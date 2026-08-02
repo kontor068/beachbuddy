@@ -1012,24 +1012,47 @@ const categoryTitleFor = (key, islandName, language, count) => {
 // Category meta, en/gr only (spec §3.2): "{count} {phrase} — {island}: {basis}.
 // {live CTA as a pointer to the per-beach pages}". The count is rebuild-fresh
 // (never stale like "today"); the basis is the honest selection reason.
+// de/fr/it were added 2026-08-02. Measured cause: of the 267 guide pages in
+// those three locales, 0% carried a count in the description, against 99% for
+// en/gr — the one CTR lever this project has actually measured was never
+// extended past the two original languages. Italy is the proof: position 9.7
+// (better than Greek) with 2.4% CTR, the worst of any locale, on 2.590
+// impressions. The phrases below are the existing hand-written copy, unchanged
+// in meaning; only the countable head and the CTA are new.
 const CATEGORY_META = {
   sheltered:  { en: { phrase: 'sheltered picks',          basis: 'oriented away from northerly Meltemi winds' }, gr: { phrase: 'πιο απάνεμες επιλογές',     basis: 'με προσανατολισμό μακριά από το βόρειο μελτέμι' } },
-  family:     { en: { phrase: 'family-friendly beaches',  basis: 'with shallow water and easier access' },       gr: { phrase: 'οικογενειακές παραλίες',    basis: 'με ρηχά νερά και ευκολότερη πρόσβαση' } },
-  snorkeling: { en: { phrase: 'snorkeling beaches',       basis: 'with clearer water and rocky seabed' },        gr: { phrase: 'παραλίες για snorkeling',   basis: 'με καθαρότερα νερά και βραχώδη βυθό' } },
-  organized:  { en: { phrase: 'organized beaches',        basis: 'with sunbeds, umbrellas and facilities' },     gr: { phrase: 'οργανωμένες παραλίες',      basis: 'με ξαπλώστρες, ομπρέλες και παροχές' } },
-  secluded:   { en: { phrase: 'secluded beaches',         basis: 'quieter and harder to reach' },                gr: { phrase: 'απομονωμένες παραλίες',     basis: 'πιο ήσυχες και δύσκολες στην πρόσβαση' } },
-  sunset:     { en: { phrase: 'west-facing beaches',      basis: 'that look out toward the sunset' },            gr: { phrase: 'δυτικές παραλίες',          basis: 'με θέα στο ηλιοβασίλεμα' } },
+  family:     { en: { phrase: 'family-friendly beaches',  basis: 'with shallow water and easier access' },       gr: { phrase: 'οικογενειακές παραλίες',    basis: 'με ρηχά νερά και ευκολότερη πρόσβαση' },
+              de: { phrase: 'familienfreundliche Strände', basis: 'mit flacherem Wasser und einfacherem Zugang' }, fr: { phrase: 'plages familiales',       basis: 'à eau généralement peu profonde et accès plus facile' }, it: { phrase: 'spiagge per famiglie',   basis: 'con acqua bassa e accesso più facile' } },
+  snorkeling: { en: { phrase: 'snorkeling beaches',       basis: 'with clearer water and rocky seabed' },        gr: { phrase: 'παραλίες για snorkeling',   basis: 'με καθαρότερα νερά και βραχώδη βυθό' },
+              de: { phrase: 'Schnorchelstrände',           basis: 'mit klarerem Wasser und felsigem Grund' },      fr: { phrase: 'plages de snorkeling',    basis: "à l'eau plus claire et au fond rocheux" },              it: { phrase: 'spiagge per snorkeling', basis: 'con acqua più limpida e fondale roccioso' } },
+  organized:  { en: { phrase: 'organized beaches',        basis: 'with sunbeds, umbrellas and facilities' },     gr: { phrase: 'οργανωμένες παραλίες',      basis: 'με ξαπλώστρες, ομπρέλες και παροχές' },
+              de: { phrase: 'organisierte Strände',        basis: 'mit Liegen, Sonnenschirmen und Einrichtungen' }, fr: { phrase: 'plages aménagées',       basis: 'avec transats, parasols et services' },                  it: { phrase: 'spiagge attrezzate',     basis: 'con lettini, ombrelloni e servizi' } },
+  secluded:   { en: { phrase: 'secluded beaches',         basis: 'quieter and harder to reach' },                gr: { phrase: 'απομονωμένες παραλίες',     basis: 'πιο ήσυχες και δύσκολες στην πρόσβαση' },
+              de: { phrase: 'abgelegene Strände',          basis: 'ruhiger und schwerer zu erreichen' },           fr: { phrase: 'plages isolées',          basis: "plus calmes et plus difficiles d'accès" },               it: { phrase: 'spiagge isolate',        basis: 'più tranquille e difficili da raggiungere' } },
+  sunset:     { en: { phrase: 'west-facing beaches',      basis: 'that look out toward the sunset' },            gr: { phrase: 'δυτικές παραλίες',          basis: 'με θέα στο ηλιοβασίλεμα' },
+              de: { phrase: 'nach Westen ausgerichtete Strände', basis: 'mit Blick auf den Sonnenuntergang' },     fr: { phrase: "plages orientées à l'ouest", basis: 'avec vue sur le coucher de soleil' },                 it: { phrase: 'spiagge esposte a ovest', basis: 'con vista sul tramonto' } },
 };
 const CATEGORY_META_CTA = {
-  long:  { en: 'Check live wind & waves for each beach on CalmBeach before you go.', gr: 'Δες live άνεμο & κύμα για κάθε παραλία στο CalmBeach πριν πας.' },
-  short: { en: 'Check live wind & waves on CalmBeach.',                              gr: 'Δες live άνεμο & κύμα στο CalmBeach.' },
+  long:  { en: 'Check live wind & waves for each beach on CalmBeach before you go.', gr: 'Δες live άνεμο & κύμα για κάθε παραλία στο CalmBeach πριν πας.',
+           de: 'Prüfe Wind und Wellen für jeden Strand auf CalmBeach, bevor du losfährst.', fr: "Vérifiez le vent et les vagues pour chaque plage sur CalmBeach avant d'y aller.", it: 'Controlla vento e onde per ogni spiaggia su CalmBeach prima di andare.' },
+  short: { en: 'Check live wind & waves on CalmBeach.',                              gr: 'Δες live άνεμο & κύμα στο CalmBeach.',
+           de: 'Prüfe Wind und Wellen auf CalmBeach.',                                      fr: 'Vérifiez le vent et les vagues sur CalmBeach.',                                    it: 'Controlla vento e onde su CalmBeach.' },
+};
+// The head reads with each language's own preposition instead of forcing the
+// Greek em-dash onto German, French and Italian. en/gr keep the exact wording
+// they were measured with.
+const CATEGORY_META_HEAD = {
+  en: (count, phrase, islandName, basis) => `${count} ${phrase} in ${islandName}: ${basis}. `,
+  gr: (count, phrase, islandName, basis) => `${count} ${phrase} — ${islandName}: ${basis}. `,
+  de: (count, phrase, islandName, basis) => `${count} ${phrase} auf ${islandName}: ${basis}. `,
+  fr: (count, phrase, islandName, basis) => `${count} ${phrase} à ${islandName} : ${basis}. `,
+  it: (count, phrase, islandName, basis) => `${count} ${phrase} a ${islandName}: ${basis}. `,
 };
 const categoryMetaFor = (key, islandName, count, language) => {
   const spec = CATEGORY_META[key]?.[language];
   if (!spec) return null;
-  const head = language === 'en'
-    ? `${count} ${spec.phrase} in ${islandName}: ${spec.basis}. `
-    : `${count} ${spec.phrase} — ${islandName}: ${spec.basis}. `;
+  const buildHead = CATEGORY_META_HEAD[language] || CATEGORY_META_HEAD.en;
+  const head = buildHead(count, spec.phrase, islandName, spec.basis);
   for (const cta of [CATEGORY_META_CTA.long[language], CATEGORY_META_CTA.short[language]]) {
     const candidate = `${head}${cta}`;
     if (candidate.length <= 155) return candidate;
@@ -1083,7 +1106,7 @@ const islandIntents = [
       },
       de: {
         title: `Strände auf ${islandName}, die oft besser beim ${a.word.de} liegen | CalmBeach`,
-        description: `Finde Strände auf ${islandName}, die ${w.de} abgewandt sind, und prüfe Wind und Wellen, bevor du losfährst.`,
+        description: truncateForMeta(`${count} eher windgeschützte Strände auf ${islandName}, ${w.de} abgewandt. Prüfe Wind und Wellen, bevor du losfährst.`, 155),
         h1: `Strände auf ${islandName}, die oft besser beim ${a.word.de} liegen`,
         intro: `Wenn der ${a.word.de} weht, sind auf ${islandName} oft Buchten angenehmer, die von ihm abgewandt liegen. Diese ${count} Strände liegen laut Ausrichtungsdaten von ${a.dir.de}-Winden abgewandt – prüfe trotzdem die Bedingungen, bevor du losfährst.`,
         sections: [
@@ -1093,7 +1116,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages souvent plus confortables à ${islandName} par ${a.word.fr} | CalmBeach`,
-        description: `Trouvez à ${islandName} des plages orientées à l'opposé ${w.fr}, puis vérifiez le vent et les vagues avant d'y aller.`,
+        description: truncateForMeta(`${count} plages plus abritées à ${islandName}, orientées à l'opposé ${w.fr}. Vérifiez le vent et les vagues avant d'y aller.`, 155),
         h1: `Plages à ${islandName} souvent plus confortables par ${a.word.fr}`,
         intro: `Quand le ${a.word.fr} souffle, les baies orientées à l'opposé peuvent être plus confortables à ${islandName}. Ces ${count} plages sont listées selon les données d'orientation disponibles — vérifiez quand même les conditions avant d'y aller.`,
         sections: [
@@ -1103,7 +1126,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge a ${islandName} spesso migliori con ${a.word.it} | CalmBeach`,
-        description: `Trova a ${islandName} spiagge orientate lontano ${w.it}, poi controlla vento e onde prima di andare.`,
+        description: truncateForMeta(`${count} spiagge più riparate a ${islandName}, orientate lontano ${w.it}. Controlla vento e onde prima di andare.`, 155),
         h1: `Spiagge a ${islandName} spesso migliori con ${a.word.it}`,
         intro: `Quando soffia il ${a.word.it}, a ${islandName} possono essere più comode le insenature orientate dalla parte opposta. Queste ${count} spiagge sono elencate in base ai dati di orientamento disponibili — controlla comunque le condizioni prima di andare.`,
         sections: [
@@ -1152,7 +1175,7 @@ const islandIntents = [
       },
       de: {
         title: `Familienfreundliche Strände auf ${islandName} | CalmBeach`,
-        description: `Familienfreundliche Strände auf ${islandName} mit flacherem Wasser und einfacherem Zugang. Prüfe Wind und Wellen, bevor du losfährst.`,
+        description: categoryMetaFor('family', islandName, count, 'de'),
         h1: `Familienstrände auf ${islandName}`,
         intro: `Unterwegs mit kleinen Kindern auf ${islandName}? Wir haben diese ${count} Strände ausgewählt, weil sie organisiert und gut erreichbar sind und in unseren Daten als flach verzeichnet stehen. Wie schnell das Wasser tiefer wird, ist von Strand zu Strand verschieden — prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
@@ -1162,7 +1185,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages familiales à ${islandName} à l'eau peu profonde | CalmBeach`,
-        description: `Plages adaptées aux familles à ${islandName}, avec eau généralement peu profonde et accès plus facile. Vérifiez le vent et les vagues avant d'y aller.`,
+        description: categoryMetaFor('family', islandName, count, 'fr'),
         h1: `Plages familiales à ${islandName}`,
         intro: `Vous voyagez avec de jeunes enfants à ${islandName} ? Nous avons retenu ces ${count} plages parce qu'elles sont aménagées, faciles d'accès, et enregistrées comme peu profondes dans nos données. La vitesse à laquelle l'eau devient profonde varie d'une plage à l'autre — vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
@@ -1172,7 +1195,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge per famiglie a ${islandName} con acqua bassa | CalmBeach`,
-        description: `Spiagge adatte alle famiglie a ${islandName}, con acqua bassa e accesso più facile. Controlla vento e onde prima di andare.`,
+        description: categoryMetaFor('family', islandName, count, 'it'),
         h1: `Spiagge per famiglie a ${islandName}`,
         intro: `Viaggi con bambini piccoli a ${islandName}? Abbiamo scelto queste ${count} spiagge perché sono attrezzate, facili da raggiungere e registrate come basse nei nostri dati. Quanto rapidamente l'acqua diventa profonda cambia da spiaggia a spiaggia — controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
@@ -1213,7 +1236,7 @@ const islandIntents = [
       },
       de: {
         title: `Schnorchelstrände auf ${islandName} | Klares Wasser & Felsen | CalmBeach`,
-        description: `Strände auf ${islandName} mit klarerem Wasser und felsigem Grund zum Schnorcheln. Prüfe Wind und Wellen, bevor du losfährst.`,
+        description: categoryMetaFor('snorkeling', islandName, count, 'de'),
         h1: `Schnorchelstrände auf ${islandName}`,
         intro: `Du suchst klares Wasser und Felsen zum Erkunden auf ${islandName}? Diese ${count} Strände eignen sich zum Schnorcheln, meist mit klarerem Wasser und felsigem oder gemischtem Grund. Die Sicht ist oft an windarmen Tagen besser – prüfe zuerst Wind und Wellen in CalmBeach.`,
         sections: [
@@ -1223,7 +1246,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages de snorkeling à ${islandName} | Eau claire & rochers | CalmBeach`,
-        description: `Plages à ${islandName} à l'eau plus claire et au fond rocheux pour le snorkeling. Vérifiez le vent et les vagues avant d'y aller.`,
+        description: categoryMetaFor('snorkeling', islandName, count, 'fr'),
         h1: `Plages de snorkeling à ${islandName}`,
         intro: `Vous cherchez une eau claire et des rochers à explorer à ${islandName} ? Ces ${count} plages se prêtent au snorkeling, généralement avec une eau plus claire et un fond rocheux ou mixte. La visibilité est souvent meilleure les jours peu ventés — vérifiez d'abord le vent et les vagues dans CalmBeach.`,
         sections: [
@@ -1233,7 +1256,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge per snorkeling a ${islandName} | Acqua limpida e scogli | CalmBeach`,
-        description: `Spiagge a ${islandName} con acqua più limpida e fondale roccioso per lo snorkeling. Controlla vento e onde prima di andare.`,
+        description: categoryMetaFor('snorkeling', islandName, count, 'it'),
         h1: `Spiagge per snorkeling a ${islandName}`,
         intro: `Cerchi acqua limpida e scogli da esplorare a ${islandName}? Queste ${count} spiagge sono adatte allo snorkeling, di solito con acqua più limpida e fondale roccioso o misto. La visibilità è spesso migliore nei giorni poco ventosi — controlla prima vento e onde in CalmBeach.`,
         sections: [
@@ -1270,7 +1293,7 @@ const islandIntents = [
       },
       de: {
         title: `Organisierte Strände auf ${islandName} mit Liegen | CalmBeach`,
-        description: `Organisierte Strände auf ${islandName} mit Liegen, Sonnenschirmen und Einrichtungen. Prüfe Wind und Wellen, bevor du losfährst.`,
+        description: categoryMetaFor('organized', islandName, count, 'de'),
         h1: `Organisierte Strände auf ${islandName}`,
         intro: `Du bevorzugst Liegen, Sonnenschirme und eine Beach Bar auf ${islandName}? Diese ${count} organisierten Strände bieten meist Einrichtungen und einfacheren Zugang. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
@@ -1280,7 +1303,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages aménagées à ${islandName} avec transats et services | CalmBeach`,
-        description: `Plages aménagées à ${islandName} avec transats, parasols et services. Vérifiez le vent et les vagues avant d'y aller.`,
+        description: categoryMetaFor('organized', islandName, count, 'fr'),
         h1: `Plages aménagées à ${islandName}`,
         intro: `Vous préférez transats, parasols et un bar de plage à ${islandName} ? Ces ${count} plages aménagées offrent généralement des services et un accès plus facile. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
@@ -1290,7 +1313,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge attrezzate a ${islandName} con lettini e servizi | CalmBeach`,
-        description: `Spiagge attrezzate a ${islandName} con lettini, ombrelloni e servizi. Controlla vento e onde prima di andare.`,
+        description: categoryMetaFor('organized', islandName, count, 'it'),
         h1: `Spiagge attrezzate a ${islandName}`,
         intro: `Preferisci lettini, ombrelloni e un beach bar a ${islandName}? Queste ${count} spiagge attrezzate hanno di solito servizi e un accesso più facile. Controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
@@ -1327,7 +1350,7 @@ const islandIntents = [
       },
       de: {
         title: `Abgelegene Strände auf ${islandName} abseits der Menschenmengen | CalmBeach`,
-        description: `Ruhige, abgelegene Strände auf ${islandName} abseits der Menschenmengen. Prüfe Zugang, Wind und Wellen auf CalmBeach.`,
+        description: categoryMetaFor('secluded', islandName, count, 'de'),
         h1: `Abgelegene Strände auf ${islandName}`,
         intro: `Du möchtest den Menschenmengen auf ${islandName} entkommen? Diese ${count} abgelegenen Strände sind ruhiger und schwerer erreichbar – oft über Schotterpiste, zu Fuß oder per Boot. Bring Wasser und Schatten mit und prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
@@ -1337,7 +1360,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages isolées à ${islandName} loin de la foule | CalmBeach`,
-        description: `Plages isolées à ${islandName}, loin de la foule. Vérifiez l'accès, le vent et les vagues sur CalmBeach.`,
+        description: categoryMetaFor('secluded', islandName, count, 'fr'),
         h1: `Plages isolées à ${islandName}`,
         intro: `Vous voulez échapper à la foule à ${islandName} ? Ces ${count} plages isolées sont plus difficiles d'accès — souvent par piste, à pied ou en bateau. Apportez eau et ombre, et vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
@@ -1347,7 +1370,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge isolate a ${islandName} lontano dalla folla | CalmBeach`,
-        description: `Spiagge tranquille e isolate a ${islandName}, lontano dalla folla. Controlla accesso, vento e onde su CalmBeach.`,
+        description: categoryMetaFor('secluded', islandName, count, 'it'),
         h1: `Spiagge isolate a ${islandName}`,
         intro: `Vuoi sfuggire alla folla a ${islandName}? Queste ${count} spiagge isolate sono più difficili da raggiungere — spesso su strada sterrata, a piedi o in barca. Porta acqua e ombra e controlla vento e onde in CalmBeach prima di andare.`,
         sections: [
@@ -1384,7 +1407,7 @@ const islandIntents = [
       },
       de: {
         title: `Sonnenuntergangsstrände auf ${islandName} nach Westen | CalmBeach`,
-        description: `Nach Westen ausgerichtete Strände auf ${islandName} mit Sonnenuntergangsblick. Prüfe Wind und Wellen, bevor du losfährst.`,
+        description: categoryMetaFor('sunset', islandName, count, 'de'),
         h1: `Sonnenuntergangsstrände auf ${islandName}`,
         intro: `Du möchtest die Sonne über dem Meer auf ${islandName} untergehen sehen? Diese ${count} nach Westen ausgerichteten Strände blicken zum Sonnenuntergang. Plane deinen Besuch für den späten Nachmittag – und prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
         sections: [
@@ -1394,7 +1417,7 @@ const islandIntents = [
       },
       fr: {
         title: `Plages de coucher de soleil à ${islandName} face à l'ouest | CalmBeach`,
-        description: `Plages orientées à l'ouest à ${islandName} avec une belle vue sur le coucher de soleil. Vérifiez le vent et les vagues avant d'y aller.`,
+        description: categoryMetaFor('sunset', islandName, count, 'fr'),
         h1: `Plages de coucher de soleil à ${islandName}`,
         intro: `Envie de voir le soleil se coucher sur la mer à ${islandName} ? Ces ${count} plages orientées à l'ouest donnent vers le coucher de soleil. Prévoyez votre visite en fin d'après-midi — et vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
         sections: [
@@ -1404,7 +1427,7 @@ const islandIntents = [
       },
       it: {
         title: `Spiagge per il tramonto a ${islandName} esposte a ovest | CalmBeach`,
-        description: `Spiagge esposte a ovest a ${islandName} con vista sul tramonto. Controlla vento e onde prima di andare.`,
+        description: categoryMetaFor('sunset', islandName, count, 'it'),
         h1: `Spiagge per il tramonto a ${islandName}`,
         intro: `Vuoi vedere il sole tramontare sul mare a ${islandName}? Queste ${count} spiagge esposte a ovest guardano verso il tramonto. Programma la visita nel tardo pomeriggio — e controlla vento e onde in CalmBeach prima di andare.`,
         sections: [

@@ -389,10 +389,13 @@ function buildRegion(regionId) {
     }
   }
 
-  const payload = {
+  // Everything except the timestamp. Key order matters: the comparison below is
+  // a string compare against the previous file with `generatedAt` removed, and
+  // that file was written with `generatedAt` sitting between `region` and
+  // `srcHash`.
+  const body = {
     v: 1,
     region: regionId,
-    generatedAt: new Date().toISOString(),
     srcHash: sourceFingerprint(beaches, coastline),
     box: [BOX_W, BOX_H],
     pin: [PIN_X, PIN_Y],
@@ -401,6 +404,30 @@ function buildRegion(regionId) {
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const outPath = path.join(OUT_DIR, `${regionId}.json`);
+
+  // `generatedAt` is informational: validateShorelineShapes checks `srcHash`, and
+  // nothing anywhere reads the timestamp. Stamping a fresh one on every build made
+  // all 109 region files show as modified in git with byte-identical drawings, so
+  // every commit carried 109 phantom changes that hid the real ones — the pipeline
+  // doc literally instructs people to "restore timestamp-only files after". Keep
+  // the old stamp whenever the drawing itself did not move.
+  let generatedAt = new Date().toISOString();
+  try {
+    const { generatedAt: previousStamp, ...previousBody } = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+    if (previousStamp && JSON.stringify(previousBody) === JSON.stringify(body)) generatedAt = previousStamp;
+  } catch {
+    // No readable previous file — first build for this region, keep the new stamp.
+  }
+
+  const payload = {
+    v: body.v,
+    region: body.region,
+    generatedAt,
+    srcHash: body.srcHash,
+    box: body.box,
+    pin: body.pin,
+    beaches: body.beaches,
+  };
   fs.writeFileSync(outPath, `${JSON.stringify(payload)}\n`, 'utf8');
 
   return {

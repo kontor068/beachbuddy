@@ -83,7 +83,18 @@ const footNav = (kind) => {
 const page = (kind, { archived = false } = {}) => {
   const gr = data.docs[kind].gr;
   const en = data.docs[kind].en;
-  const title = `${gr.title} — Calm Beach / ${en.title}`;
+  // Google truncates around 60 chars. The full bilingual title runs to 109 on
+  // /privacy/ ("Πολιτική Απορρήτου & Προστασίας Προσωπικών Δεδομένων — Calm
+  // Beach / Privacy & Personal Data Protection Policy"), so the entire English
+  // half was cut off in the result. Fall back to the short labels that already
+  // name these documents in the footer; both languages then survive.
+  // Archived snapshots keep the exact title they shipped with: they are a record
+  // of what the user agreed to, they are noindex, and rewriting them would make
+  // the archive disagree with itself. Only the live page gets shortened.
+  const fullTitle = `${gr.title} — Calm Beach / ${en.title}`;
+  const title = archived || fullTitle.length <= 60
+    ? fullTitle
+    : `${TOKEN_LABEL.gr[kind]} — Calm Beach / ${TOKEN_LABEL.en[kind]}`;
   const archivedBanner = archived
     ? `<div class="operator" style="border-color:#fbbf24;background:#fffbeb">Αρχειοθετημένη έκδοση v${esc(data.version)}. Δείτε την <a href="/${SLUGS[kind]}/">τρέχουσα έκδοση</a>. / Archived version — see the <a href="/${SLUGS[kind]}/">current version</a>.</div>`
     : '';
