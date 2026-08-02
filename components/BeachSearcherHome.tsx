@@ -625,7 +625,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Updated just now',
     updatedMinutes: (minutes) => `Updated ${minutes} min ago`,
     updatedHours: (hours) => `Updated ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`,
-    forecastAt: (time) => `Forecast from `,
+    forecastAt: (time) => `Forecast from ${time}`,
     forecastAtYesterday: (time) => `Forecast from ${time} yesterday`,
     beachFeatures: {
       sandy: 'Sandy beach',
@@ -696,7 +696,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Ενημερώθηκε μόλις τώρα',
     updatedMinutes: (minutes) => `Ενημερώθηκε πριν ${minutes} λεπτά`,
     updatedHours: (hours) => `Ενημερώθηκε πριν ${hours} ${hours === 1 ? 'ώρα' : 'ώρες'}`,
-    forecastAt: (time) => `Βάσει πρόγνωσης `,
+    forecastAt: (time) => `Βάσει πρόγνωσης ${time}`,
     forecastAtYesterday: (time) => `Βάσει πρόγνωσης ${time} χθες`,
     beachFeatures: {
       sandy: 'Αμμώδης ακτή',
@@ -767,7 +767,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Mis à jour à l’instant',
     updatedMinutes: (minutes) => `Mis à jour il y a ${minutes} min`,
     updatedHours: (hours) => `Mis à jour il y a ${hours} h`,
-    forecastAt: (time) => `Prévision de `,
+    forecastAt: (time) => `Prévision de ${time}`,
     forecastAtYesterday: (time) => `Prévision de ${time} hier`,
     beachFeatures: {
       sandy: 'Plage de sable',
@@ -838,7 +838,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Gerade aktualisiert',
     updatedMinutes: (minutes) => `Vor ${minutes} Min. aktualisiert`,
     updatedHours: (hours) => `Vor ${hours} Std. aktualisiert`,
-    forecastAt: (time) => `Vorhersage von `,
+    forecastAt: (time) => `Vorhersage von ${time}`,
     forecastAtYesterday: (time) => `Vorhersage von ${time} gestern`,
     beachFeatures: {
       sandy: 'Sandstrand',
@@ -909,7 +909,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Aggiornato ora',
     updatedMinutes: (minutes) => `Aggiornato ${minutes} min fa`,
     updatedHours: (hours) => `Aggiornato ${hours} h fa`,
-    forecastAt: (time) => `Previsione delle `,
+    forecastAt: (time) => `Previsione delle ${time}`,
     forecastAtYesterday: (time) => `Previsione delle ${time} di ieri`,
     beachFeatures: {
       sandy: 'Spiaggia sabbiosa',
