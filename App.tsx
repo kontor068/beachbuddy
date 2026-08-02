@@ -61,7 +61,7 @@ import {
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
-import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
+import { scrollToPageTop, smoothScrollToStableElement } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
@@ -2267,6 +2267,11 @@ export const App: React.FC = () => {
       setDetailDataStatus('idle');
       setDetailBeach(null);
       setView('home');
+      // Land on the map, the same as picking a region from the selector. Until now "Κοντά μου"
+      // scrolled nowhere: the merged region mounted underneath wherever the user happened to be
+      // standing, and the forecast, the exposure profiles and the per-beach seas landing one after
+      // another moved the content under them. Nothing was scrolling — it only looked that way.
+      pendingRegionMapScrollRef.current = true;
       selectAdHocRegion(nearbyRegion);
       setIsIslandSelectorOpen(false);
       // Surface the nearest beaches first, mirroring the distance-sort affordance.
@@ -3088,58 +3093,42 @@ export const App: React.FC = () => {
       ? ['top-recommendations-section', 'suitable-beaches-section', 'all-beaches-section']
       : ['top-recommendations-section', 'all-beaches-section', 'suitable-beaches-section'];
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const target = targetIds
-          .map(id => document.getElementById(id))
-          .find((element): element is HTMLElement => Boolean(element));
-        scrollElementIntoView(target ?? null);
-      });
-    });
+    // Same glide as the map landing: the results section is re-measured every frame, so a filter
+    // that shortens the list while we travel bends the motion instead of leaving us past the
+    // footer. It used to be a one-shot scrollIntoView behind a double rAF, which is a guess about
+    // when the layout is finished — and on a phone that guess is wrong more often than not.
+    startStableScroll(
+      () => targetIds
+        .map(id => document.getElementById(id))
+        .find((element): element is HTMLElement => Boolean(element)) ?? null
+    );
   };
 
   /**
-   * Scroll a section to the top and KEEP it there while the page settles.
-   * Generalised from scrollToMapSection so the trip planner can reuse it —
-   * it sits even further down the page than the map, so it needs the same
-   * re-anchoring, and a plain double-rAF scroll is not enough. See the
-   * comment inside for why this polls instead of scrolling once.
+   * One landing at a time. Two of these overlapping is a page pulled in two directions — which is
+   * half of what «πάνω-κάτω» was: a region switch fires the map landing while the search-result
+   * effect fires the results landing, and both used to run their own five-second correction loop.
+   */
+  const activeScrollCancelRef = useRef<(() => void) | null>(null);
+  const startStableScroll = (getTarget: () => HTMLElement | null, stickyTop = 0) => {
+    activeScrollCancelRef.current?.();
+    activeScrollCancelRef.current = smoothScrollToStableElement(getTarget, { offset: stickyTop });
+  };
+  useEffect(() => () => activeScrollCancelRef.current?.(), []);
+
+  /**
+   * Glide a section to the top and keep it there while the page settles.
+   *
+   * The page is not finished when we start: a cross-region search mounts the island strip and hero
+   * images AFTER the scroll — sometimes seconds later on a slow phone — and the space ABOVE the
+   * sticky map shrinks while the card carousel BELOW grows, so the body height barely changes (a
+   * ResizeObserver on <body> misses it) yet the map slides up and a one-shot scroll ends up past
+   * it, near the legal footer. utils/scroll.smoothScrollToStableElement handles that by
+   * re-measuring the destination every frame instead of remembering it — see the note there for
+   * why the previous per-frame snap was accurate and still felt broken.
    */
   const scrollToStableSection = (id: string, stickyTop = 0) => {
-    if (typeof window === 'undefined') return;
-    // A cross-region search loads the new region's view asynchronously: the island strip and
-    // hero images finish laying out AFTER we scroll — sometimes seconds later on a slow phone —
-    // and the space ABOVE the sticky map shrinks while the card carousel BELOW grows, so the
-    // body height barely changes (a ResizeObserver on <body> misses it) yet the map slides up
-    // and the page ends scrolled PAST it, near the legal footer.
-    //
-    // So poll the MAP's own position each frame and re-anchor it to the top (instant scrollBy,
-    // not a smooth scroll that we'd re-trigger every frame) until it holds still. We re-anchor
-    // unconditionally: browser scroll anchoring shifts window.scrollY when content above changes,
-    // so we can't reliably distinguish "user scrolled" from "layout shifted" — and this only runs
-    // for the brief settle window right after a search-select, when the user is waiting to land on
-    // the map, not scrolling. Verified with a throttled (slow-image) mobile Playwright repro.
-    const TOLERANCE = 6;
-    const MAX_MS = 5000;       // give a slow region up to 5s to mount + settle
-    const STABLE_MS = 500;     // stop once the target has held the top this long
-    const start = performance.now();
-    let stableSince: number | null = null;
-    const tick = () => {
-      const nowMs = performance.now();
-      const target = document.getElementById(id);
-      if (target) {
-        const delta = target.getBoundingClientRect().top - stickyTop;
-        if (Math.abs(delta) > TOLERANCE) {
-          window.scrollBy(0, delta);
-          stableSince = null;
-        } else if (stableSince === null) {
-          stableSince = nowMs;
-        }
-      }
-      const settled = stableSince !== null && nowMs - stableSince >= STABLE_MS;
-      if (!settled && nowMs - start < MAX_MS) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+    startStableScroll(() => document.getElementById(id), stickyTop);
   };
 
   const scrollToMapSection = () => {
