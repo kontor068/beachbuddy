@@ -20,7 +20,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
-import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
+import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -2670,7 +2670,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * nobody is wearing does not appear; a colour somebody is wearing cannot be left out. This is
    * what makes the legend structurally unable to contradict the pins — see tallyMapTones.
    */
-  const visibleWindColorGuideRows = CALMNESS_ORDER
+  // Calmest first (LEGEND_TONE_ORDER), NOT CALMNESS_ORDER — that one is the severity scale the
+  // sea-state ceiling and the dominant-tone scan depend on, and it runs the other way.
+  const visibleWindColorGuideRows = LEGEND_TONE_ORDER
     .map(tone => ({ tone, count: mapToneTally.counts.get(tone) ?? 0 }))
     .filter(row => row.count > 0);
   const showGroupedExposureLegend = showWindExposureStatusLabels && !isSevereWind;

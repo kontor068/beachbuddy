@@ -70,6 +70,23 @@ export type CalmnessTone = 'red' | 'orange' | 'yellow' | 'blue';
 export const CALMNESS_ORDER: readonly CalmnessTone[] = ['red', 'orange', 'yellow', 'blue'];
 
 /**
+ * The order the LEGEND lists the tones in: calmest first, «Ιδανική → Καλή → Μέτρια → Δύσκολη».
+ * Miltos, 02/08/2026 — the legend was reading bottom-up, which puts the worst news first on a
+ * page whose whole job is "where can I go today".
+ *
+ * A SEPARATE CONSTANT, not `[...CALMNESS_ORDER].reverse()` at the call site, because
+ * CALMNESS_ORDER is a SEVERITY SCALE and two other places depend on its direction:
+ * resolveConditionTone compares `indexOf()` against it so a small wave can never lift a pin past
+ * the tone the wind earned, and the map's dominant-tone scan walks it roughest-first. Reversing
+ * it in place would invert both without a single test noticing — the sea-state ceiling would
+ * start making pins calmer.
+ *
+ * scripts/validateConditionToneAgreement.mjs asserts these two are exact reverses of each other,
+ * so a tone added to one cannot go missing from the other.
+ */
+export const LEGEND_TONE_ORDER: readonly CalmnessTone[] = ['blue', 'yellow', 'orange', 'red'];
+
+/**
  * An enclosed cove (όρμος) protected from the LIVE wind keeps its water flat as the wind
  * builds (operator-verified at Άγιος Ερμογένης).
  *

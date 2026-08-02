@@ -58,7 +58,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 // The map pin's resolver (components/BeachMap.tsx getExposureMarkerTone delegates to this).
-const { resolveConditionTone, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const { resolveConditionTone, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
 const { seaStateSeverityM, SEA_STATE_AMBER_M } = require(path.join(root, 'utils/waveCharacter.ts'));
@@ -375,13 +375,32 @@ if (/\brange:\s*['"`]\s*\d/.test(mapSource) || /windColorGuideCopy\.rows\b/.test
     row: {},
   });
 }
-if (!/visibleWindColorGuideRows\s*=\s*CALMNESS_ORDER/.test(mapSource)) {
+// The legend lists calmest-first (LEGEND_TONE_ORDER) while the severity scale runs roughest-first
+// (CALMNESS_ORDER). Two constants on purpose: resolveConditionTone compares indexOf() against the
+// severity one so a small wave can never lift a pin past the tone the wind earned, and the map's
+// dominant-tone scan walks it roughest-first. A `.reverse()` on the shared constant would invert
+// both silently — the sea-state ceiling would start making pins CALMER.
+if (!/visibleWindColorGuideRows\s*=\s*LEGEND_TONE_ORDER/.test(mapSource)) {
   failures.push({
     rule: 'slider-has-no-ladder-of-its-own',
-    reason: 'the legend rows are no longer derived from CALMNESS_ORDER over mapToneTally.counts — '
+    reason: 'the legend rows are no longer derived from LEGEND_TONE_ORDER over mapToneTally.counts — '
       + 'the legend and the pins can drift apart again.',
     row: {},
   });
+}
+{
+  const reversedSeverity = [...CALMNESS_ORDER].reverse();
+  const sameLength = LEGEND_TONE_ORDER.length === CALMNESS_ORDER.length;
+  const isExactMirror = sameLength && LEGEND_TONE_ORDER.every((tone, index) => tone === reversedSeverity[index]);
+  if (!isExactMirror) {
+    failures.push({
+      rule: 'legend-order-mirrors-severity',
+      reason: `LEGEND_TONE_ORDER (${LEGEND_TONE_ORDER.join('→')}) is not the exact reverse of `
+        + `CALMNESS_ORDER (${CALMNESS_ORDER.join('→')}). A tone added to one and forgotten in the `
+        + 'other either vanishes from the legend or from the severity ladder.',
+      row: {},
+    });
+  }
 }
 {
   // The swatches must never again be resolved without the sea, which was the original defect.
