@@ -4,6 +4,7 @@ import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
 import { athensNow } from './athensTime';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
+import { resolveWindTone, type CalmnessTone } from './suitabilityTone';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -25,9 +26,19 @@ export interface ExperienceTierInput {
    *  map pin and the wave graphic, so a short-period chop is not waved through on height alone. */
   wavePeriodS?: number;
   swimmingComfort?: SwimmingComfort;
-  noIdealSwimmingWindow?: boolean;
   /** Only used to split "fair" vs "skip" on a strong-wind (≥5 Bft) day. */
   exposureLevel?: ExposureLevel;
+  /**
+   * THE COLOUR THIS BEACH'S OWN DOT IS WEARING — `simpleWindSuitability.suitabilityColor`, i.e.
+   * post-sea-state (`applySeaStateToWindSuitability`), so it already carries the cove exemption
+   * and the offshore-flat-water lift.
+   *
+   * Supplied rather than derived here for the same reason `offshoreFlatWater` is supplied to
+   * resolveConditionTone: the word must be capped by the colour the reader is ACTUALLY looking
+   * at on that surface, not by a second computation that could be handed different inputs. Where
+   * it is absent the wind-only ladder stands in — see the ceiling block below.
+   */
+  conditionTone?: CalmnessTone;
   /**
    * 0–10 from calculateSeaConditionScore — the same number the "weather now" chip is built from.
    *
@@ -41,6 +52,25 @@ export interface ExperienceTierInput {
 }
 
 const clampScore = (score: number) => Math.max(0, Math.min(100, Math.round(score)));
+
+/**
+ * How good a beach may READ, given the colour it is already PAINTED. The one place the two
+ * vocabularies meet.
+ *
+ * Written out exhaustively rather than as `CALMNESS_ORDER.indexOf(tone)`, which would give the
+ * same four numbers today. utils/suitabilityTone documents at length that the DIRECTION of
+ * CALMNESS_ORDER is load-bearing for two other consumers and that reversing it would silently
+ * invert both; making the verdict word a third silent dependent is exactly the coupling this
+ * change exists to remove. An exhaustive Record is also what turned the removal of the cove's
+ * 'green' into a list of compiler errors instead of five dead entries — a tone added to the
+ * ladder cannot go missing here.
+ */
+export const TONE_TIER_CEILING: Record<CalmnessTone, 0 | 1 | 2 | 3> = {
+  red: 0,
+  orange: 1,
+  yellow: 2,
+  blue: 3,
+};
 
 // The tier is a BEACH-EXPERIENCE verdict, not a swimming-safety verdict. The model:
 //
@@ -109,28 +139,46 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   const seaRedensPin = wave !== undefined && wave >= SEA_STATE_ROUGH_M;
   if (bft >= 7 || seaRedensPin || (bft >= 5 && pinRedInStrongWind)) return 'skip';
 
-  // Condition ceiling: 3 excellent · 2 good · 1 OK. The wind ceiling MIRRORS the map's
-  // wind-colour engine (getSimpleWindColor) so the verdict word can never sit a tier ABOVE
-  // the pin. Colour → tier: green → 3 ("Ιδανική") · yellow → 2 ("Καλή") · orange → 1 ("Μέτρια").
+  // Condition ceiling: 3 excellent · 2 good · 1 OK.
   //
-  // The old model applied NO wind penalty below 5 Bft (ceiling 3 for every beach), so an
-  // exposed, onshore shore at 4 Bft read "Ιδανική" while its own pin was already orange
-  // ("Μέτρια") — the Καγιά case (faces due north, straight into the meltemi). The badge is
-  // normally hidden at 3–4 Bft, so this only ever surfaced where it's forced on (detail page,
-  // single searched beach). Now the ceiling tracks exposure through the whole 3–5 Bft band,
-  // exactly like the pin:
-  //   protected: green to 4 Bft, yellow at 5–6           → 3 up to 4, 2 at 5–6
-  //   partial:   yellow at 3–4, orange at 5+ (uncertain) → 3 at ≤2, 2 at 3–4, 1 at 5+
-  //   exposed:   yellow at 3, orange at 4, red at 5+     → 3 at ≤2, 2 at 3, 1 at 4+
-  // Unknown exposure is treated as exposed, matching getSimpleWindColor's fall-through.
-  // Real WAVES (≥1.2 m → OK, ≥0.8 m → cap "good") and a hard swim advisory pull it down
-  // further, independent of wind. (7 Bft+ already returned 'skip'.)
+  // THE DOT IS THE CEILING (02/08/2026). The block below used to be a hand-written wind ladder
+  // whose comment claimed to "mirror" the colour engine. It did not, and it could not: a copy of
+  // a rule is not the rule. It drifted twice — the comment it replaced still described a ladder
+  // with a green tier and a protected shore reading yellow at 5–6 Bft, neither of which had
+  // existed since the enclosed cove lost its own colour that morning. Measured against the card's
+  // real inputs before this change: 169 of 2.376 combinations (7,1%) printed a word ABOVE the dot
+  // beside it — «Καλή» over an orange dot on every protected shore at 5–6 Bft, which is every
+  // card on the home page on a windy day.
+  //
+  // So the colour now sets the ceiling and the ladder below it only ever narrows further:
+  //   blue → 3 («Ιδανική») · yellow → 2 («Καλή») · orange → 1 («Μέτρια») · red → 'skip'
+  //
+  // A MINIMUM, NOT A REPLACEMENT — this is the load-bearing detail. Deriving the ceiling PURELY
+  // from the tone was measured too and rejected: it made 54 combinations MORE optimistic, because
+  // resolveWindTone reads only `exposureLevel === 'exposed'`, so an unknown-exposure shore is
+  // treated as sheltered (yellow at 4 Bft) where this function treats it as exposed. Unknown
+  // exposure reading calmer than known-exposed is precisely the wrong direction, so the old
+  // ladder stays as an additional floor of caution. What it can no longer do is EXCEED the dot;
+  // if it drifts again it can only drift conservative, which is harmless.
+  //
+  // Where no tone is supplied (a caller that has no colour to give) the wind-only ladder from the
+  // same module stands in, so even the fallback path is the shared rule rather than a third copy.
   const isProtected = input.exposureLevel === 'protected';
+  const tone = input.conditionTone ?? resolveWindTone(input.exposureLevel, bft);
+  const toneCeiling = TONE_TIER_CEILING[tone];
+  if (toneCeiling === 0) return 'skip';
+
   let ceiling: 1 | 2 | 3;
   if (bft <= 2) ceiling = 3;
   else if (isProtected) ceiling = bft >= 5 ? 2 : 3;
   else if (input.exposureLevel === 'partial') ceiling = bft >= 5 ? 1 : bft >= 3 ? 2 : 3;
   else ceiling = bft >= 4 ? 1 : bft >= 3 ? 2 : 3;
+  ceiling = Math.min(ceiling, toneCeiling) as 1 | 2 | 3;
+  // THE SEA IS NOW COUNTED TWICE, ON TWO DIFFERENT NUMBERS, AND THAT IS DELIBERATE. The tone
+  // above already carries a sea ceiling — but computed on `seaStateWaveM`, shore-damped by
+  // exposure and exempt for a cove. The one below reads the DISPLAY wave, raw and unexempted.
+  // Both are conservative, so the minimum of the two is sound; the pair exists because neither
+  // number answers the other's question. Do not "simplify" by deleting this one.
   if (wave !== undefined && wave >= SEA_STATE_ROUGH_M) ceiling = 1;
   else if (wave !== undefined && wave >= SEA_STATE_AMBER_M && ceiling > 2) ceiling = 2;
   if (swimmingComfort === 'avoid_swimming') ceiling = 1;
@@ -149,14 +197,22 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // (ceiling ≥ 2), reads at least "good" (yellow) — if it's out of the wind it's a good
   // beach day there, so it shouldn't fall to "OK" for a middling composite score.
   //
-  // The Beaufort cutoff tracks the map's simple wind-suitability layer so the pin colour and
-  // the verdict word can't contradict each other: a VERIFIED-protected beach paints YELLOW
-  // ("Καλή") through 5–6 Bft (getSimpleWindColor), so the verdict must too — otherwise the map
-  // read "Καλή" while the detail said "Μέτρια" for the same sheltered cove (Άγιος Ερμογένης,
-  // still calm with minimal wave at 6 Bft in the lee). PARTIAL shelter keeps the ≤4 cutoff,
-  // matching its pin (partial-at-5-Bft is orange/"Μέτρια"). The ceiling ≥ 2 gate still holds
-  // (protected wind is relaxed above, but real waves ≥1.2 m or a swim advisory still cap it at
-  // OK). `exposureLevel` is already gated to real protection (canClaimWindProtection) by the caller.
+  // ⚠️ THE 5–6 BFT HALF OF THIS WAS REVERSED ON 02/08/2026, BY DECISION, NOT BY REFACTOR.
+  // Until then the cutoff read «a VERIFIED-protected beach paints YELLOW through 5–6 Bft, so the
+  // verdict must too», and named Άγιος Ερμογένης — still calm at 6 Bft in the lee. That premise
+  // died the day before, when the enclosed cove lost its own colour: a protected shore now paints
+  // ORANGE at 5–6 Bft. The floor kept lifting the word to «Καλή» over that orange dot on 150 of
+  // the measured combinations. Miltos: the word follows the dot.
+  //
+  // The floor is NOT gated on Beaufort any more than it was; what stops it now is that `ceiling`
+  // has already been minimum'd against the tone above, and `rank ≤ ceiling`, so `Math.max(rank, 2)`
+  // can never exceed the colour. NO SECOND CLAMP IS NEEDED HERE — adding one would be dead code
+  // that reads as load-bearing. The `shelteredFloorMaxBft` of 6 therefore now only does work where
+  // the dot itself allows tier 2: a protected shore at 5 Bft with the wind blowing OFF the land
+  // (utils/offshoreFlatWater), whose dot is yellow. That is the case the floor was always for.
+  //
+  // PARTIAL shelter keeps the ≤4 cutoff, matching its pin (partial-at-5-Bft is orange/"Μέτρια").
+  // `exposureLevel` is already gated to real protection (canClaimWindProtection) by the caller.
   const lessExposed = isProtected || input.exposureLevel === 'partial';
   const dayBft = typeof input.dayBeaufort === 'number' ? input.dayBeaufort : bft;
   const shelteredFloorMaxBft = isProtected ? 6 : 4;

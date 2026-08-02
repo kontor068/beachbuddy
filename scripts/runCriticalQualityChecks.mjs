@@ -60,9 +60,9 @@ const checks = [
   {
     id: 'verdict-consistency',
     title: 'One sea verdict per page',
-    description: 'Sweeps 3.168 wind/wave/period/exposure/score combinations and checks the experience-tier badge, the "weather now" chip and the wave graphic never describe the same sea two different ways.',
-    protects: 'Prevents the beach page from printing "Excellent today" and "Calm right now" above an orange "Some chop" — three severity ladders that drifted apart and contradicted each other on 21% of the grid.',
-    failureAction: 'Fix the shared ladder in utils/seaVerdict.ts, or the surface that stopped reading it. Never relax a rule in the audit to make a combination pass.',
+    description: 'Sweeps 17.820 wind/wave/period/exposure/cove/offshore-wind/score combinations, in the three shapes the badge is really called in (card, detail hero, no-colour fallback), and checks the experience-tier WORD, the "weather now" chip, the wave graphic and the map DOT never describe the same sea two different ways. Then reads the JSX to confirm every <TodayScoreBadge> is actually handed the colour it must obey.',
+    protects: 'Prevents the beach page from printing "Excellent today" and "Calm right now" above an orange "Some chop" — three severity ladders that drifted apart on 21% of the grid — and, since 02/08/2026, prevents the verdict word from reading BETTER than the dot beside it. That fourth drift was measured at 169 of 2.376 card combinations (7,1%): «Καλή» over an orange dot on every protected shore at 5-6 Bft, i.e. every card on the home page on a windy day.',
+    failureAction: 'Fix the shared ladder in utils/seaVerdict.ts / utils/experienceTier.ts, or pass the colour to the surface that stopped passing it. NEVER re-derive the wind ceiling locally — a second copy of the ladder is what caused both drifts, and it is what this gate exists to prevent.',
     command: process.execPath,
     args: ['scripts/validateVerdictConsistency.mjs'],
   },
@@ -119,6 +119,15 @@ const checks = [
     failureAction: 'Fix utils/suitabilityTone.resolveConditionTone or whichever surface stopped reading it. Never relax a rule here to make a case pass — two independent ladders is exactly how this started.',
     command: process.execPath,
     args: ['scripts/validateConditionToneAgreement.mjs'],
+  },
+  {
+    id: 'beach-page-contradictions',
+    title: 'What the user actually sees',
+    description: 'Opens four real Ios beach pages in a browser against a fixed 5 Bft northerly and checks each one states how that wind meets ITS shore — lee, side-on or head-on — matching the beach\'s own committed geometry, and that a lee shore and a windward shore on the same island never read the same.',
+    protects: 'The only gate in the repo that opens a page. Every other check reasons about numbers, and both defects reported on 29/07/2026 were found by a human looking at a screen while fourteen gates were green. It is joining this set on 02/08/2026 because it had been RED for three days without anyone noticing: it lived only behind `npm run quality:page`, and three of the strings it scraped had been intentionally renamed or removed underneath it. A check nobody runs is a check that goes stale, and a stale check teaches people to ignore red.',
+    failureAction: 'Read the printed table first: it says what the geometry expects and what the page actually read. If the page says nothing, the explanation sentence has been lost from the hero — that has happened before (twice, silently). If the wording merely changed, update the phrase lists at the top of the script; never delete a rule to make it pass.',
+    command: process.execPath,
+    args: ['scripts/validateBeachPageContradictions.mjs'],
   },
   {
     id: 'wave-climatology',

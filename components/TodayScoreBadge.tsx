@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart3, Ship } from 'lucide-react';
-import { LanguageCode, SwimmingComfort } from '../types';
+import { LanguageCode, SwimmingComfort, WindSuitabilityColor } from '../types';
 import { getLocalizedCopy } from '../utils/i18n';
 import { ExposureLevel } from '../utils/windExposure';
 import { getBoatRideMotionLevel, type BoatRideMotionLevel } from '../utils/boatRideMotion';
@@ -22,8 +22,18 @@ interface TodayScoreBadgeProps {
   /** 0–10 from calculateSeaConditionScore — the same figure the "weather now" chip reads, so the
    *  badge can never sit a tier above the chip printed a few lines below it. */
   seaConditionScore?: number;
-  noIdealSwimmingWindow?: boolean;
   exposureLevel?: ExposureLevel;
+  /**
+   * The colour this beach's own dot/chip is wearing right now — pass
+   * `simpleWindSuitability.suitabilityColor`, which every surface rendering this badge already
+   * holds. It CAPS the word: the verdict may read more cautiously than the dot (the score folds
+   * in access and amenities, the colour does not), never more optimistically.
+   *
+   * Not optional in practice — `validateVerdictConsistency` fails any `<TodayScoreBadge` that
+   * omits it. Optional in the type only so the fallback ladder in getExperienceTier stays
+   * reachable and testable.
+   */
+  conditionTone?: WindSuitabilityColor;
   selectedHour?: number;
   boatAccess?: boolean;
   /**
@@ -143,7 +153,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   wavePeriodS,
   swimmingComfort,
   seaConditionScore,
-  noIdealSwimmingWindow,
+  conditionTone,
   exposureLevel,
   selectedHour,
   boatAccess = false,
@@ -171,8 +181,8 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
       wavePeriodS,
       swimmingComfort,
       seaConditionScore,
-      noIdealSwimmingWindow,
       exposureLevel,
+      conditionTone,
     });
     tone = experienceTierTone[tier];
     // The label must know the SHARED sea verdict, or 'fair' prints "OK today" above a swim chip

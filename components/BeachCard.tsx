@@ -1190,10 +1190,11 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     de: 'Beste Zeit',
     it: 'Ora migliore',
   });
-  const noIdealSwimmingWindow = swimmingComfort === 'avoid_swimming' || Boolean(
-    warnings.some(warning => warning.type === 'rough_sea' && warning.severity === 'critical') ||
-    (typeof cardSeaStateM === 'number' && Number.isFinite(cardSeaStateM) && cardSeaStateM >= SEA_STATE_ROUGH_M)
-  );
+  // `noIdealSwimmingWindow` was computed here and threaded to all three badges. It was removed on
+  // 02/08/2026 with the input itself: getExperienceTier DECLARED it and never read it, so three
+  // call sites were paying for a value the verdict ignored. Everything it tried to express —
+  // avoid_swimming, a critical rough-sea warning, a sea over SEA_STATE_ROUGH_M — the badge already
+  // learns from `swimmingComfort` and from the colour it is now capped by.
   const favoriteLabel = localizedCardCopy.favorite;
   const unfavoriteLabel = localizedCardCopy.unfavorite;
   const shareLabel = localizedCardCopy.share;
@@ -1548,8 +1549,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 waveHeightM={waveHeightM}
                 wavePeriodS={seaStatePeriodS}
                 swimmingComfort={swimmingComfort}
-                noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                conditionTone={windSuitabilityColor}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
                 boatAccess={isBoatOnlyBeach}
@@ -1684,8 +1685,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 waveHeightM={waveHeightM}
                 wavePeriodS={seaStatePeriodS}
                 swimmingComfort={swimmingComfort}
-                noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                conditionTone={windSuitabilityColor}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
                 boatAccess={isBoatOnlyBeach}
@@ -1876,8 +1877,8 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 waveHeightM={waveHeightM}
                 wavePeriodS={seaStatePeriodS}
                 swimmingComfort={swimmingComfort}
-                noIdealSwimmingWindow={noIdealSwimmingWindow}
                 exposureLevel={exposureLevel}
+                conditionTone={windSuitabilityColor}
                 canClaimWindProtection={canClaimWindProtection}
                 selectedHour={selectedHour}
                 boatAccess={isBoatOnlyBeach}

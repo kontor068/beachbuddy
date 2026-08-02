@@ -1858,8 +1858,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               wavePeriodS={scoreResult.seaStatePeriodS}
               seaConditionScore={seaConditionScore}
               swimmingComfort={swimmingComfort}
-              noIdealSwimmingWindow={swimWindowDisplay.tone === 'avoid'}
               exposureLevel={mapAlignedExposureLevel}
+              // The hero prints three readings of the same beach — this word, the map pin, and the
+              // conditions chip. The colour is what the other two are built from, so it caps the
+              // word here too; without it the hero could say «Καλή» over its own orange pin.
+              conditionTone={scoreResult.simpleWindSuitability?.suitabilityColor}
               canClaimWindProtection={canClaimWindProtectionForCopy}
               selectedHour={selectedHour}
               boatAccess={isBoatOnlyBeach}
@@ -2659,8 +2662,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               waveHeightM={itemWaveHeightM}
                               wavePeriodS={item.seaStatePeriodS}
                               swimmingComfort={item.swimmingComfort}
-                              noIdealSwimmingWindow={item.swimmingComfort === 'avoid_swimming'}
                               exposureLevel={item.exposureLevel}
+                              conditionTone={item.simpleWindSuitability?.suitabilityColor}
                               canClaimWindProtection={item.canClaimWindProtection}
                               selectedHour={selectedHour}
                               boatAccess={hasBoatOnlyAccess(item.beach)}

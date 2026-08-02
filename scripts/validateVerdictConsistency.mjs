@@ -45,7 +45,7 @@ require.extensions['.ts'] = (module, filename) => {
   module._compile(output, filename);
 };
 
-const { getExperienceTier, getExperienceTierLabel } = require(path.join(root, 'utils/experienceTier.ts'));
+const { getExperienceTier, getExperienceTierLabel, TONE_TIER_CEILING } = require(path.join(root, 'utils/experienceTier.ts'));
 const { buildWeatherNowContent } = require(path.join(root, 'utils/weatherNowCopy.ts'));
 const { calculateSeaConditionScore } = require(path.join(root, 'utils/seaConditions.ts'));
 const { getSeaSeverity, getSeaStateSeverity } = require(path.join(root, 'utils/seaVerdict.ts'));
@@ -56,18 +56,47 @@ const { WindDirection } = require(path.join(root, 'types.ts'));
 const BEAUFORTS = [0, 1, 2, 3, 4, 5, 6, 7];
 const WAVES_M = [0.1, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 1.0, 1.3, 1.6];
 const PERIODS_S = [2.5, 4, 7];
-const LEVELS = ['protected', 'partial', 'exposed'];
+// `undefined` is a real class nothing in this repo swept until 02/08/2026: a beach whose exposure
+// was never resolved. The two ladders disagree about it on purpose — resolveWindTone tests only
+// `=== 'exposed'`, so unknown reads as sheltered, while getExperienceTier's own fallback treats it
+// as exposed. Sweeping it is what proves the minimum of the two lands on the cautious side.
+const LEVELS = ['protected', 'partial', 'exposed', undefined];
 const SCORES = [45, 65, 85];
 /** Representative wind speed (km/h) at the middle of each Beaufort step. */
 const BFT_KMH = { 0: 1, 1: 4, 2: 9, 3: 15, 4: 24, 5: 34, 6: 44, 7: 55 };
 
+const TIER_RANK = { excellent: 3, good: 2, fair: 1, skip: 0 };
+
+/**
+ * The three shapes `getExperienceTier` is really called in. Sweeping only one would leave the
+ * others unguarded, and they differ in ways that matter:
+ *
+ *   card        — components/BeachCard.tsx ×3. No seaConditionScore, no dayBeaufort. This is the
+ *                 configuration ~all users see, and the one the 7,1% drift was measured in.
+ *   detail-hero — pages/BeachDetailPage.tsx:1849, which DOES pass seaConditionScore.
+ *   fallback    — no colour supplied, so the wind-only ladder inside getExperienceTier answers.
+ *                 Keeps the path a future caller might land on under the same invariant.
+ */
+const CONFIGS = ['card', 'detail-hero', 'fallback'];
+
 /**
  * The rules. Each returns a reason string when the combination is a contradiction the user
  * would actually see on one screen, or null when it is fine.
+ *
+ * `configs` says WHICH SCREEN. Rules 1-5 compare the badge against the "weather now" chip and the
+ * wave graphic — three things that only ever appear TOGETHER on the beach detail page, which is
+ * also the only surface that passes `seaConditionScore`. Running them over the card configuration
+ * would assert a contradiction between two elements that are never on screen at the same time,
+ * and would fail on 108 combinations for that reason alone. Rules 6-7 compare the word with its
+ * own dot, which travels with the beach onto every surface, so they run everywhere.
  */
+const ALL_CONFIGS = ['card', 'detail-hero', 'fallback'];
+const DETAIL_ONLY = ['detail-hero'];
+
 const RULES = [
   {
     id: 'excellent-over-running-sea',
+    configs: DETAIL_ONLY,
     // Blue "Excellent today" is the strongest thing we say. It cannot sit above a wave figure
     // the same page paints amber or rough.
     check: ({ tier, severity }) =>
@@ -77,6 +106,7 @@ const RULES = [
   },
   {
     id: 'calm-chip-over-running-sea',
+    configs: DETAIL_ONLY,
     // "Calm right now" beside an amber/rough wave graphic — the Avlonas class, and in its worst
     // form a 1,3 m sea described as calm.
     check: ({ tone, severity }) =>
@@ -86,6 +116,7 @@ const RULES = [
   },
   {
     id: 'choppy-chip-under-excellent-badge',
+    configs: DETAIL_ONLY,
     // The two verdicts the user reads first must not disagree with each other.
     check: ({ tier, tone }) =>
       tier === 'excellent' && tone !== 'calm'
@@ -94,6 +125,7 @@ const RULES = [
   },
   {
     id: 'rough-sea-still-good',
+    configs: DETAIL_ONLY,
     // A measured rough sea (>= SEA_STATE_ROUGH_M) may never read better than "OK".
     check: ({ tier, severity }) =>
       severity === 'rough' && (tier === 'excellent' || tier === 'good')
@@ -102,6 +134,7 @@ const RULES = [
   },
   {
     id: 'badge-endorses-a-day-the-swim-chip-refuses',
+    configs: DETAIL_ONLY,
     // THE FIFTH LADDER. The four rules above compare the badge and the "weather now" chip; the
     // swim-feel chip inside the wave graphic was never in this grid, and it is the one that
     // prints "Difficult for swimming" / «Δύσκολη για μπάνιο» right under the metre figure.
@@ -131,6 +164,7 @@ const RULES = [
   },
   {
     id: 'red-pin-under-a-word-that-is-not-skip',
+    configs: ALL_CONFIGS,
     // THE SIXTH LADDER, and the one that was missing entirely: the DOT versus the WORD.
     //
     // Rules 1-5 all compare text with text. Nothing compared the verdict with the colour the map
@@ -149,10 +183,36 @@ const RULES = [
         ? `map pin is RED but the verdict is "${tier}" — the word sits a tier above its own dot`
         : null,
   },
+  {
+    id: 'word-above-its-own-pin',
+    configs: ALL_CONFIGS,
+    // RULE 6 GENERALISED (02/08/2026). Rule 6 only ever asked about RED. Everything softer went
+    // unchecked, and that is where the drift actually lived: measured with the inputs a BeachCard
+    // really passes, 169 of 2.376 combinations (7,1%) printed a word ABOVE its dot — «Καλή» over
+    // an orange dot on EVERY protected shore at 5-6 Bft, i.e. every card on the home page on a
+    // windy day, plus «Ιδανική» over a yellow dot at 4 Bft. The cause was a second, hand-written
+    // wind ladder inside getExperienceTier whose own comment described a colour scale that had
+    // stopped existing the previous morning.
+    //
+    // ONE DIRECTION ONLY. The reverse — a word more cautious than the dot — is legitimate and
+    // common (1.019 of 3.024, 33,7%): the word folds in the composite score (access, amenities,
+    // a swim advisory) and the colour describes conditions alone. This rule must therefore NEVER
+    // assert equality, never "blue ⇒ excellent", never "yellow ⇒ at least good", and never
+    // "orange ⇒ fair". Tightening it in any of those directions turns a thousand correct rows
+    // red. `legitimatelyBelow` below counts them so an accidentally bidirectional rule shows up
+    // as a suspiciously empty count rather than as silence.
+    check: ({ pinTone, tier }) => (
+      TIER_RANK[tier] > TONE_TIER_CEILING[pinTone]
+        ? `verdict "${tier}" over a ${pinTone.toUpperCase()} dot — the word may read more cautiously than the colour, never better`
+        : null
+    ),
+  },
 ];
 
 const failures = [];
 let combinations = 0;
+/** Rows where the word is CALMER than the dot — the legitimate direction. See rule 7. */
+let legitimatelyBelow = 0;
 
 for (const beaufort of BEAUFORTS) {
   for (const waveHeightM of WAVES_M) {
@@ -161,6 +221,15 @@ for (const beaufort of BEAUFORTS) {
         for (const canClaimWindProtection of [true, false]) {
           // Only a protected profile can claim wind protection — the other pairs never occur.
           if (exposureLevel !== 'protected' && canClaimWindProtection) continue;
+          // Geometry gates both flags to protected shores, and the offshore lift to exactly
+          // 5 Bft (utils/offshoreFlatWater). Sweeping them wider would assert over states the
+          // app cannot produce; sweeping them not at all — which is what this gate did until
+          // 02/08 — asserts against a dot the app never paints for a cove or a lee shore.
+          const COVES = exposureLevel === 'protected' ? [false, true] : [false];
+          const LIFTS = exposureLevel === 'protected' && beaufort === 5 ? [false, true] : [false];
+          for (const isEnclosedCove of COVES) {
+          for (const offshoreFlatWater of LIFTS) {
+          for (const config of CONFIGS) {
           for (const score of SCORES) {
             combinations += 1;
             const windSpeedKmh = BFT_KMH[beaufort];
@@ -173,14 +242,26 @@ for (const beaufort of BEAUFORTS) {
               wavePeriodS
             );
 
+            // The dot this beach is actually wearing — full argument set, so the word is compared
+            // against the colour the app paints rather than a simplified stand-in.
+            const pinTone = resolveConditionTone({
+              exposureLevel,
+              beaufort,
+              seaStateM: seaStateSeverityM(waveHeightM, wavePeriodS),
+              isEnclosedCove,
+              offshoreFlatWater,
+            });
+
             const tier = getExperienceTier({
               score,
               windBeaufort: beaufort,
-              dayBeaufort: beaufort,
+              // Only the pre-02/08 configuration passed these. Cards never have either.
+              ...(config === 'detail-hero' ? { dayBeaufort: beaufort, seaConditionScore } : {}),
               waveHeightM,
               wavePeriodS,
               exposureLevel,
-              seaConditionScore,
+              // 'fallback' deliberately withholds it so the internal ladder answers instead.
+              ...(config === 'fallback' ? {} : { conditionTone: pinTone }),
             });
 
             const { tone } = buildWeatherNowContent({
@@ -203,18 +284,16 @@ for (const beaufort of BEAUFORTS) {
             });
 
             const seaStateSeverity = getSeaStateSeverity(seaStateSeverityM(waveHeightM, wavePeriodS));
-            // The pin's own colour, from the shared ladder — so rule 6 can compare the dot on the
-            // map with the word printed beside it instead of trusting they were kept in step.
-            const pinTone = resolveConditionTone({
-              exposureLevel,
-              beaufort,
-              seaStateM: seaStateSeverityM(waveHeightM, wavePeriodS),
-            });
-            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity, seaStateSeverity, pinTone };
+            if (TIER_RANK[tier] < TONE_TIER_CEILING[pinTone]) legitimatelyBelow += 1;
+            const row = { beaufort, waveHeightM, wavePeriodS, exposureLevel, canClaimWindProtection, score, tier, tone, severity, seaStateSeverity, pinTone, isEnclosedCove, offshoreFlatWater, config };
             for (const rule of RULES) {
+              if (!rule.configs.includes(config)) continue;
               const reason = rule.check(row);
               if (reason) failures.push({ rule: rule.id, reason, row });
             }
+          }
+          }
+          }
           }
         }
       }
@@ -242,10 +321,66 @@ for (const rule of RULES) {
   if (hits.length > 3) console.log(`       …and ${hits.length - 3} more`);
 }
 
-if (failures.length > 0) {
-  console.error(`\nFAILED: ${failures.length} contradicting combination(s).`);
-  console.error('The page would state the same sea two different ways. Fix the ladder in');
-  console.error('utils/seaVerdict.ts, or the surface that stopped reading it.');
+/**
+ * PROOF THAT RULE 7 DID NOT BECOME BIDIRECTIONAL.
+ *
+ * A word CALMER than its dot is correct and common — the word folds in the composite score, the
+ * colour does not. If someone tightens rule 7 into an equality, every one of these rows starts
+ * failing; but if they tighten it the other way (asserting the word must be at least as calm as
+ * the dot) the failure list stays empty and the gate looks healthier than it is. Printing the
+ * count makes that second mistake visible: a sudden zero here means the legitimate direction has
+ * been outlawed, not that the app got better.
+ */
+const belowShare = (100 * legitimatelyBelow / combinations).toFixed(1);
+console.log(`\nWord more cautious than its dot (legitimate): ${legitimatelyBelow} of ${combinations} (${belowShare}%)`);
+if (legitimatelyBelow === 0) {
+  console.error('FAILED: not one row has the word reading calmer than its dot.');
+  console.error('That is not possible over this grid — rule 7 has been made bidirectional.');
+  process.exit(1);
+}
+
+// ── Source wiring ────────────────────────────────────────────────────────────────────────────
+//
+// The grid above proves a pure function. It cannot see a SURFACE that forgot to pass the colour —
+// which is the exact failure being fixed: for three days the word and the dot disagreed on every
+// card while every gate stayed green, because no gate read the JSX. Same shape as
+// `detail-map-gets-the-same-inputs` in scripts/validateConditionToneAgreement.mjs.
+const wiringFailures = [];
+const BADGE_FILES = ['components/BeachCard.tsx', 'pages/BeachDetailPage.tsx'];
+for (const file of BADGE_FILES) {
+  const source = readFileSync(path.join(root, file), 'utf8');
+  const badges = source.split('<TodayScoreBadge').length - 1;
+  const wired = source.split('conditionTone=').length - 1;
+  if (badges !== wired) {
+    wiringFailures.push(`${file}: ${badges} <TodayScoreBadge but ${wired} conditionTone= — a surface is on the old ladder`);
+  }
+}
+const badgeSource = readFileSync(path.join(root, 'components/TodayScoreBadge.tsx'), 'utf8');
+if (!badgeSource.includes('conditionTone,')) {
+  wiringFailures.push('components/TodayScoreBadge.tsx: does not forward conditionTone into getExperienceTier');
+}
+const tierSource = readFileSync(path.join(root, 'utils/experienceTier.ts'), 'utf8');
+if (!tierSource.includes("from './suitabilityTone'")) {
+  wiringFailures.push('utils/experienceTier.ts: no longer reads the shared ladder — a second ladder has grown back');
+}
+// The explicit Record must agree with the severity scale it mirrors, or the two can drift apart
+// exactly the way the ladder and the word did.
+const { CALMNESS_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
+for (const tone of CALMNESS_ORDER) {
+  if (TONE_TIER_CEILING[tone] !== CALMNESS_ORDER.indexOf(tone)) {
+    wiringFailures.push(`TONE_TIER_CEILING.${tone} = ${TONE_TIER_CEILING[tone]} but CALMNESS_ORDER puts it at ${CALMNESS_ORDER.indexOf(tone)}`);
+  }
+}
+
+const wiringMark = wiringFailures.length === 0 ? 'OK  ' : 'FAIL';
+console.log(`${wiringMark} every-verdict-knows-its-own-colour: ${wiringFailures.length}`);
+for (const reason of wiringFailures) console.log(`       ${reason}`);
+
+if (failures.length > 0 || wiringFailures.length > 0) {
+  console.error(`\nFAILED: ${failures.length} contradicting combination(s), ${wiringFailures.length} wiring problem(s).`);
+  console.error('Either the ladder in utils/seaVerdict.ts / utils/experienceTier.ts drifted, or a');
+  console.error('surface stopped passing the colour it is painted. Never re-derive the wind');
+  console.error('ceiling locally — that second ladder is what this gate exists to prevent.');
   process.exit(1);
 }
 
