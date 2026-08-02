@@ -726,6 +726,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const showConditions = !conditionsUnavailable;
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  /**
+   * The id every committed per-beach FILE is keyed by.
+   *
+   * In «Κοντά μου» the region is synthesised from whatever lies within the radius and every
+   * beach is re-numbered 1..60 so the merged set has unique ids; the real one is kept in
+   * `sourceBeachId` (App.buildNearbyRegion). Lookups that read a committed file — the climate
+   * record, the shoreline drawing — must use the real id or they silently find nothing, and the
+   * same beach loses its shoreline graphic and its "is today unusual?" line purely because the
+   * reader arrived through Near me. Anything about live conditions keeps using `beach.id`,
+   * which is what the in-memory maps for this session are keyed by.
+   */
+  const committedBeachId = beach.sourceBeachId ?? beach.id;
   const beachDisplayName = displayBeachName(beach.name, language);
   const islandDisplayName = islandName || 'Greece';
   const [storyExpanded, setStoryExpanded] = useState(false);
@@ -746,9 +758,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   useEffect(() => {
     let cancelled = false;
     setBeachClimate(null);
-    getBeachClimate(beach.id, beach.regionId ?? regionId).then(c => { if (!cancelled) setBeachClimate(c); });
+    getBeachClimate(committedBeachId, beach.regionId ?? regionId).then(c => { if (!cancelled) setBeachClimate(c); });
     return () => { cancelled = true; };
-  }, [beach.id, beach.regionId, regionId]);
+  }, [committedBeachId, beach.regionId, regionId]);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
   const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
   const guidesHubLink = useMemo(() => getGuidesHubLink(language), [language]);
@@ -964,7 +976,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const windDir = degToCompass(weatherData.wind.deg);
   const windDirectionLabel = t.windDirectionsAccusative?.[windDir as WindDirection] || t.windDirections[windDir as WindDirection] || windDir;
   // Real shoreline geometry, drawn in the photo slot when this beach has no photo.
-  const shorelineShape = useShorelineShape(beach.regionId ?? regionId, beach.id);
+  const shorelineShape = useShorelineShape(beach.regionId ?? regionId, committedBeachId);
   const geospatialExposure = geospatialExposureProfiles?.[beach.id];
   const scoreResult = calculateBeachScore(beach, weatherData, userLocation, preferences, {
     weatherSource: scoringWeatherSource,

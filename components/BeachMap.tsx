@@ -445,13 +445,24 @@ const MapAutoResize = () => {
 };
 
 // Component to update map center when user location changes
-const RecenterMap = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
+/**
+ * Applies the caller's `center`/`zoom` — UNLESS the caller also asked for the view to be fitted
+ * to its beaches, in which case it stays out of the way entirely.
+ *
+ * Both components claim the opening view, and this one was winning: the region map opened at the
+ * `zoom={11}` prop centred on the region's geometric centre, so on a long island the fit never
+ * showed. Measured on Evia 02/08/2026 — 1 of 130 pins inside the viewport on arrival; dropping
+ * the prop to 9 as a probe put 38 there, which is how the precedence was proven rather than
+ * guessed. `fitBoundsToBeaches` is the caller saying "frame my beaches, not my centre".
+ */
+const RecenterMap = ({ center, zoom, enabled }: { center: [number, number]; zoom: number; enabled: boolean }) => {
   const map = useMap();
   const [lat, lon] = center;
 
   useEffect(() => {
+    if (!enabled) return;
     map.setView(center, zoom);
-  }, [lat, lon, zoom, map]);
+  }, [lat, lon, zoom, map, enabled]);
 
   return null;
 };
@@ -694,21 +705,45 @@ const FitBeachBounds = ({
       ));
 
     if (points.length === 0) return;
-    lastFitKeyRef.current = fitKey;
 
-    if (points.length === 1) {
-      map.setView([points[0].lat, points[0].lon], Math.max(map.getZoom(), 12), {
+    /**
+     * Returns false while the map has no real size yet.
+     *
+     * The map mounts inside a Suspense placeholder, so this effect can run against a container
+     * Leaflet still measures as ~0×0. Fitting bounds to a zero-size box produces a meaningless
+     * zoom and — worse — marks the fit as done, so the region view was never applied and the map
+     * simply kept the `zoom={11}` prop it was created with. Measured on Evia 02/08/2026: 1 of
+     * 130 pins inside the viewport on arrival, which is what «εξαφάνισες παραλίες» looked like.
+     */
+    const applyFit = () => {
+      const size = map.getSize();
+      if (size.x < 40 || size.y < 40) return false;
+
+      lastFitKeyRef.current = fitKey;
+
+      if (points.length === 1) {
+        map.setView([points[0].lat, points[0].lon], Math.max(map.getZoom(), 12), {
+          animate: false,
+        });
+        return true;
+      }
+
+      const bounds = L.latLngBounds(points.map(point => [point.lat, point.lon] as [number, number]));
+      map.fitBounds(bounds, {
         animate: false,
+        padding: [28, 28],
+        maxZoom: 12,
       });
-      return;
-    }
+      return true;
+    };
 
-    const bounds = L.latLngBounds(points.map(point => [point.lat, point.lon] as [number, number]));
-    map.fitBounds(bounds, {
-      animate: false,
-      padding: [28, 28],
-      maxZoom: 12,
-    });
+    if (applyFit()) return;
+
+    const onResize = () => {
+      if (applyFit()) map.off('resize', onResize);
+    };
+    map.on('resize', onResize);
+    return () => { map.off('resize', onResize); };
   }, [beaches, center, enabled, fitKey, map]);
 
   return null;
@@ -2995,7 +3030,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           )}
 
           <MapAutoResize />
-          <RecenterMap center={center} zoom={zoom} />
+          <RecenterMap center={center} zoom={zoom} enabled={!fitBoundsToBeaches} />
           <MapViewportGuardrails
             minZoom={viewportGuardrails.minZoom}
             maxBounds={viewportGuardrails.maxBounds}

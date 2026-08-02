@@ -566,7 +566,10 @@ export const BeachPhotoFallback: React.FC<{
   crop?: 'default' | 'band' | 'square';
   className?: string;
 }> = ({ beach, regionId, language, beachName, size = 'compact', crop = 'default', className = '' }) => {
-  const shape = useShorelineShape(beach.regionId ?? regionId, beach.id);
+  // sourceBeachId first: the drawings are committed files keyed by the real beach id, and in
+  // «Κοντά μου» every beach carries a synthetic id instead (App.buildNearbyRegion). Without this
+  // the same beach silently loses its shoreline drawing depending on how the reader got to it.
+  const shape = useShorelineShape(beach.regionId ?? regionId, beach.sourceBeachId ?? beach.id);
   const features = useMemo(() => deriveShorelineFeatures(beach), [beach]);
 
   if (!shape) return <NeutralShorePanel />;

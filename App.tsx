@@ -1704,6 +1704,28 @@ export const App: React.FC = () => {
     setDirectorySearchCardFocus({ beachId, nonce: directorySearchCardFocusNonceRef.current });
   };
   const [isDirectoryMapFollowPaused, setIsDirectoryMapFollowPaused] = useState(false);
+  /**
+   * THE MAP MAY NOT CHASE A CARD NOBODY SCROLLED TO.
+   *
+   * The directory carousel reports its first visible card the moment it mounts, and the map's
+   * highlight-follower answered that by panning onto that one beach — so the island fit the map
+   * had just made was replaced, before the reader had touched anything, by a single-beach view
+   * with the other 129 pins off screen. Reported as «εξαφάνισες παραλίες» (Λαυρεωτική, 02/08);
+   * measured at the same time: 59 pins were drawn for 59 beaches, none were missing, they were
+   * simply outside the viewport the follower had chosen.
+   *
+   * The card↔map sync is worth keeping — it is what makes scrolling the list readable. It just
+   * has to answer a gesture rather than a mount. Any real gesture will do; the point is only to
+   * distinguish "the page settled" from "the reader is looking around".
+   */
+  const [hasUserEngagedWithDirectory, setHasUserEngagedWithDirectory] = useState(false);
+  useEffect(() => {
+    if (hasUserEngagedWithDirectory || typeof window === 'undefined') return;
+    const engage = () => setHasUserEngagedWithDirectory(true);
+    const events: Array<keyof WindowEventMap> = ['pointerdown', 'wheel', 'touchstart', 'keydown'];
+    events.forEach(event => window.addEventListener(event, engage, { passive: true, once: true }));
+    return () => events.forEach(event => window.removeEventListener(event, engage));
+  }, [hasUserEngagedWithDirectory]);
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const [geospatialExposureProfiles, setGeospatialExposureProfiles] = useState<GeospatialExposureProfileLookup | undefined>(undefined);
   const [geospatialExposureRegionId, setGeospatialExposureRegionId] = useState<string | undefined>(undefined);
@@ -6518,7 +6540,7 @@ export const App: React.FC = () => {
           islandName={selectedIsland.name[language]}
           selectedDate={selectedDayDate}
           highlightedBeachId={highlightedMapBeachId}
-          followHighlightedBeach={!isDirectoryMapFollowPaused}
+          followHighlightedBeach={!isDirectoryMapFollowPaused && hasUserEngagedWithDirectory}
           fitBoundsToBeaches
           fitBoundsBeaches={toneFittedMapBeaches}
           fitBoundsKey={mapFitBoundsKey}
