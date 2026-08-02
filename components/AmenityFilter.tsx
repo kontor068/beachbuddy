@@ -46,6 +46,10 @@ interface CombinedFilterProps {
   hasUserLocation?: boolean;
   onRequestLocation?: () => void | Promise<void>;
   availableFilters?: FilterKey[];
+  /** Filters no beach in the colour group picked on the map legend has. Shown faded and
+   *  unclickable rather than removed: dropping a chip mid-sheet shifts every chip after it, and
+   *  a thumb already moving lands on whatever slid into the gap. */
+  unavailableFilters?: FilterKey[];
   protectedSortLabel?: string;
   showProtectedSort?: boolean;
   /** Hide the "near me" (distance) sort option — on mobile it lives in the dedicated front button instead. */
@@ -178,6 +182,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     hasUserLocation = false,
     onRequestLocation,
     availableFilters,
+    unavailableFilters,
     protectedSortLabel,
     showProtectedSort = true,
     hideDistanceSort = false,
@@ -273,6 +278,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     };
 
     const availableFilterSet = availableFilters ? new Set<FilterKey>(availableFilters) : undefined;
+    const unavailableFilterSet = new Set<FilterKey>(unavailableFilters ?? []);
     const filters = (Object.keys(t.filterOptions)
         .filter(k => k !== 'showAll' && k !== 'restaurant' && k !== 'unknown' && !hiddenUserFacingFilters.has(k as FilterKey)) as FilterKey[])
         .filter(filter => !availableFilterSet || availableFilterSet.has(filter) || tempFilters.includes(filter));
@@ -347,10 +353,12 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
 
     const renderFilterButton = (filter: FilterKey, compact = false) => {
         const isSelected = tempFilters.includes(filter);
+        const isUnavailable = !isSelected && unavailableFilterSet.has(filter);
         return (
             <button
                 key={filter}
                 onClick={() => handleFilterChange(filter)}
+                disabled={isUnavailable}
                 aria-pressed={isSelected}
                 aria-label={`${t.toggleFilterForLabel} ${t.filterOptions[filter]}`}
                 title={filter === 'organized' ? t.organizedTooltip : undefined}
@@ -360,7 +368,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                     isSelected
                         ? 'border-cyan-600 bg-cyan-600 text-white shadow-md shadow-cyan-700/20'
                         : 'border-slate-200 bg-white/82 text-slate-700 shadow-sm shadow-slate-900/5 hover:border-cyan-200 hover:bg-cyan-50/60 hover:text-slate-950'
-                }`}
+                } ${isUnavailable ? 'cursor-not-allowed opacity-40 hover:border-slate-200 hover:bg-white/82 hover:text-slate-700' : ''}`}
             >
                 {filterIcons[filter as string]}
                 <span className="min-w-0 whitespace-normal text-center leading-tight">{t.filterOptions[filter]}</span>

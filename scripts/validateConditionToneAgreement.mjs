@@ -580,6 +580,107 @@ for (const tone of emittedTones) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 8 — the filters describe the COLOUR GROUP, not the region.
+//
+// Miltos, 02/08/2026: «όταν επιλέγω ομάδα παραλιών, στα φίλτρα να μη μου εμφανίζεις
+// χαρακτηριστικά που δεν έχουν». Pick «Καλή 31» and the chips below must count inside those 31,
+// so a chip nothing in the group has reads 0 and goes dead instead of leading to an empty list.
+//
+// Every check below is a CONNECTION check, never an existence check — the lesson written three
+// times over on 01–02/08: the range was computed, printed into a string, and never reached the
+// screen, and the rule that only asked «is the word in the file?» passed anyway.
+//
+// Two of them exist because this feature has a specific way of failing quietly:
+//  • the tone table the counts read is reported by the map, and the map's `beaches` prop is
+//    ALREADY narrowed by the active chips. Report over that and every chip describes itself:
+//    filter to «Ξαπλώστρες» and the only beaches wearing a colour at all are the ones with
+//    sunbeds. Hence `toneSourceBeaches` must be the unfiltered list.
+//  • both count memos are near-identical, so a rule that scans the whole file passes with one of
+//    the two reverted. They are matched one at a time, by name.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const appSource = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+  const homeSource = readFileSync(path.join(root, 'components/BeachSearcherHome.tsx'), 'utf8');
+  const sheetSource = readFileSync(path.join(root, 'components/AmenityFilter.tsx'), 'utf8');
+  const fail = reason => failures.push({ rule: 'chips-describe-the-picked-colour', reason, row: {} });
+
+  // (1) The map reports colours for every beach in the region, not for the surviving pins.
+  const reported = mapSource.match(/const\s+reportedToneEntries\s*=[\s\S]{0,400}?;\n/);
+  if (!reported || !/toneSourceBeaches[\s\S]*beachConditionTone/.test(reported[0])) {
+    fail('components/BeachMap.tsx no longer builds reportedToneEntries from toneSourceBeaches via '
+      + 'beachConditionTone. The reported tone table falls back to the filtered pins, and every '
+      + 'filter chip below the map starts describing itself.');
+  }
+  for (const site of ['beachTonesSignature = reportedToneEntries', 'useRef(reportedToneEntries)',
+    'beachTonesRef.current = reportedToneEntries']) {
+    if (!mapSource.includes(`const ${site}`) && !mapSource.includes(site)) {
+      fail(`components/BeachMap.tsx: "${site}" is gone — the fuller tone table is computed but no `
+        + 'longer the one onBeachTonesChange reports upward. Computed is not connected.');
+    }
+  }
+  // (2) App hands the map the UNFILTERED list for that job.
+  if (!/toneSourceBeaches=\{mapSuitableBeaches\}/.test(appSource)) {
+    fail('App.tsx no longer passes toneSourceBeaches={mapSuitableBeaches} to the directory map. '
+      + 'Anything narrower (directoryMapPinBeaches / filteredMapSuitableBeaches) is already '
+      + 'filtered, and the chip counts silently become circular.');
+  }
+  // (3) The pool is looked up in the reported tones, never coloured here.
+  const pool = appSource.match(/const\s+toneScopedBeaches\s*=[\s\S]{0,700}?\n\s*\}, \[/);
+  if (!pool || !/mapBeachTones\[beach\.id\]\s*===\s*mapToneFilter/.test(pool[0])) {
+    fail('App.tsx: toneScopedBeaches no longer selects by mapBeachTones[beach.id] === mapToneFilter. '
+      + 'The chips must read the colour the map painted, not re-derive one.');
+  }
+  // (4) BOTH count memos read the pool. Matched one at a time: they are near-identical, and a
+  //     whole-file scan passes with either one reverted to selectedIsland.beaches.
+  for (const memo of ['preferenceFilterResultCounts', 'desktopAdvancedFilterResultCounts']) {
+    const body = appSource.match(new RegExp(`const\\s+${memo}\\s*=\\s*useMemo\\(\\(\\) => \\{[\\s\\S]{0,1800}?\\n  \\}, \\[[^\\]]*\\]\\);`));
+    if (!body) {
+      fail(`App.tsx: ${memo} is gone or no longer a useMemo — this gate cannot see whether the `
+        + 'chip counts still follow the picked colour.');
+      continue;
+    }
+    if (!body[0].includes('toneScopedBeaches')) {
+      fail(`App.tsx: ${memo} no longer counts over toneScopedBeaches. Its chips are back to `
+        + 'describing the whole region while the user is looking at one colour of it.');
+    }
+    if (/selectedIsland\.beaches/.test(body[0])) {
+      fail(`App.tsx: ${memo} reads selectedIsland.beaches again — the region, not the selection.`);
+    }
+    if (!/\]\);$/.test(body[0]) || !body[0].slice(body[0].lastIndexOf('}, [')).includes('toneScopedBeaches')) {
+      fail(`App.tsx: toneScopedBeaches is missing from ${memo}'s dependency list, so the counts `
+        + 'freeze on whichever colour was picked first.');
+    }
+  }
+  // (5) A chip with nothing behind it fades — it is never removed. Chips that disappear move the
+  //     ones after them, and a thumb already travelling lands on whatever slid into the gap.
+  const sheetButton = sheetSource.match(/const\s+renderFilterButton\s*=[\s\S]{0,900}?disabled=\{[^}]*\}/);
+  if (!sheetButton || !/isUnavailable\s*=\s*!isSelected\s*&&\s*unavailableFilterSet\.has\(filter\)/.test(sheetSource)
+    || !/disabled=\{isUnavailable\}/.test(sheetSource)) {
+    fail('components/AmenityFilter.tsx no longer disables a chip from unavailableFilters. Either '
+      + 'the fade is gone (dead chips lead to an empty list) or the chip is being hidden instead, '
+      + 'which reshuffles the sheet under the user\'s thumb.');
+  }
+  if (/\.filter\([^)]*!unavailableFilter/.test(sheetSource)) {
+    fail('components/AmenityFilter.tsx filters unavailable chips OUT of the list. Miltos chose '
+      + 'faded-in-place over hidden precisely so nothing moves.');
+  }
+  // (6) The "your filter was dropped" line actually reaches the screen. This is the (στ) failure
+  //     mode verbatim: computed, formatted, and never rendered.
+  if (!/toneFilterDropCopy\[language\]\(/.test(appSource) || !/toneFilterDropNote=\{toneDroppedFilterNote\}/.test(appSource)) {
+    fail('App.tsx computes no drop note, or stops passing it to BeachSearcherHome. A filter that '
+      + 'switches itself off in silence takes away a choice the user made without a word.');
+  }
+  if (!/\{toneFilterDropNote\}/.test(homeSource)) {
+    fail('components/BeachSearcherHome.tsx receives toneFilterDropNote but never renders it. The '
+      + 'message exists and no one can read it.');
+  }
+}
+
+const chipScopeFailures = failures.filter(failure => failure.rule === 'chips-describe-the-picked-colour');
+console.log(`${chipScopeFailures.length === 0 ? 'OK  ' : 'FAIL'} chips-describe-the-picked-colour: ${chipScopeFailures.length}`);
+for (const hit of chipScopeFailures) console.log(`       ${hit.reason}`);
+
 const listRuleFailures = failures.filter(failure => failure.rule === 'the-list-does-not-colour-its-own-beaches');
 console.log(`${listRuleFailures.length === 0 ? 'OK  ' : 'FAIL'} the-list-does-not-colour-its-own-beaches: ${listRuleFailures.length}`);
 for (const hit of listRuleFailures) console.log(`       ${hit.reason}`);

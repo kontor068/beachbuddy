@@ -92,6 +92,12 @@ interface BeachMapProps {
   /** The colour each beach on this map is wearing, reported so the cards below can be
    *  filtered by the exact same tally the pins and the legend are built from. */
   onBeachTonesChange?: (tones: Record<number, CalmnessTone>) => void;
+  /** The region's FULL beach list, used only by `onBeachTonesChange`. The pins, the legend and
+   *  its counts still come from `beaches`. It exists because the caller narrows `beaches` by the
+   *  active amenity chips: a tone table built from that narrowed list already has the chips
+   *  applied to it, so anything downstream that tries to describe a colour group ends up
+   *  describing the chips instead. Defaults to `beaches`, i.e. exactly the previous behaviour. */
+  toneSourceBeaches?: SuitableBeach[];
   /** Beaches that are drawn on the map but can never appear in the list below it (naturist
    *  beaches; boat-only shores in strong wind). Excluded from the legend COUNTS only — their
    *  pins stay — so the legend's number and the list's number describe the same set. */
@@ -1710,6 +1716,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   toneFilter = null,
   onToneFilterChange,
   onBeachTonesChange,
+  toneSourceBeaches,
   uncountedBeachIds
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
@@ -1981,9 +1988,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   // Report the tally upward so the cards below the map can hide the same beaches the pins hide.
   // Keyed on a signature rather than the object, which is rebuilt on every render.
-  const beachTonesSignature = beachTonesById.map(entry => `${entry.beachId}:${entry.tone}`).join(',');
-  const beachTonesRef = useRef(beachTonesById);
-  beachTonesRef.current = beachTonesById;
+  //
+  // Reported over `toneSourceBeaches` when the caller supplies it — the SAME expression
+  // (beachConditionTone), just asked about every beach in the region rather than only the ones
+  // the active chips left standing. Without it the table is silently self-referential: filter to
+  // «Ξαπλώστρες» and the only beaches that have a colour at all are the ones with sunbeds.
+  const reportedToneEntries = toneSourceBeaches
+    ? toneSourceBeaches.map(item => ({ beachId: item.beachId, tone: beachConditionTone(item) }))
+    : beachTonesById;
+  const beachTonesSignature = reportedToneEntries.map(entry => `${entry.beachId}:${entry.tone}`).join(',');
+  const beachTonesRef = useRef(reportedToneEntries);
+  beachTonesRef.current = reportedToneEntries;
   useEffect(() => {
     if (!onBeachTonesChange) return;
     const record: Record<number, CalmnessTone> = {};
