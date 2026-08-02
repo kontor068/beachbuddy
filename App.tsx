@@ -91,7 +91,7 @@ import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import type { ExposureLevel } from './utils/windExposure';
-import type { CalmnessTone } from './utils/suitabilityTone';
+import { selectSuitableByTone, type CalmnessTone } from './utils/suitabilityTone';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
@@ -3381,8 +3381,20 @@ export const App: React.FC = () => {
   // Per-beach local wind (direction + speed) for the map hover card, so a beach
   // coloured differently from the island headline is self-explanatory ("here it
   // blows N 7 km/h"). Falls back to the island wind when no cluster forecast.
+  //
+  // STANDS DOWN IN «ΚΟΝΤΑ ΜΟΥ», for the same reason beachWindSourceById does (see above).
+  // Reported 02/08/2026: the same beach showed slightly different conditions and colours under
+  // "Κοντά μου" than on its own region page. The scoring path was already standing down there —
+  // each beach is scored from its OWN home region's forecast — but this map path was not, so the
+  // page ran on THREE winds at once: the card showed the home region's centre wind, the pin was
+  // coloured from a cluster centroid computed over the synthetic GPS region's merged 60-beach
+  // list (a different mean, and possibly a different grid step, than the same beach's cluster on
+  // its region page), and any beach without a cluster reading fell back to the user's GPS wind
+  // instead of its own region's. Emptying this map leaves one wind per beach — its home
+  // region's — which is what the cards, the verdict and the detail page already use.
   const mapBeachLocalWinds = useMemo<Record<number, { deg: number; speedKmh: number }>>(() => {
     const lookup: Record<number, { deg: number; speedKmh: number }> = {};
+    if (isNearMeRegionActive) return lookup;
     Object.entries(hourAdjustedBeachForecasts).forEach(([beachId, forecast]) => {
       const deg = forecast?.wind?.deg;
       const speed = forecast?.wind?.speed;
@@ -3391,7 +3403,7 @@ export const App: React.FC = () => {
       }
     });
     return lookup;
-  }, [hourAdjustedBeachForecasts]);
+  }, [hourAdjustedBeachForecasts, isNearMeRegionActive]);
 
   // --- Hour selection (map slider) ---
   // `forecast` is already gated to the selected region at the source (see useWeather
@@ -4062,6 +4074,42 @@ export const App: React.FC = () => {
   // during a name search (the map still opens centred on the match via mapFitBoundsBeaches).
   // Amenity/preference filters still narrow the pins as before.
   const directoryMapPinBeaches = isBeachNameSearchActive ? mapSuitableBeaches : filteredMapSuitableBeaches;
+
+  /**
+   * Can this beach EVER appear in the directory list? One predicate, two readers: the list source
+   * below and the ids the map is told not to count. Writing it once is the point — the legend
+   * prints a number and the list prints a number, and two separately-maintained exclusion rules
+   * are how they came to say 35 and 34 for the same colour on Evia.
+   *
+   * Two exclusions, both pre-existing product rules, neither weakened here:
+   *  - naturist beaches are never surfaced in a list (they stay on the map and findable by name)
+   *  - a boat-only beach at >= 5 Bft is not a real option: the boats do not run.
+   */
+  const isListableInDirectory = useCallback((item: SuitableBeach): boolean => (
+    !(suppressNaturistFromRecommendations && isNaturistBeach(item.beach)) &&
+    !(beachSearchQuery.trim().length === 0
+      && hasBoatOnlyAccess(item.beach)
+      && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT)
+  ), [suppressNaturistFromRecommendations, beachSearchQuery, beaufortAtBeach]);
+
+  /**
+   * The pins the legend must NOT count.
+   *
+   * The map keeps every pin — a naturist beach is a real beach and stays findable — but the
+   * legend prints a NUMBER, and so does the list heading. Those two numbers have to describe the
+   * same set of beaches or the reader sees «Δύσκολη 35» and «Δύσκολες παραλίες (34)» on one
+   * screen. Only the tally is narrowed; the markers are untouched, because hiding a pin to fix a
+   * printed number would trade a legend-vs-list contradiction for a legend-vs-map one.
+   *
+   * Accepted cost: if a suppressed beach is the ONLY one wearing a colour, that legend row
+   * disappears while its pin sits on the map unexplained. Rare, and strictly better than two
+   * numbers that disagree. `activeToneFilter` already ignores a tone with no count, so there is
+   * no dead end.
+   */
+  const directoryUncountedBeachIds = useMemo(
+    () => new Set(directoryMapPinBeaches.filter(item => !isListableInDirectory(item)).map(item => item.beachId)),
+    [directoryMapPinBeaches, isListableInDirectory]
+  );
 
   /**
    * The map legend doubles as a filter: tapping «Δύσκολη 8» leaves those 8 beaches on the map and
@@ -5573,16 +5621,53 @@ export const App: React.FC = () => {
       ? directoryRecommendationSource
       : directoryFallbackSource;
   })();
+  /**
+   * «Καταλληλότερες» = the beaches the map painted ΙΔΑΝΙΚΗ or ΚΑΛΗ, topped up with ΜΕΤΡΙΕΣ when
+   * that is fewer than three. The rule itself is utils/suitabilityTone.selectSuitableByTone; the
+   * colours are NOT recomputed here — they are looked up in `mapBeachTones`, which the map
+   * reported after painting the pins. That lookup is the whole point: the list and the legend are
+   * the same judgement by construction, not by two rules that happen to agree.
+   *
+   * Listability is applied BEFORE the selection, not after. A boat-only beach dropped afterwards
+   * would already have filled a slot, and the "fewer than three" top-up would never fire for it.
+   *
+   * NOT a useMemo, and that is not an oversight: App returns early at the `beachesLoading` /
+   * `beachesError` guards further up, so a hook placed below them runs on some renders and not
+   * others — "Rendered more hooks than during the previous render", the whole page replaced by
+   * the error boundary. Everything in this stretch of the component is a plain const for that
+   * reason. Do not memoise here without first hoisting the early returns.
+   */
+  const toneSuitableDirectorySource = (() => {
+    const listable = recommendableFilteredMapSuitableBeaches.filter(isListableInDirectory);
+    const byPriority = (a: SuitableBeach, b: SuitableBeach) => compareTouristTopPickPriority(a, b) || b.score - a.score;
+
+    // A colour picked on the legend OVERRIDES the suitability rule — it does not intersect with
+    // it. Intersecting was measured wrong the first time it ran: «Δύσκολη 34» produced a list of
+    // 8, because the source was ΙΔΑΝΙΚΕΣ+ΚΑΛΕΣ, the intersection with red was empty, and the
+    // carousel quietly fell back to an unrelated set. When the reader asks for the difficult
+    // ones they are not asking for a recommendation; they are asking to see those beaches.
+    if (mapToneFilter) {
+      return listable.filter(item => mapBeachTones[item.beach.id] === mapToneFilter).sort(byPriority);
+    }
+
+    return selectSuitableByTone(listable, item => mapBeachTones[item.beach.id], byPriority);
+  })();
+
   const directoryVisibleBeachCardSource = (() => {
-    if (mapAlignedVisibleProtectedDirectorySource.length === 0) {
+    // Before the map has reported a single colour there is no arithmetic to do. This is NOT the
+    // same as "nothing qualifies": on an all-red meltemi day the honest answer is an empty list,
+    // and using length as the discriminator would confuse the two and quietly resurrect the old
+    // pipeline on exactly the days the new rule matters most. Covers the lazy map chunk still
+    // loading, and info-only regions where the map never mounts at all.
+    if (Object.keys(mapBeachTones).length === 0) {
       return directoryBaseBeachCardSource;
     }
 
     if (sortBy !== 'distance') {
-      return mapAlignedVisibleProtectedDirectorySource;
+      return toneSuitableDirectorySource;
     }
 
-    return [...mapAlignedVisibleProtectedDirectorySource].sort((a, b) => (
+    return [...toneSuitableDirectorySource].sort((a, b) => (
       compareOptionalDistance(a, b) || compareTouristTopPickPriority(a, b) || b.score - a.score
     ));
   })();
@@ -5679,22 +5764,12 @@ export const App: React.FC = () => {
 
     return directoryVisibleBeachCardSource.filter(item => !directoryTopRecommendationIds.has(item.beach.id));
   })();
-  // Miltos 2026-06-19: at strong wind (≥5 Bft) a boat-only beach (e.g. Κλεφτικό)
-  // isn't a real option for the day — the boats don't run and you can't drive there —
-  // so it must not appear in the recommended/explore or "Κοντά μου" lists with such
-  // weather. We drop boat-access beaches here only; they stay on the map and remain
-  // findable by an explicit name search (kept whenever the user is actually searching).
-  //
-  // 02/08/2026: the 5 Bft is now read at the beach's own shore, not at the region's centre.
-  // Whether the boat sails is decided by the water it sails on: a region reading 3 Bft while
-  // Alimounda's own shore blows 5 used to keep the beach on offer (measured, Karpathos), and a
-  // region reading 5 while a beach's bay lies at 2 used to remove a perfectly reachable beach.
-  const isBoatAccessHideActive = beachSearchQuery.trim().length === 0;
-  const recommendableDirectorySuitableBeachCards = isBoatAccessHideActive
-    ? directorySuitableBeachCards.filter(item => !(
-      hasBoatOnlyAccess(item.beach) && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT
-    ))
-    : directorySuitableBeachCards;
+  // The boat-only-at-≥5-Bft drop (Miltos 2026-06-19: the boats don't run, so Κλεφτικό isn't an
+  // option that day) used to live here, after the list was already built. It moved into
+  // isListableInDirectory, which runs BEFORE the colour selection — dropping a beach afterwards
+  // let it occupy one of the three slots that decide whether ΜΕΤΡΙΕΣ get promoted, so the list
+  // could come up short for a beach nobody was ever going to be shown.
+  const recommendableDirectorySuitableBeachCards = directorySuitableBeachCards;
   // Guarantee a distance on every suitable card when the user's location is
   // known (some source pipelines, e.g. calm-wind days, don't carry it), so the
   // "Κοντά μου" distance sort always has a value to order by.
@@ -5725,6 +5800,12 @@ export const App: React.FC = () => {
   const toneFilteredHomeSuitableBeachCards = applyMapToneFilter(directoryHomeSuitableBeachCards);
   const toneFilteredAllSourceBeaches = applyMapToneFilterFlat(directoryAllSourceBeaches);
   const directorySuitableBeachTotalCount = toneFilteredHomeSuitableBeachCards.length;
+  // Does the list hold literally every beach we would ever list? Only then may the heading say
+  // «Όλες οι παραλίες κατάλληλες». Compared against the same listable set the selection was made
+  // from, so a naturist beach's permanent absence never makes the claim false on its own.
+  const directoryListCoversEveryBeach = !mapToneFilter
+    && toneSuitableDirectorySource.length
+      === recommendableFilteredMapSuitableBeaches.filter(isListableInDirectory).length;
   const shouldShowDirectorySuitableSection = mapToneFilter
     // With a colour picked, that list IS the answer — show it whenever it has anything in it,
     // including on a calm day where the section would normally collapse into "all of them".
@@ -6448,6 +6529,7 @@ export const App: React.FC = () => {
           toneFilter={mapToneFilter}
           onToneFilterChange={setMapToneFilter}
           onBeachTonesChange={setMapBeachTones}
+          uncountedBeachIds={directoryUncountedBeachIds}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
           compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"
@@ -6533,6 +6615,7 @@ export const App: React.FC = () => {
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
               activeToneFilter={mapToneFilter}
+              suitableListCoversEverything={directoryListCoversEveryBeach}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
               directorySearchCardFocus={directorySearchCardFocus}
               showSuitableBeachSection={shouldShowDirectorySuitableSection}

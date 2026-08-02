@@ -1352,20 +1352,31 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // narrow mouth, or curated) that is verifiably protected TODAY is the rare,
   // high-value signal the card exists to surface, so only that case renders the marker.
   const showHeaderProtectedMarker = enclosedCove && isProtectedToday;
+  /**
+   * Does the line under the beach name carry anything of its own?
+   *
+   * On a region page the island name is hidden (you already know which island you are on)
+   * and there is no distance, so that line held ONLY the «Κλειστός όρμος» pill — a whole
+   * row spent on one small badge, which pushed the amenity chips down far enough to clip
+   * the «Πληροφορίες» button off the bottom of the card. When the line has real content
+   * the pill rides with it as before; when it would be alone, it moves up beside the name.
+   */
+  const hasMetaLine = showIslandName || distance !== undefined;
   const windSuitabilityChipTone: Record<WindSuitabilityColor, string> = {
-    // 'blue' = genuinely calm; 'green' = sheltered while it blows (a cove holding flat water).
-    // Both read as "fine", which is why they shared a colour until 2026-07-31.
+    // 'blue' = genuinely calm. There was a fifth, emerald 'green', for a cove holding flat water
+    // while it blew; the cove stopped being a colour on 02/08/2026 and is now a map badge, so a
+    // cove's chip is simply the chip its conditions earn.
     blue: 'border-sky-200/80 bg-sky-50/72 text-sky-700 dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-sky-300',
-    green: 'border-emerald-200/80 bg-emerald-50/72 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300',
     yellow: 'border-yellow-200/90 bg-yellow-50/78 text-yellow-800 dark:border-yellow-900/50 dark:bg-yellow-950/30 dark:text-yellow-300',
     orange: 'border-orange-200/90 bg-orange-50/78 text-orange-800 dark:border-orange-900/50 dark:bg-orange-950/30 dark:text-orange-300',
     red: 'border-rose-200/90 bg-rose-50/78 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-300',
   };
+  // The shield used to belong to 'green' — the cove tone. The cove's identity on the card is
+  // carried by ProtectedBeachMarker (the «Κλειστός όρμος» pill), which is keyed on enclosedCove
+  // directly and is unaffected by the tone change.
   const windSuitabilityIcon = windSuitabilityColor === 'orange' || windSuitabilityColor === 'red'
     ? 'caution'
-    : windSuitabilityColor === 'green'
-      ? 'shield'
-      : 'wind';
+    : 'wind';
   const protectionChipTone = windSuitabilityColor
     ? windSuitabilityChipTone[windSuitabilityColor]
     : isLightWindConditionChip
@@ -1479,15 +1490,24 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               )}
             </div>
 
+            {/* Where the shelter pill goes depends on whether the meta line exists at all.
+                Inside a region page we hide the island name and there is no distance, so the
+                pill was the ONLY thing on that line — a full row spent on one small badge,
+                which pushed the amenity chips down and clipped the «Πληροφορίες» button off
+                the card (reported 31/07). When the line has real content the pill still rides
+                with it; when it would be alone, it sits beside the beach name instead. */}
             <div className="min-w-0 pt-0.5 text-center">
-              <div className="flex min-h-[2.45rem] items-center justify-center">
+              <div className="flex min-h-[2.45rem] flex-wrap items-center justify-center gap-x-1.5">
                 <h3 className="line-clamp-2 text-center font-heading text-lg font-extrabold leading-[1.08] text-slate-950 dark:text-white">
                   {beachDisplayName}
                 </h3>
+                {showHeaderProtectedMarker && !hasMetaLine && (
+                  <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />
+                )}
               </div>
-              {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
+              {hasMetaLine && (
                 <div className="flex min-w-0 flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-700 dark:text-slate-600">
-                  {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
                   {showIslandName && <span className="min-w-0 truncate">{islandName}</span>}
                   {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
                   {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}
@@ -1635,12 +1655,17 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         <div className={`hidden flex-col sm:flex sm:flex-1 ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
           <div className={`${isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'} hidden sm:block`}>
-            <h3 className="line-clamp-1 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
-              {beachDisplayName}
-            </h3>
-            {(showIslandName || distance !== undefined || showHeaderProtectedMarker) && (
+            <div className="flex min-w-0 flex-wrap items-center gap-x-1.5">
+              <h3 className="line-clamp-1 min-w-0 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
+                {beachDisplayName}
+              </h3>
+              {showHeaderProtectedMarker && !hasMetaLine && (
+                <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />
+              )}
+            </div>
+            {hasMetaLine && (
               <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs font-semibold text-slate-700 dark:text-slate-600">
-                {(showIslandName || distance !== undefined) && <MapPin className="h-3.5 w-3.5 shrink-0" />}
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
                 {showIslandName && <span className="min-w-0 flex-1 truncate">{islandName}</span>}
                 {distance !== undefined && <span className="shrink-0 text-primary">{distance.toFixed(1)} km</span>}
                 {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}

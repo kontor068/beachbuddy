@@ -592,6 +592,8 @@ body {
   --beach-map-marker-scale: 1;
   transform-origin: center;
   transform: scale(var(--beach-map-marker-scale));
+  /* The cove badge is an absolutely-positioned CHILD of the dot and anchors to this. */
+  position: relative;
 }
 
 .beach-map-marker-evidence-supported {
@@ -653,6 +655,55 @@ body {
   inset: 0;
 }
 
+/* Enclosed-cove badge. Same doctrine as the surf badge above — outside the dot, never
+   recolouring it — because the pin's colour is the day's reading and the bay's shape is a
+   permanent fact about the place. Until 02/08/2026 the cove WAS a colour ('green'), which put
+   a fact and a verdict on the same scale and printed calm over the app's own "don't swim".
+
+   Two deliberate differences from the surf badge:
+   - It is a CHILD element (.beach-map-marker-cove), not a ::before. Both pseudo-elements on
+     .beach-map-marker-dot are taken — surf uses ::before, the top-pick radar uses ::after —
+     and .beach-map-active-scroll-marker-dot::before already fights the surf badge for ::before
+     at equal specificity. A third claimant would lose that race silently.
+   - Bottom-left, not top-right: top-right is the surf badge, and a beach can be both.
+   Slate, not emerald: emerald is exactly the hue being retired, and at 11px on a map it is
+   indistinguishable from the surf badge's teal — two marks that mean different things must not
+   look alike. Neutral reads as "a fact about this place", which is what it is. */
+.beach-map-legend-cove {
+  position: relative;
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.beach-map-marker-cove,
+.beach-map-legend-cove::before {
+  content: "";
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background-color: #334155;
+  /* A horseshoe bay seen from above, opening downward — deliberately not a wave, which is
+     what the surf badge draws. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 10V7a3 3 0 0 1 6 0v3' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 9px 9px;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.beach-map-marker-cove {
+  bottom: -7px;
+  left: -7px;
+  box-shadow: 0 0 0 1.5px #ffffff;
+}
+
+.beach-map-legend-cove::before {
+  inset: 0;
+}
+
 .beach-map-top-pick-marker-dot {
   position: relative;
   z-index: 1;
@@ -683,7 +734,11 @@ body {
     0 12px 24px rgba(8, 47, 73, 0.28);
 }
 
-.beach-map-active-scroll-marker-dot::before {
+/* ::after, not ::before — this ring and the surf badge both used ::before on the same element,
+   same specificity, and this rule sits later in the file, so scrolling a surf spot's card into
+   view silently deleted its surf badge. Safe on ::after because the top-pick radar (the other
+   ::after user) can never coexist: isTopPickMarker is gated on !hasActiveHighlight. */
+.beach-map-active-scroll-marker-dot::after {
   content: "";
   position: absolute;
   inset: -12px;

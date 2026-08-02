@@ -62,10 +62,15 @@ const exposureDir = path.join(root, 'public/data/geospatial/exposure');
  * The wind at which a shore stops being swimmable-by-default. Same number the app itself uses:
  * from 5 Bft resolveWindTone can no longer return a calm tone for any exposure, so a calm pin
  * above a real 5 Bft is not a matter of taste — it is the ladder being fed the wrong wind.
+ *
+ * That sentence was not quite true until 02/08/2026: a verified enclosed cove could return
+ * 'green' at exactly 5 Bft, so one calm colour did survive above this line. This gate never saw
+ * it (its own resolveConditionTone calls pass isEnclosedCove: false), but the hole was real. The
+ * cove lost its tone and became a marker badge, and the assumption is now the truth.
  */
 const CALM_LIE_BEAUFORT = 5;
 /** Tones the user reads as "go" — see utils/suitabilityTone.CALMNESS_ORDER. */
-const CALM_TONES = new Set(['blue', 'green']);
+const CALM_TONES = new Set(['blue']);
 /** Sampled hours (Athens). Morning, midday, late afternoon — the day people actually plan. */
 const HOURS = ['T08:00', 'T11:00', 'T17:00'];
 const SECTORS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];

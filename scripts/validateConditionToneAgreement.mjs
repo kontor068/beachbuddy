@@ -58,7 +58,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 // The map pin's resolver (components/BeachMap.tsx getExposureMarkerTone delegates to this).
-const { resolveConditionTone, COVE_CALM_MAX_BEAUFORT } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const { resolveConditionTone, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
 const { seaStateSeverityM, SEA_STATE_AMBER_M } = require(path.join(root, 'utils/waveCharacter.ts'));
@@ -67,7 +67,9 @@ const LEVELS = ['protected', 'partial', 'exposed'];
 const BEAUFORTS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const WAVES_M = [undefined, 0.1, 0.3, 0.45, 0.6, 0.79, 0.85, 1.0, 1.25, 1.6, 2.1];
 const PERIODS_S = [undefined, 2.5, 4, 7];
-const CALM_TONES = new Set(['blue', 'green']);
+// 'green' left this set on 02/08/2026 with the tone itself — the enclosed cove is a badge on the
+// marker now, not a rung on the severity scale. Blue is the only calm colour the ladder can paint.
+const CALM_TONES = new Set(['blue']);
 
 /** The chip as the app actually builds it: engine shape in, scoring-layer sea state applied. */
 const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM) => applySeaStateToWindSuitability(
@@ -94,25 +96,45 @@ const RULES = [
   },
   {
     id: 'no-calm-colour-over-a-running-sea',
-    // The one sanctioned exception is a verified cove holding calm water: the marine grid cell
-    // cannot resolve a 50 m pocket, so it must not overrule an operator-verified morphology.
-    check: ({ chip, seaStateM, enclosedCove, exposureStatus, beaufort }) => {
+    // The cove exemption that used to live here is GONE (02/08/2026), and deleting it made this
+    // rule strictly stricter rather than weaker. It existed because a cove could paint 'green'
+    // over a running sea; a cove now reads orange at 5 Bft, which is not a calm colour, so the
+    // exception can no longer be reached. Do not re-add it without a case that needs it — the
+    // sea-ceiling exemption in suitabilityTone still protects the cove from being painted RED,
+    // which is the part that was ever about measurement.
+    check: ({ chip, seaStateM }) => {
       if (!CALM_TONES.has(chip)) return null;
       if (seaStateM === undefined || seaStateM < SEA_STATE_AMBER_M) return null;
-      const coveExempt = enclosedCove && exposureStatus === 'protected' && beaufort >= COVE_CALM_MAX_BEAUFORT;
-      return coveExempt ? null : `"${chip}" over a ${seaStateM.toFixed(2)} m swell-equivalent sea`;
+      return `"${chip}" over a ${seaStateM.toFixed(2)} m swell-equivalent sea`;
     },
   },
   {
-    id: 'cove-green-never-over-avoid-swimming',
+    id: 'no-calm-colour-over-avoid-swimming',
     // swimmingComfortFromScore: effectiveBeaufort >= 6 is avoid_swimming, unconditionally, and a
     // cove at 6 Bft cannot get the −1 shelter discount (it is gated to <= 5 Bft). So a calm
-    // colour at 6+ Bft is the app contradicting its own verdict.
+    // colour at 6+ Bft is the app contradicting its own verdict. Structurally unreachable since
+    // the cove lost its tone — which is the point: this is the tripwire for anyone adding a new
+    // calm branch above 5 Bft, and it was named after the cove only because the cove got there
+    // first.
     check: ({ chip, beaufort }) => (
       CALM_TONES.has(chip) && beaufort >= 6
         ? `"${chip}" at ${beaufort} Bft, where the verdict is always avoid_swimming`
         : null
     ),
+  },
+  {
+    id: 'cove-badge-never-over-avoid-swimming',
+    // The colour contradiction the green tone created must not come back wearing a badge. Driven
+    // through the exported predicate, not a source regex, so changing the rule changes the test.
+    check: ({ exposureStatus, beaufort, enclosedCove }) => {
+      if (!showsCoveBadge(enclosedCove, exposureStatus, beaufort)) return null;
+      if (beaufort > COVE_BADGE_MAX_BEAUFORT) {
+        return `cove badge shown at ${beaufort} Bft, where the verdict is always avoid_swimming`;
+      }
+      return exposureStatus === 'protected'
+        ? null
+        : `cove badge shown on a "${exposureStatus}" shore — the bay is not a refuge from this wind`;
+    },
   },
 ];
 
@@ -159,7 +181,7 @@ for (const failure of failures) {
 // RULES covers the grid sweep; the wiring rule and the slider rule are asserted after it, so the
 // headline counts all of them — a gate that under-reports its own coverage invites the assumption
 // that something is checked when it is not.
-const NON_GRID_RULES = 4;
+const NON_GRID_RULES = 5;
 console.log(`Grid: ${combinations} condition combinations · ${RULES.length + NON_GRID_RULES} rules\n`);
 
 for (const rule of RULES) {
@@ -317,7 +339,10 @@ if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.tes
   // places (pins, counts, the filter, and the tone table reported to the cards). The rule is
   // unchanged — it just follows the expression to where it lives. If beachConditionTone is gone,
   // the tally expression itself must carry the inputs, which is what the fallback checks.
-  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,900}?\n\s*\}\);/);
+  // 1800, not 900: the function carries the reasoning for each input it feeds the resolver, and
+  // the window has to fit the comments as well as the code — a guard that fails because someone
+  // explained themselves teaches people to delete the explanation.
+  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,1800}?\n\s*\}\);/);
   const crowd = resolver || mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
   const body = crowd ? crowd[0] : '';
   if (resolver && !/tallyMapTones\([^)]*beachConditionTone|beachTonesById[\s\S]{0,400}?tallyMapTones/.test(mapSource)) {
@@ -501,6 +526,44 @@ for (const tone of emittedTones) {
     }
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 7 — «Καταλληλότερες» is the map's own arithmetic, not a second opinion.
+//
+// The list used to be built from "this beach's exposure level is protected" while the pins were
+// coloured by wind + sea + geometry, so the page could offer a beach the map beside it had just
+// painted orange. It is now the ΙΔΑΝΙΚΕΣ plus the ΚΑΛΕΣ, selected by looking each beach up in the
+// tones the map REPORTED — App must never resolve a tone itself, because the moment it does the
+// two surfaces are two rules again and nothing here can tell.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const appSource = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+  const toneSource = readFileSync(path.join(root, 'utils/suitabilityTone.ts'), 'utf8');
+  const fail = reason => failures.push({ rule: 'the-list-does-not-colour-its-own-beaches', reason, row: {} });
+
+  if (/\bresolveConditionTone\b/.test(appSource)) {
+    fail('App.tsx calls resolveConditionTone. The list must read the tones the map reported '
+      + '(mapBeachTones), never paint its own — that is how the list and the legend became two '
+      + 'rules over the same evidence in the first place.');
+  }
+  if (!/selectSuitableByTone\(/.test(appSource) || !/mapBeachTones\[/.test(appSource)) {
+    fail('App.tsx no longer selects the suitable list with selectSuitableByTone over mapBeachTones '
+      + '— «Καταλληλότερες» has stopped being the sum of the colours on the map.');
+  }
+  const rule = toneSource.match(/export const SUITABLE_LIST_TONES[\s\S]{0,400}?\n\s*\};/)
+    || toneSource.match(/export const SUITABLE_LIST_TONES[^\n]*\n/);
+  if (!rule) {
+    fail('SUITABLE_LIST_TONES is gone from utils/suitabilityTone.ts — the rule that decides which '
+      + 'colours may be offered has moved somewhere this gate cannot see.');
+  } else if (/['"`]red['"`]/.test(rule[0])) {
+    fail('"red" appears in the suitable-list rule. The app must not offer a beach it has just '
+      + 'called ΔΥΣΚΟΛΗ; red is unreachable there by construction and must stay so.');
+  }
+}
+
+const listRuleFailures = failures.filter(failure => failure.rule === 'the-list-does-not-colour-its-own-beaches');
+console.log(`${listRuleFailures.length === 0 ? 'OK  ' : 'FAIL'} the-list-does-not-colour-its-own-beaches: ${listRuleFailures.length}`);
+for (const hit of listRuleFailures) console.log(`       ${hit.reason}`);
 
 const legendWordFailures = failures.filter(failure => failure.rule === 'every-pin-colour-has-a-legend-word');
 console.log(`${legendWordFailures.length === 0 ? 'OK  ' : 'FAIL'} every-pin-colour-has-a-legend-word: ${legendWordFailures.length}`);

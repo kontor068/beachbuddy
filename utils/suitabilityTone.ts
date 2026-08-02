@@ -15,12 +15,6 @@ export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
     badge: 'bg-sky-100 text-sky-700',
     wave: 'text-sky-500',
   },
-  green: {
-    marker: 'bg-emerald-500',
-    ring: 'ring-emerald-200',
-    badge: 'bg-emerald-100 text-emerald-700',
-    wave: 'text-emerald-500',
-  },
   yellow: {
     marker: 'bg-yellow-400',
     ring: 'ring-yellow-200',
@@ -70,33 +64,60 @@ export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
  * 'partial' shore at 3 Bft look exactly like a verified protected one, a distinction the
  * validation suite pins deliberately.
  */
-export type CalmnessTone = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
+export type CalmnessTone = 'red' | 'orange' | 'yellow' | 'blue';
 
 /** Roughest → calmest. Index order is the comparison used by every ceiling below. */
-export const CALMNESS_ORDER: readonly CalmnessTone[] = ['red', 'orange', 'yellow', 'green', 'blue'];
+export const CALMNESS_ORDER: readonly CalmnessTone[] = ['red', 'orange', 'yellow', 'blue'];
 
 /**
  * An enclosed cove (όρμος) protected from the LIVE wind keeps its water flat as the wind
- * builds, so at 5 Bft it holds green where a classic protected shore drops to orange
- * (operator-verified at Άγιος Ερμογένης).
+ * builds (operator-verified at Άγιος Ερμογένης).
  *
- * It STOPS at 5, and that upper bound is the load-bearing part. The rule used to be
- * `beaufort >= 5`, while `swimmingComfortFromScore` returns `avoid_swimming` from an
- * effective Beaufort of 6 — and the −1 shelter discount in `getEffectiveBeaufortForComfort`
- * only applies at ≤5 Bft, so a cove at 6 Bft is ALWAYS avoid_swimming. The result was a
- * green pin and a green chip sitting directly above the app's own "better not to swim":
- * measured 2026-07-31 over the shipped geometry, 202 cove-shaped beaches and 1,010
- * beach × wind-direction combinations (4.4% of the national 22,800).
+ * THE COVE NO LONGER HAS A COLOUR OF ITS OWN (02/08/2026). It used to hold a fifth tone,
+ * 'green', at exactly 5 Bft, where a classic protected shore drops to orange. That colour is
+ * gone: a cove now wears whatever its conditions are — orange at 5 Bft, blue or yellow below —
+ * and carries a BADGE on the map marker instead (see showsCoveBadge). Miltos, 02/08: the shape
+ * of a bay is a fact about the place, not a severity, and a fifth severity forced the reader to
+ * hold a colour scale that wasn't one. What it still buys the beach is the sea-state exemption
+ * below, which is the part that was always about measurement rather than about looks.
  *
- * The 29/07 research decided deliberately that `avoid_swimming` stays at 6 Bft (ISO 20712-2
- * offshore-wind flag, 0.36 m/s leeway on an unattended inflatable). The colour was simply
- * never aligned with that decision. It is now.
- *
- * Below 5 Bft a cove is NOT special-cased — it colours exactly like any protected shore,
- * because the distinction only means something once the wind threatens a swim.
+ * The upper bound of 5 stays, and it is still the load-bearing part. `swimmingComfortFromScore`
+ * returns `avoid_swimming` from an effective Beaufort of 6, and the −1 shelter discount in
+ * `getEffectiveBeaufortForComfort` only applies at ≤5 Bft, so a cove at 6 Bft is ALWAYS
+ * avoid_swimming. When the cove had a colour, that produced a green pin and a green chip sitting
+ * directly above the app's own "better not to swim": measured 2026-07-31 over the shipped
+ * geometry, 202 cove-shaped beaches and 1.010 beach × wind-direction combinations (4,4% of the
+ * national 22.800). The badge inherits the same ceiling for the same reason — a "this bay is
+ * calmer" mark over an avoid_swimming verdict is the identical contradiction wearing a new shape.
  */
 export const COVE_CALM_MIN_BEAUFORT = 5;
 export const COVE_CALM_MAX_BEAUFORT = 5;
+
+/**
+ * The wind above which the app's verdict is unconditionally avoid_swimming. The cove badge must
+ * never appear above this line — see the paragraph above; this is the constant that keeps the
+ * removed contradiction from reappearing as a badge.
+ */
+export const COVE_BADGE_MAX_BEAUFORT = 5;
+
+/**
+ * Does this beach show the enclosed-cove badge on the map right now?
+ *
+ * Deliberately WIDER than coveHoldsCalmWater (which is exactly 5 Bft): a badge that existed only
+ * at one Beaufort would blink on and off as the hour slider moves and would be absent from almost
+ * every map — a symbol nobody sees often enough to learn. Deliberately NARROWER than "is a cove":
+ * it requires the shelter to be live, because on a wind blowing into the mouth the bay is not a
+ * refuge and the badge would be a lie printed over the beach's own colour.
+ */
+export const showsCoveBadge = (
+  isEnclosedCove: boolean,
+  exposureLevel: ExposureLevel | string | undefined,
+  beaufort: number
+): boolean => (
+  isEnclosedCove &&
+  exposureLevel === 'protected' &&
+  beaufort <= COVE_BADGE_MAX_BEAUFORT
+);
 
 export const coveHoldsCalmWater = (
   isEnclosedCove: boolean,
@@ -126,7 +147,9 @@ export const resolveWindTone = (
   const isExposed = exposureLevel === 'exposed';
 
   if (beaufort >= 7) return 'red';
-  if (coveHoldsCalmWater(isEnclosedCove, isProtected, beaufort)) return 'green';
+  // A cove used to escape to 'green' here. It no longer escapes at all: at 5 Bft it reads
+  // orange like every other sheltered shore, and the bay's own contribution is carried by the
+  // map badge (showsCoveBadge) and by the sea-state exemption in resolveConditionTone.
   if (beaufort >= 5) return isExposed ? 'red' : 'orange';
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the uncertain
   // "partial" middle get a yellow "mild chop" heads-up.
@@ -150,8 +173,12 @@ export const resolveWindTone = (
  */
 /**
  * Sea-state ceilings, roughest → mildest. Relief below is counted in THESE rungs, not in
- * CALMNESS_ORDER: 'green' is reserved for the verified-cove case and must never become
- * reachable as a side effect of a wave being small.
+ * CALMNESS_ORDER, so a small wave can never lift a pin past the tone the wind earned.
+ *
+ * The cove exemption still does real work here even though the cove lost its colour. A protected
+ * cove at 5 Bft now resolves to orange; over a 1,2 m sea the ceiling is red, and red is rougher,
+ * so without the exemption the ceiling would repaint the one genuinely calm pocket on the island
+ * red — from a marine sample point a median of 10 km offshore that cannot resolve a 50 m bay.
  *
  * `null` — no ceiling at all — is deliberately NOT a rung. Once the open water is running, the
  * shelter correction may soften how bad we call it; it may not delete the fact. The first
@@ -240,8 +267,45 @@ export const resolveConditionTone = ({
 );
 
 /**
- * Identity: the card/list palette carries all five tones, so nothing is lost on the way from the
- * shared ladder to a chip. Kept as a named conversion (rather than the raw tone) so the two types
- * stay documented as the same set — if they ever diverge again, it breaks here and nowhere else.
+ * «Καταλληλότερες» IS THE COLOUR ARITHMETIC (02/08/2026).
+ *
+ * The list used to be built from a different rule than the map: membership was "this beach's
+ * exposure level is protected", while the pins were coloured by wind + sea + geometry through
+ * resolveConditionTone. Two rules over the same evidence, so the page could offer a beach the
+ * map beside it had painted orange, and the count above the cards answered a question nobody
+ * had asked. Miltos, 02/08: the list is the sum of the ΙΔΑΝΙΚΕΣ and the ΚΑΛΕΣ.
+ *
+ * ΜΕΤΡΙΑ joins only when that sum is under three — an island where nothing is better than fair
+ * still has to offer something on a windy day, and a list of one is not a choice. ΔΥΣΚΟΛΗ never
+ * joins: the list is an offer, and the app does not offer a beach it has just called difficult.
+ * That is enforced structurally — red is simply not reachable from here — rather than by a
+ * filter someone can later loosen.
+ */
+export const SUITABLE_LIST_TONES: readonly CalmnessTone[] = ['blue', 'yellow'];
+export const SUITABLE_LIST_TOPUP_TONE: CalmnessTone = 'orange';
+export const MIN_SUITABLE_LIST_SIZE = 3;
+
+export const selectSuitableByTone = <T,>(
+  items: readonly T[],
+  toneOf: (item: T) => CalmnessTone | undefined,
+  compare: (a: T, b: T) => number
+): T[] => {
+  const core = items.filter(item => {
+    const tone = toneOf(item);
+    return tone !== undefined && SUITABLE_LIST_TONES.includes(tone);
+  }).sort(compare);
+  if (core.length >= MIN_SUITABLE_LIST_SIZE) return core;
+
+  // Sorted WITHIN each block and then concatenated, never merged: a beach promoted because the
+  // island had nothing better must not outrank a genuinely calm one on score alone.
+  const topUp = items.filter(item => toneOf(item) === SUITABLE_LIST_TOPUP_TONE).sort(compare);
+  return [...core, ...topUp];
+};
+
+/**
+ * Identity: the card/list palette carries every tone the ladder can emit, so nothing is lost on
+ * the way from the shared ladder to a chip. Kept as a named conversion (rather than the raw tone)
+ * so the two types stay documented as the same set — if they ever diverge again, it breaks here
+ * and nowhere else. It is what turned the removal of 'green' into a compiler error list.
  */
 export const toWindSuitabilityColor = (tone: CalmnessTone): WindSuitabilityColor => tone;

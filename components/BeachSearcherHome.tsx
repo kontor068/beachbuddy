@@ -24,16 +24,14 @@ import {
   SlidersHorizontal,
   Star,
   Sunset,
-  Thermometer,
   Trees,
   Utensils,
   Users,
   VolumeX,
   Waves,
-  Wind,
   X,
 } from 'lucide-react';
-import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences, WindDirection } from '../types';
+import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
 import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
@@ -152,6 +150,10 @@ interface BeachSearcherHomeProps {
   /** Colour picked on the map legend, if any. Retitles the list so the heading names the same
    *  thing the cards contain («Δύσκολες παραλίες στις 17:00»). */
   activeToneFilter?: CalmnessTone | null;
+  /** True only when the list literally holds every beach we would ever list. «Όλες οι παραλίες
+   *  κατάλληλες» may not be printed above a selection — a light-wind day with a running sea
+   *  leaves plenty of beaches out, and the heading has to say so. */
+  suitableListCoversEverything?: boolean;
   onActiveSuitableBeachChange?: (beachId: number | undefined, options?: { resumeFollow?: boolean }) => void;
   /** Discrete signal (nonce-keyed) to centre a specific beach's card in the carousel below the
    *  mobile map — fired when the user picks a beach from search, so they land on map + card. */
@@ -539,7 +541,6 @@ type HomeCopy = {
   islandTitle: (title: string) => string;
   beachCount: (count: number) => string;
   conditionsOverviewAria: string;
-  conditionsOverviewTitle: string;
   noForecast: string;
   allOtherBeaches: string;
   beachSearchAria: string;
@@ -578,15 +579,6 @@ type HomeCopy = {
     calmWaters: string;
     easyAccess: string;
   };
-  conditions: {
-    wind: string;
-    beaufortUnit: string;
-    air: string;
-    high: string;
-    gusts: string;
-    noStrongSignal: string;
-    maxGust: string;
-  };
 };
 
 const homeCopy: Record<LanguageCode, HomeCopy> = {
@@ -621,7 +613,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     islandTitle: (title) => title,
     beachCount: (count) => `${count} ${count === 1 ? 'beach' : 'beaches'}`,
     conditionsOverviewAria: 'Conditions overview',
-    conditionsOverviewTitle: "Today's conditions overview",
     noForecast: 'No forecast is available for this area.',
     allOtherBeaches: 'All beaches',
     beachSearchAria: 'Beach search',
@@ -660,15 +651,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       calmWaters: 'Calm waters',
       easyAccess: 'Easy access',
     },
-    conditions: {
-      wind: 'Wind',
-      beaufortUnit: 'Bft',
-      air: 'Air',
-      high: 'high',
-      gusts: 'Gusts',
-      noStrongSignal: 'No strong signal',
-      maxGust: 'max gust',
-    },
   },
   gr: {
     greece: 'Ελλάδα',
@@ -701,7 +683,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     islandTitle: (title) => `Νησί ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'παραλία' : 'παραλίες'}`,
     conditionsOverviewAria: 'Σύνοψη συνθηκών',
-    conditionsOverviewTitle: 'Σύνοψη σημερινών συνθηκών',
     noForecast: 'Δεν υπάρχει διαθέσιμη πρόγνωση για αυτή την περιοχή.',
     allOtherBeaches: 'Όλες οι παραλίες',
     beachSearchAria: 'Αναζήτηση παραλιών',
@@ -740,15 +721,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       calmWaters: 'Ήρεμα νερά',
       easyAccess: 'Εύκολη πρόσβαση',
     },
-    conditions: {
-      wind: 'Άνεμος',
-      beaufortUnit: 'μποφόρ',
-      air: 'Αέρας',
-      high: 'μέγιστη',
-      gusts: 'Ριπές',
-      noStrongSignal: 'Χωρίς έντονη ένδειξη',
-      maxGust: 'μέγιστη ριπή',
-    },
   },
   fr: {
     greece: 'Grèce',
@@ -781,7 +753,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     islandTitle: (title) => `Île ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'plage' : 'plages'}`,
     conditionsOverviewAria: 'Aperçu des conditions',
-    conditionsOverviewTitle: "Conditions d'aujourd'hui",
     noForecast: 'Aucune prévision disponible pour cette zone.',
     allOtherBeaches: 'Toutes les plages',
     beachSearchAria: 'Recherche de plages',
@@ -820,15 +791,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       calmWaters: 'Eaux calmes',
       easyAccess: 'Accès facile',
     },
-    conditions: {
-      wind: 'Vent',
-      beaufortUnit: 'Bft',
-      air: 'Air',
-      high: 'max',
-      gusts: 'Rafales',
-      noStrongSignal: 'Pas de signal fort',
-      maxGust: 'rafale max',
-    },
   },
   de: {
     greece: 'Griechenland',
@@ -861,7 +823,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     islandTitle: (title) => `Insel ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'Strand' : 'Strände'}`,
     conditionsOverviewAria: 'Bedingungsübersicht',
-    conditionsOverviewTitle: 'Heutige Bedingungen',
     noForecast: 'Für diese Region ist keine Vorhersage verfügbar.',
     allOtherBeaches: 'Alle Strände',
     beachSearchAria: 'Strandsuche',
@@ -900,15 +861,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       calmWaters: 'Ruhiges Wasser',
       easyAccess: 'Einfacher Zugang',
     },
-    conditions: {
-      wind: 'Wind',
-      beaufortUnit: 'Bft',
-      air: 'Luft',
-      high: 'max',
-      gusts: 'Böen',
-      noStrongSignal: 'Kein starkes Signal',
-      maxGust: 'max. Böe',
-    },
   },
   it: {
     greece: 'Grecia',
@@ -941,7 +893,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     islandTitle: (title) => `Isola ${title}`,
     beachCount: (count) => `${count} ${count === 1 ? 'spiaggia' : 'spiagge'}`,
     conditionsOverviewAria: 'Panoramica condizioni',
-    conditionsOverviewTitle: 'Condizioni di oggi',
     noForecast: 'Nessuna previsione disponibile per questa zona.',
     allOtherBeaches: 'Tutte le spiagge',
     beachSearchAria: 'Ricerca spiagge',
@@ -979,15 +930,6 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
       protected: 'Più protetta',
       calmWaters: 'Acque calme',
       easyAccess: 'Accesso facile',
-    },
-    conditions: {
-      wind: 'Vento',
-      beaufortUnit: 'Bft',
-      air: 'Aria',
-      high: 'max',
-      gusts: 'Raffiche',
-      noStrongSignal: 'Nessun segnale forte',
-      maxGust: 'raffica max',
     },
   },
 };
@@ -1039,43 +981,6 @@ const formatDirectoryDate = (date: Date, language: LanguageCode) => {
   }
 
   return absoluteDateLabel;
-};
-
-const getConditionsOverviewTitle = (language: LanguageCode, selectedDate?: Date): string => {
-  const dayOffset = getSelectedDayOffset(selectedDate);
-
-  if (language === 'gr') {
-    if (dayOffset === 0) return 'Σύνοψη σημερινών συνθηκών';
-    if (dayOffset === 1) return 'Σύνοψη αυριανών συνθηκών';
-    if (dayOffset === 2) return 'Σύνοψη μεθαυριανών συνθηκών';
-    return `Σύνοψη συνθηκών ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
-  }
-
-  if (language === 'en') {
-    if (dayOffset === 0) return "Today's conditions overview";
-    if (dayOffset === 1) return "Tomorrow's conditions overview";
-    if (dayOffset === 2) return 'Day-after-tomorrow conditions overview';
-    return `Conditions overview ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
-  }
-
-  if (language === 'fr') {
-    if (dayOffset === 0) return "Conditions d'aujourd'hui";
-    if (dayOffset === 1) return 'Conditions de demain';
-    if (dayOffset === 2) return "Conditions d'après-demain";
-    return `Conditions ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
-  }
-
-  if (language === 'de') {
-    if (dayOffset === 0) return 'Heutige Bedingungen';
-    if (dayOffset === 1) return 'Morgige Bedingungen';
-    if (dayOffset === 2) return 'Übermorgige Bedingungen';
-    return `Bedingungen ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
-  }
-
-  if (dayOffset === 0) return 'Condizioni di oggi';
-  if (dayOffset === 1) return 'Condizioni di domani';
-  if (dayOffset === 2) return 'Condizioni di dopodomani';
-  return `Condizioni ${getSelectedDayPrefix(selectedDate, athensNow(), language)}`;
 };
 
 const formatUpdatedAgo = (lastUpdated: Date | null | undefined, language: LanguageCode) => {
@@ -1382,35 +1287,30 @@ const getToneFilterLabel = (
       orange: `Fair beaches ${day}`,
       yellow: `Good beaches ${day}`,
       blue: `Excellent beaches ${day}`,
-      green: `Enclosed bays ${day}`,
     },
     gr: {
       red: `Δύσκολες παραλίες ${day}`,
       orange: `Μέτριες παραλίες ${day}`,
       yellow: `Καλές παραλίες ${day}`,
       blue: `Ιδανικές παραλίες ${day}`,
-      green: `Κλειστοί όρμοι ${day}`,
     },
     fr: {
       red: `Plages difficiles ${day}`,
       orange: `Plages correctes ${day}`,
       yellow: `Bonnes plages ${day}`,
       blue: `Plages idéales ${day}`,
-      green: `Baies fermées ${day}`,
     },
     de: {
       red: `Schwierige Strände ${day}`,
       orange: `Mäßige Strände ${day}`,
       yellow: `Gute Strände ${day}`,
       blue: `Ideale Strände ${day}`,
-      green: `Geschlossene Buchten ${day}`,
     },
     it: {
       red: `Spiagge difficili ${day}`,
       orange: `Spiagge discrete ${day}`,
       yellow: `Buone spiagge ${day}`,
       blue: `Spiagge ideali ${day}`,
-      green: `Baie chiuse ${day}`,
     },
   });
 
@@ -1671,6 +1571,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableBeachTotalCount,
   suitableTimePrefix,
   activeToneFilter = null,
+  suitableListCoversEverything = false,
   onActiveSuitableBeachChange,
   directorySearchCardFocus,
   showSuitableBeachSection = true,
@@ -2091,7 +1992,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   ), [topRecommendationCards]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
-  const isCalmAllSuitableDay = typeof currentBeaufort === 'number' && currentBeaufort <= 2;
+  // A low regional Beaufort is not by itself a licence to say «Όλες οι παραλίες κατάλληλες».
+  // Measured on Evia at 3 Bft: 76 of 130 beaches were blue or yellow — the rest were capped by a
+  // running sea — so the old wind-only test printed "all of them" above a list of 76. The list
+  // must literally hold everything before the heading claims it does.
+  const isCalmAllSuitableDay = typeof currentBeaufort === 'number' && currentBeaufort <= 2
+    && suitableListCoversEverything;
   const suitableSectionLabel = activeToneFilter
     // The user picked a colour on the map: the list IS that colour, so the heading says so and
     // every other framing (best / all-suitable / the-rest) steps aside. Otherwise the page would
@@ -2105,9 +2011,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           ? allBeachesLabel
           : bestBeachesLabel;
   const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
-  const suitableBeachDisplayCount = typeof suitableBeachTotalCount === 'number'
-    ? suitableBeachTotalCount
-    : weatherBeachCards.length;
+  // The number in the heading is the number of cards under it, full stop. It used to be App's
+  // pre-filter total (`suitableBeachTotalCount`) while the carousel below re-filtered locally
+  // through matchesCurrentFilters — so with a search or an amenity filter on, the title promised
+  // more beaches than it rendered, and the gap grew with every filter the user added.
+  const suitableBeachDisplayCount = weatherBeachCards.length;
   const hasSuitableSortOption = Boolean(selectedIsland);
   // "Όλες" from the mobile filter sheet sets sortBy='all' and must always show the full list —
   // viewport-independent, because that sheet is used below the lg breakpoint (1024px) while
@@ -2741,8 +2649,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     : undefined;
   const isWeatherPanelMode = isMobileViewport && isWeatherPanelOpen;
   const conditionsOverviewDate = isWeatherPanelMode ? absoluteWeatherDate : weatherDate;
-  const conditionsOverviewTitle = getConditionsOverviewTitle(language, selectedForecast?.date);
-  const showConditionsOverviewTitle = !isWeatherPanelMode;
   const mobileWeatherForecastTitle = selectedIsland
     ? `${getLocalizedCopy(language, {
       en: 'Forecast',
@@ -2760,29 +2666,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ? copy.forecastAt(toAthensWallClock(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
     : updatedLabel;
   const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined;
-  const localizedWindDirection = windDirection
-    ? t.windDirections[windDirection as WindDirection] || windDirection
-    : undefined;
-  const windKmh = selectedForecast ? Math.round(selectedForecast.wind.speed * 3.6) : undefined;
   const windBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : undefined;
-  const conditionItems = selectedForecast ? [
-    {
-      key: 'wind',
-      icon: <Wind className="h-6 w-6" />,
-      label: copy.conditions.wind,
-      value: localizedWindDirection || '',
-      detail: `${windKmh ?? 0} km/h`,
-      subdetail: windBeaufort ? `${windBeaufort} ${copy.conditions.beaufortUnit}` : undefined,
-    },
-    {
-      key: 'air',
-      icon: <Thermometer className="h-6 w-6" />,
-      label: t.temperatureLabel || copy.conditions.air,
-      value: `${Math.round(selectedForecast.temp_max)}°C`,
-      detail: copy.conditions.high,
-      subdetail: undefined,
-    },
-  ] : [];
   // In the desktop sidebar the panel is a narrow column, so the forecast's wide
   // 3-column header/toggle row would collide. There we keep the hourly forecast
   // permanently expanded (no toggle) and drop the redundant inner header, which
@@ -2901,11 +2785,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     <section className="flex flex-col rounded-2xl border border-sky-200 bg-white p-3 shadow-sm shadow-sky-900/5 sm:p-4 lg:absolute lg:inset-0 lg:overflow-hidden" aria-label={copy.conditionsOverviewAria}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2 lg:shrink-0">
         <div>
-          {showConditionsOverviewTitle && (
-            <h2 className="text-base font-extrabold text-slate-950">
-              {conditionsOverviewTitle}
-            </h2>
-          )}
           {isWeatherPanelMode && mobileWeatherForecastTitle && (
             <div className="mb-2 flex min-w-0 items-center gap-2">
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky-500 shadow-inner shadow-white/70">
@@ -2916,7 +2795,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               </h2>
             </div>
           )}
-          <div className={`${showConditionsOverviewTitle ? 'mt-1.5' : ''} flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-700`}>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-700">
             {conditionsOverviewDate && (
               <span className="inline-flex items-center gap-1.5">
                 <CalendarDays className="h-3.5 w-3.5" />
@@ -2933,32 +2812,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         </div>
       </div>
 
-      {conditionItems.length > 0 ? (
-        <div className={`grid gap-2.5 lg:shrink-0 ${isWeatherPanelMode ? 'grid-cols-1' : 'grid-cols-2'}`}>
-          {conditionItems.map(item => (
-            <div key={item.key} className="flex min-h-16 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-2.5 py-2.5">
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-[#007a83] shadow-sm ring-1 ring-sky-100">
-                {item.icon}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold tracking-normal text-slate-700">{item.label}</p>
-                <p className={`${item.key === 'wind' ? 'whitespace-normal break-words text-sm' : 'whitespace-normal break-words text-sm sm:text-base'} font-extrabold leading-tight text-slate-950`}>
-                  {item.value}
-                </p>
-                {item.detail && <p className="text-xs font-semibold text-[#007a83]">{item.detail}</p>}
-                {item.subdetail && <p className="text-xs font-semibold text-[#007a83]">{item.subdetail}</p>}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
+      {!selectedForecast && (
         <div className="rounded-xl border border-sky-100 bg-sky-50 px-4 py-6 text-sm font-semibold text-slate-600">
           {copy.noForecast}
         </div>
       )}
 
       {forecastDays && forecastDays.length > 0 && typeof selectedDayIndex === 'number' && onForecastDaySelect && (
-        <div className="mt-4 border-t border-sky-100 pt-4 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
           <WeatherSummary
             forecast={forecastDays}
             selectedDayIndex={selectedDayIndex}

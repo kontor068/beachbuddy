@@ -20,7 +20,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
-import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, CALMNESS_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
+import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -92,6 +92,10 @@ interface BeachMapProps {
   /** The colour each beach on this map is wearing, reported so the cards below can be
    *  filtered by the exact same tally the pins and the legend are built from. */
   onBeachTonesChange?: (tones: Record<number, CalmnessTone>) => void;
+  /** Beaches that are drawn on the map but can never appear in the list below it (naturist
+   *  beaches; boat-only shores in strong wind). Excluded from the legend COUNTS only — their
+   *  pins stay — so the legend's number and the list's number describe the same set. */
+  uncountedBeachIds?: Set<number>;
 }
 
 const visibleExposureLevel = (
@@ -979,13 +983,7 @@ const getExposureMarkerTone = (
   // so a beach with light wind and a real running sea was blue by construction.
   seaStateM?: number
 ) => {
-  const tones = {
-    green: {
-      colorClass: 'bg-emerald-500',
-      ringClass: 'ring-emerald-200',
-      bgClass: 'bg-emerald-50',
-      textClass: 'text-emerald-700',
-    },
+  const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
       colorClass: 'bg-sky-500',
       ringClass: 'ring-sky-200',
@@ -1027,36 +1025,35 @@ const getExposureMarkerTone = (
   })];
 };
 
-const windLegendDotClasses = {
-  green: 'bg-emerald-500 ring-emerald-200',
+/**
+ * Every legend map below is keyed by CalmnessTone, NOT by its own literal set. That is the whole
+ * reason removing the cove's 'green' from the ladder produced a compiler error list here instead
+ * of five silently-dead entries: the legend cannot describe a colour the ladder cannot paint, and
+ * it cannot omit one the ladder can.
+ */
+type WindLegendDot = CalmnessTone;
+type MapExposureEvidence = 'supported' | 'estimated';
+
+const windLegendDotClasses: Record<WindLegendDot, string> = {
   blue: 'bg-sky-500 ring-sky-200',
   yellow: 'bg-yellow-400 ring-yellow-200',
   orange: 'bg-orange-500 ring-orange-200',
   red: 'bg-rose-600 ring-rose-300',
-} as const;
+};
 
 /** Selected-state skin for a legend row used as a filter button — the row's own colour, softened. */
-const windLegendActiveClasses = {
-  green: 'border-emerald-400 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-500/15',
+const windLegendActiveClasses: Record<WindLegendDot, string> = {
   blue: 'border-sky-400 bg-sky-50 dark:border-sky-400 dark:bg-sky-500/15',
   yellow: 'border-yellow-400 bg-yellow-50 dark:border-yellow-400 dark:bg-yellow-500/15',
   orange: 'border-orange-400 bg-orange-50 dark:border-orange-400 dark:bg-orange-500/15',
   red: 'border-rose-500 bg-rose-50 dark:border-rose-400 dark:bg-rose-500/15',
-} as const;
-
-type WindLegendDot = keyof typeof windLegendDotClasses;
-type MapExposureEvidence = 'supported' | 'estimated';
+};
 
 const windSliderTones: Record<WindLegendDot, {
   color: string;
   shadow: string;
   focus: string;
 }> = {
-  green: {
-    color: '#10b981',
-    shadow: 'rgba(16, 185, 129, 0.38)',
-    focus: '#34d399',
-  },
   blue: {
     color: '#0ea5e9',
     shadow: 'rgba(14, 165, 233, 0.38)',
@@ -1128,10 +1125,17 @@ const createExposureIcon = (
   isEnclosedCove = false,
   isSurfSpot = false,
   /** Swell-equivalent sea state (m) — ceiling only, see getExposureMarkerTone. */
-  seaStateM?: number
+  seaStateM?: number,
+  /** Enclosed-cove badge. Decided by suitabilityTone.showsCoveBadge, never inline here. */
+  showCoveBadge = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
+  // A CHILD element, not a pseudo-element. Both ::before and ::after on .beach-map-marker-dot
+  // are already spoken for (surf badge and the scroll-highlight ring use ::before, the top-pick
+  // radar uses ::after), and a third would silently win or lose a specificity race depending on
+  // file order — which is how the surf badge already disappears on a scroll-highlighted marker.
+  const coveBadge = showCoveBadge ? '<span class="beach-map-marker-cove" aria-hidden="true"></span>' : '';
   const highlightedClass = isHighlighted ? 'beach-map-active-scroll-marker-dot' : '';
   const evidenceClass = evidence === 'supported'
     ? 'beach-map-marker-evidence-supported'
@@ -1163,7 +1167,7 @@ const createExposureIcon = (
   // legend entry — because the legend entry was tried here too and did not rescue it.
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${coveBadge}</div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -1670,13 +1674,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
   exposureLevelOverrides,
   toneFilter = null,
   onToneFilterChange,
-  onBeachTonesChange
+  onBeachTonesChange,
+  uncountedBeachIds
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
   // Camping layer: ON by default (per-island counts are small, so it's discoverable, not
   // cluttered); the bottom-left button hides the tent pins for a clean beach-finding map.
-  const [showCamping, setShowCamping] = useState(true);
   // Plain street map vs satellite imagery. Remembered across visits because it's a
   // personal viewing preference, not part of the recommendation. Read lazily and
   // defensively: this component is also rendered during the static prerender.
@@ -1913,7 +1917,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * copy of this ladder would have reintroduced exactly that.
    */
   const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone({
-    exposureLevel: mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item),
+    // getMapExposureLevel, unconditionally — the same call the pin itself makes at its icon
+    // (see createExposureIcon's `mapExposureLevel` argument). This used to carry a ternary that
+    // read `visibleExposureLevel` in wind mode, which is the mode the colour legend renders in:
+    // so the counts came from the raw per-item field while every pin came from the union-find
+    // consistency pass. The legend was built to be structurally unable to contradict the pins
+    // and was quietly contradicting them on any beach where the two disagreed.
+    exposureLevel: getMapExposureLevel(item),
     // Same per-beach wind the pin itself uses (beachBeaufort). While the user drags, the
     // scrubbed hour's region Beaufort stands in — the pins show that same approximation until
     // the drag is committed, so the two never disagree on screen.
@@ -1924,8 +1934,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   // Deliberately over EVERY beach on the map, never the filtered subset: picking «Δύσκολη»
   // must not collapse the legend to a single row the user cannot escape from.
+  //
+  // `beachTonesById` stays COMPLETE — it is what onBeachTonesChange reports, and the "all
+  // beaches" list needs a colour for beaches the directory never lists. Only the TALLY drops
+  // `uncountedBeachIds`, so the legend's number matches the list's. The fallback covers the
+  // degenerate case where every pin is uncountable, which would otherwise leave `dominant`
+  // undefined and put a calm blue slider thumb over a red map.
   const beachTonesById = beaches.map(item => ({ beachId: item.beachId, tone: beachConditionTone(item) }));
-  const mapToneTally = tallyMapTones(beachTonesById.map(entry => entry.tone));
+  const countedTones = beachTonesById.filter(e => !uncountedBeachIds?.has(e.beachId)).map(e => e.tone);
+  const mapToneTally = tallyMapTones(countedTones.length ? countedTones : beachTonesById.map(e => e.tone));
 
   // Report the tally upward so the cards below the map can hide the same beaches the pins hide.
   // Keyed on a signature rather than the object, which is rebuilt on every render.
@@ -1946,6 +1963,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const markerBeaches = activeToneFilter
     ? beaches.filter(item => beachConditionTone(item) === activeToneFilter)
     : beaches;
+  /**
+   * Does this pin wear the enclosed-cove badge? One expression, read by the marker AND by the
+   * legend cue, so the map can never show a badge the legend does not explain (or explain one
+   * that is not on screen). The rule itself lives in utils/suitabilityTone.showsCoveBadge —
+   * this only feeds it the same exposure and wind the pin's colour is built from.
+   */
+  const beachCoveBadge = (item: SuitableBeach): boolean => showsCoveBadge(
+    Boolean(item.enclosedCove),
+    getMapExposureLevel(item),
+    beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0
+  );
   const sliderTone = windSliderTones[mapToneTally.dominant ?? 'blue'];
   const sliderThumbStyle: React.CSSProperties & Record<string, string> = {
     '--beach-map-hour-slider-thumb': sliderTone.color,
@@ -2156,84 +2184,76 @@ const BeachMap: React.FC<BeachMapProps> = ({
     severeColorName: string;
   }>(language, {
     en: {
-      toneLabel: { blue: 'Excellent', green: 'Enclosed bay, calmer', yellow: 'Good', orange: 'Fair', red: 'Difficult' },
+      toneLabel: { blue: 'Excellent', yellow: 'Good', orange: 'Fair', red: 'Difficult' },
       toneMeaning: {
         blue: 'Light wind, flat water',
-        green: 'The bay itself blocks the wind and the swell',
         yellow: 'A little breeze or ripple, swimming stays easy',
         orange: 'Noticeable wind or waves — fine for a dip, not for a long swim',
         red: 'Strong wind or big waves — pick another shore today',
       },
-      colorName: { blue: 'blue', green: 'green', yellow: 'yellow', orange: 'orange', red: 'red' },
+      colorName: { blue: 'blue', yellow: 'yellow', orange: 'orange', red: 'red' },
       severeLabel: 'Unsuitable', severeColorName: 'danger',
     },
     gr: {
-      toneLabel: { blue: 'Ιδανική', green: 'Κλειστός όρμος, πιο ήρεμος', yellow: 'Καλή', orange: 'Μέτρια', red: 'Δύσκολη' },
+      toneLabel: { blue: 'Ιδανική', yellow: 'Καλή', orange: 'Μέτρια', red: 'Δύσκολη' },
       toneMeaning: {
         blue: 'Λίγος αέρας, ήρεμο νερό',
-        green: 'Ο ίδιος ο όρμος κόβει τον αέρα και το κύμα',
         yellow: 'Λίγο αεράκι ή κυματάκι, κολυμπάς άνετα',
         orange: 'Αισθητός αέρας ή κύμα — για μια βουτιά ναι, για ώρες όχι',
         red: 'Δυνατός αέρας ή μεγάλο κύμα — διάλεξε άλλη ακτή σήμερα',
       },
-      colorName: { blue: 'μπλε', green: 'πράσινο', yellow: 'κίτρινο', orange: 'πορτοκαλί', red: 'κόκκινο' },
+      colorName: { blue: 'μπλε', yellow: 'κίτρινο', orange: 'πορτοκαλί', red: 'κόκκινο' },
       severeLabel: 'Ακατάλληλη', severeColorName: 'κίνδυνος',
     },
     fr: {
-      toneLabel: { blue: 'Idéale', green: 'Baie fermée, plus calme', yellow: 'Bonne', orange: 'Correcte', red: 'Difficile' },
+      toneLabel: { blue: 'Idéale', yellow: 'Bonne', orange: 'Correcte', red: 'Difficile' },
       toneMeaning: {
         blue: 'Peu de vent, eau plate',
-        green: 'La baie elle-même coupe le vent et la houle',
         yellow: 'Un peu de brise ou de clapot, on nage tranquillement',
         orange: 'Vent ou vagues sensibles — pour une baignade courte',
         red: 'Vent fort ou grosses vagues — choisissez une autre côte',
       },
-      colorName: { blue: 'bleu', green: 'vert', yellow: 'jaune', orange: 'orange', red: 'rouge' },
+      colorName: { blue: 'bleu', yellow: 'jaune', orange: 'orange', red: 'rouge' },
       severeLabel: 'Déconseillée', severeColorName: 'danger',
     },
     de: {
-      toneLabel: { blue: 'Ideal', green: 'Geschlossene Bucht, ruhiger', yellow: 'Gut', orange: 'Mäßig', red: 'Schwierig' },
+      toneLabel: { blue: 'Ideal', yellow: 'Gut', orange: 'Mäßig', red: 'Schwierig' },
       toneMeaning: {
         blue: 'Wenig Wind, ruhiges Wasser',
-        green: 'Die Bucht selbst bricht Wind und Welle',
         yellow: 'Etwas Brise oder Kräuselwellen, Schwimmen bleibt leicht',
         orange: 'Spürbarer Wind oder Wellen — für ein kurzes Bad',
         red: 'Starker Wind oder hohe Wellen — heute lieber eine andere Küste',
       },
-      colorName: { blue: 'blau', green: 'grün', yellow: 'gelb', orange: 'orange', red: 'rot' },
+      colorName: { blue: 'blau', yellow: 'gelb', orange: 'orange', red: 'rot' },
       severeLabel: 'Ungeeignet', severeColorName: 'danger',
     },
     it: {
-      toneLabel: { blue: 'Ideale', green: 'Baia chiusa, più calma', yellow: 'Buona', orange: 'Discreta', red: 'Difficile' },
+      toneLabel: { blue: 'Ideale', yellow: 'Buona', orange: 'Discreta', red: 'Difficile' },
       toneMeaning: {
         blue: 'Poco vento, acqua piatta',
-        green: 'È la baia stessa a fermare vento e onde',
         yellow: 'Un po\' di brezza o increspature, si nuota bene',
         orange: 'Vento o onde percettibili — per un bagno breve',
         red: 'Vento forte o onde alte — meglio un\'altra costa oggi',
       },
-      colorName: { blue: 'blu', green: 'verde', yellow: 'giallo', orange: 'arancione', red: 'rosso' },
+      colorName: { blue: 'blu', yellow: 'giallo', orange: 'arancione', red: 'rosso' },
       severeLabel: 'Non adatta', severeColorName: 'danger',
     },
   });
 
-  // Campsites near the beaches on this map, deduped by id. The detail map passes an
-  // explicit `campsites` list (always shown); the overview map derives them from the
-  // beaches' nearbyCamping and gates them behind the showCamping toggle.
-  const derivedCampsites = useMemo(() => {
-    const seen = new Map<string, { id: string; name: string; lat: number; lon: number }>();
-    for (const item of beaches) {
-      const list = item.beach?.nearbyCamping ?? item.beach?.metadata?.nearbyCamping ?? [];
-      for (const c of list) {
-        if (!seen.has(c.id)) seen.set(c.id, { id: c.id, name: c.name, lat: c.coordinates.lat, lon: c.coordinates.lon });
-      }
-    }
-    return [...seen.values()];
-  }, [beaches]);
-  // Show on the browse maps (incl. the compact island map), but never on previews or the
-  // detail map (which passes its own `campsites` and always shows them).
-  const hasCampingToggle = !preview && !campsites && derivedCampsites.length > 0;
-  const renderedCampsites = campsites ?? (showCamping ? derivedCampsites : []);
+  /**
+   * REGION MAPS NO LONGER DRAW CAMPSITES (02/08/2026).
+   *
+   * The overview map used to derive a tent pin from every beach's `nearbyCamping` and scatter
+   * them across the region. On a coast like Evia that is dozens of tents mixed in among the
+   * condition pins, and they compete for attention with the only thing this map exists to say —
+   * which water is calm today. Miltos: «έχουμε γεμίσει χρώματα στους χάρτες». The information is
+   * not lost; it is on the beach's own card and page, where it is attached to a beach the reader
+   * has already chosen.
+   *
+   * The DETAIL map still shows the campsites it is explicitly handed, because there it is one
+   * beach's own surroundings rather than a region-wide scatter.
+   */
+  const renderedCampsites = campsites ?? [];
 
   // Calculate average center of all beaches if they exist
   let avgCenter: [number, number] | null = null;
@@ -2597,7 +2617,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // beaches are actually wearing right now.
   const medianSeaOfGroup = (wanted: 'protected' | 'exposed'): number | undefined => {
     const seas = beaches
-      .filter(item => (mapMode === 'recommendation' ? getMapExposureLevel(item) : visibleExposureLevel(item)) === wanted)
+      // Same unconditional getMapExposureLevel as beachConditionTone above — grouping the
+      // swatches by one exposure rule while colouring the pins by another put a median sea
+      // from the wrong set of beaches into the swatch.
+      .filter(item => getMapExposureLevel(item) === wanted)
       .map(item => seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))
       .filter((v): v is number => typeof v === 'number' && Number.isFinite(v))
       .sort((a, b) => a - b);
@@ -2619,7 +2642,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // The surf line only appears when a surf spot is actually on screen. There are
   // 10 nationally, so on almost every map it would be an unexplained symbol
   // taking up legend space — and an unexplained badge is worse than no badge.
-  const showSurfLegendCue = beaches.some(item => isSurfSpotInSeason(item.beach));
+  //
+  // markerBeaches, not beaches: with a colour filter on, `beaches` still holds the pins the
+  // filter removed, so the legend would explain a symbol that is no longer anywhere on screen.
+  const showSurfLegendCue = markerBeaches.some(item => isSurfSpotInSeason(item.beach));
+  // Same rule for the cove badge, from the same predicate the marker itself uses.
+  const showCoveLegendCue = markerBeaches.some(item => beachCoveBadge(item));
 
   // Tapping a row shows only those beaches — on the map AND in the cards below, which is why the
   // rows are only interactive when the parent actually wired the filter up. On the detail map,
@@ -2700,9 +2728,27 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </button>
           );
         })}
-        {/* The enclosed-cove line used to live here as a separate cue. It is now simply the
-            'green' row above, counted like every other colour — one place, one count, and it
-            appears exactly when a green pin is on the map rather than on a Beaufort guess. */}
+        {/* The cove is a cue again (02/08/2026), and this time it is a badge on the pin rather
+            than a colour of its own. It was briefly the 'green' row above; that made the bay's
+            SHAPE — a permanent fact about the place — look like a rung on the severity scale,
+            and at 5 Bft it printed a calm colour over the app's own «better not to swim».
+            The pin now wears the conditions; this line explains the mark. */}
+        {showCoveLegendCue && (
+          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
+            <span className="inline-flex min-w-0 items-center gap-1.5">
+              <span className="beach-map-legend-cove" aria-hidden="true" />
+              {/* A FACT about the bay, never a verdict about the day — the colour of the pin is
+                  the verdict, and this mark must not be read as overruling it. */}
+              <span className="min-w-0">{getLocalizedCopy(language, {
+                en: 'Enclosed bay — calmer than the open sea reading',
+                gr: 'Κλειστός όρμος — πιο ήρεμο νερό απ’ ό,τι δείχνει η ανοιχτή θάλασσα',
+                fr: 'Baie fermée — plus calme que la mesure du large',
+                de: 'Geschlossene Bucht — ruhiger als die Messung auf offener See',
+                it: 'Baia chiusa — più calma di quanto indichi il mare aperto',
+              })}</span>
+            </span>
+          </div>
+        )}
         {showSurfLegendCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -2873,21 +2919,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
               ? 'h-[195px] sm:h-[420px]'
               : 'h-[360px] sm:h-[500px]'
       }`}>
-        {/* Camping layer toggle (overview map only) — left side, below the mode toggle on mobile */}
-        {hasCampingToggle && (
-          <button
-            type="button"
-            onClick={() => setShowCamping((v) => !v)}
-            aria-label={`${mapCopy.campingToggle[language]}${showCamping ? ' ✓' : ''}`}
-            title={mapCopy.campingToggle[language]}
-            // Bottom-left: free on the browse map (wind legend is top-left, zoom top-right,
-            // the exposure legend is desktop-full-map only, and the hour slider docks below).
-            className={`absolute bottom-3 left-3 z-[1000] inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold shadow-lg backdrop-blur-xl transition-colors sm:bottom-4 sm:left-4 ${showCamping ? 'border-emerald-300 bg-emerald-600 text-white' : 'border-white/60 bg-white/85 text-slate-700 hover:bg-white dark:border-slate-700 dark:bg-slate-900/85 dark:text-slate-200'}`}
-          >
-            <Tent className="h-3.5 w-3.5 shrink-0" aria-hidden />
-            {mapCopy.campingToggle[language]}
-          </button>
-        )}
+        {/* The camping layer toggle stood here. It went with the layer it controlled — see
+            renderedCampsites above: the region map no longer scatters tent pins. */}
 
         {/* Map Mode Toggle */}
         {!compact && !preview && (
@@ -3044,7 +3077,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS))}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

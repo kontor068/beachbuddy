@@ -482,6 +482,17 @@ if (!/isNearMeRegionActive \? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForeca
     + 'its own home region and these clusters belong to the synthetic GPS region instead.'
   );
 }
+// Both halves, or the page runs on two winds again. Until 02/08/2026 only the scoring half stood
+// down: the card showed the home region's wind while the pin beside it was coloured from a cluster
+// centroid computed over the synthetic GPS region's merged beach list. Reported as "«Κοντά μου»
+// shows slightly different data for the same beach".
+if (!/if \(isNearMeRegionActive\) return lookup;/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5 — mapBeachLocalWinds no longer stands down in "Κοντά μου". The pin would be coloured '
+    + 'from the synthetic GPS region\'s clusters while the card beside it reads the beach\'s own '
+    + 'home region — the same beach, two winds, on one screen.'
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 console.log(

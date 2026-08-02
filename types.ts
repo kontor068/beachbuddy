@@ -58,12 +58,14 @@ export type SwimmingComfort = 'excellent' | 'good' | 'caution' | 'avoid_swimming
  * both come from utils/suitabilityTone.resolveConditionTone, so a card and the pin for the same
  * beach cannot state different conditions.
  *
- * 'blue' means genuinely calm (0–2 Bft, plus protected/partial shores at 3 Bft). 'green' is the
- * reserved "sheltered while it blows" tone — a verified enclosed cove holding flat water at 5 Bft.
- * They used to be collapsed into one card colour, which is how an uncertain 'partial' shore at
- * 3 Bft ended up looking exactly like a verified protected one.
+ * 'blue' means genuinely calm (0–2 Bft, plus protected/partial shores at 3 Bft).
+ *
+ * There used to be a fifth value, 'green', for a verified enclosed cove holding flat water at
+ * 5 Bft. It was removed on 02/08/2026: the shape of a bay is a fact about the place, not a rung
+ * on a severity scale, and it now shows as a badge on the map marker instead (suitabilityTone
+ * .showsCoveBadge) while the beach wears its real conditions.
  */
-export type WindSuitabilityColor = 'blue' | 'green' | 'yellow' | 'orange' | 'red';
+export type WindSuitabilityColor = 'blue' | 'yellow' | 'orange' | 'red';
 export type WindSuitabilityExplanationKey =
   | 'generally_calm'
   | 'protected_from_wind'
