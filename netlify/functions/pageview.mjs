@@ -163,7 +163,12 @@ const hostOf = (value) => {
 // Deploy previews and branch deploys live on *.netlify.app and must keep working.
 const isOwnHost = (host) => Boolean(host) && (ALLOWED_HOSTS.has(host) || host.endsWith('.netlify.app'));
 
-const isTrustedOrigin = (headers) => {
+// Exported for scripts/validateAnalyticsGuards.mjs. The handler answers 204 whether a hit was
+// accepted, refused by these guards, or lost to a storage error — deliberately, so a script
+// learns nothing from the status code. That also makes the guards untestable through the
+// handler: every outcome looks identical from outside. Exporting the two predicates is what lets
+// the gate assert they refuse what they should, instead of asserting a 204 that proves nothing.
+export const isTrustedOrigin = (headers) => {
   const origin = headers.origin || headers.Origin || '';
   const referer = headers.referer || headers.Referer || '';
   if (origin) return isOwnHost(hostOf(origin));
@@ -175,7 +180,7 @@ const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 120; // one real visitor needs ~1-10/min; leaves headroom for shared IPs
 const recentByIp = new Map();
 
-const isRateLimited = (headers) => {
+export const isRateLimited = (headers) => {
   const ip = clientIp(headers);
   if (!ip || ip === 'unknown') return false;
 

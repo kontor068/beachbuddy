@@ -130,6 +130,15 @@ const checks = [
     args: ['scripts/validateBeachPageContradictions.mjs'],
   },
   {
+    id: 'analytics-guards',
+    title: 'The counter only counts our own visitors',
+    description: 'Drives the two abuse guards on /api/hit directly — same-origin (including deploy previews, lookalike domains and the Origin-beats-Referer rule) and the per-IP burst limit — plus the POST-only restriction on the handler.',
+    protects: 'The FIRST gate that ever opened a Netlify function. Nothing else covers them: no build step, no type check, no test — they ship straight to production on push. On 02/08/2026 /api/hit reported 6.937 unique visitors and 1.008 new for a day GA4 measured at 82 users, because uniqueness is ip+UA+day and the caller picks the UA. It drives the PREDICATES, not the handler, on purpose: the handler answers 204 for accepted, refused and storage-error alike so a probing script learns nothing — which also means a handler-level test passes with both guards deleted.',
+    failureAction: 'Restore the guard the gate names in netlify/functions/pageview.mjs. Never loosen the host check to a suffix match — «calmbeach.gr.evil.example» ends with our domain. And never let the burst limit be shared across IPs: one attacker would mute everyone else\'s analytics.',
+    command: process.execPath,
+    args: ['scripts/validateAnalyticsGuards.mjs'],
+  },
+  {
     id: 'wave-climatology',
     title: 'Guide climatology vs beach pages',
     description: 'Compares the wave thresholds and the swell-equivalent formula between utils/waveCharacter.ts and the Python that builds data/waveClimatology.generated.json, proves the three honesty rules of utils/seaSeasonProfile.mjs by driving them backwards, and reads the prerender call site to confirm it passes beach IDS and the loaded climatology.',
