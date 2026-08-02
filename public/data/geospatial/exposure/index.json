@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T15:02:09.420Z",
+  "generatedAt": "2026-08-02T20:05:08.575Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -4949,8 +4949,8 @@
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 30,
-            "partial": 4,
+            "protected": 29,
+            "partial": 5,
             "exposed": 5
           },
           "NE": {
@@ -4960,13 +4960,13 @@
           },
           "E": {
             "protected": 10,
-            "partial": 16,
-            "exposed": 13
+            "partial": 17,
+            "exposed": 12
           },
           "SE": {
             "protected": 9,
-            "partial": 10,
-            "exposed": 20
+            "partial": 11,
+            "exposed": 19
           },
           "S": {
             "protected": 9,

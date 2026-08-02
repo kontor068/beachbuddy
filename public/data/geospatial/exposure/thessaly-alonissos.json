@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:15.475Z",
+  "generatedAt": "2026-08-02T20:05:08.571Z",
   "region": {
     "id": "thessaly-alonissos",
     "name": "Alonissos"
@@ -41,8 +41,8 @@
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 30,
-        "partial": 4,
+        "protected": 29,
+        "partial": 5,
         "exposed": 5
       },
       "NE": {
@@ -52,13 +52,13 @@
       },
       "E": {
         "protected": 10,
-        "partial": 16,
-        "exposed": 13
+        "partial": 17,
+        "exposed": 12
       },
       "SE": {
         "protected": 9,
-        "partial": 10,
-        "exposed": 20
+        "partial": 11,
+        "exposed": 19
       },
       "S": {
         "protected": 9,
@@ -1144,74 +1144,74 @@
         "gr": "Κοκκινόκαστρο"
       },
       "coordinates": {
-        "lat": 39.154,
-        "lon": 23.8776
+        "lat": 39.16456,
+        "lon": 23.90399
       },
-      "facingDeg": 104.6,
+      "facingDeg": 71.1,
       "sectors": {
         "N": {
-          "level": "protected",
-          "fetchKm": 0.04,
+          "level": "partial",
+          "fetchKm": 0.44,
           "blockedRayRatio": 1,
-          "onshore": -0.252,
-          "intensity": 22.4
+          "onshore": 0.324,
+          "intensity": 39.7
         },
         "NE": {
           "level": "partial",
-          "fetchKm": 1.6,
+          "fetchKm": 1.72,
           "blockedRayRatio": 1,
-          "onshore": 0.506,
-          "intensity": 45.2
+          "onshore": 0.898,
+          "intensity": 56.9
         },
         "E": {
-          "level": "exposed",
-          "fetchKm": 13.36,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.968,
-          "intensity": 98.4
+          "level": "partial",
+          "fetchKm": 2.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.946,
+          "intensity": 58.4
         },
         "SE": {
-          "level": "exposed",
-          "fetchKm": 11.92,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.863,
-          "intensity": 92.4
+          "level": "partial",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.44,
+          "intensity": 45.6
         },
         "S": {
           "level": "partial",
-          "fetchKm": 0.04,
-          "blockedRayRatio": 1,
-          "onshore": 0.252,
-          "intensity": 37.6
+          "fetchKm": 15.04,
+          "blockedRayRatio": 0.4,
+          "onshore": -0.324,
+          "intensity": 33.8
         },
         "SW": {
           "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.506,
-          "intensity": 14.8
+          "fetchKm": 5.04,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.898,
+          "intensity": 3.2
         },
         "W": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.08,
           "blockedRayRatio": 1,
-          "onshore": -0.968,
-          "intensity": 1
+          "onshore": -0.946,
+          "intensity": 1.6
         },
         "NW": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.4,
           "blockedRayRatio": 1,
-          "onshore": -0.863,
-          "intensity": 4.1
+          "onshore": -0.44,
+          "intensity": 16.8
         }
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.1388,
-        "lon": 23.9526,
-        "bearingDeg": 104.6,
-        "distanceKm": 6.68
+        "lat": 39.0969,
+        "lon": 23.904,
+        "bearingDeg": 180,
+        "distanceKm": 7.52
       }
     },
     "2595": {
