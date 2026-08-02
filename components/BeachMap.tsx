@@ -21,6 +21,7 @@ import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
 import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
+import { holdsFlatWaterUnderOffshoreWind } from '../utils/offshoreFlatWater';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1022,7 +1023,9 @@ const getExposureMarkerTone = (
   // Swell-equivalent sea state (m). Applied as a CEILING only — it can stop a pin being blue,
   // never make a windy pin calmer. Without it the pin was decided by wind and exposure alone,
   // so a beach with light wind and a real running sea was blue by construction.
-  seaStateM?: number
+  seaStateM?: number,
+  /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
+  offshoreFlatWater = false
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1063,6 +1066,7 @@ const getExposureMarkerTone = (
     beaufort: typeof windBeaufort === 'number' ? windBeaufort : 0,
     isEnclosedCove,
     seaStateM,
+    offshoreFlatWater,
   })];
 };
 
@@ -1168,7 +1172,9 @@ const createExposureIcon = (
   /** Swell-equivalent sea state (m) — ceiling only, see getExposureMarkerTone. */
   seaStateM?: number,
   /** Enclosed-cove badge. Decided by suitabilityTone.showsCoveBadge, never inline here. */
-  showCoveBadge = false
+  showCoveBadge = false,
+  /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
+  offshoreFlatWater = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -1192,7 +1198,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -1925,6 +1931,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
   };
 
   /**
+   * Is the wind blowing OFF the land here, over no fetch? See utils/offshoreFlatWater.
+   *
+   * Fed the beach's OWN bearing (`local.deg`) rather than the region's, for the same reason
+   * beachBeaufort exists: the region centre answered for Vai with a northerly at 3 Bft while its
+   * own shore had 5 Bft from 295°, and the sector this rule reads is chosen by that bearing. The
+   * region direction remains the fallback where a cluster reading never arrived.
+   */
+  const beachOffshoreFlatWater = (item: SuitableBeach): boolean => holdsFlatWaterUnderOffshoreWind({
+    profile: item.geospatialExposure,
+    windDirectionDeg: beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg,
+    beaufort: beachBeaufort(item),
+  });
+
+  /**
    * The spread of wind actually blowing on the shores currently drawn — what the compass widget
    * prints instead of the region's single figure.
    *
@@ -1972,6 +1992,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     beaufort: beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0,
     isEnclosedCove: Boolean(item.enclosedCove),
     seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
+    offshoreFlatWater: beachOffshoreFlatWater(item),
   });
 
   // Deliberately over EVERY beach on the map, never the filtered subset: picking «Δύσκολη»
@@ -3129,7 +3150,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item))}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

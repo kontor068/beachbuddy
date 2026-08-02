@@ -115,6 +115,31 @@ const INCIDENCE_SENTENCE: Record<WindIncidence, LocalizedCopy<IncidenceSentence>
 };
 
 /**
+ * From this wind up, an offshore breeze is strong enough to carry a float out faster than a
+ * child can paddle back. It is the same Beaufort at which utils/offshoreFlatWater lets a flat
+ * offshore shore read yellow instead of orange — deliberately the same number, because the two
+ * are one fact: the wind that flattens the water is the wind that pushes it away from the beach.
+ * Saying the first without the second is the version of this feature that gets someone hurt.
+ *
+ * Below 5 the app already says enough — the colour is yellow or blue on its own and the standing
+ * `offshore_wind` warning (services/recommendationService) covers 4 Bft.
+ */
+export const OFFSHORE_DRIFT_MIN_BEAUFORT = 5;
+
+/**
+ * The RNLI's standing advice, in one sentence. Not hedged into "may possibly": the wording that
+ * works is the wording that says what to do (components/planner/tripPlannerCopy carries the same
+ * advice for the planner, worded for a whole-day plan rather than a beach page).
+ */
+const OFFSHORE_DRIFT_SENTENCE: LocalizedCopy<string> = {
+  gr: 'Το νερό μένει επίπεδο, αλλά ο αέρας σπρώχνει προς τα ανοιχτά: φουσκωτά, στρώματα και SUP παρασύρονται μακριά από την ακτή — κράτα τα παιδιά κοντά.',
+  en: 'The water stays flat, but the wind pushes seaward: inflatables, airbeds and SUPs are carried away from shore — keep children close in.',
+  de: 'Das Wasser bleibt glatt, doch der Wind drückt seewärts: Luftmatratzen, Schlauchboote und SUPs treiben vom Ufer ab – Kinder nah bei sich halten.',
+  fr: "L'eau reste plate, mais le vent pousse vers le large : bouées, matelas et SUP sont emportés loin du bord — gardez les enfants près de vous.",
+  it: "L'acqua resta piatta, ma il vento spinge al largo: gonfiabili, materassini e SUP vengono portati via dalla riva — tieni i bambini vicini.",
+};
+
+/**
  * Returns the sentence(s) to print above the wave graphic, or null when nothing may be said.
  *
  * Every suppression below is a case where the line would contradict something already on screen,
@@ -127,17 +152,28 @@ export const buildShoreIncidenceLine = (input: ShoreIncidenceInput): string | nu
 
   const parts: string[] = [];
 
-  if (typeof onshore === 'number' && Number.isFinite(onshore) && !input.suppressIncidence) {
+  if (typeof onshore === 'number' && Number.isFinite(onshore)) {
     const incidence = getWindIncidence(onshore);
     // HARD CONTRADICTION WITH THE PIN — say nothing. A shore the map paints red cannot be told
     // the wind blows off the land, and a shore it paints green cannot be told the wind is on it.
     // Measured 29/07/2026 at 5 Bft: 248 of 22.800 beach x sector cases (1,09%) land here.
     const contradictsPin = (incidence === 'offshore' && mapExposureLevel === 'exposed')
       || (incidence === 'onshore' && mapExposureLevel === 'protected');
-    if (!contradictsPin) {
+    if (!contradictsPin && !input.suppressIncidence) {
       const adjTable = WIND_ADJ_NOM[language] ?? WIND_ADJ_NOM.en;
       const sentence = getLocalizedCopy(language, INCIDENCE_SENTENCE[incidence]);
       parts.push(sentence(adjTable[input.windDir], beaufort, getLocalizedCopy(language, BFT_UNIT)));
+    }
+    // THE DRIFT WARNING IS NOT SUPPRESSED WITH THE SENTENCE ABOVE, and that is the point.
+    //
+    // `suppressIncidence` exists because the card higher up the page already states the same
+    // FACT in almost the same words, and the reader pays for both. This is not the same fact:
+    // the card says how the wind meets the shore, this says what to do about it. Dropping it
+    // alongside would mean the beaches most likely to carry a float out to sea — the ones whose
+    // card is confident enough about the wind to trigger the suppression — are exactly the ones
+    // that never see the warning.
+    if (!contradictsPin && incidence === 'offshore' && beaufort >= OFFSHORE_DRIFT_MIN_BEAUFORT) {
+      parts.push(getLocalizedCopy(language, OFFSHORE_DRIFT_SENTENCE));
     }
   }
 

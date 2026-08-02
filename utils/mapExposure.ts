@@ -2,9 +2,15 @@ import type { Beach, SuitableBeach, WindProfile, WindProfileSource, WindSector }
 import { WindDirection } from '../types';
 import { areInSameShorelineSegment } from './shorelineSegments';
 import { calculateDistance } from './weatherUtils';
-import { calculateWindExposure, estimateBeachOrientation, type ExposureLevel } from './windExposure';
+import {
+  calculateWindExposure,
+  estimateBeachOrientation,
+  windSectorFromDegrees,
+  WIND_SECTORS,
+  type ExposureLevel,
+} from './windExposure';
 
-const windSectors: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+const windSectors = WIND_SECTORS;
 
 const windSectorToDirection: Record<WindSector, WindDirection> = {
   N: WindDirection.N,
@@ -21,9 +27,13 @@ const normalizeDegrees = (degrees: number): number => ((degrees % 360) + 360) % 
 const ADJACENT_BEACH_MAX_DISTANCE_KM = 0.65;
 const SIMILAR_BEACH_FRONT_MAX_DEGREES = 45;
 
+/**
+ * The bucketing itself now lives in utils/windExposure, shared with the engine — this wrapper
+ * only adds the "no reading, no sector" case the map needs and the engine does not.
+ */
 const getWindSectorFromDegrees = (degrees?: number): WindSector | undefined => {
   if (typeof degrees !== 'number' || !Number.isFinite(degrees)) return undefined;
-  return windSectors[Math.round(normalizeDegrees(degrees) / 45) % windSectors.length];
+  return windSectorFromDegrees(degrees);
 };
 
 // Wind-exposure colours are always available; the map tone is decided by the

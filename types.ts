@@ -83,6 +83,14 @@ export interface SimpleWindSuitability {
   /** Beaufort of the wind this assessment was built for; lets copy scale its
    *  certainty (a 5–6 Bft day definitely has wind/waves, even on a sheltered shore). */
   windBeaufort?: number;
+  /**
+   * The wind is blowing off the land over zero fetch at 5 Bft
+   * (utils/offshoreFlatWater.holdsFlatWaterUnderOffshoreWind), so the surface is flat despite
+   * the speed. Carried on the object — like `exposureStatus` and `windBeaufort` — so the
+   * sea-state pass that re-derives the colour reads the exact value the wind-only colour was
+   * built from, instead of a call site re-answering the question with different inputs.
+   */
+  offshoreFlatWater?: boolean;
 }
 
 export interface BeachMapCoordinates {

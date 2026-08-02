@@ -155,10 +155,32 @@ export const coveHoldsCalmWater = (
  * shores at 3 Bft where only open coasts feel it) — from 4 Bft up even sheltered shores get
  * visible chop.
  */
+/**
+ * Does the offshore-flat-water rule actually lift THIS combination? The single answer both the
+ * ladder and the sea-state ceiling ask, so the two cannot disagree about whether a lift happened.
+ *
+ * The Beaufort test is `=== 5`, not `>= 5`, and that is not belt-and-braces duplication of
+ * utils/offshoreFlatWater's own gate. This function is handed a caller-supplied boolean and a
+ * caller-supplied Beaufort, and nothing stops those two describing different moments — the map
+ * hands the flag a beach's own wind and the tone the slider's scrubbed hour, so a beach that is
+ * offshore-flat at 14:00 can be passed 6 Bft for 18:00. At 6 Bft the app's own verdict is
+ * avoid_swimming, so the ladder has to refuse the lift itself rather than trust the flag.
+ */
+export const offshoreLiftApplies = (
+  exposureLevel: ExposureLevel | string | undefined,
+  beaufort: number,
+  offshoreFlatWater: boolean
+): boolean => offshoreFlatWater && beaufort === 5 && exposureLevel === 'protected';
+
 export const resolveWindTone = (
   exposureLevel: ExposureLevel | string | undefined,
   beaufort: number,
-  isEnclosedCove = false
+  isEnclosedCove = false,
+  /**
+   * The wind is blowing OFF the land over zero fetch — see utils/offshoreFlatWater for the gate
+   * and the national measurement. Only consulted at 5 Bft, and only to lift orange → yellow.
+   */
+  offshoreFlatWater = false
 ): CalmnessTone => {
   const isProtected = exposureLevel === 'protected';
   const isExposed = exposureLevel === 'exposed';
@@ -167,7 +189,25 @@ export const resolveWindTone = (
   // A cove used to escape to 'green' here. It no longer escapes at all: at 5 Bft it reads
   // orange like every other sheltered shore, and the bay's own contribution is carried by the
   // map badge (showsCoveBadge) and by the sea-state exemption in resolveConditionTone.
-  if (beaufort >= 5) return isExposed ? 'red' : 'orange';
+  //
+  // THE ONE ESCAPE THAT EXISTS AT 5 BFT IS OFFSHORE WIND OVER ZERO FETCH (02/08/2026). Not a
+  // softening of the ladder: it is the case where the ladder was reading the wrong thing. Speed
+  // is a proxy for how much wave the wind has built, and with the land upwind and no fetch it has
+  // built none. Never reaches 'blue' — the air is still moving hard enough to take an umbrella,
+  // and the ceiling below can still pull it back to orange when the open sea is running.
+  //
+  // BOTH SIGNALS MUST AGREE — `isProtected`, not just `!isExposed`. The offshore flag is pure
+  // sector geometry; `exposureLevel` is what the whole engine concluded, curated overrides and
+  // suspect pins included. Without this clause a beach an author had explicitly marked exposed
+  // to this sector, or one whose pin is suspect, could still be lifted by its own geometry —
+  // the geometry outvoting the human knowledge that exists precisely because the geometry is
+  // wrong there. It also keeps the pin from rising above the verdict word: utils/experienceTier
+  // caps a 'partial' shore at «Μέτρια» from 5 Bft, so lifting a partial pin to yellow would put
+  // a calmer colour under a more cautious word.
+  if (beaufort >= 5) {
+    if (isExposed) return 'red';
+    return offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater) ? 'yellow' : 'orange';
+  }
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the uncertain
   // "partial" middle get a yellow "mild chop" heads-up.
   if (beaufort >= 4) return isExposed ? 'orange' : 'yellow';
@@ -271,15 +311,37 @@ export const resolveConditionTone = ({
   beaufort,
   isEnclosedCove = false,
   seaStateM,
+  offshoreFlatWater = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
   isEnclosedCove?: boolean;
   seaStateM?: number;
+  /**
+   * Wind off the land over zero fetch (utils/offshoreFlatWater.holdsFlatWaterUnderOffshoreWind).
+   * Passed rather than derived here so this module keeps knowing nothing about geometry — and so
+   * the map pin and the card chip cannot answer it differently: both compute it from the same
+   * profile and the same live bearing before calling in.
+   *
+   * NOT exempt from the sea-state ceiling, unlike the cove. A cove is exempt because the grid
+   * cell cannot resolve a 50 m pocket; an offshore wind changes nothing about whether a swell is
+   * running outside, so the ceiling must still get its say.
+   */
+  offshoreFlatWater?: boolean;
 }): CalmnessTone => capToneBySeaState(
-  resolveWindTone(exposureLevel, beaufort, isEnclosedCove),
+  resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
   seaStateM,
-  coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort),
+  // THE TWO CALM RULES DO NOT STACK. A cove is exempt from the sea ceiling because the grid cell
+  // ten kilometres out cannot resolve a 50 m pocket. An offshore wind is a different claim — it
+  // says the wind is not BUILDING a wave here, and says nothing about a swell already running
+  // outside, which wraps into lee shores. Let both apply at once and a cove on an offshore 5 Bft
+  // day reads yellow over a 1,25 m sea, which neither rule alone would allow: the lift makes it
+  // yellow and the cove's exemption then hides the sea that should have pulled it back. So a
+  // lifted beach gives up the exemption. Where the sea is quiet this costs nothing (there is no
+  // ceiling to be exempt from); where it is running, the beach lands on the orange it had before
+  // this rule existed. Caught by validateConditionToneAgreement's offshore-lift-still-obeys-the-sea.
+  coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
+    && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater),
   exposureLevel
 );
 

@@ -1,6 +1,30 @@
-import { WindDirection } from '../types';
+import { WindDirection, WindSector } from '../types';
 
 export type ExposureLevel = 'protected' | 'partial' | 'exposed';
+
+/** The eight sectors every geospatial exposure profile is keyed by, in compass order. */
+export const WIND_SECTORS: readonly WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+/**
+ * Live wind bearing (degrees the wind comes FROM) → the sector whose pre-computed geometry
+ * answers for it.
+ *
+ * It lives HERE, at the bottom of the dependency graph, because it was written out three times:
+ * `utils/windExposureEngine.windSectorFromDegrees`, a private copy in `utils/mapExposure`, and a
+ * third inside the measurement scripts. Identical today, but the engine and the map drifting
+ * apart on the same input is exactly the class of bug that produced a card and a pin disagreeing
+ * about the same beach. One definition, imported by both.
+ *
+ * NOTE THE PRECISION IT THROWS AWAY. Bucketing to 45° means a 295° wind is answered by the
+ * geometry computed for 315°. That is fine for "which sector's fetch do I read" and NOT fine for
+ * "how squarely does this wind meet the shore" — for the second, use the beach's own facingDeg
+ * against the raw bearing (utils/offshoreFlatWater does exactly that, and Vai is the case that
+ * proved the difference: −0,65 from the sector centre, −0,87 from the live bearing).
+ */
+export const windSectorFromDegrees = (degrees: number): WindSector => {
+  const normalized = ((degrees % 360) + 360) % 360;
+  return WIND_SECTORS[Math.round(normalized / 45) % WIND_SECTORS.length];
+};
 
 export interface ExposureResult {
   exposureLevel: ExposureLevel;

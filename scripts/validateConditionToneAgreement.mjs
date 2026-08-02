@@ -58,7 +58,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 // The map pin's resolver (components/BeachMap.tsx getExposureMarkerTone delegates to this).
-const { resolveConditionTone, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
 const { seaStateSeverityM, SEA_STATE_AMBER_M } = require(path.join(root, 'utils/waveCharacter.ts'));
@@ -72,9 +72,9 @@ const PERIODS_S = [undefined, 2.5, 4, 7];
 const CALM_TONES = new Set(['blue']);
 
 /** The chip as the app actually builds it: engine shape in, scoring-layer sea state applied. */
-const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM) => applySeaStateToWindSuitability(
+const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater) => applySeaStateToWindSuitability(
   {
-    // Only these two fields drive the colour; the rest is carried through untouched.
+    // Only these three fields drive the colour; the rest is carried through untouched.
     suitabilityColor: 'red',
     exposureStatus,
     confidence: 'medium',
@@ -82,6 +82,7 @@ const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM) => applySe
     explanationText: '',
     windSector: 'N',
     windBeaufort: beaufort,
+    offshoreFlatWater,
   },
   seaStateM,
   enclosedCove,
@@ -136,6 +137,36 @@ const RULES = [
         : `cove badge shown on a "${exposureStatus}" shore — the bay is not a refuge from this wind`;
     },
   },
+  {
+    id: 'offshore-lift-only-where-it-is-earned',
+    // The 02/08/2026 offshore-flat-water rule (utils/offshoreFlatWater) is the ONLY thing that may
+    // make a 5 Bft shore read calmer than orange, and it may do it only on a shore the engine
+    // itself calls protected, only at exactly 5 Bft, and never past yellow. Anything else means a
+    // new calm branch has been opened above 4 Bft without the measurement that justified this one.
+    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM }) => {
+      if (!offshoreFlatWater) return null;
+      const withoutLift = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM });
+      if (pin === withoutLift) return null;
+      if (beaufort !== 5) return `lifted the colour at ${beaufort} Bft — the rule is 5 Bft only`;
+      if (exposureStatus !== 'protected') return `lifted a "${exposureStatus}" shore, not a protected one`;
+      if (pin !== 'yellow') return `lifted to "${pin}" — the rule may only reach yellow`;
+      return null;
+    },
+  },
+  {
+    id: 'offshore-lift-still-obeys-the-sea',
+    // The offshore flag says the WIND is not building a wave here. It says nothing about a swell
+    // already running outside, which wraps into lee shores — so unlike the cove, this rule gets
+    // no exemption from the sea-state ceiling. If the lifted colour is ever calmer than what the
+    // sea alone permits, the exemption has been added by accident.
+    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM }) => {
+      if (!offshoreFlatWater) return null;
+      const ceilinged = capToneBySeaState(pin, seaStateM, false, exposureStatus);
+      return ceilinged === pin
+        ? null
+        : `"${pin}" survived a sea that permits only "${ceilinged}"`;
+    },
+  },
 ];
 
 const failures = [];
@@ -150,21 +181,26 @@ for (const exposureStatus of LEVELS) {
       for (const waveHeightM of WAVES_M) {
         for (const periodS of PERIODS_S) {
           if (waveHeightM === undefined && periodS !== undefined) continue;
-          const seaStateM = seaStateSeverityM(waveHeightM, periodS);
-          const row = {
-            exposureStatus,
-            beaufort,
-            enclosedCove,
-            waveHeightM,
-            periodS,
-            seaStateM,
-            pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM }),
-            chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM),
-          };
-          combinations += 1;
-          for (const rule of RULES) {
-            const reason = rule.check(row);
-            if (reason) failures.push({ rule: rule.id, reason, row });
+          // Both values of the offshore-flat-water flag, over the WHOLE grid rather than only its
+          // own Beaufort: the rules below have to be able to catch it firing where it should not.
+          for (const offshoreFlatWater of [false, true]) {
+            const seaStateM = seaStateSeverityM(waveHeightM, periodS);
+            const row = {
+              exposureStatus,
+              beaufort,
+              enclosedCove,
+              waveHeightM,
+              periodS,
+              seaStateM,
+              offshoreFlatWater,
+              pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater }),
+              chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater),
+            };
+            combinations += 1;
+            for (const rule of RULES) {
+              const reason = rule.check(row);
+              if (reason) failures.push({ rule: rule.id, reason, row });
+            }
           }
         }
       }

@@ -12,7 +12,14 @@ import {
   WindProfileSource,
   WindSector,
 } from '../types';
-import { calculateWindExposure, estimateBeachOrientation, ExposureLevel } from './windExposure';
+import {
+  calculateWindExposure,
+  estimateBeachOrientation,
+  windSectorFromDegrees,
+  WIND_SECTORS,
+  ExposureLevel,
+} from './windExposure';
+import { holdsFlatWaterUnderOffshoreWind } from './offshoreFlatWater';
 import { resolveWindExposure } from './windExposureModel';
 import { getWindProfileOverride } from './windProfileOverrides';
 import { CURATED_ENCLOSED_COVE_IDS, CURATED_NON_COVE_IDS } from './enclosedCoves';
@@ -82,7 +89,8 @@ const WIND_DIRECTION_TO_SECTOR: Record<WindDirection, WindSector> = {
   [WindDirection.NW]: 'NW',
 };
 
-const SECTORS: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+/** The shared list — the private copy that used to live here was the third one in the codebase. */
+const SECTORS = WIND_SECTORS;
 const GEOSPATIAL_WIND_PROFILE_BACKFILL_ISLANDS = new Set([
   'aegina',
   'agistri',
@@ -312,9 +320,10 @@ const getSimpleWindConfidence = (
 const getSimpleWindColor = (
   exposureLevel: ExposureLevel,
   beaufort: number,
-  enclosedCove = false
+  enclosedCove = false,
+  offshoreFlatWater = false
 ): SimpleWindSuitability['suitabilityColor'] => toWindSuitabilityColor(
-  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove })
+  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove, offshoreFlatWater })
 );
 
 /**
@@ -338,6 +347,7 @@ export const applySeaStateToWindSuitability = (
     beaufort: suitability.windBeaufort,
     isEnclosedCove: enclosedCove,
     seaStateM,
+    offshoreFlatWater: suitability.offshoreFlatWater,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
@@ -374,6 +384,7 @@ export const buildSimpleWindSuitability = ({
   beach,
   hasGeometry,
   enclosedCove = false,
+  offshoreFlatWater = false,
 }: {
   exposureLevel: ExposureLevel;
   beaufort: number;
@@ -385,76 +396,77 @@ export const buildSimpleWindSuitability = ({
   beach: Beach;
   hasGeometry: boolean;
   enclosedCove?: boolean;
+  /** utils/offshoreFlatWater — wind off the land over zero fetch at 5 Bft. */
+  offshoreFlatWater?: boolean;
 }): SimpleWindSuitability => {
   const confidence = getSimpleWindConfidence(profile, source, beach, hasGeometry);
   const exposureStatus = getSimpleExposureStatus(exposureLevel, source, beach, windDirection, windDirectionDeg);
-  const suitabilityColor = getSimpleWindColor(exposureStatus, beaufort, enclosedCove && exposureStatus === 'protected');
+  const suitabilityColor = getSimpleWindColor(
+    exposureStatus,
+    beaufort,
+    enclosedCove && exposureStatus === 'protected',
+    offshoreFlatWater
+  );
   const windLabel = WIND_SECTOR_LABELS[windSector];
+
+  // The five branches below differ ONLY in their explanation, so everything the colour was
+  // derived from is spread in from one place. It used to be repeated in each branch, and
+  // `offshoreFlatWater` — which applySeaStateToWindSuitability later reads back off this object
+  // to re-derive the colour — would have had to be added to all five without missing one.
+  const shared = {
+    suitabilityColor,
+    exposureStatus,
+    confidence,
+    windSector,
+    windBeaufort: beaufort,
+    offshoreFlatWater,
+  } as const;
 
   if (beaufort <= 2) {
     return {
-      suitabilityColor,
-      exposureStatus,
-      confidence,
+      ...shared,
       explanationKey: 'generally_calm',
       explanationText: 'Generally manageable choice today',
-      windSector,
-      windBeaufort: beaufort,
     };
   }
 
   if (beaufort >= 7) {
     return {
-      suitabilityColor,
-      exposureStatus,
-      confidence,
+      ...shared,
       explanationKey: 'avoid_today',
       explanationText: `Strong ${windLabel} wind today - better to avoid for calm swimming`,
-      windSector,
-      windBeaufort: beaufort,
     };
   }
 
   if (exposureStatus === 'protected') {
     return {
-      suitabilityColor,
-      exposureStatus,
-      confidence,
+      ...shared,
       explanationKey: 'protected_from_wind',
       explanationText: `More sheltered from today's ${windLabel} wind`,
-      windSector,
-      windBeaufort: beaufort,
     };
   }
 
   if (exposureStatus === 'exposed') {
     return {
-      suitabilityColor,
-      exposureStatus,
-      confidence,
+      ...shared,
       explanationKey: 'exposed_to_wind',
       explanationText: `More exposed to today's ${windLabel} wind`,
-      windSector,
-      windBeaufort: beaufort,
     };
   }
 
   return {
-    suitabilityColor,
-    exposureStatus,
-    confidence,
+    ...shared,
     explanationKey: 'partly_exposed',
     explanationText: `Partial shelter from today's ${windLabel} wind`,
-    windSector,
-    windBeaufort: beaufort,
   };
 };
 
-export const windSectorFromDegrees = (degrees: number): WindSector => {
-  const normalized = ((degrees % 360) + 360) % 360;
-  const index = Math.round(normalized / 45) % SECTORS.length;
-  return SECTORS[index];
-};
+/**
+ * Re-exported, not defined here: the definition moved to utils/windExposure on 02/08/2026 so the
+ * map and this engine stop keeping private copies of the same bucketing. Existing importers
+ * (services/tripPlannerService, components/planner/TripPlanner) keep working unchanged.
+ */
+export { windSectorFromDegrees };
 
 export const windSectorFromDirection = (direction: WindDirection): WindSector => (
   WIND_DIRECTION_TO_SECTOR[direction]
@@ -925,6 +937,14 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     input.waveHeightMeters <= 0.4 &&
     !isKnownWindSportRisk;
   const enclosedCove = isEnclosedCoveGeometry(input.beach.id, input.geospatialProfile, profile, source);
+  // Computed from `baseBeaufort`, the same wind the colour ladder is about — NOT the amplified
+  // `effectiveBeaufort`, which exists to make a funnelled shore score worse and would silently
+  // move a beach out of the one Beaufort this rule applies to.
+  const offshoreFlatWater = holdsFlatWaterUnderOffshoreWind({
+    profile: input.geospatialProfile,
+    windDirectionDeg: input.windDirectionDeg,
+    beaufort: baseBeaufort,
+  });
   const simpleWindSuitability = buildSimpleWindSuitability({
     exposureLevel,
     beaufort: baseBeaufort,
@@ -936,6 +956,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     beach: input.beach,
     hasGeometry,
     enclosedCove,
+    offshoreFlatWater,
   });
 
   return {
