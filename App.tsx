@@ -64,7 +64,7 @@ import { scrollElementIntoView, scrollToPageTop } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
-import { QUICK_PREFERENCE_FILTERS } from './utils/preferenceFilterLabels';
+import { QUICK_PREFERENCE_FILTERS, getPreferenceFilterLabel } from './utils/preferenceFilterLabels';
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { beachSentenceName } from './utils/beachCopy';
@@ -904,6 +904,18 @@ const isNoIdealFallbackCandidate = (
 };
 
 const getDefaultBeachListSort = (): SortOption => 'protected';
+
+/**
+ * Said when picking a colour on the map legend switches off a filter that nothing in that colour
+ * has. Names the filter — «a filter was removed» leaves the user hunting for which one.
+ */
+const toneFilterDropCopy: Record<LanguageCode, (labels: string) => string> = {
+  gr: labels => `Αφαιρέθηκε το φίλτρο «${labels}» — καμία παραλία σε αυτή την ομάδα δεν το έχει.`,
+  en: labels => `Removed the “${labels}” filter — no beach in this group has it.`,
+  de: labels => `Filter „${labels}“ entfernt – kein Strand in dieser Gruppe hat das.`,
+  fr: labels => `Filtre « ${labels} » retiré — aucune plage de ce groupe ne le propose.`,
+  it: labels => `Filtro «${labels}» rimosso — nessuna spiaggia di questo gruppo ce l’ha.`,
+};
 
 const beachMatchesMobileFilter = (
   beach: Beach,
@@ -4161,6 +4173,23 @@ export const App: React.FC = () => {
     mapToneFilter ? list.filter(item => isMapToneMatch(item.id)) : list
   ), [mapToneFilter, isMapToneMatch]);
   /**
+   * The beaches wearing the colour picked on the legend — the pool every filter chip below the
+   * map has to describe. With no colour picked it is the whole region, i.e. today's behaviour.
+   *
+   * Read out of `mapBeachTones`, which the map reports for every beach in the region (see
+   * `toneSourceBeaches`), NOT recomputed here: the chips have to agree with the pins by
+   * construction, the same rule that governs the legend counts.
+   */
+  const toneScopedBeaches = useMemo<Beach[]>(() => {
+    if (!selectedIsland) return [];
+    if (!mapToneFilter) return selectedIsland.beaches;
+
+    const scoped = selectedIsland.beaches.filter(beach => mapBeachTones[beach.id] === mapToneFilter);
+    // "The map has not reported a colour yet" (lazy chunk, first paint) is NOT the same as "no
+    // beach wears this colour" — treating them alike would empty every chip on the first frame.
+    return scoped.length > 0 ? scoped : selectedIsland.beaches;
+  }, [selectedIsland, mapToneFilter, mapBeachTones]);
+  /**
    * Picking a colour has to move the map, not just thin it out.
    *
    * Measured on Evia (02/08): filtering to «Δύσκολη 35» left the viewport exactly where it was —
@@ -4253,25 +4282,31 @@ export const App: React.FC = () => {
     return selectedIsland.beaches.filter(beach => desktopMapVisibleBeachIdSet.has(beach.id));
   }, [desktopMapVisibleBeachIdSet, isDesktopMapViewportFilterActive, selectedIsland]);
   const preferenceFilterResultCounts = useMemo(() => {
-    if (!selectedIsland || selectedIsland.beaches.length === 0) {
+    if (toneScopedBeaches.length === 0) {
       return {} as Partial<Record<keyof UserPreferences, number>>;
     }
 
-    // Faceted, dynamic counts: each chip shows how many island beaches match the CURRENT
-    // selection (active preferences + advanced filters) WITH this attribute added. Computed
-    // over the WHOLE island (not the wind-filtered/today set), so the numbers narrow as you
-    // pick filters — without the old misleading drop to "1" from an unrelated subset. With no
-    // filters active this reduces to the plain per-attribute island total.
+    // Faceted, dynamic counts: each chip shows how many beaches match the CURRENT selection
+    // (active preferences + advanced filters) WITH this attribute added. Computed over the
+    // whole pool (not the wind-filtered/today set), so the numbers narrow as you pick filters —
+    // without the old misleading drop to "1" from an unrelated subset. With no filters active
+    // this reduces to the plain per-attribute total.
+    //
+    // The pool is `toneScopedBeaches`: the whole region normally, but only the beaches wearing
+    // the picked colour once one is picked. That is what makes the chips describe the selection
+    // instead of the region — a chip nothing in the group has counts 0 and the shared render
+    // path fades and disables it (PreferenceFilters / BeachSearcherHome), so the user cannot
+    // walk into an empty list.
     const activeAdvancedFilters = selectedFilters.filter(filter => filter !== 'showAll' && filter !== 'restaurant');
     return QUICK_PREFERENCE_FILTERS.reduce((counts, key) => {
       const candidatePreferences = { ...preferences, [key]: true };
-      const preferenceMatched = filterBeachesByUserPreferences(selectedIsland.beaches, candidatePreferences);
+      const preferenceMatched = filterBeachesByUserPreferences(toneScopedBeaches, candidatePreferences);
       counts[key] = getFilteredBeaches(preferenceMatched, activeAdvancedFilters, '', 'all', WindDirection.N).length;
       return counts;
     }, {} as Partial<Record<keyof UserPreferences, number>>);
-  }, [getFilteredBeaches, preferences, selectedFilters, selectedIsland]);
+  }, [getFilteredBeaches, preferences, selectedFilters, toneScopedBeaches]);
   const desktopAdvancedFilterResultCounts = useMemo(() => {
-    if (!selectedIsland || selectedIsland.beaches.length === 0) {
+    if (toneScopedBeaches.length === 0) {
       return {} as Partial<Record<FilterKey, number>>;
     }
 
@@ -4286,11 +4321,11 @@ export const App: React.FC = () => {
       'adventure',
     ];
 
-    // Faceted, dynamic counts (see preferenceFilterResultCounts): each chip = island beaches
+    // Faceted, dynamic counts (see preferenceFilterResultCounts): each chip = pool beaches
     // matching the active preferences + active advanced filters + this filter. Narrows as the
-    // selection grows; computed over the whole island, and reduces to the per-attribute total
-    // when nothing else is selected.
-    const preferenceMatched = filterBeachesByUserPreferences(selectedIsland.beaches, preferences);
+    // selection grows, and reduces to the per-attribute total when nothing else is selected.
+    // Same pool rule: the region, or just the picked colour group when there is one.
+    const preferenceMatched = filterBeachesByUserPreferences(toneScopedBeaches, preferences);
     const activeAdvancedFilters = selectedFilters.filter(filter => filter !== 'showAll' && filter !== 'restaurant');
     return desktopAdvancedFilterKeys.reduce((counts, key) => {
       // Adding an already-active key again is a no-op for filtering (idempotent), so we don't
@@ -4299,7 +4334,7 @@ export const App: React.FC = () => {
       counts[key] = getFilteredBeaches(preferenceMatched, combinedFilters, '', 'all', WindDirection.N).length;
       return counts;
     }, {} as Partial<Record<FilterKey, number>>);
-  }, [getFilteredBeaches, preferences, selectedFilters, selectedIsland]);
+  }, [getFilteredBeaches, preferences, selectedFilters, toneScopedBeaches]);
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
       .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown' && key !== 'organized') as FilterKey[]
@@ -4314,6 +4349,68 @@ export const App: React.FC = () => {
       selectedIsland.beaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
     ));
   }, [defaultPreferences, mobileFilterKeys, selectedFilters, selectedIsland]);
+  /**
+   * Filters no beach in the picked colour group has. The sheet fades and disables these instead
+   * of dropping them (which is what `availableMobileFilterKeys` above does for the region): a
+   * chip that vanishes takes the ones after it with it, and a thumb already on its way down lands
+   * on whatever slid into its place. Region-level absence still hides — that list is stable for
+   * as long as the user is in the region, so nothing moves under them.
+   */
+  const unavailableMobileFilterKeys = useMemo<FilterKey[]>(() => {
+    if (!mapToneFilter || toneScopedBeaches.length === 0) return [];
+
+    return mobileFilterKeys.filter(filter => (
+      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
+    ));
+  }, [defaultPreferences, mapToneFilter, mobileFilterKeys, toneScopedBeaches]);
+  /**
+   * A filter that was already on when the user picked a colour, and that nothing in that colour
+   * has. It is dropped — and said out loud. Leaving it on produces the empty list this whole
+   * feature exists to prevent; dropping it in silence takes away a choice the user made without
+   * a word, which is the same defect wearing better clothes. Tied to the tone that caused it so
+   * it disappears the moment the user picks another colour or clears the filter.
+   */
+  const [toneDroppedFilterLabels, setToneDroppedFilterLabels] = useState<{ tone: CalmnessTone; labels: string[] } | null>(null);
+  // Declared BEFORE the drop effect on purpose: on the render where the colour changes this one
+  // wipes the old message first, then the drop effect below writes the new one.
+  useEffect(() => {
+    setToneDroppedFilterLabels(null);
+  }, [mapToneFilter, selectedIsland?.id]);
+  useEffect(() => {
+    if (!mapToneFilter || toneScopedBeaches.length === 0) return;
+
+    const droppedPreferences = QUICK_PREFERENCE_FILTERS.filter(key => (
+      preferences[key] &&
+      !toneScopedBeaches.some(beach => beachMatchesUserPreferences(beach, { ...defaultPreferences, [key]: true }))
+    ));
+    const droppedFilters = selectedFilters.filter(filter => (
+      filter !== 'showAll' &&
+      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
+    ));
+    if (droppedPreferences.length === 0 && droppedFilters.length === 0) return;
+
+    if (droppedPreferences.length > 0) {
+      setPreferences(prev => {
+        const updated = { ...prev };
+        droppedPreferences.forEach(key => { updated[key] = false; });
+        localStorage.setItem('userPreferences', JSON.stringify(updated));
+        return updated;
+      });
+    }
+    if (droppedFilters.length > 0) {
+      setSelectedFilters(prev => prev.filter(filter => !droppedFilters.includes(filter)));
+    }
+    setToneDroppedFilterLabels({
+      tone: mapToneFilter,
+      labels: [
+        ...droppedPreferences.map(key => getPreferenceFilterLabel(key, language, t)),
+        ...droppedFilters.map(filter => t.filterOptions[filter as keyof typeof t.filterOptions] || String(filter)),
+      ],
+    });
+  }, [defaultPreferences, language, mapToneFilter, preferences, selectedFilters, t, toneScopedBeaches]);
+  const toneDroppedFilterNote = mapToneFilter && toneDroppedFilterLabels?.tone === mapToneFilter && toneDroppedFilterLabels.labels.length > 0
+    ? toneFilterDropCopy[language](toneDroppedFilterLabels.labels.join(' · '))
+    : undefined;
   const currentWeatherMode = getWeatherMode(Boolean(weatherError), Boolean(activeWeatherFixtureScenario));
   const currentWaveHeightBucket = getWaveHeightBucket(selectedForecast?.marine?.waveHeightM);
   const rainRiskSummary = useMemo(() => getRainRiskSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
@@ -5837,18 +5934,20 @@ export const App: React.FC = () => {
       : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
   const getMobileFilterModalResultCount = (filters: FilterKey[], nextSortBy: SortOption): number => {
     const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
+    // The sheet's "see N beaches" button has to count what the user will actually land on, and
+    // with a colour picked on the legend that is only the beaches wearing it — the same narrowing
+    // every list below the map already goes through.
+    const candidates = applyMapToneFilterFlat(getFilteredBeachResults(normalizedFilters, nextSortBy));
 
     if (
       nextSortBy !== 'protected' ||
       !selectedForecast ||
       (calmAllAroundSummary?.isEveryBeachSuitable ?? false)
     ) {
-      return getFilteredBeachResults(normalizedFilters, nextSortBy).length;
+      return candidates.length;
     }
 
-    const filteredBeachIds = new Set(
-      getFilteredBeachResults(normalizedFilters, nextSortBy).map(beach => beach.id)
-    );
+    const filteredBeachIds = new Set(candidates.map(beach => beach.id));
     const matchingSuitableBeaches = mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
     if (matchingSuitableBeaches.length === 0) return 0;
 
@@ -6551,6 +6650,9 @@ export const App: React.FC = () => {
           toneFilter={mapToneFilter}
           onToneFilterChange={setMapToneFilter}
           onBeachTonesChange={setMapBeachTones}
+          // Colours for EVERY beach in the region, not just the pins the chips left standing —
+          // that is what `toneScopedBeaches` (and therefore the chip counts) reads.
+          toneSourceBeaches={mapSuitableBeaches}
           uncountedBeachIds={directoryUncountedBeachIds}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
@@ -6637,6 +6739,7 @@ export const App: React.FC = () => {
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
               activeToneFilter={mapToneFilter}
+              toneFilterDropNote={toneDroppedFilterNote}
               suitableListCoversEverything={directoryListCoversEveryBeach}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
               directorySearchCardFocus={directorySearchCardFocus}
@@ -7571,6 +7674,7 @@ export const App: React.FC = () => {
                 void handleRequestUserLocation();
               }}
               availableFilters={availableMobileFilterKeys}
+              unavailableFilters={unavailableMobileFilterKeys}
               protectedSortLabel={protectedSortLabel}
               showProtectedSort={!(calmAllAroundSummary?.isEveryBeachSuitable ?? false)}
               hideDistanceSort={!isDesktopViewport}

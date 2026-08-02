@@ -50,7 +50,7 @@ import {
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
-import { athensNow, toAthensWallClock } from '../utils/athensTime';
+import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
@@ -150,6 +150,10 @@ interface BeachSearcherHomeProps {
   /** Colour picked on the map legend, if any. Retitles the list so the heading names the same
    *  thing the cards contain («Δύσκολες παραλίες στις 17:00»). */
   activeToneFilter?: CalmnessTone | null;
+  /** Plain line saying which filter was switched off because nothing in the picked colour group
+   *  has it. Shown under the list heading — the place the user is already looking after picking
+   *  a colour — so a choice is never taken away without a word. */
+  toneFilterDropNote?: string;
   /** True only when the list literally holds every beach we would ever list. «Όλες οι παραλίες
    *  κατάλληλες» may not be printed above a selection — a light-wind day with a running sea
    *  leaves plenty of beaches out, and the heading has to say so. */
@@ -549,6 +553,7 @@ type HomeCopy = {
   updatedMinutes: (minutes: number) => string;
   updatedHours: (hours: number) => string;
   forecastAt: (time: string) => string;
+  forecastAtYesterday: (time: string) => string;
   beachFeatures: {
     sandy: string;
     pebbles: string;
@@ -620,7 +625,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Updated just now',
     updatedMinutes: (minutes) => `Updated ${minutes} min ago`,
     updatedHours: (hours) => `Updated ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`,
-    forecastAt: (time) => `Forecast from ${time}`,
+    forecastAt: (time) => `Forecast from `,
+    forecastAtYesterday: (time) => `Forecast from ${time} yesterday`,
     beachFeatures: {
       sandy: 'Sandy beach',
       pebbles: 'Pebbles',
@@ -690,7 +696,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Ενημερώθηκε μόλις τώρα',
     updatedMinutes: (minutes) => `Ενημερώθηκε πριν ${minutes} λεπτά`,
     updatedHours: (hours) => `Ενημερώθηκε πριν ${hours} ${hours === 1 ? 'ώρα' : 'ώρες'}`,
-    forecastAt: (time) => `Βάσει πρόγνωσης ${time}`,
+    forecastAt: (time) => `Βάσει πρόγνωσης `,
+    forecastAtYesterday: (time) => `Βάσει πρόγνωσης ${time} χθες`,
     beachFeatures: {
       sandy: 'Αμμώδης ακτή',
       pebbles: 'Βότσαλα',
@@ -760,7 +767,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Mis à jour à l’instant',
     updatedMinutes: (minutes) => `Mis à jour il y a ${minutes} min`,
     updatedHours: (hours) => `Mis à jour il y a ${hours} h`,
-    forecastAt: (time) => `Prévision de ${time}`,
+    forecastAt: (time) => `Prévision de `,
+    forecastAtYesterday: (time) => `Prévision de ${time} hier`,
     beachFeatures: {
       sandy: 'Plage de sable',
       pebbles: 'Galets',
@@ -830,7 +838,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Gerade aktualisiert',
     updatedMinutes: (minutes) => `Vor ${minutes} Min. aktualisiert`,
     updatedHours: (hours) => `Vor ${hours} Std. aktualisiert`,
-    forecastAt: (time) => `Vorhersage von ${time}`,
+    forecastAt: (time) => `Vorhersage von `,
+    forecastAtYesterday: (time) => `Vorhersage von ${time} gestern`,
     beachFeatures: {
       sandy: 'Sandstrand',
       pebbles: 'Kiesel',
@@ -900,7 +909,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedJustNow: 'Aggiornato ora',
     updatedMinutes: (minutes) => `Aggiornato ${minutes} min fa`,
     updatedHours: (hours) => `Aggiornato ${hours} h fa`,
-    forecastAt: (time) => `Previsione delle ${time}`,
+    forecastAt: (time) => `Previsione delle `,
+    forecastAtYesterday: (time) => `Previsione delle ${time} di ieri`,
     beachFeatures: {
       sandy: 'Spiaggia sabbiosa',
       pebbles: 'Ciottoli',
@@ -1571,6 +1581,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableBeachTotalCount,
   suitableTimePrefix,
   activeToneFilter = null,
+  toneFilterDropNote,
   suitableListCoversEverything = false,
   onActiveSuitableBeachChange,
   directorySearchCardFocus,
@@ -2659,12 +2670,22 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     })} · ${selectedIsland.name[language]}`
     : undefined;
   const updatedLabel = formatUpdatedAgo(lastUpdated, language);
-  // Soft-stale window (60 min–3 h old): make the freshness explicit — an amber
+  // Soft-stale window (60 min–12 h old): make the freshness explicit — an amber
   // "βάσει πρόγνωσης HH:MM" chip instead of the quiet grey "updated X ago".
   const isSoftStaleForecast = forecastFreshness === 'soft';
-  const forecastStampLabel = isSoftStaleForecast && lastUpdated
-    ? copy.forecastAt(toAthensWallClock(lastUpdated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
-    : updatedLabel;
+  // A bare "Βάσει πρόγνωσης 22:00" was fine while the window was 3 h, because 22:00 could
+  // only mean today. At 12 h it can mean last night, and then the stamp reads as *more*
+  // recent than it is — the one thing this chip exists to prevent. So when the forecast
+  // falls on a different Athens calendar day, say so. It can only ever be yesterday: the
+  // hard cutoff throws anything older than 12 h away long before it reaches this line.
+  const forecastStampLabel = (() => {
+    if (!isSoftStaleForecast || !lastUpdated) return updatedLabel;
+    const stamp = toAthensWallClock(lastUpdated);
+    const time = stamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return wallClockDayKey(stamp) === wallClockDayKey(athensNow())
+      ? copy.forecastAt(time)
+      : copy.forecastAtYesterday(time);
+  })();
   const windDirection = selectedForecast ? degToCompass(selectedForecast.wind.deg) : undefined;
   const windBeaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : undefined;
   // In the desktop sidebar the panel is a narrow column, so the forecast's wide
@@ -3690,6 +3711,15 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             </h2>
             <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
           </div>
+
+          {selectedIsland && toneFilterDropNote && (
+            <p
+              role="status"
+              className="mx-3 mb-2 rounded-xl border border-amber-200/80 bg-amber-50/80 px-3 py-2 text-center text-[11px] font-semibold leading-snug text-amber-900 sm:mb-3 sm:text-xs lg:mx-5"
+            >
+              {toneFilterDropNote}
+            </p>
+          )}
 
           <div
             ref={suitableCarouselRef}
