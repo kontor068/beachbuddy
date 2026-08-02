@@ -75,7 +75,7 @@ export function recordRateLimited(prev, dayKey, increment = 1) {
   return { next, fire: true };
 }
 
-/** Telegram message body for a threshold/429 alarm. */
+/** Telegram message body for a threshold/429 alarm — Greek, severity-tagged, with a "what to do" line. */
 export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLDS) {
   if (level === 'rate_limited') {
     // Deliberately no longer says "the free quota is exhausted". That was our own
@@ -84,19 +84,20 @@ export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLD
     // calls with the daily bucket barely touched. The count now travels with the
     // message so the first question — how close were we? — is already answered.
     const share = Math.round((count / 10000) * 100);
-    return '🚨 <b>CalmBeach capacity: Open-Meteo refused a call (429)</b>\n' +
-      `Today's counted points so far: <b>${count}</b> (~${share}% of the ~10,000/day free cap).\n` +
+    return '🔴 ΚΡΙΣΙΜΟ — δράσε τώρα\n' +
+      '<b>Χωρητικότητα: το Open-Meteo αρνήθηκε κλήση</b>\n' +
+      `Σημερινές μετρημένες κλήσεις: <b>${count}</b> (~${share}% του ~10.000/ημέρα δωρεάν ορίου).\n` +
       (share < 50
-        ? 'Well under the DAILY cap, so this is almost certainly the per-minute (~600) or ' +
-          'per-hour (~5,000) limit — a burst, not exhaustion. Look at what spiked.'
-        : 'Close to the daily cap as well — this may be real exhaustion.') +
-      '\nForecasts may be failing for some users right now.';
+        ? 'Είμαστε μακριά από το ημερήσιο όριο, άρα πιθανότατα χτυπήσαμε το όριο ανά λεπτό ' +
+          '(~600) ή ανά ώρα (~5.000) — μια ξαφνική αιχμή, όχι εξάντληση. Δες τι προκάλεσε το μπαράζ.'
+        : 'Είμαστε επίσης κοντά στο ημερήσιο όριο — μπορεί να είναι πραγματική εξάντληση.') +
+      '\nΤι να κάνεις: κάποιοι επισκέπτες μπορεί αυτή τη στιγμή να μη βλέπουν πρόγνωση. Έλεγξε τα Netlify function logs για αιχμή κίνησης.';
   }
-  const emoji = level === 'red' ? '🔴' : '🟠';
+  const tag = level === 'red' ? '🟠 ΠΡΟΣΟΧΗ — παρακολούθησε' : '🔵 ΕΝΗΜΕΡΩΣΗ';
   const limit = level === 'red' ? thresholds.red : thresholds.amber;
-  return `${emoji} <b>CalmBeach capacity: ${level.toUpperCase()} — ${count} Open-Meteo calls today</b>\n` +
-    `Crossed the ${limit}/day watch line (free cap ~10,000/day). ` +
+  return `${tag}\n<b>Χωρητικότητα: ${count} κλήσεις στο Open-Meteo σήμερα</b>\n` +
+    `Περάσαμε τη γραμμή παρακολούθησης των ${limit}/ημέρα (δωρεάν όριο ~10.000/ημέρα).\n` +
     (level === 'red'
-      ? 'Approaching the ceiling — watch the per-minute rate on the morning peak.'
-      : 'Still comfortable; just a heads-up that traffic is climbing.');
+      ? 'Τι να κάνεις: όχι ακόμα πρόβλημα, αλλά ρίξε μια ματιά στην κίνηση στην πρωινή αιχμή — αν συνεχίσει έτσι, θα φτάσουμε το όριο σήμερα.'
+      : 'Τι να κάνεις: καμία ενέργεια τώρα — απλή ενημέρωση ότι η κίνηση ανεβαίνει.');
 }

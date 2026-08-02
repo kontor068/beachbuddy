@@ -129,17 +129,26 @@ const parseBody = (event) => {
   }
 };
 
+// tag/note give this Greek severity/action reading: 🟢 = καμία ενέργεια, 🟡 = άξιζε
+// έλεγχο (πιθανό σφάλμα πρόβλεψης), 💬 = ελεύθερο μήνυμα χωρίς σοβαρότητα.
 const VERDICTS = {
-  accurate: { label: 'Accurate', emoji: '👍' },
-  not_accurate: { label: 'Not accurate', emoji: '👎' },
-  had_waves: { label: 'Had waves', emoji: '🌊' },
-  too_windy: { label: 'Too windy', emoji: '💨' },
-  calmer: { label: 'Calmer than shown', emoji: '😎' },
+  accurate: { label: 'Σωστή πρόβλεψη', emoji: '👍', tag: '🟢 ΘΕΤΙΚΟ', note: 'Καμία ενέργεια.' },
+  not_accurate: { label: 'Λάθος πρόβλεψη', emoji: '👎', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Δες αν αξίζει διόρθωση στον αλγόριθμο για αυτή την παραλία/ημέρα.' },
+  had_waves: { label: 'Είχε κύμα', emoji: '🌊', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Πιθανό σφάλμα στην πρόβλεψη κύματος για αυτή την παραλία.' },
+  too_windy: { label: 'Είχε πολύ αέρα', emoji: '💨', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Πιθανό σφάλμα στην πρόβλεψη έντασης ανέμου για αυτή την παραλία.' },
+  calmer: { label: 'Ήταν πιο ήρεμα απ\' όσο έδειχνε', emoji: '😎', tag: '🟢 ΘΕΤΙΚΟ', note: 'Καμία ενέργεια — ίσως είμαστε πιο συντηρητικοί απ\' όσο χρειάζεται εδώ.' },
   // Free-text message from the landing story section (no beach attached).
-  story_message: { label: 'Landing message', emoji: '✉️' },
+  story_message: { label: 'Μήνυμα από την αρχική σελίδα', emoji: '✉️', tag: '💬 ΜΗΝΥΜΑ', note: 'Διάβασε το μήνυμα παρακάτω.' },
 };
 
-const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Unknown feedback', 80), emoji: '📩' };
+const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Άγνωστο σχόλιο', 80), emoji: '📩', tag: '📩 ΑΓΝΩΣΤΟ', note: 'Δες τι στέλνει αυτή η φόρμα.' };
+
+const finiteNumber = (value) => (Number.isFinite(Number(value)) && value !== null && value !== '' ? Number(value) : undefined);
+
+/** "0,30 μ." — the mail is read by a person in Greek, not parsed by a script. */
+const formatWaveM = (value) => (typeof value === 'number' ? `${value.toFixed(2).replace('.', ',')} μ.` : '');
+const formatPeriodS = (value) => (typeof value === 'number' ? `${value.toFixed(1).replace('.', ',')} δευτ.` : '');
+const formatHour = (value) => (typeof value === 'number' ? `${String(value).padStart(2, '0')}:00 (ώρα Ελλάδας)` : '');
 
 const normalizePayload = (body, event) => {
   const feedback = body && typeof body === 'object' ? body : {};
@@ -157,6 +166,8 @@ const normalizePayload = (body, event) => {
     feedback: clamp(feedback.feedback || feedback.verdict || 'unknown', 80),
     verdictLabel: verdict.label,
     verdictEmoji: verdict.emoji,
+    verdictTag: verdict.tag,
+    verdictNote: verdict.note,
     timestamp: clamp(feedback.timestamp || new Date().toISOString(), 80),
     beachName: clamp(context.beachName || feedback.beachName, 120),
     islandName: clamp(context.islandName || feedback.islandName, 120),
@@ -165,39 +176,54 @@ const normalizePayload = (body, event) => {
     pagePath: clamp(context.pagePath || feedback.pagePath || event.headers?.referer || '', 240),
     conditions: {
       exposureLevel: clamp(conditions.exposureLevel, 80),
-      beaufort: Number.isFinite(Number(conditions.beaufort)) ? Number(conditions.beaufort) : undefined,
+      beaufort: finiteNumber(conditions.beaufort),
       windDir: clamp(conditions.windDir, 40),
       date: clamp(conditions.date, 40),
+      // A "had waves" report is only evidence if the mail says what sea WE claimed. Height
+      // alone is not enough: 0.3 m at 3.8 s is breaking chop and 0.3 m at 8 s is glass, so
+      // the period travels with it. `hour` and `live` say whether the visitor was standing
+      // in it that morning or reading about next Tuesday — opposite strengths of evidence.
+      hour: finiteNumber(conditions.hour),
+      seaStateWaveM: finiteNumber(conditions.seaStateWaveM),
+      seaStatePeriodS: finiteNumber(conditions.seaStatePeriodS),
+      live: typeof conditions.live === 'boolean' ? conditions.live : undefined,
     },
   };
 };
 
 const fieldLines = (payload) => [
   // A landing message has no beach attached — an "Unknown" row would be noise.
-  ['Beach', payload.beachName || (payload.beachId ? `#${payload.beachId}` : '')],
-  ['Reply to', payload.replyTo],
-  ['Prompt', payload.prompt],
-  ['Beach ID', payload.beachId ?? ''],
-  ['Island/region', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
-  ['Date', payload.conditions.date],
-  ['Beaufort', payload.conditions.beaufort ?? ''],
-  ['Wind direction', payload.conditions.windDir],
-  ['Exposure', payload.conditions.exposureLevel],
-  ['Language', payload.language],
-  ['Source', payload.source],
-  ['Page', payload.pagePath],
-  ['Timestamp', payload.timestamp],
+  ['Παραλία', payload.beachName || (payload.beachId ? `#${payload.beachId}` : '')],
+  ['Απάντηση σε', payload.replyTo],
+  ['Ερώτηση', payload.prompt],
+  ['ID παραλίας', payload.beachId ?? ''],
+  ['Νησί/περιοχή', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
+  ['Ημερομηνία', payload.conditions.date],
+  ['Ώρα παρατήρησης', formatHour(payload.conditions.hour)],
+  ['Μποφόρ', payload.conditions.beaufort ?? ''],
+  ['Κατεύθυνση ανέμου', payload.conditions.windDir],
+  ['Έκθεση', payload.conditions.exposureLevel],
+  ['Κύμα που δείχναμε', formatWaveM(payload.conditions.seaStateWaveM)],
+  ['Περίοδος κύματος', formatPeriodS(payload.conditions.seaStatePeriodS)],
+  // Without this a report about next Tuesday reads exactly like one from the water's edge.
+  ['Ήταν επιτόπου τώρα', payload.conditions.live === undefined ? '' : (payload.conditions.live ? 'Ναι' : 'Όχι — έβλεπε άλλη μέρα/ώρα')],
+  ['Γλώσσα', payload.language],
+  ['Πηγή', payload.source],
+  ['Σελίδα', payload.pagePath],
+  ['Ώρα', payload.timestamp],
 ].filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '');
 
 const formatMessage = (payload) => {
-  const header = `${payload.verdictEmoji} <b>CalmBeach feedback: ${escapeTelegram(payload.verdictLabel)}</b>`;
+  const header = `${payload.verdictEmoji} <b>Σχόλιο επισκέπτη: ${escapeTelegram(payload.verdictLabel)}</b>`;
   const rows = fieldLines(payload)
     .map(([label, value]) => `<b>${escapeTelegram(label)}:</b> ${escapeTelegram(value)}`)
     .join('\n');
+  const lead = [payload.verdictTag, header];
+  if (payload.verdictNote) lead.push(`Τι σημαίνει: ${escapeTelegram(payload.verdictNote)}`);
   // The human's own words go above the metadata, as a block — inlining them into a
   // "<b>Message:</b> …" row buries the only part worth reading on a phone.
   const body = payload.message ? [escapeTelegram(payload.message), ''] : [];
-  return [header, '', ...body, rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
+  return [...lead, '', ...body, rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
 };
 
 // Durable, calibration-shaped copy of a beach-attached verdict. Skips free-text/no-beach

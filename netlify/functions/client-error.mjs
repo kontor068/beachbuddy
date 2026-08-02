@@ -188,22 +188,32 @@ const sendTelegram = async (text) => {
   });
 };
 
+// Greek, severity-tagged Telegram body with an explicit "what to do" line — a crash
+// is 🔴 (a visitor actually hit a broken page), an enforced CSP block is 🟠 (something
+// was refused, worth a look but the site itself did not necessarily break).
 const formatMessage = (report, context, repeats) => {
-  const header = report.kind === 'csp'
-    ? `🛡️ <b>CSP ${report.disposition === 'report' ? 'report-only' : 'violation'}</b>`
-    : '💥 <b>CalmBeach client error</b>';
+  const isCsp = report.kind === 'csp';
+  const tag = isCsp ? '🟠 ΠΡΟΣΟΧΗ — έλεγξε' : '🔴 ΚΡΙΣΙΜΟ — δράσε τώρα';
+  const header = isCsp
+    ? `🛡️ <b>Μπλοκαρίστηκε κάτι στη σελίδα (CSP ${report.disposition === 'report' ? 'δοκιμαστικά' : 'ενεργό'})</b>`
+    : '💥 <b>Έσπασε σελίδα σε επισκέπτη</b>';
+  const whatToDo = isCsp
+    ? 'Τι να κάνεις: έλεγξε αν αυτό το resource είναι απαραίτητο. Αν ναι, πρόσθεσέ το στη λίστα επιτρεπόμενων του CSP· αν όχι, αγνόησέ το.'
+    : `Τι να κάνεις: άνοιξε τη σελίδα${context.page ? ` (${escapeTelegram(context.page)})` : ''} σε κινητό. Αν είναι λευκή ή σπασμένη, κάνε rollback στο προηγούμενο deploy.`;
 
   const rows = [
-    `<b>${escapeTelegram(report.message) || 'Unknown error'}</b>`,
-    report.source ? `at <code>${escapeTelegram(report.source)}${report.line ? `:${report.line}` : ''}</code>` : '',
-    context.page ? `page: ${escapeTelegram(context.page)}` : '',
-    context.userAgent ? `ua: ${escapeTelegram(context.userAgent)}` : '',
+    `<b>${escapeTelegram(report.message) || 'Άγνωστο σφάλμα'}</b>`,
+    report.source ? `σε <code>${escapeTelegram(report.source)}${report.line ? `:${report.line}` : ''}</code>` : '',
+    context.page ? `σελίδα: ${escapeTelegram(context.page)}` : '',
+    context.userAgent ? `συσκευή: ${escapeTelegram(context.userAgent)}` : '',
     context.buildId ? `build: ${escapeTelegram(context.buildId)}` : '',
-    repeats > 1 ? `seen ${repeats}× today` : '',
+    repeats > 1 ? `εμφανίστηκε ${repeats}× σήμερα` : '',
+    '',
+    whatToDo,
     report.stack ? `\n<pre>${escapeTelegram(report.stack)}</pre>` : '',
   ].filter(Boolean);
 
-  return [header, '', ...rows].join('\n').slice(0, 3_800);
+  return [tag, header, '', ...rows].join('\n').slice(0, 3_800);
 };
 
 export const handler = async (event) => {
@@ -267,7 +277,7 @@ export const handler = async (event) => {
         await sendTelegram(formatMessage(report, context, repeats));
       } else if (budget === MAX_DISTINCT_PER_DAY) {
         await store.setJSON(budgetKey, { distinct: budget + 1 });
-        await sendTelegram(`🔇 <b>CalmBeach: ${MAX_DISTINCT_PER_DAY} distinct client errors today</b>\nFurther new errors are being counted but not sent. Something is badly wrong — check a real page.`);
+        await sendTelegram(`🟠 ΠΡΟΣΟΧΗ — έλεγξε\n🔇 <b>${MAX_DISTINCT_PER_DAY} διαφορετικά σφάλματα σήμερα</b>\nΤα επόμενα καινούρια σφάλματα καταγράφονται αλλά δεν στέλνονται πια εδώ.\nΤι να κάνεις: κάτι πάει σοβαρά στραβά — άνοιξε μια πραγματική σελίδα να δεις τι συμβαίνει.`);
       }
     }
   } catch (error) {
