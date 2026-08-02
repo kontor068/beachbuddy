@@ -180,7 +180,8 @@
 # originates from Netlify, so no visitor can be rate-limited by their neighbours.
 #
 # WHAT PROTECTS THE SHARED QUOTA: the function sets Netlify-CDN-Cache-Control
-# s-maxage=1800, so the edge answers repeats and upstream load scales with DISTINCT
+# (weather 3600 / marine 10800, see CDN_MAX_AGE_S there for the per-route reasoning),
+# so the edge answers repeats and upstream load scales with DISTINCT
 # BEACHES rather than with visitors — the whole point of capacity-model.md. The
 # capacity alarm in the function (amber 5k / red 7k / any 429 → Telegram) is now the
 # thing to watch; it was previously metering preview traffic only.

@@ -207,10 +207,14 @@ const PREFIX = '/api/forecast/';
  * How long the shared CDN may serve one upstream answer. Split by route on 2026-07-31,
  * because the two carry data with completely different shelf lives:
  *
- *   wind/weather — 30 min. Unchanged, and it must stay short: this is the safety-critical
- *                  feed. hooks/useWeather derives forecast freshness from the HOURLY
+ *   wind/weather — 60 min, raised from 30 on 2026-08-02 under live traffic pressure. It
+ *                  matches the upstream refresh cadence: Open-Meteo republishes the hourly
+ *                  forecast once an hour, so asking twice an hour fetched the SAME numbers
+ *                  half the time and was charged in full. This still has to stay bounded,
+ *                  because hooks/useWeather derives forecast freshness from the HOURLY
  *                  forecast's fetch time (useWeather.ts, setForecastFetchedAt) and blanks
- *                  colours/verdicts past 3 h, so a long cache here would age that clock.
+ *                  colours/verdicts past 3 h (SOFT_STALE_LIMIT_MS) — see below for why the
+ *                  worst-case age did NOT move.
  *
  *   marine       — 3 h. Both pinned wave models publish a new run every 12 HOURS
  *                  (Open-Meteo's own model table, verified 2026-07-31 for ewam and
@@ -227,10 +231,23 @@ const PREFIX = '/api/forecast/';
  *   3 models @ 30 min  →  48 refreshes x 2.1  = 101
  *   3 models @ 3 h     →   8 refreshes x 2.1  =  17     ← 4x cheaper than before the change
  *
- * stale-while-revalidate stays at 1 h on both, so a user never waits on a refresh.
+ * stale-while-revalidate DROPPED from 1 h to 30 min on 2026-08-02, and that halving is what
+ * makes the weather change free of any user-visible cost. The two numbers add up: worst-case
+ * age of what a visitor sees is s-maxage + swr.
+ *
+ *   weather before  1800 + 3600 = 90 min worst case,  48 upstream refreshes/point/day
+ *   weather after   3600 + 1800 = 90 min worst case,  24 upstream refreshes/point/day
+ *
+ * Same ceiling, half the upstream load. Nobody sees older data than they did yesterday, and
+ * the 90-min worst case still sits inside the 3 h hard cutoff with an hour to spare. A user
+ * still never waits on a refresh — 30 min of stale-serving is far longer than a refresh takes;
+ * the window only has to outlast the fetch, not the cache period.
+ *
+ * Marine is untouched at 3 h and unaffected by the shorter swr (3 h 30 worst case, and marine
+ * freshness drives nothing, per the paragraph above).
  */
-const CDN_MAX_AGE_S = { weather: 1800, marine: 10800 };
-const CDN_STALE_WHILE_REVALIDATE_S = 3600;
+const CDN_MAX_AGE_S = { weather: 3600, marine: 10800 };
+const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
 const cdnCacheControl = (providerKey) => {
   const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine : CDN_MAX_AGE_S.weather;
