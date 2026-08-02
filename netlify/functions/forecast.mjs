@@ -19,6 +19,7 @@
 // params with sanitised values are ever forwarded. Anything else → 400.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { createHash } from 'node:crypto';
 import { connectLambda, getStore } from '@netlify/blobs';
 import {
   recordCalls, recordRateLimited, formatCapacityAlert, utcDayKey, DEFAULT_THRESHOLDS,
@@ -145,6 +146,69 @@ const meterUpstream = async ({ rateLimited, points = 1 }) => {
   }
 };
 
+// ── Last-good forecast, kept on the SERVER ───────────────────────────────────
+//
+// WHY THIS EXISTS: the client already survives a provider outage — weatherService
+// keeps every answer in the device's own cache and re-serves it, tagged with its real
+// age, if a refresh fails. But that cache is PER DEVICE, so it protects yesterday's
+// visitor and leaves the new one with an empty page: exactly the tourist who just
+// arrived from Google, i.e. the one who matters. Nothing on the server remembered
+// anything, so an exhausted daily quota meant "conditions unavailable" for everybody
+// who had not been here before.
+//
+// So: every successful upstream answer is kept here, and when the provider refuses
+// us (429) or breaks, we serve the last good one instead of an error. The point is
+// stronger than "something rather than nothing" — an Open-Meteo answer is an HOURLY
+// FORECAST, not a measurement. The response fetched at 09:00 already contains the
+// model's prediction for 17:00 and for tomorrow. Re-serving it is not showing this
+// morning's wind; it is showing what this morning's model run said about right now,
+// which is still good guidance.
+//
+// TWO RULES MAKE IT SAFE, and both are load-bearing:
+//
+//   1. It travels with its real age (X-Forecast-Age-Seconds). The client sets
+//      fetchedAt from that header, so the existing freshness gate keeps working:
+//      the visitor sees the "βάσει πρόγνωσης HH:MM" stamp and the hard cutoff still
+//      applies. Without this the client would time the age from when IT received the
+//      bytes and present 8-hour-old data as live — worse than the blank page.
+//   2. It is barely CDN-cached (5 min, not the usual 30/180). A rescued response
+//      must not be pinned at the edge for an hour after the provider recovers. Five
+//      minutes is still enough to stop a stampede from re-hitting a provider that is
+//      already refusing us.
+//
+// The 12 h ceiling is a product decision (Miltos, 2026-08-02), not a technical one:
+// beyond half a day a forecast run is too far from what the sea is doing to be worth
+// showing at all, even labelled.
+const FALLBACK_STORE = 'forecast-fallback';
+const FALLBACK_MAX_AGE_MS = 12 * 60 * 60 * 1000;
+const FALLBACK_CDN_MAX_AGE_S = 300;
+
+/** Stable, filesystem-safe blob key for one exact upstream URL. */
+const fallbackKeyFor = (target) => createHash('sha256').update(target).digest('hex').slice(0, 32);
+
+/** Remember one good answer. Never throws — a storage failure must not cost a forecast. */
+const rememberLastGood = async (key, body) => {
+  try {
+    await getStore(FALLBACK_STORE).setJSON(key, { at: Date.now(), body });
+  } catch { /* best-effort */ }
+};
+
+/**
+ * The freshest usable answer we still hold for this URL, or null.
+ * Returns { body, ageSeconds }. Never throws.
+ */
+const readLastGood = async (key) => {
+  try {
+    const saved = await getStore(FALLBACK_STORE).get(key, { type: 'json' });
+    if (!saved?.body || typeof saved.at !== 'number') return null;
+    const ageMs = Date.now() - saved.at;
+    if (ageMs < 0 || ageMs > FALLBACK_MAX_AGE_MS) return null;
+    return { body: saved.body, ageSeconds: Math.round(ageMs / 1000) };
+  } catch {
+    return null;
+  }
+};
+
 // ── Per-IP burst net ─────────────────────────────────────────────────────────
 //
 // LAST line of defence, not the first. The first is that the app now batches its
@@ -213,7 +277,7 @@ const PREFIX = '/api/forecast/';
  *                  half the time and was charged in full. This still has to stay bounded,
  *                  because hooks/useWeather derives forecast freshness from the HOURLY
  *                  forecast's fetch time (useWeather.ts, setForecastFetchedAt) and blanks
- *                  colours/verdicts past 3 h (SOFT_STALE_LIMIT_MS) — see below for why the
+ *                  colours/verdicts past 12 h (SOFT_STALE_LIMIT_MS) — see below for why the
  *                  worst-case age did NOT move.
  *
  *   marine       — 3 h. Both pinned wave models publish a new run every 12 HOURS
@@ -239,7 +303,7 @@ const PREFIX = '/api/forecast/';
  *   weather after   3600 + 1800 = 90 min worst case,  24 upstream refreshes/point/day
  *
  * Same ceiling, half the upstream load. Nobody sees older data than they did yesterday, and
- * the 90-min worst case still sits inside the 3 h hard cutoff with an hour to spare. A user
+ * the 90-min worst case sits far inside the 12 h hard cutoff. A user
  * still never waits on a refresh — 30 min of stale-serving is far longer than a refresh takes;
  * the window only has to outlast the fetch, not the cache period.
  *
@@ -379,6 +443,33 @@ export const handler = async (event) => {
 
   const target = `${upstream.host}${upstreamPath}?${query.toString()}`;
 
+  const fallbackKey = fallbackKeyFor(target);
+
+  /**
+   * Last resort before an error page: re-serve the freshest answer we still hold for
+   * this exact URL, honestly aged. See the FALLBACK_STORE block above for why the age
+   * header and the short CDN TTL are both mandatory.
+   */
+  const rescueOr = async (errorResponse) => {
+    const rescued = await readLastGood(fallbackKey);
+    if (!rescued) return errorResponse;
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        // Deliberately NOT the normal 30/180 min: the provider may recover in a minute
+        // and we must not have pinned stale data at the edge for an hour.
+        'Netlify-CDN-Cache-Control': `public, s-maxage=${FALLBACK_CDN_MAX_AGE_S}`,
+        // The whole reason this is safe. weatherService reads it and back-dates
+        // fetchedAt, so the freshness stamp and the hard cutoff still apply.
+        'X-Forecast-Age-Seconds': String(rescued.ageSeconds),
+        ...cors,
+      },
+      body: rescued.body,
+    };
+  };
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
   try {
@@ -390,14 +481,15 @@ export const handler = async (event) => {
     if (!upstreamResponse.ok) {
       // 429 = upstream refused us → the definitive capacity alarm.
       if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true, points: pointCount });
-      // Do NOT cache upstream failures — let clients retry / fall back to their cache.
-      return json(502, { error: `Upstream ${upstreamResponse.status}` }, cors);
+      // Do NOT cache upstream failures — but do try to answer from what we last knew.
+      return await rescueOr(json(502, { error: `Upstream ${upstreamResponse.status}` }, cors));
     }
 
     // A real upstream success (this ran only because the CDN cache missed) → meter it.
     await meterUpstream({ rateLimited: false, points: pointCount });
 
     const payload = await upstreamResponse.text(); // pass through verbatim (already JSON)
+    await rememberLastGood(fallbackKey, payload);
     return {
       statusCode: 200,
       headers: {
@@ -417,7 +509,7 @@ export const handler = async (event) => {
       body: payload,
     };
   } catch (error) {
-    return json(504, { error: 'Upstream timeout or network error.' }, cors);
+    return await rescueOr(json(504, { error: 'Upstream timeout or network error.' }, cors));
   } finally {
     clearTimeout(timeout);
   }

@@ -20,8 +20,21 @@ import { marinePointKey } from '../utils/marineSamplePoints';
 // This module owns the fetch/cache half; the UI owns the display half. The one
 // hard rule here: we NEVER return data older than SOFT_STALE_LIMIT_MS, and every
 // value carries its real fetchedAt so the UI can tell how old it is.
-export const FRESH_TTL_MS = 60 * 60 * 1000;          // 60 min — matches Open-Meteo refresh cadence
-export const SOFT_STALE_LIMIT_MS = 3 * 60 * 60 * 1000; // 3 h — hard cutoff; older is never served
+//
+// The cutoff was 3 h until 2026-08-02, when it was raised to 12 h. The reasoning that
+// moved it: 3 h is the right number for a MEASUREMENT and too strict for a FORECAST.
+// What we hold is Open-Meteo's hourly prediction for the whole day ahead, so a payload
+// fetched at 09:00 already contains what the model expects at 17:00. Refusing to show
+// it at 12:01 does not protect anyone — it just blanks the page for a tourist standing
+// outside their hotel, which is the outcome the fail-closed rule was meant to avoid
+// being *worse* than. Twelve hours is where a run stops being worth showing at all,
+// even labelled (product decision, Miltos, 2026-08-02).
+//
+// This is only safe because the soft window is genuinely visible: everything past
+// FRESH_TTL_MS renders with the "βάσει πρόγνωσης HH:MM" stamp, so a longer window
+// means more honestly-labelled data, never more silently-old data.
+export const FRESH_TTL_MS = 60 * 60 * 1000;           // 60 min — matches Open-Meteo refresh cadence
+export const SOFT_STALE_LIMIT_MS = 12 * 60 * 60 * 1000; // 12 h — hard cutoff; older is never served
 const WEATHER_REQUEST_TIMEOUT_MS = 8000;
 
 /** A forecast payload plus the real epoch-ms time its data was fetched from Open-Meteo. */
@@ -132,6 +145,29 @@ const describeError = (error: unknown): string => {
   return String(error);
 };
 
+/**
+ * How old the payload we just received already was at the origin, keyed by request URL.
+ *
+ * Normally zero and absent: a forecast fetched now was produced now. It is non-zero only
+ * when our edge proxy could not reach Open-Meteo and answered from its own last-good
+ * store (netlify/functions/forecast.mjs, FALLBACK_STORE) — then it sends
+ * X-Forecast-Age-Seconds saying how stale that rescue is.
+ *
+ * This exists because `fetchedAt` is otherwise stamped with Date.now() at the moment the
+ * bytes land, which is the right answer for a live fetch and the WRONG one for a rescue:
+ * an 8-hour-old forecast would be presented as live, with no stamp and no cutoff. That
+ * would be worse than the blank page the rescue replaces. Read once, then dropped, so a
+ * later fetch of the same URL can never inherit an earlier response's age.
+ */
+const originAgeMsByUrl = new Map<string, number>();
+
+/** Consume the recorded origin age for a URL (0 if the response was live). */
+const takeOriginAgeMs = (url: string): number => {
+  const age = originAgeMsByUrl.get(url) ?? 0;
+  originAgeMsByUrl.delete(url);
+  return age;
+};
+
 const fetchJson = async <T>(url: string, source: string): Promise<T> => {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), WEATHER_REQUEST_TIMEOUT_MS);
@@ -144,6 +180,13 @@ const fetchJson = async <T>(url: string, source: string): Promise<T> => {
 
     if (!response.ok) {
       throw new Error(`${source} fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    // Clear first, so a live response after a rescued one never keeps the old age.
+    originAgeMsByUrl.delete(url);
+    const originAge = Number(response.headers.get('x-forecast-age-seconds'));
+    if (Number.isFinite(originAge) && originAge > 0) {
+      originAgeMsByUrl.set(url, originAge * 1000);
     }
 
     // Free, trustworthy clock reference: `Date` is a CORS-safelisted response header, so
@@ -185,7 +228,10 @@ const withCache = async <T>(
   const request = (async (): Promise<FetchResult<T>> => {
     try {
       const data = await runFetch();
-      const fetchedAt = Date.now();
+      // Not simply Date.now(): if the proxy rescued this from its last-good store, the
+      // forecast is older than the delivery. Back-dating here is what keeps the stamp
+      // and the hard cutoff honest all the way down the chain.
+      const fetchedAt = Date.now() - takeOriginAgeMs(meta.url);
       saveToCache(cacheKey, data, fetchedAt);
       // Count only real origin calls (cache misses) so the counter tracks how close
       // we are to the Open-Meteo rate limit.
@@ -490,7 +536,9 @@ const fetchPointsBatched = async <T>(
         return;
       }
 
-      const fetchedAt = Date.now();
+      // Same back-dating as the single-point path: a rescued batch is as old as the
+      // proxy says it is, not as young as its delivery.
+      const fetchedAt = Date.now() - takeOriginAgeMs(url);
 
       batch.forEach((point, index) => {
         const entry = entries[index];

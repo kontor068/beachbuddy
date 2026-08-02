@@ -22,8 +22,8 @@ import type { MarineForecastItem } from '../services/weatherService';
 /**
  * Freshness of the forecast currently held in state, derived from its real fetch time.
  *   • fresh   — age ≤ 60 min: render normally.
- *   • soft    — 60 min…3 h: render WITH a visible "βάσει πρόγνωσης HH:MM" stamp.
- *   • stale   — > 3 h: HARD CUTOFF; callers must blank wind colours / verdicts / scores.
+ *   • soft    — 60 min…12 h: render WITH a visible "βάσει πρόγνωσης HH:MM" stamp.
+ *   • stale   — > 12 h: HARD CUTOFF; callers must blank wind colours / verdicts / scores.
  *   • unknown — no forecast loaded yet (loading / absent). Not a safety state.
  */
 export type ForecastFreshness = 'fresh' | 'soft' | 'stale' | 'unknown';
@@ -484,7 +484,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       }
       // On a same-region refresh failure we keep the previous forecast in state, but we do
       // NOT touch forecastFetchedAt — its real (old) age lets the freshness gate blank it
-      // once it crosses the 3 h cutoff.
+      // once it crosses the 12 h cutoff.
     }
 
     activeIslandIdRef.current = selectedIsland.id;
@@ -579,7 +579,7 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     () => freshnessFromAge(forecastFetchedAt, freshnessNow),
     [forecastFetchedAt, freshnessNow],
   );
-  // Hard cutoff: forecast older than 3 h must not colour the map / score beaches / claim "calm".
+  // Hard cutoff: forecast older than 12 h must not colour the map / score beaches / claim "calm".
   const isStaleBlocked = forecastFreshness === 'stale';
 
   useEffect(() => {

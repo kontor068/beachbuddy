@@ -634,7 +634,7 @@ interface BeachDetailPageProps {
   mapWind?: { deg: number; speedKmh: number };
   /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
   selectedHour?: number;
-  /** SAFETY hard cutoff: the region forecast is >3 h old and could not be refreshed. When
+  /** SAFETY hard cutoff: the region forecast is past the 12 h cutoff and could not be refreshed. When
    *  true, every wind/sea/score/verdict block is blanked and a banner is shown; only the
    *  static content (name, photo, access, map, info) stays. Never show stale conditions. */
   conditionsUnavailable?: boolean;
