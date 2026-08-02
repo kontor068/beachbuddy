@@ -62,7 +62,7 @@ export const ConstraintFitSection: React.FC<ConstraintFitSectionProps> = ({ lang
 
   return (
     <section className="space-y-2" data-nosnippet="true">
-      <h3 className="px-1 text-[11px] font-bold uppercase tracking-wide text-slate-500">{pick(TITLE, language)}</h3>
+      <h3 className="px-1 text-[11px] font-bold tracking-wide text-slate-500">{pick(TITLE, language)}</h3>
       <div className="grid gap-2 sm:grid-cols-3">
         {fits.map(fit => {
           const Icon = ICON[fit.key];
