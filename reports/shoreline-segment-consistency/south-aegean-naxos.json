@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-08T10:12:42.588Z",
+  "generatedAt": "2026-08-01T20:52:51.363Z",
   "regionId": "south-aegean-naxos",
   "policy": {
     "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
@@ -9,36 +9,10 @@
   "summary": {
     "scenarioCount": 5,
     "segmentCount": 7,
-    "allowedExceptions": 1,
+    "allowedExceptions": 0,
     "unresolvedContradictions": 0
   },
-  "allowedExceptions": [
-    {
-      "scenarioId": "Naxos_E_4BFT",
-      "segmentId": "naxos-orkos-mikri-vigla-wind-front",
-      "consistentLevels": [
-        "protected",
-        "exposed"
-      ],
-      "rows": [
-        {
-          "beachId": 2010,
-          "name": "Όρκος",
-          "level": "protected",
-          "windProfileConfidence": "low",
-          "knownWindSportSpot": false
-        },
-        {
-          "beachId": 2006,
-          "name": "Μικρή Βίγλα",
-          "level": "exposed",
-          "windProfileConfidence": "low",
-          "knownWindSportSpot": true
-        }
-      ],
-      "allowedException": true
-    }
-  ],
+  "allowedExceptions": [],
   "unresolved": [],
   "results": [
     {
@@ -49,30 +23,30 @@
           "segmentId": "naxos-agia-anna-prokopios-plaka-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1985,
               "name": "Άγιος Προκόπιος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2012,
               "name": "Πλάκα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -81,21 +55,21 @@
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1985,
               "name": "Άγιος Προκόπιος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2012,
               "name": "Πλάκα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -149,58 +123,58 @@
           "segmentId": "naxos-alyko-kastraki-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1997,
               "name": "Καστράκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1987,
               "name": "Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1998,
               "name": "Κέδρος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2019,
               "name": "Hawaii",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2013,
               "name": "Πυργάκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -209,49 +183,49 @@
             {
               "beachId": 1997,
               "name": "Καστράκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1987,
               "name": "Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1998,
               "name": "Κέδρος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2019,
               "name": "Hawaii",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2013,
               "name": "Πυργάκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -262,23 +236,23 @@
           "segmentId": "naxos-klido-cove",
           "reason": "same_cove_or_micro_bay",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1999,
               "name": "Κλειδός",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2000,
               "name": "Παραλία Κλειδώ",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -287,14 +261,14 @@
             {
               "beachId": 1999,
               "name": "Κλειδός",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2000,
               "name": "Παραλία Κλειδώ",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -468,30 +442,30 @@
           "segmentId": "naxos-agia-anna-prokopios-plaka-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1985,
               "name": "Άγιος Προκόπιος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2012,
               "name": "Πλάκα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -500,21 +474,21 @@
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1985,
               "name": "Άγιος Προκόπιος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2012,
               "name": "Πλάκα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -568,58 +542,58 @@
           "segmentId": "naxos-alyko-kastraki-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1997,
               "name": "Καστράκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1987,
               "name": "Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1998,
               "name": "Κέδρος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2019,
               "name": "Hawaii",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2013,
               "name": "Πυργάκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -628,49 +602,49 @@
             {
               "beachId": 1997,
               "name": "Καστράκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1987,
               "name": "Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1998,
               "name": "Κέδρος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2019,
               "name": "Hawaii",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2013,
               "name": "Πυργάκι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -681,23 +655,23 @@
           "segmentId": "naxos-klido-cove",
           "reason": "same_cove_or_micro_bay",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1999,
               "name": "Κλειδός",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2000,
               "name": "Παραλία Κλειδώ",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -706,14 +680,14 @@
             {
               "beachId": 1999,
               "name": "Κλειδός",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2000,
               "name": "Παραλία Κλειδώ",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -1186,23 +1160,23 @@
           "segmentId": "naxos-southeast-coves",
           "reason": "same_cove_or_micro_bay",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 2014,
               "name": "Ρίνα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2015,
               "name": "Παραλία Σπεδό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -1211,14 +1185,14 @@
             {
               "beachId": 2014,
               "name": "Ρίνα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2015,
               "name": "Παραλία Σπεδό",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -1306,6 +1280,7 @@
           "segmentId": "naxos-agia-anna-prokopios-plaka-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
+            "partial",
             "exposed"
           ],
           "consistentLevels": [
@@ -1338,7 +1313,7 @@
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "exposed",
+              "level": "partial",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
@@ -1363,23 +1338,23 @@
           "segmentId": "naxos-orkos-mikri-vigla-wind-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "exposed"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 2010,
               "name": "Όρκος",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2006,
               "name": "Μικρή Βίγλα",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": true
             }
@@ -1388,14 +1363,14 @@
             {
               "beachId": 2010,
               "name": "Όρκος",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2006,
               "name": "Μικρή Βίγλα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": true
             }
@@ -1407,58 +1382,59 @@
           "reason": "same_continuous_beachfront",
           "rawLevels": [
             "partial",
+            "protected",
             "exposed"
           ],
           "consistentLevels": [
-            "exposed"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1997,
               "name": "Καστράκι",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1987,
               "name": "Αλυκό",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1998,
               "name": "Κέδρος",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2019,
               "name": "Hawaii",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2013,
               "name": "Πυργάκι",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -1474,7 +1450,7 @@
             {
               "beachId": 1993,
               "name": "Γλυφάδα",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
@@ -1563,23 +1539,23 @@
           "segmentId": "naxos-lionas-east-bay",
           "reason": "same_village_bay",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 2002,
               "name": "Παραλία Λιμνάρι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2003,
               "name": "Λίωνας",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -1588,14 +1564,14 @@
             {
               "beachId": 2002,
               "name": "Παραλία Λιμνάρι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2003,
               "name": "Λίωνας",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -1786,8 +1762,7 @@
             "protected"
           ],
           "consistentLevels": [
-            "protected",
-            "exposed"
+            "protected"
           ],
           "rows": [
             {
@@ -1800,7 +1775,7 @@
             {
               "beachId": 2006,
               "name": "Μικρή Βίγλα",
-              "level": "exposed",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": true
             }
@@ -1827,7 +1802,8 @@
           "segmentId": "naxos-alyko-kastraki-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "protected"
+            "protected",
+            "partial"
           ],
           "consistentLevels": [
             "protected"
@@ -1915,7 +1891,7 @@
             {
               "beachId": 2008,
               "name": "Μικρό Αλυκό",
-              "level": "protected",
+              "level": "partial",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
@@ -2069,37 +2045,37 @@
           "segmentId": "naxos-northwest-rocky-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 1988,
               "name": "Αμμίτης",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1992,
               "name": "Γλατζά",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2005,
               "name": "Μικρά",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2016,
               "name": "Χίλια Βρύση",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
@@ -2108,28 +2084,28 @@
             {
               "beachId": 1988,
               "name": "Αμμίτης",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 1992,
               "name": "Γλατζά",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2005,
               "name": "Μικρά",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2016,
               "name": "Χίλια Βρύση",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             }
