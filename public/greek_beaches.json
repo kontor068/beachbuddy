@@ -6460,51 +6460,6 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
-        },
-        {
-          "id": 3119,
-          "name": "Παραλία Μαγούλα",
-          "lat": 38.39039,
-          "lon": 23.80234,
-          "metadata": {
-            "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
-            },
-            "terrain": {
-              "types": [
-                "sand",
-                "pebbles"
-              ],
-              "label": "άμμος και βότσαλο"
-            },
-            "organized": true,
-            "shade": false,
-            "amenities": [
-              "ντους"
-            ],
-            "confidence": "low",
-            "language": "el",
-            "batch": "shower_beach_discovery_2026_07",
-            "needsVerification": true,
-            "activities": {
-              "surfing": false
-            },
-            "sourceUrls": [
-              "https://www.openstreetmap.org/way/369237211",
-              "https://www.openstreetmap.org/?mlat=38.39039136363636&mlon=23.80233672727273#map=17/38.39039136363636/23.80233672727273"
-            ],
-            "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~229μ ακτή, κοντά σε Μαγούλα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/369237211 (κέντρο polygon). Slot κοντά στο #26 (Παραλία Ακρωτηρίου, 6805m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
-            ],
-            "googleMapsNavigation": {
-              "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-07-23",
-              "method": "guide-discovery-v1"
-            }
-          }
         }
       ]
     },
@@ -22834,6 +22789,52 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Απομονωμένη παραλία στον πορθμό, ~3,5 χλμ Ν του Ευαγγελισμού· βότσαλο και άμμος με θαλασσοσπηλιές («σπηλίτσες»). Ονομάζεται Σπηλίτσες για να μη μπερδεύεται με τα άλλα 3 «Λιμνιώνας» της Εύβοιας. Συντεταγμένες: topo.directory Area 99515 = OSM way 548307068 (συμφωνούν ~20m). Slot κοντά στο #250 (Λινάρι, 2226m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            }
+          }
+        },
+        {
+          "id": 3119,
+          "name": "Παραλία Μαγούλα",
+          "lat": 38.39039,
+          "lon": 23.80234,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος και βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ντους"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "shower_beach_discovery_2026_07",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/369237211",
+              "https://www.openstreetmap.org/?mlat=38.39039136363636&mlon=23.80233672727273#map=17/38.39039136363636/23.80233672727273"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~229μ ακτή, κοντά σε Μαγούλα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/369237211 (κέντρο polygon). Slot κοντά στο #26 (Παραλία Ακρωτηρίου, 6805m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Διόρθωση περιοχής (02/08/2026): ήταν καταχωρημένη στην Ανατολική Αττική. Οι συντεταγμένες (38.39039, 23.80234) είναι ~1 χλμ ΝΑ της Ερέτριας, δηλαδή στην ΕΥΒΟΙΑ· η απέναντι στεριά (Σκάλα Ωρωπού) απέχει 8-9 χλμ νότια, πέρα από τον Ευβοϊκό. Η αρχική τοποθέτηση προήλθε από τον κανόνα «slot δίπλα στην πλησιέστερη υπάρχουσα παραλία», που δεν κοιτάζει το στενό."
             ],
             "googleMapsNavigation": {
               "status": "verified",

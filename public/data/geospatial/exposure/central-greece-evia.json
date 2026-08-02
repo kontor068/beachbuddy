@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 129,
-    "generatedProfiles": 129,
+    "beachCount": 130,
+    "generatedProfiles": 130,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 61,
+        "protected": 62,
         "partial": 26,
         "exposed": 42
       },
       "NE": {
         "protected": 50,
-        "partial": 28,
+        "partial": 29,
         "exposed": 51
       },
       "E": {
         "protected": 49,
-        "partial": 33,
+        "partial": 34,
         "exposed": 47
       },
       "SE": {
         "protected": 60,
         "partial": 35,
-        "exposed": 34
+        "exposed": 35
       },
       "S": {
         "protected": 75,
-        "partial": 26,
+        "partial": 27,
         "exposed": 28
       },
       "SW": {
-        "protected": 86,
+        "protected": 87,
         "partial": 19,
         "exposed": 24
       },
       "W": {
-        "protected": 86,
+        "protected": 87,
         "partial": 26,
         "exposed": 17
       },
       "NW": {
-        "protected": 72,
+        "protected": 73,
         "partial": 34,
         "exposed": 23
       }
@@ -9871,6 +9871,83 @@
         "lon": 24.6953,
         "bearingDeg": 95.5,
         "distanceKm": 10
+      }
+    },
+    "3119": {
+      "beachId": 3119,
+      "name": {
+        "en": "Paralia Magoula",
+        "gr": "Παραλία Μαγούλα"
+      },
+      "coordinates": {
+        "lat": 38.39039,
+        "lon": 23.80234
+      },
+      "facingDeg": 121.2,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.518,
+          "intensity": 14.5
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 1.64,
+          "blockedRayRatio": 1,
+          "onshore": 0.239,
+          "intensity": 37.2
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.32,
+          "blockedRayRatio": 1,
+          "onshore": 0.855,
+          "intensity": 55.7
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 8.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.971,
+          "intensity": 64.6
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 6.72,
+          "blockedRayRatio": 1,
+          "onshore": 0.518,
+          "intensity": 45.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 1.44,
+          "blockedRayRatio": 1,
+          "onshore": -0.239,
+          "intensity": 22.8
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.855,
+          "intensity": 4.3
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.971,
+          "intensity": 0.9
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.37,
+        "lon": 23.8453,
+        "bearingDeg": 121.2,
+        "distanceKm": 4.38
       }
     },
     "3121": {
