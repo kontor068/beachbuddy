@@ -42,7 +42,9 @@ const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
 // Cache version is bumped when the Overpass query changes (so stale results aren't reused).
 // gr2: queries are constrained to Greek territory via area["ISO3166-1"="GR"], which excludes
 // Turkish/Albanian beaches that border-island bboxes (Kastellorizo, Symi, Corfu…) otherwise pull in.
-const CACHE_VERSION = 'gr2';
+// gr3: adds NAMED natural=shingle. Bumping the version is what stops a cached gr2 payload —
+// which physically cannot contain a shingle beach — from being reused and hiding the new rows.
+const CACHE_VERSION = 'gr3';
 const cacheDir = path.join(rootDir, '.tmp', 'beach-audit-cache', `osm-national-${CACHE_VERSION}`);
 const seedOutPath = path.join(rootDir, 'scripts', 'data', 'osm-beaches-national.json');
 const summaryOutPath = path.join(rootDir, 'reports', 'coverage', 'harvest-summary.json');
@@ -156,6 +158,15 @@ area["ISO3166-1"="GR"][admin_level=2]->.gr;
   node["natural"="beach"](area.gr)(${south},${west},${north},${east});
   way["natural"="beach"](area.gr)(${south},${west},${north},${east});
   relation["natural"="beach"](area.gr)(${south},${west},${north},${east});
+  // natural=shingle, NAMED only (02/08/2026). A pebble shore is tagged shingle, not beach, in
+  // OSM, so a query for natural=beach alone cannot see one — which is how a coast could look
+  // covered while named swimming beaches were missing from the baseline entirely (Σαμοθράκη
+  // went 3 -> 11 when this was checked by hand). The name filter is what keeps it useful:
+  // unnamed shingle is every gravel bank on every river mouth in the country, and the coverage
+  // classifier has no way to tell those from a beach anyone swims at.
+  node["natural"="shingle"]["name"](area.gr)(${south},${west},${north},${east});
+  way["natural"="shingle"]["name"](area.gr)(${south},${west},${north},${east});
+  relation["natural"="shingle"]["name"](area.gr)(${south},${west},${north},${east});
   node["leisure"="beach_resort"](area.gr)(${south},${west},${north},${east});
   way["leisure"="beach_resort"](area.gr)(${south},${west},${north},${east});
   relation["leisure"="beach_resort"](area.gr)(${south},${west},${north},${east});
@@ -255,7 +266,7 @@ const main = async () => {
   await writeFile(seedOutPath, `${JSON.stringify({
     generatedAt: new Date().toISOString(),
     scope: scopeLabel,
-    source: 'OpenStreetMap Overpass (natural=beach | leisure/tourism=beach_resort)',
+    source: 'OpenStreetMap Overpass (natural=beach | named natural=shingle | leisure/tourism=beach_resort)',
     uniqueOsmElements: elementById.size,
     namedCandidates: rawCandidates.length,
     dedupedCandidates: candidates.length,
