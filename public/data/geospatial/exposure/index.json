@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-27T17:47:53.777Z",
+  "generatedAt": "2026-08-02T15:02:09.420Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2850,
-    "generatedProfiles": 2850,
+    "beachCount": 2854,
+    "generatedProfiles": 2854,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -576,47 +576,47 @@
       },
       "attica-west-attica-mainland": {
         "regionName": "West Attica",
-        "beachCount": 6,
-        "generatedProfiles": 6,
+        "beachCount": 7,
+        "generatedProfiles": 7,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 4,
+            "protected": 5,
             "partial": 2,
             "exposed": 0
           },
           "NE": {
-            "protected": 6,
+            "protected": 7,
             "partial": 0,
             "exposed": 0
           },
           "E": {
             "protected": 4,
-            "partial": 2,
+            "partial": 3,
             "exposed": 0
           },
           "SE": {
             "protected": 3,
             "partial": 2,
-            "exposed": 1
+            "exposed": 2
           },
           "S": {
             "protected": 3,
             "partial": 2,
-            "exposed": 1
+            "exposed": 2
           },
           "SW": {
             "protected": 0,
-            "partial": 4,
+            "partial": 5,
             "exposed": 2
           },
           "W": {
-            "protected": 2,
+            "protected": 3,
             "partial": 1,
             "exposed": 3
           },
           "NW": {
-            "protected": 3,
+            "protected": 4,
             "partial": 2,
             "exposed": 1
           }
@@ -720,47 +720,47 @@
       },
       "central-greece-fthiotida-mainland": {
         "regionName": "Fthiotida",
-        "beachCount": 18,
-        "generatedProfiles": 18,
+        "beachCount": 19,
+        "generatedProfiles": 19,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 5,
+            "protected": 6,
             "partial": 1,
             "exposed": 12
           },
           "NE": {
             "protected": 4,
-            "partial": 3,
+            "partial": 4,
             "exposed": 11
           },
           "E": {
             "protected": 9,
-            "partial": 1,
+            "partial": 2,
             "exposed": 8
           },
           "SE": {
             "protected": 10,
-            "partial": 7,
+            "partial": 8,
             "exposed": 1
           },
           "S": {
             "protected": 14,
-            "partial": 4,
+            "partial": 5,
             "exposed": 0
           },
           "SW": {
-            "protected": 15,
+            "protected": 16,
             "partial": 1,
             "exposed": 2
           },
           "W": {
-            "protected": 13,
+            "protected": 14,
             "partial": 4,
             "exposed": 1
           },
           "NW": {
-            "protected": 10,
+            "protected": 11,
             "partial": 4,
             "exposed": 4
           }
@@ -4704,47 +4704,47 @@
       },
       "south-aegean-symi": {
         "regionName": "Symi",
-        "beachCount": 9,
-        "generatedProfiles": 9,
+        "beachCount": 11,
+        "generatedProfiles": 11,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 3,
-            "partial": 6,
+            "protected": 4,
+            "partial": 7,
             "exposed": 0
           },
           "NE": {
             "protected": 1,
-            "partial": 4,
+            "partial": 6,
             "exposed": 4
           },
           "E": {
             "protected": 1,
-            "partial": 7,
-            "exposed": 1
+            "partial": 8,
+            "exposed": 2
           },
           "SE": {
             "protected": 6,
+            "partial": 4,
+            "exposed": 1
+          },
+          "S": {
+            "protected": 8,
             "partial": 3,
             "exposed": 0
           },
-          "S": {
-            "protected": 7,
-            "partial": 2,
-            "exposed": 0
-          },
           "SW": {
-            "protected": 8,
+            "protected": 10,
             "partial": 0,
             "exposed": 1
           },
           "W": {
-            "protected": 8,
+            "protected": 10,
             "partial": 1,
             "exposed": 0
           },
           "NW": {
-            "protected": 4,
+            "protected": 6,
             "partial": 5,
             "exposed": 0
           }

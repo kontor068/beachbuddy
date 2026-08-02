@@ -30,8 +30,12 @@ const DATA = path.join(rootDir, 'public', 'greek_beaches.json');
 const PLAN_OUT = path.join(rootDir, 'reports', 'coverage', 'osm-gap-insert-plan.json');
 
 const NEW_BEACH_MIN_ID = 3000;
-const BATCH = 'osm_coverage_gap_2026_06';
-const CHECKED_AT = '2026-06-26';
+// Overridable so a later sweep does not stamp its beaches with an earlier sweep's date and
+// batch tag — the tag is what scopes enrichOsmGapBeaches and any later audit to one decision.
+const batchArg = process.argv.find((a) => a.startsWith('--batch='));
+const checkedAtArg = process.argv.find((a) => a.startsWith('--checked-at='));
+const BATCH = batchArg ? batchArg.slice('--batch='.length) : 'osm_coverage_gap_2026_06';
+const CHECKED_AT = checkedAtArg ? checkedAtArg.slice('--checked-at='.length) : '2026-06-26';
 const DUP_RADIUS_M = 150;          // pure geographic dup (any name)
 const NAME_DUP_RADIUS_M = 600;     // same beach, slightly different name -> alias, don't duplicate
 const NAME_DUP_DICE = 55;          // core-name similarity threshold for the wider radius

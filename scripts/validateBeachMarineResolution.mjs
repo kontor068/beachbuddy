@@ -88,8 +88,20 @@ const OPPOSING_DISTANCE_KM = 5;
  * They read the region cell exactly as they did before this change — no worse than yesterday,
  * and their own SMB floor still applies. The number is here so the count cannot quietly grow:
  * a geometry rebuild that drops sample points is a regression this gate has to see.
+ *
+ * 295 -> 297 on 02/08/2026, and the two are named because a raised baseline is exactly how this
+ * gate would be defeated: Λιασίκι (3169) and Παραλία Πανορμίτη (3171), two of the four beaches
+ * added by the national coverage sweep. Both sit in genuinely enclosed bays — Gardiki Bay on the
+ * Maliakos and the Panormitis harbour — so the builder correctly declines to push a point
+ * offshore for them and they run on the modelled wave.
+ *
+ * It was raised only after proving the rest had not moved: every one of the 295 that had no point
+ * before still has none, and NO beach that had a point lost it. The first attempt at this rebuild
+ * did lose them — a scoped geometry run wipes marineSamplePoint, which is written by a separate
+ * later step (scripts/buildMarineSamplePoints.mjs) — and the count went to 324. This gate is what
+ * caught it. If you are here to raise this number again, prove the same thing first.
  */
-const REGION_FALLBACK_BASELINE = 295;
+const REGION_FALLBACK_BASELINE = 297;
 
 /** The pair that started this, asserted by name so a refactor cannot lose the case. */
 const INCIDENT = { regionId: 'north-aegean-lemnos', beachIds: [1433, 1435] };

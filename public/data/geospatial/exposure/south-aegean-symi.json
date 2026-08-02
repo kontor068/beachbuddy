@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.952Z",
+  "generatedAt": "2026-08-02T15:02:09.418Z",
   "region": {
     "id": "south-aegean-symi",
     "name": "Symi"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 9,
-    "generatedProfiles": 9,
+    "beachCount": 11,
+    "generatedProfiles": 11,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 3,
-        "partial": 6,
+        "protected": 4,
+        "partial": 7,
         "exposed": 0
       },
       "NE": {
         "protected": 1,
-        "partial": 4,
+        "partial": 6,
         "exposed": 4
       },
       "E": {
         "protected": 1,
-        "partial": 7,
-        "exposed": 1
+        "partial": 8,
+        "exposed": 2
       },
       "SE": {
         "protected": 6,
+        "partial": 4,
+        "exposed": 1
+      },
+      "S": {
+        "protected": 8,
         "partial": 3,
         "exposed": 0
       },
-      "S": {
-        "protected": 7,
-        "partial": 2,
-        "exposed": 0
-      },
       "SW": {
-        "protected": 8,
+        "protected": 10,
         "partial": 0,
         "exposed": 1
       },
       "W": {
-        "protected": 8,
+        "protected": 10,
         "partial": 1,
         "exposed": 0
       },
       "NW": {
-        "protected": 4,
+        "protected": 6,
         "partial": 5,
         "exposed": 0
       }
@@ -757,6 +757,154 @@
         "bearingDeg": 38.2,
         "distanceKm": 4.62
       }
+    },
+    "3170": {
+      "beachId": 3170,
+      "name": {
+        "en": "Marathounta",
+        "gr": "Μαραθούντα"
+      },
+      "coordinates": {
+        "lat": 36.5665703,
+        "lon": 27.8618621
+      },
+      "facingDeg": 110.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.355,
+          "intensity": 19.3
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.41,
+          "intensity": 42.3
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 10.16,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.935,
+          "intensity": 81.8
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.912,
+          "intensity": 79.7
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": 0.355,
+          "intensity": 40.7
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.41,
+          "intensity": 17.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.935,
+          "intensity": 2
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.912,
+          "intensity": 2.6
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.5503,
+        "lon": 27.915,
+        "bearingDeg": 110.8,
+        "distanceKm": 5.08
+      }
+    },
+    "3171": {
+      "beachId": 3171,
+      "name": {
+        "en": "Paralia Panormiti",
+        "gr": "Παραλία Πανορμίτη"
+      },
+      "coordinates": {
+        "lat": 36.5487601,
+        "lon": 27.8418936
+      },
+      "facingDeg": 62,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.469,
+          "intensity": 44.1
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 0.36,
+          "blockedRayRatio": 1,
+          "onshore": 0.956,
+          "intensity": 58.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 0.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.883,
+          "intensity": 56.5
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.292,
+          "intensity": 38.8
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.469,
+          "intensity": 15.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.956,
+          "intensity": 1.3
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.883,
+          "intensity": 3.5
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.292,
+          "intensity": 21.2
+        }
+      },
+      "confidence": "high"
     }
   }
 }

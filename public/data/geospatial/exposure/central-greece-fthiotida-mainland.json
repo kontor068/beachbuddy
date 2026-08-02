@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:55.896Z",
+  "generatedAt": "2026-08-02T15:02:09.371Z",
   "region": {
     "id": "central-greece-fthiotida-mainland",
     "name": "Fthiotida"
@@ -36,47 +36,47 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 18,
-    "generatedProfiles": 18,
+    "beachCount": 19,
+    "generatedProfiles": 19,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 5,
+        "protected": 6,
         "partial": 1,
         "exposed": 12
       },
       "NE": {
         "protected": 4,
-        "partial": 3,
+        "partial": 4,
         "exposed": 11
       },
       "E": {
         "protected": 9,
-        "partial": 1,
+        "partial": 2,
         "exposed": 8
       },
       "SE": {
         "protected": 10,
-        "partial": 7,
+        "partial": 8,
         "exposed": 1
       },
       "S": {
         "protected": 14,
-        "partial": 4,
+        "partial": 5,
         "exposed": 0
       },
       "SW": {
-        "protected": 15,
+        "protected": 16,
         "partial": 1,
         "exposed": 2
       },
       "W": {
-        "protected": 13,
+        "protected": 14,
         "partial": 4,
         "exposed": 1
       },
       "NW": {
-        "protected": 10,
+        "protected": 11,
         "partial": 4,
         "exposed": 4
       }
@@ -1456,6 +1456,77 @@
         "bearingDeg": 91.2,
         "distanceKm": 5.36
       }
+    },
+    "3169": {
+      "beachId": 3169,
+      "name": {
+        "en": "Liasiki",
+        "gr": "Λιασίκι"
+      },
+      "coordinates": {
+        "lat": 38.9084958,
+        "lon": 22.8376082
+      },
+      "facingDeg": 110.6,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.352,
+          "intensity": 19.4
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 1.68,
+          "blockedRayRatio": 1,
+          "onshore": 0.413,
+          "intensity": 42.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 6.92,
+          "blockedRayRatio": 1,
+          "onshore": 0.936,
+          "intensity": 58.1
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 5.68,
+          "blockedRayRatio": 1,
+          "onshore": 0.911,
+          "intensity": 57.3
+        },
+        "S": {
+          "level": "partial",
+          "fetchKm": 2.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.352,
+          "intensity": 40.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.413,
+          "intensity": 17.6
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.936,
+          "intensity": 1.9
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.911,
+          "intensity": 2.7
+        }
+      },
+      "confidence": "high"
     }
   }
 }
