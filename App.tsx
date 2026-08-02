@@ -6919,6 +6919,7 @@ export const App: React.FC = () => {
               preferences={preferences}
               geospatialProfiles={geospatialExposureProfiles}
               todayRainBlocked={isRainBlockedBeachWindow}
+              isFilteredView={Boolean(mapToneFilter)}
               beachForecastDaysById={beachForecastDaysById}
               userLocation={userLocation}
               initialDays={tripPlannerInitialDays ?? undefined}

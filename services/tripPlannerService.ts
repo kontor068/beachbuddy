@@ -991,6 +991,15 @@ export const planTrip = ({
   // order, so a day served early would otherwise offer an "or X" that a later
   // day then takes as its pick — the runner-up must be a beach that is usable
   // this day AND assigned to no day of the trip.
+  //
+  // An alternative is also RESERVED once offered (02/08/2026). The picks were already
+  // reserved so "two blank days don't both name the same cove" (see the refuge branch above),
+  // but the runner-ups were not, and on a coast where one sheltered beach tops the ranking
+  // every day it became the «ή Άγιος Μηνάς» of Today AND Tomorrow AND Tuesday. Reported as a
+  // beach showing twice. Repeating it also buys the reader nothing: the whole job of this line
+  // is to widen the choice, and naming yesterday's runner-up again widens nothing. When no
+  // distinct beach is left the day simply offers no alternative, which is the honest answer.
+  const offeredAlternativeIds = new Set<number>();
   for (const entry of ordered) {
     if (entry.status !== 'beach' || !entry.pick) {
       continue;
@@ -998,8 +1007,10 @@ export const planTrip = ({
     entry.alternative = rankedByDay[entry.dayIndex].find(candidate =>
       candidate.beach.id !== entry.pick!.beach.id &&
       !usedBeachIds.has(candidate.beach.id) &&
+      !offeredAlternativeIds.has(candidate.beach.id) &&
       isUsable(candidate)
     ) ?? null;
+    if (entry.alternative) offeredAlternativeIds.add(entry.alternative.beach.id);
   }
 
   // Backwards pass: on a blank day, point at the next day of the trip that does

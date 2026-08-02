@@ -61,6 +61,9 @@ interface TripPlannerProps {
   geospatialProfiles?: GeospatialExposureProfileLookup;
   /** The homepage's own rain verdict for today (see PlanTripInput). */
   todayRainBlocked?: boolean;
+  /** True while the reader has a colour picked on the map legend. Only changes the subtitle —
+   *  this plan is about other days and must not narrow with a filter on today's conditions. */
+  isFilteredView?: boolean;
   userLocation?: { lat: number; lon: number };
   /** Each beach's own multi-day forecast (see PlanTripInput.beachForecastDaysById). */
   beachForecastDaysById?: Record<number, DailyForecast[]>;
@@ -135,6 +138,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   preferences,
   geospatialProfiles,
   todayRainBlocked,
+  isFilteredView = false,
   userLocation,
   beachForecastDaysById,
   initialDays,
@@ -394,7 +398,12 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
               </h3>
               <p className="mt-0.5 flex items-start gap-1.5 text-[13px] font-semibold leading-snug text-slate-600">
                 <Wind className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[#0284c7]" aria-hidden="true" />
-                <span>{c.valueProp}</span>
+                {/* With a colour picked on the map legend this section deliberately does NOT
+                    narrow with it — it plans other days, on those days' weather, so a beach that
+                    is difficult today can be the right answer for tomorrow. Left unexplained it
+                    reads as the filter having missed one, which is exactly how it was reported.
+                    Saying so is enough; hiding the plan would cost more than the confusion. */}
+                <span>{isFilteredView ? c.ignoresFilter : c.valueProp}</span>
               </p>
             </div>
           </div>

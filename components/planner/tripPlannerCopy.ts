@@ -30,6 +30,9 @@ export type TripPlannerCopy = {
    * good we are at it.
    */
   valueProp: string;
+  /** Replaces valueProp while a colour filter is active on the map: this plan is about other
+   *  days, on those days' weather, so it deliberately does not narrow with the filter. */
+  ignoresFilter: string;
   /** Label before the day-count chips UNDER the plan — an extension, not a gate. */
   stayingLonger: string;
   /** "3 days" — the chosen length, shown as a pill in the expanded header. */
@@ -111,6 +114,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   gr: {
     nextDaysTitle: (n) => (n === 1 ? 'Η επόμενη μέρα' : `Οι επόμενες ${n} μέρες`),
     valueProp: 'Κάθε μέρα, η παραλία που ταιριάζει στον άνεμο.',
+    ignoresFilter: 'Για τις επόμενες μέρες — με τον καιρό της κάθε μέρας, ανεξάρτητα από το φίλτρο.',
     stayingLonger: 'Μένεις περισσότερο;',
     daysUnit: (n) => (n === 1 ? '1 μέρα' : `${n} μέρες`),
     planForDays: (n) => (n === 1 ? 'Πλάνο για 1 μέρα' : `Πλάνο για ${n} μέρες`),
@@ -164,6 +168,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   en: {
     nextDaysTitle: (n) => (n === 1 ? 'The next day' : `The next ${n} days`),
     valueProp: 'Every day, the beach that fits the wind.',
+    ignoresFilter: 'For the days ahead — on each day’s own weather, independent of the filter.',
     stayingLonger: 'Staying longer?',
     daysUnit: (n) => (n === 1 ? '1 day' : `${n} days`),
     planForDays: (n) => (n === 1 ? 'Plan for 1 day' : `Plan for ${n} days`),
@@ -213,6 +218,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   de: {
     nextDaysTitle: (n) => (n === 1 ? 'Der nächste Tag' : `Die nächsten ${n} Tage`),
     valueProp: 'Jeden Tag der Strand, der zum Wind passt.',
+    ignoresFilter: 'Für die kommenden Tage — nach dem Wetter des jeweiligen Tages, unabhängig vom Filter.',
     stayingLonger: 'Bleibst du länger?',
     daysUnit: (n) => (n === 1 ? '1 Tag' : `${n} Tage`),
     planForDays: (n) => (n === 1 ? 'Plan für 1 Tag' : `Plan für ${n} Tage`),
@@ -262,6 +268,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   it: {
     nextDaysTitle: (n) => (n === 1 ? 'Il prossimo giorno' : `I prossimi ${n} giorni`),
     valueProp: 'Ogni giorno, la spiaggia giusta per il vento.',
+    ignoresFilter: 'Per i prossimi giorni — con il meteo di ogni giorno, indipendentemente dal filtro.',
     stayingLonger: 'Ti fermi di più?',
     daysUnit: (n) => (n === 1 ? '1 giorno' : `${n} giorni`),
     planForDays: (n) => (n === 1 ? 'Piano per 1 giorno' : `Piano per ${n} giorni`),
@@ -311,6 +318,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   fr: {
     nextDaysTitle: (n) => (n === 1 ? 'Le jour à venir' : `Les ${n} prochains jours`),
     valueProp: 'Chaque jour, la plage qui convient au vent.',
+    ignoresFilter: 'Pour les jours à venir — selon la météo de chaque jour, indépendamment du filtre.',
     stayingLonger: 'Vous restez plus longtemps ?',
     daysUnit: (n) => (n === 1 ? '1 jour' : `${n} jours`),
     planForDays: (n) => (n === 1 ? 'Plan pour 1 jour' : `Plan pour ${n} jours`),
