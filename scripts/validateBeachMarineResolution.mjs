@@ -476,21 +476,47 @@ if (!/const detailForecast = withBeachOwnWind\(/.test(appSourceForWind)) {
     + 'sentence and its verdict all hang off that one object, and the map pin beside it does not.'
   );
 }
-if (!/isNearMeRegionActive \? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForecasts/.test(appSourceForWind)) {
+// RULE 5c — "Κοντά μου" reads each beach's HOME region wind, and only that.
+//
+// History, because this rule was wrong once already. Until 02/08/2026 the near-me map coloured
+// pins from clusters computed over the synthetic GPS region's merged beach list while the cards
+// read the beach's home region: one beach, two winds. The 02/08 fix stood the cluster path down
+// on both halves — and that turned out to be worse, not better: with no per-beach wind at all,
+// App's `beaufortAtBeach` and `canonicalMapExposureLevels` fall back to `currentBeaufort` and
+// `selectedForecast.wind.deg`, which in this synthetic region are the wind AT THE USER'S GPS
+// POINT. The pins, the boat-access gate and the shelter ranking then ran on the user's back yard.
+//
+// Since 02/08/2026 the answer is neither map: near-me fetches each beach's HOME region cluster —
+// the same coordinate the region page uses, because the clustering is built over that region's
+// FULL beach list in buildNearbyRegion, not over the 60 that survived the 40 km cut.
+//
+// Four things have to hold together, and each of them was a real failure mode above.
+if (!/isNearMeRegionActive \? nearMeBeachWindById : hourAdjustedBeachForecasts/.test(appSourceForWind)) {
   failures.push(
-    'RULE 5 — the wind swap no longer stands down in "Κοντά μου", where each beach is scored from '
-    + 'its own home region and these clusters belong to the synthetic GPS region instead.'
+    'RULE 5 — the card\'s wind source in "Κοντά μου" is no longer nearMeBeachWindById. Either it '
+    + 'is back on the synthetic GPS region\'s clusters, or it stands down again — and standing '
+    + 'down hands the map the wind at the user\'s GPS point.'
   );
 }
-// Both halves, or the page runs on two winds again. Until 02/08/2026 only the scoring half stood
-// down: the card showed the home region's wind while the pin beside it was coloured from a cluster
-// centroid computed over the synthetic GPS region's merged beach list. Reported as "«Κοντά μου»
-// shows slightly different data for the same beach".
-if (!/if \(isNearMeRegionActive\) return lookup;/.test(appSourceForWind)) {
+if (!/const clusters = beach\.regionId \? nearMeSourceClusters\[beach\.regionId\] : undefined/.test(appSourceForWind)) {
   failures.push(
-    'RULE 5 — mapBeachLocalWinds no longer stands down in "Κοντά μου". The pin would be coloured '
-    + 'from the synthetic GPS region\'s clusters while the card beside it reads the beach\'s own '
-    + 'home region — the same beach, two winds, on one screen.'
+    'RULE 5 — the near-me wind is no longer looked up in the beach\'s OWN home-region clusters. '
+    + 'Any other grouping puts the beach on a coordinate its region page never uses.'
+  );
+}
+if (!/clustersByRegion\[region\.id\] = buildBeachForecastClusters\(region\.beaches\)/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5 — the home-region clusters are no longer built over the region\'s FULL beach list in '
+    + 'buildNearbyRegion. Clustering the surviving 60 gives different members, possibly a '
+    + 'different grid step, and therefore a different wind for the same beach.'
+  );
+}
+// One source for the card and the pin. Reading the raw cluster map here is exactly how the two
+// came to disagree in the first place.
+if (!/Object\.entries\(beachWindSourceById\)\.forEach/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5 — mapBeachLocalWinds no longer reads beachWindSourceById. The pin and the card beside '
+    + 'it are back on two different winds for the same beach.'
   );
 }
 

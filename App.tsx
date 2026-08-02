@@ -40,7 +40,8 @@ import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
-import { fetchForecastData, fetchMarineForecastData, fetchMarineForecastDataBatch, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
+import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fetchMarineForecastDataBatch, forecastPointKey, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
+import { buildBeachForecastClusters, type BeachForecastCluster } from './utils/beachForecastClusters';
 import { resolveBeachMarinePoints, marinePointKey } from './utils/marineSamplePoints';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
 import {
@@ -2003,6 +2004,13 @@ export const App: React.FC = () => {
     const regionIndex = await loadBeachRegionIndex().catch(() => []);
     const indexById = new Map(regionIndex.map(entry => [entry.id, entry] as const));
 
+    // Each candidate region's OWN wind clusters, built over its FULL beach list — exactly what
+    // the region page builds. Kept here because this is the only moment the whole region is in
+    // memory; downstream "Κοντά μου" keeps only the ≤60 nearest beaches, and from those alone the
+    // clustering grid comes out different (different members, possibly a different step), which is
+    // precisely how the same beach ended up with a different wind in the two views.
+    const clustersByRegion: Record<string, BeachForecastCluster[]> = {};
+
     const loadedRegions = await Promise.all(candidates.map(async candidate => {
       let region = candidate.island;
       if (region.beaches.length === 0) {
@@ -2017,6 +2025,7 @@ export const App: React.FC = () => {
           return [];
         }
       }
+      clustersByRegion[region.id] = buildBeachForecastClusters(region.beaches);
       return region.beaches.map(beach => ({
         beach,
         regionId: region.id,
@@ -2050,6 +2059,8 @@ export const App: React.FC = () => {
       sourceBeachId: beach.sourceBeachId ?? beach.id,
       regionId: beach.regionId ?? regionId,
     }));
+
+    setNearMeSourceClusters(clustersByRegion);
 
     return {
       id: NEAR_ME_REGION_ID,
@@ -3358,29 +3369,10 @@ export const App: React.FC = () => {
     return adjusted;
   }, [selectedBeachForecasts, deferredSelectedHourDt]);
 
-  /**
-   * EACH BEACH IS SCORED AND PRINTED WITH THE WIND AT ITS OWN SHORE (02/08/2026).
-   *
-   * The last place the single region number survived. The map moved to per-beach readings on
-   * 01/08 and the gates that hide and rank beaches on 02/08, but the CARD still printed one
-   * Beaufort for every beach on the page — measured nationally over 8.550 beach-hours, at least
-   * one Beaufort away from the beach's own shore 35,9% of the time. Reported as «στα Χανιά η
-   * πυξίδα λέει 2 Μπφ και οι πάνω παραλίες είναι κατακόκκινες»: both were true at once, from two
-   * different winds.
-   *
-   * The swap is deliberately its own step (utils/weatherUtils.applyBeachWindToDailyForecast) and
-   * never rides along inside the marine merge — see RULE 4 of validateBeachMarineResolution.
-   *
-   * Skipped in "Κοντά μου": there each beach is already scored from its OWN home region's
-   * forecast, and these clusters belong to the synthetic GPS region, not to those regions.
-   */
-  const beachWindSourceById = useMemo<BeachWeatherById>(() => (
-    isNearMeRegionActive ? EMPTY_BEACH_FORECAST_MAP : hourAdjustedBeachForecasts
-  ), [isNearMeRegionActive, hourAdjustedBeachForecasts]);
-  /** One beach's forecast with its own wind in it — unchanged when it has no cluster reading. */
-  const withBeachOwnWind = React.useCallback((beachId: number, forecast: DailyForecast): DailyForecast => (
-    applyBeachWindToDailyForecast(forecast, beachWindSourceById[beachId])
-  ), [beachWindSourceById]);
+  // `beachWindSourceById`, `withBeachOwnWind` and `mapBeachLocalWinds` used to be declared here.
+  // They moved below the "Κοντά μου" block (02/08/2026) because they now read it: there the
+  // per-beach wind comes from each beach's HOME region cluster, which is only known once that
+  // block has run. Nothing else about them changed, and no consumer sits above their new home.
   /**
    * The same cluster readings as a MULTI-DAY lookup, for the trip planner.
    *
@@ -3397,47 +3389,6 @@ export const App: React.FC = () => {
     });
     return byId;
   }, [isNearMeRegionActive, beachForecasts]);
-
-  const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
-    const beachId = detailBeach?.id;
-    if (beachId == null) return hourAdjustedBeachForecasts;
-
-    const exactBeachForecast = detailExactForecastContext?.forecast[selectedDayIndex];
-    const beachForecast = exactBeachForecast ?? selectedBeachForecasts[beachId];
-    if (!beachForecast) return hourAdjustedBeachForecasts;
-
-    return {
-      ...hourAdjustedBeachForecasts,
-      [beachId]: selectedHourDt == null ? beachForecast : adjustDailyForecastToHour(beachForecast, selectedHourDt),
-    };
-  }, [detailBeach?.id, detailExactForecastContext, selectedDayIndex, selectedBeachForecasts, selectedHourDt, hourAdjustedBeachForecasts]);
-
-  // Per-beach local wind (direction + speed) for the map hover card, so a beach
-  // coloured differently from the island headline is self-explanatory ("here it
-  // blows N 7 km/h"). Falls back to the island wind when no cluster forecast.
-  //
-  // STANDS DOWN IN «ΚΟΝΤΑ ΜΟΥ», for the same reason beachWindSourceById does (see above).
-  // Reported 02/08/2026: the same beach showed slightly different conditions and colours under
-  // "Κοντά μου" than on its own region page. The scoring path was already standing down there —
-  // each beach is scored from its OWN home region's forecast — but this map path was not, so the
-  // page ran on THREE winds at once: the card showed the home region's centre wind, the pin was
-  // coloured from a cluster centroid computed over the synthetic GPS region's merged 60-beach
-  // list (a different mean, and possibly a different grid step, than the same beach's cluster on
-  // its region page), and any beach without a cluster reading fell back to the user's GPS wind
-  // instead of its own region's. Emptying this map leaves one wind per beach — its home
-  // region's — which is what the cards, the verdict and the detail page already use.
-  const mapBeachLocalWinds = useMemo<Record<number, { deg: number; speedKmh: number }>>(() => {
-    const lookup: Record<number, { deg: number; speedKmh: number }> = {};
-    if (isNearMeRegionActive) return lookup;
-    Object.entries(hourAdjustedBeachForecasts).forEach(([beachId, forecast]) => {
-      const deg = forecast?.wind?.deg;
-      const speed = forecast?.wind?.speed;
-      if (typeof deg === 'number' && Number.isFinite(deg) && typeof speed === 'number') {
-        lookup[Number(beachId)] = { deg, speedKmh: speed * 3.6 };
-      }
-    });
-    return lookup;
-  }, [hourAdjustedBeachForecasts, isNearMeRegionActive]);
 
   // --- Hour selection (map slider) ---
   // `forecast` is already gated to the selected region at the source (see useWeather
@@ -3535,6 +3486,14 @@ export const App: React.FC = () => {
   // normal island — where beach.regionId === selectedIsland.id — is a byte-for-byte no-op.
   const [nearMeRegionForecasts, setNearMeRegionForecasts] = useState<Record<string, DailyForecast[]>>({});
   /**
+   * The wind clusters of every region "Κοντά μου" drew a beach from, built over each region's FULL
+   * beach list at the moment it was loaded (buildNearbyRegion). Keyed by region id; the ids inside
+   * are the REAL beach ids, so a merged beach is matched through its sourceBeachId.
+   */
+  const [nearMeSourceClusters, setNearMeSourceClusters] = useState<Record<string, BeachForecastCluster[]>>({});
+  /** Each near-me beach's HOME cluster wind forecast (whole array), keyed by synthetic beach id. */
+  const [nearMeClusterForecasts, setNearMeClusterForecasts] = useState<Record<number, DailyForecast[]>>({});
+  /**
    * Each near-me beach's OWN sea, the same way a normal region gets it (useWeather.beachMarine).
    *
    * It cannot ride along in useWeather because the base forecast differs per beach here — every
@@ -3626,6 +3585,67 @@ export const App: React.FC = () => {
     return () => { cancelled = true; };
   }, [isNearMeRegionActive, selectedIsland, allIslands]);
 
+  // Each near-me beach's OWN-SHORE wind, taken from ITS HOME region's cluster — the very reading,
+  // at the very coordinate, the beach shows on its region page.
+  //
+  // Reported 02/08 and again 03/08: the same beach read differently under "Κοντά μου". The first
+  // pass stood the cluster path down here, on the grounds that the beach already scores from its
+  // home region. That was half true — the CARD did, but the map did not: with no per-beach wind,
+  // `beaufortAtBeach` and `canonicalMapExposureLevels` both fall back to `currentBeaufort` and
+  // `selectedForecast.wind.deg`, and in this synthetic region those are the wind AT THE USER'S GPS
+  // POINT. So the pins, the boat-access gate and the shelter ranking ran on the user's back yard
+  // while the cards ran on the beach's region. Standing down was never enough; the fix is to feed
+  // the RIGHT clusters — the home region's, built over its full beach list in buildNearbyRegion.
+  //
+  // Wind only: the sea already comes from nearMeBeachMarine, and mergeMarineForecastData never
+  // touches the wind fields, so skipping the marine leg here costs nothing and halves the calls.
+  useEffect(() => {
+    if (!isNearMeRegionActive || !selectedIsland) {
+      setNearMeClusterForecasts(current => (Object.keys(current).length === 0 ? current : {}));
+      return;
+    }
+    // Only the clusters that actually hold a near-me beach: ≤60 beaches inside 40 km fall into a
+    // handful of them, and fetchForecastDataBatch carries 32 coordinates per request.
+    const pointByKey = new Map<string, { lat: number; lon: number }>();
+    const clusterKeyByBeachId = new Map<number, string>();
+    selectedIsland.beaches.forEach(beach => {
+      const clusters = beach.regionId ? nearMeSourceClusters[beach.regionId] : undefined;
+      if (!clusters) return;
+      const realId = beach.sourceBeachId ?? beach.id;
+      const cluster = clusters.find(candidate => candidate.beachIds.includes(realId));
+      if (!cluster) return;
+      const key = forecastPointKey(cluster.lat, cluster.lon);
+      pointByKey.set(key, { lat: cluster.lat, lon: cluster.lon });
+      clusterKeyByBeachId.set(beach.id, key);
+    });
+    if (pointByKey.size === 0) {
+      setNearMeClusterForecasts(current => (Object.keys(current).length === 0 ? current : {}));
+      return;
+    }
+
+    let cancelled = false;
+    fetchForecastDataBatch(Array.from(pointByKey.values()))
+      .then(byPoint => {
+        if (cancelled) return;
+        const daysByKey = new Map<string, DailyForecast[]>();
+        for (const [key, result] of byPoint) {
+          if (result.data.length > 0) daysByKey.set(key, processForecastData(result.data));
+        }
+        const next: Record<number, DailyForecast[]> = {};
+        clusterKeyByBeachId.forEach((key, beachId) => {
+          const days = daysByKey.get(key);
+          if (days?.length) next[beachId] = days;
+        });
+        setNearMeClusterForecasts(next);
+      })
+      .catch(error => {
+        if (cancelled) return;
+        console.warn('Near-me cluster wind unavailable; those beaches keep their home region wind.', error);
+        setNearMeClusterForecasts({});
+      });
+    return () => { cancelled = true; };
+  }, [isNearMeRegionActive, selectedIsland, nearMeSourceClusters]);
+
   // Each near-me beach's home-region area forecast, day-selected + hour-adjusted exactly like
   // selectedForecast, so the near-me card/map reads the same wind/wave/verdict/colour the beach
   // shows on its home island. Empty outside near-me → the area-forecast fallback applies below.
@@ -3647,6 +3667,89 @@ export const App: React.FC = () => {
     });
     return out;
   }, [isNearMeRegionActive, selectedIsland, nearMeRegionForecasts, nearMeBeachMarine, selectedDayIndex, selectedHourDt, mapHourSlots]);
+
+  /**
+   * "Κοντά μου" per-beach wind, day-selected and hour-adjusted the same way the region page's is.
+   * Only the WIND is ever read out of it (applyBeachWindToDailyForecast, mapBeachLocalWinds).
+   *
+   * A beach whose cluster has not arrived yet falls back to its HOME region's forecast — never to
+   * the user's GPS point, which is the whole reason this exists.
+   */
+  const nearMeBeachWindById = useMemo<BeachWeatherById>(() => {
+    if (!isNearMeRegionActive || !selectedIsland) return EMPTY_BEACH_FORECAST_MAP;
+    const out: BeachWeatherById = {};
+    selectedIsland.beaches.forEach(beach => {
+      const clusterDay = nearMeClusterForecasts[beach.id]?.[selectedDayIndex];
+      const day = clusterDay
+        ? (selectedHourDt == null ? clusterDay : adjustDailyForecastToHour(clusterDay, selectedHourDt, mapHourSlots))
+        : nearMeBeachForecastById[beach.id];
+      if (day) out[beach.id] = day;
+    });
+    return out;
+  }, [isNearMeRegionActive, selectedIsland, nearMeClusterForecasts, nearMeBeachForecastById, selectedDayIndex, selectedHourDt, mapHourSlots]);
+
+  /**
+   * EACH BEACH IS SCORED AND PRINTED WITH THE WIND AT ITS OWN SHORE (02/08/2026).
+   *
+   * The last place the single region number survived. The map moved to per-beach readings on
+   * 01/08 and the gates that hide and rank beaches on 02/08, but the CARD still printed one
+   * Beaufort for every beach on the page — measured nationally over 8.550 beach-hours, at least
+   * one Beaufort away from the beach's own shore 35,9% of the time. Reported as «στα Χανιά η
+   * πυξίδα λέει 2 Μπφ και οι πάνω παραλίες είναι κατακόκκινες»: both were true at once, from two
+   * different winds.
+   *
+   * The swap is deliberately its own step (utils/weatherUtils.applyBeachWindToDailyForecast) and
+   * never rides along inside the marine merge — see RULE 4 of validateBeachMarineResolution.
+   *
+   * In "Κοντά μου" the source is nearMeBeachWindById — the beach's HOME region cluster, not the
+   * synthetic GPS region's, so the same beach gets the same wind in both views (02/08/2026).
+   */
+  const beachWindSourceById = useMemo<BeachWeatherById>(() => (
+    isNearMeRegionActive ? nearMeBeachWindById : hourAdjustedBeachForecasts
+  ), [isNearMeRegionActive, nearMeBeachWindById, hourAdjustedBeachForecasts]);
+  /** One beach's forecast with its own wind in it — unchanged when it has no cluster reading. */
+  const withBeachOwnWind = React.useCallback((beachId: number, forecast: DailyForecast): DailyForecast => (
+    applyBeachWindToDailyForecast(forecast, beachWindSourceById[beachId])
+  ), [beachWindSourceById]);
+
+  // Per-beach local wind (direction + speed) for the map hover card and — through perBeachMapWind —
+  // for the pin colours and every gate that compares a Beaufort against a threshold. Falls back to
+  // the region wind when a beach has no reading at all.
+  //
+  // Reads the SAME source as the cards above, so "Κοντά μου" can no longer colour a pin from the
+  // user's GPS wind while the card next to it reads the beach's own region.
+  const mapBeachLocalWinds = useMemo<Record<number, { deg: number; speedKmh: number }>>(() => {
+    const lookup: Record<number, { deg: number; speedKmh: number }> = {};
+    Object.entries(beachWindSourceById).forEach(([beachId, forecast]) => {
+      const deg = forecast?.wind?.deg;
+      const speed = forecast?.wind?.speed;
+      if (typeof deg === 'number' && Number.isFinite(deg) && typeof speed === 'number') {
+        lookup[Number(beachId)] = { deg, speedKmh: speed * 3.6 };
+      }
+    });
+    return lookup;
+  }, [beachWindSourceById]);
+
+  // The detail sheet's weather lookup. Base is `beachWindSourceById` (not the raw cluster map) so
+  // a beach opened from "Κοντά μου" reads the same wind there as on its card and its pin; the
+  // detail beach itself is then overwritten with its beach-exact forecast when one has arrived.
+  const detailBeachWeatherById = useMemo<BeachWeatherById>(() => {
+    const beachId = detailBeach?.id;
+    if (beachId == null) return beachWindSourceById;
+
+    const exactBeachForecast = detailExactForecastContext?.forecast[selectedDayIndex];
+    // The synthetic region's own clusters are never an acceptable fallback in "Κοντά μου" — they
+    // are grouped around the user, not around the beach's home region. Without an exact forecast
+    // the beach keeps the home-region wind already sitting in beachWindSourceById.
+    const beachForecast = exactBeachForecast
+      ?? (isNearMeRegionActive ? undefined : selectedBeachForecasts[beachId]);
+    if (!beachForecast) return beachWindSourceById;
+
+    return {
+      ...beachWindSourceById,
+      [beachId]: selectedHourDt == null ? beachForecast : adjustDailyForecastToHour(beachForecast, selectedHourDt),
+    };
+  }, [detailBeach?.id, detailExactForecastContext, isNearMeRegionActive, selectedDayIndex, selectedBeachForecasts, selectedHourDt, beachWindSourceById]);
 
   // Each beach's own sea, laid over the region's day. THIS is what stopped Γομάτι (faces NE) and
   // Κάσπακας (faces W) — 11 km apart on opposite Lemnos coasts — from both printing 1,3 m while
