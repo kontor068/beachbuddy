@@ -188,18 +188,38 @@ const sendTelegram = async (text) => {
   });
 };
 
+// Requests that are not a person. AdsBot-Google renders pages on a hard time budget
+// and abandons subresources when it runs out — which surfaces here as a missing chunk
+// and, until 04/08/2026, as "🔴 έσπασε σελίδα σε επισκέπτη" for a visitor that does
+// not exist. Their reports are still counted in the blob store (worth knowing if a
+// crawler cannot render the site at all); they just never ring the phone.
+const CRAWLER_UA = /AdsBot|Googlebot|bingbot|Applebot|YandexBot|DuckDuckBot|Baiduspider|SemrushBot|AhrefsBot|PetalBot|facebookexternalhit|Bytespider|GPTBot|ClaudeBot|crawler|spider/i;
+
+const isCrawler = (userAgent) => CRAWLER_UA.test(userAgent || '');
+
+// A missing JS/CSS chunk is not a broken site: services/errorReporter.ts only forwards
+// the ones where the automatic recovery ALREADY reloaded and still failed. Even those
+// are a deploy/CDN question, not "a visitor is looking at a white screen right now", so
+// they get 🟠 and an instruction that matches what actually helps.
+const CHUNK_LOAD_MESSAGE = /dynamically imported module|Importing a module script failed|Loading chunk \S+ failed|Unable to preload CSS/i;
+
 // Greek, severity-tagged Telegram body with an explicit "what to do" line — a crash
-// is 🔴 (a visitor actually hit a broken page), an enforced CSP block is 🟠 (something
-// was refused, worth a look but the site itself did not necessarily break).
+// is 🔴 (a visitor actually hit a broken page), an enforced CSP block or a chunk that
+// would not load is 🟠 (worth a look, the site itself did not necessarily break).
 const formatMessage = (report, context, repeats) => {
   const isCsp = report.kind === 'csp';
-  const tag = isCsp ? '🟠 ΠΡΟΣΟΧΗ — έλεγξε' : '🔴 ΚΡΙΣΙΜΟ — δράσε τώρα';
+  const isChunk = !isCsp && CHUNK_LOAD_MESSAGE.test(report.message || '');
+  const tag = isCsp || isChunk ? '🟠 ΠΡΟΣΟΧΗ — έλεγξε' : '🔴 ΚΡΙΣΙΜΟ — δράσε τώρα';
   const header = isCsp
     ? `🛡️ <b>Μπλοκαρίστηκε κάτι στη σελίδα (CSP ${report.disposition === 'report' ? 'δοκιμαστικά' : 'ενεργό'})</b>`
-    : '💥 <b>Έσπασε σελίδα σε επισκέπτη</b>';
+    : isChunk
+      ? '📦 <b>Δεν κατέβηκε κομμάτι του κώδικα (και μετά από επαναφόρτωση)</b>'
+      : '💥 <b>Έσπασε σελίδα σε επισκέπτη</b>';
   const whatToDo = isCsp
     ? 'Τι να κάνεις: έλεγξε αν αυτό το resource είναι απαραίτητο. Αν ναι, πρόσθεσέ το στη λίστα επιτρεπόμενων του CSP· αν όχι, αγνόησέ το.'
-    : `Τι να κάνεις: άνοιξε τη σελίδα${context.page ? ` (${escapeTelegram(context.page)})` : ''} σε κινητό. Αν είναι λευκή ή σπασμένη, κάνε rollback στο προηγούμενο deploy.`;
+    : isChunk
+      ? 'Τι να κάνεις: συνήθως κακό δίκτυο στο κινητό του επισκέπτη — τίποτα. Αν έρχεται πολλές φορές την ίδια ώρα με το ίδιο build, τότε λείπει αρχείο από το deploy: ξανακάνε deploy.'
+      : `Τι να κάνεις: άνοιξε τη σελίδα${context.page ? ` (${escapeTelegram(context.page)})` : ''} σε κινητό. Αν είναι λευκή ή σπασμένη, κάνε rollback στο προηγούμενο deploy.`;
 
   const rows = [
     `<b>${escapeTelegram(report.message) || 'Άγνωστο σφάλμα'}</b>`,
@@ -264,6 +284,11 @@ export const handler = async (event) => {
     // Enforced violations DO reach Telegram: at that point something on the page
     // really was refused and a visitor really did lose it.
     if (report.kind === 'csp' && report.disposition !== 'enforce') {
+      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
+    }
+
+    // Counted above, never pushed: a crawler is not a visitor. See CRAWLER_UA.
+    if (isCrawler(context.userAgent)) {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
     }
 

@@ -137,7 +137,14 @@
 # via /api/client-error instead of failing silently.
 #
 # ROLLBACK IS ONE WORD: put `-Report-Only` back on the header name and redeploy.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://api.open-meteo.com https://marine-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+# 04/08/2026 — `https://www.googletagmanager.com` ADDED TO connect-src. It was in
+# script-src (the tag loads) but not connect-src (the tag could not report), and GA4
+# now sends part of its traffic to https://www.googletagmanager.com/td?id=G-… instead
+# of the *.google-analytics.com collector. Enforcing CSP was therefore DROPPING real
+# pageviews: caught by an enforced violation from /el/beaches/lakonia/1552-viandini-vourkos/.
+# This is the failure mode the comment above warned about — one missing origin, every
+# page still returning 200. Strictly a loosening; nothing that worked can break.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the

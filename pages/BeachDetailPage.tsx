@@ -20,6 +20,7 @@ import {
   getWeatherGustKmph,
   type BeachWeatherById
 } from '../services/recommendationService';
+import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
@@ -86,8 +87,18 @@ import { translations } from '../translations';
 // implemented yet — hiding it until we rework it. Flip back to true to re-enable.
 const ENABLE_DAY_PLAN_SECTION = false;
 
-// Lazy load map to avoid blocking main thread
-const BeachMap = React.lazy(() => import('../components/BeachMap'));
+// Lazy load map to avoid blocking main thread.
+//
+// MUST be lazyWithChunkRecovery, never a bare React.lazy: React reads `.default` off
+// whatever the import resolves to, so a chunk that fails to arrive throws
+// "Cannot read properties of undefined (reading 'default')" (Safari: "undefined is not
+// an object (evaluating 's.default')") from inside React's own initialiser, with a
+// minified frame and no recovery. That is exactly what reached Telegram on 03/08/2026
+// from /it/beaches/lefkada/1154-afteli/ and /de/beaches/mykonos/1963-merchia/ — the
+// visitor got the error screen instead of the beach. App.tsx wraps every other lazy
+// component; this second copy of the map was the one that was missed.
+// `npm run quality:lazy-recovery` now fails the build if a bare React.lazy comes back.
+const BeachMap = lazyWithChunkRecovery(() => import('../components/BeachMap'), 'BeachMap');
 
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { BeachPhotoFallback, deriveShorelineFeatures, ShorelineThumbnail, useShorelineShape } from '../components/ShorelineThumbnail';

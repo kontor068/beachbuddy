@@ -42,16 +42,74 @@ const trimmed = (value: unknown, max: number): string =>
  *    inside map-vendor, not a broken screen.
  * 3. ResizeObserver loop notices, which browsers report as errors and which every
  *    project on earth ignores.
+ * 4. More extension plumbing, seen 03-04/08/2026 on build 7a370781: `Invalid call to
+ *    runtime.sendMessage(). Tab not found.` and `Extension context invalidated`.
+ *    Same family as (1) — the `tabId` pattern did not happen to match their wording,
+ *    which is the whole problem with matching on one phrase per symptom.
  */
 const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /\btabId\b/i,
   /chrome-extension:|moz-extension:|safari-web-extension:/i,
+  /runtime\.sendMessage/i,
+  /Tab not found/i,
+  /Extension context invalidated/i,
   /_leaflet_pos/,
   /ResizeObserver loop/i,
 ];
 
+/**
+ * Missing-chunk failures. These are NOT a broken site and must not fire "🔴 ΚΡΙΣΙΜΟ".
+ *
+ * utils/chunkLoadRecovery.ts already treats them as self-healing: clear the runtime
+ * caches, reload once, land on the current build. index.tsx's RootErrorBoundary has
+ * deliberately not reported them since day one for exactly that reason — but the
+ * SAME error also arrives at the global `unhandledrejection` listener below, which
+ * had no such filter. That gap is what filled Telegram on 03-04/08/2026 with
+ * "έσπασε σελίδα σε επισκέπτη" for pages that were, in fact, fine: every asset the
+ * alerts named (south-aegean-mykonos-jgY9YB5b.js, BeachDetailPage-BA_gNNyJ.js,
+ * map-vendor-CIGW-MKW.css, index-Dop3pvh4.js) answered 200 on the live site while
+ * the alerts were still arriving, and the build id in them was the live build.
+ *
+ * What a chunk failure really means is one of three harmless things: a deploy landed
+ * while a tab was open, a phone on island 4G dropped one request, or AdsBot-Google
+ * gave up on a subresource.
+ *
+ * The one version worth waking up for is the SECOND failure — recovery ran, reloaded,
+ * and the chunk STILL would not load. That is a broken deploy. chunkLoadRecovery
+ * stamps sessionStorage immediately before reloading, so a stamp younger than its own
+ * cooldown means "the reload already happened and did not help". Keep those.
+ */
+const CHUNK_LOAD_PATTERNS: RegExp[] = [
+  /dynamically imported module/i,
+  /Importing a module script failed/i,
+  /Loading chunk \S+ failed/i,
+  /Unable to preload CSS/i,
+];
+
+/** Must match utils/chunkLoadRecovery.ts — same key, same cooldown. */
+const CHUNK_RELOAD_KEY = 'calmBeachChunkReloadAttemptedAt';
+const CHUNK_RELOAD_COOLDOWN_MS = 10_000;
+
+const isSelfHealingChunkError = (message: string): boolean => {
+  if (!CHUNK_LOAD_PATTERNS.some(pattern => pattern.test(message))) return false;
+
+  try {
+    const lastAttempt = Number(window.sessionStorage.getItem(CHUNK_RELOAD_KEY) || 0);
+    const recoveryAlreadyFailed =
+      Number.isFinite(lastAttempt) &&
+      lastAttempt > 0 &&
+      Date.now() - lastAttempt < CHUNK_RELOAD_COOLDOWN_MS;
+    return !recoveryAlreadyFailed;
+  } catch {
+    // No sessionStorage (private mode, embedded webview) — we cannot tell a first
+    // failure from a second, so stay quiet rather than cry wolf.
+    return true;
+  }
+};
+
 const isIgnorable = (message: string, source: string): boolean =>
-  IGNORED_ERROR_PATTERNS.some(pattern => pattern.test(message) || pattern.test(source));
+  IGNORED_ERROR_PATTERNS.some(pattern => pattern.test(message) || pattern.test(source)) ||
+  isSelfHealingChunkError(message);
 
 /** Path without query or hash: `?near=1` and friends can carry location intent. */
 const currentPath = (): string => {
