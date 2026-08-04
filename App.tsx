@@ -3170,11 +3170,16 @@ export const App: React.FC = () => {
 
   // A region search switches islands async; once the new region is committed (and its
   // map-section mounted), land on the map — same outcome a beach search gets.
+  // Also keyed on locationSortResetKey: "Κοντά μου" always selects the same constant
+  // 'near-me' id, so back-to-back presses never change selectedIsland?.id and this effect
+  // would silently skip the scroll on the second press, stranding the user wherever the
+  // page happened to be scrolled (e.g. the footer). locationSortResetKey increments on
+  // every "Κοντά μου" press regardless of id, so it forces this effect to re-run.
   useEffect(() => {
     if (!pendingRegionMapScrollRef.current || !selectedIsland) return;
     pendingRegionMapScrollRef.current = false;
     scrollToMapSection();
-  }, [selectedIsland?.id]);
+  }, [selectedIsland?.id, locationSortResetKey]);
 
   // Beach search lands on the map, but only AFTER the name-search filtering (which runs on
   // the deferred query) has re-rendered the page to its final, shorter height — otherwise
