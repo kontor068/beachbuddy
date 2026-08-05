@@ -153,11 +153,61 @@ if (!readLabelsBlock) {
       failures.push(`READ_LABELS.${lang}: seaOpen ("${seaOpen[1]}") is identical to sea — the change is a no-op in ${lang}.`);
     }
   }
-  if (!/label:\s*sea\.isOpenWater\s*\?\s*labels\.seaOpen\s*:\s*labels\.sea/.test(heroSource)) {
+  // THREE LABELS SINCE 05/08/2026, and the choice between them is still one expression.
+  //
+  // The tile used to answer one question — "is this number the area grid or our own estimate?" —
+  // with `sea.isOpenWater ? seaOpen : sea`. It now answers a prior one first: "do we have a
+  // separate reading for the water AT THE SHORE?" (utils/shoreWave). Where we do, the shore
+  // figure leads under «Κύμα στην ακτή» and the open-water one is demoted into the hint rather
+  // than dropped, so both numbers stay on screen and each still names where it was taken.
+  //
+  // This assertion is deliberately NOT relaxed to "some label is chosen": it pins the shape of
+  // the whole three-way decision. The failure it exists to prevent — a grid reading wearing a
+  // near-shore label — is now reachable two ways instead of one, so it checks both branches.
+  if (!/label:\s*shoreLeads\s*\?\s*shoreCopy\.atShore\s*:\s*\(\s*sea\.isOpenWater\s*\?\s*labels\.seaOpen\s*:\s*labels\.sea\s*\)/.test(heroSource)) {
     failures.push(
-      'components/BeachAnswerHero.tsx: the sea reading no longer picks its label from sea.isOpenWater. '
+      'components/BeachAnswerHero.tsx: the sea reading no longer picks its label from shoreLeads / sea.isOpenWater. '
       + 'The labels exist but nothing chooses between them.'
     );
+  }
+  // The shore label may only lead when a shore FIGURE exists — a label without its own number
+  // would silently rebrand the open-water reading as the water at the beach, which is precisely
+  // the lie this gate was written to stop.
+  if (!/const shoreLeads = typeof sea\.shoreHeightM === 'number' && Number\.isFinite\(sea\.shoreHeightM\)/.test(heroSource)) {
+    failures.push(
+      'components/BeachAnswerHero.tsx: `shoreLeads` no longer requires a finite sea.shoreHeightM. '
+      + 'The «at the shore» label must never sit above the open-water number.'
+    );
+  }
+  // And the open-water number must survive into the hint whenever the shore figure takes the
+  // headline: it is the reading the drift warning rests on (the wind pushing a float off this
+  // shore is pushing it toward exactly that sea), so it may be demoted but never removed.
+  if (!/shoreCopy\.offshore\(metres\(sea\.heightM\)\)/.test(heroSource)) {
+    failures.push(
+      'components/BeachAnswerHero.tsx: the open-water figure is no longer shown beside the shore one. '
+      + 'Demoting it to the hint is allowed; dropping it is not.'
+    );
+  }
+
+  // The five languages must carry the new pair too — same rule as seaOpen above, same reason.
+  const shoreLabelsBlock = heroSource.match(/const SHORE_LABELS[\s\S]*?\n\};/);
+  if (!shoreLabelsBlock) {
+    failures.push('components/BeachAnswerHero.tsx: SHORE_LABELS block not found.');
+  } else {
+    for (const lang of ['en', 'gr', 'de', 'it', 'fr']) {
+      const row = shoreLabelsBlock[0].match(new RegExp(`\\b${lang}:\\s*\\{([^}]*)\\}`));
+      if (!row) {
+        failures.push(`SHORE_LABELS: language "${lang}" is missing.`);
+        continue;
+      }
+      const atShore = row[1].match(/\batShore:\s*'([^']*)'/);
+      if (!atShore || !atShore[1].trim()) {
+        failures.push(`SHORE_LABELS.${lang}: atShore is missing or empty — that language would print a bare number.`);
+      }
+      if (!/offshore:\s*\(v\)\s*=>/.test(row[1])) {
+        failures.push(`SHORE_LABELS.${lang}: offshore note is missing — the open-water figure would lose its name.`);
+      }
+    }
   }
 }
 

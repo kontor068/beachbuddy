@@ -32,7 +32,8 @@ import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_K
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
-import { assessBeachWindExposure } from '../utils/windExposureEngine';
+import { assessBeachWindExposure, resolveBeachWindProfile } from '../utils/windExposureEngine';
+import { estimateShoreWaveHeightM } from '../utils/shoreWave';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
@@ -1037,6 +1038,23 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const displayWaveHeightM = coveWave.coveApplied ? coveWave.waveHeightM : (waveHeightM ?? measuredWaveHeightM);
   // When the cove path is taken we are showing the modeled SMB, not the live grid value → estimate.
   const isWaveEstimate = coveWave.coveApplied || !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
+  // «Κύμα στην ακτή» — the second, separately-labelled reading (utils/shoreWave). Only speaks
+  // where the wind blows off the land into a land-blocked, fetch-free sector with no swell; the
+  // open-water figure above stays exactly as it is and stays on screen beside it. Reuses the
+  // cove guard's own resolved sector geometry so the two cannot disagree about which way the
+  // wind meets this shore.
+  const shoreWaveHeightM = estimateShoreWaveHeightM({
+    openWaterWaveHeightM: displayWaveHeightM,
+    windSpeedKmh,
+    sector: {
+      fetchKm: coveWave.fetchKm,
+      blockedRayRatio: coveWave.blockedRayRatio,
+      onshore: coveWave.onshore,
+    },
+    confidence: geospatialExposure?.confidence,
+    suspectPin: resolveBeachWindProfile(beach).profile.suspectPin,
+    swellPresent,
+  });
   // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
   // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
   // marine value when present), so a bar can never contradict the big wave meter beside it.
@@ -1831,7 +1849,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             // figure IS the live marine grid cell (open water), true when the cove guard replaced
             // it with our near-shore SMB or nothing was measured. One source, so the label can
             // never disagree with the number it sits above.
-            ? { heightM: displayWaveHeightM ?? null, label: seaConditionDisplay.value, isOpenWater: !isWaveEstimate }
+            ? {
+                heightM: displayWaveHeightM ?? null,
+                label: seaConditionDisplay.value,
+                isOpenWater: !isWaveEstimate,
+                shoreHeightM: shoreWaveHeightM,
+              }
             : null}
           water={showConditions && typeof seaTemperatureC === 'number' && waterTempDescriptor
             ? {

@@ -86,6 +86,15 @@ const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: st
   fr: { wind: 'Vent', sea: 'Vagues', seaOpen: 'Vagues au large', water: 'Eau', sunset: 'Coucher' },
 };
 
+/** Shown when the shore reading leads: the label above it, and the «offshore …» note beneath. */
+const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v: string) => string }> = {
+  en: { atShore: 'Waves at the shore', offshore: (v) => `${v} offshore` },
+  gr: { atShore: 'Κύμα στην ακτή', offshore: (v) => `${v} ανοιχτά` },
+  de: { atShore: 'Wellen am Ufer', offshore: (v) => `${v} draußen` },
+  it: { atShore: 'Onde a riva', offshore: (v) => `${v} al largo` },
+  fr: { atShore: 'Vagues au rivage', offshore: (v) => `${v} au large` },
+};
+
 /**
  * How this shore sits in today's wind, in the fewest words that still mean something to a
  * swimmer. Deliberately everyday language, not the scoring vocabulary: «στη σκιά» and
@@ -199,6 +208,14 @@ export interface BeachAnswerHeroProps {
      * which describe THIS shore. Drives the label only; the number is identical either way.
      */
     isOpenWater: boolean;
+    /**
+     * The modelled height AT THE SHORE (utils/shoreWave), present only where the wind blows off
+     * the land into a fetch-free, land-blocked sector with no swell running. When it is here the
+     * tile leads with it and demotes `heightM` to a secondary «ανοιχτά …» note — because a metre
+     * figure beside a beach name is read as the water at that beach, and on those shores it is
+     * not. Absent (the normal case) the tile behaves exactly as before.
+     */
+    shoreHeightM?: number | null;
   } | null;
   water: { celsius: number; descriptor: string; tone: HeroTone } | null;
   sunsetTime?: string | null;
@@ -364,14 +381,24 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
     });
   }
   if (sea) {
+    const unit = language === 'gr' ? 'μ.' : 'm';
+    const metres = (m: number) => `${m.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${unit}`;
+    // THE SHORE READING LEADS WHEN WE HAVE ONE. Both numbers stay on screen and each says where
+    // it was taken — the open-water figure is not hidden, it is demoted to the hint, because it
+    // is still the number that justifies the drift warning (the wind pushing a float out there
+    // is pushing it toward exactly that sea). The «~» is not decoration: the shore figure is
+    // modelled, the offshore one measured, and the tile must not let them look alike.
+    const shoreLeads = typeof sea.shoreHeightM === 'number' && Number.isFinite(sea.shoreHeightM);
+    const shoreCopy = SHORE_LABELS[language] ?? SHORE_LABELS.en;
     readings.push({
       glyph: <SeaGlyph heightM={sea.heightM} tone={glyphTone} className="h-full w-full" />,
-      label: sea.isOpenWater ? labels.seaOpen : labels.sea,
-      value:
-        typeof sea.heightM === 'number'
-          ? `${sea.heightM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
-          : '—',
-      hint: sea.label,
+      label: shoreLeads ? shoreCopy.atShore : (sea.isOpenWater ? labels.seaOpen : labels.sea),
+      value: shoreLeads
+        ? `~${metres(sea.shoreHeightM as number)}`
+        : typeof sea.heightM === 'number' ? metres(sea.heightM) : '—',
+      hint: shoreLeads && typeof sea.heightM === 'number'
+        ? `${sea.label} · ${shoreCopy.offshore(metres(sea.heightM))}`
+        : sea.label,
     });
   }
   if (water) {
