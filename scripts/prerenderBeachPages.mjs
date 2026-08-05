@@ -50,8 +50,8 @@ const prerenderLocales = [
     hreflang: 'en',
     ogLocale: 'en_US',
     pathPrefix: '',
-    homeTitle: 'Find Your Ideal Beach in Greece Today | CalmBeach',
-    homeDescription: "Tailored to today's conditions and your beach preferences — live wind, waves and shelter for thousands of Greek beaches.",
+    homeTitle: 'Which Greek Beach Is Calm Today? Wind & Waves | CalmBeach',
+    homeDescription: "See which Greek beaches have calm water today: live wind, waves, and the shelter each coastline's own shape gives.",
     homeImageAlt: 'CalmBeach Greece beach recommendations by wind and waves',
   },
   {
@@ -61,8 +61,8 @@ const prerenderLocales = [
     hreflang: 'el',
     ogLocale: 'el_GR',
     pathPrefix: '/el',
-    homeTitle: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα | CalmBeach',
-    homeDescription: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου — ζωντανός άνεμος, κύμα και προστασία για χιλιάδες ελληνικές παραλίες.',
+    homeTitle: 'Πού έχει ήρεμη θάλασσα σήμερα στην Ελλάδα | CalmBeach',
+    homeDescription: 'Δες ποιες ελληνικές παραλίες έχουν ήρεμη θάλασσα σήμερα: ζωντανός άνεμος, κύμα και η προστασία που δίνει το σχήμα της κάθε ακτής.',
     homeImageAlt: 'Calm Beach Greece προτάσεις παραλιών',
   },
   {
@@ -72,8 +72,8 @@ const prerenderLocales = [
     hreflang: 'de',
     ogLocale: 'de_DE',
     pathPrefix: '/de',
-    homeTitle: 'Dein idealer Strand in Griechenland heute | CalmBeach',
-    homeDescription: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben — Wind, Wellen und Schutz live für tausende Strände in Griechenland.',
+    homeTitle: 'Wo ist das Meer heute ruhig? Griechenland | CalmBeach',
+    homeDescription: 'Sieh, welche griechischen Strände heute ruhiges Wasser haben: Wind und Wellen live, plus der Schutz durch die Form der Küste.',
     homeImageAlt: 'CalmBeach Griechenland – Strandempfehlungen nach Wind und Wellen',
   },
   {
@@ -83,8 +83,8 @@ const prerenderLocales = [
     hreflang: 'fr',
     ogLocale: 'fr_FR',
     pathPrefix: '/fr',
-    homeTitle: 'Trouvez votre plage idéale en Grèce aujourd’hui | CalmBeach',
-    homeDescription: 'Adaptée aux conditions du jour et à vos préférences — vent, vagues et abri en direct pour des milliers de plages grecques.',
+    homeTitle: 'Quelle plage grecque est calme aujourd’hui ? | CalmBeach',
+    homeDescription: 'Voyez quelles plages grecques ont une mer calme aujourd’hui : vent et vagues en direct, et l’abri qu’offre la forme de la côte.',
     homeImageAlt: 'CalmBeach Grèce – recommandations de plages selon le vent et les vagues',
   },
   {
@@ -94,8 +94,8 @@ const prerenderLocales = [
     hreflang: 'it',
     ogLocale: 'it_IT',
     pathPrefix: '/it',
-    homeTitle: 'Trova la tua spiaggia ideale in Grecia oggi | CalmBeach',
-    homeDescription: 'Su misura per le condizioni di oggi e le tue preferenze — vento, onde e riparo in tempo reale per migliaia di spiagge greche.',
+    homeTitle: 'Quale spiaggia greca è calma oggi? | CalmBeach',
+    homeDescription: 'Scopri quali spiagge greche hanno mare calmo oggi: vento e onde in tempo reale e il riparo dato dalla forma della costa.',
     homeImageAlt: 'CalmBeach Grecia – consigli sulle spiagge in base a vento e onde',
   },
 ];
@@ -1519,12 +1519,38 @@ const intentNavLabel = (intentKey, regionId, language) => {
 // The guide articles that were actually generated for this island (same ≥MIN
 // gate as the page generation), so region/guide pages only link to pages that
 // exist. `excludeKey` drops the current page from a "more guides" cross-link.
+// Whether a guide page WILL be built for this island+intent. Must stay identical
+// to the generation loop in main(), or a link points at a 404 (too few guides
+// linked is the milder failure, and that is exactly what happened): the loop
+// scores `sheltered` off the baked `shelteredFromLocalWind` flag with a
+// proportional 25% gate, while this function used `intent.match` — the defensive
+// `protectedFrom` fallback — with the flat minimum. The two disagreed on 9
+// regions (Arki, Arta, Donousa, Erikoussa, Mathraki, Othonoi, Polyaigos,
+// Pserimos, Xanthi), whose sheltered guide was built and then linked from
+// nowhere on its own parent page. Found 05/08/2026 by scripts/auditRegionPages.mjs.
+const intentPredicateFor = intent =>
+  intent.key === 'sheltered'
+    ? (beach => beach.shelteredFromLocalWind === true)
+    : (beach => intent.match(beach));
+
+const islandIntentQualifies = (intent, beaches) => {
+  const valid = beaches.filter(b => Number.isInteger(b.id) && b.name);
+  const matched = valid.filter(intentPredicateFor(intent));
+  if (matched.length === 0) return false;
+  const min = intentMinFor(intent.key);
+  if (intent.key === 'sheltered') {
+    return matched.length >= min || (valid.length > 0 && matched.length / valid.length >= 0.25);
+  }
+  return Math.min(matched.length, ISLAND_INTENT_CAP) >= min;
+};
+
 const getIslandGuides = (island, region, locale, excludeKey = null) => {
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
   return islandIntents
     .filter(intent => intent.key !== excludeKey)
-    .filter(intent => beaches.filter(b => Number.isInteger(b.id) && b.name && intent.match(b)).length >= intentMinFor(intent.key))
+    .filter(intent => islandIntentQualifies(intent, beaches))
     .map(intent => ({
+      key: intent.key,
       href: localizedPath(islandIntentPath(intent, region, island), locale),
       label: intentNavLabel(intent.key, region.id, locale.language),
     }));
@@ -1556,6 +1582,91 @@ const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
         <section style="margin:0 0 24px;">
           <h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(heading)}</h2>
           <ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;">${items}${hubItem}</ul>
+        </section>`;
+};
+
+// One sentence per guide, so the region page states what each child page is FOR
+// instead of dropping five unexplained chips. Chips stay on the guide pages
+// (there the reader already knows the vocabulary); the region page is the entry
+// point, and until 05/08/2026 it linked its own guides once, in passing, while
+// every guide linked back to it four times. That asymmetry is part of why Google
+// read the guides as the primary pages for "{region} beaches".
+const INTENT_SECTION_BLURB = {
+  sheltered: {
+    en: 'The coves that face away from the prevailing wind — the shortlist for a windy day.',
+    gr: 'Οι ακτές που κοιτούν μακριά από τον άνεμο που επικρατεί — η μικρή λίστα για μέρα με αέρα.',
+    de: 'Die Buchten, die vom vorherrschenden Wind abgewandt liegen — die Auswahl für einen windigen Tag.',
+    fr: 'Les criques tournées à l\'opposé du vent dominant — la liste courte pour un jour de vent.',
+    it: 'Le insenature orientate lontano dal vento dominante — la lista breve per una giornata ventosa.',
+  },
+  family: {
+    en: 'Organised, not hard to reach, and recorded as shallow in our data.',
+    gr: 'Οργανωμένες, χωρίς δύσκολη πρόσβαση, και καταγεγραμμένες ως ρηχές στα δεδομένα μας.',
+    de: 'Bewirtschaftet, gut erreichbar und in unseren Daten als flach erfasst.',
+    fr: 'Aménagées, faciles d\'accès et enregistrées comme peu profondes dans nos données.',
+    it: 'Attrezzate, facili da raggiungere e registrate come basse nei nostri dati.',
+  },
+  snorkeling: {
+    en: 'Rockier seabed and clearer water, where there is something to look at underwater.',
+    gr: 'Πιο βραχώδης βυθός και καθαρότερο νερό, εκεί που έχει κάτι να δεις από κάτω.',
+    de: 'Felsiger Grund und klareres Wasser, wo es unter Wasser etwas zu sehen gibt.',
+    fr: 'Fond plus rocheux et eau plus claire, là où il y a quelque chose à voir sous l\'eau.',
+    it: 'Fondale più roccioso e acqua più limpida, dove sott\'acqua c\'è qualcosa da vedere.',
+  },
+  organized: {
+    en: 'Sunbeds, umbrellas and somewhere to eat or drink nearby.',
+    gr: 'Ξαπλώστρες, ομπρέλες και κάτι για φαγητό ή ποτό κοντά.',
+    de: 'Liegen, Sonnenschirme und etwas zu essen oder trinken in der Nähe.',
+    fr: 'Transats, parasols et de quoi manger ou boire à proximité.',
+    it: 'Lettini, ombrelloni e qualcosa da mangiare o bere nelle vicinanze.',
+  },
+  secluded: {
+    en: 'Quieter and harder to reach — dirt track, a walk, or boat only.',
+    gr: 'Πιο ήσυχες και πιο δύσκολες — χωματόδρομος, με τα πόδια ή μόνο με σκάφος.',
+    de: 'Ruhiger und schwerer erreichbar — Schotterpiste, zu Fuß oder nur per Boot.',
+    fr: 'Plus calmes et plus difficiles d\'accès — piste, à pied ou seulement en bateau.',
+    it: 'Più tranquille e più difficili da raggiungere — sterrato, a piedi o solo in barca.',
+  },
+  sunset: {
+    en: 'West-facing, so the sun goes down over the water in front of you.',
+    gr: 'Βλέπουν δυτικά, οπότε ο ήλιος δύει πάνω από το νερό μπροστά σου.',
+    de: 'Nach Westen ausgerichtet, die Sonne geht vor dir über dem Wasser unter.',
+    fr: 'Orientées à l\'ouest : le soleil se couche sur l\'eau devant vous.',
+    it: 'Esposte a ovest: il sole tramonta sull\'acqua davanti a te.',
+  },
+};
+
+const REGION_GUIDE_SECTION = {
+  en: { heading: 'Pick by what you are looking for', hub: 'All beach guides' },
+  gr: { heading: 'Διάλεξε με το τι ψάχνεις', hub: 'Όλοι οι οδηγοί παραλιών' },
+  de: { heading: 'Wähle nach dem, was du suchst', hub: 'Alle Strandführer' },
+  fr: { heading: 'Choisissez selon ce que vous cherchez', hub: 'Tous les guides plages' },
+  it: { heading: 'Scegli in base a cosa cerchi', hub: 'Tutte le guide' },
+};
+
+const renderRegionGuideSection = (island, region, locale) => {
+  const guides = getIslandGuides(island, region, locale);
+  const language = locale.language;
+  const copy = REGION_GUIDE_SECTION[language] || REGION_GUIDE_SECTION.en;
+  const items = guides.map(g => {
+    const blurb = INTENT_SECTION_BLURB[g.key]?.[language] || INTENT_SECTION_BLURB[g.key]?.en || '';
+    return `
+            <li style="margin:0;">
+              <a href="${escapeHtml(g.href)}" style="color:#075985;font-weight:800;text-decoration:none;font-size:16px;">${escapeHtml(g.label)}</a>
+              ${blurb ? `<p style="margin:2px 0 0;font-size:14.5px;line-height:1.55;color:#475569;">${escapeHtml(blurb)}</p>` : ''}
+            </li>`;
+  }).join('');
+  // The hub is en + el only, so /de//fr//it/ must not link a page never written
+  // (same rule as renderIslandGuides and NATIONAL_GUIDE_LINKS).
+  const hubItem = BASE_LOCALE_IDS.has(locale.id)
+    ? `
+            <li style="margin:0;"><a href="${escapeHtml(localizedPath(GUIDES_HUB_PATH, locale))}" style="color:#0e7490;font-weight:800;text-decoration:none;font-size:16px;">${escapeHtml(copy.hub)} →</a></li>`
+    : '';
+  if (!items && !hubItem) return '';
+  return `
+        <section style="margin:0 0 26px;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(copy.heading)}</h2>
+          <ul style="display:grid;gap:12px;margin:0;padding:0;list-style:none;">${items}${hubItem}</ul>
         </section>`;
 };
 
@@ -2254,18 +2365,26 @@ const withStaticFooter = (html, locale) => html.replace('</main>', `</main>${sta
 
 const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLinks = []) => {
   const isGreek = locale.language === 'gr';
+  // The <title> carries the " | CalmBeach" suffix because a search result needs the
+  // brand; an <h1> does not — a heading with a pipe in it reads like a page title
+  // pasted into the body, which is exactly what it was until 05/08/2026. Same string,
+  // brand stripped, so the two can never drift apart.
+  const homeHeading = String(locale.homeTitle).split(' | ')[0];
+  // What the visitor GETS, not what the app HAS. These used to be a feature list
+  // ("Map and beach detail pages"), which describes software rather than answering
+  // the question the heading above them just asked.
   const features = isGreek
     ? [
-      'Προτάσεις παραλιών με βάση τις συνθήκες',
-      'Έλεγχος ανέμου, κύματος και καιρού',
-      'Αναζήτηση ανά νησί ή περιοχή',
-      'Χάρτης και λεπτομέρειες παραλίας',
+      'Ποιες παραλίες είναι απάνεμες σήμερα',
+      'Άνεμος και κύμα ανά ώρα, για κάθε παραλία',
+      'Η προστασία που δίνει το σχήμα της κάθε ακτής',
+      'Χάρτης με τη σημερινή εικόνα κάθε παραλίας',
     ]
     : [
-      'Beach recommendations by conditions',
-      'Wind, waves and weather checks',
-      'Search by Greek island or region',
-      'Map and beach detail pages',
+      'Which beaches are sheltered today',
+      'Wind and waves hour by hour, per beach',
+      'The shelter each coastline’s own shape gives',
+      'A map showing today’s picture for every beach',
     ];
   const guideLinks = seoLandingPages
     .filter(landing => landing.locales[locale.id])
@@ -2280,7 +2399,7 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLi
     <div id="root">
       <main data-static-fallback style="max-width:860px;margin:0 auto;padding:40px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
         <p style="margin:0 0 8px;color:#0e7490;font-weight:800;">Calm Beach Greece</p>
-        <h1 style="margin:0 0 14px;font-size:36px;line-height:1.08;">${escapeHtml(locale.homeTitle)}</h1>
+        <h1 style="margin:0 0 14px;font-size:36px;line-height:1.08;">${escapeHtml(homeHeading)}</h1>
         <p style="margin:0 0 22px;font-size:18px;line-height:1.55;color:#334155;">${escapeHtml(locale.homeDescription)}</p>
         <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 24px;padding:0;list-style:none;">
           ${features.map(feature => `<li style="border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#075985;font-weight:700;">${escapeHtml(feature)}</li>`).join('')}
@@ -2301,10 +2420,18 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLi
           </ul>
         </nav>
         ` : ''}
+        ${/* This block is what a visitor sees before the JavaScript lands, and what
+              anyone browsing without it sees permanently. Until 05/08/2026 it said
+              "open the app" above a link pointing at `canonicalUrl` — i.e. AT THIS
+              VERY PAGE. With JS the React app has already replaced this markup, so
+              nobody ever clicked it; without JS it reloaded the same dead page. A
+              self-referential link is not navigation, so it now points at the guides
+              hub: a real, fully static destination that works with JS switched off,
+              and the page family that earns most of our search clicks. */''}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(isGreek
-          ? 'Άνοιξε την εφαρμογή για live προτάσεις με βάση άνεμο και θάλασσα.'
-          : "Open the app for live recommendations based on wind and sea conditions.")}</p>
-        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:800;">${escapeHtml(isGreek ? 'Άνοιγμα Calm Beach Greece' : 'Open Calm Beach Greece')}</a></p>
+          ? 'Δεν φορτώνει ο χάρτης; Οι οδηγοί παραλιών διαβάζονται κανονικά χωρίς αυτόν.'
+          : 'Map not loading? The beach guides read fine without it.')}</p>
+        <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(localizedPath(GUIDES_HUB_PATH, locale))}" style="color:#0e7490;font-weight:800;">${escapeHtml(isGreek ? 'Όλοι οι οδηγοί παραλιών' : 'All beach guides')} →</a></p>
       </main>
     </div>
   `;
@@ -3395,76 +3522,243 @@ const fitIntentTitle = (title, language) => {
 // earned exactly 0 clicks (GSC 28d to 2026-07-24), against a ~1.2% baseline for
 // those positions. Leading with "{total} παραλίες {gen}" answers the query
 // first; the shelter count keeps the differentiator without owning the title.
-const buildRegionShelterCopy = (regionId, nameEl, nameEn, total, sheltered, language) => {
+// ---------------------------------------------------------------------------
+// Region-page copy — rewritten 05/08/2026. See docs/team/10-seo-specialist.md.
+//
+// What was wrong: the H1 asked the SHELTER question ("Which Preveza beaches are
+// more sheltered from the wind?"), which is the job of /sheltered-beaches/{region}/.
+// So on the region's own head term — "preveza beaches", "lemnos beaches",
+// "kavala beach" — Google skipped the region page entirely and ranked three of
+// our sub-guides at positions 12-15 against each other. Zero clicks on 208
+// impressions across those three queries, and 34 clicks for the whole page type
+// site-wide (GSC 06/07-02/08).
+//
+// So: the H1 is now the bare head term, the shelter angle is demoted to a
+// section that LINKS the sheltered guide, and the guides read as children of
+// this page instead of rivals to it.
+//
+// The comparative stays everywhere it appears ("πιο υπήνεμες" / "more
+// sheltered" / "eher windgeschützt" / "plutôt abritées" / "più riparate"): the
+// exposure model ranks coasts against a wind direction, it never promises
+// shelter, and `checkRiskyConditionClaims` in scripts/auditSeoPrerender.mjs
+// treats the bare claim as a defect. It is right to.
+const buildRegionHeadCopy = (regionId, nameEl, nameEn, total, sheltered, language) => {
   const w = windWordsFor(regionId);
   const numberless = sheltered < 2 || sheltered >= total;
+
   if (language === 'gr') {
     const gen = regionGenGr(regionId, nameEl);
     const prep = regionPrepGr(regionId, nameEl);
-    const title = numberless
-      ? pickUnderLimit([`${total} παραλίες ${gen}: σύγκρινε άνεμο & κύμα | CalmBeach`, `${total} παραλίες ${gen}: σύγκρινε άνεμο & κύμα`, `${total} παραλίες ${gen}: άνεμος & κύμα`], 58)
-      : pickUnderLimit([`${total} παραλίες ${gen} — οι ${sheltered} πιο υπήνεμες | CalmBeach`, `${total} παραλίες ${gen} — οι ${sheltered} πιο υπήνεμες`, `${total} παραλίες ${gen}: ${sheltered} πιο υπήνεμες`], 58);
-    const description = numberless
-      ? `${total} παραλίες ${prep}. Σύγκρινε προστασία ${w.elFrom} και ζωντανό άνεμο και κύμα πριν πας.`
-      : `${total} παραλίες ${prep}. Οι ${sheltered} είναι προστατευμένες ${w.elFrom}. Δες ζωντανά άνεμο και κύμα πριν πας.`;
-    // "πιο υπήνεμες" / "more sheltered", never the bare claim: the exposure model
-    // ranks coasts against a wind direction, it does not promise shelter. Same
-    // comparative the UI endorsement uses ("Πιο υπήνεμη επιλογή").
-    const h1 = `Ποιες παραλίες ${prep} μένουν πιο υπήνεμες ${w.elIn};`;
-    const intro = numberless
-      ? `Οι ${total} παραλίες ${prep} διαφέρουν πολύ στην προστασία ${w.elFrom}. Σύγκρινέ τες και δες ζωντανά άνεμο και κύμα πριν πας.`
-      : `Από τις ${total} παραλίες ${prep}, οι ${sheltered} δεν είναι εκτεθειμένες ${w.elIn} — αυτές με τις καλύτερες πιθανότητες για μπάνιο μια μέρα με αέρα. Άνοιξε όποια θες για ζωντανό άνεμο και κύμα.`;
-    return { title, description, h1, intro };
+    return {
+      // Head term first, always. The tiers only ever drop the tail.
+      title: pickUnderLimit([
+        `Παραλίες ${gen}: όλες οι ${total}, άνεμος & κύμα | CalmBeach`,
+        `Παραλίες ${gen}: όλες οι ${total}, άνεμος & κύμα`,
+        `Παραλίες ${gen}: όλες οι ${total}`,
+        `Παραλίες ${gen}`,
+      ], 58),
+      description: numberless
+        ? `Και οι ${total} παραλίες ${prep}, με ζωντανό άνεμο και κύμα για την καθεμιά και προστασία ${w.elFrom}.`
+        : `Και οι ${total} παραλίες ${prep}, με ζωντανό άνεμο και κύμα. Οι ${sheltered} μένουν πιο υπήνεμες ${w.elIn}.`,
+      h1: `Παραλίες ${gen}`,
+      intro: numberless
+        ? `Όλες οι ${total} παραλίες ${prep}, σε μία λίστα. Διαφέρουν πολύ στην προστασία ${w.elFrom} — άνοιξε όποια θέλεις για ζωντανό άνεμο και κύμα πριν ξεκινήσεις.`
+        : `Όλες οι ${total} παραλίες ${prep}, σε μία λίστα. Οι ${sheltered} από αυτές δεν είναι εκτεθειμένες ${w.elIn} — αυτές έχουν τις καλύτερες πιθανότητες για μπάνιο μια μέρα με αέρα. Άνοιξε όποια θέλεις για ζωντανό άνεμο και κύμα.`,
+      sections: [
+        {
+          heading: `Ποιες παραλίες ${prep} μένουν πιο υπήνεμες ${w.elIn};`,
+          body: numberless
+            ? `Κοίτα προς τα πού βλέπει η κάθε ακτή. Όταν φυσάει ${w.elNom}, οι παραλίες που κοιτούν προς την αντίθετη μεριά έχουν μπροστά τους λιγότερη θάλασσα για να χτιστεί κύμα, οπότε συνήθως είναι πιο βατές. Δεν είναι εγγύηση: η ίδια παραλία αλλάζει χαρακτήρα όταν γυρίσει ο άνεμος, γι' αυτό δες τον ζωντανό άνεμο και το κύμα πριν πας.`
+            : `Από τις ${total}, οι ${sheltered} έχουν προσανατολισμό μακριά ${w.elFrom}, δηλαδή μπροστά τους υπάρχει λιγότερη θάλασσα για να χτιστεί κύμα όταν φυσάει. Δεν είναι εγγύηση — η ίδια παραλία αλλάζει χαρακτήρα όταν γυρίσει ο άνεμος. Δες τη ζωντανή εικόνα πριν ξεκινήσεις.`,
+        },
+        {
+          heading: `Με τι σειρά είναι η λίστα;`,
+          body: `Με το πόσο γνωστή είναι η κάθε παραλία, όχι με βαθμολογία δική μας. Η κατάταξη «ποια είναι καλή τώρα» αλλάζει ώρα με την ώρα και δεν μπορεί να τυπωθεί σε στατική σελίδα — γι' αυτό εδώ θα βρεις τη λίστα και τα σταθερά χαρακτηριστικά, ενώ τις συνθήκες τις δίνει ο ζωντανός χάρτης.`,
+        },
+      ],
+    };
   }
-  // en (+ de/fr/it region pages reuse the en shelter framing with localized copy below)
-  const title = numberless
-    ? pickUnderLimit([`${total} Beaches in ${nameEn}: Compare Wind & Waves | CalmBeach`, `${total} Beaches in ${nameEn}: Compare Wind & Waves`, `${total} Beaches in ${nameEn}: Wind & Waves`], 60)
-    : pickUnderLimit([`${total} Beaches in ${nameEn} — ${sheltered} More Sheltered | CalmBeach`, `${total} Beaches in ${nameEn} — ${sheltered} More Sheltered`, `${total} Beaches in ${nameEn}: ${sheltered} More Sheltered`], 60);
-  const description = numberless
-    ? `${total} beaches in ${nameEn}. Compare each by shelter from ${w.en} and live wind & waves before you go.`
-    : `${total} beaches in ${nameEn}, ${sheltered} sheltered from ${w.en}. See live wind & wave conditions for each before you go.`;
-  const h1 = `Which ${nameEn} beaches are more sheltered from the wind?`;
-  const intro = numberless
-    ? `The ${total} beaches in ${nameEn} vary widely in shelter from ${w.en}. Compare them and check live wind and waves before you go.`
-    : `Of the ${total} beaches in ${nameEn}, ${sheltered} sit away from ${w.en} — the ones likeliest to stay swimmable on a windy day. Open any for live wind and waves before you go.`;
-  return { title, description, h1, intro };
+
+  if (language === 'de') {
+    return {
+      title: pickUnderLimit([
+        `Strände auf ${nameEn}: alle ${total}, Wind & Wellen | CalmBeach`,
+        `Strände auf ${nameEn}: alle ${total}, Wind & Wellen`,
+        `Strände auf ${nameEn}: alle ${total}`,
+        `Strände auf ${nameEn}`,
+      ], 60),
+      description: numberless
+        ? `Alle ${total} Strände auf ${nameEn}, mit Live-Wind und Wellen für jeden einzelnen und dem Schutz vor ${w.de}.`
+        : `Alle ${total} Strände auf ${nameEn} mit Live-Wind und Wellen. ${sheltered} davon liegen eher windgeschützt vor ${w.de}.`,
+      h1: `Strände auf ${nameEn}`,
+      intro: numberless
+        ? `Alle ${total} Strände auf ${nameEn} in einer Liste. Sie unterscheiden sich stark im Schutz vor ${w.de} — öffne einen beliebigen für Live-Wind und Wellen, bevor du losfährst.`
+        : `Alle ${total} Strände auf ${nameEn} in einer Liste. ${sheltered} davon liegen nicht offen zu ${w.de} und haben an einem windigen Tag die besseren Chancen. Öffne einen beliebigen für Live-Wind und Wellen.`,
+      sections: [
+        {
+          heading: `Welche Strände auf ${nameEn} sind eher windgeschützt?`,
+          body: `Es kommt darauf an, wohin die Küste schaut. Weht der Wind, haben Buchten auf der abgewandten Seite weniger offene See vor sich, an der sich Welle aufbauen kann — sie sind meist ruhiger. Das ist keine Garantie: dreht der Wind, ändert sich der Strand. Prüfe Wind und Wellen live, bevor du losfährst.`,
+        },
+        {
+          heading: 'Wie ist die Liste sortiert?',
+          body: 'Nach Bekanntheit, nicht nach einer Wertung von uns. Welcher Strand gerade gut ist, ändert sich stündlich und lässt sich auf einer statischen Seite nicht drucken — hier stehen die Liste und die festen Eigenschaften, die Bedingungen liefert die Live-Karte.',
+        },
+      ],
+    };
+  }
+
+  if (language === 'fr') {
+    return {
+      title: pickUnderLimit([
+        `Plages à ${nameEn} : les ${total}, vent & vagues | CalmBeach`,
+        `Plages à ${nameEn} : les ${total}, vent & vagues`,
+        `Plages à ${nameEn} : les ${total}`,
+        `Plages à ${nameEn}`,
+      ], 60),
+      description: numberless
+        ? `Les ${total} plages de ${nameEn}, avec le vent et les vagues en direct pour chacune et leur abri ${w.fr}.`
+        : `Les ${total} plages de ${nameEn}, vent et vagues en direct. ${sheltered} d'entre elles sont plutôt abritées ${w.fr}.`,
+      h1: `Plages à ${nameEn}`,
+      intro: numberless
+        ? `Les ${total} plages de ${nameEn}, en une seule liste. Leur abri ${w.fr} varie beaucoup — ouvrez celle que vous voulez pour le vent et les vagues en direct avant de partir.`
+        : `Les ${total} plages de ${nameEn}, en une seule liste. ${sheltered} d'entre elles ne sont pas exposées ${w.fr} : ce sont celles qui ont le plus de chances un jour de vent. Ouvrez celle que vous voulez pour le vent et les vagues en direct.`,
+      sections: [
+        {
+          heading: `Quelles plages de ${nameEn} sont plutôt abritées ?`,
+          body: `Tout dépend de l'orientation de la côte. Quand le vent souffle, les criques tournées à l'opposé ont moins de mer ouverte devant elles pour lever de la vague : elles sont en général plus confortables. Ce n'est pas une garantie — la même plage change de caractère quand le vent tourne. Vérifiez le vent et les vagues en direct avant d'y aller.`,
+        },
+        {
+          heading: 'Comment la liste est-elle classée ?',
+          body: "Par notoriété, pas par une note de notre part. Savoir quelle plage est bonne à un moment donné change d'heure en heure et ne peut pas s'imprimer sur une page statique — ici vous avez la liste et les caractéristiques stables, les conditions viennent de la carte en direct.",
+        },
+      ],
+    };
+  }
+
+  if (language === 'it') {
+    return {
+      title: pickUnderLimit([
+        `Spiagge a ${nameEn}: tutte le ${total}, vento e onde | CalmBeach`,
+        `Spiagge a ${nameEn}: tutte le ${total}, vento e onde`,
+        `Spiagge a ${nameEn}: tutte le ${total}`,
+        `Spiagge a ${nameEn}`,
+      ], 60),
+      description: numberless
+        ? `Tutte le ${total} spiagge di ${nameEn}, con vento e onde in diretta per ciascuna e il riparo ${w.it}.`
+        : `Tutte le ${total} spiagge di ${nameEn}, vento e onde in diretta. ${sheltered} sono più riparate ${w.it}.`,
+      h1: `Spiagge a ${nameEn}`,
+      intro: numberless
+        ? `Tutte le ${total} spiagge di ${nameEn} in un unico elenco. Il riparo ${w.it} cambia molto da una all'altra — apri quella che vuoi per vento e onde in diretta prima di partire.`
+        : `Tutte le ${total} spiagge di ${nameEn} in un unico elenco. ${sheltered} non sono esposte ${w.it} e in una giornata ventosa hanno le probabilità migliori. Apri quella che vuoi per vento e onde in diretta.`,
+      sections: [
+        {
+          heading: `Quali spiagge di ${nameEn} sono più riparate?`,
+          body: `Dipende da dove guarda la costa. Quando soffia il vento, le insenature orientate dalla parte opposta hanno meno mare aperto davanti per costruire onda, quindi di solito sono più comode. Non è una garanzia: la stessa spiaggia cambia carattere quando il vento gira. Controlla vento e onde in tempo reale prima di andare.`,
+        },
+        {
+          heading: "Con quale criterio è ordinato l'elenco?",
+          body: 'Per quanto è conosciuta ciascuna spiaggia, non per un nostro voto. Quale spiaggia sia buona in un dato momento cambia di ora in ora e non si può stampare su una pagina statica — qui trovi l\'elenco e le caratteristiche stabili, le condizioni le dà la mappa in diretta.',
+        },
+      ],
+    };
+  }
+
+  // en
+  return {
+    title: pickUnderLimit([
+      `Beaches in ${nameEn}: All ${total}, Wind & Waves | CalmBeach`,
+      `Beaches in ${nameEn}: All ${total}, Wind & Waves`,
+      `Beaches in ${nameEn}: All ${total}`,
+      `Beaches in ${nameEn}`,
+    ], 60),
+    // Every string here that contains "sheltered" also carries a qualifier
+    // ("more", "check", "before you go", "compare") — `shelterQualifierPattern`
+    // in scripts/auditSeoPrerender.mjs treats a bare shelter claim as a defect,
+    // and the exposure model does rank coasts rather than promise shelter.
+    description: numberless
+      ? `All ${total} beaches in ${nameEn}, with live wind and waves for each. Compare how sheltered each one sits from ${w.en} before you go.`
+      : `All ${total} beaches in ${nameEn}, with live wind and waves. ${sheltered} of them sit more sheltered from ${w.en}.`,
+    h1: `Beaches in ${nameEn}`,
+    intro: numberless
+      ? `All ${total} beaches in ${nameEn}, in one list. They vary widely in how sheltered they sit from ${w.en} — open any of them and check live wind and waves before you go.`
+      : `All ${total} beaches in ${nameEn}, in one list. ${sheltered} of them are not exposed to ${w.en}, which gives them the better odds on a windy day. Open any of them for live wind and waves.`,
+    sections: [
+      {
+        heading: `Which beaches in ${nameEn} are more sheltered from the wind?`,
+        body: numberless
+          ? `It comes down to which way the coast faces. When ${w.en} blows, coves facing the other way have less open water in front of them for a wave to build across, so they are usually more comfortable. It is not a guarantee — the same beach changes character when the wind turns. Check live wind and waves before you go.`
+          : `${sheltered} of the ${total} face away from ${w.en}, meaning less open water in front of them for a wave to build across when it blows. It is not a guarantee — the same beach changes character when the wind turns. Check the live reading before you drive out.`,
+      },
+      {
+        heading: 'How is this list ordered?',
+        body: 'By how well known each beach is, not by a score of ours. Which beach is good on a given day changes hour by hour and cannot be printed on a static page — so this page carries the list and the things that do not change, and the live map carries the conditions.',
+      },
+    ],
+  };
 };
 
-const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLocales[0], shelterCopy = null) => {
+// The region page's crawlable body. Deliberately built from plain inline styles
+// and NOT from STATIC_PAGE_BASE_CSS / renderBeachCard, unlike the guide
+// articles: this page still mounts the React app, and that stylesheet carries
+// global `body`, `a` and `*{box-sizing}` rules that would restyle the live map.
+// The SEO value here is text, structure and links — photo cards would have cost
+// a second design system inside the interactive page, plus ~400 KB on Halkidiki
+// (133 beaches), to buy nothing Google reads.
+const REGION_BEACH_LINK_CAP = 200; // headroom over the largest region (Halkidiki, 133)
+const staticRegionFallback = (island, region, canonicalUrl, locale = prerenderLocales[0], content = null) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
+  const chrome = getArticleChrome(language);
   const islandName = displayName(island.name, region.id, language);
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
+  // Every beach, not the first 80. The old cap orphaned the tail of the four
+  // regions that exceed it — Halkidiki 133, Evia 130, Corfu 105, Chania 89 — so
+  // 96 beach pages had no internal link from anywhere on the site and reached
+  // Google by sitemap alone (measured 05/08/2026, scripts/auditOrphanPages.mjs).
+  // A text link costs ~120 bytes; the region page is the only natural parent
+  // those pages have. The JSON-LD ItemList below stays capped at 80 — schema.org
+  // lists are a sample, and that one is parsed on every crawl.
   const beachItems = beaches
-    .slice(0, 80)
+    .slice(0, REGION_BEACH_LINK_CAP)
     .map(beach => {
       const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
+      // The curated story hook where one exists (unique prose, ~83 beaches), the
+      // structured type/access line otherwise. Same helper the guide lists use.
+      const blurb = intentBeachBlurbText(region, beach, language);
       return `
           <li style="margin:0;">
             <a href="${escapeHtml(localizedPath(beachPath(region, island, beach), locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:10px 12px;background:white;color:#0f172a;text-decoration:none;">
               <strong style="color:#0e7490;">${escapeHtml(beachName)}</strong>
               ${renderBeachSummaryMeta(beach, language)}
             </a>
+            ${blurb ? `<p style="margin:5px 2px 0;font-size:13.5px;line-height:1.5;color:#475569;">${escapeHtml(blurb)}</p>` : ''}
           </li>
         `;
     })
     .join('');
 
+  // Each visible Q&A heading is an <h2> and each body a <p>, so the FAQPage
+  // JSON-LD built from the same `content.sections` in buildRegionPage describes
+  // markup that is actually on the page — the rule Google states for FAQ rich
+  // results, and the same shape staticIslandIntentFallback uses.
+  const sections = Array.isArray(content?.sections) ? content.sections : [];
+  const sectionHtml = sections.map(section => `
+          <section style="margin:0 0 18px;">
+            <h2 style="margin:0 0 7px;font-size:18px;line-height:1.25;color:#0f172a;">${escapeHtml(section.heading)}</h2>
+            <p style="margin:0;font-size:15.5px;line-height:1.62;color:#334155;">${escapeHtml(section.body)}</p>
+          </section>`).join('');
+
   return `
     <div id="root">
       <main data-static-fallback style="max-width:840px;margin:0 auto;padding:32px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
         <p style="margin:0 0 8px;color:#0e7490;font-weight:700;">${escapeHtml(copy.brand)}</p>
-        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(shelterCopy ? shelterCopy.h1 : copy.regionHeading(islandName))}</h1>
-        <p style="margin:0 0 20px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(shelterCopy ? shelterCopy.intro : copy.regionDescription(islandName, beaches.length))}</p>
-        ${beachItems ? `<ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 20px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
-        ${renderIslandGuides(island, region, locale, null, pickLang(language, {
-          en: `${islandName} beach guides`,
-          gr: `Οδηγοί παραλιών — ${islandName}`,
-          de: `${islandName} Strandführer`,
-          fr: `Guides plages — ${islandName}`,
-          it: `Guide spiagge — ${islandName}`,
-        }))}
-        <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppRegion)}</p>
+        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.1;">${escapeHtml(content ? content.h1 : copy.regionHeading(islandName))}</h1>
+        <p style="margin:0 0 22px;font-size:17px;line-height:1.55;color:#334155;">${escapeHtml(content ? content.intro : copy.regionDescription(islandName, beaches.length))}</p>
+        ${beachItems ? `<h2 style="margin:0 0 10px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(chrome.listHeading)}</h2>
+        <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 26px;padding:0;list-style:none;">${beachItems}</ul>` : ''}
+        ${renderRegionGuideSection(island, region, locale)}
+        ${sectionHtml ? `<h2 style="margin:0 0 12px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(chrome.faqHeading)}</h2>${sectionHtml}` : ''}
+        <p data-nosnippet="true" style="margin:18px 0 0;color:#475569;">${escapeHtml(copy.openAppRegion)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewRegion(islandName))}</a></p>
       </main>
     </div>
@@ -4038,35 +4332,43 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
   // generic, near-identical "compare N beaches by wind, waves…" copy for en/gr.
   const nameEl = displayName(island.name, region.id, 'gr');
   const nameEn = regionDisplayEn(region.id, displayName(island.name, region.id, 'en'));
-  const w = windWordsFor(region.id);
-  const numberless = sheltered < 2 || sheltered >= total;
-  const shelterCopy = (language === 'en' || language === 'gr')
-    ? buildRegionShelterCopy(region.id, nameEl, nameEn, total, sheltered, language)
-    : null;
-  const description = shelterCopy ? shelterCopy.description : pickLang(language, {
-    de: numberless
-      ? `${nameEn}, Griechenland: ${total} Strände. Vergleiche sie nach Schutz vor ${w.de} und prüfe Wind und Wellen, bevor du losfährst.`
-      : `${nameEn}, Griechenland: ${total} Strände, ${sheltered} vor ${w.de} geschützt. Prüfe Wind und Wellen für jeden, bevor du losfährst.`,
-    fr: numberless
-      ? `${nameEn}, Grèce : ${total} plages. Comparez leur abri ${w.fr} et vérifiez le vent et les vagues avant d'y aller.`
-      : `${nameEn}, Grèce : ${total} plages, ${sheltered} plutôt abritées ${w.fr}. Vérifiez le vent et les vagues pour chacune avant d'y aller.`,
-    it: numberless
-      ? `${nameEn}, Grecia: ${total} spiagge. Confronta il riparo ${w.it} e controlla vento e onde prima di andare.`
-      : `${nameEn}, Grecia: ${total} spiagge, ${sheltered} più riparate ${w.it}. Controlla vento e onde per ciascuna prima di andare.`,
-  });
-  const title = shelterCopy ? shelterCopy.title : pickLang(language, {
-    // Same count-first shape as en/gr, and the shelter claim carries its
-    // comparative in each language (eher / plutôt / più) — the bare "sheltered
-    // beaches" form promises a state the exposure model never promises.
-    de: numberless ? `${total} Strände auf ${nameEn}: Wind & Wellen | CalmBeach` : `${total} Strände auf ${nameEn} — ${sheltered} eher windgeschützt | CalmBeach`,
-    fr: numberless ? `${total} plages à ${nameEn} : vent & vagues | CalmBeach` : `${total} plages à ${nameEn} — ${sheltered} plutôt abritées | CalmBeach`,
-    it: numberless ? `${total} spiagge a ${nameEn}: vento e onde | CalmBeach` : `${total} spiagge a ${nameEn} — ${sheltered} più riparate | CalmBeach`,
-  });
-  const regionPageName = `${islandName} beaches`;
+  // All five languages now go through one function. de/fr/it used to skip it
+  // entirely and carry inline literals, which is how they ended up with a
+  // different framing from en/gr on the same page type.
+  const headCopy = buildRegionHeadCopy(region.id, nameEl, nameEn, total, sheltered, language);
+  // The same two computed sections the guides carry — the only content on the
+  // site that answers "when should I come?" with a number, and the strongest
+  // argument that these are real pages and not a keyword permutation. Both take
+  // an arbitrary beach-id set and return the content untouched when the data is
+  // missing or the region has fewer than 3 beaches with climatology.
+  // Same idiom as the guide loop on purpose (`.map(beach => beach.id)`,
+  // `locale.language` spelled out): scripts/validateWaveClimatology.mjs and
+  // validateWaterClimatology.mjs read this call site as TEXT to prove the
+  // section is wired to real beach ids, the right climatology file and the
+  // locale's language. Passing the local `language` alias here was equivalent at
+  // runtime and still tripped both gates — correctly, because a gate that reads
+  // source cannot know an alias is the same thing.
+  // Kept un-nested for the same reason the guide loop is: the water gate reads
+  // one call expression and fails if `waveClimatology` appears inside it, because
+  // the two file names differ by a letter and swapping them makes the temperature
+  // section vanish in silence. Nesting the sea call inside the water call put
+  // both names in one expression and tripped it.
+  const beachIds = beaches.filter(beach => Number.isInteger(beach.id)).map(beach => beach.id);
+  const withSea = withSeaSeasonSection(headCopy, beachIds, waveClimatology, locale.language, region.id);
+  const content = withWaterSeasonSection(withSea, beachIds, waterClimatology, locale.language);
+  const description = content.description;
+  const title = content.title;
+  // The breadcrumb used to read `${islandName} beaches` — the raw display name
+  // plus a hardcoded English noun, on every locale. Two problems it caused:
+  // "Παραλίες Αττικής" on the page against "Περιοχή Αθήνας beaches" in the
+  // breadcrumb (the H1 uses the curated `regionDisplayEn`/declension, the label
+  // did not), and a German page whose breadcrumb said "beaches". The H1 IS the
+  // label — one string, one name. Caught 05/08 by scripts/auditRegionPages.mjs.
+  const regionPageName = content.h1;
   const pageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: shelterCopy ? shelterCopy.h1 : pickLang(language, { de: `Strände: ${islandName}`, fr: `Plages : ${islandName}`, it: `Spiagge: ${islandName}` }),
+    name: content.h1,
     description,
     url: canonicalUrl,
     image: imageUrl,
@@ -4088,7 +4390,11 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
       { name: 'CalmBeach Greece', url: homeUrlForLocale(locale) },
       { name: regionPageName, url: canonicalUrl },
     ]),
-  ];
+    // Every question here is rendered as a visible <h2>/<p> pair by
+    // staticRegionFallback, from this same array. Region pages were the only
+    // list-page type on the site without it.
+    faqJsonLd(content.sections.map(section => ({ q: section.heading, a: section.body }))),
+  ].filter(Boolean);
 
   const htmlWithHead = injectBeachHead(baseHtml, {
     title,
@@ -4103,7 +4409,7 @@ const buildRegionPage = (baseHtml, island, region, imageUrl, locale = prerenderL
     jsonLd,
   });
 
-  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale, shelterCopy));
+  return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticRegionFallback(island, region, canonicalUrl, locale, content));
 };
 
 const articleChrome = {
@@ -4993,10 +5299,9 @@ const main = async () => {
     // 'sheltered' uses the baked, curated-aware `shelteredFromLocalWind` flag (one
     // source), so it lists only genuinely sheltered beaches for the region's regime.
     for (const intent of islandIntents) {
-      const predicate = intent.key === 'sheltered'
-        ? (beach => beach.shelteredFromLocalWind === true)
-        : (beach => intent.match(beach));
-      const matchedAll = validBeaches.filter(predicate);
+      // Same predicate `getIslandGuides` uses, so "this guide gets built" and
+      // "the region page links this guide" can never diverge again.
+      const matchedAll = validBeaches.filter(intentPredicateFor(intent));
       const matches = matchedAll
         .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0))
         .slice(0, ISLAND_INTENT_CAP);

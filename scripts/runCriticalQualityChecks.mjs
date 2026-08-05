@@ -255,6 +255,18 @@ const checks = [
     command: npmBin,
     args: ['run', 'seo:audit'],
   },
+  {
+    id: 'region-pages',
+    title: 'Region pages are list pages',
+    description:
+      'Asserts every prerendered /beaches/{region}/ page in every locale answers its own head term ("Beaches in X"): a short, non-interrogative H1 that names the region, a body thick enough to be a real list page, a link to every beach and to every guide actually built for that region, FAQPage/CollectionPage/ItemList/BreadcrumbList structured data, and a self-referential canonical.',
+    protects:
+      'Prevents the region page from ceding "X beaches" to our own sub-guides again — the 05/08/2026 cannibalisation where three of our URLs sat at position 13-15 with zero clicks.',
+    failureAction:
+      'Fix buildRegionHeadCopy / staticRegionFallback / buildRegionPage in scripts/prerenderBeachPages.mjs, then rebuild. Details in reports/seo/region-pages.json.',
+    command: npmBin,
+    args: ['run', 'quality:region-pages'],
+  },
 ];
 
 const printExplanation = () => {

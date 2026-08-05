@@ -83,6 +83,7 @@
     "quality:hreflang-build": "node scripts/auditHreflangIntegrity.mjs",
     "quality:jsonld-coverage": "node scripts/auditJsonLdCoverage.mjs",
     "quality:orphan-pages": "node scripts/auditOrphanPages.mjs",
+    "quality:region-pages": "node scripts/auditRegionPages.mjs",
     "quality:numbers": "npm run quality:data-coverage && npm run quality:photo-coverage && npm run quality:hreflang-build && npm run quality:jsonld-coverage && npm run quality:orphan-pages",
     "build:climate": "node scripts/splitBeachClimate.mjs"
   },
