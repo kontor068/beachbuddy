@@ -140,13 +140,22 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Εύρεση τοποθεσίας…',
     },
     // Names people actually use, not sea areas: nobody says "let's go to the
-    // Cretan Sea". The order is measured demand from our own counter, and the
-    // number next to each name is the thing a directory cannot copy.
+    // Cretan Sea". The order is measured demand from our own counter.
+    //
+    // THE HEADING IS AN INSTRUCTION, NOT A CLAIM (changed 05/08/2026). It used to
+    // read «Πού πάει ο κόσμος» / "Where people go", which promises crowd data we do
+    // not have and the list cannot survive: a Greek reader sees Patmos and Lemnos
+    // but no Crete-as-a-whole, no Santorini, Mykonos, Zakynthos, Kos or Skiathos,
+    // and stops believing the line. Worse, it was circular — the order comes from
+    // what people search ON THIS SITE, which is a function of what we already rank
+    // for, so "where people go" really meant "where our own traffic already is".
+    // The subtitle now says whose demand this is («οι επισκέπτες μας»), which is
+    // both true and the only version we can defend.
     today: {
-      title: 'Πού πάει ο κόσμος',
+      title: 'Διάλεξε περιοχή',
       // Not "από το Ιόνιο ως τα Δωδεκάνησα" — the sample also covers Crete, which
       // is south of both, plus three mainland regions.
-      subtitle: 'Μερικές από τις περιοχές που αναζητά περισσότερο ο κόσμος. Διάλεξε μία για να δεις όλες τις παραλίες και τις σημερινές συνθήκες.',
+      subtitle: 'Οι περιοχές που ζητούν περισσότερο οι επισκέπτες μας. Διάλεξε μία για να δεις όλες τις παραλίες και τις σημερινές συνθήκες.',
       // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
@@ -192,7 +201,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Αυτό που φτιάχνουμε τώρα',
-          body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή, αλλά είναι σε εξέλιξη — θα το δεις να αλλάζει.',
+          body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
@@ -266,8 +275,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Finding location…',
     },
     today: {
-      title: 'Where people go',
-      subtitle: 'Some of the regions people search for most. Choose one to see all its beaches and today’s conditions.',
+      title: 'Choose a region',
+      subtitle: 'The regions our visitors look for most. Choose one to see all its beaches and today’s conditions.',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
@@ -291,7 +300,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'What we are building now',
-          body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region, but it is a work in progress — you will see it change.',
+          body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region.',
         },
       ],
       more: 'How CalmBeach works',
@@ -343,8 +352,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Standort wird ermittelt…',
     },
     today: {
-      title: 'Wohin die Leute fahren',
-      subtitle: 'Einige der meistgesuchten Regionen. Wähle eine aus, um alle Strände und die heutigen Bedingungen zu sehen.',
+      title: 'Wähle eine Region',
+      subtitle: 'Die Regionen, die unsere Besucher am häufigsten suchen. Wähle eine aus, um alle Strände und die heutigen Bedingungen zu sehen.',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
       // Never "Ich" in a German UI, and never a first-person singular anywhere on
       // a page that speaks as "wir".
@@ -370,7 +379,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Woran wir gerade arbeiten',
-          body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon, ist aber noch in Arbeit — du wirst ihn sich ändern sehen.',
+          body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon.',
         },
       ],
       more: 'Wie CalmBeach funktioniert',
@@ -423,8 +432,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Localisation en cours…',
     },
     today: {
-      title: 'Où vont les gens',
-      subtitle: 'Quelques-unes des régions les plus recherchées. Choisissez-en une pour voir toutes ses plages et les conditions du jour.',
+      title: 'Choisissez une région',
+      subtitle: 'Les régions les plus recherchées par nos visiteurs. Choisissez-en une pour voir toutes ses plages et les conditions du jour.',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
@@ -448,7 +457,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Ce que nous construisons en ce moment',
-          body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région, mais il est en cours de développement — vous le verrez évoluer.',
+          body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région.',
         },
       ],
       more: 'Comment fonctionne CalmBeach',
@@ -501,8 +510,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       findingLocation: 'Ricerca della posizione…',
     },
     today: {
-      title: 'Dove va la gente',
-      subtitle: 'Alcune delle regioni più cercate. Scegline una per vedere tutte le spiagge e le condizioni di oggi.',
+      title: 'Scegli una regione',
+      subtitle: 'Le regioni più cercate dai nostri visitatori. Scegline una per vedere tutte le spiagge e le condizioni di oggi.',
       // Italian has its own official sea-state ladder (calmo / poco mosso / mosso
       // / molto mosso / agitato) — use it rather than translating the English.
       cta: 'Trova una spiaggia riparata vicino a te',
@@ -528,7 +537,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Quello che stiamo costruendo ora',
-          body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione, ma è in lavorazione — lo vedrai cambiare.',
+          body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione.',
         },
       ],
       more: 'Come funziona CalmBeach',

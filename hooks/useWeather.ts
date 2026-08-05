@@ -12,7 +12,7 @@ import {
   SOFT_STALE_LIMIT_MS,
 } from '../services/weatherService';
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
-import { athensNow } from '../utils/athensTime';
+import { athensNow, BEACH_DAY_ENDS_HOUR } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
 import { resolveBeachMarinePoints, marinePointKey, type MarinePoint } from '../utils/marineSamplePoints';
@@ -68,7 +68,6 @@ const MARINE_POINT_OVERRIDES: Record<string, { lat: number; lon: number }> = {
 // immediately from the island forecast. Keep a short delay so we don't compete
 // with first paint, but land the refinement quickly instead of seconds later.
 const BEACH_FORECAST_BACKGROUND_DELAY_MS = 1500;
-const EVENING_TODAY_CUTOFF_HOUR = 21;
 
 /**
  * The sea each beach reads, keyed so App can hand every beach its own wave.
@@ -102,7 +101,7 @@ export interface BeachMarineContext {
 const PER_BEACH_MARINE_PROFILE_TIMEOUT_MS = 2500;
 
 const shouldSkipTodayAfterEvening = (now: Date = athensNow()): boolean =>
-  now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
+  now.getHours() >= BEACH_DAY_ENDS_HOUR;
 
 const getDefaultDayIndex = (forecastLength?: number, now: Date = athensNow()): number => {
   if (shouldSkipTodayAfterEvening(now) && (forecastLength || 0) > 1) return 1;
@@ -134,8 +133,8 @@ const dropPastForecastDays = (
 const getNextDaySelectionBoundaryDelay = (now: Date = athensNow()): number => {
   const nextBoundary = new Date(now);
 
-  if (now.getHours() < EVENING_TODAY_CUTOFF_HOUR) {
-    nextBoundary.setHours(EVENING_TODAY_CUTOFF_HOUR, 0, 0, 0);
+  if (now.getHours() < BEACH_DAY_ENDS_HOUR) {
+    nextBoundary.setHours(BEACH_DAY_ENDS_HOUR, 0, 0, 0);
   } else {
     nextBoundary.setDate(nextBoundary.getDate() + 1);
     nextBoundary.setHours(0, 0, 0, 0);
@@ -624,5 +623,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
     forecastFreshness,
     isStaleBlocked,
     forecastFetchedAt,
+    /**
+     * True once the evening cutoff has handed the page over to tomorrow. Callers should SAY SO —
+     * after this hour `clampSelectedDayIndex` refuses to return to index 0, so today is not just
+     * skipped, it is unreachable. A page that quietly answers a different question than the one
+     * asked is the same defect as a wrong answer.
+     */
+    isEveningHandover: shouldSkipTodayAfterEvening() && (forecast?.length || 0) > 1,
   };
 };

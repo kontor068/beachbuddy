@@ -47,7 +47,6 @@ import { generateBeachExplanation as generateUiBeachExplanation } from '../utils
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import type { ExposureLevel } from '../utils/windExposure';
 import { getLocalWindNote } from '../utils/localWindNote';
-import { WeatherDataAttribution } from '../components/WeatherDataAttribution';
 import { getBeachStory, type BeachStory } from '../data/beachStories';
 import { getIslandGuideLinks, getGuidesHubLink, GUIDES_HUB_LABEL } from '../utils/beachGuides';
 import {
@@ -68,6 +67,7 @@ import {
   getAccessibilityCheckedLabel,
 } from '../utils/accessibility';
 import { MapLoadBoundary } from '../components/MapLoadBoundary';
+import { DeferUntilVisible } from '../components/DeferUntilVisible';
 import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
 import { sunsetOverSeaWindow, sunsetSeasonRange, type SunsetOverSea } from '../utils/sunsetOverSea';
@@ -837,6 +837,21 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       fr: `Houle ${verdictMomentLabel}`,
     },
     beachStoryHeading: { en: 'About this beach', gr: 'Πληροφορίες', de: 'Über diesen Strand', it: 'Informazioni', fr: 'À propos' },
+    // THE ONE LINE THE CARD KEEPS WHEN EVERY OTHER SIGNAL GOES QUIET (05/08/2026).
+    // On a calm, light-wind day three things fall silent at once: the verdict pill (removed
+    // 01/08 as a second, competing answer), the live sentence (suppressed at ≤2 Bft the same
+    // day, because it only restated the Bft number), and the shelter label (never printed
+    // below 3 Bft). What was left on a real phone was eight tiles and a pale mint background —
+    // no judgement anywhere, on the one product whose entire promise is a judgement.
+    // Deliberately carries NO figure: every number on this line already has a tile. It states
+    // the decision the tiles imply and never spell out. Gated hard — see calmDayVerdictLine.
+    calmDayVerdict: {
+      en: 'A good day to swim here.',
+      gr: 'Καλή μέρα για μπάνιο εδώ.',
+      de: 'Ein guter Tag zum Schwimmen hier.',
+      it: 'Una buona giornata per fare il bagno qui.',
+      fr: 'Une bonne journée pour se baigner ici.',
+    },
     // The two section breaks that give the scroll a shape. Kept as plain labels rather
     // than headings: they organise, they do not introduce a new topic, and an extra <h2>
     // in the outline would compete with the ones that carry real search intent.
@@ -1342,6 +1357,31 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     : '';
   const displayedBestTimeLabel = usefulBestTimeWindow ? canonicalBestTimeLabel : '';
   const swimmingWindowHelper = swimWindowDisplay.helper || bestTimeReason;
+  /* THE CALM-DAY VERDICT — the one sentence that keeps the answer card an answer.
+     Measured on a real phone 05/08/2026 (Κανάλι του Έρωτα, 1 Bft, both at 12:30 and at
+     20:50): the card printed eight tiles and not one word of judgement, because the
+     verdict pill, the live sentence and the shelter label all fall silent together at
+     light wind — and `bestTime` was null, so «Κατάλληλη όλη μέρα» never rendered either.
+
+     FIVE GATES, ALL POINTING THE SAME WAY, so this line can never be the optimistic half
+     of a contradiction. It speaks only when the beach's OWN pin is blue — the 02/08 rule
+     that the word may never sit above its own dot applies here exactly as it does to
+     TodayScoreBadge — and stays quiet the moment anything else on the page hedges. */
+  const calmDayVerdictLine = (
+    showConditions
+    && weatherNow.tone === 'calm'
+    && beaufortLevel <= 2
+    && scoreResult.simpleWindSuitability?.suitabilityColor === 'blue'
+    && !isNoIdealSwimmingWindow
+    && !rainAdvisory?.isRainingNow
+  ) ? copy.calmDayVerdict[language] : null;
+  /* One place decides what goes in the hero's explanation slot, so the styling below can
+     never drift out of step with the text it is styling. */
+  const heroLiveSentence = showConditions && weatherNow.tone !== 'unknown' && !(weatherNow.tone === 'calm' && beaufortLevel <= 2)
+    ? weatherNow.liveSentence
+    : null;
+  const heroExplanation = heroLiveSentence || calmDayVerdictLine;
+  const heroExplanationIsVerdict = !heroLiveSentence && Boolean(calmDayVerdictLine);
   // Calm day: no narrow "best window" exists because every hour is suitable. Instead of
   // hiding the section entirely (a value gap), affirm that any time works.
   const allDaySuitable = Boolean(bestTime) && !usefulBestTimeWindow && swimWindowDisplay.tone === 'good';
@@ -1519,6 +1559,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const windContext = getRegionWindContext(regionId ?? '');
   const localWindSectors = LOCAL_WIND_SECTORS[windContext];
   const localWindExposure = summarizeLocalWindBehavior(geospatialExposure, beach, localWindSectors);
+  /* Is the regime wind actually blowing right now? Same two facts the atlas is built from —
+     its own sectors and a wind strong enough to matter (3 Bft is the floor the shelter label
+     uses; below it "sheltered" is a fact about a wind that is not blowing). Used ONLY to
+     stop the seasonal panel wearing alarm colours on a calm day — never to edit its text. */
+  const localWindBlowingNow = showConditions
+    && beaufortLevel >= 3
+    && localWindSectors.includes(windDir as string);
   const localWindShelteredCoves = useMemo<LocalWindShelteredCove[]>(() => {
     return allBeaches
       .filter(b => b.id !== beach.id)
@@ -1835,9 +1882,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
              at light wind, so it read as pure filler ("Ο άνεμος είναι μόλις 2 Μπφ τώρα —
              σχεδόν άπνοια, και το νερό είναι ήρεμο."). The ≤2 Bft branch where the sea
              DISAGREES (leftover swell) still explains something real, so it stays. */
-          explanation={showConditions && weatherNow.tone !== 'unknown' && !(weatherNow.tone === 'calm' && beaufortLevel <= 2)
-            ? weatherNow.liveSentence
-            : null}
+          /* …and when that suppression fires, the slot is not left empty: it takes the
+             calm-day verdict instead (05/08/2026). The complaint the suppression answered
+             was «this sentence only repeats the tiles»; a line with no figure in it, that
+             states the decision rather than the reading, is not the thing that was cut. */
+          explanation={heroExplanation}
+          explanationIsVerdict={heroExplanationIsVerdict}
           wind={showConditions ? {
             beaufort: beaufortLevel,
             speedKmh: windSpeedKmh,
@@ -2037,11 +2087,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <span>{localWindNote.text}</span>
             </p>
           )}
-          {/* This page bypasses the site footer entirely (App.tsx returns early for
-              view === 'detail', before <LegalFooter> renders — confirmed by reading the
-              render tree, not assumed), so it's the one surface needing its own copy of
-              the attribution the footer provides everywhere else. */}
-          <WeatherDataAttribution language={language} className="px-1 pt-1" />
+          {/* THE ATTRIBUTION USED TO BE PRINTED HERE **AND** IN THE FOOTER (removed 05/08/2026).
+              The comment that stood here said this page "bypasses the site footer entirely,
+              so it's the one surface needing its own copy" — true when it was written, and
+              untrue since 30/07/2026, when this page started rendering <LegalFooter> itself
+              precisely because it had no footer. Nobody came back to delete the workaround, so
+              «Δεδομένα καιρού από την Open-Meteo · Θαλάσσια μοντέλα: DWD EWAM · Météo-France»
+              appeared twice on one page, word for word, once mid-scroll and once at the end.
+              The footer copy stays: it is the one every other page uses, it is what the
+              prerendered HTML carries, and the licence obligation is satisfied once. */}
         </section>
 
         {/* 1b. Swell-window router — surfaces only on genuine ground swell: warns when this
@@ -2390,7 +2444,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${copy.openNavigation[language]}: ${camp.name}`}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 transition-colors hover:bg-emerald-100"
+                      /* h-11 w-11 = 44 px. An icon-only link has no text to enlarge the box,
+                         so the box has to be sized deliberately (measured at 36 px, 05/08). */
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 transition-colors hover:bg-emerald-100"
                     >
                       <Navigation className="h-4 w-4" aria-hidden />
                     </a>
@@ -2479,7 +2535,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 8. Map Location */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.locationTitle[language]}</h3>
-          <div className="h-56 w-full overflow-hidden rounded-[2rem] border border-white/75 bg-slate-100 shadow-sm shadow-sky-900/5 sm:h-64">
+          <DeferUntilVisible
+            className="h-56 w-full overflow-hidden rounded-[2rem] border border-white/75 bg-slate-100 shadow-sm shadow-sky-900/5 sm:h-64"
+            /* Same grey block Suspense already used, so nothing moves when the map arrives. */
+            placeholder={<div className="h-full w-full bg-slate-100" />}
+          >
             <MapLoadBoundary
               resetKey={`${beach.id}-${language}`}
               fallback={
@@ -2551,7 +2611,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 />
               </React.Suspense>
             </MapLoadBoundary>
-          </div>
+          </DeferUntilVisible>
           {canNavigate && (
             <button
               type="button"
@@ -2634,6 +2694,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           thisExposure={localWindExposure}
           shelteredCoves={localWindShelteredCoves}
           isBoatAccess={isBoatOnlyBeach}
+          localWindBlowingNow={localWindBlowingNow}
           onSelect={(id) => {
             const target = allBeaches.find(b => b.id === id);
             if (target) onBeachClick(target);
@@ -2763,7 +2824,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <a
                   key={guide.key}
                   href={guide.href}
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"
+                  /* 34 px measured on a real phone (05/08/2026) — these are standalone
+                     pill links, not inline text, so the 44 px minimum applies to them. */
+                  className="inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"
                 >
                   {guide.label}
                 </a>
@@ -2772,7 +2835,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 href={guidesHubLink.href}
                 target={guidesHubLink.external ? '_blank' : undefined}
                 rel={guidesHubLink.external ? 'noopener noreferrer' : undefined}
-                className="inline-flex items-center rounded-full border border-teal-600 bg-teal-50 px-3.5 py-1.5 text-sm font-extrabold text-teal-700 hover:bg-teal-100"
+                className="inline-flex min-h-[44px] items-center rounded-full border border-teal-600 bg-teal-50 px-3.5 py-1.5 text-sm font-extrabold text-teal-700 hover:bg-teal-100"
               >
                 {GUIDES_HUB_LABEL[language] || GUIDES_HUB_LABEL.en} →
               </a>
@@ -2792,36 +2855,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <LegalFooter language={language} />
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
-        <div className="mx-auto flex max-w-4xl items-center gap-2">
-          {canNavigate && (
+      {/* ONE ACTION, FULL WIDTH (05/08/2026).
+          On 29/07 the ♥/share pair was cut from three places on this page down to two — the
+          sticky header and this bar. Seeing it on a real phone showed what the count could
+          not: the header does not scroll away, so BOTH survivors are on screen together, at
+          every scroll position, all the way down six and a half screens. Two identical hearts
+          in one viewport is not a shorter list, it is the same duplication standing still.
+          The header keeps them (always reachable, and it is where a title bar's actions
+          belong); the bar keeps the one thing it is for. `navigation_clicked` is the metric
+          this page is judged on — it now gets the whole width instead of 62% of it.
+          When there is nothing to navigate to, the bar has no reason to exist at all. */}
+      {canNavigate && (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
+          <div className="mx-auto flex max-w-4xl items-center">
             <button
               type="button"
               onClick={handleNavigation}
-              className="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99]"
+              className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99]"
             >
               <Navigation className="h-5 w-5" />
               {copy.navigation[language]}
             </button>
-          )}
-          <button
-            type="button"
-            onClick={() => onToggleFavorite(beach.id)}
-            aria-label={copy.favorite[language]}
-            className={`flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border ${isFavorite ? 'border-red-100 bg-red-50 text-red-500' : 'border-slate-100 bg-slate-50 text-slate-700'}`}
-          >
-            <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
-          </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            aria-label={copy.share[language]}
-            className="flex min-h-[52px] min-w-[52px] items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-slate-700"
-          >
-            <Share2 className="h-5 w-5" />
-          </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -2834,7 +2891,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
  */
 const SectionBreak: React.FC<{ label: string }> = ({ label }) => (
   <div className="flex items-center gap-3 pt-2" aria-hidden="true">
-    <span className="text-[11px] font-black tracking-[0.12em] text-slate-400">{label}</span>
+    <span className="text-[11px] font-black tracking-[0.12em] text-slate-600">{label}</span>
     <span className="h-px flex-1 bg-gradient-to-r from-slate-200 to-transparent" />
   </div>
 );

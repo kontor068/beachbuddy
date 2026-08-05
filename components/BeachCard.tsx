@@ -1739,7 +1739,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               href={detailHref}
               onClick={handleDetailLinkClick}
               data-nosnippet="true"
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-700 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-700/20 transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
             >
               <Info className="h-4 w-4" />
               <span>{t.learnMore}</span>
@@ -1749,7 +1749,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             <button
               onClick={(e) => { e.stopPropagation(); onClick?.(); }}
               data-nosnippet="true"
-              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-600/20 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-700 px-4 py-2 text-sm font-heading font-bold text-white shadow-sm shadow-cyan-700/20 transition-colors hover:bg-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:min-h-10 cursor-pointer"
             >
               <Info className="h-4 w-4" />
               <span>{t.learnMore}</span>

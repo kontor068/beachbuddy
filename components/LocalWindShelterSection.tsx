@@ -45,6 +45,23 @@ const SELF_TONE: Record<ExposureLevel, { badge: string; text: string }> = {
   exposed: { badge: 'bg-orange-50 border-orange-200', text: 'text-orange-800' },
 };
 
+/* WHEN THE LOCAL SUMMER WIND IS NOT BLOWING TODAY, THIS BOX STOPS SHOUTING (05/08/2026).
+   Amber and orange are the app's alarm colours everywhere else, so an "exposed to the
+   maistros" panel in orange reads as a warning about right now — three screens under a
+   calm mint card that had just said the opposite. The sentence is not wrong (it is a
+   seasonal tendency, and the section stays independent of the forecast by design), but
+   its colour was making a claim about today that its words never made. On a day the
+   regime wind is absent the panel goes neutral and says so in four words; on a day it
+   IS blowing, nothing changes and the alarm colours stand. */
+const QUIET_TONE = { badge: 'bg-slate-50 border-slate-200', text: 'text-slate-700' };
+const NOT_BLOWING_TODAY: Copy = {
+  en: 'Not blowing today.',
+  gr: 'Σήμερα δεν φυσάει.',
+  de: 'Heute weht er nicht.',
+  it: 'Oggi non soffia.',
+  fr: 'Il ne souffle pas aujourd’hui.',
+};
+
 interface LocalWindShelterSectionProps {
   language: LanguageCode;
   windContext: LocalWindContext;
@@ -53,6 +70,9 @@ interface LocalWindShelterSectionProps {
   shelteredCoves: LocalWindShelteredCove[];
   onSelect: (id: number) => void;
   isBoatAccess?: boolean;
+  /** Is the regime wind (meltemi / maistros / summer breeze) actually blowing right now?
+   *  Only ever used to calm the panel down — never to change a word of the atlas itself. */
+  localWindBlowingNow?: boolean;
 }
 
 export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = ({
@@ -63,6 +83,7 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
   shelteredCoves,
   onSelect,
   isBoatAccess = false,
+  localWindBlowingNow = true,
 }) => {
   if (!thisExposure && shelteredCoves.length === 0) return null;
   const copy = LOCAL_WIND_SECTION[windContext] || LOCAL_WIND_SECTION.aegean;
@@ -81,11 +102,18 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
             sat underneath a paragraph you had already read on the previous beach. The
             definition still belongs here (it is what makes "μελτέμι" mean something to a
             visitor), just as the footnote it is. */}
-        {thisExposure && (
-          <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${SELF_TONE[thisExposure].badge} ${SELF_TONE[thisExposure].text}`}>
-            {beachSubject(beachName, language, isBoatAccess)} {isBoatAccess && language === 'gr' ? copy.statusBoatGr[thisExposure] : pick(copy.status[thisExposure], language)}
-          </p>
-        )}
+        {thisExposure && (() => {
+          // A calm day only softens the two cautionary levels. 'protected' keeps its green:
+          // that one is an endorsement, and endorsements are not alarms.
+          const quiet = !localWindBlowingNow && thisExposure !== 'protected';
+          const skin = quiet ? QUIET_TONE : SELF_TONE[thisExposure];
+          return (
+            <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${skin.badge} ${skin.text}`}>
+              {beachSubject(beachName, language, isBoatAccess)} {isBoatAccess && language === 'gr' ? copy.statusBoatGr[thisExposure] : pick(copy.status[thisExposure], language)}
+              {quiet && <span className="text-slate-500"> {pick(NOT_BLOWING_TODAY, language)}</span>}
+            </p>
+          );
+        })()}
 
         <p className={`leading-relaxed ${thisExposure ? 'text-xs text-slate-500' : 'text-sm text-slate-600'}`}>{pick(copy.intro, language)}</p>
 
@@ -100,7 +128,11 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
                   <button
                     type="button"
                     onClick={() => onSelect(cove.id)}
-                    className="flex w-full items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left transition-colors hover:bg-emerald-50"
+                    /* min-h-[44px]: these rows measured 38 px on a real phone (05/08/2026).
+                       They are the section's whole point — the way out of an exposed beach
+                       towards a sheltered one — so they are the last thing that should be
+                       fiddly to hit. */
+                    className="flex min-h-[44px] w-full items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left transition-colors hover:bg-emerald-50"
                   >
                     <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">{cove.name}</span>
                     <span className="flex-shrink-0 text-xs font-bold text-slate-500">

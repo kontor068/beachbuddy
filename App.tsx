@@ -91,8 +91,14 @@ import { rotateEquivalentTopPicks } from './utils/topPickVariety';
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
-import type { ExposureLevel } from './utils/windExposure';
+import { windSectorFromDegrees, type ExposureLevel } from './utils/windExposure';
 import { selectSuitableByTone, type CalmnessTone } from './utils/suitabilityTone';
+import {
+  getStayWindowSlots,
+  getStaySampleSlots,
+  pickHarshestStayHourFromReadings,
+  type StayLengthHours,
+} from './utils/stayWindow';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
 import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
@@ -283,28 +289,28 @@ const compactWeatherLabels: Record<LanguageCode, Record<string, string>> = {
 
 const seoCopy: Record<SupportedLanguage, { title: string; description: string; locale: string }> = {
   en: {
-    title: 'Find Your Ideal Beach in Greece Today | CalmBeach',
-    description: "Tailored to today's conditions and your beach preferences — live wind, waves and shelter for thousands of Greek beaches.",
+    title: 'Which Greek Beach Is Calm Today? Wind & Waves | CalmBeach',
+    description: "See which Greek beaches have calm water today: live wind, waves, and the shelter each coastline's own shape gives.",
     locale: 'en_US',
   },
   gr: {
-    title: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα | CalmBeach',
-    description: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου — ζωντανός άνεμος, κύμα και προστασία για χιλιάδες ελληνικές παραλίες.',
+    title: 'Πού έχει ήρεμη θάλασσα σήμερα στην Ελλάδα | CalmBeach',
+    description: 'Δες ποιες ελληνικές παραλίες έχουν ήρεμη θάλασσα σήμερα: ζωντανός άνεμος, κύμα και η προστασία που δίνει το σχήμα της κάθε ακτής.',
     locale: 'el_GR',
   },
   fr: {
-    title: 'Trouvez votre plage idéale en Grèce aujourd’hui | CalmBeach',
-    description: 'Adaptée aux conditions du jour et à vos préférences — vent, vagues et abri en direct pour des milliers de plages grecques.',
+    title: 'Quelle plage grecque est calme aujourd’hui ? | CalmBeach',
+    description: 'Voyez quelles plages grecques ont une mer calme aujourd’hui : vent et vagues en direct, et l’abri qu’offre la forme de la côte.',
     locale: 'fr_FR',
   },
   de: {
-    title: 'Dein idealer Strand in Griechenland heute | CalmBeach',
-    description: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben — Wind, Wellen und Schutz live für tausende Strände in Griechenland.',
+    title: 'Wo ist das Meer heute ruhig? Griechenland | CalmBeach',
+    description: 'Sieh, welche griechischen Strände heute ruhiges Wasser haben: Wind und Wellen live, plus der Schutz durch die Form der Küste.',
     locale: 'de_DE',
   },
   it: {
-    title: 'Trova la tua spiaggia ideale in Grecia oggi | CalmBeach',
-    description: 'Su misura per le condizioni di oggi e le tue preferenze — vento, onde e riparo in tempo reale per migliaia di spiagge greche.',
+    title: 'Quale spiaggia greca è calma oggi? | CalmBeach',
+    description: 'Scopri quali spiagge greche hanno mare calmo oggi: vento e onde in tempo reale e il riparo dato dalla forma della costa.',
     locale: 'it_IT',
   },
 };
@@ -1387,9 +1393,21 @@ export const App: React.FC = () => {
           it: 'Buone opzioni da cui iniziare',
           fr: 'Bonnes options pour commencer',
         },
+        // BOTH SENTENCES, IN EVERY LANGUAGE (fixed 05/08/2026).
+        //
+        // On a settled day (`mild` = under 4 Bft and under 0,5 m, see
+        // getRecommendationDisplayMode) the wind stops separating anything: a Corfu afternoon
+        // at 1 Bft paints 104 of 105 beaches «Ιδανική». Saying only "most beaches look
+        // suitable" states that problem and leaves the visitor with a ranking that is, on that
+        // day, close to arbitrary. The second sentence is what makes the list usable again —
+        // it hands over the criteria that DO still differ.
+        //
+        // de/it/fr have carried that sentence from the start; en and gr silently stopped after
+        // the first one, so exactly the two locales that serve almost all our traffic were the
+        // two missing the answer.
         helper: {
-          en: 'Today the weather is mild, so most beaches look suitable for swimming.',
-      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
+          en: 'Today the weather is mild, so most beaches look suitable for swimming. These stand out more for access, beach type, amenities and your preferences.',
+      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο. Αυτές ξεχωρίζουν περισσότερο για την πρόσβαση, το είδος της παραλίας, τις παροχές και τις προτιμήσεις σου.',
           de: 'Heute ist das Wetter mild, daher passen die meisten Strände. Diese fallen eher durch Zugang, Strandtyp, Ausstattung und deine Vorlieben auf.',
           it: 'Oggi il meteo è mite, quindi la maggior parte delle spiagge va bene. Queste spiccano di più per accesso, tipo di spiaggia, servizi e preferenze.',
           fr: 'La météo est douce aujourd’hui, donc la plupart des plages conviennent. Celles-ci ressortent surtout pour l’accès, le type de plage, les services et tes préférences.',
@@ -1503,15 +1521,15 @@ export const App: React.FC = () => {
       fr: (_beaufort: number) => 'Vent faible. Toutes les plages conviennent.',
     },
     calmAllAroundDescription: {
-      en: 'Today the weather is mild, so all beaches look suitable for swimming.',
-      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε όλες οι παραλίες φαίνονται κατάλληλες για μπάνιο.',
+      en: 'Today the weather is mild, so all beaches look suitable for swimming. Choose by access, sand or pebbles, shade, or the mood you want.',
+      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε όλες οι παραλίες φαίνονται κατάλληλες για μπάνιο. Διάλεξε με βάση την πρόσβαση, την άμμο ή τα βότσαλα, τη σκιά ή την ατμόσφαιρα.',
       de: 'Der Wind ist leicht und das Meer wirkt ruhig. Es muss heute keine einzelne Top-Wahl geben. Entscheide nach Zugang, Sand/Kies, Schatten oder Stimmung.',
       it: 'Il vento è leggero e il mare sembra calmo, quindi non serve forzare una sola scelta top. Scegli per accesso, sabbia/ciottoli, ombra o atmosfera.',
       fr: 'Le vent est faible et la mer semble calme. Pas besoin de forcer un seul meilleur choix aujourd’hui. Choisis selon l’accès, le sable/galets, l’ombre ou l’ambiance.',
     },
     lightWindDayDescription: {
-      en: 'Today the weather is mild, so most beaches look suitable for swimming.',
-      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο.',
+      en: 'Today the weather is mild, so most beaches look suitable for swimming. Just pick by sand, shade, access or mood.',
+      gr: 'Σήμερα ο καιρός είναι ήπιος, οπότε οι περισσότερες παραλίες φαίνονται κατάλληλες για μπάνιο. Διάλεξε απλώς με βάση την άμμο, τη σκιά, την πρόσβαση ή την ατμόσφαιρα.',
       de: 'Wähle einfach nach Sand, Schatten, Zugang oder Stimmung.',
       it: 'Scegli quella che preferisci per sabbia, ombra, accesso o atmosfera.',
       fr: 'Choisis celle que tu préfères selon le sable, l’ombre, l’accès ou l’ambiance.',
@@ -1603,7 +1621,10 @@ export const App: React.FC = () => {
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
-  const { selectedIsland, selectIsland, selectAdHocRegion, showValueProp, markValuePropSeen, showLanding, goToLanding } = useLocation(allIslands);
+  // `showValueProp` is no longer read: the first-visit value-prop block above the search box
+  // was removed 05/08. `markValuePropSeen` stays wired up — it is what flips the flag, and
+  // useLocation still persists it, so bringing the block back is a one-line change.
+  const { selectedIsland, selectIsland, selectAdHocRegion, markValuePropSeen, showLanding, goToLanding } = useLocation(allIslands);
   // Islands offered in the browsable selector + name search. Info-only regions
   // (e.g. Milos) are SEO-only: their pages exist and resolve on a direct URL, but
   // they are never surfaced as a pickable/searchable option in the app. Resolution
@@ -1613,7 +1634,16 @@ export const App: React.FC = () => {
     [allIslands],
   );
   const isNearMeRegionActive = selectedIsland?.id === NEAR_ME_REGION_ID;
-  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked } = useWeather(selectedIsland, language);
+  const { weather, forecast: rawForecast, forecastIslandId, beachForecasts, beachMarine, loading: weatherLoading, error: weatherError, selectedDayIndex, setSelectedDayIndex, loadWeatherData, lastUpdated, forecastFreshness, isStaleBlocked, isEveningHandover } = useWeather(selectedIsland, language);
+  // Said out loud whenever the evening cutoff moved the page to tomorrow — see the render site
+  // in the recommendation section.
+  const eveningHandoverNote = getLocalizedCopy(language, {
+    en: 'Today’s beach hours are over — showing tomorrow.',
+    gr: 'Η σημερινή μέρα για παραλία τελείωσε — δείχνουμε αύριο.',
+    fr: 'La journée plage est terminée — voici demain.',
+    de: 'Der Strandtag ist vorbei — wir zeigen morgen.',
+    it: 'La giornata da spiaggia è finita — mostriamo domani.',
+  });
   // On a region switch `selectedIsland` updates synchronously, but the new region's
   // forecast only lands in an effect after paint. Until the loaded forecast actually
   // belongs to the selected region, treat it as absent everywhere downstream — so the
@@ -1701,6 +1731,13 @@ export const App: React.FC = () => {
   // value. That keeps the slider drag smooth on mobile: React can interrupt the
   // expensive beach re-render instead of blocking each frame of the scrub.
   const deferredSelectedHourDt = React.useDeferredValue(selectedHourDt);
+  /**
+   * How long the visitor says they are staying, in hours — `null` until they say, which is the
+   * untouched behaviour: this moment only. See utils/stayWindow for the rule (the window's answer
+   * is its WORST hour) and the measurement that justified building it at all.
+   */
+  const [stayHours, setStayHours] = useState<StayLengthHours | null>(null);
+  const deferredStayHours = React.useDeferredValue(stayHours);
   const hasUserSelectedSortRef = useRef(false);
   const [topPickClock, setTopPickClock] = useState(() => athensNow().getTime());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
@@ -3917,9 +3954,94 @@ export const App: React.FC = () => {
    * In "Κοντά μου" the source is nearMeBeachWindById — the beach's HOME region cluster, not the
    * synthetic GPS region's, so the same beach gets the same wind in both views (02/08/2026).
    */
-  const beachWindSourceById = useMemo<BeachWeatherById>(() => (
+  /**
+   * THE HOUR THAT SPEAKS FOR THE STAY — one dt per beach, or empty when nobody asked.
+   *
+   * When the visitor says how long they are staying, the answer stops being "right now" and
+   * becomes "the roughest hour you will be standing there". This memo picks that hour PER BEACH —
+   * a west-facing cove and an east-facing open shore turn at different times on the same day — and
+   * every surface downstream then renders that single moment through the machinery it already
+   * uses. Nothing below this line knows a window exists, which is exactly the point: the card
+   * still describes one hour, so word, pin, tile and sentence cannot drift apart the way they did
+   * on 31/07/2026 when «Ήρεμα ΤΩΡΑ» printed over another hour's numbers.
+   *
+   * WHAT IT IS ALLOWED TO BE WRONG ABOUT, stated rather than hidden: the tone used to CHOOSE the
+   * hour reads the geometry sector directly (the same signal scripts/validateColourAgainstRealWind
+   * calls "the colour the app actually paints"), not the full getVisibleMapExposureLevel, which
+   * needs a scored SuitableBeach that does not exist this early. So on a curated-override or
+   * enclosed-cove beach we may land on the second-roughest hour instead of the roughest. The hour
+   * we land on is then painted honestly by the real function — the error is which moment we show,
+   * never what we say about it. Ties resolve to the earliest hour, so the ~54% of beach-days that
+   * hold one tone all day behave exactly as they do today.
+   */
+  const harshestStayHourByBeachId = useMemo<Map<number, number>>(() => {
+    const byBeach = new Map<number, number>();
+    if (deferredStayHours == null || mapHourSlots.length === 0) return byBeach;
+
+    const sampleSlots = getStaySampleSlots(getStayWindowSlots(mapHourSlots, deferredStayHours));
+    if (sampleSlots.length <= 1) return byBeach;
+
+    Object.entries(selectedBeachForecasts).forEach(([id, beachForecast]) => {
+      const hourly = beachForecast?.hourly;
+      if (!hourly || hourly.length === 0) return;
+      const beachId = Number(id);
+      const profile = geospatialExposureProfiles?.[beachId];
+
+      // Gathered inputs only — the tone itself is formed in utils/stayWindow, never here. App.tsx
+      // is forbidden from resolving a condition tone at all (validateConditionToneAgreement's
+      // the-list-does-not-colour-its-own-beaches), and that rule holds even when the tone is used
+      // to pick an hour rather than to paint one.
+      const readings = sampleSlots
+        .map(slot => {
+          const item = getForecastItemAtDt(hourly, slot.dt, mapHourSlots);
+          if (!item) return null;
+          const deg = item.wind?.deg;
+          const speed = item.wind?.speed;
+          if (typeof deg !== 'number' || !Number.isFinite(deg) || typeof speed !== 'number') return null;
+          return {
+            dt: slot.dt,
+            exposureLevel: profile?.sectors?.[windSectorFromDegrees(deg)]?.level,
+            beaufort: getBeaufortLevel(speed * 3.6),
+            seaStateM: item.marine?.waveHeightM,
+          };
+        })
+        .filter((reading): reading is NonNullable<typeof reading> => reading !== null);
+
+      const harshest = pickHarshestStayHourFromReadings(readings);
+      if (harshest != null) byBeach.set(beachId, harshest);
+    });
+
+    return byBeach;
+  }, [deferredStayHours, mapHourSlots, selectedBeachForecasts, geospatialExposureProfiles]);
+
+  const hourAdjustedWindSourceById = useMemo<BeachWeatherById>(() => (
     isNearMeRegionActive ? nearMeBeachWindById : hourAdjustedBeachForecasts
   ), [isNearMeRegionActive, nearMeBeachWindById, hourAdjustedBeachForecasts]);
+
+  /**
+   * The per-beach wind source, moved off "now" and onto each beach's harshest hour when a stay
+   * length is set. Falls straight through when it is not, and in "Κοντά μου", where no beach has
+   * an entry — those beaches read their HOME region's forecast, which this map is not built from,
+   * so they keep the slider behaviour rather than being handed another region's hour.
+   *
+   * The near-me choice above it is kept as its own expression on purpose: validateBeachMarineResolution's
+   * RULE 5 pins it, because standing that branch down once handed the map the wind at the user's
+   * GPS point. Re-adjusting an already hour-adjusted forecast is safe — adjustDailyForecastToHour
+   * reads from the untouched `hourly` array every time (see hourAdjustedBeachForecasts above), so
+   * this replaces the hour rather than compounding it.
+   */
+  const beachWindSourceById = useMemo<BeachWeatherById>(() => {
+    if (harshestStayHourByBeachId.size === 0) return hourAdjustedWindSourceById;
+    const adjusted: BeachWeatherById = {};
+    Object.entries(hourAdjustedWindSourceById).forEach(([id, beachForecast]) => {
+      const beachId = Number(id);
+      const harshestDt = harshestStayHourByBeachId.get(beachId);
+      adjusted[beachId] = beachForecast && harshestDt != null
+        ? adjustDailyForecastToHour(beachForecast, harshestDt, mapHourSlots)
+        : beachForecast;
+    });
+    return adjusted;
+  }, [hourAdjustedWindSourceById, harshestStayHourByBeachId, mapHourSlots]);
   /** One beach's forecast with its own wind in it — unchanged when it has no cluster reading. */
   const withBeachOwnWind = React.useCallback((beachId: number, forecast: DailyForecast): DailyForecast => (
     applyBeachWindToDailyForecast(forecast, beachWindSourceById[beachId])
@@ -3998,13 +4120,20 @@ export const App: React.FC = () => {
   const beachAreaForecastById = useMemo<Record<number, DailyForecast>>(() => {
     const ids = Object.keys(beachMarineDayById);
     if (ids.length === 0) return {};
-    if (selectedHourDt == null) return beachMarineDayById;
+    if (selectedHourDt == null && harshestStayHourByBeachId.size === 0) return beachMarineDayById;
     const out: Record<number, DailyForecast> = {};
     for (const id of ids) {
-      out[Number(id)] = adjustDailyForecastToHour(beachMarineDayById[Number(id)], selectedHourDt, mapHourSlots);
+      const beachId = Number(id);
+      // The beach's own harshest hour when a stay is set, otherwise the slider's. Never a mix:
+      // a card whose wind came from 16:00 and whose sea came from 11:00 would be the 31/07 defect
+      // rebuilt one field lower down.
+      const dt = harshestStayHourByBeachId.get(beachId) ?? selectedHourDt;
+      out[beachId] = dt == null
+        ? beachMarineDayById[beachId]
+        : adjustDailyForecastToHour(beachMarineDayById[beachId], dt, mapHourSlots);
     }
     return out;
-  }, [beachMarineDayById, selectedHourDt, mapHourSlots]);
+  }, [beachMarineDayById, selectedHourDt, harshestStayHourByBeachId, mapHourSlots]);
 
   // Deferred twin, for the heavy scoring pass — same reason deferredSelectedForecast exists.
   // Region-guarded the same way: a map built for the previous region must never score this one's
@@ -4062,6 +4191,22 @@ export const App: React.FC = () => {
       minute: '2-digit',
       hour12: false,
     });
+    // A stay changes what this header is claiming, so it has to change what it says. The cards
+    // below now describe each beach's ROUGHEST hour inside the window rather than the slider
+    // moment — leaving the old "at 15:00" over them would be the 31/07/2026 defect («Ήρεμα ΤΩΡΑ»
+    // over another hour's numbers) rebuilt across the whole list.
+    if (stayHours != null) {
+      const windowSlots = getStayWindowSlots(mapHourSlots, stayHours);
+      const from = formatHour(windowSlots[0].dt);
+      const to = formatHour(windowSlots[windowSlots.length - 1].dt);
+      return getLocalizedCopy(language, {
+        en: `for ${from}–${to}, at their roughest`,
+        gr: `για ${from}–${to}, στη χειρότερη ώρα`,
+        fr: `pour ${from}–${to}, au pire moment`,
+        de: `für ${from}–${to}, zur rauesten Stunde`,
+        it: `per ${from}–${to}, nell'ora peggiore`,
+      });
+    }
     const nextSlot = mapHourSlots[index + 1];
     const windowLabel = nextSlot
       ? `${formatHour(mapHourSlots[index].dt)}–${formatHour(nextSlot.dt)}`
@@ -4073,7 +4218,7 @@ export const App: React.FC = () => {
       de: `um ${windowLabel}`,
       it: `alle ${windowLabel}`,
     });
-  }, [mapHourSlots, selectedHourDt, language]);
+  }, [mapHourSlots, selectedHourDt, stayHours, language]);
   const mapForecastTimeLabel = useMemo(() => {
     if (mapHourSlots.length === 0 || selectedHourDt == null) return undefined;
     const index = mapHourSlots.findIndex(slot => slot.dt === selectedHourDt);
@@ -5524,15 +5669,20 @@ export const App: React.FC = () => {
     const windDirection = degToCompass(selectedForecast.wind.deg);
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const beaufortLevel = getBeaufortLevel(windSpeedKmph);
-    const windSpeedMph = Math.round(selectedForecast.wind.speed * 2.23694);
     const conditions = compactWeatherLabels[language]?.[selectedForecast.weather.description]
       || (t.weatherConditions && t.weatherConditions[selectedForecast.weather.description])
       || selectedForecast.weather.description;
 
+    // NO mph HERE (removed 05/08/2026). This chip printed «ΝΔ · 1 μποφ. · 3mph · 34°C» to
+    // every visitor in every language — miles per hour inside a Greek interface, beside the
+    // Beaufort number that already says the same thing. Two faults in one field: nobody in
+    // Greece reads mph, and the app HAS a wind-unit preference (WindUnit, the Bft/mph toggle
+    // in components/WindInfo.tsx) which this header ignored entirely, so a user who chose
+    // Beaufort still got mph pushed at them. Beaufort is the vocabulary the whole product
+    // speaks; the exact speed belongs in the wind panel, where the toggle lives.
     return [
       compactWindDirections[language]?.[windDirection] || t.windDirections[windDirection],
       language === 'gr' ? `${beaufortLevel} μποφ.` : `${beaufortLevel} Bft`,
-      `${windSpeedMph}mph`,
       `${Math.round(selectedForecast.temp_max)}°C`,
       conditions,
     ].join(' · ');
@@ -6951,6 +7101,8 @@ export const App: React.FC = () => {
           selectedHourDt={selectedHourDt}
           onHourChange={handleMapHourChange}
           enableHourSlider
+          stayHours={stayHours}
+          onStayHoursChange={setStayHours}
           language={language}
           islandName={selectedIsland.name[language]}
           selectedDate={selectedDayDate}
@@ -7014,7 +7166,6 @@ export const App: React.FC = () => {
             <BeachSearcherHome
               language={language}
               selectedIsland={selectedIsland}
-              showLandingValueProp={showValueProp}
               allIslands={allIslands}
               regionWindNote={regionWindVariationNote?.text}
               rainWarning={
@@ -7328,7 +7479,9 @@ export const App: React.FC = () => {
               + a 3-day plan + the day chips — so a late chunk does not push the
               recommendations below it down. Raised from 6.5rem on 28/07/2026,
               when the card stopped being collapsed-until-tapped. */}
-          <Suspense fallback={<div className="mx-auto w-full max-w-6xl px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem]" /></div>}>
+          {/* Fallback width tracks the card's own (110rem since 05/08), and the reserved height
+              drops on lg because the days sit in columns there, not in one tall list. */}
+          <Suspense fallback={<div className="mx-auto w-full max-w-[110rem] px-3 sm:px-4"><div className="min-h-[21rem] rounded-2xl border border-cyan-200/80 bg-cyan-50/85 sm:min-h-[19rem] lg:min-h-[15rem]" /></div>}>
             <TripPlanner
               key={String(selectedIsland.id)}
               beaches={selectedIsland.beaches}
@@ -7359,6 +7512,15 @@ export const App: React.FC = () => {
                 <p className="mx-auto max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
                   {recommendationGeneralHelper}
                 </p>
+                {/* After the evening cutoff the app answers about TOMORROW, and today is not
+                    merely skipped — clampSelectedDayIndex makes index 0 unreachable. Changing
+                    which day is on screen without saying so is the same defect as a wrong
+                    answer, so it says so. */}
+                {isEveningHandover && (
+                  <p className="mx-auto max-w-2xl text-sm font-bold leading-relaxed text-cyan-800">
+                    {eveningHandoverNote}
+                  </p>
+                )}
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                 {recommendationSectionBeaches.map((r, i) => (
@@ -7430,6 +7592,8 @@ export const App: React.FC = () => {
                     selectedHourDt={selectedHourDt}
                     onHourChange={handleMapHourChange}
                     enableHourSlider
+                    stayHours={stayHours}
+                    onStayHoursChange={setStayHours}
                     language={language}
                     islandName={selectedIsland.name[language]}
                     selectedDate={selectedDayDate}
@@ -7770,6 +7934,8 @@ export const App: React.FC = () => {
                             selectedHourDt={selectedHourDt}
                             onHourChange={handleMapHourChange}
                             enableHourSlider
+                            stayHours={stayHours}
+                            onStayHoursChange={setStayHours}
                             language={language}
                             islandName={selectedIsland.name[language]}
                             selectedDate={selectedDayDate}

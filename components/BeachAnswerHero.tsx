@@ -147,13 +147,25 @@ const TILE_TEXT = 'w-full [overflow-wrap:normal] [word-break:normal] [hyphens:no
  * [data-tilefit] text node at 320 / 360 / 430 px across all five languages; that probe
  * is the only way to catch this, since it renders fine on the machine you build it on.
  */
-const TILE_BOX = 'flex min-w-0 flex-col items-center gap-1 rounded-2xl px-0.5 min-[380px]:px-1 py-3 text-center shadow-sm shadow-sky-900/5 ring-1';
-const TILE_HINT = 'text-[9px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
+/* 05/08/2026 — THE PROBE ABOVE IS NOW A COMMITTED GATE: scripts/validateTileFit.mjs, in the
+   critical set. Written because the labels were raised off 9 px (illegible on a real phone)
+   and there was no way to answer "did that break the fit?". It immediately found three words
+   still being cut at 320 px, all of them old: «Με αυτοκίνητο» by 8 px, «Παπούτσια θαλάσσης»
+   by 6, the German sea hint by 2. Hence: below 380 px the tile gives up its last 2 px of side
+   padding and the value and hint each drop one step. Above 380 px nothing changes.
+
+   The LABEL is a flat 10 px at every width, and that is a measurement too, not a compromise.
+   At 11 px «Κύμα ανοιχτά» wraps onto a second line, and because a tile is a flex column that
+   pushes its number down while the three tiles beside it keep theirs up — the row of figures
+   stops being a row. 10 px keeps every label on one line in all five languages at 320-430 px
+   and is still a step up from the 9 px it was. */
+const TILE_BOX = 'flex min-w-0 flex-col items-center gap-1 rounded-2xl px-0 min-[380px]:px-1 py-3 text-center shadow-sm shadow-sky-900/5 ring-1';
+const TILE_HINT = 'text-[8px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
 
 const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint }) => (
   <div data-tilefit="reading" className={`${TILE_BOX} bg-white/75 ring-white/60`}>
     <div className="h-6 w-9">{glyph}</div>
-    <p className="text-[9px] font-bold tracking-wide text-slate-500">{label}</p>
+    <p className="text-[10px] font-bold tracking-wide text-slate-500">{label}</p>
     <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight text-slate-900 tabular-nums`}>{value}</p>
     {hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-2`}>{hint}</p>}
   </div>
@@ -183,6 +195,15 @@ export interface BeachAnswerHeroProps {
    * not compose a new one here; that copy is the measured, five-language, gate-swept text.
    */
   explanation?: string | null;
+  /**
+   * The explanation slot carries two different kinds of text and they want opposite
+   * typography. The live sentence is a paragraph that explains the instruments — it reads
+   * left-aligned, like prose. The calm-day verdict is four words that ARE the answer, and
+   * left-aligned at the same weight it read as a stray caption hanging off the edge of the
+   * card (reported 05/08/2026). Centred and heavier, it lands where the eye already is:
+   * on the axis of the four tiles above it.
+   */
+  explanationIsVerdict?: boolean;
   wind: {
     beaufort: number;
     speedKmh: number;
@@ -267,11 +288,11 @@ const Practical: React.FC<{ tile: PracticalTile }> = ({ tile }) => {
           tile.tone === 'warn' ? 'text-amber-600' : tile.tone === 'good' ? 'text-emerald-600' : 'text-slate-500'
         }`}
       />
-      <p className="text-[9px] font-bold tracking-wide text-slate-500">{tile.label}</p>
+      <p className="text-[10px] font-bold tracking-wide text-slate-500">{tile.label}</p>
       {/* Three lines, not two: the "bring" tile may legitimately carry three short nouns
           ("Νερό, Αντηλιακό, Παπούτσια θαλάσσης") and they must ALL be visible — the tile
           is not clickable, so anything clamped away is simply lost to the reader. */}
-      <p className={`${TILE_TEXT} line-clamp-3 text-[11px] min-[380px]:text-[12px] font-black leading-[1.2] text-slate-900`}>
+      <p className={`${TILE_TEXT} line-clamp-3 text-[10px] min-[380px]:text-[12px] font-black leading-[1.2] text-slate-900`}>
         {tile.value}
       </p>
       {tile.hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-1`}>{tile.hint}</p>}
@@ -297,7 +318,7 @@ const AmenityPanel: React.FC<{
   if (!known.length) return null;
   return (
     <div className="space-y-2">
-      {title && <p className="px-1 text-[9px] font-bold tracking-wide text-slate-500">{title}</p>}
+      {title && <p className="px-1 text-[10px] font-bold tracking-wide text-slate-500">{title}</p>}
       {/* Same grid, same gap, same rounding as the tile rows above — so on desktop each
           facility sits in its own column, flush with the tile over it, instead of floating
           inside one wide box with its own indent (reported 31/07). Two columns on a phone,
@@ -329,7 +350,7 @@ const AmenityPanel: React.FC<{
               <span className="min-w-0 flex-1">
                 <span
                   className={`block ${TILE_TEXT} line-clamp-2 text-[11px] min-[380px]:text-[12px] font-bold leading-[1.2] ${
-                    yes ? 'text-slate-900' : partial ? 'text-slate-800' : 'text-slate-400 line-through'
+                    yes ? 'text-slate-900' : partial ? 'text-slate-800' : 'text-slate-500 line-through'
                   }`}
                 >
                   {row.label}
@@ -351,6 +372,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   tone,
   bestTimeLabel,
   explanation,
+  explanationIsVerdict = false,
   wind,
   airTempC,
   sea,
@@ -492,7 +514,12 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
             (statesShoreIncidence) went on silencing the SECOND copy of the same fact further
             down the page, so the explanation vanished from both places at once. */}
         {explanation && (
-          <p className="px-1 text-sm font-medium leading-relaxed text-slate-700" data-nosnippet="true">
+          <p
+            className={explanationIsVerdict
+              ? 'px-1 text-center text-base font-bold leading-snug text-slate-800'
+              : 'px-1 text-sm font-medium leading-relaxed text-slate-700'}
+            data-nosnippet="true"
+          >
             {explanation}
           </p>
         )}

@@ -236,7 +236,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
                 type="submit"
                 disabled={state === 'sending' || message.trim().length < 3}
                 aria-busy={state === 'sending'}
-                className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
+                className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
               >
                 {state === 'sending'
                   ? <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" aria-hidden="true" />

@@ -13,10 +13,25 @@
   --color-background: #F0F9FF;
   --color-foreground: #ffffff;
   --color-primary: #0EA5E9;
-  --color-primary-dark: #0284C7;
+  /* One shade darker than sky-600 (05/08/2026). This token is used both as small link text on
+     pale sky backgrounds («Αρχική» in the bottom nav, 10px) and as a badge background under
+     white numerals — 3,8:1 and 4,1:1 respectively, both under the 4,5:1 AA needs. #0369A1 is
+     sky-700: same hue, same family, 5,9:1 on white and 5,5:1 on sky-50, and it makes BOTH
+     cases pass without touching either component. */
+  --color-primary-dark: #0369A1;
   --color-secondary: #38BDF8;
-  --color-cta: #F97316;
-  --color-cta-hover: #EA580C;
+  /* THE CTA IS CALMBEACH TEAL, NOT ORANGE (05/08/2026).
+     Every `bg-cta` button carries white text, and against the old #F97316 that measured
+     2,8:1 — WCAG AA asks 4,5:1 at this size, and it was the only failing colour pair in a
+     full sweep of the beach page, the region page and the home page. On a phone in August
+     sun it is the one button we most need people to be able to read.
+     A darker orange was tried first and rejected as too aggressive: the site is called Calm
+     Beach and the loudest thing on it was shouting in a colour that appears nowhere else.
+     #007a83 is not a new colour — it is the teal already in components/BeachSearcherHome
+     and in the mark itself — and it measures 5,1:1 against white. The palette gets smaller
+     rather than louder. Anything placed on `bg-cta` keeps white text: measured as a pair. */
+  --color-cta: #007a83;
+  --color-cta-hover: #005F66;
   --color-accent: #0ea5e9;
   --color-accent-hover: #0284c7;
   --color-text: #0C4A6E;
@@ -536,6 +551,17 @@ body {
   .leaflet-control-bar-button svg {
     width: 22px;
     height: 22px;
+  }
+  /* THE ICONS GREW HERE, THE BUTTONS NEVER DID. Measured on a real phone 05/08/2026: the
+     whole column — zoom in, zoom out, satellite — was 30×30 px, against the 44 px that both
+     Apple and Google give as the minimum for a finger. Leaflet's own touch rule is
+     `.leaflet-touch .leaflet-bar a` (0,2,1); this adds `.leaflet-container` so it wins
+     outright rather than depending on file order, the same trap documented above. */
+  .leaflet-container.leaflet-touch .leaflet-bar a,
+  .leaflet-container.leaflet-touch .leaflet-bar a:hover {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
   }
 }
 

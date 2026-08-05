@@ -24,24 +24,10 @@ interface LandingHeroProps {
   roughness: number;
 }
 
-// One quiet accent: the title's final word ("σήμερα"/"today") in brand teal.
-// Both authored titles deliberately end on that promise word, so a last-word
-// split is a controlled device, not string luck.
-// Colours one phrase inside the headline. The copy keeps ONE canonical title
-// string (so the sentence is never assembled from fragments) and names the
-// substring to accent; if that substring is ever edited out of the title, this
-// degrades to the plain headline rather than breaking it.
-const renderTitleAccent = (title: string, accent: string): React.ReactNode => {
-  const i = accent ? title.indexOf(accent) : -1;
-  if (i === -1) return title;
-  return (
-    <>
-      {title.slice(0, i)}
-      <span className="text-[#0284c7]">{accent}</span>
-      {title.slice(i + accent.length)}
-    </>
-  );
-};
+// The headline used to colour one word ("Ελλάδας"/"Greece") as an accent; that
+// read as a stray, unrelated colour, so the title is now plain text throughout —
+// this just returns it unchanged.
+const renderTitleAccent = (title: string, _accent: string): React.ReactNode => title;
 
 const riseDelay = (delayMs: number): React.CSSProperties => ({ animationDelay: `${delayMs}ms` });
 const cssVar = (name: string, value: string) => ({ [name]: value } as React.CSSProperties);
@@ -150,7 +136,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             and it pushed the region tiles — the page's actual conversion event —
             further below the fold. */}
         <h1
-          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
+          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-teal-700 sm:text-[3.4rem]"
           style={riseDelay(0)}
         >
           {heroTitle}
@@ -195,7 +181,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             type="button"
             onClick={onNearMe}
             disabled={isFindingLocation}
-            className={`inline-flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-2xl bg-cta px-7 text-base font-bold text-white shadow-lg shadow-orange-500/25 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-full ${
+            className={`inline-flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-2xl bg-cta px-7 text-base font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-full ${
               isFindingLocation ? 'cursor-wait opacity-70' : ''
             }`}
           >

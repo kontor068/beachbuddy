@@ -31,6 +31,8 @@ const copy = {
     close: 'Close',
     accessData: 'Accessibility',
     blueFlag: 'Blue Flag 2026',
+    beachData: 'Beach data',
+    beachDataLicence: 'contributors, under the',
     footerNote:
       'Calm Beach is an informational beach guide. Always check local conditions, warning flags, lifeguards, and official advice before swimming.',
     legalLinks: 'Legal',
@@ -49,6 +51,8 @@ const copy = {
     close: 'Κλείσιμο',
     accessData: 'Πρόσβαση ΑμεΑ',
     blueFlag: 'Γαλάζιες Σημαίες 2026',
+    beachData: 'Δεδομένα παραλιών',
+    beachDataLicence: 'συνεισφέροντες, με άδεια',
     footerNote:
       'Το Calm Beach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, σημαίες, ναυαγοσώστες και επίσημες οδηγίες.',
     legalLinks: 'Νομικά',
@@ -100,17 +104,32 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   // de/fr/it, where no localized hub is emitted).
   const { href: guidesHref, external: guidesExternal } = getGuidesHubLink(language);
 
+  /* `min-h-[44px]` is not decoration: measured on a real phone 05/08/2026, every link in this
+     footer was 19-20 px tall — under half the 44 px both Apple and Google give as the minimum
+     touch target, and these are the links a user reaches for when they are annoyed (privacy,
+     cookie settings, terms). The height is bought with flex centring rather than padding so
+     the visual rhythm of the column is unchanged; only the tappable box grows. Standalone
+     links only — the attribution links below stay inline inside their sentence, which is the
+     case WCAG 2.5.8 explicitly exempts, and padding them would break the paragraph.
+
+     From `md:` up the target drops to 32 px: that breakpoint is a pointing device, where the
+     44 px finger rule does not apply and five stacked 44 px rows made the footer eat a third
+     of the viewport. 32 px still clears the 24 px WCAG 2.5.8 minimum with room to spare. */
   const contactLinkClass =
-    'group inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded';
+    'group inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded md:min-h-[32px]';
   const legalLinkClass =
-    'cursor-pointer text-sm font-medium text-slate-600 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded';
+    'inline-flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-slate-600 transition-colors hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded md:min-h-[30px]';
   const columnHeadingClass = 'text-xs font-bold uppercase tracking-wider text-slate-500';
+  // Attribution links live in the muted fine print, so they carry the same weight as the
+  // text around them — a licence credit that shouts is a worse credit.
+  const fineLinkClass =
+    'font-semibold text-slate-500 underline-offset-4 transition-colors hover:text-teal-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded';
 
   return (
     <>
       <footer className="w-full border-t border-slate-200 bg-white/85 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
-          <div className="grid gap-9 text-center md:grid-cols-[1.6fr_1fr_1fr] md:gap-12 md:text-left">
+        <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-7">
+          <div className="grid gap-9 text-center md:grid-cols-[1.6fr_1fr_1fr] md:gap-8 md:text-left">
 
             {/* Brand + tagline + safety note */}
             <div>
@@ -123,7 +142,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 href={guidesHref}
                 target={guidesExternal ? '_blank' : undefined}
                 rel={guidesExternal ? 'noopener noreferrer' : undefined}
-                className="mt-3 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3.5 py-1.5 text-sm font-bold text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3.5 py-1.5 text-sm font-bold text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
               >
                 <Compass className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {c.guides} →
@@ -137,7 +156,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
             {/* Contact */}
             <div>
               <p className={columnHeadingClass}>{c.contact}</p>
-              <ul className="mt-4 flex flex-col items-center gap-3 md:items-start">
+              <ul className="mt-2 flex flex-col items-center md:items-start">
                 <li>
                   <a href={`mailto:${LEGAL_OPERATOR.contactEmail}`} className={contactLinkClass}>
                     <Mail className="h-4 w-4 shrink-0 text-teal-600 transition-colors group-hover:text-teal-700" aria-hidden="true" />
@@ -159,7 +178,9 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
             {/* Legal */}
             <nav aria-label={c.legalLinks}>
               <p className={columnHeadingClass}>{c.legalLinks}</p>
-              <ul className="mt-4 flex flex-col items-center gap-2.5 md:items-start">
+              {/* The gap shrinks as the targets grow: each row is now 44 px of tappable box
+                  instead of 20 px of text, so the column keeps roughly the height it had. */}
+              <ul className="mt-2 flex flex-col items-center md:items-start">
                 <li><button type="button" onClick={() => setActiveModal('terms')} className={legalLinkClass}>{c.terms}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('privacy')} className={legalLinkClass}>{c.privacy}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('cookies')} className={legalLinkClass}>{c.cookies}</button></li>
@@ -174,7 +195,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
           </div>
 
           {/* Fine print */}
-          <div className="mt-10 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-6 text-center text-xs text-slate-400 sm:flex-row sm:justify-between sm:text-left">
+          <div className="mt-6 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-5 text-center text-xs text-slate-600 sm:flex-row sm:justify-between sm:text-left md:mt-5 md:pt-4">
             <p>© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 sm:justify-end">
               <WeatherDataAttribution language={language} />
@@ -187,6 +208,46 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               <span>{c.blueFlag}</span>
             </div>
           </div>
+
+          {/* ODbL attribution for the beach dataset — a derivative of OpenStreetMap.
+              Its own row, because it is a licence obligation rather than a credit we
+              choose to give, and the row above is already three items wide.
+
+              ⚠️ THIS WAS MISSING FOR EVERY VISITOR WITH JAVASCRIPT until 05/08/2026.
+              The notice existed only in the prerendered HTML (prerenderBeachPages.mjs,
+              `withStaticFooter()`), which React overwrites on mount by design — the
+              static footer is injected INSIDE #root precisely so it does not duplicate.
+              So the audit that reported "ODbL on 9.499/9.502 pages" was reading the
+              build output, not the browser. In the client bundle the words
+              OpenStreetMap/ODbL appeared only in BeachMap (tile credit) and
+              BeachDetailPage — neither of which the landing page renders, leaving the
+              home page with no attribution at all.
+
+              Placed here rather than in WeatherDataAttribution because that component
+              covers the FORECAST licences (Open-Meteo CC BY 4.0, DWD, Météo-France);
+              this covers the BEACH DATABASE, a different source with a different
+              licence, and merging them would make one line responsible for two
+              obligations that can change independently. */}
+          <p className="mt-3 text-center text-xs leading-relaxed text-slate-600 sm:text-left">
+            {c.beachData}: ©{' '}
+            <a
+              href="https://www.openstreetmap.org/copyright"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={fineLinkClass}
+            >
+              OpenStreetMap
+            </a>{' '}
+            {c.beachDataLicence}{' '}
+            <a
+              href="https://opendatacommons.org/licenses/odbl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={fineLinkClass}
+            >
+              Open Database License (ODbL)
+            </a>
+          </p>
         </div>
       </footer>
 

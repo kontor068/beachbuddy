@@ -12,6 +12,7 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+import { conditionToneLabels } from '../utils/conditionToneLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
@@ -46,6 +47,14 @@ interface BeachMapProps {
   onHourChange?: (dt: number) => void;
   /** Whether to render the docked hour slider under the map. */
   enableHourSlider?: boolean;
+  /**
+   * How long the visitor says they are staying, in hours — `null` means they have not said, which
+   * is the untouched "this moment" behaviour. Rendered as chips beside the hour slider because
+   * that is where time already lives on this surface; see utils/stayWindow for why it asks one
+   * question (duration) and never a second one (arrival).
+   */
+  stayHours?: 2 | 4 | 8 | null;
+  onStayHoursChange?: (hours: 2 | 4 | 8 | null) => void;
   language?: LanguageCode;
   selectedDate?: Date;
   compact?: boolean;
@@ -1700,6 +1709,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   selectedHourDt = null,
   onHourChange,
   enableHourSlider = false,
+  stayHours = null,
+  onStayHoursChange,
   language = 'en',
   selectedDate,
   compact = false,
@@ -2120,6 +2131,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
     view: { en: 'View', gr: 'Προβολή', de: 'Ansehen', it: 'Vedi', fr: 'Voir' },
     navigate: { en: 'Navigate', gr: 'Πλοήγηση', de: 'Route', it: 'Naviga', fr: 'Itinéraire' },
     closeDetails: { en: 'Close beach details', gr: 'Κλείσιμο λεπτομερειών παραλίας', de: 'Stranddetails schließen', it: 'Chiudi dettagli spiaggia', fr: 'Fermer les détails de la plage' },
+    stayLabel: { en: 'Staying', gr: 'Θα μείνω', de: 'Aufenthalt', it: 'Mi fermo', fr: 'Je reste' },
+    stayNow: { en: 'Now', gr: 'Τώρα', de: 'Jetzt', it: 'Ora', fr: 'Maintenant' },
+    stay2h: { en: '2 hours', gr: '2 ώρες', de: '2 Stunden', it: '2 ore', fr: '2 heures' },
+    stay4h: { en: 'Half a day', gr: 'Μισή μέρα', de: 'Halber Tag', it: 'Mezza giornata', fr: 'Une demi-journée' },
+    stay8h: { en: 'All day', gr: 'Όλη μέρα', de: 'Ganzer Tag', it: 'Tutto il giorno', fr: 'Toute la journée' },
+    stayHint: {
+      en: 'Beaches are judged by the roughest hour you would be there, not by right now',
+      gr: 'Οι παραλίες κρίνονται από τη χειρότερη ώρα που θα είσαι εκεί, όχι από τώρα',
+      de: 'Strände werden nach der rauesten Stunde Ihres Aufenthalts bewertet, nicht nach jetzt',
+      it: 'Le spiagge sono valutate sull’ora peggiore della tua permanenza, non su adesso',
+      fr: 'Les plages sont jugées sur l’heure la plus agitée de votre séjour, pas sur maintenant',
+    },
     suitability: {
       en: `Recommendation ${selectedDayPrefix}`,
       gr: `Πρόταση για ${selectedDayPrefix}`,
@@ -2242,15 +2265,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * beaches cannot be omitted. As a bonus it answers a better question than the old table did —
    * not "what would 4 Bft mean" but "how many choices do I have right now".
    */
+  // The colour words live in utils/conditionToneLabels.ts rather than inline here, so the gate
+  // (validateConditionToneAgreement) can read the real table and fail on an empty or missing word
+  // in any of the five languages — a coloured pin the legend cannot explain.
+  const toneWords = conditionToneLabels[language] ?? conditionToneLabels.en;
   const windColorGuideCopy = getLocalizedCopy<{
-    /** One word per tone. Keys are CalmnessTone — every tone the ladder can emit needs one. */
-    toneLabel: Record<WindLegendDot, string>;
-    /**
-     * What separates this colour from the one above it, in one short line. Deliberately says
-     * "wind OR sea": since the sea-state ceiling landed (01/08) a beach can be orange on a light
-     * wind day, and a meaning written as a Beaufort band would be the old, wrong legend again.
-     */
-    toneMeaning: Record<WindLegendDot, string>;
     /** Spoken colour name; aria-label/title only, never rendered as text. */
     colorName: Record<WindLegendDot, string>;
     /** Replaces the counted rows at >=7 Bft, where the wind alone makes every pin red. */
@@ -2258,57 +2277,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
     severeColorName: string;
   }>(language, {
     en: {
-      toneLabel: { blue: 'Excellent', yellow: 'Good', orange: 'Fair', red: 'Difficult' },
-      toneMeaning: {
-        blue: 'Light wind, flat water',
-        yellow: 'A little breeze or ripple, swimming stays easy',
-        orange: 'Noticeable wind or waves — fine for a dip, not for a long swim',
-        red: 'Strong wind or big waves — pick another shore today',
-      },
       colorName: { blue: 'blue', yellow: 'yellow', orange: 'orange', red: 'red' },
       severeLabel: 'Unsuitable', severeColorName: 'danger',
     },
     gr: {
-      toneLabel: { blue: 'Ιδανική', yellow: 'Καλή', orange: 'Μέτρια', red: 'Δύσκολη' },
-      toneMeaning: {
-        blue: 'Λίγος αέρας, ήρεμο νερό',
-        yellow: 'Λίγο αεράκι ή κυματάκι, κολυμπάς άνετα',
-        orange: 'Αισθητός αέρας ή κύμα — για μια βουτιά ναι, για ώρες όχι',
-        red: 'Δυνατός αέρας ή μεγάλο κύμα — διάλεξε άλλη ακτή σήμερα',
-      },
       colorName: { blue: 'μπλε', yellow: 'κίτρινο', orange: 'πορτοκαλί', red: 'κόκκινο' },
       severeLabel: 'Ακατάλληλη', severeColorName: 'κίνδυνος',
     },
     fr: {
-      toneLabel: { blue: 'Idéale', yellow: 'Bonne', orange: 'Correcte', red: 'Difficile' },
-      toneMeaning: {
-        blue: 'Peu de vent, eau plate',
-        yellow: 'Un peu de brise ou de clapot, on nage tranquillement',
-        orange: 'Vent ou vagues sensibles — pour une baignade courte',
-        red: 'Vent fort ou grosses vagues — choisissez une autre côte',
-      },
       colorName: { blue: 'bleu', yellow: 'jaune', orange: 'orange', red: 'rouge' },
       severeLabel: 'Déconseillée', severeColorName: 'danger',
     },
     de: {
-      toneLabel: { blue: 'Ideal', yellow: 'Gut', orange: 'Mäßig', red: 'Schwierig' },
-      toneMeaning: {
-        blue: 'Wenig Wind, ruhiges Wasser',
-        yellow: 'Etwas Brise oder Kräuselwellen, Schwimmen bleibt leicht',
-        orange: 'Spürbarer Wind oder Wellen — für ein kurzes Bad',
-        red: 'Starker Wind oder hohe Wellen — heute lieber eine andere Küste',
-      },
       colorName: { blue: 'blau', yellow: 'gelb', orange: 'orange', red: 'rot' },
       severeLabel: 'Ungeeignet', severeColorName: 'danger',
     },
     it: {
-      toneLabel: { blue: 'Ideale', yellow: 'Buona', orange: 'Discreta', red: 'Difficile' },
-      toneMeaning: {
-        blue: 'Poco vento, acqua piatta',
-        yellow: 'Un po\' di brezza o increspature, si nuota bene',
-        orange: 'Vento o onde percettibili — per un bagno breve',
-        red: 'Vento forte o onde alte — meglio un\'altra costa oggi',
-      },
       colorName: { blue: 'blu', yellow: 'giallo', orange: 'arancione', red: 'rosso' },
       severeLabel: 'Non adatta', severeColorName: 'danger',
     },
@@ -2777,7 +2761,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   role="img"
                   className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
                 />
-                <span className="min-w-0 truncate">{windColorGuideCopy.toneLabel[row.tone]}</span>
+                <span className="min-w-0 truncate">{toneWords[row.tone].label}</span>
                 <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
                 {isToneFilterEnabled && (
                   isActive
@@ -2788,7 +2772,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               {/* The one line that separates this colour from the one above it. Without it the
                   reader sees five words and no way to tell «Μέτρια» from «Καλή». */}
               <span className="mt-0.5 block text-left text-[10px] font-medium leading-snug text-slate-500 dark:text-slate-400">
-                {windColorGuideCopy.toneMeaning[row.tone]}
+                {toneWords[row.tone].meaning}
               </span>
             </>
           );
@@ -2803,7 +2787,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               key={row.tone}
               type="button"
               aria-pressed={isActive}
-              aria-label={`${windColorGuideCopy.toneLabel[row.tone]} (${row.count}) — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
+              aria-label={`${toneWords[row.tone].label} (${row.count}) — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
               className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
                 isActive
@@ -3340,6 +3324,49 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-700 sm:block dark:text-slate-600">
             {hourSliderHelper[language]}
           </p>
+          {/*
+            HOW LONG ARE YOU STAYING — one question, never two.
+            Measured before this was built (scripts/measureIntradayWindowSpread.mjs, 05/08/2026):
+            on 41,6% of beach-days a two-hour slot is calmer than the day, and on 33,0% the day
+            turns rougher than the hour a visitor arrives in. Arrival time costs two tone steps on
+            only 3,6%, which is why the window simply starts now and there is no second chip row
+            asking when. "Τώρα" is the default and is exactly the behaviour that existed before,
+            so a visitor who ignores this loses nothing.
+          */}
+          {onStayHoursChange && (
+            <div
+              className="flex basis-full flex-wrap items-center gap-1.5 pb-2 pt-1 sm:pb-0"
+              role="group"
+              aria-label={mapCopy.stayHint[language]}
+            >
+              <span className="shrink-0 text-[11px] font-extrabold text-slate-600 dark:text-slate-300">
+                {mapCopy.stayLabel[language]}
+              </span>
+              {([
+                { value: null, label: mapCopy.stayNow[language] },
+                { value: 2 as const, label: mapCopy.stay2h[language] },
+                { value: 4 as const, label: mapCopy.stay4h[language] },
+                { value: 8 as const, label: mapCopy.stay8h[language] },
+              ]).map(option => {
+                const isActive = stayHours === option.value;
+                return (
+                  <button
+                    key={option.label}
+                    type="button"
+                    onClick={() => onStayHoursChange(option.value)}
+                    aria-pressed={isActive}
+                    className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-extrabold transition-colors cursor-pointer ${
+                      isActive
+                        ? 'border-[#007a83] bg-[#007a83] text-white'
+                        : 'border-slate-300 bg-white text-slate-700 hover:border-[#007a83] hover:text-[#007a83] dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 

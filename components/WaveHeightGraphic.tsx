@@ -1135,8 +1135,12 @@ const HourlyStrip: React.FC<{
                 style={{ height: `${waveBarFraction(p.waveHeightM) * 100}%` }}
               />
             </div>
-            {/* Every hour gets its own tiny label so they all fit; the shown/now hour is emphasised. */}
-            <span className={`mt-0.5 text-[9px] leading-none font-semibold tabular-nums ${isNow ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+            {/* Every hour gets its own tiny label so they all fit; the shown/now hour is emphasised.
+                The quiet hours were slate-400 — 2,6:1 against white, at 9 px, which is where a
+                contrast sweep on 05/08/2026 found them. slate-600 measures 7:1 and the emphasis
+                still reads, because it was never carrying the emphasis alone: the now-hour has a
+                pill behind it. Contrast is not the same lever as hierarchy. */}
+            <span className={`mt-0.5 text-[9px] leading-none font-semibold tabular-nums ${isNow ? 'text-slate-800 dark:text-slate-100' : 'text-slate-600 dark:text-slate-400'}`}>
               {String(p.hour).padStart(2, '0')}
             </span>
           </div>

@@ -93,6 +93,16 @@ export type TripPlannerCopy = {
   /** The per-day "why this beach" line, keyed by TripWhyKey. */
   why: {
     calm_everywhere: string;
+    /**
+     * Used INSTEAD of repeating an identical why-line on a following day.
+     *
+     * On a settled week every day resolves to the same whyKey and the same Beaufort, so the
+     * card printed the very same sentence two or three times in a row — with the same
+     * best-hours line and the same wind badge under each. Three identical paragraphs read as a
+     * template rather than a calculation, which is the opposite of what this card exists to
+     * prove. It says LESS than the line it replaces, so it makes no new claim.
+     */
+    same_again: string;
     cove_refuge: (windFrom: string) => string;
     sheltered: (windFrom: string) => string;
     partial_shelter: (windFrom: string) => string;
@@ -113,7 +123,7 @@ export type TripPlannerCopy = {
 export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   gr: {
     nextDaysTitle: (n) => (n === 1 ? 'Η επόμενη μέρα' : `Οι επόμενες ${n} μέρες`),
-    valueProp: 'Κάθε μέρα, η παραλία που ταιριάζει στον άνεμο.',
+    valueProp: 'Κάθε μέρα διαφορετική παραλία, ταιριαστή με τον άνεμο εκείνης της μέρας.',
     ignoresFilter: 'Για τις επόμενες μέρες — με τον καιρό της κάθε μέρας, ανεξάρτητα από το φίλτρο.',
     stayingLonger: 'Μένεις περισσότερο;',
     daysUnit: (n) => (n === 1 ? '1 μέρα' : `${n} μέρες`),
@@ -144,6 +154,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     },
     why: {
       calm_everywhere: 'Ήπιος άνεμος — ήρεμα σχεδόν παντού· η καλύτερη συνολικά επιλογή.',
+      same_again: 'Πάλι ήπιος άνεμος — η διαφορά είναι στην ίδια την παραλία, όχι στον καιρό.',
       cove_refuge: (windFrom) => `Κλειστός όρμος — ο αέρας ${windFrom} δεν μπαίνει.`,
       sheltered: (windFrom) => `Προστατευμένη ${windFrom} — πιο ήρεμη από την εκτεθειμένη πλευρά, αλλά με λίγο αέρα κι εδώ.`,
       partial_shelter: (windFrom) => `Μερική προστασία ${windFrom} — θα έχει κάποιο κύμα.`,
@@ -167,7 +178,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   en: {
     nextDaysTitle: (n) => (n === 1 ? 'The next day' : `The next ${n} days`),
-    valueProp: 'Every day, the beach that fits the wind.',
+    valueProp: 'A different beach each day, matched to that day’s wind.',
     ignoresFilter: 'For the days ahead — on each day’s own weather, independent of the filter.',
     stayingLonger: 'Staying longer?',
     daysUnit: (n) => (n === 1 ? '1 day' : `${n} days`),
@@ -198,6 +209,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     },
     why: {
       calm_everywhere: 'Light wind — calm almost everywhere; the best all-round choice.',
+      same_again: 'Light wind again — what differs is the beach itself, not the weather.',
       cove_refuge: (windFrom) => `A closed cove — the wind ${windFrom} does not get in.`,
       sheltered: (windFrom) => `Sheltered ${windFrom} — calmer than the exposed side, with a little wind even here.`,
       partial_shelter: (windFrom) => `Partial shelter ${windFrom} — expect some chop.`,
@@ -217,7 +229,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   de: {
     nextDaysTitle: (n) => (n === 1 ? 'Der nächste Tag' : `Die nächsten ${n} Tage`),
-    valueProp: 'Jeden Tag der Strand, der zum Wind passt.',
+    valueProp: 'Jeden Tag ein anderer Strand, passend zum Wind dieses Tages.',
     ignoresFilter: 'Für die kommenden Tage — nach dem Wetter des jeweiligen Tages, unabhängig vom Filter.',
     stayingLonger: 'Bleibst du länger?',
     daysUnit: (n) => (n === 1 ? '1 Tag' : `${n} Tage`),
@@ -248,6 +260,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     },
     why: {
       calm_everywhere: 'Leichter Wind — fast überall ruhig; die beste Wahl insgesamt.',
+      same_again: 'Wieder leichter Wind — der Unterschied liegt am Strand selbst, nicht am Wetter.',
       cove_refuge: (windFrom) => `Eine geschlossene Bucht — der Wind ${windFrom} kommt nicht hinein.`,
       sheltered: (windFrom) => `Geschützt vor Wind ${windFrom} — ruhiger als die exponierte Seite, mit etwas Wind auch hier.`,
       partial_shelter: (windFrom) => `Teilweise geschützt vor Wind ${windFrom} — mit etwas Welle ist zu rechnen.`,
@@ -267,7 +280,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   it: {
     nextDaysTitle: (n) => (n === 1 ? 'Il prossimo giorno' : `I prossimi ${n} giorni`),
-    valueProp: 'Ogni giorno, la spiaggia giusta per il vento.',
+    valueProp: 'Ogni giorno una spiaggia diversa, scelta per il vento di quel giorno.',
     ignoresFilter: 'Per i prossimi giorni — con il meteo di ogni giorno, indipendentemente dal filtro.',
     stayingLonger: 'Ti fermi di più?',
     daysUnit: (n) => (n === 1 ? '1 giorno' : `${n} giorni`),
@@ -298,6 +311,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     },
     why: {
       calm_everywhere: 'Vento leggero — calmo quasi ovunque; la scelta migliore in assoluto.',
+      same_again: 'Di nuovo vento leggero — a cambiare è la spiaggia, non il meteo.',
       cove_refuge: (windFrom) => `Una cala chiusa — il vento ${windFrom} non entra.`,
       sheltered: (windFrom) => `Riparata dal vento ${windFrom} — più calma del lato esposto, con un po' di vento anche qui.`,
       partial_shelter: (windFrom) => `Riparo parziale dal vento ${windFrom} — aspettati un po' di onda.`,
@@ -317,7 +331,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
   },
   fr: {
     nextDaysTitle: (n) => (n === 1 ? 'Le jour à venir' : `Les ${n} prochains jours`),
-    valueProp: 'Chaque jour, la plage qui convient au vent.',
+    valueProp: 'Chaque jour une plage différente, adaptée au vent de ce jour-là.',
     ignoresFilter: 'Pour les jours à venir — selon la météo de chaque jour, indépendamment du filtre.',
     stayingLonger: 'Vous restez plus longtemps ?',
     daysUnit: (n) => (n === 1 ? '1 jour' : `${n} jours`),
@@ -348,6 +362,7 @@ export const tripPlannerCopy: Record<LanguageCode, TripPlannerCopy> = {
     },
     why: {
       calm_everywhere: 'Vent léger — calme presque partout ; le meilleur choix global.',
+      same_again: 'Encore un vent léger — ce qui change, c’est la plage, pas la météo.',
       cove_refuge: (windFrom) => `Une crique fermée — le vent ${windFrom} n'y entre pas.`,
       sheltered: (windFrom) => `Abritée du vent ${windFrom} — plus calme que le côté exposé, avec un peu de vent ici aussi.`,
       partial_shelter: (windFrom) => `Abri partiel du vent ${windFrom} — attendez-vous à un peu de clapot.`,

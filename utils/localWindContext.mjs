@@ -53,9 +53,15 @@ export const LOCAL_WIND_ATOMS = {
 
 // Full seasonal-shelter section copy per regime (LocalWindShelterSection reads this).
 // `statusBoatGr` = neuter-agreeing Greek for boat-only spots ("Το Κλέφτικο …").
+//
+// EVERY TITLE SAYS "USUALLY" (05/08/2026). This section is a seasonal atlas and is
+// deliberately independent of today's forecast — but on a real phone, «Στον μαΐστρο»
+// three screens below a calm mint card read as a statement about NOW, and the beach
+// appeared to contradict itself: ideal at the top, "exposed, often choppy" further down.
+// Both were true; only one said when. The word costs nothing and removes the collision.
 export const LOCAL_WIND_SECTION = {
   aegean: {
-    title: { en: 'In the meltemi', gr: 'Στα μελτέμια', de: 'Beim Meltemi', it: 'Con il meltemi', fr: 'Pendant le meltemi' },
+    title: { en: 'Usually in the meltemi', gr: 'Συνήθως στα μελτέμια', de: 'Normalerweise beim Meltemi', it: 'Di solito con il meltemi', fr: 'Habituellement pendant le meltem' },
     intro: {
       en: 'The meltemi is the dry N/NE wind that dominates Aegean summers — the single best guide to how a beach usually behaves from July to September.',
       gr: 'Το μελτέμι είναι ο ξηρός Β/ΒΑ άνεμος που κυριαρχεί το καλοκαίρι στο Αιγαίο — ο πιο αξιόπιστος οδηγός για το πώς συμπεριφέρεται συνήθως μια παραλία από τον Ιούλιο ως τον Σεπτέμβριο.',
@@ -77,7 +83,7 @@ export const LOCAL_WIND_SECTION = {
     sourceNote: { en: 'Based on each cove’s coastline orientation to the N/NE — a seasonal guide, not today’s forecast.', gr: 'Βάσει του προσανατολισμού της ακτής κάθε όρμου στον Β/ΒΑ — εποχικός οδηγός, όχι η σημερινή πρόγνωση.', de: 'Basierend auf der N/NO-Ausrichtung jeder Bucht — ein saisonaler Hinweis, keine heutige Vorhersage.', it: "In base all'orientamento della costa di ogni cala verso N/NE — una guida stagionale, non la previsione di oggi.", fr: "D'après l'orientation de chaque crique vers le N/NE — un repère saisonnier, pas la prévision du jour." },
   },
   ionian: {
-    title: { en: 'In the maistros', gr: 'Στον μαΐστρο', de: 'Beim Maistros', it: 'Con il maestrale', fr: 'Par le maïstro' },
+    title: { en: 'Usually in the maistros', gr: 'Συνήθως στον μαΐστρο', de: 'Normalerweise beim Maistros', it: 'Di solito con il maestrale', fr: 'Habituellement par le maïstro' },
     intro: {
       en: 'The maistros is the NW/W wind that picks up on summer afternoons in the Ionian — the best guide to how a beach usually behaves from June to September.',
       gr: 'Ο μαΐστρος είναι ο ΒΔ/Δ άνεμος που σηκώνεται τα καλοκαιρινά απογεύματα στο Ιόνιο — ο πιο αξιόπιστος οδηγός για το πώς συμπεριφέρεται συνήθως μια παραλία από τον Ιούνιο ως τον Σεπτέμβριο.',
@@ -99,7 +105,7 @@ export const LOCAL_WIND_SECTION = {
     sourceNote: { en: "Based on each cove’s coastline orientation to the NW/W — a seasonal guide, not today’s forecast.", gr: 'Βάσει του προσανατολισμού της ακτής κάθε όρμου στον ΒΔ/Δ — εποχικός οδηγός, όχι η σημερινή πρόγνωση.', de: 'Basierend auf der NW/W-Ausrichtung jeder Bucht — ein saisonaler Hinweis, keine heutige Vorhersage.', it: "In base all'orientamento della costa di ogni cala verso NO/O — una guida stagionale, non la previsione di oggi.", fr: "D'après l'orientation de chaque crique vers le NO/O — un repère saisonnier, pas la prévision du jour." },
   },
   thermaic: {
-    title: { en: 'In the summer wind', gr: 'Στον καλοκαιρινό αέρα', de: 'Beim Sommerwind', it: 'Con il vento estivo', fr: "Par le vent d'été" },
+    title: { en: 'Usually in the summer wind', gr: 'Συνήθως στον καλοκαιρινό αέρα', de: 'Normalerweise beim Sommerwind', it: 'Di solito con il vento estivo', fr: "Habituellement par le vent d'été" },
     intro: {
       en: 'The afternoon NW/W summer wind on the Thermaic Gulf is the best guide to how a beach usually behaves in summer.',
       gr: 'Ο απογευματινός ΒΔ/Δ καλοκαιρινός αέρας στον Θερμαϊκό είναι ο πιο αξιόπιστος οδηγός για το πώς συμπεριφέρεται συνήθως μια παραλία το καλοκαίρι.',

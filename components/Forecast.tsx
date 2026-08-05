@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useId, useState } from 'react';
 import { DailyForecast, WeatherData, ForecastItem } from '../types';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
-import { athensNow } from '../utils/athensTime';
+import { athensNow, BEACH_DAY_ENDS_HOUR } from '../utils/athensTime';
 import { ArrowRight, CloudSun, Wind, Clock, ChevronDown } from 'lucide-react';
 import { trackEvent } from '../services/analyticsService';
 import { WeatherIcon } from './WeatherIcon';
@@ -31,7 +31,6 @@ interface ForecastProps {
   fillHeight?: boolean;
 }
 
-const EVENING_TODAY_CUTOFF_HOUR = 20;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 const startOfLocalDay = (date: Date): number =>
@@ -78,13 +77,13 @@ const getForecastDayLabel = (
 };
 
 const isTodayDisabledAfterEvening = (index: number, now: Date = athensNow()): boolean =>
-  index === 0 && now.getHours() >= EVENING_TODAY_CUTOFF_HOUR;
+  index === 0 && now.getHours() >= BEACH_DAY_ENDS_HOUR;
 
 const getNextTodayDisabledStateDelay = (now: Date = athensNow()): number => {
   const nextBoundary = new Date(now);
 
-  if (now.getHours() < EVENING_TODAY_CUTOFF_HOUR) {
-    nextBoundary.setHours(EVENING_TODAY_CUTOFF_HOUR, 0, 0, 0);
+  if (now.getHours() < BEACH_DAY_ENDS_HOUR) {
+    nextBoundary.setHours(BEACH_DAY_ENDS_HOUR, 0, 0, 0);
   } else {
     nextBoundary.setDate(nextBoundary.getDate() + 1);
     nextBoundary.setHours(0, 0, 0, 0);
@@ -345,6 +344,36 @@ const Forecast: React.FC<ForecastProps> = ({
     ? `${selectedForecastRelativeLabel ? `${selectedForecastRelativeLabel}, ` : ''}${selectedForecastDateFormatter.format(selectedForecast.date)}`
     : '';
   const hourlyTitle = t.hourlyForecast?.title || (t.locale === 'el-GR' ? 'Ωριαία πρόγνωση ανέμου' : 'Hourly wind forecast');
+  /**
+   * The conclusion, above the fourteen rows that contain it.
+   *
+   * The panel is a full column of «08:00 · 25°C · ΒΑ · 1 Μπφ» lines whose whole message, on an
+   * ordinary day, is "1–3 Beaufort, windiest mid-afternoon". Reading fourteen rows to learn one
+   * sentence is work the page can do for the reader. The rows stay — someone planning an exact
+   * hour still wants them — this only puts the answer first.
+   *
+   * Range plus peak WINDOW, not peak hour: an hourly forecast is not precise enough to name a
+   * single hour as the windiest, and «δυναμώνει 15:00–17:00» is what a person would actually say.
+   */
+  const hourlySummary = (() => {
+    const hours = selectedForecast?.hourly;
+    if (!hours || hours.length < 3) return null;
+    const levels = hours.map(item => ({ dt: item.dt, bft: getBeaufortLevel(item.wind.speed * 3.6) }));
+    const min = Math.min(...levels.map(l => l.bft));
+    const max = Math.max(...levels.map(l => l.bft));
+    const range = min === max ? `${max}` : `${min}–${max}`;
+    const unit = t.locale === 'el-GR' ? 'μποφ.' : 'Bft';
+    // A flat day has no peak worth naming.
+    if (max - min < 2) return `${range} ${unit}`;
+    const peaks = levels.filter(l => l.bft === max).map(l => new Date(l.dt * 1000).getHours());
+    const from = Math.min(...peaks);
+    const to = Math.max(...peaks) + 1;
+    const pad = (h: number) => `${String(h).padStart(2, '0')}:00`;
+    const peakLabel = t.locale === 'el-GR'
+      ? `δυναμώνει ${pad(from)}–${pad(to)}`
+      : `strongest ${pad(from)}–${pad(to)}`;
+    return `${range} ${unit} · ${peakLabel}`;
+  })();
   const showDetailsLabel = t.hourlyForecast?.showDetails || (t.locale === 'el-GR' ? 'Δες αναλυτικά' : 'Show details');
   const hideDetailsLabel = t.hourlyForecast?.hideDetails || (t.locale === 'el-GR' ? 'Απόκρυψη' : 'Hide details');
   const toggleLabel = isHourlyExpanded ? hideDetailsLabel : showDetailsLabel;
@@ -448,6 +477,11 @@ const Forecast: React.FC<ForecastProps> = ({
               <span className="flex min-w-0 items-center gap-1.5 text-[10px] font-bold leading-none text-slate-600">
                 <Clock className="h-3 w-3 shrink-0 text-sky-500" aria-hidden="true" />
                 <span className="truncate">{hourlyTitle}</span>
+                {hourlySummary && (
+                  <span className="ml-1.5 shrink-0 rounded-full bg-sky-50 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-sky-700">
+                    {hourlySummary}
+                  </span>
+                )}
               </span>
               <button
                 type="button"
@@ -577,7 +611,7 @@ const Forecast: React.FC<ForecastProps> = ({
             </div>
           )}
 
-          <div className="grid min-w-0 grid-cols-5 gap-1 sm:gap-2">
+          <div className={`grid min-w-0 grid-cols-5 gap-1 ${stackedPills ? '' : 'sm:gap-2'}`}>
             {displayForecasts.slice(0, 5).map((forecast, index) => (
               <ForecastCard
                 key={forecast.date.toISOString()}
@@ -616,17 +650,13 @@ const Forecast: React.FC<ForecastProps> = ({
         hasHourlyData && isHourlyExpanded && (
           <div id={hourlyDetailsId} className="overflow-hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
             <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
-              <div className="mb-2 flex min-w-0 items-center gap-2 lg:shrink-0">
-                <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
-                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                </div>
-                <h3 className="min-w-0 truncate font-heading text-sm font-semibold text-slate-600">
-                  {hourlyTitle}
-                </h3>
-                <span className="ml-auto hidden truncate text-xs font-semibold text-slate-700 sm:block">
-                  {selectedForecastDateLabel}
-                </span>
-              </div>
+              {/* No visible "Ωριαία πρόγνωση ανέμου · Πέμπτη 6 Αυγ" strip here. In the desktop
+                  sidebar the card above it already carries both the day and the date, so this
+                  was the same two facts printed twice, 40px apart. The heading stays for screen
+                  readers, which have no "card above" to read it from. */}
+              <h3 className="sr-only">
+                {hourlyTitle} · {selectedForecastDateLabel}
+              </h3>
               <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:[scrollbar-width:thin]">
                 <HourlyForecastDetail hourlyData={selectedForecast.hourly} t={t} />
               </div>

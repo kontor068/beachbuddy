@@ -17,6 +17,8 @@ import {
   MoreHorizontal,
   Mountain,
   Navigation,
+  PanelRightClose,
+  PanelRightOpen,
   ParkingCircle,
   ShowerHead,
   Search,
@@ -104,9 +106,6 @@ type BeachCardContext = Beach & {
 interface BeachSearcherHomeProps {
   language: SupportedLanguage;
   selectedIsland: Island | null;
-  /** True only for a first-time visitor (never seen the value prop before), regardless of
-   *  entry point — homepage or a region page from a search result. Gates the value-prop block. */
-  showLandingValueProp?: boolean;
   allIslands: Island[];
   /** Plain "calmer in the X of the area today" line, when the region's per-beach
    *  winds show one side clearly calmer. Omitted when conditions are uniform. */
@@ -218,6 +217,9 @@ interface BeachSearcherHomeProps {
 }
 
 const DRAG_SCROLL_THRESHOLD_PX = 6;
+
+/** Remembers the desktop "full-width map" choice. Cosmetic only, so no consent gate. */
+const WEATHER_COLUMN_HIDDEN_KEY = 'calmbeach:desktop-weather-column-hidden';
 
 // From 5 Bft up a boat-only beach (e.g. Κλεφτικό) isn't a real option for the day —
 // the boats don't run and you can't drive there — so it must never surface as a "top
@@ -540,6 +542,10 @@ type HomeCopy = {
   topChoiceAria: string;
   topChoiceBadge: string;
   beachMapAria: string;
+  /** Desktop toggle above the map. Kept as a plain statement of what you get, not "hide the
+   *  weather" — the point of the click is the bigger map, not losing the forecast. */
+  fullWidthMap: string;
+  showWeatherColumn: string;
   bestBeachesToday: string;
   popularDestinations: string;
   islandTitle: (title: string) => string;
@@ -591,7 +597,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     greece: 'Greece',
     hero: {
       title: 'Find the best beach for today',
-      subtitle: "Tailored to today's conditions and your beach preferences.",
+      subtitle: 'Ranked by today’s wind and sea, and by what you want from a beach.',
       wind: 'Wind',
       waves: 'Waves',
       weather: 'Weather',
@@ -613,6 +619,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     topChoiceAria: 'Best beach today',
     topChoiceBadge: 'Best beach today',
     beachMapAria: 'Beach map',
+    fullWidthMap: 'Wider map',
+    showWeatherColumn: 'Show weather',
     bestBeachesToday: 'Best beaches today',
     popularDestinations: 'Popular destinations',
     islandTitle: (title) => title,
@@ -662,7 +670,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     greece: 'Ελλάδα',
     hero: {
       title: 'Βρες την καλύτερη παραλία για σήμερα',
-      subtitle: 'Προσαρμοσμένη στις σημερινές συνθήκες και στις προτιμήσεις σου για παραλία.',
+      subtitle: 'Η σειρά βγαίνει από τον σημερινό άνεμο και τη θάλασσα, και από το τι θες εσύ σε μια παραλία.',
       wind: 'Άνεμος',
       waves: 'Κύμα',
       weather: 'Καιρός',
@@ -684,6 +692,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     topChoiceAria: 'Top επιλογή σήμερα',
     topChoiceBadge: 'Top Παραλία Σήμερα',
     beachMapAria: 'Χάρτης παραλιών',
+    fullWidthMap: 'Μεγαλύτερος χάρτης',
+    showWeatherColumn: 'Δείξε τον καιρό',
     bestBeachesToday: 'Καταλληλότερες παραλίες σήμερα',
     popularDestinations: 'Δημοφιλείς προορισμοί',
     islandTitle: (title) => `Νησί ${title}`,
@@ -694,7 +704,9 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     beachSearchAria: 'Αναζήτηση παραλιών',
     beachFiltersAria: 'Φίλτρα παραλιών',
     updatedJustNow: 'Ενημερώθηκε μόλις τώρα',
-    updatedMinutes: (minutes) => `Ενημερώθηκε πριν ${minutes} λεπτά`,
+    // Singular, like updatedHours right below — Greek is the only locale here that spells
+    // the unit out, so it is the only one that can read «πριν 1 λεπτά», and it did.
+    updatedMinutes: (minutes) => `Ενημερώθηκε πριν ${minutes} ${minutes === 1 ? 'λεπτό' : 'λεπτά'}`,
     updatedHours: (hours) => `Ενημερώθηκε πριν ${hours} ${hours === 1 ? 'ώρα' : 'ώρες'}`,
     forecastAt: (time) => `Βάσει πρόγνωσης ${time}`,
     forecastAtYesterday: (time) => `Βάσει πρόγνωσης ${time} χθες`,
@@ -733,7 +745,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     greece: 'Grèce',
     hero: {
       title: 'Trouvez la meilleure plage pour aujourd’hui',
-      subtitle: 'Adaptée aux conditions du jour et à vos préférences de plage.',
+      subtitle: 'Le classement suit le vent et la mer du jour, et ce que vous attendez d’une plage.',
       wind: 'Vent',
       waves: 'Vagues',
       weather: 'Météo',
@@ -755,6 +767,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     topChoiceAria: 'Meilleure plage aujourd’hui',
     topChoiceBadge: 'Meilleure plage aujourd’hui',
     beachMapAria: 'Carte des plages',
+    fullWidthMap: 'Carte plus large',
+    showWeatherColumn: 'Afficher la météo',
     bestBeachesToday: 'Meilleures plages aujourd’hui',
     popularDestinations: 'Destinations populaires',
     islandTitle: (title) => `Île ${title}`,
@@ -804,7 +818,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     greece: 'Griechenland',
     hero: {
       title: 'Finde heute den besten Strand für dich',
-      subtitle: 'Abgestimmt auf die heutigen Bedingungen und deine Strandvorlieben.',
+      subtitle: 'Die Reihenfolge folgt dem heutigen Wind und Seegang — und dem, was du am Strand suchst.',
       wind: 'Wind',
       waves: 'Wellen',
       weather: 'Wetter',
@@ -826,6 +840,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     topChoiceAria: 'Bester Strand heute',
     topChoiceBadge: 'Bester Strand heute',
     beachMapAria: 'Strandkarte',
+    fullWidthMap: 'Größere Karte',
+    showWeatherColumn: 'Wetter anzeigen',
     bestBeachesToday: 'Beste Strände heute',
     popularDestinations: 'Beliebte Ziele',
     islandTitle: (title) => `Insel ${title}`,
@@ -875,7 +891,7 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     greece: 'Grecia',
     hero: {
       title: 'Trova la spiaggia migliore per oggi',
-      subtitle: 'Su misura per le condizioni di oggi e le tue preferenze di spiaggia.',
+      subtitle: 'L’ordine segue il vento e il mare di oggi, e quello che cerchi in una spiaggia.',
       wind: 'Vento',
       waves: 'Onde',
       weather: 'Meteo',
@@ -897,6 +913,8 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     topChoiceAria: 'Migliore spiaggia oggi',
     topChoiceBadge: 'Migliore spiaggia oggi',
     beachMapAria: 'Mappa spiagge',
+    fullWidthMap: 'Mappa più grande',
+    showWeatherColumn: 'Mostra il meteo',
     bestBeachesToday: 'Migliori spiagge oggi',
     popularDestinations: 'Destinazioni popolari',
     islandTitle: (title) => `Isola ${title}`,
@@ -1549,7 +1567,6 @@ const withCount = (label: string, count?: number): string => (
 export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
   selectedIsland,
-  showLandingValueProp,
   allIslands,
   regionWindNote,
   rainWarning,
@@ -1638,6 +1655,41 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const setIsAllBeachesPanelOpen = onAllBeachesPanelOpenChange ?? setLocalAllBeachesPanelOpen;
   const isWeatherPanelOpen = controlledWeatherPanelOpen ?? localWeatherPanelOpen;
   const setIsWeatherPanelOpen = onWeatherPanelOpenChange ?? setLocalWeatherPanelOpen;
+  /**
+   * Desktop only: hide the weather column and give its width to the map.
+   *
+   * Deliberately OPT-OUT, not opt-in. A drawer that starts closed was the first idea, and it
+   * is the same shape as the mistake the planner already made here — it asked "how many
+   * days?" and 99% of visitors never answered (GA, 28 days), which is why the plan now shows
+   * itself. The forecast is the evidence behind the map's colours; hiding it by default would
+   * quietly cost every first-time visitor that, to save a click for the few who want a bigger
+   * map. So it opens as before, the choice is one click away, and it sticks.
+   *
+   * Read lazily in the initialiser rather than in an effect: setting it after paint would
+   * flash the weather column in for one frame on every load for someone who turned it off.
+   */
+  const [isWeatherColumnHidden, setIsWeatherColumnHidden] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return window.localStorage.getItem(WEATHER_COLUMN_HIDDEN_KEY) === 'true';
+    } catch {
+      // Private mode / blocked storage: the toggle still works, it just won't be remembered.
+      return false;
+    }
+  });
+  const toggleWeatherColumn = () => {
+    setIsWeatherColumnHidden(previous => {
+      const next = !previous;
+      try {
+        window.localStorage.setItem(WEATHER_COLUMN_HIDDEN_KEY, String(next));
+      } catch {
+        /* not remembering the preference is not a reason to refuse the click */
+      }
+      return next;
+    });
+    // No manual invalidateSize here — BeachMap's own ResizeObserver (MapAutoResize) already
+    // watches its container, and the column change resizes it.
+  };
   const directorySortRef = useRef<HTMLDivElement>(null);
   const desktopDirectorySortRef = useRef<HTMLDivElement>(null);
   const [isDesktopMoreFiltersOpen, setIsDesktopMoreFiltersOpen] = useState(false);
@@ -3251,18 +3303,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
             returning users, so the decision surface stays clean. */}
-        {showLandingValueProp && (
-          <div className="mb-3 hidden border-b border-slate-200/70 pb-3 sm:mb-4 sm:block sm:pb-4">
-            {/* Was an <h1>; stepped down to <p> when the region title above the search box
-                became the page heading. Same look, one heading. */}
-            <p className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-[1.7rem]">
-              {copy.hero.title}
-            </p>
-            <p className="mt-1.5 max-w-xl text-sm font-semibold leading-snug text-slate-600 sm:text-[15px]">
-              {copy.hero.subtitle}
-            </p>
-          </div>
-        )}
+        {/* The first-visit value prop ("Βρες την καλύτερη παραλία για σήμερα" + how the order
+            is decided) used to sit here, above the search box. Removed 05/08: the region title
+            directly above is already the heading, and the explanation of the ranking was a
+            paragraph nobody was going to read while looking for a search box. The search box
+            and the map start higher because of it. `copy.hero.title/subtitle` are now unused in
+            all five languages; left in the copy table rather than deleted, in case the block
+            comes back. Nothing else reads them. */}
         <form
           className="flex flex-col gap-3"
           onSubmit={(event) => {
@@ -3529,17 +3576,48 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             className="mt-4 border-t border-slate-200/80 pt-4"
             aria-label={copy.beachMapAria}
           >
-            <div className="lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-4">
+            {/* The weather column is a fixed 24rem, not a third of the row. At 1/3 it grew with
+                the viewport — on a wide screen it was 540px of mostly empty space between the
+                temperature and the Beaufort number, while the map, the thing people actually
+                read, stayed cramped. A read-only column has a natural width; past it the extra
+                pixels do nothing, so they go to the map instead.
+
+                Hidden entirely (one column) when the visitor has asked for the full-width map.
+                Below `lg` this is one column anyway and the toggle is not rendered — on a phone
+                the weather is already its own «Καιρός» panel. */}
+            <div className={`lg:items-stretch lg:gap-4 ${
+              isWeatherColumnHidden ? 'lg:block' : 'lg:grid lg:grid-cols-[minmax(0,1fr)_24rem]'
+            }`}>
               <div
                 id="map-section-desktop"
-                className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md sm:p-4 lg:col-span-2"
+                className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md sm:p-4"
               >
+                {/* Above the map, not floating on it: Leaflet already owns the top-right corner
+                    (zoom / layers / recentre) and the top-left carries the wind-direction card,
+                    so an overlay would either collide or cover pins. */}
+                <div className="mb-2 hidden justify-end lg:flex">
+                  <button
+                    type="button"
+                    onClick={toggleWeatherColumn}
+                    aria-pressed={isWeatherColumnHidden}
+                    className="inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 py-1 text-[12px] font-bold text-slate-600 transition hover:bg-sky-50 hover:text-sky-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                  >
+                    {isWeatherColumnHidden ? (
+                      <PanelRightOpen className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    ) : (
+                      <PanelRightClose className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    )}
+                    {isWeatherColumnHidden ? copy.showWeatherColumn : copy.fullWidthMap}
+                  </button>
+                </div>
                 <div>
                   {mapPreview}
                 </div>
               </div>
               {conditionsOverviewContent && (
-                <div className="mt-4 lg:col-span-1 lg:mt-0 lg:relative lg:min-h-0">
+                <div className={`mt-4 lg:col-span-1 lg:mt-0 lg:relative lg:min-h-0 ${
+                  isWeatherColumnHidden ? 'lg:hidden' : ''
+                }`}>
                   {conditionsOverviewContent}
                 </div>
               )}

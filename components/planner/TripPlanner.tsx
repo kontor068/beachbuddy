@@ -112,6 +112,15 @@ const clampRequestedDays = (requested: number | undefined, horizon: number): num
 /** Entrance stagger. Capped so a 6-day plan still finishes inside ~500ms. */
 const ROW_STAGGER_MS = 45;
 
+/**
+ * Phone and tablet keep the vertical timeline — one day under the next, on a rail. From `lg`
+ * the card is as wide as the map above it, and a single column of 3–6 short rows in that
+ * width is mostly empty space, so the days become columns. The rail is hidden there: a
+ * connecting line only means "next" while the rows actually run downwards.
+ * Both the skeleton and the real plan use this, or the layout would jump when the plan lands.
+ */
+const PLAN_ROWS_LAYOUT = 'lg:grid lg:grid-cols-2 lg:gap-x-4 xl:grid-cols-3';
+
 const CHIP_BASE =
   'inline-flex h-11 min-w-11 cursor-pointer items-center justify-center rounded-xl px-3.5 text-[15px] font-extrabold ' +
   // `translate` is listed because Tailwind v4 compiles translate-* to the
@@ -119,12 +128,17 @@ const CHIP_BASE =
   'transition-[translate,background-color,border-color,color,box-shadow] duration-200 ease-out ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0369a1] focus-visible:ring-offset-2 focus-visible:ring-offset-white ' +
   'motion-reduce:transition-none';
+/* The selected day-count chip is white text over a blue gradient. Its LIGHT end was #0EA5E9
+   (2,8:1) and its dark end #0284C7 (4,1:1) — both under AA, measured 05/08/2026 in a contrast
+   sweep of the whole page. The gradient now runs one step deeper, #0284C7 → #075985, so the
+   text clears 4,5:1 at BOTH ends rather than only where the gradient happens to be darkest.
+   Same blue family, same depth cue; only the range moved. */
 const CHIP_IDLE =
   'border border-cyan-300/90 bg-white/95 text-[#0369a1] shadow-sm shadow-sky-900/10 ' +
-  'hover:-translate-y-0.5 hover:border-transparent hover:bg-gradient-to-br hover:from-[#0ea5e9] hover:to-[#0284c7] hover:text-white hover:shadow-md hover:shadow-sky-900/25 ' +
+  'hover:-translate-y-0.5 hover:border-transparent hover:bg-gradient-to-br hover:from-[#0369a1] hover:to-[#075985] hover:text-white hover:shadow-md hover:shadow-sky-900/25 ' +
   'active:translate-y-0 motion-reduce:hover:translate-y-0';
 const CHIP_ACTIVE =
-  'border border-transparent bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-white shadow-md shadow-sky-900/25';
+  'border border-transparent bg-gradient-to-br from-[#0369a1] to-[#075985] text-white shadow-md shadow-sky-900/25';
 
 /** One badge shape for every meta pill, so the row reads as a single system. */
 const BADGE_BASE =
@@ -292,9 +306,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   // The per-day "why this beach": the SERVICE decided the claim (whyKey,
   // honesty-first); this only renders the localized sentence for it, with the
   // provisional-day qualifier appended because a day-5 direction is a guess.
-  const whyLine = (entry: TripDayPlan, pick: TripPick): string => {
+  /** The reason sentence for one day, before any repeat handling. */
+  const baseWhy = (entry: TripDayPlan, pick: TripPick): string => {
     const windFrom = c.windFrom[pick.windSector ?? windSectorFromDegrees(forecast[entry.dayIndex]?.wind?.deg ?? 0)];
-    const base = pick.whyKey === 'calm_everywhere'
+    return pick.whyKey === 'calm_everywhere'
       ? c.why.calm_everywhere
       : pick.whyKey === 'cove_refuge'
         ? c.why.cove_refuge(windFrom)
@@ -303,7 +318,31 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
           : pick.whyKey === 'partial_shelter'
             ? c.why.partial_shelter(windFrom)
             : c.why.best_available(windFrom, pick.windBeaufort);
-    return entry.confidence === 'provisional' ? `${base} — ${c.ifWindHolds}` : base;
+  };
+
+  /**
+   * True when the day above this one already put the very same sentence on screen.
+   *
+   * A settled week resolved every day to the same whyKey, so the card printed one identical
+   * paragraph per day — three times «Ήπιος άνεμος — ήρεμα σχεδόν παντού· η καλύτερη συνολικά
+   * επιλογή.» under three different beach names, each with the same hours and the same badge.
+   * Only the names differed, which made the reasoning look generated rather than computed — on
+   * the one card whose whole job is to show that a calculation happened.
+   *
+   * COMPARE THE SENTENCE, NOT ITS INPUTS. The first attempt compared whyKey + Beaufort + wind
+   * sector and caught only one of the two repeats: `calm_everywhere` does not mention the
+   * sector at all, so two days with different sectors still render the identical text. Any
+   * field-by-field check has to be kept in step with which fields each sentence actually uses,
+   * and it silently stops working when one changes. The rendered string cannot drift from
+   * itself.
+   */
+  const whyLine = (entry: TripDayPlan, pick: TripPick, previous?: TripDayPlan): string => {
+    const base = baseWhy(entry, pick);
+    // Say less, not the same thing again. Never on the first row — that one has to carry the
+    // actual reason — and never as a substitute for a DIFFERENT claim.
+    const repeats = Boolean(previous?.pick) && baseWhy(previous!, previous!.pick!) === base;
+    const line = repeats ? c.why.same_again : base;
+    return entry.confidence === 'provisional' ? `${line} — ${c.ifWindHolds}` : line;
   };
 
   // The timeline node's colour. It follows the SAME 5 Bft gate as the caution
@@ -367,7 +406,11 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   return (
     <section
       ref={sectionRef}
-      className="mx-auto w-full max-w-6xl px-3 sm:px-4"
+      /* Same 110rem rail as the map, the search box and the beach cards. At max-w-6xl the card
+         stopped ~300px short of the row above it on a wide screen, so on desktop it read as a
+         stray narrower block rather than part of the page. The rows go into columns below
+         (lg:grid), which is what earns the extra width instead of padding it out. */
+      className="mx-auto w-full max-w-[110rem] px-3 sm:px-4"
       aria-label={c.title}
       data-nosnippet="true"
     >
@@ -411,13 +454,13 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
           {/* ── Pending: skeleton rows on the same rail, never a half plan ── */}
           {(isPlanning || !days) && (
             <ol
-              className="relative mt-4 border-t border-cyan-200/60 pt-3"
+              className={`relative mt-4 border-t border-cyan-200/60 pt-3 ${PLAN_ROWS_LAYOUT}`}
               aria-busy="true"
               aria-label={c.title}
             >
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute bottom-6 left-4 top-6 w-px bg-cyan-200/70"
+                className="pointer-events-none absolute bottom-6 left-4 top-6 w-px bg-cyan-200/70 lg:hidden"
               />
               {/* `days` is null until the card nears the viewport, so the
                   placeholder is sized on what we are ABOUT to plan — same row
@@ -435,10 +478,10 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
           {/* ── The plan: a vertical timeline, one node per day ───────────── */}
           {!isPlanning && days && plan.length > 0 && (
-            <ol className="relative mt-4 border-t border-cyan-200/60 pt-3" aria-label={c.title}>
+            <ol className={`relative mt-4 border-t border-cyan-200/60 pt-3 ${PLAN_ROWS_LAYOUT}`} aria-label={c.title}>
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute bottom-8 left-4 top-6 w-px bg-gradient-to-b from-cyan-300/80 via-cyan-200/70 to-cyan-200/0"
+                className="pointer-events-none absolute bottom-8 left-4 top-6 w-px bg-gradient-to-b from-cyan-300/80 via-cyan-200/70 to-cyan-200/0 lg:hidden"
               />
 
               {plan.map((entry, index) => {
@@ -492,7 +535,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
 
                         {/* The why-line: the one sentence that justifies the pick. */}
                         <p className="text-[13px] font-semibold leading-snug text-slate-600">
-                          {whyLine(entry, entry.pick)}
+                          {whyLine(entry, entry.pick, plan[index - 1])}
                         </p>
 
                         {/* WHEN to go, on the days where the hour actually
@@ -501,7 +544,14 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
                             and the badge row below is already four pills wide
                             on a hard day. Rendered only when the service found
                             a real window — see TripPick.bestTimeStart. */}
-                        {entry.pick.bestTimeStart && entry.pick.bestTimeEnd && (
+                        {/* Suppressed when the day above already printed the identical window —
+                            «Καλύτερα 10:00–15:00» three rows running is the same repetition the
+                            why-line just stopped doing, and repeating it here would undo that.
+                            Compared field by field, so a genuinely different window still prints. */}
+                        {entry.pick.bestTimeStart && entry.pick.bestTimeEnd
+                          && !(plan[index - 1]?.pick?.bestTimeStart === entry.pick.bestTimeStart
+                            && plan[index - 1]?.pick?.bestTimeEnd === entry.pick.bestTimeEnd
+                            && plan[index - 1]?.pick?.bestTimeTrend === entry.pick.bestTimeTrend) && (
                           <p className="mt-1 inline-flex items-center gap-1.5 text-[13px] font-bold leading-snug text-[#0369a1]">
                             <Clock3 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                             {entry.pick.bestTimeTrend === 'eases'

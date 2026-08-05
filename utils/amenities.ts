@@ -65,13 +65,21 @@ const amenityLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
   foodNearby: { en: 'Tavernas nearby', gr: 'Ταβέρνες κοντά', fr: 'Tavernes proches', de: 'Tavernen in der Nähe', it: 'Taverne vicine' },
   cafeNearby: { en: 'Café nearby', gr: 'Καφέ κοντά', fr: 'Café proche', de: 'Café in der Nähe', it: 'Caffè vicino' },
   snackCanteen: { en: 'Canteen', gr: 'Καντίνα', fr: 'Buvette', de: 'Imbiss', it: 'Chiosco' },
-  parking: { en: 'Parking nearby', gr: 'Parking κοντά', fr: 'Parking proche', de: 'Parken in der Nähe', it: 'Parcheggio vicino' },
+  // ONE SPELLING OF PARKING IN GREEK (05/08/2026). The word appeared three ways across the
+  // app — «Parking» here, «πάρκινγκ» in utils/filterSummary, «Πάρκινγκ ΑμεΑ» in
+  // utils/accessibility — and two of them landed on the same phone screen at once: the
+  // practical tile read «πάρκινγκ» while the facilities panel three centimetres below read
+  // «Parking». Greek wins because two of the three were already Greek, and because a reader
+  // scanning a list should never have to decide whether two entries mean the same thing.
+  // «Beach bar» deliberately stays Latin: it is the loanword Greeks actually use, and there
+  // is no Greek term in circulation to be consistent WITH.
+  parking: { en: 'Parking nearby', gr: 'Πάρκινγκ κοντά', fr: 'Parking proche', de: 'Parken in der Nähe', it: 'Parcheggio vicino' },
   shower: { en: 'Shower', gr: 'Ντους', fr: 'Douche', de: 'Dusche', it: 'Doccia' },
 };
 
 const rowLabels: Record<SpecificAmenityKey, LocalizedAmenityText> = {
   ...amenityLabels,
-  parking: { en: 'Parking', gr: 'Parking', fr: 'Parking', de: 'Parken', it: 'Parcheggio' },
+  parking: { en: 'Parking', gr: 'Πάρκινγκ', fr: 'Parking', de: 'Parken', it: 'Parcheggio' },
 };
 
 const getLabel = (key: SpecificAmenityKey, language: LanguageCode): string => {
@@ -105,7 +113,7 @@ const getChipLabel = (key: AmenityChipKey, status: AmenityStatus, language: Lang
     return seasonalSuffix[language];
   }
   if (status === 'limited' && key === 'parking') {
-    return localized(language, { en: 'Limited parking', gr: 'Parking περιορισμένο', fr: 'Parking limité', de: 'Begrenztes Parken', it: 'Parcheggio limitato' });
+    return localized(language, { en: 'Limited parking', gr: 'Πάρκινγκ περιορισμένο', fr: 'Parking limité', de: 'Begrenztes Parken', it: 'Parcheggio limitato' });
   }
   return base;
 };

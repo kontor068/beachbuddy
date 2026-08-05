@@ -108,7 +108,7 @@ export const PrivacyConsentBanner: React.FC<PrivacyConsentBannerProps> = ({ lang
             <button
               type="button"
               onClick={() => choose(true)}
-              className="min-h-11 rounded-xl border border-transparent bg-sky-600 px-4 text-sm font-bold text-white transition hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
+              className="min-h-11 rounded-xl border border-transparent bg-sky-700 px-4 text-sm font-bold text-white transition hover:bg-sky-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
             >
               {c.accept}
             </button>
