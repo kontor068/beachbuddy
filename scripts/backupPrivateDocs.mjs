@@ -42,6 +42,12 @@ const EXPENSIVE_PATHS = [
   'reports/wave-model',
   'reports/wind-model',
   'reports/snapshots',
+  // The high-res coastline mask every exposure-geometry rebuild depends on — and every NEW
+  // beach requires a rebuild, so this will be needed again. Gitignored (34,7 MB), lives on
+  // exactly one disk, and regenerating it means a ~700 MB OSM download + filter run
+  // (scripts/fetchHighResLandMask.mjs). Added 05/08/2026 with the model lock: the locked
+  // model's data must be as recoverable as the reasoning behind it.
+  '.tmp/geospatial/greece-land-osm-split.geojson',
 ];
 
 const SECRET_PATHS = [

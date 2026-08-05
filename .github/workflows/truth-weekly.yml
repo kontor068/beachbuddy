@@ -1,0 +1,65 @@
+# Ο ΦΥΛΑΚΑΣ ΤΟΥ ΚΛΕΙΔΩΜΕΝΟΥ ΜΟΝΤΕΛΟΥ (added 05/08/2026).
+#
+# The weather model was audited and LOCKED on 05/08/2026 (docs/team/PORISMA-KAIROS-2026-08.md).
+# The lock has three reopening triggers, and trigger #2 is «the truth gate reports even one
+# false-calm pin». But the truth gate needs the network, so it is not in quality:critical —
+# it only ever ran when someone remembered to run it. A trigger nobody watches can never fire,
+# which quietly turns the lock into a promise instead of a mechanism.
+#
+# This workflow IS the watcher: twice a week it compares the map's colours against the real
+# live wind over the 10 largest regions + 4 controls (~2.900 beach-hours, 230 wind points in
+# 8 batched requests — negligible quota). If a single calm pin sits over water whose own wind
+# is blowing, the run fails.
+#
+# Who hears it fail:
+#   - GitHub e-mails scheduled-run failures to the person who last touched this file.
+#   - If TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID exist as repo secrets (same values the Netlify
+#     functions already use), a Telegram message is sent too. Without them the step is a no-op,
+#     so the workflow needs zero configuration to be useful.
+#
+# NOTE: cron only fires from the DEFAULT branch — this starts working when it reaches main.
+
+name: Truth gate — the lock's watcher
+
+on:
+  schedule:
+    # Monday and Thursday 05:00 UTC (08:00 Athens in summer) — morning, when the day's
+    # forecast starts steering real decisions.
+    - cron: '0 5 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  truth:
+    name: Map colours vs real wind
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run the truth gate (network — live Open-Meteo wind)
+        run: npm run quality:truth
+
+      - name: Alert Telegram (only if secrets are configured)
+        if: failure()
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$CHAT" ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+              -d chat_id="${CHAT}" \
+              --data-urlencode text="🔴 Πύλη αλήθειας: ψευδο-ήρεμο σημάδι ή αποτυχία μέτρησης — η σκανδάλη #2 του κλειδώματος. ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              > /dev/null
+          else
+            echo "No Telegram secrets — relying on GitHub's scheduled-failure e-mail."
+          fi
