@@ -1929,7 +1929,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {/* Condition Score */}
         <div className="mb-3">
-          <BeachConditionScore isExposed={isExposed} windSpeed={effectiveWindKmph} waveHeightM={waveHeightM} seaStateWaveM={seaStateWaveM} seaStatePeriodS={seaStatePeriodS} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} directSwell={warnings.some(warning => warning.type === 'direct_swell')} />
+          <BeachConditionScore isExposed={isExposed} windSpeed={effectiveWindKmph} waveHeightM={waveHeightM} seaStateWaveM={seaStateWaveM} seaStatePeriodS={seaStatePeriodS} temperature={temperature} compact={true} exposureLevel={exposureLevel} language={language} selectedDate={selectedDate} selectedHour={selectedHour} canClaimWindProtection={canClaimWindProtection} boatAccess={isBoatOnlyBeach} directSwell={warnings.some(warning => warning.type === 'direct_swell')} enclosedCove={enclosedCove && isProtectedToday} />
         </div>
 
         {warnings.length > 0 && (

@@ -634,8 +634,14 @@ for (const tone of emittedTones) {
   const fail = reason => failures.push({ rule: 'a-collapsed-legend-has-a-way-out', reason, row: {} });
 
   const collapses = /\.filter\(row => !activeToneFilter \|\| row\.tone === activeToneFilter\)/.test(mapSource);
-  // The button must be reachable exactly WHILE a filter is on — `activeToneFilter ? (button)`.
-  const hasExit = /activeToneFilter \? \(\s*<button/.test(mapSource)
+  // The button must be reachable exactly WHILE a filter is on. Both JSX shapes say that —
+  // `activeToneFilter ? (button) : (something)` and the plain `activeToneFilter && (button)`
+  // once there is no longer an else-branch to render. Matching only the ternary made this rule
+  // fail on 05/08/2026 over a hint line being dropped, with the exit button untouched and
+  // working: a gate that fires on syntax instead of behaviour teaches people to ignore it.
+  // The negative lookbehind is the part that must stay strict — `!activeToneFilter && (button)`
+  // is the real defect this rule exists to catch (an exit that only shows with no filter on).
+  const hasExit = /(?<!!)activeToneFilter\s*(?:\?|&&)\s*\(\s*<button/.test(mapSource)
     && /onClick=\{\(\) => onToneFilterChange\?\.\(null\)\}/.test(mapSource)
     && /toneFilterCopy\.showAll/.test(mapSource);
 

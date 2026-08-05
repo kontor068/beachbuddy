@@ -2735,19 +2735,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // markerBeaches, not beaches: with a colour filter on, `beaches` still holds the pins the
   // filter removed, so the legend would explain a symbol that is no longer anywhere on screen.
   const showSurfLegendCue = markerBeaches.some(item => isSurfSpotInSeason(item.beach));
-  // Same rule for the cove badge, from the same predicate the marker itself uses.
-  const showCoveLegendCue = markerBeaches.some(item => beachCoveBadge(item));
 
   // Tapping a row shows only those beaches — on the map AND in the cards below, which is why the
   // rows are only interactive when the parent actually wired the filter up. On the detail map,
   // where there is nothing to filter, they stay plain text.
   const isToneFilterEnabled = Boolean(onToneFilterChange) && !isSevereWind;
-  const toneFilterCopy = getLocalizedCopy<{ showOnly: string; showAll: string; hint: string }>(language, {
-    en: { showOnly: 'Show only these', showAll: 'Show all beaches', hint: 'Tap a colour to see only those beaches' },
-    gr: { showOnly: 'Δείξε μόνο αυτές', showAll: 'Δείξε όλες τις παραλίες', hint: 'Πάτα ένα χρώμα για να δεις μόνο αυτές τις παραλίες' },
-    fr: { showOnly: 'Afficher uniquement celles-ci', showAll: 'Afficher toutes les plages', hint: 'Touchez une couleur pour ne voir que ces plages' },
-    de: { showOnly: 'Nur diese anzeigen', showAll: 'Alle Strände anzeigen', hint: 'Tippe eine Farbe an, um nur diese Strände zu sehen' },
-    it: { showOnly: 'Mostra solo queste', showAll: 'Mostra tutte le spiagge', hint: 'Tocca un colore per vedere solo quelle spiagge' },
+  const toneFilterCopy = getLocalizedCopy<{ showOnly: string; showAll: string }>(language, {
+    en: { showOnly: 'Show only these', showAll: 'Show all beaches' },
+    gr: { showOnly: 'Δείξε μόνο αυτές', showAll: 'Δείξε όλες τις παραλίες' },
+    fr: { showOnly: 'Afficher uniquement celles-ci', showAll: 'Afficher toutes les plages' },
+    de: { showOnly: 'Nur diese anzeigen', showAll: 'Alle Strände anzeigen' },
+    it: { showOnly: 'Mostra solo queste', showAll: 'Mostra tutte le spiagge' },
   });
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
@@ -2817,27 +2815,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
             </button>
           );
         })}
-        {/* The cove is a cue again (02/08/2026), and this time it is a badge on the pin rather
-            than a colour of its own. It was briefly the 'green' row above; that made the bay's
-            SHAPE — a permanent fact about the place — look like a rung on the severity scale,
-            and at 5 Bft it printed a calm colour over the app's own «better not to swim».
-            The pin now wears the conditions; this line explains the mark. */}
-        {showCoveLegendCue && (
-          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
-            <span className="inline-flex min-w-0 items-center gap-1.5">
-              <span className="beach-map-legend-cove" aria-hidden="true" />
-              {/* A FACT about the bay, never a verdict about the day — the colour of the pin is
-                  the verdict, and this mark must not be read as overruling it. */}
-              <span className="min-w-0">{getLocalizedCopy(language, {
-                en: 'Enclosed bay — calmer than the open sea reading',
-                gr: 'Κλειστός όρμος — πιο ήρεμο νερό απ’ ό,τι δείχνει η ανοιχτή θάλασσα',
-                fr: 'Baie fermée — plus calme que la mesure du large',
-                de: 'Geschlossene Bucht — ruhiger als die Messung auf offener See',
-                it: 'Baia chiusa — più calma di quanto indichi il mare aperto',
-              })}</span>
-            </span>
-          </div>
-        )}
+        {/* The cove's explanatory line used to live here (removed 05/08/2026) — it now rides
+            inside the beach cards themselves, next to the wind/wave stats, instead of as a
+            standalone caption under the map legend (see BeachConditionScore's enclosedCove
+            note). The pin still wears its own badge (beachCoveBadge, above) — that mark is
+            unchanged; only the separate legend caption explaining it is gone. */}
         {showSurfLegendCue && (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -2865,21 +2847,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
-        {isToneFilterEnabled && (
-          activeToneFilter ? (
-            <button
-              type="button"
-              onClick={() => onToneFilterChange?.(null)}
-              className="inline-flex min-h-8 w-full cursor-pointer items-center justify-center gap-1 rounded-lg bg-slate-900 px-2 text-[10px] font-black text-white transition hover:bg-slate-700"
-            >
-              <X aria-hidden="true" className="h-3 w-3" />
-              {toneFilterCopy.showAll}
-            </button>
-          ) : (
-            <p className="text-center text-[10px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
-              {toneFilterCopy.hint}
-            </p>
-          )
+        {isToneFilterEnabled && activeToneFilter && (
+          <button
+            type="button"
+            onClick={() => onToneFilterChange?.(null)}
+            className="inline-flex min-h-8 w-full cursor-pointer items-center justify-center gap-1 rounded-lg bg-slate-900 px-2 text-[10px] font-black text-white transition hover:bg-slate-700"
+          >
+            <X aria-hidden="true" className="h-3 w-3" />
+            {toneFilterCopy.showAll}
+          </button>
         )}
       </div>
     );

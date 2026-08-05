@@ -1829,8 +1829,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
              read as a typo. The long form still appears on the km/h line below. */
           /* The one sentence that makes the four instruments agree with each other. It is
              weatherNowCopy's own text — this card dropped it on 31/07 and nothing else picked
-             it up, which is why an orange 2,0 m beach beside a red 1,3 m one looked arbitrary. */
-          explanation={showConditions && weatherNow.tone !== 'unknown' ? weatherNow.liveSentence : null}
+             it up, which is why an orange 2,0 m beach beside a red 1,3 m one looked arbitrary.
+             Suppressed at ≤2 Bft AND calm (05/08/2026): that specific sentence only restates
+             the Bft number and "calm water" the tiles already show — nothing to disambiguate
+             at light wind, so it read as pure filler ("Ο άνεμος είναι μόλις 2 Μπφ τώρα —
+             σχεδόν άπνοια, και το νερό είναι ήρεμο."). The ≤2 Bft branch where the sea
+             DISAGREES (leftover swell) still explains something real, so it stays. */
+          explanation={showConditions && weatherNow.tone !== 'unknown' && !(weatherNow.tone === 'calm' && beaufortLevel <= 2)
+            ? weatherNow.liveSentence
+            : null}
           wind={showConditions ? {
             beaufort: beaufortLevel,
             speedKmh: windSpeedKmh,

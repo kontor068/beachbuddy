@@ -35,6 +35,12 @@ interface BeachConditionScoreProps {
    *  warning); drops the protected/partial wave floor so the displayed sea score/icon matches
    *  how the ranking already scores it. */
   directSwell?: boolean;
+  /** This is an enclosed bay (όρμος) AND today's wind is genuinely blocked — same gate as
+   *  ProtectedBeachMarker's cove pill (enclosedCove && isProtectedToday). Prints the one-line
+   *  "why calmer than the open-sea reading" fact right under the wave/wind summary, where it
+   *  used to live as a standalone caption under the map's colour legend (moved 05/08/2026 —
+   *  the map now only carries the pin's own badge, not a prose explanation of it). */
+  enclosedCove?: boolean;
 }
 
 type DayLabel = (day: string, isToday: boolean) => string;
@@ -65,6 +71,7 @@ type ConditionCopy = {
   waveHeight: string;
   windSpeed: string;
   temperature: string;
+  enclosedCoveNote: string;
 };
 
 // Today's live conditions read as a clean present-tense phrase (no "σήμερα/today" stamp —
@@ -98,6 +105,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     waveHeight: 'Wave Height',
     windSpeed: 'Wind Speed',
     temperature: 'Temperature',
+    enclosedCoveNote: 'Enclosed bay — calmer than the open sea reading',
   },
   gr: {
     exposedToWind: dayLabel('Πιο εκτεθειμένη στον άνεμο', (day) => `Πιο εκτεθειμένη στον άνεμο ${day}`),
@@ -123,6 +131,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     waveHeight: 'Ύψος Κύματος',
     windSpeed: 'Ταχύτητα Ανέμου',
     temperature: 'Θερμοκρασία',
+    enclosedCoveNote: 'Κλειστός όρμος — πιο ήρεμο νερό απ’ ό,τι δείχνει η ανοιχτή θάλασσα',
   },
   fr: {
     exposedToWind: dayLabel('Plus exposée au vent', (day) => `Plus exposée au vent ${day}`),
@@ -148,6 +157,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     waveHeight: 'Hauteur des vagues',
     windSpeed: 'Vitesse du vent',
     temperature: 'Température',
+    enclosedCoveNote: 'Baie fermée — plus calme que la mesure du large',
   },
   de: {
     exposedToWind: dayLabel('Windexponiert', (day) => `Windexponiert ${day}`),
@@ -173,6 +183,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     waveHeight: 'Wellenhöhe',
     windSpeed: 'Windgeschwindigkeit',
     temperature: 'Temperatur',
+    enclosedCoveNote: 'Geschlossene Bucht — ruhiger als die Messung auf offener See',
   },
   it: {
     exposedToWind: dayLabel('Più esposta al vento', (day) => `Più esposta al vento ${day}`),
@@ -198,6 +209,7 @@ const conditionCopy: Record<LanguageCode, ConditionCopy> = {
     waveHeight: 'Altezza onde',
     windSpeed: 'Velocità vento',
     temperature: 'Temperatura',
+    enclosedCoveNote: 'Baia chiusa — più calma di quanto indichi il mare aperto',
   },
 };
 
@@ -285,7 +297,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   selectedHour,
   canClaimWindProtection = false,
   boatAccess = false,
-  directSwell = false
+  directSwell = false,
+  enclosedCove = false
 }) => {
   const rawSeaExposureLevel: ExposureLevel = getSeaExposureLevel(isExposed, exposureLevel);
   const seaExposureLevel: ExposureLevel = rawSeaExposureLevel === 'protected' && !canClaimWindProtection
@@ -509,6 +522,14 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
           <span className={`text-xs font-medium ${conditionTone.text} leading-tight`}>
             {compactConditionParts.join(' · ')}
           </span>
+          {/* The fact about the bay's shape, not a verdict about today — sits right under the
+              same wind/wave line it explains, instead of as a separate caption under the map's
+              colour legend (moved here 05/08/2026). */}
+          {enclosedCove && (
+            <span className="text-[11px] font-medium leading-tight text-slate-500 dark:text-slate-400">
+              {copy.enclosedCoveNote}
+            </span>
+          )}
         </div>
       </div>
     );
