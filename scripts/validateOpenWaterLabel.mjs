@@ -228,7 +228,15 @@ if (!/isOpenWater:\s*!isWaveEstimate\b/.test(detailSource)) {
 // `liveSentence` in five languages, the card stopped rendering it on 31/07, and the flag it
 // ships with (statesShoreIncidence) kept suppressing the second copy further down the page —
 // so BOTH explanations disappeared at once and no gate noticed.
-if (!/explanation=\{[^}]*weatherNow\.liveSentence/.test(detailSource)) {
+// WIDENED 05/08/2026, WITHOUT WEAKENING. The prop stopped being an inline ternary when the
+// calm-day verdict was added: one named value now decides what the slot holds, so the styling
+// beside it cannot drift. The gate follows the value instead of the literal — it must still be
+// impossible to render the hero without the live sentence reaching it. Both links are checked:
+// `heroLiveSentence` is built from weatherNow.liveSentence, AND it is what feeds `explanation`.
+const heroSentenceWired = /const heroLiveSentence[^;]*weatherNow\.liveSentence/s.test(detailSource)
+  && /const heroExplanation\s*=\s*heroLiveSentence/.test(detailSource)
+  && /explanation=\{heroExplanation\}/.test(detailSource);
+if (!heroSentenceWired && !/explanation=\{[^}]*weatherNow\.liveSentence/.test(detailSource)) {
   failures.push(
     'pages/BeachDetailPage.tsx: the hero no longer receives weatherNow.liveSentence. That sentence '
     + 'is the ONLY thing on the card explaining why this beach reads better or worse than another '

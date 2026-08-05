@@ -1738,6 +1738,23 @@ export const App: React.FC = () => {
    */
   const [stayHours, setStayHours] = useState<StayLengthHours | null>(null);
   const deferredStayHours = React.useDeferredValue(stayHours);
+  /**
+   * ΣΤΟΝ ΠΑΓΟ — απόφαση Μίλτου, 05/08/2026. Δεν βγαίνει live μέχρι να το πει ο ίδιος.
+   *
+   * OFF means the chips are never rendered, so `stayHours` can never leave null, so
+   * `harshestStayHourByBeachId` stays empty and every path falls straight through to the
+   * behaviour that existed before this feature. The whole thing is dormant, not half-wired: this
+   * is safe to commit and safe to deploy, and it will change nothing a visitor sees.
+   *
+   * A flag rather than an uncommitted working tree on purpose — "remember not to push this" is
+   * not a mechanism, and this repo has already deployed unapproved commits once by moving a whole
+   * branch. To resume: flip to true, then read docs/team/99-decision-log.md (05/08) for what was
+   * decided and utils/stayWindow.ts for the rule. Still open when it thaws: no browser check on a
+   * real phone, "Κοντά μου" deliberately excluded, and the "calm until four" sentence is computed
+   * (findStayTurningPoint) but printed nowhere.
+   */
+  const STAY_WINDOW_ENABLED: boolean = false;
+  const handleStayHoursChange = STAY_WINDOW_ENABLED ? setStayHours : undefined;
   const hasUserSelectedSortRef = useRef(false);
   const [topPickClock, setTopPickClock] = useState(() => athensNow().getTime());
   const [beachSearchQuery, setBeachSearchQuery] = useState('');
@@ -7102,7 +7119,7 @@ export const App: React.FC = () => {
           onHourChange={handleMapHourChange}
           enableHourSlider
           stayHours={stayHours}
-          onStayHoursChange={setStayHours}
+          onStayHoursChange={handleStayHoursChange}
           language={language}
           islandName={selectedIsland.name[language]}
           selectedDate={selectedDayDate}
@@ -7593,7 +7610,7 @@ export const App: React.FC = () => {
                     onHourChange={handleMapHourChange}
                     enableHourSlider
                     stayHours={stayHours}
-                    onStayHoursChange={setStayHours}
+                    onStayHoursChange={handleStayHoursChange}
                     language={language}
                     islandName={selectedIsland.name[language]}
                     selectedDate={selectedDayDate}
@@ -7935,7 +7952,7 @@ export const App: React.FC = () => {
                             onHourChange={handleMapHourChange}
                             enableHourSlider
                             stayHours={stayHours}
-                            onStayHoursChange={setStayHours}
+                            onStayHoursChange={handleStayHoursChange}
                             language={language}
                             islandName={selectedIsland.name[language]}
                             selectedDate={selectedDayDate}

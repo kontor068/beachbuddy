@@ -127,6 +127,10 @@ const read = async (browser, page1) => {
     swimming: (text.match(/(Difficult for swimming|Fine for swimming|Great for swimming|Not for swimming|Hard work in the water)/) || [])[0] ?? null,
     sea: (text.match(/(Rough sea|Choppy|Calm sea|Some chop|Flat)/) || [])[0] ?? null,
     shelteredClaim: /relatively sheltered here/.test(text),
+    // The calm-day verdict added 05/08/2026 (BeachDetailPage `calmDayVerdict`). It is the only
+    // unconditional endorsement left on the page, so it is the one sentence most worth watching:
+    // under this fixture the island is under a 5 Bft northerly and NO beach may print it.
+    calmVerdictClaim: /A good day to swim here/.test(text),
     // Searched over the WHOLE body, deliberately — see the header note. The previous version
     // sliced the text after a heading and went silently null the day that heading was renamed.
     saysSheltered: matchAny(text, SHELTERED_PHRASES),
@@ -159,6 +163,18 @@ try {
   for (const r of results) {
     if (r.shelteredClaim && /Rough sea/.test(r.sea ?? '')) {
       failures.push(`${r.name}: claims shelter while printing "${r.sea}"`);
+    }
+  }
+  // 2c. THE CALM-DAY VERDICT MUST NOT SURVIVE A WINDY DAY (added 05/08/2026, with the line).
+  //     It fills the hero slot that goes quiet at ≤2 Bft, and it is gated in the app on a blue
+  //     pin, a swimmable window and no rain. Every one of those gates lives in one expression,
+  //     which is exactly the kind of thing that rots silently — so this asks the reverse
+  //     question the app never asks itself: under a 5 Bft northerly, does any page still tell
+  //     the reader it is a good day to swim? Nothing here may print it, on any of the four
+  //     shores, sheltered ones included.
+  for (const r of results) {
+    if (r.calmVerdictClaim) {
+      failures.push(`${r.name}: prints the calm-day verdict under a 5 Bft fixture (sea reads "${r.sea}", swimming "${r.swimming}")`);
     }
   }
   // 2b. THE TIER-BADGE RULE WAS REMOVED, NOT RELAXED (02/08/2026). It asserted that the four

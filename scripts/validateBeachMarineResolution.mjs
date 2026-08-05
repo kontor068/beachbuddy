@@ -510,6 +510,24 @@ if (!/isNearMeRegionActive \? nearMeBeachWindById : hourAdjustedBeachForecasts/.
     + 'down hands the map the wind at the user\'s GPS point.'
   );
 }
+// 05/08/2026 — the choice above stopped being the LAST word: the stay window ("how long are you
+// staying") re-points each beach at its own harshest hour on top of it. That is allowed, and the
+// expression above is still pinned, but the value the app actually consumes is one hop further
+// on — so the pin has to follow it there. Without this, someone could keep the blessed ternary
+// alive as dead code and feed beachWindSourceById from anywhere at all.
+// Anchored on the two places the value is really CONSUMED, not on the memo's dependency array —
+// the first draft of this rule matched a sabotaged body that fed itself from somewhere else
+// entirely, because `[hourAdjustedWindSourceById, …]` in the deps was enough to satisfy it. A rule
+// that a broken version passes is worse than no rule: it reports a guarantee nobody is keeping.
+if (!/return hourAdjustedWindSourceById;/.test(appSourceForWind)
+  || !/Object\.entries\(hourAdjustedWindSourceById\)/.test(appSourceForWind)) {
+  failures.push(
+    'RULE 5b — beachWindSourceById no longer derives from hourAdjustedWindSourceById. The near-me '
+    + 'choice is pinned above, but what the cards and pins READ is this one: it must pass that '
+    + 'value straight through when no stay is set, and map over it when one is. If it stops '
+    + 'carrying that value the pin above is decoration.'
+  );
+}
 if (!/const clusters = beach\.regionId \? nearMeSourceClusters\[beach\.regionId\] : undefined/.test(appSourceForWind)) {
   failures.push(
     'RULE 5 — the near-me wind is no longer looked up in the beach\'s OWN home-region clusters. '

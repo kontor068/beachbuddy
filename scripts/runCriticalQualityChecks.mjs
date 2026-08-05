@@ -121,6 +121,15 @@ const checks = [
     args: ['scripts/validateConditionToneAgreement.mjs'],
   },
   {
+    id: 'stay-window-worst-hour',
+    title: 'A stay is judged by its roughest hour',
+    description: 'Drives utils/stayWindow over all 1.364 tone sequences a sampled window can have (1-5 hours × 4 colours) and checks the hour chosen to speak for the window is always the roughest one in it, that ties fall to the earliest hour so an unchanging day behaves exactly as before, that no stay still means exactly one slot, and that both ends of the window are always sampled. Then re-runs the whole grid against two deliberately wrong pickers and fails if either survives.',
+    protects: 'Prevents "how long are you staying" from quietly becoming an average. A visitor staying 11:00-19:00 on a day that goes to 6 Bft at 17:00 has an afternoon the mean of the day calls fine — and averaging is the one direction this project has decided it will not fail in. Measured before the feature was built (scripts/measureIntradayWindowSpread.mjs, 05/08/2026, 2.922 beach-days): on 33,0% of them the day turns rougher than the hour the visitor arrives in, so this is the common case, not the corner case.',
+    failureAction: 'Fix utils/stayWindow.pickHarshestStayHour. Never soften the rule to make a case pass: if the window\'s answer is allowed to be calmer than one of its hours, the feature is telling people the sea is quieter than it will be.',
+    command: process.execPath,
+    args: ['scripts/validateStayWindow.mjs'],
+  },
+  {
     id: 'beach-page-contradictions',
     title: 'What the user actually sees',
     description: 'Opens four real Ios beach pages in a browser against a fixed 5 Bft northerly and checks each one states how that wind meets ITS shore — lee, side-on or head-on — matching the beach\'s own committed geometry, and that a lee shore and a windward shore on the same island never read the same.',
@@ -128,6 +137,15 @@ const checks = [
     failureAction: 'Read the printed table first: it says what the geometry expects and what the page actually read. If the page says nothing, the explanation sentence has been lost from the hero — that has happened before (twice, silently). If the wording merely changed, update the phrase lists at the top of the script; never delete a rule to make it pass.',
     command: process.execPath,
     args: ['scripts/validateBeachPageContradictions.mjs'],
+  },
+  {
+    id: 'tile-fit',
+    title: 'No tile clips a word',
+    description: 'Opens the answer card at 320 / 360 / 390 / 430 px in all five languages and measures every text node inside a tile: 400 measurements, and none of them may be cut off horizontally.',
+    protects: 'The eight tiles are the whole card, and on a 320 px phone each one gets about 66 px. A long word does not wrap — it is simply cut, and the reader is handed half a fact («Με αυτοκίν…»). BeachAnswerHero.tsx has carried a comment describing exactly this measurement, and the `data-tilefit` attributes it was run against, since the day the card was built — but the probe was never committed, so for weeks nothing enforced it. When it was finally written down (05/08/2026) it immediately found three words still being cut, in Greek and German, that no one had seen.',
+    failureAction: 'Fix it with the levers the card already uses below 380 px — side padding and one step of font size — never by shortening the copy and never by letting words break mid-syllable (a broken Greek word reads as a typo, which is why [word-break:normal] is set explicitly). If a language needs a shorter label, change that label, not the rule.',
+    command: process.execPath,
+    args: ['scripts/validateTileFit.mjs'],
   },
   {
     id: 'analytics-guards',

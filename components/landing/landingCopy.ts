@@ -111,7 +111,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // you don't announce it). Conditions come last on purpose — the amenities
       // say which beach you want, the conditions say whether it works today.
       title: 'Ποια παραλία της Ελλάδας σου ταιριάζει σήμερα;',
-      titleAccent: 'Ελλάδας',
+      titleAccent: 'σήμερα',
       // Names the cost we actually remove: not the beach, the «πού πάμε σήμερα;».
       // Deliberately does NOT repeat «ταιριάζει» from the title above it, and
       // leaves the enumeration of amenities to the manifesto band further down —
@@ -260,7 +260,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   en: {
     hero: {
       title: 'Which beach in Greece suits you today?',
-      titleAccent: 'in Greece',
+      titleAccent: 'today',
       subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
       searchPlaceholder: 'Search a beach or region…',
       searchPlaceholderAlt: 'Where and how many days?',
@@ -337,7 +337,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   de: {
     hero: {
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
-      titleAccent: 'in Griechenland',
+      titleAccent: 'heute',
       subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
       searchPlaceholder: 'Strand oder Region suchen…',
       searchPlaceholderAlt: 'Wohin und wie viele Tage?',
@@ -417,7 +417,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   fr: {
     hero: {
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
-      titleAccent: 'de Grèce',
+      titleAccent: 'aujourd’hui',
       subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
       searchPlaceholder: 'Chercher une plage ou une région…',
       searchPlaceholderAlt: 'Où et combien de jours ?',
@@ -495,7 +495,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
   it: {
     hero: {
       title: 'Quale spiaggia della Grecia fa per te oggi?',
-      titleAccent: 'della Grecia',
+      titleAccent: 'oggi',
       subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
       searchPlaceholder: 'Cerca una spiaggia o una regione…',
       searchPlaceholderAlt: 'Dove e quanti giorni?',

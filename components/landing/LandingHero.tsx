@@ -24,10 +24,28 @@ interface LandingHeroProps {
   roughness: number;
 }
 
-// The headline used to colour one word ("Ελλάδας"/"Greece") as an accent; that
-// read as a stray, unrelated colour, so the title is now plain text throughout —
-// this just returns it unchanged.
-const renderTitleAccent = (title: string, _accent: string): React.ReactNode => title;
+// One quiet accent: the "today" word in each language ("σήμερα"/"today"/
+// "heute"/"aujourd'hui"/"oggi") in the exact brand colour (#007a83 — the same
+// hex as the "CalmBeach" wordmark in Header.tsx, not the nearby Tailwind
+// teal-700 swatch, which is visibly a different shade). Everything else in
+// the headline stays plain black. Teal stays a small dose here — colouring
+// the whole headline (tried and reverted 05/08/2026, see team review) drowns
+// out the same colour used for the actual CTA below.
+// Colours one phrase inside the headline. The copy keeps ONE canonical title
+// string (so the sentence is never assembled from fragments) and names the
+// substring to accent; if that substring is ever edited out of the title, this
+// degrades to the plain headline rather than breaking it.
+const renderTitleAccent = (title: string, accent: string): React.ReactNode => {
+  const i = accent ? title.indexOf(accent) : -1;
+  if (i === -1) return title;
+  return (
+    <>
+      {title.slice(0, i)}
+      <span className="text-[#007a83]">{accent}</span>
+      {title.slice(i + accent.length)}
+    </>
+  );
+};
 
 const riseDelay = (delayMs: number): React.CSSProperties => ({ animationDelay: `${delayMs}ms` });
 const cssVar = (name: string, value: string) => ({ [name]: value } as React.CSSProperties);
@@ -136,7 +154,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             and it pushed the region tiles — the page's actual conversion event —
             further below the fold. */}
         <h1
-          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-teal-700 sm:text-[3.4rem]"
+          className="cb-hero-rise mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-tight text-slate-950 sm:text-[3.4rem]"
           style={riseDelay(0)}
         >
           {heroTitle}

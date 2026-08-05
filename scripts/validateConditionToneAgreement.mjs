@@ -530,20 +530,37 @@ for (const exposureStatus of ['protected', 'partial', 'exposed']) {
     }
   }
 }
+// The words moved out of BeachMap.tsx into utils/conditionToneLabels.ts on 05/08/2026, so the
+// beach card could show the SAME word as the pin instead of deriving one of its own. This check
+// follows them — and gets stronger for it: it reads the real exported table instead of
+// regex-scraping JSX, so an empty word, or a locale that silently lost a key, fails here rather
+// than passing a text match.
+const { conditionToneLabels } = require(path.join(root, 'utils/conditionToneLabels.ts'));
+
 for (const tone of emittedTones) {
   for (const lang of LANGS) {
-    // Match the per-language toneLabel object and look for this tone key inside it.
-    const block = mapSource.match(new RegExp(`${lang}:\\s*\\{\\s*toneLabel:\\s*\\{([^}]*)\\}`));
-    const body = block ? block[1] : '';
-    if (!new RegExp(`\\b${tone}\\s*:\\s*['"\`][^'"\`]+['"\`]`).test(body)) {
+    const word = conditionToneLabels?.[lang]?.[tone]?.label;
+    if (typeof word !== 'string' || word.trim() === '') {
       failures.push({
         rule: 'every-pin-colour-has-a-legend-word',
-        reason: `the ladder can paint a "${tone}" pin, but the legend has no ${lang} word for it — `
-          + 'that pin would appear with a coloured dot and no explanation.',
+        reason: `the ladder can paint a "${tone}" pin, but utils/conditionToneLabels.ts has no ${lang} `
+          + 'word for it — that pin would appear with a coloured dot and no explanation, and the card '
+          + 'chip beside it would be blank too.',
         row: {},
       });
     }
   }
+}
+
+// The map must stay a READER of that table, not keep a private copy. If the words get pasted back
+// into BeachMap.tsx the two surfaces can drift apart again while every check above still passes.
+if (!/conditionToneLabels/.test(mapSource) || /toneLabel:\s*\{\s*blue:/.test(mapSource)) {
+  failures.push({
+    rule: 'every-pin-colour-has-a-legend-word',
+    reason: 'components/BeachMap.tsx has stopped reading utils/conditionToneLabels.ts, or has grown '
+      + 'its own toneLabel block again. The legend and the card chip must name a colour from one table.',
+    row: {},
+  });
 }
 
 // The legend rows double as a filter (02/08/2026): picking one retitles the list below the map
@@ -596,10 +613,35 @@ for (const tone of emittedTones) {
   const toneSource = readFileSync(path.join(root, 'utils/suitabilityTone.ts'), 'utf8');
   const fail = reason => failures.push({ rule: 'the-list-does-not-colour-its-own-beaches', reason, row: {} });
 
-  if (/\bresolveConditionTone\b/.test(appSource)) {
-    fail('App.tsx calls resolveConditionTone. The list must read the tones the map reported '
-      + '(mapBeachTones), never paint its own — that is how the list and the legend became two '
-      + 'rules over the same evidence in the first place.');
+  // ONE exception, and it is not a loophole: `harshestStayHourByBeachId` asks "which hour of the
+  // window is roughest", so it must evaluate hours the map has NOT painted — mapBeachTones only
+  // holds the hour currently on screen, so there is nothing there to look up. It picks a MOMENT;
+  // it never decides a colour, because the hour it returns is then painted by the same
+  // resolveConditionTone every other surface uses. The ban stands for everything else: the moment
+  // a SECOND call appears, or this one leaves that memo, the list and the legend are two rules
+  // again and this gate is the only thing that can tell. Blanket-banning the name was the original
+  // shape and it failed the day the stay window landed (05/08/2026).
+  const stayWindowMemo = appSource.match(
+    /const harshestStayHourByBeachId\s*=\s*useMemo[\s\S]*?\n\s*\}, \[[^\]]*\]\);/,
+  );
+  if (!stayWindowMemo) {
+    fail('harshestStayHourByBeachId is gone from App.tsx, or no longer a useMemo this gate can '
+      + 'delimit. Re-anchor the exception below before trusting it — an exception whose boundary '
+      + 'cannot be found permits everything.');
+  }
+  const toneCalls = appSource.match(/\bresolveConditionTone\s*\(/g) || [];
+  const callsInsideWindow = stayWindowMemo
+    ? (stayWindowMemo[0].match(/\bresolveConditionTone\s*\(/g) || []).length
+    : 0;
+  if (toneCalls.length !== callsInsideWindow) {
+    fail(`App.tsx calls resolveConditionTone ${toneCalls.length} time(s), ${callsInsideWindow} of `
+      + 'them inside harshestStayHourByBeachId. Every other call paints a colour App has no '
+      + 'business painting: the list must read the tones the map reported (mapBeachTones) — that '
+      + 'is how the list and the legend became two rules over the same evidence in the first place.');
+  }
+  if (callsInsideWindow > 1) {
+    fail('harshestStayHourByBeachId resolves a tone more than once. It picks ONE hour from one '
+      + 'ladder; a second call there is a second ladder in the place hardest to notice.');
   }
   if (!/selectSuitableByTone\(/.test(appSource) || !/mapBeachTones\[/.test(appSource)) {
     fail('App.tsx no longer selects the suitable list with selectSuitableByTone over mapBeachTones '

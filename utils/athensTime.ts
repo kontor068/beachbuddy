@@ -152,3 +152,24 @@ export const wallClockDayKey = (date: Date): string => {
 /** Greek wall-clock day key (YYYY-MM-DD) — stable for all viewers on the same Greek day. */
 export const athensDayKey = (instant: Date = new Date()): string =>
   wallClockDayKey(toAthensWallClock(instant));
+
+/**
+ * The Athens hour from which the app stops answering about TODAY and answers about tomorrow.
+ *
+ * ONE CONSTANT, TWO READERS — and it has to stay that way. It used to be declared separately in
+ * hooks/useWeather.ts (which decides WHICH DAY is selected) and in components/Forecast.tsx (which
+ * decides whether the «Σήμερα» pill is tappable). On 05/08/2026 the first was lowered from 21 to
+ * 19 and the second was missed, which put the app in a state no user could make sense of between
+ * 19:00 and 20:00: the page had moved to tomorrow while the «Σήμερα» pill still looked available,
+ * and tapping it did nothing — clampSelectedDayIndex simply pushed the selection back. A control
+ * that looks enabled and refuses to act is worse than one that is visibly disabled.
+ *
+ * WHY 19. It is a judgement, not a measurement. After seven in the evening someone opening this
+ * site is deciding about tomorrow; before that, a swim is still an ordinary thing to do in a
+ * Greek summer. It was 21 for a long time, which is the hour the beach-hour slider itself ends
+ * (MAP_HOUR_SLIDER_END_HOUR) — so the handover only ever fired once there was no day left to
+ * hand over, and the page spent the evening ranking beaches for an hour that had already passed.
+ *
+ * Nothing is hidden by this: the day chips stay on screen and the handover announces itself.
+ */
+export const BEACH_DAY_ENDS_HOUR = 19;
