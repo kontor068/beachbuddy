@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-31T18:15:02.879204+00:00",
+  "generatedAt": "2026-08-04T18:54:12.944081+00:00",
   "window": {
-    "start": "2024-07-01",
-    "end": "2024-09-01"
+    "start": "2025-07-01",
+    "end": "2025-09-01"
   },
   "judge_dataset": "cmems_mod_med_wav_anfc_4.2km_PT1H-i",
   "gates": {
@@ -17,9 +17,44 @@
   },
   "per_island": [
     {
+      "island": "Thasos",
+      "separation_km": 14.0,
+      "meltemi_hours": 31,
+      "cells": {
+        "windward": {
+          "lat": 40.72916793823242,
+          "lon": 24.791667938232422,
+          "distance_km": 2.6
+        },
+        "leeward": {
+          "lat": 40.60416793823242,
+          "lon": 24.750001907348633,
+          "distance_km": 1.9
+        }
+      },
+      "windward_beach": "Βάθη",
+      "leeward_beach": "Άγιος Ιωάννης Λουκάς",
+      "models": {
+        "copernicus": {
+          "n": 31,
+          "mean_contrast_m": -0.056
+        },
+        "ewam": {
+          "n": 31,
+          "mean_contrast_m": -0.277,
+          "lee_vs_copernicus_mean_m": -0.01
+        },
+        "meteofrance_wave": {
+          "n": 31,
+          "mean_contrast_m": -0.021,
+          "lee_vs_copernicus_mean_m": 0.028
+        }
+      }
+    },
+    {
       "island": "Samos",
       "separation_km": 10.3,
-      "meltemi_hours": 68,
+      "meltemi_hours": 51,
       "cells": {
         "windward": {
           "lat": 37.8125,
@@ -36,29 +71,29 @@
       "leeward_beach": "Πυθαγόρειο",
       "models": {
         "copernicus": {
-          "n": 68,
-          "mean_contrast_m": 0.387
+          "n": 51,
+          "mean_contrast_m": 0.372
         },
         "ewam": {
-          "n": 68,
-          "mean_contrast_m": 0.266,
-          "lee_vs_copernicus_mean_m": 0.078,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 60
+          "n": 51,
+          "mean_contrast_m": 0.227,
+          "lee_vs_copernicus_mean_m": 0.097,
+          "clear_hour_sign_agreement": 0.976,
+          "clear_hours": 42
         },
         "meteofrance_wave": {
-          "n": 68,
-          "mean_contrast_m": 0.014,
-          "lee_vs_copernicus_mean_m": 0.191,
-          "clear_hour_sign_agreement": 0.65,
-          "clear_hours": 60
+          "n": 51,
+          "mean_contrast_m": 0.006,
+          "lee_vs_copernicus_mean_m": 0.205,
+          "clear_hour_sign_agreement": 0.667,
+          "clear_hours": 42
         }
       }
     },
     {
       "island": "Milos",
       "separation_km": 9.0,
-      "meltemi_hours": 814,
+      "meltemi_hours": 660,
       "cells": {
         "windward": {
           "lat": 36.77083206176758,
@@ -75,29 +110,29 @@
       "leeward_beach": "Άγιος Σώστης",
       "models": {
         "copernicus": {
-          "n": 814,
-          "mean_contrast_m": 0.568
+          "n": 660,
+          "mean_contrast_m": 0.701
         },
         "ewam": {
-          "n": 814,
-          "mean_contrast_m": 0.3,
-          "lee_vs_copernicus_mean_m": -0.081,
-          "clear_hour_sign_agreement": 0.975,
-          "clear_hours": 775
+          "n": 660,
+          "mean_contrast_m": 0.478,
+          "lee_vs_copernicus_mean_m": -0.09,
+          "clear_hour_sign_agreement": 1.0,
+          "clear_hours": 637
         },
         "meteofrance_wave": {
-          "n": 814,
-          "mean_contrast_m": 0.079,
-          "lee_vs_copernicus_mean_m": 0.442,
-          "clear_hour_sign_agreement": 0.991,
-          "clear_hours": 775
+          "n": 660,
+          "mean_contrast_m": 0.095,
+          "lee_vs_copernicus_mean_m": 0.51,
+          "clear_hour_sign_agreement": 0.986,
+          "clear_hours": 637
         }
       }
     },
     {
       "island": "Lemnos",
       "separation_km": 10.4,
-      "meltemi_hours": 334,
+      "meltemi_hours": 396,
       "cells": {
         "windward": {
           "lat": 40.02083206176758,
@@ -114,29 +149,29 @@
       "leeward_beach": "Μικρό Φαναράκι",
       "models": {
         "copernicus": {
-          "n": 334,
-          "mean_contrast_m": 0.156
+          "n": 396,
+          "mean_contrast_m": 0.29
         },
         "ewam": {
-          "n": 334,
-          "mean_contrast_m": 0.294,
-          "lee_vs_copernicus_mean_m": -0.337,
+          "n": 396,
+          "mean_contrast_m": 0.514,
+          "lee_vs_copernicus_mean_m": -0.362,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 127
+          "clear_hours": 252
         },
         "meteofrance_wave": {
-          "n": 334,
-          "mean_contrast_m": -0.093,
-          "lee_vs_copernicus_mean_m": 0.078,
-          "clear_hour_sign_agreement": 0.039,
-          "clear_hours": 127
+          "n": 396,
+          "mean_contrast_m": -0.153,
+          "lee_vs_copernicus_mean_m": 0.183,
+          "clear_hour_sign_agreement": 0.052,
+          "clear_hours": 252
         }
       }
     },
     {
       "island": "Ios",
       "separation_km": 9.1,
-      "meltemi_hours": 1015,
+      "meltemi_hours": 728,
       "cells": {
         "windward": {
           "lat": 36.77083206176758,
@@ -153,29 +188,29 @@
       "leeward_beach": "Τρυπητή",
       "models": {
         "copernicus": {
-          "n": 1015,
-          "mean_contrast_m": 0.147
+          "n": 728,
+          "mean_contrast_m": 0.165
         },
         "ewam": {
-          "n": 1015,
-          "mean_contrast_m": 0.124,
-          "lee_vs_copernicus_mean_m": -0.213,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 298
+          "n": 728,
+          "mean_contrast_m": 0.149,
+          "lee_vs_copernicus_mean_m": -0.212,
+          "clear_hour_sign_agreement": 0.981,
+          "clear_hours": 318
         },
         "meteofrance_wave": {
-          "n": 1015,
-          "mean_contrast_m": -0.032,
-          "lee_vs_copernicus_mean_m": 0.264,
-          "clear_hour_sign_agreement": 0.067,
-          "clear_hours": 298
+          "n": 728,
+          "mean_contrast_m": -0.033,
+          "lee_vs_copernicus_mean_m": 0.297,
+          "clear_hour_sign_agreement": 0.063,
+          "clear_hours": 318
         }
       }
     },
     {
       "island": "Kythnos",
       "separation_km": 9.8,
-      "meltemi_hours": 913,
+      "meltemi_hours": 689,
       "cells": {
         "windward": {
           "lat": 37.39583206176758,
@@ -192,29 +227,29 @@
       "leeward_beach": "Νίκα",
       "models": {
         "copernicus": {
-          "n": 913,
-          "mean_contrast_m": -0.168
+          "n": 689,
+          "mean_contrast_m": -0.202
         },
         "ewam": {
-          "n": 913,
-          "mean_contrast_m": 0.089,
-          "lee_vs_copernicus_mean_m": -0.376,
-          "clear_hour_sign_agreement": 0.085,
-          "clear_hours": 272
+          "n": 689,
+          "mean_contrast_m": 0.151,
+          "lee_vs_copernicus_mean_m": -0.351,
+          "clear_hour_sign_agreement": 0.013,
+          "clear_hours": 313
         },
         "meteofrance_wave": {
-          "n": 913,
-          "mean_contrast_m": -0.002,
-          "lee_vs_copernicus_mean_m": 0.04,
-          "clear_hour_sign_agreement": 0.721,
-          "clear_hours": 272
+          "n": 689,
+          "mean_contrast_m": 0.013,
+          "lee_vs_copernicus_mean_m": 0.101,
+          "clear_hour_sign_agreement": 0.348,
+          "clear_hours": 313
         }
       }
     },
     {
       "island": "Tinos",
       "separation_km": 9.0,
-      "meltemi_hours": 1133,
+      "meltemi_hours": 965,
       "cells": {
         "windward": {
           "lat": 37.6875,
@@ -231,29 +266,29 @@
       "leeward_beach": "Πίσω Διαλισκαρ",
       "models": {
         "copernicus": {
-          "n": 1133,
-          "mean_contrast_m": 1.001
+          "n": 965,
+          "mean_contrast_m": 1.092
         },
         "ewam": {
-          "n": 1133,
-          "mean_contrast_m": 0.88,
-          "lee_vs_copernicus_mean_m": -0.065,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 1130
+          "n": 965,
+          "mean_contrast_m": 1.027,
+          "lee_vs_copernicus_mean_m": -0.062,
+          "clear_hour_sign_agreement": 0.998,
+          "clear_hours": 963
         },
         "meteofrance_wave": {
-          "n": 1133,
-          "mean_contrast_m": 0.009,
-          "lee_vs_copernicus_mean_m": 0.489,
-          "clear_hour_sign_agreement": 0.469,
-          "clear_hours": 1130
+          "n": 965,
+          "mean_contrast_m": 0.018,
+          "lee_vs_copernicus_mean_m": 0.534,
+          "clear_hour_sign_agreement": 0.618,
+          "clear_hours": 963
         }
       }
     },
     {
       "island": "Naxos",
       "separation_km": 18.1,
-      "meltemi_hours": 574,
+      "meltemi_hours": 578,
       "cells": {
         "windward": {
           "lat": 37.14583206176758,
@@ -270,29 +305,29 @@
       "leeward_beach": "Πυργάκι",
       "models": {
         "copernicus": {
-          "n": 574,
+          "n": 578,
           "mean_contrast_m": 0.585
         },
         "ewam": {
-          "n": 574,
-          "mean_contrast_m": 0.016,
-          "lee_vs_copernicus_mean_m": 0.521,
-          "clear_hour_sign_agreement": 0.483,
-          "clear_hours": 567
+          "n": 578,
+          "mean_contrast_m": 0.06,
+          "lee_vs_copernicus_mean_m": 0.537,
+          "clear_hour_sign_agreement": 0.692,
+          "clear_hours": 545
         },
         "meteofrance_wave": {
-          "n": 574,
-          "mean_contrast_m": 0.001,
-          "lee_vs_copernicus_mean_m": 0.406,
-          "clear_hour_sign_agreement": 0.476,
-          "clear_hours": 567
+          "n": 578,
+          "mean_contrast_m": -0.03,
+          "lee_vs_copernicus_mean_m": 0.436,
+          "clear_hour_sign_agreement": 0.237,
+          "clear_hours": 545
         }
       }
     },
     {
       "island": "Alonissos",
       "separation_km": 9.4,
-      "meltemi_hours": 331,
+      "meltemi_hours": 368,
       "cells": {
         "windward": {
           "lat": 39.14583206176758,
@@ -309,29 +344,29 @@
       "leeward_beach": "Παραλία Βύθισμα",
       "models": {
         "copernicus": {
-          "n": 331,
-          "mean_contrast_m": -0.03
+          "n": 368,
+          "mean_contrast_m": -0.009
         },
         "ewam": {
-          "n": 331,
-          "mean_contrast_m": -0.091,
-          "lee_vs_copernicus_mean_m": 0.01,
+          "n": 368,
+          "mean_contrast_m": -0.197,
+          "lee_vs_copernicus_mean_m": 0.211,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 39
+          "clear_hours": 52
         },
         "meteofrance_wave": {
-          "n": 331,
-          "mean_contrast_m": 0.057,
-          "lee_vs_copernicus_mean_m": 0.151,
-          "clear_hour_sign_agreement": 0.128,
-          "clear_hours": 39
+          "n": 368,
+          "mean_contrast_m": 0.097,
+          "lee_vs_copernicus_mean_m": 0.246,
+          "clear_hour_sign_agreement": 0.173,
+          "clear_hours": 52
         }
       }
     },
     {
       "island": "Kos",
       "separation_km": 9.0,
-      "meltemi_hours": 609,
+      "meltemi_hours": 456,
       "cells": {
         "windward": {
           "lat": 36.85416793823242,
@@ -348,29 +383,29 @@
       "leeward_beach": "Πολέμι / Magic Beach",
       "models": {
         "copernicus": {
-          "n": 609,
-          "mean_contrast_m": 0.506
+          "n": 456,
+          "mean_contrast_m": 0.531
         },
         "ewam": {
-          "n": 609,
-          "mean_contrast_m": -0.313,
-          "lee_vs_copernicus_mean_m": 0.496,
+          "n": 456,
+          "mean_contrast_m": -0.311,
+          "lee_vs_copernicus_mean_m": 0.554,
           "clear_hour_sign_agreement": 0.0,
-          "clear_hours": 601
+          "clear_hours": 454
         },
         "meteofrance_wave": {
-          "n": 609,
-          "mean_contrast_m": -0.057,
-          "lee_vs_copernicus_mean_m": 0.689,
-          "clear_hour_sign_agreement": 0.0,
-          "clear_hours": 601
+          "n": 456,
+          "mean_contrast_m": -0.056,
+          "lee_vs_copernicus_mean_m": 0.724,
+          "clear_hour_sign_agreement": 0.004,
+          "clear_hours": 454
         }
       }
     },
     {
       "island": "Paros",
       "separation_km": 12.5,
-      "meltemi_hours": 901,
+      "meltemi_hours": 696,
       "cells": {
         "windward": {
           "lat": 37.14583206176758,
@@ -387,29 +422,29 @@
       "leeward_beach": "Παραλία Αγκάλη Χρυσής Ακτής",
       "models": {
         "copernicus": {
-          "n": 901,
-          "mean_contrast_m": 0.536
+          "n": 696,
+          "mean_contrast_m": 0.614
         },
         "ewam": {
-          "n": 901,
-          "mean_contrast_m": -0.118,
-          "lee_vs_copernicus_mean_m": 0.396,
-          "clear_hour_sign_agreement": 0.048,
-          "clear_hours": 879
+          "n": 696,
+          "mean_contrast_m": -0.069,
+          "lee_vs_copernicus_mean_m": 0.472,
+          "clear_hour_sign_agreement": 0.186,
+          "clear_hours": 683
         },
         "meteofrance_wave": {
-          "n": 901,
-          "mean_contrast_m": 0.076,
-          "lee_vs_copernicus_mean_m": 0.311,
-          "clear_hour_sign_agreement": 0.976,
-          "clear_hours": 879
+          "n": 696,
+          "mean_contrast_m": 0.067,
+          "lee_vs_copernicus_mean_m": 0.375,
+          "clear_hour_sign_agreement": 0.939,
+          "clear_hours": 683
         }
       }
     },
     {
       "island": "Kea",
       "separation_km": 14.7,
-      "meltemi_hours": 654,
+      "meltemi_hours": 618,
       "cells": {
         "windward": {
           "lat": 37.6875,
@@ -426,29 +461,29 @@
       "leeward_beach": "Σχίνος",
       "models": {
         "copernicus": {
-          "n": 654,
-          "mean_contrast_m": 0.277
+          "n": 618,
+          "mean_contrast_m": 0.332
         },
         "ewam": {
-          "n": 654,
-          "mean_contrast_m": 0.233,
-          "lee_vs_copernicus_mean_m": -0.235,
+          "n": 618,
+          "mean_contrast_m": 0.332,
+          "lee_vs_copernicus_mean_m": -0.191,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 552
+          "clear_hours": 536
         },
         "meteofrance_wave": {
-          "n": 654,
-          "mean_contrast_m": -0.034,
-          "lee_vs_copernicus_mean_m": 0.233,
-          "clear_hour_sign_agreement": 0.034,
-          "clear_hours": 552
+          "n": 618,
+          "mean_contrast_m": -0.03,
+          "lee_vs_copernicus_mean_m": 0.297,
+          "clear_hour_sign_agreement": 0.097,
+          "clear_hours": 536
         }
       }
     },
     {
       "island": "Skopelos",
       "separation_km": 9.3,
-      "meltemi_hours": 331,
+      "meltemi_hours": 368,
       "cells": {
         "windward": {
           "lat": 39.1875,
@@ -465,29 +500,29 @@
       "leeward_beach": "Τραχήλι",
       "models": {
         "copernicus": {
-          "n": 331,
-          "mean_contrast_m": 0.156
+          "n": 368,
+          "mean_contrast_m": 0.335
         },
         "ewam": {
-          "n": 331,
-          "mean_contrast_m": 0.082,
-          "lee_vs_copernicus_mean_m": -0.114,
-          "clear_hour_sign_agreement": 0.948,
-          "clear_hours": 116
+          "n": 368,
+          "mean_contrast_m": 0.189,
+          "lee_vs_copernicus_mean_m": -0.017,
+          "clear_hour_sign_agreement": 0.857,
+          "clear_hours": 266
         },
         "meteofrance_wave": {
-          "n": 331,
-          "mean_contrast_m": 0.055,
-          "lee_vs_copernicus_mean_m": 0.06,
-          "clear_hour_sign_agreement": 0.983,
-          "clear_hours": 116
+          "n": 368,
+          "mean_contrast_m": 0.086,
+          "lee_vs_copernicus_mean_m": 0.13,
+          "clear_hour_sign_agreement": 0.985,
+          "clear_hours": 266
         }
       }
     },
     {
       "island": "Skyros",
       "separation_km": 11.1,
-      "meltemi_hours": 507,
+      "meltemi_hours": 531,
       "cells": {
         "windward": {
           "lat": 38.97916793823242,
@@ -504,29 +539,29 @@
       "leeward_beach": "Φωκιοτρύπα",
       "models": {
         "copernicus": {
-          "n": 507,
-          "mean_contrast_m": 0.732
+          "n": 531,
+          "mean_contrast_m": 0.974
         },
         "ewam": {
-          "n": 507,
-          "mean_contrast_m": 0.642,
-          "lee_vs_copernicus_mean_m": -0.09,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 490
+          "n": 531,
+          "mean_contrast_m": 0.902,
+          "lee_vs_copernicus_mean_m": -0.064,
+          "clear_hour_sign_agreement": 0.998,
+          "clear_hours": 514
         },
         "meteofrance_wave": {
-          "n": 507,
-          "mean_contrast_m": 0.154,
-          "lee_vs_copernicus_mean_m": 0.314,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 490
+          "n": 531,
+          "mean_contrast_m": 0.193,
+          "lee_vs_copernicus_mean_m": 0.416,
+          "clear_hour_sign_agreement": 0.994,
+          "clear_hours": 514
         }
       }
     },
     {
       "island": "Kalymnos",
       "separation_km": 12.9,
-      "meltemi_hours": 657,
+      "meltemi_hours": 506,
       "cells": {
         "windward": {
           "lat": 37.0625,
@@ -543,29 +578,29 @@
       "leeward_beach": "Κασόνια",
       "models": {
         "copernicus": {
-          "n": 657,
-          "mean_contrast_m": 0.04
+          "n": 506,
+          "mean_contrast_m": 0.065
         },
         "ewam": {
-          "n": 657,
-          "mean_contrast_m": 0.12,
-          "lee_vs_copernicus_mean_m": -0.069,
-          "clear_hour_sign_agreement": 0.828,
-          "clear_hours": 151
+          "n": 506,
+          "mean_contrast_m": 0.142,
+          "lee_vs_copernicus_mean_m": -0.028,
+          "clear_hour_sign_agreement": 0.768,
+          "clear_hours": 168
         },
         "meteofrance_wave": {
-          "n": 657,
-          "mean_contrast_m": -0.084,
-          "lee_vs_copernicus_mean_m": 0.341,
-          "clear_hour_sign_agreement": 0.232,
-          "clear_hours": 151
+          "n": 506,
+          "mean_contrast_m": -0.088,
+          "lee_vs_copernicus_mean_m": 0.369,
+          "clear_hour_sign_agreement": 0.262,
+          "clear_hours": 168
         }
       }
     },
     {
       "island": "Ikaria",
       "separation_km": 12.1,
-      "meltemi_hours": 592,
+      "meltemi_hours": 395,
       "cells": {
         "windward": {
           "lat": 37.6875,
@@ -582,29 +617,29 @@
       "leeward_beach": "Συρτικό",
       "models": {
         "copernicus": {
-          "n": 592,
-          "mean_contrast_m": 0.645
+          "n": 395,
+          "mean_contrast_m": 0.669
         },
         "ewam": {
-          "n": 592,
-          "mean_contrast_m": 0.56,
-          "lee_vs_copernicus_mean_m": -0.081,
+          "n": 395,
+          "mean_contrast_m": 0.66,
+          "lee_vs_copernicus_mean_m": -0.074,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 592
+          "clear_hours": 395
         },
         "meteofrance_wave": {
-          "n": 592,
-          "mean_contrast_m": 0.14,
-          "lee_vs_copernicus_mean_m": 0.491,
+          "n": 395,
+          "mean_contrast_m": 0.135,
+          "lee_vs_copernicus_mean_m": 0.522,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 592
+          "clear_hours": 395
         }
       }
     },
     {
       "island": "Aegina",
       "separation_km": 9.2,
-      "meltemi_hours": 409,
+      "meltemi_hours": 374,
       "cells": {
         "windward": {
           "lat": 37.77083206176758,
@@ -621,25 +656,25 @@
       "leeward_beach": "Παραλία Σαρπά",
       "models": {
         "copernicus": {
-          "n": 409,
-          "mean_contrast_m": -0.047
+          "n": 374,
+          "mean_contrast_m": -0.066
         },
         "ewam": {
-          "n": 409,
-          "mean_contrast_m": -0.034,
-          "lee_vs_copernicus_mean_m": -0.135
+          "n": 374,
+          "mean_contrast_m": -0.051,
+          "lee_vs_copernicus_mean_m": -0.123
         },
         "meteofrance_wave": {
-          "n": 409,
-          "mean_contrast_m": -0.036,
-          "lee_vs_copernicus_mean_m": -0.037
+          "n": 374,
+          "mean_contrast_m": -0.053,
+          "lee_vs_copernicus_mean_m": -0.029
         }
       }
     },
     {
       "island": "Amorgos",
       "separation_km": 13.7,
-      "meltemi_hours": 1235,
+      "meltemi_hours": 979,
       "cells": {
         "windward": {
           "lat": 36.89583206176758,
@@ -656,29 +691,29 @@
       "leeward_beach": "Μούρος",
       "models": {
         "copernicus": {
-          "n": 1235,
-          "mean_contrast_m": 0.908
+          "n": 979,
+          "mean_contrast_m": 0.943
         },
         "ewam": {
-          "n": 1235,
-          "mean_contrast_m": 0.738,
-          "lee_vs_copernicus_mean_m": -0.063,
-          "clear_hour_sign_agreement": 0.993,
-          "clear_hours": 1230
+          "n": 979,
+          "mean_contrast_m": 0.786,
+          "lee_vs_copernicus_mean_m": -0.015,
+          "clear_hour_sign_agreement": 0.985,
+          "clear_hours": 963
         },
         "meteofrance_wave": {
-          "n": 1235,
-          "mean_contrast_m": 0.141,
-          "lee_vs_copernicus_mean_m": 0.447,
-          "clear_hour_sign_agreement": 0.948,
-          "clear_hours": 1230
+          "n": 979,
+          "mean_contrast_m": 0.133,
+          "lee_vs_copernicus_mean_m": 0.483,
+          "clear_hour_sign_agreement": 0.922,
+          "clear_hours": 963
         }
       }
     },
     {
       "island": "Santorini",
       "separation_km": 12.2,
-      "meltemi_hours": 787,
+      "meltemi_hours": 569,
       "cells": {
         "windward": {
           "lat": 36.47916793823242,
@@ -695,29 +730,29 @@
       "leeward_beach": "Κόκκινη Παραλία",
       "models": {
         "copernicus": {
-          "n": 787,
-          "mean_contrast_m": 0.197
+          "n": 569,
+          "mean_contrast_m": 0.204
         },
         "ewam": {
-          "n": 787,
-          "mean_contrast_m": -0.062,
-          "lee_vs_copernicus_mean_m": -0.085,
-          "clear_hour_sign_agreement": 0.019,
-          "clear_hours": 362
+          "n": 569,
+          "mean_contrast_m": -0.06,
+          "lee_vs_copernicus_mean_m": -0.042,
+          "clear_hour_sign_agreement": 0.025,
+          "clear_hours": 236
         },
         "meteofrance_wave": {
-          "n": 787,
-          "mean_contrast_m": -0.009,
-          "lee_vs_copernicus_mean_m": 0.2,
-          "clear_hour_sign_agreement": 0.508,
-          "clear_hours": 362
+          "n": 569,
+          "mean_contrast_m": -0.012,
+          "lee_vs_copernicus_mean_m": 0.214,
+          "clear_hour_sign_agreement": 0.551,
+          "clear_hours": 236
         }
       }
     },
     {
       "island": "Antiparos",
       "separation_km": 9.2,
-      "meltemi_hours": 895,
+      "meltemi_hours": 742,
       "cells": {
         "windward": {
           "lat": 37.0625,
@@ -734,29 +769,29 @@
       "leeward_beach": "Άγιος Σώστης",
       "models": {
         "copernicus": {
-          "n": 895,
-          "mean_contrast_m": 0.527
+          "n": 742,
+          "mean_contrast_m": 0.57
         },
         "ewam": {
-          "n": 895,
-          "mean_contrast_m": 0.275,
-          "lee_vs_copernicus_mean_m": -0.101,
-          "clear_hour_sign_agreement": 0.998,
-          "clear_hours": 871
+          "n": 742,
+          "mean_contrast_m": 0.367,
+          "lee_vs_copernicus_mean_m": -0.087,
+          "clear_hour_sign_agreement": 1.0,
+          "clear_hours": 712
         },
         "meteofrance_wave": {
-          "n": 895,
-          "mean_contrast_m": 0.001,
-          "lee_vs_copernicus_mean_m": 0.513,
-          "clear_hour_sign_agreement": 0.366,
-          "clear_hours": 871
+          "n": 742,
+          "mean_contrast_m": 0.004,
+          "lee_vs_copernicus_mean_m": 0.568,
+          "clear_hour_sign_agreement": 0.403,
+          "clear_hours": 712
         }
       }
     },
     {
       "island": "Tilos",
       "separation_km": 10.3,
-      "meltemi_hours": 250,
+      "meltemi_hours": 190,
       "cells": {
         "windward": {
           "lat": 36.47916793823242,
@@ -773,29 +808,29 @@
       "leeward_beach": "Τολός",
       "models": {
         "copernicus": {
-          "n": 250,
-          "mean_contrast_m": -0.248
+          "n": 190,
+          "mean_contrast_m": -0.189
         },
         "ewam": {
-          "n": 250,
-          "mean_contrast_m": -0.018,
-          "lee_vs_copernicus_mean_m": -0.163,
-          "clear_hour_sign_agreement": 0.797,
-          "clear_hours": 148
+          "n": 190,
+          "mean_contrast_m": 0.006,
+          "lee_vs_copernicus_mean_m": -0.172,
+          "clear_hour_sign_agreement": 0.683,
+          "clear_hours": 82
         },
         "meteofrance_wave": {
-          "n": 250,
-          "mean_contrast_m": -0.086,
-          "lee_vs_copernicus_mean_m": 0.265,
+          "n": 190,
+          "mean_contrast_m": -0.088,
+          "lee_vs_copernicus_mean_m": 0.281,
           "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 148
+          "clear_hours": 82
         }
       }
     },
     {
       "island": "Samothraki",
       "separation_km": 9.1,
-      "meltemi_hours": 40,
+      "meltemi_hours": 163,
       "cells": {
         "windward": {
           "lat": 40.52083206176758,
@@ -812,85 +847,85 @@
       "leeward_beach": "Παραλία Μακρυλιές",
       "models": {
         "copernicus": {
-          "n": 40,
-          "mean_contrast_m": 0.324
+          "n": 163,
+          "mean_contrast_m": 0.461
         },
         "ewam": {
-          "n": 40,
-          "mean_contrast_m": 0.267,
-          "lee_vs_copernicus_mean_m": -0.122,
-          "clear_hour_sign_agreement": 1.0,
-          "clear_hours": 36
+          "n": 163,
+          "mean_contrast_m": 0.588,
+          "lee_vs_copernicus_mean_m": -0.126,
+          "clear_hour_sign_agreement": 0.993,
+          "clear_hours": 148
         },
         "meteofrance_wave": {
-          "n": 40,
-          "mean_contrast_m": -0.011,
-          "lee_vs_copernicus_mean_m": 0.203,
-          "clear_hour_sign_agreement": 0.167,
-          "clear_hours": 36
+          "n": 163,
+          "mean_contrast_m": -0.001,
+          "lee_vs_copernicus_mean_m": 0.351,
+          "clear_hour_sign_agreement": 0.385,
+          "clear_hours": 148
         }
       }
     }
   ],
   "summary": {
     "mean_lee_shore_contrast_m": {
-      "copernicus": 0.42,
-      "ewam": 0.25,
+      "copernicus": 0.475,
+      "ewam": 0.332,
       "meteofrance_wave": 0.023
     },
     "lee_shore_error_vs_copernicus_m": {
-      "ewam": -0.039,
-      "meteofrance_wave": 0.331
+      "ewam": -0.008,
+      "meteofrance_wave": 0.372
     },
     "lee_shore_rmse_vs_copernicus_m": {
-      "ewam": 0.274,
-      "meteofrance_wave": 0.394
+      "ewam": 0.297,
+      "meteofrance_wave": 0.439
     },
     "clear_hours": {
       "threshold_m": 0.2,
-      "n": 9296,
-      "of": 13049,
-      "share": 0.712
+      "n": 8279,
+      "of": 11053,
+      "share": 0.749
     },
     "clear_hour_sign_agreement": {
-      "ewam": 0.739,
-      "meteofrance_wave": 0.62
+      "ewam": 0.777,
+      "meteofrance_wave": 0.59
     },
     "diagnostic_own_sign_ratio": {
-      "copernicus": 0.829,
-      "ewam": 0.705,
-      "meteofrance_wave": 0.47
+      "copernicus": 0.837,
+      "ewam": 0.738,
+      "meteofrance_wave": 0.497
     },
     "sign_agreement_by_predicted_gap": {
       "ewam": [
         {
           "from_m": 0.0,
           "to_m": 0.2,
-          "n": 6405,
-          "agreement": 0.475
+          "n": 4656,
+          "agreement": 0.463
         },
         {
           "from_m": 0.2,
           "to_m": 0.4,
-          "n": 2854,
-          "agreement": 0.74
+          "n": 2239,
+          "agreement": 0.734
         },
         {
           "from_m": 0.4,
           "to_m": 0.6,
-          "n": 1283,
-          "agreement": 0.925
+          "n": 1343,
+          "agreement": 0.895
         },
         {
           "from_m": 0.6,
           "to_m": 1.0,
-          "n": 1889,
-          "agreement": 1.0
+          "n": 1656,
+          "agreement": 0.997
         },
         {
           "from_m": 1.0,
           "to_m": null,
-          "n": 618,
+          "n": 1159,
           "agreement": 1.0
         }
       ],
@@ -898,20 +933,20 @@
         {
           "from_m": 0.0,
           "to_m": 0.2,
-          "n": 12659,
-          "agreement": 0.573
+          "n": 10453,
+          "agreement": 0.561
         },
         {
           "from_m": 0.2,
           "to_m": 0.4,
-          "n": 390,
-          "agreement": 0.928
+          "n": 599,
+          "agreement": 0.783
         },
         {
           "from_m": 0.4,
           "to_m": 0.6,
-          "n": 0,
-          "agreement": null
+          "n": 1,
+          "agreement": 0.0
         },
         {
           "from_m": 0.6,
@@ -936,13 +971,13 @@
       "gates": {
         "ewam_is_right_when_it_claims_a_big_gap": {
           "pass": true,
-          "ratio": 1.0,
-          "n": 2507,
+          "ratio": 0.9982,
+          "n": 2815,
           "threshold": 0.95
         },
         "the_rule_covers_enough_hours_to_be_worth_it": {
           "pass": true,
-          "coverage": 0.192,
+          "coverage": 0.255,
           "threshold": 0.15
         }
       }
@@ -950,27 +985,27 @@
     "gates": {
       "copernicus_sees_a_real_lee_shore_difference": {
         "pass": true,
-        "mean_contrast_m": 0.42,
+        "mean_contrast_m": 0.475,
         "threshold_m": 0.3
       },
       "ewam_picks_the_calm_coast_when_the_judge_sees_one": {
         "pass": false,
-        "ratio": 0.739,
-        "n": 9296,
+        "ratio": 0.777,
+        "n": 8279,
         "threshold": 0.9,
-        "previous_model_ratio": 0.62
+        "previous_model_ratio": 0.59
       },
       "ewam_does_not_under_read_the_lee_shore": {
         "pass": true,
-        "mean_error_m": -0.039,
-        "severe_ratio": 0.0172,
-        "severe_incidents": 225,
-        "n": 13049
+        "mean_error_m": -0.008,
+        "severe_ratio": 0.0195,
+        "severe_incidents": 215,
+        "n": 11053
       },
       "ewam_closer_to_the_judge_than_the_model_it_replaced": {
         "pass": true,
-        "ewam_rmse_m": 0.274,
-        "previous_rmse_m": 0.394
+        "ewam_rmse_m": 0.297,
+        "previous_rmse_m": 0.439
       }
     }
   }

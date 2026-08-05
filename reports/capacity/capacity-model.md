@@ -57,16 +57,22 @@ So **~4× average traffic** is the soft ceiling; a concentrated spike can bite s
 ## The fix — edge-cached forecast proxy (zero cost)
 
 Built at `netlify/functions/forecast.mjs`, wired through the forecast seam
-(`services/forecast/`, seam #2). **Currently OFF** behind `VITE_FORECAST_PROXY_BASE`.
+(`services/forecast/`, seam #2). **LIVE in production since 27/07/2026** —
+`VITE_FORECAST_PROXY_BASE = "/api/forecast"` is set in all three deploy contexts
+(`netlify.toml`, production / deploy-preview / branch-deploy), and the client
+*fail-closed*: outside `vite dev` an unset proxy base throws rather than calling
+the vendor directly. *(This section said «Currently OFF» until 05/08/2026.)*
 
 How it changes the math:
 - Client still caches per-device first (unchanged). On a cache miss it calls
   **our** same-origin proxy instead of Open-Meteo directly.
-- The proxy sets `Netlify-CDN-Cache-Control: public, s-maxage=1800,
-  stale-while-revalidate=3600`. Netlify's CDN then serves the **same forecast to
-  every user** for the TTL — so both the function invocation **and** the upstream
-  Open-Meteo call happen **once per beach per ~30 min**, no matter how many users
-  ask.
+- The proxy sets `Netlify-CDN-Cache-Control` per route — **weather `s-maxage=3600`,
+  marine `s-maxage=10800`, both `stale-while-revalidate=1800`** (split on 31/07/2026
+  because the two wave models publish every 12 h, so a 30-minute marine TTL was
+  re-fetching a number that had not moved). Netlify's CDN then serves the **same
+  forecast to every user** for the TTL — so both the function invocation **and** the
+  upstream Open-Meteo call happen **once per beach per hour** (per 3 h for marine),
+  no matter how many users ask.
 - Upstream load flips from `O(users × beaches)` to `O(distinct_beaches ×
   refreshes/day)` — **independent of audience size**. At 10× users, distinct
   beaches viewed barely grows, so upstream stays roughly flat.

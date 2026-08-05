@@ -207,6 +207,49 @@ const RULES = [
         : null
     ),
   },
+  {
+    id: 'refusal-under-a-dot-that-does-not-refuse',
+    // NOT 'fallback': that config deliberately withholds conditionTone so the internal ladder
+    // answers instead, and with no dot handed in there is no dot to contradict. The raw-sea
+    // refusal is still correct there and must stay — it is the only sea signal that path has.
+    configs: ['card', 'detail-hero'],
+    // ⚠️ THE ONE THAT ASKS THE QUESTION NONE OF THE OTHERS ASK (added 05/08/2026).
+    //
+    // Every rule in this file, and every gate in scripts/, guards ONE direction: are we calling
+    // the sea calmer than it is? That is the right instinct — a false calm can hurt someone and
+    // a false alarm cannot. But it means nothing in the repo could see the opposite failure, and
+    // the opposite failure was live and large.
+    //
+    // getExperienceTier used to `return 'skip'` on a raw wave ≥ SEA_STATE_ROUGH_M in an early
+    // exit that ran BEFORE the tone ceiling. The dot reddens on the SHORE-damped sea
+    // (utils/suitabilityTone.capToneBySeaState → shoreSeaStateM, ×0,5 on a protected shore);
+    // the word used the undamped open-water number against the same 1,2 m boundary. Measured on
+    // the 5.040-combination grid: 840 (16,7%) printed «Καλύτερα άλλη μέρα» / "Not recommended
+    // today" under a NON-red dot, and every single one of the 840 was a PROTECTED shore — a lee
+    // coast on a meltemi day, i.e. precisely where someone should be sent. Reported from Σχινιάς
+    // with the wind straight off the land and a webcam showing glass.
+    //
+    // The rule is deliberately narrow, and must stay narrow. It does NOT say the word must match
+    // the dot, and it does NOT forbid a cautious word under a calm dot — the word legitimately
+    // folds in score, access and advisories, which is why 'fair' under a blue dot is fine and
+    // common. It forbids exactly one thing: the strongest refusal the app has, printed under a
+    // colour that is not refusing. If a future change needs to break this, the fix is to redden
+    // the dot too — never to widen this rule.
+    //
+    // KNOWN exposure levels only, and that exclusion is deliberate rather than convenient. With
+    // `exposureLevel: undefined` the two ladders diverge BY DESIGN: resolveWindTone tests only
+    // `=== 'exposed'`, so an unknown shore takes the sheltered colour, while getExperienceTier's
+    // `pinRedInStrongWind` treats "neither protected nor partial" as exposed and refuses the day.
+    // That asymmetry is documented in utils/experienceTier and is the safe direction — an unknown
+    // shore at 5 Bft may well be a wide-open one. It is also unreachable in production: the engine
+    // always returns a concrete level and utils/mapExposure falls back to 'partial', so `undefined`
+    // exists only in this synthetic grid. It flagged 300 rows here, all of them that case.
+    check: ({ pinTone, tier, exposureLevel }) => (
+      tier === 'skip' && pinTone !== 'red' && exposureLevel !== undefined
+        ? `verdict "skip" under a ${pinTone.toUpperCase()} dot — the app's hardest refusal under a colour that does not refuse`
+        : null
+    ),
+  },
 ];
 
 const failures = [];

@@ -55,9 +55,12 @@ export const parseMarineHourly = (marineHourly: any): MarineHourlyRow[] => {
   // the normal case and the bare name is the fallback.
   //
   // The fallback is load-bearing, not defensive decoration: the edge proxy caches marine
-  // responses with s-maxage=1800 + stale-while-revalidate=3600, so for up to ~1.5h after a
-  // deploy that changes the model list the CDN keeps serving the PREVIOUS shape. Without the
-  // bare-name fallback, every wave reading would read undefined for that whole window.
+  // responses with s-maxage=10800 + stale-while-revalidate=1800 (netlify/functions/forecast.mjs,
+  // CDN_MAX_AGE_S.marine and CDN_STALE_WHILE_REVALIDATE_S), so for up to ~3.5h after a deploy
+  // that changes the model list the CDN keeps serving the PREVIOUS shape. Without the bare-name
+  // fallback, every wave reading would read undefined for that whole window.
+  // (Corrected 05/08/2026 — this said 1800/3600 and «~1.5h», neither of which had been true
+  // since the per-route cache split on 31/07.)
   const series = (field: string, model: string): unknown[] | undefined =>
     marineHourly[`${field}_${model}`] ?? marineHourly[field];
 

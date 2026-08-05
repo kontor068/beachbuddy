@@ -1097,14 +1097,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // "Calmer than a normal July here." Deliberately fed the UNCORRECTED wave height:
   // the climatology is an open-water 4,2 km cell, so comparing a cove-corrected figure
   // against it would print a false compliment on every enclosed bay, every day.
+  // …and fed the two facts it needs to know whether "here" is even true: how far offshore
+  // today's reading was sampled, and what colour this beach's own dot is wearing. Without them
+  // the amber "rougher than usual" fires on a lee shore all summer (see guard 3 in that file).
   const climateComparison: ClimateComparison | null = useMemo(
     () => describeClimateComparison(beachClimate, {
       openWaterWaveHeightM: waveHeightM ?? measuredWaveHeightM,
       seaTemperatureC,
       date: selectedDate,
       language,
+      sampleDistanceKm: geospatialExposure?.marineSamplePoint?.distanceKm,
+      mapAlignedExposureLevel,
     }),
-    [beachClimate, waveHeightM, measuredWaveHeightM, seaTemperatureC, selectedDate, language],
+    [beachClimate, waveHeightM, measuredWaveHeightM, seaTemperatureC, selectedDate, language,
+      geospatialExposure, mapAlignedExposureLevel],
   );
   // R1: mirror the ranking's direct-swell detection so the DISPLAYED sea sub-score drops the
   // protected/partial wave floor exactly when the ranking does — otherwise a west-facing cove on

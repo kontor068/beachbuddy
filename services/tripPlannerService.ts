@@ -353,6 +353,12 @@ const resolveWhyKey = (input: {
   canClaimWindProtection: boolean;
   enclosedCove: boolean;
 }): TripWhyKey => {
+  // A caution-tier pick always reads 'best_available'. This is a CONTRACT, not an oversight:
+  // scripts/validatePlannerAgreement asserts it directly («if (pick.caution && pick.whyKey !==
+  // 'best_available') return true» in claims-need-evidence). Escalating it to 'partial_shelter'
+  // on genuinely sheltered caution picks was tried on 05/08/2026 and reverted — see the
+  // `per-beach-story` note in docs/team/PORISMA-KAIROS-2026-08.md; it needs a product decision,
+  // not a refactor.
   if (input.caution) return 'best_available';
   // <= 3 Bft, not <= 2: the project rule is that 3-4 Bft is a light/moderate
   // breeze and never earns caution wording (see the beach-card copy doctrine),
@@ -422,6 +428,12 @@ const buildPick = (
   );
   const canClaimWindProtection = source.canClaimWindProtection === true;
   const enclosedCove = source.enclosedCove === true;
+  // Evidence stays the AUTHORED trail only, deliberately. Geometry-earned protection was added
+  // here on 05/08/2026 and removed the same day: it was scaffolding for a whyKey change that got
+  // reverted, and it left a latent trap — scripts/validatePlannerAgreement runs its OWN
+  // `hasTrustedWindEvidence` over the finished pick, so a whyKey upgraded by evidence the
+  // validator cannot see would fail `claims-need-evidence` the first time a scenario reached it.
+  // If this needs to change, the validator's copy has to learn about geometry in the same commit.
   const hasEvidence = hasTrustedWindEvidence(
     { confidence: source.confidence, windProfile: source.windProfile, windProfileSource: source.windProfileSource },
     windBeaufort

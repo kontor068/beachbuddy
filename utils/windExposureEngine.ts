@@ -776,15 +776,66 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const effectiveBeaufort = Math.min(12, baseBeaufort + (amplificationApplies ? localAmplificationBoost(profile.localWindAmplification) : 0));
   const isKnownWindSportRisk = profile.knownWindSportSpot && baseBeaufort >= 4;
   const isKnownWindSportCaution = profile.knownWindSportSpot && baseBeaufort === 3 && effectiveBeaufort >= 4;
-  // Authored profiles encode deliberate, conservative local knowledge, so their claim
-  // policy wins; only where there is NO authored shelter profile (geospatial backfill or
-  // a bare geospatial region) do we let strong enclosure geometry earn the protected claim,
-  // aligning scoring with the map. Explicit exposed sectors always keep winning.
-  const noAuthoredShelterProfile = source === 'geospatial' || source === 'unknown';
-  const geometryEnclosed = noAuthoredShelterProfile
-    && !profile.exposedToWindDirections.includes(windSector)
+  // Strong enclosure geometry earns the protected claim on the LIVE sector, aligning scoring
+  // with the map. Explicit exposed sectors and windsport spots always keep winning (below).
+  //
+  // ⚠️ 05/08/2026 — THE `noAuthoredShelterProfile` PRECONDITION WAS REMOVED. It read:
+  //   const noAuthoredShelterProfile = source === 'geospatial' || source === 'unknown';
+  // i.e. geometry could only be consulted where nobody had authored anything. The intent was
+  // "authored local knowledge wins". The effect was different, because `shelterLevel` is a
+  // COARSE, whole-beach word while this gate is PER-SECTOR: a beach whose profile merely says
+  // 'open' or 'semi_sheltered' — without ever naming this sector as exposed — could never earn
+  // protection from its own geometry, however completely the land blocked the wind.
+  //
+  // Measured nationally at 5 Bft over all 22.832 beach × sector combinations: the map painted a
+  // CALMER level than the scoring engine in 538 combinations across 148 beaches (the reverse,
+  // the intended direction, happened in 19). In the hard core — ratio 1,0, sector fetch ≤0,5 km,
+  // wind blowing off the land — 376 combinations were demoted, and 303 of them (81%) purely
+  // because of a generic authored word, with no human ever having said this sector blows.
+  // Concentrated on Μήλος 90 · Άνδρος 87 · Νάξος 81 · Πάρος 74. Each demotion cost the beach
+  // six things at once: a 0,60 m instead of 0,40 m wind-chop floor, no shore damping on the sea
+  // ceiling, +1 effective Beaufort, a −18 instead of −8 gust penalty, a «Μέτρια» instead of
+  // «Καλή» tier ceiling, and denial of the offshore-flat-water lift.
+  //
+  // THIS CANNOT MANUFACTURE A FALSE CALM, and that is the whole argument for it: the gate is
+  // `hasGeometryEnclosedProtection`, the SAME strict test mapExposure already uses to paint a
+  // protected pin. So it can only grant protection where the dot on screen is already protected
+  // — it closes a gap between two surfaces rather than opening a new claim. Every other guard is
+  // untouched: an explicitly authored exposed sector still wins, `suspectPin` still vetoes,
+  // confidence must still be 'high', and `isKnownWindSportRisk` still overrides at the AND below.
+  const geometryEnclosed = !profile.exposedToWindDirections.includes(windSector)
     && hasGeometryEnclosedProtection(input.geospatialProfile, windSector, profile.suspectPin);
-  const canClaimProtected = (canClaimProtectedFromWind(profile, windSector) || geometryEnclosed) && !isKnownWindSportRisk;
+  // ⚠️ 05/08/2026 — A FACING CONFLICT NOW WITHHOLDS THE PROTECTED CLAIM, AUTHORED OR NOT.
+  //
+  // `geospatialProfileConflictsWithAuthoredFacing` was wired into exactly one place — the όρμος
+  // test — so a conflicted beach lost its COVE claim and kept its PROTECTION claim. Found on
+  // Παραλία Αγία Ειρήνη, Πάρος (id 2020): authored «faces 225°, protected from N/NE/NW» against
+  // a high-confidence geometry reading facing 307° with the NW sector fully open — level
+  // 'exposed', 10,08 km of fetch, onshore 0,99. The app answered «πιο προστατευμένη από τον
+  // σημερινό βορειοδυτικό» and painted the pin BLUE at 3 Bft. It was the only false calm found
+  // in a national sweep, but the mechanism allowed more, and Πάρος is precisely the region
+  // scripts/auditPinOriginConflict.mjs already flags (15 of its 22 conflicted beaches).
+  //
+  // NOTE WHAT THIS DOES *NOT* CLAIM. A conflict says the two sources disagree about which coast
+  // this beach is on; it does not say which one is wrong — and the doctrine above holds that on
+  // a conflict it is the GEOMETRY that is suspect. So this does not let geometry overrule an
+  // author. It withholds the claim from BOTH, because with the coast itself in dispute a
+  // "protected" verdict is the one answer we cannot afford to get wrong. Strictly one-directional
+  // and strictly downward — 'protected' becomes 'partial', never the reverse, exactly as the
+  // conflict rule already behaves for cove claims.
+  //
+  // Narrowed to the intersection where the disagreement is ACTIVE: mere facing disagreement is
+  // not enough, the live sector's own geometry must also read wide-open sea (level 'exposed' with
+  // at least the escalation fetch). Measured extent: 1 beach today.
+  const conflictedFacing = geospatialProfileConflictsWithAuthoredFacing(input.geospatialProfile, profile, source);
+  const liveSectorGeometry = input.geospatialProfile?.sectors?.[windSector];
+  const geometrySaysWideOpen = liveSectorGeometry?.level === 'exposed'
+    && typeof liveSectorGeometry.fetchKm === 'number'
+    && liveSectorGeometry.fetchKm >= GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM;
+  const coastInDispute = conflictedFacing && Boolean(geometrySaysWideOpen);
+  const canClaimProtected = (canClaimProtectedFromWind(profile, windSector) || geometryEnclosed)
+    && !isKnownWindSportRisk
+    && !coastInDispute;
   const isExplicitlyExposed = profile.exposedToWindDirections.includes(windSector);
   const isExplicitlyProtected = canClaimProtected;
 

@@ -426,7 +426,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
 // 29/07/2026. Batched, the same 34 clusters cost 2 requests per endpoint.
 //
 // Nothing about the DATA changes: same coordinates, same values, same per-point
-// cache entries and the same 60-min TTL / 3-hour cutoff. We are not sampling fewer
+// cache entries and the same 60-min TTL / 12-hour cutoff. We are not sampling fewer
 // places — hooks/useWeather.ts explains at length why that is forbidden.
 
 /** Mirrors MAX_COORDINATE_LIST_ITEMS in netlify/functions/forecast.mjs. Going over
@@ -478,7 +478,7 @@ const chunk = <T>(items: T[], size: number): T[][] => {
  * one of these clusters is a cache hit rather than a new call.
  *
  * A failed group falls back to each point's own cached copy while it is inside the
- * 3-hour cutoff, exactly like the single-point path. Points with nothing usable are
+ * SOFT_STALE_LIMIT_MS cutoff, exactly like the single-point path. Points with nothing usable are
  * simply absent from the returned map — the caller treats a missing cluster the same
  * way it already treats a failed one.
  */

@@ -132,6 +132,8 @@ const scenarios = {
     targetRegionId: 'south-aegean-naxos',
     days: Array.from({ length: 6 }, () => D(0, 12.5, 17.0, 2.0)),
     highWind: true,
+    // The wind never turns here — see `rotatingWind` on the per-beach-story check below.
+    rotatingWind: false,
   },
   // THE INTRADAY BUILD (added 2026-07-29 with the best-time window). Quiet
   // morning, meltemi filling in after lunch — the only shape in this file where
@@ -354,7 +356,26 @@ const runScenario = (scenarioId, scenario) => {
   // notes, never the headline — App.tsx:3667). The per-beach truth the UI
   // must show is therefore the EXPOSURE/WHY layer: on a windy rotating week
   // the picks must not all tell one identical story.
-  if (scenario.highWind && picks.length >= 2) {
+  //
+  // ⚠️ 05/08/2026 — SCOPED TO ROTATING WEEKS, WHICH IS WHAT THE PARAGRAPH ABOVE ALWAYS SAID.
+  // It ran on every highWind scenario, including Naxos_SUSTAINED_6BFT where the wind holds due
+  // north for six straight days. On that week the whole west coast of Naxos is in the lee — 22
+  // of its 39 committed profiles pass hasGeometryEnclosedProtection for a N wind — so the six
+  // picks are correctly six different west-coast beaches, all 'protected'. And every pick on a
+  // 6 Bft week comes from the CAUTION tier, whose whyKey is contractually 'best_available'
+  // (asserted by claims-need-evidence, twelve lines up). So on a sustained week neither branch
+  // of this check can be satisfied while the model is telling the truth: it demanded variety
+  // that only exists if the exposure model is WRONG about a uniformly sheltered coast.
+  //
+  // It began failing when the scoring engine stopped refusing geometry-earned protection to
+  // beaches that carry an authored profile (utils/windExposureEngine, same date) — i.e. the
+  // model got MORE accurate and this check read that as a regression.
+  //
+  // Not silenced, narrowed to where it discriminates: a rotating week must still tell six
+  // different stories, and both ROTATING scenarios still assert it. The sustained week keeps
+  // every other check, including no-duplicate-assignment, which is what actually guarantees the
+  // plan is six beaches rather than one repeated.
+  if (scenario.highWind && scenario.rotatingWind !== false && picks.length >= 2) {
     const exposureLevels = new Set(picks.map(entry => entry.pick.exposureLevel).filter(Boolean));
     const hasShelterStory = picks.some(entry =>
       ['sheltered', 'cove_refuge', 'partial_shelter'].includes(entry.pick.whyKey));

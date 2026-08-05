@@ -135,9 +135,32 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // this change: 26 of 60 sampled (exposure × Bft × wave) combinations printed «Μέτρια σήμερα»
   // under a RED pin, and no existing gate could see it. Keep these two in lockstep; if the pin
   // ladder in utils/suitabilityTone moves, this moves with it.
+  // ⚠️ 05/08/2026 — THE SEA CLAUSE NOW ONLY FIRES WHERE THERE IS NO DOT TO ASK.
+  //
+  // The comment above says this condition IS the pin, restated. It was not: `wave` here is the
+  // DISPLAY height — the open-water reading from a sample point a median 10 km offshore — while
+  // the pin reddens on the SHORE-damped one (`shoreSeaStateM` inside capToneBySeaState). Same
+  // 1,2 m boundary, two different numbers, and the harsher one won because this line returns
+  // BEFORE the tone ceiling below can speak. Measured across the 5.040-combination grid:
+  // 840 (16,7%) printed «Καλύτερα άλλη μέρα» under a NON-red dot, and ALL 840 were protected
+  // shores — a lee coast on a meltemi day, i.e. exactly the beach a person should be sent to.
+  // Reported from Σχινιάς, 05/08/2026: intensity 0,2/100 with the wind straight off the land,
+  // a webcam showing glass, and the page saying "not today".
+  //
+  // No gate could see it: scripts/validateVerdictConsistency asserts only that the word is never
+  // BETTER than the dot. Every net we own asks "are we calling it calmer than it is"; none asks
+  // the reverse. That blind spot is the finding, not this line.
+  //
+  // Deleting the escalation loses nothing, because the conservative answer is already written
+  // and already deliberate: a raw display wave ≥ SEA_STATE_ROUGH_M caps the ceiling at 1 («Μέτρια»)
+  // at the `wave >= SEA_STATE_ROUGH_M` line below, and a genuinely red dot returns 'skip' at the
+  // `toneCeiling === 0` line. So a rough sea still cannot read better than "OK today"; it simply
+  // stops jumping past the colour beside it. Where a caller supplies NO tone there is no dot to
+  // defer to, so the raw rule stands — that path is unchanged.
   const pinRedInStrongWind = input.exposureLevel !== 'protected' && input.exposureLevel !== 'partial';
-  const seaRedensPin = wave !== undefined && wave >= SEA_STATE_ROUGH_M;
-  if (bft >= 7 || seaRedensPin || (bft >= 5 && pinRedInStrongWind)) return 'skip';
+  const seaRedensPinWithNoDotToAsk = input.conditionTone === undefined
+    && wave !== undefined && wave >= SEA_STATE_ROUGH_M;
+  if (bft >= 7 || seaRedensPinWithNoDotToAsk || (bft >= 5 && pinRedInStrongWind)) return 'skip';
 
   // Condition ceiling: 3 excellent · 2 good · 1 OK.
   //

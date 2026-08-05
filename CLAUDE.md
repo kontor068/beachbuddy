@@ -4,7 +4,7 @@ Free B2C platform that tells tourists which Greek beach to go to today, based on
 and wave conditions and each beach's orientation. **2.850 beaches across 110 regions**, five
 languages (EN / EL nationally; DE / FR / IT for 17 tourist regions). React + Vite +
 TypeScript, pre-rendered to ~9.500 static pages, hosted on Netlify with DNS on Cloudflare.
-No database and no server — four small Netlify functions.
+No database and no server — seven small Netlify functions.
 
 ## How to work on this project
 

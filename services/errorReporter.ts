@@ -98,6 +98,10 @@ const isSelfHealingChunkError = (message: string): boolean => {
     const recoveryAlreadyFailed =
       Number.isFinite(lastAttempt) &&
       lastAttempt > 0 &&
+      // athens-clock-exempt: elapsed time since the last reload attempt, not a time of day.
+      // Both sides are raw epoch instants and only their DIFFERENCE is read, so the viewer's
+      // timezone cannot move it. Using athensNow() here would compare a wall-clock-shifted
+      // value against a raw stored one and make the cooldown wrong by the UTC offset.
       Date.now() - lastAttempt < CHUNK_RELOAD_COOLDOWN_MS;
     return !recoveryAlreadyFailed;
   } catch {

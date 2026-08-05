@@ -1,6 +1,14 @@
 import type { GeospatialExposureProfile } from '../types';
 import { onshoreComponent } from './geospatialExposureModel';
 import { windSectorFromDegrees } from './windExposure';
+import { estimateFetchLimitedWaveHeightM } from './waveModel';
+
+/**
+ * Top of the 5 Bft band in km/h (utils/weatherUtils.getBeaufortLevel: 5 Bft is ≤38). The gate
+ * only ever runs at exactly 5 Bft, and taking the WORST wind in the band keeps the physical
+ * assertion below conservative — a fetch that is flat at 38 km/h is flat at 30.
+ */
+const BEAUFORT_5_REFERENCE_WIND_KMH = 38;
 
 /**
  * THE ONE CASE WHERE 5 BEAUFORT DOES NOT MEAN CHOP.
@@ -48,8 +56,38 @@ import { windSectorFromDegrees } from './windExposure';
 export const OFFSHORE_FLAT_MIN_BLOCKED_RATIO = 1;
 /** Sector intensity ceiling — less than half the 33 the green-pin test allows. */
 export const OFFSHORE_FLAT_MAX_INTENSITY = 15;
-/** Zero, not "short": a kilometre of open water at 5 Bft is a real chop. */
-export const OFFSHORE_FLAT_MAX_FETCH_KM = 0;
+/**
+ * Short enough that our OWN wave model calls it nothing — not "exactly zero".
+ *
+ * ⚠️ 05/08/2026 — this was `0`, an exact-equality test against a number that is a MEAN of a
+ * five-ray fan. A ray fan almost never averages to a clean zero, so the gate was rejecting the
+ * very shores it was written for. Measured nationally at 5 Bft: 322 beach × sector combinations
+ * across 258 beaches passed every other test — fully land-blocked, intensity under 15, wind more
+ * than 143° off head-on — and were denied on fetch alone. Their denied fetch: minimum 0,04 km,
+ * MEDIAN 0,12 km, p90 0,64 km. 302 of them also carry engine level 'protected', i.e. they would
+ * genuinely have gone orange → yellow. Σχινιάς N (0,2 km, intensity 0,2/100) was one, with a
+ * webcam showing glass while the page said otherwise.
+ *
+ * 0,5 km is not a tuned number and must not become one — it is READ OFF the physics. At the top
+ * of the 5 Bft band our own SMB model (utils/waveModel.estimateFetchLimitedWaveHeightM) returns
+ * 0,197 m over 0,5 km and crosses 0,20 m at ≈0,52 km. The assertion below re-derives that at
+ * runtime, so if either the constant or the wave model moves, the gate closes rather than
+ * silently widening.
+ */
+export const OFFSHORE_FLAT_MAX_FETCH_KM = 0.5;
+/**
+ * The modelled fetch-limited height this gate may still call flat, in metres.
+ *
+ * Anchored to the app's own vocabulary rather than picked: 0,20 m is BELOW THE LOWEST WIND-CHOP
+ * FLOOR the app applies anywhere (0,30 m — utils/waveModel.getWindChopWaveFloorM, protected shore
+ * at 4 Bft). A height the app already refuses to call chop is a height this gate may call flat.
+ *
+ * It was 0,10 m for one draft — the cove DISPLAY floor — and that was wrong: measured against the
+ * real SMB it rejected 0,12 km of fetch, i.e. it would have thrown out Σχινιάς (0,2 km → 0,134 m)
+ * and every other beach this fix exists for. The display floor answers "what is too small to
+ * print"; this answers "what is too small to be chop". Different questions.
+ */
+export const OFFSHORE_FLAT_MAX_MODELLED_WAVE_M = 0.2;
 /**
  * cos(windFrom − facing) ≤ this, i.e. more than 143° off head-on. The same `onshoreComponent`
  * the cove guard and the wave model read, so three parts of the app cannot disagree about which
@@ -88,6 +126,14 @@ export const holdsFlatWaterUnderOffshoreWind = ({
   if (sector.blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return false;
   if (typeof sector.intensity !== 'number' || sector.intensity >= OFFSHORE_FLAT_MAX_INTENSITY) return false;
   if (sector.fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return false;
+  // The physical half of the fetch test: whatever the constant says, the water is only "flat" if
+  // our own fetch-limited model agrees it is. This keeps the 0,6 km above honest — raise it and
+  // this line starts rejecting, instead of silently widening a false-calm.
+  const modelledM = estimateFetchLimitedWaveHeightM({
+    windSpeedKmh: BEAUFORT_5_REFERENCE_WIND_KMH,
+    fetchKm: sector.fetchKm,
+  });
+  if (typeof modelledM === 'number' && modelledM > OFFSHORE_FLAT_MAX_MODELLED_WAVE_M) return false;
 
   return onshoreComponent(windDirectionDeg, facingDeg) <= OFFSHORE_FLAT_MAX_ONSHORE;
 };

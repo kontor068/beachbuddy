@@ -4,10 +4,19 @@ import { getLocalizedCopy } from '../utils/i18n';
 
 // Compact, reusable credit line for weather/marine forecast data — satisfies Open-Meteo's
 // CC BY 4.0 requirement to link "next to any location Open-Meteo data are displayed"
-// (open-meteo.com/en/licence) plus the marine model's own Météo-France (Etalab Licence
-// Ouverte 2.0) source-mention requirement. See the batch-7 commit message for the full
-// research trail. Deliberately compact — full licence/source details live in the Terms
-// document, not repeated here; this is the "next to the data" pointer, not the full text.
+// (open-meteo.com/en/licence) plus each marine model's own source-mention requirement:
+// DWD (CC BY 4.0, dwd.de legal notice) and Météo-France (Etalab Licence Ouverte 2.0).
+// See the batch-7 commit message for the full research trail. Deliberately compact — full
+// licence/source details live in the Terms document, not repeated here; this is the
+// "next to the data" pointer, not the full text.
+//
+// ⚠️ 05/08/2026 — DWD ADDED. This line credited Météo-France alone, but `ewam` — which is
+// DWD's own European Wave Model — became the PRIMARY per-hour wave source on 31/07/2026
+// (netlify/functions/forecast.mjs pins `models=ewam,meteofrance_wave,meteofrance_currents`,
+// and utils/marineForecastParsing prefers ewam for every hour it reports a height). So the
+// number on the page was usually German while the credit under it was French. Météo-France
+// stays because it is genuinely still in use — as the wave fallback and, via
+// meteofrance_currents, as the sole source of sea-surface temperature.
 //
 // Where this is used:
 //   - components/LegalFooter.tsx: once, site-wide (covers home, region/results, map, planner
@@ -26,11 +35,11 @@ interface WeatherDataAttributionProps {
 }
 
 const copy = {
-  en: { weatherBy: 'Weather data by', marineModel: 'Marine model' },
-  gr: { weatherBy: 'Δεδομένα καιρού από την', marineModel: 'Θαλάσσιο μοντέλο' },
-  de: { weatherBy: 'Wetterdaten von', marineModel: 'Wellenmodell' },
-  fr: { weatherBy: 'Données météo par', marineModel: 'Modèle de houle' },
-  it: { weatherBy: 'Dati meteo di', marineModel: 'Modello marino' },
+  en: { weatherBy: 'Weather data by', marineModel: 'Marine models' },
+  gr: { weatherBy: 'Δεδομένα καιρού από την', marineModel: 'Θαλάσσια μοντέλα' },
+  de: { weatherBy: 'Wetterdaten von', marineModel: 'Wellenmodelle' },
+  fr: { weatherBy: 'Données météo par', marineModel: 'Modèles de houle' },
+  it: { weatherBy: 'Dati meteo di', marineModel: 'Modelli marini' },
 };
 
 const linkClass =
@@ -60,12 +69,21 @@ export const WeatherDataAttribution: React.FC<WeatherDataAttributionProps> = ({ 
       <span className="text-slate-300" aria-hidden="true">·</span>
       <span>{c.marineModel}:</span>
       <a
+        href="https://www.dwd.de/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={linkClass}
+      >
+        DWD EWAM
+      </a>
+      <span className="text-slate-300" aria-hidden="true">·</span>
+      <a
         href="https://meteofrance.com/"
         target="_blank"
         rel="noopener noreferrer"
         className={linkClass}
       >
-        Météo-France MFWAM
+        Météo-France
       </a>
     </p>
   );
