@@ -69,6 +69,22 @@ if (wantDetail) reports.push(await checkDir(detailDir, 'detail (patch)', validat
 
 const allViolations = reports.flatMap((r) => r.violations);
 
+// The national geo-index ("Κοντά μου" reads it to find the nearest beaches before touching a
+// single region file) is generated from these very payloads. If a data rebuild has moved on
+// without it, the app silently falls back to the slow centroid path — so say so here, loudly,
+// while it is still a one-command fix.
+let geoIndexProblem = null;
+try {
+  const geoIndex = JSON.parse(await readFile(path.join(rootDir, 'public', 'data', 'beaches', 'geo-index.json'), 'utf8'));
+  const indexed = Array.isArray(geoIndex?.beaches) ? geoIndex.beaches.length : 0;
+  const expected = reports.find((r) => r.label === 'summary')?.beaches ?? 0;
+  if (indexed !== expected) {
+    geoIndexProblem = `holds ${indexed} beaches, the dataset holds ${expected}`;
+  }
+} catch (error) {
+  geoIndexProblem = `could not be read (${error.message})`;
+}
+
 if (asJson) {
   console.log(JSON.stringify({ contractVersion: CONTRACT_VERSION, reports }, null, 2));
 } else {
@@ -87,6 +103,10 @@ if (asJson) {
   } else {
     console.log('\n✅ All beach records satisfy the canonical contract.\n');
   }
+  if (geoIndexProblem) {
+    console.log(`❌ public/data/beaches/geo-index.json ${geoIndexProblem}.`);
+    console.log('   Fix with: npm run build:geo-index\n');
+  }
 }
 
-process.exit(allViolations.length ? 1 : 0);
+process.exit(allViolations.length || geoIndexProblem ? 1 : 0);

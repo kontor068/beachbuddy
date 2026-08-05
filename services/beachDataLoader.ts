@@ -37,8 +37,24 @@ interface AppBeachDetailPayload {
 
 const BEACH_REGION_INDEX_PATH = '/data/beaches/index.json';
 const BEACH_SEARCH_INDEX_PATH = '/data/beaches/search-index.json';
+const BEACH_GEO_INDEX_PATH = '/data/beaches/geo-index.json';
 let beachRegionIndexPromise: Promise<BeachRegionIndexEntry[]> | null = null;
 let beachSearchIndexPromise: Promise<BeachSearchIndexBeachEntry[]> | null = null;
+let beachGeoIndexPromise: Promise<BeachGeoIndexEntry[]> | null = null;
+
+/** One beach reduced to what "Κοντά μου" needs to rank it. See scripts/buildBeachGeoIndex.mjs. */
+export interface BeachGeoIndexEntry {
+  regionId: string;
+  beachId: number;
+  lat: number;
+  lon: number;
+}
+
+interface BeachGeoIndexPayload {
+  regions?: string[];
+  /** Positional rows — [regionIndex, beachId, lat, lon] — which is what keeps the file ~74 KB. */
+  beaches?: [number, number, number, number][];
+}
 
 export interface BeachSearchIndexBeachEntry {
   regionId: string;
@@ -242,6 +258,42 @@ export const loadBeachSearchIndex = (): Promise<BeachSearchIndexBeachEntry[]> =>
   }
 
   return beachSearchIndexPromise;
+};
+
+/**
+ * Every beach in the country as {regionId, beachId, lat, lon} — ~74 KB, fetched once per session.
+ * It exists so "Κοντά μου" can find the nearest beaches without downloading whole regions first;
+ * the region files are then loaded only for the handful of regions that actually contribute.
+ */
+export const loadBeachGeoIndex = (): Promise<BeachGeoIndexEntry[]> => {
+  if (!beachGeoIndexPromise) {
+    beachGeoIndexPromise = (async () => {
+      const response = await fetch(BEACH_GEO_INDEX_PATH);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${BEACH_GEO_INDEX_PATH}: ${response.status}`);
+      }
+
+      const payload = await response.json() as BeachGeoIndexPayload;
+      const regions = payload.regions;
+      const rows = payload.beaches;
+      if (!Array.isArray(regions) || !Array.isArray(rows)) {
+        throw new Error(`${BEACH_GEO_INDEX_PATH} is missing regions[] or beaches[]`);
+      }
+
+      const entries: BeachGeoIndexEntry[] = [];
+      for (const row of rows) {
+        const regionId = regions[row?.[0]];
+        if (!regionId || !Number.isFinite(row[1]) || !Number.isFinite(row[2]) || !Number.isFinite(row[3])) continue;
+        entries.push({ regionId, beachId: row[1], lat: row[2], lon: row[3] });
+      }
+      return entries;
+    })().catch(error => {
+      beachGeoIndexPromise = null;
+      throw error;
+    });
+  }
+
+  return beachGeoIndexPromise;
 };
 
 const fetchAppReadyRegion = async (dataPath: string, regionId: string): Promise<Island> => {

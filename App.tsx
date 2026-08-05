@@ -39,8 +39,8 @@ import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, ap
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
-import { loadAppReadyRegion, loadBeachDetailData, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
-import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fetchMarineForecastDataBatch, forecastPointKey, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
+import { loadAppReadyRegion, loadBeachDetailData, loadBeachGeoIndex, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
+import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fetchMarineForecastDataBatch, fetchWeatherData, forecastPointKey, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
 import { buildBeachForecastClusters, type BeachForecastCluster } from './utils/beachForecastClusters';
 import { resolveBeachMarinePoints, marinePointKey } from './utils/marineSamplePoints';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
@@ -1997,12 +1997,140 @@ export const App: React.FC = () => {
     return scoredCandidates[0]?.island || centroidRanked[0].island;
   };
 
+  const NEAR_ME_REGION_NAME = {
+    gr: 'Κοντά μου',
+    en: 'Near me',
+    fr: 'Près de moi',
+    de: 'In meiner Nähe',
+    it: 'Vicino a me',
+  };
+
+  /**
+   * Loads the full records of exactly the regions that own the shortlisted beaches, and returns
+   * both the beaches keyed by "regionId:beachId" and each region's own wind clusters — the
+   * clusters must be built over the region's FULL beach list, not the near-me slice, or the same
+   * beach reads a different wind here than on its region page.
+   */
+  const loadNearbyRegionSources = async (regionIds: string[], islands: Island[]) => {
+    const regionIndex = await loadBeachRegionIndex().catch(() => []);
+    const indexById = new Map(regionIndex.map(entry => [entry.id, entry] as const));
+
+    const loaded = await Promise.all(regionIds.map(async regionId => {
+      const known = islands.find(island => island.id === regionId);
+      if (known && known.beaches.length > 0) return known;
+
+      const entry = indexById.get(regionId);
+      try {
+        return await loadAppReadyRegion(regionId, {
+          summaryDataPath: entry?.summaryDataPath,
+          appDataPath: entry?.appDataPath,
+        });
+      } catch (error) {
+        console.warn('Nearby-region beach load failed; skipping region.', { regionId, error });
+        return null;
+      }
+    }));
+
+    const clustersByRegion: Record<string, BeachForecastCluster[]> = {};
+    const beachByKey = new Map<string, Beach>();
+    for (const region of loaded) {
+      if (!region) continue;
+      clustersByRegion[region.id] = buildBeachForecastClusters(region.beaches);
+      for (const beach of region.beaches) beachByKey.set(`${region.id}:${beach.id}`, beach);
+    }
+
+    return { clustersByRegion, beachByKey };
+  };
+
+  /**
+   * The fast path (2026-08-05). The national geo-index is ~74 KB and holds every beach's region,
+   * id and coordinates, so the nearest 60 can be worked out exactly before a single region file is
+   * touched — and then only the 2-4 regions that actually own them are downloaded. The path below
+   * used to download the FULL files of the 14 regions whose centroid fell within 80 km (up to
+   * 771 KB of JSON to parse on a phone) and discard almost all of it; that was what the user was
+   * waiting on. This is also the more correct of the two: no beach can be missed because its
+   * region's centre of gravity sat past the 80 km line, and the home landmass is derived from the
+   * truly nearest beach in the country rather than from within a shortlist.
+   */
+  const buildNearbyRegionFromGeoIndex = async (
+    userLoc: { lat: number; lon: number },
+    islands: Island[]
+  ): Promise<Island | null> => {
+    const geoIndex = await loadBeachGeoIndex();
+    if (geoIndex.length === 0) return null;
+
+    const ranked = geoIndex
+      .map(entry => ({ entry, distance: calculateDistance(userLoc.lat, userLoc.lon, entry.lat, entry.lon) }))
+      .sort((a, b) => a.distance - b.distance);
+
+    // Same landmass rule as below: straight-line distance happily crosses the sea, so without it
+    // standing on Naxos surfaces Koufonisia (a ferry away). See utils/landmass.
+    const homeLandmass = getLandmassId(ranked[0].entry.regionId);
+    const sameLandmass = ranked.filter(item => getLandmassId(item.entry.regionId) === homeLandmass);
+
+    const withinRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
+    const shortlist = (withinRadius.length >= NEAR_ME_MIN_BEACHES ? withinRadius : sameLandmass)
+      .slice(0, NEAR_ME_MAX_BEACHES);
+    if (shortlist.length === 0) return null;
+
+    const regionIds = Array.from(new Set(shortlist.map(item => item.entry.regionId)));
+    const { clustersByRegion, beachByKey } = await loadNearbyRegionSources(regionIds, islands);
+
+    let nextSyntheticId = 1;
+    const beaches: Beach[] = [];
+    for (const item of shortlist) {
+      const source = beachByKey.get(`${item.entry.regionId}:${item.entry.beachId}`);
+      if (!source) continue;
+      beaches.push({
+        ...source,
+        // Globally-unique within the merged region; the real id lives in sourceBeachId.
+        id: nextSyntheticId++,
+        sourceBeachId: source.sourceBeachId ?? source.id,
+        regionId: source.regionId ?? item.entry.regionId,
+      });
+    }
+
+    // A geo-index left behind by a data rebuild would silently hand the user a thinner list than
+    // the beaches that actually surround them. Rather than show that, fall back to the slow path.
+    if (beaches.length < Math.min(NEAR_ME_MIN_BEACHES, shortlist.length)) {
+      console.warn('Beach geo-index disagrees with the region data; falling back to the centroid shortlist.', {
+        shortlisted: shortlist.length,
+        resolved: beaches.length,
+      });
+      return null;
+    }
+
+    setNearMeSourceClusters(clustersByRegion);
+
+    return {
+      id: NEAR_ME_REGION_ID,
+      name: NEAR_ME_REGION_NAME,
+      group: 'other',
+      coordinates: userLoc,
+      beaches,
+    };
+  };
+
   // Builds the synthetic "Κοντά μου" region: merges beaches from the regions
   // nearest to the user into a single distance-sorted list, so results reflect
   // the user's real position instead of whichever region is currently on screen.
   // Beach ids are only unique within a region, so each merged beach gets a fresh
   // globally-unique id (keeping its real id + region for detail lookups).
   const buildNearbyRegion = async (
+    userLoc: { lat: number; lon: number },
+    islands: Island[]
+  ): Promise<Island | null> => {
+    const fromGeoIndex = await buildNearbyRegionFromGeoIndex(userLoc, islands).catch(error => {
+      console.warn('Beach geo-index unavailable; falling back to the centroid shortlist.', error);
+      return null;
+    });
+    if (fromGeoIndex) return fromGeoIndex;
+
+    return buildNearbyRegionFromCentroids(userLoc, islands);
+  };
+
+  /** The pre-geo-index path, kept as the fallback for a missing or stale geo-index. */
+  const buildNearbyRegionFromCentroids = async (
     userLoc: { lat: number; lon: number },
     islands: Island[]
   ): Promise<Island | null> => {
@@ -2082,13 +2210,7 @@ export const App: React.FC = () => {
 
     return {
       id: NEAR_ME_REGION_ID,
-      name: {
-        gr: 'Κοντά μου',
-        en: 'Near me',
-        fr: 'Près de moi',
-        de: 'In meiner Nähe',
-        it: 'Vicino a me',
-      },
+      name: NEAR_ME_REGION_NAME,
       group: 'other',
       coordinates: userLoc,
       beaches,
@@ -2309,11 +2431,10 @@ export const App: React.FC = () => {
     const requestId = nearMeRequestRef.current + 1;
     nearMeRequestRef.current = requestId;
 
-    // Both fixes start now, not one after the other: the coarse one decides how fast the list
-    // appears, the precise one how soon it is corrected. Waiting for the second to begin only
-    // after the first returned would have handed back the seconds this change is saving.
-    const precise = getAccuratePosition();
-    void precise.catch(() => undefined);
+    // The coarse fix runs ALONE on the fast path. Starting the high-accuracy watch alongside it
+    // makes the phone power up the GPS and serve both from one location session, which delays the
+    // very fix the user is waiting on — the precise one is a background correction, so it can
+    // start a second later and nobody notices.
     const coarse = getPositionOnce(NEAR_ME_FAST_LOCATION_OPTIONS);
     // The region index is needed the moment the fix lands and does not depend on it, so warm it
     // now instead of paying for it after. It is promise-cached, so this costs nothing if loaded.
@@ -2321,17 +2442,33 @@ export const App: React.FC = () => {
 
     try {
       let position: GeolocationPosition;
+      let precise: Promise<GeolocationPosition>;
       try {
         const quick = await coarse;
-        position = Number.isFinite(quick.coords.accuracy) && quick.coords.accuracy <= NEAR_ME_USABLE_ACCURACY_M
-          ? quick
-          : await precise.catch(() => quick);
+        if (Number.isFinite(quick.coords.accuracy) && quick.coords.accuracy <= NEAR_ME_USABLE_ACCURACY_M) {
+          position = quick;
+          precise = getAccuratePosition();
+          void precise.catch(() => undefined);
+        } else {
+          precise = getAccuratePosition();
+          void precise.catch(() => undefined);
+          position = await precise.catch(() => quick);
+        }
       } catch (coarseError) {
+        precise = getAccuratePosition();
+        void precise.catch(() => undefined);
         // Permission denied fails both, so this rethrows the real reason rather than a timeout.
         position = await precise.catch(() => { throw coarseError; });
       }
 
       const userLoc = applyUserPosition(position);
+      // The area weather for this exact point is the first thing useWeather asks for once the
+      // synthetic region mounts — and that used to start only AFTER the region files had landed,
+      // so two slow legs ran back to back. weatherService caches and de-duplicates by rounded
+      // coordinate, so firing them here moves a whole Open-Meteo round trip off the critical path.
+      void fetchWeatherData(userLoc.lat, userLoc.lon).catch(() => undefined);
+      void fetchForecastData(userLoc.lat, userLoc.lon).catch(() => undefined);
+
       const nearbyRegion = await buildNearbyRegion(userLoc, allIslands);
       if (!nearbyRegion || nearbyRegion.beaches.length === 0) {
         setFindNearestError(getLocalizedCopy(language, {
