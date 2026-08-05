@@ -7512,7 +7512,11 @@ export const App: React.FC = () => {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
-      {shouldRenderMainShell && (
+      {/* Hidden behind an open mobile panel for the same stacking reason as the footer
+          below: this shell is `z-10` in the root context, the panels are `z-[1200]`
+          inside an `isolate` section, and root-context z always wins. On mobile with a
+          forecast it only carries usage insights / the beta link, so nothing is lost. */}
+      {shouldRenderMainShell && !isMobileWeatherPanelOpen && !isMobileAllBeachesPanelOpen && (
       <main className="max-w-7xl mx-auto px-3 sm:px-4 space-y-8 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:space-y-16 md:pb-8 lg:space-y-8 relative z-10">
             <div
               key={`${selectedIsland?.id}-${selectedDayIndex}`}
@@ -7815,6 +7819,15 @@ export const App: React.FC = () => {
       </>
       )}
 
+      {/* Same stacking-context trap the trip planner hit on 31/07, from the other side:
+          this wrapper is `relative z-50` in the ROOT stacking context, while «Καιρός» /
+          «Όλες οι παραλίες» are `z-[1200]` INSIDE BeachSearcherHome's `relative isolate`
+          section (BeachSearcherHome.tsx:3241). `isolate` makes that section its own
+          stacking context with z-index:auto, so its 1200 never competes with this 50 —
+          the whole legal footer painted straight over the open forecast (reported 05/08:
+          tapping «Καιρός» while scrolled to the bottom showed Όροι/Cookies covering it).
+          Unmounting, not z-index chasing, for the reason recorded above the planner. */}
+      {!isMobileWeatherPanelOpen && !isMobileAllBeachesPanelOpen && (
       <div className={`${isDesktopViewport
         ? 'relative z-[70] bg-transparent'
         : showBottomNav && !showLanding
@@ -7823,6 +7836,7 @@ export const App: React.FC = () => {
       }`}>
         <LegalFooter language={language} />
       </div>
+      )}
 
       {/* ===== MOBILE BOTTOM NAVIGATION ===== */}
       <MobileBottomNav
