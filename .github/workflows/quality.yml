@@ -25,6 +25,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The «What the user actually sees» check (scripts/validateBeachPageContradictions.mjs)
+      # launches Playwright Chromium. Locally the browser exists; on a fresh runner it does not,
+      # so the check — and with it the whole gate — failed on EVERY main push since it joined the
+      # critical set (02/08), while the same gate was green locally. A permanently red CI is
+      # worse than none: it teaches people to ignore red (the project's own recorded lesson).
+      - name: Install Playwright Chromium (browser check needs it)
+        run: npx playwright install --with-deps chromium
+
       - name: Run critical quality gate
         # Build the SAME way Netlify ships production, so the SEO prerender audit sees
         # real index/follow robots meta. Without these the deploy guards mark the CI
