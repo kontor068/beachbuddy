@@ -1948,7 +1948,23 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           )}
           <WaveHeightGraphic
             variant="full"
-            waveHeightM={displayWaveHeightM}
+            // THE SCENE DRAWS THE WATER SOMEONE WOULD STAND IN (05/08/2026).
+            //
+            // This card is a person to scale, ankle-deep, under a breaking wave — it answers
+            // «πώς θα είναι να μπω», which is a question about the SHORE. Fed the open-water
+            // figure it drew a metre of surf beside a paragraph that read «Το νερό μένει
+            // επίπεδο» — the card contradicting its own caption, on the shores where the
+            // caption was right (Σχινιάς, 5 Bft off the land, webcam showing glass).
+            //
+            // `shoreWaveHeightM` is undefined everywhere except a land-blocked, fetch-free,
+            // offshore-wind sector with no swell (utils/shoreWave), so this is the same number
+            // as before on every other beach. Where it IS defined it replaces the figure
+            // wholesale rather than only the drawing, which keeps the card's own documented
+            // identity intact: what it draws is what its verdict is judged from. The wind half
+            // of that verdict is untouched and still floors the swim feel at 'moderate' from
+            // 5 Bft (utils/seaVerdict.getWindSeverity), so a flat lee shore in a blow reads
+            // «πιο προστατευμένη, με κυματισμό» — never «calm».
+            waveHeightM={shoreWaveHeightM ?? displayWaveHeightM}
             wavePeriodS={scoreResult.seaStatePeriodS}
             isEstimate={isWaveEstimate}
             estimateHeightM={coveWave.coveApplied ? coveWave.waveHeightM : scoreResult.modeledWaveHeightM}
