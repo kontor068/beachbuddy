@@ -332,6 +332,23 @@ const DISTANCE_SORT_REFINEMENT_OPTIONS: PositionOptions = {
   maximumAge: 0,
 };
 
+// "Κοντά μου" used to block on the precise fix alone (getAccuratePosition: a high-accuracy watch
+// with maximumAge 0 that returns early only at ≤30 m). On a laptop, or on a phone indoors, that
+// accuracy never arrives and every press paid the full 9 s window BEFORE a single beach file was
+// requested. Now the coarse — often already-cached — fix draws the list, and the precise one keeps
+// running behind it. Same options as the distance-sort fast path, one second longer because here
+// it is the only thing between the tap and the results.
+const NEAR_ME_FAST_LOCATION_OPTIONS: PositionOptions = {
+  enableHighAccuracy: false,
+  timeout: 5500,
+  maximumAge: 5 * 60 * 1000,
+};
+// Inside a 40 km radius a fix this coarse changes the order of the top few cards at most, never
+// which beaches are in the set. Anything worse waits for the precise fix instead of guessing.
+const NEAR_ME_USABLE_ACCURACY_M = 2000;
+// How far the precise fix must land from the coarse one before the merged region is rebuilt.
+const NEAR_ME_REBUILD_DISTANCE_KM = 1;
+
 // Synthetic region id for the cross-region "Κοντά μου" view. Its beaches are
 // merged from the real regions nearest to the user, so the result reflects the
 // user's actual location rather than whichever region happens to be on screen.
@@ -1530,7 +1547,8 @@ export const App: React.FC = () => {
     mapLoadPrompt: { en: 'Loading map', gr: 'Φόρτωση χάρτη', fr: 'Chargement de la carte', de: 'Karte wird geladen', it: 'Caricamento mappa' },
     mapError: { en: 'The map did not load right now. The beach list is still available.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα. Η λίστα παραλιών παραμένει διαθέσιμη.', fr: 'La carte ne s’est pas chargée pour le moment. La liste des plages reste disponible.', de: 'Die Karte wurde gerade nicht geladen. Die Strandliste bleibt verfügbar.', it: 'La mappa non si è caricata ora. La lista delle spiagge resta disponibile.' },
     weatherRetry: { en: 'Refresh', gr: 'Ανανέωση', fr: 'Actualiser', de: 'Aktualisieren', it: 'Aggiorna' },
-    // Hard-cutoff safety state: the forecast is older than 3 h and could not be refreshed,
+    // Hard-cutoff safety state: the forecast is older than SOFT_STALE_LIMIT_MS (12 h since
+    // 02/08/2026, was 3 h) and could not be refreshed,
     // so we deliberately show NO conditions/colours rather than risk a stale "calm" reading.
     conditionsUnavailableTitle: {
       en: 'Conditions are not available right now',
@@ -1604,7 +1622,7 @@ export const App: React.FC = () => {
   // its loading state instead and fills in once the right forecast arrives. Gating at
   // the source keeps every consumer (and their dependency arrays) consistent.
   const forecastMatchesRegion = Boolean(selectedIsland && forecastIslandId === selectedIsland.id);
-  // SAFETY hard cutoff: a forecast older than 3 h that we could not refresh must never
+  // SAFETY hard cutoff: a forecast past SOFT_STALE_LIMIT_MS (12 h) that we could not refresh must never
   // colour the map / score beaches / claim "calm". Treat it as absent everywhere downstream
   // (same mechanism as the region-mismatch gate) and surface the "unavailable" banner instead.
   // Better to show nothing than a stale "ήρεμα" on a meltemi day.
@@ -2235,6 +2253,45 @@ export const App: React.FC = () => {
     }
   };
 
+  // Tracks which "Κοντά μου" press is the live one, so a slow background refinement from an
+  // earlier press can never rebuild the region under a later action.
+  const nearMeRequestRef = useRef(0);
+  // Which region is on screen right now. The refinement below closes over the state as it was at
+  // press time, so without this a fix arriving after the user picked another region would drag
+  // them back into "Κοντά μου".
+  const activeRegionIdRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    activeRegionIdRef.current = selectedIsland?.id;
+  }, [selectedIsland?.id]);
+  // The precise fix keeps arriving after the list is already on screen. If it lands close to the
+  // coarse one we only tighten the distance labels; if it lands further than a kilometre away the
+  // merged region is rebuilt silently — no re-scroll, the user just sees the order settle.
+  const applyNearMeRefinement = (
+    precise: Promise<GeolocationPosition>,
+    coarseLoc: { lat: number; lon: number },
+    requestId: number
+  ) => {
+    void precise
+      .then(async better => {
+        if (nearMeRequestRef.current !== requestId) return;
+
+        const refinedLoc = applyUserPosition(better);
+        const moved = calculateDistance(coarseLoc.lat, coarseLoc.lon, refinedLoc.lat, refinedLoc.lon);
+        if (moved < NEAR_ME_REBUILD_DISTANCE_KM) return;
+
+        if (activeRegionIdRef.current !== NEAR_ME_REGION_ID) return;
+
+        const rebuilt = await buildNearbyRegion(refinedLoc, allIslands);
+        if (!rebuilt || rebuilt.beaches.length === 0) return;
+        if (nearMeRequestRef.current !== requestId) return;
+        if (activeRegionIdRef.current !== NEAR_ME_REGION_ID) return;
+
+        selectAdHocRegion(rebuilt);
+        setLocationSortResetKey(key => key + 1);
+      })
+      .catch(() => undefined);
+  };
+
   // Powers the "Κοντά μου" button: instead of sorting whichever region is on
   // screen, it builds a one-off region from the beaches physically nearest to the
   // user (across region boundaries) and shows them distance-first.
@@ -2248,8 +2305,32 @@ export const App: React.FC = () => {
     setBeachSearchQuery('');
     setIsFindingNearest(true);
     setFindNearestError(null);
+
+    const requestId = nearMeRequestRef.current + 1;
+    nearMeRequestRef.current = requestId;
+
+    // Both fixes start now, not one after the other: the coarse one decides how fast the list
+    // appears, the precise one how soon it is corrected. Waiting for the second to begin only
+    // after the first returned would have handed back the seconds this change is saving.
+    const precise = getAccuratePosition();
+    void precise.catch(() => undefined);
+    const coarse = getPositionOnce(NEAR_ME_FAST_LOCATION_OPTIONS);
+    // The region index is needed the moment the fix lands and does not depend on it, so warm it
+    // now instead of paying for it after. It is promise-cached, so this costs nothing if loaded.
+    void loadBeachRegionIndex().catch(() => undefined);
+
     try {
-      const position = await getAccuratePosition();
+      let position: GeolocationPosition;
+      try {
+        const quick = await coarse;
+        position = Number.isFinite(quick.coords.accuracy) && quick.coords.accuracy <= NEAR_ME_USABLE_ACCURACY_M
+          ? quick
+          : await precise.catch(() => quick);
+      } catch (coarseError) {
+        // Permission denied fails both, so this rethrows the real reason rather than a timeout.
+        position = await precise.catch(() => { throw coarseError; });
+      }
+
       const userLoc = applyUserPosition(position);
       const nearbyRegion = await buildNearbyRegion(userLoc, allIslands);
       if (!nearbyRegion || nearbyRegion.beaches.length === 0) {
@@ -2279,6 +2360,7 @@ export const App: React.FC = () => {
       setSortBy('protected');
       setMobileSuitableDistanceSort(true);
       setLocationSortResetKey(key => key + 1);
+      applyNearMeRefinement(precise, userLoc, requestId);
     } catch (err) {
       const geoErr = err as GeolocationPositionError;
       if (geoErr.code === 1) {

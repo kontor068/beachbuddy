@@ -258,22 +258,40 @@ const fetchAppReadyRegion = async (dataPath: string, regionId: string): Promise<
   return normalizeGreekBeachDisplayNames(applyRegionDisplayName(payload.island, regionId));
 };
 
-export const loadAppReadyRegion = async (
+// A loaded region is immutable for the session (every consumer maps it into new objects), so it
+// is worth keeping. "Κοντά μου" pulls up to 14 regions in one press — the biggest are ~330 KB of
+// JSON each — and without this every repeat press, and every walk back into a region already
+// visited, re-downloaded and re-parsed the lot.
+const appReadyRegionPromises = new Map<string, Promise<Island>>();
+
+export const loadAppReadyRegion = (
   regionId: string,
   paths?: Pick<BeachRegionIndexEntry, 'summaryDataPath' | 'appDataPath'>
 ): Promise<Island> => {
+  const cached = appReadyRegionPromises.get(regionId);
+  if (cached) return cached;
+
   const summaryPath = paths?.summaryDataPath || `/data/beaches/app/summary/${encodeURIComponent(regionId)}.json`;
 
-  try {
-    return await fetchAppReadyRegion(summaryPath, regionId);
-  } catch (summaryError) {
-    const legacyPath = paths?.appDataPath || `/data/beaches/app/${encodeURIComponent(regionId)}.json`;
-    console.warn('Summary beach region unavailable; falling back to combined app-ready data.', {
-      regionId,
-      summaryError,
-    });
-    return fetchAppReadyRegion(legacyPath, regionId);
-  }
+  const pending = (async () => {
+    try {
+      return await fetchAppReadyRegion(summaryPath, regionId);
+    } catch (summaryError) {
+      const legacyPath = paths?.appDataPath || `/data/beaches/app/${encodeURIComponent(regionId)}.json`;
+      console.warn('Summary beach region unavailable; falling back to combined app-ready data.', {
+        regionId,
+        summaryError,
+      });
+      return fetchAppReadyRegion(legacyPath, regionId);
+    }
+  })().catch(error => {
+    // A failed load must not be remembered, or the region stays broken for the whole session.
+    appReadyRegionPromises.delete(regionId);
+    throw error;
+  });
+
+  appReadyRegionPromises.set(regionId, pending);
+  return pending;
 };
 
 export const loadBeachDetailData = async (
