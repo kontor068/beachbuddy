@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-30T14:51:06.238Z",
-  "totalBeaches": 2850,
+  "generatedAt": "2026-08-05T16:41:03.333Z",
+  "totalBeaches": 2854,
   "fields": [
     {
       "field": "mapCoordinates.confidence",
@@ -29,6 +29,16 @@
     },
     {
       "field": "mapCoordinates.sourceUrl",
+      "count": 1,
+      "percent": 0
+    },
+    {
+      "field": "metadata.coordinatesNote",
+      "count": 1,
+      "percent": 0
+    },
+    {
+      "field": "metadata.coordinatesSource",
       "count": 1,
       "percent": 0
     },
@@ -399,8 +409,8 @@
     },
     {
       "field": "metadata.needsVerification",
-      "count": 158,
-      "percent": 5.5
+      "count": 163,
+      "percent": 5.7
     },
     {
       "field": "metadata.blueFlag2026.awardCount",
@@ -469,7 +479,7 @@
     },
     {
       "field": "legacySlugs",
-      "count": 395,
+      "count": 396,
       "percent": 13.9
     },
     {
@@ -490,466 +500,466 @@
     {
       "field": "metadata.popularity.rating",
       "count": 1938,
-      "percent": 68
+      "percent": 67.9
     },
     {
       "field": "popularity.rating",
       "count": 1938,
-      "percent": 68
+      "percent": 67.9
     },
     {
       "field": "metadata.googleMapsNavigation.placeId",
       "count": 1984,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "metadata.popularity.checkedAt",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "metadata.popularity.ratingCount",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "metadata.popularity.source",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "metadata.popularity.tier",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "popularity.checkedAt",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "popularity.ratingCount",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "popularity.source",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "popularity.tier",
       "count": 1983,
-      "percent": 69.6
+      "percent": 69.5
     },
     {
       "field": "metadata.googleMapsNavigation.query",
       "count": 1986,
-      "percent": 69.7
+      "percent": 69.6
     },
     {
       "field": "metadata.amenities",
       "count": 2155,
-      "percent": 75.6
+      "percent": 75.5
     },
     {
       "field": "metadata.googleMapsNavigation.checkedAt",
-      "count": 2308,
+      "count": 2312,
       "percent": 81
     },
     {
       "field": "metadata.googleMapsNavigation.method",
-      "count": 2308,
+      "count": 2312,
       "percent": 81
     },
     {
       "field": "metadata.googleMapsNavigation.mode",
-      "count": 2308,
+      "count": 2312,
       "percent": 81
     },
     {
       "field": "metadata.googleMapsNavigation.status",
-      "count": 2308,
+      "count": 2312,
       "percent": 81
     },
     {
       "field": "metadata.waterDepth.label",
       "count": 2688,
-      "percent": 94.3
+      "percent": 94.2
     },
     {
       "field": "metadata.waterDepth.notes",
       "count": 2688,
-      "percent": 94.3
+      "percent": 94.2
     },
     {
       "field": "metadata.waterDepth.type",
       "count": 2688,
-      "percent": 94.3
+      "percent": 94.2
     },
     {
       "field": "staticLabels.waterDepth",
       "count": 2688,
-      "percent": 94.3
+      "percent": 94.2
     },
     {
       "field": "metadata.terrain.types",
       "count": 2742,
-      "percent": 96.2
+      "percent": 96.1
     },
     {
       "field": "metadata.orientation.confidence",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "metadata.orientation.degrees",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "metadata.orientation.faces",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "metadata.orientation.notes",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "orientation.confidence",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "orientation.degrees",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "orientation.faces",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "orientation.notes",
       "count": 2808,
-      "percent": 98.5
+      "percent": 98.4
     },
     {
       "field": "metadata.sourceUrls",
-      "count": 2840,
+      "count": 2844,
       "percent": 99.6
     },
     {
       "field": "accessibility",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "accessNotes.de",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "accessNotes.en",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "accessNotes.fr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "accessNotes.gr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "accessNotes.it",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "activities.snorkeling",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "activities.surfing",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "aliases",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.beachBar",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.naturalShade",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.organized",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.parking",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.restaurant",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.shower",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.sunbeds",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "amenities.taverna",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "beachType",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "characteristics.deepWaters",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "characteristics.shallowWaters",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "coordinates.lat",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "coordinates.lon",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "description.de",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "description.en",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "description.fr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "description.gr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "description.it",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "detailedDescription.de",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "detailedDescription.en",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "detailedDescription.fr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "detailedDescription.gr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "detailedDescription.it",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "environment.familyFriendly",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "environment.quiet",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "environment.remote",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "id",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "location.island",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "location.region",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.access.label",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.access.notes",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.access.type",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.batch",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.confidence",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.language",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.organized",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.shade",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.sourceNotes",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "metadata.terrain.label",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "name.de",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "name.en",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "name.fr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "name.gr",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "name.it",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "popularityScore",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "protectedFrom",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "rating",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "shelteredFromLocalWind",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "staticLabels.accessLabel",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "staticLabels.accessType",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "staticLabels.beachType",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "staticLabels.terrain",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     },
     {
       "field": "waterDepth",
-      "count": 2850,
+      "count": 2854,
       "percent": 100
     }
   ]

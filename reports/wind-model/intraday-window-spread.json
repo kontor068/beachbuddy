@@ -1,0 +1,146 @@
+{
+  "measuredAt": "2026-08-05T20:12:01.954Z",
+  "scope": "10-largest-plus-controls",
+  "windOnly": true,
+  "dayWindow": {
+    "startHour": 10,
+    "endHour": 18
+  },
+  "arrivalReferenceHour": 11,
+  "totals": {
+    "beachDays": 2922,
+    "notUniform": 1355,
+    "shortStayUpside": 1215,
+    "allDayWarning": 964,
+    "arrivalCostsTwoSteps": 106
+  },
+  "percentages": {
+    "notUniform": 46.37234770704997,
+    "shortStayUpside": 41.581108829568784,
+    "allDayWarning": 32.99110198494182,
+    "arrivalCostsTwoSteps": 3.6276522929500343
+  },
+  "byStayLength": {
+    "2": {
+      "better": 1215,
+      "same": 1707
+    },
+    "4": {
+      "better": 813,
+      "same": 2109
+    },
+    "8": {
+      "better": 16,
+      "same": 2906
+    }
+  },
+  "transitions": {
+    "yellow → blue": 847,
+    "orange → yellow": 249,
+    "red → orange": 13,
+    "orange → blue": 99,
+    "red → yellow": 5,
+    "red → blue": 2
+  },
+  "perRegion": [
+    {
+      "id": "central-macedonia-halkidiki-mainland",
+      "beachDays": 399,
+      "notUniform": 143,
+      "shortStayUpside": 137,
+      "allDayWarning": 99
+    },
+    {
+      "id": "central-greece-evia",
+      "beachDays": 390,
+      "notUniform": 206,
+      "shortStayUpside": 177,
+      "allDayWarning": 109
+    },
+    {
+      "id": "ionian-islands-corfu",
+      "beachDays": 315,
+      "notUniform": 125,
+      "shortStayUpside": 125,
+      "allDayWarning": 125
+    },
+    {
+      "id": "crete-crete-chania",
+      "beachDays": 267,
+      "notUniform": 160,
+      "shortStayUpside": 136,
+      "allDayWarning": 117
+    },
+    {
+      "id": "ionian-islands-kefalonia",
+      "beachDays": 231,
+      "notUniform": 67,
+      "shortStayUpside": 67,
+      "allDayWarning": 67
+    },
+    {
+      "id": "thessaly-magnesia-mainland---pelion",
+      "beachDays": 210,
+      "notUniform": 59,
+      "shortStayUpside": 57,
+      "allDayWarning": 55
+    },
+    {
+      "id": "peloponnese-lakonia-mainland",
+      "beachDays": 207,
+      "notUniform": 149,
+      "shortStayUpside": 145,
+      "allDayWarning": 88
+    },
+    {
+      "id": "crete-crete-lasithi",
+      "beachDays": 189,
+      "notUniform": 77,
+      "shortStayUpside": 68,
+      "allDayWarning": 42
+    },
+    {
+      "id": "north-aegean-lesvos",
+      "beachDays": 186,
+      "notUniform": 76,
+      "shortStayUpside": 56,
+      "allDayWarning": 31
+    },
+    {
+      "id": "south-aegean-rhodes",
+      "beachDays": 186,
+      "notUniform": 105,
+      "shortStayUpside": 99,
+      "allDayWarning": 98
+    },
+    {
+      "id": "south-aegean-folegandros",
+      "beachDays": 48,
+      "notUniform": 48,
+      "shortStayUpside": 48,
+      "allDayWarning": 33
+    },
+    {
+      "id": "south-aegean-mykonos",
+      "beachDays": 117,
+      "notUniform": 15,
+      "shortStayUpside": 5,
+      "allDayWarning": 5
+    },
+    {
+      "id": "south-aegean-naxos",
+      "beachDays": 117,
+      "notUniform": 65,
+      "shortStayUpside": 35,
+      "allDayWarning": 35
+    },
+    {
+      "id": "south-aegean-sifnos",
+      "beachDays": 60,
+      "notUniform": 60,
+      "shortStayUpside": 60,
+      "allDayWarning": 60
+    }
+  ],
+  "unmeasured": []
+}
