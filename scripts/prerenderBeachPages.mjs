@@ -2785,9 +2785,33 @@ const renderShelteredNearby = (beach, island, region, language, locale) => {
 // shown on the page (dl row, amenity chip or narrative sentence) and only
 // positive, stable facts are emitted — so the set differs per beach and never
 // claims something the page does not display.
-const buildBeachFaqPairs = (beach, island, language) => {
+const buildBeachFaqPairs = (beach, island, region, language) => {
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const pairs = [];
+
+  // "Does it get windy there?" is the question this whole product exists to answer,
+  // and it was the one question the page never asked out loud. The answer REUSES the
+  // exact verdict sentence printed in the narrative above (same baked localWindStatus,
+  // same LOCAL_WIND_SECTION copy) so the FAQ can never drift from the page or the app.
+  const faqWindStatus = ['protected', 'partial', 'exposed'].includes(beach.localWindStatus)
+    ? beach.localWindStatus
+    : null;
+  if (faqWindStatus) {
+    const section = localWindSectionFor(region?.id);
+    const isBoat = (beach.staticLabels?.accessType ?? beach.metadata?.access?.type) === 'boat_only';
+    const verdict = (isBoat && language === 'gr')
+      ? section.statusBoatGr[faqWindStatus]
+      : pickLang(language, section.status[faqWindStatus]);
+    const subject = measuredShelterSubject(beachName, language, isBoat);
+    const windName = pickLang(language, LOCAL_WIND_ATOMS[getRegionWindContext(region?.id)].word);
+    pairs.push(pickLang(language, {
+      en: { q: `Does ${beachName} beach get windy?`, a: `${subject} ${verdict} That is based on the measured shape of its coastline against the ${windName}; check live wind and waves before you go.` },
+      gr: { q: `Έχει αέρα η παραλία ${sentenceName(beachName, 'gr')};`, a: `${subject} ${verdict} Βασίζεται στο μετρημένο σχήμα της ακτογραμμής της απέναντι στο ${windName === 'μελτέμι' ? 'μελτέμι' : windName}· έλεγξε ζωντανά άνεμο και κύμα πριν πας.` },
+      de: { q: `Ist es am Strand ${beachName} windig?`, a: `${subject} ${verdict} Grundlage ist die vermessene Form der Küstenlinie gegenüber dem ${windName}; prüfe Wind und Wellen live, bevor du losfährst.` },
+      fr: { q: `Y a-t-il du vent à la plage ${beachName} ?`, a: `${subject} ${verdict} Cela repose sur la forme mesurée de son littoral face au ${windName} ; vérifiez le vent et les vagues en direct avant de partir.` },
+      it: { q: `C'è vento alla spiaggia ${beachName}?`, a: `${subject} ${verdict} Si basa sulla forma misurata della sua costa rispetto al ${windName}; controlla vento e onde dal vivo prima di andare.` },
+    }));
+  }
 
   const access = readableAccess(beach, language);
   if (access) {
@@ -2849,6 +2873,31 @@ const buildBeachFaqPairs = (beach, island, language) => {
   }
 
   return pairs;
+};
+
+// The FAQ as VISIBLE markup — each question an <h2>, each answer a <p> — which is
+// what lets the beach page carry FAQPage JSON-LD at all: Google's rule is that the
+// structured data must describe content the visitor can actually see. Until
+// 06/08/2026 `buildBeachFaqPairs` existed but was called from nowhere, so beach
+// pages shipped neither the visible Q&A nor the markup.
+const BEACH_FAQ_HEADING = {
+  en: 'Good to know',
+  gr: 'Καλό να ξέρεις',
+  de: 'Gut zu wissen',
+  fr: 'Bon à savoir',
+  it: 'Buono a sapersi',
+};
+const renderBeachFaq = (pairs, language) => {
+  if (!pairs.length) return '';
+  return `
+        <section style="margin:22px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2;color:#075985;">${escapeHtml(pickLang(language, BEACH_FAQ_HEADING))}</h2>
+          ${pairs.map(pair => `
+          <div style="margin:0 0 14px;">
+            <h3 style="margin:0 0 5px;font-size:16px;line-height:1.3;color:#0f172a;">${escapeHtml(pair.q)}</h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:#334155;">${escapeHtml(pair.a)}</p>
+          </div>`).join('')}
+        </section>`;
 };
 
 // Shared beach <title>/<h1>/description builders. NOTE on description: the
@@ -3272,6 +3321,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
         </dl>
         ${amenityLabels.length > 0 ? `<ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;">${amenityLabels.map(label => `<li style="border:1px solid #bae6fd;border-radius:999px;padding:6px 10px;background:white;color:#075985;font-weight:700;font-size:13px;">${escapeHtml(label)}</li>`).join('')}</ul>` : ''}
         ${renderBeachNarrative(beach, island, region, language, copy.aboutHeading)}
+        ${renderBeachFaq(buildBeachFaqPairs(beach, island, region, language), language)}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
         ${renderIslandGuides(island, region, locale, null, pickLang(language, {
@@ -5220,10 +5270,13 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
       { name: beachPageName, url: canonicalUrl },
     ]),
   ];
-  // No FAQPage here: the beach page shows its facts as a definition list and
-  // amenity chips, not as visible question/answer pairs, so FAQPage markup would
-  // not match visible content (structured-data guideline). FAQPage stays only on
-  // the category/national pages that render Q&A visibly.
+  // FAQPage joined the beach page on 06/08/2026, and only because the same pairs are
+  // now RENDERED visibly by renderBeachFaq in the static fallback (h3 question +
+  // p answer) — the condition the previous note was protecting. Same builder, same
+  // order, so the markup describes exactly what a visitor reads. If the visible
+  // section is ever removed, this must go with it.
+  const faqPairs = buildBeachFaqPairs(beach, island, region, language);
+  if (faqPairs.length) jsonLd.push(faqJsonLd(faqPairs));
 
   const htmlWithHead = injectBeachHead(baseHtml, {
     title,
