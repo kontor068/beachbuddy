@@ -108,12 +108,23 @@ const prerenderLocales = [
 // en + el stay national and byte-identical; rollout = add region ids here.
 const BASE_LOCALE_IDS = new Set(['en', 'el']);
 const baseLocales = prerenderLocales.filter(locale => BASE_LOCALE_IDS.has(locale.id));
-// hreflang x-default = Greek. calmbeach.gr is a Greek-market (.gr) site, so search engines should
-// serve Greek to visitors whose language/region matches none of the hreflang entries. English (and
-// de/fr/it) visitors still get their own version via their own hreflang tag — this only changes the
-// fallback for undetermined users, which was English and surfaced en pages to Greek searchers (the
-// GSC "wrong_audience" signal). Falls back to the first locale if 'el' is ever removed.
-const xDefaultLocale = prerenderLocales.find(locale => locale.id === 'el') ?? prerenderLocales[0];
+// hreflang x-default = English (reverted to English on 06/08/2026; see below).
+//
+// x-default is ONLY consulted for a visitor whose language matches none of our hreflang
+// entries — not English, Greek, German, French or Italian. By definition that is a foreign
+// tourist (Spanish, Dutch, Polish, Nordic…), and Google's own definition of the value is
+// "the URL where you want your users to land if your site doesn't support their language"
+// (developers.google.com/search/docs/specialty/international/localized-versions, read
+// 06/08/2026). For that person English is the useful landing page and Greek is a dead end.
+// A Greek speaker is unaffected either way: they match hreflang="el" directly.
+//
+// Why it was Greek in between: commit 341f95f6 (17/07/2026) switched it to el to kill a GSC
+// "wrong_audience" signal — English pages appearing to Greek searchers. That signal was then
+// investigated on 19/07 and found to be a false alarm: it was a country-only heuristic
+// counting legitimate brand and Latin-script beach-name queries as "wrong", and the verdict
+// was explicitly "no serving fix warranted". The fix had already shipped two days earlier and
+// nobody reverted it. This is that revert, with the reason recorded so it does not flip again.
+const xDefaultLocale = prerenderLocales.find(locale => locale.id === 'en') ?? prerenderLocales[0];
 // Multilingual rollout by foreign demand. MUST stay 1:1 in sync with
 // LOCALIZED_REGION_SLUGS in utils/beachUrls.ts (full region id here, bare URL
 // slug there) — a drift makes the client emit /de|fr|it links to pages that were
@@ -397,6 +408,131 @@ const seoLandingPages = [
           { href: '/', label: 'Άνοιξε το CalmBeach' },
           { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
+        ],
+      },
+    },
+  },
+  {
+    // The methodology page. It exists because the one thing no competitor can copy —
+    // a per-beach shelter reading measured from the shape of the coastline, checked
+    // nationally — was invisible: it lived in the model, never in a page a visitor or
+    // a journalist could read. DELIBERATE LIMIT ON WHAT THIS SAYS: it explains WHAT we
+    // measure and THAT we check ourselves, never the thresholds, sector rules or curated
+    // overrides. Those are the part that took two summers; the description of the idea
+    // is not the moat and was already half-public in the FAQ.
+    pathName: '/how-we-measure-wind-shelter/',
+    kind: 'info',
+    locales: {
+      en: {
+        title: 'How We Measure Wind Shelter at Each Beach | CalmBeach',
+        description: 'Every Greek beach on CalmBeach carries a shelter reading built from the shape of its own coastline, not from a single regional forecast. Here is how it is made and where it stops.',
+        h1: 'How we measure wind shelter at each beach',
+        intro: 'Most weather sites give you one wind figure for a whole island. That figure is often right and still useless: on the same afternoon, one bay is flat and the bay behind the headland is unswimmable. CalmBeach exists to answer the harder question — what the wind does at THIS beach — so this page explains how that answer is built, and where we stop trusting it.',
+        sections: [
+          {
+            heading: 'The question a forecast alone cannot answer',
+            body: 'A marine forecast is calculated on a grid of cells several kilometres across. One cell can cover an entire small island, so it cannot see that a cove faces away from the wind while the coast opposite takes it head-on. That is not a flaw in the forecast — it is a limit of its resolution. Every beach we describe sits inside such a cell, so the forecast is where our work starts, not where it ends.',
+          },
+          {
+            heading: 'What we measure for every single beach',
+            body: 'For each of the beaches in our dataset we work out, direction by direction, how much open water lies in front of the shore and how much land stands behind it. A beach with a long stretch of open sea to the north will build waves when the wind comes from the north; the same beach can be completely calm in a southerly. This is geometry, computed from coastline data rather than typed in by hand, and it is why two beaches ten minutes apart can get different readings on the same day.',
+          },
+          {
+            heading: 'Where the numbers come from',
+            body: 'Live wind, wave and temperature forecasts come from Open-Meteo. Coastline shapes and much of the beach information come from OpenStreetMap and its contributors. On top of both sits our own curation: corrected pin positions, verified amenities, and per-beach overrides where the automatic reading was wrong. Sources and licences are credited on every page.',
+          },
+          {
+            heading: 'We test it, and we test it in the direction that can hurt you',
+            body: 'A model like this can fail in two directions: it can call a beach rougher than it is, which costs you a good afternoon, or it can call it calmer than it is, which is the one that matters. We run the model against thousands of real beach-hours of live data before we change anything, and our automatic checks are written to catch both directions before a change reaches the site. When a check and a nice-looking idea disagree, the check wins.',
+          },
+          {
+            heading: 'What we deliberately do not claim',
+            body: 'We do not promise calm water, and we do not tell you a beach is safe — no forecast can. Very light winds, sudden gusts falling off steep terrain, and conditions inside very small enclosed coves are all cases where we stay cautious on purpose and say less rather than more. Our wording follows that: "usually sheltered" is a seasonal tendency, not a statement about this afternoon.',
+          },
+          {
+            heading: 'What to do with all this',
+            body: 'Use the shelter reading to choose which side of the island to drive to, and the live conditions to choose the day and the hour. Then use your eyes when you arrive: local flags, the lifeguard, and how the water actually looks always outrank anything a website told you.',
+          },
+        ],
+        faq: [
+          {
+            q: 'Why does CalmBeach sometimes disagree with a general weather app?',
+            a: 'A general app usually reports the wind for a region or a nearby town. We start from the same forecast and then account for the shape of the coastline at the specific beach, so a beach in the wind shadow of the land can read differently from the island average. The two are not measuring the same thing.',
+          },
+          {
+            q: 'Is the shelter reading about today or about the season?',
+            a: 'Both, separately. The wording "usually sheltered when the meltemi blows" describes how a beach tends to behave in the region\'s dominant summer wind, which is useful weeks ahead. Today\'s colour and conditions come from the live forecast and change through the day.',
+          },
+          {
+            q: 'Do you visit the beaches?',
+            a: 'Some of them, and those carry a visited-and-verified mark. The rest are built from open data plus our own corrections. We would rather tell you a beach is unverified than imply a personal visit that never happened.',
+          },
+          {
+            q: 'Can I trust this for swimming safety?',
+            a: 'No website can carry that. Treat everything here as planning information: it helps you pick a likely-comfortable beach and a likely-comfortable hour. Warning flags, lifeguards, local signage and your own judgement at the water\'s edge come first.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach beach search' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Beaches usually better with Meltemi winds' },
+          { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
+          { href: '/faq/', label: 'Frequently asked questions' },
+        ],
+      },
+      el: {
+        title: 'Πώς Υπολογίζουμε την Προστασία από τον Άνεμο | CalmBeach',
+        description: 'Κάθε παραλία στο CalmBeach έχει δική της εκτίμηση προστασίας, από το σχήμα της ίδιας της ακτογραμμής της και όχι από μία πρόγνωση για όλο το νησί. Πώς φτιάχνεται και πού σταματά.',
+        h1: 'Πώς υπολογίζουμε την προστασία από τον άνεμο',
+        intro: 'Τα περισσότερα site δίνουν έναν αριθμό ανέμου για ολόκληρο το νησί. Συχνά είναι σωστός και ταυτόχρονα άχρηστος: το ίδιο απόγευμα, ο ένας όρμος είναι λάδι και ο διπλανός δεν κολυμπιέται. Το CalmBeach υπάρχει για το δυσκολότερο ερώτημα — τι κάνει ο άνεμος σε ΑΥΤΗ την παραλία. Εδώ εξηγούμε πώς βγαίνει αυτή η απάντηση, και πού σταματάμε να την εμπιστευόμαστε.',
+        sections: [
+          {
+            heading: 'Τι δεν μπορεί να απαντήσει μια πρόγνωση μόνη της',
+            body: 'Η θαλάσσια πρόγνωση υπολογίζεται σε κελιά μερικών χιλιομέτρων. Ένα κελί μπορεί να καλύπτει ολόκληρο μικρό νησί, οπότε δεν βλέπει ότι ένας όρμος κοιτάζει αντίθετα από τον άνεμο ενώ η απέναντι ακτή τον τρώει κατάμουτρα. Δεν είναι ελάττωμα της πρόγνωσης· είναι όριο της ανάλυσής της. Κάθε παραλία που περιγράφουμε βρίσκεται μέσα σε τέτοιο κελί, γι\' αυτό η πρόγνωση είναι η αρχή της δουλειάς μας και όχι το τέλος της.',
+          },
+          {
+            heading: 'Τι μετράμε για κάθε ξεχωριστή παραλία',
+            body: 'Για κάθε παραλία υπολογίζουμε, κατεύθυνση προς κατεύθυνση, πόση ανοιχτή θάλασσα απλώνεται μπροστά στην ακτή και πόση στεριά στέκεται από πίσω. Μια παραλία με πολλά ανοιχτά μίλια προς τον βορρά θα χτίσει κύμα όταν φυσά βοριάς· η ίδια παραλία μπορεί να είναι εντελώς ήρεμη με νοτιά. Είναι γεωμετρία, υπολογισμένη από δεδομένα ακτογραμμής και όχι γραμμένη στο χέρι, και γι\' αυτό δύο παραλίες δέκα λεπτά μακριά μπορεί να διαβάζονται διαφορετικά την ίδια μέρα.',
+          },
+          {
+            heading: 'Από πού έρχονται τα νούμερα',
+            body: 'Ο ζωντανός άνεμος, το κύμα και οι θερμοκρασίες έρχονται από το Open-Meteo. Τα σχήματα των ακτών και μεγάλο μέρος των στοιχείων κάθε παραλίας από το OpenStreetMap και τους συνεισφέροντές του. Πάνω σε αυτά κάθεται η δική μας επιμέλεια: διορθωμένες θέσεις πινέζας, επαληθευμένες παροχές, και χειροκίνητες διορθώσεις όπου η αυτόματη ανάγνωση έβγαινε λάθος. Οι πηγές και οι άδειες αναφέρονται σε κάθε σελίδα.',
+          },
+          {
+            heading: 'Το ελέγχουμε — και το ελέγχουμε προς την κατεύθυνση που σε βλάπτει',
+            body: 'Ένα τέτοιο μοντέλο μπορεί να αστοχήσει με δύο τρόπους: να πει μια παραλία αγριότερη απ\' ό,τι είναι, που σου κοστίζει ένα καλό απόγευμα, ή να την πει ηρεμότερη, που είναι το σοβαρό. Δοκιμάζουμε το μοντέλο σε χιλιάδες πραγματικές ώρες-παραλίας με ζωντανά δεδομένα πριν αλλάξουμε οτιδήποτε, και οι αυτόματοι έλεγχοί μας είναι γραμμένοι ώστε να πιάνουν και τις δύο κατευθύνσεις πριν φτάσει η αλλαγή στο site. Όταν ένας έλεγχος διαφωνεί με μια ωραία ιδέα, κερδίζει ο έλεγχος.',
+          },
+          {
+            heading: 'Τι σκόπιμα δεν ισχυριζόμαστε',
+            body: 'Δεν υποσχόμαστε ήρεμο νερό και δεν σου λέμε ότι μια παραλία είναι ασφαλής — καμία πρόγνωση δεν μπορεί. Οι πολύ ασθενείς άνεμοι, τα ξαφνικά ριπίσματα που πέφτουν από απότομες πλαγιές και οι συνθήκες μέσα σε πολύ μικρούς κλειστούς όρμους είναι περιπτώσεις όπου μένουμε επίτηδες συντηρητικοί και λέμε λιγότερα αντί για περισσότερα. Η διατύπωση το δείχνει: το «συνήθως προστατευμένη» περιγράφει εποχική τάση με βάση τον προσανατολισμό, όχι το σημερινό απόγευμα.',
+          },
+          {
+            heading: 'Πώς να το χρησιμοποιήσεις',
+            body: 'Χρησιμοποίησε την εκτίμηση προστασίας για να διαλέξεις σε ποια πλευρά του νησιού θα οδηγήσεις, και τις ζωντανές συνθήκες για να διαλέξεις μέρα και ώρα. Και μετά χρησιμοποίησε τα μάτια σου όταν φτάσεις: οι σημαίες, ο ναυαγοσώστης και το πώς δείχνει όντως το νερό υπερισχύουν πάντα από ό,τι σου είπε μια ιστοσελίδα.',
+          },
+        ],
+        faq: [
+          {
+            q: 'Γιατί το CalmBeach διαφωνεί μερικές φορές με μια γενική εφαρμογή καιρού;',
+            a: 'Μια γενική εφαρμογή δίνει συνήθως τον άνεμο για μια περιοχή ή για κοντινή πόλη. Εμείς ξεκινάμε από την ίδια πρόγνωση και μετά λαμβάνουμε υπόψη το σχήμα της ακτογραμμής στη συγκεκριμένη παραλία, οπότε μια παραλία στη σκιά της στεριάς μπορεί να διαβάζεται αλλιώς από τον μέσο όρο του νησιού. Τα δύο δεν μετρούν το ίδιο πράγμα.',
+          },
+          {
+            q: 'Η εκτίμηση προστασίας αφορά τη σημερινή μέρα ή την εποχή;',
+            a: 'Και τα δύο, χωριστά. Το «συνήθως μένει προστατευμένη όταν φυσά μελτέμι» περιγράφει πώς τείνει να συμπεριφέρεται μια παραλία στον κυρίαρχο καλοκαιρινό άνεμο της περιοχής, και είναι χρήσιμο εβδομάδες πριν. Το σημερινό χρώμα και οι συνθήκες βγαίνουν από τη ζωντανή πρόγνωση και αλλάζουν μέσα στη μέρα.',
+          },
+          {
+            q: 'Επισκέπτεστε τις παραλίες;',
+            a: 'Κάποιες, και αυτές έχουν σήμανση ότι τις έχουμε δει από κοντά. Οι υπόλοιπες χτίζονται από ανοιχτά δεδομένα και τις δικές μας διορθώσεις. Προτιμάμε να σου πούμε ότι μια παραλία δεν είναι επιβεβαιωμένη, παρά να υπονοήσουμε επίσκεψη που δεν έγινε.',
+          },
+          {
+            q: 'Μπορώ να το εμπιστευτώ για την ασφάλειά μου στο μπάνιο;',
+            a: 'Καμία ιστοσελίδα δεν σηκώνει αυτό το βάρος. Δες τα πάντα εδώ ως πληροφορία σχεδιασμού: σε βοηθά να διαλέξεις μια πιθανόν άνετη παραλία και μια πιθανόν άνετη ώρα. Οι σημαίες, οι ναυαγοσώστες, η τοπική σήμανση και η δική σου κρίση στην άκρη του νερού προηγούνται.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε την αναζήτηση CalmBeach' },
+          { href: '/sheltered-beaches-meltemi/', label: 'Παραλίες που βολεύουν με μελτέμι' },
+          { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
+          { href: '/faq/', label: 'Συχνές ερωτήσεις' },
         ],
       },
     },
@@ -2282,6 +2418,7 @@ const FOOTER_COPY = {
     privacy: 'Privacy Policy',
     cookies: 'Cookie Policy',
     faq: 'FAQ',
+    method: 'How we measure shelter',
     guides: 'Beach guides',
     data: 'Beach data derived from OpenStreetMap, © OpenStreetMap contributors, available under the Open Database License (ODbL). Weather and marine forecasts by Open-Meteo (CC BY 4.0).',
   },
@@ -2292,6 +2429,7 @@ const FOOTER_COPY = {
     privacy: 'Πολιτική Απορρήτου',
     cookies: 'Πολιτική Cookies',
     faq: 'Συχνές ερωτήσεις',
+    method: 'Πώς μετράμε την προστασία',
     guides: 'Οδηγοί παραλιών',
     data: 'Τα δεδομένα παραλιών προέρχονται από το OpenStreetMap, © συνεισφέροντες OpenStreetMap, με άδεια Open Database License (ODbL). Οι προγνώσεις καιρού και θάλασσας από το Open-Meteo (CC BY 4.0).',
   },
@@ -2302,6 +2440,7 @@ const FOOTER_COPY = {
     privacy: 'Datenschutzerklärung',
     cookies: 'Cookie-Richtlinie',
     faq: 'FAQ',
+    method: 'Wie wir Windschutz messen',
     guides: 'Strandführer',
     data: 'Stranddaten abgeleitet aus OpenStreetMap, © OpenStreetMap-Mitwirkende, verfügbar unter der Open Database License (ODbL). Wetter- und Seegangsvorhersagen von Open-Meteo (CC BY 4.0).',
   },
@@ -2312,6 +2451,7 @@ const FOOTER_COPY = {
     privacy: 'Politique de confidentialité',
     cookies: 'Politique de cookies',
     faq: 'FAQ',
+    method: "Comment nous mesurons l'abri",
     guides: 'Guides des plages',
     data: 'Données de plages dérivées d’OpenStreetMap, © les contributeurs OpenStreetMap, disponibles sous Open Database License (ODbL). Prévisions météo et marines par Open-Meteo (CC BY 4.0).',
   },
@@ -2322,6 +2462,7 @@ const FOOTER_COPY = {
     privacy: 'Informativa sulla privacy',
     cookies: 'Politica sui cookie',
     faq: 'FAQ',
+    method: 'Come misuriamo il riparo',
     guides: 'Guide alle spiagge',
     data: 'Dati delle spiagge derivati da OpenStreetMap, © contributori OpenStreetMap, disponibili con licenza Open Database License (ODbL). Previsioni meteo e marine di Open-Meteo (CC BY 4.0).',
   },
@@ -2345,6 +2486,7 @@ const staticLegalFooter = (locale = prerenderLocales[0]) => {
             ${link('/privacy/', c.privacy)}
             ${link('/cookies/', c.cookies)}
             ${link(`${localePrefix}/faq/`, c.faq)}
+            ${link(`${localePrefix}/how-we-measure-wind-shelter/`, c.method)}
             ${link(`${localePrefix}/beach-guides/`, c.guides)}
           </ul>
         </nav>
