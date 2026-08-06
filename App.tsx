@@ -22,6 +22,7 @@ import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
+import { WhereToGoToday } from './components/WhereToGoToday';
 import { LandingView } from './components/landing/LandingView';
 // Lazy: the planner (and its scoring path) must not ride in the main bundle —
 // most visitors only want today, and with the flag off it would still ship.
@@ -7283,6 +7284,24 @@ export const App: React.FC = () => {
               onSelectIsland={handleRegionSelected}
               strongWindContext={isStrongRecommendationMode}
             />
+
+            {/* "Which side of the island today?" — the coast-level answer. It reads
+                `mapBeachTones` (the colours the MAP reported) and each beach's committed
+                orientation, and computes no judgement of its own; see the header of
+                components/WhereToGoToday.tsx for why that boundary is not negotiable.
+                It renders nothing until the map has judged enough beaches, so on first paint,
+                on info-only regions and on a map chunk that never loads it is simply absent. */}
+            {selectedIsland && !isInfoOnlyRegion && (
+              <WhereToGoToday
+                language={language}
+                beaches={selectedIsland.beaches}
+                beachTones={mapBeachTones}
+                onSelectBeach={(beachId) => {
+                  const beach = selectedIsland.beaches.find(candidate => candidate.id === beachId);
+                  if (beach) openBeachDetails(beach, 'where_to_go_today');
+                }}
+              />
+            )}
 
             <div className="hidden" aria-hidden="true">
               <div className="overflow-hidden rounded-[1.35rem] border border-slate-200/80 bg-white/86 shadow-sm shadow-sky-900/5 ring-1 ring-white/45">
