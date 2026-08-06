@@ -37,11 +37,17 @@ async function main(): Promise<void> {
 
     // Compute once per beach from the full app-shape beach (so resolveBeachWindProfile
     // sees curated overrides / windsport spots / suspect pins), then fan out to every
-    // file variant the runtime + prerender read.
+    // file variant the runtime + prerender read. The three-level verdict is baked
+    // alongside the boolean so the static beach page can print the same sentence the
+    // app's shelter section shows; when the model abstains (undefined) no status is
+    // written — absence must stay "no claim", never collapse to 'exposed'.
     const flagById = new Map<number, boolean>();
+    const statusById = new Map<number, 'protected' | 'partial' | 'exposed'>();
     for (const beach of beaches) {
       if (!Number.isInteger(beach.id)) continue;
-      const flag = summarizeLocalWindBehavior(profiles[String(beach.id)], beach, sectors) === 'protected';
+      const level = summarizeLocalWindBehavior(profiles[String(beach.id)], beach, sectors);
+      if (level) statusById.set(beach.id, level);
+      const flag = level === 'protected';
       flagById.set(beach.id, flag);
       total += 1;
       if (flag) sheltered += 1;
@@ -53,7 +59,11 @@ async function main(): Promise<void> {
       const data = rj(fp);
       const list: Beach[] = data.island?.beaches || [];
       for (const beach of list) {
-        if (flagById.has(beach.id)) (beach as { shelteredFromLocalWind?: boolean }).shelteredFromLocalWind = flagById.get(beach.id);
+        if (!flagById.has(beach.id)) continue;
+        const target = beach as { shelteredFromLocalWind?: boolean; localWindStatus?: string };
+        target.shelteredFromLocalWind = flagById.get(beach.id);
+        if (statusById.has(beach.id)) target.localWindStatus = statusById.get(beach.id);
+        else delete target.localWindStatus;
       }
       writeFileSync(fp, `${JSON.stringify(data)}\n`, 'utf8');
     }

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
-import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
+import { localWindLabelFor, getRegionWindContext, localWindSectorsFor, localWindSectionFor, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from '../utils/localWindContext.mjs';
 import { withSeaSeasonSection } from '../utils/seaSeasonProfile.mjs';
 import { withWaterSeasonSection } from '../utils/waterSeasonProfile.mjs';
 import { STATIC_ARTICLE_CSS } from './staticArticleTheme.mjs';
@@ -2490,10 +2490,49 @@ const sentenceName = (name, language) => {
   return trimmed;
 };
 
-const buildBeachNarrative = (beach, island, language) => {
+// The measured seasonal-shelter verdict, stated in the static page. Reads the baked
+// `localWindStatus` (bakeLocalWindShelter → summarizeLocalWindBehavior, the ONE
+// curated-aware computation) and prints the SAME five-language sentences the app's
+// "Usually in the meltemi" section shows (LOCAL_WIND_SECTION.status) — so the static
+// word and the app can never diverge. Until 06/08/2026 this layer only offered
+// orientation-with-disclaimer and deferred the verdict to "the app": the crawler and
+// any first-time visitor saw a promise where the product's actual answer exists.
+// The tail deliberately contains no today-words and carries the hedge/check tokens
+// hasUnsupportedStaticConditionCopy expects of honest shelter copy.
+const MEASURED_SHELTER_TAIL = {
+  en: 'That comes from the measured shape of the coastline around it and our curated wind records — a seasonal picture, not a live forecast, so check live wind and waves before you go.',
+  gr: 'Το συμπέρασμα βγαίνει από το μετρημένο σχήμα της ακτογραμμής γύρω από το σημείο και τα επιμελημένα δεδομένα ανέμου μας — εποχική εικόνα, όχι ζωντανή πρόγνωση· έλεγξε ζωντανά άνεμο και κύμα πριν πας.',
+  de: 'Das ergibt sich aus der vermessenen Form der Küstenlinie ringsum und unseren kuratierten Winddaten — ein saisonales Bild, keine Live-Vorhersage; prüfe daher Wind und Wellen live, bevor du losfährst.',
+  fr: 'Ce constat vient de la forme mesurée du littoral alentour et de nos données de vent vérifiées — une image saisonnière, pas une prévision en direct ; vérifiez donc le vent et les vagues en direct avant de partir.',
+  it: 'Questo giudizio nasce dalla forma misurata della costa circostante e dai nostri dati sul vento curati — un quadro stagionale, non una previsione in tempo reale; controlla vento e onde dal vivo prima di andare.',
+};
+// Subject phrasing mirrors components/LocalWindShelterSection.tsx beachSubject:
+// Greek boat-only spots take the neuter article + the neuter statusBoatGr predicates.
+const measuredShelterSubject = (beachName, language, isBoat) => {
+  if (language === 'gr') return isBoat ? `Το ${beachName}` : `Η παραλία ${sentenceName(beachName, 'gr')}`;
+  if (language === 'de') return `Der Strand ${beachName}`;
+  if (language === 'fr') return `La plage ${beachName}`;
+  if (language === 'it') return `La spiaggia ${beachName}`;
+  return beachName;
+};
+
+const buildBeachNarrative = (beach, island, region, language) => {
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const pick = variants => variants[(beach.id ?? 0) % variants.length];
   const paragraphs = [];
+
+  const localWindStatus = ['protected', 'partial', 'exposed'].includes(beach.localWindStatus)
+    ? beach.localWindStatus
+    : null;
+  if (localWindStatus) {
+    const section = localWindSectionFor(region?.id);
+    const isBoat = (beach.staticLabels?.accessType ?? beach.metadata?.access?.type) === 'boat_only';
+    const statusSentence = (isBoat && language === 'gr')
+      ? section.statusBoatGr[localWindStatus]
+      : pickLang(language, section.status[localWindStatus]);
+    const subject = measuredShelterSubject(beachName, language, isBoat);
+    paragraphs.push(`${subject} ${statusSentence} ${pickLang(language, MEASURED_SHELTER_TAIL)}`);
+  }
 
   const faces = Array.isArray(beach.orientation?.faces) ? beach.orientation.faces : [];
   const protectedFrom = Array.isArray(beach.protectedFrom) ? beach.protectedFrom : [];
@@ -2554,7 +2593,11 @@ const buildBeachNarrative = (beach, island, language) => {
       },
     });
     const lead = pick(orient.leads);
-    paragraphs.push(`${lead}${protWords ? orient.prot(protWords) : ''}${orient.tail}`);
+    // When the measured verdict paragraph is present it already carries the
+    // epistemics and the live-check pointer; repeating "not confirmed shelter,
+    // check the app" under a stated verdict would read as the page doubting itself.
+    const tail = localWindStatus ? '.' : orient.tail;
+    paragraphs.push(`${lead}${protWords ? orient.prot(protWords) : ''}${tail}`);
   }
 
   const surface = readableLabel(surfaceWord.get(beach.beachType), language);
@@ -2652,8 +2695,8 @@ const buildBeachNarrative = (beach, island, language) => {
   return paragraphs;
 };
 
-const renderBeachNarrative = (beach, island, language, heading) => {
-  const paragraphs = buildBeachNarrative(beach, island, language);
+const renderBeachNarrative = (beach, island, region, language, heading) => {
+  const paragraphs = buildBeachNarrative(beach, island, region, language);
   if (!paragraphs.length) return '';
   return `
         <section style="margin:0 0 22px;">
@@ -3228,7 +3271,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
           <dt style="font-weight:700;">${escapeHtml(copy.coordinates)}</dt><dd style="margin:0;">${escapeHtml(beach.coordinates?.lat)}, ${escapeHtml(beach.coordinates?.lon)}</dd>
         </dl>
         ${amenityLabels.length > 0 ? `<ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;">${amenityLabels.map(label => `<li style="border:1px solid #bae6fd;border-radius:999px;padding:6px 10px;background:white;color:#075985;font-weight:700;font-size:13px;">${escapeHtml(label)}</li>`).join('')}</ul>` : ''}
-        ${renderBeachNarrative(beach, island, language, copy.aboutHeading)}
+        ${renderBeachNarrative(beach, island, region, language, copy.aboutHeading)}
         <p data-nosnippet="true" style="margin:0;color:#475569;">${escapeHtml(copy.openAppBeach)}</p>
         <p data-nosnippet="true" style="margin:16px 0 0;"><a href="${escapeHtml(canonicalUrl)}" style="color:#0e7490;font-weight:700;">${escapeHtml(copy.viewBeach)}</a></p>
         ${renderIslandGuides(island, region, locale, null, pickLang(language, {

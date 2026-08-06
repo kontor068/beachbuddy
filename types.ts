@@ -340,6 +340,10 @@ export interface Beach {
   // baked by scripts/bakeLocalWindShelter.ts via the curated-aware windClimatology.
   // Single source for region-page counts, the sheltered guide gate, and the chip.
   shelteredFromLocalWind?: boolean;
+  // The full three-level verdict behind that flag (protected/partial/exposed),
+  // baked by the same single computation. Absent when the model abstains
+  // (suspect pin / no profile) — absent means "make no claim", not "exposed".
+  localWindStatus?: 'protected' | 'partial' | 'exposed';
   aliases?: string[];
   staticLabels?: {
     beachType?: string;

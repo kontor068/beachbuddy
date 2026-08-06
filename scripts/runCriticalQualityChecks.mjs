@@ -285,6 +285,18 @@ const checks = [
     command: npmBin,
     args: ['run', 'quality:region-pages'],
   },
+  {
+    id: 'static-shelter-verdict',
+    title: 'The static page prints the measured verdict, exactly',
+    description:
+      'Reads the baked localWindStatus for every beach and every built beach page in all five languages, and asserts the page contains that level\'s exact LOCAL_WIND_SECTION sentence (the same copy the app shows) and NEITHER of the other two levels\' sentences — over-claim and under-claim both. Also checks shelteredFromLocalWind never disagrees with the three-level status it was reduced from. Then reruns itself with the levels rotated and requires mass failures, proving it is not decorative.',
+    protects:
+      'The 06/08/2026 competitor audit found our nationally measured shelter verdict never reached the static layer Google and first-time visitors read — the page hedged with orientation and deferred to "the app". Now that the verdict IS printed on ~8.000 pages, the new possible lie is the page claiming protected over data that says exposed (or the reverse). Both directions are checked because the 05/08 lesson is that every earlier gate looked only one way.',
+    failureAction:
+      'Fix the verdict paragraph in buildBeachNarrative (scripts/prerenderBeachPages.mjs) or rerun node scripts/bakeLocalWindShelter.mjs if the baked data is stale, then rebuild. Never edit the gate\'s sentence lists independently: they import utils/localWindContext.mjs, the same single source the app renders.',
+    command: process.execPath,
+    args: ['scripts/validateStaticShelterVerdict.mjs', '--prove'],
+  },
 ];
 
 const printExplanation = () => {
