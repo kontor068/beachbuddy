@@ -28,6 +28,7 @@ const copy = {
     cookies: 'Cookie Policy',
     cookieSettings: 'Cookie settings',
     faq: 'FAQ',
+    method: 'How we measure shelter',
     close: 'Close',
     accessData: 'Accessibility',
     blueFlag: 'Blue Flag 2026',
@@ -48,6 +49,7 @@ const copy = {
     cookies: 'Πολιτική Cookies',
     cookieSettings: 'Ρυθμίσεις Cookies',
     faq: 'Συχνές ερωτήσεις',
+    method: 'Πώς μετράμε την προστασία',
     close: 'Κλείσιμο',
     accessData: 'Πρόσβαση ΑμεΑ',
     blueFlag: 'Γαλάζιες Σημαίες 2026',
@@ -100,6 +102,15 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const faqPath = language === 'gr' ? '/el/faq/' : '/faq/';
   const faqExternal = import.meta.env.DEV;
   const faqHref = faqExternal ? `https://calmbeach.gr${faqPath}` : faqPath;
+  /* The methodology page ("how we measure wind shelter") is the same kind of prerendered
+     page as the FAQ and needs the same dev/prod treatment. It shipped on 06/08/2026 linked
+     ONLY from the prerendered footer — which React replaces on mount — so for every visitor
+     with JavaScript it existed and was unreachable. That is exactly the failure the ODbL
+     comment below records from 05/08: a link that satisfies the crawler is not a link a
+     person can click. Prerendered footer and this one must be changed together.
+     de/fr/it fall back to the English page, like the FAQ. */
+  const methodPath = language === 'gr' ? '/el/how-we-measure-wind-shelter/' : '/how-we-measure-wind-shelter/';
+  const methodHref = faqExternal ? `https://calmbeach.gr${methodPath}` : methodPath;
   // Same story for the guides hub (and it falls back to the English hub for
   // de/fr/it, where no localized hub is emitted).
   const { href: guidesHref, external: guidesExternal } = getGuidesHubLink(language);
@@ -188,6 +199,11 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 <li>
                   <a href={faqHref} className={legalLinkClass} target={faqExternal ? '_blank' : undefined} rel={faqExternal ? 'noopener noreferrer' : undefined}>
                     {c.faq}
+                  </a>
+                </li>
+                <li>
+                  <a href={methodHref} className={legalLinkClass} target={faqExternal ? '_blank' : undefined} rel={faqExternal ? 'noopener noreferrer' : undefined}>
+                    {c.method}
                   </a>
                 </li>
               </ul>

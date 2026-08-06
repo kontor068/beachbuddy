@@ -360,6 +360,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/how-we-measure-wind-shelter/', label: 'How we measure wind shelter at each beach' },
           { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
           { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
         ],
@@ -406,6 +407,7 @@ const seoLandingPages = [
         ],
         links: [
           { href: '/', label: 'Άνοιξε το CalmBeach' },
+          { href: '/how-we-measure-wind-shelter/', label: 'Πώς υπολογίζουμε την προστασία από τον άνεμο' },
           { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
         ],
