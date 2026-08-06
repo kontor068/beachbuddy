@@ -141,10 +141,6 @@ interface BeachSearcherHomeProps {
   mapForecastTimeLabel?: string;
   mapDayStrip?: React.ReactNode;
   mapPreview?: React.ReactNode;
-  /** Coast-level "which side of the island today" summary. Rendered inside this component so it
-   *  appears exactly once in BOTH layouts — the mobile shell and the desktop main shell are
-   *  different React trees, and a copy placed in only one of them is invisible on the other. */
-  coastSummary?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
   suitableBeachCards?: SuitableBeach[];
   suitableBeachTotalCount?: number;
@@ -1597,7 +1593,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   mapForecastTimeLabel,
   mapDayStrip,
   mapPreview,
-  coastSummary,
   topRecommendationCards,
   suitableBeachCards,
   suitableBeachTotalCount,
@@ -3627,9 +3622,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            {/* Same slot, desktop tree. Mutually exclusive with the mobile branch above
-                (`isMobileViewport`), so it can never render twice and duplicate its heading id. */}
-            {coastSummary && <div className="mt-4">{coastSummary}</div>}
           </section>
         )}
 
@@ -3754,8 +3746,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   {mapPreview}
                 </div>
               </section>
-              {/* Directly under the map, because it is the map's pattern put into words. */}
-              {coastSummary && <div className="mb-3 sm:mb-5">{coastSummary}</div>}
             </>
           )}
 

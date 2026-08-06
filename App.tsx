@@ -22,7 +22,6 @@ import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
 import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
-import { WhereToGoToday } from './components/WhereToGoToday';
 import { LandingView } from './components/landing/LandingView';
 // Lazy: the planner (and its scoring path) must not ride in the main bundle —
 // most visitors only want today, and with the flag off it would still ship.
@@ -7283,32 +7282,6 @@ export const App: React.FC = () => {
               onBeachClick={(beach) => { markValuePropSeen(); openBeachDetails(beach, 'directory_home_card'); }}
               onSelectIsland={handleRegionSelected}
               strongWindContext={isStrongRecommendationMode}
-              /* "Which side of the island today?" — the coast-level answer, handed to the
-                 directory home so it lands INSIDE whichever layout is on screen. It reads
-                 `mapBeachTones` (the colours the MAP reported) plus each beach's committed
-                 orientation and judges nothing itself; see the header of
-                 components/WhereToGoToday.tsx for why that boundary is not negotiable.
-
-                 ⚠️ IT IS PASSED AS A SLOT, not rendered here. Rendered as a sibling of
-                 <BeachSearcherHome> (first attempt, 06/08/2026) it was perfectly correct and
-                 completely invisible: that JSX sits inside a <header> that wraps ~1.900 px of
-                 page and forms its own stacking context — the same trap this project already
-                 lost a day to. Rendered inside <main> instead, it then vanished on PHONES,
-                 because with a forecast loaded `shouldRenderMainShell` is false on mobile and
-                 the whole experience lives in the header shell. Two React trees, one component:
-                 the only place it renders once and everywhere is inside the shell itself.
-                 Both failures were found by a browser screenshot; no gate saw either. */
-              coastSummary={selectedIsland && !isInfoOnlyRegion ? (
-                <WhereToGoToday
-                  language={language}
-                  beaches={selectedIsland.beaches}
-                  beachTones={mapBeachTones}
-                  onSelectBeach={(beachId) => {
-                    const beach = selectedIsland.beaches.find(candidate => candidate.id === beachId);
-                    if (beach) openBeachDetails(beach, 'where_to_go_today');
-                  }}
-                />
-              ) : undefined}
             />
 
             <div className="hidden" aria-hidden="true">
