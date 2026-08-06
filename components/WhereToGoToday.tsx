@@ -168,11 +168,19 @@ export const WhereToGoToday: React.FC<WhereToGoTodayProps> = ({
     return language === 'gr' ? beachSentenceName(raw, 'gr') : raw;
   };
 
-  const verdictFor = (group: CoastGroup, index: number): string => {
+  /**
+   * The verdict AND the dot come from the same number: what share of this coast's beaches the
+   * map painted a going-there colour. The dot deliberately does NOT use the calmest beach on
+   * the coast — a shore with one ideal cove and six difficult ones would then wear a blue dot,
+   * which is the exact over-claim ("we said calmer than it is") this project has decided it
+   * will not make. One share, one word, one colour.
+   */
+  const verdictFor = (group: CoastGroup, index: number): { label: string; tone: CalmnessTone } => {
     const share = group.good / group.total;
-    if (index === 0 && share >= 0.5) return c.calmHere;
-    if (share >= 0.34) return c.mixed;
-    return c.rough;
+    if (index === 0 && share >= 0.5) return { label: c.calmHere, tone: 'blue' };
+    if (share >= 0.5) return { label: c.mixed, tone: 'yellow' };
+    if (share >= 0.25) return { label: c.mixed, tone: 'orange' };
+    return { label: c.rough, tone: 'red' };
   };
 
   return (
@@ -185,7 +193,8 @@ export const WhereToGoToday: React.FC<WhereToGoTodayProps> = ({
 
       <ul className="space-y-2">
         {groups.slice(0, 4).map((group, index) => {
-          const skin = TONE_SKIN[group.best];
+          const verdict = verdictFor(group, index);
+          const skin = TONE_SKIN[verdict.tone];
           return (
             <li
               key={group.face}
@@ -197,7 +206,7 @@ export const WhereToGoToday: React.FC<WhereToGoTodayProps> = ({
                   {FACE_LABEL[group.face][language] ?? FACE_LABEL[group.face].en}
                 </span>
                 <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${skin.chip}`}>
-                  {verdictFor(group, index)}
+                  {verdict.label}
                 </span>
                 <span className="text-xs font-semibold text-slate-500">
                   {c.beachesOne(group.total)}

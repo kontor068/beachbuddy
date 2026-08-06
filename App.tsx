@@ -7283,25 +7283,33 @@ export const App: React.FC = () => {
               onBeachClick={(beach) => { markValuePropSeen(); openBeachDetails(beach, 'directory_home_card'); }}
               onSelectIsland={handleRegionSelected}
               strongWindContext={isStrongRecommendationMode}
-            />
+              /* "Which side of the island today?" — the coast-level answer, handed to the
+                 directory home so it lands INSIDE whichever layout is on screen. It reads
+                 `mapBeachTones` (the colours the MAP reported) plus each beach's committed
+                 orientation and judges nothing itself; see the header of
+                 components/WhereToGoToday.tsx for why that boundary is not negotiable.
 
-            {/* "Which side of the island today?" — the coast-level answer. It reads
-                `mapBeachTones` (the colours the MAP reported) and each beach's committed
-                orientation, and computes no judgement of its own; see the header of
-                components/WhereToGoToday.tsx for why that boundary is not negotiable.
-                It renders nothing until the map has judged enough beaches, so on first paint,
-                on info-only regions and on a map chunk that never loads it is simply absent. */}
-            {selectedIsland && !isInfoOnlyRegion && (
-              <WhereToGoToday
-                language={language}
-                beaches={selectedIsland.beaches}
-                beachTones={mapBeachTones}
-                onSelectBeach={(beachId) => {
-                  const beach = selectedIsland.beaches.find(candidate => candidate.id === beachId);
-                  if (beach) openBeachDetails(beach, 'where_to_go_today');
-                }}
-              />
-            )}
+                 ⚠️ IT IS PASSED AS A SLOT, not rendered here. Rendered as a sibling of
+                 <BeachSearcherHome> (first attempt, 06/08/2026) it was perfectly correct and
+                 completely invisible: that JSX sits inside a <header> that wraps ~1.900 px of
+                 page and forms its own stacking context — the same trap this project already
+                 lost a day to. Rendered inside <main> instead, it then vanished on PHONES,
+                 because with a forecast loaded `shouldRenderMainShell` is false on mobile and
+                 the whole experience lives in the header shell. Two React trees, one component:
+                 the only place it renders once and everywhere is inside the shell itself.
+                 Both failures were found by a browser screenshot; no gate saw either. */
+              coastSummary={selectedIsland && !isInfoOnlyRegion ? (
+                <WhereToGoToday
+                  language={language}
+                  beaches={selectedIsland.beaches}
+                  beachTones={mapBeachTones}
+                  onSelectBeach={(beachId) => {
+                    const beach = selectedIsland.beaches.find(candidate => candidate.id === beachId);
+                    if (beach) openBeachDetails(beach, 'where_to_go_today');
+                  }}
+                />
+              ) : undefined}
+            />
 
             <div className="hidden" aria-hidden="true">
               <div className="overflow-hidden rounded-[1.35rem] border border-slate-200/80 bg-white/86 shadow-sm shadow-sky-900/5 ring-1 ring-white/45">
