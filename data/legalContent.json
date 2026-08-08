@@ -1,9 +1,10 @@
 {
-  "version": "1.1",
-  "updated": { "gr": "Ιούλιος 2026", "en": "July 2026" },
+  "version": "1.2",
+  "updated": { "gr": "Αύγουστος 2026", "en": "August 2026" },
   "history": [
     { "version": "1.0", "date": "2026-07-06", "summary": "Αρχική δημοσίευση Όρων Χρήσης, Πολιτικής Απορρήτου και Πολιτικής Cookies." },
-    { "version": "1.1", "date": "2026-07-28", "summary": "Προστέθηκε ενότητα για δεδομένα καιρού/θάλασσας (Open-Meteo, μοντέλο MFWAM της Météo-France) στους Όρους Χρήσης· διορθώθηκε ανακριβής αναφορά σε DWD στην Πολιτική Cookies." }
+    { "version": "1.1", "date": "2026-07-28", "summary": "Προστέθηκε ενότητα για δεδομένα καιρού/θάλασσας (Open-Meteo, μοντέλο MFWAM της Météo-France) στους Όρους Χρήσης· διορθώθηκε ανακριβής αναφορά σε DWD στην Πολιτική Cookies." },
+    { "version": "1.2", "date": "2026-08-08", "summary": "Προστέθηκε στην Πολιτική Απορρήτου ενότητα για τον προαιρετικό λογαριασμό Google και τις φωτογραφίες χρηστών: τι λαμβάνουμε από τη Google, ότι κάθε φωτογραφία ελέγχεται από άνθρωπο πριν δημοσιευθεί, ότι τα μεταδεδομένα τοποθεσίας αφαιρούνται στη συσκευή, και ότι μια εγκεκριμένη φωτογραφία δημοσιεύεται με συντομευμένο όνομα και ποτέ με email. Η άδεια δημοσίευσης καλυπτόταν ήδη από την ενότητα 7 των Όρων Χρήσης." }
   ],
   "operator": {
     "legalName": "MARIS AND CO Ο.Ε.",
@@ -157,6 +158,7 @@
           { "p": "Δεδομένα καιρού/θάλασσας. Οι κλήσεις προς παρόχους καιρού/θαλάσσιων δεδομένων γίνονται κατά κανόνα με συντεταγμένες παραλιών και όχι με προσωπικά στοιχεία χρηστών. Δεν αποστέλλουμε όνομα, email ή προφίλ σε παρόχους καιρού (π.χ. Open-Meteo/Open-Meteo Marine, Meteomatics κλπ.)." },
           { "p": "Ιστορικό τοποθεσίας. Δεν αποθηκεύουμε ιστορικό τοποθεσίας. Το στίγμα, όταν χρησιμοποιείται, εξυπηρετεί άμεσα τη σύσταση/πρόταση κοντινών παραλιών και δεν διατηρείται ως ιστορικό κινήσεων. Ενδέχεται να τηρούμε μόνο ανώνυμα/συγκεντρωτικά στατιστικά χρήσης ανά περιοχή, χωρίς ταυτοποίηση." },
           { "p": "Ειδικές κατηγορίες (άρθρο 9 ΓΚΠΔ). Δεν συλλέγουμε ούτε επιδιώκουμε να συλλέξουμε δεδομένα ειδικών κατηγοριών." },
+          { "p": "Λογαριασμός & φωτογραφίες (προαιρετικά). Αν συνδεθείτε με Google, λαμβάνουμε από τη Google το όνομα, τη διεύθυνση email και τη φωτογραφία προφίλ σας, ώστε να αναγνωρίζουμε τον λογαριασμό σας και να συγχρονίζουμε τις αποθηκευμένες παραλίες σας σε όλες τις συσκευές σας. Αν ανεβάσετε φωτογραφία παραλίας, αυτή αποθηκεύεται σε ιδιωτικό χώρο και ελέγχεται από άνθρωπο πριν από οποιαδήποτε δημοσίευση· τα κρυμμένα μεταδεδομένα του αρχείου, περιλαμβανομένου του σημείου λήψης, αφαιρούνται στη συσκευή σας πριν από την αποστολή. Αν η φωτογραφία εγκριθεί, δημοσιεύεται στη σελίδα της παραλίας μαζί με συντομευμένη μορφή του ονόματός σας (π.χ. «Γιώργος Π.»)· η διεύθυνση email σας δεν δημοσιεύεται ποτέ. Αν απορριφθεί, το αρχείο διαγράφεται. Μπορείτε οποτεδήποτε να ζητήσετε την απόσυρση μιας δημοσιευμένης φωτογραφίας ή τη διαγραφή ολόκληρου του λογαριασμού σας στο {privacyEmail}." },
           { "h": "3. Σκοποί & νομικές βάσεις" },
           { "p": "Επεξεργαζόμαστε δεδομένα με νόμιμη βάση (άρθρο 6 ΓΚΠΔ):" },
           { "table": { "head": ["Σκοπός", "Νομική βάση"], "rows": [
@@ -231,6 +233,7 @@
           { "p": "Weather/sea data. Calls to weather/marine data providers are, as a rule, made with beach coordinates and not with users' personal details. We do not send name, email or profile to weather providers (e.g. Open-Meteo/Open-Meteo Marine, Meteomatics, etc.)." },
           { "p": "Location history. We do not store location history. Device position, when used, directly serves the recommendation/suggestion of nearby beaches and is not retained as a movement history. We may keep only anonymous/aggregate usage statistics per area, without identification." },
           { "p": "Special categories (Article 9 GDPR). We do not collect nor seek to collect special-category data." },
+          { "p": "Account & photos (optional). If you sign in with Google, we receive your name, email address and profile picture from Google, in order to identify your account and sync your saved beaches across your devices. If you upload a beach photo, it is stored privately and reviewed by a person before any publication; the file's hidden metadata, including where it was taken, is removed on your device before it is sent. If the photo is approved, it is published on the beach page together with a shortened form of your name (e.g. «George P.»); your email address is never published. If it is rejected, the file is deleted. You may at any time request the withdrawal of a published photo or the deletion of your entire account at {privacyEmail}." },
           { "h": "3. Purposes & legal bases" },
           { "p": "We process data on a lawful basis (Article 6 GDPR):" },
           { "table": { "head": ["Purpose", "Legal basis"], "rows": [
