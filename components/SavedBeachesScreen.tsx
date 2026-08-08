@@ -61,19 +61,19 @@ const BACK: Copy = {
 // it was worth doing. This version answers the question the screen exists for.
 
 const EMPTY_TITLE: Copy = {
-  en: 'Your beaches will live here',
-  gr: 'Εδώ θα ζουν οι παραλίες σου',
-  de: 'Hier leben deine Strände',
-  it: 'Qui vivranno le tue spiagge',
-  fr: 'Vos plages vivront ici',
+  en: 'Build your own list',
+  gr: 'Φτιάξε τη δική σου λίστα',
+  de: 'Bau dir deine eigene Liste',
+  it: 'Crea la tua lista',
+  fr: 'Composez votre liste',
 };
 
 const EMPTY_WHY: Copy = {
-  en: 'Save the beaches you care about and every morning this screen tells you which of them is worth the drive today — the wind and the sea change daily, and each cove answers differently.',
-  gr: 'Αποθήκευσε τις παραλίες που σε ενδιαφέρουν και κάθε πρωί αυτή η οθόνη θα σου λέει ποια από αυτές αξίζει σήμερα — ο αέρας και η θάλασσα αλλάζουν κάθε μέρα, και κάθε όρμος απαντά διαφορετικά.',
-  de: 'Speichere die Strände, die dich interessieren, und dieser Bildschirm sagt dir jeden Morgen, welcher davon sich heute lohnt — Wind und Meer ändern sich täglich, und jede Bucht antwortet anders.',
-  it: 'Salva le spiagge che ti interessano e ogni mattina questa schermata ti dirà quale vale la pena oggi — vento e mare cambiano ogni giorno, e ogni cala risponde in modo diverso.',
-  fr: "Enregistrez les plages qui vous intéressent : chaque matin, cet écran vous dira laquelle vaut le détour aujourd'hui — le vent et la mer changent chaque jour, et chaque crique répond différemment.",
+  en: 'Tap the heart on any beach you like the look of. After that you stop checking them one by one: this screen puts today’s conditions for all of them in one place, and the wind changes the answer every day.',
+  gr: 'Πάτα την καρδιά σε όποια παραλία σου αρέσει. Μετά σταματάς να τις ελέγχεις μία-μία: εδώ τις βλέπεις όλες μαζί με τις σημερινές συνθήκες τους, και ο αέρας αλλάζει την απάντηση κάθε μέρα.',
+  de: 'Tippe bei jedem Strand, der dir gefällt, auf das Herz. Danach musst du sie nicht mehr einzeln durchgehen: hier stehen sie alle mit den heutigen Bedingungen, und der Wind ändert die Antwort täglich.',
+  it: 'Tocca il cuore su ogni spiaggia che ti piace. Poi smetti di controllarle una per una: qui le vedi tutte insieme con le condizioni di oggi, e il vento cambia la risposta ogni giorno.',
+  fr: "Touchez le cœur sur chaque plage qui vous plaît. Ensuite vous ne les vérifiez plus une par une : cet écran les réunit avec les conditions du jour, et le vent change la réponse chaque jour.",
 };
 
 const STEPS: Record<LanguageCode, [string, string, string]> = {

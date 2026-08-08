@@ -37,6 +37,7 @@ import { deleteAccount } from './services/authService';
 // Type-only: the component itself stays behind the lazy import below.
 import type { PhotoBeachOption } from './components/photos/AddBeachPhotoSheet';
 import { useFavoritesSync, syncFavoriteToggle } from './hooks/useFavoritesSync';
+import { usePreferencesSync } from './hooks/usePreferencesSync';
 import { useBeaches } from './hooks/useBeaches';
 import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
@@ -2018,6 +2019,11 @@ export const App: React.FC = () => {
   // signed in — no network, no Supabase library, no change to the line above.
   const auth = useAuth();
   useFavoritesSync({ userId: auth.user?.id ?? null, onFavorites: setFavorites });
+  usePreferencesSync({
+    userId: auth.user?.id ?? null,
+    preferences,
+    onRemotePreferences: setPreferences,
+  });
 
   // The photo-upload sheet. `beach` is set when it was opened from a beach page
   // (nobody should have to search for the beach they are already looking at) and
@@ -7451,12 +7457,14 @@ export const App: React.FC = () => {
         isSignedIn={auth.isSignedIn}
         accountName={auth.user?.name ?? auth.user?.email ?? null}
         accountEmail={auth.user?.email ?? null}
+        accountUserId={auth.user?.id ?? null}
         accountAvatarUrl={auth.user?.avatarUrl ?? null}
         savedCount={favorites.length}
         savedOtherIslandsCount={savedOtherIslandsCount}
         onSignIn={() => { void auth.signIn(); }}
         onSignOut={() => { void auth.signOut(); }}
         onDeleteAccount={deleteAccount}
+        onAddPhoto={() => handleAddPhoto('account_panel')}
         forecastSlot={showHeaderForecast && !showLanding ? (
           <>
             {isStartupLocationPromptOpen && (

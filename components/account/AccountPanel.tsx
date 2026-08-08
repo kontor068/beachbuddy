@@ -21,7 +21,8 @@
 //     exist yet is a debt paid with trust.
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronDown, ChevronRight, Heart, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
+import { Camera, ChevronDown, ChevronRight, Clock, Heart, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
+import { EMPTY_CONTRIBUTIONS, getMyContributions, type MyContributions } from '../../services/myContributions';
 import { getLocalizedCopy, type SupportedLanguage } from '../../utils/i18n';
 
 export interface AccountPanelProps {
@@ -29,9 +30,13 @@ export interface AccountPanelProps {
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
+  /** Needed to read this person's own uploads; null disables that section. */
+  userId?: string | null;
   savedCount: number;
   savedOtherIslandsCount?: number;
   onOpenSaved: () => void;
+  /** Opens the upload sheet. Absent ⇒ the photo section offers no way in. */
+  onAddPhoto?: () => void;
   onSignOut: () => void;
   onDeleteAccount: () => Promise<{ ok: boolean; error?: string }>;
   onClose: () => void;
@@ -83,6 +88,12 @@ const COPY: Record<SupportedLanguage, Copy> = {
     dataSettings: 'Τις ρυθμίσεις αναζήτησης που διάλεξες.',
     dataNone: 'Τίποτα άλλο. Δεν κρατάμε πού βρίσκεσαι, ούτε σε ποιες παραλίες πήγες.',
     dataPrivacyLink: 'Διάβασε την πολιτική απορρήτου',
+    photosTitle: 'Οι φωτογραφίες σου',
+    photosNone: 'Δεν μας έχεις στείλει φωτογραφία ακόμη.',
+    photosPending: '{n} περιμένουν έλεγχο',
+    photosApproved: '{n} δημοσιευμένες',
+    photosRejected: '{n} δεν πέρασαν',
+    photosAdd: 'Στείλε φωτογραφία',
     signOut: 'Αποσύνδεση',
     signOutHint: 'Οι παραλίες σου μένουν στον λογαριασμό.',
     del: 'Διαγραφή λογαριασμού',
@@ -107,6 +118,12 @@ const COPY: Record<SupportedLanguage, Copy> = {
     dataSettings: 'The search settings you chose.',
     dataNone: "Nothing else. We don't keep where you are, or which beaches you went to.",
     dataPrivacyLink: 'Read the privacy policy',
+    photosTitle: 'Your photos',
+    photosNone: "You haven't sent us a photo yet.",
+    photosPending: '{n} waiting to be checked',
+    photosApproved: '{n} published',
+    photosRejected: "{n} didn't make it",
+    photosAdd: 'Send a photo',
     signOut: 'Sign out',
     signOutHint: 'Your beaches stay on your account.',
     del: 'Delete account',
@@ -131,6 +148,12 @@ const COPY: Record<SupportedLanguage, Copy> = {
     dataSettings: 'Die Sucheinstellungen, die du gewählt hast.',
     dataNone: 'Sonst nichts. Wir speichern nicht, wo du bist oder an welchen Stränden du warst.',
     dataPrivacyLink: 'Datenschutzerklärung lesen',
+    photosTitle: 'Deine Fotos',
+    photosNone: 'Du hast uns noch kein Foto geschickt.',
+    photosPending: '{n} warten auf Prüfung',
+    photosApproved: '{n} veröffentlicht',
+    photosRejected: '{n} nicht übernommen',
+    photosAdd: 'Foto schicken',
     signOut: 'Abmelden',
     signOutHint: 'Deine Strände bleiben in deinem Konto.',
     del: 'Konto löschen',
@@ -155,6 +178,12 @@ const COPY: Record<SupportedLanguage, Copy> = {
     dataSettings: 'Les réglages de recherche que vous avez choisis.',
     dataNone: 'Rien d\'autre. Nous ne gardons ni où vous êtes, ni les plages où vous êtes allé.',
     dataPrivacyLink: 'Lire la politique de confidentialité',
+    photosTitle: 'Vos photos',
+    photosNone: "Vous ne nous avez pas encore envoyé de photo.",
+    photosPending: '{n} en attente de vérification',
+    photosApproved: '{n} publiées',
+    photosRejected: "{n} non retenues",
+    photosAdd: 'Envoyer une photo',
     signOut: 'Se déconnecter',
     signOutHint: 'Vos plages restent sur votre compte.',
     del: 'Supprimer le compte',
@@ -179,6 +208,12 @@ const COPY: Record<SupportedLanguage, Copy> = {
     dataSettings: 'Le impostazioni di ricerca che hai scelto.',
     dataNone: 'Nient\'altro. Non conserviamo dove sei, né in quali spiagge sei stato.',
     dataPrivacyLink: 'Leggi l\'informativa sulla privacy',
+    photosTitle: 'Le tue foto',
+    photosNone: 'Non ci hai ancora mandato una foto.',
+    photosPending: '{n} in attesa di controllo',
+    photosApproved: '{n} pubblicate',
+    photosRejected: '{n} non accettate',
+    photosAdd: 'Manda una foto',
     signOut: 'Esci',
     signOutHint: 'Le tue spiagge restano sul tuo account.',
     del: 'Elimina account',
@@ -198,14 +233,26 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
   name,
   email,
   avatarUrl,
+  userId,
   savedCount,
   savedOtherIslandsCount = 0,
   onOpenSaved,
+  onAddPhoto,
   onSignOut,
   onDeleteAccount,
   onClose,
 }) => {
   const copy = getLocalizedCopy(language, COPY);
+  // Fetched when the panel opens rather than kept in App: it is one small query
+  // that only matters while this panel is on screen, and nobody else needs it.
+  const [contributions, setContributions] = useState<MyContributions>(EMPTY_CONTRIBUTIONS);
+  useEffect(() => {
+    if (!userId) return undefined;
+    let cancelled = false;
+    void getMyContributions(userId).then(result => { if (!cancelled) setContributions(result); });
+    return () => { cancelled = true; };
+  }, [userId]);
+
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
@@ -350,6 +397,55 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
             <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-cyan-600" aria-hidden="true" />
           </span>
         </button>
+
+        {/* WHAT HAPPENED TO WHAT YOU GAVE US.
+            The upload sheet promises "a person checks it". Without this, that
+            promise has no page behind it: a photo is sent and then nothing —
+            no confirmation, no verdict, no sign it ever arrived. Silence reads
+            as "lost", and nobody sends a second photo after losing the first.
+            Rejections are shown for the same reason, plainly and without a
+            reason attached, because an unexplained "no" is still more honest
+            than a disappearance. */}
+        {userId && onAddPhoto && (
+          <div className="mt-2 rounded-2xl bg-white/62 px-4 py-3 shadow-sm ring-1 ring-white/55">
+            <div className="flex min-w-0 items-center gap-3">
+              <Camera className="h-5 w-5 shrink-0 text-[#007a83]" aria-hidden="true" />
+              <span className="min-w-0 flex-1 truncate font-bold text-slate-800">{copy.photosTitle}</span>
+            </div>
+
+            {contributions.photos.length === 0 ? (
+              <p className="mt-1.5 text-xs font-semibold leading-relaxed text-slate-600">{copy.photosNone}</p>
+            ) : (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {contributions.approved > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-extrabold text-emerald-700 ring-1 ring-emerald-100">
+                    {copy.photosApproved.replace('{n}', String(contributions.approved))}
+                  </span>
+                )}
+                {contributions.pending > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-extrabold text-amber-700 ring-1 ring-amber-100">
+                    <Clock className="h-3 w-3" aria-hidden="true" />
+                    {copy.photosPending.replace('{n}', String(contributions.pending))}
+                  </span>
+                )}
+                {contributions.rejected > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-extrabold text-slate-600 ring-1 ring-slate-200">
+                    {copy.photosRejected.replace('{n}', String(contributions.rejected))}
+                  </span>
+                )}
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => { onClose(); onAddPhoto(); }}
+              className="mt-2.5 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#007a83] px-3.5 text-xs font-extrabold text-white transition hover:bg-[#00646c] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/40"
+            >
+              <Camera className="h-3.5 w-3.5" aria-hidden="true" />
+              {copy.photosAdd}
+            </button>
+          </div>
+        )}
 
         {/* Transparency, folded away. Someone who came for their beaches should
             not have to walk past a wall of policy to reach them. */}

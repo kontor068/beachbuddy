@@ -28,11 +28,13 @@ interface HeaderProps {
   accountAvatarUrl?: string | null;
   isSignedIn?: boolean;
   accountEmail?: string | null;
+  accountUserId?: string | null;
   savedCount?: number;
   savedOtherIslandsCount?: number;
   onSignIn?: () => void;
   onSignOut?: () => void;
   onDeleteAccount?: () => Promise<{ ok: boolean; error?: string }>;
+  onAddPhoto?: () => void;
 }
 
 const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
@@ -82,11 +84,13 @@ const Header: React.FC<HeaderProps> = ({
   accountAvatarUrl,
   isSignedIn = false,
   accountEmail,
+  accountUserId,
   savedCount = 0,
   savedOtherIslandsCount = 0,
   onSignIn,
   onSignOut,
   onDeleteAccount,
+  onAddPhoto,
   onOpenFavorites,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
@@ -267,10 +271,12 @@ const Header: React.FC<HeaderProps> = ({
                     language={language}
                     name={accountName ?? null}
                     email={accountEmail ?? null}
+                    userId={accountUserId ?? null}
                     avatarUrl={accountAvatarUrl ?? null}
                     savedCount={savedCount}
                     savedOtherIslandsCount={savedOtherIslandsCount}
                     onOpenSaved={() => onOpenFavorites?.()}
+                    onAddPhoto={onAddPhoto}
                     onSignOut={() => {
                       setIsAccountMenuOpen(false);
                       onSignOut?.();

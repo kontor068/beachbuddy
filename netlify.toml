@@ -55,6 +55,21 @@
   to = "/.netlify/functions/account-delete"
   status = 200
 
+# Supabase Database Webhook → "someone sent a photo" push, with approve/reject
+# buttons. Gated by UGC_WEBHOOK_SECRET (unset ⇒ 403).
+[[redirects]]
+  from = "/api/ugc-hook"
+  to = "/.netlify/functions/ugc-hook"
+  status = 200
+
+# The tap on those buttons comes back here. Two gates: Telegram's own
+# secret_token header AND the presser's chat id — the button publishes content
+# to a crawled page, so one gate was not enough.
+[[redirects]]
+  from = "/api/telegram-hook"
+  to = "/.netlify/functions/telegram-webhook"
+  status = 200
+
 # Moderation queue for visitor photos and reviews. Gated by UGC_ADMIN_KEY (unset ⇒
 # 403). Nothing a visitor uploads is public until it is approved here — or from the
 # Telegram buttons, which call the same lib/ugcModeration.mjs.

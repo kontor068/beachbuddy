@@ -69,11 +69,17 @@ self.addEventListener('fetch', event => {
   // 1. App shell / page navigations (Network First)
   // Always prefer the latest index.html so the app imports the current hashed chunks.
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+    // The OAuth return page is a deliberately stripped copy of the shell (no
+    // canonical, no structured data, noindex). Every navigation overwrites the
+    // cached '/index.html', so letting this one through would make that stripped
+    // copy the offline fallback for the whole site until the next online visit.
+    const isAuthCallback = url.pathname.replace(/\/+$/, '') === '/auth/callback';
+
     event.respondWith(
       fetch(event.request, { cache: 'no-store' })
         .then(networkResponse => {
           const response = stripRedirect(networkResponse);
-          putInCache('/index.html', response);
+          if (!isAuthCallback) putInCache('/index.html', response);
           return response;
         })
         .catch(() => matchCache('/index.html').then(cached => cached || Response.error()))
