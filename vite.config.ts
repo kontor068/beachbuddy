@@ -145,7 +145,30 @@ export default defineConfig(({ mode }) => {
                   return 'beach-ui';
                 }
 
+                // Accounts. Kept in its own chunk so that signing in is the only
+                // thing that ever downloads it — a visitor who never logs in (the
+                // overwhelming majority) pays nothing for the feature existing.
+                // Anything added here must stay off the import path of App.tsx.
+                if (isAnyProjectModule(id, [
+                  'components/account/AccountPanel.tsx',
+                  'components/auth/AuthCallbackScreen.tsx',
+                  'hooks/useAuth.ts',
+                  'hooks/useFavoritesSync.ts',
+                  'services/authService.ts',
+                  'services/supabaseClient.ts',
+                ])) {
+                  return 'account-ui';
+                }
+
                 return undefined;
+              }
+
+              // The Supabase SDK is ~40-60 KB gzipped — bigger than the budget has
+              // room for in the entry chunk (see scripts/auditBundlePerformance.mjs).
+              // It is only ever reached through a dynamic import in
+              // services/supabaseClient.ts, and this keeps it that way.
+              if (normalizedId.includes('node_modules/@supabase')) {
+                return 'supabase-vendor';
               }
 
               if (normalizedId.includes('node_modules/react/') || normalizedId.includes('node_modules/react-dom/') || normalizedId.includes('node_modules/scheduler/')) {

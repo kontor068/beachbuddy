@@ -72,6 +72,31 @@ export type LandingCopy = {
      */
     askLink: string;
   };
+  /**
+   * The community ask: sign in, send us your best beach photos, see them on the
+   * beach cards. It is the only section on this page that asks for something
+   * instead of giving something, which is why it sits AFTER the manifesto — by
+   * then the page has already shown its working and earned the right to ask.
+   *
+   * The three steps are load-bearing, not decoration: the honest version of this
+   * offer includes "a person checks it first", and burying that turns an
+   * approval queue into a broken promise the first time a photo does not appear.
+   */
+  photos: {
+    badge: string;
+    overline: string;
+    title: string;
+    /** Substring of `title` shown in blue. Must appear verbatim in `title`. */
+    titleAccent: string;
+    body: string;
+    steps: { title: string; body: string }[];
+    /** Signed out — the click starts Google sign-in. */
+    cta: string;
+    /** Already signed in — the click opens the upload sheet directly. */
+    ctaSignedIn: string;
+    /** What the account does BESIDES photos, so signing in is worth it either way. */
+    note: string;
+  };
   story: {
     overline: string;
     title: string;
@@ -207,6 +232,30 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       more: 'Πώς δουλεύει το CalmBeach',
       askLink: 'Ξέρεις κάτι που δεν ξέρουμε; Πες μας',
     },
+    photos: {
+      badge: 'ΝΕΟ',
+      overline: 'Φωτογραφίες από εσένα',
+      // The promise is the reward, and the reward is specific: not "join the
+      // community" (nobody wants to join a community), but "your photo, on the
+      // card, with your name on it".
+      //
+      // REWRITTEN 08/08/2026 because it read as machine-written. The tells were
+      // an em-dash splicing every title, clipped verbless fragments ("Ten
+      // seconds, no new password"), and three steps in identical rhythm. Full
+      // sentences, one idea each, and the small concession that our own photos
+      // are worse — a claim no template makes about itself.
+      title: 'Η φωτογραφία σου είναι σίγουρα καλύτερη από τη δική μας',
+      titleAccent: 'καλύτερη από τη δική μας',
+      body: 'Οι μισές παραλίες εδώ δεν έχουν καμία φωτογραφία. Κι όσες έχουν, συνήθως δείχνουν κάτι γενικό που τράβηξε κάποιος περαστικός. Αν πήγες φέτος και έβγαλες μια καλή, στείλ’ την μας. Θα μπει στη σελίδα της παραλίας. Το όνομά σου από κάτω, μόνο αν το θέλεις.',
+      steps: [
+        { title: 'Μπες με Google', body: 'Δεν φτιάχνεις καινούριο κωδικό. Μπαίνεις με αυτόν που έχεις ήδη.' },
+        { title: 'Διάλεξε τη φωτογραφία', body: 'Στείλ’ την όπως είναι από το κινητό.' },
+        { title: 'Την κοιτάει άνθρωπος', body: 'Δεν ανεβαίνει μόνη της. Αν είναι καλή, θα τη δεις στη σελίδα της παραλίας.' },
+      ],
+      cta: 'Μπες και στείλε φωτογραφία',
+      ctaSignedIn: 'Στείλε φωτογραφία',
+      note: 'Με τον λογαριασμό κρατάς και τις αγαπημένες σου παραλίες, σε όποια συσκευή κι αν μπεις.',
+    },
     // The page's one warm, human moment. It lands right after the dark manifesto
     // on purpose: that band is the institutional voice (what we measure, where we
     // stop), this one is the people behind it.
@@ -306,6 +355,21 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       more: 'How CalmBeach works',
       askLink: 'Know something we don’t? Tell us',
     },
+    photos: {
+      badge: 'NEW',
+      overline: 'Photos from you',
+      title: 'Your photo is better than ours',
+      titleAccent: 'better than ours',
+      body: 'Half the beaches here have no photo at all. The ones that do usually show something generic that a passer-by took. If you went this summer and got a good one, send it over. It goes on the beach page. Your name underneath it, only if you want it there.',
+      steps: [
+        { title: 'Sign in with Google', body: 'There is no new password to invent. You use the one you already have.' },
+        { title: 'Pick the photo', body: 'Send it straight from your phone, as it is.' },
+        { title: 'A person looks at it', body: 'It does not go up on its own. If it is good, you will see it on the beach page.' },
+      ],
+      cta: 'Sign in and send a photo',
+      ctaSignedIn: 'Send a photo',
+      note: 'The account also keeps your saved beaches, whichever device you sign in from.',
+    },
     story: {
       overline: 'Who we are',
       title: 'We grew up with the sea next door',
@@ -385,6 +449,21 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       more: 'Wie CalmBeach funktioniert',
       askLink: 'Weißt du etwas, das wir nicht wissen? Sag es uns',
     },
+    photos: {
+      badge: 'NEU',
+      overline: 'Fotos von dir',
+      title: 'Dein Foto ist besser als unseres',
+      titleAccent: 'besser als unseres',
+      body: 'Die Hälfte der Strände hier hat überhaupt kein Foto. Und die anderen zeigen meistens irgendetwas Beliebiges, das jemand im Vorbeigehen aufgenommen hat. Wenn du diesen Sommer da warst und ein gutes Bild hast, schick es uns. Es kommt auf die Strandseite. Dein Name darunter, nur wenn du das möchtest.',
+      steps: [
+        { title: 'Mit Google anmelden', body: 'Du musst dir kein neues Passwort ausdenken. Du nimmst das, das du schon hast.' },
+        { title: 'Foto aussuchen', body: 'Schick es direkt vom Handy, so wie es ist.' },
+        { title: 'Ein Mensch schaut es an', body: 'Es geht nicht von allein online. Wenn es gut ist, siehst du es auf der Strandseite.' },
+      ],
+      cta: 'Anmelden und Foto schicken',
+      ctaSignedIn: 'Foto schicken',
+      note: 'Das Konto behält auch deine gespeicherten Strände, egal von welchem Gerät du dich anmeldest.',
+    },
     story: {
       overline: 'Wer wir sind',
       title: 'Wir sind mit dem Meer vor der Tür aufgewachsen',
@@ -462,6 +541,21 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       more: 'Comment fonctionne CalmBeach',
       askLink: 'Vous savez quelque chose que nous ignorons ? Dites-le-nous',
+    },
+    photos: {
+      badge: 'NOUVEAU',
+      overline: 'Vos photos',
+      title: 'Votre photo est meilleure que la nôtre',
+      titleAccent: 'meilleure que la nôtre',
+      body: "La moitié des plages ici n'ont aucune photo. Et celles qui en ont montrent souvent quelque chose de banal, pris par quelqu'un de passage. Si vous y êtes allé cet été et que vous avez une belle photo, envoyez-la-nous. Elle ira sur la page de la plage. Votre nom en dessous, seulement si vous le voulez.",
+      steps: [
+        { title: 'Connectez-vous avec Google', body: "Il n'y a pas de nouveau mot de passe à inventer. Vous utilisez celui que vous avez déjà." },
+        { title: 'Choisissez la photo', body: 'Envoyez-la telle quelle depuis votre téléphone.' },
+        { title: 'Une personne la regarde', body: "Elle ne se publie pas toute seule. Si elle est belle, vous la verrez sur la page de la plage." },
+      ],
+      cta: 'Se connecter et envoyer une photo',
+      ctaSignedIn: 'Envoyer une photo',
+      note: "Le compte garde aussi vos plages enregistrées, quel que soit l'appareil.",
     },
     story: {
       overline: 'Qui nous sommes',
@@ -542,6 +636,21 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       ],
       more: 'Come funziona CalmBeach',
       askLink: 'Sai qualcosa che non sappiamo? Diccelo',
+    },
+    photos: {
+      badge: 'NUOVO',
+      overline: 'Le tue foto',
+      title: 'La tua foto è migliore della nostra',
+      titleAccent: 'migliore della nostra',
+      body: 'Metà delle spiagge qui non ha nessuna foto. E quelle che ce l’hanno mostrano di solito qualcosa di generico, scattato da qualcuno di passaggio. Se ci sei stato quest’estate e hai una foto bella, mandacela. Finisce sulla pagina della spiaggia. Il tuo nome sotto, solo se lo vuoi.',
+      steps: [
+        { title: 'Accedi con Google', body: 'Non devi inventarti una password nuova. Usi quella che hai già.' },
+        { title: 'Scegli la foto', body: 'Mandala dal telefono così com’è.' },
+        { title: 'La guarda una persona', body: 'Non va online da sola. Se è bella, la vedrai sulla pagina della spiaggia.' },
+      ],
+      cta: 'Accedi e manda una foto',
+      ctaSignedIn: 'Manda una foto',
+      note: 'L’account tiene anche le tue spiagge salvate, da qualunque dispositivo entri.',
     },
     story: {
       overline: 'Chi siamo',

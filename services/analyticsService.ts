@@ -70,6 +70,24 @@ export type AnalyticsEvent =
   | 'landing_story_read'
   | 'landing_feedback_submitted'
   | 'landing_feedback_failed'
+  // The photo-contribution funnel, which only exists because accounts do. It is
+  // measured end to end on purpose: the whole point of accounts is whether they
+  // produce photos, and every step below is a place that can silently swallow
+  // the intent.
+  //   landing_photos_viewed   — the announcement was actually seen (denominator)
+  //   landing_photos_cta_clicked / photo_sheet_sign_in_clicked — intent
+  //   photo_sheet_opened      — the form was reached
+  //   photo_prepare_failed    — their file could not be turned into an upload
+  //   photo_upload_failed / _succeeded — the end of the funnel
+  // `signed_in` on the first two separates "wants to contribute" from "already
+  // has an account", which are different populations with different drop-off.
+  | 'landing_photos_viewed'
+  | 'landing_photos_cta_clicked'
+  | 'photo_sheet_opened'
+  | 'photo_sheet_sign_in_clicked'
+  | 'photo_prepare_failed'
+  | 'photo_upload_failed'
+  | 'photo_upload_succeeded'
   // Multi-day trip planner (components/planner/). `days` tells us how long a
   // stay we answered for, and `source` separates the three audiences —
   // 'auto' (we planned the next 3 days unasked — an IMPRESSION), 'search_intent'

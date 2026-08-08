@@ -7,6 +7,7 @@ import { useNationalConditions } from '../../hooks/useNationalConditions';
 import { LandingHero } from './LandingHero';
 import { TodayRegionsSection } from './TodayRegionsSection';
 import { HowWeDecideSection } from './HowWeDecideSection';
+import { CommunityPhotosSection } from './CommunityPhotosSection';
 import { OurStorySection } from './OurStorySection';
 
 // The national landing shown to first-time / no-region visitors. It follows the
@@ -33,6 +34,11 @@ interface LandingViewProps {
   locationError?: string | null;
   onSelectIsland: (island: Island) => void;
   onOpenIslandSelector: () => void;
+  /** False when accounts are unconfigured — the photo section then does not render. */
+  isAuthAvailable: boolean;
+  isSignedIn: boolean;
+  /** Signed out → sign in; signed in → open the upload sheet. */
+  onAddPhoto: () => void;
 }
 
 export const LandingView: React.FC<LandingViewProps> = ({
@@ -49,6 +55,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
   locationError,
   onSelectIsland,
   onOpenIslandSelector,
+  isAuthAvailable,
+  isSignedIn,
+  onAddPhoto,
 }) => {
   const conditions = useNationalConditions();
 
@@ -112,6 +121,22 @@ export const LandingView: React.FC<LandingViewProps> = ({
             trackEvent('landing_all_regions_clicked');
             onOpenIslandSelector();
           }}
+        />
+      </div>
+
+      {/* MOVED UP 08/08/2026, above "how we decide", at Miltos's call.
+          The photo ask now sits straight after the region band, while the
+          visitor is still thinking about a specific coast they know — which is
+          exactly when "do you have a photo of one of these?" makes sense. Below
+          the methodology band it was the fourth thing on a long page, i.e.
+          invisible on a phone. The trade is deliberate: the ask now comes before
+          we have finished showing our working. */}
+      <div className="mt-14 sm:mt-20">
+        <CommunityPhotosSection
+          language={language}
+          isAuthAvailable={isAuthAvailable}
+          isSignedIn={isSignedIn}
+          onStart={onAddPhoto}
         />
       </div>
 
