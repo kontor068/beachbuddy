@@ -6233,8 +6233,17 @@ export const App: React.FC = () => {
    * the region-wide ranking this same render already pays for (and which IS memoised above the
    * early returns, where a hook belongs).
    */
-  const dayTurnNote = ((): string | undefined => {
-    const lead = recommendationSectionBeaches[0];
+  /**
+   * «ΔΕΝ ΚΡΑΤΑΕΙ ΟΛΗ ΜΕΡΑ» for whichever beach a surface is leading with.
+   *
+   * Made a function on 09/08/2026 because a SECOND surface needed the same sentence — the region
+   * podium — and the two surfaces lead with DIFFERENT beaches: `recommendationSectionBeaches` is
+   * the strong-wind / no-ideal preview set, while the region podium is
+   * `directoryTopRecommendationCards`. Passing the home page's sentence down to the region would
+   * have named a beach that is not on screen there, which is the same class of defect as a wrong
+   * hour. One rule, called twice with its own lead.
+   */
+  const buildDayTurnNote = (lead: SuitableBeach | undefined): string | undefined => {
     if (!lead || mapHourSlots.length < 2) return undefined;
     const day = baseDailyForecast?.date;
     if (!day || !isSameCalendarDay(day, athensNow())) return undefined;
@@ -6282,7 +6291,8 @@ export const App: React.FC = () => {
       fr: `${name} : ne tient pas toute la journée — ça se dégrade à partir de ${at}.`,
       it: `${name}: non regge tutto il giorno — dalle ${at} peggiora.`,
     });
-  })();
+  };
+  const dayTurnNote = buildDayTurnNote(recommendationSectionBeaches[0]);
   const exploreSectionLabel = isStrongSuitableSortOnly
     ? homeCopy.moreSuitableOptions[language]
     : isNoIdealFallbackSortOnly
@@ -6594,11 +6604,51 @@ export const App: React.FC = () => {
     ...directoryFallbackSource,
     ...directoryVisibleBeachCardSource,
   ].filter(isDirectoryTopRecommendationCandidate);
+  /**
+   * «ΚΑΜΙΑ ΔΕΝ ΕΙΝΑΙ ΙΔΑΝΙΚΗ» — the podium of last resort.
+   *
+   * The quality pool above is deliberately strict: mainstream access, verified static data, a sea
+   * gate. On a hard meltemi day nothing clears it, and until 09/08/2026 the answer block simply
+   * vanished — the page stopped answering «πού να πάμε;» on precisely the days the question is
+   * hardest. That is the wrong silence: the visitor is going to the beach anyway, and choosing FOR
+   * them between a lee shore and a windward one is the whole product.
+   *
+   * So when the strict pool is empty we still name three, ranked by shelter, and the block says
+   * out loud that none of them is ideal (BeachSearcherHome prints the warning subtitle from
+   * `shelteredFallbackPodium`). What does NOT relax is safety: a beach we tell people not to swim
+   * at, or one under a critical official warning, is never surfaced — those two filters are the
+   * floor, not the ranking.
+   *
+   * Decision by Miltos, 09/08/2026, over the alternative of staying silent.
+   */
+  const isShelteredFallbackCandidate = (item: SuitableBeach): boolean => {
+    if (item.swimmingComfort === 'avoid_swimming') return false;
+    if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
+    return true;
+  };
+  const directoryShelteredFallbackPool = (
+    directoryTopRecommendationCandidatePool.length > 0
+    || showNoIdealFallbackSection
+    || showStrongManageableSection
+  )
+    ? []
+    : prioritizeProtectedRecommendations(
+      getWindPriorityTopPickPool(
+        recommendableMapSuitableBeaches.filter(isShelteredFallbackCandidate),
+        currentBeaufort,
+        perBeachMapWind
+      ),
+      currentBeaufort,
+      perBeachMapWind
+    );
+  const isShelteredFallbackPodium = directoryShelteredFallbackPool.length > 0;
   const directoryTopRecommendationCandidateCount = showNoIdealFallbackSection
     ? noIdealFallbackCandidates.length
     : showStrongManageableSection
     ? windPreviewCandidates.length
-    : directoryTopRecommendationCandidatePool.length;
+    : directoryTopRecommendationCandidatePool.length > 0
+    ? directoryTopRecommendationCandidatePool.length
+    : directoryShelteredFallbackPool.length;
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
@@ -6612,7 +6662,7 @@ export const App: React.FC = () => {
     !mapToneFilter &&
     directoryTopRecommendationLimit > 0
   );
-  const directoryTopRecommendationCards = (() => {
+  const directoryTopRecommendationCardsRaw = (() => {
     if (!shouldShowDirectoryTopRecommendations) return [];
 
     const seenIds = new Set<number>();
@@ -6645,6 +6695,18 @@ export const App: React.FC = () => {
     addSource(directoryFallbackSource);
     addSource(directoryVisibleBeachCardSource);
 
+    // Last resort: nothing cleared the quality bar, so fill the podium from the shelter-ranked
+    // pool instead of rendering nothing. `addSource` cannot be reused — its predicate is the very
+    // gate that rejected everything — so these are appended directly, already ranked, and still
+    // subject to the two safety filters applied when the pool was built.
+    if (cards.length === 0 && directoryShelteredFallbackPool.length > 0) {
+      directoryShelteredFallbackPool.forEach(item => {
+        if (cards.length >= collectLimit || seenIds.has(item.beach.id)) return;
+        seenIds.add(item.beach.id);
+        cards.push(item);
+      });
+    }
+
     // In "Κοντά μου" the podium leads with the nearest beaches, not the highest-scoring
     // ones across the merged radius (a 35 km high-scorer should never sit above a closer
     // pick). Distance-sort the full qualifying set, then apply the display limit so the
@@ -6660,7 +6722,34 @@ export const App: React.FC = () => {
 
     return cards;
   })();
+  /**
+   * «ΜΕΧΡΙ ΤΙ ΩΡΑ» FOR THE THREE ON THE PODIUM — filled in here, and only here.
+   *
+   * The podium's beaches arrive from the MAP-aligned sources (mapSuitableBeaches and the pools
+   * built on it), which assemble their items by hand and carry no bestBeachTime — only the
+   * getSuitableBeaches path computes one. So every podium card asked for its best-time label and
+   * got undefined, and the card's «Καλύτερη ώρα» row silently never rendered.
+   *
+   * Computed for THE THREE, not for the region: calculateBestBeachTime walks a beach's hourly
+   * series, and doing that for ~2.850 beaches on every slider tick to label three cards would be
+   * absurd. Reads the same hourly series the rest of the app scores with, in the same precedence
+   * (own cluster → beach forecast → area), so the hour named here is the hour the numbers beside
+   * it came from.
+   */
+  const directoryTopRecommendationCards = directoryTopRecommendationCardsRaw.map(item => {
+    if (item.bestBeachTime) return item;
+    const hourly = beachAreaForecastById[item.beach.id]?.hourly
+      || selectedBeachForecasts[item.beach.id]?.hourly
+      || selectedForecast?.hourly;
+    if (!hourly || hourly.length === 0) return item;
+    const bestBeachTime = calculateBestBeachTime(hourly, item.beach);
+    return bestBeachTime ? { ...item, bestBeachTime } : item;
+  });
   const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
+  // The region podium's own day-turn sentence, about the beach the podium actually leads with.
+  // Silent by default: it speaks only when the day genuinely gets WORSE (utils/stayWindow's
+  // findWorseningTurnFromReadings), never to volunteer that things improve.
+  const directoryDayTurnNote = buildDayTurnNote(directoryTopRecommendationCards[0]);
   const shouldShowAllBeachesBelowTopRecommendations = Boolean(
     shouldShowDirectoryTopRecommendations &&
     currentBeaufort <= 2
@@ -7514,6 +7603,12 @@ export const App: React.FC = () => {
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
               topRecommendationCards={toneFilteredTopRecommendationCards}
+              // Same clock the home page's picks are ranked and labelled with, passed down rather
+              // than read again inside the component: a second `new Date()` down there is exactly
+              // how the device-clock bug got in (utils/athensTime.ts).
+              topPickNow={topPickNow}
+              shelteredFallbackPodium={isShelteredFallbackPodium}
+              dayTurnNote={mapToneFilter ? undefined : directoryDayTurnNote}
               suitableBeachCards={toneFilteredHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}

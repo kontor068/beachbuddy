@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  ChevronRight,
   CloudRain,
   CloudSun,
   Clock3,
@@ -52,6 +53,7 @@ import {
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
+import { getTopPickTimingLabel } from '../utils/topPickTiming';
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
@@ -142,6 +144,14 @@ interface BeachSearcherHomeProps {
   mapDayStrip?: React.ReactNode;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
+  /** The clock App ranked the picks with. Passed in so this component never starts a second one. */
+  topPickNow?: Date;
+  /** True when nothing cleared the quality bar and the podium is the shelter-ranked last resort.
+   *  The block then says so out loud instead of presenting three picks as if they were good. */
+  shelteredFallbackPodium?: boolean;
+  /** «Δεν κρατάει όλη μέρα — από τις 16:00 χειροτερεύει», about the beach the podium leads with.
+   *  Undefined — and therefore silent — whenever the day holds or only improves. */
+  dayTurnNote?: string;
   suitableBeachCards?: SuitableBeach[];
   suitableBeachTotalCount?: number;
   /** Localized time-window prefix from the map slider (e.g. "στις 15:00–18:00") used in the suitable/best-beaches headers. */
@@ -1435,6 +1445,47 @@ const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date |
   });
 };
 
+/**
+ * THE QUESTION THE PODIUM ANSWERS, printed above it.
+ *
+ * Until 09/08/2026 the top-3 carried a quiet «Top 3 επιλογές τώρα» in 12px between two hairlines —
+ * indistinguishable from the section heading of the list below it, so nothing on the page said
+ * that this block IS the answer. A rival ships the same three beaches under an explicit question.
+ * We ask it too, and the picks answer it directly underneath.
+ *
+ * WHEN IT SAYS «ΤΩΡΑ» AND WHEN IT DOES NOT: today with no hour chosen is present tense («τώρα»),
+ * never a «σήμερα» stamp — the standing rule against date-stamping dynamic copy. The moment the
+ * visitor moves the hour slider or picks another day, the question names that instead, because the
+ * cards under it then describe that moment and a stale «τώρα» would be the 31/07/2026 defect
+ * («Ήρεμα ΤΩΡΑ» over another hour's numbers) rebuilt one level up.
+ */
+const getTopRecommendationsQuestion = (
+  language: LanguageCode,
+  selectedDate: Date | undefined,
+  timePrefix?: string
+): string => {
+  const offset = getSelectedDayOffset(selectedDate, athensNow());
+  const when = timePrefix ?? (offset === 0 ? undefined : getSelectedDayPrefix(selectedDate, athensNow(), language));
+
+  if (!when) {
+    return getLocalizedCopy(language, {
+      en: 'Where should we go right now?',
+      gr: 'Πού να πάμε τώρα;',
+      fr: 'Où aller maintenant ?',
+      de: 'Wohin sollen wir jetzt?',
+      it: 'Dove andiamo adesso?',
+    });
+  }
+
+  return getLocalizedCopy(language, {
+    en: `Where should we go ${when}?`,
+    gr: `Πού να πάμε ${when};`,
+    fr: `Où aller ${when} ?`,
+    de: `Wohin sollen wir ${when}?`,
+    it: `Dove andiamo ${when}?`,
+  });
+};
+
 const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string): string => {
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
 
@@ -1594,6 +1645,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   mapDayStrip,
   mapPreview,
   topRecommendationCards,
+  topPickNow,
+  shelteredFallbackPodium = false,
+  dayTurnNote,
   suitableBeachCards,
   suitableBeachTotalCount,
   suitableTimePrefix,
@@ -2051,10 +2105,28 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       beach: item.beach,
       score: Math.max(0, Math.min(100, Math.round(item.score))),
       context: item,
+      // «Top μέχρι 15:00». Computed once here so the card below the map and the desktop summary
+      // beside it can never print two different hours for the same beach. Undefined — and then
+      // nothing is rendered — when the beach has no usable window (getTopPickTimingLabel returns
+      // undefined on state 'unknown'), which is the honest answer rather than a made-up hour.
+      timeLabel: getTopPickTimingLabel(item.bestBeachTime, selectedDate, language, topPickNow),
     }))
-  ), [topRecommendationCards]);
+  ), [topRecommendationCards, selectedDate, language, topPickNow]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
+  const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix);
+  // The honesty line for the last-resort podium. It replaces the ordinary «Top 3 …» subtitle
+  // rather than joining it: two subtitles, one boasting and one warning, is how a page ends up
+  // saying both things at once.
+  const topRecommendationsSubtitle = shelteredFallbackPodium
+    ? getLocalizedCopy(language, {
+      en: 'None of them is ideal right now — these are the most sheltered',
+      gr: 'Καμία δεν είναι ιδανική τώρα — αυτές είναι οι πιο προστατευμένες',
+      fr: "Aucune n'est idéale en ce moment — voici les plus abritées",
+      de: 'Keiner ist gerade ideal — das sind die geschütztesten',
+      it: 'Nessuna è ideale adesso — queste sono le più riparate',
+    })
+    : topRecommendationsLabel;
   // A low regional Beaufort is not by itself a licence to say «Όλες οι παραλίες κατάλληλες».
   // Measured on Evia at 3 Bft: 76 of 130 beaches were blue or yellow — the rest were capped by a
   // running sea — so the old wind-only test printed "all of them" above a list of 76. The list
@@ -3174,6 +3246,72 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       onMouseLeave: clearBeachHighlightOnMap,
     }),
   });
+  /**
+   * THE THREE PICKS, BESIDE THE MAP — three lines, desktop only.
+   *
+   * WHY LINES AND NOT THE CARDS. The right column is a fixed 24rem by deliberate design (see the
+   * map section below); three full decision cards do not fit in it, and the obvious alternative —
+   * moving the weather down to make room — was rejected: the weather is what EXPLAINS the pin
+   * colours the visitor is looking at, and separating the two leaves red pins on screen with
+   * nothing beside them saying it is blowing 6 Beaufort. So the answer sits above the weather in
+   * the same column, compressed to name + hour, and the full cards stay under the map where there
+   * is width for them.
+   *
+   * NOTHING IS RECOMPUTED HERE. The hour is the same `timeLabel` the card below prints, and the
+   * Beaufort is `perBeachMapWind` — the reading the map's own pin used. No tone, no colour: the
+   * list must never form a condition opinion of its own (validateConditionToneAgreement's
+   * the-list-does-not-colour-its-own-beaches), and a number is not a verdict.
+   *
+   * Hovering a line lights its pin, which is the entire reason this belongs beside the map rather
+   * than anywhere else on the page.
+   */
+  const topPicksSidebarSummary = !isMobileViewport && selectedIsland && hasTopRecommendationView && !infoOnly ? (
+    <section
+      className="rounded-2xl border border-sky-200 bg-white p-3 shadow-sm shadow-sky-900/5"
+      aria-label={topRecommendationsQuestion}
+    >
+      <h2 className="mb-2 text-[0.82rem] font-extrabold leading-tight text-slate-900">
+        {topRecommendationsQuestion}
+      </h2>
+      <ol className="space-y-1">
+        {topRecommendationBeachCards.map(({ beach, timeLabel }, index) => {
+          const localBeaufort = perBeachMapWind?.get(beach.id)?.beaufort ?? currentBeaufort;
+          const beaufortText = typeof localBeaufort === 'number'
+            ? `${localBeaufort} ${language === 'gr' ? 'Μπφ' : 'Bft'}`
+            : undefined;
+          const detail = [timeLabel, beaufortText].filter(Boolean).join(' · ');
+
+          return (
+            <li key={beach.id}>
+              <button
+                type="button"
+                onClick={() => onBeachClick(beach)}
+                {...beachCardHoverProps(beach.id)}
+                className="flex min-h-11 w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left transition hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              >
+                <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-black text-white shadow-sm ${
+                  index === 0 ? 'bg-amber-400' : index === 1 ? 'bg-slate-400' : 'bg-orange-300'
+                }`}>
+                  {index + 1}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[0.82rem] font-extrabold leading-tight text-slate-950">
+                    {displayBeachName(beach.name, language)}
+                  </span>
+                  {detail && (
+                    <span className="block truncate text-[11px] font-bold leading-tight text-slate-500">
+                      {detail}
+                    </span>
+                  )}
+                </span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  ) : null;
   const handleDesktopFilterSelect = (item: DesktopFilterItem) => {
     if (item.kind === 'preference') {
       onCategorySelect(item.key);
@@ -3413,7 +3551,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
                 className={`min-h-12 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 pl-4 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full sm:pl-5 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
-                  searchQuery.trim().length > 0 ? 'pr-[6.5rem]' : 'pr-14'
+                  searchQuery.trim().length > 0 ? 'pr-[8.75rem] lg:pr-[6.5rem]' : 'pr-24 lg:pr-14'
                 }`}
               />
               {searchQuery.trim().length > 0 && (
@@ -3424,12 +3562,33 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     setIsSearchSuggestionsOpen(false);
                     setActiveSearchSuggestionIndex(-1);
                   }}
-                  className="absolute right-14 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                  className="absolute right-[5.75rem] top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 lg:right-14"
                   aria-label={language === 'gr' ? 'Καθαρισμός αναζήτησης' : 'Clear search'}
                 >
                   <X className="h-4 w-4" aria-hidden="true" />
                 </button>
               )}
+              {/* Το «Φίλτρο» ζει μέσα στο πεδίο αναζήτησης κάτω από `lg`: στο κινητό η δεύτερη
+                  σειρά κουμπιών έσπρωχνε τον χάρτη και τις προτάσεις μια ολόκληρη γραμμή πιο
+                  κάτω, ενώ το εικονίδιο δίπλα στη λούπα διαβάζεται ως «στένεψε την αναζήτηση».
+                  Στο desktop μένει η inline μπάρα φίλτρων, οπότε εδώ κρύβεται. */}
+              <button
+                type="button"
+                onClick={onOpenFilters}
+                className="absolute right-[3.35rem] top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-[#007a83]/35 bg-cyan-50/85 text-[#007a83] transition hover:bg-cyan-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/40 lg:hidden"
+                aria-label={
+                  typeof activeFilterCount === 'number' && activeFilterCount > 0
+                    ? `${copy.filter} (${activeFilterCount})`
+                    : copy.filter
+                }
+              >
+                <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                {typeof activeFilterCount === 'number' && activeFilterCount > 0 && (
+                  <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[#007a83] px-1 text-[10px] font-extrabold leading-none text-white ring-2 ring-white tabular-nums">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
               <button
                 type="submit"
                 className="absolute right-1.5 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-[#007a83] text-white transition hover:bg-[#00646d] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2"
@@ -3498,8 +3657,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            <div className={`grid gap-1.5 sm:flex sm:items-center lg:flex-nowrap lg:justify-end ${(onShowNearbyBeaches ?? onUseCurrentLocation) ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              {(onShowNearbyBeaches ?? onUseCurrentLocation) && (
+            {/* Η σειρά κάτω από το πεδίο εμφανίζεται μόνο αν έχει κάτι να δείξει. Το «Κοντά μου»
+                φεύγει όταν βλέπεις ήδη τη λίστα «Κοντά μου» — το κουμπί θα ξαναέκανε αυτό που
+                μόλις έγινε. Το «Φίλτρο» μετακόμισε μέσα στο πεδίο αναζήτησης. */}
+            {(((onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion)
+              || (selectedIsland && directorySortOptions.length > 0)) && (
+            <div className="grid grid-cols-1 gap-1.5 sm:flex sm:items-center lg:flex-nowrap lg:justify-end">
+              {(onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion && (
                 <button
                   type="button"
                   onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
@@ -3516,23 +3680,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </span>
                 </button>
               )}
-              <button
-                type="button"
-                onClick={onOpenFilters}
-                className="inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full border border-[#007a83] bg-white px-2.5 text-[13px] font-bold leading-none text-slate-900 transition hover:bg-cyan-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm lg:hidden"
-              >
-                <SlidersHorizontal className="h-3.5 w-3.5 shrink-0 text-[#007a83] sm:h-4 sm:w-4" />
-                <span className="min-w-0 truncate">{copy.filter}</span>
-                {typeof activeFilterCount === 'number' && activeFilterCount > 0 && (
-                  <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#007a83] px-1.5 text-[11px] font-extrabold leading-none text-white ring-1 ring-cyan-100 tabular-nums">
-                    {activeFilterCount}
-                  </span>
-                )}
-              </button>
               {selectedIsland && directorySortOptions.length > 0 && (
                 renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
               )}
             </div>
+            )}
             {currentLocationError && (
               <p className="text-xs font-semibold text-rose-600 sm:col-span-2" role="alert">
                 {currentLocationError}
@@ -3614,11 +3766,22 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   {mapPreview}
                 </div>
               </div>
-              {conditionsOverviewContent && (
+              {(conditionsOverviewContent || topPicksSidebarSummary) && (
                 <div className={`mt-4 lg:col-span-1 lg:mt-0 lg:relative lg:min-h-0 ${
                   isWeatherColumnHidden ? 'lg:hidden' : ''
                 }`}>
-                  {conditionsOverviewContent}
+                  {/* Answer first, then the weather that explains it — in ONE column, so the
+                      Beaufort reading never leaves the side of the pins it accounts for. */}
+                  <div className="space-y-3 lg:absolute lg:inset-0 lg:flex lg:flex-col lg:gap-3 lg:space-y-0">
+                    {topPicksSidebarSummary && (
+                      <div className="lg:shrink-0">{topPicksSidebarSummary}</div>
+                    )}
+                    {conditionsOverviewContent && (
+                      <div className="lg:relative lg:min-h-0 lg:flex-1">
+                        {conditionsOverviewContent}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -3749,21 +3912,40 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             </>
           )}
 
+          {/* THE ANSWER BLOCK. Framed — border, tint, ring — so the three picks read as one thing
+              the page is telling you, not as the first three of the list below. The list's own
+              heading stays a plain hairline row, and the contrast between the two is the whole
+              point: same three beaches as before, but now something on the page says what they ARE. */}
           {selectedIsland && hasTopRecommendationView && !infoOnly && (
-            <section id="top-recommendations-section" className="mb-3 scroll-mt-[25rem] sm:mb-5 sm:scroll-mt-4">
-              <div className="mb-1.5 flex items-center justify-center gap-3 px-3 sm:mb-3 lg:px-5">
-                <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
-                <h2 className="line-clamp-2 min-w-0 max-w-full flex-[0_1_auto] text-center text-xs font-extrabold leading-tight tracking-normal text-slate-800 sm:text-sm">
-                  {topRecommendationsLabel}
+            <section
+              id="top-recommendations-section"
+              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-1 pt-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
+              aria-label={topRecommendationsQuestion}
+            >
+              <div className="mb-2 space-y-1 text-center sm:mb-3">
+                <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 [text-wrap:balance] sm:text-2xl">
+                  {topRecommendationsQuestion}
                 </h2>
-                <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
+                <p className={`text-xs font-bold leading-snug sm:text-sm ${
+                  shelteredFallbackPodium ? 'text-amber-900' : 'text-slate-600'
+                }`}>
+                  {topRecommendationsSubtitle}
+                </p>
+                {/* Amber is a register here ("mind the clock"), NOT a tone claim — no pin sits
+                    beside it and the sentence never states a condition level, it states an hour.
+                    Silent unless the day genuinely worsens; see App's buildDayTurnNote. */}
+                {dayTurnNote && (
+                  <p className="mx-auto max-w-2xl text-xs font-bold leading-snug text-amber-900 sm:text-sm">
+                    {dayTurnNote}
+                  </p>
+                )}
               </div>
 
               <div
                 ref={topRecommendationsCarouselRef}
-                className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
+                className="beach-card-carousel no-scrollbar -mx-3 flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain px-3 pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:-mx-5 sm:px-5 sm:pb-5 lg:snap-none"
               >
-                {topRecommendationBeachCards.map(({ beach, score, context }, index) => (
+                {topRecommendationBeachCards.map(({ beach, score, context, timeLabel }, index) => (
                   <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
                     {renderBeachDecisionCard(beach as BeachCardContext, {
                       score,
@@ -3773,6 +3955,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       showTodayScoreBadge: false,
                       alignExposureToMap: true,
                       windExposureMode: 'none',
+                      // «Μέχρι τι ώρα». The card has carried this slot since the top-pick work
+                      // (BeachCard's «Καλύτερη ώρα» row) and the region podium simply never fed
+                      // it — only the home preview did.
+                      topPickTimeLabel: timeLabel,
                     })}
                   </div>
                 ))}
