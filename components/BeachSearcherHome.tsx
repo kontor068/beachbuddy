@@ -38,6 +38,7 @@ import {
 import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
 import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
+import { getTopPickDistinguishers } from '../utils/topPickDistinguishers';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import type { CalmnessTone } from '../utils/suitabilityTone';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
@@ -2247,16 +2248,40 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     })
     : topRecommendationsLabel;
   // The desktop transparency rail beside the podium (Miltos, 09/08: «θέλω να είναι όλα με
-  // διαφάνεια»). Two rules keep it honest: the per-beach «γιατί» lines are the recommendation's
-  // OWN localized explanation — never authored here, so they can't contradict the pins — and the
-  // «πώς» bullets state only criteria, not thresholds or sector rules (decision 06/08: the
-  // methodology page draws that same line against copycats).
+  // διαφάνεια»). Two rules keep it honest: the «πώς» bullets state only criteria, not thresholds
+  // or sector rules (decision 06/08: the methodology page draws that same line against copycats),
+  // and the per-beach «γιατί» lines are computed, never authored — see below.
+  //
+  // The first version printed each pick's own `explanation`, and Miltos caught it immediately:
+  // on a calm day all three said «φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες
+  // σήμερα. Ζεστή μέρα στους 36°C» — true, useless, and identical, because that copy compares a
+  // beach to the open sea and never to the other two picks. `getTopPickDistinguishers` answers
+  // the comparative question instead, and stays silent (plain profile line) when nothing
+  // genuinely separates a beach.
+  const topPickDistinguishers = useMemo(
+    () => getTopPickDistinguishers(
+      topRecommendationBeachCards.map(({ beach, context }) => ({ beach, context })),
+      language,
+      selectedDate,
+    ),
+    [topRecommendationBeachCards, language, selectedDate],
+  );
   const topPicksWhyTitle = getLocalizedCopy(language, {
     en: 'Why these three?',
     gr: 'Γιατί αυτές οι τρεις;',
     de: 'Warum diese drei?',
     fr: 'Pourquoi ces trois-là ?',
     it: 'Perché queste tre?',
+  });
+  // The list under the «Γιατί αυτές οι τρεις;» heading answers «ποια από τις τρεις», not «γιατί
+  // αυτές και όχι οι άλλες 71» — that second question is what the bullets below answer. One lead
+  // line joins them, so the heading is not left writing a cheque the list does not cash.
+  const topPicksWhyLead = getLocalizedCopy(language, {
+    en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
+    gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
+    de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
+    fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
+    it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
   });
   const topPicksHowTitle = getLocalizedCopy(language, {
     en: 'How the Top 3 is picked',
@@ -4388,20 +4413,25 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     width would push the third card into horizontal scroll. */}
                 <aside className="hidden w-0 min-w-[16rem] max-w-[26rem] flex-1 flex-col justify-center gap-4 self-stretch rounded-2xl border border-sky-100 bg-white/78 p-5 text-left min-[1360px]:flex">
                   <div>
-                    <h3 className="mb-2 text-sm font-extrabold text-slate-950">{topPicksWhyTitle}</h3>
+                    <h3 className="mb-1 text-sm font-extrabold text-slate-950">{topPicksWhyTitle}</h3>
+                    {!shelteredFallbackPodium && (
+                      <p className="mb-2 text-[11px] leading-snug text-slate-500">{topPicksWhyLead}</p>
+                    )}
                     <ul className="space-y-2">
-                      {topRecommendationBeachCards.map(({ beach, context }, index) => (
-                        context?.explanation ? (
+                      {topRecommendationBeachCards.map(({ beach }, index) => {
+                        const claim = topPickDistinguishers.find(entry => entry.beachId === beach.id)?.claim;
+                        if (!claim) return null;
+                        return (
                           <li key={beach.id} className="flex gap-2 text-xs leading-snug text-slate-700">
                             <span className="font-extrabold text-[#007a83]">{index + 1}.</span>
                             <span>
                               <strong className="font-bold text-slate-900">{displayBeachName(beach.name, language)}</strong>
                               {' — '}
-                              {context.explanation}
+                              {claim}
                             </span>
                           </li>
-                        ) : null
-                      ))}
+                        );
+                      })}
                     </ul>
                   </div>
                   <div className="border-t border-sky-100 pt-3">
