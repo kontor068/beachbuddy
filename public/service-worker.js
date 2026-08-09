@@ -3,6 +3,7 @@ const CACHE_NAME = 'calm-beach-v2026-06-26-assets-cache-first';
 const WEATHER_API_HOSTS = new Set([
   'api.open-meteo.com',
   'marine-api.open-meteo.com',
+  'air-quality-api.open-meteo.com',
 ]);
 // A list of stable files to cache. Keep index.html out of precache so deploys
 // do not leave clients running an app shell that imports removed chunks.

@@ -190,7 +190,7 @@
 # pageviews: caught by an enforced violation from /el/beaches/lakonia/1552-viandini-vourkos/.
 # This is the failure mode the comment above warned about — one missing origin, every
 # page still returning 200. Strictly a loosening; nothing that worked can break.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
