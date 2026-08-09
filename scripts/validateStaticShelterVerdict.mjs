@@ -33,14 +33,21 @@ const distDir = path.join(projectRoot, 'dist');
 const dataDir = path.join(projectRoot, 'public', 'data', 'beaches');
 const prove = process.argv.includes('--prove');
 
-// Mirror of prerenderBeachPages.mjs escapeHtml — the sentences are matched against
-// built HTML, so they must be escaped the same way the builder escaped them.
-const escapeHtml = value => String(value ?? '')
-  .replace(/&/g, '&amp;')
-  .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;')
-  .replace(/'/g, '&#39;');
+// The sentences are matched against built HTML, so both sides have to agree on
+// entities. Escaping the expected sentence was the original approach and it was
+// wrong in one direction: the narrative paragraph reaches the page through a
+// path that leaves the apostrophe raw, so every French sentence containing one
+// — "les jours d'été de N/NE", "les après-midis d'été" — could never match.
+// Measured 08/08/2026: 349 false failures, all of them French `exposed` pages,
+// and it also means the gate was structurally blind to a French over-claim.
+// Decoding the page instead of escaping the sentence works whichever way the
+// builder happens to emit it.
+const decodeEntities = value => String(value ?? '')
+  .replace(/&#39;/g, "'")
+  .replace(/&quot;/g, '"')
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&amp;/g, '&');
 
 const LEVELS = ['protected', 'partial', 'exposed'];
 const LANGS = ['en', 'gr', 'de', 'fr', 'it'];
@@ -55,7 +62,7 @@ const sentenceSets = context => {
     for (const lang of LANGS) {
       const variants = [section.status[level][lang]];
       if (lang === 'gr') variants.push(section.statusBoatGr[level]);
-      map[level][lang] = variants.map(escapeHtml);
+      map[level][lang] = variants;
     }
   }
   return map;
@@ -115,7 +122,7 @@ async function run(rotated) {
   for (const page of pages) {
     const baked = byId.get(page.id);
     if (!baked) continue; // legacy/redirect ids — no claim to check
-    const html = await readFile(page.file, 'utf8');
+    const html = decodeEntities(await readFile(page.file, 'utf8'));
     const sets = SENTENCES[baked.context];
     const expected = rotated && baked.status ? rotate(baked.status) : baked.status;
     for (const level of LEVELS) {
