@@ -43,7 +43,21 @@ const ORIGIN_KEY = 'calmbeach:auth:origin';
  * matching one-time code from Google, and it already lives in this same storage.
  */
 const VERIFIER_KEY = 'calmbeach:auth:verifier';
-export const AUTH_CALLBACK_PATH = '/auth/callback';
+/**
+ * TRAILING SLASH IS LOAD-BEARING — do not "tidy" it away (10/08/2026).
+ *
+ * The prerender emits the shell at `/auth/callback/`, and Netlify answers the slashless
+ * `/auth/callback` with a **301** to it. Supabase matches `redirectTo` against its Redirect URLs
+ * allow list EXACTLY; a value that does not match is silently discarded and the visitor is sent
+ * to the project's **Site URL** instead. With Site URL still pointing at a dev machine, signing in
+ * on calmbeach.gr landed people on localhost — reported the same night accounts went live.
+ *
+ * Sending the canonical form fixes both halves: the allow-list entry matches character for
+ * character, and the OAuth return no longer bounces through a 301 — which matters because the
+ * implicit-flow token arrives in the URL fragment, and a fragment is the one part of a URL a
+ * redirect is not obliged to carry.
+ */
+export const AUTH_CALLBACK_PATH = '/auth/callback/';
 
 export type AuthUser = {
   id: string;
