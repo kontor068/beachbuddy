@@ -4,8 +4,8 @@ import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { trackEvent } from '../services/analyticsService';
 
-// A deliberately low-key "add to home screen" nudge. It never interrupts the first interaction
-// (waits for a quiet engagement delay), only appears when the browser says the app is installable
+// A deliberately low-key "add to home screen" nudge. It appears as soon as the browser can offer
+// an install action, only appears when the browser says the app is installable
 // (or on iOS Safari, which has no programmatic prompt), is one-tap dismissible, and backs off for
 // weeks after a dismissal — capped so we never nag.
 
@@ -17,7 +17,7 @@ interface BeforeInstallPromptEvent extends Event {
 const STORE_KEY = 'cb_install_prompt_v1';
 const COOLDOWN_MS = 45 * 24 * 60 * 60 * 1000; // back off ~6 weeks after a dismissal
 const MAX_DISMISSALS = 2; // after the user says no twice, stop asking for good
-const ENGAGEMENT_DELAY_MS = 18000; // let people actually use the site before we ask
+const ENGAGEMENT_DELAY_MS = 0; // show the install message immediately when eligible
 
 type InstallMode = 'android' | 'ios';
 
