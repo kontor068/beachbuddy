@@ -25,10 +25,53 @@ import {
   recordCalls, recordRateLimited, formatCapacityAlert, utcDayKey, DEFAULT_THRESHOLDS,
 } from './lib/capacityAlarm.mjs';
 
+// Each provider has two hosts: the free one, and Open-Meteo's reserved "customer-"
+// host for paying accounts. Which one is used is decided per request by whether a key
+// is configured (see apiKey() below) — never by the caller.
 const UPSTREAMS = {
-  'open-meteo': { host: 'https://api.open-meteo.com', paths: new Set(['/v1/forecast']) },
-  'open-meteo-marine': { host: 'https://marine-api.open-meteo.com', paths: new Set(['/v1/marine']) },
+  'open-meteo': {
+    host: 'https://api.open-meteo.com',
+    customerHost: 'https://customer-api.open-meteo.com',
+    paths: new Set(['/v1/forecast']),
+  },
+  'open-meteo-marine': {
+    host: 'https://marine-api.open-meteo.com',
+    customerHost: 'https://customer-marine-api.open-meteo.com',
+    paths: new Set(['/v1/marine']),
+  },
+  // Saharan-dust route (added 09/08/2026, the day the paid plan made it affordable).
+  // Same strict allow-list discipline: only /v1/air-quality, only the shared
+  // ALLOWED_PARAMS — the client asks for `hourly=dust` and nothing else.
+  'open-meteo-air-quality': {
+    host: 'https://air-quality-api.open-meteo.com',
+    customerHost: 'https://customer-air-quality-api.open-meteo.com',
+    paths: new Set(['/v1/air-quality']),
+  },
 };
+
+// ── Paid Open-Meteo key (server-side only) ───────────────────────────────────
+//
+// Set as a Netlify environment variable scoped to FUNCTIONS and marked secret. It must
+// never become a VITE_* variable and must never be written into netlify.toml: the first
+// is inlined into the public bundle, the second is committed to a public repository.
+// This function is the only place it exists, which is the whole reason the edge proxy
+// was built — the browser talks to /api/forecast on our own domain and never sees a key.
+//
+// ABSENT KEY IS A SUPPORTED STATE, and deliberately so: an expired, revoked or
+// mistyped-away key drops us back to the free hosts and the site keeps working on the
+// free quota instead of going dark. Read per request, not at module load, so a warm
+// container picks up a rotated value on its next invocation.
+//
+// `apikey` is NOT in ALLOWED_PARAMS, so buildSafeQuery() has already dropped anything a
+// caller tried to send under that name — same discipline as the `models` pin. The key is
+// appended after the safe query is built, so it can neither be overridden nor echoed.
+const apiKey = () => process.env.OPEN_METEO_API_KEY || '';
+
+// A rejected key looks exactly like any other upstream failure from the outside: we'd
+// quietly serve the 12 h fallback and then blanks, with nothing in the alarms, because the
+// capacity meter only fires on 429. Alerted once per container so a broken key surfaces in
+// minutes without turning into a Telegram flood.
+let authAlertSent = false;
 
 // Marine model pin (see services/forecast/openMeteoProvider.ts for the full reasoning and
 // the measurements behind it). `models` is deliberately NOT in ALLOWED_PARAMS below, so
@@ -119,7 +162,16 @@ const sendTelegram = async (text) => {
  * exactly the wrong direction for a number whose only job is to warn us early.
  * The provider's limits are what this is compared against, and it prices work, not
  * HTTP requests.
+ *
+ * `weight` closes the second known undercount (docs/team/17 §7): Open-Meteo's own
+ * rule prices a request at more than one call once it carries >10 variables, and
+ * the marine route asks for 7 fields × 3 models = 21 → ~2.1 calls per point. The
+ * meter used to charge marine points 1.0, so the number the alarm compared against
+ * the provider's quota was systematically low exactly where the bill is highest.
+ * Weather routes stay at 1.0 (8 hourly fields — under the threshold).
  */
+const METER_WEIGHT = { 'open-meteo': 1.0, 'open-meteo-marine': 2.1, 'open-meteo-air-quality': 1.0 };
+
 const meterUpstream = async ({ rateLimited, points = 1 }) => {
   try {
     const store = getStore(CAPACITY_STORE);
@@ -310,11 +362,17 @@ const PREFIX = '/api/forecast/';
  * Marine is untouched at 3 h and unaffected by the shorter swr (3 h 30 worst case, and marine
  * freshness drives nothing, per the paragraph above).
  */
-const CDN_MAX_AGE_S = { weather: 3600, marine: 10800 };
+// Air quality rides the marine TTL for the same reason marine got it: the CAMS model
+// behind the dust field publishes a new run every 12 hours, so asking more often than
+// every 3 h re-fetches identical numbers at full charge. Dust events build over many
+// hours — 3 h staleness cannot misdirect anyone.
+const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800 };
 const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
 const cdnCacheControl = (providerKey) => {
-  const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine : CDN_MAX_AGE_S.weather;
+  const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
+    : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
+    : CDN_MAX_AGE_S.weather;
   return `public, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
 };
 
@@ -434,14 +492,26 @@ export const handler = async (event) => {
 
   // How many coordinates this one request carries. buildSafeQuery has already
   // validated the list and guaranteed latitude/longitude have equal length.
+  // Metered at the route's provider-rule weight (see METER_WEIGHT), rounded up —
+  // the alarm must never be optimistic.
   const pointCount = (query.get('latitude') || '').split(',').length;
+  const meteredPoints = Math.ceil(pointCount * (METER_WEIGHT[providerKey] || 1));
 
   // Enforce the marine model pin server-side, unconditionally. `models` was already
   // dropped by buildSafeQuery() if the client sent one (not in ALLOWED_PARAMS), so this
   // is a plain set, never an override of anything a caller could have supplied.
   if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
 
+  // `target` is the KEY-FREE identity of this request: the free host, no apikey. It is
+  // what the last-good store is keyed on, so the saved answers survive both switching the
+  // paid key on and rotating it later — and so a secret is never hashed into a blob name.
+  // `requestUrl` is what actually goes on the wire.
   const target = `${upstream.host}${upstreamPath}?${query.toString()}`;
+
+  const subscriptionKey = apiKey();
+  const requestUrl = subscriptionKey
+    ? `${upstream.customerHost}${upstreamPath}?${query.toString()}&apikey=${encodeURIComponent(subscriptionKey)}`
+    : target;
 
   const fallbackKey = fallbackKeyFor(target);
 
@@ -473,20 +543,29 @@ export const handler = async (event) => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
   try {
-    const upstreamResponse = await fetch(target, {
+    const upstreamResponse = await fetch(requestUrl, {
       signal: controller.signal,
       headers: { Accept: 'application/json' },
     });
 
     if (!upstreamResponse.ok) {
       // 429 = upstream refused us → the definitive capacity alarm.
-      if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true, points: pointCount });
+      if (upstreamResponse.status === 429) await meterUpstream({ rateLimited: true, points: meteredPoints });
+      // 401/403 on the customer host = the paid key is rejected (expired, revoked, typo).
+      // Nothing else in this function would ever tell us; see authAlertSent above.
+      if (subscriptionKey && (upstreamResponse.status === 401 || upstreamResponse.status === 403) && !authAlertSent) {
+        authAlertSent = true;
+        await sendTelegram(
+          `🔴 Open-Meteo rejected the paid API key (HTTP ${upstreamResponse.status}). ` +
+          'Forecasts are running on the last-good fallback. Check OPEN_METEO_API_KEY in Netlify.'
+        );
+      }
       // Do NOT cache upstream failures — but do try to answer from what we last knew.
       return await rescueOr(json(502, { error: `Upstream ${upstreamResponse.status}` }, cors));
     }
 
     // A real upstream success (this ran only because the CDN cache missed) → meter it.
-    await meterUpstream({ rateLimited: false, points: pointCount });
+    await meterUpstream({ rateLimited: false, points: meteredPoints });
 
     const payload = await upstreamResponse.text(); // pass through verbatim (already JSON)
     await rememberLastGood(fallbackKey, payload);

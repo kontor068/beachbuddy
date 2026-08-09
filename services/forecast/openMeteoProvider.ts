@@ -29,6 +29,7 @@ import type { ForecastProvider } from './ForecastProvider';
 
 const FORECAST_HOST = 'https://api.open-meteo.com';
 const MARINE_HOST = 'https://marine-api.open-meteo.com';
+const AIR_QUALITY_HOST = 'https://air-quality-api.open-meteo.com';
 
 const MARINE_HOURLY = [
   'wave_height',
@@ -135,6 +136,11 @@ const marineOrigin = () => {
   if (IS_DEV) return MARINE_HOST;
   throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
 };
+const airQualityOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-air-quality`;
+  if (IS_DEV) return AIR_QUALITY_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
 
 export const openMeteoProvider: ForecastProvider = {
   id: 'open-meteo',
@@ -170,5 +176,9 @@ export const openMeteoProvider: ForecastProvider = {
     const lats = points.map(p => p.lat).join(',');
     const lons = points.map(p => p.lon).join(',');
     return `${marineOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${MARINE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
+  },
+
+  dustForecastUrl(lat, lon) {
+    return `${airQualityOrigin()}/v1/air-quality?latitude=${lat}&longitude=${lon}&hourly=dust&timezone=Europe%2FAthens&forecast_days=2`;
   },
 };

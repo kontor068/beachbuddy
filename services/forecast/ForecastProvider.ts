@@ -40,6 +40,13 @@ export interface ForecastProvider {
    */
   hourlyForecastUrlBatch(points: ForecastPoint[]): string;
   marineForecastUrlBatch(points: ForecastPoint[]): string;
+  /**
+   * Saharan-dust endpoint (surface dust concentration, μg/m³). Added 09/08/2026
+   * with the paid plan. ONE point per region — dust is a synoptic-scale field
+   * (the CAMS cells behind it are ~11 km and events span hundreds of km), so
+   * per-cluster sampling would multiply cost for identical numbers.
+   */
+  dustForecastUrl(lat: number, lon: number): string;
 }
 
 export interface ForecastPoint {
