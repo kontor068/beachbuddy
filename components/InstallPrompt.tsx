@@ -282,7 +282,7 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
           type="button"
           onClick={handleDismiss}
           aria-label={copy.close}
-          className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-1 dark:hover:bg-slate-700 sm:static sm:h-11 sm:w-11"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-1 dark:hover:bg-slate-700"
         >
           <X className="h-4 w-4" />
         </button>
