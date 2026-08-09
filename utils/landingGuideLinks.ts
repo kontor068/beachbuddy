@@ -58,11 +58,43 @@ export interface LandingGuideLink {
   href: string;
   /** True only under `vite dev`, where `href` is absolute — see resolveGuideHref. */
   external: boolean;
-  /** "Wind-sheltered" — the question the article answers. */
-  topicLabel: string;
-  /** "Naxos" — where. Rendered quieter than the topic; the topic is the hook. */
+  /** "Wind-sheltered beaches in Naxos" — the article's headline, as one phrase. */
+  articleTitle: string;
+  /** "Naxos" — the place alone, for surfaces that label the destination. */
   regionLabel: string;
 }
+
+/**
+ * "…in Naxos", the plain way each language attaches a place to a headline.
+ *
+ * Only the four island-safe prepositions appear here because that is all these
+ * pairs can ever produce: de/fr/it drop any region outside the multilingual
+ * pilot (see below), and every pilot region is an island, so "auf Naxos" /
+ * "à Naxos" / "a Naxos" are correct. English uses "in", matching the wording the
+ * prerendered articles themselves use ("Beaches in Naxos").
+ */
+const WHERE_PHRASE: Record<LanguageCode, (name: string) => string> = {
+  en: name => `in ${name}`,
+  gr: name => `στη ${name}`,
+  de: name => `auf ${name}`,
+  fr: name => `à ${name}`,
+  it: name => `a ${name}`,
+};
+
+/**
+ * Greek is the one language here that inflects the place name, and no generic
+ * rule gets it right — «στη Νάξο» but «στην Εύβοια», «στη Ρόδο» not «στη Ρόδος».
+ * Six curated pairs mean six written-out forms; the fallback above keeps a newly
+ * added pair readable (slightly wrong, never broken) until its form is added.
+ */
+const GREEK_WHERE_BY_SLUG: Readonly<Record<string, string>> = {
+  naxos: 'στη Νάξο',
+  evia: 'στην Εύβοια',
+  halkidiki: 'στη Χαλκιδική',
+  rhodes: 'στη Ρόδο',
+  corfu: 'στην Κέρκυρα',
+  lefkada: 'στη Λευκάδα',
+};
 
 /**
  * de/fr/it only have guide pages for the multilingual-pilot regions, and the
@@ -101,14 +133,18 @@ export const getLandingGuideLinks = (
     if (!topic || !island) return [];
 
     const prefix = getBeachLocalePrefix(language, pair.slug);
+    const regionLabel = island.name[language] || island.name.en;
+    const where = language === 'gr'
+      ? (GREEK_WHERE_BY_SLUG[pair.slug] || WHERE_PHRASE.gr(regionLabel))
+      : WHERE_PHRASE[language](regionLabel);
     return [{
       key: `${pair.topic}:${pair.slug}`,
       // Prerendered files, not app routes: under `vite dev` a relative path here
       // silently reboots the SPA and dumps you back on the landing, which reads
       // as a dead link. resolveGuideHref sends dev at the live URL instead.
       ...resolveGuideHref(`${prefix}${topic.pathPrefix}/${pair.slug}/`),
-      topicLabel: topic.label[language] || topic.label.en,
-      regionLabel: island.name[language] || island.name.en,
+      articleTitle: `${topic.articleLabel[language] || topic.articleLabel.en} ${where}`,
+      regionLabel,
     }];
   });
 };

@@ -20,9 +20,17 @@ import { landingCopy } from './landingCopy';
 // NOT A ROW OF CHIPS. A chips row was built for exactly this job on 08/08/2026
 // and rejected on sight — and the objection was right: pills read as filters, and
 // a visitor who has just been offered thirteen region pills does not need six
-// more. This is an index instead: the QUESTION in the link colour, the place
-// beside it in grey, two columns on a wide screen. It reads as a table of
-// contents, which is what it is.
+// more.
+//
+// NOT A QUESTIONNAIRE EITHER. The first version asked «Ψάχνεις κάτι
+// συγκεκριμένο;» over six bare adjectives beside a place («Απάνεμες · Νάξος»)
+// and it failed the only test that matters: nobody could tell these were
+// ARTICLES. The question framing made them look like a filter picker, and an
+// adjective is not a headline. So the block now says out loud that it is a list
+// of articles, and every row carries the article's own title as one readable
+// phrase — «Απάνεμες παραλίες στη Νάξο». The rank numbers are not decoration:
+// they are the cheapest signal in the language that says "this is a reading
+// list, not a control".
 //
 // WHY IT SITS HERE, between the region band and the photo ask: someone who does
 // not recognise a single region name has, up to this point, been offered nothing
@@ -50,14 +58,20 @@ export const GuideTopicsSection: React.FC<GuideTopicsSectionProps> = ({ language
         <h2 className="shrink-0 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">{c.title}</h2>
         <span className="hidden h-px flex-1 translate-y-[-0.35rem] bg-slate-300/70 sm:block" aria-hidden="true" />
       </div>
-      <p className="mt-2 max-w-xl text-[15px] font-normal leading-relaxed text-slate-600">{c.subtitle}</p>
+      {/* NO SUBTITLE (09/08/2026). It used to name three of the six topics in a
+          sentence sitting directly above the six links that name all of them —
+          the same list twice, and ~40px of a phone screen for nothing. */}
 
       {/* Real full navigations, not SPA routes: the app has no route for these
           articles — they are prerendered pages. Under `vite dev` they do not
           exist on disk, which is the documented reason the hub link goes
           absolute in dev only (utils/beachGuides.ts). */}
-      <ul className="mt-5 grid gap-x-10 border-t border-slate-200/80 sm:mt-6 sm:grid-cols-2">
-        {links.map(link => (
+      {/* An ORDERED list, and not only for looks: the numbers are the reading
+          order we chose, so <ol> is what it actually is. Screen readers announce
+          "list item 1 of 6", which carries the same "these are articles, ranked"
+          message the numerals carry visually. */}
+      <ol className="mt-5 grid gap-x-10 border-t border-slate-200/80 sm:mt-6 sm:grid-cols-2">
+        {links.map((link, index) => (
           <li key={link.key} className="border-b border-slate-200/80">
             <a
               href={link.href}
@@ -68,24 +82,23 @@ export const GuideTopicsSection: React.FC<GuideTopicsSectionProps> = ({ language
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noopener noreferrer' : undefined}
               onClick={() => trackEvent('landing_guide_clicked', undefined, { guide: link.key, locale: language })}
-              className="group flex min-h-[3.5rem] items-center gap-3 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+              className="group flex min-h-[3.5rem] items-center gap-3.5 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
             >
-              <span className="min-w-0 flex-1">
-                <span className="text-[15px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-[#007a83]">
-                  {link.topicLabel}
-                </span>
-                {/* AN EXPLICIT SEPARATOR, not a margin. JSX collapses the
-                    whitespace between these two spans to nothing, so the labels
-                    ran together into one string — «ΑπάνεμεςΝάξος» to a screen
-                    reader, and visually a single noun phrase that is
-                    ungrammatical in four of the five languages ("Windgeschützt
-                    Naxos", "Abritées du vent Corfou"). A middot reads as "topic,
-                    then place" in all five and belongs to none of them. */}
-                <span aria-hidden="true" className="mx-1.5 text-slate-300">·</span>
-                {/* The place is deliberately quieter than the question. Someone
-                    scanning this block is choosing a KIND of beach; the island
-                    is the answer to "where can I see one", not the hook. */}
-                <span className="text-[15px] font-medium text-slate-500">{link.regionLabel}</span>
+              {/* aria-hidden because the <ol> already numbers these for a screen
+                  reader; reading "01" aloud on top of that is duplication.
+                  tabular-nums keeps the six titles on one optical left edge. */}
+              <span
+                aria-hidden="true"
+                className="shrink-0 text-[13px] font-bold tabular-nums text-slate-400 transition-colors group-hover:text-[#007a83]"
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              {/* ONE PHRASE, not topic + separator + place. The old two-span
+                  build read as a filter chip and collapsed to «ΑπάνεμεςΝάξος»
+                  for a screen reader; the title now arrives from
+                  getLandingGuideLinks already inflected per language. */}
+              <span className="min-w-0 flex-1 text-[15px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-[#007a83]">
+                {link.articleTitle}
               </span>
               <ArrowUpRight
                 className="h-4 w-4 shrink-0 text-slate-400 transition-colors group-hover:text-[#007a83]"
@@ -94,7 +107,7 @@ export const GuideTopicsSection: React.FC<GuideTopicsSectionProps> = ({ language
             </a>
           </li>
         ))}
-      </ul>
+      </ol>
 
       <p className="mt-5">
         <a

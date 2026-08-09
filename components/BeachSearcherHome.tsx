@@ -2671,7 +2671,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
     const getCardFocusY = () => {
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const mapRect = document.getElementById('map-section')?.getBoundingClientRect();
+      const mapRect = (
+        document.getElementById('directory-map-section')
+        ?? document.getElementById('map-section')
+      )?.getBoundingClientRect();
 
       if (mapRect && mapRect.bottom > 0 && mapRect.bottom < viewportHeight) {
         return mapRect.bottom + (viewportHeight - mapRect.bottom) * 0.38;
@@ -4085,7 +4088,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
         {selectedIsland && mapPreview && !isMobileViewport && (
           <section
-            id="map-section"
+            id="directory-map-section-desktop"
             className="mt-4 border-t border-slate-200/80 pt-4"
             aria-label={copy.beachMapAria}
           >
@@ -4102,7 +4105,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               isWeatherColumnHidden ? 'lg:block' : 'lg:grid lg:grid-cols-[minmax(0,1fr)_24rem]'
             }`}>
               <div
-                id="map-section-desktop"
+                id="directory-map-panel-desktop"
                 className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md sm:p-4"
               >
                 {/* Above the map, not floating on it: Leaflet already owns the top-right corner
@@ -4261,7 +4264,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {selectedIsland && mapPreview && isMobileViewport && (
             <>
               <section
-                id="map-section"
+                id="directory-map-section"
                 className="sticky top-2 z-30 mb-1.5 space-y-1.5 sm:mb-4 sm:space-y-2"
                 aria-label={copy.beachMapAria}
               >

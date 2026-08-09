@@ -19,7 +19,14 @@ interface GuideTopic {
   key: string;
   pathPrefix: string;
   match: (beach: Beach) => boolean;
+  /** The chip form — an adjective on its own ("Wind-sheltered"). Used where the
+   *  surrounding UI already says "guides", e.g. the island page's guide row. */
   label: LocalizedLabel;
+  /** The article form — a headline that stands alone ("Wind-sheltered beaches").
+   *  A surface that must read as a LIST OF ARTICLES needs this, not `label`:
+   *  bare adjectives beside a place name ("Wind-sheltered · Naxos") read as
+   *  filter pills, which is exactly how the landing block was misread. */
+  articleLabel: LocalizedLabel;
 }
 
 const GUIDE_TOPICS: GuideTopic[] = [
@@ -30,36 +37,42 @@ const GUIDE_TOPICS: GuideTopic[] = [
     // maistros). Matches the sheltered guide the prerender actually publishes.
     match: beach => beach.shelteredFromLocalWind === true,
     label: { en: 'Wind-sheltered', gr: 'Απάνεμες', de: 'Windgeschützt', fr: 'Abritées du vent', it: 'Riparate dal vento' },
+    articleLabel: { en: 'Wind-sheltered beaches', gr: 'Απάνεμες παραλίες', de: 'Windgeschützte Strände', fr: 'Plages abritées du vent', it: 'Spiagge riparate dal vento' },
   },
   {
     key: 'family',
     pathPrefix: '/family-beaches',
     match: beach => beach.environment?.familyFriendly === true,
     label: { en: 'Family beaches', gr: 'Οικογενειακές', de: 'Familienstrände', fr: 'Plages familiales', it: 'Per famiglie' },
+    articleLabel: { en: 'Family beaches', gr: 'Οικογενειακές παραλίες', de: 'Familienstrände', fr: 'Plages familiales', it: 'Spiagge per famiglie' },
   },
   {
     key: 'snorkeling',
     pathPrefix: '/snorkeling-beaches',
     match: beach => beach.activities?.snorkeling === true,
     label: { en: 'Snorkeling', gr: 'Για snorkeling', de: 'Schnorcheln', fr: 'Snorkeling', it: 'Snorkeling' },
+    articleLabel: { en: 'Snorkeling beaches', gr: 'Παραλίες για snorkeling', de: 'Strände zum Schnorcheln', fr: 'Plages pour le snorkeling', it: 'Spiagge per lo snorkeling' },
   },
   {
     key: 'organized',
     pathPrefix: '/organized-beaches',
     match: beach => beach.amenities?.organized === true,
     label: { en: 'Organized', gr: 'Οργανωμένες', de: 'Organisiert', fr: 'Aménagées', it: 'Attrezzate' },
+    articleLabel: { en: 'Organized beaches', gr: 'Οργανωμένες παραλίες', de: 'Organisierte Strände', fr: 'Plages aménagées', it: 'Spiagge attrezzate' },
   },
   {
     key: 'secluded',
     pathPrefix: '/secluded-beaches',
     match: beach => beach.environment?.remote === true,
     label: { en: 'Secluded', gr: 'Απομονωμένες', de: 'Abgelegen', fr: 'Isolées', it: 'Isolate' },
+    articleLabel: { en: 'Secluded beaches', gr: 'Απομονωμένες παραλίες', de: 'Abgelegene Strände', fr: 'Plages isolées', it: 'Spiagge isolate' },
   },
   {
     key: 'sunset',
     pathPrefix: '/sunset-beaches',
     match: isSunsetFacingBeach,
     label: { en: 'Sunset', gr: 'Για ηλιοβασίλεμα', de: 'Sonnenuntergang', fr: 'Coucher de soleil', it: 'Tramonto' },
+    articleLabel: { en: 'Sunset beaches', gr: 'Παραλίες για ηλιοβασίλεμα', de: 'Strände für den Sonnenuntergang', fr: 'Plages pour le coucher de soleil', it: 'Spiagge per il tramonto' },
   },
 ];
 
@@ -100,9 +113,9 @@ export interface IslandGuideLink {
  * Exposed as a lookup rather than the array so nobody is tempted to iterate it
  * and hand-build every topic × region URL: most of those pages do not exist.
  */
-export const GUIDE_TOPIC_BY_KEY: Readonly<Record<string, { pathPrefix: string; label: LocalizedLabel }>> =
+export const GUIDE_TOPIC_BY_KEY: Readonly<Record<string, { pathPrefix: string; label: LocalizedLabel; articleLabel: LocalizedLabel }>> =
   Object.freeze(Object.fromEntries(
-    GUIDE_TOPICS.map(topic => [topic.key, { pathPrefix: topic.pathPrefix, label: topic.label }]),
+    GUIDE_TOPICS.map(topic => [topic.key, { pathPrefix: topic.pathPrefix, label: topic.label, articleLabel: topic.articleLabel }]),
   ));
 
 /**

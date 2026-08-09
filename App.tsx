@@ -1880,7 +1880,8 @@ export const App: React.FC = () => {
       return;
     }
     const update = () => {
-      const mapEl = document.getElementById('map-section');
+      const mapEl = document.getElementById('directory-map-section')
+        ?? document.getElementById('map-section');
       if (!mapEl) {
         // No map element yet: if a region is selected the map is just still loading, so keep
         // the nav hidden (a later run re-measures it). With no region there's no map to hide
@@ -3574,8 +3575,21 @@ export const App: React.FC = () => {
   };
 
   const scrollToMapSection = () => {
-    // 8 = the map-section's `sticky top-2` resting offset (0.5rem).
-    scrollToStableSection(isDesktopViewport ? 'map-section-desktop' : 'map-section', 8);
+    // Map landing is intentionally an instant viewport jump. A stable/smooth scroll here makes
+    // the whole page visibly travel while the nearby region mounts, which is especially confusing
+    // on mobile. The map is already sticky, so once it is at the top there is nothing else to animate.
+    const directoryMapId = isDesktopViewport
+      ? 'directory-map-section-desktop'
+      : 'directory-map-section';
+    const fallbackMapId = isDesktopViewport ? 'map-section-desktop' : 'map-section';
+    const target = document.getElementById(directoryMapId) ?? document.getElementById(fallbackMapId);
+    if (!target) return;
+
+    activeScrollCancelRef.current?.();
+    activeScrollCancelRef.current = null;
+
+    const targetTop = window.scrollY + target.getBoundingClientRect().top - 8;
+    window.scrollTo({ top: Math.max(0, targetTop), left: 0, behavior: 'auto' });
   };
 
   /** The planner has no sticky offset — it should land flush at the top. */
