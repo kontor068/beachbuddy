@@ -47,7 +47,13 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
   // meets the cookie banner and this page at the same moment, so a plain
   // fire-once effect is swallowed by the consent gate for exactly the people
   // this launch needs to measure.
-  const sectionRef = useRef<HTMLElement>(null);
+  // OBSERVES THE HEADING, NOT THE WHOLE SECTION (changed 09/08/2026). With a
+  // ratio threshold on the section itself, "seen" meant "40% of however tall
+  // this card happens to be" — so halving the card moved the trigger point and
+  // would have shown up in the data as a jump in interest that nobody caused.
+  // A heading is the same height whatever the card does, which is also why
+  // OurStorySection has always sentinelled on its own heading.
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const sentRef = useRef(false);
   useEffect(() => {
     if (!isAuthAvailable || typeof IntersectionObserver === 'undefined') return undefined;
@@ -66,9 +72,9 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
         observer.unobserve(entry.target);
       });
       flush();
-    }, { threshold: 0.4 });
+    }, { threshold: 0.6 });
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
+    if (headingRef.current) observer.observe(headingRef.current);
     if (typeof document === 'undefined') return () => observer.disconnect();
 
     document.addEventListener(COOKIE_CONSENT_CHANGED_EVENT, flush);
@@ -88,24 +94,35 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
     : [c.title, '', ''];
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-6xl px-5" aria-label={c.overline}>
-      <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-cyan-50 via-white to-sky-100 px-6 py-10 ring-1 ring-cyan-200/70 sm:rounded-[2.5rem] sm:px-12 sm:py-14 lg:px-16">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+    <section className="mx-auto w-full max-w-6xl px-5" aria-label={c.overline}>
+      {/* HALVED 09/08/2026. This was the tallest block on the landing — a full
+          phone screen and then some — and it is the only one that ASKS instead of
+          giving, aimed at a first-time visitor from Google who has not been to
+          the beach yet. It keeps its place (Miltos moved it up on 08/08, straight
+          after the region band) and loses its bulk: tighter padding, a smaller
+          heading, one paragraph instead of two, and the three steps as a row
+          rather than a divided column.
+          WHAT DID NOT GET CUT: all three steps, in full. The copy's own note
+          says they are load-bearing — dropping "a person checks it first" turns
+          an approval queue into a broken promise the first time a photo does not
+          appear — so the shrink came out of spacing and type size, not truth. */}
+      <div className="overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-cyan-50 via-white to-sky-100 px-5 py-7 ring-1 ring-cyan-200/70 sm:rounded-[2rem] sm:px-9 sm:py-9">
+        <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-12">
           <div>
-            <p className="flex flex-wrap items-center gap-2.5">
-              <span className="inline-flex items-center rounded-full bg-[#007a83] px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.09em] text-white">
+            <p className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center rounded-full bg-[#007a83] px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.09em] text-white">
                 {c.badge}
               </span>
-              <span className="text-sm font-bold text-[#007a83]">{c.overline}</span>
+              <span className="text-[13px] font-bold text-[#007a83]">{c.overline}</span>
             </p>
 
-            <h2 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-slate-950 sm:text-[2rem]">
+            <h2 ref={headingRef} className="mt-2.5 text-balance text-xl font-bold leading-tight tracking-tight text-slate-950 sm:text-2xl">
               {titleParts[0]}
               <span className="text-[#007a83]">{titleParts[1]}</span>
               {titleParts[2]}
             </h2>
 
-            <p className="mt-4 max-w-md text-[17px] font-medium leading-relaxed text-slate-700">
+            <p className="mt-2.5 max-w-md text-[15px] font-medium leading-relaxed text-slate-700">
               {c.body}
             </p>
 
@@ -118,33 +135,40 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
                 trackEvent('landing_photos_cta_clicked', undefined, { signed_in: isSignedIn ? 1 : 0 });
                 onStart();
               }}
-              className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
+              className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cta px-5 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
             >
               <Camera className="h-4 w-4" aria-hidden="true" />
               {isSignedIn ? c.ctaSignedIn : c.cta}
             </button>
 
-            <p className="mt-3 max-w-sm text-[13px] font-semibold leading-snug text-slate-600">{c.note}</p>
+            <p className="mt-2.5 max-w-sm text-[12px] font-semibold leading-snug text-slate-600">{c.note}</p>
           </div>
 
-          <div>
-            <ol className="divide-y divide-cyan-200/70 border-t border-cyan-200/70 lg:border-t-0">
-              {c.steps.map((step, index) => {
-                const Icon = stepIcons[index] || Sparkles;
-                return (
-                  <li key={step.title} className="flex gap-4 py-5 lg:first:pt-0">
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-[#007a83] ring-1 ring-cyan-200">
-                      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="text-base font-bold leading-tight text-slate-950">{step.title}</h3>
-                      <p className="mt-1.5 text-sm font-normal leading-relaxed text-slate-600">{step.body}</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+          {/* The height came out of the CHROME, not the content: all three steps
+              keep their full title and body. Gone are the 36px icon tiles, the
+              dividers and the 20px vertical padding per row — the icon is now
+              inline with the title and the rows sit on a 12px rhythm.
+
+              STILL ONE COLUMN ON A PHONE. Three across was tried and is wrong at
+              320-375px: the columns land at ~85px while the French and German
+              step titles ("Connectez-vous avec Google", "Melde dich mit Google
+              an") need roughly 95px, so they wrap to three ragged lines each and
+              the strip ends up taller than the list it replaced. Three columns
+              only from `sm:` up, where a column is ~180px. */}
+          <ol className="grid gap-3 border-t border-cyan-200/70 pt-4 sm:grid-cols-3 sm:gap-x-5 lg:border-t-0 lg:pt-0">
+            {c.steps.map((step, index) => {
+              const Icon = stepIcons[index] || Sparkles;
+              return (
+                <li key={step.title} className="min-w-0">
+                  <h3 className="flex items-center gap-2 text-[13px] font-bold leading-tight text-slate-950">
+                    <Icon className="h-4 w-4 shrink-0 text-[#007a83]" aria-hidden="true" />
+                    {step.title}
+                  </h3>
+                  <p className="mt-1 text-[12px] font-normal leading-snug text-slate-600">{step.body}</p>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </section>

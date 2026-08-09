@@ -63,11 +63,47 @@ const GUIDE_TOPICS: GuideTopic[] = [
   },
 ];
 
+/**
+ * Where a guide link should actually point.
+ *
+ * These articles are PRERENDERED FILES, not app routes — under `vite dev` they
+ * do not exist on disk, and the dev server answers any unknown path with the SPA
+ * shell. So a relative href in development does not 404 (which would at least be
+ * obvious): it silently boots the app and lands you back on the home page, which
+ * reads as a broken link with no clue why. Pointing dev at the live URL is the
+ * only honest option, and `external` says so out loud so the caller can add
+ * target/rel rather than navigating the dev tab away.
+ *
+ * Production and the bundled native app keep the relative path — it works
+ * offline and never leaves the origin.
+ */
+export const resolveGuideHref = (path: string): { href: string; external: boolean } => {
+  const external = import.meta.env.DEV;
+  return { href: external ? `https://calmbeach.gr${path}` : path, external };
+};
+
 export interface IslandGuideLink {
   key: string;
   href: string;
   label: string;
+  /** True only under `vite dev`, where `href` is absolute — see resolveGuideHref. */
+  external: boolean;
 }
+
+/**
+ * The topic list, exposed for surfaces that link a guide WITHOUT having that
+ * region's beaches loaded — the national landing being the only one today. They
+ * cannot run the ≥5 predicate gate above (it needs the beach records), so they
+ * must instead name a curated pair that a build gate proves exists; see
+ * utils/landingGuideLinks.ts and scripts/validateLandingGuideLinks.mjs.
+ *
+ * Exposed as a lookup rather than the array so nobody is tempted to iterate it
+ * and hand-build every topic × region URL: most of those pages do not exist.
+ */
+export const GUIDE_TOPIC_BY_KEY: Readonly<Record<string, { pathPrefix: string; label: LocalizedLabel }>> =
+  Object.freeze(Object.fromEntries(
+    GUIDE_TOPICS.map(topic => [topic.key, { pathPrefix: topic.pathPrefix, label: topic.label }]),
+  ));
 
 /**
  * The national guides hub — the one page that collects every guide article.
@@ -91,11 +127,8 @@ export const getGuidesHubPath = (language: LanguageCode): string =>
  * the SPA shell — open the live page instead. Prod and the bundled native app
  * keep the relative path (works offline). `external` is true only in dev.
  */
-export const getGuidesHubLink = (language: LanguageCode): { href: string; external: boolean } => {
-  const path = getGuidesHubPath(language);
-  const external = import.meta.env.DEV;
-  return { href: external ? `https://calmbeach.gr${path}` : path, external };
-};
+export const getGuidesHubLink = (language: LanguageCode): { href: string; external: boolean } =>
+  resolveGuideHref(getGuidesHubPath(language));
 
 /**
  * The guide articles available for an island, as clickable links — only topics
@@ -121,7 +154,7 @@ export const getIslandGuideLinks = (
     })
     .map(topic => ({
       key: topic.key,
-      href: `${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`,
+      ...resolveGuideHref(`${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`),
       label: topic.label[language] || topic.label.en,
     }));
 };

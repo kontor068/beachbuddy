@@ -8,6 +8,7 @@ import type { DirectorySearchSuggestion } from '../BeachSearcherHome';
 import { DailyBeachScene } from './DailyBeachScene';
 import { LandingHeroPhoto } from './LandingHeroPhoto';
 import { athensDayKey } from '../../utils/athensTime';
+import type { NationalWindMood } from '../../utils/nationalWindMood';
 import type { HeroSlot } from './heroSources';
 
 interface LandingHeroProps {
@@ -22,6 +23,13 @@ interface LandingHeroProps {
   isFindingLocation: boolean;
   locationError?: string | null;
   roughness: number;
+  /**
+   * Today's national sea mood, or null when we are not going to say — too few
+   * readings, a failed fetch, or a reading old enough that "today" would be a
+   * stretch. LandingView owns that decision; the hero only renders what it is
+   * handed, so there is exactly one place where the claim can be switched off.
+   */
+  todayMood: NationalWindMood | null;
 }
 
 // One quiet accent: the "today" word in each language ("σήμερα"/"today"/
@@ -88,6 +96,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   isFindingLocation,
   locationError,
   roughness,
+  todayMood,
 }) => {
   const c = getLocalizedCopy(language, landingCopy).hero;
   const heroTitle = renderTitleAccent(c.title, c.titleAccent);
@@ -206,6 +215,48 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             <LocateFixed className="h-5 w-5 shrink-0" aria-hidden="true" />
             <span className="truncate">{isFindingLocation ? c.findingLocation : c.nearMe}</span>
           </button>
+        </div>
+
+        {/* THE ONE LIVE THING ON THIS PAGE. The headline, the region band and the
+            header date all say "today"; until this line shipped, nothing on the
+            landing showed what today actually is, while the national reading was
+            already being fetched and thrown away (it fed only the fallback
+            illustration that appears when the hero photo fails).
+
+            BELOW THE SEARCH ROW, NOT ABOVE IT. It reads better above — evidence
+            straight under the promise — but it costs ~68px on a phone, and the
+            thing it would push down is «Κοντά μου», which takes 43,8% of every
+            click this page gets. Under the row the same sentence still sits high,
+            still explains why the box is worth using, and moves nothing anyone
+            was about to tap.
+
+            THE HEIGHT IS RESERVED, not grown into. The sentence arrives after a
+            network call, so without a reservation the region band below would
+            jump a moment after paint. It is sized on the LONGEST locale at the
+            NARROWEST phone — French, which wraps to three lines at 320px, not
+            the two that 375px suggests — because a reservation measured on the
+            comfortable case is not a reservation. Three lines below `sm:`
+            (helped by 14px, which also keeps it a footnote rather than a third
+            CTA), two above it.
+
+            The dot is static. A pulsing "live" indicator over a reading that may
+            be up to an hour old is precisely the over-claim the freshness rule
+            exists to prevent — and the gate that decides whether this renders at
+            all already lives in LandingView. */}
+        <div
+          className="cb-hero-rise mx-auto mt-4 flex min-h-[3.75rem] max-w-xl items-start justify-center sm:mt-5 sm:min-h-[3rem]"
+          style={riseDelay(320)}
+          aria-live="polite"
+        >
+          {todayMood && (
+            <p className="flex items-start gap-2.5 text-[14px] font-semibold leading-snug text-slate-700 sm:text-base">
+              <span
+                aria-hidden="true"
+                className="mt-[0.42rem] h-2 w-2 shrink-0 rounded-full bg-[#007a83] ring-4 ring-[#007a83]/15 sm:mt-[0.45rem]"
+              />
+              {c.todayMood[todayMood]}
+            </p>
+          )}
         </div>
 
         {locationError && (

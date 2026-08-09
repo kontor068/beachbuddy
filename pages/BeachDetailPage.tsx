@@ -2951,6 +2951,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <a
                   key={guide.key}
                   href={guide.href}
+                  /* Same rule as the hub chip beside it, which has always had this:
+                     these are prerendered files, so under `vite dev` the path does
+                     not exist and a relative href just reboots the SPA. It looked
+                     like a dead link with no explanation. resolveGuideHref points
+                     dev at the live URL and flags it external. */
+                  target={guide.external ? '_blank' : undefined}
+                  rel={guide.external ? 'noopener noreferrer' : undefined}
                   /* 34 px measured on a real phone (05/08/2026) — these are standalone
                      pill links, not inline text, so the 44 px minimum applies to them. */
                   className="inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"

@@ -95,6 +95,10 @@ export const usePreferencesSync = ({ userId, preferences, onRemotePreferences }:
         const { error } = await client
           .from('user_preferences')
           .upsert(
+            // athens-clock-exempt: a row's last-write instant, not a time of day.
+            // It is compared against other absolute timestamps (and only ever by
+            // the database), so shifting it to Athens wall-clock would make a row
+            // written from abroad look newer or older than it is.
             { user_id: userId, preferences, updated_at: new Date().toISOString() },
             { onConflict: 'user_id' },
           );

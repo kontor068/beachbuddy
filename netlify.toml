@@ -47,6 +47,14 @@
   to = "/.netlify/functions/feedback-export"
   status = 200
 
+# Newsletter. POST subscribes (origin-gated, rate-limited, de-duplicated by a
+# hash of the address); GET exports the list and is gated by NEWSLETTER_EXPORT_KEY
+# — unset means 403, so the list is never public by accident.
+[[redirects]]
+  from = "/api/newsletter"
+  to = "/.netlify/functions/newsletter-subscribe"
+  status = 200
+
 # "Delete my account" (GDPR right to erasure). Authenticated by the caller's own
 # access token — never by a user id in the request — and it deletes their stored
 # files before the account row, because files are the part a cascade cannot redo.
