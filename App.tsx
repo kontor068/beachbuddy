@@ -6674,11 +6674,16 @@ export const App: React.FC = () => {
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
     return true;
   };
-  const directoryShelteredFallbackPool = (
-    directoryTopRecommendationCandidatePool.length > 0
-    || showNoIdealFallbackSection
-    || showStrongManageableSection
-  )
+  // ONLY the strict pool being non-empty stands this down. It used to ALSO stand down whenever
+  // showNoIdealFallbackSection / showStrongManageableSection were true, and that was the bug
+  // (Λήμνος, 09/08 evening — reported as «γύρισε σε παλιότερη έκδοση»): in those modes the COUNT
+  // comes from noIdealFallbackCandidates / windPreviewCandidates, so the gate happily computed
+  // «16 candidates → show 3» — but the collector below still filters every source through
+  // isDirectoryTopRecommendationCandidate, the same strict predicate that had already rejected
+  // all of them. Result: shouldShow = true, limit = 3, cards = 0, and the block silently fell
+  // back to the old single-beach hero. Those two flags describe which SOURCE leads, never whether
+  // a last resort is allowed to exist.
+  const directoryShelteredFallbackPool = directoryTopRecommendationCandidatePool.length > 0
     ? []
     : prioritizeProtectedRecommendations(
       getWindPriorityTopPickPool(
@@ -6723,20 +6728,37 @@ export const App: React.FC = () => {
     // can't put back a beach the limit removed — so for near-me collect EVERY
     // qualifying candidate, then distance-sort and slice.
     const collectLimit = isNearMeRegionActive ? Infinity : directoryTopRecommendationLimit;
-    const addSource = (source: SuitableBeach[]) => {
+    /**
+     * `preScreened` sources skip isDirectoryTopRecommendationCandidate — they have ALREADY been
+     * filtered, by a predicate built for the day they describe.
+     *
+     * Λήμνος, 09/08/2026 evening, reported as «γύρισε σε παλιότερη έκδοση»: on a 5 Bft meltemi day
+     * every one of the region's 40 beaches scores swimmingComfort 'avoid_swimming', so the strict
+     * predicate (sea gate + swimmingScore ≥ 50) rejected all of them — INCLUDING the 16 that
+     * noIdealFallbackCandidates had already selected and ranked precisely for this case. The
+     * counter read those 16 and said «show 3»; the collector then filtered them to nothing, so
+     * shouldShow was true with zero cards and the block fell back to the old single-beach hero.
+     *
+     * Re-screening them is not extra safety, it is a category error: noIdealFallbackCandidates and
+     * windPreviewCandidates each run isTrustedTopRecommendationCandidate PLUS their own
+     * day-appropriate gate (isNoIdealFallbackCandidate / the strong-wind pool) before ranking by
+     * shelter. Asking «is this an ideal-day pick?» of a set explicitly chosen for a non-ideal day
+     * can only ever answer no.
+     */
+    const addSource = (source: SuitableBeach[], preScreened = false) => {
       source.forEach(item => {
         if (cards.length >= collectLimit || seenIds.has(item.beach.id)) return;
-        if (!isDirectoryTopRecommendationCandidate(item)) return;
+        if (!preScreened && !isDirectoryTopRecommendationCandidate(item)) return;
         seenIds.add(item.beach.id);
         cards.push(item);
       });
     };
 
     if (showNoIdealFallbackSection) {
-      addSource(noIdealFallbackBeaches);
+      addSource(noIdealFallbackBeaches, true);
     }
     if (showStrongManageableSection) {
-      addSource(strongManageableBeaches);
+      addSource(strongManageableBeaches, true);
     }
 
     addSource(recommendedSuitableBeaches);
