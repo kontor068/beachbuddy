@@ -321,12 +321,15 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       moderateAccess: 'Μέτρια πρόσβαση',
     },
     amenities: {
+      // «Beach bar» stays Latin on purpose — utils/amenities.ts logged the decision: it is the
+      // loanword Greeks actually use. «Πάρκινγκ» is the same decision's OTHER half, which this
+      // map never adopted: the app had three spellings and Greek won (2026-08).
       beachBar: 'Beach bar',
       sunbeds: 'Ξαπλώστρες',
       foodNearby: 'Ταβέρνα',
       cafeNearby: 'Καφέ',
       snackCanteen: 'Καντίνα',
-      parking: 'Parking',
+      parking: 'Πάρκινγκ',
       shower: 'Ντους',
       organizedFacilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
@@ -1190,6 +1193,17 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     de: 'Beste Zeit',
     it: 'Ora migliore',
   });
+  // «Άνεμος στην παραλία» — the podium card's why-row. Kept beside visitTimeLabel because the two
+  // rows render together and someone changing one wording should see the other.
+  const windOnShoreLabel = getLocalizedCopy(language, {
+    en: 'Wind at the beach',
+    gr: 'Άνεμος στην παραλία',
+    fr: 'Vent sur la plage',
+    de: 'Wind am Strand',
+    it: 'Vento in spiaggia',
+  });
+  // Same unit spelling as utils/shoreIncidenceCopy's BFT_UNIT — «Μπφ» in Greek, «Bft» elsewhere.
+  const beaufortUnitLabel = language === 'gr' ? 'Μπφ' : 'Bft';
   // `noIdealSwimmingWindow` was computed here and threaded to all three badges. It was removed on
   // 02/08/2026 with the input itself: getExperienceTier DECLARED it and never read it, so three
   // call sites were paying for a value the verdict ignored. Everything it tried to express —
@@ -1472,7 +1486,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         data-nosnippet="true"
         className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
       >
-        <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 py-3 sm:hidden ${isPodium
+        <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 pb-0 pt-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
           : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
           <div className={`grid min-w-0 items-start gap-2.5 ${isPodium ? 'grid-cols-[auto_minmax(0,1fr)_2.75rem]' : 'grid-cols-[2.75rem_minmax(0,1fr)_2.75rem]'}`}>
@@ -1569,10 +1583,31 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
+            {/* THE MOBILE «WHY» ROW — podium cards only, and ONE row for both facts. The desktop
+                column renders the wind figure and the «Top μέχρι» hour as two rows, but this body
+                is height-constrained (the 31/07 defect was the «Πληροφορίες» button clipped off
+                the card by exactly one extra row), so here they share a line. Same rules as the
+                desktop row: the Beaufort is the pin's own reading, stated as a number — never a
+                word, never a colour. */}
+            {isPodium && (
+              <div className="flex min-h-8 w-full min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200">
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
+                  <span>{windBeaufort} {beaufortUnitLabel}</span>
+                </span>
+                {topPickTimeLabel && (
+                  <span className="inline-flex min-w-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60">
+                    <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />
+                    <span className="min-w-0 truncate">{topPickTimeLabel}</span>
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Fixed mobile slot mirrors the desktop feature set, including a third row
                 when the beach has 5-6 compact chips. */}
             {featureChips.length > 0 ? (
-              <div className="grid min-h-[6.75rem] min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5">
+              <div className="grid min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5">
                 {featureChips.map(chip => (
                   <span key={chip.key} className={featureChipBase}>
                     <span className={featureChipIconClass}>{chip.icon}</span>
@@ -1581,7 +1616,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 ))}
               </div>
             ) : !showMobileProtectionChip ? (
-              <div className="grid h-[6.75rem] content-start overflow-hidden">
+              <div className="grid content-start overflow-hidden">
                 <span className="inline-flex min-h-9 w-full min-w-0 items-center justify-start gap-1.5 overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/70 px-2.5 py-1.5 text-xs font-semibold leading-tight text-slate-600">
                   <Info className="h-3.5 w-3.5 shrink-0" />
                   <span className="min-w-0 line-clamp-2 leading-tight">{localizedCardCopy.localExposureCheck}</span>
@@ -1654,7 +1689,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </button>
         </div>
 
-        <div className={`hidden flex-col sm:flex sm:flex-1 ${isCompact ? 'gap-3 p-3 sm:p-[1.05rem] lg:gap-2 lg:p-3' : 'gap-3 p-3 sm:p-[1.05rem]'}`}>
+        <div className={`hidden flex-col sm:flex sm:flex-1 ${isCompact ? 'gap-3 px-3 pb-0 pt-3 sm:px-[1.05rem] sm:pt-[1.05rem] lg:gap-2 lg:px-3 lg:pt-3' : 'gap-3 px-3 pb-0 pt-3 sm:px-[1.05rem] sm:pt-[1.05rem]'}`}>
           <div className={`${isCompact ? 'space-y-1 lg:space-y-0.5' : 'space-y-1'} hidden sm:block`}>
             <div className="flex min-w-0 flex-wrap items-center gap-x-1.5">
               <h3 className="line-clamp-1 min-w-0 font-heading text-lg font-extrabold leading-[1.12] text-slate-950 transition-colors group-hover:text-primary dark:text-white">
@@ -1701,6 +1736,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           </div>
           )}
 
+          {/* THE «WHY» ROW — a NUMBER, never a verdict. The podium deliberately silences every
+              per-card condition opinion (windExposureMode 'none', hidden exposure badge, hidden
+              score badge): the map above is the only surface allowed to colour a beach, and two
+              ladders is the defect class this project keeps paying for. What was lost with them is
+              any sign of WHY these three lead — the card read like a tourist listing (easy access,
+              sunbeds, taverna). A bare Beaufort figure restores the why without reopening the
+              ladder: it is the SAME per-beach reading the map pin used (beachWindSpeedKmph ←
+              perBeachMapWind), stated as a fact, with no word and no colour attached. Podium cards
+              only — the general list keeps its slimmer body. */}
+          {isPodium && (
+            <div
+              className="flex min-h-9 w-full min-w-0 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-3 py-1.5 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
+              aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`}
+            >
+              <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
+              <span className="min-w-0 truncate text-xs font-bold text-slate-700 dark:text-slate-200">
+                {windOnShoreLabel}: {windBeaufort} {beaufortUnitLabel}
+              </span>
+            </div>
+          )}
+
           {topPickTimeLabel && (
             <div
               className="flex min-h-12 w-full min-w-0 items-center gap-2.5 rounded-xl border border-cyan-200/80 bg-cyan-50/85 px-3 py-2 text-left shadow-sm shadow-sky-900/5 dark:border-cyan-900/45 dark:bg-cyan-950/25"
@@ -1721,7 +1777,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           )}
 
           {featureChips.length > 0 && (
-            <div className="hidden min-h-[5.875rem] grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
+            <div className="hidden grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
               {featureChips.map(chip => (
                 <span key={chip.key} className={featureChipBase}>
                   <span className={featureChipIconClass}>{chip.icon}</span>
@@ -1733,7 +1789,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         </div>
 
-        <div className={`order-3 mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-3 sm:order-none sm:pt-2 ${isCompact ? 'px-3.5 pb-3.5 sm:px-3 sm:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-3'} dark:border-slate-800 dark:bg-slate-900/60`}>
+        <div className={`order-3 mt-auto flex items-center gap-2 border-t border-sky-50 bg-white/74 pt-2 sm:order-none ${isCompact ? 'px-3.5 pb-3.5 sm:px-3 sm:pb-3' : 'px-3.5 pb-3.5 sm:px-4 sm:pb-3'} dark:border-slate-800 dark:bg-slate-900/60`}>
           {detailHref ? (
             <a
               href={detailHref}

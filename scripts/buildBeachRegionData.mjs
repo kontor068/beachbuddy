@@ -692,15 +692,32 @@ const buildSummaryBeach = beach => {
     // utils/navigation.ts builds those links off beach.metadata. Without it, those surfaces lose
     // the verified Google placeId and Maps drops a raw coordinate pin instead of the place card
     // (only the detail page, which merges in detail-tier metadata, worked). Carry a TRIMMED metadata
-    // mirroring exactly what navigation.ts reads — placeId/query (googleMapsNavigation), access.type
-    // (boat-only + badge), confidence (low-conf status) — without bloating the tier with terrain/
-    // amenities/notes (already flattened into the fields above).
-    ...((beach.metadata?.googleMapsNavigation || beach.metadata?.access?.type || beach.metadata?.confidence)
+    // mirroring exactly what the SUMMARY-tier consumers read — placeId/query
+    // (googleMapsNavigation), access.type (boat-only + badge), confidence (low-conf status), and
+    // terrain.types.
+    //
+    // WHY terrain.types IS HERE, 09/08/2026. It was deliberately left out ("already flattened into
+    // beachType") and that flattening is real — but two consumers read the RAW array off
+    // beach.metadata, and both run on the summary tier, where it did not exist:
+    //
+    //   1. hasTrustedTopPickStaticData (services/recommendationService.ts) requires
+    //      metadata.terrain.types.length. With the field absent it returned false for EVERY beach,
+    //      so isTrustedTopRecommendationCandidate rejected all of them and the region podium — the
+    //      «Top 3 / Πού να πάμε τώρα;» block — rendered for NOBODY, in all 110 regions, every day.
+    //      Measured: Corfu offered 105 candidates and 0 survived, each failing on this one check
+    //      while passing confidence, access, profile, depth, orientation and wind evidence.
+    //   2. hasRockySnorkelingTerrain (same file) silently scored every beach as non-rocky.
+    //
+    // The honest fix is to ship the field the gates were written against, not to loosen gates to
+    // match a tier that happened to drop it: a gate relaxed here would also relax on the detail
+    // tier, where the data is real. Cost is ~2 short strings per beach.
+    ...((beach.metadata?.googleMapsNavigation || beach.metadata?.access?.type || beach.metadata?.confidence || beach.metadata?.terrain?.types?.length)
       ? {
         metadata: {
           ...(beach.metadata?.access?.type ? { access: { type: beach.metadata.access.type } } : {}),
           ...(beach.metadata?.confidence ? { confidence: beach.metadata.confidence } : {}),
           ...(beach.metadata?.googleMapsNavigation ? { googleMapsNavigation: beach.metadata.googleMapsNavigation } : {}),
+          ...(beach.metadata?.terrain?.types?.length ? { terrain: { types: beach.metadata.terrain.types } } : {}),
         },
       }
       : {}),

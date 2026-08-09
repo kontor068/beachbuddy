@@ -22,6 +22,15 @@ const checks = [
     args: ['scripts/validateCriticalBeachData.mjs'],
   },
   {
+    id: 'auth-csp',
+    title: 'Accounts ↔ Content-Security-Policy',
+    description: 'If accounts are configured, checks that the enforcing CSP in netlify.toml actually allows the Supabase origin this build talks to — and that it is the exact origin, not a wildcard.',
+    protects: 'Prevents sign-in, saved beaches and photo uploads from failing silently in production while working perfectly on localhost, where no CSP header exists.',
+    failureAction: 'Add the exact Supabase origin to connect-src in netlify.toml. Never use https://*.supabase.co — that allows every Supabase tenant on the internet.',
+    command: process.execPath,
+    args: ['scripts/validateAuthCsp.mjs'],
+  },
+  {
     id: 'shoreline-shapes',
     title: 'Shoreline thumbnails',
     description: 'Checks the committed per-beach shoreline drawings still match the beach coordinates and coastline they were built from, and that every drawing is left-to-right with the beach sitting on its own waterline.',
@@ -128,6 +137,15 @@ const checks = [
     failureAction: 'Fix utils/stayWindow.pickHarshestStayHour. Never soften the rule to make a case pass: if the window\'s answer is allowed to be calmer than one of its hours, the feature is telling people the sea is quieter than it will be.',
     command: process.execPath,
     args: ['scripts/validateStayWindow.mjs'],
+  },
+  {
+    id: 'summary-tier-can-answer',
+    title: 'Every region can still answer "where should we go"',
+    description: 'Reads all 110 summary-tier region files — the data the map, the cards and the podium actually run on — and applies the same static-data half of the top-pick trust gate the app applies, then checks that regions able to produce an answer have not collapsed wholesale, and that terrain.types is not lost between the raw dataset and the tier. Self-proves with --prove: stripping terrain in memory must make it fail.',
+    protects: 'On 09/08/2026 the region podium — the «Πού να πάμε τώρα;» block, the one thing the product exists to answer — was found rendering for NOBODY, in all 110 regions, every day. Corfu offered 105 candidates and 0 survived. The summary tier carries a deliberately trimmed metadata and the trim dropped metadata.terrain.types, which hasTrustedTopPickStaticData requires; every beach failed that single check while passing confidence, access, profile, depth, orientation and wind evidence. None of the 31 existing gates saw it, because every one of them asks "is what we say true?" and this was "we say nothing at all". This gate asks the other question.',
+    failureAction: 'Do NOT relax the trust gate to make this pass — it would relax on the detail tier too, where the data is real. Fix buildSummaryBeach in scripts/buildBeachRegionData.mjs to carry the field the gate reads, and re-run npm run build:beach-data.',
+    command: process.execPath,
+    args: ['scripts/validateSummaryTierAnswers.mjs', '--prove'],
   },
   {
     id: 'beach-page-contradictions',
@@ -256,6 +274,22 @@ const checks = [
     env: { CONTEXT: 'production' },
   },
   {
+    // MOVED HERE 09/08/2026, from third place in this list. It reads dist/ and
+    // exits 1 when the directory is absent (auditLoggedOutParity.mjs:39-41), so
+    // ahead of the build it passed only on a machine that happened to have a
+    // dist/ lying around from an earlier run — and failed on every clean
+    // checkout, including CI, for a reason that had nothing to do with the code.
+    // A gate that is red for an unrelated reason is worse than no gate: it
+    // teaches people to ignore red. It now sits with the other dist-readers.
+    id: 'logged-out-parity',
+    title: 'Signing out costs nothing',
+    description: 'Checks the built output keeps the promise accounts were added on: the Supabase SDK is never preloaded by the entry HTML and is never imported statically, no account UI leaks into prerendered static content, and every visitor-contributed block carries its "from a visitor" label.',
+    protects: 'Prevents the ~99% of visitors who never sign in from silently paying 57 KB gzipped for a feature they do not use — and prevents user-uploaded content from ever reading as our own measured data.',
+    failureAction: 'Move the offending import behind the dynamic import in services/supabaseClient.ts, or add the locale label to the visitor block in scripts/prerenderBeachPages.mjs. Never delete the rule to make it pass.',
+    command: process.execPath,
+    args: ['scripts/auditLoggedOutParity.mjs'],
+  },
+  {
     id: 'bundle-secrets',
     title: 'Bundle secret guard',
     description: 'Checks vite.config.ts still loads only VITE_-prefixed env vars and has no `define` block injecting environment values, then scans the built bundle for key-shaped literals (Google, OpenAI, GitHub, AWS, Slack, Telegram, PEM).',
@@ -296,6 +330,30 @@ const checks = [
       'Fix the verdict paragraph in buildBeachNarrative (scripts/prerenderBeachPages.mjs) or rerun node scripts/bakeLocalWindShelter.mjs if the baked data is stale, then rebuild. Never edit the gate\'s sentence lists independently: they import utils/localWindContext.mjs, the same single source the app renders.',
     command: process.execPath,
     args: ['scripts/validateStaticShelterVerdict.mjs', '--prove'],
+  },
+  {
+    id: 'beach-meta-descriptions',
+    title: 'The Google snippet is truthful and is not the same sentence on 241 pages',
+    description:
+      'Reads the <meta name="description"> of every built beach page in all five languages and asserts four things: it never claims a shelter level the baked localWindStatus contradicts (checked with loose vocabulary, not just our own generated strings, so hand-written copy is covered too); beaches with a baked verdict actually print it; no single snippet body covers more than 7% of a language\'s pages and the distinct-body count has not regressed; and nothing exceeds 160 characters.',
+    protects:
+      'Search Console 06/07-02/08/2026: the 2.854 beach pages earned 4.509 impressions and 44 clicks — 1,0% against 16,9% on the home page — with pages at position 3,6 taking zero clicks. Rank did not explain it. Measured on the build, 2.854 Greek pages shared only 926 distinct snippet bodies and the measured verdict never reached the snippet at all. The gate also caught two hand-written overrides telling Google a beach was "υπήνεμη στο μελτέμι" over data that says exposed.',
+    failureAction:
+      'Fix beachMetaDescription / beachTraitMetaDescription / SEO_META_DESCRIPTION_OVERRIDES in scripts/prerenderBeachPages.mjs, then rebuild. If distinctness regressed, a trait clause has probably stopped being emitted — check beachTraitList against the beach data shape before relaxing the floor.',
+    command: process.execPath,
+    args: ['scripts/validateBeachMetaDescriptions.mjs'],
+  },
+  {
+    id: 'landing-guide-links',
+    title: 'Every guide the landing links actually exists',
+    description:
+      'Takes the six curated topic×region pairs the national landing links (utils/landingGuideLinks.ts), resolves each one through the same locale-prefix rule the app uses, and asserts the built page is on disk for all five languages — 30 URLs. Also refuses an empty pair list, a repeated topic, a region id missing from the beach index, and a topic key that is not in GUIDE_TOPICS.',
+    protects:
+      'The landing cannot check these links the way every other surface does: the ≥5-beach predicate gate needs a region\'s beach records loaded and the landing loads none, so the pairs are named by hand. Two ways that rots silently — a data correction drops a topic under the threshold and the page stops being generated, or the slug drifts (getRegionUrlSlug normalises the region ID while the prerender normalises region.name.en, and they already disagree on Pelion: magnesia-mainland-pelion vs the magnesia-pelion on disk). Either one ships a 404 from the page with the site\'s best CTR, 16,9%.',
+    failureAction:
+      'Either fix the pair in utils/landingGuideLinks.ts (the slug is written out literally on purpose — copy it from the directory name under dist/), or, if a guide genuinely stopped qualifying, swap that pair for another topic and rebuild.',
+    command: process.execPath,
+    args: ['scripts/validateLandingGuideLinks.mjs'],
   },
 ];
 

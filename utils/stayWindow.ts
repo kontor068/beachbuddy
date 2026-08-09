@@ -153,7 +153,15 @@ export interface StayHourReading {
  */
 export const pickHarshestStayHourFromReadings = (
   readings: readonly StayHourReading[]
-): number | null => pickHarshestStayHour(readings.map(reading => ({
+): number | null => pickHarshestStayHour(toStayHourSamples(readings));
+
+/**
+ * Readings → tones. The ONE place in this module where a reading becomes a colour, so every
+ * consumer below asks the same question of the same ladder. Extracted on 08/08/2026, when the
+ * day-turn sentence needed the identical mapping: a second copy would have been a second ladder,
+ * and two ladders drifting apart unseen is the defect class this project keeps paying for.
+ */
+const toStayHourSamples = (readings: readonly StayHourReading[]): StayHourSample[] => readings.map(reading => ({
   dt: reading.dt,
   tone: resolveConditionTone({
     exposureLevel: reading.exposureLevel,
@@ -164,7 +172,50 @@ export const pickHarshestStayHourFromReadings = (
     isEnclosedCove: false,
     seaStateM: reading.seaStateM,
   }),
-})));
+}));
+
+/** The opening tone, the hour it is first beaten, and what beats it. */
+export interface WorseningTurn {
+  fromDt: number;
+  openingTone: CalmnessTone;
+  worseTone: CalmnessTone;
+}
+
+/**
+ * «ΔΕΝ ΚΡΑΤΑΕΙ ΟΛΗ ΜΕΡΑ» — the first hour genuinely rougher than right now.
+ *
+ * WHY THIS IS NOT findStayTurningPoint. That one returns the first hour whose tone DIFFERS from
+ * the opening, in either direction, because the stay-window card describes a window the visitor
+ * chose and any change inside it is news to them. This one feeds the homepage, where nobody asked
+ * anything, and there only one direction may be volunteered: that it gets WORSE. An unprompted
+ * "it improves at five" is a calmer claim about a future we never measured that way, and the
+ * lesson of 05/08/2026 is exactly that every gate here looked in one direction only — so a new
+ * unprompted sentence gets the safe direction or it gets nothing.
+ *
+ * It also asks "rougher than NOW", not "different from the previous hour". A day that dips calm at
+ * noon and turns at four would slip past a neighbour-comparison the moment the dip came first.
+ * Comparing every hour against the opening is the definition stayWindowDegrades already uses, and
+ * the one the 33,0% figure was measured with — so the sentence and the evidence for it agree.
+ *
+ * Returns null — and the caller then says nothing — when the day holds, when it only improves, or
+ * when fewer than two hours are left to speak about. Silence is the correct default: a qualifier
+ * printed every day reads as "we are not sure" (the standing rule against permanent uncertainty
+ * labels), and 54% of beach-days genuinely are one answer.
+ */
+export const findWorseningTurnFromReadings = (
+  readings: readonly StayHourReading[]
+): WorseningTurn | null => {
+  const samples = toStayHourSamples(readings);
+  if (samples.length < 2) return null;
+  const opening = samples[0];
+  const openingRank = calmnessRank(opening.tone);
+  for (let i = 1; i < samples.length; i += 1) {
+    if (calmnessRank(samples[i].tone) < openingRank) {
+      return { fromDt: samples[i].dt, openingTone: opening.tone, worseTone: samples[i].tone };
+    }
+  }
+  return null;
+};
 
 /**
  * Does the window actually turn, and when?

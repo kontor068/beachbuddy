@@ -1919,6 +1919,10 @@ const beachPhotosById = await readJson(path.join(projectRoot, 'data', 'beachPhot
 const beachPhotoBlocklist = new Set(
   (await readJson(path.join(projectRoot, 'data', 'beachPhotoBlocklist.json'))).ids || [],
 );
+// Photos our own visitors sent and we approved (scripts/syncApprovedPhotos.mjs,
+// which runs earlier in `npm run build`). Read defensively: a fresh checkout has
+// an empty map, and the file is regenerated on every build rather than hand-kept.
+const beachPhotosUgc = await readJson(path.join(projectRoot, 'data', 'beachPhotosUgc.generated.json')) || {};
 
 // Wave climatology (scripts/buildWaveClimatology.py) — how often the sea in front of each
 // beach is actually calm, month by month, from 10 years of Copernicus reanalysis.
@@ -1977,7 +1981,43 @@ const photoCreditsByFile = new Map(
     .map(([, file, author, license, sourceUrl]) => [file, { author, license, sourceUrl }]),
 );
 
-const beachCardPhoto = beach => {
+// A visitor's own photo, credited to them by name. Checked BEFORE the Commons
+// library for the same reason the app checks it first: it is newer, it is
+// verifiably of this beach, and a contributor promised their photo would appear
+// on the card has to find it there — including on the static page Google reads.
+//
+// The credit is built here rather than looked up in photoCredit.ts because the
+// prerenderer is plain Node and cannot import the app's TypeScript.
+const UGC_PHOTO_WORD = { en: 'Photo', gr: 'Φωτογραφία', de: 'Foto', fr: 'Photo', it: 'Foto' };
+const UGC_VISITOR = {
+  en: 'from a visitor', gr: 'από επισκέπτη', de: 'von einem Besucher',
+  fr: 'd’un visiteur', it: 'da un visitatore',
+};
+
+const beachUgcCardPhoto = (beach, language = 'en') => {
+  const id = String(beach?.id ?? '');
+  if (!id || beachPhotoBlocklist.has(id)) return null;
+  const entry = Array.isArray(beachPhotosUgc[id]) ? beachPhotosUgc[id].find(item => item && item.url) : null;
+  if (!entry) return null;
+
+  const word = UGC_PHOTO_WORD[language] || UGC_PHOTO_WORD.en;
+  const name = entry.credit || UGC_VISITOR[language] || UGC_VISITOR.en;
+  return {
+    // Already 1600px and under 550 KB when it was uploaded — there is no resize
+    // parameter to add, and no second size to offer.
+    src: entry.url,
+    src2x: entry.url,
+    credit: { author: name, license: '', sourceUrl: '' },
+    creditLabel: `${word}: ${name}`,
+    creditRequired: true,
+    isUgc: true,
+  };
+};
+
+const beachCardPhoto = (beach, language = 'en') => {
+  const ugc = beachUgcCardPhoto(beach, language);
+  if (ugc) return ugc;
+
   const id = String(beach?.id ?? '');
   if (!id || beachPhotoBlocklist.has(id)) return null;
   const urls = beachPhotosById[id];
@@ -3063,7 +3103,13 @@ const hasUnsupportedStaticConditionCopy = text => {
   if (/(?:\bsafe(?:st)?\b|\u03b1\u03c3\u03c6\u03b1\u03bb)/i.test(value) && !/\b(safety|lifeguard|warning flags?|beach flags?|red flags?|yellow flags?|avoid|caution|does not replace|do not replace|not replace|follow)\b/i.test(value)) return true;
   if (/\bguarantee(?:d)?\b/i.test(value) && !/\b(?:not|no|never|without)\s+\w*\s*guarantee/i.test(value)) return true;
   if (/\b(calm|calmer|calmest)\b|\u03ae\u03c1\u03b5\u03bc|\u03b3\u03b1\u03bb\u03ae\u03bd|\u03bd\u03b7\u03bd\u03b5\u03bc/i.test(value) && !/\b(not|avoid|conditions?|mild|low-wind|wind and waves|check)\b|\u03ad\u03bb\u03b5\u03b3\u03be\u03b5|\u03c3\u03c5\u03bd\u03b8\u03ae\u03ba/i.test(value)) return true;
-  if (/\b(sheltered|wind-protected|protected from|fully protected)\b|\u03c0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5|\u03b1\u03c0\u03ac\u03bd\u03b5\u03bc|\u03c5\u03c0\u03ae\u03bd\u03b5\u03bc/i.test(value) && !/\b(usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\u03bc\u03c0\u03bf\u03c1\u03b5\u03af|\u03c3\u03c5\u03c7\u03bd|\u03b4\u03b9\u03b1\u03b8\u03ad\u03c3\u03b9\u03bc|\u03c0\u03c1\u03bf\u03c3\u03b1\u03bd\u03b1\u03c4\u03bf\u03bb|\u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd|\u03c0\u03c1\u03b9\u03bd\s+\u03c0\u03b1\u03c2|\u03c0\u03b9\u03bf/i.test(value)) return true;
+  // NOTE (08/08/2026): the hedge list carried English "usually" but not its Greek
+  // equivalent \u03c3\u03c5\u03bd\u03ae\u03b8\u03c9\u03c2 \u2014 an asymmetry, not a policy. 05/08 settled that
+  // \u03c3\u03c5\u03bd\u03ae\u03b8\u03c9\u03c2 is THE word this project uses to mark a seasonal tendency
+  // (see LOCAL_WIND_SECTION: "EVERY TITLE SAYS USUALLY"), so a sentence carrying
+  // it is hedged by construction. Without this, the meta verdict below could not
+  // reuse the same vocabulary the page body already prints.
+  if (/\b(sheltered|wind-protected|protected from|fully protected)\b|\u03c0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5|\u03b1\u03c0\u03ac\u03bd\u03b5\u03bc|\u03c5\u03c0\u03ae\u03bd\u03b5\u03bc/i.test(value) && !/\b(usually|often|may|might|can|more|less|available|orientation|oriented|based on|not guaranteed|check|compare|before you go|conditions vary|depending|signal|data|less exposed|more comfortable)\b|\u03bc\u03c0\u03bf\u03c1\u03b5\u03af|\u03c3\u03c5\u03c7\u03bd|\u03c3\u03c5\u03bd\u03ae\u03b8|\u03b4\u03b9\u03b1\u03b8\u03ad\u03c3\u03b9\u03bc|\u03c0\u03c1\u03bf\u03c3\u03b1\u03bd\u03b1\u03c4\u03bf\u03bb|\u03b4\u03b5\u03b4\u03bf\u03bc\u03ad\u03bd|\u03c0\u03c1\u03b9\u03bd\s+\u03c0\u03b1\u03c2|\u03c0\u03b9\u03bf/i.test(value)) return true;
   return false;
 };
 
@@ -3080,8 +3126,9 @@ const truncateForMeta = (text, max = 160) => {
   if (clean.length <= max) return clean;
   const slice = clean.slice(0, max);
   const lastSpace = slice.lastIndexOf(' ');
-  // Strip trailing dashes/commas/spaces so we never render "… —…" or "…,…".
-  const trimmed = slice.slice(0, lastSpace > 80 ? lastSpace : max).replace(/[\s—–,-]+$/u, '').trim();
+  // Strip trailing punctuation/spaces so we never render "… —…", "…,…" or the
+  // "νερά.…" that a sentence boundary landing exactly on the cut produced.
+  const trimmed = slice.slice(0, lastSpace > 80 ? lastSpace : max).replace(/[\s—–,.·-]+$/u, '').trim();
   return `${trimmed}…`;
 };
 
@@ -3101,20 +3148,20 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
     gr: 'Πολλώνια Μήλου: αμμώδης παραλία σε ψαροχώρι, με ξαπλώστρες, πάρκινγκ και ταβέρνες, καλή για οικογένειες. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'south-aegean-milos#1924': {
-    en: 'Triades, Milos: remote sand-and-pebble coves on the wild west coast, good for snorkeling, often better in northerly Meltemi winds. Check live wind first.',
-    gr: 'Τριάδες Μήλου: τρεις απομακρυσμένοι όρμοι με άμμο και βότσαλο στη δυτική ακτή, καλοί για snorkeling και υπήνεμοι στο μελτέμι. Δες ζωντανά τον άνεμο.',
+    en: 'Triades, Milos: remote sand-and-pebble coves on the wild west coast, good for snorkeling.',
+    gr: 'Τριάδες Μήλου: τρεις απομακρυσμένοι όρμοι με άμμο και βότσαλο στη δυτική ακτή, καλοί για snorkeling.',
   },
   'north-aegean-lemnos#1455': {
-    en: 'Mikro Fanaraki, Lemnos: organised sandy beach with sunbeds, bar and parking, often better with northerly winds. Check wind and waves.',
-    gr: 'Μικρό Φαναράκι, Λήμνος: οργανωμένη αμμώδης παραλία με ξαπλώστρες, bar και πάρκινγκ, υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και κύμα.',
+    en: 'Mikro Fanaraki, Lemnos: organised sandy beach with sunbeds, a bar and parking.',
+    gr: 'Μικρό Φαναράκι, Λήμνος: οργανωμένη αμμώδης παραλία με ξαπλώστρες, bar και πάρκινγκ.',
   },
   'peloponnese-korinthia-mainland#1528': {
-    en: 'Lychnari, Korinthia: a quiet pebble beach good for snorkeling and often better with northerly winds. Check wind and sea before you go.',
-    gr: 'Λυχνάρι Κορινθίας: ήσυχη παραλία με βότσαλο, καλή για snorkeling και υπήνεμη σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα πριν πας.',
+    en: 'Lychnari, Korinthia: a quiet pebble beach, good for snorkeling.',
+    gr: 'Λυχνάρι Κορινθίας: ήσυχη παραλία με βότσαλο, καλή για snorkeling.',
   },
   'peloponnese-korinthia-mainland#1523': {
-    en: 'Kalogerolimano, Korinthia: a pebble cove good for snorkeling and often better with northerly winds. Check wind and sea before you go.',
-    gr: 'Καλογερολίμανο Κορινθίας: προστατευμένος όρμος με βότσαλο, καλός για snorkeling, υπήνεμος σε βόρειους ανέμους. Δες ζωντανά άνεμο και θάλασσα.',
+    en: 'Kalogerolimano, Korinthia: a pebble cove, good for snorkeling.',
+    gr: 'Καλογερολίμανο Κορινθίας: όρμος με βότσαλο, καλός για snorkeling.',
   },
   'west-greece-ileia-mainland#2568': {
     en: 'Kounoupeli, Ileia: a quiet, family-friendly sand-and-pebble beach with sunbeds. Check wind and waves before you go.',
@@ -3125,8 +3172,8 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
     gr: 'Φακίστρα Πηλίου: απομακρυσμένος όρμος με βότσαλο και καθαρά νερά, καλός για snorkeling. Δες ζωντανά άνεμο και κύμα πριν πας.',
   },
   'south-aegean-paros#2029': {
-    en: 'Kalogeros, Paros: a sand-and-pebble beach good for snorkeling and often better with Meltemi winds. Check wind and waves before you go.',
-    gr: 'Καλόγερος Πάρου: παραλία με άμμο και βότσαλο, καλή για snorkeling και υπήνεμη στο μελτέμι. Δες ζωντανά άνεμο και κύμα πριν πας.',
+    en: 'Kalogeros, Paros: a sand-and-pebble beach, good for snorkeling.',
+    gr: 'Καλόγερος Πάρου: παραλία με άμμο και βότσαλο, καλή για snorkeling.',
   },
   'crete-crete-chania#574': {
     en: 'Platanias, Chania: a long organised sandy beach near Chania with sunbeds. Check wind and waves before you go.',
@@ -3152,16 +3199,16 @@ const SEO_META_DESCRIPTION_OVERRIDES = {
   // no invented claims; the 3 OSM-only bleeders (Porto Fino, Perani, Nopigia) are
   // left on the template since their data carries no honest distinguishing hook.
   'south-aegean-lipsi#2373': {
-    en: 'Katsadia, Lipsi: an organised sandy beach with sunbeds and a taverna, often better in northerly winds. Check live wind & waves before you go.',
-    gr: 'Κατσαδιά, Λειψοί: οργανωμένη αμμώδης παραλία με ξαπλώστρες και ταβέρνα, υπήνεμη σε βόρειους ανέμους. Δες live άνεμο & κύμα πριν πας.',
+    en: 'Katsadia, Lipsi: an organised sandy beach with sunbeds and a taverna.',
+    gr: 'Κατσαδιά, Λειψοί: οργανωμένη αμμώδης παραλία με ξαπλώστρες και ταβέρνα.',
   },
   'attica-west-attica-mainland#191': {
     en: 'Prosili, West Attica: a quiet pebble beach in Aigosthena bay, good for snorkeling, with a taverna nearby. Check live wind & waves before you go.',
     gr: 'Προσήλι, Δυτική Αττική: ήσυχη παραλία με βότσαλο στον όρμο Αιγοσθένων, καλή για snorkeling, με ταβέρνα κοντά. Δες live άνεμο & κύμα πριν πας.',
   },
   'south-aegean-milos#1900': {
-    en: 'Agios Sostis, Milos: a sandy beach with shallow water, parking and a taverna nearby, often better in northerly winds. Check live wind & waves.',
-    gr: 'Άγιος Σώστης, Μήλος: αμμώδης παραλία με ρηχά νερά, πάρκινγκ και ταβέρνα κοντά, υπήνεμη σε βόρειους ανέμους. Δες live άνεμο & κύμα πριν πας.',
+    en: 'Agios Sostis, Milos: a sandy beach with shallow water, parking and a taverna nearby.',
+    gr: 'Άγιος Σώστης, Μήλος: αμμώδης παραλία με ρηχά νερά, πάρκινγκ και ταβέρνα κοντά.',
   },
   'south-aegean-milos#1905': {
     en: 'Gerania, Milos: a quiet sand-and-pebble beach with shallow water and parking, reached by a dirt road with few facilities. Check live wind & waves.',
@@ -3238,12 +3285,66 @@ const TRAIT_PHRASES = {
   family:               { en: 'family-friendly',        gr: 'οικογενειακή',              de: 'familienfreundlich',     fr: 'familiale',              it: 'adatta alle famiglie' },
   snorkeling:           { en: 'good for snorkeling',    gr: 'καλή για snorkeling',       de: 'gut zum Schnorcheln',    fr: 'bien pour le snorkeling', it: 'buona per lo snorkeling' },
   northerly:            { en: 'often more sheltered in northerly winds', gr: 'συχνά πιο απάνεμη σε βόρειους ανέμους', de: 'bei Nordwind oft ruhiger gelegen', fr: 'souvent plus abritée par vent du nord', it: 'spesso più riparata con venti da nord' },
+  // Added 08/08/2026. These three fields were already in every beach record and
+  // were the strongest remaining separators between look-alike snippets:
+  // shallow water 1.427 beaches, quiet 594, remote 375. Shallow also happens to
+  // be the one modifier with measured search demand ("παραλίες για παιδιά",
+  // 551 impressions/28d — every other modifier is under 320).
+  shallow:              { en: 'shallow water',          gr: 'ρηχά νερά',                 de: 'flaches Wasser',         fr: 'eau peu profonde',       it: 'acqua bassa' },
+  quiet:                { en: 'quiet',                  gr: 'ήσυχη',                     de: 'ruhig',                  fr: 'tranquille',             it: 'tranquilla' },
+  remote:               { en: 'secluded',               gr: 'απομονωμένη',               de: 'abgelegen',              fr: 'isolée',                 it: 'isolata' },
 };
 const traitPhrase = (key, language) => TRAIT_PHRASES[key][language] || TRAIT_PHRASES[key].en;
 
-const beachTraitSentence = (beach, language) => {
+// Meta-sized shelter verdict: one short line per wind regime × measured level.
+//
+// WHY (08/08/2026): the nationally measured seasonal verdict reached the page
+// BODY on 06/08, but the snippet Google actually shows still carried only the
+// orientation-derived hedge — "συχνά πιο απάνεμη σε βόρειους ανέμους" appeared
+// on 241 Greek pages, and the top four snippet bodies covered a quarter of the
+// site. The verdict is the one fact here no competitor holds; it belongs in the
+// snippet. The full LOCAL_WIND_SECTION sentence does not fit 155 characters, so
+// these are short forms of the SAME verdict read from the SAME baked
+// `localWindStatus` — never a second, hand-written scale.
+//
+// Greek names a feminine subject ("ακτή") on purpose: the beach's own name may be
+// neuter (boat-only spots like "Το Κλέφτικο" — the trap `statusBoatGr` exists for
+// in the body copy), and an adjective agreeing with the wrong gender would be a
+// grammar error on hundreds of pages.
+const BEACH_META_SHELTER = {
+  aegean: {
+    protected: { en: 'Usually a sheltered shore in the meltemi.', gr: 'Συνήθως προστατευμένη ακτή στα μελτέμια.', de: 'Beim Meltemi meist geschützte Küste.', fr: 'Côte généralement abritée au meltemi.', it: 'Costa di solito riparata dal meltemi.' },
+    partial:   { en: 'Partial shelter in the meltemi.',           gr: 'Μερική προστασία στα μελτέμια.',          de: 'Teilweiser Schutz beim Meltemi.',     fr: 'Abri partiel au meltemi.',            it: 'Riparo parziale dal meltemi.' },
+    exposed:   { en: 'Exposed shore in the meltemi.',             gr: 'Εκτεθειμένη ακτή στα μελτέμια.',          de: 'Beim Meltemi exponierte Küste.',      fr: 'Côte exposée au meltemi.',            it: 'Costa esposta al meltemi.' },
+  },
+  ionian: {
+    protected: { en: 'Usually a sheltered shore in the maistros.', gr: 'Συνήθως προστατευμένη ακτή στον μαΐστρο.', de: 'Beim Maistros meist geschützte Küste.', fr: 'Côte généralement abritée au maïstro.', it: 'Costa di solito riparata dal maestrale.' },
+    partial:   { en: 'Partial shelter in the maistros.',           gr: 'Μερική προστασία στον μαΐστρο.',           de: 'Teilweiser Schutz beim Maistros.',      fr: 'Abri partiel au maïstro.',              it: 'Riparo parziale dal maestrale.' },
+    exposed:   { en: 'Exposed shore in the maistros.',             gr: 'Εκτεθειμένη ακτή στον μαΐστρο.',           de: 'Beim Maistros exponierte Küste.',       fr: 'Côte exposée au maïstro.',              it: 'Costa esposta al maestrale.' },
+  },
+  thermaic: {
+    protected: { en: 'Usually a sheltered shore in the summer wind.', gr: 'Συνήθως προστατευμένη ακτή στον καλοκαιρινό αέρα.', de: 'Beim Sommerwind meist geschützte Küste.', fr: "Côte généralement abritée par le vent d'été.", it: 'Costa di solito riparata dal vento estivo.' },
+    partial:   { en: 'Partial shelter in the summer wind.',           gr: 'Μερική προστασία στον καλοκαιρινό αέρα.',           de: 'Teilweiser Schutz beim Sommerwind.',      fr: "Abri partiel par le vent d'été.",             it: 'Riparo parziale dal vento estivo.' },
+    exposed:   { en: 'Exposed shore in the summer wind.',             gr: 'Εκτεθειμένη ακτή στον καλοκαιρινό αέρα.',           de: 'Beim Sommerwind exponierte Küste.',       fr: "Côte exposée au vent d'été.",                 it: 'Costa esposta al vento estivo.' },
+  },
+};
+
+// The measured verdict for this beach, in meta form, or '' when the model
+// abstained (no baked status) — abstention prints nothing, exactly as the body
+// copy does. Never invents a level.
+const beachMetaShelterLine = (beach, region, language) => {
+  const lang = BEACH_META_SHELTER.aegean.protected[language] ? language : 'en';
+  const status = beach?.localWindStatus;
+  if (status !== 'protected' && status !== 'partial' && status !== 'exposed') return '';
+  const regime = getRegionWindContext(region?.id);
+  return BEACH_META_SHELTER[regime]?.[status]?.[lang] || '';
+};
+
+// Ordered, data-backed trait phrases for the snippet. Returns the list so the
+// composer can drop the weakest ones when the line runs long, instead of losing
+// the whole clause.
+const beachTraitList = (beach, language, { includeNortherly = true } = {}) => {
   const lang = TRAIT_PHRASES.organised[language] ? language : 'en';
-  const typePhrase = BEACH_TYPE_TRAIT[beach?.beachType]?.[lang];
   const features = [];
   const organized = beach.amenities?.organized === true;
   const sunbeds = beach.amenities?.sunbeds === true;
@@ -3252,15 +3353,21 @@ const beachTraitSentence = (beach, language) => {
   else if (sunbeds) features.push(traitPhrase('sunbeds', lang));
   if (beach.amenities?.parking === true) features.push(traitPhrase('parking', lang));
   if (beach.amenities?.restaurant === true || beach.amenities?.taverna === true) features.push(traitPhrase('food', lang));
+  if ((beach.waterDepth?.type || beach.waterDepth) === 'shallow') features.push(traitPhrase('shallow', lang));
   if (beach.environment?.familyFriendly === true) features.push(traitPhrase('family', lang));
   if (beach.activities?.snorkeling === true) features.push(traitPhrase('snorkeling', lang));
-  if (Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d))) {
+  if (beach.environment?.remote === true) features.push(traitPhrase('remote', lang));
+  else if (beach.environment?.quiet === true) features.push(traitPhrase('quiet', lang));
+  // The orientation hedge is now the FALLBACK, not the headline: when the model
+  // baked a real verdict, `beachMetaShelterLine` says the stronger, measured
+  // thing and repeating a weaker version of the same claim only wastes
+  // characters. Kept for the handful of beaches where the model abstained.
+  if (includeNortherly && Array.isArray(beach.protectedFrom) && NORTHERLY.some(d => beach.protectedFrom.includes(d))) {
     features.push(traitPhrase('northerly', lang));
   }
-  const parts = [typePhrase, ...features.slice(0, 3)].filter(Boolean);
-  if (parts.length === 0) return '';
-  return `${parts.join(', ')}.`;
+  return features;
 };
+
 
 // Programmatic beach meta template, all five languages:
 // "{Label}, {island}: {traits} {CTA}". de/fr/it used to bail out here and fall
@@ -3270,18 +3377,44 @@ const beachTraitSentence = (beach, language) => {
 // page. The Greek page for the same beach opened with what the place is actually
 // like. That gap is the best explanation we have for identical rank (9.5) and
 // half the CTR (1.37% vs 2.63%).
-const beachTraitMetaDescription = (beach, beachName, islandName, language) => {
+const beachTraitMetaDescription = (beach, region, beachName, islandName, language) => {
   const label = localizedBeachLabel(beachName, language);
-  const traits = beachTraitSentence(beach, language);
+  const lang = BEACH_TYPE_TRAIT.sandy[language] ? language : 'en';
   const head = `${label}, ${islandName}: `;
-  // Prefer the richest CTA that fits; keep the traits and the live hook as long
-  // as possible, only dropping to a traits-only snippet as the last resort.
+  const shelter = beachMetaShelterLine(beach, region, language);
+  // The orientation hedge only earns its place when no verdict was baked.
+  const typePhrase = BEACH_TYPE_TRAIT[beach?.beachType]?.[lang] || '';
+  const traitList = beachTraitList(beach, language, { includeNortherly: !shelter });
+  const sentence = count => {
+    const parts = [typePhrase, ...traitList.slice(0, count)].filter(Boolean);
+    if (!parts.length) return '';
+    // The trait phrases are lowercase because they normally follow the beach
+    // type ("Αμμώδης παραλία, ήσυχη"). On the 112 beaches whose type is unknown
+    // the first one starts the sentence instead, and read as a typo: "Παραλία
+    // Δημήτρανι, Σαλαμίνα: ήσυχη."
+    if (!typePhrase) parts[0] = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+    return `${parts.join(', ')}.`;
+  };
+  // Ordered by what we would rather keep. The measured verdict outranks both the
+  // trait list and the CTA: it is the only clause on the line that a competitor
+  // cannot copy from a tourism page, and it is what the query actually asks.
+  // Three traits, not four: measured, a fourth clause fits within 155 characters
+  // on only 3 of 2.854 Greek pages once the head, the verdict and the CTA are
+  // paid for. It bought nothing and was removed rather than left as decoration.
+  const bodies = [3, 2, 1, 0]
+    .map(count => [sentence(count), shelter].filter(Boolean).join(' '))
+    .filter(Boolean);
+  // Shed traits before shedding the call to action — the CTA is what turns a
+  // description into a click, so it goes last, not first.
   const candidates = [
-    traits ? `${head}${traits} ${BEACH_META_CTA.long[language]}` : `${head}${BEACH_META_CTA.long[language]}`,
-    traits ? `${head}${traits} ${BEACH_META_CTA.short[language]}` : `${head}${BEACH_META_CTA.short[language]}`,
-    traits ? `${head}${traits} ${BEACH_META_CTA.tiny[language]}` : `${head}${BEACH_META_CTA.tiny[language]}`,
-    traits ? `${head}${traits}` : `${head}${BEACH_META_CTA.tiny[language]}`,
+    ...bodies.map(body => `${head}${body} ${BEACH_META_CTA.tiny[language]}`),
+    ...bodies.map(body => `${head}${body}`),
   ];
+  // No traits and no verdict at all (unknown type, model abstained): keep the
+  // pre-existing behaviour rather than emitting a bare name.
+  candidates.push(`${head}${BEACH_META_CTA.long[language]}`);
+  candidates.push(`${head}${BEACH_META_CTA.short[language]}`);
+  candidates.push(`${head}${BEACH_META_CTA.tiny[language]}`);
   for (const candidate of candidates) if (candidate.length <= 155) return candidate;
   return truncateForMeta(candidates[candidates.length - 1], 155);
 };
@@ -3296,17 +3429,55 @@ const beachTraitMetaDescription = (beach, beachName, islandName, language) => {
 const beachMetaDescription = (beach, region, beachName, islandName, language) => {
   const override = SEO_META_DESCRIPTION_OVERRIDES[`${region?.id}#${beach.id}`];
   if (override && (language === 'en' || language === 'gr') && override[language] && !hasUnsupportedStaticConditionCopy(override[language])) {
-    return override[language];
+    const text = override[language];
+    const shelter = beachMetaShelterLine(beach, region, language);
+    if (!shelter) return text;
+    // These overrides were written as complete snippets, each ending in its own
+    // call to action. That trailing sentence is dropped and re-added by the
+    // composer, so the characters it was holding can pay for the verdict — the
+    // hand-written part keeps describing the beach's character, which is what it
+    // is good at, and the shelter level comes from the data.
+    //
+    // WHY (08/08/2026): seven of the sixteen asserted shelter from orientation
+    // alone, written before the verdict was baked. Two contradicted it outright —
+    // Καλόγερος Πάρου read "υπήνεμη στο μελτέμι" over data that says *exposed*,
+    // Λυχνάρι claimed shelter over *partial*. A hand-written sentence cannot keep
+    // step with data that changes; only one place may state the level.
+    // `\s`, not `\b`: JavaScript's word boundary is ASCII-only, so it never fires
+    // after "Δες" and the Greek CTA silently survived the strip.
+    const traits = text.replace(/(?:^|(?<=\.\s))(?:Check|Δες)\s[^.]*\.\s*$/u, '').trim();
+    const body = traits || text;
+    const withCta = `${body} ${shelter} ${BEACH_META_CTA.tiny[language]}`;
+    if (withCta.length <= 155) return withCta;
+    const withoutCta = `${body} ${shelter}`;
+    if (withoutCta.length <= 155) return withoutCta;
+    return text;
   }
   const story = getBeachStory(region, beach, language);
   const safeStoryParagraph = story?.paragraphs?.find(paragraph => !hasUnsupportedStaticConditionCopy(paragraph));
   if (safeStoryParagraph) {
+    // 08/08/2026: the story opener used to own the whole snippet, and on 789
+    // Greek pages that silently cost us the measured verdict — the one clause a
+    // tourism site cannot write. The opener is still the lead (it is genuinely
+    // unique prose, which the trait template is not), but it now yields
+    // characters to the verdict rather than the other way round.
+    const shelter = beachMetaShelterLine(beach, region, language);
+    const cta = BEACH_META_CTA.story[language];
+    if (shelter) {
+      for (const openerLength of [115, 100, 85, 70]) {
+        const opener = truncateForMeta(safeStoryParagraph, openerLength);
+        const withCta = `${opener} ${shelter} ${cta}`;
+        if (withCta.length <= 155) return withCta;
+        const withoutCta = `${opener} ${shelter}`;
+        if (withoutCta.length <= 155) return withoutCta;
+      }
+    }
     const opener = truncateForMeta(safeStoryParagraph, 115);
-    const withCta = `${opener} ${BEACH_META_CTA.story[language]}`;
+    const withCta = `${opener} ${cta}`;
     if (withCta.length <= 155) return withCta;
     return truncateForMeta(safeStoryParagraph, 155);
   }
-  return beachTraitMetaDescription(beach, beachName, islandName, language);
+  return beachTraitMetaDescription(beach, region, beachName, islandName, language);
 };
 
 // Visible, crawlable editorial section (unique geology/history/character prose)
@@ -3410,7 +3581,7 @@ const beachImageAltFor = (beachName, islandName, language) => {
 // require attribution (risk #2), so a photo without its author does not ship.
 // `beachCardPhoto` already refuses to return anything it cannot attribute.
 const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
-  const photo = beachCardPhoto(beach);
+  const photo = beachCardPhoto(beach, language);
   if (!photo) return '';
   const alt = pickLang(language, {
     en: `${beachName} beach, ${islandName}, Greece`,
@@ -3420,9 +3591,13 @@ const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
     it: `Spiaggia ${beachName}, ${islandName}, Grecia`,
   });
   const { author, license, sourceUrl } = photo.credit;
-  const creditLine = photo.creditRequired
-    ? `<figcaption style="margin:6px 0 0;font-size:12px;color:#64748b;">${escapeHtml(beachName)} — <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank" style="color:#64748b;">${escapeHtml(author)}</a>, ${escapeHtml(license)}</figcaption>`
-    : '';
+  // A visitor's photo has no external licence page to point at, so its byline is
+  // plain text. Linking it to "" would make the caption reload the page.
+  const creditLine = photo.isUgc
+    ? `<figcaption style="margin:6px 0 0;font-size:12px;color:#64748b;">${escapeHtml(beachName)} — ${escapeHtml(photo.creditLabel)}</figcaption>`
+    : photo.creditRequired
+      ? `<figcaption style="margin:6px 0 0;font-size:12px;color:#64748b;">${escapeHtml(beachName)} — <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank" style="color:#64748b;">${escapeHtml(author)}</a>, ${escapeHtml(license)}</figcaption>`
+      : '';
   return `
         <figure style="margin:0 0 20px;">
           <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
@@ -4723,12 +4898,16 @@ const renderPhotoCredits = (beaches, language, chrome, heroPhoto = null) => {
   const row = (beach, credit) => {
     const name = displayName(beach.name, `Beach ${beach.id}`, language);
     const { author, license, sourceUrl } = credit;
+    // A visitor's own photo has no licence deed and no source page — its whole
+    // provenance is "this person sent it to us and let us publish it". Rendering
+    // the Commons shape for it would produce a dead link and a dangling comma.
+    if (!sourceUrl) return `<li>${escapeHtml(name)}: ${escapeHtml(author)}</li>`;
     return `<li>${escapeHtml(name)}: <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank">${escapeHtml(author)}</a>, ${escapeHtml(license)}</li>`;
   };
   // The hero counts too when it is a beach photo rather than a region background.
   const heroRow = heroPhoto?.credit ? [row(heroPhoto.beach, heroPhoto.credit)] : [];
   const rows = heroRow.concat(beaches
-    .map(beach => ({ beach, photo: beachCardPhoto(beach) }))
+    .map(beach => ({ beach, photo: beachCardPhoto(beach, language) }))
     .filter(entry => entry.photo?.creditRequired)
     .map(({ beach, photo }) => row(beach, photo.credit)));
   if (rows.length === 0) return '';
@@ -5184,7 +5363,7 @@ const renderBeachCard = (beach, island, region, locale, intentKey = null) => {
   const language = locale.language;
   const beachName = displayName(beach.name, `Beach ${beach.id}`, language);
   const blurb = intentBeachBlurbText(region, beach, language);
-  const photo = beachCardPhoto(beach);
+  const photo = beachCardPhoto(beach, language);
   const type = readableBeachType(beach, language);
   const access = readableAccess(beach, language);
   const isHard = beach.staticLabels?.accessType === 'BOAT_ONLY' || beach.accessibility === 'difficult';
@@ -5769,6 +5948,36 @@ const main = async () => {
     }
   }
 
+  // ── The OAuth return page ──────────────────────────────────────────────────
+  // Google redirects here after sign-in, so this URL must exist as a real file:
+  // every route on this site is a prerendered directory and there is no SPA
+  // catch-all, so an unemitted /auth/callback/ would be a 404 in the middle of
+  // signing in.
+  //
+  // It is the built shell VERBATIM. It deliberately does not go through
+  // buildX/withStaticFooter: those paths add head templating and, for some page
+  // types, run stripClientScripts — which deletes the module scripts. On a page
+  // whose entire job is to run JavaScript, that would hang the sign-in forever
+  // with nothing in the console to explain it.
+  //
+  // Not in the sitemap, not linked from anywhere, noindex: it has no content, and
+  // an indexed callback URL is only ever a way for someone to land mid-handshake.
+  //
+  // Two things ARE removed from the copy, and both matter:
+  //   • the canonical — the shell's points at the homepage, and a second file
+  //     claiming that URL collides with the real home page in every audit that
+  //     keys pages by canonical (auditHreflangIntegrity.mjs builds exactly such a
+  //     map, so the home page's hreflang cluster would silently disappear);
+  //   • the JSON-LD — a WebSite/Organization block on a one-second redirect page
+  //     is a duplicate entity, not structured data.
+  const authCallbackDir = path.join(distDir, 'auth', 'callback');
+  await mkdir(authCallbackDir, { recursive: true });
+  const authCallbackHtml = baseHtml
+    .replace(/<link\s+rel=["']canonical["'][^>]*>\s*/gi, '')
+    .replace(/<script[^>]*type=["']application\/ld\+json["'][\s\S]*?<\/script>\s*/gi, '')
+    .replace('<head>', '<head>\n    <meta name="robots" content="noindex, nofollow">');
+  await writeFile(path.join(authCallbackDir, 'index.html'), authCallbackHtml, 'utf8');
+
   const lastmod = new Date().toISOString().slice(0, 10);
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
@@ -5782,7 +5991,7 @@ const main = async () => {
   if (redirects.length > 0) {
     await writeFile(path.join(distDir, '_redirects'), `${redirects.join('\n')}\n`, 'utf8');
   }
-  console.log(`Prerendered ${baseLocales.length} home pages, ${landingPageCount} SEO landing pages, ${islandIntentPageCount} island intent pages, ${regionPageCount} region pages, ${pageCount} beach pages, ${redirects.length} redirects and sitemap.xml`);
+  console.log(`Prerendered ${baseLocales.length} home pages, ${landingPageCount} SEO landing pages, ${islandIntentPageCount} island intent pages, ${regionPageCount} region pages, ${pageCount} beach pages, the /auth/callback/ shell, ${redirects.length} redirects and sitemap.xml`);
 };
 
 main().catch(error => {

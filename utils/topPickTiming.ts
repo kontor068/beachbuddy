@@ -113,6 +113,46 @@ export const topPickTimingPriority = (timing: TopPickTiming): number => {
   }
 };
 
+/**
+ * The wording per language, per state.
+ *
+ * DE/FR/IT were missing until 09/08/2026: the function fell through to the English branch, so a
+ * German visitor read «Top until 15:00» inside an otherwise German card. That was invisible while
+ * the label only appeared on the home preview; it stopped being invisible the moment the region
+ * podium started printing it on every top-3 card in five languages.
+ */
+const TIMING_LABELS: Record<LanguageCode, {
+  active: (end: string) => string;
+  expired: (end: string) => string;
+  upcoming: (start: string, end: string) => string;
+}> = {
+  gr: {
+    active: end => `Top μέχρι ${end}`,
+    expired: end => `Καλύτερο νωρίτερα έως ${end}`,
+    upcoming: (start, end) => `Top ${start}-${end}`,
+  },
+  en: {
+    active: end => `Top until ${end}`,
+    expired: end => `Best earlier until ${end}`,
+    upcoming: (start, end) => `Top ${start}-${end}`,
+  },
+  de: {
+    active: end => `Top bis ${end}`,
+    expired: end => `Früher besser, bis ${end}`,
+    upcoming: (start, end) => `Top ${start}-${end}`,
+  },
+  fr: {
+    active: end => `Top jusqu'à ${end}`,
+    expired: end => `Mieux plus tôt, jusqu'à ${end}`,
+    upcoming: (start, end) => `Top ${start}-${end}`,
+  },
+  it: {
+    active: end => `Top fino alle ${end}`,
+    expired: end => `Meglio prima, fino alle ${end}`,
+    upcoming: (start, end) => `Top ${start}-${end}`,
+  },
+};
+
 export const getTopPickTimingLabel = (
   bestBeachTime: BestBeachTimeLike | undefined,
   selectedDate: Date | undefined,
@@ -122,13 +162,8 @@ export const getTopPickTimingLabel = (
   const timing = getTopPickTiming(bestBeachTime, selectedDate, now);
   if (!timing.startLabel || !timing.endLabel || timing.state === 'unknown') return undefined;
 
-  if (language === 'gr') {
-    if (timing.state === 'active') return `Top μέχρι ${timing.endLabel}`;
-    if (timing.state === 'expired') return `Καλύτερο νωρίτερα έως ${timing.endLabel}`;
-    return `Top ${timing.startLabel}-${timing.endLabel}`;
-  }
-
-  if (timing.state === 'active') return `Top until ${timing.endLabel}`;
-  if (timing.state === 'expired') return `Best earlier until ${timing.endLabel}`;
-  return `Top ${timing.startLabel}-${timing.endLabel}`;
+  const labels = TIMING_LABELS[language] ?? TIMING_LABELS.en;
+  if (timing.state === 'active') return labels.active(timing.endLabel);
+  if (timing.state === 'expired') return labels.expired(timing.endLabel);
+  return labels.upcoming(timing.startLabel, timing.endLabel);
 };

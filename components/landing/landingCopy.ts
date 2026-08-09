@@ -50,6 +50,28 @@ export type LandingCopy = {
     searchNeedsPlace: string;
     nearMe: string;
     findingLocation: string;
+    /**
+     * The hero's ONE live sentence, selected by today's real national reading
+     * (utils/nationalWindMood.ts) — the page says «σήμερα» three times and until
+     * this shipped it showed nothing about today at all.
+     *
+     * These strings are the only place on this page allowed to describe current
+     * conditions, and the constraints on them are hard:
+     *  - SCOPE IT TO OPEN SEA in the words themselves («στα ανοιχτά» / "out at
+     *    sea"). The samples are open-water points; the same words about a coast
+     *    would contradict the region page one click later, which is exactly why
+     *    the per-region Beaufort was removed from the tiles.
+     *  - NO NUMBERS AND NO REGION NAMES. A figure invites comparison with the
+     *    figure on the next page; a mood does not.
+     *  - REUSE THE APP'S VOCABULARY VERBATIM — «προστατευμένες» / "sheltered" /
+     *    "geschützt" / "abritées" / "riparate" come from BeachMap's pin labels,
+     *    and the verb for blowing («φυσάει» / "blowing" / "weht" / "souffle" /
+     *    "soffia") from tripPlannerCopy. Never a synonym.
+     *  - CALM IS THE DANGEROUS ONE. It says "in most regions", never "nowhere",
+     *    and it promises nothing about any particular beach.
+     * Rendering is gated on a live AND fresh reading; nothing is shown otherwise.
+     */
+    todayMood: Record<'calm' | 'windy', string>;
   };
   today: {
     title: string;
@@ -72,6 +94,93 @@ export type LandingCopy = {
      */
     askLink: string;
   };
+  /**
+   * The way into the guide articles — 381 of them, and until this shipped the
+   * landing linked exactly zero. The prerendered fallback has carried a
+   * "popular beach guides" nav all along, but it lives inside #root and React
+   * wipes it on mount, so the links existed for crawlers and for nobody else.
+   *
+   * The destinations themselves are labelled from vocabulary that already exists
+   * in five languages (topic labels in utils/beachGuides.ts, region names in the
+   * beach index), so this block adds no translatable link text.
+   *
+   * A HEADING AND NOTHING ELSE (09/08/2026). There used to be a subtitle naming
+   * three of the topics — «ποιες μένουν απάνεμες, ποιες βολεύουν με παιδιά,
+   * ποιες βλέπουν το ηλιοβασίλεμα» — directly above six links that say exactly
+   * those things by name, two centimetres lower. It was the page telling you
+   * what you were about to read instead of letting you read it.
+   */
+  guides: {
+    title: string;
+  };
+  /**
+   * The newsletter — and the landing's ONLY mechanism for a second visit. Every
+   * other block on this page helps someone today and then lets them leave; a
+   * service people use four times a year has no natural return path, so the
+   * alternative to this is depending on Google remembering us every single time.
+   *
+   * TWO RULES ON THIS COPY, both about not writing a cheque we cannot cash:
+   *  - SAY WHAT ARRIVES AND HOW OFTEN, in the visitor's own terms. "Subscribe to
+   *    our newsletter" promises nothing and is therefore trusted by nobody. The
+   *    body names the content (what we added, fixed, learned) and — more
+   *    importantly — what does NOT arrive: offers, and not every week.
+   *  - THE CONSENT LINE IS PART OF THE OFFER, not fine print. It states the only
+   *    thing stored (the address), the only use, and that leaving is one line to
+   *    a human. It is shown BEFORE the button, because consent you read after
+   *    you acted is not consent. `consentVersion` in the Netlify function is
+   *    stamped onto every row — change this wording materially and bump it there.
+   */
+  newsletter: {
+    overline: string;
+    title: string;
+    body: string;
+    placeholder: string;
+    inputLabel: string;
+    cta: string;
+    sending: string;
+    /**
+     * Shown for a new subscriber AND for an address already on the list.
+     *
+     * IT NAMES THE EMAIL THAT IS NOT COMING, and that clause is load-bearing:
+     * there is no mail provider behind this form (netlify/functions/
+     * newsletter-subscribe.mjs writes a durable row and pushes to Telegram —
+     * nothing is ever sent to the subscriber). A confirmation people wait for
+     * and never get costs twice: they sign up again believing it failed, and
+     * when the first real newsletter lands months later it arrives from a sender
+     * they have no memory of, which is exactly how mail gets marked as spam.
+     * DELETE THAT CLAUSE ONLY WHEN A WELCOME EMAIL ACTUALLY SENDS.
+     */
+    success: string;
+    invalid: string;
+    /** Followed by the plain contact address, so the path never dead-ends. */
+    error: string;
+    consent: string;
+  };
+  /**
+   * The community ask: sign in, send us your best beach photos, see them on the
+   * beach cards. It is the only section on this page that asks for something
+   * instead of giving something, which is why it sits AFTER the manifesto — by
+   * then the page has already shown its working and earned the right to ask.
+   *
+   * The three steps are load-bearing, not decoration: the honest version of this
+   * offer includes "a person checks it first", and burying that turns an
+   * approval queue into a broken promise the first time a photo does not appear.
+   */
+  photos: {
+    badge: string;
+    overline: string;
+    title: string;
+    /** Substring of `title` shown in blue. Must appear verbatim in `title`. */
+    titleAccent: string;
+    body: string;
+    steps: { title: string; body: string }[];
+    /** Signed out — the click starts Google sign-in. */
+    cta: string;
+    /** Already signed in — the click opens the upload sheet directly. */
+    ctaSignedIn: string;
+    /** What the account does BESIDES photos, so signing in is worth it either way. */
+    note: string;
+  };
   story: {
     overline: string;
     title: string;
@@ -79,7 +188,22 @@ export type LandingCopy = {
     paragraphs: string[];
     /** Lifted out of paragraph 2 as the column's one visual anchor for skimmers. */
     pullQuote: string;
-    signature: string;
+    /**
+     * A NAMED signature, split in two so the name can carry visual weight and a
+     * monogram while the role stays quiet.
+     *
+     * It used to read «Η ομάδα του CalmBeach» — and an anonymous letter is a
+     * strange thing to close the page's most-read section with (85% of the
+     * people who reach the heading also reach this line). It also sat oddly
+     * against our own competitor note, which counts an anonymous operator
+     * against a rival. A name is the cheapest trust the page can buy.
+     *
+     * KEEP THE NAME IDENTICAL ACROSS LOCALES except for script: Greek renders it
+     * in Greek letters, everyone else in Latin. Do not translate or localise the
+     * person. The role line carries the language.
+     */
+    signatureName: string;
+    signatureRole: string;
     askTitle: string;
     askHint: string;
     /**
@@ -134,10 +258,26 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // narrator nobody introduced.
       searchLoading: 'Ψάχνουμε παραλίες…',
       // «κοντινό αποτέλεσμα» is search-engine language; nobody says it out loud.
-      searchNoResults: 'Δεν βρέθηκε κάτι παρόμοιο. Πάτα Enter για αναζήτηση.',
-      searchNeedsPlace: 'Πες μου και σε ποιο μέρος.',
+      // AND NEVER NAME A KEY: 88% of visitors are on a phone, where there is no
+      // Enter key at all — the old line pointed at hardware most readers do not
+      // have. Name the button they can see. Same fix in every locale.
+      searchNoResults: 'Δεν βρήκαμε κάτι παρόμοιο. Πάτα αναζήτηση.',
+      // «Πες μας», never «Πες μου» — same rule as searchLoading above. This was
+      // the one string on the page speaking in the singular.
+      searchNeedsPlace: 'Πες μας και σε ποιο μέρος.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
+      // «στα ανοιχτά» is doing real work in all three: it is the only scope the
+      // thirteen sample points can honestly describe. Drop it and the sentence
+      // becomes a claim about coasts that the region pages would contradict.
+      todayMood: {
+        // Never «πουθενά». The calm line is the one that can send someone to a
+        // beach that turns out rough, so it claims a majority and nothing more.
+        calm: 'Σήμερα δεν φυσάει πολύ στα ανοιχτά στις περισσότερες περιοχές.',
+        // «προστατευμένες» verbatim from the map's pin label — same word on the
+        // pin, on the card and here, never a synonym.
+        windy: 'Σήμερα φυσάει δυνατά στα ανοιχτά. Δες ποιες ακτές μένουν προστατευμένες.',
+      },
     },
     // Names people actually use, not sea areas: nobody says "let's go to the
     // Cretan Sea". The order is measured demand from our own counter.
@@ -155,7 +295,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Διάλεξε περιοχή',
       // Not "από το Ιόνιο ως τα Δωδεκάνησα" — the sample also covers Crete, which
       // is south of both, plus three mainland regions.
-      subtitle: 'Οι περιοχές που ζητούν περισσότερο οι επισκέπτες μας. Διάλεξε μία για να δεις όλες τις παραλίες και τις σημερινές συνθήκες.',
+      // SHORTENED 09/08/2026. The second sentence used to explain what clicking a
+      // region does, under a heading that already says «Διάλεξε περιοχή» — the
+      // definition of explaining the obvious. It now promises the concrete thing
+      // the next page delivers (wind), not the word «συνθήκες».
+      subtitle: 'Αυτές ψάχνουν πιο πολύ οι επισκέπτες μας. Μπες σε μία και δες πού φυσάει σήμερα.',
       // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
@@ -183,11 +327,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // personal). The old version ran 45 words and ended by restating what the
       // numbered points beside it already say; the points now carry that.
       quote:
-        'Το «ήρεμα» δεν είναι το ίδιο για όλους. Μπορεί να θες ρηχά νερά, μπορεί μια άδεια αμμουδιά, μπορεί κύμα για σερφ.',
+        'Το «ήρεμα» δεν είναι το ίδιο για όλους. Μπορεί να θες ρηχά νερά, μπορεί μια άδεια αμμουδιά, μπορεί και κύμα για σερφ.',
       points: [
         {
-          title: 'Πώς το επαληθεύουμε',
-          body: 'Επίσημα μητρώα, δορυφόρος, και παραλίες που έχουμε πάει οι ίδιοι. Διορθώνουμε κάθε βδομάδα, και όταν δεν είμαστε σίγουροι δεν το γράφουμε — χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
+          title: 'Πώς το ελέγχουμε',
+          // «Διορθώνουμε κάθε βδομάδα» was cut, not lost: the story further down
+          // says the same thing concretely («μετακινούμε σημεία στον χάρτη,
+          // βγάζουμε ξαπλώστρες που δεν υπάρχουν πια»). Showing beats telling, and
+          // the page should not claim the same habit twice.
+          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε. Χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
         },
         {
           title: 'Το σχήμα της ακτής',
@@ -197,7 +345,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Τι δεν ξέρουμε (ακόμα)',
-          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
         },
         {
           title: 'Αυτό που φτιάχνουμε τώρα',
@@ -205,7 +353,71 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
-      askLink: 'Ξέρεις κάτι που δεν ξέρουμε; Πες μας',
+      // WAS «Ξέρεις κάτι που δεν ξέρουμε; Πες μας» — word for word the same
+      // sentence as story.askTitle two screens below, which made the page sound
+      // like it had one idea and used it twice. A link wants a verb, not a
+      // question; the ξέρεις/ξέρουμε pair with point 03 above survives.
+      askLink: 'Πες μας τι ξέρεις εσύ',
+    },
+    guides: {
+      // WAS A QUESTION («Ψάχνεις κάτι συγκεκριμένο;») over six bare adjectives,
+      // and nobody realised these were articles — it read as a filter picker.
+      // The heading now names the thing: άρθρα.
+      //
+      // NOT «Δημοφιλή» (09/08/2026): only two of the six pairs are there because
+      // Search Console shows they earn clicks (utils/landingGuideLinks.ts) — the
+      // other four are there because the region is already on this page. The
+      // heading now describes what the list IS, which is defensible.
+      title: 'Άρθρα ανά περιοχή',
+    },
+    newsletter: {
+      // «Πριν φύγεις», not «Μείνε κοντά»: this is the last block on the page and
+      // the overline should say where the reader is standing. The old one was a
+      // greeting-card phrase that promised nothing.
+      overline: 'Πριν φύγεις',
+      title: 'Θες να μαθαίνεις τι φτιάχνουμε;',
+      body: 'Ένα σύντομο email πού και πού: τι προσθέσαμε, τι διορθώσαμε, τι μάθαμε για τον καιρό των παραλιών. Όχι προσφορές, όχι κάθε βδομάδα.',
+      placeholder: 'name@example.com',
+      inputLabel: 'Το email σου',
+      cta: 'Γράψε με',
+      sending: 'Στέλνεται…',
+      success: 'Σε γράψαμε. Δεν θα σου έρθει email επιβεβαίωσης. Θα σου γράψουμε μόνο όταν έχουμε κάτι να πούμε.',
+      invalid: 'Έλεγξε το email, κάτι λείπει.',
+      error: 'Κάτι πήγε στραβά. Δοκίμασε ξανά ή γράψε μας:',
+      consent: 'Κρατάμε μόνο το email σου, μόνο για αυτά τα μηνύματα. Φεύγεις όποτε θες με μία γραμμή.',
+    },
+    photos: {
+      badge: 'ΝΕΟ',
+      overline: 'Φωτογραφίες από εσένα',
+      // The promise is the reward, and the reward is specific: not "join the
+      // community" (nobody wants to join a community), but "your photo, on the
+      // card, with your name on it".
+      //
+      // REWRITTEN 08/08/2026 because it read as machine-written. The tells were
+      // an em-dash splicing every title, clipped verbless fragments ("Ten
+      // seconds, no new password"), and three steps in identical rhythm. Full
+      // sentences, one idea each, and the small concession that our own photos
+      // are worse — a claim no template makes about itself.
+      title: 'Η φωτογραφία σου είναι σίγουρα καλύτερη από τη δική μας',
+      titleAccent: 'καλύτερη από τη δική μας',
+      // SHORTENED 09/08/2026 with the rest of the section: it was the tallest
+      // block on the page and it asks for a favour from someone who, on a first
+      // visit from Google, has not been to the beach yet. The concession that
+      // our own photos are worse is kept — it is the only line here no template
+      // would write about itself.
+      // «θα μπει» became «μπαίνει» (09/08/2026): the future tense read as a
+      // promise to THIS photo, which step 3 then takes back («την κοιτάει
+      // άνθρωπος»). The present tense describes what happens to photos in
+      // general and leaves the approval queue where it belongs.
+      body: 'Οι μισές παραλίες εδώ δεν έχουν καμία φωτογραφία, κι όσες έχουν δείχνουν συνήθως θάλασσα από μακριά. Αν πήγες φέτος κι έβγαλες μια καλή, στείλ’ την μας. Μπαίνει στη σελίδα της παραλίας, με το όνομά σου από κάτω αν το θέλεις.',
+      steps: [
+        { title: 'Μπες με Google', body: 'Δεν χρειάζεται καινούριος κωδικός.' },
+        { title: 'Διάλεξε τη φωτογραφία', body: 'Στείλ’ την όπως είναι από το κινητό.' },
+        { title: 'Την κοιτάει άνθρωπος', body: 'Δεν ανεβαίνει μόνη της. Αν είναι καλή, θα τη δεις στη σελίδα της παραλίας.' },
+      ],
+      cta: 'Μπες και στείλε φωτογραφία',
+      ctaSignedIn: 'Στείλε φωτογραφία',
+      note: 'Με τον λογαριασμό κρατάς και τις αγαπημένες σου παραλίες, σε κινητό και υπολογιστή.',
     },
     // The page's one warm, human moment. It lands right after the dark manifesto
     // on purpose: that band is the institutional voice (what we measure, where we
@@ -231,12 +443,13 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // Plain autobiographical fact, not a slogan — and it earns the next line.
       title: 'Μεγαλώσαμε με τη θάλασσα δίπλα μας',
       paragraphs: [
-        'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και ουσιαστικά δεν έφυγε ποτέ. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του — άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
-        'Το έχουμε πάθει κι εμείς: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία, και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα της κάθε ακτής — πού χτυπάει ο άνεμος, πού προστατεύει η στεριά — για όλη την Ελλάδα.',
-        'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Καμία παραλία δεν πληρώνει για να βγει ψηλότερα — η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτε άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
+        'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και ουσιαστικά δεν έφυγε ποτέ. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του: άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
+        'Το έχουμε πάθει κι εμείς: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία, και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα κάθε ακτής στην Ελλάδα: πού χτυπάει ο άνεμος, πού προστατεύει η στεριά.',
+        'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Καμία παραλία δεν πληρώνει για να βγει ψηλότερα. Η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτα άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
       ],
       pullQuote: 'Καμία φωτογραφία δεν σου λέει τι κάνει η θάλασσα σήμερα.',
-      signature: 'Η ομάδα του CalmBeach',
+      signatureName: 'Μίλτος',
+      signatureRole: 'από την ομάδα του CalmBeach',
       askTitle: 'Ξέρεις κάτι που δεν ξέρουμε;',
       askHint: 'Δυο γραμμές αρκούν.',
       askPrompts: [
@@ -244,13 +457,13 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         { id: 'outdated', label: 'Κάτι δεν ισχύει πια', seed: 'Κάτι δεν ισχύει πια: ' },
         { id: 'local', label: 'Κάτι που δεν φαίνεται στον χάρτη', seed: 'Κάτι που δεν φαίνεται στον χάρτη: ' },
       ],
-      formPlaceholder: 'π.χ. «Στη Λιμνιώνα έφυγαν οι ξαπλώστρες» ή «το απόγευμα σε πιάνει ο αέρας στη δεξιά άκρη».',
-      formEmailLabel: 'Email — μόνο αν θες απάντηση',
+      formPlaceholder: 'π.χ. «Στη Λιμνιώνα έφυγαν οι ξαπλώστρες» ή «Το απόγευμα σε πιάνει ο αέρας στη δεξιά άκρη».',
+      formEmailLabel: 'Email (μόνο αν θες απάντηση)',
       formEmailPlaceholder: 'name@example.com',
       // «Στέλνω…» would be the app speaking in the singular while the whole page
       // speaks as «εμείς»; the passive is what a Greek UI actually says here.
       formSending: 'Στέλνεται…',
-      formSuccess: 'Το λάβαμε — ευχαριστούμε. Τα διαβάζουμε ένα-ένα.',
+      formSuccess: 'Το λάβαμε, ευχαριστούμε. Τα διαβάζουμε ένα-ένα.',
       formError: 'Κάτι πήγε στραβά. Στείλ’ το μας καλύτερα εδώ:',
       askCta: 'Στείλ’ το μας',
       mailSubject: 'Διόρθωση ή πρόταση για το CalmBeach',
@@ -269,14 +482,18 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Beach',
       searchLoading: 'Searching beaches…',
-      searchNoResults: 'No close match found. Press Enter to search.',
-      searchNeedsPlace: 'Tell me the place as well.',
+      searchNoResults: 'We found nothing close. Press search.',
+      searchNeedsPlace: 'Tell us the place as well.',
       nearMe: 'Near me',
       findingLocation: 'Finding location…',
+      todayMood: {
+        calm: 'Not much wind out at sea today, in most regions.',
+        windy: 'Blowing hard out at sea today. See which coasts stay sheltered.',
+      },
     },
     today: {
       title: 'Choose a region',
-      subtitle: 'The regions our visitors look for most. Choose one to see all its beaches and today’s conditions.',
+      subtitle: 'These are what our visitors look for most. Open one and see where the wind is today.',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
@@ -288,7 +505,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'How we check it',
-          body: 'Official registries, satellite, and beaches we have walked ourselves. We correct them every week, and when we are not sure we leave it out — a sunbed that is not there is worse than one we never mentioned.',
+          body: 'Official registries, satellite, and beaches we have walked ourselves. When we are not sure, we leave it out. A sunbed that is not there is worse than one we never mentioned.',
         },
         {
           title: 'The shape of the coast',
@@ -304,7 +521,38 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'How CalmBeach works',
-      askLink: 'Know something we don’t? Tell us',
+      askLink: 'Tell us what you know',
+    },
+    guides: {
+      title: 'Articles by region',
+    },
+    newsletter: {
+      overline: 'Before you go',
+      title: 'Want to hear what we are building?',
+      body: 'A short email now and then: what we added, what we fixed, what we learned about beach weather. No offers, and not every week.',
+      placeholder: 'name@example.com',
+      inputLabel: 'Your email',
+      cta: 'Sign me up',
+      sending: 'Sending…',
+      success: 'You are on the list. No confirmation email is coming — we will write only when we have something to say.',
+      invalid: 'Check the address — something is missing.',
+      error: 'Something went wrong. Try again, or write to us:',
+      consent: 'We keep your email and nothing else, and use it only for these messages. One line to us and you are off the list.',
+    },
+    photos: {
+      badge: 'NEW',
+      overline: 'Photos from you',
+      title: 'Your photo is better than ours',
+      titleAccent: 'better than ours',
+      body: 'Half the beaches here have no photo at all, and the ones that do usually show the sea from far away. If you went this summer and got a good one, send it over. It goes on the beach page, with your name underneath if you want it there.',
+      steps: [
+        { title: 'Sign in with Google', body: 'No new password to invent.' },
+        { title: 'Pick the photo', body: 'Send it straight from your phone, as it is.' },
+        { title: 'A person looks at it', body: 'It does not go up on its own. If it is good, you will see it on the beach page.' },
+      ],
+      cta: 'Sign in and send a photo',
+      ctaSignedIn: 'Send a photo',
+      note: 'The account also keeps your saved beaches, on your phone and on your computer.',
     },
     story: {
       overline: 'Who we are',
@@ -315,7 +563,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Every week we move pins on the map, delete sunbeds and canteens that are gone, add beaches that were missing. No beach pays to rank higher — the order comes from the wind and the shape of the coast, nothing else. That is where we need you: you know your beach better than any satellite.',
       ],
       pullQuote: 'No photo tells you what the sea is doing today.',
-      signature: 'The CalmBeach team',
+      signatureName: 'Miltos',
+      signatureRole: 'from the CalmBeach team',
       askTitle: 'Know something we don’t?',
       askHint: 'Two lines are enough.',
       askPrompts: [
@@ -346,14 +595,18 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchRegionLabel: 'Region',
       searchBeachLabel: 'Strand',
       searchLoading: 'Suche Strände…',
-      searchNoResults: 'Kein passendes Ergebnis. Drücke Enter, um zu suchen.',
-      searchNeedsPlace: 'Sag mir auch den Ort.',
+      searchNoResults: 'Wir haben nichts Passendes gefunden. Tipp auf Suchen.',
+      searchNeedsPlace: 'Sag uns auch den Ort.',
       nearMe: 'In meiner Nähe',
       findingLocation: 'Standort wird ermittelt…',
+      todayMood: {
+        calm: 'Heute weht es auf See in den meisten Regionen kaum.',
+        windy: 'Heute weht es auf See stark. Sieh, welche Küsten geschützt bleiben.',
+      },
     },
     today: {
       title: 'Wähle eine Region',
-      subtitle: 'Die Regionen, die unsere Besucher am häufigsten suchen. Wähle eine aus, um alle Strände und die heutigen Bedingungen zu sehen.',
+      subtitle: 'Danach suchen unsere Besucher am häufigsten. Öffne eine und sieh, wo es heute weht.',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
       // Never "Ich" in a German UI, and never a first-person singular anywhere on
       // a page that speaks as "wir".
@@ -367,7 +620,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Wie wir es prüfen',
-          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Wir korrigieren wöchentlich, und im Zweifel lassen wir es weg — eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
+          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Im Zweifel lassen wir es weg. Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
         },
         {
           title: 'Die Form der Küste',
@@ -383,7 +636,38 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Wie CalmBeach funktioniert',
-      askLink: 'Weißt du etwas, das wir nicht wissen? Sag es uns',
+      askLink: 'Sag uns, was du weißt',
+    },
+    guides: {
+      title: 'Artikel nach Region',
+    },
+    newsletter: {
+      overline: 'Bevor du gehst',
+      title: 'Willst du hören, woran wir bauen?',
+      body: 'Ab und zu eine kurze E-Mail: was wir ergänzt, was wir korrigiert und was wir über das Wetter an den Stränden gelernt haben. Keine Angebote, und nicht jede Woche.',
+      placeholder: 'name@example.com',
+      inputLabel: 'Deine E-Mail',
+      cta: 'Eintragen',
+      sending: 'Wird gesendet…',
+      success: 'Du stehst auf der Liste. Es kommt keine Bestätigungs-E-Mail — wir schreiben nur, wenn wir etwas zu sagen haben.',
+      invalid: 'Prüf die Adresse — da fehlt etwas.',
+      error: 'Etwas ist schiefgelaufen. Versuch es noch einmal oder schreib uns:',
+      consent: 'Wir speichern nur deine E-Mail und nutzen sie ausschließlich für diese Nachrichten. Eine Zeile an uns und du bist wieder raus.',
+    },
+    photos: {
+      badge: 'NEU',
+      overline: 'Fotos von dir',
+      title: 'Dein Foto ist besser als unseres',
+      titleAccent: 'besser als unseres',
+      body: 'Die Hälfte der Strände hier hat überhaupt kein Foto, und die anderen zeigen meistens das Meer aus der Ferne. Wenn du diesen Sommer da warst und ein gutes Bild hast, schick es uns. Es kommt auf die Strandseite, mit deinem Namen darunter, wenn du das möchtest.',
+      steps: [
+        { title: 'Mit Google anmelden', body: 'Kein neues Passwort nötig.' },
+        { title: 'Foto aussuchen', body: 'Schick es direkt vom Handy, so wie es ist.' },
+        { title: 'Ein Mensch schaut es an', body: 'Es geht nicht von allein online. Wenn es gut ist, siehst du es auf der Strandseite.' },
+      ],
+      cta: 'Anmelden und Foto schicken',
+      ctaSignedIn: 'Foto schicken',
+      note: 'Das Konto behält auch deine gespeicherten Strände, auf dem Handy und am Computer.',
     },
     story: {
       overline: 'Wer wir sind',
@@ -395,7 +679,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Strandkioske, die es nicht mehr gibt, und ergänzen fehlende Strände. Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
       ],
       pullQuote: 'Kein Foto sagt dir, was das Meer heute macht.',
-      signature: 'Das CalmBeach-Team',
+      signatureName: 'Miltos',
+      signatureRole: 'aus dem CalmBeach-Team',
       askTitle: 'Weißt du etwas, das wir nicht wissen?',
       askHint: 'Zwei Zeilen genügen.',
       askPrompts: [
@@ -426,14 +711,18 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchRegionLabel: 'Région',
       searchBeachLabel: 'Plage',
       searchLoading: 'Recherche des plages…',
-      searchNoResults: 'Aucun résultat similaire. Appuyez sur Entrée pour lancer la recherche.',
-      searchNeedsPlace: 'Dites-moi aussi le lieu.',
+      searchNoResults: 'Nous n’avons rien trouvé de proche. Appuyez sur Rechercher.',
+      searchNeedsPlace: 'Dites-nous aussi le lieu.',
       nearMe: 'Près de moi',
       findingLocation: 'Localisation en cours…',
+      todayMood: {
+        calm: 'Aujourd’hui, il y a peu de vent au large dans la plupart des régions.',
+        windy: 'Aujourd’hui, ça souffle fort au large. Voyez quelles côtes restent abritées.',
+      },
     },
     today: {
       title: 'Choisissez une région',
-      subtitle: 'Les régions les plus recherchées par nos visiteurs. Choisissez-en une pour voir toutes ses plages et les conditions du jour.',
+      subtitle: 'Voilà ce que nos visiteurs cherchent le plus. Ouvrez-en une et voyez où ça souffle aujourd’hui.',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
@@ -445,7 +734,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Comment nous le vérifions',
-          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Nous corrigeons chaque semaine et, en cas de doute, nous n’indiquons rien — promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
+          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. En cas de doute, nous n’indiquons rien. Promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
         },
         {
           title: 'La forme de la côte',
@@ -461,7 +750,38 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Comment fonctionne CalmBeach',
-      askLink: 'Vous savez quelque chose que nous ignorons ? Dites-le-nous',
+      askLink: 'Dites-nous ce que vous savez',
+    },
+    guides: {
+      title: 'Articles par région',
+    },
+    newsletter: {
+      overline: 'Avant de partir',
+      title: 'Vous voulez savoir ce que nous construisons ?',
+      body: 'Un court e-mail de temps en temps : ce que nous avons ajouté, ce que nous avons corrigé, ce que nous avons appris sur la météo des plages. Pas d’offres, et pas toutes les semaines.',
+      placeholder: 'nom@exemple.com',
+      inputLabel: 'Votre e-mail',
+      cta: 'Je m’inscris',
+      sending: 'Envoi…',
+      success: 'Vous êtes sur la liste. Vous ne recevrez pas d’e-mail de confirmation — nous vous écrirons seulement quand nous aurons quelque chose à dire.',
+      invalid: 'Vérifiez l’adresse — il manque quelque chose.',
+      error: 'Quelque chose n’a pas fonctionné. Réessayez, ou écrivez-nous :',
+      consent: 'Nous conservons uniquement votre e-mail et ne l’utilisons que pour ces messages. Une ligne et vous êtes retiré de la liste.',
+    },
+    photos: {
+      badge: 'NOUVEAU',
+      overline: 'Vos photos',
+      title: 'Votre photo est meilleure que la nôtre',
+      titleAccent: 'meilleure que la nôtre',
+      body: "La moitié des plages ici n'ont aucune photo, et celles qui en ont montrent souvent la mer de loin. Si vous y êtes allé cet été et que vous avez une belle photo, envoyez-la-nous. Elle va sur la page de la plage, avec votre nom en dessous si vous le voulez.",
+      steps: [
+        { title: 'Connectez-vous avec Google', body: "Pas de nouveau mot de passe à inventer." },
+        { title: 'Choisissez la photo', body: 'Envoyez-la telle quelle depuis votre téléphone.' },
+        { title: 'Une personne la regarde', body: "Elle ne se publie pas toute seule. Si elle est belle, vous la verrez sur la page de la plage." },
+      ],
+      cta: 'Se connecter et envoyer une photo',
+      ctaSignedIn: 'Envoyer une photo',
+      note: "Le compte garde aussi vos plages enregistrées, sur le téléphone comme sur l'ordinateur.",
     },
     story: {
       overline: 'Qui nous sommes',
@@ -473,7 +793,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les buvettes qui n’existent plus, nous ajoutons les plages qui manquaient. Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
       ],
       pullQuote: 'Aucune photo ne vous dit ce que la mer fait aujourd’hui.',
-      signature: 'L’équipe CalmBeach',
+      signatureName: 'Miltos',
+      signatureRole: 'de l’équipe CalmBeach',
       askTitle: 'Vous savez quelque chose que nous ignorons ?',
       askHint: 'Deux lignes suffisent.',
       askPrompts: [
@@ -504,14 +825,18 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchRegionLabel: 'Regione',
       searchBeachLabel: 'Spiaggia',
       searchLoading: 'Cerchiamo spiagge…',
-      searchNoResults: 'Nessun risultato simile. Premi Invio per cercare.',
-      searchNeedsPlace: 'Dimmi anche il posto.',
+      searchNoResults: 'Non abbiamo trovato niente di simile. Premi Cerca.',
+      searchNeedsPlace: 'Dicci anche il posto.',
       nearMe: 'Vicino a me',
       findingLocation: 'Ricerca della posizione…',
+      todayMood: {
+        calm: 'Oggi al largo soffia poco, nella maggior parte delle regioni.',
+        windy: 'Oggi al largo soffia forte. Guarda quali coste restano riparate.',
+      },
     },
     today: {
       title: 'Scegli una regione',
-      subtitle: 'Le regioni più cercate dai nostri visitatori. Scegline una per vedere tutte le spiagge e le condizioni di oggi.',
+      subtitle: 'Queste sono le più cercate dai nostri visitatori. Aprine una e guarda dove tira vento oggi.',
       // Italian has its own official sea-state ladder (calmo / poco mosso / mosso
       // / molto mosso / agitato) — use it rather than translating the English.
       cta: 'Trova una spiaggia riparata vicino a te',
@@ -525,7 +850,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Come lo verifichiamo',
-          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Correggiamo ogni settimana e, nel dubbio, non lo scriviamo — promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
+          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Nel dubbio, non lo scriviamo. Promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
         },
         {
           title: 'La forma della costa',
@@ -541,7 +866,38 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Come funziona CalmBeach',
-      askLink: 'Sai qualcosa che non sappiamo? Diccelo',
+      askLink: 'Dicci quello che sai tu',
+    },
+    guides: {
+      title: 'Articoli per regione',
+    },
+    newsletter: {
+      overline: 'Prima di andare',
+      title: 'Vuoi sapere cosa stiamo costruendo?',
+      body: 'Ogni tanto una mail breve: cosa abbiamo aggiunto, cosa abbiamo corretto, cosa abbiamo imparato sul meteo delle spiagge. Niente offerte, e non ogni settimana.',
+      placeholder: 'nome@esempio.com',
+      inputLabel: 'La tua email',
+      cta: 'Iscrivimi',
+      sending: 'Invio…',
+      success: 'Sei nella lista. Non arriverà nessuna email di conferma — ti scriviamo solo quando abbiamo qualcosa da dire.',
+      invalid: 'Controlla l’indirizzo — manca qualcosa.',
+      error: 'Qualcosa è andato storto. Riprova, oppure scrivici:',
+      consent: 'Conserviamo solo la tua email e la usiamo soltanto per questi messaggi. Basta una riga e ti togliamo dalla lista.',
+    },
+    photos: {
+      badge: 'NUOVO',
+      overline: 'Le tue foto',
+      title: 'La tua foto è migliore della nostra',
+      titleAccent: 'migliore della nostra',
+      body: 'Metà delle spiagge qui non ha nessuna foto, e quelle che ce l’hanno mostrano di solito il mare da lontano. Se ci sei stato quest’estate e hai una foto bella, mandacela. Finisce sulla pagina della spiaggia, con il tuo nome sotto se lo vuoi.',
+      steps: [
+        { title: 'Accedi con Google', body: 'Non serve una password nuova.' },
+        { title: 'Scegli la foto', body: 'Mandala dal telefono così com’è.' },
+        { title: 'La guarda una persona', body: 'Non va online da sola. Se è bella, la vedrai sulla pagina della spiaggia.' },
+      ],
+      cta: 'Accedi e manda una foto',
+      ctaSignedIn: 'Manda una foto',
+      note: 'L’account tiene anche le tue spiagge salvate, sul telefono e sul computer.',
     },
     story: {
       overline: 'Chi siamo',
@@ -552,7 +908,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Ogni settimana spostiamo punti sulla mappa, togliamo lettini e chioschi che non ci sono più, aggiungiamo spiagge che mancavano. Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
       ],
       pullQuote: 'Nessuna foto ti dice cosa fa il mare oggi.',
-      signature: 'Il team di CalmBeach',
+      signatureName: 'Miltos',
+      signatureRole: 'dal team di CalmBeach',
       askTitle: 'Sai qualcosa che non sappiamo?',
       askHint: 'Bastano due righe.',
       askPrompts: [

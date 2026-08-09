@@ -52,6 +52,7 @@ const {
   pickHarshestStayHourFromReadings,
   findStayTurningPoint,
   stayWindowDegrades,
+  findWorseningTurnFromReadings,
 } = require(path.join(root, 'utils/stayWindow.ts'));
 const { CALMNESS_ORDER, resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 
@@ -195,6 +196,69 @@ for (const exposureA of EXPOSURES) {
 }
 if (pickHarshestStayHourFromReadings([]) !== null) fail('readings-picker-empty', 'empty readings did not return null');
 
+// ── RULE 8 — «δεν κρατάει όλη μέρα» fires only downhill, and names the FIRST hour. ──────────
+// This drives the homepage sentence, which nobody asked for — so it carries a stricter burden than
+// the window card. Two ways to be wrong and both reach a user: firing on a day that only IMPROVES
+// volunteers a calmer future we never measured (the one direction this project has decided it will
+// not fail in), and naming a later hour than the true one sends someone into the part of the
+// afternoon the sentence exists to keep them out of.
+const READING_POOL = [
+  { exposureLevel: 'protected', beaufort: 2, seaStateM: 0.2 },
+  { exposureLevel: 'protected', beaufort: 5, seaStateM: 0.5 },
+  { exposureLevel: 'partial', beaufort: 4, seaStateM: 0.6 },
+  { exposureLevel: 'exposed', beaufort: 5, seaStateM: 0.9 },
+  { exposureLevel: 'exposed', beaufort: 7, seaStateM: 1.6 },
+  { exposureLevel: undefined, beaufort: 3, seaStateM: undefined },
+];
+const readingSequences = [];
+const buildReadings = (prefix) => {
+  if (prefix.length >= 2) readingSequences.push([...prefix]);
+  if (prefix.length === 4) return;
+  for (const entry of READING_POOL) buildReadings([...prefix, entry]);
+};
+buildReadings([]);
+
+const asReadings = (entries) => entries.map((entry, i) => ({ dt: 1_000 + i * 3_600, ...entry }));
+const tonesOf = (readings) => readings.map(r => resolveConditionTone({
+  exposureLevel: r.exposureLevel,
+  beaufort: r.beaufort,
+  isEnclosedCove: false,
+  seaStateM: r.seaStateM,
+}));
+/** The truth this rule is written against: the first hour rougher than the OPENING, or -1. */
+const trueTurnIndex = (tones) => tones.findIndex((tone, i) => i > 0 && rank(tone) < rank(tones[0]));
+
+let rule8Checked = 0;
+for (const entries of readingSequences) {
+  const readings = asReadings(entries);
+  const tones = tonesOf(readings);
+  const expectedIndex = trueTurnIndex(tones);
+  const turn = findWorseningTurnFromReadings(readings);
+  rule8Checked += 1;
+
+  if (Boolean(turn) !== (expectedIndex !== -1)) {
+    fail('turn-fires-iff-it-worsens', `[${tones.join(',')}] returned ${turn ? turn.fromDt : 'null'}, truth index ${expectedIndex}`);
+    continue;
+  }
+  if (!turn) continue;
+  if (turn.fromDt !== readings[expectedIndex].dt) {
+    fail('turn-is-first-worse-hour', `[${tones.join(',')}] said ${turn.fromDt}, first worse was ${readings[expectedIndex].dt}`);
+  }
+  if (turn.openingTone !== tones[0]) {
+    fail('turn-opening-is-opening', `[${tones.join(',')}] reported opening ${turn.openingTone}, actual ${tones[0]}`);
+  }
+  if (turn.worseTone !== tones[expectedIndex]) {
+    fail('turn-reports-the-hour-it-named', `[${tones.join(',')}] reported ${turn.worseTone}, actual ${tones[expectedIndex]}`);
+  }
+  if (rank(turn.worseTone) >= rank(turn.openingTone)) {
+    fail('turn-is-downhill-only', `[${tones.join(',')}] claimed ${turn.openingTone} → ${turn.worseTone}`);
+  }
+}
+if (findWorseningTurnFromReadings([]) !== null) fail('turn-empty', 'empty readings did not return null');
+if (findWorseningTurnFromReadings([{ dt: 1_000, beaufort: 7, exposureLevel: 'exposed' }]) !== null) {
+  fail('turn-single-hour', 'a single reading produced a turn');
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // THE SABOTAGE. Two wrong pickers over the same grid. Both MUST be caught.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -217,13 +281,60 @@ const calmestViolations = countViolations(calmestPicker);
 if (firstHourViolations === 0) fail('grid-is-blind', 'a first-hour picker passed rule 1 — the grid proves nothing');
 if (calmestViolations === 0) fail('grid-is-blind', 'a calmest-hour picker passed rule 1 — the grid proves nothing');
 
+// Three wrong day-turn finders over rule 8's grid. Each is a plausible thing to write — one of
+// them is literally the sibling function this module already exports — so if the grid cannot tell
+// them apart, rule 8 is decoration.
+const countTurnViolations = (finder) => {
+  let violations = 0;
+  for (const entries of readingSequences) {
+    const readings = asReadings(entries);
+    const tones = tonesOf(readings);
+    const expectedIndex = trueTurnIndex(tones);
+    const turn = finder(readings, tones);
+    if (Boolean(turn) !== (expectedIndex !== -1)) { violations += 1; continue; }
+    if (turn && turn.fromDt !== readings[expectedIndex].dt) violations += 1;
+  }
+  return violations;
+};
+// (a) fires on ANY change — i.e. announces improvements too. This is findStayTurningPoint's
+//     contract, correct for the window card and wrong here.
+const anyChangeFinder = (readings, tones) => {
+  const i = tones.findIndex((tone, idx) => idx > 0 && tone !== tones[0]);
+  return i === -1 ? null : { fromDt: readings[i].dt, openingTone: tones[0], worseTone: tones[i] };
+};
+// (b) compares each hour with the PREVIOUS one instead of with now — fires on a day that recovers
+//     and then dips again while still calmer than it started.
+const neighbourFinder = (readings, tones) => {
+  for (let i = 1; i < tones.length; i += 1) {
+    if (rank(tones[i]) < rank(tones[i - 1])) return { fromDt: readings[i].dt, openingTone: tones[0], worseTone: tones[i] };
+  }
+  return null;
+};
+// (c) right about whether, wrong about when: names the LAST rough hour, sending someone into the
+//     afternoon this sentence exists to keep them out of.
+const lastWorseFinder = (readings, tones) => {
+  let found = -1;
+  tones.forEach((tone, i) => { if (i > 0 && rank(tone) < rank(tones[0])) found = i; });
+  return found === -1 ? null : { fromDt: readings[found].dt, openingTone: tones[0], worseTone: tones[found] };
+};
+const anyChangeViolations = countTurnViolations(anyChangeFinder);
+const neighbourViolations = countTurnViolations(neighbourFinder);
+const lastWorseViolations = countTurnViolations(lastWorseFinder);
+if (anyChangeViolations === 0) fail('turn-grid-is-blind', 'an any-change finder passed rule 8 — the grid proves nothing');
+if (neighbourViolations === 0) fail('turn-grid-is-blind', 'a neighbour-compare finder passed rule 8 — the grid proves nothing');
+if (lastWorseViolations === 0) fail('turn-grid-is-blind', 'a last-worse-hour finder passed rule 8 — the grid proves nothing');
+
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('Πύλη: η απάντηση του παραθύρου = η χειρότερη ώρα του');
 console.log(`  Παράθυρα ελεγμένα: ${sequences.length.toLocaleString('el-GR')} (κάθε ακολουθία 1-5 ωρών × 4 χρώματα)`);
 console.log(`  Έλεγχοι κανόνα 1: ${rule1Checked.toLocaleString('el-GR')}`);
 console.log(`  Έλεγχοι κανόνα 7 (πραγματικές εισόδοι App): ${rule7Checked.toLocaleString('el-GR')}`);
+console.log(`  Έλεγχοι κανόνα 8 («δεν κρατάει όλη μέρα»): ${rule8Checked.toLocaleString('el-GR')}`);
 console.log(`  Σαμποτάζ — «πρώτη ώρα» πιάστηκε ${firstHourViolations.toLocaleString('el-GR')} φορές, `
   + `«ηρεμότερη ώρα» ${calmestViolations.toLocaleString('el-GR')} φορές`);
+console.log(`  Σαμποτάζ κανόνα 8 — «κάθε αλλαγή» ${anyChangeViolations.toLocaleString('el-GR')}, `
+  + `«σύγκριση με προηγούμενη ώρα» ${neighbourViolations.toLocaleString('el-GR')}, `
+  + `«τελευταία χειρότερη ώρα» ${lastWorseViolations.toLocaleString('el-GR')}`);
 
 if (failures.length > 0) {
   console.error(`\nΑΠΕΤΥΧΕ — ${failures.length} παραβιάσεις:`);

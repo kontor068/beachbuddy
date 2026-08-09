@@ -31,6 +31,13 @@ const TripPlanner = lazyWithChunkRecovery(
 );
 
 // Hooks & Utils
+import { setStoredJson, setStoredValue } from './utils/safeStorage';
+import { useAuth } from './hooks/useAuth';
+import { deleteAccount } from './services/authService';
+// Type-only: the component itself stays behind the lazy import below.
+import type { PhotoBeachOption } from './components/photos/AddBeachPhotoSheet';
+import { useFavoritesSync, syncFavoriteToggle } from './hooks/useFavoritesSync';
+import { usePreferencesSync } from './hooks/usePreferencesSync';
 import { useBeaches } from './hooks/useBeaches';
 import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
@@ -39,7 +46,7 @@ import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, ap
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
-import { loadAppReadyRegion, loadBeachDetailData, loadBeachGeoIndex, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData } from './services/beachDataLoader';
+import { loadAppReadyRegion, loadBeachDetailData, loadBeachGeoIndex, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData, type BeachSearchIndexBeachEntry } from './services/beachDataLoader';
 import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fetchMarineForecastDataBatch, fetchWeatherData, forecastPointKey, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
 import { buildBeachForecastClusters, type BeachForecastCluster } from './utils/beachForecastClusters';
 import { resolveBeachMarinePoints, marinePointKey } from './utils/marineSamplePoints';
@@ -60,6 +67,7 @@ import {
   passesTopPickSeaGate,
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
+import { getRegionDust, type DustLevel } from './services/dustService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
 import { scrollToPageTop, smoothScrollToStableElement } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
@@ -97,6 +105,7 @@ import {
   getStayWindowSlots,
   getStaySampleSlots,
   pickHarshestStayHourFromReadings,
+  findWorseningTurnFromReadings,
   type StayLengthHours,
 } from './utils/stayWindow';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
@@ -135,6 +144,13 @@ const AiBeachAdvisor = lazyWithChunkRecovery(
 const UsageInsights = lazyWithChunkRecovery(
   () => import('./components/UsageInsights').then(pickLazyExport('UsageInsights', 'UsageInsights')),
   'UsageInsights'
+);
+// The upload form pulls in canvas encoding and, once opened, the Supabase
+// storage client. Almost nobody uploads a photo, so none of it belongs in the
+// first download — it is fetched on the tap that opens the sheet.
+const AddBeachPhotoSheet = lazyWithChunkRecovery(
+  () => import('./components/photos/AddBeachPhotoSheet').then(pickLazyExport('AddBeachPhotoSheet', 'AddBeachPhotoSheet')),
+  'AddBeachPhotoSheet'
 );
 
 const ENABLE_AI_ADVISOR = false;
@@ -511,6 +527,39 @@ type DirectorySearchSuggestion = {
   island: Island;
   beachId?: number;
   beach?: Beach;
+};
+
+/**
+ * The app's single name-matching rule: how well a typed query matches any of a
+ * thing's names (Greek, English, aliases, old slugs).
+ *
+ * MODULE SCOPE, not inside the component: it is a pure function of its two
+ * arguments, and callers now include code paths that run before the component's
+ * own search helpers are reached — an early `return` on the beach-detail view
+ * skips the whole lower half of the render body, so anything defined down there
+ * is unusable from above.
+ */
+const scoreSearchValues = (query: string, values: string[]): number => {
+  const queryVariants = getSearchVariants(query);
+
+  return values.reduce((bestScore, value) => {
+    const valueVariants = getSearchVariants(value);
+    const directScore = Math.max(
+      0,
+      ...queryVariants.flatMap(queryVariant => (
+        valueVariants.map(valueVariant => {
+          if (!queryVariant || !valueVariant) return 0;
+          if (queryVariant === valueVariant) return 100;
+          if (queryVariant.includes(valueVariant) && valueVariant.length >= 4) return 96;
+          if (valueVariant.includes(queryVariant) && queryVariant.length >= 3) return 92;
+          if (valueVariant.split(' ').some(word => word.startsWith(queryVariant))) return 84;
+          return 0;
+        })
+      ))
+    );
+
+    return Math.max(bestScore, directScore, fuzzySearchScore(query, value));
+  }, 0);
 };
 
 const clampTopPickScore = (score: number): number => Math.max(0, Math.min(100, Math.round(score)));
@@ -1679,7 +1728,7 @@ export const App: React.FC = () => {
       hasUserSelectedSortRef.current = false;
       setSortBy(defaultBeachListSort);
       setMobileSuitableDistanceSort(false);
-      localStorage.setItem('userPreferences', JSON.stringify(defaultPreferences));
+      setStoredJson('userPreferences', defaultPreferences);
     }
 
     detailRequestRef.current += 1;
@@ -1831,7 +1880,8 @@ export const App: React.FC = () => {
       return;
     }
     const update = () => {
-      const mapEl = document.getElementById('map-section');
+      const mapEl = document.getElementById('directory-map-section')
+        ?? document.getElementById('map-section');
       if (!mapEl) {
         // No map element yet: if a region is selected the map is just still loading, so keep
         // the nav hidden (a later run re-measures it). With no region there's no map to hide
@@ -1966,6 +2016,122 @@ export const App: React.FC = () => {
   });
 
   const [favorites, setFavorites] = useState<number[]>(() => readJsonArrayFromStorage<number>('favorites'));
+
+  // Accounts. Both of these are no-ops when Supabase is unconfigured or nobody is
+  // signed in — no network, no Supabase library, no change to the line above.
+  const auth = useAuth();
+  useFavoritesSync({ userId: auth.user?.id ?? null, onFavorites: setFavorites });
+  usePreferencesSync({
+    userId: auth.user?.id ?? null,
+    preferences,
+    onRemotePreferences: setPreferences,
+  });
+
+  // The photo-upload sheet. `beach` is set when it was opened from a beach page
+  // (nobody should have to search for the beach they are already looking at) and
+  // null when opened from the landing, where the sheet asks which beach it is.
+  const [photoSheet, setPhotoSheet] = useState<{ beach: PhotoBeachOption | null; source: string } | null>(null);
+
+  /**
+   * Which beach is this photo of? — the picker inside the sheet.
+   *
+   * DEFINED HERE, high up, because the beach-detail view returns early from this
+   * component: everything declared in the lower half of the render body is out
+   * of reach on exactly the screen that offers the most important "add a photo"
+   * button.
+   *
+   * It reads the same national search file as the header (loadBeachSearchIndex
+   * caches it), but ranks on the beach's own names only — no region bonus. The
+   * header is answering "where do you want to go"; this is answering "what am I
+   * looking at", and a region-name match is noise for that question.
+   */
+  const searchBeachesForPhoto = useCallback(async (query: string): Promise<PhotoBeachOption[]> => {
+    const trimmed = query.trim();
+    if (trimmed.length < 3) return [];
+
+    try {
+      const searchIndex = await loadBeachSearchIndex();
+      const islandById = new Map(allIslands.map(island => [island.id, island] as const));
+
+      type ScoredEntry = { entry: BeachSearchIndexBeachEntry; island: Island; score: number };
+
+      return searchIndex
+        .map((entry): ScoredEntry | null => {
+          const island = islandById.get(entry.regionId);
+          // Info-only regions have no beach pages, so a photo filed against one
+          // would be approved into somewhere nobody can see it.
+          if (!island || isInfoOnlyRegionId(entry.regionId)) return null;
+          const names = [entry.name?.gr, entry.name?.en, ...(entry.aliases || [])]
+            .filter((value): value is string => Boolean(value));
+          return { entry, island, score: scoreSearchValues(trimmed, names) };
+        })
+        .filter((item): item is ScoredEntry => Boolean(item) && (item as ScoredEntry).score >= 76)
+        .sort((a, b) => (
+          b.score - a.score
+          || (b.entry.rating || 0) - (a.entry.rating || 0)
+          || displayBeachName(a.entry.name, language).localeCompare(displayBeachName(b.entry.name, language))
+        ))
+        .slice(0, 6)
+        .map(({ entry, island }) => ({
+          beachId: entry.beachId,
+          regionId: entry.regionId,
+          label: displayBeachName(entry.name, language),
+          subtitle: island.name[language] || island.name.en,
+        }));
+    } catch (error) {
+      console.warn('Beach search for the photo sheet failed.', error);
+      return [];
+    }
+  }, [allIslands, language]);
+
+  /**
+   * One entry point for "add a photo", wherever it is offered.
+   *
+   * Signed out it starts Google sign-in INSTEAD of opening the form, with
+   * `returnTo` set to the current page: signing in is a full-page redirect, so
+   * an open sheet cannot survive it, and dropping someone back on the homepage
+   * after they asked to photograph a specific beach loses both the intent and
+   * the visit.
+   */
+  /** Survives the full-page trip to Google, so the intent is not lost on the way. */
+  const PENDING_PHOTO_KEY = 'calmbeach:pendingPhoto';
+
+  const handleAddPhoto = useCallback((source: string, beach: PhotoBeachOption | null = null) => {
+    if (!auth.isAvailable) return;
+    if (!auth.isSignedIn) {
+      // Signing in is a full page load, which wipes every bit of React state —
+      // including the fact that this person was in the middle of sending us a
+      // photo of the beach they were looking at. Without this they come back to
+      // the same page, signed in, with nothing open, and have to work out that
+      // they must press the same button again. Most people do not.
+      try {
+        window.sessionStorage.setItem(PENDING_PHOTO_KEY, JSON.stringify({ beach, source }));
+      } catch {
+        /* private mode — they simply press the button again */
+      }
+      const returnTo = typeof window === 'undefined'
+        ? undefined
+        : `${window.location.pathname}${window.location.search}`;
+      void auth.signIn(returnTo);
+      return;
+    }
+    setPhotoSheet({ beach, source });
+  }, [auth]);
+
+  // Pick the intent back up on the other side of the sign-in redirect.
+  useEffect(() => {
+    if (!auth.isSignedIn) return;
+    let pending: { beach: PhotoBeachOption | null; source: string } | null = null;
+    try {
+      const raw = window.sessionStorage.getItem(PENDING_PHOTO_KEY);
+      if (!raw) return;
+      window.sessionStorage.removeItem(PENDING_PHOTO_KEY);
+      pending = JSON.parse(raw);
+    } catch {
+      return;
+    }
+    if (pending) setPhotoSheet({ beach: pending.beach ?? null, source: `${pending.source}_after_signin` });
+  }, [auth.isSignedIn]);
 
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | undefined>(undefined);
   const [userLocationAccuracy, setUserLocationAccuracy] = useState<number | undefined>(undefined);
@@ -2677,7 +2843,7 @@ export const App: React.FC = () => {
   // --- Effects ---
   useEffect(() => {
     document.documentElement.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
+    setStoredValue('theme', 'light');
   }, []);
 
   useEffect(() => {
@@ -3052,7 +3218,7 @@ export const App: React.FC = () => {
     setPreferences(prev => {
       const isApplying = !prev[key];
       const updated = { ...prev, [key]: isApplying };
-      localStorage.setItem('userPreferences', JSON.stringify(updated));
+      setStoredJson('userPreferences', updated);
       if (isApplying) {
         trackEvent('filter_applied', undefined, {
           ...analyticsBaseParams,
@@ -3111,7 +3277,7 @@ export const App: React.FC = () => {
     setSelectedFilters([]);
     setPreferences(defaultPreferences);
     resetMobileResultListPosition();
-    localStorage.setItem('userPreferences', JSON.stringify(defaultPreferences));
+    setStoredJson('userPreferences', defaultPreferences);
   };
 
   const handleDesktopMapVisibleBeachIdsChange = React.useCallback((visibleBeachIds: number[]) => {
@@ -3166,7 +3332,11 @@ export const App: React.FC = () => {
         ...buildBeachExposureParams(favoriteBeach),
       });
       const newFavs = isFavoriting ? [...prev, beachId] : prev.filter(id => id !== beachId);
-      localStorage.setItem('favorites', JSON.stringify(newFavs));
+      setStoredJson('favorites', newFavs);
+      // Mirror it to the account, if there is one. Deliberately after the local
+      // write and never awaited: the heart must fill instantly and keep working
+      // with no signal, exactly as it did before accounts existed.
+      void syncFavoriteToggle(auth.user?.id ?? null, beachId, isFavoriting);
       return newFavs;
     });
   };
@@ -3405,8 +3575,21 @@ export const App: React.FC = () => {
   };
 
   const scrollToMapSection = () => {
-    // 8 = the map-section's `sticky top-2` resting offset (0.5rem).
-    scrollToStableSection(isDesktopViewport ? 'map-section-desktop' : 'map-section', 8);
+    // Map landing is intentionally an instant viewport jump. A stable/smooth scroll here makes
+    // the whole page visibly travel while the nearby region mounts, which is especially confusing
+    // on mobile. The map is already sticky, so once it is at the top there is nothing else to animate.
+    const directoryMapId = isDesktopViewport
+      ? 'directory-map-section-desktop'
+      : 'directory-map-section';
+    const fallbackMapId = isDesktopViewport ? 'map-section-desktop' : 'map-section';
+    const target = document.getElementById(directoryMapId) ?? document.getElementById(fallbackMapId);
+    if (!target) return;
+
+    activeScrollCancelRef.current?.();
+    activeScrollCancelRef.current = null;
+
+    const targetTop = window.scrollY + target.getBoundingClientRect().top - 8;
+    window.scrollTo({ top: Math.max(0, targetTop), left: 0, behavior: 'auto' });
   };
 
   /** The planner has no sticky offset — it should land flush at the top. */
@@ -4236,6 +4419,25 @@ export const App: React.FC = () => {
       it: `alle ${windowLabel}`,
     });
   }, [mapHourSlots, selectedHourDt, stayHours, language]);
+  /**
+   * Is the hour on the slider the hour the visitor is living in right now?
+   *
+   * mapHourSlots[0] is, for TODAY, the slot covering "now" (see utils/stayWindow's contract with
+   * the slider) — so "now" is: today, untouched-or-returned slider, no stay window. The podium's
+   * question reads «Πού να πάμε τώρα;» exactly then, and names the hour otherwise: a permanent
+   * «στις 16:00–17:00» over the picks was the title reading like a timetable, while a «τώρα» that
+   * survived a slider move would be the 31/07/2026 defect («Ήρεμα ΤΩΡΑ» over another hour's
+   * numbers) at the top of the page.
+   */
+  const isSelectedHourNow = Boolean(
+    stayHours == null &&
+    selectedHourDt != null &&
+    mapHourSlots.length > 0 &&
+    selectedHourDt === mapHourSlots[0].dt &&
+    // selectedDayDate is declared further down; it is literally selectedForecast?.date.
+    isSelectedDateToday(selectedForecast?.date, athensNow())
+  );
+
   const mapForecastTimeLabel = useMemo(() => {
     if (mapHourSlots.length === 0 || selectedHourDt == null) return undefined;
     const index = mapHourSlots.findIndex(slot => slot.dt === selectedHourDt);
@@ -4871,7 +5073,7 @@ export const App: React.FC = () => {
       setPreferences(prev => {
         const updated = { ...prev };
         droppedPreferences.forEach(key => { updated[key] = false; });
-        localStorage.setItem('userPreferences', JSON.stringify(updated));
+        setStoredJson('userPreferences', updated);
         return updated;
       });
     }
@@ -4891,6 +5093,20 @@ export const App: React.FC = () => {
     : undefined;
   const currentWeatherMode = getWeatherMode(Boolean(weatherError), Boolean(activeWeatherFixtureScenario));
   const currentWaveHeightBucket = getWaveHeightBucket(selectedForecast?.marine?.waveHeightM);
+  // Saharan-dust advisory for the selected region — display-only (see services/dustService.ts:
+  // it can add a line of text, never touch scoring/colours). One fetch per region, resolved to
+  // null on quiet days and on ANY failure, so the UI's default is silence, not an error.
+  const [regionDustLevel, setRegionDustLevel] = useState<DustLevel | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    setRegionDustLevel(null);
+    const coords = selectedIsland?.coordinates;
+    if (!selectedIsland || !coords) return;
+    getRegionDust(selectedIsland.id, coords.lat, coords.lon).then(reading => {
+      if (!cancelled) setRegionDustLevel(reading?.level ?? null);
+    });
+    return () => { cancelled = true; };
+  }, [selectedIsland?.id]);
   const rainRiskSummary = useMemo(() => getRainRiskSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
   const rainRiskCopy = useMemo(() => getRainRiskCopy(rainRiskSummary, language, selectedForecast?.date), [language, rainRiskSummary, selectedForecast?.date]);
   const hourlyWindIncreaseSummary = useMemo(() => getHourlyWindIncreaseSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
@@ -5843,6 +6059,29 @@ export const App: React.FC = () => {
     };
   }, [beachesError, beachesLoading, deferredBeachSearchQuery, allIslands, selectedIsland, language, regionBeachCounts, view]);
 
+  // ── The photo sheet has to live ABOVE the early returns ────────────────────
+  // It used to be rendered only in the main return, far below `if (view ===
+  // 'detail')` and `if (mobileTab === 'favorites')`. So on a beach page — the
+  // one screen where someone is looking at a photo of that exact beach and is
+  // most likely to have a better one — pressing "send yours" set the state and
+  // then rendered nothing at all. The button worked; the sheet was simply not
+  // in the tree. Defined once here and rendered by every branch below.
+  const photoSheetOverlay = photoSheet ? (
+    <Suspense fallback={null}>
+      <AddBeachPhotoSheet
+        isOpen
+        onClose={() => setPhotoSheet(null)}
+        language={language}
+        userId={auth.user?.id ?? null}
+        isSignedIn={auth.isSignedIn}
+        onSignIn={() => { void auth.signIn(); }}
+        preselectedBeach={photoSheet.beach}
+        onSearchBeaches={searchBeachesForPhoto}
+        source={photoSheet.source}
+      />
+    </Suspense>
+  ) : null;
+
   if (beachesLoading) return showInitialBeachLoader ? <SkeletonLoader t={t} /> : null;
   if (beachesError) return <ErrorDisplay message={beachesError} onRetry={() => window.location.reload()} t={t} />;
 
@@ -5902,14 +6141,32 @@ export const App: React.FC = () => {
             mapWind={mapBeachLocalWinds[detailBeach.id]}
             conditionsUnavailable={isStaleBlocked}
             lastForecastAt={lastUpdated}
+            // Undefined when accounts are off, so the button does not exist in a
+            // build with nothing behind it. The beach is preselected so nobody
+            // has to search for the page they are already on — EXCEPT under
+            // "Κοντά μου", whose region is a synthetic id built from the GPS
+            // point rather than a real region. Filing a photo under that id
+            // would put it somewhere no beach page can ever read it, so there
+            // the sheet opens empty and the search resolves the true region.
+            onAddPhoto={!auth.isAvailable ? undefined : () => handleAddPhoto(
+              'beach_detail',
+              selectedIsland && !isNearMeRegionActive ? {
+                beachId: detailBeach.sourceBeachId ?? detailBeach.id,
+                regionId: selectedIsland.id,
+                label: localizedBeachLabel(displayBeachName(detailBeach.name, language), language),
+                subtitle: selectedIsland.name[language] || selectedIsland.name.en,
+              } : null,
+            )}
           />
         </Suspense>
+        {photoSheetOverlay}
       </div>
     );
   }
 
   if (mobileTab === 'favorites') {
     return (
+      <>
       <SavedBeachesScreen
         language={language}
         t={t}
@@ -5917,6 +6174,9 @@ export const App: React.FC = () => {
         favorites={favorites}
         onToggleFavorite={handleToggleFavorite}
         onOpenBeach={(b) => openBeachDetails(b, 'saved_screen')}
+        authAvailable={auth.isAvailable}
+        isSignedIn={auth.isSignedIn}
+        onSignIn={() => { void auth.signIn(); }}
         onClose={() => handleMobileTab('home')}
         selectedDate={selectedForecast?.date}
         selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
@@ -5926,6 +6186,8 @@ export const App: React.FC = () => {
         regionId={isNearMeRegionActive ? undefined : selectedIsland?.id}
         otherIslandsCount={savedOtherIslandsCount}
       />
+      {photoSheetOverlay}
+      </>
     );
   }
 
@@ -5977,6 +6239,108 @@ export const App: React.FC = () => {
     : headerTopCandidate
     ? topRecommendedSuitableBeaches.slice(1)
     : topRecommendedSuitableBeaches;
+  /**
+   * «ΔΕΝ ΚΡΑΤΑΕΙ ΟΛΗ ΜΕΡΑ» — the one line the competition cannot write.
+   *
+   * WHAT IT IS. Above the picks, for TODAY only, naming the first beach below it: the hour that
+   * beach stops being what it is right now. Nobody is asked anything — no chips, no "what time?",
+   * no form. That is the whole design brief, and it is a direct reading of the most expensive
+   * lesson this project has: the trip planner asked ONE question («πόσες μέρες;») and got 3 users
+   * out of ~280 in 28 days (components/planner/TripPlanner.tsx:28-33). A rival's four-question
+   * panel is that same mistake with three more questions.
+   *
+   * WHY IT IS WORTH A LINE AT ALL — measured, not assumed (utils/stayWindow.ts:15-19, 2.922
+   * beach-days on live Open-Meteo): 46,4% of beach-days are not one answer, and 33,0% get WORSE
+   * after the hour the visitor arrives. That last third is the case where every surface we have
+   * describes a moment the visitor will have left behind. This sentence is the only place the app
+   * says so out loud.
+   *
+   * WHY IT NAMES A BEACH AND NOT A COAST. Coast-level scoring — the rival's «Saronic coast 87» —
+   * cannot produce this line even in principle: on Limnos we measured Γομάτι at 2,02 m and
+   * Κάσπακας at 1,24 m, 11 km apart on the same island (status board, 01/08). One coast is not
+   * one answer, so an hour that turns for one shore does not turn for its neighbour. The moat is
+   * per-beach geometry, and this sentence spends it.
+   *
+   * COST. One beach, not the region: the first card below the header. Sampling is the existing
+   * every-other-hour stride, so a full afternoon is ~7 tone resolutions per recompute — bounded and
+   * far below the per-slider-tick work the map already pays. It deliberately does NOT wake
+   * STAY_WINDOW_ENABLED: those chips are a question, and this line exists to avoid asking one.
+   *
+   * WHEN IT SAYS NOTHING. Not today, no geometry, fewer than two hours left, the day holds, or the
+   * day only improves — see findWorseningTurnFromReadings for why "it gets better later" is
+   * deliberately never volunteered.
+   */
+  /**
+   * NOT a hook, deliberately. This sits BELOW the `beachesLoading` / `beachesError` early returns
+   * at App.tsx:5858-5859, because it needs recommendationSectionBeaches, which is computed here.
+   * A useMemo in this position is skipped on the loading render and called on the next one — a
+   * change in hook order that React refuses, and it takes the WHOLE app down to an error boundary,
+   * on every route. That is exactly what happened when this was first written as a useMemo.
+   *
+   * A plain call is the right shape anyway: one beach, ~7 sampled hours, which is nothing beside
+   * the region-wide ranking this same render already pays for (and which IS memoised above the
+   * early returns, where a hook belongs).
+   */
+  /**
+   * «ΔΕΝ ΚΡΑΤΑΕΙ ΟΛΗ ΜΕΡΑ» for whichever beach a surface is leading with.
+   *
+   * Made a function on 09/08/2026 because a SECOND surface needed the same sentence — the region
+   * podium — and the two surfaces lead with DIFFERENT beaches: `recommendationSectionBeaches` is
+   * the strong-wind / no-ideal preview set, while the region podium is
+   * `directoryTopRecommendationCards`. Passing the home page's sentence down to the region would
+   * have named a beach that is not on screen there, which is the same class of defect as a wrong
+   * hour. One rule, called twice with its own lead.
+   */
+  const buildDayTurnNote = (lead: SuitableBeach | undefined): string | undefined => {
+    if (!lead || mapHourSlots.length < 2) return undefined;
+    const day = baseDailyForecast?.date;
+    if (!day || !isSameCalendarDay(day, athensNow())) return undefined;
+
+    const beachId = lead.beach.id;
+    const hourly = selectedBeachForecasts[beachId]?.hourly;
+    if (!hourly || hourly.length === 0) return undefined;
+    const profile = geospatialExposureProfiles?.[beachId];
+    if (!profile) return undefined;
+
+    // Gathered inputs only — the tone is formed in utils/stayWindow, never here
+    // (validateConditionToneAgreement's the-list-does-not-colour-its-own-beaches).
+    const readings = getStaySampleSlots(mapHourSlots)
+      .map(slot => {
+        const item = getForecastItemAtDt(hourly, slot.dt, mapHourSlots);
+        if (!item) return null;
+        const deg = item.wind?.deg;
+        const speed = item.wind?.speed;
+        if (typeof deg !== 'number' || !Number.isFinite(deg) || typeof speed !== 'number') return null;
+        return {
+          dt: slot.dt,
+          exposureLevel: profile.sectors?.[windSectorFromDegrees(deg)]?.level,
+          beaufort: getBeaufortLevel(speed * 3.6),
+          seaStateM: item.marine?.waveHeightM,
+        };
+      })
+      .filter((reading): reading is NonNullable<typeof reading> => reading !== null);
+
+    const turn = findWorseningTurnFromReadings(readings);
+    if (!turn) return undefined;
+
+    const locale = language === 'gr' ? 'el-GR' : languageToLocale(language);
+    const at = new Date(turn.fromDt * 1000).toLocaleTimeString(locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    // The name leads and a colon follows it, so no Greek article has to be inferred — «Η Πλάκα»
+    // beside «Ο Άγιος Προκόπιος» beside «Το Βάι» is three genders the copy would have to guess.
+    const name = lead.beach.name[language] ?? lead.beach.name.en;
+    return getLocalizedCopy(language, {
+      gr: `${name}: δεν κρατάει όλη μέρα — από τις ${at} χειροτερεύει.`,
+      en: `${name}: it does not hold all day — conditions get worse from ${at}.`,
+      de: `${name}: hält nicht den ganzen Tag — ab ${at} wird es schlechter.`,
+      fr: `${name} : ne tient pas toute la journée — ça se dégrade à partir de ${at}.`,
+      it: `${name}: non regge tutto il giorno — dalle ${at} peggiora.`,
+    });
+  };
+  const dayTurnNote = buildDayTurnNote(recommendationSectionBeaches[0]);
   const exploreSectionLabel = isStrongSuitableSortOnly
     ? homeCopy.moreSuitableOptions[language]
     : isNoIdealFallbackSortOnly
@@ -6288,11 +6652,56 @@ export const App: React.FC = () => {
     ...directoryFallbackSource,
     ...directoryVisibleBeachCardSource,
   ].filter(isDirectoryTopRecommendationCandidate);
+  /**
+   * «ΚΑΜΙΑ ΔΕΝ ΕΙΝΑΙ ΙΔΑΝΙΚΗ» — the podium of last resort.
+   *
+   * The quality pool above is deliberately strict: mainstream access, verified static data, a sea
+   * gate. On a hard meltemi day nothing clears it, and until 09/08/2026 the answer block simply
+   * vanished — the page stopped answering «πού να πάμε;» on precisely the days the question is
+   * hardest. That is the wrong silence: the visitor is going to the beach anyway, and choosing FOR
+   * them between a lee shore and a windward one is the whole product.
+   *
+   * So when the strict pool is empty we still name three, ranked by shelter, and the block says
+   * out loud that none of them is ideal (BeachSearcherHome prints the warning subtitle from
+   * `shelteredFallbackPodium`). What does NOT relax is safety: a beach we tell people not to swim
+   * at, or one under a critical official warning, is never surfaced — those two filters are the
+   * floor, not the ranking.
+   *
+   * Decision by Miltos, 09/08/2026, over the alternative of staying silent.
+   */
+  const isShelteredFallbackCandidate = (item: SuitableBeach): boolean => {
+    if (item.swimmingComfort === 'avoid_swimming') return false;
+    if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
+    return true;
+  };
+  // ONLY the strict pool being non-empty stands this down. It used to ALSO stand down whenever
+  // showNoIdealFallbackSection / showStrongManageableSection were true, and that was the bug
+  // (Λήμνος, 09/08 evening — reported as «γύρισε σε παλιότερη έκδοση»): in those modes the COUNT
+  // comes from noIdealFallbackCandidates / windPreviewCandidates, so the gate happily computed
+  // «16 candidates → show 3» — but the collector below still filters every source through
+  // isDirectoryTopRecommendationCandidate, the same strict predicate that had already rejected
+  // all of them. Result: shouldShow = true, limit = 3, cards = 0, and the block silently fell
+  // back to the old single-beach hero. Those two flags describe which SOURCE leads, never whether
+  // a last resort is allowed to exist.
+  const directoryShelteredFallbackPool = directoryTopRecommendationCandidatePool.length > 0
+    ? []
+    : prioritizeProtectedRecommendations(
+      getWindPriorityTopPickPool(
+        recommendableMapSuitableBeaches.filter(isShelteredFallbackCandidate),
+        currentBeaufort,
+        perBeachMapWind
+      ),
+      currentBeaufort,
+      perBeachMapWind
+    );
+  const isShelteredFallbackPodium = directoryShelteredFallbackPool.length > 0;
   const directoryTopRecommendationCandidateCount = showNoIdealFallbackSection
     ? noIdealFallbackCandidates.length
     : showStrongManageableSection
     ? windPreviewCandidates.length
-    : directoryTopRecommendationCandidatePool.length;
+    : directoryTopRecommendationCandidatePool.length > 0
+    ? directoryTopRecommendationCandidatePool.length
+    : directoryShelteredFallbackPool.length;
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
@@ -6306,7 +6715,7 @@ export const App: React.FC = () => {
     !mapToneFilter &&
     directoryTopRecommendationLimit > 0
   );
-  const directoryTopRecommendationCards = (() => {
+  const directoryTopRecommendationCardsRaw = (() => {
     if (!shouldShowDirectoryTopRecommendations) return [];
 
     const seenIds = new Set<number>();
@@ -6319,25 +6728,54 @@ export const App: React.FC = () => {
     // can't put back a beach the limit removed — so for near-me collect EVERY
     // qualifying candidate, then distance-sort and slice.
     const collectLimit = isNearMeRegionActive ? Infinity : directoryTopRecommendationLimit;
-    const addSource = (source: SuitableBeach[]) => {
+    /**
+     * `preScreened` sources skip isDirectoryTopRecommendationCandidate — they have ALREADY been
+     * filtered, by a predicate built for the day they describe.
+     *
+     * Λήμνος, 09/08/2026 evening, reported as «γύρισε σε παλιότερη έκδοση»: on a 5 Bft meltemi day
+     * every one of the region's 40 beaches scores swimmingComfort 'avoid_swimming', so the strict
+     * predicate (sea gate + swimmingScore ≥ 50) rejected all of them — INCLUDING the 16 that
+     * noIdealFallbackCandidates had already selected and ranked precisely for this case. The
+     * counter read those 16 and said «show 3»; the collector then filtered them to nothing, so
+     * shouldShow was true with zero cards and the block fell back to the old single-beach hero.
+     *
+     * Re-screening them is not extra safety, it is a category error: noIdealFallbackCandidates and
+     * windPreviewCandidates each run isTrustedTopRecommendationCandidate PLUS their own
+     * day-appropriate gate (isNoIdealFallbackCandidate / the strong-wind pool) before ranking by
+     * shelter. Asking «is this an ideal-day pick?» of a set explicitly chosen for a non-ideal day
+     * can only ever answer no.
+     */
+    const addSource = (source: SuitableBeach[], preScreened = false) => {
       source.forEach(item => {
         if (cards.length >= collectLimit || seenIds.has(item.beach.id)) return;
-        if (!isDirectoryTopRecommendationCandidate(item)) return;
+        if (!preScreened && !isDirectoryTopRecommendationCandidate(item)) return;
         seenIds.add(item.beach.id);
         cards.push(item);
       });
     };
 
     if (showNoIdealFallbackSection) {
-      addSource(noIdealFallbackBeaches);
+      addSource(noIdealFallbackBeaches, true);
     }
     if (showStrongManageableSection) {
-      addSource(strongManageableBeaches);
+      addSource(strongManageableBeaches, true);
     }
 
     addSource(recommendedSuitableBeaches);
     addSource(directoryFallbackSource);
     addSource(directoryVisibleBeachCardSource);
+
+    // Last resort: nothing cleared the quality bar, so fill the podium from the shelter-ranked
+    // pool instead of rendering nothing. `addSource` cannot be reused — its predicate is the very
+    // gate that rejected everything — so these are appended directly, already ranked, and still
+    // subject to the two safety filters applied when the pool was built.
+    if (cards.length === 0 && directoryShelteredFallbackPool.length > 0) {
+      directoryShelteredFallbackPool.forEach(item => {
+        if (cards.length >= collectLimit || seenIds.has(item.beach.id)) return;
+        seenIds.add(item.beach.id);
+        cards.push(item);
+      });
+    }
 
     // In "Κοντά μου" the podium leads with the nearest beaches, not the highest-scoring
     // ones across the merged radius (a 35 km high-scorer should never sit above a closer
@@ -6354,7 +6792,34 @@ export const App: React.FC = () => {
 
     return cards;
   })();
+  /**
+   * «ΜΕΧΡΙ ΤΙ ΩΡΑ» FOR THE THREE ON THE PODIUM — filled in here, and only here.
+   *
+   * The podium's beaches arrive from the MAP-aligned sources (mapSuitableBeaches and the pools
+   * built on it), which assemble their items by hand and carry no bestBeachTime — only the
+   * getSuitableBeaches path computes one. So every podium card asked for its best-time label and
+   * got undefined, and the card's «Καλύτερη ώρα» row silently never rendered.
+   *
+   * Computed for THE THREE, not for the region: calculateBestBeachTime walks a beach's hourly
+   * series, and doing that for ~2.850 beaches on every slider tick to label three cards would be
+   * absurd. Reads the same hourly series the rest of the app scores with, in the same precedence
+   * (own cluster → beach forecast → area), so the hour named here is the hour the numbers beside
+   * it came from.
+   */
+  const directoryTopRecommendationCards = directoryTopRecommendationCardsRaw.map(item => {
+    if (item.bestBeachTime) return item;
+    const hourly = beachAreaForecastById[item.beach.id]?.hourly
+      || selectedBeachForecasts[item.beach.id]?.hourly
+      || selectedForecast?.hourly;
+    if (!hourly || hourly.length === 0) return item;
+    const bestBeachTime = calculateBestBeachTime(hourly, item.beach);
+    return bestBeachTime ? { ...item, bestBeachTime } : item;
+  });
   const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
+  // The region podium's own day-turn sentence, about the beach the podium actually leads with.
+  // Silent by default: it speaks only when the day genuinely gets WORSE (utils/stayWindow's
+  // findWorseningTurnFromReadings), never to volunteer that things improve.
+  const directoryDayTurnNote = buildDayTurnNote(directoryTopRecommendationCards[0]);
   const shouldShowAllBeachesBelowTopRecommendations = Boolean(
     shouldShowDirectoryTopRecommendations &&
     currentBeaufort <= 2
@@ -6580,29 +7045,6 @@ export const App: React.FC = () => {
     island.name.it,
     island.id.replace(/-/g, ' '),
   ].filter((value): value is string => Boolean(value)));
-
-  const scoreSearchValues = (query: string, values: string[]): number => {
-    const queryVariants = getSearchVariants(query);
-
-    return values.reduce((bestScore, value) => {
-      const valueVariants = getSearchVariants(value);
-      const directScore = Math.max(
-        0,
-        ...queryVariants.flatMap(queryVariant => (
-          valueVariants.map(valueVariant => {
-            if (!queryVariant || !valueVariant) return 0;
-            if (queryVariant === valueVariant) return 100;
-            if (queryVariant.includes(valueVariant) && valueVariant.length >= 4) return 96;
-            if (valueVariant.includes(queryVariant) && queryVariant.length >= 3) return 92;
-            if (valueVariant.split(' ').some(word => word.startsWith(queryVariant))) return 84;
-            return 0;
-          })
-        ))
-      );
-
-      return Math.max(bestScore, directScore, fuzzySearchScore(query, value));
-    }, 0);
-  };
 
   const getIslandBeachCount = (island: Island): number => (
     island.beaches.length > 0 ? island.beaches.length : regionBeachCounts[island.id] ?? 0
@@ -7170,6 +7612,18 @@ export const App: React.FC = () => {
         onOpenIslandSelector={handleOpenIslandSelector} isWinter={isWinter}
         onGoHome={handleGoHome}
         onOpenFavorites={() => handleMobileTab('favorites')}
+        authAvailable={auth.isAvailable}
+        isSignedIn={auth.isSignedIn}
+        accountName={auth.user?.name ?? auth.user?.email ?? null}
+        accountEmail={auth.user?.email ?? null}
+        accountUserId={auth.user?.id ?? null}
+        accountAvatarUrl={auth.user?.avatarUrl ?? null}
+        savedCount={favorites.length}
+        savedOtherIslandsCount={savedOtherIslandsCount}
+        onSignIn={() => { void auth.signIn(); }}
+        onSignOut={() => { void auth.signOut(); }}
+        onDeleteAccount={deleteAccount}
+        onAddPhoto={() => handleAddPhoto('account_panel')}
         forecastSlot={showHeaderForecast && !showLanding ? (
           <>
             {isStartupLocationPromptOpen && (
@@ -7188,6 +7642,11 @@ export const App: React.FC = () => {
               rainWarning={
                 selectedIsland && rainRiskSummary.hasRainRisk && !isUnsafeWinter && !isStaleBlocked && !isInfoOnlyRegion
                   ? { title: rainRiskCopy.title, body: rainRiskCopy.body, isNow: rainRiskSummary.isRainingNow }
+                  : undefined
+              }
+              dustLevel={
+                selectedIsland && regionDustLevel && !isUnsafeWinter && !isInfoOnlyRegion
+                  ? regionDustLevel
                   : undefined
               }
               searchQuery={beachSearchQuery}
@@ -7219,9 +7678,16 @@ export const App: React.FC = () => {
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
               topRecommendationCards={toneFilteredTopRecommendationCards}
+              // Same clock the home page's picks are ranked and labelled with, passed down rather
+              // than read again inside the component: a second `new Date()` down there is exactly
+              // how the device-clock bug got in (utils/athensTime.ts).
+              topPickNow={topPickNow}
+              shelteredFallbackPodium={isShelteredFallbackPodium}
+              dayTurnNote={mapToneFilter ? undefined : directoryDayTurnNote}
               suitableBeachCards={toneFilteredHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
+              suitableTimeIsNow={isSelectedHourNow}
               activeToneFilter={mapToneFilter}
               toneFilterDropNote={toneDroppedFilterNote}
               suitableListCoversEverything={directoryListCoversEveryBeach}
@@ -7406,6 +7872,28 @@ export const App: React.FC = () => {
                     </div>
                   ) : null}
                   <div className="space-y-1.5">
+                    {/* THE LABEL THAT NAMES THE JOB.
+                        Everything below this line already existed — the beach, the reason, the
+                        hour, the navigate button. What was missing is that nothing said what the
+                        panel IS, so a first-time visitor had to infer that this block is the answer
+                        rather than one more card. A rival ships the same idea as an eyebrow above a
+                        question ("THE QUICK DECISION" / "Where should we go?"). We STATE it instead
+                        of asking it: every other surface here hands over an answer, and a question
+                        in the one place we actually have one reads as hesitation.
+                        NO DAY WORD ON PURPOSE. The sentence directly below already carries
+                        selectedDayPrefix, and after the 19:00 handover this panel describes
+                        TOMORROW — a hard-coded «για σήμερα» would be false exactly then, on top of
+                        double-stamping a day the copy already names.
+                        Not caps: 02's label rule. Not a tinted chip: that is his shape, not ours. */}
+                    <p className="text-xs font-bold tracking-wide text-cyan-700/90 sm:text-[0.8rem]">
+                      {getLocalizedCopy(language, {
+                        gr: 'Η απάντηση',
+                        en: 'The answer',
+                        de: 'Die Antwort',
+                        fr: 'La réponse',
+                        it: 'La risposta',
+                      })}
+                    </p>
                     <h2 className="mx-auto max-w-3xl truncate font-heading text-[1.55rem] font-extrabold leading-[1.16] text-slate-950 sm:text-[1.75rem]">
                       {headerTopBeachName}
                     </h2>
@@ -7466,6 +7954,9 @@ export const App: React.FC = () => {
           locationError={findNearestError}
           onSelectIsland={island => handleRegionSelected(island, 'landing')}
           onOpenIslandSelector={handleOpenIslandSelector}
+          isAuthAvailable={auth.isAvailable}
+          isSignedIn={auth.isSignedIn}
+          onAddPhoto={() => handleAddPhoto('landing')}
         />
       ) : (
       <>
@@ -7536,6 +8027,14 @@ export const App: React.FC = () => {
                 {isEveningHandover && (
                   <p className="mx-auto max-w-2xl text-sm font-bold leading-relaxed text-cyan-800">
                     {eveningHandoverNote}
+                  </p>
+                )}
+                {/* The day-turn line. Amber is a register here ("mind the clock"), NOT a tone
+                    claim: no pin sits beside it, and the sentence never states a condition level —
+                    it states an hour. See the dayTurnNote memo for why it is silent by default. */}
+                {dayTurnNote && (
+                  <p className="mx-auto max-w-2xl text-sm font-bold leading-relaxed text-amber-900">
+                    {dayTurnNote}
                   </p>
                 )}
               </div>
@@ -8141,6 +8640,8 @@ export const App: React.FC = () => {
       )}
 
       <InstallPrompt language={language} />
+
+      {photoSheetOverlay}
 
       {isFilterModalOpen && (
         <Suspense fallback={null}>

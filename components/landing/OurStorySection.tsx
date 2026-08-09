@@ -26,6 +26,19 @@ import { landingCopy } from './landingCopy';
 // the existing Telegram function converts instead of leaking, and the plain
 // address stays underneath so the path never dead-ends.
 
+/**
+ * ── PUT YOUR PHOTO HERE ──────────────────────────────────────────────────────
+ * Drop a square photo (400×400 or bigger, JPG or WebP) into `public/team/` and
+ * set this to its path, e.g. '/team/miltos.jpg'. Nothing else needs changing:
+ * the signature swaps the initial for the picture on its own.
+ *
+ * Left null on purpose rather than pointed at a file that is not there — a
+ * missing image is a 404 in the console and a broken frame on the page, and the
+ * monogram below is a deliberate design, not a placeholder waiting to be fixed.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+const SIGNATURE_PORTRAIT_SRC: string | null = null;
+
 interface OurStorySectionProps {
   language: LanguageCode;
 }
@@ -54,7 +67,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
   // straight into the consent gate would silently drop exactly the visitors we
   // most need to count.
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const signatureRef = useRef<HTMLParagraphElement>(null);
+  const signatureRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return undefined;
     const seen = new Set<'landing_story_viewed' | 'landing_story_read'>();
@@ -164,11 +177,43 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
         </div>
 
         {/* Signed, so the letter closes like a letter — and doubles as the
-            read-through sentinel: reaching it means the prose was scrolled past. */}
-        <p ref={signatureRef} className="mt-6 flex items-center gap-3 text-sm font-bold text-slate-500">
-          <span className="h-px w-8 bg-slate-300" aria-hidden="true" />
-          {c.signature}
-        </p>
+            read-through sentinel: reaching it means the prose was scrolled past.
+
+            NAMED SINCE 09/08/2026. This is the most-read block on the landing —
+            85% of the people who reach the heading also reach this line — and it
+            used to end «Η ομάδα του CalmBeach», i.e. anonymously. An anonymous
+            letter is a strange way to close the one section written in the first
+            person, and it is the same thing our own competitor note holds against
+            a rival. A face-shaped anchor and a name cost nothing and are the
+            cheapest trust on the page.
+
+            The monogram is not a fallback avatar waiting for an upload — it is
+            what ships until a real photo is dropped in (see
+            SIGNATURE_PORTRAIT_SRC at the top of this file). */}
+        <div ref={signatureRef} className="mt-7 flex items-center gap-3.5">
+          {SIGNATURE_PORTRAIT_SRC ? (
+            <img
+              src={SIGNATURE_PORTRAIT_SRC}
+              alt={c.signatureName}
+              width={44}
+              height={44}
+              loading="lazy"
+              decoding="async"
+              className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-slate-200"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#007a83] text-lg font-black text-white ring-4 ring-[#007a83]/10"
+            >
+              {c.signatureName.trim().charAt(0)}
+            </span>
+          )}
+          <span className="min-w-0">
+            <span className="block text-[15px] font-bold leading-tight text-slate-800">{c.signatureName}</span>
+            <span className="block text-[13px] font-semibold leading-tight text-slate-500">{c.signatureRole}</span>
+          </span>
+        </div>
 
         <div className="mt-8 rounded-3xl border border-white/70 bg-white/72 p-6 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:p-7">
           <h3 className="text-lg font-bold leading-tight text-slate-950">{c.askTitle}</h3>

@@ -60,6 +60,20 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
       'selectedIslandId'
     ];
     keysToClear.forEach((key) => localStorage.removeItem(key));
+
+    // The forecast caches are by far the biggest thing this app stores, and a FULL
+    // localStorage is one of the reasons a visitor ends up looking at this button
+    // in the first place (a quota error crashes any unguarded write). Clearing the
+    // five keys above would not free a byte of it, so the button would "fix"
+    // nothing and the next tap would crash again. These entries all refetch.
+    try {
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith('forecast_') || key.startsWith('marine_') || key.startsWith('weather_'))
+        .forEach((key) => localStorage.removeItem(key));
+    } catch {
+      /* nothing else to try — reload anyway */
+    }
+
     window.location.reload();
   };
 
@@ -101,13 +115,30 @@ if (window.__calmBeachFallbackTimer) {
 document.documentElement.classList.add('app-mounted');
 
 const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <RootErrorBoundary>
-      <App />
-    </RootErrorBoundary>
-  </React.StrictMode>
-);
+
+// The OAuth return trip gets its own tiny screen instead of the whole app: it is
+// on screen for about a second, it needs none of the beach data, and mounting App
+// here would run the entire homepage boot for a page nobody looks at. Dynamically
+// imported, so this costs zero bytes for every other visitor.
+const isAuthCallback = window.location.pathname.replace(/\/+$/, '') === '/auth/callback';
+
+if (isAuthCallback) {
+  void import('./components/auth/AuthCallbackScreen')
+    .then(({ mountAuthCallback }) => mountAuthCallback(root))
+    .catch((error) => {
+      // Never strand someone mid-sign-in on a blank page.
+      console.error('Auth callback failed to load.', error);
+      window.location.replace('/');
+    });
+} else {
+  root.render(
+    <React.StrictMode>
+      <RootErrorBoundary>
+        <App />
+      </RootErrorBoundary>
+    </React.StrictMode>
+  );
+}
 
 // Before anything else that can throw: the boundary only sees errors inside the
 // React tree, and plenty of what breaks a page happens outside it.

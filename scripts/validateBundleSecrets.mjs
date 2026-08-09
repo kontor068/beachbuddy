@@ -82,6 +82,48 @@ if (defineBlock) {
   }
 }
 
+/* ------------------------------------------------------------------ 2b: the service_role key
+
+ * Accounts brought a second kind of key into the project, and the two look
+ * identical to a human: Supabase issues both the anon key and the service_role key
+ * as JWTs starting `eyJ`. The anon key is MEANT to ship — Row Level Security is the
+ * real boundary, and the app cannot talk to Supabase without it. The service_role
+ * key BYPASSES Row Level Security entirely: in a public bundle it is read/write
+ * access to every user's rows, and it cannot be un-leaked by a rollback because
+ * every visitor who loaded the page already has a copy.
+ *
+ * So a blanket "no JWTs in dist" rule would be wrong (it would ban the anon key)
+ * and a blanket allow is dangerous. The check decodes each JWT payload and looks at
+ * the role claim — the only thing that actually distinguishes them.
+ */
+
+const decodeJwtRole = (token) => {
+  const payload = token.split('.')[1];
+  if (!payload) return null;
+  try {
+    const json = Buffer.from(payload.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+    const parsed = JSON.parse(json);
+    return typeof parsed?.role === 'string' ? parsed.role : null;
+  } catch {
+    return null; // not a JWT we can read — the generic patterns still apply
+  }
+};
+
+const JWT_RE = /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}/g;
+
+// A VITE_-prefixed name containing SERVICE_ROLE is a leak waiting for someone to
+// set it: Vite ships every VITE_ variable to the browser by definition.
+for (const [file, source] of [['vite.config.ts', viteConfig]]) {
+  if (/VITE_[A-Z0-9_]*SERVICE_ROLE/.test(source)) {
+    failures.push(
+      `${file} references a VITE_…SERVICE_ROLE variable.\n` +
+      '    Every VITE_ variable is compiled into the public bundle. The service_role key\n' +
+      '    bypasses Row Level Security — it belongs only in the Netlify function environment,\n' +
+      '    named SUPABASE_SERVICE_ROLE_KEY with no VITE_ prefix.'
+    );
+  }
+}
+
 /* ------------------------------------------------------------------ 3: the built bundle */
 
 // Literals that are known-harmless and must not fail the build. These are Google's own
@@ -94,6 +136,9 @@ const ALLOWED_LITERALS = [
 
 const PATTERNS = [
   { name: 'Google API key',      re: /AIza[0-9A-Za-z_-]{35}/g },
+  // Supabase's newer secret format. Its public counterpart is `sb_publishable_`,
+  // which is meant to ship — only the secret one is a failure.
+  { name: 'Supabase secret key', re: /\bsb_secret_[A-Za-z0-9_-]{20,}/g },
   { name: 'OpenAI-style key',    re: /\bsk-(?:proj-)?[A-Za-z0-9_-]{32,}/g },
   { name: 'GitHub token',        re: /\bgh[pousr]_[A-Za-z0-9]{36,}/g },
   { name: 'AWS access key id',   re: /\bAKIA[0-9A-Z]{16}\b/g },
@@ -119,6 +164,21 @@ if (!existsSync(distDir)) {
   scannedFiles = files.length;
   for (const file of files) {
     const contents = readFileSync(file, 'utf8');
+
+    for (const token of contents.match(JWT_RE) || []) {
+      const role = decodeJwtRole(token);
+      if (role && role !== 'anon' && role !== 'authenticated') {
+        failures.push(
+          `A "${role}" JWT is in the built bundle: ${path.relative(rootDir, file)}\n` +
+          `    value: ${token.slice(0, 12)}…${token.slice(-4)}\n` +
+          '    The service_role key bypasses Row Level Security — in a public bundle it is\n' +
+          '    full read/write on every user\'s data, and a rollback cannot take it back.\n' +
+          '    ROTATE IT NOW in the Supabase dashboard, then find what shipped it (a VITE_\n' +
+          '    variable, a define block, or a committed .env).'
+        );
+      }
+    }
+
     for (const { name, re } of PATTERNS) {
       for (const match of contents.match(re) || []) {
         if (ALLOWED_LITERALS.includes(match)) continue;

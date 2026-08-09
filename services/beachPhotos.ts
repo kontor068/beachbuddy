@@ -4,6 +4,7 @@
  */
 import { getBeachImageMetadata, getBeachImageMetadataById, type BeachImageMetadata } from './beachImageService';
 import BEACH_PHOTOS_BY_ID from '../data/beachPhotosById.generated.json';
+import { getUgcPhotoUrls } from '../utils/ugcPhotos';
 
 const wm = (filename: string) =>
   `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(filename)}&width=800`;
@@ -1495,6 +1496,16 @@ export const getBeachPhotoLookup = (
   count: number = 5,
   islandName?: string
 ): BeachPhotoLookup => {
+  // FIRST: photos our own visitors sent us and a human approved. They outrank
+  // the Commons library on every axis that matters — taken this summer rather
+  // than in 2009, of this beach rather than of something 300m away, and checked
+  // by us. They are also the whole point of asking for them: a contributor who
+  // is told their photo will appear on the card has to actually see it there.
+  const ugc = getUgcPhotoUrls(beachId);
+  if (ugc.length) {
+    return { photos: padPhotos(ugc, count), source: 'exact' };
+  }
+
   // GPS-verified per-beach photos (keyed by unique beachId → zero collision risk).
   // Populated by scripts/harvestGeoPhotos.mjs (Commons files geotagged within a
   // tight radius of the beach's coordinates, filtered for non-beach subjects).

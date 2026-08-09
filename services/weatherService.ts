@@ -105,6 +105,55 @@ const getStaleFallbackEntry = <T>(key: string): CacheEntry<T> | null => {
  * and walk us back toward the 429 of 29/07. Per-beach seas therefore live in memory, where they
  * cost a re-fetch on reload (2-5 batched requests) instead of the whole cache.
  */
+/**
+ * How many persisted forecast entries this app is allowed to keep.
+ *
+ * WHY A CAP AT ALL. Until 08/08/2026 there was none. One marine point is ~35 KB
+ * of JSON and a browser gives about 5 MB TOTAL for the whole origin, so a
+ * visitor who browsed a few regions filled their own storage — and then every
+ * OTHER feature that writes started failing: saving a beach threw and took the
+ * whole app down to an error boundary, and signing in failed with a message
+ * about a missing key. The quota handler below already recovered the weather
+ * cache from its own overflow, which is exactly why the damage always landed
+ * somewhere else.
+ *
+ * 48 entries ≈ 1.5 MB worst case, comfortably inside the budget while still
+ * holding several regions' worth of a day's browsing.
+ */
+const MAX_PERSISTED_FORECASTS = 48;
+const PERSISTED_PREFIXES = ['forecast_', 'marine_', 'weather_'];
+
+const isForecastKey = (key: string): boolean => PERSISTED_PREFIXES.some(prefix => key.startsWith(prefix));
+
+/**
+ * Evict the oldest entries once the cap is passed. Key names are counted first
+ * and the (expensive) JSON parse only happens on the rare write that actually
+ * goes over, so the common path stays free.
+ */
+const enforceCacheCap = () => {
+  try {
+    const keys = Object.keys(localStorage).filter(isForecastKey);
+    if (keys.length <= MAX_PERSISTED_FORECASTS) return;
+
+    const dated = keys.map(key => {
+      let timestamp = 0;
+      try {
+        timestamp = Number(JSON.parse(localStorage.getItem(key) || '{}')?.timestamp) || 0;
+      } catch {
+        /* unparseable entry — treat as oldest so it is the first to go */
+      }
+      return { key, timestamp };
+    });
+
+    dated.sort((a, b) => a.timestamp - b.timestamp);
+    for (const { key } of dated.slice(0, dated.length - MAX_PERSISTED_FORECASTS)) {
+      localStorage.removeItem(key);
+    }
+  } catch {
+    /* storage unavailable — nothing to enforce */
+  }
+};
+
 const saveToCache = <T>(key: string, data: T, timestamp: number, persist: boolean = true) => {
   const entry: CacheEntry<T> = { timestamp, data };
   memoryCache.set(key, entry);
@@ -113,6 +162,7 @@ const saveToCache = <T>(key: string, data: T, timestamp: number, persist: boolea
     if (!persist) return;
     if (typeof localStorage === 'undefined') return;
     localStorage.setItem(key, JSON.stringify(entry));
+    enforceCacheCap();
   } catch (error) {
     const isQuotaError = error instanceof DOMException && (
       error.name === 'QuotaExceededError' ||

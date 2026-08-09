@@ -61,6 +61,12 @@ export type AnalyticsEvent =
   | 'landing_near_me_clicked'
   | 'landing_region_clicked'
   | 'landing_all_regions_clicked'
+  // The way out of the landing and into the 381 guide articles. Carries `guide`
+  // ("family:evia", or "hub" for the all-guides link) so the six curated pairs
+  // can be judged against each other rather than as one number — the point of
+  // measuring them is to find out which QUESTION people arrive with, which is
+  // the only thing that says what the next article should be about.
+  | 'landing_guide_clicked'
   | 'landing_contact_clicked'
   // The story section, measured with two sentinels rather than one observer on
   // the section itself: the section is taller than a phone viewport, so a
@@ -70,6 +76,32 @@ export type AnalyticsEvent =
   | 'landing_story_read'
   | 'landing_feedback_submitted'
   | 'landing_feedback_failed'
+  // The newsletter — the landing's only way of asking a visitor to come back.
+  // `_viewed` is the denominator (it sits at the very bottom of a long page, so
+  // the interesting number is what share of people even reach it), `_submitted`
+  // fires only on a real 2xx, and `_failed` exists so a broken endpoint shows up
+  // as a shape in the data instead of as silence that looks like disinterest.
+  | 'landing_newsletter_viewed'
+  | 'landing_newsletter_submitted'
+  | 'landing_newsletter_failed'
+  // The photo-contribution funnel, which only exists because accounts do. It is
+  // measured end to end on purpose: the whole point of accounts is whether they
+  // produce photos, and every step below is a place that can silently swallow
+  // the intent.
+  //   landing_photos_viewed   — the announcement was actually seen (denominator)
+  //   landing_photos_cta_clicked / photo_sheet_sign_in_clicked — intent
+  //   photo_sheet_opened      — the form was reached
+  //   photo_prepare_failed    — their file could not be turned into an upload
+  //   photo_upload_failed / _succeeded — the end of the funnel
+  // `signed_in` on the first two separates "wants to contribute" from "already
+  // has an account", which are different populations with different drop-off.
+  | 'landing_photos_viewed'
+  | 'landing_photos_cta_clicked'
+  | 'photo_sheet_opened'
+  | 'photo_sheet_sign_in_clicked'
+  | 'photo_prepare_failed'
+  | 'photo_upload_failed'
+  | 'photo_upload_succeeded'
   // Multi-day trip planner (components/planner/). `days` tells us how long a
   // stay we answered for, and `source` separates the three audiences —
   // 'auto' (we planned the next 3 days unasked — an IMPRESSION), 'search_intent'
@@ -500,6 +532,49 @@ export const sendLandingMessage = async (payload: {
       console.warn('[Feedback] Landing message delivery failed.', error);
     }
     return false;
+  }
+};
+
+/**
+ * Newsletter subscription. Posts to /api/newsletter, which writes a durable row
+ * (de-duplicated by a hash of the address) and pushes a Telegram notification.
+ *
+ * `alreadySubscribed` comes back so the UI can avoid a second confirmation that
+ * reads like a second subscription — but the visible message is deliberately the
+ * SAME either way. A different message for an address already on the list tells
+ * anyone who asks whether that address subscribed, which is a small free leak we
+ * do not need to hand out.
+ *
+ * Errors resolve rather than throw: the section falls back to the plain address,
+ * exactly like the story form, so the path never dead-ends.
+ */
+export const subscribeToNewsletter = async (payload: {
+  email: string;
+  language?: string;
+  source?: string;
+  /** Honeypot: a visible endpoint is a spam target within days. */
+  company?: string;
+}): Promise<{ ok: boolean; alreadySubscribed: boolean }> => {
+  if (typeof fetch === 'undefined') return { ok: false, alreadySubscribed: false };
+
+  try {
+    const response = await fetch('/api/newsletter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: payload.email,
+        locale: payload.language || '',
+        source: payload.source || 'landing',
+        company: payload.company || '',
+      }),
+    });
+    const body = await response.json().catch(() => null);
+    return { ok: response.ok, alreadySubscribed: Boolean(body?.alreadySubscribed) };
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn('[Newsletter] Subscription failed.', error);
+    }
+    return { ok: false, alreadySubscribed: false };
   }
 };
 

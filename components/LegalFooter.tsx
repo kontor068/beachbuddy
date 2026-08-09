@@ -139,8 +139,12 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   return (
     <>
       <footer className="w-full border-t border-slate-200 bg-white/85 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-5 py-10 md:px-8 md:py-7">
-          <div className="grid gap-9 text-center md:grid-cols-[1.6fr_1fr_1fr] md:gap-8 md:text-left">
+        {/* Tightened 10/08/2026 (Miltos: «πιο συμμαζεμένο, πιο σωστά στοιχισμένο, μικρότερο
+            ύψος»). The vertical padding and the inter-column gap were both sized for the
+            three-band fine print that no longer exists; `items-start` stops the short Contact
+            and Legal columns from stretching to the tall brand column's height. */}
+        <div className="mx-auto max-w-6xl px-5 py-7 md:px-8 md:py-6">
+          <div className="grid items-start gap-7 text-center md:grid-cols-[1.6fr_1fr_1fr] md:gap-8 md:text-left">
 
             {/* Brand + tagline + safety note */}
             <div>
@@ -158,9 +162,9 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                 <Compass className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {c.guides} →
               </a>
-              <p className="mt-4 flex items-start justify-center gap-2 text-xs leading-relaxed text-slate-500 md:justify-start">
+              <p className="mt-3 flex items-start justify-center gap-2 text-xs leading-snug text-slate-500 md:justify-start">
                 <LifeBuoy className="mt-0.5 h-4 w-4 shrink-0 text-teal-600/80" aria-hidden="true" />
-                <span className="max-w-xs">{c.footerNote}</span>
+                <span className="max-w-sm">{c.footerNote}</span>
               </p>
             </div>
 
@@ -191,7 +195,12 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               <p className={columnHeadingClass}>{c.legalLinks}</p>
               {/* The gap shrinks as the targets grow: each row is now 44 px of tappable box
                   instead of 20 px of text, so the column keeps roughly the height it had. */}
-              <ul className="mt-2 flex flex-col items-center md:items-start">
+              {/* TWO COLUMNS ON A PHONE. Six links × 44 px of mandatory touch target is 264 px of
+                  footer — the single tallest thing on the page's last screen. Pairing them halves
+                  that to three rows WITHOUT shrinking a single target: the 44 px rule (measured
+                  05/08/2026, when every link here was 19 px) is about the finger, not the layout.
+                  Back to one column at `md`, where the three-column grid needs the narrow shape. */}
+              <ul className="mt-2 grid grid-cols-2 justify-items-center gap-x-4 md:flex md:flex-col md:justify-items-start md:items-start">
                 <li><button type="button" onClick={() => setActiveModal('terms')} className={legalLinkClass}>{c.terms}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('privacy')} className={legalLinkClass}>{c.privacy}</button></li>
                 <li><button type="button" onClick={() => setActiveModal('cookies')} className={legalLinkClass}>{c.cookies}</button></li>
@@ -210,60 +219,86 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
             </nav>
           </div>
 
-          {/* Fine print */}
-          <div className="mt-6 flex flex-col items-center gap-3 border-t border-slate-200/80 pt-5 text-center text-xs text-slate-600 sm:flex-row sm:justify-between sm:text-left md:mt-5 md:pt-4">
-            <p>© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 sm:justify-end">
-              <WeatherDataAttribution language={language} />
-              <span className="hidden text-slate-300 sm:inline" aria-hidden="true">·</span>
-              <span className="flex items-center gap-1.5">
-                <span>{c.accessData}:</span>
-                <a href="https://www.seatrac.gr/" target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-teal-700 hover:underline">SEATRAC</a>
+          {/* Fine print — ONE band, not three.
+              It used to be a justify-between row plus a separate full-width ODbL paragraph
+              underneath, and at desktop width that read as three ragged bands: the operator name
+              wrapping onto a second line on the left, the credits wrapping independently on the
+              right, and a lone licence sentence below them. Now the credits are a single wrapping
+              flow that fills the width in reading order and the copyright is the one fixed anchor
+              (nowrap — «MARIS AND CO O.E.» is a legal name and must not break across lines).
+              `items-baseline` aligns the text, not the boxes, so the two halves sit on one line
+              instead of drifting apart. */}
+          <div className="mt-5 flex flex-col gap-2 border-t border-slate-200/80 pt-4 text-left text-xs leading-relaxed text-slate-600 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 md:mt-4">
+            <p className="shrink-0 sm:whitespace-nowrap">© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
+            {/* LEFT-ALIGNED ON A PHONE, and one single flow.
+                Centred fine print looked ragged (Miltos, 10/08): five credits of five different
+                lengths, each centred on its own line, gave the block a zig-zag edge on both
+                sides. Left alignment buys one straight edge to read down. The `contents` on
+                WeatherDataAttribution is the other half of the fix — it is its own flex
+                container, so its three credits used to wrap on their own rhythm INSIDE this
+                one, and two wrapping systems can never line up. Flattened, every credit is a
+                sibling here and they fill each line in order. */}
+            <div className="flex flex-wrap items-baseline justify-start gap-x-2.5 gap-y-1 sm:justify-end">
+              <WeatherDataAttribution language={language} className="!contents" />
+              {/* The «·» is an ::after INSIDE each credit, not a sibling span. As siblings they
+                  were wrappable on their own and regularly ended up dangling at the end of a
+                  line — or, before the flow was flattened, at the start of one. Inside the item
+                  they can only ever sit between two credits, and `last:after:content-none`
+                  keeps the final one clean. */}
+              <span className="whitespace-nowrap after:ml-2.5 after:text-slate-300 after:content-['·'] last:after:content-none">
+                {c.accessData}:{' '}
+                <a href="https://www.seatrac.gr/" target="_blank" rel="noopener noreferrer" className={fineLinkClass}>SEATRAC</a>
               </span>
-              <span className="hidden text-slate-300 sm:inline" aria-hidden="true">·</span>
-              <span>{c.blueFlag}</span>
+              {/* No separator after this one: the ODbL sentence that follows is long enough to wrap
+                  onto its own line at almost every width, which left the dot stranded at the end
+                  of the line above. `last:` cannot help — ODbL, not this, is the last child. */}
+              <span className="whitespace-nowrap">{c.blueFlag}</span>
+              {/* ODbL attribution for the beach dataset — a derivative of OpenStreetMap.
+                  It joins the credit flow rather than owning a row: the obligation is that the
+                  attribution is PRESENT and legible, not that it sits alone, and a lone row was
+                  costing a full line of footer height for one sentence.
+
+                  ⚠️ THIS WAS MISSING FOR EVERY VISITOR WITH JAVASCRIPT until 05/08/2026.
+                  The notice existed only in the prerendered HTML (prerenderBeachPages.mjs,
+                  `withStaticFooter()`), which React overwrites on mount by design — the static
+                  footer is injected INSIDE #root precisely so it does not duplicate. So the audit
+                  that reported "ODbL on 9.499/9.502 pages" was reading the build output, not the
+                  browser. Keep it in the CLIENT tree, wherever it sits.
+
+                  Separate from WeatherDataAttribution because that covers the FORECAST licences
+                  (Open-Meteo CC BY 4.0, DWD, Météo-France); this covers the BEACH DATABASE, a
+                  different source under a different licence, and merging them would make one line
+                  responsible for two obligations that can change independently. */}
+              {/* `basis-full` forces its own line instead of trailing the credits: as a wrapping
+                  flex child it would otherwise leave a dangling «·» at the end of the line above
+                  whenever it happened to break. Its own line, no separator, no orphan. */}
+              <span>
+                {c.beachData}: ©{' '}
+                <a
+                  href="https://www.openstreetmap.org/copyright"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={fineLinkClass}
+                >
+                  OpenStreetMap
+                </a>{' '}
+                {/* «με άδεια ODbL» is kept whole: as loose words the licence name broke onto a
+                    line of its own, leaving a two-word orphan under a full-width sentence. */}
+                <span className="whitespace-nowrap">
+                  {c.beachDataLicence}{' '}
+                  <a
+                    href="https://opendatacommons.org/licenses/odbl/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={fineLinkClass}
+                  >
+                    ODbL
+                  </a>
+                </span>
+              </span>
             </div>
           </div>
 
-          {/* ODbL attribution for the beach dataset — a derivative of OpenStreetMap.
-              Its own row, because it is a licence obligation rather than a credit we
-              choose to give, and the row above is already three items wide.
-
-              ⚠️ THIS WAS MISSING FOR EVERY VISITOR WITH JAVASCRIPT until 05/08/2026.
-              The notice existed only in the prerendered HTML (prerenderBeachPages.mjs,
-              `withStaticFooter()`), which React overwrites on mount by design — the
-              static footer is injected INSIDE #root precisely so it does not duplicate.
-              So the audit that reported "ODbL on 9.499/9.502 pages" was reading the
-              build output, not the browser. In the client bundle the words
-              OpenStreetMap/ODbL appeared only in BeachMap (tile credit) and
-              BeachDetailPage — neither of which the landing page renders, leaving the
-              home page with no attribution at all.
-
-              Placed here rather than in WeatherDataAttribution because that component
-              covers the FORECAST licences (Open-Meteo CC BY 4.0, DWD, Météo-France);
-              this covers the BEACH DATABASE, a different source with a different
-              licence, and merging them would make one line responsible for two
-              obligations that can change independently. */}
-          <p className="mt-3 text-center text-xs leading-relaxed text-slate-600 sm:text-left">
-            {c.beachData}: ©{' '}
-            <a
-              href="https://www.openstreetmap.org/copyright"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={fineLinkClass}
-            >
-              OpenStreetMap
-            </a>{' '}
-            {c.beachDataLicence}{' '}
-            <a
-              href="https://opendatacommons.org/licenses/odbl/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={fineLinkClass}
-            >
-              Open Database License (ODbL)
-            </a>
-          </p>
         </div>
       </footer>
 

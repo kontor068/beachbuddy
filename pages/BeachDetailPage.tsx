@@ -196,50 +196,98 @@ const BeachDetailPhotoPlaceholder: React.FC = () => {
   );
 };
 
+// `upload` / `addYours` are the in-app path added with accounts; `button` is the
+// older external suggestion link, kept as the fallback for signed-out visitors
+// and for builds where accounts are unconfigured.
 const photoContributionCopy: Record<LanguageCode, {
   title: string;
   body: string;
   button: string;
   buttonLabel: (beachName: string) => string;
+  /** Primary CTA once uploading is possible — replaces the external hand-off. */
+  upload: string;
+  /** Offered under an existing gallery: this beach has a photo, yours may be better. */
+  addYours: string;
+  /**
+   * The prominent version of the same ask, sitting directly under the main
+   * photo. Deliberately the SAME request as the landing page's — one invitation
+   * in two places, not two competing campaigns — and phrased for a visitor who
+   * is already looking at somebody else's picture of this exact beach.
+   */
+  betterTitle: string;
+  betterBody: string;
+  betterCta: string;
 }> = {
   en: {
     title: 'Have a photo of this beach?',
     body: 'Send us your own photo or a clearly licensed image. Nothing is published without review.',
     button: 'Suggest a photo',
     buttonLabel: (beachName) => `Suggest a photo for ${beachName}`,
+    upload: 'Add your photo',
+    addYours: 'Add your own photo',
+    betterTitle: 'Let the photographer in you out',
+    betterBody: 'Your shot will help the next person looking up this beach see what it is really like before they drive out here.',
+    betterCta: 'Send yours',
   },
   gr: {
     title: 'Έχεις φωτογραφία αυτής της παραλίας;',
     body: 'Στείλε μας μια δική σου φωτογραφία ή μια εικόνα με ξεκάθαρη άδεια χρήσης. Δεν δημοσιεύεται τίποτα χωρίς έλεγχο.',
     button: 'Πρότεινε φωτογραφία',
     buttonLabel: (beachName) => `Πρότεινε φωτογραφία για την παραλία ${beachSentenceName(beachName, 'gr')}`,
+    upload: 'Ανέβασε τη φωτογραφία σου',
+    addYours: 'Πρόσθεσε τη δική σου φωτογραφία',
+    betterTitle: 'Βγάλε τον φωτογράφο που έχεις μέσα σου',
+    betterBody: 'Η δική σου φωτογραφία θα βοηθήσει τον επόμενο που ψάχνει αυτή την παραλία να δει πώς είναι στ’ αλήθεια, πριν κάνει τον δρόμο.',
+    betterCta: 'Στείλε τη δική σου',
   },
   de: {
     title: 'Hast du ein Foto von diesem Strand?',
     body: 'Sende uns dein eigenes Foto oder ein klar lizenziertes Bild. Nichts wird ohne Prüfung veröffentlicht.',
     button: 'Foto vorschlagen',
     buttonLabel: (beachName) => `Foto für ${beachName} vorschlagen`,
+    upload: 'Dein Foto hochladen',
+    addYours: 'Eigenes Foto hinzufügen',
+    betterTitle: 'Lass den Fotografen in dir raus',
+    betterBody: 'Dein Bild hilft dem Nächsten, der diesen Strand nachschlägt, zu sehen, wie er wirklich ist — bevor er losfährt.',
+    betterCta: 'Schick deins',
   },
   it: {
     title: 'Hai una foto di questa spiaggia?',
     body: 'Mandaci una tua foto o un’immagine con licenza chiara. Nulla viene pubblicato senza verifica.',
     button: 'Suggerisci una foto',
     buttonLabel: (beachName) => `Suggerisci una foto per ${beachName}`,
+    upload: 'Carica la tua foto',
+    addYours: 'Aggiungi la tua foto',
+    betterTitle: 'Fai uscire il fotografo che hai dentro',
+    betterBody: 'Il tuo scatto aiuterà chi cercherà questa spiaggia dopo di te a capire com’è davvero, prima di mettersi in viaggio.',
+    betterCta: 'Manda la tua',
   },
   fr: {
     title: 'Vous avez une photo de cette plage ?',
     body: 'Envoyez votre propre photo ou une image avec une licence claire. Rien n’est publié sans vérification.',
     button: 'Proposer une photo',
     buttonLabel: (beachName) => `Proposer une photo pour ${beachName}`,
+    upload: 'Ajouter votre photo',
+    addYours: 'Ajouter votre propre photo',
+    betterTitle: 'Libérez le photographe qui est en vous',
+    betterBody: 'Votre cliché aidera la prochaine personne qui cherche cette plage à voir à quoi elle ressemble vraiment, avant de faire la route.',
+    betterCta: 'Envoyez la vôtre',
   },
 };
 
+// WHY THE ORDER FLIPPED: this prompt used to offer only the external suggestion
+// link, which sent the one visitor willing to give us a photo away to somebody
+// else's product to upload it. With accounts, the in-app upload is the primary
+// button and the external link stays underneath as the escape hatch — it is
+// still the only path when accounts are unconfigured.
 const PhotoContributionPrompt: React.FC<{
   beachName: string;
   language: LanguageCode;
   suggestionUrl?: string;
   onClick?: () => void;
-}> = ({ beachName, language, suggestionUrl, onClick }) => {
+  /** Present only when accounts are configured; opens the upload sheet. */
+  onAddPhoto?: () => void;
+}> = ({ beachName, language, suggestionUrl, onClick, onAddPhoto }) => {
   const copy = photoContributionCopy[language] || photoContributionCopy.en;
 
   return (
@@ -251,18 +299,44 @@ const PhotoContributionPrompt: React.FC<{
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-bold leading-snug text-slate-900">{copy.title}</h3>
           <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-600">{copy.body}</p>
-          {suggestionUrl && (
-            <a
-              href={suggestionUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={copy.buttonLabel(beachName)}
-              onClick={onClick}
-              className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cyan-100 bg-cyan-600 px-4 text-xs font-bold text-white shadow-sm shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+
+          {onAddPhoto && (
+            <button
+              type="button"
+              onClick={onAddPhoto}
+              className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cyan-600 px-4 text-xs font-bold text-white shadow-sm shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
             >
-              {copy.button}
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
+              <Camera className="h-3.5 w-3.5" aria-hidden="true" />
+              {copy.upload}
+            </button>
+          )}
+
+          {suggestionUrl && (
+            onAddPhoto ? (
+              <a
+                href={suggestionUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={copy.buttonLabel(beachName)}
+                onClick={onClick}
+                className="ml-3 inline-flex min-h-11 items-center gap-1.5 rounded text-xs font-bold text-cyan-800 underline underline-offset-2 transition-colors hover:text-cyan-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              >
+                {copy.button}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            ) : (
+              <a
+                href={suggestionUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={copy.buttonLabel(beachName)}
+                onClick={onClick}
+                className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cyan-100 bg-cyan-600 px-4 text-xs font-bold text-white shadow-sm shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+              >
+                {copy.button}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            )
           )}
         </div>
       </div>
@@ -652,6 +726,12 @@ interface BeachDetailPageProps {
   conditionsUnavailable?: boolean;
   /** Real fetch time of the last known forecast, for the "last forecast HH:MM" stamp. */
   lastForecastAt?: Date | null;
+  /**
+   * Opens the photo-upload sheet for THIS beach. Undefined when accounts are
+   * unconfigured, which is what keeps the button from appearing in a build where
+   * there is nothing behind it.
+   */
+  onAddPhoto?: () => void;
 }
 
 // "Sunset over the sea" card: localised copy + short month names for every
@@ -732,7 +812,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   mapExposureLevelOverride,
   selectedHour,
   conditionsUnavailable = false,
-  lastForecastAt
+  lastForecastAt,
+  onAddPhoto
 }) => {
   // Hard-cutoff gate: hide every live wind/sea/score/verdict block, keep static content.
   const showConditions = !conditionsUnavailable;
@@ -2165,18 +2246,58 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   </a>
                 </p>
               )}
+              {/* A visitor's own photo has no external page to link to — the
+                  permission lives in the form they filled in, not on Commons —
+                  so the byline is plain text there. An <a href=""> would reload
+                  the page, which is what "click the photographer's name" did. */}
               {photoCredit && (
                 <p className="px-1 text-[11px] font-medium leading-snug text-slate-600">
-                  <a
-                    href={photoCredit.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
-                  >
-                    {photoCredit.label}
-                  </a>
+                  {photoCredit.href ? (
+                    <a
+                      href={photoCredit.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline decoration-slate-300 underline-offset-2 hover:text-slate-800"
+                    >
+                      {photoCredit.label}
+                    </a>
+                  ) : (
+                    photoCredit.label
+                  )}
                 </p>
               )}
+              {/* THE ASK, MOVED UP AND GIVEN WEIGHT (08/08/2026, Miltos).
+                  It used to be a small underlined link at the very bottom of
+                  this section, below the thumbnails — the last thing on a block
+                  most people scroll straight past. Photos are the thing we most
+                  need from visitors and 63% of beaches still have none, so the
+                  request now sits directly under the photo it is talking about,
+                  where the comparison is happening anyway.
+
+                  SAME ASK AS THE LANDING PAGE, on purpose: same voice, same
+                  button, same sheet. Two differently-worded campaigns for one
+                  favour would read as two favours. */}
+              {onAddPhoto && (
+                <div className="flex flex-col gap-3 rounded-[1.25rem] border border-cyan-100 bg-cyan-50/60 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-sm font-extrabold leading-snug text-slate-900">
+                      {(photoContributionCopy[language] || photoContributionCopy.en).betterTitle}
+                    </p>
+                    <p className="mt-0.5 text-xs font-semibold leading-relaxed text-slate-600">
+                      {(photoContributionCopy[language] || photoContributionCopy.en).betterBody}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={onAddPhoto}
+                    className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#007a83] px-4 text-sm font-extrabold text-white shadow-sm transition-colors hover:bg-[#00646c] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/40"
+                  >
+                    <Camera className="h-4 w-4" aria-hidden="true" />
+                    {(photoContributionCopy[language] || photoContributionCopy.en).betterCta}
+                  </button>
+                </div>
+              )}
+
               {realPhotos.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
                   {realPhotos.slice(1).map((url, i) => (
@@ -2195,6 +2316,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   ))}
                 </div>
               )}
+
+              {/* The quiet duplicate that used to live here is gone: the same
+                  request now sits ABOVE the thumbnails, where it is actually
+                  seen. Two buttons for one favour, on one screen, is how a
+                  request starts reading as nagging. */}
             </>
           ) : (
             <>
@@ -2213,6 +2339,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 language={language}
                 suggestionUrl={photoSuggestionUrl}
                 onClick={photoSuggestionUrl ? handlePhotoSuggestionClick : undefined}
+                onAddPhoto={onAddPhoto}
               />
             </>
           )}
@@ -2824,6 +2951,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <a
                   key={guide.key}
                   href={guide.href}
+                  /* Same rule as the hub chip beside it, which has always had this:
+                     these are prerendered files, so under `vite dev` the path does
+                     not exist and a relative href just reboots the SPA. It looked
+                     like a dead link with no explanation. resolveGuideHref points
+                     dev at the live URL and flags it external. */
+                  target={guide.external ? '_blank' : undefined}
+                  rel={guide.external ? 'noopener noreferrer' : undefined}
                   /* 34 px measured on a real phone (05/08/2026) — these are standalone
                      pill links, not inline text, so the 44 px minimum applies to them. */
                   className="inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"

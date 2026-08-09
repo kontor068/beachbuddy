@@ -118,6 +118,29 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
       // forever, because `status` never leaves 'loading'.
       const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
       if (!res.ok) throw new Error(`national conditions ${res.status}`);
+      // HOW OLD THIS BODY REALLY IS — not how long ago we received it.
+      //
+      // A 200 does NOT mean fresh. Two paths hand us an old body with a
+      // perfectly healthy status line:
+      //   1. The edge proxy's rescue store. When Open-Meteo rate-limits or
+      //      breaks, netlify/functions/forecast.mjs answers 200 with the last
+      //      good body — up to TWELVE HOURS old — and says so only in
+      //      X-Forecast-Age-Seconds. Its own comment calls that header "the
+      //      whole reason this is safe".
+      //   2. The CDN. The same function sets s-maxage=3600 with
+      //      stale-while-revalidate=1800, so a cached body can be 90 minutes
+      //      old before anything upstream is asked — already past the one-hour
+      //      window the landing uses to decide it may say "today".
+      // Stamping Date.now() on arrival makes both look zero seconds old, and
+      // the landing would then print «σήμερα δεν φυσάει πολύ» over a body
+      // captured at dawn. services/weatherService.ts has read this header since
+      // the rescue path shipped; this reader simply never did.
+      const originAgeS = Number(res.headers.get('x-forecast-age-seconds'));
+      const cdnAgeS = Number(res.headers.get('age'));
+      const ageMs = Math.max(
+        Number.isFinite(originAgeS) && originAgeS > 0 ? originAgeS * 1000 : 0,
+        Number.isFinite(cdnAgeS) && cdnAgeS > 0 ? cdnAgeS * 1000 : 0,
+      );
       const json = await res.json();
       const arr = Array.isArray(json) ? json : [json];
 
@@ -161,7 +184,10 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
         beaufort: Math.round(avg),
         roughness: roughnessFromBeaufort(avg),
         regions,
-        sampledAt: Date.now(),
+        // Back-dated by the real age of the body, so a rescued or CDN-cached
+        // response fails the landing's freshness gate instead of sailing
+        // through it as if it had just been measured.
+        sampledAt: Date.now() - ageMs,
       };
       cache = { at: Date.now(), data };
       return data;

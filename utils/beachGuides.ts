@@ -19,7 +19,14 @@ interface GuideTopic {
   key: string;
   pathPrefix: string;
   match: (beach: Beach) => boolean;
+  /** The chip form — an adjective on its own ("Wind-sheltered"). Used where the
+   *  surrounding UI already says "guides", e.g. the island page's guide row. */
   label: LocalizedLabel;
+  /** The article form — a headline that stands alone ("Wind-sheltered beaches").
+   *  A surface that must read as a LIST OF ARTICLES needs this, not `label`:
+   *  bare adjectives beside a place name ("Wind-sheltered · Naxos") read as
+   *  filter pills, which is exactly how the landing block was misread. */
+  articleLabel: LocalizedLabel;
 }
 
 const GUIDE_TOPICS: GuideTopic[] = [
@@ -30,44 +37,86 @@ const GUIDE_TOPICS: GuideTopic[] = [
     // maistros). Matches the sheltered guide the prerender actually publishes.
     match: beach => beach.shelteredFromLocalWind === true,
     label: { en: 'Wind-sheltered', gr: 'Απάνεμες', de: 'Windgeschützt', fr: 'Abritées du vent', it: 'Riparate dal vento' },
+    articleLabel: { en: 'Wind-sheltered beaches', gr: 'Απάνεμες παραλίες', de: 'Windgeschützte Strände', fr: 'Plages abritées du vent', it: 'Spiagge riparate dal vento' },
   },
   {
     key: 'family',
     pathPrefix: '/family-beaches',
     match: beach => beach.environment?.familyFriendly === true,
     label: { en: 'Family beaches', gr: 'Οικογενειακές', de: 'Familienstrände', fr: 'Plages familiales', it: 'Per famiglie' },
+    articleLabel: { en: 'Family beaches', gr: 'Οικογενειακές παραλίες', de: 'Familienstrände', fr: 'Plages familiales', it: 'Spiagge per famiglie' },
   },
   {
     key: 'snorkeling',
     pathPrefix: '/snorkeling-beaches',
     match: beach => beach.activities?.snorkeling === true,
     label: { en: 'Snorkeling', gr: 'Για snorkeling', de: 'Schnorcheln', fr: 'Snorkeling', it: 'Snorkeling' },
+    articleLabel: { en: 'Snorkeling beaches', gr: 'Παραλίες για snorkeling', de: 'Strände zum Schnorcheln', fr: 'Plages pour le snorkeling', it: 'Spiagge per lo snorkeling' },
   },
   {
     key: 'organized',
     pathPrefix: '/organized-beaches',
     match: beach => beach.amenities?.organized === true,
     label: { en: 'Organized', gr: 'Οργανωμένες', de: 'Organisiert', fr: 'Aménagées', it: 'Attrezzate' },
+    articleLabel: { en: 'Organized beaches', gr: 'Οργανωμένες παραλίες', de: 'Organisierte Strände', fr: 'Plages aménagées', it: 'Spiagge attrezzate' },
   },
   {
     key: 'secluded',
     pathPrefix: '/secluded-beaches',
     match: beach => beach.environment?.remote === true,
     label: { en: 'Secluded', gr: 'Απομονωμένες', de: 'Abgelegen', fr: 'Isolées', it: 'Isolate' },
+    articleLabel: { en: 'Secluded beaches', gr: 'Απομονωμένες παραλίες', de: 'Abgelegene Strände', fr: 'Plages isolées', it: 'Spiagge isolate' },
   },
   {
     key: 'sunset',
     pathPrefix: '/sunset-beaches',
     match: isSunsetFacingBeach,
     label: { en: 'Sunset', gr: 'Για ηλιοβασίλεμα', de: 'Sonnenuntergang', fr: 'Coucher de soleil', it: 'Tramonto' },
+    articleLabel: { en: 'Sunset beaches', gr: 'Παραλίες για ηλιοβασίλεμα', de: 'Strände für den Sonnenuntergang', fr: 'Plages pour le coucher de soleil', it: 'Spiagge per il tramonto' },
   },
 ];
+
+/**
+ * Where a guide link should actually point.
+ *
+ * These articles are PRERENDERED FILES, not app routes — under `vite dev` they
+ * do not exist on disk, and the dev server answers any unknown path with the SPA
+ * shell. So a relative href in development does not 404 (which would at least be
+ * obvious): it silently boots the app and lands you back on the home page, which
+ * reads as a broken link with no clue why. Pointing dev at the live URL is the
+ * only honest option, and `external` says so out loud so the caller can add
+ * target/rel rather than navigating the dev tab away.
+ *
+ * Production and the bundled native app keep the relative path — it works
+ * offline and never leaves the origin.
+ */
+export const resolveGuideHref = (path: string): { href: string; external: boolean } => {
+  const external = import.meta.env.DEV;
+  return { href: external ? `https://calmbeach.gr${path}` : path, external };
+};
 
 export interface IslandGuideLink {
   key: string;
   href: string;
   label: string;
+  /** True only under `vite dev`, where `href` is absolute — see resolveGuideHref. */
+  external: boolean;
 }
+
+/**
+ * The topic list, exposed for surfaces that link a guide WITHOUT having that
+ * region's beaches loaded — the national landing being the only one today. They
+ * cannot run the ≥5 predicate gate above (it needs the beach records), so they
+ * must instead name a curated pair that a build gate proves exists; see
+ * utils/landingGuideLinks.ts and scripts/validateLandingGuideLinks.mjs.
+ *
+ * Exposed as a lookup rather than the array so nobody is tempted to iterate it
+ * and hand-build every topic × region URL: most of those pages do not exist.
+ */
+export const GUIDE_TOPIC_BY_KEY: Readonly<Record<string, { pathPrefix: string; label: LocalizedLabel; articleLabel: LocalizedLabel }>> =
+  Object.freeze(Object.fromEntries(
+    GUIDE_TOPICS.map(topic => [topic.key, { pathPrefix: topic.pathPrefix, label: topic.label, articleLabel: topic.articleLabel }]),
+  ));
 
 /**
  * The national guides hub — the one page that collects every guide article.
@@ -91,11 +140,8 @@ export const getGuidesHubPath = (language: LanguageCode): string =>
  * the SPA shell — open the live page instead. Prod and the bundled native app
  * keep the relative path (works offline). `external` is true only in dev.
  */
-export const getGuidesHubLink = (language: LanguageCode): { href: string; external: boolean } => {
-  const path = getGuidesHubPath(language);
-  const external = import.meta.env.DEV;
-  return { href: external ? `https://calmbeach.gr${path}` : path, external };
-};
+export const getGuidesHubLink = (language: LanguageCode): { href: string; external: boolean } =>
+  resolveGuideHref(getGuidesHubPath(language));
 
 /**
  * The guide articles available for an island, as clickable links — only topics
@@ -121,7 +167,7 @@ export const getIslandGuideLinks = (
     })
     .map(topic => ({
       key: topic.key,
-      href: `${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`,
+      ...resolveGuideHref(`${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`),
       label: topic.label[language] || topic.label.en,
     }));
 };

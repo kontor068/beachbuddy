@@ -47,6 +47,47 @@
   to = "/.netlify/functions/feedback-export"
   status = 200
 
+# Newsletter. POST subscribes (origin-gated, rate-limited, de-duplicated by a
+# hash of the address); GET exports the list and is gated by NEWSLETTER_EXPORT_KEY
+# — unset means 403, so the list is never public by accident.
+[[redirects]]
+  from = "/api/newsletter"
+  to = "/.netlify/functions/newsletter-subscribe"
+  status = 200
+
+# "Delete my account" (GDPR right to erasure). Authenticated by the caller's own
+# access token — never by a user id in the request — and it deletes their stored
+# files before the account row, because files are the part a cascade cannot redo.
+[[redirects]]
+  from = "/api/account-delete"
+  to = "/.netlify/functions/account-delete"
+  status = 200
+
+# The tap on those buttons comes back here. Two gates: Telegram's own
+# secret_token header AND the presser's chat id — the button publishes content
+# to a crawled page, so one gate was not enough.
+[[redirects]]
+  from = "/api/telegram-hook"
+  to = "/.netlify/functions/telegram-webhook"
+  status = 200
+
+# Moderation queue for visitor photos and reviews. Gated by UGC_ADMIN_KEY (unset ⇒
+# 403). Nothing a visitor uploads is public until it is approved here — or from the
+# Telegram buttons, which call the same lib/ugcModeration.mjs.
+[[redirects]]
+  from = "/api/ugc-admin"
+  to = "/.netlify/functions/ugc-admin"
+  status = 200
+
+# "A photo just arrived" → Telegram. Called by the upload form right after a
+# successful upload. It cannot be used to send arbitrary messages: it accepts a
+# photo id plus the caller's Supabase token, and refuses unless that row really
+# exists, really belongs to that user and is really still pending.
+[[redirects]]
+  from = "/api/ugc-notify"
+  to = "/.netlify/functions/ugc-notify"
+  status = 200
+
 # What an uptime monitor should watch. NOT the homepage: that is a static file on
 # a CDN and keeps returning 200 long after the functions behind the product have
 # stopped. Unauthenticated on purpose — a monitor cannot log in.
@@ -108,6 +149,11 @@
 #                list would be six entries that silently break an image the first
 #                time a photo is added from somewhere new; images are also the least
 #                dangerous thing to allow broadly.
+#                `blob:` added 08/08/2026 for the upload sheet: the photo preview is a
+#                canvas-encoded Blob shown through URL.createObjectURL, so without it
+#                the visitor would pick a photo and see nothing the day this header
+#                stops being report-only. It is a same-document source, not a network
+#                one — it cannot fetch anything.
 #   connect-src  GA4 collection endpoints, plus the Open-Meteo hosts which are only
 #                reached directly under `vite dev` (production goes through
 #                same-origin /api/forecast).
@@ -144,7 +190,7 @@
 # pageviews: caught by an enforced violation from /el/beaches/lakonia/1552-viandini-vourkos/.
 # This is the failure mode the comment above warned about — one missing origin, every
 # page still returning 200. Strictly a loosening; nothing that worked can break.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
