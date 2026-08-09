@@ -6291,7 +6291,11 @@ export const App: React.FC = () => {
    * have named a beach that is not on screen there, which is the same class of defect as a wrong
    * hour. One rule, called twice with its own lead.
    */
+  // Switched off by product decision: the line is not shown on any surface. The rule below is kept
+  // intact (and its validators with it) so it can be turned back on by flipping this constant.
+  const SHOW_DAY_TURN_NOTE: boolean = false;
   const buildDayTurnNote = (lead: SuitableBeach | undefined): string | undefined => {
+    if (!SHOW_DAY_TURN_NOTE) return undefined;
     if (!lead || mapHourSlots.length < 2) return undefined;
     const day = baseDailyForecast?.date;
     if (!day || !isSameCalendarDay(day, athensNow())) return undefined;
