@@ -128,6 +128,7 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
   const [visible, setVisible] = useState(false); // drives the slide-up transition
   const deferredPrompt = useRef<BeforeInstallPromptEvent | null>(null);
   const engagedRef = useRef(false);
+  const copy = getLocalizedCopy(language, COPY);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -207,8 +208,25 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
     }
   }, [close]);
 
+  const handleIosInstall = useCallback(async () => {
+    // iOS Safari does not expose beforeinstallprompt. Opening the native share
+    // sheet from the user's tap is the closest supported action; the inline
+    // instructions still explain the final "Add to Home Screen" step.
+    if (typeof navigator.share !== 'function') return;
+
+    try {
+      await navigator.share({
+        title: copy.title,
+        url: window.location.href,
+      });
+    } catch (error) {
+      // Cancelling the share sheet is expected. Other failures are also safe to
+      // ignore because the manual iOS instructions remain visible.
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+    }
+  }, [copy.title]);
+
   if (!mode) return null;
-  const copy = getLocalizedCopy(language, COPY);
 
   return (
     <div
@@ -245,17 +263,26 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
           <button
             type="button"
             onClick={handleInstall}
-            className="shrink-0 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-700 active:bg-teal-800"
+            className="min-h-11 min-w-11 shrink-0 touch-manipulation cursor-pointer rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-700 active:bg-teal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
           >
             {copy.install}
           </button>
-        ) : null}
+        ) : (
+          <button
+            type="button"
+            onClick={handleIosInstall}
+            aria-label={copy.install}
+            className="min-h-11 min-w-11 shrink-0 touch-manipulation cursor-pointer rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-teal-700 active:bg-teal-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
+          >
+            {copy.install}
+          </button>
+        )}
 
         <button
           type="button"
           onClick={handleDismiss}
           aria-label={copy.close}
-          className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 sm:static sm:h-7 sm:w-7"
+          className="absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-1 dark:hover:bg-slate-700 sm:static sm:h-11 sm:w-11"
         >
           <X className="h-4 w-4" />
         </button>
