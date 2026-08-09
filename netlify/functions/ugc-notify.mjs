@@ -135,10 +135,27 @@ export const handler = async (event) => {
       /* text-only message is still worth sending */
     }
 
+    // TWO BUTTONS, so the decision happens where the notification lands.
+    // Without them the message is only a reminder to open a page later, and
+    // "later" is exactly how a moderation queue becomes a week old — which is
+    // the failure this function was written to prevent in the first place.
+    //
+    // The tap goes to netlify/functions/telegram-webhook.mjs, which checks
+    // Telegram's secret_token AND that the presser is our own chat id before
+    // touching anything, then calls the same lib/ugcModeration.mjs the admin
+    // page uses. callback_data is capped at 64 bytes, hence the terse shape:
+    // kind initial, uuid, action initial — `p:<uuid>:a` = approve this photo.
+    const replyMarkup = {
+      inline_keyboard: [[
+        { text: '✅ Δημοσίευση', callback_data: `p:${photo.id}:a` },
+        { text: '🚫 Απόρριψη', callback_data: `p:${photo.id}:r` },
+      ]],
+    };
+
     const endpoint = preview ? 'sendPhoto' : 'sendMessage';
     const body = preview
-      ? { chat_id: chatId, photo: preview, caption: lines.join('\n'), parse_mode: 'HTML' }
-      : { chat_id: chatId, text: lines.join('\n'), parse_mode: 'HTML', disable_web_page_preview: true };
+      ? { chat_id: chatId, photo: preview, caption: lines.join('\n'), parse_mode: 'HTML', reply_markup: replyMarkup }
+      : { chat_id: chatId, text: lines.join('\n'), parse_mode: 'HTML', disable_web_page_preview: true, reply_markup: replyMarkup };
 
     await fetch(`https://api.telegram.org/bot${botToken}/${endpoint}`, {
       method: 'POST',
