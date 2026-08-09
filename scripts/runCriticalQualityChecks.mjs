@@ -139,6 +139,15 @@ const checks = [
     args: ['scripts/validateStayWindow.mjs'],
   },
   {
+    id: 'summary-tier-can-answer',
+    title: 'Every region can still answer "where should we go"',
+    description: 'Reads all 110 summary-tier region files — the data the map, the cards and the podium actually run on — and applies the same static-data half of the top-pick trust gate the app applies, then checks that regions able to produce an answer have not collapsed wholesale, and that terrain.types is not lost between the raw dataset and the tier. Self-proves with --prove: stripping terrain in memory must make it fail.',
+    protects: 'On 09/08/2026 the region podium — the «Πού να πάμε τώρα;» block, the one thing the product exists to answer — was found rendering for NOBODY, in all 110 regions, every day. Corfu offered 105 candidates and 0 survived. The summary tier carries a deliberately trimmed metadata and the trim dropped metadata.terrain.types, which hasTrustedTopPickStaticData requires; every beach failed that single check while passing confidence, access, profile, depth, orientation and wind evidence. None of the 31 existing gates saw it, because every one of them asks "is what we say true?" and this was "we say nothing at all". This gate asks the other question.',
+    failureAction: 'Do NOT relax the trust gate to make this pass — it would relax on the detail tier too, where the data is real. Fix buildSummaryBeach in scripts/buildBeachRegionData.mjs to carry the field the gate reads, and re-run npm run build:beach-data.',
+    command: process.execPath,
+    args: ['scripts/validateSummaryTierAnswers.mjs', '--prove'],
+  },
+  {
     id: 'beach-page-contradictions',
     title: 'What the user actually sees',
     description: 'Opens four real Ios beach pages in a browser against a fixed 5 Bft northerly and checks each one states how that wind meets ITS shore — lee, side-on or head-on — matching the beach\'s own committed geometry, and that a lee shore and a windward shore on the same island never read the same.',

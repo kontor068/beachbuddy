@@ -67,6 +67,7 @@ import {
   passesTopPickSeaGate,
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
+import { getRegionDust, type DustLevel } from './services/dustService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
 import { scrollToPageTop, smoothScrollToStableElement } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
@@ -4404,6 +4405,25 @@ export const App: React.FC = () => {
       it: `alle ${windowLabel}`,
     });
   }, [mapHourSlots, selectedHourDt, stayHours, language]);
+  /**
+   * Is the hour on the slider the hour the visitor is living in right now?
+   *
+   * mapHourSlots[0] is, for TODAY, the slot covering "now" (see utils/stayWindow's contract with
+   * the slider) — so "now" is: today, untouched-or-returned slider, no stay window. The podium's
+   * question reads «Πού να πάμε τώρα;» exactly then, and names the hour otherwise: a permanent
+   * «στις 16:00–17:00» over the picks was the title reading like a timetable, while a «τώρα» that
+   * survived a slider move would be the 31/07/2026 defect («Ήρεμα ΤΩΡΑ» over another hour's
+   * numbers) at the top of the page.
+   */
+  const isSelectedHourNow = Boolean(
+    stayHours == null &&
+    selectedHourDt != null &&
+    mapHourSlots.length > 0 &&
+    selectedHourDt === mapHourSlots[0].dt &&
+    // selectedDayDate is declared further down; it is literally selectedForecast?.date.
+    isSelectedDateToday(selectedForecast?.date, athensNow())
+  );
+
   const mapForecastTimeLabel = useMemo(() => {
     if (mapHourSlots.length === 0 || selectedHourDt == null) return undefined;
     const index = mapHourSlots.findIndex(slot => slot.dt === selectedHourDt);
@@ -5059,6 +5079,20 @@ export const App: React.FC = () => {
     : undefined;
   const currentWeatherMode = getWeatherMode(Boolean(weatherError), Boolean(activeWeatherFixtureScenario));
   const currentWaveHeightBucket = getWaveHeightBucket(selectedForecast?.marine?.waveHeightM);
+  // Saharan-dust advisory for the selected region — display-only (see services/dustService.ts:
+  // it can add a line of text, never touch scoring/colours). One fetch per region, resolved to
+  // null on quiet days and on ANY failure, so the UI's default is silence, not an error.
+  const [regionDustLevel, setRegionDustLevel] = useState<DustLevel | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    setRegionDustLevel(null);
+    const coords = selectedIsland?.coordinates;
+    if (!selectedIsland || !coords) return;
+    getRegionDust(selectedIsland.id, coords.lat, coords.lon).then(reading => {
+      if (!cancelled) setRegionDustLevel(reading?.level ?? null);
+    });
+    return () => { cancelled = true; };
+  }, [selectedIsland?.id]);
   const rainRiskSummary = useMemo(() => getRainRiskSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
   const rainRiskCopy = useMemo(() => getRainRiskCopy(rainRiskSummary, language, selectedForecast?.date), [language, rainRiskSummary, selectedForecast?.date]);
   const hourlyWindIncreaseSummary = useMemo(() => getHourlyWindIncreaseSummary(selectedForecast, topPickNow), [selectedForecast, topPickNow]);
@@ -7574,6 +7608,11 @@ export const App: React.FC = () => {
                   ? { title: rainRiskCopy.title, body: rainRiskCopy.body, isNow: rainRiskSummary.isRainingNow }
                   : undefined
               }
+              dustLevel={
+                selectedIsland && regionDustLevel && !isUnsafeWinter && !isInfoOnlyRegion
+                  ? regionDustLevel
+                  : undefined
+              }
               searchQuery={beachSearchQuery}
               activeCategory={directoryActiveCategory}
               sortBy={sortBy}
@@ -7612,6 +7651,7 @@ export const App: React.FC = () => {
               suitableBeachCards={toneFilteredHomeSuitableBeachCards}
               suitableBeachTotalCount={directorySuitableBeachTotalCount}
               suitableTimePrefix={selectedHourPrefix}
+              suitableTimeIsNow={isSelectedHourNow}
               activeToneFilter={mapToneFilter}
               toneFilterDropNote={toneDroppedFilterNote}
               suitableListCoversEverything={directoryListCoversEveryBeach}

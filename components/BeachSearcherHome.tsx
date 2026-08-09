@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronRight,
   CloudRain,
+  Haze,
   CloudSun,
   Clock3,
   Droplets,
@@ -116,6 +117,9 @@ interface BeachSearcherHomeProps {
    *  rains, so this is surfaced at the top of the home instead of being buried
    *  in a description line. `isNow` means the rain is falling at this moment. */
   rainWarning?: { title: string; body: string; isNow: boolean };
+  /** Saharan-dust advisory for the region's day, display-only: 'elevated' = hazy sky,
+   *  'heavy' = dense episode. Absent (the normal case) renders nothing at all. */
+  dustLevel?: 'elevated' | 'heavy';
   searchQuery: string;
   activeCategory: DirectoryCategory;
   sortBy: SortOption;
@@ -156,6 +160,9 @@ interface BeachSearcherHomeProps {
   suitableBeachTotalCount?: number;
   /** Localized time-window prefix from the map slider (e.g. "στις 15:00–18:00") used in the suitable/best-beaches headers. */
   suitableTimePrefix?: string;
+  /** True when the slider hour IS the current hour (today, no stay window): the podium question
+   *  then reads «Πού να πάμε τώρα;» instead of naming the hour like a timetable. */
+  suitableTimeIsNow?: boolean;
   /** Colour picked on the map legend, if any. Retitles the list so the heading names the same
    *  thing the cards contain («Δύσκολες παραλίες στις 17:00»). */
   activeToneFilter?: CalmnessTone | null;
@@ -570,6 +577,12 @@ type HomeCopy = {
   updatedHours: (hours: number) => string;
   forecastAt: (time: string) => string;
   forecastAtYesterday: (time: string) => string;
+  dustWarning: {
+    elevatedTitle: string;
+    elevatedBody: string;
+    heavyTitle: string;
+    heavyBody: string;
+  };
   beachFeatures: {
     sandy: string;
     pebbles: string;
@@ -645,6 +658,12 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedHours: (hours) => `Updated ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`,
     forecastAt: (time) => `Forecast from ${time}`,
     forecastAtYesterday: (time) => `Forecast from ${time} yesterday`,
+    dustWarning: {
+      elevatedTitle: 'Saharan dust in the air',
+      elevatedBody: 'Some desert dust is drifting over — expect a slightly hazy sky. Fine for most people; sensitive groups may feel it.',
+      heavyTitle: 'Heavy Saharan dust',
+      heavyBody: 'A dense dust cloud sits over the area — hazy, yellowish sky and reduced visibility. Anyone with breathing issues should take it easy outdoors.',
+    },
     beachFeatures: {
       sandy: 'Sandy beach',
       pebbles: 'Pebbles',
@@ -720,6 +739,12 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedHours: (hours) => `Ενημερώθηκε πριν ${hours} ${hours === 1 ? 'ώρα' : 'ώρες'}`,
     forecastAt: (time) => `Βάσει πρόγνωσης ${time}`,
     forecastAtYesterday: (time) => `Βάσει πρόγνωσης ${time} χθες`,
+    dustWarning: {
+      elevatedTitle: 'Αφρικανική σκόνη στην ατμόσφαιρα',
+      elevatedBody: 'Περνάει σκόνη από τη Σαχάρα — λίγο θολός ουρανός. Για τους περισσότερους δεν αλλάζει κάτι· τα ευαίσθητα άτομα ίσως το νιώσουν.',
+      heavyTitle: 'Πολλή αφρικανική σκόνη',
+      heavyBody: 'Πυκνή σκόνη πάνω από την περιοχή — θολός, κιτρινωπός ουρανός και περιορισμένη ορατότητα. Όσοι έχουν αναπνευστικό θέμα, με μέτρο έξω.',
+    },
     beachFeatures: {
       sandy: 'Αμμώδης ακτή',
       pebbles: 'Βότσαλα',
@@ -793,6 +818,12 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedHours: (hours) => `Mis à jour il y a ${hours} h`,
     forecastAt: (time) => `Prévision de ${time}`,
     forecastAtYesterday: (time) => `Prévision de ${time} hier`,
+    dustWarning: {
+      elevatedTitle: 'Poussière du Sahara dans l\'air',
+      elevatedBody: 'De la poussière saharienne passe — ciel un peu voilé. Sans effet pour la plupart ; les personnes sensibles peuvent la ressentir.',
+      heavyTitle: 'Beaucoup de poussière saharienne',
+      heavyBody: 'Nuage de poussière dense sur la région — ciel jaunâtre et visibilité réduite. Les personnes ayant des difficultés respiratoires devraient se ménager.',
+    },
     beachFeatures: {
       sandy: 'Plage de sable',
       pebbles: 'Galets',
@@ -866,6 +897,12 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedHours: (hours) => `Vor ${hours} Std. aktualisiert`,
     forecastAt: (time) => `Vorhersage von ${time}`,
     forecastAtYesterday: (time) => `Vorhersage von ${time} gestern`,
+    dustWarning: {
+      elevatedTitle: 'Saharastaub in der Luft',
+      elevatedBody: 'Etwas Wüstenstaub zieht durch — leicht diesiger Himmel. Für die meisten unproblematisch; empfindliche Personen können ihn spüren.',
+      heavyTitle: 'Viel Saharastaub',
+      heavyBody: 'Dichte Staubwolke über der Region — gelblicher Himmel, eingeschränkte Sicht. Wer Atemprobleme hat, sollte sich draußen schonen.',
+    },
     beachFeatures: {
       sandy: 'Sandstrand',
       pebbles: 'Kiesel',
@@ -939,6 +976,12 @@ const homeCopy: Record<LanguageCode, HomeCopy> = {
     updatedHours: (hours) => `Aggiornato ${hours} h fa`,
     forecastAt: (time) => `Previsione delle ${time}`,
     forecastAtYesterday: (time) => `Previsione delle ${time} di ieri`,
+    dustWarning: {
+      elevatedTitle: 'Polvere sahariana nell\'aria',
+      elevatedBody: 'Sta passando un po\' di polvere dal Sahara — cielo leggermente velato. Per la maggior parte delle persone nessun problema; i soggetti sensibili potrebbero avvertirla.',
+      heavyTitle: 'Molta polvere sahariana',
+      heavyBody: 'Densa nube di polvere sulla zona — cielo giallastro e visibilità ridotta. Chi ha problemi respiratori dovrebbe limitare gli sforzi all\'aperto.',
+    },
     beachFeatures: {
       sandy: 'Spiaggia sabbiosa',
       pebbles: 'Ciottoli',
@@ -1412,41 +1455,94 @@ const buildBeachIntradayShift = (
   return undefined;
 };
 
-const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date | undefined, count: number, timePrefix?: string, beaufort?: number): string => {
-  const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
+/**
+ * TIMELESS on purpose (09/08/2026). This is the podium's SUBTITLE, and the question above it now
+ * carries the when («τώρα» / «στις 18:00–19:00» / «αύριο»). With the time here too, the block
+ * opened by saying the hour twice in two consecutive lines — and the list header below says it a
+ * third time. One claim, one place: the when lives in the title, this line counts the picks.
+ */
+const getTopRecommendationsLabel = (language: LanguageCode, count: number, beaufort?: number): string => {
   const displayCount = Math.max(1, Math.min(3, count));
 
   if (typeof beaufort === 'number' && beaufort > 4) {
     return getLocalizedCopy(language, {
-      en: `More sheltered ${day}`,
-      gr: `Πιο προστατευμένες ${day}`,
-      fr: `Plus abritées ${day}`,
-      de: `Besser geschützt ${day}`,
-      it: `Più riparate ${day}`,
+      en: 'The more sheltered picks',
+      gr: 'Οι πιο προστατευμένες επιλογές',
+      fr: 'Les choix les plus abrités',
+      de: 'Die besser geschützten Optionen',
+      it: 'Le scelte più riparate',
     });
   }
 
   if (displayCount === 1) {
     return getLocalizedCopy(language, {
-      en: `Top pick ${day}`,
-      gr: `Top επιλογή ${day}`,
-      fr: `Meilleur choix ${day}`,
-      de: `Top-Empfehlung ${day}`,
-      it: `Scelta top ${day}`,
+      en: 'Top pick',
+      gr: 'Top επιλογή',
+      fr: 'Meilleur choix',
+      de: 'Top-Empfehlung',
+      it: 'Scelta top',
     });
   }
 
   return getLocalizedCopy(language, {
-    en: `Top ${displayCount} picks ${day}`,
-    gr: `Top ${displayCount} επιλογές ${day}`,
-    fr: `Top ${displayCount} choix ${day}`,
-    de: `Top ${displayCount} Empfehlungen ${day}`,
-    it: `Top ${displayCount} scelte ${day}`,
+    en: `Top ${displayCount} picks`,
+    gr: `Top ${displayCount} επιλογές`,
+    fr: `Top ${displayCount} choix`,
+    de: `Top ${displayCount} Empfehlungen`,
+    it: `Top ${displayCount} scelte`,
   });
 };
 
 /**
- * THE QUESTION THE PODIUM ANSWERS, printed above it.
+ * THE MOBILE PODIUM TITLE — one plain line, no question.
+ *
+ * 09/08/2026 evening: the question form (getTopRecommendationsQuestion below) shipped to both
+ * viewports the same afternoon, and Miltos asked for mobile to go back to a flat statement —
+ * «Top 3 Επιλογές στις 16:00–17:00» — with the count and the hour in ONE line and no «Πού να
+ * πάμε;» framing. Desktop keeps the question (getTopRecommendationsQuestion); this is mobile-only,
+ * selected by `isMobileViewport` at the render site.
+ */
+const getMobileTopRecommendationsTitle = (
+  language: LanguageCode,
+  count: number,
+  timePrefix: string | undefined,
+  beaufort?: number
+): string => {
+  const displayCount = Math.max(1, Math.min(3, count));
+  const when = timePrefix ? ` ${timePrefix}` : '';
+
+  if (typeof beaufort === 'number' && beaufort > 4) {
+    return getLocalizedCopy(language, {
+      en: `More sheltered picks${when}`,
+      gr: `Πιο προστατευμένες επιλογές${when}`,
+      fr: `Choix plus abrités${when}`,
+      de: `Besser geschützte Optionen${when}`,
+      it: `Scelte più riparate${when}`,
+    });
+  }
+
+  if (displayCount === 1) {
+    return getLocalizedCopy(language, {
+      en: `Top pick${when}`,
+      gr: `Top επιλογή${when}`,
+      fr: `Meilleur choix${when}`,
+      de: `Top-Empfehlung${when}`,
+      it: `Scelta top${when}`,
+    });
+  }
+
+  return getLocalizedCopy(language, {
+    en: `Top ${displayCount} picks${when}`,
+    gr: `Top ${displayCount} επιλογές${when}`,
+    fr: `Top ${displayCount} choix${when}`,
+    de: `Top ${displayCount} Empfehlungen${when}`,
+    it: `Top ${displayCount} scelte${when}`,
+  });
+};
+
+/**
+ * THE QUESTION THE PODIUM ANSWERS, printed above it. DESKTOP ONLY as of 09/08/2026 evening — see
+ * getMobileTopRecommendationsTitle for the plain mobile line.
  *
  * Until 09/08/2026 the top-3 carried a quiet «Top 3 επιλογές τώρα» in 12px between two hairlines —
  * indistinguishable from the section heading of the list below it, so nothing on the page said
@@ -1462,10 +1558,18 @@ const getTopRecommendationsLabel = (language: LanguageCode, selectedDate: Date |
 const getTopRecommendationsQuestion = (
   language: LanguageCode,
   selectedDate: Date | undefined,
-  timePrefix?: string
+  timePrefix?: string,
+  isNowHour = false
 ): string => {
   const offset = getSelectedDayOffset(selectedDate, athensNow());
-  const when = timePrefix ?? (offset === 0 ? undefined : getSelectedDayPrefix(selectedDate, athensNow(), language));
+  // The slider ALWAYS has a selected hour, so `timePrefix` always exists and the bare-«τώρα»
+  // branch below was unreachable — every visitor read «Πού να πάμε στις 16:00–17:00;» even when
+  // that hour was simply the one they were standing in. `isNowHour` (computed in App against the
+  // slider's own slot-0-is-now contract) is what makes «τώρα» honest: it holds exactly while the
+  // cards below describe the present, and drops the moment the slider moves.
+  const when = isNowHour && offset === 0
+    ? undefined
+    : timePrefix ?? (offset === 0 ? undefined : getSelectedDayPrefix(selectedDate, athensNow(), language));
 
   if (!when) {
     return getLocalizedCopy(language, {
@@ -1621,6 +1725,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   allIslands,
   regionWindNote,
   rainWarning,
+  dustLevel,
   searchQuery,
   sortBy,
   isMobileViewport = false,
@@ -1651,6 +1756,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableBeachCards,
   suitableBeachTotalCount,
   suitableTimePrefix,
+  suitableTimeIsNow = false,
   activeToneFilter = null,
   toneFilterDropNote,
   suitableListCoversEverything = false,
@@ -1752,6 +1858,18 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const desktopFilterMeasureRef = useRef<HTMLDivElement>(null);
   const topRecommendationsCarouselRef = useRef<HTMLDivElement>(null);
   const suitableCarouselRef = useRef<HTMLDivElement>(null);
+  /**
+   * «Top 3» / «Υπόλοιπες» live in ONE tabbed surface right under the map (Miltos, 09/08 evening):
+   * scrolling down to the second list loses sight of the live map, and the map is where you see
+   * WHERE each beach is. Both panels stay MOUNTED and the inactive one is CSS-hidden — the
+   * pin-highlight machinery attaches scroll/drag listeners to these exact carousel elements via
+   * the two refs above, and unmounting a panel would silently detach the pin blink for whichever
+   * list is off screen.
+   */
+  const [activePicksTab, setActivePicksTab] = useState<'top' | 'rest'>('top');
+  useEffect(() => {
+    setActivePicksTab('top');
+  }, [selectedIsland?.id]);
   const directoryCarouselRef = useRef<HTMLDivElement>(null);
   const allBeachesPanelScrollRef = useRef<HTMLDivElement>(null);
   const activeSuitableBeachIdRef = useRef<number | undefined>(undefined);
@@ -2113,8 +2231,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     }))
   ), [topRecommendationCards, selectedDate, language, topPickNow]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
-  const topRecommendationsLabel = getTopRecommendationsLabel(language, selectedDate, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
-  const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix);
+  const topRecommendationsLabel = getTopRecommendationsLabel(language, topRecommendationBeachCards.length, currentBeaufort);
+  const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix, suitableTimeIsNow);
+  const mobileTopRecommendationsTitle = getMobileTopRecommendationsTitle(language, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
   // The honesty line for the last-resort podium. It replaces the ordinary «Top 3 …» subtitle
   // rather than joining it: two subtitles, one boasting and one warning, is how a page ends up
   // saying both things at once.
@@ -2127,6 +2246,63 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       it: 'Nessuna è ideale adesso — queste sono le più riparate',
     })
     : topRecommendationsLabel;
+  // The desktop transparency rail beside the podium (Miltos, 09/08: «θέλω να είναι όλα με
+  // διαφάνεια»). Two rules keep it honest: the per-beach «γιατί» lines are the recommendation's
+  // OWN localized explanation — never authored here, so they can't contradict the pins — and the
+  // «πώς» bullets state only criteria, not thresholds or sector rules (decision 06/08: the
+  // methodology page draws that same line against copycats).
+  const topPicksWhyTitle = getLocalizedCopy(language, {
+    en: 'Why these three?',
+    gr: 'Γιατί αυτές οι τρεις;',
+    de: 'Warum diese drei?',
+    fr: 'Pourquoi ces trois-là ?',
+    it: 'Perché queste tre?',
+  });
+  const topPicksHowTitle = getLocalizedCopy(language, {
+    en: 'How the Top 3 is picked',
+    gr: 'Πώς βγαίνει το Top 3',
+    de: 'So entsteht die Top 3',
+    fr: 'Comment le Top 3 est choisi',
+    it: 'Come nasce la Top 3',
+  });
+  const topPicksHowBullets = [
+    getLocalizedCopy(language, {
+      en: 'We look at wind, gusts and waves for the hour you are viewing — not a daily average.',
+      gr: 'Κοιτάμε τον άνεμο, τις ριπές και το κύμα για την ώρα που βλέπεις — όχι έναν μέσο όρο της ημέρας.',
+      de: 'Wir betrachten Wind, Böen und Wellen für die angezeigte Stunde — nicht einen Tagesdurchschnitt.',
+      fr: "Nous regardons le vent, les rafales et les vagues pour l'heure affichée — pas une moyenne de la journée.",
+      it: "Guardiamo vento, raffiche e onde per l'ora che stai vedendo — non una media della giornata.",
+    }),
+    getLocalizedCopy(language, {
+      en: "We measure how much each beach's coastline shelters it from today's wind direction.",
+      gr: 'Μετράμε πόσο προστατεύει κάθε παραλία το σχήμα της ακτής της από τη σημερινή κατεύθυνση του ανέμου.',
+      de: 'Wir messen, wie stark die Küstenform jeden Strand vor der heutigen Windrichtung schützt.',
+      fr: "Nous mesurons à quel point la forme de la côte abrite chaque plage du vent du jour.",
+      it: 'Misuriamo quanto la forma della costa ripara ogni spiaggia dal vento di oggi.',
+    }),
+    getLocalizedCopy(language, {
+      en: 'Beaches that need a boat or a hard path always rank after the easily accessible ones.',
+      gr: 'Παραλίες που θέλουν σκάφος ή δύσκολο μονοπάτι μπαίνουν πάντα μετά τις εύκολα προσβάσιμες.',
+      de: 'Strände, die ein Boot oder einen schwierigen Weg erfordern, kommen immer nach den leicht erreichbaren.',
+      fr: "Les plages accessibles seulement en bateau ou par un sentier difficile passent toujours après les plages faciles d'accès.",
+      it: 'Le spiagge raggiungibili solo in barca o con sentieri difficili vengono sempre dopo quelle facili da raggiungere.',
+    }),
+    getLocalizedCopy(language, {
+      en: 'No beach pays for its spot — the order comes only from the conditions and the beach itself.',
+      gr: 'Καμία παραλία δεν πληρώνει για τη θέση της — η σειρά βγαίνει μόνο από τις συνθήκες και τα χαρακτηριστικά της.',
+      de: 'Kein Strand bezahlt für seinen Platz — die Reihenfolge ergibt sich nur aus den Bedingungen und dem Strand selbst.',
+      fr: "Aucune plage ne paie sa place — l'ordre vient uniquement des conditions et de la plage elle-même.",
+      it: "Nessuna spiaggia paga per la sua posizione — l'ordine nasce solo dalle condizioni e dalla spiaggia stessa.",
+    }),
+  ];
+  const topPicksMethodologyPath = language === 'gr' ? '/el/how-we-measure-wind-shelter/' : '/how-we-measure-wind-shelter/';
+  const topPicksMethodLinkLabel = getLocalizedCopy(language, {
+    en: 'How exactly we measure shelter →',
+    gr: 'Πώς ακριβώς μετράμε την προστασία →',
+    de: 'Wie genau wir den Schutz messen →',
+    fr: "Comment nous mesurons l'abri exactement →",
+    it: 'Come misuriamo esattamente il riparo →',
+  });
   // A low regional Beaufort is not by itself a licence to say «Όλες οι παραλίες κατάλληλες».
   // Measured on Evia at 3 Bft: 76 of 130 beaches were blue or yellow — the rest were capped by a
   // running sea — so the old wind-only test printed "all of them" above a list of 76. The list
@@ -2160,6 +2336,34 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const isDirectorySuitableView = hasSuitableSortOption && (
     sortBy === 'all' ? false : directoryViewCriteria.suitable
   );
+  // Tabs only make sense when BOTH lists exist for the same moment: a podium on screen and the
+  // suitable list in its normal mode. A colour filter or «Όλες» sorting already stands the podium
+  // down (or reroutes the list), and then the page keeps its untabbed layout.
+  const isTabbedPicksMode = Boolean(selectedIsland && hasTopRecommendationView && !infoOnly && isDirectorySuitableView);
+  const restTabLabel = withCount(getLocalizedCopy(language, {
+    en: 'The rest',
+    gr: 'Υπόλοιπες',
+    fr: 'Les autres',
+    de: 'Weitere',
+    it: 'Le altre',
+  }), suitableBeachDisplayCount);
+  // The tab is narrower than a heading, so «επιλογές» goes: «Top 3 στις 16:00–17:00» fits one
+  // line where the full title wrapped to two. The >4 Bft honesty variant keeps its word.
+  const topTabLabel = (() => {
+    const when = suitableTimePrefix ? ` ${suitableTimePrefix}` : '';
+    if (typeof currentBeaufort === 'number' && currentBeaufort > 4) {
+      return getLocalizedCopy(language, {
+        en: `More sheltered${when}`,
+        gr: `Πιο προστατευμένες${when}`,
+        fr: `Plus abritées${when}`,
+        de: `Besser geschützt${when}`,
+        it: `Più riparate${when}`,
+      });
+    }
+    const displayCount = Math.max(1, Math.min(3, topRecommendationBeachCards.length));
+    return `Top ${displayCount}${when}`;
+  })();
+
 
   useEffect(() => {
     if (!onActiveSuitableBeachChange) return undefined;
@@ -3427,6 +3631,133 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     </div>
   );
 
+  /**
+   * The «Υπόλοιπες κατάλληλες» carousel, built ONCE and rendered in exactly one of two homes:
+   * inside the tabbed picks surface (isTabbedPicksMode) or in its classic standalone section.
+   * One instance means suitableCarouselRef always points at the real element, wherever it
+   * lives — the pin-highlight listeners follow the ref, not the section.
+   */
+  const suitableBeachesCarouselNode = (
+          <div
+            ref={suitableCarouselRef}
+            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
+          >
+            {selectedIsland ? (
+              weatherBeachCards.map(({ beach, score, context }, index) => {
+                // A name search turns this carousel into a match list, not the day's
+                // ranking — so a result must NOT wear the "top beach" medal just for
+                // being the first (often only) match. Drop the rank/podium and instead
+                // lead the card with its own today-verdict (ideal / good / exposed…),
+                // which is what someone looking up a specific beach actually wants.
+                // When there's no dedicated top-3 carousel, THIS suitable carousel is the
+                // numbered "best picks" surface (cards get rank 1,2,3…), so its first three
+                // are the day's de-facto top 3 and earn the podium frame. Ranks 4+ stay plain.
+                // BUT when amenity/preference filters are active the list is a filtered subset,
+                // not the day's ranking — so a beach must NOT wear a "No 1" medal just because
+                // the filter left only a few. Drop the rank/podium then (mirrors how App hides
+                // the top-recommendations carousel when hasActiveSearchOrFilters).
+                // A colour picked on the map legend is the same situation, and worse: a silver
+                // medal on the second-roughest beach of the day reads as «η 2η καλύτερη», which
+                // is the opposite of what the heading above it says.
+                const hasActiveDirectoryFilters = (activeFilterCount ?? 0) > 0;
+                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters || infoOnly || activeToneFilter
+                  ? undefined
+                  : weatherBeachCardRankStart + index;
+                return (
+                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
+                  {renderBeachDecisionCard(beach as BeachCardContext, {
+                    score,
+                    context,
+                    recommendationRank: cardRank,
+                    topPickPodium: cardRank !== undefined && cardRank <= 3,
+                    showTodayScoreBadge: false,
+                    forceTodayScoreBadge: false,
+                    alignExposureToMap: true,
+                    windExposureMode: 'none',
+                  })}
+                </div>
+                );
+              })
+            ) : (
+              sortedIslandCards.map(island => {
+                const title = island.name[language];
+                const features = getIslandFeatureLabels(island, language);
+                const destinationCardPhoto = getIslandDestinationPhoto(island.id, 'card');
+
+                if (!destinationCardPhoto) {
+                  return (
+                    <button
+                      key={island.id}
+                      type="button"
+                      onClick={() => onSelectIsland(island)}
+                      className="group w-[13rem] shrink-0 snap-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:w-[14rem]"
+                    >
+                      <div className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg">
+                        <BeachImageFallback />
+                      </div>
+                      <div className="mt-3 space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 shadow-sm shadow-slate-900/8 backdrop-blur-md">
+                        <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
+                          {copy.islandTitle(title)}
+                        </h3>
+                        <p className="text-sm font-semibold text-slate-900">
+                          {copy.beachCount(island.beaches.length)}
+                        </p>
+                        {features.length > 0 && (
+                          <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-700">
+                            {features.join(' · ')}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  );
+                }
+
+                return (
+                  <div
+                    key={island.id}
+                    className="group w-[13rem] shrink-0 snap-start text-left sm:w-[14rem]"
+                  >
+                    <div
+                      className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg"
+                    >
+                      <CuratedPhotoImage
+                        photo={destinationCardPhoto}
+                        className="absolute inset-0"
+                        imgClassName="h-full w-full object-cover"
+                        showAttribution
+                        attributionClassName="absolute bottom-2 right-2 z-20 max-w-[calc(100%-1rem)] rounded-full bg-slate-950/55 px-2 py-1 text-[10px] font-semibold leading-none text-white/92 shadow-sm backdrop-blur-sm [&_a]:text-white/92 [&_a]:underline-offset-2 hover:[&_a]:underline"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => onSelectIsland(island)}
+                        className="absolute inset-0 z-10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        aria-label={copy.islandTitle(title)}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onSelectIsland(island)}
+                      className="mt-3 w-full space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 text-left shadow-sm shadow-slate-900/8 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                    >
+                      <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
+                        {copy.islandTitle(title)}
+                      </h3>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {copy.beachCount(island.beaches.length)}
+                      </p>
+                      {features.length > 0 && (
+                        <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-700">
+                          {features.join(' · ')}
+                        </p>
+                      )}
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+  );
+
   return (
     <section className="relative isolate bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
       {/* Plain brand-blue field. Was a full-bleed island photo behind two white scrims;
@@ -3722,6 +4053,36 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </div>
         )}
 
+        {/* Saharan dust — advisory, not alarm: it informs the day (hazy sky, sensitive
+            groups) without contradicting the wind-based verdicts. Amber only for a
+            genuinely heavy episode; the common mild pass-over stays low-key. */}
+        {dustLevel && (
+          <div
+            role="status"
+            className={`mt-3 flex items-start gap-3 rounded-2xl border p-3 text-left shadow-sm sm:p-3.5 ${
+              dustLevel === 'heavy'
+                ? 'border-amber-300 bg-amber-50/92 text-amber-900 shadow-amber-900/5'
+                : 'border-yellow-200 bg-yellow-50/90 text-yellow-900 shadow-yellow-900/5'
+            }`}
+          >
+            <span
+              className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white shadow-sm ${
+                dustLevel === 'heavy' ? 'bg-amber-500' : 'bg-yellow-500'
+              }`}
+            >
+              <Haze className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-black leading-snug">
+                {dustLevel === 'heavy' ? copy.dustWarning.heavyTitle : copy.dustWarning.elevatedTitle}
+              </span>
+              <span className="mt-0.5 block text-sm font-semibold leading-snug opacity-90">
+                {dustLevel === 'heavy' ? copy.dustWarning.heavyBody : copy.dustWarning.elevatedBody}
+              </span>
+            </span>
+          </div>
+        )}
+
         {selectedIsland && mapPreview && !isMobileViewport && (
           <section
             id="map-section"
@@ -3919,31 +4280,86 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {selectedIsland && hasTopRecommendationView && !infoOnly && (
             <section
               id="top-recommendations-section"
-              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-1 pt-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
-              aria-label={topRecommendationsQuestion}
+              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-1 pt-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
+              aria-label={mobileTopRecommendationsTitle}
             >
-              <div className="mb-2 space-y-1 text-center sm:mb-3">
-                <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 [text-wrap:balance] sm:text-2xl">
-                  {topRecommendationsQuestion}
-                </h2>
-                <p className={`text-xs font-bold leading-snug sm:text-sm ${
-                  shelteredFallbackPodium ? 'text-amber-900' : 'text-slate-600'
-                }`}>
-                  {topRecommendationsSubtitle}
-                </p>
-                {/* Amber is a register here ("mind the clock"), NOT a tone claim — no pin sits
-                    beside it and the sentence never states a condition level, it states an hour.
-                    Silent unless the day genuinely worsens; see App's buildDayTurnNote. */}
-                {dayTurnNote && (
-                  <p className="mx-auto max-w-2xl text-xs font-bold leading-snug text-amber-900 sm:text-sm">
-                    {dayTurnNote}
-                  </p>
+              <div className="mb-1.5 space-y-1 text-center sm:mb-3">
+                {/* The «Πού να πάμε τώρα;» question dropped off DESKTOP the same evening it was
+                    tightened on mobile (Miltos): once the tabs carry «Top 3 στις HH:MM» /
+                    «Υπόλοιπες» as their own labels, a full-sentence question above them repeats
+                    the same claim in a second, louder voice. The frame — border, tint, ring —
+                    is what still marks this block as the answer; it no longer needs to say so
+                    in words on EITHER viewport. */}
+                {isTabbedPicksMode ? (
+                  /* «Top 3» / «Υπόλοιπες» segmented control. Switching never scrolls: both lists
+                     live at the SAME height, right under the (sticky, on mobile) map, so the pins
+                     stay in view whichever list is open. */
+                  <div
+                    role="tablist"
+                    aria-label={mobileTopRecommendationsTitle}
+                    className="mx-auto flex w-fit max-w-full items-center gap-1 rounded-full border border-sky-100 bg-sky-50/70 p-1"
+                  >
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={activePicksTab === 'top'}
+                      onClick={() => setActivePicksTab('top')}
+                      className={`min-h-9 min-w-0 rounded-full px-3 text-xs font-extrabold leading-tight transition sm:px-4 sm:text-sm ${
+                        activePicksTab === 'top'
+                          ? 'bg-white text-slate-950 shadow-sm ring-1 ring-sky-200'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {topTabLabel}
+                    </button>
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={activePicksTab === 'rest'}
+                      onClick={() => setActivePicksTab('rest')}
+                      className={`min-h-9 min-w-0 rounded-full px-3 text-xs font-extrabold leading-tight transition sm:px-4 sm:text-sm ${
+                        activePicksTab === 'rest'
+                          ? 'bg-white text-slate-950 shadow-sm ring-1 ring-sky-200'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {restTabLabel}
+                    </button>
+                  </div>
+                ) : (
+                  <h2 className={`font-heading font-extrabold leading-tight text-slate-950 [text-wrap:balance] ${
+                    isMobileViewport ? 'text-sm' : 'text-lg sm:text-2xl'
+                  }`}>
+                    {mobileTopRecommendationsTitle}
+                  </h2>
+                )}
+                {/* The honesty/warning lines describe the TOP-3, so they stand down while the
+                    visitor is looking at «Υπόλοιπες». */}
+                {(!isTabbedPicksMode || activePicksTab === 'top') && (
+                  <>
+                    {shelteredFallbackPodium && (
+                      <p className="text-xs font-bold leading-snug text-amber-900 sm:text-sm">
+                        {topRecommendationsSubtitle}
+                      </p>
+                    )}
+                    {/* Amber is a register here ("mind the clock"), NOT a tone claim — no pin sits
+                        beside it and the sentence never states a condition level, it states an
+                        hour. Silent unless the day genuinely worsens; see App's buildDayTurnNote. */}
+                    {dayTurnNote && (
+                      <p className="mx-auto max-w-2xl text-xs font-bold leading-snug text-amber-900 sm:text-sm">
+                        {dayTurnNote}
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
 
               <div
                 ref={topRecommendationsCarouselRef}
-                className="beach-card-carousel no-scrollbar -mx-3 flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain px-3 pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:-mx-5 sm:px-5 sm:pb-5 lg:snap-none"
+                role={isTabbedPicksMode ? 'tabpanel' : undefined}
+                className={`beach-card-carousel no-scrollbar -mx-3 flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain px-3 pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:-mx-5 sm:px-5 sm:pb-5 lg:snap-none${
+                  isTabbedPicksMode && activePicksTab === 'rest' ? ' hidden' : ''
+                }`}
               >
                 {topRecommendationBeachCards.map(({ beach, score, context, timeLabel }, index) => (
                   <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
@@ -3962,11 +4378,54 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     })}
                   </div>
                 ))}
+                {/* Desktop transparency rail. Three cards are ~63rem, so wide screens leave a
+                    dead column on the right; it now answers the two questions the cards can't:
+                    «γιατί αυτές;» (each pick's own explanation, which the podium never surfaced)
+                    and «πώς βγαίνει η σειρά;». Gated at 1360px — below that the rail's min
+                    width would push the third card into horizontal scroll. */}
+                <aside className="hidden w-0 min-w-[16rem] max-w-[26rem] flex-1 flex-col justify-center gap-4 self-stretch rounded-2xl border border-sky-100 bg-white/78 p-5 text-left min-[1360px]:flex">
+                  <div>
+                    <h3 className="mb-2 text-sm font-extrabold text-slate-950">{topPicksWhyTitle}</h3>
+                    <ul className="space-y-2">
+                      {topRecommendationBeachCards.map(({ beach, context }, index) => (
+                        context?.explanation ? (
+                          <li key={beach.id} className="flex gap-2 text-xs leading-snug text-slate-700">
+                            <span className="font-extrabold text-[#007a83]">{index + 1}.</span>
+                            <span>
+                              <strong className="font-bold text-slate-900">{displayBeachName(beach.name, language)}</strong>
+                              {' — '}
+                              {context.explanation}
+                            </span>
+                          </li>
+                        ) : null
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="border-t border-sky-100 pt-3">
+                    <h3 className="mb-2 text-sm font-extrabold text-slate-950">{topPicksHowTitle}</h3>
+                    <ul className="mb-2 list-disc space-y-1 pl-4 text-xs leading-snug text-slate-700">
+                      {topPicksHowBullets.map(bullet => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                    <a
+                      href={topPicksMethodologyPath}
+                      className="text-xs font-bold text-[#007a83] underline decoration-sky-300 underline-offset-2 hover:text-[#00565d]"
+                    >
+                      {topPicksMethodLinkLabel}
+                    </a>
+                  </div>
+                </aside>
               </div>
+              {isTabbedPicksMode && (
+                <div role="tabpanel" className={activePicksTab === 'top' ? 'hidden' : undefined}>
+                  {suitableBeachesCarouselNode}
+                </div>
+              )}
             </section>
           )}
 
-          {(!selectedIsland || isDirectorySuitableView) && (
+          {(!selectedIsland || (isDirectorySuitableView && !isTabbedPicksMode)) && (
           <>
           <div id={selectedIsland ? 'suitable-beaches-section' : undefined} className="mb-1.5 flex scroll-mt-[25rem] items-center justify-center gap-3 px-3 sm:mb-3 sm:scroll-mt-4 lg:px-5">
             <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
@@ -3985,124 +4444,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             </p>
           )}
 
-          <div
-            ref={suitableCarouselRef}
-            className="beach-card-carousel no-scrollbar flex cursor-grab snap-x snap-mandatory items-stretch gap-6 overflow-x-auto overscroll-x-contain pb-3 select-none active:cursor-grabbing data-[dragging=true]:cursor-grabbing data-[dragging=true]:snap-none sm:pb-5 lg:snap-none lg:px-5"
-          >
-            {selectedIsland ? (
-              weatherBeachCards.map(({ beach, score, context }, index) => {
-                // A name search turns this carousel into a match list, not the day's
-                // ranking — so a result must NOT wear the "top beach" medal just for
-                // being the first (often only) match. Drop the rank/podium and instead
-                // lead the card with its own today-verdict (ideal / good / exposed…),
-                // which is what someone looking up a specific beach actually wants.
-                // When there's no dedicated top-3 carousel, THIS suitable carousel is the
-                // numbered "best picks" surface (cards get rank 1,2,3…), so its first three
-                // are the day's de-facto top 3 and earn the podium frame. Ranks 4+ stay plain.
-                // BUT when amenity/preference filters are active the list is a filtered subset,
-                // not the day's ranking — so a beach must NOT wear a "No 1" medal just because
-                // the filter left only a few. Drop the rank/podium then (mirrors how App hides
-                // the top-recommendations carousel when hasActiveSearchOrFilters).
-                // A colour picked on the map legend is the same situation, and worse: a silver
-                // medal on the second-roughest beach of the day reads as «η 2η καλύτερη», which
-                // is the opposite of what the heading above it says.
-                const hasActiveDirectoryFilters = (activeFilterCount ?? 0) > 0;
-                const cardRank = isNameSearchActive || hasTopRecommendationView || hasActiveDirectoryFilters || infoOnly || activeToneFilter
-                  ? undefined
-                  : weatherBeachCardRankStart + index;
-                return (
-                <div key={beach.id} data-suitable-beach-id={beach.id} {...beachCardHoverProps(beach.id)} className={getMapLinkedCardClassName(beach.id, `flex min-h-[24rem] w-[17rem] shrink-0 snap-start sm:min-h-[25rem] sm:w-[20rem]`)}>
-                  {renderBeachDecisionCard(beach as BeachCardContext, {
-                    score,
-                    context,
-                    recommendationRank: cardRank,
-                    topPickPodium: cardRank !== undefined && cardRank <= 3,
-                    showTodayScoreBadge: false,
-                    forceTodayScoreBadge: false,
-                    alignExposureToMap: true,
-                    windExposureMode: 'none',
-                  })}
-                </div>
-                );
-              })
-            ) : (
-              sortedIslandCards.map(island => {
-                const title = island.name[language];
-                const features = getIslandFeatureLabels(island, language);
-                const destinationCardPhoto = getIslandDestinationPhoto(island.id, 'card');
-
-                if (!destinationCardPhoto) {
-                  return (
-                    <button
-                      key={island.id}
-                      type="button"
-                      onClick={() => onSelectIsland(island)}
-                      className="group w-[13rem] shrink-0 snap-start text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:w-[14rem]"
-                    >
-                      <div className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg">
-                        <BeachImageFallback />
-                      </div>
-                      <div className="mt-3 space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 shadow-sm shadow-slate-900/8 backdrop-blur-md">
-                        <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
-                          {copy.islandTitle(title)}
-                        </h3>
-                        <p className="text-sm font-semibold text-slate-900">
-                          {copy.beachCount(island.beaches.length)}
-                        </p>
-                        {features.length > 0 && (
-                          <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-700">
-                            {features.join(' · ')}
-                          </p>
-                        )}
-                      </div>
-                    </button>
-                  );
-                }
-
-                return (
-                  <div
-                    key={island.id}
-                    className="group w-[13rem] shrink-0 snap-start text-left sm:w-[14rem]"
-                  >
-                    <div
-                      className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg"
-                    >
-                      <CuratedPhotoImage
-                        photo={destinationCardPhoto}
-                        className="absolute inset-0"
-                        imgClassName="h-full w-full object-cover"
-                        showAttribution
-                        attributionClassName="absolute bottom-2 right-2 z-20 max-w-[calc(100%-1rem)] rounded-full bg-slate-950/55 px-2 py-1 text-[10px] font-semibold leading-none text-white/92 shadow-sm backdrop-blur-sm [&_a]:text-white/92 [&_a]:underline-offset-2 hover:[&_a]:underline"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => onSelectIsland(island)}
-                        className="absolute inset-0 z-10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                        aria-label={copy.islandTitle(title)}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => onSelectIsland(island)}
-                      className="mt-3 w-full space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 text-left shadow-sm shadow-slate-900/8 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
-                    >
-                      <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
-                        {copy.islandTitle(title)}
-                      </h3>
-                      <p className="text-sm font-semibold text-slate-900">
-                        {copy.beachCount(island.beaches.length)}
-                      </p>
-                      {features.length > 0 && (
-                        <p className="line-clamp-2 text-sm font-medium leading-snug text-slate-700">
-                          {features.join(' · ')}
-                        </p>
-                      )}
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
+          {suitableBeachesCarouselNode}
           </>
           )}
 

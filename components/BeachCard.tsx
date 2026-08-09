@@ -321,12 +321,15 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       moderateAccess: 'Μέτρια πρόσβαση',
     },
     amenities: {
+      // «Beach bar» stays Latin on purpose — utils/amenities.ts logged the decision: it is the
+      // loanword Greeks actually use. «Πάρκινγκ» is the same decision's OTHER half, which this
+      // map never adopted: the app had three spellings and Greek won (2026-08).
       beachBar: 'Beach bar',
       sunbeds: 'Ξαπλώστρες',
       foodNearby: 'Ταβέρνα',
       cafeNearby: 'Καφέ',
       snackCanteen: 'Καντίνα',
-      parking: 'Parking',
+      parking: 'Πάρκινγκ',
       shower: 'Ντους',
       organizedFacilities: 'Παροχές',
       noFacilities: 'Χωρίς παροχές',
@@ -1190,6 +1193,17 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     de: 'Beste Zeit',
     it: 'Ora migliore',
   });
+  // «Άνεμος στην παραλία» — the podium card's why-row. Kept beside visitTimeLabel because the two
+  // rows render together and someone changing one wording should see the other.
+  const windOnShoreLabel = getLocalizedCopy(language, {
+    en: 'Wind at the beach',
+    gr: 'Άνεμος στην παραλία',
+    fr: 'Vent sur la plage',
+    de: 'Wind am Strand',
+    it: 'Vento in spiaggia',
+  });
+  // Same unit spelling as utils/shoreIncidenceCopy's BFT_UNIT — «Μπφ» in Greek, «Bft» elsewhere.
+  const beaufortUnitLabel = language === 'gr' ? 'Μπφ' : 'Bft';
   // `noIdealSwimmingWindow` was computed here and threaded to all three badges. It was removed on
   // 02/08/2026 with the input itself: getExperienceTier DECLARED it and never read it, so three
   // call sites were paying for a value the verdict ignored. Everything it tried to express —
@@ -1569,6 +1583,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
+            {/* THE MOBILE «WHY» ROW — podium cards only, and ONE row for both facts. The desktop
+                column renders the wind figure and the «Top μέχρι» hour as two rows, but this body
+                is height-constrained (the 31/07 defect was the «Πληροφορίες» button clipped off
+                the card by exactly one extra row), so here they share a line. Same rules as the
+                desktop row: the Beaufort is the pin's own reading, stated as a number — never a
+                word, never a colour. */}
+            {isPodium && (
+              <div className="flex min-h-8 w-full min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200">
+                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
+                  <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
+                  <span>{windBeaufort} {beaufortUnitLabel}</span>
+                </span>
+                {topPickTimeLabel && (
+                  <span className="inline-flex min-w-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60">
+                    <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />
+                    <span className="min-w-0 truncate">{topPickTimeLabel}</span>
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Fixed mobile slot mirrors the desktop feature set, including a third row
                 when the beach has 5-6 compact chips. */}
             {featureChips.length > 0 ? (
@@ -1699,6 +1734,27 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </div>
             ) : null}
           </div>
+          )}
+
+          {/* THE «WHY» ROW — a NUMBER, never a verdict. The podium deliberately silences every
+              per-card condition opinion (windExposureMode 'none', hidden exposure badge, hidden
+              score badge): the map above is the only surface allowed to colour a beach, and two
+              ladders is the defect class this project keeps paying for. What was lost with them is
+              any sign of WHY these three lead — the card read like a tourist listing (easy access,
+              sunbeds, taverna). A bare Beaufort figure restores the why without reopening the
+              ladder: it is the SAME per-beach reading the map pin used (beachWindSpeedKmph ←
+              perBeachMapWind), stated as a fact, with no word and no colour attached. Podium cards
+              only — the general list keeps its slimmer body. */}
+          {isPodium && (
+            <div
+              className="flex min-h-9 w-full min-w-0 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-3 py-1.5 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
+              aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`}
+            >
+              <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
+              <span className="min-w-0 truncate text-xs font-bold text-slate-700 dark:text-slate-200">
+                {windOnShoreLabel}: {windBeaufort} {beaufortUnitLabel}
+              </span>
+            </div>
           )}
 
           {topPickTimeLabel && (
