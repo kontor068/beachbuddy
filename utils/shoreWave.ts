@@ -35,11 +35,12 @@ import {
  *      the maximum sector fetch was 0.
  *   2. High-confidence geometry, no suspect pin. A misread coastline must never produce a calm
  *      claim — the whole reason geospatialProfileConflictsWithAuthoredFacing exists.
- *   3. NO SWELL. This is the one real false-calm risk and it is why the cove guard has the same
- *      rule: ground swell wraps around headlands and into bays that the wind cannot reach, so a
- *      blocked shore can be perfectly sheltered from the wind and still have a metre of roll
- *      arriving. With swell present we say nothing about the shore and leave the open-water
- *      number to speak alone.
+ *   3. NO SWELL THAT CAN ARRIVE HERE. This is the one real false-calm risk: ground swell wraps
+ *      around headlands and into bays that the wind cannot reach, so a blocked shore can be
+ *      perfectly sheltered from the wind and still have a metre of roll arriving. The test is
+ *      whether the swell is ONSHORE for this beach (utils/swellExposure), not whether the grid
+ *      cell reports one — see `arrivingSwellPresent`. A swell running away from the shore is the
+ *      normal state of a lee coast in a meltemi and must not silence this estimate.
  *   4. There is an open-water reading to be quieter than. With no measurement there is nothing
  *      to add a second opinion to.
  *
@@ -69,8 +70,30 @@ export interface ShoreWaveInput {
   /** Profile confidence — only 'high' may produce a calm claim. */
   confidence?: string;
   suspectPin?: boolean;
-  /** True when meaningful ground swell is present (assessSwellExposure's own threshold). */
-  swellPresent?: boolean;
+  /**
+   * True when meaningful swell can ACTUALLY REACH THIS SHORE — not merely when the grid reports
+   * a swell somewhere in the cell.
+   *
+   * ⚠️ RENAMED AND REDEFINED 10/08/2026, from `swellPresent`, because the old question was the
+   * wrong one. Reported by Miltos with a live webcam of Άγιος Προκόπιος, Νάξος, 19:00: a full
+   * beach, people standing in glass — and the page saying 1,1 m. The engine's numbers that
+   * minute: the shore faces 212°, the wind blew from 5°, the wave came from 360° and the swell
+   * from 358° at 6,55 s. Onshore components −0,89 / −0,85 / −0,83. Every single component of
+   * that 1,1 m sea was travelling AWAY from the beach, measured in a cell 7,66 km DOWNWIND.
+   *
+   * This gate refused to speak purely because a swell existed. Its reason for existing is real —
+   * ground swell wraps around headlands into bays the wind cannot reach, and that is the one way
+   * a shore estimate can invent a false calm — but "a swell exists in the cell" and "a swell
+   * arrives here" are different questions, and only the second one is dangerous. Charging the
+   * first is how the lee coast of a meltemi, which is exactly what this project exists to find,
+   * kept being described by the open sea behind it.
+   *
+   * Callers must pass an ONSHORE-aware value (services/recommendationService uses
+   * utils/swellExposure's `exposed`, which requires onshore > 0,3 AND an open sector) and must
+   * pass TRUE when a meaningful swell is present but its direction is unknown — with no direction
+   * there is no evidence it is leaving, and silence is the safe answer.
+   */
+  arrivingSwellPresent?: boolean;
 }
 
 /**
@@ -85,9 +108,9 @@ export const estimateShoreWaveHeightM = ({
   sector,
   confidence,
   suspectPin,
-  swellPresent,
+  arrivingSwellPresent,
 }: ShoreWaveInput): number | undefined => {
-  if (swellPresent) return undefined;
+  if (arrivingSwellPresent) return undefined;
   if (suspectPin) return undefined;
   if (confidence !== 'high') return undefined;
   if (typeof openWaterWaveHeightM !== 'number' || !Number.isFinite(openWaterWaveHeightM)) return undefined;

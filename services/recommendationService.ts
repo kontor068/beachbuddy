@@ -29,7 +29,7 @@ import {
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
 import { hasDownwindSeaSample } from '../utils/offshoreFlatWater';
-import { assessSwellExposure } from '../utils/swellExposure';
+import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -2216,7 +2216,13 @@ export const calculateBeachScore = (
     },
     confidence: options?.geospatialProfile?.confidence,
     suspectPin: windAssessment.windProfile.suspectPin,
-    swellPresent: swell.hasSwell,
+    // Only a swell that can REACH this shore silences the estimate. `swell.exposed` is
+    // utils/swellExposure's onshore test (component > 0,3 AND an open sector); a meaningful swell
+    // whose direction we do not know counts as arriving, because there is no evidence it is not.
+    arrivingSwellPresent: swell.exposed || (
+      (marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M &&
+      typeof marine?.swellWaveDirectionDeg !== 'number'
+    ),
   });
   const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the

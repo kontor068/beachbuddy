@@ -1119,6 +1119,27 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // disagree the card and its detail page print different wave numbers for the same beach.
   const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
     && typeof weatherData.marine?.swellWaveDirectionDeg === 'number';
+  /**
+   * The shore estimate asks a NARROWER swell question than the cove guard above (10/08/2026).
+   *
+   * `swellPresent` stays exactly as it is for the cove guard — for a fully blocked cove the
+   * geometric 'exposed' flag is structurally false, so using it there would reopen the wrap-in
+   * false calm that rule exists to prevent. utils/shoreWave is a different case: it only ever
+   * speaks on an OPEN shore whose live wind sector is land-blocked, and there the swell's own
+   * direction is meaningful evidence. Άγιος Προκόπιος, 10/08 19:00: swell from 358° onto a shore
+   * facing 212° — onshore −0,83, i.e. leaving — while a webcam showed glass and the page said
+   * 1,1 m. A swell that cannot arrive must not silence the estimate; an unknown direction still
+   * must, because absence of evidence is not evidence of absence.
+   */
+  const arrivingSwellHere = (() => {
+    if ((weatherData.marine?.swellWaveHeightM ?? 0) < SWELL_MIN_HEIGHT_M) return false;
+    if (typeof weatherData.marine?.swellWaveDirectionDeg !== 'number') return true;
+    return assessSwellExposure(geospatialExposure, scoreResult.facingDeg ?? null, {
+      swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+      swellHeightM: weatherData.marine?.swellWaveHeightM,
+      swellPeriodS: weatherData.marine?.swellWavePeriodS,
+    }).exposed;
+  })();
   const coveWave = resolveCoveAwareWaveHeightM({
     geospatialProfile: geospatialExposure,
     facingDeg: scoreResult.facingDeg ?? null,
@@ -1149,7 +1170,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     },
     confidence: geospatialExposure?.confidence,
     suspectPin: resolveBeachWindProfile(beach).profile.suspectPin,
-    swellPresent,
+    arrivingSwellPresent: arrivingSwellHere,
   });
   // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
   // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
