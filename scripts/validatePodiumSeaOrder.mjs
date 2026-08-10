@@ -125,37 +125,76 @@ check('C. το κύμα στην άμμο κατατάσσει, όχι το κε
 const calmerButOranger = candidate({ id: 7, name: 'ΠΟΡΤΟΚΑΛΙ', seaM: 0.3, tone: 2 });
 const yellowRougher = candidate({ id: 8, name: 'ΚΙΤΡΙΝΗ', seaM: 1.0, tone: 1 });
 check('D1. το χρώμα του χάρτη μένει πάνω από το νέο σκαλί', rank([calmerButOranger, yellowRougher]), ['ΚΙΤΡΙΝΗ', 'ΠΟΡΤΟΚΑΛΙ']);
-const calmerButWindier = candidate({ id: 9, name: 'ΑΕΡΑΣ', seaM: 0.3, ownBft: 6 });
-const windCalmRougher = candidate({ id: 10, name: 'ΥΠΗΝΕΜΗ', seaM: 1.0, ownBft: 5 });
-check('D2. ο άνεμος της ακτής μένει πάνω από το νέο σκαλί', rank([calmerButWindier, windCalmRougher]), ['ΥΠΗΝΕΜΗ', 'ΑΕΡΑΣ']);
+/**
+ * D2, rewritten 10/08/2026 when the ladder became Ο ΠΙΝΑΚΑΣ ΤΩΝ 100.
+ *
+ * It used to assert that the wind on that shore outranks the sea ALWAYS — 0,3 m at 6 Bft had to
+ * lose to 1,0 m at 5 Bft. That is a statement about a ladder, not about the sea: under a weighted
+ * table with wind and sea both at 25, one Beaufort cannot outweigh 0,7 m of wave, and it should
+ * not. The beach in question is swimmable; the other one is not.
+ *
+ * What is actually worth protecting is that the wind still COUNTS, so the assertion is now the
+ * honest form of it: with the sea equal, less wind on your own shore wins. The old case is kept
+ * directly below as D3, inverted, so the behaviour change is recorded in the gate rather than
+ * discovered later by someone who assumes it was an accident.
+ */
+const windyEqualSea = candidate({ id: 9, name: 'ΑΕΡΑΣ', seaM: 0.5, ownBft: 6 });
+const calmEqualSea = candidate({ id: 10, name: 'ΥΠΗΝΕΜΗ', seaM: 0.5, ownBft: 4 });
+check('D2. με ίδια θάλασσα, λιγότερος άνεμος στη δική της ακτή κερδίζει', rank([windyEqualSea, calmEqualSea]), ['ΥΠΗΝΕΜΗ', 'ΑΕΡΑΣ']);
+
+// D3. DELIBERATE CHANGE, recorded on purpose: a large sea gap now beats a small wind gap. Under
+// the old ladder ΥΠΗΝΕΜΗ led on one Beaufort while standing in a metre of wave. In the app the
+// colour would usually separate these two first (6 Bft is orange by decision), so this is mainly
+// the planner's and the prerender's path, where no pin has painted a tone.
+const flatButWindy = candidate({ id: 11, name: 'ΛΑΔΙ-ΜΕ-ΑΕΡΑ', seaM: 0.3, ownBft: 6 });
+const roughButSheltered = candidate({ id: 12, name: 'ΚΥΜΑ-ΥΠΗΝΕΜΗ', seaM: 1.0, ownBft: 5 });
+check('D3. μεγάλη διαφορά θάλασσας νικά μικρή διαφορά ανέμου (σκόπιμη αλλαγή)', rank([roughButSheltered, flatButWindy]), ['ΛΑΔΙ-ΜΕ-ΑΕΡΑ', 'ΚΥΜΑ-ΥΠΗΝΕΜΗ']);
 
 // E. No readings at all — untouched behaviour (amenities decide, as they always did).
 check('E. χωρίς μετρήσεις θάλασσας η σειρά μένει όπως ήταν', rank([calmPoor, roughRich], { withSea: false }), ['ΦΟΥΡΤΟΥΝΑ', 'ΗΡΕΜΗ']);
 
 if (PROVE) {
-  // The gate must be able to fail. Each simulation breaks one guarantee in memory.
-  const source = readFileSync(path.join(root, 'services/topPickRanking.ts'), 'utf8');
+  /**
+   * The gate must be able to fail. Since 10/08/2026 the sea logic lives in the weighted table
+   * (utils/topPickScoreTable.ts), not in the comparator, so the regressions are injected there and
+   * the ranking module is re-loaded on top of the broken table — mutating topPickRanking.ts alone
+   * would now mutate a file that no longer decides this, and the self-proof would pass while
+   * proving nothing. That is exactly the failure this block caught when the table landed.
+   */
+  const rankingSource = readFileSync(path.join(root, 'services/topPickRanking.ts'), 'utf8');
+  const tableSource = readFileSync(path.join(root, 'utils/topPickScoreTable.ts'), 'utf8');
   const regressions = [
-    ['το σκαλί της θάλασσας αφαιρέθηκε', s => s.replace(/if \(seaDiff !== 0\) return seaDiff;/g, '')],
-    ['το κατώφλι μηδενίστηκε', s => s.replace(/PODIUM_SEA_MEANINGFUL_DIFFERENCE_M = 0\.25/, 'PODIUM_SEA_MEANINGFUL_DIFFERENCE_M = 0')],
-    ['αγνοήθηκε το κύμα στην άμμο', s => s.replace(/Math\.min\(shoreM, decisionM\)/, 'decisionM')],
+    ['η θάλασσα βγήκε από τον πίνακα', s => s.replace(/ {2}sea: 25,/, '  sea: 0,')],
+    ['το κατώφλι λεπτύνθηκε κάτω από το σφάλμα', s => s.replace(/export const SEA_STEP_M = 0\.25;/, 'export const SEA_STEP_M = 0.001;')],
+    ['αγνοήθηκε το κύμα στην άμμο', s => s.replace(/shoreM <= decisionM \? shoreM : decisionM/, 'decisionM')],
   ];
+  const compile = (source, fileName) => ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true },
+    fileName,
+  }).outputText;
+
   for (const [label, mutate] of regressions) {
-    const mutated = mutate(source);
-    if (mutated === source) {
+    const mutatedTable = mutate(tableSource);
+    if (mutatedTable === tableSource) {
       failures.push(`SELF-PROOF: η προσομοίωση «${label}» δεν άλλαξε τίποτα — η πύλη διαβάζει άλλον κώδικα`);
       continue;
     }
-    const out = ts.transpileModule(mutated, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true },
-    }).outputText;
-    const sandbox = { exports: {}, require: p => require(path.join(root, 'services', p.replace('../', '../').replace(/^\.\.\//, '') + (p.endsWith('.ts') ? '' : '.ts'))) };
     let broken;
     try {
-      const load = new Function('exports', 'require', '__dirname', out);
-      const localRequire = p => require(path.resolve(path.join(root, 'services'), p.startsWith('.') ? p : `./${p}`) + (p.endsWith('.ts') ? '' : '.ts'));
-      load(sandbox.exports, localRequire, path.join(root, 'services'));
-      broken = sandbox.exports;
+      // Load the mutated table first, then hand it to a fresh copy of the ranking module.
+      const tableExports = {};
+      new Function('exports', 'require', compile(mutatedTable, 'topPickScoreTable.ts'))(
+        tableExports,
+        p => require(path.resolve(path.join(root, 'utils'), p) + (p.endsWith('.ts') ? '' : '.ts'))
+      );
+      const rankingExports = {};
+      new Function('exports', 'require', compile(rankingSource, 'topPickRanking.ts'))(
+        rankingExports,
+        p => (p.includes('topPickScoreTable')
+          ? tableExports
+          : require(path.resolve(path.join(root, 'services'), p) + (p.endsWith('.ts') ? '' : '.ts')))
+      );
+      broken = rankingExports;
     } catch (error) {
       failures.push(`SELF-PROOF: δεν φορτώθηκε η προσομοίωση «${label}» — ${error.message}`);
       continue;
@@ -181,4 +220,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`✅ Podium sea order: ${PROVE ? '6 έλεγχοι + 3 προσομοιωμένες παλινδρομήσεις' : '6 έλεγχοι'} — κατώφλι ${PODIUM_SEA_MEANINGFUL_DIFFERENCE_M} μ.`);
+console.log(`✅ Podium sea order: ${PROVE ? '7 έλεγχοι + 3 προσομοιωμένες παλινδρομήσεις' : '7 έλεγχοι'} — κατώφλι ${PODIUM_SEA_MEANINGFUL_DIFFERENCE_M} μ.`);

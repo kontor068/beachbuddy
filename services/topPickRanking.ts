@@ -2,7 +2,7 @@ import { Accessibility, Beach, SuitableBeach } from '../types';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from '../utils/seaConditions';
-import { seaStateSeverityM } from '../utils/waveCharacter';
+import { scoreTopPick } from '../utils/topPickScoreTable';
 
 /**
  * TOP-PICK RANKING — the homepage podium's gates and ordering, extracted
@@ -174,6 +174,22 @@ export const hasHardTopPickAccessBlocker = (beach: Beach): boolean => (
   !hasMainstreamTopPickAccess(beach)
 );
 
+/**
+ * ΠΟΤΕ ΣΤΙΣ ΤΟΠ 3 ΠΑΡΑΛΙΑ ΠΟΥ ΘΕΛΕΙ ΠΛΗΡΩΜΗ ΓΙΑ ΝΑ ΜΠΕΙΣ (Μίλτος, 10/08/2026).
+ *
+ * A door, not a weight: no amount of shelter buys a place on the podium for a beach you cannot
+ * walk onto for free. The flag was already collected and already shown on the card, the map and
+ * the beach page — but no ranking file read it, so a paid beach could and did come first.
+ *
+ * Deliberately narrow: the beach stays on the map, in search, in the guides and in «Υπόλοιπες»,
+ * where its card explains why it is not recommended. This removes it from the three slots that
+ * answer «πού να πάμε τώρα», nothing else. If a region has only paid beaches its podium is empty,
+ * and that is the correct answer rather than a fallback.
+ */
+export const hasPaidEntryTopPickBlocker = (beach: Beach): boolean => Boolean(
+  beach.paidEntry ?? beach.metadata?.paidEntry
+);
+
 export const isLessExposedTopPickCandidate = (item: SuitableBeach): boolean => {
   const lessExposed = item.exposureLevel === 'protected' || item.exposureLevel === 'partial';
   if (!lessExposed || hasHardTopPickAccessBlocker(item.beach)) return false;
@@ -232,7 +248,12 @@ export const prioritizeProtectedRecommendations = (
   perBeachWind?: PerBeachWindLookup,
   toneRank?: PodiumToneRank
 ): SuitableBeach[] => {
-  const candidates = bestShelteredRecommendationGroup(items, beaufort, perBeachWind);
+  // The paid-entry door, applied before anything is scored — see hasPaidEntryTopPickBlocker. It
+  // runs on the raw pool rather than inside the sort so a paid beach cannot occupy a slot even
+  // when it would have scored first, and so the shelter group is chosen from beaches that can
+  // actually be recommended.
+  const freeToEnter = items.filter(item => !hasPaidEntryTopPickBlocker(item.beach));
+  const candidates = bestShelteredRecommendationGroup(freeToEnter, beaufort, perBeachWind);
   const poolBeaufort = strongestBeaufortInPool(candidates, beaufort, perBeachWind);
   // Wind-aware ranks. When the pool is windy somewhere, a beach whose OWN shore is calm is
   // ranked as if it had the pool's best shelter — it is neither rewarded for geometry it does
@@ -240,31 +261,26 @@ export const prioritizeProtectedRecommendations = (
   // meaningful wind everywhere, the ranks are the plain ones, so calm days are untouched.
   const poolIsWindy = poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT;
   const bestProfile = candidates.length > 0 ? Math.min(...candidates.map(topPickProfilePriority)) : 0;
-  const bestExposure = candidates.length > 0 ? Math.min(...candidates.map(exposurePriority)) : 0;
   const feelsWind = (item: SuitableBeach): boolean => (
     !poolIsWindy || beachOwnBeaufort(item, beaufort, perBeachWind) >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT
   );
-  const profileRank = (item: SuitableBeach): number => (feelsWind(item) ? topPickProfilePriority(item) : bestProfile);
-  const exposureRank = (item: SuitableBeach): number => (feelsWind(item) ? exposurePriority(item) : bestExposure);
-
   /**
-   * LESS WIND ON YOUR OWN SHORE BEATS BEING FAMOUS (10/08/2026).
+   * The same question the ranks ask, but phrased for the weighted table, and NOT the same answer.
    *
-   * Only inside the shelter-first branch, and only after exposure has had its say: among beaches
-   * that are equally protected on paper, the one whose water is actually quieter today comes
-   * first. Beaufort is a coarse bucket, so a difference here is a real threshold crossing, not
-   * sampling noise.
+   * `feelsWind` returns true on a calm day (`!poolIsWindy`) because the LADDER only ever consulted
+   * it inside the windy branches — below 3 Bft nothing above ran at all. The table has no branches:
+   * it scores every beach every day. Feeding it `feelsWind` therefore charged 30 points of shelter
+   * on a 1 Bft morning, demoting an exposed beach for a wind that was not blowing anywhere — the
+   * exact inversion of the rule this project has held since 02/08. Caught by
+   * validatePerBeachWindGates on the calm-day fixture.
    *
-   * Why it was needed: the tie-break under it is `compareTouristTopPickPriority` — recognition,
-   * then access, then amenities. On Naxos at 5 Bft (the day this was found) thirteen beaches tied
-   * on exposure, so fame decided the whole podium: Αγία Άννα and Άγιος Προκόπιος, orange pins with
-   * 5 Bft on their own shore, led over Ψιλή Άμμος, a yellow pin at 3 Bft with 22 more points. The
-   * heading above them reads «Πιο προστατευμένες» — the list has to mean it.
-   *
-   * A no-op wherever there are no per-beach readings (planner, prerender, first paint): every
-   * beach then returns the same region Beaufort, the tier ties, and the old order stands.
+   * So: on a calm day nobody feels the wind and shelter cannot separate anyone. When the pool is
+   * windy, the per-beach answer decides, exactly as the ranks do.
    */
-  const ownWindRank = (item: SuitableBeach): number => beachOwnBeaufort(item, beaufort, perBeachWind);
+  const shelterCounts = (item: SuitableBeach): boolean => (
+    poolIsWindy && beachOwnBeaufort(item, beaufort, perBeachWind) >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+  );
+  const profileRank = (item: SuitableBeach): number => (feelsWind(item) ? topPickProfilePriority(item) : bestProfile);
 
   /**
    * THE COLOUR THE MAP PAINTED IS EVIDENCE, AND IT RANKS BEFORE FAME (10/08/2026).
@@ -290,55 +306,6 @@ export const prioritizeProtectedRecommendations = (
    * Silent by construction where it should be: no tone table (planner, prerender, first paint) or
    * either beach unpainted → the tier ties and the previous order stands, untouched.
    */
-  /**
-   * ΟΤΑΝ ΤΟ ΧΡΩΜΑ ΙΣΟΦΑΡΙΖΕΙ, ΜΙΛΑΕΙ ΤΟ ΝΕΡΟ — ΟΧΙ ΟΙ ΟΜΠΡΕΛΕΣ (10/08/2026).
-   *
-   * Reported by Miltos: «με σκορ 76 το Πεύκο πώς βγαίνει 2ο;». Measured live in East Attica at
-   * 5 Bft: all ten candidates came out protected, yellow, 5 Bft on their own shore, recognition 0
-   * and asphalt access — so the ladder ran past every condition tier and stopped on AMENITIES,
-   * 22 vs 20. Two points of parking-and-shade decided a podium under a heading about shelter.
-   *
-   * WHY A NEW TIER RATHER THAN A WIDER COLOUR. The colour already carries the sea (toneDiff, just
-   * above) and that is deliberately ONE piece of evidence answered once. But the colour has only
-   * two sea thresholds — SEA_STATE_AMBER_M 0,8 and SEA_STATE_ROUGH_M 1,2 — so anything under 0,8
-   * is the same yellow, and 0,15 m of glass ties with 0,52 m of chop. This tier does not ask a
-   * second question; it reads the SAME sea at the resolution the colour throws away. It runs only
-   * after the colour has failed to separate them.
-   *
-   * WHICH NUMBER. Not `waveHeightM` — that is the display figure the cove guard rewrites and it is
-   * forbidden as a decision key (types.ts). `seaStateWaveM` is the decision-grade one, and where
-   * the beach has a modelled height AT THE SAND (utils/shoreWave's four gates: zero fetch, blocked
-   * sector, high-confidence geometry, no swell) the lower of the two wins — otherwise Σχινιάς is
-   * ranked on 1,22 m taken 9,4 km offshore, the exact water this project ruled out of the swim
-   * verdict the same evening. Height is read through seaStateSeverityM, so 0,5 m at 3 s is not
-   * filed beside 0,5 m at 7 s.
-   *
-   * WHY A THRESHOLD, AND WHY THIS ONE. 0,25 m is the worst per-buoy RMSE our wave model records
-   * (reports/wave-model/buoy-comparison.json: 0,171 / 0,185 / 0,251; national 0,184). Below its
-   * own error bar the model is not distinguishing anything, so a smaller gap must NOT reorder a
-   * podium — it would be noise dressed as a recommendation. 21,8% of beaches still share a marine
-   * cell, which is the other reason this is a coarse tier and not a sort key.
-   *
-   * Silent by construction where it should be: no sea reading on either beach → tie → the previous
-   * order (recognition, access, distance, amenities, score) stands exactly as before.
-   */
-  const podiumSeaSeverityM = (item: SuitableBeach): number | undefined => {
-    const decisionM = item.seaStateWaveM;
-    if (typeof decisionM !== 'number' || !Number.isFinite(decisionM)) return undefined;
-    const shoreM = item.shoreWaveHeightM;
-    const rankM = typeof shoreM === 'number' && Number.isFinite(shoreM)
-      ? Math.min(shoreM, decisionM)
-      : decisionM;
-    return seaStateSeverityM(rankM, item.seaStatePeriodS) ?? rankM;
-  };
-  const compareSea = (a: SuitableBeach, b: SuitableBeach): number => {
-    const aSea = podiumSeaSeverityM(a);
-    const bSea = podiumSeaSeverityM(b);
-    if (typeof aSea !== 'number' || typeof bSea !== 'number') return 0;
-    if (Math.abs(aSea - bSea) < PODIUM_SEA_MEANINGFUL_DIFFERENCE_M) return 0;
-    return aSea - bSea;
-  };
-
   const toneOf = (item: SuitableBeach): number | undefined => (toneRank ? toneRank(item.beach.id) : undefined);
   const compareTone = (a: SuitableBeach, b: SuitableBeach): number => {
     const aTone = toneOf(a);
@@ -347,34 +314,55 @@ export const prioritizeProtectedRecommendations = (
     return aTone - bTone;
   };
 
+  /**
+   * Ο ΠΙΝΑΚΑΣ ΤΩΝ 100 (Μίλτος, 10/08/2026) — the podium is now the first three rows of one
+   * weighted score, not the first three survivors of a ladder.
+   *
+   * The table itself lives in utils/topPickScoreTable.ts with its weights and its reasoning; this
+   * function only feeds it the four things it cannot resolve on its own (the wind on that shore,
+   * whether the shore feels the wind at all, and the two comfort priorities) and then sorts.
+   *
+   * TWO THINGS SURVIVE THE REWRITE, AND THEY ARE NOT DECORATION:
+   *
+   *   1. THE COLOUR THE MAP PAINTED STILL COMES FIRST. Not as a weight — it would double-count the
+   *      very three axes the table already scores (shelter + own-shore wind + sea) — but as an
+   *      ordering above the score. This project spent 10/08 making the podium, the «Υπόλοιπες»
+   *      list and the legend agree; a sum that can place a yellow pin above a blue one re-opens
+   *      exactly that wound, and the reader sees it instantly because both are on the same screen.
+   *      Within a colour, the score decides everything. Where no pin has reported a tone (planner,
+   *      prerender, first paint) this is silent and the score decides outright.
+   *   2. THE PROFILE FLOOR. bestShelteredRecommendationGroup already narrowed the pool; the
+   *      profile rank stays above the score so a tourist-unready beach cannot buy its way up.
+   *
+   * The old ladder's remaining rungs are gone: exposure, own-shore wind, sea and comfort are now
+   * points, and `compareTouristTopPickPriority` no longer runs here at all — which is the whole
+   * point, since it was two points of parking that ordered the East Attica podium on 10/08.
+   */
+  const scoreOf = (item: SuitableBeach): number => scoreTopPick({
+    item,
+    ownBeaufort: beachOwnBeaufort(item, beaufort, perBeachWind),
+    feelsWind: shelterCounts(item),
+    accessPriority: topPickAccessPriority(item.beach),
+    amenitiesScore: topPickAmenitiesScore(item.beach),
+  }).total;
+
+  const scores = new Map<SuitableBeach, number>();
+  for (const item of candidates) scores.set(item, scoreOf(item));
+
   return [...candidates].sort((a, b) => {
     const profileDiff = profileRank(a) - profileRank(b);
-    const exposureDiff = exposureRank(a) - exposureRank(b);
-    const scoreDiff = b.score - a.score;
-    const touristDiff = compareTouristTopPickPriority(a, b);
-    const toneDiff = compareTone(a, b);
-    const ownWindDiff = ownWindRank(a) - ownWindRank(b);
-    const seaDiff = compareSea(a, b);
-
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
-    if (poolBeaufort >= PROTECTED_FIRST_BEAUFORT) {
-      if (exposureDiff !== 0) return exposureDiff;
-      if (toneDiff !== 0) return toneDiff;
-      if (ownWindDiff !== 0) return ownWindDiff;
-      if (seaDiff !== 0) return seaDiff;
-      return touristDiff || scoreDiff;
-    }
-    // 3-4 Bft. The wind is doing something, so the same two pieces of live evidence — the colour,
-    // then the wind on that shore — get their say before recognition does. Below this, nothing
-    // here runs at all and a calm day keeps ranking on score.
-    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
-      if (toneDiff !== 0) return toneDiff;
-      if (ownWindDiff !== 0) return ownWindDiff;
-      if (seaDiff !== 0) return seaDiff;
-      if (exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) return exposureDiff;
-      return touristDiff || scoreDiff || exposureDiff;
-    }
-    return scoreDiff || exposureDiff;
+
+    const toneDiff = compareTone(a, b);
+    if (toneDiff !== 0) return toneDiff;
+
+    const tableDiff = (scores.get(b) ?? 0) - (scores.get(a) ?? 0);
+    if (tableDiff !== 0) return tableDiff;
+
+    // A genuine tie: every axis landed in the same bucket, which means we cannot tell them apart
+    // with the evidence we hold. The region score breaks it only to keep the sort deterministic —
+    // never as a criterion, because it changes shape when the visitor shares a location.
+    return b.score - a.score;
   });
 };
 

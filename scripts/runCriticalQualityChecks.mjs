@@ -148,6 +148,15 @@ const checks = [
     args: ['scripts/validatePodiumSeaOrder.mjs', '--prove'],
   },
   {
+    id: 'top-pick-score-table',
+    title: 'Ο πίνακας των 100 λέει αυτό που υπόσχεται',
+    description: 'Drives the REAL weighted table: the weights sum to 100 and split 80 weather / 20 comfort; an exposed beach with perfect access, full amenities and the best crowd tier can never outscore a protected one on identical wind and sea; two sea heights inside the model\'s error bar score identically and SEA_STEP_M still equals PODIUM_SEA_MEANINGFUL_DIFFERENCE_M; a beach with no wave, no exposure verdict and no crowd tier scores in the middle rather than at the floor; no crowd tier ever adds points or removes more than 5; and across every region holding a paid beach, at every wind state, none reaches a Top 3. Self-proves with --prove: comfort raised to 50, the sea step made continuous, missing data scored zero, and the crowd penalty flipped to a bonus must each make it fail.',
+    protects: 'On 10/08/2026 the podium stopped being a lexicographic ladder and became one weighted score, on Miltos\'s instruction. Measured over 110 regions × 8 wind sectors × 4 Beaufort: the #1 pick changes in 50,0% of cases and the full Top 3 in 69,4%. A weighted sum introduces a failure a ladder could not have — comfort accumulating past weather — and nothing downstream can see it, because the ranking is the last word and a wrong weight looks exactly like a right one. The paid-entry door is asserted here too: the flag had been collected and shown on cards since launch, but no ranking file read it, and 32 podiums in the national sweep contained a beach you pay to enter.',
+    failureAction: 'Fix utils/topPickScoreTable.ts. Never rebalance the weights to make a case pass — the 80/20 split is a product decision recorded in the status board, and moving it silently re-weights every recommendation on the site. Never make an axis continuous to "break more ties": a tie means the evidence genuinely cannot separate two beaches.',
+    command: process.execPath,
+    args: ['scripts/validateTopPickScoreTable.mjs', '--prove'],
+  },
+  {
     id: 'presumed-quiet',
     title: '"Little known" never lands on a beach we simply failed to look up',
     description: 'Checks the 569 beaches the «Ήσυχη» filter now includes on inference rather than measurement: none is on the curated famous list, none carries a Google crowd tier, none is organized or has a bar or sunbeds, none sits inside a big city\'s radius, every quiet flag says how it was reached, and the inferred badge uses different words from the counted one in all five languages. Self-proves with --prove: a famous, a counted, a beach-bar and an urban beach each marked presumed must each make it fail.',
