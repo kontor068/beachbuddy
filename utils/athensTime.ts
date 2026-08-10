@@ -175,3 +175,24 @@ export const athensDayKey = (instant: Date = new Date()): string =>
  * Nothing is hidden by this: the day chips stay on screen and the handover announces itself.
  */
 export const BEACH_DAY_ENDS_HOUR = 20;
+
+/**
+ * The Athens hour from which the TRIP PLANNER stops offering today as a day of the plan.
+ *
+ * WHY IT IS EARLIER THAN BEACH_DAY_ENDS_HOUR, AND WHY THAT IS NOT AN INCONSISTENCY. The two
+ * constants answer two different questions. BEACH_DAY_ENDS_HOUR decides when the PAGE stops
+ * describing today — someone at seven in the evening may still be a ten-minute walk from the
+ * sea, and telling them the wind right now is a real answer. The planner asks something else:
+ * "which beach on which day of my stay". A day you would have to drive to and arrive at half
+ * past six is not a day of a plan; it is a row that costs the visitor a line of reading and
+ * gives back nothing, and it pushes the days that ARE plannable down the card.
+ *
+ * So after this hour the plan simply starts at tomorrow. Nothing is hidden and nothing is
+ * claimed: the rows keep their real day labels (index 1 is still «Αύριο»), and the page above
+ * the card goes on answering about today until BEACH_DAY_ENDS_HOUR, exactly as before.
+ *
+ * WHY 18. A judgement, matching what the feature is for. A plan is made the evening before or
+ * the morning of; six is late enough that a same-day beach trip is over for most people and
+ * early enough that we are not still listing it at sunset.
+ */
+export const TRIP_PLAN_DAY_ENDS_HOUR = 18;

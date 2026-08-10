@@ -406,6 +406,38 @@ const runScenario = (scenarioId, scenario) => {
       `plan depends on input file order:\n  forward:  ${key(plan)}\n  reversed: ${key(reversedPlan)}`, { canary: true });
   }
 
+  // 5b. THE EVENING HANDOVER READS THE RIGHT DAYS (10/08/2026).
+  //
+  // After TRIP_PLAN_DAY_ENDS_HOUR the card plans from TOMORROW — a beach day you would arrive
+  // at half past six is not a day of a plan. The plan keeps ABSOLUTE forecast indices while
+  // doing it, which is the whole risk: an off-by-one here would rank each day against the
+  // previous day's wind and nothing on screen would look wrong. So the shifted plan is
+  // compared against the same forecast with its first day sliced off — the two must name the
+  // same beach for the same real day.
+  {
+    const shifted = planTrip({
+      beaches, forecast, days: forecast.length, language: 'gr', geospatialProfiles, startDayIndex: 1,
+    });
+    const sliced = planTrip({
+      beaches, forecast: forecast.slice(1), days: forecast.length - 1, language: 'gr', geospatialProfiles,
+    });
+    const problems = [];
+    if (shifted.length !== forecast.length - 1) {
+      problems.push(`${shifted.length} rows, expected ${forecast.length - 1}`);
+    }
+    if (shifted.some(entry => entry.dayIndex === 0)) problems.push('today is still in the plan');
+    for (const entry of shifted) {
+      if (String(entry.date) !== String(forecast[entry.dayIndex].date)) {
+        problems.push(`day ${entry.dayIndex} carries the wrong date`);
+      }
+    }
+    const key = entries => entries.map(entry => `${entry.status}:${entry.pick?.beach.id ?? '-'}`).join('|');
+    if (key(shifted) !== key(sliced)) {
+      problems.push(`picks differ from the sliced-forecast plan:\n  shifted: ${key(shifted)}\n  sliced:  ${key(sliced)}`);
+    }
+    check(scenarioId, 'evening-handover-starts-tomorrow', problems.length === 0, problems.join('; '));
+  }
+
   // 8. Policy: naturist beaches never appear (D13 canary).
   {
     const violations = plan.flatMap(entry => [entry.pick, entry.alternative]

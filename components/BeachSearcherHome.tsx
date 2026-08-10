@@ -74,6 +74,8 @@ import { beachMatchesUserPreferences, getBeachSearchFilterValues } from '../serv
 import { isSearchMatch } from '../utils/searchNormalize';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
+import { buildTopPickLadder } from '../utils/topPickLadder';
+import { TopPickLadderPanel } from './TopPickLadderPanel';
 
 export type DirectoryCategory = 'all' | QuickPreferenceFilter;
 
@@ -2221,6 +2223,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       timeLabel: getTopPickTimingLabel(item.bestBeachTime, selectedDate, language, topPickNow),
     }))
   ), [topRecommendationCards, selectedDate, language, topPickNow]);
+  /**
+   * «Πώς βγήκε αυτή η σειρά» — the ladder with each pick's value on it, and the rung that actually
+   * decided (Μίλτος, 10/08/2026). Reads the SAME fields the comparator reads; it never re-ranks.
+   */
+  const topPickLadder = useMemo(() => buildTopPickLadder({
+    picks: topRecommendationBeachCards.map(card => card.context),
+    language,
+    beaufortOf: item => perBeachMapWind?.get(item.beach.id)?.beaufort ?? currentBeaufort,
+    toneOf: item => item.simpleWindSuitability?.suitabilityColor as CalmnessTone | undefined,
+  }), [topRecommendationBeachCards, language, perBeachMapWind, currentBeaufort]);
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, topRecommendationBeachCards.length, currentBeaufort);
   const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix, suitableTimeIsNow);
@@ -4641,11 +4653,15 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </div>
                   <div className="border-t border-sky-100 pt-3">
                     <h3 className="mb-2 text-sm font-extrabold text-slate-950">{topPicksHowTitle}</h3>
-                    <ul className="mb-2 list-disc space-y-1 pl-4 text-xs leading-snug text-slate-700">
-                      {topPicksHowBullets.map(bullet => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
+                    {topPickLadder.length > 0 ? (
+                      <TopPickLadderPanel rungs={topPickLadder} language={language} className="mb-2" />
+                    ) : (
+                      <ul className="mb-2 list-disc space-y-1 pl-4 text-xs leading-snug text-slate-700">
+                        {topPicksHowBullets.map(bullet => (
+                          <li key={bullet}>{bullet}</li>
+                        ))}
+                      </ul>
+                    )}
                     <a
                       href={topPicksMethodologyPath}
                       className="text-xs font-bold text-[#007a83] underline decoration-sky-300 underline-offset-2 hover:text-[#00565d]"
@@ -4655,6 +4671,26 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </div>
                 </aside>
               </div>
+              {/* The same ladder for the 86% who never see the rail. Below 1360px it goes UNDER the
+                  cards, folded shut: the answer to «πού να πάω» is the three cards, and the answer
+                  to «γιατί με αυτή τη σειρά» is a question the reader asks second, if at all. Open
+                  by default it would push the list below the fold on a phone. */}
+              {topPickLadder.length > 0 && (
+                <details className="mt-2 rounded-2xl border border-sky-100 bg-white/78 px-3 py-2 text-left min-[1360px]:hidden">
+                  <summary className="cursor-pointer list-none text-xs font-extrabold text-slate-800 marker:hidden">
+                    {topPicksHowTitle}
+                  </summary>
+                  <div className="pt-2">
+                    <TopPickLadderPanel rungs={topPickLadder} language={language} />
+                    <a
+                      href={topPicksMethodologyPath}
+                      className="mt-2 inline-block text-[11px] font-bold text-[#007a83] underline decoration-sky-300 underline-offset-2"
+                    >
+                      {topPicksMethodLinkLabel}
+                    </a>
+                  </div>
+                </details>
+              )}
               {isTabbedPicksMode && (
                 <div role="tabpanel" className={activePicksTab === 'top' ? 'hidden' : undefined}>
                   {suitableBeachesCarouselNode}

@@ -16,7 +16,7 @@ import { getLocalizedCopy, languageToDateLocale } from '../../utils/i18n';
 import { getBeaufortLevel } from '../../utils/weatherUtils';
 import { windSectorFromDegrees } from '../../utils/windExposureEngine';
 import { trackEvent } from '../../services/analyticsService';
-import { planTrip, type TripDayPlan, type TripPick } from '../../services/tripPlannerService';
+import { planTrip, getTripPlanStartDayIndex, type TripDayPlan, type TripPick } from '../../services/tripPlannerService';
 import { tripPlannerCopy } from './tripPlannerCopy';
 
 // "I'm here for N days — which beach on which day?"
@@ -159,12 +159,20 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   onBeachClick,
 }) => {
   const c = getLocalizedCopy(language, tripPlannerCopy);
+  // WHICH DAY THE PLAN OPENS ON. Today up to TRIP_PLAN_DAY_ENDS_HOUR, tomorrow after it: an
+  // evening visitor is planning tomorrow, and a row for a day that is over reads as filler.
+  // Read on every render rather than memoised — crossing six o'clock with the tab open should
+  // move the card, and the next render is soon enough for a card nobody is mid-tap on.
+  const startDayIndex = getTripPlanStartDayIndex(forecast.length);
+  // How many days there are left to plan. Everything below counts in THESE days, not in
+  // forecast.length: after the handover a 6-day forecast can only answer five.
+  const planHorizon = Math.max(0, forecast.length - startDayIndex);
   // A day count the visitor ASKED for — a chip tap, or a stay length typed in
   // the search box. `null` means nobody asked and the card plans AUTO_DAYS by
   // itself. Lazy initializer, NOT an effect: an effect would render once at
   // null and then flip, replaying the entrance stagger and planning twice.
   const [chosenDays, setChosenDays] = useState<number | null>(
-    () => clampRequestedDays(initialDays, forecast.length)
+    () => clampRequestedDays(initialDays, planHorizon)
   );
 
   // The auto-plan's trigger. It is deliberately NOT "on mount": the card sits
@@ -195,7 +203,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   }, [inView]);
 
   // What we actually plan. A stated count always wins over the automatic one.
-  const autoDays = Math.min(AUTO_DAYS, forecast.length);
+  const autoDays = Math.min(AUTO_DAYS, planHorizon);
   const days = chosenDays ?? (inView ? autoDays : null);
   const isAutoPlan = chosenDays === null;
 
@@ -220,8 +228,9 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
       userLocation,
       todayRainBlocked,
       beachForecastDaysById,
+      startDayIndex,
     });
-  }, [beaches, deferredDays, forecast, geospatialProfiles, language, preferences, todayRainBlocked, userLocation, beachForecastDaysById]);
+  }, [beaches, deferredDays, forecast, geospatialProfiles, language, preferences, todayRainBlocked, userLocation, beachForecastDaysById, startDayIndex]);
 
   // Entrance: rows mount at opacity-0/translate-y and flip on the next frame, so
   // the stagger is pure transform+opacity with no keyframes and no library. Held
@@ -373,7 +382,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
   // beyond === 0 would be dishonest by omission, and the copy to say it
   // (c.beyondHorizon) already exists.
   const requestedForBeyond = Math.max(initialDays ?? 0, days ?? 0);
-  const beyond = requestedForBeyond ? Math.max(0, requestedForBeyond - forecast.length) : 0;
+  const beyond = requestedForBeyond ? Math.max(0, requestedForBeyond - planHorizon) : 0;
   const hasProvisional = plan.some(entry => entry.confidence === 'provisional');
   const hasCaution = plan.some(entry => entry.pick?.caution && entry.pick.windBeaufort >= 5);
   const hasRefuge = plan.some(entry => entry.isRefuge);
@@ -465,7 +474,7 @@ export const TripPlanner: React.FC<TripPlannerProps> = ({
               {/* `days` is null until the card nears the viewport, so the
                   placeholder is sized on what we are ABOUT to plan — same row
                   count, no jump when the real plan replaces it. */}
-              {Array.from({ length: Math.min(days ?? autoDays, forecast.length) }, (_, index) => (
+              {Array.from({ length: Math.min(days ?? autoDays, planHorizon) }, (_, index) => (
                 <li key={index} className="relative py-2.5 pl-10">
                   <span className="absolute left-[12px] top-[1.05rem] h-2.5 w-2.5 rounded-full bg-slate-300 shadow-[0_0_0_4px_rgba(255,255,255,0.8)]" />
                   <span className="block h-3 w-16 animate-pulse rounded bg-slate-200/90" />

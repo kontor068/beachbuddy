@@ -32,6 +32,7 @@ import {
 } from '../utils/windExposureEngine';
 import { onshoreComponent } from '../utils/geospatialExposureModel';
 import { getBeaufortLevel, applyBeachWindToDailyForecast } from '../utils/weatherUtils';
+import { athensNow, TRIP_PLAN_DAY_ENDS_HOUR } from '../utils/athensTime';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TRIP PLANNER — "I'm here for N days: which beach on which day?"
@@ -299,7 +300,34 @@ export interface PlanTripInput {
    * what keeps the planner working on a region whose clusters have not loaded.
    */
   beachForecastDaysById?: Record<number, DailyForecast[]>;
+  /**
+   * THE FIRST FORECAST DAY THE PLAN MAY USE. Absolute, i.e. an index into `forecast`, where 0
+   * is always today — see getTripPlanStartDayIndex, which is what the card passes.
+   *
+   * Deliberately NOT defaulted from the clock in here. This service is under a gate
+   * (scripts/validatePlannerAgreement.mjs) whose whole value is that the same region and the
+   * same forecast produce the same plan byte for byte; a default that read the hour would make
+   * that gate say something different after six in the evening. So the clock is read once, at
+   * the surface that shows the days, and travels here as a number.
+   *
+   * Every index in the returned plan stays absolute: a plan that starts tomorrow has no entry
+   * with dayIndex 0, and `confidence`, the day labels and the per-beach forecast lookups all
+   * keep meaning the same thing they meant before this existed.
+   */
+  startDayIndex?: number;
 }
+
+/**
+ * Which forecast day a plan should open on, right now: today until
+ * TRIP_PLAN_DAY_ENDS_HOUR, tomorrow after it.
+ *
+ * Never returns an index the forecast does not have — with a single day left there is nothing
+ * to hand over to, so the plan keeps today and the card simply has one row.
+ */
+export const getTripPlanStartDayIndex = (
+  forecastLength: number,
+  now: Date = athensNow()
+): number => (now.getHours() >= TRIP_PLAN_DAY_ENDS_HOUR && forecastLength > 1 ? 1 : 0);
 
 /** Storm-force wind, wind above the podium's ceiling, or persistent daytime rain. */
 const badWeatherReason = (
@@ -642,9 +670,11 @@ export const buildTripPool = (
   forecast: DailyForecast[],
   days: number,
   geospatialProfiles?: GeospatialExposureProfileLookup,
-  preferences?: UserPreferences
+  preferences?: UserPreferences,
+  startDayIndex = 0
 ): Beach[] => {
-  const horizon = Math.max(0, Math.min(days, forecast.length));
+  const startIndex = Math.min(Math.max(0, startDayIndex), Math.max(0, forecast.length - 1));
+  const horizon = Math.max(0, Math.min(days, forecast.length - startIndex));
   const eligible = filterBeachesByUserPreferences(beaches, preferences)
     .filter(beach => !isNaturistBeach(beach));
   // The comparator ends on beach id, so the pool (and everything downstream)
@@ -673,7 +703,7 @@ export const buildTripPool = (
 
   // Arm C — sheltered on the winds of THIS trip, ranked, fills to the cap.
   const tripSectors: WindSector[] = [];
-  for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
+  for (let dayIndex = startIndex; dayIndex < startIndex + horizon; dayIndex++) {
     const sector = windSectorFromDegrees(forecast[dayIndex].wind?.deg ?? 0);
     if (!tripSectors.includes(sector)) tripSectors.push(sector);
   }
@@ -732,11 +762,14 @@ export const planTrip = ({
   userLocation,
   todayRainBlocked,
   beachForecastDaysById,
+  startDayIndex = 0,
 }: PlanTripInput): TripDayPlan[] => {
-  const horizon = Math.max(0, Math.min(days, forecast.length));
+  const startIndex = Math.min(Math.max(0, startDayIndex), Math.max(0, forecast.length - 1));
+  const horizon = Math.max(0, Math.min(days, forecast.length - startIndex));
+  const endIndex = startIndex + horizon;
   if (horizon === 0 || beaches.length === 0) return [];
 
-  const pool = buildTripPool(beaches, forecast, days, geospatialProfiles, preferences);
+  const pool = buildTripPool(beaches, forecast, days, geospatialProfiles, preferences, startIndex);
   if (pool.length === 0) return [];
 
   // Score every candidate for every day of the stay — ONE scoring pass per
@@ -744,8 +777,11 @@ export const planTrip = ({
   // two independent passes that could disagree on the same beach). Where the
   // normal bar leaves a day empty, drop to the caution tier rather than
   // returning a blank day.
+  // Keyed by ABSOLUTE forecast index, not by position in the plan: a plan that starts tomorrow
+  // leaves index 0 empty, and every lookup below (rankedByDay[entry.dayIndex]) then needs no
+  // translation. One shifted index here would rank a day against another day's wind.
   const rankedByDay: TripPick[][] = [];
-  for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
+  for (let dayIndex = startIndex; dayIndex < endIndex; dayIndex++) {
     const day = forecast[dayIndex];
     const windSpeedKmph = (day.wind?.speed ?? 0) * 3.6;
     const beaufort = getBeaufortLevel(windSpeedKmph);
@@ -839,9 +875,8 @@ export const planTrip = ({
         geospatialProfiles
       ));
 
-    rankedByDay.push(
-      ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores, geospatialProfiles)
-    );
+    rankedByDay[dayIndex] =
+      ranked.length > 0 ? ranked : cautionRanking(pool, day, dayScores, geospatialProfiles);
   }
 
   const plans = new Map<number, TripDayPlan>();
@@ -851,7 +886,7 @@ export const planTrip = ({
   const assignedCount = new Map<number, number>();
   const pendingDays = new Set<number>();
 
-  for (let dayIndex = 0; dayIndex < horizon; dayIndex++) {
+  for (let dayIndex = startIndex; dayIndex < endIndex; dayIndex++) {
     const day = forecast[dayIndex];
     const confidence: TripDayConfidence = dayIndex < FIRM_FORECAST_DAYS ? 'firm' : 'provisional';
 
@@ -996,8 +1031,9 @@ export const planTrip = ({
     });
   }
 
-  const ordered = Array.from({ length: horizon }, (_, dayIndex) =>
-    plans.get(dayIndex) ?? {
+  const ordered = Array.from({ length: horizon }, (_, offset) => {
+    const dayIndex = startIndex + offset;
+    return plans.get(dayIndex) ?? {
       dayIndex,
       date: forecast[dayIndex].date,
       status: 'no_beach_day' as TripDayStatus,
@@ -1008,8 +1044,8 @@ export const planTrip = ({
       isRepeat: false,
       isRefuge: false,
       nextBeachDayIndex: null,
-    }
-  );
+    };
+  });
 
   // Alternatives, second pass (D6a): the assignment loop runs in SCARCITY
   // order, so a day served early would otherwise offer an "or X" that a later
