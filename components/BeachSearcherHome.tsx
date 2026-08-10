@@ -2475,12 +2475,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    * Mobile keeps the bare «Υπόλοιπες»: beside «Πιο προστατευμένες στις 13:00–14:00» the pair
    * wraps to two lines at 320px, and the heading over the list says the full phrase anyway.
    *
-   * So does the last-resort podium. When the block above is saying «καμία δεν είναι ιδανική
-   * τώρα», a neighbouring tab reading «Υπόλοιπες ΚΑΤΑΛΛΗΛΕΣ» offers the visitor something that
-   * sounds better than the three picks — on the one day the page has just admitted it has no
-   * good answer.
+   * The last-resort podium used to drop the word too, on the theory that «ΚΑΤΑΛΛΗΛΕΣ» next to
+   * «καμία δεν είναι ιδανική» sounded like a better offer than the picks. Reverted 10/08/2026 on
+   * Miltos' instruction («και για καιρό με άνεμο»): windy days are exactly when the reader is
+   * comparing the two lists, and a tab that changes its name between days reads as two different
+   * lists. Membership is the same rule in every wind, so the label is too.
    */
-  const restTabLabel = withCount(isMobileViewport || shelteredFallbackPodium
+  const restTabLabel = withCount(isMobileViewport
     ? getLocalizedCopy(language, {
       en: 'The rest',
       gr: 'Υπόλοιπες',
@@ -2676,39 +2677,46 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     return byId;
   }, [beachWeatherContexts, selectedForecast, perBeachMapWind]);
   /**
-   * One sentence per reason, and each one names the rule rather than apologising. The «σίγουρα
-   * στοιχεία» wording is deliberate: that case is about OUR records, not about the beach, and the
-   * reader has to be able to tell those two apart — the pin next to it is still coloured from live
-   * weather and stays trustworthy.
+   * One sentence per reason, each naming a property of THE BEACH — never our list.
+   *
+   * They opened with «Εκτός προτάσεων» until 10/08/2026 evening, and Miltos killed that wording on
+   * sight: it appeared under a tab of beaches the same page calls κατάλληλες, and it now also has
+   * to read correctly on a podium card, since a thin day fills the empty seats from exactly this
+   * set. «Not in the picks» said something about the ranking; «πιο ταραγμένη θάλασσα εδώ σήμερα»
+   * says the thing the reader can actually use, and stays true wherever the card is shown.
+   *
+   * The «σίγουρα στοιχεία» wording is deliberate: that case is about OUR records, not about the
+   * beach, and the reader has to be able to tell those two apart — the pin next to it is still
+   * coloured from live weather and stays trustworthy.
    */
   const topPickExclusionCopy: Record<TopPickExclusionReason, string> = {
     safety: getLocalizedCopy(language, {
-      en: 'Not in the picks — we are not recommending a swim here today.',
-      gr: 'Εκτός προτάσεων — σήμερα δεν τη συστήνουμε για μπάνιο.',
-      de: 'Nicht in den Empfehlungen — heute raten wir hier vom Baden ab.',
-      fr: "Hors des suggestions — aujourd'hui nous ne conseillons pas la baignade ici.",
-      it: 'Fuori dai consigli — oggi non consigliamo il bagno qui.',
+      en: 'We are not recommending a swim here today.',
+      gr: 'Σήμερα δεν τη συστήνουμε για μπάνιο.',
+      de: 'Heute raten wir hier vom Baden ab.',
+      fr: "Aujourd'hui, nous ne conseillons pas la baignade ici.",
+      it: 'Oggi non consigliamo il bagno qui.',
     }),
     access: getLocalizedCopy(language, {
-      en: 'Not in the picks — it needs a boat or a hard path, so it always ranks after the easy ones.',
-      gr: 'Εκτός προτάσεων — θέλει σκάφος ή δύσκολο μονοπάτι, οπότε μπαίνει πάντα μετά τις εύκολες.',
-      de: 'Nicht in den Empfehlungen — nur per Boot oder schwierigem Weg, daher immer nach den leicht erreichbaren.',
-      fr: "Hors des suggestions — accès en bateau ou par sentier difficile, donc toujours après les plages faciles.",
-      it: 'Fuori dai consigli — serve una barca o un sentiero difficile, quindi viene dopo quelle facili.',
+      en: 'It needs a boat or a hard path, so it ranks after the easy ones.',
+      gr: 'Θέλει σκάφος ή δύσκολο μονοπάτι, γι’ αυτό μπαίνει μετά τις εύκολες.',
+      de: 'Nur per Boot oder schwierigem Weg — daher nach den leicht erreichbaren.',
+      fr: "Accès en bateau ou par sentier difficile — donc après les plages faciles.",
+      it: 'Serve una barca o un sentiero difficile, quindi viene dopo quelle facili.',
     }),
     sea: getLocalizedCopy(language, {
-      en: 'Not in the picks — its own water does not clear today’s sea check.',
-      gr: 'Εκτός προτάσεων — η θάλασσά της δεν περνά τον σημερινό έλεγχο.',
-      de: 'Nicht in den Empfehlungen — ihr Wasser besteht die heutige Seegangsprüfung nicht.',
-      fr: "Hors des suggestions — sa mer ne passe pas le contrôle du jour.",
-      it: 'Fuori dai consigli — il suo mare non supera il controllo di oggi.',
+      en: 'Rougher water on its own shore today.',
+      gr: 'Πιο ταραγμένη θάλασσα στη δική της ακτή σήμερα.',
+      de: 'Heute unruhigeres Wasser an dieser Küste.',
+      fr: "Mer plus agitée sur sa propre côte aujourd'hui.",
+      it: 'Mare più mosso sulla sua costa oggi.',
     }),
     unverified: getLocalizedCopy(language, {
-      en: 'Not in the picks — we do not have enough verified detail about this beach yet. The map still colours it from live weather.',
-      gr: 'Εκτός προτάσεων — δεν έχουμε ακόμα αρκετά σίγουρα στοιχεία γι’ αυτήν. Στον χάρτη το χρώμα της βγαίνει κανονικά από τον ζωντανό καιρό.',
-      de: 'Nicht in den Empfehlungen — uns fehlen noch gesicherte Angaben zu diesem Strand. Die Karte färbt ihn weiterhin nach dem Live-Wetter.',
-      fr: "Hors des suggestions — il nous manque encore des informations vérifiées sur cette plage. La carte la colore toujours selon la météo en direct.",
-      it: 'Fuori dai consigli — non abbiamo ancora dati verificati a sufficienza su questa spiaggia. Sulla mappa il colore resta quello del meteo in diretta.',
+      en: 'We do not have enough verified detail about this beach yet — the map still colours it from live weather.',
+      gr: 'Δεν έχουμε ακόμα αρκετά σίγουρα στοιχεία γι’ αυτήν — στον χάρτη το χρώμα της βγαίνει κανονικά από τον ζωντανό καιρό.',
+      de: 'Uns fehlen noch gesicherte Angaben zu diesem Strand — die Karte färbt ihn weiterhin nach dem Live-Wetter.',
+      fr: "Il nous manque encore des informations vérifiées sur cette plage — la carte la colore toujours selon la météo en direct.",
+      it: 'Non abbiamo ancora dati verificati a sufficienza su questa spiaggia — sulla mappa il colore resta quello del meteo in diretta.',
     }),
   };
   // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
@@ -4595,6 +4603,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       // (BeachCard's «Καλύτερη ώρα» row) and the region podium simply never fed
                       // it — only the home preview did.
                       topPickTimeLabel: timeLabel,
+                      // A podium seat filled from the last-resort list keeps its caveat. Beaches
+                      // that cleared every gate have no reason attached, so this stays silent for
+                      // them — the line only ever appears where something really is not ideal.
+                      // Silent as well when NOTHING here cleared the bar: the subtitle above has
+                      // already said it once, for all three.
+                      notInTopPicksNote: shelteredFallbackPodium
+                        ? undefined
+                        : topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason],
                     })}
                   </div>
                 ))}

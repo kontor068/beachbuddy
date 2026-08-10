@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachProfile, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
-import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
+import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
 
@@ -6821,26 +6821,87 @@ export const App: React.FC = () => {
   // all of them. Result: shouldShow = true, limit = 3, cards = 0, and the block silently fell
   // back to the old single-beach hero. Those two flags describe which SOURCE leads, never whether
   // a last resort is allowed to exist.
-  const directoryShelteredFallbackPool = directoryTopRecommendationCandidatePool.length > 0
-    ? []
-    : prioritizeProtectedRecommendations(
-      getWindPriorityTopPickPool(
-        recommendableMapSuitableBeaches.filter(isShelteredFallbackCandidate),
-        currentBeaufort,
-        perBeachMapWind
-      ),
+  const strictTopRecommendationIds = new Set(directoryTopRecommendationCandidatePool.map(item => item.beach.id));
+  // DISTINCT beaches, not entries. The pool concatenates three sources that overlap heavily, so
+  // its raw length counted the same beach up to three times — a region with ONE qualifying beach
+  // could report «3» to the display limit and then render a single card.
+  const strictTopRecommendationCount = strictTopRecommendationIds.size;
+  /**
+   * The shelter-ranked list of everything the region has to offer, minus the two safety filters.
+   * Used twice below: as the WHOLE podium when nothing clears the quality bar, and — since
+   * 10/08/2026 evening — to TOP UP a podium that cleared it with only one or two beaches.
+   *
+   * Built only when one of those two is actually possible. It sorts every beach in the region and
+   * this whole stretch of the component re-runs on each render (see the no-hooks note above), so a
+   * full podium must not pay for a list it will not read.
+   */
+  const shelteredRankedFallbackPool: SuitableBeach[] = prioritizeProtectedRecommendations(
+    getWindPriorityTopPickPool(
+      recommendableMapSuitableBeaches.filter(isShelteredFallbackCandidate),
       currentBeaufort,
-      perBeachMapWind,
-      podiumToneRank
-    );
-  const isShelteredFallbackPodium = directoryShelteredFallbackPool.length > 0;
-  const directoryTopRecommendationCandidateCount = showNoIdealFallbackSection
-    ? noIdealFallbackCandidates.length
+      perBeachMapWind
+    ),
+    currentBeaufort,
+    perBeachMapWind,
+    podiumToneRank
+  );
+  const directoryShelteredFallbackPool = strictTopRecommendationCount > 0
+    ? []
+    : shelteredRankedFallbackPool;
+  /**
+   * «ΔΕΝ ΓΙΝΕΤΑΙ ΟΙ ΠΙΟ ΠΡΟΣΤΑΤΕΥΜΕΝΕΣ ΝΑ ΕΙΝΑΙ ΜΟΝΟ 1» (Μίλτος, 10/08/2026).
+   *
+   * The podium was all-or-nothing about its last resort: with ZERO beaches through the quality
+   * gates it named three, with ONE it named one. So the harder the day, the fuller the podium —
+   * exactly backwards, and on a 5 Bft Naxos it printed a single card under a heading that promises
+   * a choice, beside a map showing pins the reader could see for themselves.
+   *
+   * Now the same shelter-ranked list fills the empty seats. These beaches did NOT clear the strict
+   * gates — that is why they were not there already — so each one carries its own line saying what
+   * the catch is (BeachSearcherHome's exclusion note, which the podium renders too). What does not
+   * change: the two safety filters above, and the fact that a beach which cleared everything is
+   * always ranked ahead of a beach that did not.
+   *
+   * Reachable first among the top-ups. The last-resort pool ranks on shelter alone, so a boat-only
+   * cove can head it; that is the right answer when it is the ONLY answer (09/08 decision), but as
+   * filler beside a beach you can drive to it would quietly undo «δύσβατες τελευταίες».
+   */
+  /**
+   * How many cards the podium's OWN sources can actually name, before any top-up.
+   *
+   * Counted off the display lists (strongManageableBeaches / noIdealFallbackBeaches), not off the
+   * candidate arrays behind them, and off DISTINCT strict ids rather than the concatenated pool.
+   * Those two details are the whole Λήμνος bug of 09/08 in miniature: a count that promises more
+   * than the collector can deliver leaves the block on screen with empty seats.
+   */
+  const directoryPrimaryTopRecommendationCount = showNoIdealFallbackSection
+    ? noIdealFallbackBeaches.length
     : showStrongManageableSection
-    ? windPreviewCandidates.length
-    : directoryTopRecommendationCandidatePool.length > 0
-    ? directoryTopRecommendationCandidatePool.length
+    ? strongManageableBeaches.length
+    : strictTopRecommendationCount > 0
+    ? strictTopRecommendationCount
     : directoryShelteredFallbackPool.length;
+  const podiumPrimaryBeachIds = new Set([
+    ...strictTopRecommendationIds,
+    ...(showNoIdealFallbackSection ? noIdealFallbackBeaches : []).map(item => item.beach.id),
+    ...(showStrongManageableSection ? strongManageableBeaches : []).map(item => item.beach.id),
+  ]);
+  const podiumTopUpPool = (() => {
+    const missing = MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT
+      - Math.min(MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, directoryPrimaryTopRecommendationCount);
+    if (missing <= 0) return [];
+
+    // Measured against the PRIMARY count, not the strict pool. On a meltemi day the cards come
+    // from a pre-screened source while the strict pool is empty — Naxos, 10/08, 5 Bft: one card
+    // on screen, three more beaches swimmable (Πάνορμος, Κλειδός, Σπεδό: ΙΔΑΝΙΚΗ pins, 3 Bft,
+    // 0,50 m) held out of the podium by a records gate. Keyed on the strict count this would
+    // never have fired for exactly that day.
+    const rest = shelteredRankedFallbackPool.filter(item => !podiumPrimaryBeachIds.has(item.beach.id));
+    const reachable = rest.filter(item => hasMainstreamTopPickAccess(item.beach));
+    const harder = rest.filter(item => !hasMainstreamTopPickAccess(item.beach));
+    return [...reachable, ...harder].slice(0, missing);
+  })();
+  const directoryTopRecommendationCandidateCount = directoryPrimaryTopRecommendationCount + podiumTopUpPool.length;
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
@@ -6916,6 +6977,16 @@ export const App: React.FC = () => {
       });
     }
 
+    // Two empty seats beside one qualifying beach — filled from the same ranked list, appended
+    // AFTER everything that cleared the gates so the order still reads best-first. Bounded by the
+    // display limit rather than `collectLimit`, which is Infinity in «Κοντά μου» and would pull
+    // the whole region in before the distance sort ever ran.
+    podiumTopUpPool.forEach(item => {
+      if (cards.length >= directoryTopRecommendationLimit || seenIds.has(item.beach.id)) return;
+      seenIds.add(item.beach.id);
+      cards.push(item);
+    });
+
     /**
      * «ΚΟΝΤΑ ΜΟΥ»: ΠΡΩΤΑ ΟΙ ΣΥΝΘΗΚΕΣ, Η ΑΠΟΣΤΑΣΗ ΣΠΑΕΙ ΤΗΝ ΙΣΟΠΑΛΙΑ (απόφαση Μίλτου, 10/08/2026).
      *
@@ -6986,6 +7057,21 @@ export const App: React.FC = () => {
     return bestBeachTime ? { ...item, bestBeachTime } : item;
   });
   const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
+  /**
+   * «ΚΑΜΙΑ ΔΕΝ ΕΙΝΑΙ ΙΔΑΝΙΚΗ ΤΩΡΑ» is decided by the CARDS, not by the pool that produced them.
+   *
+   * It used to mean «the strict pool was empty», which missed the case that matters most: on a
+   * meltemi Mykonos the strong-wind preview names three real beaches, every one of which the app
+   * separately tells you not to swim at today. The pool was not empty, so the honest line stayed
+   * off — and after the per-card notes landed, all three cards printed the same sentence under a
+   * heading promising shelter. One title above them says it once (no-duplicate-robot-copy), and
+   * BeachSearcherHome drops the per-card line whenever this is on.
+   *
+   * A podium where even ONE card cleared the strict bar is not that day: there the genuine pick
+   * leads and the topped-up seats beside it keep their own, differing, caveat.
+   */
+  const isShelteredFallbackPodium = directoryTopRecommendationCards.length > 0
+    && !directoryTopRecommendationCards.some(item => strictTopRecommendationIds.has(item.beach.id));
   // The region podium's own day-turn sentence, about the beach the podium actually leads with.
   // Silent by default: it speaks only when the day genuinely gets WORSE (utils/stayWindow's
   // findWorseningTurnFromReadings), never to volunteer that things improve.
