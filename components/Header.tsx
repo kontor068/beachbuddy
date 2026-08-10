@@ -155,9 +155,13 @@ const Header: React.FC<HeaderProps> = ({
     if (!isAccountMenuOpen) return undefined;
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!accountMenuRef.current?.contains(event.target as Node)) {
-        setIsAccountMenuOpen(false);
-      }
+      const target = event.target as Node | null;
+      if (accountMenuRef.current?.contains(target)) return;
+      // On a phone the panel is a sheet portalled to <body> (it has to escape
+      // the header's backdrop-filter), so it is not inside accountMenuRef.
+      // Without this it would close on its own first tap.
+      if (target instanceof Element && target.closest('[data-account-panel]')) return;
+      setIsAccountMenuOpen(false);
     };
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setIsAccountMenuOpen(false);

@@ -21,6 +21,7 @@
 //     exist yet is a debt paid with trust.
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Camera, ChevronDown, ChevronRight, Clock, Heart, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
 import { EMPTY_CONTRIBUTIONS, getMyContributions, type MyContributions } from '../../services/myContributions';
 import { getLocalizedCopy, type SupportedLanguage } from '../../utils/i18n';
@@ -258,13 +259,33 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
   const [deleteError, setDeleteError] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // PHONE = SHEET, AND THE SHEET MUST LEAVE THE HEADER.
+  // The header bar carries `backdrop-blur-xl`, and a backdrop-filter makes an
+  // element the containing block for every `position: fixed` descendant. Left
+  // inside it, `fixed bottom-0` pins the sheet to the bottom of the *bar*, so
+  // the whole panel sits above the viewport and only its last row — the delete
+  // link — is visible. Portalling to <body> on phones restores "bottom of the
+  // screen". From `sm` up the panel is an anchored dropdown and must stay in
+  // the header's flow, so it renders in place there.
+  const [isSheet, setIsSheet] = useState(
+    () => typeof window !== 'undefined' && !window.matchMedia('(min-width: 640px)').matches,
+  );
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const query = window.matchMedia('(min-width: 640px)');
+    const sync = () => setIsSheet(!query.matches);
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
   // iOS Safari ignores `body { overflow: hidden }` for touch scrolling, so the
   // page behind a sheet keeps moving and peeks through. Pin the body instead and
   // restore the scroll position on close. Copied from the one correct
   // implementation in the codebase (components/BeachSearcherHome.tsx).
   useEffect(() => {
-    if (typeof document === 'undefined') return undefined;
-    if (typeof window === 'undefined' || window.innerWidth >= 640) return undefined;
+    if (typeof document === 'undefined' || typeof window === 'undefined') return undefined;
+    if (!isSheet) return undefined;
 
     const { body } = document;
     const scrollY = window.scrollY;
@@ -293,7 +314,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
       body.style.overflow = previous.overflow;
       window.scrollTo(0, scrollY);
     };
-  }, []);
+  }, [isSheet]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -323,7 +344,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
     ? copy.savedOne
     : copy.savedMany.replace('{n}', String(savedCount));
 
-  return (
+  const panel = (
     <>
       {/* Backdrop exists only where the panel is a sheet. */}
       <div
@@ -334,6 +355,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
 
       <div
         ref={panelRef}
+        data-account-panel=""
         role="dialog"
         aria-modal="true"
         aria-label={copy.title}
@@ -521,6 +543,10 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
       </div>
     </>
   );
+
+  return isSheet && typeof document !== 'undefined'
+    ? createPortal(panel, document.body)
+    : panel;
 };
 
 export default AccountPanel;
