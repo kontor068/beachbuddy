@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight } from 'lucide-react';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
-import { displayBeachName, localizedPopularityLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
+import { displayBeachName, localizedPopularityLabel, localizedLittleKnownLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
@@ -314,6 +314,13 @@ const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): Ho
     addChip(
       'popularity',
       localizedPopularityLabel(beach.popularity.tier, language),
+      <Users className="h-3 w-3 shrink-0" aria-hidden="true" />
+    );
+  } else if (beach.environment?.quietEvidence === 'presumed') {
+    // Same slot, inferred wording — see localizedLittleKnownLabel.
+    addChip(
+      'popularity',
+      localizedLittleKnownLabel(language),
       <Users className="h-3 w-3 shrink-0" aria-hidden="true" />
     );
   }

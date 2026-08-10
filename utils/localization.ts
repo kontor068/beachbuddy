@@ -168,6 +168,24 @@ const popularityLabels: Record<PopularityTier, Record<LanguageCode, string>> = {
 export const localizedPopularityLabel = (tier: PopularityTier, language: LanguageCode): string =>
   popularityLabels[tier]?.[language] || popularityLabels[tier]?.en || '';
 
+/**
+ * The badge for a beach with NO Google identity (environment.quietEvidence === 'presumed').
+ *
+ * Deliberately not a sixth popularity tier: the five above are counted, this one is inferred, and
+ * merging them would let an inference inherit the authority of a measurement. The wording states
+ * only what we actually know — that hardly anyone has registered the place — instead of promising
+ * an empty beach we never counted. It reads as an advantage, which for this audience it is.
+ */
+const littleKnownLabels: Record<LanguageCode, string> = {
+  en: 'Little known',
+  gr: 'Λίγο γνωστή',
+  de: 'Wenig bekannt',
+  it: 'Poco conosciuta',
+  fr: 'Peu connue',
+};
+export const localizedLittleKnownLabel = (language: LanguageCode): string =>
+  littleKnownLabels[language] || littleKnownLabels.en;
+
 // "You pay to be here." Each kind gets a SHORT chip label + an honest one-line explanation,
 // so we never reduce three very different situations to a single vague "paid" tag.
 const paidEntryLabels: Record<PaidEntryKind, Record<LanguageCode, string>> = {

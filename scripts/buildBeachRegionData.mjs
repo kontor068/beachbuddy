@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -22,8 +23,80 @@ const appSummaryOutputDir = path.join(appOutputDir, 'summary');
 const appDetailOutputDir = path.join(appOutputDir, 'detail');
 // A beach is "quiet" (low traffic) when it has fewer than this many Google reviews. 100 is the
 // natural break in the nationwide distribution (the bottom ~third by visitor volume): the
-// 'secluded' (<20) + 'quiet' (20-99) popularity tiers. Beaches with no Google data count as quiet.
+// 'secluded' (<20) + 'quiet' (20-99) popularity tiers.
 const QUIET_REVIEW_THRESHOLD = 100;
+
+/**
+ * PRESUMED QUIET — the 871 beaches Google has never heard of (Μίλτος, 10/08/2026).
+ *
+ * `quiet` above is measured: it needs a Google review count below the threshold, so it can only
+ * ever describe the 1.986 beaches that carry a verified Place ID. The other 871 were silently
+ * excluded from the «Ήσυχη» filter — and they are, in all likelihood, the emptiest coastline we
+ * list. A visitor asking for solitude was shown 594 results while the best candidates were hidden
+ * behind a missing Google identity. Absence of evidence was being read as evidence of absence.
+ *
+ * So a beach with NO review data is presumed quiet — but only after three gates, because the
+ * measurement that would have contradicted us is exactly the thing we do not have:
+ *
+ *   1. Developed (organized / beach bar / sunbeds) — 281 beaches. Umbrellas mean people.
+ *   2. Nationally famous (utils/touristPriority.ts) — 7 beaches, and this one is not optional:
+ *      Ναυάγιο, Σαρακήνικο, Εγκρεμνοί, Σεϊτάν Λιμάνι, Κλέφτικο, Λαλάρια, Πισίνα all lack a
+ *      Place ID (their names collide nationally, so the resolver refused to guess) and would
+ *      otherwise have been labelled empty. Calling Ναυάγιο secluded in August is the single
+ *      most damaging sentence this site could print.
+ *   3. Inside a big city's radius — 58 beaches. Β' πλαζ Βούλας is 17km from Syntagma and is not
+ *      a hidden cove, whatever OSM failed to record about it.
+ *
+ * 620 survive. They enter the filter, but they are NEVER given the measured wording: the card
+ * says «Δεν την ξέρουν πολλοί», which is literally what we know — no reviews, no Google entry —
+ * rather than a crowd tier we did not measure. The popularity tier itself stays untouched and
+ * google-sourced; this is our inference and it is labelled as ours.
+ */
+const URBAN_CENTRES = [
+  // [name, lat, lon, radius km] — radius is "beach within commuting distance of a big population"
+  ['Athens', 37.9838, 23.7275, 40],
+  ['Thessaloniki', 40.6401, 22.9444, 40],
+  ['Patra', 38.2466, 21.7346, 25],
+  ['Heraklion', 35.3387, 25.1442, 25],
+  ['Chania', 35.5138, 24.0180, 20],
+  ['Volos', 39.3622, 22.9420, 25],
+  ['Kavala', 40.9396, 24.4066, 20],
+  ['Rhodes', 36.4341, 28.2176, 20],
+  ['Corfu', 39.6243, 19.9217, 15],
+  ['Kalamata', 37.0389, 22.1142, 20],
+  ['Alexandroupoli', 40.8457, 25.8744, 20],
+];
+
+const distanceKm = (lat1, lon1, lat2, lon2) => {
+  const p = Math.PI / 180;
+  const a = 0.5 - Math.cos((lat2 - lat1) * p) / 2
+    + Math.cos(lat1 * p) * Math.cos(lat2 * p) * (1 - Math.cos((lon2 - lon1) * p)) / 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(a));
+};
+
+const isNearUrbanCentre = (lat, lon) => {
+  if (typeof lat !== 'number' || typeof lon !== 'number') return false;
+  return URBAN_CENTRES.some(([, cLat, cLon, radius]) => distanceKm(lat, lon, cLat, cLon) <= radius);
+};
+
+/**
+ * The curated recognition list, read from its single source of truth rather than restated here.
+ * A second copy of these ids would drift the first time a beach is added to the map, and the
+ * failure mode of drift is «Ναυάγιο: δεν την ξέρουν πολλοί».
+ */
+const ICONIC_BEACH_IDS = (() => {
+  const source = readFileSync(path.join(rootDir, 'utils', 'touristPriority.ts'), 'utf8');
+  const ids = new Set();
+  for (const line of source.split('\n')) {
+    const match = line.match(/^\s*(\d+):\s*\d+\s*,/);
+    if (match) ids.add(Number(match[1]));
+  }
+  if (ids.size < 40) {
+    throw new Error(`ICONIC_BEACH_IDS parsed only ${ids.size} ids from touristPriority.ts — the format changed and famous beaches would be mislabelled as unknown.`);
+  }
+  return ids;
+})();
+
 const regionDisplayNamesPath = path.join(rootDir, 'utils', 'regionDisplayNames.json');
 
 const APP_DATA_SCHEMA_VERSION = 1;
@@ -515,7 +588,17 @@ const buildBeach = (rawBeach, island) => {
   // A beach bar means it's a developed/lively spot, so never "quiet" even with few reviews
   // (also enforced as a data-quality invariant downstream).
   const reviewCount = metadata?.popularity?.ratingCount;
-  const quiet = typeof reviewCount === 'number' && reviewCount < QUIET_REVIEW_THRESHOLD && !hasBar;
+  const measuredQuiet = typeof reviewCount === 'number' && reviewCount < QUIET_REVIEW_THRESHOLD && !hasBar;
+  // No Google identity at all — see PRESUMED QUIET above. The three gates are the whole safety of
+  // this inference, so they are spelled out rather than folded into one predicate.
+  const presumedQuiet = typeof reviewCount !== 'number'
+    && !organized && !hasBar && !hasSunbeds
+    && !ICONIC_BEACH_IDS.has(rawBeach.id)
+    && !isNearUrbanCentre(rawBeach.lat, rawBeach.lon);
+  const quiet = measuredQuiet || presumedQuiet;
+  // Which of the two produced the flag, so the card can say «Ήσυχη» (counted) or «Δεν την ξέρουν
+  // πολλοί» (inferred) and never pass one off as the other.
+  const quietEvidence = measuredQuiet ? 'measured' : presumedQuiet ? 'presumed' : undefined;
   const remote = access === 'DIFFICULT' || access === 'BOAT_ONLY';
   // These two used to be computed EAGERLY, above the ternaries that consume
   // them — so the hash ran for every beach on every build, metadata or not, and
@@ -616,6 +699,9 @@ const buildBeach = (rawBeach, island) => {
       quiet: metadata?.environment?.quiet ?? quiet,
       remote: metadata?.environment?.remote ?? remote,
       familyFriendly: metadata?.environment?.familyFriendly ?? familyFriendly,
+      // Only stamped when nothing hand-written overrode `quiet` — a curated flag is a human
+      // judgement and must not be presented as either a Google count or our inference.
+      ...(metadata?.environment?.quiet === undefined && quietEvidence ? { quietEvidence } : {}),
     },
     // Measured, not invented. This was `hash(id) * 100` — the same fabricated-value
     // bug as the old `4.0 + hash(id)` rating, and worse in effect: four sorts in

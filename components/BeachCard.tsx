@@ -29,6 +29,7 @@ import {
   localizedWaterDepthLabel,
   isWaterDepthUnverified,
   localizedPopularityLabel,
+  localizedLittleKnownLabel,
   localizedPaidEntryLabel,
   localizedPaidEntryExplanation,
 } from '../utils/localization';
@@ -960,7 +961,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
           <span>{localizedShadeLabel(language)}</span>
         </div>
       )}
-      {(beach.popularity ?? metadata.popularity)?.tier && (() => {
+      {(beach.popularity ?? metadata.popularity)?.tier ? (() => {
         const pop = beach.popularity ?? metadata.popularity!;
         return (
           <div
@@ -971,7 +972,14 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
             <span>{localizedPopularityLabel(pop.tier, language)}</span>
           </div>
         );
-      })()}
+      })() : beach.environment?.quietEvidence === 'presumed' ? (
+        // No Google entry at all. Same slot as the crowd badge — it answers the same question —
+        // but its own muted styling, because it is an inference and should not look counted.
+        <div className="px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+          <Users className="w-3.5 h-3.5" />
+          <span>{localizedLittleKnownLabel(language)}</span>
+        </div>
+      ) : null}
       {amenityChips.map(chip => (
         <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {amenityChipIcon(chip)}

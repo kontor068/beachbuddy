@@ -37,7 +37,7 @@ import {
 } from 'lucide-react';
 import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
-import { displayBeachName, localizedAccessLabel, localizedPopularityLabel } from '../utils/localization';
+import { displayBeachName, localizedAccessLabel, localizedPopularityLabel, localizedLittleKnownLabel } from '../utils/localization';
 import { getTopPickDistinguishers } from '../utils/topPickDistinguishers';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import type { CalmnessTone } from '../utils/suitabilityTone';
@@ -1214,6 +1214,13 @@ const getTopBeachFeatureChips = (
     addChip({
       key: 'popularity',
       label: localizedPopularityLabel(popularityTier, language),
+      icon: <Users className="h-5 w-5" />,
+    });
+  } else if (beach.environment?.quietEvidence === 'presumed') {
+    // No Google entry — inferred wording in the same slot, see localizedLittleKnownLabel.
+    addChip({
+      key: 'popularity',
+      label: localizedLittleKnownLabel(language),
       icon: <Users className="h-5 w-5" />,
     });
   }

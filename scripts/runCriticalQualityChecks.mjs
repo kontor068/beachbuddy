@@ -148,6 +148,15 @@ const checks = [
     args: ['scripts/validatePodiumSeaOrder.mjs', '--prove'],
   },
   {
+    id: 'presumed-quiet',
+    title: '"Little known" never lands on a beach we simply failed to look up',
+    description: 'Checks the 569 beaches the «Ήσυχη» filter now includes on inference rather than measurement: none is on the curated famous list, none carries a Google crowd tier, none is organized or has a bar or sunbeds, none sits inside a big city\'s radius, every quiet flag says how it was reached, and the inferred badge uses different words from the counted one in all five languages. Self-proves with --prove: a famous, a counted, a beach-bar and an urban beach each marked presumed must each make it fail.',
+    protects: 'The «Ήσυχη» filter used to need a Google review count, so it could only ever see the 1.986 beaches with a verified Place ID — the 871 emptiest stretches of coast were missing from the one filter built to find them. Letting them in means publishing a claim about crowds we did not measure, and nothing downstream can catch a mistake here: the contradicting data is exactly what we lack. Measured on 10/08/2026: without the famous-beach gate, Ναυάγιο, Σαρακήνικο, Εγκρεμνοί, Σεϊτάν Λιμάνι, Κλέφτικο, Λαλάρια and Πισίνα would all have been published as little known, because their names collide nationally and the Place ID resolver refused to guess.',
+    failureAction: 'Fix the three gates in scripts/buildBeachRegionData.mjs (developed / famous / urban) and rebuild with "npm run build:beach-data". Never widen the inference to make a case pass, and never let the presumed badge borrow the counted wording — the whole safety of this feature is that an inference is visibly an inference.',
+    command: process.execPath,
+    args: ['scripts/validatePresumedQuiet.mjs', '--prove'],
+  },
+  {
     id: 'stay-window-worst-hour',
     title: 'A stay is judged by its roughest hour',
     description: 'Drives utils/stayWindow over all 1.364 tone sequences a sampled window can have (1-5 hours × 4 colours) and checks the hour chosen to speak for the window is always the roughest one in it, that ties fall to the earliest hour so an unchanging day behaves exactly as before, that no stay still means exactly one slot, and that both ends of the window are always sampled. Then re-runs the whole grid against two deliberately wrong pickers and fails if either survives.',

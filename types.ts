@@ -323,6 +323,13 @@ export interface Beach {
     quiet: boolean;
     remote: boolean;
     familyFriendly: boolean;
+    /**
+     * How `quiet` was arrived at. 'measured' = a Google review count below the threshold.
+     * 'presumed' = no Google identity at all, and the beach passed the developed / famous /
+     * urban gates in buildBeachRegionData.mjs. Absent = a hand-written override, or not quiet.
+     * The UI must never print the measured wording over a presumed flag.
+     */
+    quietEvidence?: 'measured' | 'presumed';
   };
   popularityScore: number;
   /** Static crowd/popularity badge (from Google review count); surfaced top-level for summary/detail data. */
