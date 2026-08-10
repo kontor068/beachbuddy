@@ -93,6 +93,18 @@ const compactPreferenceLabels: Record<LanguageCode, Partial<Record<keyof UserPre
   },
 };
 
+/**
+ * The same chip word, for callers that have a language but no translation
+ * object — the account panel is one, since it is lazy-loaded and deliberately
+ * never pulls the full translation bundle in behind it. Every quick filter has
+ * a hand-written entry in all five languages above, so nothing falls through
+ * to the key name; the guard is there for a key added to one language only.
+ */
+export const getPreferenceFilterWord = (
+  key: QuickPreferenceFilter,
+  language: LanguageCode
+): string => compactPreferenceLabels[language][key] || compactPreferenceLabels.en[key] || String(key);
+
 export const getPreferenceFilterLabel = (
   key: keyof UserPreferences,
   language: LanguageCode,

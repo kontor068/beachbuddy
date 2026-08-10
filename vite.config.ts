@@ -151,6 +151,7 @@ export default defineConfig(({ mode }) => {
                 // Anything added here must stay off the import path of App.tsx.
                 if (isAnyProjectModule(id, [
                   'components/account/AccountPanel.tsx',
+                  'components/account/BeachProfileSection.tsx',
                   'components/auth/AuthCallbackScreen.tsx',
                   'hooks/useAuth.ts',
                   'hooks/useFavoritesSync.ts',

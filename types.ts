@@ -259,6 +259,22 @@ export interface UserPreferences {
   easyAccess: boolean;
 }
 
+/**
+ * The "what I like in a beach" profile, chosen once inside the account and kept
+ * there. Deliberately NOT the same state as the filter chips: a chip is a
+ * question about today ("show me only sandy ones on Naxos"), while this is a
+ * standing answer that follows the person across islands and devices.
+ */
+export interface BeachProfile {
+  /**
+   * Off until asked for. A saved list that silently reorders the site the first
+   * time someone signs in is a surprise, and surprises here look like bugs.
+   */
+  enabled: boolean;
+  /** Same vocabulary as the chips, so nobody has to learn a second one. */
+  wishes: UserPreferences;
+}
+
 export interface Beach {
   id: number;
   rating: number;

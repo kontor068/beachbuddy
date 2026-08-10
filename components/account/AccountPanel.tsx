@@ -25,6 +25,8 @@ import { createPortal } from 'react-dom';
 import { Camera, ChevronDown, ChevronRight, Clock, Heart, LogOut, ShieldCheck, Trash2 } from 'lucide-react';
 import { EMPTY_CONTRIBUTIONS, getMyContributions, type MyContributions } from '../../services/myContributions';
 import { getLocalizedCopy, type SupportedLanguage } from '../../utils/i18n';
+import BeachProfileSection from './BeachProfileSection';
+import type { BeachProfile } from '../../types';
 
 export interface AccountPanelProps {
   language: SupportedLanguage;
@@ -38,6 +40,9 @@ export interface AccountPanelProps {
   onOpenSaved: () => void;
   /** Opens the upload sheet. Absent ⇒ the photo section offers no way in. */
   onAddPhoto?: () => void;
+  /** The saved "what I like in a beach" profile. Absent ⇒ the section is not offered. */
+  beachProfile?: BeachProfile;
+  onBeachProfileChange?: (next: BeachProfile) => void;
   onSignOut: () => void;
   onDeleteAccount: () => Promise<{ ok: boolean; error?: string }>;
   onClose: () => void;
@@ -239,6 +244,8 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
   savedOtherIslandsCount = 0,
   onOpenSaved,
   onAddPhoto,
+  beachProfile,
+  onBeachProfileChange,
   onSignOut,
   onDeleteAccount,
   onClose,
@@ -419,6 +426,17 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({
             <ChevronRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-cyan-600" aria-hidden="true" />
           </span>
         </button>
+
+        {/* The one thing in here that changes what the app DOES. It sits second
+            because saved beaches are why people sign in, but it is the reason
+            an account is worth more than a bookmark. */}
+        {beachProfile && onBeachProfileChange && (
+          <BeachProfileSection
+            language={language}
+            profile={beachProfile}
+            onChange={onBeachProfileChange}
+          />
+        )}
 
         {/* WHAT HAPPENED TO WHAT YOU GAVE US.
             The upload sheet promises "a person checks it". Without this, that

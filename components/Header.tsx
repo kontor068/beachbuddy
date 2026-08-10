@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CalendarDays, Check, ChevronDown, CloudSun, Languages, User } from 'lucide-react';
 import AccountPanel from './account/AccountPanel';
+import type { BeachProfile } from '../types';
 import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -35,6 +36,8 @@ interface HeaderProps {
   onSignOut?: () => void;
   onDeleteAccount?: () => Promise<{ ok: boolean; error?: string }>;
   onAddPhoto?: () => void;
+  beachProfile?: BeachProfile;
+  onBeachProfileChange?: (next: BeachProfile) => void;
 }
 
 const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
@@ -91,6 +94,8 @@ const Header: React.FC<HeaderProps> = ({
   onSignOut,
   onDeleteAccount,
   onAddPhoto,
+  beachProfile,
+  onBeachProfileChange,
   onOpenFavorites,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
@@ -281,6 +286,8 @@ const Header: React.FC<HeaderProps> = ({
                     savedOtherIslandsCount={savedOtherIslandsCount}
                     onOpenSaved={() => onOpenFavorites?.()}
                     onAddPhoto={onAddPhoto}
+                    beachProfile={beachProfile}
+                    onBeachProfileChange={onBeachProfileChange}
                     onSignOut={() => {
                       setIsAccountMenuOpen(false);
                       onSignOut?.();

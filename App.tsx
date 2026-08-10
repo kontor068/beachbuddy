@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
-import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
+import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachProfile, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
 import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
@@ -38,6 +38,7 @@ import { deleteAccount } from './services/authService';
 import type { PhotoBeachOption } from './components/photos/AddBeachPhotoSheet';
 import { useFavoritesSync, syncFavoriteToggle } from './hooks/useFavoritesSync';
 import { usePreferencesSync } from './hooks/usePreferencesSync';
+import { orderByBeachProfile, readStoredBeachProfile, storeBeachProfile } from './utils/beachProfile';
 import { useBeaches } from './hooks/useBeaches';
 import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
@@ -2017,6 +2018,15 @@ export const App: React.FC = () => {
 
   const [favorites, setFavorites] = useState<number[]>(() => readJsonArrayFromStorage<number>('favorites'));
 
+  // The standing "what I like in a beach" answer, set in the account panel. Kept
+  // apart from `preferences` above on purpose: those are today's chips, this one
+  // travels between islands and devices. See utils/beachProfile.ts.
+  const [beachProfile, setBeachProfile] = useState<BeachProfile>(readStoredBeachProfile);
+  const handleBeachProfileChange = React.useCallback((next: BeachProfile) => {
+    setBeachProfile(next);
+    storeBeachProfile(next);
+  }, []);
+
   // Accounts. Both of these are no-ops when Supabase is unconfigured or nobody is
   // signed in — no network, no Supabase library, no change to the line above.
   const auth = useAuth();
@@ -2025,6 +2035,8 @@ export const App: React.FC = () => {
     userId: auth.user?.id ?? null,
     preferences,
     onRemotePreferences: setPreferences,
+    profile: beachProfile,
+    onRemoteProfile: setBeachProfile,
   });
 
   // The photo-upload sheet. `beach` is set when it was opened from a beach page
@@ -4523,6 +4535,17 @@ export const App: React.FC = () => {
     return typeof own === 'number' && Number.isFinite(own) ? own : currentBeaufort;
   }, [perBeachMapWind, currentBeaufort]);
   /**
+   * The saved beach profile is allowed to reshuffle picks ONLY inside a set that
+   * today's weather already treats as one answer: same Beaufort on that shore,
+   * same exposure standing. Group any coarser and a taste for a beach bar could
+   * outrank the wind — the one thing this app must never let a preference do.
+   * Group any finer and the profile would never get to decide anything.
+   */
+  const beachProfileGroupKey = React.useCallback(
+    (item: SuitableBeach) => `${beaufortAtBeach(item)}|${exposurePriority(item)}`,
+    [beaufortAtBeach],
+  );
+  /**
    * The strongest wind actually blowing on this region's shores. Used only where a decision is
    * region-wide by nature (the "is it windy enough to filter at all?" switch below); anything
    * that concerns a single beach uses beaufortAtBeach instead.
@@ -4929,8 +4952,10 @@ export const App: React.FC = () => {
     ));
     const topPickPool = getWindPriorityTopPickPool(candidates, beaufort, perBeachMapWind);
     const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort, perBeachMapWind);
-    return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind]);
+    const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
+    // Last, and only within equally-good groups: the person's own saved profile.
+    return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
+  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
   const topRecommendedSuitableBeaches = useMemo(() => {
     // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
     // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
@@ -4942,8 +4967,14 @@ export const App: React.FC = () => {
       dateKey: selectedForecast ? wallClockDayKey(selectedForecast.date) : '',
       regionKey: String(selectedIsland?.id ?? ''),
     });
-    return varied.slice(0, getTopRecommendationDisplayLimit(varied.length));
-  }, [recommendedSuitableBeaches, selectedForecast, selectedIsland]);
+    // …and then the saved profile gets the last word, because the rotation's whole
+    // premise — "these are equally good, so vary them" — stops being true the
+    // moment someone has told us what they like. Re-applying it here rather than
+    // suppressing the rotation keeps both: beaches that are equal ON THE PROFILE
+    // TOO still rotate, since the sort is stable and leaves their order alone.
+    const preferred = orderByBeachProfile(varied, beachProfile, item => item.beach, beachProfileGroupKey);
+    return preferred.slice(0, getTopRecommendationDisplayLimit(preferred.length));
+  }, [recommendedSuitableBeaches, selectedForecast, selectedIsland, beachProfile, beachProfileGroupKey]);
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
   // Colours come from each beach's own shore: perBeachMapWind, declared above the filtering
   // memos that now read it too.
@@ -5556,8 +5587,13 @@ export const App: React.FC = () => {
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
-    return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind]);
+    const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
+    return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
+  // Deliberately untouched by the saved beach profile: this is the "nothing is
+  // good today" list, where the only honest ordering is least-exposed first. A
+  // preference for sand has nothing useful to say about which bad day is least
+  // bad, and letting it speak here would dress a compromise up as a match.
   const noIdealFallbackCandidates = useMemo(() => {
     if (!hasNoSwimmableBeachesToday || !isStrongRecommendationMode || !selectedForecast) return [];
 
@@ -5618,8 +5654,9 @@ export const App: React.FC = () => {
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
     const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
-    return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow, beaufortAtBeach, perBeachMapWind]);
+    const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
+    return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
   const strongManageableBeaches = useMemo(() => (
     windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
@@ -7635,6 +7672,8 @@ export const App: React.FC = () => {
         onSignOut={() => { void auth.signOut(); }}
         onDeleteAccount={deleteAccount}
         onAddPhoto={() => handleAddPhoto('account_panel')}
+        beachProfile={beachProfile}
+        onBeachProfileChange={handleBeachProfileChange}
         forecastSlot={showHeaderForecast && !showLanding ? (
           <>
             {isStartupLocationPromptOpen && (
