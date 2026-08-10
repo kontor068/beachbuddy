@@ -28,6 +28,7 @@ import {
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
+import { hasDownwindSeaSample } from '../utils/offshoreFlatWater';
 import { assessSwellExposure } from '../utils/swellExposure';
 import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
@@ -2155,6 +2156,13 @@ export const calculateBeachScore = (
     windAssessment.simpleWindSuitability,
     seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
     windAssessment.enclosedCove,
+    // Same profile, same live bearing, same swell reading the map pin's flag is built from —
+    // the chip and the pin must not answer "is this sea reading downwind?" differently.
+    hasDownwindSeaSample({
+      profile: options?.geospatialProfile,
+      windDirectionDeg: weather.wind.deg,
+      swellWaveHeightM: marine?.swellWaveHeightM,
+    }),
   );
 
   return {

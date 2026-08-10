@@ -261,6 +261,22 @@ const ceilingRung = (c: SeaToneCeiling): number => (c === null ? MILDEST_RUNG : 
 export const MAX_SHELTER_CEILING_RELIEF = 1;
 
 /**
+ * How many rungs the ceiling relaxes when the marine sample point is DOWNWIND of the beach —
+ * the wind is blowing off the land over zero fetch, no swell is running, and the "open sea"
+ * reading was therefore taken from water this wind is pushing AWAY from the shore (see
+ * utils/offshoreFlatWater.hasDownwindSeaSample for the gates and the national measurement).
+ *
+ * TWO, and never more — this is the «δεύτερο σκαλοπάτι, ποτέ μπλε» decision (Miltos,
+ * 10/08/2026). Two rungs takes a red open-water ceiling to yellow, which is where CEILING_ORDER
+ * ends: the rung index is still clamped to MILDEST_RUNG, so the ceiling can soften to «Καλή»
+ * but can never disappear. Blue over a running open sea stays structurally impossible — the
+ * live national measurement found 426 hour-combinations where a full ceiling skip would have
+ * produced exactly that (Κεδρόδασος-class, 0,8–1,4 μ. seas whose direction nobody verified),
+ * and this constant is why none of them can happen.
+ */
+export const DOWNWIND_SAMPLE_CEILING_RELIEF = 2;
+
+/**
  * A running sea sets a CEILING on how calm a surface may look. The wind ladder above cannot
  * see a sea built by wind over the water, earlier in the day, or further down the fetch —
  * which is why a light-wind day on an open shore was calm by construction.
@@ -282,17 +298,20 @@ export const capToneBySeaState = (
   windTone: CalmnessTone,
   seaStateM: number | undefined,
   exempt = false,
-  exposureLevel?: ExposureLevel | string
+  exposureLevel?: ExposureLevel | string,
+  /** The sample the sea reading came from is downwind of this shore — see DOWNWIND_SAMPLE_CEILING_RELIEF. */
+  downwindSeaSample = false
 ): CalmnessTone => {
   if (exempt) return windTone;
   const openWaterCeiling = seaStateToneCeiling(seaStateM);
   if (!openWaterCeiling) return windTone;
 
+  const relief = downwindSeaSample ? DOWNWIND_SAMPLE_CEILING_RELIEF : MAX_SHELTER_CEILING_RELIEF;
   const shoreCeiling = seaStateToneCeiling(shoreSeaStateM(seaStateM, exposureLevel));
   const rung = Math.min(
     MILDEST_RUNG,
     ceilingRung(shoreCeiling),
-    ceilingRung(openWaterCeiling) + MAX_SHELTER_CEILING_RELIEF
+    ceilingRung(openWaterCeiling) + relief
   );
   const ceiling = CEILING_ORDER[rung];
 
@@ -312,6 +331,7 @@ export const resolveConditionTone = ({
   isEnclosedCove = false,
   seaStateM,
   offshoreFlatWater = false,
+  downwindSeaSample = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -328,6 +348,12 @@ export const resolveConditionTone = ({
    * running outside, so the ceiling must still get its say.
    */
   offshoreFlatWater?: boolean;
+  /**
+   * The sea reading was taken downwind of this shore with no swell running
+   * (utils/offshoreFlatWater.hasDownwindSeaSample) — the ceiling relaxes by one extra rung,
+   * never further. Same passed-not-derived contract as offshoreFlatWater, same reason.
+   */
+  downwindSeaSample?: boolean;
 }): CalmnessTone => capToneBySeaState(
   resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
   seaStateM,
@@ -342,7 +368,8 @@ export const resolveConditionTone = ({
   // this rule existed. Caught by validateConditionToneAgreement's offshore-lift-still-obeys-the-sea.
   coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
     && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater),
-  exposureLevel
+  exposureLevel,
+  downwindSeaSample
 );
 
 /**

@@ -1,5 +1,6 @@
 import type { GeospatialExposureProfile } from '../types';
 import { onshoreComponent } from './geospatialExposureModel';
+import { SWELL_MIN_HEIGHT_M } from './swellExposure';
 import { windSectorFromDegrees } from './windExposure';
 import { estimateFetchLimitedWaveHeightM } from './waveModel';
 
@@ -105,15 +106,14 @@ export interface OffshoreFlatWaterInput {
 }
 
 /**
- * True when the water in front of this beach is flat because the wind is blowing off the land
- * behind it, at the one wind strength where saying so changes the colour.
+ * The geometric core both rules below share: the live wind sector is near-totally land-blocked,
+ * has essentially no fetch, and the wind meets the shore more than 143° off head-on — i.e. the
+ * wind is blowing OFF the land and has nothing to build a wave on in front of this beach.
  */
-export const holdsFlatWaterUnderOffshoreWind = ({
-  profile,
-  windDirectionDeg,
-  beaufort,
-}: OffshoreFlatWaterInput): boolean => {
-  if (beaufort !== OFFSHORE_FLAT_BEAUFORT) return false;
+const sectorHoldsNoWindWave = (
+  profile: GeospatialExposureProfile | undefined,
+  windDirectionDeg: number | undefined
+): boolean => {
   if (!profile) return false;
   if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return false;
 
@@ -136,4 +136,63 @@ export const holdsFlatWaterUnderOffshoreWind = ({
   if (typeof modelledM === 'number' && modelledM > OFFSHORE_FLAT_MAX_MODELLED_WAVE_M) return false;
 
   return onshoreComponent(windDirectionDeg, facingDeg) <= OFFSHORE_FLAT_MAX_ONSHORE;
+};
+
+/**
+ * True when the water in front of this beach is flat because the wind is blowing off the land
+ * behind it, at the one wind strength where saying so changes the colour.
+ */
+export const holdsFlatWaterUnderOffshoreWind = ({
+  profile,
+  windDirectionDeg,
+  beaufort,
+}: OffshoreFlatWaterInput): boolean =>
+  beaufort === OFFSHORE_FLAT_BEAUFORT && sectorHoldsNoWindWave(profile, windDirectionDeg);
+
+/**
+ * THE MARINE SAMPLE POINT IS DOWNWIND OF THIS BEACH — ITS SEA IS LEAVING, NOT ARRIVING.
+ *
+ * Σχοινιάς, 10/08/2026: a 5–6 Bft northerly off the land, 0,2 km of fetch, a webcam showing
+ * glass — and an orange pin, because the sea-state ceiling read 1,3 μ. from the beach's
+ * marineSamplePoint 9,4 km SOUTH, where that same northerly has the whole South Evoian Gulf to
+ * work with. The sample point sits along `facingDeg` by construction (utils/marineSamplePoints),
+ * so when the onshore gate below passes (wind >143° off head-on) the wind is blowing FROM the
+ * beach TOWARD the sample point: waves there are being driven away from this shore and do not
+ * come back against the wind.
+ *
+ * Measured nationally 10/08/2026 (live, 2.557 beaches × 12 h — .tmp/downwind-ceiling-
+ * measurement.json): 222 beaches (8,7%) wore a rougher colour than their own water for at least
+ * one hour; 73% of the changed hours were orange→yellow on the meltemi lee coasts (Κάρπαθος,
+ * Μύκονος, Τήνος, Μήλος).
+ *
+ * WHAT THIS FLAG MAY BUY, and what it may not: consumed only by utils/suitabilityTone, where it
+ * widens the sea-ceiling relief from one rung to two — red→yellow instead of red→orange. It can
+ * NEVER remove the ceiling entirely: the same national measurement found 426 hour-combinations
+ * that a full skip would have painted BLUE under a 0,8–1,4 μ. open sea (Κεδρόδασος-class, where
+ * the "wind wave" at the sample point may be travelling shoreward from a different fetch). Blue
+ * over a running sea is the exact false calm the house rule forbids, so the two-rung form was
+ * chosen (Miltos, 10/08/2026) and the never-blue property is structural in CEILING_ORDER.
+ *
+ * No Beaufort gate, deliberately — unlike the colour lift above. At ≥6 Bft the wind tone is
+ * already orange/red and a yellow ceiling cannot lift it; below 5 the relief only softens what
+ * the distant sample claimed. The swell veto is the load-bearing safety line: ground swell wraps
+ * around headlands against the wind, so ANY meaningful swell (≥ SWELL_MIN_HEIGHT_M, height alone
+ * — direction unknown must still veto) means the distant reading may genuinely be arriving, and
+ * the ceiling keeps its full say. An unknown swell reading also vetoes: no relief without
+ * evidence.
+ */
+export const hasDownwindSeaSample = ({
+  profile,
+  windDirectionDeg,
+  swellWaveHeightM,
+}: {
+  profile?: GeospatialExposureProfile;
+  /** Degrees the wind comes FROM, at THIS beach — not the region's. */
+  windDirectionDeg?: number;
+  /** Live swell height at this beach's marine sample point, metres. */
+  swellWaveHeightM?: number;
+}): boolean => {
+  if (typeof swellWaveHeightM !== 'number' || !Number.isFinite(swellWaveHeightM)) return false;
+  if (swellWaveHeightM >= SWELL_MIN_HEIGHT_M) return false;
+  return sectorHoldsNoWindWave(profile, windDirectionDeg);
 };

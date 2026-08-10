@@ -72,7 +72,7 @@ const PERIODS_S = [undefined, 2.5, 4, 7];
 const CALM_TONES = new Set(['blue']);
 
 /** The chip as the app actually builds it: engine shape in, scoring-layer sea state applied. */
-const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater) => applySeaStateToWindSuitability(
+const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample) => applySeaStateToWindSuitability(
   {
     // Only these three fields drive the colour; the rest is carried through untouched.
     suitabilityColor: 'red',
@@ -86,6 +86,7 @@ const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFl
   },
   seaStateM,
   enclosedCove,
+  downwindSeaSample,
 ).suitabilityColor;
 
 const RULES = [
@@ -143,9 +144,12 @@ const RULES = [
     // make a 5 Bft shore read calmer than orange, and it may do it only on a shore the engine
     // itself calls protected, only at exactly 5 Bft, and never past yellow. Anything else means a
     // new calm branch has been opened above 4 Bft without the measurement that justified this one.
-    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM }) => {
+    // `downwindSeaSample` is held EQUAL on both sides of the comparison, so this rule keeps
+    // isolating the lift's own effect — without that, every downwind-relieved row would read as
+    // an illegal lift at the wrong Beaufort.
+    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample }) => {
       if (!offshoreFlatWater) return null;
-      const withoutLift = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM });
+      const withoutLift = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM, downwindSeaSample });
       if (pin === withoutLift) return null;
       if (beaufort !== 5) return `lifted the colour at ${beaufort} Bft — the rule is 5 Bft only`;
       if (exposureStatus !== 'protected') return `lifted a "${exposureStatus}" shore, not a protected one`;
@@ -158,13 +162,36 @@ const RULES = [
     // The offshore flag says the WIND is not building a wave here. It says nothing about a swell
     // already running outside, which wraps into lee shores — so unlike the cove, this rule gets
     // no exemption from the sea-state ceiling. If the lifted colour is ever calmer than what the
-    // sea alone permits, the exemption has been added by accident.
-    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM }) => {
+    // sea alone permits, the exemption has been added by accident. The ceiling is re-applied with
+    // the row's OWN downwind flag: the relief is part of the ceiling, not an escape from it.
+    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample }) => {
       if (!offshoreFlatWater) return null;
-      const ceilinged = capToneBySeaState(pin, seaStateM, false, exposureStatus);
+      const ceilinged = capToneBySeaState(pin, seaStateM, false, exposureStatus, downwindSeaSample);
       return ceilinged === pin
         ? null
         : `"${pin}" survived a sea that permits only "${ceilinged}"`;
+    },
+  },
+  {
+    id: 'downwind-relief-is-one-rung-and-never-blue',
+    // The «δεύτερο σκαλοπάτι, ποτέ μπλε» decision (10/08/2026): a downwind marine sample may
+    // soften the sea ceiling by exactly ONE extra rung — red→yellow at most — and may never
+    // delete it. Two asserts: (a) the flag's whole effect on any row is at most one tone step
+    // toward calm and never toward rough; (b) over a sea at or above the amber line the result
+    // is never blue, whatever the flag says. (b) is also covered by no-calm-colour-over-a-
+    // running-sea sweeping the widened grid, but it is restated here so a future exemption for
+    // the downwind flag specifically (the Κεδρόδασος temptation — 426 live hour-combinations
+    // measured on 10/08/2026) fails a rule whose name says why.
+    check: ({ pin, exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample }) => {
+      if (!downwindSeaSample) return null;
+      if (seaStateM !== undefined && seaStateM >= SEA_STATE_AMBER_M && CALM_TONES.has(pin)) {
+        return `"${pin}" over a ${seaStateM.toFixed(2)} m sea because the sample is downwind — the relief must never delete the ceiling`;
+      }
+      const withoutRelief = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater });
+      const step = CALMNESS_ORDER.indexOf(pin) - CALMNESS_ORDER.indexOf(withoutRelief);
+      if (step < 0) return `the downwind flag made the pin ROUGHER ("${withoutRelief}" → "${pin}")`;
+      if (step > 1) return `the downwind flag lifted "${withoutRelief}" to "${pin}" — more than one rung`;
+      return null;
     },
   },
 ];
@@ -184,22 +211,28 @@ for (const exposureStatus of LEVELS) {
           // Both values of the offshore-flat-water flag, over the WHOLE grid rather than only its
           // own Beaufort: the rules below have to be able to catch it firing where it should not.
           for (const offshoreFlatWater of [false, true]) {
-            const seaStateM = seaStateSeverityM(waveHeightM, periodS);
-            const row = {
-              exposureStatus,
-              beaufort,
-              enclosedCove,
-              waveHeightM,
-              periodS,
-              seaStateM,
-              offshoreFlatWater,
-              pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater }),
-              chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater),
-            };
-            combinations += 1;
-            for (const rule of RULES) {
-              const reason = rule.check(row);
-              if (reason) failures.push({ rule: rule.id, reason, row });
+            // Same treatment for the downwind-sample flag (10/08/2026): in production it is gated
+            // by geometry and swell, but the grid asserts the ladder holds even where the gates
+            // would never send it.
+            for (const downwindSeaSample of [false, true]) {
+              const seaStateM = seaStateSeverityM(waveHeightM, periodS);
+              const row = {
+                exposureStatus,
+                beaufort,
+                enclosedCove,
+                waveHeightM,
+                periodS,
+                seaStateM,
+                offshoreFlatWater,
+                downwindSeaSample,
+                pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample }),
+                chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample),
+              };
+              combinations += 1;
+              for (const rule of RULES) {
+                const reason = rule.check(row);
+                if (reason) failures.push({ rule: rule.id, reason, row });
+              }
             }
           }
         }
@@ -217,7 +250,7 @@ for (const failure of failures) {
 // RULES covers the grid sweep; the wiring rule and the slider rule are asserted after it, so the
 // headline counts all of them — a gate that under-reports its own coverage invites the assumption
 // that something is checked when it is not.
-const NON_GRID_RULES = 6;
+const NON_GRID_RULES = 7;
 console.log(`Grid: ${combinations} condition combinations · ${RULES.length + NON_GRID_RULES} rules\n`);
 
 for (const rule of RULES) {
@@ -476,7 +509,11 @@ if (!/visibleWindColorGuideRows\s*=\s*LEGEND_TONE_ORDER/.test(mapSource)) {
     });
   } else {
     // Every input resolveConditionTone reads, plus the wind that keys the tone band.
-    for (const field of ['seaStateWaveM', 'seaStatePeriodS', 'enclosedCove', 'exposureLevel']) {
+    // `marine` and `geospatialExposure` joined 10/08/2026: the downwind-sample flag is computed
+    // inside BeachMap from item.marine.swellWaveHeightM + item.geospatialExposure, so stripping
+    // either starves the relief silently and the detail pin goes back to orange while the region
+    // pin reads yellow.
+    for (const field of ['seaStateWaveM', 'seaStatePeriodS', 'enclosedCove', 'exposureLevel', 'marine', 'geospatialExposure']) {
       if (!body.includes(field)) {
         failures.push({
           rule: 'detail-map-gets-the-same-inputs',
@@ -500,6 +537,33 @@ if (!/visibleWindColorGuideRows\s*=\s*LEGEND_TONE_ORDER/.test(mapSource)) {
       row: {},
     });
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 5c — the REGION map's items carry the marine forecast.
+//
+// Same starvation class as 5b, other map. App.tsx builds mapSuitableBeaches by hand-picking
+// fields off the scoring result; `marine` was not among them, so the pin's downwind-sample flag
+// read swellWaveHeightM === undefined and vetoed ("no relief without evidence") while the card
+// chip — coloured inside scoring, where marine exists — granted it. Σχοινιάς 10/08/2026: orange
+// pin beside a yellow card, found live by Miltos, invisible to the same-inputs grid above
+// because the two surfaces were fed DIFFERENT inputs.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const appSourceForMarine = readFileSync(path.join(root, 'App.tsx'), 'utf8');
+  const builder = appSourceForMarine.match(/seaStateWaveM:\s*scoreResult\.seaStateWaveM[\s\S]{0,1600}?geospatialExposure,/);
+  if (!builder || !/marine:\s*scoreResult\.marine/.test(builder[0])) {
+    failures.push({
+      rule: 'region-map-gets-the-marine',
+      reason: 'the mapSuitableBeaches builder in App.tsx no longer passes `marine: scoreResult.marine` — '
+        + 'the pin\'s downwind-sample flag silently vetoes on missing swell and the pin can wear a '
+        + 'rougher colour than the card chip built from the same score.',
+      row: {},
+    });
+  }
+  const marineFailures = failures.filter(failure => failure.rule === 'region-map-gets-the-marine');
+  console.log(`${marineFailures.length === 0 ? 'OK  ' : 'FAIL'} region-map-gets-the-marine: ${marineFailures.length}`);
+  for (const hit of marineFailures) console.log(`       ${hit.reason}`);
 }
 
 const detailFailures = failures.filter(failure => failure.rule === 'detail-map-gets-the-same-inputs');

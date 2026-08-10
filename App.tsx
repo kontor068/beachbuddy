@@ -4693,6 +4693,13 @@ export const App: React.FC = () => {
         waveHeightM: scoreResult.waveHeightM,
         seaStateWaveM: scoreResult.seaStateWaveM,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
+        // The full marine forecast rides along for the map's downwind-sample flag
+        // (utils/offshoreFlatWater.hasDownwindSeaSample reads swellWaveHeightM). Found the hard
+        // way 10/08/2026: without it the pin vetoed the relief ("unknown swell") while the card
+        // chip — coloured inside scoring, where marine exists — granted it, and Σχοινιάς wore
+        // an orange pin beside a yellow card. Guarded by validateConditionToneAgreement's
+        // region-map-gets-the-marine rule.
+        marine: scoreResult.marine,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,
         swimmingComfort: scoreResult.swimmingComfort,

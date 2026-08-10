@@ -22,7 +22,7 @@ import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
 import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
-import { holdsFlatWaterUnderOffshoreWind } from '../utils/offshoreFlatWater';
+import { hasDownwindSeaSample, holdsFlatWaterUnderOffshoreWind } from '../utils/offshoreFlatWater';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1034,7 +1034,9 @@ const getExposureMarkerTone = (
   // so a beach with light wind and a real running sea was blue by construction.
   seaStateM?: number,
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
-  offshoreFlatWater = false
+  offshoreFlatWater = false,
+  /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
+  downwindSeaSample = false
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1076,6 +1078,7 @@ const getExposureMarkerTone = (
     isEnclosedCove,
     seaStateM,
     offshoreFlatWater,
+    downwindSeaSample,
   })];
 };
 
@@ -1183,7 +1186,9 @@ const createExposureIcon = (
   /** Enclosed-cove badge. Decided by suitabilityTone.showsCoveBadge, never inline here. */
   showCoveBadge = false,
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
-  offshoreFlatWater = false
+  offshoreFlatWater = false,
+  /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
+  downwindSeaSample = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -1207,7 +1212,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -1956,6 +1961,19 @@ const BeachMap: React.FC<BeachMapProps> = ({
   });
 
   /**
+   * Is this beach's sea reading coming from DOWNWIND of it? (utils/offshoreFlatWater.
+   * hasDownwindSeaSample — Σχοινιάς-class: offshore wind, zero fetch, no swell, so the 1,3 μ.
+   * «ανοιχτά» was measured in water this wind is pushing away from the shore.) Fed the beach's
+   * own bearing for the same reason beachOffshoreFlatWater is; the swell comes from the beach's
+   * own marine forecast, and an absent reading vetoes rather than passes.
+   */
+  const beachDownwindSeaSample = (item: SuitableBeach): boolean => hasDownwindSeaSample({
+    profile: item.geospatialExposure,
+    windDirectionDeg: beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg,
+    swellWaveHeightM: item.marine?.swellWaveHeightM,
+  });
+
+  /**
    * The spread of wind actually blowing on the shores currently drawn — what the compass widget
    * prints instead of the region's single figure.
    *
@@ -2004,6 +2022,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     isEnclosedCove: Boolean(item.enclosedCove),
     seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
     offshoreFlatWater: beachOffshoreFlatWater(item),
+    downwindSeaSample: beachDownwindSeaSample(item),
   });
 
   // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
@@ -2529,12 +2548,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
       : visibleExposureLevel(item);
     // Same sea ceiling as the marker itself: this badge is what the user sees when they tap that
     // pin, so a yellow pin opening a blue badge would be the pin/word divergence all over again.
+    // Same per-beach wind and the same two offshore flags too (10/08/2026): the badge used to sit
+    // on the REGION Beaufort with neither flag, so a downwind-relieved yellow pin opened an
+    // orange badge — the exact divergence the comment above exists to forbid, one surface later.
     const exposureTone = getExposureMarkerTone(
       exposureLevel,
       showWindExposureColors,
-      windBeaufort,
+      beachBeaufort(item) ?? windBeaufort,
       Boolean(item.enclosedCove),
-      seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS)
+      seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
+      beachOffshoreFlatWater(item),
+      beachDownwindSeaSample(item)
     );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
@@ -3141,7 +3165,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item))}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

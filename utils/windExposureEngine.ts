@@ -340,7 +340,14 @@ const getSimpleWindColor = (
 export const applySeaStateToWindSuitability = (
   suitability: SimpleWindSuitability,
   seaStateM: number | undefined,
-  enclosedCove: boolean
+  enclosedCove: boolean,
+  /**
+   * The sea reading came from downwind of this shore with no swell running
+   * (utils/offshoreFlatWater.hasDownwindSeaSample). Computed by the caller — this is the layer
+   * where the live marine data exists — from the SAME profile and bearing the map pin uses, so
+   * the chip and the pin cannot answer it differently.
+   */
+  downwindSeaSample = false
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -348,6 +355,7 @@ export const applySeaStateToWindSuitability = (
     isEnclosedCove: enclosedCove,
     seaStateM,
     offshoreFlatWater: suitability.offshoreFlatWater,
+    downwindSeaSample,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
