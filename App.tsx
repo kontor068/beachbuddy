@@ -944,8 +944,14 @@ const isStrongWindSuitableCandidate = (
   windSpeedKmph: number,
   fallbackWaveHeightM?: number
 ): boolean => {
+  // The wind THIS item was scored with — its own cluster when one exists (carried as
+  // windSpeedKmph since the pool moved onto each beach's own weather, 10/08/2026), the caller's
+  // region figure otherwise. Judging a beach's sea with a wind that is not blowing there is the
+  // exact defect PORISMA §7στ measured (Πάνορμος: 38/avoid under the region's 5 Bft, 75/good
+  // under its own 3 Bft).
+  const itemWindKmph = item.windSpeedKmph ?? windSpeedKmph;
   const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? fallbackWaveHeightM;
-  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
+  const seaScore = calculateSeaConditionScore(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
   const hasBlockingWarning = item.warnings?.some(warning =>
     warning.severity === 'critical' ||
     warning.type === 'rough_sea' ||
@@ -956,7 +962,7 @@ const isStrongWindSuitableCandidate = (
   return item.score >= 60 &&
     item.swimmingComfort !== 'avoid_swimming' &&
     seaScore >= MIN_STRONG_SUITABLE_SEA_CONDITION_SCORE &&
-    !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS) &&
+    !hasPoorSeaConditions(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS) &&
     !hasBlockingWarning;
 };
 
@@ -965,8 +971,10 @@ const isNoIdealFallbackCandidate = (
   windSpeedKmph: number,
   fallbackWaveHeightM?: number
 ): boolean => {
+  // Same per-item wind rule as isStrongWindSuitableCandidate above, same 10/08 reason.
+  const itemWindKmph = item.windSpeedKmph ?? windSpeedKmph;
   const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? fallbackWaveHeightM;
-  const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
+  const seaScore = calculateSeaConditionScore(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
   const hasHardExclusion = item.warnings?.some(warning =>
     warning.type === 'wind_sport_spot' ||
     (warning.type === 'exposed_to_wind' && item.exposureLevel === 'exposed')
@@ -4759,11 +4767,47 @@ export const App: React.FC = () => {
     return favorites.filter(id => !currentIslandBeachIds.has(id)).length;
   }, [favorites, selectedIsland]);
 
+  /**
+   * ΚΑΘΕ ΥΠΟΨΗΦΙΑ ΒΑΘΜΟΛΟΓΕΙΤΑΙ ΜΕ ΤΟΝ ΑΝΕΜΟ ΚΑΙ ΤΗ ΘΑΛΑΣΣΑ ΤΗΣ ΔΙΚΗΣ ΤΗΣ ΑΚΤΗΣ (10/08/2026).
+   *
+   * The exact per-beach forecast chain `beachScoreById` has used since 02/08 — own home-region
+   * forecast in «Κοντά μου», own-shore marine (01/08), own cluster wind (02/08), temperature and
+   * sky staying the area's by reference. Built once here and handed to getSuitableBeaches as its
+   * `beachWeatherById`, so the CANDIDATE POOL finally reads the same weather as the pin, the card
+   * and the detail page.
+   *
+   * Why this existed as a gap: the 02/08 conversion moved the four THRESHOLD decisions onto each
+   * beach's own shore (see docs/team/HANDOVER-per-beach-wind, «Η ΔΙΟΡΘΩΣΗ»), but the pool's
+   * SCORE stayed an input computed from the one region wind. Measured consequence (Naxos meltemi,
+   * 10/08, PORISMA §7στ): Πάνορμος — organized, asphalt, its own shore at 3 Bft, painted ΙΔΑΝΙΚΗ
+   * by the map — scored 38/avoid_swimming under the region's 5 Bft and never became a candidate
+   * at all. Same family as the national 02/08 measurement: «πετιέται έξω ενώ είναι πιο ήρεμη —
+   * 889 beach-hours (10,4%)». Error direction: false alarm, the direction §5 of the PORISMA says
+   * no gate watches.
+   *
+   * NOT reused from beachScoreById: that map is computed WITH userLocation and preferences, and
+   * this pool is deliberately the same for every visitor (no distance term, no taste term) — see
+   * «Same conditions for all users». The forecasts are shared; the scoring inputs are not.
+   */
+  const dailyBeachWeatherById = useMemo<BeachWeatherById>(() => {
+    if (!selectedIsland || !deferredSelectedForecast) return {};
+    const byId: BeachWeatherById = {};
+    selectedIsland.beaches.forEach(beach => {
+      const beachAreaForecast = nearMeBeachForecastById[beach.id]
+        ?? deferredBeachAreaForecastById[beach.id]
+        ?? deferredSelectedForecast;
+      const beachOwnForecast = withBeachOwnWind(beach.id, beachAreaForecast);
+      // Identity means "this beach has no data of its own" — leave it out so getSuitableBeaches
+      // takes its normal region fallback and the item is marked island-fallback, not beach-cluster.
+      if (beachOwnForecast !== deferredSelectedForecast) byId[beach.id] = beachOwnForecast;
+    });
+    return byId;
+  }, [selectedIsland, deferredSelectedForecast, deferredBeachAreaForecastById, nearMeBeachForecastById, withBeachOwnWind]);
   const dailySuitableBeaches = useMemo(() => {
     if (!selectedIsland || !deferredSelectedForecast) return [];
-    const scored = getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, undefined, geospatialExposureProfiles);
+    const scored = getSuitableBeaches(selectedIsland.beaches, deferredSelectedForecast, language, undefined, deferredSelectedForecast.hourly, undefined, dailyBeachWeatherById, geospatialExposureProfiles);
     return suppressNaturistFromRecommendations ? scored.filter(item => !isNaturistBeach(item.beach)) : scored;
-  }, [selectedIsland, deferredSelectedForecast, language, geospatialExposureProfiles, suppressNaturistFromRecommendations]);
+  }, [selectedIsland, deferredSelectedForecast, language, dailyBeachWeatherById, geospatialExposureProfiles, suppressNaturistFromRecommendations]);
 
   const hasActivePreferenceFilters = useMemo(() => {
     return Object.values(preferences).some(Boolean);
@@ -4978,8 +5022,9 @@ export const App: React.FC = () => {
     const waveHeightM = selectedForecast.marine?.waveHeightM;
     const candidates = recommendationSource.filter(item => {
       if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return false;
-      // One shared implementation with the trip planner (services/topPickRanking).
-      return passesTopPickSeaGate(item, windSpeedKmph, waveHeightM);
+      // One shared implementation with the trip planner (services/topPickRanking) — driven by
+      // the wind the item was scored with (its own shore when known), not the region's.
+      return passesTopPickSeaGate(item, item.windSpeedKmph ?? windSpeedKmph, waveHeightM);
     }).map(item => applyRemainingTopPickWindow(
       item,
       selectedForecast.date,
@@ -5418,7 +5463,7 @@ export const App: React.FC = () => {
       );
       return item.score >= 70 &&
         !hasSeriousWarning &&
-        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM, item.seaStatePeriodS);
+        !hasPoorSeaConditions(item.isExposed, item.windSpeedKmph ?? windSpeedKmph, item.exposureLevel, item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM, item.seaStatePeriodS);
     });
 
     const totalBeachCount = selectedIsland.beaches.length;
@@ -5458,8 +5503,11 @@ export const App: React.FC = () => {
     if (dailySuitableBeaches.length === 0) return true;
 
     const swimmableBeaches = dailySuitableBeaches.filter(item => {
+      // Per-item wind (10/08): a day is only «no swimmable beaches» if no beach's OWN shore
+      // clears the bar — the region centre's figure no longer speaks for every coast here.
+      const itemWindKmph = item.windSpeedKmph ?? windSpeedKmph;
       const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM;
-      const seaScore = calculateSeaConditionScore(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
+      const seaScore = calculateSeaConditionScore(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
       const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
       const hasSeriousWarning = item.warnings?.some(warning =>
         warning.severity === 'critical' ||
@@ -5470,7 +5518,7 @@ export const App: React.FC = () => {
       return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
         hasGoodHourlySea &&
         !hasSeriousWarning &&
-        !hasPoorSeaConditions(item.isExposed, windSpeedKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS);
+        !hasPoorSeaConditions(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS);
     });
 
     return swimmableBeaches.length === 0;
@@ -6734,8 +6782,8 @@ export const App: React.FC = () => {
     if (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) return false;
 
     const windSpeedKmph = selectedForecast ? selectedForecast.wind.speed * 3.6 : 0;
-    // One shared implementation with the podium and the trip planner.
-    return passesTopPickSeaGate(item, windSpeedKmph, selectedForecast?.marine?.waveHeightM);
+    // One shared implementation with the podium and the trip planner — per-item wind, 10/08.
+    return passesTopPickSeaGate(item, item.windSpeedKmph ?? windSpeedKmph, selectedForecast?.marine?.waveHeightM);
   };
   const directoryTopRecommendationCandidatePool = [
     ...recommendedSuitableBeaches,

@@ -1036,7 +1036,10 @@ export const explainTopPickExclusion = (
 
   if (
     (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) ||
-    !passesTopPickSeaGate(item, windSpeedKmph, fallbackWaveHeightM)
+    // The item's own scored wind when it carries one — the explanation must judge with the same
+    // wind the gates themselves use (10/08), or it would tell a calm-shore beach its sea fails
+    // a check the actual gate no longer runs against the region figure.
+    !passesTopPickSeaGate(item, item.windSpeedKmph ?? windSpeedKmph, fallbackWaveHeightM)
   ) {
     return 'sea';
   }
