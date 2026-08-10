@@ -97,8 +97,12 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
 
 /**
  * How this shore sits in today's wind, in the fewest words that still mean something to a
- * swimmer. Deliberately everyday language, not the scoring vocabulary: «στη σκιά» and
+ * swimmer. Deliberately everyday language, not the scoring vocabulary: «απάνεμη» and
  * «κατάμουτρα» need no glossary, «Προστατευμένη / Εκτεθειμένη» reads like a category.
+ *
+ * The Greek word for "protected" used to be «στη σκιά». It was wrong for this site: we also
+ * say «σκιά» for actual shade from the sun (amenities, guide copy), so «Β · στη σκιά» read
+ * as "there are trees" instead of "the wind misses this shore". «Απάνεμη» cannot be misread.
  *
  * Wired from the MAP-ALIGNED exposure level, so this line and the pin colour are the same
  * fact — that is the whole point. A reader comparing an orange 2,0 m beach with a red 1,3 m
@@ -108,7 +112,7 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  */
 export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string }> = {
   en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on' },
-  gr: { protected: 'στη σκιά', partial: 'πλάγια', exposed: 'κατάμουτρα' },
+  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα' },
   de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal' },
   it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia' },
   fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face' },
@@ -210,7 +214,7 @@ export interface BeachAnswerHeroProps {
     /** Short compass form ("ΒΑ") — the instrument tile is only a quarter-width. */
     directionLabel: string;
     /**
-     * How this shore sits in the live wind — «στη σκιά» / «πλάγια» / «κατάμουτρα». This is
+     * How this shore sits in the live wind — «απάνεμη» / «πλάγια» / «κατάμουτρα». This is
      * the SAME fact the map pin is coloured from (the map-aligned exposure level), so the
      * tile can explain the colour instead of merely repeating the compass point.
      */
@@ -396,7 +400,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
       glyph: <WindGlyph beaufort={wind.beaufort} tone={glyphTone} className="h-full w-full" />,
       label: labels.wind,
       value: `${wind.beaufort} ${language === 'gr' ? 'Μπφ' : 'Bft'}`,
-      // «Β» alone is a compass point; «Β · στη σκιά» is the reason for the colour. The
+      // «Β» alone is a compass point; «Β · απάνεμη» is the reason for the colour. The
       // shelter half is what lets a reader see at a glance why a 2,0 m beach can beat a
       // 1,3 m one — it is the map-aligned exposure level, the same input the pin uses.
       hint: wind.shelterLabel ? `${wind.directionLabel} · ${wind.shelterLabel}` : wind.directionLabel,

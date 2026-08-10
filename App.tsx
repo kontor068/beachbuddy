@@ -6767,7 +6767,35 @@ export const App: React.FC = () => {
       return listable.filter(item => mapBeachTones[item.beach.id] === mapToneFilter).sort(byPriority);
     }
 
-    return selectSuitableByTone(listable, item => mapBeachTones[item.beach.id], byPriority);
+    /**
+     * «ΑΝ ΔΕΝ ΤΗΝ ΣΥΣΤΗΝΕΙΣ ΓΙΑ ΜΠΑΝΙΟ, ΓΙΑΤΙ ΤΗΝ ΕΧΕΙΣ ΚΑΤΑΛΛΗΛΗ;» (Μίλτος, 10/08/2026).
+     *
+     * Reported with a screenshot of Naxos: under a tab reading «Υπόλοιπες κατάλληλες (17)» sat
+     * Άγιος Προκόπιος carrying the line «Σήμερα δεν τη συστήνουμε για μπάνιο». Both sentences are
+     * ours, one screen apart, and one of them has to be wrong.
+     *
+     * The cause is that this list was selected on COLOUR alone. Colour answers "how does today's
+     * wind meet this shore" — it is not a swim verdict, and a beach can be painted a calm yellow
+     * while the engine refuses the swim (a critical official warning, or a sea the swim ladder
+     * vetoes outright). Every OTHER surface already applies these same two filters as its floor:
+     * the podium's last-resort pool (isShelteredFallbackCandidate), the strict pool, the trip
+     * planner. The directory list was the one place that never asked.
+     *
+     * So the word «κατάλληλες» now means it. The two filters are exactly the ones used everywhere
+     * else — not a new, stricter bar: a beach merely rougher than the ones above it stays in the
+     * list and says so on its own card, which is the honest use of that space.
+     *
+     * NOT applied on a colour-filtered list above: picking «Δύσκολη» on the legend is a request to
+     * SEE those beaches, not a request for a recommendation, and the heading there names the
+     * colour rather than calling anything suitable. Removing them would answer a question the
+     * reader did not ask and leave a legend count with no list behind it.
+     */
+    const swimmable = listable.filter(item => (
+      item.swimmingComfort !== 'avoid_swimming' &&
+      !item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')
+    ));
+
+    return selectSuitableByTone(swimmable, item => mapBeachTones[item.beach.id], byPriority);
   })();
 
   const directoryVisibleBeachCardSource = (() => {

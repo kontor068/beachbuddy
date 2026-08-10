@@ -28,7 +28,7 @@
  *  D. THE CARD EXPLAINS ITSELF. An honest label is not enough: an orange 2,0 m beach beside a
  *     red 1,3 m one still reads as arbitrary without the reason. Checks that the hero still
  *     receives `weatherNow.liveSentence` and that the wind tile still carries SHELTER_LABEL
- *     («στη σκιά» / «πλάγια» / «κατάμουτρα»), with three DISTINCT words per language.
+ *     («απάνεμη» / «πλάγια» / «κατάμουτρα»), with three DISTINCT words per language.
  *     This one is not hypothetical — it already broke: the card stopped rendering the sentence
  *     on 31/07 while `statesShoreIncidence` went on suppressing the second copy below, so both
  *     explanations vanished at once and every gate stayed green.

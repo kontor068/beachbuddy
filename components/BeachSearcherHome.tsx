@@ -2700,13 +2700,20 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       fr: "Mer plus agitée sur sa propre côte aujourd'hui.",
       it: 'Mare più mosso sulla sua costa oggi.',
     }),
-    unverified: getLocalizedCopy(language, {
-      en: 'We do not have enough verified detail about this beach yet — the map still colours it from live weather.',
-      gr: 'Δεν έχουμε ακόμα αρκετά σίγουρα στοιχεία γι’ αυτήν — στον χάρτη το χρώμα της βγαίνει κανονικά από τον ζωντανό καιρό.',
-      de: 'Uns fehlen noch gesicherte Angaben zu diesem Strand — die Karte färbt ihn weiterhin nach dem Live-Wetter.',
-      fr: "Il nous manque encore des informations vérifiées sur cette plage — la carte la colore toujours selon la météo en direct.",
-      it: 'Non abbiamo ancora dati verificati a sufficienza su questa spiaggia — sulla mappa il colore resta quello del meteo in diretta.',
-    }),
+    /**
+     * SILENT SINCE 10/08/2026 — kept as a reason the code can still classify, printed nowhere.
+     *
+     * It was the only one of the four that describes US rather than the beach, and a reader
+     * choosing where to swim cannot do anything with «δεν έχουμε αρκετά στοιχεία». On a list of
+     * beaches the page calls κατάλληλες it read as a disclaimer nobody asked for, sitting where
+     * the amenities of the OTHER cards are. The pin beside it is coloured from live weather and
+     * is trustworthy — which is precisely why the sentence had to explain itself away, and that
+     * is the tell that it should not be on a card at all.
+     *
+     * Where the missing records genuinely matter, they already keep the beach OUT of the strict
+     * podium; they do not need to be narrated on the card as well.
+     */
+    unverified: '',
   };
   // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
   // count memos), independent of wind / active filters / suitable-vs-all view. We
@@ -3890,7 +3897,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     // «Όλες» directory or a colour-filtered list the same line would state the
                     // obvious on every card.
                     notInTopPicksNote: cardRank === undefined || cardRank > 3
-                      ? topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason]
+                      ? topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason] || undefined
                       : undefined,
                   })}
                 </div>
@@ -4600,7 +4607,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       // already said it once, for all three.
                       notInTopPicksNote: shelteredFallbackPodium
                         ? undefined
-                        : topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason],
+                        : topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason] || undefined,
                     })}
                   </div>
                 ))}
