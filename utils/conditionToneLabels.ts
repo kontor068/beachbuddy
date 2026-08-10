@@ -29,6 +29,12 @@ import type { CalmnessTone } from './suitabilityTone';
  * above it. Deliberately phrased as "wind OR sea": since the sea-state ceiling landed
  * (01/08/2026) a beach can be orange on a light-wind day, so any wording tied to a Beaufort
  * band would be the old, wrong legend again.
+ *
+ * KEEP IT TO THE CAUSE, NOT THE ADVICE (10/08/2026). It used to carry a second clause — «κολυμπάς
+ * άνετα», «για μια βουτιά ναι, για ώρες όχι» — and those clauses are what forced the legend into
+ * four full-width rows stacked down a phone screen. The rows now sit two-up (four on a wide
+ * screen), so every word here has to survive a column half the screen wide. The cause alone
+ * separates the colours; the advice is already in the verdict on the card and the detail page.
  */
 export interface ConditionToneWords {
   label: string;
@@ -38,33 +44,33 @@ export interface ConditionToneWords {
 export const conditionToneLabels: Record<LanguageCode, Record<CalmnessTone, ConditionToneWords>> = {
   en: {
     blue: { label: 'Excellent', meaning: 'Light wind, flat water' },
-    yellow: { label: 'Good', meaning: 'A little breeze or ripple, swimming stays easy' },
-    orange: { label: 'Fair', meaning: 'Noticeable wind or waves — fine for a dip, not for a long swim' },
-    red: { label: 'Difficult', meaning: 'Strong wind or big waves — pick another shore today' },
+    yellow: { label: 'Good', meaning: 'A little breeze or ripple' },
+    orange: { label: 'Fair', meaning: 'Noticeable wind or waves' },
+    red: { label: 'Difficult', meaning: 'Strong wind or big waves' },
   },
   gr: {
     blue: { label: 'Ιδανική', meaning: 'Λίγος αέρας, ήρεμο νερό' },
-    yellow: { label: 'Καλή', meaning: 'Λίγο αεράκι ή κυματάκι, κολυμπάς άνετα' },
-    orange: { label: 'Μέτρια', meaning: 'Αισθητός αέρας ή κύμα — για μια βουτιά ναι, για ώρες όχι' },
-    red: { label: 'Δύσκολη', meaning: 'Δυνατός αέρας ή μεγάλο κύμα — διάλεξε άλλη ακτή σήμερα' },
+    yellow: { label: 'Καλή', meaning: 'Λίγο αεράκι ή κυματάκι' },
+    orange: { label: 'Μέτρια', meaning: 'Αισθητός αέρας ή κύμα' },
+    red: { label: 'Δύσκολη', meaning: 'Δυνατός αέρας ή μεγάλο κύμα' },
   },
   fr: {
     blue: { label: 'Idéale', meaning: 'Peu de vent, eau plate' },
-    yellow: { label: 'Bonne', meaning: 'Un peu de brise ou de clapot, on nage tranquillement' },
-    orange: { label: 'Correcte', meaning: 'Vent ou vagues sensibles — pour une baignade courte' },
-    red: { label: 'Difficile', meaning: 'Vent fort ou grosses vagues — choisissez une autre côte' },
+    yellow: { label: 'Bonne', meaning: 'Un peu de brise ou de clapot' },
+    orange: { label: 'Correcte', meaning: 'Vent ou vagues sensibles' },
+    red: { label: 'Difficile', meaning: 'Vent fort ou grosses vagues' },
   },
   de: {
     blue: { label: 'Ideal', meaning: 'Wenig Wind, ruhiges Wasser' },
-    yellow: { label: 'Gut', meaning: 'Etwas Brise oder Kräuselwellen, Schwimmen bleibt leicht' },
-    orange: { label: 'Mäßig', meaning: 'Spürbarer Wind oder Wellen — für ein kurzes Bad' },
-    red: { label: 'Schwierig', meaning: 'Starker Wind oder hohe Wellen — heute lieber eine andere Küste' },
+    yellow: { label: 'Gut', meaning: 'Etwas Brise oder Kräuselwellen' },
+    orange: { label: 'Mäßig', meaning: 'Spürbarer Wind oder Wellen' },
+    red: { label: 'Schwierig', meaning: 'Starker Wind oder hohe Wellen' },
   },
   it: {
     blue: { label: 'Ideale', meaning: 'Poco vento, acqua piatta' },
-    yellow: { label: 'Buona', meaning: 'Un po\' di brezza o increspature, si nuota bene' },
-    orange: { label: 'Discreta', meaning: 'Vento o onde percettibili — per un bagno breve' },
-    red: { label: 'Difficile', meaning: 'Vento forte o onde alte — meglio un\'altra costa oggi' },
+    yellow: { label: 'Buona', meaning: 'Un po\' di brezza o increspature' },
+    orange: { label: 'Discreta', meaning: 'Vento o onde percettibili' },
+    red: { label: 'Difficile', meaning: 'Vento forte o onde alte' },
   },
 };
 

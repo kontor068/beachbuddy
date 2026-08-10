@@ -2734,13 +2734,23 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
+    // TWO-UP ON A PHONE, FOUR ACROSS ON A WIDE SCREEN (10/08/2026). These rows used to run
+    // full-width down the page: four colours, two lines each, and the beach cards started below
+    // the fold on a phone. Side by side they cost a quarter of that height. The wording in
+    // utils/conditionToneLabels.ts was cut to the cause alone for exactly this reason — a column
+    // half a phone wide cannot hold a sentence. A single row (a filter is on) stays full width
+    // rather than sitting in a lonely half-column, and an odd last row spans both phone columns
+    // so the strip never ends with a gap.
+    const rowCount = visibleWindColorGuideRows.length;
+    const isSideBySide = !isSevereWind && rowCount > 1;
+    const gridClasses = isSideBySide ? 'grid grid-cols-2 gap-1 sm:grid-cols-4' : 'grid gap-1';
 
     return (
       <div
-        className={`${isPreview ? 'grid gap-1 sm:grid-cols-2' : 'grid gap-1 rounded-lg bg-slate-50/80 p-2 dark:bg-slate-800/60'}`}
+        className={`${gridClasses} ${isPreview ? '' : 'rounded-lg bg-slate-50/80 p-2 dark:bg-slate-800/60'}`}
       >
         {isSevereWind ? (
-          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
+          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} col-span-full flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1">
               <span className="min-w-0">{windColorGuideCopy.severeLabel}</span>
               <AlertTriangle
@@ -2750,8 +2760,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
               />
             </span>
           </div>
-        ) : visibleWindColorGuideRows.map(row => {
+        ) : visibleWindColorGuideRows.map((row, rowIndex) => {
           const isActive = activeToneFilter === row.tone;
+          // Three colours in a two-column grid would leave a hole; the last one takes the whole
+          // phone row instead. At sm: the grid is four wide and every row fits on one line.
+          const spanClasses = isSideBySide && rowCount % 2 === 1 && rowIndex === rowCount - 1
+            ? 'col-span-2 sm:col-span-1'
+            : '';
           const body = (
             <>
               <span className="flex min-w-0 items-center gap-1.5">
@@ -2776,7 +2791,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               </span>
             </>
           );
-          const textClasses = `${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
+          const textClasses = `${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} ${spanClasses} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
 
           if (!isToneFilterEnabled) {
             return <div key={row.tone} className={textClasses}>{body}</div>;
@@ -2805,7 +2820,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             note). The pin still wears its own badge (beachCoveBadge, above) — that mark is
             unchanged; only the separate legend caption explaining it is gone. */}
         {showSurfLegendCue && (
-          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
+          <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} col-span-full flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
             <span className="inline-flex min-w-0 items-center gap-1.5">
               <span className="beach-map-legend-surf" aria-hidden="true" />
               {/* "known" and "in season", not "good today" — the wind reading is
