@@ -1036,7 +1036,9 @@ const getExposureMarkerTone = (
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
   offshoreFlatWater = false,
   /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
-  downwindSeaSample = false
+  downwindSeaSample = false,
+  /** The engine refused a swim here — the colour is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
+  swimVerdictAvoid = false
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1079,6 +1081,7 @@ const getExposureMarkerTone = (
     seaStateM,
     offshoreFlatWater,
     downwindSeaSample,
+    swimVerdictAvoid,
   })];
 };
 
@@ -1188,7 +1191,9 @@ const createExposureIcon = (
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
   offshoreFlatWater = false,
   /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
-  downwindSeaSample = false
+  downwindSeaSample = false,
+  /** The engine refused a swim here — the pin is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
+  swimVerdictAvoid = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -1212,7 +1217,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, swimVerdictAvoid);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -2023,6 +2028,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
     offshoreFlatWater: beachOffshoreFlatWater(item),
     downwindSeaSample: beachDownwindSeaSample(item),
+    // A beach the app refuses a swim at cannot be counted as ΙΔΑΝΙΚΗ or ΚΑΛΗ in the legend
+    // beside it — the same ceiling the card chip takes (utils/suitabilityTone).
+    swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
   });
 
   // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
@@ -2558,7 +2566,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
       Boolean(item.enclosedCove),
       seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
       beachOffshoreFlatWater(item),
-      beachDownwindSeaSample(item)
+      beachDownwindSeaSample(item),
+      item.swimmingComfort === 'avoid_swimming'
     );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
@@ -3165,7 +3174,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item))}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming')}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

@@ -2382,6 +2382,10 @@ export const calculateBeachScore = (
       windDirectionDeg: weather.wind.deg,
       swellWaveHeightM: marine?.swellWaveHeightM,
     }),
+    // «Όταν λέει ΚΑΛΗ θέλω να μπορείς να κολυμπήσεις κιόλας» (Μίλτος, 10/08/2026). The chip and
+    // the pin both take the ceiling; the verdict is already final at this point (rain rule
+    // included), so no surface can print a calm colour over a refused swim.
+    swimmingComfort === 'avoid_swimming',
   );
 
   return {

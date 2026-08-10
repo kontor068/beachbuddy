@@ -199,6 +199,39 @@ const RULES = [
 const failures = [];
 let combinations = 0;
 
+/**
+ * «ΟΤΑΝ ΛΕΕΙ ΚΑΛΗ ΘΕΛΩ ΝΑ ΜΠΟΡΕΙΣ ΝΑ ΚΟΛΥΜΠΗΣΕΙΣ ΚΙΟΛΑΣ» (Μίλτος, 10/08/2026).
+ *
+ * Measured that night over 136.992 beach × wind × sea combinations: 5.863 of the 49.514 blue or
+ * yellow readings (11,8%) sat on a beach the same engine had marked `avoid_swimming`. The legend
+ * called it ΙΔΑΝΙΚΗ or ΚΑΛΗ; the card under it said do not swim.
+ *
+ * Two assertions, and the second one matters as much as the first: the ceiling must DARKEN a calm
+ * colour, and it must never LIGHTEN anything — a ceiling that could raise a tone would be a false
+ * calm with extra steps.
+ */
+let swimCeilingChecks = 0;
+for (const exposureStatus of LEVELS) {
+  for (const beaufort of BEAUFORTS) {
+    for (const seaStateM of [undefined, 0.2, 0.9, 1.4]) {
+      for (const enclosedCove of [false, true]) {
+        for (const offshoreFlatWater of [false, true]) {
+          const base = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater });
+          const capped = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater, swimVerdictAvoid: true });
+          swimCeilingChecks += 1;
+          if (capped === 'blue' || capped === 'yellow') {
+            failures.push(`Άρνηση μπάνιου με χρώμα «${capped}»: ${exposureStatus} @ ${beaufort} Bft, θάλασσα ${seaStateM ?? '—'}, cove=${enclosedCove}, offshore=${offshoreFlatWater}`);
+          }
+          if (CALMNESS_ORDER.indexOf(capped) > CALMNESS_ORDER.indexOf(base)) {
+            failures.push(`Η πύλη άρνησης μπάνιου ΦΩΤΙΣΕ χρώμα (${base} → ${capped}): ${exposureStatus} @ ${beaufort} Bft, θάλασσα ${seaStateM ?? '—'}`);
+          }
+        }
+      }
+    }
+  }
+}
+if (swimCeilingChecks === 0) failures.push('Η πύλη άρνησης μπάνιου δεν μέτρησε καμία περίπτωση');
+
 for (const exposureStatus of LEVELS) {
   for (const beaufort of BEAUFORTS) {
     for (const enclosedCove of [false, true]) {

@@ -325,6 +325,22 @@ export const capToneBySeaState = (
  * @param seaStateM swell-equivalent sea state in metres (utils/waveCharacter.seaStateSeverityM),
  *                  NOT the raw height: a 0.45 m 2.5 s chop and a 0.45 m 8 s roll are different water.
  */
+/**
+ * The calmest colour a beach may wear while the app is telling people not to swim there.
+ *
+ * ΜΕΤΡΙΑ, never calmer — and never used to make anything calmer than it already was. See
+ * `swimVerdictAvoid` below for the measurement that produced this rule.
+ */
+const SWIM_VERDICT_AVOID_TONE_CEILING: CalmnessTone = 'orange';
+const capToneForSwimVerdict = (avoid: boolean | undefined, tone: CalmnessTone): CalmnessTone => {
+  if (!avoid) return tone;
+  // CALMNESS_ORDER runs red → blue, so a lower index is the rougher colour. Keep whatever the
+  // sea and wind already decided when it is already at or below the ceiling.
+  return CALMNESS_ORDER.indexOf(tone) <= CALMNESS_ORDER.indexOf(SWIM_VERDICT_AVOID_TONE_CEILING)
+    ? tone
+    : SWIM_VERDICT_AVOID_TONE_CEILING;
+};
+
 export const resolveConditionTone = ({
   exposureLevel,
   beaufort,
@@ -332,6 +348,7 @@ export const resolveConditionTone = ({
   seaStateM,
   offshoreFlatWater = false,
   downwindSeaSample = false,
+  swimVerdictAvoid = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -354,7 +371,24 @@ export const resolveConditionTone = ({
    * never further. Same passed-not-derived contract as offshoreFlatWater, same reason.
    */
   downwindSeaSample?: boolean;
-}): CalmnessTone => capToneBySeaState(
+  /**
+   * «ΟΤΑΝ ΛΕΕΙ ΚΑΛΗ ΘΕΛΩ ΝΑ ΜΠΟΡΕΙΣ ΝΑ ΚΟΛΥΜΠΗΣΕΙΣ ΚΙΟΛΑΣ» (Μίλτος, 10/08/2026).
+   *
+   * The engine's own swim verdict for this beach and hour is `avoid_swimming`. Measured across
+   * 136.992 beach × wind × sea combinations that night: **5.863 of 49.514 blue/yellow readings
+   * (11,8%) carried it** — a pin the legend calls ΙΔΑΝΙΚΗ or ΚΑΛΗ over a beach the same app tells
+   * you not to swim at. The two surfaces were computed from the same weather by two ladders that
+   * never spoke: the colour asks "how does today's wind meet this shore", the verdict asks "can
+   * you get in", and nothing required the answers to be compatible.
+   *
+   * It is a CEILING and it only ever darkens: at best ΜΕΤΡΙΑ, never below whatever the sea and
+   * wind already decided, and red stays red. So it can never make a beach look calmer — the one
+   * direction this project refuses to fail in — and «Καλή» now means what a reader assumes it
+   * means. Passed rather than derived here, exactly like the sea state and the offshore flag: the
+   * pin and the chip must not be able to answer this differently.
+   */
+  swimVerdictAvoid?: boolean;
+}): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
   resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
   seaStateM,
   // THE TWO CALM RULES DO NOT STACK. A cove is exempt from the sea ceiling because the grid cell
@@ -370,7 +404,7 @@ export const resolveConditionTone = ({
     && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater),
   exposureLevel,
   downwindSeaSample
-);
+));
 
 /**
  * «Καταλληλότερες» IS THE COLOUR ARITHMETIC (02/08/2026).
@@ -391,21 +425,45 @@ export const SUITABLE_LIST_TONES: readonly CalmnessTone[] = ['blue', 'yellow'];
 export const SUITABLE_LIST_TOPUP_TONE: CalmnessTone = 'orange';
 export const MIN_SUITABLE_LIST_SIZE = 3;
 
+/**
+ * Best to worst, red excluded by construction — the list is an offer, and the app does not offer a
+ * beach it has just called ΔΥΣΚΟΛΗ. Red is not reachable from here rather than filtered out later,
+ * so no future edit can quietly let it in.
+ */
+const SUITABLE_LIST_TONE_RANK: readonly CalmnessTone[] = ['blue', 'yellow', 'orange'];
+/** How many colour groups the list may span. Two: the best one, and the next one down. */
+export const SUITABLE_LIST_TONE_GROUPS = 2;
+
+/**
+ * ΤΟ ΑΘΡΟΙΣΜΑ ΤΗΣ ΛΙΣΤΑΣ ΕΙΝΑΙ ΤΑ ΔΥΟ ΚΑΛΥΤΕΡΑ ΧΡΩΜΑΤΑ ΠΟΥ ΥΠΑΡΧΟΥΝ (Μίλτος, 10/08/2026).
+ *
+ * «Στις τοπ 3 και στις υπόλοιπες κατάλληλες το άθροισμά τους να είναι το άθροισμα των ιδανικών και
+ * των καλών, δηλαδή μπλε και κίτρινων — και αντίστοιχα σε άλλες συνθήκες το άθροισμα κίτρινων και
+ * πορτοκαλί. Μόνο τις δύσκολες θα αφήνεις απέξω.»
+ *
+ * The old rule was ΙΔΑΝΙΚΕΣ + ΚΑΛΕΣ, with ΜΕΤΡΙΕΣ joining only when that sum fell under three. On a
+ * meltemi island with, say, four yellow and forty orange beaches, the reader was shown four and the
+ * other forty — every one of them swimmable, and the only realistic choice on the island — sat
+ * behind a colour filter nobody opens. The count was a rule about our thresholds, not about what
+ * the island had to offer.
+ *
+ * Now the list spans the TWO best colours that actually have members: blue+yellow where a blue
+ * exists, yellow+orange where none does, orange alone on a hard island. What never changes is the
+ * bottom: ΔΥΣΚΟΛΗ never joins, structurally.
+ *
+ * Blocks are sorted internally and concatenated best-colour-first, never merged into one sort. The
+ * calmer colour is evidence — it is the same reasoning that put tone above recognition in the
+ * podium the same morning — so a ΜΕΤΡΙΑ beach cannot outrank a ΚΑΛΗ one on fame or facilities.
+ */
 export const selectSuitableByTone = <T,>(
   items: readonly T[],
   toneOf: (item: T) => CalmnessTone | undefined,
   compare: (a: T, b: T) => number
 ): T[] => {
-  const core = items.filter(item => {
-    const tone = toneOf(item);
-    return tone !== undefined && SUITABLE_LIST_TONES.includes(tone);
-  }).sort(compare);
-  if (core.length >= MIN_SUITABLE_LIST_SIZE) return core;
+  const present = SUITABLE_LIST_TONE_RANK.filter(tone => items.some(item => toneOf(item) === tone));
+  const chosen = present.slice(0, SUITABLE_LIST_TONE_GROUPS);
 
-  // Sorted WITHIN each block and then concatenated, never merged: a beach promoted because the
-  // island had nothing better must not outrank a genuinely calm one on score alone.
-  const topUp = items.filter(item => toneOf(item) === SUITABLE_LIST_TOPUP_TONE).sort(compare);
-  return [...core, ...topUp];
+  return chosen.flatMap(tone => items.filter(item => toneOf(item) === tone).sort(compare));
 };
 
 /**

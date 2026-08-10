@@ -347,7 +347,12 @@ export const applySeaStateToWindSuitability = (
    * where the live marine data exists — from the SAME profile and bearing the map pin uses, so
    * the chip and the pin cannot answer it differently.
    */
-  downwindSeaSample = false
+  downwindSeaSample = false,
+  /**
+   * The engine's swim verdict for this beach and hour is `avoid_swimming`. Caps the colour at
+   * ΜΕΤΡΙΑ — a beach we tell people not to swim at cannot wear ΚΑΛΗ. See resolveConditionTone.
+   */
+  swimVerdictAvoid = false
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -356,6 +361,7 @@ export const applySeaStateToWindSuitability = (
     seaStateM,
     offshoreFlatWater: suitability.offshoreFlatWater,
     downwindSeaSample,
+    swimVerdictAvoid,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
