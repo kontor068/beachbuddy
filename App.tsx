@@ -4884,6 +4884,29 @@ export const App: React.FC = () => {
     const severity = CALMNESS_ORDER.indexOf(tone);
     return severity < 0 ? undefined : (CALMNESS_ORDER.length - 1) - severity;
   }, [mapBeachTones]);
+  /**
+   * HOW FAR THIS BEACH IS, LOOKED UP BY ID RATHER THAN TRUSTED OFF THE ITEM.
+   *
+   * `mapSuitableBeaches` computes a distance for every beach whenever we have the user's
+   * position; `dailySuitableBeaches` does not — App calls getSuitableBeaches with no userLocation,
+   * so items that reach the podium through that path carry `distance: undefined`.
+   *
+   * Measured 10/08/2026 in «Κοντά μου» from Piraeus: Βοτσαλάκια printed «0,7 km» in the list and
+   * NO distance on its podium card, because the two lists had reached it by different routes. The
+   * nearest-first sort then read that undefined as Infinity and pushed the closest beach in the
+   * whole set to the end of the podium.
+   */
+  const mapDistanceByBeachId = useMemo(() => {
+    const byId = new Map<number, number>();
+    mapSuitableBeaches.forEach(item => {
+      if (typeof item.distance === 'number' && Number.isFinite(item.distance)) byId.set(item.beach.id, item.distance);
+    });
+    return byId;
+  }, [mapSuitableBeaches]);
+  const podiumDistanceKm = React.useCallback((item: SuitableBeach): number => {
+    if (typeof item.distance === 'number' && Number.isFinite(item.distance)) return item.distance;
+    return mapDistanceByBeachId.get(item.beach.id) ?? Infinity;
+  }, [mapDistanceByBeachId]);
   // Another region means another set of beaches and another tally; carrying the filter across
   // could land the user on an empty list with no visible cause.
   useEffect(() => {
@@ -6845,16 +6868,38 @@ export const App: React.FC = () => {
       });
     }
 
-    // In "Κοντά μου" the podium leads with the nearest beaches, not the highest-scoring
-    // ones across the merged radius (a 35 km high-scorer should never sit above a closer
-    // pick). Distance-sort the full qualifying set, then apply the display limit so the
-    // podium is genuinely the nearest qualifying beaches.
+    /**
+     * «ΚΟΝΤΑ ΜΟΥ»: ΠΡΩΤΑ ΟΙ ΣΥΝΘΗΚΕΣ, Η ΑΠΟΣΤΑΣΗ ΣΠΑΕΙ ΤΗΝ ΙΣΟΠΑΛΙΑ (απόφαση Μίλτου, 10/08/2026).
+     *
+     * This branch used to sort on distance ALONE, which threw away everything the podium chain had
+     * just decided — including, since this morning, the colour the map painted. Measured live from
+     * Piraeus while the region blew 4 Bft: the podium offered Αστέρα Γλυφάδας (12,1 km) and Μεγάλο
+     * Καβούρι (16,5 km), both YELLOW pins, while four BLUE beaches sat at 0,7 / 1,5 / 3,0 / 3,4 km.
+     * The heading over them read «Πιο προστατευμένες». Nearest-first is a reasonable instinct for
+     * «Κοντά μου», but it cannot be the ONLY rule on a page whose whole promise is which water is
+     * calm today — and it silently contradicted the pins beside it.
+     *
+     * So: the map's colour first, then the nearest inside that colour, then whatever order the
+     * podium chain had already produced (stable, so exposure/own-wind/fame keep breaking the
+     * remaining ties). A blue beach at 0,7 km now leads a yellow one at 16 km; two blue ones are
+     * still ranked nearest-first, which is what someone asking «κοντά μου» came for.
+     *
+     * Distance comes from podiumDistanceKm, not `item.distance` — see the note there for why the
+     * closest beach in the set could previously be sorted last.
+     */
     if (isNearMeRegionActive) {
+      const chainOrder = new Map(cards.map((item, index) => [item.beach.id, index]));
       return [...cards]
-        .sort((a, b) => (
-          (typeof a.distance === 'number' ? a.distance : Infinity) -
-          (typeof b.distance === 'number' ? b.distance : Infinity)
-        ))
+        .sort((a, b) => {
+          const aTone = podiumToneRank(a.beach.id);
+          const bTone = podiumToneRank(b.beach.id);
+          if (typeof aTone === 'number' && typeof bTone === 'number' && aTone !== bTone) return aTone - bTone;
+
+          const distanceDiff = podiumDistanceKm(a) - podiumDistanceKm(b);
+          if (distanceDiff !== 0 && Number.isFinite(distanceDiff)) return distanceDiff;
+
+          return (chainOrder.get(a.beach.id) ?? 0) - (chainOrder.get(b.beach.id) ?? 0);
+        })
         .slice(0, directoryTopRecommendationLimit);
     }
 
@@ -6874,7 +6919,16 @@ export const App: React.FC = () => {
    * (own cluster → beach forecast → area), so the hour named here is the hour the numbers beside
    * it came from.
    */
-  const directoryTopRecommendationCards = directoryTopRecommendationCardsRaw.map(item => {
+  const directoryTopRecommendationCards = directoryTopRecommendationCardsRaw.map(rawItem => {
+    // The «X km» on the card reads the item's own `distance`, and the sources that skip
+    // getSuitableBeaches' location argument arrive without one — so in «Κοντά μου» the same beach
+    // printed 0,7 km in the list below and nothing at all on its podium card. Filled from the same
+    // lookup the ordering above uses, so the number shown and the number sorted on are one.
+    const distance = podiumDistanceKm(rawItem);
+    const item = typeof rawItem.distance === 'number' || !Number.isFinite(distance)
+      ? rawItem
+      : { ...rawItem, distance };
+
     if (item.bestBeachTime) return item;
     const hourly = beachAreaForecastById[item.beach.id]?.hourly
       || selectedBeachForecasts[item.beach.id]?.hourly
