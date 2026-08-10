@@ -345,7 +345,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Τι δεν ξέρουμε (ακόμα)',
-          body: 'Ρεύματα, βυθό, τοπικές ριπές. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+          // WAS «Ρεύματα, βυθό, τοπικές ριπές» — δύο από τα τρία ήταν ψέμα: το
+          // badge «ρηχά/βαθιά νερά» στέκεται δίπλα στην ίδια κάρτα παραλίας και
+          // αλλού γράφουμε ρητά «κοιτάμε τον άνεμο, τις ριπές και το κύμα».
+          // Μια κάρτα μετριοφροσύνης που αντιφάσκει με το ίδιο το προϊόν ρίχνει
+          // την αξιοπιστία και των δύο. Μένουν μόνο όσα όντως δεν ξέρουμε.
+          body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
         },
         {
           title: 'Αυτό που φτιάχνουμε τώρα',
@@ -513,7 +518,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'What we do not know (yet)',
-          body: 'Currents, the seabed, local gusts. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
+          body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
         },
         {
           title: 'What we are building now',
@@ -628,7 +633,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Was wir (noch) nicht wissen',
-          body: 'Strömungen, den Grund, lokale Böen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
+          body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
         },
         {
           title: 'Woran wir gerade arbeiten',
@@ -742,7 +747,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Ce que nous ne savons pas (encore)',
-          body: 'Les courants, le fond, les rafales locales. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
+          body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
         },
         {
           title: 'Ce que nous construisons en ce moment',
@@ -858,7 +863,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
         {
           title: 'Cosa non sappiamo (ancora)',
-          body: 'Le correnti, il fondale, le raffiche locali. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
+          body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
         },
         {
           title: 'Quello che stiamo costruendo ora',
