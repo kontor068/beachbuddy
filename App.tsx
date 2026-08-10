@@ -66,6 +66,9 @@ import {
   getWindPriorityTopPickPool,
   prioritizeProtectedRecommendations,
   passesTopPickSeaGate,
+  topPickPopularityScore,
+  topPickAmenitiesScore,
+  topPickAccessPriority,
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getRegionDust, type DustLevel } from './services/dustService';
@@ -387,13 +390,29 @@ const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
 // From the merged beaches, keep those within this radius, then cap the list. The
 // landmass guard in buildNearbyRegion is what stops sea crossings (you never see
 // another island's beaches); this radius then keeps the *same-landmass* result
-// local. Kept deliberately tight: 40 km still covers a normal beach-day drive on
-// the mainland without reaching halfway across a prefecture.
-const NEAR_ME_BEACH_RADIUS_KM = 40;
+// local. Kept deliberately tight: these are STRAIGHT-LINE km, and on Greek roads
+// 30 km of them is already a 40-50 km / ~45-minute drive — the outer edge of what
+// anyone would call "near me". (Was 40 km, i.e. over an hour of driving.)
+const NEAR_ME_BEACH_RADIUS_KM = 30;
+// Sparse coastline (Epirus, inner Peloponnese, small islands): widen once rather
+// than jump straight to "nearest on this landmass, whatever the distance".
+const NEAR_ME_BEACH_RADIUS_FALLBACK_KM = 60;
 const NEAR_ME_MAX_BEACHES = 60;
 // If almost nothing falls inside the radius (sparse coastline), still surface at
 // least this many nearest beaches so the view is never empty.
 const NEAR_ME_MIN_BEACHES = 15;
+
+// Prefer the tight radius; widen only when it would leave the view nearly empty,
+// and only then fall back to the unbounded nearest-on-this-landmass list. Callers
+// must pass a list already sorted by ascending distance, so the cap keeps the
+// nearest beaches rather than an arbitrary slice.
+const pickNearbyShortlist = <T extends { distance: number }>(sameLandmass: T[]): T[] => {
+  const withinRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
+  if (withinRadius.length >= NEAR_ME_MIN_BEACHES) return withinRadius.slice(0, NEAR_ME_MAX_BEACHES);
+  const widened = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_FALLBACK_KM);
+  if (widened.length >= NEAR_ME_MIN_BEACHES) return widened.slice(0, NEAR_ME_MAX_BEACHES);
+  return sameLandmass.slice(0, NEAR_ME_MAX_BEACHES);
+};
 
 const isGenericAppEntryPath = (pathname?: string): boolean => {
   const currentPathname = pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
@@ -2308,9 +2327,7 @@ export const App: React.FC = () => {
     const homeLandmass = getLandmassId(ranked[0].entry.regionId);
     const sameLandmass = ranked.filter(item => getLandmassId(item.entry.regionId) === homeLandmass);
 
-    const withinRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
-    const shortlist = (withinRadius.length >= NEAR_ME_MIN_BEACHES ? withinRadius : sameLandmass)
-      .slice(0, NEAR_ME_MAX_BEACHES);
+    const shortlist = pickNearbyShortlist(sameLandmass);
     if (shortlist.length === 0) return null;
 
     const regionIds = Array.from(new Set(shortlist.map(item => item.entry.regionId)));
@@ -2433,9 +2450,7 @@ export const App: React.FC = () => {
     const homeLandmass = getLandmassId(ranked[0].regionId);
     const sameLandmass = ranked.filter(item => getLandmassId(item.regionId) === homeLandmass);
 
-    const withinBeachRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
-    const selected = (withinBeachRadius.length >= NEAR_ME_MIN_BEACHES ? withinBeachRadius : sameLandmass)
-      .slice(0, NEAR_ME_MAX_BEACHES);
+    const selected = pickNearbyShortlist(sameLandmass);
 
     let nextSyntheticId = 1;
     const beaches: Beach[] = selected.map(({ beach, regionId }) => ({
@@ -6902,6 +6917,18 @@ export const App: React.FC = () => {
     return [...reachable, ...harder].slice(0, missing);
   })();
   const directoryTopRecommendationCandidateCount = directoryPrimaryTopRecommendationCount + podiumTopUpPool.length;
+  if (typeof window !== 'undefined') {
+    (window as any).__rank = {
+      strict: strictTopRecommendationCount,
+      primary: directoryPrimaryTopRecommendationCount,
+      topUp: podiumTopUpPool.length,
+      pool: shelteredRankedFallbackPool.slice(0, 8).map((i: any) => ({
+        n: i.beach.name.gr, tone: mapBeachTones[i.beach.id], ownBft: beaufortAtBeach(i), fame: topPickPopularityScore(i.beach), amen: topPickAmenitiesScore(i.beach), acc: topPickAccessPriority(i.beach),
+        ex: i.exposureLevel, score: i.score, comfort: i.swimmingComfort,
+        wave: i.waveHeightM, prof: i.windProfileSource, access: i.beach.metadata?.accessibility?.difficulty ?? null,
+      })),
+    };
+  }
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
