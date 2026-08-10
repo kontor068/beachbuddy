@@ -8180,7 +8180,7 @@ export const App: React.FC = () => {
                         of asking it: every other surface here hands over an answer, and a question
                         in the one place we actually have one reads as hesitation.
                         NO DAY WORD ON PURPOSE. The sentence directly below already carries
-                        selectedDayPrefix, and after the 19:00 handover this panel describes
+                        selectedDayPrefix, and after the BEACH_DAY_ENDS_HOUR handover this panel describes
                         TOMORROW — a hard-coded «για σήμερα» would be false exactly then, on top of
                         double-stamping a day the copy already names.
                         Not caps: 02's label rule. Not a tinted chip: that is his shape, not ours. */}

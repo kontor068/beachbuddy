@@ -53,6 +53,12 @@ export interface ResolveWindExposureInput {
   geospatialProfile?: GeospatialExposureProfile;
   /** Authored beach-facing direction (windProfile), highest-trust geometry. */
   authoredFacingDeg?: number | null;
+  /**
+   * How sure the AUTHORED profile says it is about itself. A 'low' note loses a facing argument
+   * to a high-confidence coastline measurement much sooner — see
+   * UNSURE_AUTHORED_FACING_DISAGREEMENT_DEG. Absent means "treat it as curated knowledge".
+   */
+  authoredConfidence?: 'high' | 'medium' | 'low';
   /** Pin location is suspect — never let geometry beat the authored facing. */
   suspectPin?: boolean;
   /** Verified orientation degrees from beach metadata. */
@@ -121,6 +127,32 @@ const angularDeltaDegrees = (a: number, b: number): number => {
 
 /** Gross authored-vs-geometry disagreement that marks a legacy facing error. */
 const FACING_DISAGREEMENT_DEG = 60;
+/**
+ * THE SAME TEST, FOR A NOTE WE OURSELVES MARKED UNRELIABLE (10/08/2026).
+ *
+ * The 60° rule above only catches a facing that is grossly, unmistakably backwards. That is the
+ * right bar against a note written with local knowledge — but not every authored facing was.
+ * Some carry `confidence: 'low'`, which is our own record saying "we are not sure about this
+ * one", and against a high-confidence ray-cast of the actual coastline there is no reason for an
+ * admittedly-unsure round number to win a 30° or 50° argument.
+ *
+ * Άγιος Προκόπιος, Νάξος, 10/08/2026 19:00, reported with a live webcam showing glass and a full
+ * beach while the page said 1,2 m: authored 265°, measured 212,0° — **53° apart, seven degrees
+ * under the old bar**. With 265° the northerly reads cross-shore (onshore −0,17) and the lee-shore
+ * relief is refused; with the measured 212° it reads straight offshore (−0,89) and the shore
+ * estimate returns 0,1 m, which is what the camera showed.
+ *
+ * Measured nationally the same night: 175 beaches carry an authored profile, 108 disagree with
+ * the coastline by 20° or more, and the confidence split is 40 low-vs-high, 63 medium-vs-high,
+ * 5 high-vs-high. This constant moves ONLY the 40. A 'medium' note is still local knowledge and
+ * keeps the 60° bar; a 'high' one is a disagreement between two confident sources and wants human
+ * eyes, not a threshold.
+ *
+ * 20° is the smallest step that means anything here: the compass sectors this model reasons in
+ * are 45° wide, so a smaller disagreement cannot change which sector a wind lands in and would be
+ * churn, not correction.
+ */
+const UNSURE_AUTHORED_FACING_DISAGREEMENT_DEG = 20;
 
 const resolveFacingDeg = (input: ResolveWindExposureInput): number | null => {
   const authored = typeof input.authoredFacingDeg === 'number' && Number.isFinite(input.authoredFacingDeg)
@@ -135,12 +167,15 @@ const resolveFacingDeg = (input: ResolveWindExposureInput): number | null => {
   // sea). When the high-res coastline disagrees grossly, trust the shoreline
   // normal for the FACING (exposure levels keep following curated policy) —
   // unless the pin itself is suspect, where geometry samples the wrong spot.
+  const disagreementBar = input.authoredConfidence === 'low'
+    ? UNSURE_AUTHORED_FACING_DISAGREEMENT_DEG
+    : FACING_DISAGREEMENT_DEG;
   if (
     authored !== null &&
     geo !== null &&
     input.geospatialProfile?.confidence === 'high' &&
     !input.suspectPin &&
-    angularDeltaDegrees(authored, geo) > FACING_DISAGREEMENT_DEG
+    angularDeltaDegrees(authored, geo) > disagreementBar
   ) {
     return geo;
   }

@@ -857,6 +857,9 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const unified = resolveWindExposure({
     geospatialProfile: input.geospatialProfile,
     authoredFacingDeg,
+    // Our own record of how sure that authored facing is. Only 'low' changes anything — it lowers
+    // the bar at which a measured coastline wins the argument (windExposureModel).
+    authoredConfidence: profile.confidence,
     suspectPin: profile.suspectPin,
     orientationDeg: input.beach.orientation?.degrees ?? null,
     protectedFrom: input.beach.protectedFrom,

@@ -164,12 +164,14 @@ export const athensDayKey = (instant: Date = new Date()): string =>
  * and tapping it did nothing — clampSelectedDayIndex simply pushed the selection back. A control
  * that looks enabled and refuses to act is worse than one that is visibly disabled.
  *
- * WHY 19. It is a judgement, not a measurement. After seven in the evening someone opening this
- * site is deciding about tomorrow; before that, a swim is still an ordinary thing to do in a
- * Greek summer. It was 21 for a long time, which is the hour the beach-hour slider itself ends
- * (MAP_HOUR_SLIDER_END_HOUR) — so the handover only ever fired once there was no day left to
- * hand over, and the page spent the evening ranking beaches for an hour that had already passed.
+ * WHY 20. It is a judgement, not a measurement. It was 21 for a long time — the hour the
+ * beach-hour slider itself ends (MAP_HOUR_SLIDER_END_HOUR) — so the handover only ever fired
+ * once there was no day left to hand over, and the page spent the evening ranking beaches for
+ * an hour that had already passed. On 05/08/2026 it was cut to 19, which turned out to be too
+ * early: at seven in the evening the slider still has real hours left in it and someone opening
+ * the site is often still asking about today. Eight is the compromise — late enough that today
+ * is genuinely over, early enough that we are not answering about a swim that cannot happen.
  *
  * Nothing is hidden by this: the day chips stay on screen and the handover announces itself.
  */
-export const BEACH_DAY_ENDS_HOUR = 19;
+export const BEACH_DAY_ENDS_HOUR = 20;
