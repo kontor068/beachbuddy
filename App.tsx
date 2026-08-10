@@ -66,9 +66,6 @@ import {
   getWindPriorityTopPickPool,
   prioritizeProtectedRecommendations,
   passesTopPickSeaGate,
-  topPickPopularityScore,
-  topPickAmenitiesScore,
-  topPickAccessPriority,
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getRegionDust, type DustLevel } from './services/dustService';
@@ -6917,18 +6914,6 @@ export const App: React.FC = () => {
     return [...reachable, ...harder].slice(0, missing);
   })();
   const directoryTopRecommendationCandidateCount = directoryPrimaryTopRecommendationCount + podiumTopUpPool.length;
-  if (typeof window !== 'undefined') {
-    (window as any).__rank = {
-      strict: strictTopRecommendationCount,
-      primary: directoryPrimaryTopRecommendationCount,
-      topUp: podiumTopUpPool.length,
-      pool: shelteredRankedFallbackPool.slice(0, 8).map((i: any) => ({
-        n: i.beach.name.gr, tone: mapBeachTones[i.beach.id], ownBft: beaufortAtBeach(i), fame: topPickPopularityScore(i.beach), amen: topPickAmenitiesScore(i.beach), acc: topPickAccessPriority(i.beach),
-        ex: i.exposureLevel, score: i.score, comfort: i.swimmingComfort,
-        wave: i.waveHeightM, prof: i.windProfileSource, access: i.beach.metadata?.accessibility?.difficulty ?? null,
-      })),
-    };
-  }
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
