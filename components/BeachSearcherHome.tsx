@@ -2241,17 +2241,59 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const topRecommendationsLabel = getTopRecommendationsLabel(language, topRecommendationBeachCards.length, currentBeaufort);
   const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix, suitableTimeIsNow);
   const mobileTopRecommendationsTitle = getMobileTopRecommendationsTitle(language, topRecommendationBeachCards.length, suitableTimePrefix, currentBeaufort);
-  // The honesty line for the last-resort podium. It replaces the ordinary «Top 3 …» subtitle
-  // rather than joining it: two subtitles, one boasting and one warning, is how a page ends up
-  // saying both things at once.
+  /**
+   * ONE PANEL, THREE REGIMES — because the RANKING has three (Miltos, 10/08/2026: «άλλο top 3 σε
+   * ήρεμο καιρό και άλλο top 3 σε μεγάλα μποφόρ»). He was right that it changes; MEASURED through
+   * the real functions before a word was written here (.tmp/probePodiumRegimes.mjs — two fixtures,
+   * a plain protected beach at score 65 against a famous organized 'partial' one at score 85):
+   *
+   *   ≤2 Bft  shelter plays no part. The famous higher-scoring beach wins, and nothing is
+   *           filtered out — bestShelteredRecommendationGroup returns the pool untouched.
+   *   3-4 Bft the shelter tier becomes a GATE: the pool drops 2→1, the plain protected beach
+   *           beats the famous exposed one. But between two equally protected beaches, fame and
+   *           score still decide.
+   *   ≥5 Bft  same gate, plus the tier added on 10/08: among equally protected beaches the one
+   *           with less wind on its OWN shore leads, ahead of recognition and score.
+   *
+   * The heading/tab above the podium switches at >4 («Πιο προστατευμένες» vs «Top 3»), so the
+   * rail's title and lead follow that same line — they must never contradict it. Only the ONE
+   * bullet that states the ordering rule reads the true thresholds, because at 3-4 Bft both of
+   * the other two sentences would be false.
+   */
+  const isShelterFirstPodium = typeof currentBeaufort === 'number' && currentBeaufort > 4;
+  const podiumOrderingRegime: 'calm' | 'shelter_gate' | 'own_shore_first' = typeof currentBeaufort !== 'number' || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+    ? 'calm'
+    : currentBeaufort < PROTECTED_FIRST_BEAUFORT
+      ? 'shelter_gate'
+      : 'own_shore_first';
+  /**
+   * The honesty line for the last-resort podium. It replaces the ordinary «Top 3 …» subtitle
+   * rather than joining it: two subtitles, one boasting and one warning, is how a page ends up
+   * saying both things at once.
+   *
+   * 10/08/2026, caught by Miltos: it was ALSO saying the same thing twice by itself. Above 4 Bft
+   * the heading right over it already reads «Πιο προστατευμένες στις 13:00–14:00», so
+   * «…— αυτές είναι οι πιο προστατευμένες» was the second copy of a claim the visitor had just
+   * read one line higher. The half that only this line can say — that none of the three is
+   * actually ideal — is what stays. Below 4 Bft the heading says «Top 3», nothing is repeated,
+   * and the full sentence still earns its place.
+   */
   const topRecommendationsSubtitle = shelteredFallbackPodium
-    ? getLocalizedCopy(language, {
-      en: 'None of them is ideal right now — these are the most sheltered',
-      gr: 'Καμία δεν είναι ιδανική τώρα — αυτές είναι οι πιο προστατευμένες',
-      fr: "Aucune n'est idéale en ce moment — voici les plus abritées",
-      de: 'Keiner ist gerade ideal — das sind die geschütztesten',
-      it: 'Nessuna è ideale adesso — queste sono le più riparate',
-    })
+    ? isShelterFirstPodium
+      ? getLocalizedCopy(language, {
+        en: 'None of them is ideal right now',
+        gr: 'Καμία δεν είναι ιδανική τώρα',
+        fr: "Aucune n'est idéale en ce moment",
+        de: 'Keiner ist gerade ideal',
+        it: 'Nessuna è ideale adesso',
+      })
+      : getLocalizedCopy(language, {
+        en: 'None of them is ideal right now — these are the most sheltered',
+        gr: 'Καμία δεν είναι ιδανική τώρα — αυτές είναι οι πιο προστατευμένες',
+        fr: "Aucune n'est idéale en ce moment — voici les plus abritées",
+        de: 'Keiner ist gerade ideal — das sind die geschütztesten',
+        it: 'Nessuna è ideale adesso — queste sono le più riparate',
+      })
     : topRecommendationsLabel;
   // The desktop transparency rail beside the podium (Miltos, 09/08: «θέλω να είναι όλα με
   // διαφάνεια»). Two rules keep it honest: the «πώς» bullets state only criteria, not thresholds
@@ -2279,31 +2321,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     fr: 'Pourquoi ces trois-là ?',
     it: 'Perché queste tre?',
   });
-  /**
-   * ONE PANEL, THREE REGIMES — because the RANKING has three (Miltos, 10/08/2026: «άλλο top 3 σε
-   * ήρεμο καιρό και άλλο top 3 σε μεγάλα μποφόρ»). He was right that it changes; MEASURED through
-   * the real functions before a word was written here (.tmp/probePodiumRegimes.mjs — two fixtures,
-   * a plain protected beach at score 65 against a famous organized 'partial' one at score 85):
-   *
-   *   ≤2 Bft  shelter plays no part. The famous higher-scoring beach wins, and nothing is
-   *           filtered out — bestShelteredRecommendationGroup returns the pool untouched.
-   *   3-4 Bft the shelter tier becomes a GATE: the pool drops 2→1, the plain protected beach
-   *           beats the famous exposed one. But between two equally protected beaches, fame and
-   *           score still decide.
-   *   ≥5 Bft  same gate, plus the tier added on 10/08: among equally protected beaches the one
-   *           with less wind on its OWN shore leads, ahead of recognition and score.
-   *
-   * The tab beside these bullets switches at >4 («Πιο προστατευμένες» vs «Top 3»), so the title
-   * and the lead follow that same line — they must never contradict the tab. Only the ONE bullet
-   * that states the ordering rule reads the true thresholds, because at 3-4 Bft both of the
-   * other two sentences would be false.
-   */
-  const isShelterFirstPodium = typeof currentBeaufort === 'number' && currentBeaufort > 4;
-  const podiumOrderingRegime: 'calm' | 'shelter_gate' | 'own_shore_first' = typeof currentBeaufort !== 'number' || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT
-    ? 'calm'
-    : currentBeaufort < PROTECTED_FIRST_BEAUFORT
-      ? 'shelter_gate'
-      : 'own_shore_first';
   // The list under the «Γιατί αυτές οι τρεις;» heading answers «ποια από τις τρεις», not «γιατί
   // αυτές και όχι οι άλλες 71» — that second question is what the bullets below answer. One lead
   // line joins them, so the heading is not left writing a cheque the list does not cash.
