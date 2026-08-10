@@ -11,7 +11,7 @@ import { TOP_PICK_WEIGHTS } from './topPickScoreTable';
  *   2. A live ladder printing all three picks' values on every rung and marking the one that
  *      decided. Accurate, and rejected by Miltos on sight: «δεν θέλω να έχω έναν υπολογιστή δίπλα
  *      μου». It also stopped being true the moment the ladder became a weighted table.
- *   3. This: the table itself, with its weights, static. Six lines that say what the site values
+ *   3. This: the table itself, with its weights, static. Seven lines that say what the site values
  *      and by how much, readable in three seconds and identical everywhere — which is the point,
  *      because it is a statement of policy, not a per-beach calculation.
  *
@@ -20,7 +20,7 @@ import { TOP_PICK_WEIGHTS } from './topPickScoreTable';
  */
 
 export interface TopPickCriterionRow {
-  key: 'shelter' | 'ownWind' | 'sea' | 'access' | 'amenities' | 'liked';
+  key: 'shelter' | 'sea' | 'ownWind' | 'distance' | 'amenities' | 'access' | 'crowd';
   label: string;
   /** Weight out of 100. */
   weight: number;
@@ -33,7 +33,8 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Νερό στην ακτή',
     access: 'Πρόσβαση',
     amenities: 'Παροχές',
-    liked: 'Πόσο αρέσει',
+    distance: 'Απόσταση από εσένα',
+    crowd: 'Πολυσύχναστη',
   },
   en: {
     shelter: 'Shelter from the wind',
@@ -41,7 +42,8 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Water at the shore',
     access: 'Access',
     amenities: 'Facilities',
-    liked: 'How much people liked it',
+    distance: 'Distance from you',
+    crowd: 'Crowded',
   },
   de: {
     shelter: 'Schutz vor dem Wind',
@@ -49,7 +51,8 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Wasser am Ufer',
     access: 'Zugang',
     amenities: 'Ausstattung',
-    liked: 'Wie gut sie gefällt',
+    distance: 'Entfernung von dir',
+    crowd: 'Stark besucht',
   },
   fr: {
     shelter: 'Abri du vent',
@@ -57,7 +60,8 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Eau au rivage',
     access: 'Accès',
     amenities: 'Services',
-    liked: 'À quel point elle plaît',
+    distance: 'Distance depuis chez vous',
+    crowd: 'Très fréquentée',
   },
   it: {
     shelter: 'Riparo dal vento',
@@ -65,7 +69,8 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Acqua a riva',
     access: 'Accesso',
     amenities: 'Servizi',
-    liked: 'Quanto piace',
+    distance: 'Distanza da te',
+    crowd: 'Affollata',
   },
 };
 
@@ -93,10 +98,11 @@ export const topPickCriteriaRows = (language: LanguageCode): TopPickCriterionRow
   const words = LABELS[language] ?? LABELS.gr;
   return [
     { key: 'shelter', label: words.shelter, weight: TOP_PICK_WEIGHTS.shelter },
-    { key: 'ownWind', label: words.ownWind, weight: TOP_PICK_WEIGHTS.ownWind },
     { key: 'sea', label: words.sea, weight: TOP_PICK_WEIGHTS.sea },
+    { key: 'ownWind', label: words.ownWind, weight: TOP_PICK_WEIGHTS.ownWind },
+    { key: 'distance', label: words.distance, weight: TOP_PICK_WEIGHTS.distance },
     { key: 'amenities', label: words.amenities, weight: TOP_PICK_WEIGHTS.amenities },
     { key: 'access', label: words.access, weight: TOP_PICK_WEIGHTS.access },
-    { key: 'liked', label: words.liked, weight: TOP_PICK_WEIGHTS.liked },
+    { key: 'crowd', label: words.crowd, weight: TOP_PICK_WEIGHTS.crowd },
   ];
 };

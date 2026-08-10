@@ -17,23 +17,38 @@ import { seaStateSeverityM } from './waveCharacter';
  * ═══════════════════════════════════════════════════════════════════════════
  *  ΤΙ ΚΟΙΤΑΜΕ                          ΒΑΡΥΤΗΤΑ      πηγή
  * ───────────────────────────────────────────────────────────────────────────
- *  Προστασία από τον άνεμο                 30        exposureLevel + geometry
- *  Άνεμος στη δική της ακτή                25        per-beach cluster Beaufort
+ *  Προστασία από τον άνεμο                 25        exposureLevel + geometry
  *  Νερό στην ακτή                          25        seaStateWaveM / shoreWaveHeightM
+ *  Άνεμος στη δική της ακτή                20        per-beach cluster Beaufort
  *                                        ─────
- *                          ο καιρός        80
+ *                          ο καιρός        70
  *
- *  Παροχές                                  8        amenities
- *  Πρόσβαση                                 7        metadata.access.type
- *  Πόσο αρέσει                              5        Google star rating
+ *  Απόσταση από τον χρήστη                 10        item.distance (km)
+ *  Παροχές                                  9        amenities
+ *  Πρόσβαση                                 6        metadata.access.type
+ *  Πολυσύχναστη                             5        Google review count
  *                                        ─────
- *                        τα ανθρώπινα      20
+ *                        τα ανθρώπινα      30
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * 80/20 is Miltos's call, made 10/08 with the trade-off stated: at this split a beach with
- * umbrellas, a canteen and asphalt can outrank a slightly calmer wild one, but only when the
- * weather gap is small — an exposed beach gives up 30 points that 20 points of comfort can never
- * repay. That is the intended behaviour and the reason the two blocks are not 50/50.
+ * 70/30 is Miltos's call, settled 11/08 after a day at 80/20. At this split a beach with umbrellas,
+ * a canteen and asphalt fifteen minutes away can outrank a slightly calmer wild one — but only when
+ * the weather gap is small: an exposed shore gives up 25 points that 30 points of everything else
+ * can only repay if it is winning on all four of them at once. That is the intended behaviour and
+ * the reason the blocks are not 50/50.
+ *
+ * ─── THE DISTANCE AXIS RE-OPENS A CLOSED DECISION, DELIBERATELY ────────────
+ *
+ * On 10/08 ranking by score was rejected for one specific reason: the old BeachScore changes shape
+ * when the visitor shares a location, so two people looking at the same weather saw different
+ * podiums. Distance puts that back — knowingly, at Miltos's instruction («σε σχέση με τον χρήστη
+ * είναι σημαντική»), because «πού να πάω τώρα» genuinely depends on where you are standing.
+ *
+ * The difference from the old defect is that it is now ONE declared axis worth 10 of 100 instead of
+ * an opaque number that silently changed formula. And when no location is shared — the prerender,
+ * the planner, every first paint — every beach scores the same middle value, so the podium is
+ * identical for everyone. Never give the missing case the maximum: a region where only some
+ * beaches carry a distance would then rank the unmeasured ones first.
  *
  * ─── WHY EVERY AXIS IS BUCKETED, NOT CONTINUOUS ────────────────────────────
  *
@@ -63,12 +78,13 @@ import { seaStateSeverityM } from './waveCharacter';
 
 /** The weights, in one place, summing to 100. */
 export const TOP_PICK_WEIGHTS = {
-  shelter: 30,
-  ownWind: 25,
+  shelter: 25,
   sea: 25,
-  amenities: 8,
-  access: 7,
-  liked: 5,
+  ownWind: 20,
+  distance: 10,
+  amenities: 9,
+  access: 6,
+  crowd: 5,
 } as const;
 
 export const TOP_PICK_SCORE_MAX = 100;
@@ -120,11 +136,11 @@ const shelterPoints = (item: SuitableBeach, feelsWind: boolean): TopPickAxisResu
   return axis('shelter', max / 2, max, true);
 };
 
-/** ΑΝΕΜΟΣ ΣΤΗ ΔΙΚΗ ΤΗΣ ΑΚΤΗ — 25, in whole Beaufort, the forecast's own resolution. */
-const OWN_WIND_POINTS: Record<number, number> = { 0: 25, 1: 25, 2: 25, 3: 20, 4: 14, 5: 7, 6: 0 };
+/** ΑΝΕΜΟΣ ΣΤΗ ΔΙΚΗ ΤΗΣ ΑΚΤΗ — 20, in whole Beaufort, the forecast's own resolution. */
+const OWN_WIND_POINTS: Record<number, number> = { 0: 20, 1: 20, 2: 20, 3: 16, 4: 11, 5: 5, 6: 0 };
 const ownWindPoints = (beaufort: number | undefined): TopPickAxisResult => {
   const max = TOP_PICK_WEIGHTS.ownWind;
-  if (typeof beaufort !== 'number' || !Number.isFinite(beaufort)) return axis('ownWind', 14, max, true);
+  if (typeof beaufort !== 'number' || !Number.isFinite(beaufort)) return axis('ownWind', 11, max, true);
   const clamped = Math.max(0, Math.min(6, Math.round(beaufort)));
   return axis('ownWind', OWN_WIND_POINTS[clamped] ?? 0, max);
 };
@@ -151,18 +167,41 @@ const seaPoints = (item: SuitableBeach): TopPickAxisResult => {
 };
 
 /**
- * ΠΡΟΣΒΑΣΗ — 7, one point below the facilities it used to outrank (Μίλτος, 11/08/2026: «οι παροχές
- * επίσης θα είναι πάνω από τον δρόμο σαν ποσοστό»). Takes the podium's existing 0-5 access
- * priority so there is one definition of "easy" on the site.
+ * ΑΠΟΣΤΑΣΗ ΑΠΟ ΤΟΝ ΧΡΗΣΤΗ — 10, the heaviest of the human axes (Μίλτος, 11/08/2026: «βάλ' την πάνω
+ * από τις παροχές»).
+ *
+ * Bands, not a curve: the first ten kilometres are worth far more than the next ten, and a visitor
+ * cannot tell 23 km from 26 km. The bottom band is 0 rather than negative — a far beach is not
+ * being punished, it is simply not earning the points a near one does.
+ *
+ * The missing case is the MIDDLE, never the maximum. When nobody has shared a location every beach
+ * lands here and the axis cannot separate anyone, which is the whole reason the podium stays
+ * identical for every visitor on the prerendered and planner paths.
  */
-const ACCESS_POINTS = [7, 5, 3, 2, 1, 0];
+const DISTANCE_BANDS: [number, number][] = [[5, 10], [10, 8], [20, 6], [35, 4], [60, 2]];
+const distancePoints = (distanceKm: number | undefined): TopPickAxisResult => {
+  const max = TOP_PICK_WEIGHTS.distance;
+  if (typeof distanceKm !== 'number' || !Number.isFinite(distanceKm) || distanceKm < 0) {
+    return axis('distance', max / 2, max, true);
+  }
+  for (const [limit, points] of DISTANCE_BANDS) {
+    if (distanceKm <= limit) return axis('distance', points, max);
+  }
+  return axis('distance', 0, max);
+};
+
+/**
+ * ΠΡΟΣΒΑΣΗ — 6, below both the distance and the facilities it used to outrank (Μίλτος, 11/08/2026:
+ * «οι παροχές επίσης θα είναι πάνω από τον δρόμο»). Takes the podium's existing 0-5 access priority
+ * so there is one definition of "easy" on the site.
+ */
+const ACCESS_POINTS = [6, 4.5, 3, 1.5, 0.5, 0];
 const accessPoints = (priority: number): TopPickAxisResult =>
   axis('access', ACCESS_POINTS[Math.max(0, Math.min(5, priority))] ?? 0, TOP_PICK_WEIGHTS.access);
 
 /**
- * ΠΑΡΟΧΕΣ — 8, the heaviest of the three human axes. The podium's amenities score runs 0-22, mapped
- * proportionally so two points of parking cannot move a beach the way they did on 10/08, when they
- * decided a whole podium on their own.
+ * ΠΑΡΟΧΕΣ — 9. The podium's amenities score runs 0-22, mapped proportionally so two points of
+ * parking cannot move a beach the way they did on 10/08, when they decided a whole podium alone.
  */
 const amenitiesPoints = (score: number): TopPickAxisResult => {
   const max = TOP_PICK_WEIGHTS.amenities;
@@ -171,11 +210,11 @@ const amenitiesPoints = (score: number): TopPickAxisResult => {
 };
 
 /**
- * ΠΟΣΟ ΑΡΕΣΕΙ — 5, and positive (Μίλτος, 11/08/2026).
+ * ΠΟΛΥΣΥΧΝΑΣΤΗ — 5, and positive (Μίλτος, 11/08/2026).
  *
  * This axis was a crowd PENALTY for one day. Miltos overturned it: «αφού πάει πολύς κόσμος λογικά
- * καλή θα είναι, μην το παίρνουμε αρνητικά». Measured over the 1.941 beaches carrying both a
- * review count and a star rating, he is right — and the reason is sharper than the averages:
+ * καλή θα είναι, μην το παίρνουμε αρνητικά». Measured over the 1.941 beaches carrying both a review
+ * count and a star rating, he is right — and the reason is sharper than the averages:
  *
  *   Πολυσύχναστη  4,49 stars   5% rated below 4,3
  *   Δημοφιλής     4,47        15%
@@ -183,33 +222,32 @@ const amenitiesPoints = (score: number): TopPickAxisResult => {
  *   Ήσυχη         4,40        27%
  *   Απομονωμένη   4,35        33%
  *
- * The mean barely moves (0,14 stars across the whole range) but the DOWNSIDE moves six-fold: one
+ * The mean barely moves — 0,14 stars across the whole range — but the DOWNSIDE moves six-fold: one
  * in three secluded beaches disappoints, one in twenty crowded ones does. Popularity is not
- * evidence of excellence, it is evidence against a bad surprise.
+ * evidence of excellence, it is evidence against a bad surprise, and five points out of a hundred
+ * is what that is worth.
  *
- * WHICH NUMBER, THEN. The star rating, not the review count — they answer different questions and
- * only one of them is «did people like it». Scoring the count would have pushed every list towards
- * the same two dozen names, which is the one thing this site cannot afford to be: a slower Google.
- * The rating is nearly independent of the count (top-100 by volume average 4,49 stars, bottom-100
- * average 4,38), so this rewards beaches people loved, not beaches buses reach.
- *
- * Bands are wide because the ratings are compressed: p25 is 4,3 and p75 is 4,6 nationally, so
- * finer steps would be sorting on a tenth of a star that means nothing. No rating on record scores
- * the middle band, never zero — 916 beaches have no Google identity at all and this must not
- * become a tax on being unknown.
+ * WHY THE COUNT AND NOT THE STARS. Both were built and measured; Miltos chose the count on
+ * 11/08 and the label says so — «Πολυσύχναστη», the same word the card already prints, so the box
+ * beside the podium and the badge on the beach cannot say different things. The known cost is that
+ * the same two dozen famous names gain five points everywhere, which is why this is the SMALLEST
+ * axis on the table and why the 916 beaches Google has never heard of are scored in the middle
+ * rather than at zero: not knowing must never read as "nobody goes there".
  */
-const likedPoints = (beach: Beach): TopPickAxisResult => {
-  const max = TOP_PICK_WEIGHTS.liked;
-  const rating = beach.popularity?.rating ?? beach.metadata?.popularity?.rating;
-  if (typeof rating !== 'number' || !Number.isFinite(rating)) return axis('liked', 2, max, true);
-  if (rating >= 4.6) return axis('liked', max, max);
-  if (rating >= 4.4) return axis('liked', 3, max);
-  if (rating >= 4.2) return axis('liked', 1, max);
-  return axis('liked', 0, max);
+const crowdPoints = (beach: Beach): TopPickAxisResult => {
+  const max = TOP_PICK_WEIGHTS.crowd;
+  const tier = beach.popularity?.tier ?? beach.metadata?.popularity?.tier;
+  if (!tier) return axis('crowd', 2, max, true);
+  if (tier === 'crowded') return axis('crowd', max, max);
+  if (tier === 'popular') return axis('crowd', 3, max);
+  if (tier === 'moderate') return axis('crowd', 1, max);
+  return axis('crowd', 0, max);
 };
 
 export interface TopPickScoreInput {
   item: SuitableBeach;
+  /** Kilometres from the visitor, when a location has been shared. Undefined otherwise. */
+  distanceKm?: number;
   /** The wind on this beach's own shore, already resolved by the caller. */
   ownBeaufort: number | undefined;
   /** False when the pool is windy but this shore is not — see shelterPoints. */
@@ -224,15 +262,16 @@ export interface TopPickScoreInput {
  * explanation and the order drift apart.
  */
 export const scoreTopPick = ({
-  item, ownBeaufort, feelsWind, accessPriority, amenitiesScore,
+  item, ownBeaufort, feelsWind, accessPriority, amenitiesScore, distanceKm,
 }: TopPickScoreInput): TopPickScoreBreakdown => {
   const axes = [
     shelterPoints(item, feelsWind),
-    ownWindPoints(ownBeaufort),
     seaPoints(item),
-    accessPoints(accessPriority),
+    ownWindPoints(ownBeaufort),
+    distancePoints(distanceKm),
     amenitiesPoints(amenitiesScore),
-    likedPoints(item.beach),
+    accessPoints(accessPriority),
+    crowdPoints(item.beach),
   ];
   const raw = axes.reduce((sum, a) => sum + a.points, 0);
   return { total: Math.max(0, Math.min(TOP_PICK_SCORE_MAX, Math.round(raw * 10) / 10)), axes };

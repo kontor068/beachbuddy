@@ -344,6 +344,9 @@ export const prioritizeProtectedRecommendations = (
     feelsWind: shelterCounts(item),
     accessPriority: topPickAccessPriority(item.beach),
     amenitiesScore: topPickAmenitiesScore(item.beach),
+    // Undefined on every surface where no location was shared, which makes the axis neutral for
+    // all of them — see the distance section of the table.
+    distanceKm: typeof item.distance === 'number' && Number.isFinite(item.distance) ? item.distance : undefined,
   }).total;
 
   const scores = new Map<SuitableBeach, number>();
