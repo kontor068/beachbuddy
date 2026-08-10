@@ -2,6 +2,7 @@ import { Accessibility, Beach, SuitableBeach } from '../types';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess } from '../utils/access';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from '../utils/seaConditions';
+import { seaStateSeverityM } from '../utils/waveCharacter';
 
 /**
  * TOP-PICK RANKING — the homepage podium's gates and ordering, extracted
@@ -17,6 +18,13 @@ import { calculateSeaConditionScore, hasPoorSeaConditions } from '../utils/seaCo
 
 export const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 export const PROTECTED_FIRST_BEAUFORT = 5;
+/**
+ * The smallest sea difference the podium is allowed to reorder on, in metres of swell-equivalent
+ * height. Read off our own model's error, not chosen: the worst per-buoy RMSE in
+ * reports/wave-model/buoy-comparison.json is 0,251 m (national 0,184). Below its own error bar the
+ * model is not measuring a difference, and a podium that reorders there is publishing noise.
+ */
+export const PODIUM_SEA_MEANINGFUL_DIFFERENCE_M = 0.25;
 /**
  * THE WIND AT EACH BEACH'S OWN SHORE (02/08/2026), keyed by beach id — App.perBeachMapWind,
  * built from the same cluster forecasts that already colour the map.
@@ -282,6 +290,55 @@ export const prioritizeProtectedRecommendations = (
    * Silent by construction where it should be: no tone table (planner, prerender, first paint) or
    * either beach unpainted → the tier ties and the previous order stands, untouched.
    */
+  /**
+   * ΟΤΑΝ ΤΟ ΧΡΩΜΑ ΙΣΟΦΑΡΙΖΕΙ, ΜΙΛΑΕΙ ΤΟ ΝΕΡΟ — ΟΧΙ ΟΙ ΟΜΠΡΕΛΕΣ (10/08/2026).
+   *
+   * Reported by Miltos: «με σκορ 76 το Πεύκο πώς βγαίνει 2ο;». Measured live in East Attica at
+   * 5 Bft: all ten candidates came out protected, yellow, 5 Bft on their own shore, recognition 0
+   * and asphalt access — so the ladder ran past every condition tier and stopped on AMENITIES,
+   * 22 vs 20. Two points of parking-and-shade decided a podium under a heading about shelter.
+   *
+   * WHY A NEW TIER RATHER THAN A WIDER COLOUR. The colour already carries the sea (toneDiff, just
+   * above) and that is deliberately ONE piece of evidence answered once. But the colour has only
+   * two sea thresholds — SEA_STATE_AMBER_M 0,8 and SEA_STATE_ROUGH_M 1,2 — so anything under 0,8
+   * is the same yellow, and 0,15 m of glass ties with 0,52 m of chop. This tier does not ask a
+   * second question; it reads the SAME sea at the resolution the colour throws away. It runs only
+   * after the colour has failed to separate them.
+   *
+   * WHICH NUMBER. Not `waveHeightM` — that is the display figure the cove guard rewrites and it is
+   * forbidden as a decision key (types.ts). `seaStateWaveM` is the decision-grade one, and where
+   * the beach has a modelled height AT THE SAND (utils/shoreWave's four gates: zero fetch, blocked
+   * sector, high-confidence geometry, no swell) the lower of the two wins — otherwise Σχινιάς is
+   * ranked on 1,22 m taken 9,4 km offshore, the exact water this project ruled out of the swim
+   * verdict the same evening. Height is read through seaStateSeverityM, so 0,5 m at 3 s is not
+   * filed beside 0,5 m at 7 s.
+   *
+   * WHY A THRESHOLD, AND WHY THIS ONE. 0,25 m is the worst per-buoy RMSE our wave model records
+   * (reports/wave-model/buoy-comparison.json: 0,171 / 0,185 / 0,251; national 0,184). Below its
+   * own error bar the model is not distinguishing anything, so a smaller gap must NOT reorder a
+   * podium — it would be noise dressed as a recommendation. 21,8% of beaches still share a marine
+   * cell, which is the other reason this is a coarse tier and not a sort key.
+   *
+   * Silent by construction where it should be: no sea reading on either beach → tie → the previous
+   * order (recognition, access, distance, amenities, score) stands exactly as before.
+   */
+  const podiumSeaSeverityM = (item: SuitableBeach): number | undefined => {
+    const decisionM = item.seaStateWaveM;
+    if (typeof decisionM !== 'number' || !Number.isFinite(decisionM)) return undefined;
+    const shoreM = item.shoreWaveHeightM;
+    const rankM = typeof shoreM === 'number' && Number.isFinite(shoreM)
+      ? Math.min(shoreM, decisionM)
+      : decisionM;
+    return seaStateSeverityM(rankM, item.seaStatePeriodS) ?? rankM;
+  };
+  const compareSea = (a: SuitableBeach, b: SuitableBeach): number => {
+    const aSea = podiumSeaSeverityM(a);
+    const bSea = podiumSeaSeverityM(b);
+    if (typeof aSea !== 'number' || typeof bSea !== 'number') return 0;
+    if (Math.abs(aSea - bSea) < PODIUM_SEA_MEANINGFUL_DIFFERENCE_M) return 0;
+    return aSea - bSea;
+  };
+
   const toneOf = (item: SuitableBeach): number | undefined => (toneRank ? toneRank(item.beach.id) : undefined);
   const compareTone = (a: SuitableBeach, b: SuitableBeach): number => {
     const aTone = toneOf(a);
@@ -297,12 +354,14 @@ export const prioritizeProtectedRecommendations = (
     const touristDiff = compareTouristTopPickPriority(a, b);
     const toneDiff = compareTone(a, b);
     const ownWindDiff = ownWindRank(a) - ownWindRank(b);
+    const seaDiff = compareSea(a, b);
 
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
     if (poolBeaufort >= PROTECTED_FIRST_BEAUFORT) {
       if (exposureDiff !== 0) return exposureDiff;
       if (toneDiff !== 0) return toneDiff;
       if (ownWindDiff !== 0) return ownWindDiff;
+      if (seaDiff !== 0) return seaDiff;
       return touristDiff || scoreDiff;
     }
     // 3-4 Bft. The wind is doing something, so the same two pieces of live evidence — the colour,
@@ -311,6 +370,7 @@ export const prioritizeProtectedRecommendations = (
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
       if (toneDiff !== 0) return toneDiff;
       if (ownWindDiff !== 0) return ownWindDiff;
+      if (seaDiff !== 0) return seaDiff;
       if (exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) return exposureDiff;
       return touristDiff || scoreDiff || exposureDiff;
     }

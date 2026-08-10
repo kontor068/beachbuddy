@@ -139,6 +139,15 @@ const checks = [
     args: ['scripts/validateOverCaution.mjs', '--prove'],
   },
   {
+    id: 'podium-sea-order',
+    title: 'The podium does not rank umbrellas above the sea',
+    description: "Drives the REAL prioritizeProtectedRecommendations over six fixtures and checks the order means what the heading says: a calmer sea outranks better amenities and higher recognition; a difference INSIDE the wave model's own error bar (0,25 m, the worst per-buoy RMSE we record) does not reorder anything; a lee shore ranks on its modelled height at the sand, not on the cell 9 km offshore; the map colour and the wind on that shore both still outrank the new tier; and with no sea readings at all the order is byte-identical to the old behaviour. Self-proves with --prove: the tier removed, the threshold zeroed, and the shore height ignored must each make it fail.",
+    protects: 'Prevents the ladder from deciding a "where is it calm today" podium on parking and sunbeds. Measured live on 10/08/2026 in East Attica at 5 Bft: all ten candidates tied on exposure, colour, own-shore wind, recognition and access, so the comparison fell through to amenities — 22 versus 20 — and a beach scoring 58 led one scoring 76. Until this gate existed there were 33 checks on whether our claims were TRUE and none on whether the ranking meant what its own heading promises.',
+    failureAction: 'Fix the tier order in services/topPickRanking.prioritizeProtectedRecommendations. Never make it pass by raising PODIUM_SEA_MEANINGFUL_DIFFERENCE_M — that number is read off reports/wave-model/buoy-comparison.json, and widening it to silence a case is how a measured constant becomes a tuned one. Never rank on BeachScore.waveHeightM: it is the display figure the cove guard rewrites.',
+    command: process.execPath,
+    args: ['scripts/validatePodiumSeaOrder.mjs', '--prove'],
+  },
+  {
     id: 'stay-window-worst-hour',
     title: 'A stay is judged by its roughest hour',
     description: 'Drives utils/stayWindow over all 1.364 tone sequences a sampled window can have (1-5 hours × 4 colours) and checks the hour chosen to speak for the window is always the roughest one in it, that ties fall to the earliest hour so an unchanging day behaves exactly as before, that no stay still means exactly one slot, and that both ends of the window are always sampled. Then re-runs the whole grid against two deliberately wrong pickers and fails if either survives.',

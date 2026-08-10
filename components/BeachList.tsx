@@ -14,6 +14,8 @@ type BeachListBeach = Beach & {
   waveHeightM?: number;
   /** Decision-grade sea state (m) + period — see BeachScore.seaStateWaveM. */
   seaStateWaveM?: number;
+  /** Modelled height at the sand (m) where utils/shoreWave speaks — see BeachScore. */
+  shoreWaveHeightM?: number;
   seaStatePeriodS?: number;
   windSpeedKmph?: number;
   warnings?: WarningFlag[];
@@ -295,6 +297,7 @@ export const BeachList: React.FC<BeachListProps> = ({
               exposureLevel={b.exposureLevel}
               waveHeightM={b.waveHeightM ?? waveHeightM}
               seaStateWaveM={b.seaStateWaveM}
+              shoreWaveHeightM={b.shoreWaveHeightM}
               seaStatePeriodS={b.seaStatePeriodS}
               warnings={b.warnings}
               confidence={b.confidence}

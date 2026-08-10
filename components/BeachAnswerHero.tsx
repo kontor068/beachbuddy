@@ -78,7 +78,7 @@ const AIR_TEMP_LABEL: Record<LanguageCode, string> = {
 // measured and rejected). Only the word above it changes, and only when the figure really is the
 // area grid — see `isOpenWater`, which the cove guard flips off because there the number is our
 // own near-shore SMB estimate and «offshore» would be a fresh lie.
-const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: string; water: string; sunset: string }> = {
+export const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: string; water: string; sunset: string }> = {
   en: { wind: 'Wind', sea: 'Waves', seaOpen: 'Waves offshore', water: 'Water', sunset: 'Sunset' },
   gr: { wind: 'Άνεμος', sea: 'Κύμα', seaOpen: 'Κύμα ανοιχτά', water: 'Νερό', sunset: 'Δύση' },
   de: { wind: 'Wind', sea: 'Wellen', seaOpen: 'Wellen draußen', water: 'Wasser', sunset: 'Sonne' },
@@ -87,7 +87,7 @@ const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaOpen: st
 };
 
 /** Shown when the shore reading leads: the label above it, and the «offshore …» note beneath. */
-const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v: string) => string }> = {
+export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v: string) => string }> = {
   en: { atShore: 'Waves at the shore', offshore: (v) => `${v} offshore` },
   gr: { atShore: 'Κύμα στην ακτή', offshore: (v) => `${v} ανοιχτά` },
   de: { atShore: 'Wellen am Ufer', offshore: (v) => `${v} draußen` },

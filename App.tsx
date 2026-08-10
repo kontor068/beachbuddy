@@ -4735,6 +4735,7 @@ export const App: React.FC = () => {
         windSpeedKmph: scoreResult.windSpeedKmph,
         waveHeightM: scoreResult.waveHeightM,
         seaStateWaveM: scoreResult.seaStateWaveM,
+        shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // The full marine forecast rides along for the map's downwind-sample flag
         // (utils/offshoreFlatWater.hasDownwindSeaSample reads swellWaveHeightM). Found the hard
@@ -8329,6 +8330,7 @@ export const App: React.FC = () => {
                       exposureLevel={r.exposureLevel}
                       waveHeightM={r.waveHeightM}
                       seaStateWaveM={r.seaStateWaveM}
+                      shoreWaveHeightM={r.shoreWaveHeightM}
                       seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
                       warnings={r.warnings}
@@ -8578,6 +8580,7 @@ export const App: React.FC = () => {
                           exposureLevel={r.exposureLevel}
                           waveHeightM={r.waveHeightM}
                           seaStateWaveM={r.seaStateWaveM}
+                          shoreWaveHeightM={r.shoreWaveHeightM}
                           seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}
                           warnings={r.warnings}

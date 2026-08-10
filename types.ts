@@ -667,6 +667,18 @@ export interface SuitableBeach {
   /** Decision-grade sea state (m) + its period. See BeachScore.seaStateWaveM. */
   seaStateWaveM?: number;
   seaStatePeriodS?: number;
+  /**
+   * THE MODELLED HEIGHT AT THE SAND (m), or undefined — which is the normal answer.
+   *
+   * Present only where the wind blows OFF the land into a land-blocked, essentially fetch-free
+   * sector with no swell and high-confidence geometry (utils/shoreWave, four gates). It is the
+   * same value the beach page has printed as «Κύμα στην ακτή» since 05/08/2026, carried onto the
+   * card and into the podium's ranking so all three read one number instead of three.
+   *
+   * Unlike `waveHeightM` this one IS a decision input — see the podium's sea tier in
+   * services/topPickRanking. It is modelled, never measured, and it says so on screen with a «~».
+   */
+  shoreWaveHeightM?: number;
   /** Wind (km/h) this beach was scored with, so its card Beaufort matches its same-wind wave. */
   windSpeedKmph?: number;
   warnings?: WarningFlag[];

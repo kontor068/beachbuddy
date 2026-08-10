@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { SHORE_LABELS, READ_LABELS } from './BeachAnswerHero';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
@@ -52,6 +53,10 @@ interface BeachCardProps {
    *  that decides a colour or a word reads these; `waveHeightM` is display only. */
   seaStateWaveM?: number;
   seaStatePeriodS?: number;
+  /** Modelled height AT THE SAND (m) where utils/shoreWave is entitled to speak — undefined
+   *  everywhere else. This is the figure the podium card prints, because it is the water the
+   *  reader is standing in; see the wave line below. */
+  shoreWaveHeightM?: number;
   temperature?: number;
   favorites: number[];
   onToggleFavorite: (id: number) => void;
@@ -1119,6 +1124,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   beachWindSpeedKmph,
   waveHeightM,
   seaStateWaveM,
+  shoreWaveHeightM,
   seaStatePeriodS,
   temperature,
   favorites,
@@ -1186,6 +1192,33 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   // same number to read and a different sea to swim in.
   const cardSeaStateM = seaStateSeverityM(seaStateWaveM ?? waveHeightM, seaStatePeriodS)
     ?? (seaStateWaveM ?? waveHeightM);
+  /**
+   * ΤΟ ΚΥΜΑ ΣΤΗΝ ΚΑΡΤΑ — Ο ΧΡΗΣΤΗΣ ΗΤΑΝ ΤΥΦΛΟΣ ΩΣ ΣΗΜΕΡΑ (10/08/2026).
+   *
+   * The podium card printed a Beaufort and an hour, and nothing at all about the sea. Measured in
+   * East Attica the same evening: #1 sat at 1,14 m and #2 at 0,52 m and the two cards were
+   * indistinguishable — on a site whose entire promise is «πού είναι ήρεμα σήμερα». The one place
+   * that said it («η πιο ήρεμη θάλασσα από τις τρεις») lives in a desktop rail that appears at
+   * 1360px and up, i.e. never for the 86% of visitors on a phone.
+   *
+   * Which number and which words: exactly the pair the beach page has printed since 05/08 — the
+   * modelled height AT THE SAND with a «~» where utils/shoreWave is entitled to speak, otherwise
+   * the honest open-water reading labelled «ανοιχτά». The strings are imported from
+   * BeachAnswerHero rather than retyped, so the card and the beach page cannot drift into
+   * describing the same water with different words.
+   */
+  const cardWaveM = typeof shoreWaveHeightM === 'number' && Number.isFinite(shoreWaveHeightM)
+    ? shoreWaveHeightM
+    : waveHeightM;
+  const cardWaveIsShore = typeof shoreWaveHeightM === 'number' && Number.isFinite(shoreWaveHeightM);
+  // Same spelling as the beach page's own tile (BeachAnswerHero): «0,5 μ.» in Greek, «0.5 m»
+  // elsewhere, and the «~» only on the modelled shore figure so the two never look alike.
+  const cardWaveText = typeof cardWaveM === 'number' && Number.isFinite(cardWaveM)
+    ? `${cardWaveIsShore ? '~' : ''}${cardWaveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
+    : undefined;
+  const cardWaveLabel = cardWaveIsShore
+    ? SHORE_LABELS[language].atShore
+    : READ_LABELS[language].seaOpen;
   const isFavorite = favorites.includes(beach.id);
   const labels = compactLabels(language, selectedDate, selectedHour);
   const localizedCardCopy = getLocalizedCopy(language, cardCopy);
@@ -1598,6 +1631,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
                   <span>{windBeaufort} {beaufortUnitLabel}</span>
                 </span>
+                {cardWaveText && (
+                  <span
+                    className="inline-flex min-w-0 shrink-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60"
+                    title={cardWaveLabel}
+                    aria-label={`${cardWaveLabel}: ${cardWaveText}`}
+                  >
+                    <Waves className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
+                    <span>{cardWaveText}</span>
+                  </span>
+                )}
                 {topPickTimeLabel && (
                   <span className="inline-flex min-w-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60">
                     <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />

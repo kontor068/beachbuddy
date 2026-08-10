@@ -99,6 +99,13 @@ export interface BeachScore {
   seaStateWaveM?: number;
   /** Total-sea period (s) behind seaStateWaveM — separates steep chop from a long roll. */
   seaStatePeriodS?: number;
+  /**
+   * The modelled height AT THE SAND (m), or undefined — the normal answer. Present only under
+   * utils/shoreWave's four gates (blocked sector, no fetch, high-confidence geometry, no swell).
+   * Unlike `waveHeightM` this one IS a decision input: the swim verdict's shore branch and the
+   * podium's sea tier both read it. Modelled, never measured — printed with a «~».
+   */
+  shoreWaveHeightM?: number;
   seaStateSource?: SeaStateSource;
   /** Which water the measurement describes — this beach's own shore, or the region cell. */
   seaStatePointSource?: SeaStatePointSource;
@@ -162,6 +169,8 @@ export interface BeachRecommendation {
   seaStateWaveM?: number;
   /** Total-sea period (s) behind seaStateWaveM. */
   seaStatePeriodS?: number;
+  /** Modelled height AT THE SAND (m) where the four shoreWave gates allow it — see types.ts. */
+  shoreWaveHeightM?: number;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** Wind speed (km/h) this recommendation was scored with (beach-cluster when available), so a
@@ -2388,6 +2397,7 @@ export const calculateBeachScore = (
     waveHeightM: displayWaveHeightM,
     seaStateWaveM: effectiveWaveHeightM,
     seaStatePeriodS,
+    shoreWaveHeightM: shoreModelWaveM,
     seaStateSource,
     modeledWaveHeightM,
     windSpeedKmph,
