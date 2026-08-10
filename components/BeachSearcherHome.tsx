@@ -56,6 +56,7 @@ import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getTopPickTimingLabel } from '../utils/topPickTiming';
+import { MEANINGFUL_WIND_TOP_PICK_BEAUFORT as SHARED_MEANINGFUL_WIND_TOP_PICK_BEAUFORT } from '../services/topPickRanking';
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
@@ -243,6 +244,11 @@ const WEATHER_COLUMN_HIDDEN_KEY = 'calmbeach:desktop-weather-column-hidden';
 // the boats don't run and you can't drive there — so it must never surface as a "top
 // pick". Mirrors the App-level `shouldHideBoatAccessBeaches` chokepoint (PROTECTED_FIRST_BEAUFORT).
 const PROTECTED_FIRST_BEAUFORT = 5;
+// The wind at which shelter stops being a tie-break and becomes a gate on who enters the podium
+// at all (services/topPickRanking.bestShelteredRecommendationGroup). Imported rather than retyped:
+// the transparency panel describes that rule in words, and a threshold that drifts in one of the
+// two places would leave the page explaining a ranking it no longer performs.
+const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = SHARED_MEANINGFUL_WIND_TOP_PICK_BEAUFORT;
 
 const installMouseDragScroll = (element: HTMLElement): (() => void) => {
   let pointerId: number | null = null;
@@ -2273,23 +2279,69 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     fr: 'Pourquoi ces trois-là ?',
     it: 'Perché queste tre?',
   });
+  /**
+   * ONE PANEL, THREE REGIMES — because the RANKING has three (Miltos, 10/08/2026: «άλλο top 3 σε
+   * ήρεμο καιρό και άλλο top 3 σε μεγάλα μποφόρ»). He was right that it changes; MEASURED through
+   * the real functions before a word was written here (.tmp/probePodiumRegimes.mjs — two fixtures,
+   * a plain protected beach at score 65 against a famous organized 'partial' one at score 85):
+   *
+   *   ≤2 Bft  shelter plays no part. The famous higher-scoring beach wins, and nothing is
+   *           filtered out — bestShelteredRecommendationGroup returns the pool untouched.
+   *   3-4 Bft the shelter tier becomes a GATE: the pool drops 2→1, the plain protected beach
+   *           beats the famous exposed one. But between two equally protected beaches, fame and
+   *           score still decide.
+   *   ≥5 Bft  same gate, plus the tier added on 10/08: among equally protected beaches the one
+   *           with less wind on its OWN shore leads, ahead of recognition and score.
+   *
+   * The tab beside these bullets switches at >4 («Πιο προστατευμένες» vs «Top 3»), so the title
+   * and the lead follow that same line — they must never contradict the tab. Only the ONE bullet
+   * that states the ordering rule reads the true thresholds, because at 3-4 Bft both of the
+   * other two sentences would be false.
+   */
+  const isShelterFirstPodium = typeof currentBeaufort === 'number' && currentBeaufort > 4;
+  const podiumOrderingRegime: 'calm' | 'shelter_gate' | 'own_shore_first' = typeof currentBeaufort !== 'number' || currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT
+    ? 'calm'
+    : currentBeaufort < PROTECTED_FIRST_BEAUFORT
+      ? 'shelter_gate'
+      : 'own_shore_first';
   // The list under the «Γιατί αυτές οι τρεις;» heading answers «ποια από τις τρεις», not «γιατί
   // αυτές και όχι οι άλλες 71» — that second question is what the bullets below answer. One lead
   // line joins them, so the heading is not left writing a cheque the list does not cash.
-  const topPicksWhyLead = getLocalizedCopy(language, {
-    en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
-    gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
-    de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
-    fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
-    it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
-  });
-  const topPicksHowTitle = getLocalizedCopy(language, {
-    en: 'How the Top 3 is picked',
-    gr: 'Πώς βγαίνει το Top 3',
-    de: 'So entsteht die Top 3',
-    fr: 'Comment le Top 3 est choisi',
-    it: 'Come nasce la Top 3',
-  });
+  const topPicksWhyLead = isShelterFirstPodium
+    // NOT «…που αξίζουν ακόμα για μπάνιο», which is what this said first: we measure wind and
+    // sea, never whether a swim is worth it, and at 6 Bft that promise is one we cannot keep.
+    // The clause borrows the calm variant's own vocabulary instead, which is exactly what the
+    // page can prove — and is only ever printed when the three really did clear the bar
+    // (`shelteredFallbackPodium` false).
+    ? getLocalizedCopy(language, {
+      en: 'With this much wind, these three are the most sheltered ones that still clear the wind and sea checks. Here is what separates them:',
+      gr: 'Με τέτοιο αέρα, αυτές οι τρεις είναι οι πιο προστατευμένες που περνούν ακόμα τους ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
+      de: 'Bei diesem Wind sind diese drei die geschütztesten, die die Wind- und Seegangsprüfungen noch bestehen. Das unterscheidet sie:',
+      fr: "Avec ce vent, ces trois-là sont les plus abritées qui passent encore les contrôles de vent et de mer. Voici ce qui les distingue :",
+      it: 'Con questo vento, queste tre sono le più riparate che superano ancora i controlli su vento e mare. Ecco cosa le distingue:',
+    })
+    : getLocalizedCopy(language, {
+      en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
+      gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
+      de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
+      fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
+      it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
+    });
+  const topPicksHowTitle = isShelterFirstPodium
+    ? getLocalizedCopy(language, {
+      en: 'How we pick the sheltered ones',
+      gr: 'Πώς διαλέγουμε τις πιο προστατευμένες',
+      de: 'So wählen wir die geschütztesten',
+      fr: 'Comment nous choisissons les plus abritées',
+      it: 'Come scegliamo le più riparate',
+    })
+    : getLocalizedCopy(language, {
+      en: 'How the Top 3 is picked',
+      gr: 'Πώς βγαίνει το Top 3',
+      de: 'So entsteht die Top 3',
+      fr: 'Comment le Top 3 est choisi',
+      it: 'Come nasce la Top 3',
+    });
   const topPicksHowBullets = [
     getLocalizedCopy(language, {
       en: 'We look at wind, gusts and waves for the hour you are viewing — not a daily average.',
@@ -2305,6 +2357,33 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       fr: "Nous mesurons à quel point la forme de la côte abrite chaque plage du vent du jour.",
       it: 'Misuriamo quanto la forma della costa ripara ogni spiaggia dal vento di oggi.',
     }),
+    // THE RULE THAT ACTUALLY CHANGES WITH THE WIND — the only sentence on this list that is not
+    // true on every day. Each variant states what was measured for its own band; see the regime
+    // note above. Never merge these back into one line "for simplicity": the merged version is
+    // wrong on two days out of three.
+    podiumOrderingRegime === 'own_shore_first'
+      ? getLocalizedCopy(language, {
+        en: 'When it blows like this, the shelter decides: only the most sheltered beaches make the list. The one with the least wind on its own shore comes first, and only then does it matter how well known or well equipped it is.',
+        gr: 'Όταν φυσάει έτσι, αποφασίζει η προστασία: στη λίστα μπαίνουν μόνο οι πιο προστατευμένες. Πρώτη έρχεται όποια έχει τον λιγότερο αέρα στη δική της ακτή, και μετά μετράει το πόσο γνωστή ή οργανωμένη είναι.',
+        de: 'Wenn es so weht, entscheidet der Schutz: In die Liste kommen nur die geschütztesten Strände. Vorn steht der mit dem wenigsten Wind am eigenen Ufer, und erst danach zählt, wie bekannt oder gut ausgestattet er ist.',
+        fr: "Quand il souffle ainsi, c'est l'abri qui décide : seules les plages les plus abritées entrent dans la liste. Celle qui a le moins de vent sur son propre rivage vient en premier, et sa notoriété ou ses équipements ne comptent qu'ensuite.",
+        it: 'Quando soffia così, decide il riparo: nella lista entrano solo le spiagge più riparate. Viene prima quella con meno vento sulla propria riva, e solo dopo conta quanto sia nota o attrezzata.',
+      })
+      : podiumOrderingRegime === 'shelter_gate'
+        ? getLocalizedCopy(language, {
+          en: 'With a moderate wind, only the beaches that have that shelter make the list. An exposed beach does not get in because it is beautiful.',
+          gr: 'Με μέτριο άνεμο, στη λίστα μπαίνουν μόνο όσες έχουν αυτή την προστασία. Μια εκτεθειμένη παραλία δεν μπαίνει επειδή είναι ωραία.',
+          de: 'Bei mäßigem Wind kommen nur die Strände in die Liste, die diesen Schutz haben. Ein offen liegender Strand kommt nicht hinein, weil er schön ist.',
+          fr: "Par vent modéré, seules les plages qui ont cet abri entrent dans la liste. Une plage exposée n'y entre pas parce qu'elle est belle.",
+          it: 'Con vento moderato, entrano in lista solo le spiagge che hanno questo riparo. Una spiaggia esposta non entra perché è bella.',
+        })
+        : getLocalizedCopy(language, {
+          en: 'With so little wind, shelter is not what decides. The waves and what each beach itself is like matter more.',
+          gr: 'Με τόσο λίγο αέρα δεν αποφασίζει η προστασία. Μετράνε περισσότερο το κύμα και τα χαρακτηριστικά της κάθε παραλίας.',
+          de: 'Bei so wenig Wind entscheidet nicht der Schutz. Wellengang und die Eigenschaften des Strandes zählen mehr.',
+          fr: "Avec si peu de vent, ce n'est pas l'abri qui décide. Les vagues et les caractéristiques de chaque plage comptent davantage.",
+          it: 'Con così poco vento non decide il riparo. Contano di più le onde e le caratteristiche di ogni spiaggia.',
+        }),
     getLocalizedCopy(language, {
       en: 'Beaches that need a boat or a hard path always rank after the easily accessible ones.',
       gr: 'Παραλίες που θέλουν σκάφος ή δύσκολο μονοπάτι μπαίνουν πάντα μετά τις εύκολα προσβάσιμες.',
@@ -2365,13 +2444,39 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // suitable list in its normal mode. A colour filter or «Όλες» sorting already stands the podium
   // down (or reroutes the list), and then the page keeps its untabbed layout.
   const isTabbedPicksMode = Boolean(selectedIsland && hasTopRecommendationView && !infoOnly && isDirectorySuitableView);
-  const restTabLabel = withCount(getLocalizedCopy(language, {
-    en: 'The rest',
-    gr: 'Υπόλοιπες',
-    fr: 'Les autres',
-    de: 'Weitere',
-    it: 'Le altre',
-  }), suitableBeachDisplayCount);
+  /**
+   * «Υπόλοιπες» ΑΛΛΑ ΟΧΙ «υπόλοιπες ΠΡΟΣΤΑΤΕΥΜΕΝΕΣ» — asked for on 10/08/2026 and deliberately
+   * answered with a different word, because this list is not selected by shelter at all.
+   * `selectSuitableByTone` (utils/suitabilityTone) takes the beaches the MAP painted ΙΔΑΝΙΚΗ or
+   * ΚΑΛΗ — a colour that mixes wind, sea and geometry — and tops the list up with ΜΕΤΡΙΑ when
+   * fewer than three qualify. So a member can be calm today simply because no wind reaches it,
+   * with no shelter to speak of, and on a thin day it can even be a fair one. «Κατάλληλες» is
+   * the word the section heading beneath already uses (getRemainingSuitableLabel) and the only
+   * one the membership rule earns.
+   *
+   * Mobile keeps the bare «Υπόλοιπες»: beside «Πιο προστατευμένες στις 13:00–14:00» the pair
+   * wraps to two lines at 320px, and the heading over the list says the full phrase anyway.
+   *
+   * So does the last-resort podium. When the block above is saying «καμία δεν είναι ιδανική
+   * τώρα», a neighbouring tab reading «Υπόλοιπες ΚΑΤΑΛΛΗΛΕΣ» offers the visitor something that
+   * sounds better than the three picks — on the one day the page has just admitted it has no
+   * good answer.
+   */
+  const restTabLabel = withCount(isMobileViewport || shelteredFallbackPodium
+    ? getLocalizedCopy(language, {
+      en: 'The rest',
+      gr: 'Υπόλοιπες',
+      fr: 'Les autres',
+      de: 'Weitere',
+      it: 'Le altre',
+    })
+    : getLocalizedCopy(language, {
+      en: 'Other suitable',
+      gr: 'Υπόλοιπες κατάλληλες',
+      fr: 'Autres adaptées',
+      de: 'Weitere passende',
+      it: 'Altre adatte',
+    }), suitableBeachDisplayCount);
   // The tab is narrower than a heading, so «επιλογές» goes: «Top 3 στις 16:00–17:00» fits one
   // line where the full title wrapped to two. The >4 Bft honesty variant keeps its word.
   const topTabLabel = (() => {
