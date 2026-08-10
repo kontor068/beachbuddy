@@ -82,15 +82,6 @@ export const LADDER_HEADING: Record<LanguageCode, string> = {
   it: 'Cosa guardiamo, in ordine di peso',
 };
 
-/** The one line that is not a row: the door no score can open. */
-export const LADDER_NOTE: Record<LanguageCode, string> = {
-  gr: 'Δεν προτείνουμε ποτέ παραλία με είσοδο επί πληρωμή.',
-  en: 'We never recommend a beach you pay to enter.',
-  de: 'Strände mit Eintritt empfehlen wir nie.',
-  fr: 'Nous ne recommandons jamais une plage payante.',
-  it: 'Non consigliamo mai una spiaggia a pagamento.',
-};
-
 /**
  * The rows, heaviest first. Pure function of the weights — no beach, no forecast, no memo needed.
  */

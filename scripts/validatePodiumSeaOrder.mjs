@@ -75,6 +75,9 @@ const beach = ({ id, name, rich }) => ({
     ? { organized: true, beachBar: true, sunbeds: true, parking: true, naturalShade: true }
     : { organized: true },
   environment: rich ? { familyFriendly: true } : {},
+  // Opens a real Google pin: without it the navigation door (11/08/2026) empties the pool and
+  // every order below would compare two absences.
+  googleMapsNavigation: { status: 'verified', mode: 'place', placeId: `pid-${id}` },
 });
 
 const candidate = ({ id, name, rich = false, seaM, periodS = 4, shoreM, tone = 1, ownBft = 5 }) => ({

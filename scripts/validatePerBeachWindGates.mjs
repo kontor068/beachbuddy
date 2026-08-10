@@ -281,6 +281,9 @@ const beachFixture = (id) => ({
     access: { type: 'asphalt_road' },
     environment: { remote: false },
   },
+  // Every fixture opens a real Google pin. Without it the podium's navigation door (added
+  // 11/08/2026) empties the pool and every ordering assertion below silently tests nothing.
+  googleMapsNavigation: { status: 'verified', mode: 'place', placeId: `pid-${id}` },
 });
 
 const itemFixture = ({ id, score, exposureLevel }) => ({

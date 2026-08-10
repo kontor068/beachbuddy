@@ -148,6 +148,11 @@ interface BeachSearcherHomeProps {
   activeFilterCount?: number;
   searchSuggestions?: DirectorySearchSuggestion[];
   isSearchSuggesting?: boolean;
+  /** Ready-made intent bundles ("Για παιδιά") offered the moment the empty search box is
+   *  focused. Already counted and already filtered to count > 0 by App — this component
+   *  renders what it is given and never guesses whether a bundle has beaches behind it. */
+  intentBundles?: Array<{ key: string; label: string; count: number }>;
+  onIntentBundleSelect?: (key: string) => void;
   protectedSortLabel?: string;
   currentBeaufort?: number;
   mapForecastTimeLabel?: string;
@@ -1719,6 +1724,17 @@ const withCount = (label: string, count?: number): string => (
   typeof count === 'number' && count > 0 ? `${label} (${count})` : label
 );
 
+/** Heading over the ready-made intent bundles. Deliberately an invitation and not a label
+ *  («Δοκίμασε», not «Φίλτρα»): the row sits inside the search dropdown, where the user came
+ *  to type, so it has to read as a shortcut for what they were about to write. */
+const intentPanelLeadCopy: Record<LanguageCode, string> = {
+  gr: 'Δοκίμασε',
+  en: 'Try',
+  de: 'Probier',
+  fr: 'Essayez',
+  it: 'Prova',
+};
+
 export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
   selectedIsland,
@@ -1744,6 +1760,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   activeFilterCount,
   searchSuggestions = [],
   isSearchSuggesting = false,
+  intentBundles = [],
+  onIntentBundleSelect,
   protectedSortLabel,
   currentBeaufort,
   mapForecastTimeLabel,
@@ -1877,6 +1895,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const [activeMapLinkedBeachId, setActiveMapLinkedBeachId] = useState<number | undefined>(undefined);
   const searchBoxRef = useRef<HTMLDivElement>(null);
   const [isSearchSuggestionsOpen, setIsSearchSuggestionsOpen] = useState(false);
+  const [isIntentPanelOpen, setIsIntentPanelOpen] = useState(false);
   const [activeSearchSuggestionIndex, setActiveSearchSuggestionIndex] = useState(-1);
   const activePlaceName = selectedIsland?.name[language] || copy.greece;
   const isNearMeRegion = selectedIsland?.id === 'near-me';
@@ -2034,6 +2053,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   const canShowSearchSuggestions = trimmedSearchQuery.length >= 2 && Boolean(onSearchSuggestionSelect);
   const shouldRenderSearchSuggestions = isSearchSuggestionsOpen && canShowSearchSuggestions;
   const searchSuggestionListId = 'directory-search-suggestions';
+  /* The bundle panel keeps its OWN open flag instead of reusing isSearchSuggestionsOpen.
+     That flag is force-closed below on every keystroke that leaves fewer than 2 characters
+     — exactly the state the bundle panel lives in — so sharing it would make the panel
+     flicker shut the moment it was supposed to appear. */
+  const shouldRenderIntentPanel =
+    isIntentPanelOpen && trimmedSearchQuery.length === 0 && intentBundles.length > 0 && Boolean(onIntentBundleSelect);
 
   useEffect(() => {
     if (trimmedSearchQuery.length >= 2) return;
@@ -2042,11 +2067,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   }, [trimmedSearchQuery]);
 
   useEffect(() => {
-    if (!isSearchSuggestionsOpen) return undefined;
+    if (!isSearchSuggestionsOpen && !isIntentPanelOpen) return undefined;
 
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       if (!searchBoxRef.current || searchBoxRef.current.contains(event.target as Node)) return;
       setIsSearchSuggestionsOpen(false);
+      setIsIntentPanelOpen(false);
       setActiveSearchSuggestionIndex(-1);
     };
 
@@ -2057,7 +2083,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       document.removeEventListener('mousedown', handlePointerDown);
       document.removeEventListener('touchstart', handlePointerDown);
     };
-  }, [isSearchSuggestionsOpen]);
+  }, [isSearchSuggestionsOpen, isIntentPanelOpen]);
+
+  const handleIntentBundleSelect = (key: string) => {
+    setIsIntentPanelOpen(false);
+    setIsSearchSuggestionsOpen(false);
+    setActiveSearchSuggestionIndex(-1);
+    onIntentBundleSelect?.(key);
+  };
 
   const handleSearchSuggestionSelect = (suggestion: DirectorySearchSuggestion) => {
     setIsSearchSuggestionsOpen(false);
@@ -2086,9 +2119,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       return;
     }
 
-    if (event.key === 'Escape' && isSearchSuggestionsOpen) {
+    if (event.key === 'Escape' && (isSearchSuggestionsOpen || isIntentPanelOpen)) {
       event.preventDefault();
       setIsSearchSuggestionsOpen(false);
+      setIsIntentPanelOpen(false);
       setActiveSearchSuggestionIndex(-1);
     }
   };
@@ -4119,6 +4153,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 }}
                 onFocus={() => {
                   if (canShowSearchSuggestions) setIsSearchSuggestionsOpen(true);
+                  setIsIntentPanelOpen(true);
                 }}
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
@@ -4226,6 +4261,33 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       {copy.searchLoading}
                     </div>
                   )}
+                </div>
+              )}
+              {/* Έτοιμες προθέσεις, μόνο με άδειο πεδίο. Ζει ΜΕΣΑ στο dropdown της
+                  αναζήτησης και όχι σε δική του σειρά κάτω από το κουτί: το 86% των
+                  χρηστών είναι σε κινητό και η σειρά των φίλτρων από πάνω έχει ήδη
+                  «+11 ακόμη» — μια τέταρτη μόνιμη σειρά θα έσπρωχνε τον χάρτη κάτω από
+                  τη μέση. Εμφανίζεται τη στιγμή που ο χρήστης πάει να γράψει, δηλαδή
+                  ακριβώς όταν έχει ήδη πρόθεση. */}
+              {shouldRenderIntentPanel && (
+                <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white/98 p-2.5 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70 backdrop-blur-xl">
+                  <p className="px-1 pb-1.5 text-[11px] font-black uppercase tracking-wide text-slate-600">
+                    {intentPanelLeadCopy[language] || intentPanelLeadCopy.en}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {intentBundles.map(bundle => (
+                      <button
+                        key={bundle.key}
+                        type="button"
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => handleIntentBundleSelect(bundle.key)}
+                        className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-cyan-200 bg-cyan-50/70 px-3.5 text-sm font-bold text-[#007a83] transition hover:bg-cyan-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                      >
+                        <span>{bundle.label}</span>
+                        <span className="text-xs font-black tabular-nums text-slate-600">{bundle.count}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

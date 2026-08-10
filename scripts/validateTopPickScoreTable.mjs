@@ -35,9 +35,10 @@
  *   G. DISTANCE IS NEUTRAL WITHOUT A LOCATION. With no distance shared, two identical beaches must
  *      score identically, so the prerender, the planner and every first paint show the same podium
  *      to everyone. A nearer beach outscores a far one, and the axis never exceeds its 10 points.
- *   F. THE PAID DOOR HOLDS, NATIONALLY. Over every region and wind state, no beach with a
- *      paidEntry flag may appear in a Top 3. Measured before the door existed: 32 podiums across
- *      the sweep contained one.
+ *   F. THE DOORS HOLD, NATIONALLY. Over every region and wind state, no beach with a paidEntry
+ *      flag and no beach whose navigation would hand over a coordinate instead of a Google pin may
+ *      appear in a Top 3. Measured before the doors existed: 32 podiums in the sweep contained a
+ *      paid beach, and 1.158 of 3.142 records cannot open a place card of their own.
  *
  * SELF-PROOF (--prove): four regressions — comfort raised to 50, the sea step made continuous,
  * missing data scored as zero, and the missing distance given the maximum instead of the middle —
@@ -63,7 +64,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 const ranking = require(path.join(root, 'services/topPickRanking.ts'));
-const { PODIUM_SEA_MEANINGFUL_DIFFERENCE_M, prioritizeProtectedRecommendations, hasPaidEntryTopPickBlocker } = ranking;
+const { PODIUM_SEA_MEANINGFUL_DIFFERENCE_M, prioritizeProtectedRecommendations, hasPaidEntryTopPickBlocker, opensGoogleMapsPin } = ranking;
 
 const failures = [];
 const fail = m => failures.push(m);
@@ -80,6 +81,9 @@ const beachFixture = ({ id, rich = false, tier, rating, paid = false }) => ({
   environment: rich ? { familyFriendly: true } : {},
   ...(tier || typeof rating === 'number' ? { popularity: { ...(tier ? { tier } : {}), ...(typeof rating === 'number' ? { rating } : {}) } } : {}),
   ...(paid ? { paidEntry: { kind: 'entrance_fee' } } : {}),
+  // Every fixture opens a real pin unless a case is specifically about that door — otherwise the
+  // paid-entry and ordering assertions would all be testing an empty pool.
+  googleMapsNavigation: { status: 'verified', mode: 'place', placeId: `pid-${id}` },
 });
 
 const item = ({ id, rich = false, tier, rating, exposure = 'protected', seaM, periodS = 4, shoreM, paid = false }) => ({
@@ -219,9 +223,9 @@ failures.push(...run(realTable));
     fail(`F: loaded only ${regions.length} regions — run "npm run build:beach-data" first.`);
   }
   const angleDiff = (a, b) => { const d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
-  let paidInPodium = 0, pools = 0, examined = 0;
+  let paidInPodium = 0, pinlessInPodium = 0, pools = 0, examined = 0;
   for (const [regionId, beaches] of regions) {
-    if (!beaches.some(b => b.paidEntry || b.metadata?.paidEntry)) continue;
+    if (!beaches.some(b => b.paidEntry || b.metadata?.paidEntry || !opensGoogleMapsPin(b))) continue;
     pools++;
     for (const windDir of [0, 90, 180, 270]) {
       for (const bft of [3, 4, 5, 6]) {
@@ -247,13 +251,19 @@ failures.push(...run(realTable));
           paidInPodium++;
           if (paidInPodium <= 3) fail(`F: paid beach ${offender.beach.id} in the Top 3 of ${regionId} at ${bft} Bft, wind ${windDir}°.`);
         }
+        const pinless = top3.find(i => !opensGoogleMapsPin(i.beach));
+        if (pinless) {
+          pinlessInPodium++;
+          if (pinlessInPodium <= 3) fail(`F: beach ${pinless.beach.id} has no Google pin of its own but reached the Top 3 of ${regionId} at ${bft} Bft, wind ${windDir}°.`);
+        }
       }
     }
   }
   if (paidInPodium > 3) fail(`F: ...and ${paidInPodium - 3} more paid beaches in podiums.`);
+  if (pinlessInPodium > 3) fail(`F: ...and ${pinlessInPodium - 3} more pinless beaches in podiums.`);
   if (examined === 0) fail('F: no region with a paid beach was examined — the check is inert.');
   else if (!failures.some(f => f.startsWith('F:'))) {
-    console.log(`paid door: ${examined} podiums across ${pools} regions holding a paid beach — 0 reached a Top 3.`);
+    console.log(`doors: ${examined} podiums across ${pools} regions holding a paid beach — 0 paid and 0 pinless reached a Top 3.`);
   }
 }
 

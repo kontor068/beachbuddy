@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LanguageCode } from '../types';
-import { LADDER_NOTE, topPickCriteriaRows } from '../utils/topPickLadder';
+import { topPickCriteriaRows } from '../utils/topPickLadder';
 
 /**
  * ΤΟ ΚΟΥΤΙ «ΤΙ ΚΟΙΤΑΜΕ» (Μίλτος, 10/08/2026).
@@ -21,7 +21,6 @@ export const TopPickLadderPanel: React.FC<{
   className?: string;
 }> = ({ language, className }) => {
   const rows = topPickCriteriaRows(language);
-  const note = LADDER_NOTE[language] ?? LADDER_NOTE.gr;
 
   return (
     <div className={className}>
@@ -45,7 +44,6 @@ export const TopPickLadderPanel: React.FC<{
           );
         })}
       </ol>
-      <p className="mt-2 text-[10px] leading-snug text-slate-500">{note}</p>
     </div>
   );
 };

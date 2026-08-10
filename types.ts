@@ -340,6 +340,16 @@ export interface Beach {
     source?: string;
     checkedAt?: string;
   };
+  /**
+   * Trimmed navigation record, surfaced top-level for the summary/detail tiers (the metadata copy
+   * is not shipped to them). Read by opensGoogleMapsPin: only 'verified' + a placeId + a mode that
+   * is not 'coordinates' means the «Πλοήγηση» button lands on THIS beach's Google place card.
+   */
+  googleMapsNavigation?: {
+    status: 'verified' | 'unresolved' | 'needs-review' | 'blocked';
+    mode?: 'place' | 'coordinates';
+    placeId?: string;
+  };
   coordinates: { lat: number; lon: number; };
   mapCoordinates?: BeachMapCoordinates;
   location?: Partial<BeachLocation>;

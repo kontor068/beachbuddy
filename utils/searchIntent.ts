@@ -1,4 +1,4 @@
-import type { FilterKey } from '../types';
+import type { FilterKey, LanguageCode } from '../types';
 import { normalizeSearchText } from './searchNormalize';
 
 /**
@@ -69,3 +69,74 @@ export const detectSearchIntentFilters = (query: string, ignore: string[] = []):
   }
   return matched;
 };
+
+/**
+ * A named intent that switches on SEVERAL filters at once — the "story" form of the
+ * filter strip. The rules above are deliberately one word → one filter, because a typed
+ * word must mean exactly what it says; a bundle is the opposite contract: the user picks
+ * a ready-made situation and we decide what that situation is made of.
+ *
+ * WHY THESE THREE, AND WHY THESE INGREDIENTS. Measured on our own Search Console queries
+ * (06/07–02/08/2026, 2.754 queries, reports/snapshots/_raw-queries.json): only 4 queries
+ * in 2.754 carried two attributes at once. People search «τόπος + ΜΙΑ λέξη», and the
+ * three words with real volume are children (560 impressions), snorkeling (467) and
+ * organised (287). So a bundle is named after the ONE word that is searched, and the
+ * combination hides behind it — never the other way round.
+ *
+ * The ingredients were then measured against the built data (2.854 beaches / 110 regions)
+ * rather than chosen by taste, because an AND of filters empties fast:
+ *   family   shallow+sandy+easy      → 1.018 beaches, empty in 20 of 110 regions
+ *            (+ sunbeds)             →   628 beaches, empty in 37 — dropped for that reason
+ *   organized sunbeds+parking        →   778 beaches, empty in 32
+ *   snorkeling                       →   743 beaches, empty in 16
+ * The "quiet + food" shape this feature was first imagined as measured 133 beaches and
+ * was empty in 51 of 110 regions; adding family to it left 42 beaches and ZERO in 81 of
+ * 110. Those two wishes fight each other, so no bundle offers them together.
+ *
+ * The empty regions are why every caller MUST count before rendering: a bundle chip with
+ * no beaches behind it is worse than no chip, so the count is computed against the real
+ * pool with the real predicate and the chip is dropped at 0 (see App.tsx).
+ */
+export interface SearchIntentBundle {
+  key: string;
+  /** ANDed by the normal filter engine — no new matching logic, so a bundle can never
+   *  surface a beach that the equivalent hand-picked chips would not. */
+  filters: FilterKey[];
+  label: Record<LanguageCode, string>;
+}
+
+export const SEARCH_INTENT_BUNDLES: readonly SearchIntentBundle[] = [
+  {
+    key: 'family',
+    filters: ['shallowWaters', 'sandy', 'easyAccess'],
+    label: {
+      gr: 'Για παιδιά',
+      en: 'For kids',
+      de: 'Für Kinder',
+      fr: 'Pour les enfants',
+      it: 'Per bambini',
+    },
+  },
+  {
+    key: 'organized',
+    filters: ['sunbeds', 'parking'],
+    label: {
+      gr: 'Οργανωμένες',
+      en: 'Organized',
+      de: 'Organisiert',
+      fr: 'Aménagées',
+      it: 'Attrezzate',
+    },
+  },
+  {
+    key: 'snorkeling',
+    filters: ['snorkeling'],
+    label: {
+      gr: 'Για snorkeling',
+      en: 'For snorkeling',
+      de: 'Zum Schnorcheln',
+      fr: 'Pour le snorkeling',
+      it: 'Per lo snorkeling',
+    },
+  },
+];

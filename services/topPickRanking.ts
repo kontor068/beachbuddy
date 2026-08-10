@@ -190,6 +190,67 @@ export const hasPaidEntryTopPickBlocker = (beach: Beach): boolean => Boolean(
   beach.paidEntry ?? beach.metadata?.paidEntry
 );
 
+/**
+ * ΣΤΙΣ ΤΟΠ 3 ΜΟΝΟ ΠΑΡΑΛΙΕΣ ΠΟΥ ΣΕ ΠΑΝΕ ΚΑΡΦΩΤΑ ΣΕ PIN (Μίλτος, 11/08/2026).
+ *
+ * The fourth door. A recommendation whose «Πλοήγηση» button drops the visitor on a coordinate in
+ * the middle of a road, or on a Google search for a name that exists in ten places, is not a
+ * recommendation — it is a problem handed over at the worst moment, when someone is in a car.
+ *
+ * Three states fail, all of them for the same reason: we cannot promise the map will land on THIS
+ * beach.
+ *   · no navigation record at all (830 beaches)
+ *   · `mode: 'coordinates'` — set deliberately by the routing audit where a cross-island name
+ *     collision made place search risky, so we already know the pin is not ours (254)
+ *   · `status` other than 'verified', or verified with no placeId (73)
+ *
+ * Measured 11/08 over the built dataset: 1.984 of 3.142 records open a real Google place card, and
+ * NO region is left with fewer than three of them, which is why this can be a hard door rather
+ * than a preference. The beach keeps its place on the map, in search, in the guides and in
+ * «Υπόλοιπες» — this removes it only from the three slots that answer «πού να πάμε τώρα».
+ */
+export const opensGoogleMapsPin = (beach: Beach): boolean => {
+  const nav = beach.googleMapsNavigation ?? beach.metadata?.googleMapsNavigation;
+  return Boolean(nav && nav.status === 'verified' && nav.placeId && nav.mode !== 'coordinates');
+};
+
+/**
+ * ΤΟ ΤΟΠ 3 ΘΕΛΕΙ ΠΑΝΩ ΑΠΟ 4,5 ΑΣΤΕΡΙΑ — ΟΤΑΝ ΓΙΝΕΤΑΙ (Μίλτος, 11/08/2026).
+ *
+ * A PREFERENCE, not a door, and the difference was measured before it was built. Over 3.264
+ * region × wind-sector × Beaufort cases, applying >4,5 as a hard filter:
+ *
+ *   no threshold   92,2% show a full Top 3    3,9% empty
+ *   > 4,2          89,2%                      4,9%
+ *   > 4,4          82,4%                      6,9%
+ *   > 4,5          71,6%                     12,7% empty
+ *
+ * One podium in eight would go blank, because 4,5 is the national MEDIAN — it cuts half the
+ * country, and on a windy day it cuts from a pool that is already small. «Καμία κατάλληλη σήμερα»
+ * on a day when a calm 4,4 beach exists is a worse answer than showing it.
+ *
+ * There is a second reason not to make it a door: the star rating already punishes things this
+ * table weighs separately. A beach rated 4,3 for having no parking would be filtered here AND
+ * scored down on the facilities axis — the same fact charged twice.
+ *
+ * So: when three or more well-rated candidates survive every other rule, the podium is only them.
+ * Otherwise the preference stands down and the full pool ranks, which keeps the promise wherever
+ * it can be kept without ever printing an empty page. Unrated beaches pass — 46 of them clear the
+ * other doors, and «no rating» has never meant «bad» anywhere else in this codebase.
+ */
+export const TOP_PICK_PREFERRED_RATING = 4.5;
+
+const isWellRated = (beach: Beach): boolean => {
+  const rating = beach.popularity?.rating ?? beach.metadata?.popularity?.rating;
+  return typeof rating !== 'number' || !Number.isFinite(rating) || rating > TOP_PICK_PREFERRED_RATING;
+};
+
+/** The preference applied: the well-rated subset when it can fill a podium, otherwise everyone. */
+export const preferWellRatedTopPicks = (items: SuitableBeach[]): SuitableBeach[] => {
+  const wellRated = items.filter(item => isWellRated(item.beach));
+  return wellRated.length >= 3 ? wellRated : items;
+};
+
 export const isLessExposedTopPickCandidate = (item: SuitableBeach): boolean => {
   const lessExposed = item.exposureLevel === 'protected' || item.exposureLevel === 'partial';
   if (!lessExposed || hasHardTopPickAccessBlocker(item.beach)) return false;
@@ -248,12 +309,19 @@ export const prioritizeProtectedRecommendations = (
   perBeachWind?: PerBeachWindLookup,
   toneRank?: PodiumToneRank
 ): SuitableBeach[] => {
-  // The paid-entry door, applied before anything is scored — see hasPaidEntryTopPickBlocker. It
-  // runs on the raw pool rather than inside the sort so a paid beach cannot occupy a slot even
-  // when it would have scored first, and so the shelter group is chosen from beaches that can
-  // actually be recommended.
-  const freeToEnter = items.filter(item => !hasPaidEntryTopPickBlocker(item.beach));
-  const candidates = bestShelteredRecommendationGroup(freeToEnter, beaufort, perBeachWind);
+  // The two doors, applied before anything is scored: pay-to-enter, and beaches whose navigation
+  // would hand over a coordinate instead of a Google pin. Both run on the raw pool rather than
+  // inside the sort, so a blocked beach cannot occupy a slot even when it would have scored first
+  // and so the shelter group is chosen only from beaches that can actually be recommended.
+  const recommendable = items.filter(item => (
+    !hasPaidEntryTopPickBlocker(item.beach) && opensGoogleMapsPin(item.beach)
+  ));
+  // The rating preference runs AFTER the weather has narrowed the pool, never before: filtering on
+  // stars first could leave three well-rated but exposed beaches and drop the sheltered ones the
+  // podium exists to find.
+  const candidates = preferWellRatedTopPicks(
+    bestShelteredRecommendationGroup(recommendable, beaufort, perBeachWind)
+  );
   const poolBeaufort = strongestBeaufortInPool(candidates, beaufort, perBeachWind);
   // Wind-aware ranks. When the pool is windy somewhere, a beach whose OWN shore is calm is
   // ranked as if it had the pool's best shelter — it is neither rewarded for geometry it does

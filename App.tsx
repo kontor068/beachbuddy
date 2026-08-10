@@ -82,7 +82,7 @@ import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { isNaturistBeach } from './utils/naturistBeaches';
 import { isSunsetFacingBeach } from './utils/beachOrientation';
-import { detectSearchIntentFilters } from './utils/searchIntent';
+import { detectSearchIntentFilters, SEARCH_INTENT_BUNDLES } from './utils/searchIntent';
 import { parseTripQuery } from './utils/tripQueryParser';
 import { tripPlannerCopy } from './components/planner/tripPlannerCopy';
 import { getBeachPopularityRating } from './utils/beachRating';
@@ -5152,6 +5152,37 @@ export const App: React.FC = () => {
       return counts;
     }, {} as Partial<Record<FilterKey, number>>);
   }, [getFilteredBeaches, preferences, selectedFilters, toneScopedBeaches]);
+
+  /**
+   * The ready-made intent bundles offered inside the empty search box, already counted
+   * against the pool the user is actually looking at.
+   *
+   * The count is not decoration — it is the safety rule. A bundle is an AND of filters, so
+   * it empties far faster than a single chip: measured on the built data, «Για παιδιά»
+   * (shallow+sandy+easy) has no beaches at all in 20 of 110 regions. Counting here with the
+   * SAME pool and the SAME predicate the click will use means a chip can never promise
+   * beaches that are not there — including the contradictions the user set up themselves
+   * (pebbles already on + a bundle that wants sand → 0 → the chip is simply not offered).
+   */
+  const directoryIntentBundles = useMemo(() => {
+    if (toneScopedBeaches.length === 0) return [];
+    const preferenceMatched = filterBeachesByUserPreferences(toneScopedBeaches, preferences);
+    const activeAdvancedFilters = selectedFilters.filter(filter => filter !== 'showAll' && filter !== 'restaurant');
+    return SEARCH_INTENT_BUNDLES
+      .map(bundle => ({
+        key: bundle.key,
+        label: bundle.label[language] || bundle.label.en,
+        count: getFilteredBeaches(
+          preferenceMatched,
+          [...activeAdvancedFilters, ...bundle.filters],
+          '',
+          'all',
+          WindDirection.N
+        ).length,
+      }))
+      .filter(bundle => bundle.count > 0);
+  }, [getFilteredBeaches, language, preferences, selectedFilters, toneScopedBeaches]);
+
   const mobileFilterKeys = useMemo(() => (
     Object.keys(t.filterOptions)
       .filter(key => key !== 'showAll' && key !== 'restaurant' && key !== 'unknown' && key !== 'organized') as FilterKey[]
@@ -5256,6 +5287,31 @@ export const App: React.FC = () => {
     wind_beaufort: currentBeaufort,
     wave_height_bucket: currentWaveHeightBucket,
   }), [currentBeaufort, currentWaveHeightBucket, currentWeatherMode, language, selectedIsland?.id, selectedIsland?.name.en]);
+  /** Adds the bundle's filters rather than replacing the selection — the same contract as a
+   *  typed intent word (see the free-text branch of handleDirectorySearch). Nothing the user
+   *  switched on is silently thrown away, and the count guard on directoryIntentBundles has
+   *  already removed any bundle that would come back empty on top of what is active.
+   *  Lives below analyticsBaseParams because it reads it — declared any earlier and the
+   *  dependency would be in its temporal dead zone. */
+  const handleIntentBundleSelect = useCallback((key: string) => {
+    const bundle = SEARCH_INTENT_BUNDLES.find(item => item.key === key);
+    if (!bundle) return;
+    setSelectedFilters(prev => {
+      const next: FilterKey[] = prev.filter(item => item !== 'showAll');
+      for (const filter of bundle.filters) {
+        if (!next.includes(filter)) next.push(filter);
+      }
+      return next;
+    });
+    trackEvent('filter_applied', undefined, {
+      ...analyticsBaseParams,
+      source: 'intent_bundle',
+      intent_bundle: key,
+      intent_filters: bundle.filters.join(','),
+    });
+    scrollToBeachResultsSection();
+  }, [analyticsBaseParams]);
+
   const betaFeedbackUrl = useMemo(() => buildBetaFeedbackUrl({
     locale: languageToLocale(language),
     regionId: selectedIsland?.id,
@@ -7954,6 +8010,8 @@ export const App: React.FC = () => {
               activeFilterCount={selectedFilters.filter(filter => filter !== 'showAll').length + Object.values(preferences).filter(Boolean).length}
               searchSuggestions={directorySearchSuggestions}
               isSearchSuggesting={isDirectorySearchSuggesting}
+              intentBundles={directoryIntentBundles}
+              onIntentBundleSelect={handleIntentBundleSelect}
               protectedSortLabel={protectedSortLabel}
               currentBeaufort={currentBeaufort}
               // Same per-beach wind the map's pins use, so a card and the pin beside it can
