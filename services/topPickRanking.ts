@@ -210,10 +210,19 @@ export const bestShelteredRecommendationGroup = (
   ));
 };
 
+/**
+ * The rank of the colour the MAP painted this beach (0 = ΙΔΑΝΙΚΗ … 3 = ΔΥΣΚΟΛΗ), or undefined
+ * when no pin has reported one yet. Supplied by the caller, never derived here: App.tsx is
+ * forbidden from resolving a condition tone (validateConditionToneAgreement), and this module
+ * knows nothing about sea state — the whole point is that both surfaces read ONE answer.
+ */
+export type PodiumToneRank = (beachId: number) => number | undefined;
+
 export const prioritizeProtectedRecommendations = (
   items: SuitableBeach[],
   beaufort: number,
-  perBeachWind?: PerBeachWindLookup
+  perBeachWind?: PerBeachWindLookup,
+  toneRank?: PodiumToneRank
 ): SuitableBeach[] => {
   const candidates = bestShelteredRecommendationGroup(items, beaufort, perBeachWind);
   const poolBeaufort = strongestBeaufortInPool(candidates, beaufort, perBeachWind);
@@ -249,23 +258,60 @@ export const prioritizeProtectedRecommendations = (
    */
   const ownWindRank = (item: SuitableBeach): number => beachOwnBeaufort(item, beaufort, perBeachWind);
 
+  /**
+   * THE COLOUR THE MAP PAINTED IS EVIDENCE, AND IT RANKS BEFORE FAME (10/08/2026).
+   *
+   * Found by Miltos on the Attica coast: «πώς βγάζεις top 3 πιο προστατευμένες κάποιες κίτρινες
+   * ενώ έχεις και μπλε;». Measured the same afternoon against the live forecast
+   * (.tmp/reproAttica.mjs + a real browser in «Κοντά μου»):
+   *
+   *   Βοτσαλάκια, Φρεαττύδος, Καλαμπάκα, Κράκαρης — ΜΠΛΕ pins, protected, 3 Bft on their own shore
+   *   Αστέρα Γλυφάδας, Μεγάλο Καβούρι            — ΚΙΤΡΙΝΑ pins, protected, 4 Bft
+   *
+   * All six are `protected`, so the exposure tier tied and `compareTouristTopPickPriority` — fame,
+   * access, amenities — decided the podium. The two famous yellow ones led; the calmest blue beach
+   * in the set came third. The exposure tier cannot see the difference, because a pin is blue for
+   * THREE reasons (exposure + the wind on that shore + the sea state) and this sort was reading
+   * only the first.
+   *
+   * So the ranking now reads the tone itself, from the same table the map and the «Υπόλοιπες» list
+   * already share (App's `mapBeachTones`) — not a second opinion computed here. One piece of
+   * evidence, one answer, exactly the rule that closed the same class of bug on 08/08 and this
+   * morning.
+   *
+   * Silent by construction where it should be: no tone table (planner, prerender, first paint) or
+   * either beach unpainted → the tier ties and the previous order stands, untouched.
+   */
+  const toneOf = (item: SuitableBeach): number | undefined => (toneRank ? toneRank(item.beach.id) : undefined);
+  const compareTone = (a: SuitableBeach, b: SuitableBeach): number => {
+    const aTone = toneOf(a);
+    const bTone = toneOf(b);
+    if (typeof aTone !== 'number' || typeof bTone !== 'number') return 0;
+    return aTone - bTone;
+  };
+
   return [...candidates].sort((a, b) => {
     const profileDiff = profileRank(a) - profileRank(b);
     const exposureDiff = exposureRank(a) - exposureRank(b);
     const scoreDiff = b.score - a.score;
     const touristDiff = compareTouristTopPickPriority(a, b);
+    const toneDiff = compareTone(a, b);
+    const ownWindDiff = ownWindRank(a) - ownWindRank(b);
 
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
     if (poolBeaufort >= PROTECTED_FIRST_BEAUFORT) {
       if (exposureDiff !== 0) return exposureDiff;
-      const ownWindDiff = ownWindRank(a) - ownWindRank(b);
+      if (toneDiff !== 0) return toneDiff;
       if (ownWindDiff !== 0) return ownWindDiff;
       return touristDiff || scoreDiff;
     }
-    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) {
-      return exposureDiff;
-    }
+    // 3-4 Bft. The wind is doing something, so the same two pieces of live evidence — the colour,
+    // then the wind on that shore — get their say before recognition does. Below this, nothing
+    // here runs at all and a calm day keeps ranking on score.
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT) {
+      if (toneDiff !== 0) return toneDiff;
+      if (ownWindDiff !== 0) return ownWindDiff;
+      if (exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) return exposureDiff;
       return touristDiff || scoreDiff || exposureDiff;
     }
     return scoreDiff || exposureDiff;

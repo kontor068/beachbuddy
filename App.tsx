@@ -101,7 +101,7 @@ import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import { windSectorFromDegrees, type ExposureLevel } from './utils/windExposure';
-import { selectSuitableByTone, type CalmnessTone } from './utils/suitabilityTone';
+import { CALMNESS_ORDER, selectSuitableByTone, type CalmnessTone } from './utils/suitabilityTone';
 import {
   getStayWindowSlots,
   getStaySampleSlots,
@@ -4866,6 +4866,24 @@ export const App: React.FC = () => {
    */
   const [mapToneFilter, setMapToneFilter] = useState<CalmnessTone | null>(null);
   const [mapBeachTones, setMapBeachTones] = useState<Record<number, CalmnessTone>>({});
+  /**
+   * The podium's view of the map's own colours: ΙΔΑΝΙΚΗ → 0, ΔΥΣΚΟΛΗ → 3, unknown → undefined.
+   *
+   * Read, never resolved. The tones come from BeachMap via onBeachTonesChange, which is the same
+   * table the «Υπόλοιπες» list is already built from (selectSuitableByTone) — so the ranking, the
+   * pins and the list below them cannot disagree about which beach is calmer today. App.tsx
+   * deciding a tone here would break validateConditionToneAgreement's the-list-does-not-colour-
+   * its-own-beaches rule, and would be a second opinion besides.
+   *
+   * CALMNESS_ORDER is a SEVERITY scale (red first), so it is inverted here rather than reused
+   * directly — the ranking wants «lower is better», and blue is best.
+   */
+  const podiumToneRank = React.useCallback((beachId: number): number | undefined => {
+    const tone = mapBeachTones[beachId];
+    if (!tone) return undefined;
+    const severity = CALMNESS_ORDER.indexOf(tone);
+    return severity < 0 ? undefined : (CALMNESS_ORDER.length - 1) - severity;
+  }, [mapBeachTones]);
   // Another region means another set of beaches and another tally; carrying the filter across
   // could land the user on an empty list with no visible cause.
   useEffect(() => {
@@ -4951,11 +4969,11 @@ export const App: React.FC = () => {
         || selectedForecast.hourly
     ));
     const topPickPool = getWindPriorityTopPickPool(candidates, beaufort, perBeachMapWind);
-    const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(topPickPool, beaufort, perBeachMapWind, podiumToneRank);
     const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
     // Last, and only within equally-good groups: the person's own saved profile.
     return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
-  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
+  }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey, podiumToneRank]);
   const topRecommendedSuitableBeaches = useMemo(() => {
     // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
     // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
@@ -5586,10 +5604,10 @@ export const App: React.FC = () => {
         || selectedForecast.hourly
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
-    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind, podiumToneRank);
     const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
     return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey, podiumToneRank]);
   // Deliberately untouched by the saved beach profile: this is the "nothing is
   // good today" list, where the only honest ordering is least-exposed first. A
   // preference for sand has nothing useful to say about which bad day is least
@@ -5620,9 +5638,9 @@ export const App: React.FC = () => {
         || selectedBeachForecasts[item.beach.id]?.hourly
         || selectedForecast.hourly
     ));
-    const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(timeAwareItems, currentBeaufort, perBeachMapWind, podiumToneRank);
     return prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
-  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind]);
+  }, [currentBeaufort, hasNoSwimmableBeachesToday, isStrongRecommendationMode, recommendableMapSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, topPickNow, beaufortAtBeach, perBeachMapWind, podiumToneRank]);
   const windPreviewCandidates = useMemo(() => {
     if (!isStrongRecommendationMode || !selectedForecast) return [];
     if (strongSuitableCandidates.length > 0) return strongSuitableCandidates;
@@ -5653,10 +5671,10 @@ export const App: React.FC = () => {
         || selectedForecast.hourly
     ));
     const candidates = getWindPriorityTopPickPool(timeAwareItems, currentBeaufort, perBeachMapWind);
-    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind);
+    const protectedPriority = prioritizeProtectedRecommendations(candidates, currentBeaufort, perBeachMapWind, podiumToneRank);
     const ordered = prioritizeDynamicTopPickWindows(protectedPriority, selectedForecast.date, topPickNow);
     return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
-  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey]);
+  }, [currentBeaufort, dailySuitableBeaches, isStrongRecommendationMode, recommendableMapSuitableBeaches, recommendedSuitableBeaches, selectedBeachForecasts, beachAreaForecastById, selectedForecast, strongSuitableCandidates, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey, podiumToneRank]);
   const strongManageableBeaches = useMemo(() => (
     windPreviewCandidates.slice(0, getTopRecommendationDisplayLimit(windPreviewCandidates.length))
   ), [windPreviewCandidates]);
@@ -6590,7 +6608,8 @@ export const App: React.FC = () => {
       perBeachMapWind
     ),
     currentBeaufort,
-    perBeachMapWind
+    perBeachMapWind,
+    podiumToneRank
   );
   const shouldSuppressDirectoryTopBeachFallback = Boolean(
     currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT &&
@@ -6740,7 +6759,8 @@ export const App: React.FC = () => {
         perBeachMapWind
       ),
       currentBeaufort,
-      perBeachMapWind
+      perBeachMapWind,
+      podiumToneRank
     );
   const isShelteredFallbackPodium = directoryShelteredFallbackPool.length > 0;
   const directoryTopRecommendationCandidateCount = showNoIdealFallbackSection
