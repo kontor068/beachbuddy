@@ -24,15 +24,18 @@
  *      no crowd tier must score in the middle of each of those axes, not at the floor. 916 beaches
  *      have no Google identity and 1.410 share a marine cell; scoring absence as "bad" would bury
  *      exactly the quiet coastline this site exists to surface.
- *   E. FAME ONLY EVER SUBTRACTS. No tier may produce a positive crowd contribution — Miltos,
- *      10/08: «το πλήθος κριτικών να μη σε ανεβάζει ποτέ, μόνο να σε προειδοποιεί».
+ *   E. LIKED, NOT VISITED. The rating axis orders loved > unknown > disliked, spans no more than
+ *      its 5-point weight, and the review COUNT is invisible to the score: two beaches with the
+ *      same stars and different crowd tiers must score identically. Scoring volume would make
+ *      every list the same two dozen names — a slower Google, which is the one thing this site
+ *      cannot be.
  *   F. THE PAID DOOR HOLDS, NATIONALLY. Over every region and wind state, no beach with a
  *      paidEntry flag may appear in a Top 3. Measured before the door existed: 32 podiums across
  *      the sweep contained one.
  *
  * SELF-PROOF (--prove): four regressions — comfort raised to 50, the sea step made continuous,
- * missing data scored as zero, and the crowd penalty flipped to a bonus — must each make the gate
- * fail.
+ * missing data scored as zero, and the rating axis rewired to read the crowd tier instead of the
+ * stars — must each make the gate fail.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
@@ -59,7 +62,7 @@ const { PODIUM_SEA_MEANINGFUL_DIFFERENCE_M, prioritizeProtectedRecommendations, 
 const failures = [];
 const fail = m => failures.push(m);
 
-const beachFixture = ({ id, rich = false, tier, paid = false }) => ({
+const beachFixture = ({ id, rich = false, tier, rating, paid = false }) => ({
   id,
   name: { gr: `B${id}`, en: `B${id}` },
   coordinates: { lat: 38.1, lon: 24.0 },
@@ -69,12 +72,12 @@ const beachFixture = ({ id, rich = false, tier, paid = false }) => ({
     ? { organized: true, beachBar: true, sunbeds: true, parking: true, naturalShade: true }
     : {},
   environment: rich ? { familyFriendly: true } : {},
-  ...(tier ? { popularity: { tier } } : {}),
+  ...(tier || typeof rating === 'number' ? { popularity: { ...(tier ? { tier } : {}), ...(typeof rating === 'number' ? { rating } : {}) } } : {}),
   ...(paid ? { paidEntry: { kind: 'entrance_fee' } } : {}),
 });
 
-const item = ({ id, rich = false, tier, exposure = 'protected', seaM, periodS = 4, shoreM, paid = false }) => ({
-  beach: beachFixture({ id, rich, tier, paid }),
+const item = ({ id, rich = false, tier, rating, exposure = 'protected', seaM, periodS = 4, shoreM, paid = false }) => ({
+  beach: beachFixture({ id, rich, tier, rating, paid }),
   beachId: id,
   score: 70,
   isExposed: exposure === 'exposed',
@@ -87,7 +90,7 @@ const item = ({ id, rich = false, tier, exposure = 'protected', seaM, periodS = 
 
 const run = (table) => {
   const local = [];
-  const { TOP_PICK_WEIGHTS, CROWD_PENALTY_MAX, SEA_STEP_M, scoreTopPick } = table;
+  const { TOP_PICK_WEIGHTS, SEA_STEP_M, scoreTopPick } = table;
   const score = (it, { ownBeaufort = 4, feelsWind = true, accessPriority = 0, amenitiesScore = 0 } = {}) =>
     scoreTopPick({ item: it, ownBeaufort, feelsWind, accessPriority, amenitiesScore }).total;
 
@@ -95,14 +98,14 @@ const run = (table) => {
   const sum = Object.values(TOP_PICK_WEIGHTS).reduce((a, b) => a + b, 0);
   if (sum !== 100) local.push(`A: weights sum to ${sum}, not 100.`);
   const weather = TOP_PICK_WEIGHTS.shelter + TOP_PICK_WEIGHTS.ownWind + TOP_PICK_WEIGHTS.sea;
-  const comfort = TOP_PICK_WEIGHTS.access + TOP_PICK_WEIGHTS.amenities;
+  const comfort = TOP_PICK_WEIGHTS.access + TOP_PICK_WEIGHTS.amenities + TOP_PICK_WEIGHTS.liked;
   if (weather !== 80 || comfort !== 20) {
     local.push(`A: split is ${weather}/${comfort}, not the 80/20 Miltos chose on 10/08/2026.`);
   }
 
   // B — weather cannot be bought
   const exposedLuxury = score(
-    item({ id: 1, rich: true, exposure: 'exposed', seaM: 0.4, tier: 'secluded' }),
+    item({ id: 1, rich: true, exposure: 'exposed', seaM: 0.4, rating: 5.0 }),
     { accessPriority: 0, amenitiesScore: 22 }
   );
   const protectedBare = score(
@@ -141,15 +144,28 @@ const run = (table) => {
     local.push(`D: a beach with NO data (${noData}) scored at or above perfect conditions (${bestData}). Absence is being rewarded.`);
   }
 
-  // E — fame only subtracts
-  const neutral = score(item({ id: 9, seaM: 0.4 }));
+  /**
+   * E — "how much people liked it" reads the STARS, not the crowd, and is capped at 5.
+   *
+   * Rewritten 11/08/2026 when Miltos overturned the crowd penalty. The danger changed shape: it is
+   * no longer "fame lifts a beach" but "volume lifts a beach", which would turn every list into
+   * the same two dozen names and make the site a slower Google. So the assertion is that the
+   * review COUNT is invisible to the score and only the rating moves it.
+   */
+  const noRating = score(item({ id: 9, seaM: 0.4 }));
+  const loved = score(item({ id: 10, seaM: 0.4, rating: 4.8 }));
+  const disliked = score(item({ id: 11, seaM: 0.4, rating: 3.9 }));
+  if (!(loved > noRating && noRating > disliked)) {
+    local.push(`E: stars do not order the score as loved > unknown > disliked (${loved} / ${noRating} / ${disliked}).`);
+  }
+  if (loved - disliked > TOP_PICK_WEIGHTS.liked) {
+    local.push(`E: the rating axis spans ${loved - disliked} points, over its ${TOP_PICK_WEIGHTS.liked} weight.`);
+  }
   for (const tier of ['secluded', 'quiet', 'moderate', 'popular', 'crowded']) {
-    const withTier = score(item({ id: 10, seaM: 0.4, tier }));
-    if (withTier > neutral) {
-      local.push(`E: crowd tier "${tier}" ADDED points (${withTier} vs ${neutral}). Fame must only ever subtract.`);
-    }
-    if (neutral - withTier > CROWD_PENALTY_MAX) {
-      local.push(`E: crowd tier "${tier}" removed ${neutral - withTier} points, over the ${CROWD_PENALTY_MAX} cap.`);
+    const sameStarsDifferentCrowd = score(item({ id: 12, seaM: 0.4, rating: 4.5, tier }));
+    const sameStarsNoCrowd = score(item({ id: 13, seaM: 0.4, rating: 4.5 }));
+    if (sameStarsDifferentCrowd !== sameStarsNoCrowd) {
+      local.push(`E: crowd tier "${tier}" moved the score (${sameStarsDifferentCrowd} vs ${sameStarsNoCrowd}) at identical stars. How many went must not count — only whether they liked it.`);
     }
   }
 
@@ -218,17 +234,19 @@ if (failures.length) {
   failures.forEach(f => console.error(`  • ${f}\n`));
   process.exit(1);
 }
-console.log(`✅ Πίνακας των 100: 80/20, βήμα θάλασσας ${realTable.SEA_STEP_M} μ., ποινή κοσμοσυρροής έως ${realTable.CROWD_PENALTY_MAX}.`);
+console.log(`✅ Πίνακας των 100: 80/20, βήμα θάλασσας ${realTable.SEA_STEP_M} μ., «πόσο αρέσει» ${realTable.TOP_PICK_WEIGHTS.liked} πόντοι από τα αστέρια.`);
 
 if (PROVE) {
   const source = readFileSync(path.join(root, 'utils/topPickScoreTable.ts'), 'utf8');
   const regressions = [
-    ['οι παροχές ανέβηκαν στο 50', s => s.replace(/ {2}access: 12,\n {2}amenities: 8,/, '  access: 30,\n  amenities: 20,')],
+    ['οι παροχές ανέβηκαν στο 50', s => s.replace(/access: 7,/, 'access: 30,').replace(/amenities: 8,/, 'amenities: 15,')],
     ['το βήμα της θάλασσας έγινε συνεχές', s => s.replace(/export const SEA_STEP_M = 0\.25;/, 'export const SEA_STEP_M = 0.001;')],
     ['το κενό δεδομένο βαθμολογείται μηδέν', s => s
       .replace(/return axis\('sea', 14, max, true\);/, "return axis('sea', 0, max, true);")
       .replace(/return axis\('shelter', max \/ 2, max, true\);/, "return axis('shelter', 0, max, true);")],
-    ['η κοσμοσυρροή έγινε μπόνους', s => s.replace(/return axis\('crowd', -CROWD_PENALTY_MAX, 0\);/, "return axis('crowd', CROWD_PENALTY_MAX, 0);")],
+    ['ο άξονας διαβάζει το πλήθος αντί για τα αστέρια', s => s.replace(
+      /const rating = beach\.popularity\?\.rating \?\? beach\.metadata\?\.popularity\?\.rating;/,
+      "const tier = beach.popularity?.tier ?? beach.metadata?.popularity?.tier; const rating = tier === 'crowded' ? 4.9 : tier === 'popular' ? 4.7 : tier ? 4.3 : undefined;")],
   ];
   for (const [label, mutate] of regressions) {
     const mutated = mutate(source);

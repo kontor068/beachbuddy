@@ -50,28 +50,6 @@ export type LandingCopy = {
     searchNeedsPlace: string;
     nearMe: string;
     findingLocation: string;
-    /**
-     * The hero's ONE live sentence, selected by today's real national reading
-     * (utils/nationalWindMood.ts) — the page says «σήμερα» three times and until
-     * this shipped it showed nothing about today at all.
-     *
-     * These strings are the only place on this page allowed to describe current
-     * conditions, and the constraints on them are hard:
-     *  - SCOPE IT TO OPEN SEA in the words themselves («στα ανοιχτά» / "out at
-     *    sea"). The samples are open-water points; the same words about a coast
-     *    would contradict the region page one click later, which is exactly why
-     *    the per-region Beaufort was removed from the tiles.
-     *  - NO NUMBERS AND NO REGION NAMES. A figure invites comparison with the
-     *    figure on the next page; a mood does not.
-     *  - REUSE THE APP'S VOCABULARY VERBATIM — «προστατευμένες» / "sheltered" /
-     *    "geschützt" / "abritées" / "riparate" come from BeachMap's pin labels,
-     *    and the verb for blowing («φυσάει» / "blowing" / "weht" / "souffle" /
-     *    "soffia") from tripPlannerCopy. Never a synonym.
-     *  - CALM IS THE DANGEROUS ONE. It says "in most regions", never "nowhere",
-     *    and it promises nothing about any particular beach.
-     * Rendering is gated on a live AND fresh reading; nothing is shown otherwise.
-     */
-    todayMood: Record<'calm' | 'windy', string>;
   };
   today: {
     title: string;
@@ -267,17 +245,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchNeedsPlace: 'Πες μας και σε ποιο μέρος.',
       nearMe: 'Κοντά μου',
       findingLocation: 'Εύρεση τοποθεσίας…',
-      // «στα ανοιχτά» is doing real work in all three: it is the only scope the
-      // thirteen sample points can honestly describe. Drop it and the sentence
-      // becomes a claim about coasts that the region pages would contradict.
-      todayMood: {
-        // Never «πουθενά». The calm line is the one that can send someone to a
-        // beach that turns out rough, so it claims a majority and nothing more.
-        calm: 'Σήμερα δεν φυσάει πολύ στα ανοιχτά στις περισσότερες περιοχές.',
-        // «προστατευμένες» verbatim from the map's pin label — same word on the
-        // pin, on the card and here, never a synonym.
-        windy: 'Σήμερα φυσάει δυνατά στα ανοιχτά. Δες ποιες ακτές μένουν προστατευμένες.',
-      },
     },
     // Names people actually use, not sea areas: nobody says "let's go to the
     // Cretan Sea". The order is measured demand from our own counter.
@@ -491,10 +458,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchNeedsPlace: 'Tell us the place as well.',
       nearMe: 'Near me',
       findingLocation: 'Finding location…',
-      todayMood: {
-        calm: 'Not much wind out at sea today, in most regions.',
-        windy: 'Blowing hard out at sea today. See which coasts stay sheltered.',
-      },
     },
     today: {
       title: 'Choose a region',
@@ -604,10 +567,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchNeedsPlace: 'Sag uns auch den Ort.',
       nearMe: 'In meiner Nähe',
       findingLocation: 'Standort wird ermittelt…',
-      todayMood: {
-        calm: 'Heute weht es auf See in den meisten Regionen kaum.',
-        windy: 'Heute weht es auf See stark. Sieh, welche Küsten geschützt bleiben.',
-      },
     },
     today: {
       title: 'Wähle eine Region',
@@ -720,10 +679,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchNeedsPlace: 'Dites-nous aussi le lieu.',
       nearMe: 'Près de moi',
       findingLocation: 'Localisation en cours…',
-      todayMood: {
-        calm: 'Aujourd’hui, il y a peu de vent au large dans la plupart des régions.',
-        windy: 'Aujourd’hui, ça souffle fort au large. Voyez quelles côtes restent abritées.',
-      },
     },
     today: {
       title: 'Choisissez une région',
@@ -834,10 +789,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       searchNeedsPlace: 'Dicci anche il posto.',
       nearMe: 'Vicino a me',
       findingLocation: 'Ricerca della posizione…',
-      todayMood: {
-        calm: 'Oggi al largo soffia poco, nella maggior parte delle regioni.',
-        windy: 'Oggi al largo soffia forte. Guarda quali coste restano riparate.',
-      },
     },
     today: {
       title: 'Scegli una regione',

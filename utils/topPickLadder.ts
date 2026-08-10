@@ -1,5 +1,5 @@
 import type { LanguageCode } from '../types';
-import { TOP_PICK_WEIGHTS, CROWD_PENALTY_MAX } from './topPickScoreTable';
+import { TOP_PICK_WEIGHTS } from './topPickScoreTable';
 
 /**
  * ΤΙ ΚΟΙΤΑΜΕ, ΜΕ ΣΕΙΡΑ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ — the box beside the Top 3.
@@ -20,9 +20,9 @@ import { TOP_PICK_WEIGHTS, CROWD_PENALTY_MAX } from './topPickScoreTable';
  */
 
 export interface TopPickCriterionRow {
-  key: 'shelter' | 'ownWind' | 'sea' | 'access' | 'amenities' | 'crowd';
+  key: 'shelter' | 'ownWind' | 'sea' | 'access' | 'amenities' | 'liked';
   label: string;
-  /** Signed weight out of 100. Negative for the crowd penalty. */
+  /** Weight out of 100. */
   weight: number;
 }
 
@@ -33,7 +33,7 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Νερό στην ακτή',
     access: 'Πρόσβαση',
     amenities: 'Παροχές',
-    crowd: 'Πολυσύχναστη',
+    liked: 'Πόσο αρέσει',
   },
   en: {
     shelter: 'Shelter from the wind',
@@ -41,7 +41,7 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Water at the shore',
     access: 'Access',
     amenities: 'Facilities',
-    crowd: 'Crowded',
+    liked: 'How much people liked it',
   },
   de: {
     shelter: 'Schutz vor dem Wind',
@@ -49,7 +49,7 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Wasser am Ufer',
     access: 'Zugang',
     amenities: 'Ausstattung',
-    crowd: 'Stark besucht',
+    liked: 'Wie gut sie gefällt',
   },
   fr: {
     shelter: 'Abri du vent',
@@ -57,7 +57,7 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Eau au rivage',
     access: 'Accès',
     amenities: 'Services',
-    crowd: 'Très fréquentée',
+    liked: 'À quel point elle plaît',
   },
   it: {
     shelter: 'Riparo dal vento',
@@ -65,7 +65,7 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Acqua a riva',
     access: 'Accesso',
     amenities: 'Servizi',
-    crowd: 'Affollata',
+    liked: 'Quanto piace',
   },
 };
 
@@ -87,8 +87,7 @@ export const LADDER_NOTE: Record<LanguageCode, string> = {
 };
 
 /**
- * The rows, heaviest first, with the crowd penalty last because it is the only one that subtracts.
- * Pure function of the weights — no beach, no forecast, no memo needed.
+ * The rows, heaviest first. Pure function of the weights — no beach, no forecast, no memo needed.
  */
 export const topPickCriteriaRows = (language: LanguageCode): TopPickCriterionRow[] => {
   const words = LABELS[language] ?? LABELS.gr;
@@ -96,8 +95,8 @@ export const topPickCriteriaRows = (language: LanguageCode): TopPickCriterionRow
     { key: 'shelter', label: words.shelter, weight: TOP_PICK_WEIGHTS.shelter },
     { key: 'ownWind', label: words.ownWind, weight: TOP_PICK_WEIGHTS.ownWind },
     { key: 'sea', label: words.sea, weight: TOP_PICK_WEIGHTS.sea },
-    { key: 'access', label: words.access, weight: TOP_PICK_WEIGHTS.access },
     { key: 'amenities', label: words.amenities, weight: TOP_PICK_WEIGHTS.amenities },
-    { key: 'crowd', label: words.crowd, weight: -CROWD_PENALTY_MAX },
+    { key: 'access', label: words.access, weight: TOP_PICK_WEIGHTS.access },
+    { key: 'liked', label: words.liked, weight: TOP_PICK_WEIGHTS.liked },
   ];
 };

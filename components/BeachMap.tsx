@@ -1807,11 +1807,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
     if (slot && slot.dt !== activeHourItem?.dt) onHourChange?.(slot.dt);
   };
   const hourSliderCopy: Record<LanguageCode, string> = {
-    en: 'Wind by hour',
-    gr: 'Άνεμος ανά ώρα',
-    de: 'Wind je Stunde',
-    it: 'Vento per ora',
-    fr: 'Vent par heure',
+    en: 'Conditions by hour',
+    gr: 'Συνθήκες ανά ώρα',
+    de: 'Bedingungen je Stunde',
+    it: 'Condizioni per ora',
+    fr: 'Conditions par heure',
   };
   const hourSliderLabel = hourSliderCopy[language];
   const hourSliderHelper: Record<LanguageCode, string> = {

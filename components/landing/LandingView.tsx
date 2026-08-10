@@ -4,7 +4,6 @@ import { canTrackAnalytics, trackEvent } from '../../services/analyticsService';
 import { COOKIE_CONSENT_CHANGED_EVENT } from '../../services/legalConsent';
 import type { DirectorySearchSuggestion } from '../BeachSearcherHome';
 import { useNationalConditions } from '../../hooks/useNationalConditions';
-import { getNationalWindMood } from '../../utils/nationalWindMood';
 import { LandingHero } from './LandingHero';
 import { TodayRegionsSection } from './TodayRegionsSection';
 import { GuideTopicsSection } from './GuideTopicsSection';
@@ -64,21 +63,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
 }) => {
   const conditions = useNationalConditions();
 
-  // THE ONE GATE for the hero's live sentence, kept here rather than inside the
-  // hero so there is a single place to switch the claim off.
-  //
-  // Both halves are required. `status === 'live'` means we actually have
-  // readings — on failure the hook stays at a fallback calm, and rendering
-  // "there is not much wind" off a fallback would be the exact lie this project
-  // is built to avoid. `isFresh` means the reading is under an hour old: the
-  // service caches for three hours and the service worker can hold it longer, so
-  // "today" has to be earned by the timestamp, not assumed from the cache.
-  // getNationalWindMood adds the third condition — enough surviving sample
-  // points to speak for the country at all — and returns null when it cannot.
-  const todayMood = conditions.status === 'live' && conditions.isFresh
-    ? getNationalWindMood(conditions.regions)
-    : null;
-
   // Landing reach — the denominator for every drop-off question we want to ask
   // (how many of these ever pick a region / tap "near me" / search?).
   //
@@ -122,7 +106,6 @@ export const LandingView: React.FC<LandingViewProps> = ({
         isFindingLocation={isFindingLocation}
         locationError={locationError}
         roughness={conditions.roughness}
-        todayMood={todayMood}
       />
 
       {/* Real <a href> navigation carrying today's live wind — the landing's only

@@ -23,12 +23,11 @@ import { seaStateSeverityM } from './waveCharacter';
  *                                        ─────
  *                          ο καιρός        80
  *
- *  Πρόσβαση                                12        metadata.access.type
  *  Παροχές                                  8        amenities
+ *  Πρόσβαση                                 7        metadata.access.type
+ *  Πόσο αρέσει                              5        Google star rating
  *                                        ─────
  *                        τα ανθρώπινα      20
- * ───────────────────────────────────────────────────────────────────────────
- *  Κοσμοσυρροή                        έως −5        Google review count
  * ═══════════════════════════════════════════════════════════════════════════
  *
  * 80/20 is Miltos's call, made 10/08 with the trade-off stated: at this split a beach with
@@ -62,17 +61,15 @@ import { seaStateSeverityM } from './waveCharacter';
  * coastline this site exists to surface.
  */
 
-/** The weights, in one place, summing to 100 before the crowd penalty. */
+/** The weights, in one place, summing to 100. */
 export const TOP_PICK_WEIGHTS = {
   shelter: 30,
   ownWind: 25,
   sea: 25,
-  access: 12,
   amenities: 8,
+  access: 7,
+  liked: 5,
 } as const;
-
-/** Never more than this, and only ever subtracted — fame cannot lift a beach, only weigh it down. */
-export const CROWD_PENALTY_MAX = 5;
 
 export const TOP_PICK_SCORE_MAX = 100;
 
@@ -83,11 +80,11 @@ export const TOP_PICK_SCORE_MAX = 100;
  */
 export const SEA_STEP_M = 0.25;
 
-export type TopPickAxisKey = keyof typeof TOP_PICK_WEIGHTS | 'crowd';
+export type TopPickAxisKey = keyof typeof TOP_PICK_WEIGHTS;
 
 export interface TopPickAxisResult {
   key: TopPickAxisKey;
-  /** Points awarded on this axis. Negative only for 'crowd'. */
+  /** Points awarded on this axis. Never negative — every axis rewards, none punishes. */
   points: number;
   /** The most this axis could have given (0 for the penalty axis). */
   max: number;
@@ -153,14 +150,19 @@ const seaPoints = (item: SuitableBeach): TopPickAxisResult => {
   return axis('sea', Math.max(0, max - step * 5), max);
 };
 
-/** ΠΡΟΣΒΑΣΗ — 12. Takes the podium's existing 0-5 priority so there is one definition of "easy". */
-const ACCESS_POINTS = [12, 9, 6, 3, 1, 0];
+/**
+ * ΠΡΟΣΒΑΣΗ — 7, one point below the facilities it used to outrank (Μίλτος, 11/08/2026: «οι παροχές
+ * επίσης θα είναι πάνω από τον δρόμο σαν ποσοστό»). Takes the podium's existing 0-5 access
+ * priority so there is one definition of "easy" on the site.
+ */
+const ACCESS_POINTS = [7, 5, 3, 2, 1, 0];
 const accessPoints = (priority: number): TopPickAxisResult =>
   axis('access', ACCESS_POINTS[Math.max(0, Math.min(5, priority))] ?? 0, TOP_PICK_WEIGHTS.access);
 
 /**
- * ΠΑΡΟΧΕΣ — 8. The podium's amenities score runs 0-22; mapped in fifths so two points of parking
- * cannot move a beach the way they did on 10/08, when they decided a whole podium.
+ * ΠΑΡΟΧΕΣ — 8, the heaviest of the three human axes. The podium's amenities score runs 0-22, mapped
+ * proportionally so two points of parking cannot move a beach the way they did on 10/08, when they
+ * decided a whole podium on their own.
  */
 const amenitiesPoints = (score: number): TopPickAxisResult => {
   const max = TOP_PICK_WEIGHTS.amenities;
@@ -169,20 +171,41 @@ const amenitiesPoints = (score: number): TopPickAxisResult => {
 };
 
 /**
- * ΚΟΣΜΟΣΥΡΡΟΙΑ — up to −5, never positive (Μίλτος, 10/08: «το πλήθος κριτικών να μη σε ανεβάζει
- * ποτέ — μόνο να σε προειδοποιεί»).
+ * ΠΟΣΟ ΑΡΕΣΕΙ — 5, and positive (Μίλτος, 11/08/2026).
  *
- * Google review count is a proxy for how many people are there, not for how good the beach is. A
- * bonus would have pushed the site towards the seventeen places already on every list; a capped
- * penalty nudges away from the fullest ones without ever hiding them — Μπάλος loses five points,
- * not its place. Beaches with no Google identity (916 of them) are untouched: absence of a review
- * count is not evidence of a crowd, and the penalty must never become a tax on being unknown.
+ * This axis was a crowd PENALTY for one day. Miltos overturned it: «αφού πάει πολύς κόσμος λογικά
+ * καλή θα είναι, μην το παίρνουμε αρνητικά». Measured over the 1.941 beaches carrying both a
+ * review count and a star rating, he is right — and the reason is sharper than the averages:
+ *
+ *   Πολυσύχναστη  4,49 stars   5% rated below 4,3
+ *   Δημοφιλής     4,47        15%
+ *   Μέτρια        4,44        18%
+ *   Ήσυχη         4,40        27%
+ *   Απομονωμένη   4,35        33%
+ *
+ * The mean barely moves (0,14 stars across the whole range) but the DOWNSIDE moves six-fold: one
+ * in three secluded beaches disappoints, one in twenty crowded ones does. Popularity is not
+ * evidence of excellence, it is evidence against a bad surprise.
+ *
+ * WHICH NUMBER, THEN. The star rating, not the review count — they answer different questions and
+ * only one of them is «did people like it». Scoring the count would have pushed every list towards
+ * the same two dozen names, which is the one thing this site cannot afford to be: a slower Google.
+ * The rating is nearly independent of the count (top-100 by volume average 4,49 stars, bottom-100
+ * average 4,38), so this rewards beaches people loved, not beaches buses reach.
+ *
+ * Bands are wide because the ratings are compressed: p25 is 4,3 and p75 is 4,6 nationally, so
+ * finer steps would be sorting on a tenth of a star that means nothing. No rating on record scores
+ * the middle band, never zero — 916 beaches have no Google identity at all and this must not
+ * become a tax on being unknown.
  */
-const crowdPenalty = (beach: Beach): TopPickAxisResult => {
-  const tier = beach.popularity?.tier ?? beach.metadata?.popularity?.tier;
-  if (tier === 'crowded') return axis('crowd', -CROWD_PENALTY_MAX, 0);
-  if (tier === 'popular') return axis('crowd', -2, 0);
-  return axis('crowd', 0, 0);
+const likedPoints = (beach: Beach): TopPickAxisResult => {
+  const max = TOP_PICK_WEIGHTS.liked;
+  const rating = beach.popularity?.rating ?? beach.metadata?.popularity?.rating;
+  if (typeof rating !== 'number' || !Number.isFinite(rating)) return axis('liked', 2, max, true);
+  if (rating >= 4.6) return axis('liked', max, max);
+  if (rating >= 4.4) return axis('liked', 3, max);
+  if (rating >= 4.2) return axis('liked', 1, max);
+  return axis('liked', 0, max);
 };
 
 export interface TopPickScoreInput {
@@ -209,7 +232,7 @@ export const scoreTopPick = ({
     seaPoints(item),
     accessPoints(accessPriority),
     amenitiesPoints(amenitiesScore),
-    crowdPenalty(item.beach),
+    likedPoints(item.beach),
   ];
   const raw = axes.reduce((sum, a) => sum + a.points, 0);
   return { total: Math.max(0, Math.min(TOP_PICK_SCORE_MAX, Math.round(raw * 10) / 10)), axes };
