@@ -56,6 +56,7 @@ import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getTopPickTimingLabel } from '../utils/topPickTiming';
+import { explainTopPickExclusion, type TopPickExclusionReason } from '../services/recommendationService';
 import { MEANINGFUL_WIND_TOP_PICK_BEAUFORT as SHARED_MEANINGFUL_WIND_TOP_PICK_BEAUFORT } from '../services/topPickRanking';
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
@@ -2650,6 +2651,66 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       perBeachMapWind
     )
   ), [beachWeatherContexts, selectedForecast, perBeachMapWind]);
+  /**
+   * WHY A BEACH THE MAP LIKES IS NOT IN THE PICKS (Miltos, 10/08/2026).
+   *
+   * Computed from the SAME contexts the cards are already drawn from, so no new data crosses the
+   * prop boundary and the answer cannot drift from the card beside it. `explainTopPickExclusion`
+   * returns null for a beach that cleared every gate and was merely outranked — silence is the
+   * honest answer there, and it keeps the line rare enough to be worth reading.
+   *
+   * Each beach is judged against the wind on ITS OWN shore, like every other gate since 02/08.
+   */
+  const topPickExclusionByBeachId = useMemo(() => {
+    const byId = new Map<number, TopPickExclusionReason>();
+    if (!selectedForecast) return byId;
+
+    const windSpeedKmph = selectedForecast.wind.speed * 3.6;
+    const regionBeaufort = getBeaufortLevel(windSpeedKmph);
+    const waveHeightM = selectedForecast.marine?.waveHeightM;
+    (beachWeatherContexts || []).forEach(item => {
+      const ownBeaufort = perBeachMapWind?.get(item.beach.id)?.beaufort ?? regionBeaufort;
+      const reason = explainTopPickExclusion(item, ownBeaufort, windSpeedKmph, waveHeightM);
+      if (reason) byId.set(item.beach.id, reason);
+    });
+    return byId;
+  }, [beachWeatherContexts, selectedForecast, perBeachMapWind]);
+  /**
+   * One sentence per reason, and each one names the rule rather than apologising. The «σίγουρα
+   * στοιχεία» wording is deliberate: that case is about OUR records, not about the beach, and the
+   * reader has to be able to tell those two apart — the pin next to it is still coloured from live
+   * weather and stays trustworthy.
+   */
+  const topPickExclusionCopy: Record<TopPickExclusionReason, string> = {
+    safety: getLocalizedCopy(language, {
+      en: 'Not in the picks — we are not recommending a swim here today.',
+      gr: 'Εκτός προτάσεων — σήμερα δεν τη συστήνουμε για μπάνιο.',
+      de: 'Nicht in den Empfehlungen — heute raten wir hier vom Baden ab.',
+      fr: "Hors des suggestions — aujourd'hui nous ne conseillons pas la baignade ici.",
+      it: 'Fuori dai consigli — oggi non consigliamo il bagno qui.',
+    }),
+    access: getLocalizedCopy(language, {
+      en: 'Not in the picks — it needs a boat or a hard path, so it always ranks after the easy ones.',
+      gr: 'Εκτός προτάσεων — θέλει σκάφος ή δύσκολο μονοπάτι, οπότε μπαίνει πάντα μετά τις εύκολες.',
+      de: 'Nicht in den Empfehlungen — nur per Boot oder schwierigem Weg, daher immer nach den leicht erreichbaren.',
+      fr: "Hors des suggestions — accès en bateau ou par sentier difficile, donc toujours après les plages faciles.",
+      it: 'Fuori dai consigli — serve una barca o un sentiero difficile, quindi viene dopo quelle facili.',
+    }),
+    sea: getLocalizedCopy(language, {
+      en: 'Not in the picks — its own water does not clear today’s sea check.',
+      gr: 'Εκτός προτάσεων — η θάλασσά της δεν περνά τον σημερινό έλεγχο.',
+      de: 'Nicht in den Empfehlungen — ihr Wasser besteht die heutige Seegangsprüfung nicht.',
+      fr: "Hors des suggestions — sa mer ne passe pas le contrôle du jour.",
+      it: 'Fuori dai consigli — il suo mare non supera il controllo di oggi.',
+    }),
+    unverified: getLocalizedCopy(language, {
+      en: 'Not in the picks — we do not have enough verified detail about this beach yet. The map still colours it from live weather.',
+      gr: 'Εκτός προτάσεων — δεν έχουμε ακόμα αρκετά σίγουρα στοιχεία γι’ αυτήν. Στον χάρτη το χρώμα της βγαίνει κανονικά από τον ζωντανό καιρό.',
+      de: 'Nicht in den Empfehlungen — uns fehlen noch gesicherte Angaben zu diesem Strand. Die Karte färbt ihn weiterhin nach dem Live-Wetter.',
+      fr: "Hors des suggestions — il nous manque encore des informations vérifiées sur cette plage. La carte la colore toujours selon la météo en direct.",
+      it: 'Fuori dai consigli — non abbiamo ancora dati verificati a sufficienza su questa spiaggia. Sulla mappa il colore resta quello del meteo in diretta.',
+    }),
+  };
   // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
   // count memos), independent of wind / active filters / suitable-vs-all view. We
   // deliberately do NOT recompute over the wind-filtered `suitableBeachCards` here:
@@ -3476,6 +3537,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       alignExposureToMap?: boolean;
       windExposureMode?: 'none' | 'simple';
       topPickPodium?: boolean;
+      notInTopPicksNote?: string;
     } = {}
   ) => {
     const directContext = beach as BeachCardContext;
@@ -3558,6 +3620,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         bestBeachTime={options.context?.bestBeachTime ?? directContext.bestBeachTime ?? weatherContext?.bestBeachTime}
         bestSwimWindow={options.context?.bestTimeWindow ?? directContext.bestTimeWindow ?? weatherContext?.bestTimeWindow}
         topPickTimeLabel={options.topPickTimeLabel}
+        notInTopPicksNote={options.notInTopPicksNote}
         selectedDate={selectedDate}
         selectedHour={mapSelectedHour}
         showIslandName={!selectedIsland}
@@ -3824,6 +3887,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     forceTodayScoreBadge: false,
                     alignExposureToMap: true,
                     windExposureMode: 'none',
+                    // Only here. This carousel is the list sitting right beside the podium, so
+                    // «γιατί όχι κι αυτή;» is the question the reader actually has open. On the
+                    // «Όλες» directory or a colour-filtered list the same line would state the
+                    // obvious on every card.
+                    notInTopPicksNote: cardRank === undefined || cardRank > 3
+                      ? topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason]
+                      : undefined,
                   })}
                 </div>
                 );

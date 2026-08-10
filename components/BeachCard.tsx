@@ -67,6 +67,8 @@ interface BeachCardProps {
   bestSwimWindow?: string;
   bestBeachTime?: { bestStart?: string; bestEnd?: string };
   topPickTimeLabel?: string;
+  /** «Γιατί δεν είναι στις προτάσεις» — computed upstream, printed verbatim, silent when absent. */
+  notInTopPicksNote?: string;
   selectedDate?: Date;
   selectedHour?: number;
   crowdLevel?: CrowdLevel;
@@ -1132,6 +1134,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   recommendationLabel,
   bestSwimWindow,
   topPickTimeLabel,
+  notInTopPicksNote,
   selectedDate,
   selectedHour,
   crowdLevel,
@@ -1774,6 +1777,16 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 </span>
               </span>
             </div>
+          )}
+
+          {notInTopPicksNote && (
+            /* Slate, not amber: this is an explanation, not a warning. The card beside it may be
+               painted ΙΔΑΝΙΚΗ and both statements are true at once — the conditions are good AND
+               a rule keeps it out of the picks. Colouring this like a hazard would contradict the
+               pin. */
+            <p className="w-full rounded-xl border border-slate-200/90 bg-slate-50/90 px-3 py-2 text-left text-[0.68rem] font-semibold leading-snug text-slate-600 dark:border-slate-700/60 dark:bg-slate-900/40 dark:text-slate-300">
+              {notInTopPicksNote}
+            </p>
           )}
 
           {featureChips.length > 0 && (

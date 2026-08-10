@@ -47,6 +47,7 @@ import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
+import { passesTopPickSeaGate } from './topPickRanking';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -991,6 +992,64 @@ export const isTrustedTopRecommendationCandidate = <T extends {
   const beach = getPriorityBeach(item, beachById);
   if (!beach || !hasTrustedTopPickStaticData(beach)) return false;
   return hasTrustedWindEvidence(item, windBeaufort);
+};
+
+/**
+ * WHY THIS BEACH IS NOT IN THE RECOMMENDATIONS — the answer the map owed the reader.
+ *
+ * Miltos, 10/08/2026: «όλοι αυτοί οι λόγοι που μπορεί να μην μπαίνει μια μπλε παραλία στις
+ * προτεινόμενες θα πρέπει να τους ξέρει ο χρήστης». He is right, and the silence was the worst
+ * part of it: the map paints a beach ΙΔΑΝΙΚΗ, the podium above it does not mention it, and
+ * nothing on the page says whether that is a judgement about today or about our own data.
+ *
+ * Returns null when the beach clears every gate — it was simply outranked, or three slots were
+ * not enough, and inventing a reason for that would be worse than saying nothing. So a line only
+ * ever appears where a REAL rule kept the beach out.
+ *
+ * The order is what the reader can act on, not the order the gates happen to run in: a safety
+ * call first, then a permanent property of the beach (how you get there), then today's sea, and
+ * only then an admission about our own records. Each branch is the same predicate the podium
+ * itself uses — this function must never become a second opinion about who qualifies.
+ */
+export type TopPickExclusionReason = 'safety' | 'access' | 'sea' | 'unverified';
+
+export const explainTopPickExclusion = (
+  item: SuitableBeach,
+  windBeaufort: number,
+  windSpeedKmph: number,
+  fallbackWaveHeightM?: number
+): TopPickExclusionReason | null => {
+  const beach = item.beach;
+  if (!beach) return null;
+
+  if (
+    item.swimmingComfort === 'avoid_swimming' ||
+    item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')
+  ) {
+    return 'safety';
+  }
+
+  // Boat-only and hard-path beaches are not "worse", they are a different kind of day out — the
+  // podium puts them after every reachable beach by decision (16/06/2026), so this is the honest
+  // word for them rather than dressing it up as a conditions call.
+  if (!hasMainstreamTopPickAccess(beach)) return 'access';
+
+  if (
+    (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) ||
+    !passesTopPickSeaGate(item, windSpeedKmph, fallbackWaveHeightM)
+  ) {
+    return 'sea';
+  }
+
+  // Last, and deliberately so: this one is about US, not about the beach. It fires for a missing
+  // access type, unknown terrain or depth, low-confidence orientation, or wind exposure we cannot
+  // back — the gate that keeps a beach off the podium while the map still colours it from live
+  // weather (Πλαζ Καλαμπάκα, ΙΔΑΝΙΚΗ at 3,0 km on 10/08, is exactly this case).
+  if (!hasTrustedTopPickStaticData(beach) || !hasTrustedWindEvidence(item, windBeaufort)) {
+    return 'unverified';
+  }
+
+  return null;
 };
 
 const visibleExposurePriority = (item: { exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean }): number => {
