@@ -428,14 +428,26 @@ const buildPick = (
   );
   const canClaimWindProtection = source.canClaimWindProtection === true;
   const enclosedCove = source.enclosedCove === true;
-  // Evidence stays the AUTHORED trail only, deliberately. Geometry-earned protection was added
-  // here on 05/08/2026 and removed the same day: it was scaffolding for a whyKey change that got
-  // reverted, and it left a latent trap — scripts/validatePlannerAgreement runs its OWN
-  // `hasTrustedWindEvidence` over the finished pick, so a whyKey upgraded by evidence the
-  // validator cannot see would fail `claims-need-evidence` the first time a scenario reached it.
-  // If this needs to change, the validator's copy has to learn about geometry in the same commit.
+  // Evidence = the authored trail OR the geometry that earned this beach its protected pin.
+  //
+  // It was authored-only until 10/08/2026, and the note here warned that changing it needed the
+  // validator's copy to learn about geometry in the same commit. It now does — for free:
+  // hasTrustedWindEvidence reads the claim off the item, and scripts/validatePlannerAgreement
+  // passes the finished TripPick, which carries exposureLevel and canClaimWindProtection. Both
+  // sides therefore see the same evidence.
+  //
+  // Why it had to move: the same gate decides who ENTERS the pool. Once geometry-earned
+  // protection was accepted there (services/recommendationService), a Naxos meltemi week filled
+  // with beaches picked precisely because the geometry says they are in the lee — while every
+  // sentence still read «η καλύτερη διαθέσιμη». Picked for shelter, described as a compromise.
   const hasEvidence = hasTrustedWindEvidence(
-    { confidence: source.confidence, windProfile: source.windProfile, windProfileSource: source.windProfileSource },
+    {
+      confidence: source.confidence,
+      windProfile: source.windProfile,
+      windProfileSource: source.windProfileSource,
+      exposureLevel,
+      canClaimWindProtection,
+    },
     windBeaufort
   );
 

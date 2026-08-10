@@ -945,15 +945,30 @@ export const hasTrustedWindEvidence = <T extends {
   confidence?: RecommendationConfidence;
   windProfile?: WindProfile;
   windProfileSource?: WindProfileSource;
+  exposureLevel?: ExposureLevel;
+  canClaimWindProtection?: boolean;
 }>(
   item: T,
   windBeaufort: number = MEANINGFUL_WIND_TOP_PICK_BEAUFORT
 ): boolean => {
   if (item.confidence?.level === 'low') return false;
-  if (item.windProfile?.confidence === 'low') return false;
+
+  // Geometry-earned protection IS evidence. `canClaimWindProtection` on a protected item is
+  // granted either by trusted authored data or by the strict enclosure gate
+  // (windExposureEngine.hasGeometryEnclosedProtection: high-confidence mask, live sector
+  // ≥95% land-blocked, low residual wind) — the same gate the map pin, the card verdict and
+  // the directory already trust. Without this, a stale low-confidence authored override
+  // (e.g. the 06/2026 Naxos phase-1 coverage profiles) vetoed beaches the geometry now
+  // verifies: on a 5 Bft Naxos meltemi the map painted 14 beaches Ιδανική/Καλή while the
+  // podium could surface exactly one (measured 10/08/2026, .tmp/reproParosPodium.mjs).
+  // Items that do not carry the claim fields (the trip planner's deliberately authored-only
+  // evidence object) are unaffected.
+  const geometryVouches = item.canClaimWindProtection === true && item.exposureLevel === 'protected';
+
+  if (item.windProfile?.confidence === 'low' && !geometryVouches) return false;
 
   // From meaningful wind upward, do not make a top recommendation from legacy/unknown wind exposure.
-  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && item.windProfileSource === 'unknown') {
+  if (windBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && item.windProfileSource === 'unknown' && !geometryVouches) {
     return false;
   }
 
@@ -966,6 +981,8 @@ export const isTrustedTopRecommendationCandidate = <T extends {
   confidence?: RecommendationConfidence;
   windProfile?: WindProfile;
   windProfileSource?: WindProfileSource;
+  exposureLevel?: ExposureLevel;
+  canClaimWindProtection?: boolean;
 }>(
   item: T,
   beachById?: Map<number, Beach>,

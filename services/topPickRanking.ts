@@ -230,6 +230,25 @@ export const prioritizeProtectedRecommendations = (
   const profileRank = (item: SuitableBeach): number => (feelsWind(item) ? topPickProfilePriority(item) : bestProfile);
   const exposureRank = (item: SuitableBeach): number => (feelsWind(item) ? exposurePriority(item) : bestExposure);
 
+  /**
+   * LESS WIND ON YOUR OWN SHORE BEATS BEING FAMOUS (10/08/2026).
+   *
+   * Only inside the shelter-first branch, and only after exposure has had its say: among beaches
+   * that are equally protected on paper, the one whose water is actually quieter today comes
+   * first. Beaufort is a coarse bucket, so a difference here is a real threshold crossing, not
+   * sampling noise.
+   *
+   * Why it was needed: the tie-break under it is `compareTouristTopPickPriority` — recognition,
+   * then access, then amenities. On Naxos at 5 Bft (the day this was found) thirteen beaches tied
+   * on exposure, so fame decided the whole podium: Αγία Άννα and Άγιος Προκόπιος, orange pins with
+   * 5 Bft on their own shore, led over Ψιλή Άμμος, a yellow pin at 3 Bft with 22 more points. The
+   * heading above them reads «Πιο προστατευμένες» — the list has to mean it.
+   *
+   * A no-op wherever there are no per-beach readings (planner, prerender, first paint): every
+   * beach then returns the same region Beaufort, the tier ties, and the old order stands.
+   */
+  const ownWindRank = (item: SuitableBeach): number => beachOwnBeaufort(item, beaufort, perBeachWind);
+
   return [...candidates].sort((a, b) => {
     const profileDiff = profileRank(a) - profileRank(b);
     const exposureDiff = exposureRank(a) - exposureRank(b);
@@ -239,6 +258,8 @@ export const prioritizeProtectedRecommendations = (
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
     if (poolBeaufort >= PROTECTED_FIRST_BEAUFORT) {
       if (exposureDiff !== 0) return exposureDiff;
+      const ownWindDiff = ownWindRank(a) - ownWindRank(b);
+      if (ownWindDiff !== 0) return ownWindDiff;
       return touristDiff || scoreDiff;
     }
     if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && exposureDiff !== 0 && Math.abs(scoreDiff) <= 12) {
