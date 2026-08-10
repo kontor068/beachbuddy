@@ -1215,10 +1215,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
    * BeachAnswerHero rather than retyped, so the card and the beach page cannot drift into
    * describing the same water with different words.
    */
-  const cardWaveM = typeof shoreWaveHeightM === 'number' && Number.isFinite(shoreWaveHeightM)
-    ? shoreWaveHeightM
-    : waveHeightM;
   const cardWaveIsShore = typeof shoreWaveHeightM === 'number' && Number.isFinite(shoreWaveHeightM);
+  // Ίδιο καπάκι με τη σελίδα της παραλίας (pages/BeachDetailPage): το κύμα στην ακτή δεν
+  // τυπώνεται ποτέ μεγαλύτερο από το νερό έξω. Χωρίς αυτό, η κάρτα και η σελίδα έβγαζαν
+  // διαφορετικό νούμερο σε όρμους, όπου η display τιμή είναι χαμηλότερη από την effective.
+  const cardWaveM = cardWaveIsShore
+    ? (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+        ? Math.min(shoreWaveHeightM as number, waveHeightM)
+        : shoreWaveHeightM)
+    : waveHeightM;
   // Same spelling as the beach page's own tile (BeachAnswerHero): «0,5 μ.» in Greek, «0.5 m»
   // elsewhere, and the «~» only on the modelled shore figure so the two never look alike.
   const cardWaveText = typeof cardWaveM === 'number' && Number.isFinite(cardWaveM)
@@ -1523,6 +1528,49 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   const mobilePodiumPillClass = recommendationRank === 1
     ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2 py-1 text-xs font-extrabold text-white ring-1 ring-[#007a83]/30'
     : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2 py-1 text-xs font-extrabold text-[#007a83] ring-1 ring-[#007a83]/45';
+  /**
+   * ΤΑ ΜΠΟΦΟΡ ΚΑΙ ΤΟ ΚΥΜΑ ΜΠΑΙΝΟΥΝ ΣΕ ΙΣΕΣ ΣΤΗΛΕΣ (11/08/2026).
+   *
+   * Η γραμμή ήταν flex με στοίχιση αριστερά, οπότε ο διαχωριστής έπεφτε αλλού σε κάθε κάρτα —
+   * «3 Μπφ | 0,3 μ.» δίπλα σε «5 Μπφ | ~1,1 μ.» δεν διαβάζονταν ως η ίδια πληροφορία. Ένα grid
+   * με ίσες στήλες βάζει τον διαχωριστή στο ίδιο σημείο σε όλες τις κάρτες του καρουζέλ.
+   */
+  const podiumWhyItems: Array<{
+    key: string;
+    icon: React.ReactNode;
+    text: string;
+    title?: string;
+    ariaLabel?: string;
+    truncate?: boolean;
+  }> = [
+    {
+      key: 'wind',
+      icon: <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />,
+      text: `${windBeaufort} ${beaufortUnitLabel}`,
+    },
+  ];
+  if (cardWaveText) {
+    podiumWhyItems.push({
+      key: 'wave',
+      icon: <Waves className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />,
+      text: cardWaveText,
+      title: cardWaveLabel,
+      ariaLabel: `${cardWaveLabel}: ${cardWaveText}`,
+    });
+  }
+  if (topPickTimeLabel) {
+    podiumWhyItems.push({
+      key: 'time',
+      icon: <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />,
+      text: topPickTimeLabel,
+      truncate: true,
+    });
+  }
+  const podiumWhyColumnsClass = podiumWhyItems.length >= 3
+    ? 'grid-cols-3'
+    : podiumWhyItems.length === 2
+      ? 'grid-cols-2'
+      : 'grid-cols-1';
   if (variant === 'decision' || variant === 'default') {
     return (
       <div
@@ -1530,7 +1578,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         data-nosnippet="true"
         className={`group relative beach-card flex h-full w-full cursor-pointer flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.995]${isPodium ? ' border-2 border-[#007a83]/45' : ''}`}
       >
-        <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 pb-0 pt-3 sm:hidden ${isPodium
+        <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 pb-2 pt-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
           : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
           <div className={`grid min-w-0 items-start gap-2.5 ${isPodium ? 'grid-cols-[auto_minmax(0,1fr)_2.75rem]' : 'grid-cols-[2.75rem_minmax(0,1fr)_2.75rem]'}`}>
@@ -1572,6 +1620,10 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                   {showHeaderProtectedMarker && <ProtectedBeachMarker language={language} selectedDate={selectedDate} enclosedCove={enclosedCove && isProtectedToday} />}
                 </div>
               )}
+              {/* Η γραμμή «γαλάζια σημαία / φωτογραφία» κρατούσε ύψος ακόμη κι όταν ήταν άδεια —
+                  ένα κενό 20px ανάμεσα στο όνομα και στα μποφόρ σε ΚΑΘΕ κάρτα χωρίς σημαία.
+                  Τώρα υπάρχει μόνο όταν έχει κάτι να πει. */}
+              {(hasBlueFlag2026 || (cardPhoto && !isPhotoCueDismissed)) && (
               <div className="mt-1 flex h-4 min-w-0 flex-nowrap items-center justify-center gap-x-2 overflow-hidden text-[11px] font-bold leading-tight text-cyan-800/90">
                   {hasBlueFlag2026 && (
                     <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -1586,6 +1638,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                     </span>
                   )}
               </div>
+              )}
             </div>
 
             <button
@@ -1597,7 +1650,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             </button>
           </div>
 
-          <div className="mt-2.5 space-y-1.5">
+          <div className="mt-1.5 space-y-1.5">
             {showForcedTodayScoreBadge ? (
               <TodayScoreBadge
                 score={todayScore}
@@ -1634,27 +1687,18 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 desktop row: the Beaufort is the pin's own reading, stated as a number — never a
                 word, never a colour. */}
             {isPodium && (
-              <div className="flex min-h-8 w-full min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200">
-                <span className="inline-flex min-w-0 shrink-0 items-center gap-1">
-                  <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
-                  <span>{windBeaufort} {beaufortUnitLabel}</span>
-                </span>
-                {cardWaveText && (
+              <div className={`grid min-h-8 w-full min-w-0 items-stretch overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200 ${podiumWhyColumnsClass}`}>
+                {podiumWhyItems.map((item, index) => (
                   <span
-                    className="inline-flex min-w-0 shrink-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60"
-                    title={cardWaveLabel}
-                    aria-label={`${cardWaveLabel}: ${cardWaveText}`}
+                    key={item.key}
+                    className={`flex min-w-0 items-center justify-center gap-1 px-2 py-1 ${index > 0 ? 'border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                    title={item.title}
+                    aria-label={item.ariaLabel}
                   >
-                    <Waves className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
-                    <span>{cardWaveText}</span>
+                    {item.icon}
+                    <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
                   </span>
-                )}
-                {topPickTimeLabel && (
-                  <span className="inline-flex min-w-0 items-center gap-1 border-l border-sky-200/80 pl-2 dark:border-sky-900/60">
-                    <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />
-                    <span className="min-w-0 truncate">{topPickTimeLabel}</span>
-                  </span>
-                )}
+                ))}
               </div>
             )}
 

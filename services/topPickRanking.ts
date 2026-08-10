@@ -237,12 +237,34 @@ export const opensGoogleMapsPin = (beach: Beach): boolean => {
  * Otherwise the preference stands down and the full pool ranks, which keeps the promise wherever
  * it can be kept without ever printing an empty page. Unrated beaches pass — 46 of them clear the
  * other doors, and «no rating» has never meant «bad» anywhere else in this codebase.
+ *
+ * ─── THE SECOND ROUTE: 4,2 WITH A CROWD BEHIND IT (Μίλτος, 11/08/2026) ─────
+ *
+ * «Μπορούν να είναι και από 4,2 και πάνω, απλά να έχουν πάνω από 500 κριτικές.» This is the
+ * statistically better rule and the data says so plainly: a 4,3 averaged over 13.211 visits is a
+ * far surer bet than a 4,7 averaged over eleven, because the second number is mostly noise. Ratings
+ * nationally sit between p25 4,3 and p75 4,6, so at low volume a tenth of a star separates nothing.
+ *
+ * Measured: the clause adds 311 beaches (776 → 1.087) and the names it recovers are the argument —
+ * Κανάλι του Έρωτα (4,3 over 13.211 reviews) and Πρέβελη (4,5 over 10.691) were both being held out
+ * of every podium by a threshold that could not see how many people had voted. Only 27 busy beaches
+ * fall below 4,2 and stay out, which is the rule doing exactly what it should.
  */
 export const TOP_PICK_PREFERRED_RATING = 4.5;
+/** The second route: this rating, when this many people have voted on it. */
+export const TOP_PICK_TRUSTED_RATING = 4.2;
+export const TOP_PICK_TRUSTED_REVIEW_COUNT = 500;
 
 const isWellRated = (beach: Beach): boolean => {
-  const rating = beach.popularity?.rating ?? beach.metadata?.popularity?.rating;
-  return typeof rating !== 'number' || !Number.isFinite(rating) || rating > TOP_PICK_PREFERRED_RATING;
+  const popularity = beach.popularity ?? beach.metadata?.popularity;
+  const rating = popularity?.rating;
+  // No rating on record is not a bad rating — same rule as everywhere else in this codebase.
+  if (typeof rating !== 'number' || !Number.isFinite(rating)) return true;
+  if (rating > TOP_PICK_PREFERRED_RATING) return true;
+  const reviews = popularity?.ratingCount;
+  return rating >= TOP_PICK_TRUSTED_RATING
+    && typeof reviews === 'number'
+    && reviews > TOP_PICK_TRUSTED_REVIEW_COUNT;
 };
 
 /** The preference applied: the well-rated subset when it can fill a podium, otherwise everyone. */

@@ -32,8 +32,7 @@ import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_K
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
-import { assessBeachWindExposure, resolveBeachWindProfile } from '../utils/windExposureEngine';
-import { estimateShoreWaveHeightM } from '../utils/shoreWave';
+import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
@@ -1119,27 +1118,6 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // disagree the card and its detail page print different wave numbers for the same beach.
   const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
     && typeof weatherData.marine?.swellWaveDirectionDeg === 'number';
-  /**
-   * The shore estimate asks a NARROWER swell question than the cove guard above (10/08/2026).
-   *
-   * `swellPresent` stays exactly as it is for the cove guard — for a fully blocked cove the
-   * geometric 'exposed' flag is structurally false, so using it there would reopen the wrap-in
-   * false calm that rule exists to prevent. utils/shoreWave is a different case: it only ever
-   * speaks on an OPEN shore whose live wind sector is land-blocked, and there the swell's own
-   * direction is meaningful evidence. Άγιος Προκόπιος, 10/08 19:00: swell from 358° onto a shore
-   * facing 212° — onshore −0,83, i.e. leaving — while a webcam showed glass and the page said
-   * 1,1 m. A swell that cannot arrive must not silence the estimate; an unknown direction still
-   * must, because absence of evidence is not evidence of absence.
-   */
-  const arrivingSwellHere = (() => {
-    if ((weatherData.marine?.swellWaveHeightM ?? 0) < SWELL_MIN_HEIGHT_M) return false;
-    if (typeof weatherData.marine?.swellWaveDirectionDeg !== 'number') return true;
-    return assessSwellExposure(geospatialExposure, scoreResult.facingDeg ?? null, {
-      swellDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
-      swellHeightM: weatherData.marine?.swellWaveHeightM,
-      swellPeriodS: weatherData.marine?.swellWavePeriodS,
-    }).exposed;
-  })();
   const coveWave = resolveCoveAwareWaveHeightM({
     geospatialProfile: geospatialExposure,
     facingDeg: scoreResult.facingDeg ?? null,
@@ -1149,29 +1127,32 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     appModeledWaveHeightM: scoreResult.modeledWaveHeightM ?? 0,
     swellPresent,
   });
-  // Only OVERRIDE when the cove path is actually taken; otherwise keep the exact prior value so
-  // non-cove beaches are byte-for-byte unchanged. The effective value (max of measured + wind-chop
-  // floor) is what the verdict badge and the list cards already use, so the figure matches them.
-  const displayWaveHeightM = coveWave.coveApplied ? coveWave.waveHeightM : (waveHeightM ?? measuredWaveHeightM);
+  /**
+   * ΕΝΑΣ ΑΡΙΘΜΟΣ ΓΙΑ ΤΟ ΚΥΜΑ, ΟΧΙ ΔΥΟ ΥΠΟΛΟΓΙΣΜΟΙ (11/08/2026).
+   *
+   * Αυτή η σελίδα ξανα-υπολόγιζε και τις δύο τιμές — τη «display» τιμή του όρμου και το κύμα
+   * στην ακτή — με ελαφρώς άλλες εισόδους από το scoring (η μία ξεκινούσε από το display ύψος,
+   * η άλλη από το effective). Αποτέλεσμα: η κάρτα του Top 3 έλεγε άλλο νούμερο απ' ό,τι η ίδια
+   * η σελίδα της παραλίας που άνοιγε από πάνω της. Και τα δύο βγαίνουν πια από το scoreResult,
+   * δηλαδή από τον ΙΔΙΟ υπολογισμό που τροφοδοτεί την κάρτα (services/recommendationService:
+   * displayWaveHeightM + shoreModelWaveM), οπότε δεν μπορούν να αποκλίνουν.
+   *
+   * Ο τοπικός υπολογισμός μένει μόνο ως fallback για την περίπτωση που το scoring δεν έδωσε
+   * ύψος καθόλου.
+   */
+  const displayWaveHeightM = scoreResult.waveHeightM
+    ?? (coveWave.coveApplied ? coveWave.waveHeightM : (waveHeightM ?? measuredWaveHeightM));
   // When the cove path is taken we are showing the modeled SMB, not the live grid value → estimate.
   const isWaveEstimate = coveWave.coveApplied || !(typeof measuredWaveHeightM === 'number' && Number.isFinite(measuredWaveHeightM));
-  // «Κύμα στην ακτή» — the second, separately-labelled reading (utils/shoreWave). Only speaks
-  // where the wind blows off the land into a land-blocked, fetch-free sector with no swell; the
-  // open-water figure above stays exactly as it is and stays on screen beside it. Reuses the
-  // cove guard's own resolved sector geometry so the two cannot disagree about which way the
-  // wind meets this shore.
-  const shoreWaveHeightM = estimateShoreWaveHeightM({
-    openWaterWaveHeightM: displayWaveHeightM,
-    windSpeedKmh,
-    sector: {
-      fetchKm: coveWave.fetchKm,
-      blockedRayRatio: coveWave.blockedRayRatio,
-      onshore: coveWave.onshore,
-    },
-    confidence: geospatialExposure?.confidence,
-    suspectPin: resolveBeachWindProfile(beach).profile.suspectPin,
-    arrivingSwellPresent: arrivingSwellHere,
-  });
+  // «Κύμα στην ακτή» — the second, separately-labelled reading (utils/shoreWave, computed inside
+  // scoring). Only speaks where the wind blows off the land into a land-blocked, fetch-free sector
+  // with no swell. Capped at the open-water figure shown right beside it: the shore reading must
+  // never print a bigger sea than the water outside it, and the card applies the same cap.
+  const shoreWaveHeightM = typeof scoreResult.shoreWaveHeightM === 'number' && Number.isFinite(scoreResult.shoreWaveHeightM)
+    ? (typeof displayWaveHeightM === 'number' && Number.isFinite(displayWaveHeightM)
+        ? Math.min(scoreResult.shoreWaveHeightM, displayWaveHeightM)
+        : scoreResult.shoreWaveHeightM)
+    : undefined;
   // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
   // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
   // marine value when present), so a bar can never contradict the big wave meter beside it.

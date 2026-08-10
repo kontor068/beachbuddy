@@ -35,6 +35,12 @@
  *   G. DISTANCE IS NEUTRAL WITHOUT A LOCATION. With no distance shared, two identical beaches must
  *      score identically, so the prerender, the planner and every first paint show the same podium
  *      to everyone. A nearer beach outscores a far one, and the axis never exceeds its 10 points.
+ *   H. THE RATING PREFERENCE HAS TWO ROUTES AND STANDS DOWN RATHER THAN EMPTY A PODIUM.
+ *      Above 4,5 qualifies; so does 4,2 or better with more than 500 reviews, because a 4,3 over
+ *      13.211 visits is a surer bet than a 4,7 over eleven. A beach with no rating passes. Below
+ *      4,2 never qualifies however busy it is. And when fewer than three candidates qualify the
+ *      preference must release the whole pool — measured 11/08: as a hard filter, >4,5 leaves a
+ *      full Top 3 in only 71,6% of cases and blanks the podium in 12,7%.
  *   F. THE DOORS HOLD, NATIONALLY. Over every region and wind state, no beach with a paidEntry
  *      flag and no beach whose navigation would hand over a coordinate instead of a Google pin may
  *      appear in a Top 3. Measured before the doors existed: 32 podiums in the sweep contained a
@@ -69,7 +75,7 @@ const { PODIUM_SEA_MEANINGFUL_DIFFERENCE_M, prioritizeProtectedRecommendations, 
 const failures = [];
 const fail = m => failures.push(m);
 
-const beachFixture = ({ id, rich = false, tier, rating, paid = false }) => ({
+const beachFixture = ({ id, rich = false, tier, rating, ratingCount, paid = false }) => ({
   id,
   name: { gr: `B${id}`, en: `B${id}` },
   coordinates: { lat: 38.1, lon: 24.0 },
@@ -79,15 +85,15 @@ const beachFixture = ({ id, rich = false, tier, rating, paid = false }) => ({
     ? { organized: true, beachBar: true, sunbeds: true, parking: true, naturalShade: true }
     : {},
   environment: rich ? { familyFriendly: true } : {},
-  ...(tier || typeof rating === 'number' ? { popularity: { ...(tier ? { tier } : {}), ...(typeof rating === 'number' ? { rating } : {}) } } : {}),
+  ...(tier || typeof rating === 'number' ? { popularity: { ...(tier ? { tier } : {}), ...(typeof rating === 'number' ? { rating } : {}), ...(typeof ratingCount === 'number' ? { ratingCount } : {}) } } : {}),
   ...(paid ? { paidEntry: { kind: 'entrance_fee' } } : {}),
   // Every fixture opens a real pin unless a case is specifically about that door — otherwise the
   // paid-entry and ordering assertions would all be testing an empty pool.
   googleMapsNavigation: { status: 'verified', mode: 'place', placeId: `pid-${id}` },
 });
 
-const item = ({ id, rich = false, tier, rating, exposure = 'protected', seaM, periodS = 4, shoreM, paid = false }) => ({
-  beach: beachFixture({ id, rich, tier, rating, paid }),
+const item = ({ id, rich = false, tier, rating, ratingCount, exposure = 'protected', seaM, periodS = 4, shoreM, paid = false }) => ({
+  beach: beachFixture({ id, rich, tier, rating, ratingCount, paid }),
   beachId: id,
   score: 70,
   isExposed: exposure === 'exposed',
@@ -175,6 +181,41 @@ const run = (table) => {
   }
   if (crowded - secluded > TOP_PICK_WEIGHTS.crowd) {
     local.push(`E: the crowd axis spans ${crowded - secluded} points, over its ${TOP_PICK_WEIGHTS.crowd} weight.`);
+  }
+
+  /**
+   * H — the rating preference: two routes in, and a release valve.
+   *
+   * Miltos set the second route on 11/08 («από 4,2 και πάνω, απλά να έχουν πάνω από 500 κριτικές»)
+   * and it is the statistically better rule: at low review counts a tenth of a star is noise, and
+   * the national spread is only p25 4,3 to p75 4,6. It recovered 311 beaches including Κανάλι του
+   * Έρωτα (4,3 over 13.211) and Πρέβελη (4,5 over 10.691), both of which a flat 4,5 was hiding.
+   */
+  const rated = (id, rating, ratingCount) => item({ id, seaM: 0.4, rating, ratingCount });
+  const qualifies = list => table.preferWellRatedTopPicks
+    ? table.preferWellRatedTopPicks(list)
+    : null;
+  if (!ranking.preferWellRatedTopPicks) {
+    local.push('H: preferWellRatedTopPicks is gone — the rating preference is not applied at all.');
+  } else {
+    const pool = [
+      rated(20, 4.8, 12),        // high stars, few votes — in, via route one
+      rated(21, 4.3, 13211),     // trusted by volume — in, via route two
+      rated(22, 4.2, 501),       // exactly over the review line — in
+      rated(23, 4.3, 400),       // not enough votes to trust a 4,3 — out
+      rated(24, 4.1, 9000),      // busy but genuinely poorly rated — out
+      item({ id: 25, seaM: 0.4 }),  // no rating at all — in
+    ];
+    const kept = ranking.preferWellRatedTopPicks(pool).map(i => i.beach.id).sort((a, b) => a - b);
+    const expected = [20, 21, 22, 25];
+    if (JSON.stringify(kept) !== JSON.stringify(expected)) {
+      local.push(`H: the preference kept ${JSON.stringify(kept)}, expected ${JSON.stringify(expected)}.`);
+    }
+    // Release valve: with only two qualifying, the whole pool must come back.
+    const thin = [rated(30, 4.9, 5000), rated(31, 4.8, 5000), rated(32, 4.0, 5000), rated(33, 4.0, 5000)];
+    if (ranking.preferWellRatedTopPicks(thin).length !== thin.length) {
+      local.push('H: with fewer than three qualifying beaches the preference did not stand down — podiums will go blank.');
+    }
   }
 
   /**
