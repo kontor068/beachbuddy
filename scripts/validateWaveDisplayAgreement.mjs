@@ -149,8 +149,32 @@ for (const file of readdirSync(exposureDir).filter(name => name.endsWith('.json'
 console.log(`Wave display agreement: ${beachesChecked} beaches x ${WIND_DIRECTIONS_DEG.length} wind directions = ${casesChecked} cases.`);
 console.log(`Onshore-wind cases where the cove guard lowered the displayed wave: ${guardedByCove} (sanctioned).`);
 
+/**
+ * ΤΟ ΥΨΟΣ ΣΤΗΝ ΑΚΤΗ ΠΡΕΠΕΙ ΝΑ ΤΑΞΙΔΕΥΕΙ ΜΑΖΙ ΜΕ ΤΟ ΑΝΟΙΧΤΟ ΝΕΡΟ (11/08/2026).
+ *
+ * Ο πάνω έλεγχος συγκρίνει ΝΟΥΜΕΡΑ και δεν μπορεί να δει τι χάνεται στη ΔΙΑΔΡΟΜΗ. Στις 11/08 οι
+ * builders του SuitableBeach αντέγραφαν `waveHeightM` και `seaStateWaveM` αλλά ΞΕΧΝΟΥΣΑΝ το
+ * `shoreWaveHeightM`, οπότε η κάρτα του Top 3 έπεφτε στο ανοιχτό νερό (0,3 μ.) ενώ η σελίδα της
+ * παραλίας τύπωνε το ύψος στην ακτή (~0,1 μ.) — δύο οθόνες, δύο απαντήσεις, καμία πύλη κόκκινη.
+ * Κανόνας: όπου ένα object literal μεταφέρει `seaStateWaveM`, μεταφέρει και `shoreWaveHeightM`.
+ */
+const CARRIER_FILES = ['App.tsx', 'services/recommendationService.ts', 'components/BeachSearcherHome.tsx'];
+for (const relativePath of CARRIER_FILES) {
+  const source = readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8').split('\n');
+  source.forEach((line, index) => {
+    if (!/^\s*seaStateWaveM:/.test(line)) return;
+    const window = source.slice(Math.max(0, index - 6), index + 7).join('\n');
+    if (!/\bshoreWaveHeightM:/.test(window)) {
+      failures.push(
+        `${relativePath}:${index + 1} carries seaStateWaveM without shoreWaveHeightM — `
+        + 'the card will fall back to the open-water figure and disagree with the beach page'
+      );
+    }
+  });
+}
+
 if (failures.length > 0) {
-  console.error(`\nFAIL — ${failures.length} cases print a calmer wave than the sea the page itself decided on, with the wind blowing onto the shore:`);
+  console.error(`\nFAIL — ${failures.length} cases where the wave shown is not the wave decided on (a calmer figure with the wind onto the shore, or a shore height dropped on its way to the card):`);
   failures.slice(0, 25).forEach(line => console.error(`- ${line}`));
   if (failures.length > 25) console.error(`- ...and ${failures.length - 25} more`);
   console.error('\nThe displayed wave may only fall below seaStateWaveM through the cove guard.');

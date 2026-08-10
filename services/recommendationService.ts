@@ -2782,6 +2782,11 @@ export const getTopRecommendedBeaches = (
       waveHeightM: scoreResult.waveHeightM,
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
+      // ΧΩΡΙΣ ΑΥΤΟ Η ΚΑΡΤΑ ΕΛΕΓΕ ΑΛΛΟ ΚΥΜΑ ΑΠΟ ΤΗ ΣΕΛΙΔΑ (11/08/2026): το πεδίο υπήρχε στον τύπο
+      // και στο scoreResult, αλλά αυτός ο builder δεν το αντέγραφε — άρα κάθε κάρτα που τρέφεται
+      // από SuitableBeach (μαζί το podium του Top 3) έπεφτε στο ανοιχτό νερό, ενώ η σελίδα της
+      // παραλίας τύπωνε το ύψος στην ακτή. Γαλάζια Ακτή: 0,3 μ. στην κάρτα, ~0,1 μ. μέσα.
+      shoreWaveHeightM: scoreResult.shoreWaveHeightM,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
       confidence: scoreResult.confidence,
@@ -2939,6 +2944,8 @@ export const getSuitableBeaches = (
         waveHeightM: scoreResult.waveHeightM,
         seaStateWaveM: scoreResult.seaStateWaveM,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
+        // Ίδιος λόγος με τον από πάνω builder — το ύψος στην ακτή ταξιδεύει μαζί με τα υπόλοιπα.
+        shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,

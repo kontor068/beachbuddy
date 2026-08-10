@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LanguageCode } from '../types';
-import { topPickCriteriaRows } from '../utils/topPickLadder';
+import { LADDER_COLOUR_FIRST, LADDER_DOORS, topPickCriteriaRows } from '../utils/topPickLadder';
 
 /**
  * ΤΟ ΚΟΥΤΙ «ΤΙ ΚΟΙΤΑΜΕ» (Μίλτος, 10/08/2026).
@@ -21,9 +21,12 @@ export const TopPickLadderPanel: React.FC<{
   className?: string;
 }> = ({ language, className }) => {
   const rows = topPickCriteriaRows(language);
+  const doors = LADDER_DOORS[language] ?? LADDER_DOORS.gr;
+  const colourFirst = LADDER_COLOUR_FIRST[language] ?? LADDER_COLOUR_FIRST.gr;
 
   return (
     <div className={className}>
+      <p className="mb-2 text-[10px] leading-snug text-slate-500">{doors}</p>
       <ol className="space-y-1">
         {rows.map(row => {
           const isPenalty = row.weight < 0;
@@ -44,6 +47,7 @@ export const TopPickLadderPanel: React.FC<{
           );
         })}
       </ol>
+      <p className="mt-2 text-[10px] leading-snug text-slate-500">{colourFirst}</p>
     </div>
   );
 };

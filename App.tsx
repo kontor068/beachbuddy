@@ -5866,6 +5866,7 @@ export const App: React.FC = () => {
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
+        shoreWaveHeightM: context.shoreWaveHeightM,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -5889,6 +5890,7 @@ export const App: React.FC = () => {
         seaCalmClaimAllowed: context.seaCalmClaimAllowed,
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
+        shoreWaveHeightM: context.shoreWaveHeightM,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -5926,6 +5928,9 @@ export const App: React.FC = () => {
       waveHeightM: item.waveHeightM,
       seaStateWaveM: item.seaStateWaveM,
       seaStatePeriodS: item.seaStatePeriodS,
+      // Το ύψος στην ακτή ταξιδεύει μαζί με το ανοιχτό νερό — αν χαθεί εδώ, η κάρτα ξαναπέφτει
+      // στο μεγαλύτερο νούμερο και διαφωνεί με τη σελίδα της παραλίας (11/08/2026).
+      shoreWaveHeightM: item.shoreWaveHeightM,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -5946,6 +5951,7 @@ export const App: React.FC = () => {
       waveHeightM: item.waveHeightM,
       seaStateWaveM: item.seaStateWaveM,
       seaStatePeriodS: item.seaStatePeriodS,
+      shoreWaveHeightM: item.shoreWaveHeightM,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,

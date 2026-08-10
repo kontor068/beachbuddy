@@ -74,6 +74,33 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
   },
 };
 
+/**
+ * Η ΜΙΣΗ ΑΛΗΘΕΙΑ ΠΟΥ ΕΛΕΙΠΕ (11/08/2026).
+ *
+ * The seven weights read as if the sum decides everything. It does not: four doors run BEFORE any
+ * score is computed, and the colour the map painted orders above the whole table. A reader who
+ * sees «Προστασία 25» and assumes that is the story has been told something untrue by omission —
+ * which is worse here than anywhere else on the site, because this box exists to be believed.
+ *
+ * Two short lines, one each side of the numbers. Deliberately plain: they describe the rules a
+ * person can check against the map in front of them.
+ */
+export const LADDER_DOORS: Record<LanguageCode, string> = {
+  gr: 'Πρώτα βγάζουμε έξω: όπου λέμε να μην κολυμπήσεις, όσες θέλουν εισιτήριο, όσες δεν σε πάνε καρφωτά στον χάρτη.',
+  en: 'First we rule out: where we say do not swim, beaches you pay to enter, and any the map cannot take you straight to.',
+  de: 'Zuerst fallen weg: wo wir vom Baden abraten, Strände mit Eintritt, und alle ohne genauen Kartenpunkt.',
+  fr: "D'abord nous écartons : là où nous déconseillons la baignade, les plages payantes, et celles sans point précis sur la carte.",
+  it: 'Prima escludiamo: dove sconsigliamo il bagno, le spiagge a pagamento, e quelle senza un punto preciso sulla mappa.',
+};
+
+export const LADDER_COLOUR_FIRST: Record<LanguageCode, string> = {
+  gr: 'Το χρώμα του χάρτη προηγείται: μπλε παραλία δεν χάνει ποτέ από κίτρινη.',
+  en: 'The map colour comes first: a blue beach never loses to a yellow one.',
+  de: 'Die Kartenfarbe zählt zuerst: ein blauer Strand verliert nie gegen einen gelben.',
+  fr: "La couleur de la carte prime : une plage bleue ne perd jamais face à une jaune.",
+  it: 'Il colore della mappa viene prima: una spiaggia blu non perde mai contro una gialla.',
+};
+
 export const LADDER_HEADING: Record<LanguageCode, string> = {
   gr: 'Τι κοιτάμε, με σειρά προτεραιότητας',
   en: 'What we look at, in order of weight',
