@@ -54,6 +54,7 @@ import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { estimateShoreWaveHeightM } from '../utils/shoreWave';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
 
@@ -416,13 +417,39 @@ const swimmingComfortFromScore = (
   effectiveBeaufort: number,
   waveHeightM?: number,
   officialOverride?: boolean,
-  shoreWaveHeightM?: number
+  shoreWaveHeightM?: number,
+  /**
+   * THE SHORE BRANCH WAS DEAD ON ARRIVAL UNTIL 10/08/2026 (evening).
+   *
+   * The comparison below swaps the WAVE for its shore-damped value and takes the milder verdict —
+   * but `swimmingScore` and `effectiveBeaufort` were computed from the OPEN-water height and were
+   * handed to both branches unchanged. Both of them veto on their own (score < 45, Beaufort ≥ 6),
+   * and both of those vetoes were charged BY the open-water wave: −25 on the score for a height
+   * over 1,2 m, +1 on the Beaufort for a height over 0,9 m. So on exactly the beach this function
+   * exists for — rough offshore, calm at the sand — the shore branch returned the open-water
+   * answer and the relief never happened.
+   *
+   * Measured live, Σχινιάς 10/08/2026 17:00: open water 1,22 m / shore 0,61 m; the shore branch
+   * computed 'avoid_swimming' from a score of 29 and an effective 7 Bft, both of them the open
+   * sea's numbers. The pin beside it was YELLOW (the offshore-flat gate of 02/08 had already
+   * decided that shore is glass), so the map and the verdict described two different seas — the
+   * defect closed on 31/07 for the colour, still open for the word.
+   *
+   * `shoreView` therefore carries the score and the Beaufort RE-DERIVED from the shore height.
+   * Everything else is unchanged: the relief is still capped at one step, wind and gusts are
+   * still charged in full, and without a shore height there is still no second opinion at all.
+   */
+  shoreView?: { swimmingScore: number; effectiveBeaufort: number }
 ): SwimmingComfort => {
   if (officialOverride) return 'avoid_swimming';
   const openWater = swimmingComfortForWave(swimmingScore, effectiveBeaufort, waveHeightM);
   if (typeof shoreWaveHeightM !== 'number' || !Number.isFinite(shoreWaveHeightM)) return openWater;
 
-  const shore = swimmingComfortForWave(swimmingScore, effectiveBeaufort, shoreWaveHeightM);
+  const shore = swimmingComfortForWave(
+    shoreView?.swimmingScore ?? swimmingScore,
+    shoreView?.effectiveBeaufort ?? effectiveBeaufort,
+    shoreWaveHeightM
+  );
   const step = Math.min(
     SWIMMING_COMFORT_ORDER.indexOf(shore),
     SWIMMING_COMFORT_ORDER.indexOf(openWater) + 1
@@ -1080,10 +1107,14 @@ const compareOptionalDistance = <T extends { distance?: number }>(a: T, b: T): n
 // difference (e.g. very close vs short drive) precedes recognition — a 6 km vs 8 km
 // gap stays within one zone and does not reorder above iconic recognition. Returns 0
 // when distance is unknown (e.g. no user location), so the tier is simply skipped.
+// The top zone boundary is 30 km, not 50: these are straight-line km, so 50 of them
+// is well over an hour of Greek road. Lumping 16 km and 45 km into one zone let a
+// far beach outrank a near one on a lesser tie-break (amenities), which reads wrong
+// under "near me". 30 km ≈ a 45-minute drive — still one beach-day category.
 const proximityZone = (distanceKm: number): number => {
   if (distanceKm < 5) return 0;
   if (distanceKm < 15) return 1;
-  if (distanceKm < 50) return 2;
+  if (distanceKm < 30) return 2;
   return 3;
 };
 
@@ -1975,15 +2006,18 @@ export const calculateBeachScore = (
   swimmingScore -= directSwellPenalty;
   // Wave penalty applies to the measured wave, or to the (damped) modeled wave
   // when none was reported — gentler for the estimate to avoid over-penalising.
-  if (measuredWaveHeightM !== undefined) {
-    if (effectiveWaveHeightM > 1.2) swimmingScore -= 25;
-    else if (effectiveWaveHeightM >= 0.9) swimmingScore -= 16;
-    else if (effectiveWaveHeightM >= 0.6) swimmingScore -= 8;
-  } else {
-    if (modeledWaveHeightM > 1.2) swimmingScore -= 18;
-    else if (modeledWaveHeightM >= 0.9) swimmingScore -= 12;
-    else if (modeledWaveHeightM >= 0.6) swimmingScore -= 6;
-  }
+  // Kept as a function of the height so the shore branch of the comfort verdict can re-charge
+  // it against the shore-damped height instead of the open-water one (see `shoreView` in
+  // swimmingComfortFromScore). Same ladder, same numbers, one place.
+  const waveHeightPenalty = (heightM: number): number => (
+    measuredWaveHeightM !== undefined
+      ? (heightM > 1.2 ? 25 : heightM >= 0.9 ? 16 : heightM >= 0.6 ? 8 : 0)
+      : (heightM > 1.2 ? 18 : heightM >= 0.9 ? 12 : heightM >= 0.6 ? 6 : 0)
+  );
+  const openWaterWavePenalty = waveHeightPenalty(
+    measuredWaveHeightM !== undefined ? effectiveWaveHeightM : modeledWaveHeightM
+  );
+  swimmingScore -= openWaterWavePenalty;
   // Period surge, de-duped against direct_swell (max, never sum) so one long-period
   // onshore swell is charged once — on EITHER period channel: when the swell period is
   // missing and the surge falls back to the wave channel, it still describes the same
@@ -2131,15 +2165,111 @@ export const calculateBeachScore = (
     finalScore = Math.min(finalScore, windAssessment.finalScoreCap);
   }
 
+  const coveWave = resolveCoveAwareWaveHeightM({
+    geospatialProfile: options?.geospatialProfile,
+    facingDeg: windAssessment.facingDeg,
+    windDirectionDeg: weather.wind.deg,
+    windSpeedKmh: windSpeedKmph,
+    measuredWaveHeightM: realisticMeasuredWaveHeightM,
+    appModeledWaveHeightM: modeledWaveHeightM,
+    swellPresent: swell.hasSwell,
+  });
+  /**
+   * ΤΟ ΝΕΡΟ ΠΟΥ ΔΕΙΧΝΕΙ Η ΣΕΛΙΔΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΤΟ ΔΙΑΒΑΖΕΙ ΠΛΕΟΝ ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ (10/08/2026).
+   *
+   * `utils/shoreWave` has modelled the height at the sand since 05/08 and the beach page prints it
+   * («Κύμα στην ακτή ~0,2 μ.»), but it was declared display-only: the verdict kept reading the
+   * open-water grid. On Σχινιάς that produced both sentences on ONE screen — «Κύμα στην ακτή
+   * ~0,2 μ.» above «μην κολυμπήσεις», the second one computed from 1,22 m taken 9,4 km out in the
+   * South Evoian Gulf, in water the same offshore wind pushes AWAY from the beach.
+   *
+   * Reported by Miltos, 10/08/2026: «ο Σχινιάς έχει 24 km/h, γιατί δεν τον βάζεις στις τοπ;».
+   *
+   * This is a narrower claim than the blanket 0,5 damping the shore branch already used: that one
+   * applies to every 'protected' shore, this one only speaks where the ray-caster measured a
+   * land-blocked, essentially fetch-free sector, the wind is blowing OFF the land, the geometry is
+   * high-confidence with no suspect pin, and there is NO swell (ground swell wraps into shores the
+   * wind cannot reach — the one real false-calm route, closed by the gate itself). Where it does
+   * speak it is the app's own SMB height over the fetch that was actually measured, capped at the
+   * open-water reading, so it can never claim a calmer sea than the one outside.
+   *
+   * It feeds the SHORE branch only. The open-water branch, the score, the colour, the exposure
+   * level and every gate keep reading effectiveWaveHeightM, and the one-step cap still stands —
+   * so a genuinely running sea cannot travel from «μην κολυμπήσεις» to «καλή».
+   */
+  const shoreModelWaveM = estimateShoreWaveHeightM({
+    openWaterWaveHeightM: effectiveWaveHeightM,
+    windSpeedKmh: windSpeedKmph,
+    sector: {
+      fetchKm: coveWave.fetchKm,
+      blockedRayRatio: coveWave.blockedRayRatio,
+      onshore: coveWave.onshore,
+    },
+    confidence: options?.geospatialProfile?.confidence,
+    suspectPin: windAssessment.windProfile.suspectPin,
+    swellPresent: swell.hasSwell,
+  });
+  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel);
+  // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
+  // damping that has been in place since 01/08.
+  const shoreWaveM = typeof shoreModelWaveM === 'number'
+    ? Math.min(shoreModelWaveM, dampedShoreWaveM ?? shoreModelWaveM)
+    : dampedShoreWaveM;
   let swimmingComfort = swimmingComfortFromScore(
     swimmingScore,
     effectiveBeaufort,
     effectiveWaveHeightM,
     officialWarningOverride,
-    shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel)
+    shoreWaveM,
+    typeof shoreWaveM === 'number'
+      ? {
+          // The same score and the same Beaufort, re-derived from the shore height. Only the two
+          // terms the wave itself paid for move: the height penalty on the score and the ≥0,9 m
+          // bump on the Beaufort. Wind, gusts, fetch, swell, rain and the afternoon build are all
+          // charged exactly as they were — shelter has never bought relief from those and does
+          // not now.
+          swimmingScore: swimmingScore + openWaterWavePenalty - waveHeightPenalty(shoreWaveM),
+          effectiveBeaufort: getEffectiveBeaufortForComfort(
+            comfortBeaufortInput,
+            gustSpreadKmph,
+            finalExposureLevel,
+            shoreWaveM
+          ),
+        }
+      : undefined
   );
   // Roadmap #4: a strong afternoon build never leaves a 'good'/'excellent' headline.
   if (afternoonBuild.buildsRough && (swimmingComfort === 'good' || swimmingComfort === 'excellent')) {
+    swimmingComfort = 'caution';
+  }
+  /**
+   * «ΜΗΝ ΚΟΛΥΜΠΗΣΕΙΣ» ΕΙΝΑΙ Η ΒΑΡΥΤΕΡΗ ΛΕΞΗ ΠΟΥ ΛΕΜΕ. ΣΤΑ 3 ΜΠΟΦΟΡ ΔΕΝ ΤΗ ΛΕΜΕ (10/08/2026).
+   *
+   * The verdict has three doors to 'avoid_swimming': 6 Bft, over 1,2 m of water, or a swim score
+   * under 45. The first two are statements about the sea. The third is an ACCUMULATION — chop,
+   * gusts, fetch, afternoon build, water quality, cold — and each of those penalties is defensible
+   * on its own while the sum can land under 45 on a day nobody would call dangerous.
+   *
+   * Measured live, Ωρωπός Χαλκούτσι 10/08/2026 17:00: 18 km/h (3 Bft), 0,44 m of water, no swell,
+   * no warning — and the page said «μην κολυμπήσεις», beside a YELLOW pin calling the same beach
+   * «Καλή». Two more in the same region (Ακρωτηρίου, Αγίας Παρασκευής) read identically. That is
+   * the over-caution the 05/08 finding warned about, arriving through the one door that is a sum
+   * rather than a measurement.
+   *
+   * So below meaningful wind, with under 0,6 m of water, the accumulation may still say «πρόσεχε»
+   * — it may not say «μην κολυμπήσεις». The two REAL doors are untouched: this cannot fire at
+   * 4 Bft or above, cannot fire over 0,6 m, and stands aside for an official warning, for a
+   * long-period swell (a 0,5 m ground swell dumps harder than its height) and for the rain rule
+   * below, which is allowed to overwrite the verdict after this point.
+   */
+  const isLightWindSmallSea = (
+    baseBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT + 1 &&
+    effectiveWaveHeightM < 0.6 &&
+    !officialWarningOverride &&
+    !directSwell &&
+    swellSurgePenalty <= 0
+  );
+  if (isLightWindSmallSea && swimmingComfort === 'avoid_swimming') {
     swimmingComfort = 'caution';
   }
   if (confidence.level === 'low' && swimmingComfort === 'excellent') {
@@ -2161,17 +2291,12 @@ export const calculateBeachScore = (
   // Display-only cove wave (the same guard the detail page ships), so a card and its
   // detail page can never disagree on the wave NUMBER: in a genuinely enclosed cove the
   // open-water grid cell over-reads the near-shore height, and the displayed value takes
-  // the fetch-limited SMB estimate instead. Every score/level/comfort above keeps
-  // reading effectiveWaveHeightM — the guard remains display-only by doctrine.
-  const coveWave = resolveCoveAwareWaveHeightM({
-    geospatialProfile: options?.geospatialProfile,
-    facingDeg: windAssessment.facingDeg,
-    windDirectionDeg: weather.wind.deg,
-    windSpeedKmh: windSpeedKmph,
-    measuredWaveHeightM: realisticMeasuredWaveHeightM,
-    appModeledWaveHeightM: modeledWaveHeightM,
-    swellPresent: swell.hasSwell,
-  });
+  // the fetch-limited SMB estimate instead. Every score/level keeps reading
+  // effectiveWaveHeightM — the guard remains display-only by doctrine.
+  //
+  // Resolved further up the function since 10/08/2026 (see `shoreModelWaveM`) because the swim
+  // verdict now reads its sector geometry too. The computation is unchanged and depends on
+  // nothing between the two positions.
   // Offshore extension: the guard's onshore gate exists because ANY beach's offshore
   // sectors read blocked/0-fetch while a real sea remains. A verified enclosed-cove
   // MORPHOLOGY (isEnclosedCoveGeometry) with no swell present is the stronger statement:

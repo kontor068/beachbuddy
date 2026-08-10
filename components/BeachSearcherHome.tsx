@@ -1472,16 +1472,7 @@ const buildBeachIntradayShift = (
 const getTopRecommendationsLabel = (language: LanguageCode, count: number, beaufort?: number): string => {
   const displayCount = Math.max(1, Math.min(3, count));
 
-  if (typeof beaufort === 'number' && beaufort > 4) {
-    return getLocalizedCopy(language, {
-      en: 'The more sheltered picks',
-      gr: 'Οι πιο προστατευμένες επιλογές',
-      fr: 'Les choix les plus abrités',
-      de: 'Die besser geschützten Optionen',
-      it: 'Le scelte più riparate',
-    });
-  }
-
+  // One name in every weather — see topTabLabel for why the >4 Bft rename was dropped.
   if (displayCount === 1) {
     return getLocalizedCopy(language, {
       en: 'Top pick',
@@ -1519,16 +1510,7 @@ const getMobileTopRecommendationsTitle = (
   const displayCount = Math.max(1, Math.min(3, count));
   const when = timePrefix ? ` ${timePrefix}` : '';
 
-  if (typeof beaufort === 'number' && beaufort > 4) {
-    return getLocalizedCopy(language, {
-      en: `More sheltered picks${when}`,
-      gr: `Πιο προστατευμένες επιλογές${when}`,
-      fr: `Choix plus abrités${when}`,
-      de: `Besser geschützte Optionen${when}`,
-      it: `Scelte più riparate${when}`,
-    });
-  }
-
+  // One name in every weather — see topTabLabel for why the >4 Bft rename was dropped.
   if (displayCount === 1) {
     return getLocalizedCopy(language, {
       en: `Top pick${when}`,
@@ -2496,19 +2478,24 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       de: 'Weitere passende',
       it: 'Altre adatte',
     }), suitableBeachDisplayCount);
-  // The tab is narrower than a heading, so «επιλογές» goes: «Top 3 στις 16:00–17:00» fits one
-  // line where the full title wrapped to two. The >4 Bft honesty variant keeps its word.
+  /**
+   * ΕΝΑ ΟΝΟΜΑ, ΣΕ ΚΑΘΕ ΚΑΙΡΟ — «Top N» (Μίλτος, 10/08/2026).
+   *
+   * The tab used to change its own name above 4 Bft, to «Πιο προστατευμένες». The intention was
+   * honesty — do not call a hard day's answer a "top" list — but the effect was the opposite of
+   * honest: the reader saw a DIFFERENT block on windy days and could not tell whether the list had
+   * changed meaning or the site had. It is the same list, ranked by the same rules, every day.
+   *
+   * The honesty lives where it belongs and is unchanged: the subtitle still says out loud when
+   * none of them is ideal, each card still carries what the catch is with that beach, and the
+   * safety floor still keeps a «μην κολυμπήσεις» beach out of a seat.
+   *
+   * The number follows what is actually on screen: «Top 2» when the region could only fill two.
+   * The tab is narrower than a heading, so «επιλογές» is dropped — «Top 3 στις 16:00–17:00» fits
+   * one line where the full title wrapped to two.
+   */
   const topTabLabel = (() => {
     const when = suitableTimePrefix ? ` ${suitableTimePrefix}` : '';
-    if (typeof currentBeaufort === 'number' && currentBeaufort > 4) {
-      return getLocalizedCopy(language, {
-        en: `More sheltered${when}`,
-        gr: `Πιο προστατευμένες${when}`,
-        fr: `Plus abritées${when}`,
-        de: `Besser geschützt${when}`,
-        it: `Più riparate${when}`,
-      });
-    }
     const displayCount = Math.max(1, Math.min(3, topRecommendationBeachCards.length));
     return `Top ${displayCount}${when}`;
   })();
