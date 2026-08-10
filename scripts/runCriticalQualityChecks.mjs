@@ -130,6 +130,15 @@ const checks = [
     args: ['scripts/validateConditionToneAgreement.mjs'],
   },
   {
+    id: 'over-caution',
+    title: 'The reverse net: never rougher than our own geometry proves',
+    description: 'Every other gate asks "are we claiming calmer than the truth?". This one asks the opposite question, demanded by the PORISMA on 05/08/2026 and unpaid until 10/08: over the 2.823 beaches whose committed geometry proves flat water on a pure-offshore wind (same exported constants the shipped reliefs trust, authored human vetoes respected), it drives the REAL engine and the REAL map path and fails if the engine withholds earned protection, if the pin exceeds the deliberate per-Beaufort maximum caution (quiet sea: blue to 3 Bft, yellow to 5; running downwind sea: the yellow floor; 6 Bft: orange by decision), or — the other direction — if any relief overshoots to blue over a running sea. Self-proves: three simulated regressions (relief lost, geometry starved, ceiling deleted) must each make it fail.',
+    protects: 'Prevents the app quietly frightening people away from its own best answers. On 10/08/2026 Miltos found by eye what no gate asked: 222 beaches — Σχοινιάς first, then the meltemi lee coasts of Κάρπαθος, Μύκονος, Τήνος, Μήλος — wearing a rougher colour than their own water, because the sea reading came from a sample point DOWNWIND of the shore. The over-cautious direction has no complaining user: nobody emails "I did not go and it was lovely". It only shows up as trust quietly leaking to whichever competitor says "fine" on the days we wrongly say "fair".',
+    failureAction: 'Fix the surface the rule names (engine grant, pin ladder, or ceiling). Never widen this gate\'s thresholds and never shrink its class definition to make it pass — the class is built from the SAME constants the shipped reliefs trust, so weakening one weakens the other.',
+    command: process.execPath,
+    args: ['scripts/validateOverCaution.mjs', '--prove'],
+  },
+  {
     id: 'stay-window-worst-hour',
     title: 'A stay is judged by its roughest hour',
     description: 'Drives utils/stayWindow over all 1.364 tone sequences a sampled window can have (1-5 hours × 4 colours) and checks the hour chosen to speak for the window is always the roughest one in it, that ties fall to the earliest hour so an unchanging day behaves exactly as before, that no stay still means exactly one slot, and that both ends of the window are always sampled. Then re-runs the whole grid against two deliberately wrong pickers and fails if either survives.',
