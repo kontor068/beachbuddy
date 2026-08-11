@@ -3950,13 +3950,29 @@ export const App: React.FC = () => {
     }
     return slots;
   }, [baseDailyForecast]);
-  // Default: the current hour for today, otherwise the first beach-hour slot.
+  /**
+   * Which hour a day opens on. Today: `mapHourSlots` is already sliced to start at the hour
+   * covering "now", so its first slot IS now and the podium answers «πού να πάμε τώρα».
+   *
+   * A FUTURE DAY HAS NO "NOW", AND 08:00 WAS THE WRONG ANSWER (Μίλτος, 11/08/2026). Both branches
+   * used to return `mapHourSlots[0]` — the comment promised a distinction the code never made —
+   * so picking tomorrow opened the map, the colours and the whole podium on 08:00, headed «Top 3
+   * στις 08:00–09:00». Nobody plans a beach day around eight in the morning; the conditions there
+   * are routinely the calmest of the day and say nothing about when the visitor will actually go.
+   *
+   * It now opens on the start of the beach day the rest of this file already works to
+   * (BEACH_DAY_START_MINUTES, 10:00), falling back to the first available slot if a day somehow
+   * has nothing at or after it. The slider itself still starts at 08:00 — only the thumb moves.
+   */
   const defaultHourDt = useMemo(() => {
     if (mapHourSlots.length === 0) return null;
     const day = baseDailyForecast?.date;
     const isToday = day ? isSameCalendarDay(day, athensNow()) : false;
     if (isToday) return mapHourSlots[0].dt;
-    return mapHourSlots[0].dt;
+    const beachDayStart = mapHourSlots.find(
+      slot => new Date(slot.dt * 1000).getHours() * 60 >= BEACH_DAY_START_MINUTES
+    );
+    return (beachDayStart ?? mapHourSlots[0]).dt;
   }, [mapHourSlots, baseDailyForecast]);
   useEffect(() => {
     setSelectedHourDt(defaultHourDt);
@@ -6556,9 +6572,18 @@ export const App: React.FC = () => {
    * have named a beach that is not on screen there, which is the same class of defect as a wrong
    * hour. One rule, called twice with its own lead.
    */
-  // Switched off by product decision: the line is not shown on any surface. The rule below is kept
-  // intact (and its validators with it) so it can be turned back on by flipping this constant.
-  const SHOW_DAY_TURN_NOTE: boolean = false;
+  /**
+   * BACK ON (Μίλτος, 11/08/2026: «φτιάξ' τα όλα»). It had been switched off by product decision
+   * with no reason recorded anywhere in docs/team, and the podium review found it to be the one
+   * sentence on the page that answers «πότε να πάω» rather than «πού» — which is the thing a
+   * weather search cannot give, and the reason to come back tomorrow.
+   *
+   * Its visibility was measured before it was first built and that measurement still stands
+   * (`scripts/measureDayTurnVisibility.mjs`, 938 beaches, live Open-Meteo): it is a MORNING tool —
+   * on 49,3% of beaches at 08:00, 19,5% at 11:00, 1,2% at 17:00. Opening the site in the afternoon
+   * and not seeing it is the designed silence, not a fault.
+   */
+  const SHOW_DAY_TURN_NOTE: boolean = true;
   const buildDayTurnNote = (lead: SuitableBeach | undefined): string | undefined => {
     if (!SHOW_DAY_TURN_NOTE) return undefined;
     if (!lead || mapHourSlots.length < 2) return undefined;
