@@ -97,8 +97,12 @@ const compositionWord = (language: LanguageCode, beachType: string): string => {
   return filterWord(language, beachType);
 };
 
-/** «από τις τρεις» / «of the three» — the comparison is meaningless with a single pick. */
-const groupPhrase = (language: LanguageCode, count: number): string => {
+/**
+ * «δύο» / «τρεις» — the podium is NOT always three. A thin region, an active colour filter or the
+ * safety floor can leave two picks, or one. Any line that announces the set has to say the number
+ * actually on screen: on 11/08/2026 the panel headed two cards with «Γιατί αυτές οι 3 από τις 5;».
+ */
+export const topPickNumberWord = (language: LanguageCode, count: number): string => {
   const numberWord: Record<LanguageCode, Record<number, string>> = {
     gr: { 2: 'δύο', 3: 'τρεις', 4: 'τέσσερις' },
     en: { 2: 'two', 3: 'three', 4: 'four' },
@@ -106,7 +110,12 @@ const groupPhrase = (language: LanguageCode, count: number): string => {
     fr: { 2: 'deux', 3: 'trois', 4: 'quatre' },
     it: { 2: 'due', 3: 'tre', 4: 'quattro' },
   };
-  const word = numberWord[language]?.[count] || numberWord.en[count] || String(count);
+  return numberWord[language]?.[count] || numberWord.en[count] || String(count);
+};
+
+/** «από τις τρεις» / «of the three» — the comparison is meaningless with a single pick. */
+const groupPhrase = (language: LanguageCode, count: number): string => {
+  const word = topPickNumberWord(language, count);
   const frame: Record<LanguageCode, string> = {
     gr: `από τις ${word}`,
     en: `of the ${word}`,

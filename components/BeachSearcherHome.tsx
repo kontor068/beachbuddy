@@ -38,7 +38,7 @@ import {
 import type { Beach, DailyForecast, FilterKey, Island, LanguageCode, SortOption, SuitableBeach, Translation, UserPreferences } from '../types';
 import { getLocalizedCopy, languageToDateLocale, languageToLocale, type SupportedLanguage } from '../utils/i18n';
 import { displayBeachName, localizedAccessLabel, localizedPopularityLabel, localizedLittleKnownLabel } from '../utils/localization';
-import { getTopPickDistinguishers } from '../utils/topPickDistinguishers';
+import { getTopPickDistinguishers, topPickNumberWord } from '../utils/topPickDistinguishers';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import type { CalmnessTone } from '../utils/suitabilityTone';
 import { getAmenityChips, type AmenityChip } from '../utils/amenities';
@@ -2383,23 +2383,53 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     ),
     [topRecommendationBeachCards, suitableBeachCards, language, selectedDate, isCalmPodiumDay],
   );
+  /**
+   * ΤΟ ΠΛΗΘΟΣ ΤΟΥ PODIUM ΔΕΝ ΕΙΝΑΙ ΠΑΝΤΑ ΤΡΙΑ (Μίλτος, 11/08/2026).
+   *
+   * Every line below used to be written as if it always were: the panel printed «Γιατί αυτές οι 3
+   * από τις 5;» and «Με τέτοιο αέρα, αυτές οι τρεις…» above a podium of TWO cards, while the tab
+   * beside it correctly read «Top 2». The tab was the only place that counted what was on screen.
+   *
+   * Same expression as `topTabLabel` — deliberately shared, because the two are read together and
+   * any drift between them is the bug being fixed here. A region can fill fewer than three seats
+   * whenever the pool is thin, a colour filter is on, or the safety floor keeps a beach out.
+   */
+  const topPickCount = Math.max(1, Math.min(3, topRecommendationBeachCards.length));
+  const isSingleTopPick = topPickCount === 1;
+  const topPickCountWord = topPickNumberWord(language, topPickCount);
   // The number does the work: it says we looked at sixty-two, not that we picked three at random.
   // Falls back to the bare question when the pool IS the podium (tiny regions, heavy filtering).
-  const topPicksWhyTitle = topPickPoolSize > 3
-    ? getLocalizedCopy(language, {
-      en: `Why these 3 of ${topPickPoolSize}?`,
-      gr: `Γιατί αυτές οι 3 από τις ${topPickPoolSize};`,
-      de: `Warum diese 3 von ${topPickPoolSize}?`,
-      fr: `Pourquoi ces 3 sur ${topPickPoolSize} ?`,
-      it: `Perché queste 3 su ${topPickPoolSize}?`,
-    })
-    : getLocalizedCopy(language, {
-      en: 'Why these three?',
-      gr: 'Γιατί αυτές οι τρεις;',
-      de: 'Warum diese drei?',
-      fr: 'Pourquoi ces trois-là ?',
-      it: 'Perché queste tre?',
-    });
+  const topPicksWhyTitle = topPickPoolSize > topPickCount
+    ? (isSingleTopPick
+      ? getLocalizedCopy(language, {
+        en: `Why this one of ${topPickPoolSize}?`,
+        gr: `Γιατί αυτή η μία από τις ${topPickPoolSize};`,
+        de: `Warum dieser eine von ${topPickPoolSize}?`,
+        fr: `Pourquoi celle-ci sur ${topPickPoolSize} ?`,
+        it: `Perché questa su ${topPickPoolSize}?`,
+      })
+      : getLocalizedCopy(language, {
+        en: `Why these ${topPickCount} of ${topPickPoolSize}?`,
+        gr: `Γιατί αυτές οι ${topPickCount} από τις ${topPickPoolSize};`,
+        de: `Warum diese ${topPickCount} von ${topPickPoolSize}?`,
+        fr: `Pourquoi ces ${topPickCount} sur ${topPickPoolSize} ?`,
+        it: `Perché queste ${topPickCount} su ${topPickPoolSize}?`,
+      }))
+    : (isSingleTopPick
+      ? getLocalizedCopy(language, {
+        en: 'Why this one?',
+        gr: 'Γιατί αυτή;',
+        de: 'Warum dieser eine?',
+        fr: 'Pourquoi celle-ci ?',
+        it: 'Perché questa?',
+      })
+      : getLocalizedCopy(language, {
+        en: `Why these ${topPickCountWord}?`,
+        gr: `Γιατί αυτές οι ${topPickCountWord};`,
+        de: `Warum diese ${topPickCountWord}?`,
+        fr: `Pourquoi ces ${topPickCountWord}-là ?`,
+        it: `Perché queste ${topPickCountWord}?`,
+      }));
   // The list under the «Γιατί αυτές οι τρεις;» heading answers «ποια από τις τρεις», not «γιατί
   // αυτές και όχι οι άλλες 71» — that second question is what the bullets below answer. One lead
   // line joins them, so the heading is not left writing a cheque the list does not cash.
@@ -2409,13 +2439,21 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     // The clause borrows the calm variant's own vocabulary instead, which is exactly what the
     // page can prove — and is only ever printed when the three really did clear the bar
     // (`shelteredFallbackPodium` false).
-    ? getLocalizedCopy(language, {
-      en: 'With this much wind, these three are the most sheltered ones that still clear the wind and sea checks. Here is what separates them:',
-      gr: 'Με τέτοιο αέρα, αυτές οι τρεις είναι οι πιο προστατευμένες που περνούν ακόμα τους ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
-      de: 'Bei diesem Wind sind diese drei die geschütztesten, die die Wind- und Seegangsprüfungen noch bestehen. Das unterscheidet sie:',
-      fr: "Avec ce vent, ces trois-là sont les plus abritées qui passent encore les contrôles de vent et de mer. Voici ce qui les distingue :",
-      it: 'Con questo vento, queste tre sono le più riparate che superano ancora i controlli su vento e mare. Ecco cosa le distingue:',
-    })
+    ? (isSingleTopPick
+      ? getLocalizedCopy(language, {
+        en: 'With this much wind, this is the only one left that still clears the wind and sea checks. Here is what stands out about it:',
+        gr: 'Με τέτοιο αέρα, αυτή είναι η μόνη που περνά ακόμα τους ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:',
+        de: 'Bei diesem Wind ist dies der einzige Strand, der die Wind- und Seegangsprüfungen noch besteht. Das zeichnet ihn aus:',
+        fr: "Avec ce vent, c'est la seule qui passe encore les contrôles de vent et de mer. Voici ce qui la distingue :",
+        it: 'Con questo vento, questa è la sola che supera ancora i controlli su vento e mare. Ecco cosa la distingue:',
+      })
+      : getLocalizedCopy(language, {
+        en: `With this much wind, these ${topPickCountWord} are the most sheltered ones that still clear the wind and sea checks. Here is what separates them:`,
+        gr: `Με τέτοιο αέρα, αυτές οι ${topPickCountWord} είναι οι πιο προστατευμένες που περνούν ακόμα τους ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:`,
+        de: `Bei diesem Wind sind diese ${topPickCountWord} die geschütztesten, die die Wind- und Seegangsprüfungen noch bestehen. Das unterscheidet sie:`,
+        fr: `Avec ce vent, ces ${topPickCountWord}-là sont les plus abritées qui passent encore les contrôles de vent et de mer. Voici ce qui les distingue :`,
+        it: `Con questo vento, queste ${topPickCountWord} sono le più riparate che superano ancora i controlli su vento e mare. Ecco cosa le distingue:`,
+      }))
     /**
      * ΤΟ ΚΕΝΟ ΠΟΥ ΒΡΗΚΕ Ο ΜΙΛΤΟΣ (11/08/2026): «γιατί αυτές οι 3 και όχι κάποιες από τις άλλες 17;»
      *
@@ -2425,29 +2463,56 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
      * the weather separates nobody (Rhodes, 1-2 Bft: 80 of the 100 points identical for all 62) and
      * the order comes from the review counts.
      */
-    : isCalmPodiumDay && topPickPoolSize > 3
-      ? getLocalizedCopy(language, {
-        en: `With so little wind none of today's ${topPickPoolSize} suitable beaches stands out on the weather, so the best-known ones lead. Here is what each one has:`,
-        gr: `Με τόσο λίγο αέρα καμία από τις ${topPickPoolSize} κατάλληλες δεν ξεχωρίζει στον καιρό, οπότε προηγούνται οι πιο δοκιμασμένες. Να τι έχει η καθεμία:`,
-        de: `Bei so wenig Wind hebt sich keiner der heute ${topPickPoolSize} geeigneten Strände beim Wetter ab, also führen die bekanntesten. Das hat jeder:`,
-        fr: `Avec si peu de vent, aucune des ${topPickPoolSize} plages adaptées ne se démarque sur la météo : les plus éprouvées passent devant. Voici ce qu'a chacune :`,
-        it: `Con così poco vento nessuna delle ${topPickPoolSize} spiagge adatte spicca sul meteo, quindi guidano le più collaudate. Ecco cosa ha ciascuna:`,
-      })
-      : topPickPoolSize > 3
+    : isCalmPodiumDay && topPickPoolSize > topPickCount
+      ? (isSingleTopPick
         ? getLocalizedCopy(language, {
-          en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what separates them:`,
-          gr: `Διαλέχτηκαν ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:`,
-          de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das unterscheidet sie:`,
-          fr: `Choisies parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qui les distingue :`,
-          it: `Scelte tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa le distingue:`,
+          en: `With so little wind none of today's ${topPickPoolSize} suitable beaches stands out on the weather, so the best-known one leads. Here is what it has:`,
+          gr: `Με τόσο λίγο αέρα καμία από τις ${topPickPoolSize} κατάλληλες δεν ξεχωρίζει στον καιρό, οπότε προηγείται η πιο δοκιμασμένη. Να τι έχει:`,
+          de: `Bei so wenig Wind hebt sich keiner der heute ${topPickPoolSize} geeigneten Strände beim Wetter ab, also führt der bekannteste. Das hat er:`,
+          fr: `Avec si peu de vent, aucune des ${topPickPoolSize} plages adaptées ne se démarque sur la météo : la plus éprouvée passe devant. Voici ce qu'elle a :`,
+          it: `Con così poco vento nessuna delle ${topPickPoolSize} spiagge adatte spicca sul meteo, quindi guida la più collaudata. Ecco cosa ha:`,
         })
         : getLocalizedCopy(language, {
-          en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
-          gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
-          de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
-          fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
-          it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
-        });
+          en: `With so little wind none of today's ${topPickPoolSize} suitable beaches stands out on the weather, so the best-known ones lead. Here is what each one has:`,
+          gr: `Με τόσο λίγο αέρα καμία από τις ${topPickPoolSize} κατάλληλες δεν ξεχωρίζει στον καιρό, οπότε προηγούνται οι πιο δοκιμασμένες. Να τι έχει η καθεμία:`,
+          de: `Bei so wenig Wind hebt sich keiner der heute ${topPickPoolSize} geeigneten Strände beim Wetter ab, also führen die bekanntesten. Das hat jeder:`,
+          fr: `Avec si peu de vent, aucune des ${topPickPoolSize} plages adaptées ne se démarque sur la météo : les plus éprouvées passent devant. Voici ce qu'a chacune :`,
+          it: `Con così poco vento nessuna delle ${topPickPoolSize} spiagge adatte spicca sul meteo, quindi guidano le più collaudate. Ecco cosa ha ciascuna:`,
+        }))
+      : topPickPoolSize > topPickCount
+        ? (isSingleTopPick
+          ? getLocalizedCopy(language, {
+            en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what stands out about it:`,
+            gr: `Διαλέχτηκε ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:`,
+            de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das zeichnet ihn aus:`,
+            fr: `Choisie parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qui la distingue :`,
+            it: `Scelta tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa la distingue:`,
+          })
+          : getLocalizedCopy(language, {
+            en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what separates them:`,
+            gr: `Διαλέχτηκαν ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:`,
+            de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das unterscheidet sie:`,
+            fr: `Choisies parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qui les distingue :`,
+            it: `Scelte tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa le distingue:`,
+          }))
+        : (isSingleTopPick
+          ? getLocalizedCopy(language, {
+            en: 'It clears today\'s wind and sea checks. Here is what stands out about it:',
+            gr: 'Περνά τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:',
+            de: 'Er besteht die heutigen Wind- und Seegangsprüfungen. Das zeichnet ihn aus:',
+            fr: "Elle passe les contrôles du jour (vent et mer). Voici ce qui la distingue :",
+            it: 'Supera i controlli di oggi su vento e mare. Ecco cosa la distingue:',
+          })
+          : getLocalizedCopy(language, {
+            en: `All ${topPickCountWord} clear today's wind and sea checks. Here is what separates them:`,
+            gr: `Και οι ${topPickCountWord} περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:`,
+            // «Alle zwei» is not German; the pair takes its own word.
+            de: topPickCount === 2
+              ? 'Beide bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:'
+              : `Alle ${topPickCountWord} bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:`,
+            fr: `Toutes les ${topPickCountWord} passent les contrôles du jour (vent et mer). Voici ce qui les distingue :`,
+            it: `Tutte e ${topPickCountWord} superano i controlli di oggi su vento e mare. Ecco cosa le distingue:`,
+          }));
   const topPicksHowTitle = isShelterFirstPodium
     ? getLocalizedCopy(language, {
       en: 'How we pick the sheltered ones',
@@ -2457,11 +2522,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       it: 'Come scegliamo le più riparate',
     })
     : getLocalizedCopy(language, {
-      en: 'How the Top 3 is picked',
-      gr: 'Πώς βγαίνει το Top 3',
-      de: 'So entsteht die Top 3',
-      fr: 'Comment le Top 3 est choisi',
-      it: 'Come nasce la Top 3',
+      en: `How the Top ${topPickCount} is picked`,
+      gr: `Πώς βγαίνει το Top ${topPickCount}`,
+      de: `So entsteht die Top ${topPickCount}`,
+      fr: `Comment le Top ${topPickCount} est choisi`,
+      it: `Come nasce la Top ${topPickCount}`,
     });
   const topPicksHowBullets = [
     getLocalizedCopy(language, {
@@ -2617,8 +2682,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    */
   const topTabLabel = (() => {
     const when = suitableTimePrefix ? ` ${suitableTimePrefix}` : '';
-    const displayCount = Math.max(1, Math.min(3, topRecommendationBeachCards.length));
-    return `Top ${displayCount}${when}`;
+    // Shared with the «Γιατί αυτές…» panel, so the tab and the explanation can never disagree
+    // about how many beaches are on screen.
+    return `Top ${topPickCount}${when}`;
   })();
 
 

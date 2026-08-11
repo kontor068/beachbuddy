@@ -44549,9 +44549,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJm9rFMdmGmxQRFA27_uLWqBE",
+              "query": "Σεϊτάν Λιμάνι, Chania"
             },
             "hasShower": true,
             "showerEvidence": {
@@ -90397,6 +90399,14 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJK-2PC2awXRMRPVDESDXJEeU",
+              "query": "Παραλία Εγκρεμνοί, Lefkada"
             }
           }
         },
@@ -93769,6 +93779,14 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJ4QpUwoxrZxMR7opYdYvoPng",
+              "query": "Παραλία Ναυάγιο, Zakynthos"
             }
           }
         },
@@ -141949,9 +141967,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJzQpOqP8IohQRuYOBSlqo2dM",
+              "query": "Παραλία Κολώνα, Kythnos"
             }
           }
         },
@@ -144221,9 +144241,11 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJ0WiZqZngmBQRGpyewQ9Be10",
+              "query": "Σαρακήνικο, Milos"
             }
           }
         },
@@ -145287,9 +145309,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1",
-              "query": "Κλέφτικο, Milos"
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "query": "Παραλία Κλέφτικο, Milos",
+              "placeId": "ChIJm4ngzlUvmRQRoTRDMx9ps0c"
             },
             "waterDepth": {
               "type": "deep",
@@ -154500,10 +154523,12 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-29",
-              "method": "osm-nav-audit-v1",
-              "reason": "No Google placeId resolved yet; routes by exact coordinate. Upgrade to mode=place + placeId via the Places API backfill so Maps opens the named Red Beach card."
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "reason": "No Google placeId resolved yet; routes by exact coordinate. Upgrade to mode=place + placeId via the Places API backfill so Maps opens the named Red Beach card.",
+              "placeId": "ChIJ8ZbWwETPmRQRXH_K_oZUxZE",
+              "query": "Κόκκινη Παραλία, Santorini"
             }
           }
         },
@@ -165038,9 +165063,11 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-06-16",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJ14DcXtACmBQRiDp-1nyCdZI",
+              "query": "Πισίνα, Koufonisia"
             },
             "orientation": {
               "degrees": 85.6,
@@ -195424,6 +195451,14 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "place",
+              "checkedAt": "2026-08-11",
+              "method": "owner-shared-maps-link-v1",
+              "placeId": "ChIJj3XzrdLmphQRhlArj16mXcY",
+              "query": "Παραλία Λαλάρια, Skiathos"
             }
           }
         },

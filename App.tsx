@@ -389,7 +389,7 @@ const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
 // local. Kept deliberately tight: these are STRAIGHT-LINE km, and on Greek roads
 // 20 km of them is already a 30-40 km / ~35-minute drive — the outer edge of what
 // anyone would call "near me". In a dense metro area (Athens, Thessaloniki) this
-// alone easily clears NEAR_ME_MIN_BEACHES, so the fallback below never fires there
+// alone easily clears NEAR_ME_WIDEN_BELOW, so the fallback below never fires there
 // and users never see a beach from across the whole conurbation. (Was 40 km, then
 // 30 km, i.e. over an hour of driving.)
 const NEAR_ME_BEACH_RADIUS_KM = 20;
@@ -397,9 +397,20 @@ const NEAR_ME_BEACH_RADIUS_KM = 20;
 // than jump straight to "nearest on this landmass, whatever the distance".
 const NEAR_ME_BEACH_RADIUS_FALLBACK_KM = 40;
 const NEAR_ME_MAX_BEACHES = 60;
-// If almost nothing falls inside the radius (sparse coastline), still surface at
-// least this many nearest beaches so the view is never empty.
+// Consistency floor for the geo-index sanity check further down: a rebuild that left the
+// index disagreeing with the region files would hand back a thinner list than the beaches
+// that really surround the user. NOT the widening threshold — see NEAR_ME_WIDEN_BELOW.
 const NEAR_ME_MIN_BEACHES = 15;
+// Widen the radius only when the tight one leaves the view genuinely empty, not merely
+// short. This used to reuse NEAR_ME_MIN_BEACHES (15), which quietly defeated the radius in
+// exactly the places it matters most: measured against the national geo-index, a user in the
+// northern Athens suburbs has 9 beaches within 20 km, so the 15-floor widened them to 40 km
+// and handed back 90 — the "why am I still seeing beaches 30 km away" report. Central Athens
+// (29 within 20 km) and Glyfada (41) never tripped it, which is why it looked fine on paper.
+// At 5, widening is reserved for sparse coastline (Epirus, inner Peloponnese, small islands)
+// where the alternative really is an empty screen; a thin 9-beach list in Kifisia is the
+// honest answer to "near me", not a bug to paper over.
+const NEAR_ME_WIDEN_BELOW = 5;
 
 // Prefer the tight radius; widen only when it would leave the view nearly empty,
 // and only then fall back to the unbounded nearest-on-this-landmass list. Callers
@@ -407,9 +418,9 @@ const NEAR_ME_MIN_BEACHES = 15;
 // nearest beaches rather than an arbitrary slice.
 const pickNearbyShortlist = <T extends { distance: number }>(sameLandmass: T[]): T[] => {
   const withinRadius = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_KM);
-  if (withinRadius.length >= NEAR_ME_MIN_BEACHES) return withinRadius.slice(0, NEAR_ME_MAX_BEACHES);
+  if (withinRadius.length >= NEAR_ME_WIDEN_BELOW) return withinRadius.slice(0, NEAR_ME_MAX_BEACHES);
   const widened = sameLandmass.filter(item => item.distance <= NEAR_ME_BEACH_RADIUS_FALLBACK_KM);
-  if (widened.length >= NEAR_ME_MIN_BEACHES) return widened.slice(0, NEAR_ME_MAX_BEACHES);
+  if (widened.length >= NEAR_ME_WIDEN_BELOW) return widened.slice(0, NEAR_ME_MAX_BEACHES);
   return sameLandmass.slice(0, NEAR_ME_MAX_BEACHES);
 };
 
