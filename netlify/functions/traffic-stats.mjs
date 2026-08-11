@@ -1625,6 +1625,24 @@ const readQueue = async (event) => {
 /** Only ever a known code, so it can never carry markup into the page. */
 const flashCode = (value) => (Object.prototype.hasOwnProperty.call(FLASH, value) ? value : '');
 
+/**
+ * The ONLY way this page reaches a browser — because the key has to be written
+ * into it TWICE, in two different encodings, and doing that at each call site is
+ * how the moderation buttons shipped broken on 11/08/2026:
+ *
+ *   KEYPLACEHOLDER — inside hrefs and form actions, so it must be URL-encoded.
+ *   RAWFORMKEY     — a form input VALUE, which the browser URL-encodes on submit.
+ *                    Encoding it here as well sends a double-encoded key that
+ *                    matches nothing, and every decision comes back "Forbidden".
+ *
+ * One of the two call sites did the first substitution and not the second, so
+ * the buttons posted the literal string "RAWFORMKEY" as the key. Both paths go
+ * through here now; a new render path cannot forget half the job.
+ */
+const renderPage = (data, given) => page(data)
+  .replace(/KEYPLACEHOLDER/g, encodeURIComponent(given))
+  .replace(/RAWFORMKEY/g, esc(given));
+
 export const handler = async (event) => {
   const key = process.env.TRAFFIC_STATS_KEY || '';
   const params = event.queryStringParameters || {};
@@ -1849,17 +1867,11 @@ export const handler = async (event) => {
         // crawler that never parses the HTML obeys.
         'X-Robots-Tag': 'noindex, nofollow, noarchive',
       },
-        body: page({
+        body: renderPage({
           rows: [], totals: {}, days: 0, startDay: todayKey,
           live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], mapDays: 0, nowMin,
           queue: await readQueue(event), flash: flashCode(params.done),
-        })
-          // Two substitutions, deliberately different. KEYPLACEHOLDER sits inside
-          // hrefs and form actions and must be URL-encoded; RAWFORMKEY is a form
-          // VALUE, which the browser encodes itself — encoding it here too would
-          // send a double-encoded key that never matches and 403s every decision.
-          .replace(/KEYPLACEHOLDER/g, encodeURIComponent(given))
-          .replace(/RAWFORMKEY/g, esc(given)),
+        }, given),
       };
     }
 
@@ -1969,7 +1981,7 @@ export const handler = async (event) => {
         // crawler that never parses the HTML obeys.
         'X-Robots-Tag': 'noindex, nofollow, noarchive',
       },
-      body: page({
+      body: renderPage({
         rows,
         totals: merged,
         days: limit,
@@ -1982,7 +1994,7 @@ export const handler = async (event) => {
         nowMin,
         queue: await readQueue(event),
         flash: flashCode(params.done),
-      }).replace(/KEYPLACEHOLDER/g, encodeURIComponent(given)),
+      }, given),
     };
   } catch (error) {
     // Never 502: surface the cause behind the secret key so the operator (and the
