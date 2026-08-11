@@ -2382,10 +2382,30 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           ...topRecommendationBeachCards.map(({ beach, context }) => ({ beach, context })),
           ...(suitableBeachCards ?? []).map(item => ({ beach: item.beach, context: item })),
         ],
-        reviewsDecided: isCalmPodiumDay,
+        /**
+         * ΟΙ ΚΡΙΤΙΚΕΣ ΜΙΛΑΝΕ ΟΠΟΤΕ ΑΠΟΦΑΣΙΖΟΥΝ — ΚΑΙ ΣΤΑ 3-4 ΜΠΟΦΟΡ ΑΠΟΦΑΣΙΖΟΥΝ (Μίλτος, 11/08/2026).
+         *
+         * This was `isCalmPodiumDay` (< 3 Bft), and the band it left silent is the one Miltos was
+         * looking at: Λήμνος at 3 Bft, 28 suitable beaches, all three picks reading «άμμος, ρηχά
+         * νερά, φυσική σκιά» because no other claim was allowed to speak.
+         *
+         * The original gate's reasoning was right and is kept — a true sentence in the wrong place
+         * is still a lie about how we work, and at 5+ Bft the least wind on a beach's own shore is
+         * what genuinely orders the podium, so crediting reviews there would misattribute the
+         * decision. But 3-4 Bft is not that case: `bestShelteredRecommendationGroup` has already
+         * filtered the pool down to the equally sheltered, so the wind GATHERED the candidates
+         * without SEPARATING them, and what actually breaks the order from there is the review
+         * count — both as the 5-point crowd row of the score table and as the final tie-break
+         * (services/topPickRanking). The page was already deciding this way and was forbidden from
+         * saying so.
+         *
+         * Same boundary as the heading above the podium (`isShelterFirstPodium`, > 4 Bft), on
+         * purpose: the rail must never credit a different decision than the title over it claims.
+         */
+        reviewsDecided: podiumOrderingRegime !== 'own_shore_first',
       },
     ),
-    [topRecommendationBeachCards, suitableBeachCards, language, selectedDate, isCalmPodiumDay],
+    [topRecommendationBeachCards, suitableBeachCards, language, selectedDate, podiumOrderingRegime],
   );
   /**
    * ΤΟ ΠΛΗΘΟΣ ΤΟΥ PODIUM ΔΕΝ ΕΙΝΑΙ ΠΑΝΤΑ ΤΡΙΑ (Μίλτος, 11/08/2026).
@@ -3965,6 +3985,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   };
   const renderDesktopMenuFilterButton = (item: DesktopFilterItem) => {
     const count = getDesktopFilterDisplayCount(item);
+    // Same rule as the visible row above: a chip that would empty the list is faded and
+    // disabled. The overflow menu is where the least-used filters live, so leaving it tappable
+    // here is exactly where a dead end goes unnoticed.
+    const isUnavailable = typeof count === 'number' && count === 0 && !item.isActive;
 
     return (
       <button
@@ -3973,9 +3997,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         role="option"
         aria-selected={item.isActive}
         onClick={() => handleDesktopFilterSelect(item)}
+        disabled={isUnavailable}
         className={`flex min-h-10 items-center gap-2 rounded-xl px-3 text-left text-sm font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 ${
           item.isActive ? 'bg-cyan-50 text-[#007a83]' : 'text-slate-600 hover:bg-cyan-50/70 hover:text-[#007a83]'
-        }`}
+        } ${isUnavailable ? 'cursor-not-allowed opacity-40 hover:bg-transparent hover:text-slate-600' : ''}`}
       >
         <span className={item.isActive ? 'text-[#007a83]' : 'text-slate-700'}>{item.icon}</span>
         <span className="min-w-0 flex-1 truncate">{item.label}</span>

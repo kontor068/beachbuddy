@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { FilterKey, LanguageCode, SortOption } from '../types';
 import { Translation } from '../types';
 import { 
@@ -286,6 +286,46 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         getResultCount ? getResultCount(tempFilters, tempSortBy) : undefined
     ), [getResultCount, tempFilters, tempSortBy]);
 
+    /**
+     * A chip that would empty the list must not be tappable — the same rule the desktop chip
+     * row already applies (BeachSearcherHome: faceted count 0 → fade + disable). The prop
+     * `unavailableFilters` only knows about the picked colour group and judges each filter on
+     * its own, so on mobile a COMBINATION that yields nothing was still tappable. Ask the
+     * sheet's own counter — the one behind the "see N beaches" button — the same question per
+     * chip: with this added to what is already picked, what is left? Zero → disabled.
+     *
+     * Only unselected chips are judged: turning a filter OFF always opens the list back up, so
+     * an already-picked chip stays tappable even when the current selection returns nothing.
+     *
+     * Counted against sort 'all' on purpose, never the live 'protected' sort. We are answering
+     * "do these attributes exist together in this region", not "is it windy today" — on a 6 Bft
+     * day the protected count is near zero for EVERY chip and the whole sheet would grey out,
+     * hiding a real choice (switch the sort) behind what looks like a broken screen.
+     *
+     * Keyed on joined strings, not the arrays/callback themselves: `filters` is rebuilt on every
+     * render and `getResultCount` is a fresh closure from App each time, so raw deps would rerun
+     * ~20 count passes on every unrelated re-render while the sheet is open.
+     */
+    const getResultCountRef = useRef(getResultCount);
+    getResultCountRef.current = getResultCount;
+    const filtersKey = filters.join('|');
+    const tempFiltersKey = tempFilters.join('|');
+    const emptyingFilters = useMemo(() => {
+        const empties = new Set<FilterKey>();
+        const countFor = getResultCountRef.current;
+        if (!countFor) return empties;
+
+        const selected = new Set(tempFilters);
+        filters.forEach(filter => {
+            if (selected.has(filter)) return;
+            if (countFor([...tempFilters, filter], 'all') === 0) {
+                empties.add(filter);
+            }
+        });
+        return empties;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filtersKey, tempFiltersKey]);
+
     const sheetCopy = filterSheetCopy[language];
     const displayGroups = filterGroupDefinitions
         .map(group => ({
@@ -353,7 +393,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
 
     const renderFilterButton = (filter: FilterKey, compact = false) => {
         const isSelected = tempFilters.includes(filter);
-        const isUnavailable = !isSelected && unavailableFilterSet.has(filter);
+        const isUnavailable = !isSelected && (unavailableFilterSet.has(filter) || emptyingFilters.has(filter));
         return (
             <button
                 key={filter}
