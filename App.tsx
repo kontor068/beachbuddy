@@ -6596,9 +6596,34 @@ export const App: React.FC = () => {
     const profile = geospatialExposureProfiles?.[beachId];
     if (!profile) return undefined;
 
+    /**
+     * ΜΕΤΡΑ ΑΠΟ ΤΗΝ ΩΡΑ ΠΟΥ ΚΟΙΤΑΕΙ, ΟΧΙ ΑΠΟ ΤΟ «ΤΩΡΑ» (Μίλτος, 12/08/2026).
+     *
+     * `findWorseningTurnFromReadings` compares every hour against the FIRST reading it is given,
+     * and it was being given `mapHourSlots` — whose slot 0 is, for today, the hour covering now.
+     * So with the slider dragged to 11:00 the sentence still opened at 09:00 and announced «από
+     * τις 10:00 χειροτερεύει»: a turn the visitor had already scrolled past, printed under a tab
+     * that read «Top 3 στις 11:00–12:00». Two hours on one screen, disagreeing.
+     *
+     * Slicing to the selected hour makes the opening the hour the visitor is actually looking at,
+     * so «αργότερα» means later than what is on screen. It also makes the sentence self-silencing
+     * at the end of the day: drag to the last slot and fewer than two readings remain, which
+     * `findWorseningTurnFromReadings` already answers with null.
+     *
+     * Reads `selectedHourDt`, not the deferred twin, because this line sits beside the tab label
+     * that reads the same value — the two must never name different hours.
+     */
+    const slotsFromSelectedHour = (() => {
+      if (selectedHourDt == null) return mapHourSlots;
+      const index = mapHourSlots.findIndex(slot => slot.dt >= selectedHourDt);
+      // No slot at or after the selected hour: there is no "later" to describe, so say nothing.
+      // Returning the full day here instead would quietly reinstate the bug this block fixes.
+      if (index === -1) return [];
+      return index === 0 ? mapHourSlots : mapHourSlots.slice(index);
+    })();
     // Gathered inputs only — the tone is formed in utils/stayWindow, never here
     // (validateConditionToneAgreement's the-list-does-not-colour-its-own-beaches).
-    const readings = getStaySampleSlots(mapHourSlots)
+    const readings = getStaySampleSlots(slotsFromSelectedHour)
       .map(slot => {
         const item = getForecastItemAtDt(hourly, slot.dt, mapHourSlots);
         if (!item) return null;
@@ -6626,12 +6651,22 @@ export const App: React.FC = () => {
     // The name leads and a colon follows it, so no Greek article has to be inferred — «Η Πλάκα»
     // beside «Ο Άγιος Προκόπιος» beside «Το Βάι» is three genders the copy would have to guess.
     const name = lead.beach.name[language] ?? lead.beach.name.en;
+    /**
+     * ΔΥΟ ΙΣΧΥΡΙΣΜΟΙ ΕΓΙΝΑΝ ΕΝΑΣ (Μίλτος, 12/08/2026: «η φράση αυτή δεν στέκει»).
+     *
+     * «Δεν κρατάει όλη μέρα — από τις 14:00 χειροτερεύει» says the same thing twice, and the first
+     * half is the weaker claim of the two: it judges the WHOLE day from one turn, while all we
+     * measured is that one hour reads rougher than the hour on screen. What is left is the part
+     * the data carries — an hour, and a comparison against what the visitor is looking at right
+     * now. «Τόσο καλή» is deliberately relative and deliberately vague about how much worse: the
+     * tone ranks are ordinal, so we know the direction and have no business implying a size.
+     */
     return getLocalizedCopy(language, {
-      gr: `${name}: δεν κρατάει όλη μέρα — από τις ${at} χειροτερεύει.`,
-      en: `${name}: it does not hold all day — conditions get worse from ${at}.`,
-      de: `${name}: hält nicht den ganzen Tag — ab ${at} wird es schlechter.`,
-      fr: `${name} : ne tient pas toute la journée — ça se dégrade à partir de ${at}.`,
-      it: `${name}: non regge tutto il giorno — dalle ${at} peggiora.`,
+      gr: `${name}: από τις ${at} δεν θα είναι τόσο καλή.`,
+      en: `${name}: not as good from ${at} onwards.`,
+      de: `${name}: ab ${at} nicht mehr so gut.`,
+      fr: `${name} : moins bien à partir de ${at}.`,
+      it: `${name}: dalle ${at} non è più così buona.`,
     });
   };
   const dayTurnNote = buildDayTurnNote(recommendationSectionBeaches[0]);
