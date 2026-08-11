@@ -2503,7 +2503,35 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           fr: `Avec si peu de vent, aucune des ${topPickPoolSize} plages adaptées ne se démarque sur la météo : les plus éprouvées passent devant. Voici ce qu'a chacune :`,
           it: `Con così poco vento nessuna delle ${topPickPoolSize} spiagge adatte spicca sul meteo, quindi guidano le più collaudate. Ecco cosa ha ciascuna:`,
         }))
-      : topPickPoolSize > topPickCount
+      /**
+       * 3-4 ΜΠΟΦΟΡ — Η ΖΩΝΗ ΠΟΥ ΔΕΝ ΕΙΧΕ ΔΙΚΗ ΤΗΣ ΠΡΟΤΑΣΗ (Μίλτος, 11/08/2026).
+       *
+       * It fell through to the generic «Διαλέχτηκαν ανάμεσα σε 28 παραλίες που περνούν τους
+       * ελέγχους», which states the pool and explains nothing — and above three picks whose own
+       * lines had been silenced by the review gate, the whole panel said nothing at all.
+       *
+       * What is true in this band and in no other: the shelter tier ran as a GATE
+       * (`bestShelteredRecommendationGroup`), so every survivor is equally sheltered. The wind
+       * chose the pool and then had nothing left to say about the order — which is exactly what
+       * the sentence now tells the visitor, in the words he used himself.
+       */
+      : podiumOrderingRegime === 'shelter_gate' && topPickPoolSize > topPickCount
+        ? (isSingleTopPick
+          ? getLocalizedCopy(language, {
+            en: `Today's wind narrowed the field to ${topPickPoolSize} equally sheltered beaches — it gathered them, it did not separate them. The best-known one leads. Here is what it has:`,
+            gr: `Με τον σημερινό αέρα, οι ${topPickPoolSize} που πέρασαν είναι όλες εξίσου προστατευμένες — ο αέρας τις μάζεψε, δεν τις ξεχώρισε. Μπροστά μπαίνει η πιο δοκιμασμένη. Να τι έχει:`,
+            de: `Der heutige Wind hat das Feld auf ${topPickPoolSize} gleich gut geschützte Strände verengt — er hat sie versammelt, nicht unterschieden. Vorn steht der bekannteste. Das hat er:`,
+            fr: `Le vent du jour a réduit le champ à ${topPickPoolSize} plages également abritées — il les a rassemblées, il ne les a pas départagées. La plus éprouvée passe devant. Voici ce qu'elle a :`,
+            it: `Il vento di oggi ha ristretto il campo a ${topPickPoolSize} spiagge ugualmente riparate — le ha raccolte, non le ha distinte. Guida la più collaudata. Ecco cosa ha:`,
+          })
+          : getLocalizedCopy(language, {
+            en: `Today's wind narrowed the field to ${topPickPoolSize} equally sheltered beaches — it gathered them, it did not separate them. The best-known ones lead. Here is what each one has:`,
+            gr: `Με τον σημερινό αέρα, οι ${topPickPoolSize} που πέρασαν είναι όλες εξίσου προστατευμένες — ο αέρας τις μάζεψε, δεν τις ξεχώρισε. Μπροστά μπαίνουν οι πιο δοκιμασμένες. Να τι έχει η καθεμία:`,
+            de: `Der heutige Wind hat das Feld auf ${topPickPoolSize} gleich gut geschützte Strände verengt — er hat sie versammelt, nicht unterschieden. Vorn stehen die bekanntesten. Das hat jeder:`,
+            fr: `Le vent du jour a réduit le champ à ${topPickPoolSize} plages également abritées — il les a rassemblées, il ne les a pas départagées. Les plus éprouvées passent devant. Voici ce qu'a chacune :`,
+            it: `Il vento di oggi ha ristretto il campo a ${topPickPoolSize} spiagge ugualmente riparate — le ha raccolte, non le ha distinte. Guidano le più collaudate. Ecco cosa ha ciascuna:`,
+          }))
+        : topPickPoolSize > topPickCount
         ? (isSingleTopPick
           ? getLocalizedCopy(language, {
             en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what stands out about it:`,

@@ -52,7 +52,11 @@ export interface TopPickCandidate {
 export interface TopPickDistinguisher {
   beachId: number;
   axis: TopPickAxis;
-  /** One short sentence. Never empty — falls back to the recommendation's own explanation. */
+  /**
+   * One short sentence, or EMPTY when we hold nothing that is both true and not already said —
+   * the rail drops the row rather than print a manufactured or repeated line. Callers must handle
+   * the empty string (`if (!claim) return null`).
+   */
   claim: string;
 }
 
@@ -71,6 +75,8 @@ type Facts = {
   isQuiet: boolean;
   isEasyAccess: boolean;
   hasShade: boolean;
+  /** Γαλάζια Σημαία 2026 — already on the card and the map, never once spoken by this rail. */
+  hasBlueFlag: boolean;
   facilityCount: number;
   facilityLabels: string[];
   /** Google review count, 0 when we hold none — the calm-day tie-break, spoken out loud. */
@@ -173,6 +179,7 @@ const collectFacts = (candidate: TopPickCandidate, language: LanguageCode, selec
       || beach.environment?.quiet === true || metadata?.environment?.quiet === true,
     isEasyAccess: hasTrulyEasyAccess(beach),
     hasShade: beach.amenities?.naturalShade === true,
+    hasBlueFlag: (beach.blueFlag2026 ?? metadata?.blueFlag2026)?.awarded === true,
     facilityCount: facilityChips.length,
     facilityLabels: facilityChips.slice(0, 2).map(chip => chip.label),
     reviewCount: (() => {
@@ -351,7 +358,14 @@ const AXIS_RULES: AxisRule[] = [
  */
 type ProfileMode = 'alone' | 'framed' | 'bare';
 
-const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMode): string => {
+/**
+ * The sentence AND the attribute set it was built from. Two picks that resolve to the same set are
+ * saying the same thing however the frame is worded, and the caller has to be able to see that —
+ * see the dedup note in `getTopPickDistinguishers`.
+ */
+type ProfileClaim = { text: string; key: string };
+
+const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMode): ProfileClaim => {
   const parts: string[] = [];
   const composition = facts.beach.beachType && facts.beach.beachType !== 'unknown'
     ? compositionWord(language, facts.beach.beachType)
@@ -364,7 +378,16 @@ const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMo
   else if (facts.isQuiet) parts.push(filterWord(language, 'quiet'));
 
   const attributes = parts.filter(Boolean).slice(0, 3);
-  if (attributes.length === 0) return facts.context?.explanation || '';
+  /**
+   * ΣΙΩΠΗ, ΟΧΙ ΤΟ ΠΑΛΙΟ `explanation` (Μίλτος, 11/08/2026). This used to fall back to the
+   * recommendation's own sentence, which is the machine voice this whole module exists to remove —
+   * «φαίνεται πιθανόν πιο προστατευμένη από ανοιχτές παραλίες αύριο. Η θερμοκρασία θα είναι 25°C».
+   * It reached the live Λήμνος podium exactly that way. When we hold nothing to say about a beach,
+   * the rail drops its line (`if (!claim) return null` at the call site) — an empty row costs the
+   * reader nothing, a manufactured one costs the page its credibility.
+   */
+  if (attributes.length === 0) return { text: '', key: '' };
+  const key = attributes.join('|');
 
   // Lowercased mid-sentence: the filter vocabulary is Title Case because it labels chips
   // («Ρηχά Νερά»), and dropping it into a sentence unchanged reads like a form field.
@@ -372,13 +395,16 @@ const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMo
 
   // With a single pick there is nothing to be "similar to", so the comparative frame is a lie.
   if (mode === 'alone') {
-    return localized(language, {
-      gr: `Τι θα βρεις: ${list}.`,
-      en: `What you'll find: ${list}.`,
-      de: `Was dich erwartet: ${list}.`,
-      fr: `Ce que vous trouverez : ${list}.`,
-      it: `Cosa troverai: ${list}.`,
-    });
+    return {
+      key,
+      text: localized(language, {
+        gr: `Τι θα βρεις: ${list}.`,
+        en: `What you'll find: ${list}.`,
+        de: `Was dich erwartet: ${list}.`,
+        fr: `Ce que vous trouverez : ${list}.`,
+        it: `Cosa troverai: ${list}.`,
+      }),
+    };
   }
 
   // Only the first undifferentiated beach explains WHY it has no superlative. Repeating that
@@ -388,17 +414,36 @@ const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMo
     // Plain toUpperCase, NEVER toLocaleUpperCase('el'): the Greek locale rule strips diacritics
     // (right for a word set in all caps, wrong here) and turned «Άμμος» into «Αμμος».
     const first = Array.from(list)[0] || '';
-    return `${first.toUpperCase()}${list.slice(first.length)}.`;
+    return { key, text: `${first.toUpperCase()}${list.slice(first.length)}.` };
   }
 
-  return localized(language, {
-    gr: `Ίδιες περίπου συνθήκες με τις άλλες — η διαφορά είναι η ίδια η παραλία: ${list}.`,
-    en: `Much the same conditions as the others — the difference is the beach itself: ${list}.`,
-    de: `Ähnliche Bedingungen wie die anderen — der Unterschied ist der Strand selbst: ${list}.`,
-    fr: `Des conditions proches des autres — la différence est la plage elle-même : ${list}.`,
-    it: `Condizioni simili alle altre — la differenza è la spiaggia stessa: ${list}.`,
-  });
+  return {
+    key,
+    text: localized(language, {
+      gr: `Ίδιες περίπου συνθήκες με τις άλλες — η διαφορά είναι η ίδια η παραλία: ${list}.`,
+      en: `Much the same conditions as the others — the difference is the beach itself: ${list}.`,
+      de: `Ähnliche Bedingungen wie die anderen — der Unterschied ist der Strand selbst: ${list}.`,
+      fr: `Des conditions proches des autres — la différence est la plage elle-même : ${list}.`,
+      it: `Condizioni simili alle altre — la differenza è la spiaggia stessa: ${list}.`,
+    }),
+  };
 };
+
+/**
+ * ΤΟ ΙΔΙΟ ΠΡΑΓΜΑ ΔΥΟ ΦΟΡΕΣ — Η ΓΡΑΜΜΗ ΠΟΥ ΤΟ ΠΑΡΑΔΕΧΕΤΑΙ ΑΝΤΙ ΝΑ ΤΟ ΕΠΑΝΑΛΑΜΒΑΝΕΙ.
+ *
+ * Reached when a pick's attribute set is identical to one already printed. Repeating the list is
+ * what the live Λήμνος panel did — «άμμος, ρηχά νερά, φυσική σκιά» twice, once framed and once
+ * bare — and it reads as a machine because it IS the same claim twice. This says the one thing the
+ * repetition was hiding: they are interchangeable, so pick on the thing we cannot know for you.
+ */
+const sameProfileClaim = (language: LanguageCode): string => localized(language, {
+  gr: 'Ίδιο προφίλ με την προηγούμενη — εδώ αποφασίζει η απόσταση.',
+  en: 'The same profile as the one above — here it comes down to how far you want to go.',
+  de: 'Dasselbe Profil wie oben — hier entscheidet die Entfernung.',
+  fr: 'Le même profil que la précédente — ici, c\'est la distance qui décide.',
+  it: 'Stesso profilo della precedente — qui decide la distanza.',
+});
 
 /**
  * ΤΟ ΕΡΩΤΗΜΑ ΠΟΥ ΔΕΝ ΑΠΑΝΤΟΥΣΑΜΕ: «ΓΙΑΤΙ ΑΥΤΕΣ ΚΑΙ ΟΧΙ ΟΙ ΑΛΛΕΣ 59;» (Μίλτος, 11/08/2026).
@@ -416,7 +461,7 @@ const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMo
  * Rarity is capped at a quarter of the pool: «μόνο 15 από τις 60» is not a reason to pick a beach.
  * And no two picks may claim the same attribute, or the rail goes back to reading like one voice.
  */
-type PoolAttributeKey = 'shade' | 'shallow' | 'sandy' | 'quiet' | 'easyAccess';
+type PoolAttributeKey = 'blueFlag' | 'shade' | 'shallow' | 'sandy' | 'quiet' | 'easyAccess';
 
 /**
  * Each attribute carries TWO finished clauses per language rather than a bare noun dropped into a
@@ -434,6 +479,26 @@ const POOL_ATTRIBUTES: {
   has: (facts: Facts) => boolean;
   phrases: AttributePhrases;
 }[] = [
+  /**
+   * ΤΟ ΣΗΜΑ ΠΟΥ ΗΤΑΝ ΠΑΝΩ ΣΤΗΝ ΚΑΡΤΑ ΚΑΙ ΔΕΝ ΤΟ ΕΛΕΓΕ ΚΑΝΕΙΣ (Μίλτος, 11/08/2026).
+   *
+   * On the Λήμνος podium the second and third cards carried a «Γαλάζια Σημαία» badge and the panel
+   * headed «Γιατί αυτές οι 3;» never mentioned it — while the first pick, which has no flag, led.
+   * The visitor is left to reconcile two claims the page makes about the same three beaches.
+   *
+   * It belongs here rather than in the sibling axes because it is an award, not a condition: it is
+   * interesting when FEW of today's suitable beaches hold one, which is exactly what the rarity
+   * ceiling measures. It is listed first only for readability — the order the visitor sees is
+   * decided by the count, rarest first.
+   */
+  {
+    key: 'blueFlag',
+    has: facts => facts.hasBlueFlag,
+    phrases: {
+      only: { gr: 'με Γαλάζια Σημαία', en: 'with a Blue Flag', de: 'mit Blauer Flagge', fr: 'avec un Pavillon Bleu', it: 'con Bandiera Blu' },
+      some: { gr: 'έχουν Γαλάζια Σημαία', en: 'have a Blue Flag', de: 'haben die Blaue Flagge', fr: 'ont un Pavillon Bleu', it: 'hanno la Bandiera Blu' },
+    },
+  },
   {
     key: 'shade',
     has: facts => facts.hasShade,
@@ -618,7 +683,11 @@ export const getTopPickDistinguishers = (
   }
 
   const usedClaims = new Set(Array.from(assigned.values()).map(entry => entry.claim));
+  /** The attribute SETS already printed — the dedup key that matters. See the note at the use. */
+  const usedProfileKeys = new Set<string>();
   let framedProfileUsed = false;
+  /** «Ίδιο προφίλ με την προηγούμενη» is itself a line, so it may be said once and no more. */
+  let sameProfileUsed = false;
   /**
    * The last-resort review line, allowed ONCE. On a calm day the review count is the true reason
    * all three are there, but three review sentences in a row is the robot voice this module was
@@ -648,12 +717,33 @@ export const getTopPickDistinguishers = (
     const mode: ProfileMode = facts.length === 1
       ? 'alone'
       : (framedProfileUsed ? 'bare' : 'framed');
-    framedProfileUsed = true;
     const profile = buildProfileClaim(self, language, mode);
-    // Two identical profile lines would reintroduce exactly the robot-voice problem this
-    // module exists to kill, so the second one falls back to its own explanation.
-    const claim = profile && !usedClaims.has(profile) ? profile : (self.context?.explanation || profile);
-    usedClaims.add(claim);
+
+    /**
+     * ΤΟ ΔΙΧΤΥ ΠΟΥ ΣΥΓΚΡΙΝΕ ΛΑΘΟΣ ΠΡΑΓΜΑ (Μίλτος, 11/08/2026).
+     *
+     * The old guard compared the finished STRING, so the two frames of the same content —
+     * «Ίδιες περίπου συνθήκες με τις άλλες… άμμος, ρηχά νερά, φυσική σκιά» (framed) and «Άμμος,
+     * ρηχά νερά, φυσική σκιά.» (bare) — were two different strings and both printed. That is the
+     * live Λήμνος panel: the same three words twice, and a third pick pushed onto the machine
+     * sentence because ITS bare line then collided with the second one.
+     *
+     * The set of attributes is what has to be unique, not the wording. On a collision the pick
+     * says the useful thing instead of the repeated one, and `framedProfileUsed` is only spent
+     * when a profile line is actually printed — otherwise the first real profile on the podium
+     * could arrive already stripped of its frame.
+     */
+    if (profile.key && usedProfileKeys.has(profile.key)) {
+      if (sameProfileUsed) return { beachId: self.beachId, axis: 'profile' as const, claim: '' };
+      sameProfileUsed = true;
+      return { beachId: self.beachId, axis: 'profile' as const, claim: sameProfileClaim(language) };
+    }
+    if (profile.key) {
+      usedProfileKeys.add(profile.key);
+      framedProfileUsed = true;
+    }
+    const claim = profile.text && !usedClaims.has(profile.text) ? profile.text : '';
+    if (claim) usedClaims.add(claim);
     return { beachId: self.beachId, axis: 'profile' as const, claim };
   });
 };
