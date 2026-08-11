@@ -2362,21 +2362,44 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // beach to the open sea and never to the other two picks. `getTopPickDistinguishers` answers
   // the comparative question instead, and stays silent (plain profile line) when nothing
   // genuinely separates a beach.
+  /**
+   * Every beach the podium was chosen from today — the three plus the «Υπόλοιπες κατάλληλες»
+   * list, which is exactly the pool after the doors have run. It is what makes the rarity claims
+   * possible («μόνο 4 από τις 62»), i.e. the answer to «γιατί αυτές και όχι οι άλλες».
+   */
+  const topPickPoolSize = topRecommendationBeachCards.length + (suitableBeachCards?.length ?? 0);
   const topPickDistinguishers = useMemo(
     () => getTopPickDistinguishers(
       topRecommendationBeachCards.map(({ beach, context }) => ({ beach, context })),
       language,
       selectedDate,
+      {
+        pool: [
+          ...topRecommendationBeachCards.map(({ beach, context }) => ({ beach, context })),
+          ...(suitableBeachCards ?? []).map(item => ({ beach: item.beach, context: item })),
+        ],
+        reviewsDecided: isCalmPodiumDay,
+      },
     ),
-    [topRecommendationBeachCards, language, selectedDate],
+    [topRecommendationBeachCards, suitableBeachCards, language, selectedDate, isCalmPodiumDay],
   );
-  const topPicksWhyTitle = getLocalizedCopy(language, {
-    en: 'Why these three?',
-    gr: 'Γιατί αυτές οι τρεις;',
-    de: 'Warum diese drei?',
-    fr: 'Pourquoi ces trois-là ?',
-    it: 'Perché queste tre?',
-  });
+  // The number does the work: it says we looked at sixty-two, not that we picked three at random.
+  // Falls back to the bare question when the pool IS the podium (tiny regions, heavy filtering).
+  const topPicksWhyTitle = topPickPoolSize > 3
+    ? getLocalizedCopy(language, {
+      en: `Why these 3 of ${topPickPoolSize}?`,
+      gr: `Γιατί αυτές οι 3 από τις ${topPickPoolSize};`,
+      de: `Warum diese 3 von ${topPickPoolSize}?`,
+      fr: `Pourquoi ces 3 sur ${topPickPoolSize} ?`,
+      it: `Perché queste 3 su ${topPickPoolSize}?`,
+    })
+    : getLocalizedCopy(language, {
+      en: 'Why these three?',
+      gr: 'Γιατί αυτές οι τρεις;',
+      de: 'Warum diese drei?',
+      fr: 'Pourquoi ces trois-là ?',
+      it: 'Perché queste tre?',
+    });
   // The list under the «Γιατί αυτές οι τρεις;» heading answers «ποια από τις τρεις», not «γιατί
   // αυτές και όχι οι άλλες 71» — that second question is what the bullets below answer. One lead
   // line joins them, so the heading is not left writing a cheque the list does not cash.
@@ -2393,13 +2416,38 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       fr: "Avec ce vent, ces trois-là sont les plus abritées qui passent encore les contrôles de vent et de mer. Voici ce qui les distingue :",
       it: 'Con questo vento, queste tre sono le più riparate che superano ancora i controlli su vento e mare. Ecco cosa le distingue:',
     })
-    : getLocalizedCopy(language, {
-      en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
-      gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
-      de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
-      fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
-      it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
-    });
+    /**
+     * ΤΟ ΚΕΝΟ ΠΟΥ ΒΡΗΚΕ Ο ΜΙΛΤΟΣ (11/08/2026): «γιατί αυτές οι 3 και όχι κάποιες από τις άλλες 17;»
+     *
+     * The old line said all three pass the checks — true, and it left the visitor thinking the
+     * other fifty-nine had failed them. They had not: they pass too. What the lead has to carry is
+     * the SIZE of the pool and WHY the tie was broken, because on a calm day it was measured that
+     * the weather separates nobody (Rhodes, 1-2 Bft: 80 of the 100 points identical for all 62) and
+     * the order comes from the review counts.
+     */
+    : isCalmPodiumDay && topPickPoolSize > 3
+      ? getLocalizedCopy(language, {
+        en: `With so little wind none of today's ${topPickPoolSize} suitable beaches stands out on the weather, so the best-known ones lead. Here is what each one has:`,
+        gr: `Με τόσο λίγο αέρα καμία από τις ${topPickPoolSize} κατάλληλες δεν ξεχωρίζει στον καιρό, οπότε προηγούνται οι πιο δοκιμασμένες. Να τι έχει η καθεμία:`,
+        de: `Bei so wenig Wind hebt sich keiner der heute ${topPickPoolSize} geeigneten Strände beim Wetter ab, also führen die bekanntesten. Das hat jeder:`,
+        fr: `Avec si peu de vent, aucune des ${topPickPoolSize} plages adaptées ne se démarque sur la météo : les plus éprouvées passent devant. Voici ce qu'a chacune :`,
+        it: `Con così poco vento nessuna delle ${topPickPoolSize} spiagge adatte spicca sul meteo, quindi guidano le più collaudate. Ecco cosa ha ciascuna:`,
+      })
+      : topPickPoolSize > 3
+        ? getLocalizedCopy(language, {
+          en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what separates them:`,
+          gr: `Διαλέχτηκαν ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:`,
+          de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das unterscheidet sie:`,
+          fr: `Choisies parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qui les distingue :`,
+          it: `Scelte tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa le distingue:`,
+        })
+        : getLocalizedCopy(language, {
+          en: 'All three clear today\'s wind and sea checks. Here is what separates them:',
+          gr: 'Και οι τρεις περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι τις ξεχωρίζει:',
+          de: 'Alle drei bestehen die heutigen Wind- und Seegangsprüfungen. Das unterscheidet sie:',
+          fr: "Toutes les trois passent les contrôles du jour (vent et mer). Voici ce qui les distingue :",
+          it: 'Tutte e tre superano i controlli di oggi su vento e mare. Ecco cosa le distingue:',
+        });
   const topPicksHowTitle = isShelterFirstPodium
     ? getLocalizedCopy(language, {
       en: 'How we pick the sheltered ones',
@@ -4769,6 +4817,31 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     {topPicksHowTitle}
                   </summary>
                   <div className="pt-2">
+                    {/* «ΓΙΑΤΙ ΑΥΤΕΣ ΚΑΙ ΟΧΙ ΟΙ ΑΛΛΕΣ» ΚΑΙ ΣΤΟ ΚΙΝΗΤΟ (11/08/2026).
+                        Until today these per-beach reasons lived only in the ≥1360px rail, i.e.
+                        the 14% of visits. The weights table beside them was already duplicated
+                        here for exactly that reason; the sentences that answer the visitor's
+                        actual question were not, which is the wrong half to leave on desktop. */}
+                    <h4 className="mb-1 text-xs font-extrabold text-slate-950">{topPicksWhyTitle}</h4>
+                    {!shelteredFallbackPodium && (
+                      <p className="mb-2 text-[11px] leading-snug text-slate-500">{topPicksWhyLead}</p>
+                    )}
+                    <ul className="mb-3 space-y-2">
+                      {topRecommendationBeachCards.map(({ beach }, index) => {
+                        const claim = topPickDistinguishers.find(entry => entry.beachId === beach.id)?.claim;
+                        if (!claim) return null;
+                        return (
+                          <li key={beach.id} className="flex gap-2 text-[11px] leading-snug text-slate-700">
+                            <span className="font-extrabold text-[#007a83]">{index + 1}.</span>
+                            <span>
+                              <strong className="font-bold text-slate-900">{displayBeachName(beach.name, language)}</strong>
+                              {' — '}
+                              {claim}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
                     <TopPickLadderPanel language={language} isCalmDay={isCalmPodiumDay} />
                     <a
                       href={topPicksMethodologyPath}

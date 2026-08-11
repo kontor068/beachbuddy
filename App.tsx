@@ -387,12 +387,15 @@ const NEAR_ME_MAX_CANDIDATE_REGIONS = 14;
 // landmass guard in buildNearbyRegion is what stops sea crossings (you never see
 // another island's beaches); this radius then keeps the *same-landmass* result
 // local. Kept deliberately tight: these are STRAIGHT-LINE km, and on Greek roads
-// 30 km of them is already a 40-50 km / ~45-minute drive — the outer edge of what
-// anyone would call "near me". (Was 40 km, i.e. over an hour of driving.)
-const NEAR_ME_BEACH_RADIUS_KM = 30;
+// 20 km of them is already a 30-40 km / ~35-minute drive — the outer edge of what
+// anyone would call "near me". In a dense metro area (Athens, Thessaloniki) this
+// alone easily clears NEAR_ME_MIN_BEACHES, so the fallback below never fires there
+// and users never see a beach from across the whole conurbation. (Was 40 km, then
+// 30 km, i.e. over an hour of driving.)
+const NEAR_ME_BEACH_RADIUS_KM = 20;
 // Sparse coastline (Epirus, inner Peloponnese, small islands): widen once rather
 // than jump straight to "nearest on this landmass, whatever the distance".
-const NEAR_ME_BEACH_RADIUS_FALLBACK_KM = 60;
+const NEAR_ME_BEACH_RADIUS_FALLBACK_KM = 40;
 const NEAR_ME_MAX_BEACHES = 60;
 // If almost nothing falls inside the radius (sparse coastline), still surface at
 // least this many nearest beaches so the view is never empty.

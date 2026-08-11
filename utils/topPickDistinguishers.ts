@@ -38,6 +38,10 @@ export type TopPickAxis =
   | 'quietest'
   | 'easiestAccess'
   | 'shade'
+  /** Rare against the WHOLE candidate pool, with the count said out loud — «μόνο 4 από τις 62». */
+  | 'rarity'
+  /** The pool's most-reviewed beach — the tie-break that actually put it first on a calm day. */
+  | 'mostReviewed'
   | 'profile';
 
 export interface TopPickCandidate {
@@ -69,6 +73,8 @@ type Facts = {
   hasShade: boolean;
   facilityCount: number;
   facilityLabels: string[];
+  /** Google review count, 0 when we hold none — the calm-day tie-break, spoken out loud. */
+  reviewCount: number;
 };
 
 const filterWord = (language: LanguageCode, key: string): string => {
@@ -160,6 +166,10 @@ const collectFacts = (candidate: TopPickCandidate, language: LanguageCode, selec
     hasShade: beach.amenities?.naturalShade === true,
     facilityCount: facilityChips.length,
     facilityLabels: facilityChips.slice(0, 2).map(chip => chip.label),
+    reviewCount: (() => {
+      const reviews = (beach.popularity ?? metadata?.popularity)?.ratingCount;
+      return typeof reviews === 'number' && Number.isFinite(reviews) && reviews > 0 ? reviews : 0;
+    })(),
   };
 };
 
@@ -381,16 +391,202 @@ const buildProfileClaim = (facts: Facts, language: LanguageCode, mode: ProfileMo
   });
 };
 
+/**
+ * ΤΟ ΕΡΩΤΗΜΑ ΠΟΥ ΔΕΝ ΑΠΑΝΤΟΥΣΑΜΕ: «ΓΙΑΤΙ ΑΥΤΕΣ ΚΑΙ ΟΧΙ ΟΙ ΑΛΛΕΣ 59;» (Μίλτος, 11/08/2026).
+ *
+ * Everything above compares the three picks with EACH OTHER, which answers «ποια από τις τρεις».
+ * Miltos asked the other question and he was right that the page never answered it: on Rhodes the
+ * rail said «άμμος + βότσαλα, ρηχά νερά, ξαπλώστρες» while 31 of the other 59 beaches had exactly
+ * the same chips.
+ *
+ * Widening the axes above to the whole pool does NOT work, and the reason is worth writing down:
+ * they are built on exclusivity («the only sandy one»), and out of sixty candidates nothing is ever
+ * the only anything. So the pool needs its own question — not "is it unique" but "how rare is it",
+ * with the count said out loud, because the count is the part that answers Miltos.
+ *
+ * Rarity is capped at a quarter of the pool: «μόνο 15 από τις 60» is not a reason to pick a beach.
+ * And no two picks may claim the same attribute, or the rail goes back to reading like one voice.
+ */
+type PoolAttributeKey = 'shade' | 'shallow' | 'sandy' | 'quiet' | 'easyAccess';
+
+/**
+ * Each attribute carries TWO finished clauses per language rather than a bare noun dropped into a
+ * generic frame — because the first version did exactly that and produced «μόνο 4 έχουν αμμώδης»
+ * and «η μόνη με ήσυχη». The filter vocabulary is adjectives labelling chips; a sentence needs
+ * either a verb that agrees or a noun in the right case, and no single frame gives you both.
+ *
+ *   only — completes «Η μόνη από τις 62 κατάλληλες σήμερα ___.»
+ *   some — completes «Από τις 62 κατάλληλες σήμερα, μόνο 4 ___ — αυτή είναι μία.»
+ */
+type AttributePhrases = { only: Record<LanguageCode, string>; some: Record<LanguageCode, string> };
+
+const POOL_ATTRIBUTES: {
+  key: PoolAttributeKey;
+  has: (facts: Facts) => boolean;
+  phrases: AttributePhrases;
+}[] = [
+  {
+    key: 'shade',
+    has: facts => facts.hasShade,
+    phrases: {
+      only: { gr: 'με φυσική σκιά', en: 'with natural shade', de: 'mit natürlichem Schatten', fr: "avec de l'ombre naturelle", it: 'con ombra naturale' },
+      some: { gr: 'έχουν φυσική σκιά', en: 'have natural shade', de: 'haben natürlichen Schatten', fr: "ont de l'ombre naturelle", it: 'hanno ombra naturale' },
+    },
+  },
+  {
+    key: 'shallow',
+    has: facts => facts.isShallow,
+    phrases: {
+      only: { gr: 'με ρηχά νερά', en: 'with shallow water', de: 'mit flachem Wasser', fr: "avec de l'eau peu profonde", it: 'con acqua bassa' },
+      some: { gr: 'έχουν ρηχά νερά', en: 'have shallow water', de: 'haben flaches Wasser', fr: "ont de l'eau peu profonde", it: 'hanno acqua bassa' },
+    },
+  },
+  {
+    key: 'quiet',
+    has: facts => facts.isQuiet,
+    phrases: {
+      only: { gr: 'που είναι ήσυχη', en: 'that is quiet', de: 'der ruhig ist', fr: 'qui soit tranquille', it: 'che sia tranquilla' },
+      some: { gr: 'είναι ήσυχες', en: 'are quiet', de: 'sind ruhig', fr: 'sont tranquilles', it: 'sono tranquille' },
+    },
+  },
+  {
+    key: 'sandy',
+    has: facts => facts.isSandy,
+    phrases: {
+      only: { gr: 'με άμμο', en: 'with sand', de: 'mit Sand', fr: 'avec du sable', it: 'con sabbia' },
+      some: { gr: 'έχουν άμμο', en: 'have sand', de: 'haben Sand', fr: 'ont du sable', it: 'hanno sabbia' },
+    },
+  },
+  {
+    key: 'easyAccess',
+    has: facts => facts.isEasyAccess,
+    phrases: {
+      only: { gr: 'με εύκολη πρόσβαση', en: 'with easy access', de: 'mit leichtem Zugang', fr: 'avec un accès facile', it: 'con accesso facile' },
+      some: { gr: 'έχουν εύκολη πρόσβαση', en: 'have easy access', de: 'haben leichten Zugang', fr: 'ont un accès facile', it: 'hanno accesso facile' },
+    },
+  },
+];
+
+const rareAttributeClaim = (
+  language: LanguageCode,
+  phrases: AttributePhrases,
+  count: number,
+  poolSize: number,
+): string => (count === 1
+  ? localized(language, {
+    gr: `Η μόνη από τις ${poolSize} κατάλληλες σήμερα ${localized(language, phrases.only)}.`,
+    en: `The only one of today's ${poolSize} suitable beaches ${localized(language, phrases.only)}.`,
+    de: `Als einziger der heute ${poolSize} geeigneten Strände ${localized(language, phrases.only)}.`,
+    fr: `La seule des ${poolSize} plages adaptées aujourd'hui ${localized(language, phrases.only)}.`,
+    it: `L'unica delle ${poolSize} spiagge adatte oggi ${localized(language, phrases.only)}.`,
+  })
+  : localized(language, {
+    gr: `Από τις ${poolSize} κατάλληλες σήμερα, μόνο ${count} ${localized(language, phrases.some)} — αυτή είναι μία.`,
+    en: `Of today's ${poolSize} suitable beaches only ${count} ${localized(language, phrases.some)} — this is one.`,
+    de: `Von den heute ${poolSize} geeigneten Stränden ${localized(language, phrases.some)} nur ${count} — dies ist einer.`,
+    fr: `Sur les ${poolSize} plages adaptées aujourd'hui, seules ${count} ${localized(language, phrases.some)} — celle-ci en fait partie.`,
+    it: `Delle ${poolSize} spiagge adatte oggi solo ${count} ${localized(language, phrases.some)} — questa è una.`,
+  }));
+
+/**
+ * ΓΙΑΤΙ ΑΥΤΗ ΠΡΩΤΗ ΟΤΑΝ ΟΛΕΣ ΕΙΝΑΙ ΙΔΙΕΣ — the honest answer, and since 11/08 also the true one.
+ *
+ * On a calm day the weather separates nobody, and the order comes from the Google review count
+ * (services/topPickRanking, tie-break). Saying so out loud is the only line on this rail that
+ * answers «γιατί αυτή και όχι μια από τις άλλες 59» with the actual mechanism instead of a feature.
+ */
+const mostReviewedClaim = (language: LanguageCode, reviews: number, poolSize: number): string => {
+  const n = reviews.toLocaleString(language === 'gr' ? 'el-GR' : language);
+  return localized(language, {
+    gr: `Η πιο δοκιμασμένη από τις ${poolSize} — ${n} κριτικές στο Google.`,
+    en: `The most tried and tested of the ${poolSize} — ${n} Google reviews.`,
+    de: `Die meisterprobte der ${poolSize} — ${n} Google-Bewertungen.`,
+    fr: `La plus éprouvée des ${poolSize} — ${n} avis Google.`,
+    it: `La più collaudata delle ${poolSize} — ${n} recensioni Google.`,
+  });
+};
+
+export interface TopPickDistinguisherOptions {
+  /** Every beach today's podium was chosen from, the three included. Enables the rarity claims. */
+  pool?: TopPickCandidate[];
+  /**
+   * True only when the weather genuinely separated nobody and the Google review count broke the
+   * tie (services/topPickRanking) — i.e. below the wind at which shelter starts to mean anything.
+   *
+   * Gating the review sentences on this is not decoration. On a 3 Bft day in Naxos the picks are
+   * the leeward shores and the wind is the reason they are there; printing «από τις πιο ψηφισμένες»
+   * beside one of them would credit the decision to popularity, which on that day did not decide
+   * anything. A true sentence in the wrong place is still a lie about how we work.
+   */
+  reviewsDecided?: boolean;
+}
+
 export const getTopPickDistinguishers = (
   candidates: TopPickCandidate[],
   language: LanguageCode,
   selectedDate?: Date,
+  { pool, reviewsDecided = false }: TopPickDistinguisherOptions = {},
 ): TopPickDistinguisher[] => {
   if (candidates.length === 0) return [];
 
   const facts = candidates.map(candidate => collectFacts(candidate, language, selectedDate));
   const group = groupPhrase(language, facts.length);
   const assigned = new Map<number, TopPickDistinguisher>();
+
+  // POOL RARITY FIRST — it answers the visitor's actual question, so it outranks the sibling axes.
+  const poolFacts = pool && pool.length > facts.length
+    ? pool.map(candidate => collectFacts(candidate, language, selectedDate))
+    : [];
+  /** The next few review counts under the pool leader — the last-resort claim, used at most once. */
+  let poolRunnerUpReviews: number[] = [];
+  let poolSizeForFallback = 0;
+  if (poolFacts.length > 0) {
+    const poolSize = poolFacts.length;
+    const rarityCeiling = Math.max(1, Math.round(poolSize / 4));
+
+    // The pool's most-reviewed beach, and only if one of the three IS it — otherwise the sentence
+    // would be true of a beach that is not on screen.
+    const poolTopReviews = reviewsDecided ? Math.max(...poolFacts.map(other => other.reviewCount)) : 0;
+    if (poolTopReviews > 0) {
+      const leader = facts.find(self => self.reviewCount === poolTopReviews);
+      if (leader) {
+        assigned.set(leader.beachId, {
+          beachId: leader.beachId,
+          axis: 'mostReviewed',
+          claim: mostReviewedClaim(language, poolTopReviews, poolSize),
+        });
+      }
+    }
+
+    const counts = new Map<PoolAttributeKey, number>(
+      POOL_ATTRIBUTES.map(attribute => [attribute.key, poolFacts.filter(attribute.has).length]),
+    );
+    const usedAttributes = new Set<PoolAttributeKey>();
+    poolRunnerUpReviews = poolFacts
+      .map(other => other.reviewCount)
+      .filter(count => count > 0 && count < poolTopReviews)
+      .sort((a, b) => b - a)
+      .slice(0, 4);
+    poolSizeForFallback = poolSize;
+
+    // Rarest first ACROSS the three, so the scarcest fact on the screen is never spent on the
+    // beach that happened to be listed first.
+    const options = facts.flatMap(self => POOL_ATTRIBUTES
+      .filter(attribute => attribute.has(self))
+      .map(attribute => ({ self, attribute, count: counts.get(attribute.key) ?? 0 }))
+      .filter(option => option.count > 0 && option.count <= rarityCeiling && option.count < poolSize));
+    options.sort((a, b) => a.count - b.count);
+
+    for (const option of options) {
+      if (assigned.has(option.self.beachId) || usedAttributes.has(option.attribute.key)) continue;
+      usedAttributes.add(option.attribute.key);
+      assigned.set(option.self.beachId, {
+        beachId: option.self.beachId,
+        axis: 'rarity',
+        claim: rareAttributeClaim(language, option.attribute.phrases, option.count, poolSize),
+      });
+    }
+  }
 
   // A single pick has nothing to be compared against, so every comparative axis is skipped and
   // it drops straight to its profile line.
@@ -414,10 +610,31 @@ export const getTopPickDistinguishers = (
 
   const usedClaims = new Set(Array.from(assigned.values()).map(entry => entry.claim));
   let framedProfileUsed = false;
+  /**
+   * The last-resort review line, allowed ONCE. On a calm day the review count is the true reason
+   * all three are there, but three review sentences in a row is the robot voice this module was
+   * written to kill — so the leader gets «η πιο δοκιμασμένη», one runner-up gets «από τις πιο
+   * ψηφισμένες», and anyone else falls back to describing itself.
+   */
+  let runnerUpReviewUsed = false;
 
   return facts.map(self => {
     const won = assigned.get(self.beachId);
     if (won) return won;
+
+    if (!runnerUpReviewUsed && poolRunnerUpReviews.includes(self.reviewCount)) {
+      runnerUpReviewUsed = true;
+      const n = self.reviewCount.toLocaleString(language === 'gr' ? 'el-GR' : language);
+      const claim = localized(language, {
+        gr: `Από τις πιο ψηφισμένες των ${poolSizeForFallback} — ${n} κριτικές στο Google.`,
+        en: `Among the most reviewed of the ${poolSizeForFallback} — ${n} Google reviews.`,
+        de: `Unter den meistbewerteten der ${poolSizeForFallback} — ${n} Google-Bewertungen.`,
+        fr: `Parmi les plus commentées des ${poolSizeForFallback} — ${n} avis Google.`,
+        it: `Tra le più recensite delle ${poolSizeForFallback} — ${n} recensioni Google.`,
+      });
+      usedClaims.add(claim);
+      return { beachId: self.beachId, axis: 'mostReviewed' as const, claim };
+    }
 
     const mode: ProfileMode = facts.length === 1
       ? 'alone'
