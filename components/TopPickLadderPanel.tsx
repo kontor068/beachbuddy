@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LanguageCode } from '../types';
-import { LADDER_COLOUR_FIRST, LADDER_DOORS, topPickCriteriaRows } from '../utils/topPickLadder';
+import { LADDER_CALM_DAY, LADDER_COLOUR_FIRST, LADDER_DOORS, topPickCriteriaRows } from '../utils/topPickLadder';
 
 /**
  * ΤΟ ΚΟΥΤΙ «ΤΙ ΚΟΙΤΑΜΕ» (Μίλτος, 10/08/2026).
@@ -18,11 +18,18 @@ import { LADDER_COLOUR_FIRST, LADDER_DOORS, topPickCriteriaRows } from '../utils
  */
 export const TopPickLadderPanel: React.FC<{
   language: LanguageCode;
+  /**
+   * True below the wind that makes shelter mean anything (3 Bft). The two heaviest rows score full
+   * marks for every beach there, so the box says so rather than letting the reader believe a
+   * criterion decided something it did not — see LADDER_CALM_DAY.
+   */
+  isCalmDay?: boolean;
   className?: string;
-}> = ({ language, className }) => {
+}> = ({ language, isCalmDay = false, className }) => {
   const rows = topPickCriteriaRows(language);
   const doors = LADDER_DOORS[language] ?? LADDER_DOORS.gr;
   const colourFirst = LADDER_COLOUR_FIRST[language] ?? LADDER_COLOUR_FIRST.gr;
+  const calmDay = LADDER_CALM_DAY[language] ?? LADDER_CALM_DAY.gr;
 
   return (
     <div className={className}>
@@ -47,6 +54,7 @@ export const TopPickLadderPanel: React.FC<{
           );
         })}
       </ol>
+      {isCalmDay && <p className="mt-2 text-[10px] leading-snug text-slate-500">{calmDay}</p>}
       <p className="mt-2 text-[10px] leading-snug text-slate-500">{colourFirst}</p>
     </div>
   );

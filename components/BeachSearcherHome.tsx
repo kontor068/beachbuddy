@@ -2290,6 +2290,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    * whenever there is a podium to explain.
    */
   const showTopPickCriteria = topRecommendationBeachCards.length > 1;
+  // Below the wind that makes shelter mean anything, the two heaviest rows of the weights box are
+  // full marks for everybody — the box has to say which rows actually decided (LADDER_CALM_DAY).
+  const isCalmPodiumDay = typeof currentBeaufort === 'number' && currentBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT;
   const hasTopRecommendationView = selectedIsland !== null && topRecommendationBeachCards.length > 0;
   const topRecommendationsLabel = getTopRecommendationsLabel(language, topRecommendationBeachCards.length, currentBeaufort);
   const topRecommendationsQuestion = getTopRecommendationsQuestion(language, selectedDate, suitableTimePrefix, suitableTimeIsNow);
@@ -4739,7 +4742,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   <div className="border-t border-sky-100 pt-3">
                     <h3 className="mb-2 text-sm font-extrabold text-slate-950">{topPicksHowTitle}</h3>
                     {showTopPickCriteria ? (
-                      <TopPickLadderPanel language={language} className="mb-2" />
+                      <TopPickLadderPanel language={language} isCalmDay={isCalmPodiumDay} className="mb-2" />
                     ) : (
                       <ul className="mb-2 list-disc space-y-1 pl-4 text-xs leading-snug text-slate-700">
                         {topPicksHowBullets.map(bullet => (
@@ -4766,7 +4769,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     {topPicksHowTitle}
                   </summary>
                   <div className="pt-2">
-                    <TopPickLadderPanel language={language} />
+                    <TopPickLadderPanel language={language} isCalmDay={isCalmPodiumDay} />
                     <a
                       href={topPicksMethodologyPath}
                       className="mt-2 inline-block text-[11px] font-bold text-[#007a83] underline decoration-sky-300 underline-offset-2"

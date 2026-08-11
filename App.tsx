@@ -6992,10 +6992,30 @@ export const App: React.FC = () => {
   })();
   const directoryTopRecommendationCandidateCount = directoryPrimaryTopRecommendationCount + podiumTopUpPool.length;
   const directoryTopRecommendationLimit = getTopRecommendationDisplayLimit(directoryTopRecommendationCandidateCount);
+  /**
+   * ΤΟ PODIUM ΒΓΑΙΝΕΙ ΚΑΙ ΣΤΙΣ ΗΡΕΜΕΣ ΜΕΡΕΣ (Μίλτος, 11/08/2026).
+   *
+   * Until today this carried `&& !isCalmAllSuitable`, so at 2 Bft or less — the commonest summer
+   * morning, and two of the four regions checked in a browser on 10/08 — the whole Top 3 vanished
+   * and the page answered «όλες οι παραλίες είναι κατάλληλες, διάλεξε με βάση την άμμο ή τη σκιά».
+   * That is the one question the site exists to answer, refused on the nicest days of the year.
+   *
+   * The reasoning behind the old gate was sound and is kept where it belongs: with no wind, SHELTER
+   * is not a virtue, so the podium must not be sold as «πιο προστατευμένες». It never is — the
+   * heading is «Top 3 επιλογές / Πού να πάμε;» in every weather, and the ranking already handles
+   * the calm regime on its own: below 3 Bft nothing is filtered out, shelter scores full marks for
+   * everyone and the order falls to the water at the shore, the facilities and the road. So there
+   * is a real answer to give; we were just declining to give it.
+   *
+   * Two things wake up with it, both written for exactly this day and unreachable until now:
+   * `shouldShowAllBeachesBelowTopRecommendations` (calm day ⇒ the whole region below the three,
+   * not a "suitable" subset that would be everything anyway) and the daily rotation of #2/#3 in
+   * utils/topPickVariety, whose ROTATION_MAX_BEAUFORT is 2 — it could only ever have fired on the
+   * days the podium was hidden.
+   */
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
     !hasActiveSearchOrFilters &&
-    !isCalmAllSuitable &&
     // A colour picked on the legend must leave ONE list under ONE heading («Δύσκολες παραλίες
     // στις 17:00»). The podium is a cross-colour ranking with its own «Top 3» heading, so with a
     // filter on it would put a second, contradicting title above the same beaches. Standing it
@@ -7165,10 +7185,22 @@ export const App: React.FC = () => {
   // Silent by default: it speaks only when the day genuinely gets WORSE (utils/stayWindow's
   // findWorseningTurnFromReadings), never to volunteer that things improve.
   const directoryDayTurnNote = buildDayTurnNote(directoryTopRecommendationCards[0]);
-  const shouldShowAllBeachesBelowTopRecommendations = Boolean(
-    shouldShowDirectoryTopRecommendations &&
-    currentBeaufort <= 2
-  );
+  /**
+   * ΚΑΤΑΡΓΗΘΗΚΕ 11/08/2026 — ΤΟ «ΥΠΟΛΟΙΠΕΣ» ΠΡΕΠΕΙ ΝΑ ΣΗΜΑΙΝΕΙ ΥΠΟΛΟΙΠΕΣ, ΚΑΘΕ ΜΕΡΑ.
+   *
+   * This existed for a world where the podium was hidden below 3 Bft, and it said: on a calm day
+   * put the WHOLE region under the three rather than a "suitable" subset that would be everything
+   * anyway. The moment the podium was opened on calm days it became a defect, and a browser caught
+   * it within the hour: Πρέβεζα at 2 Bft printed «Ιδανική 26» on the legend, «Υπόλοιπες κατάλληλες
+   * (26)» on the tab, and three cards above them — so 3 + 26 = 29 beaches in a region the legend
+   * said had 26, with the top three counted twice and called "the rest". Κέρκυρα at 1 Bft: 3 + 105
+   * against 105. Χανιά at 3 Bft, on the ordinary path, was correct: 3 + 71 = 74 = 64 + 10.
+   *
+   * The rule Miltos verified on 10/08 across four regions — podium + list = the two best colours on
+   * the legend — is worth more than the extra browsing convenience, and costs the visitor nothing:
+   * the three are one scroll above. So the list is now always the rest, in every wind.
+   */
+  const shouldShowAllBeachesBelowTopRecommendations = false;
   const directorySuitableBeachCards = (() => {
     if (!shouldShowDirectoryTopRecommendations || shouldShowAllBeachesBelowTopRecommendations) {
       return directoryVisibleBeachCardSource;
@@ -8147,10 +8179,33 @@ export const App: React.FC = () => {
             )}
 
             {headerTopBeach && (
-              <button
-                type="button"
+              /**
+               * A DIV THAT BEHAVES LIKE A BUTTON, BECAUSE IT CONTAINS ONE.
+               *
+               * This was a <button> wrapping the whole answer card, and the navigation pin on the
+               * photo is a <button> too — so the browser was being handed a button inside a button.
+               * React logs it as a hydration error and the nesting is invalid HTML: the inner
+               * control is the one browsers may drop, which is the one that opens Google Maps.
+               *
+               * Found 11/08/2026 in a real browser on Κέρκυρα while opening the podium on calm
+               * days. Not caused by that change — it needs a headerTopBeach WITH a photo AND
+               * navigation, which is why the same check on Αν. Αττική reported zero.
+               *
+               * role/tabIndex/onKeyDown reproduce what the <button> gave for free (keyboard focus,
+               * Enter and Space), and the inner button keeps its stopPropagation, so tapping the
+               * pin still opens navigation rather than the beach page.
+               */
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => openBeachDetails(headerTopBeach.beach, 'top_recommendation_panel')}
-                className="block w-full border-t border-white/55 px-2 py-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:px-4 sm:py-4"
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return;
+                  if (event.target !== event.currentTarget) return;
+                  event.preventDefault();
+                  openBeachDetails(headerTopBeach.beach, 'top_recommendation_panel');
+                }}
+                className="block w-full cursor-pointer border-t border-white/55 px-2 py-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:px-4 sm:py-4"
               >
                 <div className="space-y-3 text-center">
                   {headerTopBeachPhoto ? (
@@ -8279,7 +8334,7 @@ export const App: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </button>
+              </div>
             )}
 
               </div>

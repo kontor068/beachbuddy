@@ -102,6 +102,25 @@ export const LADDER_COLOUR_FIRST: Record<LanguageCode, string> = {
   it: 'Il colore della mappa viene prima: una spiaggia blu non perde mai contro una gialla.',
 };
 
+/**
+ * Η ΓΡΑΜΜΗ ΤΗΣ ΗΡΕΜΗΣ ΜΕΡΑΣ (11/08/2026, μαζί με το άνοιγμα του podium στα ≤2 Μποφ).
+ *
+ * The box lists shelter and own-shore wind as the two heaviest rows — 55 of the 100 — and on a day
+ * with no wind neither of them separates a single beach: the ranking gives every beach full marks
+ * on both. Printing the table unqualified there would be the same half-truth the doors line was
+ * added to fix, only worse, because the reader can see for himself that it is not windy.
+ *
+ * So on calm days the box says which rows are actually deciding. It does not hide the others —
+ * they are still the site's priorities, they simply have nothing to do today.
+ */
+export const LADDER_CALM_DAY: Record<LanguageCode, string> = {
+  gr: 'Σήμερα δεν φυσάει, οπότε τα δύο πρώτα δεν χωρίζουν καμία παραλία: αποφασίζουν το νερό στην ακτή, οι παροχές και ο δρόμος.',
+  en: 'There is no wind today, so the top two separate nobody: the water at the shore, the facilities and the road decide.',
+  de: 'Heute weht kein Wind, also trennen die ersten beiden niemanden: Wasser am Ufer, Ausstattung und Zufahrt entscheiden.',
+  fr: "Il n'y a pas de vent aujourd'hui : les deux premiers ne départagent personne, ce sont l'eau au rivage, les services et l'accès qui décident.",
+  it: 'Oggi non c\'è vento, quindi i primi due non separano nessuna: decidono l\'acqua a riva, i servizi e la strada.',
+};
+
 export const LADDER_HEADING: Record<LanguageCode, string> = {
   gr: 'Τι κοιτάμε, με σειρά προτεραιότητας',
   en: 'What we look at, in order of weight',
