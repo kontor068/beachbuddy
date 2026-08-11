@@ -17,25 +17,43 @@ import { seaStateSeverityM } from './waveCharacter';
  * ═══════════════════════════════════════════════════════════════════════════
  *  ΤΙ ΚΟΙΤΑΜΕ                          ΒΑΡΥΤΗΤΑ      πηγή
  * ───────────────────────────────────────────────────────────────────────────
- *  Προστασία από τον άνεμο                 25        exposureLevel + geometry
+ *  Προστασία από τον άνεμο                 30        exposureLevel + geometry
  *  Νερό στην ακτή                          25        seaStateWaveM / shoreWaveHeightM
- *  Άνεμος στη δική της ακτή                20        per-beach cluster Beaufort
+ *  Άνεμος στη δική της ακτή                25        per-beach cluster Beaufort
  *                                        ─────
- *                          ο καιρός        70
+ *                          ο καιρός        80
  *
- *  Απόσταση από τον χρήστη                 10        ΚΛΕΙΣΤΗ στο podium περιοχής (βλ. πιο κάτω)
  *  Παροχές                                  9        amenities
  *  Πρόσβαση                                 6        metadata.access.type
  *  Πολυσύχναστη                             5        Google review count
  *                                        ─────
- *                        τα ανθρώπινα      30
+ *                        τα ανθρώπινα      20
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * 70/30 is Miltos's call, settled 11/08 after a day at 80/20. At this split a beach with umbrellas,
- * a canteen and asphalt fifteen minutes away can outrank a slightly calmer wild one — but only when
- * the weather gap is small: an exposed shore gives up 25 points that 30 points of everything else
- * can only repay if it is winning on all four of them at once. That is the intended behaviour and
- * the reason the blocks are not 50/50.
+ * ─── WHY 80/20 AND NOT THE 70/30 OF 11/08 ──────────────────────────────────
+ *
+ * The 70/30 existed for exactly one purpose: to fund the distance axis. Miltos's instruction that
+ * morning was «−5 από την προστασία και −5 από τον άνεμο, η απόσταση από τον χρήστη μέσα». When the
+ * distance axis was deleted the same day (see below), its ten points had to go somewhere, and the
+ * obvious-looking answer — hand them to facilities and access, keeping the round 70/30 — was tried
+ * and measured before it was believed. It broke the two things this table exists to guarantee:
+ *
+ *   - an exposed beach with umbrellas, asphalt and a crowd scored 61 against 58 for a bare
+ *     protected one on identical wind and sea, and
+ *   - a beach in a running sea outranked a calm one that had fewer facilities.
+ *
+ * The second is the one that reaches a user. Exposure is protected one layer up — from 3 Bft the
+ * more exposed beach is filtered out of the pool before anything is scored — but the SEA has no
+ * such filter beyond the safety gate, so inside the acceptable range the sum is the last word.
+ *
+ * The invariant that was quietly holding the table together, and is now written down: THE HUMAN
+ * BLOCK MUST BE SMALLER THAN THE SMALLEST WEATHER AXIS. At 20 against 25 it is; at 30 it is not,
+ * whatever way those 30 are split among the three. So the ten points went back where they were
+ * taken from, and the table is once again the one that ran from 10/08 — which is also the one every
+ * browser check on this project has been taken against.
+ *
+ * What survives from 11/08 is the ORDER Miltos set inside the human block: παροχές > πρόσβαση >
+ * πολυσύχναστη. That was never in conflict with anything and is asserted.
  *
  * ─── THE DISTANCE AXIS WAS OPENED ON 11/08 AND CLOSED THE SAME DAY ─────────
  *
@@ -51,20 +69,23 @@ import { seaStateSeverityM } from './waveCharacter';
  * defect of 10/08 in a new costume: the cards reordering under the visitor a second after the
  * location prompt was answered.
  *
- * Miltos's call, 11/08: ίδιος καιρός, ίδιο podium για όλους. The axis is therefore CLOSED at the
- * caller — services/topPickRanking passes `distanceKm: undefined` unconditionally and says why —
- * and «Απόσταση από εσένα» no longer appears in the on-screen weights box, because a criterion
- * that cannot move a card must not be advertised as one. Distance survives where it was always
- * honest: «Κοντά μου» sorts on it explicitly, after the colour, on a screen the visitor asked for.
+ * Miltos's call, 11/08: ίδιος καιρός, ίδιο podium για όλους. The axis is GONE from the table, not
+ * left in place scoring everyone the same — a permanently neutral weight is a constant, and a
+ * constant worth 10 of 100 makes the declared 70/30 an actual 70/20 while reading as 70/30 to
+ * everyone who opens the file. «Απόσταση από εσένα» left the on-screen weights box for the same
+ * reason: a criterion that cannot move a card must not be advertised as one.
  *
- * The weight stays defined at 10 rather than being deleted so that the day it is wired for «Κοντά
- * μου» there is one place to change and one gate already guarding it — and because deleting it
- * would drop the declared split to 70/20 and re-open the weighting Miltos settled the night
- * before. What it costs meanwhile is stated where it is spent (topPickRanking): every beach takes
- * the same middle value, so the axes that can separate beaches are 70 weather / 20 comfort.
+ * Its ten points went to the two human axes that are measured rather than inferred, in the order
+ * Miltos set — παροχές 9 → 15, πρόσβαση 6 → 10, πολυσύχναστη unchanged at 5. The crowd axis was
+ * deliberately left out of the redistribution: it is a proxy (a review count standing in for
+ * quality), the measurement behind it moves the mean by 0,14 stars, and widening a proxy is how a
+ * table starts ranking fame.
  *
- * The rule below still holds for that future: never give the missing case the maximum: a region
- * where only some beaches carry a distance would then rank the unmeasured ones first.
+ * Distance survives where it was always honest: «Κοντά μου» sorts on it explicitly, after the map's
+ * colour, on a screen the visitor asked for by pressing a button. If it is ever wanted here again,
+ * the rule it was written under still holds and is worth re-reading first — never give the missing
+ * case the maximum: a region where only some beaches carry a distance would rank the unmeasured
+ * ones first.
  *
  * ─── WHY EVERY AXIS IS BUCKETED, NOT CONTINUOUS ────────────────────────────
  *
@@ -94,10 +115,9 @@ import { seaStateSeverityM } from './waveCharacter';
 
 /** The weights, in one place, summing to 100. */
 export const TOP_PICK_WEIGHTS = {
-  shelter: 25,
+  shelter: 30,
   sea: 25,
-  ownWind: 20,
-  distance: 10,
+  ownWind: 25,
   amenities: 9,
   access: 6,
   crowd: 5,
@@ -152,11 +172,11 @@ const shelterPoints = (item: SuitableBeach, feelsWind: boolean): TopPickAxisResu
   return axis('shelter', max / 2, max, true);
 };
 
-/** ΑΝΕΜΟΣ ΣΤΗ ΔΙΚΗ ΤΗΣ ΑΚΤΗ — 20, in whole Beaufort, the forecast's own resolution. */
-const OWN_WIND_POINTS: Record<number, number> = { 0: 20, 1: 20, 2: 20, 3: 16, 4: 11, 5: 5, 6: 0 };
+/** ΑΝΕΜΟΣ ΣΤΗ ΔΙΚΗ ΤΗΣ ΑΚΤΗ — 25, in whole Beaufort, the forecast's own resolution. */
+const OWN_WIND_POINTS: Record<number, number> = { 0: 25, 1: 25, 2: 25, 3: 20, 4: 14, 5: 6, 6: 0 };
 const ownWindPoints = (beaufort: number | undefined): TopPickAxisResult => {
   const max = TOP_PICK_WEIGHTS.ownWind;
-  if (typeof beaufort !== 'number' || !Number.isFinite(beaufort)) return axis('ownWind', 11, max, true);
+  if (typeof beaufort !== 'number' || !Number.isFinite(beaufort)) return axis('ownWind', max / 2, max, true);
   const clamped = Math.max(0, Math.min(6, Math.round(beaufort)));
   return axis('ownWind', OWN_WIND_POINTS[clamped] ?? 0, max);
 };
@@ -183,41 +203,26 @@ const seaPoints = (item: SuitableBeach): TopPickAxisResult => {
 };
 
 /**
- * ΑΠΟΣΤΑΣΗ ΑΠΟ ΤΟΝ ΧΡΗΣΤΗ — 10, the heaviest of the human axes (Μίλτος, 11/08/2026: «βάλ' την πάνω
- * από τις παροχές»).
+ * ΠΡΟΣΒΑΣΗ — 6, below the facilities it used to outrank (Μίλτος, 11/08/2026: «οι παροχές επίσης
+ * θα είναι πάνω από τον δρόμο»). Takes the podium's existing 0-5 access priority so there is one
+ * definition of "easy" on the site.
  *
- * Bands, not a curve: the first ten kilometres are worth far more than the next ten, and a visitor
- * cannot tell 23 km from 26 km. The bottom band is 0 rather than negative — a far beach is not
- * being punished, it is simply not earning the points a near one does.
- *
- * The missing case is the MIDDLE, never the maximum. When nobody has shared a location every beach
- * lands here and the axis cannot separate anyone, which is the whole reason the podium stays
- * identical for every visitor on the prerendered and planner paths.
- */
-const DISTANCE_BANDS: [number, number][] = [[5, 10], [10, 8], [20, 6], [35, 4], [60, 2]];
-const distancePoints = (distanceKm: number | undefined): TopPickAxisResult => {
-  const max = TOP_PICK_WEIGHTS.distance;
-  if (typeof distanceKm !== 'number' || !Number.isFinite(distanceKm) || distanceKm < 0) {
-    return axis('distance', max / 2, max, true);
-  }
-  for (const [limit, points] of DISTANCE_BANDS) {
-    if (distanceKm <= limit) return axis('distance', points, max);
-  }
-  return axis('distance', 0, max);
-};
-
-/**
- * ΠΡΟΣΒΑΣΗ — 6, below both the distance and the facilities it used to outrank (Μίλτος, 11/08/2026:
- * «οι παροχές επίσης θα είναι πάνω από τον δρόμο»). Takes the podium's existing 0-5 access priority
- * so there is one definition of "easy" on the site.
+ * Half of what "hard access" costs a visitor is already charged on the facilities axis — a beach at
+ * the end of a dirt track rarely has parking — which is why access is the smaller of the two.
  */
 const ACCESS_POINTS = [6, 4.5, 3, 1.5, 0.5, 0];
 const accessPoints = (priority: number): TopPickAxisResult =>
   axis('access', ACCESS_POINTS[Math.max(0, Math.min(5, priority))] ?? 0, TOP_PICK_WEIGHTS.access);
 
 /**
- * ΠΑΡΟΧΕΣ — 9. The podium's amenities score runs 0-22, mapped proportionally so two points of
- * parking cannot move a beach the way they did on 10/08, when they decided a whole podium alone.
+ * ΠΑΡΟΧΕΣ — 9, the heaviest human axis: the only one of the three that can ruin a day on its own,
+ * no shade, no water, nowhere to leave the car.
+ *
+ * The podium's amenities score runs 0-22, mapped proportionally so two points of parking cannot
+ * move a beach the way they did on 10/08, when they decided a whole podium alone. Widening this
+ * axis narrows that protection, which is one more reason the 11/08 attempt to grow it to 15 was
+ * reverted: at 9 a raw point is worth 0,41 and the half-point rounding below keeps small equipment
+ * differences from separating two beaches at all.
  */
 const amenitiesPoints = (score: number): TopPickAxisResult => {
   const max = TOP_PICK_WEIGHTS.amenities;
@@ -262,8 +267,6 @@ const crowdPoints = (beach: Beach): TopPickAxisResult => {
 
 export interface TopPickScoreInput {
   item: SuitableBeach;
-  /** Kilometres from the visitor, when a location has been shared. Undefined otherwise. */
-  distanceKm?: number;
   /** The wind on this beach's own shore, already resolved by the caller. */
   ownBeaufort: number | undefined;
   /** False when the pool is windy but this shore is not — see shelterPoints. */
@@ -278,13 +281,12 @@ export interface TopPickScoreInput {
  * explanation and the order drift apart.
  */
 export const scoreTopPick = ({
-  item, ownBeaufort, feelsWind, accessPriority, amenitiesScore, distanceKm,
+  item, ownBeaufort, feelsWind, accessPriority, amenitiesScore,
 }: TopPickScoreInput): TopPickScoreBreakdown => {
   const axes = [
     shelterPoints(item, feelsWind),
     seaPoints(item),
     ownWindPoints(ownBeaufort),
-    distancePoints(distanceKm),
     amenitiesPoints(amenitiesScore),
     accessPoints(accessPriority),
     crowdPoints(item.beach),

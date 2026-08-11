@@ -427,6 +427,16 @@ export const prioritizeProtectedRecommendations = (
    * The old ladder's remaining rungs are gone: exposure, own-shore wind, sea and comfort are now
    * points, and `compareTouristTopPickPriority` no longer runs here at all — which is the whole
    * point, since it was two points of parking that ordered the East Attica podium on 10/08.
+   *
+   * AND `item.distance` IS NOT READ HERE, ON PURPOSE (Μίλτος, 11/08/2026: «ίδιος καιρός, ίδιο
+   * podium για όλους»). The table briefly carried a 10-point distance axis; the wiring said it had
+   * never once run, because the pool this function is normally given is fetched with no location at
+   * all — and the one path that did feed it (an active preference filter swaps in the
+   * location-scored pool) simply reordered the cards under the visitor a second after the location
+   * prompt was answered. The axis was deleted rather than left neutral, and its points went to
+   * facilities and access. Distance is a «Κοντά μου» rule and is applied there, after this chain,
+   * on a screen the visitor asked for. If a `distanceKm` argument ever reappears in the call below,
+   * assertion H of validateTopPickScoreTable.mjs is the thing that will go red.
    */
   const scoreOf = (item: SuitableBeach): number => scoreTopPick({
     item,
@@ -434,33 +444,6 @@ export const prioritizeProtectedRecommendations = (
     feelsWind: shelterCounts(item),
     accessPriority: topPickAccessPriority(item.beach),
     amenitiesScore: topPickAmenitiesScore(item.beach),
-    /**
-     * ΤΟ PODIUM ΜΙΑΣ ΠΕΡΙΟΧΗΣ ΔΕΝ ΒΛΕΠΕΙ ΠΟΤΕ ΤΗΝ ΤΟΠΟΘΕΣΙΑ ΤΟΥ ΕΠΙΣΚΕΠΤΗ
-     * (Μίλτος, 11/08/2026 — «ίδιος καιρός, ίδιο podium για όλους»).
-     *
-     * Hard-coded rather than read off the item, because reading it off the item was a lie that
-     * looked like a feature. Checked in the wiring on 11/08:
-     *
-     *   - The pool the podium is normally built from is `dailySuitableBeaches`, and App calls
-     *     getSuitableBeaches with NO location for it (App.tsx) — so `item.distance` was already
-     *     undefined on every region page, every day, for everyone. The axis has never once
-     *     separated two beaches there.
-     *   - The single path where it did arrive was an active preference filter, which flips the
-     *     pool to the location-scored `suitableBeaches`. That, and only that, is what could
-     *     reorder a podium under the visitor the moment the browser answered the location
-     *     prompt — three cards, then two seconds later three different cards.
-     *
-     * So the axis is not "neutral until we wire it up"; it is closed. Distance stays a «Κοντά
-     * μου» rule and is applied THERE, explicitly, after this chain has finished (the near-me
-     * branch in App.tsx sorts on the map's colour, then on distance) — on a screen the visitor
-     * asked for by pressing a button, where a reorder is the answer rather than a surprise.
-     *
-     * Cost, stated plainly: with every beach scoring the same middle value, the axes that can
-     * actually separate beaches are 70 weather / 20 comfort, not the table's declared 70/30.
-     * That is exactly the arithmetic the 11/08 browser pass on Νάξο / Πάρο / Αν. Αττική / Χανιά
-     * was taken against, so nothing that was looked at and approved moves because of this line.
-     */
-    distanceKm: undefined,
   }).total;
 
   const scores = new Map<SuitableBeach, number>();

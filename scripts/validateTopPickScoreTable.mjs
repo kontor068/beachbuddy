@@ -114,27 +114,59 @@ const run = (table) => {
   const sum = Object.values(TOP_PICK_WEIGHTS).reduce((a, b) => a + b, 0);
   if (sum !== 100) local.push(`A: weights sum to ${sum}, not 100.`);
   const weather = TOP_PICK_WEIGHTS.shelter + TOP_PICK_WEIGHTS.ownWind + TOP_PICK_WEIGHTS.sea;
-  const human = TOP_PICK_WEIGHTS.distance + TOP_PICK_WEIGHTS.amenities + TOP_PICK_WEIGHTS.access + TOP_PICK_WEIGHTS.crowd;
-  if (weather !== 70 || human !== 30) {
-    local.push(`A: split is ${weather}/${human}, not the 70/30 Miltos settled on 11/08/2026.`);
+  const human = TOP_PICK_WEIGHTS.amenities + TOP_PICK_WEIGHTS.access + TOP_PICK_WEIGHTS.crowd;
+  if (weather !== 80 || human !== 20) {
+    local.push(`A: split is ${weather}/${human}, not 80/20.`);
   }
-  if (!(TOP_PICK_WEIGHTS.distance > TOP_PICK_WEIGHTS.amenities
-    && TOP_PICK_WEIGHTS.amenities > TOP_PICK_WEIGHTS.access
+  // The invariant the split has to satisfy, stated so nobody has to rediscover it: the human block
+  // must not be able to overturn any single weather axis on its own. 11/08 proved what happens when
+  // it can — a running sea with sunbeds outranking a calm shore without.
+  const smallestWeatherAxis = Math.min(TOP_PICK_WEIGHTS.shelter, TOP_PICK_WEIGHTS.sea, TOP_PICK_WEIGHTS.ownWind);
+  if (human >= smallestWeatherAxis) {
+    local.push(`A: the human block (${human}) is not smaller than the smallest weather axis (${smallestWeatherAxis}), so umbrellas can outrank the sea.`);
+  }
+  if (!(TOP_PICK_WEIGHTS.amenities > TOP_PICK_WEIGHTS.access
     && TOP_PICK_WEIGHTS.access > TOP_PICK_WEIGHTS.crowd)) {
-    local.push(`A: human axes out of the order Miltos set (distance ${TOP_PICK_WEIGHTS.distance} > facilities ${TOP_PICK_WEIGHTS.amenities} > access ${TOP_PICK_WEIGHTS.access} > crowd ${TOP_PICK_WEIGHTS.crowd}).`);
+    local.push(`A: human axes out of the order Miltos set (facilities ${TOP_PICK_WEIGHTS.amenities} > access ${TOP_PICK_WEIGHTS.access} > crowd ${TOP_PICK_WEIGHTS.crowd}).`);
+  }
+  if ('distance' in TOP_PICK_WEIGHTS) {
+    local.push('A: a distance weight is back in the table. The region podium is not allowed a per-visitor input — see assertion I and services/topPickRanking.');
   }
 
-  // B — weather cannot be bought
-  const exposedLuxury = score(
-    item({ id: 1, rich: true, exposure: 'exposed', seaM: 0.4, tier: 'crowded' }),
-    { accessPriority: 0, amenitiesScore: 22, distanceKm: 12 }
-  );
-  const protectedBare = score(
-    item({ id: 2, rich: false, exposure: 'protected', seaM: 0.4 }),
-    { accessPriority: 5, amenitiesScore: 0, distanceKm: 12 }
-  );
-  if (exposedLuxury >= protectedBare) {
-    local.push(`B: at the same distance, an exposed beach with everything (${exposedLuxury}) matched or beat a protected bare one (${protectedBare}) on identical sea and wind. Umbrellas are buying weather.`);
+  /**
+   * B — ΟΙ ΟΜΠΡΕΛΕΣ ΔΕΝ ΑΓΟΡΑΖΟΥΝ ΤΟΝ ΚΑΙΡΟ, ΚΑΙ Ο ΕΛΕΓΧΟΣ ΓΙΝΕΤΑΙ ΟΠΟΥ ΚΡΙΝΕΤΑΙ.
+   *
+   * Until 11/08 this drove the bare table and compared totals: facilities + access + crowd came to
+   * 20 against 25 of shelter, so the sum alone could not overturn exposure. When the distance axis
+   * was deleted and its ten points went to facilities and access, the human block reached 30 and
+   * the table-level comparison inverted — an exposed beach with everything scored 61 against 58.
+   *
+   * The right response was not to shave weights until the arithmetic came out. It was to ask where
+   * the promise is actually kept, and the answer is one layer up: from MEANINGFUL_WIND_TOP_PICK_
+   * BEAUFORT (3 Bft) the more exposed beach is not outscored, it is removed from the pool —
+   * getWindPriorityTopPickPool and bestShelteredRecommendationGroup run before anything is scored.
+   * Measured 11/08 on the real chain: at 3, 4 and 5 Bft the pool arrives holding ONE beach.
+   *
+   * So B now drives prioritizeProtectedRecommendations, and it pins both halves of Miltos's rule
+   * («αν είναι λίγο πιο εκτεθειμένη δεν πειράζει, αν είναι πολύ πειράζει»): while there is wind,
+   * not even one step of exposure can be bought — and on a calm day the equipped beach wins, which
+   * is correct rather than a leak, because there is no wind to be sheltered from and every beach is
+   * scored as fully sheltered. That second case is asserted too, so that a later reader cannot
+   * "fix" it back into a false promise.
+   */
+  const luxury = (exposure) => item({ id: 1, rich: true, exposure, seaM: 0.4, tier: 'crowded' });
+  const bare = () => item({ id: 2, rich: false, exposure: 'protected', seaM: 0.4 });
+  for (const bft of [3, 4, 5]) {
+    for (const exposure of ['exposed', 'partial']) {
+      const winner = prioritizeProtectedRecommendations([luxury(exposure), bare()], bft)[0];
+      if (!winner || winner.beach.id !== 2) {
+        local.push(`B: at ${bft} Bft a ${exposure} beach with full facilities, asphalt and the best crowd tier beat a bare protected one on identical sea. Umbrellas are buying weather.`);
+      }
+    }
+  }
+  const calmWinner = prioritizeProtectedRecommendations([luxury('exposed'), bare()], 2)[0];
+  if (!calmWinner || calmWinner.beach.id !== 1) {
+    local.push('B: on a 2 Bft day the equipped beach no longer wins. Shelter is not a virtue when there is no wind — every beach is scored fully sheltered there, so this is the intended result and something has changed underneath it.');
   }
 
   // C — noise does not reorder
@@ -219,27 +251,23 @@ const run = (table) => {
   }
 
   /**
-   * G — distance is neutral when nobody shared a location.
+   * G — THE TABLE HAS NO PER-VISITOR INPUT AT ALL.
    *
-   * This axis knowingly re-opens the defect that got score-ranking rejected on 10/08 (two visitors,
-   * same weather, different podium). The containment is that with no location every beach lands on
-   * the same middle value, so the prerender, the planner and every first paint stay identical for
-   * everyone — and that the missing case is the MIDDLE, never the maximum, or a region where only
-   * some beaches carry a distance would rank the unmeasured ones first.
+   * Score-ranking was rejected on 10/08 for one reason: two visitors, same weather, different
+   * podium. A distance axis put that back on 11/08 and was deleted the same day — so the assertion
+   * is no longer "the axis is neutral when unused" (a permanently neutral axis is just a constant
+   * that lies about the split) but the stronger one: nothing the visitor carries can reach this
+   * table. Passing an extra argument must change nothing.
    */
-  const near = score(item({ id: 12, seaM: 0.4 }), { distanceKm: 2 });
-  const far = score(item({ id: 13, seaM: 0.4 }), { distanceKm: 150 });
-  const noLocation = score(item({ id: 14, seaM: 0.4 }));
-  if (!(near > noLocation && noLocation > far)) {
-    local.push(`G: distance does not order near > unknown > far (${near} / ${noLocation} / ${far}).`);
-  }
-  if (near - far > TOP_PICK_WEIGHTS.distance) {
-    local.push(`G: the distance axis spans ${near - far} points, over its ${TOP_PICK_WEIGHTS.distance} weight.`);
-  }
   const twinA = score(item({ id: 15, seaM: 0.4, tier: 'quiet' }));
   const twinB = score(item({ id: 16, seaM: 0.4, tier: 'quiet' }));
   if (twinA !== twinB) {
-    local.push('G: two identical beaches scored differently with no location shared.');
+    local.push('G: two identical beaches scored differently.');
+  }
+  const withStowaway = score(item({ id: 17, seaM: 0.4, tier: 'quiet' }), { distanceKm: 2 });
+  const without = score(item({ id: 18, seaM: 0.4, tier: 'quiet' }));
+  if (withStowaway !== without) {
+    local.push(`G: the table still reads a per-visitor input — a beach scored ${withStowaway} with a distance and ${without} without one.`);
   }
 
   return local;
@@ -308,12 +336,12 @@ failures.push(...run(realTable));
   }
 }
 
-// H — ΙΔΙΟΣ ΚΑΙΡΟΣ, ΙΔΙΟ PODIUM ΓΙΑ ΟΛΟΥΣ (Μίλτος, 11/08/2026).
+// I — ΙΔΙΟΣ ΚΑΙΡΟΣ, ΙΔΙΟ PODIUM ΓΙΑ ΟΛΟΥΣ (Μίλτος, 11/08/2026).
 //
-// The region podium must not change because the visitor shared a location. This is checked on the
-// ranking function rather than on the table, because the table's distance axis still works on
-// purpose — what is closed is the caller, and a caller is exactly the kind of thing a later edit
-// re-opens by "restoring" a line that looks like a bug.
+// Assertion G proves the TABLE cannot see the visitor. This one proves the RANKING cannot either,
+// because the two are separate holes: the table lost its distance axis, but `item.distance` still
+// exists on every SuitableBeach and any comparator added here could pick it up — which is exactly
+// how it arrived the first time.
 {
   const near = { ...item({ id: 91, seaM: 0.4, tier: 'quiet' }), distance: 2 };
   const far = { ...item({ id: 92, seaM: 0.4, tier: 'quiet' }), distance: 240 };
@@ -325,17 +353,18 @@ failures.push(...run(realTable));
   ).map(i => i.beach.id);
 
   if (withLocation.join(',') !== withoutLocation.join(',')) {
-    fail(`H: the podium reordered once a location was known (${withoutLocation.join(' → ')} became ${withLocation.join(' → ')}). Two visitors, same weather, different Top 3.`);
+    fail(`I: the podium reordered once a location was known (${withoutLocation.join(' → ')} became ${withLocation.join(' → ')}). Two visitors, same weather, different Top 3.`);
   }
-  // …and prove the check is not inert: the axis it is guarding must be able to separate them.
+  // …and prove the check is not inert: these two must be otherwise inseparable, or the ordering
+  // would be held in place by something else and a distance tie-break could slip in unnoticed.
   const { scoreTopPick } = realTable;
   const args = { ownBeaufort: 4, feelsWind: true, accessPriority: 0, amenitiesScore: 0 };
-  const nearPoints = scoreTopPick({ ...args, item: near, distanceKm: 2 }).total;
-  const farPoints = scoreTopPick({ ...args, item: far, distanceKm: 240 }).total;
-  if (nearPoints === farPoints) {
-    fail('H: the fixtures score the same even when the distance IS fed in, so the check would pass with the axis wide open.');
-  } else if (!failures.some(f => f.startsWith('H:'))) {
-    console.log(`location: a beach 2 km away and one 240 km away are ${nearPoints} vs ${farPoints} on the table, and the podium ranks them identically — closed at the caller.`);
+  const nearPoints = scoreTopPick({ ...args, item: near }).total;
+  const farPoints = scoreTopPick({ ...args, item: far }).total;
+  if (nearPoints !== farPoints) {
+    fail(`I: the fixtures are not tied (${nearPoints} vs ${farPoints}), so the order is being held by the score and the check cannot see a distance tie-break.`);
+  } else if (!failures.some(f => f.startsWith('I:'))) {
+    console.log(`location: two beaches tied at ${nearPoints}, 2 km and 240 km away, keep the order they arrived in — nothing per-visitor reaches the ranking.`);
   }
 }
 
@@ -344,19 +373,19 @@ if (failures.length) {
   failures.forEach(f => console.error(`  • ${f}\n`));
   process.exit(1);
 }
-console.log(`✅ Πίνακας των 100: 70 ο καιρός · θάλασσα ανά ${realTable.SEA_STEP_M} μ. · παροχές ${realTable.TOP_PICK_WEIGHTS.amenities} · πρόσβαση ${realTable.TOP_PICK_WEIGHTS.access} · πολυσύχναστη ${realTable.TOP_PICK_WEIGHTS.crowd} · απόσταση ${realTable.TOP_PICK_WEIGHTS.distance} αλλά ΚΛΕΙΣΤΗ στο podium περιοχής.`);
+console.log(`✅ Πίνακας των 100: 80 ο καιρός / 20 τα ανθρώπινα · θάλασσα ανά ${realTable.SEA_STEP_M} μ. · παροχές ${realTable.TOP_PICK_WEIGHTS.amenities} · πρόσβαση ${realTable.TOP_PICK_WEIGHTS.access} · πολυσύχναστη ${realTable.TOP_PICK_WEIGHTS.crowd} · καμία είσοδος από τον επισκέπτη.`);
 
 if (PROVE) {
   const source = readFileSync(path.join(root, 'utils/topPickScoreTable.ts'), 'utf8');
   const regressions = [
-    ['οι παροχές ανέβηκαν στο 50', s => s.replace(/access: 6,/, 'access: 30,').replace(/amenities: 9,/, 'amenities: 15,')],
+    ['η άνεση ξεπέρασε τον καιρό', s => s.replace(/shelter: 30,/, 'shelter: 15,').replace(/amenities: 9,/, 'amenities: 24,')],
     ['το βήμα της θάλασσας έγινε συνεχές', s => s.replace(/export const SEA_STEP_M = 0\.25;/, 'export const SEA_STEP_M = 0.001;')],
     ['το κενό δεδομένο βαθμολογείται μηδέν', s => s
       .replace(/return axis\('sea', 14, max, true\);/, "return axis('sea', 0, max, true);")
       .replace(/return axis\('shelter', max \/ 2, max, true\);/, "return axis('shelter', 0, max, true);")],
-    ['η άγνωστη απόσταση πήρε το μέγιστο', s => s.replace(
-      /return axis\('distance', max \/ 2, max, true\);/,
-      "return axis('distance', max, max, true);")],
+    ['ο δρόμος ανέβηκε πάνω από τις παροχές', s => s
+      .replace(/amenities: 9,/, 'amenities: 4,')
+      .replace(/access: 6,/, 'access: 11,')],
   ];
   for (const [label, mutate] of regressions) {
     const mutated = mutate(source);
