@@ -96,7 +96,6 @@ import {
 } from './utils/dateLabels';
 import { athensNow, toAthensWallClock, wallClockDayKey } from './utils/athensTime';
 import { getTopPickTiming, getTopPickTimingLabel, topPickTimingPriority } from './utils/topPickTiming';
-import { rotateEquivalentTopPicks } from './utils/topPickVariety';
 import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
@@ -5056,24 +5055,28 @@ export const App: React.FC = () => {
     return orderByBeachProfile(ordered, beachProfile, item => item.beach, beachProfileGroupKey);
   }, [selectedForecast, dailySuitableBeaches, hasActivePreferenceFilters, selectedBeachForecasts, beachAreaForecastById, suitableBeaches, topPickNow, beaufortAtBeach, perBeachMapWind, beachProfile, beachProfileGroupKey, podiumToneRank]);
   const topRecommendedSuitableBeaches = useMemo(() => {
-    // Day-to-day variety: on calm days, rotate #2/#3 among beaches that are genuinely
-    // equally-good today (keeps #1 fixed, never surfaces a harder-to-reach or worse
-    // beach). Seeded by island + calendar date so it is stable within a day and changes
-    // across days. Runs AFTER prioritizeDynamicTopPickWindows so the shown #1 is honoured.
-    const beaufort = selectedForecast ? getBeaufortLevel(selectedForecast.wind.speed * 3.6) : 0;
-    const varied = rotateEquivalentTopPicks(recommendedSuitableBeaches, {
-      beaufort,
-      dateKey: selectedForecast ? wallClockDayKey(selectedForecast.date) : '',
-      regionKey: String(selectedIsland?.id ?? ''),
-    });
-    // …and then the saved profile gets the last word, because the rotation's whole
-    // premise — "these are equally good, so vary them" — stops being true the
-    // moment someone has told us what they like. Re-applying it here rather than
-    // suppressing the rotation keeps both: beaches that are equal ON THE PROFILE
-    // TOO still rotate, since the sort is stable and leaves their order alone.
-    const preferred = orderByBeachProfile(varied, beachProfile, item => item.beach, beachProfileGroupKey);
+    /**
+     * Η ΗΜΕΡΗΣΙΑ ΕΝΑΛΛΑΓΗ ΣΤΑΘΗΚΕ ΣΤΗΝ ΑΚΡΗ (11/08/2026) — ΚΑΙ ΠΟΤΕ ΔΕΝ ΤΗΝ ΕΙΔΕ ΧΡΗΣΤΗΣ.
+     *
+     * `rotateEquivalentTopPicks` shuffled #2/#3 among beaches that are equally good on a calm day,
+     * so the region did not show the same three every morning. It was unreachable until an hour
+     * ago (its ceiling is 2 Bft, which was exactly the wind at which the podium used to be hidden
+     * altogether), and the moment the podium opened there it collided head-on with the decision
+     * taken the same hour: when everything ties, order by Google review count, descending.
+     * Rotation and "descending by popularity" are the same slot asking for opposite things.
+     *
+     * Miltos's instruction is explicit and current; the rotation has never been seen by anyone. So
+     * the tie-break wins and the rotation stands down rather than being layered on top of it, where
+     * it would have quietly undone the very order that was just asked for.
+     *
+     * What we knowingly give up: on a calm day a region now shows the SAME three every day for as
+     * long as the calm lasts, and they will be its best-known beaches. If that ever needs fixing,
+     * fix it as variety INSIDE the popularity order (e.g. rotate only among beaches whose review
+     * counts are within the same order of magnitude), not by re-adding a shuffle above it.
+     */
+    const preferred = orderByBeachProfile(recommendedSuitableBeaches, beachProfile, item => item.beach, beachProfileGroupKey);
     return preferred.slice(0, getTopRecommendationDisplayLimit(preferred.length));
-  }, [recommendedSuitableBeaches, selectedForecast, selectedIsland, beachProfile, beachProfileGroupKey]);
+  }, [recommendedSuitableBeaches, beachProfile, beachProfileGroupKey]);
   const isSevereWindNoTopRecommendationDay = currentBeaufort > MAX_TOP_RECOMMENDATION_BEAUFORT;
   // Colours come from each beach's own shore: perBeachMapWind, declared above the filtering
   // memos that now read it too.

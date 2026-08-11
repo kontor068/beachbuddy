@@ -368,6 +368,36 @@ failures.push(...run(realTable));
   }
 }
 
+// J — ΟΙ ΑΞΙΟΛΟΓΗΣΕΙΣ ΣΠΑΝΕ ΤΗΝ ΙΣΟΠΑΛΙΑ ΚΑΙ ΤΙΠΟΤΑ ΑΛΛΟ (Μίλτος, 11/08/2026).
+//
+// Two halves, and the second matters more than the first. Fame as a WEIGHT is the defect found on
+// 10/08 («η ΦΗΜΗ αποφάσιζε»), where recognition floated an orange 5 Bft beach over a blue 3 Bft
+// one. Fame as a TIE-BREAK is what Miltos asked for and is harmless by construction — but only for
+// as long as it stays below the table, which is the kind of line a later edit moves without noticing.
+{
+  const withReviews = (it, ratingCount) => ({
+    ...it,
+    beach: { ...it.beach, popularity: { ...(it.beach.popularity || {}), tier: 'crowded', rating: 4.6, ratingCount } },
+  });
+  // Identical on every axis, so only the tie-break can speak. The less-reviewed one is listed first.
+  const famous = withReviews(item({ id: 81, seaM: 0.4 }), 12000);
+  const unknown = withReviews(item({ id: 82, seaM: 0.4 }), 40);
+  const tied = prioritizeProtectedRecommendations([unknown, famous], 4).map(i => i.beach.id);
+  if (tied[0] !== 81) {
+    fail(`J: on an exact tie the better-known beach did not lead (${tied.join(' → ')}).`);
+  }
+  // …and the half that guards the 10/08 defect: a rougher sea must still beat a famous calm-water
+  // rival, i.e. the tie-break must never be reached when the table can separate them.
+  const famousRough = withReviews(item({ id: 83, seaM: 1.2 }), 50000);
+  const quietCalm = withReviews(item({ id: 84, seaM: 0.2 }), 30);
+  const separated = prioritizeProtectedRecommendations([famousRough, quietCalm], 4).map(i => i.beach.id);
+  if (separated[0] !== 84) {
+    fail(`J: 50.000 reviews outranked a calmer sea (${separated.join(' → ')}). Fame has become a weight again.`);
+  } else if (!failures.some(f => f.startsWith('J:'))) {
+    console.log('reviews: they decide an exact tie, and lose outright to 1,0 m of extra sea — tie-break, not weight.');
+  }
+}
+
 if (failures.length) {
   console.error('❌ Ο πίνακας των 100 δεν λέει αυτό που υπόσχεται:\n');
   failures.forEach(f => console.error(`  • ${f}\n`));

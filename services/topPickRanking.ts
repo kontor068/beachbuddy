@@ -267,6 +267,27 @@ const isWellRated = (beach: Beach): boolean => {
     && reviews > TOP_PICK_TRUSTED_REVIEW_COUNT;
 };
 
+/**
+ * ΠΟΣΟΙ ΤΗΝ ΕΧΟΥΝ ΨΗΦΙΣΕΙ — tie-break only (Μίλτος, 11/08/2026).
+ *
+ * «Αν όλες είναι καλές και ισοδύναμες, βάλε τοπ 3 τις πιο δημοφιλείς, με φθίνουσα σειρά
+ * αξιολογήσεων.» Measured on Rhodes the same morning, at 1-2 Bft: 80 of the table's 100 points are
+ * identical for all 62 beaches (no wind to shelter from, 0,1 m everywhere, and 0/1/2 Bft share one
+ * bucket), and TEN of them then tie at 16,5/20 on the human block — same 5,5 facilities, same 6
+ * access, same 5 crowd tier. The podium's three came out of that ten by the legacy region score,
+ * which the sort itself documents as "never as a criterion, only to keep the order deterministic".
+ * So the visitor was reading «Γιατί αυτές οι τρεις;» above a choice nobody had made.
+ *
+ * The count is deliberately NOT a weight. Adding fame to the table is the exact defect found on
+ * 10/08 — «η ΦΗΜΗ αποφάσιζε» — where recognition floated an orange 5 Bft beach above a blue 3 Bft
+ * one. As a tie-break it can only speak after shelter, sea, own-shore wind, the map colour and the
+ * whole comfort block have all come out level, which is the only situation Miltos described.
+ */
+export const topPickReviewCount = (beach: Beach): number => {
+  const reviews = (beach.popularity ?? beach.metadata?.popularity)?.ratingCount;
+  return typeof reviews === 'number' && Number.isFinite(reviews) && reviews > 0 ? reviews : 0;
+};
+
 /** The preference applied: the well-rated subset when it can fill a podium, otherwise everyone. */
 export const preferWellRatedTopPicks = (items: SuitableBeach[]): SuitableBeach[] => {
   const wellRated = items.filter(item => isWellRated(item.beach));
@@ -459,9 +480,29 @@ export const prioritizeProtectedRecommendations = (
     const tableDiff = (scores.get(b) ?? 0) - (scores.get(a) ?? 0);
     if (tableDiff !== 0) return tableDiff;
 
-    // A genuine tie: every axis landed in the same bucket, which means we cannot tell them apart
-    // with the evidence we hold. The region score breaks it only to keep the sort deterministic —
-    // never as a criterion, because it changes shape when the visitor shares a location.
+    /**
+     * A GENUINE TIE — AND NOW SOMEBODY DECIDES IT (Μίλτος, 11/08/2026).
+     *
+     * Every axis landed in the same bucket, so the evidence we hold cannot separate these beaches.
+     * Until today the region score broke it "only to keep the sort deterministic, never as a
+     * criterion" — which is an honest thing to write and a poor thing to publish: on a calm day in
+     * Rhodes that meant three beaches out of ten identical ones, under a heading asking why those
+     * three.
+     *
+     * The count of Google reviews is the tie-break because it is the only signal we hold that is
+     * about the BEACH rather than about today, and because it answers the visitor's real fear on a
+     * day when everything is fine: not "which is best" but "which won't disappoint me". The same
+     * measurement that made the crowd axis positive says so — 5% of crowded beaches sit below 4,3
+     * stars against 33% of the secluded ones.
+     *
+     * Beaches Google has never heard of score 0 here and therefore lose every tie. That is the one
+     * real cost, it is deliberate, and it is bounded: it can only ever apply when a beach is
+     * otherwise INDISTINGUISHABLE from a famous one, and the whole «Ήσυχη / Λίγο γνωστή» filter
+     * exists so that the quiet coastline is found on purpose rather than by accident of a tie.
+     */
+    const reviewsDiff = topPickReviewCount(b.beach) - topPickReviewCount(a.beach);
+    if (reviewsDiff !== 0) return reviewsDiff;
+
     return b.score - a.score;
   });
 };

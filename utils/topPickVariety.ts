@@ -19,6 +19,21 @@ import { stableVariantIndex } from './beachCopy';
  * Scope is deliberately narrow ("Ήπια"): calm days only, #2/#3 only, #1 stays put.
  */
 
+/**
+ * ⚠️ ΔΕΝ ΕΙΝΑΙ ΣΥΝΔΕΔΕΜΕΝΟ ΑΠΟ ΤΙΣ 11/08/2026 — και ποτέ δεν το είδε χρήστης.
+ *
+ * The ceiling below is 2 Bft, and until 11/08 the podium was hidden at 2 Bft and under, so this
+ * rotation could only ever have fired on the days nothing was displayed. When the podium was
+ * opened on calm days it lasted about an hour: the same morning Miltos decided that beaches which
+ * tie on everything are ordered by Google review count, descending, and a shuffle sitting above
+ * that order simply undoes it.
+ *
+ * Kept, not deleted, because the problem it solves is real — a region showing the same three every
+ * morning for a fortnight of calm — and because the correct version is a variation of this code:
+ * rotate only INSIDE the popularity order (e.g. among beaches whose review counts are the same
+ * order of magnitude), never above it. See App.tsx `topRecommendedSuitableBeaches`.
+ */
+
 /** Only rotate on genuinely calm days (Beaufort <= this). At 3+ Bft the picks are the
  *  best-available leeward refuges and must not be shuffled (meltemi invariant). */
 export const ROTATION_MAX_BEAUFORT = 2;
