@@ -1609,7 +1609,24 @@ const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, 
 
 const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, selectedDate?: Date): string => {
   const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
-  const waveHeightM = item.waveHeightM;
+  /**
+   * ΤΟ ΝΟΥΜΕΡΟ ΤΗΣ ΑΚΤΗΣ, ΟΧΙ ΤΟΥ ΠΕΛΑΓΟΥΣ (Μίλτος, 11/08/2026).
+   *
+   * This line printed the raw open-water figure while the same beach's card, page and swim verdict
+   * had all moved to the modelled height at the sand. Σχινιάς was the case that showed it: «1,2 μ.»
+   * in this sentence, 0,2 m everywhere else, on a beach judged and coloured from the 0,2. One
+   * beach, two numbers, on the same screen.
+   *
+   * Same rule as BeachCard.cardWaveM, deliberately identical rather than clever: prefer the shore
+   * height where utils/shoreWave produced one, capped by the open water so a cove can never read
+   * rougher than the sea outside it.
+   */
+  const shoreM = item.shoreWaveHeightM;
+  const openM = item.waveHeightM;
+  const waveIsShore = typeof shoreM === 'number' && Number.isFinite(shoreM);
+  const waveHeightM = waveIsShore
+    ? (typeof openM === 'number' && Number.isFinite(openM) ? Math.min(shoreM as number, openM) : shoreM)
+    : openM;
   const copy = getLocalizedCopy(language, {
     en: {
       lead: `For ${day}`,
@@ -1694,7 +1711,9 @@ const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, sel
   }
 
   if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-    addFact(copy.wave(waveHeightM.toFixed(1)));
+    // The «~» marks a modelled shore height, exactly as BeachCard and the beach page spell it, so
+    // a reader can tell a measured cell from our own near-shore model at a glance.
+    addFact(copy.wave(`${waveIsShore ? '~' : ''}${waveHeightM.toFixed(1)}`));
   } else if (item.seaCalmClaimAllowed === true) {
     addFact(copy.calmSea);
   }
