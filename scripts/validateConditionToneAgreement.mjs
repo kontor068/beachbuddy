@@ -871,7 +871,16 @@ if (!/conditionToneLabels/.test(mapSource) || /toneLabel:\s*\{\s*blue:/.test(map
   // (5) A chip with nothing behind it fades — it is never removed. Chips that disappear move the
   //     ones after them, and a thumb already travelling lands on whatever slid into the gap.
   const sheetButton = sheetSource.match(/const\s+renderFilterButton\s*=[\s\S]{0,900}?disabled=\{[^}]*\}/);
-  if (!sheetButton || !/isUnavailable\s*=\s*!isSelected\s*&&\s*unavailableFilterSet\.has\(filter\)/.test(sheetSource)
+  /**
+   * The test allows the condition to be one term of a wider OR. It was pinned to
+   * `!isSelected && unavailableFilterSet.has(filter)` with nothing allowed between, and commit
+   * 3eda6df2 («Στο κινητό δεν πατιέται πια φίλτρο που αδειάζει τη λίστα») made the rule STRICTER
+   * — `!isSelected && (unavailableFilterSet.has(filter) || emptyingFilters.has(filter))` — which
+   * the old pattern read as the rule being gone. A gate that goes red when the code gets safer is
+   * a gate that gets switched off, so it now asserts what actually matters: the unavailable set
+   * still reaches `isUnavailable`, and `isUnavailable` still drives `disabled`.
+   */
+  if (!sheetButton || !/isUnavailable\s*=\s*!isSelected\s*&&[^;]*unavailableFilterSet\.has\(filter\)/.test(sheetSource)
     || !/disabled=\{isUnavailable\}/.test(sheetSource)) {
     fail('components/AmenityFilter.tsx no longer disables a chip from unavailableFilters. Either '
       + 'the fade is gone (dead chips lead to an empty list) or the chip is being hidden instead, '
