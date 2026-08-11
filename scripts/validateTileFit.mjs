@@ -125,23 +125,37 @@ try {
         // must clear the 44 px touch minimum the 05/08 decision put on this page.
         const bar = document.querySelector('[data-tabfit]');
         const barNodes = [];
+        const barTouching = [];
         let barOverflowPx = 0;
         if (bar) {
           barOverflowPx = Math.round(bar.scrollWidth - bar.clientWidth);
+          const labelBoxes = [];
           for (const control of bar.querySelectorAll('button')) {
             const box = control.getBoundingClientRect();
             for (const n of control.querySelectorAll('span')) {
               if (n.children.length || !(n.textContent || '').trim()) continue;
+              const r = n.getBoundingClientRect();
               barNodes.push({
                 text: n.textContent.trim(),
                 overflowPx: Math.round(n.scrollWidth - n.clientWidth),
                 fontSize: getComputedStyle(n).fontSize,
                 heightPx: Math.round(box.height),
               });
+              labelBoxes.push({ text: n.textContent.trim(), left: r.left, right: r.right });
             }
           }
+          // Neighbours must not touch. Overflow and clipping both said "fine" while
+          // «Πληροφορίες» and «Εναλλακτικές» sat flush against each other at 320 px and
+          // read as one 24-letter word — each label fitted its own box perfectly, and the
+          // row fitted the screen; what was missing was the space BETWEEN them. Measuring
+          // one box at a time can never see that.
+          labelBoxes.sort((a, b) => a.left - b.left);
+          for (let i = 1; i < labelBoxes.length; i += 1) {
+            const gap = Math.round(labelBoxes[i].left - labelBoxes[i - 1].right);
+            if (gap < 4) barTouching.push({ a: labelBoxes[i - 1].text, b: labelBoxes[i].text, gap });
+          }
         }
-        return { tiles: tiles.length, nodes, bar: Boolean(bar), barOverflowPx, barNodes };
+        return { tiles: tiles.length, nodes, bar: Boolean(bar), barOverflowPx, barNodes, barTouching };
       });
 
       await ctx.close();
@@ -167,6 +181,9 @@ try {
         measured += found.barNodes.length;
         if (found.barOverflowPx > 1) {
           failures.push(`${lang} @${width}px: the bottom bar row overflows by ${found.barOverflowPx}px`);
+        }
+        for (const t of found.barTouching) {
+          failures.push(`${lang} @${width}px: bottom-bar «${t.a}» and «${t.b}» are ${t.gap}px apart — they read as one word`);
         }
         for (const n of found.barNodes) {
           if (n.overflowPx > 1) {
