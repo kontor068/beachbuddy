@@ -31,6 +31,23 @@
 import { connectLambda, getStore } from '@netlify/blobs';
 import { countryLabel, countryFlag, COUNTRY_NAMES_EL } from './lib/geoLookup.mjs';
 import { WORLD_PATH, WORLD_W, WORLD_H, WORLD_LAT_TOP } from './lib/worldPath.mjs';
+// ── The moderation queue lives here too, so there is ONE admin page ───────────
+// It used to be a second URL behind a second key (/api/ugc-admin), which meant
+// remembering that it existed. A console you open every day to watch the traffic
+// is the place where "three people sent photos" is actually seen. The decisions
+// themselves still go through lib/ugcModeration.mjs — the same function the
+// Telegram buttons and the old page call, so there is one implementation and
+// three doors, not three copies of the rules.
+import {
+  clearPendingPublish,
+  isConfigured as ugcConfigured,
+  isKnownKind,
+  listPending,
+  moderate,
+  readPendingPublish,
+  signPendingPhoto,
+  withBeachLabels,
+} from './lib/ugcModeration.mjs';
 
 const TRAFFIC_STORE = 'traffic';
 
@@ -313,10 +330,115 @@ const breakdown = (title, obj, labelFn, total, limit = 10, unit = '') => {
   return `<section class="panel"><h2>${esc(title)}${unit ? `<em>${esc(unit)}</em>` : ''}</h2><ul class="bars">${rows}</ul></section>`;
 };
 
+// ── the moderation queue, rendered ───────────────────────────────────────────
+// Plain <form> posts, no JavaScript. That is not nostalgia: the rest of this page
+// is a live map that redraws itself, and a decision that publishes a stranger's
+// photo to a crawled page should not depend on any of that still working. A form
+// post either happened or it didn't.
+
+const whenEl = (value) => {
+  if (!value) return '—';
+  try {
+    return new Date(value).toLocaleString('el-GR', { timeZone: 'Europe/Athens', dateStyle: 'short', timeStyle: 'short' });
+  } catch {
+    return String(value).slice(0, 16);
+  }
+};
+
+/** The two buttons. `key` travels in the body so the decision is never a GET. */
+const ugcActions = (kind, id) => `
+  <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos">
+    <input type="hidden" name="key" value="RAWFORMKEY">
+    <input type="hidden" name="kind" value="${esc(kind)}">
+    <input type="hidden" name="id" value="${esc(id)}">
+    <button class="yes" name="action" value="approve">✅ Έγκριση</button>
+    <button class="no" name="action" value="reject">🚫 Διαγραφή</button>
+  </form>`;
+
+const ugcPhotoCard = (item, signedUrl) => `
+  <div class="item">
+    ${signedUrl
+      ? `<img src="${esc(signedUrl)}" alt="" loading="lazy">`
+      : '<div class="noimg">η εικόνα δεν φορτώνει</div>'}
+    <div class="body">
+      <div class="who">${esc(item.beach_name || `Παραλία #${item.beach_id}`)}</div>
+      <div class="facts">${esc(item.region_id || '—')} · ${whenEl(item.created_at)}${
+        item.show_credit ? ' · με όνομα' : ''}</div>
+      ${item.caption ? `<p class="cap">${esc(item.caption)}</p>` : ''}
+      ${ugcActions('photo', item.id)}
+    </div>
+  </div>`;
+
+const ugcReviewCard = (item) => {
+  const stars = Math.max(0, Math.min(5, Number(item.rating) || 0));
+  return `
+  <div class="item">
+    <div class="body">
+      <div class="who">${esc(item.beach_name || `Παραλία #${item.beach_id}`)}
+        <span class="stars">${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}</span></div>
+      <div class="facts">${esc(item.region_id || '—')} · ${whenEl(item.created_at)}</div>
+      <p class="cap">${esc(item.body || '— χωρίς κείμενο —')}</p>
+      ${ugcActions('review', item.id)}
+    </div>
+  </div>`;
+};
+
+const FLASH = {
+  approved: ['Εγκρίθηκε. Θα εμφανιστεί στη σελίδα της παραλίας στο επόμενο χτίσιμο του site.', ''],
+  rejected: ['Απορρίφθηκε και το αρχείο διαγράφηκε οριστικά.', ''],
+  already: ['Είχε ήδη κριθεί — δεν έγινε τίποτα δεύτερη φορά.', 'warn'],
+  built: ['Ξεκίνησε το χτίσιμο. Σε λίγα λεπτά τα εγκεκριμένα θα είναι στις δημόσιες σελίδες.', ''],
+  nobuild: ['Δεν υπάρχει build hook ρυθμισμένο (NETLIFY_BUILD_HOOK_URL) — τα εγκεκριμένα θα βγουν στο επόμενο ανέβασμα κώδικα.', 'warn'],
+  failed: ['Κάτι πήγε στραβά — δες τα logs της συνάρτησης. Τίποτα δεν άλλαξε.', 'warn'],
+};
+
+const moderationTab = (queue, flashCode) => {
+  const flash = FLASH[flashCode];
+  const head = flash ? `<div class="flash ${flash[1]}">${esc(flash[0])}</div>` : '';
+
+  if (!queue.configured) {
+    return `${head}<section class="panel"><h2>Εγκρίσεις</h2>
+      <p class="empty">Η Supabase δεν είναι ρυθμισμένη (λείπουν <code>SUPABASE_URL</code> /
+      <code>SUPABASE_SERVICE_ROLE_KEY</code>), οπότε δεν υπάρχει ουρά να διαβαστεί.</p></section>`;
+  }
+
+  const waiting = queue.pendingPublish?.count || 0;
+  const notLive = waiting
+    ? `<div class="flash warn">Υπάρχουν <b>${num(waiting)}</b> εγκεκριμένα που δεν έχουν βγει ακόμα στις
+       δημόσιες σελίδες. Θα βγουν <b>δωρεάν</b> στο επόμενο ανέβασμα κώδικα — δεν χρειάζεται να κάνεις τίποτα.
+       <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos" style="margin-top:9px;display:flex;gap:8px;max-width:340px">
+         <input type="hidden" name="key" value="RAWFORMKEY">
+         <button class="yes" name="action" value="publish"
+           style="flex:1;appearance:none;border:1px solid rgba(16,185,129,.45);border-radius:999px;padding:9px 10px;
+                  font:650 13px system-ui,sans-serif;cursor:pointer;background:rgba(16,185,129,.18);color:#6ee7b7">
+           🚀 Δημοσίευσε τώρα (ξοδεύει ένα χτίσιμο)</button>
+       </form></div>`
+    : '';
+
+  return `${head}${notLive}
+<section class="panel">
+  <h2>Φωτογραφίες επισκεπτών<em>${queue.photos.length ? `${num(queue.photos.length)} περιμένουν · τίποτα εδώ δεν είναι ορατό στο κοινό` : 'τίποτα σε αναμονή'}</em></h2>
+  ${queue.photos.length
+    ? `<div class="ugc">${queue.photos.map((item, i) => ugcPhotoCard(item, queue.signed[i])).join('')}</div>`
+    : '<p class="empty">Καμία φωτογραφία σε αναμονή.</p>'}
+</section>
+
+<section class="panel">
+  <h2>Κριτικές<em>${queue.reviews.length ? `${num(queue.reviews.length)} περιμένουν` : 'τίποτα σε αναμονή'}</em></h2>
+  ${queue.reviews.length
+    ? `<div class="ugc">${queue.reviews.map(ugcReviewCard).join('')}</div>`
+    : '<p class="empty">Καμία κριτική σε αναμονή.</p>'}
+</section>
+
+${queue.problem ? `<div class="flash warn">Πρόβλημα ανάγνωσης της ουράς: ${esc(queue.problem)}</div>` : ''}`;
+};
+
 // ── the page ─────────────────────────────────────────────────────────────────
 
 const page = (data) => {
   const { rows, totals, days, startDay, live, pulse, todayPoints, earlierPoints, nowMin } = data;
+  const queue = data.queue || { configured: false, photos: [], reviews: [], signed: [], pendingPublish: null, problem: '' };
+  const queueCount = queue.photos.length + queue.reviews.length;
 
   const today = rows[0] || { unique: 0, hits: 0, newV: 0, retV: 0, unkV: 0 };
   const sumUnique = rows.reduce((s, r) => s + r.unique, 0);
@@ -483,6 +605,35 @@ const page = (data) => {
   .tab:hover{color:var(--txt)}
   .tab.on{color:#a5f3fc;border-bottom-color:var(--cy);background:rgba(34,211,238,.07)}
   .tab:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+  /* The count rides on the tab itself: the whole point of moving moderation in
+     here is that an unopened queue is visible without opening it. */
+  .tab .badge{display:inline-block;min-width:18px;padding:1px 6px;margin-left:6px;border-radius:999px;
+    background:var(--am);color:#1a1005;font:700 11px/1.5 var(--mono);vertical-align:1px}
+
+  /* ── moderation cards ─────────────────────────────────────────────────────── */
+  .ugc{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .ugc .item{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ugc .item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:rgba(148,163,184,.12)}
+  .ugc .noimg{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;
+    background:rgba(148,163,184,.10);color:var(--mut);font-size:12.5px}
+  .ugc .body{padding:11px 13px 13px}
+  .ugc .who{font-size:13.5px;font-weight:650;margin-bottom:3px}
+  .ugc .facts{font-size:11.5px;color:var(--mut);font-family:var(--mono);margin-bottom:9px}
+  .ugc .cap{font-size:13px;line-height:1.5;margin:0 0 10px;white-space:pre-wrap;
+    border-left:2px solid var(--line);padding-left:9px;color:#cbd5e1}
+  .ugc .stars{letter-spacing:2px;color:var(--am)}
+  .ugc form{display:flex;gap:8px}
+  .ugc button{flex:1;appearance:none;border:1px solid transparent;border-radius:999px;padding:9px 10px;
+    font:650 13px system-ui,sans-serif;cursor:pointer;color:#fff}
+  .ugc .yes{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.45);color:#6ee7b7}
+  .ugc .yes:hover{background:rgba(16,185,129,.3)}
+  .ugc .no{background:rgba(244,63,94,.14);border-color:rgba(244,63,94,.4);color:#fda4af}
+  .ugc .no:hover{background:rgba(244,63,94,.26)}
+  .ugc button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+  .flash{border:1px solid rgba(52,211,153,.4);background:rgba(52,211,153,.10);color:#a7f3d0;
+    border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:13.5px}
+  .flash.warn{border-color:rgba(251,191,36,.42);background:rgba(251,191,36,.10);color:#fde68a}
+  .empty{color:var(--mut);font-size:13.5px;padding:6px 0}
 
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;margin-bottom:14px}
   .panel h2{display:flex;align-items:baseline;gap:8px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
@@ -715,6 +866,8 @@ const page = (data) => {
 <nav class="tabs" role="tablist">
   <button type="button" class="tab on" data-tab="map" role="tab" aria-selected="true">🌍 Χάρτης</button>
   <button type="button" class="tab" data-tab="stats" role="tab" aria-selected="false">📊 Στατιστικά</button>
+  <button type="button" class="tab" data-tab="photos" role="tab" aria-selected="false">📷 Εγκρίσεις${
+    queueCount ? `<span class="badge">${num(queueCount)}</span>` : ''}</button>
 </nav>
 
 <div id="tabMap" role="tabpanel">
@@ -865,6 +1018,10 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
     })()}
   </ul>
 </section>
+</div>
+
+<div id="tabPhotos" role="tabpanel" hidden>
+${moderationTab(queue, data.flash)}
 </div>
 
 <footer class="meth">
@@ -1188,9 +1345,12 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
   // Tabs. The map view is the default — it answers "what is happening right now",
   // which is the reason to open this page at all. The choice is remembered.
   var TAB_KEY = 'cb_traffic_tab';
+  var TABS = { map: 'tabMap', stats: 'tabStats', photos: 'tabPhotos' };
   function showTab(name) {
-    document.getElementById('tabMap').hidden = name !== 'map';
-    document.getElementById('tabStats').hidden = name !== 'stats';
+    if (!TABS[name]) name = 'map';
+    Object.keys(TABS).forEach(function (k) {
+      document.getElementById(TABS[k]).hidden = k !== name;
+    });
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
       var on = t.dataset.tab === name;
       t.className = 'tab' + (on ? ' on' : '');
@@ -1201,9 +1361,12 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
     t.addEventListener('click', function () { showTab(t.dataset.tab); });
   });
-  var savedTab = 'map';
-  try { savedTab = localStorage.getItem(TAB_KEY) === 'stats' ? 'stats' : 'map'; } catch (e) {}
-  showTab(savedTab);
+  // ?tab=photos wins over the remembered tab — that link is what the Telegram
+  // alert points at, and "someone sent a photo" must land ON the photo, not on
+  // whichever tab happened to be open last time.
+  var wanted = (location.search.match(/[?&]tab=([a-z]+)/) || [])[1];
+  if (!wanted) { try { wanted = localStorage.getItem(TAB_KEY); } catch (e) {} }
+  showTab(TABS[wanted] ? wanted : 'map');
 
   // True full screen for the map stage — board and map together, so the numbers
   // stay readable instead of leaving a pretty but unlabelled globe.
@@ -1370,6 +1533,98 @@ const readDayPoints = async (store, day) => {
   return out;
 };
 
+// ── The moderation POST ──────────────────────────────────────────────────────
+// Post/Redirect/Get: the decision is a POST, the answer is a redirect, so the
+// browser's own refresh button can never approve the same photo twice. The flash
+// travels back as a fixed code (`done=approved`), never as text — a message that
+// came from a URL and gets printed into the page is how you build an XSS hole in
+// your own admin console.
+const moderationPost = async (event, key) => {
+  const raw = event.isBase64Encoded
+    ? Buffer.from(event.body || '', 'base64').toString('utf8')
+    : (event.body || '');
+  const form = Object.fromEntries(new URLSearchParams(raw));
+
+  // The key rides in the body as well as the query so a decision cannot be
+  // triggered by a link someone was tricked into clicking.
+  if (form.key !== key) {
+    return { statusCode: 403, headers: { 'Content-Type': 'text/plain' }, body: 'Forbidden' };
+  }
+
+  const back = (code) => ({
+    statusCode: 303,
+    headers: {
+      Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=photos&done=${code}`,
+      'Cache-Control': 'no-store',
+    },
+    body: '',
+  });
+
+  // "Publish now" spends one Netlify build on purpose. Approvals otherwise ride
+  // along free with the next ordinary code push — see ugc-admin.mjs for why there
+  // is no cron here.
+  if (form.action === 'publish') {
+    const hook = process.env.NETLIFY_BUILD_HOOK_URL || '';
+    if (!hook) return back('nobuild');
+    try {
+      const response = await fetch(hook, { method: 'POST', body: '{}' });
+      if (!response.ok) return back('failed');
+      await clearPendingPublish(event);
+      return back('built');
+    } catch (error) {
+      console.error('Build trigger failed.', error && error.message);
+      return back('failed');
+    }
+  }
+
+  const { kind, id, action } = form;
+  if (!isKnownKind(kind) || !id || (action !== 'approve' && action !== 'reject')) {
+    return back('failed');
+  }
+
+  try {
+    const result = await moderate({ kind, id, action, event });
+    if (result.alreadyDone) return back('already');
+    return back(result.status === 'approved' ? 'approved' : 'rejected');
+  } catch (error) {
+    console.error('Moderation failed.', error && error.message);
+    return back('failed');
+  }
+};
+
+/**
+ * The pending queue, shaped for the page. Never throws: the traffic console must
+ * still render every number it was opened for even when Supabase is unreachable.
+ */
+const readQueue = async (event) => {
+  const empty = { configured: false, photos: [], reviews: [], signed: [], pendingPublish: null, problem: '' };
+  if (!ugcConfigured()) return empty;
+
+  try {
+    const [photos, reviews, pendingPublish] = await Promise.all([
+      listPending('photo'),
+      listPending('review'),
+      readPendingPublish(event).catch(() => null),
+    ]);
+    const [labelledPhotos, labelledReviews] = await Promise.all([
+      withBeachLabels(photos),
+      withBeachLabels(reviews),
+    ]);
+    // One signed URL per pending photo, minted server-side. The bucket stays
+    // private; these links live in this page only and expire in an hour.
+    const signed = await Promise.all(labelledPhotos.map((item) => (
+      item.storage_path ? signPendingPhoto(item.storage_path, 3600).catch(() => '') : Promise.resolve('')
+    )));
+    return { configured: true, photos: labelledPhotos, reviews: labelledReviews, signed, pendingPublish, problem: '' };
+  } catch (error) {
+    console.error('Could not read the moderation queue.', error && error.message);
+    return { ...empty, configured: true, problem: error.message || 'άγνωστο σφάλμα' };
+  }
+};
+
+/** Only ever a known code, so it can never carry markup into the page. */
+const flashCode = (value) => (Object.prototype.hasOwnProperty.call(FLASH, value) ? value : '');
+
 export const handler = async (event) => {
   const key = process.env.TRAFFIC_STATS_KEY || '';
   const params = event.queryStringParameters || {};
@@ -1381,6 +1636,10 @@ export const handler = async (event) => {
   try {
     // Wire the Blobs environment from the Lambda event (see pageview.mjs).
     connectLambda(event);
+
+    // Approve / reject / publish. Handled before anything is read, so a decision
+    // never waits for a full day-scan of the traffic store.
+    if (event.httpMethod === 'POST') return await moderationPost(event, key);
 
     // ?capacity=1 — how close today is to the Open-Meteo free quota.
     //
@@ -1582,11 +1841,25 @@ export const handler = async (event) => {
     if (!counted.length) {
       return {
         statusCode: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+        headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-store',
+        // The page now carries un-approved photos of other people's holidays. The
+        // <meta robots> tag was enough for a page of numbers; a header is what a
+        // crawler that never parses the HTML obeys.
+        'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      },
         body: page({
           rows: [], totals: {}, days: 0, startDay: todayKey,
           live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], mapDays: 0, nowMin,
-        }).replace(/KEYPLACEHOLDER/g, encodeURIComponent(given)),
+          queue: await readQueue(event), flash: flashCode(params.done),
+        })
+          // Two substitutions, deliberately different. KEYPLACEHOLDER sits inside
+          // hrefs and form actions and must be URL-encoded; RAWFORMKEY is a form
+          // VALUE, which the browser encodes itself — encoding it here too would
+          // send a double-encoded key that never matches and 403s every decision.
+          .replace(/KEYPLACEHOLDER/g, encodeURIComponent(given))
+          .replace(/RAWFORMKEY/g, esc(given)),
       };
     }
 
@@ -1688,7 +1961,14 @@ export const handler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-store',
+        // The page now carries un-approved photos of other people's holidays. The
+        // <meta robots> tag was enough for a page of numbers; a header is what a
+        // crawler that never parses the HTML obeys.
+        'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      },
       body: page({
         rows,
         totals: merged,
@@ -1700,6 +1980,8 @@ export const handler = async (event) => {
         earlierPoints,
         mapDays: Math.max(0, mapDays.length - 1),
         nowMin,
+        queue: await readQueue(event),
+        flash: flashCode(params.done),
       }).replace(/KEYPLACEHOLDER/g, encodeURIComponent(given)),
     };
   } catch (error) {

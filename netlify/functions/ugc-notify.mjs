@@ -26,7 +26,7 @@
 // is a much larger security surface than a link.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { getSupabaseConfig, isConfigured, signPendingPhoto } from './lib/ugcModeration.mjs';
+import { beachLabel, getSupabaseConfig, isConfigured, signPendingPhoto } from './lib/ugcModeration.mjs';
 
 const noContent = { statusCode: 204, body: '' };
 
@@ -112,18 +112,29 @@ export const handler = async (event) => {
     // The three checks that make a forged notification impossible.
     if (!photo || photo.user_id !== userId || photo.status !== 'pending') return noContent;
 
+    // The admin console is one page now (the traffic dashboard, photos tab), so
+    // that is where the link goes. The old standalone queue stays as the fallback
+    // for as long as it has a key and the console does not — nobody should get a
+    // notification whose link leads to a 403.
+    const trafficKey = process.env.TRAFFIC_STATS_KEY || '';
     const adminKey = process.env.UGC_ADMIN_KEY || '';
-    const queueUrl = adminKey
-      ? `https://calmbeach.gr/api/ugc-admin?key=${encodeURIComponent(adminKey)}`
-      : 'https://calmbeach.gr/api/ugc-admin';
+    const queueUrl = trafficKey
+      ? `https://calmbeach.gr/api/traffic?key=${encodeURIComponent(trafficKey)}&tab=photos`
+      : (adminKey
+        ? `https://calmbeach.gr/api/ugc-admin?key=${encodeURIComponent(adminKey)}`
+        : 'https://calmbeach.gr/api/ugc-admin');
+
+    // The name, not just the id: "1352" is not something you can judge a photo
+    // against. Best-effort — beachLabel falls back to the id if the lookup fails.
+    const beachName = await beachLabel(photo.region_id, photo.beach_id).catch(() => `Παραλία #${photo.beach_id}`);
 
     const lines = [
       '📸 <b>Νέα φωτογραφία παραλίας</b>',
-      `Παραλία: <code>${escapeHtml(photo.beach_id)}</code> — ${escapeHtml(photo.region_id)}`,
+      `${escapeHtml(beachName)} — ${escapeHtml(photo.region_id)}`,
     ];
     if (photo.caption) lines.push(`Λεζάντα: ${escapeHtml(photo.caption)}`);
     if (photo.show_credit === false) lines.push('<i>Ο χρήστης ΔΕΝ θέλει να φαίνεται το όνομά του.</i>');
-    lines.push(`\n<a href="${escapeHtml(queueUrl)}">Άνοιγμα ουράς ελέγχου</a>`);
+    lines.push(`\n<a href="${escapeHtml(queueUrl)}">Άνοιγμα κονσόλας διαχείρισης</a>`);
 
     // A one-hour signed URL so the photo itself is visible in the chat without
     // the bucket ever being public. If signing fails, still send the text — the

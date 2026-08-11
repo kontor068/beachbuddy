@@ -154,6 +154,56 @@ const patchItem = async (kind, id, patch) => {
   return rows[0] || null;
 };
 
+// ── Which beach is this, in words ────────────────────────────────────────────
+// The tables store (region_id, beach_id) because that pair is the only stable
+// identifier — ids are unique per region, not nationally. But "Παραλία #1352" is
+// not something a human can approve: judging whether a photo belongs to a beach
+// needs the beach's name. The names live in the site's own published data, which
+// is on the same deploy as this function, so one fetch per region resolves them.
+//
+// Best-effort by design: a failed lookup falls back to the id and nothing breaks.
+// A moderation queue that refuses to render because a label is missing would be a
+// far worse outcome than a queue that shows a number.
+const beachNameCache = new Map();
+
+const siteOrigin = () => (process.env.URL || process.env.DEPLOY_URL || 'https://calmbeach.gr').replace(/\/$/, '');
+
+// The PROMISE is cached, not the result. Ten pending photos from one region are
+// labelled concurrently, so caching only on completion would fire ten identical
+// fetches before the first one returned.
+const regionBeachNames = (regionId) => {
+  if (!regionId) return Promise.resolve(null);
+  if (beachNameCache.has(regionId)) return beachNameCache.get(regionId);
+
+  const pending = (async () => {
+    try {
+      const response = await fetch(`${siteOrigin()}/data/beaches/${encodeURIComponent(regionId)}.json`);
+      if (!response.ok) return null;
+      const list = await response.json();
+      return new Map((Array.isArray(list) ? list : []).map((b) => [String(b.id), b.name]));
+    } catch {
+      /* offline, renamed region, bad deploy — the id is still a usable label */
+      return null;
+    }
+  })();
+
+  // Cached even when it resolves to null, so a region with no file is not
+  // re-fetched on every card of every render.
+  beachNameCache.set(regionId, pending);
+  return pending;
+};
+
+/** "Παραλία Βαγίας" when we can resolve it, "Παραλία #80" when we cannot. */
+export const beachLabel = async (regionId, beachId) => {
+  const names = await regionBeachNames(regionId);
+  return names?.get(String(beachId)) || `Παραλία #${beachId}`;
+};
+
+/** One pass over a queue, resolving every label with at most one fetch per region. */
+export const withBeachLabels = async (items = []) => Promise.all(
+  items.map(async (item) => ({ ...item, beach_name: await beachLabel(item.region_id, item.beach_id) }))
+);
+
 // ── Storage ──────────────────────────────────────────────────────────────────
 
 /**

@@ -3,6 +3,14 @@
 //
 //   https://calmbeach.gr/api/ugc-admin?key=YOUR_KEY
 //
+// NOT THE MAIN DOOR ANY MORE (11/08/2026). The same queue now lives inside the
+// traffic console — /api/traffic?key=…&tab=photos — because an admin page you
+// have to remember separately is an admin page you do not open. That is where
+// the Telegram alert links and where the pending count is visible without
+// asking for it. This file stays as a fallback that depends on nothing except
+// Supabase: no map, no blobs day-scan, no traffic key. If the console ever
+// breaks, moderation still has a door.
+//
 // Set UGC_ADMIN_KEY in the Netlify env to enable it (unset ⇒ 403, never open) —
 // the same gate as /api/traffic. Deliberately built BEFORE anything can be
 // uploaded: a moderation queue that arrives after the content it moderates means
