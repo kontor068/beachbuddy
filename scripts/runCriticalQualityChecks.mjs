@@ -194,10 +194,10 @@ const checks = [
   },
   {
     id: 'tile-fit',
-    title: 'No tile clips a word',
-    description: 'Opens the answer card at 320 / 360 / 390 / 430 px in all five languages and measures every text node inside a tile: 400 measurements, and none of them may be cut off horizontally.',
+    title: 'No tile or tab clips a word, and every tab lands',
+    description: 'Opens the answer card at 320 / 360 / 390 / 430 px in all five languages and measures every text node inside a tile — 400 measurements, none of which may be cut off horizontally — then does the same for the fixed bottom bar, where navigation and up to three jump tabs share one row: no clipped label, no row wider than the viewport, no control under 44 px. Finally it CLICKS each tab and checks the section it jumps to lands clear of the sticky header and takes keyboard focus with it.',
     protects: 'The eight tiles are the whole card, and on a 320 px phone each one gets about 66 px. A long word does not wrap — it is simply cut, and the reader is handed half a fact («Με αυτοκίν…»). BeachAnswerHero.tsx has carried a comment describing exactly this measurement, and the `data-tilefit` attributes it was run against, since the day the card was built — but the probe was never committed, so for weeks nothing enforced it. When it was finally written down (05/08/2026) it immediately found three words still being cut, in Greek and German, that no one had seen.',
-    failureAction: 'Fix it with the levers the card already uses below 380 px — side padding and one step of font size — never by shortening the copy and never by letting words break mid-syllable (a broken Greek word reads as a typo, which is why [word-break:normal] is set explicitly). If a language needs a shorter label, change that label, not the rule.',
+    failureAction: 'For a tile: fix it with the levers the card already uses below 380 px — side padding and one step of font size — never by shortening the copy and never by letting words break mid-syllable (a broken Greek word reads as a typo, which is why [word-break:normal] is set explicitly). If a language needs a shorter label, change that label, not the rule. For a bar tab: shorten that language\'s tabWave/tabStory/tabNearby string — the tab carries an icon and is allowed to be shorter than the heading it lands on. For a failed landing: the scroll-mt on the three jump targets in BeachDetailPage must clear the sticky header, which was 77 px when this was written; if the header grew, grow the margin.',
     command: process.execPath,
     args: ['scripts/validateTileFit.mjs'],
   },

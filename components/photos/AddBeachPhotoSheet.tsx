@@ -78,6 +78,8 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
   const [showCredit, setShowCredit] = useState(true);
   const [stage, setStage] = useState<Stage>('form');
   const [error, setError] = useState<string | null>(null);
+  /** Flipped only when the server says guest uploads are off — see handleSubmit. */
+  const [needsAccount, setNeedsAccount] = useState(false);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +108,7 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
     setShowCredit(true);
     setStage('form');
     setError(null);
+    setNeedsAccount(false);
     setPreparedPhoto(null);
     trackEvent('photo_sheet_opened', undefined, { source, signed_in: isSignedIn ? 1 : 0 });
     // `isSignedIn` is read for the event only; re-running on a sign-in flip would
@@ -197,6 +200,7 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
       case 'unreadable': return c.errors.unreadable;
       case 'too-small': return c.errors.tooSmall;
       case 'not-signed-in': return c.errors.notSignedIn;
+      case 'sign-in-required': return c.errors.signInRequired;
       case 'quota': return c.errors.quota;
       default: return c.errors.failed;
     }
@@ -230,7 +234,9 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
     if (!beach) { setError(c.errors.noBeach); return; }
     if (!photo) { setError(c.errors.unreadable); return; }
     if (!hasRights) { setError(c.errors.noRights); return; }
-    if (!userId) { setError(c.errors.notSignedIn); return; }
+    // NO SIGN-IN CHECK. A visitor with no account is the normal case now: the
+    // upload service mints a guest identity at send time. `userId` is passed
+    // through only so a REAL account keeps its own uid (and its name credit).
 
     setError(null);
     setStage('sending');
@@ -245,6 +251,10 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
 
     if (result.status === 'error') {
       setStage('form');
+      // The one failure a visitor can actually do something about: guest uploads
+      // are switched off in the project, so the form turns into the Google ask
+      // rather than showing a dead-end message under a filled-in form.
+      if (result.reason === 'sign-in-required') setNeedsAccount(true);
       setError(messageFor(result.reason));
       trackEvent('photo_upload_failed', undefined, { reason: result.reason, source });
       return;
@@ -306,7 +316,11 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-4">
-          {!isSignedIn ? (
+          {/* THE SIGN-IN WALL IS NOT THE DEFAULT ANY MORE (11/08/2026). It shows
+              only when the project has guest uploads switched off and the send
+              actually came back refused — never as the first thing a visitor
+              meets. See the note on handleAddPhoto in App.tsx for the numbers. */}
+          {needsAccount ? (
             <div className="py-4 text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-50 text-[#007a83]">
                 <Camera className="h-7 w-7" aria-hidden="true" />
@@ -501,20 +515,41 @@ export const AddBeachPhotoSheet: React.FC<AddBeachPhotoSheetProps> = ({
                     and unticking it is honoured everywhere the photo appears,
                     including the baked static pages where a wrong credit cannot
                     be quietly corrected later. */}
-                <label className="mt-2 flex cursor-pointer items-start gap-3 rounded-2xl bg-white/70 p-3.5">
-                  <input
-                    type="checkbox"
-                    checked={showCredit}
-                    onChange={event => setShowCredit(event.target.checked)}
-                    className="mt-0.5 h-5 w-5 shrink-0 rounded border-slate-300 text-[#007a83] focus:ring-2 focus:ring-cyan-400"
-                  />
-                  <span className="text-[13px] font-semibold leading-snug text-slate-700">
-                    {c.creditLabel}
-                    <span className="mt-0.5 block text-[12px] font-medium text-slate-500">
-                      {showCredit ? c.creditOnHint : c.creditOffHint}
+                {isSignedIn ? (
+                  <label className="mt-2 flex cursor-pointer items-start gap-3 rounded-2xl bg-white/70 p-3.5">
+                    <input
+                      type="checkbox"
+                      checked={showCredit}
+                      onChange={event => setShowCredit(event.target.checked)}
+                      className="mt-0.5 h-5 w-5 shrink-0 rounded border-slate-300 text-[#007a83] focus:ring-2 focus:ring-cyan-400"
+                    />
+                    <span className="text-[13px] font-semibold leading-snug text-slate-700">
+                      {c.creditLabel}
+                      <span className="mt-0.5 block text-[12px] font-medium text-slate-500">
+                        {showCredit ? c.creditOnHint : c.creditOffHint}
+                      </span>
                     </span>
-                  </span>
-                </label>
+                  </label>
+                ) : (
+                  /* No checkbox for a guest: there is no name on record to show or
+                     hide, so offering the choice would be theatre. Signing in is
+                     offered as what it actually is — the way to get your name
+                     under the photo — and never as a condition for sending it. */
+                  <div className="mt-2 rounded-2xl bg-white/70 p-3.5">
+                    <p className="text-[13px] font-semibold leading-snug text-slate-700">{c.guestCreditTitle}</p>
+                    <p className="mt-0.5 text-[12px] font-medium leading-snug text-slate-500">{c.guestCreditHint}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        trackEvent('photo_sheet_sign_in_clicked', undefined, { source });
+                        onSignIn();
+                      }}
+                      className="mt-2 min-h-11 rounded-full text-[13px] font-bold text-[#007a83] underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                    >
+                      {c.guestCreditCta}
+                    </button>
+                  </div>
+                )}
 
                 <p className="mt-2 px-1 text-[12px] font-medium leading-snug text-slate-500">{c.privacyNote}</p>
 

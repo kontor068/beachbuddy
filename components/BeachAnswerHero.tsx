@@ -163,7 +163,15 @@ const TILE_TEXT = 'w-full [overflow-wrap:normal] [word-break:normal] [hyphens:no
    pushes its number down while the three tiles beside it keep theirs up — the row of figures
    stops being a row. 10 px keeps every label on one line in all five languages at 320-430 px
    and is still a step up from the 9 px it was. */
-const TILE_BOX = 'flex min-w-0 flex-col items-center gap-1 rounded-2xl px-0 min-[380px]:px-1 py-3 text-center shadow-sm shadow-sky-900/5 ring-1';
+/* SUBGRID, not flex-column. A tile is four stacked slots (glyph / label / value / hint) and
+   with a flex column each tile sizes those slots on its own — so the moment ONE label wraps
+   to two lines («Κύμα ανοιχτά» at phone width) that tile's number drops ~12 px below the three
+   beside it and the row of figures stops reading as a row (reported 11/08/2026). Spanning the
+   parent grid's four rows makes the four slots line up ACROSS tiles: every label row is as tall
+   as the tallest label, so the numbers share one baseline whatever the language does to the
+   words. `gap-1` here overrides the parent's gap-2 for the tracks the tile spans, so the inside
+   of a tile keeps its old 4 px rhythm while the gap between tiles stays 8 px. */
+const TILE_BOX = 'grid grid-rows-subgrid row-span-4 min-w-0 justify-items-center gap-1 rounded-2xl px-0 min-[380px]:px-1 py-3 text-center shadow-sm shadow-sky-900/5 ring-1';
 const TILE_HINT = 'text-[8px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
 
 const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint }) => (
@@ -494,7 +502,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
             screens down in four separate cards. */}
         {readings.length > 0 && (
           <div
-            className={`grid gap-2 ${readings.length === 4 ? 'grid-cols-4' : readings.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
+            className={`grid grid-rows-[auto_auto_auto_auto] gap-2 ${readings.length === 4 ? 'grid-cols-4' : readings.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
             data-nosnippet="true"
           >
             {readings.map((r) => (
@@ -517,20 +525,21 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
             card replaced the old "weather now" block on 31/07, and the flag it ships with
             (statesShoreIncidence) went on silencing the SECOND copy of the same fact further
             down the page, so the explanation vanished from both places at once. */}
-        {explanation && (
-          <p
-            className={explanationIsVerdict
-              ? 'px-1 text-center text-base font-bold leading-snug text-slate-800'
-              : 'px-1 text-sm font-medium leading-relaxed text-slate-700'}
-            data-nosnippet="true"
-          >
+        {/* 11/08/2026 — THE LIVE SENTENCE IS NO LONGER PRINTED HERE. «Με βόρειο άνεμο 4 Μπφ
+            που φυσάει τώρα, εδώ είναι σχετικά προστατευμένα» re-said in words exactly what the
+            four tiles above it had just said in figures (4 Μπφ, Β, «σχετικά προστατευμένα» is
+            already the wind tile's own hint), so it read as filler under the numbers rather
+            than as an explanation of them. Only the calm-day verdict — the short answer that
+            is NOT anywhere else on the card — keeps the slot. */}
+        {explanation && explanationIsVerdict && (
+          <p className="px-1 text-center text-base font-bold leading-snug text-slate-800" data-nosnippet="true">
             {explanation}
           </p>
         )}
 
         {practical.length > 0 && (
           <div
-            className={`grid gap-2 ${practical.length >= 4 ? 'grid-cols-4' : practical.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
+            className={`grid grid-rows-[auto_auto_auto_auto] gap-2 ${practical.length >= 4 ? 'grid-cols-4' : practical.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}
           >
             {practical.map((tile) => (
               <Practical key={tile.key} tile={tile} />

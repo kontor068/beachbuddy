@@ -38,6 +38,9 @@ interface HeaderProps {
   onAddPhoto?: () => void;
   beachProfile?: BeachProfile;
   onBeachProfileChange?: (next: BeachProfile) => void;
+  /** Sticky top bar. Landing page only — inside a region the bar scrolls away
+      as it always did, so the map and the picks keep the full screen. */
+  stickyTopBar?: boolean;
 }
 
 const languageLabels: Record<SupportedLanguage, { short: string; label: string }> = {
@@ -97,6 +100,7 @@ const Header: React.FC<HeaderProps> = ({
   beachProfile,
   onBeachProfileChange,
   onOpenFavorites,
+  stickyTopBar = false,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
@@ -180,16 +184,27 @@ const Header: React.FC<HeaderProps> = ({
     };
   }, [isAccountMenuOpen]);
 
-  // NOTE: no z-index on the outer <header>. It wraps the whole hero, map and
-  // today's picks (~1600px tall), so a z-index turned it into a stacking
-  // context that swallowed every FOLLOWING sibling section painted at a lower
-  // z: the trip planner strip and the "more sheltered options" section both
-  // rendered as blank bands — real layout, real text, hit-testable, zero
-  // pixels. The sticky bar below keeps its own z-50, which is what actually
-  // needs to float over the page while scrolling.
+  // NOTE: the <header> IS the bar and nothing else — forecastSlot is a sibling,
+  // not a child. A sticky element only travels inside its parent box, so while
+  // the hero lived inside <header> the bar stopped following as soon as the hero
+  // scrolled past; now its parent is the page shell and it can follow to the
+  // bottom.
+  // But it pins with position:FIXED, not sticky, and only when stickyTopBar is
+  // on (landing page). Sticky would need `overflow-x: hidden` gone from <body>,
+  // and that rule is the only thing keeping every OTHER bar on the page (day
+  // chips, map card, section strips) from sticking too — remove it and the
+  // beach list scrolls behind the map. Fixed pins this one bar and touches
+  // nothing else; the spacer below replaces the height it no longer occupies.
+  // The z-50 here is safe only because this element is ~60px tall. It used to
+  // wrap the whole hero, map and today's picks (~1600px), and back then a
+  // z-index turned it into a stacking context that swallowed every FOLLOWING
+  // sibling painted at a lower z: the trip planner strip and the "more
+  // sheltered options" section rendered as blank bands — real layout, real
+  // text, hit-testable, zero pixels. Never let this element wrap tall content
+  // again.
   return (
-    <header className="relative">
-      <div className="sticky top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
+    <>
+      <header className={`${stickyTopBar ? 'fixed inset-x-0' : 'relative'} top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl`}>
         <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
           <button
             type="button"
@@ -349,9 +364,12 @@ const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </header>
+      {/* Keeps the page from jumping up under a fixed bar. Mirrors the bar's
+          own height (60/58px) plus its 1px bottom border. */}
+      {stickyTopBar && <div aria-hidden="true" className="h-[61px] lg:h-[59px]" />}
       {forecastSlot}
-    </header>
+    </>
   );
 };
 

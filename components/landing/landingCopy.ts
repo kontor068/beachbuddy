@@ -152,11 +152,17 @@ export type LandingCopy = {
     titleAccent: string;
     body: string;
     steps: { title: string; body: string }[];
-    /** Signed out — the click starts Google sign-in. */
+    /**
+     * ONE label for both states since 11/08/2026. It used to be a pair — "sign in
+     * and send" vs "send" — because sending genuinely required a Google account.
+     * It no longer does (guest uploads, migration 0005), so a second label would
+     * only be a place for the old promise to survive.
+     */
     cta: string;
-    /** Already signed in — the click opens the upload sheet directly. */
-    ctaSignedIn: string;
-    /** What the account does BESIDES photos, so signing in is worth it either way. */
+    /**
+     * What an account changes now: the name under the photo, nothing else. It is
+     * NOT a condition for sending, and this line must never read as one.
+     */
     note: string;
   };
   story: {
@@ -381,15 +387,16 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // promise to THIS photo, which step 3 then takes back («την κοιτάει
       // άνθρωπος»). The present tense describes what happens to photos in
       // general and leaves the approval queue where it belongs.
-      body: 'Οι μισές παραλίες εδώ δεν έχουν καμία φωτογραφία, κι όσες έχουν δείχνουν συνήθως θάλασσα από μακριά. Αν πήγες φέτος κι έβγαλες μια καλή, στείλ’ την μας. Μπαίνει στη σελίδα της παραλίας, με το όνομά σου από κάτω αν το θέλεις.',
+      // «χωρίς λογαριασμό» ΜΕΣΑ στην παράκληση (11/08/2026), όχι σε ψιλά γράμματα
+      // από κάτω: το εμπόδιο πρέπει να πέφτει την ίδια στιγμή που ζητάμε τη χάρη.
+      body: 'Οι μισές παραλίες εδώ δεν έχουν καμία φωτογραφία, κι όσες έχουν δείχνουν συνήθως θάλασσα από μακριά. Αν πήγες φέτος κι έβγαλες μια καλή, στείλ’ την μας — χωρίς λογαριασμό, χωρίς email. Μπαίνει στη σελίδα της παραλίας.',
       steps: [
-        { title: 'Μπες με Google', body: 'Δεν χρειάζεται καινούριος κωδικός.' },
+        { title: 'Διάλεξε παραλία', body: 'Γράψε το όνομά της και τη βρίσκουμε.' },
         { title: 'Διάλεξε τη φωτογραφία', body: 'Στείλ’ την όπως είναι από το κινητό.' },
         { title: 'Την κοιτάει άνθρωπος', body: 'Δεν ανεβαίνει μόνη της. Αν είναι καλή, θα τη δεις στη σελίδα της παραλίας.' },
       ],
-      cta: 'Μπες και στείλε φωτογραφία',
-      ctaSignedIn: 'Στείλε φωτογραφία',
-      note: 'Με τον λογαριασμό κρατάς και τις αγαπημένες σου παραλίες, σε κινητό και υπολογιστή.',
+      cta: 'Στείλε φωτογραφία',
+      note: 'Χωρίς λογαριασμό η φωτογραφία γράφεται «από επισκέπτη». Αν θες το όνομά σου από κάτω, μπες με Google.',
     },
     // The page's one warm, human moment. It lands right after the dark manifesto
     // on purpose: that band is the institutional voice (what we measure, where we
@@ -512,15 +519,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       overline: 'Photos from you',
       title: 'Your photo is better than ours',
       titleAccent: 'better than ours',
-      body: 'Half the beaches here have no photo at all, and the ones that do usually show the sea from far away. If you went this summer and got a good one, send it over. It goes on the beach page, with your name underneath if you want it there.',
+      body: 'Half the beaches here have no photo at all, and the ones that do usually show the sea from far away. If you went this summer and got a good one, send it over — no account, no email. It goes on the beach page.',
       steps: [
-        { title: 'Sign in with Google', body: 'No new password to invent.' },
+        { title: 'Pick the beach', body: 'Type its name and we will find it.' },
         { title: 'Pick the photo', body: 'Send it straight from your phone, as it is.' },
         { title: 'A person looks at it', body: 'It does not go up on its own. If it is good, you will see it on the beach page.' },
       ],
-      cta: 'Sign in and send a photo',
-      ctaSignedIn: 'Send a photo',
-      note: 'The account also keeps your saved beaches, on your phone and on your computer.',
+      cta: 'Send a photo',
+      note: 'Without an account the photo is credited "from a visitor". If you want your name underneath, sign in with Google.',
     },
     story: {
       overline: 'Who we are',
@@ -623,15 +629,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       overline: 'Fotos von dir',
       title: 'Dein Foto ist besser als unseres',
       titleAccent: 'besser als unseres',
-      body: 'Die Hälfte der Strände hier hat überhaupt kein Foto, und die anderen zeigen meistens das Meer aus der Ferne. Wenn du diesen Sommer da warst und ein gutes Bild hast, schick es uns. Es kommt auf die Strandseite, mit deinem Namen darunter, wenn du das möchtest.',
+      body: 'Die Hälfte der Strände hier hat überhaupt kein Foto, und die anderen zeigen meistens das Meer aus der Ferne. Wenn du diesen Sommer da warst und ein gutes Bild hast, schick es uns — ohne Konto, ohne E-Mail. Es kommt auf die Strandseite.',
       steps: [
-        { title: 'Mit Google anmelden', body: 'Kein neues Passwort nötig.' },
+        { title: 'Strand aussuchen', body: 'Schreib den Namen, wir finden ihn.' },
         { title: 'Foto aussuchen', body: 'Schick es direkt vom Handy, so wie es ist.' },
         { title: 'Ein Mensch schaut es an', body: 'Es geht nicht von allein online. Wenn es gut ist, siehst du es auf der Strandseite.' },
       ],
-      cta: 'Anmelden und Foto schicken',
-      ctaSignedIn: 'Foto schicken',
-      note: 'Das Konto behält auch deine gespeicherten Strände, auf dem Handy und am Computer.',
+      cta: 'Foto schicken',
+      note: 'Ohne Konto erscheint das Foto als „von einem Besucher". Wenn du deinen Namen darunter möchtest, melde dich mit Google an.',
     },
     story: {
       overline: 'Wer wir sind',
@@ -733,15 +738,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       overline: 'Vos photos',
       title: 'Votre photo est meilleure que la nôtre',
       titleAccent: 'meilleure que la nôtre',
-      body: "La moitié des plages ici n'ont aucune photo, et celles qui en ont montrent souvent la mer de loin. Si vous y êtes allé cet été et que vous avez une belle photo, envoyez-la-nous. Elle va sur la page de la plage, avec votre nom en dessous si vous le voulez.",
+      body: "La moitié des plages ici n'ont aucune photo, et celles qui en ont montrent souvent la mer de loin. Si vous y êtes allé cet été et que vous avez une belle photo, envoyez-la-nous — sans compte, sans e-mail. Elle va sur la page de la plage.",
       steps: [
-        { title: 'Connectez-vous avec Google', body: "Pas de nouveau mot de passe à inventer." },
+        { title: 'Choisissez la plage', body: 'Écrivez son nom, nous la trouvons.' },
         { title: 'Choisissez la photo', body: 'Envoyez-la telle quelle depuis votre téléphone.' },
         { title: 'Une personne la regarde', body: "Elle ne se publie pas toute seule. Si elle est belle, vous la verrez sur la page de la plage." },
       ],
-      cta: 'Se connecter et envoyer une photo',
-      ctaSignedIn: 'Envoyer une photo',
-      note: "Le compte garde aussi vos plages enregistrées, sur le téléphone comme sur l'ordinateur.",
+      cta: 'Envoyer une photo',
+      note: "Sans compte, la photo est créditée « d'un visiteur ». Si vous voulez votre nom en dessous, connectez-vous avec Google.",
     },
     story: {
       overline: 'Qui nous sommes',
@@ -845,15 +849,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       overline: 'Le tue foto',
       title: 'La tua foto è migliore della nostra',
       titleAccent: 'migliore della nostra',
-      body: 'Metà delle spiagge qui non ha nessuna foto, e quelle che ce l’hanno mostrano di solito il mare da lontano. Se ci sei stato quest’estate e hai una foto bella, mandacela. Finisce sulla pagina della spiaggia, con il tuo nome sotto se lo vuoi.',
+      body: 'Metà delle spiagge qui non ha nessuna foto, e quelle che ce l’hanno mostrano di solito il mare da lontano. Se ci sei stato quest’estate e hai una foto bella, mandacela — senza account, senza email. Finisce sulla pagina della spiaggia.',
       steps: [
-        { title: 'Accedi con Google', body: 'Non serve una password nuova.' },
+        { title: 'Scegli la spiaggia', body: 'Scrivi il nome e la troviamo noi.' },
         { title: 'Scegli la foto', body: 'Mandala dal telefono così com’è.' },
         { title: 'La guarda una persona', body: 'Non va online da sola. Se è bella, la vedrai sulla pagina della spiaggia.' },
       ],
-      cta: 'Accedi e manda una foto',
-      ctaSignedIn: 'Manda una foto',
-      note: 'L’account tiene anche le tue spiagge salvate, sul telefono e sul computer.',
+      cta: 'Manda una foto',
+      note: 'Senza account la foto è accreditata «da un visitatore». Se vuoi il tuo nome sotto, accedi con Google.',
     },
     story: {
       overline: 'Chi siamo',

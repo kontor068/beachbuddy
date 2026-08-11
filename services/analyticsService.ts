@@ -53,6 +53,15 @@ export type AnalyticsEvent =
   // Street map vs satellite imagery. Tells us whether the aerial view is a niche
   // toggle or the one people actually want to land on.
   | 'map_basemap_toggle'
+  // The in-page shortcuts that sit under today's answer on a beach page. Carries
+  // `target` ('story' | 'nearby') so the two are judged separately rather than as
+  // one number — they solve different problems and only one of them may be worth
+  // keeping. They exist because the page is ~6 phone screens and we have NEVER
+  // measured scroll depth on it, so this event is the whole point of shipping
+  // them: if they go untapped, the honest reading is that the length is not what
+  // costs us, and the chips come out again. Same discipline the trip planner's
+  // unanswered "how many days?" bought the hard way.
+  | 'beach_jump_clicked'
   | 'beta_feedback_clicked'
   // National landing (components/landing/). `landing_viewed` is the denominator
   // for every drop-off question — without it the landing's reach is invisible,

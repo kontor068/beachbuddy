@@ -16,6 +16,8 @@ interface BeachExplanation {
   heroTitle: string;
   heroBullets: string[];
   cardSummary: string;
+  /** The same reasons as points, for list cards. See BeachCopyResult.cardPoints. */
+  cardPoints: string[];
   tradeoffText?: string;
 }
 
@@ -36,6 +38,7 @@ export const generateBeachExplanation = (input: BeachExplanationInput): BeachExp
     heroTitle: copy.heroTitle,
     heroBullets: copy.detailBullets,
     cardSummary: copy.cardSummary,
+    cardPoints: copy.cardPoints,
     tradeoffText: copy.tradeoffText,
   };
 };

@@ -898,8 +898,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     bestTime: { en: 'Best Time', gr: 'Ώρα', de: 'Beste Zeit', it: 'Ora migliore', fr: 'Meilleur moment' },
     toVisit: { en: 'To visit', gr: 'Για επίσκεψη', de: 'Zum Besuch', it: 'Per visitare', fr: 'Pour visiter' },
     bestSwim: { en: `Best swimming time ${selectedDayPrefix}`, gr: `Καλύτερη ώρα για μπάνιο ${selectedDayPrefix}`, de: 'Beste Badezeit', it: 'Ora migliore per nuotare', fr: 'Meilleur moment pour se baigner' },
-    feedbackTitle: { en: 'How accurate was our forecast?', gr: 'Πόσο σωστή ήταν η πρόβλεψή μας;', de: 'Wie genau war unsere Vorhersage?', it: 'Quanto era accurata la previsione?', fr: 'À quel point notre prévision était-elle juste ?' },
-    feedbackText: { en: 'Your feedback helps us improve our recommendations for everyone.', gr: 'Η γνώμη σου μας βοηθά να βελτιώνουμε τις προτάσεις για όλους.', de: 'Dein Feedback hilft uns, die Empfehlungen für alle zu verbessern.', it: 'Il tuo feedback ci aiuta a migliorare i consigli per tutti.', fr: 'Votre avis nous aide a ameliorer les recommandations pour tous.' },
+    /* Ο τίτλος ρωτούσε «πόσο σωστή ήταν η πρόβλεψη» και τα κουμπιά περιέγραφαν καιρό
+       («Είχε κύμα», «Πολύς αέρας»), οπότε ο κόσμος τα πατούσε ως περιγραφή της ημέρας
+       — ακόμα κι όταν το είχαμε ήδη πει σωστά. Τώρα η ερώτηση είναι σύγκριση με ό,τι
+       του είπαμε και τα κουμπιά είναι συγκριτικά («πιο πολύ», «πιο ήρεμα»), ώστε να
+       τα πατάει μόνο όποιος βρήκε κάτι ΔΙΑΦΟΡΕΤΙΚΟ από την πρόβλεψη. */
+    feedbackTitle: { en: 'Did it match what we told you?', gr: 'Ταίριαζε με αυτό που σου είπαμε;', de: 'Hat es gestimmt, was wir gesagt haben?', it: 'Corrispondeva a quello che ti abbiamo detto?', fr: 'Cela correspondait-il à notre prévision ?' },
+    feedbackText: { en: 'Tap one of the others only if we got it wrong — that is how we fix the recommendations.', gr: 'Πάτα κάτι από τα υπόλοιπα μόνο αν πέσαμε έξω — έτσι διορθώνουμε τις προτάσεις.', de: 'Tippe die anderen nur an, wenn wir danebenlagen — so verbessern wir die Empfehlungen.', it: 'Tocca le altre solo se abbiamo sbagliato — così miglioriamo i consigli.', fr: 'Choisissez une autre réponse seulement si nous nous sommes trompés — cela améliore nos recommandations.' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     /* Was "Συνθήκες σήμερα" — a heading so general it could have introduced any of the
@@ -937,6 +942,21 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     // in the outline would compete with the ones that carry real search intent.
     sectionBeach: { en: 'The beach', gr: 'Η παραλία', de: 'Der Strand', it: 'La spiaggia', fr: 'La plage' },
     sectionNearby: { en: 'Nearby', gr: 'Κοντά εδώ', de: 'In der Nähe', it: 'Nei dintorni', fr: 'À proximité' },
+    /* The bottom-bar tabs. These are the ONE place on the page where a label may be
+       shorter than the heading it lands on: a tab is ~63 px wide at 320 px and carries
+       an icon that does half the naming. The full headings stay where they belong, on
+       the sections themselves. Kept deliberately short in every language — German
+       "In der Nähe" would wrap to two lines and make the bar taller on every page. */
+    tabWave: { en: 'Waves', gr: 'Κύμα', de: 'Wellen', it: 'Onde', fr: 'Vagues' },
+    tabStory: { en: 'About', gr: 'Πληροφορίες', de: 'Infos', it: 'Info', fr: 'Infos' },
+    /* «Εναλλακτικές», not «Κοντινές» (Miltos, 11/08). The section it lands on is
+       headed «Κοντινές προτάσεις», so this is the one tab whose word is chosen for
+       what the visitor WANTS rather than for what the heading says: at the moment
+       you look at this bar, "somewhere else" is the question — how far away that
+       somewhere is comes after. The longest of the four labels by some way, which
+       is why the fit gate re-measured it at 320 px. */
+    tabNearby: { en: 'Alternatives', gr: 'Εναλλακτικές', de: 'Alternativen', it: 'Alternative', fr: 'Alternatives' },
+    tabPhoto: { en: 'Add photo', gr: 'Ανέβασε φωτό', de: 'Foto senden', it: 'Invia foto', fr: 'Envoyer photo' },
     conditionsUnavailableTitle: { en: 'Conditions are not available right now', gr: 'Οι συνθήκες δεν είναι διαθέσιμες τώρα', de: 'Die Bedingungen sind derzeit nicht verfügbar', it: 'Le condizioni non sono disponibili al momento', fr: 'Les conditions ne sont pas disponibles pour le moment' },
     conditionsUnavailableBody: { en: 'We could not refresh the forecast, so wind and sea conditions are hidden to avoid an out-of-date reading. Beach info below is still accurate.', gr: 'Δεν μπορέσαμε να ανανεώσουμε την πρόγνωση, γι’ αυτό κρύβουμε άνεμο και θάλασσα ώστε να μη δώσουμε παρωχημένη εικόνα. Οι πληροφορίες της παραλίας παρακάτω ισχύουν.', de: 'Wir konnten die Vorhersage nicht aktualisieren, daher sind Wind- und Seebedingungen ausgeblendet. Die Strandinfos unten bleiben gültig.', it: 'Non siamo riusciti ad aggiornare la previsione, quindi vento e mare sono nascosti. Le info sulla spiaggia restano valide.', fr: 'Nous n’avons pas pu actualiser la prévision ; le vent et la mer sont masqués. Les infos plage ci-dessous restent valables.' },
     lastForecastAt: { en: (time: string) => `Last forecast: ${time}`, gr: (time: string) => `Τελευταία πρόγνωση: ${time}`, de: (time: string) => `Letzte Vorhersage: ${time}`, it: (time: string) => `Ultima previsione: ${time}`, fr: (time: string) => `Dernière prévision : ${time}` },
@@ -1066,6 +1086,37 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     openNavigation(beach);
   };
   const canNavigate = canOpenNavigation(beach);
+
+  /**
+   * Same-page jump for the shortcut chips under today's answer.
+   *
+   * A <button>, NOT <a href="#…">, on purpose. This app keeps the URL in sync with
+   * its own state (region, near-me, filters), so a hash left in the address bar is
+   * one more thing that has to be consumed and stripped on the next read — exactly
+   * the trap `?near=1` already sprang, where a leftover param re-fired geolocation.
+   * Nothing about "I scrolled to the text" needs to survive a reload, so nothing
+   * about it belongs in the URL.
+   *
+   * Focus moves with the scroll. A jump control that only scrolls leaves keyboard
+   * focus behind, so the next Tab throws the visitor back to the top of the page —
+   * the control would actively hurt the people who need it most. The targets carry
+   * tabIndex={-1} for this and nothing else.
+   */
+  const handleJump = (elementId: string, target: 'wave' | 'story' | 'nearby') => {
+    trackEvent('beach_jump_clicked', beach.id, {
+      locale: language === 'gr' ? 'el' : 'en',
+      region: islandDisplayName,
+      beach_name: beach.name.en,
+      target,
+    });
+
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    element.focus({ preventScroll: true });
+  };
 
   // 1. Calculate Conditions & Scores
   // The headline wind, wave and verdict all read from `dayForecast` — which App now hands over
@@ -1317,17 +1368,26 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // below). It reuses coveWave.onshore — already computed for every beach from the same geometry
   // the wave figure uses — and the MAP pin level, so it can never contradict the pins.
   //
-  // Built AFTER weatherNow on purpose: the card above states the same wind-vs-shore fact in
-  // almost the same words at ≥4 Bft, so we hand it `suppressIncidence`, which now silences the
-  // whole line. (Ordering matters — this used to sit above buildWeatherNowContent.)
+  // 11/08/2026 — THIS LINE IS NOW THE ONLY PLACE THE FACT IS STATED, so it is never suppressed.
+  //
+  // It used to be handed `suppressIncidence: weatherNow.statesShoreIncidence`, meaning "stay
+  // quiet, the card above already said it in almost the same words". That premise died when the
+  // live sentence was removed from the hero (BeachAnswerHero.tsx:528): leaving the suppression in
+  // would delete the wind-vs-shore explanation from the WHOLE page — which is exactly the silent
+  // double-disappearance of 31/07 that `validateOpenWaterLabel` and the browser gate were written
+  // to catch. They caught it again, the same day, from the other direction.
+  //
+  // Removing the duplicate under the tiles and keeping the explanation further down is the point:
+  // the numbers stand on their own where the eye lands, and the sentence that explains them lives
+  // in the conditions section, where it is not repeating a figure printed 40 px above it.
   const shoreIncidenceLine = useMemo(() => buildShoreIncidenceLine({
     onshore: coveWave.onshore,
     mapExposureLevel: mapAlignedExposureLevel,
     windDir: windDir as WindDirection,
     beaufort: beaufortLevel,
     language,
-    suppressIncidence: weatherNow.statesShoreIncidence,
-  }), [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, language, weatherNow.statesShoreIncidence]);
+    suppressIncidence: false,
+  }), [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, language]);
 
   // Show only curated beach-specific photos. Region/island fallbacks are hidden
   // because a wrong landmark damages trust more than a polished placeholder.
@@ -1875,6 +1935,56 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     }
   };
 
+  /**
+   * THE BOTTOM BAR BECOMES A TAB BAR (11/08/2026) — and this knowingly narrows the
+   * button that 05/08 had just widened to 100%. Miltos's call, made twice; the
+   * reasoning that changed my own mind is worth keeping, because the earlier
+   * decision is not simply overruled, it turned out to be answering a different
+   * question:
+   *
+   * The 05/08 note is about WEIGHT — `navigation_clicked` is the metric this page
+   * is judged on, so nothing may sit beside it at equal weight. That still holds
+   * and is still enforced here: navigation is the only filled control, the only
+   * cyan one, and takes `flex-[1.6]` against the tabs' `flex-1`.
+   *
+   * What the note missed is that this bar is FIXED. A shortcut in the page flow is
+   * only useful before you have scrolled past it; a shortcut in this bar is on
+   * screen at every scroll position, which makes it useful in the direction nobody
+   * had considered — BACKWARDS. Four screens down, "show me that wave picture
+   * again" is a real request, and until now the only answer was to flick up blind.
+   * That is the case the page-flow version could never have served, and it is why
+   * the wave tab exists here after being rejected as a chip an hour earlier.
+   *
+   * Two tabs are conditional, so the bar renders with 2, 3 or 4 controls. That is
+   * accepted rather than padded: an always-present tab pointing at a section this
+   * beach does not have is worse than a bar of varying width.
+   */
+  const jumpTabs: Array<{
+    target: 'wave' | 'story' | 'nearby';
+    elementId: string;
+    label: string;
+    icon: React.ReactNode;
+  }> = [
+    ...(showConditions ? [{
+      target: 'wave' as const,
+      elementId: 'today-conditions',
+      label: copy.tabWave[language],
+      icon: <Waves className="h-5 w-5 shrink-0 text-cyan-600" aria-hidden="true" />,
+    }] : []),
+    ...(beachStory ? [{
+      target: 'story' as const,
+      elementId: 'beach-story',
+      label: copy.tabStory[language],
+      icon: <ScrollText className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />,
+    }] : []),
+    ...(showConditions && nearbyBeaches.length > 0 ? [{
+      target: 'nearby' as const,
+      elementId: 'nearby-beaches',
+      label: copy.tabNearby[language],
+      icon: <MapPin className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />,
+    }] : []),
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 via-slate-50 to-white pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-20">
       {/* Sticky Header */}
@@ -2081,7 +2191,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             with the one thing that genuinely differs between two shores at the same hour — how the
             live wind meets this one, and where it sits among its neighbours. Words only, never
             metres: see utils/shoreIncidenceCopy for why no arithmetic may go here. */}
-        <section className="space-y-3" data-nosnippet="true">
+        {/* Jump target for the «Κύμα» tab in the bottom bar. Unlike the other two this
+            one is usually a jump BACKWARDS — the bar is fixed, so it is on screen four
+            screens down, where "show me that wave picture again" is a real request. */}
+        <section id="today-conditions" tabIndex={-1} className="scroll-mt-24 space-y-3 focus:outline-none" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
           {shoreIncidenceLine && (
             <p className="px-1 text-sm leading-relaxed text-slate-700">{shoreIncidenceLine}</p>
@@ -2351,7 +2464,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 4a. About this beach — curated history/geology/character (own section so
             the "Συνθήκες" heading stays about today's weather, not beach info) */}
         {beachStory && (
-          <section className="space-y-3">
+          /* Jump target for the «Πληροφορίες» tab. `scroll-mt-24` (96 px) is not
+             decoration: the header is `sticky top-0` and MEASURED 77 px on a 390 px
+             phone (not the ~64 I assumed — scroll-mt-20 landed the heading 3 px under
+             it, technically visible and visually cramped). Without the margin the
+             heading you jumped to hides behind the header entirely and the visitor
+             lands on a paragraph starting mid-sentence. tabIndex/outline: see
+             handleJump. Both the width and the landing are measured by
+             scripts/validateTileFit.mjs, which clicks each tab for real. */
+          <section id="beach-story" tabIndex={-1} className="scroll-mt-24 space-y-3 focus:outline-none">
             <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
               <ScrollText className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />
               {copy.beachStoryHeading[language]}
@@ -2777,7 +2898,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
               >
                 <ThumbsUp className="w-4 h-4" />
-                {{ en: 'Accurate', gr: 'Σωστό', de: 'Stimmt', it: 'Corretto', fr: 'Exact' }[language]}
+                {{ en: 'It matched', gr: 'Ταίριαζε', de: 'Hat gestimmt', it: 'Corrispondeva', fr: 'Ça correspondait' }[language]}
               </button>
               <button
                 type="button"
@@ -2785,7 +2906,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-sky-100 text-sm font-bold text-sky-700 transition-all hover:bg-sky-50 active:scale-95"
               >
                 <span aria-hidden>🌊</span>
-                {{ en: 'Had waves', gr: 'Είχε κύμα', de: 'Wellen', it: 'Onde', fr: 'Des vagues' }[language]}
+                {{ en: 'More waves', gr: 'Είχε πιο πολύ κύμα', de: 'Mehr Wellen', it: 'Più onde', fr: 'Plus de vagues' }[language]}
               </button>
               <button
                 type="button"
@@ -2793,7 +2914,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-amber-100 text-sm font-bold text-amber-700 transition-all hover:bg-amber-50 active:scale-95"
               >
                 <span aria-hidden>💨</span>
-                {{ en: 'Too windy', gr: 'Πολύς αέρας', de: 'Zu windig', it: 'Troppo vento', fr: 'Trop venteux' }[language]}
+                {{ en: 'More wind', gr: 'Είχε πιο πολύ αέρα', de: 'Mehr Wind', it: 'Più vento', fr: 'Plus de vent' }[language]}
               </button>
               <button
                 type="button"
@@ -2801,7 +2922,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
               >
                 <span aria-hidden>😎</span>
-                {{ en: 'Calmer', gr: 'Πιο ήρεμα', de: 'Ruhiger', it: 'Più calmo', fr: 'Plus calme' }[language]}
+                {{ en: 'Calmer than you said', gr: 'Ήταν πιο ήρεμα', de: 'Ruhiger als gesagt', it: 'Più calmo del previsto', fr: 'Plus calme que prévu' }[language]}
               </button>
             </div>
           )}
@@ -2831,7 +2952,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         />
 
         {showConditions && nearbyBeaches.length > 0 && (
-        <section className="space-y-4" data-nosnippet="true">
+        /* Jump target for the "Κοντινές προτάσεις" chip — same header-clearance and
+           focus reasoning as the story section above. */
+        <section id="nearby-beaches" tabIndex={-1} className="scroll-mt-24 space-y-4 focus:outline-none" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.nearby[language]}</h3>
           <div className="space-y-3">
             <>
@@ -2922,12 +3045,36 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                               boatAccess={hasBoatOnlyAccess(item.beach)}
                               forceShow
                             />
-                            <p
-                              className="text-xs font-semibold text-slate-600 line-clamp-2"
-                              data-nosnippet="true"
-                            >
-                              {itemExplanation.cardSummary || itemWindSummary}
-                            </p>
+                            {/* POINTS, NOT A PARAGRAPH (11/08/2026).
+                                First it was `line-clamp-2`, and on a phone the sentence runs to
+                                three lines, so EVERY card ended in «…» — the clamp was buying an
+                                even card height by cutting the only line that says why THIS beach
+                                and not the one above it. Removing the clamp fixed the truncation
+                                and left the other half of the problem: four cards of prose, each
+                                opening with the same 45 characters («Αύριο ταιριάζει περισσότερο
+                                αν ψάχνεις …»), with the part that actually differs buried inside.
+                                A list is read by scanning, so the scaffolding goes and the facts
+                                stay. The sentence is still what a single beach's own page uses. */}
+                            {itemExplanation.cardPoints.length > 0 ? (
+                              <ul className="space-y-0.5 pt-0.5" data-nosnippet="true">
+                                {itemExplanation.cardPoints.map((point) => (
+                                  <li
+                                    key={point}
+                                    className="flex gap-1.5 text-xs font-semibold leading-snug text-slate-600"
+                                  >
+                                    <span className="select-none text-slate-400" aria-hidden="true">·</span>
+                                    <span className="min-w-0">{point}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p
+                                className="text-xs font-semibold leading-snug text-slate-600"
+                                data-nosnippet="true"
+                              >
+                                {itemExplanation.cardSummary || itemWindSummary}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <ChevronRight className="w-5 h-5 flex-shrink-0 text-slate-300 group-hover:text-cyan-600 transition-colors" />
@@ -3001,17 +3148,66 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           belong); the bar keeps the one thing it is for. `navigation_clicked` is the metric
           this page is judged on — it now gets the whole width instead of 62% of it.
           When there is nothing to navigate to, the bar has no reason to exist at all. */}
-      {canNavigate && (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
-          <div className="mx-auto flex max-w-4xl items-center">
-            <button
-              type="button"
-              onClick={handleNavigation}
-              className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-cyan-600 px-4 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99]"
-            >
-              <Navigation className="h-5 w-5" />
-              {copy.navigation[language]}
-            </button>
+      {(canNavigate || jumpTabs.length > 0 || onAddPhoto) && (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
+          {/* data-tabfit: the same measurable hook the answer tiles carry. Four controls
+              sharing a 320 px row, with labels in five languages, is the exact shape that
+              clipped words in the hero — scripts/validateTileFit.mjs measures both now. */}
+          {/* `gap-1` below 360 px, `gap-1.5` above. With five controls the four gaps are
+              real estate: the fifth tab («Ανέβασε φωτό», 11/08) pushed the Greek row 19 px
+              past a 320 px viewport, measured by the gate below. */}
+          <div data-tabfit className="mx-auto flex max-w-4xl items-stretch gap-1 min-[360px]:gap-1.5">
+            {canNavigate && (
+              <button
+                type="button"
+                onClick={handleNavigation}
+                /* `flex-[1.6]` against the tabs' `flex-1`: it is the only filled
+                   control, it keeps the largest share, and it is the only one that
+                   leaves the site. That is as far as the demotion goes on purpose —
+                   see the block above.
+                   Below 360 px it drops to 1.25. Five controls plus Greek labels do not
+                   fit at 320 px otherwise, and the alternative was cutting «Ανέβασε φωτό»
+                   down to «Φωτό» — which beside a camera icon reads as "see the photos",
+                   the opposite of what the control does. Giving up a fifth of one button's
+                   width on the narrowest phones costs less than a verb. The RULE the 05/08
+                   decision actually set is about weight, not pixels, and it still holds at
+                   every width: this is the only filled control and the only cyan one. */
+                className="flex min-h-[52px] flex-[1.25] flex-col items-center justify-center gap-0.5 rounded-2xl bg-cyan-600 px-0.5 min-[360px]:px-1 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99] min-[360px]:flex-[1.6]"
+              >
+                <Navigation className="h-5 w-5 shrink-0" aria-hidden="true" />
+                <span className="text-[10px] font-extrabold leading-tight">{copy.navigation[language]}</span>
+              </button>
+            )}
+            {jumpTabs.map((tab) => (
+              <button
+                key={tab.target}
+                type="button"
+                onClick={() => handleJump(tab.elementId, tab.target)}
+                className="flex min-h-[52px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white px-0.5 min-[360px]:px-1 text-slate-700 active:scale-[0.99]"
+              >
+                {tab.icon}
+                <span className="text-center text-[10px] font-bold leading-tight">{tab.label}</span>
+              </button>
+            ))}
+            {/* The one control here that is NOT a jump — it opens the upload sheet. Kept last
+                (rightmost) so the three shortcuts stay a block and this reads as the odd one
+                out, which it is. It fires the existing photo funnel via onAddPhoto (source
+                'beach_detail'), so it needs no `beach_jump_clicked`: photo_sheet_opened and
+                the rest of that funnel already measure it end to end.
+
+                This is the same offer that came OUT from under the search an hour ago, and the
+                move is the point: there it interrupted someone deciding where to go, here it
+                sits on the page about a beach they have already been reading about. */}
+            {onAddPhoto && (
+              <button
+                type="button"
+                onClick={onAddPhoto}
+                className="flex min-h-[52px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white px-0.5 min-[360px]:px-1 text-slate-700 active:scale-[0.99]"
+              >
+                <Camera className="h-5 w-5 shrink-0 text-slate-400" aria-hidden="true" />
+                <span className="text-center text-[10px] font-bold leading-tight">{copy.tabPhoto[language]}</span>
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -33,7 +33,7 @@ const TripPlanner = lazyWithChunkRecovery(
 // Hooks & Utils
 import { setStoredJson, setStoredValue } from './utils/safeStorage';
 import { useAuth } from './hooks/useAuth';
-import { deleteAccount } from './services/authService';
+import { deleteAccount, releaseGuestIdentity } from './services/authService';
 // Type-only: the component itself stays behind the lazy import below.
 import type { PhotoBeachOption } from './components/photos/AddBeachPhotoSheet';
 import { useFavoritesSync, syncFavoriteToggle } from './hooks/useFavoritesSync';
@@ -70,7 +70,7 @@ import {
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getRegionDust, type DustLevel } from './services/dustService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
-import { scrollToPageTop, smoothScrollToStableElement } from './utils/scroll';
+import { scrollToPageTop, smoothScrollToStableElement, type StableScrollOptions } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
 import { buildBetaFeedbackUrl } from './utils/betaFeedback';
@@ -2145,26 +2145,36 @@ export const App: React.FC = () => {
   /** Survives the full-page trip to Google, so the intent is not lost on the way. */
   const PENDING_PHOTO_KEY = 'calmbeach:pendingPhoto';
 
+  /**
+   * 11/08/2026 — NO SIGN-IN GATE ANY MORE. This used to bounce anyone without an
+   * account straight to Google before the form was ever seen. Measured over
+   * 04–10/08: 28 people saw the ask, 2 opened this, **0 finished**, with zero
+   * technical failures — we were asking strangers to hand over a Google account
+   * in order to give us a present. The sheet now opens for everybody and the
+   * identity is minted invisibly at send time (services/authService signInAsGuest).
+   *
+   * The stash-and-return dance below is still needed, because the sheet still
+   * offers Google as the way to get your NAME under the photo, and that is a
+   * full-page redirect which wipes every bit of React state — including the fact
+   * that this person was in the middle of sending us a photo of the beach they
+   * were looking at.
+   */
   const handleAddPhoto = useCallback((source: string, beach: PhotoBeachOption | null = null) => {
     if (!auth.isAvailable) return;
-    if (!auth.isSignedIn) {
-      // Signing in is a full page load, which wipes every bit of React state —
-      // including the fact that this person was in the middle of sending us a
-      // photo of the beach they were looking at. Without this they come back to
-      // the same page, signed in, with nothing open, and have to work out that
-      // they must press the same button again. Most people do not.
-      try {
-        window.sessionStorage.setItem(PENDING_PHOTO_KEY, JSON.stringify({ beach, source }));
-      } catch {
-        /* private mode — they simply press the button again */
-      }
-      const returnTo = typeof window === 'undefined'
-        ? undefined
-        : `${window.location.pathname}${window.location.search}`;
-      void auth.signIn(returnTo);
-      return;
-    }
     setPhotoSheet({ beach, source });
+  }, [auth.isAvailable]);
+
+  /** Sign in from inside the sheet, without losing the photo they came to send. */
+  const handleSignInFromPhotoSheet = useCallback((beach: PhotoBeachOption | null, source: string) => {
+    try {
+      window.sessionStorage.setItem(PENDING_PHOTO_KEY, JSON.stringify({ beach, source }));
+    } catch {
+      /* private mode — they simply press the button again */
+    }
+    const returnTo = typeof window === 'undefined'
+      ? undefined
+      : `${window.location.pathname}${window.location.search}`;
+    void auth.signIn(returnTo);
   }, [auth]);
 
   // Pick the intent back up on the other side of the sign-in redirect.
@@ -2755,6 +2765,13 @@ export const App: React.FC = () => {
       // standing, and the forecast, the exposure profiles and the per-beach seas landing one after
       // another moved the content under them. Nothing was scrolling — it only looked that way.
       pendingRegionMapScrollRef.current = true;
+      // Start the new view from the top, instantly, BEFORE it mounts. Whoever pressed this was
+      // probably deep down the landing page, and a replacement page has no business inheriting
+      // that offset: while the landing unmounts and the nearby page builds, the document height
+      // swings wildly (measured: ~6.000px → ~20.000px → ~2.000px) and the browser drags the old
+      // offset along with it, then clamps whatever is left to the end of the document — the legal
+      // footer. From zero there is nothing above us to drag and nothing to clamp.
+      if (typeof window !== 'undefined') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       selectAdHocRegion(nearbyRegion);
       setIsIslandSelectorOpen(false);
       // Surface the nearest beaches first, mirroring the distance-sort affordance.
@@ -3598,9 +3615,13 @@ export const App: React.FC = () => {
    * effect fires the results landing, and both used to run their own five-second correction loop.
    */
   const activeScrollCancelRef = useRef<(() => void) | null>(null);
-  const startStableScroll = (getTarget: () => HTMLElement | null, stickyTop = 0) => {
+  const startStableScroll = (
+    getTarget: () => HTMLElement | null,
+    stickyTop = 0,
+    options: Omit<StableScrollOptions, 'offset'> = {}
+  ) => {
     activeScrollCancelRef.current?.();
-    activeScrollCancelRef.current = smoothScrollToStableElement(getTarget, { offset: stickyTop });
+    activeScrollCancelRef.current = smoothScrollToStableElement(getTarget, { ...options, offset: stickyTop });
   };
   useEffect(() => () => activeScrollCancelRef.current?.(), []);
 
@@ -3620,21 +3641,33 @@ export const App: React.FC = () => {
   };
 
   const scrollToMapSection = () => {
-    // Map landing is intentionally an instant viewport jump. A stable/smooth scroll here makes
-    // the whole page visibly travel while the nearby region mounts, which is especially confusing
-    // on mobile. The map is already sticky, so once it is at the top there is nothing else to animate.
-    const directoryMapId = isDesktopViewport
-      ? 'directory-map-section-desktop'
-      : 'directory-map-section';
-    const fallbackMapId = isDesktopViewport ? 'map-section-desktop' : 'map-section';
-    const target = document.getElementById(directoryMapId) ?? document.getElementById(fallbackMapId);
-    if (!target) return;
+    // Map landing is intentionally an INSTANT viewport jump: a visible glide while the nearby
+    // region mounts is confusing on mobile. What changed (11/08) is what we measure and for how
+    // long we keep measuring it — «Κοντά μου» from the landing page kept ending at the legal
+    // footer, and both halves of that were here:
+    //
+    //   • MEASUREMENT. On mobile #directory-map-section is `position: sticky`, so once you are
+    //     scrolled past its natural place its rect reports the STUCK position (8px). The old
+    //     destination, scrollY + rect.top - 8, therefore evaluated to scrollY — "you are already
+    //     there" — and nothing moved. Tapping from the top of the page worked, tapping from the
+    //     bottom of the landing did nothing, which is exactly the report. #directory-map-anchor
+    //     is a zero-height STATIC element rendered right above it for this purpose.
+    //   • CLAMP. Nothing moved, then the nearby page — 60 beaches instead of a whole landing —
+    //     rendered shorter than the scroll offset the browser was holding, so it clamped us to
+    //     the end of the document. That is how "no scroll at all" surfaces as "took me to the
+    //     legal bits". Re-measuring for a moment afterwards absorbs the same shrink when the
+    //     cards, forecasts and seas land one after another.
+    const targetIds = isDesktopViewport
+      ? ['directory-map-section-desktop', 'map-section-desktop']
+      : ['directory-map-anchor', 'directory-map-section', 'map-section'];
+    const getTarget = () => targetIds
+      .map(id => document.getElementById(id))
+      .find((element): element is HTMLElement => Boolean(element)) ?? null;
+    if (!getTarget()) return;
 
-    activeScrollCancelRef.current?.();
-    activeScrollCancelRef.current = null;
-
-    const targetTop = window.scrollY + target.getBoundingClientRect().top - 8;
-    window.scrollTo({ top: Math.max(0, targetTop), left: 0, behavior: 'auto' });
+    // Short and cancellable: the first frame is the same teleport as before, the rest only correct
+    // for layout arriving underneath, and the reader's first touch ends it outright.
+    startStableScroll(getTarget, 8, { instant: true, maxMs: 1500, holdMs: 250 });
   };
 
   /** The planner has no sticky offset — it should land flush at the top. */
@@ -6295,11 +6328,18 @@ export const App: React.FC = () => {
     <Suspense fallback={null}>
       <AddBeachPhotoSheet
         isOpen
-        onClose={() => setPhotoSheet(null)}
+        onClose={() => {
+          setPhotoSheet(null);
+          // Drop any guest identity minted for this upload. Kept while the sheet
+          // is open so "send another" reuses it (and its quota); dropped after so
+          // a stored session does not make every later visit download the auth
+          // library for someone who never made an account.
+          void releaseGuestIdentity();
+        }}
         language={language}
         userId={auth.user?.id ?? null}
         isSignedIn={auth.isSignedIn}
-        onSignIn={() => { void auth.signIn(); }}
+        onSignIn={() => handleSignInFromPhotoSheet(photoSheet.beach, photoSheet.source)}
         preselectedBeach={photoSheet.beach}
         onSearchBeaches={searchBeachesForPhoto}
         source={photoSheet.source}
@@ -8004,6 +8044,7 @@ export const App: React.FC = () => {
         selectedIslandMeta={showLanding ? undefined : headerWeatherMeta}
         selectedDate={selectedDayDate}
         onOpenIslandSelector={handleOpenIslandSelector} isWinter={isWinter}
+        stickyTopBar={showLanding}
         onGoHome={handleGoHome}
         onOpenFavorites={() => handleMobileTab('favorites')}
         authAvailable={auth.isAvailable}

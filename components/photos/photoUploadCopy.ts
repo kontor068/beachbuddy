@@ -44,6 +44,15 @@ export type PhotoUploadCopy = {
   creditLabel: string;
   creditOnHint: string;
   creditOffHint: string;
+  /**
+   * What a visitor with NO account is told about the name under their photo.
+   * Not a checkbox: there is no name on record to show or hide, so this states
+   * the outcome («από επισκέπτη») and offers signing in as the way to change it
+   * — never as a condition for sending the photo (see AddBeachPhotoSheet).
+   */
+  guestCreditTitle: string;
+  guestCreditHint: string;
+  guestCreditCta: string;
   privacyNote: string;
   submit: string;
   submitting: string;
@@ -56,6 +65,8 @@ export type PhotoUploadCopy = {
     unreadable: string;
     tooSmall: string;
     notSignedIn: string;
+    /** Guest uploads are off in this project — the only case that needs Google. */
+    signInRequired: string;
     quota: string;
     failed: string;
     noBeach: string;
@@ -66,7 +77,7 @@ export type PhotoUploadCopy = {
 export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
   gr: {
     title: 'Πρόσθεσε τη φωτογραφία σου',
-    subtitle: 'Οι καλές φωτογραφίες μπαίνουν στην κάρτα της παραλίας, με το όνομά σου από κάτω.',
+    subtitle: 'Οι καλές φωτογραφίες μπαίνουν στην κάρτα της παραλίας. Δεν χρειάζεται λογαριασμός.',
     close: 'Κλείσιμο',
     signInTitle: 'Χρειάζεται σύνδεση',
     signInBody: 'Μπαίνεις με τον λογαριασμό Google σου, για να ξέρουμε ποιανού είναι η φωτογραφία και να σου τη γράψουμε σωστά.',
@@ -86,6 +97,9 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     creditLabel: 'Να φαίνεται το όνομά μου κάτω από τη φωτογραφία.',
     creditOnHint: 'Θα γράφει το όνομα που έχεις στη Google.',
     creditOffHint: 'Η φωτογραφία θα μπει χωρίς όνομα.',
+    guestCreditTitle: 'Θα μπει ως «από επισκέπτη».',
+    guestCreditHint: 'Δεν χρειάζεται λογαριασμός για να τη στείλεις — δεν κρατάμε όνομα.',
+    guestCreditCta: 'Θέλω το όνομά μου από κάτω',
     privacyNote: 'Σβήνουμε τα κρυφά στοιχεία του αρχείου — μαζί και το σημείο όπου τραβήχτηκε — πριν φύγει από το κινητό σου.',
     submit: 'Στείλε τη φωτογραφία',
     // Passive, matching landingCopy's «Στέλνεται…» — the app must not become a
@@ -100,6 +114,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
       unreadable: 'Δεν μπόρεσα να διαβάσω αυτό το αρχείο. Δοκίμασε μια κανονική φωτογραφία από το κινητό σου.',
       tooSmall: 'Η φωτογραφία είναι πολύ μικρή για να δημοσιευτεί. Θέλουμε κάτι μεγαλύτερο.',
       notSignedIn: 'Έληξε η σύνδεσή σου. Μπες ξανά και ξαναδοκίμασε.',
+      signInRequired: 'Για να στείλεις φωτογραφία χρειάζεται σύνδεση αυτή τη στιγμή. Μπες με Google και ξαναδοκίμασε.',
       quota: 'Έχεις στείλει ήδη πολλές φωτογραφίες. Περίμενε να ελεγχθούν αυτές που εκκρεμούν.',
       failed: 'Κάτι πήγε στραβά και δεν στάλθηκε. Δοκίμασε ξανά σε λίγο.',
       noBeach: 'Διάλεξε πρώτα παραλία.',
@@ -108,7 +123,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
   },
   en: {
     title: 'Add your photo',
-    subtitle: 'Good photos go on the beach card itself, credited to you.',
+    subtitle: 'Good photos go on the beach card itself. No account needed.',
     close: 'Close',
     signInTitle: 'Sign in first',
     signInBody: 'Sign in with Google so we know whose photo it is and can credit you properly.',
@@ -128,6 +143,9 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     creditLabel: 'Show my name under the photo.',
     creditOnHint: 'It will show the name you have on Google.',
     creditOffHint: 'The photo goes up with no name on it.',
+    guestCreditTitle: 'It will show as "from a visitor".',
+    guestCreditHint: 'No account needed to send it — we keep no name.',
+    guestCreditCta: 'I want my name under it',
     privacyNote: 'We strip the hidden data in the file — including where it was taken — before it leaves your phone.',
     submit: 'Send the photo',
     submitting: 'Sending…',
@@ -140,6 +158,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
       unreadable: 'That file could not be read. Try a normal photo from your phone.',
       tooSmall: 'That photo is too small to publish. We need a bigger one.',
       notSignedIn: 'Your session expired. Sign in again and retry.',
+      signInRequired: 'Sending a photo needs a sign-in right now. Sign in with Google and try again.',
       quota: 'You have already sent a lot of photos. Wait for the pending ones to be reviewed.',
       failed: 'Something went wrong and it was not sent. Try again in a moment.',
       noBeach: 'Pick a beach first.',
@@ -148,7 +167,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
   },
   de: {
     title: 'Füge dein Foto hinzu',
-    subtitle: 'Gute Fotos kommen auf die Strandkarte selbst — mit deinem Namen darunter.',
+    subtitle: 'Gute Fotos kommen auf die Strandkarte selbst. Kein Konto nötig.',
     close: 'Schließen',
     signInTitle: 'Zuerst anmelden',
     signInBody: 'Melde dich mit Google an, damit wir wissen, wessen Foto es ist, und dich richtig nennen können.',
@@ -168,6 +187,9 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     creditLabel: 'Meinen Namen unter dem Foto zeigen.',
     creditOnHint: 'Es erscheint der Name, den du bei Google hast.',
     creditOffHint: 'Das Foto erscheint ohne Namen.',
+    guestCreditTitle: 'Es erscheint als „von einem Besucher".',
+    guestCreditHint: 'Zum Senden braucht es kein Konto — wir speichern keinen Namen.',
+    guestCreditCta: 'Ich möchte meinen Namen darunter',
     privacyNote: 'Wir entfernen die versteckten Daten der Datei — auch den Aufnahmeort — bevor sie dein Handy verlässt.',
     submit: 'Foto senden',
     submitting: 'Senden…',
@@ -180,6 +202,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
       unreadable: 'Diese Datei konnte nicht gelesen werden. Versuche ein normales Foto von deinem Handy.',
       tooSmall: 'Das Foto ist zu klein zum Veröffentlichen. Wir brauchen ein größeres.',
       notSignedIn: 'Deine Sitzung ist abgelaufen. Melde dich erneut an und versuche es nochmal.',
+      signInRequired: 'Zum Senden eines Fotos ist gerade eine Anmeldung nötig. Melde dich mit Google an und versuche es nochmal.',
       quota: 'Du hast schon viele Fotos gesendet. Warte, bis die offenen geprüft sind.',
       failed: 'Etwas ist schiefgelaufen, es wurde nicht gesendet. Versuche es gleich nochmal.',
       noBeach: 'Wähle zuerst einen Strand.',
@@ -188,7 +211,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
   },
   fr: {
     title: 'Ajoutez votre photo',
-    subtitle: 'Les bonnes photos vont sur la fiche de la plage, à votre nom.',
+    subtitle: 'Les bonnes photos vont sur la fiche de la plage. Sans compte.',
     close: 'Fermer',
     signInTitle: 'Connectez-vous d’abord',
     signInBody: 'Connectez-vous avec Google pour que nous sachions à qui est la photo et puissions vous créditer.',
@@ -208,6 +231,9 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     creditLabel: 'Afficher mon nom sous la photo.',
     creditOnHint: 'Ce sera le nom que vous avez sur Google.',
     creditOffHint: 'La photo sera publiée sans nom.',
+    guestCreditTitle: 'Elle paraîtra « d\'un visiteur ».',
+    guestCreditHint: 'Aucun compte requis pour l\'envoyer — nous ne gardons aucun nom.',
+    guestCreditCta: 'Je veux mon nom en dessous',
     privacyNote: 'Nous supprimons les données cachées du fichier — dont le lieu de prise de vue — avant qu’il ne quitte votre téléphone.',
     submit: 'Envoyer la photo',
     submitting: 'Envoi…',
@@ -220,6 +246,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
       unreadable: 'Ce fichier n’a pas pu être lu. Essayez une photo normale prise avec votre téléphone.',
       tooSmall: 'Cette photo est trop petite pour être publiée. Il en faut une plus grande.',
       notSignedIn: 'Votre session a expiré. Reconnectez-vous et réessayez.',
+      signInRequired: 'L\'envoi d\'une photo demande une connexion pour l\'instant. Connectez-vous avec Google et réessayez.',
       quota: 'Vous avez déjà envoyé beaucoup de photos. Attendez que celles en attente soient vérifiées.',
       failed: 'Un problème est survenu, la photo n’a pas été envoyée. Réessayez dans un instant.',
       noBeach: 'Choisissez d’abord une plage.',
@@ -228,7 +255,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
   },
   it: {
     title: 'Aggiungi la tua foto',
-    subtitle: 'Le foto belle finiscono sulla scheda della spiaggia, con il tuo nome.',
+    subtitle: 'Le foto belle finiscono sulla scheda della spiaggia. Senza account.',
     close: 'Chiudi',
     signInTitle: 'Prima accedi',
     signInBody: 'Accedi con Google così sappiamo di chi è la foto e possiamo citarti correttamente.',
@@ -248,6 +275,9 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     creditLabel: 'Mostra il mio nome sotto la foto.',
     creditOnHint: 'Comparirà il nome che hai su Google.',
     creditOffHint: 'La foto viene pubblicata senza nome.',
+    guestCreditTitle: 'Apparirà come «da un visitatore».',
+    guestCreditHint: 'Non serve un account per inviarla — non conserviamo nessun nome.',
+    guestCreditCta: 'Voglio il mio nome sotto',
     privacyNote: 'Togliamo i dati nascosti del file — anche il luogo dello scatto — prima che lasci il tuo telefono.',
     submit: 'Invia la foto',
     submitting: 'Invio…',
@@ -260,6 +290,7 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
       unreadable: 'Non è stato possibile leggere questo file. Prova con una foto normale dal telefono.',
       tooSmall: 'Questa foto è troppo piccola per essere pubblicata. Ne serve una più grande.',
       notSignedIn: 'La sessione è scaduta. Accedi di nuovo e riprova.',
+      signInRequired: 'Per inviare una foto ora serve accedere. Accedi con Google e riprova.',
       quota: 'Hai già inviato molte foto. Aspetta che quelle in attesa vengano controllate.',
       failed: 'Qualcosa è andato storto e non è stata inviata. Riprova tra poco.',
       noBeach: 'Scegli prima una spiaggia.',

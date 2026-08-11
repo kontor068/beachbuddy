@@ -43,6 +43,13 @@ export interface BeachCopyResult {
   heroTitle: string;
   detailBullets: string[];
   cardSummary: string;
+  /**
+   * `cardSummary` broken into its parts, for LISTS where the reader is comparing
+   * beaches rather than reading about one. Same facts, no connecting prose — see
+   * buildCardPoints. Empty when there is nothing specific to say, in which case
+   * the caller falls back to the sentence.
+   */
+  cardPoints: string[];
   tradeoffText?: string;
 }
 
@@ -727,6 +734,49 @@ export const generateBestTimeReason = (input: Pick<BeachCopyInput, 'language' | 
   );
 };
 
+/**
+ * The same reasons as `cardSummary`, as separate points instead of one sentence.
+ *
+ * WHY BOTH EXIST. In a LIST — «κοντινές παραλίες», the planner — the reader is
+ * comparing, not reading: four cards each carrying a three-line paragraph is a
+ * wall, and the part that actually differs between two beaches (sand vs pebble,
+ * tavernas, the wave) is buried inside identical scaffolding. «Αύριο ταιριάζει
+ * περισσότερο αν ψάχνεις …» is 45 characters of preamble repeated on every card,
+ * which is exactly the duplicate-robot-copy shape we keep removing. As points,
+ * only the differences are left on screen. (Reported 11/08/2026: «τα πολλά
+ * γράμματα κάν' τα με bullets».)
+ *
+ * `cardSummary` is deliberately untouched: it is a real sentence, and a sentence
+ * is what a page description and a single beach's own copy need. Nothing here
+ * invents a fact — every point is a phrase the sentence was already built from.
+ */
+const stripLeadingArticle = (phrase: string, language: LanguageCode): string => {
+  // Reason phrases are written to follow «αν ψάχνεις …», so they arrive in the
+  // accusative with an article («την εύκολη πρόσβαση»). On its own line that
+  // article is what makes a point read like a fragment of someone else's
+  // sentence, which is what it is.
+  const articles = language === 'gr'
+    ? /^(?:τον|την|τη|το|τους|τις|τα|έναν|ένα|μια|μία)\s+/i
+    : /^(?:the|a|an|its|some)\s+/i;
+  return phrase.replace(articles, '');
+};
+
+const buildCardPoints = (input: BeachCopyInput, facts: BeachFeatureFacts): string[] => {
+  const { language, waveHeightM } = input;
+  const points: string[] = [];
+
+  // The sea leads, always: it is the one thing this site exists to answer, and
+  // the only point on the card that changes with the day rather than the beach.
+  const wave = waveShortPhrase(facts, waveHeightM, language, isFutureDay(input), input.beach.id);
+  if (wave) points.push(sentenceCase(wave));
+
+  for (const reason of cardReasonPhrases(facts, language)) {
+    points.push(sentenceCase(stripLeadingArticle(reason, language)));
+  }
+
+  return Array.from(new Set(points)).slice(0, 4);
+};
+
 export const generateBeachCopy = (input: BeachCopyInput): BeachCopyResult => {
   const facts = getFacts(input);
   const windy = hasMeaningfulWind(input.windBeaufort);
@@ -745,6 +795,7 @@ export const generateBeachCopy = (input: BeachCopyInput): BeachCopyResult => {
     heroTitle: localize(input.language, `Γιατί προτείνεται ${dayPrefix(input)};`, `Why it's recommended ${dayPrefix(input)}`),
     detailBullets: Array.from(new Set(bullets)).slice(0, 4),
     cardSummary,
+    cardPoints: buildCardPoints(input, facts),
     tradeoffText: tradeoffText(input, facts),
   };
 };

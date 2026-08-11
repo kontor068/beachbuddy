@@ -177,6 +177,12 @@ html {
 }
 
 body {
+  /* KEEP THIS. It turns body into a scroll container whose scrollport never
+     scrolls, which as a side effect disables position:sticky page-wide — and a
+     lot of the layout (day chips, map card, section strips) silently relies on
+     that. Removing it made every one of those bars start sticking and the
+     content scrolled behind the map. If something must stay pinned to the
+     viewport, use position:fixed + a spacer, not sticky. */
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizeLegibility;

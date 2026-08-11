@@ -32,6 +32,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { getSupabase } from './supabaseClient';
+import { signInAsGuest } from './authService';
 
 /** The DB check is `bytes <= 600000`. Aim under it — never AT it. */
 const MAX_UPLOAD_BYTES = 550_000;
@@ -59,6 +60,13 @@ export type PhotoUploadFailure =
   | 'too-small'
   /** Signed out, or the session expired between opening the form and sending. */
   | 'not-signed-in'
+  /**
+   * Guest uploads are switched off in the Supabase project, so there is no way
+   * through except a real account. Distinct from 'not-signed-in' because the
+   * visitor never claimed to be signed in — the answer is an invitation, not
+   * "your session expired".
+   */
+  | 'sign-in-required'
   /** The per-user cap in the quota trigger. */
   | 'quota'
   /** Network, storage, or anything else we did not anticipate. */
@@ -232,8 +240,52 @@ const classifyError = (message: string, code?: string): PhotoUploadFailure => {
   return 'failed';
 };
 
+/**
+ * Who is about to write this row — an account, or a guest minted on the spot.
+ *
+ * The order matters. An existing session always wins: someone who IS signed in
+ * must keep their own uid (and therefore their name under the photo), and a
+ * session that expired while the form was open must still come back as
+ * 'not-signed-in' rather than being quietly replaced by a nameless guest.
+ */
+type UploadIdentity =
+  | { status: 'ok'; userId: string; isGuest: boolean }
+  | { status: 'error'; reason: PhotoUploadFailure };
+
+const resolveUploadIdentity = async (
+  client: Awaited<ReturnType<typeof getSupabase>>,
+  claimedUserId: string | null | undefined,
+): Promise<UploadIdentity> => {
+  if (!client) return { status: 'error', reason: 'failed' };
+
+  // The uid the DB will check is the one in the live session, NOT whatever the
+  // UI was rendered with. They differ exactly when a session expired mid-form,
+  // and that is the case worth getting right.
+  const { data: sessionData } = await client.auth.getUser();
+  const liveUser = sessionData?.user;
+
+  if (liveUser?.id) {
+    const isGuest = Boolean((liveUser as { is_anonymous?: boolean }).is_anonymous);
+    // A signed-in visitor whose session changed under them: refuse rather than
+    // file their photo under someone else's uid.
+    if (claimedUserId && !isGuest && liveUser.id !== claimedUserId) {
+      return { status: 'error', reason: 'not-signed-in' };
+    }
+    return { status: 'ok', userId: liveUser.id, isGuest };
+  }
+
+  // The UI thought it had an account but the session is gone — say so, instead
+  // of turning a named contributor into an anonymous one behind their back.
+  if (claimedUserId) return { status: 'error', reason: 'not-signed-in' };
+
+  const guest = await signInAsGuest();
+  if (guest.status === 'ok') return { status: 'ok', userId: guest.userId, isGuest: true };
+  return { status: 'error', reason: guest.status === 'disabled' ? 'sign-in-required' : 'failed' };
+};
+
 export const uploadBeachPhoto = async (params: {
-  userId: string;
+  /** Null for a visitor with no account — a guest identity is minted here. */
+  userId: string | null;
   regionId: string;
   beachId: number;
   caption?: string;
@@ -242,19 +294,16 @@ export const uploadBeachPhoto = async (params: {
   photo: PreparedPhoto;
 }): Promise<PhotoUploadResult> => {
   const { userId, regionId, beachId, caption, showCredit, photo } = params;
-  if (!userId || !regionId || !Number.isFinite(beachId)) {
+  if (!regionId || !Number.isFinite(beachId)) {
     return { status: 'error', reason: 'failed' };
   }
 
   const client = await getSupabase();
   if (!client) return { status: 'error', reason: 'not-signed-in' };
 
-  // The uid the DB will check is the one in the live session, NOT whatever the
-  // UI was rendered with. They differ exactly when a session expired mid-form,
-  // and that is the case worth getting right.
-  const { data: sessionData } = await client.auth.getUser();
-  const liveUserId = sessionData?.user?.id;
-  if (!liveUserId || liveUserId !== userId) return { status: 'error', reason: 'not-signed-in' };
+  const identity = await resolveUploadIdentity(client, userId);
+  if (identity.status === 'error') return { status: 'error', reason: identity.reason };
+  const { userId: liveUserId, isGuest } = identity;
 
   const storagePath = buildStoragePath(liveUserId, beachId);
 
@@ -297,7 +346,12 @@ export const uploadBeachPhoto = async (params: {
     caption: trimmedCaption || null,
     // Explicit, never inferred: an absent value would mean "we guessed", and
     // what we would be guessing about is publishing someone's real name.
-    show_credit: showCredit !== false,
+    //
+    // A guest has no name to publish — there is no profile row with a display
+    // name behind this uid — so the answer is false whatever the form said. The
+    // publication step (scripts/syncApprovedPhotos.mjs) already renders a null
+    // credit as «από επισκέπτη» in each language, so nothing downstream changes.
+    show_credit: isGuest ? false : showCredit !== false,
     // `status` is deliberately NOT sent: the column defaults to 'pending' and
     // the insert policy demands that value. Sending it explicitly would be one
     // more place that has to stay in step with the migration.
@@ -318,7 +372,10 @@ export const uploadBeachPhoto = async (params: {
   // misrepresented. When the uploader opted OUT there is nowhere to record it,
   // and publishing their name anyway is the one outcome worth failing for.
   if (insertError && isMissingCreditColumn(insertError)) {
-    if (showCredit === false) {
+    // A guest is the one case where losing the column costs nothing: with no
+    // profile name behind the uid, the database default ("show the name")
+    // resolves to no name at all. Only a real account can be misrepresented.
+    if (showCredit === false && !isGuest) {
       await client.storage.from(PHOTO_BUCKET).remove([storagePath]).catch(() => undefined);
       console.error(
         'Beach photo record failed: this Supabase project has no `show_credit` column, so '

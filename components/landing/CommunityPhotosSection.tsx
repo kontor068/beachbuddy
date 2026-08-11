@@ -138,7 +138,7 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
               className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cta px-5 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
             >
               <Camera className="h-4 w-4" aria-hidden="true" />
-              {isSignedIn ? c.ctaSignedIn : c.cta}
+              {c.cta}
             </button>
 
             <p className="mt-2.5 max-w-sm text-[12px] font-semibold leading-snug text-slate-600">{c.note}</p>
@@ -150,11 +150,13 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
               inline with the title and the rows sit on a 12px rhythm.
 
               STILL ONE COLUMN ON A PHONE. Three across was tried and is wrong at
-              320-375px: the columns land at ~85px while the French and German
-              step titles ("Connectez-vous avec Google", "Melde dich mit Google
-              an") need roughly 95px, so they wrap to three ragged lines each and
-              the strip ends up taller than the list it replaced. Three columns
-              only from `sm:` up, where a column is ~180px. */}
+              320-375px: the columns land at ~85px while the longest step titles
+              ("Choisissez la plage", "Ein Mensch schaut es an") need roughly
+              95px, so they wrap to three ragged lines each and the strip ends up
+              taller than the list it replaced. Three columns only from `sm:` up,
+              where a column is ~180px.
+              (The sign-in step that used to set this width was removed on
+              11/08/2026 — guest uploads. The constraint survives it.) */}
           <ol className="grid gap-3 border-t border-cyan-200/70 pt-4 sm:grid-cols-3 sm:gap-x-5 lg:border-t-0 lg:pt-0">
             {c.steps.map((step, index) => {
               const Icon = stepIcons[index] || Sparkles;

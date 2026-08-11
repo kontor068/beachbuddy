@@ -28,6 +28,12 @@ export interface StableScrollOptions {
   maxMs?: number;
   /** How long the target has to sit still before we let go of the page. */
   holdMs?: number;
+  /**
+   * Teleport on the first frame instead of easing. For a landing that should feel like it was
+   * already there — the map — while still re-measuring afterwards, so content arriving underneath
+   * cannot leave the reader somewhere else.
+   */
+  instant?: boolean;
 }
 
 /**
@@ -56,7 +62,7 @@ export const smoothScrollToStableElement = (
   getTarget: () => HTMLElement | null,
   options: StableScrollOptions = {}
 ): (() => void) => {
-  const { offset = 0, maxMs = 5000, holdMs = 400 } = options;
+  const { offset = 0, maxMs = 5000, holdMs = 400, instant: alwaysInstant = false } = options;
   if (typeof window === 'undefined') return () => {};
 
   // Exponential ease-out: each frame closes the same FRACTION of whatever distance is left, so a
@@ -65,7 +71,7 @@ export const smoothScrollToStableElement = (
   const SETTLED_PX = 1.5;
   /** Frames of "we asked to scroll and the page did not move" before we accept it cannot. */
   const STUCK_FRAMES = 3;
-  const instant = prefersReducedMotion();
+  const instant = alwaysInstant || prefersReducedMotion();
 
   let cancelled = false;
   let frame = 0;
@@ -108,7 +114,12 @@ export const smoothScrollToStableElement = (
       } else {
         stableSince = null;
         const before = window.scrollY;
-        window.scrollBy(0, instant ? delta : delta * (1 - Math.exp(-dt / TAU_MS)));
+        // 'instant', NEVER 'auto': index.css sets `html { scroll-behavior: smooth }`, and 'auto'
+        // means "use the CSS value" — so every one of these ~60 calls per second was starting its
+        // own browser animation, each cancelling the last. The page crawled instead of moving, our
+        // own easing never applied, and the stuck-detection below read the browser's unfinished
+        // animation as "the page cannot scroll". The easing here is ours; the browser must obey.
+        window.scrollBy({ top: instant ? delta : delta * (1 - Math.exp(-dt / TAU_MS)), behavior: 'instant' });
         // Already at the end of the document (a short results page cannot bring its last section
         // to the top). Without this we would hold the page hostage for the full maxMs.
         stuckFrames = Math.abs(window.scrollY - before) < 0.5 ? stuckFrames + 1 : 0;

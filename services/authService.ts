@@ -89,6 +89,18 @@ export const hasStoredSession = (): boolean => {
 
 const toAuthUser = (user: User | null | undefined): AuthUser | null => {
   if (!user) return null;
+  // A GUEST IS NOT A USER, AS FAR AS THE REST OF THE APP IS CONCERNED.
+  //
+  // Sending a photo without a Google account mints a real Supabase identity
+  // (see signInAsGuest) — that is how the database can keep enforcing "you may
+  // only write rows that are yours" with no new policy. But it is an identity
+  // for one upload, not an account: it has no name, no email, no favourites and
+  // nothing to show in an account panel. Returning null here is what keeps that
+  // true everywhere at once — the header keeps showing «Σύνδεση», the avatar
+  // menu never appears, favourites never try to sync. Without this one line,
+  // uploading a photo would silently look like signing in, and the "delete my
+  // account" screen would offer to delete an account nobody made.
+  if ((user as { is_anonymous?: boolean }).is_anonymous) return null;
   const meta = (user.user_metadata || {}) as Record<string, unknown>;
   const pick = (...keys: string[]): string | null => {
     for (const key of keys) {
@@ -438,6 +450,77 @@ export const getAccessToken = async (): Promise<string | null> => {
   return withClient(async (client) => {
     const { data } = await client.auth.getSession();
     return data.session?.access_token ?? null;
+  }, null);
+};
+
+/**
+ * A throwaway identity for someone who wants to send a photo and nothing else.
+ *
+ * WHY THIS EXISTS: measured 11/08/2026, the photo funnel was 28 → 2 → 2 → **0**.
+ * Nobody failed technically; people were asked to hand over a Google account in
+ * order to give us a present, and they left. This removes the ask.
+ *
+ * WHY IT IS STILL AN IDENTITY and not an anonymous endpoint: every protection
+ * around uploads is written in terms of `auth.uid()` — the row-level policies,
+ * the storage path (`<uid>/…`), the per-user quota trigger, and the check in
+ * /api/ugc-notify that you own the row you are shouting about. A guest session
+ * satisfies all of them unchanged. Opening a public upload endpoint instead
+ * would mean rewriting every one of those in a Netlify function.
+ *
+ * `{ status: 'disabled' }` is not a failure to hide: it means the Supabase
+ * project has anonymous sign-ins switched off, and the caller must fall back to
+ * asking for Google rather than reporting a broken button.
+ */
+export type GuestIdentityResult =
+  | { status: 'ok'; userId: string }
+  | { status: 'disabled' }
+  | { status: 'failed' };
+
+export const signInAsGuest = async (): Promise<GuestIdentityResult> => {
+  const client = await getSupabase();
+  if (!client) return { status: 'failed' };
+  try {
+    const { data, error } = await client.auth.signInAnonymously();
+    if (error) {
+      const text = `${error.message || ''} ${(error as { code?: string }).code || ''}`.toLowerCase();
+      // Supabase answers 422 `anonymous_provider_disabled`; the human-readable
+      // wording has changed once already, so match on either shape.
+      if (text.includes('anonymous') && (text.includes('disabled') || text.includes('not enabled'))) {
+        console.warn(
+          'Guest photo upload is unavailable: anonymous sign-ins are switched off for this Supabase '
+          + 'project (Authentication → Sign In / Providers → Anonymous). Falling back to Google.',
+        );
+        return { status: 'disabled' };
+      }
+      console.error('Guest sign-in failed.', error);
+      return { status: 'failed' };
+    }
+    const id = data?.user?.id;
+    return id ? { status: 'ok', userId: id } : { status: 'failed' };
+  } catch (error) {
+    console.error('Guest sign-in failed.', error);
+    return { status: 'failed' };
+  }
+};
+
+/**
+ * Throw the guest identity away again — called when the upload sheet closes.
+ *
+ * Kept for the life of the sheet (so "send another" reuses the same identity and
+ * therefore the same quota) and dropped after, because a stored session is the
+ * thing `hasStoredSession()` looks at to decide whether to download the Supabase
+ * library at boot. Leaving it behind would make every later visit pay for a
+ * library that a guest has no use for.
+ *
+ * Local scope only: there is no server session worth revoking, and a network
+ * round-trip on close would be one more thing to fail for no benefit.
+ */
+export const releaseGuestIdentity = async (): Promise<void> => {
+  await withClient(async (client) => {
+    const { data } = await client.auth.getUser();
+    if (!data?.user || !(data.user as { is_anonymous?: boolean }).is_anonymous) return null;
+    await client.auth.signOut({ scope: 'local' });
+    return null;
   }, null);
 };
 

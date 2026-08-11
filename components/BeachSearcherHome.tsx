@@ -560,6 +560,7 @@ type HomeCopy = {
   };
   searchPlaceholder: string;
   currentLocation: string;
+  /** Deliberately quiet: it sits beside «Κοντά μου» and must not compete with it. */
   findingLocation: string;
   fallbackFeatureCopy: string;
   more: string;
@@ -2048,7 +2049,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       body.style.right = previous.right;
       body.style.width = previous.width;
       body.style.overflow = previous.overflow;
-      window.scrollTo(0, scrollY);
+      // 'instant' spelled out: the two-argument scrollTo obeys `html { scroll-behavior: smooth }`
+      // (index.css), so putting the reader back where they were ANIMATED them back — a page that
+      // slides on its own the moment a panel closes, instead of simply being where it was.
+      window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
     };
   }, [isAllBeachesPanelOpen, isWeatherPanelOpen]);
 
@@ -4434,11 +4438,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
               || (selectedIsland && directorySortOptions.length > 0)) && (
             <div className="grid grid-cols-1 gap-1.5 sm:flex sm:items-center lg:flex-nowrap lg:justify-end">
               {(onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion && (
+              <div className="flex items-center gap-1.5 lg:hidden">
+              {(onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion && (
                 <button
                   type="button"
                   onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
                   disabled={isFindingCurrentLocation}
-                  className={`inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm lg:hidden ${
+                  className={`inline-flex min-h-10 w-full min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm ${
                     hasUserLocation
                       ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
                       : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
@@ -4449,6 +4455,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
                   </span>
                 </button>
+              )}
+              {/* ΕΦΥΓΕ ΤΟ «Ανέβασε φωτό» (11/08/2026). Καθόταν δίπλα στο «Κοντά μου»,
+                  ακριβώς κάτω από την αναζήτηση — δηλαδή πάνω στη γραμμή όπου κάποιος
+                  αποφασίζει ΠΟΥ ΘΑ ΠΑΕΙ, και ζητούσε το ακριβώς αντίθετο: κάτι από
+                  κάποιον που έχει ήδη πάει. Απόφαση Μίλτου. Η ίδια προσφορά μένει και
+                  στα τρία σημεία όπου έχει νόημα — στη σελίδα παραλίας (εκεί που
+                  λείπει η φωτογραφία), στο μενού λογαριασμού και στο landing. */}
+              </div>
               )}
               {selectedIsland && directorySortOptions.length > 0 && (
                 renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
@@ -4699,6 +4713,14 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         <div className="mx-auto max-w-[110rem] px-4 pb-4 pt-0.5 sm:px-5 sm:pb-5 sm:pt-2 lg:px-6">
           {selectedIsland && mapPreview && isMobileViewport && (
             <>
+              {/* Static, zero-height twin of the sticky map below, and the ONLY thing anything
+                  should measure when it wants to scroll the map into view. A `position: sticky`
+                  element reports its STUCK rect — 8px from the viewport top — the moment you are
+                  scrolled past its natural place, so "scroll to the map" computed a destination
+                  equal to where you already were and did nothing. That is what sent «Κοντά μου»
+                  from the landing page to the legal footer: the scroll was a no-op, then the
+                  shorter nearby page clamped the old offset to the bottom of the document. */}
+              <div id="directory-map-anchor" aria-hidden="true" className="h-0 w-full" />
               <section
                 id="directory-map-section"
                 className="sticky top-2 z-30 mb-1.5 space-y-1.5 sm:mb-4 sm:space-y-2"
