@@ -20,7 +20,13 @@ import { TOP_PICK_WEIGHTS } from './topPickScoreTable';
  */
 
 export interface TopPickCriterionRow {
-  key: 'shelter' | 'sea' | 'ownWind' | 'distance' | 'amenities' | 'access' | 'crowd';
+  /**
+   * No 'distance' row (11/08/2026). The axis exists in the score table but the region podium is
+   * hard-wired never to feed it (services/topPickRanking) so that one weather gives one podium to
+   * everyone — so printing «Απόσταση από εσένα 10» here would be advertising a criterion that
+   * cannot move a single card on this screen. Distance is a «Κοντά μου» rule and lives there.
+   */
+  key: 'shelter' | 'sea' | 'ownWind' | 'amenities' | 'access' | 'crowd';
   label: string;
   /** Weight out of 100. */
   weight: number;
@@ -33,7 +39,6 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Νερό στην ακτή',
     access: 'Πρόσβαση',
     amenities: 'Παροχές',
-    distance: 'Απόσταση από εσένα',
     crowd: 'Πολυσύχναστη',
   },
   en: {
@@ -42,7 +47,6 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Water at the shore',
     access: 'Access',
     amenities: 'Facilities',
-    distance: 'Distance from you',
     crowd: 'Crowded',
   },
   de: {
@@ -51,7 +55,6 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Wasser am Ufer',
     access: 'Zugang',
     amenities: 'Ausstattung',
-    distance: 'Entfernung von dir',
     crowd: 'Stark besucht',
   },
   fr: {
@@ -60,7 +63,6 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Eau au rivage',
     access: 'Accès',
     amenities: 'Services',
-    distance: 'Distance depuis chez vous',
     crowd: 'Très fréquentée',
   },
   it: {
@@ -69,7 +71,6 @@ const LABELS: Record<LanguageCode, Record<TopPickCriterionRow['key'], string>> =
     sea: 'Acqua a riva',
     access: 'Accesso',
     amenities: 'Servizi',
-    distance: 'Distanza da te',
     crowd: 'Affollata',
   },
 };
@@ -118,7 +119,6 @@ export const topPickCriteriaRows = (language: LanguageCode): TopPickCriterionRow
     { key: 'shelter', label: words.shelter, weight: TOP_PICK_WEIGHTS.shelter },
     { key: 'sea', label: words.sea, weight: TOP_PICK_WEIGHTS.sea },
     { key: 'ownWind', label: words.ownWind, weight: TOP_PICK_WEIGHTS.ownWind },
-    { key: 'distance', label: words.distance, weight: TOP_PICK_WEIGHTS.distance },
     { key: 'amenities', label: words.amenities, weight: TOP_PICK_WEIGHTS.amenities },
     { key: 'access', label: words.access, weight: TOP_PICK_WEIGHTS.access },
     { key: 'crowd', label: words.crowd, weight: TOP_PICK_WEIGHTS.crowd },

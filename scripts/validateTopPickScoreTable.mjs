@@ -308,12 +308,43 @@ failures.push(...run(realTable));
   }
 }
 
+// H — ΙΔΙΟΣ ΚΑΙΡΟΣ, ΙΔΙΟ PODIUM ΓΙΑ ΟΛΟΥΣ (Μίλτος, 11/08/2026).
+//
+// The region podium must not change because the visitor shared a location. This is checked on the
+// ranking function rather than on the table, because the table's distance axis still works on
+// purpose — what is closed is the caller, and a caller is exactly the kind of thing a later edit
+// re-opens by "restoring" a line that looks like a bug.
+{
+  const near = { ...item({ id: 91, seaM: 0.4, tier: 'quiet' }), distance: 2 };
+  const far = { ...item({ id: 92, seaM: 0.4, tier: 'quiet' }), distance: 240 };
+  // The far one is listed FIRST, so any reading of distance at all has to reorder them.
+  const withLocation = prioritizeProtectedRecommendations([far, near], 4).map(i => i.beach.id);
+  const withoutLocation = prioritizeProtectedRecommendations(
+    [item({ id: 92, seaM: 0.4, tier: 'quiet' }), item({ id: 91, seaM: 0.4, tier: 'quiet' })],
+    4
+  ).map(i => i.beach.id);
+
+  if (withLocation.join(',') !== withoutLocation.join(',')) {
+    fail(`H: the podium reordered once a location was known (${withoutLocation.join(' → ')} became ${withLocation.join(' → ')}). Two visitors, same weather, different Top 3.`);
+  }
+  // …and prove the check is not inert: the axis it is guarding must be able to separate them.
+  const { scoreTopPick } = realTable;
+  const args = { ownBeaufort: 4, feelsWind: true, accessPriority: 0, amenitiesScore: 0 };
+  const nearPoints = scoreTopPick({ ...args, item: near, distanceKm: 2 }).total;
+  const farPoints = scoreTopPick({ ...args, item: far, distanceKm: 240 }).total;
+  if (nearPoints === farPoints) {
+    fail('H: the fixtures score the same even when the distance IS fed in, so the check would pass with the axis wide open.');
+  } else if (!failures.some(f => f.startsWith('H:'))) {
+    console.log(`location: a beach 2 km away and one 240 km away are ${nearPoints} vs ${farPoints} on the table, and the podium ranks them identically — closed at the caller.`);
+  }
+}
+
 if (failures.length) {
   console.error('❌ Ο πίνακας των 100 δεν λέει αυτό που υπόσχεται:\n');
   failures.forEach(f => console.error(`  • ${f}\n`));
   process.exit(1);
 }
-console.log(`✅ Πίνακας των 100: 70/30 · θάλασσα ανά ${realTable.SEA_STEP_M} μ. · απόσταση ${realTable.TOP_PICK_WEIGHTS.distance} · παροχές ${realTable.TOP_PICK_WEIGHTS.amenities} · πρόσβαση ${realTable.TOP_PICK_WEIGHTS.access} · πολυσύχναστη ${realTable.TOP_PICK_WEIGHTS.crowd}.`);
+console.log(`✅ Πίνακας των 100: 70 ο καιρός · θάλασσα ανά ${realTable.SEA_STEP_M} μ. · παροχές ${realTable.TOP_PICK_WEIGHTS.amenities} · πρόσβαση ${realTable.TOP_PICK_WEIGHTS.access} · πολυσύχναστη ${realTable.TOP_PICK_WEIGHTS.crowd} · απόσταση ${realTable.TOP_PICK_WEIGHTS.distance} αλλά ΚΛΕΙΣΤΗ στο podium περιοχής.`);
 
 if (PROVE) {
   const source = readFileSync(path.join(root, 'utils/topPickScoreTable.ts'), 'utf8');

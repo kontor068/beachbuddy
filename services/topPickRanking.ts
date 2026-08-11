@@ -434,9 +434,33 @@ export const prioritizeProtectedRecommendations = (
     feelsWind: shelterCounts(item),
     accessPriority: topPickAccessPriority(item.beach),
     amenitiesScore: topPickAmenitiesScore(item.beach),
-    // Undefined on every surface where no location was shared, which makes the axis neutral for
-    // all of them — see the distance section of the table.
-    distanceKm: typeof item.distance === 'number' && Number.isFinite(item.distance) ? item.distance : undefined,
+    /**
+     * ΤΟ PODIUM ΜΙΑΣ ΠΕΡΙΟΧΗΣ ΔΕΝ ΒΛΕΠΕΙ ΠΟΤΕ ΤΗΝ ΤΟΠΟΘΕΣΙΑ ΤΟΥ ΕΠΙΣΚΕΠΤΗ
+     * (Μίλτος, 11/08/2026 — «ίδιος καιρός, ίδιο podium για όλους»).
+     *
+     * Hard-coded rather than read off the item, because reading it off the item was a lie that
+     * looked like a feature. Checked in the wiring on 11/08:
+     *
+     *   - The pool the podium is normally built from is `dailySuitableBeaches`, and App calls
+     *     getSuitableBeaches with NO location for it (App.tsx) — so `item.distance` was already
+     *     undefined on every region page, every day, for everyone. The axis has never once
+     *     separated two beaches there.
+     *   - The single path where it did arrive was an active preference filter, which flips the
+     *     pool to the location-scored `suitableBeaches`. That, and only that, is what could
+     *     reorder a podium under the visitor the moment the browser answered the location
+     *     prompt — three cards, then two seconds later three different cards.
+     *
+     * So the axis is not "neutral until we wire it up"; it is closed. Distance stays a «Κοντά
+     * μου» rule and is applied THERE, explicitly, after this chain has finished (the near-me
+     * branch in App.tsx sorts on the map's colour, then on distance) — on a screen the visitor
+     * asked for by pressing a button, where a reorder is the answer rather than a surprise.
+     *
+     * Cost, stated plainly: with every beach scoring the same middle value, the axes that can
+     * actually separate beaches are 70 weather / 20 comfort, not the table's declared 70/30.
+     * That is exactly the arithmetic the 11/08 browser pass on Νάξο / Πάρο / Αν. Αττική / Χανιά
+     * was taken against, so nothing that was looked at and approved moves because of this line.
+     */
+    distanceKm: undefined,
   }).total;
 
   const scores = new Map<SuitableBeach, number>();

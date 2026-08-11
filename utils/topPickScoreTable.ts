@@ -23,7 +23,7 @@ import { seaStateSeverityM } from './waveCharacter';
  *                                        ─────
  *                          ο καιρός        70
  *
- *  Απόσταση από τον χρήστη                 10        item.distance (km)
+ *  Απόσταση από τον χρήστη                 10        ΚΛΕΙΣΤΗ στο podium περιοχής (βλ. πιο κάτω)
  *  Παροχές                                  9        amenities
  *  Πρόσβαση                                 6        metadata.access.type
  *  Πολυσύχναστη                             5        Google review count
@@ -37,18 +37,34 @@ import { seaStateSeverityM } from './waveCharacter';
  * can only repay if it is winning on all four of them at once. That is the intended behaviour and
  * the reason the blocks are not 50/50.
  *
- * ─── THE DISTANCE AXIS RE-OPENS A CLOSED DECISION, DELIBERATELY ────────────
+ * ─── THE DISTANCE AXIS WAS OPENED ON 11/08 AND CLOSED THE SAME DAY ─────────
  *
  * On 10/08 ranking by score was rejected for one specific reason: the old BeachScore changes shape
  * when the visitor shares a location, so two people looking at the same weather saw different
- * podiums. Distance puts that back — knowingly, at Miltos's instruction («σε σχέση με τον χρήστη
+ * podiums. Distance put that back — knowingly, at Miltos's instruction («σε σχέση με τον χρήστη
  * είναι σημαντική»), because «πού να πάω τώρα» genuinely depends on where you are standing.
  *
- * The difference from the old defect is that it is now ONE declared axis worth 10 of 100 instead of
- * an opaque number that silently changed formula. And when no location is shared — the prerender,
- * the planner, every first paint — every beach scores the same middle value, so the podium is
- * identical for everyone. Never give the missing case the maximum: a region where only some
- * beaches carry a distance would then rank the unmeasured ones first.
+ * Then the wiring was read instead of assumed, and it said the axis had never actually run: the
+ * pool the region podium is built from is fetched with no location at all, so `item.distance` was
+ * undefined on every region page from the hour the axis shipped. The one path that did feed it —
+ * an active preference filter, which swaps in the location-scored pool — bought nothing except the
+ * defect of 10/08 in a new costume: the cards reordering under the visitor a second after the
+ * location prompt was answered.
+ *
+ * Miltos's call, 11/08: ίδιος καιρός, ίδιο podium για όλους. The axis is therefore CLOSED at the
+ * caller — services/topPickRanking passes `distanceKm: undefined` unconditionally and says why —
+ * and «Απόσταση από εσένα» no longer appears in the on-screen weights box, because a criterion
+ * that cannot move a card must not be advertised as one. Distance survives where it was always
+ * honest: «Κοντά μου» sorts on it explicitly, after the colour, on a screen the visitor asked for.
+ *
+ * The weight stays defined at 10 rather than being deleted so that the day it is wired for «Κοντά
+ * μου» there is one place to change and one gate already guarding it — and because deleting it
+ * would drop the declared split to 70/20 and re-open the weighting Miltos settled the night
+ * before. What it costs meanwhile is stated where it is spent (topPickRanking): every beach takes
+ * the same middle value, so the axes that can separate beaches are 70 weather / 20 comfort.
+ *
+ * The rule below still holds for that future: never give the missing case the maximum: a region
+ * where only some beaches carry a distance would then rank the unmeasured ones first.
  *
  * ─── WHY EVERY AXIS IS BUCKETED, NOT CONTINUOUS ────────────────────────────
  *
