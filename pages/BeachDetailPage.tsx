@@ -1969,19 +1969,19 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       target: 'wave' as const,
       elementId: 'today-conditions',
       label: copy.tabWave[language],
-      icon: <Waves className="h-5 w-5 shrink-0 text-cyan-600" aria-hidden="true" />,
+      icon: <Waves className="h-5 w-5 shrink-0 text-slate-600" aria-hidden="true" />,
     }] : []),
     ...(beachStory ? [{
       target: 'story' as const,
       elementId: 'beach-story',
       label: copy.tabStory[language],
-      icon: <ScrollText className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />,
+      icon: <ScrollText className="h-5 w-5 shrink-0 text-slate-600" aria-hidden="true" />,
     }] : []),
     ...(showConditions && nearbyBeaches.length > 0 ? [{
       target: 'nearby' as const,
       elementId: 'nearby-beaches',
       label: copy.tabNearby[language],
-      icon: <MapPin className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />,
+      icon: <MapPin className="h-5 w-5 shrink-0 text-slate-600" aria-hidden="true" />,
     }] : []),
   ];
 
@@ -3147,35 +3147,38 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           The header keeps them (always reachable, and it is where a title bar's actions
           belong); the bar keeps the one thing it is for. `navigation_clicked` is the metric
           this page is judged on — it now gets the whole width instead of 62% of it.
-          When there is nothing to navigate to, the bar has no reason to exist at all. */}
+          When there is nothing to navigate to, the bar has no reason to exist at all.
+
+          ONE BOTTOM BAR VOCABULARY FOR THE WHOLE SITE (11/08/2026, Miltos).
+          This bar deliberately copies components/MobileBottomNav.tsx — the same border,
+          blur, shadow, `h-16` row, `h-5 w-5` icons and `text-[10px]` labels — because a
+          visitor meets that bar on the home page and this one on a beach page, and two
+          different-looking bars in the same bottom-of-screen slot read as two different
+          apps. MobileBottomNav IS the reference: change it and this must follow.
+
+          What that costs, stated plainly: navigation was a filled cyan pill and is now a
+          flat icon like the rest. The 05/08 rule that nothing may sit beside
+          `navigation_clicked` at equal weight is now carried by COLOUR alone — it is the
+          only control in `text-primary-dark` while every other is `text-slate-600`, which
+          is exactly how the home bar already marks its important tab. If
+          `navigation_clicked` drops after this, the lever to pull is that one button's
+          fill, not the other four. */}
       {(canNavigate || jumpTabs.length > 0 || onAddPhoto) && (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-100 bg-white/95 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden">
-          {/* data-tabfit: the same measurable hook the answer tiles carry. Four controls
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/80 bg-white/95 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl md:hidden">
+          {/* data-tabfit: the same measurable hook the answer tiles carry. Five controls
               sharing a 320 px row, with labels in five languages, is the exact shape that
-              clipped words in the hero — scripts/validateTileFit.mjs measures both now. */}
-          {/* `gap-1` below 360 px, `gap-1.5` above. With five controls the four gaps are
-              real estate: the fifth tab («Ανέβασε φωτό», 11/08) pushed the Greek row 19 px
-              past a 320 px viewport, measured by the gate below. */}
-          <div data-tabfit className="mx-auto flex max-w-4xl items-stretch gap-1 min-[360px]:gap-1.5">
+              clipped words in the hero — scripts/validateTileFit.mjs measures both now.
+              The `gap`/`padding` juggling this row needed while the buttons were boxes is
+              gone with the boxes: flat controls spend their width on words, not on chrome. */}
+          <div data-tabfit className="mx-auto flex h-16 max-w-4xl items-center justify-center">
             {canNavigate && (
               <button
                 type="button"
                 onClick={handleNavigation}
-                /* `flex-[1.6]` against the tabs' `flex-1`: it is the only filled
-                   control, it keeps the largest share, and it is the only one that
-                   leaves the site. That is as far as the demotion goes on purpose —
-                   see the block above.
-                   Below 360 px it drops to 1.25. Five controls plus Greek labels do not
-                   fit at 320 px otherwise, and the alternative was cutting «Ανέβασε φωτό»
-                   down to «Φωτό» — which beside a camera icon reads as "see the photos",
-                   the opposite of what the control does. Giving up a fifth of one button's
-                   width on the narrowest phones costs less than a verb. The RULE the 05/08
-                   decision actually set is about weight, not pixels, and it still holds at
-                   every width: this is the only filled control and the only cyan one. */
-                className="flex min-h-[52px] flex-[1.25] flex-col items-center justify-center gap-0.5 rounded-2xl bg-cyan-600 px-0.5 min-[360px]:px-1 font-bold text-white shadow-lg shadow-cyan-200 active:scale-[0.99] min-[360px]:flex-[1.6]"
+                className="group relative flex h-full max-w-[7rem] flex-1 flex-col items-center justify-center gap-0.5 px-0.5 min-[360px]:px-1"
               >
-                <Navigation className="h-5 w-5 shrink-0" aria-hidden="true" />
-                <span className="text-[10px] font-extrabold leading-tight">{copy.navigation[language]}</span>
+                <Navigation className="h-5 w-5 shrink-0 text-primary-dark" aria-hidden="true" />
+                <span className="text-center text-[9px] tracking-tight min-[360px]:text-[10px] min-[360px]:tracking-normal font-bold leading-tight text-primary-dark">{copy.navigation[language]}</span>
               </button>
             )}
             {jumpTabs.map((tab) => (
@@ -3183,10 +3186,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 key={tab.target}
                 type="button"
                 onClick={() => handleJump(tab.elementId, tab.target)}
-                className="flex min-h-[52px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white px-0.5 min-[360px]:px-1 text-slate-700 active:scale-[0.99]"
+                className="group relative flex h-full max-w-[7rem] flex-1 flex-col items-center justify-center gap-0.5 px-0.5 min-[360px]:px-1"
               >
                 {tab.icon}
-                <span className="text-center text-[10px] font-bold leading-tight">{tab.label}</span>
+                <span className="text-center text-[9px] tracking-tight min-[360px]:text-[10px] min-[360px]:tracking-normal font-semibold leading-tight text-slate-600">{tab.label}</span>
               </button>
             ))}
             {/* The one control here that is NOT a jump — it opens the upload sheet. Kept last
@@ -3202,10 +3205,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <button
                 type="button"
                 onClick={onAddPhoto}
-                className="flex min-h-[52px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-slate-200 bg-white px-0.5 min-[360px]:px-1 text-slate-700 active:scale-[0.99]"
+                className="group relative flex h-full max-w-[7rem] flex-1 flex-col items-center justify-center gap-0.5 px-0.5 min-[360px]:px-1"
               >
-                <Camera className="h-5 w-5 shrink-0 text-slate-400" aria-hidden="true" />
-                <span className="text-center text-[10px] font-bold leading-tight">{copy.tabPhoto[language]}</span>
+                <Camera className="h-5 w-5 shrink-0 text-slate-600" aria-hidden="true" />
+                <span className="text-center text-[9px] tracking-tight min-[360px]:text-[10px] min-[360px]:tracking-normal font-semibold leading-tight text-slate-600">{copy.tabPhoto[language]}</span>
               </button>
             )}
           </div>
