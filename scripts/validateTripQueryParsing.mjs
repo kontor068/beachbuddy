@@ -42,9 +42,10 @@ const { parseTripQuery, TRIP_QUERY_TOKEN_TABLES } = require('../utils/tripQueryP
 const regionIndex = JSON.parse(readFileSync(path.join(root, 'public/data/beaches/index.json'), 'utf8'));
 const displayNames = JSON.parse(readFileSync(path.join(root, 'utils/regionDisplayNames.json'), 'utf8'));
 
-const INFO_ONLY = new Set(['south-aegean-milos']);
+// No region is withheld from the planner any more: Milos moved from INFO_ONLY to MAP_HIDDEN
+// on 12/08/2026 (utils/infoOnlyRegions.ts), which withholds only its pin map. If a region is
+// ever put back into INFO_ONLY_REGION_IDS, mirror it here — an info-only region has no planner.
 const islands = (regionIndex.regions || [])
-  .filter(entry => !INFO_ONLY.has(entry.id))
   .map(entry => ({
     id: entry.id,
     name: displayNames[entry.id] || entry.name || { en: entry.id, gr: entry.id },

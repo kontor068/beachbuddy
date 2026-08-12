@@ -55,9 +55,14 @@ small rental business on Milos that cross-promotes the site. Operating entity: M
 
 ## History worth knowing
 
-- Milos is **"info-only"** since 11/07/2026: its 42 beaches are browsable and crawlable, but
-  the interactive map and today's recommendations are withheld (`utils/infoOnlyRegions.ts`).
-  Do not describe Milos as removed — it is present and deliberately limited.
+- Milos was **"info-only"** from 11/07/2026 to 12/08/2026: its 42 beaches were browsable and
+  crawlable, but the interactive map AND today's recommendations were withheld. Since
+  12/08/2026 it is **map-hidden only** (`utils/infoOnlyRegions.ts` → `MAP_HIDDEN_REGION_IDS`):
+  podium, recommendations, filters, planner, «Κοντά μου» and search all run exactly as in any
+  other region, and only the pin map is withheld — including inside the synthetic «Κοντά μου»
+  region, which is checked per beach. `INFO_ONLY_REGION_IDS` is now empty but still wired, for
+  a future region that needs the stronger soft-launch. Do not describe Milos as removed or as
+  info-only — it is a full region without a map.
 - Google compliance is treated as non-negotiable — the site does not chase grey-hat SEO.
 - Expansion beyond Greece is deliberately parked until Greece proves out.
 
