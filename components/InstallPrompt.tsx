@@ -16,7 +16,16 @@ interface BeforeInstallPromptEvent extends Event {
 const STORE_KEY = 'cb_install_prompt_v1';
 const COOLDOWN_MS = 45 * 24 * 60 * 60 * 1000; // back off ~6 weeks after a dismissal
 const MAX_DISMISSALS = 2; // after the user says no twice, stop asking for good
-const ENGAGEMENT_DELAY_MS = 0; // show the install message immediately when eligible
+
+// WHEN WE ARE ALLOWED TO ASK (12/08/2026). This used to be 0 — the card appeared the instant the
+// page loaded, which on a phone meant it floated over the hero photo, over the region cards, over
+// the map and over the amenities of the beach we had just recommended. Four screenshots, four
+// screens, the product covered on every one. A visitor who has not yet seen a single beach has no
+// reason to install anything, so asking then is pure cost: it hides the work and buys nothing.
+// Both gates below must hold. Time alone is not engagement (a phone left on a table would qualify)
+// and scroll alone is not either (a flick to the bottom is not use), so we require both.
+const ENGAGEMENT_DELAY_MS = 25_000; // ~25s on the page
+const ENGAGEMENT_SCROLL_RATIO = 1.2; // …and scrolled past the first screen and a bit
 
 type InstallMode = 'android' | 'ios';
 
@@ -170,6 +179,8 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
   const [showIosGuide, setShowIosGuide] = useState(false);
   const deferredPrompt = useRef<BeforeInstallPromptEvent | null>(null);
   const engagedRef = useRef(false);
+  const timeReadyRef = useRef(false);
+  const scrollReadyRef = useRef(false);
   const copy = getLocalizedCopy(language, COPY);
 
   useEffect(() => {
@@ -203,15 +214,34 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
     window.addEventListener('beforeinstallprompt', onBeforeInstall);
     window.addEventListener('appinstalled', onInstalled);
 
-    const timer = window.setTimeout(() => {
+    // Ask only once BOTH gates have opened. Whichever closes last does the revealing, so a visitor
+    // who reads slowly and one who scrolls fast both get asked at a moment they are actually using
+    // the site — and never while the first screen is still the only thing they have seen.
+    const tryReveal = () => {
+      if (!timeReadyRef.current || !scrollReadyRef.current) return;
       engagedRef.current = true;
       if (deferredPrompt.current) reveal('android');
       else if (isIosSafari()) reveal('ios');
+    };
+
+    const onScroll = () => {
+      if (scrollReadyRef.current) return;
+      if (window.scrollY < window.innerHeight * ENGAGEMENT_SCROLL_RATIO) return;
+      scrollReadyRef.current = true;
+      window.removeEventListener('scroll', onScroll);
+      tryReveal();
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const timer = window.setTimeout(() => {
+      timeReadyRef.current = true;
+      tryReveal();
     }, ENGAGEMENT_DELAY_MS);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', onBeforeInstall);
       window.removeEventListener('appinstalled', onInstalled);
+      window.removeEventListener('scroll', onScroll);
       window.clearTimeout(timer);
     };
   }, []);
@@ -302,9 +332,11 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
             <div className="min-w-0 flex-1">
               <div className="text-sm font-bold leading-tight text-slate-900 dark:text-slate-100">{copy.title}</div>
               {mode === 'ios' ? (
+                /* One line, not three. The Share-icon steps used to be spelled out here AND again
+                   behind «Show steps», which doubled the card's height for text the visitor reads
+                   twice. The steps live in the guide; this line only says why they'd want it. */
                 <div className="mt-0.5 text-[12px] font-medium leading-snug text-slate-500 dark:text-slate-400">
-                  {copy.bodyIos}{' '}
-                  <span className="whitespace-nowrap">{copy.iosBefore} <Share className="-mt-0.5 inline h-3.5 w-3.5 text-sky-600 dark:text-sky-400" aria-hidden="true" /> {copy.iosAfter}</span>
+                  {copy.bodyIos}
                 </div>
               ) : (
                 <div className="mt-0.5 text-[12px] font-medium leading-snug text-slate-500 dark:text-slate-400">{copy.bodyAndroid}</div>
