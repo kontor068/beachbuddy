@@ -96,9 +96,14 @@ export const handler = async (event) => {
   let notice;
   try {
     const result = await moderate({ ...parsed, action: parsed.action, event });
+    // «Δημοσιεύεται» used to mean "queued for the next build". It now means the
+    // photo is on the site, so the stamp says which — a one-tap approval from a
+    // phone is exactly the moment you want to know whether it is actually up.
     notice = result.alreadyDone
       ? 'Είχε ήδη κριθεί.'
-      : (result.status === 'approved' ? '✅ Δημοσιεύεται' : '🚫 Απορρίφθηκε');
+      : (result.status === 'approved'
+        ? (result.live?.ok ? '✅ Μπήκε στο site' : '✅ Εγκρίθηκε (μπαίνει στο επόμενο χτίσιμο)')
+        : '🚫 Απορρίφθηκε');
   } catch (error) {
     console.error('Moderation from Telegram failed.', error && error.message);
     notice = 'Κάτι πήγε στραβά. Δοκίμασε από τη σελίδα διαχείρισης.';

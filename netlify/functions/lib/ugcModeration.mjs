@@ -14,9 +14,18 @@
 //      cannot carry a signed URL — signed URLs expire, and a page baked with one
 //      would serve a dead image days later. A public bucket path is permanent.
 //   2. Stamps the row approved + public_path.
-//   3. Raises a flag in Netlify Blobs. It does NOT trigger a rebuild. Builds cost
+//   3. Republishes the live photo index into the same public bucket, so the photo
+//      appears on the running site within a minute. See ugcPhotoIndex.mjs.
+//   4. Raises a flag in Netlify Blobs. It does NOT trigger a rebuild. Builds cost
 //      Netlify build minutes (a limited free allowance), so publication is batched
 //      by a scheduled check — see scripts/ and the publish-check function.
+//
+// STEPS 3 AND 4 ARE NOT ALTERNATIVES, and the difference is the whole reason both
+// exist. Step 3 reaches the app a visitor is running: it fetches the index and
+// renders the photo, no deploy involved. Step 4 reaches the STATIC HTML — the
+// prerendered pages, the social preview image, everything Google reads — and that
+// genuinely needs a build. So an approval is visible to people immediately and to
+// crawlers at the next build, and the flag is what says a build is still owed.
 //
 // REJECTION DELETES THE FILE. There is no reason to pay storage for a photo we
 // have decided never to show, and a rejected upload is often exactly the kind of
@@ -28,6 +37,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { connectLambda, getStore } from '@netlify/blobs';
+
+import { refreshApprovedPhotoIndex } from './ugcPhotoIndex.mjs';
 
 export const UGC_STORE = 'ugc';
 /** Set when there is approved content the live site has not baked yet. */
@@ -318,8 +329,15 @@ export const moderate = async ({ kind, id, action, event }) => {
     }
     const updated = await patchItem(kind, id, rejection);
     // Un-publishing something that WAS live has to reach the static pages too.
-    if (item.status === 'approved') await markPendingPublish(event, { lastKind: kind, lastId: id, removal: true });
-    return { ok: true, kind, id, status: 'rejected', item: updated || item };
+    let live = null;
+    if (item.status === 'approved') {
+      await markPendingPublish(event, { lastKind: kind, lastId: id, removal: true });
+      // …and it has to leave the running site FIRST. Taking a photo down is the
+      // urgent direction of this pipeline: a photo we have decided not to show is
+      // usually one we should stop showing now, not at the next build.
+      if (kind === 'photo') live = await refreshApprovedPhotoIndex(getSupabaseConfig());
+    }
+    return { ok: true, kind, id, status: 'rejected', item: updated || item, live };
   }
 
   const patch = { status: 'approved', approved_at: new Date().toISOString() };
@@ -335,5 +353,10 @@ export const moderate = async ({ kind, id, action, event }) => {
   const updated = await patchItem(kind, id, patch);
   await markPendingPublish(event, { lastKind: kind, lastId: id });
 
-  return { ok: true, kind, id, status: 'approved', item: updated || { ...item, ...patch } };
+  // Live publication, after the row is committed and never before it: the index
+  // is built by re-reading the approved rows, so publishing it earlier would
+  // upload a map that does not yet contain the photo we just approved.
+  const live = kind === 'photo' ? await refreshApprovedPhotoIndex(getSupabaseConfig()) : null;
+
+  return { ok: true, kind, id, status: 'approved', item: updated || { ...item, ...patch }, live };
 };

@@ -98,6 +98,9 @@ const filterSheetCopy: Record<LanguageCode, {
   sort: string;
   nearMe: string;
   seeResults: (count: number) => string;
+  /** Shown only when the picked attributes exist in the region but none of them is suitable today. */
+  noneSuitable: string;
+  seeAllInstead: (count: number) => string;
 }> = {
   en: {
     quick: 'Most useful',
@@ -109,6 +112,8 @@ const filterSheetCopy: Record<LanguageCode, {
     sort: 'Sort',
     nearMe: 'Near me',
     seeResults: (count) => `See ${count} beaches`,
+    noneSuitable: 'None of these is suitable today.',
+    seeAllInstead: (count) => `Show all ${count} anyway`,
   },
   gr: {
     quick: 'Πιο χρήσιμα',
@@ -120,6 +125,8 @@ const filterSheetCopy: Record<LanguageCode, {
     sort: 'Ταξινόμηση',
     nearMe: 'Κοντά μου',
     seeResults: (count) => `Δες ${count} παραλίες`,
+    noneSuitable: 'Καμία από αυτές δεν είναι κατάλληλη σήμερα.',
+    seeAllInstead: (count) => `Δες τις ${count} έτσι κι αλλιώς`,
   },
   fr: {
     quick: 'Les plus utiles',
@@ -131,6 +138,8 @@ const filterSheetCopy: Record<LanguageCode, {
     sort: 'Tri',
     nearMe: 'Pres de moi',
     seeResults: (count) => `Voir ${count} plages`,
+    noneSuitable: "Aucune d'elles n'est adaptée aujourd'hui.",
+    seeAllInstead: (count) => `Voir les ${count} quand même`,
   },
   de: {
     quick: 'Am wichtigsten',
@@ -142,6 +151,8 @@ const filterSheetCopy: Record<LanguageCode, {
     sort: 'Sortierung',
     nearMe: 'In der Nahe',
     seeResults: (count) => `${count} Strande anzeigen`,
+    noneSuitable: 'Keiner davon ist heute geeignet.',
+    seeAllInstead: (count) => `Trotzdem alle ${count} zeigen`,
   },
   it: {
     quick: 'Più utili',
@@ -153,6 +164,8 @@ const filterSheetCopy: Record<LanguageCode, {
     sort: 'Ordina',
     nearMe: 'Vicino a me',
     seeResults: (count) => `Vedi ${count} spiagge`,
+    noneSuitable: 'Nessuna di queste è adatta oggi.',
+    seeAllInstead: (count) => `Mostra comunque tutte e ${count}`,
   },
 };
 
@@ -271,7 +284,8 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         onResetAll?.();
     };
     const handleApply = () => {
-        const appliedSortBy = normalizeInitialSort(tempSortBy);
+        // The button offered «Όλες» — applying has to actually deliver it, or the offer is a lie.
+        const appliedSortBy = normalizeInitialSort(shouldOfferAllInstead ? 'all' : tempSortBy);
         onApplyFilters(tempFilters, appliedSortBy, {
             distanceWithinSuitable: appliedSortBy === 'protected' && tempDistanceWithinSuitable,
         });
@@ -285,6 +299,22 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     const liveResultCount = useMemo(() => (
         getResultCount ? getResultCount(tempFilters, tempSortBy) : undefined
     ), [getResultCount, tempFilters, tempSortBy]);
+    /**
+     * THE DEAD END, AND THE WAY OUT OF IT (Μίλτος, 12/08/2026).
+     *
+     * «Καταλληλότερες» judges the day, not the region: on a windy afternoon a perfectly real set
+     * of beach-bar beaches can be nothing but red, and the honest answer to «Δες N» is zero. That
+     * answer is also useless on its own — the beaches ARE there, one tap away under «Όλες», and
+     * the visitor has no way of knowing that from a greyed-out button.
+     *
+     * So when the suitable view is empty and the all view is not, the button stops pretending and
+     * offers the thing that exists: it says so in words above, and applying switches the sort. One
+     * tap, no guessing, and the number on it is true either way.
+     */
+    const allViewResultCount = useMemo(() => (
+        getResultCount && tempSortBy !== 'all' ? getResultCount(tempFilters, 'all') : undefined
+    ), [getResultCount, tempFilters, tempSortBy]);
+    const shouldOfferAllInstead = liveResultCount === 0 && (allViewResultCount ?? 0) > 0;
 
     /**
      * A chip that would empty the list must not be tappable — the same rule the desktop chip
@@ -386,10 +416,13 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
             return 0;
         });
 
+    // The badge beside the sheet's title counts the same beaches the button promises — including
+    // when the button has fallen back to «Όλες», or the two would contradict each other on screen.
+    const headerResultCount = shouldOfferAllInstead ? allViewResultCount : liveResultCount;
     useEffect(() => {
-        if (!onResultCountChange || typeof liveResultCount !== 'number') return;
-        onResultCountChange(liveResultCount);
-    }, [liveResultCount, onResultCountChange]);
+        if (!onResultCountChange || typeof headerResultCount !== 'number') return;
+        onResultCountChange(headerResultCount);
+    }, [headerResultCount, onResultCountChange]);
 
     const renderFilterButton = (filter: FilterKey, compact = false) => {
         const isSelected = tempFilters.includes(filter);
@@ -492,13 +525,25 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 {secondaryGroups.map(group => renderFilterSection(sheetCopy[group.titleKey], group.filters))}
             </div>
 
-            <div className="sticky bottom-0 flex items-center gap-3 border-t border-slate-200/85 bg-slate-50/96 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-16px_28px_rgba(15,23,42,0.06)] backdrop-blur">
+            <div className="sticky bottom-0 border-t border-slate-200/85 bg-slate-50/96 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-16px_28px_rgba(15,23,42,0.06)] backdrop-blur">
+                {/* Amber is a register here ("this is not what you asked for"), not a tone claim. */}
+                {shouldOfferAllInstead && (
+                    <p role="status" className="mb-2 text-center text-xs font-bold leading-snug text-amber-900">
+                        {sheetCopy.noneSuitable}
+                    </p>
+                )}
+                <div className="flex items-center gap-3">
                 <button onClick={handleReset} className="min-h-12 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400/40">
                     {t.resetFilters}
                 </button>
                 <button onClick={handleApply} className="min-h-12 flex-1 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-cyan-700/20 transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600/35">
-                    {typeof liveResultCount === 'number' ? sheetCopy.seeResults(liveResultCount) : t.applyFilters}
+                    {shouldOfferAllInstead && typeof allViewResultCount === 'number'
+                        ? sheetCopy.seeAllInstead(allViewResultCount)
+                        : typeof liveResultCount === 'number'
+                            ? sheetCopy.seeResults(liveResultCount)
+                            : t.applyFilters}
                 </button>
+                </div>
             </div>
         </div>
     );

@@ -646,6 +646,20 @@ for (const tone of emittedTones) {
         row: {},
       });
     }
+    // The legend row shows the COUNTED phrase, not the bare word (12/08/2026): «Ιδανικές 4
+    // παραλίες». Both forms must exist and both must contain the {n} slot — a phrase without it
+    // renders a noun with no number, which is exactly the ambiguity the change removed.
+    for (const form of ['countOne', 'countMany']) {
+      const phrase = conditionToneLabels?.[lang]?.[tone]?.[form];
+      if (typeof phrase !== 'string' || !phrase.includes('{n}')) {
+        failures.push({
+          rule: 'every-pin-colour-has-a-legend-word',
+          reason: `utils/conditionToneLabels.ts has no usable ${lang} "${form}" for a "${tone}" pin `
+            + '— the legend row would print a beach count with no number, or fall back to English.',
+          row: {},
+        });
+      }
+    }
   }
 }
 

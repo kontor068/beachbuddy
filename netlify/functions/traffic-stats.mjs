@@ -39,7 +39,9 @@ import { WORLD_PATH, WORLD_W, WORLD_H, WORLD_LAT_TOP } from './lib/worldPath.mjs
 // Telegram buttons and the old page call, so there is one implementation and
 // three doors, not three copies of the rules.
 import {
+  beachLabel,
   clearPendingPublish,
+  getSupabaseConfig,
   isConfigured as ugcConfigured,
   isKnownKind,
   listPending,
@@ -48,6 +50,14 @@ import {
   signPendingPhoto,
   withBeachLabels,
 } from './lib/ugcModeration.mjs';
+import {
+  HARD_MAX_PER_BEACH,
+  listBeachPhotos,
+  listBeachesWithPhotos,
+  moveBeachPhoto,
+  refreshApprovedPhotoIndex,
+  setBeachPhotoLimit,
+} from './lib/ugcPhotoIndex.mjs';
 
 const TRAFFIC_STORE = 'traffic';
 
@@ -383,16 +393,120 @@ const ugcReviewCard = (item) => {
   </div>`;
 };
 
+// ── Putting one beach's photos in order ──────────────────────────────────────
+// The screen that answers "which of these three represents this beach". It shows
+// EVERY approved photo, including the ones past the cap, dimmed and labelled —
+// you cannot decide that the fourth deserves to be first if the console only
+// shows you the three that made it.
+//
+// Arrows and one ⭐, not drag-and-drop. Dragging inside a page that scrolls is
+// miserable on a phone, and it would need JavaScript in the one place on this
+// page that deliberately has none: a control that publishes a stranger's photo
+// must work as a plain form post or not at all.
+
+const ORDER_BTN = 'appearance:none;border:1px solid rgba(148,163,184,.35);border-radius:8px;'
+  + 'background:rgba(148,163,184,.12);color:#cbd5e1;font:600 13px system-ui,sans-serif;'
+  + 'cursor:pointer;padding:5px 9px;min-width:34px';
+
+const curatingCard = (curating, photo, index, total) => `
+  <div class="item" style="${photo.shown ? '' : 'opacity:.55'}">
+    <img src="${esc(photo.url)}" alt="" loading="lazy">
+    <div class="body">
+      <div class="who">${index === 0 ? '⭐ Εξώφυλλο' : `#${photo.position}`}
+        ${photo.shown ? '' : '<span class="stars" style="color:#f59e0b">δεν φαίνεται</span>'}</div>
+      ${photo.caption ? `<p class="cap">${esc(photo.caption)}</p>` : ''}
+      <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(beachRef(curating.regionId, curating.beachId))}"
+            style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+        <input type="hidden" name="key" value="RAWFORMKEY">
+        <input type="hidden" name="region" value="${esc(curating.regionId)}">
+        <input type="hidden" name="beach" value="${esc(curating.beachId)}">
+        <input type="hidden" name="photoId" value="${esc(photo.id)}">
+        ${index === 0 ? '' : `<button name="action" value="move-first" style="${ORDER_BTN}" title="Κάν' την εξώφυλλο">⭐</button>`}
+        ${index === 0 ? '' : `<button name="action" value="move-up" style="${ORDER_BTN}" title="Πιο πάνω">↑</button>`}
+        ${index === total - 1 ? '' : `<button name="action" value="move-down" style="${ORDER_BTN}" title="Πιο κάτω">↓</button>`}
+      </form>
+    </div>
+  </div>`;
+
+const curatingPanel = (curating) => {
+  if (!curating) return '';
+  if (curating.problem) {
+    return `<section class="panel"><h2>Σειρά φωτογραφιών</h2>
+      <p class="empty">Δεν διαβάστηκε: ${esc(curating.problem)}</p></section>`;
+  }
+  if (!curating.photos.length) {
+    return `<section class="panel"><h2>${esc(curating.name)}<em>σειρά φωτογραφιών</em></h2>
+      <p class="empty">Αυτή η παραλία δεν έχει ακόμα εγκεκριμένη φωτογραφία.</p></section>`;
+  }
+
+  const total = curating.photos.length;
+  const shown = Math.min(curating.maxShown, total);
+  const options = Array.from({ length: Math.min(HARD_MAX_PER_BEACH, Math.max(total, curating.maxShown)) }, (_, i) => i + 1)
+    .map((n) => `<option value="${n}"${n === curating.maxShown ? ' selected' : ''}>${n}</option>`)
+    .join('');
+
+  return `
+<section class="panel">
+  <h2>${esc(curating.name)}<em>${num(total)} εγκεκριμένες · φαίνονται ${num(shown)}</em></h2>
+  <p class="empty" style="margin:0 0 10px">Η πρώτη είναι το εξώφυλλο — αυτή που βλέπει ο κόσμος στην κάρτα
+    και στην αναζήτηση. Κάθε αλλαγή είναι ζωντανή αμέσως, χωρίς χτίσιμο.</p>
+  <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(beachRef(curating.regionId, curating.beachId))}"
+        style="display:flex;gap:8px;align-items:center;margin:0 0 12px;flex-wrap:wrap">
+    <input type="hidden" name="key" value="RAWFORMKEY">
+    <input type="hidden" name="region" value="${esc(curating.regionId)}">
+    <input type="hidden" name="beach" value="${esc(curating.beachId)}">
+    <label style="color:#94a3b8;font:600 13px system-ui,sans-serif">Να δείχνει τις πρώτες</label>
+    <select name="n" style="${ORDER_BTN};padding:5px 8px">${options}</select>
+    <button name="action" value="limit" style="${ORDER_BTN}">Αποθήκευση</button>
+  </form>
+  <div class="ugc">${curating.photos.map((photo, i) => curatingCard(curating, photo, i, total)).join('')}</div>
+</section>`;
+};
+
+/**
+ * The beaches you can go and rearrange, as plain links.
+ *
+ * Beaches with a single photo are listed too but marked, because "1 φωτό" is a
+ * beach where there is nothing to order — the link is still there so you can
+ * change how many it shows, and so the list is a complete answer to "where have
+ * visitor photos actually landed".
+ */
+const publishedBeachesPanel = (beaches, current) => {
+  if (!beaches?.length) return '';
+  const row = (beach) => {
+    const ref = beachRef(beach.regionId, beach.beachId);
+    const active = current && ref === beachRef(current.regionId, current.beachId);
+    return `<li class="${active ? '' : 'dim'}">
+      <a href="?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(ref)}"
+         style="color:${active ? '#6ee7b7' : '#cbd5e1'};text-decoration:none">
+        ${active ? '▸ ' : ''}${esc(beach.name)}</a>
+      <span class="bl">${beach.count === 1 ? '1 φωτό' : `${num(beach.count)} φωτό`}</span></li>`;
+  };
+  return `<section class="panel">
+    <h2>Παραλίες με φωτογραφίες<em>${num(beaches.length)} · πάτα μία για να αλλάξεις σειρά</em></h2>
+    <ul class="bars">${beaches.map(row).join('')}</ul>
+  </section>`;
+};
+
+// Since 12/08/2026 an approval publishes itself — see lib/ugcPhotoIndex.mjs. The
+// wording has to keep the two audiences apart, because they are now hours or days
+// apart: the photo is on the site immediately, and on the pages Google reads at
+// the next build. Saying only the first would imply the SEO side is done too.
 const FLASH = {
-  approved: ['Εγκρίθηκε. Θα εμφανιστεί στη σελίδα της παραλίας στο επόμενο χτίσιμο του site.', ''],
-  rejected: ['Απορρίφθηκε και το αρχείο διαγράφηκε οριστικά.', ''],
+  approved: ['Εγκρίθηκε — είναι ήδη στη σελίδα της παραλίας (μέσα σε ένα-δυο λεπτά). Στη Google μπαίνει στο επόμενο χτίσιμο.', ''],
+  approvedNotLive: ['Εγκρίθηκε, αλλά η ζωντανή λίστα δεν ανανεώθηκε — θα εμφανιστεί στο επόμενο χτίσιμο. Δες τα logs.', 'warn'],
+  rejected: ['Απορρίφθηκε, το αρχείο διαγράφηκε οριστικά και έφυγε αμέσως από το site.', ''],
   already: ['Είχε ήδη κριθεί — δεν έγινε τίποτα δεύτερη φορά.', 'warn'],
-  built: ['Ξεκίνησε το χτίσιμο. Σε λίγα λεπτά τα εγκεκριμένα θα είναι στις δημόσιες σελίδες.', ''],
-  nobuild: ['Δεν υπάρχει build hook ρυθμισμένο (NETLIFY_BUILD_HOOK_URL) — τα εγκεκριμένα θα βγουν στο επόμενο ανέβασμα κώδικα.', 'warn'],
+  built: ['Ξεκίνησε το χτίσιμο. Σε λίγα λεπτά τα εγκεκριμένα θα είναι και στις στατικές σελίδες.', ''],
+  refreshed: ['Η ζωντανή λίστα ανανεώθηκε — ό,τι είναι εγκεκριμένο φαίνεται τώρα στο site.', ''],
+  reordered: ['Η σειρά άλλαξε και είναι ήδη ζωντανή στο site.', ''],
+  reorderedNotLive: ['Η σειρά αποθηκεύτηκε, αλλά δεν πρόλαβε να βγει ζωντανά — δοκίμασε «Ανανέωσε τη ζωντανή λίστα».', 'warn'],
+  nomigration: ['Η αλλαγή σειράς δεν είναι ακόμα ενεργή: τρέξε το supabase/migrations/0006_photo_ordering.sql στη Supabase. Μέχρι τότε όλα τα υπόλοιπα δουλεύουν κανονικά.', 'warn'],
+  nobuild: ['Δεν υπάρχει build hook ρυθμισμένο (NETLIFY_BUILD_HOOK_URL) — οι φωτογραφίες φαίνονται ήδη στο site, στη Google θα μπουν στο επόμενο ανέβασμα κώδικα.', 'warn'],
   failed: ['Κάτι πήγε στραβά — δες τα logs της συνάρτησης. Τίποτα δεν άλλαξε.', 'warn'],
 };
 
-const moderationTab = (queue, flashCode) => {
+const moderationTab = (queue, flashCode, curating, publishedBeaches) => {
   const flash = FLASH[flashCode];
   const head = flash ? `<div class="flash ${flash[1]}">${esc(flash[0])}</div>` : '';
 
@@ -404,18 +518,24 @@ const moderationTab = (queue, flashCode) => {
 
   const waiting = queue.pendingPublish?.count || 0;
   const notLive = waiting
-    ? `<div class="flash warn">Υπάρχουν <b>${num(waiting)}</b> εγκεκριμένα που δεν έχουν βγει ακόμα στις
-       δημόσιες σελίδες. Θα βγουν <b>δωρεάν</b> στο επόμενο ανέβασμα κώδικα — δεν χρειάζεται να κάνεις τίποτα.
-       <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos" style="margin-top:9px;display:flex;gap:8px;max-width:340px">
+    ? `<div class="flash warn"><b>${num(waiting)}</b> εγκεκριμένα είναι ήδη <b>ορατά στο site</b>.
+       Λείπουν μόνο από τις σελίδες που διαβάζει η Google — μπαίνουν <b>δωρεάν</b> στο επόμενο
+       ανέβασμα κώδικα, δεν χρειάζεται να κάνεις τίποτα.
+       <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos" style="margin-top:9px;display:flex;gap:8px;max-width:400px">
          <input type="hidden" name="key" value="RAWFORMKEY">
          <button class="yes" name="action" value="publish"
            style="flex:1;appearance:none;border:1px solid rgba(16,185,129,.45);border-radius:999px;padding:9px 10px;
                   font:650 13px system-ui,sans-serif;cursor:pointer;background:rgba(16,185,129,.18);color:#6ee7b7">
-           🚀 Δημοσίευσε τώρα (ξοδεύει ένα χτίσιμο)</button>
+           🚀 Βάλ' τα και στη Google (ξοδεύει ένα χτίσιμο)</button>
+         <button name="action" value="refresh-live"
+           style="flex:1;appearance:none;border:1px solid rgba(148,163,184,.4);border-radius:999px;padding:9px 10px;
+                  font:650 13px system-ui,sans-serif;cursor:pointer;background:rgba(148,163,184,.14);color:#cbd5e1">
+           🔄 Ανανέωσε τη ζωντανή λίστα (δωρεάν)</button>
        </form></div>`
     : '';
 
   return `${head}${notLive}
+${curatingPanel(curating)}
 <section class="panel">
   <h2>Φωτογραφίες επισκεπτών<em>${queue.photos.length ? `${num(queue.photos.length)} περιμένουν · τίποτα εδώ δεν είναι ορατό στο κοινό` : 'τίποτα σε αναμονή'}</em></h2>
   ${queue.photos.length
@@ -429,6 +549,8 @@ const moderationTab = (queue, flashCode) => {
     ? `<div class="ugc">${queue.reviews.map(ugcReviewCard).join('')}</div>`
     : '<p class="empty">Καμία κριτική σε αναμονή.</p>'}
 </section>
+
+${publishedBeachesPanel(publishedBeaches, curating)}
 
 ${queue.problem ? `<div class="flash warn">Πρόβλημα ανάγνωσης της ουράς: ${esc(queue.problem)}</div>` : ''}`;
 };
@@ -1021,7 +1143,7 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
 </div>
 
 <div id="tabPhotos" role="tabpanel" hidden>
-${moderationTab(queue, data.flash)}
+${moderationTab(queue, data.flash, data.curating, data.publishedBeaches)}
 </div>
 
 <footer class="meth">
@@ -1551,18 +1673,62 @@ const moderationPost = async (event, key) => {
     return { statusCode: 403, headers: { 'Content-Type': 'text/plain' }, body: 'Forbidden' };
   }
 
-  const back = (code) => ({
+  // `beach` keeps the ordering panel open across the redirect, so pressing ↑ four
+  // times is four presses rather than four presses and four navigations back.
+  const back = (code, beach = '') => ({
     statusCode: 303,
     headers: {
-      Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=photos&done=${code}`,
+      Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=photos${
+        beach ? `&beach=${encodeURIComponent(beach)}` : ''}&done=${code}`,
       'Cache-Control': 'no-store',
     },
     body: '',
   });
 
-  // "Publish now" spends one Netlify build on purpose. Approvals otherwise ride
-  // along free with the next ordinary code push — see ugc-admin.mjs for why there
-  // is no cron here.
+  // ── Reordering one beach ───────────────────────────────────────────────────
+  // Every one of these ends with the live index republished, because an order
+  // that is only true in the database is not an order anybody can see.
+  const MOVES = { 'move-up': 'up', 'move-down': 'down', 'move-first': 'first' };
+  if (MOVES[form.action] || form.action === 'limit') {
+    const regionId = form.region || '';
+    const beachId = Number(form.beach);
+    const ref = regionId && Number.isInteger(beachId) ? beachRef(regionId, beachId) : '';
+    if (!ref) return back('failed');
+
+    try {
+      if (form.action === 'limit') {
+        await setBeachPhotoLimit(getSupabaseConfig(), { regionId, beachId, maxShown: form.n });
+      } else {
+        await moveBeachPhoto(getSupabaseConfig(), {
+          regionId, beachId, photoId: form.photoId, direction: MOVES[form.action],
+        });
+      }
+      const live = await refreshApprovedPhotoIndex(getSupabaseConfig());
+      return back(live.ok ? 'reordered' : 'reorderedNotLive', ref);
+    } catch (error) {
+      console.error('Reordering failed.', error && error.message);
+      // The one failure with an obvious, actionable cause deserves its own words.
+      // "Κάτι πήγε στραβά" for a migration nobody has run yet is an hour lost in
+      // the function logs for something a single sentence answers.
+      const text = String(error?.message || '');
+      const needsMigration = /42703|42P01/.test(text)
+        || (/does not exist/i.test(text) && /sort_order|beach_photo_settings/.test(text));
+      return back(needsMigration ? 'nomigration' : 'failed', ref);
+    }
+  }
+
+  // Rebuild the live index by hand — free, and the repair for anything approved
+  // before 12/08/2026 or whose index upload failed. It only ever rewrites the file
+  // from the approved rows, so pressing it twice does nothing the first press did
+  // not already do.
+  if (form.action === 'refresh-live') {
+    const result = await refreshApprovedPhotoIndex(getSupabaseConfig());
+    return back(result.ok ? 'refreshed' : 'failed');
+  }
+
+  // "Publish now" spends one Netlify build on purpose, and buys ONLY the static
+  // pages — approvals are already live by the time this button is visible. See
+  // ugc-admin.mjs for why there is no cron here.
   if (form.action === 'publish') {
     const hook = process.env.NETLIFY_BUILD_HOOK_URL || '';
     if (!hook) return back('nobuild');
@@ -1585,7 +1751,22 @@ const moderationPost = async (event, key) => {
   try {
     const result = await moderate({ kind, id, action, event });
     if (result.alreadyDone) return back('already');
-    return back(result.status === 'approved' ? 'approved' : 'rejected');
+
+    // APPROVING A PHOTO LANDS YOU ON THAT BEACH'S ORDER, with the new photo in it.
+    // This is the whole difference between "you can reorder photos" and "you do":
+    // the moment you have just looked at a photo and judged it is the only moment
+    // you know where it belongs among the others. A separate screen you have to
+    // remember to open is a screen nobody opens.
+    const item = result.item || {};
+    const landing = kind === 'photo' && result.status === 'approved' && item.region_id
+      ? beachRef(item.region_id, item.beach_id)
+      : '';
+
+    if (result.status !== 'approved') return back('rejected', landing);
+    // Say which of the two publications happened. A photo whose live index upload
+    // failed IS approved and WILL appear — at the next build — and telling you it
+    // is on the site now would be the one wrong thing to say.
+    return back(kind === 'photo' && !result.live?.ok ? 'approvedNotLive' : 'approved', landing);
   } catch (error) {
     console.error('Moderation failed.', error && error.message);
     return back('failed');
@@ -1619,6 +1800,59 @@ const readQueue = async (event) => {
   } catch (error) {
     console.error('Could not read the moderation queue.', error && error.message);
     return { ...empty, configured: true, problem: error.message || 'άγνωστο σφάλμα' };
+  }
+};
+
+// ── The beach being curated ──────────────────────────────────────────────────
+// `?beach=<regionId>:<beachId>` opens one beach's photo order above the queue.
+// It is a QUERY PARAMETER rather than a stored "current beach" because that is
+// what makes the approval flow work: approving a photo redirects here with that
+// photo's own beach already selected, so the ordering screen is where you land
+// rather than somewhere you have to remember to go.
+
+/** `"lesvos:1352"` → `{ regionId, beachId }`, or null for anything else. */
+const parseBeachRef = (raw) => {
+  const value = String(raw || '');
+  const at = value.lastIndexOf(':');
+  if (at < 1) return null;
+  const regionId = value.slice(0, at);
+  const beachId = Number(value.slice(at + 1));
+  if (!regionId || !Number.isInteger(beachId)) return null;
+  return { regionId, beachId };
+};
+
+const beachRef = (regionId, beachId) => `${regionId}:${beachId}`;
+
+const readCurating = async (raw) => {
+  const ref = parseBeachRef(raw);
+  if (!ref || !ugcConfigured()) return null;
+  try {
+    const [{ photos, maxShown }, name] = await Promise.all([
+      listBeachPhotos(getSupabaseConfig(), ref.regionId, ref.beachId),
+      beachLabel(ref.regionId, ref.beachId),
+    ]);
+    return { ...ref, photos, maxShown, name };
+  } catch (error) {
+    console.error('Could not read a beach photo order.', error && error.message);
+    return { ...ref, photos: [], maxShown: 0, name: `Παραλία #${ref.beachId}`, problem: error.message || 'άγνωστο σφάλμα' };
+  }
+};
+
+/**
+ * The beaches you could go and rearrange. Best-effort: this is a convenience list,
+ * and failing to build it must not cost you the moderation queue underneath it.
+ */
+const readPublishedBeaches = async () => {
+  if (!ugcConfigured()) return [];
+  try {
+    const beaches = await listBeachesWithPhotos(getSupabaseConfig());
+    return await Promise.all(beaches.map(async (beach) => ({
+      ...beach,
+      name: await beachLabel(beach.regionId, beach.beachId),
+    })));
+  } catch (error) {
+    console.error('Could not list beaches with photos.', error && error.message);
+    return [];
   }
 };
 
@@ -1871,6 +2105,8 @@ export const handler = async (event) => {
           rows: [], totals: {}, days: 0, startDay: todayKey,
           live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], mapDays: 0, nowMin,
           queue: await readQueue(event), flash: flashCode(params.done),
+          curating: await readCurating(params.beach),
+          publishedBeaches: await readPublishedBeaches(),
         }, given),
       };
     }
@@ -1994,6 +2230,8 @@ export const handler = async (event) => {
         nowMin,
         queue: await readQueue(event),
         flash: flashCode(params.done),
+        curating: await readCurating(params.beach),
+          publishedBeaches: await readPublishedBeaches(),
       }, given),
     };
   } catch (error) {

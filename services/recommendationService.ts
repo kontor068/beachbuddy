@@ -1437,6 +1437,14 @@ export const filterBeaches = (
         if (filterName === 'sunset') return isSunsetFacingBeach(b);
         if (filterName === 'naturist') return isNaturistBeach(b);
         if (filterName === 'beachBar') return hasBeachBarAmenity(b);
+        // Seasonal, so it can never be the raw `activities.surfing` flag the fallback below would
+        // have read: the western breaks are November–April and the Aegean ones meltemi-driven, so
+        // a raw read offers a winter-only spot in August. Same rule the preference path has always
+        // used (beachMatchesUserPreferences) — written here too because a filter key does not go
+        // through preferences. Not reachable from the UI today: `surfing` is in no filter sheet and
+        // in no search-intent rule. It is written down now precisely so the day it is added, it
+        // does not arrive wrong.
+        if (filterName === 'surfing') return isSurfSpotInSeason(b);
         // Check amenities
         if (b.amenities && f in b.amenities) return b.amenities[f as keyof typeof b.amenities];
         // Check characteristics
@@ -1456,6 +1464,25 @@ export const filterBeaches = (
 
   return result;
 };
+
+/**
+ * Does THIS beach carry THIS filter? The single-beach form of `filterBeaches`, and the only
+ * answer allowed anywhere.
+ *
+ * Every surface that decides which chips to OFFER used to answer it with its own hand-written
+ * copy — App's `beachMatchesMobileFilter`, BeachSearcherHome's `beachMatchesAdvancedFilter` —
+ * and copies drift. Both of those read only `amenities` and `characteristics` in their fallback,
+ * so a filter living under `activities` or `environment` would have been reported as "no beach in
+ * this region has it" and quietly dropped from the sheet; the second one had no `disabledAccess`
+ * branch at all. Neither was reachable with today's filter list, which is exactly how a defect
+ * like this survives until the day someone adds a key.
+ *
+ * A single filter is passed, so the surface-type OR inside `filterBeaches` reduces to equality —
+ * this is a pure membership test, not a combination one.
+ */
+export const beachMatchesFilterKey = (beach: Beach, filter: FilterKey): boolean => (
+  filterBeaches([beach], [filter], '', 'en').length === 1
+);
 
 /**
  * Sorts beaches based on the selected option.

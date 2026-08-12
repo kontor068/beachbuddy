@@ -60,9 +60,7 @@ import { explainTopPickExclusion, type TopPickExclusionReason } from '../service
 import { MEANINGFUL_WIND_TOP_PICK_BEAUFORT as SHARED_MEANINGFUL_WIND_TOP_PICK_BEAUFORT } from '../services/topPickRanking';
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
-import { hasBoatOnlyAccess, isAdventureBeach } from '../utils/access';
-import { isSunsetFacingBeach } from '../utils/beachOrientation';
-import { isNaturistBeach } from '../utils/naturistBeaches';
+import { hasBoatOnlyAccess } from '../utils/access';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
@@ -70,7 +68,7 @@ import { getIslandDestinationPhoto, getIslandStripPhoto } from '../data/destinat
 import { getIslandGroupLabel } from '../utils/islandRegionLabels';
 import { buildIslandDaySummary } from '../utils/islandDaySummary';
 import { CuratedPhotoImage } from './photos';
-import { beachMatchesUserPreferences, getBeachSearchFilterValues } from '../services/recommendationService';
+import { beachMatchesFilterKey, beachMatchesUserPreferences, filterBeaches, getBeachSearchFilterValues } from '../services/recommendationService';
 import { isSearchMatch } from '../utils/searchNormalize';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { describeSimpleWindSuitability } from '../utils/windExposureCopy';
@@ -482,53 +480,11 @@ const beachMatchesPreferenceFilter = (beach: Beach, filter: QuickPreferenceFilte
   })
 );
 
-const beachMatchesAdvancedFilter = (beach: Beach, filter: FilterKey): boolean => {
-  if (filter === 'showAll') return true;
-  if (filter === 'easyAccess') {
-    return beachMatchesPreferenceFilter(beach, 'easyAccess');
-  }
-  if (filter === 'sandy' || filter === 'pebbles') {
-    return beachMatchesPreferenceFilter(beach, filter);
-  }
-  if (filter === 'snorkeling') {
-    return beachMatchesPreferenceFilter(beach, 'snorkeling');
-  }
-  if (filter === 'adventure') {
-    return isAdventureBeach(beach);
-  }
-  if (filter === 'sunset') {
-    return isSunsetFacingBeach(beach);
-  }
-  if (filter === 'naturist') {
-    return isNaturistBeach(beach);
-  }
-  if (filter === 'familyFriendly') {
-    return beachMatchesPreferenceFilter(beach, 'familyFriendly');
-  }
-  if (filter === 'quiet') {
-    return beachMatchesPreferenceFilter(beach, 'quiet');
-  }
-  if (filter === 'surfing') {
-    // Route through the shared matcher, not a bare flag read: surf spots are
-    // seasonal and the season check lives there. Reading `activities.surfing`
-    // directly here quietly offered November-only Ionian breaks in August.
-    // Route through the shared matcher, not a bare flag read: surf spots are
-    // seasonal and the season check lives there. Reading `activities.surfing`
-    // directly here quietly offered November-only Ionian breaks in August.
-    return beachMatchesPreferenceFilter(beach, 'surfing');
-  }
-  if (filter === 'sandy-pebbles' || filter === 'rocky') {
-    return beach.beachType === filter;
-  }
-  if (beach.amenities && filter in beach.amenities) {
-    return Boolean(beach.amenities[filter as keyof Beach['amenities']]);
-  }
-  if (beach.characteristics && filter in beach.characteristics) {
-    return Boolean(beach.characteristics[filter as keyof Beach['characteristics']]);
-  }
-
-  return false;
-};
+// Which chips this region can offer is the same question the list answers, so it is answered by
+// the same function — see beachMatchesFilterKey. The hand-written copy that used to live here
+// read only `amenities` and `characteristics`, had no `disabledAccess` branch, and needed its own
+// note explaining that surf spots are seasonal; all of that is now one rule, written once.
+const beachMatchesAdvancedFilter = beachMatchesFilterKey;
 
 // When a region is picked from the search suggestions, App keeps the region label in the
 // search box (preserveSearchQueryOnRegionChange) so the user still sees e.g. "Μήλος". That
@@ -2211,6 +2167,25 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     if (suitableBeachCards && suitableBeachCards.length > 0) {
       const normalizedSearchQuery = normalizeBeachSearchQuery(searchQuery, selectedIsland, language);
       const activeAdvancedFilters = activeFilters.filter(filter => filter !== 'showAll');
+      /**
+       * «ΛΕΕΙ 6 ΚΑΙ ΔΕΙΧΝΕΙ 0» (Μίλτος, 12/08/2026) — ΤΟ ΙΔΙΟ ΦΙΛΤΡΟ, ΜΙΑ ΦΟΡΑ ΓΡΑΜΜΕΝΟ.
+       *
+       * This list used to re-filter the cards App had ALREADY filtered, through a second
+       * hand-written matcher (`beachMatchesAdvancedFilter`, still used above to decide which
+       * chips to offer). The two disagreed on the surface types: the shared `filterBeaches`
+       * treats Άμμος / Βότσαλα / Άμμος+Βότσαλα as alternatives — a beach carries exactly one
+       * `beachType`, so requiring all three at once can only ever mean "any of these" — while
+       * the local copy ANDed every chip together. Tick all three and App counted 6, this list
+       * rendered 0, and the same six reappeared the moment you switched to «Όλες».
+       *
+       * They could differ elsewhere too (beachBar goes through hasBeachBarAmenity there and a
+       * raw flag read here), so the fix is not to patch the surface case: the shared matcher is
+       * now the only one that decides, and this stays a lookup into its answer.
+       */
+      const sharedFilterMatchIds = new Set(
+        filterBeaches(suitableBeachCards.map(item => item.beach), activeAdvancedFilters, '', language)
+          .map(beach => beach.id)
+      );
       const matchesCurrentFilters = (beach: Beach) => {
         // isSearchMatch, not naive substring: the typed name is often accent-/spelling-
         // variant («Γυαλός» vs the dataset's «Γιαλος»), and the results list already
@@ -2220,12 +2195,22 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
         if (!matchesSearch) return false;
 
-        const matchesPreferences = QUICK_PREFERENCE_FILTERS.every(filter => (
-          !preferences[filter] || beachMatchesPreferenceFilter(beach, filter)
-        ));
-        if (!matchesPreferences) return false;
+        /**
+         * ΤΟ ΙΔΙΟ ΛΑΘΟΣ, ΤΟ ΔΙΠΛΑΝΟ ΜΟΝΟΠΑΤΙ (Μίλτος, 12/08/2026).
+         *
+         * Το σχόλιο από πάνω έκλεισε τη διαφωνία στα advanced φίλτρα και άφησε αυτή τη γραμμή
+         * να ρωτάει κάθε προτίμηση ΞΕΧΩΡΙΣΤΑ και να τις κάνει AND. Άμμος και Βότσαλα είναι ο
+         * ίδιος τύπος παραλίας με δύο τιμές: ο κοινός κανόνας τις διαβάζει ως εναλλακτικές
+         * (beachMatchesUserPreferences → typeFiltersActive), αυτό εδώ απαιτούσε και τις δύο
+         * μαζί σε μία παραλία που έχει έναν μόνο `beachType`. Πατώντας και τα δύο chips στον
+         * desktop: τα chips μετρούσαν 120 και 40, ο χάρτης κρατούσε 160 pins, ο τίτλος έλεγε
+         * «Υπόλοιπες κατάλληλες (0)» — και το «Όλες» τις ξανάφερνε όλες.
+         *
+         * Ένας κανόνας, ο κοινός, με ΟΛΟ το αντικείμενο προτιμήσεων μαζί — όχι μία-μία.
+         */
+        if (!beachMatchesUserPreferences(beach, preferences)) return false;
 
-        return activeAdvancedFilters.every(filter => beachMatchesAdvancedFilter(beach, filter));
+        return sharedFilterMatchIds.has(beach.id);
       };
 
       const getDistance = (item: SuitableBeach): number | undefined => (
@@ -2917,13 +2902,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    * coloured from live weather and stays trustworthy.
    */
   const topPickExclusionCopy: Record<TopPickExclusionReason, string> = {
-    safety: getLocalizedCopy(language, {
-      en: 'We are not recommending a swim here today.',
-      gr: 'Σήμερα δεν τη συστήνουμε για μπάνιο.',
-      de: 'Heute raten wir hier vom Baden ab.',
-      fr: "Aujourd'hui, nous ne conseillons pas la baignade ici.",
-      it: 'Oggi non consigliamo il bagno qui.',
-    }),
+    /**
+     * SILENT SINCE 12/08/2026 — classified, never printed (same treatment as `unverified`).
+     *
+     * «Σήμερα δεν τη συστήνουμε για μπάνιο» was a verdict, not a caption, and it landed on a card
+     * that already carries its own colour, its own headline and its own Beaufort. Two voices on the
+     * same tile, and the small grey one contradicting the pin beside it, is worse than silence.
+     * The safety judgement itself is unchanged: it still keeps the beach off the podium and still
+     * colours the pin — it simply stops being narrated a second time in the corner of the card.
+     */
+    safety: '',
     access: getLocalizedCopy(language, {
       en: 'It needs a boat or a hard path, so it ranks after the easy ones.',
       gr: 'Θέλει σκάφος ή δύσκολο μονοπάτι, γι’ αυτό μπαίνει μετά τις εύκολες.',
@@ -4948,6 +4936,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </div>
                 </aside>
               </div>
+              {/* Both tab panels come FIRST, so «Πώς βγαίνει το Top 3» below them sits under the
+                  cards on EITHER tab (Miltos, 12/08/2026). It used to live between the two, which
+                  looks right on «Top 3» and wrong on «Υπόλοιπες»: with the podium carousel hidden,
+                  the disclosure collapsed upward and became the first thing under the tabs, so the
+                  same control moved as you switched. Only one of the two panels is ever visible,
+                  so ordering them back-to-back changes nothing else. */}
+              {isTabbedPicksMode && (
+                <div role="tabpanel" className={activePicksTab === 'top' ? 'hidden' : undefined}>
+                  {suitableBeachesCarouselNode}
+                </div>
+              )}
               {/* The same ladder for the 86% who never see the rail. Below 1360px it goes UNDER the
                   cards, folded shut: the answer to «πού να πάω» is the three cards, and the answer
                   to «γιατί με αυτή τη σειρά» is a question the reader asks second, if at all. Open
@@ -4992,11 +4991,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     </a>
                   </div>
                 </details>
-              )}
-              {isTabbedPicksMode && (
-                <div role="tabpanel" className={activePicksTab === 'top' ? 'hidden' : undefined}>
-                  {suitableBeachesCarouselNode}
-                </div>
               )}
             </section>
           )}

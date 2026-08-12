@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachProfile, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
-import { beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
+import { beachMatchesFilterKey, beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
 import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
 
@@ -70,6 +70,7 @@ import {
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getRegionDust, type DustLevel } from './services/dustService';
 import { getBeachPhotoLookup } from './services/beachPhotos';
+import { useLiveUgcPhotos } from './hooks/useLiveUgcPhotos';
 import { scrollToPageTop, smoothScrollToStableElement, type StableScrollOptions } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
 import { lazyWithChunkRecovery, pickLazyExport } from './utils/chunkLoadRecovery';
@@ -1028,66 +1029,17 @@ const toneFilterDropCopy: Record<LanguageCode, (labels: string) => string> = {
   it: labels => `Filtro «${labels}» rimosso — nessuna spiaggia di questo gruppo ce l’ha.`,
 };
 
-const beachMatchesMobileFilter = (
-  beach: Beach,
-  filter: FilterKey,
-  defaultPreferences: UserPreferences
-): boolean => {
-  if (filter === 'showAll') return true;
-  if (filter === 'easyAccess') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, easyAccess: true });
-  }
-  if (filter === 'disabledAccess') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, disabledAccess: true });
-  }
-  if (filter === 'sandy' || filter === 'pebbles') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, [filter]: true });
-  }
-  if (filter === 'deepWaters') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, deepWater: true });
-  }
-  if (filter === 'shallowWaters') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, shallowWater: true });
-  }
-  if (filter === 'beachBar') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, beachBar: true });
-  }
-  if (filter === 'parking') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, parking: true });
-  }
-  if (filter === 'snorkeling') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, snorkeling: true });
-  }
-  if (filter === 'adventure') {
-    return isAdventureBeach(beach);
-  }
-  if (filter === 'sunset') {
-    return isSunsetFacingBeach(beach);
-  }
-  if (filter === 'naturist') {
-    return isNaturistBeach(beach);
-  }
-  if (filter === 'familyFriendly') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, familyFriendly: true });
-  }
-  if (filter === 'quiet') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, quiet: true });
-  }
-  if (filter === 'surfing') {
-    return beachMatchesUserPreferences(beach, { ...defaultPreferences, surfing: true });
-  }
-  if (filter === 'sandy-pebbles' || filter === 'rocky') {
-    return beach.beachType === filter;
-  }
-  if (beach.amenities && filter in beach.amenities) {
-    return Boolean(beach.amenities[filter as keyof Beach['amenities']]);
-  }
-  if (beach.characteristics && filter in beach.characteristics) {
-    return Boolean(beach.characteristics[filter as keyof Beach['characteristics']]);
-  }
-
-  return false;
-};
+/**
+ * Which chips the sheet may offer, and which it must fade — the same question the list itself
+ * answers, so it goes to the same function (services/recommendationService.beachMatchesFilterKey).
+ *
+ * This was a fifty-line hand-written copy until 12/08/2026. It ended in a fallback that read only
+ * `amenities` and `characteristics`, so any filter living under `activities` or `environment`
+ * would have been judged "no beach in this region has it" — hidden from the sheet, and worse,
+ * silently dropped from an ACTIVE selection by the colour-group effect below, which asks this
+ * same question. No offered key fell in that hole, which is precisely why it went unnoticed.
+ */
+const beachMatchesMobileFilter = beachMatchesFilterKey;
 
 const readJsonArrayFromStorage = <T,>(key: string): T[] => {
   const saved = localStorage.getItem(key);
@@ -1454,6 +1406,10 @@ const withRainRiskContext = (
 };
 
 export const App: React.FC = () => {
+  // A visitor's photo, approved five minutes ago, shows up here without a deploy.
+  // One subscription for the whole tree — see hooks/useLiveUgcPhotos.ts.
+  useLiveUgcPhotos();
+
   // --- UI & Language State ---
   const [language, setLanguage] = useState<SupportedLanguage>(() => getInitialLanguage());
   const t = translations[language];
@@ -1998,6 +1954,18 @@ export const App: React.FC = () => {
   // so we stash the intent filter(s) here and let that same effect re-apply them once the
   // region has switched — the only way a cross-region search can land with a filter active.
   const pendingRegionIntentFiltersRef = useRef<FilterKey[]>([]);
+  /**
+   * Filters that arrived from a TYPED WORD, not a tapped chip — and are therefore the only ones
+   * the app is allowed to take back on its own (see the pruning effect below `sortResultCounts`).
+   *
+   * A chip can only be tapped when the region has beaches behind it: the sheet offers
+   * `availableMobileFilterKeys` and the desktop row hides what the region lacks. A word can be
+   * typed regardless — «Νάξος ξαπλώστρες» applies `sunbeds` on a Naxos that may have none — and
+   * there is no empty state on the directory to explain the blank page that follows. Unlike the
+   * ready-made intent chips right beside it, which are already dropped at count 0
+   * (`directoryIntentBundles`), nothing was checking this path.
+   */
+  const intentAppliedFiltersRef = useRef<Set<FilterKey>>(new Set());
   // Set when a SEARCH picks a beach: setBeachSearchQuery(name) starts a name-search whose
   // beach filtering runs on the DEFERRED query, so the page re-renders shorter a beat later.
   // Scrolling to the map at select-time would clamp to the (now shorter) page bottom — the
@@ -3128,9 +3096,13 @@ export const App: React.FC = () => {
     // the region switch; every other region change starts with a clean filter slate.
     if (pendingRegionIntentFiltersRef.current.length > 0) {
       setSelectedFilters(pendingRegionIntentFiltersRef.current);
+      // Typed, not tapped — and the target region's beaches are usually still loading here, so
+      // the check that they exist at all happens in the pruning effect once they arrive.
+      intentAppliedFiltersRef.current = new Set(pendingRegionIntentFiltersRef.current);
       pendingRegionIntentFiltersRef.current = [];
     } else {
       setSelectedFilters([]);
+      intentAppliedFiltersRef.current = new Set();
     }
     // A stated stay length belongs to ONE region. Landing anywhere else drops
     // it — this is also what bounds the wait when a region's beaches never
@@ -3262,6 +3234,23 @@ export const App: React.FC = () => {
     });
   };
 
+  /**
+   * Turn typed intent words into active filters — adding to what is already on, never replacing
+   * it (same contract as a tapped intent chip), and remembering that they came from a word so
+   * the pruning effect may take back the ones this region cannot honour.
+   */
+  const applyIntentFilters = (intentFilters: FilterKey[]) => {
+    if (intentFilters.length === 0) return;
+    setSelectedFilters(prev => {
+      const next: FilterKey[] = prev.filter(item => item !== 'showAll');
+      for (const filter of intentFilters) {
+        if (!next.includes(filter)) next.push(filter);
+      }
+      return next;
+    });
+    intentFilters.forEach(filter => intentAppliedFiltersRef.current.add(filter));
+  };
+
   const handleClearAdvancedFilter = (filter: FilterKey) => {
     resetMobileResultListPosition();
     trackEvent('filters_cleared', undefined, {
@@ -3269,10 +3258,13 @@ export const App: React.FC = () => {
       source: 'remove_filter',
       filter_name: String(filter),
     });
+    intentAppliedFiltersRef.current.delete(filter);
     setSelectedFilters(prev => prev.filter(item => item !== filter));
   };
 
   const handleToggleAdvancedFilter = (filter: FilterKey) => {
+    // Tapped, therefore owned by the user from now on — the intent pruner must not take it back.
+    intentAppliedFiltersRef.current.delete(filter);
     hasUserSelectedSortRef.current = true;
     setSortBy(defaultBeachListSort);
     setMobileSuitableDistanceSort(false);
@@ -3307,6 +3299,7 @@ export const App: React.FC = () => {
     setSortBy(defaultBeachListSort);
     setMobileSuitableDistanceSort(false);
     setSelectedFilters([]);
+    intentAppliedFiltersRef.current.clear();
     setPreferences(defaultPreferences);
     resetMobileResultListPosition();
     setStoredJson('userPreferences', defaultPreferences);
@@ -4917,13 +4910,24 @@ export const App: React.FC = () => {
    * Two exclusions, both pre-existing product rules, neither weakened here:
    *  - naturist beaches are never surfaced in a list (they stay on the map and findable by name)
    *  - a boat-only beach at >= 5 Bft is not a real option: the boats do not run.
+   *
+   * Curried on the naturist gate rather than reading it from the closure, because the filter
+   * sheet has to ask this question about a selection the user has NOT applied yet — where the
+   * «Γυμνιστών» chip may differ from the live one. Curried, not a second parameter: this is
+   * handed straight to `.filter()`, which would pass the array index into it.
    */
-  const isListableInDirectory = useCallback((item: SuitableBeach): boolean => (
-    !(suppressNaturistFromRecommendations && isNaturistBeach(item.beach)) &&
-    !(beachSearchQuery.trim().length === 0
-      && hasBoatOnlyAccess(item.beach)
-      && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT)
-  ), [suppressNaturistFromRecommendations, beachSearchQuery, beaufortAtBeach]);
+  const directoryListabilityGate = useCallback((naturistSuppressed: boolean) => (
+    (item: SuitableBeach): boolean => (
+      !(naturistSuppressed && isNaturistBeach(item.beach)) &&
+      !(beachSearchQuery.trim().length === 0
+        && hasBoatOnlyAccess(item.beach)
+        && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT)
+    )
+  ), [beachSearchQuery, beaufortAtBeach]);
+  const isListableInDirectory = useMemo(
+    () => directoryListabilityGate(suppressNaturistFromRecommendations),
+    [directoryListabilityGate, suppressNaturistFromRecommendations]
+  );
 
   /**
    * The pins the legend must NOT count.
@@ -5230,7 +5234,7 @@ export const App: React.FC = () => {
 
     return mobileFilterKeys.filter(filter => (
       selectedFilters.includes(filter) ||
-      selectedIsland.beaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
+      selectedIsland.beaches.some(beach => beachMatchesMobileFilter(beach, filter))
     ));
   }, [defaultPreferences, mobileFilterKeys, selectedFilters, selectedIsland]);
   /**
@@ -5244,7 +5248,7 @@ export const App: React.FC = () => {
     if (!mapToneFilter || toneScopedBeaches.length === 0) return [];
 
     return mobileFilterKeys.filter(filter => (
-      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
+      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter))
     ));
   }, [defaultPreferences, mapToneFilter, mobileFilterKeys, toneScopedBeaches]);
   /**
@@ -5269,7 +5273,7 @@ export const App: React.FC = () => {
     ));
     const droppedFilters = selectedFilters.filter(filter => (
       filter !== 'showAll' &&
-      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter, defaultPreferences))
+      !toneScopedBeaches.some(beach => beachMatchesMobileFilter(beach, filter))
     ));
     if (droppedPreferences.length === 0 && droppedFilters.length === 0) return;
 
@@ -5927,7 +5931,16 @@ export const App: React.FC = () => {
     })
   ), [beachWeatherContextById, filteredBeachesWithoutHighlights, isStrongRecommendationMode, lessExposedBeachIds]);
   const directoryAllSourceBeaches = useMemo(() => {
-    const hydratedBeaches = filteredBeaches.map(beach => {
+    // «Όλες» is a directory listing like any other, so the naturist rule holds here too: never
+    // surfaced unless the «Γυμνιστών» chip is on or a name search is running (see
+    // suppressNaturistFromRecommendations). It used to be the ONE list that skipped the gate —
+    // `beachListBeaches` below and the suitable list both apply it — which put those beaches in
+    // front of every visitor who tapped the «Όλες» tab. The «Δες N» button counts the same way
+    // (getMobileFilterModalResultCount), or the two would part company by exactly this many.
+    const listableSource = suppressNaturistFromRecommendations
+      ? filteredBeaches.filter(beach => !isNaturistBeach(beach))
+      : filteredBeaches;
+    const hydratedBeaches = listableSource.map(beach => {
       const context = beachWeatherContextById.get(beach.id);
       if (!context) return beach;
       const beachWithDistance = beach as Beach & { distance?: number };
@@ -5955,7 +5968,7 @@ export const App: React.FC = () => {
     }
 
     return hydratedBeaches.filter(beach => desktopMapVisibleBeachIdSet.has(beach.id));
-  }, [beachWeatherContextById, desktopMapVisibleBeachIdSet, filteredBeaches, isDesktopMapViewportFilterActive, isStrongRecommendationMode, lessExposedBeachIds]);
+  }, [beachWeatherContextById, desktopMapVisibleBeachIdSet, filteredBeaches, isDesktopMapViewportFilterActive, isStrongRecommendationMode, lessExposedBeachIds, suppressNaturistFromRecommendations]);
   const isNoIdealFallbackSortOnly = hasNoSwimmableBeachesToday && isProtectedFirstRecommendationMode && isProtectedSortOnly;
   const isStrongSuitableSortOnly = !hasNoSwimmableBeachesToday && isProtectedFirstRecommendationMode && isProtectedSortOnly;
   const strongSuitableFilterBeaches = useMemo(() => {
@@ -6075,6 +6088,65 @@ export const App: React.FC = () => {
       };
     });
   }, [beachListBeaches, beachWeatherContextById, language, sortBy]);
+  /**
+   * «ΛΕΕΙ ΔΕΣ 6 ΚΑΙ ΔΕΙΧΝΕΙ 0» (Μίλτος, 12/08/2026) — ΤΟ ΚΟΥΜΠΙ ΜΕΤΡΑΕΙ Ο,ΤΙ ΜΕΤΡΑΕΙ Η ΛΙΣΤΑ.
+   *
+   * The sheet's «Δες N παραλίες» had its own, older idea of what «Καταλληλότερες» means: beaches
+   * whose exposure reads 'protected', falling back to ALL matching beaches when none does, capped
+   * at 16. The list on the page decides something else entirely — it keeps the beaches the MAP
+   * painted in its two best colours (selectSuitableByTone, further down). Pick «Beach bar +
+   * ξαπλώστρες» on a day when all six of those beaches are red and the two numbers part company:
+   * the button promised six, the page delivered nothing, and only «Όλες» brought them back.
+   *
+   * So the count walks the same three steps the rendered list walks — filter → listable → tone
+   * selection — instead of approximating them. Everything here is a lookup into state the list
+   * itself reads; nothing is re-derived, which is the only way the two stay equal tomorrow.
+   *
+   * A HOOK, AND HIGH UP, since 12/08/2026: these two used to sit far below as plain functions,
+   * where `sortResultCounts` could not reach them — so the tab beside the button answered the
+   * same question with a different rule (see there). Hoisted above the `beachesLoading` /
+   * `beachesError` early returns so it may legally be a hook at all, and so the tab, the button
+   * and the list are now three readers of ONE count.
+   */
+  const countDirectoryListResults = React.useCallback((normalizedFilters: FilterKey[], candidates: Beach[]): number => {
+    const filteredBeachIds = new Set(candidates.map(beach => beach.id));
+    // The pending selection owns the naturist gate here — the applied one may not have it yet.
+    const naturistSuppressed = !normalizedFilters.includes('naturist') && beachSearchQuery.trim().length === 0;
+    const isListable = directoryListabilityGate(naturistSuppressed);
+    const listable = mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id) && isListable(item));
+
+    // A colour picked on the legend OVERRIDES the tone selection for the list too, and
+    // `candidates` has already been narrowed to that colour. Same for the frames before the map
+    // has reported any colour at all — there the list falls back to its pre-tone source.
+    if (mapToneFilter || Object.keys(mapBeachTones).length === 0) return listable.length;
+
+    return selectSuitableByTone(
+      listable,
+      item => mapBeachTones[item.beach.id],
+      (a, b) => compareTouristTopPickPriority(a, b) || b.score - a.score
+    ).length;
+  }, [beachSearchQuery, directoryListabilityGate, mapBeachTones, mapSuitableBeaches, mapToneFilter]);
+  const getMobileFilterModalResultCount = React.useCallback((filters: FilterKey[], nextSortBy: SortOption): number => {
+    const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
+    // The sheet's "see N beaches" button has to count what the user will actually land on, and
+    // with a colour picked on the legend that is only the beaches wearing it — the same narrowing
+    // every list below the map already goes through.
+    const candidates = applyMapToneFilterFlat(getFilteredBeachResults(normalizedFilters, nextSortBy));
+
+    // «Όλες» is the only sort that shows the unfiltered directory; every other one (including
+    // «Κοντά μου») lands on the suitable list — see BeachSearcherHome's isDirectorySuitableView.
+    // Even there the naturist gate applies (directoryAllSourceBeaches), and it is judged on the
+    // PENDING selection — the «Γυμνιστών» chip the user has just tapped inside the sheet, not the
+    // applied one — exactly as countDirectoryListResults does.
+    if (nextSortBy === 'all' || !selectedForecast) {
+      const naturistSuppressed = !normalizedFilters.includes('naturist') && beachSearchQuery.trim().length === 0;
+      return naturistSuppressed
+        ? candidates.filter(beach => !isNaturistBeach(beach)).length
+        : candidates.length;
+    }
+
+    return countDirectoryListResults(normalizedFilters, candidates);
+  }, [applyMapToneFilterFlat, beachSearchQuery, countDirectoryListResults, getFilteredBeachResults, selectedForecast]);
   const sortResultCounts = useMemo(() => {
     if (!selectedIsland || !selectedForecast) {
       return {} as Partial<Record<SortOption, number>>;
@@ -6115,21 +6187,27 @@ export const App: React.FC = () => {
       (hasNoSwimmableBeachesToday || !previewIds.has(item.beach.id)) &&
       viewportContainsCandidate(item)
     )).length;
+    /**
+     * ΤΟ «ΚΑΤΑΛΛΗΛΟΤΕΡΕΣ (N)» ΜΕΤΡΑΕΙ ΤΗ ΛΙΣΤΑ, ΟΧΙ ΤΟ ΦΙΛΤΡΟ (12/08/2026).
+     *
+     * It used to call getFilteredBeaches with sort 'protected' AND NO WEATHER — and neither of
+     * those two things excludes a single beach: 'protected' only reorders, and without weather
+     * even the reorder is skipped. So with any filter or preference on, this number was literally
+     * `allCount` under a different name, while the list beside it shows only the beaches the map
+     * painted in its two best colours. «Όλες (71)» and «Καταλληλότερες (71)» over a list of nine.
+     *
+     * Same counter as the sheet's «Δες N» button now, which is the same three steps as the list.
+     */
     const protectedCount = hasOnlySortControls && isProtectedFirstRecommendationMode
       ? strongProtectedCount
-      : getFilteredBeaches(
-        baseBeaches,
-        selectedFilters,
-        deferredBeachSearchQuery,
-        'protected',
-        windDirection
-      ).length;
+      : getMobileFilterModalResultCount(selectedFilters, 'protected');
 
     return { all: allCount, protected: protectedCount } as Partial<Record<SortOption, number>>;
   }, [
     deferredBeachSearchQuery,
     desktopMapVisibleBeachIdSet,
     getFilteredBeaches,
+    getMobileFilterModalResultCount,
     hasActivePreferenceFilters,
     hasNoSwimmableBeachesToday,
     isDesktopMapViewportFilterActive,
@@ -6149,6 +6227,54 @@ export const App: React.FC = () => {
     windPreviewCandidates.length,
     windPreviewCandidates,
   ]);
+  /**
+   * ΜΙΑ ΛΕΞΗ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΑΔΕΙΑΣΕΙ ΤΗ ΣΕΛΙΔΑ (12/08/2026).
+   *
+   * The ready-made intent chips are counted before they are offered and dropped at zero
+   * (`directoryIntentBundles`), so a tap can never land on nothing. A TYPED word had no such
+   * check: «Νάξος ξαπλώστρες» switched on `sunbeds` in a region that may hold none, and the
+   * directory has no empty state to explain itself — the visitor got a map, no cards, and the
+   * only way out was a «Καθαρισμός» link they had no reason to look for.
+   *
+   * So the word is honoured as far as the region allows and no further: filters are re-added one
+   * at a time and any that would empty the list is dropped. Only filters marked as typed
+   * (`intentAppliedFiltersRef`) can be taken back this way — a tapped chip is a decision and
+   * stays put, empty list or not.
+   *
+   * Counted against sort «Όλες» on purpose, like the sheet's per-chip check: the question is
+   * "does this region hold such a beach at all", not "is it windy today".
+   */
+  useEffect(() => {
+    const intentApplied = intentAppliedFiltersRef.current;
+    if (intentApplied.size === 0) return;
+    // Region still loading: judging now would drop every word on an empty beach list.
+    if (!selectedIsland || selectedIsland.beaches.length === 0) return;
+
+    const active = selectedFilters.filter(filter => filter !== 'showAll');
+    if (active.length === 0 || getMobileFilterModalResultCount(active, 'all') > 0) {
+      intentApplied.clear();
+      return;
+    }
+
+    const kept: FilterKey[] = [];
+    const dropped: FilterKey[] = [];
+    active.forEach(filter => {
+      if (intentApplied.has(filter) && getMobileFilterModalResultCount([...kept, filter], 'all') === 0) {
+        dropped.push(filter);
+        return;
+      }
+      kept.push(filter);
+    });
+    intentApplied.clear();
+    if (dropped.length === 0) return;
+
+    setSelectedFilters(kept);
+    trackEvent('filters_cleared', undefined, {
+      ...analyticsBaseParams,
+      source: 'search_intent_unavailable',
+      filter_name: dropped.join(','),
+    });
+  }, [analyticsBaseParams, getMobileFilterModalResultCount, selectedFilters, selectedIsland]);
   const protectedSortNoResults = (isStrongSuitableSortOnly && strongSuitableFilterBeaches.length === 0) ||
     (isNoIdealFallbackSortOnly && noIdealFallbackFilterBeaches.length === 0);
   const headerWeatherMeta = useMemo(() => {
@@ -7360,57 +7486,6 @@ export const App: React.FC = () => {
     : shouldShowDirectoryTopRecommendations
       ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
       : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
-  const getMobileFilterModalResultCount = (filters: FilterKey[], nextSortBy: SortOption): number => {
-    const normalizedFilters = filters.filter(filter => filter !== 'restaurant');
-    // The sheet's "see N beaches" button has to count what the user will actually land on, and
-    // with a colour picked on the legend that is only the beaches wearing it — the same narrowing
-    // every list below the map already goes through.
-    const candidates = applyMapToneFilterFlat(getFilteredBeachResults(normalizedFilters, nextSortBy));
-
-    if (
-      nextSortBy !== 'protected' ||
-      !selectedForecast ||
-      (calmAllAroundSummary?.isEveryBeachSuitable ?? false)
-    ) {
-      return candidates.length;
-    }
-
-    const filteredBeachIds = new Set(candidates.map(beach => beach.id));
-    const matchingSuitableBeaches = mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id));
-    if (matchingSuitableBeaches.length === 0) return 0;
-
-    // Same wind the pins use — a filter count that disagrees with the map it describes is worse
-    // than no count at all.
-    const visibleExposureLevels = getConsistentVisibleMapExposureLevels(
-      matchingSuitableBeaches,
-      currentBeaufort,
-      selectedForecast.wind.deg,
-      perBeachMapWind
-    );
-    const protectedCandidates = matchingSuitableBeaches.filter(item => (
-      visibleExposureLevels.get(item.beach.id) === 'protected'
-    ));
-    const source = protectedCandidates.length > 0
-      ? protectedCandidates
-      : matchingSuitableBeaches;
-    const sorted = [...source].sort((a, b) => (
-      compareTouristTopPickPriority(a, b) || b.score - a.score
-    ));
-    const topBeachId = sorted[0]?.beach.id;
-
-    // A separate "top pick" hero is only shown when there are no active filters/search
-    // (see shouldDisplayDirectoryTopPick). When it's shown, the suitable list excludes that
-    // beach — but with filters active there is no hero, so every suitable beach is listed.
-    // Only drop the top beach in the no-filters case, otherwise the modal promised one fewer
-    // than the list actually shows.
-    const hasActiveContext = normalizedFilters.some(filter => filter !== 'showAll')
-      || beachSearchQuery.trim().length > 0;
-    const ranked = hasActiveContext
-      ? sorted
-      : sorted.filter(item => item.beach.id !== topBeachId);
-
-    return ranked.slice(0, 16).length;
-  };
   const directoryTopBeachName = directoryTopBeach
     ? displayBeachName(directoryTopBeach.beach.name, language)
     : '';
@@ -7796,14 +7871,8 @@ export const App: React.FC = () => {
       pendingRegionIntentFiltersRef.current = parsed.filters;
       handleRegionSelected(target, 'selector');
       closeMobileBottomPanels();
-    } else if (parsed.filters.length > 0) {
-      setSelectedFilters(prev => {
-        const next: FilterKey[] = prev.filter(item => item !== 'showAll');
-        for (const filter of parsed.filters) {
-          if (!next.includes(filter)) next.push(filter);
-        }
-        return next;
-      });
+    } else {
+      applyIntentFilters(parsed.filters);
     }
     return true;
   };
@@ -7862,15 +7931,7 @@ export const App: React.FC = () => {
         closeMobileBottomPanels();
       } else {
         // Already on this region — the reset effect won't fire, so apply directly.
-        if (intentFilters.length > 0) {
-          setSelectedFilters(prev => {
-            const next: FilterKey[] = prev.filter(item => item !== 'showAll');
-            for (const filter of intentFilters) {
-              if (!next.includes(filter)) next.push(filter);
-            }
-            return next;
-          });
-        }
+        applyIntentFilters(intentFilters);
         scrollToMapSection();
       }
       return;
@@ -7924,13 +7985,7 @@ export const App: React.FC = () => {
       : [];
     if (intentFilters.length > 0 && selectedIsland) {
       setBeachSearchQuery('');
-      setSelectedFilters(prev => {
-        const next: FilterKey[] = prev.filter(item => item !== 'showAll');
-        for (const filter of intentFilters) {
-          if (!next.includes(filter)) next.push(filter);
-        }
-        return next;
-      });
+      applyIntentFilters(intentFilters);
       trackEvent('filter_applied', undefined, {
         ...analyticsBaseParams,
         source: 'search_intent',
@@ -9176,6 +9231,8 @@ export const App: React.FC = () => {
                   });
                 }
                 setSelectedFilters(normalizedFilters);
+                // Applied by hand in the sheet — every chip in there is now the user's own.
+                intentAppliedFiltersRef.current.clear();
                 setMobileSuitableDistanceSort(s === 'protected' && Boolean(options?.distanceWithinSuitable));
                 handleSortChange(s);
                 setIsFilterModalOpen(false);

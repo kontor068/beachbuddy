@@ -26,6 +26,7 @@
 
 import {
   clearPendingPublish,
+  getSupabaseConfig,
   isConfigured,
   isKnownKind,
   listPending,
@@ -33,15 +34,22 @@ import {
   readPendingPublish,
   signPendingPhoto,
 } from './lib/ugcModeration.mjs';
+import { refreshApprovedPhotoIndex } from './lib/ugcPhotoIndex.mjs';
 
-// ── Publishing costs build minutes, so a human decides when to spend them ─────
-// Netlify's free plan includes a fixed number of build minutes per month, and a
-// full CalmBeach build prerenders ~9.500 pages. An automatic rebuild on every
-// approval would quietly burn that allowance; a nightly cron would burn it more
-// predictably but still without anyone asking for it.
+// ── The build is now only for the STATIC pages ───────────────────────────────
+// Approving a photo publishes it to visitors immediately: the moderation code
+// rewrites a small index in the public bucket and the running app reads it
+// (netlify/functions/lib/ugcPhotoIndex.mjs). No build, no deploy, no cost.
 //
-// So there is no cron and no automatic trigger. Approvals accumulate behind the
-// flag and go live free of charge on the next ordinary code push. The button
+// What still needs a build is the prerendered HTML — the ~9.500 static pages,
+// their social preview images, everything a crawler sees without running our
+// JavaScript. Those are baked at build time and cannot be updated from here.
+//
+// Netlify's free plan includes a fixed number of build minutes per month, so an
+// automatic rebuild on every approval would quietly burn that allowance and a
+// nightly cron would burn it more predictably but still unasked. So there is no
+// cron and no automatic trigger: approvals accumulate behind the flag and reach
+// the static pages free of charge on the next ordinary code push. The button
 // below exists for when that is too slow — one tap, one build, chosen on purpose.
 // It only appears if NETLIFY_BUILD_HOOK_URL is set.
 const triggerBuild = async (event) => {
@@ -181,14 +189,24 @@ const renderPage = async (key, flash, event) => {
     ${flash ? `<p class="note ok">${escapeHtml(flash)}</p>` : ''}
     ${problem ? `<p class="note">Πρόβλημα ανάγνωσης: ${escapeHtml(problem.message || problem)}</p>` : ''}
     ${pending?.count ? `<div class="note">
-      Υπάρχουν <b>${escapeHtml(pending.count)}</b> εγκεκριμένα που δεν έχουν βγει ακόμα στις δημόσιες σελίδες.
-      Θα βγουν <b>δωρεάν</b> στο επόμενο κανονικό ανέβασμα κώδικα — δεν χρειάζεται να κάνεις τίποτα.
+      <b>${escapeHtml(pending.count)}</b> εγκεκριμένα είναι ήδη <b>ορατά στο site</b>.
+      Αυτό που λείπει είναι μόνο οι σελίδες που διαβάζει η Google — μπαίνουν <b>δωρεάν</b>
+      στο επόμενο κανονικό ανέβασμα κώδικα, δεν χρειάζεται να κάνεις τίποτα.
       ${process.env.NETLIFY_BUILD_HOOK_URL ? `
       <form method="post" class="row" style="margin-top:10px">
         <input type="hidden" name="key" value="${escapeHtml(key)}">
-        <button class="yes" name="action" value="publish">🚀 Δημοσίευσε τώρα (ξοδεύει ένα χτίσιμο)</button>
+        <button class="yes" name="action" value="publish">🚀 Βάλ' τα και στη Google τώρα (ξοδεύει ένα χτίσιμο)</button>
       </form>` : ''}
     </div>` : ''}
+
+    <form method="post" class="row" style="margin-top:14px">
+      <input type="hidden" name="key" value="${escapeHtml(key)}">
+      <button name="action" value="refresh-live">🔄 Ανανέωσε τη ζωντανή λίστα φωτογραφιών (δωρεάν)</button>
+    </form>
+    <div class="sub" style="margin-top:6px">
+      Δεν χρειάζεται κανονικά — κάθε έγκριση το κάνει μόνη της. Πάτησέ το αν κάτι
+      εγκρίθηκε αλλά δεν φαίνεται στο site, ή για όσα είχαν εγκριθεί παλιά.
+    </div>
 
     <h2>Φωτογραφίες (${photoList.length})</h2>
     ${photoList.length
@@ -215,6 +233,19 @@ export const handler = async (event) => {
 
     const { kind, id, action } = form;
 
+    // Rebuild the live index by hand. Costs nothing — two reads and one small
+    // upload — and is the repair for the only way this can go wrong: an approval
+    // whose index upload failed, or a photo approved before the live index
+    // existed at all. It cannot make anything worse: the index is derived
+    // entirely from the approved rows, so the worst case is rewriting the same
+    // file with the same contents.
+    if (action === 'refresh-live') {
+      const result = await refreshApprovedPhotoIndex(getSupabaseConfig());
+      return await renderPage(key, result.ok
+        ? `Έτοιμο — ${result.published} φωτογραφίες σε ${result.beaches} παραλίες είναι ζωντανές στο site.`
+        : `Δεν ανανεώθηκε η ζωντανή λίστα: ${result.reason || 'άγνωστο σφάλμα'}.`, event);
+    }
+
     // "Publish now" carries no item — it spends a build, nothing else.
     if (action === 'publish') {
       try {
@@ -232,11 +263,28 @@ export const handler = async (event) => {
     try {
       const result = await moderate({ kind, id, action, event });
       const what = kind === 'photo' ? 'Η φωτογραφία' : 'Η κριτική';
+
+      // Say which of the two publications happened. They are not the same thing:
+      // the live index reaches people browsing the site now, the build reaches the
+      // static pages Google reads. Reporting only one of them is how «εγκρίθηκε»
+      // came to mean «κάτσε να χτίσεις» — or, worse, would now mean «είναι παντού».
+      const liveNote = result.live?.ok
+        ? ' Είναι ήδη ορατή στο site — μέσα σε ένα-δυο λεπτά.'
+        : (kind === 'photo' ? ' (Η ζωντανή λίστα δεν ανανεώθηκε — θα μπει στο επόμενο χτίσιμο.)' : '');
+
+      // This page approves and rejects; it does not order. Rather than pretend the
+      // ordering does not exist, it says where the ordering lives — otherwise the
+      // backup door silently drops the one decision that follows an approval.
+      const item = result.item || {};
+      const orderNote = kind === 'photo' && result.status === 'approved' && item.region_id
+        ? ` Για τη σειρά των φωτογραφιών αυτής της παραλίας: /api/traffic?tab=photos&beach=${item.region_id}:${item.beach_id}`
+        : '';
+
       const flash = result.alreadyDone
         ? `${what} είχε ήδη κριθεί (${result.status}) — δεν έγινε τίποτα δεύτερη φορά.`
         : (result.status === 'approved'
-          ? `${what} εγκρίθηκε. Θα εμφανιστεί στη δημόσια σελίδα στο επόμενο χτίσιμο.`
-          : `${what} απορρίφθηκε και το αρχείο διαγράφηκε.`);
+          ? `${what} εγκρίθηκε.${liveNote} Στις σελίδες που διαβάζει η Google μπαίνει στο επόμενο χτίσιμο.${orderNote}`
+          : `${what} απορρίφθηκε και το αρχείο διαγράφηκε.${result.live?.ok ? ' Έφυγε και από το site.' : ''}`);
       return renderPage(key, flash, event);
     } catch (error) {
       console.error('Moderation failed.', error && error.message);

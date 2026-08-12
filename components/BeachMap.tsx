@@ -12,7 +12,7 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
-import { conditionToneLabels } from '../utils/conditionToneLabels';
+import { conditionToneLabels, conditionToneCountPhrase } from '../utils/conditionToneLabels';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
@@ -2807,21 +2807,29 @@ const BeachMap: React.FC<BeachMapProps> = ({
           const spanClasses = isSideBySide && rowCount % 2 === 1 && rowIndex === rowCount - 1
             ? 'col-span-2 sm:col-span-1'
             : '';
+          // «Ιδανικές 4 παραλίες», not «Ιδανική 4». The bare number beside a singular adjective
+          // was read as a score or a rank; the noun is what makes it a count. The phrase wraps
+          // to a second line in a half-width column instead of truncating — a clipped
+          // «Ιδανικές 4 παρα…» would be worse than the two lines it costs.
+          const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
           const body = (
             <>
-              <span className="flex min-w-0 items-center gap-1.5">
+              <span className="flex min-w-0 items-start gap-1.5">
                 <span
                   aria-label={windColorGuideCopy.colorName[row.tone]}
                   title={windColorGuideCopy.colorName[row.tone]}
                   role="img"
-                  className={`h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
+                  className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
                 />
-                <span className="min-w-0 truncate">{toneWords[row.tone].label}</span>
-                <span className="shrink-0 font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
+                <span className="min-w-0">
+                  {countPhrase.before}
+                  <span className="font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
+                  {countPhrase.after}
+                </span>
                 {isToneFilterEnabled && (
                   isActive
-                    ? <X aria-hidden="true" className="ml-auto h-3 w-3 shrink-0 text-slate-500" />
-                    : <ChevronRight aria-hidden="true" className="ml-auto h-3 w-3 shrink-0 text-slate-400" />
+                    ? <X aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-500" />
+                    : <ChevronRight aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400" />
                 )}
               </span>
               {/* The one line that separates this colour from the one above it. Without it the
@@ -2842,7 +2850,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               key={row.tone}
               type="button"
               aria-pressed={isActive}
-              aria-label={`${toneWords[row.tone].label} (${row.count}) — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
+              aria-label={`${countPhrase.text} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
               className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
                 isActive
