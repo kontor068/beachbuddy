@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Beach, LanguageCode, RecommendationConfidence, SimpleWindSuitability, SortOption, SwimmingComfort, Translation, WarningFlag, WindDirection } from '../types';
 import { BeachCard } from './BeachCard';
+import { BeachSearchEmptyState } from './BeachSearchEmptyState';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { ExposureLevel } from '../utils/windExposure';
@@ -188,69 +189,18 @@ export const BeachList: React.FC<BeachListProps> = ({
     }
 
     if (hasActiveSearchOrFilters) {
-      const protectedSortMessage = language === 'gr'
-        ? {
-          title: 'Δεν βρέθηκαν αρκετές κατάλληλες επιλογές.',
-          body: 'Δεν βρέθηκαν αρκετές κατάλληλες επιλογές με τα διαθέσιμα δεδομένα. Δοκίμασε να γυρίσεις στις Όλες.',
-        }
-        : {
-          title: 'Not enough suitable options were found.',
-          body: 'Not enough suitable options were found with the available data. Try returning to All.',
-        };
-      const sortMessage = protectedSortEmptyCopy ?? protectedSortMessage;
-
-      // A search that matched nothing is a different problem from filters that matched
-      // nothing — and it is overwhelmingly the common one. Measured 2026-07-28: 101 users
-      // reached this state in 28 days while only 18 ever applied a filter of any kind. They
-      // had searched a beach that belongs to another region, and were told to clear filters
-      // they never set, with a button that undoes their search rather than widening it.
-      // The whole-of-Greece lookup they actually needed already existed — it just required
-      // pressing Enter, which nothing on this screen suggested.
-      const trimmedQuery = searchQuery.trim();
-      const isSearchMiss = !protectedSortNoResults && trimmedQuery.length > 0;
-      const title = protectedSortNoResults
-        ? sortMessage.title
-        : isSearchMiss
-          ? t.beachSearchFilters.emptySearchTitle(trimmedQuery)
-          : t.beachSearchFilters.emptyTitle;
-      const body = protectedSortNoResults
-        ? sortMessage.body
-        : isSearchMiss
-          ? t.beachSearchFilters.emptySearchDescription
-          : t.beachSearchFilters.emptyDescription;
-      const showSearchAllRegions = isSearchMiss && Boolean(onSearchAllRegions);
-
+      // The card itself lives in BeachSearchEmptyState so the forecast home renders the
+      // exact same words — see the note at the top of that file for why that matters.
       return (
-        <div role="status" className="col-span-full rounded-3xl border border-white/60 bg-white/72 px-5 py-12 text-center shadow-sm ring-1 ring-white/35 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/50">
-          <p className="font-heading text-lg font-black text-slate-800 dark:text-slate-100">
-            {title}
-          </p>
-          <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-relaxed text-slate-700 dark:text-slate-600">
-            {body}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            {showSearchAllRegions && (
-              <button
-                type="button"
-                onClick={onSearchAllRegions}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-600 px-5 text-sm font-black text-white shadow-sm transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400/70"
-              >
-                {t.beachSearchFilters.searchAllRegions}
-              </button>
-            )}
-            {onClearSearchAndFilters && (
-              <button
-                type="button"
-                onClick={onClearSearchAndFilters}
-                className={showSearchAllRegions
-                  ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-cyan-400/70 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200'
-                  : 'inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-600 px-5 text-sm font-black text-white shadow-sm transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400/70'}
-              >
-                {t.beachSearchFilters.clearAll}
-              </button>
-            )}
-          </div>
-        </div>
+        <BeachSearchEmptyState
+          language={language}
+          t={t}
+          searchQuery={searchQuery}
+          onSearchAllRegions={onSearchAllRegions}
+          onClearSearchAndFilters={onClearSearchAndFilters}
+          protectedSortNoResults={protectedSortNoResults}
+          protectedSortEmptyCopy={protectedSortEmptyCopy}
+        />
       );
     }
 

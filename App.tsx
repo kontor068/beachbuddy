@@ -1984,7 +1984,12 @@ export const App: React.FC = () => {
   const trackedAppLoadedRef = useRef(false);
   const trackedPageViewRef = useRef<string | null>(null);
   const trackedWeatherFallbackRef = useRef<string | null>(null);
-  const trackedEmptyResultsRef = useRef<string | null>(null);
+  // EVERY empty-result key this visit has already reported, not just the last one. Holding a
+  // single key meant the same dead end was re-counted the moment the visitor deleted a letter
+  // and retyped it (key A → key B → key A reports A twice), and again after every 0.8s pause.
+  // Measured 11–12/08/2026: 42 visits produced 148 events — 3,5 each — which is most of why
+  // the metric read 2.019 when a few hundred people actually hit a dead end.
+  const trackedEmptyResultsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     globalBeachSearchIndexRef.current = null;
@@ -4448,6 +4453,23 @@ export const App: React.FC = () => {
       minute: '2-digit',
       hour12: false,
     });
+    /**
+     * Η ΩΡΑ ΧΩΡΙΣ ΤΗ ΜΕΡΑ ΔΙΑΒΑΖΕΤΑΙ ΣΑΝ ΣΗΜΕΡΑ (Μίλτος, 12/08/2026, 21:35 Αθήνας).
+     *
+     * After BEACH_DAY_ENDS_HOUR the page hands over to TOMORROW (useWeather's evening handover),
+     * so every hour on the slider belongs to another day — and this label still read «στις
+     * 12:00–13:00», which every heading downstream prints INSTEAD of the day («Top 2 στις
+     * 12:00–13:00», «Υπόλοιπες κατάλληλες στις 12:00–13:00»: they all do `timePrefix ?? dayPrefix`,
+     * so a bare hour silently deletes the day). Tomorrow's forecast was being announced as today's.
+     *
+     * The day is taken from the SLOT ITSELF, not from the selected forecast's date: the slot
+     * timestamp is what the visitor is actually looking at, so the label cannot drift from the
+     * slider the way a second, separately-derived date can.
+     */
+    const dayOfSlot = new Date(mapHourSlots[index].dt * 1000);
+    const dayPrefix = isSameCalendarDay(dayOfSlot, athensNow())
+      ? ''
+      : `${getSelectedDayPrefix(dayOfSlot, athensNow(), language)} `;
     // A stay changes what this header is claiming, so it has to change what it says. The cards
     // below now describe each beach's ROUGHEST hour inside the window rather than the slider
     // moment — leaving the old "at 15:00" over them would be the 31/07/2026 defect («Ήρεμα ΤΩΡΑ»
@@ -4457,11 +4479,11 @@ export const App: React.FC = () => {
       const from = formatHour(windowSlots[0].dt);
       const to = formatHour(windowSlots[windowSlots.length - 1].dt);
       return getLocalizedCopy(language, {
-        en: `for ${from}–${to}, at their roughest`,
-        gr: `για ${from}–${to}, στη χειρότερη ώρα`,
-        fr: `pour ${from}–${to}, au pire moment`,
-        de: `für ${from}–${to}, zur rauesten Stunde`,
-        it: `per ${from}–${to}, nell'ora peggiore`,
+        en: `${dayPrefix}for ${from}–${to}, at their roughest`,
+        gr: `${dayPrefix}για ${from}–${to}, στη χειρότερη ώρα`,
+        fr: `${dayPrefix}pour ${from}–${to}, au pire moment`,
+        de: `${dayPrefix}für ${from}–${to}, zur rauesten Stunde`,
+        it: `${dayPrefix}per ${from}–${to}, nell'ora peggiore`,
       });
     }
     const nextSlot = mapHourSlots[index + 1];
@@ -4469,11 +4491,11 @@ export const App: React.FC = () => {
       ? `${formatHour(mapHourSlots[index].dt)}–${formatHour(nextSlot.dt)}`
       : formatHour(mapHourSlots[index].dt);
     return getLocalizedCopy(language, {
-      en: `at ${windowLabel}`,
-      gr: `στις ${windowLabel}`,
-      fr: `à ${windowLabel}`,
-      de: `um ${windowLabel}`,
-      it: `alle ${windowLabel}`,
+      en: `${dayPrefix}at ${windowLabel}`,
+      gr: `${dayPrefix}στις ${windowLabel}`,
+      fr: `${dayPrefix}à ${windowLabel}`,
+      de: `${dayPrefix}um ${windowLabel}`,
+      it: `${dayPrefix}alle ${windowLabel}`,
     });
   }, [mapHourSlots, selectedHourDt, stayHours, language]);
   /**
@@ -4491,8 +4513,16 @@ export const App: React.FC = () => {
     selectedHourDt != null &&
     mapHourSlots.length > 0 &&
     selectedHourDt === mapHourSlots[0].dt &&
-    // selectedDayDate is declared further down; it is literally selectedForecast?.date.
-    isSelectedDateToday(selectedForecast?.date, athensNow())
+    /**
+     * Judged on the SLOT'S OWN timestamp, not on a separately-derived selected date. It used to
+     * read `isSelectedDateToday(selectedForecast?.date)`, which answers TRUE for an absent date
+     * (getSelectedDayOffset treats undefined as offset 0) — a missing forecast date could hand the
+     * page a «τώρα» over another day's numbers. The slot is the moment on screen, so it decides.
+     * It must also have started: before the slider's first hour (a visitor at 07:00 with the slider
+     * opening at 08:00) the earliest slot is still the future, and «τώρα» would be a lie there too.
+     */
+    isSameCalendarDay(new Date(selectedHourDt * 1000), athensNow()) &&
+    selectedHourDt * 1000 <= athensNow().getTime()
   );
 
   const mapForecastTimeLabel = useMemo(() => {
@@ -5730,8 +5760,11 @@ export const App: React.FC = () => {
     ].join(':');
 
     const timer = window.setTimeout(() => {
-      if (trackedEmptyResultsRef.current === trackingKey) return;
-      trackedEmptyResultsRef.current = trackingKey;
+      if (trackedEmptyResultsRef.current.has(trackingKey)) return;
+      // Bounded so a very long session cannot grow this without limit; 200 distinct dead ends
+      // in one visit is far past any real use, and past it we simply stop reporting.
+      if (trackedEmptyResultsRef.current.size >= 200) return;
+      trackedEmptyResultsRef.current.add(trackingKey);
 
       trackEvent('empty_results_shown', undefined, {
         ...analyticsBaseParams,
@@ -8174,6 +8207,10 @@ export const App: React.FC = () => {
             )}
             <BeachSearcherHome
               language={language}
+              // Same two values RecommendationSection already gets, so the empty state on the
+              // forecast home says exactly what the no-forecast list says.
+              hasActiveSearchOrFilters={hasActiveSearchOrFilters}
+              onClearSearchAndFilters={handleClearSearchAndFilters}
               selectedIsland={selectedIsland}
               allIslands={allIslands}
               regionWindNote={regionWindVariationNote?.text}

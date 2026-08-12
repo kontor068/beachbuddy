@@ -63,6 +63,7 @@ import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '..
 import { hasBoatOnlyAccess } from '../utils/access';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
+import { BeachSearchEmptyState } from './BeachSearchEmptyState';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 import { getIslandDestinationPhoto, getIslandStripPhoto } from '../data/destinationPhotoAdapter';
 import { getIslandGroupLabel } from '../utils/islandRegionLabels';
@@ -141,6 +142,12 @@ interface BeachSearcherHomeProps {
   advancedFilterResultCounts?: Partial<Record<FilterKey, number>>;
   sortResultCounts?: Partial<Record<SortOption, number>>;
   filteredResultCount?: number;
+  /** True when a search, a filter, a preference or a non-default sort is narrowing the list.
+   *  Passed in rather than recomputed so this component and App can never disagree about
+   *  whether the visitor asked for something — see App.hasActiveSearchOrFilters. */
+  hasActiveSearchOrFilters?: boolean;
+  /** Clears the search box AND every filter/preference in one press, for the empty state. */
+  onClearSearchAndFilters?: () => void;
   /** Count of currently-applied filters (advanced + quick preferences), for the mobile
    *  Filter button badge. Distinct from filteredResultCount (number of matching beaches). */
   activeFilterCount?: number;
@@ -1517,6 +1524,17 @@ const getMobileTopRecommendationsTitle = (
  * cards under it then describe that moment and a stale «τώρα» would be the 31/07/2026 defect
  * («Ήρεμα ΤΩΡΑ» over another hour's numbers) rebuilt one level up.
  */
+/**
+ * ΜΙΑ ΚΡΙΣΗ ΓΙΑ ΤΟ «ΤΩΡΑ», ΟΧΙ ΜΙΑ ΑΝΑ ΠΡΟΤΑΣΗ (Μίλτος, 12/08/2026).
+ *
+ * The podium's question asked it here, and the podium's subtitle right underneath said «τώρα»
+ * unconditionally — so on tomorrow's forecast the two lines disagreed, and the one that was wrong
+ * («Καμία δεν είναι ιδανική τώρα» over tomorrow's picks) was the one making the safety claim.
+ * Every line that wants to say «now» asks this.
+ */
+const isViewedMomentNow = (selectedDate: Date | undefined, isNowHour: boolean): boolean =>
+  isNowHour && getSelectedDayOffset(selectedDate, athensNow()) === 0;
+
 const getTopRecommendationsQuestion = (
   language: LanguageCode,
   selectedDate: Date | undefined,
@@ -1529,7 +1547,7 @@ const getTopRecommendationsQuestion = (
   // that hour was simply the one they were standing in. `isNowHour` (computed in App against the
   // slider's own slot-0-is-now contract) is what makes «τώρα» honest: it holds exactly while the
   // cards below describe the present, and drops the moment the slider moves.
-  const when = isNowHour && offset === 0
+  const when = isViewedMomentNow(selectedDate, isNowHour)
     ? undefined
     : timePrefix ?? (offset === 0 ? undefined : getSelectedDayPrefix(selectedDate, athensNow(), language));
 
@@ -1713,6 +1731,8 @@ const intentPanelLeadCopy: Record<LanguageCode, string> = {
 
 export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
+  hasActiveSearchOrFilters = false,
+  onClearSearchAndFilters,
   selectedIsland,
   allIslands,
   regionWindNote,
@@ -2323,22 +2343,45 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    * actually ideal — is what stays. Below 4 Bft the heading says «Top 3», nothing is repeated,
    * and the full sentence still earns its place.
    */
+  /**
+   * 12/08/2026, caught by Miltos on tomorrow's forecast: it said «τώρα» in every case. After the
+   * evening handover — and on any day the visitor picks — the heading right above it reads «Top 2
+   * αύριο στις 12:00–13:00» while this line claimed the present. The moment belongs to the heading,
+   * which names it once; this line only keeps «τώρα» while «τώρα» is genuinely what is on screen,
+   * and otherwise states the warning with no time at all rather than repeating the heading's.
+   */
   const topRecommendationsSubtitle = shelteredFallbackPodium
-    ? isShelterFirstPodium
-      ? getLocalizedCopy(language, {
-        en: 'None of them is ideal right now',
-        gr: 'Καμία δεν είναι ιδανική τώρα',
-        fr: "Aucune n'est idéale en ce moment",
-        de: 'Keiner ist gerade ideal',
-        it: 'Nessuna è ideale adesso',
-      })
-      : getLocalizedCopy(language, {
-        en: 'None of them is ideal right now — these are the most sheltered',
-        gr: 'Καμία δεν είναι ιδανική τώρα — αυτές είναι οι πιο προστατευμένες',
-        fr: "Aucune n'est idéale en ce moment — voici les plus abritées",
-        de: 'Keiner ist gerade ideal — das sind die geschütztesten',
-        it: 'Nessuna è ideale adesso — queste sono le più riparate',
-      })
+    ? isViewedMomentNow(selectedDate, suitableTimeIsNow)
+      ? isShelterFirstPodium
+        ? getLocalizedCopy(language, {
+          en: 'None of them is ideal right now',
+          gr: 'Καμία δεν είναι ιδανική τώρα',
+          fr: "Aucune n'est idéale en ce moment",
+          de: 'Keiner ist gerade ideal',
+          it: 'Nessuna è ideale adesso',
+        })
+        : getLocalizedCopy(language, {
+          en: 'None of them is ideal right now — these are the most sheltered',
+          gr: 'Καμία δεν είναι ιδανική τώρα — αυτές είναι οι πιο προστατευμένες',
+          fr: "Aucune n'est idéale en ce moment — voici les plus abritées",
+          de: 'Keiner ist gerade ideal — das sind die geschütztesten',
+          it: 'Nessuna è ideale adesso — queste sono le più riparate',
+        })
+      : isShelterFirstPodium
+        ? getLocalizedCopy(language, {
+          en: 'None of them is ideal',
+          gr: 'Καμία δεν είναι ιδανική',
+          fr: "Aucune n'est idéale",
+          de: 'Keiner ist ideal',
+          it: 'Nessuna è ideale',
+        })
+        : getLocalizedCopy(language, {
+          en: 'None of them is ideal — these are the most sheltered',
+          gr: 'Καμία δεν είναι ιδανική — αυτές είναι οι πιο προστατευμένες',
+          fr: "Aucune n'est idéale — voici les plus abritées",
+          de: 'Keiner ist ideal — das sind die geschütztesten',
+          it: 'Nessuna è ideale — queste sono le più riparate',
+        })
     : topRecommendationsLabel;
   // The desktop transparency rail beside the podium (Miltos, 09/08: «θέλω να είναι όλα με
   // διαφάνεια»). Two rules keep it honest: the «πώς» bullets state only criteria, not thresholds
@@ -2981,6 +3024,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   }, [directoryAllBeachCards, directorySuitableOnlyBeachCards, isDirectorySuitableView, isDistanceSortActive, weatherContextByBeachId]);
   const firstWeatherBeachId = weatherBeachCards[0]?.beach.id;
   const firstDirectoryBeachId = directoryDisplayBeachCards[0]?.id;
+
+  // Did the list the visitor is ACTUALLY looking at come back empty? The home shows one of
+  // two lists — the suitable-sorted carousel or the plain directory — and BOTH render an
+  // empty container rather than a message when their array is empty. Checking only the
+  // directory (as the first cut of this fix did) misses the default view: verified in the
+  // browser on 13/08/2026, a search for «Μπάλος» on Naxos left map + forecast on screen and
+  // silently deleted every beach section, exactly as a visitor would have met it.
+  const visibleBeachListIsEmpty = isDirectorySuitableView
+    ? weatherBeachCards.length === 0
+    : directoryDisplayBeachCards.length === 0;
 
   useEffect(() => {
     if (!isDistanceSortActive) return undefined;
@@ -5018,6 +5071,31 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </>
           )}
 
+
+          {/* THE DEAD END, fixed 13/08/2026. Every beach list on this screen — the suitable
+              carousel above and both directory sections below — renders an empty container
+              rather than a message when it has no cards, so a search matching nothing left
+              this spot completely blank: no explanation, no way out. Measured 29/07–12/08/2026:
+              233 of the 288 people who searched (81%) reached that blank screen, and the card
+              that answers them had existed since 28/07 but was unreachable all summer (see the
+              note in BeachSearchEmptyState). One block for both viewports and both views —
+              whichever list would have rendered here is gone anyway. */}
+          {selectedIsland && visibleBeachListIsEmpty && hasActiveSearchOrFilters && (
+            <section id="all-beaches-section" className="mt-7 scroll-mt-4">
+              <BeachSearchEmptyState
+                language={language}
+                t={t}
+                searchQuery={searchQuery}
+                // Wrapped, NOT passed straight through: onSearchSubmit reaches App as
+                // handleDirectorySearchSubmit(queryOverride?), so handing it to onClick makes
+                // React pass the mouse event as the query and the search dies with
+                // "(queryOverride ?? beachSearchQuery).trim is not a function". Caught in the
+                // browser on 13/08/2026 — the button rendered fine and did nothing.
+                onSearchAllRegions={() => { onSearchSubmit(); }}
+                onClearSearchAndFilters={onClearSearchAndFilters}
+              />
+            </section>
+          )}
 
           {selectedIsland && !isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
             <section id="all-beaches-section" className="mt-7 scroll-mt-4 rounded-2xl border border-sky-200 bg-white/88 p-4 shadow-sm shadow-sky-900/5 backdrop-blur-md sm:p-5">
