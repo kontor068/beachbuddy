@@ -119,3 +119,7 @@ deno.lock
 # φορά, 700 KB. Τα dated reports/snapshots/*.json|*.md ΕΙΝΑΙ tracked (η μέτρηση
 # GSC είναι το ιστορικό)· αυτό εδώ είναι μόνο η πρώτη ύλη τους.
 reports/snapshots/_raw-queries.json
+
+# Netlify snapshots: κατανάλωση λογαριασμού (bandwidth, build minutes) και
+# επισκεψιμότητα. Το repo είναι δημόσιο — μένουν στον δίσκο.
+reports/netlify/
