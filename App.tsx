@@ -78,7 +78,7 @@ import { QUICK_PREFERENCE_FILTERS, getPreferenceFilterLabel } from './utils/pref
 import { canOpenNavigation, openNavigation } from './utils/navigation';
 import { displayBeachName, localizedBeachLabel } from './utils/localization';
 import { beachSentenceName } from './utils/beachCopy';
-import { isInfoOnlyRegionId } from './utils/infoOnlyRegions';
+import { isInfoOnlyRegionId, isMapHiddenRegionId } from './utils/infoOnlyRegions';
 import { hasBoatOnlyAccess, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, isAdventureBeach } from './utils/access';
 import { isNaturistBeach } from './utils/naturistBeaches';
 import { isSunsetFacingBeach } from './utils/beachOrientation';
@@ -109,7 +109,11 @@ import {
   type StayLengthHours,
 } from './utils/stayWindow';
 import { getRegionWindVariationNote, type RegionBeachWindSample } from './utils/regionWindVariation';
-import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from './services/geospatialExposureService';
+import {
+  loadGeospatialExposureProfilesForBeaches,
+  NEAR_ME_REGION_ID,
+  type GeospatialExposureProfileLookup,
+} from './services/geospatialExposureService';
 import { assessBeachWindExposure } from './utils/windExposureEngine';
 import { resolveDisplayWaveHeightM } from './utils/waveModel';
 import { fuzzySearchScore, getSearchVariants } from './utils/searchNormalize';
@@ -371,10 +375,6 @@ const NEAR_ME_USABLE_ACCURACY_M = 2000;
 // How far the precise fix must land from the coarse one before the merged region is rebuilt.
 const NEAR_ME_REBUILD_DISTANCE_KM = 1;
 
-// Synthetic region id for the cross-region "Κοντά μου" view. Its beaches are
-// merged from the real regions nearest to the user, so the result reflects the
-// user's actual location rather than whichever region happens to be on screen.
-const NEAR_ME_REGION_ID = 'near-me';
 // Anchor for "search stated a stay length → land on the plan". Lives on the App
 // wrapper, not on the <section> inside TripPlanner: that one is keyed by region
 // id and remounts, so its element would vanish mid-scroll.
@@ -3073,48 +3073,18 @@ export const App: React.FC = () => {
       return () => { cancelled = true; };
     }
 
-    // The synthetic "Κοντά μου" region has no profile file of its own, but its beaches come from
-    // real islands. Load each constituent island's profiles and merge them keyed by the SYNTHETIC
-    // beach id, so every downstream geospatialExposureProfiles?.[beach.id] lookup resolves to the
-    // real per-cove geometry instead of falling back to island-level wind (the known backlog gap).
-    if (regionId === NEAR_ME_REGION_ID) {
-      const nearbyBeaches = selectedIsland?.beaches ?? [];
-      const sourceRegionIds = Array.from(
-        new Set(nearbyBeaches.map(b => b.regionId).filter((r): r is string => Boolean(r)))
-      );
-      if (sourceRegionIds.length === 0) {
-        setGeospatialExposureRegionId(regionId);
-        setIsGeospatialExposureLoading(false);
-        return () => { cancelled = true; };
-      }
-      setIsGeospatialExposureLoading(true);
-      Promise.all(
-        sourceRegionIds.map(rid =>
-          loadGeospatialExposureProfiles(rid).catch(() => ({} as GeospatialExposureProfileLookup))
-        )
-      ).then(perRegion => {
-        if (cancelled) return;
-        const byRegion = new Map<string, GeospatialExposureProfileLookup>();
-        sourceRegionIds.forEach((rid, i) => byRegion.set(rid, perRegion[i] ?? {}));
-        const merged: GeospatialExposureProfileLookup = {};
-        for (const b of nearbyBeaches) {
-          const src = b.regionId ? byRegion.get(b.regionId) : undefined;
-          const profile = src?.[b.sourceBeachId ?? b.id];
-          if (profile) merged[b.id] = profile;
-        }
-        setGeospatialExposureProfiles(merged);
-        setGeospatialExposureRegionId(regionId);
-        setIsGeospatialExposureLoading(false);
-      }).catch(() => {
-        if (cancelled) return;
-        setGeospatialExposureRegionId(regionId);
-        setIsGeospatialExposureLoading(false);
-      });
+    // "Κοντά μου" merges its geometry from the constituent regions — the loader owns that, so
+    // the weather layer gets the same answer. Before its beach list exists there is nothing to
+    // merge, and flipping the loading flag for an empty pass would only stall scoring.
+    const nearbyBeaches = selectedIsland?.beaches ?? [];
+    if (regionId === NEAR_ME_REGION_ID && nearbyBeaches.length === 0) {
+      setGeospatialExposureRegionId(regionId);
+      setIsGeospatialExposureLoading(false);
       return () => { cancelled = true; };
     }
 
     setIsGeospatialExposureLoading(true);
-    loadGeospatialExposureProfiles(regionId).then(profiles => {
+    loadGeospatialExposureProfilesForBeaches(regionId, nearbyBeaches).then(profiles => {
       if (!cancelled) {
         setGeospatialExposureProfiles(profiles);
         setGeospatialExposureRegionId(regionId);
@@ -5387,6 +5357,22 @@ export const App: React.FC = () => {
   // Info-only regions (e.g. Milos): pages exist and beaches are browsable, but the
   // region page hides the interactive map and the today-recommendation ranking.
   const isInfoOnlyRegion = isInfoOnlyRegionId(selectedIsland?.id);
+  /**
+   * Map-hidden regions (e.g. Milos): everything else runs exactly as anywhere else — podium,
+   * recommendations, filters, planner, search — and only the pin map is withheld.
+   *
+   * The beach scan is not redundant with the id test. «Κοντά μου» builds a SYNTHETIC region
+   * (NEAR_ME_REGION_ID) whose beaches keep their home `regionId`, so standing on Milos and
+   * pressing it would otherwise plot exactly the pins the id test exists to withhold. The
+   * landmass rule in buildNearbyRegion keeps that set on one island, so this does not cost a
+   * neighbouring island its map — but if a future merge spans two islands, one map-hidden
+   * beach withholds the whole map rather than half of it: a map missing pins it silently
+   * dropped would disagree with the list and the legend beneath it.
+   */
+  const isMapHiddenRegion = useMemo(() => (
+    isMapHiddenRegionId(selectedIsland?.id)
+    || (selectedIsland?.beaches ?? []).some(beach => isMapHiddenRegionId(beach.regionId))
+  ), [selectedIsland]);
   /**
    * Everything that must be true for the trip planner to render. Named rather
    * than inlined in the JSX because it is ALSO the readiness signal a search
@@ -8023,7 +8009,7 @@ export const App: React.FC = () => {
   // on the first mobile viewport.
   // Keep the height stable as the hour slider changes.
 
-  const directoryMapPreview = selectedIsland && !isUnsafeWinter && !isInfoOnlyRegion ? (
+  const directoryMapPreview = selectedIsland && !isUnsafeWinter && !isMapHiddenRegion ? (
     <MapLoadBoundary
       resetKey={`${selectedIsland.id}-${language}-directory`}
       fallback={
@@ -8601,7 +8587,7 @@ export const App: React.FC = () => {
         </section>
       )}
 
-      {selectedIsland && !isUnsafeWinter && isDesktopViewport && !showHeaderForecast && !isInfoOnlyRegion && (
+      {selectedIsland && !isUnsafeWinter && isDesktopViewport && !showHeaderForecast && !isMapHiddenRegion && (
         <section id="map-section-desktop" className="relative z-20 hidden px-3 pb-3 pt-1 sm:block sm:px-4 sm:pb-5 sm:pt-0">
           <div className="mx-auto max-w-6xl">
             <div className="relative overflow-hidden rounded-2xl border border-white/60 shadow-lg dark:border-slate-800 sm:rounded-3xl">
@@ -8927,7 +8913,7 @@ export const App: React.FC = () => {
                 </section>
               )}
 
-              {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && !isInfoOnlyRegion && (
+              {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && !isMapHiddenRegion && (
                 <section id="map-section" ref={mapSectionRef} className="!mt-4 space-y-2 sm:hidden sm:space-y-5" data-nosnippet="true">
                   <div className="space-y-1 sm:space-y-2">
                     <div className="flex min-h-10 w-full items-center justify-center rounded-full border border-white/50 bg-white/42 px-5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 backdrop-blur-xl sm:px-6">

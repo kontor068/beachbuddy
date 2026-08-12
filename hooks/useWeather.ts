@@ -14,7 +14,7 @@ import {
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
 import { athensNow, BEACH_DAY_ENDS_HOUR } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
-import { loadGeospatialExposureProfiles, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
+import { loadGeospatialExposureProfilesForBeaches, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
 import { resolveBeachMarinePoints, marinePointKey, type MarinePoint } from '../utils/marineSamplePoints';
 import { buildBeachForecastClusters, MAX_BEACH_FORECAST_CLUSTERS, type BeachForecastCluster } from '../utils/beachForecastClusters';
 import type { MarineForecastItem } from '../services/weatherService';
@@ -253,7 +253,8 @@ const loadBeachMarine = async (
   options: { timeoutMs?: number } = {}
 ): Promise<BeachMarineContext | null> => {
   try {
-    const profilesPromise = loadGeospatialExposureProfiles(island.id).catch(() => undefined);
+    const profilesPromise = loadGeospatialExposureProfilesForBeaches(island.id, island.beaches)
+      .catch(() => undefined);
 
     let profiles: GeospatialExposureProfileLookup | undefined;
     if (options.timeoutMs) {
@@ -303,7 +304,8 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
   // Started, not awaited. The exposure JSON runs to ~236 KB for the biggest region and only the
   // MARINE coordinate needs it, so awaiting it here would hold every wind request in the region
   // behind one file on a cold cache. The forecast leg races it; only the marine leg waits.
-  const profilesPromise = loadGeospatialExposureProfiles(island.id).catch(() => undefined);
+  const profilesPromise = loadGeospatialExposureProfilesForBeaches(island.id, island.beaches)
+    .catch(() => undefined);
 
   // ONE request per 32 clusters instead of one per cluster. Evia's 34 clusters used to
   // cost 68 requests in a burst; they now cost 4. The coordinates are identical — this

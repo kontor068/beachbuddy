@@ -103,6 +103,15 @@ const checks = [
     args: ['scripts/validateBeachMarineResolution.mjs'],
   },
   {
+    id: 'near-me-geometry',
+    title: 'The cross-region view keeps its geometry',
+    description: 'Builds a synthetic "Κοντά μου" region the way the app does and checks the loader never requests a profile file for it, resolves each beach to its OWN geometry under the re-keyed id, and asks once for a file that is genuinely missing.',
+    protects: 'Prevents the whole "Κοντά μου" list from silently collapsing onto one area sea cell for beaches up to 40 km apart, which is what a 404 on a synthetic region id costs.',
+    failureAction: 'Route the call through loadGeospatialExposureProfilesForBeaches in services/geospatialExposureService.ts — it owns the merge. Never make it pass by adding a near-me.json to the build: the region is assembled per user from their GPS and has no fixed beach list to build a file from.',
+    command: process.execPath,
+    args: ['scripts/validateNearMeGeometry.mjs'],
+  },
+  {
     id: 'swell-origin-copy',
     title: 'The card says where the sea came from',
     description: 'Drives the beach page\'s live sentence in all five languages over a measured light-wind/running-sea reading and checks it names the direction the swell arrived from — then checks it stays completely silent on ordinary short-period chop, on a swell too small to matter, on a swell that is only part of the sea, and when no direction is known. Also checks the origin phrase itself is a whole per-language string («από τα βόρεια», «de l\'est») and that the beach page still hands the swell channel over.',

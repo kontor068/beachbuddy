@@ -1,5 +1,12 @@
-import type { DataConfidence, GeospatialExposureProfile, WindSector } from '../types';
+import type { Beach, DataConfidence, GeospatialExposureProfile, WindSector } from '../types';
 import type { ExposureLevel } from '../utils/windExposure';
+
+/**
+ * Synthetic region id for the cross-region "Κοντά μου" view. It has no profile file of its
+ * own and never will — its beaches are borrowed from the real regions around the user — so
+ * it must never reach buildProfileUrl. Lives here, next to the loader that has to know.
+ */
+export const NEAR_ME_REGION_ID = 'near-me';
 
 export type GeospatialExposureProfileLookup = Record<number, GeospatialExposureProfile>;
 
@@ -91,7 +98,11 @@ export const loadGeospatialExposureProfiles = async (
           regionId,
           status: response.status,
         });
-        profileCache.delete(regionId);
+        // A 404 is permanent: the file is absent from the build and will not appear
+        // mid-session, so keep the negative result cached. Everything else (5xx, a proxy
+        // hiccup) deserves another attempt, and only then is the entry dropped. Retrying
+        // 404s is how one bad region id turned into 866 requests in a day of prod logs.
+        if (response.status !== 404 && response.status !== 410) profileCache.delete(regionId);
         return undefined;
       }
       const payload = await response.json() as RawGeospatialExposurePayload;
@@ -108,4 +119,45 @@ export const loadGeospatialExposureProfiles = async (
 
   profileCache.set(regionId, request);
   return request;
+};
+
+/** The little a caller must know about a beach for its geometry to be findable. */
+type ProfileLookupBeach = Pick<Beach, 'id'> & Partial<Pick<Beach, 'regionId' | 'sourceBeachId'>>;
+
+/**
+ * Profiles for a beach list, keyed by the id those beaches actually carry.
+ *
+ * Every caller that holds a region and its beaches should use THIS, not the per-region loader
+ * above: "Κοντά μου" is a synthetic region whose beaches come from the real regions near the
+ * user and are re-keyed to globally-unique ids, so asking for its own profile file 404s
+ * forever. The map got that right and the weather layer did not, and the cost was invisible —
+ * with no geometry, resolveBeachMarinePoints has nothing to place a beach's own sea cell with,
+ * so every beach up to 40 km apart fell back to a single region-centre reading.
+ */
+export const loadGeospatialExposureProfilesForBeaches = async (
+  regionId: string,
+  beaches: ReadonlyArray<ProfileLookupBeach>
+): Promise<GeospatialExposureProfileLookup | undefined> => {
+  if (regionId !== NEAR_ME_REGION_ID) return loadGeospatialExposureProfiles(regionId);
+
+  const sourceRegionIds = Array.from(
+    new Set(beaches.map(beach => beach.regionId).filter((id): id is string => Boolean(id)))
+  );
+  if (sourceRegionIds.length === 0) return undefined;
+
+  const perRegion = await Promise.all(
+    sourceRegionIds.map(id => loadGeospatialExposureProfiles(id).catch(() => undefined))
+  );
+  const byRegion = new Map(sourceRegionIds.map((id, index) => [id, perRegion[index]]));
+
+  const merged: GeospatialExposureProfileLookup = {};
+  for (const beach of beaches) {
+    const source = beach.regionId ? byRegion.get(beach.regionId) : undefined;
+    // Ids are region-scoped, so the profile is filed under the beach's ORIGINAL id while
+    // every downstream lookup uses the synthetic one.
+    const profile = source?.[beach.sourceBeachId ?? beach.id];
+    if (profile) merged[beach.id] = profile;
+  }
+
+  return Object.keys(merged).length > 0 ? merged : undefined;
 };
