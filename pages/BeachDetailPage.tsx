@@ -31,6 +31,7 @@ import { LocalWindShelterSection, type LocalWindShelteredCove } from '../compone
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
+import { beachShoreBreaks } from '../utils/shoreBreak';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
@@ -357,7 +358,21 @@ const getSeaConditionDisplay = (
   waveHeightM?: number,
   selectedHour?: number,
   boatAccess = false,
-  enclosedCove = false
+  enclosedCove = false,
+  /**
+   * utils/shoreBreak — deep water off a coarse shore, with today's sea actually running into it.
+   *
+   * IT GOES UNDER THE WAVE FIGURE, NOT IN A CHIP (13/08/2026). The first version of this note was
+   * a warning chip on the card, and the card shows only two: on Καβαλικευτά it landed fourth in a
+   * list of five and never reached a screen. Here it fills the second line of the tile the reader
+   * is already looking at — the one that prints «0,3 μ.» and, on exactly these calm days, had
+   * nothing underneath it.
+   *
+   * The caller evaluates the rule against the height THIS tile prints, so the note always
+   * qualifies the number beside it: the beach page judges the hour on screen, the card judges the
+   * day it shows. Same rule, one function, each surface honest about its own figure.
+   */
+  shoreBreaks = false
 ) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
   const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
@@ -368,6 +383,18 @@ const getSeaConditionDisplay = (
     de: `Windexponiert${momentSuffix}`,
     it: `Più esposta al vento${momentSuffix}`,
     fr: `Plus exposée au vent${momentSuffix}`,
+  }[language];
+  /**
+   * Deliberately does NOT repeat «ήρεμη θάλασσα» — the tile's own value line has just said it, and
+   * two near-identical sentences stacked on top of each other is the duplicate-copy failure this
+   * project has already paid for. It starts from «όμως», so it reads as the continuation it is.
+   */
+  const shoreBreakLabel = {
+    en: 'But the waves break a bit harder at the shore',
+    gr: 'Σκάει όμως το κύμα λίγο παραπάνω στην ακτή',
+    de: 'Am Ufer brechen die Wellen aber etwas kräftiger',
+    it: 'A riva però le onde frangono un po’ di più',
+    fr: 'Au bord, les vagues déferlent un peu plus',
   }[language];
   const shelteredWindLabel = {
     en: `Better sheltered${momentSuffix}`,
@@ -525,14 +552,20 @@ const getSeaConditionDisplay = (
     if (windBeaufort <= 3 && waveHeightM < 0.5) {
       return {
         value: { en: 'Manageable sea', gr: 'Ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gérable' }[language],
-        subValue: undefined,
+        // The empty slot this note was written for: a mild sea, nothing else to say, and a reader
+        // who is about to walk into water that gets deep in two steps.
+        subValue: shoreBreaks ? shoreBreakLabel : undefined,
       };
     }
 
     if (windBeaufort <= 3 && waveHeightM < 0.8) {
       return {
         value: { en: `Some chop ${day}`, gr: 'Λίγος κυματισμός', de: 'Etwas unruhig', it: 'Un po mosso', fr: 'Un peu de clapot' }[language],
-        subValue: { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
+        // Where both could speak, the one about THIS beach wins over the generic "open spots"
+        // line — and it is the more cautious of the two, never the calmer.
+        subValue: shoreBreaks
+          ? shoreBreakLabel
+          : { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
       };
     }
 
@@ -1299,7 +1332,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const gustKmph = getWeatherGustKmph(weatherData, scoringHourlyForecast);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
+  // Evaluated against `displayWaveHeightM` — the exact figure the tile prints — so the note can
+  // never qualify a number the reader is not looking at. See getSeaConditionDisplay's shoreBreaks.
+  const shoreBreaksHere = beachShoreBreaks(
+    beach,
+    scoreResult.seaArrivalExposureLevel,
+    displayWaveHeightM,
+    scoreResult.seaStatePeriodS
+  );
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove, shoreBreaksHere);
   const boatRideConditionLabel = {
     en: 'Ride',
     gr: 'Συνθήκες πλεύσης',

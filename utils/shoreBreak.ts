@@ -51,11 +51,19 @@ export const COARSE_SHORE_TERRAIN: readonly string[] = [
 ];
 
 /**
- * Below this the sea has nothing to break with — a note about how a wave lands is noise when
- * there is no wave. Deliberately low: the whole point of this rule is the case the app currently
- * calls flat, so a threshold up at the amber line would silence it exactly where it is needed.
+ * Below this the sea has nothing to break with — a note about how a wave lands is noise when there
+ * is no wave. Deliberately low: the whole point of this rule is the case the app currently calls
+ * flat, so a threshold up at the amber line would silence it exactly where it is needed.
+ *
+ * 0,2 AND NOT 0,25, AND THAT IS NOT A ROUNDING PREFERENCE (13/08/2026). The page prints one
+ * decimal. A 0,25 floor sits exactly on the boundary between «0,2 μ.» and «0,3 μ.», so an hourly
+ * series that wobbles by a single centimetre crosses it repeatedly: measured on Καβαλικευτά the
+ * same afternoon, the note appeared at 07:00, vanished at 08:00 (0,24 m), came back at 09:00, and
+ * did the same again at 14:00–15:00 — a sentence blinking on and off as the reader drags the hour
+ * slider, over a difference nobody can see and the page does not even display. A threshold has to
+ * sit where the printed number is not changing, not in the middle of its rounding step.
  */
-export const SHORE_BREAK_MIN_WAVE_M = 0.25;
+export const SHORE_BREAK_MIN_WAVE_M = 0.2;
 
 export interface ShoreBreakInput {
   /** `beach.metadata.waterDepth.type` — our own record of how fast it gets deep. */
