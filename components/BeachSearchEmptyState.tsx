@@ -32,6 +32,26 @@ interface BeachSearchEmptyStateProps {
     title: string;
     body: string;
   };
+  /**
+   * True while the visitor is in "Near me" — a circle around their GPS rather than a region
+   * they picked. The default words are wrong there twice over: "in this area" names nothing
+   * they chose, and "it may belong to another region" is usually false — the beach is often
+   * in the same prefecture, just further out than we looked (20 km, widened to 40).
+   */
+  isNearMe?: boolean;
+  /**
+   * How far the searched beach actually is, in km, when we could identify it nationally.
+   * Straight-line, never driving distance (see NEAR_ME_BEACH_RADIUS_KM's note in App) — so the
+   * copy says "from here" and never promises minutes on the road. Undefined when the name
+   * matched nothing nationally; the card then drops the number rather than guessing.
+   */
+  foundElsewhereKm?: number;
+  /**
+   * Near-me only: return to the beaches around the visitor. Deliberately NOT
+   * onClearSearchAndFilters — that one also resets the distance sort that "Near me" switched
+   * on, so the list would silently stop being ordered nearest-first.
+   */
+  onBackToNearMe?: () => void;
 }
 
 export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
@@ -42,6 +62,9 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
   onClearSearchAndFilters,
   protectedSortNoResults = false,
   protectedSortEmptyCopy,
+  isNearMe = false,
+  foundElsewhereKm,
+  onBackToNearMe,
 }) => {
   const protectedSortMessage = language === 'gr'
     ? {
@@ -63,17 +86,42 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
   // pressing Enter, which nothing on this screen suggested.
   const trimmedQuery = searchQuery.trim();
   const isSearchMiss = !protectedSortNoResults && trimmedQuery.length > 0;
+  // Near-me wording only replaces the SEARCH miss. A filter miss inside "Near me" really is
+  // about filters, and the ordinary words are right for it.
+  const isNearMeMiss = isNearMe && isSearchMiss;
+
+  // Round the way the number was measured: whole km, and tens above 100. A straight-line
+  // estimate printed as "214 km" claims a precision the great-circle distance to a beach
+  // pin does not have.
+  const roundedKm = typeof foundElsewhereKm === 'number' && Number.isFinite(foundElsewhereKm)
+    ? (foundElsewhereKm >= 100 ? Math.round(foundElsewhereKm / 10) * 10 : Math.round(foundElsewhereKm))
+    : undefined;
+
+  const nearMeTitle = roundedKm !== undefined && roundedKm > 0
+    ? t.beachSearchFilters.nearMeSearchTitleWithDistance(trimmedQuery, roundedKm)
+    : t.beachSearchFilters.nearMeSearchTitle(trimmedQuery);
+
   const title = protectedSortNoResults
     ? sortMessage.title
-    : isSearchMiss
-      ? t.beachSearchFilters.emptySearchTitle(trimmedQuery)
-      : t.beachSearchFilters.emptyTitle;
+    : isNearMeMiss
+      ? nearMeTitle
+      : isSearchMiss
+        ? t.beachSearchFilters.emptySearchTitle(trimmedQuery)
+        : t.beachSearchFilters.emptyTitle;
   const body = protectedSortNoResults
     ? sortMessage.body
-    : isSearchMiss
-      ? t.beachSearchFilters.emptySearchDescription
-      : t.beachSearchFilters.emptyDescription;
+    : isNearMeMiss
+      ? t.beachSearchFilters.nearMeSearchDescription
+      : isSearchMiss
+        ? t.beachSearchFilters.emptySearchDescription
+        : t.beachSearchFilters.emptyDescription;
   const showSearchAllRegions = isSearchMiss && Boolean(onSearchAllRegions);
+  // In "Near me" the second button goes back to the beaches around the visitor instead of
+  // clearing filters they never set.
+  const secondaryAction = isNearMeMiss && onBackToNearMe ? onBackToNearMe : onClearSearchAndFilters;
+  const secondaryLabel = isNearMeMiss && onBackToNearMe
+    ? t.beachSearchFilters.backToNearMe
+    : t.beachSearchFilters.clearAll;
 
   return (
     <div role="status" className="col-span-full rounded-3xl border border-white/60 bg-white/72 px-5 py-12 text-center shadow-sm ring-1 ring-white/35 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/50">
@@ -93,15 +141,15 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
             {t.beachSearchFilters.searchAllRegions}
           </button>
         )}
-        {onClearSearchAndFilters && (
+        {secondaryAction && (
           <button
             type="button"
-            onClick={onClearSearchAndFilters}
+            onClick={secondaryAction}
             className={showSearchAllRegions
               ? 'inline-flex min-h-11 items-center justify-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-cyan-400/70 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200'
               : 'inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-600 px-5 text-sm font-black text-white shadow-sm transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400/70'}
           >
-            {t.beachSearchFilters.clearAll}
+            {secondaryLabel}
           </button>
         )}
       </div>

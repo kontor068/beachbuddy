@@ -881,6 +881,19 @@ export type Translation = {
     emptySearchTitle: (query: string) => string;
     emptySearchDescription: string;
     searchAllRegions: string;
+    // Same miss, but the visitor is in "Near me" — a circle around their GPS, not a
+    // region they chose. "In this area" names nothing they picked, and "it may belong
+    // to another region" is usually false: the beach is often in the SAME prefecture,
+    // just further than we looked. Measured 11-12/08/2026: Near me was the single
+    // largest bucket of empty results (26%).
+    nearMeSearchTitle: (query: string) => string;
+    // Preferred form: we can price the miss in kilometres for free, because the name
+    // index and the geo index are both already in memory when the card renders.
+    nearMeSearchTitleWithDistance: (query: string, km: number) => string;
+    nearMeSearchDescription: string;
+    // "Clear all" talks about filters the Near-me visitor never set; the action they
+    // actually want is to go back to the beaches around them.
+    backToNearMe: string;
   };
   gettingLocation: string;
   locationErrorPermission: string;

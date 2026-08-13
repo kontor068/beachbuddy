@@ -148,6 +148,11 @@ interface BeachSearcherHomeProps {
   hasActiveSearchOrFilters?: boolean;
   /** Clears the search box AND every filter/preference in one press, for the empty state. */
   onClearSearchAndFilters?: () => void;
+  /** Straight-line km to the searched beach when it exists nationally but outside the circle.
+   *  (Whether we ARE in Near me is already derived locally — see isNearMeRegion below.) */
+  nearMeMissDistanceKm?: number;
+  /** Near-me only: back to the beaches around the visitor, keeping the nearest-first order. */
+  onBackToNearMe?: () => void;
   /** Count of currently-applied filters (advanced + quick preferences), for the mobile
    *  Filter button badge. Distinct from filteredResultCount (number of matching beaches). */
   activeFilterCount?: number;
@@ -1733,6 +1738,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   language,
   hasActiveSearchOrFilters = false,
   onClearSearchAndFilters,
+  nearMeMissDistanceKm,
+  onBackToNearMe,
   selectedIsland,
   allIslands,
   regionWindNote,
@@ -5093,6 +5100,9 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 // browser on 13/08/2026 — the button rendered fine and did nothing.
                 onSearchAllRegions={() => { onSearchSubmit(); }}
                 onClearSearchAndFilters={onClearSearchAndFilters}
+                isNearMe={isNearMeRegion}
+                foundElsewhereKm={nearMeMissDistanceKm}
+                onBackToNearMe={onBackToNearMe}
               />
             </section>
           )}

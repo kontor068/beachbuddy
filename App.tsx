@@ -5782,6 +5782,57 @@ export const App: React.FC = () => {
     return () => window.clearTimeout(timer);
   }, [analyticsBaseParams, beachesLoading, deferredBeachSearchQuery, filteredBeaches.length, hasActiveSearchOrFilters, preferences, selectedFilters, selectedIsland]);
 
+  /**
+   * ΠΟΣΟ ΜΑΚΡΙΑ ΕΙΝΑΙ ΑΥΤΟ ΠΟΥ ΖΗΤΗΣΕ — the number behind «"Μπάλος": 300 χλμ. από εδώ».
+   *
+   * In "Near me" the empty-list card used to say «σε αυτή την περιοχή», naming a region the
+   * visitor never chose, and «μπορεί να ανήκει σε άλλη περιοχή», which is usually false — the
+   * beach is often in the same prefecture, merely past the 20 km (widened 40 km) circle we
+   * searched. Pricing the miss in kilometres turns a dead end into an offer.
+   *
+   * It costs one distance calculation and NO network: the national name index is already
+   * downloaded (it is what the search box queries from 3 characters) and the geo index is
+   * already in module cache (buildNearbyRegionFromGeoIndex loaded it to build this very
+   * region). Guarded so it only runs while the card is actually on screen — in Near me, with
+   * a settled query, and only once the local list has genuinely come back empty.
+   */
+  const [nearMeMissDistanceKm, setNearMeMissDistanceKm] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const query = deferredBeachSearchQuery.trim();
+    // The 3-character floor is findGlobalBeachMatch's own (App search index), not a guess.
+    if (!isNearMeRegionActive || !userLocation || query.length < 3 || beachesLoading || filteredBeaches.length > 0) {
+      setNearMeMissDistanceKm(undefined);
+      return;
+    }
+
+    let cancelled = false;
+    void (async () => {
+      try {
+        const [match, geoIndex] = await Promise.all([findGlobalBeachMatch(query), loadBeachGeoIndex()]);
+        if (cancelled) return;
+        if (!match) {
+          setNearMeMissDistanceKm(undefined);
+          return;
+        }
+        // regionId:beachId is the same key buildNearbyRegionFromGeoIndex joins on, and it is
+        // complete: 2.854 names / 2.854 coordinates, nothing missing (measured 13/08/2026).
+        const point = geoIndex.find(entry => entry.regionId === match.island.id && entry.beachId === match.beachId);
+        if (cancelled) return;
+        setNearMeMissDistanceKm(
+          point ? calculateDistance(userLocation.lat, userLocation.lon, point.lat, point.lon) : undefined
+        );
+      } catch {
+        // A missing number just drops the kilometres from the sentence; it never blocks the card.
+        if (!cancelled) setNearMeMissDistanceKm(undefined);
+      }
+    })();
+
+    return () => { cancelled = true; };
+    // findGlobalBeachMatch is redefined each render; including it would re-run this every time.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [beachesLoading, deferredBeachSearchQuery, filteredBeaches.length, isNearMeRegionActive, userLocation]);
+
   useEffect(() => {
     if (sortBy === 'recommended') {
       setSortBy(defaultBeachListSort);
@@ -7731,6 +7782,28 @@ export const App: React.FC = () => {
     if (trimmedQuery.length < 3) return null;
 
     const searchIndex = await getGlobalBeachSearchIndex();
+
+    /**
+     * ΟΜΩΝΥΜΕΣ ΠΑΡΑΛΙΕΣ: ΝΙΚΑΕΙ Η ΚΟΝΤΙΝΗ, ΟΧΙ Η ΔΙΑΣΗΜΗ.
+     *
+     * 524 από τις 2.854 παραλίες (18%) μοιράζονται όνομα με άλλη — «Άγιος Νικόλαος» ×11,
+     * «Άγιος Ιωάννης» ×10. Η ισοπαλία λυνόταν με το beachRating, δηλαδή με τη ΦΗΜΗ: κάποιος
+     * στο Πόρτο Ράφτη που έψαχνε «Άγιος Νικόλαος» στελνόταν στην Κρήτη ενώ ένας ήταν 15 χλμ.
+     * δίπλα του. Στο «Κοντά μου» ήταν εγγυημένο, γιατί το μπόνους «ίδια περιοχή» παραπάνω
+     * δεν ανάβει ποτέ ('near-me' δεν ισούται με καμία πραγματική περιοχή).
+     *
+     * Μόνο για ΙΣΟΠΑΛΙΕΣ και μόνο όταν ο χρήστης έχει δώσει τοποθεσία· χωρίς GPS τίποτα δεν
+     * αλλάζει. Ο γεωγραφικός πίνακας είναι ήδη κατεβασμένος.
+     */
+    const geoByKey = userLocation
+      ? new Map((await loadBeachGeoIndex()).map(entry => [`${entry.regionId}:${entry.beachId}`, entry]))
+      : null;
+    const distanceFromUser = (regionId: string, beachId: number): number | undefined => {
+      if (!userLocation || !geoByKey) return undefined;
+      const point = geoByKey.get(`${regionId}:${beachId}`);
+      return point ? calculateDistance(userLocation.lat, userLocation.lon, point.lat, point.lon) : undefined;
+    };
+
     const rankedMatches = searchIndex
       .map(entry => {
         const beachScore = scoreSearchValues(trimmedQuery, entry.searchValues);
@@ -7742,6 +7815,12 @@ export const App: React.FC = () => {
       .filter(entry => entry.beachScore >= 82)
       .sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score;
+        // Distance BEFORE reputation — see the note above. Only when we actually know both.
+        const aDistance = distanceFromUser(a.island.id, a.beachId);
+        const bDistance = distanceFromUser(b.island.id, b.beachId);
+        if (aDistance !== undefined && bDistance !== undefined && aDistance !== bDistance) {
+          return aDistance - bDistance;
+        }
         if (b.beachRating !== a.beachRating) return b.beachRating - a.beachRating;
         return displayBeachName(a.beachName, language).localeCompare(displayBeachName(b.beachName, language));
       });
@@ -8211,6 +8290,11 @@ export const App: React.FC = () => {
               // forecast home says exactly what the no-forecast list says.
               hasActiveSearchOrFilters={hasActiveSearchOrFilters}
               onClearSearchAndFilters={handleClearSearchAndFilters}
+              nearMeMissDistanceKm={nearMeMissDistanceKm}
+              // Clears ONLY the search: handleClearSearchAndFilters would also reset the
+              // distance sort that "Near me" switched on, so the list would quietly stop
+              // being ordered nearest-first — the opposite of "back to beaches near me".
+              onBackToNearMe={() => setBeachSearchQuery('')}
               selectedIsland={selectedIsland}
               allIslands={allIslands}
               regionWindNote={regionWindVariationNote?.text}
