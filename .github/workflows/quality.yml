@@ -33,6 +33,41 @@ jobs:
       - name: Install Playwright Chromium (browser check needs it)
         run: npx playwright install --with-deps chromium
 
+      # WHICH FONT THE LAYOUT GATE MEASURES IN (13/08/2026).
+      #
+      # index.css asks for ui-rounded / SF Pro Rounded / Nunito / Inter / system-ui. An iPhone
+      # answers SF Pro Rounded, an Android Roboto, a developer's Windows machine Segoe UI. A
+      # bare Ubuntu runner owns none of them and answers with its own default, whose Greek is
+      # wider than any of those — so the tile-fit gate was measuring a page no visitor will
+      # ever see, and calling the difference a layout defect. That is the whole reason it was
+      # green on every laptop and red on every push here.
+      #
+      # Roboto is the honest pin: it is what the largest share of our visitors actually render.
+      # This does not relax the rule — it points it at a real phone.
+      - name: Install Roboto so the layout gate measures a phone's font
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fontconfig
+          sudo apt-get install -y -qq fonts-roboto || sudo apt-get install -y -qq fonts-roboto-unhinted
+          mkdir -p ~/.config/fontconfig
+          cat > ~/.config/fontconfig/fonts.conf <<'CONF'
+          <?xml version="1.0"?>
+          <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+          <fontconfig>
+            <match target="pattern">
+              <test name="family"><string>sans-serif</string></test>
+              <edit name="family" mode="prepend" binding="strong"><string>Roboto</string></edit>
+            </match>
+            <match target="pattern">
+              <test name="family"><string>system-ui</string></test>
+              <edit name="family" mode="prepend" binding="strong"><string>Roboto</string></edit>
+            </match>
+          </fontconfig>
+          CONF
+          fc-cache -f > /dev/null
+          echo "sans-serif  -> $(fc-match sans-serif)"
+          echo "system-ui   -> $(fc-match system-ui)"
+
       - name: Run critical quality gate
         # Build the SAME way Netlify ships production, so the SEO prerender audit sees
         # real index/follow robots meta. Without these the deploy guards mark the CI
@@ -42,3 +77,17 @@ jobs:
           CONTEXT: production
           VITE_APP_ENV: production
         run: npm run quality:critical
+
+      # The log above now prints the last 40 lines a failing check wrote, which is enough
+      # for a clipped label but not for a check that fails in twenty places at once. The
+      # report holds every line of every check; without this step it dies with the runner,
+      # which is why a red gate could only ever be reproduced locally — and this one does
+      # not reproduce locally, it only fails here.
+      - name: Keep the quality report when the gate fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critical-quality-report
+          path: .tmp/critical-quality-report.json
+          retention-days: 14
+          if-no-files-found: warn

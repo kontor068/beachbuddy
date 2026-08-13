@@ -69,6 +69,7 @@ const server = spawn(
 );
 
 const failures = [];
+const fontsSeen = new Set();
 let measured = 0;
 try {
   await waitForUrl(BASE + '/');
@@ -104,6 +105,31 @@ try {
       await wait(1200);
 
       const found = await page.evaluate(() => {
+        // WHICH FONT THIS WAS MEASURED IN — added 13/08/2026.
+        //
+        // Clipping is a question about metrics, and metrics belong to whatever font the
+        // machine actually owns. index.css asks for ui-rounded / SF Pro Rounded / Nunito /
+        // Inter / system-ui, and a Linux CI runner owns none of them: it answers with its own
+        // default, whose Greek is wider than any phone's. So a verdict here is only readable
+        // next to the name of the font that produced it — otherwise "clipped by 3px" cannot
+        // be told apart from "measured in a font no visitor will ever see".
+        const fontInUse = (() => {
+          const ctx2d = document.createElement('canvas').getContext('2d');
+          const sample = 'Πληροφορίες Handhabbare';
+          const widthOf = family => { ctx2d.font = `20px ${family}`; return ctx2d.measureText(sample).width; };
+
+          // What the page is really drawing with: the whole stack, resolved by the browser.
+          const actual = widthOf(getComputedStyle(document.body).fontFamily);
+          // Named against the fonts a real device answers with, plus the three a bare Linux
+          // box falls back to. Matching by width identifies the winner without asking the
+          // browser a question it has no API for.
+          const candidates = ['SF Pro Rounded', 'Nunito', 'Inter', 'Roboto', 'Segoe UI', 'Noto Sans', 'DejaVu Sans', 'Liberation Sans', 'FreeSans'];
+          for (const family of candidates) {
+            if (Math.abs(widthOf(`"${family}", "NoSuchFamily-CalmBeach"`) - actual) < 0.5) return family;
+          }
+          return `unrecognised (the sample measures ${Math.round(actual)}px here; none of the fonts a phone uses match)`;
+        })();
+
         const tiles = Array.from(document.querySelectorAll('[data-tilefit]'));
         const nodes = [];
         for (const tile of tiles) {
@@ -155,7 +181,7 @@ try {
             if (gap < 4) barTouching.push({ a: labelBoxes[i - 1].text, b: labelBoxes[i].text, gap });
           }
         }
-        return { tiles: tiles.length, nodes, bar: Boolean(bar), barOverflowPx, barNodes, barTouching };
+        return { tiles: tiles.length, nodes, bar: Boolean(bar), barOverflowPx, barNodes, barTouching, fontInUse };
       });
 
       await ctx.close();
@@ -195,7 +221,8 @@ try {
         }
       }
 
-      console.log(`${lang} @${width}px  tiles=${found.tiles}  texts=${found.nodes.length}  clipped=${found.nodes.filter(n => n.overflowPx > 1).length}  bar=${found.barNodes.length} labels, overflow=${found.barOverflowPx}px`);
+      fontsSeen.add(found.fontInUse);
+      console.log(`${lang} @${width}px  tiles=${found.tiles}  texts=${found.nodes.length}  clipped=${found.nodes.filter(n => n.overflowPx > 1).length}  bar=${found.barNodes.length} labels, overflow=${found.barOverflowPx}px  font=${found.fontInUse}`);
     }
   }
 
@@ -267,7 +294,10 @@ try {
 
 console.log(`\nMeasured ${measured} tile and bar text nodes · ${PAGES.length} languages × ${WIDTHS.length} widths, plus the tab landings`);
 if (failures.length > 0) {
-  console.error(`\nFAILED: ${failures.length} problem(s).\n`);
+  // On stderr on purpose: the gate runner shows the failing check's stderr, and a list of
+  // clipped words without the font that clipped them cannot be acted on.
+  console.error(`\nMeasured in: ${[...fontsSeen].join(' · ') || 'unknown'}`);
+  console.error(`FAILED: ${failures.length} problem(s).\n`);
   for (const f of failures) console.error('  - ' + f);
   process.exit(1);
 }

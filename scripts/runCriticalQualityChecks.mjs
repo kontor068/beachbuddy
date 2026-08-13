@@ -490,6 +490,23 @@ const runAttempt = attempt => {
 
     if (!result.ok) {
       console.log(`  ${result.reason}`);
+      // WHAT THE CHECK ITSELF SAID — added 13/08/2026.
+      //
+      // Every check in this suite ends by naming the exact thing that is wrong («gr @320px:
+      // «Χωμάτινος» is clipped by 3px»). None of it was ever printed: the runner captures
+      // stdout/stderr, files them into .tmp/critical-quality-report.json, and shows only
+      // «process exited with 1». That is readable locally, where the report file is on disk —
+      // and completely unreadable on CI, where the report is deleted with the runner.
+      //
+      // The cost: 39 of the 60 runs before this date were red, on the same check, and no one
+      // could tell from GitHub what the check had found. A gate whose failure cannot be read
+      // is not a gate — it is a red light people learn to walk past, which is the exact
+      // failure mode the workflow file warns about at the top.
+      const said = tail(result.stderrTail || result.stdoutTail || '', 40);
+      if (said) {
+        console.log('  What it said:');
+        for (const line of said.split('\n')) console.log(`    ${line}`);
+      }
       console.log(`  Next step: ${check.failureAction}`);
     }
   }
