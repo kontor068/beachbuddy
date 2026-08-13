@@ -36,7 +36,10 @@ const waitForUrl = async (url, timeoutMs = 30000) => {
 const startServer = () => {
   if (args.has('url')) return undefined;
   const viteBin = path.join('node_modules', 'vite', 'bin', 'vite.js');
-  return spawn(process.execPath, [viteBin, '--host', host, '--port', String(port)], {
+  // --strictPort: without it vite slides to the next free port when a dev server left over from an
+  // earlier run holds this one, and the gate then measures that STALE build while reporting on
+  // today's. See validateBeachPageContradictions.mjs for the afternoon that cost.
+  return spawn(process.execPath, [viteBin, '--host', host, '--port', String(port), '--strictPort'], {
     stdio: ['ignore', 'pipe', 'pipe'],
     env: process.env,
   });

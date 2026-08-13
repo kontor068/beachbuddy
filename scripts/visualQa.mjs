@@ -33,7 +33,9 @@ const startDevServer = () => {
   const viteBin = path.join('node_modules', 'vite', 'bin', 'vite.js');
   const child = spawn(
     process.execPath,
-    [viteBin, '--host', DEFAULT_HOST, '--port', String(DEFAULT_PORT)],
+    // --strictPort: without it a leftover dev server on this port silently becomes what we
+    // screenshot — stale code shown as today's. See validateBeachPageContradictions.mjs.
+    [viteBin, '--host', DEFAULT_HOST, '--port', String(DEFAULT_PORT), '--strictPort'],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
       env: process.env,

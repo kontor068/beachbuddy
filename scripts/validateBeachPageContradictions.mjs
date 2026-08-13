@@ -83,7 +83,17 @@ const PAGES = [
   { slug: 'ios/1756-gero-aggeli', name: 'Gero Aggeli', shelter: 'windward' },
 ];
 
-const server = spawn(process.execPath, [path.join('node_modules', 'vite', 'bin', 'vite.js'), '--host', '127.0.0.1', '--port', String(PORT)], { stdio: ['ignore', 'ignore', 'inherit'], env: process.env });
+/**
+ * `--strictPort` IS THE POINT, NOT A DETAIL (13/08/2026).
+ *
+ * Without it vite quietly moves to the next free port when 4189 is taken — and a dev server left
+ * behind by an earlier run (a killed test, a crashed gate) holds exactly that port. The gate then
+ * measured the STALE server: old code, old copy, reported as today's product. That is how this
+ * script spent an afternoon insisting Kolitsani had lost its shore sentence while the real page
+ * printed it correctly the whole time. A gate that can silently test the wrong build is worse than
+ * no gate, so now the port is either ours or the run dies saying so.
+ */
+const server = spawn(process.execPath, [path.join('node_modules', 'vite', 'bin', 'vite.js'), '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], { stdio: ['ignore', 'ignore', 'inherit'], env: process.env });
 
 /**
  * How the page says the wind meets THIS shore — the one fact that legitimately differs between two
@@ -113,11 +123,39 @@ const CROSS_PHRASES = [
 ];
 const matchAny = (text, patterns) => patterns.some(p => p.test(text));
 
+/**
+ * THE FIRST BEACH WAS BEING JUDGED BEFORE ITS PAGE EXISTED (13/08/2026).
+ *
+ * `await wait(9000)` was a bet that nine seconds is always enough. For the FIRST page of the run
+ * it is not: that one page also pays for vite's dependency optimisation, so the body read back was
+ * still the region list — no instruments, no shore sentence — and the gate reported the product's
+ * headline fact as missing. Measured: on a cold server Kolitsani read «— NOTHING —» with a null
+ * wave; on a warm one, at the very same 9.000 ms, it read `lee` with ~0,1 m. Three green pages
+ * followed it purely because they ran second.
+ *
+ * The fix must not wait for the thing under test — polling until the shore sentence appears would
+ * turn a real regression into a 60-second pass. So it waits on an INDEPENDENT proof that the beach
+ * page is up: the instrument row printing a wave height, which every fixture beach has and which
+ * the region list never renders. If that never arrives the read proceeds anyway and the assertions
+ * below fail exactly as they did before — a hang is still a failure, just an honest one.
+ */
+const READY_TIMEOUT_MS = 60000;
+const pageIsUp = text => /~[\d.,]+\s*m/.test(text);
+
 const read = async (browser, page1) => {
   const page = await browser.newPage({ viewport: { width: 1100, height: 1600 } });
   await page.goto(`${BASE}/beaches/${page1.slug}?bbWeatherFixture=Paros_N_5BFT`, { waitUntil: 'domcontentloaded', timeout: 90000 });
-  await wait(9000);
-  const text = await page.evaluate(() => document.body.innerText);
+  const t0 = Date.now();
+  let text = '';
+  while (Date.now() - t0 < READY_TIMEOUT_MS) {
+    text = await page.evaluate(() => document.body.innerText);
+    if (pageIsUp(text)) break;
+    await wait(500);
+  }
+  // The page is mounted; give the shore sentence the same settle time it always had.
+  await wait(2000);
+  text = await page.evaluate(() => document.body.innerText);
+  if (!pageIsUp(text)) console.log(`  (${page1.name}: instruments never appeared in ${READY_TIMEOUT_MS} ms — reading anyway)`);
   await page.close();
   const waves = [...text.matchAll(/~([\d.,]+)\s*m/g)].map(m => Number(m[1].replace(',', '.')));
   return {

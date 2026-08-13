@@ -31,6 +31,7 @@
  */
 import { chromium } from '@playwright/test';
 import { spawn, spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const PORT = 4191;
@@ -80,7 +81,9 @@ spawnSync(process.execPath, [vite, 'optimize', '--force'], { stdio: 'ignore', en
 
 const server = spawn(
   process.execPath,
-  [vite, '--host', '127.0.0.1', '--port', String(PORT)],
+  // --strictPort: without it a leftover dev server on this port silently becomes what we measure —
+  // stale code reported as today's. See validateBeachPageContradictions.mjs.
+  [vite, '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'],
   { stdio: ['ignore', 'ignore', 'inherit'], env: process.env },
 );
 
@@ -322,12 +325,85 @@ try {
     await ctx.close();
   }
 
+  // ---- The podium card's «why» row (added 13/08/2026) ----
+  //
+  // The row is two columns on a phone, and on 13/08 the open-water figure stopped being a bare
+  // «1,5 μ.» and started carrying its word — «1,5 μ. ανοιχτά» — because without it the number
+  // read as the water at the sand (Μαραθώνας 1,5 μ. beside Σχινιάς 0,1 μ., 4 km apart). That is
+  // eight more characters in a fixed-width chip, in five languages, and a word cut in half is
+  // worse than no word: «1,5 μ. ανοιχ…» claims nothing and costs the space the number needed.
+  //
+  // ⚠️ 13/08, ΒΡΑΔΥ — Η ΕΝΕΣΗ ΕΦΥΓΕ ΜΑΖΙ ΜΕ ΤΗ ΛΕΞΗ. Λίγες ώρες αργότερα η κάρτα έπαψε να δείχνει
+  // τη θάλασσα του ανοιχτού: τυπώνει πλέον ΠΑΝΤΑ το νερό της ακτής, σκέτο, χωρίς ετικέτα («στο
+  // mobile έχει πολύ κείμενο» — Μίλτος· και αυτό εδώ το αρχείο έκοβε τη λέξη στα 390 px). Με ένα
+  // μόνο σχήμα στην οθόνη δεν υπάρχει «λάθος περίπτωση» να αποφύγεις με ένεση: το φυσικό
+  // περιεχόμενο του chip ΕΙΝΑΙ η χειρότερη περίπτωση. Μετριέται όπως ζωγραφίζεται.
+  //
+  // Η ένεση δεν διαγράφεται από το ιστορικό επίτηδες: αν ξαναμπεί ποτέ λέξη δίπλα στον αριθμό,
+  // αυτό το μπλοκ πρέπει να ξαναγίνει injection — αλλιώς θα μετράει 20 φορές τη σύντομη μορφή.
+  {
+    const PODIUM_ROUTES = [['gr', '/el/'], ['en', '/'], ['de', '/de/'], ['fr', '/fr/'], ['it', '/it/']];
+    let podiumMeasured = 0;
+    for (const [lang, route] of PODIUM_ROUTES) {
+      for (const width of WIDTHS) {
+        const ctx = await browser.newContext({
+          viewport: { width, height: 900 },
+          deviceScaleFactor: 2, isMobile: true, hasTouch: true, timezoneId: 'Europe/Athens',
+        });
+        const page = await ctx.newPage();
+        // The fixture is what makes the podium exist at all: without a committed region the
+        // homepage shows the national landing, which has no cards to measure.
+        await page.goto(`${BASE}${route}?bbWeatherFixture=Paros_N_5BFT`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+        const there = await page.waitForSelector('[data-tilefit="podium-why-wave"]', { timeout: 60000 })
+          .then(() => true, () => false);
+        if (!there) {
+          failures.push(`${lang} @${width}px: no podium wave chip on ${route} — the row was not measured`);
+          await ctx.close();
+          continue;
+        }
+        await wait(1200);
+        const probe = await page.evaluate(() => {
+          const chip = document.querySelector('[data-tilefit="podium-why-wave"]');
+          const spans = chip.querySelectorAll('span');
+          const textSpan = spans[spans.length - 1];
+          return {
+            natural: (textSpan.textContent || '').trim(),
+            chipScroll: chip.scrollWidth, chipClient: chip.clientWidth,
+            textScroll: textSpan.scrollWidth, textClient: textSpan.clientWidth,
+            rowScroll: chip.parentElement.scrollWidth, rowClient: chip.parentElement.clientWidth,
+          };
+        });
+        // Το chip πρέπει να έχει ΚΑΤΙ μέσα: ένα άδειο span δεν ξεχειλίζει ποτέ και θα περνούσε.
+        if (!probe.natural) {
+          failures.push(`${lang} @${width}px: the podium wave chip is empty — nothing was measured`);
+        }
+        podiumMeasured += 1;
+        measured += 1;
+        if (probe.textScroll > probe.textClient + 1
+          || probe.chipScroll > probe.chipClient + 1
+          || probe.rowScroll > probe.rowClient + 1) {
+          failures.push(
+            `${lang} @${width}px: the podium wave chip cannot hold «${probe.natural}» `
+            + `(text ${probe.textScroll}/${probe.textClient}px · chip ${probe.chipScroll}/${probe.chipClient}px `
+            + `· row ${probe.rowScroll}/${probe.rowClient}px). The wave figure would be cut.`
+          );
+        }
+        await ctx.close();
+      }
+    }
+    if (podiumMeasured === 0) {
+      failures.push('the podium «why» row was never measured — a pass here would mean nothing');
+    } else {
+      console.log(`podium wave chip: ${podiumMeasured} measurements of the string the card actually paints`);
+    }
+  }
+
   await browser.close();
 } finally {
   server.kill();
 }
 
-console.log(`\nMeasured ${measured} tile and bar text nodes · ${PAGES.length} languages × ${WIDTHS.length} widths, plus the tab landings`);
+console.log(`\nMeasured ${measured} tile and bar text nodes · ${PAGES.length} languages × ${WIDTHS.length} widths, plus the tab landings and the podium row`);
 if (failures.length > 0) {
   // On stderr on purpose: the gate runner shows the failing check's stderr, and a list of
   // clipped words without the font that clipped them cannot be acted on.
