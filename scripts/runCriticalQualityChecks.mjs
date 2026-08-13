@@ -291,6 +291,15 @@ const checks = [
     args: ['scripts/validateAthensClock.mjs'],
   },
   {
+    id: 'capacity-ledger',
+    title: 'Open-Meteo quota ledger',
+    description: 'Pure-logic checks on the monthly call counter: day rollover, billing window, projection.',
+    protects: 'Keeps the "how much of the 1,000,000/month is left" number honest. The counter used to hold ONE day and zero it at midnight, so nothing could tell whether the paid plan was about to run out.',
+    failureAction: 'Read the failing assertion in scripts/validateCapacityLedger.mjs — it names the behaviour that broke.',
+    command: process.execPath,
+    args: ['scripts/validateCapacityLedger.mjs'],
+  },
+  {
     id: 'lint',
     title: 'TypeScript lint/typecheck',
     description: 'Runs TypeScript without emitting files.',

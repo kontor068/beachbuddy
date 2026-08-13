@@ -31,6 +31,10 @@
 import { connectLambda, getStore } from '@netlify/blobs';
 import { countryLabel, countryFlag, COUNTRY_NAMES_EL } from './lib/geoLookup.mjs';
 import { WORLD_PATH, WORLD_W, WORLD_H, WORLD_LAT_TOP } from './lib/worldPath.mjs';
+// The weather bill lives on the same console as the traffic: both answer "is the
+// site about to break?", and a quota meter you have to remember to open is a quota
+// meter nobody opens. The counting itself happens in the forecast proxy.
+import { monthlyUsage, MONTHLY_QUOTA, DAILY_BUDGET, DEFAULT_THRESHOLDS } from './lib/capacityAlarm.mjs';
 // ── The moderation queue lives here too, so there is ONE admin page ───────────
 // It used to be a second URL behind a second key (/api/ugc-admin), which meant
 // remembering that it existed. A console you open every day to watch the traffic
@@ -555,6 +559,88 @@ ${publishedBeachesPanel(publishedBeaches, curating)}
 ${queue.problem ? `<div class="flash warn">Πρόβλημα ανάγνωσης της ουράς: ${esc(queue.problem)}</div>` : ''}`;
 };
 
+// ── the weather bill ─────────────────────────────────────────────────────────
+
+/**
+ * "Will we blow the Open-Meteo plan?" — the one question the meter existed to
+ * answer and could not, because it only ever held today.
+ *
+ * The verdict is driven by the PROJECTION (pace × cycle length), not by the raw
+ * percentage: 60% of the quota on day 6 is fine, the same 60% on day 25 is fine
+ * too, and 40% on day 3 is not. A percentage bar alone would say the opposite of
+ * the truth in half those cases, so the bar carries a "where we should be by now"
+ * marker and the sentence under it does the actual talking.
+ */
+export const capacityPanel = (usage, state) => {
+  if (!usage) return '';
+
+  const measured = usage.daysMeasured > 0;
+  const partial = measured && usage.measuringSince && usage.measuringSince > usage.cycleStart;
+
+  // Where a perfectly even month would stand today — the honest yardstick for the bar.
+  const paceMark = usage.cycleDays ? Math.min(100, Math.round((usage.dayIndex / usage.cycleDays) * 100)) : 0;
+  const fill = Math.min(100, usage.percent);
+
+  let tone = 'ok';
+  let badge = '🟢 Άνετα';
+  let verdict;
+  if (usage.remaining === 0) {
+    tone = 'bad';
+    badge = '🔴 Εξαντλήθηκε';
+    verdict = 'Το μηνιαίο πακέτο τελείωσε. Οι επισκέπτες βλέπουν πρόγνωση διάσωσης (ως 12 ώρες παλιά) μέχρι να ανανεωθεί ο κύκλος.';
+  } else if (!measured || usage.projected === null) {
+    tone = 'unknown';
+    badge = '⚪ Χωρίς ρυθμό ακόμη';
+    verdict = 'Χρειάζεται μία ολόκληρη μέρα μέτρησης πριν μπορέσουμε να πούμε πού πάει ο μήνας. Μέχρι τότε βλέπεις μόνο το τρέχον σύνολο.';
+  } else if (usage.willExceed) {
+    tone = 'bad';
+    badge = '🔴 Θα σκάσει';
+    verdict = `Με τον ρυθμό των τελευταίων ημερών ο κύκλος κλείνει στις <b>~${num(usage.projected)}</b> — <b>${num(usage.projected - usage.quota)} πάνω από το όριο</b>. Θα τελειώσουν οι κλήσεις πριν τις ${dayLabel(usage.cycleEnd)}.`;
+  } else if (usage.projected > usage.quota * 0.8) {
+    tone = 'warn';
+    badge = '🟡 Οριακά';
+    verdict = `Με τον ρυθμό των τελευταίων ημερών ο κύκλος κλείνει στις <b>~${num(usage.projected)}</b> από 1.000.000 — χωράει, αλλά χωρίς περιθώριο για μια δυνατή εβδομάδα.`;
+  } else {
+    verdict = `Με τον ρυθμό των τελευταίων ημερών ο κύκλος κλείνει στις <b>~${num(usage.projected)}</b> από 1.000.000. Περιθώριο <b>×${(usage.quota / Math.max(1, usage.projected)).toFixed(1)}</b> — η κίνηση μπορεί να πολλαπλασιαστεί τόσο πριν μας απασχολήσει.`;
+  }
+
+  const todayTone = usage.today >= DEFAULT_THRESHOLDS.red ? ' hi' : usage.today >= DEFAULT_THRESHOLDS.amber ? ' mid' : '';
+
+  // The per-day ledger, newest last, so a spike is visible as a shape.
+  const maxDay = Math.max(1, ...usage.perDay.map(([, v]) => v));
+  const ledger = usage.perDay
+    .map(([d, v]) => {
+      const h = Math.max(3, Math.round((v / maxDay) * 100));
+      const over = v >= DEFAULT_THRESHOLDS.red ? ' over' : v >= DEFAULT_THRESHOLDS.amber ? ' near' : '';
+      return `<span class="cd${over}" title="${dayLabel(d)}: ${num(v)} κλήσεις"><i style="height:${h}%"></i><b>${dayLabel(d)}</b></span>`;
+    })
+    .join('');
+
+  const refused = state?.rateLimited || 0;
+
+  return `<section class="panel cap ${tone}">
+  <h2>Κλήσεις καιρού<em>Open-Meteo · πακέτο 1 εκατ./μήνα · κύκλος ${dayLabel(usage.cycleStart)} → ${dayLabel(usage.cycleEnd)}</em>
+    <span class="capbadge">${badge}</span></h2>
+  <div class="capgrid">
+    <div class="capmain">
+      <div class="capbig">${num(usage.used)}<span>/ ${num(usage.quota)}</span></div>
+      <div class="capbar"><i style="width:${fill}%"></i><u style="left:${paceMark}%" title="εδώ θα ήμασταν με ομοιόμορφη κατανάλωση"></u></div>
+      <div class="capsub">${usage.percent}% του μήνα · μέρα ${usage.dayIndex} από ${usage.cycleDays}${partial ? ` · μετράμε από ${dayLabel(usage.measuringSince)}` : ''}</div>
+    </div>
+    <div class="capstats">
+      <div><span class="cl">Απομένουν</span><span class="cv">${num(usage.remaining)}</span></div>
+      <div><span class="cl">Σήμερα</span><span class="cv${todayTone}">${num(usage.today)}</span></div>
+      <div><span class="cl">Μέσος όρος/μέρα</span><span class="cv">${usage.avgPerDay === null ? '—' : num(usage.avgPerDay)}</span></div>
+      <div><span class="cl">Πρόβλεψη μήνα</span><span class="cv">${usage.projected === null ? '—' : num(usage.projected)}</span></div>
+    </div>
+  </div>
+  <p class="capverdict">${verdict}</p>
+  ${ledger ? `<div class="capdays">${ledger}</div>` : ''}
+  ${refused ? `<p class="capwarn">⚠ Σήμερα το Open-Meteo αρνήθηκε <b>${num(refused)}</b> κλήσεις (429). Αν το ποσοστό του μήνα είναι χαμηλό, χτυπήσαμε όριο ρυθμού — όχι εξάντληση.</p>` : ''}
+  ${!measured ? '' : `<p class="capnote">Μετράμε στο σημείο που φεύγει η κλήση προς το Open-Meteo — ό,τι σερβίρεται από την cache δεν χρεώνεται και δεν μετριέται. Ο αριθμός είναι <b>κατώτατο όριο</b>: σε ταυτόχρονες κλήσεις χάνεται καμιά μέτρηση${partial ? ', και οι μέρες του κύκλου πριν τις ' + dayLabel(usage.measuringSince) + ' λείπουν εντελώς' : ''}. Ποτέ δεν φουσκώνει.</p>`}
+</section>`;
+};
+
 // ── the page ─────────────────────────────────────────────────────────────────
 
 const page = (data) => {
@@ -761,6 +847,44 @@ const page = (data) => {
   .panel h2{display:flex;align-items:baseline;gap:8px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
     color:var(--mut);margin:0 0 12px;font-weight:700}
   .panel h2 em{font-style:normal;font-size:10.5px;color:#6b819f;letter-spacing:.02em;text-transform:none;font-weight:500}
+
+  /* Open-Meteo quota meter — colour follows the PROJECTION, not the raw percentage */
+  .panel.cap{border-color:rgba(34,211,238,.22)}
+  .panel.cap.warn{border-color:rgba(251,191,36,.38);background:linear-gradient(180deg,rgba(251,191,36,.07),transparent 60%)}
+  .panel.cap.bad{border-color:rgba(251,113,133,.46);background:linear-gradient(180deg,rgba(251,113,133,.10),transparent 60%)}
+  .panel.cap h2{margin-bottom:14px}
+  .capbadge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:0;text-transform:none;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);white-space:nowrap}
+  .cap.ok .capbadge{border-color:rgba(52,211,153,.38);color:#6ee7b7}
+  .cap.warn .capbadge{border-color:rgba(251,191,36,.45);color:#fcd34d}
+  .cap.bad .capbadge{border-color:rgba(251,113,133,.5);color:#fda4af}
+  .capgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}
+  @media(max-width:720px){.capgrid{grid-template-columns:1fr;gap:14px}}
+  .capbig{font:650 30px/1.1 var(--mono);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .capbig span{font-size:14px;font-weight:500;color:var(--mut);margin-left:7px;letter-spacing:0}
+  .capbar{position:relative;height:12px;border-radius:999px;background:rgba(148,163,184,.14);margin:11px 0 7px;overflow:visible}
+  .capbar i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#22d3ee,#34d399);transition:width .4s}
+  .cap.warn .capbar i{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+  .cap.bad .capbar i{background:linear-gradient(90deg,#fb7185,#f43f5e)}
+  /* where an evenly-spent month would stand today */
+  .capbar u{position:absolute;top:-4px;width:2px;height:20px;background:rgba(230,237,247,.55);border-radius:2px}
+  .capsub{font-size:11.5px;color:var(--mut)}
+  .capstats{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px}
+  .capstats div{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:11px;padding:8px 10px}
+  .capstats .cl{display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);font-weight:650}
+  .capstats .cv{display:block;font:650 17px/1.25 var(--mono);margin-top:3px;font-variant-numeric:tabular-nums}
+  .capstats .cv.mid{color:var(--am)}
+  .capstats .cv.hi{color:var(--rs)}
+  .capverdict{margin:14px 0 0;font-size:13.5px;line-height:1.5;color:var(--txt)}
+  .capverdict b{font-variant-numeric:tabular-nums}
+  .capdays{display:flex;align-items:flex-end;gap:3px;height:62px;margin-top:14px;overflow-x:auto;padding-bottom:2px}
+  .capdays .cd{position:relative;flex:1 0 16px;min-width:16px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px}
+  .capdays .cd i{display:block;width:100%;border-radius:3px 3px 0 0;background:rgba(34,211,238,.45)}
+  .capdays .cd.near i{background:rgba(251,191,36,.6)}
+  .capdays .cd.over i{background:rgba(251,113,133,.65)}
+  .capdays .cd b{font-size:8.5px;font-weight:500;color:#5f7a9c;white-space:nowrap}
+  .capwarn{margin:12px 0 0;font-size:12.5px;color:#fda4af}
+  .capnote{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--mut)}
 
   /* world map */
   .mapwrap{position:relative;border-radius:12px;overflow:hidden;background:#050a13;
@@ -984,6 +1108,8 @@ const page = (data) => {
   ${kpi('Μέσος χρόνος', avgDwell ? dur(avgDwell) : '—', `${bouncePct}% έφυγαν από 1 σελίδα`, '')}
   ${kpi('Άνοιξαν παραλία', `${beachPct}%`, navPeople ? `${num(navPeople)} ζήτησαν οδηγίες` : `${num(navActions)} κλικ «Οδηγίες»`, '', 'act')}
 </div>
+
+${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capacity.state)}
 
 <nav class="tabs" role="tablist">
   <button type="button" class="tab on" data-tab="map" role="tab" aria-selected="true">🌍 Χάρτης</button>
@@ -1877,6 +2003,28 @@ const renderPage = (data, given) => page(data)
   .replace(/KEYPLACEHOLDER/g, encodeURIComponent(given))
   .replace(/RAWFORMKEY/g, esc(given));
 
+/**
+ * Read the forecast proxy's Open-Meteo meter and fold it into the billing cycle.
+ *
+ * Never throws and never blocks: a missing or malformed capacity blob must not take
+ * down the console that shows the traffic. An unreadable meter reports as "not
+ * measured yet", which is the truth, rather than as a zero — which would read as
+ * "we have spent nothing" on exactly the screen where that lie is most expensive.
+ *
+ * The cycle anchor is env-tunable because the plan's billing day is the provider's
+ * to decide, not ours: CAPACITY_CYCLE_START_DAY=1 turns this into a calendar month.
+ */
+const readCapacity = async () => {
+  const cycleStartDay = Number(process.env.CAPACITY_CYCLE_START_DAY) || undefined;
+  const now = new Date();
+  try {
+    const state = await getStore('capacity').get('open-meteo-day', { type: 'json' });
+    return { state, usage: monthlyUsage(state, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+  } catch {
+    return { state: null, usage: monthlyUsage(null, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+  }
+};
+
 export const handler = async (event) => {
   const key = process.env.TRAFFIC_STATS_KEY || '';
   const params = event.queryStringParameters || {};
@@ -1902,27 +2050,42 @@ export const handler = async (event) => {
     // no dial is not monitoring. Lives here rather than in a new function because the
     // key gate, the Blobs wiring and the deploy already exist.
     if (event.queryStringParameters?.capacity) {
-      const capacity = await getStore('capacity').get('open-meteo-day', { type: 'json' });
-      const counted = capacity?.count || 0;
+      const capacity = await readCapacity();
+      const usage = capacity.usage;
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
         body: JSON.stringify({
-          day: capacity?.day || utcDayKey(new Date()),
+          day: capacity.state?.day || utcDayKey(new Date()),
           // Points, not requests: one batched call can carry up to 32 coordinates and
-          // the provider charges the work, not the HTTP request.
-          pointsToday: counted,
-          refusedToday: capacity?.rateLimited || 0,
-          dailyFreeCap: 10000,
-          percentOfDailyCap: Math.round((counted / 10000) * 100),
+          // the provider charges the work, not the HTTP request. Marine points are
+          // weighted ×2.1 because the provider prices variables, not requests.
+          pointsToday: usage.today,
+          refusedToday: capacity.state?.rateLimited || 0,
+          // The bucket that actually matters: the plan is 1,000,000 per MONTH.
+          monthlyQuota: usage.quota,
+          usedThisCycle: usage.used,
+          remainingThisCycle: usage.remaining,
+          percentOfMonthlyQuota: usage.percent,
+          cycle: { start: usage.cycleStart, end: usage.cycleEnd, day: usage.dayIndex, of: usage.cycleDays },
+          avgPerDay: usage.avgPerDay,
+          projectedEndOfCycle: usage.projected,
+          willExceed: usage.willExceed,
+          // Days of this cycle we have real numbers for. Anything before
+          // `measuringSince` predates the ledger and is UNKNOWN, not zero.
+          daysMeasured: usage.daysMeasured,
+          measuringSince: usage.measuringSince,
+          dailyAverageBudget: DAILY_BUDGET,
+          dailyThresholds: DEFAULT_THRESHOLDS,
           alerted: {
-            amber: Boolean(capacity?.alertedAmber),
-            red: Boolean(capacity?.alertedRed),
-            rateLimited: Boolean(capacity?.alerted429),
+            amber: Boolean(capacity.state?.alertedAmber),
+            red: Boolean(capacity.state?.alertedRed),
+            rateLimited: Boolean(capacity.state?.alerted429),
           },
-          // Reminder for whoever reads this at 3am: the daily cap is rarely what
-          // bites. Open-Meteo also enforces ~600/min and ~5,000/hour.
-          note: 'A 429 with a low percentOfDailyCap means a burst hit the per-minute limit, not exhaustion.',
+          perDay: usage.perDay,
+          // Reminder for whoever reads this at 3am: the monthly bucket is rarely what
+          // bites first. Open-Meteo also enforces short-window rate limits.
+          note: 'A 429 with a low percentOfMonthlyQuota means a burst hit a rate limit, not exhaustion. `usedThisCycle` is a floor: lost increments and pre-ledger days are missing, never invented.',
         }, null, 2),
       };
     }
@@ -2107,6 +2270,9 @@ export const handler = async (event) => {
           queue: await readQueue(event), flash: flashCode(params.done),
           curating: await readCurating(params.beach),
           publishedBeaches: await readPublishedBeaches(),
+          // Zero visitors does not mean zero weather calls — the prerendered pages and
+          // the CDN keep the proxy busy, so the quota still belongs on an empty console.
+          capacity: await readCapacity(),
         }, given),
       };
     }
@@ -2231,7 +2397,8 @@ export const handler = async (event) => {
         queue: await readQueue(event),
         flash: flashCode(params.done),
         curating: await readCurating(params.beach),
-          publishedBeaches: await readPublishedBeaches(),
+        publishedBeaches: await readPublishedBeaches(),
+        capacity: await readCapacity(),
       }, given),
     };
   } catch (error) {

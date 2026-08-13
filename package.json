@@ -30,6 +30,7 @@
     "quality:clock": "node scripts/validateAthensClock.mjs",
     "quality:lazy-recovery": "node scripts/checkLazyRecovery.mjs",
     "quality:bundle-secrets": "node scripts/validateBundleSecrets.mjs",
+    "quality:capacity": "node scripts/validateCapacityLedger.mjs",
     "contract:check": "node scripts/checkBeachContract.mjs",
     "contract:check:full": "node scripts/checkBeachContract.mjs --detail",
     "build:sqlite": "node --experimental-sqlite scripts/buildBeachSqlite.mjs",

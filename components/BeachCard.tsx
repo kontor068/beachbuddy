@@ -1558,14 +1558,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       ariaLabel: `${cardWaveLabel}: ${cardWaveText}`,
     });
   }
-  if (topPickTimeLabel) {
-    podiumWhyItems.push({
-      key: 'time',
-      icon: <Clock3 className="h-3.5 w-3.5 shrink-0 text-cyan-700 dark:text-cyan-300" aria-hidden="true" />,
-      text: topPickTimeLabel,
-      truncate: true,
-    });
-  }
+  /**
+   * ΟΧΙ ΩΡΑ ΣΤΗ ΜΠΡΟΣΤΙΝΗ ΟΨΗ ΤΗΣ ΚΑΡΤΑΣ ΣΤΟ ΚΙΝΗΤΟ (Μίλτος, 13/08/2026).
+   *
+   * Η ώρα έμπαινε τρίτη σε αυτή τη γραμμή τριών στηλών, οπότε σε τηλέφωνο έπεφτε σε ~1/3 του
+   * πλάτους και τυπωνόταν «Top 1…» — μια κομμένη λέξη που δεν λέει τίποτα και τρώει τον χώρο
+   * των δύο νούμερων (μποφόρ, κύμα) που όντως διαβάζονται. Η πληροφορία ΔΕΝ χάθηκε: μένει στη
+   * σελίδα της παραλίας (καταλληλότερη ώρα) και στην πλήρη γραμμή της κάρτας σε υπολογιστή,
+   * όπου υπάρχει πλάτος να γραφτεί ολόκληρη με τον τίτλο της.
+   */
   const podiumWhyColumnsClass = podiumWhyItems.length >= 3
     ? 'grid-cols-3'
     : podiumWhyItems.length === 2

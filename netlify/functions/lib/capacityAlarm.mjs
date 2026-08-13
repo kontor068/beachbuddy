@@ -23,6 +23,23 @@ export const MONTHLY_QUOTA = 1_000_000;
 export const DAILY_BUDGET = Math.round(MONTHLY_QUOTA / 30); // ~33k
 export const DEFAULT_THRESHOLDS = Object.freeze({ amber: 18000, red: 25000 });
 
+/**
+ * The quota is MONTHLY, so the only number that can answer "will we blow the plan?"
+ * is the running total of the billing cycle — and until 13/08/2026 nothing kept it.
+ * The state held one day and zeroed it at UTC midnight, so every day's usage was
+ * destroyed the moment it became history. The daily alarms could say "today is big"
+ * but nobody, including us, could say how much of the million was gone.
+ *
+ * Fix: the same blob now carries a per-day ledger of SEALED days. Today's live
+ * figure stays in `count` (single writer, unchanged hot path); on rollover the
+ * finished day is written into `days` before the counter is zeroed. One blob, one
+ * read-modify-write per cache-miss — no extra I/O on the forecast path.
+ */
+export const HISTORY_DAYS = 70; // two billing cycles plus slack; ~2 KB of blob
+
+/** The day of month the paid plan's billing cycle turns over (subscription began 09/08/2026). */
+export const DEFAULT_CYCLE_START_DAY = 9;
+
 /** UTC day key, e.g. "2026-07-20". Pass the date in (keeps this module pure/testable). */
 export const utcDayKey = (date) => date.toISOString().slice(0, 10);
 
@@ -35,11 +52,107 @@ const freshState = (dayKey) => ({
   alertedAmber: false,
   alertedRed: false,
   alerted429: false,
+  /** Sealed history: { 'YYYY-MM-DD': weightedCalls }. Never includes `day` itself. */
+  days: {},
 });
 
-/** Return `prev` if it's for today, else a fresh state (handles day rollover). */
-export const stateForDay = (prev, dayKey) =>
-  prev && prev.day === dayKey ? { ...freshState(dayKey), ...prev, day: dayKey } : freshState(dayKey);
+/** Keep the ledger bounded — oldest days fall off first. */
+const trimHistory = (days) => {
+  const keys = Object.keys(days).sort();
+  if (keys.length <= HISTORY_DAYS) return days;
+  const out = {};
+  for (const k of keys.slice(-HISTORY_DAYS)) out[k] = days[k];
+  return out;
+};
+
+/**
+ * Return `prev` if it's for today, else a fresh state — sealing the finished day
+ * into the ledger on the way. A zero day is recorded as a real zero: the first key
+ * in the ledger is how the dashboard knows when honest measurement started, so a
+ * silent gap would read as "we counted that day and it was quiet".
+ */
+export const stateForDay = (prev, dayKey) => {
+  if (!prev) return freshState(dayKey);
+  if (prev.day === dayKey) {
+    return { ...freshState(dayKey), ...prev, day: dayKey, days: { ...(prev.days || {}) } };
+  }
+  const days = { ...(prev.days || {}) };
+  if (prev.day) days[prev.day] = Math.round(Number(prev.count) || 0);
+  return { ...freshState(dayKey), days: trimHistory(days) };
+};
+
+/**
+ * The billing window that contains `now`, as [start, end) UTC day keys.
+ * Clamped to day ≤ 28 so a cycle starting on the 31st cannot vanish in February.
+ */
+export function cycleWindow(now, cycleStartDay = DEFAULT_CYCLE_START_DAY) {
+  const anchor = Math.min(28, Math.max(1, Number(cycleStartDay) || DEFAULT_CYCLE_START_DAY));
+  const y = now.getUTCFullYear();
+  const m = now.getUTCMonth();
+  const startMonth = now.getUTCDate() >= anchor ? m : m - 1;
+  const start = new Date(Date.UTC(y, startMonth, anchor));
+  const end = new Date(Date.UTC(y, startMonth + 1, anchor)); // exclusive
+  return { start, end, startKey: utcDayKey(start), endKey: utcDayKey(end) };
+}
+
+/**
+ * Fold the ledger into the running total of the current billing cycle.
+ *
+ * `used` is deliberately an UNDER-estimate in two ways and both are stated in the
+ * UI rather than hidden: concurrent cache-misses can lose an increment, and days
+ * before the ledger existed simply are not there. It is a floor, never a ceiling —
+ * which is the safe direction for a number whose job is "are we about to blow it?".
+ */
+export function monthlyUsage(state, options = {}) {
+  const now = options.now || new Date();
+  const quota = Number(options.quota) || MONTHLY_QUOTA;
+  const { start, end, startKey, endKey } = cycleWindow(now, options.cycleStartDay);
+  const todayKey = utcDayKey(now);
+
+  const ledger = (state && state.days) || {};
+  const perDay = [];
+  for (const [k, v] of Object.entries(ledger)) {
+    if (k >= startKey && k < endKey && k !== todayKey) perDay.push([k, Math.max(0, Number(v) || 0)]);
+  }
+  const sealedTotal = perDay.reduce((s, [, v]) => s + v, 0);
+  const today = state && state.day === todayKey ? Math.max(0, Number(state.count) || 0) : 0;
+  if (todayKey >= startKey && todayKey < endKey) perDay.push([todayKey, today]);
+  perDay.sort((a, b) => (a[0] < b[0] ? -1 : 1));
+
+  const used = sealedTotal + today;
+  const dayMs = 86400000;
+  const cycleDays = Math.round((end - start) / dayMs);
+  const dayIndex = Math.round((Date.parse(`${todayKey}T00:00:00Z`) - start) / dayMs) + 1; // 1-based
+  const daysLeft = Math.max(0, cycleDays - dayIndex);
+
+  // Average over SEALED days only — today is half-finished and would drag the
+  // projection down all morning and up all evening.
+  const avgPerDay = perDay.length > 1 ? Math.round(sealedTotal / (perDay.length - 1)) : null;
+  const projected = avgPerDay === null ? null : Math.round(avgPerDay * cycleDays);
+
+  return {
+    quota,
+    used,
+    remaining: Math.max(0, quota - used),
+    percent: quota ? Math.min(999, Math.round((used / quota) * 100)) : 0,
+    today,
+    todayPercentOfAverage: DAILY_BUDGET ? Math.round((today / DAILY_BUDGET) * 100) : 0,
+    cycleStart: startKey,
+    cycleEnd: endKey,
+    cycleDays,
+    dayIndex: Math.min(cycleDays, Math.max(1, dayIndex)),
+    daysLeft,
+    /** How many days of this cycle we actually have numbers for (the rest predate the ledger). */
+    daysMeasured: perDay.length,
+    avgPerDay,
+    projected,
+    /** True when the current pace would exhaust the plan before the cycle ends. */
+    willExceed: projected !== null && projected > quota,
+    perDay,
+    /** Earliest day we ever measured — everything before it is unknown, not zero. */
+    measuringSince: Object.keys(ledger).sort()[0] || (state && state.day) || null,
+  };
+}
 
 /**
  * Fold `increment` real upstream calls into the day's state and detect a newly
