@@ -33,7 +33,7 @@ import {
   localizedPaidEntryLabel,
   localizedPaidEntryExplanation,
 } from '../utils/localization';
-import { AmenityChip, getAmenityChips } from '../utils/amenities';
+import { AmenityChip, AmenityChipKey, AmenityStatusRow, getAmenityChips, getAmenityStatusRows } from '../utils/amenities';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
 
@@ -58,6 +58,7 @@ interface BeachCardProps {
    *  everywhere else. This is the figure the podium card prints, because it is the water the
    *  reader is standing in; see the wave line below. */
   shoreWaveHeightM?: number;
+  shoreDisplayWaveM?: number;
   temperature?: number;
   favorites: number[];
   onToggleFavorite: (id: number) => void;
@@ -1167,6 +1168,14 @@ type CompactFeatureChip = {
   key: string;
   label: string;
   icon: React.ReactNode;
+  /** Rendered faint: the slot exists on every card, this beach just doesn't have it. */
+  muted?: boolean;
+  /** Hover/screen-reader text that says WHY the slot is faint (absent vs unverified). */
+  title?: string;
+  /** Bonus chip that is only ever shown when true — takes the full row under the fixed six. */
+  fullWidth?: boolean;
+  /** Holds the slot open without drawing anything: we have no honest word for it. */
+  placeholder?: boolean;
 };
 
 export const BeachCard: React.FC<BeachCardProps> = ({
@@ -1179,6 +1188,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   waveHeightM,
   seaStateWaveM,
   shoreWaveHeightM,
+  shoreDisplayWaveM,
   seaStatePeriodS,
   temperature,
   favorites,
@@ -1261,23 +1271,82 @@ export const BeachCard: React.FC<BeachCardProps> = ({
    * BeachAnswerHero rather than retyped, so the card and the beach page cannot drift into
    * describing the same water with different words.
    */
-  const cardWaveIsShore = typeof shoreWaveHeightM === 'number' && Number.isFinite(shoreWaveHeightM);
+  /**
+   * ΕΝΑΣ ΑΡΙΘΜΟΣ ΠΑΝΤΟΥ, ΚΑΙ ΝΑ ΕΙΝΑΙ ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ (Μίλτος, 13/08/2026).
+   *
+   * Μέχρι σήμερα η κάρτα τύπωνε το ύψος στην ακτή ΜΟΝΟ όπου μιλούσε το `utils/shoreWave` (κλειστός
+   * όρμος, απόγειος άνεμος — 647 από 2.854 παραλίες), και παντού αλλού τη θάλασσα του ανοιχτού.
+   * Δύο κάρτες δίπλα-δίπλα τύπωναν έτσι δύο ΔΙΑΦΟΡΕΤΙΚΑ ΜΕΓΕΘΗ χωρίς να το λέει τίποτα.
+   *
+   * `shoreDisplayWaveM` είναι ο ίδιος αριθμός που η ετυμηγορία κολύμβησης διαβάζει από τις 10/08
+   * (§7η) και το ταβάνι του χρώματος από τις 01/08 — υπολογισμένος για ΚΑΘΕ παραλία. Μετρήθηκε
+   * εθνικά πριν μπει (βίβλος §Γ5, 110/110 περιοχές): **2.104 από 2.854 παραλίες δεν αλλάζουν
+   * νούμερο καθόλου** — όλες οι `exposed` και όλες οι `partial`, γιατί εκεί ο συντελεστής είναι
+   * 1,0. Αλλάζουν μόνο προστατευμένες ακτές, κατά 0,18 μ. διάμεσα.
+   *
+   * `shoreWaveHeightM` ΔΕΝ αντικαταστάθηκε και δεν πρέπει: είναι κλειδί απόφασης (25 πόντοι
+   * «νερό» στο podium). Η υπόσχεση της μέτρησης ήταν ότι αλλάζει μόνο η οθόνη· το fallback εδώ
+   * υπάρχει για κλήσεις που δεν μεταφέρουν ακόμη το νέο πεδίο, ώστε καμία κάρτα να μη γυρίσει
+   * σιωπηλά στο ανοιχτό νερό.
+   */
+  const cardShoreM = typeof shoreDisplayWaveM === 'number' && Number.isFinite(shoreDisplayWaveM)
+    ? shoreDisplayWaveM
+    : shoreWaveHeightM;
+  const cardWaveIsShore = typeof cardShoreM === 'number' && Number.isFinite(cardShoreM);
   // Ίδιο καπάκι με τη σελίδα της παραλίας (pages/BeachDetailPage): το κύμα στην ακτή δεν
   // τυπώνεται ποτέ μεγαλύτερο από το νερό έξω. Χωρίς αυτό, η κάρτα και η σελίδα έβγαζαν
   // διαφορετικό νούμερο σε όρμους, όπου η display τιμή είναι χαμηλότερη από την effective.
   const cardWaveM = cardWaveIsShore
     ? (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-        ? Math.min(shoreWaveHeightM as number, waveHeightM)
-        : shoreWaveHeightM)
+        ? Math.min(cardShoreM as number, waveHeightM)
+        : cardShoreM)
     : waveHeightM;
   // Same spelling as the beach page's own tile (BeachAnswerHero): «0,5 μ.» in Greek, «0.5 m»
   // elsewhere, and the «~» only on the modelled shore figure so the two never look alike.
-  const cardWaveText = typeof cardWaveM === 'number' && Number.isFinite(cardWaveM)
-    ? `${cardWaveIsShore ? '~' : ''}${cardWaveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
+  // Το «~» μόνο όταν ο αριθμός της ακτής ΔΙΑΦΕΡΕΙ από τη μέτρηση του ανοιχτού — αλλιώς είναι η
+  // μέτρηση, και ένα «~» θα την υποβάθμιζε σε εκτίμηση. Ίδιος κανόνας με τη σελίδα (BeachAnswerHero).
+  const cardWaveDiffers = cardWaveIsShore
+    && typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
+    && Math.abs((cardWaveM as number) - waveHeightM) >= 0.05;
+  const cardWaveValueText = typeof cardWaveM === 'number' && Number.isFinite(cardWaveM)
+    ? `${cardWaveDiffers ? '~' : ''}${cardWaveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
     : undefined;
   const cardWaveLabel = cardWaveIsShore
     ? SHORE_LABELS[language].atShore
     : READ_LABELS[language].seaOpen;
+  /**
+   * ΤΟ ΣΚΕΤΟ ΝΟΥΜΕΡΟ ΔΙΑΒΑΖΟΤΑΝ ΩΣ «ΤΟΣΟ ΚΥΜΑ ΕΧΕΙ ΜΠΡΟΣΤΑ ΣΟΥ» (Μίλτος, 13/08/2026).
+   *
+   * Παραλία Μαραθώνα, βοριάς 6 Μπφ: η κάρτα τύπωνε «1,5 μ.» — που είναι η θάλασσα στο σημείο
+   * μέτρησης 10 χλμ ΝΑ ανοιχτά, όχι το νερό στην άμμο (ο άνεμος εκεί είναι απόγειος και ο
+   * τομέας του βοριά έχει fetch 0). Ο Σχινιάς 4 χλμ πιο πάνω, όπου το `utils/shoreWave`
+   * δικαιούται να μιλήσει, τύπωνε «~0,1 μ.» την ίδια ώρα.
+   *
+   * Η λέξη «ανοιχτά» ΥΠΗΡΧΕ ήδη εδώ — αλλά μόνο σε `title` (tooltip, δεν υπάρχει σε αφή) και
+   * σε `aria-label` (αναγνώστες οθόνης). Δηλαδή για το 86% που μπαίνει από κινητό δεν
+   * ζωγραφιζόταν ΠΟΤΕ. Είναι η ίδια κατηγορία σφάλματος που η βίβλος κατέγραψε στις 11/08
+   * («καμία πύλη δεν κοιτούσε αν το νούμερο ΦΤΑΝΕΙ στην κάρτα»), ένα σκαλί πιο πέρα: εδώ το
+   * νούμερο έφτανε και η λέξη του δεν σχεδιαζόταν.
+   *
+   * Η βίβλος (§7δ) έδωσε την εξαίρεση για το κύμα ακτής με ρητό όρο — «τα δύο νούμερα μαζί»,
+   * «το νούμερο της ανοιχτής θάλασσας μένει στην οθόνη, ΔΙΠΛΑ, ΜΕ ΤΟ ΟΝΟΜΑ ΤΟΥ». Στη σελίδα
+   * της παραλίας τηρείται· εδώ δεν τηρούνταν.
+   *
+   * ⚠️ Η ΛΥΣΗ ΔΕΝ ΗΤΑΝ ΔΕΥΤΕΡΗ ΛΕΞΗ — ΗΤΑΝ ΝΑ ΠΑΨΕΙ Η ΚΑΡΤΑ ΝΑ ΔΕΙΧΝΕΙ ΔΥΟ ΜΕΓΕΘΗ (13/08 βράδυ).
+   *
+   * Ενδιάμεσα δοκιμάστηκε το προφανές: να γράφει η κάρτα «~0,2 μ. στην ακτή» εκεί που έγραφε
+   * «1,4 μ. ανοιχτά». Ο Μίλτος το είδε στο κινητό και το έκοψε — «στο mobile έχει πολύ κείμενο» —
+   * και το `validateTileFit` συμφώνησε την ίδια ώρα: στα 390 px η γραμμή κοβόταν.
+   *
+   * ΚΑΙ ΔΕΝ ΧΡΕΙΑΖΕΤΑΙ. Η λέξη υπήρχε για να ξεχωρίζει ο αναγνώστης ΔΥΟ διαφορετικά μεγέθη σε
+   * διπλανές κάρτες. Από σήμερα η κάρτα δείχνει ΠΑΝΤΑ το ίδιο μέγεθος — το νερό στην ακτή, για
+   * κάθε παραλία (§Γ5) — οπότε δεν υπάρχει τίποτα να ξεχωρίσει. Ένα μέγεθος, καμία λέξη, κανένα
+   * μπέρδεμα, και το πλάτος επιστρέφει στον αριθμό όπου ανήκει.
+   *
+   * Η ΣΕΛΙΔΑ της παραλίας κρατά και τα δύο νούμερα με τα ονόματά τους όπου διαφέρουν — ο όρος της
+   * §7δ ζει εκεί, σε οθόνη που έχει τον χώρο γι' αυτόν.
+   */
+  const cardWaveText = cardWaveValueText;
   const isFavorite = favorites.includes(beach.id);
   const labels = compactLabels(language, selectedDate, selectedHour);
   const localizedCardCopy = getLocalizedCopy(language, cardCopy);
@@ -1511,33 +1580,117 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     .filter(chip => chip.key !== 'unknownFacilities')
       .map(chip => [chip.key, chip] as const)
   );
-  const amenityFeatureChip = (key: AmenityChip['key']): CompactFeatureChip | null => {
-    const chip = amenityChipLookup.get(key);
-    if (!chip) return null;
-
+  /**
+   * ΤΑ ΙΔΙΑ ΕΞΙ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΣΕ ΚΑΘΕ ΚΑΡΤΑ (Μίλτος, 13/08/2026).
+   *
+   * Πριν, η κάρτα έδειχνε ΜΟΝΟ όσα χαρακτηριστικά είχε η παραλία: μια παραλία με ένα και
+   * μόνο chip («Μέτρια πρόσβαση») δίπλα σε μία με έξι δεν διαβαζόταν ως «δεν έχει τα άλλα
+   * πέντε» — διαβαζόταν ως «μάλλον δεν τα γράψαμε». Η σιωπή γεννούσε αμφιβολία και άφηνε
+   * και μισή κάρτα κενή, αφού όλες οι κάρτες μιας σειράς παίρνουν το ίδιο ύψος.
+   *
+   * Τώρα οι έξι θέσεις υπάρχουν παντού, με την ίδια σειρά· όσες δεν ισχύουν μένουν αχνές
+   * με διακεκομμένο περίγραμμα, οπότε η απουσία είναι ορατή απάντηση αντί για κενό. Το
+   * ύψος δεν μεγάλωσε: έξι θέσεις ήταν ήδη το μέγιστο που χωρούσε η κάρτα.
+   *
+   * ΤΙΜΙΟΤΗΤΑ: το αχνό chip σημαίνει «δεν το έχουμε» ΚΑΙ «δεν το έχουμε επιβεβαιώσει» —
+   * τα δεδομένα μας ξεχωρίζουν τα δύο (status 'no' vs 'unknown') αλλά η κάρτα δεν έχει
+   * χώρο για δύο βαθμίδες γκρι, οπότε η διάκριση ζει στο tooltip/aria.
+   */
+  const amenityStatusByKey = new Map<AmenityStatusRow['key'], AmenityStatusRow['status']>(
+    getAmenityStatusRows(beach, language).map(row => [row.key, row.status] as const)
+  );
+  const missingAmenityTitle = (key: AmenityChipKey): string => {
+    const status = amenityStatusByKey.get(key as AmenityStatusRow['key']);
+    return status === 'no'
+      ? getLocalizedCopy(language, {
+          en: 'Not available at this beach',
+          gr: 'Δεν υπάρχει σε αυτή την παραλία',
+          fr: "N'existe pas sur cette plage",
+          de: 'An diesem Strand nicht vorhanden',
+          it: 'Non presente in questa spiaggia',
+        })
+      : getLocalizedCopy(language, {
+          en: 'Not recorded for this beach',
+          gr: 'Δεν το έχουμε καταγράψει εδώ',
+          fr: "Non recensé pour cette plage",
+          de: 'Für diesen Strand nicht erfasst',
+          it: 'Non registrato per questa spiaggia',
+        });
+  };
+  const compactAmenityLabels = localizedCardCopy.amenities;
+  /**
+   * One fixed slot. `alternateKeys` exists because "food nearby" is one slot in the reader's
+   * head but two signals in the data (taverna / café) — either one fills it.
+   */
+  const amenityFeatureSlot = (key: AmenityChipKey, ...alternateKeys: AmenityChipKey[]): CompactFeatureChip => {
+    const presentKey = [key, ...alternateKeys].find(candidate => amenityChipLookup.has(candidate));
+    const chip = presentKey ? amenityChipLookup.get(presentKey) : undefined;
+    if (chip) {
+      return {
+        key: `amenity-${key}`,
+        label: compactAmenityLabel(chip, language),
+        icon: amenityChipIcon(chip),
+      };
+    }
     return {
-      key: `amenity-${chip.key}`,
-      label: compactAmenityLabel(chip, language),
-      icon: amenityChipIcon(chip),
+      key: `amenity-${key}`,
+      label: compactAmenityLabels[key] || key,
+      icon: amenityChipIcon({ key }),
+      muted: true,
+      title: missingAmenityTitle(key),
     };
   };
-  const stableFeatureSlots: Array<CompactFeatureChip | null> = [
-    beachType !== 'unknown' ? { key: 'surface', label: t.filterOptions[beachType], icon: beachTypeFeatureIcons[beachType] } : null,
-    hasShallowWater ? { key: 'shallow', label: cautionWaterConditions ? labels.shallowWatersCaution : labels.shallowWaters, icon: <Droplets className="h-3.5 w-3.5 shrink-0" /> } : null,
-    amenityFeatureChip('sunbeds'),
-    amenityFeatureChip('foodNearby') ?? amenityFeatureChip('cafeNearby'),
-    amenityFeatureChip('parking'),
-    amenityFeatureChip('beachBar'),
-  ];
+  /**
+   * ΑΝ ΔΕΝ ΞΕΡΟΥΜΕ ΤΟΝ ΒΥΘΟ, ΔΕΝ ΓΡΑΦΟΥΜΕ ΤΙΠΟΤΑ (Μίλτος, 13/08/2026).
+   *
+   * Οι παροχές είναι δυαδικές — «δεν έχει ξαπλώστρες» είναι χρήσιμη απάντηση. Το είδος της
+   * παραλίας δεν είναι: κάθε παραλία ΕΧΕΙ βυθό, απλώς εμείς δεν τον καταγράψαμε, και ένα chip
+   * «Άγνωστο» θα διαφήμιζε το κενό μας αντί να πει κάτι για την παραλία. Η θέση μένει κενή
+   * αλλά κρατημένη, ώστε οι υπόλοιπες να μη μετακινηθούν και το ύψος της κάρτας να μην αλλάξει.
+   */
+  const surfaceFeatureChip: CompactFeatureChip = beachType !== 'unknown'
+    ? { key: 'surface', label: t.filterOptions[beachType], icon: beachTypeFeatureIcons[beachType] }
+    : { key: 'surface', label: '', icon: null, placeholder: true };
   const accessFeatureChip: CompactFeatureChip = {
     key: 'access',
     label: accessLabel,
     icon: <Footprints className="h-3.5 w-3.5 shrink-0" />,
   };
-  const featureChips = [accessFeatureChip, ...(stableFeatureSlots.filter(Boolean) as CompactFeatureChip[])].slice(0, 6);
-  const featureChipBase = `grid min-h-8 sm:min-h-7 w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-center gap-1.5 rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
+  const featureChips: CompactFeatureChip[] = [
+    accessFeatureChip,
+    surfaceFeatureChip,
+    amenityFeatureSlot('sunbeds'),
+    amenityFeatureSlot('beachBar'),
+    amenityFeatureSlot('foodNearby', 'cafeNearby', 'snackCanteen'),
+    amenityFeatureSlot('parking'),
+  ];
+  // Τα ρηχά νερά ΔΕΝ γίνονται αχνή θέση: η απουσία σήμανσης «ρηχά» δεν αποδεικνύει βαθιά
+  // νερά, οπότε ένα αχνό «Ρηχά νερά» θα έλεγε κάτι που δεν ξέρουμε. Μπαίνει μόνο όταν ισχύει,
+  // σε δική του πλήρη γραμμή κάτω από τις έξι σταθερές θέσεις.
+  if (hasShallowWater) {
+    featureChips.push({
+      key: 'shallow',
+      label: cautionWaterConditions ? labels.shallowWatersCaution : labels.shallowWaters,
+      icon: <Droplets className="h-3.5 w-3.5 shrink-0" />,
+      fullWidth: true,
+    });
+  }
+  const featureChipMutedClass = 'border-dashed border-slate-200/90 bg-transparent text-slate-400/90 dark:border-slate-700/70 dark:bg-transparent dark:text-slate-500';
+  const featureChipClass = (chip: CompactFeatureChip): string => {
+    // Οι έξι σταθερές θέσεις είναι δίστηλο πλέγμα (εικονίδιο | κείμενο) ώστε τα κείμενα να
+    // ξεκινούν στην ΙΔΙΑ κάθετη γραμμή σε όλη τη στήλη. Η μοναχική γραμμή των ρηχών νερών δεν
+    // έχει με τι να στοιχιστεί — αριστερά άφηνε ένα κενό μισής κάρτας δίπλα της — οπότε εκεί
+    // το ζευγάρι εικονίδιο+κείμενο κεντράρεται ως ένα πράγμα.
+    const layout = chip.fullWidth
+      ? 'col-span-2 flex justify-center'
+      : 'grid grid-cols-[1rem_minmax(0,1fr)]';
+    if (chip.placeholder) return `${featureChipBase} ${layout} invisible border-transparent bg-transparent`;
+    return `${featureChipBase} ${layout}${chip.muted ? ` ${featureChipMutedClass}` : ''}`;
+  };
+  const featureChipBase = `min-h-8 sm:min-h-7 w-full min-w-0 items-center gap-1.5 rounded-full border border-sky-100/70 bg-white/68 px-2 py-1 text-xs font-semibold leading-tight text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300`;
   const featureChipIconClass = 'flex h-4 w-4 shrink-0 items-center justify-center justify-self-center';
-  const featureChipLabelClass = 'min-w-0 whitespace-normal break-words text-left leading-tight';
+  const featureChipLabelClass = (chip: CompactFeatureChip): string =>
+    `min-w-0 whitespace-normal break-words leading-tight ${chip.fullWidth ? 'text-center' : 'text-left'}`;
   const showMobileProtectionChip = forceHideWindChip
     ? false
     : simpleWindChipOnly
@@ -1601,7 +1754,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       icon: <Waves className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />,
       text: cardWaveText,
       title: cardWaveLabel,
-      ariaLabel: `${cardWaveLabel}: ${cardWaveText}`,
+      // Το αναγνωστικό κείμενο κρατά τον ΤΙΤΛΟ + το σκέτο νούμερο, αλλιώς μετά την αλλαγή
+      // παραπάνω θα διαβαζόταν «Κύμα ανοιχτά: 1,5 μ. ανοιχτά».
+      ariaLabel: `${cardWaveLabel}: ${cardWaveValueText}`,
     });
   }
   /**
@@ -1727,17 +1882,26 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               </span>
             ) : null}
 
-            {/* THE MOBILE «WHY» ROW — podium cards only, and ONE row for both facts. The desktop
-                column renders the wind figure and the «Top μέχρι» hour as two rows, but this body
-                is height-constrained (the 31/07 defect was the «Πληροφορίες» button clipped off
-                the card by exactly one extra row), so here they share a line. Same rules as the
-                desktop row: the Beaufort is the pin's own reading, stated as a number — never a
-                word, never a colour. */}
-            {isPodium && (
+            {/* THE MOBILE «WHY» ROW — ONE row for both facts. The desktop column renders the wind
+                figure and the «Top μέχρι» hour as two rows, but this body is height-constrained
+                (the 31/07 defect was the «Πληροφορίες» button clipped off the card by exactly one
+                extra row), so here they share a line. Same rules as the desktop row: the Beaufort
+                is the pin's own reading, stated as a number — never a word, never a colour.
+
+                ΤΟ ΚΥΜΑ ΣΕ ΚΑΘΕ ΚΑΡΤΑ, ΟΧΙ ΜΟΝΟ ΣΤΟ ΒΑΘΡΟ (Μίλτος, 13/08/2026). Η γραμμή έδειχνε τα
+                δύο νούμερα μόνο στις τρεις κορυφαίες, οπότε η 4η παραλία της λίστας — που ο
+                επισκέπτης συγκρίνει με τις τρεις από πάνω — δεν έλεγε πόσο κύμα έχει. Τώρα κάθε
+                κάρτα με μετρημένο κύμα δείχνει την ίδια γραμμή· χωρίς κύμα δεν μπαίνει γραμμή
+                μόνο για τα μποφόρ, γιατί αυτά τα λέει ήδη το chip από πάνω. */}
+            {(isPodium || Boolean(cardWaveText)) && (
               <div className={`grid min-h-8 w-full min-w-0 items-stretch overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200 ${podiumWhyColumnsClass}`}>
                 {podiumWhyItems.map((item, index) => (
                   <span
                     key={item.key}
+                    // `data-tilefit` is the marker scripts/validateTileFit.mjs measures. Added here on
+                    // 13/08/2026 together with the «ανοιχτά» word: this row is two columns on a 320 px
+                    // phone, and a word that gets cut in half is worse than no word at all.
+                    data-tilefit={`podium-why-${item.key}`}
                     className={`flex min-w-0 items-center justify-center gap-1 px-2 py-1 ${index > 0 ? 'border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
                     title={item.title}
                     aria-label={item.ariaLabel}
@@ -1754,9 +1918,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
             {featureChips.length > 0 ? (
               <div className="grid min-w-0 grid-cols-2 auto-rows-min content-start gap-1.5">
                 {featureChips.map(chip => (
-                  <span key={chip.key} className={featureChipBase}>
+                  <span key={chip.key} className={featureChipClass(chip)} title={chip.title} aria-hidden={chip.placeholder || undefined} aria-label={chip.title ? `${chip.label}: ${chip.title}` : undefined}>
                     <span className={featureChipIconClass}>{chip.icon}</span>
-                    <span className={featureChipLabelClass}>{chip.label}</span>
+                    <span className={featureChipLabelClass(chip)}>{chip.label}</span>
                   </span>
                 ))}
               </div>
@@ -1934,9 +2098,9 @@ export const BeachCard: React.FC<BeachCardProps> = ({
           {featureChips.length > 0 && (
             <div className="hidden grid-cols-2 auto-rows-min content-start gap-1.5 sm:grid">
               {featureChips.map(chip => (
-                <span key={chip.key} className={featureChipBase}>
+                <span key={chip.key} className={featureChipClass(chip)} title={chip.title} aria-hidden={chip.placeholder || undefined} aria-label={chip.title ? `${chip.label}: ${chip.title}` : undefined}>
                   <span className={featureChipIconClass}>{chip.icon}</span>
-                  <span className={featureChipLabelClass}>{chip.label}</span>
+                  <span className={featureChipLabelClass(chip)}>{chip.label}</span>
                 </span>
               ))}
             </div>
