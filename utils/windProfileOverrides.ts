@@ -1137,6 +1137,33 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
   3040: unverifiedWindProfile(
     'Loutraki Lake Vouliagmeni / Heraion lagoon — official Seatrac accessible beach on an enclosed lagoon the coastline mask treats as land, so the geometry origin-jumps ~1.4 km and cannot be trusted. Almost certainly calm in reality, but kept as a no-claim conservative profile pending field verification.'
   ),
+
+  // Paros + Naxos hidden-beach discovery, 2026-08-13. These seven were unnamed OSM beach
+  // polygons; their toponyms were confirmed against nearby place=hamlet nodes, but nobody
+  // has stood on any of them. They DO have committed ray-cast geometry (the high-res mask
+  // built profiles and marine sample points for all seven), so the engine can still read
+  // their shore — what they must never carry is a hand-authored shelter claim on top of it.
+  3172: unverifiedWindProfile(
+    'Ακρωτήρι (north Naxos) — added from an unnamed OSM beach polygon. No mapped road or path within 350 m, so even the approach is unverified. Geometry only; no calm/protected claim.'
+  ),
+  3173: unverifiedWindProfile(
+    'Γαλήνη (north-west Naxos) — added from an unnamed OSM beach polygon near the Ammitis stretch. Exposure to the meltemi on this coast is expected but unmeasured here; geometry only, no calm/protected claim.'
+  ),
+  3174: unverifiedWindProfile(
+    'Κανάκι (east Naxos) — added from an unnamed OSM beach polygon, 2,5 km from the nearest record we hold. East-facing, but the cove shape has not been verified; geometry only, no calm/protected claim.'
+  ),
+  3175: unverifiedWindProfile(
+    'Μακριά Μύτη (south-west Paros) — added from an unnamed OSM beach polygon on the cape south of Aliki. Cape coves change behaviour sharply with wind direction; geometry only, no calm/protected claim.'
+  ),
+  3176: unverifiedWindProfile(
+    'Πίσω Λιβάδι (east Paros) — village beach added from an unnamed OSM node. The bay it shares with Logaras is not the same water as the open east coast; until that is measured, geometry only, no calm/protected claim.'
+  ),
+  3177: unverifiedWindProfile(
+    'Στελίδα (west Naxos) — added from an unnamed OSM beach polygon on the Stelida peninsula, on the meltemi-facing side of the island. Geometry only, no calm/protected claim.'
+  ),
+  3178: unverifiedWindProfile(
+    'Φαρακλό (north Naxos) — added from an unnamed OSM beach polygon near Apollonas. Geometry only, no calm/protected claim.'
+  ),
 };
 
 const legacyMilosOverrideEntries: OverrideEntry[] = [

@@ -1,83 +1,74 @@
 {
   "_meta": {
-    "batch": "hidden_beach_discovery_samothraki_2026_07_27",
+    "batch": "hidden_paros_naxos_2026_08_13",
     "aliases": 0,
-    "inserts": 8,
+    "inserts": 7,
     "skips": 0
   },
   "aliases": [],
   "inserts": [
     {
-      "name": "Θέρμα",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.50282,
-      "lon": 25.6005,
+      "name": "Πίσω Λιβάδι",
+      "region": "South Aegean",
+      "municipality": "Paros",
+      "lat": 37.0392,
+      "lon": 25.26163,
       "access": "asphalt_road",
-      "neighbor": "#780 Παραλία Μακρυλιές (11274m)"
+      "neighbor": "#2035 Λογαράς (1006m)"
     },
     {
-      "name": "Φονιάς",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.49239,
-      "lon": 25.65786,
-      "access": "asphalt_road",
-      "neighbor": "#779 Βάτος (11474m)"
+      "name": "Μακριά Μύτη",
+      "region": "South Aegean",
+      "municipality": "Paros",
+      "lat": 36.99491,
+      "lon": 25.11651,
+      "access": "passable_dirt_road",
+      "neighbor": "#2044 Παραλία Αλυκή (1350m)"
     },
     {
-      "name": "Κήπος",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.42391,
-      "lon": 25.69184,
-      "access": "difficult_dirt_road",
-      "neighbor": "#779 Βάτος (7833m)"
+      "name": "Στελίδα",
+      "region": "South Aegean",
+      "municipality": "Naxos",
+      "lat": 37.08244,
+      "lon": 25.34132,
+      "access": "passable_dirt_road",
+      "neighbor": "#1985 Άγιος Προκόπιος (948m)"
     },
     {
-      "name": "Γυαλί",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.40841,
-      "lon": 25.64479,
-      "access": "boat_only",
-      "neighbor": "#779 Βάτος (3494m)"
+      "name": "Κανάκι",
+      "region": "South Aegean",
+      "municipality": "Naxos",
+      "lat": 37.03539,
+      "lon": 25.57844,
+      "access": "passable_dirt_road",
+      "neighbor": "#2017 Παραλία Ψιλή Άμμος (2515m)"
     },
     {
-      "name": "Λάκκωμα",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.42073,
-      "lon": 25.52675,
-      "access": "asphalt_road",
-      "neighbor": "#780 Παραλία Μακρυλιές (869m)"
+      "name": "Φαρακλό",
+      "region": "South Aegean",
+      "municipality": "Naxos",
+      "lat": 37.19416,
+      "lon": 25.54437,
+      "access": "passable_dirt_road",
+      "neighbor": "#1990 Απόλλωνας (1740m)"
     },
     {
-      "name": "Παλαιόπολη",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.50478,
-      "lon": 25.52599,
-      "access": "asphalt_road",
-      "neighbor": "#780 Παραλία Μακρυλιές (9051m)"
+      "name": "Γαλήνη",
+      "region": "South Aegean",
+      "municipality": "Naxos",
+      "lat": 37.13549,
+      "lon": 25.41522,
+      "access": "passable_dirt_road",
+      "neighbor": "#1988 Αμμίτης (1849m)"
     },
     {
-      "name": "Κατσαμπάς",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.50092,
-      "lon": 25.5139,
-      "access": "asphalt_road",
-      "neighbor": "#780 Παραλία Μακρυλιές (8596m)"
-    },
-    {
-      "name": "Κάτω Καρυώτες",
-      "region": "East Macedonia and Thrace",
-      "municipality": "Samothraki",
-      "lat": 40.50932,
-      "lon": 25.57057,
-      "access": "asphalt_road",
-      "neighbor": "#780 Παραλία Μακρυλιές (10540m)"
+      "name": "Ακρωτήρι",
+      "region": "South Aegean",
+      "municipality": "Naxos",
+      "lat": 37.14053,
+      "lon": 25.45029,
+      "access": "unknown",
+      "neighbor": "#1992 Γλατζά (1018m)"
     }
   ],
   "skips": []

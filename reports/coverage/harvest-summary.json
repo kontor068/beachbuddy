@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-02T14:44:41.364Z",
+  "generatedAt": "2026-08-13T21:47:39.097Z",
   "scope": "national",
   "tiles": 244,
-  "cachedTiles": 238,
-  "fetchedTiles": 6,
+  "cachedTiles": 239,
+  "fetchedTiles": 5,
   "failedTiles": 0,
-  "uniqueOsmElements": 7703,
+  "uniqueOsmElements": 7705,
   "namedCandidates": 3115,
   "dedupedCandidates": 3065,
   "sample": [
@@ -417,7 +417,7 @@
       "north": 38.5468,
       "east": 23.5785,
       "label": "Central Greece::Viotia::Viotia (mainland)",
-      "status": "fetched",
+      "status": "cache",
       "elements": 66
     },
     {
@@ -795,7 +795,7 @@
       "north": 41.1492,
       "east": 25.7537,
       "label": "East Macedonia and Thrace::Rodopi::Rodopi (mainland)",
-      "status": "fetched",
+      "status": "cache",
       "elements": 7
     },
     {
@@ -1029,7 +1029,7 @@
       "north": 38.6834,
       "east": 21.0197,
       "label": "Ionian Islands::Kefalonia::Kefalonia",
-      "status": "fetched",
+      "status": "cache",
       "elements": 72
     },
     {
@@ -1452,7 +1452,7 @@
       "north": 37.1264,
       "east": 26.1434,
       "label": "South Aegean::Cyclades::Amorgos",
-      "status": "fetched",
+      "status": "cache",
       "elements": 123
     },
     {
@@ -1610,38 +1610,38 @@
     },
     {
       "south": 36.7364,
-      "west": 25.1469,
+      "west": 25.1413,
       "north": 37.3364,
-      "east": 25.7469,
+      "east": 25.7413,
       "label": "South Aegean::Cyclades::Naxos",
-      "status": "cache",
-      "elements": 289
+      "status": "fetched",
+      "elements": 290
     },
     {
       "south": 36.7364,
-      "west": 25.7469,
+      "west": 25.7413,
       "north": 37.3364,
       "east": 25.7939,
       "label": "South Aegean::Cyclades::Naxos",
-      "status": "cache",
-      "elements": 3
+      "status": "fetched",
+      "elements": 5
     },
     {
       "south": 37.3364,
-      "west": 25.1469,
-      "north": 37.3911,
-      "east": 25.7469,
+      "west": 25.1413,
+      "north": 37.3942,
+      "east": 25.7413,
       "label": "South Aegean::Cyclades::Naxos",
-      "status": "cache",
-      "elements": 9
+      "status": "fetched",
+      "elements": 12
     },
     {
       "south": 37.3364,
-      "west": 25.7469,
-      "north": 37.3911,
+      "west": 25.7413,
+      "north": 37.3942,
       "east": 25.7939,
       "label": "South Aegean::Cyclades::Naxos",
-      "status": "cache",
+      "status": "fetched",
       "elements": 0
     },
     {
@@ -1704,7 +1704,7 @@
       "north": 37.7764,
       "east": 25.165,
       "label": "South Aegean::Cyclades::Syros",
-      "status": "fetched",
+      "status": "cache",
       "elements": 16
     },
     {
@@ -1866,7 +1866,7 @@
       "north": 37.0847,
       "east": 27.5525,
       "label": "South Aegean::Dodecanese::Kos",
-      "status": "fetched",
+      "status": "cache",
       "elements": 8
     },
     {
@@ -1960,13 +1960,13 @@
       "elements": 88
     },
     {
-      "south": 36.3823,
+      "south": 36.3488,
       "west": 27.6139,
       "north": 36.8227,
       "east": 28.0713,
       "label": "South Aegean::Dodecanese::Symi",
-      "status": "cache",
-      "elements": 24
+      "status": "fetched",
+      "elements": 29
     },
     {
       "south": 36.1858,

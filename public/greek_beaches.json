@@ -132106,7 +132106,7 @@
         },
         {
           "id": 3072,
-          "name": "Παραλία Μονατήρι",
+          "name": "Παραλία Μοναστήρι",
           "lat": 37.0037721,
           "lon": 25.0264719,
           "metadata": {
@@ -132127,7 +132127,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Μονατήρι\" (https://www.openstreetmap.org/node/5768708365) in Antiparos, South Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>2541m from any existing beach). Google confirms a beach (93 ratings) 58m from the pin. Slot via nearest existing beach #1733 (2541m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Μονατήρι\" (https://www.openstreetmap.org/node/5768708365) in Antiparos, South Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>2541m from any existing beach). Google confirms a beach (93 ratings) 58m from the pin. Slot via nearest existing beach #1733 (2541m). Access/terrain unknown — needs field verification.",
+              "Paros/Naxos audit 2026-08-13: spelling: «Μονατήρι» → «Μοναστήρι». The old slug paralia-monatiri is kept in legacySlugs so the existing URL still resolves."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/5768708365"
@@ -132156,7 +132157,10 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "legacySlugs": [
+            "paralia-monatiri"
+          ]
         }
       ],
       "Folegandros": [
@@ -149048,7 +149052,7 @@
               "label": "Άμμος και βότσαλα"
             },
             "organized": false,
-            "shade": true,
+            "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
               "restaurant κοντά",
@@ -149064,7 +149068,8 @@
             },
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Official naxos.gr: quiet beach with seaside restaurants/accommodation; no beach bar or sunbeds stated.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy."
             ],
             "verification_sources": [
               "https://naxos.gr/en/naxos/beaches/abram/"
@@ -149117,7 +149122,7 @@
               "label": "Άμμος και βότσαλα"
             },
             "organized": false,
-            "shade": true,
+            "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
               "restaurant κοντά",
@@ -149132,7 +149137,10 @@
               "label": "Μέτριο βάθος",
               "notes": "Παραλία οικισμού με άμμο και βότσαλο."
             },
-            "sourceNotes": "Naxos 2026 amenities/access audit: Official naxos.gr: asphalt road, tavernas and small shops by the beach; no organized sunbeds/beach bar stated. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Navigation audit 2026-06-12 (batch-approved): pin moved 117 m onto the same-name OSM beach feature (https://www.openstreetmap.org/way/42720866, \"Apollonas Beach\", OSM data 2026-06-11) because the previous pin sat outside the mapped beach polygon. Previous pin: 37.18008,25.55343. Only coordinates changed; windProfile, amenities and claims untouched. Final pin refined onto the feature outline itself (37.179760,25.552063) because the thin beach polygon's centroid falls outside the ring. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — naxos.net: Apollonas is NOT organized, no sunbeds/umbrellas, everything free (bring your own). Round1 over-read the waterfront tavernas. [https://www.naxos.net/beaches/apollonas/].",
+            "sourceNotes": [
+              "Naxos 2026 amenities/access audit: Official naxos.gr: asphalt road, tavernas and small shops by the beach; no organized sunbeds/beach bar stated. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Navigation audit 2026-06-12 (batch-approved): pin moved 117 m onto the same-name OSM beach feature (https://www.openstreetmap.org/way/42720866, \"Apollonas Beach\", OSM data 2026-06-11) because the previous pin sat outside the mapped beach polygon. Previous pin: 37.18008,25.55343. Only coordinates changed; windProfile, amenities and claims untouched. Final pin refined onto the feature outline itself (37.179760,25.552063) because the thin beach polygon's centroid falls outside the ring. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — naxos.net: Apollonas is NOT organized, no sunbeds/umbrellas, everything free (bring your own). Round1 over-read the waterfront tavernas. [https://www.naxos.net/beaches/apollonas/].",
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy."
+            ],
             "verification_sources": [
               "https://naxos.gr/en/naxos/beaches/apollonas/"
             ],
@@ -149184,9 +149192,13 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": true,
+            "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "παροχές οικισμού κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -149195,7 +149207,11 @@
               "label": "Μέτριο βάθος",
               "notes": "Depth can vary by section; verify locally when conditions change."
             },
-            "sourceNotes": "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick [https://www.naxos.gr/vintzi-beach/?lang=en].",
+            "sourceNotes": [
+              "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick [https://www.naxos.gr/vintzi-beach/?lang=en].",
+              "Paros/Naxos audit 2026-08-13: organized:true with an empty amenities list — nothing on disk backs the claim (reverseAmenitySweep.mjs, organized-but-empty). Set to false per the under-claim rule.",
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 155 m of the pin: περίπτερο 87 m, «Στης Ειρήνης» 113 m, καφέ «Diogenes» 129 m, «Babylonia» 135 m, μπαρ 145 m, «Vassilis Tavern» 147 m, «Taverna Apostolis» 154 m. The list was empty."
+            ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1204646781",
               "https://www.naxos.gr/vintzi-beach/?lang=en"
@@ -149240,7 +149256,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -149252,7 +149270,8 @@
             "sourceNotes": [
               "Naxos missing-beaches audit 2026-05-23",
               "Naxos source-backed cleanup 2026-05-27: AllOverGreece describes Glatza as a remote sandy bay next to Amitis with no shade, so terrain was corrected from pebbles/rocks to fine sand. Coordinate source: OpenStreetMap way 500669911.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/500669911"
@@ -149373,7 +149392,10 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά",
+              "παροχές οικισμού κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -149386,7 +149408,8 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Chora-side Grotta beach; coordinate source: ToposText location 371254XGro.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks."
+              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks.",
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 165 m of the pin: «Kozi» 99 m, σούπερ μάρκετ «Pantelias» 110 m, φούρνος 112 m, «Metaxi mas» 125 m, «Ελληνική Διατροφή» 134 m, «Taverna Apostolis» 135 m. The list was empty."
             ],
             "verification_sources": [
               "https://topostext.org/place/371254XGro",
@@ -149508,9 +149531,11 @@
               "label": "άμμος και βότσαλα"
             },
             "organized": false,
-            "shade": true,
-            "amenities": [],
-            "confidence": "high",
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
             "waterDepth": {
@@ -149521,7 +149546,10 @@
             "sourceNotes": [
               "Naxos missing-beaches audit 2026-05-23",
               "Kambos of Komiaki; coordinate converted from Greek Travel Pages DMS.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: placeId ChIJ16MPVNanohQRZ7U2svHoJzI resolves to «Mikra Bay», which is #2005 Μικρά’s own place, 754 m away. The pin is also 760 m from the nearest mapped beach polygon of any kind (Overpass 1,5 km). Identity unverified — routing by coordinates and confidence downgraded until someone confirms a beach exists here.",
+              "Paros/Naxos audit 2026-08-14: pin re-measured: 84 m from the OSM coastline (nearest point 37.16467,25.47615), i.e. genuinely on the shore — the earlier \"760 m from any beach\" figure was distance to the nearest TAGGED natural=beach polygon, and OSM leaves plenty of real Greek beaches untagged. Deletion rejected on that evidence. Confidence stays low because no source describes the shore itself; the name matches the Κάμπος settlement 780 m inland.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "verification_sources": [
               "https://www.gtp.gr/LocPage.asp?id=63231&lng=2",
@@ -149542,18 +149570,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ16MPVNanohQRZ7U2svHoJzI",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-13",
+              "method": "paros-naxos-audit-2026-08-13",
               "query": "Παραλία Κάμπος, Naxos"
-            },
-            "popularity": {
-              "tier": "quiet",
-              "rating": 4.6,
-              "ratingCount": 63,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           }
         },
@@ -149700,7 +149720,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -149713,7 +149735,9 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Moved out of Koufonisia: coordinates are on southeast Naxos. Coordinate source: OpenStreetMap way 404481267.",
               "Naxos evidence pass 2026-05-29: added the official Naxos guide PDF to Naxos.net and OSM, corroborating Klidos as a southeast-coast complex of sandy quiet beaches with road/locality context.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: placeId ChIJDy-QhX0EmBQRenTLBEstyZ4 resolves to «Παραλία Κλειδώ» (#2000, 45 m from its own pin) 383 m away. OSM keeps them as two polygons (way/404481267 vs way/1157948744), so the record stays — the borrowed place and its 4,2/15 rating do not.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/404481267",
@@ -149735,18 +149759,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJDy-QhX0EmBQRenTLBEstyZ4",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-13",
+              "method": "paros-naxos-audit-2026-08-13",
               "query": "Παραλία Κλειδός, Naxos"
-            },
-            "popularity": {
-              "tier": "secluded",
-              "rating": 4.2,
-              "ratingCount": 15,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           }
         },
@@ -149770,7 +149786,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -149783,7 +149801,8 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Moved out of Koufonisia: coordinates are on southeast Naxos. Coordinate source: OpenStreetMap way 1157948744.",
               "Naxos evidence pass 2026-05-29: added the official Naxos guide PDF to Naxos.net and OSM, corroborating Kleido/Klidos identity, southeast-coast sandy beach context, and location evidence.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1157948744",
@@ -149896,7 +149915,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "medium",
             "language": "el",
             "batch": "020_1901_2000",
@@ -149912,7 +149933,8 @@
             "sourceNotes": [
               "Naxos source-backed cleanup 2026-05-27: BeachSearcher directly identifies Limnari Bay on Naxos near Lionas, with pebbles, no services, and car/taxi access followed by a descent. Kept amenities empty and avoided stronger road-quality claims.",
               "Naxos evidence pass 2026-05-29: kept at medium because BeachSearcher and review-derived sources support Limnari Bay identity, pebbly cover, no services, and descent-style access, but no official or strong local corroborating source was found. Not promoted to high.",
-              "Naxos tourist-priority evidence pass 2026-05-29: BeachSearcher and Wanderlog/Google-derived place evidence support Limnari Bay identity on Naxos, pebbly/rocky terrain, difficult or descent-style access, and limited/no normal services. Kept medium because the supporting evidence remains review-derived rather than official or strong local beach-source documentation."
+              "Naxos tourist-priority evidence pass 2026-05-29: BeachSearcher and Wanderlog/Google-derived place evidence support Limnari Bay identity on Naxos, pebbly/rocky terrain, difficult or descent-style access, and limited/no normal services. Kept medium because the supporting evidence remains review-derived rather than official or strong local beach-source documentation.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "orientation": {
               "degrees": 86.7,
@@ -149961,6 +149983,7 @@
             "organized": false,
             "shade": false,
             "amenities": [
+              "ταβέρνα πάνω στην παραλία",
               "ταβέρνες κοντά",
               "restaurant κοντά",
               "parking κοντά"
@@ -149975,7 +149998,8 @@
             },
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Official naxos.gr: asphalt access from Koronos, fish tavernas and parking; pebbles/dark sand and deeper water.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: named taverna «Ntoyzenia» sits 58 m from the pin, on the beach itself (google-nearby cache) — the list only said \"ταβέρνες κοντά\"."
             ],
             "verification_sources": [
               "https://naxos.gr/en/naxos/beaches/lionas/"
@@ -150029,7 +150053,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -150046,7 +150072,8 @@
             "sourceNotes": [
               "Naxos source-backed cleanup 2026-05-27: Mapcarta/OpenStreetMap corroborate Melino as a beach near Apollonas at the current coordinates. Kept unknown access and no-service wording because no reliable visitor-access or amenity source was found.",
               "Naxos evidence pass 2026-05-29: added AllOverGreece Melino Beach to Mapcarta/OSM, giving direct beach identity plus north-coast small sandy bay context. Access/services remain conservative because no stronger visitor-service source was found.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "orientation": {
               "degrees": 339,
@@ -150088,7 +150115,7 @@
               "label": "άμμος και βότσαλα"
             },
             "organized": false,
-            "shade": true,
+            "shade": false,
             "amenities": [
               "parking κοντά"
             ],
@@ -150104,7 +150131,8 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Coordinate source: AllOverGreece Naxos Mikra beach.",
               "Naxos evidence pass 2026-05-29: added the live official Mikra Beach page to corroborate AllOverGreece for identity, sandy surface, road access, summer public transport, and quiet/nature-oriented static context.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy."
             ],
             "verification_sources": [
               "https://www.allovergreece.com/Beaches/Descr/16/70/en"
@@ -150319,7 +150347,8 @@
             },
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Alyko-area audit: quiet sandy cove with natural shade and no fixed beach facilities claimed.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: popularity 4,6/1135 was identical to #1987 Αλυκό while the two records resolve to different Google places (ChIJLZLuafoRmBQR-nKbZ0SswTE vs ChIJJcnPsP0RmBQRJ_anR1gu33Y). The rating count belongs to Αλυκό; removed rather than guessed."
             ],
             "verification_sources": [
               "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
@@ -150344,13 +150373,6 @@
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJLZLuafoRmBQR-nKbZ0SswTE",
               "query": "Μικρό Αλυκό, Naxos"
-            },
-            "popularity": {
-              "tier": "popular",
-              "rating": 4.6,
-              "ratingCount": 1135,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           }
         },
@@ -150373,8 +150395,9 @@
               "label": "Άμμος"
             },
             "organized": false,
-            "shade": true,
+            "shade": false,
             "amenities": [
+              "ταβέρνα πάνω στην παραλία",
               "ταβέρνες κοντά",
               "restaurant κοντά",
               "καφέ κοντά",
@@ -150390,7 +150413,9 @@
             },
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Official naxos.gr: fishing village with fish tavernas/cafes, shallow family beaches and asphalt access.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy.",
+              "Paros/Naxos audit 2026-08-13: named restaurant «Sea you soon» sits 23 m from the pin, on the beach itself (google-nearby cache) — the list only said \"ταβέρνες κοντά\"."
             ],
             "verification_sources": [
               "https://naxos.gr/en/naxos/beaches/moutsouna/"
@@ -150825,7 +150850,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -150840,7 +150867,8 @@
             ],
             "sourceNotes": [
               "Naxos source-backed cleanup 2026-05-27: official Naxos source-backs Spedo as a remote south-coast beach with sand/fine pebbles and rural-road access by private transport. Kept amenities empty and no organized-service claims.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "orientation": {
               "degrees": 138.3,
@@ -150879,7 +150907,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "naxos_audit_2026_05_23",
@@ -150892,7 +150922,8 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Remote Naxos cove/pebbly beach added after missing-beach audit.",
               "Coordinate source: OpenStreetMap way 1336837770.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1336837770",
@@ -151018,7 +151049,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151033,7 +151066,8 @@
             "sourceNotes": [
               "Naxos final low/no-source batch 2026-05-27: the only direct source found identifies Paralia Psofagrilia as a very small beach and also as Paralia Klido, but provides weak details and no reliable visitor-access/source-backed metadata for a distinct Naxos beach at the current coordinates. Excluded from app-facing recommendations until a stronger local source confirms it as a distinct beach card.",
               "Naxos evidence pass 2026-05-29: kept at low because the only direct source found remains BeachNearby, which itself has limited data and mainly identifies the beach as Paralia Klido/Psofagrilia. Not promoted to medium/high without stronger local or official confirmation.",
-              "Naxos tourist-priority evidence pass 2026-05-29: A fresh search found no stronger source than BeachNearby for Psofagrilia. Kept low because the only direct evidence is weak and the Klido/Psofagrilia identity/access context remains uncertain."
+              "Naxos tourist-priority evidence pass 2026-05-29: A fresh search found no stronger source than BeachNearby for Psofagrilia. Kept low because the only direct evidence is weak and the Klido/Psofagrilia identity/access context remains uncertain.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "orientation": {
               "degrees": 89.5,
@@ -151088,7 +151122,8 @@
             },
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Official naxos.gr: quiet sandy Alyko-area beach with juniper shade; no fixed facilities stated.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: Greek display name «Χαβάη» added via nameGr so the Greek list stops showing a Latin name; the English name, slug and URL stay «Hawaii»."
             ],
             "verification_sources": [
               "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
@@ -151120,6 +151155,281 @@
               "ratingCount": 2546,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            }
+          },
+          "nameGr": "Χαβάη"
+        },
+        {
+          "id": 3172,
+          "name": "Ακρωτήρι",
+          "lat": 37.14053,
+          "lon": 25.45029,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "notes": "Κανένας χαρτογραφημένος δρόμος ή μονοπάτι σε 350 m (OSM). Δεν ξέρουμε πώς φτάνει κανείς — μη βασιστείτε σε αυτή την εγγραφή για διαδρομή."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Akrotiri"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1195230333"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στη βόρεια Νάξο, ~1 χλμ από τη Γλατζά. Τοπωνύμιο: place=hamlet «Ακρωτήρι» στα 371 m. ΠΡΟΣΟΧΗ: δεν βρέθηκε κανένας δρόμος ούτε μονοπάτι σε ακτίνα 350 m — η πρόσβαση παραμένει άγνωστη και μπορεί να είναι μόνο με τα πόδια ή με σκάφος. Συντεταγμένες: OSM way/1195230333 (ανώνυμο natural=beach) + οικισμός «Ακρωτήρι» 371 m. Slot κοντά στο #1992 (Γλατζά, 1018m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 332.9,
+              "faces": [
+                "Northwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3173,
+          "name": "Γαλήνη",
+          "lat": 37.13549,
+          "lon": 25.41522,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Χωματόδρομοι από 316 m (OSM)· χωρίς άσφαλτο μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Galini"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/1175256989",
+              "https://www.openstreetmap.org/way/1175256988"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στη ΒΔ Νάξο, ~1,8 χλμ από τον Αμμίτη, στην περιοχή Γαλήνης. Τοπωνύμιο από Nominatim reverse· κοντινότερο ονομασμένο σημείο η κορυφή «Καντήλι» 473 m. Πρόσβαση: χωματόδρομοι από 316 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/1175256989 (ανώνυμο natural=beach)· Nominatim reverse επιστρέφει «Γαλήνη». Slot κοντά στο #1988 (Αμμίτης, 1849m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 335.6,
+              "faces": [
+                "Northwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3174,
+          "name": "Κανάκι",
+          "lat": 37.03539,
+          "lon": 25.57844,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Βοηθητικός δρόμος 278 m και χωματόδρομος 434 m (OSM)· χωρίς άσφαλτο μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Kanaki"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/209086975",
+              "https://www.openstreetmap.org/way/209085779"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στην ανατολική Νάξο, 2,5 χλμ από την πλησιέστερη δική μας εγγραφή (Ψιλή Άμμος) — το μεγαλύτερο κενό του νησιού. Τοπωνύμιο «Κανάκι» από Nominatim reverse· εκκλησάκι Αγίου Ιωάννη 139 m. Πρόσβαση: βοηθητικός δρόμος 278 m, χωματόδρομος 434 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/209086975 (ανώνυμο natural=beach)· Nominatim reverse επιστρέφει «Κανάκι». Slot κοντά στο #2017 (Παραλία Ψιλή Άμμος, 2515m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 105,
+              "faces": [
+                "East"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3177,
+          "name": "Στελίδα",
+          "lat": 37.08244,
+          "lon": 25.34132,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Χωματόδρομοι από 163 m (OSM)· καμία ασφαλτοστρωμένη πρόσβαση μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Stelida"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/521211106",
+              "https://www.openstreetmap.org/way/521211552"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στη χερσόνησο της Στελίδας, ~950 m βόρεια από τον Άγιο Προκόπιο — τουριστικά από τις πιο πυκνοδομημένες περιοχές της Νάξου, αλλά η ίδια η ακτή δεν είχε εγγραφή. Τοπωνύμιο: place=hamlet «Στελίδα» στα 264 m. Πρόσβαση: μόνο μονοπάτια/χωματόδρομοι από 163 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/521211106 (ανώνυμο natural=beach) + οικισμός «Στελίδα» 264 m. Slot κοντά στο #1985 (Άγιος Προκόπιος, 948m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: the only object Overpass found within 500 m was too far and too generic to record as a facility of this beach (a single hotel at 393 m for Μώλος, one unnamed parking at 483 m for Στελίδα). Nothing stands ON the beach, so it says so rather than staying silent."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 295.2,
+              "faces": [
+                "Northwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3178,
+          "name": "Φαρακλό",
+          "lat": 37.19416,
+          "lon": 25.54437,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Χωματόδρομος 333 m από την ακτή· η επαρχιακή άσφαλτος σταματά 701 m πιο πάνω (OSM). Δεν επιβεβαιώθηκε επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Faraklo"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/712284364",
+              "https://www.openstreetmap.org/way/499499305"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στη βόρεια Νάξο, ~1,7 χλμ από τον Απόλλωνα. Τοπωνύμιο: place=hamlet «Φαρακλό» στα 289 m, επιβεβαιωμένο και από Nominatim reverse. Πρόσβαση: χωματόδρομος 333 m, άσφαλτος (επαρχιακή) στα 701 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/712284364 (ανώνυμο natural=beach) + οικισμός «Φαρακλό» 289 m. Slot κοντά στο #1990 (Απόλλωνας, 1740m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 95.6,
+              "faces": [
+                "East"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }
@@ -151288,7 +151598,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καταλύματα κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151299,7 +151611,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Onar Hotels supports Stefano/Agios Stefanos beach between Naoussa and Santa Maria, sandy beach, no sunbeds or umbrellas, and access by short path from the road. OSM supports the same-name beach feature near stored coordinates. No live condition claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps six hotels/apartments between 179 m and 308 m (Cosme, Kalypso, Salt Suites, Parian, Aspasia Maria, Kosmitis) plus two restaurants at 377 m and 443 m. Only the accommodation is close enough to record; the restaurants stay out."
             ],
             "sourceUrls": [
               "https://onarhotels.com/paros-island/stefano-beach-paros/",
@@ -151413,7 +151726,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνα κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151424,7 +151739,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: VerPlayas and Beaches-Searcher support Aspros Gremos identity near Ambelas, small natural beach, fine-sand surface with rocky edges, no beach-service infrastructure, and road/trail style access. OSM supports the compatible beach feature near stored coordinates. No live condition claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps one named restaurant, «To thalami», 379 m from the pin — the only thing within 500 m. Recorded in the singular, at that distance."
             ],
             "sourceUrls": [
               "https://www.verplayas.com/playa-aspros-gremos-paros/",
@@ -151490,7 +151806,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151501,7 +151819,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Toparos supports Voutakos location on the Alyki-Pounta road, coarse sand, mostly paved access plus final walkable dirt section, and no encoded organized-service claim. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.2paros.gr/en/places-beaches.html",
@@ -151556,7 +151875,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151567,7 +151888,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Toparos supports Glyfades as a large sandy beach between Molos and Ambelas, reachable by dirt roads, with no tourist facilities on the beach. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.2paros.gr/en/places-beaches.html",
@@ -151701,7 +152023,7 @@
               "label": "χοντρή άμμος, βότσαλα"
             },
             "organized": true,
-            "shade": true,
+            "shade": false,
             "amenities": [
               "καφέ κοντά",
               "parking κοντά"
@@ -151718,7 +152040,10 @@
               "https://cycladesmap.gr/en/listings/paros/drios-beach/",
               "https://poloscarsparos.gr/about-paros/beaches-east-of-paros/"
             ],
-            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options. Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Paros SE coast settlement Dryos (matches lat/lng): 'the beach of Dryos consists of sand and pebbles' - mixed, not pure pebbles. [https://www.parosislandinfo.gr/parosgenika/parosparalies/paraliadryos/index.html].",
+            "sourceNotes": [
+              "Phase 2 organized audit 2026-05-25: removed organized claim; Drios-specific sources say no sunbeds/umbrellas, despite nearby organized Golden Beach options. Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"sand/pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Paros SE coast settlement Dryos (matches lat/lng): 'the beach of Dryos consists of sand and pebbles' - mixed, not pure pebbles. [https://www.parosislandinfo.gr/parosgenika/parosparalies/paraliadryos/index.html].",
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy."
+            ],
             "orientation": {
               "degrees": 144.8,
               "faces": [
@@ -151766,7 +152091,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -151777,7 +152104,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: ApartmentsParos supports short flat dirt-road access, unorganized setting, soft grey sand, colored cliffs and clay; Toparos supports Kalogeros beside Molos and the clay/rock context. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.apartmentsparos.com/island/beaches-in-paros",
@@ -152021,7 +152349,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -152032,7 +152362,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Toparos supports Lageri as not organized with very fine sand dunes; ApartmentsParos supports the Zoodochos Pigi parking/path approach and bring-your-own-supplies context. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.apartmentsparos.com/island/beaches-in-paros",
@@ -152452,8 +152783,8 @@
         {
           "id": 2037,
           "name": "Μαρτσέλο",
-          "lat": 37.09655,
-          "lon": 25.14182,
+          "lat": 37.09679,
+          "lon": 25.13963,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -152490,7 +152821,8 @@
             ],
             "sourceNotes": [
               "AllParosBeaches beach-bar facility listing includes Marcello beach; keep beach-bar claim seasonal.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-14: pin moved from 37.09655,25.14182 to the WEST end of the OSM beach polygon (way/271733594, 399 m long), 37 m from where Google resolves «Marcelo Beach». It previously sat 51 m from #2031 Κριός, which Google places at the polygon's centre — the two cards were pointing at the same sand. They are now ~230 m apart, one at each end of the shore."
             ],
             "orientation": {
               "degrees": 304.8,
@@ -152731,7 +153063,9 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -152742,7 +153076,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: ApartmentsParos supports paved access from Marmara, long fine sand, unorganized setting, tamarisk/juniper shade and gentle seabed slope; Toparos supports Molos location, unorganized status and fine sand. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: the only object Overpass found within 500 m was too far and too generic to record as a facility of this beach (a single hotel at 393 m for Μώλος, one unnamed parking at 483 m for Στελίδα). Nothing stands ON the beach, so it says so rather than staying silent."
             ],
             "sourceUrls": [
               "https://www.apartmentsparos.com/island/beaches-in-paros",
@@ -152813,7 +153148,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Paros Sailing Center and European Paros support the Nautical Club at Livadia beach, organized beach chairs/umbrellas, restaurant/cafe, showers/changing rooms, sailing/swimming lessons, and beach-volley context; AllOverGreece supports beach identity/location. No live condition claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: placeId ChIJbbhTsqlxmBQRSKKzRSECf2Y is «Marcelo Beach» (#2037), 1.420 m away — google-upgrade.json logged distM:1420 while still place-routing. Switched to coordinate routing and dropped the 4,1/576 rating, which is Μαρτσέλο’s."
             ],
             "sourceUrls": [
               "https://www.paros-sailing.gr/dinghy.html",
@@ -152832,18 +153168,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJbbhTsqlxmBQRSKKzRSECf2Y",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-13",
+              "method": "paros-naxos-audit-2026-08-13",
               "query": "Παραλία Ναυτικός όμιλος Πάρου, Paros"
-            },
-            "popularity": {
-              "tier": "popular",
-              "rating": 4.1,
-              "ratingCount": 576,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             },
             "nearbyCamping": [
               {
@@ -152993,7 +153321,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: Paros Rentals supports Agali between Golden Beach and Drios, golden-sand unorganized beach, car/bus/walking access, and nearby taverns/bars/rooms; Golden Sand Paros supports the Agali/Golden Beach area and nearby beach services. OSM supports stored location. No live condition claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos audit 2026-08-13: placeId ChIJV8r9unltmBQRE7DMZ5Jvgsg belongs to «Παραλία Χρυσή Ακτή» (#2056) — the same place resolved for both records (google-upgrade.json). Switched to coordinate routing on its own OSM node (node/2407941530) and dropped the borrowed 4,5/187 rating."
             ],
             "sourceUrls": [
               "https://www.parosrentals.gr/agali-beach-paros/",
@@ -153011,18 +153340,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJV8r9unltmBQRE7DMZ5Jvgsg",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-13",
+              "method": "paros-naxos-audit-2026-08-13",
               "query": "Παραλία Αγκάλη Χρυσής Ακτής, Paros"
-            },
-            "popularity": {
-              "tier": "moderate",
-              "rating": 4.5,
-              "ratingCount": 187,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           }
         },
@@ -153528,7 +153849,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "medium",
             "language": "el",
             "batch": "paros_medium_confidence_cleanup_2026_06_05_do",
@@ -153539,7 +153862,8 @@
             },
             "sourceNotes": [
               "Strict evidence re-audit 2026-05-29: downgraded from high to medium. OSM and Greece.com support Pyrgaki identity/location as a Paros beach/small-port/settlement context, but do not provide enough beach-specific access, terrain, or service facts for high confidence.",
-              "Paros medium-confidence cleanup 2026-06-05 DO: neutralized unsupported asphalt-road, nearby taverna, parking, sandy-terrain and shallow-water claims for Pyrgaki. Greece.com supports Pyrgaki as a Paros settlement that is also a beach/small port, and OSM supports location, but current evidence is not enough for exact access, terrain, amenities, depth, windProfile, scoring, photos, or live calm/protected/safe claims."
+              "Paros medium-confidence cleanup 2026-06-05 DO: neutralized unsupported asphalt-road, nearby taverna, parking, sandy-terrain and shallow-water claims for Pyrgaki. Greece.com supports Pyrgaki as a Paros settlement that is also a beach/small port, and OSM supports location, but current evidence is not enough for exact access, terrain, amenities, depth, windProfile, scoring, photos, or live calm/protected/safe claims.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/4457915964",
@@ -153678,7 +154002,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -153689,7 +154015,8 @@
             },
             "sourceNotes": [
               "Paros confidence pass 2026-05-29: replaced an unavailable Paros Park reference with live official Paros Park beach and trail pages supporting Tourkou Ammos identity and foot-access trail context.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://www.allovergreece.com/Trekking/Descr/17/183/en",
@@ -153820,7 +154147,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "020_1901_2000",
@@ -153831,7 +154160,8 @@
             },
             "sourceNotes": [
               "Phase 2 Paros low cleanup 2026-05-28: GoParos supports northeast-coast location, rougher final road, no organized sunbeds/beach clubs, simple parking, and sand/pebble/rock terrain; Toparos supports the Glyfades/Tsoukalia area and windsurfing context. No live sea-state claim was encoded.",
-              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
             ],
             "sourceUrls": [
               "https://goparos.gr/tsoukalia-beach-paros/",
@@ -153940,8 +154270,8 @@
         {
           "id": 2056,
           "name": "Χρυσή Ακτή",
-          "lat": 37.010658,
-          "lon": 25.240516,
+          "lat": 37.00994,
+          "lon": 25.2394,
           "metadata": {
             "access": {
               "type": "asphalt_road",
@@ -153982,7 +154312,8 @@
             "sourceNotes": [
               "AllParosBeaches beach-bar facility listing includes Chrisi Akti/Golden Beach; keep beach-bar claim seasonal.",
               "Paros tourist-priority confidence pass 2026-05-29: existing Paros official/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Navigation audit 2026-06-12 (batch-approved): pin moved 127 m onto the same-name OSM beach feature (https://www.openstreetmap.org/node/2407941530, \"Παραλία Αγκάλη Χρυσής Ακτής\", OSM data 2026-06-11) because the previous pin sat outside the mapped beach polygon. Previous pin: 37.00994,25.2394. Only coordinates changed; windProfile, amenities and claims untouched."
+              "Navigation audit 2026-06-12 (batch-approved): pin moved 127 m onto the same-name OSM beach feature (https://www.openstreetmap.org/node/2407941530, \"Παραλία Αγκάλη Χρυσής Ακτής\", OSM data 2026-06-11) because the previous pin sat outside the mapped beach polygon. Previous pin: 37.00994,25.2394. Only coordinates changed; windProfile, amenities and claims untouched.",
+              "Paros/Naxos audit 2026-08-13: pin moved from the Αγκάλη node (37.010658,25.240516) to the centre of the Golden Beach polygon (OSM relation/453222, 37.00994,25.23940), corroborated by Nominatim. It previously sat 0 m from #2043 and drew two pins on one point."
             ],
             "orientation": {
               "degrees": 139.5,
@@ -154007,6 +154338,117 @@
               "ratingCount": 187,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            }
+          }
+        },
+        {
+          "id": 3175,
+          "name": "Μακριά Μύτη",
+          "lat": 36.99491,
+          "lon": 25.11651,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Βοηθητικοί δρόμοι 125 m από την ακτή (OSM), χωρίς ασφαλτοστρωμένη σύνδεση. Δεν επιβεβαιώθηκε επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "χωρίς σταθερές παροχές"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Makria Myti"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/272567726"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ακτή στο ακρωτήρι Μακριά Μύτη, ΝΔ της Αλυκής, ~1,3 χλμ από την παραλία Αλυκή. Το τοπωνύμιο επιβεβαιώθηκε από place=hamlet «Μακριά Μύτη» στα 392 m και από Nominatim reverse. Πρόσβαση: μόνο αγροτικοί/βοηθητικοί δρόμοι 125 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/272567726 (ανώνυμο natural=beach) + οικισμός «Μακριά Μύτη» 392 m. Slot κοντά στο #2044 (Παραλία Αλυκή, 1350m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 244.6,
+              "faces": [
+                "Southwest"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3176,
+          "name": "Πίσω Λιβάδι",
+          "lat": 37.0392,
+          "lon": 25.26163,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Μέσα στον οικισμό του Πίσω Λιβαδιού· δρόμος οικισμού 83 m από την ακτή (OSM). Δεν επιβεβαιώθηκε επιτόπου η τελική προσέγγιση ούτε οργανωμένο parking."
+            },
+            "terrain": {
+              "types": [
+                "sand"
+              ],
+              "label": "άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ταβέρνες κοντά",
+              "καταλύματα κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_paros_naxos_2026_08_13",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Piso Livadi"
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/node/6694985283",
+              "https://www.openstreetmap.org/way/299567908"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η παραλία του ομώνυμου παραθαλάσσιου χωριού στην ανατολική Πάρο, ~1 χλμ βόρεια από τον Λογαρά. Ήταν ανώνυμο σημείο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 400 m υπάρχουν Blue Horizon apartments (166 m), Kohili studios (181 m), Elena Studios (246 m), Aloni Hotel (309 m) και εστιατόριο Anthi Meze (396 m) — οικισμός, όχι ερημιά. Πρόσβαση: δρόμος οικισμού 83 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM node/6694985283 (natural=beach) στο ίδιο το χωριό. Slot κοντά στο #2035 (Λογαράς, 1006m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 124.8,
+              "faces": [
+                "Southeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }

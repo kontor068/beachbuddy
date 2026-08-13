@@ -61,6 +61,10 @@ tmp/
 reports/photo-coverage/qa/
 reports/photo-coverage/qa-img/
 reports/photo-coverage/qa-focus/
+# Contact-sheet montages from discoverBeachPhotos.mjs — third-party images downloaded only
+# so a human can eyeball the candidates before one is accepted. Throwaway, and a public repo
+# is the wrong place to redistribute them.
+reports/photo-coverage/discover/
 reports/visual-qa/
 reports/tmp-*/
 # Raw EMODnet bathymetry transects: 25 MB of third-party floats, 1.000 samples

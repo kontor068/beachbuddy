@@ -425,6 +425,10 @@ const naxosPhase1CoverageNames = [
   'Mikra', 'Mikri Vigla', 'Mikri Vigla - Notia plevra', 'Mikro Alyko', 'Moutsouna',
   'Orkos', 'Panormos', 'Plaka', 'Pyrgaki', 'Rina', 'Paralia Spedo', 'Chilia Vrysi',
   'Paralia Psili Ammos', 'Paralia Psofagrilia', 'Hawaii',
+  // Added 2026-08-13 from the hidden-beach discovery pass. They carry no-claim
+  // (unverified) profiles, so they belong in the LOW-evidence half of the gate below —
+  // never in naxosMediumEvidenceGateIds until someone actually verifies a shore.
+  'Akrotiri', 'Galini', 'Kanaki', 'Stelida', 'Faraklo',
 ];
 const milosNorthExposedNames = ['Papafragkas', 'Plathiena', 'Sarakiniko', 'Tourkothalassa', 'Fyropotamos'];
 const milosNorthSensitiveLowConfidenceNames = ['Gerania', 'Kapros', 'Nerodafni'];
@@ -612,10 +616,10 @@ const phase21WindProfilesAdded = parosCoverage.phase21Profiles + androsCoverage.
 const allProfilesCovered = parosCoverage.overrideProfiles + androsCoverage.overrideProfiles;
 const naxosWindProfilesCovered = naxosCoverage.overrideProfiles;
 
-assert(parosBeaches.length === 37, 'Coverage: Paros app data must contain 37 beaches.');
+assert(parosBeaches.length === 39, 'Coverage: Paros app data must contain 39 beaches (37 original + Πίσω Λιβάδι #3176 and Μακριά Μύτη #3175 added 2026-08-13 from the hidden-beach discovery pass).');
 assert(androsBeaches.length === 41, 'Coverage: Andros app data must contain 41 beaches.');
 assert(milosBeaches.length === 42, 'Coverage: Milos app data must contain 42 beaches (41 original + Kleftiko #3000 added 2026-06-12 + Pachaina #3054 added 2026-06-19, − Rema #1937 removed in the 2026-06-20 Milos data refresh).');
-assert(naxosBeaches.length === 39, 'Coverage: Naxos app data must contain 39 beaches.');
+assert(naxosBeaches.length === 44, 'Coverage: Naxos app data must contain 44 beaches (39 original + Ακρωτήρι #3172, Γαλήνη #3173, Κανάκι #3174, Στελίδα #3177 and Φαρακλό #3178 added 2026-08-13 from the hidden-beach discovery pass).');
 assert(parosCoverage.p0Profiles === parosP0Ids.length, 'Coverage: all Paros P0 beaches must have windProfile overrides.');
 assert(androsCoverage.p0Profiles === androsP0Ids.length, 'Coverage: all Andros P0 beaches must have windProfile overrides.');
 assert(milosCoverage.p0Profiles === milosP0Ids.length, 'Coverage: all Milos P0 beaches must have windProfile overrides.');
@@ -625,9 +629,9 @@ assert(milosCoverage.phase21Profiles === milosPhase3CoverageIds.length, 'Coverag
 assert(naxosCoverage.phase21Profiles === naxosPhase1CoverageIds.length, 'Coverage: all Naxos Phase 1 beaches must have audited windProfile overrides.');
 assert(p0WindProfilesCovered === 29, 'Coverage: Phase 2 P0 should still cover 29 high-impact profiles.');
 assert(phase21WindProfilesAdded === 49, 'Coverage: Phase 2.1 should add 49 remaining profiles.');
-assert(parosCoverage.overrideProfiles === parosCoverage.total, 'Coverage: Paros must reach 37/37 windProfile coverage.');
+assert(parosCoverage.overrideProfiles === parosCoverage.total, 'Coverage: Paros must reach 39/39 windProfile coverage.');
 assert(androsCoverage.overrideProfiles === androsCoverage.total, 'Coverage: Andros must reach 41/41 windProfile coverage.');
-assert(allProfilesCovered === 78, 'Coverage: Paros and Andros must reach 78/78 combined windProfile coverage.');
+assert(allProfilesCovered === 80, 'Coverage: Paros and Andros must reach 80/80 combined windProfile coverage (79 → 80 when Paros went from 37 to 39 beaches on 2026-08-13).');
 assert(parosCoverage.unknownSourceProfiles === 0, 'Coverage: Paros should have no source-missing windProfiles after Phase 2.1.');
 assert(androsCoverage.unknownSourceProfiles === 0, 'Coverage: Andros should have no source-missing windProfiles after Phase 2.1.');
 // Kleftiko (#3000, added 2026-06-12) and Pachaina (#3054, added 2026-06-19) are served by
@@ -660,8 +664,8 @@ assertExactIds(
   assert(assessment.windProfile.confidence === 'high', `Paros 5 Bft N: ${name} must remain high-confidence after sheltered-bay evidence review.`);
   assert(assessment.canClaimProtected, `Paros 5 Bft N: ${name} may claim protected only because beach-specific sheltered-bay evidence exists.`);
 });
-assert(naxosCoverage.overrideProfiles === naxosCoverage.total, 'Coverage: Naxos should reach 39/39 windProfile override coverage.');
-assert(naxosWindProfilesCovered === 39, 'Coverage: Naxos Phase 1 should cover 39/39 windProfiles.');
+assert(naxosCoverage.overrideProfiles === naxosCoverage.total, 'Coverage: Naxos should reach 44/44 windProfile override coverage.');
+assert(naxosWindProfilesCovered === 44, 'Coverage: Naxos Phase 1 should cover 44/44 windProfiles (the 39 audited ones plus the five 2026-08-13 discoveries, which carry no-claim profiles).');
 assert(naxosCoverage.unknownSourceProfiles === 0, 'Coverage: Naxos should have no source-missing windProfiles after Phase 1 coverage.');
 assert(naxosCoverage.highConfidence === 0, 'Coverage: Naxos Phase 1 must not create high-confidence profiles from map/geospatial evidence alone.');
 assert(naxosCoverage.mediumConfidence === naxosMediumEvidenceGateIds.length, 'Coverage: Naxos medium-confidence upgrades must match the wind-profile evidence gate.');

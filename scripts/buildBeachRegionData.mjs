@@ -485,11 +485,16 @@ const getEnglishBeachName = value => (
   value
 );
 
-const getLegacyBeachSlugs = (rawName, englishName) => {
+// `extraSlugs` lets a beach record carry the slug it used to live at. Renaming a beach
+// (fixing a misspelling, say) otherwise moves its URL and orphans every link and search
+// result pointing at the old one — the computed legacy slug only covers the change of
+// transliteration scheme, not a change of the name itself.
+const getLegacyBeachSlugs = (rawName, englishName, extraSlugs = []) => {
   const currentSlug = normalizeSlug(englishName);
   const legacySlug = normalizeSlug(toLegacyGreeklish(rawName));
+  const seeded = (Array.isArray(extraSlugs) ? extraSlugs : []).map(normalizeSlug);
 
-  return Array.from(new Set([legacySlug].filter(slug => slug && slug !== currentSlug)));
+  return Array.from(new Set([legacySlug, ...seeded].filter(slug => slug && slug !== currentSlug)));
 };
 
 const hasGreekText = value => /[\u0370-\u03ff]/.test(value || '');
@@ -566,7 +571,7 @@ const buildBeach = (rawBeach, island) => {
   const protection = verifiedOrientation?.protectedFrom.length ? verifiedOrientation.protectedFrom : autoProtection;
   const access = metadata ? metadataAccessToAccessibility(metadata.access.type) : 'EASY';
   const englishName = getEnglishBeachName(rawBeach.name);
-  const legacySlugs = getLegacyBeachSlugs(rawBeach.name, englishName);
+  const legacySlugs = getLegacyBeachSlugs(rawBeach.name, englishName, rawBeach.legacySlugs);
   const narrative = makeBeachNarrative(rawBeach.name, rawBeach.prefecture, metadata?.access?.notes, island.id, englishName);
   const hasBar = metadata
     ? hasExplicitBeachBarAmenityInList(metadata.amenities)

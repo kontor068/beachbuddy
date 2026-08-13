@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.160Z",
+  "generatedAt": "2026-08-13T19:24:03.943Z",
   "region": {
     "id": "south-aegean-paros",
     "name": "Paros"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 37,
-    "generatedProfiles": 37,
+    "beachCount": 39,
+    "generatedProfiles": 39,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 25,
+        "protected": 27,
         "partial": 8,
         "exposed": 4
       },
       "NE": {
-        "protected": 22,
-        "partial": 10,
+        "protected": 23,
+        "partial": 11,
         "exposed": 5
       },
       "E": {
         "protected": 20,
-        "partial": 9,
-        "exposed": 8
+        "partial": 10,
+        "exposed": 9
       },
       "SE": {
-        "protected": 13,
+        "protected": 14,
         "partial": 9,
-        "exposed": 15
+        "exposed": 16
       },
       "S": {
         "protected": 14,
         "partial": 12,
-        "exposed": 11
+        "exposed": 13
       },
       "SW": {
-        "protected": 19,
+        "protected": 20,
         "partial": 11,
-        "exposed": 7
+        "exposed": 8
       },
       "W": {
-        "protected": 21,
+        "protected": 23,
         "partial": 14,
         "exposed": 2
       },
       "NW": {
-        "protected": 26,
-        "partial": 5,
+        "protected": 27,
+        "partial": 6,
         "exposed": 6
       }
     }
@@ -2796,74 +2796,228 @@
         "gr": "Χρυσή Ακτή"
       },
       "coordinates": {
-        "lat": 37.010658,
-        "lon": 25.240516
+        "lat": 37.00994,
+        "lon": 25.2394
       },
-      "facingDeg": 186.2,
+      "facingDeg": 168.6,
       "sectors": {
         "N": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.994,
-          "intensity": 0.2
+          "onshore": -0.98,
+          "intensity": 0.6
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0,
-          "blockedRayRatio": 1,
-          "onshore": -0.779,
-          "intensity": 6.6
-        },
-        "E": {
-          "level": "protected",
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.108,
-          "intensity": 26.8
+          "onshore": -0.553,
+          "intensity": 13.4
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 7.76,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.198,
+          "intensity": 39
         },
         "SE": {
           "level": "exposed",
-          "fetchKm": 15.04,
+          "fetchKm": 22.64,
           "blockedRayRatio": 0.4,
-          "onshore": 0.627,
-          "intensity": 81.3
+          "onshore": 0.833,
+          "intensity": 91.6
         },
         "S": {
           "level": "exposed",
           "fetchKm": 20.32,
           "blockedRayRatio": 0.2,
-          "onshore": 0.994,
-          "intensity": 99.7
+          "onshore": 0.98,
+          "intensity": 99
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 15.28,
+          "fetchKm": 15.12,
           "blockedRayRatio": 0.4,
-          "onshore": 0.779,
-          "intensity": 89
+          "onshore": 0.553,
+          "intensity": 77.7
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 0.28,
+          "level": "protected",
+          "fetchKm": 0.12,
           "blockedRayRatio": 1,
-          "onshore": 0.108,
-          "intensity": 33.2
+          "onshore": -0.198,
+          "intensity": 24.1
         },
         "NW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.627,
-          "intensity": 11.2
+          "onshore": -0.833,
+          "intensity": 5
         }
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.9213,
-        "lon": 25.2284,
-        "bearingDeg": 186.2,
+        "lat": 36.9218,
+        "lon": 25.2616,
+        "bearingDeg": 168.6,
         "distanceKm": 10
+      }
+    },
+    "3175": {
+      "beachId": 3175,
+      "name": {
+        "en": "Makria Myti",
+        "gr": "Μακριά Μύτη"
+      },
+      "coordinates": {
+        "lat": 36.99491,
+        "lon": 25.11651
+      },
+      "facingDeg": 244.6,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.28,
+          "blockedRayRatio": 1,
+          "onshore": -0.429,
+          "intensity": 17.1
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.942,
+          "intensity": 1.7
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.903,
+          "intensity": 2.9
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.335,
+          "intensity": 21
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 10.68,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.429,
+          "intensity": 63.3
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 8.52,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.942,
+          "intensity": 66.6
+        },
+        "W": {
+          "level": "partial",
+          "fetchKm": 3.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.903,
+          "intensity": 57.1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 2.72,
+          "blockedRayRatio": 1,
+          "onshore": 0.335,
+          "intensity": 40.1
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9785,
+        "lon": 25.0732,
+        "bearingDeg": 244.6,
+        "distanceKm": 4.26
+      }
+    },
+    "3176": {
+      "beachId": 3176,
+      "name": {
+        "en": "Piso Livadi",
+        "gr": "Πίσω Λιβάδι"
+      },
+      "coordinates": {
+        "lat": 37.0392,
+        "lon": 25.26163
+      },
+      "facingDeg": 124.8,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.571,
+          "intensity": 12.9
+        },
+        "NE": {
+          "level": "partial",
+          "fetchKm": 3.52,
+          "blockedRayRatio": 1,
+          "onshore": 0.177,
+          "intensity": 35.3
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 10.04,
+          "blockedRayRatio": 1,
+          "onshore": 0.821,
+          "intensity": 70.2
+        },
+        "SE": {
+          "level": "exposed",
+          "fetchKm": 19.64,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.984,
+          "intensity": 99.2
+        },
+        "S": {
+          "level": "exposed",
+          "fetchKm": 15,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.571,
+          "intensity": 78.5
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.177,
+          "intensity": 24.7
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.821,
+          "intensity": 5.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.984,
+          "intensity": 0.5
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9888,
+        "lon": 25.3524,
+        "bearingDeg": 124.8,
+        "distanceKm": 9.82
       }
     }
   }

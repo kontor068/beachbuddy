@@ -1,0 +1,778 @@
+{
+  "scope": {
+    "region": "South Aegean",
+    "prefecture": "Cyclades",
+    "municipality": "Naxos"
+  },
+  "existing": 39,
+  "osm": {
+    "total": 106,
+    "namedGaps": [
+      {
+        "type": "way",
+        "id": 70321959,
+        "name": "Άμμος",
+        "lat": 36.9316729,
+        "lon": 25.6023082,
+        "nearestDistM": 6393,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 70321968,
+        "name": "Φοίνικας",
+        "lat": 36.934191,
+        "lon": 25.6137228,
+        "nearestDistM": 7195,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 70375922,
+        "name": "Φανός",
+        "lat": 36.9360374,
+        "lon": 25.6163881,
+        "nearestDistM": 7342,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 168674366,
+        "name": "Plaka Beach",
+        "lat": 37.050381,
+        "lon": 25.3660008,
+        "nearestDistM": 297,
+        "nearest": "Πλάκα (#2012)"
+      },
+      {
+        "type": "way",
+        "id": 229796830,
+        "name": "Ιταλίδα",
+        "lat": 36.9365129,
+        "lon": 25.6198753,
+        "nearestDistM": 7617,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 229796834,
+        "name": "Λίμνη",
+        "lat": 36.9315873,
+        "lon": 25.6106994,
+        "nearestDistM": 7065,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 229796835,
+        "name": "Λουτρό",
+        "lat": 36.9315863,
+        "lon": 25.5962209,
+        "nearestDistM": 5925,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 229796841,
+        "name": "Πόρτα",
+        "lat": 36.9319821,
+        "lon": 25.6112249,
+        "nearestDistM": 7089,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 229796847,
+        "name": "Limni beach",
+        "lat": 36.9303798,
+        "lon": 25.6092863,
+        "nearestDistM": 7010,
+        "nearest": "Πάνορμος (#2011)"
+      }
+    ],
+    "unnamedGaps": [
+      {
+        "type": "way",
+        "id": 183302906,
+        "name": null,
+        "lat": 37.035608,
+        "lon": 25.3770438,
+        "nearestDistM": 484,
+        "nearest": "Όρκος (#2010)"
+      },
+      {
+        "type": "way",
+        "id": 209085779,
+        "name": null,
+        "lat": 37.0302482,
+        "lon": 25.5767763,
+        "nearestDistM": 1929,
+        "nearest": "Παραλία Ψιλή Άμμος (#2017)"
+      },
+      {
+        "type": "way",
+        "id": 209086975,
+        "name": null,
+        "lat": 37.0353927,
+        "lon": 25.5784367,
+        "nearestDistM": 2515,
+        "nearest": "Παραλία Ψιλή Άμμος (#2017)"
+      },
+      {
+        "type": "way",
+        "id": 209103782,
+        "name": null,
+        "lat": 37.1678816,
+        "lon": 25.5714254,
+        "nearestDistM": 2165,
+        "nearest": "Απόλλωνας (#1990)"
+      },
+      {
+        "type": "way",
+        "id": 209103783,
+        "name": null,
+        "lat": 37.1635391,
+        "lon": 25.5734328,
+        "nearestDistM": 2615,
+        "nearest": "Απόλλωνας (#1990)"
+      },
+      {
+        "type": "way",
+        "id": 209107848,
+        "name": null,
+        "lat": 37.1937765,
+        "lon": 25.5119037,
+        "nearestDistM": 718,
+        "nearest": "Μελινό (#2004)"
+      },
+      {
+        "type": "way",
+        "id": 237830216,
+        "name": null,
+        "lat": 37.0661214,
+        "lon": 25.3551607,
+        "nearestDistM": 323,
+        "nearest": "Αγία Άννα (#1981)"
+      },
+      {
+        "type": "way",
+        "id": 335440492,
+        "name": null,
+        "lat": 37.1004714,
+        "lon": 25.3727498,
+        "nearestDistM": 396,
+        "nearest": "Άγιος Γεώργιος (#1984)"
+      },
+      {
+        "type": "way",
+        "id": 335440493,
+        "name": null,
+        "lat": 37.0800218,
+        "lon": 25.3377805,
+        "nearestDistM": 974,
+        "nearest": "Άγιος Προκόπιος (#1985)"
+      },
+      {
+        "type": "way",
+        "id": 404481268,
+        "name": null,
+        "lat": 36.981756,
+        "lon": 25.5580349,
+        "nearestDistM": 608,
+        "nearest": "Παραλία Κλειδώ (#2000)"
+      },
+      {
+        "type": "way",
+        "id": 404481327,
+        "name": null,
+        "lat": 36.9787891,
+        "lon": 25.5566478,
+        "nearestDistM": 959,
+        "nearest": "Παραλία Κλειδώ (#2000)"
+      },
+      {
+        "type": "way",
+        "id": 477005621,
+        "name": null,
+        "lat": 36.9185576,
+        "lon": 25.6067214,
+        "nearestDistM": 7503,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 477558694,
+        "name": null,
+        "lat": 36.9323223,
+        "lon": 25.5937848,
+        "nearestDistM": 5697,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 477558696,
+        "name": null,
+        "lat": 36.9317762,
+        "lon": 25.5943493,
+        "nearestDistM": 5771,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 478502410,
+        "name": null,
+        "lat": 36.9297448,
+        "lon": 25.5977799,
+        "nearestDistM": 6149,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 478502411,
+        "name": null,
+        "lat": 36.9303075,
+        "lon": 25.597396,
+        "nearestDistM": 6087,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 478510623,
+        "name": null,
+        "lat": 36.9352918,
+        "lon": 25.5909738,
+        "nearestDistM": 5315,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 499499305,
+        "name": null,
+        "lat": 37.19012,
+        "lon": 25.5448499,
+        "nearestDistM": 1317,
+        "nearest": "Απόλλωνας (#1990)"
+      },
+      {
+        "type": "way",
+        "id": 499728148,
+        "name": null,
+        "lat": 36.9336617,
+        "lon": 25.46503,
+        "nearestDistM": 676,
+        "nearest": "Παραλία Καλαντός (#1995)"
+      },
+      {
+        "type": "way",
+        "id": 499728200,
+        "name": null,
+        "lat": 36.9336103,
+        "lon": 25.4658433,
+        "nearestDistM": 614,
+        "nearest": "Παραλία Καλαντός (#1995)"
+      },
+      {
+        "type": "way",
+        "id": 499728291,
+        "name": null,
+        "lat": 36.9331522,
+        "lon": 25.4640243,
+        "nearestDistM": 781,
+        "nearest": "Παραλία Καλαντός (#1995)"
+      },
+      {
+        "type": "way",
+        "id": 500068362,
+        "name": null,
+        "lat": 37.0593145,
+        "lon": 25.5837037,
+        "nearestDistM": 1762,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 500068894,
+        "name": null,
+        "lat": 37.0573933,
+        "lon": 25.5825805,
+        "nearestDistM": 1983,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 500069723,
+        "name": null,
+        "lat": 37.0545907,
+        "lon": 25.5818202,
+        "nearestDistM": 2300,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 500104731,
+        "name": null,
+        "lat": 37.0735962,
+        "lon": 25.5847893,
+        "nearestDistM": 172,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 500652420,
+        "name": null,
+        "lat": 36.9911774,
+        "lon": 25.5616319,
+        "nearestDistM": 214,
+        "nearest": "Κλειδός (#1999)"
+      },
+      {
+        "type": "way",
+        "id": 500657281,
+        "name": null,
+        "lat": 36.9583518,
+        "lon": 25.5339322,
+        "nearestDistM": 425,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 500657632,
+        "name": null,
+        "lat": 36.956593,
+        "lon": 25.5290387,
+        "nearestDistM": 886,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 500657701,
+        "name": null,
+        "lat": 36.9573087,
+        "lon": 25.5195035,
+        "nearestDistM": 1077,
+        "nearest": "Παραλία Σπεδό (#2015)"
+      },
+      {
+        "type": "way",
+        "id": 504222161,
+        "name": null,
+        "lat": 36.9325834,
+        "lon": 25.6125897,
+        "nearestDistM": 7172,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 504222371,
+        "name": null,
+        "lat": 36.9332,
+        "lon": 25.6129485,
+        "nearestDistM": 7174,
+        "nearest": "Πάνορμος (#2011)"
+      },
+      {
+        "type": "way",
+        "id": 505218149,
+        "name": null,
+        "lat": 37.1826302,
+        "lon": 25.5487363,
+        "nearestDistM": 434,
+        "nearest": "Απόλλωνας (#1990)"
+      },
+      {
+        "type": "way",
+        "id": 519401769,
+        "name": null,
+        "lat": 37.0831287,
+        "lon": 25.6033524,
+        "nearestDistM": 1100,
+        "nearest": "Αζαλάς (#1986)"
+      },
+      {
+        "type": "way",
+        "id": 521211106,
+        "name": null,
+        "lat": 37.0824353,
+        "lon": 25.3413154,
+        "nearestDistM": 948,
+        "nearest": "Άγιος Προκόπιος (#1985)"
+      },
+      {
+        "type": "way",
+        "id": 521211552,
+        "name": null,
+        "lat": 37.0866506,
+        "lon": 25.3400168,
+        "nearestDistM": 1415,
+        "nearest": "Άγιος Προκόπιος (#1985)"
+      },
+      {
+        "type": "way",
+        "id": 521261156,
+        "name": null,
+        "lat": 36.9495526,
+        "lon": 25.4266894,
+        "nearestDistM": 1808,
+        "nearest": "Αγιασσός (#1982)"
+      },
+      {
+        "type": "way",
+        "id": 521265542,
+        "name": null,
+        "lat": 36.9575222,
+        "lon": 25.4261677,
+        "nearestDistM": 921,
+        "nearest": "Αγιασσός (#1982)"
+      },
+      {
+        "type": "way",
+        "id": 521266087,
+        "name": null,
+        "lat": 36.9579381,
+        "lon": 25.4263706,
+        "nearestDistM": 877,
+        "nearest": "Αγιασσός (#1982)"
+      },
+      {
+        "type": "way",
+        "id": 521266088,
+        "name": null,
+        "lat": 36.9583933,
+        "lon": 25.4265422,
+        "nearestDistM": 828,
+        "nearest": "Αγιασσός (#1982)"
+      },
+      {
+        "type": "way",
+        "id": 521276149,
+        "name": null,
+        "lat": 36.9712722,
+        "lon": 25.4115587,
+        "nearestDistM": 1154,
+        "nearest": "Πυργάκι (#2013)"
+      },
+      {
+        "type": "way",
+        "id": 521276221,
+        "name": null,
+        "lat": 36.9715978,
+        "lon": 25.4111218,
+        "nearestDistM": 1102,
+        "nearest": "Πυργάκι (#2013)"
+      },
+      {
+        "type": "way",
+        "id": 521291526,
+        "name": null,
+        "lat": 37.0169023,
+        "lon": 25.5710092,
+        "nearestDistM": 374,
+        "nearest": "Παραλία Ψιλή Άμμος (#2017)"
+      },
+      {
+        "type": "way",
+        "id": 521294545,
+        "name": null,
+        "lat": 36.9959451,
+        "lon": 25.5630785,
+        "nearestDistM": 721,
+        "nearest": "Κλειδός (#1999)"
+      },
+      {
+        "type": "way",
+        "id": 521294668,
+        "name": null,
+        "lat": 37.0003247,
+        "lon": 25.5649022,
+        "nearestDistM": 1232,
+        "nearest": "Κλειδός (#1999)"
+      },
+      {
+        "type": "way",
+        "id": 521308177,
+        "name": null,
+        "lat": 37.0261078,
+        "lon": 25.3659542,
+        "nearestDistM": 448,
+        "nearest": "Μικρή Βίγλα (#2006)"
+      },
+      {
+        "type": "way",
+        "id": 521872593,
+        "name": null,
+        "lat": 37.0720992,
+        "lon": 25.5853144,
+        "nearestDistM": 341,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 541728437,
+        "name": null,
+        "lat": 37.093706,
+        "lon": 25.3719203,
+        "nearestDistM": 416,
+        "nearest": "Άγιος Γεώργιος (#1984)"
+      },
+      {
+        "type": "way",
+        "id": 614206782,
+        "name": null,
+        "lat": 37.0267943,
+        "lon": 25.3672549,
+        "nearestDistM": 310,
+        "nearest": "Μικρή Βίγλα (#2006)"
+      },
+      {
+        "type": "way",
+        "id": 614763477,
+        "name": null,
+        "lat": 37.0215672,
+        "lon": 25.370054,
+        "nearestDistM": 737,
+        "nearest": "Μικρή Βίγλα (#2006)"
+      },
+      {
+        "type": "way",
+        "id": 614780798,
+        "name": null,
+        "lat": 37.0253591,
+        "lon": 25.3635478,
+        "nearestDistM": 675,
+        "nearest": "Μικρή Βίγλα (#2006)"
+      },
+      {
+        "type": "way",
+        "id": 614780799,
+        "name": null,
+        "lat": 37.0254779,
+        "lon": 25.3635222,
+        "nearestDistM": 671,
+        "nearest": "Μικρή Βίγλα (#2006)"
+      },
+      {
+        "type": "way",
+        "id": 712284364,
+        "name": null,
+        "lat": 37.194158,
+        "lon": 25.5443697,
+        "nearestDistM": 1740,
+        "nearest": "Απόλλωνας (#1990)"
+      },
+      {
+        "type": "way",
+        "id": 720112289,
+        "name": null,
+        "lat": 37.069923,
+        "lon": 25.5857442,
+        "nearestDistM": 586,
+        "nearest": "Λιγαρίδια (#2001)"
+      },
+      {
+        "type": "way",
+        "id": 1175256988,
+        "name": null,
+        "lat": 37.1360024,
+        "lon": 25.4171355,
+        "nearestDistM": 1677,
+        "nearest": "Αμμίτης (#1988)"
+      },
+      {
+        "type": "way",
+        "id": 1175256989,
+        "name": null,
+        "lat": 37.135492,
+        "lon": 25.4152233,
+        "nearestDistM": 1848,
+        "nearest": "Αμμίτης (#1988)"
+      },
+      {
+        "type": "way",
+        "id": 1175256990,
+        "name": null,
+        "lat": 37.1360643,
+        "lon": 25.4198639,
+        "nearestDistM": 1435,
+        "nearest": "Αμμίτης (#1988)"
+      },
+      {
+        "type": "way",
+        "id": 1195230333,
+        "name": null,
+        "lat": 37.1405304,
+        "lon": 25.4502905,
+        "nearestDistM": 1018,
+        "nearest": "Γλατζά (#1992)"
+      },
+      {
+        "type": "way",
+        "id": 1296657941,
+        "name": null,
+        "lat": 37.0642573,
+        "lon": 25.3533648,
+        "nearestDistM": 531,
+        "nearest": "Αγία Άννα (#1981)"
+      },
+      {
+        "type": "way",
+        "id": 1296657942,
+        "name": null,
+        "lat": 37.0113738,
+        "lon": 25.5689221,
+        "nearestDistM": 319,
+        "nearest": "Παραλία Ψιλή Άμμος (#2017)"
+      },
+      {
+        "type": "way",
+        "id": 1303506857,
+        "name": null,
+        "lat": 37.102045,
+        "lon": 25.373747,
+        "nearestDistM": 555,
+        "nearest": "Άγιος Γεώργιος (#1984)"
+      }
+    ]
+  },
+  "triage": [
+    {
+      "nameGr": "Παραλία Μαραγκάς",
+      "locality": "Νάξος",
+      "sources": [],
+      "coord": {
+        "lat": 37.06912,
+        "lon": 25.35483
+      },
+      "coordSrc": "nominatim:Παραλία Μαραγκάς, Νάξος",
+      "nearestDistM": 41,
+      "nearest": "Αγία Άννα (#1981)",
+      "osmWithin250": 2,
+      "status": "DUP"
+    },
+    {
+      "nameGr": "Παραλία Σαχάρα",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Παρθένα",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Στελίδα",
+      "locality": "Νάξος",
+      "sources": [],
+      "coord": {
+        "lat": 37.07523,
+        "lon": 25.34901
+      },
+      "coordSrc": "nominatim:Παραλία Στελίδα, Νάξος",
+      "nearestDistM": 184,
+      "nearest": "Άγιος Προκόπιος (#1985)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Παραλία Παχιά Άμμος",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Λαγκάδα",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Άγιος Μάμας",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Καμινάκι",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Άγιος Ιωάννης",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Ορμός Αμμίτη",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Σαν Τζώρτζης",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Πλάκα Νότια",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Καλαμούρια",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Πάνερμος",
+      "locality": "Νάξος",
+      "sources": [],
+      "coord": {
+        "lat": 36.9589,
+        "lon": 25.53919
+      },
+      "coordSrc": "nominatim:Panermos beach Naxos, South Aegean",
+      "nearestDistM": 58,
+      "nearest": "Πάνορμος (#2011)",
+      "osmWithin250": 1,
+      "status": "DUP"
+    },
+    {
+      "nameGr": "Παραλία Αγία Άννα Νότια",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Καστράκι Νότια",
+      "locality": "Νάξος",
+      "sources": [],
+      "coord": {
+        "lat": 37.00428,
+        "lon": 25.38539
+      },
+      "coordSrc": "nominatim:Kastraki south Naxos, South Aegean",
+      "nearestDistM": 414,
+      "nearest": "Καστράκι (#1997)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Παραλία Μπάνια",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παραλία Τσουνάκι",
+      "locality": "Νάξος",
+      "sources": [],
+      "status": "NO_GEOCODE"
+    }
+  ]
+}

@@ -1,23 +1,23 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-02T14:48:06.066Z",
+    "generatedAt": "2026-08-13T21:47:39.964Z",
     "harvestScope": "national",
-    "harvestGeneratedAt": "2026-08-02T14:44:41.348Z",
-    "existingBeaches": 2903,
+    "harvestGeneratedAt": "2026-08-13T21:47:39.077Z",
+    "existingBeaches": 2914,
     "osmCandidates": 3065,
     "classifications": {
-      "covered": 2821,
+      "covered": 2824,
       "external_coordinate_precision_candidate": 86,
       "possible_alias_or_nearby_section": 44,
-      "external_coordinate_mismatch_candidate": 36,
+      "external_coordinate_mismatch_candidate": 37,
       "pre_adjudicated_section": 47,
       "possible_nearby_missing_or_alias": 13,
-      "likely_missing_beach_candidate": 18
+      "likely_missing_beach_candidate": 14
     },
-    "genuineGaps": 18,
+    "genuineGaps": 14,
     "genuineGapTiers": {
       "medium": 1,
-      "low": 17
+      "low": 13
     },
     "googleConfirmed": false,
     "googleBilled": 0,
@@ -30,30 +30,6 @@
   },
   "summaryByRegion": [
     {
-      "region": "South Aegean",
-      "existing": 856,
-      "osmInArea": 884,
-      "covered": 843,
-      "likelyMissing": 5,
-      "possibleAlias": 6,
-      "coordinateMismatch": 20,
-      "sourceReview": 1,
-      "preAdjudicated": 9,
-      "coveragePct": 95.4
-    },
-    {
-      "region": "Attica",
-      "existing": 209,
-      "osmInArea": 216,
-      "covered": 206,
-      "likelyMissing": 4,
-      "possibleAlias": 3,
-      "coordinateMismatch": 2,
-      "sourceReview": 1,
-      "preAdjudicated": 0,
-      "coveragePct": 95.4
-    },
-    {
       "region": "Central Macedonia",
       "existing": 158,
       "osmInArea": 249,
@@ -64,6 +40,30 @@
       "sourceReview": 8,
       "preAdjudicated": 30,
       "coveragePct": 69.9
+    },
+    {
+      "region": "Attica",
+      "existing": 210,
+      "osmInArea": 216,
+      "covered": 207,
+      "likelyMissing": 3,
+      "possibleAlias": 3,
+      "coordinateMismatch": 2,
+      "sourceReview": 1,
+      "preAdjudicated": 0,
+      "coveragePct": 95.8
+    },
+    {
+      "region": "South Aegean",
+      "existing": 865,
+      "osmInArea": 884,
+      "covered": 845,
+      "likelyMissing": 3,
+      "possibleAlias": 6,
+      "coordinateMismatch": 20,
+      "sourceReview": 1,
+      "preAdjudicated": 9,
+      "coveragePct": 95.6
     },
     {
       "region": "Crete",
@@ -91,15 +91,15 @@
     },
     {
       "region": "Central Greece",
-      "existing": 198,
+      "existing": 199,
       "osmInArea": 194,
-      "covered": 191,
-      "likelyMissing": 1,
+      "covered": 192,
+      "likelyMissing": 0,
       "possibleAlias": 0,
       "coordinateMismatch": 0,
       "sourceReview": 0,
       "preAdjudicated": 2,
-      "coveragePct": 98.5
+      "coveragePct": 99
     },
     {
       "region": "East Macedonia and Thrace",
@@ -165,29 +165,16 @@
       "region": "Thessaly",
       "existing": 189,
       "osmInArea": 171,
-      "covered": 151,
+      "covered": 150,
       "likelyMissing": 0,
       "possibleAlias": 1,
-      "coordinateMismatch": 18,
+      "coordinateMismatch": 19,
       "sourceReview": 1,
       "preAdjudicated": 0,
-      "coveragePct": 88.3
+      "coveragePct": 87.7
     }
   ],
   "summaryByMunicipality": [
-    {
-      "region": "South Aegean",
-      "municipality": "Symi",
-      "existing": 9,
-      "osmInArea": 12,
-      "covered": 7,
-      "likelyMissing": 4,
-      "possibleAlias": 0,
-      "coordinateMismatch": 1,
-      "sourceReview": 0,
-      "preAdjudicated": 0,
-      "coveragePct": 58.3
-    },
     {
       "region": "Attica",
       "municipality": "East Attica (mainland)",
@@ -200,19 +187,6 @@
       "sourceReview": 1,
       "preAdjudicated": 0,
       "coveragePct": 92.2
-    },
-    {
-      "region": "Attica",
-      "municipality": "West Attica (mainland)",
-      "existing": 6,
-      "osmInArea": 8,
-      "covered": 6,
-      "likelyMissing": 2,
-      "possibleAlias": 0,
-      "coordinateMismatch": 0,
-      "sourceReview": 0,
-      "preAdjudicated": 0,
-      "coveragePct": 75
     },
     {
       "region": "Central Macedonia",
@@ -254,17 +228,30 @@
       "coveragePct": 81.8
     },
     {
-      "region": "Central Greece",
-      "municipality": "Fthiotida (mainland)",
-      "existing": 18,
-      "osmInArea": 20,
-      "covered": 19,
+      "region": "South Aegean",
+      "municipality": "Symi",
+      "existing": 11,
+      "osmInArea": 12,
+      "covered": 9,
+      "likelyMissing": 2,
+      "possibleAlias": 0,
+      "coordinateMismatch": 1,
+      "sourceReview": 0,
+      "preAdjudicated": 0,
+      "coveragePct": 75
+    },
+    {
+      "region": "Attica",
+      "municipality": "West Attica (mainland)",
+      "existing": 7,
+      "osmInArea": 8,
+      "covered": 7,
       "likelyMissing": 1,
       "possibleAlias": 0,
       "coordinateMismatch": 0,
       "sourceReview": 0,
       "preAdjudicated": 0,
-      "coveragePct": 95
+      "coveragePct": 87.5
     },
     {
       "region": "Crete",
@@ -465,6 +452,19 @@
       "region": "Central Greece",
       "municipality": "Fokida (mainland)",
       "existing": 21,
+      "osmInArea": 20,
+      "covered": 20,
+      "likelyMissing": 0,
+      "possibleAlias": 0,
+      "coordinateMismatch": 0,
+      "sourceReview": 0,
+      "preAdjudicated": 0,
+      "coveragePct": 100
+    },
+    {
+      "region": "Central Greece",
+      "municipality": "Fthiotida (mainland)",
+      "existing": 19,
       "osmInArea": 20,
       "covered": 20,
       "likelyMissing": 0,
@@ -1101,7 +1101,7 @@
     {
       "region": "South Aegean",
       "municipality": "Naxos",
-      "existing": 39,
+      "existing": 44,
       "osmInArea": 34,
       "covered": 33,
       "likelyMissing": 0,
@@ -1114,7 +1114,7 @@
     {
       "region": "South Aegean",
       "municipality": "Paros",
-      "existing": 37,
+      "existing": 39,
       "osmInArea": 43,
       "covered": 39,
       "likelyMissing": 0,
@@ -1545,13 +1545,13 @@
       "municipality": "Alonissos",
       "existing": 40,
       "osmInArea": 37,
-      "covered": 26,
+      "covered": 25,
       "likelyMissing": 0,
       "possibleAlias": 0,
-      "coordinateMismatch": 11,
+      "coordinateMismatch": 12,
       "sourceReview": 0,
       "preAdjudicated": 0,
-      "coveragePct": 70.3
+      "coveragePct": 67.6
     },
     {
       "region": "Thessaly",
@@ -16154,7 +16154,7 @@
       "nearestExistingBeach": {
         "id": 2056,
         "name": "Χρυσή Ακτή",
-        "distanceMeters": 127.1
+        "distanceMeters": 0.4
       },
       "sameNameBeach": {
         "id": 733,
@@ -19584,14 +19584,14 @@
       "assignedPrefecture": "Cyclades",
       "assignedMunicipality": "Paros",
       "nearestExistingBeach": {
-        "id": 2037,
-        "name": "Μαρτσέλο",
-        "distanceMeters": 0.4
+        "id": 2031,
+        "name": "Κριός",
+        "distanceMeters": 51.1
       },
       "sameNameBeach": {
         "id": 2037,
         "name": "Μαρτσέλο",
-        "distanceMeters": 0.4
+        "distanceMeters": 195.9
       },
       "tags": {
         "name": "MARTSELO BEACH",
@@ -21897,9 +21897,9 @@
       "assignedPrefecture": "Cyclades",
       "assignedMunicipality": "Paros",
       "nearestExistingBeach": {
-        "id": 2056,
-        "name": "Χρυσή Ακτή",
-        "distanceMeters": 0
+        "id": 2043,
+        "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+        "distanceMeters": 0.4
       },
       "sameNameBeach": {
         "id": 2043,
@@ -27697,7 +27697,7 @@
       "nearestExistingBeach": {
         "id": 2037,
         "name": "Μαρτσέλο",
-        "distanceMeters": 550
+        "distanceMeters": 395.3
       },
       "sameNameBeach": null,
       "tags": {
@@ -38850,6 +38850,38 @@
       "priorityTier": "medium"
     },
     {
+      "osmId": "way/1446848567",
+      "osmUrl": "https://www.openstreetmap.org/way/1446848567",
+      "name": "Βαρδάρι",
+      "displayName": "Vardari",
+      "coordinates": {
+        "lat": 37.9768368,
+        "lon": 23.3232941
+      },
+      "classification": "covered",
+      "assignedRegion": "Attica",
+      "assignedPrefecture": "West Attica",
+      "assignedMunicipality": "West Attica (mainland)",
+      "nearestExistingBeach": {
+        "id": 3168,
+        "name": "Βαρδάρι",
+        "distanceMeters": 0
+      },
+      "sameNameBeach": {
+        "id": 3168,
+        "name": "Βαρδάρι",
+        "distanceMeters": 0
+      },
+      "tags": {
+        "name": "Βαρδάρι",
+        "natural": "beach"
+      },
+      "flags": [],
+      "google": null,
+      "priorityScore": 25,
+      "priorityTier": "medium"
+    },
+    {
       "osmId": "way/391321385",
       "osmUrl": "https://www.openstreetmap.org/way/391321385",
       "name": "Βοτσαλάκια",
@@ -41709,6 +41741,39 @@
       },
       "tags": {
         "name": "Λιανή Άμμος",
+        "natural": "beach"
+      },
+      "flags": [],
+      "google": null,
+      "priorityScore": 25,
+      "priorityTier": "medium"
+    },
+    {
+      "osmId": "node/14056200360",
+      "osmUrl": "https://www.openstreetmap.org/node/14056200360",
+      "name": "Λιασίκι",
+      "displayName": "Liasiki",
+      "coordinates": {
+        "lat": 38.9084958,
+        "lon": 22.8376082
+      },
+      "classification": "covered",
+      "assignedRegion": "Central Greece",
+      "assignedPrefecture": "Fthiotida",
+      "assignedMunicipality": "Fthiotida (mainland)",
+      "nearestExistingBeach": {
+        "id": 3169,
+        "name": "Λιασίκι",
+        "distanceMeters": 0
+      },
+      "sameNameBeach": {
+        "id": 3169,
+        "name": "Λιασίκι",
+        "distanceMeters": 0
+      },
+      "tags": {
+        "fixme": "turn to area",
+        "name": "Λιασίκι",
         "natural": "beach"
       },
       "flags": [],
@@ -85887,6 +85952,35 @@
       "priorityTier": "medium"
     },
     {
+      "osmId": "way/512906901",
+      "osmUrl": "https://www.openstreetmap.org/way/512906901",
+      "name": "Marathounda Bay",
+      "displayName": "Marathounda Bay",
+      "coordinates": {
+        "lat": 36.5665843,
+        "lon": 27.8618336
+      },
+      "classification": "covered",
+      "assignedRegion": "South Aegean",
+      "assignedPrefecture": "Dodecanese",
+      "assignedMunicipality": "Symi",
+      "nearestExistingBeach": {
+        "id": 3170,
+        "name": "Μαραθούντα",
+        "distanceMeters": 3
+      },
+      "sameNameBeach": null,
+      "tags": {
+        "name": "Marathounda Bay",
+        "natural": "beach",
+        "surface": "sand"
+      },
+      "flags": [],
+      "google": null,
+      "priorityScore": 25,
+      "priorityTier": "medium"
+    },
+    {
       "osmId": "way/495209179",
       "osmUrl": "https://www.openstreetmap.org/way/495209179",
       "name": "Μαρκουλη",
@@ -88192,14 +88286,10 @@
       "assignedMunicipality": "Antiparos",
       "nearestExistingBeach": {
         "id": 3072,
-        "name": "Παραλία Μονατήρι",
+        "name": "Παραλία Μοναστήρι",
         "distanceMeters": 0
       },
-      "sameNameBeach": {
-        "id": 3072,
-        "name": "Παραλία Μονατήρι",
-        "distanceMeters": 0
-      },
+      "sameNameBeach": null,
       "tags": {
         "name": "Παραλία Μονατήρι",
         "natural": "beach"
@@ -88303,6 +88393,42 @@
       "tags": {
         "name": "Παραλία Παναγίας Δεσποτικού",
         "natural": "beach"
+      },
+      "flags": [],
+      "google": null,
+      "priorityScore": 25,
+      "priorityTier": "medium"
+    },
+    {
+      "osmId": "way/1539772537",
+      "osmUrl": "https://www.openstreetmap.org/way/1539772537",
+      "name": "Παραλία Πανορμίτη",
+      "displayName": "Paralia Panormiti",
+      "coordinates": {
+        "lat": 36.5487601,
+        "lon": 27.8418936
+      },
+      "classification": "covered",
+      "assignedRegion": "South Aegean",
+      "assignedPrefecture": "Dodecanese",
+      "assignedMunicipality": "Symi",
+      "nearestExistingBeach": {
+        "id": 3171,
+        "name": "Παραλία Πανορμίτη",
+        "distanceMeters": 0
+      },
+      "sameNameBeach": {
+        "id": 3171,
+        "name": "Παραλία Πανορμίτη",
+        "distanceMeters": 0
+      },
+      "tags": {
+        "alt_name": "Panormitis Plajı",
+        "lifeguard": "no",
+        "name": "Παραλία Πανορμίτη",
+        "natural": "beach",
+        "supervised": "no",
+        "surface": "sand"
       },
       "flags": [],
       "google": null,
@@ -92909,19 +93035,19 @@
         "lat": 39.1645567,
         "lon": 23.9039917
       },
-      "classification": "external_coordinate_mismatch_candidate",
+      "classification": "covered",
       "assignedRegion": "Thessaly",
       "assignedPrefecture": "Magnesia (Sporades)",
       "assignedMunicipality": "Alonissos",
       "nearestExistingBeach": {
-        "id": 2612,
-        "name": "Τζώρτζη",
-        "distanceMeters": 724.8
+        "id": 2594,
+        "name": "Κοκκινόκαστρο",
+        "distanceMeters": 0.4
       },
       "sameNameBeach": {
         "id": 2594,
         "name": "Κοκκινόκαστρο",
-        "distanceMeters": 2560.4
+        "distanceMeters": 0.4
       },
       "tags": {
         "name": "Κοκκινοκαστρο",
@@ -93139,14 +93265,14 @@
         "lat": 39.1523872,
         "lon": 23.8795117
       },
-      "classification": "covered",
+      "classification": "external_coordinate_mismatch_candidate",
       "assignedRegion": "Thessaly",
       "assignedPrefecture": "Magnesia (Sporades)",
       "assignedMunicipality": "Alonissos",
       "nearestExistingBeach": {
-        "id": 2594,
-        "name": "Κοκκινόκαστρο",
-        "distanceMeters": 243.6
+        "id": 2601,
+        "name": "Παραλία Βότση",
+        "distanceMeters": 426.5
       },
       "sameNameBeach": {
         "id": 2595,
@@ -95002,14 +95128,14 @@
         "lat": 39.1542549,
         "lon": 23.8778198
       },
-      "classification": "covered",
+      "classification": "external_coordinate_mismatch_candidate",
       "assignedRegion": "Thessaly",
       "assignedPrefecture": "Magnesia (Sporades)",
       "assignedMunicipality": "Alonissos",
       "nearestExistingBeach": {
-        "id": 2594,
-        "name": "Κοκκινόκαστρο",
-        "distanceMeters": 34.1
+        "id": 2601,
+        "name": "Παραλία Βότση",
+        "distanceMeters": 499.7
       },
       "sameNameBeach": {
         "id": 2608,
@@ -98610,28 +98736,66 @@
       "priorityTier": "low"
     },
     {
-      "osmId": "way/512906901",
-      "osmUrl": "https://www.openstreetmap.org/way/512906901",
-      "name": "Marathounda Bay",
-      "displayName": "Marathounda Bay",
+      "osmId": "way/1539779530",
+      "osmUrl": "https://www.openstreetmap.org/way/1539779530",
+      "name": "Παραλία \"Βαθύς Γιαλός\"",
+      "displayName": "Paralia \"Vathys Gialos\"",
       "coordinates": {
-        "lat": 36.5665703,
-        "lon": 27.8618621
+        "lat": 36.5533698,
+        "lon": 27.869326
       },
       "classification": "likely_missing_beach_candidate",
       "assignedRegion": "South Aegean",
       "assignedPrefecture": "Dodecanese",
       "assignedMunicipality": "Symi",
       "nearestExistingBeach": {
-        "id": 2470,
-        "name": "Νανού",
-        "distanceMeters": 1760.9
+        "id": 3170,
+        "name": "Μαραθούντα",
+        "distanceMeters": 1612.1
       },
       "sameNameBeach": null,
       "tags": {
-        "name": "Marathounda Bay",
+        "lifeguard": "no",
+        "name": "Παραλία \"Βαθύς Γιαλός\"",
         "natural": "beach",
+        "supervised": "no",
         "surface": "sand"
+      },
+      "flags": [],
+      "google": null,
+      "priorityScore": 15,
+      "priorityTier": "low"
+    },
+    {
+      "osmId": "way/1539779152",
+      "osmUrl": "https://www.openstreetmap.org/way/1539779152",
+      "name": "Παραλία Φανερωμένη",
+      "displayName": "Paralia Faneromeni",
+      "coordinates": {
+        "lat": 36.5454561,
+        "lon": 27.8610542
+      },
+      "classification": "external_coordinate_mismatch_candidate",
+      "assignedRegion": "South Aegean",
+      "assignedPrefecture": "Dodecanese",
+      "assignedMunicipality": "Symi",
+      "nearestExistingBeach": {
+        "id": 3171,
+        "name": "Παραλία Πανορμίτη",
+        "distanceMeters": 1750.6
+      },
+      "sameNameBeach": {
+        "id": 1738,
+        "name": "Φανερωμένη",
+        "distanceMeters": 252646.6
+      },
+      "tags": {
+        "alt_name": "Faneromeni Beach",
+        "lifeguard": "no",
+        "name": "Παραλία Φανερωμένη",
+        "natural": "beach",
+        "supervised": "no",
+        "surface": "paved"
       },
       "flags": [],
       "google": null,
@@ -98851,67 +99015,6 @@
       "priorityTier": "low"
     },
     {
-      "osmId": "way/1446848567",
-      "osmUrl": "https://www.openstreetmap.org/way/1446848567",
-      "name": "Βαρδάρι",
-      "displayName": "Vardari",
-      "coordinates": {
-        "lat": 37.9768368,
-        "lon": 23.3232941
-      },
-      "classification": "likely_missing_beach_candidate",
-      "assignedRegion": "Attica",
-      "assignedPrefecture": "West Attica",
-      "assignedMunicipality": "West Attica (mainland)",
-      "nearestExistingBeach": {
-        "id": 188,
-        "name": "Παραλία Κινέτας",
-        "distanceMeters": 7318.2
-      },
-      "sameNameBeach": null,
-      "tags": {
-        "name": "Βαρδάρι",
-        "natural": "beach"
-      },
-      "flags": [
-        "isolated"
-      ],
-      "google": null,
-      "priorityScore": 5,
-      "priorityTier": "low"
-    },
-    {
-      "osmId": "node/14056200360",
-      "osmUrl": "https://www.openstreetmap.org/node/14056200360",
-      "name": "Λιασίκι",
-      "displayName": "Liasiki",
-      "coordinates": {
-        "lat": 38.9084958,
-        "lon": 22.8376082
-      },
-      "classification": "likely_missing_beach_candidate",
-      "assignedRegion": "Central Greece",
-      "assignedPrefecture": "Fthiotida",
-      "assignedMunicipality": "Fthiotida (mainland)",
-      "nearestExistingBeach": {
-        "id": 362,
-        "name": "Παραλία Αγίου Γεωργίου Πελασγίας",
-        "distanceMeters": 4450.7
-      },
-      "sameNameBeach": null,
-      "tags": {
-        "fixme": "turn to area",
-        "name": "Λιασίκι",
-        "natural": "beach"
-      },
-      "flags": [
-        "isolated"
-      ],
-      "google": null,
-      "priorityScore": 5,
-      "priorityTier": "low"
-    },
-    {
       "osmId": "node/9237786835",
       "osmUrl": "https://www.openstreetmap.org/node/9237786835",
       "name": "Agora Beach Bar & Restaurant",
@@ -99044,111 +99147,6 @@
         "name": "nimos beach",
         "name:el": "Νιμος",
         "natural": "beach"
-      },
-      "flags": [
-        "isolated"
-      ],
-      "google": null,
-      "priorityScore": 5,
-      "priorityTier": "low"
-    },
-    {
-      "osmId": "way/1539779530",
-      "osmUrl": "https://www.openstreetmap.org/way/1539779530",
-      "name": "Παραλία \"Βαθύς Γιαλός\"",
-      "displayName": "Paralia \"Vathys Gialos\"",
-      "coordinates": {
-        "lat": 36.5533698,
-        "lon": 27.869326
-      },
-      "classification": "likely_missing_beach_candidate",
-      "assignedRegion": "South Aegean",
-      "assignedPrefecture": "Dodecanese",
-      "assignedMunicipality": "Symi",
-      "nearestExistingBeach": {
-        "id": 2470,
-        "name": "Νανού",
-        "distanceMeters": 3332.6
-      },
-      "sameNameBeach": null,
-      "tags": {
-        "lifeguard": "no",
-        "name": "Παραλία \"Βαθύς Γιαλός\"",
-        "natural": "beach",
-        "supervised": "no",
-        "surface": "sand"
-      },
-      "flags": [
-        "isolated"
-      ],
-      "google": null,
-      "priorityScore": 5,
-      "priorityTier": "low"
-    },
-    {
-      "osmId": "way/1539779152",
-      "osmUrl": "https://www.openstreetmap.org/way/1539779152",
-      "name": "Παραλία Φανερωμένη",
-      "displayName": "Paralia Faneromeni",
-      "coordinates": {
-        "lat": 36.5454561,
-        "lon": 27.8610542
-      },
-      "classification": "external_coordinate_mismatch_candidate",
-      "assignedRegion": "South Aegean",
-      "assignedPrefecture": "Dodecanese",
-      "assignedMunicipality": "Symi",
-      "nearestExistingBeach": {
-        "id": 2470,
-        "name": "Νανού",
-        "distanceMeters": 4099
-      },
-      "sameNameBeach": {
-        "id": 1738,
-        "name": "Φανερωμένη",
-        "distanceMeters": 252646.6
-      },
-      "tags": {
-        "alt_name": "Faneromeni Beach",
-        "lifeguard": "no",
-        "name": "Παραλία Φανερωμένη",
-        "natural": "beach",
-        "supervised": "no",
-        "surface": "paved"
-      },
-      "flags": [
-        "isolated"
-      ],
-      "google": null,
-      "priorityScore": 5,
-      "priorityTier": "low"
-    },
-    {
-      "osmId": "way/1539772537",
-      "osmUrl": "https://www.openstreetmap.org/way/1539772537",
-      "name": "Παραλία Πανορμίτη",
-      "displayName": "Paralia Panormiti",
-      "coordinates": {
-        "lat": 36.5487601,
-        "lon": 27.8418936
-      },
-      "classification": "likely_missing_beach_candidate",
-      "assignedRegion": "South Aegean",
-      "assignedPrefecture": "Dodecanese",
-      "assignedMunicipality": "Symi",
-      "nearestExistingBeach": {
-        "id": 2470,
-        "name": "Νανού",
-        "distanceMeters": 4050.2
-      },
-      "sameNameBeach": null,
-      "tags": {
-        "alt_name": "Panormitis Plajı",
-        "lifeguard": "no",
-        "name": "Παραλία Πανορμίτη",
-        "natural": "beach",
-        "supervised": "no",
-        "surface": "sand"
       },
       "flags": [
         "isolated"

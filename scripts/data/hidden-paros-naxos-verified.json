@@ -1,0 +1,186 @@
+{
+  "batch": "hidden_paros_naxos_2026_08_13",
+  "note": "Παραλίες που το coverage pipeline δεν μπορούσε να δει: η OSM τις έχει ως ΑΝΩΝΥΜΑ natural=beach πολύγωνα, οπότε πέφτουν έξω από το name-keyed matching. Το τοπωνύμιο της καθεμιάς επιβεβαιώθηκε ΞΕΧΩΡΙΣΤΑ με Overpass (κοντινό place=hamlet/locality) και με Nominatim reverse — δεν μπήκε καμία με όνομα-εικασία. Η πρόσβαση προκύπτει από τους δρόμους που όντως υπάρχουν γύρω από κάθε πολύγωνο (highway=* σε ακτίνα 350 m), όχι από επιτόπου έλεγχο: γι' αυτό όλες μπαίνουν confidence:low + needsVerification.",
+  "beaches": [
+    {
+      "nameGr": "Πίσω Λιβάδι",
+      "aliases": ["Piso Livadi"],
+      "lat": 37.0392,
+      "lon": 25.26163,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Paros",
+      "coordSrc": "OSM node/6694985283 (natural=beach) στο ίδιο το χωριό",
+      "sourceNote": "Η παραλία του ομώνυμου παραθαλάσσιου χωριού στην ανατολική Πάρο, ~1 χλμ βόρεια από τον Λογαρά. Ήταν ανώνυμο σημείο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 400 m υπάρχουν Blue Horizon apartments (166 m), Kohili studios (181 m), Elena Studios (246 m), Aloni Hotel (309 m) και εστιατόριο Anthi Meze (396 m) — οικισμός, όχι ερημιά. Πρόσβαση: δρόμος οικισμού 83 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/node/6694985283",
+        "https://www.openstreetmap.org/way/299567908"
+      ],
+      "metadata": {
+        "access": {
+          "type": "asphalt_road",
+          "label": "Πρόσβαση με άσφαλτο",
+          "notes": "Μέσα στον οικισμό του Πίσω Λιβαδιού· δρόμος οικισμού 83 m από την ακτή (OSM). Δεν επιβεβαιώθηκε επιτόπου η τελική προσέγγιση ούτε οργανωμένο parking."
+        },
+        "terrain": { "types": ["sand"], "label": "άμμος" },
+        "organized": false,
+        "shade": false,
+        "amenities": ["ταβέρνες κοντά", "καταλύματα κοντά"]
+      }
+    },
+    {
+      "nameGr": "Μακριά Μύτη",
+      "aliases": ["Makria Myti"],
+      "lat": 36.99491,
+      "lon": 25.11651,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Paros",
+      "coordSrc": "OSM way/272567726 (ανώνυμο natural=beach) + οικισμός «Μακριά Μύτη» 392 m",
+      "sourceNote": "Ακτή στο ακρωτήρι Μακριά Μύτη, ΝΔ της Αλυκής, ~1,3 χλμ από την παραλία Αλυκή. Το τοπωνύμιο επιβεβαιώθηκε από place=hamlet «Μακριά Μύτη» στα 392 m και από Nominatim reverse. Πρόσβαση: μόνο αγροτικοί/βοηθητικοί δρόμοι 125 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/272567726"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Βατός χωματόδρομος",
+          "notes": "Βοηθητικοί δρόμοι 125 m από την ακτή (OSM), χωρίς ασφαλτοστρωμένη σύνδεση. Δεν επιβεβαιώθηκε επιτόπου."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Στελίδα",
+      "aliases": ["Stelida"],
+      "lat": 37.08244,
+      "lon": 25.34132,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Naxos",
+      "coordSrc": "OSM way/521211106 (ανώνυμο natural=beach) + οικισμός «Στελίδα» 264 m",
+      "sourceNote": "Ακτή στη χερσόνησο της Στελίδας, ~950 m βόρεια από τον Άγιο Προκόπιο — τουριστικά από τις πιο πυκνοδομημένες περιοχές της Νάξου, αλλά η ίδια η ακτή δεν είχε εγγραφή. Τοπωνύμιο: place=hamlet «Στελίδα» στα 264 m. Πρόσβαση: μόνο μονοπάτια/χωματόδρομοι από 163 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/521211106",
+        "https://www.openstreetmap.org/way/521211552"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Βατός χωματόδρομος",
+          "notes": "Χωματόδρομοι από 163 m (OSM)· καμία ασφαλτοστρωμένη πρόσβαση μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Κανάκι",
+      "aliases": ["Kanaki"],
+      "lat": 37.03539,
+      "lon": 25.57844,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Naxos",
+      "coordSrc": "OSM way/209086975 (ανώνυμο natural=beach)· Nominatim reverse επιστρέφει «Κανάκι»",
+      "sourceNote": "Ακτή στην ανατολική Νάξο, 2,5 χλμ από την πλησιέστερη δική μας εγγραφή (Ψιλή Άμμος) — το μεγαλύτερο κενό του νησιού. Τοπωνύμιο «Κανάκι» από Nominatim reverse· εκκλησάκι Αγίου Ιωάννη 139 m. Πρόσβαση: βοηθητικός δρόμος 278 m, χωματόδρομος 434 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/209086975",
+        "https://www.openstreetmap.org/way/209085779"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Βατός χωματόδρομος",
+          "notes": "Βοηθητικός δρόμος 278 m και χωματόδρομος 434 m (OSM)· χωρίς άσφαλτο μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Φαρακλό",
+      "aliases": ["Faraklo"],
+      "lat": 37.19416,
+      "lon": 25.54437,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Naxos",
+      "coordSrc": "OSM way/712284364 (ανώνυμο natural=beach) + οικισμός «Φαρακλό» 289 m",
+      "sourceNote": "Ακτή στη βόρεια Νάξο, ~1,7 χλμ από τον Απόλλωνα. Τοπωνύμιο: place=hamlet «Φαρακλό» στα 289 m, επιβεβαιωμένο και από Nominatim reverse. Πρόσβαση: χωματόδρομος 333 m, άσφαλτος (επαρχιακή) στα 701 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/712284364",
+        "https://www.openstreetmap.org/way/499499305"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Βατός χωματόδρομος",
+          "notes": "Χωματόδρομος 333 m από την ακτή· η επαρχιακή άσφαλτος σταματά 701 m πιο πάνω (OSM). Δεν επιβεβαιώθηκε επιτόπου."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Γαλήνη",
+      "aliases": ["Galini"],
+      "lat": 37.13549,
+      "lon": 25.41522,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Naxos",
+      "coordSrc": "OSM way/1175256989 (ανώνυμο natural=beach)· Nominatim reverse επιστρέφει «Γαλήνη»",
+      "sourceNote": "Ακτή στη ΒΔ Νάξο, ~1,8 χλμ από τον Αμμίτη, στην περιοχή Γαλήνης. Τοπωνύμιο από Nominatim reverse· κοντινότερο ονομασμένο σημείο η κορυφή «Καντήλι» 473 m. Πρόσβαση: χωματόδρομοι από 316 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1175256989",
+        "https://www.openstreetmap.org/way/1175256988"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Βατός χωματόδρομος",
+          "notes": "Χωματόδρομοι από 316 m (OSM)· χωρίς άσφαλτο μέχρι την ακτή. Δεν επιβεβαιώθηκε επιτόπου."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    },
+    {
+      "nameGr": "Ακρωτήρι",
+      "aliases": ["Akrotiri"],
+      "lat": 37.14053,
+      "lon": 25.45029,
+      "region": "South Aegean",
+      "prefecture": "Cyclades",
+      "municipality": "Naxos",
+      "coordSrc": "OSM way/1195230333 (ανώνυμο natural=beach) + οικισμός «Ακρωτήρι» 371 m",
+      "sourceNote": "Ακτή στη βόρεια Νάξο, ~1 χλμ από τη Γλατζά. Τοπωνύμιο: place=hamlet «Ακρωτήρι» στα 371 m. ΠΡΟΣΟΧΗ: δεν βρέθηκε κανένας δρόμος ούτε μονοπάτι σε ακτίνα 350 m — η πρόσβαση παραμένει άγνωστη και μπορεί να είναι μόνο με τα πόδια ή με σκάφος.",
+      "sourceUrls": [
+        "https://www.openstreetmap.org/way/1195230333"
+      ],
+      "metadata": {
+        "access": {
+          "type": "unknown",
+          "label": "Πρόσβαση μη επιβεβαιωμένη",
+          "notes": "Κανένας χαρτογραφημένος δρόμος ή μονοπάτι σε 350 m (OSM). Δεν ξέρουμε πώς φτάνει κανείς — μη βασιστείτε σε αυτή την εγγραφή για διαδρομή."
+        },
+        "terrain": { "types": [], "label": "μη επιβεβαιωμένο έδαφος ακτής" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    }
+  ]
+}

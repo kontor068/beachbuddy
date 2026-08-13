@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T20:05:08.575Z",
+  "generatedAt": "2026-08-13T19:24:03.948Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2854,
-    "generatedProfiles": 2854,
+    "beachCount": 2861,
+    "generatedProfiles": 2861,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -4128,49 +4128,49 @@
       },
       "south-aegean-naxos": {
         "regionName": "Naxos",
-        "beachCount": 39,
-        "generatedProfiles": 39,
+        "beachCount": 44,
+        "generatedProfiles": 44,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 22,
-            "partial": 6,
-            "exposed": 11
+            "protected": 23,
+            "partial": 8,
+            "exposed": 13
           },
           "NE": {
-            "protected": 25,
-            "partial": 6,
-            "exposed": 8
+            "protected": 26,
+            "partial": 8,
+            "exposed": 10
           },
           "E": {
-            "protected": 26,
+            "protected": 29,
             "partial": 4,
-            "exposed": 9
+            "exposed": 11
           },
           "SE": {
-            "protected": 24,
+            "protected": 27,
             "partial": 8,
-            "exposed": 7
+            "exposed": 9
           },
           "S": {
-            "protected": 19,
-            "partial": 11,
+            "protected": 23,
+            "partial": 12,
             "exposed": 9
           },
           "SW": {
-            "protected": 17,
-            "partial": 9,
+            "protected": 21,
+            "partial": 10,
             "exposed": 13
           },
           "W": {
-            "protected": 13,
-            "partial": 10,
-            "exposed": 16
+            "protected": 15,
+            "partial": 11,
+            "exposed": 18
           },
           "NW": {
-            "protected": 17,
+            "protected": 19,
             "partial": 7,
-            "exposed": 15
+            "exposed": 18
           }
         }
       },
@@ -4224,48 +4224,48 @@
       },
       "south-aegean-paros": {
         "regionName": "Paros",
-        "beachCount": 37,
-        "generatedProfiles": 37,
+        "beachCount": 39,
+        "generatedProfiles": 39,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 25,
+            "protected": 27,
             "partial": 8,
             "exposed": 4
           },
           "NE": {
-            "protected": 22,
-            "partial": 10,
+            "protected": 23,
+            "partial": 11,
             "exposed": 5
           },
           "E": {
             "protected": 20,
-            "partial": 9,
-            "exposed": 8
+            "partial": 10,
+            "exposed": 9
           },
           "SE": {
-            "protected": 13,
+            "protected": 14,
             "partial": 9,
-            "exposed": 15
+            "exposed": 16
           },
           "S": {
             "protected": 14,
             "partial": 12,
-            "exposed": 11
+            "exposed": 13
           },
           "SW": {
-            "protected": 19,
+            "protected": 20,
             "partial": 11,
-            "exposed": 7
+            "exposed": 8
           },
           "W": {
-            "protected": 21,
+            "protected": 23,
             "partial": 14,
             "exposed": 2
           },
           "NW": {
-            "protected": 26,
-            "partial": 5,
+            "protected": 27,
+            "partial": 6,
             "exposed": 6
           }
         }

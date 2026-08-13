@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-08-13T18:47:03.167Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 788
+  },
+  "totals": {
+    "beachesScanned": 39,
+    "omissionsStrong": 0,
+    "omissionsMedium": 3,
+    "errorsOrganizedButEmpty": 1,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 2
+  },
+  "omissions": [
+    {
+      "id": 2003,
+      "name": "Λίωνας",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "restaurant κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ntoyzenia\" (restaurant, 58m)"
+      ],
+      "ratingCount": 244
+    },
+    {
+      "id": 1994,
+      "name": "Γρόττα",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [],
+      "evidence": [
+        "bar/resort 161m away: \"Labyrinth\" (bar)"
+      ],
+      "ratingCount": 49
+    },
+    {
+      "id": 2009,
+      "name": "Μουτσούνα",
+      "regionId": "south-aegean-naxos",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες κοντά",
+        "restaurant κοντά",
+        "καφέ κοντά",
+        "parking κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Sea you soon\" (restaurant, 23m)"
+      ],
+      "ratingCount": null
+    }
+  ],
+  "errors": [
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "regionId": "south-aegean-naxos",
+      "kind": "organized-but-empty",
+      "detail": "organized:true but amenities:[] — nothing backs the claim",
+      "ratingCount": null
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "regionId": "south-aegean-naxos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 2013,
+      "name": "Πυργάκι",
+      "regionId": "south-aegean-naxos",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "restaurant κοντά",
+        "parking κοντά",
+        "ξαπλώστρες, ομπρέλες εποχικά"
+      ],
+      "ratingCount": 279
+    }
+  ]
+}
