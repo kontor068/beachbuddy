@@ -72,7 +72,6 @@ export default defineConfig(({ mode }) => {
                   'services/beachImageService.ts',
                   'services/beachPhotos.ts',
                   'src/data/beachImages.milos.json',
-                  'utils/islandContextStrip.ts',
                 ])) {
                   return 'beach-media';
                 }
@@ -89,7 +88,6 @@ export default defineConfig(({ mode }) => {
                   'hooks/useWeather.ts',
                   'services/analyticsService.ts',
                   'services/beachDataLoader.ts',
-                  'services/beachPhotos.ts',
                   'services/forecastVerificationService.ts',
                   'services/geospatialExposureService.ts',
                   'services/recommendationService.ts',
@@ -138,7 +136,6 @@ export default defineConfig(({ mode }) => {
                   'components/TodayScoreBadge.tsx',
                   'components/UnsafeConditionsMessage.tsx',
                   'components/WeatherSummary.tsx',
-                  'components/WindInfo.tsx',
                   'components/photos/CuratedPhotoImage.tsx',
                   'components/photos/index.ts',
                 ])) {
@@ -149,9 +146,17 @@ export default defineConfig(({ mode }) => {
                 // thing that ever downloads it — a visitor who never logs in (the
                 // overwhelming majority) pays nothing for the feature existing.
                 // Anything added here must stay off the import path of App.tsx.
+                //
+                // 13/08/2026 — that rule was being broken and the chunk was landing on
+                // every first paint. App.tsx imports useAuth and useFavoritesSync
+                // directly (it has to: they are hooks), which dragged the whole chunk in
+                // — including the 27 KB account panel nobody sees until they click their
+                // own avatar. The panel is now lazy-loaded from Header.tsx, so it is
+                // deliberately NOT listed here: leaving it in this list would glue it
+                // back to the eager modules and undo the split. The hooks below stay,
+                // because they are genuinely needed on first paint to answer "is anyone
+                // signed in?" — they never touch the Supabase SDK unless one is.
                 if (isAnyProjectModule(id, [
-                  'components/account/AccountPanel.tsx',
-                  'components/account/BeachProfileSection.tsx',
                   'components/auth/AuthCallbackScreen.tsx',
                   'hooks/useAuth.ts',
                   'hooks/useFavoritesSync.ts',

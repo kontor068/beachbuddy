@@ -17,9 +17,10 @@ import { detectSearchIntentFilters } from './searchIntent';
  * ts.transpileModule require hook. A function inside the 6,200-line App.tsx is
  * unreachable from there. Everything here is pure and React-free on purpose.
  *
- * DO NOT extend utils/searchParser.ts or services/aiAdvisorService.ts — both are
- * abandoned English-only parsers with zero live callers. A second parser next to
- * this one guarantees someone edits the wrong file.
+ * DO NOT resurrect a second parser next to this one. utils/searchParser.ts was an
+ * abandoned English-only parser with zero live callers and was deleted on 13/08/2026;
+ * services/aiAdvisorService.ts is the same thing behind a flag that is hard-coded off.
+ * Two parsers guarantee someone edits the wrong file.
  */
 
 /** Words that carry no place meaning. Scoring these is what makes «θα» match Θάσος. */

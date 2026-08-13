@@ -1,10 +1,19 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { CalendarDays, Check, ChevronDown, CloudSun, Languages, User } from 'lucide-react';
-import AccountPanel from './account/AccountPanel';
 import type { BeachProfile } from '../types';
+import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+
+// The account panel is 27 KB of markup nobody sees until they click their own avatar,
+// and the header renders on every single page. Loading it eagerly put the whole
+// `account-ui` chunk on the first paint of every visit — which is exactly what the
+// comment above that chunk in vite.config.ts forbids. It now arrives on the click.
+const AccountPanel = lazyWithChunkRecovery(
+  () => import('./account/AccountPanel'),
+  'AccountPanel'
+);
 
 interface HeaderProps {
   language: SupportedLanguage;
@@ -291,6 +300,7 @@ const Header: React.FC<HeaderProps> = ({
                 </button>
 
                 {isAccountMenuOpen && onDeleteAccount && (
+                  <Suspense fallback={null}>
                   <AccountPanel
                     language={language}
                     name={accountName ?? null}
@@ -310,6 +320,7 @@ const Header: React.FC<HeaderProps> = ({
                     onDeleteAccount={onDeleteAccount}
                     onClose={() => setIsAccountMenuOpen(false)}
                   />
+                  </Suspense>
                 )}
               </div>
             )}
