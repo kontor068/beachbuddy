@@ -30,7 +30,7 @@
  * Run: node scripts/validateTileFit.mjs
  */
 import { chromium } from '@playwright/test';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import path from 'node:path';
 
 const PORT = 4191;
@@ -62,9 +62,25 @@ const PAGES = [
   ['it', '/it/beaches/milos/1900-agios-sostis/'],
 ];
 
+const vite = path.join('node_modules', 'vite', 'bin', 'vite.js');
+
+// PRE-BUILD THE DEPENDENCIES BEFORE ANYTHING IS MEASURED — added 13/08/2026.
+//
+// A vite dev server bundles the app's dependencies the first time a page asks for them, and
+// when it discovers one it had not planned for it re-does the job and tells every open page to
+// reload — cancelling whatever was in flight. On a laptop the cache from the last run is
+// already on disk and this never happens. On a CI runner, which starts from `npm ci` with no
+// cache at all, it happens somewhere in the first minute, and the page that was mid-load comes
+// back with nothing on it — which this gate then reported as «no tiles: nothing was measured».
+// That is a false red: nothing is wrong with the layout, the server moved under it.
+//
+// Doing the work up front, before the browser exists, removes the event entirely rather than
+// waiting it out.
+spawnSync(process.execPath, [vite, 'optimize', '--force'], { stdio: 'ignore', env: process.env });
+
 const server = spawn(
   process.execPath,
-  [path.join('node_modules', 'vite', 'bin', 'vite.js'), '--host', '127.0.0.1', '--port', String(PORT)],
+  [vite, '--host', '127.0.0.1', '--port', String(PORT)],
   { stdio: ['ignore', 'ignore', 'inherit'], env: process.env },
 );
 
@@ -85,6 +101,18 @@ try {
         timezoneId: 'Europe/Athens',
       });
       const page = await ctx.newPage();
+      // An empty card has two possible authors — a broken page or a server that moved under
+      // it — and until 13/08/2026 the gate could not tell them apart: it said «nothing was
+      // measured» and left whoever read it to guess. Now the page's own complaints are kept,
+      // so the failure names its cause.
+      const pageSaid = new Set();
+      page.on('pageerror', error => pageSaid.add(`page error: ${error.message.split('\n')[0]}`));
+      page.on('requestfailed', request => pageSaid.add(`request failed: ${request.url().replace(BASE, '')} (${request.failure()?.errorText})`));
+      page.on('response', response => {
+        if (response.status() >= 400 && response.url().startsWith(BASE)) {
+          pageSaid.add(`${response.status()} on ${response.url().replace(BASE, '')}`);
+        }
+      });
       await page.goto(BASE + route, { waitUntil: 'domcontentloaded', timeout: 90000 });
       // Wait for the tiles themselves, not for a stopwatch. A cold vite server compiles the
       // first route on demand and the first two viewports came back empty on a fixed 4 s wait —
@@ -96,11 +124,15 @@ try {
       // few runs gets ignored on the run that matters, so a missed render now costs a reload and
       // a second look before it is allowed to be a failure — never a lowered bar, just a
       // refusal to report a timing miss as a layout defect.
+      // One reload was not enough: on 13/08/2026 the CI run came back with gr @390px empty
+      // after its retry, on a run where all nineteen other viewports measured clean and no
+      // word was clipped anywhere. Two reloads, because the thing being outlasted is a server
+      // event that happens once — not a layout that would fail identically every time.
       let appeared = await page.waitForSelector('[data-tilefit]', { timeout: 60000 }).then(() => true, () => false);
-      if (!appeared) {
+      for (let retry = 1; retry <= 2 && !appeared; retry += 1) {
         await page.reload({ waitUntil: 'domcontentloaded', timeout: 90000 });
         appeared = await page.waitForSelector('[data-tilefit]', { timeout: 60000 }).then(() => true, () => false);
-        console.log(`  (retry after empty first paint: ${lang} @${width}px → ${appeared ? 'rendered' : 'STILL EMPTY'})`);
+        console.log(`  (retry ${retry} after empty first paint: ${lang} @${width}px → ${appeared ? 'rendered' : 'still empty'})`);
       }
       await wait(1200);
 
@@ -189,7 +221,10 @@ try {
       // A page that rendered no tiles proves nothing, and silence is how the German run passed
       // while measuring an empty page. Treat it as a failure of the gate, not of the layout.
       if (found.tiles === 0) {
-        failures.push(`${lang} @${width}px: no [data-tilefit] tiles on ${route} — nothing was measured`);
+        const why = pageSaid.size
+          ? ` · the page said: ${[...pageSaid].slice(0, 3).join(' | ')}`
+          : ' · the page reported no error of its own, so look at the dev server, not the card';
+        failures.push(`${lang} @${width}px: no [data-tilefit] tiles on ${route} — nothing was measured${why}`);
         continue;
       }
       measured += found.nodes.length;
