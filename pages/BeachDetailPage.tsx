@@ -2885,10 +2885,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
           {(feedbackSubmitted || feedbackAlreadyGiven) ? (
             <div
-              className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-3 py-3 text-emerald-700"
+              className="flex items-start gap-3 rounded-2xl bg-emerald-50 px-4 py-4 text-emerald-800"
+              role="status"
             >
-              <CheckCircle2 className="w-5 h-5" />
-              <p className="font-bold">{{ en: 'Thank you for your feedback!', gr: 'Ευχαριστούμε για το feedback!', de: 'Danke für dein Feedback!', it: 'Grazie per il feedback!', fr: 'Merci pour votre avis !' }[language]}</p>
+              <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="font-bold">{{ en: 'Thank you so much!', gr: 'Σε ευχαριστούμε πολύ!', de: 'Vielen herzlichen Dank!', it: 'Grazie di cuore!', fr: 'Merci beaucoup !' }[language]}</p>
+                <p className="text-sm leading-snug text-emerald-700">{{
+                  en: 'You help us enormously to get better — you are our eyes on the beach.',
+                  gr: 'Μας βοηθάς απίστευτα να γινόμαστε καλύτεροι — είσαι τα μάτια μας στις παραλίες.',
+                  de: 'Du hilfst uns enorm, besser zu werden — du bist unsere Augen am Strand.',
+                  it: 'Ci aiuti tantissimo a migliorare — sei i nostri occhi in spiaggia.',
+                  fr: 'Vous nous aidez énormément à nous améliorer — vous êtes nos yeux sur la plage.',
+                }[language]}</p>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
