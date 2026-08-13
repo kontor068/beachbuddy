@@ -188,12 +188,38 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
  */
 export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
 
+/**
+ * ⚠️ THE DISCOUNT IS EARNED AGAINST THE WAVE, NOT AGAINST THE WIND (13/08/2026).
+ *
+ * `exposureLevel` answers "is this shore sheltered from the wind blowing right now". For most of
+ * the year that is a fair stand-in for "is it sheltered from the sea", because the sea IS the
+ * wind's. It stops being one the moment the two point different ways — and the commonest way for
+ * that to happen is the most ordinary summer morning there is, an offshore land breeze over a
+ * shore with a swell still running onto it.
+ *
+ * Καβαλικευτά, Λευκάδα, 13/08/2026, reported by a user standing on the beach: NE wind straight off
+ * the land, so every wind test called the beach protected and this function halved its sea — while
+ * the water was arriving from 306–320° into a shore facing 284,8°, through W/NW sectors carrying
+ * 25 km of fetch and zero blocked rays. The discount was paid for shelter the beach did not have
+ * against the wave it actually had.
+ *
+ * So the ×0,5 now needs BOTH: sheltered from today's wind AND sheltered from where the sea is
+ * coming in. `seaArrivalExposureLevel` (utils/seaArrival.resolveSeaArrivalExposureLevel) answers
+ * the second, and `undefined` — no geometry, no wave direction, or a sea not running onshore —
+ * means "no opinion", which leaves this function exactly as it behaved before. It can only ever
+ * REFUSE a discount, never grant one, so no beach can come out of this change looking calmer.
+ */
 export const shoreSeaStateM = (
   openWaterSeaStateM: number | undefined,
-  exposureLevel: string | undefined
+  exposureLevel: string | undefined,
+  seaArrivalExposureLevel?: string | undefined
 ): number | undefined => {
   if (typeof openWaterSeaStateM !== 'number' || !Number.isFinite(openWaterSeaStateM)) return undefined;
-  const damping = exposureLevel === 'protected'
+  // Only 'protected' has ever carried a discount (see the block above), so the arrival test only
+  // has to defend that one rung: an arrival sector we have judged and NOT called protected takes
+  // the shore back to full height.
+  const shelteredFromTheSea = seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected';
+  const damping = exposureLevel === 'protected' && shelteredFromTheSea
     ? SHORE_DAMPING_BY_EXPOSURE.protected
     : exposureLevel === 'partial'
       ? SHORE_DAMPING_BY_EXPOSURE.partial

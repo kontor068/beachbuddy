@@ -144,6 +144,8 @@ type CardCopy = {
     seaEstimate: string;
     highWaves: string;
     someWaves: string;
+    /** utils/shoreBreak — deep water + a coarse shore, so a small sea still lands hard. */
+    shoreBreak: string;
     strongWind: string;
     windSportSpot: string;
     exposedToWind: (day: string, isToday: boolean) => string;
@@ -211,6 +213,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       seaEstimate: 'Sea estimate',
       highWaves: 'High waves',
       someWaves: 'Some waves',
+      shoreBreak: 'Calm sea, but the waves break a bit harder at the shore',
       strongWind: 'Strong wind',
       windSportSpot: 'Wind/watersports spot',
       exposedToWind: (day, isToday) => (isToday ? 'More exposed to wind' : `More exposed to wind ${day}`),
@@ -288,6 +291,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       seaEstimate: 'Εκτίμηση θάλασσας',
       highWaves: 'Υψηλό κύμα',
       someWaves: 'Λίγο κύμα',
+      shoreBreak: 'Ήρεμη θάλασσα, αλλά σκάει το κύμα λίγο παραπάνω στην ακτή',
       strongWind: 'Δυνατός αέρας',
       windSportSpot: 'Παραλία για wind sports',
       exposedToWind: (day, isToday) => (isToday ? 'Πιο εκτεθειμένη στον άνεμο' : `Πιο εκτεθειμένη στον άνεμο ${day}`),
@@ -368,6 +372,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       seaEstimate: 'Estimation de mer',
       highWaves: 'Vagues hautes',
       someWaves: 'Un peu de clapot',
+      shoreBreak: 'Mer calme, mais les vagues déferlent un peu plus au bord',
       strongWind: 'Vent fort',
       windSportSpot: 'Spot de sports nautiques',
       exposedToWind: (day, isToday) => (isToday ? 'Exposée au vent' : `Exposée au vent ${day}`),
@@ -445,6 +450,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       seaEstimate: 'Meeres-Schätzung',
       highWaves: 'Hohe Wellen',
       someWaves: 'Etwas Welle',
+      shoreBreak: 'Ruhige See, aber die Wellen brechen am Ufer etwas kräftiger',
       strongWind: 'Starker Wind',
       windSportSpot: 'Wind-/Wassersportspot',
       exposedToWind: (day, isToday) => (isToday ? 'Windexponiert' : `Windexponiert ${day}`),
@@ -522,6 +528,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       seaEstimate: 'Stima mare',
       highWaves: 'Onde alte',
       someWaves: 'Un po’ di onda',
+      shoreBreak: 'Mare calmo, ma le onde frangono un po’ di più a riva',
       strongWind: 'Vento forte',
       windSportSpot: 'Spot wind/watersport',
       exposedToWind: (day, isToday) => (isToday ? 'Esposta al vento' : `Esposta al vento ${day}`),
@@ -1003,6 +1010,8 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
       return warning.severity === 'critical'
         ? copy.highWaves
         : copy.someWaves;
+    case 'shore_break':
+      return copy.shoreBreak;
     case 'strong_wind':
       return copy.strongWind;
     case 'wind_sport_spot':
@@ -1020,6 +1029,43 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
     default:
       return warning.message;
   }
+};
+
+/** How many warning chips the card has room for. Was an inline `.slice(0, 2)`. */
+const MAX_VISIBLE_WARNINGS = 2;
+
+/**
+ * ΤΑ ΔΥΟ ΤΣΙΠΑΚΙΑ ΕΠΙΛΕΓΟΝΤΑΙ, ΔΕΝ ΕΙΝΑΙ ΤΑ ΔΥΟ ΠΡΩΤΑ (13/08/2026).
+ *
+ * The card has room for two, and it used to take whichever two the scoring pushed first. That is
+ * fine while every warning is about the wind — but `shore_break` (utils/shoreBreak) is raised late,
+ * after the gust and offshore-wind notes, and it exists for exactly the reader who is looking at a
+ * calm-looking card. On Καβαλικευτά, 13/08, it would have landed fourth in a list of five and never
+ * reached the screen — a note nobody sees is a note that was not added.
+ *
+ * So it earns a slot: if it is present but outside the visible pair, it replaces the MILDEST of the
+ * two rather than the first. A gust warning or a rough sea is never displaced by it — those are
+ * severity, this is context about the water the reader is already being told is calm.
+ */
+const WARNING_SEVERITY_RANK: Record<WarningFlag['severity'], number> = { critical: 0, warning: 1, info: 2 };
+
+export const pickVisibleWarnings = (warnings: readonly WarningFlag[]): WarningFlag[] => {
+  const visible = warnings.slice(0, MAX_VISIBLE_WARNINGS);
+  const shoreBreak = warnings.find(warning => warning.type === 'shore_break');
+  if (!shoreBreak || visible.includes(shoreBreak)) return visible;
+
+  let mildestIndex = 0;
+  for (let index = 1; index < visible.length; index += 1) {
+    if (WARNING_SEVERITY_RANK[visible[index].severity] >= WARNING_SEVERITY_RANK[visible[mildestIndex].severity]) {
+      mildestIndex = index;
+    }
+  }
+  // Only ever displaces another note, never a warning or a critical.
+  if (WARNING_SEVERITY_RANK[visible[mildestIndex].severity] < WARNING_SEVERITY_RANK[shoreBreak.severity]) return visible;
+
+  const picked = [...visible];
+  picked[mildestIndex] = shoreBreak;
+  return picked;
 };
 
 const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined, language: LanguageCode, selectedDate?: Date, selectedHour?: number): string => {
@@ -2099,7 +2145,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
         {warnings.length > 0 && (
           <div className="mb-3 flex flex-wrap gap-1.5">
-            {warnings.slice(0, 2).map((warning, index) => (
+            {pickVisibleWarnings(warnings).map((warning, index) => (
               <span
                 key={`${warning.type}-${index}`}
                 className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${warningToneClass(warning)}`}

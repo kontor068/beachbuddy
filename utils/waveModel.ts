@@ -107,6 +107,14 @@ export const resolveEffectiveWaveHeightM = (
  * compute seaArrival, and seaArrival only ever moves the number UP, so it would
  * cap harder than the page and show a calmer sea for the same hour.
  */
+/**
+ * The flattest sea the app is willing to print, in metres. Defined here rather than imported from
+ * utils/shoreWave (which imports FROM this file) so the three floors — this one,
+ * shoreWave.SHORE_DISPLAY_FLOOR_M and coveWaveGuard.COVE_DISPLAY_FLOOR_M — stay the same number.
+ * A bare "0,00 μ." reads as a broken figure, not as calm water; the sea is never perfectly flat.
+ */
+export const WAVE_DISPLAY_FLOOR_M = 0.1;
+
 export const resolveDisplayWaveHeightM = ({
   exposureLevel,
   modeledWaveHeightM,
@@ -116,6 +124,7 @@ export const resolveDisplayWaveHeightM = ({
   measuredWaveHeightM,
   swell,
   seaArrival,
+  geometricCeilingM,
 }: {
   exposureLevel: WaveExposureLevel;
   /** `WindExposureAssessment.modeledWaveHeightM` — open-water SMB, before damping. */
@@ -127,12 +136,22 @@ export const resolveDisplayWaveHeightM = ({
   measuredWaveHeightM?: number;
   swell?: { heightM?: number; periodS?: number };
   seaArrival?: SeaArrivalGeometry;
+  /**
+   * utils/geometricWaveCeiling — the largest wave this beach's geometry can physically hold at
+   * the live wind, for the few beaches enclosed on every bearing. Applied to the FINAL height so
+   * the grid reading, the damped SMB and the wind-chop floor are all bound by it: a wave the bay
+   * has no room to build is impossible whichever of the three claims it. `undefined` for ~97% of
+   * beaches, and then nothing here changes.
+   */
+  geometricCeilingM?: number;
 }): {
   effectiveWaveHeightM: number;
   modeledWaveHeightM: number;
   /** The grid reading after the light-wind cap — callers need it to tell an
    *  honest "measured" apart from a "measured-capped" sea-state source. */
   realisticMeasuredWaveHeightM: number | undefined;
+  /** True when the geometric ceiling actually lowered the number — for copy and audits. */
+  geometricCeilingApplied: boolean;
 } => {
   // SMB gives open-water Hs, so damp it toward the shore by exposure: sheltered and
   // cross-shore beaches see far less of it than a coast facing the fetch head-on.
@@ -148,10 +167,18 @@ export const resolveDisplayWaveHeightM = ({
     ? capLightWindMeasuredWaveM(measured, beaufort, swell, seaArrival)
     : undefined;
 
+  const uncapped = resolveEffectiveWaveHeightM(realisticMeasured, modeled);
+  // The ceiling only ever removes a height the bay has no room to build; it can never raise one,
+  // and it is not allowed to invent a flatness the display floor would not print anyway.
+  const capped = typeof geometricCeilingM === 'number' && Number.isFinite(geometricCeilingM)
+    ? Number(Math.min(uncapped, Math.max(geometricCeilingM, WAVE_DISPLAY_FLOOR_M)).toFixed(2))
+    : uncapped;
+
   return {
-    effectiveWaveHeightM: resolveEffectiveWaveHeightM(realisticMeasured, modeled),
-    modeledWaveHeightM: modeled,
+    effectiveWaveHeightM: capped,
+    modeledWaveHeightM: Math.min(modeled, capped),
     realisticMeasuredWaveHeightM: realisticMeasured,
+    geometricCeilingApplied: capped < uncapped - 0.005,
   };
 };
 

@@ -300,14 +300,21 @@ export const capToneBySeaState = (
   exempt = false,
   exposureLevel?: ExposureLevel | string,
   /** The sample the sea reading came from is downwind of this shore — see DOWNWIND_SAMPLE_CEILING_RELIEF. */
-  downwindSeaSample = false
+  downwindSeaSample = false,
+  /**
+   * The exposure of the sector the SEA is arriving from (utils/seaArrival). Passed, not derived —
+   * same contract as `offshoreFlatWater` and `downwindSeaSample`, and for the same reason: the pin
+   * and the chip must not be able to answer it differently. `undefined` keeps the pre-13/08
+   * behaviour exactly; see shoreSeaStateM for why it can only ever refuse the shelter discount.
+   */
+  seaArrivalExposureLevel?: string
 ): CalmnessTone => {
   if (exempt) return windTone;
   const openWaterCeiling = seaStateToneCeiling(seaStateM);
   if (!openWaterCeiling) return windTone;
 
   const relief = downwindSeaSample ? DOWNWIND_SAMPLE_CEILING_RELIEF : MAX_SHELTER_CEILING_RELIEF;
-  const shoreCeiling = seaStateToneCeiling(shoreSeaStateM(seaStateM, exposureLevel));
+  const shoreCeiling = seaStateToneCeiling(shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel));
   const rung = Math.min(
     MILDEST_RUNG,
     ceilingRung(shoreCeiling),
@@ -349,6 +356,7 @@ export const resolveConditionTone = ({
   offshoreFlatWater = false,
   downwindSeaSample = false,
   swimVerdictAvoid = false,
+  seaArrivalExposureLevel,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -388,6 +396,13 @@ export const resolveConditionTone = ({
    * pin and the chip must not be able to answer this differently.
    */
   swimVerdictAvoid?: boolean;
+  /**
+   * The exposure of the sector the SEA is arriving from — utils/seaArrival.resolveSeaArrivalExposureLevel,
+   * carried on the score as `seaArrivalExposureLevel`. Without it a shore sheltered from today's
+   * WIND kept a ×0,5 discount on a sea rolling in through a wide-open sector (Καβαλικευτά,
+   * 13/08/2026). Passed rather than derived, like every other geometry input here.
+   */
+  seaArrivalExposureLevel?: string;
 }): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
   resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
   seaStateM,
@@ -403,7 +418,8 @@ export const resolveConditionTone = ({
   coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
     && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater),
   exposureLevel,
-  downwindSeaSample
+  downwindSeaSample,
+  seaArrivalExposureLevel
 ));
 
 /**

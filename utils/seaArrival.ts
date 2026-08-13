@@ -1,4 +1,4 @@
-import type { GeospatialExposureProfile } from '../types';
+import type { GeospatialExposureProfile, WindSector } from '../types';
 import { interpolateSectorGeometry } from './windExposureModel';
 import type { SeaArrivalGeometry } from './waveModel';
 
@@ -28,4 +28,57 @@ export const resolveSeaArrival = (
     onshore: Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180),
     fetchKm: interpolateSectorGeometry(geospatialProfile, waveDirectionDeg).fetchKm,
   };
+};
+
+const SECTOR_ORDER: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+/**
+ * Onshore component above which an arriving sea is treated as reaching this shore. The same 0,3
+ * utils/swellExposure uses for direct swell — one number for "does the water get in", so the
+ * damping and the swell charge cannot disagree about the same wave.
+ */
+export const SEA_ARRIVAL_ONSHORE_MIN = 0.3;
+
+/**
+ * ΤΟ ΚΥΜΑ ΔΕΝ ΕΡΧΕΤΑΙ ΑΠΟ ΕΚΕΙ ΠΟΥ ΦΥΣΑΕΙ (13/08/2026).
+ *
+ * The exposure level for the direction the SEA is arriving from — not the one today's WIND earned.
+ *
+ * Why this exists. `shoreSeaStateM` (utils/waveCharacter) discounts an open-water reading by ×0,5
+ * when a shore is 'protected', and until today 'protected' meant "sheltered from the wind blowing
+ * right now". Those are different questions and they come apart on the most ordinary summer day
+ * there is: an offshore breeze. Καβαλικευτά, Λευκάδα, 13/08/2026 — reported by a user standing on
+ * the beach. The wind was NE, straight off the land, so every wind test in the app called the
+ * beach protected; the sea was arriving from 306–320° into a shore facing 284,8°, through W/NW
+ * sectors with 25 km of fetch and `blockedRayRatio` 0. We halved a wave that had a completely open
+ * road in.
+ *
+ * ONE DIRECTION ONLY. This can never grant a discount — it can only refuse one. `undefined` (no
+ * profile, no wave direction, or a sea that is not arriving onshore) leaves the old behaviour
+ * exactly as it was, and a 'protected' arrival sector keeps the discount it already had. So the
+ * change cannot make any beach in Greece look calmer than it looked yesterday.
+ *
+ * It reads `sectors[…].level` — the engine's own verdict, saturation ramp and all — rather than a
+ * raw `blockedRayRatio` threshold, for the reason utils/swellExposure documents at length: a bare
+ * ratio reads a wide-open sector as closed whenever the far shore happens to sit inside the 25 km
+ * cap, which is most of the Aegean.
+ */
+export const resolveSeaArrivalExposureLevel = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  waveDirectionDeg: number | undefined
+): string | undefined => {
+  if (!geospatialProfile) return undefined;
+  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return undefined;
+  const facingDeg = geospatialProfile.facingDeg;
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return undefined;
+
+  const onshore = Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180);
+  // A sea running along or away from this shore is not the sea that lands on it. Staying silent
+  // here (rather than answering 'protected') is deliberate: silence means "no opinion, keep the
+  // old behaviour", while an opinion of 'protected' would be this function actively granting a
+  // discount — which is the one thing it must never do.
+  if (onshore <= SEA_ARRIVAL_ONSHORE_MIN) return undefined;
+
+  const sector = SECTOR_ORDER[((Math.round(waveDirectionDeg / 45) % 8) + 8) % 8];
+  return geospatialProfile.sectors?.[sector]?.level;
 };

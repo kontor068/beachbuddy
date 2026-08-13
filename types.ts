@@ -202,6 +202,7 @@ export type WarningFlagType =
   | 'offshore_wind'
   | 'onshore_chop'
   | 'direct_swell'
+  | 'shore_break'
   | 'long_period_swell'
   | 'difficult_access'
   | 'boat_only'
@@ -696,6 +697,14 @@ export interface SuitableBeach {
    * services/topPickRanking. It is modelled, never measured, and it says so on screen with a «~».
    */
   shoreWaveHeightM?: number;
+  /**
+   * Exposure of the sector TODAY'S SEA is arriving from — utils/seaArrival.resolveSeaArrivalExposureLevel.
+   * Not the wind's exposure: an offshore breeze makes a shore 'protected' while a swell rolls in
+   * through a wide-open sector (Καβαλικευτά, 13/08/2026). Carried on the score so the map pin, the
+   * card chip and the swim verdict all refuse the ×0,5 shelter discount on the same evidence.
+   * `undefined` = no opinion, and every consumer then behaves exactly as it did before.
+   */
+  seaArrivalExposureLevel?: string;
   /** Wind (km/h) this beach was scored with, so its card Beaufort matches its same-wind wave. */
   windSpeedKmph?: number;
   warnings?: WarningFlag[];

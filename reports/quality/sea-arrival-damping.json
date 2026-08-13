@@ -1,0 +1,256 @@
+{
+  "question": "The ×0,5 shore-damping discount was keyed to the WIND's exposure. How much does keying it to the SEA's arrival sector change?",
+  "method": "Offline: every profiled beach × 8 wind bearings × 5 Bft × 8 wave bearings × 4 sea heights at 4 s, through the real resolveConditionTone. Live: today's region wind + region marine cell, every beach through the real calculateBeachScore, tone computed with and without the arrival level.",
+  "caveats": [
+    "The live half reads each REGION's marine cell, not each beach's own. A beach whose own cell is rougher moves at least as much, so this is a floor.",
+    "The offline half uses the profile's raw sector level as the wind exposure; the live engine adds curated overrides and suspect-pin demotions on top."
+  ],
+  "offline": {
+    "beaches": 2854,
+    "profiled": 2851,
+    "combinations": 3649280,
+    "discountAtStake": 762780,
+    "colourChanged": 190695,
+    "beachesEverChanged": 2851,
+    "transitions": {
+      "orange → red": 190695
+    },
+    "examples": [
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 1,
+        "waveDeg": 0,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 1,
+        "waveDeg": 45,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 1,
+        "waveDeg": 315,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 3,
+        "waveDeg": 0,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 3,
+        "waveDeg": 45,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 3,
+        "waveDeg": 315,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 4,
+        "waveDeg": 0,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      },
+      {
+        "beach": "Παραλία Βαγίας",
+        "region": "attica-aegina",
+        "facingDeg": 1.2,
+        "windDeg": 90,
+        "beaufort": 4,
+        "waveDeg": 45,
+        "heightM": 1.6,
+        "windExposure": "protected",
+        "arrival": "exposed",
+        "before": "orange",
+        "after": "red"
+      }
+    ]
+  },
+  "live": {
+    "regionsAnswered": 110,
+    "regionsAsked": 110,
+    "beaches": 2854,
+    "arrivalKnown": 1001,
+    "discountRefused": 159,
+    "colourChanged": 9,
+    "shoreBreakNote": 89,
+    "transitions": {
+      "orange → red": 9
+    },
+    "rows": [
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2580,
+        "name": "Ελιά",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 117.7,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2585,
+        "name": "Βαμπακιές",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 123.1,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2586,
+        "name": "Βασίλη Μπαμπακιές",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 119.4,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2592,
+        "name": "Κατερίνας Βάλα",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 115.3,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2595,
+        "name": "Λένα",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 125.4,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2596,
+        "name": "Λεφτό Γιαλός",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 114.1,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2600,
+        "name": "Νικόλα Βάλα",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 104.8,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 2612,
+        "name": "Τζώρτζη",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 114.5,
+        "windExposure": "protected",
+        "arrival": "partial"
+      },
+      {
+        "region": "thessaly-alonissos",
+        "beachId": 3093,
+        "name": "Μεγάλη Άμμος",
+        "before": "orange",
+        "after": "red",
+        "seaM": 1.26,
+        "periodS": 5.95,
+        "waveDirDeg": 57,
+        "facingDeg": 126,
+        "windExposure": "protected",
+        "arrival": "partial"
+      }
+    ]
+  }
+}

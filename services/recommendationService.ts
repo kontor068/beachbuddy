@@ -52,9 +52,11 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { resolveSeaArrival } from '../utils/seaArrival';
+import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { estimateShoreWaveHeightM } from '../utils/shoreWave';
+import { beachShoreBreaks } from '../utils/shoreBreak';
+import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
 
@@ -106,6 +108,12 @@ export interface BeachScore {
    * podium's sea tier both read it. Modelled, never measured — printed with a «~».
    */
   shoreWaveHeightM?: number;
+  /**
+   * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
+   * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
+   * shelter discount on the same evidence; `undefined` = no opinion, behaviour unchanged.
+   */
+  seaArrivalExposureLevel?: string;
   seaStateSource?: SeaStateSource;
   /** Which water the measurement describes — this beach's own shore, or the region cell. */
   seaStatePointSource?: SeaStatePointSource;
@@ -171,6 +179,12 @@ export interface BeachRecommendation {
   seaStatePeriodS?: number;
   /** Modelled height AT THE SAND (m) where the four shoreWave gates allow it — see types.ts. */
   shoreWaveHeightM?: number;
+  /**
+   * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
+   * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
+   * shelter discount on the same evidence; `undefined` = no opinion, behaviour unchanged.
+   */
+  seaArrivalExposureLevel?: string;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** Wind speed (km/h) this recommendation was scored with (beach-cluster when available), so a
@@ -662,6 +676,25 @@ const assessHourlyWave = (
   const exposureLevel = windAssessment.exposureLevel;
   const measured = item.marine?.waveHeightM;
   const hasMeasured = typeof measured === 'number' && Number.isFinite(measured);
+  // The same geometric ceiling the daily headline applies (utils/geometricWaveCeiling). It has to
+  // be here too: the wave strip and the headline are checked against each other by
+  // scripts/validateWaveDisplayAgreement, and a ceiling on only one of them would print a 0,4 μ.
+  // headline above a row of 1,0 μ. bars for the same hours.
+  const hourSwell = assessSwellExposure(geospatialProfile, windAssessment.windProfile.beachFacingDirection, {
+    swellDirectionDeg: item.marine?.swellWaveDirectionDeg,
+    swellHeightM: item.marine?.swellWaveHeightM,
+    swellPeriodS: item.marine?.swellWavePeriodS,
+  });
+  const hourCeiling = resolveGeometricWaveCeiling({
+    profile: geospatialProfile,
+    windSpeedKmh,
+    gustKmph,
+    suspectPin: windAssessment.windProfile.suspectPin,
+    arrivingSwellPresent: hourSwell.exposed || (
+      (item.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M &&
+      typeof item.marine?.swellWaveDirectionDeg !== 'number'
+    ),
+  });
   // Same function as the beach page — this used to be the same arithmetic written
   // out again, differing only in when it rounded.
   const { effectiveWaveHeightM } = resolveDisplayWaveHeightM({
@@ -673,6 +706,7 @@ const assessHourlyWave = (
     measuredWaveHeightM: measured,
     swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
     seaArrival: resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg),
+    geometricCeilingM: hourCeiling?.ceilingM,
   });
   return {
     dt: item.dt,
@@ -1704,9 +1738,51 @@ export const calculateBeachScore = (
     windAssessment.facingDeg,
     marine?.waveDirectionDeg
   );
+  // The same bearing, asked a different question: not "how much water is behind that direction"
+  // but "have we judged the sector it comes through OPEN". It is what stops a shore sheltered from
+  // today's WIND from also being treated as sheltered from a sea arriving from somewhere else —
+  // see utils/seaArrival and utils/waveCharacter.shoreSeaStateM for the Καβαλικευτά case.
+  const seaArrivalExposureLevel = resolveSeaArrivalExposureLevel(
+    options?.geospatialProfile,
+    marine?.waveDirectionDeg
+  );
+  // Direct-swell geometry (utils/swellExposure). Computed HERE rather than at its old site further
+  // down, because the geometric wave ceiling below needs it and the ceiling has to be decided before
+  // the effective height exists. The warnings it raises still fire at the original place.
+  const swell = assessSwellExposure(options?.geospatialProfile, beachOrientation, {
+    swellDirectionDeg: marine?.swellWaveDirectionDeg,
+    swellHeightM: marine?.swellWaveHeightM,
+    swellPeriodS: marine?.swellWavePeriodS,
+  });
+  /**
+   * ΤΟ ΚΥΜΑ ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΞΕΠΕΡΝΑΕΙ ΟΣΟ ΧΩΡΑΕΙ Ο ΚΟΛΠΟΣ (13/08/2026).
+   *
+   * The one cap in this function that is NOT display-only, decided by Miltos after a Σχίσμα
+   * Ελούντας webcam showed glass while the page printed 0,94 μ. taken 13,8 km out in the open
+   * Mirabello. See utils/geometricWaveCeiling for the full argument; the short version is that it
+   * asks "how much open water does this beach have at all", never "where is the wind coming from",
+   * so no misread facing can move it. It binds `effectiveWaveHeightM`, which is what the colour,
+   * the verdict, the score and the printed number all read — deliberately, because leaving the
+   * colour tied to an impossible wave is how «κύμα 0,15 μ.» ends up above «προσοχή».
+   *
+   * Same swell test as the shore-wave estimate below: a swell that can reach this shore, or a
+   * meaningful one whose direction is unknown, removes the ceiling entirely. SMB models local
+   * wind-sea only, and ground swell is the one thing a fetch argument cannot see.
+   */
+  const arrivingSwellPresent = swell.exposed || (
+    (marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M &&
+    typeof marine?.swellWaveDirectionDeg !== 'number'
+  );
+  const geometricCeiling = resolveGeometricWaveCeiling({
+    profile: options?.geospatialProfile,
+    windSpeedKmh: windSpeedKmph,
+    gustKmph,
+    suspectPin: windAssessment.windProfile.suspectPin,
+    arrivingSwellPresent,
+  });
   // One function, called by the beach page and by scripts/validateEffectiveRanking.ts.
   // The validator measures THIS code, not a copy of it — see utils/waveModel.ts.
-  const { effectiveWaveHeightM, modeledWaveHeightM, realisticMeasuredWaveHeightM } = resolveDisplayWaveHeightM({
+  const { effectiveWaveHeightM, modeledWaveHeightM, realisticMeasuredWaveHeightM, geometricCeilingApplied } = resolveDisplayWaveHeightM({
     exposureLevel: finalExposureLevel,
     modeledWaveHeightM: windAssessment.modeledWaveHeightM,
     beaufort: baseBeaufort,
@@ -1715,6 +1791,7 @@ export const calculateBeachScore = (
     measuredWaveHeightM,
     swell: { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
     seaArrival,
+    geometricCeilingM: geometricCeiling?.ceilingM,
   });
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
 
@@ -1868,11 +1945,7 @@ export const calculateBeachScore = (
   // orientation-bucket rule when no profile/facing is available (unchanged behavior there).
   // Direct-swell geometry now lives in utils/swellExposure (single source of truth shared
   // with the UI swell-router); `exposed` is the same boolean this scoring used inline.
-  const swell = assessSwellExposure(options?.geospatialProfile, beachOrientation, {
-    swellDirectionDeg: marine?.swellWaveDirectionDeg,
-    swellHeightM: marine?.swellWaveHeightM,
-    swellPeriodS: marine?.swellWavePeriodS,
-  });
+  // `swell` itself is computed further up, next to the geometric wave ceiling that consumes it.
   const directSwell = swell.exposed;
   if (directSwell) {
     const swellHeightM = marine?.swellWaveHeightM ?? 0;
@@ -1882,6 +1955,21 @@ export const calculateBeachScore = (
       message: `Swell direction may send waves into this beach${swellHeightM >= 0.5 ? ` (~${swellHeightM.toFixed(1)} m swell)` : ''}.`
     });
     reasons.push('Direct swell exposure');
+  }
+
+  /**
+   * ΤΟ ΙΔΙΟ ΚΥΜΑ ΔΕΝ ΣΠΑΕΙ ΤΟ ΙΔΙΟ ΣΕ ΚΑΘΕ ΠΑΡΑΛΙΑ (13/08/2026 — Καβαλικευτά).
+   *
+   * A note, not a severity: it touches no colour, no score, no ranking and no swim verdict. See
+   * utils/shoreBreak for why a 0,3 m sea is nothing on flat sand and a plunging break on a steep
+   * pebble bank, and for the four gates that keep this quiet on the days it would be noise.
+   */
+  if (beachShoreBreaks(beach, seaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {
+    warnings.push({
+      type: 'shore_break',
+      severity: 'info',
+      message: 'Calm sea, but the water is deep and the shore is coarse, so the waves break a bit harder at the beach.',
+    });
   }
 
   const hourlySea = calculateHourlySeaScore(beach, hourlyForecast, options?.geospatialProfile);
@@ -2246,12 +2334,10 @@ export const calculateBeachScore = (
     // Only a swell that can REACH this shore silences the estimate. `swell.exposed` is
     // utils/swellExposure's onshore test (component > 0,3 AND an open sector); a meaningful swell
     // whose direction we do not know counts as arriving, because there is no evidence it is not.
-    arrivingSwellPresent: swell.exposed || (
-      (marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M &&
-      typeof marine?.swellWaveDirectionDeg !== 'number'
-    ),
+    // Computed once, next to the geometric ceiling that applies the identical test.
+    arrivingSwellPresent,
   });
-  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel);
+  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
   // damping that has been in place since 01/08.
   const shoreWaveM = typeof shoreModelWaveM === 'number'
@@ -2413,6 +2499,10 @@ export const calculateBeachScore = (
     // the pin both take the ceiling; the verdict is already final at this point (rain rule
     // included), so no surface can print a calm colour over a refused swim.
     swimmingComfort === 'avoid_swimming',
+    // The same value the pin gets off the score. Without it the chip would keep the ×0,5 shelter
+    // discount the map has just stopped granting, and the two would disagree on the exact days
+    // this rule exists for — an offshore wind with a sea still running in (Καβαλικευτά, 13/08).
+    seaArrivalExposureLevel,
   );
 
   return {
@@ -2435,6 +2525,7 @@ export const calculateBeachScore = (
     seaStateWaveM: effectiveWaveHeightM,
     seaStatePeriodS,
     shoreWaveHeightM: shoreModelWaveM,
+    seaArrivalExposureLevel,
     seaStateSource,
     modeledWaveHeightM,
     windSpeedKmph,
@@ -2814,6 +2905,7 @@ export const getTopRecommendedBeaches = (
       // από SuitableBeach (μαζί το podium του Top 3) έπεφτε στο ανοιχτό νερό, ενώ η σελίδα της
       // παραλίας τύπωνε το ύψος στην ακτή. Γαλάζια Ακτή: 0,3 μ. στην κάρτα, ~0,1 μ. μέσα.
       shoreWaveHeightM: scoreResult.shoreWaveHeightM,
+      seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
       confidence: scoreResult.confidence,
@@ -2973,6 +3065,7 @@ export const getSuitableBeaches = (
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // Ίδιος λόγος με τον από πάνω builder — το ύψος στην ακτή ταξιδεύει μαζί με τα υπόλοιπα.
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
+        seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,

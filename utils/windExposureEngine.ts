@@ -352,7 +352,14 @@ export const applySeaStateToWindSuitability = (
    * The engine's swim verdict for this beach and hour is `avoid_swimming`. Caps the colour at
    * ΜΕΤΡΙΑ — a beach we tell people not to swim at cannot wear ΚΑΛΗ. See resolveConditionTone.
    */
-  swimVerdictAvoid = false
+  swimVerdictAvoid = false,
+  /**
+   * Exposure of the sector the SEA is arriving from (utils/seaArrival). Without it a shore that is
+   * merely sheltered from today's WIND kept the x0,5 shore discount on a swell rolling in through
+   * a wide-open sector. Same computed-by-the-caller contract as , so the chip
+   * and the pin cannot answer it differently.
+   */
+  seaArrivalExposureLevel?: string
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -362,6 +369,7 @@ export const applySeaStateToWindSuitability = (
     offshoreFlatWater: suitability.offshoreFlatWater,
     downwindSeaSample,
     swimVerdictAvoid,
+    seaArrivalExposureLevel,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
