@@ -53,6 +53,12 @@ interface WaveHeightGraphicProps {
   exposureLevel?: ExposureLevel;
   /** True only when the current profile can honestly claim wind protection. */
   canClaimWindProtection?: boolean;
+  /**
+   * Deep water off a coarse shore (utils/shoreBreak.hasSteepCoarseShore) — a fact about the PLACE,
+   * not about today. It narrows the drawn surf zone and tilts the bank; see ShoreProfileScene.
+   * Static on purpose: the shape of a beach must not flicker with the forecast.
+   */
+  steepShore?: boolean;
   /** Keeps the compact card glyph aligned with the same tone used by the map marker. */
   suitabilityColor?: WindSuitabilityColor;
   className?: string;
@@ -670,7 +676,8 @@ const ShoreProfileScene: React.FC<{
   language: LanguageCode;
   bandLowM?: number;
   bandHighM?: number;
-}> = ({ scale, visualHeightM, windTier, severityBand, readingLabel, language, bandLowM, bandHighM }) => {
+  steepShore?: boolean;
+}> = ({ scale, visualHeightM, windTier, severityBand, readingLabel, language, bandLowM, bandHighM, steepShore = false }) => {
   const plotTopY = 12;
   const swl = 94; // still-water level — the zero of the metre axis
   const floorY = 124;
@@ -689,7 +696,29 @@ const ShoreProfileScene: React.FC<{
   const crestY = mToY(crestRiseM);
   const hPx = swl - crestY;
   const troughY = Math.min(floorY - 2, swl + hPx);
-  const crestX = 110;
+  /**
+   * ΤΟ ΚΥΜΑ ΣΚΑΕΙ ΠΑΝΩ ΣΤΗΝ ΑΚΤΗ, ΟΧΙ ΔΕΚΑ ΜΕΤΡΑ ΠΙΟ ΠΕΡΑ (13/08/2026).
+   *
+   * On a shore where the bottom drops away there is no shallow shelf for the wave to trip over
+   * early, so it keeps its shape until the last metre and breaks against the beach itself. On
+   * flat sand the same swell feels the bottom far out and spends itself crossing the shallows.
+   * Moving the crest is the whole difference; the land is untouched.
+   */
+  const crestX = steepShore ? 130 : 110;
+  /**
+   * A STEEP, COARSE SHORE IS A DIFFERENT PICTURE, NOT A DIFFERENT NUMBER (13/08/2026).
+   *
+   * Same wave height, same axis, same reading — but on a beach where the water is deep two strides
+   * out (utils/shoreBreak.hasSteepCoarseShore) the surf zone is NARROW: the wave keeps its shape
+   * until the last metre, lands on the bank, and the sheet of water that slides up is short and
+   * abrupt. On flat sand the same swell breaks far out and washes a long way in.
+   *
+   * It is drawn by moving the WATERLINE toward the wave and tilting the DRY bank — never by adding
+   * anything below the surface. Rules 1 and 2 of this scene stand: no person in the sea, no seabed.
+   * Both were tried in July and both ended up depicting depth; a figure standing in the water read
+   * as a drowning. So the depth is implied by how the LAND behaves, which is the one thing here we
+   * are allowed to draw.
+   */
   const shoreX = 152; // where the still waterline meets the sand
 
   const sandYAt = (x: number): number => swl - clamp((x - shoreX) * 0.26, 0, 13);
@@ -711,13 +740,17 @@ const ShoreProfileScene: React.FC<{
   // The sea surface, left to right. The back stays LOW until late (0.05 → 0.14 → 0.30 of the height
   // over half the frame) and only then rears to a ROUNDED crest: that late rise, and the fact that
   // the top is a curve rather than a point, is the whole difference between a wave and a spike.
+  // The low shoaling back has to follow the crest, or a crest moved shorewards leaves the wave
+  // rising over half the frame and reading as a swell rather than a break.
+  const backC1 = steepShore ? crestX - 30 : 88;
+  const backC2 = steepShore ? crestX - 14 : 98;
   const lipX = crestX + 19;
   const lipY = crestY + hPx * 0.46;
   const surfacePath = [
     `M${xL} ${(swl + 1.5).toFixed(1)}`,
     `C 12 ${(swl + 1.5 - chop).toFixed(1)}, 24 ${(swl + 1.5 + chop * 0.6).toFixed(1)}, 36 ${(swl + 0.4).toFixed(1)}`,
     `C 48 ${(swl - hPx * 0.03 - chop * 0.6).toFixed(1)}, 62 ${(swl - hPx * 0.09).toFixed(1)}, 76 ${(swl - hPx * 0.22).toFixed(1)}`,
-    `C 88 ${(swl - hPx * 0.4).toFixed(1)}, 98 ${(swl - hPx * 0.72).toFixed(1)}, ${crestX - 8} ${(crestY + hPx * 0.06).toFixed(1)}`,
+    `C ${backC1} ${(swl - hPx * 0.4).toFixed(1)}, ${backC2} ${(swl - hPx * 0.72).toFixed(1)}, ${crestX - 8} ${(crestY + hPx * 0.06).toFixed(1)}`,
     `C ${crestX - 4} ${crestY.toFixed(1)}, ${crestX + 4} ${crestY.toFixed(1)}, ${crestX + 9} ${(crestY + hPx * 0.05).toFixed(1)}`,
     // The lip pitches forward, then the face falls back to the LEFT of it — that hollow is what a
     // breaking wave looks like and what a hill never does.
@@ -726,12 +759,48 @@ const ShoreProfileScene: React.FC<{
     `C ${crestX + 42} ${(troughY - hPx * 0.18).toFixed(1)}, ${shoreX - 8} ${(swl + hPx * 0.28).toFixed(1)}, ${shoreX + 2} ${(swl + 0.5).toFixed(1)}`,
   ].join(' ');
   // Water fills everything below the surface, right across the frame; the sand is painted over its
-  // shoreward end. No vertical wall, no diagonal seabed, no depth claim.
-  const waterPath = `${surfacePath} L${xR} ${swl + 1} L${xR} ${floorY + 8} L${xL} ${floorY + 8} Z`;
+  // shoreward end.
+  const waterPath = `${surfacePath} L${xR} ${swl + 1} L${xR} ${floorY + 14} L${xL} ${floorY + 14} Z`;
+
+  /**
+   * THE BOTTOM, AND ONLY WHERE IT IS THE MESSAGE (13/08/2026).
+   *
+   * Rule 2 of this scene says no seabed, and it was written for a good reason: drawing the bottom
+   * on EVERY beach put a diagonal across every frame and turned a wave-height instrument into a
+   * depth diagram. That reason does not hold here, because on these beaches the depth IS the
+   * message — «βαθαίνει απότομα» is the sentence the drawing exists to illustrate.
+   *
+   * So it appears on the steep-and-coarse beaches only, and it is drawn as the bottom SEEN
+   * THROUGH the water (sand colour, half opacity) rather than as a hard line: deep and flat out
+   * to sea, climbing to the waterline in the last couple of strides. Everything else — the sand,
+   * the waterline, the figure — stays exactly where it has always been. The first attempt raised
+   * the land instead and Miltos called it what it was: a high ramp, and unnatural.
+   */
+  const seabedPath = steepShore
+    ? [
+        // IT KEEPS GETTING DEEPER, IT DOES NOT LEVEL OFF (Miltos, 13/08/2026).
+        // The previous version ran the bottom FLAT out to sea and he read it exactly as it was
+        // drawn: «σαν πισίνα». A real shore has no floor out there — so the bottom leaves the
+        // frame on the seaward side instead of stopping, and the eye reads "deeper than this".
+        // Two slopes, not one: a gentle offshore descent, then the abrupt climb in the last few
+        // strides. The contrast between the two IS the message; a single even slope is a shelf.
+        `M${xL} ${(floorY + 14).toFixed(1)}`,
+        `C ${(shoreX - 108).toFixed(1)} ${(floorY + 9).toFixed(1)}, ${(shoreX - 70).toFixed(1)} ${(floorY + 1).toFixed(1)}, ${(shoreX - 32).toFixed(1)} ${(floorY - 5).toFixed(1)}`,
+        `C ${(shoreX - 15).toFixed(1)} ${(floorY - 8).toFixed(1)}, ${(shoreX - 4).toFixed(1)} ${(swl + 12).toFixed(1)}, ${shoreX} ${(swl + 0.5).toFixed(1)}`,
+        // Closed at the far edge, not at the waterline: closing at shoreX drew a hard vertical
+        // seam down the frame. Everything right of the shoreline is painted over by the sand.
+        `L${xR} ${(floorY + 14).toFixed(1)}`,
+        'Z',
+      ].join(' ')
+    : null;
 
   // The break: a spilling mane of white water over the crest, running down the face and on to the
   // beach. It only appears once there is a face to break down, so a glassy morning stays glassy.
-  const showBreak = hPx >= 10 || visualIntensity >= 2;
+  // A steep bank dumps whatever it is given: there is no shallow shelf for a small wave to slide
+  // over, so white water appears at heights flat sand would simply absorb. This is the whole
+  // visual difference at the 0,2-0,8 m the shore-break note lives in — screenshotted on the real
+  // page 13/08, at 0,3 m the old threshold drew NOTHING and the two beaches were identical.
+  const showBreak = hPx >= (steepShore ? 3.5 : 10) || visualIntensity >= 2;
   const breakPath = [
     `M${crestX - 16} ${(crestY + hPx * 0.22).toFixed(1)}`,
     `C ${crestX - 7} ${(crestY - hPx * 0.05).toFixed(1)}, ${crestX + 6} ${(crestY - hPx * 0.05).toFixed(1)}, ${crestX + 16} ${(crestY + hPx * 0.16).toFixed(1)}`,
@@ -754,10 +823,12 @@ const ShoreProfileScene: React.FC<{
 
   // Dry sand only. Keep the shore profile shallow and entirely on the landward side; drawing a
   // deep diagonal here makes the illustration look like a sudden drop-off or a seabed section.
+  const sandCtrl1X = 190;
+  const sandCtrl2X = 168;
   const sandPath = [
     `M${xR} ${sandYAt(xR).toFixed(1)}`,
-    `C 190 ${sandYAt(190).toFixed(1)}, 168 ${sandYAt(168).toFixed(1)}, ${shoreX} ${(swl + 0.5).toFixed(1)}`,
-    `L${xR} ${floorY + 8}`,
+    `C ${sandCtrl1X} ${sandYAt(sandCtrl1X).toFixed(1)}, ${sandCtrl2X} ${sandYAt(sandCtrl2X).toFixed(1)}, ${shoreX} ${(swl + 0.5).toFixed(1)}`,
+    `L${xR} ${floorY + 14}`,
     'Z',
   ].join(' ');
 
@@ -766,7 +837,12 @@ const ShoreProfileScene: React.FC<{
   const bandBotY = hasBand ? mToY((bandLowM as number) / 2) : 0;
 
   const readingRightX = crestX - 10;
-  const bracketX = 139;
+  // The bracket lives in the gap between the crest and the waterline. On a steep shore that gap
+  // is deliberately narrow, so it moves out over the open water instead and reads its label to the
+  // LEFT — otherwise the ruler ends up drawn through the breaking wave it is measuring.
+  const bracketX = steepShore ? 74 : 139;
+  const bracketLabelX = steepShore ? bracketX - 4 : bracketX + 4;
+  const bracketLabelAnchor = steepShore ? 'end' : 'start';
   const personX = 184;
   const personBaseY = sandYAt(personX);
   const personTopY = personBaseY - (ADULT_REFERENCE_HEIGHT_M / axisMaxM) * plotHeight;
@@ -848,6 +924,7 @@ const ShoreProfileScene: React.FC<{
       )}
 
       <path d={waterPath} fill={`url(#${waterGradientId})`} fillOpacity={scale.isEstimate ? 0.55 : 1} />
+      {seabedPath && <path d={seabedPath} fill={`url(#${sandGradientId})`} opacity="0.55" />}
 
       <path
         d={surfacePath}
@@ -880,7 +957,7 @@ const ShoreProfileScene: React.FC<{
         <g stroke="var(--cb-wave-guide-color)" fill="none" opacity="0.72">
           <path d={`M${bracketX} ${crestY.toFixed(1)} V${troughY.toFixed(1)}`} strokeWidth="1" strokeDasharray="2 2" />
           <path d={`M${bracketX - 2.5} ${crestY.toFixed(1)} H${bracketX + 2.5} M${bracketX - 2.5} ${troughY.toFixed(1)} H${bracketX + 2.5}`} strokeWidth="1.1" strokeLinecap="round" />
-          <text x={bracketX + 4} y={((crestY + troughY) / 2 + 2).toFixed(1)} fill="var(--cb-wave-guide-color)" stroke="rgba(255,255,255,0.9)" strokeWidth="2" paintOrder="stroke" fontSize="5.7" fontWeight="800">
+          <text x={bracketLabelX} textAnchor={bracketLabelAnchor} y={((crestY + troughY) / 2 + 2).toFixed(1)} fill="var(--cb-wave-guide-color)" stroke="rgba(255,255,255,0.9)" strokeWidth="2" paintOrder="stroke" fontSize="5.7" fontWeight="800">
             {readingLabel}
           </text>
         </g>
@@ -1176,6 +1253,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
   windBeaufort,
   exposureLevel,
   canClaimWindProtection,
+  steepShore = false,
   suitabilityColor,
   className,
 }) => {
@@ -1320,7 +1398,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
         <div className={`flex w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 ${boatAccess && boatLevel ? 'h-56 sm:h-64' : 'aspect-[53/32]'} ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
           {boatAccess && boatLevel
             ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
-            : <ShoreProfileScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} language={language} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} />}
+            : <ShoreProfileScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} language={language} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} steepShore={steepShore} />}
         </div>
         {/* REMOVED 31/07/2026: the title ("Τι κύμα να περιμένεις"), the repeated headline
             number, the band range and the "~21% ύψους ενήλικα / εύρος πρόγνωσης, όχι βάθος

@@ -1,5 +1,4 @@
 import { Beach, WindDirection, Accessibility, Island, LanguageCode, BeachMetadata } from '../types';
-import { cacheBeaches, getCachedBeaches } from './indexedDBService';
 
 export interface RawBeach {
   id: number;
@@ -774,216 +773,30 @@ const determineAccessibility = (name: string, englishName: string): Accessibilit
     return Accessibility.EASY;
 };
 
-type JsonBeachRecord = {
-  name?: unknown;
-  lat?: unknown;
-  lon?: unknown;
-  metadata?: unknown;
-};
-
-export interface BeachRegionIndexEntry {
-  id: string;
-  region: string;
-  prefecture: string;
-  beachCount: number;
-  coordinates: { lat: number; lon: number };
-  dataPath: string;
-}
-
-type BeachRegionIndexPayload = {
-  regions?: BeachRegionIndexEntry[];
-};
-
-const BEACH_REGION_INDEX_PATH = '/data/beaches/index.json';
-
+/** Stable id for a region, from its name. Used by services/beachRawFallback.ts. */
 export const getBeachRegionId = (region: string | null | undefined, prefecture: string | null | undefined, fallbackId: number | string = 'unknown') => {
   const base = `${region || 'Unknown'}-${prefecture || region || 'Unknown'}`;
   const normalized = base.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   return normalized || `unknown-${fallbackId}`;
 };
 
-const isBeachMetadata = (value: unknown): value is BeachMetadata => {
-  if (!value || typeof value !== 'object') return false;
-  const metadata = value as Partial<BeachMetadata>;
-  return Boolean(
-    metadata.access &&
-    typeof metadata.access === 'object' &&
-    typeof metadata.access.type === 'string' &&
-    typeof metadata.access.label === 'string' &&
-    typeof metadata.access.notes === 'string' &&
-    metadata.terrain &&
-    typeof metadata.terrain === 'object' &&
-    Array.isArray(metadata.terrain.types) &&
-    typeof metadata.terrain.label === 'string' &&
-    typeof metadata.organized === 'boolean' &&
-    typeof metadata.shade === 'boolean' &&
-    Array.isArray(metadata.amenities)
-  );
-};
+// THE NATIONAL-DUMP LOADER LIVED HERE UNTIL 13/08/2026.
+//
+// It was ~210 lines that fetched /greek_beaches.json — the entire 9,9 MB dataset for
+// all 2.850 beaches — parsed it, de-duplicated it and cached it in IndexedDB.
+// loadBeaches() and loadBeachesForRegion() were exported, and by 13/08 NOTHING called
+// either one: the app reads the per-region shards under /data/beaches/ instead. The
+// bundler had already been dropping the whole path (the string greek_beaches appeared
+// in zero built chunks), so this was dead weight in the source only.
+//
+// It mattered anyway, because the file it fetched had to sit in public/ to be fetchable,
+// and public/ is published — which is how the complete curated dataset ended up
+// downloadable in one request from the CDN. The dataset is the moat; the React code is
+// not. scripts/stripNationalDumpFromDist.mjs now keeps it off the CDN and FAILS THE
+// BUILD if shipped code ever asks for that URL again.
+//
+// If you need every beach at once, read the shards — do not resurrect a national fetch.
 
-const parseBeachPayload = (beachData: unknown): RawBeach[] => {
-  const allBeaches: RawBeach[] = [];
-  let idCounter = 0;
-
-  const walk = (node: unknown, region: string, path: string[]) => {
-    if (Array.isArray(node)) {
-      for (const item of node) {
-        const b = item as JsonBeachRecord;
-        const lat = typeof b?.lat === 'number' ? b.lat : Number(b?.lat);
-        const lon = typeof b?.lon === 'number' ? b.lon : Number(b?.lon);
-        const name = typeof b?.name === 'string' && b.name.trim() ? b.name.trim() : 'Unknown';
-
-        if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-
-        allBeaches.push({
-          id: idCounter++,
-          region,
-          // Keep the deepest area label so nested JSON areas are preserved.
-          prefecture: path[path.length - 1] || path[0] || 'Unknown',
-          name,
-          lat,
-          lon,
-          metadata: isBeachMetadata(b?.metadata) ? b.metadata : undefined
-        });
-      }
-      return;
-    }
-
-    if (!node || typeof node !== 'object') return;
-
-    for (const [key, value] of Object.entries(node as Record<string, unknown>)) {
-      walk(value, region, [...path, key]);
-    }
-  };
-
-  if (!beachData || typeof beachData !== 'object') return allBeaches;
-
-  for (const [region, regionNode] of Object.entries(beachData as Record<string, unknown>)) {
-    walk(regionNode, region, []);
-  }
-
-  return allBeaches;
-};
-
-const dedupeBeaches = (allBeaches: RawBeach[]): RawBeach[] => {
-  // Deduplicate only exact duplicates. We keep beaches that share coordinates
-  // but have different names because they are distinct entries in the source data.
-  const uniqueBeaches: RawBeach[] = [];
-  const seenKeys = new Set<string>();
-
-  allBeaches.forEach(beach => {
-    const exactKey = `${beach.region}|${beach.prefecture}|${beach.name}|${beach.lat.toFixed(6)}|${beach.lon.toFixed(6)}`;
-    if (!seenKeys.has(exactKey)) {
-      uniqueBeaches.push(beach);
-      seenKeys.add(exactKey);
-    }
-  });
-
-  return uniqueBeaches;
-};
-
-export const loadBeachRegionIndex = async (): Promise<BeachRegionIndexEntry[]> => {
-  const response = await fetch(BEACH_REGION_INDEX_PATH);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${BEACH_REGION_INDEX_PATH}: ${response.status}`);
-  }
-
-  const payload = await response.json() as BeachRegionIndexPayload;
-  if (!Array.isArray(payload.regions)) {
-    throw new Error(`${BEACH_REGION_INDEX_PATH} is missing regions[]`);
-  }
-
-  return payload.regions.filter(region =>
-    region &&
-    typeof region.id === 'string' &&
-    typeof region.region === 'string' &&
-    typeof region.prefecture === 'string' &&
-    typeof region.beachCount === 'number' &&
-    region.coordinates &&
-    Number.isFinite(region.coordinates.lat) &&
-    Number.isFinite(region.coordinates.lon) &&
-    typeof region.dataPath === 'string'
-  );
-};
-
-export const loadBeachesForRegion = async (regionId: string): Promise<RawBeach[]> => {
-  const path = `/data/beaches/${encodeURIComponent(regionId)}.json`;
-
-  try {
-    const response = await fetch(path);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch ${path}: ${response.status}`);
-    }
-
-    const payload = await response.json();
-    if (!Array.isArray(payload)) {
-      throw new Error(`${path} is not a beach array`);
-    }
-
-    return dedupeBeaches(payload as RawBeach[]);
-  } catch (error) {
-    console.warn('Region beach file unavailable; falling back to full beach dataset.', {
-      regionId,
-      error,
-    });
-    const fullDataset = await loadBeaches();
-    return fullDataset.filter(beach => getBeachRegionId(beach.region, beach.prefecture, beach.id) === regionId);
-  }
-};
-
-const fetchBeachDataset = async (): Promise<RawBeach[]> => {
-  let beachData: unknown;
-  const response = await fetch('/greek_beaches.json');
-  if (!response.ok) {
-    throw new Error(`Failed to fetch /greek_beaches.json: ${response.status}`);
-  }
-  beachData = await response.json();
-
-  const allBeaches = parseBeachPayload(beachData);
-  const uniqueBeaches = dedupeBeaches(allBeaches);
-
-  console.log(`Total beaches loaded: ${uniqueBeaches.length}`);
-
-  if (uniqueBeaches.length > 0) {
-    void cacheBeaches(uniqueBeaches);
-  }
-
-  return uniqueBeaches;
-};
-
-const getCachedBeachesQuickly = async (): Promise<RawBeach[] | null> => {
-  // Cache should improve repeat visits, not block the first beach list.
-  return Promise.race([
-    getCachedBeaches(),
-    new Promise<null>(resolve => globalThis.setTimeout(() => resolve(null), 300)),
-  ]);
-};
-
-export const loadBeaches = async (): Promise<RawBeach[]> => {
-  // Start the static JSON fetch immediately; IndexedDB can be slow or unavailable on fresh sessions.
-  const freshBeachesRequest = fetchBeachDataset();
-  const cachedBeaches = await getCachedBeachesQuickly();
-
-  if (cachedBeaches && cachedBeaches.length > 0) {
-    freshBeachesRequest.catch(error => {
-      console.warn('Beach data refresh failed; keeping cached dataset.', error);
-    });
-    console.log(`Loaded ${cachedBeaches.length} beaches from IndexedDB cache.`);
-    return cachedBeaches;
-  }
-
-  try {
-    return await freshBeachesRequest;
-  } catch (error) {
-    console.error("Critical error loading beach data, falling back to IndexedDB cache:", error);
-    const fallbackCachedBeaches = await getCachedBeaches();
-    if (fallbackCachedBeaches && fallbackCachedBeaches.length > 0) {
-      console.log(`Loaded ${fallbackCachedBeaches.length} beaches from IndexedDB cache.`);
-      return fallbackCachedBeaches;
-    }
-    return [];
-  }
-};
 
 export const mapRegionToGroup = (region: string | null, subRegion: string | null): Island['group'] => {
     const r = (region || '').toLowerCase().trim();

@@ -87,6 +87,15 @@ export const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaO
 };
 
 /** Shown when the shore reading leads: the label above it, and the «offshore …» note beneath. */
+/**
+ * ΜΙΑ ΕΤΙΚΕΤΑ ΤΙΤΛΟΥ ΚΑΙ ΜΙΑ INLINE — ΚΑΙ ΟΧΙ ΤΡΙΤΗ (13/08/2026).
+ *
+ * Δοκιμάστηκε και μια σύντομη inline μορφή της ακτής («~0,2 μ. στην ακτή») για τις κάρτες του
+ * podium. Κόπηκε την ίδια μέρα από τον Μίλτο («στο mobile έχει πολύ κείμενο») και από το
+ * `validateTileFit` (κοβόταν στα 390 px) — και αποδείχθηκε περιττή: η κάρτα δείχνει πλέον ΠΑΝΤΑ
+ * το νερό της ακτής, ένα μέγεθος για όλες τις παραλίες, οπότε δεν έχει τι να ξεχωρίσει με λέξη.
+ * Ο τίτλος `atShore` ζει στο πλακίδιο της σελίδας, όπου υπάρχει χώρος για επικεφαλίδα.
+ */
 export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v: string) => string }> = {
   en: { atShore: 'Waves at the shore', offshore: (v) => `${v} offshore` },
   gr: { atShore: 'Κύμα στην ακτή', offshore: (v) => `${v} ανοιχτά` },
@@ -265,6 +274,19 @@ export interface BeachAnswerHeroProps {
    */
   climateNote?: { text: string; tone: 'better' | 'typical' | 'worse' } | null;
   /**
+   * «Σκάει όμως το κύμα λίγο παραπάνω στην ακτή» — utils/shoreBreak, decided by the page.
+   *
+   * A FULL-WIDTH LINE, AND THAT IS THE THIRD PLACE THIS NOTE WAS TRIED (13/08/2026). It started as
+   * a warning chip on the card, where it landed fourth of five and the card shows two. It was then
+   * moved to `getSeaConditionDisplay`'s `subValue` — which the four-tile grid does not render at
+   * all (only the boat-only row does), so it was invisible again. Both times the mistake was the
+   * same: assuming a slot was on screen instead of following the value to the JSX that prints it.
+   *
+   * Here it sits beside `climateNote`, in the one layout on this page built for a sentence about
+   * the sea. It is the only place with room for it and nothing that can push it out.
+   */
+  shoreBreakNote?: string | null;
+  /**
    * The practical half of the decision: road, facilities, entry, what to pack.
    * Built by the page so this component never touches the beach record.
    */
@@ -392,6 +414,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   sunsetTime,
   sunsetOverSea,
   climateNote,
+  shoreBreakNote,
   practical = [],
   amenities = [],
   amenitiesTitle,
@@ -422,13 +445,32 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
     // is still the number that justifies the drift warning (the wind pushing a float out there
     // is pushing it toward exactly that sea). The «~» is not decoration: the shore figure is
     // modelled, the offshore one measured, and the tile must not let them look alike.
-    const shoreLeads = typeof sea.shoreHeightM === 'number' && Number.isFinite(sea.shoreHeightM);
+    /**
+     * ⚠️ ΤΟ ΔΕΥΤΕΡΟ ΝΟΥΜΕΡΟ ΜΠΑΙΝΕΙ ΜΟΝΟ ΟΤΑΝ ΕΙΝΑΙ ΟΝΤΩΣ ΔΕΥΤΕΡΟ (13/08/2026).
+     *
+     * Από σήμερα το ύψος στην ακτή υπάρχει για ΚΑΘΕ παραλία, όχι μόνο για τους κλειστούς όρμους
+     * (βίβλος §Γ5). Και σε 2.104 από τις 2.854 — κάθε εκτεθειμένη και κάθε μερικώς προστατευμένη —
+     * είναι ΑΡΙΘΜΗΤΙΚΑ ΤΟ ΙΔΙΟ με το ανοιχτό νερό, γιατί εκεί ο συντελεστής είναι 1,0. Χωρίς αυτό
+     * το `differs`, το πλακίδιο τύπωνε «~0,6 μ.» με υπότιτλο «Λίγος κυματισμός · 0,6 μ. ανοιχτά»:
+     * το ίδιο νούμερο δύο φορές, με ένα «~» να υπονοεί ότι είναι εκτίμηση ενώ είναι η μέτρηση, και
+     * τρεις λέξεις παραπάνω που κόβονταν στα 390 px (το `validateTileFit` το έπιασε αμέσως).
+     *
+     * Ο κανόνας της §7δ («τα δύο νούμερα μαζί, το ανοιχτό μένει στην οθόνη με το όνομά του»)
+     * τηρείται εκεί που έχει νόημα: όταν τα δύο νούμερα ΔΙΑΦΕΡΟΥΝ. Όταν ταυτίζονται δεν υπάρχει
+     * δεύτερη ανάγνωση να κρυφτεί — υπάρχει μία, και τη λέμε μία φορά.
+     */
+    const shoreM = sea.shoreHeightM;
+    const hasShore = typeof shoreM === 'number' && Number.isFinite(sea.shoreHeightM);
+    const shoreLeads = typeof sea.shoreHeightM === 'number' && Number.isFinite(sea.shoreHeightM)
+      && typeof sea.heightM === 'number' && Math.abs((shoreM as number) - sea.heightM) >= 0.05;
     const shoreCopy = SHORE_LABELS[language] ?? SHORE_LABELS.en;
     readings.push({
       glyph: <SeaGlyph heightM={sea.heightM} tone={glyphTone} className="h-full w-full" />,
       label: shoreLeads ? shoreCopy.atShore : (sea.isOpenWater ? labels.seaOpen : labels.sea),
-      value: shoreLeads
-        ? `~${metres(sea.shoreHeightM as number)}`
+      // Το «~» σημαίνει «μοντελοποιημένο». Όταν ο αριθμός της ακτής ΕΙΝΑΙ η μέτρηση του ανοιχτού,
+      // ένα «~» θα ήταν ψέμα προς την αντίθετη κατεύθυνση: θα υποβάθμιζε μια μέτρηση σε εκτίμηση.
+      value: hasShore
+        ? `${shoreLeads ? '~' : ''}${metres(shoreM as number)}`
         : typeof sea.heightM === 'number' ? metres(sea.heightM) : '—',
       hint: shoreLeads && typeof sea.heightM === 'number'
         ? `${sea.label} · ${shoreCopy.offshore(metres(sea.heightM))}`
@@ -575,6 +617,17 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
               {climateNote.tone === 'better' ? '↓' : climateNote.tone === 'worse' ? '↑' : '≈'}
             </span>
             <span>{climateNote.text}</span>
+          </p>
+        )}
+
+        {shoreBreakNote && (
+          // Amber, like `climateNote`'s 'worse' tone: it is not a warning, but it is the one line
+          // on a calm-looking page saying "you will feel something", and a neutral grey would read
+          // as trivia. The wave glyph is the same character the sea tile uses, so the reader can
+          // see at a glance which figure this sentence belongs to.
+          <p className="flex items-start gap-2 rounded-2xl bg-amber-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-amber-900">
+            <span className="mt-px shrink-0" aria-hidden="true">〜</span>
+            <span>{shoreBreakNote}</span>
           </p>
         )}
       </div>

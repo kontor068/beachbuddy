@@ -149,10 +149,12 @@ self.addEventListener('fetch', event => {
   // drawings live under /data/coastline/shape/ and are rebuilt from the same source, so they
   // follow the same rule — a cached shoreline outliving a pin correction is exactly the
   // staleness the build-time guard exists to prevent.
+  // /greek_beaches.json was listed here until 13/08/2026. Nothing requests it any more —
+  // the national dump is no longer published (scripts/stripNationalDumpFromDist.mjs) and
+  // the app reads the per-region shards below.
   if (
     url.origin === self.location.origin &&
-    (url.pathname === '/greek_beaches.json' ||
-      url.pathname.startsWith('/data/beaches/') ||
+    (url.pathname.startsWith('/data/beaches/') ||
       url.pathname.startsWith('/data/coastline/'))
   ) {
     event.respondWith(

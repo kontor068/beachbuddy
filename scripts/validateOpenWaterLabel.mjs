@@ -173,10 +173,23 @@ if (!readLabelsBlock) {
   // The shore label may only lead when a shore FIGURE exists — a label without its own number
   // would silently rebrand the open-water reading as the water at the beach, which is precisely
   // the lie this gate was written to stop.
+  //
+  // ⚠️ 13/08/2026, ΒΡΑΔΥ — ΔΕΥΤΕΡΟΣ ΟΡΟΣ. Το ύψος στην ακτή υπάρχει πλέον για ΚΑΘΕ παραλία (§Γ5),
+  // και στις 2.104 από τις 2.854 είναι ΑΡΙΘΜΗΤΙΚΑ ΙΔΙΟ με το ανοιχτό. Με μόνο τον πρώτο όρο, το
+  // πλακίδιο τύπωνε «~0,6 μ.» με υπότιτλο «… · 0,6 μ. ανοιχτά» — το ίδιο νούμερο δύο φορές, και
+  // ένα «~» πάνω σε μέτρηση. Ο τίτλος «Κύμα στην ακτή» και ο υπότιτλος του ανοιχτού μπαίνουν πλέον
+  // μόνο όταν τα δύο νούμερα ΔΙΑΦΕΡΟΥΝ, δηλαδή όταν υπάρχει όντως δεύτερη ανάγνωση να ειπωθεί.
   if (!/const shoreLeads = typeof sea\.shoreHeightM === 'number' && Number\.isFinite\(sea\.shoreHeightM\)/.test(heroSource)) {
     failures.push(
       'components/BeachAnswerHero.tsx: `shoreLeads` no longer requires a finite sea.shoreHeightM. '
       + 'The «at the shore» label must never sit above the open-water number.'
+    );
+  }
+  if (!/const shoreLeads =[\s\S]{0,220}?Math\.abs\([\s\S]{0,60}?sea\.heightM\)\s*>=\s*0\.05/.test(heroSource)) {
+    failures.push(
+      'components/BeachAnswerHero.tsx: `shoreLeads` no longer requires the two figures to DIFFER. '
+      + 'On the ~74% of beaches where the shore reading equals the open-water measurement, the tile '
+      + 'would print the same number twice and mark a measurement with a «~».'
     );
   }
   // And the open-water number must survive into the hint whenever the shore figure takes the
@@ -195,7 +208,12 @@ if (!readLabelsBlock) {
     failures.push('components/BeachAnswerHero.tsx: SHORE_LABELS block not found.');
   } else {
     for (const lang of ['en', 'gr', 'de', 'it', 'fr']) {
-      const row = shoreLabelsBlock[0].match(new RegExp(`\\b${lang}:\\s*\\{([^}]*)\\}`));
+      // ⚠️ Η ΓΡΑΜΜΗ ΔΙΑΒΑΖΕΤΑΙ ΜΕΧΡΙ ΤΟ ΤΕΛΟΣ ΤΗΣ, ΟΧΙ ΜΕΧΡΙ ΤΟ ΠΡΩΤΟ «}» (13/08/2026). Το
+      // παλιό `[^}]*` έκοβε τη γραμμή στο πρώτο κλείσιμο — και μόλις μπήκε το `atShoreInline`, που
+      // είναι template literal και περιέχει `}`, η πύλη ανέφερε ότι ΛΕΙΠΕΙ το `offshore` σε
+      // ΚΑΙ ΤΙΣ ΠΕΝΤΕ γλώσσες ενώ ήταν όλα εκεί. Ένα ψευδώς κόκκινο δίχτυ είναι ένα σκαλί πριν
+      // από ένα χαλαρωμένο δίχτυ: η επόμενη κίνηση κάποιου θα ήταν να σβήσει τον έλεγχο.
+      const row = shoreLabelsBlock[0].match(new RegExp(`\\n\\s*${lang}:\\s*\\{(.*)\\},?\\s*\\n`));
       if (!row) {
         failures.push(`SHORE_LABELS: language "${lang}" is missing.`);
         continue;
@@ -281,8 +299,97 @@ if (!shelterBlock) {
   }
 }
 
+// ── E. THE PODIUM CARD MUST DRAW THE WORD, NOT MERELY CARRY IT ──────────────────────────────
+// ADDED 13/08/2026, from a user report: Παραλία Μαραθώνα printed «1,5 μ.» on the podium card in a
+// 6 Bft northerly, and Σχινιάς 4 km away printed «~0,1 μ.» the same minute. Both numbers were
+// correct — the first is the grid cell 10 km offshore, the second our shore model — but the card
+// said nothing about which water it meant, so the pair read as a contradiction.
+//
+// The word was NOT missing from the code. `cardWaveLabel` was computed correctly and handed to
+// `title` (a tooltip, which does not exist on touch) and to `aria-label` (screen readers only).
+// The rendered span printed `item.text` and nothing else. So on the 86% of visits that arrive on
+// a phone the label had never once been drawn.
+//
+// This is the 11/08 lesson one step further on. That day the failure was a field that never
+// REACHED the card, and the answer was to check the source rather than compare values. Here the
+// value reached the card and its NAME was not painted — which value comparison cannot see either.
+// Hence a source check on the two links that must both hold: the visible string is built from
+// SHORE_LABELS.offshore, and the visible string is the one handed to `text`.
+//
+// ⚠️ 13/08/2026, ΒΡΑΔΥ — Η ΑΠΑΙΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΘΗΚΕ ΑΠΟ ΙΣΧΥΡΟΤΕΡΗ, ΔΕΝ ΣΒΗΣΤΗΚΕ.
+//
+// Μέχρι σήμερα το ζητούμενο ήταν «η κάρτα, όταν δείχνει τη θάλασσα του ανοιχτού, να το γράφει».
+// Τώρα η κάρτα ΔΕΝ ΔΕΙΧΝΕΙ ΠΟΤΕ τη θάλασσα του ανοιχτού — δείχνει το νερό της ακτής σε κάθε
+// παραλία (βίβλος §Γ5) — οπότε η λέξη δεν έχει πια πού να μπει και η απαίτηση θα ήταν αδύνατη.
+// Ό,τι φύλαγε εκείνος ο έλεγχος το φυλάει τώρα ο επόμενος, στη ρίζα: ποιο νερό διαβάζει η κάρτα.
+const cardPath = path.join(root, 'components/BeachCard.tsx');
+const cardSource = readFileSync(cardPath, 'utf8');
+
+/**
+ * Η ΚΑΡΤΑ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΞΑΝΑΔΕΙΞΕΙ ΤΗ ΘΑΛΑΣΣΑ ΤΟΥ ΑΝΟΙΧΤΟΥ (13/08/2026, βράδυ).
+ *
+ * Ο έλεγχος από πάνω φυλάει τη ΛΕΞΗ. Αυτός φυλάει κάτι δυνατότερο: ότι η κάρτα διαβάζει τον
+ * αριθμό ΤΗΣ ΑΚΤΗΣ. Δύο κάρτες δίπλα-δίπλα τύπωναν «1,4 μ. ανοιχτά» και «~0,2 μ.» — δύο
+ * διαφορετικά μεγέθη, καμία ένδειξη ότι είναι διαφορετικά (Μίλτος, με στιγμιότυπο). Η λύση δεν
+ * ήταν δεύτερη λέξη — δοκιμάστηκε, κόπηκε ως «πολύ κείμενο στο mobile» και το validateTileFit
+ * την έκοβε στα 390 px — αλλά να δείχνει η κάρτα ΠΑΝΤΑ το ίδιο μέγεθος.
+ *
+ * Αν κάποιος ξαναγυρίσει το `cardShoreM` στο `shoreWaveHeightM` (που μιλάει μόνο σε κλειστούς
+ * όρμους), οι κάρτες ξαναρχίζουν να ανακατεύουν τα δύο μεγέθη και ΚΑΘΕ άλλος έλεγχος εδώ μένει
+ * πράσινος — γιατί όλοι κοιτάζουν λέξεις, όχι ποιο νερό διαβάστηκε.
+ */
+// ⚠️ ΚΑΡΦΩΜΕΝΟ ΣΤΗΝ ΠΡΩΤΗ ΕΚΦΡΑΣΗ, ΟΧΙ «ΚΑΠΟΥ ΕΚΕΙ ΚΟΝΤΑ». Η πρώτη εκδοχή αυτού του ελέγχου
+// ζητούσε απλώς να εμφανίζεται το `shoreDisplayWaveM` μέσα στα 200 επόμενα σημεία — και πέρασε
+// ΠΡΑΣΙΝΗ σε σαμποτάζ που γύρισε τη συνθήκη στο παλιό πεδίο, επειδή το νέο επιβίωνε στην επόμενη
+// γραμμή του ίδιου ternary. Ένας έλεγχος που ψάχνει αν υπάρχει μια λέξη δεν ελέγχει τι διαβάζεται.
+const cardReadsShoreEverywhere = /const cardShoreM\s*=\s*typeof shoreDisplayWaveM\b/.test(cardSource);
+if (!cardReadsShoreEverywhere) {
+  failures.push(
+    'components/BeachCard.tsx: cardShoreM no longer reads shoreDisplayWaveM. The card would print the '
+    + 'open-water figure on most beaches and the shore figure on a few — two different quantities side '
+    + 'by side, which is the defect reported on 13/08/2026.'
+  );
+}
+
+const waveItemBlock = cardSource.match(/if\s*\(cardWaveText\)\s*\{[\s\S]*?\n\s*\}/);
+if (!waveItemBlock) {
+  failures.push('components/BeachCard.tsx: the podium wave item is no longer pushed from cardWaveText.');
+} else if (!/\btext:\s*cardWaveText\b/.test(waveItemBlock[0])) {
+  failures.push(
+    'components/BeachCard.tsx: the podium wave chip no longer renders cardWaveText as its visible text. '
+    + 'A label that lives only in title/aria-label is invisible on a phone — the exact defect this check exists for.'
+  );
+}
+
+// The rendered span must still paint `item.text`. If someone drops it back to icon-only, or moves the
+// text into an attribute, every check above stays green and the card goes silent again.
+if (!/\{item\.text\}/.test(cardSource)) {
+  failures.push(
+    'components/BeachCard.tsx: the «why» row no longer paints item.text. The wave figure and its word '
+    + 'would exist in the props and never be drawn.'
+  );
+}
+
+// The word must not be re-declared inside the card. §7θ imported the strings from BeachAnswerHero
+// precisely so the card and the beach page cannot end up describing the same water differently;
+// a second label map in here is that drift, one edit away.
+if (!/import\s*\{[^}]*\bSHORE_LABELS\b[^}]*\}\s*from\s*'\.\/BeachAnswerHero'/.test(cardSource)) {
+  failures.push(
+    'components/BeachCard.tsx: SHORE_LABELS is no longer imported from BeachAnswerHero. The card would '
+    + 'be naming the water with its own words, which is how the card and the beach page drift apart.'
+  );
+}
+for (const key of ['atShore', 'seaOpen']) {
+  if (new RegExp(`\\b${key}\\s*:\\s*['\`]`).test(cardSource)) {
+    failures.push(
+      `components/BeachCard.tsx: it declares its own "${key}" string. The wave labels must come from `
+      + 'BeachAnswerHero — two copies of the same label is exactly the drift §7θ removed.'
+    );
+  }
+}
+
 // ── REPORT ──────────────────────────────────────────────────────────────────────────────────
-console.log(`Cases: ${casesChecked} (open water ${openWaterCases} · near-shore/cove ${coveCases}) · languages ${LANGUAGES.length} · explanation + shelter wiring checked`);
+console.log(`Cases: ${casesChecked} (open water ${openWaterCases} · near-shore/cove ${coveCases}) · languages ${LANGUAGES.length} · explanation + shelter wiring checked · podium card word checked`);
 
 if (failures.length > 0) {
   console.error(`\nFAILED: ${failures.length} problem(s) with the open-water label.\n`);

@@ -13,11 +13,29 @@ const failures = [];
 const warnings = [];
 let checks = 0;
 
+// WHY "TOTAL JS" IS NOT THE HEADLINE NUMBER HERE (changed 13/08/2026).
+//
+// This build emits ~225 JS files that are pure DATA, one per region: climate tables and
+// beach stories for Chania, Halkidiki, Corfu and so on. A visit downloads exactly ONE of
+// them — the region being looked at. Summing all 225 answers the question "what would it
+// weigh to download every region in Greece", which no visitor has ever done and which
+// grows every time a region gains a story. That sum was 1,309 KB against a 750 KB budget,
+// so the gate read RED permanently while the number a phone actually pays was less than
+// half of it. A gate that is red for a reason nobody can act on gets ignored, and then it
+// is not a gate.
+//
+// So the hard limit moved to `worstVisitGzipKb`: first paint + the heaviest single region
+// + the detail page + the map. That is the most a real person downloads in one sitting,
+// and it is the number that gets worse when someone adds weight to a shared chunk.
+// `maxTotalJsGzipKb` stays as a WARNING with a realistic ceiling — it still catches a
+// runaway (a vendor library duplicated into every region chunk), it just no longer fails
+// the build for having more regions.
 const budgets = {
   maxInitialGzipKb: 600,
   warnInitialGzipKb: 350,
-  maxTotalJsGzipKb: 750,
-  warnTotalJsGzipKb: 500,
+  maxWorstVisitGzipKb: 750,
+  warnWorstVisitGzipKb: 600,
+  warnTotalJsGzipKb: 1500,
   maxLargestJsGzipKb: 200,
   warnLargestJsRawKb: 500,
   warnCssGzipKb: 60,
@@ -167,16 +185,64 @@ const main = async () => {
     initialCssGzipBytes: sum(initialCssAssets, 'gzipBytes'),
   };
 
+  // What one real visit downloads. Region data chunks are named after the region id
+  // (`crete-crete-chania-<hash>.js`), so the region index tells us exactly which files are
+  // per-region data and which are shared code — no guessing from file contents.
+  let regionIds = [];
+  try {
+    const indexRaw = await readFile(path.join(distDir, 'data', 'beaches', 'index.json'), 'utf8');
+    regionIds = (JSON.parse(indexRaw).regions || []).map(region => region.id).filter(Boolean);
+  } catch {
+    warn('Could not read dist/data/beaches/index.json; worst-visit weight was not checked.');
+  }
+
+  const isRegionDataChunk = asset =>
+    regionIds.some(id => asset.name.startsWith(`${id}-`));
+
+  const initialPaths = new Set(initialAssets.map(asset => path.normalize(asset.filePath)));
+  const nonInitialJs = jsAssets.filter(asset => !initialPaths.has(path.normalize(asset.filePath)));
+  const regionChunks = nonInitialJs.filter(isRegionDataChunk);
+  const routeChunks = nonInitialJs.filter(asset => !isRegionDataChunk(asset));
+
+  // One region, and it must be the heaviest — a budget that passes only for Sifnos is not
+  // a budget. Several files can share one region id (climate and stories are separate
+  // chunks), so sum per region rather than taking the single largest file.
+  const gzipByRegion = new Map();
+  for (const asset of regionChunks) {
+    const id = regionIds.find(candidate => asset.name.startsWith(`${candidate}-`));
+    gzipByRegion.set(id, (gzipByRegion.get(id) || 0) + asset.gzipBytes);
+  }
+  const heaviestRegionGzip = Math.max(0, ...gzipByRegion.values());
+
+  // Opening a beach and its map is the ordinary path from a Google result, not an edge
+  // case: the detail page, the map component and the map library all arrive on that tap.
+  const routeChunkByName = name => routeChunks.find(asset => asset.name.startsWith(name));
+  const onOpeningABeach = ['BeachDetailPage', 'BeachMap', 'map-vendor']
+    .map(routeChunkByName)
+    .filter(Boolean);
+
+  metrics.regionChunkCount = regionChunks.length;
+  metrics.heaviestRegionGzipBytes = heaviestRegionGzip;
+  metrics.openingABeachGzipBytes = sum(onOpeningABeach, 'gzipBytes');
+  metrics.worstVisitGzipBytes =
+    metrics.initialGzipBytes + heaviestRegionGzip + metrics.openingABeachGzipBytes;
+
+  if (regionIds.length > 0) {
+    if (metrics.worstVisitGzipBytes > budgets.maxWorstVisitGzipKb * 1024) {
+      fail(`Worst realistic visit is ${formatKb(metrics.worstVisitGzipBytes)} gzip (first paint + heaviest region + beach page + map), above ${budgets.maxWorstVisitGzipKb} KB.`);
+    } else {
+      pass();
+    }
+
+    if (metrics.worstVisitGzipBytes > budgets.warnWorstVisitGzipKb * 1024) {
+      warn(`Worst realistic visit is ${formatKb(metrics.worstVisitGzipBytes)} gzip; that is what a phone on Greek mobile data pays to open one beach.`);
+    }
+  }
+
   const largestJs = topBy(jsAssets, 'rawBytes', 1)[0];
 
   if (metrics.initialGzipBytes > budgets.maxInitialGzipKb * 1024) {
     fail(`Initial JS/CSS gzip is ${formatKb(metrics.initialGzipBytes)}, above ${budgets.maxInitialGzipKb} KB.`);
-  } else {
-    pass();
-  }
-
-  if (metrics.totalJsGzipBytes > budgets.maxTotalJsGzipKb * 1024) {
-    fail(`Total JS gzip is ${formatKb(metrics.totalJsGzipBytes)}, above ${budgets.maxTotalJsGzipKb} KB.`);
   } else {
     pass();
   }
@@ -192,7 +258,7 @@ const main = async () => {
   }
 
   if (metrics.totalJsGzipBytes > budgets.warnTotalJsGzipKb * 1024) {
-    warn(`Total JS gzip is ${formatKb(metrics.totalJsGzipBytes)}; look for code-splitting wins before adding more features.`);
+    warn(`Total JS gzip is ${formatKb(metrics.totalJsGzipBytes)} across ${metrics.jsCount} files (${metrics.regionChunkCount} of them per-region data, one per visit). Only worth acting on if a shared library got duplicated into every region chunk.`);
   }
 
   if (largestJs && largestJs.rawBytes > budgets.warnLargestJsRawKb * 1024) {

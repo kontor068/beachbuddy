@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react';
 import { Accessibility, Beach, DailyForecast, ForecastItem, Island, LanguageCode, FilterKey, SortOption, UserPreferences, SuitableBeach, Translation, WindDirection, type BeachProfile, type BeachForecastContext, type GeospatialExposureProfile, type MarineForecast } from './types';
 import { beachMatchesFilterKey, beachMatchesUserPreferences, calculateBeachScore, calculateBestBeachTime, getSuitableBeaches, filterBeachesByUserPreferences, getTopRecommendationDisplayLimit, hasHourlyRainRisk, isTrustedTopRecommendationCandidate, MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT, type BeachScore, type BeachWeatherById, type BestBeachTime } from './services/recommendationService';
-import type { Chat } from '@google/genai';
 import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind } from 'lucide-react';
 
 // Components
@@ -21,8 +20,36 @@ import { SavedBeachesScreen } from './components/SavedBeachesScreen';
 import { PrivacyConsentBanner } from './components/PrivacyConsentBanner';
 import { MapLoadBoundary } from './components/MapLoadBoundary';
 import { LegalFooter } from './components/LegalFooter';
-import { BeachSearcherHome, type DirectoryCategory } from './components/BeachSearcherHome';
-import { LandingView } from './components/landing/LandingView';
+import type { DirectoryCategory } from './components/BeachSearcherHome';
+// The landing (12 files, ~28 KB gzipped) is the national front page. It renders only when
+// `showLanding` is true — never on a region page and never on a beach page, which is where
+// almost all search traffic arrives. Loaded eagerly it was riding in the entry chunk on
+// every one of those pages for nothing.
+//
+// Why this is safe to defer: `showLanding` cannot become true until `allIslands` is
+// populated (hooks/useLocation.ts), and until that fetch resolves App.tsx already renders
+// a skeleton. So this download happens inside a wait the visitor is already doing, not
+// after it.
+const LandingView = lazyWithChunkRecovery(
+  () => import('./components/landing/LandingView').then(pickLazyExport('LandingView', 'LandingView')),
+  'LandingView'
+);
+// The region screen — 5.286 lines, ~32 KB gzipped, the single biggest thing in the shared
+// UI chunk. It renders only under `showHeaderForecast && !showLanding`, so it is never on a
+// beach-detail page (where most Google traffic lands) and never on the landing, yet it was
+// downloaded on both.
+//
+// Deferring it is safe because `showHeaderForecast` requires a resolved forecast for the
+// selected region — a network round trip this chunk now overlaps instead of preceding.
+// The Suspense fallback must be the skeleton, never null: this is the page's main content.
+//
+// IT MUST ALSO STAY OUT OF THE `beach-ui` LIST IN vite.config.ts. A module named in a
+// manualChunks list is welded into that chunk, and beach-ui is preloaded on first paint —
+// leaving the line in makes this whole split save exactly zero bytes.
+const BeachSearcherHome = lazyWithChunkRecovery(
+  () => import('./components/BeachSearcherHome').then(pickLazyExport('BeachSearcherHome', 'BeachSearcherHome')),
+  'BeachSearcherHome'
+);
 // Lazy: the planner (and its scoring path) must not ride in the main bundle —
 // most visitors only want today, and with the flag off it would still ship.
 const TripPlanner = lazyWithChunkRecovery(
@@ -134,17 +161,9 @@ const CombinedFilter = lazyWithChunkRecovery(
   () => import('./components/AmenityFilter').then(pickLazyExport('CombinedFilter', 'CombinedFilter')),
   'AmenityFilter'
 );
-const ChatbotModal = lazyWithChunkRecovery(
-  () => import('./components/ChatbotModal').then(pickLazyExport('ChatbotModal', 'ChatbotModal')),
-  'ChatbotModal'
-);
 const IslandSelectorModal = lazyWithChunkRecovery(
   () => import('./components/IslandSelectorModal').then(pickLazyExport('IslandSelectorModal', 'IslandSelectorModal')),
   'IslandSelectorModal'
-);
-const AiBeachAdvisor = lazyWithChunkRecovery(
-  () => import('./components/AiBeachAdvisor').then(pickLazyExport('AiBeachAdvisor', 'AiBeachAdvisor')),
-  'AiBeachAdvisor'
 );
 const UsageInsights = lazyWithChunkRecovery(
   () => import('./components/UsageInsights').then(pickLazyExport('UsageInsights', 'UsageInsights')),
@@ -158,9 +177,10 @@ const AddBeachPhotoSheet = lazyWithChunkRecovery(
   'AddBeachPhotoSheet'
 );
 
-const ENABLE_AI_ADVISOR = false;
-const ENABLE_BEACH_BUDDY_CHAT = false;
-const ENABLE_PLANNER_PRO = false;
+// ENABLE_AI_ADVISOR / ENABLE_BEACH_BUDDY_CHAT / ENABLE_PLANNER_PRO were three hard-coded
+// `false` flags guarding an AI advisor, a chatbot and a "planner pro" screen. Removed
+// 13/08/2026 along with the code they hid — see the note further down where the chat
+// handler used to be. ENABLE_TRIP_PLANNER below is a DIFFERENT, live feature.
 // Default ON. Kill without a code change: set VITE_ENABLE_TRIP_PLANNER=false
 // in the Netlify env and trigger a deploy (~2 min, no PR). There is no runtime
 // kill switch on a static build — a boot-time config fetch would cost a
@@ -1638,29 +1658,6 @@ export const App: React.FC = () => {
     tripPlanner: { en: 'Trip Planner', gr: 'Σχεδιασμός ταξιδιού', fr: 'Planificateur', de: 'Reiseplaner', it: 'Pianificatore' },
     aiAssistant: { en: 'AI Assistant', gr: 'AI Βοηθός', fr: 'Assistant IA', de: 'KI-Assistent', it: 'Assistente AI' },
   };
-  const plannerProCopy = {
-    title: {
-      en: 'Holiday Planner is a Pro feature',
-      title: { en: 'Planner is a Pro feature', gr: 'Το Planner είναι λειτουργία Pro', fr: 'Le Planner est une fonction Pro', de: 'Der Planner ist eine Pro-Funktion', it: 'Il Planner è una funzione Pro' },
-      de: 'Der Urlaubsplaner ist eine Pro-Funktion',
-      it: 'Il Planner vacanze è una funzione Pro',
-      fr: 'Le planificateur de vacances est une fonction Pro',
-    },
-    description: {
-      en: 'Pro creates a weather-aware holiday plan for each destination, matching beach days, calmer hours and backup ideas to the forecast.',
-      description: { en: 'With Pro, it will build a holiday plan for each place, based on weather, sea, best beach hours, and backup options.', gr: 'Στο Pro θα φτιάχνει πρόγραμμα διακοπών για κάθε μέρος, με βάση τον καιρό, τη θάλασσα, τις καλύτερες ώρες για παραλία και εναλλακτικές επιλογές.', fr: 'Avec Pro, il construira un programme de vacances pour chaque lieu, selon la météo, la mer, les meilleures heures de plage et les options de secours.', de: 'Mit Pro erstellt es für jeden Ort einen Urlaubsplan, basierend auf Wetter, Meer, besten Strandzeiten und Ausweichoptionen.', it: 'Con Pro creerà un programma vacanze per ogni luogo, in base a meteo, mare, orari migliori per la spiaggia e alternative.' },
-      de: 'Pro erstellt einen wetterbasierten Urlaubsplan je Reiseziel, mit Strandtagen, ruhigen Zeitfenstern und Alternativen passend zur Vorhersage.',
-      it: 'Pro crea un programma vacanze per ogni destinazione in base a meteo, mare, orari migliori per la spiaggia e alternative.',
-      fr: 'Pro crée un programme de vacances par destination selon la météo, la mer, les meilleurs moments de plage et des alternatives.',
-    },
-    cta: {
-      en: 'Available on Pro',
-      cta: { en: 'Available in Pro', gr: 'Διαθέσιμο στο Pro', fr: 'Disponible en Pro', de: 'In Pro verfügbar', it: 'Disponibile in Pro' },
-      de: 'In Pro verfügbar',
-      it: 'Disponibile in Pro',
-      fr: 'Disponible avec Pro',
-    },
-  };
 
   // --- Beach & Weather Data (Custom Hooks) ---
   const { allIslands, loading: beachesLoading, error: beachesError, getFilteredBeaches, ensureIslandBeachesLoaded, cacheLoadedIsland } = useBeaches(language);
@@ -1900,9 +1897,7 @@ export const App: React.FC = () => {
   // --- Modals State ---
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [filterModalResultCount, setFilterModalResultCount] = useState<number | undefined>(undefined);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [isIslandSelectorOpen, setIsIslandSelectorOpen] = useState(false);
-  const [isPlannerOpen, setIsPlannerOpen] = useState(false);
 
   useEffect(() => {
     if (!beachesLoading) {
@@ -1934,9 +1929,6 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // --- Chat & AI State ---
-  const [chatMessages, setChatMessages] = useState<any[]>([]);
-  const chatSessionRef = useRef<Chat | null>(null);
   const detailRequestRef = useRef(0);
   const mapSectionRef = useRef<HTMLElement | null>(null);
   const insightsSectionRef = useRef<HTMLDivElement | null>(null);
@@ -3722,16 +3714,12 @@ export const App: React.FC = () => {
   };
 
   const handleMobileTab = (tab: MobileTab) => {
-    if (tab === 'chat' && !ENABLE_BEACH_BUDDY_CHAT) return;
-    if (tab === 'planner' && !ENABLE_PLANNER_PRO) return;
+    // The chat and planner-pro tabs were removed on 13/08/2026. MobileTab no longer has
+    // those values, so there is nothing left to guard against here — the type does it.
 
     setMobileTab(tab);
-    if (tab === 'chat') { closeMobileBottomPanels(); setIsChatOpen(true); return; }
-    if (tab === 'planner') { closeMobileBottomPanels(); setIsPlannerOpen(true); return; }
     if (tab === 'home') {
       closeMobileBottomPanels();
-      setIsChatOpen(false);
-      setIsPlannerOpen(false);
       setIsFilterModalOpen(false);
       setIsIslandSelectorOpen(false);
       if (view === 'detail') closeBeachDetails();
@@ -3764,27 +3752,19 @@ export const App: React.FC = () => {
     }
   };
 
-  // --- CORE AI LOGIC (RTX 3090 / GEMINI) ---
-  const handleChatSend = async (msg: string, model: string = 'google') => {
-    if (!selectedIsland) return;
-    
-    const userMsg = { id: Date.now().toString(), text: msg, sender: 'user' }; // athens-clock-exempt: unique id, not a time-of-day
-    const loadingId = 'bot-loading-' + Date.now(); // athens-clock-exempt: unique id, not a time-of-day
-    setChatMessages(prev => [...prev, userMsg, { id: loadingId, text: '...', sender: 'bot' }]);
-
-    try {
-      const { initializeChat, sendMessage } = await import('./services/geminiService');
-      if (!chatSessionRef.current && model === 'google') {
-        chatSessionRef.current = initializeChat(selectedIsland.name[language], selectedIsland.beaches, language, t);
-      }
-      
-      const aiResponse = await sendMessage(chatSessionRef.current, msg, model);
-
-      setChatMessages(prev => prev.map(m => m.id === loadingId ? { ...m, text: aiResponse } : m));
-    } catch (e) {
-    return 'Παρουσιάστηκε σφάλμα στην απάντηση.';
-    }
-  };
+  // THE GEMINI CHAT LIVED HERE UNTIL 13/08/2026.
+  //
+  // It was switched off with a hard-coded `false` and no visitor could reach it, but the
+  // code stayed — and it asked for its key as VITE_GEMINI_API_KEY. The VITE_ prefix means
+  // Vite bakes that value into the JavaScript every visitor downloads. So the feature was
+  // one flag flip plus one plausible Netlify env var away from publishing a paid Google
+  // key to the whole internet, silently. That is the same trap the `define` block in
+  // vite.config.ts used to be; it was removed on 28/07 for exactly this reason.
+  //
+  // Removed together with services/geminiService.ts, services/aiAdvisorService.ts,
+  // components/ChatbotModal.tsx, components/AiBeachAdvisor.tsx and the @google/genai
+  // dependency. If an AI feature ever comes back, the call belongs in a Netlify function
+  // where the key stays server-side — never in a VITE_ variable.
 
   useEffect(() => {
     if (view !== 'detail' || !detailBeach) {
@@ -4791,6 +4771,7 @@ export const App: React.FC = () => {
         waveHeightM: scoreResult.waveHeightM,
         seaStateWaveM: scoreResult.seaStateWaveM,
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
+        shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // The full marine forecast rides along for the map's downwind-sample flag
         // (utils/offshoreFlatWater.hasDownwindSeaSample reads swellWaveHeightM). Found the hard
@@ -6007,6 +5988,7 @@ export const App: React.FC = () => {
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
+        shoreDisplayWaveM: context.shoreDisplayWaveM,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -6040,6 +6022,7 @@ export const App: React.FC = () => {
         windSpeedKmph: context.windSpeedKmph,
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
+        shoreDisplayWaveM: context.shoreDisplayWaveM,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -6080,6 +6063,7 @@ export const App: React.FC = () => {
       // Το ύψος στην ακτή ταξιδεύει μαζί με το ανοιχτό νερό — αν χαθεί εδώ, η κάρτα ξαναπέφτει
       // στο μεγαλύτερο νούμερο και διαφωνεί με τη σελίδα της παραλίας (11/08/2026).
       shoreWaveHeightM: item.shoreWaveHeightM,
+      shoreDisplayWaveM: item.shoreDisplayWaveM,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -6101,6 +6085,7 @@ export const App: React.FC = () => {
       seaStateWaveM: item.seaStateWaveM,
       seaStatePeriodS: item.seaStatePeriodS,
       shoreWaveHeightM: item.shoreWaveHeightM,
+      shoreDisplayWaveM: item.shoreDisplayWaveM,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -8284,6 +8269,7 @@ export const App: React.FC = () => {
                 onChooseManually={handleChooseStartupRegionManually}
               />
             )}
+            <Suspense fallback={<SkeletonLoader t={t} />}>
             <BeachSearcherHome
               language={language}
               // Same two values RecommendationSection already gets, so the empty state on the
@@ -8410,220 +8396,32 @@ export const App: React.FC = () => {
               onSelectIsland={handleRegionSelected}
               strongWindContext={isStrongRecommendationMode}
             />
+            </Suspense>
 
-            <div className="hidden" aria-hidden="true">
-              <div className="overflow-hidden rounded-[1.35rem] border border-slate-200/80 bg-white/86 shadow-sm shadow-sky-900/5 ring-1 ring-white/45">
-            <div id="forecast-section" className="scroll-mt-4">
-              <WeatherSummary
-                forecast={forecast!}
-                selectedDayIndex={selectedDayIndex}
-                onDaySelect={setSelectedDayIndex}
-                t={t}
-                islandName={selectedIsland?.name[language]}
-                variant="header"
-              />
-            </div>
+            {/* A permanently hidden block lived here until 13/08/2026 — a div carrying both
+                className="hidden" and aria-hidden="true", holding a full copy of the weather
+                header (WeatherSummary variant="header") plus the "all calm" panel. It was
+                mounted on every render and visible to nobody, in either sense: display:none
+                for sighted visitors, aria-hidden for screen readers.
 
-            {calmAllAroundSummary && (
-              <div
-                className="border-t border-white/55 px-2 py-3 sm:min-h-[12.5rem] sm:px-4 sm:py-4"
-              >
-                <div className="space-y-3 text-center">
-                  <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-white/72 text-emerald-600 shadow-sm ring-1 ring-emerald-100/80 sm:h-10 sm:w-10">
-                    <CheckCircle2 className="h-5 w-5" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <h2 className="mx-auto max-w-3xl font-heading text-[1.22rem] font-bold leading-[1.16] text-slate-900 [text-wrap:balance] sm:text-[1.65rem] lg:text-[1.75rem]">
-                      {calmSummaryTitle}
-                    </h2>
-                    <p className="mx-auto max-w-2xl text-sm font-medium leading-relaxed text-slate-600 sm:text-[0.95rem]">
-                      {calmSummaryDescription}
-                    </p>
-                  </div>
-                  <div className="grid gap-2 text-xs font-semibold text-slate-600 sm:grid-cols-3">
-                    <div className="flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-white/60 bg-white/58 px-3 text-sky-700 shadow-sm shadow-sky-900/5">
-                      <Wind className="h-4 w-4" />
-                      {homeCopy.calmWindBadge[language](calmAllAroundSummary.beaufort)}
-                    </div>
-                    <div className="flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-white/60 bg-white/58 px-3 text-cyan-700 shadow-sm shadow-sky-900/5">
-                      <Waves className="h-4 w-4" />
-                      {homeCopy.calmSeaBadge[language](calmAllAroundSummary.waveHeightM)}
-                    </div>
-                    <div className="flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-white/60 bg-white/58 px-3 text-emerald-700 shadow-sm shadow-sky-900/5">
-                      <CheckCircle2 className="h-4 w-4" />
-                      {homeCopy.calmBeachesBadge[language](calmAllAroundSummary.suitableBeachCount, calmAllAroundSummary.totalBeachCount)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                It was not free. Forecast.tsx keeps a rolling setTimeout that re-reads the
+                Athens clock (Forecast.tsx:323) — so an invisible tree was re-rendering on a
+                timer, on phones, forever. Its analytics call was safe only by accident: it
+                sits in a click handler nobody could ever click.
 
-            {headerTopBeach && (
-              /**
-               * A DIV THAT BEHAVES LIKE A BUTTON, BECAUSE IT CONTAINS ONE.
-               *
-               * This was a <button> wrapping the whole answer card, and the navigation pin on the
-               * photo is a <button> too — so the browser was being handed a button inside a button.
-               * React logs it as a hydration error and the nesting is invalid HTML: the inner
-               * control is the one browsers may drop, which is the one that opens Google Maps.
-               *
-               * Found 11/08/2026 in a real browser on Κέρκυρα while opening the podium on calm
-               * days. Not caused by that change — it needs a headerTopBeach WITH a photo AND
-               * navigation, which is why the same check on Αν. Αττική reported zero.
-               *
-               * role/tabIndex/onKeyDown reproduce what the <button> gave for free (keyboard focus,
-               * Enter and Space), and the inner button keeps its stopPropagation, so tapping the
-               * pin still opens navigation rather than the beach page.
-               */
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => openBeachDetails(headerTopBeach.beach, 'top_recommendation_panel')}
-                onKeyDown={(event) => {
-                  if (event.key !== 'Enter' && event.key !== ' ') return;
-                  if (event.target !== event.currentTarget) return;
-                  event.preventDefault();
-                  openBeachDetails(headerTopBeach.beach, 'top_recommendation_panel');
-                }}
-                className="block w-full cursor-pointer border-t border-white/55 px-2 py-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 sm:px-4 sm:py-4"
-              >
-                <div className="space-y-3 text-center">
-                  {headerTopBeachPhoto ? (
-                    <div className="relative overflow-hidden rounded-2xl border border-white/65 bg-white/45 shadow-sm shadow-sky-900/5 ring-1 ring-white/45">
-                      <img
-                        src={headerTopBeachPhoto}
-                        alt={headerTopBeachName}
-                        width={960}
-                        height={360}
-                        loading="eager"
-                        decoding="async"
-                        className="h-40 w-full object-cover sm:h-52 lg:h-60"
-                      />
-                      {headerTopCanNavigate && (
-                        <button
-                          type="button"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            trackEvent('navigation_clicked', headerTopBeach.beach.id, {
-                              ...analyticsBaseParams,
-                              beach_name: headerTopBeach.beach.name.en,
-                              source: 'top_recommendation_panel',
-                              ...buildBeachExposureParams(headerTopBeach.beach, headerTopBeach.simpleWindSuitability?.exposureStatus),
-                            });
-                            openNavigation(headerTopBeach.beach);
-                          }}
-                          className="absolute right-3 top-3 inline-flex min-h-11 min-w-11 items-center justify-center rounded-2xl bg-white/90 text-cyan-700 shadow-md shadow-sky-900/12 ring-1 ring-white/70 backdrop-blur-xl transition hover:bg-white hover:text-cyan-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
-                          aria-label={getLocalizedCopy(language, {
-                            en: `Navigate to ${headerTopBeachName}`,
-      gr: `Πλοήγηση προς ${headerTopBeachName}`,
-                            fr: `Naviguer vers ${headerTopBeachName}`,
-                            de: `Zu ${headerTopBeachName} navigieren`,
-                            it: `Naviga verso ${headerTopBeachName}`,
-                          })}
-                          title={t.navigate}
-                        >
-                          <Navigation className="h-5 w-5" aria-hidden="true" />
-                        </button>
-                      )}
-                    </div>
-                  ) : headerTopCanNavigate ? (
-                    <div className="relative mx-auto flex h-11 w-24 items-center justify-center gap-2 rounded-xl bg-white/72 text-emerald-600 shadow-sm ring-1 ring-emerald-100/80">
-                      <CheckCircle2 className="h-4 w-4 shrink-0" />
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          trackEvent('navigation_clicked', headerTopBeach.beach.id, {
-                            ...analyticsBaseParams,
-                            beach_name: headerTopBeach.beach.name.en,
-                            source: 'top_recommendation_panel',
-                            ...buildBeachExposureParams(headerTopBeach.beach, headerTopBeach.simpleWindSuitability?.exposureStatus),
-                          });
-                          openNavigation(headerTopBeach.beach);
-                        }}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-600 text-white shadow-sm transition hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
-                        aria-label={getLocalizedCopy(language, {
-                          en: `Navigate to ${headerTopBeachName}`,
-      gr: `Πλοήγηση προς ${headerTopBeachName}`,
-                          fr: `Naviguer vers ${headerTopBeachName}`,
-                          de: `Zu ${headerTopBeachName} navigieren`,
-                          it: `Naviga verso ${headerTopBeachName}`,
-                        })}
-                        title={t.navigate}
-                      >
-                        <Navigation className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    </div>
-                  ) : null}
-                  <div className="space-y-1.5">
-                    {/* THE LABEL THAT NAMES THE JOB.
-                        Everything below this line already existed — the beach, the reason, the
-                        hour, the navigate button. What was missing is that nothing said what the
-                        panel IS, so a first-time visitor had to infer that this block is the answer
-                        rather than one more card. A rival ships the same idea as an eyebrow above a
-                        question ("THE QUICK DECISION" / "Where should we go?"). We STATE it instead
-                        of asking it: every other surface here hands over an answer, and a question
-                        in the one place we actually have one reads as hesitation.
-                        NO DAY WORD ON PURPOSE. The sentence directly below already carries
-                        selectedDayPrefix, and after the BEACH_DAY_ENDS_HOUR handover this panel describes
-                        TOMORROW — a hard-coded «για σήμερα» would be false exactly then, on top of
-                        double-stamping a day the copy already names.
-                        Not caps: 02's label rule. Not a tinted chip: that is his shape, not ours. */}
-                    <p className="text-xs font-bold tracking-wide text-cyan-700/90 sm:text-[0.8rem]">
-                      {getLocalizedCopy(language, {
-                        gr: 'Η απάντηση',
-                        en: 'The answer',
-                        de: 'Die Antwort',
-                        fr: 'La réponse',
-                        it: 'La risposta',
-                      })}
-                    </p>
-                    <h2 className="mx-auto max-w-3xl truncate font-heading text-[1.55rem] font-extrabold leading-[1.16] text-slate-950 sm:text-[1.75rem]">
-                      {headerTopBeachName}
-                    </h2>
-                    <p className="mx-auto max-w-2xl text-sm font-medium leading-relaxed text-slate-600 sm:text-[0.95rem]">
-                      {headerTopDescription}
-                    </p>
-                  </div>
-
-                  {headerTopTimingLabel && (
-                    <div
-                      className="mx-auto flex min-h-12 w-full max-w-md min-w-0 items-center justify-center gap-2.5 rounded-2xl border border-cyan-200/80 bg-cyan-50/82 px-3 py-2 text-cyan-800 shadow-sm shadow-sky-900/5"
-                      aria-label={`${visitTimeLabel}: ${headerTopTimingLabel}`}
-                    >
-                      <Clock3 className="h-4 w-4 shrink-0" aria-hidden="true" />
-                      <span className="min-w-0 text-left">
-                        <span className="block text-[0.68rem] font-bold leading-tight text-cyan-700/80">
-                          {visitTimeLabel}
-                        </span>
-                        <span className="block truncate text-sm font-extrabold leading-tight text-slate-950">
-                          {headerTopTimingLabel}
-                        </span>
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="grid gap-2 text-xs font-semibold text-slate-600 sm:grid-cols-2">
-                    <div className="flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-white/60 bg-white/58 px-3 text-sky-700 shadow-sm shadow-sky-900/5">
-                      <Wind className="h-4 w-4" />
-                      {homeCopy.calmWindBadge[language](currentBeaufort)}
-                    </div>
-                    <div className="flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-white/60 bg-white/58 px-3 text-cyan-700 shadow-sm shadow-sky-900/5">
-                      <Waves className="h-4 w-4" />
-                      {homeCopy.calmSeaBadge[language](headerTopWaveHeightM)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-              </div>
-            </div>
+                Checked before removing: #forecast-section, the only id inside it, is
+                referenced nowhere else in the repo; there were no refs and no data-
+                attributes; the visitor still sees the weather header from the live render at
+                BeachSearcherHome.tsx:3675; and calmAllAroundSummary is still computed and
+                still used by calmSummaryBaseDescription (App.tsx), so no wording was lost.
+                Prerendering is string templates, not React SSR, so this never reached any
+                static HTML either. */}
           </>
         ) : undefined}
       />
 
       {showLanding ? (
+        <Suspense fallback={<SkeletonLoader t={t} />}>
         <LandingView
           language={language}
           allIslands={allIslands}
@@ -8642,6 +8440,7 @@ export const App: React.FC = () => {
           isSignedIn={auth.isSignedIn}
           onAddPhoto={() => handleAddPhoto('landing')}
         />
+        </Suspense>
       ) : (
       <>
 
@@ -8744,6 +8543,7 @@ export const App: React.FC = () => {
                       waveHeightM={r.waveHeightM}
                       seaStateWaveM={r.seaStateWaveM}
                       shoreWaveHeightM={r.shoreWaveHeightM}
+                      shoreDisplayWaveM={r.shoreDisplayWaveM}
                       seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
                       warnings={r.warnings}
@@ -8994,6 +8794,7 @@ export const App: React.FC = () => {
                           waveHeightM={r.waveHeightM}
                           seaStateWaveM={r.seaStateWaveM}
                           shoreWaveHeightM={r.shoreWaveHeightM}
+                          shoreDisplayWaveM={r.shoreDisplayWaveM}
                           seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}
                           warnings={r.warnings}
@@ -9014,17 +8815,6 @@ export const App: React.FC = () => {
                     </p>
                   </div>
                 </section>
-              )}
-
-              {/* AI Advisor - temporarily hidden */}
-              {ENABLE_AI_ADVISOR && (
-                <div
-                  className="max-w-3xl mx-auto"
-                >
-                  <Suspense fallback={null}>
-                    <AiBeachAdvisor allIslands={allIslands} selectedIsland={selectedIsland} weather={forecast?.[selectedDayIndex] || weather} userLocation={userLocation} language={language} />
-                  </Suspense>
-                </div>
               )}
 
               {isUnsafeWinter && <UnsafeConditionsMessage t={t} />}
@@ -9217,107 +9007,18 @@ export const App: React.FC = () => {
         // tabs are dead there: «Καιρός» bounces straight back to home (no region
         // to show weather for) and «Αποθηκευμένα» is empty for a new visitor.
         visible={showBottomNav && !showLanding}
-        showBuddy={ENABLE_BEACH_BUDDY_CHAT}
-        showPlanner={ENABLE_PLANNER_PRO}
+        showBuddy={false}
+        showPlanner={false}
         favoritesCount={favorites.length}
       />
 
       <PrivacyConsentBanner language={language} />
 
-      {/* ===== FLOATING ACTION BUTTONS (desktop only) ===== */}
-      {(ENABLE_PLANNER_PRO || ENABLE_BEACH_BUDDY_CHAT) && (
-      <div className="fixed bottom-6 right-6 z-40 hidden md:flex flex-col gap-3">
-        {ENABLE_PLANNER_PRO && (
-        <button
-          onClick={() => setIsPlannerOpen(true)}
-          className="group relative p-4 bg-white dark:bg-slate-800 text-primary rounded-2xl shadow-lg hover:shadow-xl border border-sky-100 dark:border-slate-700 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-          aria-label={homeCopy.tripPlanner[language]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          <span className="absolute -right-1 -top-1 rounded-full bg-slate-900 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-white">
-            Pro
-          </span>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-heading font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-            {language === 'gr' ? 'Planner Pro' : 'Planner Pro'}
-          </span>
-        </button>
-        )}
-
-        {ENABLE_BEACH_BUDDY_CHAT && (
-        <button
-          onClick={() => setIsChatOpen(true)}
-          className="group relative p-4 bg-cta text-white rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
-          aria-label={homeCopy.aiAssistant[language]}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-heading font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-            AI Chat
-          </span>
-        </button>
-        )}
-      </div>
-      )}
+      {/* The desktop floating buttons for "Planner Pro" and "AI Chat" were removed on
+          13/08/2026 with the features behind them. Both were permanently hidden. */}
 
       {/* ===== MODALS ===== */}
-      {ENABLE_BEACH_BUDDY_CHAT && (
-        <Suspense fallback={null}>
-          <ChatbotModal
-            isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} messages={chatMessages}
-            onSend={handleChatSend} t={t} isLoading={chatMessages.some(m => m.id.startsWith('bot-loading'))}
-            onNewChat={() => setChatMessages([])} suggestions={['Ποια παραλία είναι καλύτερη σήμερα;', 'Πού να πάω για snorkeling;']}
-          />
-        </Suspense>
-      )}
 
-      {ENABLE_PLANNER_PRO && isPlannerOpen && (
-        <div
-          className="fixed inset-0 z-[90] flex items-end justify-center bg-black/60 sm:items-center"
-          onClick={() => setIsPlannerOpen(false)}
-        >
-          <div
-            className="w-full max-w-md rounded-t-2xl bg-white p-6 shadow-2xl sm:rounded-2xl dark:bg-slate-900"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="planner-pro-title"
-          >
-            <div className="mb-4 flex items-start gap-4">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-slate-900 text-white shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V8a4 4 0 00-8 0v3m-2 0h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8a1 1 0 011-1z" />
-                </svg>
-              </div>
-              <div>
-                <div className="mb-1 inline-flex rounded-full bg-cyan-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-cyan-700">
-                  Pro
-                </div>
-                <h2 id="planner-pro-title" className="text-xl font-extrabold text-slate-900 dark:text-white">
-                  {plannerProCopy.title[language]}
-                </h2>
-              </div>
-            </div>
-            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-              {plannerProCopy.description[language]}
-            </p>
-            <div className="mt-6 flex gap-3">
-              <button
-                type="button"
-                className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white"
-                disabled
-              >
-                {plannerProCopy.cta[language]}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsPlannerOpen(false)}
-                className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300"
-              >
-                {t.closeModalLabel}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {isIslandSelectorOpen && (
         <Suspense fallback={null}>

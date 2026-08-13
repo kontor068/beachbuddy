@@ -122,7 +122,9 @@ export default defineConfig(({ mode }) => {
                   'components/BeachConditionScore.tsx',
                   'components/BeachFilters.tsx',
                   'components/BeachList.tsx',
-                  'components/BeachSearcherHome.tsx',
+                  // BeachSearcherHome.tsx was here until 13/08/2026. It is the region
+                  // screen and it is lazy-loaded from App.tsx now; naming it here would
+                  // weld it back into this preloaded chunk and undo the split.
                   'components/ErrorDisplay.tsx',
                   'components/Forecast.tsx',
                   'components/Header.tsx',

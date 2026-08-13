@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-08-13T13:31:50.785Z",
+  "dayIndex": 0,
+  "regionsAnswered": 110,
+  "regionsAsked": 110,
+  "beaches": 2854,
+  "unchanged": 2104,
+  "changed": 750,
+  "medianDropM": 0.18,
+  "p90DropM": 0.22,
+  "maxDropM": 0.27,
+  "modelAlreadySpeaks": 647,
+  "byExposure": {
+    "exposed": {
+      "beaches": 892,
+      "changed": 0,
+      "medianDropM": 0
+    },
+    "protected": {
+      "beaches": 1562,
+      "changed": 750,
+      "medianDropM": 0.18
+    },
+    "partial": {
+      "beaches": 400,
+      "changed": 0,
+      "medianDropM": 0
+    }
+  },
+  "bandMoves": {},
+  "intoCalm": 0,
+  "calmTone": {},
+  "calmNumberRoughPin": 0,
+  "changedTone": {
+    "yellow": 370,
+    "orange": 210,
+    "blue": 170
+  },
+  "changedWithRoughPin": 750,
+  "examples": []
+}

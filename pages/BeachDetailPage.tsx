@@ -31,7 +31,7 @@ import { LocalWindShelterSection, type LocalWindShelteredCove } from '../compone
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
-import { beachShoreBreaks } from '../utils/shoreBreak';
+import { beachShoreBreaks, hasSteepCoarseShore } from '../utils/shoreBreak';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
@@ -358,21 +358,7 @@ const getSeaConditionDisplay = (
   waveHeightM?: number,
   selectedHour?: number,
   boatAccess = false,
-  enclosedCove = false,
-  /**
-   * utils/shoreBreak — deep water off a coarse shore, with today's sea actually running into it.
-   *
-   * IT GOES UNDER THE WAVE FIGURE, NOT IN A CHIP (13/08/2026). The first version of this note was
-   * a warning chip on the card, and the card shows only two: on Καβαλικευτά it landed fourth in a
-   * list of five and never reached a screen. Here it fills the second line of the tile the reader
-   * is already looking at — the one that prints «0,3 μ.» and, on exactly these calm days, had
-   * nothing underneath it.
-   *
-   * The caller evaluates the rule against the height THIS tile prints, so the note always
-   * qualifies the number beside it: the beach page judges the hour on screen, the card judges the
-   * day it shows. Same rule, one function, each surface honest about its own figure.
-   */
-  shoreBreaks = false
+  enclosedCove = false
 ) => {
   const hour = getSelectedHourPrefix(selectedHour, language);
   const day = hour ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
@@ -383,18 +369,6 @@ const getSeaConditionDisplay = (
     de: `Windexponiert${momentSuffix}`,
     it: `Più esposta al vento${momentSuffix}`,
     fr: `Plus exposée au vent${momentSuffix}`,
-  }[language];
-  /**
-   * Deliberately does NOT repeat «ήρεμη θάλασσα» — the tile's own value line has just said it, and
-   * two near-identical sentences stacked on top of each other is the duplicate-copy failure this
-   * project has already paid for. It starts from «όμως», so it reads as the continuation it is.
-   */
-  const shoreBreakLabel = {
-    en: 'But the waves break a bit harder at the shore',
-    gr: 'Σκάει όμως το κύμα λίγο παραπάνω στην ακτή',
-    de: 'Am Ufer brechen die Wellen aber etwas kräftiger',
-    it: 'A riva però le onde frangono un po’ di più',
-    fr: 'Au bord, les vagues déferlent un peu plus',
   }[language];
   const shelteredWindLabel = {
     en: `Better sheltered${momentSuffix}`,
@@ -552,20 +526,14 @@ const getSeaConditionDisplay = (
     if (windBeaufort <= 3 && waveHeightM < 0.5) {
       return {
         value: { en: 'Manageable sea', gr: 'Ήπια θάλασσα', de: 'Handhabbare See', it: 'Mare gestibile', fr: 'Mer gérable' }[language],
-        // The empty slot this note was written for: a mild sea, nothing else to say, and a reader
-        // who is about to walk into water that gets deep in two steps.
-        subValue: shoreBreaks ? shoreBreakLabel : undefined,
+        subValue: undefined,
       };
     }
 
     if (windBeaufort <= 3 && waveHeightM < 0.8) {
       return {
         value: { en: `Some chop ${day}`, gr: 'Λίγος κυματισμός', de: 'Etwas unruhig', it: 'Un po mosso', fr: 'Un peu de clapot' }[language],
-        // Where both could speak, the one about THIS beach wins over the generic "open spots"
-        // line — and it is the more cautious of the two, never the calmer.
-        subValue: shoreBreaks
-          ? shoreBreakLabel
-          : { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
+        subValue: { en: 'Use a bit of caution at more open spots.', gr: 'Θέλει λίγη προσοχή σε πιο ανοιχτά σημεία.', de: 'An offeneren Stellen etwas vorsichtig sein.', it: 'Serve un po’ di cautela nei punti più aperti.', fr: 'Un peu de prudence dans les zones plus ouvertes.' }[language],
       };
     }
 
@@ -1232,10 +1200,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // scoring). Only speaks where the wind blows off the land into a land-blocked, fetch-free sector
   // with no swell. Capped at the open-water figure shown right beside it: the shore reading must
   // never print a bigger sea than the water outside it, and the card applies the same cap.
-  const shoreWaveHeightM = typeof scoreResult.shoreWaveHeightM === 'number' && Number.isFinite(scoreResult.shoreWaveHeightM)
+  //
+  // 13/08/2026: διαβάζει πλέον `shoreDisplayWaveM` — τον ΙΔΙΟ αριθμό, υπολογισμένο για ΚΑΘΕ
+  // παραλία και όχι μόνο για τους κλειστούς όρμους. Είναι αυτό που η ετυμηγορία κολύμβησης κρίνει
+  // από τις 10/08 και που μέχρι σήμερα δεν τυπωνόταν πουθενά (βίβλος §Γ5). Το πλακίδιο της
+  // ανοιχτής θάλασσας μένει ΔΙΠΛΑ, με το όνομά του — ο όρος της §7δ δεν χαλαρώνει.
+  const shoreSourceM = typeof scoreResult.shoreDisplayWaveM === 'number' && Number.isFinite(scoreResult.shoreDisplayWaveM)
+    ? scoreResult.shoreDisplayWaveM
+    : scoreResult.shoreWaveHeightM;
+  const shoreWaveHeightM = typeof shoreSourceM === 'number' && Number.isFinite(shoreSourceM)
     ? (typeof displayWaveHeightM === 'number' && Number.isFinite(displayWaveHeightM)
-        ? Math.min(scoreResult.shoreWaveHeightM, displayWaveHeightM)
-        : scoreResult.shoreWaveHeightM)
+        ? Math.min(shoreSourceM, displayWaveHeightM)
+        : shoreSourceM)
     : undefined;
   // Swim-hours (08–21) wave series for the selected day. Each hour runs the SAME effective-wave
   // rule as the headline figure (directional fetch + damped SMB + wind-chop floor, then the live
@@ -1332,15 +1308,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
   const gustKmph = getWeatherGustKmph(weatherData, scoringHourlyForecast);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
-  // Evaluated against `displayWaveHeightM` — the exact figure the tile prints — so the note can
-  // never qualify a number the reader is not looking at. See getSeaConditionDisplay's shoreBreaks.
+  /**
+   * utils/shoreBreak — evaluated against `displayWaveHeightM`, the exact figure the sea tile
+   * prints, so the sentence can never qualify a number the reader is not looking at. On this page
+   * that is the hour on screen; on the card it is the day the card shows. One rule, and each
+   * surface honest about its own figure.
+   */
   const shoreBreaksHere = beachShoreBreaks(
     beach,
     scoreResult.seaArrivalExposureLevel,
     displayWaveHeightM,
     scoreResult.seaStatePeriodS
   );
-  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove, shoreBreaksHere);
+  /**
+   * Starts from «όμως» on purpose: it sits under a tile that has just said the sea is calm, and
+   * repeating «ήρεμη θάλασσα» would be a second sentence saying the first one again.
+   */
+  const shoreBreakSentence = {
+    en: 'But the waves break a bit harder right at the shore — the water gets deep fast here.',
+    gr: 'Σκάει όμως το κύμα λίγο παραπάνω στην ακτή — εδώ βαθαίνει απότομα.',
+    de: 'Am Ufer brechen die Wellen aber etwas kräftiger — hier wird es schnell tief.',
+    it: 'A riva però le onde frangono un po’ di più — qui il fondale scende subito.',
+    fr: 'Au bord, les vagues déferlent un peu plus — ici, ça devient vite profond.',
+  }[language];
+  const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
     en: 'Ride',
     gr: 'Συνθήκες πλεύσης',
@@ -2157,6 +2148,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           sunsetTime={showConditions ? sunsetTime : null}
           sunsetOverSea={sunsetSea.everOverSea}
           climateNote={showConditions ? climateComparison : null}
+          // Decided from the SAME height the sea tile prints (displayWaveHeightM), so the sentence
+          // always qualifies the figure directly above it — the hour on this page, never the day.
+          shoreBreakNote={showConditions && shoreBreaksHere ? shoreBreakSentence : null}
           /* The practical half. Not gated on `showConditions`: when the forecast fails we
              hide wind and waves, but the road is still a dirt road and the beach still has
              no shade — those are the facts that stay true and useful on a bad-data day. */
@@ -2250,9 +2244,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             // επίπεδο» — the card contradicting its own caption, on the shores where the
             // caption was right (Σχινιάς, 5 Bft off the land, webcam showing glass).
             //
-            // `shoreWaveHeightM` is undefined everywhere except a land-blocked, fetch-free,
-            // offshore-wind sector with no swell (utils/shoreWave), so this is the same number
-            // as before on every other beach. Where it IS defined it replaces the figure
+            // ⚠️ 13/08/2026 — ΤΟ ΕΥΡΟΣ ΑΛΛΑΞΕ, Η ΛΟΓΙΚΗ ΟΧΙ. Μέχρι σήμερα το `shoreWaveHeightM`
+            // ήταν undefined παντού εκτός από κλειστό όρμο με απόγειο άνεμο, οπότε αυτή η γραμμή
+            // άλλαζε 647 παραλίες. Τώρα διαβάζει `shoreDisplayWaveM`, που υπάρχει για ΚΑΘΕ
+            // παραλία (βίβλος §Γ5) — και αυτό είναι σωστό ακριβώς επειδή αυτό το γραφικό δηλώνει
+            // από μόνο του ότι απαντά ερώτηση ΓΙΑ ΤΗΝ ΑΚΤΗ. Σε 2.104 από 2.854 παραλίες ο
+            // αριθμός είναι ο ίδιος με πριν (εκτεθειμένες + μερικώς, συντελεστής 1,0)· αλλάζει
+            // μόνο σε προστατευμένες, κατά 0,18 μ. διάμεσα.
+            //
+            // Where it IS defined it replaces the figure
             // wholesale rather than only the drawing, which keeps the card's own documented
             // identity intact: what it draws is what its verdict is judged from. The wind half
             // of that verdict is untouched and still floors the swim feel at 'moderate' from
@@ -2270,6 +2270,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             windBeaufort={beaufortLevel}
             exposureLevel={mapAlignedExposureLevel}
             canClaimWindProtection={canClaimWindProtectionForCopy}
+            // The shape of THIS beach, not today's sea: deep water off a coarse shore narrows the
+            // drawn surf zone and tilts the bank, so the picture matches the sentence above it.
+            steepShore={hasSteepCoarseShore(beach.metadata?.waterDepth?.type, beach.metadata?.terrain?.types)}
           />
           {/* Two-dimensional "calm water / strong wind" cove card — display only, renders only in
               the decoupling case (enclosed cove + strong wind). Explains why the pin reads breezy

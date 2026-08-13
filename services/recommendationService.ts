@@ -108,6 +108,8 @@ export interface BeachScore {
    * podium's sea tier both read it. Modelled, never measured — printed with a «~».
    */
   shoreWaveHeightM?: number;
+  /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
+  shoreDisplayWaveM?: number;
   /**
    * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
    * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
@@ -179,6 +181,8 @@ export interface BeachRecommendation {
   seaStatePeriodS?: number;
   /** Modelled height AT THE SAND (m) where the four shoreWave gates allow it — see types.ts. */
   shoreWaveHeightM?: number;
+  /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
+  shoreDisplayWaveM?: number;
   /**
    * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
    * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
@@ -2525,6 +2529,10 @@ export const calculateBeachScore = (
     seaStateWaveM: effectiveWaveHeightM,
     seaStatePeriodS,
     shoreWaveHeightM: shoreModelWaveM,
+    // Ο αριθμός που τυπώνεται πλέον παντού: το ίδιο `shoreWaveM` που ο κλάδος ακτής της
+    // ετυμηγορίας διαβάζει δύο γραμμές πιο πάνω. Καμία δεύτερη μεταβλητή, κανένας δεύτερος
+    // υπολογισμός — η οθόνη και η ετυμηγορία δεν μπορούν πια να διαφωνήσουν κατασκευαστικά.
+    shoreDisplayWaveM: shoreWaveM,
     seaArrivalExposureLevel,
     seaStateSource,
     modeledWaveHeightM,
@@ -2905,6 +2913,7 @@ export const getTopRecommendedBeaches = (
       // από SuitableBeach (μαζί το podium του Top 3) έπεφτε στο ανοιχτό νερό, ενώ η σελίδα της
       // παραλίας τύπωνε το ύψος στην ακτή. Γαλάζια Ακτή: 0,3 μ. στην κάρτα, ~0,1 μ. μέσα.
       shoreWaveHeightM: scoreResult.shoreWaveHeightM,
+      shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
@@ -3065,6 +3074,7 @@ export const getSuitableBeaches = (
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // Ίδιος λόγος με τον από πάνω builder — το ύψος στην ακτή ταξιδεύει μαζί με τα υπόλοιπα.
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
+        shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
         seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
