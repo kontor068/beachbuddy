@@ -73,6 +73,10 @@ import {
   buildQualityRows,
   daysSince,
 } from './lib/qualityPriority.mjs';
+// Το κείμενο του εβδομαδιαίου μηνύματος. Στατικό import, όχι δυναμικό: το esbuild
+// του Netlify πρέπει να το δει για να το πακετάρει, και ένα `await import()` που δεν
+// πακετάρεται σκάει μόνο στην παραγωγή.
+import { composeDigest } from './quality-digest.mjs';
 
 const TRAFFIC_STORE = 'traffic';
 /** Manual "I checked this region today" entries. Separate store: different lifetime. */
@@ -2742,6 +2746,54 @@ export const handler = async (event) => {
     // Approve / reject / publish. Handled before anything is read, so a decision
     // never waits for a full day-scan of the traffic store.
     if (event.httpMethod === 'POST') return await moderationPost(event, key);
+
+    // ?digest=1 — δες το εβδομαδιαίο μήνυμα ΤΩΡΑ, χωρίς να σταλεί σε κανέναν.
+    //
+    // Ζει εδώ και όχι στην ίδια τη quality-digest.mjs επειδή το Netlify απαντά 403
+    // σε κάθε HTTP κλήση προς προγραμματισμένη συνάρτηση — δική μας ή ξένη. Χωρίς
+    // αυτή τη γραμμή, το πρώτο μήνυμα που θα διαβάζαμε ποτέ θα ήταν το πρώτο που
+    // στάλθηκε κιόλας. Ίδιο κλειδί, ίδια πύλη, καμία νέα πόρτα.
+    if (params.digest) {
+      const store = getStore(TRAFFIC_STORE);
+      const days = Array.from({ length: 30 }, (_, i) => utcDayKey(new Date(Date.now() - i * 86400000)));
+      const totals = await Promise.all(
+        days.map((d) => store.get(`totals/${d}`, { type: 'json' }).catch(() => null))
+      );
+      const views = {};
+      const pages = {};
+      let measured = 0;
+      for (const day of totals) {
+        if (!day) continue;
+        measured += 1;
+        for (const [k, v] of Object.entries(day.views || {})) views[k] = (views[k] || 0) + v;
+        for (const [k, v] of Object.entries(day.pages || {})) pages[k] = (pages[k] || 0) + v;
+      }
+      const [checks, todos] = await Promise.all([readQualityChecks(), readQualityTodos()]);
+      const rows = buildQualityRows(views, checks);
+      const beachRows = buildBeachGapRows(pages);
+      const late = rows.filter((r) => r.overdue > 0).length;
+      const openTodos = Object.values(todos || {}).flat().filter((t) => t && !t.done).length;
+      const text = composeDigest({
+        rows,
+        beachRows,
+        todos,
+        measured,
+        consoleUrl: `https://calmbeach.gr/api/traffic?key=${encodeURIComponent(key)}&tab=quality`,
+      });
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store',
+          'X-Robots-Tag': 'noindex, nofollow, noarchive',
+        },
+        body:
+          `Αυτό θα σταλεί τη Δευτέρα: ${
+            late > 0 || beachRows.length > 0 || openTodos > 0 ? 'ΝΑΙ' : 'ΟΧΙ — ήσυχη βδομάδα'
+          }\n(καθυστερούν ${late} · σελίδες με κενό ${beachRows.length} · ανοιχτές σημειώσεις ${openTodos})\n\n` +
+          `${text.replace(/<[^>]+>/g, '')}`,
+      };
+    }
 
     // ?capacity=1 — how close today is to the Open-Meteo free quota.
     //

@@ -72,8 +72,14 @@ const readWindow = async (store) => {
 /**
  * Το μήνυμα. Γράφεται ολόκληρο εδώ γιατί ένα digest είναι κείμενο πριν είναι
  * δεδομένα: αν δεν διαβάζεται στο κινητό σε δέκα δευτερόλεπτα, δεν έχει νόημα.
+ *
+ * Εξάγεται γιατί η κονσόλα το δείχνει κι εκείνη (`/api/traffic?key=…&digest=1`):
+ * οι προγραμματισμένες συναρτήσεις του Netlify **δεν απαντούν σε HTTP** — γυρίζουν
+ * 403 σε οποιονδήποτε, μαζί κι εμάς. Οπότε η μόνη πόρτα για να δεις το μήνυμα πριν
+ * σταλεί είναι η κονσόλα, που έχει ήδη το κλειδί της. Ένα μήνυμα που δεν μπορείς να
+ * το δοκιμάσεις πριν φύγει είναι μήνυμα που το διαβάζεις πρώτη φορά μαζί με όλους.
  */
-const compose = ({ rows, beachRows, todos, measured, consoleUrl }) => {
+export const composeDigest = ({ rows, beachRows, todos, measured, consoleUrl }) => {
   const top = rows.slice(0, REGIONS_IN_MESSAGE);
   const openTodos = Object.entries(todos || {}).flatMap(([regionId, list]) =>
     (Array.isArray(list) ? list : []).filter((t) => !t.done).map((t) => ({ ...t, regionId }))
@@ -154,10 +160,12 @@ export const handler = async (event) => {
 
     const key = process.env.TRAFFIC_STATS_KEY || '';
     const consoleUrl = `https://calmbeach.gr/api/traffic?key=${encodeURIComponent(key)}&tab=quality`;
-    const text = compose({ rows, beachRows, todos: todos || {}, measured, consoleUrl });
+    const text = composeDigest({ rows, beachRows, todos: todos || {}, measured, consoleUrl });
 
     if (manual) {
-      // ?preview=1 — δες το κείμενο χωρίς να σταλεί σε κανέναν.
+      // Αδύνατο να φτάσει εδώ κάποιος από το internet (το Netlify απαντά 403 στις
+      // προγραμματισμένες συναρτήσεις). Μένει για `netlify dev` και για κλήση από
+      // άλλη συνάρτηση· η πραγματική προεπισκόπηση ζει στην κονσόλα.
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
