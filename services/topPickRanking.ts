@@ -323,13 +323,45 @@ export const getWindPriorityTopPickPool = (
   return lessExposed.length > 0 ? lessExposed : items;
 };
 
+/**
+ * ΤΟ ΦΙΛΤΡΟ ΤΡΕΧΕΙ ΑΠΟ 5 ΜΠΟΦΟΡ, ΟΧΙ ΑΠΟ 3 (14/08/2026) — και ο λόγος είναι μετρημένος.
+ *
+ * Αυτή η συνάρτηση δεν ταξινομεί: **πετάει έξω**. Κρατάει μόνο την κορυφαία βαθμίδα προστασίας,
+ * οπότε μία και μόνη «προστατευμένη» αδειάζει το βάθρο από κάθε «μερική» — ακόμη κι όταν αυτές
+ * είναι δεκάδες και μια χαρά. Αυτό ήταν το «Top 1 στην Ανατολική Αττική» (Μίλτος, 14/08): ένα
+ * βάθρο με μία επιλογή δίπλα σε χάρτη με έντεκα καλές παραλίες.
+ *
+ * ΓΙΑΤΙ ΤΟ 3 ΗΤΑΝ ΛΑΘΟΣ ΟΡΙΟ. Με το ίδιο μας το μοντέλο κύματος
+ * (utils/waveModel.estimateFetchLimitedWaveHeightM), η διαφορά ανάμεσα σε μια προστατευμένη ακτή
+ * (fetch ~0,5 χλμ) και μια ανοιχτή «μερική» (fetch ~8 χλμ) είναι:
+ *
+ *   3 Μποφ. → 0,07 μ. vs 0,20 μ.  =  **0,13 μ.**
+ *   4 Μποφ. → 0,12 μ. vs 0,36 μ.  =  **0,24 μ.**
+ *   5 Μποφ. → 0,17 μ. vs 0,53 μ.  =  **0,36 μ.**
+ *
+ * Και το `PODIUM_SEA_MEANINGFUL_DIFFERENCE_M` ακριβώς από πάνω λέει, με τα δικά του λόγια, ότι
+ * κάτω από **0,25 μ.** «the model is not measuring a difference, and a podium that reorders there
+ * is publishing noise». Στα 3 και στα 4 Μποφ. η διαφορά είναι μέσα σε αυτό το σφάλμα — δηλαδή
+ * πετούσαμε παραλίες έξω από το βάθρο για διαφορά που δεν μπορούμε να μετρήσουμε. Στα 5 βγαίνει
+ * έξω από το σφάλμα και η προστασία αρχίζει να σημαίνει κάτι.
+ *
+ * ΤΟ ΟΡΙΟ ΔΕΝ ΕΙΝΑΙ ΚΑΙΝΟΥΡΓΙΟ: το `PROTECTED_FIRST_BEAUFORT = 5` υπάρχει ήδη σε αυτό το αρχείο
+ * και το `scripts/measureRegionWindGating.mjs` τυπώνει εδώ και καιρό «≥5 Bft — PODIUM: exposure
+ * outranks score». Η τεκμηρίωση έλεγε 5, ο φραγμός έτρεχε στο 3.
+ *
+ * ΤΙ ΔΕΝ ΑΛΛΑΖΕΙ. Η **σειρά** μένει στο `MEANINGFUL_WIND_TOP_PICK_BEAUFORT` (3): από 3 Μποφ. μια
+ * προστατευμένη εξακολουθεί να κατατάσσεται ΠΑΝΩ από μια μερική (prioritizeProtectedRecommendations).
+ * Άρα στα 3-4 Μποφ. το βάθρο δεν γίνεται πιο επιεικές — γεμίζει, με τις προστατευμένες μπροστά
+ * και τις μερικές να παίρνουν τις θέσεις που αλλιώς έμεναν κενές. Καμία αλλαγή σε χρώμα, σε
+ * ετυμηγορία κολύμβησης ή σε οποιαδήποτε πύλη ασφαλείας.
+ */
 export const bestShelteredRecommendationGroup = (
   items: SuitableBeach[],
   beaufort: number,
   perBeachWind?: PerBeachWindLookup
 ): SuitableBeach[] => {
   const poolBeaufort = strongestBeaufortInPool(items, beaufort, perBeachWind);
-  if (poolBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
+  if (poolBeaufort < PROTECTED_FIRST_BEAUFORT || items.length === 0) return items;
 
   const bestPriority = Math.min(...items.map(topPickProfilePriority));
   return items.filter(item => (
