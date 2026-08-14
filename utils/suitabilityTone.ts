@@ -180,7 +180,13 @@ export const resolveWindTone = (
    * The wind is blowing OFF the land over zero fetch — see utils/offshoreFlatWater for the gate
    * and the national measurement. Only consulted at 5 Bft, and only to lift orange → yellow.
    */
-  offshoreFlatWater = false
+  offshoreFlatWater = false,
+  /**
+   * This shore's 'partial' is a MEASUREMENT, not an absence of one — high-confidence geometry
+   * said the wind partly reaches it. Only consulted at 3 Bft; see the block below for why the
+   * distinction is load-bearing and passed rather than derived.
+   */
+  partialIsMeasured = false
 ): CalmnessTone => {
   const isProtected = exposureLevel === 'protected';
   const isExposed = exposureLevel === 'exposed';
@@ -211,10 +217,42 @@ export const resolveWindTone = (
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the uncertain
   // "partial" middle get a yellow "mild chop" heads-up.
   if (beaufort >= 4) return isExposed ? 'orange' : 'yellow';
-  // At 3 Bft only genuinely exposed coasts feel a real chop; protected and the uncertain
-  // "partial" middle stay calm enough to read as blue — this keeps the "uncertain partial"
-  // from looking worse than a sheltered neighbour.
-  if (beaufort >= 3) return isExposed ? 'yellow' : 'blue';
+  /**
+   * ΣΤΑ 3 ΜΠΟΦΟΡ ΜΟΝΟ Η ΠΡΑΓΜΑΤΙΚΗ ΠΡΟΣΤΑΣΙΑ ΕΙΝΑΙ ΜΠΛΕ (14/08/2026).
+   *
+   * Μέχρι σήμερα η γραμμή ήταν `isExposed ? 'yellow' : 'blue'`, δηλαδή η «μερική προστασία» —
+   * και κάθε shore με ΑΓΝΩΣΤΗ έκθεση — έπαιρνε το ΙΔΙΟ μπλε με μια αποδεδειγμένα υπήνεμη ακτή.
+   * Το σχόλιο που αντικαταστάθηκε το δικαιολογούσε ως «να μη φαίνεται η αβέβαιη χειρότερη από
+   * τη γειτόνισσά της»· το αποτέλεσμα όμως ήταν να φαίνεται ΙΔΙΑ με τη σίγουρη.
+   *
+   * ΔΕΝ ΕΙΝΑΙ ΚΑΙΝΟΥΡΓΙΟΣ ΚΑΝΟΝΑΣ — ΕΙΝΑΙ Ο ΚΑΝΟΝΑΣ ΠΟΥ Η ΛΕΞΗ ΗΔΗ ΕΦΑΡΜΟΖΕ. Το
+   * utils/experienceTier:197 κόβει εδώ και καιρό το 'partial' σε ceiling 2 από 3 Μποφόρ
+   * (`bft >= 3 ? 2 : 3`), δηλαδή «Καλή». Άρα η ίδια παραλία έβγαινε **ΙΔΑΝΙΚΗ κουκκίδα με
+   * «Καλή» λέξη από κάτω** — ακριβώς η κατηγορία διαφωνίας κουκκίδας/λέξης που το PORISMA §Κ1
+   * περιγράφει. Εδώ η λέξη είχε δίκιο και η κουκκίδα υπερέβαλλε, οπότε κατεβαίνει η κουκκίδα.
+   *
+   * Αναφέρθηκε από τον Μίλτο: Παραλία Αγίου Κωνσταντίνου (#28, Ν. Ευβοϊκός) με βοριά — τομέας
+   * N «partial», ένταση 46/100, onshore +0,53 (ο αέρας ΕΡΧΕΤΑΙ από τη θάλασσα). Το νερό μένει
+   * ήρεμο επειδή η Εύβοια κόβει το fetch στα 5,3 χλμ., και η κουκκίδα διάβαζε το ήρεμο νερό ως
+   * «Ιδανική» ενώ ο αέρας χτυπάει κανονικά.
+   *
+   * Η κατεύθυνση είναι ΜΟΝΟ προς τα κάτω: καμία παραλία δεν γίνεται πιο ήρεμη απ' ό,τι ήταν.
+   *
+   * ΚΑΙ ΠΙΑΝΕΙ ΜΟΝΟ ΤΟ ΜΕΤΡΗΜΕΝΟ 'partial' — ΟΧΙ ΤΗΝ ΑΓΝΩΣΤΗ ΕΚΘΕΣΗ. Αυτό είναι το λεπτό
+   * σημείο, και το βρήκε η πύλη, όχι εγώ. Πρώτη εκδοχή έγραφε `isProtected ? 'blue' : 'yellow'`
+   * και το validateWindExposureEngine (scripts/windExposureValidation.ts:1326) το απέρριψε
+   * ονομαστικά: «unknown orientation with 3 Bft should read as calm (blue), with uncertainty
+   * carried by confidence, not colour».
+   *
+   * Η πύλη έχει δίκιο, και ο λόγος είναι ότι το `'partial'` κουβαλάει ΔΥΟ διαφορετικά νοήματα:
+   *   (α) η γεωμετρία ΜΕΤΡΗΣΕ ότι ο άνεμος φτάνει εν μέρει σε αυτή την ακτή — απόδειξη·
+   *   (β) δεν έχουμε προφίλ και το 'partial' είναι το ουδέτερο που πέφτει ο engine — άγνοια.
+   * Το (β) το φέρνει ήδη το `confidence` και το low_confidence warning· να το βάψουμε και
+   * κίτρινο θα ήταν να πούμε «έχει αέρα» επειδή δεν κοιτάξαμε. Μόνο το (α) κατεβαίνει, και
+   * ξεχωρίζει από τον καλούντα (source geospatial + confidence high), ποτέ εδώ — ίδιο συμβόλαιο
+   * «περασμένο, όχι παραγόμενο» με το offshoreFlatWater και το seaArrivalExposureLevel.
+   */
+  if (beaufort >= 3) return isExposed || (partialIsMeasured && exposureLevel === 'partial') ? 'yellow' : 'blue';
   return 'blue';
 };
 
@@ -357,6 +395,7 @@ export const resolveConditionTone = ({
   downwindSeaSample = false,
   swimVerdictAvoid = false,
   seaArrivalExposureLevel,
+  partialIsMeasured = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -403,8 +442,14 @@ export const resolveConditionTone = ({
    * 13/08/2026). Passed rather than derived, like every other geometry input here.
    */
   seaArrivalExposureLevel?: string;
+  /**
+   * This shore's 'partial' came from high-confidence geometry rather than from a missing profile.
+   * Same passed-not-derived contract as `offshoreFlatWater`: the pin and the chip must not be
+   * able to answer it differently, and this module stays ignorant of where profiles come from.
+   */
+  partialIsMeasured?: boolean;
 }): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
-  resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
+  resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater, partialIsMeasured),
   seaStateM,
   // THE TWO CALM RULES DO NOT STACK. A cove is exempt from the sea ceiling because the grid cell
   // ten kilometres out cannot resolve a 50 m pocket. An offshore wind is a different claim — it

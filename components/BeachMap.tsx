@@ -1067,7 +1067,13 @@ const getExposureMarkerTone = (
   /** The engine refused a swim here — the colour is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /**
+   * This shore's 'partial' came from high-confidence geometry, not from a missing profile —
+   * only that kind loses blue at 3 Bft (utils/suitabilityTone). Read off the score's
+   * `simpleWindSuitability`, the same object the card chip reads, so pin and chip agree.
+   */
+  partialIsMeasured = false
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1112,6 +1118,7 @@ const getExposureMarkerTone = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
+    partialIsMeasured,
   })];
 };
 
@@ -1225,7 +1232,9 @@ const createExposureIcon = (
   /** The engine refused a swim here — the pin is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /** Measured (not merely unknown) 'partial' — loses blue at 3 Bft. See getExposureMarkerTone. */
+  partialIsMeasured = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -1249,7 +1258,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, partialIsMeasured);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -2066,6 +2075,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // A beach the app refuses a swim at cannot be counted as ΙΔΑΝΙΚΗ or ΚΑΛΗ in the legend
     // beside it — the same ceiling the card chip takes (utils/suitabilityTone).
     swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
+    // Off the engine's own object rather than re-answered here: a 'partial' that high-confidence
+    // geometry MEASURED loses blue at 3 Bft, a 'partial' that only means "no profile" keeps it.
+    // Same value the card chip was built with, so this tally cannot contradict the chips.
+    partialIsMeasured: item.simpleWindSuitability?.partialIsMeasured,
   });
 
   // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
@@ -2602,7 +2615,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
       seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
       beachOffshoreFlatWater(item),
       beachDownwindSeaSample(item),
-      item.swimmingComfort === 'avoid_swimming'
+      item.swimmingComfort === 'avoid_swimming',
+      // Both of these were missing here while the pin itself passed them, so this badge could
+      // print a calmer word than the dot beside it on the very same row.
+      item.seaArrivalExposureLevel,
+      item.simpleWindSuitability?.partialIsMeasured
     );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
@@ -3217,7 +3234,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel)}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, item.simpleWindSuitability?.partialIsMeasured)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

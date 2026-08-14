@@ -441,10 +441,14 @@ if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.tes
   // places (pins, counts, the filter, and the tone table reported to the cards). The rule is
   // unchanged — it just follows the expression to where it lives. If beachConditionTone is gone,
   // the tally expression itself must carry the inputs, which is what the fallback checks.
-  // 1800, not 900: the function carries the reasoning for each input it feeds the resolver, and
-  // the window has to fit the comments as well as the code — a guard that fails because someone
-  // explained themselves teaches people to delete the explanation.
-  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,1800}?\n\s*\}\);/);
+  // 2400, not 1800 and not 900: the function carries the reasoning for each input it feeds the
+  // resolver, and the window has to fit the comments as well as the code — a guard that fails
+  // because someone explained themselves teaches people to delete the explanation. Raised on
+  // 14/08/2026 when `partialIsMeasured` arrived with its three-line note and pushed the closing
+  // brace past 1800: the rule below was reporting all four needles missing, which reads like the
+  // tally lost the shared ladder when in fact only the window was too small. Widen it again for
+  // the same reason if it ever happens — never by deleting the explanation.
+  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,2400}?\n\s*\}\);/);
   const crowd = resolver || mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
   const body = crowd ? crowd[0] : '';
   if (resolver && !/tallyMapTones\([^)]*beachConditionTone|beachTonesById[\s\S]{0,400}?tallyMapTones/.test(mapSource)) {

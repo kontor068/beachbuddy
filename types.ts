@@ -91,6 +91,16 @@ export interface SimpleWindSuitability {
    * built from, instead of a call site re-answering the question with different inputs.
    */
   offshoreFlatWater?: boolean;
+  /**
+   * This shore's `exposureStatus: 'partial'` is a MEASUREMENT (high-confidence geospatial
+   * profile), not the neutral value the engine falls to when no profile exists. Only the
+   * measured kind loses blue at 3 Bft — see the 3 Bft block in utils/suitabilityTone.
+   *
+   * Carried on the object for exactly the same reason as `offshoreFlatWater`: the sea-state pass
+   * re-derives the colour, and without this it would silently answer the question differently
+   * from the wind-only pass that built the object.
+   */
+  partialIsMeasured?: boolean;
 }
 
 export interface BeachMapCoordinates {
