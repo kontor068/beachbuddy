@@ -75,6 +75,50 @@ export const hasMainstreamTopPickAccess = (
   hasTrulyEasyAccess(beach)
 );
 
+/**
+ * ΤΙ ΑΚΡΙΒΩΣ ΚΡΑΤΑΕΙ ΑΥΤΗ ΤΗΝ ΠΑΡΑΛΙΑ ΕΞΩ ΑΠΟ ΤΟ «ΕΥΚΟΛΑ» — Μίλτος, 14/08/2026.
+ *
+ * Μέχρι σήμερα υπήρχε **ένας** λόγος («access») και **μία** πρόταση: «Θέλει σκάφος ή δύσκολο
+ * μονοπάτι». Το `hasMainstreamTopPickAccess` όμως κόβει πολύ περισσότερα από σκάφη και μονοπάτια:
+ * κάθε χωματόδρομο, κάθε εύκολο περπάτημα, κάθε άγνωστο τύπο δρόμου, κάθε «απομακρυσμένη».
+ * Μετρημένο εθνικά στις 14/08 από την ίδια την πύλη, πάνω στα canonical region files (2.860
+ * παραλίες): **1.380** έπαιρναν τη λεζάντα και **1.000** από αυτές δεν ήθελαν ούτε σκάφος ούτε
+ * δύσκολο μονοπάτι — 575 χωματόδρομος, 213 περπάτημα, 212 άγνωστος δρόμος (ανάμεσά τους αστικές
+ * σαν το Άλιμος Λουτρά). Σωστά τη φορούσαν μόνο 380.
+ *
+ * Ο διαχωρισμός ζει ΕΔΩ και όχι στο κείμενο, ώστε η λεζάντα να μην μπορεί ποτέ ξανά να περιγράψει
+ * άλλο πράγμα από αυτό που έκρινε το φίλτρο: ίδιο αρχείο, ίδια predicates, μία απόφαση.
+ *
+ * `unknown` σημαίνει «δεν το έχουμε ελέγξει», ΟΧΙ «είναι κακό» — γι' αυτό είναι δικός του κάδος
+ * και το κείμενό του μιλάει για τα δικά ΜΑΣ κενά, όπως ήδη κάνει το `unverified`.
+ */
+export type HardAccessKind = 'boat_or_hard_path' | 'dirt_road' | 'walk' | 'unknown';
+
+export const getHardAccessKind = (
+  beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes' | 'environment'>
+): HardAccessKind | null => {
+  if (hasMainstreamTopPickAccess(beach)) return null;
+  if (hasDifficultTopPickAccess(beach)) return 'boat_or_hard_path';
+
+  /**
+   * Διαβάζεται ως σκέτο string ΕΠΙΤΗΔΕΣ: το `BeachAccessType` (types.ts:28) έχει 8 τιμές, αλλά τα
+   * δεδομένα κουβαλούν και `boat_or_road`, `boat_or_difficult_path`, `difficult_road`,
+   * `walking_path_easy` — τιμές εκτός συμβολαίου σε ~16 παραλίες, που ο TypeScript δηλώνει
+   * αδύνατες και άρα δεν θα τις σύγκρινε ποτέ. Μια λεζάντα που εμπιστεύεται τον τύπο αντί για τα
+   * δεδομένα θα τις έστελνε σιωπηλά στον λάθος κάδο.
+   */
+  const accessType: string = beach.metadata?.access?.type ?? '';
+  // Δύο τύποι που ΓΡΑΦΟΥΝ «σκάφος» μέσα στο όνομά τους: μένουν στην αυστηρή φράση.
+  if (accessType === 'boat_or_road' || accessType === 'boat_or_difficult_path') return 'boat_or_hard_path';
+  if (hasDirtRoadAccess(beach) || accessType === 'difficult_road') return 'dirt_road';
+  if (/path/.test(accessType)) return 'walk';
+  // Άσφαλτος ή δηλωμένα εύκολη, που έμεινε έξω μόνο επειδή είναι απομακρυσμένη: το περπάτημα
+  // είναι η πιο κοντινή αλήθεια που μπορούμε να πούμε χωρίς να επινοήσουμε δρόμο.
+  if (accessType === 'asphalt_road' || (!accessType && beach.accessibility === Accessibility.EASY)) return 'walk';
+
+  return 'unknown';
+};
+
 export const hasTrulyEasyAccess = (beach: Pick<Beach, 'accessibility' | 'metadata' | 'accessNotes'>): boolean => {
   if (hasDirtRoadAccess(beach)) return false;
   if (hasBoatOnlyAccess(beach) || hasChallengingAccess(beach)) return false;

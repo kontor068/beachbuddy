@@ -246,10 +246,10 @@ const ForecastCard: React.FC<{
         'min-h-[86px] rounded-xl px-1 pb-1.5 pt-2 sm:min-h-[92px] sm:w-auto sm:min-w-0 sm:p-2 md:min-h-[96px]'
         } ${
         disabled
-            ? 'cursor-not-allowed border-white/20 bg-white/10 opacity-40 grayscale backdrop-blur-sm'
+            ? 'cursor-not-allowed border-white/20 bg-white/95 opacity-40 grayscale'
             : isSelected
-            ? 'z-10 border-sky-100 bg-white/66 shadow-sm shadow-sky-100/40 ring-1 ring-sky-100/50 backdrop-blur-md dark:border-sky-600 dark:bg-slate-800/88 dark:shadow-none'
-            : 'border-white/30 bg-white/18 opacity-82 backdrop-blur-sm hover:border-sky-200 hover:bg-white/38 dark:border-slate-800/40 dark:bg-slate-900/28 dark:hover:border-sky-700'
+            ? 'z-10 border-sky-100 bg-white/95 shadow-sm shadow-sky-100/40 ring-1 ring-sky-100/50 dark:border-sky-600 dark:bg-slate-800 dark:shadow-none'
+            : 'border-white/30 bg-white/95 opacity-82 hover:border-sky-200 hover:bg-white/95 dark:border-slate-800/40 dark:bg-slate-900/95 dark:hover:border-sky-700'
         }`}
     >
         {isToday && !useWeekdayLabels && (
@@ -416,7 +416,7 @@ const Forecast: React.FC<ForecastProps> = ({
     const dateFormatter = new Intl.DateTimeFormat(t.locale, { month: 'short', day: 'numeric' });
 
     return (
-      <div className="mx-auto w-full rounded-2xl border border-white/55 bg-white/28 p-1 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 backdrop-blur-xl sm:p-1.5">
+      <div className="mx-auto w-full rounded-2xl border border-white/55 bg-white/95 p-1 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 sm:p-1.5">
         <h2 className="mb-0.5 text-center font-heading text-[9px] font-bold leading-tight text-slate-600 sm:mb-1 sm:text-[11px]">
           {t.forecastTitle}
         </h2>
@@ -568,7 +568,7 @@ const Forecast: React.FC<ForecastProps> = ({
         {hasHourlyData && isHourlyExpanded && (
             <div id={hourlyDetailsId} className="overflow-hidden">
               <div className="pt-2">
-                <div className="rounded-2xl border border-white/60 bg-white/70 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
+                <div className="rounded-2xl border border-white/60 bg-white/95 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40">
                   <div className="mb-2 flex min-w-0 items-center gap-2">
                     <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
                       <Clock className="h-3.5 w-3.5" aria-hidden="true" />
@@ -591,7 +591,7 @@ const Forecast: React.FC<ForecastProps> = ({
 
   return (
     <div className={`space-y-3 ${fillHeight ? 'lg:flex lg:min-h-0 lg:flex-1 lg:flex-col' : ''}`}>
-      <div className={`rounded-[1.7rem] border border-white/70 bg-white/88 p-2 shadow-md shadow-sky-900/6 ring-1 ring-white/60 backdrop-blur-xl ${fillHeight ? 'lg:shrink-0' : ''}`}>
+      <div className={`rounded-[1.7rem] border border-white/70 bg-white p-2 shadow-md shadow-sky-900/6 ring-1 ring-white/60 ${fillHeight ? 'lg:shrink-0' : ''}`}>
         <div className={`space-y-2 px-1 py-1 sm:grid sm:min-h-[64px] sm:items-center sm:gap-3 sm:space-y-0 ${
           hideForecastHeader
             ? 'sm:grid-cols-[minmax(0,1fr)_auto]'
@@ -649,7 +649,7 @@ const Forecast: React.FC<ForecastProps> = ({
       {fillHeight ? (
         hasHourlyData && isHourlyExpanded && (
           <div id={hourlyDetailsId} className="overflow-hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
-            <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+            <div className="rounded-2xl border border-white/60 bg-white/95 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
               {/* No visible "Ωριαία πρόγνωση ανέμου · Πέμπτη 6 Αυγ" strip here. In the desktop
                   sidebar the card above it already carries both the day and the date, so this
                   was the same two facts printed twice, 40px apart. The heading stays for screen
@@ -666,7 +666,7 @@ const Forecast: React.FC<ForecastProps> = ({
       ) : (
         hasHourlyData && isHourlyExpanded && (
           <div id={hourlyDetailsId} className="overflow-hidden">
-            <div className="rounded-2xl border border-white/60 bg-white/76 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40 backdrop-blur-xl">
+            <div className="rounded-2xl border border-white/60 bg-white/95 p-3 shadow-sm shadow-sky-900/5 ring-1 ring-white/40">
               <div className="mb-2 flex min-w-0 items-center gap-2">
                 <div className="rounded-lg bg-sky-50/80 p-1.5 text-sky-500">
                   <Clock className="h-3.5 w-3.5" aria-hidden="true" />

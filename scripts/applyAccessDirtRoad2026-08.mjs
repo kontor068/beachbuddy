@@ -29,6 +29,16 @@ const TARGET = new Map([
     notes: 'Η άσφαλτος σταματά περίπου ένα χιλιόμετρο πριν από την παραλία· το τελευταίο κομμάτι είναι χωματόδρομος.',
     evidence: 'άσφαλτος 1.129 m, χωματόδρομος 156 m, μονοπάτι 238 m',
   }],
+  // Added 14/08 with the Heraklion pass. Same test as #215: unorganized, no parking amenity, and
+  // OSM is demonstrably not blind here — it has the track at 86 m, it just puts the pavement at
+  // 562 m. Its old notes were also foreign text (the Σχινιάς paragraph, see
+  // scripts/fixContaminatedAccessNotes2026-08.mjs), so nothing true is lost by replacing them.
+  [661, {
+    was: { type: 'asphalt_road', label: 'άσφαλτος μέχρι κοντά στην παραλία' },
+    label: 'χωματόδρομος το τελευταίο κομμάτι',
+    notes: 'Η άσφαλτος σταματά αρκετά πριν από την παραλία· το τελευταίο κομμάτι είναι χωματόδρομος. Ελεύθερη, ανοργάνωτη παραλία με χοντρή άμμο και βότσαλο.',
+    evidence: 'άσφαλτος 562 m, χωματόδρομος 86 m',
+  }],
 ]);
 // #1339 Λαγκάδα (Λέσβος) was the second candidate and is deliberately NOT downgraded: its own
 // sourceNotes cite LesvosPost on the NEW asphalt Taxiarchis-Lagkadas road to the beach, which is

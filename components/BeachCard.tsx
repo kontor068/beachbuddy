@@ -774,7 +774,7 @@ const CertifiedBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = 
     <span
       title={copy.certifiedA11y}
       aria-label={copy.certifiedA11y}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-teal-200 bg-white/90 font-bold leading-none text-[#007a83] shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-teal-200 bg-white font-bold leading-none text-[#007a83] shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
       <BadgeCheck className="h-3.5 w-3.5 shrink-0 fill-teal-100 text-[#007a83]" aria-hidden="true" />
       <span className="whitespace-nowrap">{copy.certified}</span>
@@ -789,7 +789,7 @@ const BlueFlagBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = (
     <span
       title={label}
       aria-label={label}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white/88 font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
       <Flag className="h-3.5 w-3.5 shrink-0 fill-sky-100 text-sky-600" aria-hidden="true" />
       <span className="whitespace-nowrap">{label}</span>
@@ -804,7 +804,7 @@ const AccessibilityBadge: React.FC<{ language: LanguageCode; compact?: boolean }
     <span
       title={label}
       aria-label={label}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white/88 font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
       <AccessibilityIcon className="h-3.5 w-3.5 shrink-0 text-sky-600" aria-hidden="true" />
       <span className="whitespace-nowrap">{label}</span>
@@ -819,7 +819,7 @@ const CampingBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({
     <span
       title={label}
       aria-label={label}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-white/88 font-bold leading-none text-emerald-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-100 bg-white font-bold leading-none text-emerald-700 shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
       <Tent className="h-3.5 w-3.5 shrink-0 text-emerald-600" aria-hidden="true" />
       <span className="whitespace-nowrap">{label}</span>
@@ -838,7 +838,7 @@ const PaidEntryBadge: React.FC<{ kind: PaidEntryKind; language: LanguageCode; co
     <span
       title={explanation}
       aria-label={`${label} — ${explanation}`}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-200 bg-white/88 font-bold leading-none text-amber-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-200 bg-white font-bold leading-none text-amber-700 shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
       <Icon className="h-3.5 w-3.5 shrink-0 text-amber-600" aria-hidden="true" />
       <span className="whitespace-nowrap">{label}</span>
@@ -1179,7 +1179,7 @@ type CompactFeatureChip = {
   placeholder?: boolean;
 };
 
-export const BeachCard: React.FC<BeachCardProps> = ({
+const BeachCardImpl: React.FC<BeachCardProps> = ({
   beach,
   isExposed = false,
   language,
@@ -1811,7 +1811,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
       >
         <div className={`order-2 flex min-h-0 flex-1 flex-col overflow-hidden border-b px-3.5 pb-2 pt-3 sm:hidden ${isPodium
           ? 'border-[#007a83]/15 bg-[#007a83]/[0.05] dark:border-[#007a83]/30 dark:bg-[#007a83]/15'
-          : 'border-sky-100/70 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90'}`}>
+          : 'border-sky-100/70 bg-white dark:border-slate-800 dark:bg-slate-900/90'}`}>
           <div className={`grid min-w-0 items-start gap-2.5 ${isPodium ? 'grid-cols-[auto_minmax(0,1fr)_2.75rem]' : 'grid-cols-[2.75rem_minmax(0,1fr)_2.75rem]'}`}>
             <div className="flex h-11 min-w-11 items-start justify-start" {...(recommendationRank === undefined ? { 'aria-hidden': true } : {})}>
               {recommendationRank !== undefined && (
@@ -1874,7 +1874,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
             <button
               onClick={handleFavoriteClick}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-700 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer dark:bg-slate-800 dark:ring-slate-700"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-slate-700 shadow-sm ring-1 ring-slate-200/80 transition-colors hover:bg-white hover:text-rose-500 cursor-pointer dark:bg-slate-800 dark:ring-slate-700"
               aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
             >
               <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -2016,15 +2016,15 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 <span
                   aria-label={podiumMedalAriaLabel}
                   className={recommendationRank === 1
-                    ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
-                    : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white/92 px-2.5 py-1 text-xs font-extrabold text-[#007a83] shadow-sm ring-1 ring-[#007a83]/35 backdrop-blur-md'}>
+                    ? 'inline-flex min-h-8 items-center gap-1 rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30'
+                    : 'inline-flex min-h-8 items-center gap-1 rounded-full bg-white px-2.5 py-1 text-xs font-extrabold text-[#007a83] shadow-sm ring-1 ring-[#007a83]/35'}>
                   <Medal className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   <span>{podiumRankValue}</span>
                 </span>
               ) : (
                 <span className={recommendationRank === 1
-                  ? 'inline-flex min-h-8 items-center rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30 backdrop-blur-md'
-                  : 'inline-flex min-h-8 items-center rounded-full bg-white/82 px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5 backdrop-blur-md'}>
+                  ? 'inline-flex min-h-8 items-center rounded-full bg-[#007a83] px-2.5 py-1 text-xs font-extrabold text-white shadow-sm ring-1 ring-white/30'
+                  : 'inline-flex min-h-8 items-center rounded-full bg-white px-2.5 py-1 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-black/5'}>
                   {recommendationLabel ?? recommendationRank}
                 </span>
               )
@@ -2038,7 +2038,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
 
           <button
             onClick={handleFavoriteClick}
-            className="absolute right-3 top-3 hidden h-11 w-11 place-items-center rounded-xl bg-white/78 text-slate-700 shadow-sm backdrop-blur-md transition-colors hover:bg-white/92 hover:text-rose-500 cursor-pointer sm:grid"
+            className="absolute right-3 top-3 hidden h-11 w-11 place-items-center rounded-xl bg-white/95 text-slate-700 shadow-sm transition-colors hover:bg-white hover:text-rose-500 cursor-pointer sm:grid"
             aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
           >
             <Heart className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
@@ -2258,7 +2258,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         {/* Top badges overlay */}
         <div className="absolute top-3 left-3 flex max-w-[calc(100%-4.25rem)] flex-wrap gap-1.5">
           {!hideExposureBadge && (
-            <div className={`px-3 py-1 rounded-lg text-[10px] font-bold backdrop-blur-sm ${
+            <div className={`px-3 py-1 rounded-lg text-[10px] font-bold ${
               isProtectedToday ? 'bg-emerald-500/90 text-white' :
               isExposed ? 'bg-amber-500/90 text-white' : 'bg-sky-500/90 text-white'
             }`}>
@@ -2277,7 +2277,7 @@ export const BeachCard: React.FC<BeachCardProps> = ({
         {/* Favorite button overlay */}
         <button
           onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 p-2 rounded-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 transition-all cursor-pointer"
+          className="absolute top-3 right-3 p-2 rounded-xl bg-white/95 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 transition-all cursor-pointer"
           aria-label={isFavorite ? unfavoriteLabel : favoriteLabel}
         >
           <Heart
@@ -2460,3 +2460,52 @@ export const BeachCard: React.FC<BeachCardProps> = ({
     </div>
   );
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WHY THIS CARD IS MEMOISED.
+//
+// A region holds up to 133 beaches and every one of them renders this card. The
+// search box lives at the top of the app, so a single keystroke re-rendered the
+// whole grid twice — once urgently for the letter you just typed, once again for
+// the deferred results — even though no card's beach, wind or verdict had moved.
+// On a phone that is what "the typing lags" actually was.
+//
+// The comparison is written GENERICALLY on purpose. Listing the ~45 props by hand
+// would mean the next prop somebody adds is silently never compared, and a card
+// that keeps showing yesterday's verdict is precisely the failure this project
+// cannot afford. Every key is walked; unknown shapes fall through to "changed".
+// ─────────────────────────────────────────────────────────────────────────────
+
+const cardValuesMatch = (a: unknown, b: unknown, depth = 0): boolean => {
+  if (Object.is(a, b)) return true;
+  // Click/toggle handlers are rebuilt inline by the parent on every render and close
+  // over the same beach, so their identity says nothing about what the card shows.
+  if (typeof a === 'function' && typeof b === 'function') return true;
+  if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') return false;
+  // The props we pass are one level deep: `{...beach, distance}` is a fresh wrapper
+  // around unchanged inner references, `warnings` a fresh array of unchanged flags.
+  // Anything deeper we do not claim to understand — re-render, which is the safe way
+  // to be wrong.
+  if (depth >= 1) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((item, index) => cardValuesMatch(item, b[index], depth + 1));
+  }
+  const previousKeys = Object.keys(a as Record<string, unknown>);
+  const nextKeys = Object.keys(b as Record<string, unknown>);
+  return previousKeys.length === nextKeys.length && previousKeys.every(key => cardValuesMatch(
+    (a as Record<string, unknown>)[key],
+    (b as Record<string, unknown>)[key],
+    depth + 1
+  ));
+};
+
+const beachCardPropsMatch = (previous: BeachCardProps, next: BeachCardProps): boolean => {
+  const previousKeys = Object.keys(previous) as (keyof BeachCardProps)[];
+  const nextKeys = Object.keys(next) as (keyof BeachCardProps)[];
+  if (previousKeys.length !== nextKeys.length) return false;
+  return previousKeys.every(key => cardValuesMatch(previous[key], next[key]));
+};
+
+export const BeachCard = React.memo(BeachCardImpl, beachCardPropsMatch);

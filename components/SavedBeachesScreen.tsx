@@ -216,7 +216,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
-      <div className="sticky top-0 z-20 border-b border-white/70 bg-white/85 backdrop-blur-xl">
+      <div className="sticky top-0 z-20 border-b border-white/70 bg-white">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-3 py-3 sm:px-4">
           <button
             type="button"

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -43,8 +43,18 @@ interface BeachMapProps {
   hourSlots?: ForecastItem[];
   /** The dt (seconds) of the hour currently selected on the slider. Controlled by the parent. */
   selectedHourDt?: number | null;
-  /** Called when the user scrubs the slider to a different hour. */
+  /** Called when the user scrubs the slider to a different hour. Fires once per whole hour crossed. */
   onHourChange?: (dt: number) => void;
+  /**
+   * Called ONCE when the visitor has finished choosing an hour — finger lifted, arrow
+   * clicked, key pressed — and the hour actually ended up different.
+   *
+   * `onHourChange` fires for every hour the finger crosses on its way, so anything
+   * expensive-and-jumpy that should happen after the choice (scrolling the mobile list
+   * back to the top, recentring the map on the new first beach) belongs here, not there.
+   * Doing it per crossed hour is what made a drag feel like the page was freezing.
+   */
+  onHourSettled?: () => void;
   /** Whether to render the docked hour slider under the map. */
   enableHourSlider?: boolean;
   /**
@@ -383,7 +393,7 @@ const BeachHoverPreviewCard: React.FC<{
       className="pointer-events-none absolute z-[1150] hidden md:block"
       style={{ left, top, width: HOVER_PREVIEW_WIDTH }}
     >
-      <div className="overflow-hidden rounded-2xl border border-white/85 bg-white/94 shadow-2xl shadow-slate-950/20 ring-1 ring-sky-100/80 backdrop-blur-xl">
+      <div className="overflow-hidden rounded-2xl border border-white/85 bg-white shadow-2xl shadow-slate-950/20 ring-1 ring-sky-100/80">
         <div className="relative h-20 overflow-hidden bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50">
           {photoUrl ? (
             <img
@@ -1139,6 +1149,10 @@ const windLegendActiveClasses: Record<WindLegendDot, string> = {
   red: 'border-rose-500 bg-rose-50 dark:border-rose-400 dark:bg-rose-500/15',
 };
 
+// Set once the visitor has actually moved the hour slider, so the first-visit
+// nudge (handle wiggle + mobile helper line) never shows again on this device.
+const HOUR_SLIDER_HINT_KEY = 'cb.hourSlider.used';
+
 const windSliderTones: Record<WindLegendDot, {
   color: string;
   shadow: string;
@@ -1705,7 +1719,7 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
 
   return (
     <div className={`pointer-events-none absolute z-[1000] ${positionClass}`}>
-      <div className={`flex items-center gap-1.5 rounded-xl border border-white/75 bg-white/88 p-1.5 shadow-lg shadow-sky-900/12 ring-1 ${tone.ring} backdrop-blur-xl sm:gap-2 sm:rounded-2xl sm:p-2`}>
+      <div className={`flex items-center gap-1.5 rounded-xl border border-white/75 bg-white p-1.5 shadow-lg shadow-sky-900/12 ring-1 ${tone.ring} sm:gap-2 sm:rounded-2xl sm:p-2`}>
         <div className="relative h-10 w-10 shrink-0 rounded-full border border-slate-200/80 bg-gradient-to-b from-white to-sky-50/80 shadow-inner sm:h-[3.65rem] sm:w-[3.65rem]">
           <span className="absolute left-1/2 top-0.5 -translate-x-1/2 text-[7px] font-black leading-none text-slate-600 sm:top-1 sm:text-[9px]">{compass.n}</span>
           <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-600 sm:right-1 sm:text-[9px]">{compass.e}</span>
@@ -1750,6 +1764,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   hourSlots,
   selectedHourDt = null,
   onHourChange,
+  onHourSettled,
   enableHourSlider = false,
   stayHours = null,
   onStayHoursChange,
@@ -1810,26 +1825,126 @@ const BeachMap: React.FC<BeachMapProps> = ({
     [selectedHourDt, sliderHours]
   );
   const sliderActiveIndex = Math.max(0, sliderHours.findIndex(item => item.dt === activeHourItem?.dt));
-  const [smoothSliderIndex, setSmoothSliderIndex] = useState(sliderActiveIndex);
-  const [isScrubbingHour, setIsScrubbingHour] = useState(false);
-  useEffect(() => {
-    if (isScrubbingHour) return;
-    setSmoothSliderIndex(sliderActiveIndex);
-  }, [isScrubbingHour, sliderActiveIndex, sliderHours.length]);
   const sliderMaxIndex = Math.max(0, sliderHours.length - 1);
-  const sliderDisplayIndex = Math.min(sliderMaxIndex, Math.max(0, smoothSliderIndex));
-  const sliderFillPct = sliderHours.length > 1 ? (sliderDisplayIndex / sliderMaxIndex) * 100 : 0;
-  const sliderDisplayHourItem = sliderHours[Math.round(sliderDisplayIndex)] ?? activeHourItem;
-  const sliderDisplayBeaufort = sliderDisplayHourItem
-    ? getBeaufortLevel(sliderDisplayHourItem.wind.speed * 3.6)
+  /**
+   * NOTHING about the drag itself lives in React state — reported 14/08/2026 as
+   * "the bar sticks, it is not smooth".
+   *
+   * The cost was never in the slider. Every render of this component walks EVERY
+   * beach on the map through beachConditionTone three times over (the legend
+   * tally, the tones reported upward, the marker filter) — see the block around
+   * `beachTonesById`, none of it memoised on purpose, because those three must be
+   * literally the same expression. The old `smoothSliderIndex` state turned one
+   * pointermove into one full render, so a finger moving across a phone screen at
+   * 120Hz asked for a few hundred passes over the region's beaches per second.
+   *
+   * So the handle position and the filled track are written straight to the DOM
+   * during a drag, and React is told only when the WHOLE HOUR changes: about
+   * fifteen renders for a full sweep instead of several hundred. The hour the map
+   * paints is unchanged — it was already quantised to whole hours (Math.round on
+   * the old display index), so no beach changes colour at a moment it did not before.
+   */
+  const sliderInputRef = useRef<HTMLInputElement | null>(null);
+  const sliderFillRef = useRef<HTMLDivElement | null>(null);
+  const scrubIndexRef = useRef(sliderActiveIndex);
+  const isScrubbingRef = useRef(false);
+  const paintSliderFill = (index: number) => {
+    const fill = sliderFillRef.current;
+    if (!fill) return;
+    const ratio = sliderMaxIndex > 0 ? Math.min(1, Math.max(0, index / sliderMaxIndex)) : 0;
+    // Half a handle in from each end, so the fill stops under the handle's centre
+    // rather than at the raw percentage of the track.
+    fill.style.width = `calc(13px + (100% - 26px) * ${ratio})`;
+  };
+  // Runs after every render (no dependency list on purpose): whoever changed the
+  // hour — the arrows, the keyboard, a new region, the parent — the input and the
+  // fill are put back in step with it. During a drag the finger wins.
+  useLayoutEffect(() => {
+    if (isScrubbingRef.current) {
+      paintSliderFill(scrubIndexRef.current);
+      return;
+    }
+    scrubIndexRef.current = sliderActiveIndex;
+    if (sliderInputRef.current) sliderInputRef.current.value = String(sliderActiveIndex);
+    paintSliderFill(sliderActiveIndex);
+  });
+  const sliderDisplayBeaufort = activeHourItem
+    ? getBeaufortLevel(activeHourItem.wind.speed * 3.6)
     : undefined;
   // sliderTone is derived further down, once the per-beach exposure levels the pins use exist —
   // it must be the same tone as the pins, so it cannot be computed before them.
-  const commitSliderIndex = (index: number) => {
-    const clampedIndex = Math.min(sliderMaxIndex, Math.max(0, index));
-    setSmoothSliderIndex(clampedIndex);
-    const slot = sliderHours[Math.round(clampedIndex)];
+  // FIRST-VISIT NUDGE (14/08/2026). Reported from the phone: people did not realise
+  // the bar could be dragged at all — a coloured track with a dot reads as a progress
+  // bar, not as a control. Until a visitor has moved it once, the handle nudges itself
+  // three times, the arrows flank it, and the "drag the hours" line is shown on mobile
+  // too (it was desktop-only). After the first use the flag is stored and none of it
+  // comes back, so the compact mobile layout is the steady state, not the loud one.
+  const [hourHintPending, setHourHintPending] = useState(false);
+  useEffect(() => {
+    if (!enableHourSlider) return;
+    try {
+      if (window.localStorage.getItem(HOUR_SLIDER_HINT_KEY) === '1') return;
+    } catch {
+      // Private mode / storage disabled: showing the hint every visit is the safe side.
+    }
+    setHourHintPending(true);
+  }, [enableHourSlider]);
+  const dismissHourHint = () => {
+    setHourHintPending(previous => {
+      if (!previous) return previous;
+      try {
+        window.localStorage.setItem(HOUR_SLIDER_HINT_KEY, '1');
+      } catch {
+        // Nothing to do — the hint simply shows again next visit.
+      }
+      return false;
+    });
+  };
+  // Called while the finger moves. Deliberately touches no state: it paints the
+  // fill itself and only wakes React up when the whole hour underneath changes.
+  const scrubToIndex = (rawIndex: number) => {
+    const clamped = Math.min(sliderMaxIndex, Math.max(0, rawIndex));
+    scrubIndexRef.current = clamped;
+    paintSliderFill(clamped);
+    const slot = sliderHours[Math.round(clamped)];
+    if (slot && slot.dt !== activeHourItem?.dt) {
+      dismissHourHint();
+      onHourChange?.(slot.dt);
+    }
+  };
+  // Lands on a whole hour: the arrows, the keyboard, and the snap when a drag ends.
+  const goToHourIndex = (index: number) => {
+    const clamped = Math.min(sliderMaxIndex, Math.max(0, Math.round(index)));
+    scrubIndexRef.current = clamped;
+    if (sliderInputRef.current) sliderInputRef.current.value = String(clamped);
+    // Glide, but only for a jump the finger is not already driving.
+    sliderFillRef.current?.classList.add('beach-map-hour-fill--glide');
+    paintSliderFill(clamped);
+    dismissHourHint();
+    const slot = sliderHours[clamped];
     if (slot && slot.dt !== activeHourItem?.dt) onHourChange?.(slot.dt);
+  };
+  const scrubStartIndexRef = useRef(sliderActiveIndex);
+  const beginHourScrub = () => {
+    isScrubbingRef.current = true;
+    scrubStartIndexRef.current = sliderActiveIndex;
+    // The fill must track the finger, not chase it 300ms behind — that lag was
+    // half of what "not smooth" meant.
+    sliderFillRef.current?.classList.remove('beach-map-hour-fill--glide');
+  };
+  const endHourScrub = () => {
+    if (!isScrubbingRef.current) return;
+    isScrubbingRef.current = false;
+    const landedIndex = Math.min(sliderMaxIndex, Math.max(0, Math.round(scrubIndexRef.current)));
+    goToHourIndex(landedIndex);
+    // Announced only here, once, and only if the drag actually moved the hour. The
+    // per-hour onHourChange above has already repainted the map on the way.
+    if (landedIndex !== scrubStartIndexRef.current) onHourSettled?.();
+  };
+  const stepSliderHour = (direction: 1 | -1) => {
+    const before = Math.round(scrubIndexRef.current);
+    goToHourIndex(before + direction);
+    if (Math.round(scrubIndexRef.current) !== before) onHourSettled?.();
   };
   const hourSliderCopy: Record<LanguageCode, string> = {
     en: 'Conditions by hour',
@@ -1840,11 +1955,37 @@ const BeachMap: React.FC<BeachMapProps> = ({
   };
   const hourSliderLabel = hourSliderCopy[language];
   const hourSliderHelper: Record<LanguageCode, string> = {
-    en: 'Drag the hours to update the map and beach recommendations.',
-    gr: 'Σύρε τις ώρες για να αλλάξουν ο χάρτης και οι προτεινόμενες παραλίες.',
-    de: 'Ziehe die Stunden, um Karte und Strandempfehlungen zu aktualisieren.',
-    it: 'Scorri le ore per aggiornare mappa e spiagge consigliate.',
-    fr: 'Faites glisser les heures pour mettre à jour la carte et les plages recommandées.',
+    en: 'Drag the bar to see the beaches hour by hour',
+    gr: 'Σύρε την μπάρα και δες τις παραλίες κάθε ώρα',
+    de: 'Zieh den Regler und sieh die Strände Stunde für Stunde',
+    it: 'Trascina la barra e vedi le spiagge ora per ora',
+    fr: 'Faites glisser la barre pour voir les plages heure par heure',
+  };
+  // ONE sentence, not two. There used to be a second, shorter twin here (hourSliderPrompt) for
+  // the desktop heading — same instruction, different wording, so the two drifted apart the
+  // moment either was edited and a visitor switching devices was told the same thing twice in
+  // two voices. So there is only ever this one string, and since 15/08/2026 it is the heading
+  // above the bar at EVERY width.
+  //
+  // KEEP IT TO ONE PHONE LINE (15/08/2026). It was briefly the fully spelled-out version —
+  // «…για να δεις τις καιρικές συνθήκες στις παραλίες ανάλογα την ώρα που θα επιλέξεις» — and
+  // Miltos read the result as a wall of text: at ~40 characters per line on a 360 px screen it
+  // wrapped to three, above a control that is already tall. It says the same three things in
+  // half the words (drag it · you get beaches · hour by hour). Anything longer than roughly 45
+  // characters in any language wraps again and undoes this.
+  const previousHourCopy: Record<LanguageCode, string> = {
+    en: 'Previous hour',
+    gr: 'Προηγούμενη ώρα',
+    de: 'Vorherige Stunde',
+    it: 'Ora precedente',
+    fr: 'Heure précédente',
+  };
+  const nextHourCopy: Record<LanguageCode, string> = {
+    en: 'Next hour',
+    gr: 'Επόμενη ώρα',
+    de: 'Nächste Stunde',
+    it: 'Ora successiva',
+    fr: 'Heure suivante',
   };
   const beaufortUnitLabel = language === 'gr' ? 'μποφ.' : 'Bft';
   const formatSliderHour = (dt: number) => new Date(dt * 1000).toLocaleTimeString(
@@ -2804,11 +2945,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const isPreview = variant === 'preview';
     // TWO-UP ON A PHONE, FOUR ACROSS ON A WIDE SCREEN (10/08/2026). These rows used to run
     // full-width down the page: four colours, two lines each, and the beach cards started below
-    // the fold on a phone. Side by side they cost a quarter of that height. The wording in
-    // utils/conditionToneLabels.ts was cut to the cause alone for exactly this reason — a column
-    // half a phone wide cannot hold a sentence. A single row (a filter is on) stays full width
-    // rather than sitting in a lonely half-column, and an odd last row spans both phone columns
-    // so the strip never ends with a gap.
+    // the fold on a phone. Side by side they cost a quarter of that height. A single row (a
+    // filter is on) stays full width rather than sitting in a lonely half-column, and an odd
+    // last row spans both phone columns so the strip never ends with a gap.
+    // Since 15/08/2026 each cell is ONE line, not two — the per-colour sentence moved to a
+    // single caption under the grid — so the same 2×2 costs half the height it used to.
     const rowCount = visibleWindColorGuideRows.length;
     const isSideBySide = !isSevereWind && rowCount > 1;
     const gridClasses = isSideBySide ? 'grid grid-cols-2 gap-1 sm:grid-cols-4' : 'grid gap-1';
@@ -2836,9 +2977,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
             ? 'col-span-2 sm:col-span-1'
             : '';
           // «Ιδανικές 4 παραλίες», not «Ιδανική 4». The bare number beside a singular adjective
-          // was read as a score or a rank; the noun is what makes it a count. The phrase wraps
-          // to a second line in a half-width column instead of truncating — a clipped
-          // «Ιδανικές 4 παρα…» would be worse than the two lines it costs.
+          // was read as a score or a rank; the noun is what makes it a count (12/08/2026, from
+          // real reader reports). It survived the 15/08 slimming for exactly that reason: what
+          // was cut is the second line under each row on a PHONE, never the noun inside it.
           const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
           const body = (
             <>
@@ -2860,9 +3001,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     : <ChevronRight aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400" />
                 )}
               </span>
-              {/* The one line that separates this colour from the one above it. Without it the
-                  reader sees five words and no way to tell «Μέτρια» from «Καλή». */}
-              <span className="mt-0.5 block text-left text-[10px] font-medium leading-snug text-slate-500 dark:text-slate-400">
+              {/* WIDE SCREENS EXPLAIN, PHONES COUNT (15/08/2026, Miltos's call).
+                  This is the line that separates «Μέτρια» from «Καλή». On a desktop it is free —
+                  the rows sit four across with room under each — so it stays visible and nobody
+                  has to tap to learn what a colour means. On a phone the same four sentences are
+                  eight stacked lines immediately above the beach cards, which is what he read as
+                  crowded; there the legend counts, and the sentence returns as a caption under
+                  the grid the moment a single colour is left. Same string either way — the
+                  explanation is never rewritten per screen size, only relocated. */}
+              <span className="mt-0.5 hidden text-left text-[10px] font-medium leading-snug text-slate-500 sm:block dark:text-slate-400">
                 {toneWords[row.tone].meaning}
               </span>
             </>
@@ -2918,10 +3065,28 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const renderWindColorGuidePanel = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
+    // THE PHONE'S ONE EXPLANATORY LINE (15/08/2026), where four used to hang off four rows.
+    //
+    // On a phone the rows print the colour and the count only — four sentences stacked under
+    // four numbers is what Miltos read as crowded, and they are not four separate facts but ONE
+    // ordered scale said four times. The moment a SINGLE colour is left, though — a filter is
+    // picked, or the map paints only one — that colour's own `meaning` earns its line and shows
+    // up here, because the reader has just asked about precisely that colour.
+    //
+    // `sm:hidden`, because on a wide screen the rows already carry all four meanings inline
+    // (his call: a desktop has the room and should explain without a tap). Without that the
+    // filtered desktop legend would print the same sentence twice, one under the other.
+    // Never rendered at >=7 Bft: there are no counted rows there, only the "unsuitable" line.
+    const soleVisibleTone = visibleWindColorGuideRows.length === 1 ? visibleWindColorGuideRows[0].tone : null;
 
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
+        {!isSevereWind && soleVisibleTone && (
+          <p className="px-0.5 text-left text-[10px] font-medium leading-snug text-slate-500 sm:hidden dark:text-slate-400">
+            {toneWords[soleVisibleTone].meaning}
+          </p>
+        )}
         {isToneFilterEnabled && activeToneFilter && (
           <button
             type="button"
@@ -3064,7 +3229,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
         {/* Map Mode Toggle */}
         {!compact && !preview && (
-        <div className="absolute left-3 right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-white/60 bg-white/80 p-1 shadow-lg shadow-sky-900/10 backdrop-blur-xl sm:left-auto sm:right-4 sm:rounded-xl sm:border-slate-200 sm:p-0 dark:border-slate-700 dark:bg-slate-900/85">
+        <div className="absolute left-3 right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-white/60 bg-white/95 p-1 shadow-lg shadow-sky-900/10 sm:left-auto sm:right-4 sm:rounded-xl sm:border-slate-200 sm:p-0 dark:border-slate-700 dark:bg-slate-900">
           <button
             type="button"
             onClick={() => setMapMode('recommendation')}
@@ -3268,7 +3433,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           })}
         </MapContainer>
 
-        <div className="pointer-events-auto absolute bottom-1.5 right-1.5 z-[900] rounded bg-white/70 px-1.5 py-0.5 text-[8px] font-medium leading-none text-slate-600 shadow-sm shadow-sky-900/5 backdrop-blur-sm dark:bg-slate-900/70 dark:text-slate-300">
+        <div className="pointer-events-auto absolute bottom-1.5 right-1.5 z-[900] rounded bg-white/95 px-1.5 py-0.5 text-[8px] font-medium leading-none text-slate-600 shadow-sm shadow-sky-900/5 dark:bg-slate-900/95 dark:text-slate-300">
           <a
             href="https://leafletjs.com"
             target="_blank"
@@ -3333,7 +3498,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
         />
 
         {selectedBeach && (
-          <div className="absolute inset-x-2 bottom-2 z-[1000] max-h-[76%] overflow-y-auto rounded-2xl border border-white/80 bg-white/95 p-3 shadow-xl shadow-slate-900/20 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:bottom-4 sm:w-[min(360px,calc(100%-2rem))]">
+          <div className="absolute inset-x-2 bottom-2 z-[1000] max-h-[76%] overflow-y-auto rounded-2xl border border-white/80 bg-white p-3 shadow-xl shadow-slate-900/20 sm:inset-x-auto sm:right-4 sm:bottom-4 sm:w-[min(360px,calc(100%-2rem))]">
             <button
               type="button"
               onClick={() => setSelectedBeachId(null)}
@@ -3348,7 +3513,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
         {/* Legend Overlay */}
         {!compact && !preview && (
-        <div className="absolute bottom-4 left-4 z-[1000] hidden max-w-none rounded-xl border border-slate-200 bg-white/85 p-3 text-xs shadow-lg shadow-sky-900/10 backdrop-blur-xl sm:block dark:border-slate-700 dark:bg-slate-900/90">
+        <div className="absolute bottom-4 left-4 z-[1000] hidden max-w-none rounded-xl border border-slate-200 bg-white p-3 text-xs shadow-lg shadow-sky-900/10 sm:block dark:border-slate-700 dark:bg-slate-900">
           {renderLegend()}
         </div>
         )}
@@ -3361,60 +3526,155 @@ const BeachMap: React.FC<BeachMapProps> = ({
           className="flex flex-wrap items-center gap-x-2 gap-y-0 border-t border-slate-200/80 bg-white/92 px-3 py-0 dark:border-slate-700 dark:bg-slate-900/90 sm:gap-x-3 sm:gap-y-1 sm:px-4 sm:py-3"
           onPointerDown={() => onUserInteraction?.()}
         >
-          <span className="shrink-0 text-[11px] font-extrabold text-slate-600 dark:text-slate-300">{hourSliderLabel}</span>
-          <div className="relative flex min-w-0 flex-1 items-center">
-            <div className="pointer-events-none absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+          {/* The heading takes its own centred line on every size. It used to share the line with
+              the bar and with a second copy of the selected hour — a 26px handle inside a ~150px
+              track, squeezed between a label and a clock, was most of the reason nobody realised
+              it could be dragged, and on the desktop it left no room for the hour labels either.
+              The clock is gone: every hour is now written under its own stop and the one in force
+              is the teal one, so repeating it beside the title said nothing new.
+              THE PHONE SAYS WHAT TO DO, NOT WHAT THIS IS (15/08/2026, Miltos). It used to print
+              the bare name «Συνθήκες ανά ώρα» and keep the instruction for a hint line under the
+              bar; a name tells nobody the bar can be dragged, which is the one thing a visitor
+              has to work out. Both sizes now read the SAME string — the instruction — so it can
+              only ever be edited once, and the separate hint line under the bar is gone with it
+              rather than printing the sentence twice on one screen. */}
+          <div className="flex basis-full items-center justify-center pt-1.5 sm:pt-0">
+            <span className="text-center text-[11px] font-bold leading-snug text-slate-600 sm:text-[13px] sm:font-extrabold dark:text-slate-300">{hourSliderHelper[language]}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => stepSliderHour(-1)}
+            disabled={sliderActiveIndex <= 0}
+            aria-label={previousHourCopy[language]}
+            // Hidden on the phone: the two 36px buttons plus their gaps ate ~90px of a ~340px
+            // row, which is exactly the width the hour labels under the bar need to stay legible.
+            // The bar itself already steps hour by hour, so nothing is lost.
+            className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-50 active:scale-95 disabled:opacity-30 sm:flex dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M15 18 9 12l6-6" />
+            </svg>
+          </button>
+          <div className="flex min-w-0 flex-1 flex-col justify-center">
+          <div className="relative flex w-full items-center">
+            <div className="pointer-events-none absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-slate-200 dark:bg-slate-700" />
+            {/* Width is never written by React — paintSliderFill owns it, so a drag
+                never has to re-render this component to move the bar. */}
             <div
-              className="pointer-events-none absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full transition-[width,background-color] duration-300 ease-out motion-reduce:transition-none"
-              style={{ width: `${sliderFillPct}%`, backgroundColor: sliderTone.color }}
+              ref={sliderFillRef}
+              className="beach-map-hour-fill pointer-events-none absolute left-0 top-1/2 h-2 -translate-y-1/2 rounded-full"
+              style={{ backgroundColor: sliderTone.color }}
             />
+            {/* One dot per available hour: it reads as "there are stops along here",
+                which a plain bar does not. Dropped when the hours are too many to
+                stay legible. Inset by half a handle so the ends line up with its travel. */}
+            {sliderHours.length <= 16 && (
+              <div className="pointer-events-none absolute inset-x-[13px] top-1/2 flex -translate-y-1/2 items-center justify-between">
+                {sliderHours.map((item, index) => (
+                  <span
+                    key={item.dt}
+                    className={`h-1 w-1 rounded-full ${index <= sliderActiveIndex ? 'bg-white/80' : 'bg-slate-400/70 dark:bg-slate-500'}`}
+                  />
+                ))}
+              </div>
+            )}
+            {/* Uncontrolled on purpose: the browser owns the handle position while the
+                finger is down, and the layout effect above puts it back in step whenever
+                the hour is changed from anywhere else. A `value` prop here would mean one
+                React render per pointermove, which is exactly the stutter this fixes. */}
             <input
+              ref={sliderInputRef}
               type="range"
               min={0}
               max={sliderMaxIndex}
               step={0.01}
-              value={sliderDisplayIndex}
-              onPointerDown={() => setIsScrubbingHour(true)}
-              onTouchStart={() => setIsScrubbingHour(true)}
+              defaultValue={sliderActiveIndex}
+              onPointerDown={beginHourScrub}
+              onTouchStart={beginHourScrub}
               onChange={event => {
-                commitSliderIndex(Number(event.target.value));
+                scrubToIndex(Number(event.target.value));
               }}
               onKeyDown={event => {
                 if (!['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.key)) return;
                 event.preventDefault();
-                const direction = event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : -1;
-                commitSliderIndex(sliderActiveIndex + direction);
+                stepSliderHour(event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : -1);
               }}
-              onPointerUp={() => {
-                commitSliderIndex(Math.round(sliderDisplayIndex));
-                setIsScrubbingHour(false);
-              }}
-              onPointerCancel={() => setIsScrubbingHour(false)}
-              onTouchEnd={() => {
-                commitSliderIndex(Math.round(sliderDisplayIndex));
-                setIsScrubbingHour(false);
-              }}
-              onTouchCancel={() => setIsScrubbingHour(false)}
-              onBlur={() => {
-                commitSliderIndex(Math.round(sliderDisplayIndex));
-                setIsScrubbingHour(false);
-              }}
+              onPointerUp={endHourScrub}
+              onPointerCancel={endHourScrub}
+              // Range inputs capture the pointer; if that capture is lost anywhere but over
+              // the control, this is the only event that still fires. Without it a drag
+              // released off-target leaves the slider stuck in scrub mode and the layout
+              // effect stops re-syncing it.
+              onLostPointerCapture={endHourScrub}
+              onTouchEnd={endHourScrub}
+              onTouchCancel={endHourScrub}
+              onBlur={endHourScrub}
               aria-label={hourSliderLabel}
               style={sliderThumbStyle}
-              className="beach-map-hour-slider relative z-10 h-10 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent sm:h-11"
+              className={`beach-map-hour-slider relative z-10 h-10 min-w-0 flex-1 cursor-pointer appearance-none bg-transparent sm:h-11${hourHintPending ? ' beach-map-hour-slider--hint' : ''}`}
             />
           </div>
-          <span className="shrink-0 text-[11px] font-extrabold tabular-nums text-[#007a83]">
-            {/* The hour, and only the hour. This used to append the region's Beaufort for that
-                hour — the same single figure the widget above stopped printing on 02/08/2026, and
-                the same contradiction with the pins. The thumb is already coloured from the pins'
-                own tally (sliderTone), so the severity is on screen without a number that belongs
-                to nowhere in particular. */}
-            {formatSliderHour(activeHourItem.dt)}
-          </span>
-          <p className="hidden basis-full text-[11px] font-bold leading-snug text-slate-700 sm:block dark:text-slate-600">
-            {hourSliderHelper[language]}
-          </p>
+          {/* THREE HOURS WRITTEN, EVERY HOUR STILL MARKED (15/08/2026).
+              Every stop used to be spelled out: fourteen two-digit numbers in a row, all the same
+              weight, and the one actually in force — the only one the reader came for — was a
+              teal needle in that haystack. Miltos read the whole block as crowded and this was
+              half of it.
+              The DOTS above are untouched, so "there are stops along here, drag me" still reads
+              off the control itself; what goes is the writing on the stops nobody asked about.
+              Written now: the first hour, the last hour, and the selected one — the range plus
+              where you are, which is what a scale owes its reader.
+              An endpoint within two stops of the selection is dropped instead: at ~24px between
+              stops a full HH:MM (~26px) would sit on top of its neighbour, and of the two the
+              selected hour is never the one to lose. With three labels there is room for the full
+              HH:MM at every width, so the old two-digit phone form is gone with them. */}
+          {sliderHours.length <= 16 && (
+            <div className="pointer-events-none relative -mt-0.5 h-3">
+              <div className="absolute inset-x-[13px] top-0 flex items-start justify-between">
+                {sliderHours.map((item, index) => {
+                  const isActiveStop = index === sliderActiveIndex;
+                  const isEndpoint = index === 0 || index === sliderHours.length - 1;
+                  const crowdsSelection = Math.abs(index - sliderActiveIndex) <= 2;
+                  const isWritten = isActiveStop || (isEndpoint && !crowdsSelection);
+                  return (
+                    <span key={item.dt} className="relative block h-1 w-1">
+                      {isWritten && (
+                        <span
+                          className={`absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap leading-none tabular-nums ${
+                            isActiveStop
+                              ? 'text-[11px] font-extrabold text-[#007a83]'
+                              : 'text-[9px] font-semibold text-slate-500 sm:text-[10px] dark:text-slate-400'
+                          }`}
+                        >
+                          {formatSliderHour(item.dt)}
+                        </span>
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          </div>
+          <button
+            type="button"
+            onClick={() => stepSliderHour(1)}
+            disabled={sliderActiveIndex >= sliderMaxIndex}
+            aria-label={nextHourCopy[language]}
+            className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-50 active:scale-95 disabled:opacity-30 sm:flex dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+          {/* The lone hour readout that used to sit here is gone (15/08/2026). It carried the
+              region's Beaufort until 02/08/2026 — a figure that contradicted the pins — and after
+              that it was just the hour, which the labelled stops under the bar now say in place,
+              with the one in force painted teal. The width it freed is what lets those stops fit. */}
+          {/* The phone's hint line lived here until 15/08/2026. The heading above the bar now
+              carries that exact sentence at every width, so keeping this would have printed the
+              same instruction twice on the same screen. The first-use pulse on the handle
+              (hourHintPending → beach-map-hour-slider--hint) is untouched: the animation still
+              draws the eye to the control, it just no longer needs a paragraph to explain it. */}
           {/*
             HOW LONG ARE YOU STAYING — one question, never two.
             Measured before this was built (scripts/measureIntradayWindowSpread.mjs, 05/08/2026):
@@ -3462,20 +3722,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
       )}
 
       {isCompactPreview && mapMode === 'wind' && (
-        <div className="mt-0 rounded-xl border border-sky-100 bg-white/90 px-2 py-1 text-left shadow-sm shadow-sky-900/8 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
+        <div className="mt-0 rounded-xl border border-sky-100 bg-white px-2 py-1 text-left shadow-sm shadow-sky-900/8 dark:border-slate-700 dark:bg-slate-900">
           {renderWindColorGuidePanel('preview')}
         </div>
       )}
 
       {!compact && preview && (
-        <div className="border-t border-slate-200/80 bg-white/90 px-3 py-2 shadow-inner shadow-sky-900/5 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/90">
+        <div className="border-t border-slate-200/80 bg-white px-3 py-2 shadow-inner shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900">
           {renderPreviewLegend()}
         </div>
       )}
 
       {/* Mobile Legend */}
       {!compact && !preview && (
-      <div className="border-t border-slate-200 bg-white/88 p-3 text-[11px] shadow-inner shadow-sky-900/5 backdrop-blur-xl sm:hidden dark:border-slate-700 dark:bg-slate-900/90">
+      <div className="border-t border-slate-200 bg-white p-3 text-[11px] shadow-inner shadow-sky-900/5 sm:hidden dark:border-slate-700 dark:bg-slate-900">
         {renderLegend()}
       </div>
       )}

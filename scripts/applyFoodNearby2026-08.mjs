@@ -11,19 +11,28 @@
 //   "ταβέρνα κοντά" → «Ταβέρνες κοντά» · "καφέ κοντά" → «Καφέ κοντά» · "καντίνα κοντά" → «Καντίνα κοντά»
 // A bar/pub is deliberately written as the weaker "καντίνα κοντά".
 //
-//   node scripts/applyFoodNearby2026-08.mjs           # dry run
+//   node scripts/applyFoodNearby2026-08.mjs           # dry run, the original 6 regions
 //   node scripts/applyFoodNearby2026-08.mjs --write   # persist, then npm run build:beach-data
-// Reverse by deleting the added phrase and its sourceNotes entry (both are dated 2026-08-14).
+//   node scripts/applyFoodNearby2026-08.mjs --regions=crete-crete-heraklion --stamp=2026-08-14
+// Reverse by deleting the added phrase and its sourceNotes entry (both carry the run's date).
+// --regions/--stamp exist because this repeats region by region; a run must never depend on a
+// hardcoded list, and the note has to say WHEN that beach was actually looked at, not 14/08.
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const write = process.argv.includes('--write');
-const STAMP = '2026-08-14';
+const arg = name => {
+  const hit = process.argv.find(a => a.startsWith(`--${name}=`));
+  return hit ? hit.slice(name.length + 3) : null;
+};
+const STAMP = arg('stamp') || '2026-08-14';
 const MAX_M = 150;
-const REGIONS = ['peloponnese-lakonia-mainland', 'central-greece-evia', 'north-aegean-lesvos',
+const DEFAULT_REGIONS = ['peloponnese-lakonia-mainland', 'central-greece-evia', 'north-aegean-lesvos',
   'attica-kythira', 'attica-east-attica-mainland', 'south-aegean-kythnos'];
+const REGIONS = (arg('regions') || '').split(',').map(s => s.trim()).filter(Boolean);
+if (!REGIONS.length) REGIONS.push(...DEFAULT_REGIONS);
 
 const PHRASE = {
   restaurant: 'ταβέρνα κοντά', fast_food_restaurant: 'ταβέρνα κοντά',
@@ -35,8 +44,13 @@ const PHRASE = {
 const rows = [], nearby = {};
 for (const region of REGIONS) {
   const base = path.join(rootDir, '.tmp', 'recheck', `amen-${region}`);
-  rows.push(...JSON.parse(readFileSync(`${base}.json`, 'utf8')));
-  Object.assign(nearby, JSON.parse(readFileSync(`${base}-nearby.json`, 'utf8')));
+  try {
+    rows.push(...JSON.parse(readFileSync(`${base}.json`, 'utf8')));
+    Object.assign(nearby, JSON.parse(readFileSync(`${base}-nearby.json`, 'utf8')));
+  } catch (err) {
+    throw new Error(`Λείπει η σάρωση για "${region}" (${path.relative(rootDir, base)}.json / -nearby.json). `
+      + `Τρέξε πρώτα: node scripts/auditAmenitiesOsm.mjs --region ${region} --out .tmp/recheck/amen-${region}`);
+  }
 }
 
 const plan = new Map();

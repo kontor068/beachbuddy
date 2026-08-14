@@ -55,7 +55,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
             onClick={() => onToggle(item.key)}
             disabled={wouldReturnNoResults}
             aria-describedby={wouldReturnNoResults ? `${item.key}-no-results-hint` : undefined}
-            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight backdrop-blur-md transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:min-h-10 sm:px-4 sm:text-sm ${
+            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:min-h-10 sm:px-4 sm:text-sm ${
               isActive
                 ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
                 : wouldReturnNoResults
@@ -76,7 +76,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
       {!showMoreFilters && secondaryFilters.length > 0 && (
         <button
           onClick={() => setShowMoreFilters(true)}
-            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight backdrop-blur-md transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm sm:min-h-10 sm:px-4 sm:text-sm ${
+            className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm sm:min-h-10 sm:px-4 sm:text-sm ${
             hiddenActiveCount > 0
               ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
               : 'bg-white/58 text-slate-600 border-white/60 hover:border-cyan-300 hover:bg-white/78 hover:text-cyan-600'
@@ -89,7 +89,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
       {showMoreFilters && (
         <button
           onClick={() => setShowMoreFilters(false)}
-          className="flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border border-white/55 bg-white/52 px-3 py-2 text-xs font-semibold leading-tight text-slate-600 shadow-sm backdrop-blur-md transition-all hover:scale-[1.02] hover:border-cyan-300 hover:bg-white/72 hover:text-cyan-600 active:scale-[0.98] sm:min-h-10 sm:px-4 sm:text-sm"
+          className="flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border border-white/55 bg-white/95 px-3 py-2 text-xs font-semibold leading-tight text-slate-600 shadow-sm transition-all hover:scale-[1.02] hover:border-cyan-300 hover:bg-white/95 hover:text-cyan-600 active:scale-[0.98] sm:min-h-10 sm:px-4 sm:text-sm"
         >
           <span className="grid h-4 w-4 shrink-0 place-items-center sm:h-5 sm:w-5"><SlidersHorizontal size={16} /></span>
           <span className={isPanel ? 'min-w-0 truncate text-center' : 'whitespace-nowrap text-center'}>{lessLabel}</span>

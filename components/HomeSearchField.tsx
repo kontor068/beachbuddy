@@ -169,7 +169,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
         placeholder={activePlaceholder}
-        className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white/90 pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 backdrop-blur-md transition placeholder:text-[14px] placeholder:text-slate-500 max-[389px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
+        className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 transition placeholder:text-[14px] placeholder:text-slate-500 max-[389px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
           hasValue ? 'pr-[6.5rem] sm:pr-28' : 'pr-14 sm:pr-16'
         }`}
       />
@@ -200,7 +200,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
         <div
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-sky-100 bg-white/98 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70 backdrop-blur-xl"
+          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
         >
           {suggestions.length > 0 ? (
             <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">

@@ -106,7 +106,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={searchCopy.searchPlaceholder}
-            className={isPanel ? 'min-h-11 w-full rounded-full border border-white/65 bg-white/86 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:text-left md:placeholder:text-left [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden' : 'min-h-11 w-full rounded-full border border-white/65 bg-white/84 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 md:text-left md:placeholder:text-left [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden'}
+            className={isPanel ? 'min-h-11 w-full rounded-full border border-white/65 bg-white py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:text-left md:placeholder:text-left [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden' : 'min-h-11 w-full rounded-full border border-white/65 bg-white/95 py-2.5 pl-11 pr-11 text-center text-sm font-semibold text-slate-700 shadow-sm outline-none ring-1 ring-white/35 placeholder:text-center placeholder:text-slate-600 focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 md:text-left md:placeholder:text-left [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden'}
           />
           {searchQuery.trim().length > 0 && (
             <button
@@ -143,7 +143,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
                 setIsSortOpen(true);
               }
             }}
-            className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-white/70 bg-white/88 px-4 py-2.5 text-xs font-semibold text-slate-600 shadow-sm outline-none ring-1 ring-white/35 backdrop-blur-xl transition hover:border-cyan-200 hover:bg-white/95 focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 dark:border-slate-700/40 dark:bg-slate-800/55 dark:text-slate-200 dark:ring-white/10"
+            className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-white/70 bg-white px-4 py-2.5 text-xs font-semibold text-slate-600 shadow-sm outline-none ring-1 ring-white/35 transition hover:border-cyan-200 hover:bg-white focus:ring-2 focus:ring-cyan-400/70 md:min-h-10 md:py-2 dark:border-slate-700/40 dark:bg-slate-800/95 dark:text-slate-200 dark:ring-white/10"
           >
             <span id="beach-sort-value" className="min-w-0 flex-1 text-center">
               {selectedSortLabel}
@@ -158,7 +158,7 @@ export const BeachFilters: React.FC<BeachFiltersProps> = ({
             <div
               role="listbox"
               aria-labelledby="beach-sort-label"
-              className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-[1.15rem] border border-white/75 bg-white/96 p-1.5 shadow-xl shadow-sky-900/14 ring-1 ring-cyan-100/70 backdrop-blur-xl dark:border-slate-700/50 dark:bg-slate-900/96 dark:ring-white/10"
+              className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-[1.15rem] border border-white/75 bg-white p-1.5 shadow-xl shadow-sky-900/14 ring-1 ring-cyan-100/70 dark:border-slate-700/50 dark:bg-slate-900 dark:ring-white/10"
             >
               {sortOptions.map(option => {
                 const isSelected = option.value === selectedSortBy;

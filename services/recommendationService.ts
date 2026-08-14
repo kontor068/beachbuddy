@@ -46,8 +46,8 @@ import { assessBeachWindExposure, applySeaStateToWindSuitability } from '../util
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
-import { hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
-import { passesTopPickSeaGate } from './topPickRanking';
+import { getHardAccessKind, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
+import { passesTopPickSeaGate, TOP_PICK_PODIUM_SEATS } from './topPickRanking';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -217,7 +217,9 @@ interface ScoreOptions {
 
 export type GeospatialExposureLookup = Record<number, GeospatialExposureProfile>;
 
-export const MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT = 3;
+// Ένας αριθμός, μία πηγή: το topPickRanking τον χρειάζεται κι αυτό (η ομάδα του βάθρου γεμίζει
+// τις κενές θέσεις από 15/08/2026), και δύο «3» σε δύο αρχεία είναι πώς ξεκινούν οι αποκλίσεις.
+export const MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT = TOP_PICK_PODIUM_SEATS;
 
 // Show up to 3 picks, capped only by how many actually cleared the Tier 0 safety gate
 // (min(3, qualified)). The old floor(qualified/3) needed a 9-deep pool for 3 cards and
@@ -1085,7 +1087,14 @@ export const isTrustedTopRecommendationCandidate = <T extends {
  * only then an admission about our own records. Each branch is the same predicate the podium
  * itself uses — this function must never become a second opinion about who qualifies.
  */
-export type TopPickExclusionReason = 'safety' | 'access' | 'sea' | 'unverified';
+export type TopPickExclusionReason =
+  | 'safety'
+  | 'access'
+  | 'access_dirt'
+  | 'access_walk'
+  | 'access_unknown'
+  | 'sea'
+  | 'unverified';
 
 export const explainTopPickExclusion = (
   item: SuitableBeach,
@@ -1103,10 +1112,22 @@ export const explainTopPickExclusion = (
     return 'safety';
   }
 
-  // Boat-only and hard-path beaches are not "worse", they are a different kind of day out — the
-  // podium puts them after every reachable beach by decision (16/06/2026), so this is the honest
-  // word for them rather than dressing it up as a conditions call.
-  if (!hasMainstreamTopPickAccess(beach)) return 'access';
+  /**
+   * Beaches you cannot simply drive up to are not "worse", they are a different kind of day out —
+   * the podium puts them after every reachable beach by decision (16/06/2026), so this is the
+   * honest word for them rather than dressing it up as a conditions call.
+   *
+   * ΤΕΣΣΕΡΙΣ ΛΟΓΟΙ, ΟΧΙ ΕΝΑΣ (Μίλτος, 14/08/2026). Αυτή η γραμμή επέστρεφε πάντα `'access'`, και
+   * το κείμενό του έλεγε «θέλει σκάφος ή δύσκολο μονοπάτι» — για **1.000 από τις 1.380** παραλίες
+   * που το έπαιρναν ήταν ψέμα (μετρημένο, βλ. `utils/access.getHardAccessKind`). Ο διαχωρισμός δεν
+   * γίνεται εδώ: ρωτάει το ίδιο αρχείο που όρισε το φίλτρο, ώστε λεζάντα και κριτήριο να μη
+   * μπορούν να αποκλίνουν.
+   */
+  const hardAccessKind = getHardAccessKind(beach);
+  if (hardAccessKind === 'boat_or_hard_path') return 'access';
+  if (hardAccessKind === 'dirt_road') return 'access_dirt';
+  if (hardAccessKind === 'walk') return 'access_walk';
+  if (hardAccessKind === 'unknown') return 'access_unknown';
 
   if (
     (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) ||

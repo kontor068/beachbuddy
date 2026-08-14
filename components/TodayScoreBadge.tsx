@@ -106,7 +106,7 @@ export const getDisplayTodayScore = (score: number): number => {
 const getBoatRideTone = (level: BoatRideMotionLevel, isEstimate = false) => {
   if (isEstimate) {
     return {
-      container: 'border-slate-200/90 bg-slate-50/78 text-slate-700 backdrop-blur-md dark:border-slate-700 dark:bg-slate-900/35 dark:text-slate-200',
+      container: 'border-slate-200/90 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900/35 dark:text-slate-200',
       icon: 'text-slate-500 dark:text-slate-300',
       strong: 'text-slate-700 dark:text-slate-200',
     };
@@ -114,7 +114,7 @@ const getBoatRideTone = (level: BoatRideMotionLevel, isEstimate = false) => {
 
   if (level === 'smooth') {
     return {
-      container: 'border-emerald-200/90 bg-emerald-50/78 text-emerald-800 backdrop-blur-md dark:border-emerald-900/50 dark:bg-emerald-950/35 dark:text-emerald-200',
+      container: 'border-emerald-200/90 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/35 dark:text-emerald-200',
       icon: 'text-emerald-600 dark:text-emerald-300',
       strong: 'text-emerald-700 dark:text-emerald-200',
     };
@@ -122,7 +122,7 @@ const getBoatRideTone = (level: BoatRideMotionLevel, isEstimate = false) => {
 
   if (level === 'light') {
     return {
-      container: 'border-cyan-200/90 bg-cyan-50/78 text-cyan-800 backdrop-blur-md dark:border-cyan-900/50 dark:bg-cyan-950/35 dark:text-cyan-200',
+      container: 'border-cyan-200/90 bg-cyan-50 text-cyan-800 dark:border-cyan-900/50 dark:bg-cyan-950/35 dark:text-cyan-200',
       icon: 'text-cyan-600 dark:text-cyan-300',
       strong: 'text-cyan-700 dark:text-cyan-200',
     };
@@ -130,14 +130,14 @@ const getBoatRideTone = (level: BoatRideMotionLevel, isEstimate = false) => {
 
   if (level === 'bumpy') {
     return {
-      container: 'border-amber-200/90 bg-amber-50/78 text-amber-800 backdrop-blur-md dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-200',
+      container: 'border-amber-200/90 bg-amber-50 text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-200',
       icon: 'text-amber-600 dark:text-amber-300',
       strong: 'text-amber-700 dark:text-amber-200',
     };
   }
 
   return {
-    container: 'border-rose-200/90 bg-rose-50/78 text-rose-800 backdrop-blur-md dark:border-rose-900/50 dark:bg-rose-950/35 dark:text-rose-200',
+    container: 'border-rose-200/90 bg-rose-50 text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/35 dark:text-rose-200',
     icon: 'text-rose-600 dark:text-rose-300',
     strong: 'text-rose-700 dark:text-rose-200',
   };

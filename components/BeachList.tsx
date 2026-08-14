@@ -171,7 +171,7 @@ export const BeachList: React.FC<BeachListProps> = ({
       const message = noSwimmingMessage(language, selectedDate, noSwimmingReason);
 
       return (
-        <div role="status" className="col-span-full rounded-3xl border border-amber-200/80 bg-amber-50/90 px-5 py-8 text-left shadow-sm shadow-amber-900/5 ring-1 ring-white/45 backdrop-blur-xl dark:border-amber-900/50 dark:bg-amber-950/30">
+        <div role="status" className="col-span-full rounded-3xl border border-amber-200/80 bg-amber-50 px-5 py-8 text-left shadow-sm shadow-amber-900/5 ring-1 ring-white/45 dark:border-amber-900/50 dark:bg-amber-950/95">
           <div className="flex items-start gap-3">
             <span className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/75 text-amber-700 shadow-sm ring-1 ring-amber-100 dark:bg-slate-900/55 dark:text-amber-300 dark:ring-amber-900/40">
               <AlertTriangle className="h-5 w-5" aria-hidden="true" />

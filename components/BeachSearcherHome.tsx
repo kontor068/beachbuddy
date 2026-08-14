@@ -26,7 +26,6 @@ import {
   Search,
   ShieldCheck,
   SlidersHorizontal,
-  Star,
   Sunset,
   Trees,
   Utensils,
@@ -41,11 +40,9 @@ import { displayBeachName, localizedAccessLabel, localizedPopularityLabel, local
 import { getTopPickDistinguishers, topPickNumberWord } from '../utils/topPickDistinguishers';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import type { CalmnessTone } from '../utils/suitabilityTone';
-import { getAmenityChips, type AmenityChip } from '../utils/amenities';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
-import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
-import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
+import { trackEvent } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import {
   getPreferenceFilterLabel,
@@ -53,7 +50,6 @@ import {
   type QuickPreferenceFilter,
 } from '../utils/preferenceFilterLabels';
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
-import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { getSelectedDayOffset, getSelectedDayPrefix, getSelectedDaySentencePrefix } from '../utils/dateLabels';
 import { getTopPickTimingLabel } from '../utils/topPickTiming';
 import { explainTopPickExclusion, type TopPickExclusionReason } from '../services/recommendationService';
@@ -61,6 +57,7 @@ import { MEANINGFUL_WIND_TOP_PICK_BEAUFORT as SHARED_MEANINGFUL_WIND_TOP_PICK_BE
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess } from '../utils/access';
+import { getAccessReasonCopy } from '../utils/accessReasonCopy';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { BeachSearchEmptyState } from './BeachSearchEmptyState';
@@ -170,6 +167,15 @@ interface BeachSearcherHomeProps {
   mapDayStrip?: React.ReactNode;
   mapPreview?: React.ReactNode;
   topRecommendationCards?: SuitableBeach[];
+  /**
+   * Beaches the map painted in the BEST colour on screen today, which the podium could not name.
+   *
+   * Supplied by App from `mapBeachTones` — never resolved here, same rule as everywhere else
+   * (validateConditionToneAgreement forbids this component from deciding a colour). Empty on every
+   * ordinary day: it only fills when the reader can SEE the contradiction, i.e. the legend counts
+   * an ΙΔΑΝΙΚΗ that no medal above it mentions.
+   */
+  topColourOutsideTopPicksIds?: ReadonlySet<number>;
   /** The clock App ranked the picks with. Passed in so this component never starts a second one. */
   topPickNow?: Date;
   /** True when nothing cleared the quality bar and the podium is the shelter-ranked last resort.
@@ -203,9 +209,23 @@ interface BeachSearcherHomeProps {
   showSuitableBeachSection?: boolean;
   allBeachCards?: BeachCardContext[];
   beachWeatherContexts?: SuitableBeach[];
-  topBeachToday?: SuitableBeach | null;
-  topBeachDescription?: string;
-  topBeachTimingLabel?: string;
+  /**
+   * ΔΕΝ ΥΠΑΡΧΕΙ ΠΙΑ «Top παραλία σήμερα» ΩΣ ΞΕΧΩΡΙΣΤΗ ΚΑΡΤΑ (Μίλτος, 15/08/2026).
+   *
+   * Τρία props ζούσαν εδώ — `topBeachToday`, `topBeachDescription`, `topBeachTimingLabel` — και
+   * τάιζαν μια ολοσέλιδη κάρτα με φωτογραφία, χρυσό «1 ★», ώρα επίσκεψης και παροχές, που
+   * ΞΥΠΝΟΥΣΕ ΑΚΡΙΒΩΣ ΟΤΑΝ ΤΟ ΒΑΘΡΟ ΕΜΕΝΕ ΑΔΕΙΟ. Δηλαδή η πιο εντυπωσιακή εμφάνιση της σελίδας
+   * έβγαινε τις ΧΕΙΡΟΤΕΡΕΣ ώρες: 20:00 στη Νάξο, καμία «ιδανική» στον χάρτη, «Καλή 1 παραλία» —
+   * και από πάνω ένα βάθρο ενός ατόμου να στέφει την παραλία που απλώς έτυχε να είναι πρώτη σε
+   * μια λίστα που ο ίδιος ο χάρτης δεν χαρακτήριζε ιδανική.
+   *
+   * Το πρόβλημα δεν ήταν η θέση της (μετακινήθηκε ήδη μία φορά, 14/08) ούτε το κείμενό της: ήταν
+   * ότι η ΕΜΦΑΣΗ δεν αντιστοιχούσε στη σιγουριά. Όταν δεν έχουμε τρεις καλές να προτείνουμε, η
+   * τίμια απάντηση είναι η λίστα «Καταλληλότερες παραλίες» με τη σειρά της — όχι μια στέψη.
+   *
+   * Άρα: όταν το βάθρο είναι άδειο, δεν μπαίνει τίποτα στη θέση του. `weatherBeachCardRankStart`
+   * γύρισε σταθερά στο 1 γι' αυτόν ακριβώς τον λόγο. Μην το επαναφέρεις.
+   */
   forecastDays?: DailyForecast[];
   selectedDayIndex?: number;
   selectedForecast?: DailyForecast;
@@ -1062,185 +1082,6 @@ const formatUpdatedAgo = (lastUpdated: Date | null | undefined, language: Langua
   return copy.updatedHours(hours);
 };
 
-const getTopBeachSignals = (item: SuitableBeach, language: LanguageCode) => {
-  const copy = getLocalizedCopy(language, homeCopy).topSignals;
-  const waveHeightM = item.waveHeightM;
-  const signals: Array<{ label: string; icon: React.ReactNode }> = [];
-
-  if (item.canClaimWindProtection || item.exposureLevel === 'protected') {
-    signals.push({
-      label: copy.protected,
-      icon: <ShieldCheck className="h-5 w-5" />,
-    });
-  }
-
-  if (item.seaCalmClaimAllowed || (typeof waveHeightM === 'number' && waveHeightM < 0.5)) {
-    signals.push({
-      label: copy.calmWaters,
-      icon: <Waves className="h-5 w-5" />,
-    });
-  }
-
-  if (item.beach.accessibility === 'EASY') {
-    signals.push({
-      label: copy.easyAccess,
-      icon: <Footprints className="h-5 w-5" />,
-    });
-  }
-
-  return signals.slice(0, 3);
-};
-
-type TopBeachHighlightChip = {
-  key: string;
-  label: string;
-  icon: React.ReactNode;
-};
-
-const getTopBeachAmenityIcon = (key: AmenityChip['key']): React.ReactNode => {
-  switch (key) {
-    case 'beachBar':
-      return <BadgeCheck className="h-5 w-5" />;
-    case 'sunbeds':
-      return <SunbedIcon className="h-5 w-5" />;
-    case 'foodNearby':
-    case 'cafeNearby':
-    case 'snackCanteen':
-      return <Utensils className="h-5 w-5" />;
-    case 'parking':
-      return <ParkingCircle className="h-5 w-5" />;
-    case 'shower':
-      return <ShowerHead className="h-5 w-5" />;
-    case 'seasonalFacilities':
-      return <CalendarDays className="h-5 w-5" />;
-    case 'organizedFacilities':
-      return <Check className="h-5 w-5" />;
-    default:
-      return <Info className="h-5 w-5" />;
-  }
-};
-
-const getTopBeachFeatureChips = (
-  item: SuitableBeach,
-  language: LanguageCode,
-  t: Translation,
-  copy: HomeCopy
-): TopBeachHighlightChip[] => {
-  const beach = item.beach;
-  const chips: TopBeachHighlightChip[] = [];
-  const addChip = (chip: TopBeachHighlightChip) => {
-    if (!chip.label || chips.some(existing => existing.key === chip.key || existing.label === chip.label)) return;
-    chips.push(chip);
-  };
-  const beachTypeIcons: Record<Beach['beachType'], React.ReactNode> = {
-    sandy: <SandDotsIcon className="h-5 w-5" />,
-    pebbles: <Mountain className="h-5 w-5" />,
-    'sandy-pebbles': <SandPebblesIcon className="h-5 w-5" />,
-    rocky: <Mountain className="h-5 w-5" />,
-    unknown: <Info className="h-5 w-5" />,
-  };
-  const accessType = beach.metadata?.access?.type ?? beach.staticLabels?.accessType;
-  const customAccessLabel = beach.metadata?.access?.label ?? beach.staticLabels?.accessLabel;
-  const accessLabel = language === 'gr' && customAccessLabel
-    ? customAccessLabel
-    : accessType
-      ? localizedAccessLabel(accessType, customAccessLabel, language)
-      : t.accessibility[beach.accessibility];
-  const waterDepthType = beach.metadata?.waterDepth?.type ?? beach.waterDepth;
-
-  addChip({
-    key: 'access',
-    label: accessLabel,
-    icon: <Footprints className="h-5 w-5" />,
-  });
-  if (beach.beachType !== 'unknown') {
-    addChip({
-      key: `type-${beach.beachType}`,
-      label: t.filterOptions[beach.beachType],
-      icon: beachTypeIcons[beach.beachType],
-    });
-  }
-
-  if (waterDepthType === 'shallow' || beach.characteristics?.shallowWaters) {
-    addChip({
-      key: 'shallow-water',
-      label: getPreferenceFilterLabel('shallowWater', language, t),
-      icon: <Droplets className="h-5 w-5" />,
-    });
-  } else if (waterDepthType === 'deep' || beach.characteristics?.deepWaters) {
-    addChip({
-      key: 'deep-water',
-      label: getPreferenceFilterLabel('deepWater', language, t),
-      icon: <Waves className="h-5 w-5" />,
-    });
-  }
-
-  if (beach.amenities?.naturalShade || beach.metadata?.shade) {
-    addChip({
-      key: 'natural-shade',
-      label: copy.beachFeatures.naturalShade,
-      icon: <Trees className="h-5 w-5" />,
-    });
-  }
-  // Static popularity/crowd badge (from Google review count): how visited the beach is overall.
-  // Prefer the top-level field (present in summary data the home loads); fall back to metadata.
-  const popularityTier = beach.popularity?.tier ?? beach.metadata?.popularity?.tier;
-  if (popularityTier) {
-    addChip({
-      key: 'popularity',
-      label: localizedPopularityLabel(popularityTier, language),
-      icon: <Users className="h-5 w-5" />,
-    });
-  } else if (beach.environment?.quietEvidence === 'presumed') {
-    // No Google entry — inferred wording in the same slot, see localizedLittleKnownLabel.
-    addChip({
-      key: 'popularity',
-      label: localizedLittleKnownLabel(language),
-      icon: <Users className="h-5 w-5" />,
-    });
-  }
-  if (beach.environment?.familyFriendly) {
-    addChip({
-      key: 'family-friendly',
-      label: getPreferenceFilterLabel('familyFriendly', language, t),
-      icon: <Users className="h-5 w-5" />,
-    });
-  }
-  // (No separate "quiet" chip — the popularity badge above is the single crowd indicator, and a
-  // beach being quiet is exactly its low-popularity tier, so a quiet chip would just repeat it.)
-  if (beach.activities?.snorkeling) {
-    addChip({
-      key: 'snorkeling',
-      label: copy.beachFeatures.snorkeling,
-      icon: <Search className="h-5 w-5" />,
-    });
-  }
-
-  return chips;
-};
-
-const uniqueTopBeachHighlights = (
-  items: TopBeachHighlightChip[],
-  language: LanguageCode,
-  limit = 6
-): TopBeachHighlightChip[] => {
-  const locale = language === 'gr' ? 'el-GR' : undefined;
-  const seenKeys = new Set<string>();
-  const seenLabels = new Set<string>();
-  const uniqueItems: TopBeachHighlightChip[] = [];
-
-  for (const item of items) {
-    const label = item.label.trim().toLocaleLowerCase(locale);
-    if (seenKeys.has(item.key) || seenLabels.has(label)) continue;
-    seenKeys.add(item.key);
-    seenLabels.add(label);
-    uniqueItems.push(item);
-    if (uniqueItems.length >= limit) break;
-  }
-
-  return uniqueItems;
-};
-
 const BeachImageFallback: React.FC = () => (
   <div
     className="absolute inset-0 overflow-hidden bg-sky-100"
@@ -1261,42 +1102,12 @@ const BeachImageFallback: React.FC = () => (
       <path d="M0 135 C90 132 150 133 230 136 C300 139 350 138 400 134 L400 160 L0 160 Z" fill="currentColor" />
     </svg>
     <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
-      <div className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-100/90 bg-white/70 text-cyan-700 shadow-sm shadow-sky-900/10 backdrop-blur-md">
+      <div className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-100/90 bg-white/95 text-cyan-700 shadow-sm shadow-sky-900/10">
         <Waves className="h-5 w-5" aria-hidden="true" />
       </div>
     </div>
   </div>
 );
-
-const getTopChoiceLabel = (
-  language: LanguageCode,
-  selectedDate?: Date
-): { aria: string; badge: string } => {
-  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
-
-  return getLocalizedCopy(language, {
-    en: {
-      aria: `Best beach ${day}`,
-      badge: `Best beach ${day}`,
-    },
-    gr: {
-      aria: `Top επιλογή ${day}`,
-      badge: `Top παραλία ${day}`,
-    },
-    fr: {
-      aria: `Meilleure plage ${day}`,
-      badge: `Meilleure plage ${day}`,
-    },
-    de: {
-      aria: `Bester Strand ${day}`,
-      badge: `Bester Strand ${day}`,
-    },
-    it: {
-      aria: `Migliore spiaggia ${day}`,
-      badge: `Migliore spiaggia ${day}`,
-    },
-  });
-};
 
 const getBestBeachesLabel = (language: LanguageCode, selectedDate?: Date, timePrefix?: string, beaufort?: number): string => {
   const day = timePrefix ?? getSelectedDayPrefix(selectedDate, athensNow(), language);
@@ -1588,138 +1399,6 @@ const getRemainingSuitableLabel = (language: LanguageCode, selectedDate?: Date, 
   });
 };
 
-const getTopBeachShortReason = (item: SuitableBeach, language: LanguageCode, selectedDate?: Date): string => {
-  const day = getSelectedDayPrefix(selectedDate, athensNow(), language);
-  /**
-   * ΤΟ ΝΟΥΜΕΡΟ ΤΗΣ ΑΚΤΗΣ, ΟΧΙ ΤΟΥ ΠΕΛΑΓΟΥΣ (Μίλτος, 11/08/2026).
-   *
-   * This line printed the raw open-water figure while the same beach's card, page and swim verdict
-   * had all moved to the modelled height at the sand. Σχινιάς was the case that showed it: «1,2 μ.»
-   * in this sentence, 0,2 m everywhere else, on a beach judged and coloured from the 0,2. One
-   * beach, two numbers, on the same screen.
-   *
-   * Same rule as BeachCard.cardWaveM, deliberately identical rather than clever: prefer the shore
-   * height where utils/shoreWave produced one, capped by the open water so a cove can never read
-   * rougher than the sea outside it.
-   */
-  const shoreM = item.shoreWaveHeightM;
-  const openM = item.waveHeightM;
-  const waveIsShore = typeof shoreM === 'number' && Number.isFinite(shoreM);
-  const waveHeightM = waveIsShore
-    ? (typeof openM === 'number' && Number.isFinite(openM) ? Math.min(shoreM as number, openM) : shoreM)
-    : openM;
-  const copy = getLocalizedCopy(language, {
-    en: {
-      lead: `For ${day}`,
-      separator: ', ',
-      windProtected: 'sheltered from the wind',
-      windPartial: 'with partial shelter from the wind',
-      wave: (value: string) => `waves ${value} m`,
-      calmSea: 'calmer sea signal',
-      easyAccess: 'easy access',
-      parking: 'parking nearby',
-      organized: 'organized beach setup',
-      food: 'food nearby',
-      shade: 'natural shade',
-      fallback: 'good balance of sea conditions and access',
-    },
-    gr: {
-      lead: `Για ${day}`,
-      separator: ', ',
-      windProtected: 'προστατευμένη από τον άνεμο',
-      windPartial: 'με μερική προστασία από τον άνεμο',
-      wave: (value: string) => `κύμα ${value} m`,
-      calmSea: 'ένδειξη για πιο ήρεμη θάλασσα',
-      easyAccess: 'εύκολη πρόσβαση',
-      parking: 'parking κοντά',
-      organized: 'οργανωμένη επιλογή',
-      food: 'φαγητό κοντά',
-      shade: 'φυσική σκιά',
-      fallback: 'καλή ισορροπία θάλασσας και πρόσβασης',
-    },
-    fr: {
-      lead: `Pour ${day}`,
-      separator: ', ',
-      windProtected: 'moins exposée au vent',
-      windPartial: 'partiellement abritée du vent',
-      wave: (value: string) => `vagues ${value} m`,
-      calmSea: 'signal de mer plus calme',
-      easyAccess: 'accès facile',
-      parking: 'parking à proximité',
-      organized: 'plage aménagée',
-      food: 'restauration à proximité',
-      shade: 'ombre naturelle',
-      fallback: 'bon équilibre entre mer et accès',
-    },
-    de: {
-      lead: `Für ${day}`,
-      separator: ', ',
-      windProtected: 'weniger dem Wind ausgesetzt',
-      windPartial: 'teilweise windgeschützt',
-      wave: (value: string) => `Wellen ${value} m`,
-      calmSea: 'Signal für ruhigeres Meer',
-      easyAccess: 'einfacher Zugang',
-      parking: 'Parken in der Nähe',
-      organized: 'organisierte Strandoption',
-      food: 'Essen in der Nähe',
-      shade: 'natürlicher Schatten',
-      fallback: 'gute Balance aus Meer und Zugang',
-    },
-    it: {
-      lead: `Per ${day}`,
-      separator: ', ',
-      windProtected: 'meno esposta al vento',
-      windPartial: 'parzialmente riparata dal vento',
-      wave: (value: string) => `onde ${value} m`,
-      calmSea: 'segnale di mare più calmo',
-      easyAccess: 'accesso facile',
-      parking: 'parcheggio vicino',
-      organized: 'spiaggia attrezzata',
-      food: 'cibo vicino',
-      shade: 'ombra naturale',
-      fallback: 'buon equilibrio tra mare e accesso',
-    },
-  });
-  const facts: string[] = [];
-  const addFact = (fact?: string) => {
-    if (fact && !facts.includes(fact)) facts.push(fact);
-  };
-
-  if (item.canClaimWindProtection === true) {
-    addFact(copy.windProtected);
-  } else if (item.exposureLevel === 'partial') {
-    addFact(copy.windPartial);
-  }
-
-  if (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)) {
-    // The «~» marks a modelled shore height, exactly as BeachCard and the beach page spell it, so
-    // a reader can tell a measured cell from our own near-shore model at a glance.
-    addFact(copy.wave(`${waveIsShore ? '~' : ''}${waveHeightM.toFixed(1)}`));
-  } else if (item.seaCalmClaimAllowed === true) {
-    addFact(copy.calmSea);
-  }
-
-  if (item.beach.accessibility === 'EASY') {
-    addFact(copy.easyAccess);
-  }
-
-  if (item.beach.amenities?.parking) {
-    addFact(copy.parking);
-  } else if (item.beach.amenities?.organized || item.beach.amenities?.beachBar || item.beach.amenities?.sunbeds) {
-    addFact(copy.organized);
-  } else if (item.beach.amenities?.taverna || item.beach.amenities?.restaurant) {
-    addFact(copy.food);
-  } else if (item.beach.amenities?.naturalShade) {
-    addFact(copy.shade);
-  }
-
-  if (facts.length === 0) {
-    addFact(copy.fallback);
-  }
-
-  return `${copy.lead}: ${facts.slice(0, 3).join(copy.separator)}.`;
-};
-
 const withCount = (label: string, count?: number): string => (
   typeof count === 'number' && count > 0 ? `${label} (${count})` : label
 );
@@ -1772,6 +1451,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   mapDayStrip,
   mapPreview,
   topRecommendationCards,
+  topColourOutsideTopPicksIds,
   topPickNow,
   shelteredFallbackPodium = false,
   dayTurnNote,
@@ -1787,8 +1467,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   showSuitableBeachSection = true,
   allBeachCards,
   beachWeatherContexts,
-  topBeachToday,
-  topBeachTimingLabel,
   forecastDays,
   selectedDayIndex,
   selectedForecast,
@@ -1822,7 +1500,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   isExposureLoading = false,
 }) => {
   const copy = getLocalizedCopy(language, homeCopy);
-  const topChoiceCopy = getTopChoiceLabel(language, selectedDate);
   const bestBeachesLabel = getBestBeachesLabel(language, selectedDate, suitableTimePrefix, currentBeaufort);
   const allBeachesLabel = getAllBeachesLabel(language, selectedDate, suitableTimePrefix);
   const [isDirectorySortOpen, setIsDirectorySortOpen] = useState(false);
@@ -2499,13 +2176,40 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     // The clause borrows the calm variant's own vocabulary instead, which is exactly what the
     // page can prove — and is only ever printed when the three really did clear the bar
     // (`shelteredFallbackPodium` false).
+    /**
+     * ΤΟ «Η ΜΟΝΗ ΠΟΥ ΠΕΡΝΑ ΤΟΥΣ ΕΛΕΓΧΟΥΣ» ΕΛΕΓΕ ΛΑΘΟΣ ΛΟΓΟ (Μίλτος, 14/08/2026).
+     *
+     * Νάξος, 5 Μποφ: βάθρο με μία κάρτα, λεζάντα χάρτη «Καλές 3 παραλίες» 400 px πιο πάνω. Οι
+     * άλλες δύο ΔΕΝ κόπηκαν στους ελέγχους αέρα/θάλασσας — τους πέρασαν. Κόπηκαν ένα σκαλί πιο
+     * κάτω, στη ΒΑΘΜΙΔΑ ΕΚΘΕΣΗΣ: `bestShelteredRecommendationGroup` κρατά μόνο την κορυφαία
+     * (`protected` + `canClaimWindProtection`, services/topPickRanking.ts). Άρα η φράση
+     * επικαλούνταν ένα φίλτρο που δεν είναι αυτό που έκοψε, και διαψευδόταν από την ίδια οθόνη.
+     *
+     * Η νέα λέει ΤΙ ΟΝΤΩΣ ΕΓΙΝΕ και τίποτα παραπάνω — «κρατάμε μόνο τις πιο προστατευμένες,
+     * σήμερα μία είναι εκεί». Λέει ΛΙΓΟΤΕΡΑ από την προηγούμενη, άρα δεν εισάγει ισχυρισμό.
+     * Η πληθυντική από κάτω μένει ως έχει: λέει «οι πιο προστατευμένες», ποτέ «οι μόνες».
+     *
+     * Δεν αγγίζει τη λέξη «κατάλληλες» της διπλανής καρτέλας — αυτή είναι απόφαση 10/08/2026
+     * (PORISMA §7κ) και σημαίνει «κολυμπάς», όχι «καλές συνθήκες».
+     *
+     * ΚΑΙ ΤΟ ΚΛΕΙΣΙΜΟ: «Να τι την ΞΕΧΩΡΙΖΕΙ» → «Να τι έχει» (Μίλτος, 14/08/2026).
+     *
+     * «Ξεχωρίζει» υπόσχεται σύγκριση, και με ΜΙΑ κάρτα δεν υπάρχει σύγκριση να γίνει: το
+     * `getTopPickDistinguishers` παρατάει ρητά κάθε συγκριτικό άξονα σε μονό pick («a single pick
+     * has nothing to be compared against», utils/topPickDistinguishers.ts:665) και πέφτει στη
+     * γραμμή προφίλ — «άμμος, ρηχά νερά, πάρκινγκ», που τα έχουν και δεκάδες άλλες. Ο τίτλος
+     * έγραφε επιταγή που η λίστα από κάτω δεν εξαργυρώνει, ακριβώς ο κίνδυνος που καταγράφεται
+     * 20 γραμμές πιο πάνω. Το «πώς βγήκε αυτή η μία» το λέει ήδη το ΠΡΩΤΟ μισό της ίδιας
+     * πρότασης, οπότε το δεύτερο δεν το επαναλαμβάνει (no-duplicate-robot-copy) — απλώς σταματά
+     * να ψεύδεται. Ίδιο λεξιλόγιο με την ήρεμη παραλλαγή, που το έλεγε σωστά από την αρχή.
+     */
     ? (isSingleTopPick
       ? getLocalizedCopy(language, {
-        en: 'With this much wind, this is the only one left that still clears the wind and sea checks. Here is what stands out about it:',
-        gr: 'Με τέτοιο αέρα, αυτή είναι η μόνη που περνά ακόμα τους ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:',
-        de: 'Bei diesem Wind ist dies der einzige Strand, der die Wind- und Seegangsprüfungen noch besteht. Das zeichnet ihn aus:',
-        fr: "Avec ce vent, c'est la seule qui passe encore les contrôles de vent et de mer. Voici ce qui la distingue :",
-        it: 'Con questo vento, questa è la sola che supera ancora i controlli su vento e mare. Ecco cosa la distingue:',
+        en: 'With this much wind we keep only the most sheltered beaches — and today just one is in that group. Here is what it has:',
+        gr: 'Με τέτοιο αέρα κρατάμε μόνο τις πιο προστατευμένες — και σήμερα μία μόνο είναι εκεί. Να τι έχει:',
+        de: 'Bei diesem Wind behalten wir nur die geschütztesten Strände — und heute ist nur einer davon dabei. Das hat er:',
+        fr: "Avec ce vent, nous ne gardons que les plages les plus abritées — et aujourd'hui une seule y figure. Voici ce qu'elle a :",
+        it: 'Con questo vento teniamo solo le spiagge più riparate — e oggi solo una rientra in quel gruppo. Ecco cosa ha:',
       })
       : getLocalizedCopy(language, {
         en: `With this much wind, these ${topPickCountWord} are the most sheltered ones that still clear the wind and sea checks. Here is what separates them:`,
@@ -2570,11 +2274,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         : topPickPoolSize > topPickCount
         ? (isSingleTopPick
           ? getLocalizedCopy(language, {
-            en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what stands out about it:`,
-            gr: `Διαλέχτηκε ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:`,
-            de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das zeichnet ihn aus:`,
-            fr: `Choisie parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qui la distingue :`,
-            it: `Scelta tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa la distingue:`,
+            en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what it has:`,
+            gr: `Διαλέχτηκε ανάμεσα σε ${topPickPoolSize} παραλίες που περνούν τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι έχει:`,
+            de: `Ausgewählt aus ${topPickPoolSize} Stränden, die die heutigen Wind- und Seegangsprüfungen bestehen. Das hat er:`,
+            fr: `Choisie parmi ${topPickPoolSize} plages qui passent les contrôles du jour (vent et mer). Voici ce qu'elle a :`,
+            it: `Scelta tra ${topPickPoolSize} spiagge che superano i controlli di oggi su vento e mare. Ecco cosa ha:`,
           })
           : getLocalizedCopy(language, {
             en: `Chosen from ${topPickPoolSize} beaches that clear today's wind and sea checks. Here is what separates them:`,
@@ -2585,11 +2289,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           }))
         : (isSingleTopPick
           ? getLocalizedCopy(language, {
-            en: 'It clears today\'s wind and sea checks. Here is what stands out about it:',
-            gr: 'Περνά τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι την ξεχωρίζει:',
-            de: 'Er besteht die heutigen Wind- und Seegangsprüfungen. Das zeichnet ihn aus:',
-            fr: "Elle passe les contrôles du jour (vent et mer). Voici ce qui la distingue :",
-            it: 'Supera i controlli di oggi su vento e mare. Ecco cosa la distingue:',
+            en: 'It clears today\'s wind and sea checks. Here is what it has:',
+            gr: 'Περνά τους σημερινούς ελέγχους για αέρα και θάλασσα. Να τι έχει:',
+            de: 'Er besteht die heutigen Wind- und Seegangsprüfungen. Das hat er:',
+            fr: "Elle passe les contrôles du jour (vent et mer). Voici ce qu'elle a :",
+            it: 'Supera i controlli di oggi su vento e mare. Ecco cosa ha:',
           })
           : getLocalizedCopy(language, {
             en: `All ${topPickCountWord} clear today's wind and sea checks. Here is what separates them:`,
@@ -2699,7 +2403,10 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         : isCalmAllSuitableDay
           ? allBeachesLabel
           : bestBeachesLabel;
-  const weatherBeachCardRankStart = topBeachToday ? 2 : 1;
+  // Always 1: the list IS the answer now. Until 15/08/2026 an empty podium woke a single
+  // full-width «Top παραλία σήμερα» card above it and the numbering started at 2 — see the
+  // note on the removed prop in BeachSearcherHomeProps.
+  const weatherBeachCardRankStart = 1;
   // The number in the heading is the number of cards under it, full stop. It used to be App's
   // pre-filter total (`suitableBeachTotalCount`) while the carousel below re-filtered locally
   // through matchesCurrentFilters — so with a search or an amenity filter on, the title promised
@@ -2767,11 +2474,32 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
    * The number follows what is actually on screen: «Top 2» when the region could only fill two.
    * The tab is narrower than a heading, so «επιλογές» is dropped — «Top 3 στις 16:00–17:00» fits
    * one line where the full title wrapped to two.
+   *
+   * ΤΟ «TOP 1» ΔΕΝ ΓΡΑΦΕΤΑΙ ΠΟΤΕ ΜΕ ΨΗΦΙΟ (Μίλτος, 15/08/2026).
+   *
+   * «Top 1 στις 08:00–09:00» δίπλα σε «Υπόλοιπες (17)» διαβάζεται ως ισχυρισμός ακρίβειας που
+   * δεν έχουμε: «από τις δεκαοκτώ, ακριβώς ΜΙΑ είναι η απάντηση, και το ξέρουμε ανά ώρα». Είναι
+   * η ίδια αμαρτία που το `PODIUM_SEA_MEANINGFUL_DIFFERENCE_M` απαγορεύει στη σειρά του βάθρου —
+   * να δημοσιεύεις διάκριση κάτω από το σφάλμα σου. Το πλήθος ένα δεν είναι κρίση: είναι ό,τι
+   * περίσσεψε αφού μίλησαν οι πύλες.
+   *
+   * Η επικεφαλίδα του βάθρου το είχε ήδη λύσει (`getTopRecommendationsLabel`, «Top επιλογή»
+   * χωρίς ψηφίο) — η καρτέλα απλώς δεν πήρε ποτέ τον κανόνα. Τώρα τον μοιράζονται. Στα 2 και 3
+   * το ψηφίο μένει: εκεί μετράει πραγματικά πόσες κάρτες θα δει.
    */
   const topTabLabel = (() => {
     const when = suitableTimePrefix ? ` ${suitableTimePrefix}` : '';
     // Shared with the «Γιατί αυτές…» panel, so the tab and the explanation can never disagree
     // about how many beaches are on screen.
+    if (isSingleTopPick) {
+      return getLocalizedCopy(language, {
+        en: `Top pick${when}`,
+        gr: `Top επιλογή${when}`,
+        fr: `Meilleur choix${when}`,
+        de: `Top-Empfehlung${when}`,
+        it: `Scelta top${when}`,
+      });
+    }
     return `Top ${topPickCount}${when}`;
   })();
 
@@ -2964,13 +2692,32 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
      * colours the pin — it simply stops being narrated a second time in the corner of the card.
      */
     safety: '',
-    access: getLocalizedCopy(language, {
-      en: 'It needs a boat or a hard path, so it ranks after the easy ones.',
-      gr: 'Θέλει σκάφος ή δύσκολο μονοπάτι, γι’ αυτό μπαίνει μετά τις εύκολες.',
-      de: 'Nur per Boot oder schwierigem Weg — daher nach den leicht erreichbaren.',
-      fr: "Accès en bateau ou par sentier difficile — donc après les plages faciles.",
-      it: 'Serve una barca o un sentiero difficile, quindi viene dopo quelle facili.',
-    }),
+    /**
+     * ΤΕΣΣΕΡΙΣ ΠΡΟΤΑΣΕΙΣ ΑΝΤΙ ΓΙΑ ΜΙΑ (Μίλτος, 14/08/2026) — και η μία έλεγε ψέμα σε 1.000 παραλίες.
+     *
+     * Έγραφε «Θέλει σκάφος ή δύσκολο μονοπάτι» σε **κάθε** παραλία που δεν είναι άσφαλτος: ο
+     * Κλειδός και η Σπεδό Νάξου το φόρεσαν με **περπατητό χωματόδρομο**, το Άλιμος Λουτρά με
+     * άγνωστο τύπο δρόμου. Ο λόγος έρχεται πλέον χωρισμένος από το `explainTopPickExclusion`,
+     * που τον παίρνει από το ίδιο αρχείο που όρισε το φίλτρο (`utils/access.getHardAccessKind`).
+     *
+     * ΚΑΙ ΕΦΥΓΕ ΤΟ «ΓΙ' ΑΥΤΟ ΜΠΑΙΝΕΙ ΜΕΤΑ ΤΙΣ ΕΥΚΟΛΕΣ». Παραβίαζε τον κανόνα που είναι γραμμένος
+     * 20 γραμμές πιο πάνω — «one sentence per reason, each naming a property of THE BEACH, never
+     * our list» — και ήταν λάθος: η ταξινόμηση της λίστας βάζει **χρώμα πρώτα**
+     * (`utils/suitabilityTone.selectSuitableByTone`, απόφαση 10/08) και η πρόσβαση κρίνει μόνο
+     * ΜΕΣΑ στο ίδιο χρώμα. Η φράση περιέγραφε τον κανόνα του ΒΑΘΡΟΥ ενώ τυπωνόταν στη ΛΙΣΤΑ,
+     * οπότε ο Μίλτος έβλεπε δύο «δύσκολες» πάνω από μια «εύκολη» και το κείμενο να το διαψεύδει.
+     */
+    access: getAccessReasonCopy('boat_or_hard_path', language),
+    access_dirt: getAccessReasonCopy('dirt_road', language),
+    access_walk: getAccessReasonCopy('walk', language),
+    /**
+     * ΣΙΩΠΗ, με το ίδιο σκεπτικό που σώπασε το `unverified` στις 10/08 — και είναι δική του
+     * απόφαση, όχι νέα: αυτή η περίπτωση μιλάει για ΕΜΑΣ («δεν έχουμε ελέγξει τον δρόμο της»),
+     * όχι για την παραλία, και ο αναγνώστης δεν μπορεί να κάνει τίποτα με αυτό. Αφορά 212
+     * παραλίες, ανάμεσά τους αστικές σαν το Άλιμος Λουτρά, όπου η προηγούμενη λεζάντα ήταν και
+     * ψευδής και γελοία. Το να μην πούμε τίποτα είναι καλύτερο από μια δικαιολογία στη θέση της.
+     */
+    access_unknown: '',
     sea: getLocalizedCopy(language, {
       en: 'Rougher water on its own shore today.',
       gr: 'Πιο ταραγμένη θάλασσα στη δική της ακτή σήμερα.',
@@ -2992,6 +2739,41 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
      * podium; they do not need to be narrated on the card as well.
      */
     unverified: '',
+  };
+  /**
+   * Η ΣΙΩΠΗ ΤΟΥ `unverified` ΣΠΑΕΙ ΣΕ ΕΝΑ ΜΟΝΟ ΣΗΜΕΙΟ (Μίλτος, 15/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: «έχεις μια ιδανική που δεν την έχεις ούτε καν να είναι τοπ 2». Η λεζάντα μετράει
+   * «Ιδανική 1», και αυτή η μία δεν εμφανίζεται πουθενά στο βάθρο από κάτω. Ο αναγνώστης δεν
+   * μπορεί να ξέρει αν φταίει η παραλία, η μέρα, ή εμείς — και υποθέτει ότι κάτι χάλασε.
+   *
+   * ΓΙΑΤΙ ΔΕΝ ΑΝΑΙΡΕΙ ΤΗΝ ΑΠΟΦΑΣΗ ΤΗΣ 10/08. Τότε το «δεν έχουμε αρκετά στοιχεία» τυπωνόταν σε
+   * ΚΑΘΕ ανεπιβεβαίωτη παραλία μιας μεγάλης λίστας — μια αποποίηση ευθύνης που κανείς δεν ζήτησε,
+   * στη θέση όπου οι άλλες κάρτες δείχνουν παροχές. Αυτό μένει σβηστό. Μιλάει ΜΟΝΟ όταν η παραλία
+   * φοράει το καλύτερο χρώμα της οθόνης και παρ' όλα αυτά δεν πήρε μετάλλιο: εκεί η αντίφαση
+   * είναι ήδη ορατή, και η σιωπή δεν την κρύβει — την αφήνει ανεξήγητη.
+   *
+   * Η ΔΙΑΤΥΠΩΣΗ ΜΙΛΑΕΙ ΓΙΑ ΕΜΑΣ, ΟΧΙ ΓΙΑ ΤΗΝ ΠΑΡΑΛΙΑ, και αυτό είναι σκόπιμο (ίδιο σκεπτικό με
+   * το σχόλιο «σίγουρα στοιχεία» πιο πάνω): η κουκκίδα δίπλα της είναι βαμμένη από ζωντανό καιρό
+   * και παραμένει αξιόπιστη. Δεν λέει «κακή παραλία» — λέει «δεν την έχουμε ελέγξει αρκετά για να
+   * τη συστήσουμε». Καμία ετυμηγορία, καμία λέξη «ιδανική/κατάλληλη» (PORISMA §1703).
+   *
+   * Το `safety` παραμένει σιωπηλό όπως ήταν από τις 12/08 — δεν το αγγίζει αυτό.
+   */
+  const topColourUnverifiedNote = getLocalizedCopy(language, {
+    en: 'Calm here today — but we have not checked it enough to recommend it.',
+    gr: 'Ήρεμη εδώ σήμερα — αλλά δεν την έχουμε ελέγξει αρκετά για να τη συστήσουμε.',
+    de: 'Heute ruhig hier — aber noch zu wenig geprüft für eine Empfehlung.',
+    fr: "Calme ici aujourd'hui — mais pas assez vérifiée pour la recommander.",
+    it: 'Calma qui oggi — ma non abbastanza verificata per consigliarla.',
+  });
+  const resolveNotInTopPicksNote = (beachId: number): string | undefined => {
+    const reason = topPickExclusionByBeachId.get(beachId);
+    if (!reason) return undefined;
+    if (reason === 'unverified' && topColourOutsideTopPicksIds?.has(beachId)) {
+      return topColourUnverifiedNote;
+    }
+    return topPickExclusionCopy[reason] || undefined;
   };
   // Each filter chip shows the honest per-attribute island total (fed by App.tsx's
   // count memos), independent of wind / active filters / suitable-vs-all view. We
@@ -3424,63 +3206,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   }, [directoryDisplayBeachCards, onActiveSuitableBeachChange, shouldTrackDirectoryCarouselOnMap]);
 
   const searchPlaceholder = copy.searchPlaceholder;
-  const topBeachName = topBeachToday ? displayBeachName(topBeachToday.beach.name, language) : '';
-  const topBeachShortReason = topBeachToday ? getTopBeachShortReason(topBeachToday, language, selectedDate) : undefined;
-  const topBeachSignals = topBeachToday ? getTopBeachSignals(topBeachToday, language) : [];
-  const topBeachTimeText = topBeachToday
-    ? topBeachTimingLabel || topBeachToday.bestTimeWindow
-    : undefined;
-  const visitTimeLabel = getLocalizedCopy(language, {
-    en: 'Best time',
-    gr: 'Ώρα επίσκεψης',
-    fr: 'Meilleur moment',
-    de: 'Beste Zeit',
-    it: 'Ora migliore',
-  });
-  const topBeachAmenityChips = topBeachToday
-    ? getAmenityChips(topBeachToday.beach, language)
-      .filter(chip => chip.key !== 'unknownFacilities')
-      .slice(0, 4)
-    : [];
-  const topBeachFeatureChips = topBeachToday
-    ? getTopBeachFeatureChips(topBeachToday, language, t, copy)
-    : [];
-  const topBeachHighlights = topBeachToday
-    ? uniqueTopBeachHighlights([
-      ...topBeachSignals.map((signal, index) => ({
-        key: `signal-${index}-${signal.label}`,
-        label: signal.label,
-        icon: signal.icon,
-      })),
-      ...topBeachFeatureChips,
-      ...topBeachAmenityChips.map(chip => ({
-        key: `amenity-${chip.key}`,
-        label: chip.label,
-        icon: getTopBeachAmenityIcon(chip.key),
-      })),
-    ], language, 6)
-    : [];
-  const topBeachPhoto = topBeachToday
-    ? getBeachPhotoLookup(topBeachToday.beach.name.gr, topBeachToday.beach.name.en, topBeachToday.beach.id, 1, selectedIsland?.name[language]).photos[0]
-    : undefined;
-  const topBeachCanNavigate = topBeachToday ? canOpenNavigation(topBeachToday.beach) : false;
-  const topBeachNavBadge = topBeachToday ? getNavigationBadge(topBeachToday.beach) : undefined;
-  const topBeachNavBadgeLabel = topBeachNavBadge
-    ? t.navigationBadge[topBeachNavBadge === 'boat-access' ? 'boatAccess' : topBeachNavBadge === 'nav-unavailable' ? 'unavailable' : 'unverified']
-    : undefined;
-  const topBeachNavTitle = topBeachNavBadgeLabel ? `${t.navigate} — ${topBeachNavBadgeLabel}` : t.navigate;
-  const handleTopBeachNavigation = () => {
-    if (!topBeachToday || !topBeachCanNavigate) return;
-
-    trackEvent('navigation_clicked', topBeachToday.beach.id, {
-      locale: languageToLocale(language),
-      region: selectedIsland?.name.en || activePlaceName,
-      beach_name: topBeachToday.beach.name.en,
-      source: 'top_beach_today_card',
-      ...buildBeachExposureParams(topBeachToday.beach, topBeachToday.simpleWindSuitability?.exposureStatus),
-    });
-    openNavigation(topBeachToday.beach);
-  };
   const weatherDate = selectedForecast?.date ? formatDirectoryDate(selectedForecast.date, language) : undefined;
   const absoluteWeatherDate = selectedForecast?.date
     ? new Intl.DateTimeFormat(languageToDateLocale(language), {
@@ -4111,7 +3836,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       {isDirectorySortOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-40 mt-2 w-full min-w-[14rem] overflow-hidden rounded-2xl border border-cyan-100 bg-white/96 p-1.5 shadow-xl shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl"
+          className="absolute right-0 top-full z-40 mt-2 w-full min-w-[14rem] overflow-hidden rounded-2xl border border-cyan-100 bg-white p-1.5 shadow-xl shadow-sky-900/14 ring-1 ring-white/70"
         >
           <p className="px-3 pb-1 pt-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600">
             {t.sortByTitle}
@@ -4191,7 +3916,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     // «Όλες» directory or a colour-filtered list the same line would state the
                     // obvious on every card.
                     notInTopPicksNote: cardRank === undefined || cardRank > 3
-                      ? topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason] || undefined
+                      ? resolveNotInTopPicksNote(beach.id)
                       : undefined,
                   })}
                 </div>
@@ -4214,7 +3939,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       <div className="relative h-[18.2rem] overflow-hidden rounded-lg bg-sky-100 shadow-md shadow-slate-900/12 transition group-hover:-translate-y-0.5 group-hover:shadow-lg">
                         <BeachImageFallback />
                       </div>
-                      <div className="mt-3 space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 shadow-sm shadow-slate-900/8 backdrop-blur-md">
+                      <div className="mt-3 space-y-1 rounded-2xl border border-white/65 bg-white/95 px-3 py-2.5 shadow-sm shadow-slate-900/8">
                         <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
                           {copy.islandTitle(title)}
                         </h3>
@@ -4244,7 +3969,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                         className="absolute inset-0"
                         imgClassName="h-full w-full object-cover"
                         showAttribution
-                        attributionClassName="absolute bottom-2 right-2 z-20 max-w-[calc(100%-1rem)] rounded-full bg-slate-950/55 px-2 py-1 text-[10px] font-semibold leading-none text-white/92 shadow-sm backdrop-blur-sm [&_a]:text-white/92 [&_a]:underline-offset-2 hover:[&_a]:underline"
+                        attributionClassName="absolute bottom-2 right-2 z-20 max-w-[calc(100%-1rem)] rounded-full bg-slate-950/95 px-2 py-1 text-[10px] font-semibold leading-none text-white/92 shadow-sm [&_a]:text-white/92 [&_a]:underline-offset-2 hover:[&_a]:underline"
                       />
                       <button
                         type="button"
@@ -4256,7 +3981,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     <button
                       type="button"
                       onClick={() => onSelectIsland(island)}
-                      className="mt-3 w-full space-y-1 rounded-2xl border border-white/65 bg-white/72 px-3 py-2.5 text-left shadow-sm shadow-slate-900/8 backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+                      className="mt-3 w-full space-y-1 rounded-2xl border border-white/65 bg-white/95 px-3 py-2.5 text-left shadow-sm shadow-slate-900/8 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
                     >
                       <h3 className="truncate text-lg font-bold leading-tight text-[#007a83]">
                         {copy.islandTitle(title)}
@@ -4286,7 +4011,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
         {regionTitleBlock}
-        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/76 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 backdrop-blur-xl sm:p-4 sm:pb-2">
+        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/95 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 sm:p-4 sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
@@ -4451,7 +4176,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 <div
                   id={searchSuggestionListId}
                   role="listbox"
-                  className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white/98 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70 backdrop-blur-xl"
+                  className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
                 >
                   {searchSuggestions.length > 0 ? (
                     <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
@@ -4514,7 +4239,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   τη μέση. Εμφανίζεται τη στιγμή που ο χρήστης πάει να γράψει, δηλαδή
                   ακριβώς όταν έχει ήδη πρόθεση. */}
               {shouldRenderIntentPanel && (
-                <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white/98 p-2.5 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70 backdrop-blur-xl">
+                <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white p-2.5 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70">
                   <p className="px-1 pb-1.5 text-[11px] font-black uppercase tracking-wide text-slate-600">
                     {intentPanelLeadCopy[language] || intentPanelLeadCopy.en}
                   </p>
@@ -4660,7 +4385,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             }`}>
               <div
                 id="directory-map-panel-desktop"
-                className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md sm:p-4"
+                className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/95 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 sm:p-4"
               >
                 {/* Above the map, not floating on it: Leaflet already owns the top-right corner
                     (zoom / layers / recentre) and the top-left carries the wind-direction card,
@@ -4706,109 +4431,6 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           </section>
         )}
 
-        {topBeachToday && !hasTopRecommendationView && !infoOnly && (
-          <section
-            className="mt-4 border-t border-slate-200/80 pt-4"
-            aria-label={topChoiceCopy.aria}
-          >
-            <div className="overflow-hidden rounded-[1.35rem] bg-white/54 text-left text-slate-950 ring-1 ring-white/50 lg:grid lg:grid-cols-2">
-              <div className="flex h-full flex-col p-4 sm:p-5">
-                <div className="min-w-0 space-y-2">
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-100 bg-white/86 px-2.5 py-1 text-[11px] font-extrabold leading-none tracking-normal text-slate-900 shadow-sm">
-                    <span className="grid h-5 min-w-5 place-items-center rounded-full bg-amber-400 px-1.5 text-[11px] font-black text-white shadow-sm shadow-amber-900/15">
-                      1
-                    </span>
-                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                    {topChoiceCopy.badge}
-                  </div>
-                  <h2 className="text-2xl font-extrabold leading-tight text-slate-950 sm:text-3xl">
-                    {topBeachName}
-                  </h2>
-                  {topBeachShortReason && (
-                    <p className="max-w-xl text-sm font-semibold leading-snug text-slate-600">
-                      {topBeachShortReason}
-                    </p>
-                  )}
-                </div>
-
-                {topBeachTimeText && (
-                  <div className="mt-4 flex min-h-12 w-full min-w-0 items-center gap-2.5 rounded-2xl border border-cyan-100 bg-cyan-50/70 px-3 py-2 text-sm font-semibold text-slate-800">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white text-[#007a83] ring-1 ring-cyan-100">
-                      <Clock3 className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block text-[0.68rem] font-bold leading-tight text-[#007a83]">
-                        {visitTimeLabel}
-                      </span>
-                      <span className="block truncate text-sm font-extrabold leading-tight text-slate-950">
-                        {topBeachTimeText}
-                      </span>
-                    </span>
-                  </div>
-                )}
-
-                {topBeachHighlights.length > 0 && (
-                  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:mt-5">
-                    {topBeachHighlights.map(item => (
-                      <div key={item.key} className="flex min-h-11 min-w-0 items-center gap-2 rounded-2xl border border-sky-100 bg-white/72 px-3 py-2 text-sm font-semibold text-slate-700">
-                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-cyan-50 text-[#007a83] ring-1 ring-cyan-100">
-                          {item.icon}
-                        </span>
-                        <span className="min-w-0 leading-tight">{item.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mt-4 flex flex-wrap gap-2 lg:mt-auto lg:pt-4">
-                  {topBeachCanNavigate && (
-                  <button
-                    type="button"
-                    onClick={handleTopBeachNavigation}
-                    className="grid h-11 w-11 place-items-center rounded-xl bg-sky-50 text-[#007a83] shadow-sm transition hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
-                    title={topBeachNavTitle}
-                    aria-label={topBeachNavBadgeLabel ? `${t.navigateToLabel(topBeachName)} — ${topBeachNavBadgeLabel}` : t.navigateToLabel(topBeachName)}
-                  >
-                    <Navigation className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => onBeachClick(topBeachToday.beach)}
-                    className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 text-sm font-bold text-white shadow-sm shadow-cyan-700/15 transition hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30 sm:flex-none"
-                  >
-                    <Info className="h-4 w-4" />
-                    {t.learnMore}
-                  </button>
-                </div>
-              </div>
-
-              <div className="relative min-h-[13.5rem] overflow-hidden border-t border-white/60 bg-sky-100 lg:min-h-[24rem] lg:border-l lg:border-t-0">
-                {topBeachPhoto ? (
-                  <img
-                    src={topBeachPhoto}
-                    alt={topBeachName}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    width={640}
-                    height={420}
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : topBeachToday ? (
-                  <BeachPhotoFallback
-                    beach={topBeachToday.beach}
-                    regionId={selectedIsland?.id}
-                    language={language}
-                    beachName={topBeachName}
-                    size="full"
-                  />
-                ) : null}
-              </div>
-            </div>
-          </section>
-        )}
-
         </section>
       </div>
 
@@ -4831,7 +4453,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 aria-label={copy.beachMapAria}
               >
                 {mapDayStrip}
-                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/74 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55 backdrop-blur-md">
+                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/95 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55">
                   {mapPreview}
                 </div>
               </section>
@@ -4845,7 +4467,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {selectedIsland && hasTopRecommendationView && !infoOnly && (
             <section
               id="top-recommendations-section"
-              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-1 pt-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
+              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/95 px-3 pb-1 pt-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
               aria-label={mobileTopRecommendationsTitle}
             >
               <div className="mb-1.5 space-y-1 text-center sm:mb-3">
@@ -4947,7 +4569,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       // already said it once, for all three.
                       notInTopPicksNote: shelteredFallbackPodium
                         ? undefined
-                        : topPickExclusionCopy[topPickExclusionByBeachId.get(beach.id) as TopPickExclusionReason] || undefined,
+                        : resolveNotInTopPicksNote(beach.id),
                     })}
                   </div>
                 ))}
@@ -5111,7 +4733,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           )}
 
           {selectedIsland && !isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
-            <section id="all-beaches-section" className="mt-7 scroll-mt-4 rounded-2xl border border-sky-200 bg-white/88 p-4 shadow-sm shadow-sky-900/5 backdrop-blur-md sm:p-5">
+            <section id="all-beaches-section" className="mt-7 scroll-mt-4 rounded-2xl border border-sky-200 bg-white p-4 shadow-sm shadow-sky-900/5 sm:p-5">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                 <div className="min-w-0">
                   <h2 className="text-xl font-bold leading-tight text-slate-950">
@@ -5170,7 +4792,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           aria-label={weatherPanelTitle}
         >
           <div className="flex min-h-0 w-full flex-col">
-            <header className="sticky top-0 z-20 border-b border-sky-100 bg-white/96 px-4 py-3 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
+            <header className="sticky top-0 z-20 border-b border-sky-100 bg-white px-4 py-3 shadow-sm shadow-sky-900/5">
               <div className="flex items-center gap-3">
                 <div className="min-w-0 flex-1">
                   <h2 className="truncate text-lg font-extrabold leading-tight text-[#007a83]">
@@ -5203,7 +4825,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           aria-label={copy.allOtherBeaches}
         >
           <div className="flex min-h-0 w-full flex-col">
-            <header className="sticky top-0 z-20 border-b border-sky-100 bg-white/96 px-4 py-3 shadow-sm shadow-sky-900/5 backdrop-blur-xl">
+            <header className="sticky top-0 z-20 border-b border-sky-100 bg-white px-4 py-3 shadow-sm shadow-sky-900/5">
               <div className="flex items-center gap-3">
                 <div className="min-w-0 flex-1">
                   <h2 className="truncate text-lg font-extrabold leading-tight text-slate-950">
@@ -5246,7 +4868,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <div ref={allBeachesPanelScrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-24 pt-4">
               <div className="space-y-4">
                 {mapPreview && (
-                  <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/68 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 backdrop-blur-md">
+                  <div className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/95 p-2 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45">
                     {mapPreview}
                   </div>
                 )}

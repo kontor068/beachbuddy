@@ -1,6 +1,6 @@
 # National Beach-Coverage Gap Report
 
-Generated 2026-08-13T21:47:39.964Z · harvest scope: `national`
+Generated 2026-08-14T15:35:24.131Z · harvest scope: `national`
 
 ## Εθνικά σύνολα
 

@@ -2955,7 +2955,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -2978,7 +2978,9 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "East Attica OSM identity/location pass 2026-05-27: OSM way 1424276477 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Terrain corrected 2026-06-20 (OSM surface audit): our type \"rocks+pebbles\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand.",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=sand, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1424276477"
             ],
@@ -18714,7 +18716,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Evia audit: remote/local beach candidate confirmed in Euboea Regional Unit. Access is kept conservative as local/dirt-road until exact parking and road condition are verified."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -18738,7 +18740,8 @@
             ],
             "sourceNotes": [
               "Evia source check 2026-05-27: OSM way 166227818 confirms Mavrikas beach with sand surface near Agios Nikolaos/Ellinika in north Evia. EviaGreece places Mavrikas beside Agios Nikolaos behind a natural cove, and The Blog of Dimi identifies Mavrikas as one of the smaller Ellinika coves with narrow-road or walking-path access. Access remains conservative as local/dirt-road until exact final parking is verified.",
-              "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
+              "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Evia audit: remote/local beach candidate confirmed in Euboea Regional Unit. Access is kept conservative as local/dirt-road until exact parking and road condition are verified.\""
             ],
             "orientation": {
               "degrees": 24,
@@ -21573,7 +21576,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Evia audit: remote/local beach candidate confirmed in Euboea Regional Unit. Access is kept conservative as local/dirt-road until exact parking and road condition are verified."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -21596,7 +21599,8 @@
               "https://www.openstreetmap.org/way/591684274"
             ],
             "sourceNotes": [
-              "OpenStreetMap Overpass Evia audit 2026-05-23; reverse geocode confirmed Euboea Regional Unit."
+              "OpenStreetMap Overpass Evia audit 2026-05-23; reverse geocode confirmed Euboea Regional Unit.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Evia audit: remote/local beach candidate confirmed in Euboea Regional Unit. Access is kept conservative as local/dirt-road until exact parking and road condition are verified.\""
             ],
             "orientation": {
               "degrees": 51.7,
@@ -42924,7 +42928,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Chania audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -42948,7 +42952,9 @@
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/koutalis-beach-plaka",
               "https://www.beachatlas.com/koutalas"
             ],
-            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: upgraded to high because CretanBeaches and BeachAtlas directly support Koutalis/Koutalas Beach near Kokkino Chorio/Cape Drepano, including isolated pebble/rock terrain, passable road/dirt-track access and lack of full organization. No static calm/safe claim, windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Terrain web-verify 2026-07-20 (no-API): corrected to PEBBLES — Discover Crete / Vamos Village: Koutalas at Kokkino Chorio (Cape Drapano, Apokoronas, ~27km E of Chania) 'έχει βότσαλα και μεγάλες [https://www.discovercrete.com/el/places-to-go/koutalas-beach-a-secluded-haven].",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Chania audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence.\""
+            ],
             "orientation": {
               "degrees": 327.2,
               "faces": [
@@ -43609,7 +43615,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Chania audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -43635,7 +43641,9 @@
               "https://beaches-searcher.com/en/beach/300227408/viglia-beach",
               "https://www.thisiscrete.gr/en/beaches/viglia-beach-1004"
             ],
-            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: upgraded to high because live Kissamos/Viglia-Trachilos sources directly support the Trachilos/Viglia beach area near Kissamos port, including sandy/rocky or sandy/pebbly terrain, easy road access, nearby limited amenities and low organization. No static calm/safe claim, windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed.",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Chania audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence.\""
+            ],
             "orientation": {
               "degrees": 28.4,
               "faces": [
@@ -49142,7 +49150,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49183,7 +49191,8 @@
             "sourceNotes": [
               "Heraklion audit 2026-05-25: Ammoudara is a long organized urban beach with beach bars, lifeguards, showers, changing rooms, watersports, cafes and restaurants.",
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Ammoudara Gazi identity/location and organized long-beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -49262,7 +49271,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49296,7 +49305,8 @@
             ],
             "sourceNotes": [
               "Heraklion audit 2026-05-25: Karteros has loungers, umbrellas, beach cafes/bars, showers, toilets and parking next to the beach.",
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches, Crete-Beaches, and OSM support Karteros beach identity/location and organized north-coast beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches, Crete-Beaches, and OSM support Karteros beach identity/location and organized north-coast beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 33.5,
@@ -49366,7 +49376,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49396,7 +49406,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/agia-pelagia-beach"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Agia Pelagia beach identity/location and organized bay context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Agia Pelagia beach identity/location and organized bay context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 29.3,
@@ -49452,7 +49463,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49482,7 +49493,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/ligaria-beach-agia-pelagia"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Ligaria beach identity/location and bay beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Ligaria beach identity/location and bay beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 32.8,
@@ -49525,7 +49537,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49555,7 +49567,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/mononaftis-beach-agia-pelagia"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Mononaftis beach identity/location and Agia Pelagia-area beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Mononaftis beach identity/location and Agia Pelagia-area beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 26.9,
@@ -49597,7 +49610,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49627,7 +49640,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/psaromoura-beach-agia-pelagia"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Psaromoura beach identity/location and Agia Pelagia-area beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Psaromoura beach identity/location and Agia Pelagia-area beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 24.7,
@@ -49670,7 +49684,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49702,7 +49716,8 @@
             ],
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Mades beach identity/location and Ligaria-area beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -49778,7 +49793,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49808,7 +49823,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/paliokastro-beach"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Paliokastro beach identity/location and fortress-cove beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Paliokastro beach identity/location and fortress-cove beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 82.7,
@@ -49850,7 +49866,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49883,7 +49899,8 @@
             ],
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Kokkini Hani beaches identity/location and north-coast resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -49961,7 +49978,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -49993,7 +50010,9 @@
               "https://www.openstreetmap.org/search?query=Gouves%20beach%20Heraklion",
               "https://www.blueflag.gr/el/awards/2026"
             ],
-            "sourceNotes": "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Gouves beaches identity/location and north-coast resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — cretanbeaches/okaycrete: Kato Gouves (18km E of Heraklion) has fine sand (λεπτή άμμος) and shallow water. Coords match Gouves. Bot [https://www.okaycrete.com/article/Kato-gouves.html].",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
+            ],
             "blueFlag2026": {
               "awarded": true,
               "year": 2026,
@@ -50072,7 +50091,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50103,7 +50122,8 @@
             ],
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Analipsi/Svouros beach identity/location and resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -50189,7 +50209,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50220,7 +50240,8 @@
               "https://www.openstreetmap.org/search?query=Hersonissos%20limanakia%20beach"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Hersonissos limanakia identity/location and organized cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Hersonissos limanakia identity/location and organized cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 44.7,
@@ -50263,7 +50284,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50294,7 +50315,9 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/stalida-beach",
               "https://www.openstreetmap.org/search?query=Stalis%20beach%20Heraklion"
             ],
-            "sourceNotes": "Heraklion source confidence pass 2026-05-29: CretanBeaches supports Stalida beach identity/location and organized resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand\" contradicted the OSM natural=beach surface \"sand;pebblestone;rock\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — explorecrete/cretanbeaches: Stalida (Stalis, near Malia, Heraklion) is a ~3km organized beach of fine sand (ψιλή άμμος) with shall [https://www.explorecrete.com/heraklion-region/stalis-stalida].",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
+            ],
             "orientation": {
               "degrees": 25.3,
               "faces": [
@@ -50336,7 +50359,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50366,7 +50389,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/malia-beach"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Malia beach identity/location and organized resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Malia beach identity/location and organized resort beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 355.6,
@@ -50403,7 +50427,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50434,7 +50458,8 @@
             ],
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Potamos Malia beach identity/location and less urban beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -50776,7 +50801,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -50804,7 +50829,8 @@
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Keratokambos beach identity/location and south-coast village beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed."
+              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 178.5,
@@ -51505,7 +51531,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -51530,7 +51556,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/stena-beach-kali-limenes"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Stena beach near Kali Limenes identity/location and cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Stena beach near Kali Limenes identity/location and cove context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 178.4,
@@ -51643,7 +51670,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -51668,7 +51695,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/glykys-kolimbos-beach-tris-ekklisies-pahia-ammos"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Glykys Kolimbos identity/location and remote beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Glykys Kolimbos identity/location and remote beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 148.1,
@@ -51711,7 +51739,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -51736,7 +51764,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-heraklion/salamias-beach"
             ],
             "sourceNotes": [
-              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Salamias beach identity/location and remote south-coast beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Salamias beach identity/location and remote south-coast beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 155.8,
@@ -51985,7 +52014,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -52012,7 +52041,8 @@
             "sourceNotes": [
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Pantanassa beach identity/location and north-coast beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed."
+              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 70.5,
@@ -52153,7 +52183,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -52181,7 +52211,8 @@
               "Heraklion source confidence pass 2026-05-29: CretanBeaches Kali Limenes context and OSM support Psili Ammos Kalon Limenon identity/location; high confidence is static identity/location only. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed."
+              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"Πρόσβαση με άσφαλτο\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -52545,6 +52576,71 @@
               "ratingCount": 548,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            }
+          }
+        },
+        {
+          "id": 3179,
+          "name": "Αμμούδι",
+          "lat": 35.17076,
+          "lon": 24.42035,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά, μετά σκαλιά",
+              "notes": ""
+            },
+            "terrain": {
+              "types": [
+                "pebbles"
+              ],
+              "label": "βότσαλο"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ντους",
+              "ταβέρνα κοντά"
+            ],
+            "hasShower": true,
+            "confidence": "medium",
+            "language": "el",
+            "waterDepth": {
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
+            },
+            "activities": {
+              "surfing": false
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-way-centroid"
+            },
+            "needsVerification": true,
+            "sourceNotes": [
+              "Added 2026-08-14 (Rethymno region recheck, OSM only — no paid API). Gap found by scripts/discoverHiddenBeaches.mjs: OSM way/175803326 \"Αμμούδι\" (natural=beach, surface=gravel) sits 242 m from our #688 «Μικρό Αμμούδι», whose own pin matches the separate way/175785563 «Μικρό Αμμούδι» — so the two are different beaches and only the small one was in the dataset. Corroborated by #688's own sourceNotes, which describe it as \"Small Ammoudi/Ammoudaki within the Ammoudi beach complex\" on the cretanbeaches.com Ammoudi/Plakias page.",
+              "Services 2026-08-14 (Overpass, no API): \"Amoudi Hotel - Taverna\" (tourism=hotel) at 35 m and two amenity=shower nodes at 9 m and 50 m of the pin → ντους + ταβέρνα κοντά. organized left FALSE: showers and a taverna are not proof of a sunbed operation, and the under-claim rule applies. Terrain taken from OSM surface=gravel only. Access: nearest asphalt (highway=residential) 180 m, highway=steps 182 m, so the label promises asphalt-then-steps rather than a car ride to the sand. Orientation and wind exposure are left to the measured geospatial profile."
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/175803326",
+              "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/ammoudi-beaches-plakias"
+            ],
+            "orientation": {
+              "degrees": 244.5,
+              "faces": [
+                "Southwest"
+              ],
+              "protectedFrom": [
+                "North",
+                "Northeast",
+                "East",
+                "Southeast"
+              ],
+              "confidence": "high",
+              "notes": "Μετρημένος από το γεωμετρικό προφίλ έκθεσης (buildGeospatialExposureProfiles, 2026-08-14): facingDeg 244,5° με high confidence· οι τέσσερις τομείς της στεριάς έχουν μηδενικό fetch. Δεν εκτιμήθηκε με το μάτι."
             }
           }
         },
@@ -53095,7 +53191,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -53121,7 +53217,8 @@
               "https://greece.terrabook.com/el/rethymno/page/glima-2/"
             ],
             "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook support the verified local name Γλίμα/Γλύμα at Keramiani Gialia near Kerames; renamed display from Κλίμα to Γλίμα while keeping Κλίμα as an alias. Sources support sandy secluded terrain, unorganized status, nearby rooms, and dirt-road/walking access."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook support the verified local name Γλίμα/Γλύμα at Keramiani Gialia near Kerames; renamed display from Κλίμα to Γλίμα while keeping Κλίμα as an alias. Sources support sandy secluded terrain, unorganized status, nearby rooms, and dirt-road/walking access.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 215.2,
@@ -53235,7 +53332,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -53262,7 +53359,9 @@
               "https://www.openstreetmap.org/way/207351933",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/korakas-beach-rodakino"
             ],
-            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Korakas at Rodakino with exact location, long fine-pebble beach, organized umbrellas/taverns/rooms, showers/sports, Blue Flag context, and paved access. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — bar POI on the sand: \"Korakas Beach\" (bar, 54m). Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed. Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
+            ],
             "orientation": {
               "degrees": 174.7,
               "faces": [
@@ -53477,7 +53576,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνα κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "2026_05_rethymno_batch_1",
@@ -53493,7 +53594,8 @@
             ],
             "sourceNotes": [
               "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Small Triopetra/Koumado as the first Triopetra beach south of the three rocks, with sandy-rocky bay, rooms/taverns, umbrellas, and small-harbor/Stomio context.",
-              "Access notes cleared 2026-08-14: the text repeated access.label (\"βατός χωματόδρομος\"), duplicated the organized flag, and called every one of 21 south-Crete beaches a \"κολπίσκος\" — a claim the measured exposure geometry does not support (4-5 of 8 sectors blocked, i.e. the landward half of an ordinary shoreline). Removed text: \"Πρόσβαση από μικρό βατό χωματόδρομο και μετά άμεση προσέγγιση στον κολπίσκο. Φυσική, ανοργάνωτη παραλία.\" Access type and label were not changed."
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"βατός χωματόδρομος\"), duplicated the organized flag, and called every one of 21 south-Crete beaches a \"κολπίσκος\" — a claim the measured exposure geometry does not support (4-5 of 8 sectors blocked, i.e. the landward half of an ordinary shoreline). Removed text: \"Πρόσβαση από μικρό βατό χωματόδρομο και μετά άμεση προσέγγιση στον κολπίσκο. Φυσική, ανοργάνωτη παραλία.\" Access type and label were not changed.",
+              "Food-nearby 2026-08-14 (OSM, no API): «Pavlos» (restaurant) στα 124 m, while the record claimed no food at all. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "orientation": {
               "degrees": 228.7,
@@ -53715,7 +53817,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -53738,7 +53840,9 @@
               "https://www.openstreetmap.org/way/553233495",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/drymiskos-beaches-ammoudi-rethymnon"
             ],
-            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Anatolika/East beaches within the Drymiskos beach series east of Ammoudi/Preveli, with sandy cove sequence, deep clear-water description, sparse crowds, and paved-road/rock-shade access context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — cretanbeaches/originalcrete: these coords (35.148/24.500) are the Agios Pavlos–Akoumiani Gialia dune coast of S Rethymno (Ammolofo [https://www.originalcrete.gr/en/article/agios-paulos].",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=sand, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
+            ],
             "orientation": {
               "degrees": 199.1,
               "faces": [
@@ -53766,7 +53870,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -53791,7 +53895,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/gialopotama-beach-kerames-rethymnon"
             ],
             "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Gialopotama near Kerames with sandy-rocky terrain, unorganized status, accommodation nearby, and road access from Kerames/Drymiskos coastline."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Gialopotama near Kerames with sandy-rocky terrain, unorganized status, accommodation nearby, and road access from Kerames/Drymiskos coastline.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 204.2,
@@ -53835,7 +53940,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -53863,7 +53968,9 @@
               "https://reliefmaps.io/en/topo/ReliefMapsAI/ReliefMapsAI562560339243034825",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/drymiskos-beaches-ammoudi-rethymnon"
             ],
-            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: Exact Dynonisos name is supported by weaker map/aggregate references, while CretanBeaches supports the adjacent Drymiskos/Preveli beach context; kept medium because no strong direct local guide page was found for the exact name. Rethymno tourist-priority confidence pass BU 2026-06-02: CretanBeaches supports the Drymiskos/Drymiskiani Gialia beach cluster south of Drymiskos in Rethymno, with consecutive coves separated by rocks and reefs, sandy beaches, paved-road access to the western Amoudi section, deeper clear waters toward the eastern sections, rock shade, and umbrella/bed facilities in the additional-info profile. Promoted to high for static metadata only; source calm/quiet wording was not imported, and scoring, windProfile, coordinates, photos, or live calm/protected/safe claims were not changed. Reverse amenity sweep 2026-07-19 (no-API): amenities backfilled to match the organized flag — ξαπλώστρες, ομπρέλες.",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=sand,rocks, organized=true, shade=true. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
+            ],
             "activities": {
               "snorkeling": true,
               "surfing": false
@@ -54058,7 +54165,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54084,7 +54191,8 @@
               "https://greece.terrabook.com/el/rethymno/page/katsouni-rethymno/"
             ],
             "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Katsouni west/north of Ligres with sandy secluded terrain, unorganized status, rock shade, and access relation to Ligres/Glima/Agia Fotini."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Katsouni west/north of Ligres with sandy secluded terrain, unorganized status, rock shade, and access relation to Ligres/Glima/Agia Fotini.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=coarse_sand,pebbles, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 218.3,
@@ -54128,7 +54236,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54152,7 +54260,9 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/drymiskos-beaches-ammoudi-rethymnon",
               "https://greece.terrabook.com/el/rethymno/page/drumiskianos/"
             ],
-            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook support Kefala as the central part of the Drymiskos/Drymiskianos beach series, with sand-pebble cove sequence, limited organization, and access from the Preveli/Drymiskos road context. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles+rocks\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Terrain web-verify 2026-07-20 (no-API): label synced to types — cretanbeaches/originalcrete: Kefala is the NW end of the Akoumiani Gialia / Agios Pavlos sandy-dune stretch (S Rethymno), a sandy  [https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-kentrikis-kritis-rethymno/ammolofoi-agiou-paulou-triopetra].",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=sand, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
+            ],
             "orientation": {
               "degrees": 190,
               "faces": [
@@ -54352,7 +54462,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54377,7 +54487,8 @@
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/pahia-ammos-beach-kerames-rethymnon"
             ],
             "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Pahia Ammos at Kerames with coarse-sand terrain, sandhill landmark, secluded unorganized status, walking/dirt-track access, and nearby food/accommodation context."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Pahia Ammos at Kerames with coarse-sand terrain, sandhill landmark, secluded unorganized status, walking/dirt-track access, and nearby food/accommodation context.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=coarse_sand,pebbles, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 216.7,
@@ -54412,7 +54523,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "First-pass Chania audit: road access is classified as easy/asphalt from external map evidence. Verify exact parking, seasonal services, and final access before marking as high confidence."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54423,7 +54534,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνα κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "2026_05_chania_batch_1",
@@ -54439,7 +54552,9 @@
             "sourceNotes": [
               "OpenStreetMap Overpass Chania audit 2026-05-23",
               "Moved from Chania to Rethymno after Crete cross-prefecture check and OSM/Nominatim reverse geocode on 2026-05-23.",
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Peristeres between Fragokastelo and Rodakino with two-cove form, pebbly/rocky terrain, limited tavern context, dirt-road access, and historical/location details."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Peristeres between Fragokastelo and Rodakino with two-cove form, pebbly/rocky terrain, limited tavern context, dirt-road access, and historical/location details.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=asphalt_road keeps the access class unchanged. Removed text: \"First-pass Chania audit: road access is classified as easy/asphalt from external map evidence. Verify exact parking, seasonal services, and final access before marking as high confidence.\"",
+              "Food-nearby 2026-08-14 (OSM, no API): Καντίνα του Μανώλη «Peristeres Beach» (restaurant) στα 87 m — ονομάζει την ίδια την παραλία, while the record claimed no food at all. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "orientation": {
               "degrees": 174.8,
@@ -54659,7 +54774,7 @@
             "access": {
               "type": "hiking_path_easy",
               "label": "εύκολο μονοπάτι ή σκαλιά",
-              "notes": "Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54685,7 +54800,8 @@
               "https://greece.terrabook.com/el/rethymno/page/podare/"
             ],
             "sourceNotes": [
-              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Podare at Keramiani Gialia/Kerames with coarse sand/rock terrain, unorganized status, nearby rooms, and dirt-road access from Agia Fotini."
+              "Strict Rethymno evidence pass 2026-05-29: CretanBeaches and Terrabook directly support Podare at Keramiani Gialia/Kerames with coarse sand/rock terrain, unorganized status, nearby rooms, and dirt-road access from Agia Fotini.",
+              "Access notes cleared 2026-08-14: the text repeated access.label (\"εύκολο μονοπάτι ή σκαλιά\"), then restated terrain/organized/shade, all of which the card already renders from the structured fields — and it described \"βράχια, βότσαλο\" on terrain=pebbles,rocks, organized=false, shade=false. Removed text: \"Πρόσβαση: εύκολο μονοπάτι ή σκαλιά. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.\" Access type and label were not changed."
             ],
             "orientation": {
               "degrees": 213,
@@ -54729,7 +54845,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -54756,7 +54872,9 @@
               "https://www.openstreetmap.org/way/374141001",
               "https://www.cretanbeaches.com/en/sea-tourism/central-crete-beaches-rethymnon/polirizos-beach"
             ],
-            "sourceNotes": "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Polirizos west of Korakas/Rodakino with fine sand, shallow-water family context, taverns/rooms, slight organization with umbrellas/sunbeds, and paved shore-road access. Web-verified 2026-07-19 (web-high): organized — Polyrizos (Rodakino) described as a quiet shallow sandy beach 'με ομπρέλες, ξαπλώστρες και ταβέρνες'; reviews note sunbeds in some spots, most of the beach free [https://www.cretanbeaches.com/el/]; sunbeds added. Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed. Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
+            ],
             "orientation": {
               "degrees": 174.8,
               "faces": [
@@ -55482,7 +55600,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -55511,7 +55629,8 @@
             "sourceNotes": [
               "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Fotinari/Foteinari between Plakias and Souda with two pebbly beaches, rocky seabed, no organization, nearby rooms/restaurants, stone-path access, and rock shade.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed."
+              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "orientation": {
               "degrees": 178.4,
@@ -55617,7 +55736,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "Πρόσβαση με άσφαλτο."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -55650,7 +55769,8 @@
               "Strict Rethymno evidence pass 2026-05-29: CretanBeaches directly supports Livadi as the first and longest sandy beach at Bali, with organized services, crowded-resort context, and National Road/Bali access context.",
               "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed."
+              "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -57044,7 +57164,7 @@
             "access": {
               "type": "boat_only",
               "label": "Μόνο με βάρκα",
-              "notes": "First-pass Lasithi audit: offshore/remote beach. Treat as boat-only or boat/seasonal-access until local access and any restrictions are verified."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -57071,7 +57191,8 @@
             "sourceNotes": [
               "OpenStreetMap Overpass Lasithi audit 2026-05-23",
               "Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed.",
-              "Lasithi strict evidence pass 2026-05-29: direct CretanBeaches Vages page supports the exact Chrissi-island beach identity, eastern/south-side location, rocky bottom with sandy eastern edge, isolation character, and island-beach limitation. No ferry schedule, access season, or live sea-condition claim was added."
+              "Lasithi strict evidence pass 2026-05-29: direct CretanBeaches Vages page supports the exact Chrissi-island beach identity, eastern/south-side location, rocky bottom with sandy eastern edge, isolation character, and island-beach limitation. No ferry schedule, access season, or live sea-condition claim was added.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=boat_only keeps the access class unchanged. Removed text: \"First-pass Lasithi audit: offshore/remote beach. Treat as boat-only or boat/seasonal-access until local access and any restrictions are verified.\""
             ],
             "orientation": {
               "degrees": 80.2,
@@ -59029,7 +59150,7 @@
             "access": {
               "type": "boat_only",
               "label": "Μόνο με βάρκα",
-              "notes": "First-pass Lasithi audit: offshore/remote beach. Treat as boat-only or boat/seasonal-access until local access and any restrictions are verified."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -59055,7 +59176,8 @@
             "sourceNotes": [
               "OpenStreetMap Overpass Lasithi audit 2026-05-23",
               "Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed.",
-              "Lasithi strict evidence pass 2026-05-29: direct CretanBeaches Golden Beach/Belegrina page supports the Chrissi island beach identity, boat access from Ierapetra, white/pink-shell sand, initially rocky then sandy shore, protected-juniper restrictions, and no-collection/no-branch damage limitations."
+              "Lasithi strict evidence pass 2026-05-29: direct CretanBeaches Golden Beach/Belegrina page supports the Chrissi island beach identity, boat access from Ierapetra, white/pink-shell sand, initially rocky then sandy shore, protected-juniper restrictions, and no-collection/no-branch damage limitations.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=boat_only keeps the access class unchanged. Removed text: \"First-pass Lasithi audit: offshore/remote beach. Treat as boat-only or boat/seasonal-access until local access and any restrictions are verified.\""
             ],
             "orientation": {
               "degrees": 354.6,
@@ -59452,7 +59574,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Lasithi audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -59481,7 +59603,8 @@
             "sourceNotes": [
               "OpenStreetMap Overpass Lasithi audit 2026-05-23",
               "Strict Lasithi evidence pass 2026-05-29: source-backed static beach facts were reviewed against the attached direct source URLs. Confidence is upgraded only for identity/location plus concrete static evidence such as terrain, access, organization, nearby facilities, or explicit limitations. Coordinates, windProfile, scoring, photos, and live sea/wind/safety claims were not changed.",
-              "Lasithi strict evidence pass 2026-05-29: Armos/Pelekiti sources support the beach on the northern Spinalonga/Kolokytha peninsula, sandy or sand-pebble cove character, old quarry/rock formations, remote/no-facility limitation, and boat/walking access context. No wind-protection guarantee was added."
+              "Lasithi strict evidence pass 2026-05-29: Armos/Pelekiti sources support the beach on the northern Spinalonga/Kolokytha peninsula, sandy or sand-pebble cove character, old quarry/rock formations, remote/no-facility limitation, and boat/walking access context. No wind-protection guarantee was added.",
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Lasithi audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence.\""
             ],
             "orientation": {
               "degrees": 77.3,
@@ -60217,7 +60340,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "First-pass Lasithi audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -60242,7 +60365,9 @@
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1006256183"
             ],
-            "sourceNotes": "OpenStreetMap Overpass Lasithi audit 2026-05-23 Lasithi strict evidence pass 2026-05-29: additional searches found only OSM-derived or thin automated references for Palaria. Kept low because identity/location is present but terrain, access, and services remain unsupported by a strong direct local source. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — bar POI on the sand: \"Big Blue Cafébar\" (bar, 27m).",
+            "sourceNotes": [
+              "Access notes cleared 2026-08-14: internal first-pass audit text in English was printed verbatim on the Greek card. Its content (\"verify before marking high confidence\") is already carried by metadata.confidence / needsVerification, and access.type=passable_dirt_road keeps the access class unchanged. Removed text: \"First-pass Lasithi audit: access is classified as reachable by local road/dirt road from external map evidence. Verify road condition before marking as high confidence.\""
+            ],
             "orientation": {
               "degrees": 189,
               "faces": [

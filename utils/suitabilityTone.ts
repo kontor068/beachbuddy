@@ -471,13 +471,34 @@ export const SUITABLE_LIST_TONE_GROUPS = 2;
  * calmer colour is evidence — it is the same reasoning that put tone above recognition in the
  * podium the same morning — so a ΜΕΤΡΙΑ beach cannot outrank a ΚΑΛΗ one on fame or facilities.
  */
+/**
+ * WHICH COLOURS THE OFFER SPANS TODAY — the one place that answers it.
+ *
+ * Split out of `selectSuitableByTone` on 15/08/2026 because the PODIUM needs the same answer and
+ * was working without it: its candidate pool concatenates sources that are not colour-restricted
+ * (`recommendedSuitableBeaches`, `directoryFallbackSource`, the sheltered fallback), so a ΜΕΤΡΙΑ
+ * could take a medal above sixteen ΚΑΛΕΣ while the list beside it, built from this function,
+ * showed only blue+yellow. Miltos, 15/08: «έχεις ιδανική μία και από κάτω τοπ 1 άλλη παραλία».
+ *
+ * The arithmetic he verified by hand on 10/08 — βάθρο + λίστα = τα δύο καλύτερα χρώματα — only
+ * holds if BOTH surfaces read this. A second copy of the rule is not the rule: that is the §Κ1
+ * lesson of the PORISMA, where a comment claiming «this condition IS the pin, rewritten» had
+ * quietly lost half of it.
+ */
+export const selectSuitableToneGroups = <T,>(
+  items: readonly T[],
+  toneOf: (item: T) => CalmnessTone | undefined
+): CalmnessTone[] => {
+  const present = SUITABLE_LIST_TONE_RANK.filter(tone => items.some(item => toneOf(item) === tone));
+  return present.slice(0, SUITABLE_LIST_TONE_GROUPS);
+};
+
 export const selectSuitableByTone = <T,>(
   items: readonly T[],
   toneOf: (item: T) => CalmnessTone | undefined,
   compare: (a: T, b: T) => number
 ): T[] => {
-  const present = SUITABLE_LIST_TONE_RANK.filter(tone => items.some(item => toneOf(item) === tone));
-  const chosen = present.slice(0, SUITABLE_LIST_TONE_GROUPS);
+  const chosen = selectSuitableToneGroups(items, toneOf);
 
   return chosen.flatMap(tone => items.filter(item => toneOf(item) === tone).sort(compare));
 };

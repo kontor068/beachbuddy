@@ -1,0 +1,439 @@
+{
+  "scope": {
+    "region": "Crete",
+    "prefecture": "Rethymno",
+    "municipality": "Crete (Rethymno)"
+  },
+  "existing": 47,
+  "osm": {
+    "total": 92,
+    "namedGaps": [
+      {
+        "type": "node",
+        "id": 10968724672,
+        "name": "Orthi Ammos Paralia",
+        "lat": 35.1832018,
+        "lon": 24.2500224,
+        "nearestDistM": 3797,
+        "nearest": "Αγία Μαρίνα (#672)"
+      },
+      {
+        "type": "way",
+        "id": 28749205,
+        "name": "Παραλία Πλακιά",
+        "lat": 35.1851907,
+        "lon": 24.3981058,
+        "nearestDistM": 533,
+        "nearest": "Παλίγκρεμνος (#689)"
+      },
+      {
+        "type": "way",
+        "id": 102958051,
+        "name": "Katalyki",
+        "lat": 35.0792591,
+        "lon": 24.7417341,
+        "nearestDistM": 5237,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 118708433,
+        "name": "Καλυβάκι",
+        "lat": 35.3667682,
+        "lon": 24.2608861,
+        "nearestDistM": 7486,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 118708439,
+        "name": "Γεωργιούπολη",
+        "lat": 35.3620779,
+        "lon": 24.2644343,
+        "nearestDistM": 7066,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 175803326,
+        "name": "Αμμούδι",
+        "lat": 35.1707583,
+        "lon": 24.4203506,
+        "nearestDistM": 242,
+        "nearest": "Μικρό Αμμούδι (#688)"
+      },
+      {
+        "type": "way",
+        "id": 176296868,
+        "name": "Μικρή Τριόπετρα",
+        "lat": 35.1154933,
+        "lon": 24.5524189,
+        "nearestDistM": 188,
+        "nearest": "Μικρή Τριόπετρα (#687)"
+      },
+      {
+        "type": "way",
+        "id": 207351926,
+        "name": "Αμμόλοφους",
+        "lat": 35.1070841,
+        "lon": 24.5589211,
+        "nearestDistM": 253,
+        "nearest": "Αμμόλοφοι Αγίου Παύλου (#674)"
+      },
+      {
+        "type": "way",
+        "id": 207351941,
+        "name": "Triopetra Beach",
+        "lat": 35.1126169,
+        "lon": 24.5545861,
+        "nearestDistM": 188,
+        "nearest": "Μικρή Τριόπετρα (#687)"
+      },
+      {
+        "type": "way",
+        "id": 383275428,
+        "name": "Γεωργιούπολη",
+        "lat": 35.3569981,
+        "lon": 24.2784346,
+        "nearestDistM": 5730,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 996151777,
+        "name": "Άργιλος",
+        "lat": 35.1808438,
+        "lon": 24.2562054,
+        "nearestDistM": 3216,
+        "nearest": "Αγία Μαρίνα (#672)"
+      },
+      {
+        "type": "way",
+        "id": 1351642479,
+        "name": "Αμμόλοφοι Αγίου Παύλου (Μέλισσα)",
+        "lat": 35.1028502,
+        "lon": 24.5608125,
+        "nearestDistM": 253,
+        "nearest": "Αμμόλοφοι Αγίου Παύλου (#674)"
+      },
+      {
+        "type": "way",
+        "id": 1356491884,
+        "name": "Παραλία Λάκκοι",
+        "lat": 35.1800799,
+        "lon": 24.2684419,
+        "nearestDistM": 2101,
+        "nearest": "Αγία Μαρίνα (#672)"
+      }
+    ],
+    "unnamedGaps": [
+      {
+        "type": "way",
+        "id": 82679767,
+        "name": null,
+        "lat": 35.3324278,
+        "lon": 24.2792518,
+        "nearestDistM": 5999,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 99362408,
+        "name": null,
+        "lat": 35.3735605,
+        "lon": 24.5389593,
+        "nearestDistM": 2449,
+        "nearest": "Thalassi beach (#715)"
+      },
+      {
+        "type": "way",
+        "id": 102881795,
+        "name": null,
+        "lat": 35.097719,
+        "lon": 24.6925716,
+        "nearestDistM": 377,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 102881804,
+        "name": null,
+        "lat": 35.0974268,
+        "lon": 24.6953486,
+        "nearestDistM": 625,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 102958050,
+        "name": null,
+        "lat": 35.0868413,
+        "lon": 24.7309645,
+        "nearestDistM": 4031,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 108780081,
+        "name": null,
+        "lat": 35.3682422,
+        "lon": 24.4789009,
+        "nearestDistM": 2222,
+        "nearest": "Παραλία Ρεθύμνου (#697)"
+      },
+      {
+        "type": "way",
+        "id": 108780088,
+        "name": null,
+        "lat": 35.3770318,
+        "lon": 24.5576583,
+        "nearestDistM": 715,
+        "nearest": "Thalassi beach (#715)"
+      },
+      {
+        "type": "way",
+        "id": 108780092,
+        "name": null,
+        "lat": 35.3644253,
+        "lon": 24.4579043,
+        "nearestDistM": 4155,
+        "nearest": "Παραλία Ρεθύμνου (#697)"
+      },
+      {
+        "type": "way",
+        "id": 130075879,
+        "name": null,
+        "lat": 35.4142155,
+        "lon": 24.7833432,
+        "nearestDistM": 359,
+        "nearest": "Καραβοστάσι (#680)"
+      },
+      {
+        "type": "way",
+        "id": 130075981,
+        "name": null,
+        "lat": 35.413272,
+        "lon": 24.7832185,
+        "nearestDistM": 302,
+        "nearest": "Βαρκότοπος (#675)"
+      },
+      {
+        "type": "way",
+        "id": 152252569,
+        "name": null,
+        "lat": 35.3538243,
+        "lon": 24.2956165,
+        "nearestDistM": 4146,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 217369807,
+        "name": null,
+        "lat": 35.3922024,
+        "lon": 24.6100135,
+        "nearestDistM": 3258,
+        "nearest": "Σπήλιες (#707)"
+      },
+      {
+        "type": "way",
+        "id": 225060571,
+        "name": null,
+        "lat": 35.4200905,
+        "lon": 24.6584195,
+        "nearestDistM": 1378,
+        "nearest": "Γεροπόταμος (#677)"
+      },
+      {
+        "type": "way",
+        "id": 260650215,
+        "name": null,
+        "lat": 35.1045631,
+        "lon": 24.5766334,
+        "nearestDistM": 1171,
+        "nearest": "Φοινικίδια (#711)"
+      },
+      {
+        "type": "way",
+        "id": 293247693,
+        "name": null,
+        "lat": 35.3577961,
+        "lon": 24.3690928,
+        "nearestDistM": 2629,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 356673823,
+        "name": null,
+        "lat": 35.3310168,
+        "lon": 24.2801392,
+        "nearestDistM": 5981,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 356673827,
+        "name": null,
+        "lat": 35.3346234,
+        "lon": 24.2764456,
+        "nearestDistM": 6160,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 356841782,
+        "name": null,
+        "lat": 35.3831459,
+        "lon": 24.5841123,
+        "nearestDistM": 1781,
+        "nearest": "Thalassi beach (#715)"
+      },
+      {
+        "type": "way",
+        "id": 358489578,
+        "name": null,
+        "lat": 35.3526529,
+        "lon": 24.3631394,
+        "nearestDistM": 1994,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 362154478,
+        "name": null,
+        "lat": 35.3604594,
+        "lon": 24.4068981,
+        "nearestDistM": 6043,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 376851216,
+        "name": null,
+        "lat": 35.0657656,
+        "lon": 24.7488194,
+        "nearestDistM": 6505,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 383275408,
+        "name": null,
+        "lat": 35.3531474,
+        "lon": 24.3054471,
+        "nearestDistM": 3251,
+        "nearest": "Παραλία Επισκοπής (#693)"
+      },
+      {
+        "type": "way",
+        "id": 445496572,
+        "name": null,
+        "lat": 35.415503,
+        "lon": 24.6460769,
+        "nearestDistM": 200,
+        "nearest": "Γεροπόταμος (#677)"
+      },
+      {
+        "type": "way",
+        "id": 453085750,
+        "name": null,
+        "lat": 35.4186958,
+        "lon": 24.6931049,
+        "nearestDistM": 163,
+        "nearest": "Sfagia (#3089)"
+      },
+      {
+        "type": "way",
+        "id": 487854506,
+        "name": null,
+        "lat": 35.4070924,
+        "lon": 24.8486149,
+        "nearestDistM": 1911,
+        "nearest": "Παραλία Κατεβατή (#694)"
+      },
+      {
+        "type": "way",
+        "id": 505838355,
+        "name": null,
+        "lat": 35.4194316,
+        "lon": 24.7491377,
+        "nearestDistM": 3205,
+        "nearest": "Βαρκότοπος (#675)"
+      },
+      {
+        "type": "way",
+        "id": 561554157,
+        "name": null,
+        "lat": 35.105196,
+        "lon": 24.5712886,
+        "nearestDistM": 722,
+        "nearest": "Φοινικίδια (#711)"
+      },
+      {
+        "type": "way",
+        "id": 834184854,
+        "name": null,
+        "lat": 35.0544064,
+        "lon": 24.7531329,
+        "nearestDistM": 7563,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 834184856,
+        "name": null,
+        "lat": 35.0755713,
+        "lon": 24.7445636,
+        "nearestDistM": 5638,
+        "nearest": "Αγία Γαλήνη (#3019)"
+      },
+      {
+        "type": "way",
+        "id": 1068927586,
+        "name": null,
+        "lat": 35.4201141,
+        "lon": 24.6603349,
+        "nearestDistM": 1532,
+        "nearest": "Γεροπόταμος (#677)"
+      },
+      {
+        "type": "way",
+        "id": 1193145694,
+        "name": null,
+        "lat": 35.3649385,
+        "lon": 24.4625086,
+        "nearestDistM": 3734,
+        "nearest": "Παραλία Ρεθύμνου (#697)"
+      },
+      {
+        "type": "way",
+        "id": 1279823631,
+        "name": null,
+        "lat": 35.1799606,
+        "lon": 24.2659647,
+        "nearestDistM": 2326,
+        "nearest": "Αγία Μαρίνα (#672)"
+      },
+      {
+        "type": "way",
+        "id": 1344860673,
+        "name": null,
+        "lat": 35.0986019,
+        "lon": 24.6157533,
+        "nearestDistM": 1819,
+        "nearest": "Πρασονήσι (#703)"
+      },
+      {
+        "type": "way",
+        "id": 1351773199,
+        "name": null,
+        "lat": 35.1817101,
+        "lon": 24.2546083,
+        "nearestDistM": 3366,
+        "nearest": "Αγία Μαρίνα (#672)"
+      }
+    ]
+  },
+  "triage": []
+}

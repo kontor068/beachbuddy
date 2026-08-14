@@ -124,7 +124,7 @@ export const BeachSearchEmptyState: React.FC<BeachSearchEmptyStateProps> = ({
     : t.beachSearchFilters.clearAll;
 
   return (
-    <div role="status" className="col-span-full rounded-3xl border border-white/60 bg-white/72 px-5 py-12 text-center shadow-sm ring-1 ring-white/35 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/50">
+    <div role="status" className="col-span-full rounded-3xl border border-white/60 bg-white/95 px-5 py-12 text-center shadow-sm ring-1 ring-white/35 dark:border-slate-800 dark:bg-slate-900/95">
       <p className="font-heading text-lg font-black text-slate-800 dark:text-slate-100">
         {title}
       </p>

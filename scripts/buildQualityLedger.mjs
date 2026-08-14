@@ -293,6 +293,28 @@ try {
   console.log('Δεν υπάρχει προηγούμενο ημερολόγιο — αυτό είναι το πρώτο χτίσιμο.');
 }
 
+/**
+ * The same slug the app puts in the URL — utils/beachUrls.ts `getRegionUrlSlug`:
+ * the readable English name when there is one, otherwise the id with its region-group
+ * prefix and a trailing "-mainland" stripped. Duplicated here (and only here) because
+ * this is a plain .mjs build script and that module is TypeScript. If the URL rule ever
+ * changes, this copy has to change with it — the symptom is silent (the board goes back
+ * to "καμία προβολή"), so the slugs are cross-checked against the real recorded section
+ * keys of /api/traffic whenever this is touched.
+ */
+const slugify = (value) => String(value).toLowerCase().normalize('NFD')
+  .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const REGION_ID_PREFIXES = [
+  'attica-', 'central-greece-', 'central-macedonia-', 'crete-', 'east-macedonia-and-thrace-',
+  'epirus-', 'ionian-islands-', 'north-aegean-', 'peloponnese-', 'south-aegean-', 'thessaly-', 'west-greece-',
+];
+const regionUrlSlug = (region) => {
+  const readable = region.name?.en || region.name?.gr || region.name?.fr || region.name?.de || region.name?.it;
+  if (readable) return slugify(readable);
+  const bare = REGION_ID_PREFIXES.reduce((v, p) => (v.startsWith(p) ? v.slice(p.length) : v), region.id);
+  return slugify(bare.replace(/-mainland$/i, ''));
+};
+
 const index = readJson(path.join(beachDir, 'index.json'));
 if (!index?.regions?.length) {
   console.error('Δεν βρέθηκε το public/data/beaches/index.json — τρέξε πρώτα npm run build:beach-data.');
@@ -387,9 +409,17 @@ for (const region of index.regions) {
 
     // 3. ACCESS — how you get there. `unknown` is the default nobody filled in,
     // and the access audits exist precisely because "Εύκολη πρόσβαση" was often
-    // an assumption. So: a known type AND a note is covered, anything else open.
+    // an assumption. So: a known type AND a human-readable label is covered.
+    //
+    // This used to require `access.notes` as well, which measured the wrong thing.
+    // `notes` is free text printed under the access chip, Greek only; the August 2026
+    // rechecks emptied it on 100+ beaches precisely BECAUSE it repeated the label or
+    // described a different beach. Those records know their access perfectly — the
+    // chip says "βατός χωματόδρομος" — yet the board counted them as "άγνωστη
+    // πρόσβαση" and Rethymno read 50% right after being cleaned. Deleting robot copy
+    // must not look like losing data, or the board argues for putting it back.
     const access = m.access || {};
-    if (access.type && access.type !== 'unknown' && access.notes) axes.access.ok += 1;
+    if (access.type && access.type !== 'unknown' && access.label) axes.access.ok += 1;
     else { openNames.access.push(name); mask |= AXIS_BIT.access; }
 
     // 4. AMENITIES — an empty list is a finding, not a fact. A beach with nothing
@@ -523,6 +553,12 @@ for (const region of index.regions) {
 
   regions.push({
     id: region.id,
+    // The URL slug, which is the ONLY name our own pageview counter ever sees:
+    // services/pageviewBeacon.ts:103 records segment 1 of /beaches/<slug>/…, i.e.
+    // "chania", never "crete-crete-chania". Without this the board looked its
+    // regions up by id, found nothing, and printed "καμία προβολή" for all 110 —
+    // so its ranking silently dropped the traffic factor entirely.
+    slug: regionUrlSlug(region),
     label: region.name?.gr || region.prefecture || region.id,
     group: region.group || '',
     beaches: beaches.length,

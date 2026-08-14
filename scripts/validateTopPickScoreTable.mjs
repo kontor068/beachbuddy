@@ -41,10 +41,16 @@
  *      4,2 never qualifies however busy it is. And when fewer than three candidates qualify the
  *      preference must release the whole pool — measured 11/08: as a hard filter, >4,5 leaves a
  *      full Top 3 in only 71,6% of cases and blanks the podium in 12,7%.
- *   F. THE DOORS HOLD, NATIONALLY. Over every region and wind state, no beach with a paidEntry
- *      flag and no beach whose navigation would hand over a coordinate instead of a Google pin may
- *      appear in a Top 3. Measured before the doors existed: 32 podiums in the sweep contained a
- *      paid beach, and 1.158 of 3.142 records cannot open a place card of their own.
+ *   F. THE DOORS HOLD, NATIONALLY — AND THE PIN IS NO LONGER ONE OF THEM (15/08/2026, §Γ12).
+ *      Paid entry stays a hard door: over every region and wind state, no beach with a paidEntry
+ *      flag may appear in a Top 3 (32 podiums contained one before the door existed).
+ *      The Google pin became a PREFERENCE by Miltos's decision, because stacked under three later
+ *      gates it was emptying podiums: in East Attica only 8 of 59 beaches could ever be named and
+ *      23 were excluded for the pin alone. So the assertion is now the narrower one — a pinless
+ *      beach may take a seat ONLY where the pinned candidates could not fill the podium. If a
+ *      region has three pinned candidates and a pinless one still appears, that is a defect.
+ *      Measured after the change: 144 seats nationally are filled that would have stayed empty,
+ *      and no pinless beach displaces a pinned one anywhere.
  *
  * SELF-PROOF (--prove): four regressions — comfort raised to 50, the sea step made continuous,
  * missing data scored as zero, and the missing distance given the maximum instead of the middle —
@@ -292,7 +298,7 @@ failures.push(...run(realTable));
     fail(`F: loaded only ${regions.length} regions — run "npm run build:beach-data" first.`);
   }
   const angleDiff = (a, b) => { const d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
-  let paidInPodium = 0, pinlessInPodium = 0, pools = 0, examined = 0;
+  let paidInPodium = 0, pinlessInPodium = 0, pinlessAllowed = 0, pools = 0, examined = 0;
   for (const [regionId, beaches] of regions) {
     if (!beaches.some(b => b.paidEntry || b.metadata?.paidEntry || !opensGoogleMapsPin(b))) continue;
     pools++;
@@ -320,19 +326,34 @@ failures.push(...run(realTable));
           paidInPodium++;
           if (paidInPodium <= 3) fail(`F: paid beach ${offender.beach.id} in the Top 3 of ${regionId} at ${bft} Bft, wind ${windDir}°.`);
         }
+        /**
+         * Η ΠΙΝΕΖΑ ΕΓΙΝΕ ΠΡΟΤΙΜΗΣΗ, ΟΧΙ ΠΟΡΤΑ (Μίλτος, 15/08/2026 — βίβλος §Γ12).
+         *
+         * Ο παλιός έλεγχος ήταν «καμία απίνεζη στο Top 3, ποτέ». Ίσχυε όσο η πόρτα ήταν σκληρή,
+         * και κατέρρευσε όταν στοιβάχτηκαν από πάνω της άλλες τρεις πύλες: στην Αν. Αττική
+         * έμεναν 8 υποψήφιες από 59, και 23 κόβονταν ΜΟΝΟ γι' αυτό.
+         *
+         * Ο νέος κανόνας είναι πιο στενός και πιο δύσκολο να περαστεί κατά λάθος: απίνεζη
+         * επιτρέπεται **μόνο** όταν οι πινεζωμένες δεν έφταναν να γεμίσουν το βάθρο. Αν η
+         * περιοχή έχει τρεις πινεζωμένες υποψήφιες και μπει απίνεζη, είναι σφάλμα.
+         */
+        const pinnedAvailable = items.filter(i => (
+          opensGoogleMapsPin(i.beach) && !hasPaidEntryTopPickBlocker(i.beach)
+        )).length;
         const pinless = top3.find(i => !opensGoogleMapsPin(i.beach));
-        if (pinless) {
+        if (pinless && pinnedAvailable >= 3) {
           pinlessInPodium++;
-          if (pinlessInPodium <= 3) fail(`F: beach ${pinless.beach.id} has no Google pin of its own but reached the Top 3 of ${regionId} at ${bft} Bft, wind ${windDir}°.`);
+          if (pinlessInPodium <= 3) fail(`F: beach ${pinless.beach.id} has no Google pin but reached the Top 3 of ${regionId} at ${bft} Bft, wind ${windDir}° — ${pinnedAvailable} pinned candidates were available.`);
         }
+        if (pinless) pinlessAllowed++;
       }
     }
   }
   if (paidInPodium > 3) fail(`F: ...and ${paidInPodium - 3} more paid beaches in podiums.`);
-  if (pinlessInPodium > 3) fail(`F: ...and ${pinlessInPodium - 3} more pinless beaches in podiums.`);
+  if (pinlessInPodium > 3) fail(`F: ...and ${pinlessInPodium - 3} more pinless beaches in podiums that had three pinned candidates.`);
   if (examined === 0) fail('F: no region with a paid beach was examined — the check is inert.');
   else if (!failures.some(f => f.startsWith('F:'))) {
-    console.log(`doors: ${examined} podiums across ${pools} regions holding a paid beach — 0 paid and 0 pinless reached a Top 3.`);
+    console.log(`doors: ${examined} podiums across ${pools} regions holding a paid beach — 0 paid reached a Top 3, and no pinless one displaced a pinned candidate (${pinlessAllowed} filled seats that would otherwise have stayed empty).`);
   }
 }
 

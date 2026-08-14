@@ -61,16 +61,27 @@ export const buildQualityRows = (views, checks) => {
   // for exactly the mainland regions that get the most summer traffic. No id
   // collides at 32 characters, so the trimmed key is safe to accept as the same
   // region.
-  const viewsOf = (id) => Number(views?.[id] ?? views?.[id.slice(0, 32)] ?? 0);
-  const totalViews = LEDGER.regions.reduce((sum, r) => sum + viewsOf(r.id), 0);
+  //
+  // 14/08/2026: the id was never the key. `sectionFromPath` takes segment 1 of
+  // /beaches/<slug>/…, so what actually lands in the rollup is "chania", not
+  // "crete-crete-chania" — and every one of the 110 regions read as "καμία προβολή",
+  // which quietly removed traffic from the ranking below and left it deciding on gaps
+  // alone. The ledger now carries the same `slug` the app puts in the URL; the id and
+  // the truncated id stay as fallbacks so older rollups still count.
+  const viewsOf = (region) => {
+    const keys = [region.slug, region.id, region.id.slice(0, 32)].filter(Boolean);
+    for (const k of keys) if (views?.[k] != null) return Number(views[k]) || 0;
+    return 0;
+  };
+  const totalViews = LEDGER.regions.reduce((sum, r) => sum + viewsOf(r), 0);
 
   // Tier by CUMULATIVE share, so the split follows the actual shape of the
   // traffic instead of a percentile that assumes it is evenly spread.
-  const ranked = [...LEDGER.regions].sort((a, b) => viewsOf(b.id) - viewsOf(a.id));
+  const ranked = [...LEDGER.regions].sort((a, b) => viewsOf(b) - viewsOf(a));
   const tierOf = new Map();
   let running = 0;
   for (const region of ranked) {
-    const v = viewsOf(region.id);
+    const v = viewsOf(region);
     if (!v) {
       tierOf.set(region.id, DUE_TIERS[3]);
       continue;
@@ -117,15 +128,15 @@ export const buildQualityRows = (views, checks) => {
       // A region with no visitors keeps a small floor instead of disappearing:
       // it should sink, not vanish, or nothing quiet ever gets fixed.
       const ripeness = age === null ? 1.2 : Math.min(2.5, age / tier.days);
-      const traffic = Math.log10(1 + viewsOf(region.id));
+      const traffic = Math.log10(1 + viewsOf(region));
       const gapWeight = (100 - covered) / 100;
       const missingBeaches = axes.reduce((sum, a) => sum + a.missing, 0);
       const volume = Math.log10(1 + missingBeaches);
 
       return {
         ...region,
-        views: viewsOf(region.id),
-        share: totalViews ? viewsOf(region.id) / totalViews : 0,
+        views: viewsOf(region),
+        share: totalViews ? viewsOf(region) / totalViews : 0,
         tier,
         lastAt,
         age,

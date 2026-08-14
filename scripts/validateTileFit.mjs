@@ -79,6 +79,25 @@ const vite = path.join('node_modules', 'vite', 'bin', 'vite.js');
 // waiting it out.
 spawnSync(process.execPath, [vite, 'optimize', '--force'], { stdio: 'ignore', env: process.env });
 
+/**
+ * Η ΠΙΑΣΜΕΝΗ ΘΥΡΑ ΝΑ ΛΕΓΕΤΑΙ ΠΙΑΣΜΕΝΗ ΘΥΡΑ — Μίλτος, 14/08/2026.
+ *
+ * Με `--strictPort` (σωστά: αλλιώς μετράμε ζόμπι server με χθεσινό κώδικα) μια δεύτερη
+ * ταυτόχρονη εκτέλεση σκότωνε την πύλη με «Port 4191 is already in use» μέσα σε stack trace
+ * της vite — που στον runner διαβάζεται σαν αποτυχία της σελίδας, ενώ η σελίδα δεν έχει καν
+ * φορτώσει. Ο έλεγχος γίνεται πλέον ΠΡΙΝ ξοδευτεί ένα δευτερόλεπτο σε browser, και λέει τι να
+ * κάνει ο άνθρωπος. ΔΕΝ αλλάζουμε θύρα και ΔΕΝ πέφτουμε σε άλλη: το να μετρήσουμε ό,τι τυχαία
+ * ακούει εκεί είναι το χειρότερο δυνατό αποτέλεσμα.
+ */
+const portBusy = await fetch(BASE + '/', { signal: AbortSignal.timeout(1500) })
+  .then(() => true)
+  .catch(() => false);
+if (portBusy) {
+  console.error(`\nΗ θύρα ${PORT} είναι ήδη πιασμένη — τρέχει άλλη εκτέλεση αυτής της πύλης ή έμεινε ζόμπι dev server.`);
+  console.error('Κλείσε τον και ξανατρέξε· δεν μετράμε ό,τι ακούει ήδη εκεί, γιατί μπορεί να είναι παλιός κώδικας.');
+  process.exit(1);
+}
+
 const server = spawn(
   process.execPath,
   // --strictPort: without it a leftover dev server on this port silently becomes what we measure —
@@ -300,6 +319,34 @@ try {
       await page.getByRole('button', { name: label, exact: true }).click();
       await wait(1400);
 
+      /**
+       * ΤΟ ΤΜΗΜΑ ΜΠΟΡΕΙ ΝΑ ΜΗΝ ΕΙΝΑΙ ΕΚΕΙ ΟΤΑΝ ΠΡΟΣΓΕΙΩΝΟΜΑΣΤΕ — Μίλτος, 14/08/2026.
+       *
+       * Αυτό ήταν `el.getBoundingClientRect()` χωρίς έλεγχο, και έριχνε ΟΛΟΚΛΗΡΗ την πύλη με
+       * «Cannot read properties of null». Μετρήθηκε την ίδια μέρα: ίδιος κώδικας, run 1 PASS /
+       * run 2 FAIL — το τμήμα υπάρχει στη γραμμή 295 όταν το ελέγχουμε, και λείπει 1.400 ms
+       * αργότερα, γιατί το κλικ προκαλεί re-render και το React το ξαναστήνει.
+       *
+       * Το κακό δεν ήταν η αστάθεια αλλά το ΣΧΗΜΑ της: ένα crash βγαίνει από τη διαδικασία με
+       * exit 1 και stack trace, δηλαδή **δυσδιάκριτο από πραγματικό εύρημα** — και μια πύλη που
+       * κοκκινίζει τυχαία σταματά να διαβάζεται, ακριβώς όταν έχει να πει κάτι αληθινό.
+       *
+       * Οπότε: περιμένουμε να ξαναϋπάρξει (το re-render είναι νόμιμο, δεν είναι σφάλμα), και αν
+       * όντως δεν εμφανιστεί το γράφουμε ως ΕΥΡΗΜΑ με λόγια — «το κουμπί οδηγεί σε τμήμα που δεν
+       * υπάρχει» είναι πραγματικό bug για τον επισκέπτη, όχι θόρυβος. Καμία χαλάρωση: το
+       * κατώφλι κάτω από τη σταθερή κεφαλίδα μένει ακριβώς ίδιο.
+       */
+      const settled = await page.waitForFunction(
+        sel => Boolean(document.querySelector(sel)),
+        '#' + id,
+        { timeout: 5000 },
+      ).then(() => true).catch(() => false);
+
+      if (!settled) {
+        failures.push(`tab «${label}» was clicked but #${id} was gone 5 s later — the jump control points at a section that is not on the page`);
+        continue;
+      }
+
       const r = await page.evaluate(sel => {
         const el = document.querySelector(sel);
         const box = el.getBoundingClientRect();
@@ -400,6 +447,14 @@ try {
 
   await browser.close();
 } finally {
+  /**
+   * ΣΤΑ WINDOWS ΤΟ `.kill()` ΑΦΗΝΕΙ ΤΑ ΠΑΙΔΙΑ ΖΩΝΤΑΝΑ — και ένας vite που επιβιώνει είναι ο
+   * λόγος που η ΕΠΟΜΕΝΗ εκτέλεση βρίσκει τη θύρα πιασμένη. Το `taskkill /T` κατεβάζει όλο το
+   * δέντρο· αν αποτύχει (άλλο λειτουργικό, ήδη νεκρή διεργασία) πέφτουμε πίσω στο `.kill()`.
+   */
+  if (process.platform === 'win32' && server.pid) {
+    spawnSync('taskkill', ['/pid', String(server.pid), '/T', '/F'], { stdio: 'ignore' });
+  }
   server.kill();
 }
 

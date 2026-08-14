@@ -19,6 +19,12 @@ import { scoreTopPick } from '../utils/topPickScoreTable';
 export const MEANINGFUL_WIND_TOP_PICK_BEAUFORT = 3;
 export const PROTECTED_FIRST_BEAUFORT = 5;
 /**
+ * Πόσες θέσεις έχει το βάθρο. Ζει ΕΔΩ, όχι στο recommendationService, γιατί από 15/08/2026 το
+ * χρησιμοποιεί και η επιλογή της ομάδας: μια ομάδα που δεν ξέρει πόσες θέσεις γεμίζει, τις
+ * αφήνει άδειες. Το `MAX_TOP_RECOMMENDATION_DISPLAY_LIMIT` το διαβάζει από εδώ.
+ */
+export const TOP_PICK_PODIUM_SEATS = 3;
+/**
  * The smallest sea difference the podium is allowed to reorder on, in metres of swell-equivalent
  * height. Read off our own model's error, not chosen: the worst per-buoy RMSE in
  * reports/wave-model/buoy-comparison.json is 0,251 m (national 0,184). Below its own error bar the
@@ -358,16 +364,96 @@ export const getWindPriorityTopPickPool = (
 export const bestShelteredRecommendationGroup = (
   items: SuitableBeach[],
   beaufort: number,
-  perBeachWind?: PerBeachWindLookup
+  perBeachWind?: PerBeachWindLookup,
+  toneRank?: PodiumToneRank
 ): SuitableBeach[] => {
   const poolBeaufort = strongestBeaufortInPool(items, beaufort, perBeachWind);
   if (poolBeaufort < PROTECTED_FIRST_BEAUFORT || items.length === 0) return items;
 
-  const bestPriority = Math.min(...items.map(topPickProfilePriority));
-  return items.filter(item => (
-    beachOwnBeaufort(item, beaufort, perBeachWind) < MEANINGFUL_WIND_TOP_PICK_BEAUFORT ||
-    topPickProfilePriority(item) === bestPriority
-  ));
+  /**
+   * ΟΤΑΝ Ο ΧΑΡΤΗΣ ΕΧΕΙ ΗΔΗ ΑΠΑΝΤΗΣΕΙ «ΙΔΑΝΙΚΗ», Ο ΦΡΑΓΜΟΣ ΒΑΘΜΙΔΑΣ ΔΕΝ ΕΧΕΙ ΤΙ ΝΑ ΠΡΟΣΘΕΣΕΙ
+   * (Μίλτος, 15/08/2026 — «Νάξος, αύριο 8πμ: Top 1 ενώ ο χάρτης δείχνει 3 μπλε»).
+   *
+   * ΤΟ ΠΡΟΒΛΗΜΑ. Στα 5 Μποφ. ο φραγμός από κάτω κρατά μόνο την κορυφαία ΒΑΘΜΙΔΑ ΕΚΘΕΣΗΣ, δηλαδή
+   * κρίνει με το ΣΧΗΜΑ της παραλίας. Το χρώμα της πινέζας δεν είναι το σχήμα: μια πινέζα είναι
+   * μπλε για ΤΡΕΙΣ λόγους μαζί — έκθεση + ο άνεμος σε ΑΥΤΗ την ακτή + η κατάσταση της θάλασσας
+   * (το ίδιο τριπλό που περιγράφεται 60 γραμμές πιο κάτω, στο compareTone). Άρα ο φραγμός
+   * πετούσε έξω παραλίες για τις οποίες το ίδιο μας το μοντέλο είχε ήδη απαντήσει, με ΠΕΡΙΣΣΟΤΕΡΑ
+   * δεδομένα, ότι σήμερα εκεί το νερό είναι ήρεμο. Ένα βάθρο με μία κάρτα, 400 px κάτω από μια
+   * λεζάντα που έλεγε «Ιδανικές 3 παραλίες».
+   *
+   * Ο ΚΑΝΟΝΑΣ. Αν υπάρχει έστω μία παραλία στην κορυφαία ΧΡΩΜΑΤΙΚΗ βαθμίδα (ΙΔΑΝΙΚΗ, rank 0), η
+   * ομάδα του βάθρου είναι ακριβώς αυτές. Ο φραγμός βαθμίδας μιλάει μόνο όταν το χρώμα δεν έχει
+   * μιλήσει — καμία ΙΔΑΝΙΚΗ πουθενά, ή καμία πινέζα δεν έχει βαφτεί ακόμη (σχεδιαστής ταξιδιού,
+   * prerender, πρώτο frame), όπου αυτό είναι σιωπηλό και η προηγούμενη συμπεριφορά μένει ακέραιη.
+   *
+   * ΓΙΑΤΙ ΕΙΝΑΙ ΣΕ ΑΡΜΟΝΙΑ ΜΕ ΤΗ ΒΙΒΛΟ (PORISMA §Γ8, §Γ6, §7ε/§7στ):
+   *
+   *   · ΔΕΝ δίνει εξουσία στο `partial`. Το μάθημα του §Γ6 είναι ότι το «μερική» έχει recall 0%
+   *     και σημαίνει «δεν ξέρουμε» — γι' αυτό το εισιτήριο ΔΕΝ είναι «είναι μερική», είναι «ο
+   *     χάρτης τη μέτρησε ΙΔΑΝΙΚΗ σήμερα, σε αυτή την ακτή». Σήμα με μετρημένο περιεχόμενο, όχι
+   *     βαθμίδα χωρίς recall. «Πρώτα μετράς αν το σήμα ξεχωρίζει κάτι, μετά του δίνεις εξουσία.»
+   *   · ΣΥΜΦΩΝΕΙ με το §Γ8. Εκείνο κράτησε τον φραγμό στα ≥5 Μποφ. επειδή εκεί η διαφορά
+   *     προστατευμένης/μερικής (0,36 μ.) ξεπερνά το σφάλμα του μοντέλου (0,25 μ.). Ο υπολογισμός
+   *     όμως υποθέτει «μερική ΑΝΟΙΧΤΗ» με fetch ~8 χλμ, ενώ το §Γ6 μέτρησε ότι το 38% των τομέων
+   *     «μερική» έχει fetch <2 χλμ. Το μπλε είναι ακριβώς ο τρόπος να ξεχωρίσεις τις δεύτερες:
+   *     δεν ξαναϋπολογίζει τίποτα εδώ — διαβάζει την απάντηση που έχει ήδη δοθεί.
+   *   · ΕΙΝΑΙ ΤΟ ΙΔΙΟ ΔΟΓΜΑ με το §7ε/§7στ, που έβαλε το χρώμα να κρίνει πάνω από τη φήμη. Εκεί
+   *     το χρώμα ταξινομούσε· εδώ ξεκλειδώνει. Ίδια πηγή (`mapBeachTones`), μία απάντηση.
+   *   · ΔΕΝ ΕΙΝΑΙ ΧΑΛΑΡΩΣΗ ΑΣΦΑΛΕΙΑΣ. Καμία πύλη δεν παρακάμπτεται: όποια μπαίνει έχει ήδη
+   *     περάσει το `passesTopPickSeaGate` (hourlySeaScore ≥7), το
+   *     `isTrustedTopRecommendationCandidate`, τις πόρτες πληρωμής/πλοήγησης και το
+   *     `getWindPriorityTopPickPool` (καμία `exposed` δεν φτάνει ως εδώ στα ≥3 Μποφ.). Και προς
+   *     την άλλη κατεύθυνση ο κανόνας είναι ΑΥΣΤΗΡΟΤΕΡΟΣ από πριν: μια ΚΙΤΡΙΝΗ προστατευμένη
+   *     έβγαινε #1 ενώ δίπλα της υπήρχαν μπλε — τώρα βγαίνει από την ομάδα. Χρώμα, ετυμηγορία
+   *     κολύμβησης και κύμα δεν αγγίζονται πουθενά.
+   *   · ΚΡΑΤΑΕΙ ΤΗ ΣΕΙΡΑ ΤΟΥ §Γ8. Μέσα στην ομάδα των ΙΔΑΝΙΚΩΝ, η προστατευμένη εξακολουθεί να
+   *     κατατάσσεται πάνω από τη μερική (`profileRank` στο prioritizeProtectedRecommendations) —
+   *     απλώς τώρα η μερική παίρνει τη θέση που έμενε κενή, αντί να χάνεται.
+   */
+  const tierGroup = (pool: SuitableBeach[]): SuitableBeach[] => {
+    if (pool.length === 0) return pool;
+    const bestPriority = Math.min(...pool.map(topPickProfilePriority));
+    return pool.filter(item => (
+      beachOwnBeaufort(item, beaufort, perBeachWind) < MEANINGFUL_WIND_TOP_PICK_BEAUFORT ||
+      topPickProfilePriority(item) === bestPriority
+    ));
+  };
+
+  const idealByMap = toneRank ? items.filter(item => toneRank(item.beach.id) === 0) : [];
+  if (idealByMap.length === 0) return tierGroup(items);
+  if (idealByMap.length >= TOP_PICK_PODIUM_SEATS) return idealByMap;
+
+  /**
+   * ΜΙΑ ΜΠΛΕ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΑΔΕΙΑΣΕΙ ΤΟ ΒΑΘΡΟ — ΤΟ §Γ8 ΞΑΝΑ, ΜΕ ΑΛΛΟ ΠΑΛΤΟ (15/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: «να μην είναι ποτέ 1 επιλογή τοπ, ειδικά ανάμεσα σε πολλές κατάλληλες». Λεζάντα
+   * «Ιδανική 1 · Καλές 13 · Μέτριες 32» και από κάτω βάθρο με **μία** κάρτα.
+   *
+   * ΤΟ ΛΑΘΟΣ ΗΤΑΝ ΔΙΚΟ ΜΑΣ, ΚΑΙ ΕΙΝΑΙ ΤΟ ΙΔΙΟ ΠΟΥ ΕΙΧΕ ΗΔΗ ΚΛΕΙΣΕΙ. Το §Γ8 (14/08) το γράφει
+   * με τα ίδια λόγια για τη ΒΑΘΜΙΔΑ: *«Αυτή η συνάρτηση δεν ταξινομεί: πετάει έξω. Κρατάει μόνο
+   * την κορυφαία βαθμίδα, οπότε μία και μόνη "προστατευμένη" αδειάζει το βάθρο από κάθε
+   * "μερική"»*. Το §Γ9 (15/08) έλυσε εκείνο και **ξαναέφτιαξε το ίδιο σχήμα με το ΧΡΩΜΑ**: το
+   * `return idealByMap` κρατάει μόνο την κορυφαία χρωματική βαθμίδα, οπότε **μία και μόνη μπλε
+   * αδειάζει το βάθρο από κάθε κίτρινη**. Δεύτερη φορά σε δύο μέρες που ένα φίλτρο κόβει αντί
+   * να ταξινομεί.
+   *
+   * ΓΙΑΤΙ ΤΟ ΦΙΛΤΡΟ ΔΕΝ ΠΡΟΣΘΕΤΕ ΤΙΠΟΤΑ. Το ίδιο το §Γ9 έβαλε το χρώμα να ταξινομεί ΠΡΩΤΟ
+   * (`compareTone`, πριν από `profileRank` και από τον πίνακα). Άρα οι μπλε βγαίνουν μπροστά
+   * **ούτως ή άλλως** — το φίλτρο δεν αλλάζει σειρά, μόνο αδειάζει θέσεις. Ακριβώς το επιχείρημα
+   * του §Γ9 για τη βαθμίδα, γυρισμένο στο ίδιο του το φίλτρο: *«ο φραγμός μιλάει μόνο όταν το
+   * χρώμα δεν έχει μιλήσει»* — εδώ το χρώμα έχει ήδη μιλήσει, στη σειρά.
+   *
+   * Ο ΚΑΝΟΝΑΣ: οι μπλε κρατούν τις θέσεις τους, και οι **κενές** θέσεις γεμίζουν από την
+   * επόμενη ομάδα — που περνάει κανονικά τον φραγμό βαθμίδας του §Γ8, άρα καμία χαλάρωση
+   * ασφαλείας. Καμία μπλε δεν χάνει θέση από κίτρινη: το `compareTone` το εγγυάται.
+   *
+   * ΔΕΝ ΑΝΑΙΡΕΙ ΤΗΝ ΑΠΟΦΑΣΗ ΤΗΣ 14/08 («το βάθρο με μία κάρτα μένει»). Εκεί η μονή κάρτα ήταν
+   * ό,τι είχε **πραγματικά** το νησί σε μέρα μελτεμιού. Εδώ δεκατρείς ΚΑΛΕΣ κάθονταν δίπλα και
+   * αποκλείονταν από φίλτρο, όχι από τον καιρό. Μονή κάρτα μόνο όταν δεν υπάρχει δεύτερη.
+   */
+  const idealIds = new Set(idealByMap.map(item => item.beach.id));
+  return [...idealByMap, ...tierGroup(items.filter(item => !idealIds.has(item.beach.id)))];
 };
 
 /**
@@ -384,18 +470,45 @@ export const prioritizeProtectedRecommendations = (
   perBeachWind?: PerBeachWindLookup,
   toneRank?: PodiumToneRank
 ): SuitableBeach[] => {
-  // The two doors, applied before anything is scored: pay-to-enter, and beaches whose navigation
-  // would hand over a coordinate instead of a Google pin. Both run on the raw pool rather than
-  // inside the sort, so a blocked beach cannot occupy a slot even when it would have scored first
-  // and so the shelter group is chosen only from beaches that can actually be recommended.
-  const recommendable = items.filter(item => (
-    !hasPaidEntryTopPickBlocker(item.beach) && opensGoogleMapsPin(item.beach)
-  ));
+  /**
+   * Η ΠΛΗΡΩΜΗ ΕΙΝΑΙ ΠΟΡΤΑ. Η ΠΙΝΕΖΑ GOOGLE ΕΓΙΝΕ ΠΡΟΤΙΜΗΣΗ (Μίλτος, 15/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: βάθρο με **μία** κάρτα δίπλα σε «Υπόλοιπες (14)». Μετρημένο στην Ανατολική
+   * Αττική: από τις **59** παραλίες μόνο **8** μπορούσαν ποτέ να μπουν στο βάθρο, και **23**
+   * κόβονταν **αποκλειστικά** επειδή δεν έχουμε επιβεβαιωμένο Google placeId. Από τις 8, μία
+   * μόνο είχε καλό χρώμα εκείνη την ώρα.
+   *
+   * ΓΙΑΤΙ Η ΑΙΤΙΟΛΟΓΗΣΗ ΤΗΣ 11/08 ΕΠΑΨΕ ΝΑ ΙΣΧΥΕΙ. Είχε γραφτεί ρητά: *«NO region is left with
+   * fewer than three of them, which is why this can be a hard door rather than a preference»*.
+   * Αυτό μετρήθηκε για την πόρτα **μόνη της**. Από τότε στοιβάχτηκαν από πάνω της άλλες τρεις —
+   * επιβεβαιωμένα στοιχεία, δύσβατη πρόσβαση, και (15/08) ο χρωματικός περιορισμός του §Γ10.
+   * Η τομή τους δεν μετρήθηκε ποτέ, και είναι αυτή που αδειάζει το βάθρο. **Μια πόρτα που
+   * δικαιολογήθηκε μόνη της δεν είναι δικαιολογημένη μέσα σε στοίβα.**
+   *
+   * Ο ΚΑΝΟΝΑΣ: όσες ανοίγουν πινέζα μπαίνουν **πρώτες**· οι υπόλοιπες μπαίνουν **μόνο** για να
+   * γεμίσουν θέσεις που αλλιώς θα έμεναν άδειες. Όταν οι πινεζωμένες φτάνουν να γεμίσουν το
+   * βάθρο, η συμπεριφορά είναι **byte-identical** με πριν — δηλαδή σε κάθε περιοχή που η
+   * μέτρηση της 11/08 περιέγραφε, τίποτα δεν αλλάζει.
+   *
+   * ΜΕΣΑ στο βάθρο κατατάσσει ο ΚΑΙΡΟΣ, όχι η πινέζα: μια μπλε χωρίς πινέζα δικαίως προηγείται
+   * μιας κίτρινης με πινέζα (§Γ9, §7ε/§7στ — το χρώμα είναι απόδειξη). Η πινέζα μπαίνει χαμηλά
+   * στον συγκριτή, ως ισοπαλία, ώστε ανάμεσα σε ίσες να ηγείται αυτή που πάει τον επισκέπτη
+   * καρφωτά. Το «Οδηγίες» των υπολοίπων δείχνει το **δικό μας διορθωμένο σημείο** — το ίδιο που
+   * πέρασε από τον πανελλαδικό έλεγχο πινέζας.
+   *
+   * Η ΠΛΗΡΩΜΗ ΔΕΝ ΑΓΓΙΖΕΤΑΙ: παραμένει σκληρή πόρτα, γιατί δεν είναι έλλειψη δεδομένων — είναι
+   * ιδιότητα της παραλίας που ο επισκέπτης θα πληρώσει.
+   */
+  const affordable = items.filter(item => !hasPaidEntryTopPickBlocker(item.beach));
+  const pinned = affordable.filter(item => opensGoogleMapsPin(item.beach));
+  const recommendable = pinned.length >= TOP_PICK_PODIUM_SEATS
+    ? pinned
+    : [...pinned, ...affordable.filter(item => !opensGoogleMapsPin(item.beach))];
   // The rating preference runs AFTER the weather has narrowed the pool, never before: filtering on
   // stars first could leave three well-rated but exposed beaches and drop the sheltered ones the
   // podium exists to find.
   const candidates = preferWellRatedTopPicks(
-    bestShelteredRecommendationGroup(recommendable, beaufort, perBeachWind)
+    bestShelteredRecommendationGroup(recommendable, beaufort, perBeachWind, toneRank)
   );
   const poolBeaufort = strongestBeaufortInPool(candidates, beaufort, perBeachWind);
   // Wind-aware ranks. When the pool is windy somewhere, a beach whose OWN shore is calm is
@@ -503,14 +616,50 @@ export const prioritizeProtectedRecommendations = (
   for (const item of candidates) scores.set(item, scoreOf(item));
 
   return [...candidates].sort((a, b) => {
-    const profileDiff = profileRank(a) - profileRank(b);
-    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
-
+    /**
+     * ΤΟ ΧΡΩΜΑ ΠΡΙΝ ΑΠΟ ΤΗ ΒΑΘΜΙΔΑ ΕΚΘΕΣΗΣ — Η ΔΕΥΤΕΡΗ ΜΙΣΗ ΤΗΣ ΙΔΙΑΣ ΔΙΟΡΘΩΣΗΣ (15/08/2026).
+     *
+     * Οι δύο αυτές γραμμές ήταν ανάποδα, και μέχρι τις 14/08 δεν φαινόταν: ο φραγμός βαθμίδας
+     * έτρεχε από 3 Μποφ. και ΙΣΟΠΕΔΩΝΕ τα profiles, οπότε το `profileDiff` έβγαινε πάντα 0 και
+     * το χρώμα αποφάσιζε ούτως ή άλλως. Το §Γ8 ανέβασε τον φραγμό στα 5, η δεξαμενή των 3-4
+     * Μποφ. έγινε μεικτή — και το `profileDiff` ξύπνησε πάνω από το χρώμα. Μετρημένο στο σχήμα
+     * της Νάξου: στα 3 και 4 Μποφ. μια ΚΙΤΡΙΝΗ προστατευμένη έβγαινε #2, πάνω από δύο ΜΠΛΕ.
+     * Είναι λέξη προς λέξη το εύρημα της 10/08 («πώς βγάζεις top 3 πιο προστατευμένες κάποιες
+     * κίτρινες ενώ έχεις και μπλε;»), που είχε κλείσει και ξανάνοιξε από την πλαϊνή πόρτα.
+     *
+     * Η ΒΙΒΛΟΣ ΤΟ ΕΧΕΙ ΗΔΗ ΑΠΑΝΤΗΣΕΙ (§7στ Α): η βαθμίδα έκθεσης «cannot see the difference,
+     * because a pin is blue for THREE reasons — exposure + the wind on that shore + the sea
+     * state — and this sort was reading only the first». Η βαθμίδα είναι ΕΝΑΣ από τους τρεις
+     * λόγους του χρώματος· δεν έχει λόγο να κρίνει από πάνω του.
+     *
+     * ΚΑΙ Η ΣΕΙΡΑ ΤΟΥ §Γ8 ΔΕΝ ΘΙΓΕΤΑΙ: «προστατευμένη πάνω από μερική από 3 Μποφ.» ισχύει
+     * ακέραιη ΜΕΣΑ στο ίδιο χρώμα, που είναι και η μόνη σύγκριση όπου η βαθμίδα ξέρει κάτι που
+     * το χρώμα δεν ξέρει ήδη. Χωρίς πίνακα χρωμάτων (σχεδιαστής, prerender, πρώτο frame) το
+     * `compareTone` επιστρέφει 0 και η σειρά είναι byte-identical με πριν.
+     */
     const toneDiff = compareTone(a, b);
     if (toneDiff !== 0) return toneDiff;
 
+    const profileDiff = profileRank(a) - profileRank(b);
+    if (poolBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT && profileDiff !== 0) return profileDiff;
+
     const tableDiff = (scores.get(b) ?? 0) - (scores.get(a) ?? 0);
     if (tableDiff !== 0) return tableDiff;
+
+    /**
+     * ΑΝΑΜΕΣΑ ΣΕ ΙΣΕΣ, ΗΓΕΙΤΑΙ ΑΥΤΗ ΠΟΥ ΣΕ ΠΑΕΙ ΚΑΡΦΩΤΑ (15/08/2026).
+     *
+     * Από σήμερα η πινέζα Google δεν είναι πόρτα αλλά προτίμηση εισόδου (βλ. `recommendable` πιο
+     * πάνω), οπότε μια παραλία χωρίς επιβεβαιωμένο placeId μπορεί να πάρει θέση που αλλιώς θα
+     * έμενε άδεια. Όταν όμως ο καιρός έχει πει ό,τι είχε να πει και δύο παραλίες είναι ίσες, το
+     * #1 πάει σε αυτή που ανοίγει καρτέλα τόπου: το «Οδηγίες» της είναι το ασφαλέστερο.
+     *
+     * Κάθεται ΕΔΩ και όχι ψηλότερα επειδή είναι σήμα για τα **δικά μας αρχεία**, όχι για τη
+     * θάλασσα. Πάνω από το χρώμα θα άφηνε μια κίτρινη με πινέζα να προσπεράσει μια μπλε χωρίς —
+     * ακριβώς το λάθος που το §Γ9 διόρθωσε για τη φήμη.
+     */
+    const pinDiff = Number(opensGoogleMapsPin(b.beach)) - Number(opensGoogleMapsPin(a.beach));
+    if (pinDiff !== 0) return pinDiff;
 
     /**
      * A GENUINE TIE — AND NOW SOMEBODY DECIDES IT (Μίλτος, 11/08/2026).

@@ -128,7 +128,7 @@ import { getActiveWeatherFixtureScenario } from './utils/weatherFixtures';
 import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import { windSectorFromDegrees, type ExposureLevel } from './utils/windExposure';
-import { CALMNESS_ORDER, selectSuitableByTone, type CalmnessTone } from './utils/suitabilityTone';
+import { CALMNESS_ORDER, selectSuitableByTone, selectSuitableToneGroups, type CalmnessTone } from './utils/suitabilityTone';
 import {
   getStayWindowSlots,
   getStaySampleSlots,
@@ -503,7 +503,7 @@ const StartupLocationPrompt: React.FC<{
 
   return (
     <section className="relative z-30 bg-sky-50 px-4 pt-3 text-slate-950 sm:px-5" aria-label={copy.title} data-nosnippet="true">
-      <div className="mx-auto flex max-w-[110rem] flex-col gap-3 rounded-2xl border border-sky-100 bg-white/90 p-3 shadow-sm shadow-sky-900/8 ring-1 ring-white/60 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-4">
+      <div className="mx-auto flex max-w-[110rem] flex-col gap-3 rounded-2xl border border-sky-100 bg-white p-3 shadow-sm shadow-sky-900/8 ring-1 ring-white/60 sm:flex-row sm:items-center sm:justify-between sm:p-4">
         <div className="flex min-w-0 gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
             <Navigation className="h-5 w-5" aria-hidden="true" />
@@ -3207,10 +3207,20 @@ export const App: React.FC = () => {
     }
   };
 
+  /**
+   * Fires for EVERY whole hour the finger crosses on the slider, so it must stay cheap.
+   * Resetting the mobile list used to live here: on a full drag across the day that meant
+   * fifteen scroll-to-top + recentre-the-map passes, which is what "the bar sticks and the
+   * site freezes for a moment" was (reported 14/08/2026). It moved to handleMapHourSettled.
+   */
   const handleMapHourChange = (dt: number) => {
     if (dt === selectedHourDt) return;
-    resetMobileResultListPosition();
     setSelectedHourDt(dt);
+  };
+
+  /** Once the visitor has actually landed on an hour: now the list may jump back to the top. */
+  const handleMapHourSettled = () => {
+    resetMobileResultListPosition();
   };
 
 
@@ -5463,7 +5473,7 @@ export const App: React.FC = () => {
 
     return (
       <div
-        className="relative z-10 sm:hidden rounded-[1.1rem] border border-sky-100 bg-white/90 p-1.5 shadow-sm shadow-sky-900/5 backdrop-blur-xl"
+        className="relative z-10 sm:hidden rounded-[1.1rem] border border-sky-100 bg-white p-1.5 shadow-sm shadow-sky-900/5"
         data-testid="mobile-map-day-strip"
       >
         <div
@@ -7026,13 +7036,6 @@ export const App: React.FC = () => {
   // of the home, so the top-pick description stays about the beach itself and the
   // same sentence is not printed twice on one screen.
   const headerTopDescription = headerTopDescriptionBase;
-  const visitTimeLabel = getLocalizedCopy(language, {
-    en: 'Best time',
-      gr: 'Καλύτερη ώρα',
-    fr: 'Meilleur moment',
-    de: 'Beste Zeit',
-    it: 'Ora migliore',
-  });
   const windPriorityDirectorySource = showNoIdealFallbackSection
     ? (mapAlignedLessExposedDirectorySource.length > 0 ? mapAlignedLessExposedDirectorySource : noIdealFallbackCandidates)
     : showStrongManageableSection
@@ -7055,34 +7058,21 @@ export const App: React.FC = () => {
     perBeachMapWind,
     podiumToneRank
   );
-  const shouldSuppressDirectoryTopBeachFallback = Boolean(
-    currentBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT &&
-    mapAlignedVisibleProtectedDirectorySource.length > 0 &&
-    mapAlignedProtectedDirectorySource.length === 0
-  );
-  const directoryTopBeach = sortBy === 'distance' || shouldSuppressDirectoryTopBeachFallback
-    ? null
-    : mapAlignedProtectedDirectorySource[0]
-    || windPriorityDirectorySource[0]
-    || headerTopBeach
-    || directoryRecommendationSource[0]
-    || directoryFallbackSource[0]
-    || null;
+  /**
+   * ΕΔΩ ΖΟΥΣΕ Η ΜΟΝΗ «Top παραλία σήμερα» — ΒΓΗΚΕ (Μίλτος, 15/08/2026).
+   *
+   * `directoryTopBeach` / `shouldDisplayDirectoryTopPick` / `displayedDirectoryTopBeach` διάλεγαν
+   * μία παραλία για μια ολοσέλιδη κάρτα με φωτογραφία και χρυσό «1 ★», και η κάρτα εμφανιζόταν
+   * ΜΟΝΟ όταν το βάθρο έμενε άδειο — δηλαδή ακριβώς όταν είχαμε τα λιγότερα να πούμε. Η πλήρης
+   * αιτιολόγηση είναι στο BeachSearcherHomeProps, πάνω από το `forecastDays`.
+   *
+   * Το `mapAlignedProtectedDirectorySource` και τα υπόλοιπα που τάιζαν την επιλογή μένουν: τα
+   * διαβάζει η λίστα «Καταλληλότερες παραλίες», που είναι πλέον η μόνη απάντηση σε αυτές τις μέρες.
+   */
   // At ≤2 Bft (calm day or scrubbed calm hour) the wind doesn't separate
   // beaches, so every beach is a suitable pick. We drop the curated "top picks"
   // highlight and present them all as suitable instead of a misleading few.
   const isCalmAllSuitable = calmAllAroundSummary?.isEveryBeachSuitable ?? false;
-  const shouldDisplayDirectoryTopPick = Boolean(
-    showDecisionRecommendations &&
-    !hasActiveSearchOrFilters &&
-    !isCalmAllSuitable
-  );
-  // The standalone "★ Top choice" hero is a highest-priority/best-conditions pick, not a
-  // nearest one, so it must not headline "Κοντά μου": proximity leads there, and the
-  // distance-sorted podium + suitable list already surface the nearest beaches. (It only
-  // ever showed here when no beach qualified for the podium, i.e. a farther beach would
-  // have taken the #1 hero slot over the one right next to the user.)
-  const displayedDirectoryTopBeach = shouldDisplayDirectoryTopPick && !isNearMeRegionActive ? directoryTopBeach : null;
   const directoryBaseBeachCardSource = (() => {
     if (sortBy === 'distance') {
       return distanceSortedDirectoryBeachCards;
@@ -7162,7 +7152,49 @@ export const App: React.FC = () => {
       compareOptionalDistance(a, b) || compareTouristTopPickPriority(a, b) || b.score - a.score
     ));
   })();
+  /**
+   * ΤΟ ΒΑΘΡΟ ΔΕΝ ΔΙΝΕΙ ΜΕΤΑΛΛΙΟ ΣΕ ΧΡΩΜΑ ΠΟΥ Η ΛΙΣΤΑ ΔΕΝ ΔΕΧΕΤΑΙ (Μίλτος, 15/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: λεζάντα «Ιδανική 1 · Καλές 16», και από κάτω «Top 1» + «Υπόλοιπες (17)». Η
+   * λίστα αφαιρεί πάντα τις παραλίες του βάθρου (directorySuitableBeachCards), άρα 1 + 17 = 18
+   * ενώ τα δύο καλύτερα χρώματα είναι 1 + 16 = 17. Δεν αφαιρέθηκε τίποτα — δηλαδή η παραλία με
+   * το μετάλλιο ΔΕΝ ήταν μέλος των δύο καλύτερων χρωμάτων. Μια ΜΕΤΡΙΑ φορούσε το 🏆 πάνω από
+   * δεκαέξι ΚΑΛΕΣ, ενώ η μοναδική ΙΔΑΝΙΚΗ καθόταν από κάτω στις «Υπόλοιπες».
+   *
+   * ΠΩΣ ΕΜΠΑΙΝΕ: το `directoryTopRecommendationCandidatePool` ενώνει τρεις πηγές και μόνο η μία
+   * (`directoryVisibleBeachCardSource`) περνά από `selectSuitableByTone`. Οι άλλες δύο —
+   * `recommendedSuitableBeaches`, `directoryFallbackSource` — και η δεξαμενή συμπλήρωσης
+   * (`shelteredRankedFallbackPool`) δεν ξέρουν καθόλου από χρώμα.
+   *
+   * Ο ΚΑΝΟΝΑΣ: υποψήφια του βάθρου μπορεί να είναι μόνο παραλία σε χρώμα που η λίστα ΗΔΗ
+   * προσφέρει σήμερα. Δεν είναι νέο κατώφλι — είναι η ίδια συνάρτηση (`selectSuitableToneGroups`),
+   * διαβασμένη από τη δεύτερη επιφάνεια. Ίδιο δόγμα με το §Γ9: το χρώμα έχει ήδη απαντήσει,
+   * εδώ απλώς διαβάζεται.
+   *
+   * ΜΟΝΟΔΡΟΜΟ: μόνο ΑΦΑΙΡΕΙ υποψήφιες. Και δεν μπορεί να αδειάσει το βάθρο σε δύσκολη μέρα,
+   * γιατί τα «δύο καλύτερα χρώματα» είναι σχετικά: χωρίς μπλε γίνονται κίτρινο+πορτοκαλί, σε
+   * σκληρό νησί μόνο πορτοκαλί. Μόνο η ΔΥΣΚΟΛΗ μένει δομικά έξω — που ήταν ήδη έξω.
+   *
+   * ΣΙΩΠΗ ΟΤΑΝ Ο ΧΑΡΤΗΣ ΔΕΝ ΕΧΕΙ ΜΙΛΗΣΕΙ: ίδιος φύλακας με το `directoryVisibleBeachCardSource`
+   * από πάνω (prerender, πρώτο frame, info-only). Εκεί επιστρέφει null και η προηγούμενη
+   * συμπεριφορά μένει ακέραιη — ποτέ «κανένα χρώμα άρα καμία υποψήφια».
+   */
+  const podiumAdmissibleTones: Set<CalmnessTone> | null = (() => {
+    if (Object.keys(mapBeachTones).length === 0) return null;
+    // A legend colour filter stands the podium down entirely (isTabbedPicksMode), so the
+    // unfiltered offer is the right basis here — not the one-colour view the reader picked.
+    const listable = recommendableFilteredMapSuitableBeaches.filter(isListableInDirectory);
+    const groups = selectSuitableToneGroups(listable, item => mapBeachTones[item.beach.id]);
+    return groups.length > 0 ? new Set(groups) : null;
+  })();
+  const isPodiumColourAdmissible = (item: SuitableBeach): boolean => {
+    if (!podiumAdmissibleTones) return true;
+    const tone = mapBeachTones[item.beach.id];
+    // An unpainted beach keeps its old freedom: the map simply has not reported it yet.
+    return !tone || podiumAdmissibleTones.has(tone);
+  };
   const isDirectoryTopRecommendationCandidate = (item: SuitableBeach): boolean => {
+    if (!isPodiumColourAdmissible(item)) return false;
     if (!isTrustedTopRecommendationCandidate(item, undefined, beaufortAtBeach(item))) return false;
     if (item.swimmingComfort === 'avoid_swimming') return false;
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
@@ -7193,11 +7225,15 @@ export const App: React.FC = () => {
    * floor, not the ranking.
    *
    * Decision by Miltos, 09/08/2026, over the alternative of staying silent.
+   *
+   * ΚΑΙ ΑΥΤΗ Η ΔΕΞΑΜΕΝΗ ΠΕΡΝΑΕΙ ΑΠΟ ΤΟ ΧΡΩΜΑ (15/08/2026). Γεμίζει τις κενές θέσεις του βάθρου,
+   * άρα είναι η δεύτερη πόρτα από την οποία έμπαινε ΜΕΤΡΙΑ πάνω από ΚΑΛΕΣ. Ο περιορισμός είναι ο
+   * ίδιος `isPodiumColourAdmissible` — και δεν αγγίζει το δάπεδο ασφαλείας από πάνω του.
    */
   const isShelteredFallbackCandidate = (item: SuitableBeach): boolean => {
     if (item.swimmingComfort === 'avoid_swimming') return false;
     if (item.warnings?.some(warning => warning.type === 'official_warning' && warning.severity === 'critical')) return false;
-    return true;
+    return isPodiumColourAdmissible(item);
   };
   // ONLY the strict pool being non-empty stands this down. It used to ALSO stand down whenever
   // showNoIdealFallbackSection / showStrongManageableSection were true, and that was the bug
@@ -7465,6 +7501,35 @@ export const App: React.FC = () => {
   });
   const directoryTopRecommendationIds = new Set(directoryTopRecommendationCards.map(item => item.beach.id));
   /**
+   * ΟΙ ΠΑΡΑΛΙΕΣ ΠΟΥ Ο ΧΑΡΤΗΣ ΕΒΑΨΕ ΜΕ ΤΟ ΚΑΛΥΤΕΡΟ ΧΡΩΜΑ ΚΑΙ ΤΟ ΒΑΘΡΟ ΔΕΝ ΤΙΣ ΟΝΟΜΑΣΕ.
+   *
+   * «Έχεις μια ιδανική που δεν την έχεις ούτε καν να είναι τοπ 2» (Μίλτος, 15/08/2026). Η λεζάντα
+   * μετράει πινέζες· το βάθρο περνάει από δέκα ακόμη πύλες που η λεζάντα αγνοεί (επιβεβαιωμένα
+   * στοιχεία, πρόσβαση, πληρωμή, πλοήγηση). Όταν αυτές οι δύο απαντήσεις διαφωνούν ΣΤΟ ΚΑΛΥΤΕΡΟ
+   * ΧΡΩΜΑ, ο αναγνώστης το βλέπει και δεν έχει τρόπο να το εξηγήσει.
+   *
+   * Το σύνολο τροφοδοτεί ΜΟΝΟ ένα σημείωμα στην κάρτα (BeachSearcherHome, `unverified`). Δεν
+   * αλλάζει σειρά, χρώμα, βαθμολογία ή ποιος μπαίνει στο βάθρο — η μόνη του δουλειά είναι να
+   * σπάει τη σιωπή εκεί ακριβώς όπου η σιωπή διαβάζεται σαν σφάλμα.
+   *
+   * «Καλύτερο χρώμα» = το πρώτο των `podiumAdmissibleTones`, δηλαδή η ίδια απάντηση που δίνει η
+   * λίστα — όχι σταθερά «μπλε». Σε νησί χωρίς καμία μπλε, το καλύτερο είναι το κίτρινο και ο
+   * κανόνας διαβάζεται το ίδιο σωστά.
+   */
+  const topColourOutsideTopPicksIds = (() => {
+    const best = podiumAdmissibleTones
+      ? CALMNESS_ORDER.slice().reverse().find(tone => podiumAdmissibleTones.has(tone))
+      : undefined;
+    if (!best) return undefined;
+    const ids = new Set<number>();
+    directoryVisibleBeachCardSource.forEach(item => {
+      if (mapBeachTones[item.beach.id] !== best) return;
+      if (directoryTopRecommendationIds.has(item.beach.id)) return;
+      ids.add(item.beach.id);
+    });
+    return ids;
+  })();
+  /**
    * «ΚΑΜΙΑ ΔΕΝ ΕΙΝΑΙ ΙΔΑΝΙΚΗ ΤΩΡΑ» is decided by the CARDS, not by the pool that produced them.
    *
    * It used to mean «the strict pool was empty», which missed the case that matters most: on a
@@ -7476,8 +7541,30 @@ export const App: React.FC = () => {
    *
    * A podium where even ONE card cleared the strict bar is not that day: there the genuine pick
    * leads and the topped-up seats beside it keep their own, differing, caveat.
+   *
+   * ΚΑΙ ΣΩΠΑΙΝΕΙ ΟΤΑΝ Ο ΧΑΡΤΗΣ ΕΧΕΙ ΒΑΨΕΙ ΜΙΑ ΤΟΥΣ ΙΔΑΝΙΚΗ (Μίλτος, 15/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: λεζάντα «**Ιδανική 1 παραλία**» και 200 px πιο κάτω, πάνω από την ίδια ακριβώς
+   * παραλία, «**Καμία δεν είναι ιδανική**». Η λέξη «ιδανική» έχει ΕΝΑΝ ιδιοκτήτη σε αυτή τη
+   * σελίδα: τη λεζάντα του χάρτη, όπου σημαίνει **χρώμα** (`conditionToneLabels.blue`). Εδώ
+   * χρησιμοποιούνταν με άλλη σημασία — «καμία δεν πέρασε τους αυστηρούς ελέγχους μας» — και οι
+   * δύο σημασίες συναντήθηκαν στην ίδια οθόνη.
+   *
+   * Είναι η κατηγορία §Κ1 της βίβλου με τους ρόλους αντεστραμμένους: εκεί η λέξη ήταν
+   * ΧΕΙΡΟΤΕΡΗ από την κουκκίδα και κανείς δεν το είχε φανταστεί πρόβλημα. Ίδιο πράγμα εδώ, σε
+   * επίπεδο βάθρου: η κουκκίδα λέει ΙΔΑΝΙΚΗ, η λέξη από πάνω της λέει «καμία». **Η κουκκίδα
+   * είναι η αυθεντία** (απόφαση 02/08) — άρα σωπαίνει η λέξη.
+   *
+   * Ο έλεγχος «δεν πέρασε τους αυστηρούς ελέγχους» ΔΕΝ χαλαρώνει: η παραλία μπαίνει στο βάθρο
+   * όπως και πριν, και το «τι δεν ξέρουμε γι' αυτήν» το λέει η **κάρτα** της, όχι μια γενική
+   * επικεφαλίδα που αντιφάσκει με τον χάρτη από πάνω. Όταν όντως καμία δεν είναι μπλε, η φράση
+   * βγαίνει κανονικά — και τότε συμφωνεί με τη λεζάντα, που δεν δείχνει καμία «Ιδανική».
    */
+  const podiumHasMapIdeal = directoryTopRecommendationCards.some(
+    item => podiumToneRank(item.beach.id) === 0
+  );
   const isShelteredFallbackPodium = directoryTopRecommendationCards.length > 0
+    && !podiumHasMapIdeal
     && !directoryTopRecommendationCards.some(item => strictTopRecommendationIds.has(item.beach.id));
   // The region podium's own day-turn sentence, about the beach the podium actually leads with.
   // Silent by default: it speaks only when the day genuinely gets WORSE (utils/stayWindow's
@@ -7555,35 +7642,6 @@ export const App: React.FC = () => {
     : shouldShowDirectoryTopRecommendations
       ? !shouldShowAllBeachesBelowTopRecommendations && directoryHomeSuitableBeachCards.length > 0
       : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
-  const directoryTopBeachName = directoryTopBeach
-    ? displayBeachName(directoryTopBeach.beach.name, language)
-    : '';
-  const directoryTopUsesWindPriority = Boolean(
-    windPriorityDirectorySource[0] &&
-    directoryTopBeach?.beach.id === windPriorityDirectorySource[0].beach.id
-  );
-  const directoryTopTimingLabel = directoryTopBeach
-    ? getTopPickTimingLabel(directoryTopBeach.bestBeachTime, selectedDayDate, language, topPickNow)
-    : undefined;
-  const directoryTopDescription = directoryTopBeach
-    ? directoryTopBeach.beach.id === headerTopBeach?.beach.id && headerTopDescription
-      ? headerTopDescription
-      : directoryTopUsesWindPriority
-      ? getLocalizedCopy(language, {
-        en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because the wind may be less annoying there, with practical access.`,
-      gr: `Η παραλία ${beachSentenceName(directoryTopBeachName, 'gr')} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ο άνεμος μπορεί να είναι λιγότερο ενοχλητικός εκεί και η πρόσβαση είναι πρακτική.`,
-        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car le vent peut y être moins gênant, avec un accès pratique.`,
-        de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil der Wind dort weniger störend sein kann und der Zugang praktisch ist.`,
-        it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché lì il vento può essere meno fastidioso e l’accesso è pratico.`,
-      })
-      : getLocalizedCopy(language, {
-        en: `${directoryTopBeachName} is the best pick ${selectedDayPrefix} because it fits the conditions well and combines comfortable sea with practical access.`,
-      gr: `Η παραλία ${beachSentenceName(directoryTopBeachName, 'gr')} είναι η καλύτερη πρόταση για ${selectedDayPrefix}, γιατί ταιριάζει καλά στις συνθήκες και συνδυάζει άνετη θάλασσα με πρακτική πρόσβαση.`,
-        fr: `${directoryTopBeachName} est le meilleur choix ${selectedDayPrefix}, car elle correspond bien aux conditions et combine mer agréable et accès pratique.`,
-        de: `${directoryTopBeachName} ist ${selectedDayPrefix} die beste Wahl, weil sie gut zu den Bedingungen passt und angenehmes Meer mit praktischem Zugang verbindet.`,
-        it: `${directoryTopBeachName} è la scelta migliore ${selectedDayPrefix}, perché si adatta bene alle condizioni e combina mare piacevole con accesso pratico.`,
-      })
-    : '';
   const getExactBeachPhoto = (item: SuitableBeach | null) => {
     if (!item || !selectedIsland) return null;
     const lookup = getBeachPhotoLookup(
@@ -8191,6 +8249,7 @@ export const App: React.FC = () => {
           hourSlots={mapHourSlots}
           selectedHourDt={selectedHourDt}
           onHourChange={handleMapHourChange}
+          onHourSettled={handleMapHourSettled}
           enableHourSlider
           stayHours={stayHours}
           onStayHoursChange={handleStayHoursChange}
@@ -8325,6 +8384,7 @@ export const App: React.FC = () => {
               mapDayStrip={mobileMapDayStrip}
               mapPreview={directoryMapPreview}
               topRecommendationCards={toneFilteredTopRecommendationCards}
+              topColourOutsideTopPicksIds={topColourOutsideTopPicksIds}
               // Same clock the home page's picks are ranked and labelled with, passed down rather
               // than read again inside the component: a second `new Date()` down there is exactly
               // how the device-clock bug got in (utils/athensTime.ts).
@@ -8343,12 +8403,6 @@ export const App: React.FC = () => {
               showSuitableBeachSection={shouldShowDirectorySuitableSection}
               allBeachCards={toneFilteredAllSourceBeaches}
               beachWeatherContexts={mapSuitableBeaches}
-              // The "beach of the day" hero is a pick across ALL colours, so it stands down while
-              // the user has narrowed the map to one of them — otherwise a red-filtered list would
-              // still be crowned by a blue beach.
-              topBeachToday={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 ? null : displayedDirectoryTopBeach}
-              topBeachDescription={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 || !displayedDirectoryTopBeach ? '' : directoryTopDescription}
-              topBeachTimingLabel={mapToneFilter || toneFilteredTopRecommendationCards.length > 0 ? undefined : directoryTopTimingLabel}
               forecastDays={forecast || undefined}
               selectedDayIndex={selectedDayIndex}
               selectedForecast={selectedForecast}
@@ -8495,7 +8549,7 @@ export const App: React.FC = () => {
       {showRecommendationPreviewSection && forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
         <section className="relative z-20 px-3 pb-3 pt-1 sm:px-4 sm:pb-5 sm:pt-0" aria-label={recommendationModeTitle}>
           <div className="mx-auto max-w-6xl">
-            <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
+            <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/95 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
               <div className="mb-3 space-y-1 px-1 text-center sm:mb-4">
                 <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
                   {recommendationModeTitle}
@@ -8592,6 +8646,7 @@ export const App: React.FC = () => {
                     hourSlots={mapHourSlots}
                     selectedHourDt={selectedHourDt}
                     onHourChange={handleMapHourChange}
+                    onHourSettled={handleMapHourSettled}
                     enableHourSlider
                     stayHours={stayHours}
                     onStayHoursChange={handleStayHoursChange}
@@ -8757,7 +8812,7 @@ export const App: React.FC = () => {
               {/* Top Recommendations */}
               {forecast?.[selectedDayIndex] && !isUnsafeWinter && !showHeaderForecast && !showRecommendationPreviewSection && !hasActiveSearchOrFilters && showDecisionRecommendations && recommendationSectionBeaches.length > 0 && !isInfoOnlyRegion && (
                 <section className="!mt-0 sm:!mt-5" data-nosnippet="true">
-                  <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/72 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
+                  <div className="relative -mx-3 rounded-[1.35rem] border border-white/70 bg-white/95 px-3 pb-4 pt-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 sm:mx-0 sm:px-5 sm:pb-5 sm:pt-5">
                     <div className="mb-3 space-y-1 px-1 text-center sm:mb-4">
                       <h2 className="font-heading text-lg font-extrabold leading-tight text-slate-950 sm:text-2xl">
                         {recommendationModeTitle}
@@ -8856,7 +8911,7 @@ export const App: React.FC = () => {
               )}
 
               {betaFeedbackUrl && (
-                <section className="mx-auto max-w-3xl rounded-[1.5rem] border border-white/60 bg-white/62 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/35 backdrop-blur-xl" data-nosnippet="true">
+                <section className="mx-auto max-w-3xl rounded-[1.5rem] border border-white/60 bg-white/95 p-4 shadow-sm shadow-sky-900/5 ring-1 ring-white/35" data-nosnippet="true">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                       <h2 className="font-heading text-base font-bold text-slate-900">
@@ -8882,7 +8937,7 @@ export const App: React.FC = () => {
               {selectedIsland && !isUnsafeWinter && !isDesktopViewport && !showHeaderForecast && !isMapHiddenRegion && (
                 <section id="map-section" ref={mapSectionRef} className="!mt-4 space-y-2 sm:hidden sm:space-y-5" data-nosnippet="true">
                   <div className="space-y-1 sm:space-y-2">
-                    <div className="flex min-h-10 w-full items-center justify-center rounded-full border border-white/50 bg-white/42 px-5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 backdrop-blur-xl sm:px-6">
+                    <div className="flex min-h-10 w-full items-center justify-center rounded-full border border-white/50 bg-white/95 px-5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/30 sm:px-6">
                         <h2 className="w-full text-center font-heading text-sm font-semibold leading-tight text-slate-600 sm:text-base">
                         <span className="sm:hidden">{homeCopy.viewOnMap[language]}</span>
                         <span className="hidden sm:inline">{homeCopy.mapTitle[language]}</span>

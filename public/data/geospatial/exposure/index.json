@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-13T19:24:03.948Z",
+  "generatedAt": "2026-08-14T15:45:16.044Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2861,
-    "generatedProfiles": 2861,
+    "beachCount": 2862,
+    "generatedProfiles": 2862,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -192,47 +192,47 @@
       },
       "attica-east-attica-mainland": {
         "regionName": "East Attica",
-        "beachCount": 60,
-        "generatedProfiles": 60,
+        "beachCount": 59,
+        "generatedProfiles": 59,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 39,
+            "protected": 38,
             "partial": 11,
             "exposed": 10
           },
           "NE": {
             "protected": 31,
-            "partial": 13,
+            "partial": 12,
             "exposed": 16
           },
           "E": {
             "protected": 27,
-            "partial": 15,
+            "partial": 14,
             "exposed": 18
           },
           "SE": {
             "protected": 23,
             "partial": 17,
-            "exposed": 20
+            "exposed": 19
           },
           "S": {
             "protected": 23,
-            "partial": 18,
+            "partial": 17,
             "exposed": 19
           },
           "SW": {
-            "protected": 33,
+            "protected": 32,
             "partial": 8,
             "exposed": 19
           },
           "W": {
-            "protected": 36,
+            "protected": 35,
             "partial": 14,
             "exposed": 10
           },
           "NW": {
-            "protected": 42,
+            "protected": 41,
             "partial": 10,
             "exposed": 8
           }
@@ -624,47 +624,47 @@
       },
       "central-greece-evia": {
         "regionName": "Evia",
-        "beachCount": 129,
-        "generatedProfiles": 129,
+        "beachCount": 130,
+        "generatedProfiles": 130,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 61,
+            "protected": 62,
             "partial": 26,
             "exposed": 42
           },
           "NE": {
             "protected": 50,
-            "partial": 28,
+            "partial": 29,
             "exposed": 51
           },
           "E": {
             "protected": 49,
-            "partial": 33,
+            "partial": 34,
             "exposed": 47
           },
           "SE": {
             "protected": 60,
             "partial": 35,
-            "exposed": 34
+            "exposed": 35
           },
           "S": {
             "protected": 75,
-            "partial": 26,
+            "partial": 27,
             "exposed": 28
           },
           "SW": {
-            "protected": 86,
+            "protected": 87,
             "partial": 19,
             "exposed": 24
           },
           "W": {
-            "protected": 86,
+            "protected": 87,
             "partial": 26,
             "exposed": 17
           },
           "NW": {
-            "protected": 72,
+            "protected": 73,
             "partial": 34,
             "exposed": 23
           }
@@ -1152,48 +1152,48 @@
       },
       "crete-crete-rethymno": {
         "regionName": "Rethymno",
-        "beachCount": 47,
-        "generatedProfiles": 47,
+        "beachCount": 48,
+        "generatedProfiles": 48,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 34,
+            "protected": 35,
             "partial": 2,
             "exposed": 11
           },
           "NE": {
-            "protected": 35,
+            "protected": 36,
             "partial": 2,
             "exposed": 10
           },
           "E": {
-            "protected": 28,
+            "protected": 29,
             "partial": 14,
             "exposed": 5
           },
           "SE": {
-            "protected": 17,
+            "protected": 18,
             "partial": 13,
             "exposed": 17
           },
           "S": {
             "protected": 13,
-            "partial": 3,
+            "partial": 4,
             "exposed": 31
           },
           "SW": {
             "protected": 12,
             "partial": 8,
-            "exposed": 27
+            "exposed": 28
           },
           "W": {
             "protected": 21,
             "partial": 8,
-            "exposed": 18
+            "exposed": 19
           },
           "NW": {
             "protected": 31,
-            "partial": 9,
+            "partial": 10,
             "exposed": 7
           }
         }
@@ -4259,8 +4259,8 @@
             "exposed": 8
           },
           "W": {
-            "protected": 23,
-            "partial": 14,
+            "protected": 24,
+            "partial": 13,
             "exposed": 2
           },
           "NW": {

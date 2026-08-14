@@ -649,6 +649,10 @@ for (const tone of emittedTones) {
     // The legend row shows the COUNTED phrase, not the bare word (12/08/2026): «Ιδανικές 4
     // παραλίες». Both forms must exist and both must contain the {n} slot — a phrase without it
     // renders a noun with no number, which is exactly the ambiguity the change removed.
+    //
+    // Still exactly two forms after 15/08/2026: the phone stopped printing each row's `meaning`
+    // underneath, but the counted phrase itself — noun included — is what every row prints at
+    // every width, so this check is unchanged by that.
     for (const form of ['countOne', 'countMany']) {
       const phrase = conditionToneLabels?.[lang]?.[tone]?.[form];
       if (typeof phrase !== 'string' || !phrase.includes('{n}')) {

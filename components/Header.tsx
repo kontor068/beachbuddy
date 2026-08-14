@@ -213,7 +213,7 @@ const Header: React.FC<HeaderProps> = ({
   // again.
   return (
     <>
-      <header className={`${stickyTopBar ? 'fixed inset-x-0' : 'relative'} top-0 z-50 border-b border-white/70 bg-white/82 text-slate-800 shadow-sm shadow-sky-900/5 backdrop-blur-xl`}>
+      <header className={`${stickyTopBar ? 'fixed inset-x-0' : 'relative'} top-0 z-50 border-b border-white/70 bg-white/95 text-slate-800 shadow-sm shadow-sky-900/5`}>
         <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
           <button
             type="button"
@@ -344,7 +344,7 @@ const Header: React.FC<HeaderProps> = ({
                 <div
                   role="listbox"
                   aria-label={switchLanguageLabel}
-                  className="absolute right-0 top-full z-[60] mt-2 w-44 overflow-hidden rounded-2xl border border-cyan-100 bg-white/96 p-1.5 text-sm font-bold text-slate-700 shadow-xl shadow-sky-900/14 ring-1 ring-white/70 backdrop-blur-xl"
+                  className="absolute right-0 top-full z-[60] mt-2 w-44 overflow-hidden rounded-2xl border border-cyan-100 bg-white p-1.5 text-sm font-bold text-slate-700 shadow-xl shadow-sky-900/14 ring-1 ring-white/70"
                 >
                   {SUPPORTED_LANGUAGES.map(lang => {
                     const selected = lang === language;

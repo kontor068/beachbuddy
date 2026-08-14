@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-08-14T14:32:36.636Z",
+  "params": {
+    "types": [
+      "unknown"
+    ],
+    "regionFilter": "crete-crete-heraklion",
+    "radius": 300,
+    "pavedThreshold": 120
+  },
+  "totals": {
+    "candidates": 4,
+    "checked": 4,
+    "suspect": 3
+  },
+  "byRegion": {
+    "crete-crete-heraklion": {
+      "checked": 4,
+      "suspect": 3
+    }
+  },
+  "suspects": [
+    {
+      "id": 620,
+      "name": "Afrathia",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 198,
+      "footM": 65,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/35.04395/24.75571"
+    },
+    {
+      "id": 623,
+      "name": "Καραβόβρυση",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 438,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/34.93796/24.81594"
+    },
+    {
+      "id": 629,
+      "name": "Ψιλή Άμμος",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 102,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/34.93823/24.86089"
+    }
+  ],
+  "all": [
+    {
+      "id": 620,
+      "name": "Afrathia",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 198,
+      "footM": 65,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/35.04395/24.75571"
+    },
+    {
+      "id": 623,
+      "name": "Καραβόβρυση",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 438,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/34.93796/24.81594"
+    },
+    {
+      "id": 629,
+      "name": "Ψιλή Άμμος",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "006_501_600",
+      "pavedM": null,
+      "trackM": 102,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/34.93823/24.86089"
+    },
+    {
+      "id": 3033,
+      "name": "Χερσόνησος Αγκισαράς",
+      "regionId": "crete-crete-heraklion",
+      "accessType": "unknown",
+      "batch": "seatrac_directory_2026_06",
+      "pavedM": 28,
+      "trackM": 31,
+      "footM": 37,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/35.336862/25.354281"
+    }
+  ]
+}

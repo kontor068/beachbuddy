@@ -96,12 +96,27 @@ const visitorKind = (): 'new' | 'ret' | 'unknown' => {
   return readStore(SEEN_KEY) ? 'new' : 'unknown';
 };
 
-/** Coarse, low-cardinality section: the region/island for beach paths, else the top segment. */
+/**
+ * Coarse, low-cardinality section: the region for beach paths, else the top segment.
+ *
+ * The locale prefix is dropped first (same list as LOCALE_ROUTE_PREFIX_PATTERN in
+ * utils/beachUrls.ts). Without that, `/el/beaches/naxos/` was recorded as "el" and not
+ * as Naxos — 31% of all pageviews were filed under a LANGUAGE instead of the island the
+ * visitor was actually reading, and the Greek pages of the busiest islands were exactly
+ * the ones that vanished. The quality board reads these keys to decide which region to
+ * re-check next, so the blind spot was steering real work.
+ *
+ * What lands here is the URL SLUG ("naxos"), never the region id ("south-aegean-naxos") —
+ * the ledger carries a matching `slug` for that reason.
+ */
+const LOCALE_SEGMENTS = new Set(['el', 'de', 'fr', 'it']);
+
 const sectionFromPath = (): string => {
   const segs = window.location.pathname.split('/').filter(Boolean);
-  if (segs.length === 0) return 'home';
-  if (segs[0] === 'beaches' && segs[1]) return segs[1].slice(0, 32); // region/island id
-  return segs[0].slice(0, 32);
+  const rest = segs.length && LOCALE_SEGMENTS.has(segs[0]) ? segs.slice(1) : segs;
+  if (rest.length === 0) return 'home';
+  if (rest[0] === 'beaches' && rest[1]) return rest[1].slice(0, 32); // region URL slug
+  return rest[0].slice(0, 32);
 };
 
 /** Fire and forget. sendBeacon first — it survives the page unloading. */

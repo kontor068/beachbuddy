@@ -63,7 +63,23 @@ export const toGreeklishSearchText = (value: string): string => {
     .trim();
 };
 
+/**
+ * Every keystroke re-scored every beach name in the country, and each of those names went
+ * through two normalisations plus eight regex passes EVERY TIME — for a string that had not
+ * changed since the app started. The names are a fixed set, so the answer is cached and the
+ * work happens once per name for the life of the page.
+ *
+ * The cap is a safety valve, not a tuning knob: queries are also normalised here and a very
+ * long typing session would otherwise grow the map without end. Beach names number in the
+ * low thousands, so the cap is never reached by the data itself.
+ */
+const searchVariantCache = new Map<string, string[]>();
+const SEARCH_VARIANT_CACHE_LIMIT = 20000;
+
 export const getSearchVariants = (value: string): string[] => {
+  const cached = searchVariantCache.get(value);
+  if (cached) return cached;
+
   const baseVariants = [normalizeSearchText(value), toGreeklishSearchText(value)]
     .filter(Boolean);
   const variants = [...baseVariants];
@@ -77,7 +93,10 @@ export const getSearchVariants = (value: string): string[] => {
     );
   }
 
-  return Array.from(new Set(variants));
+  const result = Array.from(new Set(variants));
+  if (searchVariantCache.size >= SEARCH_VARIANT_CACHE_LIMIT) searchVariantCache.clear();
+  searchVariantCache.set(value, result);
+  return result;
 };
 
 export const isSearchMatch = (query: string, values: Array<string | undefined | null>): boolean => {
@@ -102,22 +121,29 @@ export const levenshteinDistance = (a: string, b: string): number => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
-  const matrix: number[][] = [];
-  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  // One row instead of a full (b+1)×(a+1) grid: the classic algorithm only ever reads the
+  // row above, and building thousands of throwaway arrays per keystroke cost more than the
+  // arithmetic did. Same distance, same result — this is the textbook rolling-row form.
+  let previousRow = new Array<number>(a.length + 1);
+  let currentRow = new Array<number>(a.length + 1);
+  for (let j = 0; j <= a.length; j++) previousRow[j] = j;
 
   for (let i = 1; i <= b.length; i++) {
+    currentRow[0] = i;
     for (let j = 1; j <= a.length; j++) {
       const cost = b[i - 1] === a[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + cost
+      currentRow[j] = Math.min(
+        previousRow[j] + 1,
+        currentRow[j - 1] + 1,
+        previousRow[j - 1] + cost
       );
     }
+    const swap = previousRow;
+    previousRow = currentRow;
+    currentRow = swap;
   }
 
-  return matrix[b.length][a.length];
+  return previousRow[a.length];
 };
 
 // Greek inflection endings in both the normalized-Greek and greeklish search spaces.
@@ -196,10 +222,20 @@ export const fuzzySearchScore = (query: string, value: string): number => {
         bestScore = Math.max(bestScore, 84);
       }
 
+      // The edit-distance sweep below is the expensive half of the whole search and it can
+      // never award more than 70, so once something cheaper has already scored 70 or better
+      // it cannot change the answer. Skipping it here is an equivalence, not a shortcut.
+      if (bestScore >= 70) continue;
+
       for (const word of words) {
         if (word.length < 3 || queryVariant.length < 3) continue;
+        const longest = Math.max(queryVariant.length, word.length);
+        // An edit distance is never smaller than the difference in length, so two strings
+        // this far apart cannot reach the 0.55 similarity gate however they are spelled.
+        // Checking that first skips most of the country without computing anything.
+        if (1 - Math.abs(queryVariant.length - word.length) / longest < 0.55) continue;
         const distance = levenshteinDistance(queryVariant, word);
-        const similarity = 1 - distance / Math.max(queryVariant.length, word.length);
+        const similarity = 1 - distance / longest;
         if (similarity >= 0.55) bestScore = Math.max(bestScore, Math.round(similarity * 70));
       }
     }

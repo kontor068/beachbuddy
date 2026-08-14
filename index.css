@@ -483,6 +483,26 @@ body {
   filter: saturate(1.08) contrast(1.04);
 }
 
+/* The filled part of the hour track. Its WIDTH is written from JS (BeachMap's
+   paintSliderFill) so a drag never costs a React render — which means the width
+   must not animate while the finger is down, or the bar visibly trails behind it.
+   The glide is therefore opt-in: added only for a jump the finger is not driving
+   (the arrows, the keyboard, the snap at the end of a drag). */
+.beach-map-hour-fill {
+  transition: background-color 0.3s ease-out;
+}
+
+.beach-map-hour-fill--glide {
+  transition: width 0.2s ease-out, background-color 0.3s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beach-map-hour-fill,
+  .beach-map-hour-fill--glide {
+    transition: none;
+  }
+}
+
 /* Smooth hour slider docked under the map. The filled track is a sibling
    div that transitions its width; here we just draw a polished, glide-y thumb. */
 .beach-map-hour-slider {
@@ -493,6 +513,7 @@ body {
   --beach-map-hour-slider-shadow: rgba(14, 165, 233, 0.38);
   --beach-map-hour-slider-focus: #38bdf8;
   touch-action: pan-y;
+  -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -507,40 +528,91 @@ body {
   background: transparent;
 }
 
+/* The three white grip lines that say "this is a handle, drag it". Painted as a
+   background image because an appearance:none thumb cannot hold child elements. */
 .beach-map-hour-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 22px;
-  width: 22px;
+  height: 26px;
+  width: 26px;
   border-radius: 999px;
-  background: var(--beach-map-hour-slider-thumb);
+  background-color: var(--beach-map-hour-slider-thumb);
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.95) 0 1.5px,
+    transparent 1.5px 4.5px
+  );
+  background-size: 10.5px 10px;
+  background-repeat: no-repeat;
+  background-position: center;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px var(--beach-map-hour-slider-shadow);
-  cursor: pointer;
+  box-shadow: 0 1px 5px var(--beach-map-hour-slider-shadow);
+  cursor: grab;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
   /* Centre the thumb on the 16px runnable track now that the input is a 44px touch zone. */
-  margin-top: -3px;
+  margin-top: -5px;
 }
 
 .beach-map-hour-slider::-moz-range-thumb {
-  height: 22px;
-  width: 22px;
+  height: 26px;
+  width: 26px;
   border-radius: 999px;
-  background: var(--beach-map-hour-slider-thumb);
+  background-color: var(--beach-map-hour-slider-thumb);
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.95) 0 1.5px,
+    transparent 1.5px 4.5px
+  );
+  background-size: 10.5px 10px;
+  background-repeat: no-repeat;
+  background-position: center;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px var(--beach-map-hour-slider-shadow);
-  cursor: pointer;
+  box-shadow: 0 1px 5px var(--beach-map-hour-slider-shadow);
+  cursor: grab;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
 }
 
 .beach-map-hour-slider:active::-webkit-slider-thumb {
   transform: scale(1.18);
   box-shadow: 0 2px 8px var(--beach-map-hour-slider-shadow);
+  cursor: grabbing;
 }
 
 .beach-map-hour-slider:active::-moz-range-thumb {
   transform: scale(1.18);
   box-shadow: 0 2px 8px var(--beach-map-hour-slider-shadow);
+  cursor: grabbing;
+}
+
+/* First-visit nudge: the handle slides a few pixels to the right and back, three
+   times, then stops for good (the component writes a flag once the visitor has
+   touched it). Reported problem was that nobody realised the bar was draggable —
+   a still handle, however well drawn, cannot say "drag me" on its own. */
+@keyframes beachMapHourSliderNudge {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  12% {
+    transform: translateX(0) scale(1.14);
+  }
+  38% {
+    transform: translateX(10px) scale(1.14);
+  }
+  72% {
+    transform: translateX(0) scale(1.14);
+  }
+  88% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.beach-map-hour-slider--hint::-webkit-slider-thumb {
+  animation: beachMapHourSliderNudge 1.9s ease-in-out 0.7s 3;
+}
+
+.beach-map-hour-slider--hint::-moz-range-thumb {
+  animation: beachMapHourSliderNudge 1.9s ease-in-out 0.7s 3;
 }
 
 .beach-map-hour-slider:focus-visible::-webkit-slider-thumb {
@@ -557,6 +629,11 @@ body {
   .beach-map-hour-slider::-webkit-slider-thumb,
   .beach-map-hour-slider::-moz-range-thumb {
     transition: none;
+  }
+
+  .beach-map-hour-slider--hint::-webkit-slider-thumb,
+  .beach-map-hour-slider--hint::-moz-range-thumb {
+    animation: none;
   }
 }
 

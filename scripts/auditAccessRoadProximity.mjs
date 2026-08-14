@@ -36,7 +36,15 @@ const pavedThreshold = Number(getArg('--paved-threshold', '120'));
 const limit = getArg('--limit') ? Number(getArg('--limit')) : Infinity;
 const offset = Number(getArg('--offset', '0'));
 const refresh = args.includes('--refresh');
-const outPath = getArg('--out', path.join(outDir, `report-${new Date().toISOString().slice(0, 10)}.json`));
+// A scoped run must never share a filename with a wider one. Before this, `--region X` wrote the
+// same `report-<date>.json` as a national sweep, so the next region silently replaced the last —
+// the same class of loss as the auditPlaceResolution partial-file trap (14/08/2026). Region-scoped
+// runs now default to their own `region-<id>-<date>.json`; `--out` still overrides either way.
+const stamp = new Date().toISOString().slice(0, 10);
+const defaultOut = regionFilter
+  ? path.join(outDir, `region-${regionFilter}-${stamp}.json`)
+  : path.join(outDir, `report-${stamp}.json`);
+const outPath = getArg('--out', defaultOut);
 
 // --- region attribution: mirrors scripts/buildBeachRegionData.mjs exactly -------------------
 const getBeachRegionId = (region, prefecture) => {
