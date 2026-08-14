@@ -530,6 +530,8 @@ const FLASH = {
   todoadded: ['Μπήκε στις εκκρεμότητες. Θα το βρεις εδώ και στον επόμενο γύρο.', ''],
   tododone: ['Κλείστηκε. Μένει γραμμένο ως δουλειά που έγινε, δεν σβήνεται.', ''],
   todoempty: ['Δεν έγραψες τίποτα, οπότε δεν αποθηκεύτηκε τίποτα.', 'warn'],
+  capsaved: ['Καταχωρήθηκε η ένδειξη του Open-Meteo. Ο πίνακας δείχνει πλέον και τα δύο νούμερα δίπλα-δίπλα.', ''],
+  capbad: ['Χρειάζεται τουλάχιστον το συνολικό νούμερο του κύκλου, σαν αριθμός. Δεν αποθηκεύτηκε τίποτα.', 'warn'],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -975,7 +977,67 @@ ${queue.problem ? `<div class="flash warn">Πρόβλημα ανάγνωσης �
  * the truth in half those cases, so the bar carries a "where we should be by now"
  * marker and the sentence under it does the actual talking.
  */
-export const capacityPanel = (usage, state) => {
+/** The day the paid Open-Meteo plan started. Fixed history, not a setting. */
+const SUBSCRIPTION_START = '2026-08-09';
+
+/**
+ * The provider's own figure, next to ours, and what the two together imply.
+ *
+ * The point of this block is the RATIO, not either number alone. Their page is authoritative
+ * but manual and hours stale; our meter is live but derived. Pair them once and our meter can
+ * be corrected into an estimate that tracks the truth between readings — which is as close to
+ * "pull it from the source" as the provider's API allows (see PROVIDER_SEED).
+ */
+const providerBlock = (usage, readings, keyless) => {
+  const list = Array.isArray(readings) ? readings : [];
+  const latest = list[0] || null;
+  // The newest reading that captured BOTH ends. Older pairs still calibrate fine; a reading
+  // taken before our meter was trustworthy carries `ours: null` and is skipped on purpose.
+  const paired = list.find((r) => Number(r?.ours) > 0 && Number(r?.total) > 0) || null;
+  const factor = paired ? Number(paired.total) / Number(paired.ours) : null;
+  const corrected = factor && usage && usage.daysMeasured > 0 ? Math.round(usage.used * factor) : null;
+
+  const dayRatio = latest && Number(latest.dayCalls) > 0 && Number(latest.dayRequests) > 0
+    ? Number(latest.dayCalls) / Number(latest.dayRequests)
+    : null;
+
+  const history = list.slice(0, 6).map((r) => {
+    const ratio = Number(r?.ours) > 0 ? `×${(Number(r.total) / Number(r.ours)).toFixed(2)}` : '—';
+    return `<li><b>${dayLabel(r.at)}</b> πάροχος <b>${num(r.total)}</b> · εμείς ${
+      Number(r?.ours) > 0 ? num(r.ours) : '—'
+    } · ${ratio}${r.note ? ` <span class="capnote-i">${esc(r.note)}</span>` : ''}</li>`;
+  }).join('');
+
+  return `<div class="capsrc">
+  <h3>Τι λέει ο ίδιος ο πάροχος<em>συνδρομή από ${dayLabel(SUBSCRIPTION_START)} · γραμμένο στο χέρι από το dashboard.open-meteo.com</em></h3>
+  <div class="capstats capsrcrow">
+    <div><span class="cl">Πάροχος (πηγή)</span><span class="cv">${latest ? num(latest.total) : '—'}</span>
+      <span class="cf">${latest ? `ανάγνωση ${dayLabel(latest.at)}` : 'καμία ανάγνωση ακόμη'}</span></div>
+    <div><span class="cl">Εμείς την ίδια στιγμή</span><span class="cv">${
+      latest && Number(latest.ours) > 0 ? num(latest.ours) : '—'}</span>
+      <span class="cf">${latest && Number(latest.ours) > 0 ? 'από τον μετρητή μας' : 'δεν είχε αξιόπιστη μέτρηση'}</span></div>
+    <div><span class="cl">Συντελεστής</span><span class="cv">${factor ? `×${factor.toFixed(2)}` : '—'}</span>
+      <span class="cf">${factor ? 'πόσο υπο-μετράμε' : 'θέλει μία ανάγνωση με τα δύο νούμερα'}</span></div>
+    <div><span class="cl">Διορθωμένη εκτίμηση</span><span class="cv">${corrected ? num(corrected) : '—'}</span>
+      <span class="cf">${corrected ? 'ο μετρητής μας × συντελεστή' : 'μόλις υπάρξει συντελεστής'}</span></div>
+  </div>
+  ${dayRatio ? `<p class="capnote">Στις ${dayLabel(latest.day)} ο πάροχος χρέωσε <b>${num(latest.dayCalls)}</b> κλήσεις για <b>${num(latest.dayRequests)}</b> αιτήματα — <b>${dayRatio.toFixed(1)} κλήσεις ανά αίτημα</b>. Αυτό επιβεβαιώνει ότι χρεώνει <b>ανά συντεταγμένη</b>, όχι ανά αίτημα: μία ερώτηση για 32 παραλίες κοστίζει 32.</p>` : ''}
+  ${history ? `<ul class="capsrclist">${history}</ul>` : ''}
+  ${keyless ? '' : `<form method="post" action="?key=KEYPLACEHOLDER" class="capform">
+    <input type="hidden" name="key" value="KEYPLACEHOLDER">
+    <input type="hidden" name="action" value="provider-reading">
+    <label>Σύνολο κύκλου<input type="text" name="total" inputmode="numeric" placeholder="475.991" required></label>
+    <label>Μέρα <span>(προαιρετικά)</span><input type="date" name="day"></label>
+    <label>Κλήσεις τη μέρα<input type="text" name="dayCalls" inputmode="numeric" placeholder="29.183"></label>
+    <label>Αιτήματα τη μέρα<input type="text" name="dayRequests" inputmode="numeric" placeholder="1.867"></label>
+    <label class="wide">Σημείωση <span>(προαιρετικά)</span><input type="text" name="note" maxlength="160" placeholder="π.χ. μετά τη διόρθωση της κοινής μνήμης"></label>
+    <button type="submit">Καταχώρησε</button>
+  </form>
+  <p class="capnote">Το κλειδί του Open-Meteo <b>δεν</b> μπορεί να διαβάσει κατανάλωση — ανοίγει μόνο τα δεδομένα καιρού, και ο πίνακάς τους δεν έχει διεύθυνση για προγραμματιστές. Γράψε εδώ το νούμερο μία φορά την εβδομάδα· ο δικός μας μετρητής κάνει τα υπόλοιπα μόνος του.</p>`}
+</div>`;
+};
+
+export const capacityPanel = (usage, state, readings) => {
   if (!usage) return '';
 
   const measured = usage.daysMeasured > 0;
@@ -1040,6 +1102,7 @@ export const capacityPanel = (usage, state) => {
   </div>
   <p class="capverdict">${verdict}</p>
   ${ledger ? `<div class="capdays">${ledger}</div>` : ''}
+  ${providerBlock(usage, readings)}
   ${refused ? `<p class="capwarn">⚠ Σήμερα το Open-Meteo αρνήθηκε <b>${num(refused)}</b> κλήσεις (429). Αν το ποσοστό του μήνα είναι χαμηλό, χτυπήσαμε όριο ρυθμού — όχι εξάντληση.</p>` : ''}
   ${!measured ? '' : `<p class="capnote">Μετράμε στο σημείο που φεύγει η κλήση προς το Open-Meteo — ό,τι σερβίρεται από την cache δεν χρεώνεται και δεν μετριέται. Ο αριθμός είναι <b>κατώτατο όριο</b>: σε ταυτόχρονες κλήσεις χάνεται καμιά μέτρηση${partial ? ', και οι μέρες του κύκλου πριν τις ' + dayLabel(usage.measuringSince) + ' λείπουν εντελώς' : ''}. Ποτέ δεν φουσκώνει.</p>
   <p class="capnote">⚠ <b>Οι μέρες πριν τις 14/08 δείχνουν περίπου τα μισά απ' όσα ήταν.</b> Ταυτόχρονες κλήσεις έσβηναν η μία τη μέτρηση της άλλης, και όσο πιο μεγάλη η μέρα τόσο περισσότερα χανόταν — στις 09-13/08 ο πίνακας του Open-Meteo έδειχνε ~94.000/ημέρα εκεί που εδώ γράφαμε ~37.700. Από 14/08 η μέτρηση κρατάει. <b>Άρα μια αύξηση στο διάγραμμα μπορεί να είναι απλώς τίμιο πια μέτρημα</b> — σύγκρινε με τον πίνακα του παρόχου (<a href="https://dashboard.open-meteo.com" target="_blank" rel="noopener">dashboard.open-meteo.com</a>) πριν βγάλεις συμπέρασμα.</p>`}
@@ -1448,6 +1511,33 @@ const page = (data) => {
   .capwarn{margin:12px 0 0;font-size:12.5px;color:#fda4af}
   .capnote{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--mut)}
 
+  /* Ο πάροχος ως πηγή. Ξεχωρίζει οπτικά από τα δικά μας νούμερα επίτηδες: το ένα
+     είναι μέτρηση, το άλλο εκτίμηση, και το να μοιάζουν ίδια είναι που οδήγησε στο
+     να πιστεύουμε επί μέρες τον λάθος αριθμό. */
+  .capsrc{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(148,163,184,.22)}
+  .capsrc h3{margin:0 0 10px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+    font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#93c5fd;font-weight:700}
+  .capsrc h3 em{font-style:normal;font-size:10.5px;color:#6b819f;letter-spacing:.02em;
+    text-transform:none;font-weight:500}
+  .capsrcrow{grid-template-columns:repeat(auto-fit,minmax(132px,1fr))}
+  .capsrcrow .cf{display:block;margin-top:3px;font-size:9.5px;line-height:1.35;color:#5f7a9c}
+  .capsrclist{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:5px;
+    font-size:11.5px;color:var(--mut);font-variant-numeric:tabular-nums}
+  .capsrclist b{color:var(--txt);font-weight:650}
+  .capnote-i{color:#5f7a9c;font-style:italic}
+  .capform{margin-top:12px;display:grid;gap:8px;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));align-items:end}
+  .capform label{display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--mut);font-weight:650}
+  .capform label span{text-transform:none;letter-spacing:0;font-weight:500;opacity:.7}
+  .capform label.wide{grid-column:1/-1}
+  .capform input{width:100%;margin-top:4px;padding:7px 9px;border-radius:9px;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);
+    font:500 12.5px system-ui,sans-serif}
+  .capform button{padding:8px 14px;border-radius:9px;border:1px solid rgba(34,211,238,.35);
+    background:rgba(34,211,238,.12);color:#a5f3fc;font:650 12px system-ui,sans-serif;cursor:pointer}
+  .capform button:hover{background:rgba(34,211,238,.2)}
+
   /* world map */
   .mapwrap{position:relative;border-radius:12px;overflow:hidden;background:#050a13;
     border:1px solid rgba(34,211,238,.10)}
@@ -1671,7 +1761,7 @@ const page = (data) => {
   ${kpi('Άνοιξαν παραλία', `${beachPct}%`, navPeople ? `${num(navPeople)} ζήτησαν οδηγίες` : `${num(navActions)} κλικ «Οδηγίες»`, '', 'act')}
 </div>
 
-${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capacity.state)}
+${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capacity.state, data.capacity && data.capacity.readings)}
 
 <nav class="tabs" role="tablist">
   <button type="button" class="tab on" data-tab="map" role="tab" aria-selected="true">🌍 Χάρτης</button>
@@ -2379,6 +2469,67 @@ const moderationPost = async (event, key) => {
     body: '',
   });
 
+  // ── Τι λέει ο ΠΑΡΟΧΟΣ: δύο νούμερα από τη σελίδα του, στο χέρι ──────────────
+  // See PROVIDER_SEED for why this is typed rather than fetched. Our own total is read
+  // here, at submit time, so the pair describes one instant and the ratio between them
+  // means something.
+  if (form.action === 'provider-reading') {
+    const backHome = (code) => ({
+      statusCode: 303,
+      headers: {
+        Location: `/api/traffic?key=${encodeURIComponent(key)}&done=${code}`,
+        'Cache-Control': 'no-store',
+      },
+      body: '',
+    });
+
+    // Greek keyboards and copy-paste from the dashboard both produce thousands
+    // separators; "475.991" must not become 475.
+    const digits = (value) => {
+      const cleaned = String(value ?? '').replace(/[^\d]/g, '');
+      return cleaned ? Number(cleaned) : null;
+    };
+    const total = digits(form.total);
+    if (!total || total < 0) return backHome('capbad');
+
+    const isDay = (value) => /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
+
+    try {
+      const store = getStore('capacity');
+      const saved = await store.get(PROVIDER_READINGS_KEY, { type: 'json' }).catch(() => null);
+      const list = Array.isArray(saved?.readings) ? saved.readings : [];
+
+      // Our number for the SAME moment. Read from the live meter, never typed — the
+      // whole value of the pair is that nobody chose the two ends independently.
+      let ours = null;
+      try {
+        const state = await store.get('open-meteo-day', { type: 'json' });
+        const usage = monthlyUsage(state, {
+          now: new Date(),
+          cycleStartDay: Number(process.env.CAPACITY_CYCLE_START_DAY) || undefined,
+          quota: MONTHLY_QUOTA,
+        });
+        ours = usage && usage.daysMeasured > 0 ? usage.used : null;
+      } catch { /* a missing meter costs the ratio, not the reading */ }
+
+      list.unshift({
+        at: utcDayKey(new Date()),
+        total,
+        ours,
+        day: isDay(form.day) ? String(form.day) : '',
+        dayCalls: digits(form.dayCalls),
+        dayRequests: digits(form.dayRequests),
+        note: String(form.note || '').slice(0, 160).replace(/[\r\n]+/g, ' ').trim(),
+      });
+
+      await store.setJSON(PROVIDER_READINGS_KEY, { readings: list.slice(0, MAX_PROVIDER_READINGS) });
+      return backHome('capsaved');
+    } catch (error) {
+      console.error('Could not store the provider reading.', error && error.message);
+      return backHome('capbad');
+    }
+  }
+
   // ── Εκκρεμότητες: γράψ' το, κλείσ' το, σβήσ' το ─────────────────────────────
   if (form.action === 'todo-add' || form.action === 'todo-done' || form.action === 'todo-drop') {
     const regionId = String(form.region || '');
@@ -2692,11 +2843,61 @@ const renderPage = (data, given) => page(data)
 const readCapacity = async () => {
   const cycleStartDay = Number(process.env.CAPACITY_CYCLE_START_DAY) || undefined;
   const now = new Date();
+  const readings = await readProviderReadings();
   try {
     const state = await getStore('capacity').get('open-meteo-day', { type: 'json' });
-    return { state, usage: monthlyUsage(state, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+    return { state, readings, usage: monthlyUsage(state, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
   } catch {
-    return { state: null, usage: monthlyUsage(null, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+    return { state: null, readings, usage: monthlyUsage(null, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+  }
+};
+
+// ── What the PROVIDER says, typed in by hand — 14/08/2026 ─────────────────────
+//
+// Asked for directly: "connect the API key so the console pulls the real number instead of
+// guessing". It cannot. The Open-Meteo key authenticates weather requests and nothing else;
+// their usage page is a logged-in web app with no documented endpoint behind it, and they say
+// themselves the usage portal is still being built. Driving it with stored credentials would
+// be a scraper that breaks the first time they touch their markup — worse than honest.
+//
+// So the source of truth gets in the only way it can: he reads two numbers off their page and
+// types them here. That is enough, because the useful thing was never the provider's number on
+// its own — it is the RATIO between theirs and ours. Once a pair is recorded, our own meter
+// (which updates every minute, for free) can be corrected by that factor and stops guessing.
+// One reading a week keeps the correction honest.
+//
+// Our side of the pair is captured automatically at submit time, so the two numbers always
+// describe the same instant. A pair assembled from a number read yesterday and a meter read
+// today would produce a ratio that means nothing.
+const PROVIDER_READINGS_KEY = 'open-meteo-provider';
+const MAX_PROVIDER_READINGS = 40;
+
+// The first reading, from the provider's own dashboard on 14/08/2026 — the day the gap was
+// found. Seeded in code rather than left blank so the panel is useful on its very first paint,
+// and because these three figures are the evidence the whole capacity investigation rests on.
+// `ours: null` is deliberate and honest: our meter was still losing increments on those days,
+// so there is no comparable figure to pair them with. The first real pair is the one HE enters.
+const PROVIDER_SEED = [
+  {
+    at: '2026-08-14',
+    total: 475991,
+    ours: null,
+    day: '2026-08-09',
+    dayCalls: 29183,
+    dayRequests: 1867,
+    note: 'Πρώτη ανάγνωση — η μέρα που ξεκίνησε η συνδρομή.',
+  },
+];
+
+const readProviderReadings = async () => {
+  try {
+    const saved = await getStore('capacity').get(PROVIDER_READINGS_KEY, { type: 'json' });
+    const list = Array.isArray(saved?.readings) ? saved.readings : [];
+    // Seed only while nothing has been entered — the moment he records one, his data owns
+    // the panel and a constant in the source must not keep injecting itself into it.
+    return list.length ? list : PROVIDER_SEED;
+  } catch {
+    return PROVIDER_SEED;
   }
 };
 
