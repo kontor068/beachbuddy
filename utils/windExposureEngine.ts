@@ -321,15 +321,9 @@ const getSimpleWindColor = (
   exposureLevel: ExposureLevel,
   beaufort: number,
   enclosedCove = false,
-  offshoreFlatWater = false,
-  /**
-   * Is this shore's 'partial' a measurement or the absence of one? See the 3 Bft block in
-   * utils/suitabilityTone: only a MEASURED partial leaves blue. Resolved by the caller from the
-   * profile source and confidence it already holds, never re-derived downstream.
-   */
-  partialIsMeasured = false
+  offshoreFlatWater = false
 ): SimpleWindSuitability['suitabilityColor'] => toWindSuitabilityColor(
-  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove, offshoreFlatWater, partialIsMeasured })
+  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove, offshoreFlatWater })
 );
 
 /**
@@ -376,10 +370,6 @@ export const applySeaStateToWindSuitability = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
-    // Off the object, exactly like `offshoreFlatWater` above. Re-deriving it here would let this
-    // pass reach a different answer from the wind-only pass that built the object — the class of
-    // drift every «passed, not derived» note in this file exists to prevent.
-    partialIsMeasured: suitability.partialIsMeasured,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
@@ -433,28 +423,11 @@ export const buildSimpleWindSuitability = ({
 }): SimpleWindSuitability => {
   const confidence = getSimpleWindConfidence(profile, source, beach, hasGeometry);
   const exposureStatus = getSimpleExposureStatus(exposureLevel, source, beach, windDirection, windDirectionDeg);
-  /**
-   * THE SOURCE, NOT THE CONFIDENCE. `source === 'geospatial'` says a real geometric profile
-   * answered for this sector, rather than the engine falling to the neutral middle it uses when
-   * nothing is known — which is precisely the (α)/(β) split utils/suitabilityTone needs.
-   *
-   * A first version also demanded `confidence === 'high'` and it was WRONG, measured: the very
-   * beach this was written for (Παραλία Αγίου Κωνσταντίνου #28) carries geometry of high
-   * confidence but resolves to `confidence: 'medium'` here, because getSimpleWindConfidence
-   * reads the WIND PROFILE's confidence, not the geometry's. That extra clause would have left
-   * the reported beach exactly as it was while still repainting others — the worst of both.
-   * `source` is the honest test of «did we look?»; `confidence` answers a different question and
-   * is already carried on this object for the copy layer to use.
-   *
-   * Computed ONCE, then both used and carried, so the colour and the object cannot disagree.
-   */
-  const partialIsMeasured = source === 'geospatial';
   const suitabilityColor = getSimpleWindColor(
     exposureStatus,
     beaufort,
     enclosedCove && exposureStatus === 'protected',
-    offshoreFlatWater,
-    partialIsMeasured
+    offshoreFlatWater
   );
   const windLabel = WIND_SECTOR_LABELS[windSector];
 
@@ -469,7 +442,6 @@ export const buildSimpleWindSuitability = ({
     windSector,
     windBeaufort: beaufort,
     offshoreFlatWater,
-    partialIsMeasured,
   } as const;
 
   if (beaufort <= 2) {
