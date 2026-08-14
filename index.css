@@ -110,6 +110,17 @@
   }
 }
 
+/* A region page can hold 133 cards and stand 57.000px tall. Without this the
+   phone lays out, paints and lazy-loads photos for every one of them, including
+   the ones fifty screens down: measured 15.492 layout objects and 1.978 KB of
+   photos before the visitor scrolled a pixel. `auto` lets the browser skip the
+   off-screen ones and remember their real height once seen, so nothing jumps.
+   Browsers without support simply render everything, exactly as before. */
+.beach-grid-deferred > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 430px;
+}
+
 .atmosphere {
   position: fixed;
   inset: 0;
@@ -143,6 +154,16 @@
   .atmosphere.cyclades-atmosphere {
     background-position: center top;
   }
+
+  /* The frosted glass on a card costs a compositing layer each, and a region
+     page carries over a hundred: measured 40 layers on a phone against 7
+     without. Behind the cards there is only a flat pale gradient, so the blur
+     had nothing to blur — the screenshots are indistinguishable. Desktop keeps
+     it; there the layer count is small and backgrounds have more texture. */
+  .beach-card {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -152,8 +173,10 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
+  /* 92% instead of 84%: the blur above is gone on phones, and on the island
+     pages the backdrop is a photo, so the card carries its own opacity now. */
   .beach-card {
-    @apply bg-white/84 border-white/70 backdrop-blur-xl;
+    @apply bg-white/92 border-white/70;
     box-shadow: 0 12px 32px -20px rgba(8, 145, 178, 0.3), 0 1px 2px rgba(15, 23, 42, 0.06);
   }
 

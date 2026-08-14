@@ -219,7 +219,7 @@ export const BeachList: React.FC<BeachListProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+    <div className="beach-grid-deferred grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
       {beaches.map((b) => {
         const isProtected = b.exposureLevel === 'protected' && b.canClaimWindProtection === true;
         const isExposed = b.exposureLevel ? b.exposureLevel !== 'protected' : true;
