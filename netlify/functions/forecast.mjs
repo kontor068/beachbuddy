@@ -170,55 +170,55 @@ const sendTelegram = async (text) => {
  * the provider's quota was systematically low exactly where the bill is highest.
  * Weather routes stay at 1.0 (8 hourly fields — under the threshold).
  */
-// ── Weight per location, derived from the query — 14/08/2026 ───────────────────
+// ── Weight per location — the provider's OWN rule, verbatim — 14/08/2026 ───────
 //
-// Open-Meteo publishes the shape (openmeteo.substack.com, "Weather Data for Multiple
-// Locations At Once"):
+// From Open-Meteo's "How Is One API Call Defined?" panel (their dashboard, read 14/08/2026):
 //
-//     weight = nLocations x (nDays / 14) x (nVariables / 10)
+//     "Requests for data covering more than 10 weather variables or extending over a period
+//      of more than 2 weeks for a single location are considered multiple API calls."
+//     Weighting factors: Weather variables · Time range · Models · Number of locations.
+//     Their calculator: 10 variables, 14 days, 1 model, 1 location -> 1.0 API calls.
 //
-// with locations as a plain multiplier — which is why a 32-point batch must never be
-// metered as one request, and always was not.
+//     weight = max(1, vars/10) x max(1, days/14) x models x locations
 //
-// THE TWO FACTORS ARE FLOORED AT 1 HERE, and that is a measurement, not a reading of the
-// docs. The prose says requests that *surpass* 14 days and/or 10 variables carry a higher
-// weight "than a standard API call", i.e. a standard call is the floor; their one worked
-// example (3650 days, 1 variable) applies the variable fraction unfloored, so the two do not
-// agree. On 14/08/2026 the provider's own dashboard settled it from the other end: it showed
-// 471,944 calls for 09-13/08 (~94k/day) while this meter recorded ~37.7k for a comparable
-// day. Unfloored weights (weather 0.40, marine 0.90 per point) would have made this meter
-// read SIX times low instead of two and a half; floored weights are the reading that survives
-// contact with the bill. Whatever residual gap remains is the lost-increment problem the CAS
-// loop in meterUpstream() now closes — measure again before touching these numbers.
+// TWO THINGS THIS SPELLS OUT that guesswork had wrong, both in the expensive direction:
 //
-// Per point, for the three routes this proxy serves:
-//     weather  8 vars,  7 days -> max(1, 7/14)  x max(1, 8/10)  = 1.0
-//     marine  21 vars,  6 days -> max(1, 6/14)  x max(1, 21/10) = 2.1
-//     dust     1 var,   2 days -> max(1, 2/14)  x max(1, 1/10)  = 1.0
+//   1. THE FACTORS ARE FLOORED. "MORE than 10 variables", "MORE than 2 weeks" — under those
+//      lines you pay a full standard call and get no discount. So our 6-7 day, 7-8 variable
+//      requests cost 1.0, not the 0.40/0.90 an earlier reading of their blog suggested. There
+//      is also a corollary worth remembering: variables 9 and 10 are FREE. Adding a field to
+//      a request that asks for 8 costs nothing at all.
 //
-// Identical to the hand-written constants this replaced — but now DERIVED FROM THE OUTGOING
-// QUERY, so adding a variable or a fourth model moves the meter by itself. That was the real
-// defect in the constants: they were maintained by hand and drifted from the request they
-// claimed to describe (docs/team/17 §7 caught one such drift, §12 the next).
+//   2. MODELS ARE THEIR OWN MULTIPLIER, not extra variables. This is the one that matters.
+//      Marine asks 7 fields from 3 models: not 21 variables (2.1), but 7 variables x 3 models
+//      = 3.0 per point. Every additional model is a FULL extra call per point no matter how
+//      little you ask of it — and `meteofrance_currents` is in that list to carry exactly one
+//      field, sea_surface_temperature. A third of the marine bill buys one number that moves
+//      half a degree a day. See docs/team/17 §12 for the ranked fix.
 //
-// NEVER OPTIMISTIC, the original design rule: `models` multiplies the variable count (3
-// models x 7 marine fields = 21 response columns) and a missing forecast_days is charged at
-// Open-Meteo's 7-day default.
+// Computed from the OUTGOING QUERY, never from hand-written constants — those had already
+// drifted from the request they described twice (docs/team/17 §7, §12), which is how a 43%
+// undercount on the single most expensive route survived this long.
+//
+// NEVER OPTIMISTIC, the original design rule: a missing forecast_days is charged at
+// Open-Meteo's 7-day default rather than assumed small.
 const OPEN_METEO_DEFAULT_FORECAST_DAYS = 7;
 const WEIGHT_DAYS_UNIT = 14;
 const WEIGHT_VARIABLES_UNIT = 10;
 
 const countList = (value) => (value ? value.split(',').filter(Boolean).length : 0);
 
-/** Billed weight of ONE location for this exact query, per the formula above. */
+/** Billed weight of ONE location for this exact query, per the rule quoted above. */
 const weightPerPoint = (query) => {
-  const models = Math.max(1, countList(query.get('models')));
-  // `current` returns one timestep per variable; `hourly` returns the whole span. Both are
-  // variables in the formula, and only `hourly` is what forecast_days stretches.
-  const variables = (countList(query.get('hourly')) + countList(query.get('current'))) * models;
+  // `hourly` and `current` are both "weather variables"; the model list multiplies whatever
+  // that count comes to. One model (or none named) is the plain case.
+  const variables = countList(query.get('hourly')) + countList(query.get('current'));
   if (!variables) return 0;
+  const models = Math.max(1, countList(query.get('models')));
   const days = Number(query.get('forecast_days')) || OPEN_METEO_DEFAULT_FORECAST_DAYS;
-  return Math.max(1, days / WEIGHT_DAYS_UNIT) * Math.max(1, variables / WEIGHT_VARIABLES_UNIT);
+  return Math.max(1, variables / WEIGHT_VARIABLES_UNIT)
+    * Math.max(1, days / WEIGHT_DAYS_UNIT)
+    * models;
 };
 
 // Read-modify-write on ONE blob is a lost-update race, and it was not theoretical: on
