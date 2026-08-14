@@ -62,8 +62,21 @@ import {
   refreshApprovedPhotoIndex,
   setBeachPhotoLimit,
 } from './lib/ugcPhotoIndex.mjs';
+// Built by scripts/buildQualityLedger.mjs and committed. Imported, not fetched:
+// this must NOT be a public file — it is a list of our own weak spots per island.
+import LEDGER from './lib/qualityLedger.generated.mjs';
+// Shared with quality-digest.mjs so the weekly message can never name a
+// different region than the board does.
+import {
+  agoLabel,
+  buildBeachGapRows,
+  buildQualityRows,
+  daysSince,
+} from './lib/qualityPriority.mjs';
 
 const TRAFFIC_STORE = 'traffic';
+/** Manual "I checked this region today" entries. Separate store: different lifetime. */
+const QUALITY_STORE = 'quality';
 
 /** A visitor counts as "on the site now" if they pinged inside this many minutes. */
 const LIVE_MINUTES = 5;
@@ -508,6 +521,393 @@ const FLASH = {
   nomigration: ['Η αλλαγή σειράς δεν είναι ακόμα ενεργή: τρέξε το supabase/migrations/0006_photo_ordering.sql στη Supabase. Μέχρι τότε όλα τα υπόλοιπα δουλεύουν κανονικά.', 'warn'],
   nobuild: ['Δεν υπάρχει build hook ρυθμισμένο (NETLIFY_BUILD_HOOK_URL) — οι φωτογραφίες φαίνονται ήδη στο site, στη Google θα μπουν στο επόμενο ανέβασμα κώδικα.', 'warn'],
   failed: ['Κάτι πήγε στραβά — δες τα logs της συνάρτησης. Τίποτα δεν άλλαξε.', 'warn'],
+  checked: ['Καταχωρήθηκε. Η περιοχή μετράει από σήμερα ως ελεγμένη και έπεσε στη σειρά προτεραιότητας.', ''],
+  checkfailed: ['Δεν αποθηκεύτηκε ο έλεγχος — δες τα logs. Δοκίμασε ξανά.', 'warn'],
+  todoadded: ['Μπήκε στις εκκρεμότητες. Θα το βρεις εδώ και στον επόμενο γύρο.', ''],
+  tododone: ['Κλείστηκε. Μένει γραμμένο ως δουλειά που έγινε, δεν σβήνεται.', ''],
+  todoempty: ['Δεν έγραψες τίποτα, οπότε δεν αποθηκεύτηκε τίποτα.', 'warn'],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ΠΟΙΟΤΗΤΑ — "which island do I re-check next, and why that one"
+//
+// Two things existed here already and never met: the console knew which regions
+// people actually open, and the repo knew when each region was last audited. On
+// their own, neither answers the only question worth asking — a stale island
+// nobody visits can wait, a busy island nobody has re-read since June cannot.
+// This tab is that join, and nothing more: no new measurement, no new claim.
+//
+// EVERY NUMBER ON THIS TAB IS BACKED BY A FILE. Coverage comes from the beach
+// records themselves, dates from the audit reports (netlify/functions/lib/
+// qualityLedger.generated.mjs), pageviews from the same rollups the stats tab
+// uses, and the "I checked it" entries from Blobs. Nothing is estimated.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Six dots, one per kind of claim — green when covered, amber/red when not. */
+const axisDots = (row) =>
+  row.axes
+    .map((a) => {
+      const level = a.pct >= 95 ? 'ok' : a.pct >= 75 ? 'mid' : a.pct >= 40 ? 'low' : 'bad';
+      return `<i class="qd ${level}" title="${esc(a.label)}: ${a.pct}% (${a.ok}/${a.total})${
+        a.at ? ` · έλεγχος ${esc(a.at)}` : ''
+      }"><b>${a.pct}</b><u>${esc(a.short)}</u></i>`;
+    })
+    .join('');
+
+/**
+ * "Τι κοιτάξαμε" — the trail behind the date.
+ *
+ * A single "last checked 29/06" is not enough to decide anything: checked for
+ * WHAT? Access and photos are different jobs with different rot rates. So every
+ * audit that touched this region is listed with its kind, and national sweeps are
+ * labelled as such so a machine pass is never mistaken for somebody reading the
+ * island. Hand-written entries come first — they are the only ones that mean a
+ * person was involved.
+ */
+const auditTrail = (row) => {
+  const manual = (row.manual?.history || []).map((h) => ({
+    at: h.at,
+    what: h.axes?.length
+      ? h.axes.map((k) => LEDGER.axes.find((a) => a.key === k)?.short || k).join(', ')
+      : 'γενικός έλεγχος',
+    note: h.note || '',
+    by: 'εσύ',
+  }));
+  const automatic = (row.audits || []).map((a) => ({
+    at: a.at,
+    what: LEDGER.kindLabels[a.kind] || a.kind,
+    note: a.findings ? `${num(a.findings)} ευρήματα` : '',
+    by: a.scope === 'national' ? 'εθνικό πέρασμα' : 'στοχευμένο',
+  }));
+
+  const all = [...manual, ...automatic].slice(0, 9);
+  if (!all.length) return '';
+
+  return `
+    <details class="qhist">
+      <summary>Τι κοιτάξαμε (${all.length})</summary>
+      <ul>
+        ${all
+          .map(
+            (e) => `<li><span class="qh-at">${esc(e.at)}</span>
+              <span class="qh-what">${esc(e.what)}</span>
+              <span class="qh-by${e.by === 'εσύ' ? ' me' : ''}">${esc(e.by)}</span>
+              ${e.note ? `<span class="qh-note">${esc(e.note)}</span>` : ''}</li>`
+          )
+          .join('')}
+      </ul>
+      ${
+        row.lastSweepAt
+          ? `<p class="qh-foot">Τελευταίο εθνικό αυτόματο πέρασμα: ${esc(row.lastSweepAt)} (${esc(
+              agoLabel(row.lastSweepAt)
+            )}).</p>`
+          : ''
+      }
+    </details>`;
+};
+
+/**
+ * ΤΙ ΔΙΟΡΘΩΘΗΚΕ — the other half of a maintenance board.
+ *
+ * Read out of the ledger's own history: each build records which axes moved and
+ * by how much. A board that only ever lists what is wrong is a board that feels
+ * like it never improves, whatever the work behind it.
+ */
+const progressTrail = (row) => {
+  const moved = (row.history || []).filter((h) => h.moved && Object.keys(h.moved).length);
+  if (!moved.length) return '';
+
+  const line = (h) => {
+    const parts = Object.entries(h.moved)
+      .map(([key, [from, to]]) => {
+        const axis = LEDGER.axes.find((a) => a.key === key);
+        const up = to > from;
+        return `<span class="${up ? 'up' : 'down'}">${esc(axis?.short || key)} ${from}%→${to}%</span>`;
+      })
+      .join(' ');
+    return `<li><span class="qh-at">${esc(h.at)}</span>${parts}</li>`;
+  };
+
+  return `
+    <details class="qhist qprog">
+      <summary>Τι διορθώθηκε (${moved.length})</summary>
+      <ul>${moved.slice(0, 6).map(line).join('')}</ul>
+    </details>`;
+};
+
+/**
+ * ΤΙ ΜΕΝΕΙ — the hand-written list, per region and optionally per beach.
+ *
+ * `compact` renders it inside a region card; the full form only appears on the
+ * focused panel, because a text input on 110 rows is a page nobody can read.
+ */
+const todoList = (row, todos, { withForm = false } = {}) => {
+  const all = todos?.[row.id] || [];
+  const open = all.filter((t) => !t.done);
+  const closed = all.filter((t) => t.done);
+
+  const item = (t) => `
+    <li class="${t.done ? 'done' : ''}">
+      <span class="qt-txt">${t.beachName ? `<b>${esc(t.beachName)}</b> ` : ''}${esc(t.text)}</span>
+      <span class="qt-when">${esc(t.done ? `έγινε ${t.doneAt}` : t.at)}</span>
+      ${
+        t.done
+          ? ''
+          : `<form method="post" action="?key=KEYPLACEHOLDER&amp;tab=quality">
+              <input type="hidden" name="key" value="RAWFORMKEY">
+              <input type="hidden" name="region" value="${esc(row.id)}">
+              <input type="hidden" name="id" value="${esc(t.id)}">
+              <button type="submit" name="action" value="todo-done" title="έγινε">✓</button>
+              <button type="submit" name="action" value="todo-drop" class="drop" title="σβήσ' το">✕</button>
+            </form>`
+      }
+    </li>`;
+
+  if (!withForm && !open.length) return '';
+
+  return `
+    <div class="qtodo">
+      ${
+        open.length || closed.length
+          ? `<ul>${open.map(item).join('')}${closed.slice(0, 3).map(item).join('')}</ul>`
+          : '<p class="empty">Καμία σημείωση ακόμη για αυτή την περιοχή.</p>'
+      }
+      ${
+        withForm
+          ? `<form method="post" action="?key=KEYPLACEHOLDER&amp;tab=quality" class="qtadd">
+              <input type="hidden" name="key" value="RAWFORMKEY">
+              <input type="hidden" name="action" value="todo-add">
+              <input type="hidden" name="region" value="${esc(row.id)}">
+              <input type="text" name="text" maxlength="200" placeholder="τι μένει να γίνει εδώ">
+              <input type="number" name="beachId" min="1" placeholder="# παραλίας (προαιρετικό)">
+              <button type="submit">Πρόσθεσε</button>
+            </form>`
+          : ''
+      }
+    </div>`;
+};
+
+/** The form that writes "I looked at this one today" into Blobs. */
+const checkForm = (row) => `
+  <details class="qchk">
+    <summary>Το τσέκαρα</summary>
+    <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=quality">
+      <input type="hidden" name="key" value="RAWFORMKEY">
+      <input type="hidden" name="action" value="quality-check">
+      <input type="hidden" name="region" value="${esc(row.id)}">
+      <div class="qaxes">
+        ${LEDGER.axes
+          .map(
+            (a) => `<label><input type="checkbox" name="axis" value="${esc(a.key)}"> ${esc(a.short)}</label>`
+          )
+          .join('')}
+      </div>
+      <input type="text" name="note" maxlength="180" placeholder="τι κοίταξες / τι μένει (προαιρετικό)">
+      <button type="submit">Καταχώρησέ το</button>
+    </form>
+  </details>`;
+
+const qualityTab = (rows, beachRows, todos, flashCode, focusId) => {
+  const flash = FLASH[flashCode];
+  const head = flash ? `<div class="flash ${flash[1]}">${esc(flash[0])}</div>` : '';
+
+  const overdueRows = rows.filter((r) => r.overdue > 0);
+  // `?region=` opens ONE region's form and history at the top. The 110-row table
+  // used to carry a folded form and a folded history on every row, which is 110
+  // copies of the same markup nobody has open — it put the console at 476 KB.
+  // Same trade-off, and the same solution, as `?beach=` on the photos tab.
+  const focus = focusId ? rows.find((r) => r.id === focusId) : null;
+  const ledgerAge = daysSince(LEDGER.generatedAt);
+
+  const totalPct = (key) => {
+    const t = LEDGER.totals.byAxis[key] || { ok: 0, total: 0 };
+    return t.total ? Math.round((t.ok / t.total) * 100) : 0;
+  };
+
+  const priorityCard = (row, rank) => `
+    <li class="qrow${row.overdue > 0 ? ' late' : ''}">
+      <div class="qhead">
+        <span class="qrank">${rank}</span>
+        <b class="qname">${esc(row.label)}</b>
+        <span class="qmeta">${num(row.beaches)} παραλίες</span>
+        <span class="spacer"></span>
+        <span class="qviews">${row.views ? `${num(row.views)} προβολές` : 'καμία προβολή'}</span>
+      </div>
+      <div class="qwhy">
+        Τελευταίος έλεγχος <b>${esc(agoLabel(row.lastAt))}</b>${
+          row.lastAt ? ` (${esc(row.lastAt)})` : ''
+        } · ${esc(row.tier.label)} → κάθε ${row.tier.days} μέρες ·
+        ${
+          row.overdue > 0
+            ? `<span class="late">καθυστερεί ${row.overdue} μέρες</span>`
+            : `<span class="fine">μέσα στον χρόνο του</span>`
+        }
+      </div>
+      <div class="qdots">${axisDots(row)}</div>
+      ${row.gaps.length ? `<div class="qgaps">${row.gaps.map((g) => esc(g)).join(' · ')}</div>` : ''}
+      ${
+        row.manual
+          ? `<div class="qlast">✔ ${esc(row.manual.at)}${
+              row.manual.note ? ` — ${esc(row.manual.note)}` : ''
+            }</div>`
+          : ''
+      }
+      ${todoList(row, todos)}
+      <div class="qacts">${checkForm(row)}${auditTrail(row)}${progressTrail(row)}</div>
+    </li>`;
+
+  const tableRow = (row) => `
+    <tr${focus && focus.id === row.id ? ' class="on"' : ''}>
+      <td class="qt-name">${esc(row.label)}<span>${num(row.beaches)}</span></td>
+      <td class="qt-num">${row.views ? num(row.views) : '—'}</td>
+      <td class="qt-when${row.overdue > 0 ? ' late' : ''}">${esc(agoLabel(row.lastAt))}</td>
+      <td class="qt-dots">${axisDots(row)}</td>
+      <td class="qt-act"><a class="qmini" href="?key=KEYPLACEHOLDER&amp;tab=quality&amp;region=${encodeURIComponent(
+        row.id
+      )}">Άνοιξέ την</a></td>
+    </tr>`;
+
+  const focusPanel = focus
+    ? `<section class="panel qfocus">
+        <h2>${esc(focus.label)}<em>${num(focus.beaches)} παραλίες · ${
+          focus.views ? `${num(focus.views)} προβολές στο παράθυρο` : 'καμία προβολή στο παράθυρο'
+        } · τελευταίος έλεγχος ${esc(agoLabel(focus.lastAt))}</em>
+        <a class="qclose" href="?key=KEYPLACEHOLDER&amp;tab=quality">κλείσε</a></h2>
+        <div class="qdots">${axisDots(focus)}</div>
+        ${focus.gaps.length ? `<div class="qgaps">${focus.gaps.map((g) => esc(g)).join(' · ')}</div>` : ''}
+        <div class="qfeat" style="margin-top:9px">
+          ${LEDGER.featureList
+            .map((f) => {
+              const n = focus.features?.[f.key] || 0;
+              return `<span${n ? '' : ' class="none"'}><b>${num(n)}</b>${esc(f.label)}</span>`;
+            })
+            .join('')}
+        </div>
+        ${
+          Object.values(focus.examples || {}).some((v) => v.length)
+            ? `<ul class="qex">${LEDGER.axes
+                .filter((a) => (focus.examples[a.key] || []).length)
+                .map(
+                  (a) =>
+                    `<li><b>${esc(a.short)}</b> ${esc(focus.examples[a.key].join(', '))}${
+                      focus.axes.find((x) => x.key === a.key).missing > 3 ? ' …' : ''
+                    }</li>`
+                )
+                .join('')}</ul>`
+            : ''
+        }
+        <h3 class="qsub">Τι μένει να γίνει εδώ</h3>
+        ${todoList(focus, todos, { withForm: true })}
+        <div class="qacts">${checkForm(focus)}${auditTrail(focus)}${progressTrail(focus)}</div>
+      </section>`
+    : '';
+
+  return `${head}${focusPanel}
+<section class="panel">
+  <h2>Πόσο καλά ξέρουμε τις παραλίες μας<em>σε όλες τις ${num(LEDGER.regions.length)} περιοχές · ${num(
+    LEDGER.totals.beaches
+  )} παραλίες</em></h2>
+  <div class="qtotals">
+    ${LEDGER.axes
+      .map((a) => {
+        const pct = totalPct(a.key);
+        const level = pct >= 95 ? 'ok' : pct >= 75 ? 'mid' : pct >= 40 ? 'low' : 'bad';
+        return `<div class="qtot ${level}"><span class="k">${esc(a.short)}</span>
+          <span class="v">${pct}%</span>
+          <span class="s">${num(LEDGER.totals.byAxis[a.key].ok)} από ${num(
+            LEDGER.totals.byAxis[a.key].total
+          )}</span></div>`;
+      })
+      .join('')}
+  </div>
+  <div class="qfeat" style="margin-top:12px">
+    ${LEDGER.featureList
+      .map((f) => {
+        const n = LEDGER.featureTotals[f.key] || 0;
+        return `<span${n ? '' : ' class="none"'}><b>${num(n)}</b>${esc(f.label)}</span>`;
+      })
+      .join('')}
+    ${
+      LEDGER.needsVerification
+        ? `<span style="border-color:rgba(251,191,36,.4);color:#fde68a"><b style="color:#fcd34d">${num(
+            LEDGER.needsVerification
+          )}</b>σημειωμένες «θέλουν επαλήθευση»</span>`
+        : ''
+    }
+  </div>
+  <p class="qnote">
+    Η δεύτερη σειρά είναι <b>τι ξέρουμε</b>, όχι τι χρωστάμε: μια παραλία χωρίς ντους δεν είναι
+    παραλία που δεν ελέγξαμε. Οι «θέλουν επαλήθευση» όμως είναι — τις σημείωσε προηγούμενο πέρασμα.
+  </p>
+  <p class="qnote">
+    Το ταμπλό χτίστηκε <b>${esc(agoLabel(LEDGER.generatedAt))}</b> (${esc(LEDGER.generatedAt)})${
+      ledgerAge !== null && ledgerAge > 21
+        ? ' — <b class="late">είναι παλιό</b>, τρέξε ξανά <code>node scripts/buildQualityLedger.mjs</code>'
+        : ''
+    }.
+    Οι ημερομηνίες μετράνε <b>στοχευμένους</b> ελέγχους σε μία περιοχή — τα εθνικά αυτόματα περάσματα
+    δεν πιάνονται ως «την ξαναδιαβάσαμε», γιατί αγγίζουν και τις 110 μαζί.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Τι να ξαναδείς τώρα<em>${
+    overdueRows.length ? `${num(overdueRows.length)} περιοχές έχουν καθυστερήσει` : 'καμία δεν έχει καθυστερήσει'
+  } · σειρά: κίνηση × παλαιότητα × πόσα λείπουν</em></h2>
+  ${
+    rows.some((r) => r.views)
+      ? ''
+      : `<p class="qwarn">Δεν υπάρχει ακόμη μετρημένη κίνηση σε αυτό το παράθυρο, οπότε η σειρά
+         βγαίνει μόνο από παλαιότητα και κενά — όχι από το τι βλέπει ο κόσμος.</p>`
+  }
+  ${
+    rows.length
+      ? `<ol class="qlist">${rows.slice(0, 10).map((r, i) => priorityCard(r, i + 1)).join('')}</ol>`
+      : '<p class="empty">Δεν υπάρχουν δεδομένα ποιότητας ακόμη.</p>'
+  }
+</section>
+
+${
+  beachRows.length
+    ? `<section class="panel">
+  <h2>Παραλίες που τις βλέπουν και τους λείπει κάτι<em>${num(
+    beachRows.length
+  )} συγκεκριμένες σελίδες · σειρά: προβολές × πόσα λείπουν</em></h2>
+  <ul class="qbl">
+    ${beachRows
+      .slice(0, 25)
+      .map(
+        (b) => `<li>
+          <span class="qb-v">${num(b.views)}</span>
+          <span class="qb-n">${esc(b.name)}<em>${esc(b.region)}</em></span>
+          <span class="qb-m">${b.missing
+            .map((a) => `<i>${esc(a.short)}</i>`)
+            .join('')}<a class="qmini" href="?key=KEYPLACEHOLDER&amp;tab=quality&amp;region=${encodeURIComponent(
+              b.regionId
+            )}#qtadd" title="σημείωσε τι μένει (#${b.id})">σημείωσε</a></span>
+        </li>`
+      )
+      .join('')}
+  </ul>
+  <p class="qnote">Οι προβολές είναι του ίδιου παραθύρου με τα στατιστικά.
+  «Λείπει» = το ίδιο κριτήριο με τα ποσοστά πιο πάνω. Παραλίες που δεν άνοιξε κανείς
+  δεν μπαίνουν εδώ — αυτές τις πιάνει η λίστα περιοχών.</p>
+</section>`
+    : ''
+}
+
+<section class="panel">
+  <h2>Όλες οι περιοχές<em>ταξινομημένες με την ίδια σειρά προτεραιότητας</em></h2>
+  <div class="qtwrap">
+    <table class="qtable">
+      <thead><tr>
+        <th>Περιοχή</th><th class="qt-num">Προβολές</th><th>Τελ. έλεγχος</th>
+        <th>Πινέζα · Πλοήγ. · Πρόσβ. · Παροχές · Φωτό · Κείμ.</th><th></th>
+      </tr></thead>
+      <tbody>${rows.map(tableRow).join('')}</tbody>
+    </table>
+  </div>
+</section>`;
 };
 
 const moderationTab = (queue, flashCode, curating, publishedBeaches) => {
@@ -647,6 +1047,11 @@ const page = (data) => {
   const { rows, totals, days, startDay, live, pulse, todayPoints, earlierPoints, nowMin } = data;
   const queue = data.queue || { configured: false, photos: [], reviews: [], signed: [], pendingPublish: null, problem: '' };
   const queueCount = queue.photos.length + queue.reviews.length;
+  // Built once and used twice — the tab badge needs the count before the panel
+  // below needs the rows, and computing them apart is how the two drift.
+  const qualityRows = buildQualityRows(data.totals?.views, data.qualityChecks);
+  const lateRegions = qualityRows.filter((r) => r.overdue > 0).length;
+  const beachGapRows = buildBeachGapRows(data.totals?.pages);
 
   const today = rows[0] || { unique: 0, hits: 0, newV: 0, retV: 0, unkV: 0 };
   const sumUnique = rows.reduce((s, r) => s + r.unique, 0);
@@ -842,6 +1247,158 @@ const page = (data) => {
     border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:13.5px}
   .flash.warn{border-color:rgba(251,191,36,.42);background:rgba(251,191,36,.10);color:#fde68a}
   .empty{color:var(--mut);font-size:13.5px;padding:6px 0}
+
+  /* ── quality board ────────────────────────────────────────────────────────── */
+  /* Four colours and nothing else, on both the totals and the per-region dots, so
+     "green means fine" is learned once and holds everywhere on the tab. */
+  /* auto-fit, not repeat(6): the axis list grew from six to seven once the
+     character fields were added, and a hard column count silently squashes. */
+  .qtotals{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:9px}
+  @media(max-width:480px){.qtotals{grid-template-columns:repeat(2,1fr)}}
+  .qtot{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:9px 10px}
+  .qtot .k{display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);font-weight:650}
+  .qtot .v{display:block;font:650 22px/1.2 var(--mono);margin-top:3px;font-variant-numeric:tabular-nums}
+  .qtot .s{display:block;font-size:10.5px;color:var(--mut);margin-top:1px}
+  .qtot.ok .v{color:#6ee7b7} .qtot.mid .v{color:#fcd34d}
+  .qtot.low .v{color:#fdba74} .qtot.bad .v{color:#fda4af}
+  .qtot.ok{border-color:rgba(52,211,153,.3)} .qtot.bad{border-color:rgba(251,113,133,.34)}
+  .qfeat{display:flex;flex-wrap:wrap;gap:7px}
+  .qfeat span{font-size:12px;color:var(--mut);border:1px solid var(--line);border-radius:999px;
+    padding:4px 11px;background:rgba(255,255,255,.03)}
+  .qfeat span b{color:#a5f3fc;font:650 12.5px var(--mono);margin-right:6px;font-variant-numeric:tabular-nums}
+  .qfeat span.none{opacity:.5}
+  .qnote{margin:12px 0 0;font-size:12px;line-height:1.55;color:var(--mut)}
+  .qnote code{font:12px var(--mono);background:rgba(148,163,184,.12);padding:1px 5px;border-radius:5px}
+  .late{color:#fda4af} .fine{color:#6ee7b7}
+
+  .qlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .qrow{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:11px 13px 10px}
+  .qrow.late{border-color:rgba(251,113,133,.32);background:linear-gradient(180deg,rgba(251,113,133,.06),transparent 70%)}
+  .qhead{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .qrank{font:700 11px var(--mono);color:var(--mut);min-width:16px}
+  .qname{font-size:15px;font-weight:650}
+  .qmeta{font-size:11.5px;color:var(--mut)}
+  .qviews{font:650 12.5px var(--mono);color:#a5f3fc;font-variant-numeric:tabular-nums}
+  .qwhy{font-size:12.5px;color:var(--mut);margin-top:5px}
+  .qwhy b{color:var(--txt)}
+  .qgaps{font-size:12px;color:#fcd34d;margin-top:6px}
+  .qwarn{margin:0 0 12px;font-size:12.5px;line-height:1.5;color:#fde68a;
+    border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.07);border-radius:11px;padding:9px 12px}
+  .qlast{font-size:12px;color:#6ee7b7;margin-top:5px}
+
+  /* The dot row IS the summary: percentage inside, axis name under it. Reading
+     left to right always gives the same six answers in the same order. */
+  .qdots{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .qd{display:inline-flex;flex-direction:column;align-items:center;gap:1px;font-style:normal;
+    min-width:46px;padding:4px 6px 3px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+  .qd b{font:650 12px var(--mono);font-variant-numeric:tabular-nums}
+  .qd u{text-decoration:none;font-size:9px;letter-spacing:.02em;color:var(--mut)}
+  .qd.ok{border-color:rgba(52,211,153,.34)} .qd.ok b{color:#6ee7b7}
+  .qd.mid{border-color:rgba(251,191,36,.30)} .qd.mid b{color:#fcd34d}
+  .qd.low{border-color:rgba(251,146,60,.32)} .qd.low b{color:#fdba74}
+  .qd.bad{border-color:rgba(251,113,133,.38)} .qd.bad b{color:#fda4af}
+
+  /* "Το τσέκαρα" stays folded: it is one press per WEEK, and an open form on 110
+     rows would bury the numbers the tab exists to show. */
+  .qchk{margin-top:8px}
+  .qchk summary{display:inline-block;cursor:pointer;font:650 11.5px system-ui,sans-serif;color:var(--mut);
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;list-style:none}
+  .qchk summary::-webkit-details-marker{display:none}
+  .qchk summary:hover{color:#a5f3fc;border-color:rgba(34,211,238,.45)}
+  .qchk[open] summary{color:#a5f3fc;border-color:rgba(34,211,238,.5)}
+  .qchk form{margin-top:8px;display:grid;gap:7px;max-width:520px}
+  .qaxes{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:12px;color:var(--mut)}
+  .qaxes label{display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+  .qchk input[type=text]{background:rgba(6,11,22,.6);border:1px solid var(--line);border-radius:9px;
+    padding:7px 10px;color:var(--txt);font:13px system-ui,sans-serif;width:100%}
+  .qchk input[type=text]:focus{outline:2px solid var(--cy);outline-offset:1px}
+  .qchk button{justify-self:start;appearance:none;border:1px solid rgba(16,185,129,.45);
+    background:rgba(16,185,129,.18);color:#6ee7b7;border-radius:999px;padding:7px 16px;
+    font:650 12.5px system-ui,sans-serif;cursor:pointer}
+  .qchk button:hover{background:rgba(16,185,129,.3)}
+
+  .qacts{display:flex;gap:7px;align-items:flex-start;flex-wrap:wrap;margin-top:8px}
+  .qhist summary{display:inline-block;cursor:pointer;font:650 11.5px system-ui,sans-serif;color:var(--mut);
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;list-style:none}
+  .qhist summary::-webkit-details-marker{display:none}
+  .qhist summary:hover{color:#a5f3fc;border-color:rgba(34,211,238,.45)}
+  .qhist[open] summary{color:#a5f3fc;border-color:rgba(34,211,238,.5)}
+  .qhist ul{list-style:none;margin:8px 0 0;padding:0;font-size:12px}
+  .qhist li{display:flex;gap:9px;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(148,163,184,.07)}
+  .qh-at{font:600 11.5px var(--mono);color:var(--mut);white-space:nowrap}
+  .qh-what{color:var(--txt)}
+  .qh-by{font-size:10.5px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:1px 7px;white-space:nowrap}
+  .qh-by.me{color:#6ee7b7;border-color:rgba(52,211,153,.35)}
+  .qh-note{font-size:11.5px;color:var(--mut)}
+  .qh-foot{margin:8px 0 0;font-size:11.5px;color:var(--mut)}
+
+  .qfocus{border-color:rgba(34,211,238,.34);background:linear-gradient(180deg,rgba(34,211,238,.07),transparent 60%)}
+  .qfocus h2{font-size:14px;text-transform:none;letter-spacing:0;color:var(--txt)}
+  .qclose{margin-left:auto;font-size:11px;color:var(--mut);text-decoration:none;
+    border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-weight:600}
+  .qclose:hover{color:#a5f3fc;border-color:rgba(34,211,238,.45)}
+  .qex{list-style:none;margin:9px 0 0;padding:0;font-size:12px;color:var(--mut);display:grid;gap:3px}
+  .qex b{color:var(--txt);font-weight:650;margin-right:6px}
+
+  /* One line per beach: count, name, what is missing. Nothing else fits on a
+     phone and nothing else is needed to decide whether to open it. */
+  .qbl{list-style:none;margin:0;padding:0}
+  .qbl li{display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:10px;
+    padding:6px 0;border-bottom:1px solid rgba(148,163,184,.08)}
+  @media(max-width:560px){.qbl li{grid-template-columns:52px minmax(0,1fr);row-gap:3px}
+    .qbl .qb-m{grid-column:2}}
+  .qb-v{text-align:right;font:650 13px var(--mono);color:#a5f3fc;font-variant-numeric:tabular-nums}
+  .qb-n{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .qb-n em{font-style:normal;font-size:11.5px;color:var(--mut);margin-left:8px}
+  .qb-m{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .qb-m i{font-style:normal;font-size:10.5px;color:#fda4af;border:1px solid rgba(251,113,133,.3);
+    background:rgba(251,113,133,.07);border-radius:999px;padding:2px 8px;white-space:nowrap}
+
+  /* to-do list: one line each, buttons small but still hittable on a phone.
+     Closed items stay, greyed — "we did this" is half the point of the list. */
+  .qsub{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);
+    margin:16px 0 8px;font-weight:700}
+  .qtodo ul{list-style:none;margin:0 0 9px;padding:0}
+  .qtodo li{display:flex;gap:9px;align-items:baseline;padding:5px 0;font-size:13px;
+    border-bottom:1px solid rgba(148,163,184,.07)}
+  .qtodo li.done{opacity:.45}
+  .qtodo li.done .qt-txt{text-decoration:line-through}
+  .qtodo .qt-txt{flex:1;min-width:0}
+  .qtodo .qt-txt b{color:#a5f3fc;font-weight:650}
+  .qtodo .qt-when{font:11px var(--mono);color:var(--mut);white-space:nowrap}
+  .qtodo li form{display:flex;gap:4px}
+  .qtodo li button{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.03);
+    color:#6ee7b7;border-radius:8px;padding:2px 9px;font:650 12px system-ui,sans-serif;cursor:pointer}
+  .qtodo li button.drop{color:#fda4af}
+  .qtodo li button:hover{border-color:rgba(34,211,238,.45)}
+  .qtadd{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .qtadd input[type=text]{flex:1;min-width:220px;background:rgba(6,11,22,.6);border:1px solid var(--line);
+    border-radius:9px;padding:7px 10px;color:var(--txt);font:13px system-ui,sans-serif}
+  .qtadd input[type=number]{width:150px;background:rgba(6,11,22,.6);border:1px solid var(--line);
+    border-radius:9px;padding:7px 10px;color:var(--txt);font:13px system-ui,sans-serif}
+  .qtadd input:focus{outline:2px solid var(--cy);outline-offset:1px}
+  .qtadd button{appearance:none;border:1px solid rgba(34,211,238,.45);background:rgba(34,211,238,.14);
+    color:#a5f3fc;border-radius:999px;padding:7px 16px;font:650 12.5px system-ui,sans-serif;cursor:pointer}
+  .qprog .up{color:#6ee7b7;font:600 11.5px var(--mono);margin-right:9px}
+  .qprog .down{color:#fda4af;font:600 11.5px var(--mono);margin-right:9px}
+
+  .qtwrap{overflow-x:auto}
+  .qtable{width:100%;border-collapse:collapse;font-size:13px}
+  .qtable tr.on{background:rgba(34,211,238,.08)}
+  .qmini{font:650 11px system-ui,sans-serif;color:var(--mut);text-decoration:none;
+    border:1px solid var(--line);border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .qmini:hover{color:#a5f3fc;border-color:rgba(34,211,238,.45)}
+  .qtable th{text-align:left;font:650 10px system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--mut);padding:0 10px 8px 0;white-space:nowrap;border-bottom:1px solid var(--line)}
+  .qtable td{padding:7px 10px 7px 0;border-bottom:1px solid rgba(148,163,184,.08);vertical-align:middle}
+  .qt-name{font-weight:600;white-space:nowrap}
+  .qt-name span{color:var(--mut);font:11px var(--mono);margin-left:7px}
+  .qt-num{text-align:right;font:600 12.5px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .qt-when{font-size:12px;color:var(--mut);white-space:nowrap}
+  .qt-when.late{color:#fda4af}
+  .qt-dots .qdots{margin-top:0}
+  .qt-act{white-space:nowrap}
+  .qt-act .qchk{margin-top:0}
 
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;margin-bottom:14px}
   .panel h2{display:flex;align-items:baseline;gap:8px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
@@ -1116,6 +1673,8 @@ ${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capa
   <button type="button" class="tab" data-tab="stats" role="tab" aria-selected="false">📊 Στατιστικά</button>
   <button type="button" class="tab" data-tab="photos" role="tab" aria-selected="false">📷 Εγκρίσεις${
     queueCount ? `<span class="badge">${num(queueCount)}</span>` : ''}</button>
+  <button type="button" class="tab" data-tab="quality" role="tab" aria-selected="false">🔎 Ποιότητα${
+    lateRegions ? `<span class="badge">${num(lateRegions)}</span>` : ''}</button>
 </nav>
 
 <div id="tabMap" role="tabpanel">
@@ -1270,6 +1829,10 @@ ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
 
 <div id="tabPhotos" role="tabpanel" hidden>
 ${moderationTab(queue, data.flash, data.curating, data.publishedBeaches)}
+</div>
+
+<div id="tabQuality" role="tabpanel" hidden>
+${qualityTab(qualityRows, beachGapRows, data.qualityTodos, data.flash, data.qualityFocus)}
 </div>
 
 <footer class="meth">
@@ -1593,7 +2156,7 @@ ${moderationTab(queue, data.flash, data.curating, data.publishedBeaches)}
   // Tabs. The map view is the default — it answers "what is happening right now",
   // which is the reason to open this page at all. The choice is remembered.
   var TAB_KEY = 'cb_traffic_tab';
-  var TABS = { map: 'tabMap', stats: 'tabStats', photos: 'tabPhotos' };
+  var TABS = { map: 'tabMap', stats: 'tabStats', photos: 'tabPhotos', quality: 'tabQuality' };
   function showTab(name) {
     if (!TABS[name]) name = 'map';
     Object.keys(TABS).forEach(function (k) {
@@ -1801,15 +2364,122 @@ const moderationPost = async (event, key) => {
 
   // `beach` keeps the ordering panel open across the redirect, so pressing ↑ four
   // times is four presses rather than four presses and four navigations back.
-  const back = (code, beach = '') => ({
+  const back = (code, beach = '', tab = 'photos') => ({
     statusCode: 303,
     headers: {
-      Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=photos${
+      Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=${tab}${
         beach ? `&beach=${encodeURIComponent(beach)}` : ''}&done=${code}`,
       'Cache-Control': 'no-store',
     },
     body: '',
   });
+
+  // ── Εκκρεμότητες: γράψ' το, κλείσ' το, σβήσ' το ─────────────────────────────
+  if (form.action === 'todo-add' || form.action === 'todo-done' || form.action === 'todo-drop') {
+    const regionId = String(form.region || '');
+    const backTo = (code) => ({
+      statusCode: 303,
+      headers: {
+        Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=quality${
+          regionId ? `&region=${encodeURIComponent(regionId)}` : ''
+        }&done=${code}`,
+        'Cache-Control': 'no-store',
+      },
+      body: '',
+    });
+    if (!LEDGER.regions.some((r) => r.id === regionId)) return backTo('checkfailed');
+
+    try {
+      const store = getStore(QUALITY_STORE);
+      const all = (await store.get('todos', { type: 'json' }).catch(() => null)) || {};
+      const list = Array.isArray(all[regionId]) ? all[regionId] : [];
+
+      if (form.action === 'todo-add') {
+        const text = String(form.text || '').slice(0, 200).replace(/[\r\n]+/g, ' ').trim();
+        if (!text) return backTo('todoempty');
+        // The beach is optional: some work is "this whole island needs photos"
+        // and forcing it onto one beach would be a lie about where it belongs.
+        const beachId = Number(form.beachId) || 0;
+        const beach = beachId ? LEDGER.beachGaps.find((b) => b[0] === beachId) : null;
+        list.unshift({
+          id: `${Date.now().toString(36)}${list.length}`,
+          text,
+          at: utcDayKey(new Date()),
+          beachId: beach ? beachId : 0,
+          beachName: beach ? beach[1] : '',
+          done: false,
+        });
+        // 60 per region is far past useful; past that it is a backlog nobody reads.
+        all[regionId] = list.slice(0, 60);
+      } else {
+        const id = String(form.id || '');
+        const index = list.findIndex((t) => t.id === id);
+        if (index < 0) return backTo('checkfailed');
+        if (form.action === 'todo-done') {
+          // Closed, not deleted: "we did this on 14/08" is the record of work.
+          list[index] = { ...list[index], done: true, doneAt: utcDayKey(new Date()) };
+        } else {
+          list.splice(index, 1); // typed it wrong — no point keeping it
+        }
+        all[regionId] = list;
+      }
+
+      await store.setJSON('todos', all);
+      return backTo(form.action === 'todo-done' ? 'tododone' : 'todoadded');
+    } catch (error) {
+      console.error('Could not store a to-do.', error && error.message);
+      return backTo('checkfailed');
+    }
+  }
+
+  // ── "Το τσέκαρα" ───────────────────────────────────────────────────────────
+  // The one thing on the quality tab that no script can derive: a person opened
+  // this island and went through it. Everything else there is computed from
+  // files; this is the entry that says a human was involved, so it is stored
+  // separately from the traffic rollups and never expires.
+  if (form.action === 'quality-check') {
+    const regionId = String(form.region || '');
+    // Land back on the region you just judged, with its history one line longer —
+    // the same reason approving a photo lands on that beach's ordering screen.
+    const backToRegion = (code) => ({
+      statusCode: 303,
+      headers: {
+        Location: `/api/traffic?key=${encodeURIComponent(key)}&tab=quality&region=${encodeURIComponent(
+          regionId
+        )}&done=${code}`,
+        'Cache-Control': 'no-store',
+      },
+      body: '',
+    });
+    if (!LEDGER.regions.some((r) => r.id === regionId)) return back('checkfailed', '', 'quality');
+
+    // Only the six known axis keys survive, so nothing from a form can reach the
+    // page as markup later — this text is rendered back on the board.
+    const known = new Set(LEDGER.axes.map((a) => a.key));
+    const params = new URLSearchParams(raw);
+    const axesChecked = params.getAll('axis').filter((a) => known.has(a));
+    const note = String(form.note || '').slice(0, 180).replace(/[\r\n]+/g, ' ').trim();
+
+    try {
+      const store = getStore(QUALITY_STORE);
+      const existing = (await store.get('checks', { type: 'json' }).catch(() => null)) || {};
+      const at = utcDayKey(new Date());
+      // History is kept — five entries per region, newest first. "Last checked"
+      // answers today's question; the trail answers "were we here in June too?".
+      const previous = existing[regionId]?.history || [];
+      existing[regionId] = {
+        at,
+        axes: axesChecked,
+        note,
+        history: [{ at, axes: axesChecked, note }, ...previous].slice(0, 5),
+      };
+      await store.setJSON('checks', existing);
+      return backToRegion('checked');
+    } catch (error) {
+      console.error('Could not store a quality check.', error && error.message);
+      return backToRegion('checkfailed');
+    }
+  }
 
   // ── Reordering one beach ───────────────────────────────────────────────────
   // Every one of these ends with the live index republished, because an order
@@ -2022,6 +2692,38 @@ const readCapacity = async () => {
     return { state, usage: monthlyUsage(state, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
   } catch {
     return { state: null, usage: monthlyUsage(null, { now, cycleStartDay, quota: MONTHLY_QUOTA }) };
+  }
+};
+
+/**
+ * The hand-entered checks. Best-effort on purpose: the quality board is still
+ * worth reading from the reports alone, so a Blobs hiccup must cost the manual
+ * dates, not the whole tab.
+ */
+const readQualityChecks = async () => {
+  try {
+    return (await getStore(QUALITY_STORE).get('checks', { type: 'json' })) || {};
+  } catch (error) {
+    console.error('Could not read the quality checks.', error && error.message);
+    return {};
+  }
+};
+
+/**
+ * The to-do list. Same store, separate key, because the two answer different
+ * questions and have different lifetimes: a check is a dated event that never
+ * changes, a to-do is open until somebody closes it.
+ *
+ * This is the part no script can produce. "47 beaches have no photo" is derived;
+ * "the pin at Λιβάδι is 200m off, I saw it, fix it next round" is knowledge that
+ * exists nowhere else and used to evaporate the moment a session ended.
+ */
+const readQualityTodos = async () => {
+  try {
+    return (await getStore(QUALITY_STORE).get('todos', { type: 'json' })) || {};
+  } catch (error) {
+    console.error('Could not read the quality to-dos.', error && error.message);
+    return {};
   }
 };
 
@@ -2273,6 +2975,11 @@ export const handler = async (event) => {
           // Zero visitors does not mean zero weather calls — the prerendered pages and
           // the CDN keep the proxy busy, so the quota still belongs on an empty console.
           capacity: await readCapacity(),
+          // The quality board does not depend on anyone having visited: with no
+          // traffic every region simply falls into the slowest re-check tier.
+          qualityChecks: await readQualityChecks(),
+          qualityFocus: params.region || '',
+          qualityTodos: await readQualityTodos(),
         }, given),
       };
     }
@@ -2399,6 +3106,9 @@ export const handler = async (event) => {
         curating: await readCurating(params.beach),
         publishedBeaches: await readPublishedBeaches(),
         capacity: await readCapacity(),
+        qualityChecks: await readQualityChecks(),
+        qualityFocus: params.region || '',
+        qualityTodos: await readQualityTodos(),
       }, given),
     };
   } catch (error) {

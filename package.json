@@ -82,6 +82,7 @@
     "quality:page": "node scripts/validateBeachPageContradictions.mjs",
     "quality:meta-descriptions": "node scripts/validateBeachMetaDescriptions.mjs",
     "quality:data-coverage": "node scripts/auditDataFieldCoverage.mjs",
+    "quality:ledger": "node scripts/buildQualityLedger.mjs",
     "quality:photo-coverage": "node scripts/auditBeachPhotoPresence.mjs && node scripts/auditPhotoImportanceGaps.mjs && node scripts/auditNameCollisionPhotos.mjs",
     "backup:private": "node scripts/backupPrivateDocs.mjs",
     "quality:csp-coverage": "node scripts/auditCspCoverage.mjs",

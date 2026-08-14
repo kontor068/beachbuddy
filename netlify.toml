@@ -16,6 +16,18 @@
   # δεύτερο, version-controlled δίχτυ που επιβιώνει αν κάποιος αλλάξει το dashboard.
   ignore = "node scripts/netlifyShouldSkipBuild.mjs"
 
+# ΕΒΔΟΜΑΔΙΑΙΟ ΜΗΝΥΜΑ ΠΟΙΟΤΗΤΑΣ — Δευτέρα 06:00 UTC (09:00 Ελλάδας το καλοκαίρι).
+#
+# Στέλνει στο Telegram ποιες περιοχές έχουν σειρά και ποιες σελίδες παραλίας
+# τραβάνε κίνηση με κενό. Η καρτέλα «Ποιότητα» απαντάει το ίδιο ερώτημα, αλλά μόνο
+# σε όποιον την ανοίξει· αυτό το φέρνει στο κινητό χωρίς να το θυμάται κανείς.
+#
+# Ένα cron τη βδομάδα, όχι ημερήσιο: τα δεδομένα παραλιών δεν αλλάζουν σε 24 ώρες
+# και ένα μήνυμα που το προσπερνάς είναι μήνυμα που δεν υπάρχει. Η ίδια η συνάρτηση
+# ΔΕΝ στέλνει όταν δεν υπάρχει τίποτα να πει.
+[functions."quality-digest"]
+  schedule = "0 6 * * 1"
+
 # Edge-cached forecast proxy (capacity fix — see reports/capacity/capacity-model.md).
 # Routes the client's ForecastProvider calls to the allow-list proxy function, which
 # sets CDN cache headers so one upstream Open-Meteo call serves all users per TTL.
