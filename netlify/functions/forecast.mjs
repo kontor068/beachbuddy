@@ -39,6 +39,14 @@ const UPSTREAMS = {
     customerHost: 'https://customer-marine-api.open-meteo.com',
     paths: new Set(['/v1/marine']),
   },
+  // Water temperature, split off the wave route on 14/08/2026. Same upstream host and path —
+  // it is a separate ROUTE here only so it can carry its own model pin and its own cache
+  // lifetime (12 h against the wave route's 3 h). See SEA_TEMPERATURE_MODEL below.
+  'open-meteo-marine-sst': {
+    host: 'https://marine-api.open-meteo.com',
+    customerHost: 'https://customer-marine-api.open-meteo.com',
+    paths: new Set(['/v1/marine']),
+  },
   // Saharan-dust route (added 09/08/2026, the day the paid plan made it affordable).
   // Same strict allow-list discipline: only /v1/air-quality, only the shared
   // ALLOWED_PARAMS — the client asks for `hourly=dust` and nothing else.
@@ -102,7 +110,19 @@ let authAlertSent = false;
 // in services/weatherService.ts reads those suffixed names, falling back to the bare ones.
 // Going back to a single model here is therefore safe, but adding/renaming a model without
 // updating that parser is not.
-const MARINE_MODEL = 'ewam,meteofrance_wave,meteofrance_currents';
+const MARINE_MODEL = 'ewam,meteofrance_wave';
+
+// The water-temperature pin, on its own route since 14/08/2026 (see UPSTREAMS above and
+// services/forecast/openMeteoProvider.ts for the full reasoning).
+//
+// WHY IT LEFT THE WAVE CALL: Open-Meteo counts MODELS as their own multiplier — three models
+// is three full API calls per coordinate. `meteofrance_currents` was in the wave list to carry
+// exactly one field, so a number that moves half a degree a day was buying a third of the
+// national marine bill (~20,000 calls/day against a 33,000/day budget).
+//
+// Same discipline as MARINE_MODEL: `models` is not in ALLOWED_PARAMS, so this constant is the
+// only way a model reaches this route, and it is set after the safe query is built.
+const SEA_TEMPERATURE_MODEL = 'meteofrance_currents';
 
 // --- CORS for the mobile app only (see services/forecast/openMeteoProvider.ts) -------
 // The web app calls this same-origin (relative /api/forecast/...), which needs no CORS
@@ -449,7 +469,16 @@ const PREFIX = '/api/forecast/';
 // behind the dust field publishes a new run every 12 hours, so asking more often than
 // every 3 h re-fetches identical numbers at full charge. Dust events build over many
 // hours — 3 h staleness cannot misdirect anyone.
-const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800 };
+//
+// `sst` — 12 h, and it is the longest TTL here by a wide margin (14/08/2026). Two reasons, and
+// the second is the one that makes it safe rather than merely cheap:
+//   1. meteofrance_currents publishes twice a day, so asking more often re-fetches identical
+//      numbers at full charge — the same argument that took marine from 30 min to 3 h.
+//   2. The response is an HOURLY series six days long, and utils/marineForecastParsing indexes
+//      it BY TIME (dt_txt), not by position. A response fetched at 07:00 therefore still yields
+//      19:00's own value at 19:00. Longer caching here does not age the number on the card; it
+//      only stops us re-buying a series we already hold.
+const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800, sst: 43200 };
 const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
 // `durable` — the single most expensive omission this file has had (found 14/08/2026).
@@ -480,6 +509,7 @@ const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 // upstream failure must stay local and short-lived, never promoted into the shared cache.
 const cdnCacheControl = (providerKey) => {
   const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
+    : providerKey === 'open-meteo-marine-sst' ? CDN_MAX_AGE_S.sst
     : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
     : CDN_MAX_AGE_S.weather;
   return `public, durable, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
@@ -606,6 +636,7 @@ export const handler = async (event) => {
   // MUST stay above the metering below: `models` multiplies the variable count, so
   // weighing the query before this line would under-charge every marine request.
   if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
+  if (providerKey === 'open-meteo-marine-sst') query.set('models', SEA_TEMPERATURE_MODEL);
 
   // How many coordinates this one request carries. buildSafeQuery has already
   // validated the list and guaranteed latitude/longitude have equal length. Locations

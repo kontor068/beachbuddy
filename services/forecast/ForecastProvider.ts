@@ -22,8 +22,11 @@
 export interface ForecastProvider {
   /** Stable identifier, e.g. 'open-meteo' — handy for logs/telemetry. */
   readonly id: string;
-  /** Current-conditions endpoint (temperature, wind, gusts, weather code). */
-  currentWeatherUrl(lat: number, lon: number): string;
+  // There is deliberately NO current-conditions URL. Open-Meteo charges a full API call for
+  // any request, however small, so a six-variable `current=` block cost exactly as much as
+  // the hourly forecast that already contains all six for the same coordinate. "Now" is read
+  // out of the hourly series instead (weatherService.fetchWeatherData), which is also what
+  // every colour and verdict in the app is computed from.
   /** Hourly forecast endpoint (temp, wind, gusts, pressure, uv, precip prob). */
   hourlyForecastUrl(lat: number, lon: number): string;
   /** Marine endpoint (wave/swell height, direction, period, SST). */
@@ -40,6 +43,17 @@ export interface ForecastProvider {
    */
   hourlyForecastUrlBatch(points: ForecastPoint[]): string;
   marineForecastUrlBatch(points: ForecastPoint[]): string;
+  /**
+   * Water temperature, split off the marine call on 14/08/2026.
+   *
+   * Its own endpoint because models are a per-coordinate cost multiplier at Open-Meteo, and
+   * the model that carries this one field was inflating every wave request by a third. On its
+   * own route it also gets a 12 h cache instead of 3 h, which is honest rather than stale: the
+   * response is an hourly series the parser indexes BY TIME, so an older fetch still yields
+   * the current hour's own value.
+   */
+  seaTemperatureUrl(lat: number, lon: number): string;
+  seaTemperatureUrlBatch(points: ForecastPoint[]): string;
   /**
    * Saharan-dust endpoint (surface dust concentration, μg/m³). Added 09/08/2026
    * with the paid plan. ONE point per region — dust is a synoptic-scale field

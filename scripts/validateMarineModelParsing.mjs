@@ -57,6 +57,33 @@ if (!providerPin) fail(`${PROVIDER}: could not find \`const MARINE_MODEL = 'mode
 if (!proxyPin) fail(`${PROXY}: could not find \`const MARINE_MODEL = '...'\`.`);
 
 let models = [];
+// The water-temperature route, split off the wave call on 14/08/2026 (models are a per-
+// coordinate cost multiplier at Open-Meteo, and this one carried a single field). It is a
+// SECOND pin that must agree across the same two files, so it gets the same treatment — the
+// original regression this whole guard exists for was exactly "SST quietly stopped arriving".
+const providerSstPin = providerSrc.match(/const SEA_TEMPERATURE_MODEL\s*=\s*'models=([^']+)'/);
+const proxySstPin = proxySrc.match(/const SEA_TEMPERATURE_MODEL\s*=\s*'([^']+)'/);
+
+if (!providerSstPin) fail(`${PROVIDER}: could not find \`const SEA_TEMPERATURE_MODEL = 'models=...'\`.`);
+if (!proxySstPin) fail(`${PROXY}: could not find \`const SEA_TEMPERATURE_MODEL = '...'\`.`);
+
+let sstModels = [];
+if (providerSstPin && proxySstPin) {
+  const providerSstModels = providerSstPin[1].split(',').map(s => s.trim()).filter(Boolean);
+  sstModels = proxySstPin[1].split(',').map(s => s.trim()).filter(Boolean);
+  const same =
+    providerSstModels.length === sstModels.length &&
+    providerSstModels.every((m, i) => m === sstModels[i]);
+  if (!same) {
+    fail(
+      `Water-temperature model pin disagrees between client and proxy.\n` +
+      `    ${PROVIDER}: ${providerSstModels.join(',') || '(none)'}\n` +
+      `    ${PROXY}:    ${sstModels.join(',') || '(none)'}\n` +
+      `    The proxy value wins in production.`
+    );
+  }
+}
+
 if (providerPin && proxyPin) {
   const providerModels = providerPin[1].split(',').map(s => s.trim()).filter(Boolean);
   const proxyModels = proxyPin[1].split(',').map(s => s.trim()).filter(Boolean);
@@ -81,9 +108,41 @@ if (providerPin && proxyPin) {
 const hourlyBlock = providerSrc.match(/const MARINE_HOURLY\s*=\s*\[([\s\S]*?)\]\.join/);
 if (!hourlyBlock) fail(`${PROVIDER}: could not find the MARINE_HOURLY variable list.`);
 
-const requestedVars = hourlyBlock
+const waveVars = hourlyBlock
   ? [...hourlyBlock[1].matchAll(/'([a-z_]+)'/g)].map(m => m[1])
   : [];
+
+// The SST route asks for one field, declared as its own constant.
+const sstHourly = providerSrc.match(/const SEA_TEMPERATURE_HOURLY\s*=\s*'([a-z_]+)'/);
+if (!sstHourly) fail(`${PROVIDER}: could not find \`const SEA_TEMPERATURE_HOURLY = '...'\`.`);
+const sstVars = sstHourly ? [sstHourly[1]] : [];
+
+// The parser reads ONE merged marine row, so from its point of view the two routes are one
+// variable list served by one model set. Checking them united is what keeps section 2 honest
+// after the split: a field must still be requested somewhere, and parsed from a model that is
+// actually pinned somewhere.
+const requestedVars = [...waveVars, ...sstVars];
+const allModels = [...models, ...sstModels];
+
+// --- 2b. the split itself must not quietly un-split ---------------------------------------
+// Putting SST back into MARINE_HOURLY would drag meteofrance_currents back into the wave model
+// list, and Open-Meteo charges a FULL extra call per coordinate per model — measured at roughly
+// 20,000 calls/day nationally for this one field. Nothing else would fail: the card would keep
+// working and the bill would quietly rise by a third. Hence a named check.
+if (waveVars.includes(SST)) {
+  fail(
+    `${PROVIDER}: '${SST}' is back inside MARINE_HOURLY. It has its own route since 14/08/2026 ` +
+    `precisely because carrying it there forces a third model onto every wave request, and ` +
+    `Open-Meteo prices models per coordinate. Use SEA_TEMPERATURE_HOURLY.`
+  );
+}
+if (models.includes('meteofrance_currents')) {
+  fail(
+    `${PROXY}/${PROVIDER}: 'meteofrance_currents' is pinned on the WAVE route again. It serves ` +
+    `only '${SST}', which now has its own endpoint — leaving it here costs one extra full API ` +
+    `call for every coordinate of every wave request.`
+  );
+}
 
 // How the parser resolves each field: series('<field>', '<model>')
 const parsed = new Map();
@@ -101,10 +160,10 @@ for (const variable of requestedVars) {
     continue;
   }
   const model = parsed.get(variable);
-  if (models.length && !models.includes(model)) {
+  if (allModels.length && !allModels.includes(model)) {
     fail(
-      `${PARSER}: parses '${variable}' from model '${model}', which is not pinned ` +
-      `(pinned: ${models.join(', ')}). That lookup can only ever miss.`
+      `${PARSER}: parses '${variable}' from model '${model}', which is not pinned on either ` +
+      `route (pinned: ${allModels.join(', ')}). That lookup can only ever miss.`
     );
   }
 }
@@ -126,9 +185,9 @@ if (requestedVars.includes(SST)) {
       `would vanish from every beach-detail page. Source it from a currents/ocean model.`
     );
   }
-  if (models.length && !models.some(m => !/_wave$/.test(m))) {
+  if (allModels.length && !allModels.some(m => !/_wave$/.test(m))) {
     fail(
-      `Only wave model(s) are pinned (${models.join(', ')}), but '${SST}' is requested. ` +
+      `Only wave model(s) are pinned (${allModels.join(', ')}), but '${SST}' is requested. ` +
       `Nothing in that set can serve it.`
     );
   }

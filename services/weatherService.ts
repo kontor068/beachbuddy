@@ -366,28 +366,57 @@ export const getMockWeatherData = (): WeatherData => {
  * Returns the data plus the real time it was fetched (fetchedAt) so callers can
  * apply the freshness/staleness policy.
  */
+/**
+ * The hour that is happening now, out of an hourly forecast.
+ *
+ * `dt` is absolute (unix seconds), so this needs no timezone reasoning at all — which is
+ * the point. The item AT or BEFORE now is the hour we are inside; the first item is the
+ * fallback for the one case that should not happen (a forecast starting in the future).
+ */
+const hourHappeningNow = (items: ForecastItem[]): ForecastItem | null => {
+  if (!items.length) return null;
+  const nowSeconds = Date.now() / 1000;
+  let current: ForecastItem | null = null;
+  for (const item of items) {
+    if (item.dt <= nowSeconds) current = item;
+    else break; // the array is chronological; nothing later can qualify
+  }
+  return current || items[0];
+};
+
+/**
+ * Today's conditions at a point.
+ *
+ * NO LONGER ITS OWN NETWORK CALL (14/08/2026). It used to fetch Open-Meteo's `current=`
+ * block, which cost a FULL API call per point — the provider's rule floors every request at
+ * one call, so six variables cost exactly as much as sixty ("How Is One API Call Defined?",
+ * quoted in netlify/functions/forecast.mjs). The hourly forecast we already fetch for the
+ * same coordinate carries every one of those six fields, so that call bought nothing.
+ *
+ * It also removes a real inconsistency rather than only a cost. Every colour, verdict,
+ * ranking and planner figure in this app is computed from the HOURLY data; only the headline
+ * "right now" read from `current=`. The two are different samples of the same model — the
+ * current block is the live instant, the hourly one is the top of the hour — so the headline
+ * could name a wind the verdict beside it had not used. Now they are the same number by
+ * construction.
+ *
+ * The hourly cache is shared, so a caller that later asks for the forecast at this point
+ * pays nothing, and vice versa.
+ */
 export const fetchWeatherData = async (lat: number, lon: number): Promise<FetchResult<WeatherData>> => {
-  const cacheKey = `weather_${lat.toFixed(3)}_${lon.toFixed(3)}`;
-  const API_URL = activeForecastProvider.currentWeatherUrl(lat, lon);
+  const forecast = await fetchForecastData(lat, lon);
+  const now = hourHappeningNow(forecast.data);
+  if (!now) throw new Error('Weather fetch failed: hourly forecast carried no hours');
 
-  return withCache<WeatherData>(cacheKey, 'current', 'current-weather', { lat, lon, url: API_URL }, async () => {
-    const data = await fetchJson<any>(API_URL, 'current-weather');
-    const current = data.current;
-    if (!current) throw new Error('Weather fetch failed: missing current data');
-
-    return {
-      wind: {
-        speed: current.wind_speed_10m,
-        deg: current.wind_direction_10m,
-        // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
-        gust: optionalNumber(current.wind_gusts_10m) ?? current.wind_speed_10m * 1.2,
-      },
-      weather: mapWmoToWeather(current.weather_code, current.is_day === 1),
-      main: {
-        temp: current.temperature_2m
-      }
-    };
-  });
+  return {
+    data: {
+      wind: { speed: now.wind.speed, deg: now.wind.deg, gust: now.wind.gust },
+      // Already mapped by parseHourlyForecast, day/night included.
+      weather: now.weather[0],
+      main: { temp: now.main.temp },
+    },
+    fetchedAt: forecast.fetchedAt,
+  };
 };
 
 /**
@@ -452,14 +481,103 @@ const parseHourlyForecast = (hourly: any): ForecastItem[] => {
  * This is intentionally separate from the weather forecast so a marine outage
  * does not force the app into mock weather mode.
  */
+// ── Water temperature, fetched apart and folded back in ──────────────────────
+//
+// Split off the wave request on 14/08/2026 because Open-Meteo prices MODELS per coordinate:
+// the currents model that carries this single field was costing a third of the national marine
+// bill. Callers are deliberately unaware of the split — every existing call site still asks for
+// "the marine forecast" and still gets water temperature inside it.
+//
+// THE MERGE IS BY TIME, never by position. The two responses can differ in length (different
+// models, different run cut-offs), so pairing them by array index would eventually hand a
+// beach the wrong hour's temperature — silently, since both are plausible numbers.
+//
+// Kept as a PLAIN OBJECT rather than a Map on purpose: this value goes through the same
+// localStorage cache as everything else, and `JSON.stringify(new Map())` is `{}` — a Map would
+// come back empty after every reload, which on screen is indistinguishable from "this beach has
+// no water temperature".
+type SeaTemperatureByHour = Record<string, number>;
+
+const parseSeaTemperatureHourly = (hourly: any): SeaTemperatureByHour => {
+  const out: SeaTemperatureByHour = {};
+  const times = hourly?.time;
+  if (!Array.isArray(times)) return out;
+  // One model is pinned on this route, so Open-Meteo returns the BARE field name. The suffixed
+  // name is read first anyway: it is what comes back if a second model is ever added here, and
+  // it costs one lookup to not regress silently the day that happens.
+  const series = hourly[`sea_surface_temperature_${'meteofrance_currents'}`] ?? hourly.sea_surface_temperature;
+  if (!Array.isArray(series)) return out;
+  times.forEach((timeStr: string, index: number) => {
+    const value = optionalNumber(series[index]);
+    if (value !== undefined) out[String(timeStr).replace('T', ' ')] = value;
+  });
+  return out;
+};
+
+/**
+ * Fold a temperature series into marine rows. Rows with no matching hour keep what they had.
+ *
+ * IT ALSO ADDS HOURS THE WAVE RESPONSE DOES NOT HAVE, and that is not a nicety. parseMarineHourly
+ * drops any hour where every field is undefined, and sea temperature used to be one of the fields
+ * keeping such an hour alive. In the enclosed basins neither wave model resolves — the Evian and
+ * Saronic gulfs, exactly the coasts this app is most careful about — the wave columns come back
+ * null while the currents model still reports a temperature. Merging only into existing rows
+ * would therefore have deleted the water-temperature card from those beaches and nowhere else,
+ * which is the kind of regression that gets found in September.
+ */
+const withSeaTemperature = (
+  items: MarineForecastItem[],
+  byHour: SeaTemperatureByHour | undefined,
+): MarineForecastItem[] => {
+  if (!byHour) return items;
+
+  const seen = new Set<string>();
+  const merged = items.map(item => {
+    seen.add(item.dt_txt);
+    const value = byHour[item.dt_txt];
+    return typeof value !== 'number'
+      ? item
+      : { ...item, marine: { ...item.marine, seaSurfaceTemperatureC: value } };
+  });
+
+  for (const [dt_txt, value] of Object.entries(byHour)) {
+    if (seen.has(dt_txt) || typeof value !== 'number') continue;
+    // No waveModel: nothing here came from a wave model, and claiming one would be a lie in
+    // the one field whose whole job is traceability.
+    merged.push({ dt_txt, marine: { seaSurfaceTemperatureC: value, source: 'open-meteo-marine' } });
+  }
+
+  // Consumers look rows up by hour, but anything that scans (first usable hour, day grouping)
+  // assumes chronological order, and appended rows would otherwise sit at the end.
+  return merged.sort((a, b) => (a.dt_txt < b.dt_txt ? -1 : a.dt_txt > b.dt_txt ? 1 : 0));
+};
+
+/**
+ * Fetches marine forecast data from Open-Meteo Marine.
+ * This is intentionally separate from the weather forecast so a marine outage
+ * does not force the app into mock weather mode.
+ *
+ * Water temperature rides a second request (see above). It is awaited alongside, never before:
+ * a failure there must cost the comfort card, never the wave height that decides a verdict.
+ */
 export const fetchMarineForecastData = async (lat: number, lon: number): Promise<FetchResult<MarineForecastItem[]>> => {
   const cacheKey = `marine_${lat.toFixed(3)}_${lon.toFixed(3)}`;
   const API_URL = activeForecastProvider.marineForecastUrl(lat, lon);
 
-  return withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
+  const waves = withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'marine-forecast');
     return parseMarineHourly(data?.hourly);
   });
+
+  const sstKey = `sst_${lat.toFixed(3)}_${lon.toFixed(3)}`;
+  const sstUrl = activeForecastProvider.seaTemperatureUrl(lat, lon);
+  const temperature = withCache<SeaTemperatureByHour>(sstKey, 'marine', 'sea-temperature', { lat, lon, url: sstUrl }, async () => {
+    const data = await fetchJson<any>(sstUrl, 'sea-temperature');
+    return parseSeaTemperatureHourly(data?.hourly);
+  }).catch(() => null);
+
+  const [waveResult, temperatureResult] = await Promise.all([waves, temperature]);
+  return { ...waveResult, data: withSeaTemperature(waveResult.data, temperatureResult?.data) };
 };
 
 // The per-hour model choice lives in utils/marineForecastParsing — decision-grade logic that
@@ -502,7 +620,9 @@ const BATCH_MAX_POINTS = 32;
  * would have rejected. That displacement is the feature working, not a fault, so
  * the marine check only exists to catch a grossly reordered response.
  */
-const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0 } as const;
+// `sst` rides the marine tolerance for the same reason: it is fetched with the identical
+// `cell_selection=sea` walk, so it is displaced exactly as far from the pin as the waves are.
+const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0, sst: 1.0 } as const;
 
 /**
  * Stable key for a point, at the same 3-decimal precision as the cache keys.
@@ -535,7 +655,7 @@ const chunk = <T>(items: T[], size: number): T[][] => {
 const fetchPointsBatched = async <T>(
   points: ForecastPoint[],
   options: {
-    cachePrefix: 'forecast' | 'marine';
+    cachePrefix: 'forecast' | 'marine' | 'sst';
     endpoint: OpenMeteoEndpoint;
     source: string;
     buildUrl: (batch: ForecastPoint[]) => string;
@@ -661,11 +781,11 @@ export const fetchForecastDataBatch = (
  * localStorage entry (it is fetched through this same call, so pass persist only when the batch
  * is the per-beach one).
  */
-export const fetchMarineForecastDataBatch = (
+export const fetchMarineForecastDataBatch = async (
   points: ForecastPoint[],
   options?: { persist?: boolean },
-): Promise<Map<string, FetchResult<MarineForecastItem[]>>> =>
-  fetchPointsBatched<MarineForecastItem[]>(points, {
+): Promise<Map<string, FetchResult<MarineForecastItem[]>>> => {
+  const waves = fetchPointsBatched<MarineForecastItem[]>(points, {
     cachePrefix: 'marine',
     endpoint: 'marine',
     source: 'marine-forecast-batch',
@@ -673,6 +793,36 @@ export const fetchMarineForecastDataBatch = (
     parse: parseMarineHourly,
     persist: options?.persist,
   });
+
+  // The temperature leg. Its own cache prefix, because sharing 'marine' would collide with the
+  // wave entry for the same coordinate and the two would overwrite each other.
+  //
+  // NEVER persisted: the wave series is what the app re-reads across sessions, while this is a
+  // 12 h-cached comfort field that the CDN hands back for free. Keeping it out of localStorage
+  // leaves that budget to the data that needs it.
+  //
+  // Failures are swallowed to an empty map ON PURPOSE. Waves decide verdicts and colours;
+  // water temperature decides a card. One must never take down the other.
+  const temperatures = fetchPointsBatched<SeaTemperatureByHour>(points, {
+    cachePrefix: 'sst',
+    endpoint: 'marine',
+    source: 'sea-temperature-batch',
+    buildUrl: batch => activeForecastProvider.seaTemperatureUrlBatch(batch),
+    parse: parseSeaTemperatureHourly,
+    persist: false,
+  }).catch(() => new Map<string, FetchResult<SeaTemperatureByHour>>());
+
+  const [waveByPoint, temperatureByPoint] = await Promise.all([waves, temperatures]);
+
+  const merged = new Map<string, FetchResult<MarineForecastItem[]>>();
+  for (const [key, result] of waveByPoint) {
+    merged.set(key, {
+      ...result,
+      data: withSeaTemperature(result.data, temperatureByPoint.get(key)?.data),
+    });
+  }
+  return merged;
+};
 
 export const mergeMarineForecastData = (
   forecastItems: ForecastItem[],

@@ -43,8 +43,31 @@ const MARINE_HOURLY = [
   'swell_wave_height',
   'swell_wave_direction',
   'swell_wave_period',
-  'sea_surface_temperature',
+  // sea_surface_temperature MOVED OUT on 14/08/2026 — see SEA_TEMPERATURE_HOURLY below.
 ].join(',');
+
+// ── Water temperature, on its own request now ────────────────────────────────
+//
+// It used to ride along in the wave call, which meant `meteofrance_currents` had to be in the
+// wave model list. Open-Meteo's published rule (their "How Is One API Call Defined?" panel)
+// counts MODELS as a multiplier of their own: three models is three full API calls per
+// coordinate, not 2.1 as this project had assumed. So one number that moves about half a
+// degree a day was costing a THIRD of the entire marine bill — measured at ~20,000 calls/day
+// nationally, against a 33,000/day budget.
+//
+// Split out, it costs one call per point instead of one third of three, and — the real saving —
+// it can be cached for 12 hours instead of 3, because the model behind it publishes twice a
+// day. That is not a staleness trade: the response carries an HOURLY series six days long and
+// the parser indexes it BY TIME, so a response fetched this morning still yields this
+// afternoon's own value. Same number on screen, a quarter of the requests.
+//
+// Waves keep the 3 h cache and the two wave models untouched: they decide colours and
+// verdicts, and nothing about them changes here.
+const SEA_TEMPERATURE_HOURLY = 'sea_surface_temperature';
+
+// The only model of the three that ever returned SST (measured: 0 of 24 hourly values from
+// meteofrance_wave nationwide). Alone on its own route it no longer inflates the wave call.
+const SEA_TEMPERATURE_MODEL = 'models=meteofrance_currents';
 
 // Pinned explicitly rather than left on Open-Meteo's default `best_match`: best_match
 // silently combines/swaps underlying marine models with no signal in the response (verified
@@ -68,7 +91,12 @@ const MARINE_HOURLY = [
 //   - ewam (DWD)            → 0.05° (~5 km). PREFERRED for wave/swell wherever it returns a value.
 //   - meteofrance_wave      → 0.08° (~8 km), global, 7 days. Fallback: days 4-6, and the basins
 //                             ewam's grid cannot resolve (measured: Σαρωνικός, Ευβοϊκός).
-//   - meteofrance_currents  → sea_surface_temperature only. Unchanged.
+//   - meteofrance_currents  → REMOVED from this list on 14/08/2026. It carried only
+//                             sea_surface_temperature, and a model costs a FULL extra call per
+//                             coordinate under Open-Meteo's published weighting. It now has its
+//                             own route and its own 12 h cache — see SEA_TEMPERATURE_MODEL above.
+//                             The water temperature itself is unchanged: same model, same field,
+//                             same number on the card.
 //
 // Measured against REAL Greek buoys (Copernicus In Situ, 9,723 QC-good hourly observations at
 // Ηράκλειο + 61277 + Άθως, 2022-09 → 2024-12 — scripts/auditWaveModelAgainstBuoys.py):
@@ -94,7 +122,7 @@ const MARINE_HOURLY = [
 // the measurement and this app's own fetch-limited SMB + wind-chop floor, so no model — however
 // well it scores against a buoy — can print flat water over a shore our own physics says is
 // choppy. That floor is computed without reference to any of these three models.
-const MARINE_MODEL = 'models=ewam,meteofrance_wave,meteofrance_currents';
+const MARINE_MODEL = 'models=ewam,meteofrance_wave';
 
 // `cell_selection=sea` is set on the MARINE request only, and deliberately not on the two forecast
 // requests below.
@@ -136,6 +164,11 @@ const marineOrigin = () => {
   if (IS_DEV) return MARINE_HOST;
   throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
 };
+const seaTemperatureOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-marine-sst`;
+  if (IS_DEV) return MARINE_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
 const airQualityOrigin = () => {
   if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-air-quality`;
   if (IS_DEV) return AIR_QUALITY_HOST;
@@ -145,9 +178,11 @@ const airQualityOrigin = () => {
 export const openMeteoProvider: ForecastProvider = {
   id: 'open-meteo',
 
-  currentWeatherUrl(lat, lon) {
-    return `${forecastOrigin()}/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`;
-  },
+  // NO `current=` URL any more (14/08/2026). Open-Meteo floors every request at one full
+  // API call — six variables cost the same as sixty — and all six fields that block carried
+  // are already in the hourly response for the same coordinate. weatherService derives "now"
+  // from the hour we are inside instead, which also stops the headline and the verdict beside
+  // it from sampling the model at two different instants. See fetchWeatherData there.
 
   hourlyForecastUrl(lat, lon) {
     return `${forecastOrigin()}/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,uv_index,precipitation_probability&wind_speed_unit=ms&timezone=auto`;
@@ -176,6 +211,20 @@ export const openMeteoProvider: ForecastProvider = {
     const lats = points.map(p => p.lat).join(',');
     const lons = points.map(p => p.lon).join(',');
     return `${marineOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${MARINE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
+  },
+
+  // Water temperature, single point and batched. Same host, same path, same
+  // `cell_selection=sea` walk to real water as the wave call — only the model list and the
+  // cache lifetime differ. `forecast_days=6` matches the wave route so the two series cover
+  // the same days and merge hour-for-hour.
+  seaTemperatureUrl(lat, lon) {
+    return `${seaTemperatureOrigin()}/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${SEA_TEMPERATURE_HOURLY}&timezone=auto&forecast_days=6&${SEA_CELL}&${SEA_TEMPERATURE_MODEL}`;
+  },
+
+  seaTemperatureUrlBatch(points) {
+    const lats = points.map(p => p.lat).join(',');
+    const lons = points.map(p => p.lon).join(',');
+    return `${seaTemperatureOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${SEA_TEMPERATURE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${SEA_TEMPERATURE_MODEL}`;
   },
 
   dustForecastUrl(lat, lon) {
