@@ -245,11 +245,14 @@
 # originates from Netlify, so no visitor can be rate-limited by their neighbours.
 #
 # WHAT PROTECTS THE SHARED QUOTA: the function sets Netlify-CDN-Cache-Control
-# (weather 3600 / marine 10800, see CDN_MAX_AGE_S there for the per-route reasoning),
-# so the edge answers repeats and upstream load scales with DISTINCT
-# BEACHES rather than with visitors — the whole point of capacity-model.md. The
-# capacity alarm in the function (amber 5k / red 7k / any 429 → Telegram) is now the
-# thing to watch; it was previously metering preview traffic only.
+# (public, DURABLE, weather 3600 / marine 10800, see CDN_MAX_AGE_S there for the
+# per-route reasoning), so the edge answers repeats and upstream load scales with
+# DISTINCT BEACHES rather than with visitors — the whole point of capacity-model.md.
+# `durable` is load-bearing and was missing until 14/08/2026: without it the cache is
+# per EDGE NODE, so every region Netlify routes traffic through bought the same
+# forecast again. See the comment on cdnCacheControl() in the function.
+# The capacity alarm in the function (amber 18k / red 25k weighted points, or any 429
+# → Telegram) is the thing to watch.
 #
 # ROLLBACK IS ONE LINE: delete the VITE_FORECAST_PROXY_BASE line below and redeploy.
 # ForecastProvider falls straight back to calling Open-Meteo directly.

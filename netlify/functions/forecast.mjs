@@ -170,28 +170,111 @@ const sendTelegram = async (text) => {
  * the provider's quota was systematically low exactly where the bill is highest.
  * Weather routes stay at 1.0 (8 hourly fields — under the threshold).
  */
-const METER_WEIGHT = { 'open-meteo': 1.0, 'open-meteo-marine': 2.1, 'open-meteo-air-quality': 1.0 };
+// ── Weight per location, derived from the query — 14/08/2026 ───────────────────
+//
+// Open-Meteo publishes the shape (openmeteo.substack.com, "Weather Data for Multiple
+// Locations At Once"):
+//
+//     weight = nLocations x (nDays / 14) x (nVariables / 10)
+//
+// with locations as a plain multiplier — which is why a 32-point batch must never be
+// metered as one request, and always was not.
+//
+// THE TWO FACTORS ARE FLOORED AT 1 HERE, and that is a measurement, not a reading of the
+// docs. The prose says requests that *surpass* 14 days and/or 10 variables carry a higher
+// weight "than a standard API call", i.e. a standard call is the floor; their one worked
+// example (3650 days, 1 variable) applies the variable fraction unfloored, so the two do not
+// agree. On 14/08/2026 the provider's own dashboard settled it from the other end: it showed
+// 471,944 calls for 09-13/08 (~94k/day) while this meter recorded ~37.7k for a comparable
+// day. Unfloored weights (weather 0.40, marine 0.90 per point) would have made this meter
+// read SIX times low instead of two and a half; floored weights are the reading that survives
+// contact with the bill. Whatever residual gap remains is the lost-increment problem the CAS
+// loop in meterUpstream() now closes — measure again before touching these numbers.
+//
+// Per point, for the three routes this proxy serves:
+//     weather  8 vars,  7 days -> max(1, 7/14)  x max(1, 8/10)  = 1.0
+//     marine  21 vars,  6 days -> max(1, 6/14)  x max(1, 21/10) = 2.1
+//     dust     1 var,   2 days -> max(1, 2/14)  x max(1, 1/10)  = 1.0
+//
+// Identical to the hand-written constants this replaced — but now DERIVED FROM THE OUTGOING
+// QUERY, so adding a variable or a fourth model moves the meter by itself. That was the real
+// defect in the constants: they were maintained by hand and drifted from the request they
+// claimed to describe (docs/team/17 §7 caught one such drift, §12 the next).
+//
+// NEVER OPTIMISTIC, the original design rule: `models` multiplies the variable count (3
+// models x 7 marine fields = 21 response columns) and a missing forecast_days is charged at
+// Open-Meteo's 7-day default.
+const OPEN_METEO_DEFAULT_FORECAST_DAYS = 7;
+const WEIGHT_DAYS_UNIT = 14;
+const WEIGHT_VARIABLES_UNIT = 10;
+
+const countList = (value) => (value ? value.split(',').filter(Boolean).length : 0);
+
+/** Billed weight of ONE location for this exact query, per the formula above. */
+const weightPerPoint = (query) => {
+  const models = Math.max(1, countList(query.get('models')));
+  // `current` returns one timestep per variable; `hourly` returns the whole span. Both are
+  // variables in the formula, and only `hourly` is what forecast_days stretches.
+  const variables = (countList(query.get('hourly')) + countList(query.get('current'))) * models;
+  if (!variables) return 0;
+  const days = Number(query.get('forecast_days')) || OPEN_METEO_DEFAULT_FORECAST_DAYS;
+  return Math.max(1, days / WEIGHT_DAYS_UNIT) * Math.max(1, variables / WEIGHT_VARIABLES_UNIT);
+};
+
+// Read-modify-write on ONE blob is a lost-update race, and it was not theoretical: on
+// 14/08/2026 the provider's dashboard reported ~94k calls/day while this counter, which sees
+// every one of them, recorded ~37.7k. Simultaneous cache-misses each read the same `count`
+// and each wrote back their own +1, so all but the last increment vanished — and the busier
+// the day, the more it lost, which is precisely backwards for a capacity alarm.
+//
+// Compare-and-swap closes it: re-read, recompute, and only store if the blob has not moved
+// since (`onlyIfMatch` / `onlyIfNew`, @netlify/blobs ≥ 10.7). A loser retries against the
+// winner's value instead of overwriting it.
+//
+// Bounded at four attempts on purpose. This runs on the response path, so a livelock under a
+// burst would cost every visitor latency to protect a number — the wrong trade. Four attempts
+// removes the ordinary collision; the pathological case degrades to what we had before (a
+// dropped increment) rather than to a slow forecast.
+const METER_CAS_ATTEMPTS = 4;
 
 const meterUpstream = async ({ rateLimited, points = 1 }) => {
   try {
     const store = getStore(CAPACITY_STORE);
-    const prev = await store.get(CAPACITY_KEY, { type: 'json' });
-    const dayKey = utcDayKey(new Date());
     const th = capacityThresholds();
-
     let alert = null;
-    let state;
-    if (rateLimited) {
-      const r = recordRateLimited(prev, dayKey, points);
-      state = r.next;
-      if (r.fire) alert = formatCapacityAlert('rate_limited', state.count, th);
-    } else {
-      const r = recordCalls(prev, dayKey, points, th);
-      state = r.next;
-      if (r.crossed) alert = formatCapacityAlert(r.crossed, state.count, th);
+
+    for (let attempt = 0; attempt < METER_CAS_ATTEMPTS; attempt++) {
+      // Re-read inside the loop: the whole point is to build on whatever landed meanwhile.
+      const held = await store.getWithMetadata(CAPACITY_KEY, { type: 'json' });
+      const prev = held?.data ?? null;
+      const dayKey = utcDayKey(new Date());
+
+      // Recomputed per attempt — the alert flags live in the state we just re-read, so a
+      // retry must not carry the previous attempt's verdict. Without this reset a losing
+      // attempt could fire a Telegram alert for a threshold the winner had already crossed.
+      alert = null;
+      let state;
+      if (rateLimited) {
+        const r = recordRateLimited(prev, dayKey, points);
+        state = r.next;
+        if (r.fire) alert = formatCapacityAlert('rate_limited', state.count, th);
+      } else {
+        const r = recordCalls(prev, dayKey, points, th);
+        state = r.next;
+        if (r.crossed) alert = formatCapacityAlert(r.crossed, state.count, th);
+      }
+
+      const written = await store.setJSON(
+        CAPACITY_KEY,
+        state,
+        held?.etag ? { onlyIfMatch: held.etag } : { onlyIfNew: true },
+      );
+      // `modified: false` means someone else wrote first — drop this attempt's alert and
+      // fold our points into their state on the next pass.
+      if (written?.modified !== false) break;
+      alert = null;
     }
 
-    await store.setJSON(CAPACITY_KEY, state);
     if (alert) await sendTelegram(alert);
   } catch {
     // Metering/alarm failures must never affect the forecast response.
@@ -369,11 +452,37 @@ const PREFIX = '/api/forecast/';
 const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800 };
 const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
+// `durable` — the single most expensive omission this file has had (found 14/08/2026).
+//
+// Without it, "the CDN caches it" was only ever true PER EDGE NODE. Netlify's default cache
+// is local to the node that served the request: a visitor routed to Frankfurt and a visitor
+// routed to Athens miss independently, invoke this function independently, and buy the SAME
+// forecast from Open-Meteo twice. Googlebot's renderer (US nodes) makes it a third. So the
+// real upstream load was `distinct points × refreshes × NODES`, not `distinct points ×
+// refreshes` — the capacity model in reports/capacity/capacity-model.md and docs/team/17 §11.1
+// silently assumed one shared cache and therefore under-counted by that node multiplier.
+//
+// The `durable` directive puts the response in Netlify's SHARED cache, which every edge node
+// consults before invoking this function (docs.netlify.com → Caching → durable directive;
+// supported for Netlify Functions, which this is — not for Edge Functions). The node
+// multiplier collapses to 1.
+//
+// Measured evidence it was off: a live response carried
+//   Cache-Status: "Netlify Durable"; fwd=bypass
+//   Cache-Status: "Netlify Edge";    hit; ttl=3600
+// i.e. the durable layer existed and was being skipped on every request.
+//
+// NOTHING ABOUT WHAT A VISITOR SEES CHANGES. Same s-maxage, same stale-while-revalidate, same
+// worst-case age (90 min weather / 3 h 30 marine), same freshness stamp and same 12 h cutoff.
+// This only stops us paying N times for one identical answer.
+//
+// Deliberately NOT applied to the rescue path below: a last-good answer served during an
+// upstream failure must stay local and short-lived, never promoted into the shared cache.
 const cdnCacheControl = (providerKey) => {
   const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
     : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
     : CDN_MAX_AGE_S.weather;
-  return `public, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
+  return `public, durable, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
 };
 
 const json = (statusCode, body, extraHeaders = {}) => ({
@@ -490,17 +599,22 @@ export const handler = async (event) => {
   const query = buildSafeQuery(event.queryStringParameters || {});
   if (!query) return json(400, { error: 'Invalid or disallowed query parameters.' }, cors);
 
-  // How many coordinates this one request carries. buildSafeQuery has already
-  // validated the list and guaranteed latitude/longitude have equal length.
-  // Metered at the route's provider-rule weight (see METER_WEIGHT), rounded up —
-  // the alarm must never be optimistic.
-  const pointCount = (query.get('latitude') || '').split(',').length;
-  const meteredPoints = Math.ceil(pointCount * (METER_WEIGHT[providerKey] || 1));
-
   // Enforce the marine model pin server-side, unconditionally. `models` was already
   // dropped by buildSafeQuery() if the client sent one (not in ALLOWED_PARAMS), so this
   // is a plain set, never an override of anything a caller could have supplied.
+  //
+  // MUST stay above the metering below: `models` multiplies the variable count, so
+  // weighing the query before this line would under-charge every marine request.
   if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
+
+  // How many coordinates this one request carries. buildSafeQuery has already
+  // validated the list and guaranteed latitude/longitude have equal length. Locations
+  // are a plain multiplier in the provider's formula (see weightPerPoint), which is why
+  // a 32-point batch must never be metered as one.
+  const pointCount = (query.get('latitude') || '').split(',').length;
+  // A served request is never recorded as zero work, however light: rounding a real
+  // upstream call down to nothing is the one error a capacity meter must not make.
+  const meteredPoints = Math.max(1, Math.round(pointCount * weightPerPoint(query)));
 
   // `target` is the KEY-FREE identity of this request: the free host, no apikey. It is
   // what the last-good store is keyed on, so the saved answers survive both switching the
@@ -583,6 +697,29 @@ export const handler = async (event) => {
         // an approved mobile origin's ACAO-bearing response is never served back to a
         // different caller, and vice versa.
         'Netlify-CDN-Cache-Control': cdnCacheControl(providerKey),
+        // ── Survive our own deploys — 14/08/2026 ────────────────────────────────
+        //
+        // Netlify invalidates the whole cache on every deploy, to keep deploys atomic. For
+        // HTML and JS that is exactly right. For a weather forecast it is nonsense: the
+        // Aegean does not change because we edited a Greek sentence. Every deploy therefore
+        // threw away every cached forecast in the country and re-bought all ~4,500 points
+        // from scratch — and the measured record confirms it, the day with 32 pushes (10/08)
+        // is also the most expensive day the account has ever had (115k calls).
+        //
+        // `Netlify-Cache-ID` opts a response out of that automatic invalidation (Netlify
+        // Caching docs). Deploys stop costing money; freshness is unaffected because it was
+        // never the deploy that governed it — s-maxage still expires these on the provider's
+        // own publishing cadence. Safe to opt out precisely because there is nothing private
+        // here: a public weather forecast for a public coordinate.
+        //
+        // Keyed per ROUTE, and that is load-bearing in two ways. Netlify registers the value
+        // as a purgeable cache tag, so each route can be flushed on demand. And it is the
+        // escape hatch for the one real consequence of opting out: MARINE_MODEL is injected
+        // server-side, so it is NOT part of the URL — change it and the old answers would
+        // otherwise keep being served for up to s-maxage (3 h 30 for marine). If you change
+        // MARINE_MODEL, MARINE_HOURLY or the parsing that reads them, purge the tag rather
+        // than assuming the deploy did it for you.
+        'Netlify-Cache-ID': `forecast-${providerKey}`,
         ...cors,
       },
       body: payload,
