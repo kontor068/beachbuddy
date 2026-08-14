@@ -12,7 +12,7 @@
 // One Overpass query per region; radius 800 m around each pin (de-censored, per the pilot
 // lesson that around:300 hid access/POI distances). A "season pass" diff can compare two
 // JSON runs to catch new closures (e.g. a vanished beach club).
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   TAVERNA_AMENITY_TERMS, RESTAURANT_AMENITY_TERMS, CAFE_AMENITY_TERMS,
@@ -162,12 +162,19 @@ for (const d of regions) {
 const csvEscape = (v) => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 const headers = ['region', 'group', 'id', 'name', 'organized', 'claimsFood', 'claimsSunbeds', 'hasOfficialSource', 'audited', 'nearestFoodM', 'nearestResortM', 'poiCount', 'flags'];
 const csv = [headers.join(','), ...rows.map(r => headers.map(h => csvEscape(r[h])).join(','))].join('\n');
+// The Overpass queries above cost ~2 min per region; a missing --out folder must not throw them away.
+mkdirSync(path.dirname(path.resolve(outBase)), { recursive: true });
 writeFileSync(outBase + '.csv', csv, 'utf8');
 writeFileSync(outBase + '.json', JSON.stringify(rows, null, 1), 'utf8');
 // shared nearby-cache (only on a full national run, so partial runs don't overwrite it)
 if (all) {
   writeFileSync('reports/amenity-evidence/osm-nearby-cache.json', JSON.stringify(osmNearby), 'utf8');
   console.log(`Wrote reports/amenity-evidence/osm-nearby-cache.json (${Object.keys(osmNearby).length} beaches with POIs)`);
+} else {
+  // A scoped run must not overwrite the national cache, but throwing its POI names away means
+  // re-querying Overpass to answer "what kind of food is that?" — so keep them beside the report.
+  writeFileSync(outBase + '-nearby.json', JSON.stringify(osmNearby), 'utf8');
+  console.log(`Wrote ${outBase}-nearby.json (${Object.keys(osmNearby).length} beaches with POIs)`);
 }
 
 // Per-region flag rates

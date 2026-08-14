@@ -1,55 +1,15 @@
 {
   "thresholdM": 1000,
   "radiusM": 1200,
-  "verified": false,
+  "verified": true,
   "totals": {
     "beaches": 2914,
     "suspects": 139,
-    "confirmed": 0,
-    "cleared": 0,
-    "unresolved": 0
+    "confirmed": 40,
+    "cleared": 97,
+    "unresolved": 2
   },
-  "confirmed": [],
-  "suspects": [
-    {
-      "id": 3128,
-      "name": "Παραλία Καλλιθέα",
-      "lat": 35.00309,
-      "lon": 25.58373,
-      "region": "Crete",
-      "prefecture": "Lasithi",
-      "municipality": "Crete (Lasithi)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 16432,
-      "stage1Ref": "Keratokambos"
-    },
-    {
-      "id": 3048,
-      "name": "ΠΔΕ Κάτω Αχαΐας",
-      "lat": 38.15515,
-      "lon": 21.55377,
-      "region": "West Greece",
-      "prefecture": "Achaia",
-      "municipality": "Achaia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 16398,
-      "stage1Ref": "Sandhill"
-    },
-    {
-      "id": 3035,
-      "name": "Κομοτηνή Φανάρι Αρωγή",
-      "lat": 40.94915,
-      "lon": 25.165847,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Rodopi",
-      "municipality": "Rodopi (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 14753,
-      "stage1Ref": "Coco Beach Bar"
-    },
+  "confirmed": [
     {
       "id": 2734,
       "name": "Αγία Παρασκευή (Αγιά)",
@@ -61,7 +21,8 @@
       "confidence": "low",
       "batch": "027_2601_2645",
       "stage1": 11636,
-      "stage1Ref": "Παραλία Παλιουριάς"
+      "stage1Ref": "Παραλία Παλιουριάς",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 1503,
@@ -74,20 +35,8 @@
       "confidence": "high",
       "batch": "argolida_tourist_evidence_pass_2026_06_01",
       "stage1": 11480,
-      "stage1Ref": "Petrothalassa"
-    },
-    {
-      "id": 3161,
-      "name": "Θέρμα",
-      "lat": 40.50282,
-      "lon": 25.6005,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Evros",
-      "municipality": "Samothraki",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_samothraki_2026_07_27",
-      "stage1": 11274,
-      "stage1Ref": "Παραλία Μακρυλιές"
+      "stage1Ref": "Petrothalassa",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3163,
@@ -100,7 +49,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_samothraki_2026_07_27",
       "stage1": 10539,
-      "stage1Ref": "Παραλία Μακρυλιές"
+      "stage1Ref": "Παραλία Μακρυλιές",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3166,
@@ -113,7 +63,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_samothraki_2026_07_27",
       "stage1": 9050,
-      "stage1Ref": "Παραλία Μακρυλιές"
+      "stage1Ref": "Παραλία Μακρυλιές",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3049,
@@ -126,7 +77,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 8957,
-      "stage1Ref": "Μικρό Γιανισκάρι"
+      "stage1Ref": "Μικρό Γιανισκάρι",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3162,
@@ -139,72 +91,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_samothraki_2026_07_27",
       "stage1": 8595,
-      "stage1Ref": "Παραλία Μακρυλιές"
-    },
-    {
-      "id": 277,
-      "name": "Παραλία Πολιτικών",
-      "lat": 38.7702,
-      "lon": 23.29612,
-      "region": "Central Greece",
-      "prefecture": "Evia",
-      "municipality": "Evia",
-      "confidence": "high",
-      "batch": "003_201_300",
-      "stage1": 8452,
-      "stage1Ref": "Γαλατάκι"
-    },
-    {
-      "id": 3167,
-      "name": "Φονιάς",
-      "lat": 40.49239,
-      "lon": 25.65786,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Evros",
-      "municipality": "Samothraki",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_samothraki_2026_07_27",
-      "stage1": 8139,
-      "stage1Ref": "Παραλία Κήπου"
-    },
-    {
-      "id": 2733,
-      "name": "Παραλία Αγιόκαμπου",
-      "lat": 39.72511,
-      "lon": 22.87432,
-      "region": "Thessaly",
-      "prefecture": "Larissa",
-      "municipality": "Larissa Coast (Agia - Kissavos)",
-      "confidence": "high",
-      "batch": "028_2701_2800",
-      "stage1": 7935,
-      "stage1Ref": "Παραλία Παπακώστα"
-    },
-    {
-      "id": 3119,
-      "name": "Παραλία Μαγούλα",
-      "lat": 38.39039,
-      "lon": 23.80234,
-      "region": "Central Greece",
-      "prefecture": "Evia",
-      "municipality": "Evia",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 6804,
-      "stage1Ref": "Παραλία Ακρωτηρίου"
-    },
-    {
-      "id": 3146,
-      "name": "Αγία Βάσω",
-      "lat": 39.08744,
-      "lon": 23.11706,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 6467,
-      "stage1Ref": "Izgoud"
+      "stage1Ref": "Παραλία Μακρυλιές",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 886,
@@ -217,46 +105,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 6081,
-      "stage1Ref": "Artolithia Beach"
-    },
-    {
-      "id": 3135,
-      "name": "Παραλία Λάρισος",
-      "lat": 39.1195,
-      "lon": 26.48593,
-      "region": "North Aegean",
-      "prefecture": "Lesvos",
-      "municipality": "Lesvos",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 6042,
-      "stage1Ref": "Ξέρες Ευρειακής"
-    },
-    {
-      "id": 1176,
-      "name": "Ελιά",
-      "lat": 38.6513033,
-      "lon": 20.7946669,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_s",
-      "stage1": 5958,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 1174,
-      "name": "Λιμονάρι",
-      "lat": 38.6475683,
-      "lon": 20.7891697,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_q",
-      "stage1": 5947,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
+      "stage1Ref": "Artolithia Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 1500,
@@ -269,33 +119,8 @@
       "confidence": "high",
       "batch": "argolida_tourist_evidence_pass_2026_06_01",
       "stage1": 5934,
-      "stage1Ref": "Petrothalassa"
-    },
-    {
-      "id": 1181,
-      "name": "Φανάρι",
-      "lat": 38.66671,
-      "lon": 20.80642,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_r",
-      "stage1": 5803,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 3034,
-      "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
-      "lat": 40.90341,
-      "lon": 25.424681,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Rodopi",
-      "municipality": "Rodopi (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 5718,
-      "stage1Ref": "Παχυνάμμος"
+      "stage1Ref": "Petrothalassa",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 884,
@@ -308,46 +133,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 5561,
-      "stage1Ref": "Artolithia Beach"
-    },
-    {
-      "id": 1177,
-      "name": "Αθερινός",
-      "lat": 38.661762,
-      "lon": 20.7995502,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_t",
-      "stage1": 5552,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 641,
-      "name": "Κοκκίνη Χάνι",
-      "lat": 35.3342,
-      "lon": 25.2633,
-      "region": "Crete",
-      "prefecture": "Heraklion",
-      "municipality": "Crete (Heraklion)",
-      "confidence": "high",
-      "batch": "2026_05_heraklion_batch_1",
-      "stage1": 5497,
-      "stage1Ref": "Καρτερού"
-    },
-    {
-      "id": 3141,
-      "name": "Παραλία Νεάπολη",
-      "lat": 36.50677,
-      "lon": 23.06238,
-      "region": "Peloponnese",
-      "prefecture": "Lakonia",
-      "municipality": "Lakonia (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 5453,
-      "stage1Ref": "Παραλία Νερατζιώνα"
+      "stage1Ref": "Artolithia Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3159,
@@ -360,7 +147,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_2026_07_pelion",
       "stage1": 5141,
-      "stage1Ref": "Χονδρή Άμμος"
+      "stage1Ref": "Χονδρή Άμμος",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2669,
@@ -373,85 +161,8 @@
       "confidence": "low",
       "batch": "026_2501_2600",
       "stage1": 4995,
-      "stage1Ref": "Φτελιά"
-    },
-    {
-      "id": 881,
-      "name": "Παραλία Μύτικα",
-      "lat": 38.99874,
-      "lon": 20.69978,
-      "region": "Epirus",
-      "prefecture": "Preveza",
-      "municipality": "Preveza (mainland)",
-      "confidence": "high",
-      "batch": "preveza_tourist_evidence_pass_2026_06_01",
-      "stage1": 4784,
-      "stage1Ref": "Nicopolis Club"
-    },
-    {
-      "id": 1175,
-      "name": "Αμπελάκια",
-      "lat": 38.6646856,
-      "lon": 20.7913786,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_t",
-      "stage1": 4782,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 3045,
-      "name": "Άκτιο Βόνιτσας Πάλαιρος",
-      "lat": 38.780444,
-      "lon": 20.878417,
-      "region": "West Greece",
-      "prefecture": "Aetolia-Acarnania",
-      "municipality": "Aetolia-Acarnania (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 4781,
-      "stage1Ref": "Παραλία Αγίου Ιωάννη"
-    },
-    {
-      "id": 3140,
-      "name": "Παραλία Λάχι",
-      "lat": 36.51166,
-      "lon": 23.05589,
-      "region": "Peloponnese",
-      "prefecture": "Lakonia",
-      "municipality": "Lakonia (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 4729,
-      "stage1Ref": "Παραλία Νερατζιώνα"
-    },
-    {
-      "id": 642,
-      "name": "Γούβες",
-      "lat": 35.3351229,
-      "lon": 25.3106121,
-      "region": "Crete",
-      "prefecture": "Heraklion",
-      "municipality": "Crete (Heraklion)",
-      "confidence": "high",
-      "batch": "2026_05_heraklion_batch_1",
-      "stage1": 4721,
-      "stage1Ref": "Ανάληψη"
-    },
-    {
-      "id": 3129,
-      "name": "Παραλία Κάτω Ζάκρος",
-      "lat": 35.09686,
-      "lon": 26.26364,
-      "region": "Crete",
-      "prefecture": "Lasithi",
-      "municipality": "Crete (Lasithi)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 4690,
-      "stage1Ref": "Krinakia beach"
+      "stage1Ref": "Φτελιά",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2105,
@@ -464,46 +175,8 @@
       "confidence": "high",
       "batch": "sifnos_tourist_evidence_pass_2026_05_29",
       "stage1": 4636,
-      "stage1Ref": "Βλυχό"
-    },
-    {
-      "id": 3145,
-      "name": "Παραλία Μύτικας",
-      "lat": 38.67008,
-      "lon": 20.95103,
-      "region": "West Greece",
-      "prefecture": "Aetolia-Acarnania",
-      "municipality": "Aetolia-Acarnania (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 4563,
-      "stage1Ref": "Μυρτιά"
-    },
-    {
-      "id": 3021,
-      "name": "Πεταλίδι",
-      "lat": 36.9601469,
-      "lon": 21.9278191,
-      "region": "Peloponnese",
-      "prefecture": "Messinia",
-      "municipality": "Messinia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 4554,
-      "stage1Ref": "Χελωναριά"
-    },
-    {
-      "id": 3131,
-      "name": "Παραλία Πετράς",
-      "lat": 35.20338,
-      "lon": 26.11225,
-      "region": "Crete",
-      "prefecture": "Lasithi",
-      "municipality": "Crete (Lasithi)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 4543,
-      "stage1Ref": "Trachilias Beach"
+      "stage1Ref": "Βλυχό",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 882,
@@ -516,46 +189,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 4498,
-      "stage1Ref": "Strand Hotel »Katerina«"
-    },
-    {
-      "id": 1246,
-      "name": "Παραλία Πυργιά (νότιος όρμος)",
-      "lat": 38.51289,
-      "lon": 26.15058,
-      "region": "North Aegean",
-      "prefecture": "Chios",
-      "municipality": "Chios",
-      "confidence": "high",
-      "batch": "012_1101_1200",
-      "stage1": 4383,
-      "stage1Ref": "Χατζαλή"
-    },
-    {
-      "id": 3155,
-      "name": "Οβριός",
-      "lat": 39.50746,
-      "lon": 23.07965,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 4333,
-      "stage1Ref": "παραλία Ελίτσα"
-    },
-    {
-      "id": 508,
-      "name": "Παραλία Κατερίνης",
-      "lat": 40.27519,
-      "lon": 22.60224,
-      "region": "Central Macedonia",
-      "prefecture": "Pieria",
-      "municipality": "Pieria (mainland)",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_l",
-      "stage1": 4315,
-      "stage1Ref": "Olympic Beach"
+      "stage1Ref": "Strand Hotel »Katerina«",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 885,
@@ -568,163 +203,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 4275,
-      "stage1Ref": "Artolithia Beach"
-    },
-    {
-      "id": 1245,
-      "name": "Παραλία Αμάδων",
-      "lat": 38.59121,
-      "lon": 26.05741,
-      "region": "North Aegean",
-      "prefecture": "Chios",
-      "municipality": "Chios",
-      "confidence": "high",
-      "batch": "012_1101_1200",
-      "stage1": 4232,
-      "stage1Ref": "Ναγός"
-    },
-    {
-      "id": 3053,
-      "name": "Πηνειός Γλύφα",
-      "lat": 37.8313,
-      "lon": 21.15015,
-      "region": "West Greece",
-      "prefecture": "Ileia",
-      "municipality": "Ileia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 4137,
-      "stage1Ref": "Αρκούδι"
-    },
-    {
-      "id": 1247,
-      "name": "Παραλία Πυργιά (βόρειος όρμος)",
-      "lat": 38.51809,
-      "lon": 26.15071,
-      "region": "North Aegean",
-      "prefecture": "Chios",
-      "municipality": "Chios",
-      "confidence": "high",
-      "batch": "012_1101_1200",
-      "stage1": 4089,
-      "stage1Ref": "Χατζαλή"
-    },
-    {
-      "id": 3044,
-      "name": "Άκτιο Βόνιτσας Αγ. Δημήτριος",
-      "lat": 38.921,
-      "lon": 20.893583,
-      "region": "West Greece",
-      "prefecture": "Aetolia-Acarnania",
-      "municipality": "Aetolia-Acarnania (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 3991,
-      "stage1Ref": "Μυρτάρι"
-    },
-    {
-      "id": 3030,
-      "name": "Δωρίδα Ερατεινή",
-      "lat": 38.35891,
-      "lon": 22.227883,
-      "region": "Central Greece",
-      "prefecture": "Fokida",
-      "municipality": "Fokida (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 3970,
-      "stage1Ref": "Βάθη"
-    },
-    {
-      "id": 3114,
-      "name": "Αμυγδαλιά",
-      "lat": 38.126,
-      "lon": 24.5823,
-      "region": "Central Greece",
-      "prefecture": "Evia",
-      "municipality": "Evia",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07",
-      "stage1": 3742,
-      "stage1Ref": "Αρχάμπολη"
-    },
-    {
-      "id": 3130,
-      "name": "Παραλία Λιβάδια",
-      "lat": 35.35763,
-      "lon": 23.53209,
-      "region": "Crete",
-      "prefecture": "Chania",
-      "municipality": "Crete (Chania)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 3709,
-      "stage1Ref": "Stomio beach"
-    },
-    {
-      "id": 3051,
-      "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
-      "lat": 38.31823,
-      "lon": 21.81686,
-      "region": "West Greece",
-      "prefecture": "Aetolia-Acarnania",
-      "municipality": "Aetolia-Acarnania (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 3672,
-      "stage1Ref": "Kite Surfing"
-    },
-    {
-      "id": 1180,
-      "name": "Σπηλιά",
-      "lat": 38.65904,
-      "lon": 20.76242,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_q",
-      "stage1": 3635,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 1179,
-      "name": "Πασουμάκι",
-      "lat": 38.67196,
-      "lon": 20.78017,
-      "region": "Ionian Islands",
-      "prefecture": "Lefkada",
-      "municipality": "Meganisi",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_s",
-      "stage1": 3523,
-      "stage1Ref": "Ανατολική παραλία Σκορπιού"
-    },
-    {
-      "id": 3160,
-      "name": "Γυαλί",
-      "lat": 40.40841,
-      "lon": 25.64479,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Evros",
-      "municipality": "Samothraki",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_samothraki_2026_07_27",
-      "stage1": 3494,
-      "stage1Ref": "Βάτος"
-    },
-    {
-      "id": 3139,
-      "name": "Παραλία Καλό Νερό",
-      "lat": 37.29667,
-      "lon": 21.69412,
-      "region": "Peloponnese",
-      "prefecture": "Messinia",
-      "municipality": "Messinia (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 3483,
-      "stage1Ref": "Kartela"
+      "stage1Ref": "Artolithia Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3158,
@@ -737,176 +217,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_2026_07_pelion",
       "stage1": 3237,
-      "stage1Ref": "Izgoud"
-    },
-    {
-      "id": 1502,
-      "name": "Χινίτσα",
-      "lat": 37.306182,
-      "lon": 23.141946,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
-      "confidence": "high",
-      "batch": "argolida_tourist_evidence_pass_2026_06_01",
-      "stage1": 3221,
-      "stage1Ref": "Λιγονέρι"
-    },
-    {
-      "id": 3144,
-      "name": "Παραλία Κρυονέρι",
-      "lat": 38.33479,
-      "lon": 21.58131,
-      "region": "West Greece",
-      "prefecture": "Aetolia-Acarnania",
-      "municipality": "Aetolia-Acarnania (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 3192,
-      "stage1Ref": "Παραλία Λιμνοπούλα"
-    },
-    {
-      "id": 3142,
-      "name": "Παραλία Πλάκα",
-      "lat": 37.1496,
-      "lon": 22.89453,
-      "region": "Peloponnese",
-      "prefecture": "Arkadia",
-      "municipality": "Arkadia (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 3171,
-      "stage1Ref": "Πούλιθρα"
-    },
-    {
-      "id": 1501,
-      "name": "Κουνουπί",
-      "lat": 37.305712,
-      "lon": 23.198374,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02",
-      "stage1": 3166,
-      "stage1Ref": "Petrothalassa"
-    },
-    {
-      "id": 2107,
-      "name": "Σεράλια",
-      "lat": 36.972356,
-      "lon": 24.746109,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Sifnos",
-      "confidence": "high",
-      "batch": "sifnos_tourist_evidence_pass_2026_05_29",
-      "stage1": 3133,
-      "stage1Ref": "Βλυχό"
-    },
-    {
-      "id": 3123,
-      "name": "Παραλία Μουριές",
-      "lat": 40.24922,
-      "lon": 23.24856,
-      "region": "Central Macedonia",
-      "prefecture": "Halkidiki",
-      "municipality": "Halkidiki (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 3051,
-      "stage1Ref": "Παραλία Πλάγια-Φλογητά"
-    },
-    {
-      "id": 3020,
-      "name": "Άγιος Ανδρέας",
-      "lat": 36.8614169,
-      "lon": 21.9229561,
-      "region": "Peloponnese",
-      "prefecture": "Messinia",
-      "municipality": "Messinia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 2957,
-      "stage1Ref": "Παραλία Κολονίδες"
-    },
-    {
-      "id": 3019,
-      "name": "Αγία Γαλήνη",
-      "lat": 35.0971451,
-      "lon": 24.6884851,
-      "region": "Crete",
-      "prefecture": "Rethymno",
-      "municipality": "Crete (Rethymno)",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 2897,
-      "stage1Ref": "Agios Georgios"
-    },
-    {
-      "id": 3134,
-      "name": "Παραλία Παληό",
-      "lat": 40.89551,
-      "lon": 24.33705,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Kavala",
-      "municipality": "Kavala (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2885,
-      "stage1Ref": "Bomo Tosca Beach"
-    },
-    {
-      "id": 3000,
-      "name": "Κλέφτικο",
-      "lat": 36.65222,
-      "lon": 24.33303,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Milos",
-      "confidence": "high",
-      "batch": "iconic_2026_06",
-      "stage1": 2877,
-      "stage1Ref": "Άγιος Ιωάννης"
-    },
-    {
-      "id": 3133,
-      "name": "Παραλία Νέα Πέραμος",
-      "lat": 40.84205,
-      "lon": 24.30627,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Kavala",
-      "municipality": "Kavala (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2853,
-      "stage1Ref": "Ρέμβη"
-    },
-    {
-      "id": 1504,
-      "name": "Κόστα",
-      "lat": 37.297217,
-      "lon": 23.156322,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
-      "confidence": "high",
-      "batch": "argolida_tourist_evidence_pass_2026_06_01",
-      "stage1": 2772,
-      "stage1Ref": "Καΐκι"
-    },
-    {
-      "id": 3029,
-      "name": "Ωρωπός Χαλκούτσι",
-      "lat": 38.337419,
-      "lon": 23.721078,
-      "region": "Attica",
-      "prefecture": "East Attica",
-      "municipality": "East Attica (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 2730,
-      "stage1Ref": "Παραλία Αγίας Παρασκευής"
+      "stage1Ref": "Izgoud",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3149,
@@ -919,72 +231,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_2026_07_pelion",
       "stage1": 2641,
-      "stage1Ref": "Koropi Beach"
-    },
-    {
-      "id": 3174,
-      "name": "Κανάκι",
-      "lat": 37.03539,
-      "lon": 25.57844,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 2515,
-      "stage1Ref": "Παραλία Ψιλή Άμμος"
-    },
-    {
-      "id": 3137,
-      "name": "Παραλία Πέτρα",
-      "lat": 39.33165,
-      "lon": 26.17889,
-      "region": "North Aegean",
-      "prefecture": "Lesvos",
-      "municipality": "Lesvos",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2486,
-      "stage1Ref": "Naturist beach"
-    },
-    {
-      "id": 645,
-      "name": "Σταλίδα",
-      "lat": 35.2940054,
-      "lon": 25.4300889,
-      "region": "Crete",
-      "prefecture": "Heraklion",
-      "municipality": "Crete (Heraklion)",
-      "confidence": "high",
-      "batch": "2026_05_heraklion_batch_1",
-      "stage1": 2402,
-      "stage1Ref": "Aelos Beach"
-    },
-    {
-      "id": 3132,
-      "name": "Παραλία Μαΐστρος",
-      "lat": 40.84183,
-      "lon": 25.87591,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Evros",
-      "municipality": "Evros (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2399,
-      "stage1Ref": "Santa Rosa Hotel"
-    },
-    {
-      "id": 3028,
-      "name": "Ωρωπός Σκάλα Ωρωπού",
-      "lat": 38.3255,
-      "lon": 23.80419,
-      "region": "Attica",
-      "prefecture": "East Attica",
-      "municipality": "East Attica (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 2397,
-      "stage1Ref": "Παραλία Αγίου Κωνσταντίνου"
+      "stage1Ref": "Koropi Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 880,
@@ -997,7 +245,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 2332,
-      "stage1Ref": "Αλωνάκι"
+      "stage1Ref": "Αλωνάκι",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2722,
@@ -1010,72 +259,8 @@
       "confidence": "high",
       "batch": "magnesia_confidence_continuation_2026_06_02",
       "stage1": 2299,
-      "stage1Ref": "Χονδρή Άμμος"
-    },
-    {
-      "id": 3125,
-      "name": "Παραλία Νέος Μαρμαράς",
-      "lat": 40.08613,
-      "lon": 23.79222,
-      "region": "Central Macedonia",
-      "prefecture": "Halkidiki",
-      "municipality": "Halkidiki (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2295,
-      "stage1Ref": "Παραλία Παράδεισος"
-    },
-    {
-      "id": 2720,
-      "name": "Σουτραλί (Αγριά)",
-      "lat": 39.3455,
-      "lon": 22.9885,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_02_f",
-      "stage1": 2276,
-      "stage1Ref": "Άναυρος"
-    },
-    {
-      "id": 3136,
-      "name": "Παραλία Λέκκα",
-      "lat": 37.79545,
-      "lon": 26.68836,
-      "region": "North Aegean",
-      "prefecture": "Samos",
-      "municipality": "Samos",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2247,
-      "stage1Ref": "Ποτάμι"
-    },
-    {
-      "id": 3118,
-      "name": "Σπηλίτσες",
-      "lat": 38.0456,
-      "lon": 24.5816,
-      "region": "Central Greece",
-      "prefecture": "Evia",
-      "municipality": "Evia",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07",
-      "stage1": 2227,
-      "stage1Ref": "Λινάρι"
-    },
-    {
-      "id": 3150,
-      "name": "Κάλαμος Πηλίου",
-      "lat": 39.22668,
-      "lon": 23.18263,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 2211,
-      "stage1Ref": "Γούρνα"
+      "stage1Ref": "Χονδρή Άμμος",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3027,
@@ -1088,33 +273,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 2209,
-      "stage1Ref": "Παραλία Αγκώνα"
-    },
-    {
-      "id": 1497,
-      "name": "Ίρια",
-      "lat": 37.504409,
-      "lon": 22.987006,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
-      "confidence": "high",
-      "batch": "argolida_tourist_evidence_pass_2026_06_01",
-      "stage1": 2185,
-      "stage1Ref": "Παραλία Κάντιας"
-    },
-    {
-      "id": 3138,
-      "name": "Παραλία Αρχάγγελος",
-      "lat": 36.62853,
-      "lon": 22.87917,
-      "region": "Peloponnese",
-      "prefecture": "Lakonia",
-      "municipality": "Lakonia (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2129,
-      "stage1Ref": "Pyla beach"
+      "stage1Ref": "Παραλία Αγκώνα",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2109,
@@ -1127,20 +287,8 @@
       "confidence": "high",
       "batch": "sifnos_tourist_evidence_pass_2026_05_29",
       "stage1": 2129,
-      "stage1Ref": "Καμάρες"
-    },
-    {
-      "id": 3120,
-      "name": "Παραλία Κίρρα",
-      "lat": 38.42738,
-      "lon": 22.43176,
-      "region": "Central Greece",
-      "prefecture": "Fokida",
-      "municipality": "Fokida (mainland)",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2123,
-      "stage1Ref": "Ακτή Βραχάκια"
+      "stage1Ref": "Καμάρες",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 883,
@@ -1153,33 +301,8 @@
       "confidence": "high",
       "batch": "preveza_tourist_evidence_pass_2026_06_01",
       "stage1": 2077,
-      "stage1Ref": "Artolithia Beach"
-    },
-    {
-      "id": 3121,
-      "name": "Παραλία Πήλι",
-      "lat": 38.76503,
-      "lon": 23.58976,
-      "region": "Central Greece",
-      "prefecture": "Evia",
-      "municipality": "Evia",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 2046,
-      "stage1Ref": "Ατάλαντος"
-    },
-    {
-      "id": 2686,
-      "name": "Καρνάγιο (Αγριά)",
-      "lat": 39.348,
-      "lon": 22.986,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "026_2501_2600",
-      "stage1": 2016,
-      "stage1Ref": "Άναυρος"
+      "stage1Ref": "Artolithia Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3038,
@@ -1192,33 +315,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1997,
-      "stage1Ref": "Παραλία Μυρσινίδι"
-    },
-    {
-      "id": 2666,
-      "name": "Δερμαριά (Πτελεός)",
-      "lat": 39.118,
-      "lon": 23.208,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "high",
-      "batch": "magnesia_confidence_continuation_2026_06_02",
-      "stage1": 1977,
-      "stage1Ref": "Χονδρή Άμμος"
-    },
-    {
-      "id": 2111,
-      "name": "Τσόχα",
-      "lat": 36.962013,
-      "lon": 24.675593,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Sifnos",
-      "confidence": "high",
-      "batch": "sifnos_tourist_evidence_pass_2026_05_29",
-      "stage1": 1972,
-      "stage1Ref": "Βλυχάδα"
+      "stage1Ref": "Παραλία Μυρσινίδι",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3115,
@@ -1231,20 +329,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_2026_07",
       "stage1": 1959,
-      "stage1Ref": "Αρχάμπολη"
-    },
-    {
-      "id": 3047,
-      "name": "ΠΔΕ Καστελόκαμπος",
-      "lat": 38.292927,
-      "lon": 21.76727,
-      "region": "West Greece",
-      "prefecture": "Achaia",
-      "municipality": "Achaia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1937,
-      "stage1Ref": "Πλάζ"
+      "stage1Ref": "Αρχάμπολη",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3031,
@@ -1257,7 +343,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1921,
-      "stage1Ref": "Παραλία Αγριλέζας"
+      "stage1Ref": "Παραλία Αγριλέζας",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 1178,
@@ -1270,98 +357,8 @@
       "confidence": "high",
       "batch": "popular_regions_source_promote_2026_06_02_s",
       "stage1": 1908,
-      "stage1Ref": "Kamari Beach"
-    },
-    {
-      "id": 2327,
-      "name": "Παραλία Καρδάμαινας",
-      "lat": 36.780534,
-      "lon": 27.1424168,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Kos",
-      "confidence": "high",
-      "batch": "2026_05_kos_batch_1",
-      "stage1": 1881,
-      "stage1Ref": "Malibu Beach"
-    },
-    {
-      "id": 3173,
-      "name": "Γαλήνη",
-      "lat": 37.13549,
-      "lon": 25.41522,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 1849,
-      "stage1Ref": "Παραλία Αμίτης"
-    },
-    {
-      "id": 3041,
-      "name": "Λουτράκι Νεράιδα",
-      "lat": 37.984993,
-      "lon": 22.960852,
-      "region": "Peloponnese",
-      "prefecture": "Korinthia",
-      "municipality": "Korinthia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1768,
-      "stage1Ref": "Loutraki blue flag beach"
-    },
-    {
-      "id": 3178,
-      "name": "Φαρακλό",
-      "lat": 37.19416,
-      "lon": 25.54437,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 1760,
-      "stage1Ref": "Apollonas Beach"
-    },
-    {
-      "id": 1496,
-      "name": "Βιβάρι",
-      "lat": 37.536694,
-      "lon": 22.919794,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
-      "confidence": "high",
-      "batch": "popular_regions_source_promote_2026_06_05_peloponnese",
-      "stage1": 1737,
-      "stage1Ref": "Παραλία Κονδύλι"
-    },
-    {
-      "id": 3154,
-      "name": "Μικρή Πάου",
-      "lat": 39.20691,
-      "lon": 23.19329,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 1734,
-      "stage1Ref": "Παραλία Κορνέλια"
-    },
-    {
-      "id": 3143,
-      "name": "Παραλία Ιαλυσός",
-      "lat": 36.41981,
-      "lon": 28.17415,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Rhodes",
-      "confidence": "low",
-      "batch": "shower_beach_discovery_2026_07",
-      "stage1": 1728,
-      "stage1Ref": "Παραλία Ιξιάς"
+      "stage1Ref": "Kamari Beach",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3024,
@@ -1374,20 +371,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1727,
-      "stage1Ref": "Παραλία Μαραθώνα Α"
-    },
-    {
-      "id": 1303,
-      "name": "Παραλία Ξυλοσύρτη",
-      "lat": 37.59015,
-      "lon": 26.25354,
-      "region": "North Aegean",
-      "prefecture": "Ikaria",
-      "municipality": "Ikaria",
-      "confidence": "high",
-      "batch": "ikaria_confidence_2026_06_05_a",
-      "stage1": 1694,
-      "stage1Ref": "Συρτικό"
+      "stage1Ref": "Παραλία Μαραθώνα Α",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3116,
@@ -1400,7 +385,8 @@
       "confidence": "low",
       "batch": "hidden_beach_discovery_2026_07",
       "stage1": 1671,
-      "stage1Ref": "Αρχάμπολη"
+      "stage1Ref": "Αρχάμπολη",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 3042,
@@ -1413,20 +399,8 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1639,
-      "stage1Ref": "Παραλία Αγία Σωτήρα"
-    },
-    {
-      "id": 2126,
-      "name": "Αζόλιμνος",
-      "lat": 37.411156,
-      "lon": 24.965034,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Syros",
-      "confidence": "high",
-      "batch": "syros_tourist_evidence_pass_2026_05_29",
-      "stage1": 1623,
-      "stage1Ref": "Σαντορινιοί"
+      "stage1Ref": "Παραλία Αγία Σωτήρα",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2660,
@@ -1439,150 +413,8 @@
       "confidence": "medium",
       "batch": "026_2501_2600",
       "stage1": 1616,
-      "stage1Ref": "Limnonari"
-    },
-    {
-      "id": 2491,
-      "name": "Βαθύ",
-      "lat": 36.93614,
-      "lon": 27.15062,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Pserimos",
-      "confidence": "high",
-      "batch": "024_2301_2400",
-      "stage1": 1607,
-      "stage1Ref": "Παραλία Αυλάκια"
-    },
-    {
-      "id": 3039,
-      "name": "Λουτράκι Αγ. Θεόδωροι",
-      "lat": 37.922432,
-      "lon": 23.139724,
-      "region": "Peloponnese",
-      "prefecture": "Korinthia",
-      "municipality": "Korinthia (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1605,
-      "stage1Ref": "Παραλία Αγίων Θεωδώρων"
-    },
-    {
-      "id": 3148,
-      "name": "Θεριάκοντας",
-      "lat": 39.14114,
-      "lon": 23.07445,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 1600,
-      "stage1Ref": "Izgoud"
-    },
-    {
-      "id": 2500,
-      "name": "Μαράθι",
-      "lat": 37.36664,
-      "lon": 26.72496,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Marathi",
-      "confidence": "high",
-      "batch": "024_2301_2400",
-      "stage1": 1583,
-      "stage1Ref": "Πατελιά"
-    },
-    {
-      "id": 2148,
-      "name": "Φοίνικας",
-      "lat": 37.3993744,
-      "lon": 24.8789018,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Syros",
-      "confidence": "high",
-      "batch": "syros_tourist_evidence_pass_2026_05_29",
-      "stage1": 1548,
-      "stage1Ref": "Αγκαθωπές"
-    },
-    {
-      "id": 3026,
-      "name": "ΚΑΑΥ Άγιος Ανδρέας",
-      "lat": 38.05555,
-      "lon": 23.99785,
-      "region": "Attica",
-      "prefecture": "East Attica",
-      "municipality": "East Attica (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1540,
-      "stage1Ref": "DIVERS BEACH"
-    },
-    {
-      "id": 1986,
-      "name": "Αζαλάς",
-      "lat": 37.08723,
-      "lon": 25.59207,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "high",
-      "batch": "naxos_audit_2026_05_23",
-      "stage1": 1492,
-      "stage1Ref": "Liaridia Beach"
-    },
-    {
-      "id": 3151,
-      "name": "Καμάρι Κεραμιδίου",
-      "lat": 39.57458,
-      "lon": 22.93502,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 1426,
-      "stage1Ref": "Paralia Ai Giannis"
-    },
-    {
-      "id": 3043,
-      "name": "Σύμη Γυάλα",
-      "lat": 36.621352,
-      "lon": 27.820906,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Symi",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1385,
-      "stage1Ref": "Παραλία της Σάρα"
-    },
-    {
-      "id": 3013,
-      "name": "Γουβιά",
-      "lat": 39.6537085,
-      "lon": 19.8454166,
-      "region": "Ionian Islands",
-      "prefecture": "Corfu",
-      "municipality": "Corfu",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 1372,
-      "stage1Ref": "Παραλία Κοντοκαλίου"
-    },
-    {
-      "id": 3175,
-      "name": "Μακριά Μύτη",
-      "lat": 36.99491,
-      "lon": 25.11651,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Paros",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 1350,
-      "stage1Ref": "Παραλία Αλυκή"
+      "stage1Ref": "Limnonari",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
       "id": 2652,
@@ -1595,72 +427,23 @@
       "confidence": "medium",
       "batch": "026_2501_2600",
       "stage1": 1306,
-      "stage1Ref": "Τραχηλι"
+      "stage1Ref": "Τραχηλι",
+      "stage2": "NO_BEACH_IN_RADIUS"
     },
     {
-      "id": 1499,
-      "name": "Νέα Επίδαυρος - Αλιότου",
-      "lat": 37.6667,
-      "lon": 23.1625,
-      "region": "Peloponnese",
-      "prefecture": "Argolida",
-      "municipality": "Argolida (mainland)",
+      "id": 1175,
+      "name": "Αμπελάκια",
+      "lat": 38.6646856,
+      "lon": 20.7913786,
+      "region": "Ionian Islands",
+      "prefecture": "Lefkada",
+      "municipality": "Meganisi",
       "confidence": "high",
-      "batch": "argolida_tourist_evidence_pass_2026_06_01",
-      "stage1": 1290,
-      "stage1Ref": "Παραλία \"Παναγιά Πολέμαρχος\""
-    },
-    {
-      "id": 3153,
-      "name": "Μεγάλη Πάου",
-      "lat": 39.20311,
-      "lon": 23.19633,
-      "region": "Thessaly",
-      "prefecture": "Magnesia",
-      "municipality": "Magnesia (mainland - Pelion)",
-      "confidence": "low",
-      "batch": "hidden_beach_discovery_2026_07_pelion",
-      "stage1": 1243,
-      "stage1Ref": "Παραλία Κορνέλια"
-    },
-    {
-      "id": 2135,
-      "name": "Δελφίνι",
-      "lat": 37.457417,
-      "lon": 24.898576,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Syros",
-      "confidence": "high",
-      "batch": "syros_tourist_evidence_pass_2026_05_29",
-      "stage1": 1231,
-      "stage1Ref": "Βαρβαρούσα"
-    },
-    {
-      "id": 3037,
-      "name": "Σάμος Βαθύ Μαούνες",
-      "lat": 37.755386,
-      "lon": 26.957824,
-      "region": "North Aegean",
-      "prefecture": "Samos",
-      "municipality": "Samos",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1188,
-      "stage1Ref": "Ροδίτσες"
-    },
-    {
-      "id": 3012,
-      "name": "Περιγιάλι",
-      "lat": 40.9482064,
-      "lon": 24.4300973,
-      "region": "East Macedonia and Thrace",
-      "prefecture": "Kavala",
-      "municipality": "Kavala (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 1177,
-      "stage1Ref": "Vranas Resort Beach Bar"
+      "batch": "popular_regions_source_promote_2026_06_02_t",
+      "stage1": 4782,
+      "stage1Ref": "Ανατολική παραλία Σκορπιού",
+      "stage2": 1182,
+      "stage2Ref": "(unnamed)"
     },
     {
       "id": 3050,
@@ -1673,33 +456,69 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1167,
-      "stage1Ref": "Παραλία Ρίζας"
+      "stage1Ref": "Παραλία Ρίζας",
+      "stage2": 1167,
+      "stage2Ref": "Παραλία Ρίζας"
     },
     {
-      "id": 1983,
-      "name": "Άγιοι Θεόδωροι",
-      "lat": 37.18601,
-      "lon": 25.49312,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "high",
-      "batch": "naxos_audit_2026_05_23",
-      "stage1": 1158,
-      "stage1Ref": "Μελινό"
+      "id": 3039,
+      "name": "Λουτράκι Αγ. Θεόδωροι",
+      "lat": 37.922432,
+      "lon": 23.139724,
+      "region": "Peloponnese",
+      "prefecture": "Korinthia",
+      "municipality": "Korinthia (mainland)",
+      "confidence": "low",
+      "batch": "seatrac_directory_2026_06",
+      "stage1": 1605,
+      "stage1Ref": "Παραλία Αγίων Θεωδώρων",
+      "stage2": 1156,
+      "stage2Ref": "(unnamed)"
     },
     {
-      "id": 2346,
-      "name": "Παραλία Αγίου Θεολόγου",
-      "lat": 36.7137375,
-      "lon": 26.9218924,
-      "region": "South Aegean",
-      "prefecture": "Dodecanese",
-      "municipality": "Kos",
+      "id": 2686,
+      "name": "Καρνάγιο (Αγριά)",
+      "lat": 39.348,
+      "lon": 22.986,
+      "region": "Thessaly",
+      "prefecture": "Magnesia",
+      "municipality": "Magnesia (mainland - Pelion)",
+      "confidence": "low",
+      "batch": "026_2501_2600",
+      "stage1": 2016,
+      "stage1Ref": "Άναυρος",
+      "stage2": 1126,
+      "stage2Ref": "(unnamed)"
+    },
+    {
+      "id": 1499,
+      "name": "Νέα Επίδαυρος - Αλιότου",
+      "lat": 37.6667,
+      "lon": 23.1625,
+      "region": "Peloponnese",
+      "prefecture": "Argolida",
+      "municipality": "Argolida (mainland)",
       "confidence": "high",
-      "batch": "2026_05_kos_batch_1",
-      "stage1": 1132,
-      "stage1Ref": "Παραλία Κάτα"
+      "batch": "argolida_tourist_evidence_pass_2026_06_01",
+      "stage1": 1290,
+      "stage1Ref": "Παραλία \"Παναγιά Πολέμαρχος\"",
+      "stage2": 1124,
+      "stage2Ref": "(unnamed)"
+    },
+    {
+      "id": 1496,
+      "name": "Βιβάρι",
+      "lat": 37.536694,
+      "lon": 22.919794,
+      "region": "Peloponnese",
+      "prefecture": "Argolida",
+      "municipality": "Argolida (mainland)",
+      "confidence": "high",
+      "batch": "popular_regions_source_promote_2026_06_05_peloponnese",
+      "stage1": 1737,
+      "stage1Ref": "Παραλία Κονδύλι",
+      "stage2": 1110,
+      "stage2Ref": "(unnamed)"
     },
     {
       "id": 3046,
@@ -1712,33 +531,9 @@
       "confidence": "low",
       "batch": "seatrac_directory_2026_06",
       "stage1": 1090,
-      "stage1Ref": "Kite Surfing"
-    },
-    {
-      "id": 3032,
-      "name": "Αποκορώνου Αλμυρίδα",
-      "lat": 35.449916,
-      "lon": 24.198811,
-      "region": "Crete",
-      "prefecture": "Chania",
-      "municipality": "Crete (Chania)",
-      "confidence": "low",
-      "batch": "seatrac_directory_2026_06",
-      "stage1": 1082,
-      "stage1Ref": "Kera"
-    },
-    {
-      "id": 3006,
-      "name": "Πόρτο Ράφτη Αυλάκι",
-      "lat": 37.872037,
-      "lon": 24.0222308,
-      "region": "Attica",
-      "prefecture": "East Attica",
-      "municipality": "East Attica (mainland)",
-      "confidence": "low",
-      "batch": "seatrac_d2_2026_06",
-      "stage1": 1071,
-      "stage1Ref": "Νησίδα Κεκροπούλα"
+      "stage1Ref": "Kite Surfing",
+      "stage2": 1090,
+      "stage2Ref": "Kite Surfing"
     },
     {
       "id": 2598,
@@ -1751,7 +546,9 @@
       "confidence": "high",
       "batch": "025_2401_2500",
       "stage1": 1051,
-      "stage1Ref": "Τσουκαλιά"
+      "stage1Ref": "Τσουκαλιά",
+      "stage2": 1051,
+      "stage2Ref": "Τσουκαλιά"
     },
     {
       "id": 2656,
@@ -1764,7 +561,9 @@
       "confidence": "high",
       "batch": "skopelos_tourist_evidence_pass_2026_06_01",
       "stage1": 1046,
-      "stage1Ref": "Limnonari"
+      "stage1Ref": "Limnonari",
+      "stage2": 1046,
+      "stage2Ref": "Limnonari"
     },
     {
       "id": 3004,
@@ -1777,46 +576,9 @@
       "confidence": "high",
       "batch": "iconic_2026_06",
       "stage1": 1032,
-      "stage1Ref": "Καλάμι"
-    },
-    {
-      "id": 3172,
-      "name": "Ακρωτήρι",
-      "lat": 37.14053,
-      "lon": 25.45029,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 1018,
-      "stage1Ref": "Παραλία Γλατζά"
-    },
-    {
-      "id": 1996,
-      "name": "Κάμπος",
-      "lat": 37.1645444,
-      "lon": 25.4770917,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Naxos",
-      "confidence": "low",
-      "batch": "naxos_audit_2026_05_23",
-      "stage1": 1016,
-      "stage1Ref": "Παραλία Αμπραμ"
-    },
-    {
-      "id": 3176,
-      "name": "Πίσω Λιβάδι",
-      "lat": 37.0392,
-      "lon": 25.26163,
-      "region": "South Aegean",
-      "prefecture": "Cyclades",
-      "municipality": "Paros",
-      "confidence": "low",
-      "batch": "hidden_paros_naxos_2026_08_13",
-      "stage1": 1007,
-      "stage1Ref": "Λογαράς"
+      "stage1Ref": "Καλάμι",
+      "stage2": 1032,
+      "stage2Ref": "Καλάμι"
     }
   ]
 }

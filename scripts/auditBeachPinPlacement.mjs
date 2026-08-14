@@ -101,12 +101,12 @@ writeFileSync(path.join(OUT_DIR, 'pin-placement-audit.json'), JSON.stringify(pay
 
 const list = VERIFY ? confirmed : suspects;
 const lines = [`# Pin-placement audit`, '', `Beaches: ${beaches.length} · suspects (>${THRESHOLD}m from a named OSM beach): ${suspects.length}`,
-  VERIFY ? `Verified against ALL OSM beaches within ${RADIUS}m → **confirmed misplaced: ${confirmed.length}**, cleared: ${cleared.length}, unresolved: ${unresolved.length}` : '_Stage 1 only — re-run with `--verify` to eliminate false positives._', '',
+  VERIFY ? `Verified against ALL OSM beaches within ${RADIUS}m → **not corroborated by OSM: ${confirmed.length}**, cleared: ${cleared.length}, unresolved: ${unresolved.length}\n\n> ⚠️ NOT a fix list. "Not corroborated" also describes a real beach OSM never mapped — on 14/08 only **2 of 40** were actually wrong. Run \`node scripts/auditPinCoastlineDistance.mjs\` (stage 3, offline): a pin >400 m inland is wrong, a coastal one is an unmapped-beach lead. Never move a pin on this table alone.` : '_Stage 1 only — re-run with `--verify` to eliminate false positives._', '',
   '| dist | id | beach | region | coords | confidence |', '|---:|---:|---|---|---|---|',
   ...list.slice(0, 200).map(b => `| ${VERIFY ? (b.stage2 === 'NO_BEACH_IN_RADIUS' ? `>${RADIUS}m` : b.stage2 + 'm') : b.stage1 + 'm'} | ${b.id} | ${b.name} | ${b.region} / ${b.municipality} | ${b.lat},${b.lon} | ${b.confidence || '—'} |`)];
 writeFileSync(path.join(OUT_DIR, 'pin-placement-audit.md'), lines.join('\n') + '\n', 'utf8');
 
-console.log(`\n${VERIFY ? `CONFIRMED misplaced pins: ${confirmed.length} (cleared ${cleared.length}, unresolved ${unresolved.length})` : `Suspects: ${suspects.length}`}`);
+console.log(`\n${VERIFY ? `NOT corroborated by OSM: ${confirmed.length} (cleared ${cleared.length}, unresolved ${unresolved.length}) — run scripts/auditPinCoastlineDistance.mjs before treating any of these as a wrong pin` : `Suspects: ${suspects.length}`}`);
 for (const b of list.slice(0, 25))
   console.log(`  ${String(VERIFY ? (b.stage2 === 'NO_BEACH_IN_RADIUS' ? `>${RADIUS}` : b.stage2) : b.stage1).padStart(6)}m  #${b.id} ${String(b.name).padEnd(28)} ${b.region}/${b.municipality}  conf=${b.confidence || '—'}`);
 console.log(`\nWrote reports/quality/pin-placement-audit.{json,md}`);

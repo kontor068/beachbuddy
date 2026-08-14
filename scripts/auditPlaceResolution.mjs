@@ -55,9 +55,12 @@ const cachePath = path.join(rootDir, '.tmp', 'place-resolution-cache.json'); // 
 const PIN_OK_M = 350;
 
 const parseArgs = () => {
-  const args = { islands: [], regions: [], limit: undefined, dryRun: false, sleepMs: 1200, radiusMeters: 3000, maxNameQueries: 2, includeCoordRouted: false };
+  const args = { islands: [], regions: [], limit: undefined, dryRun: false, sleepMs: 1200, radiusMeters: 3000, maxNameQueries: 2, includeCoordRouted: false, anyRegion: false };
   for (const arg of process.argv.slice(2)) {
     if (arg === '--dry-run') args.dryRun = true;
+    // Audit regions OUTSIDE the touristic tier (ad-hoc sweeps). Without it a --region for a
+    // non-tier id silently intersects to zero beaches and reports "0 audited" (14/08).
+    else if (arg === '--any-region') args.anyRegion = true;
     // Re-evaluate beaches already routed by coordinate too. Use after changing the query
     // builder: a beach we previously sent to coordinates (because the OLD prefixed query
     // failed) may now resolve via the bare name, so it can go back to richer place-routing.
@@ -119,7 +122,7 @@ const loadRegions = async (args) => {
     throw new Error(`touristic tier references region ids not in index.json: ${missing.join(', ')} (rename in scripts/auditPlaceResolution.mjs or check index.json)`);
   }
 
-  let ids = TOURISTIC_TIER;
+  let ids = args.anyRegion ? index.regions.map(r => r.id) : TOURISTIC_TIER;
   if (args.regions.length) ids = ids.filter(id => args.regions.includes(id.toLowerCase()));
   if (args.islands.length) {
     ids = ids.filter(id => {
@@ -199,12 +202,18 @@ const writeReports = async (rows, args) => {
   }
   const totals = rows.reduce((acc, r) => { acc[r.verdict] = (acc[r.verdict] ?? 0) + 1; return acc; }, {});
 
+  // A scoped run covers a fraction of the tier, so it must never write over the canonical
+  // report: on 14/08 a 6-region run left place-resolution.md reading "0 beaches audited" and
+  // emptied nav-fixes.json, erasing a 596-beach audit. Scoped runs get their own -partial files.
+  const isFullRun = !args.dryRun && !args.anyRegion && args.islands.length === 0 && args.regions.length === 0 && !Number.isInteger(args.limit);
+  const tag = isFullRun ? '' : '-partial';
+
   // full JSON
-  const jsonPath = path.join(outDir, `place-resolution-${date}.json`);
+  const jsonPath = path.join(outDir, `place-resolution-${date}${tag}.json`);
   await writeFile(jsonPath, JSON.stringify({ generatedAt, scope: { islands: args.islands, regions: args.regions }, totals, rows }, null, 1), 'utf8');
 
   // CSV — name signal (Nominatim, the verdict driver) + pin signal (Overpass) side by side
-  const csvPath = path.join(outDir, 'place-resolution.csv');
+  const csvPath = path.join(outDir, `place-resolution${tag}.csv`);
   const header = ['id', 'name', 'regionId', 'island', 'verdict', 'recommend', 'query',
     'nameStatus', 'nameQuery', 'nameHit', 'nameDistM', 'nameScore', 'pinHit', 'pinDistM', 'flags', 'lat', 'lon'];
   const csv = [header.join(',')];
@@ -219,9 +228,10 @@ const writeReports = async (rows, args) => {
   await writeFile(csvPath, csv.join('\n'), 'utf8');
 
   // consolidated Markdown
-  const mdPath = path.join(outDir, 'place-resolution.md');
+  const mdPath = path.join(outDir, `place-resolution${tag}.md`);
   const lines = [];
-  lines.push('# Place-resolution audit — touristic tier');
+  lines.push(isFullRun ? '# Place-resolution audit — touristic tier'
+    : `# Place-resolution audit — scoped run (${[...args.regions, ...args.islands].join(', ') || 'filtered'})`);
   lines.push('');
   lines.push(`Generated: ${generatedAt}`);
   lines.push('');
@@ -267,7 +277,6 @@ const writeReports = async (rows, args) => {
   // any tier beach that is verified+place-mode but absent here. Only written on a full
   // (non-filtered, non-limited) run so a partial run can't shrink the ledger.
   let ledgerPath = null;
-  const isFullRun = !args.dryRun && args.islands.length === 0 && args.regions.length === 0 && !Number.isInteger(args.limit);
   if (isFullRun) {
     ledgerPath = path.join(outDir, 'verified-place-queries.json');
     const passIds = rows.filter(r => r.verdict === 'PASS').map(r => r.id).sort((a, b) => a - b);
@@ -285,7 +294,7 @@ const writeReports = async (rows, args) => {
   //   - PASS but currently coordinate-routed: flip BACK to place so the user gets the rich Google
   //     beach card (the prefix-free query now resolves; coordinate routing only shows a bare pin).
   // PASS already place-routed needs no change; LOOKUP_ERROR must be re-run.
-  const fixesPath = path.join(outDir, 'nav-fixes.json');
+  const fixesPath = path.join(outDir, `nav-fixes${tag}.json`);
   const fixRows = [];
   for (const r of rows) {
     if (r.recommend === 'coordinates' || r.recommend === 'needs-review') {
@@ -313,7 +322,7 @@ const writeReports = async (rows, args) => {
 const run = async () => {
   const args = parseArgs();
   const records = await loadRecords(args);
-  console.log(`Touristic-tier name-routed beaches in scope: ${records.length}`);
+  console.log(`${args.anyRegion ? 'Name-routed' : 'Touristic-tier name-routed'} beaches in scope: ${records.length}`);
 
   if (args.dryRun) {
     for (const { region, beach } of records) {
@@ -345,7 +354,7 @@ const run = async () => {
   console.log(`Report: ${path.relative(rootDir, mdPath)}`);
   console.log(`CSV:    ${path.relative(rootDir, csvPath)}`);
   console.log(`JSON:   ${path.relative(rootDir, jsonPath)}`);
-  console.log(`Fixes:  ${path.relative(rootDir, fixesPath)} (apply with scripts/applyNavigationAudit.mjs --apply-status)`);
+  console.log(`Fixes:  ${path.relative(rootDir, fixesPath)} (apply with scripts/applyNavigationAudit.mjs --apply-status --audit ${path.relative(rootDir, fixesPath).replace(/\\/g, '/')})`);
   if (ledgerPath) console.log(`Ledger: ${path.relative(rootDir, ledgerPath)}`);
 };
 

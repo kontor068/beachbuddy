@@ -1,0 +1,158 @@
+{
+  "generatedAt": "2026-08-14T06:35:01.611Z",
+  "params": {
+    "types": [
+      "asphalt_road"
+    ],
+    "regionFilter": "south-aegean-kythnos",
+    "radius": 300,
+    "pavedThreshold": 120
+  },
+  "totals": {
+    "candidates": 8,
+    "checked": 8,
+    "suspect": 3
+  },
+  "byRegion": {
+    "south-aegean-kythnos": {
+      "checked": 8,
+      "suspect": 3
+    }
+  },
+  "suspects": [
+    {
+      "id": 1861,
+      "name": "Άγιος Στέφανος",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 137,
+      "trackM": 323,
+      "footM": 148,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.39669/24.45758"
+    },
+    {
+      "id": 1858,
+      "name": "Άγιος Δημήτριος",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 140,
+      "trackM": 269,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.31134/24.37382"
+    },
+    {
+      "id": 1885,
+      "name": "Μαρτινάκια",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "kythnos_follow_up_tourist_evidence_pass_2026_05_29",
+      "pavedM": 216,
+      "trackM": 139,
+      "footM": 64,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.39309/24.39807"
+    }
+  ],
+  "all": [
+    {
+      "id": 1858,
+      "name": "Άγιος Δημήτριος",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 140,
+      "trackM": 269,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.31134/24.37382"
+    },
+    {
+      "id": 1861,
+      "name": "Άγιος Στέφανος",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 137,
+      "trackM": 323,
+      "footM": 148,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.39669/24.45758"
+    },
+    {
+      "id": 1863,
+      "name": "Αγία Ειρήνη",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "kythnos_follow_up_tourist_evidence_pass_2026_05_29",
+      "pavedM": 70,
+      "trackM": null,
+      "footM": null,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/37.43855/24.43419"
+    },
+    {
+      "id": 1867,
+      "name": "Απόκρουσης",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 60,
+      "trackM": 119,
+      "footM": 358,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/37.41258/24.39717"
+    },
+    {
+      "id": 1872,
+      "name": "Επισκοπή",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 58,
+      "trackM": 259,
+      "footM": 142,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/37.39984/24.39921"
+    },
+    {
+      "id": 1885,
+      "name": "Μαρτινάκια",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "kythnos_follow_up_tourist_evidence_pass_2026_05_29",
+      "pavedM": 216,
+      "trackM": 139,
+      "footM": 64,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/37.39309/24.39807"
+    },
+    {
+      "id": 1893,
+      "name": "Σκινάρι",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "kythnos_follow_up_tourist_evidence_pass_2026_05_29",
+      "pavedM": 91,
+      "trackM": 42,
+      "footM": 30,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/37.44507/24.42672"
+    },
+    {
+      "id": 1897,
+      "name": "Φλαμπούρια",
+      "regionId": "south-aegean-kythnos",
+      "accessType": "asphalt_road",
+      "batch": "019_1801_1900",
+      "pavedM": 96,
+      "trackM": null,
+      "footM": 204,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/37.36515/24.39964"
+    }
+  ]
+}

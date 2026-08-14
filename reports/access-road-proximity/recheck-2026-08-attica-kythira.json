@@ -1,0 +1,242 @@
+{
+  "generatedAt": "2026-08-14T06:46:46.824Z",
+  "params": {
+    "types": [
+      "asphalt_road"
+    ],
+    "regionFilter": "attica-kythira",
+    "radius": 300,
+    "pavedThreshold": 120
+  },
+  "totals": {
+    "candidates": 12,
+    "checked": 12,
+    "suspect": 6
+  },
+  "byRegion": {
+    "attica-kythira": {
+      "checked": 12,
+      "suspect": 6
+    }
+  },
+  "suspects": [
+    {
+      "id": 119,
+      "name": "Αγία Πατρικία",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 172,
+      "trackM": null,
+      "footM": 286,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.33654/22.97671"
+    },
+    {
+      "id": 123,
+      "name": "Παραλία Λορέντζος",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 346,
+      "trackM": 197,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.31402/22.99786"
+    },
+    {
+      "id": 134,
+      "name": "Παραλία Παλαιόπολη",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 454,
+      "trackM": 236,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.22444/23.06491"
+    },
+    {
+      "id": 124,
+      "name": "Παραλια Κακιά Λαγκάδα",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 610,
+      "trackM": 36,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.3113/22.99935"
+    },
+    {
+      "id": 130,
+      "name": "Παραλία Λυκοδήμου",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 1593,
+      "trackM": 87,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.28669/22.92294"
+    },
+    {
+      "id": 135,
+      "name": "Παραλία Λίμνη (Παλαιόπολη)",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 3461,
+      "trackM": 187,
+      "footM": 545,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.22017/23.05655"
+    }
+  ],
+  "all": [
+    {
+      "id": 117,
+      "name": "Πλατιά Άμμος",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 103,
+      "trackM": 176,
+      "footM": 176,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.36491/22.9602"
+    },
+    {
+      "id": 118,
+      "name": "Παραλία Φούρνοι",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": null,
+      "trackM": 660,
+      "footM": null,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.35396/22.9667"
+    },
+    {
+      "id": 119,
+      "name": "Αγία Πατρικία",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 172,
+      "trackM": null,
+      "footM": 286,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.33654/22.97671"
+    },
+    {
+      "id": 120,
+      "name": "Παραλία Αγία Πελαγία",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 71,
+      "trackM": 160,
+      "footM": null,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.32655/22.98114"
+    },
+    {
+      "id": 123,
+      "name": "Παραλία Λορέντζος",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 346,
+      "trackM": 197,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.31402/22.99786"
+    },
+    {
+      "id": 124,
+      "name": "Παραλια Κακιά Λαγκάδα",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 610,
+      "trackM": 36,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.3113/22.99935"
+    },
+    {
+      "id": 130,
+      "name": "Παραλία Λυκοδήμου",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 1593,
+      "trackM": 87,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.28669/22.92294"
+    },
+    {
+      "id": 131,
+      "name": "Διακόφτι",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 61,
+      "trackM": 208,
+      "footM": 38,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.26262/23.0779"
+    },
+    {
+      "id": 134,
+      "name": "Παραλία Παλαιόπολη",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 454,
+      "trackM": 236,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.22444/23.06491"
+    },
+    {
+      "id": 135,
+      "name": "Παραλία Λίμνη (Παλαιόπολη)",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "kythira_tourist_evidence_pass_2026_06_01",
+      "pavedM": 3461,
+      "trackM": 187,
+      "footM": 545,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.22017/23.05655"
+    },
+    {
+      "id": 144,
+      "name": "Καψάλι",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "002_101_200",
+      "pavedM": 103,
+      "trackM": 255,
+      "footM": 100,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.14451/22.99976"
+    },
+    {
+      "id": 146,
+      "name": "Καψάλι Πίσω Γιαλός",
+      "regionId": "attica-kythira",
+      "accessType": "asphalt_road",
+      "batch": "popular_island_source_promote_2026_06_05_kythira",
+      "pavedM": 67,
+      "trackM": 96,
+      "footM": 159,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.14289/23.00439"
+    }
+  ]
+}
