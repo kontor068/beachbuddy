@@ -2303,6 +2303,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -2659,7 +2665,8 @@
               "ντουζιέρες",
               "parking ή στάθμευση δρόμου κοντά",
               "φυσική σκιά σε σημεία",
-              "παραλία με περιορισμένη πρόσβαση"
+              "παραλία με περιορισμένη πρόσβαση",
+              "φαγητό κοντά"
             ],
             "confidence": "medium",
             "language": "el",
@@ -2670,7 +2677,8 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "East Attica confidence pass 2026-05-29: official Navy/association sources support the Agios Andreas naval resort identity and restricted-access context; kept medium because it is not a normal public tourist beach."
+              "East Attica confidence pass 2026-05-29: official Navy/association sources support the Agios Andreas naval resort identity and restricted-access context; kept medium because it is not a normal public tourist beach.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Πίτσα-καφέ-ζαχαροπλαστείο\" (restaurant, 136 m) within 150 m of the pin while the record claimed no food. Added \"φαγητό κοντά\" only — organized/beach-bar untouched."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/631715142"
@@ -2769,12 +2777,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJV1VJIDp5oRQRE87IfgHwcD8",
-              "query": "Παραλία Σχινιά, East Attica"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Σχινιά, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -2926,11 +2933,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJjfc9jPOCoRQR3uODR34c684",
-              "query": "Παραλία Ζούμπερι, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -2988,11 +2993,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ5dgHbnWDoRQRYQSUW9Rehzc",
-              "query": "Παραλία Όρμος Ληδάκι, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -3088,11 +3091,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJxQ3wvYWDoRQRG5KORwXnbz4",
-              "query": "Παραλία Πλαζ Ραφήνας, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -3177,11 +3178,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJs75eelCEoRQRpBZaIXwQzG0",
-              "query": "Παραλία Αρτέμιδας, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "crowded",
@@ -3257,7 +3256,8 @@
             "shade": false,
             "amenities": [
               "ομπρέλες εποχικά",
-              "ξαπλώστρες εποχικά"
+              "ξαπλώστρες εποχικά",
+              "καφέ κοντά"
             ],
             "confidence": "high",
             "language": "el",
@@ -3272,7 +3272,8 @@
             ],
             "sourceNotes": [
               "East Attica low-confidence audit 2026-05-28: Athens Attica supports Vravrona as sandy, with clean shallow waters, sunbeds and umbrellas, and suitable for short family beach trips near the archaeological site.",
-              "East Attica confidence pass 2026-05-29: Athens Attica directly supports Vravrona/Brauron beach as sandy, shallow, family-oriented, and seasonally organized near the archaeological area."
+              "East Attica confidence pass 2026-05-29: Athens Attica directly supports Vravrona/Brauron beach as sandy, shallow, family-oriented, and seasonally organized near the archaeological area.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Ιππόκαμπος\" (cafe, 60 m) +2 more within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched."
             ],
             "orientation": {
               "degrees": 78.5,
@@ -3285,11 +3286,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJSVxuCHyPoRQRce1GIW7RmV4",
-              "query": "Παραλία Βραυρώνας, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -3795,11 +3794,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8e0jK7aOoRQRpuqwFq1OI4w",
-              "query": "Παραλία Αυλάκι, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -3832,7 +3829,8 @@
             "shade": false,
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
-              "parking ή στάθμευση δρόμου κοντά"
+              "parking ή στάθμευση δρόμου κοντά",
+              "ταβέρνα κοντά"
             ],
             "confidence": "medium",
             "language": "el",
@@ -3843,7 +3841,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "East Attica confidence pass 2026-05-29: local media directly support Panorama as a Porto Rafti/Avlaki beach/toponym; kept medium because current access/service detail remains limited."
+              "East Attica confidence pass 2026-05-29: local media directly support Panorama as a Porto Rafti/Avlaki beach/toponym; kept medium because current access/service detail remains limited.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Πανόραμα\" (restaurant, 26 m) within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/7190835532"
@@ -3859,11 +3858,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJpTZ0UgCPoRQRQZf440DyL8g",
-              "query": "Παραλία Πανόραμα, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -3965,7 +3962,8 @@
             "shade": false,
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
-              "parking ή στάθμευση δρόμου κοντά"
+              "parking ή στάθμευση δρόμου κοντά",
+              "ταβέρνα κοντά"
             ],
             "confidence": "medium",
             "language": "el",
@@ -3976,7 +3974,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "East Attica confidence pass 2026-05-29: direct local accommodation/place listings support Kokoloko beach identity near Daskalio; kept medium because beach features and public-service details remain weakly sourced."
+              "East Attica confidence pass 2026-05-29: direct local accommodation/place listings support Kokoloko beach identity near Daskalio; kept medium because beach features and public-service details remain weakly sourced.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Πανόραμα\" (restaurant, 143 m) within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/234839452",
@@ -3994,11 +3993,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJE1C7H3aMoRQRh2OI2f-nhHQ",
-              "query": "Παραλία Κοκολόκο, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -4063,11 +4060,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJESSc17eUoRQRicZekLsyxzk",
-              "query": "Παραλία Λομπάρδα / Mojito Bay, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -4316,11 +4311,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJGdQapq3soRQRE2BXukARjWk",
-              "query": "Παραλία Γαλάζια Ακτή, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -4428,11 +4421,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJE8hQQg6LoRQRfYHBw6Tbbg4",
-              "query": "Παραλία Πόρτο Εννέα, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -4492,11 +4483,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJLRGvet3soRQR8wnfpBpV4_g",
-              "query": "Παραλία Πεύκο, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -4563,12 +4552,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJCVpWGs_toRQRDM6CD8W-D4I",
-              "query": "Παραλία Lagonissi Grand Resort, East Attica"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Lagonissi Grand Resort, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -4633,11 +4621,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJrR3TxReLoRQRWWI1YsngYPY",
-              "query": "Παραλία Καλοπήγαδο, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -4751,11 +4737,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcVIL5TuLoRQRoFyXLQlUz00",
-              "query": "Παραλία Τσονίμα, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -5051,12 +5035,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ3bG3XzXsoRQRADiohzOyTkM",
-              "query": "Μαύρο Λιθάρι / Eden Beach, East Attica"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Μαύρο Λιθάρι / Eden Beach, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -5155,11 +5138,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJwUyFq-3toRQRdTFskah5sA8",
-              "query": "Παραλία Αναβύσσου, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -5214,6 +5195,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -5316,7 +5303,8 @@
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
               "parking ή στάθμευση δρόμου κοντά",
-              "ξαπλώστρες, ομπρέλες εποχικά"
+              "ξαπλώστρες, ομπρέλες εποχικά",
+              "καντίνα κοντά"
             ],
             "confidence": "high",
             "language": "el",
@@ -5326,7 +5314,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "East Attica medium-upgrade pass 2026-05-29: Saronikos municipality pages directly place the nautical club and municipal equipment reference at Paralia Agiou Nikolaou Anavyssos, supporting exact beach-area identity and local visitor traceability. Confidence promoted to high. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"(unnamed)\" 99m from the pin.",
+            "sourceNotes": "East Attica medium-upgrade pass 2026-05-29: Saronikos municipality pages directly place the nautical club and municipal equipment reference at Paralia Agiou Nikolaou Anavyssos, supporting exact beach-area identity and local visitor traceability. Confidence promoted to high. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"(unnamed)\" 99m from the pin. Food-nearby 2026-08-14 (OSM, no API): \"Nuevo Loca beach bar\" (bar, 108 m) within 150 m of the pin while the record claimed no food. Added \"καντίνα κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/354489344",
               "https://saronikoscity.gr/?p=951",
@@ -5392,11 +5380,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJP3jj0QjuoRQRMDOpapC-L2k",
-              "query": "Παραλία Θυμάρι, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -5650,7 +5636,8 @@
             "shade": false,
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
-              "parking ή στάθμευση δρόμου κοντά"
+              "parking ή στάθμευση δρόμου κοντά",
+              "ταβέρνα κοντά"
             ],
             "confidence": "high",
             "language": "el",
@@ -5661,7 +5648,8 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "East Attica confidence pass 2026-05-29: In2life and CleanBeaches directly support Asimaki beach identity/location and quiet small-beach context near Sounio/Lavreotiki."
+              "East Attica confidence pass 2026-05-29: In2life and CleanBeaches directly support Asimaki beach identity/location and quiet small-beach context near Sounio/Lavreotiki.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Coast Asimaki\" (restaurant, 71 m) within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/496489779",
@@ -5679,11 +5667,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJlRYgpLL2oRQRJshablDzIL8",
-              "query": "Παραλία Ασημάκη, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -5764,11 +5750,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJf1x-XMnxoRQRccSWOBklwl4",
-              "query": "Παραλία Χάρακας, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "crowded",
@@ -5829,12 +5813,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJm5I_a6nxoRQR8bpPl_4kqOQ",
-              "query": "Παραλία Λεγραινών, East Attica"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Λεγραινών, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -6044,11 +6027,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJo6OVVh_xoRQRvK9DlyXOG8A",
-              "query": "Παραλία Σουνίου, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -6092,12 +6073,11 @@
               "https://seatrac.gr/"
             ],
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJd88hv8eOoRQR9AhbXJij8Eo",
-              "query": "Παραλία Πόρτο Ράφτη Αυλάκι, East Attica"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Πόρτο Ράφτη Αυλάκι, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "seatrac": {
               "hasSeatrac": true,
@@ -6335,11 +6315,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJJ0u1FqptoRQRgvAI51h3Qqg",
-              "query": "Παραλία Ωρωπός Σκάλα Ωρωπού, East Attica"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "seatrac": {
               "hasSeatrac": true,
@@ -8976,12 +8954,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJsYu0TyngnRQRx4H4dK18cBE",
-              "query": "Παραλία Βλυχάδα Πλατιάς Άμμου, Kythira"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Βλυχάδα Πλατιάς Άμμου, Kythira\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -9100,11 +9077,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJsYu0TyngnRQRx4H4dK18cBE",
-              "query": "Παραλία Πλατιά Άμμος, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -9356,11 +9331,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJI6iggojgnRQR52oiWuR4mcA",
-              "query": "Παραλια Φυρή Άμμος, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -9965,11 +9938,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJLdB2c6DenRQRiInmokyksJ0",
-              "query": "Παραλία Διακόφτι, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -10107,11 +10078,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJFRjyJODlnRQRxo6HK4tTVec",
-              "query": "Παραλία Λιμνιώνας, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -10383,6 +10352,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -10639,11 +10614,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-ybteQDDnRQRO77j339Swuk",
-              "query": "Παραλία Κακόπετρα, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -10848,12 +10821,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJdWWpC9jpnRQRaSvf4_1pKM8",
-              "query": "Παραλία Καψάλι, Kythira"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Καψάλι, Kythira\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -11035,11 +11007,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJdWWpC9jpnRQRaSvf4_1pKM8",
-              "query": "Παραλία Καψάλι Πίσω Γιαλός, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -11320,11 +11290,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJNYyPFE3CnRQR1oJNv3WNB9A",
-              "query": "Παραλία Βρουλέα, Kythira"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -14641,6 +14609,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -14702,11 +14676,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJO0GVfa3ToxQRIIlCG4_afzk",
-              "query": "Αγία Ειρήνη Μαρμαρίου, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -14772,11 +14744,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-2-grqszohQRHDR-ZzEb1mc",
-              "query": "Παραλία Αγία Παρασκευή, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -14837,6 +14807,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Άγιος Αθανάσιος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           },
           "staticLabels": {
@@ -14865,7 +14842,8 @@
             "shade": true,
             "amenities": [
               "χωρίς σταθερές παροχές",
-              "περιορισμένη ή άτυπη στάθμευση"
+              "περιορισμένη ή άτυπη στάθμευση",
+              "ταβέρνα κοντά"
             ],
             "confidence": "medium",
             "language": "el",
@@ -14879,7 +14857,7 @@
               "https://www.openstreetmap.org/way/435674027",
               "http://dimoskarystou.gr/visit/2017/03/09/παραλίες/"
             ],
-            "sourceNotes": "Evia source-backed cleanup 2026-05-27: OSM way 435674027 matches the beach at 38.00803,24.43653 as Agios Antonios. Access and service claims remain conservative because the source verifies identity/location only. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — Δήμος Καρύστου / karystion.gr list Agios Antonios among the UNORGANIZED beaches of the Karystos gulf (organized ones are Psili Ammos, Dytiki, Alykes). [http://dimoskarystou.gr/visit/2017/03/09/παραλίες/].",
+            "sourceNotes": "Evia source-backed cleanup 2026-05-27: OSM way 435674027 matches the beach at 38.00803,24.43653 as Agios Antonios. Access and service claims remain conservative because the source verifies identity/location only. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — Δήμος Καρύστου / karystion.gr list Agios Antonios among the UNORGANIZED beaches of the Karystos gulf (organized ones are Psili Ammos, Dytiki, Alykes). [http://dimoskarystou.gr/visit/2017/03/09/παραλίες/]. Food-nearby 2026-08-14 (OSM, no API): \"Το Κύμα\" (restaurant, 45 m) +1 more within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched.",
             "orientation": {
               "degrees": 210.8,
               "faces": [
@@ -14888,6 +14866,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Άγιος Αντώνιος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           },
           "staticLabels": {
@@ -14941,6 +14926,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -14996,6 +14987,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -15050,11 +15047,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJh0faK9MXoRQRopnh2NCgSws",
-              "query": "Παραλία Άγιος Μηνάς, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -15115,6 +15110,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -15184,7 +15185,13 @@
                 "osmUrl": "https://www.openstreetmap.org/way/237256293",
                 "checkedAt": "2026-06-17"
               }
-            ]
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
+            }
           }
         },
         {
@@ -15231,6 +15238,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -15287,12 +15300,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJm1drdQBJoRQRmAKZGp9PMcs",
-              "query": "Ακτή Βουβάλι, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Ακτή Βουβάλι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -15386,11 +15398,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ25WOomYYoRQRI5YNyDbow8U",
-              "query": "Αλυκές, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "crowded",
@@ -15462,11 +15472,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJHU1ClvBNoRQRmo8QwJZ1s1A",
-              "query": "Ανεμάκι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -15521,6 +15529,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -15578,11 +15592,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJX84T-wO3oxQRSGnsQspm84E",
-              "query": "Αρχάμπολη, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -15643,11 +15655,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJoSdnQX8yoRQRfYOlqKlSk4U",
-              "query": "Ατάλαντος, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -15708,11 +15718,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcUtDgXk0oRQR_o3X5qb1IX8",
-              "query": "Βαθυχάντακο, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -15770,6 +15778,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Βαλοπούλα, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           }
         },
@@ -15820,11 +15835,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJpYoAqh7QoxQRvKAX6kKQyMQ",
-              "query": "Βαρελλαίων, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -15892,11 +15905,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ1bY9_HxJoRQRpxcRUHmq8lI",
-              "query": "Βύθουρη, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -15967,9 +15978,9 @@
           "lon": 23.3651,
           "metadata": {
             "access": {
-              "type": "asphalt_road",
-              "label": "άσφαλτος μέχρι κοντά στην παραλία",
-              "notes": "GTP περιγράφει το Γαλατάκι ως εύκολα προσβάσιμο, αλλά με κοντινότερο σημείο ανεφοδιασμού την περιοχή της Λίμνης."
+              "type": "passable_dirt_road",
+              "label": "χωματόδρομος το τελευταίο κομμάτι",
+              "notes": "Η άσφαλτος σταματά περίπου ένα χιλιόμετρο πριν από την παραλία· το τελευταίο κομμάτι είναι χωματόδρομος."
             },
             "terrain": {
               "types": [
@@ -15997,7 +16008,8 @@
             ],
             "sourceNotes": [
               "Evia source-backed cleanup 2026-05-27: OSM node 5176146292 matches Galataki at 38.71651,23.36510. GTP places Galataki near the monastery below Kandili, describes easy access, rocky/pebbly shore, and notes Limni as the nearest supply point; unsupported nearby cafe/taverna claims were removed.",
-              "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
+              "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
+              "Access downgrade 2026-08-14 (OSM, no API): claimed asphalt but άσφαλτος 1.129 m, χωματόδρομος 156 m, μονοπάτι 238 m; unorganized and no parking amenity, so the missing-road-tag exemption does not apply. Was type=asphalt_road, label=\"άσφαλτος μέχρι κοντά στην παραλία\", notes=\"GTP περιγράφει το Γαλατάκι ως εύκολα προσβάσιμο, αλλά με κοντινότερο σημείο ανεφοδιασμού την περιοχή της Λίμνης.\"."
             ],
             "orientation": {
               "degrees": 225.3,
@@ -16010,11 +16022,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvxF6ivHXoBQRK0rqH9PSUhE",
-              "query": "Γαλατάκι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -16076,11 +16086,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJh5c2_8rMoxQRlMckGafha04",
-              "query": "Γαλλίδα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -16146,11 +16154,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8-JQkGXPoxQRQPbLYHMGE8A",
-              "query": "Παραλία Γιαννίτσι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -16219,11 +16225,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJY8DKOBy3oBQRR0qY95xMmVw",
-              "query": "Παραλία Γρεγολίμανο, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -16284,11 +16288,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJMam6sBwtoRQREhaxOg8g8EA",
-              "query": "Δαφνοπόταμος, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -16346,6 +16348,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Ελιά, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           },
           "staticLabels": {
@@ -16397,12 +16406,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8aPD8E8tohQRXP6J3r76cd4",
-              "query": "Παραλία Ζάστανα, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Ζάστανα, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -16465,6 +16473,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -16520,11 +16534,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9V6SmLBToRQRZxLwQnzE7ag",
-              "query": "Θαψά, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -16587,6 +16599,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -16653,11 +16671,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ2Yp-S4ThoxQRj-SQUqnz8Wo",
-              "query": "Κακιά, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -16734,11 +16750,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJNUbpqQThoxQRuwxiePOxSuY",
-              "query": "Παραλία Κακολίμανο, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -16814,12 +16828,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJwRR8VhrjoxQRooiqg6rwI8k",
-              "query": "Καλάμι, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Καλάμι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -16888,6 +16901,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Καλαμίτσι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           },
           "staticLabels": {
@@ -16955,12 +16975,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJz6WM6YbhoxQRKW8l06hksqI",
-              "query": "Παραλία Κάλαμος, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Κάλαμος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "crowded",
@@ -17032,6 +17051,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "excludeFromApp": true
@@ -17083,12 +17108,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJy2N4PyEzohQRN7HYxRrmAp4",
-              "query": "Κατσούλι, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Κατσούλι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -17155,6 +17179,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -17216,11 +17246,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJn78azFDgoxQRuNEJOmB6Kz4",
-              "query": "Παραλία Κλιμάκι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -17276,12 +17304,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJU0O6QSZMoRQRodubiBNVlEY",
-              "query": "Παραλία Κοκκινιάς, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Κοκκινιάς, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -17345,11 +17372,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcdqyl03ioxQRNhHkaj4kEDA",
-              "query": "Παραλία Κορασίδα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -17427,11 +17452,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJuf5dbSDeoxQRFvz6F1BKpTQ",
-              "query": "Παραλία Κόσκινα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -17493,12 +17516,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJhwQBf7sXoRQRFNjhYudBsKg",
-              "query": "Κουρέντι, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Κουρέντι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -17587,11 +17609,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ347sRbDMoxQRbmfI4MeWUOk",
-              "query": "Κρεμάλα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -17722,6 +17742,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -17787,6 +17813,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -17849,11 +17881,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJVZmu6rMXoRQRm9DShajPBYM",
-              "query": "Λιανή Άμμος Χαλκίδας, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -17923,12 +17953,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJFQXRhmfgoxQRMy33fyM_t38",
-              "query": "Παραλία Λιανή Άμμος Πετριών, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Λιανή Άμμος Πετριών, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -17988,12 +18017,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJDQGt3S0zohQR_E96KyBFs68",
-              "query": "Λιβαδάκι, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Λιβαδάκι, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -18054,11 +18082,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJVZmsuilMoRQRM4wqgm-C53s",
-              "query": "Παραλία Λιβαδάκια, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -18119,11 +18145,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJAY3meDy1oxQRLZBpH_W8O0c",
-              "query": "Λιβάδι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -18195,6 +18219,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -18249,11 +18279,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvWqcTeU1oRQRCvCyfjf0FL0",
-              "query": "Λιμνιωνάκι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -18326,11 +18354,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvWqcTeU1oRQRCvCyfjf0FL0",
-              "query": "Λιμνιώνας Ψαχνών, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -18391,11 +18417,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJZeEfdkm0oxQRZRsUyns906E",
-              "query": "Λινάρι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -18458,11 +18482,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJCQsq3t80ohQRJKHyTXqnaQU",
-              "query": "Λουτράκι Μπούρου, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -18528,11 +18550,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJM0aFDZjhoxQRTYEkjsYeyBs",
-              "query": "Παραλία Μάγειρας, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -18598,11 +18618,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ93QGAmU0oRQRUBNkH9wagxM",
-              "query": "Μακρύς Γιαλός, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -18665,11 +18683,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJRSZOB0_LoxQR516UoDF1D04",
-              "query": "Παραλία Μάρμαρα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -18735,11 +18751,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJGcG0LmoopxQRL5nQ8KXTqi8",
-              "query": "Παραλία Μαύρικας, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -18801,12 +18815,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJgd0YZ8nSoxQRq3I7-Jh4wvU",
-              "query": "Μεγάλη Άμμος, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Μεγάλη Άμμος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -18864,6 +18877,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -18915,6 +18934,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Μνήματα, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           },
           "staticLabels": {
@@ -18971,12 +18997,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJl5tzuBEYoRQRNPk5Of5ihKc",
-              "query": "Παραλία Μπουρνόντας, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Μπουρνόντας, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -19032,12 +19057,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJlaTtqEBSoRQRA0ubRcaZCVc",
-              "query": "Ναυτικό, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Ναυτικό, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -19104,11 +19128,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJKU7Tf9A0pxQRhhm7WqJHp2Q",
-              "query": "Νησιώτισσα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -19170,6 +19192,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -19221,6 +19249,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -19272,11 +19306,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJHzbnut3PoxQRcCXXPFqeBAQ",
-              "query": "Παραλία Ακταίου, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -19371,11 +19403,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJl54aYpwXoRQRiTjY0eit87Q",
-              "query": "Παραλία \"Αστέρια\", Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -19438,11 +19468,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ_66eOYLVphQRtxO_tX_B1hc",
-              "query": "Παραλία Αχλαδίου (Φραγκάκη), Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -19502,11 +19530,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8XOu3Hc0oRQR9UM2V2uZKNM",
-              "query": "Παραλία Βλαχιάς, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -19567,11 +19593,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvV_KRRe2oBQRc_eyUzcWtbc",
-              "query": "Παραλία Γιάλτρων, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -19632,11 +19656,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJT07C0TskoRQRWnEMOlWZNFg",
-              "query": "Παραλία Δάφνης, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -19709,6 +19731,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -19764,11 +19792,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJyTYu43zIoxQRhQFkwwRSD3o",
-              "query": "Παραλία Καλλιανού, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -19832,12 +19858,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJXU1ieH_WphQRm2IobawLThs",
-              "query": "Παραλία Κοτσικιάς, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Κοτσικιάς, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -19899,11 +19924,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJJUoHefwroRQRukGI-YOVrS8",
-              "query": "Παραλία Κρύας Βρύσης, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -19965,11 +19988,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ3_b29wFOoRQRa4YoJkd_ghU",
-              "query": "Παραλία Μετοχίου, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -20031,6 +20052,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -20095,11 +20122,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJXSZ0BzoupxQRgO-6-tt7RcA",
-              "query": "Παραλία Πευκί, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -20161,6 +20186,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -20214,11 +20245,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ1b6yfWfWphQRJFol4SoCTr8",
-              "query": "Παραλία Ροδάκι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -20273,6 +20302,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -20324,11 +20359,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ6WNrZtbXphQRvifQ7CODBxw",
-              "query": "Παραλία τσιρμοκόκκαλα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -20441,11 +20474,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJx7ire1fSoxQRTRrWQe5_VFU",
-              "query": "Παραλία Φηγιά, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -20517,11 +20548,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJKRwGdiDWphQR3harYa6CAeM",
-              "query": "Παραλία Ψαροπούλι/Βασιλικών, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -20683,11 +20712,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-SkAGIhJoRQRvXgb_6zmNhs",
-              "query": "Πετάλη, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -20848,11 +20875,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJUeXW8Eq1oxQRZeDq_YWOXqM",
-              "query": "Πλατύς Γιαλός, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -20915,11 +20940,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJz4iAPYfToxQR5dlhuTa5SSc",
-              "query": "Παραλία Πόρτο Λάφια, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -20985,12 +21008,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJFc9HOKK1oBQRGyMgetfnQZI",
-              "query": "Πόρτο Πεύκο, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Πόρτο Πεύκο, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -21064,11 +21086,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJc-ZKRQG1oxQRVWXwy_wRiAY",
-              "query": "Παραλία Ποτάμι Καρύστου, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -21139,11 +21159,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJIZtyA3s0oRQR6iQgIplgFuE",
-              "query": "Ποτάμι Βλαχιάς, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -21202,11 +21220,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvZlFWijVphQRgrJSRfgi6Hc",
-              "query": "Πρασίδι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -21267,11 +21283,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJlUhWCpEXoRQRvYjG0UEIG_E",
-              "query": "Παραλία Ροδιές, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -21335,6 +21349,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -21398,12 +21418,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJd7yvxPrUphQRlp7kFPq6NfE",
-              "query": "Σαρακήνικο Αγίας Άννας, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Σαρακήνικο Αγίας Άννας, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -21526,11 +21545,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJybMuiBcXoRQRnO-v8bp6bPE",
-              "query": "Σουβάλα, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -21643,11 +21660,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJgdnSd_JVoRQR_6hzCadMYNU",
-              "query": "Σουτσίνι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -21730,7 +21745,8 @@
             "shade": true,
             "amenities": [
               "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
-              "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+              "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά",
+              "ταβέρνα κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -21740,7 +21756,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM node 10683111758 matches the current coordinates as Steni Beach. Kept low confidence and unknown access because the source verifies identity/location only.",
+            "sourceNotes": "Evia OSM identity/location pass 2026-05-27: OSM node 10683111758 matches the current coordinates as Steni Beach. Kept low confidence and unknown access because the source verifies identity/location only. Food-nearby 2026-08-14 (OSM, no API): \"Θάλασσα\" (restaurant, 43 m) within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.openstreetmap.org/node/10683111758"
             ],
@@ -21810,11 +21826,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJE1TfuabhoxQRN4ru3pf29TQ",
-              "query": "Παραλία Στόμιο, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -21920,11 +21934,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJx3NVA7zIoxQRxiBFFG0ofyg",
-              "query": "Σχοινοδαύλεια, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -21985,11 +21997,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJO0GVfa3ToxQRIIlCG4_afzk",
-              "query": "Παραλία Τριανταφυλλένια, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -22054,11 +22064,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJRz9rq5lToRQRk4zGTl2wIsk",
-              "query": "Παραλία Τσίλαρος, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -22120,11 +22128,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ_Q9Pg3Y0pxQRqKc-Gaqz8Dw",
-              "query": "Τσοκαΐτι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -22203,12 +22209,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ87sW8aPhoxQRwwRZWE9M2Cs",
-              "query": "Χερόμυλος, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Χερόμυλος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -22303,11 +22308,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8TwHRt9NoRQR58TOZsY_FNQ",
-              "query": "Χιλιαδού, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -22382,11 +22385,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ61juON9NoRQRh7MWSbfKdzY",
-              "query": "Χιλιαδού παραλία Γυμνιστών, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -22453,11 +22454,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ7XkaCgK3oBQRqDz4oJdRZ-o",
-              "query": "Χρυσή ακτή, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -22522,12 +22521,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJtdKSxafMoxQRR--1t0UztVs",
-              "query": "Ψιλή Άμμος, Evia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Ψιλή Άμμος, Evia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -22574,11 +22572,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-26",
-              "method": "osm-coverage-gap-google-v1",
-              "placeId": "ChIJz2cBgM7boxQR9h7DNi5nlJY",
-              "query": "Αλμυρίχι, Evia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -101146,11 +101142,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJyRUl1lOauhQRjfDcnrbj9hY",
-              "query": "Παραλία Γυμνιστών Μολύβου, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -101252,12 +101246,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcQcr7m1cuhQRiwyGlONvZi8",
-              "query": "Άγιος Ερμογένης, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Άγιος Ερμογένης, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -101320,12 +101313,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ4xyNAYv3uhQRhIebjoU16gU",
-              "query": "Παραλία Άγιος Ισίδωρος, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Άγιος Ισίδωρος, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -101411,11 +101403,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-1XFjahnuhQR6N4Ql11tWzs",
-              "query": "Ακτή Τσαμάκια, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -101505,11 +101495,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJrWDVCnz3uhQRxzl45YWvcZ4",
-              "query": "Αμμουδέλι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -101573,11 +101561,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ28omVi6XuhQRkSD6cjj7R2A",
-              "query": "Παραλία Αμπέλια, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -101757,6 +101743,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -101906,11 +101898,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJHztOqPLvuhQRCprmo1wQpxI",
-              "query": "Παραλία Βατερά, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -102065,12 +102055,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJL1-ffWG-uhQRFR6EpwqUhng",
-              "query": "Παραλία Κάμπος, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Κάμπος, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -102160,11 +102149,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJM8QWXB2WuhQRG-vKzBrvIzo",
-              "query": "Παραλία Καλό Λιμάνι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -102286,6 +102273,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -102334,12 +102327,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJU0lZehi5uhQRec5lDghZNrU",
-              "query": "Παραλία Λάψαρνα, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Λάψαρνα, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -102399,11 +102391,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJN14R0SHGuhQRbZDpkCNE_KI",
-              "query": "Παραλία Λίμενας, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -102469,11 +102459,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJGWFhfN6GuhQRHKxyxi0K3wY",
-              "query": "Παραλία Λαγκάδα, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -102579,11 +102567,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJaeSX5XhZuhQRkgqvfLgBPKI",
-              "query": "Παραλία Λιγονάρι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -102649,12 +102635,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJe4crfQmbuhQRmHPpU91lsZY",
-              "query": "Παραλία Λιμαντζίκι, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Λιμαντζίκι, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -102840,6 +102825,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -102971,11 +102962,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJyRUl1lOauhQRjfDcnrbj9hY",
-              "query": "Παραλία Μόλυβος, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -103140,11 +103129,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJPbvyZlReuhQRYnCeTZb9kb0",
-              "query": "Παραλία Ξέρες Ευρειακής, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -103210,11 +103197,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJCVR4LQRYuhQRntr0CgyiPVk",
-              "query": "Πάτος, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -103364,7 +103349,8 @@
             "organized": false,
             "shade": false,
             "amenities": [
-              "εστίαση κοντά"
+              "εστίαση κοντά",
+              "καφέ κοντά"
             ],
             "confidence": "high",
             "language": "el",
@@ -103374,7 +103360,7 @@
               "label": "Ρηχά νερά",
               "notes": "Αμμώδης ακτή με πιο σταδιακή είσοδο σε αρκετά σημεία, αλλά χρειάζεται προσοχή όταν έχει κύμα."
             },
-            "sourceNotes": "Source follow-up pass 47 2026-05-28: Lesvos.com and Harmonia Festival support the Skala Eressos nudist area as the western/quieter part of the sandy Eressos beach; Aeolian Village supports nearby access to the nudist beach. No official-nudist/legal claim, windProfile, or scoring field was changed. Lesvos strict evidence pass 2026-05-29: Lesvos.com, Harmonia Festival and Aeolian Village support the Skala Eressos western/quieter nudist-area identity and access context. No official/legal nudist status or live-condition claim is added.",
+            "sourceNotes": "Source follow-up pass 47 2026-05-28: Lesvos.com and Harmonia Festival support the Skala Eressos nudist area as the western/quieter part of the sandy Eressos beach; Aeolian Village supports nearby access to the nudist beach. No official-nudist/legal claim, windProfile, or scoring field was changed. Lesvos strict evidence pass 2026-05-29: Lesvos.com, Harmonia Festival and Aeolian Village support the Skala Eressos western/quieter nudist-area identity and access context. No official/legal nudist status or live-condition claim is added. Food-nearby 2026-08-14 (OSM, no API): \"daluz\" (cafe, 101 m) within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.lesvos.com/beaches/index.html",
               "https://www.harmoniafestival.com/location/",
@@ -103530,11 +103516,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ91mtV4jwuhQRjPy3BMra7l8",
-              "query": "Παραλία Δρότας, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -103776,12 +103760,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJvxiN2aFZuhQR-0NjGnlC-2I",
-              "query": "Παραλία Τάρτι, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Τάρτι, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -103954,11 +103937,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJj0f_TqNjuhQRle5EIi1TPg8",
-              "query": "Πεταλίδι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -104047,11 +104028,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJt9UG21ZjuhQRyD-MjXBXSD0",
-              "query": "Πλαζ Κανόνι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -104107,11 +104086,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJXdaerFzCuhQRpE0kH7Amt3U",
-              "query": "Παραλία Ποδαράς, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -104218,12 +104195,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJJ313bN7HuhQRxnnHVZjRJLo",
-              "query": "Παραλία Τηλέγραφος, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Τηλέγραφος, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -104288,11 +104264,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ61P8dZ5ZuhQRnDrjtFdM9mM",
-              "query": "Παραλία Τσάφι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -104350,11 +104324,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-cnCOtZbuhQRhuL3PBfkswQ",
-              "query": "Παραλία Τσίλια, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -104703,12 +104675,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJMeebXKRZuhQRpaK1kkc8l-E",
-              "query": "Παραλία Φαρά, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Φαρά, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -104765,12 +104736,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJp4_bJn9nuhQRysl5fkaSyN8",
-              "query": "Φυκιότρυπα, Lesvos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Φυκιότρυπα, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -104804,7 +104774,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καφέ κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "lesvos_tourist_evidence_pass_2026_06_01",
@@ -104815,7 +104787,8 @@
             },
             "sourceNotes": [
               "Source follow-up pass 47 2026-05-28: bathingwaterprofiles search and the 2025 Aegean bathing-water monitoring tender list Halatses with profile/station code GRBW149261133/ELBW149261133101 and coordinates matching the stored coast. Access, terrain, depth, windProfile, and scoring were not strengthened beyond existing conservative values. Lesvos strict evidence pass 2026-05-29: Kept medium after removing the unstable bathingwaterprofiles search URL: Aegean bathing-water monitoring tender supports Halatses station/code and coordinates, but access/terrain details remain limited.",
-              "Lesvos tourist evidence pass 2026-06-01: Official bathing-water profile supports Halatses identity/location in Gera gulf, beach length/orientation, pebble shore/seabed, road access, non-organized status, and available facilities; static evidence only. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
+              "Lesvos tourist evidence pass 2026-06-01: Official bathing-water profile supports Halatses identity/location in Gera gulf, beach length/orientation, pebble shore/seabed, road access, non-organized status, and available facilities; static evidence only. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Seacret\" (cafe, 30 m) within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched."
             ],
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw149261133101"
@@ -104831,11 +104804,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJzSed_4teuhQR7EivFN87FlQ",
-              "query": "Παραλία Χαλατσές, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -104937,11 +104908,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJe8V0c2FcuhQRuEAUK08XSLA",
-              "query": "Παραλία Χαραμίδα, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -105004,11 +104973,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJe8V0c2FcuhQRuEAUK08XSLA",
-              "query": "Χαραμίδα νησέλι, Lesvos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -105107,7 +105074,8 @@
             "organized": true,
             "shade": false,
             "amenities": [
-              "ντους"
+              "ντους",
+              "καφέ κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -105121,7 +105089,8 @@
               "https://www.openstreetmap.org/?mlat=39.11949520312501&mlon=26.485928634375004#map=17/39.11949520312501/26.485928634375004"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~298μ ακτή, κοντά σε Λάρισος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1508855387 (κέντρο polygon). Slot κοντά στο #1350 (Ξέρες Ευρειακής, 6042m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~298μ ακτή, κοντά σε Λάρισος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/1508855387 (κέντρο polygon). Slot κοντά στο #1350 (Ξέρες Ευρειακής, 6042m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Θέρμα\" (cafe, 52 m) within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -105170,7 +105139,8 @@
             "organized": true,
             "shade": false,
             "amenities": [
-              "ντους"
+              "ντους",
+              "ταβέρνα κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -105184,7 +105154,8 @@
               "https://www.openstreetmap.org/?mlat=39.33165476461536&mlon=26.178888920000006#map=17/39.33165476461536/26.178888920000006"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~920μ ακτή, κοντά σε Πέτρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/298756347 (κέντρο polygon). Slot κοντά στο #1320 (Παραλία Γυμνιστών Μολύβου, 2486m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 3 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~920μ ακτή, κοντά σε Πέτρα. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/298756347 (κέντρο polygon). Slot κοντά στο #1320 (Παραλία Γυμνιστών Μολύβου, 2486m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Imerovigli Lesvos\" (restaurant, 74 m) +6 more within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -117614,11 +117585,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJIxQPrvTkYRMRrA54645xaOU",
-              "query": "Παραλία Αγία Βαρβάρα, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -117678,12 +117647,11 @@
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW039251120.pdf"
             ],
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJszN463w1nhQRUjl5pl5BUf8",
-              "query": "Παραλία Αγία Κυριακή, Lakonia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Αγία Κυριακή, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -117752,11 +117720,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9zyMQf34YRMRJsoexCcu0Tk",
-              "query": "Παραλία Άγιος Κυπριανός, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -117816,12 +117782,11 @@
               "https://www.allaboutpeloponnisos.com/en/type/beaches/i-alupa-2"
             ],
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9xxazMr7YRMR6o-PwJYTlDI",
-              "query": "Παραλία Αλύπα, Lakonia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Αλύπα, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -117881,11 +117846,9 @@
             "sourceNotes": "Source follow-up pass 46: official bathing-water profile supports Ambelakia beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, ownAmenityFood); beach bar added.",
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJh7Hev-FqnhQR-8yYYmZh_wE",
-              "query": "Παραλία Αμπελάκια, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -118155,7 +118118,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνα κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "015_1401_1500",
@@ -118164,7 +118129,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 834277030 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 834277030 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Food-nearby 2026-08-14 (OSM, no API): \"Το νησί\" (restaurant, 74 m) +2 more within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/834277030"
             ],
@@ -118229,11 +118194,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJAW5611LhYRMREe9d08lR3wI",
-              "query": "Παραλία Βαθύ, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -118364,7 +118327,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καντίνα κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "015_1401_1500",
@@ -118373,7 +118338,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 211641537 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 211641537 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Food-nearby 2026-08-14 (OSM, no API): \"Kantina\" (restaurant, 31 m) within 150 m of the pin while the record claimed no food. Added \"καντίνα κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/211641537"
             ],
@@ -118440,11 +118405,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJh3Bg5orkYRMRj1TGNYuP7A4",
-              "query": "Παραλία Βορδόνας, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -118581,7 +118544,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνα κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "015_1401_1500",
@@ -118590,7 +118555,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 454480726 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": "Lakonia OSM identity/location pass 2026-05-27: OSM way 454480726 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Food-nearby 2026-08-14 (OSM, no API): \"Novellon\" (restaurant, 42 m) +1 more within 150 m of the pin while the record claimed no food. Added \"ταβέρνα κοντά\" only — organized/beach-bar untouched.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/454480726"
             ],
@@ -118717,11 +118682,9 @@
             "sourceNotes": "Lakonia confidence continuation 2026-06-02: Exploring Greece directly supports Kamares as about 1.5 km of consecutive sandy beaches on the coastal road toward Kalyvia, with road access, sand/small-pebble shore, normal depth and non-organized status. Akti Kamares and XO provide supplemental visitor context for beach-adjacent accommodation and tavern/restaurant presence. Source wind wording was not imported into windProfile or scoring. No coordinates, photos, live calm/protected/safe claim, windProfile or scoring were changed. Web-verified 2026-07-19 (web-high): organized — 'Ένα μέρος της είναι οργανωμένο, με παροχές όπως ομπρέλες και ξαπλώστρες', and a business listing exists for 'Kamares Beach Bar n Food - Οργανωμένη Παραλία Καμά [https://www.elepod.gr/business/kamares-beach-bar-n-food-organomene-paralia-kamares-lakonia]; beach bar+sunbeds added.",
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJNy3oQQnkYRMRkEewsVyHZWs",
-              "query": "Παραλία Καμάρες, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -118799,12 +118762,11 @@
             ],
             "sourceNotes": "Source follow-up pass 46: official bathing-water profile supports Karavostasi-Neo Oitylo beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Neo Oitylo/Karavostasi: 'Έχει οργανωμένη παραλία μήκους 1.200 μέτρων... θα βρείτε ξαπλώστρες και ομπρέλες καθώς και ταβέρνες, εστιατόρια και καφετέριες'. [https://i-lovegreece.com/el/features/ηπειρωτική-ελλάδα/πελοπόννησος/λακωνία/αξιοθέατα-δραστηριότητες/4151-paralia-neo-oitylo-–-karabostasi-sth-lakwnia]; sunbeds added.",
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9bu-YgLvYRMRfAXR3Q-X688",
-              "query": "Παραλία Καραβοστάσι Οιτύλου, Lakonia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Καραβοστάσι Οιτύλου, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -118859,11 +118821,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJtztfUbFrnhQRZORdIcD-o1Y",
-              "query": "Παραλία Καστέλλα, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -119072,6 +119032,12 @@
                 "https://www.openstreetmap.org/node/13072282190"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           },
           "staticLabels": {
@@ -119165,11 +119131,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJn5Te5P8CYhMR-AK_lQBhyDU",
-              "query": "Παραλία Μαρμάρι, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -119489,11 +119453,9 @@
             "sourceNotes": "Source follow-up pass 46: official bathing-water profile supports Xifias beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Xifias near Monemvasia: 'On one side of the beach there are umbrellas, loungers, and a mobile canteen, while on the other side there is a beautiful taverna.' [https://monemvasia.gr/2017/05/παραλία-ξιφιάς/]; sunbeds added.",
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJHz-s6x5rnhQRLvlK0VvA_es",
-              "query": "Παραλία Ξιφιάς, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -119554,12 +119516,11 @@
               "Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
             ],
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJG27LmAbvYRMRGsN2Pfu8dfU",
-              "query": "Παραλία Οίτυλο, Lakonia"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Οίτυλο, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "popular",
@@ -119639,6 +119600,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία 100 Ρίζες, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           }
         },
@@ -119820,6 +119788,13 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Ελιάς, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           }
         },
@@ -120257,6 +120232,12 @@
                 "https://www.openstreetmap.org/node/6732035547"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             }
           }
         },
@@ -120300,11 +120281,9 @@
             "sourceNotes": "Source follow-up pass 50: Visit Peloponnese Neapoli beaches page supports Neratziona beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Neratzionas (Vatika, near Neapoli): 'αμμουδερή με ομπρέλες και ξαπλώστρες', and 'τους καλοκαιρινούς μήνες, επί της παραλίας, λειτουργεί και καντίνα'. [https://www.visitvatika.gr/el/nature/beaches/neratzionas.html]; sunbeds added.",
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ89A0j1ttnhQRZzR0ye1FQag",
-              "query": "Παραλία Νερατζιώνα, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -120650,6 +120629,13 @@
                 "https://www.openstreetmap.org/node/10209826304"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "googleMapsNavigation": {
+              "status": "needs-review",
+              "mode": "place",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Τρίνησα, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             }
           }
         },
@@ -120694,11 +120680,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJK8OZWaIXnhQRPW1yBVo8TSc",
-              "query": "Πλύτρα - Παχιά Άμμος, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -120940,11 +120924,9 @@
             "sourceNotes": "Source follow-up pass 46: official bathing-water profile supports Pounta beach identity/location in Lakonia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Pounta (opposite Elafonisos, by Pavlopetri): 'η παραλία είναι οργανωμένη με ομπρέλες και ξαπλώστρες', with cedar natural shade along the beach. [https://www.allaboutpeloponnisos.com/type/beaches/pounta]; sunbeds added.",
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJKfyyskQNnhQRR7zM39KMCb8",
-              "query": "Παραλία Πούντα, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "quiet",
@@ -121423,11 +121405,9 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJmc7zZSf7YRMRqOQ8Ub8opzY",
-              "query": "Παραλία Χαλικιά Βάτα, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -121709,12 +121689,11 @@
               "https://www.openstreetmap.org/way/1517055494"
             ],
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-26",
-              "method": "osm-coverage-gap-google-v1",
-              "placeId": "ChIJE86ZrmwNnhQRRHw2RuT8dnY",
-              "query": "Καλόγερος (Ελαφόνησος), Lakonia"
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1",
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Καλόγερος (Ελαφόνησος), Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -121810,7 +121789,8 @@
             "organized": true,
             "shade": false,
             "amenities": [
-              "ντους"
+              "ντους",
+              "καντίνα κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -121824,7 +121804,8 @@
               "https://www.openstreetmap.org/?mlat=36.62852972352941&mlon=22.879165105882354#map=17/36.62852972352941/22.879165105882354"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~171μ ακτή, κοντά σε Αρχάγγελος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/273730067 (κέντρο polygon). Slot κοντά στο #1595 (Πύλα, 2129m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~171μ ακτή, κοντά σε Αρχάγγελος. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/273730067 (κέντρο polygon). Slot κοντά στο #1595 (Πύλα, 2129m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Άνω Κάτω\" (bar, 96 m) +2 more within 150 m of the pin while the record claimed no food. Added \"καντίνα κοντά\" only — organized/beach-bar untouched."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -121855,7 +121836,8 @@
             "organized": true,
             "shade": false,
             "amenities": [
-              "ντους"
+              "ντους",
+              "καφέ κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -121869,7 +121851,8 @@
               "https://www.openstreetmap.org/?mlat=36.511663420000005&mlon=23.05588739333333#map=17/36.511663420000005/23.05588739333333"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~420μ ακτή, κοντά σε Λάχι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/520396385 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 4729m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 6 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~420μ ακτή, κοντά σε Λάχι. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/520396385 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 4729m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Southern Breeze\" (cafe, 46 m) within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -121914,7 +121897,8 @@
             "organized": true,
             "shade": false,
             "amenities": [
-              "ντους"
+              "ντους",
+              "καφέ κοντά"
             ],
             "confidence": "low",
             "language": "el",
@@ -121928,7 +121912,8 @@
               "https://www.openstreetmap.org/?mlat=36.50676573846153&mlon=23.06237854230769#map=17/36.50676573846153/23.06237854230769"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~485μ ακτή, κοντά σε Νεάπολη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/276178177 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 5453m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 2 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~485μ ακτή, κοντά σε Νεάπολη. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/276178177 (κέντρο polygon). Slot κοντά στο #1583 (Παραλία Νερατζιώνα, 5453m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Food-nearby 2026-08-14 (OSM, no API): \"Μαϊστράλι\" (cafe, 106 m) +1 more within 150 m of the pin while the record claimed no food. Added \"καφέ κοντά\" only — organized/beach-bar untouched."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -140045,11 +140030,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJZ4dNaWemmBQRzYxOuNrMFeI",
-              "query": "Παραλία Άγιος Δημήτριος, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -140244,12 +140227,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJDx939LQLohQRcp_Fmk4i3fw",
-              "query": "Παραλία Άγιος Στέφανος, Kythnos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Άγιος Στέφανος, Kythnos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -140690,11 +140672,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJUc5w3kkKohQRcX6imkdmV1Q",
-              "query": "Παραλία Αόσα, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -140872,11 +140852,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJdbnVW-ammBQRO1uwrnAL44s",
-              "query": "Παραλία Γαϊδουρόμαντρα, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -140946,11 +140924,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJVZZJgKMJohQRxnrRDeLm98k",
-              "query": "Παραλία Επισκοπή, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "popular",
@@ -141198,11 +141174,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJh5Yzx6egmBQR54nMPS0CcPo",
-              "query": "Παραλία Καλό Λιβάδι, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -141324,11 +141298,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJwUNNMIqmmBQRHtWBrQdsr1o",
-              "query": "Παραλία Κολοβελόνη, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -141515,11 +141487,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJpy_8GRUKohQRsk6JmsLQJ38",
-              "query": "Παραλία Λεύκες, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -141703,12 +141673,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ2wOe2akOohQRWiEZHTsnp_0",
-              "query": "Παραλία Μαρούλα, Kythnos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Μαρούλα, Kythnos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -141834,12 +141803,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ40_SV_ILohQRZCXZIlrOXV4",
-              "query": "Παραλία Μικρό Λιβαδάκι, Kythnos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Μικρό Λιβαδάκι, Kythnos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "secluded",
@@ -141901,11 +141869,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ7eir1hChmBQRV5fCOj4uV3U",
-              "query": "Παραλία Νίκα, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "secluded",
@@ -142027,11 +141993,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJZ4dNaWemmBQRzYxOuNrMFeI",
-              "query": "Παραλία Πετρούσα, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
@@ -142412,12 +142376,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ1xkFRyWnmBQR21jtbHdLpIc",
-              "query": "Παραλία Σκύλου, Kythnos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Σκύλου, Kythnos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "moderate",
@@ -142478,12 +142441,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "verified",
+              "status": "needs-review",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-08-14",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJeZ6XRqqnmBQRmYNwuLr6bC8",
-              "query": "Παραλία Στύφος, Kythnos"
+              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Στύφος, Kythnos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
             },
             "popularity": {
               "tier": "quiet",
@@ -142549,11 +142511,9 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ0wS2g2GnmBQRpMjMZsWKx3k",
-              "query": "Παραλία Φλαμπούρια, Kythnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-08-14",
+              "method": "osm-nav-audit-v1"
             },
             "popularity": {
               "tier": "moderate",
