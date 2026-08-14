@@ -1,0 +1,183 @@
+import type { LanguageCode } from '../types';
+import { getLocalizedCopy, type LocalizedCopy } from './i18n';
+import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from './waveCharacter';
+
+/**
+ * ΤΑ ΔΥΟ ΝΟΥΜΕΡΑ ΤΗΣ ΚΑΡΤΑΣ ΣΕ ΜΙΑ ΦΡΑΣΗ ΠΟΥ ΛΕΕΙ ΤΙ ΘΑ ΒΡΕΙΣ (Μίλτος, 14/08/2026).
+ *
+ * Η κάρτα τύπωνε «5 Μπφ | ~0,1 μ.» — δύο σωστά νούμερα που ο επισκέπτης πρέπει να μεταφράσει
+ * μόνος του, και οι περισσότεροι δεν ξέρουν τι σημαίνει 5 Μπφ ούτε αν το 0,1 μ. είναι πολύ ή
+ * λίγο. Το ΖΕΥΓΑΡΙ όμως λέει κάτι που κανένα από τα δύο νούμερα δεν λέει μόνο του: «φυσάει,
+ * αλλά η θάλασσα μπροστά σου είναι λάδι». Αυτή ακριβώς η έκπληξη είναι ο λόγος ύπαρξης του
+ * site — και μέχρι σήμερα ο αναγνώστης έπρεπε να τη συμπεράνει.
+ *
+ * ΤΙ ΔΕΝ ΕΙΝΑΙ ΑΥΤΟ: δεν είναι ετυμηγορία και δεν είναι χρώμα. Η κάρτα του βάθρου σιωπά
+ * επίτηδες για το «καλή / κακή» (BeachCard.tsx:2048-2056 — «a NUMBER, never a verdict»· ο
+ * χάρτης είναι η μόνη επιφάνεια που χρωματίζει, και δύο σκάλες αξιολόγησης είναι η κατηγορία
+ * σφάλματος που το project πληρώνει ξανά και ξανά). Εδώ δεν κρίνεται τίποτα: περιγράφονται με
+ * λέξεις τα ΙΔΙΑ δύο νούμερα που τυπώνονται από κάτω. Καμία λέξη «ιδανική», «απόφυγε»,
+ * «κατάλληλη» δεν επιτρέπεται να μπει σε αυτό το λεξιλόγιο.
+ *
+ * ΠΟΙΟ ΚΥΜΑ ΠΕΡΙΓΡΑΦΕΙ: αυτό ΠΟΥ ΤΥΠΩΝΕΤΑΙ ΔΙΠΛΑ, δηλαδή το νερό στην ακτή. Όχι το
+ * `seaStateSeverityM` (ύψος διορθωμένο για περίοδο), όσο κι αν είναι πιο «σωστό» ως αίσθηση
+ * κολύμβησης: σε προστατευμένο όρμο η αυστηρότητα διαβάζει το ανοιχτό νερό και θα έγραφε
+ * «μεγάλο κύμα» δίπλα στο «~0,1 μ.». Αυτή ακριβώς η αντίφαση —λέξη που δεν ταιριάζει με τον
+ * αριθμό της— διορθώθηκε στις 13/08 και δεν ξαναμπαίνει από την πίσω πόρτα. Ο χαρακτηρισμός
+ * της απότομης θάλασσας ζει στη σελίδα της παραλίας, όπου φαίνονται και τα δύο μεγέθη.
+ *
+ * ΤΑ ΚΑΤΩΦΛΙΑ ΤΟΥ ΚΥΜΑΤΟΣ ΔΕΝ ΕΙΝΑΙ ΔΙΚΑ ΤΟΥ: τα δύο πάνω έρχονται από το `waveCharacter`
+ * (0,8 μ. = «κιτρινίζει», 1,2 μ. = «τραχιά»). Έτσι η λέξη δεν μπορεί να πει «λίγο κύμα» εκεί
+ * όπου η μηχανή έχει ήδη κατεβάσει το ταβάνι της ημέρας.
+ */
+
+/** 0 = άπνοια … 4 = δυνατός άνεμος. Ίδια κλίμακα με το κύμα, ώστε να συγκρίνονται. */
+export type WindFeelLevel = 0 | 1 | 2 | 3 | 4;
+/** 0 = λάδι … 4 = μεγάλο κύμα. */
+export type WaveFeelLevel = 0 | 1 | 2 | 3 | 4;
+
+/**
+ * Πάνω από αυτή τη διαφορά επιπέδων τα δύο μισά της φράσης ΔΙΑΦΩΝΟΥΝ, οπότε μπαίνει «αλλά».
+ * Δύο σκαλιά, όχι ένα: «Αρκετός αέρας, λίγο κύμα» είναι μια κανονική μέρα και δεν θέλει
+ * έμφαση· «Πολύς αέρας αλλά θάλασσα λάδι» είναι η πληροφορία για την οποία μπήκε ο κόσμος.
+ */
+const CONTRAST_GAP = 2;
+
+/**
+ * ⚠️ ΤΟ «ΑΛΛΑ» ΕΙΝΑΙ ΑΝΑΚΟΥΦΙΣΗ, ΚΑΙ Η ΑΝΑΚΟΥΦΙΣΗ ΕΧΕΙ ΤΑΒΑΝΙ.
+ *
+ * «Πολύς αέρας αλλά θάλασσα λάδι» διαβάζεται ως καλά νέα, και στα 5 Μποφόρ είναι: ο αέρας
+ * ενοχλεί, το νερό δεν έχει κύμα. Στα 6+ όμως ο χάρτης βάφει την παραλία κόκκινη, και μια
+ * κάρτα που ακούγεται καθησυχαστική δίπλα σε κόκκινη πινέζα είναι η αντίφαση που το project
+ * κυνηγάει από τον Ιούλιο. Το γεγονός δεν αλλάζει — η θάλασσα ΟΝΤΩΣ είναι λάδι — αλλάζει ο
+ * σύνδεσμος: «Δυνατός αέρας, θάλασσα λάδι». Μονόδρομη πύλη, όπως όλες οι πύλες της βίβλου:
+ * μπορεί να αφαιρέσει ανακούφιση, ποτέ να την προσθέσει.
+ */
+const RELIEF_MAX_BEAUFORT = 5;
+
+/** Κάτω από 0,2 μ. δεν υπάρχει κύμα να περιγραφεί· 0,4 μ. είναι το «το νιώθεις μόλις». */
+const WAVE_GLASSY_M = 0.2;
+const WAVE_TINY_M = 0.4;
+
+export const waveFeelLevel = (metres: number): WaveFeelLevel => {
+  if (metres < WAVE_GLASSY_M) return 0;
+  if (metres < WAVE_TINY_M) return 1;
+  if (metres < SEA_STATE_AMBER_M) return 2;
+  if (metres < SEA_STATE_ROUGH_M) return 3;
+  return 4;
+};
+
+export const windFeelLevel = (beaufort: number): WindFeelLevel => {
+  if (beaufort <= 2) return 0;
+  if (beaufort === 3) return 1;
+  if (beaufort === 4) return 2;
+  if (beaufort === 5) return 3;
+  return 4;
+};
+
+type FeelVocabulary = {
+  /** Πρώτο μισό — ΞΕΚΙΝΑ τη φράση, άρα κεφαλαίο αρχικό. */
+  wind: [string, string, string, string, string];
+  /** Δεύτερο μισό — ακολουθεί, άρα πεζό αρχικό. */
+  wave: [string, string, string, string, string];
+  /** Μπαίνει ΑΝΑΜΕΣΑ στα δύο μισά όταν συμφωνούν. Περιέχει το δικό του κενό/κόμμα. */
+  join: string;
+  /** Το ίδιο, όταν διαφωνούν. */
+  joinContrast: string;
+};
+
+/**
+ * Οι λέξεις είναι σκόπιμα καθημερινές — «θάλασσα λάδι», όχι «ήπιος κυματισμός». Το τεχνικό
+ * λεξιλόγιο («Λίγος κυματισμός», «Έντονος κυματισμός») υπάρχει ήδη στο WaveHeightGraphic για
+ * τη σελίδα της παραλίας· εδώ μιλάμε σε κάποιον που κοιτάζει έξι κάρτες στο τηλέφωνο.
+ *
+ * ΙΔΙΕΣ ΛΕΞΕΙΣ ΜΕ ΤΗ ΛΕΖΑΝΤΑ ΤΟΥ ΧΑΡΤΗ (`utils/conditionToneLabels`), που κάθεται 400 px πιο
+ * πάνω στην ίδια οθόνη: «Δυνατός αέρας», «μεγάλο κύμα», «Λίγος αέρας», «Strong wind», «big
+ * waves», «hohe Wellen», «grosses vagues», «onde alte». Δύο συνώνυμα για το ίδιο πράγμα σε
+ * μία οθόνη διαβάζονται ως δύο διαφορετικά πράγματα — αν αλλάξει η λεζάντα, αλλάζει κι εδώ.
+ */
+const FEEL_VOCABULARY: LocalizedCopy<FeelVocabulary> = {
+  en: {
+    wind: ['No wind', 'Light wind', 'Some wind', 'Windy', 'Strong wind'],
+    wave: ['flat water', 'almost no waves', 'small waves', 'noticeable waves', 'big waves'],
+    join: ', ',
+    joinContrast: ' but ',
+  },
+  gr: {
+    wind: ['Χωρίς αέρα', 'Λίγος αέρας', 'Αρκετός αέρας', 'Πολύς αέρας', 'Δυνατός αέρας'],
+    wave: ['θάλασσα λάδι', 'σχεδόν χωρίς κύμα', 'λίγο κύμα', 'αρκετό κύμα', 'μεγάλο κύμα'],
+    join: ', ',
+    joinContrast: ' αλλά ',
+  },
+  fr: {
+    // Η ανώτατη βαθμίδα λέει «Vent fort» επειδή αυτό λέει και η κόκκινη λεζάντα του χάρτη·
+    // ένα «Vent très fort» από πάνω της θα ακουγόταν χειρότερο από το χρώμα που το συνοδεύει.
+    wind: ['Pas de vent', 'Vent léger', 'Vent modéré', 'Vent soutenu', 'Vent fort'],
+    wave: ['mer d’huile', 'presque pas de vagues', 'petites vagues', 'vagues sensibles', 'grosses vagues'],
+    join: ', ',
+    joinContrast: ' mais ',
+  },
+  de: {
+    wind: ['Windstill', 'Wenig Wind', 'Etwas Wind', 'Viel Wind', 'Starker Wind'],
+    wave: ['glatte See', 'kaum Wellen', 'kleine Wellen', 'spürbare Wellen', 'hohe Wellen'],
+    join: ', ',
+    // Στα γερμανικά το «aber» θέλει κόμμα πριν από αυτό, όχι μόνο κενό.
+    joinContrast: ', aber ',
+  },
+  it: {
+    wind: ['Niente vento', 'Poco vento', 'Vento moderato', 'Molto vento', 'Vento forte'],
+    wave: ['mare piatto', 'quasi senza onde', 'onde piccole', 'onde evidenti', 'onde alte'],
+    join: ', ',
+    joinContrast: ' ma ',
+  },
+};
+
+export interface ConditionsFeelInput {
+  /** Τα μποφόρ ΤΗΣ ΠΑΡΑΛΙΑΣ — ό,τι διάβασε και η πινέζα, όχι της περιοχής. */
+  beaufort: number;
+  /** Το ύψος που ΤΥΠΩΝΕΤΑΙ δίπλα στη φράση. Χωρίς αυτό η φράση μιλά μόνο για τον αέρα. */
+  waveM?: number;
+  language: LanguageCode;
+}
+
+export interface ConditionsFeel {
+  /** Η έτοιμη φράση, π.χ. «Πολύς αέρας αλλά θάλασσα λάδι». */
+  phrase: string;
+  windLevel: WindFeelLevel;
+  waveLevel?: WaveFeelLevel;
+  /**
+   * ΤΟ ΓΕΓΟΝΟΣ: τα δύο νούμερα δείχνουν σε αντίθετες κατευθύνσεις. Ανεξάρτητο από τον τόνο —
+   * ένας θυελλώδης αέρας πάνω από επίπεδο νερό αποκλίνει εξίσου με έναν μέτριο.
+   *
+   * Αυτό διαβάζει η σελίδα της παραλίας για να αποφασίσει ΑΝ θα γράψει τη γραμμή. Στην πρώτη
+   * έκδοση διάβαζε το `contrast` και ο Φάραγγας (6 Μπφ, 0,1 μ.) έμενε σιωπηλός: το ταβάνι που
+   * υπάρχει για να ΜΗΝ ακούγεται ανακουφιστικός ο τόνος είχε αρχίσει να κρύβει την πληροφορία.
+   */
+  divergent: boolean;
+  /**
+   * Ο ΤΟΝΟΣ: μπήκε «αλλά» αντί για κόμμα. Πάντα `divergent && beaufort <= RELIEF_MAX_BEAUFORT`.
+   */
+  contrast: boolean;
+}
+
+export const buildConditionsFeel = ({ beaufort, waveM, language }: ConditionsFeelInput): ConditionsFeel | null => {
+  if (!Number.isFinite(beaufort)) return null;
+  const vocabulary = getLocalizedCopy(language, FEEL_VOCABULARY);
+  const windLevel = windFeelLevel(Math.max(0, Math.round(beaufort)));
+  const windWord = vocabulary.wind[windLevel];
+
+  if (typeof waveM !== 'number' || !Number.isFinite(waveM)) {
+    return { phrase: windWord, windLevel, divergent: false, contrast: false };
+  }
+
+  const waveLevel = waveFeelLevel(Math.max(0, waveM));
+  const divergent = Math.abs(windLevel - waveLevel) >= CONTRAST_GAP;
+  const contrast = divergent && beaufort <= RELIEF_MAX_BEAUFORT;
+  const join = contrast ? vocabulary.joinContrast : vocabulary.join;
+  return {
+    phrase: `${windWord}${join}${vocabulary.wave[waveLevel]}`,
+    windLevel,
+    waveLevel,
+    divergent,
+    contrast,
+  };
+};

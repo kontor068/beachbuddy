@@ -272,6 +272,21 @@ type SwimFeelCopy = {
   rough: string;
   estimate: string;
   protectedChop: string;
+  /**
+   * ΤΟ ΝΕΡΟ ΕΙΝΑΙ ΜΕΤΡΗΜΕΝΑ ΕΠΙΠΕΔΟ ΚΑΙ ΜΟΝΟΣ ΤΟΥ Ο ΑΝΕΜΟΣ ΚΡΑΤΑΕΙ ΤΟ ΚΙΤΡΙΝΟ (14/08/2026).
+   *
+   * Στιγμιότυπο Λωλαντώνη (Πάρος, 5 Μπφ βοριάς, απάνεμη ακτή): το πλακίδιο έγραφε «~0,1 μ.»,
+   * η παράγραφος από πάνω «το νερό μένει επίπεδο», και αυτή η ετικέτα «Πιο προστατευμένη, με
+   * κυματισμό» — τρεις δηλώσεις για το ίδιο νερό, η μία να αναιρεί τις άλλες δύο. Αιτία: στα
+   * 5 Μποφόρ ο ΑΝΕΜΟΣ μόνος του ανεβάζει τη σοβαρότητα σε «moderate» (utils/seaVerdict), σωστά,
+   * και η λέξη διάβαζε τη σοβαρότητα αντί για τη θάλασσα.
+   *
+   * Η σοβαρότητα ΔΕΝ πειράχτηκε — είναι ταβάνι ασφαλείας και χρωματίζει την κάρτα, την πινέζα
+   * και την ετυμηγορία. Άλλαξε μόνο η λέξη, και μόνο όταν το κύμα είναι μετρημένα κάτω από το
+   * κατώφλι του ήρεμου νερού: κρατά τον αέρα («με αέρα»), δεν υπόσχεται τίποτα για το μπάνιο.
+   * Ίδια διατύπωση με τον κλειστό όρμο στη σελίδα (pages/BeachDetailPage.tsx:493).
+   */
+  calmWaterWindy: string;
   protectedWindChop: string;
   windChop: string;
   exposedSea: string;
@@ -286,6 +301,7 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     rough: 'Rougher sea',
     estimate: 'Wind-based estimate',
     protectedChop: 'More sheltered, with chop',
+    calmWaterWindy: 'Calm water, breezy',
     protectedWindChop: 'Milder, but wavy',
     windChop: 'Wind chop',
     exposedSea: 'Exposed, with waves',
@@ -298,6 +314,7 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     rough: 'Πιο έντονο κύμα',
     estimate: 'Εκτίμηση από άνεμο',
     protectedChop: 'Πιο προστατευμένη, με κυματισμό',
+    calmWaterWindy: 'Ήρεμο νερό, με αέρα',
     protectedWindChop: 'Πιο ήπια, αλλά με κύμα',
     windChop: 'Κυματισμός με αέρα',
     exposedSea: 'Εκτεθειμένη, με κύμα',
@@ -310,6 +327,7 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     rough: 'Mer plus agitée',
     estimate: 'Estimation par le vent',
     protectedChop: 'Mieux abrité, avec clapot',
+    calmWaterWindy: 'Eau calme, venteux',
     protectedWindChop: 'Plus doux, mais agité',
     windChop: 'Clapot avec vent',
     exposedSea: 'Exposé, avec vagues',
@@ -322,6 +340,7 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     rough: 'Unruhigere See',
     estimate: 'Windbasierte Schätzung',
     protectedChop: 'Geschützter, mit Wellen',
+    calmWaterWindy: 'Ruhiges Wasser, windig',
     protectedWindChop: 'Milder, aber wellig',
     windChop: 'Windiges Kabbelwasser',
     exposedSea: 'Exponiert, mit Wellen',
@@ -334,6 +353,7 @@ const SWIM_FEEL_COPY: LocalizedCopy<SwimFeelCopy> = {
     rough: 'Mare più mosso',
     estimate: 'Stima dal vento',
     protectedChop: 'Più riparata, con onde',
+    calmWaterWindy: 'Acqua calma, ventoso',
     protectedWindChop: 'Più mite, ma mosso',
     windChop: 'Onde con vento',
     exposedSea: 'Esposta, con onde',
@@ -356,6 +376,13 @@ const isLessExposedForSwimFeel = (exposureLevel?: ExposureLevel): boolean =>
 // "Some chop" under a badge that says "Excellent". Exposure still chooses WHICH sentence is
 // used at a given severity — that is the useful part (it names the cause) — but it can never
 // pick a calmer severity than the sea and wind together earned.
+/**
+ * Κάτω από αυτό το ύψος το νερό δεν έχει κύμα να περιγραφεί — ίδιο κατώφλι με τον κλειστό όρμο
+ * στη σελίδα (pages/BeachDetailPage.tsx:485), ώστε οι δύο επιφάνειες να μη λένε άλλο πράγμα για
+ * το ίδιο νερό.
+ */
+const CALM_WATER_MAX_M = 0.5;
+
 const getSwimmingFeel = (
   copy: SwimFeelCopy,
   scale: WaveScaleResult,
@@ -363,7 +390,9 @@ const getSwimmingFeel = (
   windSeverity: SeaSeverity,
   seaStateSeverity: SeaSeverity,
   exposureLevel?: ExposureLevel,
-  canClaimWindProtection?: boolean
+  canClaimWindProtection?: boolean,
+  /** Το ύψος που ΖΩΓΡΑΦΙΖΕΙ η κάρτα — η ίδια τιμή από την οποία κρίνεται κάθε ετυμηγορία. */
+  displayedWaveM?: number
 ): string => {
   if (scale.isEstimate) return copy.estimate;
 
@@ -381,6 +410,13 @@ const getSwimmingFeel = (
 
   if (severity === 'moderate') {
     if (!windIsTheCause) return copy.amber;
+    // Ο άνεμος είναι η ΜΟΝΗ αιτία του κίτρινου, η θάλασσα δεν συνεισφέρει τίποτα, και το ύψος
+    // που ζωγραφίζεται από πάνω είναι μετρημένα επίπεδο: εδώ η λέξη «κυματισμός» αναιρεί τον
+    // ίδιο τον αριθμό της κάρτας. Δεν ισχύει σε εκτεθειμένη ακτή — εκεί το χαμηλό νούμερο είναι
+    // στιγμή, όχι γεωμετρία, και η προειδοποίηση μένει όπως ήταν.
+    const flatWater = typeof displayedWaveM === 'number' && Number.isFinite(displayedWaveM)
+      && displayedWaveM < CALM_WATER_MAX_M;
+    if (seaStateSeverity === 'calm' && flatWater && !isExposed) return copy.calmWaterWindy;
     if (isLessExposed) return copy.protectedChop;
     if (isExposed) return copy.exposedSea;
     return copy.windChop;
@@ -1381,7 +1417,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     .filter(Boolean)
     .map((part) => String(part).replace(/\.+$/, ''))
     .join('. ');
-  const swimmingFeel = getSwimmingFeel(swimFeelCopy, scale, seaSeverity, windOnlySeverity, seaOnlySeverity, exposureLevel, canClaimWindProtection);
+  const swimmingFeel = getSwimmingFeel(swimFeelCopy, scale, seaSeverity, windOnlySeverity, seaOnlySeverity, exposureLevel, canClaimWindProtection, verdictWaveM);
   const swimmingFeelLabelClass = getSwimmingFeelLabelClass(scale, seaSeverity);
   // Small boats rock more — flag the transfer above 3 Bft (or a genuinely rough sea).
   const showBoatNote = Boolean(boatCopy) && ((typeof windBeaufort === 'number' && windBeaufort >= 4) || boatLevel === 'rough' || boatLevel === 'bumpy');

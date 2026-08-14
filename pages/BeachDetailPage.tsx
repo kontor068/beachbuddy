@@ -25,7 +25,7 @@ import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } f
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { BeachAnswerHero, SHELTER_LABEL, type PracticalTile } from '../components/BeachAnswerHero';
+import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
 import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
@@ -2119,9 +2119,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             directionLabel: t.windDirectionsShort?.[windDir as WindDirection] || windDirectionLabel,
             longDirectionLabel: windDirectionLabel,
             /* Only from ≥3 Bft: below that "sheltered" is a fact about a wind that is not
-               blowing, and the light-wind floor in weatherNowCopy makes the same call. */
+               blowing, and the light-wind floor in weatherNowCopy makes the same call.
+               …and only up to 5 Bft for the word «απάνεμη» itself: above that the shore is
+               still geometrically protected (the wind brings it no waves) but it is NOT calm
+               to stand on, so the label states the angle («από πίσω») instead of promising
+               shelter. See SHELTER_WORD_MAX_BEAUFORT in BeachAnswerHero for the why. */
             shelterLabel: beaufortLevel >= 3
-              ? (SHELTER_LABEL[language] ?? SHELTER_LABEL.en)[mapAlignedExposureLevel]
+              ? (() => {
+                  const shelterCopy = SHELTER_LABEL[language] ?? SHELTER_LABEL.en;
+                  return mapAlignedExposureLevel === 'protected' && beaufortLevel > SHELTER_WORD_MAX_BEAUFORT
+                    ? shelterCopy.protectedStrongWind
+                    : shelterCopy[mapAlignedExposureLevel];
+                })()
               : null,
           } : null}
           airTempC={showConditions ? displayTemp : null}

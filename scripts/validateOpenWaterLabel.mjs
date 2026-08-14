@@ -32,6 +32,10 @@
  *     This one is not hypothetical — it already broke: the card stopped rendering the sentence
  *     on 31/07 while `statesShoreIncidence` went on suppressing the second copy below, so both
  *     explanations vanished at once and every gate stayed green.
+ *     Since 14/08 it also guards the STRONG-WIND form: «απάνεμη» promises stillness, so above
+ *     5 Bft the protected shore says «από πίσω» instead — a distinct word per language, plus
+ *     the Beaufort ceiling that selects it. Dropping either half silently restores a tile that
+ *     reads «6 Μπφ · Β · απάνεμη», which is what a visitor reported on Φυριπλάκα (id 1927).
  *
  * Pure computation — no network.
  * Run: node scripts/validateOpenWaterLabel.mjs
@@ -164,7 +168,13 @@ if (!readLabelsBlock) {
   // This assertion is deliberately NOT relaxed to "some label is chosen": it pins the shape of
   // the whole three-way decision. The failure it exists to prevent — a grid reading wearing a
   // near-shore label — is now reachable two ways instead of one, so it checks both branches.
-  if (!/label:\s*shoreLeads\s*\?\s*shoreCopy\.atShore\s*:\s*\(\s*sea\.isOpenWater\s*\?\s*labels\.seaOpen\s*:\s*labels\.sea\s*\)/.test(heroSource)) {
+  //
+  // ΕΝΗΜΕΡΩΘΗΚΕ 14/08/2026: ο τίτλος της περίπτωσης «ηγείται η ακτή» έγινε το σκέτο `labels.sea`
+  // («Κύμα») αντί για `shoreCopy.atShore` («Κύμα στην ακτή»), για να χωρέσει ο αριθμός του
+  // ανοιχτού στον υπότιτλο χωρίς να κοπεί. Ο ΟΥΣΙΩΔΗΣ όρος δεν χαλάρωσε καθόλου: το
+  // `labels.seaOpen` («… ανοιχτά») επιτρέπεται ΜΟΝΟ στον κλάδο `sea.isOpenWater`, ποτέ όταν
+  // ηγείται η ακτή. Αυτό ακριβώς πινάρει το regex — και δοκιμάστηκε ανάποδα.
+  if (!/label:\s*shoreLeads\s*\?\s*labels\.sea\s*:\s*\(\s*sea\.isOpenWater\s*\?\s*labels\.seaOpen\s*:\s*labels\.sea\s*\)/.test(heroSource)) {
     failures.push(
       'components/BeachAnswerHero.tsx: the sea reading no longer picks its label from shoreLeads / sea.isOpenWater. '
       + 'The labels exist but nothing chooses between them.'
@@ -199,6 +209,32 @@ if (!readLabelsBlock) {
     failures.push(
       'components/BeachAnswerHero.tsx: the open-water figure is no longer shown beside the shore one. '
       + 'Demoting it to the hint is allowed; dropping it is not.'
+    );
+  }
+
+  // ⚠️ ΚΑΙ ΤΙΠΟΤΑ ΔΕΝ ΜΠΑΙΝΕΙ ΜΠΡΟΣΤΑ ΤΟΥ (14/08/2026).
+  //
+  // «Μένει στην οθόνη» και «χωράει στην οθόνη» είναι δύο πράγματα, και η διαφορά κόστισε ήδη μία
+  // φορά: ο υπότιτλος ήταν `${sea.label} · ${offshore(...)}` = «Έντονος κυματισμός · 0,7 μ.
+  // ανοιχτά», 35 χαρακτήρες σε πλακίδιο ~66 px με γραμματοσειρά 8 px. Το `line-clamp-2` έκοβε
+  // ΝΟΜΙΜΑ τη δεύτερη ανάγνωση έξω από το πλακίδιο — ο χρήστης έβλεπε «Έντονος κυματισμός…» και
+  // ο αριθμός του ανοιχτού δεν υπήρχε πουθενά στην οθόνη.
+  //
+  // Καμία πύλη δεν το έπιασε: ο έλεγχος πλάτους ρωτάει «κόβεται ΛΕΞΗ;» και εδώ δεν κοβόταν λέξη —
+  // κοβόταν ολόκληρη πρόταση, κανονικά, με clamp. Ο έλεγχος από πάνω ρωτάει «υπάρχει ο αριθμός
+  // στον κώδικα;» και υπήρχε. Η ερώτηση που έλειπε είναι «είναι ΜΟΝΟΣ του, ώστε να χωράει;».
+  //
+  // Άρα: όταν ηγείται ο αριθμός της ακτής, ο υπότιτλος είναι ΜΟΝΟ ο αριθμός του ανοιχτού.
+  // Ο χαρακτηρισμός της θάλασσας έχει τη θέση του στο μπλοκ της ετυμηγορίας, όχι εδώ.
+  const seaHintBranch = heroSource.match(/hint:\s*shoreLeads[\s\S]{0,220}?:\s*sea\.label,/);
+  if (!seaHintBranch) {
+    failures.push('components/BeachAnswerHero.tsx: the sea tile hint branch was not found — it cannot be checked.');
+  } else if (/\$\{sea\.label\}|sea\.label\s*\}\s*·|`\$\{[^`]*\}\s*·/.test(seaHintBranch[0])) {
+    failures.push(
+      'components/BeachAnswerHero.tsx: the sea tile hint puts something IN FRONT of the open-water '
+      + 'figure again. At ~66px with an 8px font and line-clamp-2 the extra words push the number '
+      + 'off the tile, and the reader is left with «Έντονος κυματισμός…» and no second reading — '
+      + 'which is the §7δ condition broken by width instead of by design.'
     );
   }
 
@@ -290,6 +326,36 @@ if (!shelterBlock) {
         + `a sheltered and a wind-facing beach would read identically in ${lang}.`
       );
     }
+    // The strong-wind form of "protected". Must exist and must NOT be the shelter word itself,
+    // otherwise the ceiling below is wired to a no-op and «6 Μπφ · απάνεμη» returns.
+    const strongWind = (row[1].match(/\bprotectedStrongWind:\s*'([^']*)'/) || [, ''])[1].trim();
+    if (!strongWind) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: protectedStrongWind is missing. Above ${'5'} Bft a protected shore `
+        + 'must state the wind angle, not promise shelter it cannot deliver.'
+      );
+    } else if (strongWind === words[0]) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: protectedStrongWind repeats the shelter word ("${strongWind}") — `
+        + 'the Beaufort ceiling then changes nothing and the tile still reads "sheltered" at 6 Bft.'
+      );
+    }
+  }
+  // The ceiling itself, and the fact that the page applies it. Both halves are load-bearing:
+  // a vocabulary with no gate, or a gate with no vocabulary, ships the original bug.
+  if (!/export const SHELTER_WORD_MAX_BEAUFORT\s*=\s*5\b/.test(heroSource)) {
+    failures.push(
+      'components/BeachAnswerHero.tsx: SHELTER_WORD_MAX_BEAUFORT is gone or no longer 5. It must '
+      + 'track RELIEF_MAX_BEAUFORT (utils/conditionsFeelPhrase.ts) — same wind, same honesty.'
+    );
+  }
+  if (!/beaufortLevel\s*>\s*SHELTER_WORD_MAX_BEAUFORT/.test(detailSource)
+    || !/protectedStrongWind/.test(detailSource)) {
+    failures.push(
+      'pages/BeachDetailPage.tsx: the wind tile no longer swaps to protectedStrongWind above '
+      + 'SHELTER_WORD_MAX_BEAUFORT. At 6 Bft a north-facing-away beach would read «Β · απάνεμη» '
+      + 'again — geometrically true, but it tells the visitor there is no wind while there is.'
+    );
   }
   if (!/wind\.shelterLabel\s*\?\s*`\$\{wind\.directionLabel\}\s*·\s*\$\{wind\.shelterLabel\}`/.test(heroSource)) {
     failures.push('components/BeachAnswerHero.tsx: the wind tile no longer renders shelterLabel beside the compass point.');

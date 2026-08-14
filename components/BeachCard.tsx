@@ -10,6 +10,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
+import { buildConditionsFeel } from '../utils/conditionsFeelPhrase';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -1734,6 +1735,24 @@ export const BeachCard: React.FC<BeachCardProps> = ({
    * «3 Μπφ | 0,3 μ.» δίπλα σε «5 Μπφ | ~1,1 μ.» δεν διαβάζονταν ως η ίδια πληροφορία. Ένα grid
    * με ίσες στήλες βάζει τον διαχωριστή στο ίδιο σημείο σε όλες τις κάρτες του καρουζέλ.
    */
+  /**
+   * ΤΑ ΝΟΥΜΕΡΑ ΑΠΟΚΤΟΥΝ ΕΠΙΚΕΦΑΛΙΔΑ ΣΕ ΛΕΞΕΙΣ (Μίλτος, 14/08/2026).
+   *
+   * «5 Μπφ | ~0,1 μ.» είναι δύο σωστές μετρήσεις που ζητούν από τον επισκέπτη να κάνει μόνος
+   * του τη μετάφραση — και το ζευγάρι λέει κάτι που κανένα από τα δύο δεν λέει χωριστά:
+   * φυσάει δυνατά ΚΑΙ η θάλασσα μπροστά σου είναι λάδι. Η φράση μπαίνει ΠΑΝΩ από τα νούμερα,
+   * δεν τα αντικαθιστά: ο κανόνας της §7δ (τα νούμερα μένουν στην οθόνη) και ο κανόνας του
+   * βάθρου (αριθμός, όχι ετυμηγορία) ισχύουν και οι δύο — απλώς τώρα υπάρχει και μια γραμμή
+   * που διαβάζεται σε ένα δευτερόλεπτο. Λεξιλόγιο και κατώφλια: utils/conditionsFeelPhrase.
+   */
+  const conditionsFeel = buildConditionsFeel({
+    beaufort: windBeaufort,
+    // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το `cardSeaStateM`, που σε όρμο διαβάζει
+    // το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.».
+    waveM: typeof cardWaveM === 'number' && Number.isFinite(cardWaveM) && cardWaveText ? cardWaveM : undefined,
+    language,
+  });
+  const conditionsFeelPhrase = conditionsFeel?.phrase;
   const podiumWhyItems: Array<{
     key: string;
     icon: React.ReactNode;
@@ -1744,14 +1763,24 @@ export const BeachCard: React.FC<BeachCardProps> = ({
   }> = [
     {
       key: 'wind',
-      icon: <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />,
-      text: `${windBeaufort} ${beaufortUnitLabel}`,
+      // 12px εικονίδιο, όχι 14: από τις 14/08 τα νούμερα είναι η ΑΠΟΔΕΙΞΗ κάτω από τη φράση,
+      // όχι η επικεφαλίδα, και ένα εικονίδιο μεγαλύτερο από το κείμενό του τραβούσε το μάτι
+      // στο λάθος πράγμα.
+      icon: <Wind className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
+      // Χωρίς κύμα η φράση λέει μόνο τον αέρα, οπότε από πάνω θα διάβαζε το ίδιο πράγμα δύο
+      // φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο.
+      text: !cardWaveText && conditionsFeelPhrase
+        ? `${conditionsFeelPhrase} · ${windBeaufort} ${beaufortUnitLabel}`
+        : `${windBeaufort} ${beaufortUnitLabel}`,
+      // Σκέτο «5 Μπφ» σε αναγνώστη οθόνης δεν λέει ΤΙ είναι το 5 — το κύμα δίπλα το λέει από
+      // την πρώτη μέρα, ο άνεμος όχι.
+      ariaLabel: `${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`,
     },
   ];
   if (cardWaveText) {
     podiumWhyItems.push({
       key: 'wave',
-      icon: <Waves className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />,
+      icon: <Waves className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
       text: cardWaveText,
       title: cardWaveLabel,
       // Το αναγνωστικό κείμενο κρατά τον ΤΙΤΛΟ + το σκέτο νούμερο, αλλιώς μετά την αλλαγή
@@ -1894,22 +1923,40 @@ export const BeachCard: React.FC<BeachCardProps> = ({
                 κάρτα με μετρημένο κύμα δείχνει την ίδια γραμμή· χωρίς κύμα δεν μπαίνει γραμμή
                 μόνο για τα μποφόρ, γιατί αυτά τα λέει ήδη το chip από πάνω. */}
             {(isPodium || Boolean(cardWaveText)) && (
-              <div className={`grid min-h-8 w-full min-w-0 items-stretch overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 text-[11px] font-bold leading-tight text-slate-700 dark:border-sky-900/45 dark:bg-sky-950/25 dark:text-slate-200 ${podiumWhyColumnsClass}`}>
-                {podiumWhyItems.map((item, index) => (
-                  <span
-                    key={item.key}
-                    // `data-tilefit` is the marker scripts/validateTileFit.mjs measures. Added here on
-                    // 13/08/2026 together with the «ανοιχτά» word: this row is two columns on a 320 px
-                    // phone, and a word that gets cut in half is worse than no word at all.
-                    data-tilefit={`podium-why-${item.key}`}
-                    className={`flex min-w-0 items-center justify-center gap-1 px-2 py-1 ${index > 0 ? 'border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
-                    title={item.title}
-                    aria-label={item.ariaLabel}
+              <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 dark:border-sky-900/45 dark:bg-sky-950/25">
+                {/* Η ΓΡΑΜΜΗ ΠΟΥ ΔΙΑΒΑΖΕΤΑΙ ΠΡΩΤΗ. Πιο μεγάλη και πιο σκούρα από τα νούμερα, γιατί
+                    αυτή απαντά στο «τι θα βρω εκεί» — τα νούμερα από κάτω είναι η απόδειξή της.
+                    Χωρίς κύμα η φράση είναι μόνο ο αέρας («Πολύς αέρας»), οπότε θα διάβαζε το ίδιο
+                    πράγμα δύο φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο αντί από πάνω του. */}
+                {conditionsFeelPhrase && Boolean(cardWaveText) && (
+                  <p
+                    data-tilefit="podium-why-feel"
+                    className="min-w-0 line-clamp-2 px-1 text-center text-xs font-extrabold leading-[1.15] text-slate-900 dark:text-white"
                   >
-                    {item.icon}
-                    <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
-                  </span>
-                ))}
+                    {conditionsFeelPhrase}
+                  </p>
+                )}
+                <div className={`grid min-w-0 items-stretch font-bold leading-tight ${cardWaveText
+                  ? 'mt-0.5 text-[10px] text-slate-600 dark:text-slate-300'
+                  : 'min-h-6 text-[11px] text-slate-800 dark:text-slate-200'} ${podiumWhyColumnsClass}`}>
+                  {podiumWhyItems.map((item, index) => (
+                    <span
+                      key={item.key}
+                      // `data-tilefit` is the marker scripts/validateTileFit.mjs measures. Added here on
+                      // 13/08/2026 together with the «ανοιχτά» word: this row is two columns on a 320 px
+                      // phone, and a word that gets cut in half is worse than no word at all.
+                      data-tilefit={`podium-why-${item.key}`}
+                      // `my-0.5` κρατά τον διαχωριστή κοντύτερο από τη γραμμή: σε κείμενο 10 px μια
+                      // κάθετη που φτάνει άκρη-άκρη διαβάζεται πιο βαριά από τα νούμερα που χωρίζει.
+                      className={`flex min-w-0 items-center justify-center gap-1 px-1.5 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                      title={item.title}
+                      aria-label={item.ariaLabel}
+                    >
+                      {item.icon}
+                      <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -2054,15 +2101,30 @@ export const BeachCard: React.FC<BeachCardProps> = ({
               ladder: it is the SAME per-beach reading the map pin used (beachWindSpeedKmph ←
               perBeachMapWind), stated as a fact, with no word and no colour attached. Podium cards
               only — the general list keeps its slimmer body. */}
+          {/* Η ΙΔΙΑ ΦΡΑΣΗ ΜΕ ΤΟ ΚΙΝΗΤΟ, ΚΑΙ ΕΠΙΤΕΛΟΥΣ ΤΟ ΚΥΜΑ (14/08/2026). Αυτή η γραμμή έδειχνε
+              μόνο τα μποφόρ: ο υπολογιστής, που έχει τον περισσότερο χώρο, ήταν η μόνη οθόνη
+              όπου το βάθρο δεν έλεγε πόσο κύμα έχει. Τώρα λέει και τα δύο, με την ίδια
+              διατύπωση που διαβάζει ο διπλανός στο τηλέφωνο — μία γλώσσα, δύο οθόνες. */}
           {isPodium && (
             <div
               className="flex min-h-9 w-full min-w-0 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-3 py-1.5 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
-              aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`}
+              aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}${cardWaveText ? `. ${cardWaveLabel}: ${cardWaveValueText}` : ''}`}
             >
               <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
-              <span className="min-w-0 truncate text-xs font-bold text-slate-700 dark:text-slate-200">
-                {windOnShoreLabel}: {windBeaufort} {beaufortUnitLabel}
-              </span>
+              {conditionsFeelPhrase && cardWaveText ? (
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-extrabold text-slate-900 dark:text-white">
+                    {conditionsFeelPhrase}
+                  </span>
+                  <span className="block truncate text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    {windBeaufort} {beaufortUnitLabel} · <span title={cardWaveLabel}>{cardWaveText}</span>
+                  </span>
+                </span>
+              ) : (
+                <span className="min-w-0 truncate text-xs font-bold text-slate-700 dark:text-slate-200">
+                  {conditionsFeelPhrase ? `${conditionsFeelPhrase} · ` : `${windOnShoreLabel}: `}{windBeaufort} {beaufortUnitLabel}
+                </span>
+              )}
             </div>
           )}
 

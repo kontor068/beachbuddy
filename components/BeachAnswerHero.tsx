@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Clock, Check, X, CalendarClock } from 'lucide-react';
 import type { LanguageCode } from '../types';
 import { WindGlyph, SeaGlyph, WaterTempGlyph, SunsetGlyph, type GlyphTone } from './ConditionGlyphs';
+import { buildConditionsFeel } from '../utils/conditionsFeelPhrase';
 
 /**
  * The answer, above everything else — the whole beach day in one screen.
@@ -118,14 +119,35 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  * one can see the reason without opening anything.
  *
  * Kept in step with INCIDENCE_WORD in utils/windIncidence.ts (de/fr/it reuse its wording).
+ *
+ * ⚠️ «ΑΠΑΝΕΜΗ» ΕΧΕΙ ΤΑΒΑΝΙ ΜΠΟΦΟΡ (Μίλτος, 14/08/2026 — σχόλιο επισκέπτη, Φυριπλάκα id 1927).
+ *
+ * Η σελίδα τύπωνε «6 Μπφ» και από κάτω «Β · απάνεμη». Η γεωμετρία ήταν σωστή — η Φυριπλάκα
+ * κοιτάει 205°, ο βοριάς της έρχεται από τη στεριά, fetch 0 χλμ., άρα κύμα δεν της φέρνει.
+ * Λάθος ήταν η ΛΕΞΗ: «απάνεμη» υπόσχεται «δεν φυσάει», ενώ εμείς εννοούμε «ο αέρας δεν σου
+ * φέρνει κύμα». Στα 6 Μποφόρ ο επισκέπτης τρώει άμμο στα μούτρα και διαβάζει «απάνεμη» — και
+ * ένας από αυτούς μπήκε στον κόπο να μας το γράψει. Δεν είναι μία παραλία: 1.690 από τις 2.861
+ * είναι γεωμετρικά προστατευμένες στον βοριά, δηλαδή ΚΑΘΕ μελτεμιάρα μέρα του Αυγούστου.
+ *
+ * Από 6 Μποφόρ και πάνω η λέξη γίνεται λοιπόν «από πίσω»: ίδια γεωμετρία, καμία υπόσχεση
+ * νηνεμίας, και στέκει δίπλα σε κόκκινη πινέζα χωρίς να την αναιρεί. Είναι ο ΙΔΙΟΣ κανόνας
+ * που πήρε η κάρτα την ίδια μέρα (RELIEF_MAX_BEAUFORT, utils/conditionsFeelPhrase.ts): μονόδρομη
+ * πύλη που μπορεί να αφαιρέσει ανακούφιση, ποτέ να την προσθέσει. Τα «πλάγια»/«κατάμουτρα»
+ * δεν το χρειάζονται — δεν υπόσχονται τίποτα εξαρχής.
  */
-export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string }> = {
-  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on' },
-  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα' },
-  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal' },
-  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia' },
-  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face' },
+export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string }> = {
+  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on', protectedStrongWind: 'from behind' },
+  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα', protectedStrongWind: 'από πίσω' },
+  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal', protectedStrongWind: 'von hinten' },
+  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia', protectedStrongWind: 'da dietro' },
+  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face', protectedStrongWind: 'de dos' },
 };
+
+/**
+ * Πάνω από αυτό, «απάνεμη» δεν λέγεται. Ίδιο νούμερο με το RELIEF_MAX_BEAUFORT της κάρτας,
+ * και ίδιο με το σημείο όπου ο χάρτης αρχίζει να βάφει κόκκινο.
+ */
+export const SHELTER_WORD_MAX_BEAUFORT = 5;
 
 interface ReadingProps {
   glyph: React.ReactNode;
@@ -466,14 +488,35 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
     const shoreCopy = SHORE_LABELS[language] ?? SHORE_LABELS.en;
     readings.push({
       glyph: <SeaGlyph heightM={sea.heightM} tone={glyphTone} className="h-full w-full" />,
-      label: shoreLeads ? shoreCopy.atShore : (sea.isOpenWater ? labels.seaOpen : labels.sea),
+      /**
+       * ΤΟ ΠΛΑΚΙΔΙΟ ΕΚΟΒΕ ΤΟ ΜΟΝΟ ΠΡΑΓΜΑ ΠΟΥ Η ΒΙΒΛΟΣ ΑΠΑΙΤΕΙ ΝΑ ΜΕΝΕΙ (Μίλτος, 14/08/2026).
+       *
+       * Στιγμιότυπο Πάρου: τίτλος «Κύμα στην ακτή», νούμερο «~0,1 μ.», και από κάτω
+       * «Έντονος κυματισμός…» — με αποσιωπητικά. Ο υπότιτλος ήταν
+       * `${sea.label} · ${offshore(...)}` = «Έντονος κυματισμός · 0,7 μ. ανοιχτά», 35 χαρακτήρες
+       * σε πλακίδιο ~66 px με γραμματοσειρά 8 px και `line-clamp-2`. Ο χαρακτηρισμός έτρωγε τις
+       * δύο γραμμές και **ο αριθμός του ανοιχτού κοβόταν έξω** — ακριβώς ο όρος της §7δ («το
+       * νούμερο της ανοιχτής θάλασσας μένει στην οθόνη, με το όνομά του») να παραβιάζεται από
+       * πλάτος, όχι από σχεδιασμό. Η πύλη πλάτους δεν το έπιασε γιατί μετράει αν κόβεται ΛΕΞΗ,
+       * και εδώ κοβόταν ολόκληρη η δεύτερη ανάγνωση, νόμιμα, με `line-clamp`.
+       *
+       * Λύση που ζήτησε: κόψε τα περιττά. Τίτλος **«Κύμα»** σκέτο (ο αριθμός από κάτω είναι της
+       * ακτής — το «~» και ο υπότιτλος «… ανοιχτά» το λένε), και υπότιτλος **μόνο το δεύτερο
+       * νούμερο**. Δύο αναγνώσεις, καμία περιγραφή, τίποτα να κοπεί.
+       *
+       * Ο χαρακτηρισμός («Έντονος κυματισμός») ΔΕΝ χάνεται από τη σελίδα: ζει στο μπλοκ της
+       * ετυμηγορίας (`pages/BeachDetailPage.tsx:503-505`), σε γραμμή που έχει χώρο γι' αυτόν.
+       * Όταν τα δύο νούμερα ταυτίζονται (~74% των παραλιών) τίποτα εδώ δεν αλλάζει: δεν υπάρχει
+       * δεύτερη ανάγνωση, οπότε ο υπότιτλος μένει ο χαρακτηρισμός όπως πάντα.
+       */
+      label: shoreLeads ? labels.sea : (sea.isOpenWater ? labels.seaOpen : labels.sea),
       // Το «~» σημαίνει «μοντελοποιημένο». Όταν ο αριθμός της ακτής ΕΙΝΑΙ η μέτρηση του ανοιχτού,
       // ένα «~» θα ήταν ψέμα προς την αντίθετη κατεύθυνση: θα υποβάθμιζε μια μέτρηση σε εκτίμηση.
       value: hasShore
         ? `${shoreLeads ? '~' : ''}${metres(shoreM as number)}`
         : typeof sea.heightM === 'number' ? metres(sea.heightM) : '—',
       hint: shoreLeads && typeof sea.heightM === 'number'
-        ? `${sea.label} · ${shoreCopy.offshore(metres(sea.heightM))}`
+        ? shoreCopy.offshore(metres(sea.heightM))
         : sea.label,
     });
   }
@@ -494,6 +537,43 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
       hint: sunsetOverSea ? (OVER_SEA_HINT[language] ?? OVER_SEA_HINT.en) : null,
     });
   }
+
+  /**
+   * ΤΟ ΕΝΑ ΠΡΑΓΜΑ ΠΟΥ ΤΑ ΠΛΑΚΙΔΙΑ ΔΕΝ ΜΠΟΡΟΥΝ ΝΑ ΠΟΥΝ: ΤΗ ΣΧΕΣΗ ΤΟΥΣ (Μίλτος, 14/08/2026).
+   *
+   * Η κάρτα της λίστας απέκτησε σήμερα μία γραμμή σε λέξεις πάνω από τα δύο νούμερα· ο
+   * επισκέπτης που πατάει «Πληροφορίες» έβρισκε πάλι σκέτα «5 Μπφ» και «~0,1 μ.» σε δύο
+   * χωριστά κουτάκια.
+   *
+   * ⚠️ ΓΙΑΤΙ ΜΠΑΙΝΕΙ ΜΟΝΟ ΣΤΗΝ ΑΝΤΙΘΕΣΗ — και γιατί αυτό ΔΕΝ ξανανοίγει την 11/08.
+   *
+   * Εκείνη τη μέρα διαγράφηκε από αυτή ακριβώς τη θέση μια ζωντανή πρόταση («Με βόρειο άνεμο
+   * 4 Μπφ που φυσάει τώρα, εδώ είναι σχετικά προστατευμένα») επειδή **ξανάλεγε με λέξεις ό,τι
+   * τα τέσσερα πλακίδια μόλις είχαν πει με νούμερα**. Ο κανόνας που έμεινε: σε αυτό το σημείο
+   * γράφεται μόνο ό,τι ΔΕΝ υπάρχει ήδη από πάνω.
+   *
+   * «Πολύς αέρας αλλά θάλασσα λάδι» περνάει αυτόν τον κανόνα μόνο στη μισή του μορφή. Όταν τα
+   * δύο μισά συμφωνούν («Δυνατός αέρας, μεγάλο κύμα») είναι όντως τα δύο πλακίδια ξαναγραμμένα,
+   * και σιωπά. Όταν διαφωνούν, λέει το ένα πράγμα που κανένα πλακίδιο δεν ξέρει: ότι ο αριθμός
+   * του ανέμου και ο αριθμός του κύματος δείχνουν σε αντίθετες κατευθύνσεις. Αυτή η αντίθεση
+   * είναι ο λόγος που η Βραυρώνα στα 2,0 μ. είναι πορτοκαλί και η Ραφήνα στα 1,3 μ. κόκκινη —
+   * το παράπονο της 01/08 («δεν καταλαβαίνει κάποιος γιατί η μία παραλία είναι καλύτερη»).
+   *
+   * Διαβάζει ΤΑ ΙΔΙΑ δύο νούμερα που ζωγραφίζουν τα πλακίδια, όχι κάποιο τρίτο: το ύψος της
+   * ακτής όταν αυτό ηγείται, αλλιώς τη μέτρηση του ανοιχτού.
+   */
+  const feelWaveM = sea
+    ? (typeof sea.shoreHeightM === 'number' && Number.isFinite(sea.shoreHeightM)
+        ? sea.shoreHeightM
+        : (typeof sea.heightM === 'number' && Number.isFinite(sea.heightM) ? sea.heightM : undefined))
+    : undefined;
+  const conditionsFeel = wind
+    ? buildConditionsFeel({ beaufort: wind.beaufort, waveM: feelWaveM, language })
+    : null;
+  // `divergent`, ΟΧΙ `contrast`: το δεύτερο πέφτει στα 6+ Μποφόρ για να μη μπει «αλλά» δίπλα σε
+  // κόκκινη πινέζα — αν το διάβαζε αυτή η γραμμή, ο Φάραγγας (6 Μπφ πάνω από 0,1 μ.) θα ήταν ο
+  // πρώτος που θα έχανε την εξήγηση που δικαιολογεί το χρώμα του.
+  const contrastLine = conditionsFeel?.divergent ? conditionsFeel.phrase : null;
 
   return (
     <section
@@ -551,6 +631,21 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
               <Reading key={r.label} {...r} />
             ))}
           </div>
+        )}
+
+        {/* Η ΓΡΑΜΜΗ ΤΗΣ ΑΝΤΙΘΕΣΗΣ — βλ. το σκεπτικό στο `contrastLine` παραπάνω. Ίδιο λεξιλόγιο
+            με τις κάρτες της λίστας (utils/conditionsFeelPhrase), ώστε ο επισκέπτης που πάτησε
+            μια κάρτα να ξαναβρεί εδώ τις ΙΔΙΕΣ λέξεις που τον έφεραν. Δεν είναι ετυμηγορία και
+            δεν φέρνει δικό της χρώμα: το κέλυφος της κάρτας χρωματίζει ήδη. */}
+        {contrastLine && (
+          <p
+            className="px-1 text-center text-sm font-extrabold leading-snug text-slate-800"
+            data-tilefit="hero-contrast"
+            data-testid="conditions-feel"
+            data-nosnippet="true"
+          >
+            {contrastLine}
+          </p>
         )}
 
         {/* WHY THIS BEACH READS THE WAY IT DOES — the sentence that makes the instruments
