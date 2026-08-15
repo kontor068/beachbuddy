@@ -130,6 +130,15 @@ const checks = [
     args: ['scripts/validatePerBeachWindGates.mjs'],
   },
   {
+    id: 'forecast-cell-clustering',
+    title: 'No forecast point speaks for a beach in another model cell',
+    description: 'Runs the shipped clustering over all 110 regions and demands four things: every beach carries a MEASURED forecastCell, every cluster\'s members share one cell, every cluster\'s sampling point is literally a member beach\'s coordinate rather than a synthetic centroid, and that beach\'s own measured cell is the cluster\'s cell.',
+    protects: 'Prevents the app quoting a beach the wind of somewhere else. Open-Meteo does not answer from the nearest grid cell — the default cell_selection=land walks a 90 m elevation model to a LAND cell of similar height — so a centroid is a coordinate nobody probed. Measured 15/08/2026 nationally: 306 of 2.791 beaches (11,0%) were being fed a foreign cell\'s wind. Elafonisi is the worked example: its centroid sat 3,51 km away in a 34 m cell reading 50,9 km/h while the beach sat in a 1 m cell reading 43,2 km/h, so the card said «Δυνατός αέρας 7 Μπφ» for a beach having 6 while a live webcam showed flat water.',
+    failureAction: 'Re-bake with `node scripts/bakeForecastModelCells.mjs` if the beach data was rebuilt without it. NEVER make this pass by sending a centroid again, and never widen MAX_SAMPLING_DISTANCE_KM to "fit" — distance was exactly the assumption that failed: 4 km was calibrated believing the grid was 0,25°, and it is ~0,0625°.',
+    command: process.execPath,
+    args: ['scripts/validateForecastCellClustering.mjs'],
+  },
+  {
     id: 'conditions-feel-phrase',
     title: 'The card\'s plain-words line agrees with its own numbers',
     description: 'Drives every wind × wave × language combination through the card\'s one-line description and checks four things: it fits two lines on a 320 px phone, the words match the metre figure printed directly underneath them, no verdict word ("ideal", "avoid") can enter a line that is meant to describe rather than judge, and the relief connective ("but") stops at 5 Bft so a red-pinned beach never reads like good news. Also re-checks the top band still shares its exact wording with the map legend in all five languages.',

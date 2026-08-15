@@ -17,6 +17,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
 const surfSpotsPath = path.join(rootDir, 'data', 'surfSpots.json');
+// Measured by scripts/bakeForecastModelCells.mjs — which weather-model grid cell Open-Meteo
+// really answers each beach from. Stamped onto every beach so utils/beachForecastClusters.ts can
+// refuse to let one forecast point speak for beaches sitting in different cells. Optional on
+// purpose: a checkout without the bake still builds, it just keeps the old centroid behaviour.
+const forecastCellsPath = path.join(rootDir, 'data', 'forecast-cells.generated.json');
 const outputDir = path.join(rootDir, 'public', 'data', 'beaches');
 const appOutputDir = path.join(outputDir, 'app');
 const appSummaryOutputDir = path.join(appOutputDir, 'summary');
@@ -724,6 +729,7 @@ const buildBeach = (rawBeach, island) => {
     ...(metadata?.nearbyCamping?.length ? { nearbyCamping: metadata.nearbyCamping } : {}),
     ...(metadata?.paidEntry ? { paidEntry: metadata.paidEntry } : {}),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
+    ...(forecastCellsById[String(rawBeach.id)] ? { forecastCell: forecastCellsById[String(rawBeach.id)] } : {}),
     ...(mapCoordinates ? { mapCoordinates } : {}),
     location: {
       region: rawBeach.region,
@@ -770,6 +776,9 @@ const buildSummaryBeach = beach => {
     environment: beach.environment,
     popularityScore: beach.popularityScore,
     coordinates: beach.coordinates,
+    // MUST ride along. The summary tier is the one the app actually clusters on, and without the
+    // cell every cluster falls back to the centroid — which is the bug this exists to close.
+    ...(beach.forecastCell ? { forecastCell: beach.forecastCell } : {}),
     ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
     location: beach.location,
     aliases: beach.aliases,
@@ -948,6 +957,17 @@ const dedupeExactBeaches = beaches => {
 // board to the wrong beach. Seasons ride along so the filter can stop offering a
 // November break in July once it learns about months.
 const surfSpotsJson = JSON.parse(await fs.readFile(surfSpotsPath, 'utf8'));
+
+// Optional by design: missing bake => every beach keeps forecastCell undefined => the clustering
+// falls back to exactly today's centroid behaviour. A half-present map is the dangerous case, so
+// the clustering checks per cluster that ALL members carry one before it splits anything.
+const forecastCellsById = await fs
+  .readFile(forecastCellsPath, 'utf8')
+  .then(raw => JSON.parse(raw).cells || {})
+  .catch(() => {
+    console.warn('No data/forecast-cells.generated.json — beaches will cluster on centroids as before.');
+    return {};
+  });
 // TWO INDEPENDENT GUIDES MINIMUM. A single mention is worth recording but not
 // worth acting on: one blog naming a beach is how the fabricated 543 got there in
 // spirit, and sending someone with a board to a break only one site has heard of

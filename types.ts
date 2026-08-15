@@ -352,6 +352,15 @@ export interface Beach {
     placeId?: string;
   };
   coordinates: { lat: number; lon: number; };
+  /**
+   * The weather-model grid cell Open-Meteo actually answers this beach from, as `lat_lon` of the
+   * cell centre — MEASURED once by scripts/bakeForecastModelCells.mjs, not derived. It cannot be
+   * derived: the default `cell_selection=land` walks a 90 m elevation model to pick a land cell
+   * of similar height, and a plain geometric snap predicts the real cell for only ~49% of
+   * beaches. utils/beachForecastClusters.ts is the only consumer — it refuses to let one
+   * forecast point speak for beaches sitting in different cells.
+   */
+  forecastCell?: string;
   mapCoordinates?: BeachMapCoordinates;
   location?: Partial<BeachLocation>;
   crowdLevel?: CrowdLevel;

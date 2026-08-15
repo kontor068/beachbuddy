@@ -69,6 +69,78 @@ export const MAX_SAMPLING_DISTANCE_KM = 4;
 /** Finer grids used ONLY to split clusters that violate MAX_SAMPLING_DISTANCE_KM. */
 const REFINEMENT_STEPS = [0.04, 0.03, 0.02, 0.015];
 
+/**
+ * WHY DISTANCE WAS NEVER ENOUGH — measured 15/08/2026, Elafonisi.
+ *
+ * MAX_SAMPLING_DISTANCE_KM was calibrated (09/08) on the belief that the model answers from a
+ * 0.25° grid, so 4 km was comfortably inside one cell. It is not. Open-Meteo's `best_match`
+ * answers Greece from a ~0.0625° grid (≈6 km), and — more importantly — it does NOT hand back
+ * the nearest cell: the default `cell_selection=land` walks a 90 m elevation model to find a
+ * LAND cell of similar height to the point asked about. Two consequences, both measured:
+ *
+ *   1. A centroid is a synthetic point. Elafonisi's cluster centroid (5 beaches, 3.51 km away —
+ *      inside the 4 km budget) resolved to a cell at 34 m elevation reading 50.9 km/h, while the
+ *      beach itself resolved to a 1 m cell reading 43.2 km/h. The card said 7 Bft for a beach
+ *      having 6, with a live webcam showing flat water.
+ *   2. The cell CANNOT be derived offline. Snapping a coordinate to a 0.0625° box predicts the
+ *      cell Open-Meteo actually returns for only 48.9% of our 2.862 beaches (probed 15/08) —
+ *      the land/elevation walk moves the other half. So the cell has to be measured once and
+ *      baked: scripts/bakeForecastModelCells.mjs writes it, buildBeachRegionData stamps it onto
+ *      every beach as `forecastCell`, and the pass below is the only consumer.
+ *
+ * National measurement, 2.862 beaches probed 15/08/2026:
+ *   distinct model cells                                     632
+ *   clusters before this pass / after                        1.157 → 1.382 (+19.4%)
+ *   beaches in a cluster that straddles two or more cells    289 (10.1%)
+ *
+ * The pass is SPLIT-ONLY on purpose. Grouping straight by cell would cost less (632 points) but
+ * it MERGES clusters, and resolveClusterMarinePoint in hooks/useWeather.ts averages the members'
+ * marine sample points behind a pairwise-spread guard — bigger clusters make that guard fail and
+ * fall back to the centroid, trading a wind fix for a wave regression. Splitting only ever makes
+ * the marine side tighter. The cheaper "one grouping for wind, another for waves" shape is a
+ * separate change and is NOT what shipped here.
+ */
+const splitBySharedModelCell = (clusters: Beach[][]): Beach[][] =>
+  clusters.flatMap(members => {
+    // A region built before the bake — or one beach missing its cell — keeps the old behaviour
+    // rather than being split on a half-known signal. Fallback is guarded, not assumed.
+    if (members.some(beach => !beach.forecastCell)) return [members];
+
+    const byCell = new Map<string, Beach[]>();
+    for (const beach of members) {
+      const cell = beach.forecastCell as string;
+      byCell.set(cell, [...(byCell.get(cell) || []), beach]);
+    }
+    return [...byCell.values()];
+  });
+
+/**
+ * The point that will be sent to Open-Meteo for this group.
+ *
+ * A centroid is only safe when we cannot do better. When every member shares a baked cell, we
+ * send a REAL member coordinate instead — the one nearest the centroid — because that coordinate
+ * is the one we probed, so the cell that comes back is the cell we recorded. A centroid carries
+ * no such guarantee: it is a point nobody ever asked the model about.
+ */
+const samplingPointFor = (members: Beach[]): { lat: number; lon: number } => {
+  const centroid = centroidOf(members);
+  const cell = members[0]?.forecastCell;
+  if (!cell || members.some(beach => beach.forecastCell !== cell)) return centroid;
+
+  let best = members[0];
+  let bestDistance = Infinity;
+  for (const beach of members) {
+    const d = distanceKm(centroid.lat, centroid.lon, beach.coordinates.lat, beach.coordinates.lon);
+    // Ties break on id so the choice is stable across runs and machines — the offline gates
+    // rebuild these clusters and compare them against the shipped ones.
+    if (d < bestDistance || (d === bestDistance && beach.id < best.id)) {
+      best = beach;
+      bestDistance = d;
+    }
+  }
+  return { lat: best.coordinates.lat, lon: best.coordinates.lon };
+};
+
 export interface BeachForecastCluster {
   key: string;
   lat: number;
@@ -144,10 +216,14 @@ export const buildBeachForecastClusters = (beaches: Beach[]): BeachForecastClust
     const grouped = gridAt(beaches, step);
 
     if (grouped.size <= MAX_BEACH_FORECAST_CLUSTERS || step === BEACH_FORECAST_CLUSTER_STEPS[BEACH_FORECAST_CLUSTER_STEPS.length - 1]) {
-      return refineByDistance(Array.from(grouped.values())).map(clusterBeaches => {
-        const { lat, lon } = centroidOf(clusterBeaches);
-        // Key from the actual centroid (4 decimals ≈ 11 m): refined siblings must not
-        // collide, and the old snapped-grid key could not tell them apart.
+      // Distance first, then model cell: refining by distance can only make a group tighter, and
+      // a tighter group is never split further by the cell pass than a loose one would be.
+      const refined = splitBySharedModelCell(refineByDistance(Array.from(grouped.values())));
+      return refined.map(clusterBeaches => {
+        const { lat, lon } = samplingPointFor(clusterBeaches);
+        // Key from the actual sampling point (4 decimals ≈ 11 m): refined siblings must not
+        // collide, and the old snapped-grid key could not tell them apart. Two clusters cannot
+        // share a key because they cannot share the beach the point came from.
         return {
           key: `${lat.toFixed(4)}_${lon.toFixed(4)}`,
           lat,
