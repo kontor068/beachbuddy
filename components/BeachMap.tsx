@@ -3024,7 +3024,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * `!isSevereWind` γιατί στα ≥7 Μποφόρ δεν υπάρχει λεζάντα με μετρημένα χρώματα — υπάρχει μία
    * γραμμή «ακατάλληλες» — και ένα κουμπί που προτείνει παραλίες δίπλα της θα την αντέφασκε.
    */
-  const canOfferCalmWater = Boolean(onCalmWaterFilterChange) && !isSevereWind && calmWaterOffer !== null;
+  /**
+   * ΔΙΑΚΟΠΤΗΣ ΕΜΦΑΝΙΣΗΣ ΤΟΥ «ΗΡΕΜΟ ΝΕΡΟ» — ΣΒΗΣΤΟΣ ΜΕΧΡΙ ΝΑ ΤΟ ΔΕΙ Ο ΜΙΛΤΟΣ (15/08/2026).
+   *
+   * Εντολή: «βγάλε live όλες τις αλλαγές εκτός από το κουμπί ήρεμο νερό, αυτό θα το ξαναδώ».
+   * Το §Γ16 ήταν δεμένο στο ΙΔΙΟ commit με τα §Γ13/§Γ14/§Γ15, σε κοινά αρχεία — ξήλωμα θα
+   * ακουμπούσε πέντε αρχεία ξένης δουλειάς για να κρύψει ένα κουμπί.
+   *
+   * Γι' αυτό σβήνει ΜΟΝΟ Η ΕΜΦΑΝΙΣΗ, εδώ, με μία σταθερά. Ο κανόνας, οι δύο πύλες ασφαλείας και
+   * ολόκληρο το `utils/calmWaterFilter` μένουν άθικτα και οι πύλες τους πράσινες — το φίλτρο
+   * απλώς δεν προσφέρεται ποτέ στην οθόνη. **Για να ανάψει ξανά: `true`, τίποτα άλλο.**
+   */
+  const CALM_WATER_CHIP_ENABLED = false;
+  const canOfferCalmWater = CALM_WATER_CHIP_ENABLED
+    && Boolean(onCalmWaterFilterChange) && !isSevereWind && calmWaterOffer !== null;
   /**
    * One row per colour that is ACTUALLY on the map, roughest first, each with its count. A colour
    * nobody is wearing does not appear; a colour somebody is wearing cannot be left out. This is
