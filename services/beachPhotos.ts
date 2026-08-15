@@ -167,9 +167,11 @@ const BEACH_PHOTOS: Record<string, string[]> = {
   'Tsigrado': [wm('Moonscape surrounding Sarakiniko Beach on Milos Island, Greece.jpg')],
 
   // --- Ios ---
-  'Μυλοπότας': [wm('Ios Milopotas.JPG')],
-  'Mylopotas': [wm('Ios Milopotas.JPG')],
-  'Μαγγανάρι': [wm('Ios island, Cyclades, Greece beach view 2007.jpg')],
+  // ΚΕΝΟ ΕΠΙΤΗΔΕΣ. Οι φωτογραφίες της Ίου ζουν στο CYCLADES_BEACH_PHOTOS_BY_ISLAND.ios, που
+  // ελέγχεται ΠΡΩΤΟ — άρα ό,τι γραφόταν εδώ ήταν νεκρό. Και ήταν παγίδα: εδώ κάθονταν
+  // 'Ios Milopotas.JPG' και 'Ios island, Cyclades, Greece beach view 2007.jpg' (μακρινή πλαγιά
+  // πάνω από ανώνυμο όρμο, που δεν ονομάζει καμία παραλία), έτοιμα να σερβιριστούν αν κάποτε
+  // έλειπε το κλειδί του νησιού. Βρέθηκαν στον επανέλεγχο της Ίου, 15/08/2026.
 
   // --- Folegandros ---
 
@@ -912,6 +914,16 @@ const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> 
     'Mylopotas': [wm('Mylopotas beach 3.jpg'), wm('Mylopotas beach 5.jpg')],
     'Μαγγανάρι': [wm('Manganari11.jpg'), wm('Manganari2.jpg')],
     'Manganari': [wm('Manganari11.jpg'), wm('Manganari2.jpg')],
+    /**
+     * Η Ψάθη ήταν καταχωρημένη στην ΚΙΜΩΛΟ (15/08/2026, επανέλεγχος Ίου). Δύο σήματα την
+     * φέρνουν εδώ: ο ίδιος ο φωτογράφος τιτλοφορεί «Psathi Beach» και βάζει tags **ios** +
+     * **psathi**· και η Ψάθη Κιμώλου είναι **λιμάνι-χωριό** — τέσσερα ανεξάρτητα αρχεία Commons
+     * του Kritzolina («Psathi, Port village of Kimolos in 2008») δείχνουν μόλο, βάρκες, σύρματα
+     * και ασπρόσπιτα πάνω στο νερό. Η φωτογραφία δεν έχει **τίποτα** από αυτά: ανοργάνωτη
+     * αμμουδιά, γουρούνα, ανοιχτό πέλαγος. Άρα δεν είναι Κίμωλος.
+     */
+    'Ψάθη': ['https://live.staticflickr.com/3542/3821948623_81aeddacee_b.jpg'],
+    'Psathi': ['https://live.staticflickr.com/3542/3821948623_81aeddacee_b.jpg'],
   },
   folegandros: {
     'Λιβαδάκι': [wm('Paralia Livadaki Beach, Folegandros, Greece.jpg')],
@@ -1020,7 +1032,12 @@ const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> 
   },
   kimolos: {
     'Κλήμα': ['https://live.staticflickr.com/6124/5945735083_cabfa59f5f_b.jpg'],
-    'Ψάθη': ['https://live.staticflickr.com/3542/3821948623_81aeddacee_b.jpg'],
+    // Η Ψάθη μένει ΧΩΡΙΣ φωτογραφία (15/08/2026). Είχε τη Flickr 3821948623, που ο φωτογράφος
+    // της τιτλοφορεί «Psathi Beach» και ταγκάρει **ios** — και δείχνει ανοργάνωτη αμμουδιά με
+    // ανοιχτό πέλαγος, ενώ η Ψάθη Κιμώλου είναι λιμάνι-χωριό με μόλο και σπίτια στο νερό
+    // (τέσσερα αρχεία Commons του Kritzolina, «Port village of Kimolos»). Πήγε στην Ίο.
+    // Τα διαθέσιμα αρχεία της Ψάθης Κιμώλου δείχνουν το ΛΙΜΑΝΙ, που ο κλειδωμένος κανόνας 2
+    // απαγορεύει ρητά ως φωτογραφία παραλίας. Καμία φωτό > λάθος φωτό.
     'Ελληνικά': ['https://live.staticflickr.com/2010/2500522340_9589d6bf71.jpg'],
     'Πράσα': [wm('Kimolos Prasa beach.jpg'), wm('Prasa beach.jpg')],
     'Πράσα Άγιος Γεώργιος': [wm('Kimolos Prasa beach.jpg'), wm('Prasa beach.jpg')],

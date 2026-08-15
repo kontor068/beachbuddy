@@ -1,0 +1,303 @@
+{
+  "generatedAt": "2026-08-15T08:39:14.059Z",
+  "params": {
+    "types": [
+      "asphalt_road",
+      "passable_dirt_road"
+    ],
+    "regionFilter": "south-aegean-ios",
+    "radius": 300,
+    "pavedThreshold": 120
+  },
+  "totals": {
+    "candidates": 13,
+    "checked": 13,
+    "suspect": 10
+  },
+  "byRegion": {
+    "south-aegean-ios": {
+      "checked": 13,
+      "suspect": 10
+    }
+  },
+  "suspects": [
+    {
+      "id": 1803,
+      "name": "Ψάθη",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 123,
+      "trackM": 167,
+      "footM": 375,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.73721/25.36475"
+    },
+    {
+      "id": 1776,
+      "name": "Λορέντζαινα",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 152,
+      "trackM": null,
+      "footM": 269,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.75185/25.26402"
+    },
+    {
+      "id": 1759,
+      "name": "Αγία Θεοδότη",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 215,
+      "trackM": 296,
+      "footM": 201,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.75362/25.32892"
+    },
+    {
+      "id": 1774,
+      "name": "Κουμπάρα",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 290,
+      "trackM": 144,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.72527/25.2561"
+    },
+    {
+      "id": 1756,
+      "name": "Gero Aggeli",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 370,
+      "trackM": 431,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.7883/25.30114"
+    },
+    {
+      "id": 1762,
+      "name": "Αλμυρός",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 455,
+      "trackM": 245,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.74594/25.2638"
+    },
+    {
+      "id": 1758,
+      "name": "Plakotos",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 795,
+      "trackM": 82,
+      "footM": 294,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.78565/25.2899"
+    },
+    {
+      "id": 1768,
+      "name": "Καμπάκι",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 922,
+      "trackM": 282,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.77708/25.26989"
+    },
+    {
+      "id": 1767,
+      "name": "Κάλαμος",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": null,
+      "trackM": 172,
+      "footM": 274,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.69395/25.38073"
+    },
+    {
+      "id": 1769,
+      "name": "Καρατζάς",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": null,
+      "trackM": null,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.78518/25.27514"
+    }
+  ],
+  "all": [
+    {
+      "id": 1756,
+      "name": "Gero Aggeli",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 370,
+      "trackM": 431,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.7883/25.30114"
+    },
+    {
+      "id": 1758,
+      "name": "Plakotos",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 795,
+      "trackM": 82,
+      "footM": 294,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.78565/25.2899"
+    },
+    {
+      "id": 1759,
+      "name": "Αγία Θεοδότη",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "017_1601_1700",
+      "pavedM": 215,
+      "trackM": 296,
+      "footM": 201,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.75362/25.32892"
+    },
+    {
+      "id": 1762,
+      "name": "Αλμυρός",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 455,
+      "trackM": 245,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.74594/25.2638"
+    },
+    {
+      "id": 1767,
+      "name": "Κάλαμος",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": null,
+      "trackM": 172,
+      "footM": 274,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.69395/25.38073"
+    },
+    {
+      "id": 1768,
+      "name": "Καμπάκι",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 922,
+      "trackM": 282,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.77708/25.26989"
+    },
+    {
+      "id": 1769,
+      "name": "Καρατζάς",
+      "regionId": "south-aegean-ios",
+      "accessType": "passable_dirt_road",
+      "batch": "018_1701_1800",
+      "pavedM": null,
+      "trackM": null,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.78518/25.27514"
+    },
+    {
+      "id": 1774,
+      "name": "Κουμπάρα",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 290,
+      "trackM": 144,
+      "footM": null,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.72527/25.2561"
+    },
+    {
+      "id": 1776,
+      "name": "Λορέντζαινα",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 152,
+      "trackM": null,
+      "footM": 269,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.75185/25.26402"
+    },
+    {
+      "id": 1778,
+      "name": "Μαγγανάρι",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": null,
+      "trackM": 109,
+      "footM": 92,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.6586/25.37144"
+    },
+    {
+      "id": 1780,
+      "name": "Μυλοπότας",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 114,
+      "trackM": null,
+      "footM": 204,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.71253/25.29401"
+    },
+    {
+      "id": 1795,
+      "name": "Τζαμαρία",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 69,
+      "trackM": null,
+      "footM": 39,
+      "suspect": false,
+      "osm": "https://www.openstreetmap.org/#map=18/36.72447/25.26459"
+    },
+    {
+      "id": 1803,
+      "name": "Ψάθη",
+      "regionId": "south-aegean-ios",
+      "accessType": "asphalt_road",
+      "batch": "018_1701_1800",
+      "pavedM": 123,
+      "trackM": 167,
+      "footM": 375,
+      "suspect": true,
+      "osm": "https://www.openstreetmap.org/#map=18/36.73721/25.36475"
+    }
+  ]
+}

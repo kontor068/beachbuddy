@@ -1,0 +1,710 @@
+{
+ "generatedAt": "2026-08-15T08:43:42.698Z",
+ "scope": {
+  "islands": [],
+  "regions": [
+   "south-aegean-ios"
+  ]
+ },
+ "totals": {
+  "PASS": 10,
+  "REVIEW": 15
+ },
+ "rows": [
+  {
+   "id": 1758,
+   "name": "Plakotos",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.78565,
+    "lon": 25.2899
+   },
+   "query": "Plakotos, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Plakotos, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Plakotos",
+    "distanceMeters": 46,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Plakotos",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 1759,
+   "name": "Αγία Θεοδότη",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.75362,
+    "lon": 25.32892
+   },
+   "query": "Παραλία Αγία Θεοδότη, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Αγία Θεοδότη, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Oasis Ios",
+    "distanceMeters": 376,
+    "nameScore": 35,
+    "islandScore": 15,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1760,
+   "name": "Αγία Κυριακή",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.71983,
+    "lon": 25.39454
+   },
+   "query": "Παραλία Αγία Κυριακή, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Αγία Κυριακή, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Αγία Κυριακή",
+    "distanceMeters": 9,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1762,
+   "name": "Αλμυρός",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.74594,
+    "lon": 25.2638
+   },
+   "query": "Παραλία Αλμυρός, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Αλμυρός, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Αλμυρός",
+    "distanceMeters": 3,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1764,
+   "name": "Βαθύ Ρέμα",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.72584,
+    "lon": 25.38836
+   },
+   "query": "Βαθύ Ρέμα, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Βαθύ Ρέμα, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Βαθύ Ρέμα",
+    "distanceMeters": 63,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1765,
+   "name": "Βαλμάς",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.71569,
+    "lon": 25.26968
+   },
+   "query": "Βαλμάς, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Βαλμάς, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Βαλμάς",
+    "distanceMeters": 2,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1767,
+   "name": "Κάλαμος",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.69395,
+    "lon": 25.38073
+   },
+   "query": "Κάλαμος, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κάλαμος, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Κάλαμος",
+    "distanceMeters": 67,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1768,
+   "name": "Καμπάκι",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.77708,
+    "lon": 25.26989
+   },
+   "query": "Καμπάκι, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καμπάκι, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Καμπάκι",
+    "distanceMeters": 37,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Plakotos",
+    "distanceMeters": 2021,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 1772,
+   "name": "Κλήμα",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.68732,
+    "lon": 25.31528
+   },
+   "query": "Παραλία Κλήμα, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κλήμα, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Κλήμα",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1773,
+   "name": "Κολιτσάνι",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.71595,
+    "lon": 25.27914
+   },
+   "query": "Κολιτσάνι, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κολιτσάνι, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Κολιτσάνι",
+    "distanceMeters": 50,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1774,
+   "name": "Κουμπάρα",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.72527,
+    "lon": 25.2561
+   },
+   "query": "Παραλία Κουμπάρα, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κουμπάρα, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Κουμπάρα",
+    "distanceMeters": 24,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1776,
+   "name": "Λορέντζαινα",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.75185,
+    "lon": 25.26402
+   },
+   "query": "Λορέντζαινα, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λορέντζαινα, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Λορέντζαινα",
+    "distanceMeters": 7,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1778,
+   "name": "Μαγγανάρι",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.6586,
+    "lon": 25.37144
+   },
+   "query": "Παραλία Μαγγανάρι, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Μαγγανάρι, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Μαγγανάρι",
+    "distanceMeters": 220,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1780,
+   "name": "Μυλοπότας",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.71253,
+    "lon": 25.29401
+   },
+   "query": "Παραλία Μυλοπότας, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Μυλοπότας, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "ΜΥΛΟΠΟΤΑΣ (ΝΟΤΙΑ ΠΑΡΑΛΙΑ)",
+    "distanceMeters": 278,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1785,
+   "name": "Παπάς",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.6841,
+    "lon": 25.38099
+   },
+   "query": "Παραλία Παπάς, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παπάς, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Παπάς",
+    "distanceMeters": 20,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1789,
+   "name": "Πικρί Νερό",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.67871,
+    "lon": 25.3275
+   },
+   "query": "Πικρί Νερό, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Πικρί Νερό, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Πικρί Νερό",
+    "distanceMeters": 10,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1791,
+   "name": "Ρούσσου",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.73137,
+    "lon": 25.37822
+   },
+   "query": "Παραλία Ρούσσου, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Ρούσσου, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Ρούσσου",
+    "distanceMeters": 7,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1792,
+   "name": "Σαντορινέικο",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.65719,
+    "lon": 25.36424
+   },
+   "query": "Παραλία Σαντορινέικο, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Σαντορινέικο, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Σαντορινέικο",
+    "distanceMeters": 93,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1793,
+   "name": "Σαπουνόχωμα",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.69429,
+    "lon": 25.30187
+   },
+   "query": "Σαπουνόχωμα, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Σαπουνόχωμα, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Σαπουνόχωμα",
+    "distanceMeters": 10,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1795,
+   "name": "Τζαμαρία",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.72447,
+    "lon": 25.26459
+   },
+   "query": "Παραλία Τζαμαρία, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τζαμαρία, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Τζαμαρία",
+    "distanceMeters": 4,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1798,
+   "name": "Τρεις Κλεισιές βόρειος",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.67298,
+    "lon": 25.38797
+   },
+   "query": "Παραλία Τρεις Κλεισιές βόρειος, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τρεις Κλεισιές βόρειος, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Τρεις Κλεισιές βόρειος",
+    "distanceMeters": 28,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1799,
+   "name": "Τρεις Κλεισιές μεγάλη",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.66892,
+    "lon": 25.38213
+   },
+   "query": "Παραλία Τρεις Κλεισιές μεγάλη, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Τρεις Κλεισιές μεγάλη, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Τρεις Κλεισιές μεγάλη",
+    "distanceMeters": 10,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1800,
+   "name": "Τρεις Κλεισιές μικρή",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.67231,
+    "lon": 25.38263
+   },
+   "query": "Παραλία Τρεις Κλεισιές μικρή, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Τρεις Κλεισιές μικρή, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Τρεις Κλεισιές μικρή",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1801,
+   "name": "Τρυπητή",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.6567,
+    "lon": 25.34767
+   },
+   "query": "Τρυπητή, Ios",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τρυπητή, Ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Τρυπητή",
+    "distanceMeters": 34,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 1803,
+   "name": "Ψάθη",
+   "regionId": "south-aegean-ios",
+   "island": "Ios",
+   "coordinate": {
+    "lat": 36.73721,
+    "lon": 25.36475
+   },
+   "query": "Παραλία Ψάθη, Ios",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Ψάθη, ios",
+   "best": {
+    "source": "nominatim",
+    "name": "Ψάθη",
+    "distanceMeters": 393,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": null
+  }
+ ]
+}

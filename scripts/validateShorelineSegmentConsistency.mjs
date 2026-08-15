@@ -264,6 +264,11 @@ mkdirSync(absoluteOutDir, { recursive: true });
 const outPath = path.join(absoluteOutDir, `${regionId}.json`);
 writeFileSync(outPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 
-assert(unresolved.length === 0, `Unresolved shoreline segment exposure contradictions:\n${JSON.stringify(unresolved, null, 2)}`);
+// --no-assert: γράψε την αναφορά και βγες καθαρά. Το χρησιμοποιεί ο εθνικός runner
+// (validateShorelineSegmentsGate.mjs), που κρίνει ο ίδιος ΟΛΕΣ τις περιοχές μαζί απέναντι στη
+// γραμμένη λίστα αποδεκτών — αλλιώς μια αποδεκτή αντίφαση θα έριχνε το παιδί-process.
+if (!process.argv.includes('--no-assert')) {
+  assert(unresolved.length === 0, `Unresolved shoreline segment exposure contradictions:\n${JSON.stringify(unresolved, null, 2)}`);
+}
 
 console.log(JSON.stringify({ outPath, summary: payload.summary }, null, 2));

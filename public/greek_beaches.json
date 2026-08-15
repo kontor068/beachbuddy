@@ -134269,7 +134269,8 @@
             ],
             "sourceNotes": [
               "Ios local-source pass 2026-05-26: Meteo beach forecast identifies Almyros-Ios and lists it as fine-sand and non-organized. In2Greece places Almyros on the western side of Ios, very close to Chora port. FotoTravel supports the Ios Almyros beach identity. Removed unsupported parking and shade claims.",
-              "Strict Ios evidence pass 2026-05-29: Meteo, FotoTravel, and In2Greece support Almyros-Ios identity near the port/Chora side, fine-sand terrain, non-organized status, and local beach-list inclusion."
+              "Strict Ios evidence pass 2026-05-29: Meteo, FotoTravel, and In2Greece support Almyros-Ios identity near the port/Chora side, fine-sand terrain, non-organized status, and local beach-list inclusion.",
+              "Ios recheck 2026-08-15 (access): the road-proximity audit flagged Almyros as \"declares asphalt but nearest paved road is 455 m, with a track at 245 m\". Re-queried Overpass directly around the pin: a highway=service road reaches 43 m and a highway=tertiary 193 m, inside the built-up Chora/Gialos area the record already describes. The audit counts only tertiary-and-above as \"paved\", so it never saw the service road that actually reaches this beach. access.type kept as asphalt_road; nothing else changed. Flag resolved, not carried."
             ],
             "orientation": {
               "degrees": 284.7,

@@ -15,7 +15,7 @@
  * Run: node scripts/validateConditionsFeelPhrase.mjs
  */
 import type { LanguageCode } from '../types';
-import { conditionToneLabels } from '../utils/conditionToneLabels';
+import { conditionToneLabels, causeLineLabels } from '../utils/conditionToneLabels';
 import { buildConditionsFeel, waveFeelLevel, windFeelLevel } from '../utils/conditionsFeelPhrase';
 import { SUPPORTED_LANGUAGES } from '../utils/i18n';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
@@ -41,6 +41,27 @@ const WAVE_SAMPLES = [0, 0.05, 0.1, 0.19, 0.2, 0.3, 0.39, 0.4, 0.6, 0.79, 0.8, 1
 const BEAUFORT_SAMPLES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const failures: string[] = [];
+
+/**
+ * Η ΓΡΑΜΜΗ ΑΙΤΙΑΣ ΠΕΡΝΑΕΙ ΑΠΟ ΤΟΝ ΙΔΙΟ ΕΛΕΓΧΟ (15/08/2026).
+ *
+ * Τα chips του χάρτη απέκτησαν μια γραμμή που λέει τι έβαψε το χρώμα — «Φταίει ο αέρας, όχι το
+ * κύμα». Είναι ΠΕΡΙΓΡΑΦΗ, όχι ετυμηγορία: αν κάποια στιγμή δανειστεί λέξη από το λεξιλόγιο της
+ * ετυμηγορίας, η οθόνη θα έχει δύο κρίσεις υπολογισμένες χωριστά, που καμία πύλη δεν συμφιλιώνει.
+ * Ο κατάλογος των απαγορευμένων λέξεων ζει εδώ και σε ΠΕΝΤΕ γλώσσες, γι' αυτό ο έλεγχος γίνεται
+ * εδώ και όχι στο validateConditionToneAgreement, που θα κρατούσε δεύτερο, φτωχότερο αντίγραφο.
+ */
+for (const [language, forms] of Object.entries(causeLineLabels)) {
+  for (const [form, words] of Object.entries(forms)) {
+    for (const [slot, text] of Object.entries(words)) {
+      const verdict = VERDICT_WORDS.find(word => text.toLowerCase().includes(word));
+      if (verdict) {
+        failures.push(`[${language}] κρίση «${verdict}» μέσα στη γραμμή αιτίας ${form}.${slot}: «${text}»`);
+      }
+    }
+  }
+}
+
 const longest: Record<string, { phrase: string; chars: number }> = {};
 let checked = 0;
 let overSingleLine = 0;

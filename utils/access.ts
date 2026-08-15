@@ -11,21 +11,44 @@ type AccessSource = {
   accessNotes?: Beach['accessNotes'];
 };
 
+const DIRT_ROAD_WORDS = /χωματοδρομ|dirt road|gravel road|unpaved|sterrato|piste/;
+
+/**
+ * Μια πρόταση που λέει «ΔΕΝ το ξέρουμε», όχι «δεν περνάει».
+ *
+ * Επίτηδες στενή: σκέτο «δεν» θα έκοβε και το «ο χωματόδρομος **δεν** είναι βατός με χαμηλό
+ * αυτοκίνητο», που είναι **βεβαίωση** δρόμου και πρέπει να φτάσει στον επισκέπτη.
+ */
+const DENIES_KNOWLEDGE = /δεν υπαρχει|δεν υπαρχουν|δεν εχει καταγραφει|χωρις ενδειξη|χωρις πηγη|no source|not supported|no evidence/;
+
+/**
+ * ΓΙΑΤΙ ΔΙΑΒΑΖΕΤΑΙ ΠΡΟΤΑΣΗ-ΠΡΟΤΑΣΗ ΚΑΙ ΟΧΙ ΟΛΟ ΤΟ ΚΕΙΜΕΝΟ ΜΑΖΙ — 15/08/2026.
+ *
+ * Η συνάρτηση έψαχνε τη λέξη «χωματόδρομ» σε **όλο** το ελεύθερο κείμενο ενωμένο σε ένα string.
+ * Το δικό μας τυποποιημένο σημείωμα «**Δεν** υπάρχει ακόμη source-backed ένδειξη για
+ * **χωματόδρομο**, μονοπάτι ή εύκολη οδική πρόσβαση» περιέχει τη λέξη μέσα σε άρνηση — οπότε η
+ * κάρτα τύπωνε «Χωματόδρομος» ακριβώς εκεί που λέγαμε ότι **δεν ξέρουμε αν υπάρχει δρόμος**.
+ * Το `isDirtRoad` υπερισχύει του `access.type` στο `BeachCard`, άρα έσβηνε και τη σωστή ταμπέλα.
+ *
+ * Μετρημένο εθνικά πριν την αλλαγή (2.914 παραλίες): **311** έδειχναν «Χωματόδρομος» χωρίς να το
+ * δηλώνουν — 267 `unknown`, 18 `hiking_path_easy`, 15 `hiking_path_difficult`, 5 `asphalt_road`,
+ * 4 `4x4_only`, 1 `difficult_road` και **1 `boat_only`** (παραλία που πάει μόνο με βάρκα).
+ * Μετά: **259 σταματούν**, **0 νέες αρχίζουν**, και **καμία** από τις 259 δεν είχε κείμενο πέρα
+ * από το αντιγραμμένο σημείωμα άρνησης — δηλαδή δεν χάθηκε ούτε μία γνήσια προειδοποίηση.
+ * Οι ~48 που όντως περιγράφουν χωματόδρομο ενώ ο τύπος τους λέει μονοπάτι/άσφαλτο **κρατούν**
+ * την ταμπέλα: εκεί το κείμενο βεβαιώνει, δεν αρνείται.
+ */
 export const hasDirtRoadAccess = (beach: AccessSource): boolean => {
   const access = beach.metadata?.access;
-  const accessText = [
-    access?.type,
-    access?.label,
-    access?.notes,
-    beach.accessNotes?.gr,
-    beach.accessNotes?.en,
-  ].map(normalizeAccessText).join(' ');
 
-  return (
-    access?.type === 'passable_dirt_road' ||
-    access?.type === 'difficult_dirt_road' ||
-    /χωματοδρομ|dirt road|gravel road|unpaved|sterrato|piste/.test(accessText)
-  );
+  if (access?.type === 'passable_dirt_road' || access?.type === 'difficult_dirt_road') return true;
+
+  // Ο τύπος κρίθηκε ήδη παραπάνω· εδώ μένει μόνο το κείμενο που γράφτηκε από άνθρωπο.
+  return [access?.label, access?.notes, beach.accessNotes?.gr, beach.accessNotes?.en].some(field => (
+    normalizeAccessText(field)
+      .split(/[.!;·\n]+/)
+      .some(sentence => DIRT_ROAD_WORDS.test(sentence) && !DENIES_KNOWLEDGE.test(sentence))
+  ));
 };
 
 export const hasBoatOnlyAccess = (beach: Pick<Beach, 'accessibility' | 'metadata'>): boolean => (
