@@ -39,6 +39,7 @@ import { ConstraintFitSection, type ConstraintFit } from '../components/Constrai
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
+import { buildChoppySeaLine } from '../utils/choppySeaCopy';
 import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
 import { getBeachCertification, localizeCertificationNote } from '../utils/certifiedBeaches';
@@ -1067,6 +1068,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       hour: athensNow().getHours(),
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
+      // ...και ο αριθμός που είχε ΜΠΡΟΣΤΑ ΤΟΥ όταν πάτησε το κουμπί. Από τις 13/08/2026 η οθόνη
+      // τυπώνει το νερό της ακτής, όχι το ανοιχτό — οπότε χωρίς αυτό το πεδίο η αναφορά
+      // βαθμονομείται απέναντι σε νούμερο που δεν είδε ποτέ (Λιά 1958: 1,78 vs ~0,10 μ.).
+      shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       live: selectedDayIsToday && selectedHour === undefined,
     });
     setFeedbackSubmitted(true);
@@ -1420,6 +1425,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     language,
     suppressIncidence: false,
   }), [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, language]);
+
+  // Το χαμηλό-αλλά-σπαστό νερό, που μέχρι τις 15/08/2026 δεν το ανέφερε τίποτα. Διαβάζει το ΩΜΟ
+  // ύψος και την περίοδο — τα ίδια που τρέφουν τη σοβαρότητα — και μιλάει μόνο όταν το χρώμα
+  // δίπλα του λέει «ήρεμα». Βλ. utils/choppySeaCopy για τις τρεις πύλες και τα μετρημένα μερίδια.
+  const choppySeaLine = useMemo(() => buildChoppySeaLine({
+    waveHeightM: scoreResult.seaStateWaveM,
+    periodS: scoreResult.seaStatePeriodS,
+    tone: scoreResult.simpleWindSuitability?.suitabilityColor,
+    language,
+  }), [scoreResult.seaStateWaveM, scoreResult.seaStatePeriodS, scoreResult.simpleWindSuitability?.suitabilityColor, language]);
 
   // Show only curated beach-specific photos. Region/island fallbacks are hidden
   // because a wrong landmark damages trust more than a polished placeholder.
@@ -2242,6 +2257,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
           {shoreIncidenceLine && (
             <p className="px-1 text-sm leading-relaxed text-slate-700">{shoreIncidenceLine}</p>
+          )}
+          {/* Πάνω από την εικόνα του κύματος, γιατί εξηγεί ΤΗΝ ΕΙΚΟΝΑ: το σχέδιο δείχνει ένα
+              χαμηλό κύμα και ο επισκέπτης το διαβάζει ως «ήσυχα». Από κάτω θα ήταν διόρθωση. */}
+          {choppySeaLine && (
+            <p className="px-1 text-sm leading-relaxed text-slate-700">{choppySeaLine}</p>
           )}
           <WaveHeightGraphic
             variant="full"

@@ -142,6 +142,12 @@ export interface ConditionsFeelInput {
 export interface ConditionsFeel {
   /** Η έτοιμη φράση, π.χ. «Πολύς αέρας αλλά θάλασσα λάδι». */
   phrase: string;
+  /** Το πρώτο μισό μόνο του, π.χ. «Δυνατός αέρας» — για όταν κάθε μισό μπαίνει πάνω από το ΔΙΚΟ
+   *  του νούμερο αντί για μία ενιαία γραμμή πάνω από τα δύο (BeachCard.tsx, mobile «why» row). */
+  windWord: string;
+  /** Το δεύτερο μισό μόνο του, με κεφαλαίο αρχικό — στη φράση ξεκινά πεζό γιατί ακολουθεί τον
+   *  αέρα, αλλά εδώ στέκεται μόνο του πάνω από το κύμα, άρα θέλει κεφαλαίο σαν να ξεκινά αυτό. */
+  waveWord?: string;
   windLevel: WindFeelLevel;
   waveLevel?: WaveFeelLevel;
   /**
@@ -166,15 +172,19 @@ export const buildConditionsFeel = ({ beaufort, waveM, language }: ConditionsFee
   const windWord = vocabulary.wind[windLevel];
 
   if (typeof waveM !== 'number' || !Number.isFinite(waveM)) {
-    return { phrase: windWord, windLevel, divergent: false, contrast: false };
+    return { phrase: windWord, windWord, windLevel, divergent: false, contrast: false };
   }
 
   const waveLevel = waveFeelLevel(Math.max(0, waveM));
+  const waveWordRaw = vocabulary.wave[waveLevel];
+  const waveWord = waveWordRaw.charAt(0).toUpperCase() + waveWordRaw.slice(1);
   const divergent = Math.abs(windLevel - waveLevel) >= CONTRAST_GAP;
   const contrast = divergent && beaufort <= RELIEF_MAX_BEAUFORT;
   const join = contrast ? vocabulary.joinContrast : vocabulary.join;
   return {
-    phrase: `${windWord}${join}${vocabulary.wave[waveLevel]}`,
+    phrase: `${windWord}${join}${waveWordRaw}`,
+    windWord,
+    waveWord,
     windLevel,
     waveLevel,
     divergent,

@@ -129,6 +129,7 @@ import { getBeachTouristRecognitionScore } from './utils/touristPriority';
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from './utils/mapExposure';
 import { windSectorFromDegrees, type ExposureLevel } from './utils/windExposure';
 import { CALMNESS_ORDER, selectSuitableByTone, selectSuitableToneGroups, type CalmnessTone } from './utils/suitabilityTone';
+import { calmWaterFilterCopy, type CalmWaterState } from './utils/calmWaterFilter';
 import {
   getStayWindowSlots,
   getStaySampleSlots,
@@ -4981,6 +4982,39 @@ export const App: React.FC = () => {
   const [mapToneFilter, setMapToneFilter] = useState<CalmnessTone | null>(null);
   const [mapBeachTones, setMapBeachTones] = useState<Record<number, CalmnessTone>>({});
   /**
+   * «ΗΡΕΜΟ ΝΕΡΟ» — Η ΔΕΥΤΕΡΗ ΚΟΠΗ ΤΗΣ ΙΔΙΑΣ ΛΙΣΤΑΣ (Μίλτος, 15/08/2026).
+   *
+   * Το χρώμα κόβει «πόσο δύσκολη είναι η μέρα εδώ»· αυτό κόβει «πού δεν το ακολούθησε η
+   * θάλασσα». Μετρημένο εθνικά (110 περιοχές × 5 μέρες): σε δύσκολη μέρα οι δύο κατηγορίες
+   * συνυπάρχουν στο 89,5% των περιπτώσεων, ενώ ΜΕΣΑ στις κόκκινες ήρεμο νερό έχει το 1% —
+   * γι' αυτό είναι δεύτερος άξονας και όχι υποδιαίρεση του χρώματος. Ο κανόνας, οι δύο πύλες
+   * ασφαλείας και τα κατώφλια ζουν στο utils/calmWaterFilter· εδώ μόνο συνδέονται.
+   *
+   * ΤΟ ΣΥΝΟΛΟ ΕΡΧΕΤΑΙ ΑΠΟ ΤΟΝ ΧΑΡΤΗ, δεν υπολογίζεται εδώ — ίδιος κανόνας με το `mapBeachTones`:
+   * αν το App ξαναρωτούσε μόνο του ποιο είναι το κύμα κάθε παραλίας, η λίστα και οι πινέζες θα
+   * μπορούσαν να διαφωνήσουν για το ίδιο νερό.
+   */
+  const [calmWaterFilter, setCalmWaterFilter] = useState(false);
+  const [calmWaterState, setCalmWaterState] = useState<CalmWaterState>({ status: 'absent', reason: 'light-wind' });
+  const calmWaterOffer = calmWaterState.status === 'offered' ? calmWaterState : null;
+  /**
+   * ΔΥΟ ΤΡΟΠΟΙ ΝΑ ΚΟΨΕΙΣ ΤΗΝ ΙΔΙΑ ΛΙΣΤΑ ΔΕΝ ΑΝΑΒΟΥΝ ΜΑΖΙ.
+   *
+   * Η τομή τους μετρήθηκε πριν γραφτεί: «Δύσκολες» + «Ήρεμο νερό» = 6 παραλίες σε ΟΛΟ το εθνικό
+   * δείγμα των 602 κόκκινων. Δηλαδή ο συνδυασμός που φαίνεται πιο λογικός στον χρήστη («η μέρα
+   * είναι χάλια, δείξε μου τις ήρεμες από τις δύσκολες») είναι ακριβώς αυτός που βγάζει άδειο.
+   * Αντί για empty state που εξηγεί μια αντίφαση, το ένα κουμπί σβήνει το άλλο — μία επιλογή τη
+   * φορά, πάντα με αποτέλεσμα.
+   */
+  const selectMapToneFilter = useCallback((tone: CalmnessTone | null) => {
+    setMapToneFilter(tone);
+    if (tone) setCalmWaterFilter(false);
+  }, []);
+  const selectCalmWaterFilter = useCallback((active: boolean) => {
+    setCalmWaterFilter(active);
+    if (active) setMapToneFilter(null);
+  }, []);
+  /**
    * The podium's view of the map's own colours: ΙΔΑΝΙΚΗ → 0, ΔΥΣΚΟΛΗ → 3, unknown → undefined.
    *
    * Read, never resolved. The tones come from BeachMap via onBeachTonesChange, which is the same
@@ -5022,21 +5056,36 @@ export const App: React.FC = () => {
     return mapDistanceByBeachId.get(item.beach.id) ?? Infinity;
   }, [mapDistanceByBeachId]);
   // Another region means another set of beaches and another tally; carrying the filter across
-  // could land the user on an empty list with no visible cause.
+  // could land the user on an empty list with no visible cause. Same for «Ήρεμο νερό»: its whole
+  // offer is computed per region, so it cannot survive the move either.
   useEffect(() => {
     setMapToneFilter(null);
+    setCalmWaterFilter(false);
   }, [selectedIsland?.id]);
+  /**
+   * Ενεργό ΜΟΝΟ όσο ο χάρτης προσφέρει κάτι. Ένα φίλτρο που άναψε στις 14:00 και δεν έχει
+   * αποτελέσματα στις 19:00 δεν επιτρέπεται να αδειάσει τη λίστα ούτε για ένα frame — το effect
+   * παρακάτω το σβήνει και το λέει, αυτό εδώ εγγυάται ότι δεν προλαβαίνει να φανεί.
+   */
+  const isCalmWaterActive = calmWaterFilter && calmWaterOffer !== null;
   const isMapToneMatch = useCallback((beachId: number) => (
     !mapToneFilter || mapBeachTones[beachId] === mapToneFilter
   ), [mapToneFilter, mapBeachTones]);
+  const isCalmWaterMatch = useCallback((beachId: number) => (
+    !isCalmWaterActive || Boolean(calmWaterOffer?.beachIds.has(beachId))
+  ), [isCalmWaterActive, calmWaterOffer]);
   /** For the scored card sources, whose items wrap the beach ({ beach, score, … }). */
-  const applyMapToneFilter = useCallback(<T extends { beach: { id: number } }>(list: T[]): T[] => (
-    mapToneFilter ? list.filter(item => isMapToneMatch(item.beach.id)) : list
-  ), [mapToneFilter, isMapToneMatch]);
+  const applyMapToneFilter = useCallback(<T extends { beach: { id: number } }>(list: T[]): T[] => {
+    if (mapToneFilter) return list.filter(item => isMapToneMatch(item.beach.id));
+    if (isCalmWaterActive) return list.filter(item => isCalmWaterMatch(item.beach.id));
+    return list;
+  }, [mapToneFilter, isMapToneMatch, isCalmWaterActive, isCalmWaterMatch]);
   /** For the "all beaches" source, which is a flat Beach[]. */
-  const applyMapToneFilterFlat = useCallback(<T extends { id: number }>(list: T[]): T[] => (
-    mapToneFilter ? list.filter(item => isMapToneMatch(item.id)) : list
-  ), [mapToneFilter, isMapToneMatch]);
+  const applyMapToneFilterFlat = useCallback(<T extends { id: number }>(list: T[]): T[] => {
+    if (mapToneFilter) return list.filter(item => isMapToneMatch(item.id));
+    if (isCalmWaterActive) return list.filter(item => isCalmWaterMatch(item.id));
+    return list;
+  }, [mapToneFilter, isMapToneMatch, isCalmWaterActive, isCalmWaterMatch]);
   /**
    * The beaches wearing the colour picked on the legend — the pool every filter chip below the
    * map has to describe. With no colour picked it is the whole region, i.e. today's behaviour.
@@ -5047,13 +5096,19 @@ export const App: React.FC = () => {
    */
   const toneScopedBeaches = useMemo<Beach[]>(() => {
     if (!selectedIsland) return [];
-    if (!mapToneFilter) return selectedIsland.beaches;
+    if (!mapToneFilter) {
+      // «Ήρεμο νερό» narrows the same pool, so the amenity chips below have to count inside it —
+      // otherwise a chip promises «Ξαπλώστρες 12» and the filtered list shows four.
+      if (!isCalmWaterActive || !calmWaterOffer) return selectedIsland.beaches;
+      const calm = selectedIsland.beaches.filter(beach => calmWaterOffer.beachIds.has(beach.id));
+      return calm.length > 0 ? calm : selectedIsland.beaches;
+    }
 
     const scoped = selectedIsland.beaches.filter(beach => mapBeachTones[beach.id] === mapToneFilter);
     // "The map has not reported a colour yet" (lazy chunk, first paint) is NOT the same as "no
     // beach wears this colour" — treating them alike would empty every chip on the first frame.
     return scoped.length > 0 ? scoped : selectedIsland.beaches;
-  }, [selectedIsland, mapToneFilter, mapBeachTones]);
+  }, [selectedIsland, mapToneFilter, mapBeachTones, isCalmWaterActive, calmWaterOffer]);
   /**
    * Picking a colour has to move the map, not just thin it out.
    *
@@ -5062,12 +5117,20 @@ export const App: React.FC = () => {
    * that said "35 beaches" and got an empty map. Re-fitting to the filtered set is the whole
    * point of the press.
    */
-  const toneFittedMapBeaches = mapToneFilter ? applyMapToneFilter(mapFitBoundsBeaches) : mapFitBoundsBeaches;
+  const toneFittedMapBeaches = (mapToneFilter || isCalmWaterActive)
+    ? applyMapToneFilter(mapFitBoundsBeaches)
+    : mapFitBoundsBeaches;
   const mapFitBoundsKey = useMemo(() => {
     if (!selectedIsland) return undefined;
     // The tone belongs in the key in BOTH branches: without it the fit effect sees the same key
     // and never re-runs, which is exactly the empty map above.
     if (mapToneFilter) return `${selectedIsland.id}:tone:${mapToneFilter}`;
+    // Same lesson, same fix: «Ήρεμο νερό 9» on a viewport holding none of the nine is the Evia
+    // bug wearing a different button. Keyed on the SET, not the flag, because the offer changes
+    // as the hour slider moves while the filter stays on.
+    if (isCalmWaterActive && calmWaterOffer) {
+      return `${selectedIsland.id}:calm:${[...calmWaterOffer.beachIds].sort((a, b) => a - b).join('-')}`;
+    }
     if (!isBeachNameSearchActive) return String(selectedIsland.id);
     // Re-fit whenever the matched set changes (incl. a different single match), so
     // searching a beach pans/centres onto it instead of staying on the island view.
@@ -5076,7 +5139,7 @@ export const App: React.FC = () => {
       .sort((a, b) => a - b)
       .join('-');
     return `${selectedIsland.id}:q:${matchSignature}`;
-  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches, mapToneFilter]);
+  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches, mapToneFilter, isCalmWaterActive, calmWaterOffer]);
   const isProtectedSortOnly = useMemo(() => {
     return sortBy === 'protected' &&
       beachSearchQuery.trim().length === 0 &&
@@ -5320,6 +5383,41 @@ export const App: React.FC = () => {
   const toneDroppedFilterNote = mapToneFilter && toneDroppedFilterLabels?.tone === mapToneFilter && toneDroppedFilterLabels.labels.length > 0
     ? toneFilterDropCopy[language](toneDroppedFilterLabels.labels.join(' · '))
     : undefined;
+  /**
+   * 🕐 ΤΟ ΦΙΛΤΡΟ ΠΟΥ ΑΛΛΑΖΕΙ ΜΕ ΤΗΝ ΩΡΑ — ΤΟ ΕΝΑ ΠΡΑΓΜΑΤΙΚΟ ΡΙΣΚΟ ΑΥΤΟΥ ΤΟΥ FEATURE.
+   *
+   * Κάθε άλλο φίλτρο του site ρωτάει τι ΕΙΝΑΙ η παραλία (άμμος, ξαπλώστρες, πρόσβαση) — σταθερό
+   * όσο ο χρήστης είναι στη σελίδα. Αυτό ρωτάει τι ΚΑΝΕΙ η θάλασσα ΤΩΡΑ, και ο χρήστης έχει από
+   * πάνω του μια μπάρα που αλλάζει το «τώρα». Ανάβει στις 14:00 με 9 παραλίες, σύρει στις 19:00,
+   * ο αέρας πέφτει — και χωρίς αυτό εδώ θα κοίταζε άδεια λίστα χωρίς να καταλαβαίνει γιατί, ή
+   * (χειρότερα) μια λίστα που δεν έχει αφαιρέσει τίποτα ενώ το κουμπί δείχνει αναμμένο.
+   *
+   * Το φίλτρο πέφτει μόνο του και ΤΟ ΛΕΕΙ, με τον λόγο: «καμία δεν έχει» και «τώρα το έχουν
+   * όλες» είναι δύο διαφορετικές ειδήσεις (άλλαξε ώρα ⟷ διάλεξε ελεύθερα). Σιωπηλή πτώση θα
+   * έπαιρνε πίσω μια επιλογή του χρήστη χωρίς λέξη — το ίδιο σφάλμα με άλλα ρούχα, ο λόγος που
+   * υπάρχει και το `toneDroppedFilterLabels` από πάνω.
+   */
+  const [calmWaterDropNote, setCalmWaterDropNote] = useState<string | null>(null);
+  useEffect(() => {
+    setCalmWaterDropNote(null);
+  }, [selectedIsland?.id]);
+  // Μόνο στο ΑΝΑΜΜΑ. Αν καθάριζε σε κάθε αλλαγή του flag, θα έσβηνε το μήνυμα που μόλις έγραψε
+  // το effect από κάτω στο ίδιο render — δηλαδή το φίλτρο θα έπεφτε πάλι σιωπηλά.
+  useEffect(() => {
+    if (calmWaterFilter) setCalmWaterDropNote(null);
+  }, [calmWaterFilter]);
+  useEffect(() => {
+    if (!calmWaterFilter || calmWaterState.status === 'offered') return;
+    setCalmWaterFilter(false);
+    // Λίγος αέρας σημαίνει, μετρημένα, ότι το έχουν όλες (0 στις 259 σκηνές με 0–2 Μποφόρ είχαν
+    // έστω μία παραλία με κύμα) — άρα ο επισκέπτης δεν έχασε καμία επιλογή, την κέρδισε.
+    const copy = getLocalizedCopy(language, calmWaterFilterCopy);
+    setCalmWaterDropNote(
+      calmWaterState.reason === 'none' ? copy.droppedEmpty
+        : calmWaterState.reason === 'has-ideal' ? copy.droppedIdeal
+          : copy.droppedAll
+    );
+  }, [calmWaterFilter, calmWaterState, language]);
   const currentWeatherMode = getWeatherMode(Boolean(weatherError), Boolean(activeWeatherFixtureScenario));
   const currentWaveHeightBucket = getWaveHeightBucket(selectedForecast?.marine?.waveHeightM);
   // Saharan-dust advisory for the selected region — display-only (see services/dustService.ts:
@@ -8266,8 +8364,14 @@ export const App: React.FC = () => {
           // Legend-as-filter: the map hides the pins itself, and reports the colour of every
           // beach so the cards below can hide exactly the same ones.
           toneFilter={mapToneFilter}
-          onToneFilterChange={setMapToneFilter}
+          onToneFilterChange={selectMapToneFilter}
           onBeachTonesChange={setMapBeachTones}
+          // «Ήρεμο νερό»: δεύτερη κοπή της ίδιας λίστας, αμοιβαία αποκλειόμενη με το χρώμα (η
+          // τομή τους μετρήθηκε στο 1% — βλ. utils/calmWaterFilter). Ποιες παραλίες είναι, το
+          // λέει ο χάρτης· εδώ μόνο εφαρμόζεται στις κάρτες από κάτω.
+          calmWaterFilter={calmWaterFilter}
+          onCalmWaterFilterChange={selectCalmWaterFilter}
+          onCalmWaterStateChange={setCalmWaterState}
           // Colours for EVERY beach in the region, not just the pins the chips left standing —
           // that is what `toneScopedBeaches` (and therefore the chip counts) reads.
           toneSourceBeaches={mapSuitableBeaches}
@@ -8396,7 +8500,7 @@ export const App: React.FC = () => {
               suitableTimePrefix={selectedHourPrefix}
               suitableTimeIsNow={isSelectedHourNow}
               activeToneFilter={mapToneFilter}
-              toneFilterDropNote={toneDroppedFilterNote}
+              filterDropNote={toneDroppedFilterNote ?? calmWaterDropNote ?? undefined}
               suitableListCoversEverything={directoryListCoversEveryBeach}
               onActiveSuitableBeachChange={handleActiveDirectoryBeachChange}
               directorySearchCardFocus={directorySearchCardFocus}

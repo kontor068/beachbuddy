@@ -121,6 +121,15 @@ const checks = [
     args: ['scripts/validateSwellOriginCopy.mjs'],
   },
   {
+    id: 'choppy-sea-copy',
+    title: 'Το χαμηλό αλλά σπαστό κύμα δεν περνάει σιωπηλά',
+    description: 'Ελέγχει ότι η γραμμή «κοντό και σπαστό κύμα» (utils/choppySeaCopy) φτάνει όντως σε οθόνη — ΚΑΛΕΙΤΑΙ και ΖΩΓΡΑΦΙΖΕΤΑΙ στη σελίδα παραλίας, με όριο λέξης ώστε ένα μετονομασμένο κάλεσμα να μη γλιστράει. Μετά: πληρότητα και μοναδικότητα σε 5 γλώσσες πάνω στην πραγματική περίπτωση που τη γέννησε (0,68 μ. @ 3,3 δλ), απαγόρευση ύψους σε μέτρα μέσα στο κείμενο, κλείδωμα των δύο μετρημένων σταθερών, και πλέγμα 400 συνδυασμών ύψους × περιόδου × χρώματος όπου η γραμμή πρέπει να σωπαίνει σε ήπιο κύμα, σε αποθάλασσα και πάνω από χρώμα που ήδη προειδοποιεί.',
+    protects: 'Εμποδίζει έναν ολόκληρο άξονα του μοντέλου να μπει μισός. Το `isShortPeriodSea` γράφτηκε 28/07/2026 με σχόλιο «Used only to choose wording» και έζησε 18 μέρες με ΜΗΔΕΝ καταναλωτές: ο αριθμός μετρούσε την αποτομότητα, καμία λέξη δεν την ανέφερε ποτέ. Αποκαλύφθηκε από αναφορά επισκέπτη «Είχε κύμα» για τη Σκάλα Κεφαλονιάς (3105) στις 15/08/2026 — 0,68 μ. στα 3,3 δλ, σοβαρότητα 0,79 έναντι κατωφλιού 0,80, δηλαδή διπλή σιωπή: το χρώμα έχασε για ένα εκατοστό ΚΑΙ η γλώσσα δεν είχε καλωδίωση. Η σπανιότητα φυλάσσεται εξίσου σκληρά: με σκέτη κοντή περίοδο η γραμμή θα έβγαινε στο 43,6% των παραλιών, δηλαδή μόνιμη ταμπέλα.',
+    failureAction: 'Επανάφερε την καλωδίωση ή τη ρήτρα που ονομάζει η πύλη. ΜΗΝ χαλαρώσεις κατώφλι για να μιλήσει μια περίπτωση — τα δύο νούμερα βγήκαν από εθνική μέτρηση (scripts/measureChopExponent.mjs) και αλλάζουν μόνο μαζί με νέα μέτρηση γραμμένη στη βίβλο.',
+    command: process.execPath,
+    args: ['scripts/validateChoppySeaCopy.mjs'],
+  },
+  {
     id: 'per-beach-wind-gates',
     title: 'Every wind gate asks the beach\'s own shore',
     description: 'Reads every call site that decides something about ONE beach — hide the boat-only beaches, demand wind evidence, put shelter before score, switch the list filter on — and fails if any of them is back on the single wind measured at the region\'s geometric centre. Then drives the real ranking functions with fixtures: a calm shore must not be demoted by a region that blows, a shore that blows must be demoted by a region that reads calm, and a pool with no per-beach readings at all must rank exactly as it did before.',
@@ -148,6 +157,15 @@ const checks = [
     args: ['scripts/validateConditionsFeelPhrase.mjs'],
   },
   {
+    id: 'calm-water-filter',
+    title: 'Το φίλτρο «Ήρεμο νερό» δεν βγάζει ποτέ άδειο, άχρηστο ή επικίνδυνο αποτέλεσμα',
+    description: 'Τρέχει την ΑΛΗΘΙΝΗ `resolveCalmWaterState` (utils/calmWaterFilter) σε 8 κατασκευασμένα σενάρια που τρέχουν πάντα, και — όταν υπάρχει το εθνικό δείγμα στο .tmp — στις 550 σκηνές (110 περιοχές × 5 μέρες). Τέσσερις ισχυρισμοί: (Α) όποτε προσφέρεται το chip, ο αριθμός του είναι >0 και <όλες, και η λίστα του έχει ακριβώς τόσα μέλη· (Β) καμία παραλία με `avoid_swimming` ή απόγειο-γυαλί δεν μπαίνει ποτέ μέσα, και καμία με κύμα ≥0,4 μ.· (Γ) κάτω από 3 Μποφόρ το chip σιωπά, και σιωπά ΓΙ᾿ ΑΥΤΟΝ τον λόγο· (Δ) προσφέρεται σε ≥20% των σκηνών, αλλιώς είναι νεκρός κώδικας.',
+    protects: 'Το «Ήρεμο νερό» είναι το ΠΡΩΤΟ φίλτρο του site που αλλάζει με την ώρα — όλα τα άλλα ρωτάνε τι ΕΙΝΑΙ η παραλία (άμμος, ξαπλώστρες) και μένουν σταθερά. Ο επισκέπτης το ανάβει στις 14:00 και σύρει τη μπάρα στις 19:00: χωρίς αυτούς τους ισχυρισμούς κοιτάζει άδεια λίστα, ή κουμπί αναμμένο που δεν αφαιρεί τίποτα. Και επειδή είναι ΠΡΟΟΡΙΣΜΟΣ και όχι σχόλιο, μια παραλία που η ίδια η εφαρμογή λέει «μην μπεις» δεν επιτρέπεται να μπει επειδή έτυχε να έχει χαμηλό κύμα. Μετρημένο πριν γραφτεί: μέσα στις ΚΟΚΚΙΝΕΣ μόνο 6 στις 602 έχουν ήρεμο νερό (1%) — γι᾿ αυτό το φίλτρο κάθεται ΠΑΝΩ από τις ομάδες χρώματος και είναι αμοιβαία αποκλειόμενο με αυτές.',
+    failureAction: 'Διόρθωσε το utils/calmWaterFilter — ΠΟΤΕ την πύλη. Οι δύο έλεγχοι ασφαλείας (avoid_swimming, offshoreFlatWater) είναι μονόδρομοι: μπορούν να βγάλουν παραλία από την προσφορά, ποτέ να προσθέσουν. Αν πέσει το Δ, το feature δεν είναι πια ορατό σε αρκετές οθόνες ώστε να αξίζει τον χώρο του — αυτό είναι απόφαση προϊόντος, όχι κατώφλι να ανέβει.',
+    command: process.execPath,
+    args: ['scripts/validateCalmWaterFilter.mjs'],
+  },
+  {
     id: 'access-reason-copy',
     title: 'The access caption describes the beach it is sitting on',
     description: 'Runs the REAL access predicate (utils/access.getHardAccessKind) and the REAL sentences (utils/accessReasonCopy) over every beach in the country in all five languages, and asserts four things: the word "boat" reaches only beaches that actually need one; an unpaved road is called unpaved and a walk is called a walk; no caption describes OUR list or ranking instead of the beach; and an unchecked road stays silent. Refuses to pass if any bucket is empty. Self-proves with --prove: routing everything to the boat sentence, letting the dirt caption talk about our ranking, and breaking the unknown bucket\'s silence must each make it fail.',
@@ -155,6 +173,15 @@ const checks = [
     failureAction: 'Fix utils/accessReasonCopy or the bucket in utils/access.getHardAccessKind that the failure names. Never widen a sentence to cover a bucket it does not describe, and never move these strings back into a component — the gate can only see them while they live in their own file.',
     command: process.execPath,
     args: ['scripts/validateAccessReasonCopy.mjs', '--prove'],
+  },
+  {
+    id: 'shoreline-segment-geometry',
+    title: 'Οι χειροκίνητες ομάδες «ίδια ακτή» συμφωνούν με τη μετρημένη γεωμετρία',
+    description: 'Δύο έλεγχοι πάνω στις 64 ομάδες που δηλώνουν «αυτές οι παραλίες είναι το ίδιο κομμάτι ακτής». ΔΟΜΙΚΑ: καμία ομάδα δεν έχει μέλη που κοιτάνε πάνω από 65° διαφορετικά — η ίδια ανοχή που χρησιμοποιεί ο κώδικας του χάρτη — ώστε η λάθος ομάδα να πιάνεται ΠΡΙΝ βγάλει λάθος χρώμα. ΣΥΜΠΕΡΙΦΟΡΑ: τρέχει τον ΑΛΗΘΙΝΟ resolver του χάρτη σε 5 σενάρια ανέμου × 13 νησιά και απαιτεί κάθε αντίφαση χρώματος μέσα σε ομάδα να είναι γραμμένη απόφαση στο ACCEPTED_CONTRADICTIONS, με το μετρημένο εύρος δίπλα. Η λίστα δεν επιτρέπεται να σαπίσει: αποδεκτή που έπαψε να εμφανίζεται ρίχνει την πύλη. Self-proves με --prove: κατεβάζει το όριο στις 5° και πρέπει να αποτύχει.',
+    protects: 'Η ομάδα ΔΕΝ είναι διακοσμητική: το hasCuratedSegmentProtectionSupport δίνει «προστατευμένη» σε παραλία χωρίς δική της γεωμετρική προστασία, επειδή την έχει ομαδάρχισσά της — παρακάμπτοντας τον έλεγχο προσανατολισμού. Οι ομάδες γράφτηκαν 09/06/2026 και ήταν σωστές· την ΕΠΟΜΕΝΗ μέρα η ακτογραμμή ξαναμετρήθηκε με λεπτομερή χάρτη OSM και Κολιτσάνι/Μυλοπότας/Βαλμάς πήγαν από εύρος 5° σε 109°. Δεν άλλαξε η ακτή — άλλαξε πόσο καλά τη μετράμε. Το λάθος έζησε ΔΥΟ ΜΗΝΕΣ και βρέθηκε κατά τύχη στον επανέλεγχο της Ίου: 23 ομάδες μοίραζαν 38 δανεικές «προστατευμένες», και οι πέντε γύριζαν παραλία που η δική της γεωμετρία λέει exposed σε protected (Πλατανιστός, Βασιλικό, Αλυκό, Μικρό Αλυκό, Πυργάκι). Είναι η σκανδάλη #1 της βίβλου §9 — ψεύτικη ηρεμία.',
+    failureAction: 'Χώρισε την ομάδα, ή βάλ\' την στο RETIRED_SHORELINE_SEGMENT_IDS (utils/shorelineSegments.ts). Αν είναι γνήσια διαφωνία του μοντέλου — τα μέλη κοιτάνε το ίδιο και το χρώμα διαφέρει — γράψ\' την στο ACCEPTED_CONTRADICTIONS με το ΜΕΤΡΗΜΕΝΟ εύρος και τον λόγο. ΠΟΤΕ μην ανεβάσεις το όριο των 65°: είναι η ανοχή του ίδιου του χάρτη, και ανεβάζοντάς το επιτρέπεις σε δύο διαφορετικούς κόλπους να δανείζονται ηρεμία.',
+    command: process.execPath,
+    args: ['scripts/validateShorelineSegmentsGate.mjs'],
   },
   {
     id: 'condition-tone-agreement',

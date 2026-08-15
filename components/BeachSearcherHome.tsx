@@ -194,10 +194,12 @@ interface BeachSearcherHomeProps {
   /** Colour picked on the map legend, if any. Retitles the list so the heading names the same
    *  thing the cards contain («Δύσκολες παραλίες στις 17:00»). */
   activeToneFilter?: CalmnessTone | null;
-  /** Plain line saying which filter was switched off because nothing in the picked colour group
-   *  has it. Shown under the list heading — the place the user is already looking after picking
-   *  a colour — so a choice is never taken away without a word. */
-  toneFilterDropNote?: string;
+  /** Plain line saying which filter was switched off and why — either because nothing in the
+   *  picked colour group has it, or because «Ήρεμο νερό» stopped having an answer when the hour
+   *  moved. Shown under the list heading, the place the user is already looking, so a choice is
+   *  never taken away without a word. The two cases cannot coexist: the colour and the calm-water
+   *  filters are mutually exclusive (App.tsx, selectMapToneFilter). */
+  filterDropNote?: string;
   /** True only when the list literally holds every beach we would ever list. «Όλες οι παραλίες
    *  κατάλληλες» may not be printed above a selection — a light-wind day with a running sea
    *  leaves plenty of beaches out, and the heading has to say so. */
@@ -1460,7 +1462,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   suitableTimePrefix,
   suitableTimeIsNow = false,
   activeToneFilter = null,
-  toneFilterDropNote,
+  filterDropNote,
   suitableListCoversEverything = false,
   onActiveSuitableBeachChange,
   directorySearchCardFocus,
@@ -4690,12 +4692,12 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             <span className="hidden h-px flex-1 bg-slate-300/70 min-[430px]:block" aria-hidden="true" />
           </div>
 
-          {selectedIsland && toneFilterDropNote && (
+          {selectedIsland && filterDropNote && (
             <p
               role="status"
               className="mx-3 mb-2 rounded-xl border border-amber-200/80 bg-amber-50/80 px-3 py-2 text-center text-[11px] font-semibold leading-snug text-amber-900 sm:mb-3 sm:text-xs lg:mx-5"
             >
-              {toneFilterDropNote}
+              {filterDropNote}
             </p>
           )}
 

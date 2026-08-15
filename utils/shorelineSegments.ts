@@ -11,7 +11,79 @@ export interface ShorelineSegment {
   notes: string;
 }
 
-export const SHORELINE_SEGMENTS: ShorelineSegment[] = [
+/**
+ * ΑΠΟΣΥΡΘΗΚΑΝ 15/08/2026 — ΟΜΑΔΕΣ ΠΟΥ Η ΙΔΙΑ ΜΑΣ Η ΓΕΩΜΕΤΡΙΑ ΔΕΝ ΣΤΗΡΙΖΕΙ ΠΙΑ.
+ *
+ * Οι ομάδες γράφτηκαν με το χέρι στις **09/06/2026** (`3deb24f5`) — και ήταν **σωστές τότε**.
+ * Την **επόμενη μέρα**, στις 10/06 (`6239d3ba`, «Regenerate exposure profiles with high-res OSM
+ * land mask»), η ακτογραμμή ξαναμετρήθηκε με λεπτομερή χάρτη και τα νούμερα άλλαξαν κάτω από τα
+ * πόδια τους:
+ *
+ *   Κολιτσάνι / Μυλοπότας / Βαλμάς   πριν: 223,8° / 224,3° / 219,7°  → **εύρος 5°**
+ *                                    μετά: 170,2° / 241,5° / 278,8°  → **εύρος 109°**
+ *
+ * Στον χοντρό χάρτη έμοιαζαν με μία ευθεία ακτή· στον λεπτομερή είναι **τρεις διαφορετικοί
+ * κόλποι**. Το εύρος ξεπερνά την ανοχή που χρησιμοποιεί ο ΙΔΙΟΣ ο κώδικας για curated segments
+ * (`utils/mapExposure.ts`, curated branch 65°). Η απόσταση από το «σωστό» στο «λάθος» ήταν
+ * **μία μέρα** — και κανείς δεν ξανάτρεξε τον έλεγχο, γιατί δεν είναι πύλη.
+ *
+ * ΓΙΑΤΙ ΔΕΝ ΕΙΝΑΙ ΚΑΛΛΩΠΙΣΜΟΣ. Η ομάδα **μοιράζει προστασία**: το
+ * `hasCuratedSegmentProtectionSupport` επιτρέπει σε παραλία **χωρίς** δική της γεωμετρική
+ * προστασία να βαφτεί «προστατευμένη» επειδή την έχει ένα μέλος της ίδιας ομάδας — και
+ * **παρακάμπτει τον έλεγχο προσανατολισμού** που περνάει κανονικά το `areLikelySameBeachFront`.
+ * Μετρήθηκε (5 σενάρια × 13 νησιά): **93 τέτοια ανεβάσματα**, τα **38 από τις 23 ομάδες εδώ**.
+ * Αυτό δεν είναι «ασυμφωνία γειτόνων» που η βίβλος §Γ4 λέει να αγνοήσουμε — είναι **ψεύτικη
+ * ηρεμία**, η σκανδάλη #1 της §9, το μόνο λάθος που δηλώνουμε ότι δεν αντέχουμε.
+ *
+ * ΤΙ ΔΕΝ ΑΛΛΑΞΕ: κανένα κατώφλι, καμία κλίμακα χρώματος, καμία βαθμολογία. Αφαιρέθηκε ένας
+ * **λανθασμένος ισχυρισμός δεδομένων**. Ό,τι είναι όντως συνεχής ακτή το πιάνει ο αυτόματος
+ * κανόνας (650 μ. + 45°), που είναι μετρημένος και όχι ζωγραφισμένος στο χέρι.
+ *
+ * ΟΙ 8 ΠΟΥ ΕΜΕΙΝΑΝ ΜΕ ΑΝΤΙΦΑΣΗ ΔΕΝ ΠΕΙΡΑΧΤΗΚΑΝ επίτηδες: εκεί τα μέλη όντως κοιτάνε το ίδιο
+ * (Φυριπλάκα–Τσιγκράδο 19°) και το χρώμα διαφέρει από το ίδιο το μοντέλο. Είναι το 40% που η
+ * §Γ3 έχει ήδη μετρήσει και δεχτεί, και η χαλάρωση του κατωφλιού δοκιμάστηκε: 10.716 → 10.718.
+ */
+export const RETIRED_SHORELINE_SEGMENT_IDS = new Set<string>([
+  // ── Πρώτο κύμα: βρέθηκαν από τις ΑΝΤΙΦΑΣΕΙΣ ΧΡΩΜΑΤΟΣ (16) ────────────────────
+  'andros-batsi-kolona-front',
+  'andros-gavrio-batsi-golden-front',
+  'ios-kalamos-papas-plakes-front',
+  'ios-koumpara-tzamaria-front',
+  'ios-manganari-tris-klisies-front',
+  'ios-mylopotas-kolitsani-valmas-front',
+  'ios-santoriniko-trypiti-front',
+  'kythnos-agia-irini-maroula-skinari-front',
+  'mykonos-agios-stefanos-choulakia-front',
+  'mykonos-paragka-kalamopodi-front',
+  'paros-santa-maria-east-front',
+  'serifos-vagia-ganema-koutalas-front',
+  'serifos-vorino-mesiano-platys-gialos-front',
+  'sifnos-faros-apokofto-fasolou-front',
+  'syros-grammata-amerikanou-front',
+  'tinos-agios-ioannis-porto-front',
+
+  /**
+   * ── Δεύτερο κύμα: τις βρήκε η ΙΔΙΑ Η ΠΥΛΗ την πρώτη μέρα που έτρεξε ─────────
+   *
+   * Αυτές ΔΕΝ έβγαζαν αντίφαση χρώματος, γι' αυτό και δεν φάνηκαν στο πρώτο πέρασμα: το μοντέλο
+   * απλώς τύχαινε να τις βάφει ίδια. Ο δομικός έλεγχος όμως τις πιάνει, και είναι **χειρότερες**
+   * από τις 16 — δίνουν **20 δανεικές «προστατευμένες»**, και οι πέντε από αυτές γυρίζουν
+   * παραλία που η δική της γεωμετρία λέει **`exposed`** σε **`protected`**:
+   * Πλατανιστός, Βασιλικό, Αλυκό, Μικρό Αλυκό, Πυργάκι. Αυτό είναι η πιο σκληρή μορφή ψεύτικης
+   * ηρεμίας — λέμε «προστατευμένη» σε ακτή που εμείς οι ίδιοι μετράμε ως εκτεθειμένη.
+   *
+   * Χειρότερο εύρος: Καμπάνες–Νεροδάφνη (Μήλος) **116°**, Αλυκό–Καστράκι (Νάξος) **104°**.
+   */
+  'andros-platanistos-rozos-front',
+  'kythnos-agios-stefanos-lagkousi-front',
+  'kythnos-kaki-maria-kalo-livadi-levkes-front',
+  'milos-kampanes-nerodafni-front',
+  'naxos-alyko-kastraki-front',
+  'paros-parikia-town-front',
+  'syros-lia-marmari-megas-lakos-front',
+]);
+
+const AUTHORED_SHORELINE_SEGMENTS: ShorelineSegment[] = [
   {
     id: 'kea-vlanti-kaliskia-front',
     regionId: 'south-aegean-kea',
@@ -622,6 +694,9 @@ export const SHORELINE_SEGMENTS: ShorelineSegment[] = [
     notes: 'Ammitis, Glatza, Mikra, and Chilia Vrysi are north/northwest rocky-front records with similar exposure behavior.',
   },
 ];
+
+export const SHORELINE_SEGMENTS: ShorelineSegment[] = AUTHORED_SHORELINE_SEGMENTS
+  .filter(segment => !RETIRED_SHORELINE_SEGMENT_IDS.has(segment.id));
 
 const segmentByBeachId = SHORELINE_SEGMENTS.reduce<Map<number, ShorelineSegment>>((lookup, segment) => {
   segment.beachIds.forEach(beachId => {

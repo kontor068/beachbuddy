@@ -444,9 +444,18 @@ if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.tes
   // 1800, not 900: the function carries the reasoning for each input it feeds the resolver, and
   // the window has to fit the comments as well as the code — a guard that fails because someone
   // explained themselves teaches people to delete the explanation.
-  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,1800}?\n\s*\}\);/);
-  const crowd = resolver || mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/);
-  const body = crowd ? crowd[0] : '';
+  //
+  // 15/08/2026 — THE ARGUMENT OBJECT MOVED, THE RULE DID NOT. `beachToneInput` now holds the
+  // inputs and `beachConditionTone` is the one-line call on top of it, because the cause line
+  // (utils/conditionCause) has to ask about the very same moment and a second literal copy of
+  // that object is precisely the drift this rule exists to prevent. So the needles below are
+  // looked for across BOTH halves of the expression rather than in one function body.
+  const inputs = mapSource.match(/const\s+beachToneInput\s*=[\s\S]{0,1800}?\n\s*\}\);/)?.[0] ?? '';
+  const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,1800}?(?:\n\s*\}\);|;)/)?.[0] ?? '';
+  const fallback = (inputs || resolver)
+    ? ''
+    : (mapSource.match(/const\s+mapToneTally\s*=[\s\S]{0,900}?\n\s*\);/)?.[0] ?? '');
+  const body = `${inputs}\n${resolver}\n${fallback}`;
   if (resolver && !/tallyMapTones\([^)]*beachConditionTone|beachTonesById[\s\S]{0,400}?tallyMapTones/.test(mapSource)) {
     failures.push({
       rule: 'slider-has-no-ladder-of-its-own',
@@ -798,8 +807,13 @@ if (!/conditionToneLabels/.test(mapSource) || /toneLabel:\s*\{\s*blue:/.test(map
   // working: a gate that fires on syntax instead of behaviour teaches people to ignore it.
   // The negative lookbehind is the part that must stay strict — `!activeToneFilter && (button)`
   // is the real defect this rule exists to catch (an exit that only shows with no filter on).
-  const hasExit = /(?<!!)activeToneFilter\s*(?:\?|&&)\s*\(\s*<button/.test(mapSource)
-    && /onClick=\{\(\) => onToneFilterChange\?\.\(null\)\}/.test(mapSource)
+  // Since 15/08/2026 the same button is also the way out of «Ήρεμο νερό», so the condition around
+  // it reads `((isToneFilterEnabled && activeToneFilter) || isCalmWaterActive) && (<button`. The
+  // negative lookbehind still guards the real defect (an exit that only shows with NO filter on):
+  // `activeToneFilter` must appear un-negated, and the click must clear BOTH filters — a button
+  // that clears one while the other stays on is the same dead end wearing the other filter's name.
+  const hasExit = /(?<!!)activeToneFilter\s*\)?\s*(?:\?|&&|\|\|)/.test(mapSource)
+    && /onClick=\{\(\) => \{ onToneFilterChange\?\.\(null\); onCalmWaterFilterChange\?\.\(false\); \}\}/.test(mapSource)
     && /toneFilterCopy\.showAll/.test(mapSource);
 
   if (collapses && !hasExit) {
@@ -860,10 +874,28 @@ if (!/conditionToneLabels/.test(mapSource) || /toneLabel:\s*\{\s*blue:/.test(map
       + 'filtered, and the chip counts silently become circular.');
   }
   // (3) The pool is looked up in the reported tones, never coloured here.
-  const pool = appSource.match(/const\s+toneScopedBeaches\s*=[\s\S]{0,700}?\n\s*\}, \[/);
+  //     The window grew from 700 to 1600 chars on 15/08/2026 when «Ήρεμο νερό» became a second way
+  //     to narrow the same pool. That is a reading limit, not the rule: the assertion underneath —
+  //     the pool is LOOKED UP, never re-derived — is unchanged, and (3b) below adds the same
+  //     assertion for the new filter.
+  const pool = appSource.match(/const\s+toneScopedBeaches\s*=[\s\S]{0,1600}?\n\s*\}, \[/);
   if (!pool || !/mapBeachTones\[beach\.id\]\s*===\s*mapToneFilter/.test(pool[0])) {
     fail('App.tsx: toneScopedBeaches no longer selects by mapBeachTones[beach.id] === mapToneFilter. '
       + 'The chips must read the colour the map painted, not re-derive one.');
+  }
+  // (3b) «Ήρεμο νερό» narrows the SAME pool, and by the same rule: the set of qualifying beaches
+  //      is the one the map reported (calmWaterOffer.beachIds), never recomputed in App from wave
+  //      heights. Recomputing it here is how the chip's number and the list's length would drift —
+  //      the exact failure this whole rule exists for, one filter later.
+  if (pool && !/calmWaterOffer\.beachIds\.has\(beach\.id\)/.test(pool[0])) {
+    fail('App.tsx: toneScopedBeaches no longer narrows by calmWaterOffer.beachIds. With «Ήρεμο νερό» '
+      + 'on, the amenity chips below the map would count over the whole region again and promise '
+      + 'numbers the filtered list cannot deliver.');
+  }
+  if (/const\s+calmWaterOffer\s*=[\s\S]{0,200}?(shoreSeaStateM|waveHeightM|FLAT_WATER)/.test(appSource)) {
+    fail('App.tsx computes the calm-water set from wave numbers itself. It must only READ what the '
+      + 'map reported (onCalmWaterStateChange) — a second opinion about the same water is how the '
+      + 'pins and the list learned to disagree.');
   }
   // (4) BOTH count memos read the pool. Matched one at a time: they are near-identical, and a
   //     whole-file scan passes with either one reverted to selectedIsland.beaches.
@@ -910,13 +942,53 @@ if (!/conditionToneLabels/.test(mapSource) || /toneLabel:\s*\{\s*blue:/.test(map
   }
   // (6) The "your filter was dropped" line actually reaches the screen. This is the (στ) failure
   //     mode verbatim: computed, formatted, and never rendered.
-  if (!/toneFilterDropCopy\[language\]\(/.test(appSource) || !/toneFilterDropNote=\{toneDroppedFilterNote\}/.test(appSource)) {
+  //     Renamed toneFilterDropNote → filterDropNote on 15/08/2026: the same box now also carries
+  //     the calm-water drop, and the two can never coexist (the filters are mutually exclusive).
+  if (!/toneFilterDropCopy\[language\]\(/.test(appSource) || !/filterDropNote=\{toneDroppedFilterNote/.test(appSource)) {
     fail('App.tsx computes no drop note, or stops passing it to BeachSearcherHome. A filter that '
       + 'switches itself off in silence takes away a choice the user made without a word.');
   }
-  if (!/\{toneFilterDropNote\}/.test(homeSource)) {
-    fail('components/BeachSearcherHome.tsx receives toneFilterDropNote but never renders it. The '
+  if (!/\{filterDropNote\}/.test(homeSource)) {
+    fail('components/BeachSearcherHome.tsx receives filterDropNote but never renders it. The '
       + 'message exists and no one can read it.');
+  }
+  /**
+   * (7) THE HOUR-SENSITIVE FILTER SWITCHES ITSELF OFF, AND SAYS SO. Added 15/08/2026.
+   *
+   * «Ήρεμο νερό» is the first filter on this site whose answer changes while the user sits still:
+   * every other one asks what a beach IS (sand, sunbeds, access). The visitor turns it on at 14:00
+   * with nine beaches and drags the hour slider to 19:00 — and unless all three of these hold,
+   * they are looking at an empty list, or at a lit-up button that removes nothing:
+   *   • App falls back to the unfiltered list the moment the map stops offering (isCalmWaterActive
+   *     is gated on the offer existing, not on the flag);
+   *   • the filter is actually switched off rather than left lit;
+   *   • the drop is SAID, with its reason — «καμία δεν έχει» and «τώρα το έχουν όλες» are opposite
+   *     news for the reader.
+   * Each is a connection check, not an existence check: the string being in the file proved
+   * nothing three times over on 01–02/08.
+   */
+  if (!/const\s+isCalmWaterActive\s*=\s*calmWaterFilter\s*&&\s*calmWaterOffer\s*!==\s*null/.test(appSource)) {
+    fail('App.tsx: isCalmWaterActive no longer requires a live offer. A filter left on after the '
+      + 'hour moved would empty the list with nothing on screen explaining it.');
+  }
+  if (!/setCalmWaterFilter\(false\);\s*\n\s*(\/\/[^\n]*\n\s*)*const copy = getLocalizedCopy\(language, calmWaterFilterCopy\)/.test(appSource)
+    || !/setCalmWaterDropNote\(/.test(appSource)) {
+    fail('App.tsx: the calm-water filter no longer switches itself off WITH a message naming the '
+      + 'reason. Silent removal takes back a choice the user made; a message with no reason reads '
+      + 'as a fault.');
+  }
+  // Every reason the offer can vanish for must have its OWN sentence. They are opposite news —
+  // «καμία δεν έχει» sends the reader to another hour, «τώρα το έχουν όλες» and «υπάρχουν ιδανικές»
+  // tell them to choose freely — and one shared string would flatten all three into a shrug.
+  for (const slot of ['droppedEmpty', 'droppedIdeal', 'droppedAll']) {
+    if (!new RegExp(`copy\\.${slot}`).test(appSource)) {
+      fail(`App.tsx never prints copy.${slot}. A reason the calm-water filter can disappear for has `
+        + 'no sentence of its own, so the reader is told the filter went away but not why.');
+    }
+  }
+  if (!/filterDropNote=\{toneDroppedFilterNote \?\? calmWaterDropNote/.test(appSource)) {
+    fail('App.tsx computes calmWaterDropNote but stops passing it to BeachSearcherHome. The message '
+      + 'exists and no one can read it — the (στ) failure mode, one filter later.');
   }
 }
 
@@ -935,6 +1007,130 @@ for (const hit of legendWordFailures) console.log(`       ${hit.reason}`);
 const legendExitFailures = failures.filter(failure => failure.rule === 'a-collapsed-legend-has-a-way-out');
 console.log(`${legendExitFailures.length === 0 ? 'OK  ' : 'FAIL'} a-collapsed-legend-has-a-way-out: ${legendExitFailures.length}`);
 for (const hit of legendExitFailures) console.log(`       ${hit.reason}`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RULE 9 — THE CAUSE LINE NEVER REASSURES WHERE IT MUST NOT.
+//
+// The chip gained a second line on 15/08/2026: what put this colour here today, wind or sea
+// («Φταίει ο αέρας, όχι το κύμα»). It exists because the colour is a WIND scale that readers
+// read as a WAVE scale — «όταν βλέπει πορτοκαλί θεωρεί ότι θα έχει πολύ κύμα» (Μίλτος).
+//
+// It is also the one thing on this screen that can make conditions sound BETTER than the colour
+// beside it, which is the single direction this project refuses to fail in. The reassuring form
+// carries three one-directional gates (utils/conditionCause.resolveCauseLineForm): one beach at
+// avoid_swimming, one beach above 5 Bft, or one offshore-flat-water flag turns it into the
+// warning form. Those gates are exactly what a future cleanup drops without noticing — they look
+// like redundant conditions on a display string — so this rule runs the REAL function over the
+// whole grid and fails if the reassurance ever survives one of them.
+//
+// It also holds the four properties that keep the line from becoming a second verdict: it never
+// returns a colour, every wording names the wind or the sea, no wording borrows a word from the
+// verdict vocabulary, and nothing exceeds the width the chip actually has.
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const {
+    describeConditionCause, resolveConditionCause, resolveCauseLineForm, causeLineMaySpeak,
+    CAUSE_LINE_RELIEF_MAX_BEAUFORT,
+  } = require(path.join(root, 'utils/conditionCause.ts'));
+  const { causeLineLabels, CAUSE_LINE_MAX_SHORT_CHARS } = require(path.join(root, 'utils/conditionToneLabels.ts'));
+  const fail = (reason, row = {}) => failures.push({ rule: 'a-cause-line-never-reassures', reason, row });
+
+  const COLOURS = new Set(['red', 'orange', 'yellow', 'blue']);
+  // Every language must name one of the two causes. A wording that names neither is not a cause
+  // line — it is a mood.
+  const NAMES_A_CAUSE = {
+    en: /wind|wave/i, gr: /αέρα|ανέμ|κύμα|θάλασσ/i, fr: /vent|vague|mer/i,
+    de: /wind|welle|meer/i, it: /vento|onde|mare/i,
+  };
+  // The verdict vocabulary is NOT re-listed here. scripts/validateConditionsFeelPhrase.ts owns it
+  // in all five languages and now runs these same strings through it — two lists would drift, and
+  // the shorter one would be the one that passed.
+
+  for (const [language, forms] of Object.entries(causeLineLabels)) {
+    for (const [form, words] of Object.entries(forms)) {
+      for (const [slot, text] of Object.entries(words)) {
+        if (!text || !text.trim()) fail(`causeLineLabels.${language}.${form}.${slot} is empty.`);
+        if (!NAMES_A_CAUSE[language].test(text)) {
+          fail(`causeLineLabels.${language}.${form}.${slot} names neither the wind nor the sea: "${text}".`);
+        }
+      }
+      // The count placeholders make the split form longer than it looks. Two digits is the
+      // realistic worst case on a region map.
+      const rendered = words.short.replace('{wind}', '12').replace('{sea}', '12');
+      if (rendered.length > CAUSE_LINE_MAX_SHORT_CHARS) {
+        fail(`causeLineLabels.${language}.${form}.short is ${rendered.length} chars, over the `
+          + `${CAUSE_LINE_MAX_SHORT_CHARS} the chip has: "${rendered}". It pushes the chip's own count off its line.`);
+      }
+    }
+    // The warning form must never OPEN by promising calm water — the plan's fifth lock.
+    if (/^[^.]*(ήρεμ|calm|ruhig|piatt)/i.test(forms['wind-pulls-out'].short)) {
+      fail(`causeLineLabels.${language}.wind-pulls-out.short opens with a calm-water claim: `
+        + `"${forms['wind-pulls-out'].short}". The warning form must never reassure on its own.`);
+    }
+  }
+
+  // THE GRID. The real functions, every combination, no shortcuts.
+  let reassurances = 0;
+  for (const exposureLevel of LEVELS) {
+    for (const beaufort of BEAUFORTS) {
+      for (const isEnclosedCove of [false, true]) {
+        for (const waveM of WAVES_M) {
+          for (const periodS of PERIODS_S) {
+            for (const offshoreFlatWater of [false, true]) {
+              for (const swimVerdictAvoid of [false, true]) {
+                const input = {
+                  exposureLevel,
+                  beaufort,
+                  isEnclosedCove,
+                  seaStateM: seaStateSeverityM(waveM, periodS),
+                  offshoreFlatWater,
+                  swimVerdictAvoid,
+                };
+                const cause = resolveConditionCause(input);
+                if (COLOURS.has(cause)) {
+                  fail(`resolveConditionCause returned a COLOUR ("${cause}"). It is a cause, never a `
+                    + 'rung — the moment it emits a tone it is a second ladder.', input);
+                }
+
+                // A one-beach group is still a group: whatever the reassuring form may say about
+                // one beach, it may say about a hundred just like it.
+                const form = resolveCauseLineForm([describeConditionCause(input)]);
+                if (form !== 'wind-not-wave') continue;
+                reassurances += 1;
+                if (swimVerdictAvoid) {
+                  fail('The reassuring form survived an avoid_swimming beach. One beach the app '
+                    + 'refuses a swim at must drop the whole group to the warning wording.', input);
+                }
+                if (beaufort > CAUSE_LINE_RELIEF_MAX_BEAUFORT) {
+                  fail(`The reassuring form survived ${beaufort} Bft. Orange spans 5 AND 6, so the brake `
+                    + 'is tied to Beaufort precisely so it cannot quietly gain a Beaufort.', input);
+                }
+                if (offshoreFlatWater) {
+                  fail('The reassuring form survived an offshore-flat-water flag. Glass water with the '
+                    + 'wind pushing off the land is the case that must always warn.', input);
+                }
+                if (!causeLineMaySpeak('orange', form) || causeLineMaySpeak('blue', form)) {
+                  fail('causeLineMaySpeak no longer restricts the line to the colours that frighten. '
+                    + 'Measured 15/08/2026: letting every chip speak put a line on 96,2% of screens.', input);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (reassurances === 0) {
+    fail('The reassuring form is unreachable over the whole grid. Either a gate has widened into a '
+      + 'blanket ban or the rule stopped being computed — a line nobody can ever see is not a safe '
+      + 'line, it is a dead one.');
+  }
+}
+
+const causeLineFailures = failures.filter(failure => failure.rule === 'a-cause-line-never-reassures');
+console.log(`${causeLineFailures.length === 0 ? 'OK  ' : 'FAIL'} a-cause-line-never-reassures: ${causeLineFailures.length}`);
+for (const hit of causeLineFailures) console.log(`       ${hit.reason}`);
+
 
 if (failures.length > 0) {
   console.error('\nFAILED: the map pin and the card chip do not describe the same conditions.');

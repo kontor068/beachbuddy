@@ -12,7 +12,12 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
-import { conditionToneLabels, conditionToneCountPhrase } from '../utils/conditionToneLabels';
+import { conditionToneLabels, conditionToneCountPhrase, causeLinePhrase, type CauseLineWords } from '../utils/conditionToneLabels';
+import {
+  describeConditionCause, resolveCauseLineForm, causeLineMaySpeak, countCauseLineSplit,
+  type ConditionCauseInput, type ConditionCauseReading, type CauseLineForm,
+} from '../utils/conditionCause';
+import { resolveCalmWaterState, calmWaterFilterCopy, type CalmWaterState } from '../utils/calmWaterFilter';
 import { getLocalizedCopy, languageToLocale } from '../utils/i18n';
 import { getBeachMapCoordinates } from '../utils/mapCoordinates';
 import { getConsistentVisibleMapExposureLevels, getVisibleMapExposureLevel, shouldShowWindExposureColors } from '../utils/mapExposure';
@@ -122,6 +127,14 @@ interface BeachMapProps {
    *  beaches; boat-only shores in strong wind). Excluded from the legend COUNTS only — their
    *  pins stay — so the legend's number and the list's number describe the same set. */
   uncountedBeachIds?: Set<number>;
+  /** «Ήρεμο νερό» is on. A SECOND way to cut the same list, so it and `toneFilter` are mutually
+   *  exclusive at the caller — see utils/calmWaterFilter for why it does not live inside a colour. */
+  calmWaterFilter?: boolean;
+  onCalmWaterFilterChange?: (active: boolean) => void;
+  /** Which beaches qualify right now, reported upward so the cards below are cut by the exact
+   *  same reading the chip counted — never a second opinion computed in App. Carries the REASON
+   *  when there is nothing to offer, because that is what the drop message has to say. */
+  onCalmWaterStateChange?: (state: CalmWaterState) => void;
 }
 
 const visibleExposureLevel = (
@@ -1791,7 +1804,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
   onToneFilterChange,
   onBeachTonesChange,
   toneSourceBeaches,
-  uncountedBeachIds
+  uncountedBeachIds,
+  calmWaterFilter = false,
+  onCalmWaterFilterChange,
+  onCalmWaterStateChange
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -1960,6 +1976,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
     de: 'Zieh den Regler und sieh die Strände Stunde für Stunde',
     it: 'Trascina la barra e vedi le spiagge ora per ora',
     fr: 'Faites glisser la barre pour voir les plages heure par heure',
+  };
+  /**
+   * Η ΙΔΙΑ ΟΔΗΓΙΑ ΣΕ ΤΡΕΙΣ ΛΕΞΕΙΣ — μπαίνει ΜΟΝΟ όταν το κουμπί «Ήρεμο νερό» μοιράζεται τη σειρά.
+   *
+   * Δεν είναι δεύτερη διατύπωση που θα ξεκολλήσει από την πρώτη: κρατάει **το ρήμα**, που είναι
+   * όλη η δουλειά της μακράς μορφής (μπήκε 15/08 ακριβώς επειδή «ένα όνομα δεν λέει σε κανέναν
+   * ότι η μπάρα σύρεται»). Ό,τι κόβεται είναι το ΑΠΟΤΕΛΕΣΜΑ — «και δες τις παραλίες κάθε ώρα» —
+   * το οποίο ο επισκέπτης βλέπει να συμβαίνει τη στιγμή που σύρει.
+   */
+  const hourSliderHelperShort: Record<LanguageCode, string> = {
+    en: 'Drag the bar',
+    gr: 'Σύρε την μπάρα',
+    de: 'Zieh den Regler',
+    it: 'Trascina la barra',
+    fr: 'Faites glisser',
   };
   // ONE sentence, not two. There used to be a second, shorter twin here (hourSliderPrompt) for
   // the desktop heading — same instruction, different wording, so the two drifted apart the
@@ -2185,7 +2216,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * built to be structurally unable to contradict the pins, and a filter derived from a second
    * copy of this ladder would have reintroduced exactly that.
    */
-  const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone({
+  /**
+   * The arguments the ladder is asked with, in ONE place. Split out on 15/08/2026 because the
+   * cause line has to ask about the very same moment (utils/conditionCause) — a second literal
+   * copy of this object is exactly how the legend and the pins drifted apart before.
+   */
+  const beachToneInput = (item: SuitableBeach): ConditionCauseInput => ({
     // getMapExposureLevel, unconditionally — the same call the pin itself makes at its icon
     // (see createExposureIcon's `mapExposureLevel` argument). This used to carry a ternary that
     // read `visibleExposureLevel` in wind mode, which is the mode the colour legend renders in:
@@ -2209,6 +2245,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
     swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
   });
 
+  const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone(beachToneInput(item));
+
   // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
   // to the picked row while a filter is on (see visibleWindColorGuideRows), but that is a display
   // choice made with an explicit way back. This tally must stay complete underneath it: computed
@@ -2223,6 +2261,45 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const beachTonesById = beaches.map(item => ({ beachId: item.beachId, tone: beachConditionTone(item) }));
   const countedTones = beachTonesById.filter(e => !uncountedBeachIds?.has(e.beachId)).map(e => e.tone);
   const mapToneTally = tallyMapTones(countedTones.length ? countedTones : beachTonesById.map(e => e.tone));
+
+  /**
+   * WHAT PUT EACH COLOUR HERE, TODAY — the cause line, one per colour group, or nothing.
+   *
+   * «Όταν βλέπει πορτοκαλί θεωρεί ότι θα έχει πολύ κύμα» (Μίλτος, 15/08/2026). The colour is a
+   * wind scale; the reader reads it as a wave scale. This asks the same beaches the tally counts
+   * which of the two actually painted them, and lets the chip say so — on the days it has
+   * something to say. The rules, the safety gates and the four wordings all live outside this
+   * component (utils/conditionCause, utils/conditionToneLabels); nothing is decided here.
+   *
+   * TWO THINGS THIS LOOP OWNS, AND ONLY THESE TWO:
+   *   • the same population as the tally — every beach on the map minus the uncounted ones, never
+   *     the filtered subset, so the sentence describes what the chip's own number counts;
+   *   • the repetition brake: walking CALMNESS_ORDER puts the ROUGHEST colour first, and a form
+   *     already spoken is not repeated. On a Vai-class day orange and red have the identical
+   *     story, and two identical lines under two chips read as a rendering bug.
+   */
+  const causeLineByTone = ((): Map<CalmnessTone, CauseLineWords> => {
+    const readings = new Map<CalmnessTone, ConditionCauseReading[]>();
+    beaches.forEach(item => {
+      if (uncountedBeachIds?.has(item.beachId)) return;
+      const reading = describeConditionCause(beachToneInput(item));
+      const group = readings.get(reading.tone);
+      if (group) group.push(reading);
+      else readings.set(reading.tone, [reading]);
+    });
+
+    const lines = new Map<CalmnessTone, CauseLineWords>();
+    const alreadySaid = new Set<CauseLineForm>();
+    CALMNESS_ORDER.forEach(tone => {
+      const group = readings.get(tone);
+      if (!group?.length) return;
+      const form = resolveCauseLineForm(group);
+      if (!form || !causeLineMaySpeak(tone, form) || alreadySaid.has(form)) return;
+      alreadySaid.add(form);
+      lines.set(tone, causeLinePhrase(form, language, countCauseLineSplit(group)));
+    });
+    return lines;
+  })();
 
   // Report the tally upward so the cards below the map can hide the same beaches the pins hide.
   // Keyed on a signature rather than the object, which is rebuilt on every render.
@@ -2245,12 +2322,54 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beachTonesSignature, onBeachTonesChange]);
 
+  /**
+   * «ΗΡΕΜΟ ΝΕΡΟ» — ΠΟΙΕΣ ΠΑΡΑΛΙΕΣ, ΚΑΙ ΑΝ ΤΟ CHIP ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΥΠΑΡΞΕΙ (15/08/2026).
+   *
+   * Ίδιο `beachToneInput` με τις πινέζες και τη γραμμή αιτίας — ένα πέρασμα, μία ανάγνωση του
+   * καιρού. Αν το App ξαναρωτούσε μόνο του «ποιο είναι το κύμα εδώ», θα ήταν δεύτερη γνώμη για
+   * το ίδιο νερό, που είναι ακριβώς ο τρόπος με τον οποίο η λεζάντα και οι πινέζες είχαν
+   * ξεκολλήσει παλιότερα.
+   *
+   * Πάνω στην ΠΛΗΡΗ δεξαμενή της περιοχής (`toneSourceBeaches`), όχι στα `beaches` που έχουν
+   * ήδη περάσει από τα chips παροχών: αλλιώς το «Ήρεμο νερό 9» θα μετρούσε στην πραγματικότητα
+   * «9 από όσες έχουν ξαπλώστρες». Ίδιος λόγος και ίδια πηγή με το `reportedToneEntries`.
+   * Οι `uncountedBeachIds` φεύγουν όπως και από το tally — ο αριθμός του chip πρέπει να
+   * περιγράφει το ίδιο σύνολο με τη λίστα από κάτω.
+   */
+  const calmWaterSourceBeaches = toneSourceBeaches ?? beaches;
+  const calmWaterState = ((): CalmWaterState => {
+    const entries = calmWaterSourceBeaches
+      .filter(item => !uncountedBeachIds?.has(item.beachId))
+      .map(item => ({ beachId: item.beachId, reading: describeConditionCause(beachToneInput(item)) }));
+    return resolveCalmWaterState(entries);
+  })();
+  const calmWaterOffer = calmWaterState.status === 'offered' ? calmWaterState : null;
+  const calmWaterSignature = calmWaterOffer
+    ? `offered:${[...calmWaterOffer.beachIds].join(',')}`
+    : `absent:${calmWaterState.status === 'absent' ? calmWaterState.reason : ''}`;
+  const calmWaterStateRef = useRef(calmWaterState);
+  calmWaterStateRef.current = calmWaterState;
+  useEffect(() => {
+    onCalmWaterStateChange?.(calmWaterStateRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calmWaterSignature, onCalmWaterStateChange]);
+
   // A tone the map no longer contains would leave an empty map with no way back, so an
   // orphaned filter is simply ignored.
   const activeToneFilter = toneFilter && (mapToneTally.counts.get(toneFilter) ?? 0) > 0 ? toneFilter : null;
+  /**
+   * Ίδια δικλείδα με το χρώμα, ένα βήμα πιο κάτω: ένα φίλτρο που η τωρινή ώρα δεν προσφέρει πια
+   * αγνοείται αντί να αδειάσει τον χάρτη. Το App το σβήνει κιόλας — και το λέει — αλλά αυτό εδώ
+   * φροντίζει να μη δει ποτέ κανείς άδειο χάρτη ούτε για ένα frame.
+   */
+  const isCalmWaterActive = Boolean(calmWaterFilter && calmWaterOffer);
+  const calmWaterCopy = getLocalizedCopy(language, calmWaterFilterCopy);
   const markerBeaches = activeToneFilter
     ? beaches.filter(item => beachConditionTone(item) === activeToneFilter)
-    : beaches;
+    : isCalmWaterActive
+      // `calmWaterOffer` is non-null whenever isCalmWaterActive is true — the flag is built from it.
+      ? beaches.filter(item => calmWaterOffer?.beachIds.has(item.beachId))
+      : beaches;
   /**
    * Does this pin wear the enclosed-cove badge? One expression, read by the marker AND by the
    * legend cue, so the map can never show a badge the legend does not explain (or explain one
@@ -2898,6 +3017,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const isSevereWind = typeof windBeaufort === 'number' && windBeaufort >= 7;
   /**
+   * Η άδεια εμφάνισης του κουμπιού «Ήρεμο νερό» ζει ΕΔΩ, όχι μέσα στον renderer της λεζάντας: το
+   * κουμπί μετακόμισε στη γραμμή του τίτλου της μπάρας ώρας (15/08/2026, εντολή Μίλτου «top
+   * filter με εικονίδιο, χωρίς να σπρώχνει τις κάρτες»), που είναι άλλο υποδέντρο του component.
+   *
+   * `!isSevereWind` γιατί στα ≥7 Μποφόρ δεν υπάρχει λεζάντα με μετρημένα χρώματα — υπάρχει μία
+   * γραμμή «ακατάλληλες» — και ένα κουμπί που προτείνει παραλίες δίπλα της θα την αντέφασκε.
+   */
+  const canOfferCalmWater = Boolean(onCalmWaterFilterChange) && !isSevereWind && calmWaterOffer !== null;
+  /**
    * One row per colour that is ACTUALLY on the map, roughest first, each with its count. A colour
    * nobody is wearing does not appear; a colour somebody is wearing cannot be left out. This is
    * what makes the legend structurally unable to contradict the pins — see tallyMapTones.
@@ -2921,13 +3049,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     .filter(row => row.count > 0)
     .filter(row => !activeToneFilter || row.tone === activeToneFilter);
   const showGroupedExposureLegend = showWindExposureStatusLabels && !isSevereWind;
-  // The surf line only appears when a surf spot is actually on screen. There are
-  // 10 nationally, so on almost every map it would be an unexplained symbol
-  // taking up legend space — and an unexplained badge is worse than no badge.
-  //
-  // markerBeaches, not beaches: with a colour filter on, `beaches` still holds the pins the
-  // filter removed, so the legend would explain a symbol that is no longer anywhere on screen.
-  const showSurfLegendCue = markerBeaches.some(item => isSurfSpotInSeason(item.beach));
+  // Legend cue turned off (Μίλτος, 15/08/2026) — the surf marker itself (isSurfMarker,
+  // below) still shows on the pin, only this explanatory legend line is gone.
+  const showSurfLegendCue = false;
 
   // Tapping a row shows only those beaches — on the map AND in the cards below, which is why the
   // rows are only interactive when the parent actually wired the filter up. On the detail map,
@@ -2981,6 +3105,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           // real reader reports). It survived the 15/08 slimming for exactly that reason: what
           // was cut is the second line under each row on a PHONE, never the noun inside it.
           const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
+          const causeLine = causeLineByTone.get(row.tone);
           const body = (
             <>
               <span className="flex min-w-0 items-start gap-1.5">
@@ -3009,9 +3134,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   crowded; there the legend counts, and the sentence returns as a caption under
                   the grid the moment a single colour is left. Same string either way — the
                   explanation is never rewritten per screen size, only relocated. */}
-              <span className="mt-0.5 hidden text-left text-[10px] font-medium leading-snug text-slate-500 sm:block dark:text-slate-400">
-                {toneWords[row.tone].meaning}
-              </span>
+              {causeLine ? (
+                /* TODAY'S CAUSE REPLACES THE SCALE'S SENTENCE — it does not stack on top of it.
+                   The static line explains how this colour differs from the one above it, which
+                   the reader can learn once; this one says what put THESE beaches here at THIS
+                   hour, which they cannot get anywhere else on the screen. On a wide screen the
+                   swap costs zero height, and on a phone (where the static line is hidden) it is
+                   the only line — about +24 px, and only on the days it fires. */
+                <span className="mt-0.5 block text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+                  <span aria-hidden="true" className="mr-0.5 text-slate-400">▸</span>
+                  {causeLine.short}
+                </span>
+              ) : (
+                <span className="mt-0.5 hidden text-left text-[10px] font-medium leading-snug text-slate-500 sm:block dark:text-slate-400">
+                  {toneWords[row.tone].meaning}
+                </span>
+              )}
             </>
           );
           const textClasses = `${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} ${spanClasses} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
@@ -3025,7 +3163,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
               key={row.tone}
               type="button"
               aria-pressed={isActive}
-              aria-label={`${countPhrase.text} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
+              /* The spoken label carries the cause too. A blind reader hears the count and the
+                 button's action; without this they would be the only ones who never learn that
+                 today's orange is wind and not wave. */
+              aria-label={`${countPhrase.text}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
               className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
                 isActive
@@ -3083,14 +3224,27 @@ const BeachMap: React.FC<BeachMapProps> = ({
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
         {!isSevereWind && soleVisibleTone && (
-          <p className="px-0.5 text-left text-[10px] font-medium leading-snug text-slate-500 sm:hidden dark:text-slate-400">
-            {toneWords[soleVisibleTone].meaning}
-          </p>
+          /* THE FILTERED COLOUR GETS THE WHOLE SENTENCE. The reader has just tapped this colour,
+             so this is the one place with room to finish the thought — «Το χρώμα το φέρνει ο
+             αέρας. Το νερό είναι ήρεμο, όμως ο αέρας σε τραβάει ανοιχτά». Not `sm:hidden` like
+             the scale's line it replaces: the chips carry the SHORT form, so on a wide screen
+             this adds the rest of the sentence rather than repeating it. */
+          causeLineByTone.get(soleVisibleTone) ? (
+            <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+              {causeLineByTone.get(soleVisibleTone)?.full}
+            </p>
+          ) : (
+            <p className="px-0.5 text-left text-[10px] font-medium leading-snug text-slate-500 sm:hidden dark:text-slate-400">
+              {toneWords[soleVisibleTone].meaning}
+            </p>
+          )
         )}
-        {isToneFilterEnabled && activeToneFilter && (
+        {/* Μία διέξοδος για ΚΑΘΕ κοπή του χάρτη, όχι μία ανά φίλτρο. Ο επισκέπτης δεν κρατάει
+            λογαριασμό ποιο από τα δύο άναψε· θέλει να ξαναδεί όλες τις παραλίες. */}
+        {((isToneFilterEnabled && activeToneFilter) || isCalmWaterActive) && (
           <button
             type="button"
-            onClick={() => onToneFilterChange?.(null)}
+            onClick={() => { onToneFilterChange?.(null); onCalmWaterFilterChange?.(false); }}
             className="inline-flex min-h-8 w-full cursor-pointer items-center justify-center gap-1 rounded-lg bg-slate-900 px-2 text-[10px] font-black text-white transition hover:bg-slate-700"
           >
             <X aria-hidden="true" className="h-3 w-3" />
@@ -3538,8 +3692,60 @@ const BeachMap: React.FC<BeachMapProps> = ({
               has to work out. Both sizes now read the SAME string — the instruction — so it can
               only ever be edited once, and the separate hint line under the bar is gone with it
               rather than printing the sentence twice on one screen. */}
-          <div className="flex basis-full items-center justify-center pt-1.5 sm:pt-0">
-            <span className="text-center text-[11px] font-bold leading-snug text-slate-600 sm:text-[13px] sm:font-extrabold dark:text-slate-300">{hourSliderHelper[language]}</span>
+          {/* «ΗΡΕΜΟ ΝΕΡΟ» ΣΤΗ ΓΡΑΜΜΗ ΤΟΥ ΤΙΤΛΟΥ — ΜΗΔΕΝ ΕΠΙΠΛΕΟΝ ΥΨΟΣ (Μίλτος, 15/08/2026).
+              «Βάλ' το σαν top filter με εικονίδιο για να ξεχωρίζει ότι δεν ανήκει στην ίδια
+              οικογένεια, αλλά μη σπρώξει προς τα κάτω τις παραλίες.» Τρεις απαιτήσεις που
+              συγκρούονται, και μία μόνο θέση τις ικανοποιεί και τις τρεις.
+              ΓΙΑΤΙ ΟΧΙ ΜΕΣΑ ΣΤΟ GRID ΤΩΝ ΧΡΩΜΑΤΩΝ: μετρήθηκε πάνω στις 143 σκηνές όπου το chip
+              όντως βγαίνει — στο **61%** η λεζάντα δείχνει ΔΥΟ χρώματα, δηλαδή μία γεμάτη σειρά
+              δύο στηλών, και ένα τρίτο κελί θα άνοιγε δεύτερη σειρά. Μηδέν κόστος υπάρχει μόνο
+              στο 40% (1 ή 3 χρώματα), και ένα στοιχείο που άλλοτε σπρώχνει κι άλλοτε όχι είναι
+              χειρότερο από ένα που σπρώχνει πάντα.
+              ΑΥΤΗ Η ΣΕΙΡΑ ΥΠΑΡΧΕΙ ΗΔΗ και είναι κεντραρισμένη με μία πρόταση μέσα της. Όταν το
+              chip εμφανίζεται, ο τίτλος πέφτει στη ΣΥΝΤΟΜΗ του μορφή («Σύρε την μπάρα») — που
+              κρατάει το ρήμα, δηλαδή το μόνο που έπρεπε να μάθει ο επισκέπτης (η μακρά μορφή
+              μπήκε την ίδια μέρα ακριβώς επειδή «ένα όνομα δεν λέει σε κανέναν ότι σύρεται») —
+              και το κερδισμένο πλάτος το παίρνει το κουμπί. Ύψος σειράς: αμετάβλητο.
+              ΞΕΧΩΡΙΖΕΙ ΧΩΡΙΣ ΝΑ ΚΡΙΝΕΙ: εικονίδιο κύματος και γαλάζιο περίγραμμα, ΠΟΤΕ κουκκίδα
+              χρώματος — η κουκκίδα ανήκει στην κλίμακα του χάρτη και θα το έβαζε στην ίδια
+              οικογένεια, που είναι ακριβώς ό,τι δεν είναι. */}
+          <div className="flex basis-full flex-nowrap items-center justify-center gap-2 pt-1.5 sm:pt-0">
+            <span className={`text-center text-[11px] font-bold leading-snug text-slate-600 sm:text-[13px] sm:font-extrabold dark:text-slate-300 ${canOfferCalmWater ? 'min-w-0 truncate' : ''}`}>
+              {canOfferCalmWater ? hourSliderHelperShort[language] : hourSliderHelper[language]}
+            </span>
+            {canOfferCalmWater && calmWaterOffer && (
+              <button
+                type="button"
+                aria-pressed={isCalmWaterActive}
+                aria-label={`${calmWaterCopy.label} — ${calmWaterOffer.count} — ${calmWaterCopy.hint} — ${isCalmWaterActive ? calmWaterCopy.clear : calmWaterCopy.show}`}
+                title={calmWaterCopy.hint}
+                onClick={() => onCalmWaterFilterChange?.(!isCalmWaterActive)}
+                /* ΚΟΥΜΠΙ, ΟΧΙ ΕΝΔΕΙΞΗ (Μίλτος, 15/08/2026: «τώρα ίσως φαίνεται σαν ένδειξη»).
+                   Το γεμάτο παστέλ φόντο είναι η γλώσσα των ταμπελών αυτού του site — τα chips
+                   παροχών, τα σήματα «Εκτίμηση θάλασσας» — και ο αναγνώστης το διαβάζει ως κάτι
+                   που ΤΟΥ ΛΕΕΙ κάτι, όχι κάτι που πατιέται. Αυτά τα τρία το γυρίζουν σε κουμπί
+                   χωρίς να προσθέσουν ούτε ένα pixel ύψους: λευκό φόντο με **διπλό περίγραμμα**
+                   (βάθος αντί για γέμισμα), **σκιά**, και **βελάκι** — το ίδιο ChevronRight που
+                   φοράνε ήδη οι σειρές της λεζάντας, δηλαδή το ήδη μαθημένο σήμα «αυτό οδηγεί
+                   κάπου». Μαζί τους το `active:scale-95`, που είναι το μόνο σήμα αφής που
+                   υπάρχει πριν αλλάξει η λίστα. Ενεργό: συμπαγές, με ×, όπως κάθε άλλο
+                   πατημένο φίλτρο εδώ μέσα. */
+                className={`flex shrink-0 cursor-pointer items-center gap-1 rounded-full border-2 px-2.5 py-0.5 text-[11px] font-extrabold leading-snug shadow-sm transition active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                  isCalmWaterActive
+                    ? 'border-sky-600 bg-sky-600 text-white shadow-sky-900/20'
+                    : 'border-sky-500 bg-white text-sky-800 shadow-sky-900/10 hover:bg-sky-50 dark:border-sky-500 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800'
+                }`}
+              >
+                <Waves aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
+                <span className="whitespace-nowrap">{calmWaterCopy.label}</span>
+                <span className={`rounded-full px-1 tabular-nums ${isCalmWaterActive ? 'bg-white/25 text-white' : 'bg-sky-100 text-sky-900 dark:bg-sky-900 dark:text-sky-100'}`}>
+                  {calmWaterOffer.count}
+                </span>
+                {isCalmWaterActive
+                  ? <X aria-hidden="true" className="-mr-0.5 h-3.5 w-3.5 shrink-0" />
+                  : <ChevronRight aria-hidden="true" className="-mr-1 h-3.5 w-3.5 shrink-0 text-sky-500" />}
+              </button>
+            )}
           </div>
           <button
             type="button"

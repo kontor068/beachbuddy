@@ -31,10 +31,37 @@
  * factor is exactly 1 and nothing in the app moves. Below it the sea is a young, steep, locally
  * forced chop the calibration never saw — and that, precisely, is the regime that was failing.
  *
- * What a swimmer feels sits between the encounter rate (∝ T⁻¹) and the steepness (∝ T⁻²), so the
- * exponent is taken between them, and the factor is capped so this can never become the dominant
- * term. Note the constants are calibrated against the period Open-Meteo REPORTS (a mean period,
- * not a peak period); they absorb that definition and should not be re-derived from a textbook.
+ * What a swimmer feels sits between the encounter rate (∝ T⁻¹) and the steepness (∝ T⁻²). Note
+ * the constants are calibrated against the period Open-Meteo REPORTS (a mean period, not a peak
+ * period); they absorb that definition and should not be re-derived from a textbook.
+ *
+ * ⚠️ THE EXPONENT IS 0.75 — BELOW BOTH OF THOSE, NOT BETWEEN THEM (recorded 15/08/2026).
+ *
+ * This paragraph used to end «so the exponent is taken between them», which describes a value in
+ * 1..2. The constant has read 0.75 since the day it was written (f515386a, 28/07/2026) and has
+ * never been changed. One of the two was wrong, and leaving the sentence in place meant the next
+ * reader would "fix" the number to match it — a national colour change made on the strength of a
+ * comment. So the sentence is gone and what is actually known is written instead:
+ *
+ *   • 0.75 was never measured against anything. No calibration run, no ground-truth set, no
+ *     decision-log entry — it arrived with the module.
+ *   • Raising it is SAFE IN DIRECTION but not free. Measured live over 930 beaches in 14 regions
+ *     (scripts/measureChopExponent.mjs, 15/08/2026): at 1.5 exactly 48 beaches darken and 8 wake
+ *     from total silence, with ZERO going calmer — the factor only ever grows, so a false calm is
+ *     structurally impossible here. The risk of this dial is over-warning, never under-warning.
+ *     (Corrected 15/08 later the same day: the first write-up of this comment and of PORISMA §Γ13
+ *     said 23/42 for 1.5/2.0 — that was half the real reports/quality/chop-exponent.json number.)
+ *   • It is NOT being raised today, and the reason is the sentence above about mean vs peak
+ *     period: a textbook exponent applied to a provider's mean period is exactly the re-derivation
+ *     this comment warns against, and there is no judge for "how unpleasant was the water".
+ *     PORISMA §Γ4 already settled that a measured-but-unvalidated dial is Miltos's call, not the
+ *     code's. The measurement is on the table; the decision is not the code's to take.
+ *
+ * MAX_CHOP_FACTOR is, meanwhile, close to dead: it binds in 1 of 439 short-period cases, and
+ * moving it to 2.25 or 3 changes NOTHING nationally, because at 0.75 the formula only asks for
+ * more than 1.75 below about 1.9 s. It is a guard against an exponent we are not using.
+ *
+ * The half of this module that WAS missing got fixed instead — see `isShortPeriodSea` below.
  */
 
 const GRAVITY = 9.81;
@@ -97,6 +124,19 @@ export const seaStateSeverityM = (
 /**
  * True when the sea is short-period enough that its character, not just its height, is what
  * the user needs told. Used only to choose wording — never to escalate a score on its own.
+ *
+ * ⚠️ THIS HAD ZERO CALLERS FOR 18 DAYS (28/07 → 15/08/2026). The comment above says «used only to
+ * choose wording» and no wording anywhere consumed it, so the character axis shipped as half a
+ * feature: the NUMBER accounted for steepness, the LANGUAGE never mentioned it. A visitor found
+ * the gap before any gate did — «Είχε κύμα», Σκάλα Κεφαλονιάς, 0,68 m at 3,3 s, severity 0,79
+ * against a 0,80 threshold. The colour missed by a centimetre and there was no sentence to catch
+ * the fall.
+ *
+ * The wording now exists in utils/choppySeaCopy, which does NOT call this predicate: a bare
+ * «period < 4 s» fires on 43,6% of beaches, and a line on 43,6% of pages is a permanent label.
+ * It gates on measured steepness plus a height floor plus the tone already on screen (6,9%).
+ * This predicate stays as the definition of the regime; `quality:choppy-sea` is what now
+ * guarantees SOMETHING consumes the idea.
  */
 export const isShortPeriodSea = (periodS: number | undefined): boolean =>
   typeof periodS === 'number' && Number.isFinite(periodS) && periodS > 0 && periodS < 4;

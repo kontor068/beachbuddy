@@ -134,8 +134,13 @@ const parseBody = (event) => {
 const VERDICTS = {
   accurate: { label: 'Σωστή πρόβλεψη', emoji: '👍', tag: '🟢 ΘΕΤΙΚΟ', note: 'Καμία ενέργεια.' },
   not_accurate: { label: 'Λάθος πρόβλεψη', emoji: '👎', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Δες αν αξίζει διόρθωση στον αλγόριθμο για αυτή την παραλία/ημέρα.' },
-  had_waves: { label: 'Είχε κύμα', emoji: '🌊', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Πιθανό σφάλμα στην πρόβλεψη κύματος για αυτή την παραλία.' },
-  too_windy: { label: 'Είχε πολύ αέρα', emoji: '💨', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Πιθανό σφάλμα στην πρόβλεψη έντασης ανέμου για αυτή την παραλία.' },
+  // ⚠️ ΟΙ ΕΤΙΚΕΤΕΣ ΕΙΝΑΙ ΣΥΓΚΡΙΤΙΚΕΣ, ΟΠΩΣ ΤΑ ΚΟΥΜΠΙΑ (15/08/2026). Έλεγαν «Είχε κύμα» / «Είχε
+  // πολύ αέρα» ενώ ο επισκέπτης πατάει «Είχε ΠΙΟ ΠΟΛΥ κύμα» / «Είχε ΠΙΟ ΠΟΛΥ αέρα»
+  // (pages/BeachDetailPage.tsx). Η διαφορά δεν είναι υφολογική: χωρίς το «πιο πολύ», μια αναφορά
+  // πάνω σε παραλία που ΗΔΗ δείχναμε 1,38 μ. διαβάζεται ως «είπατε ήρεμα και είχε κύμα» — και
+  // στέλνει τον αναγνώστη να κυνηγήσει σφάλμα που δεν υπάρχει (Μπονάτσα Κιμώλου 1853, 15/08).
+  had_waves: { label: 'Είχε ΠΙΟ ΠΟΛΥ κύμα απ\' όσο δείχναμε', emoji: '🌊', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Λέει ότι το κύμα ήταν ΜΕΓΑΛΥΤΕΡΟ από τον αριθμό μας — σύγκρινέ το με το «Κύμα που έβλεπε» παρακάτω, όχι με το μηδέν.' },
+  too_windy: { label: 'Είχε ΠΙΟ ΠΟΛΥ αέρα απ\' όσο δείχναμε', emoji: '💨', tag: '🟡 ΣΧΟΛΙΟ — άξιζε έλεγχο', note: 'Προσοχή: σε ΑΠΟΓΕΙΟ άνεμο αυτό μπορεί να είναι σωστό ΚΑΙ η πρόβλεψη σωστή — το νερό μένει λάδι ενώ ο αέρας φυσάει κανονικά στην ακτή. Δες την «Έκθεση» δίπλα.' },
   calmer: { label: 'Ήταν πιο ήρεμα απ\' όσο έδειχνε', emoji: '😎', tag: '🟢 ΘΕΤΙΚΟ', note: 'Καμία ενέργεια — ίσως είμαστε πιο συντηρητικοί απ\' όσο χρειάζεται εδώ.' },
   // Free-text message from the landing story section (no beach attached).
   story_message: { label: 'Μήνυμα από την αρχική σελίδα', emoji: '✉️', tag: '💬 ΜΗΝΥΜΑ', note: 'Διάβασε το μήνυμα παρακάτω.' },
@@ -149,6 +154,25 @@ const finiteNumber = (value) => (Number.isFinite(Number(value)) && value !== nul
 const formatWaveM = (value) => (typeof value === 'number' ? `${value.toFixed(2).replace('.', ',')} μ.` : '');
 const formatPeriodS = (value) => (typeof value === 'number' ? `${value.toFixed(1).replace('.', ',')} δευτ.` : '');
 const formatHour = (value) => (typeof value === 'number' ? `${String(value).padStart(2, '0')}:00 (ώρα Ελλάδας)` : '');
+
+/**
+ * Ο αριθμός που είχε μπροστά του ο επισκέπτης. `shoreDisplayWaveM` λείπει όταν η οθόνη έπεσε
+ * πίσω στο ανοιχτό νερό — τότε αυτό ΕΙΝΑΙ ο αριθμός που είδε, όχι έλλειψη δεδομένων.
+ */
+const shoreShownWaveM = (conditions) =>
+  typeof conditions.shoreDisplayWaveM === 'number' ? conditions.shoreDisplayWaveM : conditions.seaStateWaveM;
+
+/**
+ * Το ανοιχτό νερό, αλλά μόνο όταν λέει κάτι ΔΙΑΦΟΡΕΤΙΚΟ από την οθόνη. Το 0,01 μ. είναι το
+ * μικρότερο που τυπώνει το `formatWaveM` — κάτω από αυτό οι δύο γραμμές θα ήταν ίδιες.
+ */
+const openWaterRowValue = (conditions) => {
+  const shore = shoreShownWaveM(conditions);
+  const open = conditions.seaStateWaveM;
+  if (typeof open !== 'number') return undefined;
+  if (typeof shore === 'number' && Math.abs(open - shore) < 0.01) return undefined;
+  return open;
+};
 
 const normalizePayload = (body, event) => {
   const feedback = body && typeof body === 'object' ? body : {};
@@ -186,6 +210,9 @@ const normalizePayload = (body, event) => {
       hour: finiteNumber(conditions.hour),
       seaStateWaveM: finiteNumber(conditions.seaStateWaveM),
       seaStatePeriodS: finiteNumber(conditions.seaStatePeriodS),
+      // Ο αριθμός που είδε ο επισκέπτης, χωριστά από αυτόν που έκρινε το χρώμα. Βλ.
+      // services/analyticsService FeedbackData.conditions.shoreDisplayWaveM.
+      shoreDisplayWaveM: finiteNumber(conditions.shoreDisplayWaveM),
       live: typeof conditions.live === 'boolean' ? conditions.live : undefined,
     },
   };
@@ -203,7 +230,13 @@ const fieldLines = (payload) => [
   ['Μποφόρ', payload.conditions.beaufort ?? ''],
   ['Κατεύθυνση ανέμου', payload.conditions.windDir],
   ['Έκθεση', payload.conditions.exposureLevel],
-  ['Κύμα που δείχναμε', formatWaveM(payload.conditions.seaStateWaveM)],
+  // ΔΥΟ ΑΡΙΘΜΟΙ, ΟΧΙ ΕΝΑΣ (15/08/2026). Μέχρι σήμερα το mail έλεγε «Κύμα που δείχναμε» και
+  // έστελνε το ανοιχτό νερό — που από τις 13/08 ΔΕΝ είναι αυτό που βλέπει ο επισκέπτης. Στη Λιά
+  // Μυκόνου ανέφερε 1,78 μ. ενώ η οθόνη έδειχνε ~0,10 μ., δηλαδή παραπλανούσε τον μόνο άνθρωπο
+  // που διαβάζει αυτά τα mail. Η δεύτερη γραμμή μπαίνει ΜΟΝΟ όταν τα δύο διαφέρουν, αλλιώς
+  // κάθε mail θα κουβαλούσε μια περιττή γραμμή θορύβου.
+  ['Κύμα που έβλεπε (ακτή)', formatWaveM(shoreShownWaveM(payload.conditions))],
+  ['Κύμα ανοιχτά (κρίνει χρώμα/ετυμηγορία)', formatWaveM(openWaterRowValue(payload.conditions))],
   ['Περίοδος κύματος', formatPeriodS(payload.conditions.seaStatePeriodS)],
   // Without this a report about next Tuesday reads exactly like one from the water's edge.
   ['Ήταν επιτόπου τώρα', payload.conditions.live === undefined ? '' : (payload.conditions.live ? 'Ναι' : 'Όχι — έβλεπε άλλη μέρα/ώρα')],

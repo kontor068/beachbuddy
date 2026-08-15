@@ -1,5 +1,6 @@
 import type { LanguageCode } from '../types';
 import type { CalmnessTone } from './suitabilityTone';
+import type { CauseLineForm } from './conditionCause';
 
 /**
  * THE ONE VOCABULARY FOR A CONDITION COLOUR.
@@ -122,3 +123,98 @@ export const conditionToneCountPhrase = (
 /** The word for a tone, in one language. Falls back to English for an unknown locale. */
 export const conditionToneLabel = (tone: CalmnessTone, language: LanguageCode): string =>
   (conditionToneLabels[language] ?? conditionToneLabels.en)[tone].label;
+
+/**
+ * WHAT PUT THIS COLOUR HERE — the cause line (15/08/2026).
+ *
+ * `meaning` above says «Αισθητός αέρας **ή** κύμα», and the «ή» is the whole problem: the reader
+ * has to guess which, and they guess wave. «Όταν βλέπει πορτοκαλί θεωρεί ότι θα έχει πολύ κύμα»
+ * (Μίλτος). These strings answer it for the beaches actually on screen at that hour — see
+ * utils/conditionCause for which form a colour group earns, and when it earns silence instead.
+ *
+ * TWO LENGTHS, ONE MEANING. `short` sits inside the chip, in a ~150 px cell at 10 px — about 28
+ * characters, which is why every language is checked against CAUSE_LINE_MAX_SHORT_CHARS and why
+ * the French and Italian wordings are shorter than a literal translation would be. `full` is the
+ * sentence under a chip the reader has actually tapped, where there is room to say the whole
+ * thing.
+ *
+ * THREE RULES THESE WORDS MUST KEEP, all enforced by
+ * scripts/validateConditionToneAgreement.mjs (`a-cause-line-never-reassures`):
+ *   1. Every string names the wind or the sea. A cause that names neither is not a cause.
+ *   2. NO VERDICT WORDS — «ιδανικ/κατάλληλ/απόφυγ/προσοχή/καλύτερ» and their siblings. The line
+ *      explains the colour; it must never quietly become a second verdict beside it
+ *      (scripts/validateConditionsFeelPhrase.ts owns that vocabulary).
+ *   3. `wind-pulls-out` NEVER claims calm water on its own. Its short form does not mention the
+ *      water at all, and its long form only reaches it after the warning is already made — the
+ *      one standalone «the sea is flat» claim in this app belongs to the card, about ONE beach,
+ *      with the number printed beside it.
+ */
+export interface CauseLineWords {
+  /** Inside the chip. Must stay under CAUSE_LINE_MAX_SHORT_CHARS in every language. */
+  short: string;
+  /** Under a chip the reader has filtered to — a full sentence. */
+  full: string;
+}
+
+/**
+ * The measured width of the chip's inner cell: ~150 px at 10 px ≈ 28 characters, plus two for the
+ * languages that need a breath. A string over this does not wrap — it pushes the chip's own count
+ * off its line, which is the number the whole legend exists to show.
+ */
+export const CAUSE_LINE_MAX_SHORT_CHARS = 30;
+
+/**
+ * The key set is `CauseLineForm` itself, imported rather than restated: a form added to the rule
+ * that has no words here becomes a compiler error instead of an empty line on someone's phone.
+ */
+export const causeLineLabels: Record<LanguageCode, Record<CauseLineForm, CauseLineWords>> = {
+  en: {
+    'wind-not-wave': { short: "It's the wind, not the waves", full: 'The colour comes from the wind — the sea here is calm.' },
+    'wind-pulls-out': { short: 'Wind pushes you offshore', full: "The colour comes from the wind. The water is calm, but the wind pushes you offshore — don't stay in long." },
+    'wave-not-wind': { short: 'The waves, not the wind', full: 'The colour comes from the sea — there is little wind here.' },
+    split: { short: '{wind} wind · {sea} waves', full: "On {wind} it's the wind, on {sea} the sea." },
+  },
+  gr: {
+    'wind-not-wave': { short: 'Φταίει ο αέρας, όχι το κύμα', full: 'Το χρώμα το φέρνει ο αέρας — η θάλασσα εδώ είναι ήρεμη.' },
+    'wind-pulls-out': { short: 'Ο αέρας σε τραβάει ανοιχτά', full: 'Το χρώμα το φέρνει ο αέρας. Το νερό είναι ήρεμο, όμως ο αέρας σε τραβάει ανοιχτά — μη μείνεις ώρα μέσα.' },
+    'wave-not-wind': { short: 'Φταίει το κύμα, όχι ο αέρας', full: 'Το χρώμα το φέρνει η θάλασσα — ο αέρας εδώ είναι λίγος.' },
+    split: { short: '{wind} από αέρα · {sea} από κύμα', full: 'Σε {wind} το φέρνει ο αέρας, σε {sea} η θάλασσα.' },
+  },
+  fr: {
+    'wind-not-wave': { short: 'Le vent, pas les vagues', full: 'La couleur vient du vent — la mer est calme ici.' },
+    'wind-pulls-out': { short: 'Le vent pousse au large', full: "La couleur vient du vent. L'eau est calme, mais le vent pousse au large — ne restez pas longtemps." },
+    'wave-not-wind': { short: 'Les vagues, pas le vent', full: 'La couleur vient de la mer — il y a peu de vent ici.' },
+    split: { short: '{wind} vent · {sea} vagues', full: "Sur {wind} c'est le vent, sur {sea} la mer." },
+  },
+  de: {
+    'wind-not-wave': { short: 'Der Wind, nicht die Wellen', full: 'Die Farbe kommt vom Wind — das Meer ist hier ruhig.' },
+    'wind-pulls-out': { short: 'Wind drückt aufs Meer hinaus', full: 'Die Farbe kommt vom Wind. Das Wasser ist ruhig, aber der Wind drückt aufs offene Meer — bleib nicht lange drin.' },
+    'wave-not-wind': { short: 'Die Wellen, nicht der Wind', full: 'Die Farbe kommt vom Meer — der Wind ist hier schwach.' },
+    split: { short: '{wind} Wind · {sea} Wellen', full: 'Bei {wind} der Wind, bei {sea} das Meer.' },
+  },
+  it: {
+    'wind-not-wave': { short: 'È il vento, non le onde', full: 'Il colore viene dal vento — qui il mare è calmo.' },
+    'wind-pulls-out': { short: 'Il vento spinge al largo', full: "Il colore viene dal vento. L'acqua è calma, ma il vento spinge al largo — non restare a lungo." },
+    'wave-not-wind': { short: 'Sono le onde, non il vento', full: 'Il colore viene dal mare — qui c\'è poco vento.' },
+    split: { short: '{wind} vento · {sea} onde', full: 'Su {wind} il vento, su {sea} il mare.' },
+  },
+};
+
+/**
+ * The cause line for one colour group, with the split counts already substituted.
+ *
+ * `counts` is only read by the `split` wording; the other three forms speak about the group as a
+ * whole and deliberately carry no number — the wave height is this app's weakest figure, and the
+ * word «κύμα» survives an error in it that a decimal would not.
+ */
+export const causeLinePhrase = (
+  form: CauseLineForm,
+  language: LanguageCode,
+  counts?: { wind: number; sea: number },
+): CauseLineWords => {
+  const words = (causeLineLabels[language] ?? causeLineLabels.en)[form];
+  const fill = (text: string): string => text
+    .replace('{wind}', String(counts?.wind ?? 0))
+    .replace('{sea}', String(counts?.sea ?? 0));
+  return { short: fill(words.short), full: fill(words.full) };
+};
