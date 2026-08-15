@@ -110,6 +110,8 @@ export interface BeachScore {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
+  seaTemperatureC?: number;
   /**
    * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
    * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
@@ -183,6 +185,8 @@ export interface BeachRecommendation {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
+  seaTemperatureC?: number;
   /**
    * Exposure of the sector TODAY'S SEA arrives from — utils/seaArrival.resolveSeaArrivalExposureLevel.
    * NOT the wind's exposure. Carried so the pin, the chip and the swim verdict all refuse the ×0,5
@@ -1281,12 +1285,40 @@ const compareRecommendationPriority = <T extends { score: number; exposureLevel?
   return touristDiff || scoreDiff || exposureDiff;
 };
 
+/**
+ * ΤΟ ΔΙΔΥΜΟ ΤΗΣ ΣΕΛΙΔΑΣ ΠΑΡΑΛΙΑΣ — ΠΗΡΕ ΤΟ §Γ8 ΔΥΟ ΜΕΡΕΣ ΑΡΓΟΤΕΡΑ (15/08/2026).
+ *
+ * Είναι το αντίγραφο της `topPickRanking.bestShelteredRecommendationGroup` για τη λίστα
+ * «κοντινές παραλίες» της σελίδας παραλίας (μοναδικός δρόμος: prioritizeProtectedBeachRecommendations
+ * → getTopRecommendedBeaches → BeachDetailPage). Το §Γ8 (14/08) ανέβασε τον φραγμό από 3 σε 5
+ * Μποφόρ στην ΑΡΧΙΚΗ και **αυτό εδώ έμεινε πίσω στο 3** — δηλαδή η σελίδα παραλίας εξακολουθούσε
+ * να πετάει έξω κάθε «μερική» μόλις υπήρχε μία «προστατευμένη», από τα 3 Μποφόρ.
+ *
+ * Ο ΛΟΓΟΣ ΕΙΝΑΙ Ο ΙΔΙΟΣ ΚΑΙ ΕΙΝΑΙ ΜΕΤΡΗΜΕΝΟΣ (βλ. topPickRanking §Γ8): στα 3-4 Μποφόρ η διαφορά
+ * κύματος προστατευμένης/μερικής είναι 0,13-0,24 μ., δηλαδή ΜΕΣΑ στο σφάλμα του ίδιου μας του
+ * μοντέλου (PODIUM_SEA_MEANINGFUL_DIFFERENCE_M = 0,25). Πετούσαμε παραλίες έξω για διαφορά που
+ * δεν μπορούμε να μετρήσουμε — στη μία οθόνη όπου ο επισκέπτης ψάχνει εναλλακτική.
+ *
+ * ΤΙ ΔΕΝ ΑΛΛΑΖΕΙ. Η ΣΕΙΡΑ μένει στα 3 Μποφόρ: το `compareRecommendationPriority` παρακάτω
+ * εξακολουθεί να βάζει την προστατευμένη ΠΑΝΩ από τη μερική από 3 Μποφόρ. Άρα στα 3-4 η λίστα
+ * γεμίζει, με τις προστατευμένες μπροστά — δεν γίνεται πιο επιεικής. Και κάθε πύλη ασφαλείας
+ * (avoid_swimming, κρίσιμη επίσημη προειδοποίηση, swimmingScore < 50, sea gate) έχει ΗΔΗ τρέξει
+ * πριν φτάσουμε εδώ, στο getTopRecommendedBeaches.
+ *
+ * ΤΟ §Γ9 ΔΕΝ ΕΦΑΡΜΟΖΕΤΑΙ ΕΔΩ, ΚΑΙ ΕΙΝΑΙ ΣΩΣΤΟ. Το §Γ9 λέει «αν ο χάρτης έχει βάψει ΙΔΑΝΙΚΗ, το
+ * χρώμα ξεκλειδώνει και κατατάσσει πριν από τη βαθμίδα». Αυτή η επιφάνεια ΔΕΝ ζωγραφίζει πινέζες
+ * και δεν έχει πίνακα χρωμάτων (BeachDetailPage:1725 — καμία `mapBeachTones`). Η ίδια η κανονική
+ * συνάρτηση είναι σχεδιασμένη να ΣΩΠΑΙΝΕΙ όταν λείπει ο πίνακας (prerender, πρώτο frame,
+ * σχεδιαστής ταξιδιού), οπότε η βαθμίδα είναι η σωστή απάντηση εδώ. Αν κάποτε η σελίδα παραλίας
+ * αποκτήσει χρώματα, ΤΟΤΕ μπαίνει το §Γ9 — και τότε η σωστή κίνηση είναι να καλέσει την ΚΑΝΟΝΙΚΗ
+ * συνάρτηση, όχι να ξαναγραφτεί εδώ (§Κ1: ένα αντίγραφο ενός κανόνα δεν είναι ο κανόνας).
+ */
 const bestShelteredRecommendationGroup = <T extends { score: number; exposureLevel?: ExposureLevel; canClaimWindProtection?: boolean; beachId?: number; beach?: Beach }>(
   items: T[],
   windBeaufort: number,
   beachById?: Map<number, Beach>
 ): T[] => {
-  if (windBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT || items.length === 0) return items;
+  if (windBeaufort < PROTECTED_FIRST_BEAUFORT || items.length === 0) return items;
 
   const bestPriority = Math.min(...items.map(item => topPickProfilePriority(item, beachById)));
   return items.filter(item => topPickProfilePriority(item, beachById) === bestPriority);
@@ -2554,6 +2586,9 @@ export const calculateBeachScore = (
     // ετυμηγορίας διαβάζει δύο γραμμές πιο πάνω. Καμία δεύτερη μεταβλητή, κανένας δεύτερος
     // υπολογισμός — η οθόνη και η ετυμηγορία δεν μπορούν πια να διαφωνήσουν κατασκευαστικά.
     shoreDisplayWaveM: shoreWaveM,
+    // Ο αριθμός κατεβαίνει ήδη για κάθε παραλία μαζί με το κύμα (ίδια σημεία, ίδιο πακέτο) και
+    // απλώς δεν έφτανε ποτέ στην κάρτα. Μηδέν επιπλέον κλήσεις. DISPLAY-ONLY (απόφαση Μίλτου Α).
+    seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,
     seaArrivalExposureLevel,
     seaStateSource,
     modeledWaveHeightM,
@@ -2935,6 +2970,7 @@ export const getTopRecommendedBeaches = (
       // παραλίας τύπωνε το ύψος στην ακτή. Γαλάζια Ακτή: 0,3 μ. στην κάρτα, ~0,1 μ. μέσα.
       shoreWaveHeightM: scoreResult.shoreWaveHeightM,
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
+      seaTemperatureC: scoreResult.seaTemperatureC,
       seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
@@ -3096,6 +3132,7 @@ export const getSuitableBeaches = (
         // Ίδιος λόγος με τον από πάνω builder — το ύψος στην ακτή ταξιδεύει μαζί με τα υπόλοιπα.
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
+        seaTemperatureC: scoreResult.seaTemperatureC,
         seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,

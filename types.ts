@@ -734,6 +734,8 @@ export interface SuitableBeach {
    * ακτογραμμή δεν υπάρχει κριτής (§7δ). Γι' αυτό τυπώνεται με «~» και με τη δική του ετικέτα.
    */
   shoreDisplayWaveM?: number;
+  /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY. Βλ. utils/waterTemperatureCopy. */
+  seaTemperatureC?: number;
   /**
    * Exposure of the sector TODAY'S SEA is arriving from — utils/seaArrival.resolveSeaArrivalExposureLevel.
    * Not the wind's exposure: an offshore breeze makes a shore 'protected' while a swell rolls in

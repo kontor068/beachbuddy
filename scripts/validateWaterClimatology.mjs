@@ -31,14 +31,37 @@ const check = (label, ok, detail = '') => {
 };
 
 // ── 1. Τρία αντίγραφα του ίδιου κατωφλιού ─────────────────────────────────────────────
-const detailPage = await readFile(path.join(projectRoot, 'pages', 'BeachDetailPage.tsx'), 'utf8');
+/**
+ * ✏️ 15/08/2026 — Η ΠΗΓΗ ΑΛΗΘΕΙΑΣ ΜΕΤΑΚΟΜΙΣΕ, ΚΑΙ Η ΠΥΛΗ ΤΟ ΕΠΙΑΣΕ ΤΗΝ ΙΔΙΑ ΩΡΑ.
+ *
+ * Τα κατώφλια και οι λέξεις ζούσαν γραμμένα ΜΕΣΑ στο pages/BeachDetailPage.tsx — και μάλιστα
+ * δύο φορές μέσα στο ίδιο αρχείο (λέξη σε ένα σημείο, τόνος 900 γραμμές πιο κάτω). Όταν η
+ * θερμοκρασία νερού χρειάστηκε να φτάσει ΚΑΙ στην κάρτα, τρίτο αντίγραφο θα ήταν ακριβώς η §Κ1
+ * της βίβλου, οπότε ο κανόνας βγήκε στο utils/waterTemperatureCopy.ts και οι δύο επιφάνειες τον
+ * διαβάζουν. Αυτή η πύλη κοκκίνισε αμέσως — σωστά, γιατί έψαχνε στο παλιό σημείο.
+ *
+ * Διαβάζει πλέον το ΕΝΑ αρχείο, και έτσι είναι ΑΥΣΤΗΡΟΤΕΡΗ από πριν: πριν επαλήθευε ένα από τα
+ * αντίγραφα· τώρα επαληθεύει την πηγή που τροφοδοτεί σελίδα, κάρτα και βάθρο μαζί.
+ */
+const copySource = await readFile(path.join(projectRoot, 'utils', 'waterTemperatureCopy.ts'), 'utf8');
 const builder = await readFile(path.join(projectRoot, 'scripts', 'buildWaterClimatology.py'), 'utf8');
 
-// Η σελίδα: `seaTemperatureC < 21 ? cold : seaTemperatureC <= 24 ? mild : ideal`
-const pageCold = detailPage.match(/seaTemperatureC\s*<\s*(\d+)/);
-const pageMild = detailPage.match(/seaTemperatureC\s*<=\s*(\d+)/);
-check('η σελίδα δηλώνει κατώφλι κρύου', Boolean(pageCold), 'δεν βρέθηκε στο BeachDetailPage');
-check('η σελίδα δηλώνει κατώφλι ιδανικού', Boolean(pageMild), 'δεν βρέθηκε στο BeachDetailPage');
+// Η πηγή: `WATER_COLD_BELOW_C = 21` και `WATER_MILD_MAX_C = 24` (ιδανικό = ΠΑΝΩ από αυτό).
+const pageCold = copySource.match(/WATER_COLD_BELOW_C\s*=\s*(\d+)/);
+const pageMild = copySource.match(/WATER_MILD_MAX_C\s*=\s*(\d+)/);
+check('η πηγή δηλώνει κατώφλι κρύου', Boolean(pageCold), 'δεν βρέθηκε στο utils/waterTemperatureCopy.ts');
+check('η πηγή δηλώνει κατώφλι ιδανικού', Boolean(pageMild), 'δεν βρέθηκε στο utils/waterTemperatureCopy.ts');
+// Το ΑΝΟΙΧΤΟ ΑΚΡΟ στην πηγή: «ιδανικό» μόνο ΠΑΝΩ από 24 — το ίδιο λάθος που έκανε η Python.
+check('η πηγή χρησιμοποιεί ΑΥΣΤΗΡΑ μεγαλύτερο για το ιδανικό',
+  /celsius\s*<=\s*WATER_MILD_MAX_C/.test(copySource),
+  'άλλαξε το άκρο· στα 24,0 η κάρτα θα διαφωνούσε με τον οδηγό');
+// Και ότι ο κανόνας ΔΕΝ ξαναγράφτηκε στη σελίδα ή στην κάρτα — η §Κ1 με πύλη από πίσω.
+for (const [label, file] of [['σελίδα', 'pages/BeachDetailPage.tsx'], ['κάρτα', 'components/BeachCard.tsx']]) {
+  const source = await readFile(path.join(projectRoot, ...file.split('/')), 'utf8');
+  check(`η ${label} δεν ξαναγράφει τα κατώφλια νερού`,
+    !/seaTemperatureC\s*<=?\s*\d+/.test(source),
+    `${file}: βρέθηκε δεύτερο αντίγραφο του κανόνα — πρέπει να καλεί το utils/waterTemperatureCopy`);
+}
 if (pageCold) {
   check('κατώφλι κρύου: module vs σελίδα', Number(pageCold[1]) === WATER_COLD_BELOW_C,
     `σελίδα ${pageCold[1]} ≠ module ${WATER_COLD_BELOW_C}`);
@@ -119,9 +142,9 @@ const PAGE_WORDS = {
 };
 for (const [tier, words] of Object.entries(PAGE_WORDS)) {
   for (const word of words) {
-    check(`η σελίδα παραλίας εξακολουθεί να λέει «${word}» για ${tier}`,
-      detailPage.includes(`'${word}'`),
-      'άλλαξε η λέξη στη σελίδα και ο οδηγός έμεινε πίσω');
+    check(`η πηγή εξακολουθεί να λέει «${word}» για ${tier}`,
+      copySource.includes(`'${word}'`),
+      'άλλαξε η λέξη στο utils/waterTemperatureCopy και ο οδηγός έμεινε πίσω');
   }
 }
 

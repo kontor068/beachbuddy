@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon } from 'lucide-react';
+import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon, Thermometer } from 'lucide-react';
 import { SHORE_LABELS, READ_LABELS } from './BeachAnswerHero';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { getBeaufortLevel } from '../utils/weatherUtils';
@@ -11,6 +11,7 @@ import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
 import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 import { buildConditionsFeel } from '../utils/conditionsFeelPhrase';
+import { buildWaterTemperatureCardLine } from '../utils/waterTemperatureCopy';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
@@ -60,6 +61,8 @@ interface BeachCardProps {
    *  reader is standing in; see the wave line below. */
   shoreWaveHeightM?: number;
   shoreDisplayWaveM?: number;
+  /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, βλ. utils/waterTemperatureCopy. */
+  seaTemperatureC?: number;
   temperature?: number;
   favorites: number[];
   onToggleFavorite: (id: number) => void;
@@ -1190,6 +1193,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   seaStateWaveM,
   shoreWaveHeightM,
   shoreDisplayWaveM,
+  seaTemperatureC,
   seaStatePeriodS,
   temperature,
   favorites,
@@ -1760,6 +1764,9 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
     title?: string;
     ariaLabel?: string;
     truncate?: boolean;
+    /** Η λέξη-αίσθηση ΠΑΝΩ από ΤΟ ΔΙΚΟ ΤΗΣ νούμερο (όχι μία ενιαία γραμμή πάνω από τα δύο μαζί —
+     *  αυτό διάβαζε σαν να «μπαίνει η μία στο κουτάκι της άλλης», Μίλτος 15/08/2026). */
+    feelWord?: string;
   }> = [
     {
       key: 'wind',
@@ -1768,13 +1775,15 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
       // στο λάθος πράγμα.
       icon: <Wind className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
       // Χωρίς κύμα η φράση λέει μόνο τον αέρα, οπότε από πάνω θα διάβαζε το ίδιο πράγμα δύο
-      // φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο.
+      // φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο. ΜΕ κύμα, η λέξη μπαίνει σαν
+      // `feelWord` πάνω από το ίδιο αυτό νούμερο, όχι εδώ μέσα στο κείμενο.
       text: !cardWaveText && conditionsFeelPhrase
         ? `${conditionsFeelPhrase} · ${windBeaufort} ${beaufortUnitLabel}`
         : `${windBeaufort} ${beaufortUnitLabel}`,
       // Σκέτο «5 Μπφ» σε αναγνώστη οθόνης δεν λέει ΤΙ είναι το 5 — το κύμα δίπλα το λέει από
       // την πρώτη μέρα, ο άνεμος όχι.
       ariaLabel: `${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`,
+      feelWord: cardWaveText ? conditionsFeel?.windWord : undefined,
     },
   ];
   if (cardWaveText) {
@@ -1786,6 +1795,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
       // Το αναγνωστικό κείμενο κρατά τον ΤΙΤΛΟ + το σκέτο νούμερο, αλλιώς μετά την αλλαγή
       // παραπάνω θα διαβαζόταν «Κύμα ανοιχτά: 1,5 μ. ανοιχτά».
       ariaLabel: `${cardWaveLabel}: ${cardWaveValueText}`,
+      feelWord: conditionsFeel?.waveWord,
     });
   }
   /**
@@ -1797,6 +1807,13 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    * σελίδα της παραλίας (καταλληλότερη ώρα) και στην πλήρη γραμμή της κάρτας σε υπολογιστή,
    * όπου υπάρχει πλάτος να γραφτεί ολόκληρη με τον τίτλο της.
    */
+  /**
+   * ΤΟ ΝΕΡΟ ΔΕΝ ΓΙΝΕΤΑΙ ΤΡΙΤΗ ΣΤΗΛΗ (15/08/2026) — το μάθημα της 13/08 είναι 40 γραμμές πιο πάνω:
+   * τρεις στήλες σε τηλέφωνο 320 px δίνουν ~1/3 πλάτος στην καθεμία και κόβουν λέξεις, γι' αυτό
+   * ακριβώς βγήκε τότε η ώρα από εδώ. Μπαίνει σε δική του γραμμή από κάτω, και μόνο όταν έχει
+   * κάτι να πει (όχι στο «ιδανικό» — βλ. utils/waterTemperatureCopy).
+   */
+  const waterCardLine = buildWaterTemperatureCardLine(seaTemperatureC, language);
   const podiumWhyColumnsClass = podiumWhyItems.length >= 3
     ? 'grid-cols-3'
     : podiumWhyItems.length === 2
@@ -1924,20 +1941,16 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                 μόνο για τα μποφόρ, γιατί αυτά τα λέει ήδη το chip από πάνω. */}
             {(isPodium || Boolean(cardWaveText)) && (
               <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 dark:border-sky-900/45 dark:bg-sky-950/25">
-                {/* Η ΓΡΑΜΜΗ ΠΟΥ ΔΙΑΒΑΖΕΤΑΙ ΠΡΩΤΗ. Πιο μεγάλη και πιο σκούρα από τα νούμερα, γιατί
-                    αυτή απαντά στο «τι θα βρω εκεί» — τα νούμερα από κάτω είναι η απόδειξή της.
-                    Χωρίς κύμα η φράση είναι μόνο ο αέρας («Πολύς αέρας»), οπότε θα διάβαζε το ίδιο
-                    πράγμα δύο φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο αντί από πάνω του. */}
-                {conditionsFeelPhrase && Boolean(cardWaveText) && (
-                  <p
-                    data-tilefit="podium-why-feel"
-                    className="min-w-0 line-clamp-2 px-1 text-center text-xs font-extrabold leading-[1.15] text-slate-900 dark:text-white"
-                  >
-                    {conditionsFeelPhrase}
-                  </p>
-                )}
+                {/* Η ΛΕΞΗ ΠΑΝΩ ΑΠΟ ΤΟ ΔΙΚΟ ΤΗΣ ΝΟΥΜΕΡΟ, ΟΧΙ ΜΙΑ ΓΡΑΜΜΗ ΠΑΝΩ ΑΠΟ ΤΑ ΔΥΟ (15/08/2026).
+                    Πριν, «Δυνατός αέρας, θάλασσα λάδι» ήταν ΜΙΑ κεντραρισμένη γραμμή πάνω από ΟΛΟ
+                    το πλάτος — δεν ευθυγραμμιζόταν με καμία από τις δύο στήλες από κάτω, οπότε σε
+                    στενή οθόνη διάβαζε σαν η μία λέξη να «μπαίνει στο κουτάκι» της άλλης. Τώρα κάθε
+                    λέξη κάθεται ΜΕΣΑ στη στήλη του δικού της νούμερου: «Δυνατός αέρας» πάνω από
+                    «6 Μπφ», «Θάλασσα λάδι» πάνω από «~0,1 μ.». Χωρίς κύμα δεν υπάρχει δεύτερη
+                    στήλη, οπότε η λέξη μπαίνει στην ίδια σειρά με το νούμερο (βλ. `feelWord`
+                    πάνω, μόνο όταν υπάρχει `cardWaveText`). */}
                 <div className={`grid min-w-0 items-stretch font-bold leading-tight ${cardWaveText
-                  ? 'mt-0.5 text-[10px] text-slate-600 dark:text-slate-300'
+                  ? 'text-[10px] text-slate-600 dark:text-slate-300'
                   : 'min-h-6 text-[11px] text-slate-800 dark:text-slate-200'} ${podiumWhyColumnsClass}`}>
                   {podiumWhyItems.map((item, index) => (
                     <span
@@ -1948,15 +1961,34 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                       data-tilefit={`podium-why-${item.key}`}
                       // `my-0.5` κρατά τον διαχωριστή κοντύτερο από τη γραμμή: σε κείμενο 10 px μια
                       // κάθετη που φτάνει άκρη-άκρη διαβάζεται πιο βαριά από τα νούμερα που χωρίζει.
-                      className={`flex min-w-0 items-center justify-center gap-1 px-1.5 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                      className={`flex min-w-0 flex-col items-center justify-center gap-0.5 px-1.5 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
                       title={item.title}
                       aria-label={item.ariaLabel}
                     >
-                      {item.icon}
-                      <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
+                      {item.feelWord && (
+                        <span
+                          data-tilefit={`podium-why-${item.key}-feel`}
+                          className="block w-full min-w-0 truncate text-center text-[11px] font-extrabold leading-[1.15] text-slate-900 dark:text-white"
+                        >
+                          {item.feelWord}
+                        </span>
+                      )}
+                      <span className="flex min-w-0 items-center justify-center gap-1">
+                        {item.icon}
+                        <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
+                      </span>
                     </span>
                   ))}
                 </div>
+                {waterCardLine && (
+                  <div
+                    data-tilefit="podium-why-water"
+                    className="mt-1 flex min-w-0 items-center justify-center gap-1 text-[10px] font-bold leading-tight text-slate-600 dark:text-slate-300"
+                  >
+                    <Thermometer className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />
+                    <span className="min-w-0 truncate">{waterCardLine}</span>
+                  </div>
+                )}
               </div>
             )}
 

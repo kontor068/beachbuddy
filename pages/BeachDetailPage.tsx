@@ -40,6 +40,7 @@ import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeigh
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
 import { buildChoppySeaLine } from '../utils/choppySeaCopy';
+import { resolveWaterTemperature } from '../utils/waterTemperatureCopy';
 import { CoveConditionsCard } from '../components/CoveConditionsCard';
 import { hasBoatOnlyAccess } from '../utils/access';
 import { getBeachCertification, localizeCertificationNote } from '../utils/certifiedBeaches';
@@ -1268,13 +1269,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // summer range (≈ 24-26°C) reads as "ideal" rather than "warm" — the Aegean stays refreshing even
   // then, so "warm" would over-claim — and < 21°C (spring/autumn/cold-snap) reads as cold. Shown
   // with the "κατά προσέγγιση" note + a ~ prefix, so the number stays advisory, not a precise claim.
-  const waterTempDescriptor = typeof seaTemperatureC === 'number'
-    ? seaTemperatureC < 21
-      ? { en: 'cold', gr: 'κρύο', de: 'kalt', it: 'fredda', fr: 'froide' }[language]
-      : seaTemperatureC <= 24
-        ? { en: 'mild', gr: 'μέτριο', de: 'mild', it: 'tiepida', fr: 'tempérée' }[language]
-        : { en: 'ideal', gr: 'ιδανικό', de: 'ideal', it: 'ideale', fr: 'idéale' }[language]
-    : undefined;
+  // Το λεξιλόγιο ΚΑΙ τα κατώφλια ζουν πλέον στο utils/waterTemperatureCopy — μία φορά, γιατί η
+  // κάρτα τα διαβάζει κι αυτή από 15/08/2026. Εδώ υπήρχαν δύο αντίγραφα των ίδιων 21/24 (λέξη
+  // εδώ, τόνος 900 γραμμές πιο κάτω)· τρίτο στην κάρτα θα ήταν η §Κ1 της βίβλου.
+  const waterReading = resolveWaterTemperature(seaTemperatureC, language);
+  const waterTempDescriptor = waterReading?.descriptor;
   // "Calmer than a normal July here." Deliberately fed the UNCORRECTED wave height:
   // the climatology is an open-water 4,2 km cell, so comparing a cove-corrected figure
   // against it would print a false compliment on every enclosed bay, every day.
@@ -2162,11 +2161,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 shoreHeightM: shoreWaveHeightM,
               }
             : null}
-          water={showConditions && typeof seaTemperatureC === 'number' && waterTempDescriptor
+          water={showConditions && waterReading
             ? {
-                celsius: seaTemperatureC,
-                descriptor: waterTempDescriptor,
-                tone: seaTemperatureC < 21 ? 'rough' : seaTemperatureC <= 24 ? 'moderate' : 'calm',
+                celsius: waterReading.celsius,
+                descriptor: waterReading.descriptor,
+                tone: waterReading.tone,
               }
             : null}
           sunsetTime={showConditions ? sunsetTime : null}

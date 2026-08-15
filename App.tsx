@@ -4783,6 +4783,7 @@ export const App: React.FC = () => {
         seaStateWaveM: scoreResult.seaStateWaveM,
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
+        seaTemperatureC: scoreResult.seaTemperatureC,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // The full marine forecast rides along for the map's downwind-sample flag
         // (utils/offshoreFlatWater.hasDownwindSeaSample reads swellWaveHeightM). Found the hard
@@ -6097,6 +6098,7 @@ export const App: React.FC = () => {
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
+        seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -6131,6 +6133,7 @@ export const App: React.FC = () => {
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
+        seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
         swimmingComfort: context.swimmingComfort,
@@ -6172,6 +6175,7 @@ export const App: React.FC = () => {
       // στο μεγαλύτερο νούμερο και διαφωνεί με τη σελίδα της παραλίας (11/08/2026).
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
+      seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -6194,6 +6198,7 @@ export const App: React.FC = () => {
       seaStatePeriodS: item.seaStatePeriodS,
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
+      seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
       swimmingComfort: item.swimmingComfort,
@@ -8702,6 +8707,7 @@ export const App: React.FC = () => {
                       seaStateWaveM={r.seaStateWaveM}
                       shoreWaveHeightM={r.shoreWaveHeightM}
                       shoreDisplayWaveM={r.shoreDisplayWaveM}
+                      seaTemperatureC={r.seaTemperatureC}
                       seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
                       warnings={r.warnings}
@@ -8954,6 +8960,7 @@ export const App: React.FC = () => {
                           seaStateWaveM={r.seaStateWaveM}
                           shoreWaveHeightM={r.shoreWaveHeightM}
                           shoreDisplayWaveM={r.shoreDisplayWaveM}
+                          seaTemperatureC={r.seaTemperatureC}
                           seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}
                           warnings={r.warnings}
