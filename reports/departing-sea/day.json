@@ -1,0 +1,900 @@
+{
+  "measuredAt": "2026-08-16T14:08:54.447Z",
+  "beaches": 2768,
+  "perHour": [
+    {
+      "hour": 7,
+      "arriving": 1885,
+      "candidates": 563,
+      "changed": 49,
+      "strict": 1
+    },
+    {
+      "hour": 8,
+      "arriving": 1871,
+      "candidates": 593,
+      "changed": 54,
+      "strict": 1
+    },
+    {
+      "hour": 9,
+      "arriving": 1850,
+      "candidates": 584,
+      "changed": 42,
+      "strict": 1
+    },
+    {
+      "hour": 10,
+      "arriving": 1871,
+      "candidates": 578,
+      "changed": 34,
+      "strict": 2
+    },
+    {
+      "hour": 11,
+      "arriving": 1825,
+      "candidates": 589,
+      "changed": 34,
+      "strict": 3
+    },
+    {
+      "hour": 12,
+      "arriving": 1753,
+      "candidates": 592,
+      "changed": 37,
+      "strict": 3
+    },
+    {
+      "hour": 13,
+      "arriving": 1760,
+      "candidates": 606,
+      "changed": 35,
+      "strict": 2
+    },
+    {
+      "hour": 14,
+      "arriving": 1766,
+      "candidates": 597,
+      "changed": 38,
+      "strict": 2
+    },
+    {
+      "hour": 15,
+      "arriving": 1774,
+      "candidates": 590,
+      "changed": 42,
+      "strict": 3
+    },
+    {
+      "hour": 16,
+      "arriving": 1872,
+      "candidates": 582,
+      "changed": 40,
+      "strict": 6
+    },
+    {
+      "hour": 17,
+      "arriving": 1905,
+      "candidates": 577,
+      "changed": 42,
+      "strict": 5
+    },
+    {
+      "hour": 18,
+      "arriving": 1830,
+      "candidates": 580,
+      "changed": 40,
+      "strict": 4
+    },
+    {
+      "hour": 19,
+      "arriving": 1870,
+      "candidates": 570,
+      "changed": 42,
+      "strict": 5
+    },
+    {
+      "hour": 20,
+      "arriving": 1869,
+      "candidates": 576,
+      "changed": 47,
+      "strict": 6
+    }
+  ],
+  "distinctStrict": [
+    {
+      "id": 2651,
+      "region": "thessaly-skopelos",
+      "profile": {
+        "beachId": 2651,
+        "name": {
+          "en": "Armenopetra",
+          "gr": "Αρμενόπετρα"
+        },
+        "coordinates": {
+          "lat": 39.1365,
+          "lon": 23.6355
+        },
+        "facingDeg": 234.5,
+        "sectors": {
+          "N": {
+            "level": "protected",
+            "fetchKm": 0.64,
+            "blockedRayRatio": 1,
+            "onshore": -0.581,
+            "intensity": 12.6
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 0.56,
+            "blockedRayRatio": 1,
+            "onshore": -0.986,
+            "intensity": 0.4
+          },
+          "E": {
+            "level": "protected",
+            "fetchKm": 0.76,
+            "blockedRayRatio": 1,
+            "onshore": -0.814,
+            "intensity": 5.6
+          },
+          "SE": {
+            "level": "protected",
+            "fetchKm": 2.44,
+            "blockedRayRatio": 1,
+            "onshore": -0.165,
+            "intensity": 25
+          },
+          "S": {
+            "level": "exposed",
+            "fetchKm": 12.04,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.581,
+            "intensity": 79
+          },
+          "SW": {
+            "level": "exposed",
+            "fetchKm": 25,
+            "blockedRayRatio": 0,
+            "onshore": 0.986,
+            "intensity": 99.3
+          },
+          "W": {
+            "level": "exposed",
+            "fetchKm": 18.16,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.814,
+            "intensity": 90.7
+          },
+          "NW": {
+            "level": "partial",
+            "fetchKm": 10.56,
+            "blockedRayRatio": 0.8,
+            "onshore": 0.165,
+            "intensity": 49.6
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 39.0842,
+          "lon": 23.5412,
+          "bearingDeg": 234.5,
+          "distanceKm": 10
+        }
+      },
+      "name": "Αρμενόπετρα",
+      "windKey": "39.1394_23.6436",
+      "seaKey": "39.0842_23.5412",
+      "openM": 0.82,
+      "proposed": 0.1,
+      "smb": 0.08,
+      "speedKmh": 17.712,
+      "worstOnshore": -0.9426414910921785,
+      "worstOnshoreB": -0.9537169507482268,
+      "windOnshore": -0.8616291604415259,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.72,
+      "hour": 7
+    },
+    {
+      "id": 2008,
+      "region": "south-aegean-naxos",
+      "profile": {
+        "beachId": 2008,
+        "name": {
+          "en": "Mikro Alyko",
+          "gr": "Μικρό Αλυκό"
+        },
+        "coordinates": {
+          "lat": 36.9767717,
+          "lon": 25.3865821
+        },
+        "facingDeg": 170,
+        "sectors": {
+          "N": {
+            "level": "protected",
+            "fetchKm": 4.72,
+            "blockedRayRatio": 1,
+            "onshore": -0.985,
+            "intensity": 0.5
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 0.08,
+            "blockedRayRatio": 1,
+            "onshore": -0.574,
+            "intensity": 12.8
+          },
+          "E": {
+            "level": "partial",
+            "fetchKm": 1.44,
+            "blockedRayRatio": 1,
+            "onshore": 0.174,
+            "intensity": 35.2
+          },
+          "SE": {
+            "level": "partial",
+            "fetchKm": 8,
+            "blockedRayRatio": 1,
+            "onshore": 0.819,
+            "intensity": 54.6
+          },
+          "S": {
+            "level": "exposed",
+            "fetchKm": 20.44,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.985,
+            "intensity": 99.2
+          },
+          "SW": {
+            "level": "exposed",
+            "fetchKm": 24.52,
+            "blockedRayRatio": 0.2,
+            "onshore": 0.574,
+            "intensity": 78.7
+          },
+          "W": {
+            "level": "partial",
+            "fetchKm": 18.92,
+            "blockedRayRatio": 0.6,
+            "onshore": -0.174,
+            "intensity": 41.3
+          },
+          "NW": {
+            "level": "protected",
+            "fetchKm": 13.32,
+            "blockedRayRatio": 1,
+            "onshore": -0.819,
+            "intensity": 9
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 36.8882,
+          "lon": 25.4061,
+          "bearingDeg": 170,
+          "distanceKm": 10
+        }
+      },
+      "name": "Μικρό Αλυκό",
+      "windKey": "36.9768_25.3866",
+      "seaKey": "36.8882_25.4061",
+      "openM": 1.32,
+      "proposed": 0.36,
+      "smb": 0.36,
+      "speedKmh": 28.836,
+      "worstOnshore": -0.9945218953682733,
+      "worstOnshoreB": -0.9945218953682733,
+      "windOnshore": -0.992546151641322,
+      "fetchKm": 4.72,
+      "blocked": 1,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.9600000000000001,
+      "hour": 17
+    },
+    {
+      "id": 1018,
+      "region": "ionian-islands-paxos",
+      "profile": {
+        "beachId": 1018,
+        "name": {
+          "en": "Mongonisi",
+          "gr": "Mongonisi"
+        },
+        "coordinates": {
+          "lat": 39.1821,
+          "lon": 20.20551
+        },
+        "facingDeg": 349.1,
+        "sectors": {
+          "N": {
+            "level": "exposed",
+            "fetchKm": 5.16,
+            "blockedRayRatio": 0.8,
+            "onshore": 0.982,
+            "intensity": 62.9
+          },
+          "NE": {
+            "level": "partial",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": 0.561,
+            "intensity": 46.8
+          },
+          "E": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.189,
+            "intensity": 24.3
+          },
+          "SE": {
+            "level": "protected",
+            "fetchKm": 0.56,
+            "blockedRayRatio": 1,
+            "onshore": -0.828,
+            "intensity": 5.2
+          },
+          "S": {
+            "level": "protected",
+            "fetchKm": 0.56,
+            "blockedRayRatio": 1,
+            "onshore": -0.982,
+            "intensity": 0.5
+          },
+          "SW": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.561,
+            "intensity": 13.2
+          },
+          "W": {
+            "level": "partial",
+            "fetchKm": 0.04,
+            "blockedRayRatio": 1,
+            "onshore": 0.189,
+            "intensity": 35.7
+          },
+          "NW": {
+            "level": "partial",
+            "fetchKm": 0.16,
+            "blockedRayRatio": 1,
+            "onshore": 0.828,
+            "intensity": 54.8
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 39.2053,
+          "lon": 20.2055,
+          "bearingDeg": 0,
+          "distanceKm": 2.58
+        }
+      },
+      "name": "Mongonisi",
+      "windKey": "39.1938_20.1928",
+      "seaKey": "39.2053_20.2055",
+      "openM": 0.2,
+      "proposed": 0.1,
+      "smb": 0.04,
+      "speedKmh": 9.432,
+      "worstOnshore": -0.9777832367586061,
+      "worstOnshoreB": -0.9777832367586061,
+      "windOnshore": -0.8737722230354651,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.1,
+      "hour": 11
+    },
+    {
+      "id": 32,
+      "region": "attica-east-attica-mainland",
+      "profile": {
+        "beachId": 32,
+        "name": {
+          "en": "Paralia Schinia",
+          "gr": "Παραλία Σχινιά"
+        },
+        "coordinates": {
+          "lat": 38.13969,
+          "lon": 24.03493
+        },
+        "facingDeg": 173.5,
+        "sectors": {
+          "N": {
+            "level": "protected",
+            "fetchKm": 0.2,
+            "blockedRayRatio": 1,
+            "onshore": -0.994,
+            "intensity": 0.2
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 0.52,
+            "blockedRayRatio": 1,
+            "onshore": -0.623,
+            "intensity": 11.3
+          },
+          "E": {
+            "level": "partial",
+            "fetchKm": 1.4,
+            "blockedRayRatio": 1,
+            "onshore": 0.113,
+            "intensity": 33.4
+          },
+          "SE": {
+            "level": "exposed",
+            "fetchKm": 15.56,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.783,
+            "intensity": 89.1
+          },
+          "S": {
+            "level": "exposed",
+            "fetchKm": 18.72,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.994,
+            "intensity": 99.7
+          },
+          "SW": {
+            "level": "partial",
+            "fetchKm": 5.96,
+            "blockedRayRatio": 1,
+            "onshore": 0.623,
+            "intensity": 48.7
+          },
+          "W": {
+            "level": "protected",
+            "fetchKm": 1.04,
+            "blockedRayRatio": 1,
+            "onshore": -0.113,
+            "intensity": 26.6
+          },
+          "NW": {
+            "level": "protected",
+            "fetchKm": 0.2,
+            "blockedRayRatio": 1,
+            "onshore": -0.783,
+            "intensity": 6.5
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 38.0561,
+          "lon": 24.047,
+          "bearingDeg": 173.5,
+          "distanceKm": 9.36
+        }
+      },
+      "name": "Παραλία Σχινιά",
+      "windKey": "38.1397_24.0349",
+      "seaKey": "38.0561_24.0470",
+      "openM": 1.04,
+      "proposed": 0.16,
+      "smb": 0.16,
+      "speedKmh": 31.248,
+      "worstOnshore": -0.9537169507482268,
+      "worstOnshoreB": -0.9537169507482268,
+      "windOnshore": -0.8616291604415256,
+      "fetchKm": 0.52,
+      "blocked": 1,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.88,
+      "hour": 15
+    },
+    {
+      "id": 390,
+      "region": "central-macedonia-halkidiki-mainland",
+      "profile": {
+        "beachId": 390,
+        "name": {
+          "en": "Diaporti",
+          "gr": "Diaporti"
+        },
+        "coordinates": {
+          "lat": 40.015,
+          "lon": 23.82252
+        },
+        "facingDeg": 307.1,
+        "sectors": {
+          "N": {
+            "level": "partial",
+            "fetchKm": 0.36,
+            "blockedRayRatio": 1,
+            "onshore": 0.603,
+            "intensity": 48.1
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 0.48,
+            "blockedRayRatio": 1,
+            "onshore": -0.137,
+            "intensity": 25.9
+          },
+          "E": {
+            "level": "protected",
+            "fetchKm": 3.4,
+            "blockedRayRatio": 1,
+            "onshore": -0.798,
+            "intensity": 6.1
+          },
+          "SE": {
+            "level": "protected",
+            "fetchKm": 2.48,
+            "blockedRayRatio": 1,
+            "onshore": -0.991,
+            "intensity": 0.3
+          },
+          "S": {
+            "level": "protected",
+            "fetchKm": 0.04,
+            "blockedRayRatio": 1,
+            "onshore": -0.603,
+            "intensity": 11.9
+          },
+          "SW": {
+            "level": "partial",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": 0.137,
+            "intensity": 34.1
+          },
+          "W": {
+            "level": "exposed",
+            "fetchKm": 10,
+            "blockedRayRatio": 0.8,
+            "onshore": 0.798,
+            "intensity": 71.9
+          },
+          "NW": {
+            "level": "exposed",
+            "fetchKm": 10.52,
+            "blockedRayRatio": 0.6,
+            "onshore": 0.991,
+            "intensity": 86.9
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 40.0435,
+          "lon": 23.7732,
+          "bearingDeg": 307.1,
+          "distanceKm": 5.26
+        }
+      },
+      "name": "Diaporti",
+      "windKey": "40.0199_23.8285",
+      "seaKey": "40.0435_23.7732",
+      "openM": 0.36,
+      "proposed": 0.1,
+      "smb": 0.03,
+      "speedKmh": 4.896000000000001,
+      "worstOnshore": -0.8079898838980304,
+      "worstOnshoreB": -0.8079898838980304,
+      "windOnshore": -0.9998157121216442,
+      "fetchKm": 2.48,
+      "blocked": 1,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.26,
+      "hour": 16
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "profile": {
+        "beachId": 595,
+        "name": {
+          "en": "Elafonisi",
+          "gr": "Ελαφονήσι"
+        },
+        "coordinates": {
+          "lat": 35.26747,
+          "lon": 23.52815
+        },
+        "facingDeg": 159.3,
+        "sectors": {
+          "N": {
+            "level": "protected",
+            "fetchKm": 5.44,
+            "blockedRayRatio": 0.8,
+            "onshore": -0.935,
+            "intensity": 2.1
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.412,
+            "intensity": 17.7
+          },
+          "E": {
+            "level": "partial",
+            "fetchKm": 2.36,
+            "blockedRayRatio": 1,
+            "onshore": 0.353,
+            "intensity": 40.6
+          },
+          "SE": {
+            "level": "exposed",
+            "fetchKm": 16.92,
+            "blockedRayRatio": 0.4,
+            "onshore": 0.911,
+            "intensity": 95.6
+          },
+          "S": {
+            "level": "exposed",
+            "fetchKm": 25,
+            "blockedRayRatio": 0,
+            "onshore": 0.935,
+            "intensity": 96.8
+          },
+          "SW": {
+            "level": "exposed",
+            "fetchKm": 20,
+            "blockedRayRatio": 0.2,
+            "onshore": 0.412,
+            "intensity": 70.6
+          },
+          "W": {
+            "level": "protected",
+            "fetchKm": 5,
+            "blockedRayRatio": 0.8,
+            "onshore": -0.353,
+            "intensity": 20.5
+          },
+          "NW": {
+            "level": "protected",
+            "fetchKm": 10.44,
+            "blockedRayRatio": 0.6,
+            "onshore": -0.911,
+            "intensity": 3.8
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 35.1833,
+          "lon": 23.567,
+          "bearingDeg": 159.3,
+          "distanceKm": 10
+        }
+      },
+      "name": "Ελαφονήσι",
+      "windKey": "35.2675_23.5282",
+      "seaKey": "35.1833_23.5670",
+      "openM": 1.22,
+      "proposed": 0.38,
+      "smb": 0.38,
+      "speedKmh": 28.872,
+      "worstOnshore": -0.9378889346118976,
+      "worstOnshoreB": -0.9378889346118976,
+      "windOnshore": -0.9578224948453149,
+      "fetchKm": 5.44,
+      "blocked": 0.8,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.84,
+      "hour": 16
+    },
+    {
+      "id": 2500,
+      "region": "south-aegean-marathi",
+      "profile": {
+        "beachId": 2500,
+        "name": {
+          "en": "Marathi",
+          "gr": "Μαράθι"
+        },
+        "coordinates": {
+          "lat": 37.36664,
+          "lon": 26.72496
+        },
+        "facingDeg": 104.3,
+        "sectors": {
+          "N": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.247,
+            "intensity": 22.6
+          },
+          "NE": {
+            "level": "partial",
+            "fetchKm": 0.48,
+            "blockedRayRatio": 1,
+            "onshore": 0.511,
+            "intensity": 45.3
+          },
+          "E": {
+            "level": "partial",
+            "fetchKm": 1.08,
+            "blockedRayRatio": 1,
+            "onshore": 0.969,
+            "intensity": 59.1
+          },
+          "SE": {
+            "level": "partial",
+            "fetchKm": 5.36,
+            "blockedRayRatio": 0.8,
+            "onshore": 0.86,
+            "intensity": 59.1
+          },
+          "S": {
+            "level": "partial",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": 0.247,
+            "intensity": 37.4
+          },
+          "SW": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.511,
+            "intensity": 14.7
+          },
+          "W": {
+            "level": "protected",
+            "fetchKm": 5.12,
+            "blockedRayRatio": 0.8,
+            "onshore": -0.969,
+            "intensity": 1
+          },
+          "NW": {
+            "level": "protected",
+            "fetchKm": 5.28,
+            "blockedRayRatio": 0.8,
+            "onshore": -0.86,
+            "intensity": 4.5
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 37.3834,
+          "lon": 26.7038,
+          "bearingDeg": 315,
+          "distanceKm": 2.64,
+          "via": "sector-NW",
+          "verified": "served-cell"
+        }
+      },
+      "name": "Μαράθι",
+      "windKey": "37.3666_26.7250",
+      "seaKey": "37.3834_26.7038",
+      "openM": 1.12,
+      "proposed": 0.41,
+      "smb": 0.41,
+      "speedKmh": 30.816000000000003,
+      "worstOnshore": -0.8221440410307375,
+      "worstOnshoreB": -0.8508111094240515,
+      "windOnshore": -0.8686315144381914,
+      "fetchKm": 5.28,
+      "blocked": 0.8,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.7100000000000002,
+      "hour": 20
+    },
+    {
+      "id": 442,
+      "region": "central-macedonia-halkidiki-mainland",
+      "profile": {
+        "beachId": 442,
+        "name": {
+          "en": "Sani Hill",
+          "gr": "Sani Hill"
+        },
+        "coordinates": {
+          "lat": 40.09969,
+          "lon": 23.30497
+        },
+        "facingDeg": 306.8,
+        "sectors": {
+          "N": {
+            "level": "exposed",
+            "fetchKm": 11.6,
+            "blockedRayRatio": 1,
+            "onshore": 0.599,
+            "intensity": 75.8
+          },
+          "NE": {
+            "level": "protected",
+            "fetchKm": 1.04,
+            "blockedRayRatio": 1,
+            "onshore": -0.143,
+            "intensity": 25.7
+          },
+          "E": {
+            "level": "protected",
+            "fetchKm": 0,
+            "blockedRayRatio": 1,
+            "onshore": -0.801,
+            "intensity": 6
+          },
+          "SE": {
+            "level": "protected",
+            "fetchKm": 0.48,
+            "blockedRayRatio": 1,
+            "onshore": -0.99,
+            "intensity": 0.3
+          },
+          "S": {
+            "level": "protected",
+            "fetchKm": 15.4,
+            "blockedRayRatio": 0.4,
+            "onshore": -0.599,
+            "intensity": 20
+          },
+          "SW": {
+            "level": "partial",
+            "fetchKm": 25,
+            "blockedRayRatio": 0,
+            "onshore": 0.143,
+            "intensity": 57.1
+          },
+          "W": {
+            "level": "exposed",
+            "fetchKm": 25,
+            "blockedRayRatio": 0,
+            "onshore": 0.801,
+            "intensity": 90
+          },
+          "NW": {
+            "level": "exposed",
+            "fetchKm": 22.72,
+            "blockedRayRatio": 0.4,
+            "onshore": 0.99,
+            "intensity": 99.5
+          }
+        },
+        "confidence": "high",
+        "marineSamplePoint": {
+          "lat": 40.1535,
+          "lon": 23.2108,
+          "bearingDeg": 306.8,
+          "distanceKm": 10
+        }
+      },
+      "name": "Sani Hill",
+      "windKey": "40.0997_23.3050",
+      "seaKey": "40.1535_23.2108",
+      "openM": 0.24,
+      "proposed": 0.15,
+      "smb": 0.15,
+      "speedKmh": 10.044,
+      "worstOnshore": -0.8553642601605066,
+      "worstOnshoreB": -0.9871362650729879,
+      "windOnshore": -0.8461931661275641,
+      "fetchKm": 15.4,
+      "blocked": 0.4,
+      "level": "protected",
+      "speaksToday": false,
+      "strict": true,
+      "strictB": true,
+      "drop": 0.09,
+      "hour": 20
+    }
+  ]
+}

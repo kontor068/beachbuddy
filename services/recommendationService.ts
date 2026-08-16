@@ -54,7 +54,7 @@ import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
-import { estimateShoreWaveHeightM } from '../utils/shoreWave';
+import { estimateShoreWaveHeightM, isSeaDepartingShore } from '../utils/shoreWave';
 import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
@@ -1830,6 +1830,20 @@ export const calculateBeachScore = (
     (marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M &&
     typeof marine?.swellWaveDirectionDeg !== 'number'
   );
+  /**
+   * Μετρημένη απόδειξη ότι ΟΛΟ το νερό φεύγει από αυτή την ακτή — utils/shoreWave.isSeaDepartingShore.
+   * Υπολογίζεται εδώ, δίπλα στο arrivingSwellPresent, γιατί είναι το ίδιο ερώτημα από την ανάποδη
+   * και τα δύο διαβάζουν τα ίδια πεδία θάλασσας. Ξεκλειδώνει ΜΟΝΟ τις δύο γεωμετρικές πύλες του
+   * shoreWave· κάθε άλλος φραγμός (ράμπα, δάπεδο, «ποτέ πιο δυνατά από την ανοιχτή θάλασσα») μένει.
+   */
+  const departingSea = isSeaDepartingShore({
+    facingDeg: windAssessment.facingDeg,
+    windDirectionDeg: weather.wind.deg,
+    components: [
+      { heightM: marine?.waveHeightM, directionDeg: marine?.waveDirectionDeg },
+      { heightM: marine?.swellWaveHeightM, directionDeg: marine?.swellWaveDirectionDeg },
+    ],
+  });
   const geometricCeiling = resolveGeometricWaveCeiling({
     profile: options?.geospatialProfile,
     windSpeedKmh: windSpeedKmph,
@@ -2395,6 +2409,7 @@ export const calculateBeachScore = (
     // whose direction we do not know counts as arriving, because there is no evidence it is not.
     // Computed once, next to the geometric ceiling that applies the identical test.
     arrivingSwellPresent,
+    departingSea,
   });
   const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the

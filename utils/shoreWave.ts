@@ -93,6 +93,82 @@ export const shoreRampWeight = (onshore: number): number => {
   return (SHORE_RAMP_SILENT_ONSHORE - onshore) / span;
 };
 
+/**
+ * Κάτω από αυτό, ένα συστατικό της θάλασσας δεν κρίνει τίποτα — μετράμε κατευθύνσεις μόνο για
+ * νερό που υπάρχει. Ίδιο νούμερο με το δάπεδο εμφάνισης × 1,5: αρκετά πάνω από τον θόρυβο του
+ * πλέγματος, αρκετά κάτω από οτιδήποτε θα πρόσεχε κολυμβητής.
+ */
+export const DEPARTING_SEA_MIN_COMPONENT_M = 0.15;
+
+/**
+ * ΟΤΑΝ ΟΛΟ ΤΟ ΝΕΡΟ ΤΑΞΙΔΕΥΕΙ ΜΑΚΡΙΑ, Η ΓΕΩΜΕΤΡΙΑ ΔΕΝ ΧΡΕΙΑΖΕΤΑΙ ΝΑ ΤΟ ΜΑΝΤΕΨΕΙ (16/08/2026).
+ *
+ * Οι δύο γεωμετρικές πύλες παρακάτω — φραγμένες ακτίνες και άνοιγμα — υπάρχουν για να απαντήσουν
+ * ΕΜΜΕΣΑ σε ένα ερώτημα: «μπορεί να φτάσει κύμα σε αυτή την ακτή;». Όταν το πλέγμα μας δίνει την
+ * ΚΑΤΕΥΘΥΝΣΗ κάθε συστατικού, το ερώτημα απαντιέται ΑΜΕΣΑ, και η μέτρηση υπερισχύει της εικασίας.
+ *
+ * Η ΑΦΟΡΜΗ, με νούμερα. Ελαφονήσι 15/08/2026 16:00, ζωντανή κάμερα με ρηχό ήρεμο νερό και κόσμο
+ * όρθιο μέσα· η κάρτα έλεγε 0,7 μ. Η θάλασσα 10 χλμ ΝΝΑ έδινε 1,22 μ., από τα οποία 1,14 μ. ήταν
+ * κύμα ανέμου ερχόμενο από 356°. Η παραλία κοιτάει 159,3°: onshore −0,94 για το κύμα, −0,96 για
+ * τον άνεμο. Ολόκληρη η θάλασσα έφευγε, και το κελί μέτρησης ήταν 10 χλμ ΚΑΤΑΝΤΗ του ανέμου. Οι
+ * δύο πύλες την έκοβαν (άνοιγμα 5,44 χλμ · φραγμένες ακτίνες 0,8) — σωστά ως εικασία, λάθος ως
+ * απάντηση, γιατί το νερό που μετρούσαν πήγαινε προς την άλλη μεριά.
+ *
+ * ΕΙΝΑΙ Η ΙΔΙΑ ΟΙΚΟΓΕΝΕΙΑ με τον Άγιο Προκόπιο της 10/08 (δες `arrivingSwellPresent` παραπάνω):
+ * τότε καλύφθηκε η ΑΠΟΘΑΛΑΣΣΙΑ, εδώ το ΚΥΜΑ ΑΝΕΜΟΥ — που στο Ελαφονήσι ήταν το 93% του αριθμού.
+ *
+ * ΚΑΤΩΦΛΙ −0,8, ΤΟ ΙΔΙΟ ΠΟΥ ΧΡΗΣΙΜΟΠΟΙΕΙ ΗΔΗ ΤΟ OFFSHORE_FLAT_MAX_ONSHORE — πάνω από 143° εκτός
+ * μετωπικής. Μετρήθηκε εθνικά (scripts/measureDepartingSeaNationally.mjs, 2.768 παραλίες × 14 ώρες
+ * κολύμβησης, ζωντανά 16/08/2026):
+ *
+ *              κατώφλι −0,5        κατώφλι −0,8
+ *   ώρες×παραλία   576                 44
+ *   παραλίες       —                    8   (ΟΛΕΣ ήδη «protected» στη γεωμετρία)
+ *   μέγιστη πτώση  1,52 μ.             0,96 μ.
+ *   πέφτουν από ≥1 μ. στο δάπεδο 0,10:  αρκετές          0
+ *
+ * Το −0,5 απορρίφθηκε: μπαίνουν περιπτώσεις με onshore −0,52, που είναι «λοξά», όχι «φεύγει», και
+ * εκεί ζουν τα άλματα από 1,6 μ. κατευθείαν στο δάπεδο. 1.872 παραλίες την ίδια ώρα έχουν θάλασσα
+ * που ΕΡΧΕΤΑΙ και δεν αγγίζονται καθόλου.
+ *
+ * ΜΕ ΤΙ ΔΕΔΟΜΕΝΑ. Μετρήθηκε και η ακριβή παραλλαγή που ζητούσε ΞΕΧΩΡΙΣΤΑ το `wind_wave_direction`
+ * (+30% βάρος σε ΚΑΘΕ κλήση θάλασσας, δες services/forecast/openMeteoProvider.ts): δίνει
+ * ΑΚΡΙΒΩΣ το ίδιο σύνολο — 44 ώρες×παραλία, οι ίδιες 8 παραλίες, καμία διαφορά. Άρα ο κανόνας
+ * τρέχει με ό,τι ήδη κατεβάζουμε και κοστίζει **μηδέν**. Μην προσθέσεις τη μεταβλητή για αυτό.
+ *
+ * ΣΙΩΠΗ ΕΙΝΑΙ Η ΑΣΦΑΛΗΣ ΑΠΑΝΤΗΣΗ: συστατικό με ύψος αλλά ΧΩΡΙΣ κατεύθυνση σημαίνει `false` —
+ * δεν έχουμε απόδειξη ότι φεύγει, άρα δεν τη διεκδικούμε.
+ */
+export const isSeaDepartingShore = ({
+  facingDeg,
+  windDirectionDeg,
+  components,
+}: {
+  facingDeg?: number | null;
+  windDirectionDeg?: number;
+  components: Array<{ heightM?: number; directionDeg?: number }>;
+}): boolean => {
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return false;
+  if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return false;
+
+  const onshoreOf = (fromDeg: number) => Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
+
+  // Ο άνεμος πρέπει ΚΙ ΑΥΤΟΣ να φεύγει. Αλλιώς χτίζει τοπικό κύμα μπροστά στην ακτή που το κελί
+  // μέτρησης, δέκα χιλιόμετρα μακριά, δεν έχει δει ακόμη.
+  if (onshoreOf(windDirectionDeg) > OFFSHORE_FLAT_MAX_ONSHORE) return false;
+
+  const measurable = components.filter(
+    c => typeof c.heightM === 'number' && Number.isFinite(c.heightM) && c.heightM >= DEPARTING_SEA_MIN_COMPONENT_M
+  );
+  if (measurable.length === 0) return false;
+
+  return measurable.every(
+    c => typeof c.directionDeg === 'number'
+      && Number.isFinite(c.directionDeg)
+      && onshoreOf(c.directionDeg) <= OFFSHORE_FLAT_MAX_ONSHORE
+  );
+};
+
 export interface ShoreWaveInput {
   /** The open-water figure the page prints today, in metres. */
   openWaterWaveHeightM?: number;
@@ -127,6 +203,13 @@ export interface ShoreWaveInput {
    * there is no evidence it is leaving, and silence is the safe answer.
    */
   arrivingSwellPresent?: boolean;
+  /**
+   * MEASURED proof that every component of the sea is travelling away from this shore — see
+   * isSeaDepartingShore above. It replaces the two GEOMETRIC gates (blocked rays, fetch) and
+   * nothing else: the ramp, the floor and the never-louder-than-the-sea guard all still apply,
+   * so this can lower the printed number and can never raise it.
+   */
+  departingSea?: boolean;
 }
 
 /**
@@ -142,6 +225,7 @@ export const estimateShoreWaveHeightM = ({
   confidence,
   suspectPin,
   arrivingSwellPresent,
+  departingSea,
 }: ShoreWaveInput): number | undefined => {
   if (arrivingSwellPresent) return undefined;
   if (suspectPin) return undefined;
@@ -154,8 +238,13 @@ export const estimateShoreWaveHeightM = ({
   if (typeof fetchKm !== 'number' || typeof blockedRayRatio !== 'number' || typeof onshore !== 'number') {
     return undefined;
   }
-  if (blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return undefined;
-  if (fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return undefined;
+  // Οι δύο γεωμετρικές πύλες ΜΑΝΤΕΥΟΥΝ αν μπορεί να φτάσει κύμα εδώ. Όταν έχουμε μετρημένη
+  // απόδειξη ότι όλο το νερό φεύγει, η μέτρηση απαντά στο ίδιο ερώτημα ΑΜΕΣΑ και υπερισχύει.
+  // Ο έλεγχος της ράμπας από κάτω ΔΕΝ παρακάμπτεται ποτέ: είναι η ίδια η κλίμακα του βάρους.
+  if (!departingSea) {
+    if (blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return undefined;
+    if (fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return undefined;
+  }
   if (onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
 
   const weight = shoreRampWeight(onshore);

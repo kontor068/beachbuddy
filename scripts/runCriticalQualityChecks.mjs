@@ -139,6 +139,15 @@ const checks = [
     args: ['scripts/validatePerBeachWindGates.mjs'],
   },
   {
+    id: 'departing-sea-evidence',
+    title: 'Ο αριθμός πέφτει μόνο με μετρημένη απόδειξη ότι το νερό φεύγει',
+    description: 'Οδηγεί τις πραγματικές utils/shoreWave.isSeaDepartingShore και estimateShoreWaveHeightM και απαιτεί: μετωπικό κύμα ή θαλάσσιος άνεμος δεν περνάνε ποτέ· ένα και μόνο συστατικό που έρχεται ακυρώνει τα υπόλοιπα· ύψος χωρίς κατεύθυνση σημαίνει σιωπή· το κατώφλι −0,8 τηρείται και από τις δύο μεριές (36° μέσα, 38° έξω)· και το ξεκλείδωμα δεν παρακάμπτει ΤΙΠΟΤΑ άλλο — αποθαλασσιά που φτάνει, χαμηλή εμπιστοσύνη, ύποπτη πινέζα και η ράμπα κρατάνε. Ελέγχει και τη ΣΥΝΔΕΣΗ στο recommendationService. Με --prove χαλαρώνει και σφίγγει την ίδια τη σταθερά μέσα στην αληθινή συνάρτηση και απαιτεί να πέσει.',
+    protects: 'Κάνει παραλίες να δείχνουν ΠΙΟ ΗΡΕΜΕΣ, δηλαδή είναι η επικίνδυνη κατεύθυνση — σκανδάλη #1 της §9. Αφορμή: Ελαφονήσι 15/08/2026 16:00, ζωντανή κάμερα με ρηχό ήρεμο νερό ενώ η κάρτα έλεγε 0,7 μ. — η θάλασσα 10 χλμ ΚΑΤΑΝΤΗ έδινε 1,22 μ. με onshore −0,94, δηλαδή όλο το νερό έφευγε. Μετρήθηκε εθνικά (2.768 παραλίες × 14 ώρες): στο −0,8 αγγίζονται 8 παραλίες / 44 ώρες×παραλία με μέγιστη πτώση 0,96 μ. και ΚΑΜΙΑ πτώση από ≥1 μ. στο δάπεδο· στο −0,5 γίνονται 576 ώρες×παραλία με άλματα ως 1,52 μ. 1.872 παραλίες την ίδια ώρα έχουν θάλασσα που έρχεται και δεν αγγίζονται καθόλου.',
+    failureAction: 'ΜΗΝ χαλαρώσεις το −0,8 για να μιλήσει μια παραλία — το νούμερο βγήκε από τη μέτρηση, όχι από συζήτηση, και το −0,5 δοκιμάστηκε και απορρίφθηκε. Αν λείπει η σύνδεση, πέρασε το departingSea στο estimateShoreWaveHeightM· ΠΟΤΕ μην παρακάμψεις τη ράμπα, την αποθαλασσιά ή τον φραγμό «ποτέ πιο δυνατά από την ανοιχτή θάλασσα».',
+    command: process.execPath,
+    args: ['scripts/validateDepartingSeaEvidence.mjs', '--prove'],
+  },
+  {
     id: 'forecast-cell-clustering',
     title: 'No forecast point speaks for a beach in another model cell',
     description: 'Runs the shipped clustering over all 110 regions and demands four things: every beach carries a MEASURED forecastCell, every cluster\'s members share one cell, every cluster\'s sampling point is literally a member beach\'s coordinate rather than a synthetic centroid, and that beach\'s own measured cell is the cluster\'s cell.',
