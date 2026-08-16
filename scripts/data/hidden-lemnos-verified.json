@@ -1,0 +1,35 @@
+{
+  "batch": "hidden_lemnos_2026_08_16",
+  "note": "Επανέλεγχος Λήμνου 16/08/2026. Το coverage pipeline δεν μπορούσε να τη δει: η OSM έχει 161 ΑΝΩΝΥΜΑ natural=beach πολύγωνα στη Λήμνο και μόνο 42 ονοματισμένα — και τα 42 τα έχουμε ήδη, οπότε το national gap report έβγαζε «καθαρή» εικόνα ενώ η παραλία έλειπε. Το τοπωνύμιο σταυρώθηκε με πέντε ανεξάρτητους οδηγούς (limnosguide, Terrabook, limnos.mobi, mylemnos, Greeka) ΚΑΙ με τη γεωμετρία της OSM: η πινέζα είναι το κεντροειδές ανώνυμου natural=beach πολυγώνου (way 264816761, 24 κόμβοι, μήκος 231 m), 20 m από την ακτογραμμή και 310 m από το ξωκλήσι «Άγιος Ερμόλαος» (OSM way 263243849) που δίνει στην παραλία το όνομά της. Η πρόσβαση προκύπτει από τους οδηγούς ΚΑΙ από τους δρόμους που όντως υπάρχουν γύρω από την πινέζα, όχι από επιτόπου έλεγχο — γι' αυτό μπαίνει confidence:low + needsVerification.",
+  "beaches": [
+    {
+      "nameGr": "Άγιος Ερμόλαος",
+      "aliases": ["Agios Ermolaos", "Aghios Ermolaos", "Παραλία Άγιος Ερμόλαος"],
+      "lat": 39.970876,
+      "lon": 25.264353,
+      "region": "North Aegean",
+      "prefecture": "Lemnos",
+      "municipality": "Lemnos",
+      "coordSrc": "OSM way/264816761 (natural=beach, ανώνυμο, μήκος 231 m) — κεντροειδές· ακτογραμμή στα 20 m· ξωκλήσι «Άγιος Ερμόλαος» OSM way/263243849 στα 310 m",
+      "sourceNote": "Ερημική αμμουδιά στη βόρεια ακτή, ανάμεσα στον Κότσινα και το Πηγαδέλι της Παναγιάς, περίπου 4,5 χλμ. από την Ατσική και 3 χλμ. από τον Κότσινα. Χρυσή άμμος, καθαρά νερά, καμία οργάνωση πέρα από κιόσκια του Δήμου. Πάει με χωματόδρομο και μικρή πεζοπορία στο τέλος — γι' αυτό μένει άδεια ακόμη και τον Αύγουστο. Το OSM δεν της έχει δώσει ποτέ όνομα, οπότε δεν εμφανίστηκε σε κανέναν έλεγχο κάλυψης.",
+      "sourceUrls": [
+        "http://limnosguide.com.gr/en/alternative-beaches/agios-ermolaos",
+        "https://greece.terrabook.com/el/lemnos/page/paralia-agios-ermolaos/",
+        "https://limnos.mobi/el/article/fusi/paralies/paralia-agios-ermolaos/2301",
+        "https://www.mylemnos.gr/old/limnos-beach.html",
+        "https://www.greeka.com/eastern-aegean/lemnos/beaches/"
+      ],
+      "metadata": {
+        "access": {
+          "type": "passable_dirt_road",
+          "label": "Χωματόδρομος από την Ατσική και λίγα μέτρα με τα πόδια",
+          "notes": "Χωματόδρομος από την Ατσική — περνάει απλό αυτοκίνητο — και στο τέλος ένα μικρό μονοπάτι ως την άμμο. Πάρε νερό, φαγητό και ομπρέλα: δεν υπάρχει τίποτα εκεί."
+        },
+        "terrain": { "types": ["fine_sand", "coarse_sand"], "label": "χρυσή άμμος" },
+        "organized": false,
+        "shade": false,
+        "amenities": []
+      }
+    }
+  ]
+}

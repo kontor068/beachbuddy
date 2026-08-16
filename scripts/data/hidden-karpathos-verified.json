@@ -1,0 +1,112 @@
+{
+  "batch": "hidden_karpathos_2026_08_16",
+  "note": "Τέσσερις παραλίες που το coverage pipeline δεν μπορούσε να δει: η OSM τις έχει ως ΑΝΩΝΥΜΑ natural=beach πολύγωνα (ή καθόλου), οπότε πέφτουν έξω από το name-keyed matching και δεν εμφανίστηκαν ποτέ στο national gap report. Ανάμεσά τους η παραλία της ΠΡΩΤΕΥΟΥΣΑΣ του νησιού. Κάθε τοπωνύμιο επιβεβαιώθηκε ξεχωριστά από τον οδηγό KarpathosInfo και σταυρώθηκε με OSM γεωμετρία (πολύγωνο natural=beach ή ακτογραμμή) — καμία δεν μπήκε με όνομα-εικασία. Η απόσταση κάθε πινέζας από την ακτογραμμή μετρήθηκε με Overpass. Η πρόσβαση προκύπτει από τους δρόμους που όντως υπάρχουν γύρω από κάθε σημείο (highway=* σε 300 m), όχι από επιτόπου έλεγχο: γι' αυτό όλες μπαίνουν confidence:low + needsVerification.",
+  "beaches": [
+    {
+      "nameGr": "Βρόντη",
+      "aliases": ["Vrondi", "Vrontis", "Βρόντης"],
+      "lat": 35.50913,
+      "lon": 27.20728,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Karpathos",
+      "coordSrc": "OSM way/225617241 (natural=beach, ανώνυμο, περίμετρος 792 m) — κεντροειδές· ακτογραμμή στα 13 m",
+      "sourceNote": "Η μακρύτερη παραλία του κόλπου των Πηγαδίων, λίγες εκατοντάδες μέτρα ΒΔ από την παραλία της πόλης· 15-20 λεπτά με τα πόδια από την πρωτεύουσα. Ήταν ανώνυμο πολύγωνο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 160 m υπάρχουν καφέ (29 m), Island Bar (111 m), εστιατόριο Kali Kardia (137 m) και η οδός Ποσειδώνος (secondary/asphalt, 131 m) — οικισμός, όχι ερημιά. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://karpathosinfo.com/karpathos-beaches/vrontis-beach",
+        "https://www.greeka.com/dodecanese/karpathos/beaches/vrontis/",
+        "https://www.openstreetmap.org/way/225617241"
+      ],
+      "metadata": {
+        "access": {
+          "type": "asphalt_road",
+          "label": "Πρόσβαση με άσφαλτο",
+          "notes": "Ασφαλτόδρομος (Ποσειδώνος) στα 131 m και δρόμοι οικισμού στα 88 m από την ακτή κατά την OSM. Δεν επιβεβαιώθηκε επιτόπου οργανωμένο parking."
+        },
+        "terrain": { "types": ["sand", "pebbles"], "label": "άμμος, βότσαλα" },
+        "organized": false,
+        "shade": false,
+        "amenities": ["καφέ κοντά", "μπαρ κοντά", "εστιατόρια κοντά", "καταλύματα κοντά"]
+      }
+    },
+    {
+      "nameGr": "Άφωτη",
+      "aliases": ["Afoti", "Affoti", "Άφφωτη"],
+      "lat": 35.5115,
+      "lon": 27.2042,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Karpathos",
+      "coordSrc": "OSM way/225617242 (natural=beach, ανώνυμο) — νότιο τμήμα· ακτογραμμή στα 14 m· διασταύρωση με Nominatim «Παραλία Άφφωτη» στα 35.51089,27.20453",
+      "sourceNote": "Το βόρειο τμήμα του κόλπου των Πηγαδίων, ~1 χλμ από την πόλη, από τα ερείπια του εκκλησιού της Αγίας Φωτεινής και βόρεια. Ο οδηγός σημειώνει ρητά ότι δεν έχει καμία φυσική προστασία από τον άνεμο. Ταυτότητα: Tamaris Suites (94 m), εστιατόρια Capari (127 m), Nisiotiko (142 m), Mediterranean House (151 m), δρόμος οικισμού 75 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://karpathosinfo.com/afoti-beach/",
+        "https://www.openstreetmap.org/way/225617242"
+      ],
+      "metadata": {
+        "access": {
+          "type": "asphalt_road",
+          "label": "Πρόσβαση με άσφαλτο",
+          "notes": "Δρόμος οικισμού στα 75 m και ασφαλτοστρωμένη διακλάδωση στα 129 m κατά την OSM. Ο οδηγός αναφέρει χώρο στάθμευσης πίσω από την παραλία, χωρίς επιτόπου επιβεβαίωση."
+        },
+        "terrain": { "types": ["coarse_sand", "pebbles"], "label": "χοντρή άμμος, βότσαλα" },
+        "organized": false,
+        "shade": false,
+        "amenities": ["εστιατόρια κοντά", "καφέ κοντά", "καταλύματα κοντά"]
+      }
+    },
+    {
+      "nameGr": "Πηγάδια",
+      "aliases": ["Pigadia", "Παραλία Πηγαδίων"],
+      "lat": 35.50795,
+      "lon": 27.21275,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Karpathos",
+      "coordSrc": "Οδηγός KarpathosInfo (μπροστά από τα ξενοδοχεία, ~100 m από το εξωτερικό λιμάνι) + πλησιέστερο σημείο ακτογραμμής OSM 35.50804,27.21289",
+      "sourceNote": "Η παραλία της πρωτεύουσας — δεν υπήρχε καμία εγγραφή για τα Πηγάδια, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει στη Χώρα. Η OSM ΔΕΝ έχει πολύγωνο παραλίας εδώ (μόνο ακτογραμμή), γι' αυτό ήταν αόρατη και στα δύο pipelines. Η πινέζα είναι εκτίμηση από τον οδηγό, ακουμπισμένη στην ακτογραμμή· ΔΕΝ προέρχεται από πολύγωνο παραλίας και χρειάζεται ανθρώπινη επιβεβαίωση. Ταυτότητα: δρόμοι πόλης 31-58 m, καφέ Non Solo Caffé (54 m), Hermanos (67 m).",
+      "sourceUrls": [
+        "https://karpathosinfo.com/pigadia-beach/",
+        "https://www.greeka.com/dodecanese/karpathos/beaches/pigadia-beach/",
+        "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
+      ],
+      "metadata": {
+        "access": {
+          "type": "asphalt_road",
+          "label": "Πρόσβαση με άσφαλτο",
+          "notes": "Μέσα στη Χώρα: ασφαλτόδρομος (28ης Οκτωβρίου) στα 58 m και δρόμοι πόλης στα 31 m κατά την OSM. Ο οδηγός σημειώνει ότι η στάθμευση δυσκολεύει τον Ιούνιο-Αύγουστο."
+        },
+        "terrain": { "types": ["sand", "coarse_sand", "pebbles"], "label": "άμμος, χοντρή άμμος, βότσαλα" },
+        "organized": true,
+        "shade": false,
+        "amenities": ["beach bar", "εστιατόρια κοντά", "καφέ κοντά", "ξαπλώστρες εποχικά", "ομπρέλες εποχικά", "καταλύματα κοντά"]
+      }
+    },
+    {
+      "nameGr": "Διαφάνι",
+      "aliases": ["Diafani", "Παραλία Διαφανίου"],
+      "lat": 35.75615,
+      "lon": 27.21022,
+      "region": "South Aegean",
+      "prefecture": "Dodecanese",
+      "municipality": "Karpathos",
+      "coordSrc": "OSM way/561329965 (natural=beach, surface=pebblestone, ανώνυμο, περίμετρος 610 m) — κεντροειδές· ακτογραμμή στα 6 m",
+      "sourceNote": "Η παραλία του δεύτερου λιμανιού της Καρπάθου, μπροστά στην προκυμαία του χωριού — δεν υπήρχε εγγραφή, ενώ γύρω της είχαμε ήδη έξι απομονωμένες ακτές. Ήταν ανώνυμο πολύγωνο στην OSM. Ο οδηγός τη δίνει >200 m μήκος, ~10 m πλάτος, με μόλο που τη χωρίζει στη μέση. Ταυτότητα: εστιατόρια Rahati (30 m), Chrissi Akti (37 m), Anixis (43 m), Blue (43 m), καφέ To Aktaio (52 m), δρόμος 21 m. Χωρίς επιτόπου επιβεβαίωση.",
+      "sourceUrls": [
+        "https://karpathosinfo.com/diafani-beach/",
+        "https://www.openstreetmap.org/way/561329965"
+      ],
+      "metadata": {
+        "access": {
+          "type": "asphalt_road",
+          "label": "Πρόσβαση με άσφαλτο",
+          "notes": "Πάνω στην προκυμαία του χωριού: δρόμος οικισμού στα 21-25 m κατά την OSM, με λεωφορείο από τα Πηγάδια κατά τον οδηγό."
+        },
+        "terrain": { "types": ["coarse_sand", "pebbles"], "label": "χοντρή άμμος, βότσαλα" },
+        "organized": false,
+        "shade": false,
+        "amenities": ["ταβέρνες κοντά", "καφέ κοντά", "καταλύματα κοντά"]
+      }
+    }
+  ]
+}

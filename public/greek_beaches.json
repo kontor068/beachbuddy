@@ -109853,9 +109853,9 @@
           "lon": 25.28395,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος — με απλό αυτοκίνητο μόνο από τα Καμίνια",
+              "notes": "Μόνο χωματόδρομος. Από τα Καμίνια (μέσω Αγίας Σοφίας) περνάει απλό αυτοκίνητο με υπομονή· από τον Μούδρο ο δρόμος θέλει 4x4. Καμία παροχή — νερό, φαγητό και ομπρέλα μαζί σου."
             },
             "terrain": {
               "types": [
@@ -109878,11 +109878,13 @@
             "sourceNotes": [
               "Lemnos OSM identity/location pass 2026-05-27: OSM way 105315245 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
               "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Parthenomytos near Skandali with extensive sandy beach character, rough dirt-road access and no visitor facilities. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (χωρίς άσφαλτο σε 500 m, χωματόδρομος στα 293 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://limnosguide.com.gr/en/alternative-beaches/parthenomytos, https://greece.terrabook.com/el/lemnos/page/parthenomutos/). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/105315245",
-              "https://limnosguide.com.gr/en/alternative-beaches/parthenomytos"
+              "https://limnosguide.com.gr/en/alternative-beaches/parthenomytos",
+              "https://greece.terrabook.com/el/lemnos/page/parthenomutos/"
             ],
             "orientation": {
               "degrees": 224.4,
@@ -109922,7 +109924,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Ακτή κοντά στον οικισμό Σκανδάλης με πρόσβαση από δρόμο. Κυρίως ελεύθερη παραλία με περιορισμένες παροχές."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -109944,7 +109946,10 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Lemnos OSM identity/location pass 2026-05-27: OSM way 264725687 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": [
+              "Lemnos OSM identity/location pass 2026-05-27: OSM way 264725687 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+              "Lemnos robot-copy sweep 2026-08-16: access.notes cleared. Removed text: \"Ακτή κοντά στον οικισμό Σκανδάλης με πρόσβαση από δρόμο. Κυρίως ελεύθερη παραλία με περιορισμένες παροχές.\" — ήταν το ίδιο πρότυπο με αλλαγμένο μόνο το όνομα οικισμού σε 3 παραλίες της Λήμνου, και κάθε κομμάτι του το έλεγε ήδη η ταμπέλα πρόσβασης ή η λίστα παροχών. Δεν περιείχε ένδειξη χωματόδρομου (utils/access.ts hasDirtRoadAccess)."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/264725687"
             ],
@@ -109981,9 +109986,9 @@
           "lon": 25.29389,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος από το Χαβούλι ή την Αγία Σοφία",
+              "notes": "Χωματόδρομος· καλύτερος από την Αγία Σοφία, πιο κακοτράχαλος από το Χαβούλι. Απέραντη αμμουδιά χωρίς καμία οργάνωση."
             },
             "terrain": {
               "types": [
@@ -110006,12 +110011,15 @@
             "sourceNotes": [
               "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
               "Lemnos tourist evidence pass 2026-06-01: Terrabook and TripinView directly support Skidi beach in southern Lemnos with large sandy beach character, unorganized/no-service context, shallow/easy-road beach traceability and local identity. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (χωρίς άσφαλτο σε 500 m, χωματόδρομος στα 390 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://lovefortravel.gr/limnos-oraioteres-paralies/, http://me-limnia-matia.blogspot.com/p/blog-page_30.html). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/115699067",
               "https://greece.terrabook.com/el/lemnos/page/skidi/",
-              "https://tripinview.com/places/beach/52883/greece-north-aegean-lemnos-skidi"
+              "https://tripinview.com/places/beach/52883/greece-north-aegean-lemnos-skidi",
+              "https://lovefortravel.gr/limnos-oraioteres-paralies/",
+              "http://me-limnia-matia.blogspot.com/p/blog-page_30.html"
             ],
             "orientation": {
               "degrees": 255.9,
@@ -110049,9 +110057,9 @@
           "lon": 25.2189,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος από το Προπούλι",
+              "notes": "Χωματόδρομος από το Προπούλι. Ακτή κυρίως βραχώδης με ένα μικρό αμμώδες τμήμα· μόνο ένα δημοτικό κιόσκι, τίποτε άλλο."
             },
             "terrain": {
               "types": [
@@ -110074,7 +110082,8 @@
             "sourceNotes": [
               "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
               "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Tryges near Atsiki with rocky/sandy beach character, dirt-road access, one municipal kiosk and isolated no-broad-service context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (άσφαλτος στα 642 m, χωματόδρομος στα 244 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://limnosguide.com.gr/en/alternative-beaches/tryges). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/113867620",
@@ -110114,7 +110123,8 @@
             "organized": false,
             "shade": true,
             "amenities": [
-              "parking κοντά"
+              "parking κοντά",
+              "καφέ κοντά"
             ],
             "confidence": "high",
             "language": "el",
@@ -110126,7 +110136,8 @@
             },
             "sourceNotes": [
               "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
-              "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Zematas near Panagia with sandy beach character, 350 m beach length, dirt-road access, trees, umbrellas/sunbeds, beach-bar/taverna, water-sports and beach-volley context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
+              "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Zematas near Panagia with sandy beach character, 350 m beach length, dirt-road access, trees, umbrellas/sunbeds, beach-bar/taverna, water-sports and beach-volley context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
+              "Lemnos amenity under-claim pass 2026-08-16 (no-API): amenities += \"καφέ κοντά\". Δύο καφέ στην OSM γύρω από την πινέζα — ένα ονοματισμένο («Sunrise») στα 101 m και ένα ανώνυμο στα 80 m — ενώ η καρτέλα δεν ανέφερε τίποτα φαγώσιμο. Γράφεται «καφέ κοντά», όχι «ταβέρνες»: το OSM type είναι cafe. Το organized, τα scoring και οι ζωντανές δηλώσεις θάλασσας ΔΕΝ άλλαξαν."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/115657461",
@@ -110444,7 +110455,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Παραλία/ακτή κοντά στον οικισμό Καλλιθέας, με πρόσβαση από δρόμο. Κυρίως ελεύθερη, με λίγη φυσική σκιά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -110466,7 +110477,10 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+            "sourceNotes": [
+              "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
+              "Lemnos robot-copy sweep 2026-08-16: access.notes cleared. Removed text: \"Παραλία/ακτή κοντά στον οικισμό Καλλιθέας, με πρόσβαση από δρόμο. Κυρίως ελεύθερη, με λίγη φυσική σκιά.\" — ήταν το ίδιο πρότυπο με αλλαγμένο μόνο το όνομα οικισμού σε 3 παραλίες της Λήμνου, και κάθε κομμάτι του το έλεγε ήδη η ταμπέλα πρόσβασης ή η λίστα παροχών. Δεν περιείχε ένδειξη χωματόδρομου (utils/access.ts hasDirtRoadAccess)."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1246250229"
             ],
@@ -110488,9 +110502,9 @@
           "lon": 25.1698,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος έξω από τη Δάφνη",
+              "notes": "Χωματόδρομος που ξεκινάει έξω από το χωριό της Δάφνης. Μικρή, ανοργάνωτη και ήσυχη ακτή."
             },
             "terrain": {
               "types": [
@@ -110511,10 +110525,14 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (άσφαλτος στα 230 m, χωματόδρομος στα 215 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (http://oraialimnos.blogspot.com/2014/02/blog-post_452.html, http://me-limnia-matia.blogspot.com/p/blog-page_30.html). Coordinates, windProfile, scoring, amenities and live sea claims were not changed.",
+              "Lemnos naming pass 2026-08-16 (no-API): aliases += Παπιά, Παραλία Παπιάς. Οι ντόπιοι οδηγοί (oraialimnos 39,98966/25,17013 — 75 m από την πινέζα μας, me-limnia-matia, Greeka «Papias») ονομάζουν αυτή την παραλία Παπιά· «Κατάλακκο» είναι το χωριό. Το όνομα εμφάνισης και το slug ΔΕΝ άλλαξαν."
             ],
             "sourceUrls": [
-              "https://www.openstreetmap.org/way/102465569"
+              "https://www.openstreetmap.org/way/102465569",
+              "http://oraialimnos.blogspot.com/2014/02/blog-post_452.html",
+              "http://me-limnia-matia.blogspot.com/p/blog-page_30.html"
             ],
             "orientation": {
               "degrees": 357,
@@ -110524,7 +110542,11 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
+            },
+            "aliases": [
+              "Παπιά",
+              "Παραλία Παπιάς"
+            ]
           },
           "staticLabels": {
             "accessType": "unknown"
@@ -110794,9 +110816,9 @@
           "lon": 25.35132,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος σε καλή κατάσταση",
+              "notes": "Χωματόδρομος σε καλή κατάσταση αμέσως μετά τον Άγιο Αλέξανδρο· περνάει και με απλό αυτοκίνητο. Καμία οργάνωση στην παραλία."
             },
             "terrain": {
               "types": [
@@ -110819,11 +110841,13 @@
             "sourceNotes": [
               "Lemnos OSM identity/location pass 2026-05-27: OSM way 115657464 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
               "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Neftina near Kontopouli with long sandy beach character, isolated/no-service context and good-condition dirt-road access from Agios Alexandros. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (χωρίς άσφαλτο σε 500 m, χωματόδρομος στα 119 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://limnosguide.com.gr/en/alternative-beaches/neftina, https://lovefortravel.gr/limnos-oraioteres-paralies/). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/115657464",
-              "https://limnosguide.com.gr/en/alternative-beaches/neftina"
+              "https://limnosguide.com.gr/en/alternative-beaches/neftina",
+              "https://lovefortravel.gr/limnos-oraioteres-paralies/"
             ],
             "orientation": {
               "degrees": 296.3,
@@ -111075,7 +111099,10 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Kotsinas Beach and supports its identity/location by Kotsinas. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Kotsinas with sandy/shallow beach character, mostly asphalt-road access, municipal/enterprise umbrellas and sunbeds, beach-bars and nearby harbor restaurants. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Web-verified 2026-07-19 (web-high): organized — Kotsinas beach is fully organized with umbrellas, sunbeds and a beach bar; picturesque tavernas nearby. [https://limnoshoteliers.com/en/places/kotsinas-beach/]; beach bar+sunbeds added.",
+            "sourceNotes": [
+              "Source follow-up pass 35 2026-05-28: direct Lemnos beaches page names Kotsinas Beach and supports its identity/location by Kotsinas. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Kotsinas with sandy/shallow beach character, mostly asphalt-road access, municipal/enterprise umbrellas and sunbeds, beach-bars and nearby harbor restaurants. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Web-verified 2026-07-19 (web-high): organized — Kotsinas beach is fully organized with umbrellas, sunbeds and a beach bar; picturesque tavernas nearby. [https://limnoshoteliers.com/en/places/kotsinas-beach/]; beach bar+sunbeds added.",
+              "Lemnos naming pass 2026-08-16 (no-API): aliases += Μπουρνιάς, Μπουρνιά. Ο όρμος του Κότσινα λέγεται Μπουρνιάς — έτσι τον γράφει το mylemnos.gr και ο limnosguide. Το όνομα εμφάνισης και το slug ΔΕΝ άλλαξαν."
+            ],
             "sourceUrls": [
               "https://varosvillagehotels.com/beaches/",
               "https://limnosguide.com.gr/en/organized-beaches/kotsinas"
@@ -111103,7 +111130,11 @@
               "ratingCount": 274,
               "source": "google-places",
               "checkedAt": "2026-06-17"
-            }
+            },
+            "aliases": [
+              "Μπουρνιάς",
+              "Μπουρνιά"
+            ]
           }
         },
         {
@@ -111260,9 +111291,9 @@
           "lon": 25.06653,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Μικρός χωματόδρομος από το Πλατύ",
+              "notes": "Μικρός χωματόδρομος από την περιοχή του Πλατέος. Ομπρέλες του Δήμου, χωρίς άλλη οργάνωση."
             },
             "terrain": {
               "types": [
@@ -111285,11 +111316,13 @@
             "sourceNotes": [
               "Lemnos OSM identity/location pass 2026-05-27: OSM way 102143832 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
               "Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Stvi/Plagisos Molos near Plati with sandy/rocky beach character, small-cove setting, dirt-road access and municipal umbrellas without broader facilities. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (δρόμος οικισμού στα 189 m, μονοπάτι στα 129 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://limnosguide.com.gr/en/alternative-beaches/stvi, https://www.greeka.com/eastern-aegean/lemnos/beaches/). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/102143832",
-              "https://limnosguide.com.gr/en/alternative-beaches/stvi"
+              "https://limnosguide.com.gr/en/alternative-beaches/stvi",
+              "https://www.greeka.com/eastern-aegean/lemnos/beaches/"
             ],
             "orientation": {
               "degrees": 157.5,
@@ -111329,7 +111362,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Ακτή κοντά στον οικισμό Πλάκας, με πρόσβαση από δρόμο. Κυρίως ελεύθερη, με βασικές υπηρεσίες στον οικισμό."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -111351,7 +111384,10 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Lemnos OSM identity/location pass 2026-05-27: OSM way 115659399 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": [
+              "Lemnos OSM identity/location pass 2026-05-27: OSM way 115659399 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+              "Lemnos robot-copy sweep 2026-08-16: access.notes cleared. Removed text: \"Ακτή κοντά στον οικισμό Πλάκας, με πρόσβαση από δρόμο. Κυρίως ελεύθερη, με βασικές υπηρεσίες στον οικισμό.\" — ήταν το ίδιο πρότυπο με αλλαγμένο μόνο το όνομα οικισμού σε 3 παραλίες της Λήμνου, και κάθε κομμάτι του το έλεγε ήδη η ταμπέλα πρόσβασης ή η λίστα παροχών. Δεν περιείχε ένδειξη χωματόδρομου (utils/access.ts hasDirtRoadAccess)."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/115659399"
             ],
@@ -111749,9 +111785,9 @@
           "lon": 25.24165,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος· και με τα πόδια από την Τρυγή",
+              "notes": "Χωματόδρομος ως την ακτή· εναλλακτικά περίπου 800 μ. με τα πόδια από την Τρυγή. Ηφαιστειακοί βράχοι, καμία παροχή."
             },
             "terrain": {
               "types": [
@@ -111772,10 +111808,12 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Lemnos access pass 2026-08-16 (no-API): access.type unknown → passable_dirt_road. Two independent signals — OSM road network around the pin (χωρίς άσφαλτο σε 500 m, χωματόδρομος στα 88 m, μονοπάτι στα 69 m, auditAccessRoadProximity --types unknown --radius 500) and named local guides (https://limnosguide.com.gr/en/alternative-beaches/tryges). Coordinates, windProfile, scoring, amenities and live sea claims were not changed."
             ],
             "sourceUrls": [
-              "https://www.openstreetmap.org/way/1248003020"
+              "https://www.openstreetmap.org/way/1248003020",
+              "https://limnosguide.com.gr/en/alternative-beaches/tryges"
             ],
             "orientation": {
               "degrees": 25,
@@ -111852,6 +111890,66 @@
               "ratingCount": 497,
               "source": "google-places",
               "checkedAt": "2026-06-17"
+            }
+          }
+        },
+        {
+          "id": 3184,
+          "name": "Άγιος Ερμόλαος",
+          "lat": 39.970876,
+          "lon": 25.264353,
+          "metadata": {
+            "access": {
+              "type": "passable_dirt_road",
+              "label": "Χωματόδρομος από την Ατσική και λίγα μέτρα με τα πόδια",
+              "notes": "Χωματόδρομος από την Ατσική — περνάει απλό αυτοκίνητο — και στο τέλος ένα μικρό μονοπάτι ως την άμμο. Πάρε νερό, φαγητό και ομπρέλα: δεν υπάρχει τίποτα εκεί."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand",
+                "coarse_sand"
+              ],
+              "label": "χρυσή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_lemnos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Agios Ermolaos",
+              "Aghios Ermolaos",
+              "Παραλία Άγιος Ερμόλαος"
+            ],
+            "sourceUrls": [
+              "http://limnosguide.com.gr/en/alternative-beaches/agios-ermolaos",
+              "https://greece.terrabook.com/el/lemnos/page/paralia-agios-ermolaos/",
+              "https://limnos.mobi/el/article/fusi/paralies/paralia-agios-ermolaos/2301",
+              "https://www.mylemnos.gr/old/limnos-beach.html",
+              "https://www.greeka.com/eastern-aegean/lemnos/beaches/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Ερημική αμμουδιά στη βόρεια ακτή, ανάμεσα στον Κότσινα και το Πηγαδέλι της Παναγιάς, περίπου 4,5 χλμ. από την Ατσική και 3 χλμ. από τον Κότσινα. Χρυσή άμμος, καθαρά νερά, καμία οργάνωση πέρα από κιόσκια του Δήμου. Πάει με χωματόδρομο και μικρή πεζοπορία στο τέλος — γι' αυτό μένει άδεια ακόμη και τον Αύγουστο. Το OSM δεν της έχει δώσει ποτέ όνομα, οπότε δεν εμφανίστηκε σε κανέναν έλεγχο κάλυψης. Συντεταγμένες: OSM way/264816761 (natural=beach, ανώνυμο, μήκος 231 m) — κεντροειδές· ακτογραμμή στα 20 m· ξωκλήσι «Άγιος Ερμόλαος» OSM way/263243849 στα 310 m. Slot κοντά στο #1440 (Παναγιάς Πηγάδελι, 2581m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 62.2,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }
@@ -170018,7 +170116,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Αχάτα έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -170048,7 +170146,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Achata sources support seasonal parasols/sunbeds, tavern and parking.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and the municipal tourism page support Achata identity/location near Aperi, asphalt/parking access, pebble/rock terrain, taverna, parasols/sunbeds, and snorkeling suitability. No live wind/sea condition was imported."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and the municipal tourism page support Achata identity/location near Aperi, asphalt/parking access, pebble/rock terrain, taverna, parasols/sunbeds, and snorkeling suitability. No live wind/sea condition was imported.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 57.2,
@@ -170138,7 +170237,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Αμμοοπή έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -170170,7 +170269,8 @@
             ],
             "sourceNotes": [
               "Karpathos official 2026 lifeguard tender lists Megali Ammopi; mapped to the app Ammopi record.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and the municipal tourism page support Amoopi/Mega Amoopi identity, sandy/shallow family beach character, organized umbrellas/sunbeds, restaurants/taverns, and road access. No live wind/sea condition was imported."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and the municipal tourism page support Amoopi/Mega Amoopi identity, sandy/shallow family beach character, organized umbrellas/sunbeds, restaurants/taverns, and road access. No live wind/sea condition was imported.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 167.1,
@@ -170205,9 +170305,9 @@
           "lon": 27.15944,
           "metadata": {
             "access": {
-              "type": "asphalt_road",
-              "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πρόσβαση από ασφαλτοστρωμένο ορεινό δρόμο ή εκδρομικό σκάφος. Βοτσαλωτή παραλία με εποχικές παροχές."
+              "type": "hiking_path_easy",
+              "label": "Άσφαλτος ως το πάρκινγκ, μετά σκαλιά",
+              "notes": "Ασφαλτοστρωμένος ορεινός δρόμος ως το πάρκινγκ· από εκεί η κατάβαση γίνεται με σκαλιά και πέρασμα πάνω από μεγάλες πέτρες. Εναλλακτικά με εκδρομικό σκάφος. Βοτσαλωτή παραλία με εποχικές παροχές."
             },
             "terrain": {
               "types": [
@@ -170238,7 +170338,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Apella sources support umbrellas/sunbeds and a beach taverna/restaurant.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Apella identity, east-coast location, sand/pebble terrain, road/boat access context, umbrellas/sunbeds, and small taverna service. No same-day condition claim was added."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Apella identity, east-coast location, sand/pebble terrain, road/boat access context, umbrellas/sunbeds, and small taverna service. No same-day condition claim was added.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: η πρόσβαση ήταν asphalt_road/«Εύκολη πρόσβαση» ενώ ο δρόμος σταματάει πάνω. KarpathosInfo: «walk down on some stairs and climb across some large rocks». OSM γύρω από την πινέζα: path/gravel 34 m, footway 177 m, ο πλησιέστερος οδηγήσιμος δρόμος (service/asphalt) στα 192 m. Άλλαξε σε hiking_path_easy (μέτρια πρόσβαση) με απόφαση Μίλτου."
             ],
             "orientation": {
               "degrees": 56.5,
@@ -170323,7 +170424,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Φοινίκι έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -170354,7 +170455,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Finiki sources support limited parasols/sunbeds plus fish taverns by the beach.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, AllOverGreece, and municipal tourism support Finiki as a small west/southwest coastal beach-village beach with pebbly/sandy terrain, fish taverns, and limited organized beach services."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, AllOverGreece, and municipal tourism support Finiki as a small west/southwest coastal beach-village beach with pebbly/sandy terrain, fish taverns, and limited organized beach services.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 278.5,
@@ -170571,7 +170673,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Γιαλού Χωράφι έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -170602,7 +170704,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Lefkos/Gialou Chorafi and nearby Potali sources support organized sunbed service and basic amenities.",
-              "Karpathos strict evidence pass 2026-05-29: AllOverGreece and KarpathosInfo support the Lefkos/Gialou Chorafi identity, settlement location, sandy family beach context, organized umbrellas/sunbeds, tavern access, and nearby services."
+              "Karpathos strict evidence pass 2026-05-29: AllOverGreece and KarpathosInfo support the Lefkos/Gialou Chorafi identity, settlement location, sandy family beach context, organized umbrellas/sunbeds, tavern access, and nearby services.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 191.9,
@@ -170852,7 +170955,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Λακκί έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -170883,7 +170986,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Amoopi/Lakki sources support full organization with parasols, sunbeds and taverns.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, GetGreece, and municipal tourism support Lakki as part of the Amoopi beach cluster, with organized coves, umbrellas/sunbeds, restaurants/taverns, and easy resort access."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, GetGreece, and municipal tourism support Lakki as part of the Amoopi beach cluster, with organized coves, umbrellas/sunbeds, restaurants/taverns, and easy resort access.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 166.6,
@@ -170983,7 +171087,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Μικρή Αμμοοπή έχει οδική πρόσβαση και εποχικές παροχές/ταβέρνες κοντά."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -171014,7 +171118,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Mikri Ammopi/Amoopi sources support organized sunbed/umbrella service and restaurants.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and secondary beach guides support Mikro/Mikri Amoopi identity, sandy/shallow small-bay terrain, road/resort access, organized umbrellas/sunbeds, and nearby restaurants."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and secondary beach guides support Mikro/Mikri Amoopi identity, sandy/shallow small-bay terrain, road/resort access, organized umbrellas/sunbeds, and nearby restaurants.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
             ],
             "orientation": {
               "degrees": 165.4,
@@ -172230,9 +172335,9 @@
           "lon": 27.17865,
           "metadata": {
             "access": {
-              "type": "asphalt_road",
-              "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Εμβληματική παραλία με πρόσβαση από ασφαλτόδρομο, ταβέρνες/καταλύματα και οργανωμένα σημεία εποχικά."
+              "type": "hiking_path_easy",
+              "label": "Άσφαλτος ως το χωριό, μετά σκαλιά",
+              "notes": "Στενός ασφαλτόδρομος ως το χωριό και τα πάρκινγκ· από εκεί περνάς τον οικισμό (~200 m) και κατεβαίνεις με σκαλιά στην άμμο. Ταβέρνες, καταλύματα και οργανωμένα σημεία εποχικά."
             },
             "terrain": {
               "types": [
@@ -172268,7 +172373,8 @@
             ],
             "sourceNotes": [
               "Karpathos official 2026 lifeguard tender lists Kyra Panagia as a busy bathing facility.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, municipal tourism, and the official 2026 lifeguard tender support Kyra Panagia identity, iconic east-coast beach location, road access, umbrellas/restaurants, chapel landmark, and busy bathing-facility status."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, municipal tourism, and the official 2026 lifeguard tender support Kyra Panagia identity, iconic east-coast beach location, road access, umbrellas/restaurants, chapel landmark, and busy bathing-facility status.",
+              "Επανέλεγχος Καρπάθου 2026-08-16: η πρόσβαση ήταν asphalt_road/«Εύκολη πρόσβαση» ενώ ο δρόμος σταματάει πάνω. KarpathosInfo: «Stairs and path down to Kyra Panagia beach» μετά τα πάρκινγκ στην άκρη του δρόμου. OSM γύρω από την πινέζα: footway 44 m και πέντε highway=steps σε 96-160 m· ο πλησιέστερος οδηγήσιμος (residential) στα 150 m. Άλλαξε σε hiking_path_easy (μέτρια πρόσβαση) με απόφαση Μίλτου."
             ],
             "orientation": {
               "degrees": 55.6,
@@ -172620,7 +172726,7 @@
         },
         {
           "id": 2314,
-          "name": "Παραλία Διακοφτης",
+          "name": "Παραλία Διακόφτης",
           "lat": 35.41001,
           "lon": 27.15277,
           "metadata": {
@@ -172827,6 +172933,275 @@
           },
           "staticLabels": {
             "accessType": "passable_dirt_road"
+          }
+        },
+        {
+          "id": 3180,
+          "name": "Άφωτη",
+          "lat": 35.5115,
+          "lon": 27.2042,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Δρόμος οικισμού στα 75 m και ασφαλτοστρωμένη διακλάδωση στα 129 m κατά την OSM. Ο οδηγός αναφέρει χώρο στάθμευσης πίσω από την παραλία, χωρίς επιτόπου επιβεβαίωση."
+            },
+            "terrain": {
+              "types": [
+                "coarse_sand",
+                "pebbles"
+              ],
+              "label": "χοντρή άμμος, βότσαλα"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "εστιατόρια κοντά",
+              "καφέ κοντά",
+              "καταλύματα κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_karpathos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Afoti",
+              "Affoti",
+              "Άφφωτη"
+            ],
+            "sourceUrls": [
+              "https://karpathosinfo.com/afoti-beach/",
+              "https://www.openstreetmap.org/way/225617242"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Το βόρειο τμήμα του κόλπου των Πηγαδίων, ~1 χλμ από την πόλη, από τα ερείπια του εκκλησιού της Αγίας Φωτεινής και βόρεια. Ο οδηγός σημειώνει ρητά ότι δεν έχει καμία φυσική προστασία από τον άνεμο. Ταυτότητα: Tamaris Suites (94 m), εστιατόρια Capari (127 m), Nisiotiko (142 m), Mediterranean House (151 m), δρόμος οικισμού 75 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617242 (natural=beach, ανώνυμο) — νότιο τμήμα· ακτογραμμή στα 14 m· διασταύρωση με Nominatim «Παραλία Άφφωτη» στα 35.51089,27.20453. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3663m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 45.2,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "waterDepth": {
+              "type": "medium",
+              "label": "Μέτριο βάθος",
+              "notes": "Ο βυθός βαθαίνει σταδιακά κατά τον οδηγό KarpathosInfo· δεν μετρήθηκε επιτόπου."
+            }
+          }
+        },
+        {
+          "id": 3181,
+          "name": "Βρόντη",
+          "lat": 35.50913,
+          "lon": 27.20728,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτόδρομος (Ποσειδώνος) στα 131 m και δρόμοι οικισμού στα 88 m από την ακτή κατά την OSM. Δεν επιβεβαιώθηκε επιτόπου οργανωμένο parking."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "pebbles"
+              ],
+              "label": "άμμος, βότσαλα"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "καφέ κοντά",
+              "μπαρ κοντά",
+              "εστιατόρια κοντά",
+              "καταλύματα κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_karpathos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Vrondi",
+              "Vrontis",
+              "Βρόντης"
+            ],
+            "sourceUrls": [
+              "https://karpathosinfo.com/karpathos-beaches/vrontis-beach",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/vrontis/",
+              "https://www.openstreetmap.org/way/225617241"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η μακρύτερη παραλία του κόλπου των Πηγαδίων, λίγες εκατοντάδες μέτρα ΒΔ από την παραλία της πόλης· 15-20 λεπτά με τα πόδια από την πρωτεύουσα. Ήταν ανώνυμο πολύγωνο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 160 m υπάρχουν καφέ (29 m), Island Bar (111 m), εστιατόριο Kali Kardia (137 m) και η οδός Ποσειδώνος (secondary/asphalt, 131 m) — οικισμός, όχι ερημιά. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617241 (natural=beach, ανώνυμο, περίμετρος 792 m) — κεντροειδές· ακτογραμμή στα 13 m. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3462m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 27.6,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "waterDepth": {
+              "type": "medium",
+              "label": "Μέτριο βάθος",
+              "notes": "Ο βυθός βαθαίνει σταδιακά κατά τον οδηγό KarpathosInfo· δεν μετρήθηκε επιτόπου."
+            }
+          }
+        },
+        {
+          "id": 3182,
+          "name": "Διαφάνι",
+          "lat": 35.75615,
+          "lon": 27.21022,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Πάνω στην προκυμαία του χωριού: δρόμος οικισμού στα 21-25 m κατά την OSM, με λεωφορείο από τα Πηγάδια κατά τον οδηγό."
+            },
+            "terrain": {
+              "types": [
+                "coarse_sand",
+                "pebbles"
+              ],
+              "label": "χοντρή άμμος, βότσαλα"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "καταλύματα κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_karpathos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Diafani",
+              "Παραλία Διαφανίου"
+            ],
+            "sourceUrls": [
+              "https://karpathosinfo.com/diafani-beach/",
+              "https://www.openstreetmap.org/way/561329965"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η παραλία του δεύτερου λιμανιού της Καρπάθου, μπροστά στην προκυμαία του χωριού — δεν υπήρχε εγγραφή, ενώ γύρω της είχαμε ήδη έξι απομονωμένες ακτές. Ήταν ανώνυμο πολύγωνο στην OSM. Ο οδηγός τη δίνει >200 m μήκος, ~10 m πλάτος, με μόλο που τη χωρίζει στη μέση. Ταυτότητα: εστιατόρια Rahati (30 m), Chrissi Akti (37 m), Anixis (43 m), Blue (43 m), καφέ To Aktaio (52 m), δρόμος 21 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/561329965 (natural=beach, surface=pebblestone, ανώνυμο, περίμετρος 610 m) — κεντροειδές· ακτογραμμή στα 6 m. Slot κοντά στο #2298 (Βανάντα, 1643m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 58.7,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "waterDepth": {
+              "type": "medium",
+              "label": "Μέτριο βάθος",
+              "notes": "Ο βυθός βαθαίνει σταδιακά κατά τον οδηγό KarpathosInfo· δεν μετρήθηκε επιτόπου."
+            }
+          }
+        },
+        {
+          "id": 3183,
+          "name": "Πηγάδια",
+          "lat": 35.50795,
+          "lon": 27.21275,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Μέσα στη Χώρα: ασφαλτόδρομος (28ης Οκτωβρίου) στα 58 m και δρόμοι πόλης στα 31 m κατά την OSM. Ο οδηγός σημειώνει ότι η στάθμευση δυσκολεύει τον Ιούνιο-Αύγουστο."
+            },
+            "terrain": {
+              "types": [
+                "sand",
+                "coarse_sand",
+                "pebbles"
+              ],
+              "label": "άμμος, χοντρή άμμος, βότσαλα"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "beach bar",
+              "εστιατόρια κοντά",
+              "καφέ κοντά",
+              "ξαπλώστρες εποχικά",
+              "ομπρέλες εποχικά",
+              "καταλύματα κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_karpathos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Pigadia",
+              "Παραλία Πηγαδίων"
+            ],
+            "sourceUrls": [
+              "https://karpathosinfo.com/pigadia-beach/",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/pigadia-beach/",
+              "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-07): Η παραλία της πρωτεύουσας — δεν υπήρχε καμία εγγραφή για τα Πηγάδια, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει στη Χώρα. Η OSM ΔΕΝ έχει πολύγωνο παραλίας εδώ (μόνο ακτογραμμή), γι' αυτό ήταν αόρατη και στα δύο pipelines. Η πινέζα είναι εκτίμηση από τον οδηγό, ακουμπισμένη στην ακτογραμμή· ΔΕΝ προέρχεται από πολύγωνο παραλίας και χρειάζεται ανθρώπινη επιβεβαίωση. Ταυτότητα: δρόμοι πόλης 31-58 m, καφέ Non Solo Caffé (54 m), Hermanos (67 m). Συντεταγμένες: Οδηγός KarpathosInfo (μπροστά από τα ξενοδοχεία, ~100 m από το εξωτερικό λιμάνι) + πλησιέστερο σημείο ακτογραμμής OSM 35.50804,27.21289. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3496m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-07-23",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 11.1,
+              "faces": [
+                "North"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "waterDepth": {
+              "type": "medium",
+              "label": "Μέτριο βάθος",
+              "notes": "Ο βυθός βαθαίνει σταδιακά κατά τον οδηγό KarpathosInfo· δεν μετρήθηκε επιτόπου."
+            }
           }
         }
       ],
@@ -183524,6 +183899,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-07-23",
               "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 2.1,
+              "faces": [
+                "North"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }
@@ -184124,6 +184508,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-08-02",
               "method": "osm-coverage-gap-v1"
+            },
+            "orientation": {
+              "degrees": 110.8,
+              "faces": [
+                "East"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         },
@@ -184160,6 +184553,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-08-02",
               "method": "osm-coverage-gap-v1"
+            },
+            "orientation": {
+              "degrees": 62,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }

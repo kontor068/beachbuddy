@@ -1,0 +1,681 @@
+{
+  "scope": {
+    "region": "South Aegean",
+    "prefecture": "Dodecanese",
+    "municipality": "Karpathos"
+  },
+  "existing": 45,
+  "osm": {
+    "total": 106,
+    "namedGaps": [
+      {
+        "type": "way",
+        "id": 273492952,
+        "name": "Náti",
+        "lat": 35.6985,
+        "lon": 27.1905857,
+        "nearestDistM": 265,
+        "nearest": "Νάτι (#2291)"
+      },
+      {
+        "type": "way",
+        "id": 518527704,
+        "name": "Παραλία Διακοφτης",
+        "lat": 35.4106455,
+        "lon": 27.1542498,
+        "nearestDistM": 152,
+        "nearest": "Παραλία Διακοφτης (#2314)"
+      },
+      {
+        "type": "way",
+        "id": 518550136,
+        "name": "Κάτω Λάκκος",
+        "lat": 35.5772484,
+        "lon": 27.1895105,
+        "nearestDistM": 282,
+        "nearest": "Κάτω Λάκκος (#2306)"
+      },
+      {
+        "type": "way",
+        "id": 607672656,
+        "name": "Κάτω Λάκκος",
+        "lat": 35.5828776,
+        "lon": 27.1836876,
+        "nearestDistM": 589,
+        "nearest": "Κάτω Λάκκος (#2306)"
+      }
+    ],
+    "unnamedGaps": [
+      {
+        "type": "way",
+        "id": 74442087,
+        "name": null,
+        "lat": 35.8402918,
+        "lon": 27.2312679,
+        "nearestDistM": 5206,
+        "nearest": "Παλάτια (#2292)"
+      },
+      {
+        "type": "way",
+        "id": 74442095,
+        "name": null,
+        "lat": 35.838169,
+        "lon": 27.2142861,
+        "nearestDistM": 5684,
+        "nearest": "Παλάτια (#2292)"
+      },
+      {
+        "type": "way",
+        "id": 225617241,
+        "name": null,
+        "lat": 35.5094261,
+        "lon": 27.207375,
+        "nearestDistM": 3496,
+        "nearest": "Μικρή Αμμοοπή (#2288)"
+      },
+      {
+        "type": "way",
+        "id": 225617242,
+        "name": null,
+        "lat": 35.5217112,
+        "lon": 27.2016729,
+        "nearestDistM": 3948,
+        "nearest": "Αχάτα (#2272)"
+      },
+      {
+        "type": "way",
+        "id": 273492949,
+        "name": null,
+        "lat": 35.4435037,
+        "lon": 27.0905251,
+        "nearestDistM": 729,
+        "nearest": "Παραλία Άγιος Θεόδωρος (#2310)"
+      },
+      {
+        "type": "way",
+        "id": 273492961,
+        "name": null,
+        "lat": 35.4412161,
+        "lon": 27.0926619,
+        "nearestDistM": 1009,
+        "nearest": "Παραλία Άγιος Θεόδωρος (#2310)"
+      },
+      {
+        "type": "way",
+        "id": 274268027,
+        "name": null,
+        "lat": 35.5803654,
+        "lon": 27.1860251,
+        "nearestDistM": 253,
+        "nearest": "Κάτω Λάκκος (#2306)"
+      },
+      {
+        "type": "way",
+        "id": 332311143,
+        "name": null,
+        "lat": 35.6018046,
+        "lon": 27.1623177,
+        "nearestDistM": 280,
+        "nearest": "Απέλλα (#2275)"
+      },
+      {
+        "type": "way",
+        "id": 375673041,
+        "name": null,
+        "lat": 35.8514319,
+        "lon": 27.1996705,
+        "nearestDistM": 4951,
+        "nearest": "Παλάτια (#2292)"
+      },
+      {
+        "type": "way",
+        "id": 375680289,
+        "name": null,
+        "lat": 35.8345976,
+        "lon": 27.2374724,
+        "nearestDistM": 5855,
+        "nearest": "Παλάτια (#2292)"
+      },
+      {
+        "type": "way",
+        "id": 397550175,
+        "name": null,
+        "lat": 35.5621604,
+        "lon": 27.0948778,
+        "nearestDistM": 2711,
+        "nearest": "Ποτάλι (#2296)"
+      },
+      {
+        "type": "way",
+        "id": 414218479,
+        "name": null,
+        "lat": 35.6106422,
+        "lon": 27.0835226,
+        "nearestDistM": 558,
+        "nearest": "Λάρες (#2287)"
+      },
+      {
+        "type": "way",
+        "id": 414218480,
+        "name": null,
+        "lat": 35.594851,
+        "lon": 27.0659774,
+        "nearestDistM": 320,
+        "nearest": "Της Πέρδικας Ποταμός (#2297)"
+      },
+      {
+        "type": "way",
+        "id": 414232903,
+        "name": null,
+        "lat": 35.6371022,
+        "lon": 27.1592879,
+        "nearestDistM": 3764,
+        "nearest": "Παραλία Αγνόντια (#2312)"
+      },
+      {
+        "type": "way",
+        "id": 414232904,
+        "name": null,
+        "lat": 35.6550259,
+        "lon": 27.1618316,
+        "nearestDistM": 1960,
+        "nearest": "Παραλία Αγνόντια (#2312)"
+      },
+      {
+        "type": "way",
+        "id": 414234697,
+        "name": null,
+        "lat": 35.5898181,
+        "lon": 27.0680661,
+        "nearestDistM": 272,
+        "nearest": "Λιμάνι Παναγιάς (#2293)"
+      },
+      {
+        "type": "way",
+        "id": 445456621,
+        "name": null,
+        "lat": 35.469968,
+        "lon": 27.1934406,
+        "nearestDistM": 339,
+        "nearest": "Καστέλια (#2282)"
+      },
+      {
+        "type": "way",
+        "id": 493293293,
+        "name": null,
+        "lat": 35.431453,
+        "lon": 27.1558857,
+        "nearestDistM": 789,
+        "nearest": "Μακρύγιαλος (#2309)"
+      },
+      {
+        "type": "way",
+        "id": 503222058,
+        "name": null,
+        "lat": 35.5092428,
+        "lon": 27.2249434,
+        "nearestDistM": 4169,
+        "nearest": "Μικρή Αμμοοπή (#2288)"
+      },
+      {
+        "type": "way",
+        "id": 518527074,
+        "name": null,
+        "lat": 35.4275852,
+        "lon": 27.1308759,
+        "nearestDistM": 228,
+        "nearest": "Ψωράρης (#2316)"
+      },
+      {
+        "type": "way",
+        "id": 518561700,
+        "name": null,
+        "lat": 35.6315383,
+        "lon": 27.1567017,
+        "nearestDistM": 3213,
+        "nearest": "Απέλλα (#2275)"
+      },
+      {
+        "type": "way",
+        "id": 518561839,
+        "name": null,
+        "lat": 35.6300707,
+        "lon": 27.1561901,
+        "nearestDistM": 3054,
+        "nearest": "Απέλλα (#2275)"
+      },
+      {
+        "type": "way",
+        "id": 561232034,
+        "name": null,
+        "lat": 35.7992984,
+        "lon": 27.1694236,
+        "nearestDistM": 4810,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 561267948,
+        "name": null,
+        "lat": 35.7658887,
+        "lon": 27.209255,
+        "nearestDistM": 561,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 561329965,
+        "name": null,
+        "lat": 35.7562985,
+        "lon": 27.2103442,
+        "nearestDistM": 1627,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 563419939,
+        "name": null,
+        "lat": 35.8194234,
+        "lon": 27.2079298,
+        "nearestDistM": 5396,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 564038515,
+        "name": null,
+        "lat": 35.778619,
+        "lon": 27.2116986,
+        "nearestDistM": 875,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 564038526,
+        "name": null,
+        "lat": 35.7732443,
+        "lon": 27.2101861,
+        "nearestDistM": 263,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 566145247,
+        "name": null,
+        "lat": 35.7854225,
+        "lon": 27.2165102,
+        "nearestDistM": 1727,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 566145250,
+        "name": null,
+        "lat": 35.7822671,
+        "lon": 27.2131788,
+        "nearestDistM": 1301,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 566145252,
+        "name": null,
+        "lat": 35.7810393,
+        "lon": 27.2126253,
+        "nearestDistM": 1156,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 567843532,
+        "name": null,
+        "lat": 35.8053733,
+        "lon": 27.178313,
+        "nearestDistM": 4762,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 571290014,
+        "name": null,
+        "lat": 35.7509478,
+        "lon": 27.2159814,
+        "nearestDistM": 1588,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290015,
+        "name": null,
+        "lat": 35.7514781,
+        "lon": 27.2164244,
+        "nearestDistM": 1644,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290016,
+        "name": null,
+        "lat": 35.7520743,
+        "lon": 27.2156113,
+        "nearestDistM": 1715,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290018,
+        "name": null,
+        "lat": 35.7525442,
+        "lon": 27.2146344,
+        "nearestDistM": 1778,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290020,
+        "name": null,
+        "lat": 35.7531356,
+        "lon": 27.2141449,
+        "nearestDistM": 1850,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290023,
+        "name": null,
+        "lat": 35.7532962,
+        "lon": 27.2140264,
+        "nearestDistM": 1869,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 571290040,
+        "name": null,
+        "lat": 35.7538025,
+        "lon": 27.2137185,
+        "nearestDistM": 1929,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 578914923,
+        "name": null,
+        "lat": 35.4416711,
+        "lon": 27.0911403,
+        "nearestDistM": 864,
+        "nearest": "Παραλία Άγιος Θεόδωρος (#2310)"
+      },
+      {
+        "type": "way",
+        "id": 593832967,
+        "name": null,
+        "lat": 35.7425542,
+        "lon": 27.2164786,
+        "nearestDistM": 655,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 593832968,
+        "name": null,
+        "lat": 35.7411119,
+        "lon": 27.2170693,
+        "nearestDistM": 490,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 594276920,
+        "name": null,
+        "lat": 35.7385542,
+        "lon": 27.217011,
+        "nearestDistM": 208,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 594276922,
+        "name": null,
+        "lat": 35.7391727,
+        "lon": 27.2167714,
+        "nearestDistM": 280,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 594276925,
+        "name": null,
+        "lat": 35.740526,
+        "lon": 27.2170648,
+        "nearestDistM": 425,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 594276926,
+        "name": null,
+        "lat": 35.7402591,
+        "lon": 27.2168621,
+        "nearestDistM": 397,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 594276927,
+        "name": null,
+        "lat": 35.7397544,
+        "lon": 27.2166369,
+        "nearestDistM": 345,
+        "nearest": "Παπάς Μηνάς (#2294)"
+      },
+      {
+        "type": "way",
+        "id": 617617888,
+        "name": null,
+        "lat": 35.8009265,
+        "lon": 27.1663479,
+        "nearestDistM": 5138,
+        "nearest": "Βανάντα (#2298)"
+      },
+      {
+        "type": "way",
+        "id": 617617952,
+        "name": null,
+        "lat": 35.726846,
+        "lon": 27.2142218,
+        "nearestDistM": 155,
+        "nearest": "Όψη (#2300)"
+      },
+      {
+        "type": "way",
+        "id": 624119550,
+        "name": null,
+        "lat": 35.4963407,
+        "lon": 27.1147914,
+        "nearestDistM": 543,
+        "nearest": "Φοινίκι (#2277)"
+      },
+      {
+        "type": "way",
+        "id": 624119553,
+        "name": null,
+        "lat": 35.4971956,
+        "lon": 27.1150346,
+        "nearestDistM": 625,
+        "nearest": "Φοινίκι (#2277)"
+      }
+    ]
+  },
+  "triage": [
+    {
+      "nameGr": "Βρόντη",
+      "locality": "Πηγάδια, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/vrondi-beach/",
+        "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Άφωτη",
+      "locality": "Πηγάδια, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/afoti-beach/"
+      ],
+      "coord": {
+        "lat": 35.51229,
+        "lon": 27.20832
+      },
+      "coordSrc": "nominatim:Άφωτη, Πηγάδια, Κάρπαθος",
+      "nearestDistM": 3825,
+      "nearest": "Μικρή Αμμοοπή (#2288)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Διαφάνι",
+      "locality": "Διαφάνι, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/diafani-beach/"
+      ],
+      "coord": {
+        "lat": 35.75514,
+        "lon": 27.21005
+      },
+      "coordSrc": "nominatim:Διαφάνι, Διαφάνι, Κάρπαθος",
+      "nearestDistM": 1755,
+      "nearest": "Βανάντα (#2298)",
+      "osmWithin250": "MIRROR_FAIL",
+      "status": "RETRY"
+    },
+    {
+      "nameGr": "Λευκός",
+      "locality": "Λευκός, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/lefkos-beach/"
+      ],
+      "coord": {
+        "lat": 35.59841,
+        "lon": 27.09428
+      },
+      "coordSrc": "nominatim:Λευκός, South Aegean",
+      "nearestDistM": 1866,
+      "nearest": "Λάρες (#2287)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Αγία Κυριακή",
+      "locality": "Μεσοχώρι, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/agia-kyriaki-beach/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Μεγάλο Καστέλι",
+      "locality": "Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/karpathos-beaches/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Τρίστομο",
+      "locality": "Βόρεια Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/karpathos-north-beaches/"
+      ],
+      "coord": {
+        "lat": 35.82247,
+        "lon": 27.22212
+      },
+      "coordSrc": "nominatim:Τρίστομο, South Aegean",
+      "nearestDistM": 5841,
+      "nearest": "Βανάντα (#2298)",
+      "osmWithin250": 0,
+      "status": "NEW_OSM_INVISIBLE"
+    },
+    {
+      "nameGr": "Άμμος",
+      "locality": "Διαφάνι, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/diafani-beach/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αγιος Ιωάννης Σαρία",
+      "locality": "Σαρία, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/saria-island/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Παλιό Λευκό",
+      "locality": "Λευκός, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/lefkos-beach/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Άγιος Νικόλαος Σπόων",
+      "locality": "Σπόα, Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/agios-nikolaos-spoa/"
+      ],
+      "coord": {
+        "lat": 35.62998,
+        "lon": 27.15575
+      },
+      "coordSrc": "nominatim:Agios Nikolaos Spoa Karpathos, South Aegean",
+      "nearestDistM": 3048,
+      "nearest": "Απέλλα (#2275)",
+      "osmWithin250": "MIRROR_FAIL",
+      "status": "RETRY"
+    },
+    {
+      "nameGr": "Πηγάδια",
+      "locality": "Πηγάδια, Κάρπαθος",
+      "sources": [
+        "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
+      ],
+      "coord": {
+        "lat": 35.50691,
+        "lon": 27.21036
+      },
+      "coordSrc": "nominatim:Πηγάδια, Πηγάδια, Κάρπαθος",
+      "nearestDistM": 3309,
+      "nearest": "Μικρή Αμμοοπή (#2288)",
+      "osmWithin250": 1,
+      "status": "NEW_but_OSM_KNOWS"
+    },
+    {
+      "nameGr": "Μικρό Καστέλι",
+      "locality": "Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/karpathos-beaches/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Αχάτα Μικρή",
+      "locality": "Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/achata-beach/"
+      ],
+      "status": "NO_GEOCODE"
+    },
+    {
+      "nameGr": "Ξενώνας",
+      "locality": "Κάρπαθος",
+      "sources": [
+        "https://karpathosinfo.com/karpathos-beaches/"
+      ],
+      "status": "NO_GEOCODE"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.013Z",
+  "generatedAt": "2026-08-16T12:02:21.568Z",
   "region": {
     "id": "south-aegean-karpathos",
     "name": "Karpathos"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 45,
-    "generatedProfiles": 45,
+    "beachCount": 49,
+    "generatedProfiles": 49,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
         "protected": 36,
-        "partial": 6,
-        "exposed": 3
+        "partial": 8,
+        "exposed": 5
       },
       "NE": {
         "protected": 25,
         "partial": 11,
-        "exposed": 9
+        "exposed": 13
       },
       "E": {
         "protected": 15,
-        "partial": 3,
-        "exposed": 27
+        "partial": 5,
+        "exposed": 29
       },
       "SE": {
-        "protected": 11,
-        "partial": 9,
+        "protected": 14,
+        "partial": 10,
         "exposed": 25
       },
       "S": {
-        "protected": 10,
+        "protected": 14,
         "partial": 14,
         "exposed": 21
       },
       "SW": {
-        "protected": 25,
+        "protected": 29,
         "partial": 9,
         "exposed": 11
       },
       "W": {
-        "protected": 30,
+        "protected": 34,
         "partial": 6,
         "exposed": 9
       },
       "NW": {
-        "protected": 37,
-        "partial": 4,
+        "protected": 39,
+        "partial": 6,
         "exposed": 4
       }
     }
@@ -229,7 +229,13 @@
           "intensity": 6.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.8714,
+        "lon": 27.2364,
+        "bearingDeg": 180,
+        "distanceKm": 2.9
+      }
     },
     "2274": {
       "beachId": 2274,
@@ -302,10 +308,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 35.4753,
-        "lon": 27.2579,
-        "bearingDeg": 91.9,
-        "distanceKm": 5.52
+        "lat": 35.4133,
+        "lon": 27.275,
+        "bearingDeg": 135,
+        "distanceKm": 10,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "2275": {
@@ -2995,7 +3003,13 @@
           "intensity": 8.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.4254,
+        "lon": 27.1825,
+        "bearingDeg": 90,
+        "distanceKm": 2.82
+      }
     },
     "2310": {
       "beachId": 2310,
@@ -3309,7 +3323,7 @@
       "beachId": 2314,
       "name": {
         "en": "Paralia Diakoftis",
-        "gr": "Παραλία Διακοφτης"
+        "gr": "Παραλία Διακόφτης"
       },
       "coordinates": {
         "lat": 35.41001,
@@ -3534,6 +3548,316 @@
         "lon": 27.1012,
         "bearingDeg": 198.2,
         "distanceKm": 8.04
+      }
+    },
+    "3180": {
+      "beachId": 3180,
+      "name": {
+        "en": "Afoti",
+        "gr": "Άφωτη"
+      },
+      "coordinates": {
+        "lat": 35.5115,
+        "lon": 27.2042
+      },
+      "facingDeg": 45.2,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.44,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.705,
+          "intensity": 54.8
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 20.56,
+          "blockedRayRatio": 0.2,
+          "onshore": 1,
+          "intensity": 100
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 15.32,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.71,
+          "intensity": 85.5
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.44,
+          "blockedRayRatio": 1,
+          "onshore": 0.003,
+          "intensity": 30.1
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.705,
+          "intensity": 8.9
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.71,
+          "intensity": 8.7
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.52,
+          "blockedRayRatio": 1,
+          "onshore": -0.003,
+          "intensity": 29.9
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.5748,
+        "lon": 27.2827,
+        "bearingDeg": 45.2,
+        "distanceKm": 10
+      }
+    },
+    "3181": {
+      "beachId": 3181,
+      "name": {
+        "en": "Vronti",
+        "gr": "Βρόντη"
+      },
+      "coordinates": {
+        "lat": 35.50913,
+        "lon": 27.20728
+      },
+      "facingDeg": 27.6,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 6.96,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.886,
+          "intensity": 61
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 15.76,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.954,
+          "intensity": 97.7
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 5.12,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.463,
+          "intensity": 46.4
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.299,
+          "intensity": 21
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.886,
+          "intensity": 3.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.954,
+          "intensity": 1.4
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.463,
+          "intensity": 16.1
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 0.76,
+          "blockedRayRatio": 1,
+          "onshore": 0.299,
+          "intensity": 39
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.5592,
+        "lon": 27.2689,
+        "bearingDeg": 45,
+        "distanceKm": 7.88,
+        "via": "sector-NE",
+        "verified": "served-cell"
+      }
+    },
+    "3182": {
+      "beachId": 3182,
+      "name": {
+        "en": "Diafani",
+        "gr": "Διαφάνι"
+      },
+      "coordinates": {
+        "lat": 35.75615,
+        "lon": 27.21022
+      },
+      "facingDeg": 58.7,
+      "sectors": {
+        "N": {
+          "level": "partial",
+          "fetchKm": 6.08,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.52,
+          "intensity": 48.7
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 20.72,
+          "blockedRayRatio": 0.2,
+          "onshore": 0.972,
+          "intensity": 98.6
+        },
+        "E": {
+          "level": "exposed",
+          "fetchKm": 25,
+          "blockedRayRatio": 0,
+          "onshore": 0.854,
+          "intensity": 92.7
+        },
+        "SE": {
+          "level": "partial",
+          "fetchKm": 10,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.237,
+          "intensity": 51.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.52,
+          "intensity": 14.4
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.972,
+          "intensity": 0.9
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.854,
+          "intensity": 4.4
+        },
+        "NW": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.237,
+          "intensity": 22.9
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.8028,
+        "lon": 27.305,
+        "bearingDeg": 58.7,
+        "distanceKm": 10
+      }
+    },
+    "3183": {
+      "beachId": 3183,
+      "name": {
+        "en": "Pigadia",
+        "gr": "Πηγάδια"
+      },
+      "coordinates": {
+        "lat": 35.50795,
+        "lon": 27.21275
+      },
+      "facingDeg": 11.1,
+      "sectors": {
+        "N": {
+          "level": "exposed",
+          "fetchKm": 11.6,
+          "blockedRayRatio": 0.6,
+          "onshore": 0.981,
+          "intensity": 95.4
+        },
+        "NE": {
+          "level": "exposed",
+          "fetchKm": 15.08,
+          "blockedRayRatio": 0.4,
+          "onshore": 0.83,
+          "intensity": 91.5
+        },
+        "E": {
+          "level": "partial",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.193,
+          "intensity": 35.8
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.558,
+          "intensity": 13.3
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.981,
+          "intensity": 0.6
+        },
+        "SW": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.83,
+          "intensity": 5.1
+        },
+        "W": {
+          "level": "protected",
+          "fetchKm": 0.4,
+          "blockedRayRatio": 1,
+          "onshore": -0.193,
+          "intensity": 24.2
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 1.28,
+          "blockedRayRatio": 1,
+          "onshore": 0.558,
+          "intensity": 46.7
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 35.5591,
+        "lon": 27.2251,
+        "bearingDeg": 11.1,
+        "distanceKm": 5.8
       }
     }
   }
