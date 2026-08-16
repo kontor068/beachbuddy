@@ -60,6 +60,39 @@ import {
 /** Never print a flatness finer than this — matches the cove guard's display floor. */
 export const SHORE_DISPLAY_FLOOR_M = 0.1;
 
+/**
+ * ΤΟ ΚΑΤΩΦΛΙ ΕΓΙΝΕ ΡΑΜΠΑ ΜΕ ΠΛΑΤΦΟΡΜΑ (16/08/2026) — βίβλος §Γ4.
+ *
+ * Το `onshore` ήταν διακόπτης στο −0,80: από κάτω τυπώναμε το νερό της ακτής, από πάνω το κύμα
+ * της ανοιχτής θάλασσας, χωρίς τίποτα ενδιάμεσο. Δύο γειτονικές παραλίες 2 χλμ μακριά, με τον
+ * ΙΔΙΟ άνεμο, έπαιρναν αντίθετη απάντηση επειδή η μία έπεφτε 0,001 πάνω από το κατώφλι —
+ * μετρημένα, 781 από 2.378 γειτονικά ζευγάρια (32,8%). Τα Λιμανάκια Βουλιαγμένης στο −0,799
+ * χρεώνονταν ολόκληρο το 0,68 μ. των ανοιχτών ενώ ο αέρας φυσούσε από τη στεριά.
+ *
+ * ΓΙΑΤΙ ΠΛΑΤΦΟΡΜΑ ΚΑΙ ΟΧΙ ΣΚΕΤΗ ΡΑΜΠΑ. Μια ράμπα που ξεκινά να ξεφουσκώνει από το −1 τιμωρεί τις
+ * παραλίες για τις οποίες ΧΤΙΣΤΗΚΕ η λειτουργία: ο Σχινιάς (onshore −0,834) πήγαινε από 0,17 σε
+ * 0,63 μ., δηλαδή θα ξαναλέγαμε «κύμα» εκεί όπου webcam έδειξε λάδι με λουόμενους μέσα
+ * (utils/shoreWave, το παράδειγμα που γέννησε το αρχείο). Οπότε το βάρος μένει **καρφωμένο στο 1
+ * μέχρι το παλιό κατώφλι** — για κάθε παραλία που μιλάει σήμερα ο κώδικας είναι ΤΑΥΤΟΤΙΚΟΣ — και
+ * σβήνει γραμμικά μόνο μέσα στη ζώνη που σήμερα σιωπά.
+ *
+ * ΤΙ ΔΕΝ ΑΛΛΑΖΕΙ: άνοιγμα, φράξιμο, εμπιστοσύνη, ύποπτο pin, αποθαλασσιά, το δάπεδο εμφάνισης και
+ * το καπάκι «ποτέ πιο δυνατά από τη θάλασσα έξω». Μόνο το `onshore` απέκτησε ενδιάμεσο.
+ */
+export const SHORE_RAMP_FULL_ONSHORE = OFFSHORE_FLAT_MAX_ONSHORE;
+export const SHORE_RAMP_SILENT_ONSHORE = -0.5;
+
+/**
+ * Πόσο από τον αριθμό είναι η ακτή και πόσο η ανοιχτή θάλασσα. 1 = καθαρά η ακτή (σημερινή
+ * συμπεριφορά), 0 = καθαρά τα ανοιχτά (δηλαδή σιωπή, μέσω του καπακιού παρακάτω).
+ */
+export const shoreRampWeight = (onshore: number): number => {
+  if (onshore <= SHORE_RAMP_FULL_ONSHORE) return 1;
+  if (onshore >= SHORE_RAMP_SILENT_ONSHORE) return 0;
+  const span = SHORE_RAMP_SILENT_ONSHORE - SHORE_RAMP_FULL_ONSHORE;
+  return (SHORE_RAMP_SILENT_ONSHORE - onshore) / span;
+};
+
 export interface ShoreWaveInput {
   /** The open-water figure the page prints today, in metres. */
   openWaterWaveHeightM?: number;
@@ -123,15 +156,24 @@ export const estimateShoreWaveHeightM = ({
   }
   if (blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return undefined;
   if (fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return undefined;
-  if (onshore > OFFSHORE_FLAT_MAX_ONSHORE) return undefined;
+  if (onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
 
+  const weight = shoreRampWeight(onshore);
   const modelledM = estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm });
-  const shoreM = Math.max(SHORE_DISPLAY_FLOOR_M, modelledM);
+  const blendedM = weight * modelledM + (1 - weight) * openWaterWaveHeightM;
+  const shoreM = Math.max(SHORE_DISPLAY_FLOOR_M, blendedM);
 
   // Never louder than the sea outside: if our own model somehow exceeds the grid reading, the
   // grid wins and we stay silent rather than print the larger of two numbers under the calmer
   // label. This is the guard that makes the pair monotonic by construction.
-  if (shoreM >= openWaterWaveHeightM) return undefined;
+  //
+  // ⚠️ ΤΟ ΣΤΡΟΓΓΥΛΟΠΟΙΗΜΕΝΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΑΥΤΟ ΠΟΥ ΚΡΙΝΕΤΑΙ (16/08/2026). Η σύγκριση γινόταν στο
+  // ασυστρογγύλευτο και η στρογγυλοποίηση ερχόταν μετά, οπότε 0,1499 έναντι ανοιχτών 0,15 περνούσε
+  // την πύλη και τύπωνε «στην ακτή ~0,15» δίπλα σε «ανοιχτά 0,15» — δύο ίδια νούμερα, δύο ετικέτες.
+  // Με τον διακόπτη ήταν σχεδόν αόρατο (η ακτή κόλλαγε στο δάπεδο 0,10)· με τη ράμπα το πέτυχε το
+  // 1,3% των νέων περιπτώσεων. Σιωπή είναι η σωστή απάντηση: δεν έχουμε δεύτερη γνώμη να δώσουμε.
+  const roundedM = Number(shoreM.toFixed(2));
+  if (roundedM >= openWaterWaveHeightM) return undefined;
 
-  return Number(shoreM.toFixed(2));
+  return roundedM;
 };

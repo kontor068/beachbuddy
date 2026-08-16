@@ -119,12 +119,22 @@ const SECTOR_ORDER = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 //
 // Το `switch` δεν είναι καμπύλη — είναι ο ΣΗΜΕΡΙΝΟΣ κώδικας, αυτούσιος, ως βάση σύγκρισης.
 // ─────────────────────────────────────────────────────────────────────────────
+//
+// `holdTo` (προστέθηκε 16/08/2026) είναι το onshore ΜΕΧΡΙ το οποίο το βάρος μένει καρφωμένο στο 1,
+// δηλαδή μια ΠΛΑΤΦΟΡΜΑ πριν αρχίσει η ράμπα. Χωρίς αυτό, κάθε ράμπα αρχίζει να ξεφουσκώνει από το
+// −1 και άρα ΑΝΕΒΑΖΕΙ τον αριθμό σε παραλίες που σήμερα μιλάνε σωστά (Σχινιάς 0,17 → 0,63 μ. στη
+// −0,50 γραμμική — η παραλία για την οποία ΧΤΙΣΤΗΚΕ η λειτουργία, με webcam που έδειχνε λάδι).
+// Με `holdTo = −0,80` η καμπύλη είναι ταυτοτικά ο σημερινός κώδικας για όποια παραλία μιλάει ήδη,
+// και ράμπα ΜΟΝΟ μέσα στη ζώνη που σήμερα σιωπά.
+// ─────────────────────────────────────────────────────────────────────────────
 const CURVES = [
   { key: 'switch', label: 'σήμερα (διακόπτης)', openAt: null, exponent: 1 },
   { key: 'ramp-080', label: 'ράμπα −1,00 → −0,80 γραμμική (ΜΟΝΟΔΡΟΜΗ)', openAt: -0.8, exponent: 1 },
   { key: 'ramp-080-soft', label: 'ράμπα −1,00 → −0,80 ήπια (ΜΟΝΟΔΡΟΜΗ)', openAt: -0.8, exponent: 0.35 },
   { key: 'ramp-065', label: 'ράμπα −1,00 → −0,65 γραμμική', openAt: -0.65, exponent: 1 },
   { key: 'ramp-050', label: 'ράμπα −1,00 → −0,50 γραμμική', openAt: -0.5, exponent: 1 },
+  { key: 'plateau-050', label: 'ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,50', openAt: -0.5, exponent: 1, holdTo: -0.8 },
+  { key: 'plateau-065', label: 'ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,65', openAt: -0.65, exponent: 1, holdTo: -0.8 },
 ];
 
 /**
@@ -138,8 +148,10 @@ const CURVES = [
  * (βάρος 0,78 στο −0,90) και σβήνει απότομα μόνο κοντά στο κατώφλι, που είναι και το σημείο όπου
  * η γεωμετρία γίνεται όντως αναξιόπιστη.
  */
-const rampWeight = (onshore, openAt, exponent) => {
-  const span = openAt - -1;
+const rampWeight = (onshore, openAt, exponent, holdTo = -1) => {
+  const start = Math.max(-1, Math.min(holdTo, openAt));
+  if (onshore <= start) return 1;
+  const span = openAt - start;
   if (!(span > 0)) return 1;
   const linear = Math.max(0, Math.min(1, (openAt - onshore) / span));
   return exponent === 1 ? linear : linear ** exponent;
@@ -151,7 +163,7 @@ const rampWeight = (onshore, openAt, exponent) => {
  * εμφάνισης και το καπάκι «ποτέ πιο δυνατά από τη θάλασσα έξω». Αλλάζει ΜΟΝΟ το τι γίνεται στο
  * onshore: αντί για ναι/όχι στο −0,8, βάρος που σβήνει σταδιακά.
  */
-const rampEstimate = (input, openAt, exponent) => {
+const rampEstimate = (input, openAt, exponent, holdTo) => {
   if (input.arrivingSwellPresent) return undefined;
   if (input.suspectPin) return undefined;
   if (input.confidence !== 'high') return undefined;
@@ -169,7 +181,7 @@ const rampEstimate = (input, openAt, exponent) => {
   if (fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return undefined;
   if (onshore > openAt) return undefined;
 
-  const weight = rampWeight(onshore, openAt, exponent);
+  const weight = rampWeight(onshore, openAt, exponent, holdTo);
   const modelledM = estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm });
   const blendedM = weight * modelledM + (1 - weight) * openWaterM;
   const shoreM = Math.max(SHORE_DISPLAY_FLOOR_M, blendedM);
@@ -179,7 +191,7 @@ const rampEstimate = (input, openAt, exponent) => {
 
 let activeCurve = CURVES[0];
 shoreWaveModule.estimateShoreWaveHeightM = (input) => (
-  activeCurve.openAt === null ? originalEstimate(input) : rampEstimate(input, activeCurve.openAt, activeCurve.exponent)
+  activeCurve.openAt === null ? originalEstimate(input) : rampEstimate(input, activeCurve.openAt, activeCurve.exponent, activeCurve.holdTo)
 );
 
 // Δίχτυ πάνω στο ίδιο το εργαλείο: αν η αντικατάσταση δεν έφτανε στο scoring, κάθε καμπύλη θα

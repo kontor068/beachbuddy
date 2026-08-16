@@ -69,7 +69,12 @@ const TWO_PI = Math.PI * 2;
 
 /** The ordinary Aegean wind-sea period the app's height thresholds were calibrated against. */
 export const SEA_REFERENCE_PERIOD_S = 4;
-/** Between encounter rate (T^-1) and steepness (T^-2). */
+/**
+ * ⚠️ 0.75 — BELOW both the encounter rate (T^-1) and the steepness (T^-2), not between them.
+ * Never measured against anything; see the module header before touching it. Raising it is safe
+ * in DIRECTION (a false calm is impossible) but at 1.5 it repaints ~48/930 beaches, mostly
+ * amber → red at 4 Bft. That is Miltos's call, not a comment's.
+ */
 const CHOP_EXPONENT = 0.75;
 /** Bounded so wave character adjusts the height, never overwhelms it. */
 const MAX_CHOP_FACTOR = 1.75;

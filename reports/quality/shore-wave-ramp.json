@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-13T12:46:46.884Z",
+  "generatedAt": "2026-08-16T08:25:44.840Z",
   "dayIndex": 0,
   "regionsAnswered": 110,
   "regionsAsked": 110,
-  "beachesMeasured": 2854,
+  "beachesMeasured": 2862,
   "curves": [
     {
       "key": "switch",
@@ -34,6 +34,20 @@
       "label": "ράμπα −1,00 → −0,50 γραμμική",
       "openAt": -0.5,
       "exponent": 1
+    },
+    {
+      "key": "plateau-050",
+      "label": "ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,50",
+      "openAt": -0.5,
+      "exponent": 1,
+      "holdTo": -0.8
+    },
+    {
+      "key": "plateau-065",
+      "label": "ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,65",
+      "openAt": -0.65,
+      "exponent": 1,
+      "holdTo": -0.8
     }
   ],
   "watchlist": [
@@ -46,34 +60,44 @@
         "lon": 24.03493
       },
       "confidence": "high",
-      "onshore": -0.834,
+      "onshore": -0.853,
       "fetchKm": 0.52,
       "blockedRayRatio": 1,
       "byCurve": {
         "switch": {
-          "printedM": 0.17,
-          "shoreM": 0.17,
-          "comfort": "avoid_swimming"
+          "printedM": 0.14,
+          "shoreM": 0.14,
+          "comfort": "caution"
         },
         "ramp-080": {
-          "printedM": 1.32,
-          "shoreM": 1.32,
+          "printedM": 0.98,
+          "shoreM": 0.98,
           "comfort": "avoid_swimming"
         },
         "ramp-080-soft": {
-          "printedM": 0.81,
-          "shoreM": 0.81,
+          "printedM": 0.56,
+          "shoreM": 0.56,
           "comfort": "avoid_swimming"
         },
         "ramp-065": {
-          "printedM": 0.83,
-          "shoreM": 0.83,
+          "printedM": 0.62,
+          "shoreM": 0.62,
           "comfort": "avoid_swimming"
         },
         "ramp-050": {
-          "printedM": 0.63,
-          "shoreM": 0.63,
-          "comfort": "avoid_swimming"
+          "printedM": 0.48,
+          "shoreM": 0.48,
+          "comfort": "caution"
+        },
+        "plateau-050": {
+          "printedM": 0.14,
+          "shoreM": 0.14,
+          "comfort": "caution"
+        },
+        "plateau-065": {
+          "printedM": 0.14,
+          "shoreM": 0.14,
+          "comfort": "caution"
         }
       }
     },
@@ -86,32 +110,42 @@
         "lon": 23.99171
       },
       "confidence": "high",
-      "onshore": -0.311,
+      "onshore": -0.344,
       "fetchKm": 2.2,
       "blockedRayRatio": 1,
       "byCurve": {
         "switch": {
-          "printedM": 1.56,
+          "printedM": 1.28,
           "shoreM": null,
           "comfort": "avoid_swimming"
         },
         "ramp-080": {
-          "printedM": 1.56,
+          "printedM": 1.28,
           "shoreM": null,
           "comfort": "avoid_swimming"
         },
         "ramp-080-soft": {
-          "printedM": 1.56,
+          "printedM": 1.28,
           "shoreM": null,
           "comfort": "avoid_swimming"
         },
         "ramp-065": {
-          "printedM": 1.56,
+          "printedM": 1.28,
           "shoreM": null,
           "comfort": "avoid_swimming"
         },
         "ramp-050": {
-          "printedM": 1.56,
+          "printedM": 1.28,
+          "shoreM": null,
+          "comfort": "avoid_swimming"
+        },
+        "plateau-050": {
+          "printedM": 1.28,
+          "shoreM": null,
+          "comfort": "avoid_swimming"
+        },
+        "plateau-065": {
+          "printedM": 1.28,
           "shoreM": null,
           "comfort": "avoid_swimming"
         }
@@ -121,7 +155,7 @@
   "structural": [
     {
       "key": "switch",
-      "spoke": 14001,
+      "spoke": 14046,
       "atFloorPct": 97.1,
       "medianM": 0.1,
       "p90M": 0.1,
@@ -129,7 +163,7 @@
     },
     {
       "key": "ramp-080",
-      "spoke": 13965,
+      "spoke": 14010,
       "atFloorPct": 35.9,
       "medianM": 0.19,
       "p90M": 0.86,
@@ -137,7 +171,7 @@
     },
     {
       "key": "ramp-080-soft",
-      "spoke": 13965,
+      "spoke": 14010,
       "atFloorPct": 56,
       "medianM": 0.1,
       "p90M": 0.47,
@@ -145,7 +179,7 @@
     },
     {
       "key": "ramp-065",
-      "spoke": 18333,
+      "spoke": 18381,
       "atFloorPct": 36.8,
       "medianM": 0.19,
       "p90M": 0.85,
@@ -153,10 +187,26 @@
     },
     {
       "key": "ramp-050",
-      "spoke": 22194,
+      "spoke": 22248,
       "atFloorPct": 36.1,
       "medianM": 0.19,
       "p90M": 0.86,
+      "maxM": 1.59
+    },
+    {
+      "key": "plateau-050",
+      "spoke": 22248,
+      "atFloorPct": 67.4,
+      "medianM": 0.1,
+      "p90M": 0.66,
+      "maxM": 1.59
+    },
+    {
+      "key": "plateau-065",
+      "spoke": 18381,
+      "atFloorPct": 77.9,
+      "medianM": 0.1,
+      "p90M": 0.4,
       "maxM": 1.59
     }
   ],
@@ -164,17 +214,19 @@
     "ramp-080": {
       "label": "ράμπα −1,00 → −0,80 γραμμική (ΜΟΝΟΔΡΟΜΗ)",
       "monotoneByDesign": true,
-      "beachesMeasured": 2854,
-      "spokeBefore": 647,
-      "spokeAfter": 646,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 673,
       "calmer": 0,
       "calmerExamples": [],
-      "rougher": 306,
+      "rougher": 358,
       "comfortSofter": 0,
-      "comfortStricter": 0,
-      "comfortMoves": {},
+      "comfortStricter": 13,
+      "comfortMoves": {
+        "caution → avoid_swimming": 13
+      },
       "softerExamples": [],
-      "podiumRegionsChanged": 19,
+      "podiumRegionsChanged": 20,
       "podiumOrderOnly": 4,
       "podiumExamples": [
         {
@@ -196,26 +248,54 @@
           "before": [
             "Χρυσή ακτή",
             "Ψιλή Άμμος",
-            "Αλυκές"
+            "Παραλία Πολιτικών"
           ],
           "after": [
             "Ψιλή Άμμος",
-            "Αλυκές",
-            "Χρυσή ακτή"
+            "Παραλία Πολιτικών",
+            "Άγιος Δημήτριος"
           ],
-          "orderOnly": true
+          "orderOnly": false
+        },
+        {
+          "region": "central-greece-skyros",
+          "before": [
+            "Καλαμίτσα",
+            "Αχερούνες",
+            "Πεύκος"
+          ],
+          "after": [
+            "Καλαμίτσα",
+            "Αχερούνες",
+            "Άγιος Φωκάς"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "central-macedonia-halkidiki-mainland",
+          "before": [
+            "Παραλία Βεργιάς",
+            "Lagomandra",
+            "Παραλία Αλυκές"
+          ],
+          "after": [
+            "Παραλία Αλυκές",
+            "Παραλία Νικήτης",
+            "Akti Kalogrias"
+          ],
+          "orderOnly": false
         },
         {
           "region": "crete-crete-chania",
           "before": [
-            "Σούγια",
-            "Ορθή Άμμος",
-            "Παραλία Ψηλός Βόλακας"
-          ],
-          "after": [
             "Ορθή Άμμος",
             "Παραλία Ψηλός Βόλακας",
-            "Grammeno"
+            "Φαλάσαρνα"
+          ],
+          "after": [
+            "Ελαφονήσι",
+            "Grammeno",
+            "Παραλία Αγίου Χαραλάμπους"
           ],
           "orderOnly": false
         },
@@ -223,62 +303,22 @@
           "region": "crete-crete-heraklion",
           "before": [
             "Τρυπητή",
-            "Ληστής",
-            "Σκούρος"
-          ],
-          "after": [
-            "Keratokambos",
-            "Κόκκινη Άμμος",
+            "Αγιοφάραγγο",
             "Κουδουμάς"
           ],
-          "orderOnly": false
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "before": [
-            "Αμμούδι",
-            "Άμμος Αγίου Νικολάου",
-            "Κιτροπλατεία"
-          ],
           "after": [
-            "Άμμος Αγίου Νικολάου",
-            "Βάι",
-            "Σχίσμα"
+            "Τρυπητή",
+            "Κουδουμάς",
+            "Χρυσόστομος"
           ],
           "orderOnly": false
-        },
-        {
-          "region": "crete-crete-rethymno",
-          "before": [
-            "Δαμνόνι",
-            "Σούδα",
-            "Πρέβελη"
-          ],
-          "after": [
-            "Δαμνόνι",
-            "Σούδα",
-            "Πλακιάς"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "east-macedonia-and-thrace-evros-mainland",
-          "before": [
-            "Παραλία Νέας Χιλής",
-            "Άγιος Γεώργιος Μάκρης"
-          ],
-          "after": [
-            "Άγιος Γεώργιος Μάκρης",
-            "Παραλία Νέας Χιλής"
-          ],
-          "orderOnly": true
         },
         {
           "region": "east-macedonia-and-thrace-thasos",
           "before": [
             "Νότος",
             "Ρωσογκρεμός",
-            "Ψιλή Άμμος"
+            "Μεταλλεία"
           ],
           "after": [
             "Νότος",
@@ -288,30 +328,44 @@
           "orderOnly": false
         },
         {
-          "region": "epirus-thesprotia-mainland",
+          "region": "ionian-islands-kefalonia",
           "before": [
-            "Αγία Παρασκευή",
-            "Καραβοστάσι",
-            "Αρίλλα"
+            "Αντίσαμος",
+            "Παραλία Σκάλας",
+            "Ξι"
           ],
           "after": [
-            "Αγία Παρασκευή",
-            "Καραβοστάσι",
-            "Γαλλικός Μώλος"
+            "Αντίσαμος",
+            "Ξι",
+            "Αγία Παρασκευή"
           ],
           "orderOnly": false
         },
         {
-          "region": "ionian-islands-lefkada",
+          "region": "ionian-islands-zakynthos",
           "before": [
-            "Αμμούσα",
-            "Πευκούλια",
-            "Κάθισμα"
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Λαγανάς"
           ],
           "after": [
-            "Πευκούλια",
-            "Κάθισμα",
-            "Αμμούσα"
+            "Καλαμάκι",
+            "Παραλία Κεριού",
+            "Μπανάνα"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "north-aegean-ikaria",
+          "before": [
+            "Σευχέλες",
+            "Αγάλιασμα",
+            "Συρτικό"
+          ],
+          "after": [
+            "Αγάλιασμα",
+            "Συρτικό",
+            "Σευχέλες"
           ],
           "orderOnly": true
         },
@@ -330,222 +384,965 @@
           "orderOnly": false
         },
         {
-          "region": "south-aegean-antiparos",
+          "region": "peloponnese-argolida-mainland",
           "before": [
-            "Πρώτη Ψαραλυκή",
-            "Καλούδια",
-            "Δεύτερη Ψαραλυκή"
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
           ],
           "after": [
-            "Πρώτη Ψαραλυκή",
-            "Δεύτερη Ψαραλυκή",
-            "Σωρό"
+            "Παραλία Αρβανιτιά",
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αγίου Νικολάου - Κονδύλι"
           ],
           "orderOnly": false
         }
       ],
       "calmerMedianM": 0,
       "calmerMaxM": null,
-      "rougherMedianM": 0.13
+      "rougherMedianM": 0.18
     },
     "ramp-080-soft": {
       "label": "ράμπα −1,00 → −0,80 ήπια (ΜΟΝΟΔΡΟΜΗ)",
       "monotoneByDesign": true,
-      "beachesMeasured": 2854,
-      "spokeBefore": 647,
-      "spokeAfter": 646,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 673,
       "calmer": 0,
       "calmerExamples": [],
-      "rougher": 162,
+      "rougher": 216,
       "comfortSofter": 0,
-      "comfortStricter": 0,
-      "comfortMoves": {},
+      "comfortStricter": 5,
+      "comfortMoves": {
+        "caution → avoid_swimming": 5
+      },
       "softerExamples": [],
-      "podiumRegionsChanged": 5,
-      "podiumOrderOnly": 0,
+      "podiumRegionsChanged": 10,
+      "podiumOrderOnly": 5,
       "podiumExamples": [
         {
-          "region": "crete-crete-heraklion",
+          "region": "attica-athens-area-mainland",
           "before": [
-            "Τρυπητή",
-            "Ληστής",
-            "Σκούρος"
+            "Παραλία Γλυφάδας Ακτή Α",
+            "Παραλία Μπάτη",
+            "Α' Πλαζ Βούλας"
           ],
           "after": [
-            "Τρυπητή",
-            "Ληστής",
-            "Keratokambos"
+            "Παραλία Γλυφάδας Ακτή Α",
+            "Α' Πλαζ Βούλας",
+            "Άγιος Κοσμάς"
           ],
           "orderOnly": false
         },
         {
-          "region": "crete-crete-lasithi",
+          "region": "central-greece-evia",
           "before": [
-            "Αμμούδι",
-            "Άμμος Αγίου Νικολάου",
-            "Κιτροπλατεία"
+            "Χρυσή ακτή",
+            "Ψιλή Άμμος",
+            "Παραλία Πολιτικών"
           ],
           "after": [
-            "Άμμος Αγίου Νικολάου",
-            "Κιτροπλατεία",
-            "Βάι"
+            "Ψιλή Άμμος",
+            "Παραλία Πολιτικών",
+            "Χρυσή ακτή"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "east-macedonia-and-thrace-thasos",
+          "before": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Μεταλλεία"
+          ],
+          "after": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Παχύς"
           ],
           "orderOnly": false
         },
         {
-          "region": "south-aegean-astypalaia",
+          "region": "ionian-islands-kefalonia",
           "before": [
-            "Στενό",
-            "Καμινάκια",
-            "Μαγαζάκι"
+            "Αντίσαμος",
+            "Παραλία Σκάλας",
+            "Ξι"
           ],
           "after": [
-            "Στενό",
-            "Καμινάκια",
-            "Μαμούνια"
+            "Αντίσαμος",
+            "Ξι",
+            "Παραλία Σκάλας"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-ikaria",
+          "before": [
+            "Σευχέλες",
+            "Αγάλιασμα",
+            "Συρτικό"
+          ],
+          "after": [
+            "Αγάλιασμα",
+            "Συρτικό",
+            "Σευχέλες"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "before": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Κάσπακας"
+          ],
+          "after": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Άγιος Ιωάννης"
           ],
           "orderOnly": false
         },
         {
-          "region": "south-aegean-folegandros",
+          "region": "peloponnese-argolida-mainland",
           "before": [
-            "Άγιος Νικόλαος",
-            "Κοχλίδια",
-            "Γάλιφος"
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
           ],
           "after": [
-            "Άγιος Νικόλαος",
-            "Κοχλίδια",
-            "Κάτεργο"
+            "Παραλία Αρβανιτιά",
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αγίου Νικολάου - Κονδύλι"
           ],
           "orderOnly": false
+        },
+        {
+          "region": "peloponnese-messinia-mainland",
+          "before": [
+            "Περούλια",
+            "Μεμί",
+            "Στούπα"
+          ],
+          "after": [
+            "Περούλια",
+            "Στούπα",
+            "Καλογριά"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-naxos",
+          "before": [
+            "Πυργάκι",
+            "Αλυκό",
+            "Παραλία Καλαντός"
+          ],
+          "after": [
+            "Αλυκό",
+            "Πυργάκι",
+            "Παραλία Καλαντός"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "south-aegean-patmos",
+          "before": [
+            "Αγριολίβαδο",
+            "Παραλία Κάμπου",
+            "Παραλία Γροίκος"
+          ],
+          "after": [
+            "Παραλία Κάμπου",
+            "Παραλία Γροίκος",
+            "Αγριολίβαδο"
+          ],
+          "orderOnly": true
+        }
+      ],
+      "calmerMedianM": 0,
+      "calmerMaxM": null,
+      "rougherMedianM": 0.09
+    },
+    "ramp-065": {
+      "label": "ράμπα −1,00 → −0,65 γραμμική",
+      "monotoneByDesign": false,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 854,
+      "calmer": 179,
+      "calmerExamples": [
+        {
+          "region": "attica-aegina",
+          "name": "Αύρα",
+          "onshore": -0.676,
+          "beforeM": 0.64,
+          "afterM": 0.59
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Παραλία Μαραθώνα Α",
+          "onshore": -0.657,
+          "beforeM": 0.64,
+          "afterM": 0.63
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Ακτή του Ήλιου",
+          "onshore": -0.778,
+          "beforeM": 0.42,
+          "afterM": 0.27
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Γ",
+          "onshore": -0.743,
+          "beforeM": 0.54,
+          "afterM": 0.4
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Δ",
+          "onshore": -0.688,
+          "beforeM": 0.35,
+          "afterM": 0.31
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Παραλία Αγίου Σπυρίδωνα",
+          "onshore": -0.669,
+          "beforeM": 1.66,
+          "afterM": 1.57
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Lagonissi Grand Resort",
+          "onshore": -0.777,
+          "beforeM": 0.46,
+          "afterM": 0.32
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Δεύτερη Παραλία Σαρωνίδας",
+          "onshore": -0.731,
+          "beforeM": 0.5,
+          "afterM": 0.38
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Μαύρο Λιθάρι / Eden Beach",
+          "onshore": -0.742,
+          "beforeM": 0.5,
+          "afterM": 0.37
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "onshore": -0.736,
+          "beforeM": 1.3,
+          "afterM": 1
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Λεφτό",
+          "onshore": -0.656,
+          "beforeM": 1.38,
+          "afterM": 1.36
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Σπαραγγάριο",
+          "onshore": -0.756,
+          "beforeM": 0.76,
+          "afterM": 0.55
+        }
+      ],
+      "rougher": 264,
+      "comfortSofter": 0,
+      "comfortStricter": 8,
+      "comfortMoves": {
+        "caution → avoid_swimming": 8
+      },
+      "softerExamples": [],
+      "podiumRegionsChanged": 17,
+      "podiumOrderOnly": 7,
+      "podiumExamples": [
+        {
+          "region": "attica-athens-area-mainland",
+          "before": [
+            "Παραλία Γλυφάδας Ακτή Α",
+            "Παραλία Μπάτη",
+            "Α' Πλαζ Βούλας"
+          ],
+          "after": [
+            "Παραλία Γλυφάδας Ακτή Α",
+            "Α' Πλαζ Βούλας",
+            "Άγιος Κοσμάς"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "attica-piraeus-area",
+          "before": [
+            "Βοτσαλάκια",
+            "Παραλία Φρεαττύδος",
+            "Πλαζ Καλαμπάκα"
+          ],
+          "after": [
+            "Βοτσαλάκια",
+            "Πλαζ Καλαμπάκα",
+            "Παραλία Φρεαττύδος"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "attica-spetses",
+          "before": [
+            "Ξυλοκέριζα",
+            "Άγιοι Ανάργυροι",
+            "Αγία Παρασκευή"
+          ],
+          "after": [
+            "Ξυλοκέριζα",
+            "Αγία Παρασκευή",
+            "Άγιοι Ανάργυροι"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "central-greece-evia",
+          "before": [
+            "Χρυσή ακτή",
+            "Ψιλή Άμμος",
+            "Παραλία Πολιτικών"
+          ],
+          "after": [
+            "Ψιλή Άμμος",
+            "Παραλία Πολιτικών",
+            "Χρυσή ακτή"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "crete-crete-chania",
+          "before": [
+            "Ορθή Άμμος",
+            "Παραλία Ψηλός Βόλακας",
+            "Φαλάσαρνα"
+          ],
+          "after": [
+            "Ορθή Άμμος",
+            "Φαλάσαρνα",
+            "Ελαφονήσι"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "east-macedonia-and-thrace-samothraki",
+          "before": [
+            "Παραλία Μακρυλιές",
+            "Λάκκωμα",
+            "Κήπος"
+          ],
+          "after": [
+            "Παραλία Μακρυλιές",
+            "Λάκκωμα",
+            "Γυαλί"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "east-macedonia-and-thrace-thasos",
+          "before": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Μεταλλεία"
+          ],
+          "after": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Παχύς"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "ionian-islands-kefalonia",
+          "before": [
+            "Αντίσαμος",
+            "Παραλία Σκάλας",
+            "Ξι"
+          ],
+          "after": [
+            "Αντίσαμος",
+            "Ξι",
+            "Παραλία Σκάλας"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "ionian-islands-zakynthos",
+          "before": [
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Λαγανάς"
+          ],
+          "after": [
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Παραλία Κεριού"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "north-aegean-ikaria",
+          "before": [
+            "Σευχέλες",
+            "Αγάλιασμα",
+            "Συρτικό"
+          ],
+          "after": [
+            "Αγάλιασμα",
+            "Συρτικό",
+            "Σευχέλες"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "before": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Κάσπακας"
+          ],
+          "after": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Άγιος Ιωάννης"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "peloponnese-argolida-mainland",
+          "before": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
+          ],
+          "after": [
+            "Παραλία Αρβανιτιά",
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αγίου Νικολάου - Κονδύλι"
+          ],
+          "orderOnly": false
+        }
+      ],
+      "calmerMedianM": 0.12,
+      "calmerMaxM": 0.75,
+      "rougherMedianM": 0.1
+    },
+    "ramp-050": {
+      "label": "ράμπα −1,00 → −0,50 γραμμική",
+      "monotoneByDesign": false,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 967,
+      "calmer": 292,
+      "calmerExamples": [
+        {
+          "region": "attica-aegina",
+          "name": "Αύρα",
+          "onshore": -0.676,
+          "beforeM": 0.64,
+          "afterM": 0.41
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Παραλία Μαραθώνα Α",
+          "onshore": -0.657,
+          "beforeM": 0.64,
+          "afterM": 0.44
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Παραλία Μαραθώνα Β",
+          "onshore": -0.505,
+          "beforeM": 0.64,
+          "afterM": 0.63
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Τούρλος",
+          "onshore": -0.575,
+          "beforeM": 0.68,
+          "afterM": 0.59
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Αίγινα Μαραθώνας",
+          "onshore": -0.555,
+          "beforeM": 0.64,
+          "afterM": 0.57
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Έδεμ",
+          "onshore": -0.64,
+          "beforeM": 0.35,
+          "afterM": 0.25
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Ακτή του Ήλιου",
+          "onshore": -0.778,
+          "beforeM": 0.42,
+          "afterM": 0.19
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Γ",
+          "onshore": -0.743,
+          "beforeM": 0.54,
+          "afterM": 0.29
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Δ",
+          "onshore": -0.688,
+          "beforeM": 0.35,
+          "afterM": 0.22
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Παραλία Αγίου Σπυρίδωνα",
+          "onshore": -0.669,
+          "beforeM": 1.66,
+          "afterM": 1.1
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Lagonissi Grand Resort",
+          "onshore": -0.777,
+          "beforeM": 0.46,
+          "afterM": 0.25
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Καλοπήγαδο",
+          "onshore": -0.506,
+          "beforeM": 1.8,
+          "afterM": 1.78
+        }
+      ],
+      "rougher": 205,
+      "comfortSofter": 2,
+      "comfortStricter": 4,
+      "comfortMoves": {
+        "caution → avoid_swimming": 4,
+        "avoid_swimming → caution": 1,
+        "good → excellent": 1
+      },
+      "softerExamples": [
+        {
+          "region": "south-aegean-milos",
+          "name": "Κλέφτικο",
+          "onshore": -0.799,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.02,
+          "afterM": 0.41
+        },
+        {
+          "region": "south-aegean-rhodes",
+          "name": "Αγία Τριάδα",
+          "onshore": -0.633,
+          "move": "good → excellent",
+          "beforeM": 0.48,
+          "afterM": 0.35
+        }
+      ],
+      "podiumRegionsChanged": 16,
+      "podiumOrderOnly": 8,
+      "podiumExamples": [
+        {
+          "region": "attica-piraeus-area",
+          "before": [
+            "Βοτσαλάκια",
+            "Παραλία Φρεαττύδος",
+            "Πλαζ Καλαμπάκα"
+          ],
+          "after": [
+            "Βοτσαλάκια",
+            "Πλαζ Καλαμπάκα",
+            "Παραλία Φρεαττύδος"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "attica-poros",
+          "before": [
+            "Ασκέλι",
+            "Μοναστήρι",
+            "Λιμανάκι της Αγάπης"
+          ],
+          "after": [
+            "Λιμανάκι της Αγάπης",
+            "Ασκέλι",
+            "Μοναστήρι"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "east-macedonia-and-thrace-thasos",
+          "before": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Μεταλλεία"
+          ],
+          "after": [
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Παχύς"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "ionian-islands-zakynthos",
+          "before": [
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Λαγανάς"
+          ],
+          "after": [
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Πόρτο Λιμνιώνας"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "north-aegean-chios",
+          "before": [
+            "Κώμη",
+            "Λιλικάς"
+          ],
+          "after": [
+            "Λιλικάς",
+            "Κώμη"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-ikaria",
+          "before": [
+            "Σευχέλες",
+            "Αγάλιασμα",
+            "Συρτικό"
+          ],
+          "after": [
+            "Αγάλιασμα",
+            "Συρτικό",
+            "Σευχέλες"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "before": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Κάσπακας"
+          ],
+          "after": [
+            "Εβγάτης",
+            "Πλατύ",
+            "Άγιος Ιωάννης"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "peloponnese-argolida-mainland",
+          "before": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
+          ],
+          "after": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Αγίου Νικολάου - Κονδύλι"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-koufonisia",
+          "before": [
+            "Άμμος",
+            "Φανός",
+            "Πλατιά Πούντα (Ιταλίδα)"
+          ],
+          "after": [
+            "Φανός",
+            "Άμμος",
+            "Πλατιά Πούντα (Ιταλίδα)"
+          ],
+          "orderOnly": true
         },
         {
           "region": "south-aegean-kythnos",
           "before": [
             "Απόκρουσης",
             "Σκινάρι",
-            "Σι Μου Σι"
+            "Άγιος Σώστης"
           ],
           "after": [
             "Απόκρουσης",
             "Σκινάρι",
-            "Γαϊδουρόμαντρα"
+            "Σι Μου Σι"
           ],
           "orderOnly": false
+        },
+        {
+          "region": "south-aegean-leros",
+          "before": [
+            "Δύο Λισκάρια",
+            "Παραλία Λακκίου",
+            "Βρομόλιθος"
+          ],
+          "after": [
+            "Δύο Λισκάρια",
+            "Παραλία Λακκίου",
+            "Παραλία Βρωμόλιθος"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-naxos",
+          "before": [
+            "Πυργάκι",
+            "Αλυκό",
+            "Παραλία Καλαντός"
+          ],
+          "after": [
+            "Αλυκό",
+            "Πυργάκι",
+            "Παραλία Καλαντός"
+          ],
+          "orderOnly": true
         }
       ],
-      "calmerMedianM": 0,
-      "calmerMaxM": null,
+      "calmerMedianM": 0.18,
+      "calmerMaxM": 1.09,
       "rougherMedianM": 0.07
     },
-    "ramp-065": {
-      "label": "ράμπα −1,00 → −0,65 γραμμική",
+    "plateau-050": {
+      "label": "ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,50",
       "monotoneByDesign": false,
-      "beachesMeasured": 2854,
-      "spokeBefore": 647,
-      "spokeAfter": 809,
-      "calmer": 160,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 967,
+      "calmer": 293,
       "calmerExamples": [
         {
           "region": "attica-aegina",
           "name": "Αύρα",
-          "onshore": -0.737,
-          "beforeM": 0.52,
-          "afterM": 0.39
+          "onshore": -0.676,
+          "beforeM": 0.64,
+          "afterM": 0.26
         },
         {
           "region": "attica-aegina",
           "name": "Παραλία Μαραθώνα Α",
-          "onshore": -0.721,
-          "beforeM": 0.52,
-          "afterM": 0.41
+          "onshore": -0.657,
+          "beforeM": 0.64,
+          "afterM": 0.31
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Παραλία Μαραθώνα Β",
+          "onshore": -0.505,
+          "beforeM": 0.64,
+          "afterM": 0.63
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Τούρλος",
+          "onshore": -0.575,
+          "beforeM": 0.68,
+          "afterM": 0.54
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Αίγινα Μαραθώνας",
+          "onshore": -0.555,
+          "beforeM": 0.64,
+          "afterM": 0.53
         },
         {
           "region": "attica-athens-area-mainland",
           "name": "Παραλία Έδεμ",
-          "onshore": -0.764,
+          "onshore": -0.64,
           "beforeM": 0.35,
-          "afterM": 0.24
+          "afterM": 0.19
         },
         {
           "region": "attica-athens-area-mainland",
-          "name": "Λιμανάκια Βουλιαγμένης",
-          "onshore": -0.799,
-          "beforeM": 0.68,
-          "afterM": 0.39
+          "name": "Ακτή του Ήλιου",
+          "onshore": -0.778,
+          "beforeM": 0.42,
+          "afterM": 0.1
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Γ",
+          "onshore": -0.743,
+          "beforeM": 0.54,
+          "afterM": 0.13
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Δ",
+          "onshore": -0.688,
+          "beforeM": 0.35,
+          "afterM": 0.13
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Παραλία Αγίου Σπυρίδωνα",
+          "onshore": -0.669,
+          "beforeM": 1.66,
+          "afterM": 0.72
         },
         {
           "region": "attica-east-attica-mainland",
           "name": "Lagonissi Grand Resort",
-          "onshore": -0.755,
-          "beforeM": 0.74,
-          "afterM": 0.55
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Δεύτερη Παραλία Σαρωνίδας",
-          "onshore": -0.755,
-          "beforeM": 0.84,
-          "afterM": 0.59
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Μαύρο Λιθάρι / Eden Beach",
-          "onshore": -0.765,
-          "beforeM": 0.84,
-          "afterM": 0.56
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Παραλία Σουνίου",
-          "onshore": -0.676,
-          "beforeM": 1.26,
-          "afterM": 1.17
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Ῥουτσούνας",
-          "onshore": -0.679,
-          "beforeM": 0.5,
-          "afterM": 0.46
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Παραλία Δίπορος",
-          "onshore": -0.691,
-          "beforeM": 0.48,
-          "afterM": 0.42
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Άγιος Λευτέρης",
-          "onshore": -0.69,
+          "onshore": -0.777,
           "beforeM": 0.46,
-          "afterM": 0.41
+          "afterM": 0.11
         },
         {
-          "region": "attica-piraeus-area",
-          "name": "Κράκαρης",
-          "onshore": -0.736,
-          "beforeM": 0.35,
+          "region": "attica-east-attica-mainland",
+          "name": "Καλοπήγαδο",
+          "onshore": -0.506,
+          "beforeM": 1.8,
+          "afterM": 1.76
+        }
+      ],
+      "rougher": 0,
+      "comfortSofter": 7,
+      "comfortStricter": 0,
+      "comfortMoves": {
+        "avoid_swimming → caution": 6,
+        "good → excellent": 1
+      },
+      "softerExamples": [
+        {
+          "region": "north-aegean-chios",
+          "name": "Αυλωνιά Πυργίου",
+          "onshore": -0.75,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.36,
+          "afterM": 0.23
+        },
+        {
+          "region": "north-aegean-psara",
+          "name": "Κατσούνι",
+          "onshore": -0.713,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.92,
+          "afterM": 0.58
+        },
+        {
+          "region": "south-aegean-antiparos",
+          "name": "Ακτή Παναγίας Φανερωμένης",
+          "onshore": -0.789,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.84,
+          "afterM": 0.21
+        },
+        {
+          "region": "south-aegean-ios",
+          "name": "Λουκά Αυλάκι",
+          "onshore": -0.703,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.14,
+          "afterM": 0.43
+        },
+        {
+          "region": "south-aegean-milos",
+          "name": "Κάλαμος",
+          "onshore": -0.757,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.02,
+          "afterM": 0.2
+        },
+        {
+          "region": "south-aegean-milos",
+          "name": "Κλέφτικο",
+          "onshore": -0.799,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.02,
+          "afterM": 0.1
+        },
+        {
+          "region": "south-aegean-rhodes",
+          "name": "Αγία Τριάδα",
+          "onshore": -0.633,
+          "move": "good → excellent",
+          "beforeM": 0.48,
           "afterM": 0.27
         }
       ],
-      "rougher": 212,
-      "comfortSofter": 0,
-      "comfortStricter": 0,
-      "comfortMoves": {},
-      "softerExamples": [],
-      "podiumRegionsChanged": 5,
-      "podiumOrderOnly": 1,
+      "podiumRegionsChanged": 20,
+      "podiumOrderOnly": 6,
       "podiumExamples": [
+        {
+          "region": "attica-piraeus-area",
+          "before": [
+            "Βοτσαλάκια",
+            "Παραλία Φρεαττύδος",
+            "Πλαζ Καλαμπάκα"
+          ],
+          "after": [
+            "Βοτσαλάκια",
+            "Πλαζ Καλαμπάκα",
+            "Κράκαρης"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "attica-poros",
+          "before": [
+            "Ασκέλι",
+            "Μοναστήρι",
+            "Λιμανάκι της Αγάπης"
+          ],
+          "after": [
+            "Λιμανάκι της Αγάπης",
+            "Ασκέλι",
+            "Μοναστήρι"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "attica-spetses",
+          "before": [
+            "Ξυλοκέριζα",
+            "Άγιοι Ανάργυροι",
+            "Αγία Παρασκευή"
+          ],
+          "after": [
+            "Άγιοι Ανάργυροι",
+            "Αγία Παρασκευή",
+            "Ξυλοκέριζα"
+          ],
+          "orderOnly": true
+        },
         {
           "region": "crete-crete-chania",
           "before": [
-            "Σούγια",
             "Ορθή Άμμος",
-            "Παραλία Ψηλός Βόλακας"
+            "Παραλία Ψηλός Βόλακας",
+            "Φαλάσαρνα"
           ],
           "after": [
             "Μαράθι",
@@ -555,30 +1352,377 @@
           "orderOnly": false
         },
         {
-          "region": "ionian-islands-lefkada",
+          "region": "east-macedonia-and-thrace-thasos",
           "before": [
-            "Αμμούσα",
-            "Πευκούλια",
-            "Κάθισμα"
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Μεταλλεία"
           ],
           "after": [
-            "Αμμούσα",
-            "Αφτέλι",
-            "Πευκούλια"
+            "Νότος",
+            "Ρωσογκρεμός",
+            "Ατσπάς"
           ],
           "orderOnly": false
         },
         {
-          "region": "north-aegean-ikaria",
+          "region": "ionian-islands-zakynthos",
           "before": [
-            "Αρμενιστής",
-            "Αγάλιασμα",
-            "Συρτικό"
+            "Πόρτο Βρώμη",
+            "Καλαμάκι",
+            "Λαγανάς"
           ],
           "after": [
-            "Αρμενιστής",
-            "Σευχέλες",
-            "Αγάλιασμα"
+            "Πόρτο Ρόξα",
+            "Πόρτο Βρώμη",
+            "Καλαμάκι"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "north-aegean-chios",
+          "before": [
+            "Κώμη",
+            "Λιλικάς"
+          ],
+          "after": [
+            "Λιλικάς",
+            "Κώμη"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-samos",
+          "before": [
+            "Παραλία Κάμπος Μαραθοκάμπου",
+            "Πυθαγόρειο",
+            "Ψιλή Άμμος Μαραθοκάμπου"
+          ],
+          "after": [
+            "Καλαδάκια",
+            "Παραλία Κάμπος Μαραθοκάμπου",
+            "Πυθαγόρειο"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "peloponnese-argolida-mainland",
+          "before": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
+          ],
+          "after": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αγίου Νικολάου - Κονδύλι",
+            "Παραλία Αρβανιτιά"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-astypalaia",
+          "before": [
+            "Στενό",
+            "Καμινάκια",
+            "Άγιος Βασίλειος"
+          ],
+          "after": [
+            "Στενό",
+            "Καμινάκια",
+            "Μαγαζάκι"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-kalymnos",
+          "before": [
+            "Παραλία Παλιόνησος",
+            "Παραλία Γέφυρα",
+            "Παραλία Θέρμα"
+          ],
+          "after": [
+            "Παραλία Γέφυρα",
+            "Παραλία Παλιόνησος",
+            "Παραλία Θέρμα"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "south-aegean-karpathos",
+          "before": [
+            "Δαματριά",
+            "Μικρή Αμμοοπή",
+            "Μακρύγιαλος"
+          ],
+          "after": [
+            "Αχάτα",
+            "Δαματριά",
+            "Μικρή Αμμοοπή"
+          ],
+          "orderOnly": false
+        }
+      ],
+      "calmerMedianM": 0.27,
+      "calmerMaxM": 1.81,
+      "rougherMedianM": 0
+    },
+    "plateau-065": {
+      "label": "ΠΛΑΤΦΟΡΜΑ ως −0,80 → ράμπα ως −0,65",
+      "monotoneByDesign": false,
+      "beachesMeasured": 2862,
+      "spokeBefore": 674,
+      "spokeAfter": 854,
+      "calmer": 180,
+      "calmerExamples": [
+        {
+          "region": "attica-aegina",
+          "name": "Αύρα",
+          "onshore": -0.676,
+          "beforeM": 0.64,
+          "afterM": 0.53
+        },
+        {
+          "region": "attica-aegina",
+          "name": "Παραλία Μαραθώνα Α",
+          "onshore": -0.657,
+          "beforeM": 0.64,
+          "afterM": 0.61
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Ακτή του Ήλιου",
+          "onshore": -0.778,
+          "beforeM": 0.42,
+          "afterM": 0.1
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Γ",
+          "onshore": -0.743,
+          "beforeM": 0.54,
+          "afterM": 0.22
+        },
+        {
+          "region": "attica-athens-area-mainland",
+          "name": "Παραλία Γλυφάδας Ακτή Δ",
+          "onshore": -0.688,
+          "beforeM": 0.35,
+          "afterM": 0.26
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Παραλία Αγίου Σπυρίδωνα",
+          "onshore": -0.669,
+          "beforeM": 1.66,
+          "afterM": 1.45
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Lagonissi Grand Resort",
+          "onshore": -0.777,
+          "beforeM": 0.46,
+          "afterM": 0.14
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Δεύτερη Παραλία Σαρωνίδας",
+          "onshore": -0.731,
+          "beforeM": 0.5,
+          "afterM": 0.23
+        },
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Μαύρο Λιθάρι / Eden Beach",
+          "onshore": -0.742,
+          "beforeM": 0.5,
+          "afterM": 0.19
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "onshore": -0.736,
+          "beforeM": 1.3,
+          "afterM": 0.59
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Λεφτό",
+          "onshore": -0.656,
+          "beforeM": 1.38,
+          "afterM": 1.32
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Σπαραγγάριο",
+          "onshore": -0.756,
+          "beforeM": 0.76,
+          "afterM": 0.27
+        }
+      ],
+      "rougher": 0,
+      "comfortSofter": 4,
+      "comfortStricter": 0,
+      "comfortMoves": {
+        "avoid_swimming → caution": 4
+      },
+      "softerExamples": [
+        {
+          "region": "north-aegean-chios",
+          "name": "Αυλωνιά Πυργίου",
+          "onshore": -0.75,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.36,
+          "afterM": 0.45
+        },
+        {
+          "region": "south-aegean-antiparos",
+          "name": "Ακτή Παναγίας Φανερωμένης",
+          "onshore": -0.789,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.84,
+          "afterM": 0.27
+        },
+        {
+          "region": "south-aegean-milos",
+          "name": "Κάλαμος",
+          "onshore": -0.757,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.02,
+          "afterM": 0.34
+        },
+        {
+          "region": "south-aegean-milos",
+          "name": "Κλέφτικο",
+          "onshore": -0.799,
+          "move": "avoid_swimming → caution",
+          "beforeM": 1.02,
+          "afterM": 0.1
+        }
+      ],
+      "podiumRegionsChanged": 15,
+      "podiumOrderOnly": 6,
+      "podiumExamples": [
+        {
+          "region": "attica-piraeus-area",
+          "before": [
+            "Βοτσαλάκια",
+            "Παραλία Φρεαττύδος",
+            "Πλαζ Καλαμπάκα"
+          ],
+          "after": [
+            "Βοτσαλάκια",
+            "Πλαζ Καλαμπάκα",
+            "Παραλία Φρεαττύδος"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "attica-spetses",
+          "before": [
+            "Ξυλοκέριζα",
+            "Άγιοι Ανάργυροι",
+            "Αγία Παρασκευή"
+          ],
+          "after": [
+            "Αγία Παρασκευή",
+            "Ξυλοκέριζα",
+            "Άγιοι Ανάργυροι"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "crete-crete-chania",
+          "before": [
+            "Ορθή Άμμος",
+            "Παραλία Ψηλός Βόλακας",
+            "Φαλάσαρνα"
+          ],
+          "after": [
+            "Μαράθι",
+            "Σούγια",
+            "Ορθή Άμμος"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "east-macedonia-and-thrace-samothraki",
+          "before": [
+            "Παραλία Μακρυλιές",
+            "Λάκκωμα",
+            "Κήπος"
+          ],
+          "after": [
+            "Παραλία Μακρυλιές",
+            "Λάκκωμα",
+            "Γυαλί"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "north-aegean-chios",
+          "before": [
+            "Κώμη",
+            "Λιλικάς"
+          ],
+          "after": [
+            "Λιλικάς",
+            "Κώμη"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "north-aegean-samos",
+          "before": [
+            "Παραλία Κάμπος Μαραθοκάμπου",
+            "Πυθαγόρειο",
+            "Ψιλή Άμμος Μαραθοκάμπου"
+          ],
+          "after": [
+            "Καλαδάκια",
+            "Παραλία Κάμπος Μαραθοκάμπου",
+            "Πυθαγόρειο"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "peloponnese-argolida-mainland",
+          "before": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αρβανιτιά",
+            "Παραλία Ασίνης"
+          ],
+          "after": [
+            "Παραλία Τολού - Ψιλή Άμμος",
+            "Παραλία Αγίου Νικολάου - Κονδύλι",
+            "Παραλία Αρβανιτιά"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-kalymnos",
+          "before": [
+            "Παραλία Παλιόνησος",
+            "Παραλία Γέφυρα",
+            "Παραλία Θέρμα"
+          ],
+          "after": [
+            "Παραλία Γέφυρα",
+            "Παραλία Παλιόνησος",
+            "Παραλία Θέρμα"
+          ],
+          "orderOnly": true
+        },
+        {
+          "region": "south-aegean-karpathos",
+          "before": [
+            "Δαματριά",
+            "Μικρή Αμμοοπή",
+            "Μακρύγιαλος"
+          ],
+          "after": [
+            "Δαματριά",
+            "Μικρή Αμμοοπή",
+            "Αχάτα"
           ],
           "orderOnly": false
         },
@@ -601,323 +1745,77 @@
           "before": [
             "Απόκρουσης",
             "Σκινάρι",
-            "Σι Μου Σι"
+            "Άγιος Σώστης"
           ],
           "after": [
             "Απόκρουσης",
             "Σκινάρι",
-            "Γαϊδουρόμαντρα"
+            "Σι Μου Σι"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "south-aegean-leros",
+          "before": [
+            "Δύο Λισκάρια",
+            "Παραλία Λακκίου",
+            "Βρομόλιθος"
+          ],
+          "after": [
+            "Δύο Λισκάρια",
+            "Παραλία Λακκίου",
+            "Παραλία Βρωμόλιθος"
           ],
           "orderOnly": false
         }
       ],
-      "calmerMedianM": 0.09,
-      "calmerMaxM": 0.33,
-      "rougherMedianM": 0.06
-    },
-    "ramp-050": {
-      "label": "ράμπα −1,00 → −0,50 γραμμική",
-      "monotoneByDesign": false,
-      "beachesMeasured": 2854,
-      "spokeBefore": 647,
-      "spokeAfter": 938,
-      "calmer": 283,
-      "calmerExamples": [
-        {
-          "region": "attica-aegina",
-          "name": "Αύρα",
-          "onshore": -0.737,
-          "beforeM": 0.52,
-          "afterM": 0.27
-        },
-        {
-          "region": "attica-aegina",
-          "name": "Παραλία Μαραθώνα Α",
-          "onshore": -0.721,
-          "beforeM": 0.52,
-          "afterM": 0.29
-        },
-        {
-          "region": "attica-aegina",
-          "name": "Παραλία Μαραθώνα Β",
-          "onshore": -0.578,
-          "beforeM": 0.52,
-          "afterM": 0.44
-        },
-        {
-          "region": "attica-aegina",
-          "name": "Παραλία Σαρπά",
-          "onshore": -0.54,
-          "beforeM": 0.56,
-          "afterM": 0.52
-        },
-        {
-          "region": "attica-aegina",
-          "name": "Αίγινα Μαραθώνας",
-          "onshore": -0.625,
-          "beforeM": 0.52,
-          "afterM": 0.4
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Παραλία Έδεμ",
-          "onshore": -0.764,
-          "beforeM": 0.35,
-          "afterM": 0.17
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Παραλία Γλυφάδας Ακτή Β",
-          "onshore": -0.643,
-          "beforeM": 0.35,
-          "afterM": 0.25
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Β' πλαζ Βούλας",
-          "onshore": -0.628,
-          "beforeM": 0.46,
-          "afterM": 0.35
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Astir Beach / Αστέρας Βουλιαγμένης",
-          "onshore": -0.517,
-          "beforeM": 0.46,
-          "afterM": 0.45
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Λιμανάκια Βουλιαγμένης",
-          "onshore": -0.799,
-          "beforeM": 0.68,
-          "afterM": 0.27
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Άλιμος Λουτρά",
-          "onshore": -0.521,
-          "beforeM": 0.35,
-          "afterM": 0.34
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Παραλία Αγίου Σπυρίδωνα",
-          "onshore": -0.643,
-          "beforeM": 1.96,
-          "afterM": 1.4
-        }
-      ],
-      "rougher": 138,
-      "comfortSofter": 0,
-      "comfortStricter": 0,
-      "comfortMoves": {},
-      "softerExamples": [],
-      "podiumRegionsChanged": 19,
-      "podiumOrderOnly": 6,
-      "podiumExamples": [
-        {
-          "region": "attica-spetses",
-          "before": [
-            "Ξυλοκέριζα",
-            "Άγιοι Ανάργυροι",
-            "Αγία Παρασκευή"
-          ],
-          "after": [
-            "Άγιοι Ανάργυροι",
-            "Αγία Παρασκευή",
-            "Ξυλοκέριζα"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "crete-crete-chania",
-          "before": [
-            "Σούγια",
-            "Ορθή Άμμος",
-            "Παραλία Ψηλός Βόλακας"
-          ],
-          "after": [
-            "Μαράθι",
-            "Σούγια",
-            "Παραλία Φραγκοκάστελλου"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "crete-crete-heraklion",
-          "before": [
-            "Τρυπητή",
-            "Ληστής",
-            "Σκούρος"
-          ],
-          "after": [
-            "Τρυπητή",
-            "Αγιοφάραγγο",
-            "Ληστής"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "crete-crete-rethymno",
-          "before": [
-            "Δαμνόνι",
-            "Σούδα",
-            "Πρέβελη"
-          ],
-          "after": [
-            "Τριόπετρα",
-            "Δαμνόνι",
-            "Σούδα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "east-macedonia-and-thrace-evros-mainland",
-          "before": [
-            "Παραλία Νέας Χιλής",
-            "Άγιος Γεώργιος Μάκρης"
-          ],
-          "after": [
-            "Άγιος Γεώργιος Μάκρης",
-            "Παραλία Νέας Χιλής"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "before": [
-            "Νότος",
-            "Ρωσογκρεμός",
-            "Ψιλή Άμμος"
-          ],
-          "after": [
-            "Νότος",
-            "Ρωσογκρεμός",
-            "Λιμενάρια"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "epirus-thesprotia-mainland",
-          "before": [
-            "Αγία Παρασκευή",
-            "Καραβοστάσι",
-            "Αρίλλα"
-          ],
-          "after": [
-            "Αγία Παρασκευή",
-            "Μέγα Άμμος",
-            "Καραβοστάσι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "ionian-islands-lefkada",
-          "before": [
-            "Αμμούσα",
-            "Πευκούλια",
-            "Κάθισμα"
-          ],
-          "after": [
-            "Αμμούσα",
-            "Αφτέλι",
-            "Πευκούλια"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-ikaria",
-          "before": [
-            "Αρμενιστής",
-            "Αγάλιασμα",
-            "Συρτικό"
-          ],
-          "after": [
-            "Αρμενιστής",
-            "Σευχέλες",
-            "Αγάλιασμα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-lemnos",
-          "before": [
-            "Εβγάτης",
-            "Πλατύ",
-            "Κάσπακας"
-          ],
-          "after": [
-            "Ρηχά νερά",
-            "Εβγάτης",
-            "Πλατύ"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "peloponnese-argolida-mainland",
-          "before": [
-            "Παραλία Αγίου Νικολάου - Κονδύλι",
-            "Παραλία Αρβανιτιά",
-            "Παραλία Τολού - Ψιλή Άμμος"
-          ],
-          "after": [
-            "Παραλία Τολού - Ψιλή Άμμος",
-            "Παραλία Αγίου Νικολάου - Κονδύλι",
-            "Παραλία Αρβανιτιά"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "south-aegean-folegandros",
-          "before": [
-            "Άγιος Νικόλαος",
-            "Κοχλίδια",
-            "Γάλιφος"
-          ],
-          "after": [
-            "Άγιος Νικόλαος",
-            "Κοχλίδια",
-            "Κάτεργο"
-          ],
-          "orderOnly": false
-        }
-      ],
-      "calmerMedianM": 0.13,
-      "calmerMaxM": 0.56,
-      "rougherMedianM": 0.03
+      "calmerMedianM": 0.27,
+      "calmerMaxM": 1.72,
+      "rougherMedianM": 0
     }
   },
   "neighbours": {
     "switch": {
-      "pairs": 2378,
-      "contradictions": 781,
-      "wideGaps": 52,
+      "pairs": 2259,
+      "contradictions": 836,
+      "wideGaps": 421,
       "medianGapM": 0
     },
     "ramp-080": {
-      "pairs": 2378,
-      "contradictions": 784,
-      "wideGaps": 52,
-      "medianGapM": 0.08
+      "pairs": 2259,
+      "contradictions": 835,
+      "wideGaps": 429,
+      "medianGapM": 0.14
     },
     "ramp-080-soft": {
-      "pairs": 2378,
-      "contradictions": 784,
-      "wideGaps": 50,
-      "medianGapM": 0.01
+      "pairs": 2259,
+      "contradictions": 835,
+      "wideGaps": 416,
+      "medianGapM": 0.09
     },
     "ramp-065": {
-      "pairs": 2378,
-      "contradictions": 439,
-      "wideGaps": 34,
-      "medianGapM": 0.05
+      "pairs": 2259,
+      "contradictions": 476,
+      "wideGaps": 317,
+      "medianGapM": 0.11
     },
     "ramp-050": {
-      "pairs": 2378,
-      "contradictions": 103,
-      "wideGaps": 29,
-      "medianGapM": 0.02
+      "pairs": 2259,
+      "contradictions": 222,
+      "wideGaps": 239,
+      "medianGapM": 0.07
+    },
+    "plateau-050": {
+      "pairs": 2259,
+      "contradictions": 222,
+      "wideGaps": 202,
+      "medianGapM": 0
+    },
+    "plateau-065": {
+      "pairs": 2259,
+      "contradictions": 476,
+      "wideGaps": 309,
+      "medianGapM": 0
     }
   }
 }

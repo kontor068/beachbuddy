@@ -2368,7 +2368,9 @@ export const calculateBeachScore = (
    *
    * This is a narrower claim than the blanket 0,5 damping the shore branch already used: that one
    * applies to every 'protected' shore, this one only speaks where the ray-caster measured a
-   * land-blocked, essentially fetch-free sector, the wind is blowing OFF the land, the geometry is
+   * land-blocked, essentially fetch-free sector, the wind has an OFFSHORE component (fully, below
+   * onshore −0,80, where the estimate is exactly what it always was; blended with the open-water
+   * reading between −0,80 and −0,50, where it fades to silence — see utils/shoreWave), the geometry is
    * high-confidence with no suspect pin, and there is NO swell (ground swell wraps into shores the
    * wind cannot reach — the one real false-calm route, closed by the gate itself). Where it does
    * speak it is the app's own SMB height over the fetch that was actually measured, capped at the
