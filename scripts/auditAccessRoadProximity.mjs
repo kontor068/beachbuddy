@@ -122,6 +122,11 @@ const queryOverpass = async (lat, lon) => {
       await sleep(2000 * (attempt + 1));
     }
   }
+  // Every attempt was rate-limited (429/504) and took the `continue` path, so the loop fell
+  // through without returning. Before this, that returned `undefined`, the caller cached it and
+  // died on `osm.paved` with a TypeError that looked like a data bug — after spending the whole
+  // run's Overpass budget. Same class as the auditAmenitiesOsm ENOENT trap (14/08/2026).
+  throw new Error(`overpass rate-limited 5/5 attempts at ${lat},${lon} — rerun later (cache keeps finished beaches)`);
 };
 
 // --- run -------------------------------------------------------------------------------------
