@@ -47660,6 +47660,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-07-23",
               "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 258.9,
+              "faces": [
+                "West"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         },
@@ -47730,6 +47739,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-08-16",
               "method": "osm-polygon-nominatim-v1"
+            },
+            "orientation": {
+              "degrees": 53.1,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }
@@ -60812,6 +60830,15 @@
                 "https://www.openstreetmap.org/node/2419956711"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "orientation": {
+              "degrees": 92,
+              "faces": [
+                "East"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         },
@@ -60857,6 +60884,15 @@
               "mode": "coordinates",
               "checkedAt": "2026-07-23",
               "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 51.6,
+              "faces": [
+                "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         },
@@ -60919,6 +60955,221 @@
                 "https://www.openstreetmap.org/node/12271752330"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "orientation": {
+              "degrees": 167.3,
+              "faces": [
+                "South"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3187,
+          "name": "Λιμανάκι Μακρύ Γιαλού",
+          "lat": 35.03796,
+          "lon": 25.97377,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Μέσα στον οικισμό, ακριβώς βόρεια από το ψαρολίμανο του Μακρύ Γιαλού. Άσφαλτος (ΕΠ28) και λίγα μέτρα με τα πόδια από τον παραλιακό πεζόδρομο· στάθμευση στο χωριό, δύσκολη τον Ιούλιο-Αύγουστο κατά τους οδηγούς."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "λεπτή άμμος"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ομπρέλες",
+              "ξαπλώστρες",
+              "ταβέρνες κοντά",
+              "καφέ κοντά"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_makrigialos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Limanaki",
+              "Limanaki Beach",
+              "Limanaki Makry Gialos",
+              "Katovigli",
+              "Κατωβίγλι",
+              "Λιμανάκι",
+              "Παραλία Λιμανάκι"
+            ],
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "Ρηχά νερά με ήπια κλίση βυθού κατά τους οδηγούς (Greeka, CreteUnlocked)· δεν μετρήθηκε επιτόπου."
+            },
+            "sourceUrls": [
+              "https://www.cretanbeaches.com/en/sea-tourism/east-crete-beaches-lassithi/makrigialos-beach",
+              "https://www.greeka.com/crete/lassithi/beaches/limanaki/",
+              "https://www.creteunlocked.com/guide/limanaki-beach"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-08-16): Η μικρή αμμουδιά ακριβώς βόρεια από το λιμανάκι του Μακρύ Γιαλού — τοπικά «Κατωβίγλι». Το OSM ΔΕΝ έχει όνομα στο πολύγωνο, γι' αυτό δεν εμφανίστηκε σε κανέναν έλεγχο κάλυψης. Ταυτότητα: OSM way/264689663 (natural=beach, ανώνυμο, λωρίδα ~130 m) — δίπλα στη μαρίνα OSM way/371864652 «Λιμανάκι Μακρύ-Γιαλού / Marina of Makrygialos» (110 m), καφέ «Limanaki» (100 m), στάση «Limanaki, Makry-Gialos» (100 m). Το cretanbeaches την περιγράφει ως «Katovigli/Limanaki (north of the port)». Πινέζα: μεσαίο σημείο της θαλάσσιας πλευράς του πολυγώνου· ακτογραμμή OSM στα 0 m. Γεωμετρία: ανοιχτό νερό μόνο 60°-150°, μέγιστο ανάπτυγμα στις 130° — κλειστός όρμος πίσω από τον μόλο. Οργάνωση/παροχές από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-16",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 134.4,
+              "faces": [
+                "Southeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3188,
+          "name": "Καλαμοκανιάς",
+          "lat": 35.03555,
+          "lon": 25.97027,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Δυτικά του οικισμού, δίπλα στα ερείπια της Ρωμαϊκής έπαυλης του Μακρύ Γιαλού. Δρόμοι του χωριού ως την ακτή· στάθμευση δρόμου."
+            },
+            "terrain": {
+              "types": [
+                "coarse_sand"
+              ],
+              "label": "χοντρή άμμος"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [
+              "εστιατόρια κοντά",
+              "ελεύθερη παραλία χωρίς πλήρη οργάνωση"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_makrigialos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Kalamokanias",
+              "Kalamokania",
+              "Παραλία Καλαμοκανιάς"
+            ],
+            "sourceUrls": [
+              "https://www.cretanbeaches.com/en/sea-tourism/east-crete-beaches-lassithi/makrigialos-beach"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-08-16): Η παραλία δυτικά του οικισμού του Μακρύ Γιαλού, «ήρεμος κόλπος» με χοντρή άμμο κατά το cretanbeaches. Ταυτότητα: OSM way/279354012 (natural=beach, ανώνυμο, ~340 m) — «Roman Villa of Makry-Gialos» στα 177 m, εστιατόριο «George's» στα 58 m, κέντρο χωριού στα 264 m. Πινέζα: μεσαίο σημείο της θαλάσσιας πλευράς του πολυγώνου· ακτογραμμή OSM στα ~60 m (ο χάρτης ξηράς είναι πιο χοντρικός εδώ). Γεωμετρία: ανοιχτό νερό 120°-270°, μέγιστο ανάπτυγμα στις 130°. Οργάνωση: ΔΕΝ αναφέρεται από καμία πηγή, οπότε δηλώνεται μη οργανωμένη — δεν έχει επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-16",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 183,
+              "faces": [
+                "South"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3189,
+          "name": "Μακρύς Γιαλός",
+          "lat": 35.03904,
+          "lon": 25.98064,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Παραλιακός ασφαλτόδρομος μέσα στον οικισμό, με στάσεις λεωφορείου (Μακρύγιαλος, Ανάληψη) πάνω στην παραλία. Στάθμευση κατά μήκος του δρόμου, γεμίζει τον Ιούλιο-Αύγουστο."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "λεπτή άμμος"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "ξαπλώστρες",
+              "ομπρέλες",
+              "ντους",
+              "θαλάσσια σπορ",
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "parking κοντά",
+              "φυσική σκιά σε σημεία"
+            ],
+            "confidence": "low",
+            "language": "el",
+            "batch": "hidden_makrigialos_2026_08_16",
+            "needsVerification": true,
+            "activities": {
+              "surfing": false
+            },
+            "aliases": [
+              "Makrys Gialos",
+              "Makrigialos",
+              "Makry Gialos",
+              "Makrygialos Beach",
+              "Ανάληψη",
+              "Analipsi",
+              "Χάνι",
+              "Μεγάλη Παραλία",
+              "Παραλία Μακρύγιαλου"
+            ],
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "«Πολύ ρηχά» με ήπια κλίση βυθού κατά cretanbeaches και crete-today· δεν μετρήθηκε επιτόπου."
+            },
+            "sourceUrls": [
+              "https://www.cretanbeaches.com/en/sea-tourism/east-crete-beaches-lassithi/makrigialos-beach",
+              "https://www.crete-today.com/makrigialos-beach/",
+              "https://el.wikipedia.org/wiki/Μακρυγιαλός_Λασιθίου"
+            ],
+            "sourceNotes": [
+              "Hidden-beach discovery (2026-08-16): Η ΚΥΡΙΑ παραλία του Μακρύ Γιαλού — τοπικά «Μεγάλη Παραλία», «Χάνι» ή «Ανάληψη» — έλειπε εντελώς, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει εκεί. Το OSM ΔΕΝ έχει όνομα στο πολύγωνο, γι' αυτό ήταν αόρατη και στα δύο pipelines. Ταυτότητα: OSM way/279354013 (natural=beach, ανώνυμο, ~800 m κατά μήκος της ακτής) — οικισμός Ανάληψη στα 196 m, στάσεις «Μακρυγίαλός» και «Analipsi» πάνω στην παραλία. Πινέζα: μεσαίο σημείο της θαλάσσιας πλευράς του πολυγώνου· ακτογραμμή OSM στα 5 m. Γεωμετρία: ανοιχτό νερό 100°-270°, μέγιστο ανάπτυγμα στις 140°. Λεπτή άμμος, γαλάζια σημαία, αλμυρίκια για σκιά, ομπρέλες/ξαπλώστρες/ντους/θαλάσσια σπορ κατά τους οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-16",
+              "method": "guide-discovery-v1"
+            },
+            "orientation": {
+              "degrees": 182.3,
+              "faces": [
+                "South"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
         }

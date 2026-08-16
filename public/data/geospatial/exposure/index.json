@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-16T16:30:24.889Z",
+  "generatedAt": "2026-08-16T21:39:12.392Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2869,
-    "generatedProfiles": 2869,
+    "beachCount": 2872,
+    "generatedProfiles": 2872,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -1104,47 +1104,47 @@
       },
       "crete-crete-lasithi": {
         "regionName": "Lasithi",
-        "beachCount": 63,
-        "generatedProfiles": 63,
+        "beachCount": 66,
+        "generatedProfiles": 66,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 37,
+            "protected": 40,
             "partial": 8,
             "exposed": 18
           },
           "NE": {
-            "protected": 18,
+            "protected": 21,
             "partial": 14,
             "exposed": 31
           },
           "E": {
-            "protected": 17,
-            "partial": 16,
+            "protected": 19,
+            "partial": 17,
             "exposed": 30
           },
           "SE": {
             "protected": 18,
             "partial": 17,
-            "exposed": 28
+            "exposed": 31
           },
           "S": {
             "protected": 31,
             "partial": 8,
-            "exposed": 24
+            "exposed": 27
           },
           "SW": {
-            "protected": 46,
+            "protected": 47,
             "partial": 6,
-            "exposed": 11
+            "exposed": 13
           },
           "W": {
-            "protected": 47,
-            "partial": 11,
+            "protected": 49,
+            "partial": 12,
             "exposed": 5
           },
           "NW": {
-            "protected": 46,
+            "protected": 49,
             "partial": 7,
             "exposed": 10
           }
