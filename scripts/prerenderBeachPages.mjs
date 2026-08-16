@@ -1785,6 +1785,12 @@ const INTENT_NAV_LABELS = {
   organized:  { en: 'Organized',       gr: 'Οργανωμένες',       de: 'Organisiert',      fr: 'Aménagées',          it: 'Attrezzate' },
   secluded:   { en: 'Secluded',        gr: 'Απομονωμένες',      de: 'Abgelegen',        fr: 'Isolées',            it: 'Isolate' },
   sunset:     { en: 'Sunset',          gr: 'Για ηλιοβασίλεμα',  de: 'Sonnenuntergang',  fr: 'Coucher de soleil',  it: 'Tramonto' },
+  // Added 16/08/2026 WITH the two new guides. Adding an intent without adding it
+  // here does not fail anything — `intentNavLabel` falls back to the topic KEY,
+  // so every region and guide page silently linked the new articles as "sandy"
+  // and "beachbar". Caught by reading the built HTML, not by a gate.
+  sandy:      { en: 'Sandy',           gr: 'Με άμμο',           de: 'Sandstrände',      fr: 'De sable',           it: 'Di sabbia' },
+  beachbar:   { en: 'Beach bars',      gr: 'Με beach bar',      de: 'Mit Beachbar',     fr: 'Avec bar',           it: 'Con beach bar' },
 };
 
 // The meltemi is an AEGEAN wind. Labelling the Ionian / Ambracian / Thermaic
@@ -1802,6 +1808,22 @@ const shelteredNavLabel = (regionId, language) => {
   if (language === 'it') return `Opzioni ${word}`;
   return `${word.charAt(0).toUpperCase()}${word.slice(1)} options`;
 };
+
+// Every intent except `sheltered` (whose label is built per-region) MUST have an
+// entry in INTENT_NAV_LABELS. Adding a guide topic and forgetting the label used
+// to fall through to the topic KEY, which shipped "sandy" and "beachbar" as the
+// visible link text on every region and beach page on 16/08/2026. A missing label
+// is a build error now, not a silently ugly link: this runs once per build and
+// costs nothing, and there is no correct page to publish without it.
+for (const intent of islandIntents) {
+  if (intent.key === 'sheltered') continue;
+  if (!INTENT_NAV_LABELS[intent.key]) {
+    throw new Error(
+      `Guide topic "${intent.key}" has no INTENT_NAV_LABELS entry. Every region and beach page ` +
+        `would link it with the raw key as its visible text. Add all five languages.`
+    );
+  }
+}
 
 const intentNavLabel = (intentKey, regionId, language) => {
   if (intentKey === 'sheltered') return shelteredNavLabel(regionId, language);
