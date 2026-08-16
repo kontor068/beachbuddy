@@ -512,6 +512,14 @@ const PREFIX = '/api/forecast/';
 const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800, sst: 43200 };
 const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
+/** The route's own s-maxage, in seconds. One definition, used by the header and by the store. */
+const routeMaxAgeS = (providerKey) => (
+  providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
+    : providerKey === 'open-meteo-marine-sst' ? CDN_MAX_AGE_S.sst
+      : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
+        : CDN_MAX_AGE_S.weather
+);
+
 // `durable` — the single most expensive omission this file has had (found 14/08/2026).
 //
 // Without it, "the CDN caches it" was only ever true PER EDGE NODE. Netlify's default cache
@@ -538,11 +546,8 @@ const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 //
 // Deliberately NOT applied to the rescue path below: a last-good answer served during an
 // upstream failure must stay local and short-lived, never promoted into the shared cache.
-const cdnCacheControl = (providerKey) => {
-  const maxAge = providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
-    : providerKey === 'open-meteo-marine-sst' ? CDN_MAX_AGE_S.sst
-    : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
-    : CDN_MAX_AGE_S.weather;
+const cdnCacheControl = (providerKey, remainingS) => {
+  const maxAge = Math.max(0, Math.round(remainingS ?? routeMaxAgeS(providerKey)));
   return `public, durable, s-maxage=${maxAge}, stale-while-revalidate=${CDN_STALE_WHILE_REVALIDATE_S}`;
 };
 
@@ -691,13 +696,67 @@ export const handler = async (event) => {
 
   const fallbackKey = fallbackKeyFor(target);
 
+  // ── OUR OWN CACHE, ahead of the provider — 14/08/2026 ────────────────────────
+  //
+  // Reaching this line means the CDN missed. Until today that meant "buy it again", and the
+  // CDN missing is not the same event as the data being old. It misses when a deploy wipes
+  // the edge, when a different edge node serves the request, when the durable layer decides
+  // an object is stale for its own reasons — none of which has anything to do with whether
+  // the Aegean has changed.
+  //
+  // This store already held the answer: `rememberLastGood` has been writing every successful
+  // response for weeks, and `rescueOr` below re-serves them when the provider refuses us. It
+  // was only ever consulted on FAILURE. Consulting it on a plain miss too is the whole fix,
+  // and it is the one that depends on nothing outside this function — not a Netlify cache
+  // directive, not a dashboard setting, not which continent the visitor was routed to.
+  //
+  // The invariant becomes purely arithmetic: for one URL, AT MOST ONE upstream call per
+  // s-maxage window. Not per window per node, not per window per deploy. Per window.
+  //
+  // THREE RULES KEEP IT HONEST, and all three are load-bearing:
+  //
+  //   1. Only served while YOUNGER than the same s-maxage the CDN would have honoured. Older
+  //      than that and we go upstream exactly as before. This adds no staleness the previous
+  //      behaviour did not already permit.
+  //   2. It travels with its real age (X-Forecast-Age-Seconds). weatherService back-dates
+  //      `fetchedAt` from that header, so the freshness stamp and the 12 h hard cutoff keep
+  //      working on the true age rather than on when the bytes arrived.
+  //   3. The CDN is told the REMAINING life, not a fresh full window. A 40-minute-old weather
+  //      answer is cached for 20 more minutes, not another 60 — so the worst-case age a
+  //      visitor can see is unchanged from yesterday (s-maxage + swr), never compounded.
+  //
+  // NOT METERED, because no call is bought. That is the point of the change, and it is also
+  // what will make it visible: the counter should fall without the site changing at all.
+  const reusable = await readLastGood(fallbackKey);
+  if (reusable && reusable.ageSeconds < routeMaxAgeS(providerKey)) {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Netlify-CDN-Cache-Control': cdnCacheControl(
+          providerKey,
+          routeMaxAgeS(providerKey) - reusable.ageSeconds,
+        ),
+        'Netlify-Cache-ID': `forecast-${providerKey}`,
+        'X-Forecast-Age-Seconds': String(reusable.ageSeconds),
+        ...cors,
+      },
+      body: reusable.body,
+    };
+  }
+
   /**
    * Last resort before an error page: re-serve the freshest answer we still hold for
    * this exact URL, honestly aged. See the FALLBACK_STORE block above for why the age
    * header and the short CDN TTL are both mandatory.
    */
   const rescueOr = async (errorResponse) => {
-    const rescued = await readLastGood(fallbackKey);
+    // `reusable` was already read above. It is null or too old to serve normally, but the
+    // rescue window is 12 h rather than one s-maxage, so a too-old-to-reuse answer is still a
+    // perfectly good rescue — and re-reading the same blob to learn that would be waste on the
+    // one path where we are already having a bad time.
+    const rescued = reusable || await readLastGood(fallbackKey);
     if (!rescued) return errorResponse;
     return {
       statusCode: 200,
