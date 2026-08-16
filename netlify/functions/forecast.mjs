@@ -73,7 +73,34 @@ const UPSTREAMS = {
 // `apikey` is NOT in ALLOWED_PARAMS, so buildSafeQuery() has already dropped anything a
 // caller tried to send under that name — same discipline as the `models` pin. The key is
 // appended after the safe query is built, so it can neither be overridden nor echoed.
-const apiKey = () => process.env.OPEN_METEO_API_KEY || '';
+//
+// ── Development deploys spend the FREE tier, not the package — 14/08/2026 ─────
+//
+// The free tier's ~10,000 calls/day sat completely unused while every preview and branch
+// deploy — which is testing, not the product — billed the paid plan. `vite dev` and the
+// analysis scripts already talked to the free hosts; previews were the one development
+// surface that did not, because netlify.toml points them at this proxy exactly like
+// production (deliberately: a preview must exercise the real path).
+//
+// OPEN_METEO_USE_FREE_TIER is set per deploy context in netlify.toml — on deploy-preview and
+// branch-deploy, never on production. A flag we set ourselves rather than Netlify's own
+// CONTEXT variable, because this one is guaranteed present at function runtime and says what
+// it means at the point someone reads it.
+//
+// WHERE THE LINE IS, and it is not arbitrary: the free tier is licensed for non-commercial
+// use. A preview of a branch is development. calmbeach.gr is the commercial product, and
+// routing ITS traffic here — including our own browsing of it — would be the violation the
+// subscription was bought to end. Production must never set this flag.
+//
+// It also makes the cheaper habit the easy one: testing on a preview costs neither the
+// package nor a production deploy's Netlify credits.
+//
+// NOTE: previews and branch deploys are currently switched OFF at the Netlify dashboard and
+// cancelled by the `ignore` command in netlify.toml, so this is armed rather than active.
+// Turning them back on is now the cheap option instead of the expensive one.
+const usingFreeTier = () => process.env.OPEN_METEO_USE_FREE_TIER === '1';
+
+const apiKey = () => (usingFreeTier() ? '' : process.env.OPEN_METEO_API_KEY || '');
 
 // A rejected key looks exactly like any other upstream failure from the outside: we'd
 // quietly serve the 12 h fallback and then blanks, with nothing in the alarms, because the
@@ -258,6 +285,10 @@ const weightPerPoint = (query) => {
 const METER_CAS_ATTEMPTS = 4;
 
 const meterUpstream = async ({ rateLimited, points = 1 }) => {
+  // A free-tier call does not touch the package, so counting it would inflate the one number
+  // the monthly alarm is compared against. Blobs are shared across deploy contexts (that is how
+  // preview traffic once polluted this counter), so the skip has to be here rather than assumed.
+  if (usingFreeTier()) return;
   try {
     const store = getStore(CAPACITY_STORE);
     const th = capacityThresholds();

@@ -263,6 +263,12 @@
 # preview keeps exercising the same path production now uses.
 [context.deploy-preview.environment]
   VITE_FORECAST_PROXY_BASE = "/api/forecast"
+  # Spend the FREE Open-Meteo tier here, not the paid package (14/08/2026). Its ~10,000
+  # calls/day were sitting unused while testing billed the plan that exists for visitors.
+  # Read by netlify/functions/forecast.mjs (`usingFreeTier`), which then omits the API key
+  # and skips the capacity meter. NEVER set this under [context.production.environment]:
+  # the free tier is licensed for non-commercial use, and calmbeach.gr is the product.
+  OPEN_METEO_USE_FREE_TIER = "1"
   # Non-production: disables GA (services/analyticsService.ts gate) and triggers the
   # noindex/robots/ribbon guards (scripts/applyDeployContextGuards.mjs) at build end.
   VITE_APP_ENV = "preview"
@@ -273,6 +279,8 @@
 # See docs/DEV-ENVIRONMENT.md.
 [context.branch-deploy.environment]
   VITE_FORECAST_PROXY_BASE = "/api/forecast"
+  # Same as deploy previews: development spends the free tier, never the package.
+  OPEN_METEO_USE_FREE_TIER = "1"
   VITE_APP_ENV = "staging"
 
 [build.environment]
