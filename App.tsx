@@ -73,7 +73,7 @@ import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast, applyBeachWindToDailyForecast } from './utils/weatherUtils';
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
-import { recordPageview } from './services/pageviewBeacon';
+import { recordPageview, recordSearch } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachGeoIndex, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData, type BeachSearchIndexBeachEntry } from './services/beachDataLoader';
 import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fetchMarineForecastDataBatch, fetchWeatherData, forecastPointKey, mergeMarineForecastData, type MarineForecastItem } from './services/weatherService';
 import { buildBeachForecastClusters, type BeachForecastCluster } from './utils/beachForecastClusters';
@@ -8165,6 +8165,16 @@ export const App: React.FC = () => {
       matched_beach_id: globalBeachMatch?.beachId,
       matched_beach_region_id: globalBeachMatch?.island.id,
     });
+    // The words themselves, first-party — GA4 above only ever gets the LENGTH, and
+    // only from the consenting half of visitors. This is the one place that knows
+    // both what was typed and whether it hit anything, so it is the only place the
+    // "searched and found nothing" signal can honestly come from.
+    //
+    // It belongs on SUBMIT, not on the results list. Recording it from the list was
+    // tried first and broke two browser checks: the list re-renders constantly, so
+    // the beacon fired mid-measurement and tore down the page being measured. A
+    // search is an intent the visitor expresses once — count it once, here.
+    recordSearch(trimmedQuery, regionMatch || globalBeachMatch ? 1 : 0);
     if (regionMatch) {
       // A region search is navigation, not a beach-name filter. Leaving "Naxos"
       // in the query makes the next region render as an active name search and

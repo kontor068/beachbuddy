@@ -253,3 +253,65 @@ export const recordAction = (event: string): void => {
 
   send(`${HIT_ENDPOINT}?a=${action}&s=${encodeURIComponent(sectionFromPath())}`);
 };
+
+// ── WHAT PEOPLE TYPE INTO OUR OWN SEARCH BOX ────────────────────────────────
+// We already counted THAT a search happened ('search' action) but never WHAT was
+// typed, so the only demand data we had was Google Search Console — which shows
+// what people searched for BEFORE arriving, never what they failed to find once
+// here. 8.202 unique visitors a month use this box and we kept zero words of it.
+//
+// PRIVACY — this is free text a human typed, so it is treated as the one input on
+// this site that could accidentally carry personal data. Three rules:
+//   1. It is sanitised HERE, on the device, before anything leaves it. Whatever
+//      this function rejects is never transmitted, so it cannot leak server-side.
+//   2. Anything shaped like contact details is dropped outright, not masked: an
+//      '@', a URL, or a run of 6+ digits (phone/card/id) fails the whole term.
+//   3. Only letters, spaces and hyphens survive, capped at 48 characters — enough
+//      for "παραλιες με αμμο κοντα στο ναυπλιο", far too little for a sentence
+//      about a person.
+// The server stores the term with NO visitor identity attached beyond the same
+// irreversible daily hash every other key already uses (see pageview.mjs).
+const SEARCH_MAX = 48;
+const CONTACT_SHAPED = /@|https?:|www\.|\d{6,}/;
+// Greek + Latin letters, spaces and hyphens. Digits survive inside short words
+// ("top 10") but a long digit run was already rejected above.
+const SEARCH_ALLOWED = /[^\p{L}\p{N} '\-]/gu;
+
+const cleanSearchTerm = (raw: string): string => {
+  const value = String(raw || '').trim();
+  if (!value || CONTACT_SHAPED.test(value)) return '';
+  const cleaned = value
+    .toLocaleLowerCase()
+    .replace(SEARCH_ALLOWED, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, SEARCH_MAX)
+    .trim();
+  // One character is a keystroke, not an intent; and a term that is now only
+  // punctuation-turned-spaces carries nothing.
+  return cleaned.length >= 2 ? cleaned : '';
+};
+
+// The last term we reported, so a debounced search box typing "naxos" one letter
+// at a time reports once, not five times — and never re-reports on re-render.
+let lastSearchTerm = '';
+
+/**
+ * Record what a visitor searched for and whether we had anything to show.
+ * `results` is stored only as found/not-found — never the exact number, which
+ * would add nothing and start to look like a fingerprint.
+ * No-op off production, for opted-out devices, and for anything the sanitiser
+ * rejects.
+ */
+export const recordSearch = (term: string, results: number): void => {
+  if (!canCount()) return;
+  const clean = cleanSearchTerm(term);
+  if (!clean || clean === lastSearchTerm) return;
+  lastSearchTerm = clean;
+
+  send(
+    `${HIT_ENDPOINT}?a=search&q=${encodeURIComponent(clean)}` +
+      `&qr=${results > 0 ? '1' : '0'}` +
+      `&s=${encodeURIComponent(sectionFromPath())}`
+  );
+};

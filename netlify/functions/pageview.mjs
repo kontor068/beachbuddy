@@ -258,6 +258,40 @@ const keySafeCity = (city) =>
     .replace(/[^A-Za-z0-9_.-]/g, '')
     .slice(0, 28);
 
+/**
+ * A search term safe to embed in a blob key, and safe to keep at all.
+ *
+ * This is the only free text a visitor can put into our storage, so it gets the
+ * strictest treatment on the site. The client already sanitises it (services/
+ * pageviewBeacon.ts) — this repeats the work rather than trusting it, because a
+ * beacon URL can be crafted by anyone who can reach the endpoint.
+ *
+ * Rejected outright (not masked — the whole term is dropped):
+ *   • an '@', a URL, or a run of 6+ digits — contact-details shaped
+ *   • anything under 2 characters after cleaning
+ * Kept: Greek/Latin letters, digits, spaces (as '_') and hyphens, max 48 chars.
+ *
+ * Greek is preserved deliberately — stripping accents like keySafeCity does would
+ * merge nothing useful here, and folding Greek to Latin would make the whole
+ * point of the feature (reading what Greek visitors type) unreadable. Blob keys
+ * are UTF-8, so the letters survive as themselves.
+ */
+const searchTerm = (raw) => {
+  const value = String(raw || '').trim();
+  if (!value || /@|https?:|www\.|\d{6,}/.test(value)) return '';
+  const cleaned = value
+    .toLocaleLowerCase()
+    // '/' and '~' would break the key structure; everything outside the allow
+    // list becomes a space and then an underscore, so no separator can be forged.
+    .replace(/[^\p{L}\p{N} '-]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 48)
+    .trim()
+    .replace(/ /g, '_');
+  return cleaned.length >= 2 ? cleaned : '';
+};
+
 /** Viewport width bucket — how many visitors are on a small phone, really. */
 const viewportBucket = (raw) => {
   const w = Number(raw);
@@ -442,6 +476,34 @@ export const handler = async (event) => {
         );
       } catch {
         // ditto
+      }
+    }
+
+    // (3b) SEARCH TERMS. What visitors type into OUR search box — the one demand
+    //      signal Search Console cannot give us, because GSC only ever shows what
+    //      people searched BEFORE they arrived, never what they failed to find
+    //      once they were here.
+    //
+    //      Everything lives in the key, like `geo/` above, so reading a day's
+    //      searches is one list() and zero blob reads. The trailing hash is NOT
+    //      there to identify anyone — it exists so two different people searching
+    //      "naxos" on the same day are two keys instead of one overwrite, which is
+    //      what makes the count race-free. It is the same irreversible,
+    //      daily-rotating hash used everywhere else, so it cannot be reversed and
+    //      does not survive to tomorrow.
+    //
+    //      The term arrives already sanitised by the client (services/
+    //      pageviewBeacon.ts). It is re-checked here anyway — the client is a
+    //      request like any other and this is free-text input, so it never gets
+    //      trusted just because our own code usually sends it.
+    if (action === 'search' && params.q) {
+      const term = searchTerm(params.q);
+      if (term) {
+        try {
+          await store.setJSON(`q/${dayKey}/${term}~${params.qr === '0' ? '0' : '1'}~${hash}`, 1);
+        } catch {
+          // Never fail a hit over a search term.
+        }
       }
     }
 

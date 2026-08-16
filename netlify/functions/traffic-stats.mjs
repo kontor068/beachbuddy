@@ -713,6 +713,61 @@ const checkForm = (row) => `
     </form>
   </details>`;
 
+/**
+ * "Αναζητήσεις" — what people typed into our own search box.
+ *
+ * The left table is what they looked for; the right one is the point of the whole
+ * feature: terms we answered with an empty list. Those are gaps stated by a
+ * visitor in their own words, which is the one thing Search Console structurally
+ * cannot tell us — by the time someone types here, Google is out of the picture.
+ */
+const searchTermsTab = (data) => {
+  const stats = data || { top: [], gaps: [], totalSearches: 0, totalMisses: 0, distinctTerms: 0 };
+  if (!stats.totalSearches) {
+    return `<section class="panel">
+      <h2>Τι έψαξαν μέσα στο site<em>δεν έχει μαζευτεί τίποτα ακόμα</em></h2>
+      <p class="qempty">Η καταγραφή ξεκινά με το πρώτο deploy μετά τις 16/08/2026. Κάθε αναζήτηση
+      καθαρίζεται στη συσκευή πριν φύγει: κρατάμε μόνο γράμματα, το πολύ 48 χαρακτήρες, και
+      πετάμε ολόκληρο τον όρο αν μοιάζει με email, σύνδεσμο ή τηλέφωνο.</p>
+    </section>`;
+  }
+
+  const missRate = stats.totalSearches ? Math.round((100 * stats.totalMisses) / stats.totalSearches) : 0;
+  const row = (r) => `
+    <tr>
+      <td class="qt-name">${esc(r.term)}</td>
+      <td class="qt-num">${num(r.searches)}</td>
+      <td class="qt-num${r.misses ? ' late' : ''}">${r.misses ? num(r.misses) : '—'}</td>
+    </tr>`;
+
+  const table = (title, note, rows) => `
+    <section class="panel">
+      <h2>${title}<em>${note}</em></h2>
+      ${rows.length
+        ? `<table class="qt">
+             <thead><tr><th>όρος</th><th>φορές</th><th>χωρίς αποτέλεσμα</th></tr></thead>
+             <tbody>${rows.map(row).join('')}</tbody>
+           </table>`
+        : '<p class="qempty">Τίποτα εδώ.</p>'}
+    </section>`;
+
+  return `
+    <section class="panel">
+      <h2>Σύνοψη αναζητήσεων<em>τελευταίες μέρες</em></h2>
+      <div class="qgaps">
+        <b>${num(stats.totalSearches)}</b> αναζητήσεις ·
+        <b>${num(stats.distinctTerms)}</b> διαφορετικοί όροι ·
+        <b>${num(stats.totalMisses)}</b> χωρίς κανένα αποτέλεσμα (${missRate}%)
+      </div>
+    </section>
+    ${table(
+      '❌ Έψαξαν και δεν βρήκαν',
+      'εδώ είναι η δουλειά — το λέει ο ίδιος ο επισκέπτης, με τα λόγια του',
+      stats.gaps
+    )}
+    ${table('🔍 Τι έψαξαν συνολικά', 'οι πιο συχνοί όροι', stats.top)}`;
+};
+
 const qualityTab = (rows, beachRows, todos, flashCode, focusId) => {
   const flash = FLASH[flashCode];
   const head = flash ? `<div class="flash ${flash[1]}">${esc(flash[0])}</div>` : '';
@@ -1770,6 +1825,8 @@ ${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capa
     queueCount ? `<span class="badge">${num(queueCount)}</span>` : ''}</button>
   <button type="button" class="tab" data-tab="quality" role="tab" aria-selected="false">🔎 Ποιότητα${
     lateRegions ? `<span class="badge">${num(lateRegions)}</span>` : ''}</button>
+  <button type="button" class="tab" data-tab="search" role="tab" aria-selected="false">🔍 Αναζητήσεις${
+    data.searchTerms?.totalMisses ? `<span class="badge">${num(data.searchTerms.totalMisses)}</span>` : ''}</button>
 </nav>
 
 <div id="tabMap" role="tabpanel">
@@ -1928,6 +1985,10 @@ ${moderationTab(queue, data.flash, data.curating, data.publishedBeaches)}
 
 <div id="tabQuality" role="tabpanel" hidden>
 ${qualityTab(qualityRows, beachGapRows, data.qualityTodos, data.flash, data.qualityFocus)}
+</div>
+
+<div id="tabSearch" role="tabpanel" hidden>
+${searchTermsTab(data.searchTerms)}
 </div>
 
 <footer class="meth">
@@ -2251,7 +2312,7 @@ ${qualityTab(qualityRows, beachGapRows, data.qualityTodos, data.flash, data.qual
   // Tabs. The map view is the default — it answers "what is happening right now",
   // which is the reason to open this page at all. The choice is remembered.
   var TAB_KEY = 'cb_traffic_tab';
-  var TABS = { map: 'tabMap', stats: 'tabStats', photos: 'tabPhotos', quality: 'tabQuality' };
+  var TABS = { map: 'tabMap', stats: 'tabStats', photos: 'tabPhotos', quality: 'tabQuality', search: 'tabSearch' };
   function showTab(name) {
     if (!TABS[name]) name = 'map';
     Object.keys(TABS).forEach(function (k) {
@@ -2437,6 +2498,57 @@ const readDayPoints = async (store, day) => {
     });
   }
   return out;
+};
+
+/**
+ * What visitors typed into OUR search box, across a range of days.
+ *
+ * Like the map above, everything is read out of the key names — one list() per
+ * day, zero blob reads. Key shape (written by pageview.mjs):
+ *   q/<day>/<term>~<1|0 found>~<daily visitor hash>
+ *
+ * The hash is only a de-duplicator inside the key; it is dropped here and never
+ * leaves this function, so a term can never be traced back to a person or joined
+ * to their other keys. What comes out is a word and two counts.
+ *
+ * `misses` is the column that earns this feature: a term people search and we
+ * answer with an empty list is a gap in the product, stated by a visitor in their
+ * own words. Search Console can never show it — by the time someone is typing in
+ * our box, Google is already out of the picture.
+ */
+const readSearchTerms = async (store, days) => {
+  const byTerm = new Map();
+  for (const day of days) {
+    const prefix = `q/${day}/`;
+    for (const key of await listKeys(store, prefix)) {
+      const rest = key.slice(prefix.length);
+      // rsplit on '~': the term itself may legitimately contain no '~' (the
+      // sanitiser strips it) but splitting from the right is still the safe read.
+      const parts = rest.split('~');
+      if (parts.length < 3) continue;
+      parts.pop(); // visitor hash — deliberately discarded
+      const found = parts.pop() === '1';
+      const term = parts.join('~').replace(/_/g, ' ').trim();
+      if (!term) continue;
+      const row = byTerm.get(term) || { term, searches: 0, misses: 0 };
+      row.searches += 1;
+      if (!found) row.misses += 1;
+      byTerm.set(term, row);
+    }
+  }
+  const all = [...byTerm.values()];
+  return {
+    top: all.slice().sort((a, b) => b.searches - a.searches || a.term.localeCompare(b.term)).slice(0, 60),
+    // Terms that mostly or always came back empty, busiest first. Anything with a
+    // single search is noise at our volume, so it needs two before it is listed.
+    gaps: all
+      .filter(row => row.misses >= 2 && row.misses / row.searches >= 0.5)
+      .sort((a, b) => b.misses - a.misses || a.term.localeCompare(b.term))
+      .slice(0, 60),
+    totalSearches: all.reduce((sum, row) => sum + row.searches, 0),
+    totalMisses: all.reduce((sum, row) => sum + row.misses, 0),
+    distinctTerms: all.length,
+  };
 };
 
 // ── The moderation POST ──────────────────────────────────────────────────────
@@ -3363,6 +3475,9 @@ export const handler = async (event) => {
         qualityChecks: await readQualityChecks(),
         qualityFocus: params.region || '',
         qualityTodos: await readQualityTodos(),
+        // Read over the same day window as everything else on the page, so the
+        // search numbers and the visitor numbers always describe one period.
+        searchTerms: await readSearchTerms(store, windowDays).catch(() => null),
       }, given),
     };
   } catch (error) {
