@@ -481,6 +481,18 @@ const checks = [
     command: process.execPath,
     args: ['scripts/validateLandingGuideLinks.mjs'],
   },
+  {
+    id: 'sitemap-lastmod',
+    title: 'The sitemap says which pages actually changed',
+    description:
+      'Checks that every sitemap <lastmod> comes from the committed content ledger (data/sitemapLastmod.json) rather than from the clock: the ledger is tracked by git, it covers every sitemap URL, no date disagrees with it and none is in the future. Then drives the real fingerprint function (utils/sitemapFingerprint.mjs) against six crafted pages and requires it to IGNORE renamed asset chunks and embedded build timestamps while NOTICING an edited title, meta description or body text.',
+    protects:
+      'URL Inspection on 16/08/2026 found 4 in 10 of our pages are not in Google\'s index at all — 11/18 English beach pages indexed, 6/15 Italian, most of the rest "Discovered – currently not indexed", meaning Google saw the URL and never fetched it. lastmod is the only crawl-priority signal we have and it was pure noise: 9.536 URLs carried TWO distinct dates, because every page without an explicit date got new Date() on each build and every beach page inherited its region data file\'s timestamp. Two silent ways to undo the fix: the ledger stops being tracked (Netlify builds from a clean checkout, so an untracked ledger is an empty one and every deploy re-stamps all 9.536 pages), or the fingerprint starts covering <script>/<link> tags (Vite renames asset chunks on any code change, marking the whole site modified).',
+    failureAction:
+      'If the ledger is untracked: git add data/sitemapLastmod.json — never gitignore it. If dates disagree with the ledger, something is writing lastmod outside it in scripts/prerenderBeachPages.mjs. If the fingerprint self-test fails, utils/sitemapFingerprint.mjs has started reading volatile markup — put it back to title/description/canonical/JSON-LD/visible-text only. Verify any change the way it was verified originally: two consecutive clean `npm run build` runs, where the second must report "0 of N pages changed content".',
+    command: process.execPath,
+    args: ['scripts/validateSitemapLastmod.mjs'],
+  },
 ];
 
 const printExplanation = () => {

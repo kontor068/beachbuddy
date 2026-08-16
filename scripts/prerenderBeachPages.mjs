@@ -1,5 +1,6 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
+import { sitemapContentFingerprint } from '../utils/sitemapFingerprint.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
@@ -6045,7 +6046,129 @@ const main = async () => {
     .replace('<head>', '<head>\n    <meta name="robots" content="noindex, nofollow">');
   await writeFile(path.join(authCallbackDir, 'index.html'), authCallbackHtml, 'utf8');
 
-  const lastmod = new Date().toISOString().slice(0, 10);
+  // ── <lastmod> THAT IS TRUE ───────────────────────────────────────────────
+  //
+  // What this replaced: every URL without an explicit lastmod got `new Date()`
+  // — today, on every single build — and every beach/region page got its
+  // REGION's `payload.generatedAt`, i.e. when the data file was last rebuilt,
+  // shared by all ~30 beaches of that region. Neither has anything to do with
+  // whether that page's content changed. Measured on the 16/08 sitemap: 9.536
+  // URLs carried exactly TWO distinct dates — 8.407 said one day, 1.129 said
+  // the next.
+  //
+  // Why it matters. 4 in 10 of our pages are not in Google's index at all
+  // (URL Inspection, 16/08: 11/18 English beach pages indexed, 6/15 Italian;
+  // "Discovered – currently not indexed" means Google saw the URL and did not
+  // even fetch it). lastmod is the one lever we have for saying "spend your
+  // crawl here, not there". A lastmod that claims 8.407 pages changed when none
+  // did is noise, and Google is documented to ignore the signal entirely once
+  // it stops correlating with real change. We were spending our only priority
+  // signal on nothing.
+  //
+  // How it works now: a per-page fingerprint of what the page SAYS, kept in a
+  // small committed ledger. Same fingerprint as last build → keep the old date.
+  // Changed → today. A page that genuinely did not change now keeps a date that
+  // recedes into the past, which is exactly what it should say.
+  //
+  // The fingerprint deliberately covers ONLY the meaningful surface: title, meta
+  // description, canonical, JSON-LD and the visible text. It must NOT include
+  // <script>/<link> tags — Vite renames every asset chunk whenever any code
+  // changes, so hashing the raw HTML would mark all 9.536 pages as modified on
+  // any code edit and put us straight back where we started. ISO timestamps and
+  // dd/mm/yyyy dates are stripped for the same reason.
+  const sitemapLedgerPath = path.join(projectRoot, 'data', 'sitemapLastmod.json');
+  const previousLedger = await readJson(sitemapLedgerPath).catch(() => ({}));
+  const today = new Date().toISOString().slice(0, 10);
+
+  // The fingerprint itself lives in utils/sitemapFingerprint.mjs so the quality
+  // gate (scripts/validateSitemapLastmod.mjs) can drive the REAL function rather
+  // than a copy that drifts away from it. That file documents what the
+  // fingerprint covers and — more importantly — what it must never cover.
+  const contentFingerprint = sitemapContentFingerprint;
+
+  /** dist file backing a canonical URL, or null for anything not on disk. */
+  const distFileForUrl = (url) => {
+    let pathname;
+    try {
+      pathname = new URL(url).pathname;
+    } catch {
+      return null;
+    }
+    return path.join(distDir, pathname.replace(/^\/+/, '').replace(/\/+$/, ''), 'index.html');
+  };
+
+  // Bounded concurrency: 9.536 simultaneous reads exhausts file handles on
+  // Windows, and unbounded Promise.all over the whole list is how that happens.
+  const forEachLimited = async (items, limit, worker) => {
+    let cursor = 0;
+    const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
+      while (cursor < items.length) {
+        const index = cursor;
+        cursor += 1;
+        await worker(items[index]);
+      }
+    });
+    await Promise.all(runners);
+  };
+
+  // Ledger key is the PATH, not the absolute URL — same information, ~230 KB less
+  // of it across 9.536 rows. Value is "<fingerprint>:<date>" rather than an object,
+  // for the same reason.
+  const ledgerKey = (url) => {
+    try {
+      return new URL(url).pathname;
+    } catch {
+      return url;
+    }
+  };
+  const readLedgerRow = (row) => {
+    if (typeof row !== 'string') return null;
+    const cut = row.lastIndexOf(':');
+    return cut < 0 ? null : { h: row.slice(0, cut), d: row.slice(cut + 1) };
+  };
+
+  const ledger = {};
+  let changedPages = 0;
+  let unreadablePages = 0;
+  await forEachLimited(sitemapEntries, 24, async (entry) => {
+    const key = ledgerKey(entry.url);
+    const known = readLedgerRow(previousLedger[key]);
+    const file = distFileForUrl(entry.url);
+    let html = null;
+    if (file) html = await readFile(file, 'utf8').catch(() => null);
+    if (html === null) {
+      // Never invent a date for a page we could not read: fall back to whatever
+      // the ledger already knew, and only then to today. Silently stamping today
+      // would re-create the bug for exactly the pages we cannot verify.
+      unreadablePages += 1;
+      const date = known ? known.d : today;
+      ledger[key] = `${known ? known.h : ''}:${date}`;
+      entry.lastmod = date;
+      return;
+    }
+    const fingerprint = contentFingerprint(html);
+    const date = known && known.h === fingerprint ? known.d : today;
+    if (!known || known.h !== fingerprint) changedPages += 1;
+    ledger[key] = `${fingerprint}:${date}`;
+    entry.lastmod = date;
+  });
+
+  // One row per line, keys sorted: a build that changes twelve pages must produce
+  // a twelve-line diff, not a 800 KB single-line blob that git cannot delta. The
+  // file is committed on purpose — see the note in docs/team/10-seo-specialist.md:
+  // Netlify builds from a clean checkout, so an uncommitted ledger means every
+  // deploy re-stamps every page with today's date, which is the bug this fixes.
+  const ledgerRows = Object.keys(ledger)
+    .sort()
+    .map(key => `${JSON.stringify(key)}:${JSON.stringify(ledger[key])}`);
+  await writeFile(sitemapLedgerPath, `{\n${ledgerRows.join(',\n')}\n}\n`, 'utf8');
+  const dateSpread = new Set(Object.values(ledger).map(v => v.d)).size;
+  console.log(
+    `sitemap lastmod: ${changedPages} of ${sitemapEntries.length} pages changed content` +
+      ` (${dateSpread} distinct dates${unreadablePages ? `, ${unreadablePages} unreadable` : ''})`
+  );
+
+  const lastmod = today;
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
