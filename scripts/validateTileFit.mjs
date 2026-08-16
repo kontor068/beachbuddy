@@ -113,6 +113,35 @@ try {
   await waitForUrl(BASE + '/');
   const browser = await chromium.launch();
 
+  /**
+   * ΠΡΟΘΕΡΜΑΝΣΗ ΚΑΘΕ ΔΙΑΔΡΟΜΗΣ ΠΡΙΝ ΜΕΤΡΗΘΕΙ ΟΤΙΔΗΠΟΤΕ — 16/08/2026.
+   *
+   * Η ΤΡΙΤΗ απόπειρα να σταματήσει το ίδιο «false red», και η πρώτη που δεν προσπαθεί να το
+   * ΠΕΡΙΜΕΝΕΙ. Στις 11/08 μπήκε ένα reload, στις 13/08 δεύτερο, και στις 16/08 η πύλη έπεφτε
+   * ακόμη — τρεις εκτελέσεις, τρία ΔΙΑΦΟΡΕΤΙΚΑ θύματα (en @320 Κέρκυρα · fr @390 Μήλος · μία
+   * καθαρή). Πάντα «no [data-tilefit] tiles — nothing was measured», ποτέ κομμένη λέξη.
+   *
+   * Το `vite optimize --force` παραπάνω προ-δεσμεύει τις ΕΞΑΡΤΗΣΕΙΣ, αλλά ο dev server
+   * μεταγλωττίζει κάθε ΔΙΑΔΡΟΜΗ την πρώτη φορά που τη ζητάει κάποιος, και μπορεί να ανακαλύψει
+   * εκεί εξάρτηση που δεν είχε προβλέψει — οπότε ξαναδεσμεύει και στέλνει full-reload σε ό,τι
+   * είναι στον αέρα. Με 5 διαδρομές × 4 πλάτη, η πρώτη επίσκεψη κάθε διαδρομής ήταν πάντα μέσα
+   * στη μέτρηση· γι' αυτό το θύμα άλλαζε κάθε φορά.
+   *
+   * Εδώ κάθε διαδρομή ζητιέται μία φορά ΠΡΙΝ αρχίσει η μέτρηση, σε δικό της παράθυρο που
+   * πετιέται. Ό,τι είναι να ξανα-δεσμευτεί, ξανα-δεσμεύεται τώρα. Δεν χαμηλώνει κανένα κατώφλι
+   * και δεν αγγίζει ούτε μία μέτρηση — απλώς η μέτρηση δεν είναι πια η πρώτη επίσκεψη.
+   */
+  {
+    const warm = await browser.newContext({ viewport: { width: 390, height: 900 }, timezoneId: 'Europe/Athens' });
+    const page = await warm.newPage();
+    for (const [, route] of PAGES) {
+      await page.goto(BASE + route, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => {});
+      await page.waitForSelector('[data-tilefit]', { timeout: 60000 }).catch(() => {});
+    }
+    await warm.close();
+    console.log(`  προθερμάνθηκαν ${PAGES.length} διαδρομές πριν τη μέτρηση`);
+  }
+
   for (const [lang, route] of PAGES) {
     for (const width of WIDTHS) {
       const ctx = await browser.newContext({
