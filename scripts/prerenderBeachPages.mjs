@@ -3293,6 +3293,32 @@ const TRAIT_PHRASES = {
   shallow:              { en: 'shallow water',          gr: 'ρηχά νερά',                 de: 'flaches Wasser',         fr: 'eau peu profonde',       it: 'acqua bassa' },
   quiet:                { en: 'quiet',                  gr: 'ήσυχη',                     de: 'ruhig',                  fr: 'tranquille',             it: 'tranquilla' },
   remote:               { en: 'secluded',               gr: 'απομονωμένη',               de: 'abgelegen',              fr: 'isolée',                 it: 'isolata' },
+  // Added 16/08/2026. Seven fields that were already in every beach record and
+  // that the snippet never read. Measured coverage across the 2.862 records:
+  // naturalShade 42%, deepWaters 25%, beachBar 21%, nearbyCamping 14%,
+  // accessibility DIFFICULT 9% / BOAT_ONLY 4%, shower 9%.
+  //
+  // WHY: with only the ten phrases above, the composer could emit just 399
+  // distinct trait signatures for 2.862 beaches — 56 pages shared the sentence
+  // "Sand & pebble beach, organised with sunbeds. Usually a sheltered shore in
+  // the meltemi." word for word. Beach pages sit at the same position band as
+  // the guide articles (4–10, 47.349 vs 35.085 impressions in the 28 days to
+  // 13/08) and earn 3,0% CTR against the guides' 4,7%. Rank does not explain
+  // that; the guides say something specific per page and these did not.
+  //
+  // beachBar is deliberately separate from `food`: "beach bar" is a query people
+  // actually type (111 impressions / 0 clicks in the same window) and it means
+  // something different from a taverna to the person choosing a beach.
+  beachBar:             { en: 'with a beach bar',       gr: 'με beach bar',              de: 'mit Beachbar',           fr: 'avec bar de plage',      it: 'con beach bar' },
+  shade:                { en: 'with natural shade',     gr: 'με φυσική σκιά',            de: 'mit natürlichem Schatten', fr: 'avec ombre naturelle', it: 'con ombra naturale' },
+  camping:              { en: 'campsite nearby',        gr: 'με κάμπινγκ κοντά',         de: 'Campingplatz in der Nähe', fr: 'camping à proximité',  it: 'campeggio nelle vicinanze' },
+  shower:               { en: 'with showers',           gr: 'με ντουζ',                  de: 'mit Duschen',            fr: 'avec douches',           it: 'con docce' },
+  deep:                 { en: 'deep water',             gr: 'βαθιά νερά',                de: 'tiefes Wasser',          fr: 'eau profonde',           it: 'acqua profonda' },
+  // Access is stated only when it is NOT the default. 52% of beaches are EASY;
+  // saying so on half the site is noise, while "hard to reach" / "reached by
+  // boat" is exactly what the secluded-beach searcher is looking for.
+  hardAccess:           { en: 'hard to reach',          gr: 'με δύσκολη πρόσβαση',       de: 'schwer zugänglich',      fr: "d'accès difficile",      it: 'di difficile accesso' },
+  boatAccess:           { en: 'reached by boat',        gr: 'με πρόσβαση από τη θάλασσα', de: 'nur per Boot erreichbar', fr: 'accessible en bateau',  it: 'raggiungibile in barca' },
 };
 const traitPhrase = (key, language) => TRAIT_PHRASES[key][language] || TRAIT_PHRASES[key].en;
 
@@ -3343,21 +3369,62 @@ const beachMetaShelterLine = (beach, region, language) => {
 // Ordered, data-backed trait phrases for the snippet. Returns the list so the
 // composer can drop the weakest ones when the line runs long, instead of losing
 // the whole clause.
+// How the three snippet slots are filled, and why in this order.
+//
+// `tier` keeps the sentence readable: tier 1 is what the place IS and why you
+// would pick it; tier 2 is useful detail that must never push tier 1 out (a
+// snippet reading "Sandy beach, with showers, campsite nearby" for an organised
+// family beach is worse for the reader even though it is rarer).
+//
+// `share` is the measured national coverage of each field (% of the 2.862
+// records, counted 16/08/2026). Inside a tier the RAREST trait wins, because a
+// trait half the coast also has separates nothing. Ordering by raw search demand
+// was tried first and measured worse: it collapsed 214 beaches onto the single
+// sentence "Sandy beach, organised with sunbeds, shallow water, family-friendly"
+// The rarity order lifts distinct trait signatures from 399 to 818.
+//
+// Re-measure `share` if the underlying data changes materially; it only decides
+// ordering, so drift degrades the spread gracefully rather than saying anything
+// untrue.
+const TRAIT_SELECTION = [
+  // Tier 0 is exempt from the rarity rule on purpose. "Sunbeds" is the one
+  // modifier with a MEASURED click-through rate rather than just impressions:
+  // 9,8% against a 4,0% site average in the 28 days to 13/08 (the highest of
+  // any intent we serve, on 61 impressions at position 6,2). Sorting it by
+  // rarity buried it — it appeared on 119 pages instead of the ~1.000 that are
+  // organised — so it is pinned ahead of the rarity ladder. Common and wanted
+  // beats rare and ignored.
+  { key: 'organisedWithSunbeds', tier: 0, share: 35, when: b => b.amenities?.organized === true && b.amenities?.sunbeds === true },
+  { key: 'organised',            tier: 0, share: 8,  when: b => b.amenities?.organized === true && b.amenities?.sunbeds !== true },
+  { key: 'sunbeds',              tier: 0, share: 10, when: b => b.amenities?.organized !== true && b.amenities?.sunbeds === true },
+  { key: 'shallow',              tier: 1, share: 50, when: b => (b.waterDepth?.type || b.waterDepth) === 'shallow' },
+  { key: 'family',               tier: 1, share: 29, when: b => b.environment?.familyFriendly === true },
+  { key: 'snorkeling',           tier: 1, share: 26, when: b => b.activities?.snorkeling === true },
+  { key: 'beachBar',             tier: 1, share: 21, when: b => b.amenities?.beachBar === true },
+  { key: 'food',                 tier: 1, share: 31, when: b => b.amenities?.restaurant === true || b.amenities?.taverna === true },
+  { key: 'boatAccess',           tier: 1, share: 4,  when: b => String(b.accessibility) === 'BOAT_ONLY' },
+  { key: 'hardAccess',           tier: 1, share: 9,  when: b => String(b.accessibility) === 'DIFFICULT' },
+  { key: 'remote',               tier: 2, share: 13, when: b => b.environment?.remote === true },
+  { key: 'quiet',                tier: 2, share: 31, when: b => b.environment?.remote !== true && b.environment?.quiet === true },
+  { key: 'shade',                tier: 2, share: 42, when: b => b.amenities?.naturalShade === true },
+  { key: 'camping',              tier: 2, share: 14, when: b => Boolean(b.nearbyCamping) },
+  { key: 'shower',               tier: 2, share: 9,  when: b => b.amenities?.shower === true },
+  { key: 'deep',                 tier: 2, share: 25, when: b => b.characteristics?.deepWaters === true },
+  { key: 'parking',              tier: 2, share: 50, when: b => b.amenities?.parking === true },
+];
+
 const beachTraitList = (beach, language, { includeNortherly = true } = {}) => {
   const lang = TRAIT_PHRASES.organised[language] ? language : 'en';
-  const features = [];
-  const organized = beach.amenities?.organized === true;
-  const sunbeds = beach.amenities?.sunbeds === true;
-  if (organized && sunbeds) features.push(traitPhrase('organisedWithSunbeds', lang));
-  else if (organized) features.push(traitPhrase('organised', lang));
-  else if (sunbeds) features.push(traitPhrase('sunbeds', lang));
-  if (beach.amenities?.parking === true) features.push(traitPhrase('parking', lang));
-  if (beach.amenities?.restaurant === true || beach.amenities?.taverna === true) features.push(traitPhrase('food', lang));
-  if ((beach.waterDepth?.type || beach.waterDepth) === 'shallow') features.push(traitPhrase('shallow', lang));
-  if (beach.environment?.familyFriendly === true) features.push(traitPhrase('family', lang));
-  if (beach.activities?.snorkeling === true) features.push(traitPhrase('snorkeling', lang));
-  if (beach.environment?.remote === true) features.push(traitPhrase('remote', lang));
-  else if (beach.environment?.quiet === true) features.push(traitPhrase('quiet', lang));
+  const features = TRAIT_SELECTION
+    .filter(entry => {
+      try {
+        return entry.when(beach) === true;
+      } catch {
+        return false;
+      }
+    })
+    .sort((a, b) => a.tier - b.tier || a.share - b.share)
+    .map(entry => traitPhrase(entry.key, lang));
   // The orientation hedge is now the FALLBACK, not the headline: when the model
   // baked a real verdict, `beachMetaShelterLine` says the stronger, measured
   // thing and repeating a weaker version of the same claim only wastes
