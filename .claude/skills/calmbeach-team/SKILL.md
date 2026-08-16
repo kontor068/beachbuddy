@@ -37,7 +37,18 @@ Two places, and they answer different questions.
   questions ❓, risks, next steps. (There is no `04-…`: Backend was merged into `08-devops`
   on 28/07/2026, and `17-cost-and-quotas` was added the same day. `18-google` was added
   30/07/2026.)
-- `docs/team/99-decision-log.md` — decisions taken and why
+- `docs/team/99-decision-log.md` — decisions taken and why (August 2026 onward)
+
+**Two archive files exist. Do NOT read them unless the question needs them.** They were
+split out on 16/08/2026 because the two live docs had grown to 770 KB combined and cost
+~240k tokens just to open — most of it history nobody was asking about:
+
+- `docs/team/ARCHIVE-journal-2026.md` — the older deploy/session journal. Open only when
+  you need what exactly happened on a specific date.
+- `docs/team/ARCHIVE-decisions-until-2026-07.md` — decisions up to 31/07/2026. Still
+  binding. Open only when you need the *why* behind a pre-August decision.
+
+Prefer `grep` over `Read` on all four: the answer is usually five lines, not the file.
 
 **The repository — what is actually true.** You are running inside the codebase. When a
 question is about how something works, the source is the answer, not the doc.
