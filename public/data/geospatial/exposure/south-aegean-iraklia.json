@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:27.522Z",
+  "generatedAt": "2026-08-16T17:55:57.263Z",
   "region": {
     "id": "south-aegean-iraklia",
     "name": "Iraklia"
@@ -225,10 +225,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.8832,
-        "lon": 25.4948,
-        "bearingDeg": 28.1,
-        "distanceKm": 4
+        "lat": 36.8769,
+        "lon": 25.5054,
+        "bearingDeg": 45,
+        "distanceKm": 4,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     }
   }

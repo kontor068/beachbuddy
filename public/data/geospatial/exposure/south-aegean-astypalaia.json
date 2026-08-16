@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:25.737Z",
+  "generatedAt": "2026-08-16T17:55:53.704Z",
   "region": {
     "id": "south-aegean-astypalaia",
     "name": "Astypalaia"
@@ -383,7 +383,13 @@
           "intensity": 38.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.5444,
+        "lon": 26.3736,
+        "bearingDeg": 45,
+        "distanceKm": 2.56
+      }
     },
     "2234": {
       "beachId": 2234,
@@ -762,7 +768,15 @@
           "intensity": 44.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.6097,
+        "lon": 26.2869,
+        "bearingDeg": 15.5,
+        "distanceKm": 2.72,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "2239": {
       "beachId": 2239,
@@ -1141,7 +1155,13 @@
           "intensity": 9.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.5723,
+        "lon": 26.416,
+        "bearingDeg": 90,
+        "distanceKm": 2.92
+      }
     },
     "2244": {
       "beachId": 2244,
@@ -1212,7 +1232,13 @@
           "intensity": 28.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.6049,
+        "lon": 26.2986,
+        "bearingDeg": 45,
+        "distanceKm": 2.78
+      }
     },
     "2245": {
       "beachId": 2245,
@@ -1591,7 +1617,13 @@
           "intensity": 41.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.6194,
+        "lon": 26.3837,
+        "bearingDeg": 0,
+        "distanceKm": 3.18
+      }
     },
     "3073": {
       "beachId": 3073,

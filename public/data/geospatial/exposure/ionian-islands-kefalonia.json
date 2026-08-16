@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:15.286Z",
+  "generatedAt": "2026-08-16T17:55:28.502Z",
   "region": {
     "id": "ionian-islands-kefalonia",
     "name": "Kefalonia"
@@ -1917,7 +1917,13 @@
           "intensity": 35.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.2284,
+        "lon": 20.457,
+        "bearingDeg": 180,
+        "distanceKm": 3.44
+      }
     },
     "1086": {
       "beachId": 1086,
@@ -2065,7 +2071,15 @@
           "intensity": 52.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3463,
+        "lon": 20.4101,
+        "bearingDeg": 357.5,
+        "distanceKm": 1.15,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "1088": {
       "beachId": 1088,
@@ -3131,7 +3145,13 @@
           "intensity": 28
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.2487,
+        "lon": 20.4494,
+        "bearingDeg": 180,
+        "distanceKm": 3.34
+      }
     },
     "1102": {
       "beachId": 1102,
@@ -3658,7 +3678,13 @@
           "intensity": 35.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.2061,
+        "lon": 20.4382,
+        "bearingDeg": 225,
+        "distanceKm": 3.98
+      }
     },
     "1109": {
       "beachId": 1109,
@@ -4191,7 +4217,13 @@
           "intensity": 59.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.1813,
+        "lon": 20.4522,
+        "bearingDeg": 315,
+        "distanceKm": 3.28
+      }
     },
     "1116": {
       "beachId": 1116,
@@ -5642,7 +5674,13 @@
           "intensity": 17
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3469,
+        "lon": 20.6448,
+        "bearingDeg": 90,
+        "distanceKm": 2
+      }
     },
     "1136": {
       "beachId": 1136,

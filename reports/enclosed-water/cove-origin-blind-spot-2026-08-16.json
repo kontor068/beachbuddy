@@ -1,0 +1,8838 @@
+{
+ "generatedAt": "2026-08-16T16:26:11.084Z",
+ "scanned": 2868,
+ "skipped": {
+  "noOwnWater": 9,
+  "openByPrefilter": 1875
+ },
+ "settings": {
+  "NEAR_STEP_KM": 0.02,
+  "NEAR_FIELD_KM": 3.2,
+  "FAR_STEP_KM": 0.2,
+  "MAX_RAY_KM": 25,
+  "OWN_WATER_SEARCH_KM": 0.15,
+  "OWN_WATER_STEP_KM": 0.01
+ },
+ "findings": [
+  {
+   "id": 40,
+   "name": "Μικρή Χαμολιά",
+   "region": "attica-east-attica-mainland",
+   "lat": 37.92336,
+   "lon": 24.02847,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 37.92345,
+    "lon": 24.02847,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.92426,
+    "lon": 24.02847,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.77,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.7,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.7,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 2.77,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 113,
+   "name": "Καλόγεροι",
+   "region": "attica-kythira",
+   "lat": 36.37649,
+   "lon": 22.92462,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 8.18,
+   "ownWater": {
+    "lat": 36.37658,
+    "lon": 22.92462,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.37739,
+    "lon": 22.92462,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.3,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.27,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.3,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 680,
+   "name": "Καραβοστάσι",
+   "region": "crete-crete-rethymno",
+   "lat": 35.41704,
+   "lon": 24.78526,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 35.41711,
+    "lon": 24.78533,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.41791,
+    "lon": 24.78555,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 0.66,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.66,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 3089,
+   "name": "Sfagia",
+   "region": "crete-crete-rethymno",
+   "lat": 35.4187326,
+   "lon": 24.6913027,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 35.41882,
+    "lon": 24.6913,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.41961,
+    "lon": 24.69159,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.24,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1213,
+   "name": "Παραλία Πλακάκι",
+   "region": "ionian-islands-zakynthos",
+   "lat": 37.68417,
+   "lon": 20.77068,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 37.68434,
+    "lon": 20.77076,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.68507,
+    "lon": 20.77068,
+    "offsetM": 100
+   },
+   "originGapM": 81,
+   "own": {
+    "maxFetchKm": 0.98,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.98,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1403,
+   "name": "Λιβαδάκι",
+   "region": "north-aegean-samos",
+   "lat": 37.79445,
+   "lon": 26.98478,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 5.08,
+   "ownWater": {
+    "lat": 37.79436,
+    "lon": 26.98478,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.794,
+    "lon": 26.9838,
+    "offsetM": 100
+   },
+   "originGapM": 95,
+   "own": {
+    "maxFetchKm": 0.36,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.36,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2339,
+   "name": "Λιμνιώνας",
+   "region": "south-aegean-kos",
+   "lat": 36.77375,
+   "lon": 26.9628,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 6.84,
+   "ownWater": {
+    "lat": 36.77375,
+    "lon": 26.9628,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.77375,
+    "lon": 26.9628,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.8,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.8,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1862,
+   "name": "Άγιος Σώστης",
+   "region": "south-aegean-kythnos",
+   "lat": 37.462,
+   "lon": 24.43407,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 37.46186,
+    "lon": 24.43422,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.46122,
+    "lon": 24.43464,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 2.11,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.42,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.11,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1170,
+   "name": "Πλάκα (Βαγιά)",
+   "region": "west-greece-aetolia-acarnania-mainland",
+   "lat": 38.85293,
+   "lon": 20.73451,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 25,
+    "allBlocked": false,
+    "minBlockedRatio": 0
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 38.85311,
+    "lon": 20.73451,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 38.85383,
+    "lon": 20.73451,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 0.71,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.52,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.71,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2480,
+   "name": "Παραλία Κοκκίνι",
+   "region": "south-aegean-tilos",
+   "lat": 36.43291,
+   "lon": 27.39336,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.8,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 36.43291,
+    "lon": 27.39336,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.43291,
+    "lon": 27.39336,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.65,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.83,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.65,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.95,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 708,
+   "name": "Σταυρί",
+   "region": "crete-crete-rethymno",
+   "lat": 35.1842944,
+   "lon": 24.354092,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.72,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 35.18438,
+    "lon": 24.35411,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.18508,
+    "lon": 24.35464,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 2.28,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.87,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.28,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.74,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 762,
+   "name": "Πελεκητή",
+   "region": "crete-crete-lasithi",
+   "lat": 35.2925177,
+   "lon": 25.7473654,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.48,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 35.29261,
+    "lon": 25.74737,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.29342,
+    "lon": 25.74737,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.94,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.94,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.54,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1247,
+   "name": "Παραλία Πυργιά (βόρειος όρμος)",
+   "region": "north-aegean-chios",
+   "lat": 38.51809,
+   "lon": 26.15071,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.48,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 38.51809,
+    "lon": 26.15071,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.51809,
+    "lon": 26.15071,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.51,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.41,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.51,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.34,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1721,
+   "name": "Πύργος",
+   "region": "south-aegean-andros",
+   "lat": 37.94508,
+   "lon": 24.68735,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.36,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 37.94506,
+    "lon": 24.68746,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.94444,
+    "lon": 24.68816,
+    "offsetM": 100
+   },
+   "originGapM": 92,
+   "own": {
+    "maxFetchKm": 1.2,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.2,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.46,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1740,
+   "name": "Άγιος Νικόλαος",
+   "region": "south-aegean-folegandros",
+   "lat": 36.63028,
+   "lon": 24.8847,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.36,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 36.63028,
+    "lon": 24.8847,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.63028,
+    "lon": 24.8847,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.95,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.47,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.95,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.41,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 448,
+   "name": "Tourkolimnionas",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.03646,
+   "lon": 23.9997,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.32,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 40.03655,
+    "lon": 23.9997,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 40.03736,
+    "lon": 23.9997,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.43,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.68,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.43,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 288,
+   "name": "Πίσω Συκιά",
+   "region": "central-greece-evia",
+   "lat": 37.98963,
+   "lon": 24.55969,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 37.98956,
+    "lon": 24.55976,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.98873,
+    "lon": 24.55969,
+    "offsetM": 100
+   },
+   "originGapM": 93,
+   "own": {
+    "maxFetchKm": 0.25,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1267,
+   "name": "Αυλωνιά Πυργίου",
+   "region": "north-aegean-chios",
+   "lat": 38.16408,
+   "lon": 25.99511,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 38.16399,
+    "lon": 25.99509,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.16363,
+    "lon": 25.99412,
+    "offsetM": 100
+   },
+   "originGapM": 94,
+   "own": {
+    "maxFetchKm": 0.26,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.26,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 492,
+   "name": "Παραλία Αγίου Ισιδώρου",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.2220975,
+   "lon": 23.7902908,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 10,
+   "ownWater": {
+    "lat": 40.2221,
+    "lon": 23.79029,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 40.2221,
+    "lon": 23.79029,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.41,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.26,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.31,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 2.41,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2177,
+   "name": "Παραλία Καβαλουρκό",
+   "region": "south-aegean-tinos",
+   "lat": 37.65969,
+   "lon": 25.0607,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 20,
+    "allBlocked": false,
+    "minBlockedRatio": 0.2
+   },
+   "sampleDistanceKm": 5.06,
+   "ownWater": {
+    "lat": 37.65957,
+    "lon": 25.06087,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.65992,
+    "lon": 25.0618,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.12,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.84,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.64,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1609,
+   "name": "Βουρλιά",
+   "region": "peloponnese-messinia-mainland",
+   "lat": 37.04401,
+   "lon": 21.55638,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 19.48,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 9.74,
+   "ownWater": {
+    "lat": 37.04408,
+    "lon": 21.55645,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.04465,
+    "lon": 21.55718,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.48,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.48,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.07,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1540,
+   "name": "Στέρνα",
+   "region": "peloponnese-korinthia-mainland",
+   "lat": 38.05195,
+   "lon": 22.89035,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 19.4,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 9.7,
+   "ownWater": {
+    "lat": 38.05195,
+    "lon": 22.89035,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.05195,
+    "lon": 22.89035,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.44,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.44,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1856,
+   "name": "Σούφι",
+   "region": "south-aegean-kimolos",
+   "lat": 36.83445,
+   "lon": 24.57182,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 18.6,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 9.3,
+   "ownWater": {
+    "lat": 36.83445,
+    "lon": 24.57182,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.83445,
+    "lon": 24.57182,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.29,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.29,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 3112,
+   "name": "Λεχούνι (Περιστέρα)",
+   "region": "thessaly-alonissos",
+   "lat": 39.2674236,
+   "lon": 23.9766526,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 18,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 9,
+   "ownWater": {
+    "lat": 39.26754,
+    "lon": 23.97683,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 39.2683,
+    "lon": 23.97695,
+    "offsetM": 100
+   },
+   "originGapM": 84,
+   "own": {
+    "maxFetchKm": 1.81,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.81,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1878,
+   "name": "Κολοβελόνη",
+   "region": "south-aegean-kythnos",
+   "lat": 37.30603,
+   "lon": 24.38409,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 17.72,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 8.86,
+   "ownWater": {
+    "lat": 37.30594,
+    "lon": 24.38429,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.30539,
+    "lon": 24.38489,
+    "offsetM": 100
+   },
+   "originGapM": 81,
+   "own": {
+    "maxFetchKm": 2.78,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.72,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.78,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2680,
+   "name": "Βλαχόρεμα",
+   "region": "thessaly-magnesia-mainland---pelion",
+   "lat": 39.167591,
+   "lon": 23.337051,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 16.76,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 8.38,
+   "ownWater": {
+    "lat": 39.16765,
+    "lon": 23.33714,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 39.16783,
+    "lon": 23.33817,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 2.98,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.98,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.94,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 300,
+   "name": "Σούρζα Μπουτ",
+   "region": "central-greece-evia",
+   "lat": 38.316143,
+   "lon": 24.2323716,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 16.72,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 8.36,
+   "ownWater": {
+    "lat": 38.31616,
+    "lon": 24.23226,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.31705,
+    "lon": 24.23237,
+    "offsetM": 100
+   },
+   "originGapM": 99,
+   "own": {
+    "maxFetchKm": 0.76,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.43,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.76,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1886,
+   "name": "Μικρό Λιβαδάκι",
+   "region": "south-aegean-kythnos",
+   "lat": 37.4285,
+   "lon": 24.44998,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 16.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 8.04,
+   "ownWater": {
+    "lat": 37.42859,
+    "lon": 24.44998,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.42873,
+    "lon": 24.44889,
+    "offsetM": 100
+   },
+   "originGapM": 98,
+   "own": {
+    "maxFetchKm": 0.64,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.64,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2382,
+   "name": "Πλατύς Γιαλός",
+   "region": "south-aegean-lipsi",
+   "lat": 37.31392,
+   "lon": 26.7393,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 16.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 8.02,
+   "ownWater": {
+    "lat": 37.31397,
+    "lon": 26.7394,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.31392,
+    "lon": 26.74043,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 0.87,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.79,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.87,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2650,
+   "name": "Έλιος",
+   "region": "thessaly-skopelos",
+   "lat": 39.13944,
+   "lon": 23.6436,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 16.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 8.02,
+   "ownWater": {
+    "lat": 39.13885,
+    "lon": 23.64388,
+    "offsetM": 70
+   },
+   "builderOrigin": {
+    "lat": 39.13866,
+    "lon": 23.64418,
+    "offsetM": 100
+   },
+   "originGapM": 33,
+   "own": {
+    "maxFetchKm": 1.12,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.12,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 917,
+   "name": "Παραλία Μπούκα",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.52873,
+   "lon": 20.15745,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.6,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 7.8,
+   "ownWater": {
+    "lat": 39.52882,
+    "lon": 20.15725,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 39.52963,
+    "lon": 20.15745,
+    "offsetM": 100
+   },
+   "originGapM": 92,
+   "own": {
+    "maxFetchKm": 0.57,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.57,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.27,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.57,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1013,
+   "name": "Πόρτο Τιμόνι",
+   "region": "ionian-islands-corfu",
+   "lat": 39.71516,
+   "lon": 19.6579,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.52,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.76,
+   "ownWater": {
+    "lat": 39.7153,
+    "lon": 19.6582,
+    "offsetM": 30
+   },
+   "builderOrigin": {
+    "lat": 39.71516,
+    "lon": 19.65907,
+    "offsetM": 100
+   },
+   "originGapM": 76,
+   "own": {
+    "maxFetchKm": 1.17,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.17,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.46,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1598,
+   "name": "Σκοπά",
+   "region": "peloponnese-lakonia-mainland",
+   "lat": 36.61705,
+   "lon": 22.4873,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.52,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.76,
+   "ownWater": {
+    "lat": 36.61696,
+    "lon": 22.48728,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.61682,
+    "lon": 22.48838,
+    "offsetM": 100
+   },
+   "originGapM": 100,
+   "own": {
+    "maxFetchKm": 1.09,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.29,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.53,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.09,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.3,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 356,
+   "name": "Αγιόνερο",
+   "region": "central-greece-fthiotida-mainland",
+   "lat": 38.63465,
+   "lon": 23.13096,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.32,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 7.66,
+   "ownWater": {
+    "lat": 38.63465,
+    "lon": 23.13096,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.63465,
+    "lon": 23.13096,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.96,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.96,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.96,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2225,
+   "name": "Βαθύ Πηγάδι",
+   "region": "south-aegean-agathonisi",
+   "lat": 37.45786,
+   "lon": 26.99531,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.62,
+   "ownWater": {
+    "lat": 37.45786,
+    "lon": 26.99531,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.45786,
+    "lon": 26.99531,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.56,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.42,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.56,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 655,
+   "name": "Πέρα Γαλήνοι",
+   "region": "crete-crete-heraklion",
+   "lat": 35.404375,
+   "lon": 24.922053,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.16,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.58,
+   "ownWater": {
+    "lat": 35.40433,
+    "lon": 24.92173,
+    "offsetM": 30
+   },
+   "builderOrigin": {
+    "lat": 35.40374,
+    "lon": 24.92127,
+    "offsetM": 100
+   },
+   "originGapM": 77,
+   "own": {
+    "maxFetchKm": 0.45,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.45,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.31,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2173,
+   "name": "Μικρή Κολυμπήθρα",
+   "region": "south-aegean-tinos",
+   "lat": 37.63102,
+   "lon": 25.14525,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.12,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.56,
+   "ownWater": {
+    "lat": 37.63111,
+    "lon": 25.14525,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.63079,
+    "lon": 25.14415,
+    "offsetM": 100
+   },
+   "originGapM": 103,
+   "own": {
+    "maxFetchKm": 0.45,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.35,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.45,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 162,
+   "name": "Πλάκα",
+   "region": "attica-poros",
+   "lat": 37.48835,
+   "lon": 23.46891,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.54,
+   "ownWater": {
+    "lat": 37.48853,
+    "lon": 23.46891,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.48925,
+    "lon": 23.46891,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 1.13,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.13,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.9,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.36,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 671,
+   "name": "Ψιλή Άμμος Καλών Λιμένων",
+   "region": "crete-crete-heraklion",
+   "lat": 34.9296228,
+   "lon": 24.8003267,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.54,
+   "ownWater": {
+    "lat": 34.92976,
+    "lon": 24.80047,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 34.93026,
+    "lon": 24.8011,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 2.74,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.99,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.74,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.3,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 993,
+   "name": "Παραλία Λίμνη",
+   "region": "ionian-islands-corfu",
+   "lat": 39.66551,
+   "lon": 19.72387,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 7.5,
+   "ownWater": {
+    "lat": 39.6656,
+    "lon": 19.72387,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 39.66638,
+    "lon": 19.72417,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.59,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.4,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.59,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1014,
+   "name": "Ροβινιά",
+   "region": "ionian-islands-corfu",
+   "lat": 39.67058,
+   "lon": 19.72779,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 15,
+    "allBlocked": false,
+    "minBlockedRatio": 0.4
+   },
+   "sampleDistanceKm": 5.2,
+   "ownWater": {
+    "lat": 39.67049,
+    "lon": 19.72759,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 39.67148,
+    "lon": 19.72779,
+    "offsetM": 100
+   },
+   "originGapM": 111,
+   "own": {
+    "maxFetchKm": 0.62,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.62,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.52,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2267,
+   "name": "Παραλία Μεγάλες Αλμύρες",
+   "region": "south-aegean-kalymnos",
+   "lat": 36.97953,
+   "lon": 27.03915,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 14.76,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 7.38,
+   "ownWater": {
+    "lat": 36.97955,
+    "lon": 27.03926,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.9793,
+    "lon": 27.04024,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 1.33,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.33,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2554,
+   "name": "Παραλία Λουτρακίου",
+   "region": "west-greece-aetolia-acarnania-mainland",
+   "lat": 38.86964,
+   "lon": 21.07395,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 14.76,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 7.38,
+   "ownWater": {
+    "lat": 38.86967,
+    "lon": 21.07406,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.87054,
+    "lon": 21.07395,
+    "offsetM": 100
+   },
+   "originGapM": 97,
+   "own": {
+    "maxFetchKm": 0.69,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.69,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.6,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 297,
+   "name": "Σαρακήνικο Αγίας Άννας",
+   "region": "central-greece-evia",
+   "lat": 38.88143,
+   "lon": 23.43972,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 14.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 7.12,
+   "ownWater": {
+    "lat": 38.88131,
+    "lon": 23.4399,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 38.88098,
+    "lon": 23.44072,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 2.62,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.62,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1880,
+   "name": "Λαγκούση",
+   "region": "south-aegean-kythnos",
+   "lat": 37.39538,
+   "lon": 24.46324,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 13.92,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 6.96,
+   "ownWater": {
+    "lat": 37.39541,
+    "lon": 24.46335,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.39493,
+    "lon": 24.46422,
+    "offsetM": 100
+   },
+   "originGapM": 94,
+   "own": {
+    "maxFetchKm": 2.64,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.64,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.44,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2378,
+   "name": "Λύρα",
+   "region": "south-aegean-lipsi",
+   "lat": 37.27811,
+   "lon": 26.76705,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 13.52,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 6.76,
+   "ownWater": {
+    "lat": 37.27811,
+    "lon": 26.76705,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.27811,
+    "lon": 26.76705,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.39,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.39,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 318,
+   "name": "Φωκιοτρύπα",
+   "region": "central-greece-skyros",
+   "lat": 38.84704,
+   "lon": 24.52721,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 13.36,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 6.68,
+   "ownWater": {
+    "lat": 38.84704,
+    "lon": 24.52721,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.84704,
+    "lon": 24.52721,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.74,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.43,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.74,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.21,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 302,
+   "name": "Σπίθα",
+   "region": "central-greece-evia",
+   "lat": 37.96204,
+   "lon": 24.38739,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 12.44,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.96,
+   "ownWater": {
+    "lat": 37.96213,
+    "lon": 24.38739,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.96294,
+    "lon": 24.38739,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.85,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.62,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.85,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 721,
+   "name": "Άμμος Αγίου Νικολάου",
+   "region": "crete-crete-lasithi",
+   "lat": 35.18701,
+   "lon": 25.71581,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 12.4,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 4.82,
+   "ownWater": {
+    "lat": 35.18701,
+    "lon": 25.71592,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.18637,
+    "lon": 25.71659,
+    "offsetM": 100
+   },
+   "originGapM": 93,
+   "own": {
+    "maxFetchKm": 2.36,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.55,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.36,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2217,
+   "name": "Φυκιό",
+   "region": "south-aegean-schinoussa",
+   "lat": 36.88581,
+   "lon": 25.52643,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 12.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 6.12,
+   "ownWater": {
+    "lat": 36.88587,
+    "lon": 25.52652,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.88668,
+    "lon": 25.52672,
+    "offsetM": 100
+   },
+   "originGapM": 92,
+   "own": {
+    "maxFetchKm": 2.3,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.87,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.3,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1702,
+   "name": "Κολώνα",
+   "region": "south-aegean-andros",
+   "lat": 37.85583,
+   "lon": 24.77878,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 12,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 6,
+   "ownWater": {
+    "lat": 37.85583,
+    "lon": 24.77878,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.85583,
+    "lon": 24.77878,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.66,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.66,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 555,
+   "name": "Παραλία Κουταλάς",
+   "region": "crete-crete-chania",
+   "lat": 35.4667125,
+   "lon": 24.2322111,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 11.96,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.98,
+   "ownWater": {
+    "lat": 35.46673,
+    "lon": 24.2321,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 35.46716,
+    "lon": 24.23126,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 1.34,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.32,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.34,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1121,
+   "name": "Παραλία Κόλπος Κορμοράνων",
+   "region": "ionian-islands-kefalonia",
+   "lat": 38.1886,
+   "lon": 20.47023,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 11.84,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.92,
+   "ownWater": {
+    "lat": 38.18852,
+    "lon": 20.47029,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.1895,
+    "lon": 20.47023,
+    "offsetM": 100
+   },
+   "originGapM": 109,
+   "own": {
+    "maxFetchKm": 1.94,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.94,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.73,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2211,
+   "name": "Γερολιμνιώνας",
+   "region": "south-aegean-schinoussa",
+   "lat": 36.8857,
+   "lon": 25.51271,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 11.6,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.8,
+   "ownWater": {
+    "lat": 36.88561,
+    "lon": 25.51271,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.88483,
+    "lon": 25.51242,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.24,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2542,
+   "name": "Παραλία Αγ. Σπυρίδωνα Λουτρακίου",
+   "region": "west-greece-aetolia-acarnania-mainland",
+   "lat": 38.86612,
+   "lon": 21.07682,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 11.36,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 5.68,
+   "ownWater": {
+    "lat": 38.86619,
+    "lon": 21.07689,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.86699,
+    "lon": 21.07712,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 0.43,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.42,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.43,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 154,
+   "name": "Αλυκή",
+   "region": "attica-poros",
+   "lat": 37.48431,
+   "lon": 23.47491,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 11.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.54,
+   "ownWater": {
+    "lat": 37.4844,
+    "lon": 23.47491,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.48521,
+    "lon": 23.47491,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.72,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.72,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.97,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.07,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 421,
+   "name": "Linaraki",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.03518,
+   "lon": 23.99177,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.88,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.44,
+   "ownWater": {
+    "lat": 40.03518,
+    "lon": 23.99177,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 40.03518,
+    "lon": 23.99177,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.6,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.6,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.8,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.66,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1946,
+   "name": "Άγιος Χαράλαμπος",
+   "region": "south-aegean-mykonos",
+   "lat": 37.44359,
+   "lon": 25.32567,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.88,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.44,
+   "ownWater": {
+    "lat": 37.44353,
+    "lon": 25.32576,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.44295,
+    "lon": 25.32647,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.9,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.62,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.9,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.26,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1504,
+   "name": "Κόστα",
+   "region": "peloponnese-argolida-mainland",
+   "lat": 37.297217,
+   "lon": 23.156322,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.8,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.4,
+   "ownWater": {
+    "lat": 37.29632,
+    "lon": 23.15538,
+    "offsetM": 130
+   },
+   "builderOrigin": {
+    "lat": 37.29565,
+    "lon": 23.15519,
+    "offsetM": 200
+   },
+   "originGapM": 75,
+   "own": {
+    "maxFetchKm": 1.89,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.62,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.89,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.76,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2113,
+   "name": "Φασολού",
+   "region": "south-aegean-sifnos",
+   "lat": 36.94085,
+   "lon": 24.75262,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.8,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.4,
+   "ownWater": {
+    "lat": 36.94085,
+    "lon": 24.75262,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.94085,
+    "lon": 24.75262,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.15,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.89,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.15,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1095,
+   "name": "Καλάμια",
+   "region": "ionian-islands-kefalonia",
+   "lat": 38.17121,
+   "lon": 20.4811,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.72,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.36,
+   "ownWater": {
+    "lat": 38.17121,
+    "lon": 20.4811,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.17121,
+    "lon": 20.4811,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.77,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 2.27,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 2.77,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1313,
+   "name": "Κασίδι",
+   "region": "north-aegean-fournoi",
+   "lat": 37.53667,
+   "lon": 26.4999,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.44,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.22,
+   "ownWater": {
+    "lat": 37.53664,
+    "lon": 26.50001,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.53622,
+    "lon": 26.50088,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.52,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.52,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1666,
+   "name": "Παραδείσια",
+   "region": "south-aegean-amorgos",
+   "lat": 36.79613,
+   "lon": 25.76658,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.44,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.22,
+   "ownWater": {
+    "lat": 36.79608,
+    "lon": 25.76648,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.79549,
+    "lon": 25.76579,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.88,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.5,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.88,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2022,
+   "name": "Άγιος Στέφανος",
+   "region": "south-aegean-paros",
+   "lat": 37.12563,
+   "lon": 25.24687,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.4,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.2,
+   "ownWater": {
+    "lat": 37.12563,
+    "lon": 25.24687,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.12563,
+    "lon": 25.24687,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.1,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.53,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.1,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2444,
+   "name": "Παραλία Παλλάς",
+   "region": "south-aegean-rhodes",
+   "lat": 36.0942271,
+   "lon": 28.0889266,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.32,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.16,
+   "ownWater": {
+    "lat": 36.09423,
+    "lon": 28.08893,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.09423,
+    "lon": 28.08893,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.4,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.35,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.4,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2277,
+   "name": "Φοινίκι",
+   "region": "south-aegean-karpathos",
+   "lat": 35.49183,
+   "lon": 27.11709,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.28,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 5.14,
+   "ownWater": {
+    "lat": 35.49183,
+    "lon": 27.11709,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 35.49183,
+    "lon": 27.11709,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.16,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.16,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.79,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 593,
+   "name": "Μπάλος",
+   "region": "crete-crete-chania",
+   "lat": 35.5811,
+   "lon": 23.58987,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.16,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.08,
+   "ownWater": {
+    "lat": 35.5811,
+    "lon": 23.58987,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 35.5811,
+    "lon": 23.58987,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.28,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.25,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.23,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1888,
+   "name": "Παραλία Κολώνα",
+   "region": "south-aegean-kythnos",
+   "lat": 37.41407,
+   "lon": 24.37917,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.16,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.08,
+   "ownWater": {
+    "lat": 37.41407,
+    "lon": 24.37917,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.41407,
+    "lon": 24.37917,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.22,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.69,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 3170,
+   "name": "Μαραθούντα",
+   "region": "south-aegean-symi",
+   "lat": 36.5665703,
+   "lon": 27.8618621,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.16,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.08,
+   "ownWater": {
+    "lat": 36.56666,
+    "lon": 27.86186,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.56735,
+    "lon": 27.86242,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 2.32,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.32,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 24,
+   "name": "Νησίδα Φλέβες",
+   "region": "attica-athens-area-mainland",
+   "lat": 37.77328,
+   "lon": 23.76446,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.12,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 5.06,
+   "ownWater": {
+    "lat": 37.77336,
+    "lon": 23.7645,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.77351,
+    "lon": 23.76556,
+    "offsetM": 100
+   },
+   "originGapM": 95,
+   "own": {
+    "maxFetchKm": 2.56,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.56,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.51,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2237,
+   "name": "Κούνουπες",
+   "region": "south-aegean-astypalaia",
+   "lat": 36.53102,
+   "lon": 26.46802,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.12,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.06,
+   "ownWater": {
+    "lat": 36.53119,
+    "lon": 26.46828,
+    "offsetM": 30
+   },
+   "builderOrigin": {
+    "lat": 36.53125,
+    "lon": 26.4691,
+    "offsetM": 100
+   },
+   "originGapM": 74,
+   "own": {
+    "maxFetchKm": 0.24,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2110,
+   "name": "Τσόπου",
+   "region": "south-aegean-sifnos",
+   "lat": 36.926658,
+   "lon": 24.691816,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.04,
+   "ownWater": {
+    "lat": 36.9267,
+    "lon": 24.69172,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.92756,
+    "lon": 24.69182,
+    "offsetM": 100
+   },
+   "originGapM": 95,
+   "own": {
+    "maxFetchKm": 0.58,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.56,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2131,
+   "name": "Αχλάδι",
+   "region": "south-aegean-syros",
+   "lat": 37.3880759,
+   "lon": 24.9406576,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5.04,
+   "ownWater": {
+    "lat": 37.38811,
+    "lon": 24.94076,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.38853,
+    "lon": 24.94164,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.4,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.4,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 232,
+   "name": "Κεφάλα",
+   "region": "central-greece-evia",
+   "lat": 38.01467,
+   "lon": 24.31706,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5,
+   "ownWater": {
+    "lat": 38.01467,
+    "lon": 24.31706,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.01467,
+    "lon": 24.31706,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.9,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.83,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.9,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 991,
+   "name": "Παραλία Κληματιά",
+   "region": "ionian-islands-corfu",
+   "lat": 39.66633,
+   "lon": 19.72456,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 10,
+    "allBlocked": false,
+    "minBlockedRatio": 0.6
+   },
+   "sampleDistanceKm": 5,
+   "ownWater": {
+    "lat": 39.66633,
+    "lon": 19.72456,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.66633,
+    "lon": 19.72456,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.54,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.5,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.54,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2397,
+   "name": "Παραλία Γροίκος",
+   "region": "south-aegean-patmos",
+   "lat": 37.30315,
+   "lon": 26.56172,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 9.92,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 4.96,
+   "ownWater": {
+    "lat": 37.30315,
+    "lon": 26.56172,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.30315,
+    "lon": 26.56172,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.72,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.72,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.7,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1181,
+   "name": "Φανάρι",
+   "region": "ionian-islands-meganisi",
+   "lat": 38.66671,
+   "lon": 20.80642,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 9.64,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 4.82,
+   "ownWater": {
+    "lat": 38.66689,
+    "lon": 20.80642,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 38.66761,
+    "lon": 20.80642,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 2.3,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.3,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.56,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 191,
+   "name": "Προσήλι",
+   "region": "attica-west-attica-mainland",
+   "lat": 38.16026,
+   "lon": 23.21157,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 9.36,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 4.68,
+   "ownWater": {
+    "lat": 38.16026,
+    "lon": 23.21157,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.16026,
+    "lon": 23.21157,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.77,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.76,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.77,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.28,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 906,
+   "name": "Πάνα",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.40346,
+   "lon": 20.23009,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 9.2,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 4.6,
+   "ownWater": {
+    "lat": 39.40346,
+    "lon": 20.23009,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.40346,
+    "lon": 20.23009,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.24,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 176,
+   "name": "Μικρή Ζωγεριά",
+   "region": "attica-spetses",
+   "lat": 37.27788,
+   "lon": 23.09996,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 8.96,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 4.48,
+   "ownWater": {
+    "lat": 37.27788,
+    "lon": 23.09996,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.27788,
+    "lon": 23.09996,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.79,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.98,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.79,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.99,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 106,
+   "name": "Μπίστι",
+   "region": "attica-hydra",
+   "lat": 37.304899,
+   "lon": 23.377265,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 8.28,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 4.14,
+   "ownWater": {
+    "lat": 37.30508,
+    "lon": 23.37727,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.3058,
+    "lon": 23.37727,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 0.7,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.57,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.7,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2038,
+   "name": "Μικρή Σάντα Μαρία",
+   "region": "south-aegean-paros",
+   "lat": 37.13821,
+   "lon": 25.28734,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 8.08,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 4.04,
+   "ownWater": {
+    "lat": 37.13819,
+    "lon": 25.28745,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.13757,
+    "lon": 25.28814,
+    "offsetM": 100
+   },
+   "originGapM": 92,
+   "own": {
+    "maxFetchKm": 0.86,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.31,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.86,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1239,
+   "name": "Τρίτα Κουρβούλια",
+   "region": "ionian-islands-ithaca",
+   "lat": 38.45593,
+   "lon": 20.67402,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.96,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.98,
+   "ownWater": {
+    "lat": 38.45602,
+    "lon": 20.67402,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.45683,
+    "lon": 20.67402,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.87,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.87,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.99,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.3,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 418,
+   "name": "Likithos",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.01987,
+   "lon": 23.82847,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.88,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.94,
+   "ownWater": {
+    "lat": 40.01996,
+    "lon": 23.82849,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 40.02074,
+    "lon": 23.82877,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 1.1,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.45,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.1,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.61,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 71,
+   "name": "Πούντα Ζέζα",
+   "region": "attica-east-attica-mainland",
+   "lat": 37.68054,
+   "lon": 24.06427,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.48,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.74,
+   "ownWater": {
+    "lat": 37.68054,
+    "lon": 24.06427,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.68054,
+    "lon": 24.06427,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.51,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.64,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 2.51,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.23,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 195,
+   "name": "Αγία Παρασκευή",
+   "region": "central-greece-evia",
+   "lat": 37.9685,
+   "lon": 24.3853,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.44,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.72,
+   "ownWater": {
+    "lat": 37.9685,
+    "lon": 24.3853,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.9685,
+    "lon": 24.3853,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.86,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.44,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.86,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1662,
+   "name": "Λεβρωσός",
+   "region": "south-aegean-amorgos",
+   "lat": 36.90828,
+   "lon": 25.97161,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.32,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.66,
+   "ownWater": {
+    "lat": 36.90821,
+    "lon": 25.97168,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.90764,
+    "lon": 25.9724,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.46,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.51,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.25,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 2.46,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1765,
+   "name": "Βαλμάς",
+   "region": "south-aegean-ios",
+   "lat": 36.71569,
+   "lon": 25.26968,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.62,
+   "ownWater": {
+    "lat": 36.71555,
+    "lon": 25.26954,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 36.71546,
+    "lon": 25.2686,
+    "offsetM": 100
+   },
+   "originGapM": 84,
+   "own": {
+    "maxFetchKm": 0.58,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.38,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2202,
+   "name": "Λίμνη Κάτω Κουφονησίου",
+   "region": "south-aegean-koufonisia",
+   "lat": 36.92116,
+   "lon": 25.58906,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.16,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 3.58,
+   "ownWater": {
+    "lat": 36.92125,
+    "lon": 25.58906,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.92161,
+    "lon": 25.58809,
+    "offsetM": 100
+   },
+   "originGapM": 95,
+   "own": {
+    "maxFetchKm": 2.33,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.2,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 2.33,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2033,
+   "name": "Λιβάδια (Παροικιά)",
+   "region": "south-aegean-paros",
+   "lat": 37.09343,
+   "lon": 25.15494,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.54,
+   "ownWater": {
+    "lat": 37.09343,
+    "lon": 25.15494,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.09343,
+    "lon": 25.15494,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.14,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 2.14,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.64,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.2,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1839,
+   "name": "Άγιος Μηνάς",
+   "region": "south-aegean-kimolos",
+   "lat": 36.80594,
+   "lon": 24.59002,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 7.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.52,
+   "ownWater": {
+    "lat": 36.80594,
+    "lon": 24.59002,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.80594,
+    "lon": 24.59002,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.75,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.94,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.75,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2203,
+   "name": "Λουτρό",
+   "region": "south-aegean-koufonisia",
+   "lat": 36.93159,
+   "lon": 25.59622,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.96,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.48,
+   "ownWater": {
+    "lat": 36.93159,
+    "lon": 25.59622,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.93159,
+    "lon": 25.59622,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.38,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.91,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.38,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.4,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2041,
+   "name": "Ναυτικός όμιλος Πάρου",
+   "region": "south-aegean-paros",
+   "lat": 37.09379,
+   "lon": 25.15549,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.92,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.46,
+   "ownWater": {
+    "lat": 37.09337,
+    "lon": 25.1553,
+    "offsetM": 50
+   },
+   "builderOrigin": {
+    "lat": 37.09289,
+    "lon": 25.15549,
+    "offsetM": 100
+   },
+   "originGapM": 56,
+   "own": {
+    "maxFetchKm": 2.27,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.52,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 2.27,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.66,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1168,
+   "name": "Νότια Παραλία Σκορπιού",
+   "region": "ionian-islands-lefkada",
+   "lat": 38.68797,
+   "lon": 20.74157,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.88,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 3.44,
+   "ownWater": {
+    "lat": 38.68797,
+    "lon": 20.74157,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.68797,
+    "lon": 20.74157,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.83,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.83,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.49,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1658,
+   "name": "Άγιος Παύλος",
+   "region": "south-aegean-amorgos",
+   "lat": 36.87859,
+   "lon": 25.93077,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.6,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.3,
+   "ownWater": {
+    "lat": 36.87882,
+    "lon": 25.93094,
+    "offsetM": 30
+   },
+   "builderOrigin": {
+    "lat": 36.87949,
+    "lon": 25.93077,
+    "offsetM": 100
+   },
+   "originGapM": 76,
+   "own": {
+    "maxFetchKm": 1.52,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.52,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.6,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1945,
+   "name": "Άγιος Σώστης",
+   "region": "south-aegean-mykonos",
+   "lat": 37.48411,
+   "lon": 25.3598,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.6,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.3,
+   "ownWater": {
+    "lat": 37.48411,
+    "lon": 25.3598,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.48411,
+    "lon": 25.3598,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.16,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.97,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.16,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.49,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1414,
+   "name": "Ροδίτσες",
+   "region": "north-aegean-samos",
+   "lat": 37.76258,
+   "lon": 26.96782,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.56,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.28,
+   "ownWater": {
+    "lat": 37.76258,
+    "lon": 26.96782,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.76258,
+    "lon": 26.96782,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.63,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.29,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.63,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.71,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1971,
+   "name": "Ταρσανάς",
+   "region": "south-aegean-mykonos",
+   "lat": 37.46473,
+   "lon": 25.38023,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.52,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.26,
+   "ownWater": {
+    "lat": 37.46468,
+    "lon": 25.38013,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.46563,
+    "lon": 25.38023,
+    "offsetM": 100
+   },
+   "originGapM": 105,
+   "own": {
+    "maxFetchKm": 0.84,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.65,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.84,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1557,
+   "name": "Θυνί",
+   "region": "peloponnese-lakonia-mainland",
+   "lat": 36.98528,
+   "lon": 22.99946,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.32,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.16,
+   "ownWater": {
+    "lat": 36.98528,
+    "lon": 22.99946,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.98528,
+    "lon": 22.99946,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.05,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.05,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.7,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 324,
+   "name": "Πετρίτσα",
+   "region": "central-greece-skyros",
+   "lat": 38.90937,
+   "lon": 24.46042,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.12,
+   "ownWater": {
+    "lat": 38.90937,
+    "lon": 24.46042,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.90937,
+    "lon": 24.46042,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.84,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.84,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 483,
+   "name": "Παραλία Φτερωτή",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.2042563,
+   "lon": 23.764481,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.24,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.12,
+   "ownWater": {
+    "lat": 40.20426,
+    "lon": 23.76448,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 40.20426,
+    "lon": 23.76448,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.73,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.73,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.51,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1475,
+   "name": "Καλαμάκι",
+   "region": "peloponnese-argolida-mainland",
+   "lat": 37.64175,
+   "lon": 23.16198,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.16,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 3.08,
+   "ownWater": {
+    "lat": 37.64175,
+    "lon": 23.16198,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.64175,
+    "lon": 23.16198,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.64,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.64,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.41,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1483,
+   "name": "Παραλία Αγίου Νικολάου - Κονδύλι",
+   "region": "peloponnese-argolida-mainland",
+   "lat": 37.53061,
+   "lon": 22.93529,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.16,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 3.08,
+   "ownWater": {
+    "lat": 37.53052,
+    "lon": 22.93527,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.52983,
+    "lon": 22.93586,
+    "offsetM": 100
+   },
+   "originGapM": 93,
+   "own": {
+    "maxFetchKm": 1.97,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.86,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.97,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.19,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.61,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1957,
+   "name": "Κόρφος",
+   "region": "south-aegean-mykonos",
+   "lat": 37.42656,
+   "lon": 25.32182,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.04,
+   "ownWater": {
+    "lat": 37.42674,
+    "lon": 25.32182,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 37.42746,
+    "lon": 25.32182,
+    "offsetM": 100
+   },
+   "originGapM": 80,
+   "own": {
+    "maxFetchKm": 1.29,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.29,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.33,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.4,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 3091,
+   "name": "Παραλία Κάτω Μέζαπος",
+   "region": "peloponnese-lakonia-mainland",
+   "lat": 36.5446735,
+   "lon": 22.388999,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 6.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 3.02,
+   "ownWater": {
+    "lat": 36.54458,
+    "lon": 22.38881,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 36.54377,
+    "lon": 22.389,
+    "offsetM": 100
+   },
+   "originGapM": 92,
+   "own": {
+    "maxFetchKm": 0.41,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.41,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2146,
+   "name": "Παραλία Λωτό",
+   "region": "south-aegean-syros",
+   "lat": 37.44325,
+   "lon": 24.89617,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.84,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.92,
+   "ownWater": {
+    "lat": 37.44325,
+    "lon": 24.89617,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.44325,
+    "lon": 24.89617,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.74,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.74,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.35,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.42,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1178,
+   "name": "Άγιος Ιωάννης",
+   "region": "ionian-islands-meganisi",
+   "lat": 38.6451266,
+   "lon": 20.7372088,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.76,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.88,
+   "ownWater": {
+    "lat": 38.64519,
+    "lon": 20.73699,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 38.64603,
+    "lon": 20.73721,
+    "offsetM": 100
+   },
+   "originGapM": 95,
+   "own": {
+    "maxFetchKm": 2.4,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.4,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.8,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.32,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.93,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2363,
+   "name": "Κόκκινη παραλία",
+   "region": "south-aegean-leros",
+   "lat": 37.12185,
+   "lon": 26.83272,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.76,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.88,
+   "ownWater": {
+    "lat": 37.12185,
+    "lon": 26.83272,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.12185,
+    "lon": 26.83272,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.32,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.16,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.32,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.68,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1696,
+   "name": "Βίντζι",
+   "region": "south-aegean-andros",
+   "lat": 37.77874,
+   "lon": 24.95557,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.72,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.86,
+   "ownWater": {
+    "lat": 37.77874,
+    "lon": 24.95557,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.77874,
+    "lon": 24.95557,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.46,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.75,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.46,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.11,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2368,
+   "name": "Όρμος Μπελφούτη",
+   "region": "south-aegean-leros",
+   "lat": 37.18844,
+   "lon": 26.81696,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.56,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.78,
+   "ownWater": {
+    "lat": 37.18844,
+    "lon": 26.81696,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.18844,
+    "lon": 26.81696,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.86,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.65,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.86,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1317,
+   "name": "Καμπί",
+   "region": "north-aegean-fournoi",
+   "lat": 37.56972,
+   "lon": 26.47715,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.52,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.76,
+   "ownWater": {
+    "lat": 37.56972,
+    "lon": 26.47715,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.56972,
+    "lon": 26.47715,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.66,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.66,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.44,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1867,
+   "name": "Απόκρουσης",
+   "region": "south-aegean-kythnos",
+   "lat": 37.41258,
+   "lon": 24.39717,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.48,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.74,
+   "ownWater": {
+    "lat": 37.41258,
+    "lon": 24.39717,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.41258,
+    "lon": 24.39717,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.66,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.3,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.66,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1798,
+   "name": "Τρεις Κλεισιές βόρειος",
+   "region": "south-aegean-ios",
+   "lat": 36.67298,
+   "lon": 25.38797,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.44,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.72,
+   "ownWater": {
+    "lat": 36.67298,
+    "lon": 25.38797,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.67298,
+    "lon": 25.38797,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.73,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.27,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.73,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.36,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1661,
+   "name": "Κάτω Κάμπος",
+   "region": "south-aegean-amorgos",
+   "lat": 36.80595,
+   "lon": 25.78361,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.36,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.68,
+   "ownWater": {
+    "lat": 36.80613,
+    "lon": 25.78361,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 36.80682,
+    "lon": 25.7839,
+    "offsetM": 100
+   },
+   "originGapM": 81,
+   "own": {
+    "maxFetchKm": 0.54,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.36,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.54,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2500,
+   "name": "Μαράθι",
+   "region": "south-aegean-marathi",
+   "lat": 37.36664,
+   "lon": 26.72496,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.36,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.68,
+   "ownWater": {
+    "lat": 37.36687,
+    "lon": 26.72545,
+    "offsetM": 50
+   },
+   "builderOrigin": {
+    "lat": 37.36728,
+    "lon": 26.72576,
+    "offsetM": 100
+   },
+   "originGapM": 53,
+   "own": {
+    "maxFetchKm": 1.22,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.22,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.51,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1529,
+   "name": "Μεγάλο Αμόνι",
+   "region": "peloponnese-korinthia-mainland",
+   "lat": 37.834,
+   "lon": 23.12975,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.2,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.6,
+   "ownWater": {
+    "lat": 37.834,
+    "lon": 23.12975,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.834,
+    "lon": 23.12975,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.31,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.31,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1018,
+   "name": "Mongonisi",
+   "region": "ionian-islands-paxos",
+   "lat": 39.1821,
+   "lon": 20.20551,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.16,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.58,
+   "ownWater": {
+    "lat": 39.1821,
+    "lon": 20.20551,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.18187,
+    "lon": 20.20439,
+    "offsetM": 100
+   },
+   "originGapM": 100,
+   "own": {
+    "maxFetchKm": 0.23,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.11,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.23,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 632,
+   "name": "Βαθύ",
+   "region": "crete-crete-heraklion",
+   "lat": 34.95208,
+   "lon": 24.75473,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.08,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.54,
+   "ownWater": {
+    "lat": 34.95191,
+    "lon": 24.7548,
+    "offsetM": 20
+   },
+   "builderOrigin": {
+    "lat": 34.95118,
+    "lon": 24.75473,
+    "offsetM": 100
+   },
+   "originGapM": 81,
+   "own": {
+    "maxFetchKm": 0.27,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.13,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.27,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1659,
+   "name": "Καλοκαταρίτισσα",
+   "region": "south-aegean-amorgos",
+   "lat": 36.79318,
+   "lon": 25.74337,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5.04,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.52,
+   "ownWater": {
+    "lat": 36.79326,
+    "lon": 25.74343,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.79254,
+    "lon": 25.74416,
+    "offsetM": 100
+   },
+   "originGapM": 103,
+   "own": {
+    "maxFetchKm": 0.28,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.09,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.28,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2052,
+   "name": "Τούρκου Άμμος",
+   "region": "south-aegean-paros",
+   "lat": 37.14409,
+   "lon": 25.23238,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 5,
+    "allBlocked": false,
+    "minBlockedRatio": 0.8
+   },
+   "sampleDistanceKm": 2.5,
+   "ownWater": {
+    "lat": 37.14409,
+    "lon": 25.23238,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 37.14409,
+    "lon": 25.23238,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.69,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.16,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.69,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.73,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.24,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 908,
+   "name": "Παραλία Έλενα",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.45918,
+   "lon": 20.26224,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 4.88,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 2.44,
+   "ownWater": {
+    "lat": 39.45918,
+    "lon": 20.26224,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.45918,
+    "lon": 20.26224,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.71,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.08,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.66,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 2.71,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 1.62,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 907,
+   "name": "Παραλία Plataria Beach Hotel",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.45981,
+   "lon": 20.25983,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 4.8,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 2.4,
+   "ownWater": {
+    "lat": 39.45981,
+    "lon": 20.25983,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.45981,
+    "lon": 20.25983,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.93,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.3,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.39,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 1.78,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 1.93,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.76,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2552,
+   "name": "Παραλία Κουλούρι",
+   "region": "west-greece-aetolia-acarnania-mainland",
+   "lat": 38.90711,
+   "lon": 21.11463,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 4.68,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 2.34,
+   "ownWater": {
+    "lat": 38.90709,
+    "lon": 21.11474,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.90801,
+    "lon": 21.11463,
+    "offsetM": 100
+   },
+   "originGapM": 102,
+   "own": {
+    "maxFetchKm": 0.45,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.22,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.45,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.29,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2317,
+   "name": "Μανδράκι",
+   "region": "south-aegean-kastellorizo",
+   "lat": 36.14749,
+   "lon": 29.59848,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 4.4,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": 2.2,
+   "ownWater": {
+    "lat": 36.14749,
+    "lon": 29.59848,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.14749,
+    "lon": 29.59848,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.82,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.82,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.44,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.23,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1137,
+   "name": "Αγιά Σοφία",
+   "region": "ionian-islands-kefalonia",
+   "lat": 38.37142,
+   "lon": 20.61272,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.72,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.37151,
+    "lon": 20.61272,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.37232,
+    "lon": 20.61272,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.82,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.82,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.87,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.05,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1079,
+   "name": "Ξυλοκάραβο",
+   "region": "ionian-islands-kefalonia",
+   "lat": 38.44336,
+   "lon": 20.58216,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.68,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.44341,
+    "lon": 20.58226,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.44359,
+    "lon": 20.58327,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.54,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.73,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 2.54,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.07,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2467,
+   "name": "Πέδι",
+   "region": "south-aegean-symi",
+   "lat": 36.61318,
+   "lon": 27.85664,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.64,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 36.61327,
+    "lon": 27.85664,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 36.61408,
+    "lon": 27.85664,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.59,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.34,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.59,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.42,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.08,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.12,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2367,
+   "name": "Παραλία Μπλεφούτης",
+   "region": "south-aegean-leros",
+   "lat": 37.18854,
+   "lon": 26.8216,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.44,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 37.18863,
+    "lon": 26.8216,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.18944,
+    "lon": 26.8216,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.56,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.56,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 913,
+   "name": "Παραλία Καλάμι",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.4732,
+   "lon": 20.24016,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.32,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 39.4732,
+    "lon": 20.24016,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.4732,
+    "lon": 20.24016,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 2.64,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.16,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.63,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 2.64,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.75,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1496,
+   "name": "Βιβάρι",
+   "region": "peloponnese-argolida-mainland",
+   "lat": 37.536694,
+   "lon": 22.919794,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.28,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 37.53665,
+    "lon": 22.91989,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.53669,
+    "lon": 22.92093,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 1.19,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.44,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 1.19,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.58,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.32,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2219,
+   "name": "Βορεινή Σπηλιά",
+   "region": "south-aegean-iraklia",
+   "lat": 36.85334,
+   "lon": 25.45197,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.28,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 36.85334,
+    "lon": 25.45197,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 36.85412,
+    "lon": 25.45253,
+    "offsetM": 100
+   },
+   "originGapM": 100,
+   "own": {
+    "maxFetchKm": 1.9,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 1.9,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.87,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.04,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 340,
+   "name": "Γιάννακης",
+   "region": "central-greece-fokida-mainland",
+   "lat": 38.37623,
+   "lon": 22.3942,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.24,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.37623,
+    "lon": 22.3942,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 38.37623,
+    "lon": 22.3942,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 1.86,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 1.86,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 1.66,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 486,
+   "name": "Παραλία Γαλήνη",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.22699,
+   "lon": 23.7572005,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.2,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 40.22699,
+    "lon": 23.7572,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 40.22699,
+    "lon": 23.7572,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.82,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.22,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.76,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.82,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 3007,
+   "name": "Αμμουλιανή",
+   "region": "central-macedonia-halkidiki-mainland",
+   "lat": 40.3340593,
+   "lon": 23.9201432,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.2,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 40.33415,
+    "lon": 23.92014,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 40.33496,
+    "lon": 23.92014,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.54,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.08,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 2.54,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.72,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.22,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1228,
+   "name": "Παραλία Μνήματα",
+   "region": "ionian-islands-ithaca",
+   "lat": 38.38058,
+   "lon": 20.71768,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.2,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.38067,
+    "lon": 20.71768,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.38148,
+    "lon": 20.71768,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 2.63,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.2,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.23,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.14,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 2.63,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2167,
+   "name": "Κουμέλας",
+   "region": "south-aegean-tinos",
+   "lat": 37.67231,
+   "lon": 25.00157,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.16,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 37.67222,
+    "lon": 25.00157,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.67144,
+    "lon": 25.00128,
+    "offsetM": 100
+   },
+   "originGapM": 90,
+   "own": {
+    "maxFetchKm": 0.56,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.07,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.54,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.56,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.15,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 354,
+   "name": "Σκούλες Μικρή και Μεγάλη",
+   "region": "central-greece-fokida-mainland",
+   "lat": 38.37736,
+   "lon": 22.39029,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.12,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.37743,
+    "lon": 22.39022,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 38.37826,
+    "lon": 22.39029,
+    "offsetM": 100
+   },
+   "originGapM": 93,
+   "own": {
+    "maxFetchKm": 2.34,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 2.34,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.69,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.17,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.21,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 1.22,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 2134,
+   "name": "Γράμματα",
+   "region": "south-aegean-syros",
+   "lat": 37.49928,
+   "lon": 24.88801,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.12,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 37.4993,
+    "lon": 24.88812,
+    "offsetM": 10
+   },
+   "builderOrigin": {
+    "lat": 37.49905,
+    "lon": 24.8891,
+    "offsetM": 100
+   },
+   "originGapM": 91,
+   "own": {
+    "maxFetchKm": 0.96,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0.1,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0.96,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0.8,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 897,
+   "name": "Κάρβουνο",
+   "region": "epirus-thesprotia-mainland",
+   "lat": 39.40421,
+   "lon": 20.23453,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.08,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 39.40421,
+    "lon": 20.23453,
+    "offsetM": 0
+   },
+   "builderOrigin": {
+    "lat": 39.40421,
+    "lon": 20.23453,
+    "offsetM": 0
+   },
+   "originGapM": 0,
+   "own": {
+    "maxFetchKm": 0.35,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.31,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.02,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.01,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.03,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.35,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  },
+  {
+   "id": 1177,
+   "name": "Αθερινός",
+   "region": "ionian-islands-meganisi",
+   "lat": 38.661762,
+   "lon": 20.7995502,
+   "confidence": "high",
+   "shipped": {
+    "maxFetchKm": 3.04,
+    "allBlocked": true,
+    "minBlockedRatio": 1
+   },
+   "sampleDistanceKm": null,
+   "ownWater": {
+    "lat": 38.66197,
+    "lon": 20.79933,
+    "offsetM": 30
+   },
+   "builderOrigin": {
+    "lat": 38.66267,
+    "lon": 20.79955,
+    "offsetM": 100
+   },
+   "originGapM": 79,
+   "own": {
+    "maxFetchKm": 0.45,
+    "allBlocked": true,
+    "sectors": {
+     "N": {
+      "fetchKm": 0.45,
+      "blockedRayRatio": 1
+     },
+     "NE": {
+      "fetchKm": 0.19,
+      "blockedRayRatio": 1
+     },
+     "E": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SE": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "S": {
+      "fetchKm": 0,
+      "blockedRayRatio": 1
+     },
+     "SW": {
+      "fetchKm": 0.06,
+      "blockedRayRatio": 1
+     },
+     "W": {
+      "fetchKm": 0.18,
+      "blockedRayRatio": 1
+     },
+     "NW": {
+      "fetchKm": 0.22,
+      "blockedRayRatio": 1
+     }
+    }
+   }
+  }
+ ]
+}

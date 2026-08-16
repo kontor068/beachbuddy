@@ -31,6 +31,9 @@
  *      node scripts/auditPerBeachWaveImpact.mjs --live
  *      node scripts/auditPerBeachWaveImpact.mjs --live --regions=north-aegean-lemnos
  */
+// Routes this script through the PAID Open-Meteo plan when OPEN_METEO_API_KEY is in the
+// environment, and changes nothing when it is not. See scripts/lib/paidOpenMeteo.mjs.
+import './lib/paidOpenMeteo.mjs';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -81,6 +84,7 @@ const { processForecastData, applyMarineToDailyForecast } = require(path.join(ro
 const { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } = require(path.join(root, 'utils/waveCharacter.ts'));
 const { fetchForecastDataBatch, fetchMarineForecastDataBatch, mergeMarineForecastData } =
   require(path.join(root, 'services/weatherService.ts'));
+
 
 const args = process.argv.slice(2);
 const LIVE = args.includes('--live');

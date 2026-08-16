@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:32.069Z",
+  "generatedAt": "2026-08-16T17:56:07.280Z",
   "region": {
     "id": "south-aegean-syros",
     "name": "Syros"
@@ -537,7 +537,13 @@
           "intensity": 63.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4369,
+        "lon": 24.8523,
+        "bearingDeg": 315,
+        "distanceKm": 2.72
+      }
     },
     "2131": {
       "beachId": 2131,
@@ -1449,7 +1455,13 @@
           "intensity": 25.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.3737,
+        "lon": 24.9245,
+        "bearingDeg": 225,
+        "distanceKm": 2.6
+      }
     },
     "2144": {
       "beachId": 2144,
@@ -1674,7 +1686,13 @@
           "intensity": 59.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4695,
+        "lon": 24.8962,
+        "bearingDeg": 0,
+        "distanceKm": 2.92
+      }
     },
     "2147": {
       "beachId": 2147,

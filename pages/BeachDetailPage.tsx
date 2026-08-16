@@ -22,7 +22,7 @@ import {
 } from '../services/recommendationService';
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
-import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, buildBeachExposureParams } from '../services/analyticsService';
+import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, ObservedTiming, buildBeachExposureParams } from '../services/analyticsService';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
@@ -821,6 +821,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const showConditions = !conditionsUnavailable;
   const isFavorite = favorites.includes(beach.id);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  // Set the moment a verdict button is tapped; the second step ("when were you there?") shows
+  // until it resolves to a submit. Kept separate from feedbackSubmitted so the first tap doesn't
+  // already read as "done" while we're still waiting on the timing answer.
+  const [pendingFeedbackVerdict, setPendingFeedbackVerdict] = useState<ConditionFeedbackVerdict | null>(null);
   /**
    * The id every committed per-beach FILE is keyed by.
    *
@@ -908,6 +912,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
        τα πατάει μόνο όποιος βρήκε κάτι ΔΙΑΦΟΡΕΤΙΚΟ από την πρόβλεψη. */
     feedbackTitle: { en: 'Did it match what we told you?', gr: 'Ταίριαζε με αυτό που σου είπαμε;', de: 'Hat es gestimmt, was wir gesagt haben?', it: 'Corrispondeva a quello che ti abbiamo detto?', fr: 'Cela correspondait-il à notre prévision ?' },
     feedbackText: { en: 'Tap one of the others only if we got it wrong — that is how we fix the recommendations.', gr: 'Πάτα κάτι από τα υπόλοιπα μόνο αν πέσαμε έξω — έτσι διορθώνουμε τις προτάσεις.', de: 'Tippe die anderen nur an, wenn wir danebenlagen — so verbessern wir die Empfehlungen.', it: 'Tocca le altre solo se abbiamo sbagliato — così miglioriamo i consigli.', fr: 'Choisissez une autre réponse seulement si nous nous sommes trompés — cela améliore nos recommandations.' },
+    // Second step, shown right after the verdict button. Without it, a report typed at 22:00
+    // about a beach visited at 09:00 reads as an evening observation — see ObservedTiming.
+    feedbackWhenTitle: { en: 'When were you there?', gr: 'Πότε ήσουν εκεί;', de: 'Wann warst du dort?', it: 'Quando eri lì?', fr: 'Quand y étiez-vous ?' },
+    feedbackWhenNow: { en: 'I am there now', gr: 'Τώρα είμαι εκεί', de: 'Ich bin gerade dort', it: 'Sono lì ora', fr: 'J y suis maintenant' },
+    feedbackWhenMorning: { en: 'This morning', gr: 'Το πρωί', de: 'Heute Vormittag', it: 'Stamattina', fr: 'Ce matin' },
+    feedbackWhenMidday: { en: 'Around midday', gr: 'Το μεσημέρι', de: 'Am Mittag', it: 'A mezzogiorno', fr: 'Vers midi' },
+    feedbackWhenEvening: { en: 'Afternoon / evening', gr: 'Απόγευμα / βράδυ', de: 'Nachmittags / abends', it: 'Pomeriggio / sera', fr: 'Après-midi / soir' },
+    feedbackWhenSkip: { en: "I don't remember", gr: 'Δεν θυμάμαι', de: 'Weiß ich nicht mehr', it: 'Non ricordo', fr: 'Je ne me souviens plus' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     /* Was "Συνθήκες σήμερα" — a heading so general it could have introduced any of the
@@ -1053,7 +1065,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     };
   }, [onBack]);
 
+  // Step 1: verdict button tapped. Don't submit yet — ask when they were actually there first,
+  // so the report isn't stuck with only the click time (see pendingFeedbackVerdict above).
   const handleFeedback = (verdict: ConditionFeedbackVerdict) => {
+    setPendingFeedbackVerdict(verdict);
+  };
+
+  // Step 2: timing answered (or skipped via observedTiming === undefined). Actually submits.
+  const submitFeedback = (verdict: ConditionFeedbackVerdict, observedTiming?: ObservedTiming) => {
     // Pair the observed verdict with the modeled conditions so an offline pass can later
     // calibrate this beach/sector (roadmap #7). exposureLevel/windDir/windSpeedKmh are
     // derived below; this handler only runs on click, after they are initialised.
@@ -1063,10 +1082,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       windDir,
       date: selectedDate ? wallClockDayKey(selectedDate) : undefined,
       // The wave side of the record. Without what we CLAIMED the sea was, a "had waves" report
-      // can only ever calibrate the wind model. The hour matters because a 2 Bft morning and a
-      // 5 Bft afternoon are not the same day, and `live` separates someone standing in the water
-      // from someone reading about next Tuesday — opposite strengths of evidence.
+      // can only ever calibrate the wind model. `hour` is the click time, kept only as a
+      // fallback — `observedTiming` (below) is what the visitor actually told us, and `live`
+      // separates someone standing in the water from someone reading about next Tuesday.
       hour: athensNow().getHours(),
+      observedTiming,
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
       // ...και ο αριθμός που είχε ΜΠΡΟΣΤΑ ΤΟΥ όταν πάτησε το κουμπί. Από τις 13/08/2026 η οθόνη
@@ -2971,6 +2991,49 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   fr: 'Vous nous aidez énormément à nous améliorer — vous êtes nos yeux sur la plage.',
                 }[language]}</p>
               </div>
+            </div>
+          ) : pendingFeedbackVerdict ? (
+            // Step 2: which part of the day the visitor was actually at the beach. Without this,
+            // a report typed at 22:00 about a 09:00 visit has no time signal but the click itself.
+            <div className="space-y-2">
+              <p className="text-sm font-bold text-slate-900">{copy.feedbackWhenTitle[language]}</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'now')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackWhenNow[language]}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'morning')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackWhenMorning[language]}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'midday')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackWhenMidday[language]}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'evening')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackWhenEvening[language]}
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => submitFeedback(pendingFeedbackVerdict, 'unsure')}
+                className="w-full text-center text-xs font-semibold text-slate-400 underline decoration-dotted hover:text-slate-600"
+              >
+                {copy.feedbackWhenSkip[language]}
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">

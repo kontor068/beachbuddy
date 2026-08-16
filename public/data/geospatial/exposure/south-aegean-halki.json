@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:25.785Z",
+  "generatedAt": "2026-08-16T17:55:53.806Z",
   "region": {
     "id": "south-aegean-halki",
     "name": "Halki"
@@ -152,7 +152,13 @@
           "intensity": 10.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.2168,
+        "lon": 27.6537,
+        "bearingDeg": 90,
+        "distanceKm": 3.38
+      }
     },
     "2251": {
       "beachId": 2251,

@@ -167,6 +167,12 @@ export interface AnalyticsData {
 
 export type ConditionFeedbackVerdict = 'accurate' | 'had_waves' | 'too_windy' | 'calmer';
 
+// When the visitor was actually AT the beach, asked as a second step right after the verdict
+// button. Without this, `hour` below (the click time) is the only time signal we have, and a
+// report typed at 22:00 about a beach visited at 09:00 reads as an evening observation — the
+// exact confusion that made an 09/08/2026 owner ask for this field.
+export type ObservedTiming = 'now' | 'morning' | 'midday' | 'evening' | 'unsure';
+
 export interface FeedbackData {
   beachId: number;
   feedback: 'accurate' | 'not_accurate' | ConditionFeedbackVerdict;
@@ -183,8 +189,10 @@ export interface FeedbackData {
     beaufort?: number;
     windDir?: string;
     date?: string;
-    /** Athens hour of the observation — a 2 Bft morning and a 5 Bft afternoon are not one day. */
+    /** Athens hour the visitor CLICKED the feedback button — not necessarily when they swam. */
     hour?: number;
+    /** When the visitor says they were actually at the beach — see ObservedTiming above. */
+    observedTiming?: ObservedTiming;
     /** The sea state we claimed (m) and its period — what the report is evidence against. */
     seaStateWaveM?: number;
     seaStatePeriodS?: number;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:15.721Z",
+  "generatedAt": "2026-08-16T17:55:29.403Z",
   "region": {
     "id": "ionian-islands-lefkada",
     "name": "Lefkada"
@@ -300,7 +300,13 @@
           "intensity": 20.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.6757,
+        "lon": 20.7458,
+        "bearingDeg": 45,
+        "distanceKm": 3.26
+      }
     },
     "1142": {
       "beachId": 1142,
@@ -1220,10 +1226,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.5669,
-        "lon": 20.6445,
-        "bearingDeg": 191.7,
-        "distanceKm": 4.96
+        "lat": 38.566,
+        "lon": 20.6561,
+        "bearingDeg": 180,
+        "distanceKm": 4.96,
+        "via": "sector-S",
+        "verified": "served-cell"
       }
     },
     "1155": {
@@ -2065,7 +2073,13 @@
           "intensity": 2.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.7671,
+        "lon": 20.7489,
+        "bearingDeg": 135,
+        "distanceKm": 3.72
+      }
     },
     "1166": {
       "beachId": 1166,
@@ -2290,7 +2304,13 @@
           "intensity": 5.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.688,
+        "lon": 20.7812,
+        "bearingDeg": 90,
+        "distanceKm": 3.44
+      }
     },
     "1169": {
       "beachId": 1169,
@@ -2517,10 +2537,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.8726,
-        "lon": 20.5447,
-        "bearingDeg": 306.3,
-        "distanceKm": 10
+        "lat": 38.883,
+        "lon": 20.5561,
+        "bearingDeg": 315,
+        "distanceKm": 10,
+        "via": "sector-NW",
+        "verified": "served-cell"
       }
     },
     "3098": {

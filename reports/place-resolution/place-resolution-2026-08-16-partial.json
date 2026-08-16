@@ -1,0 +1,1160 @@
+{
+ "generatedAt": "2026-08-16T11:30:51.364Z",
+ "scope": {
+  "islands": [],
+  "regions": [
+   "south-aegean-karpathos"
+  ]
+ },
+ "totals": {
+  "PASS": 19,
+  "REVIEW": 11,
+  "FAIL": 5
+ },
+ "rows": [
+  {
+   "id": 2272,
+   "name": "Αχάτα",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.55718,
+    "lon": 27.2037
+   },
+   "query": "Αχάτα, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Αχάτα, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Achata",
+    "distanceMeters": 22,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Achata",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2274,
+   "name": "Αμμοοπή",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47693,
+    "lon": 27.19699
+   },
+   "query": "Αμμοοπή, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Αμμοοπή, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Αμμοοπή",
+    "distanceMeters": 150,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2275,
+   "name": "Απέλλα",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.60273,
+    "lon": 27.15944
+   },
+   "query": "Απέλλα, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Apella, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Apella",
+    "distanceMeters": 55,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Apella",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2277,
+   "name": "Φοινίκι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.49183,
+    "lon": 27.11709
+   },
+   "query": "Παραλία Φοινίκι, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Φοινίκι, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Φοινίκι",
+    "distanceMeters": 83,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Finiki Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2278,
+   "name": "Φωκιά",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.46547,
+    "lon": 27.18709
+   },
+   "query": "Φωκιά, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Fokia, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Fokia",
+    "distanceMeters": 47,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 762,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 2279,
+   "name": "Φορόκλι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.71263,
+    "lon": 27.20144
+   },
+   "query": "Φορόκλι, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Forokli, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Forókli",
+    "distanceMeters": 25,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2281,
+   "name": "Γιαλού Χωράφι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.58733,
+    "lon": 27.06998
+   },
+   "query": "Παραλία Γιαλού Χωράφι, Karpathos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Gialou Chorafi",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2282,
+   "name": "Καστέλια",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47299,
+    "lon": 27.193894
+   },
+   "query": "Καστέλια, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καστέλια, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Kastelia Beach",
+    "distanceMeters": 30,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Kastelia Beach",
+    "distanceMeters": 30,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2285,
+   "name": "Κάπι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.70727,
+    "lon": 27.19935
+   },
+   "query": "Κάπι, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κάπι, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Kápi",
+    "distanceMeters": 32,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Kápi",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2286,
+   "name": "Λακκί",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47434,
+    "lon": 27.19506
+   },
+   "query": "Παραλία Λακκί, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λακκί, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Λακκί",
+    "distanceMeters": 451,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Lakki Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2287,
+   "name": "Λάρες",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.61432,
+    "lon": 27.08772
+   },
+   "query": "Λάρες, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λάρες, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Lares",
+    "distanceMeters": 38,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Lares",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2288,
+   "name": "Μικρή Αμμοοπή",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47898,
+    "lon": 27.19776
+   },
+   "query": "Παραλία Μικρή Αμμοοπή, Karpathos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Amopi",
+    "distanceMeters": 238,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 2291,
+   "name": "Νάτι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.70048,
+    "lon": 27.19221
+   },
+   "query": "Νάτι, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Νάτι, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Náti",
+    "distanceMeters": 30,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Náti",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2293,
+   "name": "Λιμάνι Παναγιάς",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.58738,
+    "lon": 27.06778
+   },
+   "query": "Παραλία Λιμάνι Παναγιάς, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λιμάνι Παναγιάς, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Panagias Limani",
+    "distanceMeters": 31,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Panagias Limani",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2294,
+   "name": "Παπάς Μηνάς",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.73672,
+    "lon": 27.21745
+   },
+   "query": "Παραλία Παπάς Μηνάς, Karpathos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Papás Minás",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2296,
+   "name": "Ποτάλι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.58226,
+    "lon": 27.07792
+   },
+   "query": "Ποτάλι, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Ποτάλι, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Potali Bay",
+    "distanceMeters": 77,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Potali Bay",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2297,
+   "name": "Της Πέρδικας Ποταμός",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.59657,
+    "lon": 27.06314
+   },
+   "query": "Παραλία Της Πέρδικας Ποταμός, Karpathos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "tis Perdikas Potamos",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2298,
+   "name": "Βανάντα",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.77092,
+    "lon": 27.20967
+   },
+   "query": "Βανάντα, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Βανάντα, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Βανάντα-Βουργούντα-Στιόι-Αυλώνας-Τρίστομο (Ολύμπου-Καρπάθου)",
+    "distanceMeters": 3290,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Vanánda",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 2299,
+   "name": "Βοτσαλάκια",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.4752,
+    "lon": 27.19663
+   },
+   "query": "Βοτσαλάκια, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Votsalakia, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Votsalakia beach",
+    "distanceMeters": 18,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2300,
+   "name": "Όψη",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.7265,
+    "lon": 27.21588
+   },
+   "query": "Παραλία Όψη, Karpathos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": null
+  },
+  {
+   "id": 2301,
+   "name": "Άγιος Μηνάς",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.68969,
+    "lon": 27.19021
+   },
+   "query": "Άγιος Μηνάς, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Άγιος Μηνάς, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Agios Minás",
+    "distanceMeters": 37,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Agios Minás",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2303,
+   "name": "Αργιλαοπόταμος",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.42957,
+    "lon": 27.11041
+   },
+   "query": "Αργιλαοπόταμος, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Αργιλαοπόταμος, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Αργιλαοπόταμος",
+    "distanceMeters": 37,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Αργιλαοπόταμος",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2304,
+   "name": "Βάθια",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.44053,
+    "lon": 27.15662
+   },
+   "query": "Παραλία Βάθια, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Βάθια, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Βάθια",
+    "distanceMeters": 70,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Χριστού Πηγάδι",
+    "distanceMeters": 975,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 2305,
+   "name": "Δαματριά",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.45365,
+    "lon": 27.16653
+   },
+   "query": "Δαματριά, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Δαματριά, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Δαματριά",
+    "distanceMeters": 8,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Δαματριά",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2306,
+   "name": "Κάτω Λάκκος",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.578136,
+    "lon": 27.18659
+   },
+   "query": "Κάτω Λάκκος, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κάτω Λάκκος, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Κάτω Λάκκος",
+    "distanceMeters": 244,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 253,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 2307,
+   "name": "Κήπος Μιχαλιού",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.4293,
+    "lon": 27.12712
+   },
+   "query": "Κήπος Μιχαλιού, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κήπος Μιχαλιού, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Κήπος Μιχαλιού",
+    "distanceMeters": 19,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Κήπος Μιχαλιού",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2308,
+   "name": "Κυρά Παναγιά",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.588,
+    "lon": 27.17865
+   },
+   "query": "Παραλία Κυρά Παναγιά, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κυρά Παναγιά, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Κυρά Παναγιά",
+    "distanceMeters": 8,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Κυρά Παναγιά",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2309,
+   "name": "Μακρύγιαλος",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.4254,
+    "lon": 27.15134
+   },
+   "query": "Μακρύγιαλος, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Μακρύγιαλος, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Μακρύγιαλος",
+    "distanceMeters": 32,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Μακρύγιαλος",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2310,
+   "name": "Παραλία Άγιος Θεόδωρος",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.44559,
+    "lon": 27.0829
+   },
+   "query": "Παραλία Άγιος Θεόδωρος, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Άγιος Θεόδωρος, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Άγιος Θεόδωρος",
+    "distanceMeters": 18,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2311,
+   "name": "Παραλία Αγίου Νικολάου",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47347,
+    "lon": 27.11233
+   },
+   "query": "Παραλία Αγίου Νικολάου, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Αγίου Νικολάου, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αγίου Νικολάου",
+    "distanceMeters": 5,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Αγίου Νικολάου",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2312,
+   "name": "Παραλία Αγνόντια",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.66785,
+    "lon": 27.17671
+   },
+   "query": "Παραλία Αγνόντια, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Αγνόντια, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αγνόντια",
+    "distanceMeters": 25,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2313,
+   "name": "Παραλία Αρκάσα",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.47623,
+    "lon": 27.11573
+   },
+   "query": "Παραλία Αρκάσα, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Αρκάσα, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αρκάσα",
+    "distanceMeters": 2,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Αρκάσα",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2314,
+   "name": "Παραλία Διακοφτης",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.41001,
+    "lon": 27.15277
+   },
+   "query": "Παραλία Διακοφτης, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Διακοφτης, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Διακοφτης",
+    "distanceMeters": 37,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2315,
+   "name": "Χριστού Πηγάδι",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.44842,
+    "lon": 27.16132
+   },
+   "query": "Χριστού Πηγάδι, Karpathos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Χριστού Πηγάδι, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Χριστού Πηγάδι",
+    "distanceMeters": 27,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Χριστού Πηγάδι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2316,
+   "name": "Ψωράρης",
+   "regionId": "south-aegean-karpathos",
+   "island": "Karpathos",
+   "coordinate": {
+    "lat": 35.42885,
+    "lon": 27.1289
+   },
+   "query": "Παραλία Ψωράρης, Karpathos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Ψωράρης, Karpathos",
+   "best": {
+    "source": "nominatim",
+    "name": "Ψωράρης",
+    "distanceMeters": 21,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Ψωράρης",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  }
+ ]
+}

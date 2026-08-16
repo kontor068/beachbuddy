@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:09.818Z",
+  "generatedAt": "2026-08-16T17:55:14.930Z",
   "region": {
     "id": "epirus-preveza-mainland",
     "name": "Preveza"
@@ -383,7 +383,13 @@
           "intensity": 1.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.2544,
+        "lon": 20.4662,
+        "bearingDeg": 180,
+        "distanceKm": 2.8
+      }
     },
     "866": {
       "beachId": 866,
@@ -687,10 +693,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.9133,
-        "lon": 20.7051,
-        "bearingDeg": 225,
-        "distanceKm": 5.22
+        "lat": 38.9169,
+        "lon": 20.7515,
+        "bearingDeg": 174.4,
+        "distanceKm": 3.3,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "870": {

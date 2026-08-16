@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.237Z",
+  "generatedAt": "2026-08-16T17:55:58.915Z",
   "region": {
     "id": "south-aegean-kimolos",
     "name": "Kimolos"
@@ -154,10 +154,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.8726,
-        "lon": 24.4783,
-        "bearingDeg": 305.2,
-        "distanceKm": 7.5
+        "lat": 36.8562,
+        "lon": 24.5472,
+        "bearingDeg": 0,
+        "distanceKm": 2.5,
+        "via": "sector-N",
+        "verified": "served-cell"
       }
     },
     "1839": {
@@ -229,7 +231,13 @@
           "intensity": 0.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7836,
+        "lon": 24.618,
+        "bearingDeg": 135,
+        "distanceKm": 3.52
+      }
     },
     "1840": {
       "beachId": 1840,
@@ -610,10 +618,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.7039,
-        "lon": 24.5344,
-        "bearingDeg": 188.9,
-        "distanceKm": 7.9
+        "lat": 36.7207,
+        "lon": 24.6147,
+        "bearingDeg": 135,
+        "distanceKm": 8.4,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "1847": {
@@ -1224,7 +1234,13 @@
           "intensity": 2.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7922,
+        "lon": 24.5995,
+        "bearingDeg": 180,
+        "distanceKm": 3.58
+      }
     },
     "1856": {
       "beachId": 1856,
@@ -1372,7 +1388,13 @@
           "intensity": 0.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7644,
+        "lon": 24.6054,
+        "bearingDeg": 135,
+        "distanceKm": 3.4
+      }
     }
   }
 }

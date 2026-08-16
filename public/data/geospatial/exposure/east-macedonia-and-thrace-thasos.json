@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:08.953Z",
+  "generatedAt": "2026-08-16T17:55:12.286Z",
   "region": {
     "id": "east-macedonia-and-thrace-thasos",
     "name": "Thasos"
@@ -2847,7 +2847,13 @@
           "intensity": 57.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.7764,
+        "lon": 24.7676,
+        "bearingDeg": 0,
+        "distanceKm": 3.56
+      }
     },
     "837": {
       "beachId": 837,

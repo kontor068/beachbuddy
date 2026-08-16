@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:56.195Z",
+  "generatedAt": "2026-08-16T17:54:39.067Z",
   "region": {
     "id": "central-greece-skyros",
     "name": "Skyros"
@@ -229,7 +229,13 @@
           "intensity": 20.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.7581,
+        "lon": 24.6159,
+        "bearingDeg": 225,
+        "distanceKm": 2.78
+      }
     },
     "317": {
       "beachId": 317,
@@ -454,7 +460,13 @@
           "intensity": 20.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.8255,
+        "lon": 24.5037,
+        "bearingDeg": 225,
+        "distanceKm": 3.8
+      }
     },
     "320": {
       "beachId": 320,
@@ -833,7 +845,13 @@
           "intensity": 57.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.9374,
+        "lon": 24.4604,
+        "bearingDeg": 0,
+        "distanceKm": 3.12
+      }
     },
     "325": {
       "beachId": 325,

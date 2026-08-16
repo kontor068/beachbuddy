@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:30.674Z",
+  "generatedAt": "2026-08-16T17:56:03.892Z",
   "region": {
     "id": "south-aegean-mykonos",
     "name": "Mykonos"
@@ -306,7 +306,13 @@
           "intensity": 45.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.3841,
+        "lon": 25.3163,
+        "bearingDeg": 225,
+        "distanceKm": 3.96
+      }
     },
     "1943": {
       "beachId": 1943,
@@ -531,7 +537,13 @@
           "intensity": 4.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4841,
+        "lon": 25.3972,
+        "bearingDeg": 90,
+        "distanceKm": 3.3
+      }
     },
     "1946": {
       "beachId": 1946,
@@ -1449,7 +1461,13 @@
           "intensity": 57.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4539,
+        "lon": 25.3218,
+        "bearingDeg": 0,
+        "distanceKm": 3.04
+      }
     },
     "1958": {
       "beachId": 1958,
@@ -1982,7 +2000,13 @@
           "intensity": 17.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4963,
+        "lon": 25.3876,
+        "bearingDeg": 45,
+        "distanceKm": 3.26
+      }
     },
     "1966": {
       "beachId": 1966,
@@ -2361,7 +2385,13 @@
           "intensity": 64.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4855,
+        "lon": 25.3541,
+        "bearingDeg": 315,
+        "distanceKm": 3.26
+      }
     },
     "1972": {
       "beachId": 1972,
@@ -2511,10 +2541,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.4406,
-        "lon": 25.2374,
-        "bearingDeg": 254.6,
-        "distanceKm": 8.36
+        "lat": 37.4606,
+        "lon": 25.234,
+        "bearingDeg": 270,
+        "distanceKm": 8.36,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     },
     "1974": {

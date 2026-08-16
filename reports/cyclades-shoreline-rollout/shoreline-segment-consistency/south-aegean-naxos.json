@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-08T13:51:21.662Z",
+  "generatedAt": "2026-08-16T16:40:21.031Z",
   "regionId": "south-aegean-naxos",
   "policy": {
     "sameSegment": "Beaches in the same curated shoreline segment should render the same visible exposure level unless a verified local morphology or wind-sport exception locks a stricter level.",
@@ -8,7 +8,7 @@
   },
   "summary": {
     "scenarioCount": 5,
-    "segmentCount": 7,
+    "segmentCount": 6,
     "allowedExceptions": 0,
     "unresolvedContradictions": 0
   },
@@ -118,120 +118,6 @@
             }
           ],
           "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
-        },
-        {
-          "segmentId": "naxos-alyko-kastraki-front",
-          "reason": "same_continuous_beachfront",
-          "rawLevels": [
-            "protected",
-            "partial"
-          ],
-          "consistentLevels": [
-            "protected"
-          ],
-          "rows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
         },
         {
           "segmentId": "naxos-klido-cove",
@@ -540,120 +426,6 @@
           "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
         },
         {
-          "segmentId": "naxos-alyko-kastraki-front",
-          "reason": "same_continuous_beachfront",
-          "rawLevels": [
-            "protected",
-            "partial"
-          ],
-          "consistentLevels": [
-            "protected"
-          ],
-          "rows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
-        },
-        {
           "segmentId": "naxos-klido-cove",
           "reason": "same_cove_or_micro_bay",
           "rawLevels": [
@@ -960,119 +732,6 @@
           "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
         },
         {
-          "segmentId": "naxos-alyko-kastraki-front",
-          "reason": "same_continuous_beachfront",
-          "rawLevels": [
-            "exposed"
-          ],
-          "consistentLevels": [
-            "exposed"
-          ],
-          "rows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
-        },
-        {
           "segmentId": "naxos-klido-cove",
           "reason": "same_cove_or_micro_bay",
           "rawLevels": [
@@ -1282,6 +941,7 @@
           "segmentId": "naxos-agia-anna-prokopios-plaka-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
+            "partial",
             "exposed"
           ],
           "consistentLevels": [
@@ -1314,7 +974,7 @@
             {
               "beachId": 1981,
               "name": "Αγία Άννα",
-              "level": "exposed",
+              "level": "partial",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
@@ -1339,159 +999,44 @@
           "segmentId": "naxos-orkos-mikri-vigla-wind-front",
           "reason": "same_continuous_beachfront",
           "rawLevels": [
-            "partial"
+            "protected"
           ],
           "consistentLevels": [
-            "exposed"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 2010,
               "name": "Όρκος",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2006,
-              "name": "Μικρή Βίγλα",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": true
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 2010,
-              "name": "Όρκος",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2006,
-              "name": "Μικρή Βίγλα",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": true
-            }
-          ],
-          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
-        },
-        {
-          "segmentId": "naxos-alyko-kastraki-front",
-          "reason": "same_continuous_beachfront",
-          "rawLevels": [
-            "partial",
-            "protected",
-            "exposed"
-          ],
-          "consistentLevels": [
-            "exposed"
-          ],
-          "rows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
               "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             },
             {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "exposed",
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "protected",
               "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "partial",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "exposed",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
+              "knownWindSportSpot": true
             }
           ],
-          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
+          "rawRows": [
+            {
+              "beachId": 2010,
+              "name": "Όρκος",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": false
+            },
+            {
+              "beachId": 2006,
+              "name": "Μικρή Βίγλα",
+              "level": "protected",
+              "windProfileConfidence": "low",
+              "knownWindSportSpot": true
+            }
+          ],
+          "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
         },
         {
           "segmentId": "naxos-klido-cove",
@@ -1540,24 +1085,23 @@
           "segmentId": "naxos-lionas-east-bay",
           "reason": "same_village_bay",
           "rawLevels": [
-            "partial",
             "protected"
           ],
           "consistentLevels": [
-            "partial"
+            "protected"
           ],
           "rows": [
             {
               "beachId": 2002,
               "name": "Παραλία Λιμνάρι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
             {
               "beachId": 2003,
               "name": "Λίωνας",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "low",
               "knownWindSportSpot": false
             }
@@ -1566,7 +1110,7 @@
             {
               "beachId": 2002,
               "name": "Παραλία Λιμνάρι",
-              "level": "partial",
+              "level": "protected",
               "windProfileConfidence": "medium",
               "knownWindSportSpot": false
             },
@@ -1799,119 +1343,6 @@
             }
           ],
           "notes": "Orkos and Mikri Vigla share the exposed west wind-front. Mikri Vigla wind-sport behavior can lock a stricter exposure, while the separate south side remains outside this segment."
-        },
-        {
-          "segmentId": "naxos-alyko-kastraki-front",
-          "reason": "same_continuous_beachfront",
-          "rawLevels": [
-            "protected"
-          ],
-          "consistentLevels": [
-            "protected"
-          ],
-          "rows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "rawRows": [
-            {
-              "beachId": 1997,
-              "name": "Καστράκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1993,
-              "name": "Γλυφάδα",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1987,
-              "name": "Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 1998,
-              "name": "Κέδρος",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2008,
-              "name": "Μικρό Αλυκό",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2019,
-              "name": "Hawaii",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            },
-            {
-              "beachId": 2013,
-              "name": "Πυργάκι",
-              "level": "protected",
-              "windProfileConfidence": "low",
-              "knownWindSportSpot": false
-            }
-          ],
-          "notes": "Kastraki, Glyfada, Alyko, Kedros, Mikro Alyko, Hawaii, and Pyrgaki are adjacent southwest coast pockets with similar shoreline facing; small coves remain lower confidence until separately verified."
         },
         {
           "segmentId": "naxos-klido-cove",

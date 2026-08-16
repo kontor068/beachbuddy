@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:25.107Z",
+  "generatedAt": "2026-08-16T17:55:52.317Z",
   "region": {
     "id": "south-aegean-amorgos",
     "name": "Amorgos"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 15,
-    "generatedProfiles": 15,
+    "beachCount": 16,
+    "generatedProfiles": 16,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 8,
+        "protected": 9,
         "partial": 4,
         "exposed": 3
       },
       "NE": {
-        "protected": 8,
+        "protected": 9,
         "partial": 6,
         "exposed": 1
       },
       "E": {
-        "protected": 9,
+        "protected": 10,
         "partial": 4,
         "exposed": 2
       },
       "SE": {
-        "protected": 6,
+        "protected": 7,
         "partial": 6,
         "exposed": 3
       },
       "S": {
-        "protected": 7,
+        "protected": 8,
         "partial": 6,
         "exposed": 2
       },
       "SW": {
         "protected": 7,
-        "partial": 4,
+        "partial": 5,
         "exposed": 4
       },
       "W": {
         "protected": 6,
         "partial": 5,
-        "exposed": 4
+        "exposed": 5
       },
       "NW": {
         "protected": 10,
-        "partial": 1,
+        "partial": 2,
         "exposed": 4
       }
     }
@@ -229,7 +229,13 @@
           "intensity": 54.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.8786,
+        "lon": 25.8937,
+        "bearingDeg": 270,
+        "distanceKm": 3.3
+      }
     },
     "1659": {
       "beachId": 1659,
@@ -300,7 +306,13 @@
           "intensity": 23.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7772,
+        "lon": 25.7234,
+        "bearingDeg": 225,
+        "distanceKm": 2.52
+      }
     },
     "1660": {
       "beachId": 1660,
@@ -448,7 +460,13 @@
           "intensity": 26.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.823,
+        "lon": 25.8049,
+        "bearingDeg": 45,
+        "distanceKm": 2.68
+      }
     },
     "1662": {
       "beachId": 1662,
@@ -519,7 +537,13 @@
           "intensity": 27.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.885,
+        "lon": 25.9425,
+        "bearingDeg": 225,
+        "distanceKm": 3.66
+      }
     },
     "1663": {
       "beachId": 1663,
@@ -1194,7 +1218,90 @@
           "intensity": 61.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9425,
+        "lon": 25.9819,
+        "bearingDeg": 315,
+        "distanceKm": 2.52
+      }
+    },
+    "3186": {
+      "beachId": 3186,
+      "name": {
+        "en": "Aigiali",
+        "gr": "Αιγιάλη"
+      },
+      "coordinates": {
+        "lat": 36.90194,
+        "lon": 25.97758
+      },
+      "facingDeg": 270.3,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 0.16,
+          "blockedRayRatio": 1,
+          "onshore": 0.005,
+          "intensity": 30.2
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.703,
+          "intensity": 8.9
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.711,
+          "intensity": 8.7
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.005,
+          "intensity": 29.8
+        },
+        "SW": {
+          "level": "partial",
+          "fetchKm": 2.12,
+          "blockedRayRatio": 1,
+          "onshore": 0.703,
+          "intensity": 51.1
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 12.2,
+          "blockedRayRatio": 0.6,
+          "onshore": 1,
+          "intensity": 100
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 5.52,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.711,
+          "intensity": 54.5
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9022,
+        "lon": 25.909,
+        "bearingDeg": 270.3,
+        "distanceKm": 6.1
+      }
     }
   }
 }

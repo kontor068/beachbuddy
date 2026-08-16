@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:19.727Z",
+  "generatedAt": "2026-08-16T17:55:38.731Z",
   "region": {
     "id": "north-aegean-lesvos",
     "name": "Lesvos"
@@ -2144,10 +2144,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.9474,
-        "lon": 26.5431,
-        "bearingDeg": 181.5,
-        "distanceKm": 7.82
+        "lat": 38.97,
+        "lon": 26.6068,
+        "bearingDeg": 135,
+        "distanceKm": 7.5,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "1346": {
@@ -2527,7 +2529,13 @@
           "intensity": 37.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.0908,
+        "lon": 26.4707,
+        "bearingDeg": 0,
+        "distanceKm": 2.7
+      }
     },
     "1351": {
       "beachId": 1351,
@@ -3907,7 +3915,13 @@
           "intensity": 14.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.9562,
+        "lon": 26.514,
+        "bearingDeg": 180,
+        "distanceKm": 2.7
+      }
     },
     "1369": {
       "beachId": 1369,
@@ -4440,7 +4454,13 @@
           "intensity": 34.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.0736,
+        "lon": 26.4961,
+        "bearingDeg": 0,
+        "distanceKm": 2.46
+      }
     },
     "1376": {
       "beachId": 1376,
@@ -4742,7 +4762,13 @@
           "intensity": 15.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.0884,
+        "lon": 26.4859,
+        "bearingDeg": 180,
+        "distanceKm": 3.46
+      }
     },
     "3137": {
       "beachId": 3137,

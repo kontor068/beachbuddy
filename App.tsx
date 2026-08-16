@@ -4359,6 +4359,17 @@ export const App: React.FC = () => {
     selectedIsland.beaches.forEach(beach => {
       const key = beachMarine.keyByBeachId.get(beach.id);
       // No key, or the region key: this beach has no geometry of its own and keeps the area sea.
+      //
+      // TAKING THAT SEA AWAY WAS TRIED AND MEASURED ON 16/08/2026, AND IT IS THE WRONG FIX. The
+      // trust audit is right that 277 of these 297 beaches read a cell describing water they do not
+      // face. But scoring them on their own SMB estimate instead moved 226 of them, turned 134 a
+      // whole sea-state band CALMER with nothing turning rougher, and raised the recommendation
+      // score on 100 (reports/quality/pointless-beach-sea-removal.json). That is measuring the wave
+      // against LOCAL fetch, which says nothing about a wave arriving from outside — the exact
+      // reasoning utils/geometricWaveCeiling records as tested and killed on 13/08/2026, where
+      // "55 of 65 beaches are shown a sea their geometry cannot hold" collapsed to 9 once open
+      // coasts were excluded and the other 56 grid readings were found defensible.
+      // The fix for these beaches is a sample point of their own, not the removal of a number.
       if (!key || key === beachMarine.regionKey) return;
       const items = beachMarine.itemsByKey.get(key);
       if (!items?.length) return;

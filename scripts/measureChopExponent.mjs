@@ -49,6 +49,9 @@
  *
  * Run: node scripts/measureChopExponent.mjs [--regions=a,b]
  */
+// Routes this script through the PAID Open-Meteo plan when OPEN_METEO_API_KEY is in the
+// environment, and changes nothing when it is not. See scripts/lib/paidOpenMeteo.mjs.
+import './lib/paidOpenMeteo.mjs';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -98,6 +101,7 @@ const { calculateBeachScore } = require(path.join(root, 'services/recommendation
 const { processForecastData, applyMarineToDailyForecast } = require(path.join(root, 'utils/weatherUtils.ts'));
 const { fetchForecastDataBatch, fetchMarineForecastDataBatch, mergeMarineForecastData } =
   require(path.join(root, 'services/weatherService.ts'));
+
 
 const args = process.argv.slice(2);
 const regionFilter = args.find(a => a.startsWith('--regions='))?.slice('--regions='.length).split(',');

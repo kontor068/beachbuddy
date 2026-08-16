@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:24.124Z",
+  "generatedAt": "2026-08-16T17:55:49.801Z",
   "region": {
     "id": "peloponnese-lakonia-mainland",
     "name": "Lakonia"
@@ -154,10 +154,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.6388,
-        "lon": 22.559,
-        "bearingDeg": 116.2,
-        "distanceKm": 5.82
+        "lat": 36.6249,
+        "lon": 22.5466,
+        "bearingDeg": 135,
+        "distanceKm": 5.82,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "1543": {
@@ -1078,10 +1080,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.619,
-        "lon": 22.5723,
-        "bearingDeg": 128.9,
-        "distanceKm": 8
+        "lat": 36.6372,
+        "lon": 22.5025,
+        "bearingDeg": 180,
+        "distanceKm": 3,
+        "via": "sector-S",
+        "verified": "served-cell"
       }
     },
     "1555": {
@@ -1307,7 +1311,13 @@
           "intensity": 8.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9569,
+        "lon": 22.9995,
+        "bearingDeg": 180,
+        "distanceKm": 3.16
+      }
     },
     "1558": {
       "beachId": 1558,
@@ -2304,10 +2314,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.0271,
-        "lon": 23.0468,
-        "bearingDeg": 36.8,
-        "distanceKm": 7.8
+        "lat": 37.0205,
+        "lon": 23.0563,
+        "bearingDeg": 45,
+        "distanceKm": 7.8,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "1571": {
@@ -3919,7 +3931,13 @@
           "intensity": 47.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.4456,
+        "lon": 22.507,
+        "bearingDeg": 45,
+        "distanceKm": 2.68
+      }
     },
     "1592": {
       "beachId": 1592,
@@ -4991,7 +5009,13 @@
           "intensity": 44.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.5447,
+        "lon": 22.3552,
+        "bearingDeg": 270,
+        "distanceKm": 3.02
+      }
     },
     "3108": {
       "beachId": 3108,
@@ -5216,7 +5240,13 @@
           "intensity": 57.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.6438,
+        "lon": 22.8601,
+        "bearingDeg": 315,
+        "distanceKm": 2.4
+      }
     },
     "3140": {
       "beachId": 3140,

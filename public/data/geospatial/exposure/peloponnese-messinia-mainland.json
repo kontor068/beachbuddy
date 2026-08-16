@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:25.011Z",
+  "generatedAt": "2026-08-16T17:55:52.078Z",
   "region": {
     "id": "peloponnese-messinia-mainland",
     "name": "Messinia"
@@ -306,7 +306,15 @@
           "intensity": 35.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7982,
+        "lon": 21.719,
+        "bearingDeg": 34.7,
+        "distanceKm": 1.36,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "1606": {
       "beachId": 1606,
@@ -993,7 +1001,13 @@
           "intensity": 6.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9365,
+        "lon": 21.6797,
+        "bearingDeg": 180,
+        "distanceKm": 2.2
+      }
     },
     "1615": {
       "beachId": 1615,
@@ -1295,7 +1309,13 @@
           "intensity": 54.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7756,
+        "lon": 21.7992,
+        "bearingDeg": 225,
+        "distanceKm": 3.12
+      }
     },
     "1619": {
       "beachId": 1619,
@@ -2367,7 +2387,13 @@
           "intensity": 33.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9227,
+        "lon": 21.6745,
+        "bearingDeg": 225,
+        "distanceKm": 3.94
+      }
     },
     "1633": {
       "beachId": 1633,
@@ -2746,7 +2772,13 @@
           "intensity": 1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7915,
+        "lon": 21.7383,
+        "bearingDeg": 135,
+        "distanceKm": 3.96
+      }
     },
     "1638": {
       "beachId": 1638,

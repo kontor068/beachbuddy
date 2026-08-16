@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:10.699Z",
+  "generatedAt": "2026-08-16T17:55:17.206Z",
   "region": {
     "id": "epirus-thesprotia-mainland",
     "name": "Thesprotia"
@@ -691,7 +691,13 @@
           "intensity": 25.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.3913,
+        "lon": 20.2062,
+        "bearingDeg": 225,
+        "distanceKm": 3.42
+      }
     },
     "896": {
       "beachId": 896,
@@ -1591,7 +1597,15 @@
           "intensity": 17.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.4527,
+        "lon": 20.2564,
+        "bearingDeg": 200.3,
+        "distanceKm": 0.84,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "908": {
       "beachId": 908,
@@ -1662,7 +1676,13 @@
           "intensity": 23.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.4592,
+        "lon": 20.2338,
+        "bearingDeg": 270,
+        "distanceKm": 2.44
+      }
     },
     "909": {
       "beachId": 909,

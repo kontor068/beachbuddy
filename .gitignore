@@ -127,3 +127,16 @@ reports/snapshots/_raw-queries.json
 # Netlify snapshots: κατανάλωση λογαριασμού (bandwidth, build minutes) και
 # επισκεψιμότητα. Το repo είναι δημόσιο — μένουν στον δίσκο.
 reports/netlify/
+# Παράγωγη γεωμετρία 15°/50 μ. — 1,1 MB, δεν τη διαβάζει η εφαρμογή (βίβλος §Μ6).
+# Ξαναφτιάχνεται με: buildGeospatialExposureProfiles --arrival-fan reports/geometry/arrival-fan
+reports/geometry/
+
+# Πρώτη ύλη του GSC snapshot με ημερομηνία στο όνομα. Η γραμμή από πάνω κάλυπτε
+# μόνο το αχρονολόγητο `_raw-queries.json`· τα δικά τους dated αδέλφια (1,4 MB
+# στις 16/08) γλιστρούσαν μέσα σε δημόσιο repo. Τα dated *χωρίς* `_raw-` (η ίδια
+# η μέτρηση) παραμένουν tracked.
+reports/snapshots/_raw-*.json
+
+# Σάρωση κατωφλίων «έχει το κύμα δρόμο να φτάσει;» — 3,3 MB παράγωγα, καμία
+# ανάγνωση από την εφαρμογή. Ξαναφτιάχνεται με scripts/sweepBlockedArrivalThresholds.mjs
+reports/blocked-arrival/

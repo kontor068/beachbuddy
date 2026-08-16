@@ -27,6 +27,13 @@
  * make `best_match` pick a different model, and then the baked cell describes a request the app
  * never makes.
  */
+
+// Routes this script through the PAID Open-Meteo plan when OPEN_METEO_API_KEY is in the
+// environment, and changes nothing when it is not. See scripts/lib/paidOpenMeteo.mjs. Added
+// 16/08/2026: a national bake is ~2.900 point-calls, so adding one beach could not be finished
+// on a day the free allowance had already been spent elsewhere — the run sat in a 65s rate-limit
+// loop while the paid subscription went unused.
+import './lib/paidOpenMeteo.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

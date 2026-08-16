@@ -51,11 +51,31 @@
  *     structurally impossible here. The risk of this dial is over-warning, never under-warning.
  *     (Corrected 15/08 later the same day: the first write-up of this comment and of PORISMA §Γ13
  *     said 23/42 for 1.5/2.0 — that was half the real reports/quality/chop-exponent.json number.)
- *   • It is NOT being raised today, and the reason is the sentence above about mean vs peak
- *     period: a textbook exponent applied to a provider's mean period is exactly the re-derivation
- *     this comment warns against, and there is no judge for "how unpleasant was the water".
- *     PORISMA §Γ4 already settled that a measured-but-unvalidated dial is Miltos's call, not the
- *     code's. The measurement is on the table; the decision is not the code's to take.
+ *   • ⛔ 1.0 WAS APPLIED AND REVERTED THE SAME EVENING (16/08/2026). Everything in the bullet
+ *     below still holds as the argument FOR 1.0 — what killed it is that the exponent is not an
+ *     isolated dial. scripts/buildWaveClimatology.py holds the same constant and bakes it into the
+ *     guide climatology; rebuilding at 1.0 changed the published sea tier for 1,008 of 2,782
+ *     beaches in at least one month (13,940 of 16,692 monthly values moved, all upward, median
+ *     +6 cm). Miltos's condition was "make sure it does not affect a large share" — 36% is a large
+ *     share, so it went back. Raising this constant is a CONTENT decision about the guides as much
+ *     as a model decision, and it has to be taken as one.
+ *   • THE ARGUMENT FOR 1.0, PRESERVED, AND DELIBERATELY NOT 1.5. 1.0 is the encounter
+ *     rate on its own — the weakest of the two mechanisms above, and the only one the mean-vs-peak
+ *     objection does not touch, because "how often does a wave hit me" is linear in T whichever
+ *     period definition the provider means. 1.5 and 2.0 lean on steepness, which is exactly the
+ *     textbook re-derivation the paragraph above forbids while we are fed a MEAN period.
+ *     Measured cost of the step: 4 of 930 beaches darken (15/08 run, 14 regions, 96% of them
+ *     carrying a period). What it buys is that the constant is no longer below every mechanism
+ *     anyone can name — the state that made 0.75 impossible to defend to the next reader.
+ *   • ⚠️ THE NATIONAL RE-MEASUREMENT IS NOT DONE. The 16/08 run over all 110 regions reported 6 of
+ *     2866, but only 200 of those beaches carried a period at all against 96% the day before, and
+ *     the Open-Meteo daily limit was hit immediately afterwards — so that run is degraded and its
+ *     number must not be quoted. Re-run scripts/measureChopExponent.mjs on a fresh quota and
+ *     replace this bullet with the real figure.
+ *   • Still true, and the reason 1.5 stays on the table rather than in the code: there is no judge
+ *     for "how unpleasant was the water". PORISMA §Γ4 settled that a measured-but-unvalidated dial
+ *     is Miltos's call. The honest way to earn 1.5 is to ask visitors on short-period days, not to
+ *     turn the dial again.
  *
  * MAX_CHOP_FACTOR is, meanwhile, close to dead: it binds in 1 of 439 short-period cases, and
  * moving it to 2.25 or 3 changes NOTHING nationally, because at 0.75 the formula only asks for
@@ -71,9 +91,15 @@ const TWO_PI = Math.PI * 2;
 export const SEA_REFERENCE_PERIOD_S = 4;
 /**
  * ⚠️ 0.75 — BELOW both the encounter rate (T^-1) and the steepness (T^-2), not between them.
- * Never measured against anything; see the module header before touching it. Raising it is safe
- * in DIRECTION (a false calm is impossible) but at 1.5 it repaints ~48/930 beaches, mostly
- * amber → red at 4 Bft. That is Miltos's call, not a comment's.
+ * Never measured against anything; see the module header before touching it.
+ *
+ * 1.0 WAS APPLIED AND REVERTED ON 16/08/2026. Not because it is wrong — it is the better-defended
+ * number — but because the step is not what it looks like. The live cost is 4 of 930 beaches. The
+ * cost nobody had measured is in scripts/buildWaveClimatology.py, which carries this same constant
+ * and bakes it into data/waveClimatology.generated.json: rebuilding at 1.0 moved 13,940 of 16,692
+ * monthly values, ALL upward, and changed the published sea tier for 1,008 of 2,782 beaches in at
+ * least one month. A third of the country's guide pages would read one step rougher for a median
+ * +6 cm. That is a content change, not a dial, and it needs its own decision.
  */
 const CHOP_EXPONENT = 0.75;
 /** Bounded so wave character adjusts the height, never overwhelms it. */

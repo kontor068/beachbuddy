@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:27.518Z",
+  "generatedAt": "2026-08-16T17:55:57.255Z",
   "region": {
     "id": "south-aegean-ios",
     "name": "Ios"
@@ -845,7 +845,13 @@
           "intensity": 54.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7157,
+        "lon": 25.2291,
+        "bearingDeg": 270,
+        "distanceKm": 3.62
+      }
     },
     "1766": {
       "beachId": 1766,
@@ -2764,7 +2770,13 @@
           "intensity": 12.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.6485,
+        "lon": 25.388,
+        "bearingDeg": 180,
+        "distanceKm": 2.72
+      }
     },
     "1799": {
       "beachId": 1799,

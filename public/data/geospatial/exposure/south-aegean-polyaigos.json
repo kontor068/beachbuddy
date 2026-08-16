@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.203Z",
+  "generatedAt": "2026-08-16T17:56:05.189Z",
   "region": {
     "id": "south-aegean-polyaigos",
     "name": "Polyaigos"
@@ -229,7 +229,13 @@
           "intensity": 43.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7613,
+        "lon": 24.5836,
+        "bearingDeg": 270,
+        "distanceKm": 2.96
+      }
     },
     "2223": {
       "beachId": 2223,

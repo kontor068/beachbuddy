@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:17.364Z",
+  "generatedAt": "2026-08-16T17:55:33.385Z",
   "region": {
     "id": "ionian-islands-zakynthos",
     "name": "Zakynthos"
@@ -2770,7 +2770,15 @@
           "intensity": 26.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.7999,
+        "lon": 20.6346,
+        "bearingDeg": 180,
+        "distanceKm": 2.5,
+        "via": "sector-S",
+        "verified": "served-cell"
+      }
     },
     "1217": {
       "beachId": 1217,

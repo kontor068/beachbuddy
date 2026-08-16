@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.684Z",
+  "generatedAt": "2026-08-16T17:56:06.419Z",
   "region": {
     "id": "south-aegean-rhodes",
     "name": "Rhodes"
@@ -3155,7 +3155,13 @@
           "intensity": 16.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.0952,
+        "lon": 28.1157,
+        "bearingDeg": 90,
+        "distanceKm": 2.64
+      }
     },
     "2444": {
       "beachId": 2444,

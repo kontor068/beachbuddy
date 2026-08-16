@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:14.199Z",
+  "generatedAt": "2026-08-16T17:55:25.889Z",
   "region": {
     "id": "ionian-islands-ithaca",
     "name": "Ithaca"
@@ -898,7 +898,13 @@
           "intensity": 30.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3584,
+        "lon": 20.6554,
+        "bearingDeg": 180,
+        "distanceKm": 3.84
+      }
     },
     "1232": {
       "beachId": 1232,
@@ -1496,7 +1502,13 @@
           "intensity": 49.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.4917,
+        "lon": 20.674,
+        "bearingDeg": 0,
+        "distanceKm": 3.98
+      }
     },
     "1240": {
       "beachId": 1240,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:50.208Z",
+  "generatedAt": "2026-08-16T17:54:24.350Z",
   "region": {
     "id": "attica-poros",
     "name": "Poros"
@@ -377,7 +377,13 @@
           "intensity": 7.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4877,
+        "lon": 23.4942,
+        "bearingDeg": 135,
+        "distanceKm": 3.26
+      }
     },
     "156": {
       "beachId": 156,
@@ -744,7 +750,13 @@
           "intensity": 10.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.4813,
+        "lon": 23.5127,
+        "bearingDeg": 135,
+        "distanceKm": 3.72
+      }
     },
     "161": {
       "beachId": 161,

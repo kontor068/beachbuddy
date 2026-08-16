@@ -155,6 +155,18 @@ const formatWaveM = (value) => (typeof value === 'number' ? `${value.toFixed(2).
 const formatPeriodS = (value) => (typeof value === 'number' ? `${value.toFixed(1).replace('.', ',')} δευτ.` : '');
 const formatHour = (value) => (typeof value === 'number' ? `${String(value).padStart(2, '0')}:00 (ώρα Ελλάδας)` : '');
 
+// What the visitor actually said about WHEN they were at the beach — added 16/08/2026 because
+// a report typed at 22:00 about a 09:00 visit was indistinguishable from an evening observation
+// with only the click time to go on. See ObservedTiming in services/analyticsService.ts.
+const OBSERVED_TIMING_LABELS = {
+  now: 'Τώρα είναι εκεί',
+  morning: 'Το πρωί',
+  midday: 'Το μεσημέρι',
+  evening: 'Απόγευμα / βράδυ',
+  unsure: 'Δεν θυμάται',
+};
+const formatObservedTiming = (value) => OBSERVED_TIMING_LABELS[value] || '';
+
 /**
  * Ο αριθμός που είχε μπροστά του ο επισκέπτης. `shoreDisplayWaveM` λείπει όταν η οθόνη έπεσε
  * πίσω στο ανοιχτό νερό — τότε αυτό ΕΙΝΑΙ ο αριθμός που είδε, όχι έλλειψη δεδομένων.
@@ -208,6 +220,7 @@ const normalizePayload = (body, event) => {
       // the period travels with it. `hour` and `live` say whether the visitor was standing
       // in it that morning or reading about next Tuesday — opposite strengths of evidence.
       hour: finiteNumber(conditions.hour),
+      observedTiming: clamp(conditions.observedTiming, 20) || undefined,
       seaStateWaveM: finiteNumber(conditions.seaStateWaveM),
       seaStatePeriodS: finiteNumber(conditions.seaStatePeriodS),
       // Ο αριθμός που είδε ο επισκέπτης, χωριστά από αυτόν που έκρινε το χρώμα. Βλ.
@@ -226,7 +239,11 @@ const fieldLines = (payload) => [
   ['ID παραλίας', payload.beachId ?? ''],
   ['Νησί/περιοχή', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
   ['Ημερομηνία', payload.conditions.date],
-  ['Ώρα παρατήρησης', formatHour(payload.conditions.hour)],
+  // Δύο ΔΙΑΦΟΡΕΤΙΚΕΣ ώρες, όχι μία (16/08/2026). Η πρώτη είναι αυτό που είπε ο επισκέπτης όταν
+  // ήταν στην παραλία· η δεύτερη είναι απλώς πότε πάτησε το κουμπί — ένα βραδινό σχόλιο για
+  // πρωινή επίσκεψη έδειχνε μέχρι τώρα ΜΟΝΟ τη δεύτερη και διαβαζόταν λάθος ως βραδινή παρατήρηση.
+  ['Πότε ήταν στην παραλία', formatObservedTiming(payload.conditions.observedTiming)],
+  ['Ώρα που έστειλε το σχόλιο', formatHour(payload.conditions.hour)],
   ['Μποφόρ', payload.conditions.beaufort ?? ''],
   ['Κατεύθυνση ανέμου', payload.conditions.windDir],
   ['Έκθεση', payload.conditions.exposureLevel],

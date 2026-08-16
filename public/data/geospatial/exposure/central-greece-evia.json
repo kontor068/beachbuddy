@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:54.248Z",
+  "generatedAt": "2026-08-16T17:54:34.448Z",
   "region": {
     "id": "central-greece-evia",
     "name": "Evia"
@@ -306,7 +306,15 @@
           "intensity": 12.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.9723,
+        "lon": 24.4164,
+        "bearingDeg": 81.1,
+        "distanceKm": 2.76,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "196": {
       "beachId": 196,
@@ -610,10 +618,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.9792,
-        "lon": 23.0531,
-        "bearingDeg": 180,
-        "distanceKm": 4.34
+        "lat": 38.9897,
+        "lon": 23.031,
+        "bearingDeg": 211,
+        "distanceKm": 3.7,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "200": {
@@ -685,7 +695,13 @@
           "intensity": 8.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5023,
+        "lon": 23.5929,
+        "bearingDeg": 45,
+        "distanceKm": 2.48
+      }
     },
     "201": {
       "beachId": 201,
@@ -1526,7 +1542,13 @@
           "intensity": 38.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5236,
+        "lon": 23.5686,
+        "bearingDeg": 0,
+        "distanceKm": 3.66
+      }
     },
     "212": {
       "beachId": 212,
@@ -2367,7 +2389,13 @@
           "intensity": 32.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5288,
+        "lon": 23.5871,
+        "bearingDeg": 270,
+        "distanceKm": 3.7
+      }
     },
     "223": {
       "beachId": 223,
@@ -3056,10 +3084,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.9469,
-        "lon": 24.4322,
-        "bearingDeg": 146.3,
-        "distanceKm": 6.8
+        "lat": 37.9545,
+        "lon": 24.444,
+        "bearingDeg": 135,
+        "distanceKm": 6.8,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "232": {
@@ -4673,10 +4703,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.4387,
-        "lon": 24.2384,
-        "bearingDeg": 84.9,
-        "distanceKm": 5.02
+        "lat": 38.4507,
+        "lon": 24.2015,
+        "bearingDeg": 45,
+        "distanceKm": 2.52,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "253": {
@@ -5204,7 +5236,13 @@
           "intensity": 15.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5172,
+        "lon": 23.5812,
+        "bearingDeg": 45,
+        "distanceKm": 2.82
+      }
     },
     "260": {
       "beachId": 260,
@@ -5429,7 +5467,13 @@
           "intensity": 42.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5013,
+        "lon": 23.6057,
+        "bearingDeg": 0,
+        "distanceKm": 2.98
+      }
     },
     "263": {
       "beachId": 263,
@@ -7111,7 +7155,13 @@
           "intensity": 29.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5043,
+        "lon": 23.6036,
+        "bearingDeg": 45,
+        "distanceKm": 3.3
+      }
     },
     "285": {
       "beachId": 285,
@@ -8254,7 +8304,13 @@
           "intensity": 50.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.504,
+        "lon": 23.5956,
+        "bearingDeg": 0,
+        "distanceKm": 3.92
+      }
     },
     "300": {
       "beachId": 300,

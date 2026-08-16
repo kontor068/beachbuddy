@@ -84,7 +84,23 @@ type BeachExposureProfile = {
   facingDeg: number | null;
   sectors: Record<Sector, SectorExposure>;
   confidence: 'low' | 'medium' | 'high';
+  /**
+   * Το ψημένο σημείο θαλάσσιας δειγματοληψίας ΔΕΝ παράγεται εδώ (το γράφει
+   * scripts/bakeMarineSamplePoints). Δηλώνεται μόνο για να μπορεί να μεταφερθεί αυτούσιο από το
+   * προηγούμενο αρχείο — δες `carriedMarineSamplePoints` στη main().
+   */
+  marineSamplePoint?: unknown;
 };
+
+/** Ανάλυση της λεπτής βεντάλιας: 24 τιμές ανά 15°. */
+const ARRIVAL_FAN_STEP_DEG = 15;
+const ARRIVAL_FAN_SLOTS = 360 / ARRIVAL_FAN_STEP_DEG;
+/**
+ * 50 μ. βήμα ακτίνας — δες το σχόλιο του `arrivalFanKm`. Είναι η ανάλυση στην οποία σταματάει να
+ * αξίζει: κάτω από αυτήν μιλάμε για λεπτομέρεια μικρότερη από την ίδια την ακτογραμμή του OSM,
+ * και ένα ακρωτήρι 50 μ. δεν σταματάει κύμα ούτως ή άλλως.
+ */
+const ARRIVAL_FAN_STEP_KM = 0.05;
 
 const root = process.cwd();
 const naturalEarthLandUrl = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson';
@@ -135,6 +151,31 @@ const parseArgValue = (name: string): string | undefined => {
   if (index === -1) return undefined;
   return process.argv[index + 1];
 };
+
+/**
+ * ΤΟ ΑΝΟΙΓΜΑ ΚΑΘΕ 15°, ΟΧΙ ΚΑΘΕ 45°. 24 τιμές ανά παραλία, δείκτης = μοίρες / 15 (0 = Βορράς),
+ * σε χιλιόμετρα ανοιχτού νερού πριν τη στεριά με ταβάνι `maxFetchKm`.
+ *
+ * ⛔ ΜΕΤΡΗΘΗΚΕ ΚΑΙ ΑΠΟΡΡΙΦΘΗΚΕ ΩΣ ΚΑΝΟΝΑΣ (16/08/2026) — γι' αυτό γράφεται σε ΔΙΚΟ ΤΟΥ αρχείο,
+ * εκτός `public/`, και δεν φτάνει σε κανέναν επισκέπτη. Η ιδέα ήταν: αν η γωνία απ' όπου δηλώνει
+ * το πλέγμα ότι έρχεται το κύμα βρίσκει στεριά, το κύμα δεν μπορεί να είναι εδώ. Εθνική μέτρηση
+ * (2.869 παραλίες × 14 ώρες, `scripts/sweepBlockedArrivalThresholds.mjs`): άναβε σε 20.311 από
+ * 40.166 ώρες και γύριζε 2.217 χρώματα πινέζας προς το ηρεμότερο. Ο λόγος είναι δομικός — κάθε
+ * παραλία έχει στεριά στη μισή πυξίδα (2.785/2.869 έχουν ≥12 από 24 γωνίες κλειστές), οπότε το
+ * «έχει στεριά προς τα εκεί» δεν διακρίνει τίποτα. Κάθε αυστηρότερη ρύθμιση που έριχνε τον
+ * αντίκτυπο σταματούσε να διορθώνει την ίδια τη Λυγαριά. Πλήρης καταγραφή: βίβλος §Μ6.
+ *
+ * ΤΙ ΜΕΝΕΙ ΧΡΗΣΙΜΟ, και γι' αυτό ο κώδικας δεν σβήστηκε: είναι η μόνη περιγραφή της γεωμετρίας
+ * μας σε ανάλυση 15°/50 μ., και είναι αυτή που ΑΠΕΔΕΙΞΕ ότι οι 8 φέτες πηδάνε πάνω από ακρωτήρια
+ * λεπτότερα από το βήμα τους (Λυγαριά 345°: λωρίδα στεριάς 100 μ. στα 0,22-0,32 χλμ, βήμα 200 μ.,
+ * αποτέλεσμα «ανοιχτή θάλασσα 25 χλμ»). Οι φέτες παραμένουν αλιασμένες — δείχνουν τις παραλίες
+ * πιο ΑΝΟΙΧΤΕΣ απ' ό,τι είναι — και δεν αλλάζουν χωρίς δική τους εθνική μέτρηση, γιατί τροφοδοτούν
+ * το χρώμα ολόκληρης της χώρας.
+ *
+ *   node scripts/buildGeospatialExposureProfiles.mjs --land-geojson <mask> --no-download  *     --arrival-fan reports/geometry/arrival-fan
+ */
+const arrivalFanDirectory = parseArgValue('--arrival-fan');
+const arrivalFans: Map<number, number[]> | undefined = arrivalFanDirectory ? new Map() : undefined;
 
 const shouldDownload = !process.argv.includes('--no-download');
 const customLandGeoJson = parseArgValue('--land-geojson');
@@ -362,6 +403,7 @@ const readdirJson = (directory: string): string[] => {
 
 const createBeachProfile = (
   beach: BeachRecord,
+  arrivalFanOut: Map<number, number[]> | undefined,
   landMask: LandMask,
   rayStepKm: number,
   landGraceKm: number,
@@ -378,6 +420,27 @@ const createBeachProfile = (
   );
 
   const facingDeg = computeShorelineOrientation(sampleOrigin.point, landMask);
+
+  // Μία ακτίνα ανά 15°, με το πυκνό βήμα — δες το σχόλιο του `arrivalFanKm`.
+  // Παράγεται ΜΟΝΟ όταν ζητηθεί: κοστίζει 24 πυκνές ακτίνες ανά παραλία και δεν το διαβάζει
+  // τίποτα στην παραγωγή (δες τη σημείωση «ΜΕΤΡΗΘΗΚΕ ΚΑΙ ΑΠΟΡΡΙΦΘΗΚΕ» παρακάτω).
+  const arrivalFanKm: number[] = !arrivalFanOut ? [] : Array.from({ length: ARRIVAL_FAN_SLOTS }, (_unused, slot) => {
+    const single = assessGeospatialWindExposure({
+      beach: beach.coordinates as Coordinates,
+      windDirectionDeg: slot * ARRIVAL_FAN_STEP_DEG,
+      landMask,
+      maxFetchKm,
+      stepKm: ARRIVAL_FAN_STEP_KM,
+      nearshoreLandGraceKm: landGraceKm,
+      nearshoreWaterSearchKm,
+      nearshoreWaterSearchStepKm: waterSearchStepKm,
+      sampleOrigin: sampleOrigin.point,
+      sampleOriginAdjustedKm: sampleOrigin.adjustedKm,
+      fanAnglesDeg: [0],
+    });
+    return Number(single.samples[0].openWaterKm.toFixed(2));
+  });
+  if (arrivalFanOut) arrivalFanOut.set(beach.id, arrivalFanKm);
 
   const sectorProfiles = sectors.reduce((accumulator, sector) => {
     const result = assessGeospatialWindExposure({
@@ -492,15 +555,47 @@ const main = async () => {
   let totalProfiles = 0;
   let totalMissingCoordinates = 0;
 
+  let carriedMarineSamplePoints = 0;
+
   regions.forEach(region => {
     const profiles: BeachExposureProfile[] = [];
     totalBeachCount += region.beaches.length;
 
+    /**
+     * ⚠️ ΜΙΑ ΠΑΓΙΔΑ ΠΟΥ ΕΧΕΙ ΗΔΗ ΧΤΥΠΗΣΕΙ (Λήμνος, 16/08/2026 — καταγραφή στο
+     * docs/team/HANDOVER-marine-cell-trust-2026-08-16.md §3α).
+     *
+     * Το `marineSamplePoint` το ψήνει ΑΛΛΟ script. Αυτό εδώ ξαναγράφει ολόκληρο το αρχείο, οπότε
+     * μέχρι σήμερα ένα `--region X` έσβηνε σιωπηλά κάθε ψημένο σημείο της περιοχής. Καμία πύλη
+     * δεν το πιάνει, γιατί «καμία τιμή → πέσε στο σημείο περιοχής» είναι νόμιμη διαδρομή: η
+     * Λήμνος βρέθηκε στιγμιαία 3/41 έμπιστες, χειρότερη περιοχή της χώρας, χωρίς να σπάσει τίποτα.
+     *
+     * Εδώ διαβάζεται το προηγούμενο αρχείο και το σημείο μεταφέρεται ΑΥΤΟΥΣΙΟ. Δεν υπολογίζεται
+     * ξανά και δεν επικυρώνεται — αυτό είναι δουλειά του script που το ψήνει· εδώ απλώς παύει να
+     * καταστρέφεται.
+     */
+    arrivalFans?.clear();
+
+    const previousProfiles: Record<string, { marineSamplePoint?: unknown }> = (() => {
+      const previousPath = path.join(outputDirectory, `${region.regionId}.json`);
+      if (!existsSync(previousPath)) return {};
+      try {
+        return JSON.parse(readFileSync(previousPath, 'utf8')).profiles || {};
+      } catch {
+        return {};
+      }
+    })();
+
     region.beaches.forEach(beach => {
-      const profile = createBeachProfile(beach, landMask, rayStepKm, landGraceKm, waterSearchStepKm);
+      const profile = createBeachProfile(beach, arrivalFans, landMask, rayStepKm, landGraceKm, waterSearchStepKm);
       if (!profile) {
         totalMissingCoordinates += 1;
         return;
+      }
+      const carried = previousProfiles[String(profile.beachId)]?.marineSamplePoint;
+      if (carried) {
+        profile.marineSamplePoint = carried;
+        carriedMarineSamplePoints += 1;
       }
       profiles.push(profile);
     });
@@ -557,6 +652,20 @@ const main = async () => {
     }
     if (!unchanged) {
       writeFileSync(regionPath, `${JSON.stringify(regionPayload, null, 2)}\n`, 'utf8');
+    }
+    if (arrivalFanDirectory && arrivalFans) {
+      mkdirSync(path.resolve(arrivalFanDirectory), { recursive: true });
+      writeFileSync(
+        path.join(path.resolve(arrivalFanDirectory), `${region.regionId}.json`),
+        `${JSON.stringify({
+          region: region.regionId,
+          note: 'Δες scripts/geospatialExposureProfiles.ts (arrivalFanDirectory) — ΜΕΤΡΗΘΗΚΕ ΚΑΙ ΑΠΟΡΡΙΦΘΗΚΕ ως κανόνας, βίβλος §Μ6.',
+          settings: { stepDeg: ARRIVAL_FAN_STEP_DEG, rayStepKm: ARRIVAL_FAN_STEP_KM, maxFetchKm },
+          fans: Object.fromEntries([...arrivalFans].map(([id, fan]) => [String(id), fan])),
+        }, null, 2)}
+`,
+        'utf8'
+      );
     }
     summaryByRegion[region.regionId] = {
       regionName: region.regionName,
@@ -657,6 +766,7 @@ const main = async () => {
     generatedProfiles: totalProfiles,
     missingCoordinates: totalMissingCoordinates,
     indexedLandPolygons: polygons.length,
+    carriedMarineSamplePoints,
   }, null, 2));
 };
 

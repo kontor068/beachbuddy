@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-14T15:45:04.702Z",
+  "generatedAt": "2026-08-16T17:55:53.581Z",
   "region": {
     "id": "south-aegean-antiparos",
     "name": "Antiparos"
@@ -685,7 +685,13 @@
           "intensity": 46.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9847,
+        "lon": 25.0029,
+        "bearingDeg": 315,
+        "distanceKm": 2.82
+      }
     },
     "1735": {
       "beachId": 1735,
@@ -989,10 +995,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.9918,
-        "lon": 24.9729,
-        "bearingDeg": 254.4,
-        "distanceKm": 4.94
+        "lat": 37.0038,
+        "lon": 24.9708,
+        "bearingDeg": 270,
+        "distanceKm": 4.94,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     }
   }

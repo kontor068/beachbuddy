@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:15.107Z",
+  "generatedAt": "2026-08-16T17:55:44.394Z",
   "region": {
     "id": "peloponnese-korinthia-mainland",
     "name": "Korinthia"
@@ -691,7 +691,13 @@
           "intensity": 59.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.857,
+        "lon": 23.0432,
+        "bearingDeg": 315,
+        "distanceKm": 2.72
+      }
     },
     "1529": {
       "beachId": 1529,
@@ -762,7 +768,13 @@
           "intensity": 5.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.834,
+        "lon": 23.1594,
+        "bearingDeg": 90,
+        "distanceKm": 2.6
+      }
     },
     "1530": {
       "beachId": 1530,
@@ -833,7 +845,13 @@
           "intensity": 18.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.8363,
+        "lon": 23.1561,
+        "bearingDeg": 90,
+        "distanceKm": 2.58
+      }
     },
     "1531": {
       "beachId": 1531,
@@ -1520,7 +1538,13 @@
           "intensity": 35.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.8662,
+        "lon": 23.0657,
+        "bearingDeg": 45,
+        "distanceKm": 3.44
+      }
     },
     "1540": {
       "beachId": 1540,
@@ -1670,10 +1694,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.1113,
-        "lon": 22.7566,
-        "bearingDeg": 60.3,
-        "distanceKm": 10
+        "lat": 38.1304,
+        "lon": 22.7382,
+        "bearingDeg": 45,
+        "distanceKm": 10,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "3039": {
@@ -1901,10 +1927,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.9511,
-        "lon": 22.943,
-        "bearingDeg": 202.6,
-        "distanceKm": 4.08
+        "lat": 37.9693,
+        "lon": 22.9609,
+        "bearingDeg": 180,
+        "distanceKm": 1.74,
+        "via": "sector-S",
+        "verified": "served-cell"
       }
     },
     "3042": {

@@ -1,8 +1,8 @@
-# Place-resolution audit — scoped run (south-aegean-ios)
+# Place-resolution audit — scoped run (south-aegean-karpathos)
 
-Generated: 2026-08-15T08:43:42.698Z
+Generated: 2026-08-16T11:30:51.364Z
 
-**Totals:** PASS 10 · REVIEW 15 · FAIL 0 · (25 name-routed beaches audited)
+**Totals:** PASS 19 · REVIEW 11 · FAIL 5 · (35 name-routed beaches audited)
 
 Does the name the app sends to Google Maps resolve to the right beach on the right island? FAIL = it does not (Melino class).
 
@@ -12,24 +12,25 @@ _Two signals per beach: **name** = Nominatim free-text geocode of the app query 
 
 | Region | Island | PASS | REVIEW | FAIL | Err | Total |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| south-aegean-ios | Ios | 10 | 15 | 0 | 0 | 25 |
+| south-aegean-karpathos | Karpathos | 19 | 11 | 5 | 0 | 35 |
 
-## Needs attention (15)
+## Needs attention (16)
 
 | Verdict | id | Name | Island | Built query | Name geocode (Nominatim) | Pin (OSM beach) | Recommended fix |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
-| REVIEW | 1759 | Αγία Θεοδότη | Ios | Παραλία Αγία Θεοδότη, Ios | Oasis Ios · 376 m · needs_review (via "Αγία Θεοδότη, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1760 | Αγία Κυριακή | Ios | Παραλία Αγία Κυριακή, Ios | Αγία Κυριακή · 9 m · verified (via "Αγία Κυριακή, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1762 | Αλμυρός | Ios | Παραλία Αλμυρός, Ios | Αλμυρός · 3 m · verified (via "Αλμυρός, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1772 | Κλήμα | Ios | Παραλία Κλήμα, Ios | Κλήμα · 1 m · verified (via "Κλήμα, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1774 | Κουμπάρα | Ios | Παραλία Κουμπάρα, Ios | Κουμπάρα · 24 m · verified (via "Κουμπάρα, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1778 | Μαγγανάρι | Ios | Παραλία Μαγγανάρι, Ios | Μαγγανάρι · 220 m · verified (via "Μαγγανάρι, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1780 | Μυλοπότας | Ios | Παραλία Μυλοπότας, Ios | ΜΥΛΟΠΟΤΑΣ (ΝΟΤΙΑ ΠΑΡΑΛΙΑ) · 278 m · needs_review | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1785 | Παπάς | Ios | Παραλία Παπάς, Ios | Παπάς · 20 m · verified (via "Παπάς, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1791 | Ρούσσου | Ios | Παραλία Ρούσσου, Ios | Ρούσσου · 7 m · verified (via "Ρούσσου, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1792 | Σαντορινέικο | Ios | Παραλία Σαντορινέικο, Ios | Σαντορινέικο · 93 m · verified (via "Σαντορινέικο, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1795 | Τζαμαρία | Ios | Παραλία Τζαμαρία, Ios | Τζαμαρία · 4 m · verified (via "Τζαμαρία, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1798 | Τρεις Κλεισιές βόρειος | Ios | Παραλία Τρεις Κλεισιές βόρειος, Ios | Τρεις Κλεισιές βόρειος · 28 m · verified (via "Τρεις Κλεισιές βόρειος, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1799 | Τρεις Κλεισιές μεγάλη | Ios | Παραλία Τρεις Κλεισιές μεγάλη, Ios | Τρεις Κλεισιές μεγάλη · 10 m · verified (via "Τρεις Κλεισιές μεγάλη, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1800 | Τρεις Κλεισιές μικρή | Ios | Παραλία Τρεις Κλεισιές μικρή, Ios | Τρεις Κλεισιές μικρή · 1 m · verified (via "Τρεις Κλεισιές μικρή, ios") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 1803 | Ψάθη | Ios | Παραλία Ψάθη, Ios | Ψάθη · 393 m · needs_review (via "Ψάθη, ios") | ✗ none | mark **needs-review** (no good name or pin) |
+| FAIL | 2281 | Γιαλού Χωράφι | Karpathos | Παραλία Γιαλού Χωράφι, Karpathos | ✗ no hit | Gialou Chorafi · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| FAIL | 2288 | Μικρή Αμμοοπή | Karpathos | Παραλία Μικρή Αμμοοπή, Karpathos | ✗ no hit | Amopi · 238 m | route by **coordinates** (pin OSM-corroborated) |
+| FAIL | 2294 | Παπάς Μηνάς | Karpathos | Παραλία Παπάς Μηνάς, Karpathos | ✗ no hit | Papás Minás · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| FAIL | 2297 | Της Πέρδικας Ποταμός | Karpathos | Παραλία Της Πέρδικας Ποταμός, Karpathos | ✗ no hit | tis Perdikas Potamos · 1 m | route by **coordinates** (pin OSM-corroborated) |
+| FAIL | 2300 | Όψη | Karpathos | Παραλία Όψη, Karpathos | ✗ no hit | ✗ none | mark **needs-review** (no good name or pin) |
+| REVIEW | 2275 | Απέλλα | Karpathos | Απέλλα, Karpathos | Apella · 55 m · verified (via "Apella, Karpathos") | Apella · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2277 | Φοινίκι | Karpathos | Παραλία Φοινίκι, Karpathos | Φοινίκι · 83 m · verified (via "Φοινίκι, Karpathos") | Finiki Beach · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2278 | Φωκιά | Karpathos | Φωκιά, Karpathos | Fokia · 47 m · verified (via "Fokia, Karpathos") | (unnamed) · 762 m | mark **needs-review** (no good name or pin) |
+| REVIEW | 2279 | Φορόκλι | Karpathos | Φορόκλι, Karpathos | Forókli · 25 m · verified (via "Forokli, Karpathos") | ✗ none | mark **needs-review** (no good name or pin) |
+| REVIEW | 2286 | Λακκί | Karpathos | Παραλία Λακκί, Karpathos | Λακκί · 451 m · needs_review (via "Λακκί, Karpathos") | Lakki Beach · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2293 | Λιμάνι Παναγιάς | Karpathos | Παραλία Λιμάνι Παναγιάς, Karpathos | Panagias Limani · 31 m · verified (via "Λιμάνι Παναγιάς, Karpathos") | Panagias Limani · 1 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2298 | Βανάντα | Karpathos | Βανάντα, Karpathos | Βανάντα-Βουργούντα-Στιόι-Αυλώνας-Τρίστομο (Ολύμπου-Καρπάθου) · 3290 m · needs_review | Vanánda · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2299 | Βοτσαλάκια | Karpathos | Βοτσαλάκια, Karpathos | Votsalakia beach · 18 m · verified (via "Votsalakia, Karpathos") | ✗ none | mark **needs-review** (no good name or pin) |
+| REVIEW | 2304 | Βάθια | Karpathos | Παραλία Βάθια, Karpathos | Βάθια · 70 m · verified (via "Βάθια, Karpathos") | Χριστού Πηγάδι · 975 m | mark **needs-review** (no good name or pin) |
+| REVIEW | 2308 | Κυρά Παναγιά | Karpathos | Παραλία Κυρά Παναγιά, Karpathos | Κυρά Παναγιά · 8 m · verified (via "Κυρά Παναγιά, Karpathos") | Κυρά Παναγιά · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2316 | Ψωράρης | Karpathos | Παραλία Ψωράρης, Karpathos | Ψωράρης · 21 m · verified (via "Ψωράρης, Karpathos") | Ψωράρης · 0 m | route by **coordinates** (pin OSM-corroborated) |

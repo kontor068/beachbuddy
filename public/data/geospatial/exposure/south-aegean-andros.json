@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:25.666Z",
+  "generatedAt": "2026-08-16T17:55:53.554Z",
   "region": {
     "id": "south-aegean-andros",
     "name": "Andros"
@@ -922,7 +922,13 @@
           "intensity": 0.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.7787,
+        "lon": 24.9881,
+        "bearingDeg": 90,
+        "distanceKm": 2.86
+      }
     },
     "1697": {
       "beachId": 1697,

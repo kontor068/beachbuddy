@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-14T15:44:56.783Z",
+  "generatedAt": "2026-08-16T17:55:34.332Z",
   "region": {
     "id": "north-aegean-chios",
     "name": "Chios"
@@ -229,7 +229,13 @@
           "intensity": 12.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5129,
+        "lon": 26.1922,
+        "bearingDeg": 90,
+        "distanceKm": 3.62
+      }
     },
     "1247": {
       "beachId": 1247,
@@ -1218,7 +1224,13 @@
           "intensity": 16.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3721,
+        "lon": 25.9903,
+        "bearingDeg": 180,
+        "distanceKm": 2.14
+      }
     },
     "1260": {
       "beachId": 1260,
@@ -2438,7 +2450,13 @@
           "intensity": 47.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3146,
+        "lon": 25.9533,
+        "bearingDeg": 0,
+        "distanceKm": 2.38
+      }
     },
     "1276": {
       "beachId": 1276,
@@ -2511,10 +2529,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.1892,
-        "lon": 25.8736,
-        "bearingDeg": 225,
-        "distanceKm": 5.08
+        "lat": 38.2125,
+        "lon": 25.8853,
+        "bearingDeg": 248.8,
+        "distanceKm": 2.76,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "1277": {

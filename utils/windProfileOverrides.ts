@@ -1821,10 +1821,15 @@ const legacyOverrideEntriesFromOrder = (
 const legacyParosOverrideEntries = legacyOverrideEntriesFromOrder(['paros'], 1817, [
   ['Agia Eirini', 'Agia Irini'], 'Agios Dimitrios', 'Agios Stefanos', 'Ampelas', ['Aspros Gkremos', 'Aspros Gremos'],
   'Voutakos', 'Glyfades', 'Delfini', 'Dryos', 'Kalogeros', 'Kolympithres', 'Krios',
-  ['Laggeri', 'Langeri'], 'Livadia', 'Limnes', 'Logaras', 'Lolantonis', 'Martselo',
+  // Λιβάδια and Παραλία Παροικιάς were renamed on 16/08/2026 so a visitor searching «Παροικιά»
+  // can tell the sheltered inner-bay beach from the open one by the town centre. These entries are
+  // matched by NAME, so the old spellings stay listed beside the new ones — dropping them would
+  // silently return both beaches to an 'unknown' wind profile.
+  ['Laggeri', 'Langeri'], ['Livadia', 'Livadia (Parikia)'], 'Limnes', 'Logaras', 'Lolantonis', 'Martselo',
   'Mikri Santa Maria', 'Monastiri', 'Molos', 'Navtikos omilos Parou', 'Xyfara',
   'Paralia Agkali Chrysis Aktis', 'Paralia Alyki', 'Paralia Glyfa',
-  ['Paralia Paroikias', 'Paralia Parikias'], 'Parasporos', 'Piperi', ['Poynta', 'Pounta'], 'Pyrgaki',
+  ['Paralia Paroikias', 'Paralia Parikias', 'Paralia Parikias (kentro)', 'Paralia Paroikias (kentro)'],
+  'Parasporos', 'Piperi', ['Poynta', 'Pounta'], 'Pyrgaki',
   'Santa Maria', ['Toyrkou Ammos', 'Tourkou Ammos'], 'Tserdakia (Nea Chrysi Akti)', 'Tsoukalia',
   ['Faraggas', 'Farangas'], 'Chrysi Akti',
 ]);

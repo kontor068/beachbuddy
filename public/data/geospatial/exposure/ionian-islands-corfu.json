@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-14T15:44:52.981Z",
+  "generatedAt": "2026-08-16T17:55:25.191Z",
   "region": {
     "id": "ionian-islands-corfu",
     "name": "Corfu"
@@ -229,7 +229,13 @@
           "intensity": 36.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.6568,
+        "lon": 19.6935,
+        "bearingDeg": 225,
+        "distanceKm": 2.6
+      }
     },
     "929": {
       "beachId": 929,
@@ -300,7 +306,13 @@
           "intensity": 5.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.7363,
+        "lon": 19.9588,
+        "bearingDeg": 90,
+        "distanceKm": 2.5
+      }
     },
     "930": {
       "beachId": 930,
@@ -5372,10 +5384,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.645,
-        "lon": 19.6503,
-        "bearingDeg": 244.8,
-        "distanceKm": 7.5
+        "lat": 39.6737,
+        "lon": 19.6697,
+        "bearingDeg": 270,
+        "distanceKm": 5.12,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     },
     "996": {
@@ -7141,7 +7155,13 @@
           "intensity": 25.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.6537,
+        "lon": 19.8821,
+        "bearingDeg": 90,
+        "distanceKm": 3.14
+      }
     },
     "3014": {
       "beachId": 3014,
@@ -7289,7 +7309,13 @@
           "intensity": 9.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.7864,
+        "lon": 19.976,
+        "bearingDeg": 45,
+        "distanceKm": 2.66
+      }
     },
     "3068": {
       "beachId": 3068,
@@ -7591,7 +7617,13 @@
           "intensity": 27.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.8108,
+        "lon": 19.9776,
+        "bearingDeg": 45,
+        "distanceKm": 3.96
+      }
     },
     "3080": {
       "beachId": 3080,
@@ -7816,7 +7848,13 @@
           "intensity": 25.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.7997,
+        "lon": 19.9846,
+        "bearingDeg": 45,
+        "distanceKm": 3.62
+      }
     },
     "3100": {
       "beachId": 3100,
@@ -7966,10 +8004,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.7369,
-        "lon": 19.9554,
-        "bearingDeg": 180,
-        "distanceKm": 4.06
+        "lat": 39.77,
+        "lon": 19.9752,
+        "bearingDeg": 102.8,
+        "distanceKm": 1.74,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "3102": {

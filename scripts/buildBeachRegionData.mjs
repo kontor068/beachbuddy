@@ -548,6 +548,33 @@ const makeSearchAliases = (name, areaName, extraAliases = []) => Array.from(new 
   'Paralia',
 ].filter(Boolean)));
 
+/**
+ * The national search index carries every beach in the country, so it can only
+ * afford the aliases that add a name the search does not already know. The beach's
+ * own name, the area and the generic «Paralia» are already scored from `name`, and
+ * the search transliterates Greek to Latin itself — so «Porto Timoni» next to
+ * «Πόρτο Τιμόνι» buys nothing and would just inflate the file 2.867 times over.
+ * What survives is the real second name: the village a visitor types instead of
+ * the beach («Αφιώνας» for Πόρτο Τιμόνι).
+ */
+const distinctiveAliasKey = value => normalizeBeachNameKey(toGreeklish(String(value || ''))).replace(/\s+/g, '');
+
+const getDistinctiveAliases = (beach, areaName) => {
+  const seen = new Set([
+    ...Object.values(beach.name || {}),
+    areaName,
+    'Paralia',
+    'Beach',
+  ].map(distinctiveAliasKey).filter(Boolean));
+
+  return (beach.aliases || []).filter(alias => {
+    const key = distinctiveAliasKey(alias);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const getMapCoordinates = metadata => {
   const mapCoordinates = metadata?.mapCoordinates;
   if (
@@ -912,6 +939,15 @@ const parseBeachPayload = beachData => {
           // allow-list is explicit, so a new source field is invisible to the rest
           // of the build until it is named here.
           ...(typeof item?.nameGr === 'string' && item.nameGr.trim() ? { nameGr: item.nameGr.trim() } : {}),
+          // The slug a renamed beach used to live at, so its old URL keeps resolving.
+          // It was written into the source by the 2026-08-13 Μοναστήρι rename and by the
+          // 2026-08-16 Παροικιά/Λιβάδια one, but it was NOT on this allow-list — so it was
+          // dropped here in silence and `getLegacyBeachSlugs` only ever saw the slug it could
+          // compute itself from the CURRENT name. A rename's whole point is that the old
+          // address survives it; without this line it never did.
+          ...(Array.isArray(item?.legacySlugs) && item.legacySlugs.some(s => typeof s === 'string' && s.trim())
+            ? { legacySlugs: item.legacySlugs.filter(s => typeof s === 'string' && s.trim()).map(s => s.trim()) }
+            : {}),
           lat,
           lon,
           ...(isBeachMetadata(item?.metadata) ? { metadata: item.metadata } : {}),
@@ -1119,13 +1155,21 @@ for (const region of regions.values()) {
   };
 
   index.regions.push(indexEntry);
-  searchIndex.beaches.push(...summaryIsland.beaches.map(beach => ({
-    regionId: region.id,
-    beachId: beach.id,
-    rating: beach.rating,
-    name: beach.name,
-    ...(beach.legacySlugs ? { legacySlugs: beach.legacySlugs } : {}),
-  })));
+  searchIndex.beaches.push(...summaryIsland.beaches.map(beach => {
+    // Without this the app-wide search never saw an alias at all: the loader's type
+    // declares `aliases`, App.tsx scores them, and this was the one place that never
+    // wrote them — so «Αφιώνας» found nothing while the region-local search found it.
+    const searchAliases = getDistinctiveAliases(beach, region.prefecture);
+
+    return {
+      regionId: region.id,
+      beachId: beach.id,
+      rating: beach.rating,
+      name: beach.name,
+      ...(searchAliases.length ? { aliases: searchAliases } : {}),
+      ...(beach.legacySlugs ? { legacySlugs: beach.legacySlugs } : {}),
+    };
+  }));
 
   await fs.writeFile(
     path.join(outputDir, `${region.id}.json`),

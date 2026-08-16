@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.063Z",
+  "generatedAt": "2026-08-16T17:55:58.537Z",
   "region": {
     "id": "south-aegean-kastellorizo",
     "name": "Kastellorizo"
@@ -152,7 +152,13 @@
           "intensity": 48.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.1615,
+        "lon": 29.6158,
+        "bearingDeg": 45,
+        "distanceKm": 2.2
+      }
     },
     "2318": {
       "beachId": 2318,

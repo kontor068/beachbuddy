@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:15.809Z",
+  "generatedAt": "2026-08-16T17:55:29.564Z",
   "region": {
     "id": "ionian-islands-meganisi",
     "name": "Meganisi"
@@ -302,10 +302,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.5967,
-        "lon": 20.8272,
-        "bearingDeg": 155,
-        "distanceKm": 6.7
+        "lat": 38.6087,
+        "lon": 20.8492,
+        "bearingDeg": 135,
+        "distanceKm": 6.7,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "1177": {
@@ -448,7 +450,13 @@
           "intensity": 58
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.6268,
+        "lon": 20.7138,
+        "bearingDeg": 225,
+        "distanceKm": 2.88
+      }
     },
     "1179": {
       "beachId": 1179,
@@ -519,7 +527,13 @@
           "intensity": 59.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.6917,
+        "lon": 20.7549,
+        "bearingDeg": 315,
+        "distanceKm": 3.1
+      }
     },
     "1180": {
       "beachId": 1180,

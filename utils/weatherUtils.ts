@@ -97,6 +97,59 @@ export const applyMarineToDailyForecast = (
 };
 
 /**
+ * Take the region's SEA away from a day, keeping the water temperature.
+ *
+ * ⚠️ NOT WIRED INTO THE APP, AND DELIBERATELY SO. This exists for
+ * scripts/auditPointlessBeachSeaRemoval.mjs, which used it to measure a change that was then NOT
+ * shipped. Keeping the function is what keeps that measurement reproducible; wiring it into a
+ * render path would re-introduce the idea the measurement rejected.
+ *
+ * THE IDEA. 297 beaches have no marineSamplePoint of their own, so they read the region cell, and
+ * scripts/auditMarineCellTrust.mjs measured on 16/08/2026 — against ewam, the model that actually
+ * decides the wave — that for 277 of them that cell describes water the beach does not face (the
+ * worst, Πόρτο Πεύκο, 104 km away). `buildMarineSamplePoints` says such a beach "should fall back
+ * to the modelled wave rather than import a number from outside". This function is that fallback.
+ *
+ * WHY IT WAS NOT SHIPPED. The displayed wave is max(imported, modelled), so removing the imported
+ * term can only ever LOWER a number. Measured nationally: 226 of the 297 moved, 134 turned a whole
+ * sea-state band CALMER with none turning rougher, and 100 gained recommendation score — on an
+ * ordinary 4-5 Bft August day, with drops like Amorgos 2.04 m → 0.35 m.
+ *
+ * That is the wave measured against LOCAL fetch, which says nothing about a wave arriving from
+ * outside. utils/geometricWaveCeiling records the same reasoning being tested and killed on
+ * 13/08/2026: "55 of 65 beaches are shown a sea their geometry cannot hold" became 9 once open
+ * coasts were excluded, and the other 56 grid readings were found defensible. A ray fan that stops
+ * short in all eight sectors does not mean no wave can arrive — waves spread into a bay, straight
+ * lines do not. The fix for these 297 is a sample point of their own where the water allows one,
+ * not the removal of a number.
+ *
+ * Returns the base object unchanged when there is no sea to remove.
+ */
+export const dropMarineWaveFromDailyForecast = (base: DailyForecast): DailyForecast => {
+  if (!base.hourly?.length) return base;
+
+  let strippedAny = false;
+  const hourly = base.hourly.map(item => {
+    if (!item.marine) return item;
+    if (item.marine.waveHeightM === undefined
+      && item.marine.swellWaveHeightM === undefined
+      && item.marine.wavePeriodS === undefined) return item;
+    strippedAny = true;
+    return {
+      ...item,
+      marine: {
+        seaSurfaceTemperatureC: item.marine.seaSurfaceTemperatureC,
+        source: item.marine.source,
+      } as MarineForecast,
+    };
+  });
+
+  if (!strippedAny) return base;
+
+  return { ...base, hourly, marine: summarizeDailyMarine(hourly) };
+};
+
+/**
  * Give one day's forecast a different WIND, and nothing else.
  *
  * The twin of the function above, and deliberately NOT part of it. Until 02/08/2026 every beach

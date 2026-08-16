@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:15.722Z",
+  "generatedAt": "2026-08-16T17:56:13.125Z",
   "region": {
     "id": "thessaly-skiathos",
     "name": "Skiathos"
@@ -999,7 +999,15 @@
           "intensity": 24.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.1508,
+        "lon": 23.4857,
+        "bearingDeg": 55,
+        "distanceKm": 2.66,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "2627": {
       "beachId": 2627,
@@ -1457,10 +1465,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.151,
+        "lat": 39.1489,
         "lon": 23.3266,
-        "bearingDeg": 272.4,
-        "distanceKm": 5.62
+        "bearingDeg": 270,
+        "distanceKm": 5.62,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     },
     "2633": {
@@ -2458,10 +2468,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.1447,
-        "lon": 23.5066,
-        "bearingDeg": 82.4,
-        "distanceKm": 4.26
+        "lat": 39.1457,
+        "lon": 23.4656,
+        "bearingDeg": 45,
+        "distanceKm": 0.96,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "2646": {

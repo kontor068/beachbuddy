@@ -1138,7 +1138,12 @@ const compactAccessLabel = (
   const copy = getLocalizedCopy(language, cardCopy).access;
   const defaultLocalizedAccessLabel = accessType ? localizedAccessLabel(accessType, undefined, language) : '';
   if (accessType?.startsWith('hiking_path') && fallback && fallback !== defaultLocalizedAccessLabel) {
-    return fallback;
+    // `fallback` is the authored Greek label. localizedAccessLabel recognises the ones that
+    // describe HOW you get down — «σκαλιά», «κατάβαση», «σχοινί» — and returns a translated
+    // phrase for them (utils/localization.getSpecificAccessLabelKey). Returning `fallback`
+    // raw would have printed that Greek sentence verbatim on the German and French cards
+    // (found 16/08/2026 while marking Απέλλα and Κυρά Παναγιά as stairs-down access).
+    return localizedAccessLabel(accessType, fallback, language) || fallback;
   }
 
   if (isDirtRoad) {

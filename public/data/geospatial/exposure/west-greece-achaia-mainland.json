@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:35.443Z",
+  "generatedAt": "2026-08-16T17:56:16.150Z",
   "region": {
     "id": "west-greece-achaia-mainland",
     "name": "Achaia"
@@ -1076,7 +1076,15 @@
           "intensity": 52.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3173,
+        "lon": 21.748,
+        "bearingDeg": 357.1,
+        "distanceKm": 3.96,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "2515": {
       "beachId": 2515,

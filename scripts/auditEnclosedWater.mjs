@@ -57,6 +57,16 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// The coastline mask moved to scripts/lib/coastlineMask.mjs on 16/08/2026 (unchanged) so that
+// scripts/auditCoveOriginBlindSpot.mjs reads the SAME coast. Two audits with two copies of the
+// mask would eventually disagree about where the land is, and neither would say so.
+import { rad, KM_PER_DEG_LAT, kmPerDegLon, loadMask, makeIsLand } from './lib/coastlineMask.mjs';
+// Witness 2 asks Open-Meteo where the nearest marine cell is. Routes through the paid plan when
+// OPEN_METEO_API_KEY is in the environment, and changes nothing when it is not — the free daily
+// allowance is small enough that a day of national measuring exhausts it and stops this audit
+// mid-run, which is exactly what happened on 16/08/2026. See scripts/lib/paidOpenMeteo.mjs.
+import './lib/paidOpenMeteo.mjs';
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SECTORS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 
@@ -66,70 +76,31 @@ const MAX_FETCH_KM = 3;
 const MIN_FETCH_KM = 0.2;
 
 
-const rad = x => (x * Math.PI) / 180;
-const KM_PER_DEG_LAT = 110.574;
-const kmPerDegLon = lat => 111.32 * Math.cos(rad(lat));
-
-// ── Land mask (the split-OSM coastline the exposure build uses) ────────────────────────────────
-const MASK_PATH = path.join(root, '.tmp/geospatial/greece-land-osm-split.geojson');
-const GRID_DEG = 0.05;
-
-const loadMask = () => {
-  const fc = JSON.parse(readFileSync(MASK_PATH, 'utf8'));
-  const polys = [];
-  for (const f of fc.features) {
-    if (f.geometry?.type !== 'Polygon') continue;
-    const ring = f.geometry.coordinates[0];
-    if (!ring || ring.length < 4) continue;
-    let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
-    for (const [lon, lat] of ring) {
-      if (lon < minLon) minLon = lon;
-      if (lon > maxLon) maxLon = lon;
-      if (lat < minLat) minLat = lat;
-      if (lat > maxLat) maxLat = lat;
-    }
-    polys.push({ ring, holes: f.geometry.coordinates.slice(1), minLon, maxLon, minLat, maxLat });
-  }
-  const buckets = new Map();
-  polys.forEach((p, i) => {
-    for (let r = Math.floor(p.minLat / GRID_DEG); r <= Math.floor(p.maxLat / GRID_DEG); r++) {
-      for (let c = Math.floor(p.minLon / GRID_DEG); c <= Math.floor(p.maxLon / GRID_DEG); c++) {
-        const k = `${r}:${c}`;
-        const b = buckets.get(k);
-        if (b) b.push(i); else buckets.set(k, [i]);
-      }
-    }
-  });
-  return { polys, buckets };
+/**
+ * Where to look for "the middle of the water this beach faces" — see witness 1 in the header.
+ *
+ * ⚠️ THE SHIPPED DEFAULTS ARE THE ONES VERIFIED_ENCLOSED_WATER_IDS WAS BUILT ON. Overriding them
+ * (--cell / --box / --seed-km, added 16/08/2026) produces a MEASUREMENT, never a list to paste:
+ * a 150 m cell cannot resolve a 120 m cove, which is why Καραβοστάσι Μπαλίου reads as open coast
+ * with a 2.349 m "mouth" — the raster measured the whole Bali bay. Re-running finer answers
+ * whether that verdict is physics or resolution. It does NOT re-admit anything on its own: the
+ * committed list stays whatever the defaults say, so a finer run can never silently loosen §Γ1.
+ *
+ * The seed radius is the subtle one. Witness 1's constriction test asks whether the narrowest
+ * point of the route out lies BEYOND the seed; seed too close to the shore and the seed is always
+ * the narrowest, so everything reads "open coast" — the same origin trap the header warns about.
+ * Shrink it only in proportion to the cove being measured, and read the result knowing that.
+ */
+const numArg = (name, fallback) => {
+  const i = process.argv.indexOf(name);
+  if (i < 0) return fallback;
+  const v = Number(process.argv[i + 1]);
+  if (!Number.isFinite(v) || v <= 0) throw new Error(`${name} needs a positive number`);
+  return v;
 };
-
-const inRing = (lon, lat, ring) => {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [xi, yi] = ring[i];
-    const [xj, yj] = ring[j];
-    if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
-  }
-  return inside;
-};
-
-const makeIsLand = mask => (lon, lat) => {
-  const cands = mask.buckets.get(`${Math.floor(lat / GRID_DEG)}:${Math.floor(lon / GRID_DEG)}`);
-  if (!cands) return false;
-  for (const i of cands) {
-    const p = mask.polys[i];
-    if (lon < p.minLon || lon > p.maxLon || lat < p.minLat || lat > p.maxLat) continue;
-    if (!inRing(lon, lat, p.ring)) continue;
-    if (p.holes.some(h => inRing(lon, lat, h))) continue;
-    return true;
-  }
-  return false;
-};
-
-/** Where to look for "the middle of the water this beach faces" — see witness 1 in the header. */
-const SEED_SEARCH_KM = 1.2;
-const BOX_HALF_KM = 15;
-const CELL_KM = 0.15;
+const SEED_SEARCH_KM = numArg('--seed-km', 1.2);
+const BOX_HALF_KM = numArg('--box', 15);
+const CELL_KM = numArg('--cell', 0.15);
 
 const measureMouthWidthM = (isLand, lat0, lon0) => {
   const n = Math.ceil((2 * BOX_HALF_KM) / CELL_KM);
@@ -302,8 +273,36 @@ const haversineKm = (aLat, aLon, bLat, bLon) => {
   return 2 * R * Math.asin(Math.sqrt(h));
 };
 const chunk = (list, size) => (list.length ? [list.slice(0, size), ...chunk(list.slice(size), size)] : []);
-console.error('\nWitness 2 — nearest marine grid cell…');
-for (const group of chunk(results, 20)) {
+
+/**
+ * Witness 2 from a previous run of THIS script (--cells-from <json>), for re-measuring witness 1
+ * at another resolution without spending the marine quota a second time. The cell a beach sits in
+ * is a property of the model grid and the pin, so it cannot move when only the raster changes.
+ *
+ * It keeps the refusal below intact rather than routing around it: a beach missing from the cache
+ * is treated exactly like an unreachable batch. The dangerous failure this guards against — a
+ * silently shorter admitted list — is identical whether the number went missing over the network
+ * or out of a file.
+ */
+const cellsFromArg = process.argv.indexOf('--cells-from');
+const cachedCellKm = new Map();
+if (cellsFromArg > -1) {
+  for (const r of JSON.parse(readFileSync(process.argv[cellsFromArg + 1], 'utf8'))) {
+    if (typeof r?.cellKm === 'number') cachedCellKm.set(r.id, r.cellKm);
+  }
+  const missing = results.filter(r => !cachedCellKm.has(r.id));
+  if (missing.length) {
+    throw new Error(
+      `--cells-from is missing witness 2 for ${missing.length} beaches (ids ${missing.map(r => r.id).join(',')}). ` +
+      'Refusing to print a list: the admitted set would shrink without saying so.'
+    );
+  }
+  console.error(`\nWitness 2 — reused from ${process.argv[cellsFromArg + 1]} (${results.length} beaches, no marine calls).`);
+  for (const r of results) r.cellKm = cachedCellKm.get(r.id);
+}
+
+if (!cachedCellKm.size) console.error('\nWitness 2 — nearest marine grid cell…');
+for (const group of cachedCellKm.size ? [] : chunk(results, 20)) {
   const url = 'https://marine-api.open-meteo.com/v1/marine' +
     `?latitude=${group.map(c => c.lat).join(',')}&longitude=${group.map(c => c.lon).join(',')}` +
     '&hourly=wave_height&forecast_days=1';
@@ -336,14 +335,23 @@ const admitted = results.filter(r => r.admitted).sort((a, b) => a.id - b.id);
 const openCoast = results.filter(r => !r.constricted);
 const shallowBay = results.filter(r => r.constricted && !r.admitted);
 
-console.log(`\nGeometric candidates: ${results.length}`);
+const shippedResolution = CELL_KM === 0.15 && BOX_HALF_KM === 15 && SEED_SEARCH_KM === 1.2;
+
+console.log(`\nRaster: cell ${CELL_KM * 1000} m, box ±${BOX_HALF_KM} km, seed radius ${SEED_SEARCH_KM} km` +
+  (shippedResolution ? ' (shipped)' : ' — NON-DEFAULT: a measurement, not a list to paste'));
+console.log(`Geometric candidates: ${results.length}`);
 console.log(`  open coast (no constriction on the way out): ${openCoast.length}`);
 console.log(`  a real mouth, but the beach sits under ${MIN_DEPTH_RATIO} gap-widths in: ${shallowBay.length}`);
 console.log(`  ADMITTED: ${admitted.length}`);
 const paros = admitted.filter(r => r.region.includes('paros')).map(r => r.name);
 console.log(`Naousa adversary among the admitted: ${paros.length ? paros.join(',') : 'NONE (correct)'}`);
 
-console.log('\nPaste into utils/geometricWaveCeiling.ts:\n');
+// The committed list may only ever come from the resolution it was validated on. A finer run is
+// evidence about the instrument, not a new admission list, and printing a pasteable block for it
+// is exactly how a "measurement" quietly becomes a shipped loosening of §Γ1.
+console.log(shippedResolution
+  ? '\nPaste into utils/geometricWaveCeiling.ts:\n'
+  : '\nAdmitted AT THIS RESOLUTION (do NOT paste — the committed list is the default-raster one):\n');
 console.log('export const VERIFIED_ENCLOSED_WATER_IDS = new Set<number>([');
 for (const r of admitted) {
   console.log(`  ${r.id}, // ${r.name} [${r.region}] — mouth ${r.mouthM} m, ${r.bayDepthKm} km deep = ${r.depthRatio} gap-widths, fetch ${r.pinFetchKm} km`);

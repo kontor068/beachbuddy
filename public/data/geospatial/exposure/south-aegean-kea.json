@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.142Z",
+  "generatedAt": "2026-08-16T17:55:58.695Z",
   "region": {
     "id": "south-aegean-kea",
     "name": "Kea"
@@ -460,7 +460,13 @@
           "intensity": 59.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.6853,
+        "lon": 24.2924,
+        "bearingDeg": 315,
+        "distanceKm": 3.6
+      }
     },
     "1809": {
       "beachId": 1809,
@@ -2612,10 +2618,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.6031,
-        "lon": 24.5035,
-        "bearingDeg": 99.8,
-        "distanceKm": 10
+        "lat": 37.5866,
+        "lon": 24.4318,
+        "bearingDeg": 135,
+        "distanceKm": 5,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "1837": {

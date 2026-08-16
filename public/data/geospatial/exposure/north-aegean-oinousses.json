@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:19.768Z",
+  "generatedAt": "2026-08-16T17:55:38.836Z",
   "region": {
     "id": "north-aegean-oinousses",
     "name": "Oinousses"
@@ -383,7 +383,13 @@
           "intensity": 53
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5215,
+        "lon": 26.1775,
+        "bearingDeg": 270,
+        "distanceKm": 2.26
+      }
     },
     "1289": {
       "beachId": 1289,
@@ -608,7 +614,13 @@
           "intensity": 29.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.509,
+        "lon": 26.1608,
+        "bearingDeg": 225,
+        "distanceKm": 3.96
+      }
     },
     "1292": {
       "beachId": 1292,

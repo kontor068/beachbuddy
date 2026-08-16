@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T15:02:09.371Z",
+  "generatedAt": "2026-08-16T17:54:38.480Z",
   "region": {
     "id": "central-greece-fthiotida-mainland",
     "name": "Fthiotida"
@@ -460,7 +460,13 @@
           "intensity": 17.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.852,
+        "lon": 22.7111,
+        "bearingDeg": 180,
+        "distanceKm": 3.86
+      }
     },
     "360": {
       "beachId": 360,
@@ -916,7 +922,13 @@
           "intensity": 31.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.6664,
+        "lon": 23.1317,
+        "bearingDeg": 270,
+        "distanceKm": 3.66
+      }
     },
     "366": {
       "beachId": 366,
@@ -1526,7 +1538,13 @@
           "intensity": 2.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.9085,
+        "lon": 22.8776,
+        "bearingDeg": 90,
+        "distanceKm": 3.46
+      }
     }
   }
 }

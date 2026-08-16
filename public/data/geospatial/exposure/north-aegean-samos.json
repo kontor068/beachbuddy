@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:20.371Z",
+  "generatedAt": "2026-08-16T17:55:40.353Z",
   "region": {
     "id": "north-aegean-samos",
     "name": "Samos"
@@ -2841,7 +2841,13 @@
           "intensity": 39.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.7626,
+        "lon": 26.9305,
+        "bearingDeg": 270,
+        "distanceKm": 3.28
+      }
     },
     "1415": {
       "beachId": 1415,

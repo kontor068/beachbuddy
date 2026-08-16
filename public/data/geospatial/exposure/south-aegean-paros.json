@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-14T15:45:10.448Z",
+  "generatedAt": "2026-08-16T17:56:05.098Z",
   "region": {
     "id": "south-aegean-paros",
     "name": "Paros"
@@ -1069,8 +1069,8 @@
     "2033": {
       "beachId": 2033,
       "name": {
-        "en": "Livadia",
-        "gr": "Λιβάδια"
+        "en": "Livadia (Parikia)",
+        "gr": "Λιβάδια (Παροικιά)"
       },
       "coordinates": {
         "lat": 37.09343,
@@ -1135,7 +1135,13 @@
           "intensity": 33
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0709,
+        "lon": 25.1267,
+        "bearingDeg": 225,
+        "distanceKm": 3.54
+      }
     },
     "2034": {
       "beachId": 2034,
@@ -1504,10 +1510,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.1125,
-        "lon": 25.3196,
-        "bearingDeg": 135,
-        "distanceKm": 4.04
+        "lat": 37.121,
+        "lon": 25.2887,
+        "bearingDeg": 176.3,
+        "distanceKm": 1.92,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "2039": {
@@ -1650,7 +1658,15 @@
           "intensity": 11.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0646,
+        "lon": 25.2794,
+        "bearingDeg": 45,
+        "distanceKm": 1.66,
+        "via": "sector-NE",
+        "verified": "served-cell"
+      }
     },
     "2041": {
       "beachId": 2041,
@@ -1721,7 +1737,13 @@
           "intensity": 36.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0718,
+        "lon": 25.1279,
+        "bearingDeg": 225,
+        "distanceKm": 3.46
+      }
     },
     "2042": {
       "beachId": 2042,
@@ -1792,7 +1814,13 @@
           "intensity": 63.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1436,
+        "lon": 25.2395,
+        "bearingDeg": 315,
+        "distanceKm": 3.1
+      }
     },
     "2043": {
       "beachId": 2043,
@@ -2028,8 +2056,8 @@
     "2046": {
       "beachId": 2046,
       "name": {
-        "en": "Paralia Parikias",
-        "gr": "Παραλία Παροικιάς"
+        "en": "Paralia Parikias (kentro)",
+        "gr": "Παραλία Παροικιάς (κέντρο)"
       },
       "coordinates": {
         "lat": 37.08187,
@@ -2250,10 +2278,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.1723,
-        "lon": 25.2284,
-        "bearingDeg": 355.6,
-        "distanceKm": 5.52
+        "lat": 37.157,
+        "lon": 25.2761,
+        "bearingDeg": 45,
+        "distanceKm": 5.38,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "2049": {
@@ -2556,7 +2586,13 @@
           "intensity": 29.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.16,
+        "lon": 25.2523,
+        "bearingDeg": 45,
+        "distanceKm": 2.5
+      }
     },
     "2053": {
       "beachId": 2053,

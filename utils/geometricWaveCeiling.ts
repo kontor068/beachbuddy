@@ -116,15 +116,18 @@ export const CEILING_GUST_ALLOWANCE_M = 0.1;
  * behind it.
  */
 export const VERIFIED_ENCLOSED_WATER_IDS = new Set<number>([
-  152, // ÎÎ¹Î¼Î±Î½Î¬ÎºÎ¹ ÏÎ·Ï ÎÎ³Î¬ÏÎ·Ï [attica-poros] â mouth 600 m, 1.92 km deep = 3.2 gap-widths, fetch 2.2 km
-  158, // ÎÎµÎ³Î¬Î»Î¿ ÎÎµÏÏÎ¹Î¿ [attica-poros] â mouth 600 m, 2.46 km deep = 4.1 gap-widths, fetch 2.4 km
-  159, // ÎÎ¹ÎºÏÏ ÎÎµÏÏÎ¹Î¿ [attica-poros] â mouth 600 m, 2.98 km deep = 4.96 gap-widths, fetch 1.08 km
-  161, // Î¡ÏÏÎ¹ÎºÎ¿Ï ÎÎ±ÏÏÏÎ±Î¸Î¼Î¿Ï [attica-poros] â mouth 600 m, 1.5 km deep = 2.5 gap-widths, fetch 2 km
-  265, // ÎÏÏÎ­ÏÎ¹Î± [central-greece-evia] â mouth 300 m, 2.1 km deep = 7 gap-widths, fetch 1.28 km
-  464, // ÎÎ¹Î²Î¬ÏÎ¹ [central-macedonia-halkidiki] â mouth 849 m, 2.55 km deep = 3.01 gap-widths, fetch 2.12 km
-  767, // Î£ÏÎ¯ÏÎ¼Î± [crete-crete-lasithi] â mouth 724 m, 2.56 km deep = 3.54 gap-widths, fetch 2.56 km
-  2255, // Î ÎµÎ¶ÏÎ½ÏÎ± [south-aegean-kalymnos] â mouth 424 m, 0.91 km deep = 2.15 gap-widths, fetch 0.44 km
-  3010, // ÎÎ»Î¿ÏÎ½ÏÎ± [crete-crete-lasithi] â mouth 600 m, 2.9 km deep = 4.83 gap-widths, fetch 2.6 km
+  // Re-verified 16/08/2026 after the Κάρπαθος geometry rebuild: same nine ids, nothing gained and
+  // nothing lost. The Greek names below were double-encoded when the generated block was first
+  // pasted in from a console; restored here from the audit's own output.
+  152, // Λιμανάκι της Αγάπης [attica-poros] — mouth 600 m, 1.92 km deep = 3.2 gap-widths, fetch 2.2 km
+  158, // Μεγάλο Νεώριο [attica-poros] — mouth 600 m, 2.46 km deep = 4.1 gap-widths, fetch 2.4 km
+  159, // Μικρό Νεώριο [attica-poros] — mouth 600 m, 2.98 km deep = 4.96 gap-widths, fetch 1.08 km
+  161, // Παραλία Ρώσικος Ναύσταθμος [attica-poros] — mouth 600 m, 1.5 km deep = 2.5 gap-widths, fetch 2 km
+  265, // Παραλία "Αστέρια" [central-greece-evia] — mouth 300 m, 2.1 km deep = 7 gap-widths, fetch 1.28 km
+  464, // Παραλία Λιβάρι [central-macedonia-halkidiki-mainland] — mouth 849 m, 2.55 km deep = 3.01 gap-widths, fetch 2.12 km
+  767, // Σχίσμα [crete-crete-lasithi] — mouth 724 m, 2.56 km deep = 3.54 gap-widths, fetch 2.56 km
+  2255, // Πεζόντα [south-aegean-kalymnos] — mouth 424 m, 0.91 km deep = 2.15 gap-widths, fetch 0.44 km
+  3010, // Ελούντα [crete-crete-lasithi] — mouth 600 m, 2.9 km deep = 4.83 gap-widths, fetch 2.6 km
 ]);
 
 export interface GeometricWaveCeilingInput {

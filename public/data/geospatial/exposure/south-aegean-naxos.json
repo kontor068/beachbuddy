@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-13T19:24:03.730Z",
+  "generatedAt": "2026-08-16T17:56:04.679Z",
   "region": {
     "id": "south-aegean-naxos",
     "name": "Naxos"
@@ -2462,7 +2462,13 @@
           "intensity": 36.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9388,
+        "lon": 25.514,
+        "bearingDeg": 225,
+        "distanceKm": 3.1
+      }
     },
     "2012": {
       "beachId": 2012,
@@ -2764,7 +2770,13 @@
           "intensity": 1.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9402,
+        "lon": 25.526,
+        "bearingDeg": 135,
+        "distanceKm": 2.28
+      }
     },
     "2016": {
       "beachId": 2016,

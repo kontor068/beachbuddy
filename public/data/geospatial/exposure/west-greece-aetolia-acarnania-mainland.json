@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:36.316Z",
+  "generatedAt": "2026-08-16T17:56:18.204Z",
   "region": {
     "id": "west-greece-aetolia-acarnania-mainland",
     "name": "Aetolia-Acarnania"
@@ -152,7 +152,13 @@
           "intensity": 24.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.7634,
+        "lon": 20.74,
+        "bearingDeg": 180,
+        "distanceKm": 3.32
+      }
     },
     "1170": {
       "beachId": 1170,
@@ -454,7 +460,13 @@
           "intensity": 7.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5954,
+        "lon": 20.8958,
+        "bearingDeg": 225,
+        "distanceKm": 3.02
+      }
     },
     "2519": {
       "beachId": 2519,
@@ -835,10 +847,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 38.5844,
-        "lon": 20.9944,
-        "bearingDeg": 132.4,
-        "distanceKm": 7
+        "lat": 38.6269,
+        "lon": 20.9678,
+        "bearingDeg": 90,
+        "distanceKm": 2.86,
+        "via": "sector-E",
+        "verified": "served-cell"
       }
     },
     "2524": {
@@ -1218,7 +1232,13 @@
           "intensity": 0.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.5313,
+        "lon": 20.9309,
+        "bearingDeg": 135,
+        "distanceKm": 3.8
+      }
     },
     "2530": {
       "beachId": 2530,
@@ -1674,7 +1694,13 @@
           "intensity": 0
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.4937,
+        "lon": 21.0484,
+        "bearingDeg": 135,
+        "distanceKm": 2.06
+      }
     },
     "2536": {
       "beachId": 2536,
@@ -1745,7 +1771,13 @@
           "intensity": 58.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.9291,
+        "lon": 20.8177,
+        "bearingDeg": 270,
+        "distanceKm": 2.68
+      }
     },
     "2537": {
       "beachId": 2537,
@@ -2278,7 +2310,13 @@
           "intensity": 60
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.8854,
+        "lon": 21.1523,
+        "bearingDeg": 315,
+        "distanceKm": 2.78
+      }
     },
     "2547": {
       "beachId": 2547,
@@ -2657,7 +2695,13 @@
           "intensity": 22.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.922,
+        "lon": 21.1338,
+        "bearingDeg": 45,
+        "distanceKm": 2.34
+      }
     },
     "2553": {
       "beachId": 2553,
@@ -3267,7 +3311,13 @@
           "intensity": 0.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.3609,
+        "lon": 21.8237,
+        "bearingDeg": 180,
+        "distanceKm": 2.96
+      }
     },
     "3017": {
       "beachId": 3017,
@@ -3723,7 +3773,13 @@
           "intensity": 49.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.349,
+        "lon": 21.8169,
+        "bearingDeg": 0,
+        "distanceKm": 3.42
+      }
     },
     "3144": {
       "beachId": 3144,
@@ -3871,7 +3927,13 @@
           "intensity": 0
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.6527,
+        "lon": 20.9733,
+        "bearingDeg": 135,
+        "distanceKm": 2.74
+      }
     }
   }
 }

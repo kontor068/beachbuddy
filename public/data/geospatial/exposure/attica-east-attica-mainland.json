@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:48.951Z",
+  "generatedAt": "2026-08-16T17:54:21.596Z",
   "region": {
     "id": "attica-east-attica-mainland",
     "name": "East Attica"
@@ -2000,7 +2000,13 @@
           "intensity": 10.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.7954,
+        "lon": 23.8357,
+        "bearingDeg": 180,
+        "distanceKm": 2.58
+      }
     },
     "51": {
       "beachId": 51,
@@ -3611,7 +3617,13 @@
           "intensity": 0.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.6568,
+        "lon": 24.0943,
+        "bearingDeg": 135,
+        "distanceKm": 3.74
+      }
     },
     "72": {
       "beachId": 72,
@@ -3836,7 +3848,13 @@
           "intensity": 2.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.6513,
+        "lon": 24.0783,
+        "bearingDeg": 135,
+        "distanceKm": 3.54
+      }
     },
     "75": {
       "beachId": 75,

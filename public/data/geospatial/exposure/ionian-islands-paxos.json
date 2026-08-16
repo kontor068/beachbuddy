@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:16.683Z",
+  "generatedAt": "2026-08-16T17:55:31.760Z",
   "region": {
     "id": "ionian-islands-paxos",
     "name": "Paxos"
@@ -152,7 +152,13 @@
           "intensity": 54.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.2053,
+        "lon": 20.2055,
+        "bearingDeg": 0,
+        "distanceKm": 2.58
+      }
     },
     "1019": {
       "beachId": 1019,
@@ -1686,7 +1692,13 @@
           "intensity": 32.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.2034,
+        "lon": 20.2298,
+        "bearingDeg": 45,
+        "distanceKm": 3.4
+      }
     },
     "1039": {
       "beachId": 1039,

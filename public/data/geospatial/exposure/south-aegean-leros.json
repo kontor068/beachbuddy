@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.706Z",
+  "generatedAt": "2026-08-16T17:56:00.089Z",
   "region": {
     "id": "south-aegean-leros",
     "name": "Leros"
@@ -152,7 +152,13 @@
           "intensity": 2.7
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1524,
+        "lon": 26.8705,
+        "bearingDeg": 135,
+        "distanceKm": 2.76
+      }
     },
     "2359": {
       "beachId": 2359,
@@ -377,7 +383,13 @@
           "intensity": 0.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0946,
+        "lon": 26.828,
+        "bearingDeg": 180,
+        "distanceKm": 2.76
+      }
     },
     "2362": {
       "beachId": 2362,
@@ -525,7 +537,13 @@
           "intensity": 1.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0959,
+        "lon": 26.8327,
+        "bearingDeg": 180,
+        "distanceKm": 2.88
+      }
     },
     "2365": {
       "beachId": 2365,
@@ -821,7 +839,13 @@
           "intensity": 38.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.2061,
+        "lon": 26.8392,
+        "bearingDeg": 45,
+        "distanceKm": 2.78
+      }
     }
   }
 }

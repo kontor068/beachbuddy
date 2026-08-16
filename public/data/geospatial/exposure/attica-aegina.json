@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:46.651Z",
+  "generatedAt": "2026-08-16T17:54:15.823Z",
   "region": {
     "id": "attica-aegina",
     "name": "Aegina"
@@ -539,10 +539,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.638,
-        "lon": 23.4501,
-        "bearingDeg": 209.1,
-        "distanceKm": 5.08
+        "lat": 37.6456,
+        "lon": 23.4373,
+        "bearingDeg": 225,
+        "distanceKm": 5.08,
+        "via": "sector-SW",
+        "verified": "served-cell"
       }
     },
     "86": {

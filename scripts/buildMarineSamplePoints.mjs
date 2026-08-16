@@ -27,11 +27,20 @@
  * push 5.1 km along a bearing that is actually blocked at 0.3 km. The push also uses the exact
  * facing bearing while the fetch it is validated against is a 45° sector bin. So this is a good
  * heuristic that must be MEASURED, not a guarantee: scripts/auditMarineCellTrust.mjs is what
- * checks where the API actually lands, and it finds 258 sample points still in other water.
+ * checks where the API actually lands. Re-measured against ewam — the model that actually decides
+ * the wave — on 2026-08-16: of the 2565 beaches that get a point here, 2473 land in water the
+ * beach faces and 76 do not. (An earlier figure of 258 came from a run that asked Open-Meteo's
+ * default model instead of ewam and does not describe production.)
  *
  * Beaches with no meaningful fetch in any direction — a deeply enclosed cove — get no sample
  * point at all. That is correct: there is no open-water cell that describes their water, and the
  * runtime should fall back to the modelled wave rather than import a number from outside.
+ *
+ * THAT LAST SENTENCE IS NOT WHAT THE RUNTIME DOES, measured 2026-08-16. utils/marineSamplePoints
+ * .resolveBeachMarinePoints hands a point-less beach the REGION key, and App.tsx keeps the area
+ * sea for it — so it imports the region's wave height after all. For 277 of those 297 beaches that
+ * number comes from water the beach does not face, the worst of them 104 km away (Πόρτο Πεύκο).
+ * The audit report has the list; closing this is a runtime decision, not a change to this file.
  *
  * Usage:  node scripts/buildMarineSamplePoints.mjs [--dry-run] [--region <id>]
  */
@@ -52,8 +61,37 @@ const PUSH_FRACTION = 0.5;
 const MAX_PUSH_KM = 10;
 /** Below this the walk is not worth making — the pin's own cell is as good as anything. */
 const MIN_PUSH_KM = 2;
-/** A sector must be at least this open to be worth sampling from. */
-const MIN_SECTOR_FETCH_KM = 2 * MIN_PUSH_KM / PUSH_FRACTION;
+/**
+ * A sector must be at least this open to be worth sampling from.
+ *
+ * This is exactly the fetch that produces the shortest push worth making: MIN_PUSH_KM / 0.5 = 4 km.
+ * It used to carry a factor of 2 on top of that — 8 km — and nothing justified the doubling. What
+ * it cost, measured 16/08/2026 by scripts/auditMarineCellTrust.mjs against ewam: 297 beaches got no
+ * point at all and fell back to the region cell, and for 277 of them that cell describes water they
+ * do not face, the worst 104 km away. 198 of those 297 have between 4 and 8 km of open water — the
+ * margin, not the physics, is what was keeping them on a borrowed number.
+ *
+ * ⚠️ A POINT OF ITS OWN IS NOT AUTOMATICALLY A BETTER POINT, and the bible says so in §Γ3: Παραλία
+ * Μαραθώνα has a sample point 10 km SE reading 1.48-1.70 m of honest S. Evoikos wind-sea while its
+ * own north sector has zero fetch, so both numbers are right and they describe different water.
+ * That is why lowering this threshold is followed by the trust audit and by an on-screen impact
+ * measurement, and why the push itself was NOT made more aggressive at the same time.
+ */
+const MIN_SECTOR_FETCH_KM = MIN_PUSH_KM / PUSH_FRACTION;
+
+/**
+ * How open the FACING sector must be before it is preferred over the widest one.
+ *
+ * Held at the old 8 km on purpose, and this separation is the whole reason it is a second constant.
+ * Lowering the eligibility gate above to 4 km in one step also relaxed this preference, because
+ * both readings used the same number — and that MOVED 90 sample points that were already working,
+ * 69 of them by more than 3 km, pulling some from a 10 km push in to a 2 km one. That is the exact
+ * move the header of this file argues against: "Nearshore cells are fetch-truncated: they model a
+ * sliver of water hemmed in by land... the fix is not a closer point." Admitting a beach that had
+ * nothing and re-aiming a beach that was already answered are different decisions, so they get
+ * different thresholds and are measured separately.
+ */
+const PREFER_FACING_FETCH_KM = 2 * MIN_PUSH_KM / PUSH_FRACTION;
 
 const EARTH_RADIUS_KM = 6371;
 const toRad = deg => (deg * Math.PI) / 180;
@@ -96,7 +134,7 @@ const resolveSampleBearing = profile => {
   if (typeof facing === 'number' && Number.isFinite(facing)) {
     const facingSector = SECTORS[((Math.round(facing / 45) % 8) + 8) % 8];
     const atFacing = profile.sectors?.[facingSector];
-    if (atFacing && Number.isFinite(atFacing.fetchKm) && atFacing.fetchKm >= MIN_SECTOR_FETCH_KM) {
+    if (atFacing && Number.isFinite(atFacing.fetchKm) && atFacing.fetchKm >= PREFER_FACING_FETCH_KM) {
       return { bearingDeg: facing, fetchKm: atFacing.fetchKm, via: 'facing' };
     }
   }
@@ -139,6 +177,7 @@ let totalProfiles = 0;
 let withPoint = 0;
 let changedFiles = 0;
 const viaCounts = { facing: 0, 'widest-sector': 0 };
+let verifiedKept = 0;
 const distances = [];
 
 for (const file of files) {
@@ -148,6 +187,22 @@ for (const file of files) {
 
   for (const profile of Object.values(payload.profiles || {})) {
     totalProfiles += 1;
+
+    /**
+     * A point that was MEASURED against the served cell outranks anything computed here.
+     *
+     * scripts/optimiseMarineSamplePoints.mjs asks the API which cell a candidate is actually served
+     * and keeps one that passes the fetch test; this file only guesses from geometry and never
+     * looks. Overwriting a verified point with a guess is a silent regression that no gate would
+     * see — the count of beaches WITH a point would not move. Delete the `verified` field to hand
+     * a beach back to the heuristic.
+     */
+    if (profile.marineSamplePoint?.verified === 'served-cell') {
+      withPoint += 1;
+      verifiedKept += 1;
+      continue;
+    }
+
     const point = buildSamplePoint(profile);
     const previous = JSON.stringify(profile.marineSamplePoint ?? null);
 

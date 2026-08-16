@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T15:02:09.418Z",
+  "generatedAt": "2026-08-16T17:56:07.048Z",
   "region": {
     "id": "south-aegean-symi",
     "name": "Symi"
@@ -525,7 +525,13 @@
           "intensity": 7.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.5823,
+        "lon": 27.8947,
+        "bearingDeg": 90,
+        "distanceKm": 3.14
+      }
     },
     "2471": {
       "beachId": 2471,
@@ -829,10 +835,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.5503,
-        "lon": 27.915,
-        "bearingDeg": 110.8,
-        "distanceKm": 5.08
+        "lat": 36.5348,
+        "lon": 27.9014,
+        "bearingDeg": 135,
+        "distanceKm": 5,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "3171": {

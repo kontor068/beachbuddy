@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:27.614Z",
+  "generatedAt": "2026-08-16T17:55:57.506Z",
   "region": {
     "id": "south-aegean-kalymnos",
     "name": "Kalymnos"
@@ -229,7 +229,13 @@
           "intensity": 5.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9584,
+        "lon": 27.0599,
+        "bearingDeg": 90,
+        "distanceKm": 2.62
+      }
     },
     "2254": {
       "beachId": 2254,
@@ -300,7 +306,13 @@
           "intensity": 9.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.024,
+        "lon": 26.9117,
+        "bearingDeg": 225,
+        "distanceKm": 3.16
+      }
     },
     "2255": {
       "beachId": 2255,
@@ -750,7 +762,13 @@
           "intensity": 63.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.0644,
+        "lon": 26.8945,
+        "bearingDeg": 315,
+        "distanceKm": 3.08
+      }
     },
     "2261": {
       "beachId": 2261,

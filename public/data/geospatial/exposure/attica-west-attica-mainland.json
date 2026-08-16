@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T15:02:08.448Z",
+  "generatedAt": "2026-08-16T17:54:25.619Z",
   "region": {
     "id": "attica-west-attica-mainland",
     "name": "West Attica"
@@ -152,7 +152,13 @@
           "intensity": 0.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.0093,
+        "lon": 23.4747,
+        "bearingDeg": 90,
+        "distanceKm": 3.54
+      }
     },
     "188": {
       "beachId": 188,
@@ -300,7 +306,13 @@
           "intensity": 54.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.1498,
+        "lon": 23.1819,
+        "bearingDeg": 270,
+        "distanceKm": 3.74
+      }
     },
     "190": {
       "beachId": 190,
@@ -371,7 +383,13 @@
           "intensity": 59
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.1464,
+        "lon": 23.1804,
+        "bearingDeg": 270,
+        "distanceKm": 3.78
+      }
     },
     "191": {
       "beachId": 191,

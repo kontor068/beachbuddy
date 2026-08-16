@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.782Z",
+  "generatedAt": "2026-08-16T17:56:00.264Z",
   "region": {
     "id": "south-aegean-lipsi",
     "name": "Lipsi"
@@ -768,7 +768,13 @@
           "intensity": 40.1
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.2975,
+        "lon": 26.7333,
+        "bearingDeg": 270,
+        "distanceKm": 2.7
+      }
     },
     "2378": {
       "beachId": 2378,

@@ -1,0 +1,734 @@
+{
+  "generatedAt": "2026-08-16T15:37:56.015Z",
+  "forecastDay": "2026-08-15",
+  "rows": 14310,
+  "blue": 8532,
+  "screensWithBlue": 357,
+  "histogram": {
+    "0.1": 5976,
+    "0.2": 2225,
+    "0.3": 7,
+    "0.4": 0,
+    "0.5": 0,
+    "0.6": 324,
+    "0.8": 0
+  },
+  "cardFloors": [
+    {
+      "floor": 0.3,
+      "field": "cardShoreM",
+      "rows": 324,
+      "shareOfBlue": 0.0379746835443038,
+      "shareOfAll": 0.022641509433962263,
+      "beaches": 269,
+      "regions": 33,
+      "screensEmptied": 5,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          44
+        ],
+        [
+          "crete-crete-chania",
+          42
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          31
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          26
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          21
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          20
+        ],
+        [
+          "central-macedonia-pieria-mainland",
+          12
+        ],
+        [
+          "north-aegean-lesvos",
+          12
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Μεγάλο Καβούρι",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Φρεαττύδος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Κουζουνός",
+          "region": "attica-spetses",
+          "day": 2,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        }
+      ]
+    },
+    {
+      "floor": 0.4,
+      "field": "cardShoreM",
+      "rows": 324,
+      "shareOfBlue": 0.0379746835443038,
+      "shareOfAll": 0.022641509433962263,
+      "beaches": 269,
+      "regions": 33,
+      "screensEmptied": 5,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          44
+        ],
+        [
+          "crete-crete-chania",
+          42
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          31
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          26
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          21
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          20
+        ],
+        [
+          "central-macedonia-pieria-mainland",
+          12
+        ],
+        [
+          "north-aegean-lesvos",
+          12
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Μεγάλο Καβούρι",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Φρεαττύδος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Κουζουνός",
+          "region": "attica-spetses",
+          "day": 2,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        }
+      ]
+    },
+    {
+      "floor": 0.5,
+      "field": "cardShoreM",
+      "rows": 324,
+      "shareOfBlue": 0.0379746835443038,
+      "shareOfAll": 0.022641509433962263,
+      "beaches": 269,
+      "regions": 33,
+      "screensEmptied": 5,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          44
+        ],
+        [
+          "crete-crete-chania",
+          42
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          31
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          26
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          21
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          20
+        ],
+        [
+          "central-macedonia-pieria-mainland",
+          12
+        ],
+        [
+          "north-aegean-lesvos",
+          12
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Μεγάλο Καβούρι",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Φρεαττύδος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Κουζουνός",
+          "region": "attica-spetses",
+          "day": 2,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        }
+      ]
+    },
+    {
+      "floor": 0.6,
+      "field": "cardShoreM",
+      "rows": 0,
+      "shareOfBlue": 0,
+      "shareOfAll": 0,
+      "beaches": 0,
+      "regions": 0,
+      "screensEmptied": 0,
+      "screensWithBlue": 357,
+      "topRegions": [],
+      "examples": []
+    }
+  ],
+  "openWaterFloors": [
+    {
+      "floor": 0.3,
+      "field": "severityM",
+      "rows": 1194,
+      "shareOfBlue": 0.139943741209564,
+      "shareOfAll": 0.08343815513626834,
+      "beaches": 844,
+      "regions": 35,
+      "screensEmptied": 57,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          160
+        ],
+        [
+          "crete-crete-chania",
+          125
+        ],
+        [
+          "north-aegean-samos",
+          94
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          90
+        ],
+        [
+          "north-aegean-lesvos",
+          85
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          77
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          73
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          49
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Φλοίσβου",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.17,
+          "openM": 0.35,
+          "exposure": "protected"
+        },
+        {
+          "name": "Παλμύρα",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.17,
+          "openM": 0.35,
+          "exposure": "protected"
+        },
+        {
+          "name": "Παραλία Μπάτη",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.17,
+          "openM": 0.35,
+          "exposure": "protected"
+        },
+        {
+          "name": "Παραλία Έδεμ",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.17,
+          "openM": 0.35,
+          "exposure": "protected"
+        },
+        {
+          "name": "Α' Πλαζ Αλίμου «Στολίδι»",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.1,
+          "openM": 0.35,
+          "exposure": "protected"
+        },
+        {
+          "name": "Ακτή του Ήλιου",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.17,
+          "openM": 0.35,
+          "exposure": "protected"
+        }
+      ]
+    },
+    {
+      "floor": 0.4,
+      "field": "severityM",
+      "rows": 324,
+      "shareOfBlue": 0.0379746835443038,
+      "shareOfAll": 0.022641509433962263,
+      "beaches": 269,
+      "regions": 33,
+      "screensEmptied": 5,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          44
+        ],
+        [
+          "crete-crete-chania",
+          42
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          31
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          26
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          21
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          20
+        ],
+        [
+          "central-macedonia-pieria-mainland",
+          12
+        ],
+        [
+          "north-aegean-lesvos",
+          12
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Μεγάλο Καβούρι",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Φρεαττύδος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Κουζουνός",
+          "region": "attica-spetses",
+          "day": 2,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        }
+      ]
+    },
+    {
+      "floor": 0.5,
+      "field": "severityM",
+      "rows": 324,
+      "shareOfBlue": 0.0379746835443038,
+      "shareOfAll": 0.022641509433962263,
+      "beaches": 269,
+      "regions": 33,
+      "screensEmptied": 5,
+      "screensWithBlue": 357,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          44
+        ],
+        [
+          "crete-crete-chania",
+          42
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          31
+        ],
+        [
+          "peloponnese-lakonia-mainland",
+          26
+        ],
+        [
+          "west-greece-aetolia-acarnania-mainland",
+          21
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          20
+        ],
+        [
+          "central-macedonia-pieria-mainland",
+          12
+        ],
+        [
+          "north-aegean-lesvos",
+          12
+        ]
+      ],
+      "examples": [
+        {
+          "name": "Παραλία Αστέρα Γλυφάδας",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Μεγάλο Καβούρι",
+          "region": "attica-athens-area-mainland",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 1,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Περάματος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Παραλία Φρεαττύδος",
+          "region": "attica-piraeus-area",
+          "day": 3,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        },
+        {
+          "name": "Κουζουνός",
+          "region": "attica-spetses",
+          "day": 2,
+          "bft": 3,
+          "cardM": 0.5,
+          "openM": 0.5,
+          "exposure": "partial"
+        }
+      ]
+    },
+    {
+      "floor": 0.6,
+      "field": "severityM",
+      "rows": 0,
+      "shareOfBlue": 0,
+      "shareOfAll": 0,
+      "beaches": 0,
+      "regions": 0,
+      "screensEmptied": 0,
+      "screensWithBlue": 357,
+      "topRegions": [],
+      "examples": []
+    }
+  ],
+  "acharavi": [
+    {
+      "tone": "blue",
+      "cause": "wind",
+      "windOnlyTone": "blue",
+      "shoreSeaStateM": 0.01,
+      "beaufort": 1,
+      "swimVerdictAvoid": false,
+      "offshoreFlatWater": false,
+      "dayIndex": 0,
+      "beachId": 986,
+      "name": "Παραλία Αχαράβης",
+      "severityM": 0.01,
+      "cardShoreM": 0.01,
+      "exposureLevel": "protected",
+      "regionId": "ionian-islands-corfu"
+    },
+    {
+      "tone": "blue",
+      "cause": "wind",
+      "windOnlyTone": "blue",
+      "shoreSeaStateM": 0.01,
+      "beaufort": 2,
+      "swimVerdictAvoid": false,
+      "offshoreFlatWater": false,
+      "dayIndex": 1,
+      "beachId": 986,
+      "name": "Παραλία Αχαράβης",
+      "severityM": 0.02,
+      "cardShoreM": 0.01,
+      "exposureLevel": "protected",
+      "regionId": "ionian-islands-corfu"
+    },
+    {
+      "tone": "blue",
+      "cause": "wind",
+      "windOnlyTone": "blue",
+      "shoreSeaStateM": 0.02,
+      "beaufort": 2,
+      "swimVerdictAvoid": false,
+      "offshoreFlatWater": false,
+      "dayIndex": 2,
+      "beachId": 986,
+      "name": "Παραλία Αχαράβης",
+      "severityM": 0.04,
+      "cardShoreM": 0.02,
+      "exposureLevel": "protected",
+      "regionId": "ionian-islands-corfu"
+    },
+    {
+      "tone": "blue",
+      "cause": "wind",
+      "windOnlyTone": "blue",
+      "shoreSeaStateM": 0.01,
+      "beaufort": 2,
+      "swimVerdictAvoid": false,
+      "offshoreFlatWater": false,
+      "dayIndex": 3,
+      "beachId": 986,
+      "name": "Παραλία Αχαράβης",
+      "severityM": 0.01,
+      "cardShoreM": 0.01,
+      "exposureLevel": "protected",
+      "regionId": "ionian-islands-corfu"
+    },
+    {
+      "tone": "blue",
+      "cause": "wind",
+      "windOnlyTone": "blue",
+      "shoreSeaStateM": 0.01,
+      "beaufort": 2,
+      "swimVerdictAvoid": false,
+      "offshoreFlatWater": false,
+      "dayIndex": 4,
+      "beachId": 986,
+      "name": "Παραλία Αχαράβης",
+      "severityM": 0.02,
+      "cardShoreM": 0.01,
+      "exposureLevel": "protected",
+      "regionId": "ionian-islands-corfu"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.854Z",
+  "generatedAt": "2026-08-16T17:56:06.772Z",
   "region": {
     "id": "south-aegean-sifnos",
     "name": "Sifnos"
@@ -306,7 +306,13 @@
           "intensity": 33.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9141,
+        "lon": 24.6701,
+        "bearingDeg": 225,
+        "distanceKm": 2.68
+      }
     },
     "2098": {
       "beachId": 2098,
@@ -1380,10 +1386,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.9625,
-        "lon": 24.5905,
-        "bearingDeg": 270.4,
-        "distanceKm": 7.56
+        "lat": 36.8984,
+        "lon": 24.5961,
+        "bearingDeg": 225,
+        "distanceKm": 10,
+        "via": "sector-SW",
+        "verified": "served-cell"
       }
     },
     "2112": {
@@ -1455,7 +1463,13 @@
           "intensity": 18.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9265,
+        "lon": 24.7297,
+        "bearingDeg": 225,
+        "distanceKm": 2.74
+      }
     },
     "2113": {
       "beachId": 2113,

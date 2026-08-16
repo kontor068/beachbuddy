@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:04.396Z",
+  "generatedAt": "2026-08-16T17:55:00.577Z",
   "region": {
     "id": "crete-crete-heraklion",
     "name": "Heraklion"
@@ -1076,7 +1076,13 @@
           "intensity": 42.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 34.9359,
+        "lon": 24.735,
+        "bearingDeg": 225,
+        "distanceKm": 2.54
+      }
     },
     "633": {
       "beachId": 633,

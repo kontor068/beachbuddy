@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:56.425Z",
+  "generatedAt": "2026-08-16T17:54:39.534Z",
   "region": {
     "id": "central-greece-viotia-mainland",
     "name": "Viotia"
@@ -383,7 +383,13 @@
           "intensity": 0.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 38.1597,
+        "lon": 23.0733,
+        "bearingDeg": 135,
+        "distanceKm": 3.08
+      }
     },
     "375": {
       "beachId": 375,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:19:49.701Z",
+  "generatedAt": "2026-08-16T17:54:23.330Z",
   "region": {
     "id": "attica-kythira",
     "name": "Kythira"
@@ -2464,10 +2464,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.1079,
-        "lon": 22.9483,
-        "bearingDeg": 180,
-        "distanceKm": 5.8
+        "lat": 36.133,
+        "lon": 22.9674,
+        "bearingDeg": 150.3,
+        "distanceKm": 3.46,
+        "via": "facing",
+        "verified": "served-cell"
       }
     },
     "141": {

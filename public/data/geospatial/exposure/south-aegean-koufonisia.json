@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.510Z",
+  "generatedAt": "2026-08-16T17:55:59.613Z",
   "region": {
     "id": "south-aegean-koufonisia",
     "name": "Koufonisia"
@@ -152,7 +152,13 @@
           "intensity": 6.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.8964,
+        "lon": 25.6023,
+        "bearingDeg": 180,
+        "distanceKm": 3.92
+      }
     },
     "2194": {
       "beachId": 2194,
@@ -762,7 +768,13 @@
           "intensity": 55
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9439,
+        "lon": 25.5606,
+        "bearingDeg": 315,
+        "distanceKm": 3.58
+      }
     },
     "2203": {
       "beachId": 2203,
@@ -833,7 +845,13 @@
           "intensity": 8.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9316,
+        "lon": 25.5571,
+        "bearingDeg": 270,
+        "distanceKm": 3.48
+      }
     },
     "2204": {
       "beachId": 2204,
@@ -1366,7 +1384,13 @@
           "intensity": 55.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.9272,
+        "lon": 25.5657,
+        "bearingDeg": 0,
+        "distanceKm": 2.32
+      }
     },
     "3002": {
       "beachId": 3002,

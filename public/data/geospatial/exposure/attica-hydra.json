@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T14:20:01.399Z",
+  "generatedAt": "2026-08-16T17:54:22.231Z",
   "region": {
     "id": "attica-hydra",
     "name": "Hydra"
@@ -460,7 +460,13 @@
           "intensity": 60
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.373,
+        "lon": 23.4618,
+        "bearingDeg": 315,
+        "distanceKm": 2.96
+      }
     },
     "106": {
       "beachId": 106,

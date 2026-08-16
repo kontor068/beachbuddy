@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:30.372Z",
+  "generatedAt": "2026-08-16T17:56:03.324Z",
   "region": {
     "id": "south-aegean-milos",
     "name": "Milos"
@@ -531,7 +531,13 @@
           "intensity": 55.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7068,
+        "lon": 24.4294,
+        "bearingDeg": 315,
+        "distanceKm": 2.56
+      }
     },
     "1904": {
       "beachId": 1904,
@@ -912,10 +918,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.8046,
-        "lon": 24.5033,
-        "bearingDeg": 1.2,
-        "distanceKm": 5.76
+        "lat": 36.7576,
+        "lon": 24.508,
+        "bearingDeg": 45,
+        "distanceKm": 0.76,
+        "via": "sector-NE",
+        "verified": "served-cell"
       }
     },
     "1909": {
@@ -1591,7 +1599,13 @@
           "intensity": 26
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7082,
+        "lon": 24.4397,
+        "bearingDeg": 225,
+        "distanceKm": 2.22
+      }
     },
     "1918": {
       "beachId": 1918,
@@ -1741,10 +1755,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 36.7882,
-        "lon": 24.3498,
-        "bearingDeg": 304,
-        "distanceKm": 6.76
+        "lat": 36.7972,
+        "lon": 24.359,
+        "bearingDeg": 315,
+        "distanceKm": 6.76,
+        "via": "sector-NW",
+        "verified": "served-cell"
       }
     },
     "1920": {
@@ -1893,7 +1909,13 @@
           "intensity": 37.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7166,
+        "lon": 24.4183,
+        "bearingDeg": 45,
+        "distanceKm": 2.1
+      }
     },
     "1922": {
       "beachId": 1922,
@@ -2272,7 +2294,13 @@
           "intensity": 53.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 36.7359,
+        "lon": 24.4079,
+        "bearingDeg": 0,
+        "distanceKm": 3.96
+      }
     },
     "1927": {
       "beachId": 1927,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:31.820Z",
+  "generatedAt": "2026-08-16T17:56:06.716Z",
   "region": {
     "id": "south-aegean-serifos",
     "name": "Serifos"
@@ -460,7 +460,13 @@
           "intensity": 4.9
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1208,
+        "lon": 24.5187,
+        "bearingDeg": 180,
+        "distanceKm": 2.9
+      }
     },
     "2075": {
       "beachId": 2075,
@@ -608,7 +614,13 @@
           "intensity": 55.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1288,
+        "lon": 24.4308,
+        "bearingDeg": 270,
+        "distanceKm": 2.8
+      }
     },
     "2077": {
       "beachId": 2077,
@@ -912,10 +924,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.1076,
-        "lon": 24.4377,
-        "bearingDeg": 250.8,
-        "distanceKm": 5.42
+        "lat": 37.0753,
+        "lon": 24.4349,
+        "bearingDeg": 225,
+        "distanceKm": 7.6,
+        "via": "sector-SW",
+        "verified": "served-cell"
       }
     },
     "2081": {
@@ -1064,7 +1078,13 @@
           "intensity": 58
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.2091,
+        "lon": 24.4331,
+        "bearingDeg": 315,
+        "distanceKm": 3.1
+      }
     },
     "2083": {
       "beachId": 2083,
@@ -1289,7 +1309,13 @@
           "intensity": 3.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1121,
+        "lon": 24.4547,
+        "bearingDeg": 180,
+        "distanceKm": 2.78
+      }
     },
     "2086": {
       "beachId": 2086,
@@ -1585,7 +1611,13 @@
           "intensity": 38.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.1235,
+        "lon": 24.4101,
+        "bearingDeg": 225,
+        "distanceKm": 2.68
+      }
     },
     "2090": {
       "beachId": 2090,

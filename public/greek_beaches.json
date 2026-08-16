@@ -47662,6 +47662,76 @@
               "method": "guide-discovery-v1"
             }
           }
+        },
+        {
+          "id": 3185,
+          "name": "Κολυμβάρι",
+          "lat": 35.544,
+          "lon": 23.7812,
+          "metadata": {
+            "aliases": [
+              "Κολυμβάρι",
+              "Παραλία Κολυμβαρίου",
+              "Κολυμπάρι",
+              "Παραλία Κολυμπαρίου",
+              "Kolymvari",
+              "Kolymvari Beach",
+              "Kolymbari",
+              "Kolymbari Beach",
+              "Kolimbari",
+              "Kolimbari Beach"
+            ],
+            "access": {
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτόδρομος φτάνει στο παραλιακό μέτωπο του Κολυμβαρίου. Χαρτογραφημένο parking στο παλιό λιμάνι Κολυμβαρίου ~180 μ. βόρεια της πινέζας (OSM) και στάθμευση μέσα στον οικισμό."
+            },
+            "terrain": {
+              "types": [
+                "coarse_sand",
+                "pebbles"
+              ],
+              "label": "άμμος, ψιλό βότσαλο"
+            },
+            "organized": true,
+            "shade": false,
+            "amenities": [
+              "ξαπλώστρες, ομπρέλες εποχικά",
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "parking κοντά"
+            ],
+            "confidence": "medium",
+            "language": "el",
+            "batch": "chania_coverage_gap_2026_08",
+            "activities": {
+              "surfing": false
+            },
+            "waterDepth": {
+              "type": "medium",
+              "label": "Μέτριο βάθος",
+              "notes": "Οι ελληνικοί οδηγοί τη δίνουν με σχετικά βαθιά νερά, το cretanbeaches.com ως κανονικό βάθος. Κρατάμε το μέτριο μέχρι να υπάρξει επιτόπου επιβεβαίωση."
+            },
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/376980748",
+              "https://www.openstreetmap.org/node/256817148",
+              "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-dytikis-kritis/paralia-kolymvari",
+              "https://www.experttravel.gr/el/destinations/greece-crete-chania-chaniabeaches-kolymbari"
+            ],
+            "sourceNotes": [
+              "Κάλυψη κενού Χανίων (16/08/2026): το Κολυμβάρι έλειπε εντελώς από τη βάση, αν και είναι από τα πιο γνωστά παραθαλάσσια χωριά των δυτικών Χανίων. Δεν το έπιανε το coverage pipeline γιατί στο OSM όλο το μέτωπο από το λιμάνι Κολυμβαρίου ως τα Ραπανιανά είναι ΕΝΑ polygon με το όνομα 'Rapaniana Beach' (way/376980748, ~5 χλμ περίμετρος) — το Κολυμβάρι είναι το δυτικό/βόρειο άκρο του και δεν έχει δικό του όνομα στο OSM.",
+              "Πινέζα 35.5440/23.7812: μέσα στο OSM beach polygon (23 μ. από την άκρη του), 29 μ. από την ακτογραμμή του land mask, ~1,05 χλμ δυτικά της υπάρχουσας #575 Ραπανιανά. Nominatim reverse: 'Λιμάνι Κολυμβαρίου, Κολυμβάρι, Δήμος Πλατανιά'.",
+              "Παροχές από OSM γύρω από την πινέζα: 3 beach_resort σε 16-55 μ. (ξαπλώστρες/ομπρέλες), εστιατόρια/ταβέρνες σε 31-64 μ., καφέ σε 96-141 μ., parking 'Car Parking old port Kolimbari' 178 μ., μαρίνα 227 μ., άσφαλτος 86 μ. ΔΕΝ υπάρχουν χαρτογραφημένα ντους/WC — δεν τα δηλώνουμε, παρότι το cretanbeaches.com αναφέρει Γαλάζια Σημαία (που θα τα προϋπέθετε).",
+              "Σκιά: το cretanbeaches.com αναφέρει σκιά από δέντρα, καμία άλλη πηγή δεν το επιβεβαιώνει — μένει shade:false (υπο-δήλωση).",
+              "Έκθεση: οι οδηγοί τη δίνουν ανοιχτή σε βόρειους ανέμους με συχνό κύμα (βόρεια ακτή Κρήτης). ΔΕΝ γράφουμε χειρόγραφο orientation — ο προσανατολισμός βγαίνει από τη γεωμετρία (buildGeospatialExposureProfiles)."
+            ],
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-16",
+              "method": "osm-polygon-nominatim-v1"
+            }
+          }
         }
       ],
       "Gavdos": [
@@ -79973,7 +80043,8 @@
             },
             "sourceNotes": [
               "Corfu low-confidence follow-up 2026-05-28: Terrabook directly backs Porto Timoni as reached by a rugged path from Afionas, fully unorganized and requiring visitors to bring essentials. Kept difficult-path/no-services metadata and promoted to medium.",
-              "Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Village alias pass 2026-08-16: aliases += Αφιώνας, Afionas. Ο Αφιώνας είναι το χωριό πάνω από την παραλία· ο κόσμος ψάχνει «Αφιώνας», όχι «Πόρτο Τιμόνι». Το όνομα εμφάνισης και το slug ΔΕΝ άλλαξαν."
             ],
             "sourceUrls": [
               "https://greece.terrabook.com/corfu/page/porto-timoni/",
@@ -80002,7 +80073,11 @@
               "ratingCount": 5199,
               "source": "google-places",
               "checkedAt": "2026-06-17"
-            }
+            },
+            "aliases": [
+              "Αφιώνας",
+              "Afionas"
+            ]
           }
         },
         {
@@ -128035,6 +128110,125 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
           }
+        },
+        {
+          "id": 3186,
+          "name": "Αιγιάλη",
+          "lat": 36.90194,
+          "lon": 25.97758,
+          "metadata": {
+            "access": {
+              "type": "asphalt_road",
+              "label": "άσφαλτος μέχρι κοντά στην παραλία",
+              "notes": "Η παραλία είναι δίπλα στο κέντρο του οικισμού και στο λιμάνι της Αιγιάλης, λίγα λεπτά με τα πόδια από τον παραλιακό πεζόδρομο. Στάθμευση στον δρόμο κοντά· δεν επιτρέπεται η οδήγηση μέσα στον παραλιακό πεζόδρομο."
+            },
+            "terrain": {
+              "types": [
+                "fine_sand"
+              ],
+              "label": "λεπτή άμμος"
+            },
+            "organized": true,
+            "shade": true,
+            "amenities": [
+              "ξαπλώστρες, ομπρέλες εποχικά",
+              "beach bar",
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "αποδυτήρια",
+              "ντους",
+              "parking ή στάθμευση δρόμου κοντά",
+              "φυσική σκιά σε σημεία",
+              "πρόσβαση ΑμεΑ (Seatrac)"
+            ],
+            "confidence": "high",
+            "language": "el",
+            "batch": "amorgos_aegiali_2026_08",
+            "aliases": [
+              "Αμοργός Αιγιάλη",
+              "Γιαλός Αιγιάλης",
+              "Aegiali"
+            ],
+            "waterDepth": {
+              "type": "shallow",
+              "label": "Ρηχά νερά",
+              "notes": "Αμμώδης βυθός με ήπια είσοδο· το βάθος αυξάνει σταδιακά και η παραλία περιγράφεται ως κατάλληλη για μικρά παιδιά."
+            },
+            "activities": {
+              "surfing": false
+            },
+            "sourceUrls": [
+              "https://amorgos.gr/explore-amorgos/aegiali-beach/",
+              "https://go-amorgos.gr/en/beaches/beaches-of-aegiali/",
+              "https://seatrac.gr/en/beach-directory/amorgos-aegiali/"
+            ],
+            "sourceNotes": [
+              "Amorgos coverage gap 2026-08-16: the main beach of Ormos Aigialis was missing from the dataset although three of its neighbours (Levrossos, Psili Ammos, Chochlakas) were already in it and referenced it by name. Amorgos municipality (amorgos.gr) describes it as \"a long beautiful sandy beach in the middle of Aegiali bay\", \"located in Aegiali just next to the village center and port\", with \"shade under the trees and shallow water suited for small children\", dressing cabins, and tavernas/bars/cafes along the beach walk; it also states driving into the beach walk is not allowed. Go-Amorgos describes \"a sandy beach with some trees scattered along its length\" giving shade, with restaurants, tavernas and beach bars. Both support sandy terrain, tree shade, shallow gradual entry and organized status.",
+              "Coordinates 36.90194, 25.97758 are the official seatrac.gr directory coordinates for this beach (https://seatrac.gr/en/beach-directory/amorgos-aegiali/). Re-checked offline against our OSM land mask (.tmp/geospatial/greece-land-osm-split.geojson): the pin sits on land 9 m from the coastline, 505 m from the already-harvested Aegiali Camping OSM node and 753 m from Levrossos, so it is a distinct beach and not a duplicate slot. Overpass was unreachable during this pass, so no live OSM corroboration was run.",
+              "Accessibility: the official Seatrac directory page lists Parking, Beach track, WC, Changing Room, Shade and Shower for this beach, i.e. the full supporting set. Its own status widget reports the device online but the page was last updated 2024-09-30, so the record is kept at \"listed-unverified\" with needsVerification true rather than claiming an operational ramp. No live sea, wind or shelter claim was added from any of these sources; orientation is left to the geospatial exposure build."
+            ],
+            "seatrac": {
+              "hasSeatrac": true,
+              "status": "listed-unverified",
+              "seasonal": true,
+              "amenities": {
+                "disabledParking": "yes",
+                "boardwalkToWater": "yes",
+                "accessibleWc": "yes",
+                "changingRoom": "yes",
+                "shower": "yes",
+                "shade": "yes"
+              },
+              "fullSet": true,
+              "source": "seatrac.gr official beach directory",
+              "sourceUrls": [
+                "https://seatrac.gr/en/beach-directory/amorgos-aegiali/"
+              ],
+              "verifiedAt": "2026-08-16",
+              "confidence": "medium",
+              "needsVerification": true,
+              "region": "South Aegean",
+              "match": {
+                "officialNameGr": "Αμοργός Αιγιάλη",
+                "officialNameEn": "Amorgos Aigiali",
+                "matchMethod": "official-directory-page",
+                "matchScore": 100
+              }
+            },
+            "nearbyCamping": [
+              {
+                "id": "osm-node-5659563918",
+                "name": "Aegali camping",
+                "coordinates": {
+                  "lat": 36.9062441,
+                  "lon": 25.9793699
+                },
+                "distanceMeters": 505,
+                "website": "https://www.aegialicamping.gr/",
+                "source": "osm",
+                "osmUrl": "https://www.openstreetmap.org/node/5659563918",
+                "checkedAt": "2026-06-17"
+              }
+            ],
+            "orientation": {
+              "degrees": 270.3,
+              "faces": [
+                "West"
+              ],
+              "protectedFrom": [
+                "North",
+                "Northeast",
+                "East",
+                "Southeast",
+                "South"
+              ],
+              "confidence": "medium",
+              "notes": "Facing direction and protected sectors both taken from this beach's geospatial exposure profile (facingDeg 270.3; the listed sectors are the ones the model scores as protected, all with ~0 km fetch and every ray blocked). The bay is open to the west: W is scored exposed at 12,2 km fetch, NW and SW partial. Recorded because the builder's fallback heuristic, which only compares the pin to the island centre, would otherwise claim protection from the west — the one direction this beach is exposed to. No live sea or wind claim."
+            }
+          },
+          "staticLabels": {
+            "accessType": "asphalt_road"
+          }
         }
       ],
       "Anafi": [
@@ -152977,14 +153171,17 @@
         },
         {
           "id": 2033,
-          "name": "Λιβάδια",
+          "name": "Λιβάδια (Παροικιά)",
+          "legacySlugs": [
+            "livadia"
+          ],
           "lat": 37.09343,
           "lon": 25.15494,
           "metadata": {
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Λιβάδια έχει εύκολη πρόσβαση και οργανωμένες/τουριστικές παροχές."
+              "notes": "Τα Λιβάδια της Παροικιάς έχουν εύκολη πρόσβαση και οργανωμένες/τουριστικές παροχές."
             },
             "terrain": {
               "types": [
@@ -154044,14 +154241,17 @@
         },
         {
           "id": 2046,
-          "name": "Παραλία Παροικιάς",
+          "name": "Παραλία Παροικιάς (κέντρο)",
+          "legacySlugs": [
+            "paralia-parikias"
+          ],
           "lat": 37.08187,
           "lon": 25.14563,
           "metadata": {
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Η Παραλία Παροικιάς έχει εύκολη πρόσβαση και οργανωμένες/τουριστικές παροχές."
+              "notes": "Η παραλία στο κέντρο της Παροικιάς έχει εύκολη πρόσβαση και οργανωμένες/τουριστικές παροχές."
             },
             "terrain": {
               "types": [

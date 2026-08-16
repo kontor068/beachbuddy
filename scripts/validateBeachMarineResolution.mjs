@@ -100,8 +100,23 @@ const OPPOSING_DISTANCE_KM = 5;
  * did lose them — a scoped geometry run wipes marineSamplePoint, which is written by a separate
  * later step (scripts/buildMarineSamplePoints.mjs) — and the count went to 324. This gate is what
  * caught it. If you are here to raise this number again, prove the same thing first.
+ *
+ * 297 -> 99 on 16/08/2026, and this time the number came DOWN. buildMarineSamplePoints demanded
+ * 8 km of fetch in some sector before it would place a point, which is twice the 4 km its own
+ * shortest push needs (MIN_PUSH_KM / PUSH_FRACTION); the factor of 2 was never argued for. Lowering
+ * it to 4 km gave 198 beaches a shore of their own. Verified the same way the raise above was: the
+ * 99 that still have no point all had none before, NO beach that had a point lost one, and — the
+ * trap that cost a rebuild here — none of the 2565 existing points MOVED. The first attempt did
+ * move 90 of them, because the same constant also decided whether the FACING sector is preferred
+ * over the widest; that reading now has its own threshold (PREFER_FACING_FETCH_KM), still 8 km.
+ *
+ * 99 -> 97 the same evening: scripts/optimiseMarineSamplePoints.mjs found a coordinate that passes
+ * the served-cell trust test for two more of them. The remaining 97 have under 4 km of fetch in
+ * every sector AND no candidate on their ladder is served a cell in water they face — the wave
+ * model simply has no cell in their water. They keep reading the region cell, deliberately: taking
+ * that number away was built, measured and rejected on 16/08 (§Γ18 of the bible).
  */
-const REGION_FALLBACK_BASELINE = 297;
+const REGION_FALLBACK_BASELINE = 97;
 
 /** The pair that started this, asserted by name so a refactor cannot lose the case. */
 const INCIDENT = { regionId: 'north-aegean-lemnos', beachIds: [1433, 1435] };

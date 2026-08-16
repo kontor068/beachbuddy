@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:28.786Z",
+  "generatedAt": "2026-08-16T17:56:00.275Z",
   "region": {
     "id": "south-aegean-marathi",
     "name": "Marathi"
@@ -152,7 +152,15 @@
           "intensity": 4.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.3834,
+        "lon": 26.7038,
+        "bearingDeg": 315,
+        "distanceKm": 2.64,
+        "via": "sector-NW",
+        "verified": "served-cell"
+      }
     },
     "2501": {
       "beachId": 2501,
@@ -225,10 +233,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.3478,
-        "lon": 26.831,
-        "bearingDeg": 106.3,
-        "distanceKm": 7.82
+        "lat": 37.3675,
+        "lon": 26.8346,
+        "bearingDeg": 90,
+        "distanceKm": 7.82,
+        "via": "sector-E",
+        "verified": "served-cell"
       }
     }
   }

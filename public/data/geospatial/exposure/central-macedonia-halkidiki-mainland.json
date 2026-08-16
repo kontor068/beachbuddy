@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-14T15:44:39.273Z",
+  "generatedAt": "2026-08-16T17:54:50.332Z",
   "region": {
     "id": "central-macedonia-halkidiki-mainland",
     "name": "Halkidiki"
@@ -229,7 +229,13 @@
           "intensity": 37.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3375,
+        "lon": 23.9394,
+        "bearingDeg": 0,
+        "distanceKm": 2.44
+      }
     },
     "380": {
       "beachId": 380,
@@ -1378,7 +1384,13 @@
           "intensity": 57.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3097,
+        "lon": 23.9292,
+        "bearingDeg": 270,
+        "distanceKm": 2.34
+      }
     },
     "395": {
       "beachId": 395,
@@ -1449,7 +1461,13 @@
           "intensity": 55.6
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3104,
+        "lon": 23.8594,
+        "bearingDeg": 225,
+        "distanceKm": 3.14
+      }
     },
     "396": {
       "beachId": 396,
@@ -3214,7 +3232,13 @@
           "intensity": 1.3
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.9948,
+        "lon": 23.8612,
+        "bearingDeg": 135,
+        "distanceKm": 3.94
+      }
     },
     "419": {
       "beachId": 419,
@@ -3285,7 +3309,13 @@
           "intensity": 30
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3294,
+        "lon": 23.9509,
+        "bearingDeg": 90,
+        "distanceKm": 2.32
+      }
     },
     "420": {
       "beachId": 420,
@@ -3356,7 +3386,13 @@
           "intensity": 28.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3329,
+        "lon": 23.9428,
+        "bearingDeg": 45,
+        "distanceKm": 2.2
+      }
     },
     "421": {
       "beachId": 421,
@@ -3735,7 +3771,13 @@
           "intensity": 39.5
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3348,
+        "lon": 23.9455,
+        "bearingDeg": 0,
+        "distanceKm": 2.48
+      }
     },
     "426": {
       "beachId": 426,
@@ -4884,7 +4926,13 @@
           "intensity": 32.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 39.9479,
+        "lon": 23.9015,
+        "bearingDeg": 225,
+        "distanceKm": 2.72
+      }
     },
     "441": {
       "beachId": 441,
@@ -5648,7 +5696,13 @@
           "intensity": 59
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.3375,
+        "lon": 23.872,
+        "bearingDeg": 270,
+        "distanceKm": 3
+      }
     },
     "451": {
       "beachId": 451,
@@ -6027,7 +6081,13 @@
           "intensity": 59
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.2093,
+        "lon": 23.799,
+        "bearingDeg": 0,
+        "distanceKm": 2.08
+      }
     },
     "456": {
       "beachId": 456,
@@ -7093,7 +7153,13 @@
           "intensity": 55.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.2545,
+        "lon": 23.738,
+        "bearingDeg": 0,
+        "distanceKm": 2.74
+      }
     },
     "470": {
       "beachId": 470,
@@ -8165,7 +8231,15 @@
           "intensity": 8.8
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.1853,
+        "lon": 23.7893,
+        "bearingDeg": 135,
+        "distanceKm": 2.98,
+        "via": "sector-SE",
+        "verified": "served-cell"
+      }
     },
     "484": {
       "beachId": 484,

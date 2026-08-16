@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:20:32.323Z",
+  "generatedAt": "2026-08-16T17:56:07.800Z",
   "region": {
     "id": "south-aegean-tinos",
     "name": "Tinos"
@@ -231,10 +231,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5018,
-        "lon": 25.2925,
-        "bearingDeg": 147.5,
-        "distanceKm": 8.68
+        "lat": 37.5125,
+        "lon": 25.3092,
+        "bearingDeg": 135,
+        "distanceKm": 8.68,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "2151": {
@@ -308,10 +310,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5074,
-        "lon": 25.2716,
-        "bearingDeg": 123.2,
-        "distanceKm": 5.48
+        "lat": 37.4995,
+        "lon": 25.2636,
+        "bearingDeg": 135,
+        "distanceKm": 5.48,
+        "via": "sector-SE",
+        "verified": "served-cell"
       }
     },
     "2152": {
@@ -385,10 +389,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5244,
-        "lon": 25.0033,
-        "bearingDeg": 226,
-        "distanceKm": 10
+        "lat": 37.5869,
+        "lon": 25.0354,
+        "bearingDeg": 270,
+        "distanceKm": 4.36,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     },
     "2153": {
@@ -462,10 +468,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5157,
-        "lon": 25.0219,
-        "bearingDeg": 232.1,
-        "distanceKm": 10
+        "lat": 37.5254,
+        "lon": 25.1113,
+        "bearingDeg": 180,
+        "distanceKm": 5.06,
+        "via": "sector-S",
+        "verified": "served-cell"
       }
     },
     "2154": {
@@ -770,10 +778,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5401,
-        "lon": 25.0169,
-        "bearingDeg": 242.9,
-        "distanceKm": 8.7
+        "lat": 37.5757,
+        "lon": 24.9999,
+        "bearingDeg": 270,
+        "distanceKm": 9.24,
+        "via": "sector-W",
+        "verified": "served-cell"
       }
     },
     "2158": {
@@ -1309,10 +1319,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.5023,
-        "lon": 25.0438,
-        "bearingDeg": 211,
-        "distanceKm": 10
+        "lat": 37.5136,
+        "lon": 25.1021,
+        "bearingDeg": 180,
+        "distanceKm": 7.32,
+        "via": "sector-S",
+        "verified": "served-cell"
       }
     },
     "2165": {
@@ -2977,7 +2989,13 @@
           "intensity": 4.2
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 37.6532,
+        "lon": 25.0825,
+        "bearingDeg": 90,
+        "distanceKm": 2.86
+      }
     },
     "2187": {
       "beachId": 2187,
