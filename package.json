@@ -55,6 +55,7 @@
     "data:forecast-cells:check": "node scripts/bakeForecastModelCells.mjs --check",
     "quality:swell-origin": "node scripts/validateSwellOriginCopy.mjs",
     "quality:choppy-sea": "node scripts/validateChoppySeaCopy.mjs",
+    "quality:access-notes-provenance": "node scripts/validateAccessNotesProvenance.mjs",
     "measure:chop-exponent": "node scripts/measureChopExponent.mjs",
     "measure:colour-cause": "node scripts/measureColourCauseSplit.mjs --live",
     "quality:truth": "node scripts/validateColourAgainstRealWind.mjs",
