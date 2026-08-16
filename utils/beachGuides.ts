@@ -74,6 +74,28 @@ const GUIDE_TOPICS: GuideTopic[] = [
     label: { en: 'Sunset', gr: 'Για ηλιοβασίλεμα', de: 'Sonnenuntergang', fr: 'Coucher de soleil', it: 'Tramonto' },
     articleLabel: { en: 'Sunset beaches', gr: 'Παραλίες για ηλιοβασίλεμα', de: 'Strände für den Sonnenuntergang', fr: 'Plages pour le coucher de soleil', it: 'Spiagge per il tramonto' },
   },
+  // Added 16/08/2026. Both answer demand that Search Console showed us losing
+  // outright: "sandy" queries earned 168 impressions and ZERO clicks in the 28
+  // days to 13/08, "beach bar" 111 and ZERO, because they landed on individual
+  // beach pages with no list page to answer "which beaches HERE have this".
+  // Predicates must stay identical to `islandIntents` in the prerender script.
+  {
+    key: 'sandy',
+    pathPrefix: '/sandy-beaches',
+    // 'sandy' only — a sand-and-pebble shore is what this searcher is avoiding.
+    match: beach => beach.beachType === 'sandy',
+    label: { en: 'Sandy', gr: 'Με άμμο', de: 'Sandstrände', fr: 'De sable', it: 'Di sabbia' },
+    articleLabel: { en: 'Sandy beaches', gr: 'Παραλίες με άμμο', de: 'Sandstrände', fr: 'Plages de sable', it: 'Spiagge di sabbia' },
+  },
+  {
+    key: 'beachbar',
+    pathPrefix: '/beach-bars',
+    // A bar ON the beach — deliberately not taverna/restaurant, which answer a
+    // different question ("food nearby" rather than "a drink without leaving").
+    match: beach => beach.amenities?.beachBar === true,
+    label: { en: 'Beach bars', gr: 'Με beach bar', de: 'Mit Beachbar', fr: 'Avec bar', it: 'Con beach bar' },
+    articleLabel: { en: 'Beaches with a beach bar', gr: 'Παραλίες με beach bar', de: 'Strände mit Beachbar', fr: 'Plages avec bar de plage', it: 'Spiagge con beach bar' },
+  },
 ];
 
 /**

@@ -1133,6 +1133,17 @@ const CATEGORY_TITLE = {
   // bare "ηλιοβασίλεμα {νησί}", so GR spends the characters on the count instead.
   secluded:   { en: { main: (islandName, count) => `${count} Secluded Beaches in ${islandName}`, tail: 'Away from Crowds' },     gr: { main: (islandName, count) => `${islandName}: ${count} Απομονωμένες Παραλίες`, tail: 'χωρίς Κόσμο' } },
   sunset:     { en: { main: islandName => `Best Sunset Beaches in ${islandName}`, tail: count => `— ${count} Facing West` },     gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες για Ηλιοβασίλεμα`, tail: '(Δυτικές)' } },
+  // Added 16/08/2026 from measured, entirely unserved demand (28 days to 13/08):
+  // "sandy" queries drew 168 impressions and ZERO clicks, "beach bar" 111 and
+  // ZERO — both landed on beach detail pages because no guide existed to answer
+  // them. These are the only two of the three unserved intents we can answer
+  // honestly; the third ("live camera", 118 impressions) needs data we do not have.
+  // No qualifier tail here on purpose. "…Sandy Beaches in Naxos Not Pebbles" and
+  // "…Παραλίες με Άμμο όχι Βότσαλο" both read as a missing comma in the SERP; the
+  // sand-versus-pebbles distinction belongs in the description, where it has room
+  // to be a sentence.
+  sandy:      { en: { main: (islandName, count) => `${count} Sandy Beaches in ${islandName}`, tail: '' },                       gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες με Άμμο`, tail: '' } },
+  beachbar:   { en: { main: (islandName, count) => `${count} Beaches with a Beach Bar in ${islandName}`, tail: '' },            gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες με Beach Bar`, tail: '' } },
 };
 // Same deterministic tiers as beach titles: T1 full → T2 drop brand → T3 drop
 // qualifier tail → T4 bare "{island}: {keyword}".
@@ -1170,6 +1181,10 @@ const CATEGORY_META = {
               de: { phrase: 'abgelegene Strände',          basis: 'ruhiger und schwerer zu erreichen' },           fr: { phrase: 'plages isolées',          basis: "plus calmes et plus difficiles d'accès" },               it: { phrase: 'spiagge isolate',        basis: 'più tranquille e difficili da raggiungere' } },
   sunset:     { en: { phrase: 'west-facing beaches',      basis: 'that look out toward the sunset' },            gr: { phrase: 'δυτικές παραλίες',          basis: 'με θέα στο ηλιοβασίλεμα' },
               de: { phrase: 'nach Westen ausgerichtete Strände', basis: 'mit Blick auf den Sonnenuntergang' },     fr: { phrase: "plages orientées à l'ouest", basis: 'avec vue sur le coucher de soleil' },                 it: { phrase: 'spiagge esposte a ovest', basis: 'con vista sul tramonto' } },
+  sandy:      { en: { phrase: 'sandy beaches',            basis: 'with sand underfoot rather than pebbles' },    gr: { phrase: 'παραλίες με άμμο',          basis: 'με άμμο αντί για βότσαλο' },
+              de: { phrase: 'Sandstrände',                 basis: 'mit Sand statt Kies' },                         fr: { phrase: 'plages de sable',         basis: 'avec du sable plutôt que des galets' },                  it: { phrase: 'spiagge di sabbia',      basis: 'con sabbia invece di ciottoli' } },
+  beachbar:   { en: { phrase: 'beaches with a beach bar', basis: 'with a bar on the beach itself' },             gr: { phrase: 'παραλίες με beach bar',     basis: 'με bar πάνω στην παραλία' },
+              de: { phrase: 'Strände mit Beachbar',        basis: 'mit Bar direkt am Strand' },                    fr: { phrase: 'plages avec bar',         basis: 'avec un bar sur la plage même' },                        it: { phrase: 'spiagge con beach bar',  basis: 'con bar sulla spiaggia stessa' } },
 };
 const CATEGORY_META_CTA = {
   long:  { en: 'Check live wind & waves for each beach on CalmBeach before you go.', gr: 'Δες live άνεμο & κύμα για κάθε παραλία στο CalmBeach πριν πας.',
@@ -1572,6 +1587,144 @@ const islandIntents = [
         sections: [
           { heading: `Quali spiagge di ${islandName} hanno i tramonti più belli?`, body: 'Le spiagge elencate qui sono esposte a ovest o sud-ovest, così il sole tramonta sull\'acqua davanti a te. Arriva prima del tramonto per trovare posto e goderti la luce.' },
           { heading: 'Cosa sapere per una visita serale?', body: 'Il vento può rinforzare o calare la sera, e le spiagge isolate non hanno illuminazione. Controlla vento e onde in tempo reale nell\'app e porta una torcia per il ritorno.' },
+        ],
+      },
+    }),
+  },
+  // ── Two intents added 16/08/2026 to answer demand we were measurably losing ──
+  //
+  // Search Console, 28 days to 13/08: "sandy" queries drew 168 impressions and
+  // ZERO clicks; "beach bar" queries 111 impressions and ZERO clicks. Both were
+  // landing on individual beach pages ("φιλιατρο ιθακη beach bar" → the Filiatro
+  // detail page, position 11.3) because there was no list page to answer "which
+  // beaches HERE have this". Every other intent with that shape already has one.
+  //
+  // Coverage measured before writing a line: sandy 934 beaches over 53 regions
+  // (median list 14), beach bar 605 over 41 regions (median 11) — both well clear
+  // of the ≥5 gate, both producing a list short enough to be a choice rather than
+  // a dump.
+  //
+  // The third unserved intent found in the same pass — "live camera", 118
+  // impressions — is deliberately NOT here: we hold no webcam data, and a guide
+  // page promising cameras we cannot show would be the one thing this project
+  // refuses to do.
+  {
+    key: 'sandy',
+    pathPrefix: '/sandy-beaches',
+    // Strictly beachType 'sandy'. 'sandy-pebbles' is deliberately excluded even
+    // though it would nearly double the list (1.953 vs 934): someone searching
+    // "παραλίες με άμμο" is choosing sand OVER pebbles, and a mixed shore in that
+    // list is the answer they were trying to avoid.
+    match: beach => beach.beachType === 'sandy',
+    copy: (islandName, count) => ({
+      en: {
+        title: categoryTitleFor('sandy', islandName, 'en', count),
+        description: categoryMetaFor('sandy', islandName, count, 'en'),
+        h1: `Sandy beaches in ${islandName}`,
+        intro: `Looking for sand rather than pebbles in ${islandName}? These ${count} beaches are recorded as sandy, so they are easier on bare feet and better for children playing. Check wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} are sandy?`, body: 'The beaches listed here are recorded as sand rather than pebbles or rock. Shorelines shift with storms and seasons, so the mix can change from year to year.' },
+          { heading: 'Does sand mean shallow water?', body: 'Not always. Sand describes the shore, not the depth — some sandy beaches drop away quickly. Open a beach to see its recorded depth, and check live wind and waves before you swim.' },
+        ],
+      },
+      gr: {
+        title: categoryTitleFor('sandy', islandName, 'gr', count),
+        description: categoryMetaFor('sandy', islandName, count, 'gr'),
+        h1: `Παραλίες με άμμο — ${islandName}`,
+        intro: `Ψάχνεις άμμο και όχι βότσαλο; Αυτές οι ${count} παραλίες (${islandName}) είναι καταγεγραμμένες ως αμμώδεις, οπότε είναι πιο βολικές ξυπόλητος και για παιδιά που παίζουν. Δες άνεμο και κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες έχουν άμμο;`, body: 'Οι παραλίες της λίστας είναι καταγεγραμμένες με άμμο, όχι με βότσαλο ή βράχο. Η ακτογραμμή αλλάζει με τις φουρτούνες και τις εποχές, γι\' αυτό η σύσταση μπορεί να διαφέρει από χρονιά σε χρονιά.' },
+          { heading: 'Η άμμος σημαίνει ρηχά νερά;', body: 'Όχι πάντα. Η άμμος περιγράφει την ακτή, όχι το βάθος — κάποιες αμμουδιές βαθαίνουν απότομα. Άνοιξε μια παραλία για να δεις το καταγεγραμμένο βάθος και έλεγξε άνεμο και κύμα πριν μπεις.' },
+        ],
+      },
+      de: {
+        title: `Sandstrände auf ${islandName} statt Kies | CalmBeach`,
+        description: categoryMetaFor('sandy', islandName, count, 'de'),
+        h1: `Sandstrände auf ${islandName}`,
+        intro: `Du suchst Sand statt Kies auf ${islandName}? Diese ${count} Strände sind als Sandstrände erfasst – angenehmer für bloße Füße und besser für spielende Kinder. Prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} haben Sand?`, body: 'Die hier gelisteten Strände sind als Sand erfasst, nicht als Kies oder Fels. Küsten verändern sich durch Stürme und Jahreszeiten, die Zusammensetzung kann also wechseln.' },
+          { heading: 'Bedeutet Sand flaches Wasser?', body: 'Nicht immer. Sand beschreibt das Ufer, nicht die Tiefe – manche Sandstrände fallen schnell ab. Öffne einen Strand für die erfasste Tiefe und prüfe Wind und Wellen vor dem Schwimmen.' },
+        ],
+      },
+      fr: {
+        title: `Plages de sable à ${islandName} plutôt que galets | CalmBeach`,
+        description: categoryMetaFor('sandy', islandName, count, 'fr'),
+        h1: `Plages de sable à ${islandName}`,
+        intro: `Vous cherchez du sable plutôt que des galets à ${islandName} ? Ces ${count} plages sont enregistrées comme sableuses : plus agréables pieds nus et mieux pour les enfants qui jouent. Vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} sont de sable ?`, body: 'Les plages listées ici sont enregistrées comme sable, et non galets ou rocher. Le littoral évolue avec les tempêtes et les saisons, la composition peut donc changer.' },
+          { heading: 'Sable veut-il dire eau peu profonde ?', body: "Pas toujours. Le sable décrit le rivage, pas la profondeur — certaines plages de sable plongent vite. Ouvrez une plage pour voir la profondeur enregistrée et vérifiez le vent et les vagues avant de nager." },
+        ],
+      },
+      it: {
+        title: `Spiagge di sabbia a ${islandName} invece di ciottoli | CalmBeach`,
+        description: categoryMetaFor('sandy', islandName, count, 'it'),
+        h1: `Spiagge di sabbia a ${islandName}`,
+        intro: `Cerchi sabbia invece di ciottoli a ${islandName}? Queste ${count} spiagge sono registrate come sabbiose, più comode a piedi nudi e migliori per i bambini che giocano. Controlla vento e onde in CalmBeach prima di andare.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} sono di sabbia?`, body: 'Le spiagge elencate qui sono registrate come sabbia, non ciottoli o roccia. La costa cambia con le mareggiate e le stagioni, quindi la composizione può variare.' },
+          { heading: 'Sabbia significa acqua bassa?', body: 'Non sempre. La sabbia descrive la riva, non la profondità — alcune spiagge sabbiose degradano rapidamente. Apri una spiaggia per vedere la profondità registrata e controlla vento e onde prima di nuotare.' },
+        ],
+      },
+    }),
+  },
+  {
+    key: 'beachbar',
+    pathPrefix: '/beach-bars',
+    // `beachBar` only, NOT the taverna/restaurant fields. They are different
+    // questions: "is there food nearby" versus "can I get a drink without
+    // leaving the sand", and the query that goes unanswered is the second one.
+    match: beach => beach.amenities?.beachBar === true,
+    copy: (islandName, count) => ({
+      en: {
+        title: categoryTitleFor('beachbar', islandName, 'en', count),
+        description: categoryMetaFor('beachbar', islandName, count, 'en'),
+        h1: `Beaches with a beach bar in ${islandName}`,
+        intro: `Want a drink without leaving the sand in ${islandName}? These ${count} beaches are recorded as having a beach bar. Opening months and hours vary, so confirm locally — and check wind and waves in CalmBeach before you go.`,
+        sections: [
+          { heading: `Which beaches in ${islandName} have a beach bar?`, body: 'The beaches listed here are recorded as having a bar on the beach itself, not only a taverna in the village. Bars are seasonal and change hands, so confirm before making the trip.' },
+          { heading: 'Is a beach bar the same as an organized beach?', body: 'No. An organized beach has sunbeds and umbrellas, which a beach bar does not always come with — and some quiet beaches have a bar and nothing else. Open a beach to see exactly what it is recorded as having.' },
+        ],
+      },
+      gr: {
+        title: categoryTitleFor('beachbar', islandName, 'gr', count),
+        description: categoryMetaFor('beachbar', islandName, count, 'gr'),
+        h1: `Παραλίες με beach bar — ${islandName}`,
+        intro: `Θες ποτό χωρίς να φύγεις από την παραλία; Αυτές οι ${count} παραλίες (${islandName}) είναι καταγεγραμμένες με beach bar. Οι μήνες και οι ώρες λειτουργίας αλλάζουν, γι' αυτό επιβεβαίωσε επιτόπου — και δες άνεμο και κύμα στο CalmBeach πριν πας.`,
+        sections: [
+          { heading: `${islandName}: ποιες παραλίες έχουν beach bar;`, body: 'Οι παραλίες της λίστας είναι καταγεγραμμένες με bar πάνω στην παραλία, όχι μόνο ταβέρνα στο χωριό. Τα bar είναι εποχικά και αλλάζουν χέρια, γι\' αυτό επιβεβαίωσε πριν κάνεις τον δρόμο.' },
+          { heading: 'Beach bar σημαίνει οργανωμένη παραλία;', body: 'Όχι. Η οργανωμένη έχει ξαπλώστρες και ομπρέλες, που δεν συνοδεύουν πάντα ένα beach bar — και κάποιες ήσυχες παραλίες έχουν bar και τίποτα άλλο. Άνοιξε μια παραλία για να δεις τι ακριβώς είναι καταγεγραμμένο.' },
+        ],
+      },
+      de: {
+        title: `Strände auf ${islandName} mit Beachbar | CalmBeach`,
+        description: categoryMetaFor('beachbar', islandName, count, 'de'),
+        h1: `Strände auf ${islandName} mit Beachbar`,
+        intro: `Ein Getränk, ohne den Strand zu verlassen auf ${islandName}? Diese ${count} Strände sind mit Beachbar erfasst. Saison und Öffnungszeiten wechseln, bestätige also vor Ort – und prüfe Wind und Wellen in CalmBeach, bevor du losfährst.`,
+        sections: [
+          { heading: `Welche Strände auf ${islandName} haben eine Beachbar?`, body: 'Die hier gelisteten Strände sind mit einer Bar am Strand selbst erfasst, nicht nur mit einer Taverne im Ort. Bars sind saisonal und wechseln den Betreiber – bestätige es vor der Fahrt.' },
+          { heading: 'Ist eine Beachbar dasselbe wie ein organisierter Strand?', body: 'Nein. Ein organisierter Strand hat Liegen und Sonnenschirme, die zu einer Beachbar nicht immer gehören – und manche ruhigen Strände haben nur eine Bar. Öffne einen Strand, um zu sehen, was genau erfasst ist.' },
+        ],
+      },
+      fr: {
+        title: `Plages avec bar de plage à ${islandName} | CalmBeach`,
+        description: categoryMetaFor('beachbar', islandName, count, 'fr'),
+        h1: `Plages avec bar de plage à ${islandName}`,
+        intro: `Envie d'un verre sans quitter le sable à ${islandName} ? Ces ${count} plages sont enregistrées avec un bar de plage. Les mois et horaires d'ouverture varient, confirmez sur place — et vérifiez le vent et les vagues dans CalmBeach avant d'y aller.`,
+        sections: [
+          { heading: `Quelles plages de ${islandName} ont un bar de plage ?`, body: "Les plages listées ici sont enregistrées avec un bar sur la plage même, pas seulement une taverne au village. Les bars sont saisonniers et changent de mains, confirmez avant de faire la route." },
+          { heading: 'Un bar de plage, est-ce une plage aménagée ?', body: "Non. Une plage aménagée a transats et parasols, ce qui n'accompagne pas toujours un bar de plage — et certaines plages tranquilles n'ont qu'un bar. Ouvrez une plage pour voir ce qui est exactement enregistré." },
+        ],
+      },
+      it: {
+        title: `Spiagge con beach bar a ${islandName} | CalmBeach`,
+        description: categoryMetaFor('beachbar', islandName, count, 'it'),
+        h1: `Spiagge con beach bar a ${islandName}`,
+        intro: `Vuoi bere qualcosa senza lasciare la spiaggia a ${islandName}? Queste ${count} spiagge sono registrate con un beach bar. Mesi e orari di apertura variano, quindi conferma sul posto — e controlla vento e onde in CalmBeach prima di andare.`,
+        sections: [
+          { heading: `Quali spiagge di ${islandName} hanno un beach bar?`, body: 'Le spiagge elencate qui sono registrate con un bar sulla spiaggia stessa, non solo con una taverna in paese. I bar sono stagionali e cambiano gestione, quindi conferma prima di metterti in viaggio.' },
+          { heading: 'Beach bar significa spiaggia attrezzata?', body: 'No. Una spiaggia attrezzata ha lettini e ombrelloni, che non accompagnano sempre un beach bar — e alcune spiagge tranquille hanno solo un bar. Apri una spiaggia per vedere cosa è registrato esattamente.' },
         ],
       },
     }),
