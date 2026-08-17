@@ -9674,8 +9674,8 @@
           "lon": 22.91366,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -9700,7 +9700,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/449278562 highway=track στα 69 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1107343220"
@@ -9726,8 +9727,8 @@
           "lon": 22.91761,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -9752,7 +9753,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/499179257 highway=track στα 130 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/499180305"
@@ -14818,8 +14820,8 @@
           "lon": 24.43941,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -14847,7 +14849,8 @@
               "https://www.openstreetmap.org/way/435674028"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/959654608 highway=residential (κατηγορία πάντα στρωμένη) στα 71 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 197.6,
@@ -14877,8 +14880,8 @@
           "lon": 24.43653,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -14908,7 +14911,8 @@
               "http://dimoskarystou.gr/visit/2017/03/09/παραλίες/"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/208079621 highway=residential (κατηγορία πάντα στρωμένη) στα 37 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 191.3,
@@ -15253,8 +15257,8 @@
           "lon": 24.45739,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -15282,7 +15286,8 @@
               "https://www.openstreetmap.org/way/435673426"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/85711613 highway=tertiary (κατηγορία πάντα στρωμένη) στα 94 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 239.5,
@@ -16370,8 +16375,8 @@
           "lon": 24.38536,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -16399,7 +16404,8 @@
               "https://www.openstreetmap.org/way/269212383"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/207438610 highway=tertiary surface=asphalt στα 21 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 92.1,
@@ -16429,8 +16435,8 @@
           "lon": 24.30521,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -16457,7 +16463,8 @@
               "https://www.openstreetmap.org/way/1193915177"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/213489158 highway=residential surface=asphalt στα 35 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 256.4,
@@ -16927,9 +16934,9 @@
           "lon": 24.35561,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "Το OSM επιβεβαιώνει την παραλία Καλαμίτσι κοντά στο Μαρμάρι, αλλά δεν τεκμηριώνει αξιόπιστα τον τύπο πρόσβασης ή σταθερές παροχές."
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -16952,7 +16959,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Evia source check 2026-05-27: OSM way 269212468 confirms Kalamitsi beach at the Marmari-side coordinates. No direct source was found for access difficulty or fixed services, so access/services remain conservative.",
+            "sourceNotes": "Evia source check 2026-05-27: OSM way 269212468 confirms Kalamitsi beach at the Marmari-side coordinates. No direct source was found for access difficulty or fixed services, so access/services remain conservative. Access from OSM road network 2026-08-17: OSM way/207442190 highway=track στα 43 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/269212468"
             ],
@@ -17131,9 +17138,9 @@
           "lon": 24.38913,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "Το OSM επιβεβαιώνει την παραλία Κατσούλι κοντά στην Κάρυστο, αλλά δεν τεκμηριώνει αξιόπιστα τον τύπο πρόσβασης ή σταθερές παροχές."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -17156,7 +17163,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Evia source check 2026-05-27: OSM way 269212464 and Mapcarta confirm Katsouli beach near Karystos; nearby OSM beaches include Pera Katsouli and Livadaki. Access and services remain unverified/conservative.",
+            "sourceNotes": "Evia source check 2026-05-27: OSM way 269212464 and Mapcarta confirm Katsouli beach near Karystos; nearby OSM beaches include Pera Katsouli and Livadaki. Access and services remain unverified/conservative. Access from OSM road network 2026-08-17: OSM way/207438610 highway=tertiary surface=asphalt στα 60 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/269212464",
               "https://mapcarta.com/W269212464"
@@ -17706,8 +17713,8 @@
           "lon": 24.38775,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -17732,7 +17739,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/207452433 highway=residential (κατηγορία πάντα στρωμένη) στα 97 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/269212407",
@@ -18111,8 +18119,8 @@
           "lon": 23.89824,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -18140,7 +18148,8 @@
               "https://www.openstreetmap.org/relation/19798442"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/342350079 highway=track στα 114 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 5,
@@ -18970,8 +18979,8 @@
           "lon": 24.39573,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -19000,7 +19009,8 @@
               "https://www.openstreetmap.org/way/269212477"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/207451454 highway=residential (κατηγορία πάντα στρωμένη) στα 71 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 130.9,
@@ -20343,9 +20353,9 @@
           "lon": 23.54763,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "Το OSM επιβεβαιώνει την Παραλία Σκιάθου κοντά στη Χαλκίδα/Δροσιά, αλλά δεν τεκμηριώνει ακόμη καθαρά την τελική πρόσβαση και τις σταθερές παροχές."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -20371,7 +20381,7 @@
               "https://www.openstreetmap.org/way/1330236405",
               "https://www.indomio.gr/en/aggelies/8749965/"
             ],
-            "sourceNotes": "Evia source check 2026-05-27: OSM way 1330236405 confirms Paralia Skiathou near the Mpournontas/Gaidaros area north of Chalkida. Sterea News references Skiathou/Mpournonta/Pountas as a Drosia infrastructure locality, and an Indomio listing places Skiathou in the Chalkida/Anthidona area near Mpournontas and Alykes. Because supporting sources are locality-level rather than beach-detail sources, access and services are kept conservative.",
+            "sourceNotes": "Evia source check 2026-05-27: OSM way 1330236405 confirms Paralia Skiathou near the Mpournontas/Gaidaros area north of Chalkida. Sterea News references Skiathou/Mpournonta/Pountas as a Drosia infrastructure locality, and an Indomio listing places Skiathou in the Chalkida/Anthidona area near Mpournontas and Alykes. Because supporting sources are locality-level rather than beach-detail sources, access and services are kept conservative. Access from OSM road network 2026-08-17: OSM way/112950362 highway=unclassified surface=asphalt στα 19 m. Previously 'unknown'. No other field changed.",
             "orientation": {
               "degrees": 21.7,
               "faces": [
@@ -20921,8 +20931,8 @@
           "lon": 24.54615,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -20947,7 +20957,8 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/957790318 highway=track στα 129 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/269212420"
@@ -21769,8 +21780,8 @@
           "lon": 24.38739,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -21795,7 +21806,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/207455755 highway=residential (κατηγορία πάντα στρωμένη) στα 89 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/269212482"
@@ -21821,8 +21833,8 @@
           "lon": 24.32151,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
               "notes": ""
             },
             "terrain": {
@@ -21848,7 +21860,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/213489156 highway=unclassified surface=asphalt στα 7 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/10683111758"
@@ -22647,9 +22660,9 @@
           "lon": 24.2517298,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": ""
             },
             "terrain": {
               "types": [],
@@ -22663,7 +22676,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Αλμυρίχι\" (https://www.openstreetmap.org/way/493354757) in Evia, Central Greece. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>2132m from any existing beach). Google confirms a beach (1035 ratings) 25m from the pin. Slot via nearest existing beach #247 (2132m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Αλμυρίχι\" (https://www.openstreetmap.org/way/493354757) in Evia, Central Greece. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>2132m from any existing beach). Google confirms a beach (1035 ratings) 25m from the pin. Slot via nearest existing beach #247 (2132m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/211035621 highway=tertiary surface=asphalt «Μεσοχώρια - Αλμυρίχι» στα 49 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/493354757"
@@ -23145,8 +23159,8 @@
           "lon": 24.63857,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -23175,7 +23189,8 @@
               "Skyros OSM identity/location pass 2026-05-27: OSM way 1037349299 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
               "Skyros official municipality continuation 2026-06-05: the Municipality of Skyros beach guide directly names Renes among the southern/southwestern bays. This supports identity/regional placement, but access/terrain/service detail remains insufficient for high confidence; coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
               "Island confidence pass 2026-06-05: Skyros records promoted to high for static beach facts only. Existing direct Visit Greece, Cycladia, Skyros municipality and local beach-source notes support identity/location plus recorded access/terrain/service context. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/226985980 highway=track tracktype=grade3 στα 76 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1037349299",
@@ -97705,8 +97720,8 @@
           "lon": 25.88439,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -97730,7 +97745,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/434842867 highway=track στα 125 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/399760304",
@@ -97773,8 +97789,8 @@
           "lon": 25.99492,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -97798,7 +97814,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/288480545 highway=track στα 57 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/288480550",
@@ -98110,8 +98127,8 @@
           "lon": 25.97191,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -98135,7 +98152,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/400843666 highway=track στα 132 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/403165151",
@@ -98403,8 +98421,8 @@
           "lon": 25.89397,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -98428,7 +98446,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/228352325 highway=track στα 31 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/228352321",
@@ -99154,8 +99173,8 @@
           "lon": 25.96596,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -99179,7 +99198,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/1434567917 highway=track tracktype=grade1 στα 73 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/403164787",
@@ -99376,9 +99396,9 @@
           "lon": 26.1601236,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": ""
             },
             "terrain": {
               "types": [],
@@ -99392,7 +99412,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Αγ.Ελένη\" (https://www.openstreetmap.org/node/3408987644) in Chios, North Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>976m from any existing beach). Google confirms a resort_hotel (106 ratings) 10m from the pin. Slot via nearest existing beach #1260 (976m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Αγ.Ελένη\" (https://www.openstreetmap.org/node/3408987644) in Chios, North Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>976m from any existing beach). Google confirms a resort_hotel (106 ratings) 10m from the pin. Slot via nearest existing beach #1260 (976m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/960124440 highway=track στα 118 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/3408987644"
@@ -110092,8 +110113,8 @@
           "lon": 25.23978,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -110115,7 +110136,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/861354419 highway=track στα 102 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/263926968"
@@ -111117,8 +111139,8 @@
           "lon": 25.43724,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -111140,7 +111162,8 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/449003776 highway=track στα 35 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/265489779"
@@ -200241,9 +200264,9 @@
           "lon": 23.616272,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": ""
             },
             "terrain": {
               "types": [],
@@ -200257,7 +200280,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Angeletou beach\" (https://www.openstreetmap.org/way/289044864) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>3936m from any existing beach). Google confirms a beach (23 ratings) 25m from the pin. Slot via nearest existing beach #2649 (3936m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Angeletou beach\" (https://www.openstreetmap.org/way/289044864) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>3936m from any existing beach). Google confirms a beach (23 ratings) 25m from the pin. Slot via nearest existing beach #2649 (3936m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/963872977 highway=track tracktype=grade1 στα 142 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/289044864"
@@ -201725,9 +201749,9 @@
           "lon": 23.306397,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Εύκολη πρόσβαση, τύπος δρόμου μη επιβεβαιωμένος",
-              "notes": "Καστρί: η πηγή αναφέρει εύκολη πρόσβαση, αλλά δεν τεκμηριώνει αν ο δρόμος είναι άσφαλτος ή χωματόδρομος."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -201749,7 +201773,7 @@
               "label": "Μέτριο βάθος",
               "notes": "Το βάθος αυξάνει κανονικά μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 5 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports fine-sand type, medium depth, easy access wording, and unorganized status. Road-surface type, wind profile, and scoring were not changed. Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.93 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/76466139, name \"Καστρί\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.205,23.302. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Web-verified 2026-07-19 (web-medium+core-signal): organized — Kastri (South Pelion) has a small organized section with umbrellas in front of Kastri Beach Camping, which runs a cafe bar and restaurant; plenty of free space  [https://mythessaly.gr/notio-pilio/kastri-paralia/]; beach bar+sunbeds added.",
+            "sourceNotes": "Source follow-up pass 5 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports fine-sand type, medium depth, easy access wording, and unorganized status. Road-surface type, wind profile, and scoring were not changed. Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.93 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/76466139, name \"Καστρί\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.205,23.302. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Web-verified 2026-07-19 (web-medium+core-signal): organized — Kastri (South Pelion) has a small organized section with umbrellas in front of Kastri Beach Camping, which runs a cafe bar and restaurant; plenty of free space  [https://mythessaly.gr/notio-pilio/kastri-paralia/]; beach bar+sunbeds added. Access from OSM road network 2026-08-17: OSM way/510179391 highway=unclassified surface=asphalt στα 65 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.discover-pelion.gr/kastri-pelion/"
             ],
@@ -203606,8 +203630,8 @@
           "lon": 23.113178,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -203631,7 +203655,8 @@
             "sourceNotes": [
               "Source follow-up pass 4 2026-05-27: direct beach listing page supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 9.02 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/124979381, name \"Παραλία Τουρκοπηγής\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.387,23.131. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/124968418 highway=track στα 116 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.beachfarer.com/beach/greece/tourkopigi-beach/181466/"
