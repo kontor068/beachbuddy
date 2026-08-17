@@ -199333,8 +199333,8 @@
         {
           "id": 2656,
           "name": "Καστάνη",
-          "lat": 39.0865,
-          "lon": 23.6865,
+          "lat": 39.121625,
+          "lon": 23.654908,
           "metadata": {
             "access": {
               "type": "passable_dirt_road",
@@ -199362,23 +199362,19 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": [
-              "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Kastani beach identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Kastani as the Mamma Mia beach, about 15 km from Chora, with car access, parking, final unpaved road section, sandy/pebbly shore, pine shade and beach-bar/sunbed-umbrella service. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched."
-            ],
+            "sourceNotes": "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Kastani beach identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Kastani as the Mamma Mia beach, about 15 km from Chora, with car access, parking, final unpaved road section, sandy/pebbly shore, pine shade and beach-bar/sunbed-umbrella service. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-08-17 (no-API): moved from 39.08650,23.68650 to 39.121625,23.654908 — name match 4763 m away; our pin had no beach mapped within 1,2 km (confidence OSM beach way/289896970 named «Καστάνη»).",
             "sourceUrls": [
               "https://visit.skopelos.gr/en/destinations/kastani/",
               "https://skopelos.com/beaches/kastani-beach/"
             ],
             "orientation": {
-              "degrees": 180.1,
+              "degrees": 268.6,
               "faces": [
-                "South"
+                "West"
               ],
               "protectedFrom": [],
               "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions. Ευθυγραμμίστηκε με τη γεωμετρία (14/08/2026): η γραμμένη κατεύθυνση υποσχόταν ηλιοβασίλεμα που η γεωμετρία διαψεύδει."
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions. Ξαναϋπολογίστηκε (2026-08-17) αφού διορθώθηκε η πινέζα: η προηγούμενη τιμή (180.1°, South) περιέγραφε το παλιό, λάθος σημείο."
             }
           }
         },

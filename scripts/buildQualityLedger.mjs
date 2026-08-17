@@ -95,9 +95,16 @@ const FEATURES = [
 ];
 
 // ── which beaches a national audit has already proved wrong ──────────────────
-// `confirmed` in the pin audits means "we looked and the pin really is off the
-// beach" — not "suspect". Only confirmed ones count against a region, so a
-// suspect list that has not been adjudicated yet cannot scare the board.
+// `confirmed` in the pin audits does NOT mean "the pin is wrong". It means "no
+// OSM beach corroborates this pin", and the audit itself says so in its own
+// header: on 14/08 only 2 of those 40 rows were actually wrong. The other 38 are
+// beaches OSM has simply never mapped — most of them the small coves the
+// hidden-beach pass added, which is exactly the work we are proud of.
+//
+// Reading that bucket as a defect list is what put «4 παραλίες με πινέζα εκτός
+// παραλίας» at the top of Πήλιο's weekly report when the real number was one, on
+// another island. A board that cries wolf on our best data stops being opened, so
+// a row only counts once a human-or-name adjudication has actually condemned it.
 const flaggedPins = new Set();
 for (const file of ['pin-placement-audit.json', 'pin-coastline-audit.json']) {
   const data = readJson(path.join(reportsDir, 'quality', file));
@@ -110,6 +117,13 @@ for (const file of ['pin-placement-audit.json', 'pin-coastline-audit.json']) {
     }
   }
 }
+// Stage 2b (scripts/findPinTargetsByName.mjs) searches for the beach BY NAME over
+// a wide radius. A KEEP verdict there is real evidence — "there is no beach of
+// this name anywhere near, so the pin is the only record of it" or "OSM's node
+// for it sits 46 m from our pin" — and it clears the row for good. A MOVE that
+// has been applied clears it too: the pin is now the OSM coordinate.
+const clearedPins = readJson(path.join(reportsDir, 'quality', 'pin-adjudication.json'), {});
+for (const row of clearedPins.cleared || []) if (row?.id != null) flaggedPins.delete(Number(row.id));
 
 // ── which beaches have a photo ───────────────────────────────────────────────
 // From the photo audit rather than from data/beachPhotosById.generated.json,

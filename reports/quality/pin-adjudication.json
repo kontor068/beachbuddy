@@ -1,0 +1,55 @@
+{
+  "note": "Rows the pin audits flag that a name search has since resolved. Consumed by scripts/buildQualityLedger.mjs.",
+  "generatedAt": "2026-08-17T08:33:11.653Z",
+  "cleared": [
+    {
+      "id": 2652,
+      "name": "Βαθιάς",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Βαθιάς» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    },
+    {
+      "id": 2656,
+      "name": "Καστάνη",
+      "at": "2026-08-17",
+      "verdict": "MOVED",
+      "reason": "pin now at 39.121625,23.654908 — OSM beach way/289896970 named «Καστάνη»"
+    },
+    {
+      "id": 2660,
+      "name": "Πλάκα",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Πλάκα» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    },
+    {
+      "id": 2686,
+      "name": "Καρνάγιο (Αγριά)",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Καρνάγιο (Αγριά)» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    },
+    {
+      "id": 3149,
+      "name": "Κάλα Νερά",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "OSM «Καλά Νερά» (node/9837279808) is 46 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 3158,
+      "name": "Πράσινη Άμμος",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Πράσινη Άμμος» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    },
+    {
+      "id": 3159,
+      "name": "Τζάστενη",
+      "at": "2026-08-17",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Τζάστενη» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-08-17T08:24:44.602Z",
+  "radiusM": 20000,
+  "samePlaceM": 250,
+  "results": [
+    {
+      "id": 2652,
+      "name": "Βαθιάς",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Βαθιάς» within 20 km — OSM has not mapped this beach; the pin is the only record we have",
+      "candidates": []
+    },
+    {
+      "id": 2656,
+      "name": "Καστάνη",
+      "verdict": "MOVE",
+      "target": [
+        39.121625,
+        23.654908
+      ],
+      "polygonDistM": 4763,
+      "confidence": "OSM beach way/289896970 named «Καστάνη»",
+      "evidence": "name match 4763 m away; our pin had no beach mapped within 1,2 km",
+      "candidates": [
+        {
+          "osm": "way/289896970",
+          "kind": "beach",
+          "lat": 39.1216252,
+          "lon": 23.6549076,
+          "names": [
+            "Καστάνη",
+            "Καστάνη",
+            "Kastani"
+          ],
+          "distM": 4763
+        }
+      ]
+    },
+    {
+      "id": 2660,
+      "name": "Πλάκα",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Πλάκα» within 20 km — OSM has not mapped this beach; the pin is the only record we have",
+      "candidates": []
+    },
+    {
+      "id": 2686,
+      "name": "Καρνάγιο (Αγριά)",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Καρνάγιο (Αγριά)» within 20 km — OSM has not mapped this beach; the pin is the only record we have",
+      "candidates": []
+    },
+    {
+      "id": 3149,
+      "name": "Κάλα Νερά",
+      "verdict": "KEEP",
+      "reason": "OSM «Καλά Νερά» (node/9837279808) is 46 m from our pin — same beach, unmapped polygon",
+      "candidates": [
+        {
+          "osm": "node/9837279808",
+          "kind": "village",
+          "lat": 39.3053039,
+          "lon": 23.1206709,
+          "names": [
+            "Καλά Νερά",
+            "Καλά Νερά",
+            "Kala Nera"
+          ],
+          "distM": 46
+        }
+      ]
+    },
+    {
+      "id": 3158,
+      "name": "Πράσινη Άμμος",
+      "verdict": "KEEP",
+      "reason": "no OSM feature named «Πράσινη Άμμος» within 20 km — OSM has not mapped this beach; the pin is the only record we have",
+      "candidates": []
+    },
+    {
+      "id": 3159,
+      "name": "Τζάστενη",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    }
+  ]
+}
