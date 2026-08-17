@@ -67,11 +67,25 @@
  *     Measured cost of the step: 4 of 930 beaches darken (15/08 run, 14 regions, 96% of them
  *     carrying a period). What it buys is that the constant is no longer below every mechanism
  *     anyone can name — the state that made 0.75 impossible to defend to the next reader.
- *   • ⚠️ THE NATIONAL RE-MEASUREMENT IS NOT DONE. The 16/08 run over all 110 regions reported 6 of
- *     2866, but only 200 of those beaches carried a period at all against 96% the day before, and
- *     the Open-Meteo daily limit was hit immediately afterwards — so that run is degraded and its
- *     number must not be quoted. Re-run scripts/measureChopExponent.mjs on a fresh quota and
- *     replace this bullet with the real figure.
+ *   • ✅ THE NATIONAL RE-MEASUREMENT IS DONE (17/08/2026, paid plan, 110/110 regions, 2,824 of
+ *     2,872 beaches carrying a period — the degraded 16/08 run that reported "6 of 2866" off 200
+ *     periods is superseded and must not be quoted). Live effect on the colour, cap held at 1.75:
+ *
+ *       exponent   darker   wakes a silent beach   LIGHTER
+ *       1.00           17                     12         0
+ *       1.25           44                     35         0
+ *       1.50           67                     56         0
+ *       2.00           87                     64         0
+ *
+ *     THE COLUMN THAT MATTERS IS THE LAST ONE: **zero at every value**. Raising this constant can
+ *     only ever make a shore look rougher — it is structurally one-directional, so trigger #1
+ *     ("false calm") cannot be reached from here. 1.5 costs 67 of 2,872 beaches (2.3%) on the day
+ *     measured, and wakes 56 that today print nothing at all.
+ *   • ⚠️ WHAT STILL BLOCKS IT IS THE GUIDES, NOT THE MODEL. 1.0 was applied and reverted on
+ *     16/08 because scripts/buildWaveClimatology.py holds the same constant and moved the
+ *     published monthly sea tier for 1,008 of 2,782 beaches. 1.5 would move MORE than 1.0 did,
+ *     and that number has NOT been measured. Measure the climatology rebuild before proposing
+ *     1.5 again — the live cost is now known and small; the content cost is the open one.
  *   • Still true, and the reason 1.5 stays on the table rather than in the code: there is no judge
  *     for "how unpleasant was the water". PORISMA §Γ4 settled that a measured-but-unvalidated dial
  *     is Miltos's call. The honest way to earn 1.5 is to ask visitors on short-period days, not to

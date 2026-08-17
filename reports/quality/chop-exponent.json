@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T13:07:21.833Z",
+  "generatedAt": "2026-08-17T07:55:26.884Z",
   "dayIndex": 0,
   "current": {
     "exponent": 0.75,
@@ -12,156 +12,156 @@
   },
   "regionsAsked": 110,
   "regionsAnswered": 110,
-  "beaches": 2866,
-  "withPeriod": 200,
-  "shortPeriod": 123,
-  "chopCandidates": 101,
+  "beaches": 2872,
+  "withPeriod": 2824,
+  "shortPeriod": 1698,
+  "chopCandidates": 705,
   "chopInterestFloorM": 0.4,
-  "silentZone": 39,
-  "silentZoneShare": 0.0136,
+  "silentZone": 469,
+  "silentZoneShare": 0.1633,
   "silentZoneSteepnessGates": [
     {
       "gate": 0.03,
-      "beaches": 39,
-      "share": 0.0136
+      "beaches": 235,
+      "share": 0.0818
     },
     {
       "gate": 0.035,
-      "beaches": 39,
-      "share": 0.0136
+      "beaches": 168,
+      "share": 0.0585
     },
     {
       "gate": 0.04,
-      "beaches": 30,
-      "share": 0.0105
+      "beaches": 74,
+      "share": 0.0258
     },
     {
       "gate": 0.045,
-      "beaches": 17,
-      "share": 0.0059
+      "beaches": 36,
+      "share": 0.0125
     },
     {
       "gate": 0.05,
-      "beaches": 3,
-      "share": 0.001
+      "beaches": 13,
+      "share": 0.0045
     }
   ],
   "silentZoneSteepest": [
     {
-      "id": 182,
-      "name": "Παραλία Περάματος",
-      "region": "attica-piraeus-area",
+      "id": 2505,
+      "name": "Διγελιώτικα",
+      "region": "west-greece-achaia-mainland",
       "beaufort": 3,
       "waveM": 0.5,
-      "periodS": 2.15
+      "periodS": 2
     },
     {
-      "id": 12,
-      "name": "Παραλία Αστέρα Γλυφάδας",
-      "region": "attica-athens-area-mainland",
+      "id": 2516,
+      "name": "Τρυπιά",
+      "region": "west-greece-achaia-mainland",
+      "beaufort": 3,
+      "waveM": 0.5,
+      "periodS": 2
+    },
+    {
+      "id": 924,
+      "name": "Παραλία Κέρκυρα",
+      "region": "epirus-thesprotia-mainland",
+      "beaufort": 3,
+      "waveM": 0.5,
+      "periodS": 2.05
+    },
+    {
+      "id": 2502,
+      "name": "Άκολη",
+      "region": "west-greece-achaia-mainland",
+      "beaufort": 3,
+      "waveM": 0.5,
+      "periodS": 2.1
+    },
+    {
+      "id": 926,
+      "name": "Keramidi Beach",
+      "region": "epirus-thesprotia-mainland",
+      "beaufort": 3,
+      "waveM": 0.5,
+      "periodS": 2.2
+    },
+    {
+      "id": 1362,
+      "name": "Πεταλίδι",
+      "region": "north-aegean-lesvos",
       "beaufort": 3,
       "waveM": 0.5,
       "periodS": 2.3
     },
     {
-      "id": 17,
-      "name": "Μεγάλο Καβούρι",
-      "region": "attica-athens-area-mainland",
+      "id": 1582,
+      "name": "Παραλία Μαυροβουνίου",
+      "region": "peloponnese-lakonia-mainland",
       "beaufort": 3,
       "waveM": 0.5,
-      "periodS": 2.3
+      "periodS": 2.4
     },
     {
-      "id": 0,
-      "name": "Παραλία Φλοίσβου",
-      "region": "attica-athens-area-mainland",
+      "id": 910,
+      "name": "Παραλία Γαλάζιος Κόλπος",
+      "region": "epirus-thesprotia-mainland",
       "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45
-    },
-    {
-      "id": 1,
-      "name": "Παλμύρα",
-      "region": "attica-athens-area-mainland",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45
-    },
-    {
-      "id": 2,
-      "name": "Παραλία Μπάτη",
-      "region": "attica-athens-area-mainland",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45
-    },
-    {
-      "id": 5,
-      "name": "Ακτή του Ήλιου",
-      "region": "attica-athens-area-mainland",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45
-    },
-    {
-      "id": 7,
-      "name": "Παραλία Αγίου Αλεξάνδρου",
-      "region": "attica-athens-area-mainland",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45
+      "waveM": 0.5,
+      "periodS": 2.5
     }
   ],
-  "structurallyCappedOut": 19,
-  "capBinds": 1,
+  "structurallyCappedOut": 186,
+  "capBinds": 103,
   "byExponent": [
     {
       "exponent": 0.75,
       "maxFactor": 1.75,
       "darker": 0,
       "lighter": 0,
-      "unchanged": 2866,
+      "unchanged": 2872,
       "wokeUp": 0
     },
     {
       "exponent": 1,
       "maxFactor": 1.75,
-      "darker": 6,
+      "darker": 17,
       "lighter": 0,
-      "unchanged": 2860,
-      "wokeUp": 3
+      "unchanged": 2855,
+      "wokeUp": 12
     },
     {
       "exponent": 1.25,
       "maxFactor": 1.75,
-      "darker": 13,
+      "darker": 44,
       "lighter": 0,
-      "unchanged": 2853,
-      "wokeUp": 6
+      "unchanged": 2828,
+      "wokeUp": 35
     },
     {
       "exponent": 1.5,
       "maxFactor": 1.75,
-      "darker": 15,
+      "darker": 67,
       "lighter": 0,
-      "unchanged": 2851,
-      "wokeUp": 6
+      "unchanged": 2805,
+      "wokeUp": 56
     },
     {
       "exponent": 1.75,
       "maxFactor": 1.75,
-      "darker": 16,
+      "darker": 79,
       "lighter": 0,
-      "unchanged": 2850,
-      "wokeUp": 7
+      "unchanged": 2793,
+      "wokeUp": 60
     },
     {
       "exponent": 2,
       "maxFactor": 1.75,
-      "darker": 21,
+      "darker": 87,
       "lighter": 0,
-      "unchanged": 2845,
-      "wokeUp": 7
+      "unchanged": 2785,
+      "wokeUp": 64
     }
   ],
   "byMaxFactor": [
@@ -170,7 +170,7 @@
       "maxFactor": 1.75,
       "darker": 0,
       "lighter": 0,
-      "unchanged": 2866,
+      "unchanged": 2872,
       "wokeUp": 0
     },
     {
@@ -178,7 +178,7 @@
       "maxFactor": 2.25,
       "darker": 0,
       "lighter": 0,
-      "unchanged": 2866,
+      "unchanged": 2872,
       "wokeUp": 0
     },
     {
@@ -186,138 +186,138 @@
       "maxFactor": 3,
       "darker": 0,
       "lighter": 0,
-      "unchanged": 2866,
+      "unchanged": 2872,
       "wokeUp": 0
     }
   ],
   "combined": {
     "exponent": 1.5,
     "maxFactor": 2.25,
-    "darker": 21,
+    "darker": 91,
     "lighter": 0,
-    "wokeUp": 12,
-    "unchanged": 2845
+    "wokeUp": 57,
+    "unchanged": 2781
   },
   "examples": [
     {
-      "name": "Παραλία Βαγίας",
-      "region": "attica-aegina",
-      "exposure": "exposed",
+      "name": "Παραλία Αγριλέζας",
+      "region": "attica-east-attica-mainland",
+      "exposure": "partial",
       "beaufort": 4,
-      "waveM": 0.7,
-      "periodS": 2.45,
-      "before": 1.01,
-      "after": 1.46,
+      "waveM": 0.55,
+      "periodS": 1.75,
+      "before": 0.96,
+      "after": 1.24,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Λουτρά",
-      "region": "attica-aegina",
-      "exposure": "exposed",
+      "name": "Παραλία Ακρωτηρίου",
+      "region": "attica-east-attica-mainland",
+      "exposure": "partial",
       "beaufort": 4,
-      "waveM": 0.7,
-      "periodS": 2.45,
-      "before": 1.01,
-      "after": 1.46,
+      "waveM": 0.55,
+      "periodS": 2,
+      "before": 0.92,
+      "after": 1.24,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Παραλία Ζινόβι",
-      "region": "attica-aegina",
-      "exposure": "exposed",
+      "name": "Παραλία Αγίας Παρασκευής",
+      "region": "attica-east-attica-mainland",
+      "exposure": "partial",
       "beaufort": 4,
-      "waveM": 0.7,
-      "periodS": 2.45,
-      "before": 1.01,
-      "after": 1.46,
+      "waveM": 0.55,
+      "periodS": 2,
+      "before": 0.92,
+      "after": 1.24,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Παραλία Καμάρες",
-      "region": "attica-aegina",
+      "name": "Παραλία Αγίου Κωνσταντίνου",
+      "region": "attica-east-attica-mainland",
       "exposure": "exposed",
       "beaufort": 4,
       "waveM": 0.7,
-      "periodS": 2.65,
-      "before": 0.95,
-      "after": 1.3,
+      "periodS": 2.1,
+      "before": 1.13,
+      "after": 1.57,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Σουβάλα",
-      "region": "attica-aegina",
+      "name": "Παραλία Ζούμπερι",
+      "region": "attica-east-attica-mainland",
       "exposure": "exposed",
       "beaufort": 4,
       "waveM": 0.7,
-      "periodS": 2.45,
-      "before": 1.01,
-      "after": 1.46,
+      "periodS": 2.25,
+      "before": 1.08,
+      "after": 1.57,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Παραλία Μεγαλοχωρίου",
-      "region": "attica-agistri",
+      "name": "Όρμος Ληδάκι",
+      "region": "attica-east-attica-mainland",
       "exposure": "exposed",
       "beaufort": 4,
       "waveM": 0.7,
-      "periodS": 2.75,
-      "before": 0.93,
-      "after": 1.23,
+      "periodS": 2.25,
+      "before": 1.08,
+      "after": 1.57,
       "toneBefore": "orange",
       "toneAfter": "red"
     },
     {
-      "name": "Παραλία Φλοίσβου",
-      "region": "attica-athens-area-mainland",
-      "exposure": "protected",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45,
-      "before": 0.61,
-      "after": 0.88,
-      "toneBefore": "blue",
-      "toneAfter": "yellow"
+      "name": "Πλαζ Ραφήνας",
+      "region": "attica-east-attica-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "waveM": 0.7,
+      "periodS": 2.25,
+      "before": 1.08,
+      "after": 1.57,
+      "toneBefore": "orange",
+      "toneAfter": "red"
     },
     {
-      "name": "Παλμύρα",
-      "region": "attica-athens-area-mainland",
-      "exposure": "protected",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45,
-      "before": 0.61,
-      "after": 0.88,
-      "toneBefore": "blue",
-      "toneAfter": "yellow"
+      "name": "Μικρή Χαμολιά",
+      "region": "attica-east-attica-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "waveM": 0.7,
+      "periodS": 2.5,
+      "before": 1,
+      "after": 1.42,
+      "toneBefore": "orange",
+      "toneAfter": "red"
     },
     {
-      "name": "Παραλία Μπάτη",
-      "region": "attica-athens-area-mainland",
-      "exposure": "protected",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45,
-      "before": 0.61,
-      "after": 0.88,
-      "toneBefore": "blue",
-      "toneAfter": "yellow"
+      "name": "Παραλία Χαμολιά",
+      "region": "attica-east-attica-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "waveM": 0.7,
+      "periodS": 2.5,
+      "before": 1,
+      "after": 1.42,
+      "toneBefore": "orange",
+      "toneAfter": "red"
     },
     {
-      "name": "Ακτή του Ήλιου",
-      "region": "attica-athens-area-mainland",
-      "exposure": "protected",
-      "beaufort": 3,
-      "waveM": 0.42,
-      "periodS": 2.45,
-      "before": 0.61,
-      "after": 0.88,
-      "toneBefore": "blue",
-      "toneAfter": "yellow"
+      "name": "Παραλία Αράχνες",
+      "region": "attica-east-attica-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "waveM": 0.7,
+      "periodS": 2.55,
+      "before": 0.98,
+      "after": 1.38,
+      "toneBefore": "orange",
+      "toneAfter": "red"
     }
   ],
   "skipped": []
