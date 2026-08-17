@@ -11,7 +11,7 @@
  * που το ελέγχει, χωρίς βήμα μεταγλώττισης — άρα η πύλη δοκιμάζει ΤΟΝ ΙΔΙΟ κώδικα που
  * γράφει τις σελίδες, όχι ένα αντίγραφό του.
  *
- * ΤΡΕΙΣ ΚΑΝΟΝΕΣ ΤΙΜΙΟΤΗΤΑΣ, και οι τρεις επιβάλλονται με κώδικα παρακάτω:
+ * ΤΕΣΣΕΡΙΣ ΚΑΝΟΝΕΣ ΤΙΜΙΟΤΗΤΑΣ, και οι τέσσερις επιβάλλονται με κώδικα παρακάτω:
  *
  *   1. Το νούμερο περιγράφει ΤΗ ΘΑΛΑΣΣΑ ΜΠΡΟΣΤΑ, όχι την παραλία. Το κελί των 4,2 χλμ.
  *      δεν βλέπει τον όρμο ή τον κάβο που κόβει το κύμα, άρα για προστατευμένες παραλίες
@@ -20,6 +20,11 @@
  *      βγαλμένο από μία παραλία δεν είναι προφίλ νησιού· είναι ένα κελί με σοβαρό ύφος.
  *   3. Χρειάζονται ΟΛΟΙ οι μήνες της ιστορίας. Μισή σεζόν βγάζει «ο Ιούλιος είναι ήρεμος»
  *      χωρίς το «ο Σεπτέμβρης πιο ήρεμος», που είναι ακριβώς η χρήσιμη πληροφορία.
+ *   4. Η γραμμή προέλευσης λέει ότι το νούμερο ΤΟ ΥΠΟΛΟΓΙΖΟΥΜΕ ΕΜΕΙΣ πάνω σε δεδομένα
+ *      Copernicus — δεν το «παίρνουμε» από εκεί. Πριν τυπωθεί έχει περάσει από τρία δικά
+ *      μας χέρια: διόρθωση αποτομότητας (buildWaveClimatology.py, ύψος × έως 1,75 όταν η
+ *      περίοδος είναι κοντή), επιλογή του κελιού που είναι κοντύτερα στην πινέζα, και
+ *      διάμεσο όλων των παραλιών της σελίδας. Απόδοση σκέτη στην πηγή ήταν ανακρίβεια.
  */
 
 import { getRegionWindContext, LOCAL_WIND_ATOMS, LOCAL_WIND_LABEL } from './localWindContext.mjs';
@@ -183,11 +188,11 @@ export const seaSeasonSection = (profile, language, regionId = '') => {
     it: `Davanti a ${beaches} delle spiagge di questa pagina, il mare aperto è `,
   };
   const tail = {
-    en: `. ${monthName(calmestMonth, 'en')} is the calmest month of the season. Figures come from the European Copernicus wave model at ${decimal(profile.resolutionKm, 'en', 1)} km resolution${years ? `, ${years}` : ''}. They describe the sea offshore, not the shelter of an individual cove — a bay protected by a headland will usually be calmer than this.`,
-    gr: `. Ο πιο ήρεμος μήνας της σεζόν είναι ο ${monthName(calmestMonth, 'gr')}ς. Τα νούμερα βγαίνουν από το ευρωπαϊκό κυματικό μοντέλο Copernicus, ανάλυσης ${decimal(profile.resolutionKm, 'gr', 1)} χλμ.${years ? ` (${years})` : ''} Δείχνουν το ανοιχτό νερό, όχι την προστασία του κάθε όρμου — ένας κόλπος πίσω από κάβο είναι συνήθως πιο ήρεμος από αυτό.`,
-    de: `. Der ruhigste Monat der Saison ist der ${monthName(calmestMonth, 'de')}. Die Zahlen stammen aus dem europäischen Copernicus-Wellenmodell mit ${decimal(profile.resolutionKm, 'de', 1)} km Auflösung${years ? `, ${years}` : ''}. Sie beschreiben das Meer vor der Küste, nicht den Schutz einer einzelnen Bucht — eine Bucht hinter einer Landzunge ist meist ruhiger.`,
-    fr: `. Le mois le plus calme de la saison est ${monthName(calmestMonth, 'fr')}. Les chiffres proviennent du modèle de vagues européen Copernicus à ${decimal(profile.resolutionKm, 'fr', 1)} km de résolution${years ? `, ${years}` : ''}. Ils décrivent la mer au large, pas l'abri d'une crique — une baie protégée par un cap est en général plus calme.`,
-    it: `. Il mese più calmo della stagione è ${monthName(calmestMonth, 'it')}. I dati vengono dal modello ondoso europeo Copernicus a ${decimal(profile.resolutionKm, 'it', 1)} km di risoluzione${years ? `, ${years}` : ''}. Descrivono il mare al largo, non il riparo di una singola cala — una baia protetta da un promontorio è di solito più calma.`,
+    en: `. ${monthName(calmestMonth, 'en')} is the calmest month of the season. We calculate these figures ourselves from European Copernicus wave-model data at ${decimal(profile.resolutionKm, 'en', 1)} km resolution${years ? `, ${years}` : ''}. They describe the sea offshore, not the shelter of an individual cove — a bay protected by a headland will usually be calmer than this.`,
+    gr: `. Ο πιο ήρεμος μήνας της σεζόν είναι ο ${monthName(calmestMonth, 'gr')}ς. Τα νούμερα τα υπολογίζουμε εμείς πάνω σε δεδομένα του ευρωπαϊκού κυματικού μοντέλου Copernicus, ανάλυσης ${decimal(profile.resolutionKm, 'gr', 1)} χλμ.${years ? ` (${years})` : ''} Δείχνουν το ανοιχτό νερό, όχι την προστασία του κάθε όρμου — ένας κόλπος πίσω από κάβο είναι συνήθως πιο ήρεμος από αυτό.`,
+    de: `. Der ruhigste Monat der Saison ist der ${monthName(calmestMonth, 'de')}. Diese Zahlen berechnen wir selbst aus Daten des europäischen Copernicus-Wellenmodells mit ${decimal(profile.resolutionKm, 'de', 1)} km Auflösung${years ? `, ${years}` : ''}. Sie beschreiben das Meer vor der Küste, nicht den Schutz einer einzelnen Bucht — eine Bucht hinter einer Landzunge ist meist ruhiger.`,
+    fr: `. Le mois le plus calme de la saison est ${monthName(calmestMonth, 'fr')}. Nous calculons ces chiffres nous-mêmes à partir des données du modèle de vagues européen Copernicus à ${decimal(profile.resolutionKm, 'fr', 1)} km de résolution${years ? `, ${years}` : ''}. Ils décrivent la mer au large, pas l'abri d'une crique — une baie protégée par un cap est en général plus calme.`,
+    it: `. Il mese più calmo della stagione è ${monthName(calmestMonth, 'it')}. Questi valori li calcoliamo noi a partire dai dati del modello ondoso europeo Copernicus a ${decimal(profile.resolutionKm, 'it', 1)} km di risoluzione${years ? `, ${years}` : ''}. Descrivono il mare al largo, non il riparo di una singola cala — una baia protetta da un promontorio è di solito più calma.`,
   };
   const heading = {
     en: 'When is the sea calmest here?',

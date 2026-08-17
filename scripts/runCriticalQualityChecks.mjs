@@ -321,7 +321,7 @@ const checks = [
   {
     id: 'wave-climatology',
     title: 'Guide climatology vs beach pages',
-    description: 'Compares the wave thresholds and the swell-equivalent formula between utils/waveCharacter.ts and the Python that builds data/waveClimatology.generated.json, proves the three honesty rules of utils/seaSeasonProfile.mjs by driving them backwards, and reads the prerender call site to confirm it passes beach IDS and the loaded climatology.',
+    description: 'Compares the wave thresholds and the swell-equivalent formula between utils/waveCharacter.ts and the Python that builds data/waveClimatology.generated.json, proves the four honesty rules of utils/seaSeasonProfile.mjs by driving them backwards (including that the source line says we compute the figure, not that Copernicus hands it to us), and reads the prerender call site to confirm it passes beach IDS and the loaded climatology.',
     protects: 'Prevents the intent guides from saying "usually calm" about a beach whose own page paints it orange. The number in the guide comes from a separate Python program that copies the app thresholds, so one edit to SEA_STATE_AMBER_M would desync hundreds of articles with nothing throwing. It also blocks a monthly AVERAGE from being phrased as a percentage of days — an invented figure in convincing clothing — and stops the Ionian guides claiming a Meltemi that does not blow there.',
     failureAction: 'Realign the constants in scripts/buildWaveClimatology.py with utils/waveCharacter.ts, or fix the prerender call site. Never widen a range in the gate to make the generated file pass — regenerate the file instead.',
     command: process.execPath,
