@@ -1,0 +1,684 @@
+{
+  "generatedAt": "2026-08-17T13:30:08.504Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 316,
+      "name": "Ρένες",
+      "regionId": "central-greece-skyros",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 318,
+      "name": "Φωκιοτρύπα",
+      "regionId": "central-greece-skyros",
+      "lat": 38.84704,
+      "lon": 24.52721,
+      "verdict": "difficult_dirt_road",
+      "label": "Δύσβατος χωματόδρομος",
+      "distM": 52,
+      "evidence": "OSM way/229103289 highway=track tracktype=grade3 στα 52 m"
+    },
+    {
+      "id": 323,
+      "name": "Μπάσαλες",
+      "regionId": "central-greece-skyros",
+      "lat": 38.89699,
+      "lon": 24.57124,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 65,
+      "evidence": "OSM way/228755099 highway=secondary surface=asphalt «Σκύρου - Λιναριάς» στα 65 m"
+    },
+    {
+      "id": 335,
+      "name": "Μαρκέσι",
+      "regionId": "central-greece-skyros",
+      "lat": 38.97179,
+      "lon": 24.47157,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 21,
+      "evidence": "OSM way/609564167 highway=track στα 21 m"
+    },
+    {
+      "id": 1436,
+      "name": "Καταπόδι",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1438,
+      "name": "Λιμάνι Αγιάς",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1447,
+      "name": "Βάθρακας",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1452,
+      "name": "Κόκκινα (νότιος όρμος)",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1453,
+      "name": "Μαντρί",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1467,
+      "name": "Τηγάνι",
+      "regionId": "north-aegean-lemnos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 112,
+      "name": "Αμμούτσι",
+      "regionId": "attica-kythira",
+      "lat": 36.37712,
+      "lon": 22.93183,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 7,
+      "evidence": "OSM way/1190120325 highway=track στα 7 m"
+    },
+    {
+      "id": 113,
+      "name": "Καλόγεροι",
+      "regionId": "attica-kythira",
+      "lat": 36.37649,
+      "lon": 22.92462,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 114,
+      "name": "Παραλία Καρπάθι",
+      "regionId": "attica-kythira",
+      "lat": 36.37596,
+      "lon": 22.93786,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 115,
+      "name": "Βλυχάδα Πλατιάς Άμμου",
+      "regionId": "attica-kythira",
+      "lat": 36.37283,
+      "lon": 22.95498,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 36,
+      "evidence": "μόνο μονοπάτι κοντά (way/1106871014 highway=path στα 36 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 116,
+      "name": "Ῥουτσούνας",
+      "regionId": "attica-kythira",
+      "lat": 36.37032,
+      "lon": 22.92352,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 108,
+      "evidence": "OSM way/1190120324 highway=track στα 108 m"
+    },
+    {
+      "id": 122,
+      "name": "Παραλια Καλαμίτσι",
+      "regionId": "attica-kythira",
+      "lat": 36.3169,
+      "lon": 22.99356,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 90,
+      "evidence": "OSM way/750381407 highway=unclassified surface=asphalt στα 90 m"
+    },
+    {
+      "id": 125,
+      "name": "Λίμνη (Αγίας Πελαγίας)",
+      "regionId": "attica-kythira",
+      "lat": 36.30767,
+      "lon": 23.00365,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 8,
+      "evidence": "μόνο μονοπάτι κοντά (way/1092275565 highway=path στα 8 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 127,
+      "name": "Παραλία Δίπορος",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 128,
+      "name": "Πετρίτης",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 129,
+      "name": "Άγιος Λευτέρης",
+      "regionId": "attica-kythira",
+      "lat": 36.2914,
+      "lon": 22.92195,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 44,
+      "evidence": "OSM way/499172686 highway=track στα 44 m"
+    },
+    {
+      "id": 141,
+      "name": "Κακόπετρα",
+      "regionId": "attica-kythira",
+      "lat": 36.1576,
+      "lon": 23.04691,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 142,
+      "name": "Φελωτή",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 143,
+      "name": "Λεφτό",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 145,
+      "name": "Παραλία Σπαραγγάριο",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 147,
+      "name": "Κυριακουλου",
+      "regionId": "attica-kythira",
+      "lat": 36.14112,
+      "lon": 23.0181,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 1,
+      "evidence": "μόνο μονοπάτι κοντά (way/1195534799 highway=path στα 1 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 148,
+      "name": "Στενό Αυλάκι",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 150,
+      "name": "Βρουλέα",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 151,
+      "name": "Ξεροπόταμος",
+      "regionId": "attica-kythira",
+      "lat": 35.88693,
+      "lon": 23.29487,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 71,
+      "evidence": "OSM way/498851760 highway=track στα 71 m"
+    },
+    {
+      "id": 1252,
+      "name": "Παραλία Τραχύλι",
+      "regionId": "north-aegean-chios",
+      "lat": 38.22115,
+      "lon": 25.90332,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 34,
+      "evidence": "πλησιέστερος δρόμος way/400507152 highway=service στα 34 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1255,
+      "name": "Αγία Ειρήνη",
+      "regionId": "north-aegean-chios",
+      "lat": 38.29537,
+      "lon": 25.96517,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 75,
+      "evidence": "OSM way/972813940 highway=unclassified surface=asphalt στα 75 m"
+    },
+    {
+      "id": 1257,
+      "name": "Αποθήκα",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1258,
+      "name": "Γυαλί",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1259,
+      "name": "Ελίντα",
+      "regionId": "north-aegean-chios",
+      "lat": 38.39133,
+      "lon": 25.99034,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 35,
+      "evidence": "πλησιέστερος δρόμος way/118713886 highway=unclassified στα 35 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1262,
+      "name": "Μακριά Άμμος",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1266,
+      "name": "Παραλία Αυλωνία",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1267,
+      "name": "Αυλωνιά Πυργίου",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1270,
+      "name": "Παραλία Κάτω Φανά",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1271,
+      "name": "Παραλία Καρύντα",
+      "regionId": "north-aegean-chios",
+      "lat": 38.19459,
+      "lon": 25.95285,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 61,
+      "evidence": "OSM way/228362636 highway=residential (κατηγορία πάντα στρωμένη) στα 61 m"
+    },
+    {
+      "id": 1275,
+      "name": "Ποταμοί",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1276,
+      "name": "Σαλάγωνα",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1277,
+      "name": "Τηγάνι",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1278,
+      "name": "Τραχήλι",
+      "regionId": "north-aegean-chios",
+      "lat": 38.36383,
+      "lon": 25.99185,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 61,
+      "evidence": "OSM way/288480547 highway=track στα 61 m"
+    },
+    {
+      "id": 3038,
+      "name": "Χίος Δασκαλόπετρα",
+      "regionId": "north-aegean-chios",
+      "lat": 38.41729,
+      "lon": 26.13354,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 10,
+      "evidence": "OSM way/400487719 highway=primary surface=asphalt «Κωστή Λώ» στα 10 m"
+    },
+    {
+      "id": 3082,
+      "name": "Αγ.Ελένη",
+      "regionId": "north-aegean-chios",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 194,
+      "name": "Αγία Ειρήνη Μαρμαρίου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 196,
+      "name": "Άγιος Αθανάσιος",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 203,
+      "name": "Ακρωτήρι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 206,
+      "name": "Ανεμάκι",
+      "regionId": "central-greece-evia",
+      "lat": 38.67235,
+      "lon": 23.91184,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 44,
+      "evidence": "μόνο μονοπάτι κοντά (way/240764695 highway=footway στα 44 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.40449,
+      "lon": 23.99741,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 51,
+      "evidence": "πλησιέστερος δρόμος way/317811970 highway=service στα 51 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 212,
+      "name": "Βαρελλαίων",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 217,
+      "name": "Γιαννίτσι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 220,
+      "name": "Ελιά",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 221,
+      "name": "Ζάστανα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 228,
+      "name": "Καλαμίτσι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 231,
+      "name": "Κατσούλι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 234,
+      "name": "Κοκκινιάς",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 239,
+      "name": "Λάκα Σαραβάνου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 243,
+      "name": "Λιανή Άμμος Πετριών",
+      "regionId": "central-greece-evia",
+      "lat": 38.3937,
+      "lon": 24.1822,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 44,
+      "evidence": "OSM way/666888321 highway=tertiary surface=asphalt «Πετριών - Λιάναμμου» στα 44 m"
+    },
+    {
+      "id": 244,
+      "name": "Λιβαδάκι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 245,
+      "name": "Λιβαδάκια",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 246,
+      "name": "Λιβάδι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 257,
+      "name": "Μικρή Κεφάλα",
+      "regionId": "central-greece-evia",
+      "lat": 38.0141,
+      "lon": 24.31654,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 13,
+      "evidence": "μόνο μονοπάτι κοντά (way/1193915170 highway=path στα 13 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 258,
+      "name": "Μνήματα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 260,
+      "name": "Ναυτικό",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 264,
+      "name": "Παραλία Ακταίου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 279,
+      "name": "Παραλία Σκιάθου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 285,
+      "name": "Πέρα Κατσούλι",
+      "regionId": "central-greece-evia",
+      "lat": 37.99494,
+      "lon": 24.38642,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 77,
+      "evidence": "OSM way/213502447 highway=track στα 77 m"
+    },
+    {
+      "id": 286,
+      "name": "Πετάλη",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 287,
+      "name": "Πηνελόπη",
+      "regionId": "central-greece-evia",
+      "lat": 37.97169,
+      "lon": 24.36606,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 93,
+      "evidence": "OSM way/207440949 highway=residential (κατηγορία πάντα στρωμένη) στα 93 m"
+    },
+    {
+      "id": 288,
+      "name": "Πίσω Συκιά",
+      "regionId": "central-greece-evia",
+      "lat": 37.98963,
+      "lon": 24.55969,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 22,
+      "evidence": "πλησιέστερος δρόμος way/269212364 highway=service στα 22 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 289,
+      "name": "Πλατύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 302,
+      "name": "Σπίθα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 303,
+      "name": "Στενή",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 306,
+      "name": "Σχοινοδαύλεια",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 307,
+      "name": "Τριανταφυλλένια",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 310,
+      "name": "Χερόμυλος",
+      "regionId": "central-greece-evia",
+      "lat": 38.42834,
+      "lon": 24.18437,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 74,
+      "evidence": "OSM way/666895724 highway=unclassified surface=concrete στα 74 m"
+    },
+    {
+      "id": 3062,
+      "name": "Αλμυρίχι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3119,
+      "name": "Παραλία Μαγούλα",
+      "regionId": "central-greece-evia",
+      "lat": 38.39039,
+      "lon": 23.80234,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 7,
+      "evidence": "OSM way/216590168 highway=residential surface=asphalt στα 7 m"
+    },
+    {
+      "id": 3121,
+      "name": "Παραλία Πήλι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    }
+  ]
+}
