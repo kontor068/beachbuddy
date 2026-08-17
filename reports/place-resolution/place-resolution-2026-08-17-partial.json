@@ -1,226 +1,103 @@
 {
- "generatedAt": "2026-08-17T09:08:09.823Z",
+ "generatedAt": "2026-08-17T11:38:58.139Z",
  "scope": {
   "islands": [],
   "regions": [
-   "thessaly-skopelos"
+   "central-macedonia-halkidiki-mainland"
   ]
  },
  "totals": {
-  "PASS": 11,
-  "REVIEW": 7,
-  "FAIL": 2
+  "PASS": 48,
+  "REVIEW": 21,
+  "FAIL": 19
  },
  "rows": [
   {
-   "id": 2647,
-   "name": "Γλυστέρι",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 378,
+   "name": "Achlada",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.143129,
-    "lon": 23.717607
+    "lat": 40.1015,
+    "lon": 23.98209
    },
-   "query": "Γλυστέρι, Skopelos",
+   "query": "Achlada, Halkidiki",
    "currentMode": "place",
    "verdict": "PASS",
    "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Γλυστέρι, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Glysteri Beach",
-    "distanceMeters": 29,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Glysteri Beach",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2648,
-   "name": "Λιμνονάρι",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.089291,
-    "lon": 23.69807
-   },
-   "query": "Λιμνονάρι, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Λιμνονάρι, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Λιμνοναρι",
-    "distanceMeters": 84,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Limnonari",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2649,
-   "name": "Άγιος Ιωάννης",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.172783,
-    "lon": 23.649862
-   },
-   "query": "Άγιος Ιωάννης, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Άγιος Ιωάννης, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Άγιος Ιωάννης",
-    "distanceMeters": 1,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Άγιος Ιωάννης",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2650,
-   "name": "Έλιος",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.13944,
-    "lon": 23.6436
-   },
-   "query": "Έλιος, Skopelos",
-   "currentMode": "place",
-   "verdict": "REVIEW",
-   "recommend": "needs-review",
    "overpassFailed": true,
    "nameError": false,
-   "nameQuery": "Έλιος, Skopelos",
+   "nameQuery": "Achlada, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Elios Holiday Hotel",
-    "distanceMeters": 504,
+    "name": "Achlada Beach",
+    "distanceMeters": 200,
     "nameScore": 35,
-    "islandScore": 0,
-    "status": "needs_review",
-    "flags": [
-     "island_not_present_or_not_nearby"
-    ]
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
    },
    "pinBest": null
   },
   {
-   "id": 2651,
-   "name": "Αρμενόπετρα",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 379,
+   "name": "Άγιος Γεώργιος",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.1365,
-    "lon": 23.6355
+    "lat": 40.31558,
+    "lon": 23.93943
    },
-   "query": "Αρμενόπετρα, Skopelos",
+   "query": "Agios Georgios, Halkidiki",
    "currentMode": "place",
    "verdict": "REVIEW",
-   "recommend": "needs-review",
+   "recommend": "coordinates",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Αρμενόπετρα, Skopelos",
+   "nameQuery": "Agios Georgios, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Ανεμόπετρα",
-    "distanceMeters": 1301,
-    "nameScore": 0,
+    "name": "Άγιος Γεώργιος",
+    "distanceMeters": 25042,
+    "nameScore": 35,
     "islandScore": 0,
     "status": "needs_review",
     "flags": [
      "far_from_existing_coordinate",
-     "weak_name_match",
      "island_not_present_or_not_nearby"
     ]
    },
    "pinBest": {
     "source": "overpass",
-    "name": "Έληος",
-    "distanceMeters": 793,
-    "nameScore": 0,
-    "islandScore": 0,
-    "status": "needs_review",
-    "flags": [
-     "weak_name_match",
-     "island_not_present_or_not_nearby"
-    ]
+    "name": "Άγιος Γεώργιος",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
    }
   },
   {
-   "id": 2652,
-   "name": "Βαθιάς",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 382,
+   "name": "Αγριδιά",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.0815,
-    "lon": 23.6705
+    "lat": 40.05824,
+    "lon": 24.00422
    },
-   "query": "Βαθιάς, Skopelos",
+   "query": "Παραλία Agridia, Halkidiki",
    "currentMode": "place",
    "verdict": "FAIL",
    "recommend": "needs-review",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Βαθιάς, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Βαθιασ",
-    "distanceMeters": 8246,
-    "nameScore": 0,
-    "islandScore": 0,
-    "status": "rejected",
-    "flags": [
-     "far_from_existing_coordinate",
-     "weak_name_match",
-     "island_not_present_or_not_nearby"
-    ]
-   },
+   "nameQuery": null,
+   "best": null,
    "pinBest": {
     "source": "overpass",
-    "name": "Τραχηλι",
-    "distanceMeters": 1306,
+    "name": "(unnamed)",
+    "distanceMeters": 2326,
     "nameScore": 0,
     "islandScore": 0,
     "status": "needs_review",
@@ -232,281 +109,36 @@
    }
   },
   {
-   "id": 2653,
-   "name": "Βελανιό",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 383,
+   "name": "Akti Kalogrias",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.085391,
-    "lon": 23.753737
+    "lat": 40.17667,
+    "lon": 23.71454
    },
-   "query": "Παραλία Βελανιό, Skopelos",
+   "query": "Ακτή Καλογριάς, Halkidiki",
    "currentMode": "place",
    "verdict": "REVIEW",
    "recommend": "coordinates",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Βελανιό, Skopelos",
+   "nameQuery": "Ακτή Καλογριάς, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Βελανιό",
-    "distanceMeters": 31,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Βελανιό",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2654,
-   "name": "Γλυφονέρι",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.130787,
-    "lon": 23.722348
-   },
-   "query": "Γλυφονέρι, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Γλυφονέρι, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Γλυφονέρι",
-    "distanceMeters": 4,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Γλυφονέρι",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2656,
-   "name": "Καστάνη",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.121625,
-    "lon": 23.654908
-   },
-   "query": "Καστάνη, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Καστάνη, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Καστάνη",
-    "distanceMeters": 10,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Καστάνη",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2657,
-   "name": "Μηλιά",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.11704,
-    "lon": 23.6538
-   },
-   "query": "Μηλιά, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": true,
-   "nameError": false,
-   "nameQuery": "Μηλιά, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Μηλιά",
-    "distanceMeters": 161,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": null
-  },
-  {
-   "id": 2658,
-   "name": "Νεράκι",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.125599,
-    "lon": 23.651621
-   },
-   "query": "Παραλία Νεράκι, Skopelos",
-   "currentMode": "place",
-   "verdict": "REVIEW",
-   "recommend": "coordinates",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Νεράκι, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Νερακι",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Νερακι",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2659,
-   "name": "Παραλία Πανόρμου Σκοπέλου",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.110659,
-    "lon": 23.662658
-   },
-   "query": "Παραλία Πανόρμου Σκοπέλου, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Παραλία Πανόρμου Σκοπέλου, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Παραλία Πανόρμου Σκοπέλου",
-    "distanceMeters": 80,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Παραλία Πανόρμου Σκοπέλου",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 2660,
-   "name": "Πλάκα",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.0855,
-    "lon": 23.68
-   },
-   "query": "Πλάκα, Skopelos",
-   "currentMode": "place",
-   "verdict": "REVIEW",
-   "recommend": "needs-review",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Πλάκα, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Πλάκα",
-    "distanceMeters": 6113,
-    "nameScore": 35,
-    "islandScore": 0,
-    "status": "needs_review",
-    "flags": [
-     "far_from_existing_coordinate",
-     "island_not_present_or_not_nearby"
-    ]
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Limnonari",
-    "distanceMeters": 1616,
+    "name": "Ακτή Καλογριάς",
+    "distanceMeters": 79,
     "nameScore": 0,
-    "islandScore": 0,
+    "islandScore": 6,
     "status": "needs_review",
     "flags": [
-     "far_from_existing_coordinate",
-     "weak_name_match",
-     "island_not_present_or_not_nearby"
-    ]
-   }
-  },
-  {
-   "id": 2661,
-   "name": "Σπηλιά",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.0895,
-    "lon": 23.695
-   },
-   "query": "Σπηλιά, Skopelos",
-   "currentMode": "place",
-   "verdict": "REVIEW",
-   "recommend": "coordinates",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Σπηλιά, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Σπηλιά",
-    "distanceMeters": 10524,
-    "nameScore": 35,
-    "islandScore": 0,
-    "status": "needs_review",
-    "flags": [
-     "far_from_existing_coordinate",
-     "island_not_present_or_not_nearby"
+     "weak_name_match"
     ]
    },
    "pinBest": {
     "source": "overpass",
-    "name": "Limnonari",
-    "distanceMeters": 266,
+    "name": "Ακτή Καλογριάς",
+    "distanceMeters": 1,
     "nameScore": 0,
     "islandScore": 6,
     "status": "needs_review",
@@ -516,56 +148,25 @@
    }
   },
   {
-   "id": 2662,
-   "name": "Στάφυλος",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 384,
+   "name": "Babylon",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.085566,
-    "lon": 23.749498
+    "lat": 40.57281,
+    "lon": 23.82133
    },
-   "query": "Παραλία Στάφυλος, Skopelos",
+   "query": "Babylon, Halkidiki",
    "currentMode": "place",
-   "verdict": "FAIL",
-   "recommend": "needs-review",
-   "overpassFailed": true,
-   "nameError": false,
-   "nameQuery": "Στάφυλος, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Σκόπελος",
-    "distanceMeters": 8451,
-    "nameScore": 0,
-    "islandScore": 0,
-    "status": "rejected",
-    "flags": [
-     "far_from_existing_coordinate",
-     "weak_name_match",
-     "island_not_present_or_not_nearby"
-    ]
-   },
-   "pinBest": null
-  },
-  {
-   "id": 2663,
-   "name": "Τραχήλι",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.089539,
-    "lon": 23.659463
-   },
-   "query": "Παραλία Τραχήλι, Skopelos",
-   "currentMode": "place",
-   "verdict": "REVIEW",
-   "recommend": "coordinates",
+   "verdict": "PASS",
+   "recommend": "none",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Τραχήλι, Skopelos",
+   "nameQuery": "Babylon, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Τραχηλι",
-    "distanceMeters": 0,
+    "name": "Babylon beach",
+    "distanceMeters": 50,
     "nameScore": 35,
     "islandScore": 6,
     "status": "verified",
@@ -573,7 +174,7 @@
    },
    "pinBest": {
     "source": "overpass",
-    "name": "Τραχηλι",
+    "name": "Babylon beach",
     "distanceMeters": 0,
     "nameScore": 35,
     "islandScore": 6,
@@ -582,24 +183,1249 @@
    }
   },
   {
-   "id": 2664,
-   "name": "Φτελιά",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 387,
+   "name": "Brounou",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.126858,
-    "lon": 23.650177
+    "lat": 40.18714,
+    "lon": 23.81817
    },
-   "query": "Φτελιά, Skopelos",
+   "query": "Παραλία Brounou, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": null
+  },
+  {
+   "id": 388,
+   "name": "Castello",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.12482,
+    "lon": 23.76445
+   },
+   "query": "Castello, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Castello, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Castello beach",
+    "distanceMeters": 27,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 390,
+   "name": "Diaporti",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.015,
+    "lon": 23.82252
+   },
+   "query": "Diaporti, Halkidiki",
    "currentMode": "place",
    "verdict": "PASS",
    "recommend": "none",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Φτελιά, Skopelos",
+   "nameQuery": "Diaporti, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Φτελια",
+    "name": "Diaporti Beach",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Likithos Beach",
+    "distanceMeters": 741,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 395,
+   "name": "Φάκα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.33034,
+    "lon": 23.88557
+   },
+   "query": "Παραλία Faka, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Φάκα",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 399,
+   "name": "Χανιώτης",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.00324,
+    "lon": 23.57313
+   },
+   "query": "παραλία Χανιώτη, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "παραλία Χανιώτη, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "παραλία Χανιώτη",
+    "distanceMeters": 7,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "παραλία Χανιώτη",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 402,
+   "name": "Παραλία Νέας Ποτίδαιας",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.212794,
+    "lon": 23.317091
+   },
+   "query": "Παραλία Νέας Ποτίδαιας, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 64,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 403,
+   "name": "Kakoudia",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.41237,
+    "lon": 23.86676
+   },
+   "query": "Κακούδια, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Κακούδια, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Κακούδια",
+    "distanceMeters": 41,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Κακούδια",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 404,
+   "name": "Καλαμίτσι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.99039,
+    "lon": 23.99189
+   },
+   "query": "Παραλία Kalamitsi, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Kalamitsi, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Γυμνιστιών Καλαμίτσι",
+    "distanceMeters": 443,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Kalamitsi",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 405,
+   "name": "Καλλιθέα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.07865,
+    "lon": 23.44845
+   },
+   "query": "Παραλία Kallithea, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": null
+  },
+  {
+   "id": 406,
+   "name": "Καλοπήγαδο",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.32205,
+    "lon": 23.91072
+   },
+   "query": "Καλοπήγαδο, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καλοπήγαδο, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Καλοπήγαδο",
+    "distanceMeters": 45,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Καλοπήγαδο",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 407,
+   "name": "Καραγάτσια",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.32514,
+    "lon": 23.8955
+   },
+   "query": "Καραγάτσια, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καραγάτσια, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Καραγάτσια",
+    "distanceMeters": 46,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Καραγάτσια",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 409,
+   "name": "Kavourotrypes",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.12652,
+    "lon": 23.9704
+   },
+   "query": "Kavourotrypes, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Kavourotrypes, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Καβουρότρυπες",
+    "distanceMeters": 8,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Γυμνιστών Πλατανίτσι",
+    "distanceMeters": 617,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 413,
+   "name": "Kristina",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.02425,
+    "lon": 24.01753
+   },
+   "query": "Παραλία Kristina, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Kristina Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 415,
+   "name": "Lagomandra",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.13539,
+    "lon": 23.74705
+   },
+   "query": "Παραλία Lagomandra, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Lagomandra, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Λαγομάνδρα",
+    "distanceMeters": 461,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παρ. Λαγομάδρα",
+    "distanceMeters": 46,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 417,
+   "name": "Lemos",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.93866,
+    "lon": 23.93129
+   },
+   "query": "Παραλία Παραλία Lemos, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Lemos Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 418,
+   "name": "Likithos",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.01987,
+    "lon": 23.82847
+   },
+   "query": "Likithos, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Likithos, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Likithos Beach",
+    "distanceMeters": 6,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Likithos Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 421,
+   "name": "Linaraki",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.03518,
+    "lon": 23.99177
+   },
+   "query": "Linaraki, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Linaraki, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Akti Linaraki Beach",
+    "distanceMeters": 41,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 422,
+   "name": "Λιόση",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.09201,
+    "lon": 23.44219
+   },
+   "query": "Λιόση, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λιόση, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Λιόση",
+    "distanceMeters": 28,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Λιόση",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 424,
+   "name": "Marathias",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.94707,
+    "lon": 23.93317
+   },
+   "query": "Marathias, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Marathias, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Marathias Beach",
+    "distanceMeters": 49,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Marathias Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 425,
+   "name": "Μεγάλη Άμμος",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.31248,
+    "lon": 23.94547
+   },
+   "query": "Παραλία Μεγάλη Άμμος, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Μεγάλη Άμμος",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 426,
+   "name": "Mikri Elia",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.14019,
+    "lon": 23.74139
+   },
+   "query": "Mikri Elia, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Mikri Elia, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Mikri Elia Beach",
+    "distanceMeters": 10,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 360,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 428,
+   "name": "Παραλία Ιερισσού",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.39318,
+    "lon": 23.89423
+   },
+   "query": "Παραλία Ιερισσού, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Πλαζ Ιερισσός",
+    "distanceMeters": 692,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 429,
+   "name": "Myti",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.95739,
+    "lon": 23.35835
+   },
+   "query": "Μύτη, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Μύτη, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Μύτη",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Μύτη",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 430,
+   "name": "Oneiro",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.16011,
+    "lon": 23.89604
+   },
+   "query": "Παραλία ονείρου, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία ονείρου, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία ονείρου",
+    "distanceMeters": 42,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία ονείρου",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 431,
+   "name": "Ouranoupoli",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.34477,
+    "lon": 23.96517
+   },
+   "query": "Καμπούδι / Άκραθως, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καμπούδι / Άκραθως, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Καμπούδι / Άκραθως",
+    "distanceMeters": 31,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Καμπούδι / Άκραθως",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 432,
+   "name": "Paradisos",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.10215,
+    "lon": 23.77521
+   },
+   "query": "Παραλία Παράδεισος, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Παράδεισος, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Παράδεισος",
+    "distanceMeters": 49,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Παράδεισος",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 433,
+   "name": "Paralia Valti",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.05203,
+    "lon": 23.99935
+   },
+   "query": "Paralia Valti, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Paralia Valti, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Paralia Valti",
+    "distanceMeters": 34,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Συκιάς",
+    "distanceMeters": 1548,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 434,
+   "name": "Pefkochori",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.99246,
+    "lon": 23.60792
+   },
+   "query": "Παραλία Πευκοχωρίου, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Πευκοχωρίου, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Πευκοχωρίου",
+    "distanceMeters": 69,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Πευκοχωρίου",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 435,
+   "name": "Παραλία Πλάγια-Φλογητά",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.25492,
+    "lon": 23.21371
+   },
+   "query": "Παραλία Plagia Flogita, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Plagia Flogita, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Πλάγια-Φλογητά",
+    "distanceMeters": 873,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Πλάγια-Φλογητά",
+    "distanceMeters": 27,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 436,
+   "name": "Πλατάνια",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.07585,
+    "lon": 23.98528
+   },
+   "query": "Παραλία Platania, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Platania Beach",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 437,
+   "name": "Παραλία Πλατανίτσι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.11829,
+    "lon": 23.98068
+   },
+   "query": "Παραλία Πλατανίτσι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Πλατανίτσι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Πλατανίτσι",
+    "distanceMeters": 60,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Πλατανίτσι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 439,
+   "name": "Porto Elea",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.171488,
+    "lon": 23.865562
+   },
+   "query": "Παραλία Ζωγράφου, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Ζωγράφου, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Ζωγράφου",
+    "distanceMeters": 116,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Ζωγράφου",
+    "distanceMeters": 74,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 440,
+   "name": "Porto Koufo",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.96518,
+    "lon": 23.92406
+   },
+   "query": "Παραλία Porto Koufo, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Πόρτο Κουφό",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 441,
+   "name": "Psakoudia",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.25899,
+    "lon": 23.49196
+   },
+   "query": "Παραλία Psakoudia, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Psakoudia, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Ψακούδια",
+    "distanceMeters": 588,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Ψακούδια",
+    "distanceMeters": 175,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 442,
+   "name": "Sani Hill",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.09969,
+    "lon": 23.30497
+   },
+   "query": "Παραλία Sani Hill, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": null
+  },
+  {
+   "id": 443,
+   "name": "Σάρτη",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.0882,
+    "lon": 23.98037
+   },
+   "query": "Παραλία Sarti, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Sarti Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 445,
+   "name": "Sykia",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.04148,
+    "lon": 23.98747
+   },
+   "query": "Παραλία Συκιάς, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Συκιάς, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Συκιάς",
+    "distanceMeters": 123,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Συκιάς",
+    "distanceMeters": 1,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 446,
+   "name": "Τηγανιά",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.03235,
+    "lon": 24.01864
+   },
+   "query": "Τηγανιά, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τηγανιά, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Τηγανιά",
     "distanceMeters": 11,
     "nameScore": 35,
     "islandScore": 6,
@@ -608,7 +1434,7 @@
    },
    "pinBest": {
     "source": "overpass",
-    "name": "Φτελια",
+    "name": "Τηγανιά",
     "distanceMeters": 0,
     "nameScore": 35,
     "islandScore": 6,
@@ -617,86 +1443,24 @@
    }
   },
   {
-   "id": 2665,
-   "name": "Χόβολο",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
+   "id": 448,
+   "name": "Tourkolimnionas",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
    "coordinate": {
-    "lat": 39.132712,
-    "lon": 23.644772
+    "lat": 40.03646,
+    "lon": 23.9997
    },
-   "query": "Χόβολο, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": true,
-   "nameError": false,
-   "nameQuery": "Χόβολο, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Χόβολο",
-    "distanceMeters": 90,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": null
-  },
-  {
-   "id": 3074,
-   "name": "Angeletou beach",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.1967593,
-    "lon": 23.616272
-   },
-   "query": "Angeletou beach, Skopelos",
+   "query": "Tourkolimnionas, Halkidiki",
    "currentMode": "place",
    "verdict": "PASS",
    "recommend": "none",
    "overpassFailed": false,
    "nameError": false,
-   "nameQuery": "Angeletou beach, Skopelos",
+   "nameQuery": "Tourkolimnionas, Halkidiki",
    "best": {
     "source": "nominatim",
-    "name": "Angeletou beach",
-    "distanceMeters": 18,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   },
-   "pinBest": {
-    "source": "overpass",
-    "name": "Angeletou beach",
-    "distanceMeters": 0,
-    "nameScore": 35,
-    "islandScore": 6,
-    "status": "verified",
-    "flags": []
-   }
-  },
-  {
-   "id": 3075,
-   "name": "Perivoliou Beach",
-   "regionId": "thessaly-skopelos",
-   "island": "Skopelos",
-   "coordinate": {
-    "lat": 39.1977557,
-    "lon": 23.6145029
-   },
-   "query": "Perivoliou Beach, Skopelos",
-   "currentMode": "place",
-   "verdict": "PASS",
-   "recommend": "none",
-   "overpassFailed": false,
-   "nameError": false,
-   "nameQuery": "Perivoliou Beach, Skopelos",
-   "best": {
-    "source": "nominatim",
-    "name": "Perivoliou Beach",
+    "name": "Tourkolimnionas Beach",
     "distanceMeters": 21,
     "nameScore": 35,
     "islandScore": 6,
@@ -705,13 +1469,1478 @@
    },
    "pinBest": {
     "source": "overpass",
-    "name": "Perivoliou Beach",
+    "name": "Παραλία Συκιάς",
+    "distanceMeters": 1181,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 449,
+   "name": "Trani Ammouda",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.24233,
+    "lon": 23.72671
+   },
+   "query": "Τρανή Αμμούδα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τρανή Αμμούδα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Τρανή Αμμούδα",
+    "distanceMeters": 153,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Τρανή Αμμούδα",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 450,
+   "name": "Τσάσκα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.33746,
+    "lon": 23.90735
+   },
+   "query": "Τσάσκα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τσάσκα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Τσάσκα",
+    "distanceMeters": 2,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Τσάσκα",
     "distanceMeters": 0,
     "nameScore": 35,
     "islandScore": 6,
     "status": "verified",
     "flags": []
    }
+  },
+  {
+   "id": 452,
+   "name": "Varkes",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.10322,
+    "lon": 23.43573
+   },
+   "query": "Varkes, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Βάρκες",
+    "distanceMeters": 0,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 455,
+   "name": "Vourvourou",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.19062,
+    "lon": 23.79901
+   },
+   "query": "Παραλία Vourvourou, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Vourvourou, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Καρύδι",
+    "distanceMeters": 807,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Καρύδι",
+    "distanceMeters": 849,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 457,
+   "name": "Παραλία Βεργιάς",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2906038,
+    "lon": 23.1231232
+   },
+   "query": "Παραλία Βεργιάς, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Βεργιάς, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Βεργιάς",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Βεργιάς",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 458,
+   "name": "Παραλία Νέας Ηράκλειας - Sahara",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.32489,
+    "lon": 23.0203
+   },
+   "query": "Παραλία Νέας Ηράκλειας - Sahara, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 1686,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 459,
+   "name": "Παραλία Νέας Καλλικράτειας",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3096302,
+    "lon": 23.0634276
+   },
+   "query": "Παραλία Νέας Καλλικράτειας, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Νέας Καλλικράτειας, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Νέας Καλλικράτειας",
+    "distanceMeters": 142,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Νέας Καλλικράτειας",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 460,
+   "name": "Παραλία Νικήτης",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2142777,
+    "lon": 23.6684267
+   },
+   "query": "Παραλία Νικήτης, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Νικήτης, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Νικήτης",
+    "distanceMeters": 111,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Νικήτης",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 461,
+   "name": "Παραλία Μικρό Καστρί",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1960696,
+    "lon": 23.682979
+   },
+   "query": "Παραλία Μικρό Καστρί, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Μικρό Καστρί, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Μικρό Καστρί",
+    "distanceMeters": 36,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Μικρό Καστρί",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 462,
+   "name": "Παραλία Στρατώνι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.5118095,
+    "lon": 23.8278636
+   },
+   "query": "Παραλία Στρατώνι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Στρατώνι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Στρατώνι",
+    "distanceMeters": 36,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Στρατώνι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 463,
+   "name": "Παραλία Κάμπος (Πυργαδίκια)",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3508365,
+    "lon": 23.7320479
+   },
+   "query": "Παραλία Κάμπος (Πυργαδίκια), Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Κάμπος (Πυργαδίκια), Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Κάμπος (Πυργαδίκια)",
+    "distanceMeters": 75,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Κάμπος (Πυργαδίκια)",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 464,
+   "name": "Παραλία Λιβάρι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1996759,
+    "lon": 23.7690428
+   },
+   "query": "Παραλία Λιβάρι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Λιβάρι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Λιβάρι",
+    "distanceMeters": 112,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Λιβάρι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 465,
+   "name": "Παραλία Σαλονικιού",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2929779,
+    "lon": 23.6950262
+   },
+   "query": "Παραλία Σαλονικιού, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Σαλονικιού, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Σαλονικιού",
+    "distanceMeters": 24,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Σαλονικιού",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 466,
+   "name": "Παραλία Λαγονήσι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2299274,
+    "lon": 23.7463818
+   },
+   "query": "Παραλία Λαγονήσι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Λαγονήσι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Λαγονήσι",
+    "distanceMeters": 44,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Λαγονήσι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 467,
+   "name": "Παραλία Τορώνης",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.9834995,
+    "lon": 23.8995875
+   },
+   "query": "Παραλία Τορώνης, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Τορώνης, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Τορώνης",
+    "distanceMeters": 370,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Τορώνης",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 468,
+   "name": "Παραλία Τριστινίκα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.9943871,
+    "lon": 23.8903207
+   },
+   "query": "Παραλία Τριστινίκα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Τριστινίκα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία",
+    "distanceMeters": 138,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 469,
+   "name": "Παραλία Λατούρα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2298936,
+    "lon": 23.737964
+   },
+   "query": "Παραλία Λατούρα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Λατούρα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Explorers Halkidiki",
+    "distanceMeters": 47,
+    "nameScore": 35,
+    "islandScore": 15,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Λατούρα",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 470,
+   "name": "Παραλία Καστρί",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1934799,
+    "lon": 23.6860482
+   },
+   "query": "Παραλία Καστρί, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Καστρί, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Καστρί",
+    "distanceMeters": 36,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Καστρί",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 471,
+   "name": "Παραλία Αγίου Ιωάννη",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1919432,
+    "lon": 23.69349
+   },
+   "query": "Παραλία Αγίου Ιωάννη, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Αγίου Ιωάννη, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αγίου Ιωάννη",
+    "distanceMeters": 136,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Αγίου Ιωάννη",
+    "distanceMeters": 16,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 472,
+   "name": "Παραλία Ελάνη",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.049445,
+    "lon": 23.3481477
+   },
+   "query": "Παραλία Ελάνη, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Ελάνη, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Ελάνη",
+    "distanceMeters": 67,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Ελάνη",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 474,
+   "name": "Παραλία Χρουσώ",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.9620208,
+    "lon": 23.6785597
+   },
+   "query": "Παραλία Χρουσώ, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Χρουσώ, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Χρουσώ",
+    "distanceMeters": 239,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Χρουσώ",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 475,
+   "name": "Παραλία Άμπελος",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.9641238,
+    "lon": 23.9669693
+   },
+   "query": "Παραλία Άμπελος, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παρ. ΄Αμπελος",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 476,
+   "name": "Παραλία Αρμενιστής",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1549226,
+    "lon": 23.9166443
+   },
+   "query": "Παραλία Αρμενιστής, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Αρμενιστής, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αρμενιστής",
+    "distanceMeters": 97,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Αρμενιστής",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 477,
+   "name": "Παραλία Ποσείδι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 39.9708785,
+    "lon": 23.3692992
+   },
+   "query": "Παραλία Ποσείδι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Ποσείδι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Ποσείδ",
+    "distanceMeters": 153,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Ποσείδ",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 479,
+   "name": "Παραλία Αγίου Μάμα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2483532,
+    "lon": 23.358468
+   },
+   "query": "Παραλία Αγίου Μάμα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "agjio mama",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 481,
+   "name": "Παραλία Δεβελίκι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3655712,
+    "lon": 23.8320599
+   },
+   "query": "Παραλία Δεβελίκι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Δεβελίκι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Δεβελίκι",
+    "distanceMeters": 661,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Δεβελίκι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 482,
+   "name": "Παραλία Ζέπκου",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.5609735,
+    "lon": 23.8313039
+   },
+   "query": "Παραλία Ζέπκου, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Ζέπκου, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Ζέπκου",
+    "distanceMeters": 228,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 483,
+   "name": "Παραλία Φτερωτή",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2042563,
+    "lon": 23.764481
+   },
+   "query": "Παραλία Φτερωτή, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Φτερωτή, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Φτερωτή",
+    "distanceMeters": 116,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Φτερωτή",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 484,
+   "name": "Παραλία Σχοινιά",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2689527,
+    "lon": 23.7037959
+   },
+   "query": "Παραλία Σχοινιά, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Σχοινιά, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Σχοινιά",
+    "distanceMeters": 8,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Σχοινιά",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 487,
+   "name": "Παραλία Μπάρα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1782252,
+    "lon": 23.8330605
+   },
+   "query": "Παραλία Μπάρα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Μπάρα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Μπάρα",
+    "distanceMeters": 85,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Μάνου",
+    "distanceMeters": 1467,
+    "nameScore": 12,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 488,
+   "name": "Παραλία Σπαθιών",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.170237,
+    "lon": 23.7208495
+   },
+   "query": "Παραλία Σπαθιών, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Σπαθιών, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Σπαθιών",
+    "distanceMeters": 41,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 489,
+   "name": "Παραλία Μικρό Καρύδι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1918567,
+    "lon": 23.8104797
+   },
+   "query": "Παραλία Μικρό Καρύδι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Μικρό Καρύδι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Μικρό Καρύδι",
+    "distanceMeters": 25,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Μικρό Καρύδι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 490,
+   "name": "Παραλία Καρύδι",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1934957,
+    "lon": 23.8082745
+   },
+   "query": "Παραλία Καρύδι, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Καρύδι, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Καρύδι",
+    "distanceMeters": 46,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Καρύδι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 491,
+   "name": "Παραλία Αζάπικο",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.0103678,
+    "lon": 23.8627823
+   },
+   "query": "Παραλία Αζάπικο, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Αζάπικο, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αζάπικο",
+    "distanceMeters": 123,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 494,
+   "name": "Παραλία Μπανάνα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1676022,
+    "lon": 23.8771408
+   },
+   "query": "Παραλία Μπανάνα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Μπανάνα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Μπανάνα",
+    "distanceMeters": 17,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 497,
+   "name": "Παραλία Όρμος Παναγίας",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2342604,
+    "lon": 23.7320324
+   },
+   "query": "Παραλία Όρμος Παναγίας, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Όρμος Παναγίας, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Όρμος Παναγίας",
+    "distanceMeters": 19,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Λατούρα",
+    "distanceMeters": 700,
+    "nameScore": 8,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 498,
+   "name": "Παραλία Κοβιού",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1819687,
+    "lon": 23.7097775
+   },
+   "query": "Παραλία Κοβιού, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Κοβιού, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Κοβιού",
+    "distanceMeters": 38,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Κοβιού",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 499,
+   "name": "Παραλία Φάβα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.1846866,
+    "lon": 23.8195559
+   },
+   "query": "Παραλία Φάβα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Φάβα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Φάβα",
+    "distanceMeters": 109,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Μάνου",
+    "distanceMeters": 164,
+    "nameScore": 12,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 500,
+   "name": "Παραλία Αλυκές",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3186957,
+    "lon": 23.9159437
+   },
+   "query": "Παραλία Αλυκές, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Αλυκές, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αλυκές",
+    "distanceMeters": 134,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 501,
+   "name": "Παραλία Αρετές",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.0031401,
+    "lon": 23.8692717
+   },
+   "query": "Παραλία Αρετές, Halkidiki",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Αρετές, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Αρετές",
+    "distanceMeters": 20,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Αρετές",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 502,
+   "name": "Συκιά Ολυμπιάδας",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.5912526,
+    "lon": 23.7913901
+   },
+   "query": "Συκιά Ολυμπιάδας, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": null
+  },
+  {
+   "id": 3008,
+   "name": "Γεωπονικά",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3041431,
+    "lon": 23.1000758
+   },
+   "query": "Παραλία Γεωπονικά, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Γεωπονικά, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "παραλία Ανθούπολης",
+    "distanceMeters": 649,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": null
+  },
+  {
+   "id": 3009,
+   "name": "Νέα Ρόδα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.3815557,
+    "lon": 23.9234575
+   },
+   "query": "Παραλία Νέα Ρόδα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": null,
+   "best": null,
+   "pinBest": {
+    "source": "overpass",
+    "name": "(unnamed)",
+    "distanceMeters": 443,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 3018,
+   "name": "Νέα Φλόγητα",
+   "regionId": "central-macedonia-halkidiki-mainland",
+   "island": "Halkidiki (mainland)",
+   "coordinate": {
+    "lat": 40.2599201,
+    "lon": 23.2214367
+   },
+   "query": "Παραλία Νέα Φλόγητα, Halkidiki",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Παραλία Νέα Φλόγητα, Halkidiki",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Πλάγια-Φλογητά",
+    "distanceMeters": 614,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": null
   }
  ]
 }

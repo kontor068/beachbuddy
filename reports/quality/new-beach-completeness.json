@@ -1,0 +1,2480 @@
+{
+  "generatedAt": "2026-08-17T11:37:44.771Z",
+  "sinceId": 3000,
+  "totals": {
+    "beaches": 185,
+    "perfect": 1,
+    "missingRequired": 153
+  },
+  "requiredCounts": {
+    "access": 121,
+    "nav": 6,
+    "amenities": 102
+  },
+  "desiredCounts": {
+    "depth": 174,
+    "photo": 133,
+    "confidence": 181,
+    "terrain": 110
+  },
+  "rows": [
+    {
+      "id": 3022,
+      "name": "Αίγινα Μαραθώνας",
+      "regionId": "attica-aegina",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3024,
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "regionId": "attica-aegina",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3025,
+      "name": "Άλιμος Λουτρά",
+      "regionId": "attica-athens-area-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3006,
+      "name": "Πόρτο Ράφτη Αυλάκι",
+      "regionId": "attica-east-attica-mainland",
+      "missingRequired": [
+        "nav",
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3026,
+      "name": "ΚΑΑΥ Άγιος Ανδρέας",
+      "regionId": "attica-east-attica-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3027,
+      "name": "Ωρωπός Άγιοι Απόστολοι Καλάμου",
+      "regionId": "attica-east-attica-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3028,
+      "name": "Ωρωπός Σκάλα Ωρωπού",
+      "regionId": "attica-east-attica-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3029,
+      "name": "Ωρωπός Χαλκούτσι",
+      "regionId": "attica-east-attica-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3055,
+      "name": "Δημήτρανι",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3056,
+      "name": "Κακή Βίγλα",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3057,
+      "name": "Κύριζα",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3058,
+      "name": "Ντουλάπι",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3059,
+      "name": "Πέρανι",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3060,
+      "name": "Πόρτο Φίνο",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3061,
+      "name": "Χαρουπιάς",
+      "regionId": "attica-salamina",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3168,
+      "name": "Βαρδάρι",
+      "regionId": "attica-west-attica-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3062,
+      "name": "Αλμυρίχι",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3114,
+      "name": "Αμυγδαλιά",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3115,
+      "name": "Ευαγγελισμός",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3116,
+      "name": "Ζαχαριάς",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3117,
+      "name": "Καστρί",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3118,
+      "name": "Σπηλίτσες",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3119,
+      "name": "Παραλία Μαγούλα",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3121,
+      "name": "Παραλία Πήλι",
+      "regionId": "central-greece-evia",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3030,
+      "name": "Δωρίδα Ερατεινή",
+      "regionId": "central-greece-fokida-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3120,
+      "name": "Παραλία Κίρρα",
+      "regionId": "central-greece-fokida-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3063,
+      "name": "ΦΑΠΡΙΚΕΖΑΙΝΑ",
+      "regionId": "central-greece-fthiotida-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3064,
+      "name": "Dermária",
+      "regionId": "central-greece-fthiotida-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3169,
+      "name": "Λιασίκι",
+      "regionId": "central-greece-fthiotida-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3031,
+      "name": "Τανάγρα Δήλεσι",
+      "regionId": "central-greece-viotia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3007,
+      "name": "Αμμουλιανή",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [
+        "nav"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3008,
+      "name": "Γεωπονικά",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3009,
+      "name": "Νέα Ρόδα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3018,
+      "name": "Νέα Φλόγητα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3088,
+      "name": "Μυκονιάτικα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3122,
+      "name": "Παραλία Κρυοπηγή",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3123,
+      "name": "Παραλία Μουριές",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3125,
+      "name": "Παραλία Νέος Μαρμαράς",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3097,
+      "name": "Άμμος (Αλυκή Κίτρους, Πιερία)",
+      "regionId": "central-macedonia-pieria-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3032,
+      "name": "Αποκορώνου Αλμυρίδα",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3065,
+      "name": "Nopigia Beach",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3076,
+      "name": "Korfalonas Beach",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3077,
+      "name": "Paralia Drapanias",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3130,
+      "name": "Παραλία Λιβάδια",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3185,
+      "name": "Κολυμβάρι",
+      "regionId": "crete-crete-chania",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3033,
+      "name": "Χερσόνησος Αγκισαράς",
+      "regionId": "crete-crete-heraklion",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3010,
+      "name": "Ελούντα",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [
+        "nav",
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3129,
+      "name": "Παραλία Κάτω Ζάκρος",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3131,
+      "name": "Παραλία Πετράς",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3128,
+      "name": "Παραλία Καλλιθέα",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3187,
+      "name": "Λιμανάκι Μακρύ Γιαλού",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3188,
+      "name": "Καλαμοκανιάς",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3189,
+      "name": "Μακρύς Γιαλός",
+      "regionId": "crete-crete-lasithi",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3179,
+      "name": "Αμμούδι",
+      "regionId": "crete-crete-rethymno",
+      "missingRequired": [
+        "nav"
+      ],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3011,
+      "name": "Ροδάκινο",
+      "regionId": "crete-crete-rethymno",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3019,
+      "name": "Αγία Γαλήνη",
+      "regionId": "crete-crete-rethymno",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3089,
+      "name": "Sfagia",
+      "regionId": "crete-crete-rethymno",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3132,
+      "name": "Παραλία Μαΐστρος",
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3012,
+      "name": "Περιγιάλι",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3066,
+      "name": "Παραλία Φώλιας",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3133,
+      "name": "Παραλία Νέα Πέραμος",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3134,
+      "name": "Παραλία Παληό",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3034,
+      "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3035,
+      "name": "Κομοτηνή Φανάρι Αρωγή",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3160,
+      "name": "Γυαλί",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3161,
+      "name": "Θέρμα",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3162,
+      "name": "Κατσαμπάς",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3163,
+      "name": "Κάτω Καρυώτες",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3164,
+      "name": "Κήπος",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3165,
+      "name": "Λάκκωμα",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3166,
+      "name": "Παλαιόπολη",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3167,
+      "name": "Φονιάς",
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3004,
+      "name": "Γκιόλα",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth"
+      ]
+    },
+    {
+      "id": 3036,
+      "name": "Λεύκιππος Άβδηρα",
+      "regionId": "east-macedonia-and-thrace-xanthi-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3090,
+      "name": "Σπιάντζα στα Σφουγγάρια",
+      "regionId": "ionian-islands-antipaxos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3013,
+      "name": "Γουβιά",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3014,
+      "name": "Παλαιοκαστρίτσα",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3067,
+      "name": "Κορφοβόνια",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3068,
+      "name": "Μοσχοφίλι",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3069,
+      "name": "Παραλία Κερασιά",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3078,
+      "name": "Βουβαλομάντρια",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3079,
+      "name": "Βραχλή",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3080,
+      "name": "Παραλία Χουχούλιο",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3081,
+      "name": "Τζουφάκα",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3099,
+      "name": "Άκολη (Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3100,
+      "name": "Αυλάκι (Κέρκυρα / Κασσιόπη)",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3101,
+      "name": "Βρωμολίμνη (Ερημίτης, Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3102,
+      "name": "Παραλία Άγιος Γόρδης (Λευκίμμη)",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3103,
+      "name": "Παραλία Καλάμι (Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3104,
+      "name": "Παραλία Φιλιατρό (Κιόνι)",
+      "regionId": "ionian-islands-ithaca",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3105,
+      "name": "Σκάλα (Κεφαλονιά)",
+      "regionId": "ionian-islands-kefalonia",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3098,
+      "name": "Άι Γιάννης (Λευκάδα)",
+      "regionId": "ionian-islands-lefkada",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3038,
+      "name": "Χίος Δασκαλόπετρα",
+      "regionId": "north-aegean-chios",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3082,
+      "name": "Αγ.Ελένη",
+      "regionId": "north-aegean-chios",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3184,
+      "name": "Άγιος Ερμόλαος",
+      "regionId": "north-aegean-lemnos",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3135,
+      "name": "Παραλία Λάρισος",
+      "regionId": "north-aegean-lesvos",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3137,
+      "name": "Παραλία Πέτρα",
+      "regionId": "north-aegean-lesvos",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3037,
+      "name": "Σάμος Βαθύ Μαούνες",
+      "regionId": "north-aegean-samos",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3106,
+      "name": "Λιμνιώνας (Σάμος)",
+      "regionId": "north-aegean-samos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3107,
+      "name": "Πλάκα (Σάμος)",
+      "regionId": "north-aegean-samos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3136,
+      "name": "Παραλία Λέκκα",
+      "regionId": "north-aegean-samos",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3142,
+      "name": "Παραλία Πλάκα",
+      "regionId": "peloponnese-arkadia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3039,
+      "name": "Λουτράκι Αγ. Θεόδωροι",
+      "regionId": "peloponnese-korinthia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3040,
+      "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "regionId": "peloponnese-korinthia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3041,
+      "name": "Λουτράκι Νεράιδα",
+      "regionId": "peloponnese-korinthia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3042,
+      "name": "Λουτράκι Σχίνος",
+      "regionId": "peloponnese-korinthia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3070,
+      "name": "Παραλία Αλμυρού",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3071,
+      "name": "Παραλία Διρού",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3091,
+      "name": "Παραλία Κάτω Μέζαπος",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3108,
+      "name": "Καλόγερος (Ελαφόνησος)",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "nav",
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3109,
+      "name": "Καραβοστάσι (Πλύτρα)",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3138,
+      "name": "Παραλία Αρχάγγελος",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3140,
+      "name": "Παραλία Λάχι",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3141,
+      "name": "Παραλία Νεάπολη",
+      "regionId": "peloponnese-lakonia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3020,
+      "name": "Άγιος Ανδρέας",
+      "regionId": "peloponnese-messinia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3021,
+      "name": "Πεταλίδι",
+      "regionId": "peloponnese-messinia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3139,
+      "name": "Παραλία Καλό Νερό",
+      "regionId": "peloponnese-messinia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3083,
+      "name": "Μεγάλη Βλυχάδα",
+      "regionId": "south-aegean-amorgos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3186,
+      "name": "Αιγιάλη",
+      "regionId": "south-aegean-amorgos",
+      "missingRequired": [
+        "nav"
+      ],
+      "missingDesired": []
+    },
+    {
+      "id": 3072,
+      "name": "Παραλία Μοναστήρι",
+      "regionId": "south-aegean-antiparos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3073,
+      "name": "Koutsomiti",
+      "regionId": "south-aegean-astypalaia",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3092,
+      "name": "Στενό",
+      "regionId": "south-aegean-astypalaia",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3180,
+      "name": "Άφωτη",
+      "regionId": "south-aegean-karpathos",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3181,
+      "name": "Βρόντη",
+      "regionId": "south-aegean-karpathos",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3182,
+      "name": "Διαφάνι",
+      "regionId": "south-aegean-karpathos",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3183,
+      "name": "Πηγάδια",
+      "regionId": "south-aegean-karpathos",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3002,
+      "name": "Γάλα",
+      "regionId": "south-aegean-koufonisia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3003,
+      "name": "Πισίνα",
+      "regionId": "south-aegean-koufonisia",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3000,
+      "name": "Κλέφτικο",
+      "regionId": "south-aegean-milos",
+      "missingRequired": [],
+      "missingDesired": []
+    },
+    {
+      "id": 3054,
+      "name": "Πάχαινα",
+      "regionId": "south-aegean-milos",
+      "missingRequired": [],
+      "missingDesired": [
+        "photo"
+      ]
+    },
+    {
+      "id": 3172,
+      "name": "Ακρωτήρι",
+      "regionId": "south-aegean-naxos",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3173,
+      "name": "Γαλήνη",
+      "regionId": "south-aegean-naxos",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3174,
+      "name": "Κανάκι",
+      "regionId": "south-aegean-naxos",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3177,
+      "name": "Στελίδα",
+      "regionId": "south-aegean-naxos",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3178,
+      "name": "Φαρακλό",
+      "regionId": "south-aegean-naxos",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "regionId": "south-aegean-paros",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3176,
+      "name": "Πίσω Λιβάδι",
+      "regionId": "south-aegean-paros",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3015,
+      "name": "Πάτμος Κάμπος",
+      "regionId": "south-aegean-patmos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3143,
+      "name": "Παραλία Ιαλυσός",
+      "regionId": "south-aegean-rhodes",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3043,
+      "name": "Σύμη Γυάλα",
+      "regionId": "south-aegean-symi",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3170,
+      "name": "Μαραθούντα",
+      "regionId": "south-aegean-symi",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3171,
+      "name": "Παραλία Πανορμίτη",
+      "regionId": "south-aegean-symi",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3016,
+      "name": "Βούλγαρη",
+      "regionId": "south-aegean-syros",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3023,
+      "name": "Αλόννησος Μηλιά",
+      "regionId": "thessaly-alonissos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3087,
+      "name": "Χρυσή Μηλιά",
+      "regionId": "thessaly-alonissos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3093,
+      "name": "Μεγάλη Άμμος",
+      "regionId": "thessaly-alonissos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3095,
+      "name": "Elias Cove",
+      "regionId": "thessaly-alonissos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3112,
+      "name": "Λεχούνι (Περιστέρα)",
+      "regionId": "thessaly-alonissos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3110,
+      "name": "Αγία Παρασκευή (Στόμιο)",
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3084,
+      "name": "Καλαμιές",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3086,
+      "name": "παραλία Νηές",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3094,
+      "name": "Σουτραλί",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3096,
+      "name": "Olive Bay",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3111,
+      "name": "Άι Γιάννης (Κεραμίδι, Πήλιο)",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3146,
+      "name": "Αγία Βάσω",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3147,
+      "name": "Αλογόπορος",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3148,
+      "name": "Θεριάκοντας",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3149,
+      "name": "Κάλα Νερά",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3150,
+      "name": "Κάλαμος Πηλίου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3151,
+      "name": "Καμάρι Κεραμιδίου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3152,
+      "name": "Κατηγιώργης",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3153,
+      "name": "Μεγάλη Πάου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3154,
+      "name": "Μικρή Πάου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3155,
+      "name": "Οβριός",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3156,
+      "name": "Παλιουράκια",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3157,
+      "name": "Πλατανιάς",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3158,
+      "name": "Πράσινη Άμμος",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3159,
+      "name": "Τζάστενη",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3085,
+      "name": "Παραλία Λαλάριας",
+      "regionId": "thessaly-skiathos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3074,
+      "name": "Angeletou beach",
+      "regionId": "thessaly-skopelos",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3075,
+      "name": "Perivoliou Beach",
+      "regionId": "thessaly-skopelos",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3113,
+      "name": "Πλάκα (Χώρα Σκοπέλου)",
+      "regionId": "thessaly-skopelos",
+      "missingRequired": [
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3047,
+      "name": "ΠΔΕ Καστελόκαμπος",
+      "regionId": "west-greece-achaia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3048,
+      "name": "ΠΔΕ Κάτω Αχαΐας",
+      "regionId": "west-greece-achaia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3049,
+      "name": "ΠΔΕ Λακκόπετρα",
+      "regionId": "west-greece-achaia-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3052,
+      "name": "ΠΔΕ Πούντα Αιγιαλείας",
+      "regionId": "west-greece-achaia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3017,
+      "name": "Μεσολόγγι Τουρλίδα",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3044,
+      "name": "Άκτιο Βόνιτσας Αγ. Δημήτριος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3045,
+      "name": "Άκτιο Βόνιτσας Πάλαιρος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3046,
+      "name": "ΠΔΕ Αραχωβίτικα",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3050,
+      "name": "ΠΔΕ Μακύνεια",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3051,
+      "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3144,
+      "name": "Παραλία Κρυονέρι",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3145,
+      "name": "Παραλία Μύτικας",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "missingRequired": [
+        "access"
+      ],
+      "missingDesired": [
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    },
+    {
+      "id": 3053,
+      "name": "Πηνειός Γλύφα",
+      "regionId": "west-greece-ileia-mainland",
+      "missingRequired": [
+        "access",
+        "amenities"
+      ],
+      "missingDesired": [
+        "terrain",
+        "depth",
+        "photo",
+        "confidence"
+      ]
+    }
+  ]
+}

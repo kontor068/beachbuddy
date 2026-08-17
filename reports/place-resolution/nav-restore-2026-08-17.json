@@ -1,0 +1,95 @@
+{
+  "generatedAt": "2026-08-17T11:59:15.188Z",
+  "radiusM": 350,
+  "results": [
+    {
+      "id": 385,
+      "name": "Biancoblusarti",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.09154,
+      "lon": 23.97942,
+      "verdict": "RETRY",
+      "reason": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 396,
+      "name": "Goa",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.07119,
+      "lon": 23.99466,
+      "verdict": "RETRY",
+      "reason": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 398,
+      "name": "Griavas",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.04999,
+      "lon": 23.99107,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Griavas Beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 411,
+      "name": "Klimataria",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.03385,
+      "lon": 24.00948,
+      "verdict": "RETRY",
+      "reason": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 416,
+      "name": "Lagoon",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.21376,
+      "lon": 23.33215,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 447,
+      "name": "Totos",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.58234,
+      "lon": 23.80088,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Βίνα» στα 119 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 485,
+      "name": "Παραλία Τρίμη",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.3175673,
+      "lon": 23.9962642,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Τρίμη» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 486,
+      "name": "Παραλία Γαλήνη",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.22699,
+      "lon": 23.7572005,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Γαλήνη» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 3007,
+      "name": "Αμμουλιανή",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.3340593,
+      "lon": 23.9201432,
+      "verdict": "RETRY",
+      "reason": "Overpass δεν απάντησε"
+    }
+  ]
+}
