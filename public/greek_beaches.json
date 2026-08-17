@@ -6303,14 +6303,17 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καφέ"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
             "sourceNotes": [
               "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Ωρωπός Σκάλα Ωρωπού\" (id 4875), Αττική, Attica. Coordinates from seatrac.gr. Slot via nearest existing beach #28 (2397 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles."
+              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles.",
+              "Amenities from OSM POIs 2026-08-17: καφέ (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/oropos-skala-oropou/"
@@ -62001,7 +62004,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "hidden_beach_discovery_samothraki_2026_07_27",
@@ -62014,7 +62019,8 @@
               "https://www.insamothraki.com/the-beaches-of-samothrace.html"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Τμήμα της συνεχούς βοτσαλωτής βόρειας ακτής, ανάμεσα σε Καμαριώτισσα και Παλαιόπολη. Μη οργανωμένη, με πρόσβαση από τον παραλιακό δρόμο. Επιβεβαίωση εγγύτητας: εστιατόριο/ξενοδοχείο «Κύματα» 107μ, οικισμός Κατσαμπάς 245μ. Συντεταγμένες: snap του οικισμού Κατσαμπάς (OSM node 1806375354) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 8596m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Τμήμα της συνεχούς βοτσαλωτής βόρειας ακτής, ανάμεσα σε Καμαριώτισσα και Παλαιόπολη. Μη οργανωμένη, με πρόσβαση από τον παραλιακό δρόμο. Επιβεβαίωση εγγύτητας: εστιατόριο/ξενοδοχείο «Κύματα» 107μ, οικισμός Κατσαμπάς 245μ. Συντεταγμένες: snap του οικισμού Κατσαμπάς (OSM node 1806375354) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 8596m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -62053,7 +62059,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "hidden_beach_discovery_samothraki_2026_07_27",
@@ -62069,7 +62077,8 @@
               "https://www.insamothraki.com/the-beaches-of-samothrace.html"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Τμήμα της βόρειας ακτής ανάμεσα σε Παλαιόπολη και Θέρμα, μη οργανωμένο, με πρόσβαση από τον δρόμο Καμαριώτισσα–Θέρμα (375μ). Επιβεβαίωση εγγύτητας: παραθαλάσσιο εστιατόριο 53μ, καταλύματα 187μ, οικισμός Κάτω Καρυώτες 483μ. Συντεταγμένες: snap του οικισμού Κάτω Καρυώτες (OSM node 764948075) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 10540m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Τμήμα της βόρειας ακτής ανάμεσα σε Παλαιόπολη και Θέρμα, μη οργανωμένο, με πρόσβαση από τον δρόμο Καμαριώτισσα–Θέρμα (375μ). Επιβεβαίωση εγγύτητας: παραθαλάσσιο εστιατόριο 53μ, καταλύματα 187μ, οικισμός Κάτω Καρυώτες 483μ. Συντεταγμένες: snap του οικισμού Κάτω Καρυώτες (OSM node 764948075) στην OSM ακτογραμμή. Slot κοντά στο #780 (Παραλία Μακρυλιές, 10540m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -119413,7 +119422,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "015_1401_1500",
@@ -119423,7 +119434,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/350603289"
@@ -122387,7 +122399,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "lakonia_confidence_continuation_2026_06_02",
@@ -122397,7 +122411,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "Lakonia confidence continuation 2026-06-02: lakonia.mobi directly supports Chalikia at Diros as the second beach north of the Diros Caves, connected by a small contemporary path, with white pebbles and clear waters. Access was changed from difficult hiking to easy path because the source does not support a difficult-access claim, but it remains non-road access. No coordinates, photos, live calm/protected/safe claim, windProfile or scoring were changed."
+              "Lakonia confidence continuation 2026-06-02: lakonia.mobi directly supports Chalikia at Diros as the second beach north of the Diros Caves, connected by a small contemporary path, with white pebbles and clear waters. Access was changed from difficult hiking to easy path because the source does not support a difficult-access claim, but it remains non-road access. No coordinates, photos, live calm/protected/safe claim, windProfile or scoring were changed.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [],
             "orientation": {
@@ -191591,13 +191606,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Μεσολόγγι Τουρλίδα\" (Mesolongi Tourlida), Mesolongi, West Greece. Nominatim hit nom-way-958950607; Overpass natural=beach corroboration 180 m. Slot via nearest existing beach #2559 (0 m). Conservative — access/terrain unknown, amenities only as stated."
+              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Μεσολόγγι Τουρλίδα\" (Mesolongi Tourlida), Mesolongi, West Greece. Nominatim hit nom-way-958950607; Overpass natural=beach corroboration 180 m. Slot via nearest existing beach #2559 (0 m). Conservative — access/terrain unknown, amenities only as stated.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://seatrac.gr/"
@@ -191746,12 +191764,16 @@
             },
             "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άκτιο Βόνιτσας Πάλαιρος\" (id 7541), Αιτωλοακαρνανία, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2544 (4781 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Άκτιο Βόνιτσας Πάλαιρος\" (id 7541), Αιτωλοακαρνανία, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2544 (4781 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ · beach bar (8 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/aktio-vonitsa-palairos/"
             ],
