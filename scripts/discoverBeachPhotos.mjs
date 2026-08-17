@@ -34,6 +34,20 @@ const FREE = new Set(['cc0', 'by', 'by-sa', 'pdm']); // commercial-OK only
 // Auto-reject obviously-non-beach subjects (cuts the noise I was rejecting by hand).
 const NEG = /church|chapel|μον[ήη]|μοναστ|εκκλησ|ναός|castle|κάστρο|fortress|φρούριο|tower|museum|μουσε[ίι]ο|windmill|ανεμόμυλ|fingerpost|σήμα|πινακίδα|road sign|fresco|τοιχογ|\bISS\b|earth\.jpg|view of earth|butterfly|πεταλούδ|flower|λουλούδ|orchid|cemetery|νεκροταφ|ruins|ερείπ|aerial view of greece|panorama of earth|shipyard|ναυπηγ|excavation|ανασκαφ/i;
 
+/**
+ * ΟΙ ΜΙΣΕΣ ΓΕΩΓΡΑΦΙΚΕΣ ΥΠΟΨΗΦΙΕΣ ΕΙΝΑΙ ΣΦΟΥΓΓΑΡΙΑ — ΜΕΤΡΗΜΕΝΟ 17/08/2026 ΣΤΟ ΠΗΛΙΟ.
+ *
+ * Το geosearch του Commons βρίσκει ό,τι έχει συντεταγμένες κοντά, και δίπλα σε κάθε ελληνική
+ * ακτή υπάρχουν χιλιάδες υποβρύχιες φωτογραφίες ειδών από παρατηρησιακές βάσεις. Από τις 18
+ * παραλίες του Πηλίου με υποψήφιες, οι 11 πήραν ΜΟΝΟ τέτοιες: «Tethya aurantium 53304172.jpg»
+ * (σφουγγάρι) στα 49 m, «Holothuria poli» (θαλάσσιο αγγούρι), «Dasyatis pastinaca» (σαλάχι),
+ * «Ophioderma longicauda» (οφίουρα) — σωστό σημείο, άχρηστη εικόνα για κάρτα παραλίας.
+ *
+ * Αναγνωρίζονται από τη σύμβαση ονομασίας τους: «Γένος είδος <αριθμός>.jpg». Το ίδιο μοτίβο
+ * πιάνει και τα έντομα («Ameles heldreichi 170779376.jpg») που μπαίνουν από την ίδια πηγή.
+ */
+const SPECIES_FILE = /^[A-Z][a-z]{2,}\s+[a-z]{3,}(\s+\([^)]*\))?\s+\d{4,}\.(jpe?g|png)$/i;
+
 const stripAccents = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '');
 const norm = s => stripAccents(String(s || '')).toLowerCase();
 
@@ -78,7 +92,10 @@ const translitKey = s => norm(s)
 const namesAnotherPlace = (title, ownTokens, rivalTokens) => {
   const t = translitKey(title);
   const ownHit = ownTokens.some(tok => tok && tok.length >= 4 && t.includes(translitKey(tok)));
-  const rival = rivalTokens.find(tok => tok && tok.length >= 5 && translitKey(tok).length >= 4 && t.includes(translitKey(tok)));
+  // Το κατώφλι μετριέται στη σκελετική μορφή, όχι στο γραμμένο όνομα: το «Λύρη»/«Lyri»
+  // έχει 4 γράμματα και ένα κατώφλι στα 5 το άφηνε να περάσει — έτσι πήγαν φωτογραφίες
+  // της σπηλιάς της Λύρης στον Θεοτόκο (17/08/2026).
+  const rival = rivalTokens.find(tok => tok && translitKey(tok).length >= 4 && t.includes(translitKey(tok)));
   // A title may legitimately mention both ("Stafilos and Velanio, Skopelos"); the rival only
   // condemns it when our own beach is NOT named at all.
   return rival && !ownHit ? rival : null;
@@ -169,7 +186,9 @@ const gatherForBeach = async (beach, island, islandGr, rivalTokens = []) => {
   const cands = [];
   const seen = new Set();
   const add = c => {
-    const other = namesAnotherPlace(c.title || c.commonsFile || '', ownTokens, rivals);
+    const title = c.title || c.commonsFile || '';
+    if (SPECIES_FILE.test(title)) { rejected.push({ title, because: 'φωτογραφία είδους από παρατηρησιακή βάση, όχι παραλίας' }); return; }
+    const other = namesAnotherPlace(title, ownTokens, rivals);
     if (other) { rejected.push({ title: c.title, because: `ο τίτλος κατονομάζει «${other}»` }); return; }
     const k = c.src || c.file; if (k && !seen.has(k)) { seen.add(k); cands.push(c); }
   };

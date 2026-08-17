@@ -27,7 +27,21 @@ const LATIN = /\b(Posidonia|Pinna|Pecten|Flexopecten|Bulla|Dasycladus|Sarpa|Salp
 const ARCH = /\bmuseum\b|μουσε[ίι]ο|archnmus|archmus|\bAM \b|\bBC\b|π\.?Χ|funeral|burial|ταφικ|pyxis|amphora|αμφορ|\bvase\b|αγγείο|terracotta|sculpture|γλυπτ|figurine|ειδώλι|Minoan|μινωικ|Mycenaean|μυκηνα|pottery|κεραμικ|sarcophag|σαρκοφάγ|exhibit|\btomb\b|τάφος|τύμβ|mausoleum|temple|\bnaos\b|cathedral|cathedrale|καθεδρικ|acropol|ακρόπολ|amphithea|αμφιθέ|\bruins?\b|ερείπ|ανάκτορ|anaktor|\bstadium\b|aqueduct|aquaduct|υδραγωγ|sacred way|ιερά οδ|\bancient\b|αρχαί/i;
 // other non-beach subjects seen in wide-radius geosearch
 const EXTRA = /\bislet\b|νησίδ|Ammouliani Island|Aponissos|Atsitsa island|ferry|\bport\b|harbour|harbor|λιμάν|marina|μαρίν|breakwater|κυματοθρ|remparts|rampart|\bboat trip\b|\byacht\b|θαλαμηγ|\bbarca\b|memorial|μνημε[ίι]|cemeter|cementery|νεκροταφ|\btank\b|Κτήμα|estate|winery|οινοποι|unnamed road|\bvillage\b|χωριό|chora village|\bhotel\b|ξενοδοχ|\bresort\b|restaurant|εστιατόρ|taverna|ταβέρν|\bcafe\b|καφέ|\bbar\b|depot|αποθήκη|factory|εργοστ|\bmine\b|μεταλλε|ορυχ|\bagora\b|αγορά|\bmarket\b|\bsquare\b|πλατεία|\bstation\b|σταθμ|werft|πύργος|kastro\b|fortosis|φόρτωσ/i;
-const bad = f => NEG.test(f) || SPECIES_NUM.test(f) || LATIN.test(f) || ARCH.test(f) || EXTRA.test(f);
+/**
+ * Η ΛΙΣΤΑ ΓΕΝΩΝ ΔΕΝ ΠΡΟΛΑΒΑΙΝΕΙ — ΤΟ ΣΧΗΜΑ ΤΟΥ ΟΝΟΜΑΤΟΣ ΠΡΟΛΑΒΑΙΝΕΙ (17/08/2026).
+ *
+ * Το LATIN παραπάνω είναι χειροκίνητη λίστα ~40 γενών και μεγαλώνει μόνο όταν κάποιος δει
+ * ένα καινούργιο να περνάει. Μετρημένο στο Πήλιο την ίδια μέρα, οι γεωγραφικές υποψήφιες
+ * έφεραν Dictyota, Bonellia, Ophioderma, Polycyathus, Stylocidaris, Conger, Squilla,
+ * Dasyatis, Pogonosoma, Ameles — ΚΑΝΕΝΑ στη λίστα. Και το SPECIES_NUM ζητάει 9-10 ψηφία,
+ * ενώ τα μισά αρχεία είχαν 8 («Tethya aurantium 53304172.jpg»).
+ *
+ * Το σχήμα «Γένος είδος <αριθμός>.jpg» τα πιάνει όλα και δεν χρειάζεται συντήρηση. Η λίστα
+ * μένει: πιάνει και τα αρχεία που γράφουν μόνο το γένος, χωρίς αριθμό παρατήρησης.
+ */
+const SPECIES_BINOMIAL = /^[A-Z][a-z]{2,}\s+[a-z]{3,}(\s+\([^)]*\))?\s+\d{4,}\.(jpe?g|png)$/i;
+
+const bad = f => NEG.test(f) || SPECIES_NUM.test(f) || SPECIES_BINOMIAL.test(f.replace(/^File:/, '')) || LATIN.test(f) || ARCH.test(f) || EXTRA.test(f);
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const getJson = async url => {

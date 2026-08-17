@@ -2,11 +2,11 @@
   "generatedFrom": "services/beachPhotos.ts BEACH_PHOTOS",
   "rule": "a key whose name matches beaches on more than one island cannot identify the beach its photo depicts",
   "totals": {
-    "keys": 137,
+    "keys": 134,
     "ambiguous": 0,
-    "unique": 97,
+    "unique": 94,
     "dead": 40,
-    "beachesCurrentlyServedByThisTable": 25,
+    "beachesCurrentlyServedByThisTable": 21,
     "beachesCurrentlyShownAWrongPhoto": 0
   },
   "ambiguous": [],
@@ -508,54 +508,6 @@
       "servedByThisTable": []
     },
     {
-      "key": "Μυλοπότας",
-      "matchCount": 1,
-      "islands": [
-        "Ίος"
-      ],
-      "beaches": [
-        {
-          "id": 1780,
-          "nameGr": "Μυλοπότας",
-          "island": "Ίος",
-          "regionFile": "south-aegean-ios"
-        }
-      ],
-      "servedByThisTable": []
-    },
-    {
-      "key": "Mylopotas",
-      "matchCount": 1,
-      "islands": [
-        "Ίος"
-      ],
-      "beaches": [
-        {
-          "id": 1780,
-          "nameGr": "Μυλοπότας",
-          "island": "Ίος",
-          "regionFile": "south-aegean-ios"
-        }
-      ],
-      "servedByThisTable": []
-    },
-    {
-      "key": "Μαγγανάρι",
-      "matchCount": 1,
-      "islands": [
-        "Ίος"
-      ],
-      "beaches": [
-        {
-          "id": 1778,
-          "nameGr": "Μαγγανάρι",
-          "island": "Ίος",
-          "regionFile": "south-aegean-ios"
-        }
-      ],
-      "servedByThisTable": []
-    },
-    {
       "key": "Κολυμπήθρα",
       "matchCount": 1,
       "islands": [
@@ -1001,13 +953,7 @@
           "regionFile": "south-aegean-rhodes"
         }
       ],
-      "servedByThisTable": [
-        {
-          "id": 2440,
-          "nameGr": "Τσαμπίκα",
-          "island": "Ρόδος"
-        }
-      ]
+      "servedByThisTable": []
     },
     {
       "key": "Παραλία Άντονι Κουίν",
@@ -1023,13 +969,7 @@
           "regionFile": "south-aegean-rhodes"
         }
       ],
-      "servedByThisTable": [
-        {
-          "id": 2414,
-          "nameGr": "Παραλία Άντονι Κουίν",
-          "island": "Ρόδος"
-        }
-      ]
+      "servedByThisTable": []
     },
     {
       "key": "Παραλία Αφάντου",
@@ -1089,13 +1029,7 @@
           "regionFile": "south-aegean-rhodes"
         }
       ],
-      "servedByThisTable": [
-        {
-          "id": 2445,
-          "nameGr": "Κόλπος Αγίου Παύλου",
-          "island": "Ρόδος"
-        }
-      ]
+      "servedByThisTable": []
     },
     {
       "key": "Παραλία Χαράκι",
@@ -1155,13 +1089,7 @@
           "regionFile": "south-aegean-rhodes"
         }
       ],
-      "servedByThisTable": [
-        {
-          "id": 2443,
-          "nameGr": "Παραλία Λίνδου (Μεγάλη Παραλία)",
-          "island": "Ρόδος"
-        }
-      ]
+      "servedByThisTable": []
     },
     {
       "key": "Παραλία Παλλάς",
@@ -1412,7 +1340,7 @@
       "beaches": [
         {
           "id": 2314,
-          "nameGr": "Παραλία Διακοφτης",
+          "nameGr": "Παραλία Διακόφτης",
           "island": "Κάρπαθος",
           "regionFile": "south-aegean-karpathos"
         }

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-05T16:41:03.907Z",
-  "total": 2854,
-  "missingTotal": 1501,
-  "missingPercent": 52.6,
+  "generatedAt": "2026-08-17T11:19:37.214Z",
+  "total": 2872,
+  "missingTotal": 1505,
+  "missingPercent": 52.4,
   "touristicTierRegions": {
-    "total": 809,
-    "missing": 329
+    "total": 821,
+    "missing": 334
   },
   "topMissingByImportance": [
     {
@@ -33,19 +33,6 @@
       "popularityScore": 97,
       "tier": "crowded",
       "touristic": true
-    },
-    {
-      "regionFile": "south-aegean-rhodes",
-      "island": "Ρόδος",
-      "id": 2457,
-      "nameGr": "Πρασονήσι",
-      "nameEn": "Prasonisi",
-      "hasPhoto": false,
-      "photoSource": "",
-      "regionId": "south-aegean-rhodes",
-      "popularityScore": 97,
-      "tier": "crowded",
-      "touristic": false
     },
     {
       "regionFile": "ionian-islands-zakynthos",
@@ -524,6 +511,19 @@
       "hasPhoto": false,
       "photoSource": "",
       "regionId": "ionian-islands-kefalonia",
+      "popularityScore": 78,
+      "tier": "popular",
+      "touristic": true
+    },
+    {
+      "regionFile": "ionian-islands-lefkada",
+      "island": "Λευκάδα",
+      "id": 1166,
+      "nameGr": "Μικρός Γιαλός",
+      "nameEn": "Mikros Gialos",
+      "hasPhoto": false,
+      "photoSource": "",
+      "regionId": "ionian-islands-lefkada",
       "popularityScore": 78,
       "tier": "popular",
       "touristic": true
