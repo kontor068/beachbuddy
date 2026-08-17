@@ -31,24 +31,23 @@ if (!IN) { console.error('usage: --in <report.json> [--write] [--stamp YYYY-MM-D
 
 const APPLICABLE = new Set(['asphalt_road', 'passable_dirt_road', 'difficult_dirt_road']);
 
-// The visitor-facing sentence per verdict. It answers "and then what?", which the
-// label alone does not — a dirt road 40 m long and one 3 km long are different days out.
-const noteFor = (verdict, distM) => {
-  const near = distM != null && distM <= 60;
-  if (verdict === 'asphalt_road') {
-    return near
-      ? 'Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία.'
-      : `Ασφαλτωμένος δρόμος περίπου ${distM} μέτρα από την παραλία.`;
-  }
-  if (verdict === 'passable_dirt_road') {
-    return near
-      ? 'Ο χωματόδρομος φτάνει μέχρι την παραλία.'
-      : `Χωματόδρομος περίπου ${distM} μέτρα από την παραλία.`;
-  }
-  return near
-    ? 'Δύσβατος χωματόδρομος μέχρι την παραλία — χαμηλό αυτοκίνητο θα δυσκολευτεί.'
-    : `Δύσβατος χωματόδρομος περίπου ${distM} μέτρα από την παραλία — χαμηλό αυτοκίνητο θα δυσκολευτεί.`;
-};
+/**
+ * ΤΟ ΣΗΜΕΙΩΜΑ ΜΕΝΕΙ ΚΕΝΟ — ΚΑΙ ΑΥΤΟ ΤΟ ΕΜΑΘΑ ΑΠΟ ΤΗΝ ΙΔΙΑ ΜΟΥ ΤΗΝ ΠΥΛΗ (17/08/2026).
+ *
+ * Η πρώτη εκδοχή έγραφε μια πρόταση ανά τύπο δρόμου («Ο χωματόδρομος φτάνει μέχρι την
+ * παραλία.»). Το `quality:access-notes-provenance` το απέρριψε αμέσως: η ίδια ακριβώς φράση
+ * βρέθηκε σε 6 παραλίες τεσσάρων διαφορετικών περιοχών — Κύθηρα, Σκύρος, Σκόπελος, Πήλιο.
+ * Δηλαδή ακριβώς η robot copy που άδειασε 100+ σημειώματα τον Αύγουστο, ξαναγραμμένη από μένα.
+ *
+ * Το `access.notes` τυπώνεται ΑΥΤΟΥΣΙΟ στην κάρτα δίπλα στην ταμπέλα. Η ταμπέλα λέει ήδη
+ * «Βατός χωματόδρομος»· μια πρόταση που λέει το ίδιο με άλλα λόγια δεν προσθέτει τίποτα και
+ * κοστίζει την εμπιστοσύνη που δίνει ένα κείμενο γραμμένο από άνθρωπο. Ο πίνακας ποιότητας
+ * συμφωνεί: η πύλη πρόσβασης ΔΕΝ ζητάει `notes` — το ζητούσε παλιά και μετρούσε λάθος πράγμα.
+ *
+ * Η μέτρηση (ποιος δρόμος, πόσο μακριά, ποιο OSM way) πάει στα `sourceNotes`, που είναι
+ * εσωτερικά και δεν τα διαβάζει επισκέπτης.
+ */
+const noteFor = () => '';
 
 const report = JSON.parse(readFileSync(path.isAbsolute(IN) ? IN : path.join(rootDir, IN), 'utf8'));
 const byId = new Map();

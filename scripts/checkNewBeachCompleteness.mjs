@@ -44,14 +44,29 @@ for (const row of readJson(path.join(rootDir, 'reports', 'photo-coverage', 'beac
   if (row?.hasPhoto) photoIds.add(Number(row.id));
 }
 
-const REQUIRED = [
+/**
+ * ΤΡΙΑ ΕΠΙΠΕΔΑ, ΓΙΑΤΙ ΜΙΑ ΠΥΛΗ ΠΟΥ ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΠΕΡΑΣΕΙ ΣΗΜΕΡΑ ΔΕΝ ΕΙΝΑΙ ΠΥΛΗ.
+ *
+ * ΦΡΑΓΜΟΣ — παράγονται ΜΟΝΟ από αρχεία που έχουμε ήδη στον δίσκο: καμία υπηρεσία, κανένα δίκτυο,
+ *   καμία δικαιολογία. Είναι στο 100% από 17/08/2026 και εκεί πρέπει να μείνουν. Αν σπάσει
+ *   κάποιο, ένα βήμα του pipeline δεν έτρεξε.
+ * ΑΓΩΓΟΣ — παράγονται μηχανικά ΑΛΛΑ χρειάζονται τον OpenStreetMap, που πέφτει (μετρημένο την ίδια
+ *   μέρα: και οι τρεις καθρέφτες χωρίς απάντηση επί ώρες, 51 παραλίες γύρισαν «RETRY»). Δεν
+ *   μπλοκάρουν ακόμα — θα μετακινηθούν στον ΦΡΑΓΜΟ όταν φτάσουν στο 100%, όχι νωρίτερα.
+ * ΕΠΙΘΥΜΗΤΑ — θέλουν πηγή ή ανθρώπινο μάτι. Μετριούνται, δεν μπλοκάρουν ποτέ.
+ */
+const BLOCKING = [
   { key: 'geometry', label: 'γεωμετρία έκθεσης', how: 'npx tsx scripts/geospatialExposureProfiles.ts --region <id> --land-geojson .tmp/geospatial/greece-land-osm-split.geojson --no-download' },
   { key: 'marine', label: 'σημείο θάλασσας (κύμα)', how: 'node scripts/buildMarineSamplePoints.mjs --region <id>' },
   { key: 'facing', label: 'κατεύθυνση ακτής', how: 'node scripts/applyIslandGroupOrientationFromGeospatial.mjs --group=<group>' },
-  { key: 'nav', label: 'οδηγίες πλοήγησης', how: 'node scripts/auditPlaceResolution.mjs --any-region --region=<id> → filterNavFixesUpgradesOnly → applyNavigationAudit' },
-  { key: 'access', label: 'τύπος πρόσβασης', how: 'node scripts/auditUnknownAccessFromOsm.mjs --regions <id> → applyAccessFromOsm' },
-  { key: 'amenities', label: 'παροχές', how: 'node scripts/auditAmenitiesOsm.mjs → applyAmenityFixes' },
 ];
+const PIPELINE = [
+  { key: 'nav', label: 'οδηγίες πλοήγησης', how: 'node scripts/restoreNavForDegradedBeaches.mjs --regions <id> --write' },
+  { key: 'access', label: 'τύπος πρόσβασης', how: 'node scripts/auditUnknownAccessFromOsm.mjs --regions <id> → applyAccessFromOsm' },
+  { key: 'amenities', label: 'παροχές', how: 'node scripts/auditAmenitiesOsm.mjs --region <id> → applyAmenitiesFromOsm' },
+];
+const REQUIRED = [...BLOCKING, ...PIPELINE];
+const requiredOnly = process.argv.includes('--required-only');
 const DESIRED = [
   { key: 'terrain', label: 'άμμος/βότσαλο' },
   { key: 'depth', label: 'βάθος νερού' },
@@ -117,8 +132,13 @@ console.log(`Πληρότητα νέων παραλιών (id ≥ ${SINCE})`);
 console.log(`  παραλίες            ${rows.length}`);
 console.log(`  πλήρεις σε όλα      ${perfect.length}`);
 console.log(`  λείπει υποχρεωτικό  ${broken.length}`);
-console.log('\nΥΠΟΧΡΕΩΤΙΚΑ που λείπουν (παράγονται μηχανικά — κάποιο βήμα δεν έτρεξε):');
-for (const r of REQUIRED) {
+console.log('\nΦΡΑΓΜΟΣ — παράγονται από αρχεία που ήδη έχουμε, καμία δικαιολογία:');
+for (const r of BLOCKING) {
+  const n = reqCounts[r.key] || 0;
+  console.log(`  ${String(n).padStart(4)}  ${r.label}${n ? `\n        → ${r.how}` : ''}`);
+}
+console.log('\nΑΓΩΓΟΣ — μηχανικά, αλλά χρειάζονται τον OpenStreetMap (δεν μπλοκάρουν ακόμα):');
+for (const r of PIPELINE) {
   const n = reqCounts[r.key] || 0;
   console.log(`  ${String(n).padStart(4)}  ${r.label}${n ? `\n        → ${r.how}` : ''}`);
 }
@@ -141,7 +161,15 @@ if (OUT) {
   console.log(`\n→ ${path.relative(rootDir, outPath)}`);
 }
 
-if (strict && broken.length) {
-  console.error(`\n❌ ${broken.length} νέες παραλίες χωρίς υποχρεωτικά δεδομένα.`);
-  process.exit(1);
+// `--required-only` κρίνει ΜΟΝΟ τον ΦΡΑΓΜΟ. Είναι ο τρόπος που η πύλη τρέχει στα κρίσιμα
+// checks χωρίς να κρατάει όμηρο ολόκληρο το build επειδή ένας ξένος εξυπηρετητής είναι κάτω.
+const blockingBroken = rows.filter((r) => r.missingRequired.some((k) => BLOCKING.some((b) => b.key === k)));
+if (strict) {
+  const offenders = requiredOnly ? blockingBroken : broken;
+  if (offenders.length) {
+    console.error(`\n❌ ${offenders.length} νέες παραλίες χωρίς ${requiredOnly ? 'τα δεδομένα του ΦΡΑΓΜΟΥ' : 'υποχρεωτικά δεδομένα'}.`);
+    for (const o of offenders.slice(0, 15)) console.error(`   #${o.id} ${o.name} (${o.regionId}) — λείπει: ${o.missingRequired.join(', ')}`);
+    process.exit(1);
+  }
+  console.log(`\n✅ Κάθε νέα παραλία φέρνει γεωμετρία, σημείο κύματος και κατεύθυνση.`);
 }

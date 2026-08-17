@@ -40,6 +40,15 @@ const checks = [
     args: ['scripts/validateShorelineShapes.mjs'],
   },
   {
+    id: 'new-beach-completeness',
+    title: 'Κάθε νέα παραλία φέρνει μαζί της τη γεωμετρία, το κύμα και την κατεύθυνσή της',
+    description: 'Ελέγχει ότι κάθε παραλία με id ≥ 3000 έχει τα τρία που παράγονται μηχανικά από ό,τι ήδη έχουμε: προφίλ έκθεσης, σημείο δειγματοληψίας κύματος (ή τεκμηριωμένη απουσία του σε κλειστό όρμο) και γραμμένη κατεύθυνση ακτής. Πρόσβαση, παροχές, φωτογραφία και βάθος μετριούνται στην αναφορά αλλά δεν μπλοκάρουν — θέλουν πηγή ή ανθρώπινο μάτι.',
+    protects: 'Μια νέα παραλία χωρίς γεωμετρία κρίνεται από τον άνεμο της γειτονιάς της και χωρίς σημείο θάλασσας παίρνει το κύμα του κελιού της περιοχής — νερό που συχνά δεν βλέπει. Μετρημένο 17/08/2026: από 185 παραλίες με id ≥ 3000, μόνο ΜΙΑ ήταν πλήρης. Χωρίς πύλη, κάθε νέα παραλία χειροτερεύει σιωπηλά την περιοχή που τη φιλοξενεί.',
+    failureAction: 'Τρέξε `node scripts/checkNewBeachCompleteness.mjs` — τυπώνει ανά πεδίο ΠΟΙΑ εντολή το φτιάχνει. ΠΟΤΕ μην περάσεις την πύλη ανεβάζοντας το --since-id: το νούμερο ορίζει ποιες παραλίες είναι «νέες», όχι πόσο αυστηροί είμαστε.',
+    command: process.execPath,
+    args: ['scripts/checkNewBeachCompleteness.mjs', '--strict', '--required-only'],
+  },
+  {
     id: 'wind-exposure',
     title: 'Wind exposure engine',
     description: 'Runs wind exposure validation scenarios for shelter, fetch, confidence, and protected/calm label behavior.',
