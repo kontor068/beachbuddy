@@ -1,0 +1,930 @@
+{
+  "measuredAt": "2026-08-17",
+  "totals": {
+    "totalBeaches": 2869,
+    "noProfile": 0,
+    "lowConfidence": 0,
+    "compared": 2869,
+    "wrong": 1747,
+    "soft": 954,
+    "clean": 168
+  },
+  "byRegion": {
+    "attica-aegina": 10,
+    "attica-agistri": 4,
+    "attica-athens-area-mainland": 21,
+    "attica-east-attica-mainland": 23,
+    "attica-hydra": 6,
+    "attica-kythira": 26,
+    "attica-methana": 3,
+    "attica-piraeus-area": 2,
+    "attica-poros": 2,
+    "attica-salamina": 5,
+    "attica-spetses": 5,
+    "attica-west-attica-mainland": 2,
+    "central-greece-evia": 87,
+    "central-greece-fokida-mainland": 12,
+    "central-greece-fthiotida-mainland": 17,
+    "central-greece-skyros": 12,
+    "central-greece-viotia-mainland": 1,
+    "central-macedonia-halkidiki-mainland": 85,
+    "central-macedonia-pieria-mainland": 6,
+    "central-macedonia-thessaloniki-area": 10,
+    "crete-crete-chania": 65,
+    "crete-crete-heraklion": 40,
+    "crete-crete-lasithi": 47,
+    "crete-crete-rethymno": 32,
+    "crete-gavdos": 6,
+    "east-macedonia-and-thrace-evros-mainland": 5,
+    "east-macedonia-and-thrace-kavala-mainland": 16,
+    "east-macedonia-and-thrace-rodopi-mainland": 6,
+    "east-macedonia-and-thrace-samothraki": 9,
+    "east-macedonia-and-thrace-thasos": 25,
+    "east-macedonia-and-thrace-xanthi-mainland": 1,
+    "epirus-arta-mainland": 1,
+    "epirus-preveza-mainland": 25,
+    "epirus-thesprotia-mainland": 29,
+    "ionian-islands-antipaxos": 10,
+    "ionian-islands-corfu": 78,
+    "ionian-islands-ithaca": 12,
+    "ionian-islands-kefalonia": 37,
+    "ionian-islands-lefkada": 21,
+    "ionian-islands-mathraki": 1,
+    "ionian-islands-othonoi": 1,
+    "ionian-islands-paxos": 19,
+    "ionian-islands-zakynthos": 29,
+    "north-aegean-agios-efstratios": 7,
+    "north-aegean-chios": 17,
+    "north-aegean-fournoi": 3,
+    "north-aegean-ikaria": 15,
+    "north-aegean-lemnos": 20,
+    "north-aegean-lesvos": 32,
+    "north-aegean-oinousses": 2,
+    "north-aegean-psara": 3,
+    "north-aegean-samos": 28,
+    "peloponnese-argolida-mainland": 25,
+    "peloponnese-arkadia-mainland": 16,
+    "peloponnese-korinthia-mainland": 13,
+    "peloponnese-lakonia-mainland": 58,
+    "peloponnese-messinia-mainland": 40,
+    "south-aegean-agathonisi": 3,
+    "south-aegean-amorgos": 10,
+    "south-aegean-anafi": 9,
+    "south-aegean-andros": 22,
+    "south-aegean-antiparos": 6,
+    "south-aegean-astypalaia": 10,
+    "south-aegean-donousa": 4,
+    "south-aegean-folegandros": 11,
+    "south-aegean-ios": 19,
+    "south-aegean-kalymnos": 5,
+    "south-aegean-karpathos": 32,
+    "south-aegean-kasos": 2,
+    "south-aegean-kastellorizo": 2,
+    "south-aegean-kea": 17,
+    "south-aegean-kimolos": 11,
+    "south-aegean-kos": 23,
+    "south-aegean-koufonisia": 15,
+    "south-aegean-kythnos": 22,
+    "south-aegean-leros": 4,
+    "south-aegean-lipsi": 14,
+    "south-aegean-milos": 25,
+    "south-aegean-mykonos": 20,
+    "south-aegean-naxos": 21,
+    "south-aegean-nisyros": 1,
+    "south-aegean-paros": 14,
+    "south-aegean-patmos": 9,
+    "south-aegean-rhodes": 46,
+    "south-aegean-santorini": 6,
+    "south-aegean-schinoussa": 1,
+    "south-aegean-serifos": 8,
+    "south-aegean-sifnos": 9,
+    "south-aegean-sikinos": 5,
+    "south-aegean-symi": 4,
+    "south-aegean-syros": 10,
+    "south-aegean-telendos": 2,
+    "south-aegean-tilos": 9,
+    "south-aegean-tinos": 20,
+    "thessaly-alonissos": 21,
+    "thessaly-larissa-coast-agia---kissavos": 8,
+    "thessaly-magnesia-mainland---pelion": 52,
+    "thessaly-skiathos": 11,
+    "thessaly-skopelos": 15,
+    "west-greece-achaia-mainland": 13,
+    "west-greece-aetolia-acarnania-mainland": 29,
+    "west-greece-ileia-mainland": 14
+  },
+  "wrong": [
+    {
+      "id": 80,
+      "name": "Παραλία Βαγίας",
+      "regionId": "attica-aegina",
+      "facingDeg": 1.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 15.6
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 81,
+      "name": "Αγία Μαρίνα",
+      "regionId": "attica-aegina",
+      "facingDeg": 105.9,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 15.12
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 0.16
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 82,
+      "name": "Αιγινήτισσα",
+      "regionId": "attica-aegina",
+      "facingDeg": 302.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 15.76
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "North",
+          "fetchKm": 0.84
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 83,
+      "name": "Αύρα",
+      "regionId": "attica-aegina",
+      "facingDeg": 229.5,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 12.92
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 6.64
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 84,
+      "name": "Βοτσαλωτή Παραλία",
+      "regionId": "attica-aegina",
+      "facingDeg": 193.6,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 19.84
+        },
+        {
+          "dir": "Southeast",
+          "fetchKm": 15
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 5.48
+        },
+        {
+          "dir": "West",
+          "fetchKm": 0.56
+        }
+      ],
+      "missedCount": 3
+    },
+    {
+      "id": 86,
+      "name": "Λουτρά",
+      "regionId": "attica-aegina",
+      "facingDeg": 11.6,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 15.48
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 0
+    },
+    {
+      "id": 87,
+      "name": "Παραλία Ζινόβι",
+      "regionId": "attica-aegina",
+      "facingDeg": 15,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northeast",
+          "fetchKm": 14.36
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "East",
+          "fetchKm": 5.56
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 88,
+      "name": "Παραλία Καμάρες",
+      "regionId": "attica-aegina",
+      "facingDeg": 353.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northeast",
+          "fetchKm": 17.64
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 0
+    },
+    {
+      "id": 89,
+      "name": "Παραλία Κολώνα",
+      "regionId": "attica-aegina",
+      "facingDeg": 266.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 16.12
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 93,
+      "name": "Τούρλος",
+      "regionId": "attica-aegina",
+      "facingDeg": 127.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 25
+        },
+        {
+          "dir": "South",
+          "fetchKm": 15.32
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 97,
+      "name": "Ξεκοφτή",
+      "regionId": "attica-agistri",
+      "facingDeg": 342.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "North",
+          "fetchKm": 12.44
+        },
+        {
+          "dir": "Northwest",
+          "fetchKm": 19.04
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Northeast",
+          "fetchKm": 0
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 98,
+      "name": "Παραλία Μεγαλοχωρίου",
+      "regionId": "attica-agistri",
+      "facingDeg": 17,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 18.68
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 0
+    },
+    {
+      "id": 99,
+      "name": "Σκληρή",
+      "regionId": "attica-agistri",
+      "facingDeg": 67.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 14.76
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 0
+    },
+    {
+      "id": 100,
+      "name": "Χαλικιάδα",
+      "regionId": "attica-agistri",
+      "facingDeg": 121.7,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 16.04
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 5.2
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 0,
+      "name": "Παραλία Φλοίσβου",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 225.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 20
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 23.68
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 2
+    },
+    {
+      "id": 1,
+      "name": "Παλμύρα",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 227.8,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 20.16
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.64
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 2
+    },
+    {
+      "id": 2,
+      "name": "Παραλία Μπάτη",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 228.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 20.12
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.6
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 2
+    },
+    {
+      "id": 3,
+      "name": "Παραλία Έδεμ",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 242.2,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.08
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.2
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 4,
+      "name": "Α' Πλαζ Αλίμου «Στολίδι»",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 196.4,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.44
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.32
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 0.48
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 5,
+      "name": "Ακτή του Ήλιου",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 230.9,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.28
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.2
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 6,
+      "name": "Άγιος Κοσμάς",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 215.8,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.36
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 23.84
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 0.4
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 7,
+      "name": "Παραλία Αγίου Αλεξάνδρου",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 263.8,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 19.04
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 5.2
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 8,
+      "name": "Παραλία Γλυφάδας Ακτή Α",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 210.7,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.04
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 15.08
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 0.04
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 9,
+      "name": "Παραλία Γλυφάδας Ακτή Β",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 252,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 15.64
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.2
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 10,
+      "name": "Παραλία Γλυφάδας Ακτή Γ",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 234,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 10.56
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 24.12
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 11,
+      "name": "Παραλία Γλυφάδας Ακτή Δ",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 238.5,
+      "claimed": 3,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 14.08
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 0.32
+        }
+      ],
+      "missedCount": 3
+    },
+    {
+      "id": 13,
+      "name": "Α' Πλαζ Βούλας",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 208.7,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 13.88
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 19.04
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 14,
+      "name": "Β' πλαζ Βούλας",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 253.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 24.28
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 19.96
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 9.76
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 15,
+      "name": "Μικρό Καβούρι",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 267.9,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 10.68
+        },
+        {
+          "dir": "West",
+          "fetchKm": 24.32
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 15.12
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 3
+    },
+    {
+      "id": 17,
+      "name": "Μεγάλο Καβούρι",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 309.5,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 14.24
+        },
+        {
+          "dir": "West",
+          "fetchKm": 18.68
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "North",
+          "fetchKm": 1.68
+        }
+      ],
+      "missedCount": 3
+    },
+    {
+      "id": 18,
+      "name": "Zen Beach / Νηρηίδες",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 220.8,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 19.68
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 8.72
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 19,
+      "name": "Astir Beach / Αστέρας Βουλιαγμένης",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 260.9,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 18.92
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 8.92
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Northwest",
+          "fetchKm": 5.36
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 20,
+      "name": "Λίμνη Βουλιαγμένης",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 225.9,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 6.32
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 5.76
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 21,
+      "name": "Παναγίτσα η Δύτισσα",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 219.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 10.88
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "West",
+          "fetchKm": 5.64
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 3025,
+      "name": "Άλιμος Λουτρά",
+      "regionId": "attica-athens-area-mainland",
+      "facingDeg": 260.6,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 14.12
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 0
+        }
+      ],
+      "missedCount": 1
+    },
+    {
+      "id": 28,
+      "name": "Παραλία Αγίου Κωνσταντίνου",
+      "regionId": "attica-east-attica-mainland",
+      "facingDeg": 57.8,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "East",
+          "fetchKm": 12.4
+        },
+        {
+          "dir": "Northeast",
+          "fetchKm": 11.8
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 1.56
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 29,
+      "name": "Παραλία Αγκώνα",
+      "regionId": "attica-east-attica-mainland",
+      "facingDeg": 26.6,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "East",
+          "fetchKm": 12.04
+        },
+        {
+          "dir": "Northeast",
+          "fetchKm": 13.28
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 1
+    },
+    {
+      "id": 31,
+      "name": "Θέρετρο Αξιωματικών Ναυτικού",
+      "regionId": "attica-east-attica-mainland",
+      "facingDeg": 142.6,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "Southeast",
+          "fetchKm": 14.36
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 6.16
+        },
+        {
+          "dir": "Southwest",
+          "fetchKm": 0.36
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 32,
+      "name": "Παραλία Σχινιά",
+      "regionId": "attica-east-attica-mainland",
+      "facingDeg": 173.5,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 18.72
+        },
+        {
+          "dir": "Southeast",
+          "fetchKm": 15.56
+        }
+      ],
+      "partialClaims": [
+        {
+          "dir": "Southwest",
+          "fetchKm": 5.96
+        }
+      ],
+      "missedCount": 2
+    },
+    {
+      "id": 33,
+      "name": "Παραλία Μαραθώνα",
+      "regionId": "attica-east-attica-mainland",
+      "facingDeg": 135.1,
+      "claimed": 5,
+      "exposedClaims": [
+        {
+          "dir": "South",
+          "fetchKm": 12
+        },
+        {
+          "dir": "Southeast",
+          "fetchKm": 22.92
+        }
+      ],
+      "partialClaims": [],
+      "missedCount": 2
+    }
+  ],
+  "note": "Σύνολα + 40 δείγματα μόνο. Ο πλήρης κατάλογος μένει εκτός git στο .tmp/quality/ — δημόσιο repo, δεν ανεβάζουμε εθνικό dump παραλιών.",
+  "wrongCount": 1747
+}

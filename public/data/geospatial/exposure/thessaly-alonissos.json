@@ -765,7 +765,15 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false
+      "marineCellTrusted": false,
+      "marineSamplePoint": {
+        "lat": 39.1989,
+        "lon": 23.9458,
+        "bearingDeg": 74.8,
+        "distanceKm": 1.72,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "2589": {
       "beachId": 2589,

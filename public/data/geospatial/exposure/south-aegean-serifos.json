@@ -1470,7 +1470,15 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false
+      "marineCellTrusted": false,
+      "marineSamplePoint": {
+        "lat": 37.1273,
+        "lon": 24.5288,
+        "bearingDeg": 135,
+        "distanceKm": 1.72,
+        "via": "sector-SE",
+        "verified": "served-cell"
+      }
     },
     "2088": {
       "beachId": 2088,

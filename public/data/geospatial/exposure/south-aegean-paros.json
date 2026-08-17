@@ -154,10 +154,12 @@
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 37.0829,
-        "lon": 25.0645,
-        "bearingDeg": 307,
-        "distanceKm": 5.04
+        "lat": 37.0877,
+        "lon": 25.0697,
+        "bearingDeg": 315,
+        "distanceKm": 5.04,
+        "via": "sector-NW",
+        "verified": "served-cell"
       },
       "marineCellTrusted": false
     },
@@ -1217,7 +1219,15 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false
+      "marineCellTrusted": false,
+      "marineSamplePoint": {
+        "lat": 37.1271,
+        "lon": 25.225,
+        "bearingDeg": 72.1,
+        "distanceKm": 1.08,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "2035": {
       "beachId": 2035,

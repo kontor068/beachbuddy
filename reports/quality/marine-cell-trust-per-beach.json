@@ -2110,7 +2110,7 @@
   "region": "attica-piraeus-area",
   "name": "Παραλία Περάματος",
   "trusted": false,
-  "via": "region",
+  "via": "sample",
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",
@@ -3969,13 +3969,13 @@
   "region": "central-greece-evia",
   "name": "Πόρτο Πεύκο",
   "trusted": false,
-  "via": "region",
-  "verdict": "too-far",
-  "model": "meteofrance_wave",
+  "via": "sample",
+  "verdict": "other-water",
+  "model": "ewam",
   "pinVerdict": "other-water",
-  "distanceKm": 104,
-  "bearingDeg": 122,
-  "fetchKm": 1.24
+  "distanceKm": 5.4,
+  "bearingDeg": 124,
+  "fetchKm": 1.15
  },
  {
   "beachId": 292,
@@ -14711,9 +14711,9 @@
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",
-  "distanceKm": 11.29,
-  "bearingDeg": 159,
-  "fetchKm": 7.13
+  "distanceKm": 12.59,
+  "bearingDeg": 338,
+  "fetchKm": 6.91
  },
  {
   "beachId": 1233,
@@ -28318,13 +28318,13 @@
   "region": "south-aegean-leros",
   "name": "Παραλία Μπλεφούτης",
   "trusted": false,
-  "via": "region",
+  "via": "sample",
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",
-  "distanceKm": 4.69,
-  "bearingDeg": 204,
-  "fetchKm": 0.06
+  "distanceKm": 7.1,
+  "bearingDeg": 344,
+  "fetchKm": 3.38
  },
  {
   "beachId": 2368,
@@ -30437,13 +30437,13 @@
   "region": "south-aegean-paros",
   "name": "Λίμνες",
   "trusted": false,
-  "via": "region",
+  "via": "sample",
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",
-  "distanceKm": 11.27,
-  "bearingDeg": 137,
-  "fetchKm": 0.61
+  "distanceKm": 3.11,
+  "bearingDeg": 338,
+  "fetchKm": 0.26
  },
  {
   "beachId": 2035,
@@ -32361,7 +32361,7 @@
   "region": "south-aegean-serifos",
   "name": "Λιβαδάκια",
   "trusted": false,
-  "via": "region",
+  "via": "sample",
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",
@@ -34090,7 +34090,7 @@
   "region": "thessaly-alonissos",
   "name": "Γλυφά",
   "trusted": false,
-  "via": "region",
+  "via": "sample",
   "verdict": "other-water",
   "model": "ewam",
   "pinVerdict": "other-water",

@@ -16,15 +16,15 @@
   },
   "production": {
     "trusted": 2617,
-    "other-water": 237,
-    "too-far": 9,
+    "other-water": 238,
+    "too-far": 8,
     "unknown": 9,
     "no-point": 0,
     "_key": "production"
   },
   "ownSamplePoint": {
     "trusted": 2617,
-    "other-water": 156,
+    "other-water": 162,
     "too-far": 0,
     "unknown": 2,
     "no-point": 0,
@@ -32,30 +32,19 @@
   },
   "regionFallback": {
     "trusted": 0,
-    "other-water": 81,
-    "too-far": 9,
+    "other-water": 76,
+    "too-far": 8,
     "unknown": 7,
     "no-point": 0,
     "_key": "  of which region fallback"
   },
   "modelUsed": {
-    "ewam": 2817,
-    "meteofrance_wave": 46,
+    "ewam": 2818,
+    "meteofrance_wave": 45,
     "none": 9
   },
   "productionTrusted": 2617,
   "worst": [
-    {
-      "beachId": 291,
-      "region": "central-greece-evia",
-      "name": "Πόρτο Πεύκο",
-      "via": "region",
-      "model": "meteofrance_wave",
-      "verdict": "too-far",
-      "distanceKm": 104,
-      "bearingDeg": 122,
-      "fetchKm": 1.24
-    },
     {
       "beachId": 258,
       "region": "central-greece-evia",
@@ -475,17 +464,6 @@
       "fetchKm": 1.73
     },
     {
-      "beachId": 2034,
-      "region": "south-aegean-paros",
-      "name": "Λίμνες",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11.3,
-      "bearingDeg": 137,
-      "fetchKm": 0.61
-    },
-    {
       "beachId": 1470,
       "region": "north-aegean-lemnos",
       "name": "Χαβούλι",
@@ -764,7 +742,7 @@
       "beachId": 182,
       "region": "attica-piraeus-area",
       "name": "Παραλία Περάματος",
-      "via": "region",
+      "via": "sample",
       "model": "ewam",
       "verdict": "other-water",
       "distanceKm": 8.2,
@@ -1003,6 +981,17 @@
       "fetchKm": 3.91
     },
     {
+      "beachId": 1232,
+      "region": "ionian-islands-ithaca",
+      "name": "Κουτούπι",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 12.6,
+      "bearingDeg": 338,
+      "fetchKm": 6.91
+    },
+    {
       "beachId": 469,
       "region": "central-macedonia-halkidiki-mainland",
       "name": "Παραλία Λατούρα",
@@ -1028,7 +1017,7 @@
       "beachId": 2588,
       "region": "thessaly-alonissos",
       "name": "Γλυφά",
-      "via": "region",
+      "via": "sample",
       "model": "ewam",
       "verdict": "other-water",
       "distanceKm": 5.5,
@@ -1144,6 +1133,17 @@
       "distanceKm": 5.2,
       "bearingDeg": 302,
       "fetchKm": 0.23
+    },
+    {
+      "beachId": 1917,
+      "region": "south-aegean-milos",
+      "name": "Παπικινού",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 6,
+      "bearingDeg": 301,
+      "fetchKm": 1.07
     }
   ]
 }

@@ -153,7 +153,15 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false
+      "marineCellTrusted": false,
+      "marineSamplePoint": {
+        "lat": 37.9662,
+        "lon": 23.5482,
+        "bearingDeg": 276.1,
+        "distanceKm": 0.7,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "183": {
       "beachId": 183,

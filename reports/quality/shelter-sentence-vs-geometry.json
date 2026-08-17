@@ -1,0 +1,987 @@
+{
+  "measuredAt": "2026-08-17",
+  "totals": {
+    "compared": 2869,
+    "noSentence": 7,
+    "printsAnyShelter": 2862,
+    "wrong": 833
+  },
+  "byRegion": {
+    "attica-aegina": 5,
+    "attica-agistri": 1,
+    "attica-athens-area-mainland": 9,
+    "attica-east-attica-mainland": 14,
+    "attica-hydra": 3,
+    "attica-kythira": 18,
+    "attica-poros": 1,
+    "attica-salamina": 2,
+    "attica-spetses": 1,
+    "central-greece-evia": 50,
+    "central-greece-fokida-mainland": 4,
+    "central-greece-fthiotida-mainland": 6,
+    "central-greece-skyros": 6,
+    "central-greece-viotia-mainland": 1,
+    "central-macedonia-halkidiki-mainland": 39,
+    "central-macedonia-pieria-mainland": 6,
+    "central-macedonia-thessaloniki-area": 4,
+    "crete-crete-chania": 20,
+    "crete-crete-heraklion": 11,
+    "crete-crete-lasithi": 27,
+    "crete-crete-rethymno": 15,
+    "crete-gavdos": 2,
+    "east-macedonia-and-thrace-evros-mainland": 1,
+    "east-macedonia-and-thrace-kavala-mainland": 6,
+    "east-macedonia-and-thrace-rodopi-mainland": 3,
+    "east-macedonia-and-thrace-thasos": 12,
+    "epirus-preveza-mainland": 12,
+    "epirus-thesprotia-mainland": 15,
+    "ionian-islands-antipaxos": 5,
+    "ionian-islands-corfu": 31,
+    "ionian-islands-ithaca": 7,
+    "ionian-islands-kefalonia": 14,
+    "ionian-islands-lefkada": 14,
+    "ionian-islands-paxos": 12,
+    "ionian-islands-zakynthos": 12,
+    "north-aegean-agios-efstratios": 7,
+    "north-aegean-chios": 9,
+    "north-aegean-fournoi": 2,
+    "north-aegean-ikaria": 3,
+    "north-aegean-lemnos": 13,
+    "north-aegean-lesvos": 11,
+    "north-aegean-psara": 2,
+    "north-aegean-samos": 7,
+    "peloponnese-argolida-mainland": 10,
+    "peloponnese-arkadia-mainland": 10,
+    "peloponnese-korinthia-mainland": 1,
+    "peloponnese-lakonia-mainland": 33,
+    "peloponnese-messinia-mainland": 26,
+    "south-aegean-amorgos": 5,
+    "south-aegean-anafi": 2,
+    "south-aegean-andros": 16,
+    "south-aegean-antiparos": 4,
+    "south-aegean-astypalaia": 3,
+    "south-aegean-ios": 9,
+    "south-aegean-kalymnos": 2,
+    "south-aegean-karpathos": 16,
+    "south-aegean-kasos": 1,
+    "south-aegean-kastellorizo": 2,
+    "south-aegean-kea": 13,
+    "south-aegean-kimolos": 5,
+    "south-aegean-kos": 11,
+    "south-aegean-koufonisia": 2,
+    "south-aegean-kythnos": 13,
+    "south-aegean-leros": 2,
+    "south-aegean-lipsi": 8,
+    "south-aegean-milos": 9,
+    "south-aegean-mykonos": 4,
+    "south-aegean-naxos": 15,
+    "south-aegean-nisyros": 1,
+    "south-aegean-paros": 6,
+    "south-aegean-patmos": 4,
+    "south-aegean-rhodes": 32,
+    "south-aegean-santorini": 4,
+    "south-aegean-serifos": 5,
+    "south-aegean-sifnos": 5,
+    "south-aegean-sikinos": 2,
+    "south-aegean-symi": 3,
+    "south-aegean-syros": 8,
+    "south-aegean-telendos": 2,
+    "south-aegean-tilos": 2,
+    "south-aegean-tinos": 6,
+    "thessaly-alonissos": 9,
+    "thessaly-larissa-coast-agia---kissavos": 6,
+    "thessaly-magnesia-mainland---pelion": 38,
+    "thessaly-skiathos": 2,
+    "thessaly-skopelos": 7,
+    "west-greece-achaia-mainland": 4,
+    "west-greece-aetolia-acarnania-mainland": 10,
+    "west-greece-ileia-mainland": 12
+  },
+  "wrong": [
+    {
+      "id": 121,
+      "name": "Παραλια Φυρή Άμμος",
+      "regionId": "attica-kythira",
+      "facingDeg": 56,
+      "sentence": "προστατεύεται από νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "E",
+          "fetchKm": 25,
+          "group": [
+            "east"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 126,
+      "name": "Παραλία Λυγία",
+      "regionId": "attica-kythira",
+      "facingDeg": 204.8,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 12.12,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 202,
+      "name": "Αγκάλη",
+      "regionId": "central-greece-evia",
+      "facingDeg": 63.9,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "SE",
+          "fetchKm": 11.4,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 236,
+      "name": "Κόσκινα",
+      "regionId": "central-greece-evia",
+      "facingDeg": 53.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 10.12,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3115,
+      "name": "Ευαγγελισμός",
+      "regionId": "central-greece-evia",
+      "facingDeg": 71.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 402,
+      "name": "Παραλία Νέας Ποτίδαιας",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "facingDeg": 251.8,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 11.72,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3123,
+      "name": "Παραλία Μουριές",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "facingDeg": 194.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 22.36,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 10.44,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 505,
+      "name": "Παραλία Λεπτοκαρυάς",
+      "regionId": "central-macedonia-pieria-mainland",
+      "facingDeg": 85,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 17.48,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 506,
+      "name": "Ολυμπιακή Ακτή",
+      "regionId": "central-macedonia-pieria-mainland",
+      "facingDeg": 100.3,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "NE",
+          "fetchKm": 20.32,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 507,
+      "name": "Panteleimonas",
+      "regionId": "central-macedonia-pieria-mainland",
+      "facingDeg": 61.4,
+      "sentence": "προστατεύεται από νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "E",
+          "fetchKm": 25,
+          "group": [
+            "east"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 508,
+      "name": "Παραλία Κατερίνης",
+      "regionId": "central-macedonia-pieria-mainland",
+      "facingDeg": 110.1,
+      "sentence": "προστατεύεται από νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 16.08,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 510,
+      "name": "Σκοτίνα",
+      "regionId": "central-macedonia-pieria-mainland",
+      "facingDeg": 76.9,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 14.08,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 12.24,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 585,
+      "name": "Afrata",
+      "regionId": "crete-crete-chania",
+      "facingDeg": 91,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 606,
+      "name": "Λιμνιονάρι",
+      "regionId": "crete-crete-chania",
+      "facingDeg": 105,
+      "sentence": "προστατεύεται από βόρειους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "E",
+          "fetchKm": 25,
+          "group": [
+            "east"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 20,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3185,
+      "name": "Κολυμβάρι",
+      "regionId": "crete-crete-chania",
+      "facingDeg": 53.1,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "E",
+          "fetchKm": 15.8,
+          "group": [
+            "east"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3128,
+      "name": "Παραλία Καλλιθέα",
+      "regionId": "crete-crete-lasithi",
+      "facingDeg": 167.3,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "E",
+          "fetchKm": 12.72,
+          "group": [
+            "east"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 612,
+      "name": "Λακκούδι",
+      "regionId": "crete-gavdos",
+      "facingDeg": 71.5,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 11.8,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3132,
+      "name": "Παραλία Μαΐστρος",
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "facingDeg": 206.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 10.08,
+          "group": [
+            "west"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 3134,
+      "name": "Παραλία Παληό",
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "facingDeg": 130.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 12.28,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SE",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 862,
+      "name": "Artolithia Beach",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 229.8,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 863,
+      "name": "Παραλία Καναλίου",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 228.5,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 867,
+      "name": "Αλωνάκι Πρέβεζας",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 240.3,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 15,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 870,
+      "name": "Μονολίθι",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 253.2,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 12.4,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 880,
+      "name": "Παραλία Καλαμίτσι",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 245.5,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 18.64,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 883,
+      "name": "Παραλία Ριζών",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 227.4,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 884,
+      "name": "Λιμνιώνας",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 236.8,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 12.64,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 885,
+      "name": "Παραλία Λυγιάς",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 235.5,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 886,
+      "name": "Παραλία Βράχος - Λούτσα",
+      "regionId": "epirus-preveza-mainland",
+      "facingDeg": 238.9,
+      "sentence": "προστατεύεται από βόρειους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        },
+        {
+          "dir": "NW",
+          "fetchKm": 12.32,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1051,
+      "name": "Ροδοβανόπουλο",
+      "regionId": "ionian-islands-antipaxos",
+      "facingDeg": 248.2,
+      "sentence": "προστατεύεται από νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1094,
+      "name": "Κακό Λαγκάδι",
+      "regionId": "ionian-islands-kefalonia",
+      "facingDeg": 60.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 19.16,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NE",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1152,
+      "name": "Ανώνυμη Παραλία Κομηλιό",
+      "regionId": "ionian-islands-lefkada",
+      "facingDeg": 287.2,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 15.12,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NW",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1157,
+      "name": "Γιαλός",
+      "regionId": "ionian-islands-lefkada",
+      "facingDeg": 266.8,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1159,
+      "name": "Εγκρεμνοί",
+      "regionId": "ionian-islands-lefkada",
+      "facingDeg": 270.5,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "NW",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1040,
+      "name": "Πλάνος",
+      "regionId": "ionian-islands-paxos",
+      "facingDeg": 258.2,
+      "sentence": "προστατεύεται από νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 15.08,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1425,
+      "name": "Μουρούλια",
+      "regionId": "north-aegean-agios-efstratios",
+      "facingDeg": 268.3,
+      "sentence": "προστατεύεται από νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "SW",
+          "fetchKm": 10.24,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "W",
+          "fetchKm": 25,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1429,
+      "name": "Φτελιό",
+      "regionId": "north-aegean-agios-efstratios",
+      "facingDeg": 301.2,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "N",
+          "fetchKm": 10.04,
+          "group": [
+            "north"
+          ]
+        },
+        {
+          "dir": "NW",
+          "fetchKm": 25,
+          "group": [
+            "north"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1446,
+      "name": "Άγιος Ιωάννης",
+      "regionId": "north-aegean-lemnos",
+      "facingDeg": 217.8,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "S",
+          "fetchKm": 11.36,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1576,
+      "name": "Παραλία Ελιάς",
+      "regionId": "peloponnese-lakonia-mainland",
+      "facingDeg": 302.6,
+      "sentence": "προστατεύεται από νότιους και δυτικούς ανέμους",
+      "bad": [
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        },
+        {
+          "dir": "W",
+          "fetchKm": 19.2,
+          "group": [
+            "west"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1604,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "peloponnese-messinia-mainland",
+      "facingDeg": 252.8,
+      "sentence": "προστατεύεται από βόρειους και νότιους και ανατολικούς ανέμους",
+      "bad": [
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    },
+    {
+      "id": 1635,
+      "name": "Παραλία Καλαμίτσι",
+      "regionId": "peloponnese-messinia-mainland",
+      "facingDeg": 264.1,
+      "sentence": "προστατεύεται από βόρειους και νότιους ανέμους",
+      "bad": [
+        {
+          "dir": "SW",
+          "fetchKm": 25,
+          "group": [
+            "south"
+          ]
+        }
+      ],
+      "worstFetchKm": 25
+    }
+  ],
+  "note": "Σύνολα + 40 δείγματα μόνο. Ο πλήρης κατάλογος μένει εκτός git στο .tmp/quality/ — δημόσιο repo, δεν ανεβάζουμε εθνικό dump παραλιών.",
+  "wrongCount": 833
+}

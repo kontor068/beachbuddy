@@ -7706,7 +7706,15 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false
+      "marineCellTrusted": false,
+      "marineSamplePoint": {
+        "lat": 38.8787,
+        "lon": 22.9646,
+        "bearingDeg": 83,
+        "distanceKm": 1.42,
+        "via": "facing",
+        "verified": "served-cell"
+      }
     },
     "292": {
       "beachId": 292,

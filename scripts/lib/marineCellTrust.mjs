@@ -107,6 +107,19 @@ export const cacheKey = (modelId, gridDeg, lat, lon) =>
  *
  * `cache` maps cacheKey -> { lat, lon, values } | null.
  */
+/**
+ * Ποιο κελί εξυπηρετεί αυτό το σημείο σε ΣΥΓΚΕΚΡΙΜΕΝΟ μοντέλο, ανεξάρτητα από το ποιο θα
+ * απαντούσε πρώτο στην εκτέλεση. Χρειάζεται όταν ψάχνουμε αν ΚΑΠΟΙΟ μοντέλο βλέπει τη σωστή
+ * θάλασσα — ερώτημα διαφορετικό από το «τι θα έπαιρνε σήμερα ο επισκέπτης».
+ */
+export const servedForModel = (cache, point, modelId) => {
+  if (!point) return null;
+  const model = MODELS.find(m => m.id === modelId);
+  if (!model) return null;
+  const served = cache[cacheKey(model.id, model.gridDeg, point.lat, point.lon)];
+  return served && served.values > 0 ? { ...served, modelId: model.id } : null;
+};
+
 export const servedForRuntime = (cache, point) => {
   if (!point) return null;
   for (const { id, gridDeg } of MODELS) {
@@ -125,9 +138,13 @@ export const isPointResolved = (cache, point) =>
  *
  * `profile` needs `coordinates` and `sectors`; `requestPoint` is what the runtime would send.
  */
-export const judge = (cache, profile, requestPoint) => {
+export const judge = (cache, profile, requestPoint, forceModelId) => {
   if (!requestPoint) return { verdict: 'no-point' };
-  const served = servedForRuntime(cache, requestPoint);
+  // Χωρίς `forceModelId` κρίνεται ό,τι θα έπαιρνε ΣΗΜΕΡΑ ο επισκέπτης. Με αυτό, κρίνεται ένα
+  // συγκεκριμένο μοντέλο — για την αναζήτηση «υπάρχει συνδυασμός σημείου × μοντέλου που δουλεύει;».
+  const served = forceModelId
+    ? servedForModel(cache, requestPoint, forceModelId)
+    : servedForRuntime(cache, requestPoint);
   if (!served) return { verdict: 'unknown' };
 
   const { lat, lon } = profile.coordinates;

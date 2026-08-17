@@ -183,12 +183,35 @@ if (unresolved.length) {
   saveCache();
 }
 
+/**
+ * ΚΟΙΝΗ ΑΝΑΖΗΤΗΣΗ ΣΗΜΕΙΟΥ × ΜΟΝΤΕΛΟΥ (--per-model).
+ *
+ * Χωρίς τη σημαία, κάθε υποψήφιο σημείο κρίνεται με «όποιο μοντέλο απαντήσει πρώτο» — δηλαδή
+ * απορρίπτονται σημεία που θα περνούσαν με το ΑΛΛΟ μοντέλο. Μετρήθηκε 17/08/2026 ότι αυτή η
+ * τυφλότητα κόστιζε 68 παραλίες στο ΤΡΕΧΟΝ σημείο τους· εδώ ψάχνεται ο ίδιος συνδυασμός σε
+ * ΟΛΗ τη σκάλα. Το ταβάνι είναι μετρημένο και μικρό (~43 από 206), γι' αυτό η σημαία είναι
+ * opt-in: η προεπιλογή μένει ό,τι έτρεχε πάντα.
+ */
+const perModel = args.includes('--per-model');
+
+/** Κρίνει ένα σημείο· με --per-model δέχεται όποιο μοντέλο περνάει και λέει ποιο. */
+const judgePoint = (profile, point) => {
+  if (!perModel) return judge(cache, profile, point);
+  const first = judge(cache, profile, point);
+  if (first.verdict === 'trusted') return first;
+  for (const model of MODELS) {
+    const verdict = judge(cache, profile, point, model.id);
+    if (verdict.verdict === 'trusted') return { ...verdict, viaModel: model.id };
+  }
+  return first;
+};
+
 const needsWork = [];
 let alreadyGood = 0;
 let noPointAtAll = 0;
 for (const beach of beaches) {
   if (!beach.currentPoint) { noPointAtAll += 1; continue; }
-  const verdict = judge(cache, beach.profile, beach.currentPoint);
+  const verdict = judgePoint(beach.profile, beach.currentPoint);
   if (verdict.verdict === 'trusted') { alreadyGood += 1; continue; }
   needsWork.push({ ...beach, before: verdict, ladder: candidatesFor(beach), attempts: 0 });
 }
@@ -221,7 +244,7 @@ for (let round = 0; round < maxRounds && pending.length && !state.quotaHit; roun
   let won = 0;
   for (const { beach, candidate } of tries) {
     beach.attempts += 1;
-    const verdict = judge(cache, beach.profile, candidate);
+    const verdict = judgePoint(beach.profile, candidate);
     if (verdict.verdict === 'trusted') {
       fixed.push({ beach, candidate, after: verdict, round: round + 1 });
       won += 1;
