@@ -235,7 +235,8 @@
         "lon": 26.9605,
         "bearingDeg": 180,
         "distanceKm": 2.9
-      }
+      },
+      "marineCellTrusted": false
     },
     "2227": {
       "beachId": 2227,
@@ -383,7 +384,8 @@
           "intensity": 0.4
         }
       },
-      "confidence": "high"
+      "confidence": "high",
+      "marineCellTrusted": false
     },
     "2229": {
       "beachId": 2229,
@@ -460,7 +462,8 @@
         "lon": 26.9541,
         "bearingDeg": 225,
         "distanceKm": 2.32
-      }
+      },
+      "marineCellTrusted": false
     }
   }
 }

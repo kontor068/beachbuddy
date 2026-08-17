@@ -8489,6 +8489,19 @@
   "fetchKm": 25
  },
  {
+  "beachId": 3185,
+  "region": "crete-crete-chania",
+  "name": "Κολυμβάρι",
+  "trusted": true,
+  "via": "sample",
+  "verdict": "trusted",
+  "model": "ewam",
+  "pinVerdict": "trusted",
+  "distanceKm": 12.42,
+  "bearingDeg": 60,
+  "fetchKm": 21.96
+ },
+ {
   "beachId": 620,
   "region": "crete-crete-heraklion",
   "name": "Afrathia",
@@ -9995,6 +10008,45 @@
   "distanceKm": 9.51,
   "bearingDeg": 57,
   "fetchKm": 15.21
+ },
+ {
+  "beachId": 3187,
+  "region": "crete-crete-lasithi",
+  "name": "Λιμανάκι Μακρύ Γιαλού",
+  "trusted": true,
+  "via": "sample",
+  "verdict": "trusted",
+  "model": "ewam",
+  "pinVerdict": "trusted",
+  "distanceKm": 4.85,
+  "bearingDeg": 150,
+  "fetchKm": 13.86
+ },
+ {
+  "beachId": 3188,
+  "region": "crete-crete-lasithi",
+  "name": "Καλαμοκανιάς",
+  "trusted": true,
+  "via": "sample",
+  "verdict": "trusted",
+  "model": "ewam",
+  "pinVerdict": "trusted",
+  "distanceKm": 9.89,
+  "bearingDeg": 164,
+  "fetchKm": 21.68
+ },
+ {
+  "beachId": 3189,
+  "region": "crete-crete-lasithi",
+  "name": "Μακρύς Γιαλός",
+  "trusted": true,
+  "via": "sample",
+  "verdict": "trusted",
+  "model": "ewam",
+  "pinVerdict": "trusted",
+  "distanceKm": 10.06,
+  "bearingDeg": 170,
+  "fetchKm": 21.78
  },
  {
   "beachId": 672,
@@ -23192,6 +23244,19 @@
   "fetchKm": 5
  },
  {
+  "beachId": 3186,
+  "region": "south-aegean-amorgos",
+  "name": "Αιγιάλη",
+  "trusted": true,
+  "via": "sample",
+  "verdict": "trusted",
+  "model": "ewam",
+  "pinVerdict": "other-water",
+  "distanceKm": 6.9,
+  "bearingDeg": 268,
+  "fetchKm": 11.8
+ },
+ {
   "beachId": 1671,
   "region": "south-aegean-anafi",
   "name": "Άγιοι Ανάργυροι",
@@ -30357,7 +30422,7 @@
  {
   "beachId": 2033,
   "region": "south-aegean-paros",
-  "name": "Λιβάδια",
+  "name": "Λιβάδια (Παροικιά)",
   "trusted": true,
   "via": "sample",
   "verdict": "trusted",
@@ -30526,7 +30591,7 @@
  {
   "beachId": 2046,
   "region": "south-aegean-paros",
-  "name": "Παραλία Παροικιάς",
+  "name": "Παραλία Παροικιάς (κέντρο)",
   "trusted": true,
   "via": "sample",
   "verdict": "trusted",

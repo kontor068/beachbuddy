@@ -157,6 +157,15 @@ const checks = [
     args: ['scripts/validateForecastCellClustering.mjs'],
   },
   {
+    id: 'marine-cell-trust-ledger',
+    title: 'Η σήμανση «αυτή η παραλία διαβάζει ξένο νερό» δεν ξεθωριάζει σιωπηλά',
+    description: 'Συγκρίνει, ΧΩΡΙΣ δίκτυο, δύο πράγματα που είναι και τα δύο στο repo: το κατάστιχο της τελευταίας εθνικής μέτρησης (reports/quality/marine-cell-trust-per-beach.json) και τη σημαία marineCellTrusted μέσα στα προφίλ γεωμετρίας. Τέσσερις ισχυρισμοί: (Α) καμία παραλία δεν υπάρχει στα δεδομένα χωρίς να έχει περάσει ποτέ από τον έλεγχο· (Β) σήμανση και μέτρηση συμφωνούν παραλία-παραλία· (Γ) οι αναξιόπιστες δεν ξεπερνούν τη βάση των 255 — καστάνια, επιτρέπεται μόνο να πέσει· (Δ) σαμποτάρει το ίδιο του το κατάστιχο και απαιτεί να το πιάσει ο έλεγχος Β.',
+    protects: 'Οι 255 από 2.872 παραλίες (8,9%) παίρνουν ύψος κύματος από κελί μοντέλου που περιγράφει νερό το οποίο δεν βλέπουν — πίσω από ακρωτήρι ή δεκάδες χιλιόμετρα μακριά (χειρότερο: #291 Πόρτο Πεύκο, κελί 104 χλμ. μακριά). Απόφαση Μίλτου 17/08/2026, δρόμος Γ του HANDOVER-marine-cell-trust: ΔΕΝ κρύβουμε τον αριθμό, γιατί θα σβήναμε 255 πιθανώς σωστές απαντήσεις για άγνωστο πλήθος λαθών — με κυψέλες 4-8 χλμ. δεν υπάρχει κριτής που να αποδείξει λάθος σε κόλπο 2 χλμ. Τον σημαδεύουμε όμως, ώστε να σταματήσει να χειροτερεύει. Η σημαία ζει μέσα στα προφίλ γεωμετρίας, που ξαναγράφονται από εθνικά rebuild: η ίδια οικογένεια σφάλματος έχει ήδη χτυπήσει δύο φορές (σημεία θάλασσας που «σβήνονταν στο rebuild», και η Αιγιάλη που μπήκε χωρίς σφραγισμένη κυψέλη πρόγνωσης).',
+    failureAction: 'Τρέξε `node scripts/auditMarineCellTrust.mjs --apply` για να ξαναμετρηθεί και να ξαναμπεί η σήμανση. ΠΟΤΕ μην ανεβάσεις το UNTRUSTED_BASELINE για να περάσει η πύλη: ο αριθμός επιτρέπεται μόνο να πέφτει, και μια αύξηση σημαίνει ότι κάτι μετακίνησε σημεία θάλασσας ή ότι μπήκαν παραλίες σε κακή θέση. Και μη σβήσεις τη σημαία για να «καθαρίσουν» τα δεδομένα — κανένας κώδικας εκτέλεσης δεν τη διαβάζει, άρα δεν βαραίνει τίποτα στην οθόνη.',
+    command: process.execPath,
+    args: ['scripts/validateMarineCellTrustLedger.mjs'],
+  },
+  {
     id: 'conditions-feel-phrase',
     title: 'The card\'s plain-words line agrees with its own numbers',
     description: 'Drives every wind × wave × language combination through the card\'s one-line description and checks four things: it fits two lines on a 320 px phone, the words match the metre figure printed directly underneath them, no verdict word ("ideal", "avoid") can enter a line that is meant to describe rather than judge, and the relief connective ("but") stops at 5 Bft so a red-pinned beach never reads like good news. Also re-checks the top band still shares its exact wording with the map legend in all five languages.',
