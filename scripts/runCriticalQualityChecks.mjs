@@ -94,6 +94,15 @@ const checks = [
     args: ['scripts/validateWaveDisplayAgreement.mjs'],
   },
   {
+    id: 'dry-sector-gate',
+    title: 'The dry-sector bypass may only calm, and only where there is no water',
+    description: 'Runs every high-confidence beach against all 8 wind sectors at three wind speeds and checks the shore-wave gate that bypasses the onshore test when the geometry reports no water in the wind\'s half-circle: the printed figure never rises, the shore height stays strictly below the open-water reading, no sector unlocks while an opening wider than 2 km sits within ±90° of the wind, and four named commitments hold (Λιμανάκια Βουλιαγμένης 22 and Πάνορμος Νάξου 2011 must NOT unlock; Σταφίδα 2186 and Άγιος Ιωάννης Πόρτο 2151 must).',
+    protects: 'Prevents a false calm — the one error direction that can put a swimmer in waves. The bypass exists because 2.082 sectors on 1.318 beaches print the open-sea figure with no water in front of them (1.721 already labelled «Προστατευμένη»), but "zero fetch" alone is not proof: 1.869 of those (89,8%) have an opening of 5 km or more right beside them, and a ±45° arc still let 520 of them through. Measured nationally 17/08/2026 over 110 regions and 2.872 beaches: 61 beaches calmer (2,1%), 0 rougher, 2 verdict changes. Five sabotage runs, five reds.',
+    failureAction: 'Fix utils/shoreWave.ts. NEVER widen the arc or raise the 2 km opening threshold to make a case pass — the wide versions were measured and rejected (docs/team/PORISMA-KAIROS-2026-08.md §Γ21), and widening them is exactly the failure this gate was written to catch.',
+    command: process.execPath,
+    args: ['scripts/validateDrySectorGate.mjs'],
+  },
+  {
     id: 'open-water-label',
     title: 'The wave figure names its water, and the card says why',
     description: 'Runs every beach with committed geometry against all 8 wind sectors through the real utils/coveWaveGuard, and checks the reading is labelled «Κύμα ανοιχτά» only where the number really is the area grid — never where the guard swapped in our own near-shore SMB. Then checks the card can still be understood: seaOpen and SHELTER_LABEL are present, non-empty and distinct in all five languages, the component renders both, and BeachDetailPage still passes weatherNow.liveSentence plus a shelter word derived from the map-aligned exposure level.',

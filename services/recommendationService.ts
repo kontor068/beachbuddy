@@ -54,7 +54,7 @@ import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
-import { estimateShoreWaveHeightM, isSeaDepartingShore } from '../utils/shoreWave';
+import { estimateShoreWaveHeightM, isEnclosedDrySector, isSeaDepartingShore } from '../utils/shoreWave';
 import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
@@ -2410,6 +2410,14 @@ export const calculateBeachScore = (
     // Computed once, next to the geometric ceiling that applies the identical test.
     arrivingSwellPresent,
     departingSea,
+    // «Δεν υπάρχει νερό προς τα εκεί» — ο ζωντανός τομέας ΚΑΙ ολόκληρο το ημικύκλιο του ανέμου.
+    // Ο έλεγχος γείτονα χρειάζεται τους 8 ωμούς τομείς, που η παρεμβολή δεν κουβαλάει, γι' αυτό
+    // περνάει εδώ το ίδιο το προφίλ (βίβλος §Γ21).
+    enclosedDrySector: isEnclosedDrySector(
+      { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
+      options?.geospatialProfile,
+      weather.wind.deg
+    ),
   });
   const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the

@@ -94,6 +94,72 @@ export const shoreRampWeight = (onshore: number): number => {
 };
 
 /**
+ * ΟΤΑΝ ΔΕΝ ΥΠΑΡΧΕΙ ΝΕΡΟ ΠΡΟΣ ΤΑ ΕΚΕΙ, Η ΓΩΝΙΑ ΤΟΥ ΑΝΕΜΟΥ ΔΕΝ ΚΡΙΝΕΙ ΤΙΠΟΤΑ (17/08/2026 — §Γ21).
+ *
+ * Η πύλη `onshore` παρακάτω ρωτάει «φυσάει από τη στεριά;». Το ερώτημα που κρίνει αν ΜΠΟΡΕΙ να
+ * υπάρξει κύμα εδώ είναι άλλο: «υπάρχει καθόλου νερό προς τα εκεί;». Όσο οι δύο ερωτήσεις
+ * συμφωνούν δεν φαίνεται τίποτα· όταν ο κόλπος κοιτάει αλλού από τον άνεμο, χωρίζουν — και τότε
+ * μια παραλία που ο ίδιος ο χάρτης μας λέει «Προστατευμένη» τυπώνει από κάτω το νούμερο του
+ * πελάγους. Εθνικά: **2.082 τομείς σε 1.318 παραλίες**, οι 1.721 ήδη «Προστατευμένες».
+ *
+ * ΤΟ «ΜΗΔΕΝ ΑΝΟΙΓΜΑ» ΔΕΝ ΑΡΚΕΙ ΜΟΝΟ ΤΟΥ, ΜΕΤΡΗΜΕΝΑ. Πάνορμος Νάξου (2011) @ S: `fetchKm 0`,
+ * `blockedRayRatio 1` — αλλά το στόμιο ΝΔ ανοίγει 6,2 χλμ και ο νότιος σηκώνει κύμα ΕΞΩ από τη
+ * ράχη, που μπαίνει από το πλάι. Δεν είναι εξαίρεση: **1.869 από τους 2.082 (89,8%)** έχουν
+ * ανοιχτό στόμιο ≥5 χλμ μέσα σε ±90°. Γι' αυτό απαιτείται ΚΑΙ δεύτερη συνθήκη — «κανένα ανοιχτό
+ * στόμιο δίπλα» — και το τόξο είναι ±90°, όχι ±45°: στα ±45° περνούσαν **520 τομείς** που είχαν
+ * στόμιο >5 χλμ λίγο πιο πέρα, και ο πληθυσμός που κρατούσαν είχε διάμεσο μέγιστο άνοιγμα 10,5 χλμ
+ * (δηλαδή ανοιχτές παραλίες με στραμμένο τον άνεμο, όχι όρμους).
+ *
+ * ΓΙΑΤΙ ΤΟ ΗΜΙΚΥΚΛΙΟ ΕΙΝΑΙ Η ΣΩΣΤΗ ΕΡΩΤΗΣΗ. Ο άνεμος χτίζει κύμα πάνω στο νερό απ' όπου έρχεται.
+ * Ανοιχτό νερό στην ΑΝΤΙΘΕΤΗ μεριά (πέρα από 90°) είναι νερό προς το οποίο φυσάει — δηλαδή η
+ * κλασική απόγεια περίπτωση, που ήδη καλύπτεται. Επικίνδυνο είναι μόνο ανοιχτό νερό στο ΙΔΙΟ
+ * ημικύκλιο με τον άνεμο.
+ *
+ * ⚠️ ΜΟΝΟΔΡΟΜΗ ΚΑΙ ΕΠΙΒΕΒΑΙΩΜΕΝΑ: μόνο ΠΡΟΣΘΕΤΕΙ περιπτώσεις όπου η εκτίμηση ακτής μιλάει, και
+ * το καπάκι «ποτέ πιο δυνατά από τη θάλασσα έξω» σιωπά αν το νούμερο δεν είναι ΜΙΚΡΟΤΕΡΟ. Εθνικά,
+ * 110/110 περιοχές × 2.872 παραλίες: **61 πιο ήρεμες (2,1%), 0 πιο άγριες**, 2 αλλαγές ετυμηγορίας
+ * (`avoid_swimming → caution`, Άγιος Ιωάννης Πόρτο 2151 και Σταφίδα 2186, Τήνος — και οι δύο ήδη
+ * `protected`), podium 5/110. Κλειδωμένο από `scripts/validateDrySectorGate.mjs`.
+ */
+export const DRY_SECTOR_NEIGHBOUR_HALF_WIDTH_DEG = 90;
+export const DRY_SECTOR_NEIGHBOUR_MAX_FETCH_KM = 2;
+
+const DRY_SECTOR_ORDER = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const;
+
+const angularDeltaDeg = (a: number, b: number): number => {
+  const normalize = (deg: number) => ((deg % 360) + 360) % 360;
+  const diff = Math.abs(normalize(a) - normalize(b));
+  return diff > 180 ? 360 - diff : diff;
+};
+
+/**
+ * Είναι ο ζωντανός τομέας ΞΗΡΟΣ — μηδέν νερό μπροστά ΚΑΙ κανένα ανοιχτό στόμιο στο ίδιο ημικύκλιο;
+ *
+ * Ο ζωντανός τομέας είναι ΠΑΡΕΜΒΟΛΗ δύο γειτονικών (utils/windExposureModel), οπότε δεν κουβαλάει
+ * τους άλλους έξι — γι' αυτό ο έλεγχος γείτονα θέλει το ίδιο το προφίλ. Χωρίς προφίλ ή χωρίς
+ * διεύθυνση ανέμου η απάντηση είναι ΟΧΙ: απουσία μάρτυρα δεν είναι απόδειξη.
+ */
+export const isEnclosedDrySector = (
+  sector: { fetchKm?: number; blockedRayRatio?: number } | null | undefined,
+  profile: { sectors?: Record<string, { fetchKm?: number } | undefined> } | null | undefined,
+  windDirectionDeg: number | null | undefined
+): boolean => {
+  if (!sector || !profile?.sectors) return false;
+  if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return false;
+  const { fetchKm, blockedRayRatio } = sector;
+  if (typeof fetchKm !== 'number' || !Number.isFinite(fetchKm) || fetchKm > 0) return false;
+  if (typeof blockedRayRatio !== 'number' || blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return false;
+
+  for (let index = 0; index < DRY_SECTOR_ORDER.length; index += 1) {
+    if (angularDeltaDeg(index * 45, windDirectionDeg) > DRY_SECTOR_NEIGHBOUR_HALF_WIDTH_DEG + 1e-9) continue;
+    const neighbourFetchKm = profile.sectors[DRY_SECTOR_ORDER[index]]?.fetchKm;
+    if (typeof neighbourFetchKm !== 'number' || !Number.isFinite(neighbourFetchKm)) return false;
+    if (neighbourFetchKm > DRY_SECTOR_NEIGHBOUR_MAX_FETCH_KM) return false;
+  }
+  return true;
+};
+
+/**
  * Κάτω από αυτό, ένα συστατικό της θάλασσας δεν κρίνει τίποτα — μετράμε κατευθύνσεις μόνο για
  * νερό που υπάρχει. Ίδιο νούμερο με το δάπεδο εμφάνισης × 1,5: αρκετά πάνω από τον θόρυβο του
  * πλέγματος, αρκετά κάτω από οτιδήποτε θα πρόσεχε κολυμβητής.
@@ -210,6 +276,13 @@ export interface ShoreWaveInput {
    * so this can lower the printed number and can never raise it.
    */
   departingSea?: boolean;
+  /**
+   * ΜΕΤΡΗΜΕΝΗ απόδειξη ότι δεν υπάρχει νερό προς τα εκεί — ούτε στον τομέα του ανέμου, ούτε σε
+   * κανένα στόμιο του ίδιου ημικυκλίου (δες {@link isEnclosedDrySector}). Παρακάμπτει ΜΟΝΟ τον
+   * έλεγχο `onshore` παρακάτω και τίποτα άλλο: το δάπεδο, το καπάκι, η αποθαλασσιά, η εμπιστοσύνη
+   * και το ύποπτο pin ισχύουν αυτούσια, οπότε μπορεί μόνο να κατεβάσει το τυπωμένο νούμερο.
+   */
+  enclosedDrySector?: boolean;
 }
 
 /**
@@ -226,6 +299,7 @@ export const estimateShoreWaveHeightM = ({
   suspectPin,
   arrivingSwellPresent,
   departingSea,
+  enclosedDrySector,
 }: ShoreWaveInput): number | undefined => {
   if (arrivingSwellPresent) return undefined;
   if (suspectPin) return undefined;
@@ -245,9 +319,13 @@ export const estimateShoreWaveHeightM = ({
     if (blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return undefined;
     if (fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return undefined;
   }
-  if (onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
+  // Ο άξονας `onshore` απαντά ΕΜΜΕΣΑ στο «μπορεί να φτάσει κύμα εδώ;». Όταν η γεωμετρία λέει ότι
+  // δεν υπάρχει καθόλου νερό στο ημικύκλιο του ανέμου, το ερώτημα απαντιέται ΑΜΕΣΑ και η γωνία
+  // δεν κρίνει τίποτα — δεν υπάρχει επιφάνεια πάνω στην οποία να χτιστεί κύμα, από όποια μεριά
+  // κι αν φυσάει. Δες isEnclosedDrySector για το γιατί το τόξο είναι ±90° και όχι ±45°.
+  if (!enclosedDrySector && onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
 
-  const weight = shoreRampWeight(onshore);
+  const weight = enclosedDrySector ? 1 : shoreRampWeight(onshore);
   const modelledM = estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm });
   const blendedM = weight * modelledM + (1 - weight) * openWaterWaveHeightM;
   const shoreM = Math.max(SHORE_DISPLAY_FLOOR_M, blendedM);

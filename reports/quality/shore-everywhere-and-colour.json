@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-08-17T19:15:52.316Z",
+  "profiles": 2872,
+  "flatThresholdM": 0.15,
+  "realSeaThresholdM": 0.8,
+  "everywhere": {
+    "combos": 68928,
+    "calmer": 59436,
+    "rougher": 9126,
+    "flatOverRealSea": 21052,
+    "flatOverRealSeaBeaches": 2858,
+    "worst": {
+      "gap": 1.5,
+      "regionId": "attica-aegina",
+      "beachId": 80,
+      "sectorKey": "S",
+      "fetchKm": 0,
+      "bft": 7,
+      "shoreM": 0.1,
+      "openWaterM": 1.6
+    },
+    "byWind": [
+      {
+        "bft": 3,
+        "windKmh": 20,
+        "flatOverRealSea": 0,
+        "combos": 22976
+      },
+      {
+        "bft": 6,
+        "windKmh": 40,
+        "flatOverRealSea": 11043,
+        "combos": 22976
+      },
+      {
+        "bft": 7,
+        "windKmh": 60,
+        "flatOverRealSea": 10009,
+        "combos": 22976
+      }
+    ],
+    "openSectorFlat": 0,
+    "medianDeltaM": -0.25,
+    "p10DeltaM": -1.5,
+    "p90DeltaM": 0.04
+  },
+  "colour": {
+    "drySectors": 8700,
+    "dryNotProtected": 361,
+    "dryNotProtectedBeaches": 308,
+    "dryNotProtectedClear90": 30,
+    "dryNotProtectedClear90Beaches": 21,
+    "exposedFromAngleAlone": 0,
+    "leakBeaches": 0,
+    "examples": [
+      {
+        "regionId": "attica-kythira",
+        "beachId": 146,
+        "sectorKey": "S",
+        "level": "partial",
+        "intensity": 48,
+        "maxAnywhereKm": 0.8
+      },
+      {
+        "regionId": "attica-kythira",
+        "beachId": 146,
+        "sectorKey": "NW",
+        "level": "partial",
+        "intensity": 34.2,
+        "maxAnywhereKm": 0.8
+      },
+      {
+        "regionId": "crete-crete-chania",
+        "beachId": 579,
+        "sectorKey": "NW",
+        "level": "partial",
+        "intensity": 33.3,
+        "maxAnywhereKm": 0.24
+      },
+      {
+        "regionId": "ionian-islands-corfu",
+        "beachId": 930,
+        "sectorKey": "S",
+        "level": "partial",
+        "intensity": 44.7,
+        "maxAnywhereKm": 1.08
+      },
+      {
+        "regionId": "ionian-islands-ithaca",
+        "beachId": 1229,
+        "sectorKey": "SW",
+        "level": "partial",
+        "intensity": 40.4,
+        "maxAnywhereKm": 1.56
+      },
+      {
+        "regionId": "ionian-islands-kefalonia",
+        "beachId": 1131,
+        "sectorKey": "NE",
+        "level": "partial",
+        "intensity": 47.6,
+        "maxAnywhereKm": 1.72
+      },
+      {
+        "regionId": "ionian-islands-kefalonia",
+        "beachId": 1131,
+        "sectorKey": "S",
+        "level": "partial",
+        "intensity": 34.7,
+        "maxAnywhereKm": 1.72
+      },
+      {
+        "regionId": "ionian-islands-kefalonia",
+        "beachId": 1138,
+        "sectorKey": "NE",
+        "level": "partial",
+        "intensity": 45.4,
+        "maxAnywhereKm": 1.96
+      },
+      {
+        "regionId": "north-aegean-chios",
+        "beachId": 1266,
+        "sectorKey": "SE",
+        "level": "partial",
+        "intensity": 37.9,
+        "maxAnywhereKm": 0.28
+      },
+      {
+        "regionId": "north-aegean-fournoi",
+        "beachId": 1316,
+        "sectorKey": "N",
+        "level": "partial",
+        "intensity": 42.3,
+        "maxAnywhereKm": 0.72
+      }
+    ],
+    "medianIntensity": 38.2
+  }
+}
