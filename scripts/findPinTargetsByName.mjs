@@ -84,7 +84,10 @@ const fetchNamedPlaces = async (lat, lon, radius) => {
       const res = await fetch(mirror, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': USER_AGENT },
+        // Χωρίς αυτό, ένας νεκρός καθρέφτης κρεμάει την κλήση επ' άπειρον — μετρημένο
+        // 17/08/2026: kumi.systems δεν απαντούσε καθόλου και κόστιζε 60 δλ ανά παραλία.
         body: 'data=' + encodeURIComponent(q),
+        signal: AbortSignal.timeout(45000),
       });
       if (res.status === 429 || res.status === 504 || res.status >= 500) { await sleep(2000); continue; }
       const json = await res.json().catch(() => ({}));

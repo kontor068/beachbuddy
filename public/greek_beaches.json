@@ -28306,9 +28306,9 @@
           "lon": 23.81817,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτωμένος δρόμος περίπου 77 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [
@@ -28332,7 +28332,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/347267356 highway=residential (κατηγορία πάντα στρωμένη) στα 77 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://chalkidikihub.gr/en/stay/five-senses-luxury-villas-vourvourou/guide",
@@ -37995,9 +37996,9 @@
           "lon": 23.9201432,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Geocoded from Seatrac accessible-beach seed; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -38014,7 +38015,7 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added. Terrain web-verify 2026-07-20 (no-API): label synced to types — Ammouliani island beaches (Alykes, Megali Ammos, Karagatsia) are 'white/golden sand with crystal-clear shallow water'; disambiguat [https://nikana.gr/en/tourist-guide/athos/beaches/3826/the-most-beautiful-beaches-on-ammouliani-island].",
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Αμμουλιανή\" (Ammouliani), Aristotelis, Central Macedonia. Nominatim hit nom-node-280887835; Overpass natural=beach corroboration 200 m. Slot via nearest existing beach #419 (592 m). Conservative — access/terrain unknown, amenities only as stated. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"sand\" (crowd-verified); set to sand. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand); beach bar added. Terrain web-verify 2026-07-20 (no-API): label synced to types — Ammouliani island beaches (Alykes, Megali Ammos, Karagatsia) are 'white/golden sand with crystal-clear shallow water'; disambiguat [https://nikana.gr/en/tourist-guide/athos/beaches/3826/the-most-beautiful-beaches-on-ammouliani-island]. Access from OSM road network 2026-08-17: OSM way/166808169 highway=residential surface=asphalt στα 43 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -38089,9 +38090,9 @@
           "lon": 23.1000758,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Geocoded from Seatrac accessible-beach seed; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [],
@@ -38108,7 +38109,8 @@
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Γεωπονικά\" (Geoponika), Nea Propontida, Central Macedonia. Nominatim hit nom-node-2330593211; Overpass natural=beach corroboration 598 m. Slot via nearest existing beach #478 (598 m). Conservative — access/terrain unknown, amenities only as stated."
+              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Γεωπονικά\" (Geoponika), Nea Propontida, Central Macedonia. Nominatim hit nom-node-2330593211; Overpass natural=beach corroboration 598 m. Slot via nearest existing beach #478 (598 m). Conservative — access/terrain unknown, amenities only as stated.",
+              "Access from OSM road network 2026-08-17: OSM way/15244455 highway=residential (κατηγορία πάντα στρωμένη) «Πολυανθών» στα 25 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://seatrac.gr/"
@@ -38174,9 +38176,9 @@
           "lon": 23.9234575,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Geocoded from Seatrac accessible-beach seed; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [],
@@ -38194,7 +38196,8 @@
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Νέα Ρόδα\" (Nea Roda), Aristotelis, Central Macedonia. Nominatim hit nom-node-296245466; Overpass natural=beach corroboration 443 m. Slot via nearest existing beach #454 (1437 m). Conservative — access/terrain unknown, amenities only as stated."
+              "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Νέα Ρόδα\" (Nea Roda), Aristotelis, Central Macedonia. Nominatim hit nom-node-296245466; Overpass natural=beach corroboration 443 m. Slot via nearest existing beach #454 (1437 m). Conservative — access/terrain unknown, amenities only as stated.",
+              "Access from OSM road network 2026-08-17: OSM way/303546656 highway=residential (κατηγορία πάντα στρωμένη) στα 24 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://seatrac.gr/"
@@ -38356,9 +38359,9 @@
           "lon": 23.090941,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [],
@@ -38373,7 +38376,7 @@
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin. Pin corrected 2026-07-20 (no-API): moved from 40.30144,23.09244 to 40.3013103,23.0868668 — OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia). (confidence medium). Pin corrected 2026-07-25 (no-API): moved from 40.30131,23.08687 to 40.30157,23.090941 — pin is 347 m from the OSM beach outline (confidence OSM polygon 347 m).",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μυκονιάτικα\" (https://www.openstreetmap.org/way/885440824) in Halkidiki (mainland), Central Macedonia. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>553m from any existing beach). Google confirms a tourist_attraction (246 ratings) 154m from the pin. Slot via nearest existing beach #478 (553m). Access/terrain unknown — needs field verification. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μυκονιάτικα\" 0m from the pin. Pin corrected 2026-07-20 (no-API): moved from 40.30144,23.09244 to 40.3013103,23.0868668 — OSM natural beach «Παραλία Γυμνιστών Μυκονιάτικα» ~475m west of our pin (Nea Kallikrateia). (confidence medium). Pin corrected 2026-07-25 (no-API): moved from 40.30131,23.08687 to 40.30157,23.090941 — pin is 347 m from the OSM beach outline (confidence OSM polygon 347 m). Access from OSM road network 2026-08-17: OSM way/882996576 highway=residential (κατηγορία πάντα στρωμένη) στα 10 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/885440824"
             ],
@@ -38454,9 +38457,9 @@
           "lon": 23.24856,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -38482,7 +38485,8 @@
               "https://www.openstreetmap.org/?mlat=40.24922000952382&mlon=23.24855651904762#map=17/40.24922000952382/23.24855651904762"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~830μ ακτή, κοντά σε Μουριές. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/91364352 (κέντρο polygon). Slot κοντά στο #3018 (Νέα Φλόγητα, 2591m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~830μ ακτή, κοντά σε Μουριές. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/91364352 (κέντρο polygon). Slot κοντά στο #3018 (Νέα Φλόγητα, 2591m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Access from OSM road network 2026-08-17: OSM way/91363612 highway=residential surface=asphalt «Ηρώων Πολυτεχνείου» στα 51 m. Previously 'unknown'. No other field changed."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -38508,9 +38512,9 @@
           "lon": 23.79222,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "Δεν έχει επιβεβαιωθεί επιτόπου."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -38535,7 +38539,8 @@
               "https://www.openstreetmap.org/?mlat=40.0861286857143&mlon=23.79221961071428#map=17/40.0861286857143/23.79221961071428"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~638μ ακτή, κοντά σε Νέος Μαρμαράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/374752064 (κέντρο polygon). Slot κοντά στο #432 (Paradisos, 2295m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Παραλία με 1 χαρτογραφημένο/α ντους (OSM amenity=shower) πάνω στο polygon, ~638μ ακτή, κοντά σε Νέος Μαρμαράς. ΑΝΩΝΥΜΗ στο OSM — γι' αυτό δεν την έπιανε το coverage pipeline που ψάχνει με όνομα. Το όνομα προκύπτει από τον πλησιέστερο οικισμό (ΔΕΝ είναι επιβεβαιωμένο τοπωνύμιο). Συντεταγμένες: OSM way/374752064 (κέντρο polygon). Slot κοντά στο #432 (Paradisos, 2295m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Access from OSM road network 2026-08-17: OSM way/14290030 highway=residential (κατηγορία πάντα στρωμένη) στα 27 m. Previously 'unknown'. No other field changed."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -199797,9 +199802,9 @@
           "lon": 23.659463,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Ο χωματόδρομος φτάνει μέχρι την παραλία."
             },
             "terrain": {
               "types": [
@@ -199822,7 +199827,8 @@
             "sourceNotes": [
               "Source follow-up pass 55 2026-05-28: GrecoSailor directly lists Paralia Trachili on Skopelos with anchorage coordinates, supporting identity/location traceability only. Confidence remains low; coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.97 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/node/10044288918, name \"Τραχηλι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.0945,23.74. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/954084362 highway=track στα 39 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://grecosailor.com/skippers/evia-and-northern-sporades/skopelos/anchorages/"
@@ -200116,9 +200122,9 @@
           "lon": 23.7295799,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτωμένος δρόμος περίπου 64 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [],
@@ -200131,7 +200137,7 @@
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Access from OSM road network 2026-08-17: OSM way/1094046166 highway=service surface=concrete στα 64 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1082118806"
             ],
@@ -200212,9 +200218,9 @@
           "lon": 23.092923,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "difficult_dirt_road",
+              "label": "Δύσβατος χωματόδρομος",
+              "notes": "Δύσβατος χωματόδρομος περίπου 74 μέτρα από την παραλία — χαμηλό αυτοκίνητο θα δυσκολευτεί."
             },
             "terrain": {
               "types": [
@@ -200237,7 +200243,8 @@
             "sourceNotes": [
               "Source follow-up pass 56 2026-05-28: Mapcarta directly names Izgoud in the Trikeri/Pelion area; used for toponym/location traceability only, not exact beach-geometry or service claims.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 5.54 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/node/11929948517, name \"Izgoud\", match score 0.85, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.1,23.0595. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/491163477 highway=track tracktype=grade5 στα 74 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://mapcarta.com/W577169488"
@@ -200779,9 +200786,9 @@
           "lon": 23.175763,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -200801,7 +200808,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/364176267 highway=tertiary surface=concrete στα 24 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://artespelion.gr/%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC/%CE%BF%CE%B4%CE%B7%CE%B3%CF%8C%CF%82-%CF%80%CE%B7%CE%BB%CE%AF%CE%BF%CF%85/%CE%BC%CE%BF%CE%BD%CE%BF%CE%AE%CE%BC%CE%B5%CF%81%CE%B5%CF%82-%CE%B5%CE%BA%CE%B4%CF%81%CE%BF%CE%BC%CE%AD%CF%82/%CE%BA%CE%B5%CE%BD%CF%84%CF%81%CE%B9%CE%BA%CF%8C-%CE%B4%CF%85%CF%84%CE%B9%CE%BA%CF%8C-%CF%80%CE%AE%CE%BB%CE%B9%CE%BF/",
@@ -201262,9 +201270,9 @@
           "lon": 23.343794,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Εύκολη πρόσβαση, τύπος δρόμου μη επιβεβαιωμένος",
-              "notes": "Θεοτόκος: η πηγή αναφέρει εύκολη πρόσβαση, αλλά δεν τεκμηριώνει αν ο δρόμος είναι άσφαλτος ή χωματόδρομος."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -201288,7 +201296,8 @@
               "Source follow-up pass 5 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, deep water, easy access wording, and unorganized status; ArtEsPelion also describes little tourism/no shops. Wind profile and scoring were not changed.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.15 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/305580865, name \"Θεοτόκος\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.175,23.276. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.15 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/305580865, name \"Θεοτόκος\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.175,23.276. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Access from OSM road network 2026-08-17: OSM way/305580867 highway=unclassified surface=paved στα 54 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.discover-pelion.gr/theotokos-pelion/",
@@ -201327,9 +201336,9 @@
           "lon": 23.01222,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Οδική πρόσβαση κοντά, επιφάνεια μη επιβεβαιωμένη",
-              "notes": "Η beach-page πηγή αναφέρει πρόσβαση χωρίς δυσκολία με αυτοκίνητο ή ταξί και παραλία δίπλα σε δρόμο, αλλά δεν επιβεβαιώνει άσφαλτο."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -201358,7 +201367,8 @@
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: Beaches-Searcher supports Kalamies beach identity near Agria/Agios Minas, nearby road access with unconfirmed road surface, fine-gravel/small-pebble terrain, gentle depth increase, and organized amenities including loungers/parasols, cafe/bar, showers, toilets, changing rooms, and lifeguard listing. No live sea-state claim was added.",
               "Magnesia continuation 2026-06-02: BeachSearcher supports Kalamies beach identity near Agria/Agios Minas, fine-gravel cover, gentle depth increase, organized amenities, adjacent-road context, and car/taxi access without a long walk. Road surface remains unconfirmed, so accessType stays unknown. Coordinates, windProfile, scoring, photos, and live condition claims were not changed.",
-              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.3425,22.989) was ~2.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location."
+              "Coordinates corrected 2026-06-20 (pin-coastline audit): stored pin (39.3425,22.989) was ~2.4 km from any coastline (OSM-confirmed inland); moved to the verified-coastal Google place location for this beach. Wind exposure regenerated at the new location.",
+              "Access from OSM road network 2026-08-17: OSM way/109431330 highway=residential (κατηγορία πάντα στρωμένη) «Ηρώων Πολυτεχνείου» στα 12 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://beaches-searcher.com/en/beach/300202290/kalamies-beach"
@@ -201620,9 +201630,9 @@
           "lon": 23.286323,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Χωματόδρομος περίπου 114 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [
@@ -201645,7 +201655,8 @@
             "sourceNotes": [
               "Source follow-up pass 5 2026-05-27: direct regional beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 6.81 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/305726283, name \"Κομός\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.21,23.296. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/310794004 highway=track στα 114 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.diakopes.gr/taxidia/kalokairines-apodraseis/pilio-ena-vouno-gia-to-kalokairi/"
@@ -201732,9 +201743,9 @@
           "lon": 23.160236,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "Η τοπική πηγή επιβεβαιώνει την παραλία Λαγούδι και τα βασικά φυσικά χαρακτηριστικά της, αλλά όχι τον τύπο δρόμου ή τελικής πρόσβασης."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτωμένος δρόμος περίπου 73 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [
@@ -201756,7 +201767,8 @@
             "sourceNotes": [
               "Low-confidence cleanup 2026-05-29: Maistrali Hotel local Pelion beach guide directly supports Lagoudi as an Afissos/Pagasitic beach with small-pebble terrain and tree shade above the beach. Access surface, services, wind profile, scoring, and live-condition claims were not strengthened.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 14.07 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/relation/568991, name \"Λαγούδι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.207,23.2985. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 14.07 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/relation/568991, name \"Λαγούδι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.207,23.2985. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Access from OSM road network 2026-08-17: OSM way/300219247 highway=tertiary surface=concrete «Διακλάδωση Αφήσου» στα 73 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.maistralihotel.com/gr/Pelion-beaches/"
@@ -202105,9 +202117,9 @@
           "lon": 23.263635,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Εύκολη πρόσβαση, τύπος δρόμου μη επιβεβαιωμένος",
-              "notes": "Μικρό: η πηγή αναφέρει εύκολη πρόσβαση, αλλά δεν τεκμηριώνει αν ο δρόμος είναι άσφαλτος ή χωματόδρομος."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτωμένος δρόμος περίπου 75 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [
@@ -202132,7 +202144,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 3 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, deep water, easy access wording, unorganized status, and nearby tavernas/cafes. Wind profile and scoring were not changed. Tourism-priority evidence pass 2026-05-29: Traveling-Greece and Discover Pelion directly support Mikro beach identity/location, coarse-sand/pebble terrain, deep water, easy-access wording, unorganized status, and nearby cafe/taverna context. Road-surface type remains unconfirmed. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 7.48 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/491163471, name \"Μικρό\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.2015,23.2855. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Web-verified 2026-07-20 (web-high): organized — Greek Wikipedia on Μικρό Μαγνησίας (the Aegean-side beach settlement 8km from Lafkos, next to Platanias — matches coords, distinct from Platanias itself): 'Η πα [https://el.wikipedia.org/wiki/Μικρό_Μαγνησίας]; beach bar+sunbeds added.",
+            "sourceNotes": "Source follow-up pass 3 2026-05-27: direct local beach guide supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, deep water, easy access wording, unorganized status, and nearby tavernas/cafes. Wind profile and scoring were not changed. Tourism-priority evidence pass 2026-05-29: Traveling-Greece and Discover Pelion directly support Mikro beach identity/location, coarse-sand/pebble terrain, deep water, easy-access wording, unorganized status, and nearby cafe/taverna context. Road-surface type remains unconfirmed. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added. Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 7.48 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/491163471, name \"Μικρό\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.2015,23.2855. Only coordinates changed; windProfile, scoring, photos and live claims untouched. Web-verified 2026-07-20 (web-high): organized — Greek Wikipedia on Μικρό Μαγνησίας (the Aegean-side beach settlement 8km from Lafkos, next to Platanias — matches coords, distinct from Platanias itself): 'Η πα [https://el.wikipedia.org/wiki/Μικρό_Μαγνησίας]; beach bar+sunbeds added. Access from OSM road network 2026-08-17: OSM way/516840261 highway=unclassified surface=asphalt στα 75 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://traveling-greece.com/pelion-mikro/",
               "https://www.discover-pelion.gr/mikro-pelion/"
@@ -202241,9 +202253,9 @@
           "lon": 23.333222,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Εύκολη πρόσβαση, τύπος δρόμου μη επιβεβαιωμένος",
-              "notes": "Μουρτιάς: η πηγή αναφέρει εύκολη πρόσβαση, αλλά δεν τεκμηριώνει αν ο δρόμος είναι άσφαλτος ή χωματόδρομος."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [
@@ -202271,7 +202283,8 @@
               "Source follow-up pass 5 2026-05-27: direct local beach article supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Magnesia/Pelion low-confidence cleanup 2026-05-28: Discover Pelion supports coarse-sand/pebble type, medium depth, easy access wording, and unorganized status; ArtEsPelion supports pebbles/stones and nearby cafes/restaurants. Wind profile and scoring were not changed.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.58 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/76449250, name \"Μουρτιάς\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.1835,23.2925. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.58 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/76449250, name \"Μουρτιάς\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.1835,23.2925. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Access from OSM road network 2026-08-17: OSM way/510241222 highway=residential (κατηγορία πάντα στρωμένη) στα 51 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.secretvolos.gr/i-exotiki-paralia-moyrtias-sto-pilio/",
@@ -202973,9 +202986,9 @@
           "lon": 23.206137,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": ""
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Ο χωματόδρομος φτάνει μέχρι την παραλία."
             },
             "terrain": {
               "types": [
@@ -202998,7 +203011,8 @@
             "sourceNotes": [
               "Source follow-up pass 56 2026-05-28: BeachNearby directly names Paralia Kornelia in the Zagora/Pelion area; used for identity/location traceability only.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 7.42 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/839121454, name \"Παραλία Κορνέλια\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.19,23.292. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-08-17: OSM way/740974662 highway=track στα 56 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://beachnearby.com/beach/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BA%CE%BF%CF%81%CE%BD%CE%AD%CE%BB%CE%B9%CE%B1-municipal-unit-of-zagora-thessaly"
@@ -204130,9 +204144,9 @@
           "lon": 23.0148313,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": "Ο χωματόδρομος φτάνει μέχρι την παραλία."
             },
             "terrain": {
               "types": [],
@@ -204146,7 +204160,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Καλαμιές\" (https://www.openstreetmap.org/way/320088015) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1140m from any existing beach). Google confirms a point_of_interest (244 ratings) 27m from the pin. Slot via nearest existing beach #2684 (1140m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Καλαμιές\" (https://www.openstreetmap.org/way/320088015) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1140m from any existing beach). Google confirms a point_of_interest (244 ratings) 27m from the pin. Slot via nearest existing beach #2684 (1140m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/385589498 highway=track tracktype=grade2 στα 34 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/320088015"
@@ -204175,9 +204190,9 @@
           "lon": 22.934017,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [],
@@ -204191,7 +204206,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"παραλία Νηές\" (https://www.openstreetmap.org/way/1484288539) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>7197m from any existing beach). Slot via nearest existing beach #2672 (7197m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"παραλία Νηές\" (https://www.openstreetmap.org/way/1484288539) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>7197m from any existing beach). Slot via nearest existing beach #2672 (7197m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/962936404 highway=tertiary surface=asphalt στα 52 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1484288539"
@@ -204220,9 +204236,9 @@
           "lon": 23.0141285,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ασφαλτωμένος δρόμος περίπου 97 μέτρα από την παραλία."
             },
             "terrain": {
               "types": [],
@@ -204237,7 +204253,7 @@
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Σουτραλί\" (https://www.openstreetmap.org/way/320087252) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>527m from any existing beach). Google confirms a beach (187 ratings) 11m from the pin. Slot via nearest existing beach #2684 (527m). Access/terrain unknown — needs field verification. Web-verified 2026-07-19 (web-high): organized — Official bathing-water profile: Soutrali (Agria) is organized with sunbeds, umbrellas, showers and waste bins; restaurants/refreshment bars nearby. [https://bathingwaterprofiles.gr/bathingprofiles/GRBW089105025]; sunbeds added.",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Σουτραλί\" (https://www.openstreetmap.org/way/320087252) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>527m from any existing beach). Google confirms a beach (187 ratings) 11m from the pin. Slot via nearest existing beach #2684 (527m). Access/terrain unknown — needs field verification. Web-verified 2026-07-19 (web-high): organized — Official bathing-water profile: Soutrali (Agria) is organized with sunbeds, umbrellas, showers and waste bins; restaurants/refreshment bars nearby. [https://bathingwaterprofiles.gr/bathingprofiles/GRBW089105025]; sunbeds added. Access from OSM road network 2026-08-17: OSM way/372415770 highway=residential (κατηγορία πάντα στρωμένη) στα 97 m. Previously 'unknown'. No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/320087252"
             ],
@@ -204328,9 +204344,9 @@
           "lon": 22.9267965,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Ο ασφαλτωμένος δρόμος φτάνει ουσιαστικά πάνω στην παραλία."
             },
             "terrain": {
               "types": [],
@@ -204344,7 +204360,8 @@
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Άι Γιάννης (Κεραμίδι, Πήλιο)\" (https://www.openstreetmap.org/node/12598434867) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>6864m from any existing beach). Google confirms a beach (18 ratings) 8m from the pin. Slot via nearest existing beach #2714 (6864m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Άι Γιάννης (Κεραμίδι, Πήλιο)\" (https://www.openstreetmap.org/node/12598434867) in Magnesia (mainland - Pelion), Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>6864m from any existing beach). Google confirms a beach (18 ratings) 8m from the pin. Slot via nearest existing beach #2714 (6864m). Access/terrain unknown — needs field verification.",
+              "Access from OSM road network 2026-08-17: OSM way/960708935 highway=residential (κατηγορία πάντα στρωμένη) στα 54 m. Previously 'unknown'. No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/12598434867"
