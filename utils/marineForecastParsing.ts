@@ -44,8 +44,15 @@ const optionalNumber = (value: unknown): number | undefined => (
   typeof value === 'number' && Number.isFinite(value) ? value : undefined
 );
 
-/** Shape one Open-Meteo Marine `hourly` block into rows, choosing a model per hour. */
-export const parseMarineHourly = (marineHourly: any): MarineHourlyRow[] => {
+/**
+ * Shape one Open-Meteo Marine `hourly` block into rows, choosing a model per hour.
+ *
+ * `preferModelId` flips which model leads for THIS point only. Omit it and nothing changes.
+ */
+export const parseMarineHourly = (
+  marineHourly: any,
+  preferModelId?: 'ewam' | 'meteofrance_wave',
+): MarineHourlyRow[] => {
   if (!marineHourly?.time || !Array.isArray(marineHourly.time)) {
     throw new Error('Marine fetch failed: missing hourly data');
   }
@@ -91,12 +98,26 @@ export const parseMarineHourly = (marineHourly: any): MarineHourlyRow[] => {
   // field follows that same decision, so height, direction and period always describe ONE sea —
   // utils/waveCharacter turns (height, period) into a single severity, so a mixed pair would
   // invent a sea neither model reported.
-  const preferEwamAt = (index: number): boolean => (
-    optionalNumber(waveHeightEwam?.[index]) !== undefined
+  // ΤΟ ΣΗΜΕΙΟ ΜΠΟΡΕΙ ΝΑ ΖΗΤΗΣΕΙ ΤΟ ΑΛΛΟ ΜΟΝΤΕΛΟ — ΚΑΙ ΜΟΝΟ ΓΙΑ ΕΝΑΝ ΛΟΓΟ.
+  // Το ewam ηγείται παντού επειδή κέρδισε σε 9.723 ώρες σημαδούρας (βλ. κεφαλίδα). Σε 56
+  // σημεία όμως το κελί του περιγράφει νερό που η παραλία ΔΕΝ βλέπει — πίσω από ακρωτήρι —
+  // ενώ του meteofrance_wave όχι. Εκεί η καλύτερη βαθμολογία του ewam είναι άσχετη: μετράει
+  // σωστά λάθος θάλασσα. Η λίστα φτιάχνεται από μέτρηση, όχι από κρίση, και αποκλείει ρητά
+  // τις περιπτώσεις όπου το meteofrance θα έχανε τη διάκριση προσήνεμης/υπήνεμης ακτής —
+  // scripts/bakeMarineModelPreference.mjs.
+  const flipped = preferModelId === 'meteofrance_wave';
+  const leading = flipped ? waveHeightMf : waveHeightEwam;
+  const preferLeadingAt = (index: number): boolean => (
+    optionalNumber(leading?.[index]) !== undefined
   );
-  const pick = (index: number, ewam?: unknown[], fallback?: unknown[]): unknown => (
-    preferEwamAt(index) ? ewam?.[index] : fallback?.[index]
-  );
+  const pick = (index: number, ewam?: unknown[], fallback?: unknown[]): unknown => {
+    const [first, second] = flipped ? [fallback, ewam] : [ewam, fallback];
+    return preferLeadingAt(index) ? first?.[index] : second?.[index];
+  };
+  const modelAt = (index: number): 'ewam' | 'meteofrance_wave' => {
+    if (preferLeadingAt(index)) return flipped ? 'meteofrance_wave' : 'ewam';
+    return flipped ? 'ewam' : 'meteofrance_wave';
+  };
 
   return marineHourly.time
     .map((timeStr: string, index: number): MarineHourlyRow => ({
@@ -109,7 +130,7 @@ export const parseMarineHourly = (marineHourly: any): MarineHourlyRow[] => {
         swellWaveDirectionDeg: optionalNumber(pick(index, swellDirectionEwam, swellDirectionMf)),
         swellWavePeriodS: optionalNumber(pick(index, swellPeriodEwam, swellPeriodMf)),
         seaSurfaceTemperatureC: optionalNumber(seaTemperature?.[index]),
-        waveModel: preferEwamAt(index) ? 'ewam' : 'meteofrance_wave',
+        waveModel: modelAt(index),
         source: 'open-meteo-marine',
       },
     }))

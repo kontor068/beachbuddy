@@ -112,6 +112,30 @@ const sabotage = () => {
 const sabotageProblem = sabotage();
 if (sabotageProblem) problems.push(sabotageProblem);
 
+// ── Ε. Η προτίμηση μοντέλου δείχνει σε σημεία που ΥΠΑΡΧΟΥΝ ──────────────────
+// Το κλειδί είναι στρογγυλοποιημένες συντεταγμένες. Αν αλλάξει η στρογγυλοποίηση σε ένα από τα
+// τρία σημεία που τη χρησιμοποιούν (παραγωγός, utils/marineModelPreference, marineSamplePoints),
+// η προτίμηση γίνεται ΣΙΩΠΗΛΑ ανενεργή: κανένα κλειδί δεν ταιριάζει και κανείς δεν το μαθαίνει.
+{
+  const prefSrc = readFileSync(path.join(root, 'utils/marineModelPreference.generated.ts'), 'utf8');
+  const keys = [...prefSrc.matchAll(/^\s*'([-\d.]+_[-\d.]+)':/gm)].map(m => m[1]);
+  const pointKeys = new Set();
+  for (const profile of profiles) {
+    const sp = profile.marineSamplePoint;
+    if (sp) pointKeys.add(`${sp.lat.toFixed(3)}_${sp.lon.toFixed(3)}`);
+  }
+  const orphans = keys.filter(k => !pointKeys.has(k));
+  if (!keys.length) {
+    problems.push('η προτίμηση μοντέλου είναι ΑΔΕΙΑ — 49 σημεία μετρήθηκαν, κανένα δεν γράφτηκε');
+  } else if (orphans.length) {
+    problems.push(
+      `${orphans.length} κλειδιά προτίμησης μοντέλου δεν αντιστοιχούν σε κανένα σημείο θάλασσας `
+      + `(${orphans.slice(0, 3).join(', ')}) — η προτίμηση είναι σιωπηλά ανενεργή εκεί. `
+      + 'Ξανατρέξε: node scripts/bakeMarineModelPreference.mjs'
+    );
+  }
+}
+
 if (problems.length) fail(problems);
 
 console.log(

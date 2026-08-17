@@ -6,6 +6,7 @@ import type { ForecastPoint } from './forecast/ForecastProvider';
 import { syncClockFromTrustedInstant } from '../utils/athensTime';
 import { parseMarineHourly } from '../utils/marineForecastParsing';
 import { marinePointKey } from '../utils/marineSamplePoints';
+import { preferredMarineModelFor } from '../utils/marineModelPreference';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -566,7 +567,7 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
 
   const waves = withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'marine-forecast');
-    return parseMarineHourly(data?.hourly);
+    return parseMarineHourly(data?.hourly, preferredMarineModelFor(lat, lon));
   });
 
   const sstKey = `sst_${lat.toFixed(3)}_${lon.toFixed(3)}`;
@@ -659,7 +660,8 @@ const fetchPointsBatched = async <T>(
     endpoint: OpenMeteoEndpoint;
     source: string;
     buildUrl: (batch: ForecastPoint[]) => string;
-    parse: (entry: any) => T;
+    /** `point` is passed so a parser can vary by coordinate — see the marine model preference. */
+    parse: (entry: any, point: ForecastPoint) => T;
     /** Default true. See saveToCache — per-beach seas stay in memory. */
     persist?: boolean;
   },
@@ -727,7 +729,7 @@ const fetchPointsBatched = async <T>(
         }
 
         try {
-          const data = options.parse(entry?.hourly);
+          const data = options.parse(entry?.hourly, point);
           saveToCache(cacheKeyOf(point), data, fetchedAt, options.persist !== false);
           results.set(forecastPointKey(point.lat, point.lon), { data, fetchedAt });
           // Counted per POINT, not per request: the provider's own limits are what
@@ -790,7 +792,9 @@ export const fetchMarineForecastDataBatch = async (
     endpoint: 'marine',
     source: 'marine-forecast-batch',
     buildUrl: batch => activeForecastProvider.marineForecastUrlBatch(batch),
-    parse: parseMarineHourly,
+    // Τα 56 σημεία που πρέπει να διαβαστούν από το άλλο μοντέλο κύματος: το κελί του ewam
+    // εκεί περιγράφει νερό που η παραλία δεν βλέπει. Παντού αλλού δεν αλλάζει τίποτα.
+    parse: (hourly, point) => parseMarineHourly(hourly, preferredMarineModelFor(point.lat, point.lon)),
     persist: options?.persist,
   });
 
