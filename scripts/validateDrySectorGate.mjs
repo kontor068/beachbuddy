@@ -30,6 +30,17 @@
  *   4. ΤΟ ΜΕΓΕΘΟΣ ΔΕΝ ΦΟΥΣΚΩΝΕΙ ΣΙΩΠΗΛΑ. Μετρημένα 17/08: 104 τομείς σε 59 παραλίες. Ένα ταβάνι
  *      με περιθώριο αφήνει φυσιολογική μετακίνηση γεωμετρίας αλλά κόβει κάθε χαλάρωση κανόνα.
  *
+ *   5. Η ΒΕΝΤΑΛΙΑ ΛΕΕΙ ΤΗΝ ΑΛΗΘΕΙΑ ΤΟΥ ΣΤΟΜΙΟΥ (§Γ22, 18/08/2026). Από τις 18/08 ο ξηρός τομέας
+ *      με πλήρες προφίλ παίρνει μοντελοποιημένο ύψος από το ολοκλήρωμα cos²ˢ × SMB. Κλειδώνονται:
+ *      (5α) μιλάει ΜΟΝΟ σε ξηρό τομέα — άνοιγμα >0 ή φράξιμο <0,95 σημαίνει σιωπή· (5β) η
+ *      κανονικοποίηση απλώνεται σε ΟΛΗ τη βεντάλια, και στη στεριά — κλειστό προφίλ = 0, ομοιόμορφα
+ *      ανοιχτό = ίδιο με τη μονή γραμμή, μισάνοιχτο = ΚΑΤΩ από το μισό της μονής (αν κάποιος
+ *      κανονικοποιήσει μόνο στο νερό, το μισάνοιχτο φουσκώνει στο ολόκληρο και εδώ κοκκινίζει)·
+ *      (5γ) δάπεδο και απόλυτο καπάκι ισχύουν σε ΚΑΘΕ ξηρό τομέα × ένταση· (5δ) ονομαστικά:
+ *      Πάνορμος (2011) και Λιμανάκια (22) — τα δύο «ΔΕΝ ξεκλειδώνουν» της §Γ21 — παίρνουν πλέον
+ *      το νούμερο του στομίου τους (≥0,15 μ. στα 40 χλμ/ώρα), ενώ Σταφίδα (2186) και Άγ. Ιωάννης
+ *      Πόρτο (2151) μένουν στο δάπεδο, ακριβώς ό,τι έδινε η §Γ21.
+ *
  * Καθαρός υπολογισμός πάνω στην αποθηκευμένη γεωμετρία — χωρίς δίκτυο.
  *
  * Run: node scripts/validateDrySectorGate.mjs
@@ -60,11 +71,15 @@ require.extensions['.ts'] = (module, filename) => {
 const {
   estimateShoreWaveHeightM,
   isEnclosedDrySector,
+  drySectorFanWaveHeightM,
   DRY_SECTOR_NEIGHBOUR_HALF_WIDTH_DEG,
   DRY_SECTOR_NEIGHBOUR_MAX_FETCH_KM,
+  DRY_SECTOR_MIN_BLOCKED_RATIO,
   SHORE_RAMP_SILENT_ONSHORE,
+  SHORE_DISPLAY_FLOOR_M,
 } = require(path.join(root, 'utils/shoreWave.ts'));
 const { interpolateSectorGeometry } = require(path.join(root, 'utils/windExposureModel.ts'));
+const { estimateFetchLimitedWaveHeightM } = require(path.join(root, 'utils/waveModel.ts'));
 
 const SECTOR_ORDER = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 // Ίδιο πλέγμα εντάσεων με τη μέτρηση της §Γ21, ώστε τα νούμερα να συγκρίνονται. Η αντιστοίχιση
@@ -96,6 +111,10 @@ const failures = [];
 const unlockedByBeach = new Map();
 let unlockedSectors = 0;
 let combos = 0;
+// (5) Ο πληθυσμός της βεντάλιας: ξηροί τομείς που σιωπούν σήμερα και θα έπαιρναν φωνή από το
+// στόμιο. Μετρημένο 18/08: 2.082 τομείς σε 1.318 παραλίες — ταβάνι με περιθώριο γεωμετρίας.
+const fanSilentBeaches = new Set();
+let fanSilentSectors = 0;
 
 for (const file of readdirSync(exposureDir).filter(n => n.endsWith('.json') && n !== 'index.json')) {
   const regionId = file.replace(/\.json$/, '');
@@ -107,6 +126,15 @@ for (const file of readdirSync(exposureDir).filter(n => n.endsWith('.json') && n
       if (!sector) return;
       const windDeg = index * 45;
       const dry = isEnclosedDrySector(sector, profile, windDeg);
+      // «Ωμός ξηρός» — το κατώφλι της βεντάλιας (§Γ22), χαλαρότερο από του isEnclosedDrySector
+      // (0,95 αντί για 1, χωρίς έλεγχο γείτονα: τον γείτονα τον ΖΥΓΙΖΕΙ το ολοκλήρωμα).
+      const rawDry = typeof sector.fetchKm === 'number' && sector.fetchKm <= 0
+        && typeof sector.blockedRayRatio === 'number'
+        && sector.blockedRayRatio >= DRY_SECTOR_MIN_BLOCKED_RATIO;
+      if (rawDry && typeof sector.onshore === 'number' && sector.onshore >= SHORE_RAMP_SILENT_ONSHORE) {
+        fanSilentSectors += 1;
+        fanSilentBeaches.add(profile.beachId);
+      }
 
       if (dry) {
         // ΜΕΤΡΑΜΕ ΜΟΝΟ ΟΣΟΥΣ ΑΛΛΑΖΟΥΝ ΣΥΜΠΕΡΙΦΟΡΑ. Οι περισσότεροι ξηροί τομείς έχουν ήδη απόγειο
@@ -159,6 +187,34 @@ for (const file of readdirSync(exposureDir).filter(n => n.endsWith('.json') && n
             + `ακτή ${after.toFixed(2)} μ. ≥ ανοιχτά ${wind.openWaterM.toFixed(2)} μ. — έφυγε το καπάκι`
           );
         }
+        // (5γ) Η βεντάλια σε ΚΑΘΕ ξηρό τομέα: δάπεδο από κάτω, απόλυτο καπάκι από πάνω. Το καπάκι
+        // εδώ έχει δόντια: στον όρμο με μεγάλο στόμιο το H_fan μεγαλώνει με τον άνεμο, και αν
+        // ξεπεράσει τα ανοιχτά ο κώδικας οφείλει να σωπάσει, όχι να τυπώσει το μεγαλύτερο νούμερο.
+        if (rawDry) {
+          const fanM = drySectorFanWaveHeightM({
+            sector: { fetchKm: sector.fetchKm, blockedRayRatio: sector.blockedRayRatio },
+            profile,
+            windDirectionDeg: windDeg,
+            windSpeedKmh: wind.windKmh,
+          });
+          if (fanM !== undefined) {
+            const withFan = estimateShoreWaveHeightM({ ...base, enclosedDrySector: false, dryFanWaveM: fanM });
+            if (typeof withFan === 'number') {
+              if (withFan >= wind.openWaterM - 1e-9) {
+                failures.push(
+                  `${regionId} #${profile.beachId} @${sectorKey} ${wind.windKmh} χλμ/ώρα: `
+                  + `βεντάλια ${withFan.toFixed(2)} μ. ≥ ανοιχτά ${wind.openWaterM.toFixed(2)} μ. — έφυγε το καπάκι της βεντάλιας`
+                );
+              }
+              if (withFan < SHORE_DISPLAY_FLOOR_M - 1e-9) {
+                failures.push(
+                  `${regionId} #${profile.beachId} @${sectorKey} ${wind.windKmh} χλμ/ώρα: `
+                  + `βεντάλια ${withFan.toFixed(2)} μ. κάτω από το δάπεδο ${SHORE_DISPLAY_FLOOR_M}`
+                );
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -204,6 +260,109 @@ for (const commitment of NAMED) {
       + `ενώ η δέσμευση λέει ${commitment.mustUnlock ? 'πρέπει' : 'ΔΕΝ πρέπει'} — ${commitment.why}`
     );
   }
+}
+
+// (5α) Η βεντάλια μιλάει ΜΟΝΟ σε ξηρό τομέα. Ένα άνοιγμα 0,3 χλμ ή φράξιμο 0,5 στη ζωντανή
+// γεωμετρία σημαίνει σιωπή — αλλιώς η βεντάλια θα άρχιζε να μιλάει για ανοιχτές παραλίες, δηλαδή
+// το fan-all που ΔΕΝ εγκρίθηκε (ξαναμετριέται σε μελτέμι πρώτα).
+{
+  const uniformProfile = (fetchKm, blockedRayRatio) => ({
+    sectors: Object.fromEntries(SECTOR_ORDER.map(k => [k, { fetchKm, blockedRayRatio }])),
+  });
+  const openProfile = uniformProfile(10, 0);
+  const closedProfile = uniformProfile(0, 1);
+  const drySector = { fetchKm: 0, blockedRayRatio: 1 };
+
+  const offDryFetch = drySectorFanWaveHeightM({ sector: { fetchKm: 0.3, blockedRayRatio: 1 }, profile: closedProfile, windDirectionDeg: 0, windSpeedKmh: 40 });
+  if (offDryFetch !== undefined) failures.push(`(5α) η βεντάλια μίλησε σε τομέα με άνοιγμα 0,3 χλμ (${offDryFetch})`);
+  const offDryRatio = drySectorFanWaveHeightM({ sector: { fetchKm: 0, blockedRayRatio: 0.5 }, profile: closedProfile, windDirectionDeg: 0, windSpeedKmh: 40 });
+  if (offDryRatio !== undefined) failures.push(`(5α) η βεντάλια μίλησε σε τομέα με φράξιμο 0,5 (${offDryRatio})`);
+  const noWitness = drySectorFanWaveHeightM({
+    sector: drySector,
+    profile: { sectors: { N: { fetchKm: 0, blockedRayRatio: 1 } } },
+    windDirectionDeg: 0,
+    windSpeedKmh: 40,
+  });
+  if (noWitness !== undefined) failures.push(`(5α) η βεντάλια μίλησε με λειψό προφίλ (${noWitness})`);
+
+  // (5β) Τιμιότητα κανονικοποίησης — τα τρία σκαλιά που ξεχωρίζουν το σωστό ολοκλήρωμα από κάθε
+  // πρόχειρη εκδοχή του: κλειστό = 0 · ομοιόμορφο = ίδιο με τη μονή γραμμή (ούτε άθροισμα ούτε
+  // διπλασιασμός) · μισάνοιχτο = κάτω από το μισό της μονής (κανονικοποίηση water-only θα το
+  // φούσκωνε ως ολόκληρο και κοκκινίζει εδώ).
+  const singleLineM = estimateFetchLimitedWaveHeightM({ windSpeedKmh: 40, fetchKm: 10 });
+  const fanClosed = drySectorFanWaveHeightM({ sector: drySector, profile: closedProfile, windDirectionDeg: 0, windSpeedKmh: 40 });
+  if (fanClosed !== 0) failures.push(`(5β) κλειστό προφίλ δεν έδωσε 0 (${fanClosed})`);
+  const fanOpen = drySectorFanWaveHeightM({ sector: drySector, profile: openProfile, windDirectionDeg: 0, windSpeedKmh: 40 });
+  if (typeof fanOpen !== 'number' || Math.abs(fanOpen - singleLineM) > 0.01) {
+    failures.push(`(5β) ομοιόμορφο προφίλ 10 χλμ: βεντάλια ${fanOpen} ≠ μονή γραμμή ${singleLineM}`);
+  }
+  const mouthProfile = {
+    sectors: Object.fromEntries(SECTOR_ORDER.map(k => [k, k === 'SW' ? { fetchKm: 10, blockedRayRatio: 0 } : { fetchKm: 0, blockedRayRatio: 1 }])),
+  };
+  const fanMouth = drySectorFanWaveHeightM({ sector: drySector, profile: mouthProfile, windDirectionDeg: 180, windSpeedKmh: 40 });
+  if (typeof fanMouth !== 'number' || fanMouth <= 0 || fanMouth >= singleLineM * 0.5) {
+    failures.push(`(5β) στόμιο ΝΔ 10 χλμ @ νοτιά: βεντάλια ${fanMouth} — έπρεπε 0 < H < ${(singleLineM * 0.5).toFixed(2)} (μισάνοιχτο ≠ ολάνοιχτο)`);
+  }
+}
+
+// (5δ) Ονομαστικές δεσμεύσεις της βεντάλιας, στα 40 χλμ/ώρα (ανοιχτά 0,9 μ. — το πλέγμα WINDS).
+// Οι δύο «ΔΕΝ ξεκλειδώνουν» της §Γ21 είναι ακριβώς οι παραλίες που η βεντάλια υπάρχει για να
+// τιμολογεί: το στόμιό τους παίρνει νούμερο αντί για γυμνό δάπεδο (Πάνορμος 2011 — το ατύχημα)
+// ή αντί για το πέλαγος (Λιμανάκια 22). Οι δύο της Τήνου μένουν στο δάπεδο — κλειστοί όρμοι.
+const FAN_NAMED = [
+  { beachId: 2011, windDeg: 180, minM: 0.15, why: 'Πάνορμος Νάξου — νοτιάς πάνω στο ΝΔ στόμιο 6,2 χλμ: η κλάση του ατυχήματος παίρνει νούμερο' },
+  // 227° — η ΙΔΙΑ γωνία με τη δέσμευση της §Γ21 πιο πάνω: ζωντανός τομέας ΞΗΡΟΣ (SW→W, και οι
+  // δύο 0/1), στόμιο Ν 15 χλμ στις 47° απόσταση. Στις 206° η παρεμβολή πατάει το ανοιχτό Ν
+  // (8,7 χλμ) και σωστά δεν είναι ξηρή — μετρήθηκε πριν διαλεχτεί η γωνία.
+  { beachId: 22, windDeg: 227, minM: 0.15, why: 'Λιμανάκια Βουλιαγμένης — στόμιο 15 χλμ στο ημικύκλιο: ποτέ ξανά σκέτο δάπεδο εδώ' },
+  { beachId: 2186, windDeg: 352, floor: true, why: 'Σταφίδα Τήνου — κλειστός όρμος: η βεντάλια οφείλει να συμφωνεί με το δάπεδο της §Γ21' },
+  { beachId: 2151, windDeg: 352, floor: true, why: 'Άγιος Ιωάννης Πόρτο Τήνου — ομοίως' },
+];
+for (const commitment of FAN_NAMED) {
+  const profile = profilesById.get(commitment.beachId);
+  if (!profile) {
+    failures.push(`(5δ) #${commitment.beachId} λείπει από τη γεωμετρία — «${commitment.why}» δεν ελέγχεται πια`);
+    continue;
+  }
+  const liveSector = interpolateSectorGeometry(profile, commitment.windDeg);
+  const fanM = drySectorFanWaveHeightM({
+    sector: liveSector,
+    profile,
+    windDirectionDeg: commitment.windDeg,
+    windSpeedKmh: 40,
+  });
+  if (fanM === undefined) {
+    failures.push(`(5δ) #${commitment.beachId} @${commitment.windDeg}°: η βεντάλια σώπασε (ο τομέας δεν είναι πια ξηρός;) — ${commitment.why}`);
+    continue;
+  }
+  const printed = estimateShoreWaveHeightM({
+    openWaterWaveHeightM: 0.9,
+    windSpeedKmh: 40,
+    sector: { fetchKm: liveSector.fetchKm, blockedRayRatio: liveSector.blockedRayRatio, onshore: 0 },
+    confidence: 'high',
+    suspectPin: false,
+    arrivingSwellPresent: false,
+    enclosedDrySector: false,
+    dryFanWaveM: fanM,
+  });
+  if (commitment.floor) {
+    if (printed !== SHORE_DISPLAY_FLOOR_M) {
+      failures.push(`(5δ) #${commitment.beachId} @${commitment.windDeg}°: τύπωσε ${printed} αντί για το δάπεδο ${SHORE_DISPLAY_FLOOR_M} — ${commitment.why}`);
+    }
+  } else if (typeof printed !== 'number' || printed < commitment.minM) {
+    failures.push(`(5δ) #${commitment.beachId} @${commitment.windDeg}°: τύπωσε ${printed} < ${commitment.minM} — ${commitment.why}`);
+  }
+}
+
+// (5ε) Ο πληθυσμός της βεντάλιας δεν φουσκώνει σιωπηλά. Μετρημένο 18/08: 2.082 τομείς σε 1.318
+// παραλίες (§Γ20/§Γ21/§Γ22 — το ίδιο πλέγμα και στις τρεις μετρήσεις).
+const MAX_FAN_SILENT_SECTORS = 2300;
+const MAX_FAN_SILENT_BEACHES = 1450;
+if (fanSilentSectors > MAX_FAN_SILENT_SECTORS || fanSilentBeaches.size > MAX_FAN_SILENT_BEACHES) {
+  failures.push(
+    `(5ε) ο πληθυσμός της βεντάλιας φούσκωσε: ${fanSilentSectors} τομείς σε ${fanSilentBeaches.size} παραλίες `
+    + `(ταβάνι ${MAX_FAN_SILENT_SECTORS}/${MAX_FAN_SILENT_BEACHES}, μετρημένο 2082/1318 στις 18/08)`
+  );
 }
 
 // (4) Το μέγεθος. Μετρημένα 104 τομείς / 59 παραλίες· ταβάνι με περιθώριο για φυσιολογική

@@ -1,4 +1,6 @@
+import type { GeospatialExposureProfile } from '../types';
 import { estimateFetchLimitedWaveHeightM } from './waveModel';
+import { interpolateSectorGeometry } from './windExposureModel';
 import {
   OFFSHORE_FLAT_MAX_FETCH_KM,
   OFFSHORE_FLAT_MAX_ONSHORE,
@@ -160,6 +162,94 @@ export const isEnclosedDrySector = (
 };
 
 /**
+ * Η ΒΕΝΤΑΛΙΑ ΔΙΑΣΠΟΡΑΣ: ΣΤΟΝ ΞΗΡΟ ΤΟΜΕΑ, ΤΟ ΝΟΥΜΕΡΟ ΤΟΥ ΣΤΟΜΙΟΥ (18/08/2026 — §Γ22, Στάδιο 0).
+ *
+ * Ο άνεμος δεν σπρώχνει ενέργεια σε μία γραμμή αλλά σε βεντάλια (cos²ˢ directional spreading).
+ * Όταν ο ζωντανός τομέας είναι ΞΗΡΟΣ — μηδέν άνοιγμα, ουσιαστικά όλες οι ακτίνες κομμένες — το
+ * «μπορεί να φτάσει κύμα εδώ;» δεν απαντιέται ούτε από τη γωνία του ανέμου (δεν υπάρχει νερό στη
+ * γραμμή του) ούτε από τον δυαδικό έλεγχο στομίου του isEnclosedDrySector (ναι/όχι σε κατώφλι
+ * 2 χλμ). Απαντιέται από το ολοκλήρωμα:
+ *
+ *   H_fan² = Σ cos²ˢ(Δθ) · H_SMB(άνοιγμα(θ))² / Σ cos²ˢ(Δθ) ,  |Δθ| < 90°
+ *
+ * με το άνοιγμα ανά γωνία από την ΙΔΙΑ παρεμβολή που τρέχει ζωντανά (interpolateSectorGeometry)
+ * και κανονικοποίηση πάνω σε ΟΛΟΚΛΗΡΗ τη βεντάλια — και στη στεριά, που συνεισφέρει μηδέν. Έτσι
+ * ο κλειστός όρμος βγάζει ~0 (→ δάπεδο 0,10, ό,τι έδινε η §Γ21) και ο όρμος με στόμιο βγάζει το
+ * κύμα του στομίου ζυγισμένο με τη γωνία του — όχι σιωπή, όχι το πέλαγος, όχι γυμνό δάπεδο.
+ *
+ * ΓΙΑΤΙ s=2 (~±33° μισής ισχύος): μετρήθηκε εθνικά 18/08 (scripts/measureFanSpreading.mjs,
+ * 110/110 περιοχές) — τα s=1/2/3 δίνουν σχεδόν ταυτόσημο αποτέλεσμα (272/273/273 πιο ήρεμες),
+ * άρα κρατάμε το μεσαίο, το τυπικό της βιβλιογραφίας για wind-sea. Η απόφαση που μέτρησε ήταν
+ * το ΠΕΔΙΟ: ο Μίλτος ενέκρινε ΜΟΝΟ τους ξηρούς τομείς (fan-dry)· το fan-all (αντικατάσταση και
+ * της ράμπας onshore) ΔΕΝ εγκρίθηκε — ξαναμετριέται σε μέρα μελτεμιού πριν κριθεί.
+ *
+ * ΟΙ ΔΥΟ ΚΑΤΕΥΘΥΝΣΕΙΣ ΤΗΣ, ΚΑΙ ΟΙ ΔΥΟ ΠΡΟΣ ΤΗΝ ΑΛΗΘΕΙΑ:
+ *  - Ξηρός + σιωπηλός σήμερα (onshore ≥ −0,5): αποκτά φωνή ΜΙΚΡΟΤΕΡΗ από το πέλαγος που τύπωνε
+ *    (98 παραλίες στη μέτρηση της άπνοιας, 0 πιο άγριες, μέγιστο σβησμένο 0,66 μ.).
+ *  - Ξηρός + ομιλητής σήμερα (απόγειος): το γυμνό δάπεδο 0,10 γίνεται το νούμερο του στομίου.
+ *    Αυτή είναι η κλάση του ατυχήματος του Πανόρμου (2011 @ Ν: σήμερα 0,10 ενώ ο νότιος σηκώνει
+ *    κύμα έξω από τη ράχη που μπαίνει από το ΝΔ στόμιο 6,2 χλμ) — η βεντάλια το ΑΝΕΒΑΖΕΙ, που
+ *    είναι η ασφαλής κατεύθυνση και ο λόγος που το Στάδιο 0 υπάρχει.
+ * Το καπάκι «ποτέ πιο δυνατά από τη θάλασσα έξω», το δάπεδο, η αποθαλασσιά, η εμπιστοσύνη και οι
+ * πύλες φραξίματος/ανοίγματος ισχύουν αυτούσια. Κλειδωμένο από scripts/validateDrySectorGate.mjs (5).
+ *
+ * ΧΩΡΙΣ ΠΛΗΡΕΣ ΠΡΟΦΙΛ (και οι 8 τομείς με αριθμούς) η απάντηση είναι undefined — απουσία μάρτυρα
+ * δεν γεννά ισχυρισμό· τότε ισχύει ό,τι ίσχυε (ράμπα + isEnclosedDrySector ως δίχτυ).
+ */
+export const FAN_SPREAD_EXPONENT = 2;
+export const FAN_SPREAD_HALF_WIDTH_DEG = 90;
+const FAN_SPREAD_STEP_DEG = 5;
+/** Ίδιο κατώφλι «ξηρού» με τη μέτρηση της §Γ20/§Γ21, ώστε τα νούμερα να διασταυρώνονται. */
+export const DRY_SECTOR_MIN_BLOCKED_RATIO = 0.95;
+
+export const drySectorFanWaveHeightM = ({
+  sector,
+  profile,
+  windDirectionDeg,
+  windSpeedKmh,
+}: {
+  /** Η ζωντανή (παρεμβλημένη) γεωμετρία — η βεντάλια μιλάει ΜΟΝΟ όταν αυτή είναι ξηρή. */
+  sector?: { fetchKm?: number; blockedRayRatio?: number } | null;
+  profile?: { sectors?: Record<string, { fetchKm?: number; blockedRayRatio?: number } | undefined> } | null;
+  windDirectionDeg?: number | null;
+  windSpeedKmh?: number;
+}): number | undefined => {
+  if (!sector || !profile?.sectors) return undefined;
+  if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return undefined;
+  if (typeof windSpeedKmh !== 'number' || !Number.isFinite(windSpeedKmh)) return undefined;
+  const { fetchKm, blockedRayRatio } = sector;
+  if (typeof fetchKm !== 'number' || !Number.isFinite(fetchKm) || fetchKm > 0) return undefined;
+  if (typeof blockedRayRatio !== 'number' || blockedRayRatio < DRY_SECTOR_MIN_BLOCKED_RATIO) return undefined;
+  for (const key of DRY_SECTOR_ORDER) {
+    const raw = profile.sectors[key];
+    if (!raw
+      || typeof raw.fetchKm !== 'number' || !Number.isFinite(raw.fetchKm)
+      || typeof raw.blockedRayRatio !== 'number' || !Number.isFinite(raw.blockedRayRatio)) {
+      return undefined;
+    }
+  }
+
+  let energy = 0;
+  let weightSum = 0;
+  for (
+    let deltaDeg = -FAN_SPREAD_HALF_WIDTH_DEG + FAN_SPREAD_STEP_DEG / 2;
+    deltaDeg < FAN_SPREAD_HALF_WIDTH_DEG;
+    deltaDeg += FAN_SPREAD_STEP_DEG
+  ) {
+    const weight = Math.cos((deltaDeg * Math.PI) / 180) ** (2 * FAN_SPREAD_EXPONENT);
+    // Πλήρες προφίλ εγγυημένο από τον βρόχο πάνω — η παρεμβολή δεν θα σκάσει σε λειψό τομέα.
+    const { fetchKm: fanFetchKm } = interpolateSectorGeometry(
+      profile as GeospatialExposureProfile,
+      windDirectionDeg + deltaDeg
+    );
+    const heightM = estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm: fanFetchKm });
+    energy += weight * heightM * heightM;
+    weightSum += weight;
+  }
+  return weightSum > 0 ? Math.sqrt(energy / weightSum) : 0;
+};
+
+/**
  * Κάτω από αυτό, ένα συστατικό της θάλασσας δεν κρίνει τίποτα — μετράμε κατευθύνσεις μόνο για
  * νερό που υπάρχει. Ίδιο νούμερο με το δάπεδο εμφάνισης × 1,5: αρκετά πάνω από τον θόρυβο του
  * πλέγματος, αρκετά κάτω από οτιδήποτε θα πρόσεχε κολυμβητής.
@@ -283,6 +373,13 @@ export interface ShoreWaveInput {
    * και το ύποπτο pin ισχύουν αυτούσια, οπότε μπορεί μόνο να κατεβάσει το τυπωμένο νούμερο.
    */
   enclosedDrySector?: boolean;
+  /**
+   * Το ύψος της βεντάλιας διασποράς όταν ο ζωντανός τομέας είναι ΞΗΡΟΣ και το προφίλ πλήρες —
+   * βλ. {@link drySectorFanWaveHeightM} (§Γ22). Όταν υπάρχει, παρακάμπτει τον έλεγχο `onshore`
+   * (όπως το enclosedDrySector) και γίνεται το ίδιο το μοντελοποιημένο ύψος: ο κλειστός όρμος
+   * δίνει ~0 → δάπεδο, ο όρμος με στόμιο δίνει το κύμα του στομίου. Δάπεδο και καπάκι ισχύουν.
+   */
+  dryFanWaveM?: number;
 }
 
 /**
@@ -300,6 +397,7 @@ export const estimateShoreWaveHeightM = ({
   arrivingSwellPresent,
   departingSea,
   enclosedDrySector,
+  dryFanWaveM,
 }: ShoreWaveInput): number | undefined => {
   if (arrivingSwellPresent) return undefined;
   if (suspectPin) return undefined;
@@ -323,10 +421,17 @@ export const estimateShoreWaveHeightM = ({
   // δεν υπάρχει καθόλου νερό στο ημικύκλιο του ανέμου, το ερώτημα απαντιέται ΑΜΕΣΑ και η γωνία
   // δεν κρίνει τίποτα — δεν υπάρχει επιφάνεια πάνω στην οποία να χτιστεί κύμα, από όποια μεριά
   // κι αν φυσάει. Δες isEnclosedDrySector για το γιατί το τόξο είναι ±90° και όχι ±45°.
-  if (!enclosedDrySector && onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
+  //
+  // Από 18/08 (§Γ22) ο ξηρός τομέας απαντά με τη ΒΕΝΤΑΛΙΑ όταν αυτή έχει μάρτυρα (πλήρες προφίλ):
+  // το μοντελοποιημένο ύψος γίνεται το H_fan — μηδέν στον κλειστό όρμο, το κύμα του στομίου στον
+  // ανοιχτό. Το enclosedDrySector μένει ως δίχτυ για προφίλ που η βεντάλια δεν μπορεί να διαβάσει.
+  const fanM = typeof dryFanWaveM === 'number' && Number.isFinite(dryFanWaveM) ? dryFanWaveM : undefined;
+  if (fanM === undefined && !enclosedDrySector && onshore >= SHORE_RAMP_SILENT_ONSHORE) return undefined;
 
-  const weight = enclosedDrySector ? 1 : shoreRampWeight(onshore);
-  const modelledM = estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm });
+  const weight = fanM !== undefined || enclosedDrySector ? 1 : shoreRampWeight(onshore);
+  const modelledM = fanM !== undefined
+    ? fanM
+    : estimateFetchLimitedWaveHeightM({ windSpeedKmh, fetchKm });
   const blendedM = weight * modelledM + (1 - weight) * openWaterWaveHeightM;
   const shoreM = Math.max(SHORE_DISPLAY_FLOOR_M, blendedM);
 

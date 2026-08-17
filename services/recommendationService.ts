@@ -54,7 +54,7 @@ import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
-import { estimateShoreWaveHeightM, isEnclosedDrySector, isSeaDepartingShore } from '../utils/shoreWave';
+import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaDepartingShore } from '../utils/shoreWave';
 import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
@@ -2418,6 +2418,15 @@ export const calculateBeachScore = (
       options?.geospatialProfile,
       weather.wind.deg
     ),
+    // Η βεντάλια διασποράς (§Γ22): στον ξηρό τομέα, το μοντελοποιημένο ύψος γίνεται το ολοκλήρωμα
+    // cos²ˢ × SMB πάνω στους 8 τομείς — ο κλειστός όρμος δίνει το δάπεδο (ό,τι έδινε η §Γ21), ο
+    // όρμος με στόμιο το κύμα του στομίου του αντί για γυμνό δάπεδο ή το νούμερο του πελάγους.
+    dryFanWaveM: drySectorFanWaveHeightM({
+      sector: { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
+      profile: options?.geospatialProfile,
+      windDirectionDeg: weather.wind.deg,
+      windSpeedKmh: windSpeedKmph,
+    }),
   });
   const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
