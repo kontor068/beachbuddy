@@ -44,6 +44,46 @@ const mentionsAny = (text, tokens) => {
   return tokens.some(tok => tok && tok.length >= 4 && t.includes(norm(tok)));
 };
 
+/**
+ * ΤΟ ΟΝΟΜΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΔΕΝ ΕΙΝΑΙ ΑΠΟΔΕΙΞΗ ΤΟΠΟΥ — ΜΕΤΡΗΜΕΝΟ 17/08/2026 ΣΤΗ ΣΚΟΠΕΛΟ.
+ *
+ * Ο έλεγχος «anti-collision» δεχόταν ταίριασμα σε [νησί, νησίGR, όνομαEN, όνομαGR] — δηλαδή
+ * και στο ΟΝΟΜΑ ΤΗΣ ΠΑΡΑΛΙΑΣ, που είναι ακριβώς αυτό με το οποίο έγινε η αναζήτηση. Αποτέλεσμα
+ * για τις 11 παραλίες της Σκοπέλου χωρίς φωτογραφία: η **Φτελιά** πήρε 6 υποψήφιες και ΚΑΙ ΟΙ 6
+ * ήταν το Φτελιά της **Μυκόνου**· η **Πλάκα** πήρε «Πλάκα Δηλεσίου» (Βοιωτία) και «ακρωτήριο
+ * Πλάκα Σκαριά» (Χαλκιδική)· το **Βελανιό** πήρε φωτογραφία με τίτλο «**Stafilos** Beach,
+ * Skopelos» στα 521 m — σωστό νησί, διπλανή παραλία. Καμία από τις 11 δεν είχε ασφαλή υποψήφια,
+ * αλλά 4 έφτασαν σε φύλλο ελέγχου σαν να είχαν.
+ *
+ * Δύο πύλες, και οι δύο από τα ίδια μας τα δεδομένα:
+ *   · η αναζήτηση ΟΝΟΜΑΤΟΣ απαιτεί το νησί/περιοχή στο όνομα αρχείου — το όνομα της παραλίας
+ *     δεν μετράει, γιατί δεν ξεχωρίζει τίποτα,
+ *   · οποιαδήποτε υποψήφια (και γεωγραφική) απορρίπτεται αν ο τίτλος της κατονομάζει ΑΛΛΗ
+ *     παραλία της ίδιας περιοχής ή άλλο νησί.
+ */
+/**
+ * Ένα ελληνικό όνομα γράφεται με λατινικά με πέντε τρόπους και ο Commons τους χρησιμοποιεί
+ * όλους. Ο **Στάφυλος** ταξιδεύει ως "Stafylos" (δικό μας) και "Stafilos" (του αρχείου) —
+ * ένα γράμμα διαφορά που άφησε φωτογραφία του Σταφύλου να περάσει για το Βελανιό. Οπότε η
+ * σύγκριση γίνεται πάνω σε μια «σκελετική» μορφή: όλα τα φωνήεντα-παραλλαγές στο ίδιο σύμβολο,
+ * τα διπλά γράμματα ένα, οι γνωστές διγραφές (ph/th/ch/ou/ai) στον απλό τους ήχο.
+ */
+const translitKey = s => norm(s)
+  .replace(/ph/g, 'f').replace(/th/g, 't').replace(/ch|kh/g, 'h')
+  .replace(/ou/g, 'u').replace(/ai/g, 'e').replace(/ei|oi/g, 'i')
+  .replace(/[ck]/g, 'k').replace(/[yj]/g, 'i').replace(/v/g, 'b')
+  .replace(/(.)\1+/g, '$1')
+  .replace(/[^a-zα-ω0-9]/g, '');
+
+const namesAnotherPlace = (title, ownTokens, rivalTokens) => {
+  const t = translitKey(title);
+  const ownHit = ownTokens.some(tok => tok && tok.length >= 4 && t.includes(translitKey(tok)));
+  const rival = rivalTokens.find(tok => tok && tok.length >= 5 && translitKey(tok).length >= 4 && t.includes(translitKey(tok)));
+  // A title may legitimately mention both ("Stafilos and Velanio, Skopelos"); the rival only
+  // condemns it when our own beach is NOT named at all.
+  return rival && !ownHit ? rival : null;
+};
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const getJson = async url => {
@@ -117,13 +157,22 @@ const isImageFile = t => /\.(jpe?g|png)$/i.test(t);
 
 // --- Per-beach candidate gathering --------------------------------------
 
-const gatherForBeach = async (beach, island, islandGr) => {
+const gatherForBeach = async (beach, island, islandGr, rivalTokens = []) => {
   const { nameEn, nameGr, lat, lon } = beach;
-  // tokens that confirm the right location for NON-geo sources
-  const locTokens = [island, islandGr, nameEn, nameGr].filter(Boolean);
+  // ONLY the island/region proves location. The beach name is what we searched for, so
+  // finding it again proves nothing — see namesAnotherPlace above (Φτελιά → Μύκονος).
+  const locTokens = [island, islandGr].filter(Boolean);
+  const ownTokens = [nameEn, nameGr].filter(Boolean);
+  // Every other beach in this region, so a photo that names the bay next door is caught.
+  const rivals = rivalTokens.filter(t => t && !ownTokens.some(o => norm(o) === norm(t)));
+  const rejected = [];
   const cands = [];
   const seen = new Set();
-  const add = c => { const k = c.src || c.file; if (k && !seen.has(k)) { seen.add(k); cands.push(c); } };
+  const add = c => {
+    const other = namesAnotherPlace(c.title || c.commonsFile || '', ownTokens, rivals);
+    if (other) { rejected.push({ title: c.title, because: `ο τίτλος κατονομάζει «${other}»` }); return; }
+    const k = c.src || c.file; if (k && !seen.has(k)) { seen.add(k); cands.push(c); }
+  };
 
   // 1. Openverse (3 queries). Require island/beach token AND not a negative subject.
   for (const q of [`${nameEn} ${island} beach`, `${nameGr} ${island}`, `${nameEn} beach Greece`]) {
@@ -147,7 +196,8 @@ const gatherForBeach = async (beach, island, islandGr) => {
     }
   }
 
-  // 3. Commons name search — require island/beach token in filename.
+  // 3. Commons name search — require the ISLAND in the filename. Requiring the beach
+  // name instead is what let six Mykonos photos through for Skopelos' Φτελιά.
   const nameFiles = [];
   for (const q of [`${nameEn} ${island} beach`, `${nameGr} παραλία`, `${nameGr} ${islandGr}`]) {
     for (const f of await commonsName(q)) {
@@ -173,6 +223,9 @@ const gatherForBeach = async (beach, island, islandGr) => {
     }
   }
 
+  if (rejected.length) {
+    for (const r of rejected) console.log(`      ✗ ${String(r.title).slice(0, 60)} — ${r.because}`);
+  }
   return cands.slice(0, 8);
 };
 
@@ -238,7 +291,11 @@ const main = async () => {
   const indexOut = [];
   let n = 0;
   for (const b of beaches) {
-    const cands = await gatherForBeach(b, island, islandGr);
+    const rivalTokens = (app.island?.beaches || [])
+      .filter(other => other.id !== b.id)
+      .flatMap(other => [other.name?.en, other.name?.gr])
+      .filter(Boolean);
+    const cands = await gatherForBeach(b, island, islandGr, rivalTokens);
     if (!cands.length) { console.log(`  [${b.nameEn || b.nameGr}] no candidates`); continue; }
     const file = `${String(n).padStart(2, '0')}_${slugify(b.nameEn || b.nameGr)}.jpg`;
     const ok = await buildMontage(path.join(outDir, file), cands);

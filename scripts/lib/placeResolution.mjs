@@ -307,6 +307,13 @@ export const fetchOverpassBeaches = async (coordinate, radiusMeters, cache) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': USER_AGENT },
         body: 'data=' + encodeURIComponent(q),
+        // ΧΩΡΙΣ ΑΥΤΟ ΕΝΑΣ ΝΕΚΡΟΣ ΚΑΘΡΕΦΤΗΣ ΚΡΕΜΑΕΙ ΤΟ ΠΕΡΑΣΜΑ ΓΙΑ ΩΡΕΣ — 17/08/2026.
+        // Ίδια ερώτηση, τρεις καθρέφτες, μετρημένο: overpass-api.de → 504 στα 8,5 δλ ·
+        // kumi.systems → ΚΑΜΙΑ απάντηση, 60+ δλ · private.coffee → 200 στα 36 δλ. Ένα
+        // `--region` πέρασμα 133 παραλιών έτρεχε 2 ώρες χωρίς να βγάλει γραμμή, και τα 60
+        // δλ ανά παραλία ήταν καθαρή αναμονή σε καθρέφτη που δεν επρόκειτο να απαντήσει.
+        // Δεν έσπαγε τίποτα — απλώς δεν τελείωνε, που είναι χειρότερο γιατί δεν φαίνεται.
+        signal: AbortSignal.timeout(45000),
       });
       if (res.status === 429 || res.status === 504 || res.status >= 500) continue;
       const json = await res.json().catch(() => ({}));
@@ -357,7 +364,9 @@ export const fetchNominatim = async (query, sleepMs, { retries = 3, cache } = {}
   let lastErr;
   for (let attempt = 0; attempt <= retries; attempt += 1) {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+      // Ίδιος λόγος με τον Overpass παραπάνω: μια κλήση χωρίς όριο δεν αποτυγχάνει ποτέ,
+      // άρα δεν φτάνει ποτέ στο backoff από κάτω — απλώς περιμένει.
+      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT }, signal: AbortSignal.timeout(30000) });
       if (res.status === 429 || res.status >= 500) {
         lastErr = new Error(`nominatim HTTP ${res.status}`);
         await sleep(sleepMs * (attempt + 2)); // linear backoff: 2x,3x,4x

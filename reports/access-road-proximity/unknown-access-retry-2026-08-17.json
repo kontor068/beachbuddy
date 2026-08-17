@@ -1,0 +1,120 @@
+{
+  "generatedAt": "2026-08-17T11:02:33.934Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 2666,
+      "name": "Δερμαριά (Πτελεός)",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2679,
+      "name": "Βαθιά Σπηλιά",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "lat": 39.180778,
+      "lon": 23.222669,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 55,
+      "evidence": "OSM way/31752972 highway=secondary surface=asphalt «Αργαλαστή - Τρίκερι» στα 55 m"
+    },
+    {
+      "id": 2687,
+      "name": "Καστρί",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2688,
+      "name": "Κλωσσού",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "lat": 39.31844,
+      "lon": 23.268626,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 92,
+      "evidence": "OSM way/832083595 highway=track στα 92 m"
+    },
+    {
+      "id": 2692,
+      "name": "Λεπετούς",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2715,
+      "name": "Παραλία Τουρκοπηγής",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3096,
+      "name": "Olive Bay",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "lat": 39.1857409,
+      "lon": 23.2194038,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 48,
+      "evidence": "OSM way/31752972 highway=secondary surface=asphalt «Αργαλαστή - Τρίκερι» στα 48 m"
+    },
+    {
+      "id": 3018,
+      "name": "Νέα Φλόγητα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.2599201,
+      "lon": 23.2214367,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 26,
+      "evidence": "OSM way/92002369 highway=residential (κατηγορία πάντα στρωμένη) «Σοφίας Βέμπο» στα 26 m"
+    },
+    {
+      "id": 3122,
+      "name": "Παραλία Κρυοπηγή",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "lat": 40.0301,
+      "lon": 23.50118,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 68,
+      "evidence": "OSM way/377005948 highway=track στα 68 m"
+    },
+    {
+      "id": 2652,
+      "name": "Βαθιάς",
+      "regionId": "thessaly-skopelos",
+      "lat": 39.0815,
+      "lon": 23.6705,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 3074,
+      "name": "Angeletou beach",
+      "regionId": "thessaly-skopelos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3075,
+      "name": "Perivoliou Beach",
+      "regionId": "thessaly-skopelos",
+      "lat": 39.1977557,
+      "lon": 23.6145029,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 68,
+      "evidence": "OSM way/963872977 highway=track tracktype=grade1 στα 68 m"
+    }
+  ]
+}
