@@ -1,8 +1,8 @@
-# Place-resolution audit — scoped run (south-aegean-karpathos)
+# Place-resolution audit — scoped run (thessaly-skopelos)
 
-Generated: 2026-08-16T11:30:51.364Z
+Generated: 2026-08-17T09:08:09.823Z
 
-**Totals:** PASS 19 · REVIEW 11 · FAIL 5 · (35 name-routed beaches audited)
+**Totals:** PASS 11 · REVIEW 7 · FAIL 2 · (20 name-routed beaches audited)
 
 Does the name the app sends to Google Maps resolve to the right beach on the right island? FAIL = it does not (Melino class).
 
@@ -12,25 +12,18 @@ _Two signals per beach: **name** = Nominatim free-text geocode of the app query 
 
 | Region | Island | PASS | REVIEW | FAIL | Err | Total |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| south-aegean-karpathos | Karpathos | 19 | 11 | 5 | 0 | 35 |
+| thessaly-skopelos | Skopelos | 11 | 7 | 2 | 0 | 20 |
 
-## Needs attention (16)
+## Needs attention (9)
 
 | Verdict | id | Name | Island | Built query | Name geocode (Nominatim) | Pin (OSM beach) | Recommended fix |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
-| FAIL | 2281 | Γιαλού Χωράφι | Karpathos | Παραλία Γιαλού Χωράφι, Karpathos | ✗ no hit | Gialou Chorafi · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| FAIL | 2288 | Μικρή Αμμοοπή | Karpathos | Παραλία Μικρή Αμμοοπή, Karpathos | ✗ no hit | Amopi · 238 m | route by **coordinates** (pin OSM-corroborated) |
-| FAIL | 2294 | Παπάς Μηνάς | Karpathos | Παραλία Παπάς Μηνάς, Karpathos | ✗ no hit | Papás Minás · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| FAIL | 2297 | Της Πέρδικας Ποταμός | Karpathos | Παραλία Της Πέρδικας Ποταμός, Karpathos | ✗ no hit | tis Perdikas Potamos · 1 m | route by **coordinates** (pin OSM-corroborated) |
-| FAIL | 2300 | Όψη | Karpathos | Παραλία Όψη, Karpathos | ✗ no hit | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 2275 | Απέλλα | Karpathos | Απέλλα, Karpathos | Apella · 55 m · verified (via "Apella, Karpathos") | Apella · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2277 | Φοινίκι | Karpathos | Παραλία Φοινίκι, Karpathos | Φοινίκι · 83 m · verified (via "Φοινίκι, Karpathos") | Finiki Beach · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2278 | Φωκιά | Karpathos | Φωκιά, Karpathos | Fokia · 47 m · verified (via "Fokia, Karpathos") | (unnamed) · 762 m | mark **needs-review** (no good name or pin) |
-| REVIEW | 2279 | Φορόκλι | Karpathos | Φορόκλι, Karpathos | Forókli · 25 m · verified (via "Forokli, Karpathos") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 2286 | Λακκί | Karpathos | Παραλία Λακκί, Karpathos | Λακκί · 451 m · needs_review (via "Λακκί, Karpathos") | Lakki Beach · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2293 | Λιμάνι Παναγιάς | Karpathos | Παραλία Λιμάνι Παναγιάς, Karpathos | Panagias Limani · 31 m · verified (via "Λιμάνι Παναγιάς, Karpathos") | Panagias Limani · 1 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2298 | Βανάντα | Karpathos | Βανάντα, Karpathos | Βανάντα-Βουργούντα-Στιόι-Αυλώνας-Τρίστομο (Ολύμπου-Καρπάθου) · 3290 m · needs_review | Vanánda · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2299 | Βοτσαλάκια | Karpathos | Βοτσαλάκια, Karpathos | Votsalakia beach · 18 m · verified (via "Votsalakia, Karpathos") | ✗ none | mark **needs-review** (no good name or pin) |
-| REVIEW | 2304 | Βάθια | Karpathos | Παραλία Βάθια, Karpathos | Βάθια · 70 m · verified (via "Βάθια, Karpathos") | Χριστού Πηγάδι · 975 m | mark **needs-review** (no good name or pin) |
-| REVIEW | 2308 | Κυρά Παναγιά | Karpathos | Παραλία Κυρά Παναγιά, Karpathos | Κυρά Παναγιά · 8 m · verified (via "Κυρά Παναγιά, Karpathos") | Κυρά Παναγιά · 0 m | route by **coordinates** (pin OSM-corroborated) |
-| REVIEW | 2316 | Ψωράρης | Karpathos | Παραλία Ψωράρης, Karpathos | Ψωράρης · 21 m · verified (via "Ψωράρης, Karpathos") | Ψωράρης · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| FAIL | 2652 | Βαθιάς | Skopelos | Βαθιάς, Skopelos | Βαθιασ · 8246 m · rejected | Τραχηλι · 1306 m | mark **needs-review** (no good name or pin) |
+| FAIL | 2662 | Στάφυλος | Skopelos | Παραλία Στάφυλος, Skopelos | Σκόπελος · 8451 m · rejected (via "Στάφυλος, Skopelos") | ✗ none | mark **needs-review** (no good name or pin) |
+| REVIEW | 2650 | Έλιος | Skopelos | Έλιος, Skopelos | Elios Holiday Hotel · 504 m · needs_review | ✗ none | mark **needs-review** (no good name or pin) |
+| REVIEW | 2651 | Αρμενόπετρα | Skopelos | Αρμενόπετρα, Skopelos | Ανεμόπετρα · 1301 m · needs_review | Έληος · 793 m | mark **needs-review** (no good name or pin) |
+| REVIEW | 2653 | Βελανιό | Skopelos | Παραλία Βελανιό, Skopelos | Βελανιό · 31 m · verified (via "Βελανιό, Skopelos") | Βελανιό · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2658 | Νεράκι | Skopelos | Παραλία Νεράκι, Skopelos | Νερακι · 0 m · verified (via "Νεράκι, Skopelos") | Νερακι · 0 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2660 | Πλάκα | Skopelos | Πλάκα, Skopelos | Πλάκα · 6113 m · needs_review | Limnonari · 1616 m | mark **needs-review** (no good name or pin) |
+| REVIEW | 2661 | Σπηλιά | Skopelos | Σπηλιά, Skopelos | Σπηλιά · 10524 m · needs_review | Limnonari · 266 m | route by **coordinates** (pin OSM-corroborated) |
+| REVIEW | 2663 | Τραχήλι | Skopelos | Παραλία Τραχήλι, Skopelos | Τραχηλι · 0 m · verified (via "Τραχήλι, Skopelos") | Τραχηλι · 0 m | route by **coordinates** (pin OSM-corroborated) |

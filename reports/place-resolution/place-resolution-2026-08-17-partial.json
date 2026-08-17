@@ -1,0 +1,717 @@
+{
+ "generatedAt": "2026-08-17T09:08:09.823Z",
+ "scope": {
+  "islands": [],
+  "regions": [
+   "thessaly-skopelos"
+  ]
+ },
+ "totals": {
+  "PASS": 11,
+  "REVIEW": 7,
+  "FAIL": 2
+ },
+ "rows": [
+  {
+   "id": 2647,
+   "name": "Γλυστέρι",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.143129,
+    "lon": 23.717607
+   },
+   "query": "Γλυστέρι, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Γλυστέρι, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Glysteri Beach",
+    "distanceMeters": 29,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Glysteri Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2648,
+   "name": "Λιμνονάρι",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.089291,
+    "lon": 23.69807
+   },
+   "query": "Λιμνονάρι, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Λιμνονάρι, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Λιμνοναρι",
+    "distanceMeters": 84,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Limnonari",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2649,
+   "name": "Άγιος Ιωάννης",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.172783,
+    "lon": 23.649862
+   },
+   "query": "Άγιος Ιωάννης, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Άγιος Ιωάννης, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Άγιος Ιωάννης",
+    "distanceMeters": 1,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Άγιος Ιωάννης",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2650,
+   "name": "Έλιος",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.13944,
+    "lon": 23.6436
+   },
+   "query": "Έλιος, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Έλιος, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Elios Holiday Hotel",
+    "distanceMeters": 504,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2651,
+   "name": "Αρμενόπετρα",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.1365,
+    "lon": 23.6355
+   },
+   "query": "Αρμενόπετρα, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Αρμενόπετρα, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Ανεμόπετρα",
+    "distanceMeters": 1301,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Έληος",
+    "distanceMeters": 793,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 2652,
+   "name": "Βαθιάς",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.0815,
+    "lon": 23.6705
+   },
+   "query": "Βαθιάς, Skopelos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Βαθιάς, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Βαθιασ",
+    "distanceMeters": 8246,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "rejected",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Τραχηλι",
+    "distanceMeters": 1306,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 2653,
+   "name": "Βελανιό",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.085391,
+    "lon": 23.753737
+   },
+   "query": "Παραλία Βελανιό, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Βελανιό, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Βελανιό",
+    "distanceMeters": 31,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Βελανιό",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2654,
+   "name": "Γλυφονέρι",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.130787,
+    "lon": 23.722348
+   },
+   "query": "Γλυφονέρι, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Γλυφονέρι, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Γλυφονέρι",
+    "distanceMeters": 4,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Γλυφονέρι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2656,
+   "name": "Καστάνη",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.121625,
+    "lon": 23.654908
+   },
+   "query": "Καστάνη, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Καστάνη, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Καστάνη",
+    "distanceMeters": 10,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Καστάνη",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2657,
+   "name": "Μηλιά",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.11704,
+    "lon": 23.6538
+   },
+   "query": "Μηλιά, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Μηλιά, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Μηλιά",
+    "distanceMeters": 161,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2658,
+   "name": "Νεράκι",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.125599,
+    "lon": 23.651621
+   },
+   "query": "Παραλία Νεράκι, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Νεράκι, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Νερακι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Νερακι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2659,
+   "name": "Παραλία Πανόρμου Σκοπέλου",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.110659,
+    "lon": 23.662658
+   },
+   "query": "Παραλία Πανόρμου Σκοπέλου, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Παραλία Πανόρμου Σκοπέλου, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Παραλία Πανόρμου Σκοπέλου",
+    "distanceMeters": 80,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Παραλία Πανόρμου Σκοπέλου",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2660,
+   "name": "Πλάκα",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.0855,
+    "lon": 23.68
+   },
+   "query": "Πλάκα, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "needs-review",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Πλάκα, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Πλάκα",
+    "distanceMeters": 6113,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Limnonari",
+    "distanceMeters": 1616,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   }
+  },
+  {
+   "id": 2661,
+   "name": "Σπηλιά",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.0895,
+    "lon": 23.695
+   },
+   "query": "Σπηλιά, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Σπηλιά, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Σπηλιά",
+    "distanceMeters": 10524,
+    "nameScore": 35,
+    "islandScore": 0,
+    "status": "needs_review",
+    "flags": [
+     "far_from_existing_coordinate",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Limnonari",
+    "distanceMeters": 266,
+    "nameScore": 0,
+    "islandScore": 6,
+    "status": "needs_review",
+    "flags": [
+     "weak_name_match"
+    ]
+   }
+  },
+  {
+   "id": 2662,
+   "name": "Στάφυλος",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.085566,
+    "lon": 23.749498
+   },
+   "query": "Παραλία Στάφυλος, Skopelos",
+   "currentMode": "place",
+   "verdict": "FAIL",
+   "recommend": "needs-review",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Στάφυλος, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Σκόπελος",
+    "distanceMeters": 8451,
+    "nameScore": 0,
+    "islandScore": 0,
+    "status": "rejected",
+    "flags": [
+     "far_from_existing_coordinate",
+     "weak_name_match",
+     "island_not_present_or_not_nearby"
+    ]
+   },
+   "pinBest": null
+  },
+  {
+   "id": 2663,
+   "name": "Τραχήλι",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.089539,
+    "lon": 23.659463
+   },
+   "query": "Παραλία Τραχήλι, Skopelos",
+   "currentMode": "place",
+   "verdict": "REVIEW",
+   "recommend": "coordinates",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Τραχήλι, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Τραχηλι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Τραχηλι",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2664,
+   "name": "Φτελιά",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.126858,
+    "lon": 23.650177
+   },
+   "query": "Φτελιά, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Φτελιά, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Φτελια",
+    "distanceMeters": 11,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Φτελια",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 2665,
+   "name": "Χόβολο",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.132712,
+    "lon": 23.644772
+   },
+   "query": "Χόβολο, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": true,
+   "nameError": false,
+   "nameQuery": "Χόβολο, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Χόβολο",
+    "distanceMeters": 90,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": null
+  },
+  {
+   "id": 3074,
+   "name": "Angeletou beach",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.1967593,
+    "lon": 23.616272
+   },
+   "query": "Angeletou beach, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Angeletou beach, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Angeletou beach",
+    "distanceMeters": 18,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Angeletou beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  },
+  {
+   "id": 3075,
+   "name": "Perivoliou Beach",
+   "regionId": "thessaly-skopelos",
+   "island": "Skopelos",
+   "coordinate": {
+    "lat": 39.1977557,
+    "lon": 23.6145029
+   },
+   "query": "Perivoliou Beach, Skopelos",
+   "currentMode": "place",
+   "verdict": "PASS",
+   "recommend": "none",
+   "overpassFailed": false,
+   "nameError": false,
+   "nameQuery": "Perivoliou Beach, Skopelos",
+   "best": {
+    "source": "nominatim",
+    "name": "Perivoliou Beach",
+    "distanceMeters": 21,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   },
+   "pinBest": {
+    "source": "overpass",
+    "name": "Perivoliou Beach",
+    "distanceMeters": 0,
+    "nameScore": 35,
+    "islandScore": 6,
+    "status": "verified",
+    "flags": []
+   }
+  }
+ ]
+}

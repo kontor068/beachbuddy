@@ -388,7 +388,9 @@ for (const region of index.regions) {
 
   const axes = Object.fromEntries(AXES.map((a) => [a.key, { ok: 0, total: beaches.length, at: '' }]));
   const confidence = { high: 0, medium: 0, low: 0 };
-  const openNames = { pin: [], nav: [], access: [], amenities: [], photo: [], character: [], text: [] };
+  // `navNoButton` is a SUBSET of `nav`, not an eighth axis: it does not get its own
+  // percentage, only its own line, because it answers "which of these actually hurt".
+  const openNames = { pin: [], nav: [], navNoButton: [], access: [], amenities: [], photo: [], character: [], text: [] };
   const features = Object.fromEntries(FEATURES.map((f) => [f.key, 0]));
   let needsVerification = 0;
   // A date stamped on a beach record IS somebody working on that beach — the most
@@ -420,6 +422,20 @@ for (const region of index.regions) {
       openNames.nav.push(name);
       mask |= AXIS_BIT.nav;
     }
+
+    // ...but "not verified" covers two states that cost the visitor very different
+    // things, and lumping them together buries the expensive one. A beach with NO
+    // status still routes by its own coordinate (utils/navigation.ts, case 'default'):
+    // the «Οδηγίες» button is there and it works, we simply have not checked it.
+    // A 'needs-review' in place mode — or 'blocked'/'unresolved' — degrades the UI to
+    // "show on map": no directions button AT ALL. Of Halkidiki's 17 open nav rows, 8
+    // are that second kind. Those 8 are the ones worth an afternoon; the other 9 are
+    // bookkeeping. Boat-only beaches are excluded — they have no road route by design,
+    // so their missing button is the safety rule working, not a defect.
+    const boatOnly = m.access?.type === 'boat_only' || m.access?.type === 'boat_or_difficult_path';
+    const degraded = nav.status === 'blocked' || nav.status === 'unresolved'
+      || (nav.status === 'needs-review' && nav.mode !== 'coordinates');
+    if (degraded && !boatOnly) openNames.navNoButton.push(name);
 
     // 3. ACCESS — how you get there. `unknown` is the default nobody filled in,
     // and the access audits exist precisely because "Εύκολη πρόσβαση" was often
@@ -531,6 +547,11 @@ for (const region of index.regions) {
   };
   gapLine(openNames.pin.length, '1 παραλία με πινέζα εκτός παραλίας', '{n} παραλίες με πινέζα εκτός παραλίας');
   gapLine(openNames.nav.length, '1 χωρίς επιβεβαιωμένες οδηγίες', '{n} χωρίς επιβεβαιωμένες οδηγίες');
+  gapLine(
+    openNames.navNoButton.length,
+    '↳ 1 από αυτές δεν δείχνει καθόλου κουμπί «Οδηγίες»',
+    '↳ {n} από αυτές δεν δείχνουν καθόλου κουμπί «Οδηγίες»'
+  );
   gapLine(openNames.access.length, '1 με άγνωστη πρόσβαση', '{n} με άγνωστη πρόσβαση');
   gapLine(openNames.amenities.length, '1 χωρίς καμία παροχή γραμμένη', '{n} χωρίς καμία παροχή γραμμένη');
   gapLine(openNames.photo.length, '1 χωρίς φωτογραφία', '{n} χωρίς φωτογραφία');
