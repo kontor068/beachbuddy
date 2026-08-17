@@ -45,6 +45,82 @@ const optionalNumber = (value: unknown): number | undefined => (
 );
 
 /**
+ * ΤΟ ΦΡΕΝΟ ΤΟΥ ΗΓΕΤΗ — ένα νούμερο που παραβιάζει τη φυσική δεν τυπώνεται (17/08/2026).
+ *
+ * Η αφορμή, μετρημένη ζωντανά στο σημείο δειγματοληψίας του Λιμνιώνα Κυθήρων
+ * (36,2772 / 22,886), 17/08/2026:
+ *
+ *   ώρα     ewam    meteofrance_wave
+ *   14:00   0,22 μ.       0,18 μ.
+ *   15:00   3,44 μ.       0,18 μ.     <-- +3,22 μ. σε ΜΙΑ ώρα, ο μάρτυρας επίπεδος
+ *   16:00   2,66 μ.       0,20 μ.
+ *   18:00   1,80 μ.       0,22 μ.
+ *
+ * Ο τοπικός άνεμος εκείνη την ώρα ήταν 4 Μποφόρ. Καμία φυσική δεν χτίζει τρία μέτρα σε
+ * εξήντα λεπτά, και το ίδιο σφάλμα κάλυπτε όλη την περιοχή (30 χλμ ΝΔ: 2,40 έναντι 0,24 ·
+ * 50 χλμ Ν: 1,00 έναντι 0,34). Ο κανόνας «το ewam κερδίζει κάθε ώρα που δίνει ύψος» δεν
+ * είχε ΚΑΝΕΝΑΝ έλεγχο λογικής, οπότε το 3,44 θα πήγαινε αυτούσιο στην ετυμηγορία.
+ *
+ * ΓΙΑΤΙ ΑΥΤΟ ΔΕΝ ΦΤΙΑΧΝΕΙ ΨΕΥΤΙΚΗ ΗΡΕΜΙΑ — η μόνη ένσταση που μετράει εδώ. Τρεις λόγοι,
+ * και οι τρεις δομικοί:
+ *   1. Το δίχτυ της `utils/waveModel.resolveEffectiveWaveHeightM` κρατάει το ΜΕΓΑΛΥΤΕΡΟ
+ *      ανάμεσα στη μέτρηση και στο δικό μας fetch-limited SMB + δάπεδο κυματισμού. Ό,τι κι
+ *      αν επιστρέψει το δεύτερο μοντέλο, δεν μπορεί να τυπώσει επίπεδο νερό πάνω από ακτή
+ *      που η δική μας φυσική λέει ταραγμένη.
+ *   2. Χωρίς μάρτυρα ΔΕΝ σβήνουμε τίποτα: αν το δεύτερο μοντέλο δεν έχει τιμή εκείνη την
+ *      ώρα, η τιμή του ηγέτη περνάει αυτούσια. Η σιωπή δεν είναι τεκμήριο.
+ *   3. Πραγματική θαλασσοταραχή ανεβάζει ΚΑΙ ΤΑ ΔΥΟ μοντέλα — σε 15 σημεία ανοιχτής
+ *      θάλασσας >25 χλμ από στεριά τα δύο συμφωνούν στο −0,5% (services/forecast/
+ *      openMeteoProvider.ts:118). Η διαφωνία τους είναι θέμα ανάλυσης κοντά στην ακτή,
+ *      όχι θέμα έντασης — άρα «ο ένας βλέπει τρίμετρο, ο άλλος εικοσάρι» δεν είναι καιρός.
+ */
+
+/** Αύξηση ύψους σε μία ώρα πέρα από την οποία δεν υπάρχει άνεμος που να τη δικαιολογεί. */
+export const MAX_CREDIBLE_WAVE_GROWTH_M_PER_H = 1;
+
+/** Κάτω από αυτό το ύψος ένα άλμα δεν αλλάζει τίποτα σε ό,τι διαβάζει ο επισκέπτης. */
+export const SPIKE_MIN_HEIGHT_M = 1;
+
+/** Ο μάρτυρας επιβεβαιώνει αν διαβάζει τουλάχιστον αυτό το κλάσμα της τιμής του ηγέτη. */
+export const SPIKE_CORROBORATION_RATIO = 0.5;
+
+/**
+ * Οι ώρες όπου ο ηγέτης έκανε φυσικά αδύνατο άλμα ΚΑΙ ο μάρτυρας δεν τον επιβεβαιώνει.
+ *
+ * Το επεισόδιο δεν κλείνει στην πρώτη ώρα: το σφάλμα του 15:00 έσβηνε αργά (3,44 → 2,66 →
+ * 2,20 → 1,80), και καθεμία από τις επόμενες ώρες είναι ΠΤΩΣΗ, όχι άλμα. Πιάνοντας μόνο την
+ * κορυφή θα αφήναμε πέντε λάθος ώρες όρθιες. Έτσι το επεισόδιο κρατάει όσο ο ηγέτης μένει
+ * ψηλά ΚΑΙ ασυνόδευτος, και κλείνει μόλις ο μάρτυρας τον προλάβει ή πέσει κάτω από το όριο.
+ */
+const uncorroboratedSpikeHours = (
+  leadSeries: unknown[] | undefined,
+  witnessSeries: unknown[] | undefined,
+): Set<number> => {
+  const suspect = new Set<number>();
+  if (!Array.isArray(leadSeries) || !Array.isArray(witnessSeries)) return suspect;
+
+  let insideEpisode = false;
+  for (let index = 0; index < leadSeries.length; index += 1) {
+    const lead = optionalNumber(leadSeries[index]);
+    if (lead === undefined) { insideEpisode = false; continue; }
+
+    const witness = optionalNumber(witnessSeries[index]);
+    // Κανένας μάρτυρας => καμία κατηγορία. Ο ηγέτης κρατάει την τιμή του.
+    const corroborated = witness === undefined || witness >= lead * SPIKE_CORROBORATION_RATIO;
+    if (corroborated || lead < SPIKE_MIN_HEIGHT_M) { insideEpisode = false; continue; }
+
+    if (insideEpisode) { suspect.add(index); continue; }
+
+    const previous = optionalNumber(leadSeries[index - 1]);
+    if (previous !== undefined && lead - previous > MAX_CREDIBLE_WAVE_GROWTH_M_PER_H) {
+      insideEpisode = true;
+      suspect.add(index);
+    }
+  }
+  return suspect;
+};
+
+/**
  * Shape one Open-Meteo Marine `hourly` block into rows, choosing a model per hour.
  *
  * `preferModelId` flips which model leads for THIS point only. Omit it and nothing changes.
@@ -107,8 +183,15 @@ export const parseMarineHourly = (
   // scripts/bakeMarineModelPreference.mjs.
   const flipped = preferModelId === 'meteofrance_wave';
   const leading = flipped ? waveHeightMf : waveHeightEwam;
+  // Ο μάρτυρας είναι πάντα ΤΟ ΑΛΛΟ μοντέλο, όποιο κι αν ηγείται σε αυτό το σημείο — ώστε τα 56
+  // αναποδογυρισμένα σημεία να προστατεύονται με τον ίδιο ακριβώς κανόνα, όχι με εξαίρεση.
+  const witness = flipped ? waveHeightEwam : waveHeightMf;
+  const spikeHours = uncorroboratedSpikeHours(leading, witness);
+  // Μια ώρα-σφάλμα πέφτει ΟΛΟΚΛΗΡΗ στον μάρτυρα: ύψος, περίοδος, κατεύθυνση και αποθαλασσιά
+  // μαζί. Κρατώντας μόνο το ύψος θα φτιάχναμε θάλασσα που δεν ανέφερε κανένα από τα δύο μοντέλα
+  // — ακριβώς ο λόγος που η επιλογή μοντέλου ήταν εξαρχής μία ανά ώρα.
   const preferLeadingAt = (index: number): boolean => (
-    optionalNumber(leading?.[index]) !== undefined
+    optionalNumber(leading?.[index]) !== undefined && !spikeHours.has(index)
   );
   const pick = (index: number, ewam?: unknown[], fallback?: unknown[]): unknown => {
     const [first, second] = flipped ? [fallback, ewam] : [ewam, fallback];

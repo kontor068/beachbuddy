@@ -317,6 +317,61 @@ if (process.argv.includes('--live') && failures.length === 0) {
              `survive whichever wave model wins the hour.`);
       }
     }
+
+    // ── ΤΟ ΦΡΕΝΟ ΤΟΥ ΗΓΕΤΗ (17/08/2026) ──────────────────────────────────────────────────
+    // Αντιγραφή του πραγματικού σφάλματος: Λιμνιώνας Κυθήρων, 17/08/2026, ewam 0,22 -> 3,44 μ.
+    // σε μία ώρα με το meteofrance επίπεδο στα 0,18. Εθνικά το φρένο άγγιξε 23 από 15.216 ώρες
+    // (0,15%) σε 6 από 317 σημεία, και ΚΑΜΙΑ από τις 454 ώρες πραγματικού κύματος ≥1 μ. όπου τα
+    // δύο μοντέλα συμφωνούν — reports/quality/wave-spike-guard.json.
+    const spikeHourly = {
+      time: ['2026-08-17T14:00', '2026-08-17T15:00', '2026-08-17T16:00',
+             '2026-08-17T17:00', '2026-08-17T18:00'],
+      // 14:00 ήρεμο και σύμφωνο · 15:00 το άλμα · 16:00-17:00 η ουρά που σβήνει · 18:00 πραγματική
+      // θαλασσοταραχή που ΚΑΙ ΤΑ ΔΥΟ μοντέλα βλέπουν — αυτή δεν επιτρέπεται να μπλοκαριστεί.
+      wave_height_ewam: [0.22, 3.44, 2.66, 2.2, 2.4],
+      wave_period_ewam: [3.5, 10.4, 9.5, 9.1, 8.0],
+      wave_direction_ewam: [300, 300, 300, 300, 300],
+      swell_wave_height_ewam: [0.1, 3.0, 2.4, 2.0, 2.1],
+      swell_wave_period_ewam: [3, 10, 9, 9, 8],
+      swell_wave_direction_ewam: [300, 300, 300, 300, 300],
+      wave_height_meteofrance_wave: [0.18, 0.18, 0.2, 0.2, 2.2],
+      wave_period_meteofrance_wave: [3.4, 3.4, 3.5, 3.5, 7.9],
+      wave_direction_meteofrance_wave: [290, 290, 290, 290, 295],
+      swell_wave_height_meteofrance_wave: [0.1, 0.1, 0.1, 0.1, 1.9],
+      swell_wave_period_meteofrance_wave: [3, 3, 3, 3, 8],
+      swell_wave_direction_meteofrance_wave: [290, 290, 290, 290, 295],
+      sea_surface_temperature_meteofrance_currents: [26, 26, 26, 26, 26],
+    };
+    const spikeRows = parseMarineHourly(spikeHourly);
+
+    if (spikeRows.length !== 5) {
+      fail(`${PARSER}: spike-guard check expected 5 rows, got ${spikeRows.length}.`);
+    } else {
+      if (spikeRows[0].marine.waveModel !== 'ewam' || spikeRows[0].marine.waveHeightM !== 0.22) {
+        fail(`${PARSER}: a calm hour where both models agree must still take the leader — got ` +
+             `${spikeRows[0].marine.waveHeightM} m from '${spikeRows[0].marine.waveModel}'. ` +
+             `The guard is firing on normal weather.`);
+      }
+      for (const index of [1, 2, 3]) {
+        if (spikeRows[index].marine.waveModel !== 'meteofrance_wave') {
+          fail(`${PARSER}: hour ${index} is a physically impossible jump (+3.22 m in one hour) ` +
+               `that the second model does not corroborate, yet it still came from ` +
+               `'${spikeRows[index].marine.waveModel}' at ${spikeRows[index].marine.waveHeightM} m. ` +
+               `A broken reading is going straight to the swim verdict.`);
+        }
+      }
+      // Η ουρά του επεισοδίου πρέπει να πέφτει ΟΛΟΚΛΗΡΗ: πιάνοντας μόνο την κορυφή αφήναμε
+      // 2,66 / 2,20 όρθια, γιατί καθεμία τους είναι ΠΤΩΣΗ και όχι άλμα.
+      if (spikeRows[2].marine.wavePeriodS !== 3.5) {
+        fail(`${PARSER}: the blocked hour kept the leader's period ` +
+             `(${spikeRows[2].marine.wavePeriodS} s) — height and period must fall together.`);
+      }
+      if (spikeRows[4].marine.waveModel !== 'ewam' || spikeRows[4].marine.waveHeightM !== 2.4) {
+        fail(`${PARSER}: a REAL 2.4 m sea that both models report was blocked ` +
+             `(got ${spikeRows[4].marine.waveHeightM} m from '${spikeRows[4].marine.waveModel}'). ` +
+             `The guard must never hide weather the witness confirms — that is false calm.`);
+      }
+    }
   }
 }
 
