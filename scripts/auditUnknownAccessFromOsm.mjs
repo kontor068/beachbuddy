@@ -99,6 +99,12 @@ const MIRROR_TIMEOUT_MS = 45000;
 
 const fetchRoads = async (lat, lon, radius) => {
   const q = `[out:json][timeout:40];(way["highway"](around:${radius},${lat},${lon}););out tags geom;`;
+  // Τέσσερα περάσματα, όχι ένα — δες την ίδια σημείωση στο scripts/lib/placeResolution.mjs:
+  // στις 17/08 βράδυ ο μόνος ζωντανός καθρέφτης απαντούσε 2 στις 6 φορές, οπότε ένα πέρασμα
+  // ανά καθρέφτη έβγαζε RETRY στα 2/3 των παραλιών χωρίς πραγματικό λόγο. Άδεια λίστα δρόμων
+  // ΔΕΝ ξαναδοκιμάζεται — είναι έγκυρο «κανένας δρόμος εκεί».
+  for (let pass = 0; pass < 4; pass += 1) {
+    if (pass > 0) await sleep(3000 * pass);
   for (const mirror of overpassMirrors) {
     try {
       const res = await fetch(mirror, {
@@ -119,6 +125,7 @@ const fetchRoads = async (lat, lon, radius) => {
         geometry: e.geometry,
       }));
     } catch { /* next mirror */ }
+  }
   }
   return null;
 };

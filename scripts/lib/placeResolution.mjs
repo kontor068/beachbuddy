@@ -301,6 +301,17 @@ export const fetchOverpassBeaches = async (coordinate, radiusMeters, cache) => {
     if (hit !== undefined) return hit; // cached array (or null for all-mirrors-failed)
   }
   const q = `[out:json][timeout:25];(node["natural"="beach"](around:${radiusMeters},${coordinate.lat},${coordinate.lon});way["natural"="beach"](around:${radiusMeters},${coordinate.lat},${coordinate.lon}););out tags center 8;`;
+  // ΜΙΑ ΕΥΚΑΙΡΙΑ ΑΝΑ ΚΑΘΡΕΦΤΗ ΔΕΝ ΦΤΑΝΕΙ ΟΤΑΝ ΟΙ ΔΥΟ ΕΙΝΑΙ ΝΕΚΡΟΙ — 17/08/2026 βράδυ.
+  // Μετρημένο εκείνη τη στιγμή: kumi.systems και private.coffee ΚΑΜΙΑ απάντηση σε 70 δλ,
+  // ενώ ο overpass-api.de απαντούσε 200 μόνο **2 στις 6 φορές** (504 στις άλλες 4 — υπερφόρτωση,
+  // όχι βλάβη). Με ένα πέρασμα ανά καθρέφτη αυτό γίνεται ~33% επιτυχία, δηλαδή τα 2/3 των
+  // παραλιών γύριζαν RETRY χωρίς να φταίει τίποτα δικό μας. Τέσσερα περάσματα με αυξανόμενη
+  // αναμονή ανεβάζουν την ίδια στιγμή το ποσοστό πάνω από 90%.
+  // ΠΡΟΣΟΧΗ ΣΤΟ ΤΙ ΕΙΝΑΙ «ΑΠΟΤΥΧΙΑ»: ξαναδοκιμάζουμε ΜΟΝΟ σε 5xx/429/δικτυακό σφάλμα. Μια
+  // κανονική απάντηση με ΑΔΕΙΑ λίστα είναι έγκυρο «δεν υπάρχει παραλία εκεί» και επιστρέφεται
+  // αμέσως — αλλιώς θα κρύβαμε πραγματικά αρνητικά πίσω από επαναλήψεις.
+  for (let pass = 0; pass < 4; pass += 1) {
+    if (pass > 0) await sleep(3000 * pass); // 3s, 6s, 9s
   for (const mirror of overpassMirrors) {
     try {
       const res = await fetch(mirror, {
@@ -336,7 +347,8 @@ export const fetchOverpassBeaches = async (coordinate, radiusMeters, cache) => {
       return out;
     } catch { /* try next mirror */ }
   }
-  return null; // all mirrors failed (not cached — transient, retry next run)
+  }
+  return null; // all mirrors failed after 4 passes (not cached — transient, retry next run)
 };
 
 const mapNominatim = (arr) => (Array.isArray(arr) ? arr : []).map(r => ({

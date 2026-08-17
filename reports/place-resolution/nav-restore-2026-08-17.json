@@ -1,15 +1,341 @@
 {
-  "generatedAt": "2026-08-17T11:59:15.188Z",
+  "generatedAt": "2026-08-17T20:05:52.567Z",
   "radiusM": 350,
   "results": [
+    {
+      "id": 32,
+      "name": "Παραλία Σχινιά",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 38.13969,
+      "lon": 24.03493,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 58,
+      "name": "Lagonissi Grand Resort",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 37.77801,
+      "lon": 23.88948,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «(unnamed)» στα 109 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 65,
+      "name": "Μαύρο Λιθάρι / Eden Beach",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 37.72784,
+      "lon": 23.90708,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Εδέμ» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 76,
+      "name": "Παραλία Λεγραινών",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 37.66119,
+      "lon": 23.98352,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Legrena» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 3006,
+      "name": "Πόρτο Ράφτη Αυλάκι",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 37.872037,
+      "lon": 24.0222308,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «(unnamed)» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 115,
+      "name": "Βλυχάδα Πλατιάς Άμμου",
+      "regionId": "attica-kythira",
+      "lat": 36.37283,
+      "lon": 22.95498,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Βλυχάδα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 144,
+      "name": "Καψάλι",
+      "regionId": "attica-kythira",
+      "lat": 36.14451,
+      "lon": 22.99976,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Καψάλι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 196,
+      "name": "Άγιος Αθανάσιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00736,
+      "lon": 24.43941,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Άγιος Αθανάσιος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00803,
+      "lon": 24.43653,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Άγιος Αντώνιος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 204,
+      "name": "Ακτή Βουβάλι",
+      "regionId": "central-greece-evia",
+      "lat": 38.69911,
+      "lon": 23.77265,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Ακτή (Βουβάλι)» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 211,
+      "name": "Βαλοπούλα",
+      "regionId": "central-greece-evia",
+      "lat": 38.4907,
+      "lon": 23.56863,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Βαλοπούλα» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 220,
+      "name": "Ελιά",
+      "regionId": "central-greece-evia",
+      "lat": 37.98927,
+      "lon": 24.38536,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Ελιά» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 221,
+      "name": "Ζάστανα",
+      "regionId": "central-greece-evia",
+      "lat": 38.02588,
+      "lon": 24.30521,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Ζάστανα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 227,
+      "name": "Καλάμι",
+      "regionId": "central-greece-evia",
+      "lat": 38.50134,
+      "lon": 24.20088,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Καλάμι» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 228,
+      "name": "Καλαμίτσι",
+      "regionId": "central-greece-evia",
+      "lat": 37.97991,
+      "lon": 24.35561,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Καλαμίτσι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 229,
+      "name": "Κάλαμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.44956,
+      "lon": 24.18419,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Beach Κάλαμος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 231,
+      "name": "Κατσούλι",
+      "regionId": "central-greece-evia",
+      "lat": 37.99775,
+      "lon": 24.38913,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κατσούλι» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 234,
+      "name": "Κοκκινιάς",
+      "regionId": "central-greece-evia",
+      "lat": 38.67852,
+      "lon": 23.89218,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κοκκινιάς» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 237,
+      "name": "Κουρέντι",
+      "regionId": "central-greece-evia",
+      "lat": 38.47162,
+      "lon": 23.6025,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κουρέντι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 243,
+      "name": "Λιανή Άμμος Πετριών",
+      "regionId": "central-greece-evia",
+      "lat": 38.3937,
+      "lon": 24.1822,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Λιανή Άμμος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 244,
+      "name": "Λιβαδάκι",
+      "regionId": "central-greece-evia",
+      "lat": 38.00395,
+      "lon": 24.39191,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Λιβαδάκι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 256,
+      "name": "Μεγάλη Άμμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.03316,
+      "lon": 24.30627,
+      "verdict": "RETRY",
+      "reason": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 258,
+      "name": "Μνήματα",
+      "regionId": "central-greece-evia",
+      "lat": 37.97637,
+      "lon": 24.39573,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μνήματα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 259,
+      "name": "Μπουρνόντας",
+      "regionId": "central-greece-evia",
+      "lat": 38.49925,
+      "lon": 23.5583,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μπουρνόντας» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 260,
+      "name": "Ναυτικό",
+      "regionId": "central-greece-evia",
+      "lat": 38.67549,
+      "lon": 23.98239,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Ναυτικό» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 272,
+      "name": "Παραλία Κοτσικιάς",
+      "regionId": "central-greece-evia",
+      "lat": 38.9367,
+      "lon": 23.4278,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Κοτσικιάς» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 291,
+      "name": "Πόρτο Πεύκο",
+      "regionId": "central-greece-evia",
+      "lat": 38.87715,
+      "lon": 22.94833,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Πόρτο πεύκο» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 297,
+      "name": "Σαρακήνικο Αγίας Άννας",
+      "regionId": "central-greece-evia",
+      "lat": 38.88143,
+      "lon": 23.43972,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Σαρακήνικο» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 310,
+      "name": "Χερόμυλος",
+      "regionId": "central-greece-evia",
+      "lat": 38.42834,
+      "lon": 24.18437,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Χερόμυλος» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 314,
+      "name": "Ψιλή Άμμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.01267,
+      "lon": 24.42675,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Ψιλή Άμμος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
     {
       "id": 385,
       "name": "Biancoblusarti",
       "regionId": "central-macedonia-halkidiki-mainland",
       "lat": 40.09154,
       "lon": 23.97942,
-      "verdict": "RETRY",
-      "reason": "Overpass δεν απάντησε"
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
     },
     {
       "id": 396,
@@ -17,8 +343,10 @@
       "regionId": "central-macedonia-halkidiki-mainland",
       "lat": 40.07119,
       "lon": 23.99466,
-      "verdict": "RETRY",
-      "reason": "Overpass δεν απάντησε"
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Goa Beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
     },
     {
       "id": 398,
@@ -37,8 +365,10 @@
       "regionId": "central-macedonia-halkidiki-mainland",
       "lat": 40.03385,
       "lon": 24.00948,
-      "verdict": "RETRY",
-      "reason": "Overpass δεν απάντησε"
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Klimataria Beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
     },
     {
       "id": 416,
@@ -88,8 +418,644 @@
       "regionId": "central-macedonia-halkidiki-mainland",
       "lat": 40.3340593,
       "lon": 23.9201432,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «(unnamed)» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 533,
+      "name": "Κουλούρα",
+      "regionId": "crete-crete-chania",
+      "lat": 35.5216936,
+      "lon": 24.040977,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κουλούρα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 654,
+      "name": "Star Beach",
+      "regionId": "crete-crete-heraklion",
+      "lat": 35.3087012,
+      "lon": 25.4048473,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Star Beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 735,
+      "name": "Βρυονήσι",
+      "regionId": "crete-crete-lasithi",
+      "lat": 35.12536,
+      "lon": 25.76222,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Βρυονήσι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 749,
+      "name": "Κρινάκια",
+      "regionId": "crete-crete-lasithi",
+      "lat": 35.05829,
+      "lon": 26.24277,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Krinakia beach» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 3010,
+      "name": "Ελούντα",
+      "regionId": "crete-crete-lasithi",
+      "lat": 35.2620067,
+      "lon": 25.7225374,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Σχίσμα» στα 254 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 976,
+      "name": "Μώλος",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.43713,
+      "lon": 20.03695,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 986,
+      "name": "Παραλία Αχαράβης",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.79668,
+      "lon": 19.80855,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1102,
+      "name": "Κουνόπετρα",
+      "regionId": "ionian-islands-kefalonia",
+      "lat": 38.15432,
+      "lon": 20.39039,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κουνόπετρα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1128,
+      "name": "Σπίθι",
+      "regionId": "ionian-islands-kefalonia",
+      "lat": 38.06318,
+      "lon": 20.79392,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Σπίθι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1165,
+      "name": "Λυγιά",
+      "regionId": "ionian-islands-lefkada",
+      "lat": 38.7908,
+      "lon": 20.7186,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1321,
+      "name": "Άγιος Ερμογένης",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.0165,
+      "lon": 26.54267,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Άγιος Ερμογένης» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1322,
+      "name": "Άγιος Ισίδωρος",
+      "regionId": "north-aegean-lesvos",
+      "lat": 38.96778,
+      "lon": 26.39115,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1333,
+      "name": "Κάμπος",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.27879,
+      "lon": 25.99375,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κάμπος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1337,
+      "name": "Λάψαρνα",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.28022,
+      "lon": 25.92277,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Λάψαρνα» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1342,
+      "name": "Λιμαντζίκι",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.37858,
+      "lon": 26.1871,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Λιμαντζίκι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1359,
+      "name": "Παραλία Τάρτι",
+      "regionId": "north-aegean-lesvos",
+      "lat": 38.9766,
+      "lon": 26.49053,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Τάρτι» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1366,
+      "name": "Τηλέγραφος",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.17183,
+      "lon": 25.8581,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Τηλέγραφος» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1373,
+      "name": "Φαρά",
+      "regionId": "north-aegean-lesvos",
+      "lat": 38.97503,
+      "lon": 26.48293,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Φαρά» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1374,
+      "name": "Φυκιότρυπα",
+      "regionId": "north-aegean-lesvos",
+      "lat": 39.11198,
+      "lon": 26.56593,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Φυκιότρυπα» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1543,
+      "name": "Αγία Κυριακή",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.98373,
+      "lon": 22.99699,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Αγία Κυριακή» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1545,
+      "name": "Αλύπα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.56707,
+      "lon": 22.47709,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Αλύπα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1560,
+      "name": "Καραβοστάσι Οιτύλου",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.6971,
+      "lon": 22.3829,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Καραβοστάσι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1572,
+      "name": "Οίτυλο",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.69282,
+      "lon": 22.38893,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Οίτυλο» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1573,
+      "name": "Παραλία 100 Ρίζες",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.67607,
+      "lon": 22.52413,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «(unnamed)» στα 79 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1576,
+      "name": "Παραλία Ελιάς",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.76076,
+      "lon": 22.79518,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κάβος» στα 71 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1588,
+      "name": "Παραλία Τρίνησα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.80523,
+      "lon": 22.65657,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 3108,
+      "name": "Καλόγερος (Ελαφόνησος)",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.5102892,
+      "lon": 22.9704615,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Καλόγερος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1702,
+      "name": "Κολώνα",
+      "regionId": "south-aegean-andros",
+      "lat": 37.85583,
+      "lon": 24.77878,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Κολώνα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1755,
+      "name": "Foniadiko",
+      "regionId": "south-aegean-ios",
+      "lat": 36.7825,
+      "lon": 25.31368,
       "verdict": "RETRY",
       "reason": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1756,
+      "name": "Gero Aggeli",
+      "regionId": "south-aegean-ios",
+      "lat": 36.7883,
+      "lon": 25.30114,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1763,
+      "name": "Αντώναρου",
+      "regionId": "south-aegean-ios",
+      "lat": 36.65014,
+      "lon": 25.36017,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1766,
+      "name": "Διαμμούδια",
+      "regionId": "south-aegean-ios",
+      "lat": 36.75693,
+      "lon": 25.26317,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1769,
+      "name": "Καρατζάς",
+      "regionId": "south-aegean-ios",
+      "lat": 36.78518,
+      "lon": 25.27514,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1771,
+      "name": "Κατσιβέλι",
+      "regionId": "south-aegean-ios",
+      "lat": 36.71526,
+      "lon": 25.28636,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1777,
+      "name": "Λουκά Αυλάκι",
+      "regionId": "south-aegean-ios",
+      "lat": 36.66056,
+      "lon": 25.38705,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1781,
+      "name": "Νεράκι",
+      "regionId": "south-aegean-ios",
+      "lat": 36.77671,
+      "lon": 25.32153,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1782,
+      "name": "Ντόμινο",
+      "regionId": "south-aegean-ios",
+      "lat": 36.7449,
+      "lon": 25.35048,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1794,
+      "name": "Σοφιάς Αυλάκι",
+      "regionId": "south-aegean-ios",
+      "lat": 36.73014,
+      "lon": 25.38073,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1802,
+      "name": "Χάλαρα",
+      "regionId": "south-aegean-ios",
+      "lat": 36.65381,
+      "lon": 25.38161,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1828,
+      "name": "Σιδερού",
+      "regionId": "south-aegean-kea",
+      "lat": 37.65108,
+      "lon": 24.40771,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Σιδερού» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1839,
+      "name": "Άγιος Μηνάς",
+      "regionId": "south-aegean-kimolos",
+      "lat": 36.80594,
+      "lon": 24.59002,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1840,
+      "name": "Αθηνιά",
+      "regionId": "south-aegean-kimolos",
+      "lat": 36.80575,
+      "lon": 24.52255,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Αθηνιά» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2194,
+      "name": "Αφρυανιά",
+      "regionId": "south-aegean-koufonisia",
+      "lat": 36.91525,
+      "lon": 25.58188,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2202,
+      "name": "Λίμνη Κάτω Κουφονησίου",
+      "regionId": "south-aegean-koufonisia",
+      "lat": 36.92116,
+      "lon": 25.58906,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1861,
+      "name": "Άγιος Στέφανος",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.39669,
+      "lon": 24.45758,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Άγιος Στέφανος» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1883,
+      "name": "Μαρκουλη",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.31107,
+      "lon": 24.39701,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μαρκουλη» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1884,
+      "name": "Μαρούλα",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.44785,
+      "lon": 24.4289,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μαρούλα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1886,
+      "name": "Μικρό Λιβαδάκι",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.4285,
+      "lon": 24.44998,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μικρό Λιβαδάκι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1895,
+      "name": "Σκύλου",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.33233,
+      "lon": 24.41601,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Σκύλου» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1896,
+      "name": "Στύφος",
+      "regionId": "south-aegean-kythnos",
+      "lat": 37.33459,
+      "lon": 24.37969,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Στύφος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "regionId": "south-aegean-naxos",
+      "lat": 37.0010969,
+      "lon": 25.3878136,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Παραλία Καστράκι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 1998,
+      "name": "Κέδρος",
+      "regionId": "south-aegean-naxos",
+      "lat": 36.983778,
+      "lon": 25.3858679,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Kedros Beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2021,
+      "name": "Άγιος Δημήτριος",
+      "regionId": "south-aegean-paros",
+      "lat": 37.12479,
+      "lon": 25.23893,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Agios Dimitrios beach» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2022,
+      "name": "Άγιος Στέφανος",
+      "regionId": "south-aegean-paros",
+      "lat": 37.12563,
+      "lon": 25.24687,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Άγιος Στέφανος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2079,
+      "name": "Γιαλούδι",
+      "regionId": "south-aegean-serifos",
+      "lat": 37.19526,
+      "lon": 24.4666,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Γιαλούδι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2096,
+      "name": "Αρτιμόνι",
+      "regionId": "south-aegean-sifnos",
+      "lat": 37.016381,
+      "lon": 24.654413,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2102,
+      "name": "Λαζάρου",
+      "regionId": "south-aegean-sifnos",
+      "lat": 36.926867,
+      "lon": 24.725655,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2109,
+      "name": "Τόσο Νερό",
+      "regionId": "south-aegean-sifnos",
+      "lat": 36.973279,
+      "lon": 24.667311,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2110,
+      "name": "Τσόπου",
+      "regionId": "south-aegean-sifnos",
+      "lat": 36.926658,
+      "lon": 24.691816,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2113,
+      "name": "Φασολού",
+      "regionId": "south-aegean-sifnos",
+      "lat": 36.94085,
+      "lon": 24.75262,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 2161,
+      "name": "Βαθύ Πανόρμου",
+      "regionId": "south-aegean-tinos",
+      "lat": 37.63907,
+      "lon": 25.07959,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Βαθύ» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 2172,
+      "name": "Μαντροκλήσι",
+      "regionId": "south-aegean-tinos",
+      "lat": 37.63536,
+      "lon": 25.13862,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μαντροκλήσι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
     }
   ]
 }
