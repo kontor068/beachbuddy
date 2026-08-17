@@ -717,7 +717,7 @@ export const buildTripPool = (
     let maxFetchKm = 0;
     let maxIntensity = 0;
     for (const sector of tripSectors) {
-      if (!hasGeometryEnclosedProtection(geoProfile, sector, profile.suspectPin)) continue;
+      if (!hasGeometryEnclosedProtection(geoProfile, sector, profile.suspectPin, beach.id)) continue;
       if (profile.exposedToWindDirections?.includes(sector)) continue;
       covered += 1;
       maxFetchKm = Math.max(maxFetchKm, geoProfile.sectors?.[sector]?.fetchKm ?? 0);

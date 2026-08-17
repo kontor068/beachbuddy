@@ -578,23 +578,65 @@ export const canClaimProtectedFromWind = (
 // low residual wind energy (intensity < 33) in a HIGH-confidence mask. It is strictly
 // per-live-sector, so the same cove stays honestly 'exposed' on its open sectors (SE/S here),
 // and it never applies to a suspect pin. Downstream wave/swell ceilings are untouched.
+// ⚠️ ΤΟ ΔΑΠΕΔΟ 0,6 ΚΑΙ ΓΙΑΤΙ ΜΙΑ ΧΕΙΡΟΚΙΝΗΤΑ ΕΠΙΘΕΩΡΗΜΕΝΗ ΠΑΡΑΛΙΑ ΤΟ ΠΑΡΑΚΑΜΠΤΕΙ (17/08/2026).
+//
+// Ο τύπος έντασης (utils/geospatialExposureModel.ts) είναι
+//     ένταση = 100 × onshoreFactor × (0,6 + 0,4 × fetchFactor × openness)
+// οπότε με fetchKm 0 και blockedRayRatio 1 ο δεύτερος παράγοντας ΚΟΛΛΑΕΙ στο 0,6 και μένει
+//     ένταση = 60 × onshoreFactor
+// Δηλαδή ένας τομέας χωρίς ΚΑΘΟΛΟΥ νερό μπροστά του βγάζει ως και 60/100 έκθεση αποκλειστικά
+// από τη ΓΩΝΙΑ του ανέμου προς το facingDeg — μια τριγωνομετρική προβολή, όχι θάλασσα.
+// Εθνικά: 361 τομείς σε 308 παραλίες, όλοι 'partial', ένταση 33,0-59,6 (διάμεσος 38,2).
+//
+// ΓΙΑΤΙ Η ΠΑΡΑΚΑΜΨΗ ΔΕΝ ΕΙΝΑΙ ΕΘΝΙΚΗ. Το «μηδέν άνοιγμα» ΔΕΝ αρκεί μόνο του, και υπάρχει
+// μετρημένο αντιπαράδειγμα: Πάνορμος Νάξου (2011) @ S — fetch 0, ratio 1, ένταση 46,3 — με
+// χειροκίνητη ετικέτα 'exposed' στο scripts/validateWindExposureGroundTruth.mjs:28. Η ράχη των
+// 57 μ. νότιά του όντως κόβει το κύμα ΑΠΟ ΕΚΕΙ, αλλά το στόμιο του κόλπου ανοίγει ΝΔ με 6,2 χλμ,
+// και ο νότιος άνεμος σηκώνει κύμα έξω από τη ράχη που μπαίνει από το πλάι. Εθνική άρση του
+// δαπέδου θα μετέτρεπε επίσης 205 παραλίες-όρμους σε 458, με 194 από τις νέες να έχουν ≥8 χλμ
+// ανοιχτά κάπου — και ο όρμος εξαιρείται από το ταβάνι θάλασσας (utils/suitabilityTone.ts:312).
+// Αυτό είναι μηχανή ψεύτικης ηρεμίας, σκανδάλη #1 της §9. ΑΠΟΡΡΙΦΘΗΚΕ.
+//
+// ΤΙ ΕΠΙΤΡΕΠΕΤΑΙ. Μόνο εκεί όπου ΑΝΘΡΩΠΟΣ επιθεώρησε τη μορφολογία και έγραψε γιατί — ο
+// CURATED_ENCLOSED_COVE_IDS κρατάει τεκμηρίωση ανά παραλία («133 — land ≤0,1 km σε 6/8 τομείς,
+// μπούκα N/NW μόνο»). Αυτός είναι ο δεύτερος μάρτυρας που απαιτεί το §Μ7, και είναι ακριβώς η
+// «δεύτερη ανάγνωση της ίδιας ακτογραμμής» του §Γ1. Έκταση: 29 τομείς σε 24 παραλίες (0,13%).
+//
+// ΔΕΝ ΓΕΝΝΑΕΙ ΝΕΟΥΣ ΟΡΜΟΥΣ, δομικά: το isEnclosedCove γυρίζει true για τα curated ids ΠΡΙΝ από
+// κάθε γεωμετρικό έλεγχο (γραμμή 706), άρα το τόξο του όρμου μένει 205 → 205. Και ο Πάνορμος
+// ΔΕΝ είναι στη λίστα, οπότε το δίχτυ των 128 μένει άθικτο· ούτε η Αγία Ειρήνη (1863) και η
+// Μαρούλα (1884) που το scripts/windExposureValidation.ts:677-678 καρφώνει ρητά ως 'partial'.
 const GEOMETRY_ENCLOSURE_BLOCKED_RATIO = 0.95;
 const GEOMETRY_ENCLOSURE_MAX_INTENSITY = 33;
 
 export const hasGeometryEnclosedProtection = (
   profile: GeospatialExposureProfile | undefined,
   windSector: WindSector,
-  suspectPin: boolean
+  suspectPin: boolean,
+  /** Χωρίς αυτό η παράκαμψη του δαπέδου δεν ενεργοποιείται ΠΟΤΕ — ο κανόνας μένει ο παλιός. */
+  beachId?: number
 ): boolean => {
   if (suspectPin) return false;
   if (profile?.confidence !== 'high') return false;
   const sector = profile.sectors?.[windSector];
-  if (!sector || sector.level !== 'protected') return false;
+  if (!sector) return false;
   const fullyLandBlocked = typeof sector.blockedRayRatio === 'number'
     && sector.blockedRayRatio >= GEOMETRY_ENCLOSURE_BLOCKED_RATIO;
+  if (!fullyLandBlocked) return false;
+
+  // Ο στεγνός τομέας μιας επιθεωρημένης παραλίας: μηδέν άνοιγμα σημαίνει μηδέν νερό, και η
+  // ένταση που τον κρατάει έξω είναι ΜΟΝΟ το δάπεδο. Το `!== 'exposed'` είναι ζώνη ασφαλείας,
+  // όχι φίλτρο — με fetchKm 0 η ένταση δεν φτάνει το 60 παρά μόνο σε τέλεια κατάματα άνεμο.
+  const curatedDrySector = typeof beachId === 'number'
+    && CURATED_ENCLOSED_COVE_IDS.has(beachId)
+    && sector.fetchKm === 0
+    && sector.level !== 'exposed';
+  if (curatedDrySector) return true;
+
+  if (sector.level !== 'protected') return false;
   const lowResidualWind = typeof sector.intensity === 'number'
     && sector.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY;
-  return fullyLandBlocked && lowResidualWind;
+  return lowResidualWind;
 };
 
 // A "closed cove" (όρμος) per coastal geomorphology: a SMALL inlet enclosed beyond a
@@ -826,7 +868,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   // untouched: an explicitly authored exposed sector still wins, `suspectPin` still vetoes,
   // confidence must still be 'high', and `isKnownWindSportRisk` still overrides at the AND below.
   const geometryEnclosed = !profile.exposedToWindDirections.includes(windSector)
-    && hasGeometryEnclosedProtection(input.geospatialProfile, windSector, profile.suspectPin);
+    && hasGeometryEnclosedProtection(input.geospatialProfile, windSector, profile.suspectPin, input.beach.id);
   // ⚠️ 05/08/2026 — A FACING CONFLICT NOW WITHHOLDS THE PROTECTED CLAIM, AUTHORED OR NOT.
   //
   // `geospatialProfileConflictsWithAuthoredFacing` was wired into exactly one place — the όρμος
