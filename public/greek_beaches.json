@@ -81061,13 +81061,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Κερασιά\" (https://www.openstreetmap.org/way/93943011) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1901m from any existing beach). Google confirms a beach (1106 ratings) 32m from the pin. Slot via nearest existing beach #937 (1901m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Κερασιά\" (https://www.openstreetmap.org/way/93943011) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1901m from any existing beach). Google confirms a beach (1106 ratings) 32m from the pin. Slot via nearest existing beach #937 (1901m). Access/terrain unknown — needs field verification.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/93943011"
@@ -81511,12 +81514,15 @@
             },
             "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Amenities from OSM POIs 2026-08-17: ταβέρνες · beach bar (12 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/42749230"
             ],
@@ -200998,7 +201004,9 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "σνακ"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "026_2501_2600",
@@ -201009,7 +201017,8 @@
             },
             "sourceNotes": [
               "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
-              "Access from OSM road network 2026-08-17: OSM way/364176267 highway=tertiary surface=concrete στα 24 m. Previously 'unknown'. No other field changed."
+              "Access from OSM road network 2026-08-17: OSM way/364176267 highway=tertiary surface=concrete στα 24 m. Previously 'unknown'. No other field changed.",
+              "Amenities from OSM POIs 2026-08-17: σνακ (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://artespelion.gr/%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC/%CE%BF%CE%B4%CE%B7%CE%B3%CF%8C%CF%82-%CF%80%CE%B7%CE%BB%CE%AF%CE%BF%CF%85/%CE%BC%CE%BF%CE%BD%CE%BF%CE%AE%CE%BC%CE%B5%CF%81%CE%B5%CF%82-%CE%B5%CE%BA%CE%B4%CF%81%CE%BF%CE%BC%CE%AD%CF%82/%CE%BA%CE%B5%CE%BD%CF%84%CF%81%CE%B9%CE%BA%CF%8C-%CE%B4%CF%85%CF%84%CE%B9%CE%BA%CF%8C-%CF%80%CE%AE%CE%BB%CE%B9%CE%BF/",
@@ -201366,7 +201375,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "pelion_tourist_evidence_pass_2026_05_29",
@@ -201378,7 +201389,8 @@
             "sourceNotes": [
               "Direct Discover Pelion page supports Vromoneri as a sandy beach reached by dirt road, with easy access, medium depth, and non-organized status. Updated access/terrain/depth/services/source detail and promoted to medium. No wind, wave, or live-condition claim was added.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.92 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/83355277, name \"Βρωμονέρι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.173,23.278. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 4.92 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/83355277, name \"Βρωμονέρι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.173,23.278. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.discover-pelion.gr/vromoneri-pelion/"
@@ -201432,7 +201444,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "beach bar"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "magnesia_confidence_continuation_2026_06_02",
@@ -201444,7 +201458,8 @@
             "sourceNotes": [
               "Source cleanup 2026-05-29: local Lefokastro source supports Gourna identity/location and short walking access of about 150 m. No services, wind, wave, calm-water, or protection claim was added.",
               "Magnesia continuation 2026-06-02: Andromahi Studios local Lefokastro page supports Gourna identity/location and short walking access of about 150 m; HellasPath adds route context for the wider area. Kept non-organized and did not change coordinates, windProfile, scoring, photos, or live condition claims.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 11.66 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/37197321, name \"Γούρνα\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.182,23.289. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 11.66 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/37197321, name \"Γούρνα\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.182,23.289. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Amenities from OSM POIs 2026-08-17: beach bar (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://andromahistudios.com/?page_id=23",
@@ -202939,7 +202954,9 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "καφέ κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "027_2601_2645",
@@ -202951,7 +202968,8 @@
             "sourceNotes": [
               "Low-confidence cleanup 2026-05-29: Adama Pelion supports Parisaina as the natural continuation north of Chorefto, reached by a short path/old cobbled path, with sandy shore, pebbly bottom, dense vegetation, and nudist/pristine character. i-escape also supports sandy Parisaina and no road at the beach front. Removed unsupported parking/taverna/shallow-water claims; no wind, wave, calm-water, or protection claim was added.",
               "Tourism-priority evidence pass 2026-05-29: AllOverGreece and i-escape support Parisaina identity/location north of Chorefto, sandy/natural beach character, footpath/no-road-front access context, vegetation/shade context, and unorganized/remote character. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 8.54 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/124979374, name \"Παρίσαινα\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.385,23.1295. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 8.54 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/124979374, name \"Παρίσαινα\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.385,23.1295. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Amenities from OSM POIs 2026-08-17: καφέ κοντά (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/124/504/el",
