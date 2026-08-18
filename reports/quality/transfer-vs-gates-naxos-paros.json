@@ -1,164 +1,13 @@
 {
-  "generatedAt": "2026-08-18T07:21:47.757Z",
+  "generatedAt": "2026-08-18T07:30:10.572Z",
   "periodS": 6,
   "thresholds": {
     "K_DANGER": 0.35,
     "K_OVERWILD": 0.15
   },
   "combos": 1328,
-  "agreement": 1091,
-  "danger": [
-    {
-      "id": 1983,
-      "name": "Άγιοι Θεόδωροι",
-      "dirDeg": 45,
-      "K6": 0.602,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.16,
-      "via": "dry-sector"
-    },
-    {
-      "id": 1983,
-      "name": "Άγιοι Θεόδωροι",
-      "dirDeg": 67.5,
-      "K6": 0.44,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.52,
-      "via": "base"
-    },
-    {
-      "id": 1990,
-      "name": "Απόλλωνας",
-      "dirDeg": 315,
-      "K6": 0.407,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.19,
-      "via": "dry-sector"
-    },
-    {
-      "id": 1996,
-      "name": "Κάμπος",
-      "dirDeg": 0,
-      "K6": 0.747,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": 0.18,
-      "via": "dry-sector"
-    },
-    {
-      "id": 1996,
-      "name": "Κάμπος",
-      "dirDeg": 22.5,
-      "K6": 0.605,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.21,
-      "via": "dry-sector"
-    },
-    {
-      "id": 1996,
-      "name": "Κάμπος",
-      "dirDeg": 45,
-      "K6": 0.433,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.57,
-      "via": "base"
-    },
-    {
-      "id": 1998,
-      "name": "Κέδρος",
-      "dirDeg": 135,
-      "K6": 0.37,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.57,
-      "via": "base"
-    },
-    {
-      "id": 2002,
-      "name": "Παραλία Λιμνάρι",
-      "dirDeg": 135,
-      "K6": 0.563,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": 0.07,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2002,
-      "name": "Παραλία Λιμνάρι",
-      "dirDeg": 157.5,
-      "K6": 0.423,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.32,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2005,
-      "name": "Μικρά",
-      "dirDeg": 45,
-      "K6": 0.402,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.21,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2027,
-      "name": "Δελφίνι",
-      "dirDeg": 225,
-      "K6": 0.377,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.68,
-      "via": "base"
-    },
-    {
-      "id": 2027,
-      "name": "Δελφίνι",
-      "dirDeg": 247.5,
-      "K6": 0.511,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.35,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2027,
-      "name": "Δελφίνι",
-      "dirDeg": 270,
-      "K6": 0.608,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": 0.03,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2029,
-      "name": "Καλόγερος",
-      "dirDeg": 225,
-      "K6": 0.393,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.1,
-      "via": "dry-sector"
-    },
-    {
-      "id": 2045,
-      "name": "Παραλία Γλυφά",
-      "dirDeg": 225,
-      "K6": 0.367,
-      "fetchKm": 0,
-      "blocked": 1,
-      "onshore": -0.16,
-      "via": "dry-sector"
-    }
-  ],
+  "agreement": 1086,
+  "danger": [],
   "overwild": [
     {
       "id": 1981,
@@ -186,6 +35,15 @@
       "fetchKm": 1.08,
       "blocked": 1,
       "onshore": 0.03
+    },
+    {
+      "id": 1982,
+      "name": "Αγιασσός",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": -0.17
     },
     {
       "id": 1984,
@@ -271,8 +129,17 @@
     {
       "id": 1990,
       "name": "Απόλλωνας",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.24,
+      "blocked": 1,
+      "onshore": 0.19
+    },
+    {
+      "id": 1990,
+      "name": "Απόλλωνας",
       "dirDeg": 157.5,
-      "K6": 0.079,
+      "K6": 0,
       "fetchKm": 0.14,
       "blocked": 1,
       "onshore": -0.2
@@ -321,6 +188,15 @@
       "fetchKm": 0.5,
       "blocked": 1,
       "onshore": -0.32
+    },
+    {
+      "id": 1994,
+      "name": "Γρόττα",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": -0.25
     },
     {
       "id": 1995,
@@ -407,10 +283,19 @@
       "id": 1997,
       "name": "Καστράκι",
       "dirDeg": 0,
-      "K6": 0.139,
+      "K6": 0,
       "fetchKm": 0.04,
       "blocked": 1,
       "onshore": -0.32
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.44
     },
     {
       "id": 1999,
@@ -425,10 +310,28 @@
       "id": 2001,
       "name": "Λιγαρίδια",
       "dirDeg": 225,
-      "K6": 0.136,
+      "K6": 0,
       "fetchKm": 0.08,
       "blocked": 1,
       "onshore": -0.3
+    },
+    {
+      "id": 2004,
+      "name": "Μελινό",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 0.02,
+      "blocked": 1,
+      "onshore": -0.04
+    },
+    {
+      "id": 2004,
+      "name": "Μελινό",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": 0.34
     },
     {
       "id": 2006,
@@ -559,6 +462,24 @@
     {
       "id": 2009,
       "name": "Μουτσούνα",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 0.1,
+      "blocked": 1,
+      "onshore": -0.35
+    },
+    {
+      "id": 2009,
+      "name": "Μουτσούνα",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": 0.04
+    },
+    {
+      "id": 2009,
+      "name": "Μουτσούνα",
       "dirDeg": 247.5,
       "K6": 0.069,
       "fetchKm": 0.12,
@@ -573,6 +494,15 @@
       "fetchKm": 1,
       "blocked": 1,
       "onshore": 0.01
+    },
+    {
+      "id": 2010,
+      "name": "Όρκος",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": -0.39
     },
     {
       "id": 2010,
@@ -731,7 +661,7 @@
       "id": 2016,
       "name": "Χίλια Βρύση",
       "dirDeg": 180,
-      "K6": 0.105,
+      "K6": 0,
       "fetchKm": 0.04,
       "blocked": 1,
       "onshore": -0.22
@@ -748,11 +678,38 @@
     {
       "id": 2018,
       "name": "Παραλία Ψωφαγριλιά",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.37
+    },
+    {
+      "id": 2018,
+      "name": "Παραλία Ψωφαγριλιά",
       "dirDeg": 225,
-      "K6": 0.096,
+      "K6": 0,
       "fetchKm": 0.36,
       "blocked": 1,
       "onshore": -0.4
+    },
+    {
+      "id": 2020,
+      "name": "Αγία Ειρήνη",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": 0.6
+    },
+    {
+      "id": 2020,
+      "name": "Αγία Ειρήνη",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": 0.25
     },
     {
       "id": 2020,
@@ -838,8 +795,17 @@
     {
       "id": 2024,
       "name": "Άσπρος Γκρεμός",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.44,
+      "blocked": 1,
+      "onshore": -0.04
+    },
+    {
+      "id": 2024,
+      "name": "Άσπρος Γκρεμός",
       "dirDeg": 247.5,
-      "K6": 0.041,
+      "K6": 0,
       "fetchKm": 0.22,
       "blocked": 1,
       "onshore": -0.42
@@ -866,7 +832,7 @@
       "id": 2026,
       "name": "Γλυφάδες",
       "dirDeg": 315,
-      "K6": 0.061,
+      "K6": 0,
       "fetchKm": 0.28,
       "blocked": 1,
       "onshore": -0.24
@@ -1091,7 +1057,7 @@
       "id": 2031,
       "name": "Κριός",
       "dirDeg": 270,
-      "K6": 0.132,
+      "K6": 0,
       "fetchKm": 0.32,
       "blocked": 1,
       "onshore": 0.39
@@ -1099,8 +1065,17 @@
     {
       "id": 2031,
       "name": "Κριός",
+      "dirDeg": 292.5,
+      "K6": 0,
+      "fetchKm": 0.18,
+      "blocked": 1,
+      "onshore": 0.01
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
       "dirDeg": 315,
-      "K6": 0.148,
+      "K6": 0,
       "fetchKm": 0.04,
       "blocked": 1,
       "onshore": -0.38
@@ -1730,10 +1705,19 @@
       "id": 2042,
       "name": "Ξυφάρα",
       "dirDeg": 247.5,
-      "K6": 0.092,
+      "K6": 0,
       "fetchKm": 0.1,
       "blocked": 1,
       "onshore": 0.15
+    },
+    {
+      "id": 2042,
+      "name": "Ξυφάρα",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": 0.51
     },
     {
       "id": 2043,
@@ -1748,7 +1732,7 @@
       "id": 2044,
       "name": "Παραλία Αλυκή",
       "dirDeg": 67.5,
-      "K6": 0.047,
+      "K6": 0,
       "fetchKm": 0.04,
       "blocked": 1,
       "onshore": -0.35
@@ -1797,6 +1781,24 @@
       "fetchKm": 2.5,
       "blocked": 0.9,
       "onshore": -0.09
+    },
+    {
+      "id": 2048,
+      "name": "Πιπέρι",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": -0.08
+    },
+    {
+      "id": 2048,
+      "name": "Πιπέρι",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.45
     },
     {
       "id": 2048,
@@ -2026,6 +2028,24 @@
     {
       "id": 2054,
       "name": "Τσουκαλιά",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.06
+    },
+    {
+      "id": 2054,
+      "name": "Τσουκαλιά",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.43
+    },
+    {
+      "id": 2054,
+      "name": "Τσουκαλιά",
       "dirDeg": 292.5,
       "K6": 0.006,
       "fetchKm": 0.28,
@@ -2045,10 +2065,19 @@
       "id": 2055,
       "name": "Φάραγγας",
       "dirDeg": 292.5,
-      "K6": 0.08,
+      "K6": 0,
       "fetchKm": 0.06,
       "blocked": 1,
       "onshore": -0.18
+    },
+    {
+      "id": 3172,
+      "name": "Ακρωτήρι",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.31
     },
     {
       "id": 3173,
@@ -2161,10 +2190,10 @@
   ],
   "summary": {
     "combos": 1328,
-    "agreementShare": 0.822,
-    "dangerCount": 15,
-    "dangerBeaches": 9,
-    "overwildCount": 222,
-    "overwildBeaches": 61
+    "agreementShare": 0.818,
+    "dangerCount": 0,
+    "dangerBeaches": 0,
+    "overwildCount": 242,
+    "overwildBeaches": 65
   }
 }

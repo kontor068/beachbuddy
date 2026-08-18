@@ -182,6 +182,28 @@ const traceRay = (zone, lat0, lon0, psi0, omega, halfDeepL) => {
   return { exit: 'horizon', psi, lat, lon }; // ανοιχτή: από εδώ και πέρα μιλάει το marine cell
 };
 
+// ── Η πύλη της πινέζας (ξεσκόνισμα 18/08, v2 του πίνακα) ────────────────────
+// Το K περιγράφει ενέργεια που φτάνει στο σημείο ΕΚΚΙΝΗΣΗΣ (100-650 μ ανοιχτά κατά facingDeg).
+// Μετρήθηκε (adjudicateTransferDangers): σε 4 περιπτώσεις η εκκίνηση «βλέπει» πάνω από βραχίονα
+// που κρύβει την πινέζα σε ≤100 μ (Δελφίνι 225°, Κέδρος 135° κ.ά.) και ο πίνακας υπερ-ισχυρίζεται.
+// Πύλη ΔΥΟ μαρτύρων (μετρήθηκε και το γιατί): μόνο «στεριά <150 μ στο raster» έκοβε ΚΑΙ 44
+// διευθύνσεις που η έκθεση ξέρει ανοιχτές με 8+ χλμ (στα 92 μ/pixel το πρώτο βήμα από πινέζα
+// στην άμμο πατάει pixel «στεριάς» της ίδιας της παραλίας) και χάλαγε τις Κολυμπήθρες. Άρα το
+// K(θ) μηδενίζεται ΜΟΝΟ όταν συμφωνούν: (α) η ευθεία από την ΠΙΝΕΖΑ βρίσκει στεριά <150 μ στο
+// raster ΚΑΙ (β) ο ώριμος ray-caster της έκθεσης λέει fetch≈0 στους τομείς γύρω από τη θ.
+// Τόσο κοντινός, διπλά βεβαιωμένος βραχίονας είναι πραγματική προστασία — κύμα 6s δεν
+// περιθλάται γύρω του με ενέργεια που να μετράει. Αλλιώς ΔΕΝ κόβουμε: η ευθεία-από-πινέζα
+// έχει το δικό της ψέμα (η θάλασσα κάνει τον γύρο, η γραμμή όχι — μάθημα v2 §8β).
+// Το ωμό μέτρο μπαίνει στο JSON (pinFirstLandM ανά διεύθυνση) για διαφάνεια/μελλοντική κρίση.
+const PIN_GATE_MAX_M = 150;
+const pinFirstLandM = (zone, lat, lon, bearingDeg, maxM = 1000) => {
+  for (let off = 50; off <= maxM; off += 50) {
+    const [la, lo] = step(lat, lon, bearingDeg, off);
+    if (zone.waterDepthAt(la, lo) == null) return off;
+  }
+  return maxM + 1;
+};
+
 // ── Σημείο εκκίνησης ────────────────────────────────────────────────────────
 const findStart = (zone, lat, lon, facingDeg) => {
   let best = null;
@@ -224,7 +246,7 @@ const main = async () => {
   const rayDirs = Array.from({ length: 360 / RAY_STEP_DEG }, (_, i) => i * RAY_STEP_DEG);
   const dPsiRad = RAY_STEP_DEG * Math.PI / 180;
 
-  const result = { version: 1, zone: ZONE_ID, generatedAt: new Date().toISOString(),
+  const result = { version: 2, zone: ZONE_ID, generatedAt: new Date().toISOString(),
     physics: 'linear refraction+shoaling, backward rays, cos2 spreading, Liouville E*cg/k invariant',
     periodsS: PERIODS_S, directionsDeg: binDirs,
     note: 'K πολλαπλασιάζει το βαθύ ύψος συνιστώσας στο σημείο εκκίνησης· null = άλυτη παραλία',
@@ -242,6 +264,19 @@ const main = async () => {
     }
     if (start.depthM < START_TARGET_DEPTH_M) diag.shallowStart.push({ id: b.id, name: b.name, depthM: +start.depthM.toFixed(1) });
 
+    const pinLand = binDirs.map(dir => pinFirstLandM(zone, b.lat, b.lon, dir));
+    // Ο δεύτερος μάρτυρας: fetch της έκθεσης στη διεύθυνση του bin — για ενδιάμεσα bins (22,5°
+    // κ.λπ.) το ΜΕΓΙΣΤΟ των δύο γειτονικών τομέων, ώστε η πύλη να πυροδοτεί μόνο όταν ΚΑΙ οι
+    // δύο γείτονες είναι κλειστοί (προς το αγριότερο = ασφαλές).
+    const SECTOR_DIRS = { N: 0, NE: 45, E: 90, SE: 135, S: 180, SW: 225, W: 270, NW: 315 };
+    const fetchNear = (dir) => {
+      let best = 0;
+      for (const [nm, sdeg] of Object.entries(SECTOR_DIRS)) {
+        if (angDiff(sdeg, dir) <= 22.5 + 1e-9) best = Math.max(best, b.sectors?.[nm]?.fetchKm ?? 0);
+      }
+      return best;
+    };
+    const pinGate = binDirs.map((dir, di) => pinLand[di] < PIN_GATE_MAX_M && fetchNear(dir) < 0.5);
     const K = []; // [περίοδος][διεύθυνση]
     const openShare = [];
     for (const T of PERIODS_S) {
@@ -260,7 +295,8 @@ const main = async () => {
         rays.push({ thetaFrom: r.psi, X: (kN * cgD) / (kD * cgN) });
       }
       openShare.push(+(rays.length / rayDirs.length).toFixed(3));
-      const row = binDirs.map(dir => {
+      const row = binDirs.map((dir, di) => {
+        if (pinGate[di]) return 0; // πύλη δύο μαρτύρων: βραχίονας κολλητά, διπλά βεβαιωμένος
         let sum = 0;
         for (const r of rays) {
           const d = angDiff(r.thetaFrom, dir);
@@ -273,6 +309,7 @@ const main = async () => {
     result.beaches[b.id] = {
       name: b.name, regionId: b.regionId,
       start: { lat: +start.lat.toFixed(5), lon: +start.lon.toFixed(5), depthM: +start.depthM.toFixed(1), offsetM: start.offsetM, bearingDeg: b.facingDeg },
+      pinFirstLandM: pinLand,
       openShare, K,
     };
 
