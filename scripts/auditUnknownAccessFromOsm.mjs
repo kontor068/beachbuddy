@@ -25,7 +25,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { overpassMirrors, USER_AGENT, sleep } from './lib/placeResolution.mjs';
+import { overpassMirrors, orderedOverpassMirrors, noteMirrorResult, USER_AGENT, sleep } from './lib/placeResolution.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const beachDir = path.join(rootDir, 'public', 'data', 'beaches');
@@ -103,9 +103,19 @@ const fetchRoads = async (lat, lon, radius) => {
   // στις 17/08 βράδυ ο μόνος ζωντανός καθρέφτης απαντούσε 2 στις 6 φορές, οπότε ένα πέρασμα
   // ανά καθρέφτη έβγαζε RETRY στα 2/3 των παραλιών χωρίς πραγματικό λόγο. Άδεια λίστα δρόμων
   // ΔΕΝ ξαναδοκιμάζεται — είναι έγκυρο «κανένας δρόμος εκεί».
+  // ΟΡΙΟ ΧΡΟΝΟΥ ΑΝΑ ΠΑΡΑΛΙΑ — ΜΕΤΡΗΜΕΝΟ 18/08/2026.
+  // Οι 4 επαναλήψεις × 3 καθρέφτες × 45-50 δλ σημαίνουν ότι μια παραλία που ΔΕΝ πρόκειται να
+  // απαντηθεί μπορεί να κρατήσει ~10 λεπτά. Μετρημένο: μια δόση 9 λεπτών προχώρησε **5**
+  // παραλίες, ενώ ο Overpass γύριζε 429 (μας φρενάρει) / 504 / καμία απάντηση.
+  // Με το όριο, η αποτυχία κοστίζει ~90 δλ και το πέρασμα προχωράει· η παραλία γράφεται RETRY
+  // και το `--resume` την ξαναρωτάει σε επόμενη δόση. Καλύτερα 100 παραλίες με 20 RETRY παρά
+  // 5 παραλίες τέλειες.
+  const deadline = Date.now() + 90000;
   for (let pass = 0; pass < 4; pass += 1) {
+    if (Date.now() > deadline) break;
     if (pass > 0) await sleep(3000 * pass);
-  for (const mirror of overpassMirrors) {
+  for (const mirror of orderedOverpassMirrors()) {
+    if (Date.now() > deadline) break;
     try {
       const res = await fetch(mirror, {
         method: 'POST',
@@ -113,7 +123,8 @@ const fetchRoads = async (lat, lon, radius) => {
         body: 'data=' + encodeURIComponent(q),
         signal: AbortSignal.timeout(MIRROR_TIMEOUT_MS),
       });
-      if (res.status === 429 || res.status === 504 || res.status >= 500) { await sleep(2500); continue; }
+      if (res.status === 429 || res.status === 504 || res.status >= 500) { noteMirrorResult(mirror, false); await sleep(2500); continue; }
+      noteMirrorResult(mirror, true);
       const json = await res.json().catch(() => ({}));
       return (json.elements || []).map((e) => ({
         osm: `way/${e.id}`,
@@ -124,7 +135,7 @@ const fetchRoads = async (lat, lon, radius) => {
         name: e.tags?.name || '',
         geometry: e.geometry,
       }));
-    } catch { /* next mirror */ }
+    } catch { noteMirrorResult(mirror, false); }
   }
   }
   return null;
@@ -189,6 +200,25 @@ const rows = [];
 // παραλία ώστε να συνεχίζει από εκεί που έμεινε») και δεν είχε εφαρμοστεί εδώ.
 const outPathEarly = path.isAbsolute(OUT) ? OUT : path.join(rootDir, OUT);
 mkdirSync(path.dirname(outPathEarly), { recursive: true });
+
+// --resume: ΣΥΝΕΧΙΣΕ ΑΠΟ ΕΚΕΙ ΠΟΥ ΕΜΕΙΝΕΣ.
+// Ένα εθνικό πέρασμα δεν χωράει σε ένα παράθυρο χρόνου, οπότε γίνεται σε δόσεις. Χωρίς αυτό,
+// κάθε δόση ξαναρωτούσε τον Overpass για ΟΛΕΣ τις παραλίες — δηλαδή η δεύτερη δόση ήταν
+// ακριβότερη από την πρώτη και το πέρασμα δεν σύγκλινε ποτέ.
+// ΤΟ RETRY ΔΕΝ ΘΕΩΡΕΙΤΑΙ ΑΠΑΝΤΗΣΗ: ξαναρωτιέται, γιατί σημαίνει «ο διακομιστής δεν μίλησε»,
+// όχι «δεν υπάρχει δρόμος». Αλλιώς μια στιγμιαία πτώση θα γινόταν μόνιμο κενό.
+const resume = process.argv.includes('--resume');
+const rowsDone = new Map();
+if (resume && existsSync(outPathEarly)) {
+  try {
+    for (const r of JSON.parse(readFileSync(outPathEarly, 'utf8')).results || []) {
+      if (r.verdict && r.verdict !== 'RETRY') rowsDone.set(Number(r.id), r);
+    }
+    console.log(`--resume: ${rowsDone.size} παραλίες έχουν ήδη απάντηση, δεν ξαναρωτιούνται\n`);
+  } catch { /* χαλασμένη αναφορά — ξεκίνα από την αρχή */ }
+}
+for (const r of rowsDone.values()) rows.push(r);
+
 const flush = () => writeFileSync(
   outPathEarly,
   JSON.stringify({ generatedAt: new Date().toISOString(), radiusM: RADIUS, pavedM: PAVED_M, trackM: TRACK_M, partial: true, results: rows }, null, 2) + '\n',
@@ -203,8 +233,9 @@ for (const regionId of regionIds) {
     const a = b.metadata?.access;
     return !a?.type || a.type === 'unknown';
   });
-  console.log(`${regionId}: ${targets.length} με άγνωστη πρόσβαση`);
-  for (const b of targets) {
+  const pending = targets.filter((b) => !rowsDone.has(Number(b.id)));
+  console.log(`${regionId}: ${targets.length} με άγνωστη πρόσβαση${resume && pending.length !== targets.length ? ` (${pending.length} μένουν)` : ''}`);
+  for (const b of pending) {
     const roads = await fetchRoads(b.lat, b.lon, RADIUS);
     if (roads === null) {
       rows.push({ id: b.id, name: b.name, regionId, verdict: 'RETRY', evidence: 'Overpass δεν απάντησε' });

@@ -54,6 +54,29 @@ export const overpassMirrors = [
   'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
 ];
+
+/**
+ * ΔΟΚΙΜΑΖΕ ΠΡΩΤΑ ΟΠΟΙΟΝ ΑΠΑΝΤΑΕΙ — ΜΕΤΡΗΜΕΝΟ 18/08/2026.
+ *
+ * Η σταθερή σειρά κόστιζε ~70 δλ ανά παραλία, από τα οποία τα ~55 ήταν καθαρή αναμονή σε
+ * καθρέφτες που δεν επρόκειτο να απαντήσουν. Ίδιο ερώτημα, ίδια στιγμή:
+ *   overpass-api.de     → 504 στα  6 δλ
+ *   kumi.systems        → 504 στα 49 δλ   ← έτρωγε μόνος του το 70% του χρόνου
+ *   private.coffee      → 200 στα 15 δλ   ← ο μόνος ζωντανός, δοκιμαζόταν ΤΕΛΕΥΤΑΙΟΣ
+ * Ένα εθνικό πέρασμα 261 παραλιών έβγαινε ~4 ώρες αντί για ~1.
+ *
+ * ΔΕΝ ΒΓΑΖΕΙ ΚΑΝΕΝΑΝ ΟΡΙΣΤΙΚΑ. Ο πεσμένος καθρέφτης πάει στο τέλος της σειράς, δεν
+ * διαγράφεται — μια στιγμιαία πτώση δεν πρέπει να τον αποκλείσει για πάντα, και οι ρόλοι
+ * αντιστρέφονται μέσα στην ίδια μέρα (σήμερα ο private.coffee ήταν ο νεκρός το πρωί και ο
+ * μόνος ζωντανός το βράδυ). Η μέτρηση ζει μόνο όσο η διεργασία.
+ */
+const mirrorFails = new Map(overpassMirrors.map((m) => [m, 0]));
+export const orderedOverpassMirrors = () =>
+  [...overpassMirrors].sort((a, b) => (mirrorFails.get(a) ?? 0) - (mirrorFails.get(b) ?? 0));
+export const noteMirrorResult = (mirror, ok) => {
+  if (ok) mirrorFails.set(mirror, 0);
+  else mirrorFails.set(mirror, (mirrorFails.get(mirror) ?? 0) + 1);
+};
 export const nominatimUrl = 'https://nominatim.openstreetmap.org/search';
 export const USER_AGENT = 'calmbeach-place-audit/1.0 (beach data validation)';
 
