@@ -1,7 +1,8 @@
 {
   "regionId": "south-aegean-folegandros",
   "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
-  "generatedAt": "2026-08-18T06:22:56.428Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T06:37:34.546Z",
   "sampleDistancesKm": [
     0.1,
     0.3,
@@ -14,59 +15,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 10.91,
+            "100m": null,
+            "300m": 16.24,
             "500m": 29.07
-          }
+          },
+          "firstWaterM": 150
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 3.16,
+            "100m": null,
+            "300m": 10.6,
             "500m": 36.81
-          }
+          },
+          "firstWaterM": 200
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.22
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 19.17
+          },
+          "firstWaterM": 350
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
+            "100m": null,
+            "300m": null,
             "500m": 14.45
-          }
+          },
+          "firstWaterM": 350
         }
       }
     },
@@ -76,59 +85,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 1.56,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.7,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 1.08,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.97,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0.15,
-            "300m": 0.23,
-            "500m": 0
-          }
+            "100m": 0.65,
+            "300m": 0.52,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0.52,
+            "100m": 7.19,
             "300m": 14.43,
             "500m": 14.54
-          }
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
+            "100m": 0.1,
             "300m": 13.64,
             "500m": 12.57
-          }
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.72
-          }
+            "100m": 0.1,
+            "300m": null,
+            "500m": 0.74
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.55,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.55,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -138,59 +155,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 3.08,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 2.36,
-            "500m": 0
-          }
+            "100m": 3.08,
+            "300m": 3.9,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 6.78,
+            "100m": 1.16,
+            "300m": 7.1,
             "500m": 11.94
-          }
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         }
       }
     },
@@ -200,59 +225,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.92,
+            "300m": null,
+            "500m": 6.23
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 5.58,
+            "100m": 1.92,
+            "300m": 10.61,
             "500m": 6.21
-          }
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
+            "100m": 1.89,
             "300m": 3.76,
             "500m": 15.96
-          }
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.92,
+            "300m": 0.45,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -262,59 +295,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
+            "100m": 5.88,
             "300m": 11.73,
-            "500m": 0
-          }
+            "500m": 11.7
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 2.15,
+            "100m": 2.64,
             "300m": 16.57,
-            "500m": 11.12
-          }
+            "500m": 11.44
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 1.68,
-            "300m": 12.69,
+            "100m": 1.85,
+            "300m": 17,
             "500m": 12.92
-          }
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0.2,
-            "300m": 3.22,
-            "500m": 0.59
-          }
+            "100m": 0.24,
+            "300m": 13.36,
+            "500m": 13.52
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 1.75,
+            "100m": 5,
             "300m": 11.57,
-            "500m": 0
-          }
+            "500m": 6.84
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 7.02,
+            "300m": 0.16,
+            "500m": null
+          },
+          "firstWaterM": 100
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 150
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         }
       }
     },
@@ -324,59 +365,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
+            "100m": 7.56,
             "300m": 7.87,
-            "500m": 8.66
-          }
+            "500m": 11.38
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 5.98,
-            "300m": 9.83,
-            "500m": 12.36
-          }
+            "100m": 7.63,
+            "300m": 12.89,
+            "500m": 19.24
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 4.8,
+            "100m": 7.86,
             "300m": 10.42,
-            "500m": 7.97
-          }
+            "500m": 13.48
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 4.8,
+            "300m": 0.28,
+            "500m": 10.25
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": 1.49,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 250
         }
       }
     },
@@ -386,59 +435,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.06,
+            "300m": 0.67,
+            "500m": null
+          },
+          "firstWaterM": 100
         },
         "SE": {
           "depths": {
-            "100m": 0,
+            "100m": null,
             "300m": 6.83,
-            "500m": 3.01
-          }
+            "500m": 4.44
+          },
+          "firstWaterM": 150
         },
         "S": {
           "depths": {
-            "100m": 0,
+            "100m": 0.58,
             "300m": 11.83,
             "500m": 14.11
-          }
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
+            "100m": 0.58,
             "300m": 11.35,
             "500m": 14.67
-          }
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.56,
+            "300m": 1.88,
+            "500m": 1.55
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         }
       }
     },
@@ -448,59 +505,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.89,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.78
-          }
+            "100m": 0.24,
+            "300m": 0.87,
+            "500m": 1.5
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0.13,
-            "300m": 11.64,
+            "100m": 0.14,
+            "300m": 30.74,
             "500m": 54.46
-          }
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0.19,
-            "300m": 0,
-            "500m": 2.34
-          }
+            "100m": 0.48,
+            "300m": null,
+            "500m": 28.27
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 1.77,
-            "300m": 0,
+            "100m": 2.08,
+            "300m": null,
             "500m": 12.93
-          }
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.1
-          }
+            "100m": 1.81,
+            "300m": 3.76,
+            "500m": 3.65
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.07,
+            "300m": null,
+            "500m": 4.56
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.04,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -510,59 +575,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.1,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0.85,
-            "300m": 0,
+            "100m": 2.52,
+            "300m": 0.2,
             "500m": 14.97
-          }
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 6.05,
-            "300m": 7.69,
-            "500m": 5.47
-          }
+            "100m": 7.48,
+            "300m": 9.19,
+            "500m": 17.43
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 5.47,
+            "100m": 6.42,
             "300m": 8.49,
-            "500m": 0.86
-          }
+            "500m": 7.55
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.16,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.16,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.11,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -572,59 +645,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 2.03,
-            "300m": 12.95,
-            "500m": 1.89
-          }
+            "100m": 6.05,
+            "300m": 12.97,
+            "500m": 1.92
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0.85,
-            "300m": 9.43,
-            "500m": 8.63
-          }
+            "100m": 7.64,
+            "300m": 13.45,
+            "500m": 18.82
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 4.33,
+            "100m": 8.1,
             "300m": 14.06,
             "500m": 16.66
-          }
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 2.68,
-            "300m": 1.73,
+            "100m": 7.56,
+            "300m": 2.98,
             "500m": 7.51
-          }
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 7.56,
+            "300m": 1.49,
+            "500m": 1.49
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 6.74,
+            "300m": 8.61,
+            "500m": 0.16
+          },
+          "firstWaterM": 100
         }
       }
     },
@@ -634,59 +715,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 1.77
+          },
+          "firstWaterM": 500
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 3.17
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 3.27
+          },
+          "firstWaterM": 400
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 600
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         }
       }
     },
@@ -696,59 +785,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
+            "100m": 0.48,
             "300m": 3.21,
             "500m": 12.7
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
             "100m": 3.87,
-            "300m": 2.84,
-            "500m": 4.77
-          }
+            "300m": 8.33,
+            "500m": 14.37
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 3.52,
-            "500m": 16.83
-          }
+            "100m": 6.97,
+            "300m": 12.74,
+            "500m": 17.2
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.85,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0.03,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.45,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -758,59 +855,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 2.5,
+            "100m": null,
+            "300m": 13.41,
             "500m": 17.22
-          }
+          },
+          "firstWaterM": 150
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 14.71
-          }
+            "100m": null,
+            "300m": 11.13,
+            "500m": 17.08
+          },
+          "firstWaterM": 300
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 1.69
-          }
+            "100m": null,
+            "300m": 7.71,
+            "500m": 10.44
+          },
+          "firstWaterM": 300
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
+            "100m": null,
+            "300m": 7.92,
             "500m": 12.34
-          }
+          },
+          "firstWaterM": 200
         }
       }
     },
@@ -823,56 +928,64 @@
             "100m": 1.71,
             "300m": 14.62,
             "500m": 18.58
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0,
+            "100m": 6.03,
             "300m": 12.99,
-            "500m": 2.36
-          }
+            "500m": 11.26
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 6.97,
+            "300m": 5.66,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.41,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.41,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -882,59 +995,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0.3,
-            "300m": 1,
+            "100m": 7.46,
+            "300m": 9.33,
             "500m": 12.14
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 3.7,
+            "100m": 5.34,
             "300m": 13.97,
-            "500m": 17.18
-          }
+            "500m": 18.69
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0.81,
-            "300m": 7.27,
-            "500m": 0
-          }
+            "100m": 3.75,
+            "300m": 8.75,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.47,
+            "300m": 3.92,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.43,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.49,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 100
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 7.56,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 100
         }
       }
     },
@@ -944,59 +1065,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
+            "100m": 3.75,
+            "300m": 0.94,
             "500m": 8.51
-          }
+          },
+          "firstWaterM": 100
         },
         "W": {
           "depths": {
-            "100m": 0,
+            "100m": 3.81,
             "300m": 8.26,
             "500m": 11.73
-          }
+          },
+          "firstWaterM": 100
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 1.12,
-            "500m": 0
-          }
+            "100m": 4.02,
+            "300m": 1.15,
+            "500m": null
+          },
+          "firstWaterM": 100
         }
       }
     }

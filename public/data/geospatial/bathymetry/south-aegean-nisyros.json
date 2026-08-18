@@ -1,7 +1,8 @@
 {
   "regionId": "south-aegean-nisyros",
   "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
-  "generatedAt": "2026-08-18T06:23:00.194Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T06:37:34.572Z",
   "sampleDistancesKm": [
     0.1,
     0.3,
@@ -17,56 +18,64 @@
             "100m": 3.67,
             "300m": 6.15,
             "500m": 7.1
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
             "100m": 7.86,
             "300m": 21.48,
             "500m": 39.89
-          }
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
             "100m": 7.54,
             "300m": 17.75,
             "500m": 47.67
-          }
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 2.44,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 4.22,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 4.08,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.12,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.12,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.62,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -76,59 +85,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 3.17,
+            "100m": 4.73,
+            "300m": 6.94,
             "500m": 10.61
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 3.69,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 5.05
-          }
+            "100m": 3.69,
+            "300m": 3.33,
+            "500m": 5.22
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
             "100m": 4.52,
             "300m": 11.89,
             "500m": 34.75
-          }
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 2.95,
+            "100m": 4.47,
             "300m": 12.22,
             "500m": 40.76
-          }
+          },
+          "firstWaterM": 50
         }
       }
     }

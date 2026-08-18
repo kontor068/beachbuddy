@@ -1,7 +1,8 @@
 {
   "regionId": "ionian-islands-mathraki",
   "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
-  "generatedAt": "2026-08-18T06:22:45.146Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T06:37:34.476Z",
   "sampleDistancesKm": [
     0.1,
     0.3,
@@ -14,59 +15,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 1.24,
+            "100m": 1.32,
+            "300m": 1.46,
             "500m": 2.73
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0.17,
+            "100m": 0.98,
             "300m": 4.72,
             "500m": 11.03
-          }
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0,
+            "100m": 1.65,
             "300m": 3.02,
             "500m": 7.98
-          }
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0.39,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.65,
+            "300m": 0.93,
+            "500m": 1.04
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.64,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.32,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.32,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0.04,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.16,
+            "300m": 0.1,
+            "500m": 0.32
+          },
+          "firstWaterM": 50
         }
       }
     }

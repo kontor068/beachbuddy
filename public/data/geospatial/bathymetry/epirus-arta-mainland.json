@@ -1,7 +1,8 @@
 {
   "regionId": "epirus-arta-mainland",
   "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
-  "generatedAt": "2026-08-18T06:22:42.033Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T06:37:34.452Z",
   "sampleDistancesKm": [
     0.1,
     0.3,
@@ -14,59 +15,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0.61,
+            "100m": 0.68,
             "300m": 2.39,
             "500m": 2.12
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.41,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.05,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.07
-          }
+            "100m": 0.04,
+            "300m": null,
+            "500m": 0.42
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0.21,
+            "100m": null,
+            "300m": 0.26,
             "500m": 1.65
-          }
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
+            "100m": 0.18,
             "300m": 0.26,
             "500m": 1.61
-          }
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0.19
-          }
+            "100m": 0.13,
+            "300m": null,
+            "500m": 0.46
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
-            "100m": 0.33,
+            "100m": 1.35,
             "300m": 4.65,
             "500m": 4.08
-          }
+          },
+          "firstWaterM": 50
         }
       }
     },
@@ -76,59 +85,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0.8,
+            "100m": 0.94,
             "300m": 3.48,
             "500m": 3.99
-          }
+          },
+          "firstWaterM": 50
         },
         "NE": {
           "depths": {
-            "100m": 0.27,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 1.09,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 0,
+            "100m": null,
             "300m": 0.33,
             "500m": 1.79
-          }
+          },
+          "firstWaterM": 150
         },
         "SE": {
           "depths": {
-            "100m": 0,
+            "100m": null,
             "300m": 0.2,
             "500m": 1.35
-          }
+          },
+          "firstWaterM": 200
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.03,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 50
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.03,
+            "300m": null,
+            "500m": 0.13
+          },
+          "firstWaterM": 50
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.06,
+            "300m": 0.08,
+            "500m": 0.05
+          },
+          "firstWaterM": 50
         },
         "NW": {
           "depths": {
             "100m": 0.46,
-            "300m": 0.79,
-            "500m": 1.42
-          }
+            "300m": 0.95,
+            "500m": 3.18
+          },
+          "firstWaterM": 50
         }
       }
     }

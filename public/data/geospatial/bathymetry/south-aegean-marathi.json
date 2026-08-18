@@ -1,7 +1,8 @@
 {
   "regionId": "south-aegean-marathi",
   "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
-  "generatedAt": "2026-08-18T06:22:59.569Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T06:37:34.565Z",
   "sampleDistancesKm": [
     0.1,
     0.3,
@@ -14,59 +15,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 600
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
+            "100m": 0.82,
+            "300m": 0.53,
             "500m": 13.13
-          }
+          },
+          "firstWaterM": 50
         },
         "E": {
           "depths": {
-            "100m": 1.27,
+            "100m": 1.8,
             "300m": 15.86,
-            "500m": 14.79
-          }
+            "500m": 15.28
+          },
+          "firstWaterM": 50
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 14.31
-          }
+            "100m": 1.31,
+            "300m": 0.55,
+            "500m": 14.54
+          },
+          "firstWaterM": 50
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 10.34
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 16.02
+          },
+          "firstWaterM": 350
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 7.76,
+            "100m": null,
+            "300m": 12.94,
             "500m": 6.95
-          }
+          },
+          "firstWaterM": 200
         },
         "W": {
           "depths": {
-            "100m": 0,
+            "100m": null,
             "300m": 16.45,
             "500m": 16.57
-          }
+          },
+          "firstWaterM": 200
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 11.91,
-            "500m": 1.86
-          }
+            "100m": null,
+            "300m": 13.7,
+            "500m": 17.95
+          },
+          "firstWaterM": 200
         }
       }
     },
@@ -76,59 +85,67 @@
       "sectors": {
         "N": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         },
         "NE": {
           "depths": {
-            "100m": 0,
-            "300m": 7.61,
-            "500m": 0.86
-          }
+            "100m": 0.34,
+            "300m": 8.88,
+            "500m": 8.92
+          },
+          "firstWaterM": 100
         },
         "E": {
           "depths": {
-            "100m": 0,
-            "300m": 13.58,
+            "100m": 0.34,
+            "300m": 14.81,
             "500m": 15.43
-          }
+          },
+          "firstWaterM": 100
         },
         "SE": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": 0.34,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": 100
         },
         "S": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
+            "100m": null,
+            "300m": null,
             "500m": 2.45
-          }
+          },
+          "firstWaterM": 350
         },
         "SW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 15.71
+          },
+          "firstWaterM": 500
         },
         "W": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": 15.82
+          },
+          "firstWaterM": 400
         },
         "NW": {
           "depths": {
-            "100m": 0,
-            "300m": 0,
-            "500m": 0
-          }
+            "100m": null,
+            "300m": null,
+            "500m": null
+          },
+          "firstWaterM": null
         }
       }
     }

@@ -27,6 +27,26 @@
  * ΤΟ ΚΡΥΦΟ ΤΟΠΙΚΟ ΑΝΤΙΓΡΑΦΟ. Κάθε GeoTIFF περιοχής μπαίνει σε `.tmp/bathymetry-tiles/` (gitignored,
  * ΠΟΤΕ commit) ώστε ένα ξανατρέξιμο να μην ξαναχτυπά το δίκτυο. `--force` το ξαναφέρνει.
  *
+ * ⚠️ v2 (18/08/2026, ίδια μέρα) — Η ΠΡΩΤΗ ΕΚΔΟΧΗ ΕΛΕΓΕ «ΣΤΕΓΝΟ» ΕΚΕΙ ΠΟΥ ΔΕΝ ΗΞΕΡΕ. Μετρήθηκε με
+ * διασταύρωση των δύο μαρτύρων (βάθος ↔ άνοιγμα ακτίνων, .tmp/witness-check): η Ροβινιά Κέρκυρας
+ * έδειχνε 0/0/0 βάθος σε τομέα με 15 χλμ ανοιχτό Ιόνιο, οι Άμμες Κεφαλονιάς 0/0/0 με 20 χλμ. Δύο
+ * μηχανισμοί, και οι δύο δικοί μας: (α) η ευθεία από την πινέζα διασχίζει τον βραχίονα του όρμου
+ * και διαβάζει το ακρωτήρι — η θάλασσα κάνει τον γύρο, η γραμμή όχι (το ανάποδο του μαθήματος
+ * «Η αφετηρία πηδάει τον βραχίονα»)· (β) στα 115 μ/pixel η διγραμμική παρεμβολή 100-300 μ από την
+ * ακτή ανακατεύει pixel ΣΤΕΡΙΑΣ (+υψόμετρο) στο μέσο όρο και βγάζει ψεύτικα ρηχά. Ένα «ταβάνι
+ * θραύσης» πάνω σε τέτοια νούμερα θα κατέβαζε το κύμα της Ροβινιάς πάνω από ανοιχτό πέλαγος —
+ * ψεύτικη ηρεμία από δικό μας artifact. Διορθώσεις v2:
+ *   1. Παρεμβολή ΜΟΝΟ σε pixel νερού (raster < 0)· τα pixel στεριάς βγαίνουν από τον μέσο όρο και
+ *      τα βάρη ξανακανονικοποιούνται. Κανένα υψόμετρο δεν μολύνει πια βάθος.
+ *   2. «Δεν είδα νερό» = null, ΟΧΙ 0. Το 0 της v1 μπέρδευε «στεγνό» με «δεν ξέρω» — και πάνω σε
+ *      αυτή τη σύγχυση θα χτιζόταν το ταβάνι. Όποιος καταναλώσει αυτά τα δεδομένα οφείλει να
+ *      συμπεριφέρεται στο null ως απουσία μάρτυρα (καμία δήλωση), ποτέ ως ρηχό.
+ *   3. Νέο πεδίο `firstWaterM` ανά τομέα: σε ποια απόσταση (βήμα 50 μ, ως 600 μ) η ευθεία βρίσκει
+ *      πρώτη φορά νερό. Δείχνει πότε ένα null στα 100 μ σημαίνει «ο τομέας ξεκινά σε στεριά/βράχο»
+ *      και πότε «δεν υπάρχει νερό πουθενά προς τα εκεί».
+ * Η επαλήθευση της v2 είναι γραμμένη στο handover 8β: Ελαφονήσι κρατά τη ρηχή του ζώνη με αριθμούς,
+ * Ροβινιά/Άμμες γυρίζουν σε null (όχι ψεύτικο στεγνό), Άγ. Προκόπιος αμετάβλητος.
+ *
  * Run: node scripts/downloadBathymetryProfiles.mjs                              (όλη η Ελλάδα)
  *      node scripts/downloadBathymetryProfiles.mjs --regions=south-aegean-naxos,south-aegean-paros
  *      node scripts/downloadBathymetryProfiles.mjs --force                      (αγνόησε το cache)
@@ -140,7 +160,12 @@ const fetchTile = async (region) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ΤΟ ΨΗΣΙΜΟ — διγραμμική παρεμβολή πάνω στο raster, βάθος = −raster όταν raster < 0.
+// ΤΟ ΨΗΣΙΜΟ (v2) — παρεμβολή ΜΟΝΟ σε pixel νερού.
+//
+// Επιστρέφει ΒΑΘΟΣ σε μέτρα (θετικό) ή null. Ο μέσος όρος παίρνει μόνο τα pixel της γειτονιάς 2×2
+// που είναι νερό (raster < 0), με τα διγραμμικά βάρη ξανακανονικοποιημένα πάνω τους — ένα pixel
+// στεριάς +15 μ. δίπλα στην ακτή δεν μπορεί πια να «ρηχύνει» το δείγμα. Αν κανένα από τα 4 δεν
+// είναι νερό, η απάντηση είναι null: δεν είδαμε νερό εκεί, δεν ξέρουμε βάθος — ΟΧΙ «στεγνό».
 // ─────────────────────────────────────────────────────────────────────────────
 const buildSampler = async (tiffBuffer) => {
   const tiff = await fromArrayBuffer(tiffBuffer.buffer.slice(
@@ -163,15 +188,20 @@ const buildSampler = async (tiffBuffer) => {
     const x0 = Math.floor(fx), y0 = Math.floor(fy);
     if (x0 < 0 || y0 < 0 || x0 + 1 >= width || y0 + 1 >= height) return null;
     const tx = fx - x0, ty = fy - y0;
-    const at = (x, y) => {
+    const waterDepthAt = (x, y) => {
       const v = band[y * width + x];
-      return (v === nodata || !Number.isFinite(v)) ? null : v;
+      if (v === nodata || !Number.isFinite(v)) return null;
+      return v < 0 ? -v : null; // στεριά (≥0) = εκτός μέσου όρου, όχι μηδενικό βάθος
     };
-    const v00 = at(x0, y0), v10 = at(x0 + 1, y0), v01 = at(x0, y0 + 1), v11 = at(x0 + 1, y0 + 1);
-    if (v00 === null || v10 === null || v01 === null || v11 === null) return null;
-    const top = v00 + (v10 - v00) * tx;
-    const bottom = v01 + (v11 - v01) * tx;
-    return top + (bottom - top) * ty;
+    const neighbours = [
+      { depth: waterDepthAt(x0, y0), weight: (1 - tx) * (1 - ty) },
+      { depth: waterDepthAt(x0 + 1, y0), weight: tx * (1 - ty) },
+      { depth: waterDepthAt(x0, y0 + 1), weight: (1 - tx) * ty },
+      { depth: waterDepthAt(x0 + 1, y0 + 1), weight: tx * ty },
+    ].filter(n => n.depth !== null);
+    const weightSum = neighbours.reduce((sum, n) => sum + n.weight, 0);
+    if (weightSum <= 0) return null;
+    return neighbours.reduce((sum, n) => sum + n.depth * n.weight, 0) / weightSum;
   };
 };
 
@@ -180,8 +210,20 @@ const buildSampler = async (tiffBuffer) => {
 // ─────────────────────────────────────────────────────────────────────────────
 let totalBeaches = 0;
 let totalSectors = 0;
-let landAt100m = 0;
+let noWaterAt100m = 0;
+let sectorsWithNoWaterAtAll = 0;
 const regionSummaries = [];
+
+/** Σε ποια απόσταση (βήμα 50 μ, ως 600 μ) η ευθεία του τομέα βρίσκει πρώτη φορά νερό — αλλιώς null. */
+const FIRST_WATER_STEP_KM = 0.05;
+const FIRST_WATER_MAX_KM = 0.6;
+const firstWaterKm = (sample, origin, bearingDeg) => {
+  for (let d = FIRST_WATER_STEP_KM; d <= FIRST_WATER_MAX_KM + 1e-9; d += FIRST_WATER_STEP_KM) {
+    const point = destinationPoint(origin, bearingDeg, d);
+    if (sample(point.lat, point.lon) !== null) return d;
+  }
+  return null;
+};
 
 for (const region of regions) {
   let sample;
@@ -203,14 +245,17 @@ for (const region of regions) {
       const depths = {};
       for (const distanceKm of SAMPLE_DISTANCES_KM) {
         const point = destinationPoint(beach.coordinates, bearingDeg, distanceKm);
-        const raw = sample(point.lat, point.lon);
+        const depthM = sample(point.lat, point.lon);
         const label = `${Math.round(distanceKm * 1000)}m`;
-        if (raw === null) { depths[label] = null; continue; }
-        const depthM = raw < 0 ? Number((-raw).toFixed(2)) : 0;
-        depths[label] = depthM;
-        if (raw >= 0 && distanceKm === 0.1) landAt100m += 1;
+        depths[label] = depthM === null ? null : Number(depthM.toFixed(2));
+        if (depthM === null && distanceKm === 0.1) noWaterAt100m += 1;
       }
-      sectors[key] = { depths };
+      const firstKm = firstWaterKm(sample, beach.coordinates, bearingDeg);
+      if (firstKm === null) sectorsWithNoWaterAtAll += 1;
+      sectors[key] = {
+        depths,
+        firstWaterM: firstKm === null ? null : Math.round(firstKm * 1000),
+      };
       totalSectors += 1;
     }
     beachProfiles[beach.id] = {
@@ -227,6 +272,8 @@ for (const region of regions) {
     `${JSON.stringify({
       regionId: region.regionId,
       source: 'EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)',
+      // v2: παρεμβολή μόνο σε pixel νερού· null = «δεν είδα νερό», ΠΟΤΕ «στεγνό»· + firstWaterM.
+      schemaVersion: 2,
       generatedAt: new Date().toISOString(),
       sampleDistancesKm: SAMPLE_DISTANCES_KM,
       profiles: beachProfiles,
@@ -238,6 +285,7 @@ for (const region of regions) {
 process.stderr.write('\n');
 
 console.log(`\nΨήθηκαν ${totalBeaches} παραλίες × 8 τομείς = ${totalSectors} συνδυασμοί σε ${regionSummaries.length} περιοχές.`);
-console.log(`Στεριά (ή δορυφορικός θόρυβος) στα 100 μ. από πινέζα: ${landAt100m} τομείς (${((landAt100m / Math.max(1, totalSectors)) * 100).toFixed(1)}%) — δεν πετάχτηκαν, βάθος 0 με σημείωση εδώ στο log.`);
+console.log(`Χωρίς νερό στα 100 μ. (null, όχι «στεγνό»): ${noWaterAt100m} τομείς (${((noWaterAt100m / Math.max(1, totalSectors)) * 100).toFixed(1)}%).`);
+console.log(`Χωρίς νερό ΠΟΥΘΕΝΑ ως τα 600 μ. (η ευθεία μένει σε στεριά): ${sectorsWithNoWaterAtAll} τομείς (${((sectorsWithNoWaterAtAll / Math.max(1, totalSectors)) * 100).toFixed(1)}%).`);
 console.log(`Αρχεία: public/data/geospatial/bathymetry/*.json (${regionSummaries.length} νέα).`);
 console.log('\nΕΛΕΓΞΕ ΔΕΙΓΜΑ ΠΡΙΝ ΤΟ ΕΠΟΜΕΝΟ ΒΗΜΑ (§4 Στάδιο 1, ποιοτικός έλεγχος): λίγα βάθη εδώ έναντι ναυτικού χάρτη/γνωστού λιμανιού, με το χέρι.');
