@@ -1,0 +1,190 @@
+{
+  "generatedAt": "2026-08-18T07:25:49.863Z",
+  "verdictKey": {
+    "no-silence-today": "ο πλήρης κανόνας ΔΕΝ σωπαίνει σήμερα — η διαφωνία δεν υπάρχει στην πράξη",
+    "real-danger": "η πινέζα βλέπει ≥3 χλμ νερό προς τη θ — το fetch=0 της έκθεσης είναι το ύποπτο",
+    "start-artifact": "η πινέζα κρύβεται (<3 χλμ), μόνο η εκκίνηση βλέπει — υπερ-ισχυρισμός του πίνακα"
+  },
+  "cases": [
+    {
+      "id": 1983,
+      "name": "Άγιοι Θεόδωροι",
+      "dirDeg": 45,
+      "K6": 0.602,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 200,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 1983,
+      "name": "Άγιοι Θεόδωροι",
+      "dirDeg": 67.5,
+      "K6": 0.44,
+      "silencesToday": true,
+      "via": "base",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.25,
+      "startOffsetM": 200,
+      "verdict": "start-artifact"
+    },
+    {
+      "id": 1990,
+      "name": "Απόλλωνας",
+      "dirDeg": 315,
+      "K6": 0.407,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.9,
+      "startOffsetM": 300,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 0,
+      "K6": 0.747,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 300,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 22.5,
+      "K6": 0.605,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.55,
+      "startOffsetM": 300,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 45,
+      "K6": 0.433,
+      "silencesToday": true,
+      "via": "base",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.2,
+      "startOffsetM": 300,
+      "verdict": "start-artifact"
+    },
+    {
+      "id": 1998,
+      "name": "Κέδρος",
+      "dirDeg": 135,
+      "K6": 0.37,
+      "silencesToday": true,
+      "via": "base",
+      "pinSeesKm": 0.1,
+      "startSeesKm": 0.6,
+      "startOffsetM": 350,
+      "verdict": "start-artifact"
+    },
+    {
+      "id": 2002,
+      "name": "Παραλία Λιμνάρι",
+      "dirDeg": 135,
+      "K6": 0.563,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 650,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2002,
+      "name": "Παραλία Λιμνάρι",
+      "dirDeg": 157.5,
+      "K6": 0.423,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 650,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2005,
+      "name": "Μικρά",
+      "dirDeg": 45,
+      "K6": 0.402,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 1,
+      "startOffsetM": 250,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 225,
+      "K6": 0.377,
+      "silencesToday": true,
+      "via": "base",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.25,
+      "startOffsetM": 400,
+      "verdict": "start-artifact"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 247.5,
+      "K6": 0.511,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 0.25,
+      "startOffsetM": 400,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 270,
+      "K6": 0.608,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 400,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2029,
+      "name": "Καλόγερος",
+      "dirDeg": 225,
+      "K6": 0.393,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.1,
+      "startSeesKm": 0.55,
+      "startOffsetM": 150,
+      "verdict": "no-silence-today"
+    },
+    {
+      "id": 2045,
+      "name": "Παραλία Γλυφά",
+      "dirDeg": 225,
+      "K6": 0.367,
+      "silencesToday": false,
+      "via": "—",
+      "pinSeesKm": 0.05,
+      "startSeesKm": 15,
+      "startOffsetM": 200,
+      "verdict": "no-silence-today"
+    }
+  ]
+}
