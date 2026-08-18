@@ -181,6 +181,20 @@ const classify = (lat, lon, roads) => {
 };
 
 const rows = [];
+// ΓΡΑΦΕ ΜΕΤΑ ΑΠΟ ΚΑΘΕ ΠΕΡΙΟΧΗ, ΟΧΙ ΣΤΟ ΤΕΛΟΣ — 18/08/2026.
+// Ένα εθνικό πέρασμα κρατάει ώρες πάνω σε διακομιστή που πέφτει. Με εγγραφή μόνο στο τέλος,
+// ΚΑΘΕ διακοπή (timeout, τερματισμός, πεσμένος Overpass) πετάει ό,τι μαζεύτηκε: μετρημένο εδώ
+// τρεις φορές — 29, 8 και 42 παραλίες ρωτήθηκαν και το αποτέλεσμά τους χάθηκε ολόκληρο.
+// Η ίδια συμβουλή είναι ήδη γραμμένη στη μνήμη του αγωγού παροχών («γράφε μετά από ΚΑΘΕ
+// παραλία ώστε να συνεχίζει από εκεί που έμεινε») και δεν είχε εφαρμοστεί εδώ.
+const outPathEarly = path.isAbsolute(OUT) ? OUT : path.join(rootDir, OUT);
+mkdirSync(path.dirname(outPathEarly), { recursive: true });
+const flush = () => writeFileSync(
+  outPathEarly,
+  JSON.stringify({ generatedAt: new Date().toISOString(), radiusM: RADIUS, pavedM: PAVED_M, trackM: TRACK_M, partial: true, results: rows }, null, 2) + '\n',
+  'utf8',
+);
+
 for (const regionId of regionIds) {
   const file = path.join(beachDir, `${regionId}.json`);
   if (!existsSync(file)) { console.error(`άγνωστη περιοχή: ${regionId}`); continue; }
@@ -199,12 +213,19 @@ for (const regionId of regionIds) {
       rows.push({ id: b.id, name: b.name, regionId, lat: b.lat, lon: b.lon, ...c });
     }
     console.log(`  ${String(rows.at(-1).verdict).padEnd(20)} #${b.id} ${b.name} — ${rows.at(-1).evidence}`);
+    // ΜΕΤΑ ΑΠΟ ΚΑΘΕ ΠΑΡΑΛΙΑ, ΟΧΙ ΜΕΤΑ ΑΠΟ ΚΑΘΕ ΠΕΡΙΟΧΗ. Η πρώτη εκδοχή αυτής της διόρθωσης
+    // έγραφε ανά περιοχή και ΞΑΝΑΧΑΘΗΚΕ: η Κεφαλονιά έχει δεκάδες άγνωστες και δεν πρόλαβε
+    // να τελειώσει μέσα στο όριο χρόνου, οπότε δεν γράφτηκε ποτέ γραμμή. Μια περιοχή μπορεί
+    // να κρατήσει περισσότερο από όλο το διαθέσιμο παράθυρο — άρα η μόνη ασφαλής μονάδα
+    // είναι η παραλία. (Το ίδιο λέει και η καταγραφή του αγωγού παροχών· εδώ εφαρμόστηκε
+    // μισό και κόστισε άλλο ένα χαμένο πέρασμα.)
+    flush();
     await sleep(1200);
   }
 }
 
-const outPath = path.isAbsolute(OUT) ? OUT : path.join(rootDir, OUT);
-mkdirSync(path.dirname(outPath), { recursive: true });
+const outPath = outPathEarly;
+// τελική εγγραφή χωρίς τη σημαία `partial`, ώστε να φαίνεται ότι το πέρασμα ολοκληρώθηκε
 writeFileSync(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), radiusM: RADIUS, pavedM: PAVED_M, trackM: TRACK_M, results: rows }, null, 2) + '\n', 'utf8');
 
 const counts = {};
