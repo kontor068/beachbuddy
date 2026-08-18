@@ -42994,7 +42994,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "2026_05_chania_medium_closure",
@@ -43006,7 +43008,7 @@
             "sourceUrls": [
               "https://www.openstreetmap.org/relation/12473117"
             ],
-            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: kept low because no stronger live source was found beyond OSM identity/location for this small Stavros-area beach section. Access, terrain/services, windProfile, coordinates, scoring, photos, and live sea/wind behavior were not changed.",
+            "sourceNotes": "Chania tourist-priority evidence pass 2026-05-29: kept low because no stronger live source was found beyond OSM identity/location for this small Stavros-area beach section. Access, terrain/services, windProfile, coordinates, scoring, photos, and live sea/wind behavior were not changed. Amenities from OSM POIs 2026-08-17: ταβέρνες (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "orientation": {
               "degrees": 19.3,
               "faces": [
@@ -47567,12 +47569,15 @@
             },
             "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Αποκορώνου Αλμυρίδα\" (id 145772), Χανιά, Crete. Coordinates from seatrac.gr. Slot via nearest existing beach #605 (1082 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand).",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Αποκορώνου Αλμυρίδα\" (id 145772), Χανιά, Crete. Coordinates from seatrac.gr. Slot via nearest existing beach #605 (1082 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Amenities from OSM POIs 2026-08-17: ταβέρνες · beach bar (18 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/apokoronou-almyrida/"
             ],
@@ -60878,12 +60883,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Ελούντα\" (Elounda), Agios Nikolaos, Crete. Nominatim hit nom-way-903356951; Overpass natural=beach corroboration 385 m. Slot via nearest existing beach #768 (662 m). Conservative — access/terrain unknown, amenities only as stated. Pin corrected 2026-07-20 (no-API): moved from 35.21897,25.70965 to 35.2620067,25.7225374 — Current pin 4.5km S of Elounda. Moved to the verified OSM Elounda town/waterfront (Lasithi). Town-level anchor (no exact OSM sand node); fixes the gro (confidence medium).",
+            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Ελούντα\" (Elounda), Agios Nikolaos, Crete. Nominatim hit nom-way-903356951; Overpass natural=beach corroboration 385 m. Slot via nearest existing beach #768 (662 m). Conservative — access/terrain unknown, amenities only as stated. Pin corrected 2026-07-20 (no-API): moved from 35.21897,25.70965 to 35.2620067,25.7225374 — Current pin 4.5km S of Elounda. Moved to the verified OSM Elounda town/waterfront (Lasithi). Town-level anchor (no exact OSM sand node); fixes the gro (confidence medium). Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ · beach bar (32 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -106933,7 +106942,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "popular_island_source_promote_2026_06_05_skyros_lesvos_samos",
@@ -106946,7 +106957,8 @@
               "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Samos strict evidence pass 2026-05-29: Kept low: only OSM identity/location evidence was found.",
               "Samos confidence continuation BV 2026-06-02: Gigaplaces supports Tripiti/Trypiti beach as a bay at the eastern end of Kampos, near Ormos Marathokampos, while OSM supports the mapped beach identity/location. Promoted from low to medium only because the available visitor source is brief and does not provide enough standalone access/service detail for high confidence. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed.",
               "Island confidence pass 2026-06-05: Samos records promoted to high for static beach facts only. Existing Samosin, Municipality of East Samos guide, World Beach Guide and direct beach/source notes support identity/location plus recorded beach context. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed.",
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/92688951",
@@ -108891,13 +108903,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Λιμνιώνας (Σάμος)\" (https://www.openstreetmap.org/relation/454576) in Samos, North Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1357m from any existing beach). Google confirms a natural_feature (70 ratings) 34m from the pin. Slot via nearest existing beach #1379 (1357m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Λιμνιώνας (Σάμος)\" (https://www.openstreetmap.org/relation/454576) in Samos, North Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1357m from any existing beach). Google confirms a natural_feature (70 ratings) 34m from the pin. Slot via nearest existing beach #1379 (1357m). Access/terrain unknown — needs field verification.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/relation/454576"
@@ -117461,7 +117476,10 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά",
+              "καφέ"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "015_1401_1500",
@@ -117471,7 +117489,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά · καφέ (7 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/515011158"
@@ -160977,7 +160996,9 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "syros_tourist_evidence_pass_2026_05_29",
@@ -160988,7 +161009,8 @@
             },
             "sourceNotes": [
               "Phase 2 Syros low cleanup 2026-05-28: Terrabook and AllOverGreece support Armeos as a small beach next to Galissas, reached by a short footpath via Agia Pakou, with sand/pebbles, rocks, limited trees/shade, no organization, and need to bring supplies. Static wind or sea-state claims from sources were not encoded. No live condition claim was encoded.",
-              "Syros tourist evidence pass 2026-05-29: Terrabook and AllOverGreece support Armeos as a small beach next to Galissas, reached by footpath via Agia Pakou, with sand/pebbles, rocks, limited shade and no organized services; OSM supports the same-name beach feature. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed."
+              "Syros tourist evidence pass 2026-05-29: Terrabook and AllOverGreece support Armeos as a small beach next to Galissas, reached by footpath via Agia Pakou, with sand/pebbles, rocks, limited shade and no organized services; OSM supports the same-name beach feature. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://greece.terrabook.com/el/syros/page/armeos-2/",
@@ -161488,7 +161510,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "cyclades_audit_fixes_2026_05_23",
@@ -161497,7 +161521,7 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Phase 2 Syros OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources.",
+            "sourceNotes": "Phase 2 Syros OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (3 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/347501304"
             ],
@@ -166098,7 +166122,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "popular_regions_source_promote_2026_06_02_d",
@@ -166109,7 +166135,8 @@
             },
             "sourceNotes": [
               "Koufonisia local-source pass 2026-05-26: OSM way 229796834 names this exact Pano Koufonisi feature as Limni beach. Exploring Greece describes Limni as the first small beach east of Geitonia tis Eirinis, a small coastline indentation with pebbles and rocky seabed; a travel account and nearby accommodation listing also distinguish Limni from adjacent Porta.",
-              "Next popular-area confidence pass 2026-06-02: OSM names the exact Pano Koufonisi feature as Limni beach, and Exploring Greece directly places Limni on the seaside trail east of Geitonia tis Eirinis, describing a small coastline indentation with pebbles and rocky seabed plus road/path access. Existing medium-depth/no-organization metadata remains conservative. No windProfile, scoring, photos, or live calm/protected/safe claim was changed."
+              "Next popular-area confidence pass 2026-06-02: OSM names the exact Pano Koufonisi feature as Limni beach, and Exploring Greece directly places Limni on the seaside trail east of Geitonia tis Eirinis, describing a small coastline indentation with pebbles and rocky seabed plus road/path access. Existing medium-depth/no-organization metadata remains conservative. No windProfile, scoring, photos, or live calm/protected/safe claim was changed.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/229796834",
@@ -166230,7 +166257,11 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ κοντά",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -166240,7 +166271,8 @@
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ κοντά · beach bar (6 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/229796835"
@@ -166472,7 +166504,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -166482,7 +166516,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/229796841"
@@ -184705,7 +184740,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "symi_source_continuation_2026_06_05",
@@ -184717,7 +184754,7 @@
             "sourceUrls": [
               "https://www.aegli-apartments-symi.gr/symi/"
             ],
-            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; naturist cove/area near Nos is described as without facilities, so Nos organized service was not applied to this separate record. Popular-source confidence pass CL 2026-06-05: Visit Symi, SymiTop, Aegli Apartments Symi, AllOverGreece, Symi Day Cruises, Travelfind and BeachAtlas sources support the recorded Symi beach identity and static access/terrain/shade/service context. Promoted to high for static beach facts only; source calm/clear/safe/protected wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims.",
+            "sourceNotes": "Phase 2 organized audit 2026-05-25: removed organized claim; naturist cove/area near Nos is described as without facilities, so Nos organized service was not applied to this separate record. Popular-source confidence pass CL 2026-06-05: Visit Symi, SymiTop, Aegli Apartments Symi, AllOverGreece, Symi Day Cruises, Travelfind and BeachAtlas sources support the recorded Symi beach identity and static access/terrain/shade/service context. Promoted to high for static beach facts only; source calm/clear/safe/protected wording was not imported into windProfile, scoring, photos, water-quality, or live calm/protected/safe claims. Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "orientation": {
               "degrees": 114.7,
               "faces": [
@@ -185200,13 +185237,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_08",
             "needsVerification": true,
             "sourceNotes": [
-              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μαραθούντα\" (https://www.openstreetmap.org/way/512906901) in Symi, South Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1761m from any existing beach). Slot via nearest existing beach #2470 (1761m). Access/terrain unknown — needs field verification."
+              "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Μαραθούντα\" (https://www.openstreetmap.org/way/512906901) in Symi, South Aegean. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>1761m from any existing beach). Slot via nearest existing beach #2470 (1761m). Access/terrain unknown — needs field verification.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες (1 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/512906901"
@@ -188367,12 +188407,16 @@
             },
             "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Kastelokampos by the Rio bridge, Achaia (lat 38.29, lng 21.77): 'a mix of golden sand and pebbles ... continuous strip of sand and [https://beaches-searcher.com/en/beach/300204060/kastelokampos].",
+            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Καστελόκαμπος\" (id 136592), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2514 (1937 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Terrain corrected 2026-06-20 (OSM surface audit): our type \"\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to MIXED_SAND_PEBBLE — Kastelokampos by the Rio bridge, Achaia (lat 38.29, lng 21.77): 'a mix of golden sand and pebbles ... continuous strip of sand and [https://beaches-searcher.com/en/beach/300204060/kastelokampos]. Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ · beach bar (6 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/kastelokampos/"
             ],
@@ -188632,13 +188676,16 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καφέ"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
             "sourceNotes": [
-              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Πούντα Αιγιαλείας\" (id 144550), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2513 (198 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer."
+              "Seatrac directory import (2026-06): created from official seatrac.gr entry \"ΠΔΕ Πούντα Αιγιαλείας\" (id 144550), Αχαΐα, West Greece. Coordinates from seatrac.gr. Slot via nearest existing beach #2513 (198 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer.",
+              "Amenities from OSM POIs 2026-08-17: καφέ (2 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/pde-pounta-aigialeias/"
@@ -194576,7 +194623,9 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "καφέ κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "025_2401_2500",
@@ -194586,7 +194635,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: καφέ κοντά (3 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://www.exploring-greece.gr/el/show/48760/%3Attd/KATERINAS-VALA"
@@ -194757,7 +194807,12 @@
             },
             "organized": false,
             "shade": true,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες κοντά",
+              "καφέ κοντά",
+              "beach bar",
+              "σνακ κοντά"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "025_2401_2500",
@@ -194767,7 +194822,8 @@
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά · καφέ κοντά · beach bar · σνακ κοντά (15 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
             ],
             "sourceUrls": [
               "https://mapcarta.com/W295333254"
@@ -195492,7 +195548,10 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "026_2501_2600",
@@ -195501,7 +195560,7 @@
               "label": "Βαθιά νερά",
               "notes": "Η Exploring Greece δηλώνει deep depth και βραχώδη βυθό/ακτή για τις Πλάκες."
             },
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Exploring Greece directly supports Plakes as an Alonissos beach reached by a short path from the Patitiri-Marpounda/Camping Rocks area, with rock slabs, rocky seabed, deep water and no organization. Raised to high for static identity, access, terrain and no-service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Exploring Greece directly supports Plakes as an Alonissos beach reached by a short path from the Patitiri-Marpounda/Camping Rocks area, with rock slabs, rocky seabed, deep water and no organization. Raised to high for static identity, access, terrain and no-service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ (6 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://www.exploring-greece.gr/en/show/48395/%3Attd/PLAKES"
             ],
@@ -200384,12 +200443,16 @@
             },
             "organized": true,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "ταβέρνες",
+              "καφέ",
+              "beach bar"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
             "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Access from OSM road network 2026-08-17: OSM way/1094046166 highway=service surface=concrete στα 64 m. Previously 'unknown'. No other field changed.",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Πλάκα (Χώρα Σκοπέλου)\" (https://www.openstreetmap.org/way/1082118806) in Skopelos, Thessaly. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>911m from any existing beach). Slot via nearest existing beach #2654 (911m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Access from OSM road network 2026-08-17: OSM way/1094046166 highway=service surface=concrete στα 64 m. Previously 'unknown'. No other field changed. Amenities from OSM POIs 2026-08-17: ταβέρνες · καφέ · beach bar (6 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/1082118806"
             ],

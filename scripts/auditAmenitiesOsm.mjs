@@ -71,10 +71,22 @@ const FOOD_TERMS = [...TAVERNA_AMENITY_TERMS, ...RESTAURANT_AMENITY_TERMS, ...CA
 const osmNearby = {};
 const KIND_TO_TYPE = { bar: 'bar', pub: 'pub', cafe: 'cafe', restaurant: 'restaurant', fast_food: 'fast_food_restaurant', taverna: 'restaurant', beach_resort: 'beach_resort' };
 
+// ΓΙΑΤΙ ΥΠΑΡΧΕΙ ΤΟ --ids (17/08/2026 βράδυ). Για να γεμίσουμε τις 95 νέες παραλίες με κενές
+// παροχές, ένα πέρασμα ανά περιοχή ρωτούσε τον Overpass για ΟΛΕΣ τις ~2.000 παραλίες των 34
+// περιοχών — 40 φορές περισσότερη δουλειά από όση χρειαζόταν, πάνω σε διακομιστή που ήδη
+// απαντούσε 2 στις 6 φορές. Με τη λίστα ids μένουν 7 παρτίδες αντί για ~300.
+// ΔΕΝ αλλάζει κανένα κατώφλι: όποια παραλία περνάει το φίλτρο κρίνεται με τους ίδιους κανόνες.
+const idFilter = (() => {
+  const raw = getArg('--ids', null);
+  if (!raw) return null;
+  return new Set(String(raw).split(',').map(s => Number(s.trim())).filter(Number.isFinite));
+})();
+
 const rows = [];
 for (const d of regions) {
   let beaches = d.island.beaches;
   if (onlyOrganized) beaches = beaches.filter(b => b.metadata?.organized === true);
+  if (idFilter) beaches = beaches.filter(b => idFilter.has(Number(b.id)));
   if (!beaches.length) continue;
   // Chunk into small batches so no single Overpass query is heavy enough to 504/time out.
   const batches = chunk(beaches, 15);
@@ -167,7 +179,12 @@ mkdirSync(path.dirname(path.resolve(outBase)), { recursive: true });
 writeFileSync(outBase + '.csv', csv, 'utf8');
 writeFileSync(outBase + '.json', JSON.stringify(rows, null, 1), 'utf8');
 // shared nearby-cache (only on a full national run, so partial runs don't overwrite it)
-if (all) {
+// ΤΟ `--ids` ΜΕΤΡΑΕΙ ΚΑΙ ΕΔΩ — ΜΕΤΡΗΜΕΝΗ ΖΗΜΙΑ, 17/08/2026 βράδυ. Ένα `--all --ids <95>`
+// έπαιρνε αυτόν τον κλάδο επειδή «είναι εθνικό» και ξανάγραφε το κοινό αρχείο με μόνο τα 95:
+// **1.184 παραλίες → 15**, σιωπηλά, χωρίς καμία πύλη να το πιάσει. Είναι το ίδιο σχήμα με το
+// «το rebuild σβήνει τα μετρημένα σημεία θάλασσας»: εθνικό αρχείο + φιλτραρισμένο τρέξιμο =
+// απώλεια. Εθνικό είναι το τρέξιμο που κοίταξε ΟΛΕΣ τις παραλίες, όχι όλες τις περιοχές.
+if (all && !idFilter) {
   writeFileSync('reports/amenity-evidence/osm-nearby-cache.json', JSON.stringify(osmNearby), 'utf8');
   console.log(`Wrote reports/amenity-evidence/osm-nearby-cache.json (${Object.keys(osmNearby).length} beaches with POIs)`);
 } else {
