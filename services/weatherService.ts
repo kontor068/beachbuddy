@@ -430,16 +430,22 @@ export const fetchForecastData = async (lat: number, lon: number): Promise<Fetch
 
   return withCache<ForecastItem[]>(cacheKey, 'hourly', 'hourly-forecast', { lat, lon, url: API_URL }, async () => {
     const data = await fetchJson<any>(API_URL, 'hourly-forecast');
-    return parseHourlyForecast(data?.hourly);
+    return parseHourlyForecast(data?.hourly, undefined, data);
   });
 };
 
 /** Shape one Open-Meteo `hourly` block into our ForecastItem[]. Shared by the
  *  single-point fetcher and the batch one — one parser, one set of quirks. */
-const parseHourlyForecast = (hourly: any): ForecastItem[] => {
+const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any): ForecastItem[] => {
   if (!hourly?.time || !Array.isArray(hourly.time)) {
     throw new Error('Forecast fetch failed: missing hourly data');
   }
+
+  // Height of the CELL that answered, not of the beach. Decides whether the gust floor may fire:
+  // over water the hourly mean is already accurate (slope 0,96-1,10 against real anemometers, and
+  // the SAR audit finds it OVER-reading at >6 m/s), so the floor would add wind to a number that
+  // is already high. See utils/windGustFloor.ts for both witnesses.
+  const cellElevationM = optionalNumber(envelope?.elevation);
 
   return hourly.time.map((timeStr: string, index: number): ForecastItem => {
       const date = new Date(timeStr);
@@ -466,7 +472,7 @@ const parseHourlyForecast = (hourly: any): ForecastItem[] => {
           // wind. See utils/windGustFloor.ts for the 32.000-hour measurement against real
           // anemometers that produced the 0,55 factor — the hourly mean compresses peaks and the
           // error was 2:1 towards "calmer than it is".
-          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index])),
+          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), cellElevationM),
           deg: hourly.wind_direction_10m[index],
           // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
           gust: optionalNumber(hourly.wind_gusts_10m?.[index]) ?? hourly.wind_speed_10m[index] * 1.2
@@ -666,8 +672,13 @@ const fetchPointsBatched = async <T>(
     endpoint: OpenMeteoEndpoint;
     source: string;
     buildUrl: (batch: ForecastPoint[]) => string;
-    /** `point` is passed so a parser can vary by coordinate — see the marine model preference. */
-    parse: (entry: any, point: ForecastPoint) => T;
+    /**
+     * `point` is passed so a parser can vary by coordinate — see the marine model preference.
+     * `envelope` is the FULL per-point response, needed because `elevation` — the height of the
+     * cell Open-Meteo actually answered from — lives beside `hourly`, not inside it, and the
+     * gust floor is only allowed to fire over a cell that contains land (utils/windGustFloor).
+     */
+    parse: (entry: any, point: ForecastPoint, envelope?: any) => T;
     /** Default true. See saveToCache — per-beach seas stay in memory. */
     persist?: boolean;
   },
@@ -735,7 +746,7 @@ const fetchPointsBatched = async <T>(
         }
 
         try {
-          const data = options.parse(entry?.hourly, point);
+          const data = options.parse(entry?.hourly, point, entry);
           saveToCache(cacheKeyOf(point), data, fetchedAt, options.persist !== false);
           results.set(forecastPointKey(point.lat, point.lon), { data, fetchedAt });
           // Counted per POINT, not per request: the provider's own limits are what

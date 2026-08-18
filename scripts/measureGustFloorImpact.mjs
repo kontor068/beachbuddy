@@ -70,7 +70,7 @@ for (const region of sample) {
   try { profiles = readJson(path.join(exposureDir, `${region.id}.json`)).profiles ?? {}; } catch { /* χωρίς γεωμετρία */ }
   for (const cluster of buildBeachForecastClusters(region.beaches)) {
     const key = `${cluster.lat.toFixed(4)},${cluster.lon.toFixed(4)}`;
-    if (!points.has(key)) points.set(key, { key, lat: cluster.lat, lon: cluster.lon, hourly: null });
+    if (!points.has(key)) points.set(key, { key, lat: cluster.lat, lon: cluster.lon, hourly: null, elevation: null });
     for (const id of cluster.beachIds) {
       plan.push({ region: region.id, beachId: id, pointKey: key, profile: profiles[String(id)] ?? null });
     }
@@ -98,7 +98,12 @@ for (let i = 0; i < pointList.length; i += BATCH) {
       await new Promise(r => setTimeout(r, 1500 * (a + 1)));
     }
   }
-  (Array.isArray(data) ? data : [data]).forEach((entry, k) => { if (slice[k]) slice[k].hourly = entry.hourly; });
+  (Array.isArray(data) ? data : [data]).forEach((entry, k) => {
+    if (!slice[k]) return;
+    slice[k].hourly = entry.hourly;
+    // Το υψόμετρο του ΚΕΛΙΟΥ — ο δάπεδος ριπής δεν επιτρέπεται πάνω από νερό (utils/windGustFloor).
+    slice[k].elevation = typeof entry.elevation === 'number' ? entry.elevation : null;
+  });
   process.stdout.write(`\r  ${Math.min(i + BATCH, pointList.length)}/${pointList.length}`);
 }
 console.log('');
@@ -122,7 +127,7 @@ for (const item of plan) {
     const gust = h.wind_gusts_10m?.[idx];
     const deg = h.wind_direction_10m[idx];
     if (typeof raw !== 'number' || typeof deg !== 'number') continue;
-    const corrected = applyGustFloor(raw, gust);
+    const corrected = applyGustFloor(raw, gust, point.elevation);
     slots++;
     const bOld = getBeaufortLevel(raw), bNew = getBeaufortLevel(corrected);
     if (bOld !== bNew) bftChanged++;

@@ -147,6 +147,11 @@ entries.forEach((entry, k) => {
     if (typeof ours !== 'number' || others.length < 3) return;
     rows.push({
       station: st[0], name: st[1], time: t, obs: obs.kmh, obsGust: obs.gustKmh,
+      // Το υψόμετρο ΤΟΥ ΚΕΛΙΟΥ που απάντησε — όχι του σταθμού. Κρίσιμο: το SAR
+      // (reports/wind-model/sheltered-vs-sar.json) βρήκε το μοντέλο ακριβές σε ανοιχτό νερό και
+      // μάλιστα να ΥΠΕΡεκτιμά στα δυνατά, ενώ τα ανεμόμετρα δείχνουν βαριά υποεκτίμηση. Αν η
+      // υποεκτίμηση ζει μόνο στα στεριανά κελιά, ο δάπεδος ριπής δεν έχει δουλειά στα θαλάσσια.
+      cellElevation: typeof entry.elevation === 'number' ? entry.elevation : null,
       ours, median: median(others),
       oursGust: h['wind_gusts_10m_best_match']?.[idx] ?? null,
       medianGust: (() => {
@@ -276,7 +281,9 @@ for (const k of [0, 0.45, 0.50, 0.55, 0.60]) {
     });
     for (const r of toneRows) {
       const truth = tone(r.obs);
-      const shown = tone(k === 0 ? r.ours : Math.max(r.ours, r.oursGust * k));
+      // Ο δάπεδος ΜΟΝΟ σε κελί με στεριά — η ίδια πύλη που εφαρμόζει το utils/windGustFloor.
+      const overLand = typeof r.cellElevation === 'number' && r.cellElevation > 0;
+      const shown = tone(k === 0 || !overLand ? r.ours : Math.max(r.ours, r.oursGust * k));
       total++;
       if (shown === truth) ok++;
       if (shown === 'blue' && truth !== 'blue') falseCalm++;
@@ -285,6 +292,34 @@ for (const k of [0, 0.45, 0.50, 0.55, 0.60]) {
   }
   colourReport.push({ factor: k, okPct: pct(ok, total), falseCalmPct: pct(falseCalm, total), falseAlarmPct: pct(falseAlarm, total) });
   console.log(`  ${(k === 0 ? 'σήμερα' : k.toFixed(2)).padStart(7)} | ${(pct(ok, total) + '%').padStart(11)} | ${(pct(falseCalm, total) + '%').padStart(14)} | ${pct(falseAlarm, total)}%`);
+}
+
+// ── ΘΑΛΑΣΣΙΝΟ ΚΕΛΙ Ή ΣΤΕΡΙΑΝΟ; Η ΔΙΑΙΤΗΣΙΑ ΜΕ ΤΟ SAR ────────────────────────────
+// 47,6% των σημείων ανέμου της εφαρμογής απαντώνται από κελί υψομέτρου 0 (θάλασσα) και
+// καλύπτουν 1.265 παραλίες· 44% από κελί 1-20 μ. (ακτή). Αν η υποεκτίμηση ζει μόνο στα
+// στεριανά, ο δάπεδος ριπής πρέπει να μπει ΜΟΝΟ εκεί.
+console.log('\n=== ΑΝΑ ΤΥΠΟ ΚΕΛΙΟΥ (υψόμετρο του κελιού που απάντησε) ===');
+console.log('  κελί            | ώρες | μεροληψία | κλίση | ≥4 Μπφ: μεροληψία | χαμηλά ≥1');
+const cellBands = [
+  ['θάλασσα (0 μ.)', r => r.cellElevation !== null && r.cellElevation <= 0],
+  ['ακτή (1-20 μ.)', r => r.cellElevation !== null && r.cellElevation > 0 && r.cellElevation <= 20],
+  ['στεριά (>20 μ.)', r => r.cellElevation !== null && r.cellElevation > 20],
+];
+const cellReport = [];
+for (const [bandLabel, test] of cellBands) {
+  const rs = rows.filter(test);
+  if (!rs.length) { console.log(`  ${bandLabel.padEnd(15)} | (κανένα δείγμα)`); continue; }
+  const b = rs.reduce((s, r) => s + (r.ours - r.obs), 0) / rs.length;
+  const mx = rs.reduce((s, r) => s + r.obs, 0) / rs.length;
+  const my = rs.reduce((s, r) => s + r.ours, 0) / rs.length;
+  const slopeB = rs.reduce((s, r) => s + (r.obs - mx) * (r.ours - my), 0) / rs.reduce((s, r) => s + (r.obs - mx) ** 2, 0);
+  const strong = rs.filter(r => getBeaufortLevel(r.obs) >= 4);
+  const strongBias = strong.length ? strong.reduce((s, r) => s + (r.ours - r.obs), 0) / strong.length : null;
+  const under = pct(rs.filter(r => getBeaufortLevel(r.ours) <= getBeaufortLevel(r.obs) - 1).length, rs.length);
+  cellReport.push({ band: bandLabel, hours: rs.length, biasKmh: Number(b.toFixed(2)), slope: Number(slopeB.toFixed(3)),
+    strongHours: strong.length, strongBiasKmh: strongBias === null ? null : Number(strongBias.toFixed(2)), underPct: under });
+  console.log(`  ${bandLabel.padEnd(15)} | ${String(rs.length).padStart(4)} | ${((b >= 0 ? '+' : '') + b.toFixed(2)).padStart(9)} | `
+    + `${slopeB.toFixed(3)} | ${(strongBias === null ? 'n/a' : (strongBias >= 0 ? '+' : '') + strongBias.toFixed(2) + ` (${strong.length}ω)`).padStart(17)} | ${under}%`);
 }
 
 const byStation = [...new Set(rows.map(r => r.station))].map(id => {

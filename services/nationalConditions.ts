@@ -153,7 +153,7 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
         // wind tiles over.
         const rawKmh = entry?.current?.wind_speed_10m;
         if (typeof rawKmh !== 'number') return;
-        const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m);
+        const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m, entry?.elevation);
 
         // Match on the coordinates the API echoes back, NOT on array position.
         // Index matching looks fine until Open-Meteo drops or reorders one entry,

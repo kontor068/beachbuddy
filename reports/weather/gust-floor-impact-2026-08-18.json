@@ -1,59 +1,59 @@
 {
-  "generatedAt": "2026-08-18T08:59:07.497Z",
+  "generatedAt": "2026-08-18T09:22:23.077Z",
   "national": true,
   "factor": 0.5,
   "regions": 110,
   "beaches": 2872,
   "points": 1385,
   "slots": 34464,
-  "bftChanged": 9291,
-  "bftChangedPct": 27,
-  "toneChanged": 1749,
-  "toneChangedPct": 5.1,
-  "beachesTouched": 789,
-  "stricter": 1749,
+  "bftChanged": 5352,
+  "bftChangedPct": 15.5,
+  "toneChanged": 960,
+  "toneChangedPct": 2.8,
+  "beachesTouched": 448,
+  "stricter": 960,
   "milder": 0,
-  "calmLost": 1710,
-  "calmLostPct": 5,
+  "calmLost": 943,
+  "calmLostPct": 2.7,
   "calmGained": 0,
   "moves": {
-    "blue→yellow": 1687,
-    "blue→orange": 23,
-    "yellow→orange": 36,
+    "blue→yellow": 928,
+    "blue→orange": 15,
+    "yellow→orange": 14,
     "yellow→red": 3
   },
   "worstRegions": [
     {
       "region": "central-greece-evia",
-      "changed": 241
+      "changed": 118
     },
     {
       "region": "thessaly-magnesia-mainland---pelion",
-      "changed": 109
-    },
-    {
-      "region": "central-macedonia-halkidiki-mainland",
-      "changed": 94
+      "changed": 74
     },
     {
       "region": "south-aegean-andros",
-      "changed": 91
-    },
-    {
-      "region": "ionian-islands-corfu",
-      "changed": 79
+      "changed": 70
     },
     {
       "region": "east-macedonia-and-thrace-thasos",
-      "changed": 77
-    },
-    {
-      "region": "north-aegean-samos",
-      "changed": 69
+      "changed": 67
     },
     {
       "region": "south-aegean-tinos",
-      "changed": 68
+      "changed": 51
+    },
+    {
+      "region": "central-macedonia-halkidiki-mainland",
+      "changed": 48
+    },
+    {
+      "region": "east-macedonia-and-thrace-kavala-mainland",
+      "changed": 28
+    },
+    {
+      "region": "crete-crete-rethymno",
+      "changed": 27
     }
   ]
 }
