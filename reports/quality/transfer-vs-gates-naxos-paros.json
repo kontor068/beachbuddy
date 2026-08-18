@@ -1,0 +1,2170 @@
+{
+  "generatedAt": "2026-08-18T07:21:47.757Z",
+  "periodS": 6,
+  "thresholds": {
+    "K_DANGER": 0.35,
+    "K_OVERWILD": 0.15
+  },
+  "combos": 1328,
+  "agreement": 1091,
+  "danger": [
+    {
+      "id": 1983,
+      "name": "Άγιοι Θεόδωροι",
+      "dirDeg": 45,
+      "K6": 0.602,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.16,
+      "via": "dry-sector"
+    },
+    {
+      "id": 1983,
+      "name": "Άγιοι Θεόδωροι",
+      "dirDeg": 67.5,
+      "K6": 0.44,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.52,
+      "via": "base"
+    },
+    {
+      "id": 1990,
+      "name": "Απόλλωνας",
+      "dirDeg": 315,
+      "K6": 0.407,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.19,
+      "via": "dry-sector"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 0,
+      "K6": 0.747,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": 0.18,
+      "via": "dry-sector"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 22.5,
+      "K6": 0.605,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.21,
+      "via": "dry-sector"
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "dirDeg": 45,
+      "K6": 0.433,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.57,
+      "via": "base"
+    },
+    {
+      "id": 1998,
+      "name": "Κέδρος",
+      "dirDeg": 135,
+      "K6": 0.37,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.57,
+      "via": "base"
+    },
+    {
+      "id": 2002,
+      "name": "Παραλία Λιμνάρι",
+      "dirDeg": 135,
+      "K6": 0.563,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": 0.07,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2002,
+      "name": "Παραλία Λιμνάρι",
+      "dirDeg": 157.5,
+      "K6": 0.423,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.32,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2005,
+      "name": "Μικρά",
+      "dirDeg": 45,
+      "K6": 0.402,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.21,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 225,
+      "K6": 0.377,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.68,
+      "via": "base"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 247.5,
+      "K6": 0.511,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.35,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 270,
+      "K6": 0.608,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": 0.03,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2029,
+      "name": "Καλόγερος",
+      "dirDeg": 225,
+      "K6": 0.393,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.1,
+      "via": "dry-sector"
+    },
+    {
+      "id": 2045,
+      "name": "Παραλία Γλυφά",
+      "dirDeg": 225,
+      "K6": 0.367,
+      "fetchKm": 0,
+      "blocked": 1,
+      "onshore": -0.16,
+      "via": "dry-sector"
+    }
+  ],
+  "overwild": [
+    {
+      "id": 1981,
+      "name": "Αγία Άννα",
+      "dirDeg": 292.5,
+      "K6": 0.103,
+      "fetchKm": 4.6,
+      "blocked": 1,
+      "onshore": 0.73
+    },
+    {
+      "id": 1981,
+      "name": "Αγία Άννα",
+      "dirDeg": 315,
+      "K6": 0.006,
+      "fetchKm": 2.16,
+      "blocked": 1,
+      "onshore": 0.41
+    },
+    {
+      "id": 1981,
+      "name": "Αγία Άννα",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 1.08,
+      "blocked": 1,
+      "onshore": 0.03
+    },
+    {
+      "id": 1984,
+      "name": "Άγιος Γεώργιος",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.2
+    },
+    {
+      "id": 1984,
+      "name": "Άγιος Γεώργιος",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 0.82,
+      "blocked": 1,
+      "onshore": 0.19
+    },
+    {
+      "id": 1984,
+      "name": "Άγιος Γεώργιος",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 1.36,
+      "blocked": 1,
+      "onshore": 0.55
+    },
+    {
+      "id": 1984,
+      "name": "Άγιος Γεώργιος",
+      "dirDeg": 247.5,
+      "K6": 0.081,
+      "fetchKm": 3.82,
+      "blocked": 1,
+      "onshore": 0.83
+    },
+    {
+      "id": 1985,
+      "name": "Άγιος Προκόπιος",
+      "dirDeg": 112.5,
+      "K6": 0.146,
+      "fetchKm": 0.9,
+      "blocked": 1,
+      "onshore": -0.17
+    },
+    {
+      "id": 1985,
+      "name": "Άγιος Προκόπιος",
+      "dirDeg": 292.5,
+      "K6": 0.067,
+      "fetchKm": 2.6,
+      "blocked": 1,
+      "onshore": 0.17
+    },
+    {
+      "id": 1985,
+      "name": "Άγιος Προκόπιος",
+      "dirDeg": 315,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.22
+    },
+    {
+      "id": 1986,
+      "name": "Αζαλάς",
+      "dirDeg": 157.5,
+      "K6": 0.139,
+      "fetchKm": 2.64,
+      "blocked": 0.9,
+      "onshore": -0.19
+    },
+    {
+      "id": 1987,
+      "name": "Αλυκό",
+      "dirDeg": 90,
+      "K6": 0.057,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "onshore": -0.3
+    },
+    {
+      "id": 1990,
+      "name": "Απόλλωνας",
+      "dirDeg": 157.5,
+      "K6": 0.079,
+      "fetchKm": 0.14,
+      "blocked": 1,
+      "onshore": -0.2
+    },
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.96,
+      "blocked": 1,
+      "onshore": -0.72
+    },
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 3.3,
+      "blocked": 1,
+      "onshore": -0.4
+    },
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "dirDeg": 225,
+      "K6": 0.013,
+      "fetchKm": 5.64,
+      "blocked": 1,
+      "onshore": -0.02
+    },
+    {
+      "id": 1991,
+      "name": "Βίντζι",
+      "dirDeg": 247.5,
+      "K6": 0.137,
+      "fetchKm": 6.52,
+      "blocked": 1,
+      "onshore": 0.36
+    },
+    {
+      "id": 1993,
+      "name": "Γλυφάδα",
+      "dirDeg": 22.5,
+      "K6": 0.122,
+      "fetchKm": 0.5,
+      "blocked": 1,
+      "onshore": -0.32
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.02,
+      "blocked": 1,
+      "onshore": -0.43
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 90,
+      "K6": 0.038,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.05
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 112.5,
+      "K6": 0.094,
+      "fetchKm": 3.2,
+      "blocked": 0.9,
+      "onshore": 0.34
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 135,
+      "K6": 0.135,
+      "fetchKm": 6.36,
+      "blocked": 0.8,
+      "onshore": 0.67
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 202.5,
+      "K6": 0.128,
+      "fetchKm": 10.7,
+      "blocked": 0.9,
+      "onshore": 0.94
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 225,
+      "K6": 0.082,
+      "fetchKm": 7.04,
+      "blocked": 1,
+      "onshore": 0.74
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 247.5,
+      "K6": 0.024,
+      "fetchKm": 3.58,
+      "blocked": 1,
+      "onshore": 0.43
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": 0.05
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "dirDeg": 292.5,
+      "K6": 0,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.34
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "dirDeg": 0,
+      "K6": 0.139,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.32
+    },
+    {
+      "id": 1999,
+      "name": "Κλειδός",
+      "dirDeg": 202.5,
+      "K6": 0.039,
+      "fetchKm": 0.62,
+      "blocked": 1,
+      "onshore": 0.06
+    },
+    {
+      "id": 2001,
+      "name": "Λιγαρίδια",
+      "dirDeg": 225,
+      "K6": 0.136,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.3
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 2.76,
+      "blocked": 1,
+      "onshore": 0.68
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 1.62,
+      "blocked": 1,
+      "onshore": 0.34
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 0.48,
+      "blocked": 1,
+      "onshore": -0.04
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.24,
+      "blocked": 1,
+      "onshore": -0.42
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 292.5,
+      "K6": 0.1,
+      "fetchKm": 7.66,
+      "blocked": 1,
+      "onshore": 0.94
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 315,
+      "K6": 0.004,
+      "fetchKm": 8.4,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 5.58,
+      "blocked": 1,
+      "onshore": 0.91
+    },
+    {
+      "id": 2007,
+      "name": "Μικρή Βίγλα - Νότια πλευρά",
+      "dirDeg": 112.5,
+      "K6": 0.146,
+      "fetchKm": 0.46,
+      "blocked": 1,
+      "onshore": -0.46
+    },
+    {
+      "id": 2007,
+      "name": "Μικρή Βίγλα - Νότια πλευρά",
+      "dirDeg": 315,
+      "K6": 0.146,
+      "fetchKm": 4.32,
+      "blocked": 1,
+      "onshore": 0.08
+    },
+    {
+      "id": 2007,
+      "name": "Μικρή Βίγλα - Νότια πλευρά",
+      "dirDeg": 337.5,
+      "K6": 0.02,
+      "fetchKm": 2.18,
+      "blocked": 1,
+      "onshore": -0.3
+    },
+    {
+      "id": 2008,
+      "name": "Μικρό Αλυκό",
+      "dirDeg": 0,
+      "K6": 0.119,
+      "fetchKm": 4.72,
+      "blocked": 1,
+      "onshore": -0.98
+    },
+    {
+      "id": 2008,
+      "name": "Μικρό Αλυκό",
+      "dirDeg": 22.5,
+      "K6": 0.073,
+      "fetchKm": 2.4,
+      "blocked": 1,
+      "onshore": -0.84
+    },
+    {
+      "id": 2008,
+      "name": "Μικρό Αλυκό",
+      "dirDeg": 67.5,
+      "K6": 0.011,
+      "fetchKm": 0.76,
+      "blocked": 1,
+      "onshore": -0.22
+    },
+    {
+      "id": 2008,
+      "name": "Μικρό Αλυκό",
+      "dirDeg": 90,
+      "K6": 0.08,
+      "fetchKm": 1.44,
+      "blocked": 1,
+      "onshore": 0.17
+    },
+    {
+      "id": 2009,
+      "name": "Μουτσούνα",
+      "dirDeg": 247.5,
+      "K6": 0.069,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": -0.42
+    },
+    {
+      "id": 2010,
+      "name": "Όρκος",
+      "dirDeg": 22.5,
+      "K6": 0.132,
+      "fetchKm": 1,
+      "blocked": 1,
+      "onshore": 0.01
+    },
+    {
+      "id": 2010,
+      "name": "Όρκος",
+      "dirDeg": 315,
+      "K6": 0.146,
+      "fetchKm": 8.4,
+      "blocked": 1,
+      "onshore": 0.93
+    },
+    {
+      "id": 2011,
+      "name": "Πάνορμος",
+      "dirDeg": 292.5,
+      "K6": 0.095,
+      "fetchKm": 0.62,
+      "blocked": 1,
+      "onshore": 0.57
+    },
+    {
+      "id": 2012,
+      "name": "Πλάκα",
+      "dirDeg": 112.5,
+      "K6": 0.067,
+      "fetchKm": 0.36,
+      "blocked": 1,
+      "onshore": -0.48
+    },
+    {
+      "id": 2012,
+      "name": "Πλάκα",
+      "dirDeg": 315,
+      "K6": 0.061,
+      "fetchKm": 4.12,
+      "blocked": 1,
+      "onshore": 0.11
+    },
+    {
+      "id": 2012,
+      "name": "Πλάκα",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 2.06,
+      "blocked": 1,
+      "onshore": -0.28
+    },
+    {
+      "id": 2013,
+      "name": "Πυργάκι",
+      "dirDeg": 90,
+      "K6": 0.025,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": -0.39
+    },
+    {
+      "id": 2013,
+      "name": "Πυργάκι",
+      "dirDeg": 112.5,
+      "K6": 0.15,
+      "fetchKm": 2.02,
+      "blocked": 1,
+      "onshore": -0.01
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.8,
+      "blocked": 1,
+      "onshore": 0.46
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 1.6,
+      "blocked": 1,
+      "onshore": 0.76
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 6.6,
+      "blocked": 0.8,
+      "onshore": 0.95
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 11.6,
+      "blocked": 0.6,
+      "onshore": 1
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 8.3,
+      "blocked": 0.7,
+      "onshore": 0.89
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 5,
+      "blocked": 0.8,
+      "onshore": 0.65
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 2.5,
+      "blocked": 0.9,
+      "onshore": 0.3
+    },
+    {
+      "id": 2015,
+      "name": "Παραλία Σπεδό",
+      "dirDeg": 67.5,
+      "K6": 0.007,
+      "fetchKm": 1.56,
+      "blocked": 1,
+      "onshore": 0.61
+    },
+    {
+      "id": 2015,
+      "name": "Παραλία Σπεδό",
+      "dirDeg": 90,
+      "K6": 0.064,
+      "fetchKm": 3.12,
+      "blocked": 1,
+      "onshore": 0.87
+    },
+    {
+      "id": 2015,
+      "name": "Παραλία Σπεδό",
+      "dirDeg": 112.5,
+      "K6": 0.129,
+      "fetchKm": 3.84,
+      "blocked": 1,
+      "onshore": 0.99
+    },
+    {
+      "id": 2016,
+      "name": "Χίλια Βρύση",
+      "dirDeg": 180,
+      "K6": 0.105,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.22
+    },
+    {
+      "id": 2017,
+      "name": "Παραλία Ψιλή Άμμος",
+      "dirDeg": 202.5,
+      "K6": 0.11,
+      "fetchKm": 1.64,
+      "blocked": 1,
+      "onshore": 0.11
+    },
+    {
+      "id": 2018,
+      "name": "Παραλία Ψωφαγριλιά",
+      "dirDeg": 225,
+      "K6": 0.096,
+      "fetchKm": 0.36,
+      "blocked": 1,
+      "onshore": -0.4
+    },
+    {
+      "id": 2020,
+      "name": "Αγία Ειρήνη",
+      "dirDeg": 247.5,
+      "K6": 0.103,
+      "fetchKm": 2.5,
+      "blocked": 0.9,
+      "onshore": 0.51
+    },
+    {
+      "id": 2020,
+      "name": "Αγία Ειρήνη",
+      "dirDeg": 270,
+      "K6": 0.142,
+      "fetchKm": 5,
+      "blocked": 0.8,
+      "onshore": 0.8
+    },
+    {
+      "id": 2021,
+      "name": "Άγιος Δημήτριος",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "onshore": -0.08
+    },
+    {
+      "id": 2021,
+      "name": "Άγιος Δημήτριος",
+      "dirDeg": 270,
+      "K6": 0.029,
+      "fetchKm": 1.12,
+      "blocked": 1,
+      "onshore": 0.31
+    },
+    {
+      "id": 2021,
+      "name": "Άγιος Δημήτριος",
+      "dirDeg": 292.5,
+      "K6": 0.129,
+      "fetchKm": 1.5,
+      "blocked": 1,
+      "onshore": 0.65
+    },
+    {
+      "id": 2022,
+      "name": "Άγιος Στέφανος",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.22
+    },
+    {
+      "id": 2022,
+      "name": "Άγιος Στέφανος",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 0.3,
+      "blocked": 1,
+      "onshore": 0.17
+    },
+    {
+      "id": 2022,
+      "name": "Άγιος Στέφανος",
+      "dirDeg": 270,
+      "K6": 0.02,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "onshore": 0.53
+    },
+    {
+      "id": 2022,
+      "name": "Άγιος Στέφανος",
+      "dirDeg": 292.5,
+      "K6": 0.094,
+      "fetchKm": 3.5,
+      "blocked": 0.9,
+      "onshore": 0.81
+    },
+    {
+      "id": 2024,
+      "name": "Άσπρος Γκρεμός",
+      "dirDeg": 247.5,
+      "K6": 0.041,
+      "fetchKm": 0.22,
+      "blocked": 1,
+      "onshore": -0.42
+    },
+    {
+      "id": 2025,
+      "name": "Βουτάκος",
+      "dirDeg": 270,
+      "K6": 0.109,
+      "fetchKm": 1.92,
+      "blocked": 1,
+      "onshore": 0.59
+    },
+    {
+      "id": 2025,
+      "name": "Βουτάκος",
+      "dirDeg": 292.5,
+      "K6": 0.018,
+      "fetchKm": 0.96,
+      "blocked": 1,
+      "onshore": 0.23
+    },
+    {
+      "id": 2026,
+      "name": "Γλυφάδες",
+      "dirDeg": 315,
+      "K6": 0.061,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.24
+    },
+    {
+      "id": 2027,
+      "name": "Δελφίνι",
+      "dirDeg": 67.5,
+      "K6": 0.073,
+      "fetchKm": 0.68,
+      "blocked": 1,
+      "onshore": 0.35
+    },
+    {
+      "id": 2028,
+      "name": "Δρυός",
+      "dirDeg": 22.5,
+      "K6": 0.035,
+      "fetchKm": 1.58,
+      "blocked": 1,
+      "onshore": -0.67
+    },
+    {
+      "id": 2028,
+      "name": "Δρυός",
+      "dirDeg": 45,
+      "K6": 0.098,
+      "fetchKm": 3.12,
+      "blocked": 1,
+      "onshore": -0.33
+    },
+    {
+      "id": 2029,
+      "name": "Καλόγερος",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.29
+    },
+    {
+      "id": 2029,
+      "name": "Καλόγερος",
+      "dirDeg": 45,
+      "K6": 0.013,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": 0.1
+    },
+    {
+      "id": 2029,
+      "name": "Καλόγερος",
+      "dirDeg": 67.5,
+      "K6": 0.139,
+      "fetchKm": 2.94,
+      "blocked": 1,
+      "onshore": 0.47
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.41
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": -0.03
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.86,
+      "blocked": 1,
+      "onshore": 0.35
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 1.56,
+      "blocked": 1,
+      "onshore": 0.68
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 1.38,
+      "blocked": 1,
+      "onshore": 0.91
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 1.2,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.94,
+      "blocked": 1,
+      "onshore": 0.94
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.68,
+      "blocked": 1,
+      "onshore": 0.73
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "onshore": 0.41
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.44,
+      "blocked": 1,
+      "onshore": 0.03
+    },
+    {
+      "id": 2030,
+      "name": "Κολυμπήθρες",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 0.32,
+      "blocked": 1,
+      "onshore": -0.35
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 0.26,
+      "blocked": 1,
+      "onshore": -0.01
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.52,
+      "blocked": 1,
+      "onshore": 0.38
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 1.16,
+      "blocked": 1,
+      "onshore": 0.7
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 1.8,
+      "blocked": 1,
+      "onshore": 0.92
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 2.24,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 225,
+      "K6": 0.039,
+      "fetchKm": 2.68,
+      "blocked": 1,
+      "onshore": 0.93
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 247.5,
+      "K6": 0.093,
+      "fetchKm": 1.5,
+      "blocked": 1,
+      "onshore": 0.71
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 270,
+      "K6": 0.132,
+      "fetchKm": 0.32,
+      "blocked": 1,
+      "onshore": 0.39
+    },
+    {
+      "id": 2031,
+      "name": "Κριός",
+      "dirDeg": 315,
+      "K6": 0.148,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.38
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.06
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.44
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.32
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": 0.06
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 0.88,
+      "blocked": 1,
+      "onshore": 0.44
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 1.64,
+      "blocked": 1,
+      "onshore": 0.75
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 2.1,
+      "blocked": 1,
+      "onshore": 0.95
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 2.56,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 292.5,
+      "K6": 0,
+      "fetchKm": 1.52,
+      "blocked": 1,
+      "onshore": 0.9
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 315,
+      "K6": 0,
+      "fetchKm": 0.48,
+      "blocked": 1,
+      "onshore": 0.66
+    },
+    {
+      "id": 2032,
+      "name": "Λάγγερη",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": 0.32
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.47
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.1
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": 0.29
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 180,
+      "K6": 0.023,
+      "fetchKm": 0.48,
+      "blocked": 1,
+      "onshore": 0.63
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 202.5,
+      "K6": 0.081,
+      "fetchKm": 3.78,
+      "blocked": 0.9,
+      "onshore": 0.88
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 225,
+      "K6": 0.127,
+      "fetchKm": 7.08,
+      "blocked": 0.8,
+      "onshore": 1
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 292.5,
+      "K6": 0.136,
+      "fetchKm": 3.3,
+      "blocked": 0.9,
+      "onshore": 0.47
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 315,
+      "K6": 0.094,
+      "fetchKm": 0.12,
+      "blocked": 1,
+      "onshore": 0.1
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια (Παροικιά)",
+      "dirDeg": 337.5,
+      "K6": 0.039,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.29
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 67.5,
+      "K6": 0.15,
+      "fetchKm": 2.04,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 90,
+      "K6": 0.079,
+      "fetchKm": 2.16,
+      "blocked": 1,
+      "onshore": 0.95
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 112.5,
+      "K6": 0.012,
+      "fetchKm": 1.4,
+      "blocked": 1,
+      "onshore": 0.76
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.64,
+      "blocked": 1,
+      "onshore": 0.46
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.34,
+      "blocked": 1,
+      "onshore": 0.08
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.31
+    },
+    {
+      "id": 2034,
+      "name": "Λίμνες",
+      "dirDeg": 315,
+      "K6": 0.098,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": -0.46
+    },
+    {
+      "id": 2035,
+      "name": "Λογαράς",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.24
+    },
+    {
+      "id": 2035,
+      "name": "Λογαράς",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 2.02,
+      "blocked": 1,
+      "onshore": 0.15
+    },
+    {
+      "id": 2035,
+      "name": "Λογαράς",
+      "dirDeg": 45,
+      "K6": 0.04,
+      "fetchKm": 4,
+      "blocked": 1,
+      "onshore": 0.52
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.1,
+      "blocked": 1,
+      "onshore": -0.31
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": 0.08
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 0.64,
+      "blocked": 1,
+      "onshore": 0.46
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 1.08,
+      "blocked": 1,
+      "onshore": 0.76
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 157.5,
+      "K6": 0.043,
+      "fetchKm": 1.56,
+      "blocked": 1,
+      "onshore": 0.95
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 180,
+      "K6": 0.099,
+      "fetchKm": 2.04,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2037,
+      "name": "Μαρτσέλο",
+      "dirDeg": 202.5,
+      "K6": 0.14,
+      "fetchKm": 1.62,
+      "blocked": 1,
+      "onshore": 0.89
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 180,
+      "K6": 0.14,
+      "fetchKm": 3.84,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 202.5,
+      "K6": 0.109,
+      "fetchKm": 2.4,
+      "blocked": 1,
+      "onshore": 0.9
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 225,
+      "K6": 0.061,
+      "fetchKm": 0.96,
+      "blocked": 1,
+      "onshore": 0.66
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 247.5,
+      "K6": 0.004,
+      "fetchKm": 0.62,
+      "blocked": 1,
+      "onshore": 0.32
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.06
+    },
+    {
+      "id": 2038,
+      "name": "Μικρή Σάντα Μαρία",
+      "dirDeg": 292.5,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": -0.44
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.14
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": 0.25
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": 0.6
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 1,
+      "blocked": 1,
+      "onshore": 0.86
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 1.72,
+      "blocked": 1,
+      "onshore": 0.99
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 1.74,
+      "blocked": 1,
+      "onshore": 0.97
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 1.76,
+      "blocked": 1,
+      "onshore": 0.8
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 0.96,
+      "blocked": 1,
+      "onshore": 0.51
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": 0.14
+    },
+    {
+      "id": 2039,
+      "name": "Μοναστήρι",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.25
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 0,
+      "K6": 0.11,
+      "fetchKm": 0.32,
+      "blocked": 1,
+      "onshore": 0.11
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 22.5,
+      "K6": 0.145,
+      "fetchKm": 1.82,
+      "blocked": 1,
+      "onshore": 0.49
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 157.5,
+      "K6": 0.149,
+      "fetchKm": 1.26,
+      "blocked": 1,
+      "onshore": 0.27
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 180,
+      "K6": 0.117,
+      "fetchKm": 0.24,
+      "blocked": 1,
+      "onshore": -0.11
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 202.5,
+      "K6": 0.067,
+      "fetchKm": 0.14,
+      "blocked": 1,
+      "onshore": -0.49
+    },
+    {
+      "id": 2040,
+      "name": "Μώλος",
+      "dirDeg": 337.5,
+      "K6": 0.058,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": -0.27
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 135,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.21
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 157.5,
+      "K6": 0.009,
+      "fetchKm": 0.24,
+      "blocked": 1,
+      "onshore": 0.18
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 180,
+      "K6": 0.069,
+      "fetchKm": 0.4,
+      "blocked": 1,
+      "onshore": 0.54
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 202.5,
+      "K6": 0.12,
+      "fetchKm": 3.66,
+      "blocked": 0.9,
+      "onshore": 0.82
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 270,
+      "K6": 0.145,
+      "fetchKm": 6.48,
+      "blocked": 0.8,
+      "onshore": 0.84
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 292.5,
+      "K6": 0.107,
+      "fetchKm": 3.32,
+      "blocked": 0.9,
+      "onshore": 0.57
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 315,
+      "K6": 0.053,
+      "fetchKm": 0.16,
+      "blocked": 1,
+      "onshore": 0.21
+    },
+    {
+      "id": 2041,
+      "name": "Ναυτικός όμιλος Πάρου",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": -0.18
+    },
+    {
+      "id": 2042,
+      "name": "Ξυφάρα",
+      "dirDeg": 45,
+      "K6": 0.138,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": 0.24
+    },
+    {
+      "id": 2042,
+      "name": "Ξυφάρα",
+      "dirDeg": 67.5,
+      "K6": 0.023,
+      "fetchKm": 0.1,
+      "blocked": 1,
+      "onshore": -0.15
+    },
+    {
+      "id": 2042,
+      "name": "Ξυφάρα",
+      "dirDeg": 247.5,
+      "K6": 0.092,
+      "fetchKm": 0.1,
+      "blocked": 1,
+      "onshore": 0.15
+    },
+    {
+      "id": 2043,
+      "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+      "dirDeg": 292.5,
+      "K6": 0.117,
+      "fetchKm": 0.14,
+      "blocked": 1,
+      "onshore": -0.28
+    },
+    {
+      "id": 2044,
+      "name": "Παραλία Αλυκή",
+      "dirDeg": 67.5,
+      "K6": 0.047,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.35
+    },
+    {
+      "id": 2044,
+      "name": "Παραλία Αλυκή",
+      "dirDeg": 90,
+      "K6": 0.146,
+      "fetchKm": 0.08,
+      "blocked": 1,
+      "onshore": 0.04
+    },
+    {
+      "id": 2045,
+      "name": "Παραλία Γλυφά",
+      "dirDeg": 22.5,
+      "K6": 0.117,
+      "fetchKm": 0.44,
+      "blocked": 1,
+      "onshore": -0.23
+    },
+    {
+      "id": 2046,
+      "name": "Παραλία Παροικιάς (κέντρο)",
+      "dirDeg": 22.5,
+      "K6": 0.067,
+      "fetchKm": 0.62,
+      "blocked": 1,
+      "onshore": 0.09
+    },
+    {
+      "id": 2046,
+      "name": "Παραλία Παροικιάς (κέντρο)",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": -0.3
+    },
+    {
+      "id": 2046,
+      "name": "Παραλία Παροικιάς (κέντρο)",
+      "dirDeg": 202.5,
+      "K6": 0.141,
+      "fetchKm": 2.5,
+      "blocked": 0.9,
+      "onshore": -0.09
+    },
+    {
+      "id": 2048,
+      "name": "Πιπέρι",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 0.3,
+      "blocked": 1,
+      "onshore": -0.31
+    },
+    {
+      "id": 2048,
+      "name": "Πιπέρι",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 0.6,
+      "blocked": 1,
+      "onshore": 0.08
+    },
+    {
+      "id": 2048,
+      "name": "Πιπέρι",
+      "dirDeg": 292.5,
+      "K6": 0.046,
+      "fetchKm": 1.06,
+      "blocked": 1,
+      "onshore": 0.45
+    },
+    {
+      "id": 2049,
+      "name": "Πούντα",
+      "dirDeg": 247.5,
+      "K6": 0.103,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.37
+    },
+    {
+      "id": 2050,
+      "name": "Πυργάκι",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": -0.36
+    },
+    {
+      "id": 2050,
+      "name": "Πυργάκι",
+      "dirDeg": 22.5,
+      "K6": 0.054,
+      "fetchKm": 3.12,
+      "blocked": 1,
+      "onshore": 0.03
+    },
+    {
+      "id": 2051,
+      "name": "Σάντα Μαρία",
+      "dirDeg": 0,
+      "K6": 0.141,
+      "fetchKm": 0.04,
+      "blocked": 1,
+      "onshore": -0.1
+    },
+    {
+      "id": 2051,
+      "name": "Σάντα Μαρία",
+      "dirDeg": 157.5,
+      "K6": 0.05,
+      "fetchKm": 5.74,
+      "blocked": 1,
+      "onshore": 0.47
+    },
+    {
+      "id": 2051,
+      "name": "Σάντα Μαρία",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 3.96,
+      "blocked": 1,
+      "onshore": 0.1
+    },
+    {
+      "id": 2051,
+      "name": "Σάντα Μαρία",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 1.98,
+      "blocked": 1,
+      "onshore": -0.29
+    },
+    {
+      "id": 2051,
+      "name": "Σάντα Μαρία",
+      "dirDeg": 337.5,
+      "K6": 0.043,
+      "fetchKm": 0.02,
+      "blocked": 1,
+      "onshore": -0.47
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 2.5,
+      "blocked": 0.9,
+      "onshore": -0.93
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 45,
+      "K6": 0,
+      "fetchKm": 5,
+      "blocked": 0.8,
+      "onshore": -1
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 67.5,
+      "K6": 0,
+      "fetchKm": 5,
+      "blocked": 0.8,
+      "onshore": -0.91
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 90,
+      "K6": 0,
+      "fetchKm": 5,
+      "blocked": 0.8,
+      "onshore": -0.69
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 112.5,
+      "K6": 0,
+      "fetchKm": 2.5,
+      "blocked": 0.9,
+      "onshore": -0.36
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 157.5,
+      "K6": 0,
+      "fetchKm": 0.78,
+      "blocked": 1,
+      "onshore": 0.41
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 180,
+      "K6": 0,
+      "fetchKm": 1.56,
+      "blocked": 1,
+      "onshore": 0.73
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 202.5,
+      "K6": 0,
+      "fetchKm": 1.6,
+      "blocked": 1,
+      "onshore": 0.93
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 225,
+      "K6": 0,
+      "fetchKm": 1.64,
+      "blocked": 1,
+      "onshore": 1
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 247.5,
+      "K6": 0,
+      "fetchKm": 1.14,
+      "blocked": 1,
+      "onshore": 0.91
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 270,
+      "K6": 0,
+      "fetchKm": 0.64,
+      "blocked": 1,
+      "onshore": 0.69
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 292.5,
+      "K6": 0,
+      "fetchKm": 0.42,
+      "blocked": 1,
+      "onshore": 0.36
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 315,
+      "K6": 0,
+      "fetchKm": 0.2,
+      "blocked": 1,
+      "onshore": -0.03
+    },
+    {
+      "id": 2052,
+      "name": "Τούρκου Άμμος",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 0.1,
+      "blocked": 1,
+      "onshore": -0.41
+    },
+    {
+      "id": 2054,
+      "name": "Τσουκαλιά",
+      "dirDeg": 292.5,
+      "K6": 0.006,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.33
+    },
+    {
+      "id": 2054,
+      "name": "Τσουκαλιά",
+      "dirDeg": 315,
+      "K6": 0.094,
+      "fetchKm": 0.56,
+      "blocked": 1,
+      "onshore": 0.06
+    },
+    {
+      "id": 2055,
+      "name": "Φάραγγας",
+      "dirDeg": 292.5,
+      "K6": 0.08,
+      "fetchKm": 0.06,
+      "blocked": 1,
+      "onshore": -0.18
+    },
+    {
+      "id": 3173,
+      "name": "Γαλήνη",
+      "dirDeg": 112.5,
+      "K6": 0.093,
+      "fetchKm": 1.04,
+      "blocked": 1,
+      "onshore": -0.73
+    },
+    {
+      "id": 3173,
+      "name": "Γαλήνη",
+      "dirDeg": 202.5,
+      "K6": 0.093,
+      "fetchKm": 1.34,
+      "blocked": 1,
+      "onshore": -0.68
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 0,
+      "K6": 0,
+      "fetchKm": 0.28,
+      "blocked": 1,
+      "onshore": -0.43
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 247.5,
+      "K6": 0.126,
+      "fetchKm": 6.14,
+      "blocked": 0.9,
+      "onshore": 1
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 270,
+      "K6": 0.062,
+      "fetchKm": 3.76,
+      "blocked": 1,
+      "onshore": 0.9
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 292.5,
+      "K6": 0.005,
+      "fetchKm": 3.24,
+      "blocked": 1,
+      "onshore": 0.67
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 315,
+      "K6": 0,
+      "fetchKm": 2.72,
+      "blocked": 1,
+      "onshore": 0.34
+    },
+    {
+      "id": 3175,
+      "name": "Μακριά Μύτη",
+      "dirDeg": 337.5,
+      "K6": 0,
+      "fetchKm": 1.5,
+      "blocked": 1,
+      "onshore": -0.05
+    },
+    {
+      "id": 3176,
+      "name": "Πίσω Λιβάδι",
+      "dirDeg": 22.5,
+      "K6": 0,
+      "fetchKm": 1.78,
+      "blocked": 1,
+      "onshore": -0.21
+    },
+    {
+      "id": 3176,
+      "name": "Πίσω Λιβάδι",
+      "dirDeg": 45,
+      "K6": 0.037,
+      "fetchKm": 3.52,
+      "blocked": 1,
+      "onshore": 0.18
+    },
+    {
+      "id": 3176,
+      "name": "Πίσω Λιβάδι",
+      "dirDeg": 67.5,
+      "K6": 0.131,
+      "fetchKm": 6.78,
+      "blocked": 1,
+      "onshore": 0.54
+    },
+    {
+      "id": 3177,
+      "name": "Στελίδα",
+      "dirDeg": 270,
+      "K6": 0.133,
+      "fetchKm": 5.52,
+      "blocked": 1,
+      "onshore": 0.9
+    }
+  ],
+  "summary": {
+    "combos": 1328,
+    "agreementShare": 0.822,
+    "dangerCount": 15,
+    "dangerBeaches": 9,
+    "overwildCount": 222,
+    "overwildBeaches": 61
+  }
+}
