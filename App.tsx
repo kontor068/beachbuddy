@@ -870,6 +870,10 @@ const scoreRemainingTopPickHour = (beach: Beach, item: ForecastItem, geospatialP
     beaufort,
     windSpeedKmh: windSpeedKmph,
     gustKmph,
+    // The real mean, so the gust-spread test is not blunted by the gust floor (utils/windGustFloor).
+    meanSpeedBeforeGustFloorKmh: typeof item.wind.speedBeforeGustFloor === 'number'
+      ? item.wind.speedBeforeGustFloor * 3.6
+      : undefined,
     measuredWaveHeightM: waveHeightM,
     swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
   });

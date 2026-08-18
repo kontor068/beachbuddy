@@ -125,6 +125,7 @@ export const resolveDisplayWaveHeightM = ({
   swell,
   seaArrival,
   geometricCeilingM,
+  meanSpeedBeforeGustFloorKmh,
 }: {
   exposureLevel: WaveExposureLevel;
   /** `WindExposureAssessment.modeledWaveHeightM` — open-water SMB, before damping. */
@@ -144,6 +145,11 @@ export const resolveDisplayWaveHeightM = ({
    * beaches, and then nothing here changes.
    */
   geometricCeilingM?: number;
+  /**
+   * The hourly mean before the gust floor lifted it (utils/windGustFloor), when it did. Only the
+   * gust-spread test uses it; every other term keeps reading the corrected wind.
+   */
+  meanSpeedBeforeGustFloorKmh?: number;
 }): {
   effectiveWaveHeightM: number;
   modeledWaveHeightM: number;
@@ -157,7 +163,7 @@ export const resolveDisplayWaveHeightM = ({
   // cross-shore beaches see far less of it than a coast facing the fetch head-on.
   const damping = exposureLevel === 'protected' ? 0.5 : exposureLevel === 'partial' ? 0.75 : 1;
   const fetchModeledWaveHeightM = Number((modeledWaveHeightM * damping).toFixed(2));
-  const windChopFloorM = getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph);
+  const windChopFloorM = getWindChopWaveFloorM(exposureLevel, beaufort, windSpeedKmh, gustKmph, meanSpeedBeforeGustFloorKmh);
   const modeled = Number(Math.max(fetchModeledWaveHeightM, windChopFloorM).toFixed(2));
 
   // ⛔ ΕΔΩ ΔΟΚΙΜΑΣΤΗΚΕ ΚΑΙ ΑΠΟΡΡΙΦΘΗΚΕ ένα τρίτο γεωμετρικό φίλτρο (16/08/2026): «αν η γωνία απ'
@@ -200,9 +206,21 @@ export const getWindChopWaveFloorM = (
   exposureLevel: WaveExposureLevel,
   beaufort: number,
   windSpeedKmh: number,
-  gustKmph?: number
+  gustKmph?: number,
+  /**
+   * The hourly mean BEFORE utils/windGustFloor raised it, when it did.
+   *
+   * The gust spread must be measured against the real mean: the floor lifts `windSpeedKmh`, which
+   * would shrink `gust - mean` and switch this floor OFF for exactly the gusty hours it exists
+   * for (measured: 918 beach-hours nationally). Omitted → falls back to `windSpeedKmh`, which is
+   * correct whenever the floor did not fire.
+   */
+  meanSpeedBeforeGustFloorKmh?: number
 ): number => {
-  const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - windSpeedKmh) : 0;
+  const spreadBaseKmh = typeof meanSpeedBeforeGustFloorKmh === 'number' && Number.isFinite(meanSpeedBeforeGustFloorKmh)
+    ? meanSpeedBeforeGustFloorKmh
+    : windSpeedKmh;
+  const gustSpreadKmph = typeof gustKmph === 'number' ? Math.max(0, gustKmph - spreadBaseKmh) : 0;
   const gusty = beaufort >= WIND_CHOP_GUST_MIN_BASE_BEAUFORT && (
     (typeof gustKmph === 'number' && gustKmph >= WIND_CHOP_GUST_NOTE_ABS_KMH) ||
     gustSpreadKmph >= WIND_CHOP_GUST_NOTE_SPREAD_KMH

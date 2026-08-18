@@ -33,6 +33,7 @@ const { buildBeachForecastClusters } = require(path.join(root, 'utils/beachForec
 const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 const { getBeaufortLevel } = require(path.join(root, 'utils/weatherUtils.ts'));
 const { applyGustFloor, GUST_FLOOR_FACTOR } = require(path.join(root, 'utils/windGustFloor.ts'));
+const { getWindChopWaveFloorM } = require(path.join(root, 'utils/waveModel.ts'));
 
 const NATIONAL = process.argv.includes('--national');
 const HOURS = ['T09:00', 'T12:00', 'T15:00', 'T18:00'];
@@ -112,6 +113,12 @@ console.log('');
 let slots = 0, changed = 0, worse = 0, better = 0, bftChanged = 0;
 const CALM = new Set(['blue']);
 let calmLost = 0;                 // ήταν «πάμε» και έγινε κάτι άλλο
+// ΤΟ ΔΙΧΤΥ ΤΗΣ ΣΥΓΚΡΟΥΣΗΣ: πέντε κατώφλια κρίνουν «ριπώδης» από τη ΔΙΑΦΟΡΑ ριπή−μέσος. Ο δάπεδος
+// ανεβάζει τον μέσο, άρα θα ΜΙΚΡΑΙΝΕ τη διαφορά και θα έσβηνε προειδοποιήσεις — μονόδρομη
+// υποβάθμιση προς την ΑΝΑΣΦΑΛΗ κατεύθυνση. Η διόρθωση περνά τον ωμό μέσο ως 5ο όρισμα· εδώ τρέχει
+// η ΠΡΑΓΜΑΤΙΚΗ συνάρτηση και στις δύο εκδόσεις και το «χαλαρώνει» πρέπει να βγει 0.
+let floorLoosened = 0, floorTightened = 0, floorSame = 0;
+let spreadRows = 0;
 let calmGained = 0;
 const moves = new Map();          // «από→προς» -> πλήθος
 const byRegion = new Map();
@@ -129,6 +136,16 @@ for (const item of plan) {
     if (typeof raw !== 'number' || typeof deg !== 'number') continue;
     const corrected = applyGustFloor(raw, gust, point.elevation);
     slots++;
+    if (typeof gust === 'number' && corrected !== raw) {
+      spreadRows++;
+      const exp = item.profile?.sectors?.[sectorOf(deg)]?.level ?? 'partial';
+      // Πριν: ωμός μέσος παντού. Μετά: διορθωμένος μέσος ΑΛΛΑ ωμός για το spread (5ο όρισμα).
+      const floorBefore = getWindChopWaveFloorM(exp, getBeaufortLevel(raw), raw, gust);
+      const floorAfter = getWindChopWaveFloorM(exp, getBeaufortLevel(corrected), corrected, gust, raw);
+      if (floorAfter < floorBefore) floorLoosened++;
+      else if (floorAfter > floorBefore) floorTightened++;
+      else floorSame++;
+    }
     const bOld = getBeaufortLevel(raw), bNew = getBeaufortLevel(corrected);
     if (bOld !== bNew) bftChanged++;
     const exposureLevel = item.profile?.sectors?.[sectorOf(deg)]?.level ?? 'partial';
@@ -156,6 +173,14 @@ console.log(`  προς το αυστηρότερο          ${worse} (${pct(wor
 console.log(`  προς το ηπιότερο             ${better}`);
 console.log(`\n  χάνει το «πάμε» (μπλε→άλλο) ${calmLost} = ${pct(calmLost, slots)}% των παραλία-ωρών`);
 console.log(`  κερδίζει «πάμε»              ${calmGained}`);
+
+console.log(`\n=== ΔΙΧΤΥ: ΤΟ ΔΑΠΕΔΟ ΚΥΜΑΤΟΣ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΧΑΛΑΡΩΣΕΙ (${spreadRows} ώρες που άγγιξε ο δάπεδος) ===`);
+console.log(`  χαλαρώνει (ΑΠΑΓΟΡΕΥΕΤΑΙ): ${floorLoosened}`);
+console.log(`  σφίγγει:                  ${floorTightened}`);
+console.log(`  αμετάβλητο:               ${floorSame}`);
+console.log(floorLoosened > 0
+  ? '  ⛔ ΣΥΓΚΡΟΥΣΗ ΕΝΕΡΓΗ — ο δάπεδος σβήνει προειδοποιήσεις ριπών.'
+  : '  ✅ καμία προειδοποίηση ριπών δεν χάνεται.');
 
 console.log('\n=== ΠΟΙΕΣ ΜΕΤΑΚΙΝΗΣΕΙΣ ===');
 for (const [move, count] of [...moves.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)) {

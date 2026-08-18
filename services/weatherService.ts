@@ -412,7 +412,7 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<FetchR
 
   return {
     data: {
-      wind: { speed: now.wind.speed, deg: now.wind.deg, gust: now.wind.gust },
+      wind: { speed: now.wind.speed, deg: now.wind.deg, gust: now.wind.gust, speedBeforeGustFloor: now.wind.speedBeforeGustFloor },
       // Already mapped by parseHourlyForecast, day/night included.
       weather: now.weather[0],
       main: { temp: now.main.temp },
@@ -473,6 +473,12 @@ const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any
           // anemometers that produced the 0,55 factor — the hourly mean compresses peaks and the
           // error was 2:1 towards "calmer than it is".
           speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), cellElevationM),
+          // Kept ONLY when the floor moved the number: everything that judges gustiness by
+          // gust-minus-mean has to keep using the real mean, or the correction would erase the
+          // very warnings it exists to strengthen. See types.ForecastItem.wind.
+          speedBeforeGustFloor: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), cellElevationM) !== hourly.wind_speed_10m[index]
+            ? hourly.wind_speed_10m[index]
+            : undefined,
           deg: hourly.wind_direction_10m[index],
           // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
           gust: optionalNumber(hourly.wind_gusts_10m?.[index]) ?? hourly.wind_speed_10m[index] * 1.2

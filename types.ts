@@ -800,7 +800,7 @@ export interface Island {
 }
 
 export interface WeatherData {
-  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; };
   weather: { main: string; description: string; icon: string; };
   main: { temp: number; };
   marine?: MarineForecast;
@@ -811,7 +811,24 @@ export interface ForecastItem {
   main: { temp: number; temp_min: number; temp_max: number; pressure: number; sea_level: number; grnd_level: number; humidity: number; temp_kf: number; };
   weather: { id: number; main: string; description: string; icon: string; }[];
   clouds: { all: number; };
-  wind: { speed: number; deg: number; gust: number; gustKnots?: number; };
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
+    gustKnots?: number;
+    /**
+     * The hourly mean EXACTLY as Open-Meteo reported it, before utils/windGustFloor raised it.
+     * Present only when the floor actually fired.
+     *
+     * Exists for one reason: five thresholds judge "is it gusty" from gust MINUS mean
+     * (recommendationService GUST_*_SPREAD_KMH, waveModel WIND_CHOP_GUST_NOTE_SPREAD_KMH).
+     * Raising the mean shrinks that difference, which would silently DELETE gust warnings —
+     * measured nationally at 918 beach-hours losing the wave/note gate and 366 losing the
+     * effective-Beaufort bump. Gustiness is a property of the real flow, so it must be measured
+     * against the real mean, never the corrected one.
+     */
+    speedBeforeGustFloor?: number;
+  };
   rain?: { '3h'?: number };
   visibility: number;
   pop: number;
@@ -825,7 +842,7 @@ export interface ForecastItem {
 
 export interface DailyForecast {
   date: Date;
-  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; };
   weather: { main: string; description: string; icon: string; };
   temp_min: number;
   temp_max: number;

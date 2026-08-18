@@ -321,8 +321,13 @@ const getWeatherGustSpreadKmph = (
         : typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust)
           ? item.wind.gust * 3.6
           : undefined;
-      const speed = typeof item.wind?.speed === 'number' && Number.isFinite(item.wind.speed)
-        ? item.wind.speed * 3.6
+      // The REAL mean, not the gust-floored one (utils/windGustFloor). Using the corrected mean
+      // here would shrink every spread and quietly cancel the gust warnings.
+      const rawSpeedMs = typeof item.wind?.speedBeforeGustFloor === 'number' && Number.isFinite(item.wind.speedBeforeGustFloor)
+        ? item.wind.speedBeforeGustFloor
+        : item.wind?.speed;
+      const speed = typeof rawSpeedMs === 'number' && Number.isFinite(rawSpeedMs)
+        ? rawSpeedMs * 3.6
         : undefined;
       return gust === undefined || speed === undefined ? undefined : Math.max(0, gust - speed);
     })
@@ -713,6 +718,9 @@ const assessHourlyWave = (
     beaufort,
     windSpeedKmh,
     gustKmph,
+    meanSpeedBeforeGustFloorKmh: typeof item.wind.speedBeforeGustFloor === 'number'
+      ? item.wind.speedBeforeGustFloor * 3.6
+      : undefined,
     measuredWaveHeightM: measured,
     swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
     seaArrival: resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg),
@@ -1676,6 +1684,12 @@ export const calculateBeachScore = (
   // 1. Weather Data Conversion
   const hourlyForecast = options?.hourlyForecast || ('hourly' in weather ? weather.hourly : undefined);
   const windSpeedKmph = weather.wind.speed * 3.6;
+  // Ο ΩΜΟΣ μέσος, μόνο για τον υπολογισμό «πόσο ριπώδης» — ο δάπεδος ριπής
+  // (utils/windGustFloor) ανεβάζει τον μέσο, και αν το spread μετριόταν από τον ανεβασμένο θα
+  // έσβηνε τις ίδιες τις προειδοποιήσεις ριπών που ο δάπεδος υπάρχει για να ενισχύσει.
+  const rawMeanWindKmphForSpread = typeof weather.wind.speedBeforeGustFloor === 'number'
+    ? weather.wind.speedBeforeGustFloor * 3.6
+    : undefined;
   const windDir = degToCompass(weather.wind.deg);
   const baseBeaufort = getBeaufortLevel(windSpeedKmph);
   const gustKmph = getWeatherGustKmph(weather, hourlyForecast);
@@ -1859,6 +1873,7 @@ export const calculateBeachScore = (
     beaufort: baseBeaufort,
     windSpeedKmh: windSpeedKmph,
     gustKmph,
+    meanSpeedBeforeGustFloorKmh: rawMeanWindKmphForSpread,
     measuredWaveHeightM,
     swell: { heightM: marine?.swellWaveHeightM, periodS: marine?.swellWavePeriodS },
     seaArrival,
