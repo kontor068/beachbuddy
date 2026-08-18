@@ -29,7 +29,25 @@ const IN = arg('--in');
 const STAMP = arg('--stamp', new Date().toISOString().slice(0, 10));
 if (!IN) { console.error('usage: --in <report.json> [--write] [--stamp YYYY-MM-DD]'); process.exit(1); }
 
-const APPLICABLE = new Set(['asphalt_road', 'passable_dirt_road', 'difficult_dirt_road']);
+// Η ΑΣΦΑΛΤΟΣ ΔΕΝ ΜΠΑΙΝΕΙ ΑΠΟ ΤΟΝ OSM ΜΟΝΟ ΤΟΥ — ΑΠΟΦΑΣΗ ΜΙΛΤΟΥ 18/08/2026.
+//
+// Η καταγεγραμμένη απόφαση της 16/08 («άγνωστη πρόσβαση μένει άγνωστη· η OSM είναι ένδειξη,
+// όχι απόδειξη· ισχύει εθνικά για τις 483 unknown») ζητάει ΔΥΟ ανεξάρτητες πηγές. Ο αγωγός
+// της 17/08 την παρέκαμψε σιωπηλά και εφάρμοσε 29 παραλίες από μία πηγή· τα 13 `asphalt_road`
+// επαναφέρθηκαν στις 18/08.
+//
+// ΓΙΑΤΙ Η ΓΡΑΜΜΗ ΜΠΑΙΝΕΙ ΑΚΡΙΒΩΣ ΕΔΩ — ΤΟ ΡΙΣΚΟ ΕΙΝΑΙ ΑΣΥΜΜΕΤΡΟ:
+//   · `asphalt_road`   → «Εύκολη πρόσβαση» στην κάρτα (utils/localization.ts) και «περπάτα»
+//     στον σχεδιασμό διαδρομής. Είναι ΥΠΟΣΧΕΣΗ: κάποιος βάζει χαμηλό αυτοκίνητο και πάει.
+//     Λάθος εδώ = κολλημένο αμάξι σε χωματόδρομο.
+//   · `*_dirt_road`    → «Βατός/δύσβατος χωματόδρομος». Είναι ΠΡΟΕΙΔΟΠΟΙΗΣΗ. Λάθος εδώ
+//     σημαίνει ότι κάποιος πήγε πιο προσεκτικά απ' όσο χρειαζόταν — ανώδυνο.
+//
+// Άρα ο χωματόδρομος περνάει με μία πηγή, η άσφαλτος όχι. Για να μπει άσφαλτος χρειάζεται
+// δεύτερη ανεξάρτητη ένδειξη (επώνυμος οδηγός, δήμος, επιτόπου έλεγχος) — χειροκίνητα.
+// Οι υποψήφιες ΔΕΝ χάνονται: γράφονται κανονικά στην αναφορά για ανθρώπινο μάτι.
+const APPLICABLE = new Set(['passable_dirt_road', 'difficult_dirt_road']);
+const REQUIRES_SECOND_SOURCE = new Set(['asphalt_road']);
 
 /**
  * ΤΟ ΣΗΜΕΙΩΜΑ ΜΕΝΕΙ ΚΕΝΟ — ΚΑΙ ΑΥΤΟ ΤΟ ΕΜΑΘΑ ΑΠΟ ΤΗΝ ΙΔΙΑ ΜΟΥ ΤΗΝ ΠΥΛΗ (17/08/2026).
@@ -51,8 +69,16 @@ const noteFor = () => '';
 
 const report = JSON.parse(readFileSync(path.isAbsolute(IN) ? IN : path.join(rootDir, IN), 'utf8'));
 const byId = new Map();
+const heldForSecondSource = [];
 for (const row of report.results || []) {
   if (APPLICABLE.has(row.verdict)) byId.set(Number(row.id), row);
+  else if (REQUIRES_SECOND_SOURCE.has(row.verdict)) heldForSecondSource.push(row);
+}
+// Σιωπηλή παράλειψη = η υποψήφια χάνεται. Τυπώνεται ρητά ώστε να φαίνεται τι περιμένει άνθρωπο.
+if (heldForSecondSource.length) {
+  console.log(`\n⏸  ${heldForSecondSource.length} υποψήφιες ΑΣΦΑΛΤΟΣ δεν εφαρμόζονται — θέλουν δεύτερη πηγή (απόφαση 16/08 + 18/08):`);
+  for (const r of heldForSecondSource) console.log(`     #${r.id} ${r.name} — ${r.evidence || r.label}`);
+  console.log('');
 }
 
 const source = JSON.parse(readFileSync(sourcePath, 'utf8'));
