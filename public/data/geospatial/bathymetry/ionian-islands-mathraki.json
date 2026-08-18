@@ -1,0 +1,74 @@
+{
+  "regionId": "ionian-islands-mathraki",
+  "source": "EMODnet Digital Bathymetry DTM (emodnet__mean, WCS)",
+  "generatedAt": "2026-08-18T06:22:45.146Z",
+  "sampleDistancesKm": [
+    0.1,
+    0.3,
+    0.5
+  ],
+  "profiles": {
+    "1061": {
+      "beachId": 1061,
+      "confidence": "high",
+      "sectors": {
+        "N": {
+          "depths": {
+            "100m": 0,
+            "300m": 1.24,
+            "500m": 2.73
+          }
+        },
+        "NE": {
+          "depths": {
+            "100m": 0.17,
+            "300m": 4.72,
+            "500m": 11.03
+          }
+        },
+        "E": {
+          "depths": {
+            "100m": 0,
+            "300m": 3.02,
+            "500m": 7.98
+          }
+        },
+        "SE": {
+          "depths": {
+            "100m": 0.39,
+            "300m": 0,
+            "500m": 0
+          }
+        },
+        "S": {
+          "depths": {
+            "100m": 0,
+            "300m": 0,
+            "500m": 0
+          }
+        },
+        "SW": {
+          "depths": {
+            "100m": 0,
+            "300m": 0,
+            "500m": 0
+          }
+        },
+        "W": {
+          "depths": {
+            "100m": 0,
+            "300m": 0,
+            "500m": 0
+          }
+        },
+        "NW": {
+          "depths": {
+            "100m": 0.04,
+            "300m": 0,
+            "500m": 0
+          }
+        }
+      }
+    }
+  }
+}
