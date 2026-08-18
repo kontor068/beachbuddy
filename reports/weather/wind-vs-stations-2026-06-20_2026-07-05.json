@@ -1,0 +1,289 @@
+{
+  "generatedAt": "2026-08-18T08:39:20.339Z",
+  "window": "2026-06-20 → 2026-07-05",
+  "boostTested": 1.2,
+  "stations": 30,
+  "slots": 8079,
+  "bestMatch": {
+    "maeKmh": 5,
+    "biasKmh": -2.204,
+    "bftExactPct": 38.8,
+    "bftUnderPct": 40.6,
+    "bftOverPct": 20.6
+  },
+  "medianOfFour": {
+    "maeKmh": 5.225,
+    "biasKmh": -0.168,
+    "bftExactPct": 41.5,
+    "bftUnderPct": 29,
+    "bftOverPct": 29.6
+  },
+  "oursCloserPct": 50.2,
+  "compression": {
+    "bestMatchSlope": 0.673,
+    "bestMatchIntercept": 2.67,
+    "medianSlope": 0.624
+  },
+  "thresholds": {
+    "obs5Hours": 804,
+    "missed5Pct": 54.2
+  },
+  "candidates": [
+    {
+      "label": "όπως είναι σήμερα",
+      "maeKmh": 5,
+      "biasKmh": -2.2,
+      "bftExactPct": 38.8,
+      "bftUnderPct": 40.6,
+      "bftOverPct": 20.6,
+      "missed5Pct": 54.2
+    },
+    {
+      "label": "γραμμική (ours-a)/b",
+      "maeKmh": 5.66,
+      "biasKmh": 0,
+      "bftExactPct": 37.4,
+      "bftUnderPct": 33.5,
+      "bftOverPct": 29.1,
+      "missed5Pct": 23.6
+    },
+    {
+      "label": "max(μέσος, ριπή×0,55)",
+      "maeKmh": 5.15,
+      "biasKmh": 0.46,
+      "bftExactPct": 41,
+      "bftUnderPct": 26.6,
+      "bftOverPct": 32.5,
+      "missed5Pct": 42.9
+    },
+    {
+      "label": "max(μέσος, ριπή×0,65)",
+      "maeKmh": 5.94,
+      "biasKmh": 2.95,
+      "bftExactPct": 39.6,
+      "bftUnderPct": 17.1,
+      "bftOverPct": 43.3,
+      "missed5Pct": 24.5
+    },
+    {
+      "label": "max(μέσος, ριπή×0,75)",
+      "maeKmh": 7.46,
+      "biasKmh": 5.68,
+      "bftExactPct": 33.4,
+      "bftUnderPct": 10.1,
+      "bftOverPct": 56.5,
+      "missed5Pct": 10
+    },
+    {
+      "label": "×1.20 μόνο πάνω από 4 Μπφ",
+      "maeKmh": 5.13,
+      "biasKmh": -1.09,
+      "bftExactPct": 38,
+      "bftUnderPct": 37.8,
+      "bftOverPct": 24.2,
+      "missed5Pct": 34.1
+    }
+  ],
+  "byStation": [
+    {
+      "station": "LGKP",
+      "name": "Κάρπαθος",
+      "hours": 252,
+      "maeOurs": 9.91,
+      "biasOurs": -8.43,
+      "underPct": 69.4
+    },
+    {
+      "station": "LGIR",
+      "name": "Ηράκλειο",
+      "hours": 361,
+      "maeOurs": 7.9,
+      "biasOurs": -7.46,
+      "underPct": 71.7
+    },
+    {
+      "station": "LGRP",
+      "name": "Ρόδος",
+      "hours": 361,
+      "maeOurs": 7.15,
+      "biasOurs": -6.99,
+      "underPct": 72.6
+    },
+    {
+      "station": "LGKO",
+      "name": "Κως",
+      "hours": 360,
+      "maeOurs": 6.03,
+      "biasOurs": -5.53,
+      "underPct": 56.4
+    },
+    {
+      "station": "LGPA",
+      "name": "Πάρος",
+      "hours": 361,
+      "maeOurs": 5.88,
+      "biasOurs": -4.82,
+      "underPct": 56.5
+    },
+    {
+      "station": "LGSR",
+      "name": "Σαντορίνη",
+      "hours": 331,
+      "maeOurs": 5.88,
+      "biasOurs": -4.6,
+      "underPct": 51.7
+    },
+    {
+      "station": "LGTS",
+      "name": "Θεσσαλονίκη",
+      "hours": 361,
+      "maeOurs": 4.89,
+      "biasOurs": -4.07,
+      "underPct": 54.8
+    },
+    {
+      "station": "LGMK",
+      "name": "Μύκονος",
+      "hours": 359,
+      "maeOurs": 5.24,
+      "biasOurs": -3.56,
+      "underPct": 42.3
+    },
+    {
+      "station": "LGAL",
+      "name": "Αλεξανδρούπολη",
+      "hours": 317,
+      "maeOurs": 6.35,
+      "biasOurs": -3.32,
+      "underPct": 47.3
+    },
+    {
+      "station": "LGBL",
+      "name": "Ν. Αγχίαλος",
+      "hours": 355,
+      "maeOurs": 4.34,
+      "biasOurs": -2.35,
+      "underPct": 47
+    },
+    {
+      "station": "LGLM",
+      "name": "Λήμνος",
+      "hours": 355,
+      "maeOurs": 3.89,
+      "biasOurs": -1.75,
+      "underPct": 32.4
+    },
+    {
+      "station": "LGKR",
+      "name": "Κέρκυρα",
+      "hours": 361,
+      "maeOurs": 3.43,
+      "biasOurs": -1.7,
+      "underPct": 41.8
+    },
+    {
+      "station": "LGMT",
+      "name": "Μυτιλήνη",
+      "hours": 360,
+      "maeOurs": 3.76,
+      "biasOurs": -1.29,
+      "underPct": 32.2
+    },
+    {
+      "station": "LGPZ",
+      "name": "Άκτιο",
+      "hours": 361,
+      "maeOurs": 3.88,
+      "biasOurs": -1.14,
+      "underPct": 36
+    },
+    {
+      "station": "LGKL",
+      "name": "Καλαμάτα",
+      "hours": 353,
+      "maeOurs": 4.39,
+      "biasOurs": -1.07,
+      "underPct": 37.1
+    },
+    {
+      "station": "LGSM",
+      "name": "Σάμος",
+      "hours": 344,
+      "maeOurs": 4.11,
+      "biasOurs": -0.84,
+      "underPct": 28.8
+    },
+    {
+      "station": "LGZA",
+      "name": "Ζάκυνθος",
+      "hours": 286,
+      "maeOurs": 3.85,
+      "biasOurs": -0.66,
+      "underPct": 33.9
+    },
+    {
+      "station": "LGKC",
+      "name": "Κύθηρα",
+      "hours": 132,
+      "maeOurs": 5.1,
+      "biasOurs": -0.44,
+      "underPct": 34.1
+    },
+    {
+      "station": "LGKV",
+      "name": "Καβάλα",
+      "hours": 358,
+      "maeOurs": 3.78,
+      "biasOurs": -0.4,
+      "underPct": 30.7
+    },
+    {
+      "station": "LGKF",
+      "name": "Κεφαλονιά",
+      "hours": 262,
+      "maeOurs": 4.12,
+      "biasOurs": 0.05,
+      "underPct": 27.5
+    },
+    {
+      "station": "LGRX",
+      "name": "Άραξος",
+      "hours": 355,
+      "maeOurs": 4.32,
+      "biasOurs": 1.05,
+      "underPct": 23.7
+    },
+    {
+      "station": "LGSA",
+      "name": "Χανιά",
+      "hours": 360,
+      "maeOurs": 4.19,
+      "biasOurs": 1.2,
+      "underPct": 21.1
+    },
+    {
+      "station": "LGHI",
+      "name": "Χίος",
+      "hours": 276,
+      "maeOurs": 4.11,
+      "biasOurs": 1.38,
+      "underPct": 19.6
+    },
+    {
+      "station": "LGSK",
+      "name": "Σκιάθος",
+      "hours": 259,
+      "maeOurs": 3.94,
+      "biasOurs": 2.51,
+      "underPct": 11.6
+    },
+    {
+      "station": "LGNX",
+      "name": "Νάξος",
+      "hours": 239,
+      "maeOurs": 5.36,
+      "biasOurs": 3.12,
+      "underPct": 11.7
+    }
+  ]
+}

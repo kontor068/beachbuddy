@@ -7,6 +7,7 @@ import { syncClockFromTrustedInstant } from '../utils/athensTime';
 import { parseMarineHourly } from '../utils/marineForecastParsing';
 import { marinePointKey } from '../utils/marineSamplePoints';
 import { preferredMarineModelFor } from '../utils/marineModelPreference';
+import { applyGustFloor } from '../utils/windGustFloor';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -460,7 +461,12 @@ const parseHourlyForecast = (hourly: any): ForecastItem[] => {
         weather: [mapWmoToWeather(hourly.weather_code[index], isDay)],
         clouds: { all: 0 },
         wind: {
-          speed: hourly.wind_speed_10m[index],
+          // Gust floor applied HERE, at the one place raw Open-Meteo becomes a ForecastItem, so
+          // every colour, verdict, filter and wave calculation downstream reads the same corrected
+          // wind. See utils/windGustFloor.ts for the 32.000-hour measurement against real
+          // anemometers that produced the 0,55 factor — the hourly mean compresses peaks and the
+          // error was 2:1 towards "calmer than it is".
+          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index])),
           deg: hourly.wind_direction_10m[index],
           // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
           gust: optionalNumber(hourly.wind_gusts_10m?.[index]) ?? hourly.wind_speed_10m[index] * 1.2

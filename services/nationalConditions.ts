@@ -1,4 +1,5 @@
 import { getBeaufortLevel } from '../utils/weatherUtils';
+import { applyGustFloor } from '../utils/windGustFloor';
 
 // One cached read of "how the sea is doing around Greece right now". It drives
 // the landing hero and the "today" strip.
@@ -113,7 +114,7 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
     try {
       const lats = POINTS.map(p => p.lat).join(',');
       const lons = POINTS.map(p => p.lon).join(',');
-      const url = `${forecastOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens`;
+      const url = `${forecastOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens`;
       // Without a deadline a hung request leaves thirteen skeleton bars pulsing
       // forever, because `status` never leaves 'loading'.
       const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
@@ -146,8 +147,13 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
 
       const regions: RegionConditionReading[] = [];
       arr.forEach((entry, i) => {
-        const kmh = entry?.current?.wind_speed_10m;
-        if (typeof kmh !== 'number') return;
+        // Same gust floor as every other surface (utils/windGustFloor). Without it the landing
+        // and the region page would print two confident, DIFFERENT Beaufort figures for the same
+        // place — the exact failure reports/region-forecast-point-audit.md killed the per-region
+        // wind tiles over.
+        const rawKmh = entry?.current?.wind_speed_10m;
+        if (typeof rawKmh !== 'number') return;
+        const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m);
 
         // Match on the coordinates the API echoes back, NOT on array position.
         // Index matching looks fine until Open-Meteo drops or reorders one entry,
