@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T09:23:09.018Z",
+  "generatedAt": "2026-08-18T11:51:24.902Z",
   "window": "2026-07-10 → 2026-07-25",
   "boostTested": 1.2,
   "stations": 30,
@@ -138,11 +138,268 @@
     },
     {
       "factor": 0.6,
-      "okPct": 67.8,
-      "falseCalmPct": 7.1,
+      "okPct": 68,
+      "falseCalmPct": 7,
       "falseAlarmPct": 10.7
     }
   ],
+  "byElevationDefinition": {
+    "pointElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 596,
+        "biasKmh": -0.19,
+        "slope": 0.963,
+        "strongHours": 161,
+        "strongBiasKmh": 0.44,
+        "underPct": 31.5
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 5228,
+        "biasKmh": -1.65,
+        "slope": 0.656,
+        "strongHours": 1201,
+        "strongBiasKmh": -6.04,
+        "underPct": 38.5
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 2240,
+        "biasKmh": -3.75,
+        "slope": 0.736,
+        "strongHours": 1082,
+        "strongBiasKmh": -6.19,
+        "underPct": 47.2
+      }
+    ],
+    "cellCentreElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 353,
+        "biasKmh": -0.9,
+        "slope": 0.817,
+        "strongHours": 62,
+        "strongBiasKmh": -2.31,
+        "underPct": 28.6
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 1725,
+        "biasKmh": -0.89,
+        "slope": 0.509,
+        "strongHours": 134,
+        "strongBiasKmh": -8.26,
+        "underPct": 38.1
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 5986,
+        "biasKmh": -2.55,
+        "slope": 0.692,
+        "strongHours": 2248,
+        "strongBiasKmh": -5.62,
+        "underPct": 41.8
+      }
+    ]
+  },
+  "byGustRatio": [
+    {
+      "band": "<1,5",
+      "hours": 190,
+      "biasKmh": 0.33,
+      "slope": 0.637,
+      "strongHours": 30,
+      "strongBiasKmh": -7.23,
+      "underPct": 27.4,
+      "afterFloorBiasKmh": 0.33,
+      "afterFloorUnderPct": 27.4,
+      "afterFloorOverPct": 46.3
+    },
+    {
+      "band": "1,5-2,0",
+      "hours": 3468,
+      "biasKmh": -1.25,
+      "slope": 0.695,
+      "strongHours": 1480,
+      "strongBiasKmh": -4.38,
+      "underPct": 32,
+      "afterFloorBiasKmh": -1.25,
+      "afterFloorUnderPct": 32,
+      "afterFloorOverPct": 26.6
+    },
+    {
+      "band": "2,0-3,0",
+      "hours": 3191,
+      "biasKmh": -2.71,
+      "slope": 0.595,
+      "strongHours": 765,
+      "strongBiasKmh": -7.16,
+      "underPct": 44.3,
+      "afterFloorBiasKmh": -0.8,
+      "afterFloorUnderPct": 31.7,
+      "afterFloorOverPct": 24
+    },
+    {
+      "band": "3,0-4,0",
+      "hours": 801,
+      "biasKmh": -3.44,
+      "slope": 0.477,
+      "strongHours": 152,
+      "strongBiasKmh": -9.48,
+      "underPct": 55.2,
+      "afterFloorBiasKmh": 2.53,
+      "afterFloorUnderPct": 17.7,
+      "afterFloorOverPct": 40.1
+    },
+    {
+      "band": "≥4,0",
+      "hours": 413,
+      "biasKmh": -3.43,
+      "slope": 0.279,
+      "strongHours": 17,
+      "strongBiasKmh": -15.11,
+      "underPct": 58.4,
+      "afterFloorBiasKmh": 2.1,
+      "afterFloorUnderPct": 24.7,
+      "afterFloorOverPct": 46.5
+    }
+  ],
+  "ratioConfoundCheck": [
+    {
+      "meanBand": "0-5",
+      "lowRatioHours": 532,
+      "lowRatioBias": 0.47,
+      "highRatioHours": 539,
+      "highRatioBias": -3.68,
+      "deltaKmh": -4.15
+    },
+    {
+      "meanBand": "5-10",
+      "lowRatioHours": 725,
+      "lowRatioBias": -1.56,
+      "highRatioHours": 354,
+      "highRatioBias": -2.12,
+      "deltaKmh": -0.56
+    },
+    {
+      "meanBand": "10-15",
+      "lowRatioHours": 547,
+      "lowRatioBias": -1.8,
+      "highRatioHours": 187,
+      "highRatioBias": -4.05,
+      "deltaKmh": -2.25
+    },
+    {
+      "meanBand": "15-20",
+      "lowRatioHours": 559,
+      "lowRatioBias": -1.99,
+      "highRatioHours": 107,
+      "highRatioBias": -5.24,
+      "deltaKmh": -3.26
+    },
+    {
+      "meanBand": "20-30",
+      "lowRatioHours": 806,
+      "lowRatioBias": -0.34,
+      "highRatioHours": 27,
+      "highRatioBias": -4.41,
+      "deltaKmh": -4.06
+    }
+  ],
+  "extremeRatioSweep": [
+    {
+      "factor": 0,
+      "biasKmh": -3.44,
+      "exactPct": 26.4,
+      "underPct": 56.3,
+      "overPct": 17.3
+    },
+    {
+      "factor": 0.3,
+      "biasKmh": -2.62,
+      "exactPct": 30.6,
+      "underPct": 49.4,
+      "overPct": 19.9
+    },
+    {
+      "factor": 0.35,
+      "biasKmh": -1.49,
+      "exactPct": 37.7,
+      "underPct": 39.2,
+      "overPct": 23.1
+    },
+    {
+      "factor": 0.4,
+      "biasKmh": -0.2,
+      "exactPct": 39.2,
+      "underPct": 31.9,
+      "overPct": 28.9
+    },
+    {
+      "factor": 0.45,
+      "biasKmh": 1.09,
+      "exactPct": 39.1,
+      "underPct": 24.9,
+      "overPct": 36
+    },
+    {
+      "factor": 0.5,
+      "biasKmh": 2.38,
+      "exactPct": 37.6,
+      "underPct": 20.1,
+      "overPct": 42.3
+    }
+  ],
+  "uncoveredByTodaysGate": [
+    {
+      "band": "<2,0",
+      "hours": 314,
+      "biasKmh": 2.26,
+      "slope": 0.936,
+      "underPct": 16.9,
+      "overPct": 44.9,
+      "stations": [
+        "Νάξος",
+        "Κέρκυρα"
+      ]
+    },
+    {
+      "band": "2,0-3,0",
+      "hours": 216,
+      "biasKmh": -2.53,
+      "slope": 0.507,
+      "underPct": 41.7,
+      "overPct": 18.5,
+      "stations": [
+        "Νάξος",
+        "Κέρκυρα"
+      ]
+    },
+    {
+      "band": "≥3,0",
+      "hours": 65,
+      "biasKmh": -4.26,
+      "slope": 0.146,
+      "underPct": 67.7,
+      "overPct": 10.8,
+      "stations": [
+        "Νάξος",
+        "Κέρκυρα"
+      ]
+    }
+  ],
+  "disputedHours": {
+    "hours": 235,
+    "biasKmh": 3.52,
+    "slope": 0.895,
+    "strongHours": 124,
+    "strongBiasKmh": 3.85,
+    "underPct": 10.2,
+    "stations": [
+      "Νάξος"
+    ]
+  },
   "byStation": [
     {
       "station": "LGKP",

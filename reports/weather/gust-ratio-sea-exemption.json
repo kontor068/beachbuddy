@@ -1,0 +1,1003 @@
+{
+  "generatedAt": "2026-08-18T11:55:52.922Z",
+  "windows": [
+    "2026-05-20:2026-06-05",
+    "2026-06-20:2026-07-05",
+    "2026-07-10:2026-07-25",
+    "2026-08-04:2026-08-18"
+  ],
+  "sampleHours": 32253,
+  "rule": "σημείο ≤0 μ. ΚΑΙ ριπή/μέσος ≥ κατώφλι => max(μέσος, ριπή × συντελεστής)· το στεριανό μισό αμετάβλητο στο 0,50",
+  "sweep": [
+    {
+      "threshold": 2.5,
+      "factor": 0.3,
+      "touchedHours": 225,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 62
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 62
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 49
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 52
+        }
+      ]
+    },
+    {
+      "threshold": 2.5,
+      "factor": 0.35,
+      "touchedHours": 364,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 99
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 110
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 75
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 80
+        }
+      ]
+    },
+    {
+      "threshold": 2.5,
+      "factor": 0.4,
+      "touchedHours": 574,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 150
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 161
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 139
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 124
+        }
+      ]
+    },
+    {
+      "threshold": 2.5,
+      "factor": 0.45,
+      "touchedHours": 580,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0.09999999999999964,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.3
+          },
+          "touched": 152
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 163
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.4,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 140
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 125
+        }
+      ]
+    },
+    {
+      "threshold": 2.5,
+      "factor": 0.5,
+      "touchedHours": 580,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0.09999999999999964,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.3,
+            "falseAlarmPct": 6.3
+          },
+          "touched": 152
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.2,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 163
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.4,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 140
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 125
+        }
+      ]
+    },
+    {
+      "threshold": 3,
+      "factor": 0.3,
+      "touchedHours": 225,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 62
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 62
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 49
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 52
+        }
+      ]
+    },
+    {
+      "threshold": 3,
+      "factor": 0.35,
+      "touchedHours": 313,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 85
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 93
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 65
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 70
+        }
+      ]
+    },
+    {
+      "threshold": 3,
+      "factor": 0.4,
+      "touchedHours": 313,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 85
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 93
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 65
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 70
+        }
+      ]
+    },
+    {
+      "threshold": 3,
+      "factor": 0.45,
+      "touchedHours": 313,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 85
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 93
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 65
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 70
+        }
+      ]
+    },
+    {
+      "threshold": 3,
+      "factor": 0.5,
+      "touchedHours": 313,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0.09999999999999964,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.3
+          },
+          "touched": 85
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 93
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 65
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 70
+        }
+      ]
+    },
+    {
+      "threshold": 3.5,
+      "factor": 0.3,
+      "touchedHours": 199,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 57
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 52
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 44
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 46
+        }
+      ]
+    },
+    {
+      "threshold": 3.5,
+      "factor": 0.35,
+      "touchedHours": 199,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 57
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 52
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 44
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 46
+        }
+      ]
+    },
+    {
+      "threshold": 3.5,
+      "factor": 0.4,
+      "touchedHours": 199,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 57
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 52
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 44
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 46
+        }
+      ]
+    },
+    {
+      "threshold": 3.5,
+      "factor": 0.45,
+      "touchedHours": 199,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 57
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 52
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 44
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 46
+        }
+      ]
+    },
+    {
+      "threshold": 3.5,
+      "factor": 0.5,
+      "touchedHours": 199,
+      "worstOkDelta": 0,
+      "worstFalseCalmDelta": 0,
+      "worstFalseAlarmDelta": 0,
+      "perWindow": [
+        {
+          "window": "2026-05-20:2026-06-05",
+          "before": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "after": {
+            "okPct": 77.5,
+            "falseCalmPct": 9.4,
+            "falseAlarmPct": 6.2
+          },
+          "touched": 57
+        },
+        {
+          "window": "2026-06-20:2026-07-05",
+          "before": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "after": {
+            "okPct": 69.9,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.4
+          },
+          "touched": 52
+        },
+        {
+          "window": "2026-07-10:2026-07-25",
+          "before": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "after": {
+            "okPct": 71.3,
+            "falseCalmPct": 10.1,
+            "falseAlarmPct": 6.8
+          },
+          "touched": 44
+        },
+        {
+          "window": "2026-08-04:2026-08-18",
+          "before": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "after": {
+            "okPct": 67.6,
+            "falseCalmPct": 10.3,
+            "falseAlarmPct": 7.3
+          },
+          "touched": 46
+        }
+      ]
+    }
+  ]
+}

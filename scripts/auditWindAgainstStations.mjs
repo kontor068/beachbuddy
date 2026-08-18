@@ -134,6 +134,20 @@ const url = 'https://customer-api.open-meteo.com/v1/forecast'
 const modelData = await fetchJson(url);
 const entries = Array.isArray(modelData) ? modelData : [modelData];
 
+// Το DEM στο ΚΕΝΤΡΟ κάθε κελιού που απάντησε. Μία κλήση, καμία χρέωση στο κλειδί πρόγνωσης.
+const cellCentreElevations = new Map();
+{
+  const centres = [...new Set(entries
+    .filter(e => typeof e.latitude === 'number' && typeof e.longitude === 'number')
+    .map(e => `${e.latitude}_${e.longitude}`))];
+  if (centres.length) {
+    const el = await fetchJson('https://api.open-meteo.com/v1/elevation'
+      + `?latitude=${centres.map(c => c.split('_')[0]).join(',')}`
+      + `&longitude=${centres.map(c => c.split('_')[1]).join(',')}`);
+    centres.forEach((c, i) => cellCentreElevations.set(c, el.elevation?.[i] ?? null));
+  }
+}
+
 const rows = [];
 entries.forEach((entry, k) => {
   const st = STATIONS[k];
@@ -147,11 +161,18 @@ entries.forEach((entry, k) => {
     if (typeof ours !== 'number' || others.length < 3) return;
     rows.push({
       station: st[0], name: st[1], time: t, obs: obs.kmh, obsGust: obs.gustKmh,
-      // Το υψόμετρο ΤΟΥ ΚΕΛΙΟΥ που απάντησε — όχι του σταθμού. Κρίσιμο: το SAR
-      // (reports/wind-model/sheltered-vs-sar.json) βρήκε το μοντέλο ακριβές σε ανοιχτό νερό και
-      // μάλιστα να ΥΠΕΡεκτιμά στα δυνατά, ενώ τα ανεμόμετρα δείχνουν βαριά υποεκτίμηση. Αν η
-      // υποεκτίμηση ζει μόνο στα στεριανά κελιά, ο δάπεδος ριπής δεν έχει δουλειά στα θαλάσσια.
-      cellElevation: typeof entry.elevation === 'number' ? entry.elevation : null,
+      // ΔΥΟ ΥΨΟΜΕΤΡΑ, ΚΑΙ ΔΕΝ ΕΙΝΑΙ ΤΟ ΙΔΙΟ ΠΡΑΓΜΑ (μετρήθηκε 18/08/2026 απόγευμα).
+      //
+      // `entry.elevation` ΔΕΝ είναι του κελιού — είναι το DEM 90 μ. ΣΤΟ ΣΗΜΕΙΟ ΠΟΥ ΡΩΤΗΣΕΣ.
+      // Απόδειξη: ίδιο κελί 37.3125_22.8125, ίδιος άνεμος 7,6 χλμ/ώ, τρεις κλήσεις — από την
+      // πινέζα του Τυρού γυρίζει 0, από το κέντρο του κελιού 242, από άλλο σημείο μέσα στο
+      // ίδιο κελί 264. Μια παραλία είναι εξ ορισμού στο 0, άρα η πύλη «κελί στη θάλασσα»
+      // αυτοακυρώνεται σε κάθε παραλία με βουνό από πίσω.
+      //
+      // Το κέντρο του κελιού είναι το `entry.latitude/longitude` — αυτά ΕΙΝΑΙ του κελιού που
+      // απάντησε. Το DEM εκεί (`cellCentreElevation`) είναι το υψόμετρο που εννοούσε η πύλη.
+      pointElevation: typeof entry.elevation === 'number' ? entry.elevation : null,
+      cellCentreElevation: cellCentreElevations.get(`${entry.latitude}_${entry.longitude}`) ?? null,
       ours, median: median(others),
       oursGust: h['wind_gusts_10m_best_match']?.[idx] ?? null,
       medianGust: (() => {
@@ -282,7 +303,7 @@ for (const k of [0, 0.45, 0.50, 0.55, 0.60]) {
     for (const r of toneRows) {
       const truth = tone(r.obs);
       // Ο δάπεδος ΜΟΝΟ σε κελί με στεριά — η ίδια πύλη που εφαρμόζει το utils/windGustFloor.
-      const overLand = typeof r.cellElevation === 'number' && r.cellElevation > 0;
+      const overLand = typeof r.cellCentreElevation === 'number' && r.cellCentreElevation > 0;
       const shown = tone(k === 0 || !overLand ? r.ours : Math.max(r.ours, r.oursGust * k));
       total++;
       if (shown === truth) ok++;
@@ -294,32 +315,164 @@ for (const k of [0, 0.45, 0.50, 0.55, 0.60]) {
   console.log(`  ${(k === 0 ? 'σήμερα' : k.toFixed(2)).padStart(7)} | ${(pct(ok, total) + '%').padStart(11)} | ${(pct(falseCalm, total) + '%').padStart(14)} | ${pct(falseAlarm, total)}%`);
 }
 
-// ── ΘΑΛΑΣΣΙΝΟ ΚΕΛΙ Ή ΣΤΕΡΙΑΝΟ; Η ΔΙΑΙΤΗΣΙΑ ΜΕ ΤΟ SAR ────────────────────────────
-// 47,6% των σημείων ανέμου της εφαρμογής απαντώνται από κελί υψομέτρου 0 (θάλασσα) και
-// καλύπτουν 1.265 παραλίες· 44% από κελί 1-20 μ. (ακτή). Αν η υποεκτίμηση ζει μόνο στα
-// στεριανά, ο δάπεδος ριπής πρέπει να μπει ΜΟΝΟ εκεί.
-console.log('\n=== ΑΝΑ ΤΥΠΟ ΚΕΛΙΟΥ (υψόμετρο του κελιού που απάντησε) ===');
-console.log('  κελί            | ώρες | μεροληψία | κλίση | ≥4 Μπφ: μεροληψία | χαμηλά ≥1');
-const cellBands = [
-  ['θάλασσα (0 μ.)', r => r.cellElevation !== null && r.cellElevation <= 0],
-  ['ακτή (1-20 μ.)', r => r.cellElevation !== null && r.cellElevation > 0 && r.cellElevation <= 20],
-  ['στεριά (>20 μ.)', r => r.cellElevation !== null && r.cellElevation > 20],
+// ── ΘΑΛΑΣΣΙΝΟ ΚΕΛΙ Ή ΣΤΕΡΙΑΝΟ; ΚΑΙ ΠΟΙΟ ΥΨΟΜΕΤΡΟ ΤΟ ΛΕΕΙ ──────────────────────
+// Η αρχική έκδοση αυτού του πίνακα ομαδοποιούσε κατά `entry.elevation` πιστεύοντας ότι είναι
+// του κελιού. Είναι του ΣΗΜΕΙΟΥ. Εδώ τρέχουν ΚΑΙ ΟΙ ΔΥΟ ομαδοποιήσεις πάνω στις ίδιες ώρες,
+// ώστε η μέτρηση —όχι η υπόθεση— να πει ποια εξηγεί τη συμπίεση των κορυφών. Αν είναι το ΚΕΛΙ,
+// η πύλη πρέπει να διαβάζει το κέντρο του κελιού· αν είναι το ΣΗΜΕΙΟ, ο σημερινός κώδικας
+// είναι σωστός και το εύρημα του Τυρού είναι κάτι άλλο.
+const bandsFor = key => [
+  ['θάλασσα (0 μ.)', r => r[key] !== null && r[key] <= 0],
+  ['ακτή (1-20 μ.)', r => r[key] !== null && r[key] > 0 && r[key] <= 20],
+  ['στεριά (>20 μ.)', r => r[key] !== null && r[key] > 20],
 ];
-const cellReport = [];
-for (const [bandLabel, test] of cellBands) {
-  const rs = rows.filter(test);
-  if (!rs.length) { console.log(`  ${bandLabel.padEnd(15)} | (κανένα δείγμα)`); continue; }
+const bandStats = rs => {
   const b = rs.reduce((s, r) => s + (r.ours - r.obs), 0) / rs.length;
   const mx = rs.reduce((s, r) => s + r.obs, 0) / rs.length;
   const my = rs.reduce((s, r) => s + r.ours, 0) / rs.length;
-  const slopeB = rs.reduce((s, r) => s + (r.obs - mx) * (r.ours - my), 0) / rs.reduce((s, r) => s + (r.obs - mx) ** 2, 0);
+  const denom = rs.reduce((s, r) => s + (r.obs - mx) ** 2, 0);
+  const slopeB = denom ? rs.reduce((s, r) => s + (r.obs - mx) * (r.ours - my), 0) / denom : NaN;
   const strong = rs.filter(r => getBeaufortLevel(r.obs) >= 4);
   const strongBias = strong.length ? strong.reduce((s, r) => s + (r.ours - r.obs), 0) / strong.length : null;
-  const under = pct(rs.filter(r => getBeaufortLevel(r.ours) <= getBeaufortLevel(r.obs) - 1).length, rs.length);
-  cellReport.push({ band: bandLabel, hours: rs.length, biasKmh: Number(b.toFixed(2)), slope: Number(slopeB.toFixed(3)),
-    strongHours: strong.length, strongBiasKmh: strongBias === null ? null : Number(strongBias.toFixed(2)), underPct: under });
-  console.log(`  ${bandLabel.padEnd(15)} | ${String(rs.length).padStart(4)} | ${((b >= 0 ? '+' : '') + b.toFixed(2)).padStart(9)} | `
-    + `${slopeB.toFixed(3)} | ${(strongBias === null ? 'n/a' : (strongBias >= 0 ? '+' : '') + strongBias.toFixed(2) + ` (${strong.length}ω)`).padStart(17)} | ${under}%`);
+  return { biasKmh: b, slope: slopeB, strongHours: strong.length, strongBiasKmh: strongBias,
+    underPct: pct(rs.filter(r => getBeaufortLevel(r.ours) <= getBeaufortLevel(r.obs) - 1).length, rs.length) };
+};
+const fmt = v => ((v >= 0 ? '+' : '') + v.toFixed(2));
+const cellReport = {};
+for (const [key, title] of [['pointElevation', 'ΤΟΥ ΣΗΜΕΙΟΥ που ρωτήθηκε (η σημερινή πύλη)'],
+                            ['cellCentreElevation', 'ΤΟΥ ΚΕΝΤΡΟΥ ΤΟΥ ΚΕΛΙΟΥ (αυτό που εννοούσε)']]) {
+  console.log(`\n=== ΑΝΑ ΥΨΟΜΕΤΡΟ ${title} ===`);
+  console.log('  κελί            | ώρες | μεροληψία | κλίση | ≥4 Μπφ: μεροληψία | χαμηλά ≥1');
+  cellReport[key] = [];
+  for (const [bandLabel, test] of bandsFor(key)) {
+    const rs = rows.filter(test);
+    if (!rs.length) { console.log(`  ${bandLabel.padEnd(15)} | (κανένα δείγμα)`); continue; }
+    const st = bandStats(rs);
+    cellReport[key].push({ band: bandLabel, hours: rs.length, biasKmh: Number(st.biasKmh.toFixed(2)),
+      slope: Number(st.slope.toFixed(3)), strongHours: st.strongHours,
+      strongBiasKmh: st.strongBiasKmh === null ? null : Number(st.strongBiasKmh.toFixed(2)), underPct: st.underPct });
+    console.log(`  ${bandLabel.padEnd(15)} | ${String(rs.length).padStart(4)} | ${fmt(st.biasKmh).padStart(9)} | `
+      + `${st.slope.toFixed(3)} | ${(st.strongBiasKmh === null ? 'n/a' : fmt(st.strongBiasKmh) + ` (${st.strongHours}ω)`).padStart(17)} | ${st.underPct}%`);
+  }
+}
+
+// Η ΩΡΑ ΤΗΣ ΚΡΙΣΗΣ: οι ώρες όπου οι δύο ομαδοποιήσεις ΔΙΑΦΩΝΟΥΝ — σημείο στο 0 (η σημερινή
+// πύλη σβήνει τον δάπεδο) ενώ το κελί είναι στεριά (θα έπρεπε να τον ανάψει). Αυτή είναι η
+// περίπτωση του Τυρού και η ΜΟΝΗ ώρα όπου η αλλαγή έχει νόημα.
+const disputed = rows.filter(r => r.pointElevation !== null && r.pointElevation <= 0
+  && r.cellCentreElevation !== null && r.cellCentreElevation > 20);
+console.log(`\n=== ΑΜΦΙΣΒΗΤΟΥΜΕΝΕΣ ΩΡΕΣ (σημείο ≤0 μ. αλλά κελί >20 μ.) — ${disputed.length} ===`);
+let disputedStats = null;
+if (disputed.length >= 30) {
+  const st = bandStats(disputed);
+  disputedStats = { hours: disputed.length, biasKmh: Number(st.biasKmh.toFixed(2)), slope: Number(st.slope.toFixed(3)),
+    strongHours: st.strongHours, strongBiasKmh: st.strongBiasKmh === null ? null : Number(st.strongBiasKmh.toFixed(2)),
+    underPct: st.underPct, stations: [...new Set(disputed.map(r => r.name))] };
+  console.log(`  μεροληψία ${fmt(st.biasKmh)} χλμ/ώ · κλίση ${st.slope.toFixed(3)} · στα ≥4 Μπφ `
+    + `${st.strongBiasKmh === null ? 'n/a' : fmt(st.strongBiasKmh)} (${st.strongHours}ω) · χαμηλά ≥1 Μπφ ${st.underPct}%`);
+  console.log(`  σταθμοί: ${disputedStats.stations.join(', ')}`);
+  console.log('  ΚΡΙΣΗ: κλίση <0,9 ή μεροληψία <−1 => η συμπίεση ΥΠΑΡΧΕΙ εδώ => η πύλη πρέπει να διαβάζει το ΚΕΛΙ.');
+} else {
+  console.log('  λιγότερες από 30 — τα αεροδρόμια δεν καλύπτουν αυτή την περίπτωση· δες τη σημείωση στο windGustFloor.');
+}
+
+// ── Η ΕΣΩΤΕΡΙΚΗ ΑΣΥΝΕΠΕΙΑ ΤΗΣ ΙΔΙΑΣ ΤΗΣ ΑΠΑΝΤΗΣΗΣ ───────────────────────────────
+// Ο Τυρός 18/08 17:00 έδωσε μέσο 3,9 χλμ/ώ ΜΕ ριπή 22,3 — λόγος 5,7. Σε πραγματικό άνεμο ο
+// λόγος ριπής προς μέσο κάθεται στο 1,3-2,0· πάνω από 3 το μοντέλο λέει δύο ασύμβατα πράγματα
+// για την ίδια ώρα. Αυτό ΔΕΝ χρειάζεται υψόμετρο, γεωγραφία ή υπόθεση: είναι μέσα στην ίδια
+// απάντηση. Αν σε αυτές τις ώρες υποεκτιμούμε συστηματικά, εδώ είναι η μετρημένη πύλη.
+console.log('\n=== ΑΝΑ ΛΟΓΟ ΡΙΠΗΣ / ΜΕΣΟΥ ΤΟΥ ΜΟΝΤΕΛΟΥ (εσωτερική ασυνέπεια) ===');
+console.log('  λόγος     | ώρες | μεροληψία | κλίση | ≥4 Μπφ: μεροληψία | χαμηλά ≥1 | ριπή×0,50 θα έδινε');
+const ratioRows = rows.filter(r => typeof r.oursGust === 'number' && r.oursGust > 0 && r.ours > 0);
+const ratioBands = [
+  ['<1,5', r => r.oursGust / r.ours < 1.5],
+  ['1,5-2,0', r => r.oursGust / r.ours >= 1.5 && r.oursGust / r.ours < 2.0],
+  ['2,0-3,0', r => r.oursGust / r.ours >= 2.0 && r.oursGust / r.ours < 3.0],
+  ['3,0-4,0', r => r.oursGust / r.ours >= 3.0 && r.oursGust / r.ours < 4.0],
+  ['≥4,0', r => r.oursGust / r.ours >= 4.0],
+];
+const ratioReport = [];
+for (const [bandLabel, test] of ratioBands) {
+  const rs = ratioRows.filter(test);
+  if (!rs.length) { console.log(`  ${bandLabel.padEnd(9)} | (κανένα δείγμα)`); continue; }
+  const st = bandStats(rs);
+  // Τι θα έδινε ο δάπεδος ΕΔΩ, αν έμπαινε ΜΟΝΟ σε αυτή τη ζώνη — μεροληψία μετά τη διόρθωση.
+  const afterBias = rs.reduce((s, r) => s + (Math.max(r.ours, r.oursGust * 0.5) - r.obs), 0) / rs.length;
+  const afterUnder = pct(rs.filter(r => getBeaufortLevel(Math.max(r.ours, r.oursGust * 0.5)) <= getBeaufortLevel(r.obs) - 1).length, rs.length);
+  const afterOver = pct(rs.filter(r => getBeaufortLevel(Math.max(r.ours, r.oursGust * 0.5)) >= getBeaufortLevel(r.obs) + 1).length, rs.length);
+  ratioReport.push({ band: bandLabel, hours: rs.length, biasKmh: Number(st.biasKmh.toFixed(2)), slope: Number(st.slope.toFixed(3)),
+    strongHours: st.strongHours, strongBiasKmh: st.strongBiasKmh === null ? null : Number(st.strongBiasKmh.toFixed(2)),
+    underPct: st.underPct, afterFloorBiasKmh: Number(afterBias.toFixed(2)), afterFloorUnderPct: afterUnder, afterFloorOverPct: afterOver });
+  console.log(`  ${bandLabel.padEnd(9)} | ${String(rs.length).padStart(4)} | ${fmt(st.biasKmh).padStart(9)} | `
+    + `${st.slope.toFixed(3)} | ${(st.strongBiasKmh === null ? 'n/a' : fmt(st.strongBiasKmh) + ` (${st.strongHours}ω)`).padStart(17)} | `
+    + `${String(st.underPct).padStart(9)} | μερ. ${fmt(afterBias)} χαμηλά ${afterUnder}% ψηλά ${afterOver}%`);
+}
+
+// ── ΕΛΕΓΧΟΣ: ΕΙΝΑΙ Ο ΛΟΓΟΣ ΠΛΗΡΟΦΟΡΙΑ, Ή ΑΠΛΩΣ «Ο ΜΕΣΟΣ ΜΑΣ ΕΙΝΑΙ ΜΙΚΡΟΣ»; ────
+// Ο λόγος ριπή/μέσος μεγαλώνει αυτόματα όταν ο παρονομαστής μικραίνει, και σε χαμηλό δικό μας
+// μέσο η υποεκτίμηση είναι σχεδόν εξ ορισμού (παλινδρόμηση προς τη μέση τιμή). Αν δεν το
+// ξεχωρίσουμε, θα βαθμονομήσουμε πάνω σε artifact — ακριβώς το λάθος που έκανε το «×1,20 πάνω
+// από 4 Μποφόρ» να κοπεί. Εδώ ο ΔΙΚΟΣ ΜΑΣ μέσος κρατιέται σταθερός και μέσα σε κάθε ζώνη
+// συγκρίνονται χαμηλός έναντι υψηλού λόγου. Αν ο λόγος είναι πληροφορία, η διαφορά επιβιώνει.
+console.log('\n=== ΕΛΕΓΧΟΣ ΣΥΓΧΥΣΗΣ: ίδιος δικός μας μέσος, χαμηλός vs υψηλός λόγος ===');
+console.log('  δικός μας μέσος | λόγος<2: ώρες/μεροληψία | λόγος≥3: ώρες/μεροληψία | ΔΙΑΦΟΡΑ');
+const meanBands = [[0, 5], [5, 10], [10, 15], [15, 20], [20, 30], [30, 100]];
+const confoundReport = [];
+for (const [lo, hi] of meanBands) {
+  const inBand = ratioRows.filter(r => r.ours >= lo && r.ours < hi);
+  const low = inBand.filter(r => r.oursGust / r.ours < 2);
+  const high = inBand.filter(r => r.oursGust / r.ours >= 3);
+  if (low.length < 25 || high.length < 25) {
+    console.log(`  ${(lo + '-' + hi + ' χλμ/ώ').padEnd(15)} | δείγμα πολύ μικρό (${low.length} / ${high.length})`);
+    continue;
+  }
+  const bl = low.reduce((s, r) => s + (r.ours - r.obs), 0) / low.length;
+  const bh = high.reduce((s, r) => s + (r.ours - r.obs), 0) / high.length;
+  confoundReport.push({ meanBand: `${lo}-${hi}`, lowRatioHours: low.length, lowRatioBias: Number(bl.toFixed(2)),
+    highRatioHours: high.length, highRatioBias: Number(bh.toFixed(2)), deltaKmh: Number((bh - bl).toFixed(2)) });
+  console.log(`  ${(lo + '-' + hi + ' χλμ/ώ').padEnd(15)} | ${String(low.length).padStart(5)} / ${fmt(bl).padStart(6)} `
+    + `        | ${String(high.length).padStart(5)} / ${fmt(bh).padStart(6)}         | ${fmt(bh - bl)} χλμ/ώ`);
+}
+console.log('  Αν η ΔΙΑΦΟΡΑ είναι κοντά στο 0, ο λόγος δεν προσθέτει τίποτα — είναι ο μικρός μέσος που μιλάει.');
+
+// ── ΣΑΡΩΣΗ ΣΥΝΤΕΛΕΣΤΗ ΜΟΝΟ ΣΤΙΣ ΑΣΥΝΕΠΕΙΣ ΩΡΕΣ ─────────────────────────────────
+// Αν ο έλεγχος παραπάνω περάσει, ΠΟΣΟ πρέπει να είναι ο δάπεδος εκεί; Το 0,50 μετρήθηκε στο
+// σύνολο· στις ακραίες ώρες φαίνεται να υπερδιορθώνει. Σαρώνεται εδώ, στο ίδιο υποσύνολο.
+console.log('\n=== ΣΑΡΩΣΗ ΔΑΠΕΔΟΥ ΣΤΙΣ ΩΡΕΣ ΜΕ ΛΟΓΟ ≥3 ===');
+console.log('  συντ. | μεροληψία | σωστό Μπφ | χαμηλά ≥1 | ψηλά ≥1');
+const extreme = ratioRows.filter(r => r.oursGust / r.ours >= 3);
+const sweepReport = [];
+for (const k of [0, 0.30, 0.35, 0.40, 0.45, 0.50]) {
+  const f = r => (k === 0 ? r.ours : Math.max(r.ours, r.oursGust * k));
+  const b = extreme.reduce((s, r) => s + (f(r) - r.obs), 0) / extreme.length;
+  const ex = pct(extreme.filter(r => getBeaufortLevel(f(r)) === getBeaufortLevel(r.obs)).length, extreme.length);
+  const un = pct(extreme.filter(r => getBeaufortLevel(f(r)) <= getBeaufortLevel(r.obs) - 1).length, extreme.length);
+  const ov = pct(extreme.filter(r => getBeaufortLevel(f(r)) >= getBeaufortLevel(r.obs) + 1).length, extreme.length);
+  sweepReport.push({ factor: k, biasKmh: Number(b.toFixed(2)), exactPct: ex, underPct: un, overPct: ov });
+  console.log(`  ${(k === 0 ? 'σήμερα' : k.toFixed(2)).padStart(6)} | ${fmt(b).padStart(9)} | ${(ex + '%').padStart(9)} | ${(un + '%').padStart(9)} | ${ov}%`);
+}
+
+// ── Η ΑΚΡΙΒΗΣ ΕΡΩΤΗΣΗ ΤΟΥ ΤΥΡΟΥ ────────────────────────────────────────────────
+// Σήμερα ο δάπεδος σβήνει όταν το σημείο είναι στο 0. Ο Τυρός είναι στο 0 ΚΑΙ έχει λόγο 5,7.
+// Άρα: μέσα στις ώρες που η ΣΗΜΕΡΙΝΗ πύλη αφήνει ακάλυπτες (σημείο ≤0), υποεκτιμούμε όταν ο
+// λόγος είναι ακραίος; Αν ναι, η διόρθωση δεν είναι «άλλαξε το υψόμετρο» αλλά «ο ακραίος λόγος
+// σπάει την εξαίρεση». Αν όχι, ο Τυρός δεν έχει μετρημένο στήριγμα και δεν αλλάζει τίποτα.
+console.log('\n=== ΟΙ ΩΡΕΣ ΠΟΥ Η ΣΗΜΕΡΙΝΗ ΠΥΛΗ ΑΦΗΝΕΙ ΑΚΑΛΥΠΤΕΣ (σημείο ≤0 μ.) ===');
+console.log('  λόγος   | ώρες | μεροληψία | κλίση | χαμηλά ≥1 | ψηλά ≥1');
+const uncovered = ratioRows.filter(r => r.pointElevation !== null && r.pointElevation <= 0);
+const uncoveredReport = [];
+for (const [bandLabel, test] of [['<2,0', r => r.oursGust / r.ours < 2],
+                                 ['2,0-3,0', r => r.oursGust / r.ours >= 2 && r.oursGust / r.ours < 3],
+                                 ['≥3,0', r => r.oursGust / r.ours >= 3]]) {
+  const rs = uncovered.filter(test);
+  if (rs.length < 20) { console.log(`  ${bandLabel.padEnd(7)} | ${String(rs.length).padStart(4)} | δείγμα πολύ μικρό`); continue; }
+  const st = bandStats(rs);
+  const ov = pct(rs.filter(r => getBeaufortLevel(r.ours) >= getBeaufortLevel(r.obs) + 1).length, rs.length);
+  uncoveredReport.push({ band: bandLabel, hours: rs.length, biasKmh: Number(st.biasKmh.toFixed(2)),
+    slope: Number(st.slope.toFixed(3)), underPct: st.underPct, overPct: ov,
+    stations: [...new Set(rs.map(r => r.name))] });
+  console.log(`  ${bandLabel.padEnd(7)} | ${String(rs.length).padStart(4)} | ${fmt(st.biasKmh).padStart(9)} | ${st.slope.toFixed(3)} | `
+    + `${(st.underPct + '%').padStart(9)} | ${ov}%   [${[...new Set(rs.map(r => r.name))].join(', ')}]`);
 }
 
 const byStation = [...new Set(rows.map(r => r.station))].map(id => {
@@ -349,6 +502,12 @@ fs.writeFileSync(tmp, JSON.stringify({
   thresholds: { obs5Hours: obs5.length, missed5Pct: pct(obs5.filter(r => getBeaufortLevel(r.ours) < 5).length, obs5.length) },
   candidates: candidateReport,
   colour: colourReport,
+  byElevationDefinition: cellReport,
+  byGustRatio: ratioReport,
+  ratioConfoundCheck: confoundReport,
+  extremeRatioSweep: sweepReport,
+  uncoveredByTodaysGate: uncoveredReport,
+  disputedHours: disputedStats,
   byStation,
 }, null, 2), 'utf8');
 fs.renameSync(tmp, out);

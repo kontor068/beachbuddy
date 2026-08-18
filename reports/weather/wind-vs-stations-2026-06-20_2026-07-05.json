@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T08:39:20.339Z",
+  "generatedAt": "2026-08-18T11:47:14.174Z",
   "window": "2026-06-20 → 2026-07-05",
   "boostTested": 1.2,
   "stations": 30,
@@ -48,7 +48,34 @@
       "missed5Pct": 23.6
     },
     {
-      "label": "max(μέσος, ριπή×0,55)",
+      "label": "max(μέσος, ριπή×0.40)",
+      "maeKmh": 4.88,
+      "biasKmh": -1.54,
+      "bftExactPct": 40.4,
+      "bftUnderPct": 36.2,
+      "bftOverPct": 23.5,
+      "missed5Pct": 51
+    },
+    {
+      "label": "max(μέσος, ριπή×0.45)",
+      "maeKmh": 4.89,
+      "biasKmh": -1.07,
+      "bftExactPct": 41.4,
+      "bftUnderPct": 33.3,
+      "bftOverPct": 25.2,
+      "missed5Pct": 48.9
+    },
+    {
+      "label": "max(μέσος, ριπή×0.50)",
+      "maeKmh": 4.98,
+      "biasKmh": -0.43,
+      "bftExactPct": 41.3,
+      "bftUnderPct": 30.4,
+      "bftOverPct": 28.3,
+      "missed5Pct": 46.9
+    },
+    {
+      "label": "max(μέσος, ριπή×0.55)",
       "maeKmh": 5.15,
       "biasKmh": 0.46,
       "bftExactPct": 41,
@@ -57,22 +84,22 @@
       "missed5Pct": 42.9
     },
     {
-      "label": "max(μέσος, ριπή×0,65)",
+      "label": "max(μέσος, ριπή×0.60)",
+      "maeKmh": 5.45,
+      "biasKmh": 1.63,
+      "bftExactPct": 40.8,
+      "bftUnderPct": 21.2,
+      "bftOverPct": 38,
+      "missed5Pct": 34.7
+    },
+    {
+      "label": "max(μέσος, ριπή×0.65)",
       "maeKmh": 5.94,
       "biasKmh": 2.95,
       "bftExactPct": 39.6,
       "bftUnderPct": 17.1,
       "bftOverPct": 43.3,
       "missed5Pct": 24.5
-    },
-    {
-      "label": "max(μέσος, ριπή×0,75)",
-      "maeKmh": 7.46,
-      "biasKmh": 5.68,
-      "bftExactPct": 33.4,
-      "bftUnderPct": 10.1,
-      "bftOverPct": 56.5,
-      "missed5Pct": 10
     },
     {
       "label": "×1.20 μόνο πάνω από 4 Μπφ",
@@ -84,6 +111,109 @@
       "missed5Pct": 34.1
     }
   ],
+  "colour": [
+    {
+      "factor": 0,
+      "okPct": 71.7,
+      "falseCalmPct": 13.6,
+      "falseAlarmPct": 3.8
+    },
+    {
+      "factor": 0.45,
+      "okPct": 71,
+      "falseCalmPct": 11.3,
+      "falseAlarmPct": 6.2
+    },
+    {
+      "factor": 0.5,
+      "okPct": 70,
+      "falseCalmPct": 10.2,
+      "falseAlarmPct": 7.4
+    },
+    {
+      "factor": 0.55,
+      "okPct": 69.2,
+      "falseCalmPct": 8.5,
+      "falseAlarmPct": 9
+    },
+    {
+      "factor": 0.6,
+      "okPct": 67.8,
+      "falseCalmPct": 6.7,
+      "falseAlarmPct": 11.3
+    }
+  ],
+  "byElevationDefinition": {
+    "pointElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 600,
+        "biasKmh": 0.22,
+        "slope": 1.04,
+        "strongHours": 122,
+        "strongBiasKmh": 1.89,
+        "underPct": 29.8
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 5215,
+        "biasKmh": -1.74,
+        "slope": 0.625,
+        "strongHours": 1223,
+        "strongBiasKmh": -6.52,
+        "underPct": 38.2
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 2264,
+        "biasKmh": -3.91,
+        "slope": 0.719,
+        "strongHours": 1043,
+        "strongBiasKmh": -6.29,
+        "underPct": 49
+      }
+    ],
+    "cellCentreElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 361,
+        "biasKmh": -1.14,
+        "slope": 0.665,
+        "strongHours": 30,
+        "strongBiasKmh": -4.31,
+        "underPct": 36
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 1715,
+        "biasKmh": -0.82,
+        "slope": 0.506,
+        "strongHours": 120,
+        "strongBiasKmh": -7.4,
+        "underPct": 35.5
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 6003,
+        "biasKmh": -2.66,
+        "slope": 0.671,
+        "strongHours": 2238,
+        "strongBiasKmh": -5.94,
+        "underPct": 42.3
+      }
+    ]
+  },
+  "disputedHours": {
+    "hours": 239,
+    "biasKmh": 3.12,
+    "slope": 0.95,
+    "strongHours": 110,
+    "strongBiasKmh": 3.01,
+    "underPct": 11.7,
+    "stations": [
+      "Νάξος"
+    ]
+  },
   "byStation": [
     {
       "station": "LGKP",

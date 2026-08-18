@@ -177,6 +177,32 @@ const parseArgValue = (name: string): string | undefined => {
 const arrivalFanDirectory = parseArgValue('--arrival-fan');
 const arrivalFans: Map<number, number[]> | undefined = arrivalFanDirectory ? new Map() : undefined;
 
+/**
+ * ΠΕΙΡΑΜΑΤΙΚΑ ΜΟΝΟ — για να μπορεί να μετρηθεί το κόστος του βήματος των ακτίνων χωρίς να αλλάξει
+ * τίποτα στα δεδομένα που στέλνονται. Τρέξε σε ΞΕΧΩΡΙΣΤΟ `--output-dir` και σύγκρινε.
+ * Το `--land-grace-km` υπάρχει επειδή η συγχώρεση στεριάς είναι ΑΔΡΑΝΗΣ όσο είναι μικρότερη από το
+ * βήμα (δες τη σημείωση πάνω από το sampleFetchRay): αν κατεβάσεις μόνο το βήμα, η συγχώρεση
+ * ξαφνικά ενεργοποιείται και το πείραμα μετράει δύο αλλαγές αντί για μία.
+ */
+const rayStepOverrideKm = Number(parseArgValue('--ray-step-km'));
+const landGraceOverrideKm = Number(parseArgValue('--land-grace-km'));
+/**
+ * ΠΕΙΡΑΜΑΤΙΚΑ ΜΟΝΟ, ΤΟ ΙΔΙΟ — η ΑΦΕΤΗΡΙΑ των ακτίνων (βίβλος §Μ5/§Μ9), που είναι ΑΛΛΟ πρόβλημα από
+ * το βήμα παραπάνω και έχει ΑΝΤΙΘΕΤΗ ετυμηγορία στον δεύτερο μάρτυρα (§Μ7: 99,1% θόρυβος για το
+ * βήμα · §Μ9: 90,4% πραγματικοί βραχίονες για την αφετηρία).
+ *
+ * Τα δύο πηγαίνουν ΜΑΖΙ και γι' αυτό είναι δύο σημαίες, όχι μία: το `--water-search-step-km`
+ * κατεβάζει το βήμα με το οποίο ψάχνουμε νερό γύρω από την πινέζα (0,1 χλμ. σήμερα — το νερό του
+ * όρμου στο Μπάλι είναι στα 30-60 μ., δηλαδή ΜΕΣΑ στο πρώτο βήμα και δεν δοκιμάζεται ποτέ), ενώ το
+ * `--min-open-water-km` χαλαρώνει τη ΔΕΥΤΕΡΗ πύλη, που απαιτεί ο υποψήφιος να κουβαλάει 0,5 χλμ.
+ * συνεχόμενο ανοιχτό νερό — και που από μόνη της σπρώχνει την αφετηρία έξω από κάθε στενό όρμο,
+ * όσο λεπτά κι αν ψάξεις.
+ *
+ * ⚠️ ΟΙ ΠΡΟΕΠΙΛΟΓΕΣ ΔΕΝ ΑΓΓΙΖΟΝΤΑΙ. Χωρίς σημαία, το build βγάζει ό,τι έβγαζε χθες.
+ */
+const waterSearchStepOverrideKm = Number(parseArgValue('--water-search-step-km'));
+const minOpenWaterOverrideKm = Number(parseArgValue('--min-open-water-km'));
+
 const shouldDownload = !process.argv.includes('--no-download');
 const customLandGeoJson = parseArgValue('--land-geojson');
 const landGeoJsonPath = path.resolve(customLandGeoJson || defaultLandGeoJsonPath);
@@ -407,7 +433,8 @@ const createBeachProfile = (
   landMask: LandMask,
   rayStepKm: number,
   landGraceKm: number,
-  waterSearchStepKm: number
+  waterSearchStepKm: number,
+  minOpenWaterKm: number
 ): BeachExposureProfile | undefined => {
   if (!beach.coordinates) return undefined;
 
@@ -416,7 +443,7 @@ const createBeachProfile = (
     landMask,
     nearshoreWaterSearchKm,
     waterSearchStepKm,
-    nearshoreMinOpenWaterKm
+    minOpenWaterKm
   );
 
   const facingDeg = computeShorelineOrientation(sampleOrigin.point, landMask);
@@ -532,9 +559,18 @@ const main = async () => {
   // baseline far more reliable than raw fetch buckets, so Natural Earth is now
   // 'medium' rather than 'low'; a supplied high-res coastline earns 'high'.
   const maskConfidence: 'low' | 'medium' | 'high' = isHighResMask ? 'high' : 'medium';
-  const rayStepKm = isHighResMask ? highResStepKm : stepKm;
-  const landGraceKm = isHighResMask ? highResNearshoreLandGraceKm : nearshoreLandGraceKm;
-  const waterSearchStepKm = isHighResMask ? highResNearshoreWaterSearchStepKm : nearshoreWaterSearchStepKm;
+  const rayStepKm = Number.isFinite(rayStepOverrideKm) && rayStepOverrideKm > 0
+    ? rayStepOverrideKm
+    : (isHighResMask ? highResStepKm : stepKm);
+  const landGraceKm = Number.isFinite(landGraceOverrideKm) && landGraceOverrideKm >= 0
+    ? landGraceOverrideKm
+    : (isHighResMask ? highResNearshoreLandGraceKm : nearshoreLandGraceKm);
+  const waterSearchStepKm = Number.isFinite(waterSearchStepOverrideKm) && waterSearchStepOverrideKm > 0
+    ? waterSearchStepOverrideKm
+    : (isHighResMask ? highResNearshoreWaterSearchStepKm : nearshoreWaterSearchStepKm);
+  const minOpenWaterKm = Number.isFinite(minOpenWaterOverrideKm) && minOpenWaterOverrideKm >= 0
+    ? minOpenWaterOverrideKm
+    : nearshoreMinOpenWaterKm;
 
   const landMask = createLandMask(polygons, maskSource, maskConfidence);
   const regions = loadAppRegions().filter(region => (
@@ -587,7 +623,7 @@ const main = async () => {
     })();
 
     region.beaches.forEach(beach => {
-      const profile = createBeachProfile(beach, arrivalFans, landMask, rayStepKm, landGraceKm, waterSearchStepKm);
+      const profile = createBeachProfile(beach, arrivalFans, landMask, rayStepKm, landGraceKm, waterSearchStepKm, minOpenWaterKm);
       if (!profile) {
         totalMissingCoordinates += 1;
         return;

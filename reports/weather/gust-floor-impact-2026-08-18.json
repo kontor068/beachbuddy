@@ -1,59 +1,60 @@
 {
-  "generatedAt": "2026-08-18T09:58:46.324Z",
+  "generatedAt": "2026-08-18T12:03:06.445Z",
   "national": true,
   "factor": 0.5,
   "regions": 110,
   "beaches": 2872,
   "points": 1385,
   "slots": 34464,
-  "bftChanged": 5352,
-  "bftChangedPct": 15.5,
-  "toneChanged": 960,
-  "toneChangedPct": 2.8,
-  "beachesTouched": 448,
-  "stricter": 960,
+  "bftChanged": 6252,
+  "bftChangedPct": 18.1,
+  "toneChanged": 1105,
+  "toneChangedPct": 3.2,
+  "beachesTouched": 506,
+  "stricter": 1105,
   "milder": 0,
-  "calmLost": 943,
-  "calmLostPct": 2.7,
+  "calmLost": 1052,
+  "calmLostPct": 3.1,
   "calmGained": 0,
   "moves": {
-    "blue→yellow": 928,
-    "blue→orange": 15,
-    "yellow→orange": 14,
-    "yellow→red": 3
+    "blue→yellow": 1017,
+    "yellow→orange": 44,
+    "blue→orange": 35,
+    "orange→red": 3,
+    "yellow→red": 6
   },
   "worstRegions": [
     {
       "region": "central-greece-evia",
-      "changed": 118
-    },
-    {
-      "region": "thessaly-magnesia-mainland---pelion",
-      "changed": 74
-    },
-    {
-      "region": "south-aegean-andros",
-      "changed": 70
+      "changed": 140
     },
     {
       "region": "east-macedonia-and-thrace-thasos",
-      "changed": 67
+      "changed": 81
+    },
+    {
+      "region": "south-aegean-andros",
+      "changed": 81
     },
     {
       "region": "south-aegean-tinos",
-      "changed": 51
+      "changed": 63
+    },
+    {
+      "region": "thessaly-magnesia-mainland---pelion",
+      "changed": 62
     },
     {
       "region": "central-macedonia-halkidiki-mainland",
-      "changed": 48
+      "changed": 59
     },
     {
-      "region": "east-macedonia-and-thrace-kavala-mainland",
-      "changed": 28
+      "region": "south-aegean-ios",
+      "changed": 42
     },
     {
-      "region": "crete-crete-rethymno",
-      "changed": 27
+      "region": "south-aegean-naxos",
+      "changed": 39
     }
   ]
 }

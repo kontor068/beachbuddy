@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T09:23:17.159Z",
+  "generatedAt": "2026-08-18T11:51:14.294Z",
   "window": "2026-08-04 → 2026-08-18",
   "boostTested": 1.2,
   "stations": 30,
@@ -12,17 +12,17 @@
     "bftOverPct": 20.7
   },
   "medianOfFour": {
-    "maeKmh": 5.646,
-    "biasKmh": -0.532,
-    "bftExactPct": 40.8,
-    "bftUnderPct": 29.9,
+    "maeKmh": 5.641,
+    "biasKmh": -0.54,
+    "bftExactPct": 40.7,
+    "bftUnderPct": 30,
     "bftOverPct": 29.3
   },
-  "oursCloserPct": 50.5,
+  "oursCloserPct": 50.6,
   "compression": {
     "bestMatchSlope": 0.71,
     "bestMatchIntercept": 2.71,
-    "medianSlope": 0.628
+    "medianSlope": 0.629
   },
   "thresholds": {
     "obs5Hours": 1232,
@@ -133,16 +133,264 @@
     {
       "factor": 0.55,
       "okPct": 67.5,
-      "falseCalmPct": 8.4,
+      "falseCalmPct": 8.3,
       "falseAlarmPct": 8.8
     },
     {
       "factor": 0.6,
       "okPct": 66.2,
-      "falseCalmPct": 6.6,
+      "falseCalmPct": 6.5,
       "falseAlarmPct": 11.1
     }
   ],
+  "byElevationDefinition": {
+    "pointElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 555,
+        "biasKmh": 0.98,
+        "slope": 1.104,
+        "strongHours": 178,
+        "strongBiasKmh": 2.68,
+        "underPct": 25.2
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 4961,
+        "biasKmh": -1.79,
+        "slope": 0.679,
+        "strongHours": 1538,
+        "strongBiasKmh": -5.8,
+        "underPct": 38.4
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 2117,
+        "biasKmh": -4.36,
+        "slope": 0.731,
+        "strongHours": 1199,
+        "strongBiasKmh": -6.94,
+        "underPct": 49.7
+      }
+    ],
+    "cellCentreElevation": [
+      {
+        "band": "θάλασσα (0 μ.)",
+        "hours": 335,
+        "biasKmh": -1.52,
+        "slope": 0.751,
+        "strongHours": 39,
+        "strongBiasKmh": -2.92,
+        "underPct": 36.7
+      },
+      {
+        "band": "ακτή (1-20 μ.)",
+        "hours": 1599,
+        "biasKmh": -1.15,
+        "slope": 0.599,
+        "strongHours": 218,
+        "strongBiasKmh": -6.4,
+        "underPct": 34.9
+      },
+      {
+        "band": "στεριά (>20 μ.)",
+        "hours": 5699,
+        "biasKmh": -2.67,
+        "slope": 0.699,
+        "strongHours": 2658,
+        "strongBiasKmh": -5.74,
+        "underPct": 42.4
+      }
+    ]
+  },
+  "byGustRatio": [
+    {
+      "band": "<1,5",
+      "hours": 147,
+      "biasKmh": 0.23,
+      "slope": 0.793,
+      "strongHours": 35,
+      "strongBiasKmh": -3.05,
+      "underPct": 27.9,
+      "afterFloorBiasKmh": 0.23,
+      "afterFloorUnderPct": 27.9,
+      "afterFloorOverPct": 41.5
+    },
+    {
+      "band": "1,5-2,0",
+      "hours": 3584,
+      "biasKmh": -1.9,
+      "slope": 0.727,
+      "strongHours": 1744,
+      "strongBiasKmh": -4.7,
+      "underPct": 36.2,
+      "afterFloorBiasKmh": -1.9,
+      "afterFloorUnderPct": 36.2,
+      "afterFloorOverPct": 21.3
+    },
+    {
+      "band": "2,0-3,0",
+      "hours": 2981,
+      "biasKmh": -2.64,
+      "slope": 0.602,
+      "strongHours": 996,
+      "strongBiasKmh": -6.68,
+      "underPct": 42.8,
+      "afterFloorBiasKmh": -0.56,
+      "afterFloorUnderPct": 31.1,
+      "afterFloorOverPct": 26.4
+    },
+    {
+      "band": "3,0-4,0",
+      "hours": 580,
+      "biasKmh": -3.04,
+      "slope": 0.34,
+      "strongHours": 113,
+      "strongBiasKmh": -12.19,
+      "underPct": 50.5,
+      "afterFloorBiasKmh": 2.84,
+      "afterFloorUnderPct": 18.8,
+      "afterFloorOverPct": 43.8
+    },
+    {
+      "band": "≥4,0",
+      "hours": 341,
+      "biasKmh": -3.46,
+      "slope": 0.139,
+      "strongHours": 27,
+      "strongBiasKmh": -15.9,
+      "underPct": 56,
+      "afterFloorBiasKmh": 3.05,
+      "afterFloorUnderPct": 28.4,
+      "afterFloorOverPct": 49
+    }
+  ],
+  "ratioConfoundCheck": [
+    {
+      "meanBand": "0-5",
+      "lowRatioHours": 329,
+      "lowRatioBias": 0.11,
+      "highRatioHours": 387,
+      "highRatioBias": -4.3,
+      "deltaKmh": -4.41
+    },
+    {
+      "meanBand": "5-10",
+      "lowRatioHours": 706,
+      "lowRatioBias": -1.29,
+      "highRatioHours": 286,
+      "highRatioBias": -1.83,
+      "deltaKmh": -0.53
+    },
+    {
+      "meanBand": "10-15",
+      "lowRatioHours": 572,
+      "lowRatioBias": -1.68,
+      "highRatioHours": 163,
+      "highRatioBias": -2.88,
+      "deltaKmh": -1.2
+    },
+    {
+      "meanBand": "15-20",
+      "lowRatioHours": 613,
+      "lowRatioBias": -1.68,
+      "highRatioHours": 78,
+      "highRatioBias": -3.11,
+      "deltaKmh": -1.43
+    }
+  ],
+  "extremeRatioSweep": [
+    {
+      "factor": 0,
+      "biasKmh": -3.2,
+      "exactPct": 24.1,
+      "underPct": 52.6,
+      "overPct": 23.3
+    },
+    {
+      "factor": 0.3,
+      "biasKmh": -2.23,
+      "exactPct": 27.1,
+      "underPct": 45.4,
+      "overPct": 27.5
+    },
+    {
+      "factor": 0.35,
+      "biasKmh": -1.05,
+      "exactPct": 31.7,
+      "underPct": 37.2,
+      "overPct": 31.1
+    },
+    {
+      "factor": 0.4,
+      "biasKmh": 0.27,
+      "exactPct": 31.7,
+      "underPct": 32.8,
+      "overPct": 35.5
+    },
+    {
+      "factor": 0.45,
+      "biasKmh": 1.59,
+      "exactPct": 32.8,
+      "underPct": 26.7,
+      "overPct": 40.5
+    },
+    {
+      "factor": 0.5,
+      "biasKmh": 2.92,
+      "exactPct": 31.9,
+      "underPct": 22.4,
+      "overPct": 45.7
+    }
+  ],
+  "uncoveredByTodaysGate": [
+    {
+      "band": "<2,0",
+      "hours": 310,
+      "biasKmh": 3.33,
+      "slope": 1.087,
+      "underPct": 13.9,
+      "overPct": 50.3,
+      "stations": [
+        "Νάξος",
+        "Κέρκυρα"
+      ]
+    },
+    {
+      "band": "2,0-3,0",
+      "hours": 175,
+      "biasKmh": -1.68,
+      "slope": 0.57,
+      "underPct": 37.1,
+      "overPct": 26.3,
+      "stations": [
+        "Νάξος",
+        "Κέρκυρα"
+      ]
+    },
+    {
+      "band": "≥3,0",
+      "hours": 70,
+      "biasKmh": -2.79,
+      "slope": 0.094,
+      "underPct": 45.7,
+      "overPct": 24.3,
+      "stations": [
+        "Κέρκυρα"
+      ]
+    }
+  ],
+  "disputedHours": {
+    "hours": 218,
+    "biasKmh": 5.34,
+    "slope": 0.755,
+    "strongHours": 149,
+    "strongBiasKmh": 4.64,
+    "underPct": 5,
+    "stations": [
+      "Νάξος"
+    ]
+  },
   "byStation": [
     {
       "station": "LGIR",

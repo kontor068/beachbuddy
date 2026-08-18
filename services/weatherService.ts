@@ -441,11 +441,15 @@ const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any
     throw new Error('Forecast fetch failed: missing hourly data');
   }
 
-  // Height of the CELL that answered, not of the beach. Decides whether the gust floor may fire:
-  // over water the hourly mean is already accurate (slope 0,96-1,10 against real anemometers, and
-  // the SAR audit finds it OVER-reading at >6 m/s), so the floor would add wind to a number that
-  // is already high. See utils/windGustFloor.ts for both witnesses.
-  const cellElevationM = optionalNumber(envelope?.elevation);
+  // Height of the POINT we asked about, from Open-Meteo's 90 m DEM — NOT the answering cell's.
+  // Proven 18/08/2026: the same cell returns 0 / 242 / 264 depending on which coordinate you
+  // send it. The name matters because the wrong one was tried and measured worse; see
+  // utils/windGustFloor.ts. It decides whether the gust floor may fire: where the point sits on
+  // flat ground at the water the hourly mean is already accurate (slope 1,104 against real
+  // anemometers, and the SAR audit finds it OVER-reading at >6 m/s), so the floor would add wind
+  // to a number that is already high. That exemption now has one exit — an incoherent
+  // gust-to-mean ratio, which is a property of the answer, not of the place.
+  const pointElevationM = optionalNumber(envelope?.elevation);
 
   return hourly.time.map((timeStr: string, index: number): ForecastItem => {
       const date = new Date(timeStr);
@@ -470,13 +474,13 @@ const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any
           // Gust floor applied HERE, at the one place raw Open-Meteo becomes a ForecastItem, so
           // every colour, verdict, filter and wave calculation downstream reads the same corrected
           // wind. See utils/windGustFloor.ts for the 32.000-hour measurement against real
-          // anemometers that produced the 0,55 factor — the hourly mean compresses peaks and the
+          // anemometers that produced the 0,50 factor — the hourly mean compresses peaks and the
           // error was 2:1 towards "calmer than it is".
-          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), cellElevationM),
+          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM),
           // Kept ONLY when the floor moved the number: everything that judges gustiness by
           // gust-minus-mean has to keep using the real mean, or the correction would erase the
           // very warnings it exists to strengthen. See types.ForecastItem.wind.
-          speedBeforeGustFloor: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), cellElevationM) !== hourly.wind_speed_10m[index]
+          speedBeforeGustFloor: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM) !== hourly.wind_speed_10m[index]
             ? hourly.wind_speed_10m[index]
             : undefined,
           deg: hourly.wind_direction_10m[index],

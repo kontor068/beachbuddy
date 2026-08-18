@@ -102,7 +102,8 @@ for (let i = 0; i < pointList.length; i += BATCH) {
   (Array.isArray(data) ? data : [data]).forEach((entry, k) => {
     if (!slice[k]) return;
     slice[k].hourly = entry.hourly;
-    // Το υψόμετρο του ΚΕΛΙΟΥ — ο δάπεδος ριπής δεν επιτρέπεται πάνω από νερό (utils/windGustFloor).
+    // Το DEM στο ΣΗΜΕΙΟ που ρωτήθηκε (όχι του κελιού — δες utils/windGustFloor): ο δάπεδος
+    // δεν επιτρέπεται όπου η πινέζα κάθεται σε επίπεδο έδαφος στο νερό, εκτός ασυνεπούς ριπής.
     slice[k].elevation = typeof entry.elevation === 'number' ? entry.elevation : null;
   });
   process.stdout.write(`\r  ${Math.min(i + BATCH, pointList.length)}/${pointList.length}`);
@@ -163,6 +164,58 @@ for (const item of plan) {
   }
   const rg = byRegion.get(item.region) ?? { slots: 0, changed: 0 };
   byRegion.set(item.region, rg);
+}
+
+// ── ΤΙ ΠΡΟΣΘΕΤΕΙ ΜΟΝΗ ΤΗΣ Η ΔΕΥΤΕΡΗ ΠΟΡΤΑ (ασυνεπής λόγος ριπής) ───────────────
+// Τα παραπάνω μετρούν ΟΛΟΝ τον δάπεδο έναντι του ωμού μέσου. Αυτό εδώ απομονώνει τη μία αλλαγή
+// της 18/08/2026 απόγευμα: σημείο στο 0 μ. που σήμερα μένει ακάλυπτο, αλλά η ριπή του είναι
+// ≥3,5× ο μέσος. Αν αυτό δεν είναι μικρό και 100% προς το αυστηρότερο, κάτι φταίει.
+const oldGate = (speed, gust, elev) =>
+  (typeof elev === 'number' && Number.isFinite(elev) && elev > 0
+    && typeof gust === 'number' && Number.isFinite(gust) && gust > 0)
+    ? Math.max(speed, gust * GUST_FLOOR_FACTOR) : speed;
+
+let doorSlots = 0, doorBft = 0, doorColour = 0, doorStricter = 0, doorMilder = 0, doorCalmLost = 0;
+const doorBeaches = new Set();
+const doorRegions = new Map();
+for (const item of plan) {
+  const point = points.get(item.pointKey);
+  if (!point?.hourly) continue;
+  const h = point.hourly;
+  for (let idx2 = 0; idx2 < h.time.length; idx2++) {
+    if (!HOURS.some(suffix => h.time[idx2].endsWith(suffix))) continue;
+    const raw = h.wind_speed_10m[idx2];
+    const gust = h.wind_gusts_10m?.[idx2];
+    const deg = h.wind_direction_10m[idx2];
+    if (typeof raw !== 'number' || typeof deg !== 'number') continue;
+    const before = oldGate(raw, gust, point.elevation);
+    const after = applyGustFloor(raw, gust, point.elevation);
+    if (before === after) continue;
+    doorSlots++;
+    doorBeaches.add(item.beachId);
+    const bB = getBeaufortLevel(before), bA = getBeaufortLevel(after);
+    if (bB !== bA) doorBft++;
+    const exposureLevel = item.profile?.sectors?.[sectorOf(deg)]?.level ?? 'partial';
+    const tB = resolveConditionTone({ exposureLevel, beaufort: bB, isEnclosedCove: false, seaStateM: undefined });
+    const tA = resolveConditionTone({ exposureLevel, beaufort: bA, isEnclosedCove: false, seaStateM: undefined });
+    if (tB === tA) continue;
+    doorColour++;
+    if (bA > bB) doorStricter++; else doorMilder++;
+    if (CALM.has(tB) && !CALM.has(tA)) doorCalmLost++;
+    doorRegions.set(item.region, (doorRegions.get(item.region) ?? 0) + 1);
+  }
+}
+console.log(`\n=== ΜΟΝΟ Η ΔΕΥΤΕΡΗ ΠΟΡΤΑ: ασυνεπής λόγος ριπής σε σημείο 0 μ. ===`);
+console.log(`  παραλία-ώρες που αγγίζει     ${doorSlots} = ${pct(doorSlots, slots)}% του συνόλου`);
+console.log(`  από αυτές αλλάζει Μποφόρ     ${doorBft}`);
+console.log(`  ΑΛΛΑΖΕΙ ΤΟ ΧΡΩΜΑ             ${doorColour} = ${pct(doorColour, slots)}% του συνόλου`);
+console.log(`  παραλίες που αγγίζονται      ${doorBeaches.size}`);
+console.log(`  προς το αυστηρότερο          ${doorStricter}`);
+console.log(`  προς το ηπιότερο             ${doorMilder}${doorMilder ? '   ΑΠΑΓΟΡΕΥΕΤΑΙ' : '   OK'}`);
+console.log(`  χάνει το «πάμε»              ${doorCalmLost}`);
+if (doorRegions.size) {
+  console.log('  περιοχές:');
+  for (const [rg, c] of [...doorRegions.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)) console.log(`    ${String(c).padStart(4)} · ${rg}`);
 }
 
 console.log(`\n=== ΕΠΙΠΤΩΣΗ (${slots} παραλία-ώρες, 3 ημέρες × 4 ώρες) ===`);

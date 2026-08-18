@@ -29,12 +29,12 @@
       "results": {
         "our_geometry_breaks_a_correct_ranking": {
           "pass": false,
-          "ratio": 0.0351,
+          "ratio": 0.0344,
           "n": 6832,
           "threshold": 0.02,
           "direction": "lower is better",
           "breakdown": {
-            "flattened_to_a_tie": 83,
+            "flattened_to_a_tie": 78,
             "named_the_wrong_coast": 157,
             "with_light_local_wind_2bft_or_less": 46,
             "would_be_correct_without_the_light_wind_cap": 33
@@ -78,9 +78,9 @@
         "results": {
           "it_fixes_rankings_we_get_wrong_today": {
             "pass": false,
-            "ratio": 0.025,
+            "ratio": 0.0255,
             "fixed": 6,
-            "of_harm": 240,
+            "of_harm": 235,
             "threshold": 0.2
           },
           "the_sea_it_reveals_is_really_there": {
@@ -164,12 +164,6 @@
           "help": 286
         },
         {
-          "island": "Naxos",
-          "n": 569,
-          "harm": 5,
-          "help": 22
-        },
-        {
           "island": "Alonissos",
           "n": 59,
           "harm": 4,
@@ -204,6 +198,12 @@
           "n": 1130,
           "harm": 0,
           "help": 0
+        },
+        {
+          "island": "Naxos",
+          "n": 569,
+          "harm": 0,
+          "help": 22
         },
         {
           "island": "Kos",
@@ -276,7 +276,7 @@
         },
         "our_geometry_fixes_a_wrong_ranking": {
           "pass": true,
-          "ratio": 0.1249,
+          "ratio": 0.1278,
           "n": 2730,
           "threshold": 0.1,
           "direction": "higher is better"
@@ -443,7 +443,7 @@
           "island": "Naxos",
           "n": 557,
           "harm": 0,
-          "help": 24
+          "help": 32
         },
         {
           "island": "Kos",

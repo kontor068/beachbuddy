@@ -153,6 +153,8 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
         // wind tiles over.
         const rawKmh = entry?.current?.wind_speed_10m;
         if (typeof rawKmh !== 'number') return;
+        // Third argument is the DEM at the POINT we asked about, not the cell's — same as
+        // weatherService. utils/windGustFloor explains why the distinction was measured.
         const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m, entry?.elevation);
 
         // Match on the coordinates the API echoes back, NOT on array position.
