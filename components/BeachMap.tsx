@@ -27,7 +27,7 @@ import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
 import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
-import { hasDownwindSeaSample, holdsFlatWaterUnderOffshoreWind } from '../utils/offshoreFlatWater';
+import { hasDownwindSeaSample, holdsFlatWaterUnderOffshoreWind, holdsGlassWaterAtFourBeaufort } from '../utils/offshoreFlatWater';
 
 interface BeachMapProps {
   beaches: SuitableBeach[];
@@ -1085,6 +1085,8 @@ const getExposureMarkerTone = (
   seaStateM?: number,
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
   offshoreFlatWater = false,
+  /** Offshore wind over zero fetch at 4 Bft with a sea proven quiet — utils/offshoreFlatWater. */
+  glassWaterAtFour = false,
   /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
   downwindSeaSample = false,
   /** The engine refused a swim here — the colour is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
@@ -1132,6 +1134,7 @@ const getExposureMarkerTone = (
     isEnclosedCove,
     seaStateM,
     offshoreFlatWater,
+    glassWaterAtFour,
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
@@ -1247,6 +1250,8 @@ const createExposureIcon = (
   showCoveBadge = false,
   /** Wind off the land over zero fetch at 5 Bft — utils/offshoreFlatWater. */
   offshoreFlatWater = false,
+  /** Offshore wind over zero fetch at 4 Bft with a sea proven quiet — utils/offshoreFlatWater. */
+  glassWaterAtFour = false,
   /** The sea reading came from downwind of this shore — utils/offshoreFlatWater.hasDownwindSeaSample. */
   downwindSeaSample = false,
   /** The engine refused a swim here — the pin is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
@@ -1276,7 +1281,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -2183,6 +2188,24 @@ const BeachMap: React.FC<BeachMapProps> = ({
   });
 
   /**
+   * The 4 Bft door (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort — Μελιδόνι-class:
+   * offshore wind, zero fetch, and a sea proven quiet). Same beach-own bearing and the same
+   * `seaStateSeverityM` the ceiling below reads, so the pin, the legend tally and the card chip
+   * cannot answer it differently.
+   */
+  const beachGlassWaterAtFour = (item: SuitableBeach): boolean => holdsGlassWaterAtFourBeaufort({
+    profile: item.geospatialExposure,
+    windDirectionDeg: beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg,
+    beaufort: beachBeaufort(item) ?? sliderDisplayBeaufort ?? 0,
+    seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
+    // The shore discount is applied inside the door, from the same two fields the ceiling reads.
+    exposureLevel: getMapExposureLevel(item),
+    seaArrivalExposureLevel: item.seaArrivalExposureLevel,
+    // Same swell veto hasDownwindSeaSample takes, from the beach's own marine forecast.
+    swellWaveHeightM: item.marine?.swellWaveHeightM,
+  });
+
+  /**
    * The spread of wind actually blowing on the shores currently drawn — what the compass widget
    * prints instead of the region's single figure.
    *
@@ -2236,6 +2259,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     isEnclosedCove: Boolean(item.enclosedCove),
     seaStateM: seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
     offshoreFlatWater: beachOffshoreFlatWater(item),
+    glassWaterAtFour: beachGlassWaterAtFour(item),
     downwindSeaSample: beachDownwindSeaSample(item),
     // Straight off the score — the pin, this legend count and the card chip all read the one
     // value calculateBeachScore computed, so none of them can rediscover it differently.
@@ -2861,6 +2885,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       Boolean(item.enclosedCove),
       seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS),
       beachOffshoreFlatWater(item),
+      beachGlassWaterAtFour(item),
       beachDownwindSeaSample(item),
       item.swimmingComfort === 'avoid_swimming'
     );
@@ -3549,7 +3574,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel)}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

@@ -3,6 +3,7 @@ import { onshoreComponent } from './geospatialExposureModel';
 import { SWELL_MIN_HEIGHT_M } from './swellExposure';
 import { windSectorFromDegrees } from './windExposure';
 import { estimateFetchLimitedWaveHeightM } from './waveModel';
+import { shoreSeaStateM } from './waveCharacter';
 
 /**
  * Top of the 5 Bft band in km/h (utils/weatherUtils.getBeaufortLevel: 5 Bft is ≤38). The gate
@@ -112,7 +113,14 @@ export interface OffshoreFlatWaterInput {
  */
 const sectorHoldsNoWindWave = (
   profile: GeospatialExposureProfile | undefined,
-  windDirectionDeg: number | undefined
+  windDirectionDeg: number | undefined,
+  /**
+   * The two doors below ask the same physical question with different strictness — see
+   * `holdsGlassWaterAtFourBeaufort` for why the 4 Bft door drops the angle and widens the
+   * intensity ceiling, and what it pays for that. Defaults reproduce the 5 Bft rule exactly, so
+   * a caller that passes nothing cannot accidentally widen it.
+   */
+  { maxIntensity = OFFSHORE_FLAT_MAX_INTENSITY, requireAngle = true } = {}
 ): boolean => {
   if (!profile) return false;
   if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return false;
@@ -124,7 +132,7 @@ const sectorHoldsNoWindWave = (
   const sector = profile.sectors?.[windSectorFromDegrees(windDirectionDeg)];
   if (!sector || sector.level !== 'protected') return false;
   if (sector.blockedRayRatio < OFFSHORE_FLAT_MIN_BLOCKED_RATIO) return false;
-  if (typeof sector.intensity !== 'number' || sector.intensity >= OFFSHORE_FLAT_MAX_INTENSITY) return false;
+  if (typeof sector.intensity !== 'number' || sector.intensity >= maxIntensity) return false;
   if (sector.fetchKm > OFFSHORE_FLAT_MAX_FETCH_KM) return false;
   // The physical half of the fetch test: whatever the constant says, the water is only "flat" if
   // our own fetch-limited model agrees it is. This keeps the 0,6 km above honest — raise it and
@@ -135,6 +143,7 @@ const sectorHoldsNoWindWave = (
   });
   if (typeof modelledM === 'number' && modelledM > OFFSHORE_FLAT_MAX_MODELLED_WAVE_M) return false;
 
+  if (!requireAngle) return true;
   return onshoreComponent(windDirectionDeg, facingDeg) <= OFFSHORE_FLAT_MAX_ONSHORE;
 };
 
@@ -148,6 +157,147 @@ export const holdsFlatWaterUnderOffshoreWind = ({
   beaufort,
 }: OffshoreFlatWaterInput): boolean =>
   beaufort === OFFSHORE_FLAT_BEAUFORT && sectorHoldsNoWindWave(profile, windDirectionDeg);
+
+/**
+ * THE SAME PHYSICS ONE BEAUFORT LOWER — AND THE ONE PLACE THIS PROJECT PAINTS «ΙΔΑΝΙΚΗ» OVER
+ * A 4 BEAUFORT WIND.
+ *
+ * Μελιδόνι, Κύθηρα, 18/08/2026 (user report): 25,6 km/h from 273° — 4 Bft, corroborated by
+ * Kythira airport reading 22 km/h the same hour, so the number was never wrong. The W sector is
+ * `protected` with ZERO fetch, our own SMB shore model returns 0,00 m, the marine sample reads
+ * 0,48 m LEAVING the shore (onshore −0,64) — and the pin was yellow, because
+ * `resolveWindTone` at 4 Bft asks only how hard the wind blows, never whether it has anywhere
+ * to build a wave. The gate above answers exactly that question and was shut one Beaufort too
+ * high.
+ *
+ * ⚠️ THIS AMENDS A WRITTEN DOCTRINE. PORISMA-KAIROS §3 said the offshore exception is «ΜΟΝΟ στα
+ * 5 Μποφόρ … Ποτέ μπλε». That sentence was true of the 5 Bft door, where the only tone above
+ * orange is yellow. One rung down there is nothing between yellow and blue, so extending the
+ * rule at all means saying «Ιδανική». The amendment was measured first and decided by Miltos
+ * (18/08/2026), which is the process §7δ requires of every exception — not a quiet widening.
+ *
+ * WHAT WAS MEASURED (national, 110 regions × 3 days = 8.616 beach-days, live wind and live
+ * marine, scripts/measureOffshoreLiftAtFourBeaufort.mjs). Only 4,72% of beach-days are at 4 Bft
+ * at all, and 2,54% are at 4 Bft on a protected shore — the ceiling on anything this rule can
+ * ever do:
+ *
+ *   the 5 Bft gate as-is, one rung down     110 beach-days  1,28%
+ *   + without the angle clause              157             1,82%
+ *   + intensity ceiling 25 instead of 15    191             2,22%   ← no sea test yet
+ *   + swell veto + quiet shore (SHIPPED)    162             1,88%   ← 162 beaches
+ *
+ * For scale: the 5 Bft door changed 2,6% of beaches on the day it shipped. This is the same
+ * order of magnitude, and the reason it is not larger is simply that 4 Bft is uncommon.
+ *
+ * WHY THE ANGLE CLAUSE IS DROPPED HERE. `facingDeg` is the direction of the COVE MOUTH, not the
+ * side the wind came over. Μελιδόνι faces 150°, the wind blew from 273°: onshore −0,53 against a
+ * −0,80 threshold, i.e. rejected for being ALONGSHORE — while the same profile reports zero
+ * fetch and fully blocked rays in that sector, which is the actual physical claim. The angle is
+ * a proxy; `blockedRayRatio = 1` + `fetchKm ≤ 0,5` + the SMB check are the measurement. Same
+ * objection as scripts/measureOffshoreAngleGate.mjs, here confined to the 4 Bft door.
+ *
+ * WHY THE INTENSITY CEILING MOVES TO 25. Μελιδόνι's W sector reads 15,1 against a limit of 15 —
+ * the beach that caused the correction was excluded by a tenth of a point. 15 was «less than
+ * half the 33 the green-pin test allows», a comfort margin rather than a measured line; 25 is
+ * still comfortably inside «Προστατευμένη» (<33). It widened 157 → 191 beach-days, i.e. it is
+ * not where the risk lives.
+ *
+ * WHERE THE RISK LIVES, AND WHAT PAYS FOR IT. At 191 beach-days the sea underneath — measured in
+ * the steepness-adjusted SEVERITY the ceiling itself reads, not the raw height — was 0,2–0,4 m in
+ * 44 cases, 0,4–0,6 m in 100, and 0,6–0,8 m in **47**. Nothing at or above 0,8 m; the existing
+ * ceiling already stops those on its own. Painting «Ιδανική» over a 0,7 m short-period chop is
+ * precisely the false calm the house rule forbids, so this door additionally requires a QUIET
+ * SEA: severity below `GLASS_AT_FOUR_MAX_SEA_STATE_M`. That is a floor the sea-state ceiling
+ * could never enforce by itself, because below 0,8 m it has no opinion at all.
+ *
+ * The swell veto is what actually shrinks the risky end: it takes the 0,6–0,8 m band from 47
+ * beach-days to **22** and the total from 191 to 162. Those 22 remain, and they are the honest
+ * residue of this rule — an open-water severity of 0,6–0,8 m, which is 0,3–0,4 m once the shore
+ * damping is applied, with no meaningful swell and the wind blowing off the land. Judge any
+ * future change to these constants against that LIVE number — the geometric count answers a
+ * question no visitor ever asks.
+ *
+ * WHAT IT DELIBERATELY DOES NOT DO. It does not touch the 5 Bft door (unchanged constants,
+ * unchanged behaviour), the exposure level, the verdict word, the score, or the printed wave. It
+ * cannot fire above or below 4 Bft. And it stays under every ceiling that runs after it: the
+ * sea-state ceiling, the swim-verdict ceiling, and the cove rules all still get their say.
+ */
+export const GLASS_AT_FOUR_BEAUFORT = 4;
+/**
+ * Sector intensity ceiling for the 4 Bft door. Wider than the 5 Bft `OFFSHORE_FLAT_MAX_INTENSITY`
+ * because that constant excluded Μελιδόνι at 15,1 — and still well inside the «Προστατευμένη»
+ * band, which runs to 33 (utils/geospatialExposureModel).
+ */
+export const GLASS_AT_FOUR_MAX_INTENSITY = 25;
+/**
+ * The sea must be genuinely quiet AT THE SHORE — `utils/waveCharacter.shoreSeaStateM` of the
+ * steepness-adjusted severity, which is the EXACT number the colour ceiling judges by.
+ *
+ * ⚠️ THE FIRST DRAFT TESTED THE OPEN-WATER NUMBER AND WAS SELF-DEFEATING. Μελιδόνι's marine
+ * sample sits 3,46 km out along `facingDeg`, and with the wind offshore the waves there are
+ * travelling AWAY from the beach (onshore −0,64, our own SMB shore model 0,00 m). Read raw, that
+ * sample said 0,54 m and closed the door on the very beach the door was written for. The sample
+ * is downwind by construction whenever this gate passes — that is the whole premise of
+ * `hasDownwindSeaSample` below — so judging the shore by it unclipped is asking the wrong
+ * question. `shoreSeaStateM` is the answer the rest of the app already uses (Μελιδόνι:
+ * 0,54 → 0,27) and reusing it means the door and the ceiling cannot disagree about the water.
+ *
+ * 0,40 m is not a tuned number: it is HALF the amber line (`SEA_STATE_AMBER_M = 0,8`), the point
+ * below which the ceiling stops having any opinion. Since this door is the only thing in the app
+ * that can print «Ιδανική» at 4 Bft, it may only do so where the sea is not merely "allowed" but
+ * demonstrably small.
+ */
+export const GLASS_AT_FOUR_MAX_SEA_STATE_M = 0.4;
+
+/**
+ * True when a 4 Bft wind is blowing off the land over zero fetch AND the water reaching the shore
+ * is genuinely quiet — the only case where this app calls a 4 Bft shore «Ιδανική».
+ *
+ * `seaStateM` is the OPEN-WATER steepness-adjusted severity; the shore discount is applied here
+ * from the same `exposureLevel` / `seaArrivalExposureLevel` the ceiling uses, so both surfaces
+ * judge one number. An unknown sea closes the door: a rule that can only ever make things look
+ * calmer must not fire on missing evidence.
+ *
+ * ⚠️ WHAT THE SHORE CLAUSE DOES AND DOES NOT BUY — MEASURED, NOT ASSUMED. Every protected shore
+ * takes the ×0,5 damping (utils/waveCharacter.SHORE_DAMPING_BY_EXPOSURE), so «below 0,40 m at the
+ * shore» is arithmetically «below 0,80 m open water» — the amber line the ceiling already
+ * enforces. Nationally it therefore excluded NOTHING the ceiling would not have caught anyway
+ * (191 beach-days with the clause, 191 without). It is kept because it is the clause that makes
+ * the door's promise true where the damping factors ever change, but it is NOT the safety net,
+ * and nobody should read it as one.
+ *
+ * THE CLAUSE THAT DOES THE WORK IS THE SWELL VETO. Short-period chop measured out on the open
+ * fetch is genuinely not at this beach — it is being blown away from it. A SWELL is the opposite:
+ * ground swell wraps around headlands against the wind and arrives at exactly the lee shores this
+ * door serves. So any meaningful swell — the same `SWELL_MIN_HEIGHT_M` gate `hasDownwindSeaSample`
+ * uses, and an unknown reading with it — closes the door outright, whatever the geometry says.
+ */
+export const holdsGlassWaterAtFourBeaufort = ({
+  profile,
+  windDirectionDeg,
+  beaufort,
+  seaStateM,
+  swellWaveHeightM,
+  exposureLevel,
+  seaArrivalExposureLevel,
+}: OffshoreFlatWaterInput & {
+  seaStateM?: number;
+  /** Live swell height at this beach's marine sample point, metres. Unknown vetoes. */
+  swellWaveHeightM?: number;
+  exposureLevel?: string;
+  seaArrivalExposureLevel?: string;
+}): boolean => {
+  if (beaufort !== GLASS_AT_FOUR_BEAUFORT) return false;
+  if (typeof swellWaveHeightM !== 'number' || !Number.isFinite(swellWaveHeightM)) return false;
+  if (swellWaveHeightM >= SWELL_MIN_HEIGHT_M) return false;
+  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel);
+  if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return false;
+  if (atShoreM >= GLASS_AT_FOUR_MAX_SEA_STATE_M) return false;
+  return sectorHoldsNoWindWave(profile, windDirectionDeg, {
+    maxIntensity: GLASS_AT_FOUR_MAX_INTENSITY,
+    requireAngle: false,
+  });
+};
 
 /**
  * THE MARINE SAMPLE POINT IS DOWNWIND OF THIS BEACH — ITS SEA IS LEAVING, NOT ARRIVING.

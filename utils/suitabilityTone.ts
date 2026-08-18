@@ -1,5 +1,6 @@
 import type { WindSuitabilityColor } from '../types';
 import type { ExposureLevel } from './windExposure';
+import { GLASS_AT_FOUR_MAX_SEA_STATE_M } from './offshoreFlatWater';
 import { seaStateToneCeiling, shoreSeaStateM, type SeaToneCeiling } from './waveCharacter';
 
 /** Shared visual tokens for the map marker and the compact card wave glyph. */
@@ -172,6 +173,19 @@ export const offshoreLiftApplies = (
   offshoreFlatWater: boolean
 ): boolean => offshoreFlatWater && beaufort === 5 && exposureLevel === 'protected';
 
+/**
+ * The 4 Bft twin of the rule above — see utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort
+ * for the measurement, the doctrine amendment it carries, and the quiet-sea clause that pays
+ * for it. Same `isProtected`-not-`!isExposed` requirement and the same exact-Beaufort test, for
+ * the same two reasons: the flag is pure geometry while `exposureLevel` is the whole engine's
+ * conclusion, and the caller's Beaufort may describe a different hour than the flag's.
+ */
+export const glassAtFourApplies = (
+  exposureLevel: ExposureLevel | string | undefined,
+  beaufort: number,
+  glassWaterAtFour: boolean
+): boolean => glassWaterAtFour && beaufort === 4 && exposureLevel === 'protected';
+
 export const resolveWindTone = (
   exposureLevel: ExposureLevel | string | undefined,
   beaufort: number,
@@ -180,7 +194,13 @@ export const resolveWindTone = (
    * The wind is blowing OFF the land over zero fetch — see utils/offshoreFlatWater for the gate
    * and the national measurement. Only consulted at 5 Bft, and only to lift orange → yellow.
    */
-  offshoreFlatWater = false
+  offshoreFlatWater = false,
+  /**
+   * Same physics at 4 Bft, with a quiet sea proven rather than assumed
+   * (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort). Only consulted at 4 Bft, and only
+   * to lift yellow → blue.
+   */
+  glassWaterAtFour = false
 ): CalmnessTone => {
   const isProtected = exposureLevel === 'protected';
   const isExposed = exposureLevel === 'exposed';
@@ -210,7 +230,18 @@ export const resolveWindTone = (
   }
   // At 4 Bft only genuinely exposed shores escalate to orange; protected and the uncertain
   // "partial" middle get a yellow "mild chop" heads-up.
-  if (beaufort >= 4) return isExposed ? 'orange' : 'yellow';
+  //
+  // THE ONE ESCAPE AT 4 BFT IS OFFSHORE WIND OVER ZERO FETCH *WITH A QUIET SEA* (18/08/2026,
+  // Μελιδόνι Κυθήρων). Reaching blue is a stronger claim than the 5 Bft lift's reach to yellow —
+  // there is no rung in between — so this door carries a clause the other one does not: the sea
+  // must be measurably small, not merely below the ceiling's amber line. Everything the ladder
+  // cannot see still runs after this: the sea-state ceiling can pull it straight back, and the
+  // swim verdict caps it at «Μέτρια». Measured nationally before shipping; the numbers and the
+  // doctrine amendment they justify live in utils/offshoreFlatWater.
+  if (beaufort >= 4) {
+    if (glassAtFourApplies(exposureLevel, beaufort, glassWaterAtFour)) return 'blue';
+    return isExposed ? 'orange' : 'yellow';
+  }
   // At 3 Bft only genuinely exposed coasts feel a real chop; protected and the uncertain
   // "partial" middle stay calm enough to read as blue — this keeps the "uncertain partial"
   // from looking worse than a sheltered neighbour.
@@ -354,6 +385,7 @@ export const resolveConditionTone = ({
   isEnclosedCove = false,
   seaStateM,
   offshoreFlatWater = false,
+  glassWaterAtFour = false,
   downwindSeaSample = false,
   swimVerdictAvoid = false,
   seaArrivalExposureLevel,
@@ -373,6 +405,17 @@ export const resolveConditionTone = ({
    * running outside, so the ceiling must still get its say.
    */
   offshoreFlatWater?: boolean;
+  /**
+   * The 4 Bft door (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort) — offshore wind over
+   * zero fetch AND a sea proven quiet. Lifts yellow → blue and nothing else. Passed rather than
+   * derived, on the same contract as every other geometry input here: the pin and the chip must
+   * not be able to answer it differently.
+   *
+   * It already contains a sea test of its own, which is NOT a duplicate of the ceiling below:
+   * both read `shoreSeaStateM`, but the ceiling has no opinion under 0,8 m while this door may
+   * only fire under 0,4 m.
+   */
+  glassWaterAtFour?: boolean;
   /**
    * The sea reading was taken downwind of this shore with no swell running
    * (utils/offshoreFlatWater.hasDownwindSeaSample) — the ceiling relaxes by one extra rung,
@@ -404,7 +447,30 @@ export const resolveConditionTone = ({
    */
   seaArrivalExposureLevel?: string;
 }): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
-  resolveWindTone(exposureLevel, beaufort, isEnclosedCove, offshoreFlatWater),
+  /**
+   * THE QUIET-SEA CLAUSE IS ENFORCED TWICE, ON PURPOSE.
+   *
+   * `holdsGlassWaterAtFourBeaufort` already refuses to raise the flag over a sea at or above
+   * GLASS_AT_FOUR_MAX_SEA_STATE_M. Re-testing it here is not a duplicate check but the
+   * structural one: every other geometry input to this ladder is "passed, not derived", so a
+   * caller that computed the flag from a different (or stale, or absent) sea number could
+   * otherwise print ΙΔΑΝΙΚΗ over 0,6-0,8 m water — the 31 beach-days the national measurement
+   * found and this rule exists to exclude. The sea-state ceiling below cannot catch them: it has
+   * no opinion at all under 0,8 m. Unknown sea closes the door for the same reason it does in
+   * the gate — the one rule in this file that can paint the calmest colour may not fire on
+   * missing evidence.
+   */
+  resolveWindTone(
+    exposureLevel,
+    beaufort,
+    isEnclosedCove,
+    offshoreFlatWater,
+    glassWaterAtFour && (() => {
+      const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel);
+      return typeof atShoreM === 'number' && Number.isFinite(atShoreM)
+        && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M;
+    })()
+  ),
   seaStateM,
   // THE TWO CALM RULES DO NOT STACK. A cove is exempt from the sea ceiling because the grid cell
   // ten kilometres out cannot resolve a 50 m pocket. An offshore wind is a different claim — it

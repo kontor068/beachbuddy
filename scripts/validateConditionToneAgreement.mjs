@@ -61,7 +61,9 @@ require.extensions['.ts'] = (module, filename) => {
 const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
-const { seaStateSeverityM, SEA_STATE_AMBER_M } = require(path.join(root, 'utils/waveCharacter.ts'));
+const { seaStateSeverityM, SEA_STATE_AMBER_M, shoreSeaStateM } = require(path.join(root, 'utils/waveCharacter.ts'));
+// The 4 Bft door's own quiet-sea constant — read, never restated, so the gate cannot drift from it.
+const { GLASS_AT_FOUR_MAX_SEA_STATE_M } = require(path.join(root, 'utils/offshoreFlatWater.ts'));
 
 const LEVELS = ['protected', 'partial', 'exposed'];
 const BEAUFORTS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -72,7 +74,7 @@ const PERIODS_S = [undefined, 2.5, 4, 7];
 const CALM_TONES = new Set(['blue']);
 
 /** The chip as the app actually builds it: engine shape in, scoring-layer sea state applied. */
-const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample) => applySeaStateToWindSuitability(
+const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, glassWaterAtFour = false) => applySeaStateToWindSuitability(
   {
     // Only these three fields drive the colour; the rest is carried through untouched.
     suitabilityColor: 'red',
@@ -87,6 +89,11 @@ const chipColor = (exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFl
   seaStateM,
   enclosedCove,
   downwindSeaSample,
+  // The chip must take the 4 Bft door on the same terms the pin does, or the two surfaces
+  // diverge again exactly where the new rule fires.
+  false,
+  undefined,
+  glassWaterAtFour,
 ).suitabilityColor;
 
 const RULES = [
@@ -147,10 +154,21 @@ const RULES = [
     // `downwindSeaSample` is held EQUAL on both sides of the comparison, so this rule keeps
     // isolating the lift's own effect — without that, every downwind-relieved row would read as
     // an illegal lift at the wrong Beaufort.
-    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample }) => {
+    check: ({ pin, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample, enclosedCove, glassWaterAtFour }) => {
       if (!offshoreFlatWater) return null;
-      const withoutLift = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM, downwindSeaSample });
+      // `glassWaterAtFour` and `enclosedCove` held EQUAL for the same reason `downwindSeaSample`
+      // already is: without that, every row the 4 Bft door lifted would be reported here as an
+      // illegal offshore lift at the wrong Beaufort.
+      const withoutLift = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM, downwindSeaSample, isEnclosedCove: enclosedCove, glassWaterAtFour });
       if (pin === withoutLift) return null;
+      // ONLY A CALMER RESULT IS THIS RULE'S BUSINESS. The flag legitimately makes one class of
+      // row ROUGHER: a lifted cove forfeits its sea-ceiling exemption (see the «ΤΟ ΚΟΛΠΟ ΔΕΝ
+      // ΣΤΟΙΒΑΖΕΤΑΙ» paragraph in resolveConditionTone), so protected+cove @5 Bft over a 2,1 m sea
+      // goes orange → red the moment the flag is true. That is the safe direction and the whole
+      // point of the forfeit; reporting it as an illegal lift would push someone to "fix" the
+      // forfeit away. Surfaced 18/08/2026 when the baseline started carrying the cove flag —
+      // before that the comparison was silently against a NON-cove row and never saw it.
+      if (CALMNESS_ORDER.indexOf(pin) < CALMNESS_ORDER.indexOf(withoutLift)) return null;
       if (beaufort !== 5) return `lifted the colour at ${beaufort} Bft — the rule is 5 Bft only`;
       if (exposureStatus !== 'protected') return `lifted a "${exposureStatus}" shore, not a protected one`;
       if (pin !== 'yellow') return `lifted to "${pin}" — the rule may only reach yellow`;
@@ -170,6 +188,42 @@ const RULES = [
       return ceilinged === pin
         ? null
         : `"${pin}" survived a sea that permits only "${ceilinged}"`;
+    },
+  },
+  {
+    id: 'glass-at-four-only-where-it-is-earned',
+    // The 18/08/2026 door (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort) is the ONLY
+    // thing that may make a 4 Bft shore read blue. Only at exactly 4 Bft, only on a shore the
+    // engine itself calls protected, and only as far as blue — anything else means a new calm
+    // branch was opened without the national measurement that justified this one. Every other
+    // flag is held EQUAL across the comparison so this isolates the door's own effect.
+    check: ({ pin, glassWaterAtFour, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample, enclosedCove }) => {
+      if (!glassWaterAtFour) return null;
+      const withoutDoor = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM, offshoreFlatWater, downwindSeaSample, isEnclosedCove: enclosedCove });
+      if (pin === withoutDoor) return null;
+      if (beaufort !== 4) return `lifted the colour at ${beaufort} Bft — the door is 4 Bft only`;
+      if (exposureStatus !== 'protected') return `lifted a "${exposureStatus}" shore, not a protected one`;
+      if (pin !== 'blue') return `lifted to "${pin}" — the door reaches blue or nothing`;
+      return null;
+    },
+  },
+  {
+    id: 'glass-at-four-needs-a-proven-quiet-sea',
+    // The door is the only rule in the app that prints ΙΔΑΝΙΚΗ at 4 Bft, and the sea-state
+    // ceiling cannot police it: below 0,8 m the ceiling has no opinion at all. So the quiet-sea
+    // clause is enforced inside resolveConditionTone as well as inside the gate, and this is the
+    // assert that keeps it there. An UNKNOWN sea must close the door for the same reason.
+    check: ({ pin, glassWaterAtFour, offshoreFlatWater, exposureStatus, beaufort, seaStateM, downwindSeaSample, enclosedCove }) => {
+      if (!glassWaterAtFour) return null;
+      // The SHORE number, exactly as the door and the ceiling both read it — testing the raw
+      // open-water severity here would assert a rule the app does not have.
+      const atShoreM = shoreSeaStateM(seaStateM, exposureStatus, undefined);
+      const quiet = typeof atShoreM === 'number' && Number.isFinite(atShoreM) && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M;
+      if (quiet) return null;
+      const withoutDoor = resolveConditionTone({ exposureLevel: exposureStatus, beaufort, seaStateM, offshoreFlatWater, downwindSeaSample, isEnclosedCove: enclosedCove });
+      return pin === withoutDoor
+        ? null
+        : `lifted to "${pin}" over a shore sea of ${atShoreM ?? 'unknown'} — the door needs below ${GLASS_AT_FOUR_MAX_SEA_STATE_M} m`;
     },
   },
   {
@@ -248,23 +302,29 @@ for (const exposureStatus of LEVELS) {
             // by geometry and swell, but the grid asserts the ladder holds even where the gates
             // would never send it.
             for (const downwindSeaSample of [false, true]) {
-              const seaStateM = seaStateSeverityM(waveHeightM, periodS);
-              const row = {
-                exposureStatus,
-                beaufort,
-                enclosedCove,
-                waveHeightM,
-                periodS,
-                seaStateM,
-                offshoreFlatWater,
-                downwindSeaSample,
-                pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample }),
-                chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample),
-              };
-              combinations += 1;
-              for (const rule of RULES) {
-                const reason = rule.check(row);
-                if (reason) failures.push({ rule: rule.id, reason, row });
+              // The 4 Bft door (18/08/2026). Same treatment as the other two flags: driven over
+              // the WHOLE grid, including the seas and Beauforts its own gate would never let it
+              // reach, so the rules below can catch it firing where it must not.
+              for (const glassWaterAtFour of [false, true]) {
+                const seaStateM = seaStateSeverityM(waveHeightM, periodS);
+                const row = {
+                  exposureStatus,
+                  beaufort,
+                  enclosedCove,
+                  waveHeightM,
+                  periodS,
+                  seaStateM,
+                  offshoreFlatWater,
+                  glassWaterAtFour,
+                  downwindSeaSample,
+                  pin: resolveConditionTone({ exposureLevel: exposureStatus, beaufort, isEnclosedCove: enclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample }),
+                  chip: chipColor(exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample, glassWaterAtFour),
+                };
+                combinations += 1;
+                for (const rule of RULES) {
+                  const reason = rule.check(row);
+                  if (reason) failures.push({ rule: rule.id, reason, row });
+                }
               }
             }
           }

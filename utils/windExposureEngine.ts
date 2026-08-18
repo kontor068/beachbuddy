@@ -359,7 +359,14 @@ export const applySeaStateToWindSuitability = (
    * a wide-open sector. Same computed-by-the-caller contract as , so the chip
    * and the pin cannot answer it differently.
    */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /**
+   * Offshore wind over zero fetch at 4 Bft with the sea proven quiet
+   * (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort). Computed by the caller for the same
+   * reason `downwindSeaSample` is — the sea state only exists at the scoring layer — and from
+   * the same profile, bearing and severity the map pin uses.
+   */
+  glassWaterAtFour = false
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -367,6 +374,7 @@ export const applySeaStateToWindSuitability = (
     isEnclosedCove: enclosedCove,
     seaStateM,
     offshoreFlatWater: suitability.offshoreFlatWater,
+    glassWaterAtFour,
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,

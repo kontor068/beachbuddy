@@ -28,7 +28,7 @@ import {
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
-import { hasDownwindSeaSample } from '../utils/offshoreFlatWater';
+import { hasDownwindSeaSample, holdsGlassWaterAtFourBeaufort } from '../utils/offshoreFlatWater';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { evaluateAfternoonBuild } from '../utils/afternoonBuild';
 import { calculateCrowdLevel, CrowdLevel } from './crowdService';
@@ -2590,6 +2590,18 @@ export const calculateBeachScore = (
   // direction. `seaStateWaveM` + `seaStatePeriodS` is exactly what BeachMap feeds its own
   // ceiling (components/BeachMap.tsx passes seaStateSeverityM(item.seaStateWaveM,
   // item.seaStatePeriodS)), so the two now cannot describe different water.
+  const glassWaterAtFour = holdsGlassWaterAtFourBeaufort({
+    profile: options?.geospatialProfile,
+    windDirectionDeg: weather.wind.deg,
+    beaufort: windAssessment.simpleWindSuitability.windBeaufort,
+    // The SAME severity the ceiling below reads, not the raw height: the door's own quiet-sea
+    // clause and the ceiling must be talking about one number, or a beach could pass a test the
+    // ceiling then contradicts.
+    seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
+    exposureLevel: windAssessment.exposureLevel,
+    seaArrivalExposureLevel,
+    swellWaveHeightM: marine?.swellWaveHeightM,
+  });
   const simpleWindSuitability = applySeaStateToWindSuitability(
     windAssessment.simpleWindSuitability,
     seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
@@ -2609,6 +2621,9 @@ export const calculateBeachScore = (
     // discount the map has just stopped granting, and the two would disagree on the exact days
     // this rule exists for — an offshore wind with a sea still running in (Καβαλικευτά, 13/08).
     seaArrivalExposureLevel,
+    // Μελιδόνι-class (18/08/2026): offshore wind over zero fetch at 4 Bft with the sea proven
+    // quiet. Same profile, same live bearing, same severity the pin uses.
+    glassWaterAtFour,
   );
 
   return {

@@ -92,6 +92,7 @@ const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.
 const { seaStateSeverityM } = require(path.join(root, 'utils/waveCharacter.ts'));
 const {
   holdsFlatWaterUnderOffshoreWind,
+  holdsGlassWaterAtFourBeaufort,
   OFFSHORE_FLAT_MIN_BLOCKED_RATIO,
   OFFSHORE_FLAT_MAX_INTENSITY,
   OFFSHORE_FLAT_MAX_FETCH_KM,
@@ -122,6 +123,11 @@ const DAYS = Number(args.find(a => a.startsWith('--days='))?.slice('--days='.len
  * μετρηθεί, όχι να συζητηθεί.
  */
 const RELAXED_MAX_INTENSITY = Number(args.find(a => a.startsWith('--maxIntensity='))?.slice('--maxIntensity='.length) ?? 25);
+/**
+ * V4 = V3 ΚΑΙ ήσυχο νερό. Στα 5 Μποφ. η εξαίρεση αγοράζει «όχι πορτοκαλί»· στα 4 αγοράζει
+ * «ΙΔΑΝΙΚΗ», που είναι πολύ δυνατότερος ισχυρισμός. Το φράγμα θάλασσας είναι το τίμημα.
+ */
+const QUIET_SEA_MAX_M = Number(args.find(a => a.startsWith('--quietSea='))?.slice('--quietSea='.length) ?? 0.4);
 
 const exposureDir = path.join(root, 'public/data/geospatial/exposure');
 const beachDir = path.join(root, 'public/data/beaches/app');
@@ -236,24 +242,28 @@ const totals = {
   v1Passes: 0,
   v2Passes: 0,
   v3Passes: 0,
+  v4Passes: 0,
   v1Changed: 0,
   v2Changed: 0,
   v3Changed: 0,
+  v4Changed: 0,
   v1SeaHeld: 0,
   v2SeaHeld: 0,
   v3SeaHeld: 0,
+  v4SeaHeld: 0,
 };
 const beaufortHistogram = {};
 const v1Beaches = new Set();
 const v2Beaches = new Set();
 const v3Beaches = new Set();
+const v4Beaches = new Set();
 const rows = [];
 const byRegion = new Map();
 const spotlight = [];
 /** Ποια ρήτρα κόβει τις protected-στα-4 που ΔΕΝ περνάνε — αλλιώς το «δεν περνάει» δεν διδάσκει. */
 const blockedByHistogram = {};
 /** Πόσο ψηλή είναι η θάλασσα κάτω από κάθε αλλαγή σε ΜΠΛΕ. Το νούμερο της ασφάλειας. */
-const seaBuckets = { 'v1': {}, 'v2': {}, 'v3': {} };
+const seaBuckets = { 'v1': {}, 'v2': {}, 'v3': {}, 'v4': {} };
 const bucketOf = (m) => (typeof m !== 'number' ? 'άγνωστη'
   : m < 0.2 ? '<0,2μ' : m < 0.4 ? '0,2-0,4μ' : m < 0.6 ? '0,4-0,6μ' : m < 0.8 ? '0,6-0,8μ' : m < 1.0 ? '0,8-1,0μ' : '≥1,0μ');
 
@@ -305,6 +315,18 @@ const measureRegion = async (region) => {
       if (v1) totals.v1Passes += 1;
       if (v2geom) totals.v2Passes += 1;
       if (v3geom) totals.v3Passes += 1;
+      // V4 = Ο ΚΩΔΙΚΑΣ ΠΟΥ ΕΦΥΓΕ. Καμία αντιγραφή: καλείται η πραγματική πύλη του προϊόντος, με
+      // τα ίδια ορίσματα που της δίνει ο χάρτης και η κάρτα.
+      const v4 = holdsGlassWaterAtFourBeaufort({
+        profile,
+        windDirectionDeg,
+        beaufort,
+        seaStateM: seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS),
+        exposureLevel: score.exposureLevel,
+        seaArrivalExposureLevel: score.seaArrivalExposureLevel,
+        swellWaveHeightM: score.marine?.swellWaveHeightM,
+      });
+      if (v4) totals.v4Passes += 1;
 
       const toneInput = {
         exposureLevel: score.exposureLevel,
@@ -316,21 +338,22 @@ const measureRegion = async (region) => {
         swimVerdictAvoid: score.swimmingComfort === 'avoid_swimming',
         seaArrivalExposureLevel: score.seaArrivalExposureLevel,
       };
-      const before = resolveConditionTone(toneInput);
-      const after = resolveConditionTone({ ...toneInput, beaufort: LIFTED_AS_BEAUFORT });
+      const before = resolveConditionTone({ ...toneInput, glassWaterAtFour: false });
+      const after = resolveConditionTone({ ...toneInput, beaufort: LIFTED_AS_BEAUFORT, glassWaterAtFour: false });
       const changed = before !== after;
 
-      const seaBucket = bucketOf(score.seaStateWaveM);
+      const seaBucket = bucketOf(seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS));
       const note = (variant, lit) => {
         if (!lit) return;
         if (!changed) { totals[`${variant}SeaHeld`] += 1; return; }
         totals[`${variant}Changed`] += 1;
-        (variant === 'v1' ? v1Beaches : variant === 'v2' ? v2Beaches : v3Beaches).add(`${region.regionId}#${beach.id}`);
+        (variant === 'v1' ? v1Beaches : variant === 'v2' ? v2Beaches : variant === 'v3' ? v3Beaches : v4Beaches).add(`${region.regionId}#${beach.id}`);
         seaBuckets[variant][seaBucket] = (seaBuckets[variant][seaBucket] ?? 0) + 1;
       };
       note('v1', Boolean(v1));
       note('v2', Boolean(v2geom));
       note('v3', Boolean(v3geom));
+      note('v4', v4);
 
       if (beach.id === 140) {
         spotlight.push({
@@ -411,11 +434,12 @@ console.log(`  V2 (χωρίς γωνία)         ${totals.v2Passes}  → ΑΛΛ
 console.log(`     κρατήθηκε από θάλασσα ${totals.v2SeaHeld}`);
 console.log(`  V3 (+ ένταση <${RELAXED_MAX_INTENSITY})       ${totals.v3Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v3Changed} (${pct(totals.v3Changed, totals.beachDays)}) · ${v3Beaches.size} παραλίες`);
 console.log(`     κρατήθηκε από θάλασσα ${totals.v3SeaHeld}`);
+console.log(`  V4 (V3 + νερό <${QUIET_SEA_MAX_M}μ)  ${totals.v4Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v4Changed} (${pct(totals.v4Changed, totals.beachDays)}) · ${v4Beaches.size} παραλίες`);
 console.log('');
 console.log('  κατανομή Μποφ.           ' + Object.keys(beaufortHistogram).sort((a, b) => a - b).map(k => `${k}:${beaufortHistogram[k]}`).join(' '));
 console.log('');
 console.log('  ΠΟΙΑ ΘΑΛΑΣΣΑ ΒΑΦΕΤΑΙ ΜΠΛΕ (ύψος κάτω από κάθε αλλαγή)');
-for (const v of ['v1', 'v2', 'v3']) {
+for (const v of ['v1', 'v2', 'v3', 'v4']) {
   const entries = Object.entries(seaBuckets[v]).sort((a, b) => a[0].localeCompare(b[0]));
   console.log(`    ${v.toUpperCase()}  ${entries.length ? entries.map(([k, n]) => `${k}:${n}`).join('  ') : '—'}`);
 }
@@ -439,7 +463,11 @@ if (spotlight.length) {
   console.log('');
   console.log('  ΜΕΛΙΔΟΝΙ (id 140)');
   for (const row of spotlight) {
-    console.log(`    ${row.variant} ημ.${row.dayIndex} άνεμος ${row.windFromDeg}° onshore ${row.onshore} θάλασσα ${row.seaM}μ: ${row.before} → ${row.after}`);
+    console.log(`    ημ.${row.dayIndex} άνεμος ${row.windFromDeg}° · πύλες V1:${row.gates.v1} V2:${row.gates.v2} V3:${row.gates.v3}`
+      + ` · onshore ${row.onshore} ένταση ${row.intensity} ανάπτυγμα ${row.fetchKm}χλμ`);
+    console.log(`         θάλασσα ${row.seaStateWaveM}μ/${row.seaStatePeriodS}s → σοβαρότητα ${row.seaStateSeverityM}μ · αποθαλασσιά ${row.swellM}μ`
+      + ` · downwind ${row.downwindSeaSample} · άφιξη ${row.seaArrivalExposureLevel} · κολύμβηση ${row.swimmingComfort}`);
+    console.log(`         ΧΡΩΜΑ: ${row.before} → ${row.after}${row.changed ? '' : '  (ΚΑΜΙΑ ΑΛΛΑΓΗ)'}`);
   }
 } else {
   console.log('');
@@ -461,6 +489,8 @@ writeFileSync(outPath, `${JSON.stringify({
   v1BeachCount: v1Beaches.size,
   v2BeachCount: v2Beaches.size,
   v3BeachCount: v3Beaches.size,
+  v4BeachCount: v4Beaches.size,
+  quietSeaMaxM: QUIET_SEA_MAX_M,
   byRegion: Object.fromEntries(byRegion),
   rows,
   spotlightMelidoni: spotlight,
