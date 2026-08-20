@@ -58,6 +58,30 @@ import { Beach, WindProfile } from '../types';
  *   #2038 Μικρή Σάντα Μαρία — N/NE  [N,NE,E] -> [E]  · χειρ. 45° vs OSM 183° (απέχει 138°, η γεωμετρία 6°)
  *   #2050 Πυργάκι — SW  [S,SW] -> [S]  · χειρ. 190° vs OSM 120° (απέχει 70°, η γεωμετρία 10°)
  *
+ * ⚠️ 20/08/2026 — ΤΡΕΙΣ ΑΠΟ ΤΙΣ ΟΚΤΩ suspectPin ΞΕΚΛΕΙΔΩΣΑΝ (PORISMA §Γ28ζ).
+ *
+ * ΤΟ ΕΠΙΧΕΙΡΗΜΑ ΤΗΣ ΕΠΑΝΑΦΟΡΑΣ ΗΤΑΝ «η μέτρηση OSM γίνεται ΠΑΝΩ στην ύποπτη πινέζα, άρα μετράει
+ * την τσέπη νερού και όχι τη θάλασσα». Μετρήθηκε: scripts/measureCoastlineScaleStability.mjs
+ * δειγματοληπτεί την ακτογραμμή σε παράθυρα 60/120/250/500/1000 μ. — μια τσέπη 40-80 μ. ΔΕΝ
+ * μπορεί να δώσει την ίδια απάντηση και στα 60 και στα 1000 μ. Ομάδα ελέγχου 40 παραλιών με
+ * πινέζα μη αμφισβητούμενη: 95% STABLE, διάμεση διακύμανση 17,6° — άρα το τεστ ξεχωρίζει.
+ *
+ * ΤΡΕΙΣ ΒΓΗΚΑΝ STABLE ΚΑΙ Η ΠΙΝΕΖΑ ΤΟΥΣ ΤΑΥΤΙΖΕΤΑΙ (0,3 μ.) ΜΕ ΕΠΩΝΥΜΗ ΠΑΡΑΛΙΑ ΤΟΥ OSM,
+ * χωρίς δεύτερη ομώνυμη κοντά — δηλαδή ούτε τσέπη, ούτε λάθος παραλία:
+ *   #1914 Νεροδάφνη (1742) — NE  [N,NE,NW,W] -> [N,NW,W]  · OSM 276° vs χειρ. 0° (84°), γεωμ. 263° (13°)
+ *   #1726 Χρυσή Αμμος (1543) — W/NW  [W,NW] -> []  ΚΑΙ facing 270° -> 147°  · OSM 147°, γεωμ. 155° (8°)
+ *   #1709 Λυδι (1526) — S  [E,SE,S] -> [E,SE]  · OSM 42° vs χειρ. 145° (103°), γεωμ. 49° (7°)
+ *
+ * ΓΙΑΤΙ ΜΟΝΟ Η ΧΡΥΣΗ ΑΜΜΟΣ ΠΗΡΕ ΚΑΙΝΟΥΡΓΙΑ ΓΩΝΙΑ. Η αλλαγή του `beachFacingDirection` ζυγίστηκε
+ * με probeBeachExposureMatrix --step 5 (όχι στα 8 κέντρα τομέων, που τη δείχνουν αδρανή):
+ * Χρυσή Αμμος 13 βήματα καλύτερα / 2 χειρότερα — μπαίνει. Λυδί 6 / 5 — ΔΕΝ μπαίνει, θα
+ * αντάλλασσε ένα λάθος «Εκτεθειμένη» με άλλο. Η γωνία του Λυδιού μένει 145° και ο νότιος του
+ * τομέας μένει στην ουρά επαλήθευσης εδάφους.
+ *
+ * ΔΕΝ ΞΕΚΛΕΙΔΩΣΑΝ: #1702 Κολώνα, #1911 Καμπάνες, #2011 Πάνορμος, #2049 Πούντα βγήκαν POCKET
+ * (διακύμανση 46°-85°) — το σημείωμά τους είχε δίκιο. #1898 Άγιος Δημήτριος βγήκε STABLE αλλά
+ * έχει ΤΡΕΙΣ ομώνυμες παραλίες OSM σε 220 μ.: το τεστ κρίνει «τσέπη ή όχι», ΟΧΙ «σωστή παραλία».
+ *
  * ΕΠΑΝΑΦΕΡΘΗΚΑΝ (καμία αλλαγή σε αυτές):
  *   #1726 Χρυσή Αμμος — suspectPin / πινέζα υπό αμφισβήτηση
  *   #1898 Άγιος Δημήτριος — suspectPin / πινέζα υπό αμφισβήτηση
@@ -238,7 +262,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 0,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'NW', 'W'],
+    exposedToWindDirections: ['N', 'NW', 'W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -787,16 +811,16 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     notes: 'Naousa bay area beach. Keep as semi-sheltered because exact cove shelter is not verified for north-wind calm claims.',
   },
   1846: {
-    beachFacingDirection: 270,
+    beachFacingDirection: 136,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'W', 'NW'],
+    exposedToWindDirections: [],
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
     confidence: 'medium',
     suspectPin: true,
-    notes: 'Known windy/kite area; should not be promoted as calm with 4-5 Beaufort. 2026-06-11 name-collision flag: this profile describes the WEST-coast kite Pounta (Antiparos strait), but the app pin (37.028, 25.252) sits at the EAST-coast Punda beach-club area next to Tserdakia. Correct fix is either moving the pin to the west-coast Pounta or a separate record for Punda Beach Club - pending Miltos decision; until then geometry from this pin must not override the authored facing.',
+    notes: 'EAST-coast Punda Beach (beach-club area next to Tserdakia/Logaras), Paros. 2026-08-21 (PORISMA §Γ28θ) — ΤΑΥΤΟΤΗΤΑ ΛΥΘΗΚΕ, απόφαση Μίλτου «Α»: this record IS the east-coast beach. Proof: our pin sits 0 m from the OSM named beach «Punda Beach», and NO west-coast Pounta exists anywhere in the national OSM beach index (the five same-named entries are on Milos, Fokida, Lakonia and Kea). The profile used to describe the WEST-coast kite Pounta in the Antiparos strait, which is why it claimed facing 270 and exposure to N/NE/W/NW — on an east-facing shore those are OFFSHORE, so we were calling the flattest water of a meltemi day «exposed». Facing corrected to the measured geometry (136 SE, which the pin agrees with to 0.1 deg); exposedToWindDirections EMPTIED rather than re-asserted, so per-sector geometry decides instead of a hand-written guess; knownWindSportSpot KEPT true, and the first attempt to clear it was WRONG: the kite claim did come from the WEST spot, but four neighbouring Paros profiles (legacy 1840/1850/1851/1853) carry the same flag because the EAST coast around Chrysi Akti is itself a windsurf belt, and scripts/windExposureValidation asserts this beach belongs to that cluster. Clearing a caution flag on inference rather than measurement is the over-claiming direction. It costs nothing here: since §Γ28β the flag is DIRECTIONAL, so the 27-step improvement below holds with it on. Probe at 5-deg steps: 27 steps better, 0 worse. suspectPin DELIBERATELY KEPT: the pin is proven correct, but scripts/measureCoastlineScaleStability.mjs rates this coastline POCKET (swing 46 deg), so geometry-derived protection here is still untrusted — removing the flag lifts 49 steps to «protected», which is the over-claiming direction. Pin identity and geometry trust are separate questions. STILL OPEN: the west-coast kite Pounta has no record of its own; if one is ever added it needs a new id, not this one.',
   },
   1847: {
     beachFacingDirection: 190,
@@ -965,10 +989,10 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     notes: 'Batsi bay area; more practical in north/east-sector wind than exposed east beaches, though not guaranteed flat everywhere in the bay.',
   },
   1543: {
-    beachFacingDirection: 270,
+    beachFacingDirection: 147,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['W', 'NW'],
+    exposedToWindDirections: [],
     protectedFromWindDirections: ['NE', 'E'],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -1099,7 +1123,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 145,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['E', 'SE', 'S'],
+    exposedToWindDirections: ['E', 'SE'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
@@ -1716,7 +1740,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
     islandTokens: ['naxos'],
     nameTokens: ['Melino'],
     profile: mediumConfidenceNaxosProfile({
-      beachFacingDirection: 15,
+      beachFacingDirection: 297,
       shelterLevel: 'open',
       fetchExposure: 'high',
       exposedToWindDirections: ['N', 'NW'],
@@ -2177,6 +2201,69 @@ const legacyOverrideOwnerById = (beachId: number): string | undefined => {
   if (beachId >= 1817 && beachId <= 1853) return 'paros';
   return undefined;
 };
+
+/**
+ * ΣΗΜΕΙΑ WINDSURF/KITE ΠΟΥ ΔΕΝ ΕΧΟΥΝ ΧΕΙΡΟΓΡΑΦΟ ΠΡΟΦΙΛ — ΜΟΝΟ Η ΣΗΜΑΙΑ, ΤΙΠΟΤΑ ΑΛΛΟ.
+ *
+ * ΓΙΑΤΙ ΞΕΧΩΡΙΣΤΟ ΣΥΝΟΛΟ ΚΑΙ ΟΧΙ ΕΓΓΡΑΦΗ ΣΤΟΝ ΧΑΡΤΗ ΑΠΟ ΠΑΝΩ. Ένα override σε αυτό το αρχείο
+ * ΑΝΤΙΚΑΘΙΣΤΑ ολόκληρο το προφίλ: το `assessBeachWindExposure` γεμίζει από τη μετρημένη
+ * γεωμετρία ΜΟΝΟ όταν `source === 'unknown'` (`windExposureEngine.ts:918-922`), οπότε μια
+ * χειρόγραφη εγγραφή με σκέτη τη σημαία θα έσβηνε προσανατολισμό, τομείς και fetch αυτών των
+ * 19 παραλιών — τα μόνα δεδομένα που έχουμε γι' αυτές. Το σύνολο μπαίνει ΠΑΝΩ στο προφίλ,
+ * αφού αυτό συναρμολογηθεί, κι έτσι προσθέτει τη μία πληροφορία που ξέρουμε χωρίς να αφαιρεί
+ * καμία που μετρήσαμε.
+ *
+ * ⚠️ ΕΙΝΑΙ ΜΟΝΟΔΡΟΜΟΣ ΠΡΟΣ ΤΗΝ ΠΡΟΣΟΧΗ. Στα ≥4 Μποφόρ κλείνει κάθε αξίωση προστασίας και
+ * σπρώχνει την κάρτα προς «Εκτεθειμένη». Από 20/08/2026 είναι ΚΑΤΕΥΘΥΝΤΙΚΟΣ — σιωπά σε
+ * απόγειο άνεμο (`windExposureEngine.ts:934-971`). Μετρήθηκε πριν γραφτεί, εθνικά και offline,
+ * με `scripts/measureWindSportSpotImpact.mjs`: αναφορά
+ * `reports/weather/windsport-spot-impact-2026-08-20.json`.
+ *
+ * ΠΗΓΗ: χειροκίνητη λίστα, όχι εξαγωγή. Το `activities.surfing` των δεδομένων είναι θόρυβος
+ * (543 λάθος εγγραφές, μνήμη `surf-data-and-spot-registry`) και ΔΕΝ χρησιμοποιήθηκε.
+ * Το σκεπτικό κάθε γραμμής: `reports/weather/windsport-spot-candidates-2026-08-20.json`.
+ *
+ * ΠΩΣ ΓΥΡΙΖΕΙ ΠΙΣΩ: σβήσε το id. Καμία άλλη συνέπεια.
+ */
+export const KNOWN_WIND_SPORT_SPOT_IDS: Set<number> = new Set([
+  // ── Α. Χειροκίνητη λίστα (γνώση), 20/08/2026 ────────────────────────────────
+  16,   // Βάρκιζα — ιστορικό windsurf/kite σημείο Σαρωνικού
+  32,   // Σχινιάς Μαραθώνα — ολυμπιακό κέντρο ιστιοπλοΐας 2004, το σημείο της Αττικής
+  37,   // Αρτέμιδα (Λούτσα) — καθιερωμένο kite σημείο ανατολικής Αττικής · OSM: «WINDSURFING» 420μ
+  402,  // Νέα Ποτίδαια Χαλκιδικής — δίαυλος Ποτίδαιας
+  479,  // Άγιος Μάμας Χαλκιδικής — ρηχός κόλπος Κασσάνδρας, kite Βορείου Ελλάδος
+  599,  // Grammeno Παλαιόχωρας (Χανιά) — το kite σημείο της Παλαιόχωρας
+  1384, // Ηραίο Σάμου — Ποτοκάκι/Ηραίο
+  1614, // Διβάρι Μεσσηνίας — κόλπος Ναβαρίνου
+  1632, // Γιάλοβα Μεσσηνίας — κόλπος Ναβαρίνου
+  1984, // Άγιος Γεώργιος Νάξου — ρηχή λιμνοθάλασσα · OSM: Flisvos Sportclub sport=windsurfing 170μ
+  2010, // Όρκος Νάξου — δίπλα στη Μικρή Βίγλα
+  2051, // Σάντα Μαρία Πάρου — ιστορικό windsurf κέντρο βορειοανατολικής ακτής
+  2281, // Γιαλού Χωράφι, Αφιάρτης Καρπάθου — παγκόσμιας κλάσης
+  2315, // Χριστού Πηγάδι, Αφιάρτης Καρπάθου — κύρια παραλία του Αφιάρτη
+  2335, // Τιγκάκι Κω — βόρεια ακτή
+  2405, // Κρεμαστή Ρόδου — δυτική ακτή · OSM: Meltemi Windsurf Rhodes sport=windsurfing 720μ
+  2422, // Ιξιά Ρόδου — κλασικό windsurf spot · OSM: Surfline Rhodes Windsurfing Station
+  3035, // Φανάρι Αρωγή Ροδόπης — το kite σημείο της Θράκης
+  3143, // Ιαλυσός Ρόδου — ίδιος κόλπος με την Ιξιά · OSM: Procenter Windsurfing Rhodes
+  // ── Β. Βρέθηκαν από τον OSM, 20/08/2026 (scripts/harvestWindSportSpotsOsm.mjs) ──
+  // Ανεξάρτητη πηγή, όχι μνήμη. Κάθε γραμμή κουβαλάει το στοιχείο και την απόστασή του από την
+  // πινέζα· τεκμηρίωση: reports/weather/windsport-spot-candidates-osm-2026-08-20.json
+  134,  // Παλαιόπολη Κυθήρων — η ΙΔΙΑ η παραλία στον OSM φέρει sport=windsurfing (way/190098223)
+  443,  // Σάρτη Χαλκιδικής — leisure=pitch + sport=windsurfing 550μ (way/488907226)
+  594,  // Χρυσή Ακτή Χανίων — amenity=surf_school «Chania Surf Club», SURF/SUP/KITE, 180μ
+  861,  // Φράχτης Κορωνησίας (Αμβρακικός) — «KiteClub Koronisia» 950μ· επόμενη παραλία στα 5,4 χλμ
+  1385, // Κοκκάρι Σάμου — club=sport + sport=windsurfing + samoswindsurfing.gr, 660μ
+  1582, // Μαυροβούνι Γυθείου — leisure=sports_centre + sport=windsurfing 300μ (node/6646935624)
+  2322, // Γυμνιστική Παραλία Τιγκάκι Κω — «Kitesurfing Kos» sport=kitesurfing 700μ, ίδια ακτή με #2335
+  2355, // Φάρος Κω — ΔΥΟ ανεξάρτητες: Windzone WindSurfing Club 120μ + Big Blue rental=windsurf 410μ
+  2424, // Καλαβάρδα Ρόδου — leisure=pitch + sport=kitesurfing «Meltemi Kiteboarding» 65μ
+  2521, // Drepano Kite Surfer's Paradise Beach — το ίδιο το όνομα + sport=kitesurfing 110μ
+  2522, // Kitesurf Spot Ναυπάκτου — το ίδιο το όνομα + sport=kitesurfing 1μ
+  3024, // Αίγινα, Άγιος Βασίλειος — «Spot Kitesurf» 90μ (node/7826304485)
+  3190, // Αγγελοχώρι Θερμαϊκού — η ΙΔΙΑ η παραλία φέρει sport=windsurfing (way/20002634)· η
+        // εγγραφή προστέθηκε 20/08/2026 επειδή δεν υπήρχε καθόλου (§Γ40γ)
+]);
 
 export const getWindProfileOverride = (
   beach: Pick<Beach, 'id' | 'name' | 'aliases' | 'location'>

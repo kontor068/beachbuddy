@@ -1,0 +1,1636 @@
+{
+  "method": "coastline facing at fixed sampling windows; swing across windows separates a small water pocket from open coast",
+  "windows": [
+    60,
+    120,
+    250,
+    500,
+    1000
+  ],
+  "swingLimitDeg": 45,
+  "control": {
+    "n": 32,
+    "medianSwing": 17.64463695470397,
+    "stableRate": 0.9375
+  },
+  "rows": [
+    {
+      "id": 1702,
+      "name": "Κολώνα",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.85583,
+        "lon": 24.77878
+      },
+      "authored": 260,
+      "geo": 89.9,
+      "kind": "target",
+      "nearestM": 0.9589720728540926,
+      "byWindow": {
+        "60": {
+          "facing": 84.94449705383312,
+          "segments": 17
+        },
+        "120": {
+          "facing": 85.90556943316369,
+          "segments": 32
+        },
+        "250": {
+          "facing": 125.09009008637821,
+          "segments": 99
+        },
+        "500": {
+          "facing": 132.07621038563968,
+          "segments": 155
+        },
+        "1000": {
+          "facing": 170.3350237095009,
+          "segments": 373
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 85.39052665566783,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 1709,
+      "name": "Λυδι",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.83275,
+        "lon": 24.94725
+      },
+      "authored": 145,
+      "geo": 48.6,
+      "kind": "target",
+      "nearestM": 7.661258077705492,
+      "byWindow": {
+        "60": {
+          "facing": 44.29280263390535,
+          "segments": 10
+        },
+        "120": {
+          "facing": 41.980873159700025,
+          "segments": 19
+        },
+        "250": {
+          "facing": 41.36349171601552,
+          "segments": 40
+        },
+        "500": {
+          "facing": 24.482984819385592,
+          "segments": 128
+        },
+        "1000": {
+          "facing": 30.882585210729985,
+          "segments": 661
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 19.80981781451976,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1726,
+      "name": "Χρυσή Αμμος",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.87554,
+        "lon": 24.7585
+      },
+      "authored": 147,
+      "geo": 155.2,
+      "kind": "target",
+      "nearestM": 1.1510033936350452,
+      "byWindow": {
+        "60": {
+          "facing": 160.56286622919902,
+          "segments": 5
+        },
+        "120": {
+          "facing": 147.24267469102801,
+          "segments": 13
+        },
+        "250": {
+          "facing": 148.25021554629535,
+          "segments": 41
+        },
+        "500": {
+          "facing": 164.7280827766166,
+          "segments": 117
+        },
+        "1000": {
+          "facing": 172.71739917298703,
+          "segments": 219
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 25.474724481959015,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1898,
+      "name": "Άγιος Δημήτριος",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.72847,
+        "lon": 24.39358
+      },
+      "authored": 300,
+      "geo": 51.2,
+      "kind": "target",
+      "nearestM": 3.909853525770661,
+      "byWindow": {
+        "60": {
+          "facing": 69.75554255188456,
+          "segments": 81
+        },
+        "120": {
+          "facing": 47.376989889024,
+          "segments": 197
+        },
+        "250": {
+          "facing": 52.13353090618483,
+          "segments": 468
+        },
+        "500": {
+          "facing": 65.42561636505519,
+          "segments": 824
+        },
+        "1000": {
+          "facing": 69.46892745717446,
+          "segments": 2102
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 22.378552662860557,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1911,
+      "name": "Καμπάνες",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.76949,
+        "lon": 24.4143
+      },
+      "authored": 330,
+      "geo": 18.4,
+      "kind": "target",
+      "nearestM": 20.075178993712555,
+      "byWindow": {
+        "60": {
+          "facing": 20.567912784090197,
+          "segments": 7
+        },
+        "120": {
+          "facing": 16.14949964502881,
+          "segments": 23
+        },
+        "250": {
+          "facing": 5.425041514822453,
+          "segments": 339
+        },
+        "500": {
+          "facing": 346.9858537134153,
+          "segments": 1088
+        },
+        "1000": {
+          "facing": 332.821531390262,
+          "segments": 1861
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 47.74638139382819,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 1914,
+      "name": "Νεροδάφνη",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.76759,
+        "lon": 24.4118
+      },
+      "authored": 0,
+      "geo": 262.7,
+      "kind": "target",
+      "nearestM": 30.996609953789687,
+      "byWindow": {
+        "60": {
+          "facing": 280.626709659499,
+          "segments": 7
+        },
+        "120": {
+          "facing": 275.5999512369126,
+          "segments": 16
+        },
+        "250": {
+          "facing": 271.4086255069647,
+          "segments": 128
+        },
+        "500": {
+          "facing": 293.91490442739246,
+          "segments": 913
+        },
+        "1000": {
+          "facing": 297.1346643841376,
+          "segments": 1788
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 25.72603887717287,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 2011,
+      "name": "Πάνορμος",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 36.95854,
+        "lon": 25.53871
+      },
+      "authored": 145,
+      "geo": 237.2,
+      "kind": "target",
+      "nearestM": 11.941280337176483,
+      "byWindow": {
+        "60": {
+          "facing": 245.4280072495443,
+          "segments": 6
+        },
+        "120": {
+          "facing": 242.59686191347078,
+          "segments": 14
+        },
+        "250": {
+          "facing": 238.66521233320412,
+          "segments": 22
+        },
+        "500": {
+          "facing": 223.64771510150092,
+          "segments": 58
+        },
+        "1000": {
+          "facing": 194.43654050710165,
+          "segments": 185
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 50.99146674244264,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 2049,
+      "name": "Πούντα",
+      "region": "south-aegean-paros",
+      "coordinates": {
+        "lat": 37.02797,
+        "lon": 25.25249
+      },
+      "authored": 270,
+      "geo": 135.9,
+      "kind": "target",
+      "nearestM": 16.27445237688633,
+      "byWindow": {
+        "60": {
+          "facing": 148.02087744105995,
+          "segments": 5
+        },
+        "120": {
+          "facing": 175.46601407470496,
+          "segments": 15
+        },
+        "250": {
+          "facing": 155.621201787102,
+          "segments": 41
+        },
+        "500": {
+          "facing": 132.6378563531391,
+          "segments": 98
+        },
+        "1000": {
+          "facing": 129.07111722357172,
+          "segments": 201
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 46.39489685113324,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 1692,
+      "name": "Αχλα",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.89382,
+        "lon": 24.9513
+      },
+      "authored": 75,
+      "geo": 71.4,
+      "kind": "control",
+      "nearestM": 3.91306749977813,
+      "byWindow": {
+        "60": {
+          "facing": 72.02300020778011,
+          "segments": 4
+        },
+        "120": {
+          "facing": 69.64535974428134,
+          "segments": 7
+        },
+        "250": {
+          "facing": 55.512505051131086,
+          "segments": 31
+        },
+        "500": {
+          "facing": 60.473130056761306,
+          "segments": 70
+        },
+        "1000": {
+          "facing": 63.36162358388958,
+          "segments": 360
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 16.510495156649085,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1695,
+      "name": "Βόρη",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.90252,
+        "lon": 24.87377
+      },
+      "authored": 45,
+      "geo": 54.8,
+      "kind": "control",
+      "nearestM": 14.03727268583951,
+      "byWindow": {
+        "60": {
+          "facing": 39.172912444646556,
+          "segments": 6
+        },
+        "120": {
+          "facing": 23.13849457526237,
+          "segments": 21
+        },
+        "250": {
+          "facing": 47.33399860885572,
+          "segments": 68
+        },
+        "500": {
+          "facing": 38.75446080544231,
+          "segments": 150
+        },
+        "1000": {
+          "facing": 28.351098508405528,
+          "segments": 482
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 24.195504033593352,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1700,
+      "name": "Καλαμίτσι",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.93265,
+        "lon": 24.69421
+      },
+      "authored": 315,
+      "geo": 306.5,
+      "kind": "control",
+      "nearestM": 9.744833378988893,
+      "byWindow": {
+        "60": {
+          "facing": 309.1078428638363,
+          "segments": 8
+        },
+        "120": {
+          "facing": 313.58233582425856,
+          "segments": 26
+        },
+        "250": {
+          "facing": 313.14506547425754,
+          "segments": 55
+        },
+        "500": {
+          "facing": 300.20619893783635,
+          "segments": 213
+        },
+        "1000": {
+          "facing": 295.21858342423366,
+          "segments": 420
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 18.36375240002485,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1703,
+      "name": "Νειμποριό",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.842466005769,
+        "lon": 24.934902109998
+      },
+      "authored": 79,
+      "geo": 80.9,
+      "kind": "control",
+      "nearestM": 16.871762723254715,
+      "byWindow": {
+        "60": {
+          "facing": 101.16171828761577,
+          "segments": 28
+        },
+        "120": {
+          "facing": 98.32536048009183,
+          "segments": 36
+        },
+        "250": {
+          "facing": 99.31442087947312,
+          "segments": 59
+        },
+        "500": {
+          "facing": 94.5645082202559,
+          "segments": 140
+        },
+        "1000": {
+          "facing": 93.0083934528111,
+          "segments": 752
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 8.153324834804607,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1706,
+      "name": "Λεύκα",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.90598,
+        "lon": 24.85459
+      },
+      "authored": 31.3,
+      "geo": 46.9,
+      "kind": "control",
+      "nearestM": 17.23156198671589,
+      "byWindow": {
+        "60": {
+          "facing": 57.605029932231105,
+          "segments": 5
+        },
+        "120": {
+          "facing": 53.996865072800574,
+          "segments": 12
+        },
+        "250": {
+          "facing": 40.07504087413747,
+          "segments": 47
+        },
+        "500": {
+          "facing": 45.14980975251552,
+          "segments": 109
+        },
+        "1000": {
+          "facing": 33.433672749836205,
+          "segments": 286
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 24.1713571823949,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1708,
+      "name": "Λιμανάκι",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.92202,
+        "lon": 24.69441
+      },
+      "authored": 233.6,
+      "geo": 235.6,
+      "kind": "control",
+      "nearestM": 0.7160754142582485,
+      "byWindow": {
+        "60": {
+          "facing": 262.8735095871035,
+          "segments": 10
+        },
+        "120": {
+          "facing": 266.7588959404619,
+          "segments": 17
+        },
+        "250": {
+          "facing": 260.88841210998083,
+          "segments": 39
+        },
+        "500": {
+          "facing": 262.41468835972654,
+          "segments": 109
+        },
+        "1000": {
+          "facing": 255.01932484313699,
+          "segments": 598
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 11.73957109732487,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1712,
+      "name": "Μικρογιάλι",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.98266,
+        "lon": 24.78494
+      },
+      "authored": 77.2,
+      "geo": 93.1,
+      "kind": "control",
+      "nearestM": 2.3859507425464956,
+      "byWindow": {
+        "60": {
+          "facing": 62.14219546784932,
+          "segments": 27
+        },
+        "120": {
+          "facing": 58.42267426000922,
+          "segments": 39
+        },
+        "250": {
+          "facing": 66.78923954256067,
+          "segments": 100
+        },
+        "500": {
+          "facing": 67.0992481833539,
+          "segments": 167
+        },
+        "1000": {
+          "facing": 64.49417945013619,
+          "segments": 327
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 8.676573923344677,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1715,
+      "name": "Παλαιοπολη",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.79352,
+        "lon": 24.84611
+      },
+      "authored": 240,
+      "geo": 240.2,
+      "kind": "control",
+      "nearestM": 5.385895728656766,
+      "byWindow": {
+        "60": {
+          "facing": 245.69118615297378,
+          "segments": 2
+        },
+        "120": {
+          "facing": 253.8182728855367,
+          "segments": 10
+        },
+        "250": {
+          "facing": 246.20805714670735,
+          "segments": 35
+        },
+        "500": {
+          "facing": 244.58117133494807,
+          "segments": 77
+        },
+        "1000": {
+          "facing": 239.19705037863275,
+          "segments": 169
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 14.621222506903905,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1722,
+      "name": "Ρόζος",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.90026,
+        "lon": 24.89241
+      },
+      "authored": 2,
+      "geo": 4.4,
+      "kind": "control",
+      "nearestM": 12.441859928568759,
+      "byWindow": {
+        "60": {
+          "facing": 16.28884248920923,
+          "segments": 7
+        },
+        "120": {
+          "facing": 11.930028993123187,
+          "segments": 24
+        },
+        "250": {
+          "facing": 13.73358024935925,
+          "segments": 60
+        },
+        "500": {
+          "facing": 10.133304235795777,
+          "segments": 202
+        },
+        "1000": {
+          "facing": 4.08828730306351,
+          "segments": 469
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 12.20055518614572,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1723,
+      "name": "Στενό (Σταυρός)",
+      "region": "south-aegean-andros",
+      "coordinates": {
+        "lat": 37.70371,
+        "lon": 24.95236
+      },
+      "authored": 109.9,
+      "geo": 109.7,
+      "kind": "control",
+      "nearestM": 8.244476013293827,
+      "byWindow": {
+        "60": {
+          "facing": 93.92264529171797,
+          "segments": 3
+        },
+        "120": {
+          "facing": 94.54941344070727,
+          "segments": 6
+        },
+        "250": {
+          "facing": 78.8386345477856,
+          "segments": 25
+        },
+        "500": {
+          "facing": 87.09994208733144,
+          "segments": 59
+        },
+        "1000": {
+          "facing": 94.53007598761991,
+          "segments": 167
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 15.710778892921667,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1899,
+      "name": "Άγιος Ιωάννης",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.67808,
+        "lon": 24.33194
+      },
+      "authored": 284.1,
+      "geo": 297.9,
+      "kind": "control",
+      "nearestM": 3.3353770367119044,
+      "byWindow": {
+        "60": {
+          "facing": 293.66678419544024,
+          "segments": 9
+        },
+        "120": {
+          "facing": 270.9269670539744,
+          "segments": 77
+        },
+        "250": {
+          "facing": 315.70626250063526,
+          "segments": 231
+        },
+        "500": {
+          "facing": 302.73018223538463,
+          "segments": 617
+        },
+        "1000": {
+          "facing": 297.46004558610025,
+          "segments": 981
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 44.77929544666085,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1900,
+      "name": "Άγιος Σώστης",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.66942,
+        "lon": 24.44241
+      },
+      "authored": 180,
+      "geo": 160.8,
+      "kind": "control",
+      "nearestM": 4.216941211279321,
+      "byWindow": {
+        "60": {
+          "facing": 175.4191918446312,
+          "segments": 21
+        },
+        "120": {
+          "facing": 166.67330679451925,
+          "segments": 87
+        },
+        "250": {
+          "facing": 167.12978801069482,
+          "segments": 177
+        },
+        "500": {
+          "facing": 166.65244994813816,
+          "segments": 306
+        },
+        "1000": {
+          "facing": 167.61502597982212,
+          "segments": 668
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 8.766741896493045,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1901,
+      "name": "Αγία Κυριακή",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.66992,
+        "lon": 24.49844
+      },
+      "authored": 165,
+      "geo": 150,
+      "kind": "control",
+      "nearestM": 75.9585141346164,
+      "byWindow": {
+        "60": null,
+        "120": {
+          "facing": 160.5497000882201,
+          "segments": 13
+        },
+        "250": {
+          "facing": 148.68134578680167,
+          "segments": 46
+        },
+        "500": {
+          "facing": 160.42628995792757,
+          "segments": 195
+        },
+        "1000": {
+          "facing": 163.17407431847505,
+          "segments": 398
+        }
+      },
+      "windowsPresent": 4,
+      "swing": 14.492728531673379,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1902,
+      "name": "Αμμουδαράκι",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.69885,
+        "lon": 24.33481
+      },
+      "authored": 301.1,
+      "geo": 299.8,
+      "kind": "control",
+      "nearestM": 3.2607254944166795,
+      "byWindow": {
+        "60": {
+          "facing": 305.4487691440668,
+          "segments": 61
+        },
+        "120": {
+          "facing": 333.3603150691887,
+          "segments": 357
+        },
+        "250": {
+          "facing": 321.8801449119915,
+          "segments": 1367
+        },
+        "500": {
+          "facing": 317.10013064348533,
+          "segments": 2279
+        },
+        "1000": {
+          "facing": 314.1239170965429,
+          "segments": 3268
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 27.911545925121914,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1903,
+      "name": "Αχιβαδολίμνη",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.69055,
+        "lon": 24.44973
+      },
+      "authored": 0,
+      "geo": 345.8,
+      "kind": "control",
+      "nearestM": 22.919826983297924,
+      "byWindow": {
+        "60": {
+          "facing": 333.7244938198265,
+          "segments": 8
+        },
+        "120": {
+          "facing": 332.7816578739782,
+          "segments": 15
+        },
+        "250": {
+          "facing": 332.9181959839369,
+          "segments": 28
+        },
+        "500": {
+          "facing": 334.68579001330073,
+          "segments": 58
+        },
+        "1000": {
+          "facing": 349.38205416480963,
+          "segments": 966
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 16.60039629083144,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1904,
+      "name": "Γέροντας",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.65571,
+        "lon": 24.3688
+      },
+      "authored": 170.1,
+      "geo": 175,
+      "kind": "control",
+      "nearestM": 2.712148240198473,
+      "byWindow": {
+        "60": {
+          "facing": 173.77007613794456,
+          "segments": 60
+        },
+        "120": {
+          "facing": 167.88693754090605,
+          "segments": 202
+        },
+        "250": {
+          "facing": 165.5076531764787,
+          "segments": 485
+        },
+        "500": {
+          "facing": 170.422712328368,
+          "segments": 1083
+        },
+        "1000": {
+          "facing": 169.9003736104886,
+          "segments": 2409
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 8.262422961465859,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1905,
+      "name": "Γερανιά",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.7503,
+        "lon": 24.44778
+      },
+      "authored": 15,
+      "geo": 359.5,
+      "kind": "control",
+      "nearestM": 6.159413354467238,
+      "byWindow": {
+        "60": {
+          "facing": 341.5939947539634,
+          "segments": 56
+        },
+        "120": {
+          "facing": 349.9139610755899,
+          "segments": 177
+        },
+        "250": {
+          "facing": 340.4302667718334,
+          "segments": 784
+        },
+        "500": {
+          "facing": 352.12587785988364,
+          "segments": 1612
+        },
+        "1000": {
+          "facing": 6.367106245469472,
+          "segments": 2632
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 25.936839473636155,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1906,
+      "name": "Θειορυχείο",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.69413,
+        "lon": 24.54479
+      },
+      "authored": 90,
+      "geo": 94.5,
+      "kind": "control",
+      "nearestM": 10.347893237216287,
+      "byWindow": {
+        "60": {
+          "facing": 89.984643645691,
+          "segments": 5
+        },
+        "120": {
+          "facing": 87.84318618575622,
+          "segments": 16
+        },
+        "250": {
+          "facing": 99.34122393638813,
+          "segments": 69
+        },
+        "500": {
+          "facing": 99.19667195947835,
+          "segments": 123
+        },
+        "1000": {
+          "facing": 100.9884943700489,
+          "segments": 175
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 13.145308184292617,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1908,
+      "name": "Κάπρος",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.75277,
+        "lon": 24.50198
+      },
+      "authored": 15,
+      "geo": 1.2,
+      "kind": "control",
+      "nearestM": 5.043534501370849,
+      "byWindow": {
+        "60": {
+          "facing": 341.48610975341586,
+          "segments": 21
+        },
+        "120": {
+          "facing": 345.6643608042647,
+          "segments": 49
+        },
+        "250": {
+          "facing": 355.77578098761285,
+          "segments": 215
+        },
+        "500": {
+          "facing": 348.8553123679063,
+          "segments": 635
+        },
+        "1000": {
+          "facing": 346.6484693935264,
+          "segments": 1062
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 14.28967123419693,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1909,
+      "name": "Κάτεργο",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.6547,
+        "lon": 24.37721
+      },
+      "authored": 174.2,
+      "geo": 164.8,
+      "kind": "control",
+      "nearestM": 4.391293104773426,
+      "byWindow": {
+        "60": {
+          "facing": 94.43600649101336,
+          "segments": 98
+        },
+        "120": {
+          "facing": 122.9139035885712,
+          "segments": 417
+        },
+        "250": {
+          "facing": 147.74533250883576,
+          "segments": 888
+        },
+        "500": {
+          "facing": 154.32100237162626,
+          "segments": 1227
+        },
+        "1000": {
+          "facing": 156.0527284686857,
+          "segments": 2046
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 61.61672197767234,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 1910,
+      "name": "Κήποι",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.66293,
+        "lon": 24.42877
+      },
+      "authored": 180,
+      "geo": 191.6,
+      "kind": "control",
+      "nearestM": 2.5610906428358864,
+      "byWindow": {
+        "60": {
+          "facing": 193.83774538654308,
+          "segments": 14
+        },
+        "120": {
+          "facing": 192.88263039935035,
+          "segments": 35
+        },
+        "250": {
+          "facing": 183.23899072751252,
+          "segments": 70
+        },
+        "500": {
+          "facing": 183.77735134243522,
+          "segments": 111
+        },
+        "1000": {
+          "facing": 166.9323256983812,
+          "segments": 702
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 26.905419688161828,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1912,
+      "name": "Λαγκάδα",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.72487,
+        "lon": 24.44193
+      },
+      "authored": 180,
+      "geo": 175.9,
+      "kind": "control",
+      "nearestM": 8.365450584038285,
+      "byWindow": {
+        "60": {
+          "facing": 168.97815734914445,
+          "segments": 22
+        },
+        "120": {
+          "facing": 173.15406263081877,
+          "segments": 72
+        },
+        "250": {
+          "facing": 147.76664526664592,
+          "segments": 274
+        },
+        "500": {
+          "facing": 142.3248319832751,
+          "segments": 519
+        },
+        "1000": {
+          "facing": 151.04791974442838,
+          "segments": 1255
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 30.82923064754368,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1920,
+      "name": "Προβατάς",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.66959,
+        "lon": 24.44634
+      },
+      "authored": 180,
+      "geo": 182.3,
+      "kind": "control",
+      "nearestM": 9.478684223303857,
+      "byWindow": {
+        "60": {
+          "facing": 175.72037126404462,
+          "segments": 58
+        },
+        "120": {
+          "facing": 177.3921855346165,
+          "segments": 70
+        },
+        "250": {
+          "facing": 182.32853668718306,
+          "segments": 145
+        },
+        "500": {
+          "facing": 185.18604681844636,
+          "segments": 331
+        },
+        "1000": {
+          "facing": 177.60488152802372,
+          "segments": 800
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 9.465675554401741,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1921,
+      "name": "Ριβάρι",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.70322,
+        "lon": 24.40162
+      },
+      "authored": 30,
+      "geo": 29.8,
+      "kind": "control",
+      "nearestM": 3.2056997201956956,
+      "byWindow": {
+        "60": {
+          "facing": 180.27513769155243,
+          "segments": 73
+        },
+        "120": {
+          "facing": 179.53821933617644,
+          "segments": 151
+        },
+        "250": {
+          "facing": 172.5598262914076,
+          "segments": 618
+        },
+        "500": {
+          "facing": 151.9261109243737,
+          "segments": 1127
+        },
+        "1000": {
+          "facing": 127.80555010765539,
+          "segments": 1664
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 52.46958758389701,
+      "verdict": "POCKET"
+    },
+    {
+      "id": 1923,
+      "name": "Τουρκοθάλασσα",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.74889,
+        "lon": 24.44475
+      },
+      "authored": 340,
+      "geo": 348.6,
+      "kind": "control",
+      "nearestM": 0.2452640944547572,
+      "byWindow": {
+        "60": {
+          "facing": 351.64893992278104,
+          "segments": 22
+        },
+        "120": {
+          "facing": 337.32117009549336,
+          "segments": 86
+        },
+        "250": {
+          "facing": 330.49567259096915,
+          "segments": 304
+        },
+        "500": {
+          "facing": 349.0924252912243,
+          "segments": 1110
+        },
+        "1000": {
+          "facing": 8.185393337182688,
+          "segments": 2646
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 37.68972074621354,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1924,
+      "name": "Τριάδες",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.7063933,
+        "lon": 24.3369804
+      },
+      "authored": 270.1,
+      "geo": 268.2,
+      "kind": "control",
+      "nearestM": 14.805907729430215,
+      "byWindow": {
+        "60": {
+          "facing": 261.24928399768277,
+          "segments": 18
+        },
+        "120": {
+          "facing": 266.9992823658259,
+          "segments": 133
+        },
+        "250": {
+          "facing": 253.59634691012525,
+          "segments": 370
+        },
+        "500": {
+          "facing": 256.76879308263847,
+          "segments": 709
+        },
+        "1000": {
+          "facing": 264.43669746222895,
+          "segments": 3231
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 13.402935455700572,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1926,
+      "name": "Φατούρενα",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.70025,
+        "lon": 24.40789
+      },
+      "authored": 5,
+      "geo": 3.2,
+      "kind": "control",
+      "nearestM": 13.924120656519458,
+      "byWindow": {
+        "60": {
+          "facing": 359.8702633683432,
+          "segments": 7
+        },
+        "120": {
+          "facing": 0.555480325764222,
+          "segments": 14
+        },
+        "250": {
+          "facing": 348.16134971814347,
+          "segments": 148
+        },
+        "500": {
+          "facing": 351.92932017486874,
+          "segments": 880
+        },
+        "1000": {
+          "facing": 358.1411635542036,
+          "segments": 1963
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 12.39413060762081,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1928,
+      "name": "Φυρλίνγκος",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.68186,
+        "lon": 24.53698
+      },
+      "authored": 135,
+      "geo": 141.2,
+      "kind": "control",
+      "nearestM": 9.575309986013636,
+      "byWindow": {
+        "60": {
+          "facing": 151.633538170669,
+          "segments": 2
+        },
+        "120": {
+          "facing": 155.70376333340312,
+          "segments": 16
+        },
+        "250": {
+          "facing": 153.4443155382412,
+          "segments": 75
+        },
+        "500": {
+          "facing": 138.3339815078424,
+          "segments": 97
+        },
+        "1000": {
+          "facing": 138.05912637869915,
+          "segments": 323
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 17.64463695470397,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1933,
+      "name": "Αγκάλη",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.71696,
+        "lon": 24.54085
+      },
+      "authored": 90,
+      "geo": 91.7,
+      "kind": "control",
+      "nearestM": 3.9366412219615854,
+      "byWindow": {
+        "60": {
+          "facing": 105.14986309209365,
+          "segments": 4
+        },
+        "120": {
+          "facing": 96.27583914496785,
+          "segments": 12
+        },
+        "250": {
+          "facing": 93.54223782948395,
+          "segments": 23
+        },
+        "500": {
+          "facing": 87.65134610963395,
+          "segments": 61
+        },
+        "1000": {
+          "facing": 81.75713706579336,
+          "segments": 154
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 23.392726026300352,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1936,
+      "name": "Κολυμπισιώνας",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.72319,
+        "lon": 24.53845
+      },
+      "authored": 85,
+      "geo": 80.9,
+      "kind": "control",
+      "nearestM": 8.88685580671942,
+      "byWindow": {
+        "60": {
+          "facing": 91.70299920876266,
+          "segments": 2
+        },
+        "120": {
+          "facing": 89.82484628004914,
+          "segments": 5
+        },
+        "250": {
+          "facing": 75.22729746726122,
+          "segments": 69
+        },
+        "500": {
+          "facing": 70.16450364026912,
+          "segments": 90
+        },
+        "1000": {
+          "facing": 73.50447152788826,
+          "segments": 144
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 21.538495568493545,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 1938,
+      "name": "Τρία Πηγάδια",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.73015,
+        "lon": 24.53667
+      },
+      "authored": 75,
+      "geo": 92.5,
+      "kind": "control",
+      "nearestM": 0.11818603071159853,
+      "byWindow": {
+        "60": {
+          "facing": 111.13234164384983,
+          "segments": 3
+        },
+        "120": {
+          "facing": 110.38779390003083,
+          "segments": 5
+        },
+        "250": {
+          "facing": 98.54310595251968,
+          "segments": 24
+        },
+        "500": {
+          "facing": 95.39332987172617,
+          "segments": 68
+        },
+        "1000": {
+          "facing": 90.37670238889336,
+          "segments": 263
+        }
+      },
+      "windowsPresent": 5,
+      "swing": 20.755639254956463,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 3000,
+      "name": "Κλέφτικο",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.65222,
+        "lon": 24.33303
+      },
+      "authored": 147,
+      "geo": 147,
+      "kind": "control",
+      "nearestM": 67.84886112084465,
+      "byWindow": {
+        "60": null,
+        "120": {
+          "facing": 179.52986328328393,
+          "segments": 160
+        },
+        "250": {
+          "facing": 166.11124052085074,
+          "segments": 548
+        },
+        "500": {
+          "facing": 156.55650389236496,
+          "segments": 1537
+        },
+        "1000": {
+          "facing": 158.29000950156797,
+          "segments": 3444
+        }
+      },
+      "windowsPresent": 4,
+      "swing": 22.973359390918972,
+      "verdict": "STABLE"
+    },
+    {
+      "id": 3054,
+      "name": "Πάχαινα",
+      "region": "south-aegean-milos",
+      "coordinates": {
+        "lat": 36.75253,
+        "lon": 24.49665
+      },
+      "authored": 343.1,
+      "geo": 343.1,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1981,
+      "name": "Αγία Άννα",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 37.0689603,
+        "lon": 25.3544164
+      },
+      "authored": 260,
+      "geo": 249.1,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1988,
+      "name": "Αμμίτης",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 37.1363228,
+        "lon": 25.4360475
+      },
+      "authored": 330,
+      "geo": 345.7,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1990,
+      "name": "Απόλλωνας",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 37.17976,
+        "lon": 25.552063
+      },
+      "authored": 45,
+      "geo": 55.7,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1992,
+      "name": "Γλατζά",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 37.1373729,
+        "lon": 25.4395072
+      },
+      "authored": 330,
+      "geo": 326.7,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1995,
+      "name": "Παραλία Καλαντός",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 36.93636,
+        "lon": 25.47184
+      },
+      "authored": 180,
+      "geo": 182.7,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1997,
+      "name": "Καστράκι",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 37.0010969,
+        "lon": 25.3878136
+      },
+      "authored": 245,
+      "geo": 251.1,
+      "kind": "control",
+      "error": "network"
+    },
+    {
+      "id": 1998,
+      "name": "Κέδρος",
+      "region": "south-aegean-naxos",
+      "coordinates": {
+        "lat": 36.983778,
+        "lon": 25.3858679
+      },
+      "authored": 250,
+      "geo": 260,
+      "kind": "control",
+      "error": "network"
+    }
+  ]
+}
