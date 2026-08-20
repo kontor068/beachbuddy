@@ -44,6 +44,20 @@ export interface ForecastProvider {
   hourlyForecastUrlBatch(points: ForecastPoint[]): string;
   marineForecastUrlBatch(points: ForecastPoint[]): string;
   /**
+   * The wave TAIL and the spike witness, split off the marine call on 20/08/2026 (PORISMA §Γ43).
+   *
+   * `ewam` reports a wave height for exactly 94 hours — measured at 153 points, min = median =
+   * max — so `meteofrance_wave` supplies hours 95-144 and nothing inside days 1-4. Its own route
+   * buys it a 12 h cache instead of 3 h, matching the 12 h cadence at which the model actually
+   * publishes. The split itself saves nothing: Open-Meteo prices models per coordinate, so two
+   * one-model requests weigh the same as one two-model request. The cache lifetime is the saving.
+   *
+   * This leg is ALSO the witness of `uncorroboratedSpikeHours`, so it must keep covering the same
+   * days as the wave call — the two series are merged hour-for-hour, by timestamp.
+   */
+  marineTailForecastUrl(lat: number, lon: number): string;
+  marineTailForecastUrlBatch(points: ForecastPoint[]): string;
+  /**
    * Water temperature, split off the marine call on 14/08/2026.
    *
    * Its own endpoint because models are a per-coordinate cost multiplier at Open-Meteo, and
@@ -61,6 +75,22 @@ export interface ForecastProvider {
    * per-cluster sampling would multiply cost for identical numbers.
    */
   dustForecastUrl(lat: number, lon: number): string;
+  /**
+   * Wind DIRECTION over the water in front of the shore — the over-water wind layer
+   * (utils/overWaterWind.ts, PORISMA §Γ29/§Γ37β). Added 20/08/2026.
+   *
+   * Its own route for the same reason water temperature got one: it must carry
+   * `cell_selection=sea`, and the two existing forecast URLs must NOT. They also carry
+   * `temperature_2m`, and a sea cell would print sea-cell air temperature on a Greek July
+   * afternoon — which is exactly why `cell_selection=sea` was kept off them for a year.
+   *
+   * ONE hourly field. Open-Meteo floors a request at one call per coordinate whatever it
+   * asks for, so this is as cheap as a request can be — but it is still a full extra call per
+   * cell, which is the entire cost of the layer. Only the 666 sea cells that serve beaches
+   * past the 3 km gate are ever requested (data/forecast-sea-cells.generated.json), and only
+   * when the land wind reaches OVER_WATER_MIN_BEAUFORT.
+   */
+  overWaterWindUrlBatch(points: ForecastPoint[]): string;
 }
 
 export interface ForecastPoint {

@@ -47,6 +47,26 @@ const UPSTREAMS = {
     customerHost: 'https://customer-marine-api.open-meteo.com',
     paths: new Set(['/v1/marine']),
   },
+  // The wave TAIL (days 4-6) and the spike witness, split off the wave route on 20/08/2026 —
+  // PORISMA §Γ43. Same upstream host and path as `open-meteo-marine`; a separate ROUTE only so
+  // it can carry its own model pin and its own cache lifetime (12 h against the wave route's
+  // 3 h). See MARINE_TAIL_MODEL below for why this model tolerates that and `ewam` does not.
+  'open-meteo-marine-tail': {
+    host: 'https://marine-api.open-meteo.com',
+    customerHost: 'https://customer-marine-api.open-meteo.com',
+    paths: new Set(['/v1/marine']),
+  },
+  // Wind DIRECTION over the water (added 20/08/2026 — PORISMA §Γ29/§Γ37β). Same upstream host
+  // and path as `open-meteo`; it is a separate ROUTE here so that `cell_selection=sea` reaches
+  // ONLY this one. The weather route must never carry it: those URLs also carry temperature_2m
+  // and the wind SPEED, and both are calibrated on the land cell. Cache lifetime deliberately
+  // NOT overridden — it falls through to CDN_MAX_AGE_S.weather (60 min), which is the same
+  // upstream refresh cadence the direction follows.
+  'open-meteo-wind-sea': {
+    host: 'https://api.open-meteo.com',
+    customerHost: 'https://customer-api.open-meteo.com',
+    paths: new Set(['/v1/forecast']),
+  },
   // Saharan-dust route (added 09/08/2026, the day the paid plan made it affordable).
   // Same strict allow-list discipline: only /v1/air-quality, only the shared
   // ALLOWED_PARAMS — the client asks for `hourly=dust` and nothing else.
@@ -120,8 +140,17 @@ let authAlertSent = false;
 //                           QC-good hourly observations from three Greek buoys it beats
 //                           meteofrance_wave on bias (+1.7% vs -8.2%) and RMSE (0.184 vs 0.203),
 //                           with a third of its dangerous underestimates (62 vs 204).
-//   meteofrance_wave      — fallback: ewam runs ~82 h ahead, so days 4-6 need this, as do the
-//                           inner-gulf cells ewam's grid does not resolve.
+//   meteofrance_wave      — fallback for the TAIL, and measured 20/08/2026 (PORISMA §Γ43) to be
+//                           nothing else. Live sample of 153 points (96 national + all 57 that
+//                           explicitly prefer this model): ewam returns a wave height for
+//                           exactly 94 hours at EVERY point — min = median = max, no gaps — and
+//                           is blind at 0 of the 153. So this model supplies precisely hours
+//                           95-144, i.e. 34% of the 6 days we ask for, and nothing inside days
+//                           1-4. The two claims this line used to carry are corrected: the
+//                           horizon is 94 h, not ~82 h, and "inner-gulf cells ewam's grid does
+//                           not resolve" did not reproduce anywhere. The 57 preferred points are
+//                           NOT an availability problem — ewam answers there too; its cell just
+//                           describes water the beach cannot see (utils/marineModelPreference).
 //   meteofrance_currents  — sea_surface_temperature only. Pinning the wave model alone once
 //                           silently removed the water-temperature reading from every
 //                           beach-detail page; this model is the only one that carries it.
@@ -137,7 +166,30 @@ let authAlertSent = false;
 // in services/weatherService.ts reads those suffixed names, falling back to the bare ones.
 // Going back to a single model here is therefore safe, but adding/renaming a model without
 // updating that parser is not.
-const MARINE_MODEL = 'ewam,meteofrance_wave';
+const MARINE_MODEL = 'ewam';
+
+// The TAIL pin, split off the wave route on 20/08/2026 (PORISMA §Γ43). Same upstream, same six
+// fields, its own route — for one reason only: **its own cache lifetime**.
+//
+// WHY THE SPLIT SAVES NOTHING BY ITSELF. The provider prices work, not HTTP requests:
+// two requests of one model each weigh exactly the same as one request of two models (1,0 + 1,0
+// = 2,0). Splitting is cost-NEUTRAL. The saving is entirely in `CDN_MAX_AGE_S.marineTail` below.
+//
+// WHY THIS MODEL TOLERATES A LONGER LIFETIME AND `ewam` DOES NOT. Measured 20/08/2026 over 153
+// points: `ewam` reports a wave height for exactly 94 hours everywhere, so this model supplies
+// hours 95-144 — days 4 to 6. Nobody plans an afternoon swim off day 5, and both models publish
+// only every 12 h anyway, so re-asking every 3 h re-bought an identical series ~4× per run.
+//
+// ⚠️ THIS MODEL HAS A SECOND JOB AND IT IS THE REASON IT WAS NOT SIMPLY DELETED.
+// utils/marineForecastParsing uses it as the WITNESS of `uncorroboratedSpikeHours`: when ewam
+// reports a jump >1 m/h reaching ≥1 m and this model does not see half of it, that hour falls to
+// the witness's lower value. So the witness SUPPRESSES wave height, which means a stale witness
+// suppresses a rising sea — the one direction this project never accepts. Two things bound that:
+// the guard fired 0 times in 9.024 lead-hours when measured (scripts/measureSpikeWitnessStaleness.mjs,
+// report reports/quality/spike-witness-staleness.json), and the parser's own rule is «no witness
+// => no accusation», so absence is already the safe case. RE-RUN THAT SCRIPT before widening this
+// lifetime further — the zero was measured on ONE calm day and bounds nothing about a storm.
+const MARINE_TAIL_MODEL = 'meteofrance_wave';
 
 // The water-temperature pin, on its own route since 14/08/2026 (see UPSTREAMS above and
 // services/forecast/openMeteoProvider.ts for the full reasoning).
@@ -509,13 +561,14 @@ const PREFIX = '/api/forecast/';
 //      it BY TIME (dt_txt), not by position. A response fetched at 07:00 therefore still yields
 //      19:00's own value at 19:00. Longer caching here does not age the number on the card; it
 //      only stops us re-buying a series we already hold.
-const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800, sst: 43200 };
+const CDN_MAX_AGE_S = { weather: 3600, marine: 10800, air: 10800, sst: 43200, marineTail: 43200 };
 const CDN_STALE_WHILE_REVALIDATE_S = 1800;
 
 /** The route's own s-maxage, in seconds. One definition, used by the header and by the store. */
 const routeMaxAgeS = (providerKey) => (
   providerKey === 'open-meteo-marine' ? CDN_MAX_AGE_S.marine
     : providerKey === 'open-meteo-marine-sst' ? CDN_MAX_AGE_S.sst
+      : providerKey === 'open-meteo-marine-tail' ? CDN_MAX_AGE_S.marineTail
       : providerKey === 'open-meteo-air-quality' ? CDN_MAX_AGE_S.air
         : CDN_MAX_AGE_S.weather
 );
@@ -673,6 +726,7 @@ export const handler = async (event) => {
   // weighing the query before this line would under-charge every marine request.
   if (providerKey === 'open-meteo-marine') query.set('models', MARINE_MODEL);
   if (providerKey === 'open-meteo-marine-sst') query.set('models', SEA_TEMPERATURE_MODEL);
+  if (providerKey === 'open-meteo-marine-tail') query.set('models', MARINE_TAIL_MODEL);
 
   // How many coordinates this one request carries. buildSafeQuery has already
   // validated the list and guaranteed latitude/longitude have equal length. Locations
