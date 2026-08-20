@@ -8380,6 +8380,7 @@ export const App: React.FC = () => {
           onHourChange={handleMapHourChange}
           onHourSettled={handleMapHourSettled}
           enableHourSlider
+          showMarkerConditions
           stayHours={stayHours}
           onStayHoursChange={handleStayHoursChange}
           language={language}
@@ -8784,6 +8785,7 @@ export const App: React.FC = () => {
                     onHourChange={handleMapHourChange}
                     onHourSettled={handleMapHourSettled}
                     enableHourSlider
+                    showMarkerConditions
                     stayHours={stayHours}
                     onStayHoursChange={handleStayHoursChange}
                     language={language}
@@ -9118,6 +9120,7 @@ export const App: React.FC = () => {
                             selectedHourDt={selectedHourDt}
                             onHourChange={handleMapHourChange}
                             enableHourSlider
+                            showMarkerConditions
                             stayHours={stayHours}
                             onStayHoursChange={handleStayHoursChange}
                             language={language}

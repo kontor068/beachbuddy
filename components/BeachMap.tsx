@@ -26,6 +26,7 @@ import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/
 import { AmenityChip, getAmenityChips } from '../utils/amenities';
 import { translations } from '../translations';
 import { seaStateSeverityM } from '../utils/waveCharacter';
+import { buildBeachConditionsReadout } from '../utils/beachConditionsReadout';
 import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
 import { hasDownwindSeaSample, holdsFlatWaterUnderOffshoreWind, holdsGlassWaterAtFourBeaufort } from '../utils/offshoreFlatWater';
 
@@ -62,6 +63,14 @@ interface BeachMapProps {
   onHourSettled?: () => void;
   /** Whether to render the docked hour slider under the map. */
   enableHourSlider?: boolean;
+  /**
+   * ΤΟ ΠΑΤΗΜΑ ΤΗΣ ΠΙΝΕΖΑΣ ΑΝΟΙΓΕΙ ΤΑΜΠΕΛΑΚΙ ΑΝΤΙ ΓΙΑ ΤΗ ΣΕΛΙΔΑ (20/08/2026).
+   *
+   * Ανοιχτό μόνο στον χάρτη της κύριας οθόνης αποτελεσμάτων. Στη σελίδα της παραλίας η πινέζα
+   * συνεχίζει να πηγαίνει κατευθείαν στην κάρτα — εκεί ο επισκέπτης έχει ήδη τα δύο νούμερα
+   * μπροστά του και ένα ταμπελάκι θα τα έλεγε δεύτερη φορά.
+   */
+  showMarkerConditions?: boolean;
   /**
    * How long the visitor says they are staying, in hours — `null` means they have not said, which
    * is the untouched "this moment" behaviour. Rendered as chips beside the hour slider because
@@ -398,6 +407,17 @@ const BeachHoverPreviewCard: React.FC<{
   const left = Math.min(Math.max(candidateLeft, 12), maxLeft);
   const top = Math.min(Math.max(position.y - HOVER_PREVIEW_HEIGHT / 2, 12), maxTop);
   const beachName = item.name || item.beach.name[language] || item.beach.name.en;
+  const hoverReadout = buildBeachConditionsReadout({
+    beachWindSpeedKmph: localWind?.speedKmh,
+    waveHeightM: item.waveHeightM,
+    seaStateWaveM: item.seaStateWaveM,
+    seaStatePeriodS: item.seaStatePeriodS,
+    shoreWaveHeightM: item.shoreWaveHeightM,
+    shoreDisplayWaveM: item.shoreDisplayWaveM,
+    language,
+  });
+  const hoverWaveText = hoverReadout.waveText;
+  const hoverWaveWord = hoverReadout.waveWord;
 
   return (
     <div
@@ -440,6 +460,17 @@ const BeachHoverPreviewCard: React.FC<{
             </p>
           )}
 
+          {/* Η ΘΑΛΑΣΣΑ ΔΙΠΛΑ ΣΤΟΝ ΑΕΡΑ, ΠΟΤΕ ΜΑΖΙ ΤΟΥ (20/08/2026). Αυτή η κάρτα έδειχνε μόνο
+              αέρα από την πρώτη μέρα, οπότε στον υπολογιστή η αιώρηση πάνω από μια πινέζα
+              απαντούσε το μισό ερώτημα. Ίδιο νούμερο με την κάρτα και με το ταμπελάκι της
+              πινέζας — μία πηγή, `utils/beachConditionsReadout`. */}
+          {hoverWaveText && (
+            <p className="mt-0.5 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-700">
+              <Waves className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+              <span>{hoverWaveWord ? `${hoverWaveWord} · ` : ''}{hoverWaveText}</span>
+            </p>
+          )}
+
           {featureChips.length > 0 && (
             <div className="mt-2 grid grid-cols-2 gap-1.5">
               {featureChips.map(chip => (
@@ -457,6 +488,99 @@ const BeachHoverPreviewCard: React.FC<{
       </div>
     </div>
   );
+};
+
+/**
+ * ΤΟ ΤΑΜΠΕΛΑΚΙ ΤΗΣ ΠΙΝΕΖΑΣ — Ο ΑΕΡΑΣ ΚΑΙ Η ΘΑΛΑΣΣΑ ΧΩΡΙΣΤΑ (20/08/2026).
+ *
+ * Η βίβλος το άφηνε γραμμένο σαν ανοιχτό κενό στη §Γ14: «Η ΠΙΝΕΖΑ ΜΕΝΕΙ ΒΟΥΒΗ — όποιος
+ * κοιτάζει μόνο κουκκίδες δεν παίρνει τίποτα από αυτή τη δουλειά.» Το χρώμα απαντά «πόσο καλή
+ * είναι συνολικά η παραλία»· δεν απαντά «τι αέρα και τι κύμα έχει», και ο κόσμος διάβαζε το
+ * πορτοκαλί ως κύμα (μετρημένο: στα 6+ Μποφόρ το νερό είναι <0,4 μ. στο 62,2% των περιπτώσεων).
+ *
+ * ΔΥΟ ΓΡΑΜΜΕΣ, ΠΟΤΕ ΜΙΑ ΜΕ «Η». Ο αέρας και η θάλασσα είναι δύο ανεξάρτητα σήματα και
+ * γράφονται χωριστά, με το δικό τους εικονίδιο και το δικό τους νούμερο. Καμία λέξη
+ * ετυμηγορίας εδώ μέσα και κανένα χρώμα καταλληλότητας: το χρώμα το κρατάει η κουκκίδα, μία
+ * φορά. Τα εικονίδια είναι sky, όπως στην κάρτα — όχι μπλε/κίτρινο/πορτοκαλί/κόκκινο, γιατί
+ * δεύτερος χρωματικός κώδικας στην ίδια οθόνη είναι ακριβώς η σύγχυση που λύνουμε.
+ *
+ * ΤΑ ΝΟΥΜΕΡΑ ΕΙΝΑΙ ΤΑ ΙΔΙΑ ΜΕ ΤΗΣ ΚΑΡΤΑΣ, από την ίδια συνάρτηση
+ * (`utils/beachConditionsReadout`) — όχι από δεύτερο υπολογισμό εδώ.
+ */
+const MarkerConditionsPopup: React.FC<{
+  item: SuitableBeach;
+  language: LanguageCode;
+  windSpeedKmh?: number;
+  openLabel: string;
+  onOpen?: () => void;
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen }) => {
+  const readout = buildBeachConditionsReadout({
+    beachWindSpeedKmph: windSpeedKmh,
+    waveHeightM: item.waveHeightM,
+    seaStateWaveM: item.seaStateWaveM,
+    seaStatePeriodS: item.seaStatePeriodS,
+    shoreWaveHeightM: item.shoreWaveHeightM,
+    shoreDisplayWaveM: item.shoreDisplayWaveM,
+    language,
+  });
+  const beachName = item.name || item.beach.name[language] || item.beach.name.en;
+
+  return (
+    <div className="min-w-[8rem] max-w-[12rem]">
+      {/* ΤΟ ΟΝΟΜΑ ΕΙΝΑΙ ΤΟ ΚΟΥΜΠΙ (Μίλτος, 20/08/2026: «πιάνει πολύ χάρτη»).
+          Ξεχωριστό κουμπί «Δες την παραλία» κόστιζε 34 από τα 145 px του ταμπελακιού, πάνω σε
+          χάρτη 214 px στο κινητό — δηλαδή έτρωγε τον χάρτη για να πει κάτι που το όνομα το λέει
+          ήδη. Χρώμα μάρκας + βελάκι δείχνουν ότι πατιέται· ο τίτλος κρατά ολόκληρο το πλάτος και
+          ύψος αφής (min-h-6), οπότε δεν χάθηκε στόχος. */}
+      {onOpen ? (
+        <button
+          type="button"
+          onClick={onOpen}
+          aria-label={`${beachName} — ${openLabel}`}
+          className="flex min-h-6 w-full cursor-pointer items-center gap-0.5 text-left text-[12px] font-black leading-tight text-[#007a83] transition hover:text-[#005c63]"
+        >
+          <span className="min-w-0 truncate">{beachName}</span>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        </button>
+      ) : (
+        <p className="truncate text-[12px] font-black leading-tight text-slate-950">{beachName}</p>
+      )}
+      <div className="mt-0.5">
+        <p className="flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
+          <Wind className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+          <span className="min-w-0 truncate">
+            {readout.windWord ? `${readout.windWord} · ` : ''}{readout.beaufortText}
+          </span>
+        </p>
+        {readout.waveText && (
+          <p className="mt-0.5 flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
+            <Waves className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+            <span className="min-w-0 truncate">
+              {readout.waveWord ? `${readout.waveWord} · ` : ''}{readout.waveText}
+            </span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/** Λέει στον γονιό αν υπάρχει ανοιχτό popup — το Leaflet κρατάει ένα κάθε φορά. */
+const MapPopupTracker: React.FC<{ onChange: (open: boolean) => void }> = ({ onChange }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const open = () => onChange(true);
+    const close = () => onChange(false);
+    map.on('popupopen', open);
+    map.on('popupclose', close);
+    return () => {
+      map.off('popupopen', open);
+      map.off('popupclose', close);
+    };
+  }, [map, onChange]);
+
+  return null;
 };
 
 // Leaflet caches the container's pixel size at init and only recomputes it on a
@@ -1789,6 +1913,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   onHourChange,
   onHourSettled,
   enableHourSlider = false,
+  showMarkerConditions = false,
   stayHours = null,
   onStayHoursChange,
   language = 'en',
@@ -1835,6 +1960,26 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }
   });
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+  /**
+   * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΜΕ ΠΑΤΗΜΑ, ΟΧΙ ΜΕ ΜΟΝΙΜΟ ΚΕΙΜΕΝΟ (Μίλτος, 20/08/2026).
+   *
+   * Μόνιμη εξηγητική γραμμή πάνω από το υπόμνημα έχει ήδη απορριφθεί δύο φορές ως «ταπετσαρία»
+   * (docs/team/HANDOVER-colour-cause-line.md §1): φαίνεται κάθε μέρα, και τις περισσότερες δεν
+   * έχει τίποτα να πει. Ένα ⓘ κοστίζει μηδέν ύψος όταν είναι κλειστό και απαντά στον έναν που
+   * αναρωτήθηκε. Δεν είναι «γραμμή αιτίας» — αυτή ζει χωριστά και μιλάει μόνο στα χρώματα που
+   * τρομάζουν· αυτό εδώ εξηγεί τον ΡΟΛΟ της κλίμακας, μία φορά, για πάντα.
+   */
+  const [showToneScaleHint, setShowToneScaleHint] = useState(false);
+  /**
+   * Η ΠΥΞΙΔΑ ΚΑΝΕΙ ΧΩΡΟ ΣΤΟ ΤΑΜΠΕΛΑΚΙ (20/08/2026).
+   *
+   * Το popup του Leaflet ζει μέσα στο `.leaflet-map-pane` (z-index 400, δικό του stacking
+   * context), οπότε ΔΕΝ μπορεί να ανέβει πάνω από ένα overlay του χάρτη με z-1000 όσο κι αν
+   * του αλλάξεις pane — μόνο ανεβάζοντας ΟΛΟ τον χάρτη πάνω από τα κουμπιά zoom, που είναι
+   * χειρότερο. Και δεν χρειάζεται: όταν ο επισκέπτης ρωτάει για ΜΙΑ παραλία, η πυξίδα του
+   * ανέμου ΤΗΣ ΠΕΡΙΟΧΗΣ δεν είναι αυτό που κοιτάει. Φεύγει όσο διαβάζει, ξαναγυρίζει μετά.
+   */
+  const [hasOpenBeachPopup, setHasOpenBeachPopup] = useState(false);
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
   const [beachLabelOpacity, setBeachLabelOpacity] = useState(0);
@@ -2489,6 +2634,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windMode: { en: 'Wind Protection Mode', gr: 'Προστασία από άνεμο', de: 'Windschutz', it: 'Protezione dal vento', fr: 'Protection du vent' },
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
+    openBeach: { en: 'Open this beach', gr: 'Δες την παραλία', de: 'Strand ansehen', it: 'Vedi la spiaggia', fr: 'Voir la plage' },
+    toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
+    toneScaleHint: {
+      en: 'The colour shows how good the beach is overall. Wind and sea are shown separately on each beach.',
+      gr: 'Το χρώμα δείχνει πόσο καλή είναι συνολικά η παραλία. Ο αέρας και η θάλασσα φαίνονται χωριστά σε κάθε παραλία.',
+      de: 'Die Farbe zeigt, wie gut der Strand insgesamt ist. Wind und See stehen bei jedem Strand getrennt.',
+      it: 'Il colore mostra quanto è buona la spiaggia nel complesso. Vento e mare sono indicati separatamente per ogni spiaggia.',
+      fr: 'La couleur indique la qualité globale de la plage. Le vent et la mer sont indiqués séparément pour chaque plage.',
+    },
     resetView: { en: 'Reset view', gr: 'Επαναφορά θέασης', de: 'Ansicht zurücksetzen', it: 'Ripristina vista', fr: 'Réinitialiser la vue' },
     centerOnMe: { en: 'Center on my location', gr: 'Κέντραρε στη θέση μου', de: 'Auf meinen Standort zentrieren', it: 'Centra sulla mia posizione', fr: 'Centrer sur ma position' },
     showSatelliteView: { en: 'Satellite view', gr: 'Δορυφορική προβολή', de: 'Satellitenansicht', it: 'Vista satellitare', fr: 'Vue satellite' },
@@ -3135,7 +3289,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // single caption under the grid — so the same 2×2 costs half the height it used to.
     const rowCount = visibleWindColorGuideRows.length;
     const isSideBySide = !isSevereWind && rowCount > 1;
-    const gridClasses = isSideBySide ? 'grid grid-cols-2 gap-1 sm:grid-cols-4' : 'grid gap-1';
+    const gridClasses = `${isSideBySide ? 'grid grid-cols-2 gap-1 sm:grid-cols-4' : 'grid gap-1'}${isPreview ? ' pr-5' : ''}`;
 
     return (
       <div
@@ -3280,8 +3434,27 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const soleVisibleTone = visibleWindColorGuideRows.length === 1 ? visibleWindColorGuideRows[0].tone : null;
 
     return (
-      <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
+      <div className={`relative ${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
+        {/* ΜΗΔΕΝ ΜΟΝΙΜΟ ΥΨΟΣ. Το κουμπί κάθεται απόλυτα στην πάνω-δεξιά γωνία και ο πίνακας
+            κρατάει `pr-5` ώστε να μη σκεπάζει ποτέ κελί. Κλειστό, η οθόνη είναι ίδια με χθες. */}
+        {isPreview && (
+          <button
+            type="button"
+            onClick={() => setShowToneScaleHint(open => !open)}
+            aria-expanded={showToneScaleHint}
+            aria-label={mapCopy.toneScaleWhat[language]}
+            title={mapCopy.toneScaleWhat[language]}
+            className="absolute right-0 top-0 z-10 inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          >
+            <Info className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        )}
         {renderWindColorGuideRows(variant)}
+        {isPreview && showToneScaleHint && (
+          <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+            {mapCopy.toneScaleHint[language]}
+          </p>
+        )}
         {!isSevereWind && soleVisibleTone && (
           /* THE FILTERED COLOUR GETS THE WHOLE SENTENCE. The reader has just tapped this colour,
              so this is the one place with room to finish the thought — «Το χρώμα το φέρνει ο
@@ -3535,6 +3708,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               a legend filter would leave the desktop viewport list holding hidden pins. */}
           <VisibleBeachTracker beaches={markerBeaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
           <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
+          {showMarkerConditions && <MapPopupTracker onChange={setHasOpenBeachPopup} />}
           <ZoomLabelController threshold={labelZoomThreshold} onLabelOpacityChange={setBeachLabelOpacity} />
 
           {/* User Location Marker */}
@@ -3605,6 +3779,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     beach_name: item.beach.name.en,
                     ...buildBeachExposureParams(item.beach, item.simpleWindSuitability?.exposureStatus),
                   });
+                  // ΜΕ ΤΟ ΤΑΜΠΕΛΑΚΙ ΑΝΟΙΧΤΟ, ΤΟ ΠΑΤΗΜΑ ΔΕΝ ΦΕΥΓΕΙ ΑΠΟ ΤΟΝ ΧΑΡΤΗ (20/08/2026).
+                  // Το Leaflet ανοίγει μόνο του το <Popup> του marker και κλείνει το προηγούμενο,
+                  // οπότε είναι πάντα ένα ανοιχτό. Η σελίδα ανοίγει από το κουμπί μέσα του.
+                  if (showMarkerConditions) return;
                   // Clicking a marker goes straight to the beach card. Maps that
                   // don't wire a handler fall back to the in-map info panel.
                   if (onBeachClick) {
@@ -3618,6 +3796,26 @@ const BeachMap: React.FC<BeachMapProps> = ({
                 mouseout: () => handleMarkerHoverEnd(item.beachId),
               }}
             >
+              {/* autoPan: στο κινητό ο χάρτης έχει ύψος 13,5rem — μια πινέζα κοντά στην κορυφή θα
+                  άνοιγε ταμπελάκι μισό έξω από το κάδρο. Το padding κρατάει τη μετακίνηση μικρή. */}
+              {showMarkerConditions && (
+                <Popup
+                  className="beach-map-conditions-popup"
+                  closeButton={false}
+                  autoPan
+                  autoPanPadding={[12, 12]}
+                  minWidth={128}
+                  maxWidth={230}
+                >
+                  <MarkerConditionsPopup
+                    item={item}
+                    language={language}
+                    windSpeedKmh={beachWindSpeedKmh(item)}
+                    openLabel={mapCopy.openBeach[language]}
+                    onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
+                  />
+                </Popup>
+              )}
               <Tooltip
                 key={`${item.beachId}-label-${beachLabelOpacityLevel}`}
                 permanent
@@ -3699,6 +3897,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           />
         )}
 
+        {!hasOpenBeachPopup && (
         <WindDirectionGraphic
           windDirection={windDirection}
           windDirectionDeg={mapWindDirectionDeg}
@@ -3709,6 +3908,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           compact={compact}
           preview={preview}
         />
+        )}
 
         {selectedBeach && (
           <div className="absolute inset-x-2 bottom-2 z-[1000] max-h-[76%] overflow-y-auto rounded-2xl border border-white/80 bg-white p-3 shadow-xl shadow-slate-900/20 sm:inset-x-auto sm:right-4 sm:bottom-4 sm:w-[min(360px,calc(100%-2rem))]">

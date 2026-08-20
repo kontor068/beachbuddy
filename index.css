@@ -939,6 +939,46 @@ body {
   }
 }
 
+/* ΤΟ ΤΑΜΠΕΛΑΚΙ ΠΟΥ ΑΝΟΙΓΕΙ Η ΠΙΝΕΖΑ (20/08/2026).
+   Το Leaflet δίνει το δικό του κουτί με 13px/20px περιθώρια και σκιά που δεν μοιάζει με
+   τίποτα άλλο στη σελίδα. Εδώ μπαίνει η ίδια ακτίνα, το ίδιο περίγραμμα sky-100 και η ίδια
+   σκιά που έχουν οι κάρτες, ώστε να διαβάζεται ως συνέχεια της οθόνης και όχι ως χάρτης
+   τρίτου. Το inline width που υπολογίζει το Leaflet παραμερίζεται: το περιεχόμενο ορίζει
+   μόνο του min/max, αλλιώς στα 360 px το κουτί έβγαινε πιο φαρδύ απ' όσο χρειάζεται. */
+/* Το ταμπελάκι πάνω από τα overlays του χάρτη. Η πυξίδα ανέμου κάθεται σε z-1000 και σκέπαζε
+   το όνομα της παραλίας· το popup pane του Leaflet είναι 700 από κατασκευής. Ο container δεν
+   φτιάχνει stacking context, οπότε το pane ανεβαίνει καθαρά — και μένει ΚΑΤΩ από την κάρτα
+   αιώρησης (1150), που είναι άλλη ανάγνωση της ίδιας πινέζας. */
+.leaflet-pane.leaflet-popup-pane {
+  z-index: 1100;
+}
+
+.leaflet-popup.beach-map-conditions-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border: 1px solid #e0f2fe;
+  border-radius: 0.85rem;
+  box-shadow: 0 10px 24px -8px rgba(2, 44, 60, 0.32);
+}
+
+/* Ο χάρτης στο κινητό είναι 13,5rem ψηλός. Κάθε περιττό pixel εδώ είναι χάρτης που δεν
+   βλέπει ο επισκέπτης, οπότε τα περιθώρια του Leaflet (13px/20px) κόβονται στο μισό. */
+.leaflet-popup.beach-map-conditions-popup .leaflet-popup-content {
+  width: auto !important;
+  margin: 0.4rem 0.5rem;
+  line-height: 1.2;
+}
+
+.leaflet-popup.beach-map-conditions-popup .leaflet-popup-tip {
+  box-shadow: none;
+}
+
+.dark .leaflet-popup.beach-map-conditions-popup .leaflet-popup-content-wrapper,
+.dark .leaflet-popup.beach-map-conditions-popup .leaflet-popup-tip {
+  border-color: rgba(12, 74, 110, 0.55);
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
 .leaflet-tooltip.beach-map-label {
   overflow: visible;
   border: 0;
