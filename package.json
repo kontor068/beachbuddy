@@ -103,7 +103,8 @@
     "build:climate": "node scripts/splitBeachClimate.mjs",
     "quality:curated-cove": "node scripts/validateCuratedCoveWindOnly.mjs",
     "quality:card-vs-pin": "node scripts/validateCardVsPinExposure.mjs",
-    "quality:gust-floor": "node scripts/validateGustFloorContract.mjs"
+    "quality:gust-floor": "node scripts/validateGustFloorContract.mjs",
+    "quality:offshore-cards": "node scripts/validateOffshoreExposedCards.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
