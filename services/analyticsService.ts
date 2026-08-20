@@ -155,7 +155,7 @@ export type AnalyticsEvent =
   | 'open_meteo_fetch';
 
 /** Which Open-Meteo endpoint a counted origin call hit. */
-export type OpenMeteoEndpoint = 'current' | 'hourly' | 'marine';
+export type OpenMeteoEndpoint = 'current' | 'hourly' | 'marine' | 'over-water-wind';
 
 export interface AnalyticsData {
   event: AnalyticsEvent;

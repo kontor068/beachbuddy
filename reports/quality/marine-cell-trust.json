@@ -5,9 +5,9 @@
   "supersedes": "The 2026-07-27 run of this file, which sent no models= parameter and so measured Open-Meteo's default rather than ewam, and which judged point-less beaches at their pin instead of the region point. Its headline figures (1410 pins / 524 effective untrusted) do not describe production and should not be quoted.",
   "minFetchRatio": 0.8,
   "maxTrustedDistanceKm": 25,
-  "beaches": 2872,
+  "beaches": 2873,
   "pin": {
-    "trusted": 1972,
+    "trusted": 1973,
     "other-water": 870,
     "too-far": 0,
     "unknown": 30,
@@ -15,7 +15,7 @@
     "_key": "pin (before sample points)"
   },
   "production": {
-    "trusted": 2617,
+    "trusted": 2618,
     "other-water": 238,
     "too-far": 8,
     "unknown": 9,
@@ -23,7 +23,7 @@
     "_key": "production"
   },
   "ownSamplePoint": {
-    "trusted": 2617,
+    "trusted": 2618,
     "other-water": 162,
     "too-far": 0,
     "unknown": 2,
@@ -39,11 +39,11 @@
     "_key": "  of which region fallback"
   },
   "modelUsed": {
-    "ewam": 2818,
+    "ewam": 2819,
     "meteofrance_wave": 45,
     "none": 9
   },
-  "productionTrusted": 2617,
+  "productionTrusted": 2618,
   "worst": [
     {
       "beachId": 258,

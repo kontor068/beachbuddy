@@ -1,0 +1,882 @@
+{
+  "checkedAt": "2026-08-20",
+  "osmElements": 63,
+  "usablePoints": 63,
+  "beaches": [
+    {
+      "id": 1984,
+      "name": "Άγιος Γεώργιος",
+      "region": "south-aegean-naxos",
+      "nearest": 0.166,
+      "signalsWithin": 3,
+      "sportTagged": 2,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/6834537090",
+          "lat": 37.0957133,
+          "lon": 25.3748344,
+          "name": "Flisvos Sportclub Center",
+          "signal": "sport",
+          "sport": "water_sports;windsurfing",
+          "leisure": "sports_centre",
+          "km": 0.166
+        },
+        {
+          "osm": "node/538257136",
+          "lat": 37.0930504,
+          "lon": 25.3733562,
+          "name": "Flisvos surf center",
+          "signal": "sport+name",
+          "sport": "windsurfing",
+          "leisure": "sports_centre",
+          "km": 0.449
+        },
+        {
+          "osm": "node/5726632865",
+          "lat": 37.0893385,
+          "lon": 25.3701413,
+          "name": "Naxos surf club",
+          "signal": "name",
+          "sport": "windsurf",
+          "leisure": "sports_centre",
+          "km": 0.925
+        }
+      ]
+    },
+    {
+      "id": 1155,
+      "name": "Βασιλική",
+      "region": "ionian-islands-lefkada",
+      "nearest": 0,
+      "signalsWithin": 2,
+      "sportTagged": 2,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/141326957",
+          "lat": 38.6301914,
+          "lon": 20.6009045,
+          "name": "Βασιλική",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "natural": "beach",
+          "km": 0
+        },
+        {
+          "osm": "node/275755055",
+          "lat": 38.6275805,
+          "lon": 20.6087193,
+          "name": "Βασιλική",
+          "signal": "sport",
+          "sport": "windsurfing;hiking;mtb",
+          "km": 0.739
+        }
+      ]
+    },
+    {
+      "id": 1402,
+      "name": "Λεμονάκια",
+      "region": "north-aegean-samos",
+      "nearest": 0.497,
+      "signalsWithin": 2,
+      "sportTagged": 2,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/2465662522",
+          "lat": 37.7793692,
+          "lon": 26.8800062,
+          "name": "Samos Windsurfing Center",
+          "signal": "sport+name",
+          "sport": "windsurfing",
+          "leisure": "pitch",
+          "km": 0.497
+        },
+        {
+          "osm": "way/1182201818",
+          "lat": 37.7792214,
+          "lon": 26.880192,
+          "name": "",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "km": 0.52
+        }
+      ]
+    },
+    {
+      "id": 1449,
+      "name": "Κέρος",
+      "region": "north-aegean-lemnos",
+      "nearest": 0.279,
+      "signalsWithin": 3,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/985099840",
+          "lat": 39.9014148,
+          "lon": 25.3538473,
+          "name": "\"No rush\" Surf club",
+          "signal": "name",
+          "km": 0.279
+        },
+        {
+          "osm": "way/274730559",
+          "lat": 39.9063166,
+          "lon": 25.3551315,
+          "name": "Φύκι Φύκι surf center",
+          "signal": "name",
+          "km": 0.824
+        },
+        {
+          "osm": "way/263844492",
+          "lat": 39.9080359,
+          "lon": 25.3572881,
+          "name": "Κέρος",
+          "signal": "sport",
+          "sport": "kitesurfing",
+          "natural": "beach",
+          "km": 1.043
+        },
+        {
+          "osm": "node/11586215733",
+          "lat": 39.912217,
+          "lon": 25.3619589,
+          "name": "Kristali Surf Club Keros",
+          "signal": "name",
+          "km": 1.614
+        },
+        {
+          "osm": "way/707003546",
+          "lat": 39.9123662,
+          "lon": 25.3620359,
+          "name": "Kristali Surf Club Keros",
+          "signal": "name",
+          "amenity": "shelter",
+          "km": 1.632
+        },
+        {
+          "osm": "way/332381607",
+          "lat": 39.9136034,
+          "lon": 25.3660343,
+          "name": "Siroko Wind Club",
+          "signal": "sport",
+          "sport": "kitesurfing",
+          "amenity": "shelter",
+          "km": 1.913
+        }
+      ]
+    },
+    {
+      "id": 2521,
+      "name": "Drepano Kite Surfer's Paradise Beach",
+      "region": "west-greece-aetolia-acarnania-mainland",
+      "nearest": 0,
+      "signalsWithin": 2,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/827337398",
+          "lat": 38.3399631,
+          "lon": 21.8486206,
+          "name": "Drepano Kite Surfer's Paradise Beach",
+          "signal": "name",
+          "natural": "beach",
+          "km": 0
+        },
+        {
+          "osm": "node/7051869444",
+          "lat": 38.3391796,
+          "lon": 21.8494018,
+          "name": "Kite Surfing",
+          "signal": "sport+name",
+          "sport": "kitesurfing",
+          "natural": "beach",
+          "km": 0.11
+        }
+      ]
+    },
+    {
+      "id": 2522,
+      "name": "Kitesurf Spot",
+      "region": "west-greece-aetolia-acarnania-mainland",
+      "nearest": 0.001,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/7834258527",
+          "lat": 38.3843353,
+          "lon": 21.8459939,
+          "name": "Kitesurf spot",
+          "signal": "sport+name",
+          "sport": "kitesurfing",
+          "leisure": "beach_resort",
+          "km": 0.001
+        }
+      ]
+    },
+    {
+      "id": 134,
+      "name": "Παραλία Παλαιόπολη",
+      "region": "attica-kythira",
+      "nearest": 0.001,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/190098223",
+          "lat": 36.2244436,
+          "lon": 23.0649056,
+          "name": "Παραλία Παλαιόπολη",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "natural": "beach",
+          "km": 0.001
+        }
+      ]
+    },
+    {
+      "id": 905,
+      "name": "Μπέλα Βράκα",
+      "region": "epirus-thesprotia-mainland",
+      "nearest": 0.035,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/859337560",
+          "lat": 39.3994294,
+          "lon": 20.2352158,
+          "name": "",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "km": 0.035
+        }
+      ]
+    },
+    {
+      "id": 2351,
+      "name": "Παραλία Πασχάλη",
+      "region": "south-aegean-kos",
+      "nearest": 0.055,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/715436318",
+          "lat": 36.7581118,
+          "lon": 27.111913,
+          "name": "Watersports center",
+          "signal": "sport",
+          "sport": "dingy;beach_catamaran;SUP_board;windsurfing;pedal_catamaran;canoe",
+          "leisure": "sports_centre",
+          "km": 0.055
+        }
+      ]
+    },
+    {
+      "id": 2424,
+      "name": "Παραλία Καλαβάρδα",
+      "region": "south-aegean-rhodes",
+      "nearest": 0.065,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/881850305",
+          "lat": 36.349551,
+          "lon": 27.9479887,
+          "name": "Meltemi Kiteboarding",
+          "signal": "sport+name",
+          "sport": "kitesurfing",
+          "leisure": "pitch",
+          "km": 0.065
+        }
+      ]
+    },
+    {
+      "id": 1957,
+      "name": "Κόρφος",
+      "region": "south-aegean-mykonos",
+      "nearest": 0.074,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/730283310",
+          "lat": 37.4263399,
+          "lon": 25.3226099,
+          "name": "Kite Mykonos",
+          "signal": "sport",
+          "sport": "kitesurfing",
+          "km": 0.074
+        }
+      ]
+    },
+    {
+      "id": 2329,
+      "name": "Παραλία Μαστιχάρι (Νέπτουν)",
+      "region": "south-aegean-kos",
+      "nearest": 0.091,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/612285192",
+          "lat": 36.8607989,
+          "lon": 27.1127849,
+          "name": "Neptune Sail & Surf Center",
+          "signal": "sport+name",
+          "sport": "sailing;windsurfing;beach_catamaran;SUP_board",
+          "leisure": "sports_centre",
+          "km": 0.091
+        }
+      ]
+    },
+    {
+      "id": 2053,
+      "name": "Τσερδάκια (Νέα Χρυσή Ακτή)",
+      "region": "south-aegean-paros",
+      "nearest": 0.107,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/13124753095",
+          "lat": 37.0151564,
+          "lon": 25.2489705,
+          "name": "Paros Windsurf Center",
+          "signal": "sport+name",
+          "sport": "windsurfing",
+          "amenity": "training",
+          "km": 0.107
+        }
+      ]
+    },
+    {
+      "id": 1582,
+      "name": "Παραλία Μαυροβουνίου",
+      "region": "peloponnese-lakonia-mainland",
+      "nearest": 0.303,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/6646935624",
+          "lat": 36.7291249,
+          "lon": 22.5551274,
+          "name": "",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "leisure": "sports_centre",
+          "km": 0.303
+        }
+      ]
+    },
+    {
+      "id": 443,
+      "name": "Σάρτη",
+      "region": "central-macedonia-halkidiki-mainland",
+      "nearest": 0.55,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/488907226",
+          "lat": 40.0832877,
+          "lon": 23.9796265,
+          "name": "",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "leisure": "pitch",
+          "km": 0.55
+        }
+      ]
+    },
+    {
+      "id": 2322,
+      "name": "Γυμνιστική Παραλία Τιγκάκι",
+      "region": "south-aegean-kos",
+      "nearest": 0.7,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "node/6677200338",
+          "lat": 36.8862091,
+          "lon": 27.1619381,
+          "name": "Kitesurfing Kos",
+          "signal": "sport+name",
+          "sport": "kitesurfing",
+          "km": 0.7
+        }
+      ]
+    },
+    {
+      "id": 2405,
+      "name": "Παραλία Κρεμαστής",
+      "region": "south-aegean-rhodes",
+      "nearest": 0.725,
+      "signalsWithin": 1,
+      "sportTagged": 1,
+      "strength": "ρητή ταμπέλα αθλήματος",
+      "signals": [
+        {
+          "osm": "way/169194772",
+          "lat": 36.42073,
+          "lon": 28.1339277,
+          "name": "Meltemi Windsurf Rhodes",
+          "signal": "sport+name",
+          "sport": "windsurfing;sup;foiling",
+          "leisure": "sports_centre",
+          "km": 0.725
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Παραλία Αρτέμιδας",
+      "region": "attica-east-attica-mainland",
+      "nearest": 0.417,
+      "signalsWithin": 3,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/9634840826",
+          "lat": 37.977933,
+          "lon": 24.0094833,
+          "name": "WINDSURFING",
+          "signal": "name",
+          "km": 0.417
+        },
+        {
+          "osm": "node/9634840825",
+          "lat": 37.9779547,
+          "lon": 24.0092107,
+          "name": "WINDSURFING",
+          "signal": "name",
+          "km": 0.422
+        },
+        {
+          "osm": "node/9634840824",
+          "lat": 37.9780847,
+          "lon": 24.0088054,
+          "name": "WINDSURFING",
+          "signal": "name",
+          "km": 0.423
+        },
+        {
+          "osm": "node/2626828718",
+          "lat": 37.9907025,
+          "lon": 24.023236,
+          "name": "Paul's Surf Club",
+          "signal": "name",
+          "shop": "sports",
+          "km": 1.488
+        }
+      ]
+    },
+    {
+      "id": 2355,
+      "name": "Φάρος",
+      "region": "south-aegean-kos",
+      "nearest": 0.116,
+      "signalsWithin": 2,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/2142857430",
+          "lat": 36.886591,
+          "lon": 27.3417021,
+          "name": "Windzone WindSurfing Club",
+          "signal": "name",
+          "leisure": "sports_centre",
+          "km": 0.116
+        },
+        {
+          "osm": "node/2142857434",
+          "lat": 36.8826778,
+          "lon": 27.3449744,
+          "name": "Big Blue Surf Center",
+          "signal": "name",
+          "shop": "rental",
+          "km": 0.409
+        }
+      ]
+    },
+    {
+      "id": 2457,
+      "name": "Πρασονήσι",
+      "region": "south-aegean-rhodes",
+      "nearest": 0.66,
+      "signalsWithin": 2,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "way/234739515",
+          "lat": 35.88965,
+          "lon": 27.7763275,
+          "name": "Surfcenter Kirschner",
+          "signal": "name",
+          "km": 0.66
+        },
+        {
+          "osm": "way/234739516",
+          "lat": 35.8898401,
+          "lon": 27.7766397,
+          "name": "Surfcenter Kirschner",
+          "signal": "name",
+          "shop": "sports",
+          "km": 0.695
+        }
+      ]
+    },
+    {
+      "id": 3024,
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "region": "attica-aegina",
+      "nearest": 0.088,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/7826304485",
+          "lat": 37.7266505,
+          "lon": 23.4399166,
+          "name": "Spot Kitesurf",
+          "signal": "name",
+          "km": 0.088
+        }
+      ]
+    },
+    {
+      "id": 2328,
+      "name": "Μαρμάρι",
+      "region": "south-aegean-kos",
+      "nearest": 0.097,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/5190290056",
+          "lat": 36.8808842,
+          "lon": 27.1491277,
+          "name": "Marmari Windsurfing",
+          "signal": "name",
+          "sport": "sailboard",
+          "shop": "rental",
+          "km": 0.097
+        }
+      ]
+    },
+    {
+      "id": 1010,
+      "name": "Παραλία Χαλικούνα",
+      "region": "ionian-islands-corfu",
+      "nearest": 0.145,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "way/290028101",
+          "lat": 39.4469794,
+          "lon": 19.8882635,
+          "name": "Kite Club Corfu",
+          "signal": "name",
+          "leisure": "sports_centre",
+          "km": 0.145
+        }
+      ]
+    },
+    {
+      "id": 594,
+      "name": "Chrysi Akti",
+      "region": "crete-crete-chania",
+      "nearest": 0.177,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/7731048117",
+          "lat": 35.5115065,
+          "lon": 23.9908957,
+          "name": "Chania Surf Club",
+          "signal": "name",
+          "amenity": "surf_school",
+          "km": 0.177
+        }
+      ]
+    },
+    {
+      "id": 2006,
+      "name": "Μικρή Βίγλα",
+      "region": "south-aegean-naxos",
+      "nearest": 0.236,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/535456927",
+          "lat": 37.0279889,
+          "lon": 25.372915,
+          "name": "Flisvos Kite Center",
+          "signal": "name",
+          "km": 0.236
+        }
+      ]
+    },
+    {
+      "id": 940,
+      "name": "Issos Beach",
+      "region": "ionian-islands-corfu",
+      "nearest": 0.375,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "way/366410162",
+          "lat": 39.4320161,
+          "lon": 19.9300372,
+          "name": "Frosch Windsurfing",
+          "signal": "name",
+          "leisure": "sports_centre",
+          "km": 0.375
+        }
+      ]
+    },
+    {
+      "id": 2056,
+      "name": "Χρυσή Ακτή",
+      "region": "south-aegean-paros",
+      "nearest": 0.43,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "node/5757933045",
+          "lat": 37.0086983,
+          "lon": 25.2348194,
+          "name": "Golden Beach Surf Club",
+          "signal": "name",
+          "sport": "surfing",
+          "km": 0.43
+        }
+      ]
+    },
+    {
+      "id": 1460,
+      "name": "Παραλία Μακρύς Γυαλός",
+      "region": "north-aegean-lemnos",
+      "nearest": 0.932,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "way/980086960",
+          "lat": 39.8345786,
+          "lon": 25.345771,
+          "name": "Beach roots Surf Center",
+          "signal": "name",
+          "km": 0.932
+        }
+      ]
+    },
+    {
+      "id": 861,
+      "name": "Φράχτης",
+      "region": "epirus-arta-mainland",
+      "nearest": 0.952,
+      "signalsWithin": 1,
+      "sportTagged": 0,
+      "strength": "μόνο όνομα",
+      "signals": [
+        {
+          "osm": "way/696045490",
+          "lat": 39.0142986,
+          "lon": 20.9153369,
+          "name": "KiteClub Koronisia",
+          "signal": "name",
+          "amenity": "shelter",
+          "km": 0.952
+        }
+      ]
+    },
+    {
+      "id": 595,
+      "name": "Ελαφονήσι",
+      "region": "crete-crete-chania",
+      "nearest": 1.226,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "node/5029248922",
+          "lat": 35.2728541,
+          "lon": 23.5399315,
+          "name": "Elafonisi Kite Club",
+          "signal": "name",
+          "amenity": "surf_school",
+          "km": 1.226
+        }
+      ]
+    },
+    {
+      "id": 3143,
+      "name": "Παραλία Ιαλυσός",
+      "region": "south-aegean-rhodes",
+      "nearest": 1.254,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "node/506174396",
+          "lat": 36.4226789,
+          "lon": 28.1606009,
+          "name": "Windmill",
+          "signal": "sport",
+          "sport": "windsurfing",
+          "km": 1.254
+        },
+        {
+          "osm": "way/350355148",
+          "lat": 36.4235887,
+          "lon": 28.1550971,
+          "name": "Procenter Windsurfing Rhodes",
+          "signal": "sport+name",
+          "sport": "windsurfing",
+          "leisure": "sports_centre",
+          "km": 1.756
+        }
+      ]
+    },
+    {
+      "id": 1735,
+      "name": "Πρώτη Ψαραλυκή",
+      "region": "south-aegean-antiparos",
+      "nearest": 1.45,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "node/5908280685",
+          "lat": 37.0300246,
+          "lon": 25.0974402,
+          "name": "Poundra Kiteboarding beach",
+          "signal": "name",
+          "km": 1.45
+        }
+      ]
+    },
+    {
+      "id": 2422,
+      "name": "Παραλία Ιξιάς",
+      "region": "south-aegean-rhodes",
+      "nearest": 1.481,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "way/157383060",
+          "lat": 36.4264583,
+          "lon": 28.1966566,
+          "name": "Surfline Rhodes Windsurfing Station",
+          "signal": "name",
+          "sport": "fitness",
+          "leisure": "fitness_station",
+          "km": 1.481
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Παραλία Σχινιά",
+      "region": "attica-east-attica-mainland",
+      "nearest": 1.704,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "node/4162740754",
+          "lat": 38.1352391,
+          "lon": 24.0162905,
+          "name": "Μoraitis beach",
+          "signal": "sport",
+          "sport": "windsurfing;paddleboard;water_ski;subwing;wakeboarding;wakesurfing",
+          "leisure": "sports_centre",
+          "km": 1.704
+        }
+      ]
+    },
+    {
+      "id": 860,
+      "name": "Παραλία Σαλαώρας",
+      "region": "epirus-arta-mainland",
+      "nearest": 1.769,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "way/696047161",
+          "lat": 39.035172,
+          "lon": 20.8784433,
+          "name": "Windsurfing Club",
+          "signal": "name",
+          "amenity": "shelter",
+          "km": 1.769
+        }
+      ]
+    },
+    {
+      "id": 511,
+      "name": "Πλαζ Αρετσούς",
+      "region": "central-macedonia-thessaloniki-area",
+      "nearest": 2.494,
+      "signalsWithin": 0,
+      "sportTagged": 0,
+      "strength": "μακριά (>1,2 χλμ)",
+      "signals": [
+        {
+          "osm": "node/7645773011",
+          "lat": 40.5978634,
+          "lon": 22.9525028,
+          "name": "Surf Center Κατσαρέας",
+          "signal": "name",
+          "sport": "surfing",
+          "shop": "sports",
+          "km": 2.494
+        }
+      ]
+    }
+  ]
+}

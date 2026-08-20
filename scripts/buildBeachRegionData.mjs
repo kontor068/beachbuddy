@@ -22,6 +22,7 @@ const surfSpotsPath = path.join(rootDir, 'data', 'surfSpots.json');
 // refuse to let one forecast point speak for beaches sitting in different cells. Optional on
 // purpose: a checkout without the bake still builds, it just keeps the old centroid behaviour.
 const forecastCellsPath = path.join(rootDir, 'data', 'forecast-cells.generated.json');
+const seaWindCellsPath = path.join(rootDir, 'data', 'forecast-sea-cells.generated.json');
 const outputDir = path.join(rootDir, 'public', 'data', 'beaches');
 const appOutputDir = path.join(outputDir, 'app');
 const appSummaryOutputDir = path.join(appOutputDir, 'summary');
@@ -757,6 +758,7 @@ const buildBeach = (rawBeach, island) => {
     ...(metadata?.paidEntry ? { paidEntry: metadata.paidEntry } : {}),
     coordinates: { lat: rawBeach.lat, lon: rawBeach.lon },
     ...(forecastCellsById[String(rawBeach.id)] ? { forecastCell: forecastCellsById[String(rawBeach.id)] } : {}),
+    ...(seaWindCellsById[String(rawBeach.id)] ? { seaWindCell: seaWindCellsById[String(rawBeach.id)] } : {}),
     ...(mapCoordinates ? { mapCoordinates } : {}),
     location: {
       region: rawBeach.region,
@@ -806,6 +808,11 @@ const buildSummaryBeach = beach => {
     // MUST ride along. The summary tier is the one the app actually clusters on, and without the
     // cell every cluster falls back to the centroid — which is the bug this exists to close.
     ...(beach.forecastCell ? { forecastCell: beach.forecastCell } : {}),
+    // Rides along for the same reason forecastCell does: the summary tier is what the app holds
+    // for every beach on the page, and the over-water wind layer has nowhere else to learn which
+    // water speaks for this shore. Absent => that beach keeps the land cell's direction, which is
+    // exactly what it had before the layer existed.
+    ...(beach.seaWindCell ? { seaWindCell: beach.seaWindCell } : {}),
     ...(beach.mapCoordinates ? { mapCoordinates: beach.mapCoordinates } : {}),
     location: beach.location,
     aliases: beach.aliases,
@@ -1004,6 +1011,18 @@ const forecastCellsById = await fs
     console.warn('No data/forecast-cells.generated.json — beaches will cluster on centroids as before.');
     return {};
   });
+// The over-water wind layer's map (PORISMA §Γ37β). Optional by exactly the same design as the
+// land bake above: missing file => no beach carries a sea cell => every direction stays on the
+// land cell, which is the behaviour that shipped for a year. The 3 km gate lives inside this
+// file, not in the app — a beach that does not pass it is simply absent.
+const seaWindCellsById = await fs
+  .readFile(seaWindCellsPath, 'utf8')
+  .then(raw => JSON.parse(raw).cells || {})
+  .catch(() => {
+    console.warn('No data/forecast-sea-cells.generated.json — wind direction stays on the land cell everywhere.');
+    return {};
+  });
+
 // TWO INDEPENDENT GUIDES MINIMUM. A single mention is worth recording but not
 // worth acting on: one blog naming a beach is how the fabricated 543 got there in
 // spirit, and sending someone with a board to a break only one site has heard of

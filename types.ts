@@ -368,6 +368,20 @@ export interface Beach {
    * forecast point speak for beaches sitting in different cells.
    */
   forecastCell?: string;
+  /**
+   * The grid cell OVER THE WATER that gives this beach its wind DIRECTION, as `lat_lon` of the
+   * cell centre — measured by scripts/bakeSeaWindCells.mjs with `cell_selection=sea`, for the
+   * same reason `forecastCell` is measured rather than derived.
+   *
+   * PRESENT ONLY PAST THE 3 km GATE. A beach whose land cell already sits on top of it has no
+   * entry at all, because PORISMA §Γ29 found no gain there and a measured LOSS on speed. Absence
+   * is therefore the "leave this beach alone" instruction, and it is data, not code — re-bake
+   * with a different gate and the whole thing moves.
+   *
+   * Only the direction rides on it: utils/overWaterWind.ts is the sole consumer. Speed, gust and
+   * every Beaufort derived from them stay on `forecastCell`.
+   */
+  seaWindCell?: string;
   mapCoordinates?: BeachMapCoordinates;
   location?: Partial<BeachLocation>;
   crowdLevel?: CrowdLevel;
@@ -835,6 +849,18 @@ export interface ForecastItem {
      * against the real mean, never the corrected one.
      */
     speedBeforeGustFloor?: number;
+    /**
+     * The direction EXACTLY as the land forecast cell reported it, before utils/overWaterWind
+     * swapped in the direction over the water in front of the beach. Present only when the swap
+     * actually happened.
+     *
+     * Same contract as `speedBeforeGustFloor` above: the corrected value is what every colour,
+     * word and wave reads, and the original stays reachable so a gate can measure the swap
+     * instead of guessing at it. See utils/overWaterWind.ts and PORISMA §Γ29/§Γ37β for the
+     * measurement — the sea cell reads the right 45° sector 1,4-1,5× more often than the land
+     * cell whenever the two disagree and the land cell sits 3 km or more away.
+     */
+    degBeforeOverWater?: number;
   };
   rain?: { '3h'?: number };
   visibility: number;
