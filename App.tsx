@@ -4970,9 +4970,42 @@ export const App: React.FC = () => {
    * prints a number and the list prints a number, and two separately-maintained exclusion rules
    * are how they came to say 35 and 34 for the same colour on Evia.
    *
-   * Two exclusions, both pre-existing product rules, neither weakened here:
+   * Three exclusions, all pre-existing product rules, none weakened here:
    *  - naturist beaches are never surfaced in a list (they stay on the map and findable by name)
    *  - a boat-only beach at >= 5 Bft is not a real option: the boats do not run.
+   *  - a beach whose own swim verdict is `avoid_swimming` is not an offer. See below.
+   *
+   * ΤΟ ΤΡΙΤΟ ΜΠΗΚΕ ΣΤΙΣ 20/08/2026, ΚΑΙ Ο ΚΩΔΙΚΑΣ ΤΟ ΕΙΧΕ ΠΡΟΒΛΕΨΕΙ (βίβλος §Γ38).
+   *
+   * Το σχόλιο στο `toneSuitableDirectorySource` παρακάτω εξηγούσε γιατί ΔΕΝ χρειάζεται φίλτρο
+   * `avoid_swimming`: «a refused swim can no longer wear blue or yellow anywhere. With that in
+   * place a filter here would be dead code **that hides the day it stops being dead**.» Σωστό
+   * στις 02/08/2026, όταν η λίστα ήταν ΜΠΛΕ+ΚΙΤΡΙΝΟ. Στις 10/08 ο κανόνας έγινε «τα δύο
+   * καλύτερα χρώματα ΠΟΥ ΥΠΑΡΧΟΥΝ» και το ταβάνι του `avoid_swimming` είναι ΠΟΡΤΟΚΑΛΙ — άρα η
+   * μέρα ήρθε αυθημερόν και δεν την είδε κανείς για δεκαοκτώ μέρες.
+   *
+   * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΑΛΛΑΞΕΙ ΓΡΑΜΜΗ (`scripts/measureAvoidSwimInSuitableList.mjs`, 110/110
+   * περιοχές × 5 μέρες = 550 οθόνες, 12.751 παραλίες στη λίστα, ζωντανή πρόγνωση):
+   * **167 οθόνες (30,4%)** είχαν έστω μία «μην κολυμπήσεις» μέσα στις κατάλληλες, **1.198
+   * παραλίες (9,4%)** συνολικά. Ο μηχανισμός: το παράθυρο των δύο χρωμάτων ΠΗΔΑΕΙ σκαλί —
+   * χωρίς κίτρινο στο νησί γίνεται μπλε+πορτοκαλί, 114 οθόνες, και στις 114 εμφανίζεται.
+   * Και η αντίφαση φαινόταν στην ΙΔΙΑ οθόνη: `experienceTier.ts:207` ρίχνει την ετυμηγορία της
+   * κάρτας στη βαθμίδα 1, οπότε κάτω από «Υπόλοιπες κατάλληλες (30)» καθόταν κάρτα που έγραφε
+   * «Καλύτερα άλλη μέρα».
+   *
+   * ΓΙΑΤΙ ΕΔΩ ΚΑΙ ΟΧΙ ΣΤΗ ΛΙΣΤΑ. Στις 02/08 το φίλτρο είχε μπει ΜΟΝΟ στη λίστα και έσπασε την
+   * αριθμητική που ο Μίλτος επαλήθευσε με το χέρι: η λεζάντα μετρούσε 30 Μέτριες, η λίστα
+   * έδειχνε 22. Αυτή η πόρτα διαβάζεται ΚΑΙ από τη λεζάντα (`directoryUncountedBeachIds`), άρα
+   * τα δύο νούμερα στενεύουν μαζί και δεν μπορούν να διαφωνήσουν. Η ΠΙΝΕΖΑ ΜΕΝΕΙ ΣΤΟΝ ΧΑΡΤΗ:
+   * δεν κρύβουμε παραλία, παύουμε να την ΠΡΟΤΕΙΝΟΥΜΕ.
+   *
+   * ΤΟ ΤΙΜΗΜΑ, ΜΕΤΡΗΜΕΝΟ: **5 οθόνες στις 550 (0,9%)** μένουν με άδεια λίστα. Τις μέρες εκείνες
+   * το «καμία» είναι η τίμια απάντηση — και η οθόνη την ξέρει ήδη (§ `directoryVisibleBeachCardSource`,
+   * «on an all-red meltemi day the honest answer is an empty list»).
+   *
+   * Η ΑΝΑΖΗΤΗΣΗ ΜΕ ΟΝΟΜΑ ΤΟ ΠΑΡΑΚΑΜΠΤΕΙ, όπως ακριβώς και η μόνο-με-βάρκα: όποιος γράφει το
+   * όνομα μιας παραλίας δεν ζητάει πρόταση, ζητάει ΑΥΤΗ την παραλία — και την παίρνει με την
+   * ετυμηγορία της από πάνω.
    *
    * Curried on the naturist gate rather than reading it from the closure, because the filter
    * sheet has to ask this question about a selection the user has NOT applied yet — where the
@@ -4984,7 +5017,9 @@ export const App: React.FC = () => {
       !(naturistSuppressed && isNaturistBeach(item.beach)) &&
       !(beachSearchQuery.trim().length === 0
         && hasBoatOnlyAccess(item.beach)
-        && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT)
+        && beaufortAtBeach(item) >= PROTECTED_FIRST_BEAUFORT) &&
+      !(beachSearchQuery.trim().length === 0
+        && item.swimmingComfort === 'avoid_swimming')
     )
   ), [beachSearchQuery, beaufortAtBeach]);
   const isListableInDirectory = useMemo(
@@ -7273,6 +7308,17 @@ export const App: React.FC = () => {
      *
      * With that in place a filter here would be dead code that hides the day it stops being dead.
      * The list is once again exactly the colours the legend counts.
+     *
+     * ⚠️ Η ΜΕΡΑ ΗΡΘΕ — 20/08/2026 (βίβλος §Γ38). Το παραπάνω ίσχυε όσο η λίστα ήταν ΜΠΛΕ+ΚΙΤΡΙΝΟ.
+     * Στις 10/08 έγινε «τα δύο καλύτερα χρώματα ΠΟΥ ΥΠΑΡΧΟΥΝ» και το ταβάνι του `avoid_swimming`
+     * είναι ΠΟΡΤΟΚΑΛΙ, οπότε το φίλτρο έπαψε να είναι νεκρός κώδικας αυθημερόν: μετρήθηκαν
+     * **167 οθόνες στις 550 (30,4%)** με «μην κολυμπήσεις» μέσα στις κατάλληλες.
+     *
+     * Ο αποκλεισμός ΔΕΝ μπήκε εδώ, γιατί εδώ θα έσπαγε ξανά την αριθμητική λεζάντα-vs-λίστα που
+     * περιγράφει η παράγραφος από πάνω. Μπήκε στο `directoryListabilityGate`, την πόρτα που
+     * διαβάζουν ΚΑΙ οι δύο — άρα τα δύο νούμερα στενεύουν μαζί και η πρόταση της παραγράφου
+     * («the list is exactly the colours the legend counts») εξακολουθεί να ισχύει, μετρημένη
+     * πάνω στο ίδιο, μικρότερο σύνολο.
      */
     return selectSuitableByTone(listable, item => mapBeachTones[item.beach.id], byPriority);
   })();
