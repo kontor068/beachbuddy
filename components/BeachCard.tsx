@@ -3,14 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon, Thermometer } from 'lucide-react';
 import { SHORE_LABELS, READ_LABELS } from './BeachAnswerHero';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
-import { getBeaufortLevel } from '../utils/weatherUtils';
 import { Translation } from '../types';
 
 import { canOpenNavigation, getNavigationBadge, openNavigation } from '../utils/navigation';
 import { BeachConditionScore } from './BeachConditionScore';
 import { TodayScoreBadge } from './TodayScoreBadge';
-import { seaStateSeverityM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
-import { buildConditionsFeel } from '../utils/conditionsFeelPhrase';
+import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
+import { buildBeachConditionsReadout, beachDecisionSeaStateM } from '../utils/beachConditionsReadout';
 import { buildWaterTemperatureCardLine } from '../utils/waterTemperatureCopy';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
@@ -1260,12 +1259,30 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   const effectiveWindKmph = typeof beachWindSpeedKmph === 'number' && Number.isFinite(beachWindSpeedKmph)
     ? beachWindSpeedKmph
     : windSpeed * 3.6;
-  const windBeaufort = getBeaufortLevel(effectiveWindKmph);
+  /**
+   * ΤΑ ΔΥΟ ΝΟΥΜΕΡΑ ΒΓΑΙΝΟΥΝ ΑΠΟ ΜΙΑ ΠΗΓΗ (20/08/2026) — `utils/beachConditionsReadout`.
+   *
+   * Το ίδιο ζευγάρι «Μποφόρ · μέτρα» τυπώνεται από σήμερα ΚΑΙ στο ταμπελάκι που ανοίγει όταν
+   * πατηθεί μια πινέζα στον χάρτη. Δύο αντίγραφα του ίδιου κανόνα σε δύο επιφάνειες είναι το
+   * σφάλμα §Κ1 της βίβλου — και ακριβώς αυτό γέννησε την πύλη «κάρτα vs πινέζα» (§Γ27).
+   * Ο υπολογισμός έφυγε από εδώ αυτούσιος· τα σχόλια από κάτω εξηγούν ΓΙΑΤΙ είναι έτσι και
+   * μένουν όπου διαβάζονται.
+   */
+  const conditionsReadout = buildBeachConditionsReadout({
+    beachWindSpeedKmph,
+    regionWindSpeedMs: windSpeed,
+    waveHeightM,
+    seaStateWaveM,
+    seaStatePeriodS,
+    shoreWaveHeightM,
+    shoreDisplayWaveM,
+    language,
+  });
+  const windBeaufort = conditionsReadout.beaufort;
   // Swell-equivalent sea state: what every colour/word decision on this card compares against.
   // The displayed metres stay `waveHeightM`; a 0.45 m 2.5 s chop and a 0.45 m 8 s roll are the
   // same number to read and a different sea to swim in.
-  const cardSeaStateM = seaStateSeverityM(seaStateWaveM ?? waveHeightM, seaStatePeriodS)
-    ?? (seaStateWaveM ?? waveHeightM);
+  const cardSeaStateM = beachDecisionSeaStateM(seaStateWaveM, waveHeightM, seaStatePeriodS);
   /**
    * ΤΟ ΚΥΜΑ ΣΤΗΝ ΚΑΡΤΑ — Ο ΧΡΗΣΤΗΣ ΗΤΑΝ ΤΥΦΛΟΣ ΩΣ ΣΗΜΕΡΑ (10/08/2026).
    *
@@ -1299,28 +1316,17 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    * υπάρχει για κλήσεις που δεν μεταφέρουν ακόμη το νέο πεδίο, ώστε καμία κάρτα να μη γυρίσει
    * σιωπηλά στο ανοιχτό νερό.
    */
-  const cardShoreM = typeof shoreDisplayWaveM === 'number' && Number.isFinite(shoreDisplayWaveM)
-    ? shoreDisplayWaveM
-    : shoreWaveHeightM;
-  const cardWaveIsShore = typeof cardShoreM === 'number' && Number.isFinite(cardShoreM);
   // Ίδιο καπάκι με τη σελίδα της παραλίας (pages/BeachDetailPage): το κύμα στην ακτή δεν
   // τυπώνεται ποτέ μεγαλύτερο από το νερό έξω. Χωρίς αυτό, η κάρτα και η σελίδα έβγαζαν
   // διαφορετικό νούμερο σε όρμους, όπου η display τιμή είναι χαμηλότερη από την effective.
-  const cardWaveM = cardWaveIsShore
-    ? (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-        ? Math.min(cardShoreM as number, waveHeightM)
-        : cardShoreM)
-    : waveHeightM;
   // Same spelling as the beach page's own tile (BeachAnswerHero): «0,5 μ.» in Greek, «0.5 m»
   // elsewhere, and the «~» only on the modelled shore figure so the two never look alike.
   // Το «~» μόνο όταν ο αριθμός της ακτής ΔΙΑΦΕΡΕΙ από τη μέτρηση του ανοιχτού — αλλιώς είναι η
-  // μέτρηση, και ένα «~» θα την υποβάθμιζε σε εκτίμηση. Ίδιος κανόνας με τη σελίδα (BeachAnswerHero).
-  const cardWaveDiffers = cardWaveIsShore
-    && typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-    && Math.abs((cardWaveM as number) - waveHeightM) >= 0.05;
-  const cardWaveValueText = typeof cardWaveM === 'number' && Number.isFinite(cardWaveM)
-    ? `${cardWaveDiffers ? '~' : ''}${cardWaveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
-    : undefined;
+  // μέτρηση, και ένα «~» θα την υποβάθμιζε σε εκτίμηση. Και τα δύο ζουν πλέον στο
+  // `utils/beachConditionsReadout`, ώστε ο χάρτης να μην μπορεί να τυπώσει άλλο νούμερο.
+  const cardWaveIsShore = conditionsReadout.waveIsShore;
+  const cardWaveM = conditionsReadout.waveM;
+  const cardWaveValueText = conditionsReadout.waveText;
   const cardWaveLabel = cardWaveIsShore
     ? SHORE_LABELS[language].atShore
     : READ_LABELS[language].seaOpen;
@@ -1754,13 +1760,10 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    * βάθρου (αριθμός, όχι ετυμηγορία) ισχύουν και οι δύο — απλώς τώρα υπάρχει και μια γραμμή
    * που διαβάζεται σε ένα δευτερόλεπτο. Λεξιλόγιο και κατώφλια: utils/conditionsFeelPhrase.
    */
-  const conditionsFeel = buildConditionsFeel({
-    beaufort: windBeaufort,
-    // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το `cardSeaStateM`, που σε όρμο διαβάζει
-    // το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.».
-    waveM: typeof cardWaveM === 'number' && Number.isFinite(cardWaveM) && cardWaveText ? cardWaveM : undefined,
-    language,
-  });
+  // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το `cardSeaStateM`, που σε όρμο διαβάζει
+  // το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.». Το δένει η
+  // `buildBeachConditionsReadout`, μία φορά για κάρτα και ταμπελάκι μαζί.
+  const conditionsFeel = conditionsReadout.feel;
   const conditionsFeelPhrase = conditionsFeel?.phrase;
   const podiumWhyItems: Array<{
     key: string;
@@ -2142,26 +2145,37 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
               μόνο τα μποφόρ: ο υπολογιστής, που έχει τον περισσότερο χώρο, ήταν η μόνη οθόνη
               όπου το βάθρο δεν έλεγε πόσο κύμα έχει. Τώρα λέει και τα δύο, με την ίδια
               διατύπωση που διαβάζει ο διπλανός στο τηλέφωνο — μία γλώσσα, δύο οθόνες. */}
-          {isPodium && (
+          {/* ΑΕΡΑΣ ΚΑΙ ΘΑΛΑΣΣΑ, ΔΥΟ ΞΕΧΩΡΙΣΤΑ ΣΗΜΑΤΑ ΚΑΙ ΣΤΟΝ ΥΠΟΛΟΓΙΣΤΗ (20/08/2026).
+              Εδώ καθόταν η ενωμένη πρόταση («Πολύς αέρας αλλά θάλασσα λάδι») με τα δύο νούμερα
+              από κάτω. Το κινητό είχε ήδη χωρίσει τα δύο σε δικά τους κελιά στις 15/08· ο
+              υπολογιστής όχι, οπότε η ΙΔΙΑ παραλία διαβαζόταν διαφορετικά στις δύο οθόνες. Η
+              ενωμένη μορφή έχει και δεύτερο κόστος: αφήνει τον αναγνώστη να διαβάσει «αέρας»
+              και «κύμα» σαν ένα πράγμα, που είναι ακριβώς η παρανόηση της §Γ14 της βίβλου.
+              Ίδια δομή, ίδιο λεξιλόγιο, ίδια εικονίδια με το κινητό — μία γλώσσα, δύο οθόνες.
+              Η γραμμή ανοίγει και στις κάρτες εκτός βάθρου όπου υπάρχει κύμα, ακριβώς όπως στο
+              κινητό: μέχρι σήμερα ο υπολογιστής δεν έλεγε ΤΙΠΟΤΑ για αέρα/θάλασσα εκτός βάθρου. */}
+          {(isPodium || Boolean(cardWaveText)) && (
             <div
-              className="flex min-h-9 w-full min-w-0 items-center gap-2.5 rounded-xl border border-sky-100 bg-sky-50/70 px-3 py-1.5 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
+              className="flex min-h-9 w-full min-w-0 items-stretch rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
               aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}${cardWaveText ? `. ${cardWaveLabel}: ${cardWaveValueText}` : ''}`}
             >
-              <Wind className="h-3.5 w-3.5 shrink-0 text-sky-600 dark:text-sky-300" aria-hidden="true" />
-              {conditionsFeelPhrase && cardWaveText ? (
-                <span className="min-w-0">
-                  <span className="block truncate text-xs font-extrabold text-slate-900 dark:text-white">
-                    {conditionsFeelPhrase}
-                  </span>
-                  <span className="block truncate text-[11px] font-bold text-slate-600 dark:text-slate-300">
-                    {windBeaufort} {beaufortUnitLabel} · <span title={cardWaveLabel}>{cardWaveText}</span>
+              {podiumWhyItems.map((item, index) => (
+                <span
+                  key={item.key}
+                  title={item.title}
+                  className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-2 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                >
+                  {item.feelWord && (
+                    <span className="block w-full min-w-0 truncate text-center text-[11px] font-extrabold leading-[1.15] text-slate-900 dark:text-white">
+                      {item.feelWord}
+                    </span>
+                  )}
+                  <span className="flex min-w-0 items-center justify-center gap-1 text-[11px] font-bold leading-tight text-slate-600 dark:text-slate-300">
+                    {item.icon}
+                    <span className="min-w-0 truncate">{item.text}</span>
                   </span>
                 </span>
-              ) : (
-                <span className="min-w-0 truncate text-xs font-bold text-slate-700 dark:text-slate-200">
-                  {conditionsFeelPhrase ? `${conditionsFeelPhrase} · ` : `${windOnShoreLabel}: `}{windBeaufort} {beaufortUnitLabel}
-                </span>
-              )}
+              ))}
             </div>
           )}
 

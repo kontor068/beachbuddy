@@ -408,12 +408,43 @@ const cardSource = readFileSync(cardPath, 'utf8');
 // ζητούσε απλώς να εμφανίζεται το `shoreDisplayWaveM` μέσα στα 200 επόμενα σημεία — και πέρασε
 // ΠΡΑΣΙΝΗ σε σαμποτάζ που γύρισε τη συνθήκη στο παλιό πεδίο, επειδή το νέο επιβίωνε στην επόμενη
 // γραμμή του ίδιου ternary. Ένας έλεγχος που ψάχνει αν υπάρχει μια λέξη δεν ελέγχει τι διαβάζεται.
-const cardReadsShoreEverywhere = /const cardShoreM\s*=\s*typeof shoreDisplayWaveM\b/.test(cardSource);
-if (!cardReadsShoreEverywhere) {
+//
+// 20/08/2026 — Ο ΥΠΟΛΟΓΙΣΜΟΣ ΜΕΤΑΚΟΜΙΣΕ, Ο ΕΛΕΓΧΟΣ ΤΟΝ ΑΚΟΛΟΥΘΗΣΕ ΚΑΙ ΜΕΓΑΛΩΣΕ.
+// Το ζευγάρι «Μποφόρ · μέτρα» τυπώνεται πλέον ΚΑΙ στο ταμπελάκι που ανοίγει η πινέζα, οπότε ο
+// υπολογισμός βγήκε στο `utils/beachConditionsReadout` — μία πηγή για δύο επιφάνειες, αντί για
+// δεύτερο αντίγραφο του κανόνα (§Κ1). Ο έλεγχος ΔΕΝ χαλάρωσε: πιάνει την ίδια έκφραση στη νέα
+// της θέση ΚΑΙ απαιτεί η κάρτα να ΚΑΤΑΝΑΛΩΝΕΙ αυτή την πηγή αντί να ξαναϋπολογίζει. Έτσι φυλάει
+// τώρα και το ταμπελάκι, που πριν δεν υπήρχε καν για να ελεγχθεί.
+const readoutPath = path.join(root, 'utils/beachConditionsReadout.ts');
+let readoutSource = '';
+try {
+  readoutSource = readFileSync(readoutPath, 'utf8');
+} catch {
   failures.push(
-    'components/BeachCard.tsx: cardShoreM no longer reads shoreDisplayWaveM. The card would print the '
-    + 'open-water figure on most beaches and the shore figure on a few — two different quantities side '
-    + 'by side, which is the defect reported on 13/08/2026.'
+    'utils/beachConditionsReadout.ts is missing. It owns the ONE reading of the shore wave that both the '
+    + 'card and the map popup print; without it the two surfaces are free to disagree.'
+  );
+}
+
+const readoutReadsShoreEverywhere = /const shoreM\s*=\s*typeof shoreDisplayWaveM\b/.test(readoutSource);
+if (!readoutReadsShoreEverywhere) {
+  failures.push(
+    'utils/beachConditionsReadout.ts: the shore figure no longer reads shoreDisplayWaveM first. Every '
+    + 'surface would print the open-water figure on most beaches and the shore figure on a few — two '
+    + 'different quantities side by side, which is the defect reported on 13/08/2026.'
+  );
+}
+
+// Και η κάρτα πρέπει να ΠΑΙΡΝΕΙ το νούμερο από εκεί. Χωρίς αυτό, κάποιος θα άφηνε τη μονή πηγή
+// ανέγγιχτη και θα ξανάγραφε τον υπολογισμό μέσα στην κάρτα — και ο έλεγχος από πάνω θα έμενε
+// πράσινος ενώ οι δύο επιφάνειες θα τύπωναν άλλο νούμερο.
+const cardUsesReadout = /const conditionsReadout\s*=\s*buildBeachConditionsReadout\(/.test(cardSource)
+  && /const cardWaveValueText\s*=\s*conditionsReadout\.waveText\b/.test(cardSource);
+if (!cardUsesReadout) {
+  failures.push(
+    'components/BeachCard.tsx: the printed wave figure no longer comes from buildBeachConditionsReadout. '
+    + 'A second copy of the rule inside the card is exactly how the card and the map pin drifted apart '
+    + 'before (§Κ1, and the card-vs-pin gate of 20/08/2026).'
   );
 }
 
