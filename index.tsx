@@ -9,6 +9,7 @@ import { recordPageview } from './services/pageviewBeacon';
 import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 import { installGlobalErrorReporting, reportClientError } from './services/errorReporter';
+import { installDomTranslationGuard } from './utils/domTranslationGuard';
 
 declare global {
   interface Window {
@@ -113,6 +114,10 @@ if (window.__calmBeachFallbackTimer) {
   window.__calmBeachFallbackTimer = undefined;
 }
 document.documentElement.classList.add('app-mounted');
+
+// Πριν στηθεί οτιδήποτε: ο μεταφραστής του browser πειράζει το κείμενο της σελίδας
+// και χωρίς αυτό μια απλή ανανέωση λέξης έριχνε ΟΛΗ τη σελίδα (Edge, Κάρπαθος 20/08).
+installDomTranslationGuard();
 
 const root = ReactDOM.createRoot(rootElement);
 

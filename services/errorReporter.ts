@@ -55,6 +55,14 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /Extension context invalidated/i,
   /_leaflet_pos/,
   /ResizeObserver loop/i,
+  // 5. Ο ΕΝΣΩΜΑΤΩΜΕΝΟΣ BROWSER ΤΟΥ FACEBOOK/INSTAGRAM (20/08/2026). Έστειλε
+  //    «Error invoking postMessage: Java object is gone» από
+  //    `iabjs://navigation_performance_logger_android` — δικό ΤΟΥΣ script που μετράει
+  //    ταχύτητα και μιλάει με το Android app· σκάει όταν ο χρήστης κλείνει την καρτέλα.
+  //    Έφτανε ως 🔴 «έσπασε σελίδα σε επισκέπτη» ενώ η σελίδα ήταν μια χαρά.
+  /^iabjs:/i,
+  /Java object is gone/i,
+  /navigation_performance_logger/i,
 ];
 
 /**
@@ -95,9 +103,18 @@ const isSelfHealingChunkError = (message: string): boolean => {
 
   try {
     const lastAttempt = Number(window.sessionStorage.getItem(CHUNK_RELOAD_KEY) || 0);
+    // Η ΣΦΡΑΓΙΔΑ ΜΠΑΙΝΕΙ ΠΡΙΝ ΤΗΝ ΕΠΑΝΑΦΟΡΤΩΣΗ, ΟΧΙ ΜΕΤΑ (διορθώθηκε 20/08/2026).
+    // Ανάμεσα στη σφραγίδα και στο πραγματικό reload μεσολαβεί καθάρισμα μνήμης — και
+    // σε κακό δίκτυο συνήθως πέφτουν ΠΟΛΛΑ κομμάτια μαζί. Κάθε επόμενο έβλεπε φρέσκια
+    // σφραγίδα και αναφερόταν σαν «η επαναφόρτωση έγινε και δεν βοήθησε», δηλαδή 🟠
+    // ειδοποίηση για κάτι που δεν είχε καν προλάβει να ξαναδοκιμαστεί.
+    // `performance.timeOrigin` είναι η στιγμή που ξεκίνησε ΑΥΤΗ η φόρτωση: αν η σφραγίδα
+    // είναι παλιότερη, η επαναφόρτωση όντως έγινε και είμαστε ήδη στη νέα σελίδα.
+    const reloadActuallyHappened = lastAttempt < performance.timeOrigin;
     const recoveryAlreadyFailed =
       Number.isFinite(lastAttempt) &&
       lastAttempt > 0 &&
+      reloadActuallyHappened &&
       // athens-clock-exempt: elapsed time since the last reload attempt, not a time of day.
       // Both sides are raw epoch instants and only their DIFFERENCE is read, so the viewer's
       // timezone cannot move it. Using athensNow() here would compare a wall-clock-shifted

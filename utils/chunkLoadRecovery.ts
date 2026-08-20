@@ -13,6 +13,15 @@ export const isChunkLoadError = (error: unknown): boolean => {
   );
 };
 
+/** Η εκκαθάριση δεν επιτρέπεται να κρατήσει τη σελίδα όμηρο: `registration.update()`
+ *  κάνει δικτυακή κλήση και σε νεκρό 4G μπορεί να μην απαντήσει ΠΟΤΕ — και τότε το
+ *  reload από κάτω δεν έφτανε ποτέ και ο επισκέπτης έμενε στην οθόνη φόρτωσης. */
+const withDeadline = <T,>(promise: Promise<T>, ms: number): Promise<T | undefined> =>
+  Promise.race([
+    promise.catch(() => undefined),
+    new Promise<undefined>(resolve => window.setTimeout(() => resolve(undefined), ms)),
+  ]);
+
 const clearAppRuntimeCaches = async () => {
   if ('caches' in window) {
     const cacheNames = await caches.keys();
@@ -45,7 +54,7 @@ export const recoverFromChunkLoadError = async (error: unknown, source: string):
   console.warn('[Calm Beach] Missing app chunk; clearing runtime cache and reloading.', { source, error });
 
   try {
-    await clearAppRuntimeCaches();
+    await withDeadline(clearAppRuntimeCaches(), 2_000);
   } finally {
     window.location.reload();
   }
@@ -53,10 +62,32 @@ export const recoverFromChunkLoadError = async (error: unknown, source: string):
   return new Promise<never>(() => undefined);
 };
 
+/**
+ * ΜΙΑ ΔΕΥΤΕΡΗ ΠΡΟΣΠΑΘΕΙΑ ΠΡΙΝ ΤΟ ΣΚΛΗΡΟ RELOAD (20/08/2026).
+ *
+ * Μέχρι σήμερα η ΜΟΝΗ αντίδραση σε ένα κομμάτι κώδικα που δεν κατέβηκε ήταν πλήρης
+ * επαναφόρτωση της σελίδας. Για ένα iPhone σε νησιώτικο 4G που έχασε ΕΝΑ αίτημα αυτό
+ * είναι σφυρί: ο επισκέπτης βλέπει τη σελίδα να ξαναφορτώνει από την αρχή, και αν η
+ * δεύτερη προσπάθεια πέσει μέσα στα 10 δευτ. της αναμονής, βλέπει οθόνη σφάλματος.
+ *
+ * Μια απλή επανάληψη μετά από μισό δευτερόλεπτο σβήνει τα περισσότερα από αυτά χωρίς
+ * να το καταλάβει κανείς. Ισχύει ΜΟΝΟ όταν το κατέβασμα απέτυχε πραγματικά: αν το
+ * αρχείο «κατέβηκε αλλά ήρθε άδειο», ο browser το έχει ήδη κρατήσει στη μνήμη του και
+ * μια δεύτερη κλήση θα έδινε το ίδιο άδειο αποτέλεσμα — εκεί μόνο το reload βοηθάει.
+ */
+const RETRY_DELAY_MS = 500;
+
+const importWithOneRetry = <T,>(loader: () => Promise<T>): Promise<T> => loader().catch(error => {
+  if (!isChunkLoadError(error)) throw error;
+  return new Promise<T>((resolve, reject) => {
+    window.setTimeout(() => { loader().then(resolve, reject); }, RETRY_DELAY_MS);
+  });
+});
+
 export const lazyWithChunkRecovery = <T extends React.ComponentType<unknown>>(
   loader: () => Promise<{ default: T }>,
   source: string
-) => React.lazy(() => loader()
+) => React.lazy(() => importWithOneRetry(loader)
   .then(module => {
     // A chunk can "load" and still hand back nothing. Reported from a real iPhone
     // on 31/07/2026: `undefined is not an object (evaluating 'e.BeachDetailPage')`

@@ -287,6 +287,15 @@ export const handler = async (event) => {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
     }
 
+    // Καταγράφεται, δεν χτυπάει το τηλέφωνο: το `object-src` αφορά Flash/Java/PDF
+    // plugins — πράγματα που το site ΔΕΝ χρησιμοποιεί πουθενά. Άρα ένα μπλοκάρισμα
+    // εκεί είναι πάντα κάτι που έβαλε ο ΞΕΝΟΣ browser μέσα στη σελίδα (20/08/2026:
+    // browser τηλεόρασης Vestel σε /el/organized-beaches/ithaca/) και δεν υπάρχει
+    // τίποτα να διορθώσουμε. Η πολιτική δούλεψε ακριβώς όπως πρέπει.
+    if (report.kind === 'csp' && /object-src/i.test(report.message)) {
+      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
+    }
+
     // Counted above, never pushed: a crawler is not a visitor. See CRAWLER_UA.
     if (isCrawler(context.userAgent)) {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
