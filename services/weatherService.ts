@@ -4,10 +4,11 @@ import { recordOpenMeteoCall, OpenMeteoEndpoint } from './analyticsService';
 import { activeForecastProvider } from './forecast';
 import type { ForecastPoint } from './forecast/ForecastProvider';
 import { syncClockFromTrustedInstant } from '../utils/athensTime';
-import { parseMarineHourly } from '../utils/marineForecastParsing';
+import { parseMarineHourly, mergeMarineLegs } from '../utils/marineForecastParsing';
 import { marinePointKey } from '../utils/marineSamplePoints';
 import { preferredMarineModelFor } from '../utils/marineModelPreference';
 import { applyGustFloor } from '../utils/windGustFloor';
+import type { OverWaterDirectionByTime } from '../utils/overWaterWind';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -587,9 +588,22 @@ export const fetchMarineForecastData = async (lat: number, lon: number): Promise
   const cacheKey = `marine_${lat.toFixed(3)}_${lon.toFixed(3)}`;
   const API_URL = activeForecastProvider.marineForecastUrl(lat, lon);
 
+  // Η ΟΥΡΑ ΕΙΝΑΙ ΔΕΥΤΕΡΟ ΑΙΤΗΜΑ ΑΠΟ 20/08/2026 (PORISMA §Γ43): `models=ewam` για τις πρώτες 94
+  // ώρες με μνήμη 3 ω., `models=meteofrance_wave` για τις 95-144 με μνήμη 12 ω. Τα δύο ενώνονται
+  // ΜΕ ΤΗ ΣΦΡΑΓΙΔΑ ΩΡΑΣ πριν φτάσουν στον parser, ώστε ο κανόνας ανά ώρα ΚΑΙ ο μάρτυρας κορυφών
+  // να δουλεύουν όπως όταν τα μοντέλα έρχονταν μαζί.
+  //
+  // Η αποτυχία της ουράς ΚΑΤΑΠΙΝΕΤΑΙ επίτηδες, ίδιο δόγμα με τη θερμοκρασία νερού: το κύμα
+  // αποφασίζει ετυμηγορίες και χρώματα, οι μέρες 4-6 όχι. Χωρίς ουρά ο parser διαβάζει τη μία
+  // σειρά ως ηγέτη ΚΑΙ ως μάρτυρα, η επιβεβαίωση περνάει πάντα, και καμία ώρα δεν κόβεται —
+  // δηλαδή χάνονται οι μακρινές μέρες, ποτέ δεν χαμηλώνει το σημερινό κύμα.
+  const TAIL_URL = activeForecastProvider.marineTailForecastUrl(lat, lon);
   const waves = withCache<MarineForecastItem[]>(cacheKey, 'marine', 'marine-forecast', { lat, lon, url: API_URL }, async () => {
-    const data = await fetchJson<any>(API_URL, 'marine-forecast');
-    return parseMarineHourly(data?.hourly, preferredMarineModelFor(lat, lon));
+    const [data, tail] = await Promise.all([
+      fetchJson<any>(API_URL, 'marine-forecast'),
+      fetchJson<any>(TAIL_URL, 'marine-forecast-tail').catch(() => null),
+    ]);
+    return parseMarineHourly(mergeMarineLegs(data?.hourly, tail?.hourly), preferredMarineModelFor(lat, lon));
   });
 
   const sstKey = `sst_${lat.toFixed(3)}_${lon.toFixed(3)}`;
@@ -645,7 +659,11 @@ const BATCH_MAX_POINTS = 32;
  */
 // `sst` rides the marine tolerance for the same reason: it is fetched with the identical
 // `cell_selection=sea` walk, so it is displaced exactly as far from the pin as the waves are.
-const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0, sst: 1.0 } as const;
+// `overWaterWind` asks at the SEA CELL's own coordinates (data/forecast-sea-cells.generated.json),
+// so a healthy answer echoes back the same cell and 0.2 deg is as generous here as on the weather
+// route. It is NOT the marine tolerance: this route must not be allowed to silently answer from a
+// cell in another basin, which is the exact failure the layer exists to fix.
+const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0, sst: 1.0, marineTail: 1.0, overWaterWind: 0.2 } as const;
 
 /**
  * Stable key for a point, at the same 3-decimal precision as the cache keys.
@@ -678,7 +696,7 @@ const chunk = <T>(items: T[], size: number): T[][] => {
 const fetchPointsBatched = async <T>(
   points: ForecastPoint[],
   options: {
-    cachePrefix: 'forecast' | 'marine' | 'sst';
+    cachePrefix: keyof typeof COORD_SANITY_TOLERANCE_DEG;
     endpoint: OpenMeteoEndpoint;
     source: string;
     buildUrl: (batch: ForecastPoint[]) => string;
@@ -804,6 +822,49 @@ export const fetchForecastDataBatch = (
   });
 
 /**
+ * WIND DIRECTION OVER THE WATER, for many sea cells at once. Key the result with `forecastPointKey`.
+ *
+ * Returns a plain `dt_txt -> degrees` map per cell, NOT a ForecastItem[]: nothing about this
+ * response is a forecast a beach could be rendered from — it carries one field and no speed, and
+ * feeding it anywhere except utils/overWaterWind.applyOverWaterWindDirection would hand a surface
+ * a direction with no wind behind it.
+ *
+ * KEYED BY TIME, NEVER BY INDEX. The two responses come from different cells and can differ in
+ * length (different model cut-offs). Pairing them by array position would eventually give a beach
+ * another hour's direction — silently, because both are plausible angles. `dt_txt` is built with
+ * exactly the same transform parseHourlyForecast uses, so the two line up or they do not merge
+ * at all.
+ *
+ * `persist: false` — this is a per-view sweep of up to 666 cells nationally. It has the same
+ * in-memory cache as everything else, but writing every cell to localStorage would evict the
+ * region forecasts that the app actually needs to survive a reload.
+ */
+export const fetchOverWaterWindBatch = (
+  points: ForecastPoint[],
+): Promise<Map<string, FetchResult<OverWaterDirectionByTime>>> =>
+  fetchPointsBatched<OverWaterDirectionByTime>(points, {
+    cachePrefix: 'overWaterWind',
+    endpoint: 'over-water-wind',
+    source: 'over-water-wind-batch',
+    buildUrl: batch => activeForecastProvider.overWaterWindUrlBatch(batch),
+    parse: hourly => {
+      const times: string[] | undefined = hourly?.time;
+      const degrees: Array<number | null> | undefined = hourly?.wind_direction_10m;
+      if (!Array.isArray(times) || !Array.isArray(degrees)) {
+        throw new Error('Over-water wind response has no hourly direction');
+      }
+      const out: Record<string, number> = {};
+      times.forEach((timeStr, index) => {
+        const deg = degrees[index];
+        if (typeof deg === 'number' && Number.isFinite(deg)) out[timeStr.replace('T', ' ')] = deg;
+      });
+      if (!Object.keys(out).length) throw new Error('Over-water wind response is empty');
+      return out;
+    },
+    persist: false,
+  });
+
+/**
  * Marine (wave/swell/SST) for many points. Key the result with `forecastPointKey`.
  *
  * `persist: false` for the per-beach sweep — see saveToCache. The REGION point keeps its
@@ -814,6 +875,25 @@ export const fetchMarineForecastDataBatch = async (
   points: ForecastPoint[],
   options?: { persist?: boolean },
 ): Promise<Map<string, FetchResult<MarineForecastItem[]>>> => {
+  // ΤΟ ΣΚΕΛΟΣ ΤΗΣ ΟΥΡΑΣ ΠΡΩΤΑ, ΚΑΙ ΩΜΟ (PORISMA §Γ43). Πρέπει να υπάρχει ΠΡΙΝ γίνει το parse του
+  // κοντινού, γιατί ο μάρτυρας κορυφών θέλει τις δύο σειρές ΜΑΖΙ — αν το ενώναμε μετά, σε έτοιμες
+  // γραμμές, ο μάρτυρας θα πέθαινε σιωπηλά και θα χάναμε το φράγμα ψεύτικης κορυφής.
+  //
+  // Δική της μνήμη (`marineTail`), γιατί το `marine` κρατάει έτοιμες γραμμές για την ίδια
+  // συντεταγμένη και τα δύο θα πατούσε το ένα το άλλο. ΠΟΤΕ persist: είναι σκέλος 12 ωρών που το
+  // CDN δίνει τζάμπα, και ο χώρος του localStorage ανήκει στη σειρά που ξαναδιαβάζεται.
+  //
+  // Αποτυχία => άδειος χάρτης, ποτέ εξαίρεση: το κύμα των πρώτων ημερών δεν επιτρέπεται να πέσει
+  // επειδή δεν απάντησαν οι μέρες 4-6.
+  const tailByPoint = await fetchPointsBatched<any>(points, {
+    cachePrefix: 'marineTail',
+    endpoint: 'marine',
+    source: 'marine-forecast-tail-batch',
+    buildUrl: batch => activeForecastProvider.marineTailForecastUrlBatch(batch),
+    parse: (hourly) => hourly,
+    persist: false,
+  }).catch(() => new Map<string, FetchResult<any>>());
+
   const waves = fetchPointsBatched<MarineForecastItem[]>(points, {
     cachePrefix: 'marine',
     endpoint: 'marine',
@@ -821,7 +901,10 @@ export const fetchMarineForecastDataBatch = async (
     buildUrl: batch => activeForecastProvider.marineForecastUrlBatch(batch),
     // Τα 56 σημεία που πρέπει να διαβαστούν από το άλλο μοντέλο κύματος: το κελί του ewam
     // εκεί περιγράφει νερό που η παραλία δεν βλέπει. Παντού αλλού δεν αλλάζει τίποτα.
-    parse: (hourly, point) => parseMarineHourly(hourly, preferredMarineModelFor(point.lat, point.lon)),
+    parse: (hourly, point) => parseMarineHourly(
+      mergeMarineLegs(hourly, tailByPoint.get(forecastPointKey(point.lat, point.lon))?.data),
+      preferredMarineModelFor(point.lat, point.lon),
+    ),
     persist: options?.persist,
   });
 

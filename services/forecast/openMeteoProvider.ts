@@ -122,7 +122,29 @@ const SEA_TEMPERATURE_MODEL = 'models=meteofrance_currents';
 // the measurement and this app's own fetch-limited SMB + wind-chop floor, so no model — however
 // well it scores against a buoy — can print flat water over a shore our own physics says is
 // choppy. That floor is computed without reference to any of these three models.
-const MARINE_MODEL = 'models=ewam,meteofrance_wave';
+const MARINE_MODEL = 'models=ewam';
+
+// Η ΟΥΡΑ ΚΑΙ Ο ΜΑΡΤΥΡΑΣ, σε δικό τους αίτημα από 20/08/2026 (PORISMA §Γ43).
+//
+// ΤΟ ΣΠΑΣΙΜΟ ΔΕΝ ΓΛΙΤΩΝΕΙ ΤΙΠΟΤΑ ΑΠΟ ΜΟΝΟ ΤΟΥ. Ο πάροχος χρεώνει δουλειά, όχι αιτήματα HTTP:
+// δύο αιτήματα ενός μοντέλου ζυγίζουν ακριβώς όσο ένα αίτημα δύο μοντέλων (1,0 + 1,0 = 2,0).
+// Η οικονομία είναι ΟΛΗ στη μνήμη — 12 ώρες αντί 3, στο netlify/functions/forecast.mjs
+// (CDN_MAX_AGE_S.marineTail). Αν κάποιος ξαναενώσει τα δύο pin εδώ «για απλότητα», το κόστος
+// επιστρέφει ακέραιο και τίποτα δεν σπάει ορατά — γι' αυτό το φυλάει πύλη.
+//
+// ΓΙΑΤΙ ΑΥΤΟ ΤΟ ΜΟΝΤΕΛΟ ΑΝΤΕΧΕΙ ΤΙΣ 12 ΩΡΕΣ. Μετρημένο σε 153 σημεία: το ewam δίνει ύψος για
+// ΑΚΡΙΒΩΣ 94 ώρες παντού, άρα αυτό εδώ δίνει τις ώρες 95-144 — μέρες 4 ώς 6. Και τα δύο μοντέλα
+// δημοσιεύουν κάθε 12 ώρες, οπότε το ερώτημα κάθε 3 ξαναγόραζε την ίδια σειρά ~4 φορές ανά
+// τρέξιμο.
+//
+// ⚠️ ΕΧΕΙ ΚΑΙ ΔΕΥΤΕΡΗ ΔΟΥΛΕΙΑ: είναι ο ΜΑΡΤΥΡΑΣ του uncorroboratedSpikeHours
+// (utils/marineForecastParsing). Ο μάρτυρας ΚΑΤΕΒΑΖΕΙ ύψος όταν δεν επιβεβαιώνει κορυφή, άρα
+// παλιός μάρτυρας = υποεκτίμηση κύματος που ανεβαίνει. Δύο πράγματα το φράζουν: ο κανόνας του
+// ίδιου του parser «κανένας μάρτυρας => καμία κατηγορία» (η απουσία είναι ήδη η ασφαλής
+// περίπτωση), και η μέτρηση 0 πυροδοτήσεις σε 9.024 ώρες ηγέτη
+// (scripts/measureSpikeWitnessStaleness.mjs). ΤΟ ΜΗΔΕΝ ΜΕΤΡΗΘΗΚΕ ΣΕ ΜΙΑ ΗΡΕΜΗ ΜΕΡΑ και δεν
+// φράζει τίποτα για φουρτούνα — ξανατρέξε το σενάριο πριν μεγαλώσει άλλο αυτή η μνήμη.
+const MARINE_TAIL_MODEL = 'models=meteofrance_wave';
 
 // `cell_selection=sea` is set on the MARINE request only, and deliberately not on the two forecast
 // requests below.
@@ -164,9 +186,19 @@ const marineOrigin = () => {
   if (IS_DEV) return MARINE_HOST;
   throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
 };
+const marineTailOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-marine-tail`;
+  if (IS_DEV) return MARINE_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
 const seaTemperatureOrigin = () => {
   if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-marine-sst`;
   if (IS_DEV) return MARINE_HOST;
+  throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
+};
+const overWaterWindOrigin = () => {
+  if (PROXY_BASE) return `${PROXY_BASE}/open-meteo-wind-sea`;
+  if (IS_DEV) return FORECAST_HOST;
   throw new Error('Forecast unavailable: VITE_FORECAST_PROXY_BASE is not configured outside Vite dev mode.');
 };
 const airQualityOrigin = () => {
@@ -213,6 +245,19 @@ export const openMeteoProvider: ForecastProvider = {
     return `${marineOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${MARINE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${MARINE_MODEL}`;
   },
 
+  // Η ουρά του κύματος (μέρες 4-6) και ο μάρτυρας κορυφών. Ίδιος host, ίδιο path, ίδιο
+  // `cell_selection=sea` και ΙΔΙΕΣ μέρες με την κλήση κύματος — αλλιώς οι δύο σειρές δεν
+  // καλύπτουν τις ίδιες ώρες και η ένωση θα άφηνε τρύπες. Διαφέρουν μόνο το μοντέλο και η μνήμη.
+  marineTailForecastUrl(lat, lon) {
+    return `${marineTailOrigin()}/v1/marine?latitude=${lat}&longitude=${lon}&hourly=${MARINE_HOURLY}&timezone=auto&forecast_days=6&${SEA_CELL}&${MARINE_TAIL_MODEL}`;
+  },
+
+  marineTailForecastUrlBatch(points) {
+    const lats = points.map(p => p.lat).join(',');
+    const lons = points.map(p => p.lon).join(',');
+    return `${marineTailOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${MARINE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${MARINE_TAIL_MODEL}`;
+  },
+
   // Water temperature, single point and batched. Same host, same path, same
   // `cell_selection=sea` walk to real water as the wave call — only the model list and the
   // cache lifetime differ. `forecast_days=6` matches the wave route so the two series cover
@@ -225,6 +270,23 @@ export const openMeteoProvider: ForecastProvider = {
     const lats = points.map(p => p.lat).join(',');
     const lons = points.map(p => p.lon).join(',');
     return `${seaTemperatureOrigin()}/v1/marine?latitude=${lats}&longitude=${lons}&hourly=${SEA_TEMPERATURE_HOURLY}&timezone=Europe%2FAthens&forecast_days=6&${SEA_CELL}&${SEA_TEMPERATURE_MODEL}`;
+  },
+
+  // THE ONLY PLACE IN THE APP WHERE A *FORECAST* URL CARRIES `cell_selection=sea`.
+  //
+  // It is safe here and nowhere else because this route asks for ONE field. The two URLs above
+  // also carry `temperature_2m`, so putting the sea cell on them would quietly print sea-cell
+  // air temperature on a July afternoon — half the reason the parameter never went in. The other
+  // half was that they carry the SPEED, which is calibrated on land-cell wind and stays there:
+  // PORISMA §Γ29 measured the sea cell winning on DIRECTION only, and losing on speed under 3 km.
+  //
+  // `forecast_days=6` matches the weather route so the two series cover the same days and the
+  // direction can be merged into them hour-for-hour, by dt_txt and never by index.
+  overWaterWindUrlBatch(points) {
+    const lats = points.map(p => p.lat).join(',');
+    const lons = points.map(p => p.lon).join(',');
+    return `${overWaterWindOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}`
+      + `&hourly=wind_direction_10m&forecast_days=6&timezone=Europe%2FAthens&${SEA_CELL}`;
   },
 
   dustForecastUrl(lat, lon) {

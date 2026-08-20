@@ -84,6 +84,34 @@ if (providerSstPin && proxySstPin) {
   }
 }
 
+// --- 1c. the TAIL pin (PORISMA §Γ43) -------------------------------------------------------
+// The wave call was split on 20/08/2026 into `models=ewam` (hours 1-94, 3 h cache) and
+// `models=meteofrance_wave` (hours 95-144 AND the spike witness, 12 h cache). Both pins are
+// checked here for the same reason the other two are: the proxy value wins in production, so a
+// client that drifts is testing a model users never get.
+const providerTailPin = providerSrc.match(/const MARINE_TAIL_MODEL\s*=\s*'models=([^']+)'/);
+const proxyTailPin = proxySrc.match(/const MARINE_TAIL_MODEL\s*=\s*'([^']+)'/);
+
+if (!providerTailPin) fail(`${PROVIDER}: could not find \`const MARINE_TAIL_MODEL = 'models=...'\`.`);
+if (!proxyTailPin) fail(`${PROXY}: could not find \`const MARINE_TAIL_MODEL = '...'\`.`);
+
+let tailModels = [];
+if (providerTailPin && proxyTailPin) {
+  const providerTailModels = providerTailPin[1].split(',').map(x => x.trim()).filter(Boolean);
+  tailModels = proxyTailPin[1].split(',').map(x => x.trim()).filter(Boolean);
+  const same =
+    providerTailModels.length === tailModels.length &&
+    providerTailModels.every((m, i) => m === tailModels[i]);
+  if (!same) {
+    fail(
+      `Wave-tail model pin disagrees between client and proxy.\n` +
+      `    ${PROVIDER}: ${providerTailModels.join(',') || '(none)'}\n` +
+      `    ${PROXY}:    ${tailModels.join(',') || '(none)'}\n` +
+      `    The proxy value wins in production.`
+    );
+  }
+}
+
 if (providerPin && proxyPin) {
   const providerModels = providerPin[1].split(',').map(s => s.trim()).filter(Boolean);
   const proxyModels = proxyPin[1].split(',').map(s => s.trim()).filter(Boolean);
@@ -122,7 +150,7 @@ const sstVars = sstHourly ? [sstHourly[1]] : [];
 // after the split: a field must still be requested somewhere, and parsed from a model that is
 // actually pinned somewhere.
 const requestedVars = [...waveVars, ...sstVars];
-const allModels = [...models, ...sstModels];
+const allModels = [...models, ...tailModels, ...sstModels];
 
 // --- 2b. the split itself must not quietly un-split ---------------------------------------
 // Putting SST back into MARINE_HOURLY would drag meteofrance_currents back into the wave model
@@ -136,6 +164,21 @@ if (waveVars.includes(SST)) {
     `Open-Meteo prices models per coordinate. Use SEA_TEMPERATURE_HOURLY.`
   );
 }
+// --- 2c. the wave split must not quietly un-split (PORISMA §Γ43) --------------------------
+// Putting the tail model back into MARINE_MODEL restores the exact cost the split removed and
+// NOTHING would look broken: the waves would still be right, the pages would still render, and
+// the only symptom would be the bill. The saving is not the split — two one-model requests weigh
+// the same as one two-model request — it is the 12 h cache the tail route gets on its own.
+for (const tailModel of tailModels) {
+  if (models.includes(tailModel)) {
+    fail(
+      `${PROXY}/${PROVIDER}: '${tailModel}' is pinned on the NEAR wave route again. It has its own ` +
+      `route since 20/08/2026 so it can carry a 12 h cache instead of 3 h; merging the pins doubles ` +
+      `the refresh rate of the biggest line on the bill and looks completely healthy from outside.`
+    );
+  }
+}
+
 if (models.includes('meteofrance_currents')) {
   fail(
     `${PROXY}/${PROVIDER}: 'meteofrance_currents' is pinned on the WAVE route again. It serves ` +

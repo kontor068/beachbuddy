@@ -226,3 +226,77 @@ export const parseMarineHourly = (
       item.marine.seaSurfaceTemperatureC !== undefined
     ));
 };
+
+
+/**
+ * ΤΑ ΕΞΙ ΠΕΔΙΑ ΠΟΥ ΖΗΤΑΕΙ Η ΚΛΗΣΗ ΚΥΜΑΤΟΣ. Ίδια λίστα με το MARINE_HOURLY του provider — η πύλη
+ * scripts/validateMarineModelParsing.mjs απαιτεί να συμφωνούν, ώστε ένα πεδίο που προστίθεται
+ * εκεί να μη μένει σιωπηλά έξω από την ένωση.
+ */
+export const MARINE_MERGE_FIELDS = [
+  'wave_height',
+  'wave_direction',
+  'wave_period',
+  'swell_wave_height',
+  'swell_wave_direction',
+  'swell_wave_period',
+] as const;
+
+/**
+ * ΕΝΩΝΕΙ ΤΑ ΔΥΟ ΣΚΕΛΗ ΤΗΣ ΘΑΛΑΣΣΑΣ ΣΕ ΕΝΑ hourly, ΩΡΑ-ΜΕ-ΩΡΑ (PORISMA §Γ43).
+ *
+ * Από 20/08/2026 το κύμα έρχεται σε ΔΥΟ αιτήματα: το κοντινό σκέλος (`models=ewam`, μνήμη 3 ώ.)
+ * και η ουρά (`models=meteofrance_wave`, μνήμη 12 ώ.). Ο πάροχος επιστρέφει ΓΥΜΝΑ ονόματα πεδίων
+ * όταν ζητηθεί ΕΝΑ μοντέλο και `<πεδίο>_<μοντέλο>` όταν ζητηθούν περισσότερα — επαληθευμένο
+ * 20/08/2026 στην ίδια συντεταγμένη: 144 ώρες και στα δύο, 94 μη-κενές στο ewam, 144 στο άλλο.
+ *
+ * Αυτή η συνάρτηση ξαναφτιάχνει ΑΚΡΙΒΩΣ τη μορφή που περίμενε ο parser όσο τα μοντέλα έρχονταν
+ * μαζί, ώστε **καμία απόφαση να μην αλλάξει**: ο κανόνας «το ewam κερδίζει κάθε ώρα που δίνει
+ * ύψος» και — το κρίσιμο — ο ΜΑΡΤΥΡΑΣ του `uncorroboratedSpikeHours` δουλεύουν όπως πριν.
+ *
+ * ⚠️ Η ΕΝΩΣΗ ΓΙΝΕΤΑΙ ΜΕ ΤΗ ΣΦΡΑΓΙΔΑ ΩΡΑΣ, ΠΟΤΕ ΜΕ ΤΗ ΘΕΣΗ. Τα δύο σκέλη έχουν ΔΙΑΦΟΡΕΤΙΚΗ
+ * μνήμη, άρα μπορούν να ληφθούν εκατέρωθεν μιας αλλαγής ημέρας και να ξεκινούν από άλλη ώρα.
+ * Ένωση κατά θέση θα μετατόπιζε σιωπηλά όλα τα ύψη κύματος κατά ώρες — λάθος που καμία πύλη δεν
+ * θα φαινόταν να πιάνει, γιατί τα νούμερα θα έμοιαζαν απολύτως εύλογα.
+ *
+ * ΑΝ ΛΕΙΠΕΙ ΕΝΑ ΣΚΕΛΟΣ, ΕΠΙΣΤΡΕΦΕΤΑΙ ΤΟ ΑΛΛΟ ΑΥΤΟΥΣΙΟ — και αυτό είναι ασφαλές και από τις δύο
+ * πλευρές: τα γυμνά ονόματά του διαβάζονται από την εφεδρεία του `series()` ως ΚΑΙ τα δύο
+ * μοντέλα, οπότε ηγέτης και μάρτυρας γίνονται η ίδια σειρά, η επιβεβαίωση περνάει πάντα και
+ * καμία ώρα δεν κόβεται. Δηλαδή αποτυχία της ουράς κοστίζει τις μέρες 4-6, ΠΟΤΕ ένα χαμηλωμένο
+ * κύμα σήμερα.
+ */
+export const mergeMarineLegs = (nearHourly: any, tailHourly: any): any => {
+  const nearTimes: unknown = nearHourly?.time;
+  const tailTimes: unknown = tailHourly?.time;
+  if (!Array.isArray(nearTimes) || !nearTimes.length) return tailHourly ?? nearHourly;
+  if (!Array.isArray(tailTimes) || !tailTimes.length) return nearHourly;
+
+  const indexOfTime = (times: unknown[]): Map<string, number> => {
+    const map = new Map<string, number>();
+    times.forEach((t, i) => { if (typeof t === 'string' && !map.has(t)) map.set(t, i); });
+    return map;
+  };
+  const nearAt = indexOfTime(nearTimes);
+  const tailAt = indexOfTime(tailTimes);
+
+  // Ο άξονας είναι η ΕΝΩΣΗ των δύο, ταξινομημένη. Οι σφραγίδες είναι ISO, άρα η αλφαβητική
+  // σειρά ΕΙΝΑΙ η χρονολογική. Ένωση και όχι «το πιο μακρύ σκέλος», ώστε μια ώρα που έχει μόνο
+  // το ένα σκέλος να μη χάνεται.
+  const spine = [...new Set([...nearAt.keys(), ...tailAt.keys()])].sort();
+
+  const column = (source: any, at: Map<string, number>, field: string, model: string): unknown[] => {
+    const series = source?.[`${field}_${model}`] ?? source?.[field];
+    if (!Array.isArray(series)) return spine.map(() => null);
+    return spine.map(t => {
+      const i = at.get(t);
+      return i === undefined ? null : (series[i] ?? null);
+    });
+  };
+
+  const merged: Record<string, unknown> = { time: spine };
+  for (const field of MARINE_MERGE_FIELDS) {
+    merged[`${field}_ewam`] = column(nearHourly, nearAt, field, 'ewam');
+    merged[`${field}_meteofrance_wave`] = column(tailHourly, tailAt, field, 'meteofrance_wave');
+  }
+  return merged;
+};
