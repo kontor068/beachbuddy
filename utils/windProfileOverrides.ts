@@ -1,5 +1,76 @@
 import { Beach, WindProfile } from '../types';
 
+/**
+ * ⚠️ 20/08/2026 — 24 ΕΓΓΡΑΦΕΣ ΔΙΟΡΘΩΘΗΚΑΝ ΑΠΟ ΑΝΕΞΑΡΤΗΤΗ ΑΚΤΟΓΡΑΜΜΗ (PORISMA §Γ28ε/στ).
+ *
+ * ΤΙ ΕΓΙΝΕ. Σε 40 παραλίες η κάρτα έλεγε «Εκτεθειμένη» σε τομέα όπου η μετρημένη γεωμετρία
+ * λέει ότι ο άνεμος ΦΕΥΓΕΙ από τη στεριά. Αιτία: το `exposedToWindDirections` εδώ κατονόμαζε
+ * τομείς που βγαίνουν από `beachFacingDirection` το οποίο δείχνει λάθος πλευρά της ακτής.
+ *
+ * ΠΟΙΟΣ ΤΟ ΕΚΡΙΝΕ. Η ακτογραμμή του OpenStreetMap (`natural=coastline`), που έχει κανόνα
+ * κατεύθυνσης — στεριά αριστερά, θάλασσα δεξιά — άρα δίνει προσανατολισμό ανεξάρτητο ΚΑΙ από
+ * το χειρόγραφο προφίλ ΚΑΙ από τη δική μας αφετηρία γεωμετρίας, που ήταν το αδιέξοδο του
+ * §Γ28δ. Εργαλείο: scripts/auditCoastlineFacingOsm.mjs · αναφορά:
+ * reports/quality/coastline-facing-osm.json
+ *
+ * ΓΙΑΤΙ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΤΟΝ ΕΜΠΙΣΤΕΥΤΟΥΜΕ. Η μέθοδος δοκιμάστηκε ΠΡΩΤΑ σε 40 παραλίες ελέγχου
+ * των ίδιων περιοχών, όπου χειρόγραφο και γεωμετρία ΣΥΜΦΩΝΟΥΝ, δηλαδή ξέραμε την απάντηση:
+ * διάμεσος απόκλιση 10,9°, 39/40 εντός 45°. Στις 40 αμφισβητούμενες ο OSM βρέθηκε πιο κοντά
+ * στη ΓΕΩΜΕΤΡΙΑ σε 38/40 — διάμεση απόσταση 9° από αυτήν, 79° από το χειρόγραφο.
+ *
+ * ⚠️ ΠΟΥ ΣΤΑΜΑΤΗΣΕ, ΚΑΙ ΓΙΑΤΙ. Δέκα διορθώσεις ΕΠΑΝΑΦΕΡΘΗΚΑΝ. Οκτώ επειδή το προφίλ τους
+ * κουβαλάει `suspectPin` ή σημείωμα ότι δεν εμπιστευόμαστε τη θέση της πινέζας — και η
+ * μέτρηση OSM γίνεται ΠΑΝΩ στην πινέζα, άρα εκεί δεν είναι ανεξάρτητη, είναι άκυρη. Μία
+ * (Βούδια Μήλου) επειδή ο βόρειος τομέας της κρατήθηκε ΡΗΤΑ στις 10/06/2026 για διαύλωση
+ * ανέμου στο στενό της Κιμώλου, με οδηγούς να προειδοποιούν για ρεύματα: ο OSM μετράει
+ * ΠΡΟΣΑΝΑΤΟΛΙΣΜΟ, δεν βλέπει διαύλωση. Το `quality:wind-exposure` το έπιασε ονομαστικά.
+ * Εξαίρεση: το Λυδί Άνδρου ΕΠΑΝΑΦΕΡΘΗΚΕ κι αυτό (suspectPin), αν και το σημείωμά του έλεγε
+ * ρητά «no independent evidence either way» — η πινέζα υπερισχύει του κενού μαρτυρίας.
+ *
+ * ΤΙ ΔΕΝ ΑΓΓΙΧΤΗΚΕ, ΕΠΙΤΗΔΕΣ. Το λανθασμένο `beachFacingDirection` ΜΕΝΕΙ: η διόρθωσή του
+ * κουνάει γωνιακή έκθεση, fetchExposure και ταξινόμηση όρμου σε τομείς που ΔΕΝ μετρήθηκαν.
+ * Αφαιρέθηκαν μόνο οι ρητοί τομείς που ο OSM διαψεύδει.
+ *
+ * ΠΩΣ ΓΥΡΙΖΕΙ ΠΙΣΩ: ξαναβάλε τον τομέα στη λίστα της παραλίας. Κάθε γραμμή λέει τι έφυγε.
+ *
+ *   #1690 Αρτεμίδι — N  [N,NE,E] -> [NE,E]  · χειρ. 45° vs OSM 137° (απέχει 92°, η γεωμετρία 20°)
+ *   #1699 Ζορκος — NW  [N,NE,NW] -> [N,NE]  · χειρ. 15° vs OSM 85° (απέχει 70°, η γεωμετρία 7°)
+ *   #1705 Κυπρί — NW  [W,NW] -> [W]  · χειρ. 270° vs OSM 188° (απέχει 82°, η γεωμετρία 7°)
+ *   #1719 Πίσω Λιμνιώνας — N  [N,NW,W] -> [NW,W]  · χειρ. 315° vs OSM 242° (απέχει 73°, η γεωμετρία 3°)
+ *   #1987 Αλυκό — NW  [W,SW,NW] -> [W,SW]  · χειρ. 250° vs OSM 184° (απέχει 66°, η γεωμετρία 13°)
+ *   #1996 Κάμπος — NE  [N,NE,NW] -> [N,NW]  · χειρ. 25° vs OSM 255° (απέχει 130°, η γεωμετρία 25°)
+ *   #2001 Λιγαρίδια — N  [N,NE,E] -> [NE,E]  · χειρ. 85° vs OSM 132° (απέχει 47°, η γεωμετρία 14°)
+ *   #2018 Παραλία Ψωφαγριλιά — N  [N,NE,E] -> [NE,E]  · χειρ. 85° vs OSM 111° (απέχει 26°, η γεωμετρία 1°)
+ *   #2024 Άσπρος Γκρεμός — N  [N,NE,E] -> [NE,E]  · χειρ. 75° vs OSM 154° (απέχει 79°, η γεωμετρία 21°)
+ *   #2027 Δελφίνι — SW  [W,SW] -> [W]  · χειρ. 260° vs OSM 3° (απέχει 103°, η γεωμετρία 5°)
+ *   #2029 Καλόγερος — N  [N,NE,E] -> [NE,E]  · χειρ. 80° vs OSM 122° (απέχει 42°, η γεωμετρία 8°)
+ *   #2031 Κριός — NW  [W,NW] -> [W]  · χειρ. 275° vs OSM 196° (απέχει 79°, η γεωμετρία 7°)
+ *   #2032 Λάγγερη — NE/E  [N,NE,E] -> [N]  · χειρ. 45° vs OSM 296° (απέχει 109°, η γεωμετρία 29°)
+ *   #2037 Μαρτσέλο — NW  [W,NW] -> [W]  · χειρ. 270° vs OSM 148° (απέχει 122°, η γεωμετρία 27°)
+ *   #2042 Ξυφάρα — E  [N,NE,E] -> [N,NE]  · χειρ. 45° vs OSM 335° (απέχει 70°, η γεωμετρία 5°)
+ *   #2043 Παραλία Αγκάλη Χρυσής Ακτής — N/NE  [N,NE,E] -> [E]  · χειρ. 105° vs OSM 172° (απέχει 67°, η γεωμετρία 15°)
+ *   #2052 Τούρκου Άμμος — N/NE  [N,NE,NW] -> [NW]  · χειρ. 0° vs OSM 248° (απέχει 112°, η γεωμετρία 25°)
+ *   #2053 Τσερδάκια (Νέα Χρυσή Ακτή) — N  [N,NE,E] -> [NE,E]  · χειρ. 100° vs OSM 162° (απέχει 62°, η γεωμετρία 22°)
+ *   #2056 Χρυσή Ακτή — N/NE  [N,NE,E] -> [E]  · χειρ. 100° vs OSM 166° (απέχει 66°, η γεωμετρία 2°)
+ *   #1989 Άμπραμ — NE/E  [N,NE,E] -> [N]  · χειρ. 35° vs OSM 285° (απέχει 110°, η γεωμετρία 6°)
+ *   #2004 Μελινό — NE  [N,NE,NW] -> [N,NW]  · χειρ. 15° vs OSM 297° (απέχει 78°, η γεωμετρία 2°)
+ *   #2008 Μικρό Αλυκό — NW  [W,SW,NW] -> [W,SW]  · χειρ. 250° vs OSM 175° (απέχει 75°, η γεωμετρία 5°)
+ *   #2038 Μικρή Σάντα Μαρία — N/NE  [N,NE,E] -> [E]  · χειρ. 45° vs OSM 183° (απέχει 138°, η γεωμετρία 6°)
+ *   #2050 Πυργάκι — SW  [S,SW] -> [S]  · χειρ. 190° vs OSM 120° (απέχει 70°, η γεωμετρία 10°)
+ *
+ * ΕΠΑΝΑΦΕΡΘΗΚΑΝ (καμία αλλαγή σε αυτές):
+ *   #1726 Χρυσή Αμμος — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1898 Άγιος Δημήτριος — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1911 Καμπάνες — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1914 Νεροδάφνη — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1934 Βούδια — ρητή διατήρηση τομέα
+ *   #2011 Πάνορμος — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #2049 Πούντα — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1702 Κολώνα — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1709 Λυδι — suspectPin / πινέζα υπό αμφισβήτηση
+ *   #1693 Βιτάλι — η διόρθωσή της μαλάκωνε τη ΓΕΙΤΟΝΙΚΗ Γίδα (#1697), που τρώει τον βοριά κατάμουτρα (+0,25, 5 χλμ)
+ */
+
 type OverrideEntry = {
   islandTokens: string[];
   nameTokens: string[];
@@ -332,11 +403,19 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     shelterLevel: 'sheltered',
     fetchExposure: 'low',
     exposedToWindDirections: ['SW', 'W'],
-    protectedFromWindDirections: ['N', 'NE', 'NW'],
+    // 'NW' ΒΓΗΚΕ 20/08/2026. Το χειρόγραφο προφίλ γράφτηκε με εικασία «νοτιοδυτικός όρμος»
+    // (facing 225), αλλά η ακτογραμμή κοιτάει 281° και ο ΒΔ τομέας μετριέται fetch 10,08 χλμ /
+    // onshore 0,99 / ένταση 83,5 — μελτέμι κατάμουτρα. Επειδή το `protectedFromWindDirections`
+    // επιστρέφεται στο `mapExposure.ts:422` ΠΡΙΝ ελεγχθεί η γεωμετρία `exposed` στη `:465`, η
+    // πινέζα έβγαινε ΠΡΑΣΙΝΗ πάνω από κάρτα που έλεγε σωστά «Εκτεθειμένη».
+    // Η εθνική μέτρηση (`scripts/measureAuthoredVsGeometryPins.mjs`, 91.904 τομεοεντάσεις)
+    // βρήκε ΜΟΝΟ αυτή τη μία σε όλη τη χώρα — γι' αυτό διορθώνεται το προφίλ και όχι η σειρά
+    // των ελέγχων: ένας εθνικός κανόνας δεν αλλάζει για ένα δείγμα.
+    protectedFromWindDirections: ['N', 'NE'],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
     confidence: 'medium',
-    notes: 'Southwest Paros cove. Likely better in north-sector wind than open east/north beaches, but not a universal calm guarantee.',
+    notes: 'West-coast Paros beach on the Antiparos channel. Better in north-sector wind than open east beaches, but the northwest sector is open water (10 km fetch) — not sheltered.',
   },
   1822: {
     beachFacingDirection: 225,
@@ -375,7 +454,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 45,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -408,7 +487,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 105,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
@@ -452,7 +531,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 100,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['NE', 'E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
@@ -485,7 +564,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 100,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: true,
     localWindAmplification: 'high',
@@ -529,7 +608,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 75,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['NE', 'E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -551,7 +630,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 260,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['W', 'SW'],
+    exposedToWindDirections: ['W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
@@ -573,7 +652,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 80,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['NE', 'E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -584,7 +663,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 275,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['W', 'NW'],
+    exposedToWindDirections: ['W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
@@ -595,7 +674,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 45,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['N'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -631,7 +710,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 270,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['W', 'NW'],
+    exposedToWindDirections: ['W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
@@ -653,7 +732,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 45,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['N', 'NE'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -709,7 +788,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 190,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['S', 'SW'],
+    exposedToWindDirections: ['S'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'low',
@@ -720,7 +799,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 0,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'NW'],
+    exposedToWindDirections: ['NW'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -830,7 +909,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 15,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'NW'],
+    exposedToWindDirections: ['N', 'NE'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -853,7 +932,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 270,
     shelterLevel: 'semi_sheltered',
     fetchExposure: 'medium',
-    exposedToWindDirections: ['W', 'NW'],
+    exposedToWindDirections: ['W'],
     protectedFromWindDirections: ['NE', 'E'],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -898,7 +977,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 45,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NE', 'E'],
+    exposedToWindDirections: ['NE', 'E'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -1087,7 +1166,7 @@ export const windProfileOverridesByBeachId: Record<number, WindProfile> = {
     beachFacingDirection: 315,
     shelterLevel: 'open',
     fetchExposure: 'high',
-    exposedToWindDirections: ['N', 'NW', 'W'],
+    exposedToWindDirections: ['NW', 'W'],
     protectedFromWindDirections: [],
     knownWindSportSpot: false,
     localWindAmplification: 'medium',
@@ -1428,7 +1507,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 250,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
-      exposedToWindDirections: ['W', 'SW', 'NW'],
+      exposedToWindDirections: ['W', 'SW'],
       notes: 'Southwest/west Naxos beach inferred from coordinates near the Alyko area. No verified calm/protected claim.',
     }),
   },
@@ -1451,7 +1530,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 35,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NE', 'E'],
+      exposedToWindDirections: ['N'],
       localWindAmplification: 'medium',
       notes: 'North/northeast Naxos beach inferred from coordinates. North/east-sector wind should be treated with caution.',
     }),
@@ -1532,7 +1611,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 25,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NE', 'NW'],
+      exposedToWindDirections: ['N', 'NW'],
       localWindAmplification: 'medium',
       notes: 'North Naxos beach inferred from coordinates. North-sector wind should be treated as exposed until local behavior is reviewed.',
     }),
@@ -1590,7 +1669,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 85,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NE', 'E'],
+      exposedToWindDirections: ['NE', 'E'],
       localWindAmplification: 'medium',
       notes: 'East-side Naxos pebble beach inferred from coordinates. Treat north/east-sector wind as exposed.',
     }),
@@ -1626,7 +1705,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 15,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NE', 'NW'],
+      exposedToWindDirections: ['N', 'NW'],
       localWindAmplification: 'medium',
       notes: 'North Naxos beach inferred from coordinates. Treat north-sector wind as exposed; no verified shelter claim.',
     }),
@@ -1675,7 +1754,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 250,
       shelterLevel: 'semi_sheltered',
       fetchExposure: 'medium',
-      exposedToWindDirections: ['W', 'SW', 'NW'],
+      exposedToWindDirections: ['W', 'SW'],
       notes: 'Small southwest/west Naxos cove inferred from coordinates. Keep low confidence; no verified calm/protected claim.',
     }),
   },
@@ -1789,7 +1868,7 @@ const naxosPhase1CoverageOverrideEntries: OverrideEntry[] = [
       beachFacingDirection: 85,
       shelterLevel: 'open',
       fetchExposure: 'high',
-      exposedToWindDirections: ['N', 'NE', 'E'],
+      exposedToWindDirections: ['NE', 'E'],
       localWindAmplification: 'medium',
       notes: 'East/northeast Naxos beach inferred from coordinates. Treat north/east-sector wind as exposed.',
     }),
