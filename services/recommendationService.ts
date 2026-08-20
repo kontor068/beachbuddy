@@ -1693,7 +1693,10 @@ export const calculateBeachScore = (
   const windDir = degToCompass(weather.wind.deg);
   const baseBeaufort = getBeaufortLevel(windSpeedKmph);
   const gustKmph = getWeatherGustKmph(weather, hourlyForecast);
-  const gustSpreadKmph = getWeatherGustSpreadKmph(weather, hourlyForecast, windSpeedKmph);
+  // Ο ωμός μέσος ΚΑΙ στο εφεδρικό μονοπάτι. Χωρίς αυτό, όταν λείπει η ωριαία πρόγνωση το
+  // spread μετριόταν από τον ανεβασμένο μέσο και έβγαινε μικρότερο — το ίδιο σβήσιμο
+  // προειδοποιήσεων που η κύρια διαδρομή είχε ήδη κλείσει (γρ. 324-331).
+  const gustSpreadKmph = getWeatherGustSpreadKmph(weather, hourlyForecast, rawMeanWindKmphForSpread ?? windSpeedKmph);
   const temp = getWeatherTemp(weather);
   const marine = weather.marine;
   const waveHeightM = marine?.waveHeightM;
