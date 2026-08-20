@@ -237,11 +237,49 @@ const hasCuratedSegmentProtectionSupport = (
   item: MapExposureItem,
   group: MapExposureItem[],
   sector?: WindSector
-): boolean => group.some(candidate => (
-  candidate.beach.id !== item.beach.id &&
-  areInSameShorelineSegment(candidate.beach.id, item.beach.id) &&
-  hasStableGeospatialProtection(candidate, sector)
-));
+): boolean => (
+  // Η ΔΑΝΕΙΚΗ προστασία δεν ταξιδεύει γύρω από ακρωτήρι. Ο γείτονας μιλάει για τη μορφολογία
+  // που μοιράζονται, όχι για μια ακτή που το ΔΙΚΟ της σχήμα τη δείχνει να τρώει τον άνεμο
+  // κατάμουτρα. Χωρίς αυτόν τον φραγμό, μετρήθηκε 20/08/2026, ο εξομαλυντής έβαφε πιο ήρεμα
+  // την Καλησκιά Κέας, τη Μερχιά Μυκόνου, το Γιαλούδι και τον Καλόγερο Σερίφου και την Τσόχα
+  // Σίφνου — ακτές με τον άνεμο κατάμουτρα — επειδή ένας επιθεωρημένος όρμος δίπλα τους τους
+  // δάνειζε την προστασία του. Δες takesTheWindHeadOn και quality:card-vs-pin.
+  !takesTheWindHeadOn(item, sector) &&
+  group.some(candidate => (
+    candidate.beach.id !== item.beach.id &&
+    areInSameShorelineSegment(candidate.beach.id, item.beach.id) &&
+    hasStableGeospatialProtection(candidate, sector)
+  ))
+);
+
+/**
+ * Παίρνει ΑΥΤΗ η ακτή τον άνεμο κατάμουτρα, κατά τη δική της γεωμετρία;
+ *
+ * Ο εξομαλυντής γειτόνων δανείζει προστασία μέσα σε μια ακτογραμμή, κι αυτό είναι σωστό όσο ο
+ * δανειστής και ο δανειζόμενος βλέπουν τον ίδιο άνεμο. Μετρήθηκε 20/08/2026 ότι δεν ισχύει
+ * πάντα: 89 πινέζες σε 11 παραλίες άλλαζαν ΧΡΩΜΑ προς τα πιο ήρεμα, και σε πέντε από αυτές η
+ * ίδια η γεωμετρία της ακτής έλεγε το αντίθετο — Καλησκιά Κέας, Μερχιά Μυκόνου, Γιαλούδι και
+ * Καλόγερος Σερίφου, Τσόχα Σίφνου, με τη συνιστώσα onshore στο 0,71-0,83.
+ *
+ * ΚΡΙΝΕΙ ΜΟΝΟ ΤΟΝ ΑΝΕΜΟ, ΟΧΙ ΤΟ ΝΕΡΟ. Μια πρώτη εκδοχή απαιτούσε και ανοιχτό fetch ≥1 χλμ.
+ * Λάθος όριο: το fetch λέει αν χτίζεται ΚΥΜΑ, ενώ αυτό που χρωματίζει εδώ είναι ο ΑΝΕΜΟΣ, και
+ * ο άνεμος φτάνει στην ακτή είτε υπάρχει νερό μπροστά της είτε όχι. Η Τσόχα Σίφνου το έδειξε:
+ * onshore 0,71 με fetch μόλις 0,24 χλμ, δηλαδή αέρας κατάμουτρα χωρίς θάλασσα να τον χτίσει —
+ * και με το όριο του fetch έμενε λάθος βαμμένη.
+ *
+ * ΤΟ ΑΝΤΙΘΕΤΟ ΔΕΝ ΕΙΝΑΙ ΣΦΑΛΜΑ, και γι᾽ αυτό ο έλεγχος είναι τόσο στενός: στους υπόλοιπους
+ * τομείς των ίδιων παραλιών (Φτελιά, Μικρή Βίγλα, Αποθήκες, Λιγαρίδια) η γεωμετρία λέει
+ * `protected` με τον άνεμο να φεύγει ΑΠΟ τη στεριά (onshore ως -0,999) — εκεί ο εξομαλυντής
+ * έχει δίκιο και η ΚΑΡΤΑ άδικο, οπότε το να τις σκουραίναμε θα χειροτέρευε τον χάρτη για να
+ * καλύψει λάθος αλλού. Απόφαση Μίλτου 20/08: δεν το κάνουμε. Ο φραγμός πιάνει μόνο όποια ακτή
+ * το ΔΙΚΟ της σχήμα τη δείχνει να τρώει τον αέρα.
+ */
+const takesTheWindHeadOn = (item: MapExposureItem, sector?: WindSector): boolean => {
+  if (!sector) return false;
+  const sectorExposure = item.geospatialExposure?.sectors?.[sector];
+  if (!sectorExposure || sectorExposure.level === 'protected') return false;
+  return typeof sectorExposure.onshore === "number" && sectorExposure.onshore > 0.5;
+};
 
 const areLikelySameBeachFront = (a: MapExposureItem, b: MapExposureItem): boolean => {
   const sameCuratedSegment = areInSameShorelineSegment(a.beach.id, b.beach.id);

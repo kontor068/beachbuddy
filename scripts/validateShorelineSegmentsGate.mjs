@@ -61,6 +61,24 @@ const ACCEPTED_CONTRADICTIONS = new Map([
   ['kythnos-agios-sostis-potamia-front', 'εύρος 56° — ίδιο μέτωπο, διαφωνία μοντέλου (§Γ3)'],
   ['sifnos-toso-nero-tsocha-front', 'εύρος 57° — ίδιο μέτωπο, διαφωνία μοντέλου (§Γ3)'],
   ['andros-kourtali-felos-front', 'εύρος 60° — οριακό αλλά εντός ανοχής· διαφωνία μοντέλου (§Γ3)'],
+  // ── 20/08/2026: η ομάδα βάζει μαζί ακτή που τρώει τον αέρα και ακτή που τον έχει πλάτη ────
+  // Οι δέκα από κάτω δεν διαφωνούν λόγω γωνίας αλλά λόγω ΑΝΕΜΟΥ. Σε κάθε μία, ένα μέλος έχει
+  // τη συνιστώσα onshore ΘΕΤΙΚΗ (0,51-0,79 — ο άνεμος πέφτει πάνω του) και ένα άλλο ΑΡΝΗΤΙΚΗ
+  // (ως -0,42 — ο ίδιος άνεμος φεύγει από τη στεριά του). Διαφορά έως 1,0 σε μια κλίμακα που
+  // πάει από -1 ως +1: δεν είναι ίδια ακτή απέναντι σε εκείνον τον άνεμο, και το μοντέλο έχει
+  // δίκιο που τα ξεχωρίζει. Φάνηκαν όταν ο φραγμός `takesTheWindHeadOn` σταμάτησε τη δανεική
+  // προστασία του γείτονα να ταξιδεύει σε ακτή που τρώει τον αέρα — δες
+  // utils/mapExposure.hasCuratedSegmentProtectionSupport, quality:card-vs-pin, βίβλος §Γ27.
+  ['kea-vroskopos-kalamitsi-kalogiros-front', 'Β: Καλόγηρος onshore +0,56 vs Βρόσκοπος -0,17 (§Γ27)'],
+  ['kythnos-aosa-kouri-zogkaki-front', 'Ν: Αόσα onshore +0,61 vs Ζογκάκι -0,20 (§Γ27)'],
+  ['serifos-achladi-kalogeros-front', 'Α: Καλόγερος onshore +0,79 vs Αχλάδι -0,18 (§Γ27)'],
+  ['serifos-sykamia-gialoudi-karavas-front', 'Δ: Συκαμιά onshore +0,70 vs Γιαλούδι -0,19 (§Γ27)'],
+  ['ios-almyros-diammoudia-lorentzaina-front', 'Ν: Διαμμούδια onshore +0,55 vs Λορέντζαινα -0,19 (§Γ27)'],
+  ['mykonos-town-megali-ammos-agia-anna-front', 'Β: Μεγάλη Άμμος onshore +0,58 vs Άγ. Χαράλαμπος -0,16 (§Γ27)'],
+  ['mykonos-merchia-sokratis-front', 'Α: Μερχιά onshore +0,74 vs Σωκράτης -0,29 (§Γ27)'],
+  ['milos-papafragas-kapros-front', 'Δ: Παπάφραγκας onshore +0,51 vs Κάπρος -0,02 (§Γ27)'],
+  ['sifnos-vathi-tsopou-front', 'Ν: Βαθή onshore +0,63 vs Τσόπου -0,34 (§Γ27)'],
+  ['syros-achladi-vari-front', 'Δ: Βάρη onshore +0,59 vs Αχλάδι -0,42 (§Γ27)'],
 ]);
 
 const OUT_DIR = path.join('.tmp', 'shoreline-segment-gate');
