@@ -274,6 +274,21 @@ const totals = {
   windowShape: {},
   windowShapeWithAvoid: {},
 };
+
+/**
+ * ΤΟ «ΜΕΤΑ»: Η ΠΟΡΤΑ ΤΟΥ 20/08/2026, ΤΙΜΟΛΟΓΗΜΕΝΗ ΠΑΝΩ ΣΤΑ ΙΔΙΑ ΔΕΔΟΜΕΝΑ.
+ *
+ * Το `directoryListabilityGate` (App.tsx) απέκτησε τρίτο αποκλεισμό: `avoid_swimming`. Δεν είναι
+ * exported, οπότε εδώ ΠΡΟΣΟΜΟΙΩΝΕΤΑΙ ΜΟΝΟ αυτό το σκέλος — ρητά μόνο αυτό, ώστε το νούμερο να
+ * λέει το τίμημα ΤΗΣ ΣΥΓΚΕΚΡΙΜΕΝΗΣ αλλαγής και τίποτα άλλο. Δεν γίνεται δεύτερο αντίγραφο κανόνα
+ * που ξεσυγχρονίζεται σιωπηλά (§Κ1): ότι η ΠΡΑΓΜΑΤΙΚΗ πόρτα το κάνει το φυλάει η πύλη
+ * `a-refused-swim-is-never-an-offer`.
+ *
+ * ΣΗΜΑΝΤΙΚΟ: ο αποκλεισμός τρέχει ΠΡΙΝ το `selectSuitableToneGroups`, άρα αλλάζει και ΠΟΙΑ
+ * χρώματα «υπάρχουν». Νησί όπου κάθε πορτοκαλί είναι «μην κολυμπήσεις» χάνει ολόκληρο το
+ * πορτοκαλί από το παράθυρο — γι' αυτό το τίμημα δεν βγαίνει με απλή αφαίρεση.
+ */
+const after = { screensWithList: 0, listedBeaches: 0, listedAvoid: 0, emptied: 0, windowShape: {} };
 const examples = [];
 const worstRegions = {};
 
@@ -292,6 +307,19 @@ for (const result of results) {
         totals.avoidBeachesTotal += 1;
         bump(totals.avoidByTone, row.tone);
       }
+    }
+
+    // ── ΤΟ «ΜΕΤΑ»: ίδια συνάρτηση, πάνω στις παραλίες που η νέα πόρτα αφήνει να περάσουν.
+    const offerable = rows.filter(row => !row.avoid);
+    const chosenAfter = selectSuitableToneGroups(offerable, row => row.tone);
+    const listedAfter = offerable.filter(row => chosenAfter.includes(row.tone));
+    if (listedAfter.length) {
+      after.screensWithList += 1;
+      after.listedBeaches += listedAfter.length;
+      after.listedAvoid += listedAfter.filter(row => row.avoid).length;
+      bump(after.windowShape, chosenAfter.join('+'));
+    } else {
+      after.emptied += 1;
     }
 
     // Η ΠΡΑΓΜΑΤΙΚΗ ΣΥΝΑΡΤΗΣΗ ΤΟΥ ΠΡΟΪΟΝΤΟΣ αποφασίζει ποια χρώματα μπαίνουν στη λίστα.
@@ -351,6 +379,13 @@ for (const [shape, count] of Object.entries(totals.windowShape).sort((a, b) => b
   console.log(`  ${shape.padEnd(16)} ${String(count).padStart(4)} οθόνες · με «μην κολυμπήσεις» μέσα: ${withAvoid} (${pct(withAvoid, count)})`);
 }
 
+console.log(`
+── ΜΕΤΑ ΤΗΝ ΠΟΡΤΑ ΤΟΥ 20/08 (avoid_swimming έξω από την προσφορά) ────`);
+console.log(`  «Μην κολυμπήσεις» που μένουν στη λίστα: ${after.listedAvoid}  (πρέπει: 0)`);
+console.log(`  Οθόνες με λίστα: ${after.screensWithList} · που ΑΔΕΙΑΣΑΝ: ${after.emptied} (${pct(after.emptied, totals.screensWithList)})`);
+console.log(`  Παραλίες στη λίστα: ${after.listedBeaches} (πριν ${totals.listedBeaches}, −${totals.listedBeaches - after.listedBeaches} = ${pct(totals.listedBeaches - after.listedBeaches, totals.listedBeaches)})`);
+console.log(`  Παράθυρα μετά: ${Object.entries(after.windowShape).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(' · ')}`);
+
 console.log(`\n── ΤΟ ΤΙΜΗΜΑ ΤΗΣ ΑΥΣΤΗΡΗΣ ΛΥΣΗΣ ─────────────────────────────────────`);
 console.log(`  Οθόνες που θα ΑΔΕΙΑΖΑΝ αν κόβαμε τις «μην κολυμπήσεις»: `
   + `${totals.screensWhereFilterEmptiesList} (${pct(totals.screensWhereFilterEmptiesList, totals.screensWithList)})`);
@@ -382,6 +417,7 @@ writeFileSync(reportPath, `${JSON.stringify({
   note: 'ΑΝΩ ΦΡΑΓΜΑ: το isListableInDirectory (γυμνιστών, μόνο-με-βάρκα στα ≥5 Μπφ) δεν είναι '
     + 'exported και δεν αντιγράφηκε εδώ. Μόνο αφαιρεί παραλίες, άρα το πραγματικό νούμερο είναι ≤.',
   ...totals,
+  after,
   examples,
   worstRegions: Object.fromEntries(worst),
 }, null, 2)}\n`);

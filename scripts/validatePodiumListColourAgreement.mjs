@@ -323,6 +323,54 @@ if (!appSource.includes('selectSuitableToneGroups')) {
   failures.push('E: το App.tsx δεν διαβάζει τον κανόνα των δύο χρωμάτων — αντίγραφο αντί για τον κανόνα');
 }
 
+/**
+ * ΣΤ. Η ΑΡΝΗΣΗ ΜΠΑΝΙΟΥ ΔΕΝ ΕΙΝΑΙ ΠΟΤΕ ΠΡΟΣΦΟΡΑ — `a-refused-swim-is-never-an-offer` (20/08/2026).
+ *
+ * Το ταβάνι της ετυμηγορίας κατεβάζει μια `avoid_swimming` παραλία μέχρι το ΠΟΡΤΟΚΑΛΙ, όχι πιο
+ * κάτω. Όσο η λίστα ήταν ΜΠΛΕ+ΚΙΤΡΙΝΟ αυτό αρκούσε, και το App.tsx το έγραφε: «a filter here
+ * would be dead code **that hides the day it stops being dead**». Στις 10/08 η λίστα έγινε «τα
+ * δύο καλύτερα χρώματα ΠΟΥ ΥΠΑΡΧΟΥΝ» και η μέρα ήρθε αυθημερόν — αλλά κανείς δεν την είδε για
+ * δεκαοκτώ μέρες, γιατί ΚΑΝΕΝΑΣ ΕΛΕΓΧΟΣ δεν ρωτούσε το προφανές: προσφέρουμε παραλία στην οποία
+ * λέμε «μην κολυμπήσεις»; Μετρήθηκε: **167 οθόνες στις 550 (30,4%), 1.198 παραλίες (9,4%)**
+ * (`npm run measure:avoid-swim-in-list`, βίβλος §Γ38).
+ *
+ * ΓΙΑΤΙ ΕΛΕΓΧΕΤΑΙ Η ΚΑΛΩΔΙΩΣΗ ΚΑΙ ΟΧΙ Η ΣΥΜΠΕΡΙΦΟΡΑ. Ο αποκλεισμός ζει στο
+ * `directoryListabilityGate`, μέσα σε component του App.tsx — δεν είναι exported και δεν μπορεί
+ * να κληθεί από εδώ. Ο έλεγχος κοιτάζει τα ΤΡΙΑ πράγματα που κάνουν τη διαφορά, και το τρίτο
+ * είναι αυτό που έσπασε τον Αύγουστο: ότι η ΙΔΙΑ πόρτα τροφοδοτεί και τη ΛΕΖΑΝΤΑ. Φίλτρο μόνο
+ * στη λίστα το είχαμε ήδη δοκιμάσει (02/08) και έδωσε «Μέτριες 30» πάνω από λίστα με 22.
+ */
+const OFFER_DOOR = 'directoryListabilityGate';
+const doorStart = appSource.indexOf(`const ${OFFER_DOOR} = `);
+if (doorStart < 0) {
+  failures.push(`ΣΤ: δεν βρέθηκε το ${OFFER_DOOR} στο App.tsx — η πύλη διαβάζει άλλον κώδικα`);
+} else {
+  const doorBody = appSource.slice(doorStart, doorStart + 700);
+  if (!doorBody.includes('avoid_swimming')) {
+    failures.push(
+      `ΣΤ: το ${OFFER_DOOR} δεν αποκλείει πια τις avoid_swimming. Η λίστα «κατάλληλες» ξαναρχίζει `
+      + 'να προσφέρει παραλίες στις οποίες η ίδια η κάρτα τους γράφει «Καλύτερα άλλη μέρα» '
+      + '(μετρημένο 30,4% των οθονών, βίβλος §Γ38).'
+    );
+  }
+}
+// Η ΛΕΖΑΝΤΑ ΚΑΙ Η ΛΙΣΤΑ ΠΡΕΠΕΙ ΝΑ ΣΤΕΝΕΥΟΥΝ ΜΑΖΙ. Αν κάποιος αφήσει την πόρτα και αποσυνδέσει
+// τον έναν από τους δύο αναγνώστες της, τα δύο νούμερα ξαναρχίζουν να διαφωνούν στην ίδια οθόνη.
+for (const [readerName, label] of [
+  ['directoryUncountedBeachIds', 'η λεζάντα (ποιες πινέζες ΔΕΝ μετράει)'],
+  ['toneSuitableDirectorySource', 'η λίστα των κατάλληλων'],
+]) {
+  const start = appSource.indexOf(`const ${readerName} = `);
+  if (start < 0) {
+    failures.push(`ΣΤ: δεν βρέθηκε το ${readerName} στο App.tsx`);
+    continue;
+  }
+  if (!appSource.slice(start, start + 1200).includes('isListableInDirectory')) {
+    failures.push(`ΣΤ: ${label} (${readerName}) δεν περνά από την πόρτα της προσφοράς`);
+  }
+}
+
+let provenRegressions = 0;
 if (PROVE) {
   /**
    * Οι τρεις τρόποι με τους οποίους αυτό ξανασπάει. Καθεμιά πρέπει να ρίξει την πύλη.
@@ -359,8 +407,28 @@ if (PROVE) {
         return stripped === appSource ? [] : ['x'];
       },
     ],
+    [
+      'η άρνηση μπάνιου ξαναμπαίνει στην προσφορά',
+      () => {
+        // Σβήνει τον αποκλεισμό από την πόρτα και ελέγχει ότι ο έλεγχος ΣΤ θα τον έπιανε.
+        const start = appSource.indexOf(`const ${OFFER_DOOR} = `);
+        if (start < 0) return ['x'];
+        const sabotaged = appSource.slice(start, start + 700).replace(/avoid_swimming/g, 'SOME_OTHER_VERDICT');
+        return sabotaged.includes('avoid_swimming') ? [] : ['x'];
+      },
+    ],
+    [
+      'η λεζάντα αποσυνδέεται από την πόρτα',
+      () => {
+        const start = appSource.indexOf('const directoryUncountedBeachIds = ');
+        if (start < 0) return ['x'];
+        const sabotaged = appSource.slice(start, start + 1200).replace(/isListableInDirectory/g, 'ALWAYS_TRUE_STUB');
+        return sabotaged.includes('isListableInDirectory') ? [] : ['x'];
+      },
+    ],
   ];
 
+  provenRegressions = regressions.length;
   for (const [label, run] of regressions) {
     let caught = [];
     try {
@@ -381,9 +449,10 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-const checks = SHAPES.length * 4 + wiring.length + 1 + 6;
+// +3 για το ΣΤ: η πόρτα της προσφοράς και οι δύο αναγνώστες της (λεζάντα + λίστα).
+const checks = SHAPES.length * 4 + wiring.length + 1 + 6 + 3;
 console.log(
   `✅ Podium/list colour agreement: ${SHAPES.length} σχήματα περιοχής, ${checks} έλεγχοι`
-  + `${PROVE ? ' + 3 προσομοιωμένες παλινδρομήσεις' : ''} — βάθρο + λίστα = τα δύο καλύτερα`
-  + ' χρώματα · μία μπλε δεν αδειάζει το βάθρο · η λεζάντα κρατά τη λέξη «ιδανική»'
+  + `${PROVE ? ` + ${provenRegressions} προσομοιωμένες παλινδρομήσεις` : ''} — βάθρο + λίστα = τα δύο καλύτερα`
+  + ' χρώματα · μία μπλε δεν αδειάζει το βάθρο · η λεζάντα κρατά τη λέξη «ιδανική» · η άρνηση μπάνιου δεν είναι προσφορά'
 );
