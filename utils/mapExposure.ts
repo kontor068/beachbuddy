@@ -319,6 +319,45 @@ const getMoreConservativeExposure = (levels: ExposureLevel[]): ExposureLevel => 
   ), 'protected' as ExposureLevel)
 );
 
+/**
+ * ΕΧΕΙ ΚΕΡΔΙΘΕΙ Η ΑΝΑΚΟΥΦΙΣΗ ΠΟΥ ΕΤΟΙΜΑΖΕΤΑΙ ΝΑ ΔΑΝΕΙΣΤΕΙ ΑΥΤΗ Η ΠΙΝΕΖΑ;
+ *
+ * Ο φραγμός `takesTheWindHeadOn` του §Γ27β ζούσε ΜΟΝΟ μέσα στο
+ * `hasCuratedSegmentProtectionSupport`, δηλαδή μόνο στο μονοπάτι όπου ο στόχος της ομάδας είναι
+ * `protected`. Όταν ο στόχος ήταν `partial`, καμία ερώτηση δεν γινόταν: ο **Άγιος Ιωάννης
+ * Λευκάδας** στον δυτικό άνεμο — onshore 0,56, γεωμετρία `exposed`, fetch 10,4 χλμ, ένταση 67 —
+ * μαλάκωνε από `exposed` σε `partial` επειδή ένας κλειδωμένος γείτονας έλεγε `partial`. Μετρήθηκε
+ * 20/08/2026 (PORISMA §Γ28γ): 4 τομεοεντάσεις, όλες ορατές στο χρώμα.
+ *
+ * Δεύτερος κανόνας, μαζί: **ο γείτονας ΕΝΙΣΧΥΕΙ προστασία, δεν την ΕΦΕΥΡΙΣΚΕΙ.** Άλμα δύο
+ * ολόκληρων σκαλιών (`exposed` → `protected`) επιτρέπεται μόνο σε ακτή που η ΔΙΚΗ ΤΗΣ γεωμετρία
+ * λέει κι αυτή `protected`. Πιάνει την **Κολυμπήθρα Τήνου** στον ανατολικό: onshore +0,32,
+ * γεωμετρία `partial`, ένταση 39,7 — πλάγιος άνεμος πάνω στην ακτή, και η πινέζα πήδαγε από
+ * πορτοκαλί σε κίτρινο δανεικά.
+ *
+ * ΤΟ ΕΥΡΟΣ ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΓΡΑΦΤΕΙ Η ΓΡΑΜΜΗ, σε 91.872 συγκρίσεις: οι δύο κανόνες μαζί πιάνουν
+ * **7 τομεοεντάσεις σε 2 παραλίες** και **καμία άλλη πινέζα στη χώρα** — ούτε καν αόρατη. Δεν
+ * ακυρώνουν την απόφαση του §Γ27β: οι 49 ΑΠΟΓΕΙΟΙ τομείς των έξι παραλιών, όπου ο χάρτης έχει
+ * δίκιο και η κάρτα διορθώθηκε στο §Γ28β, συνεχίζουν να δανείζονται κανονικά.
+ *
+ * Χωρίς δική της γεωμετρία η πινέζα ΔΕΝ μπλοκάρεται: εκεί ο γείτονας είναι η μόνη μαρτυρία που
+ * έχουμε, κι αυτός ήταν πάντα ο λόγος ύπαρξης του εξομαλυντή.
+ */
+const borrowedReliefIsEarned = (
+  item: MapExposureItem,
+  sector: WindSector | undefined,
+  currentLevel: ExposureLevel,
+  targetLevel: ExposureLevel
+): boolean => {
+  if (exposurePriority(targetLevel) >= exposurePriority(currentLevel)) return true;
+  if (!sector) return true;
+  if (takesTheWindHeadOn(item, sector)) return false;
+  if (exposurePriority(currentLevel) - exposurePriority(targetLevel) < 2) return true;
+  const ownSectorLevel = item.geospatialExposure?.sectors?.[sector]?.level;
+  if (!ownSectorLevel) return true;
+  return ownSectorLevel === 'protected';
+};
+
 export const getVisibleMapExposureLevel = (
   item: Pick<SuitableBeach, 'exposureLevel' | 'geospatialExposure' | 'orientation' | 'windProfile' | 'windProfileSource' | 'windSector' | 'warnings'> & { beach: Pick<Beach, 'protectedFrom'> },
   windBeaufort?: number,
@@ -588,6 +627,10 @@ export const getConsistentVisibleMapExposureLevels = (
         targetLevel !== 'protected' &&
         hasStableGeospatialProtection(item, sectorOf(item))
       ) return;
+      // Ο τελευταίος φραγμός πριν γραφτεί το χρώμα, και ο μόνος που ρωτάει και στα ΔΥΟ μονοπάτια
+      // (protected και μη): δες borrowedReliefIsEarned.
+      const currentLevel = levels.get(item.beach.id);
+      if (currentLevel && !borrowedReliefIsEarned(item, sectorOf(item), currentLevel, targetLevel)) return;
       levels.set(item.beach.id, targetLevel);
     });
   });
