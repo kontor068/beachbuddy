@@ -60,6 +60,7 @@
     "quality:access-notes-provenance": "node scripts/validateAccessNotesProvenance.mjs",
     "measure:chop-exponent": "node scripts/measureChopExponent.mjs",
     "measure:colour-cause": "node scripts/measureColourCauseSplit.mjs --live",
+    "measure:avoid-swim-in-list": "node scripts/measureAvoidSwimInSuitableList.mjs --live",
     "quality:truth": "node scripts/validateColourAgainstRealWind.mjs",
     "quality:truth:national": "node scripts/validateColourAgainstRealWind.mjs --national",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
