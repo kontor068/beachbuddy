@@ -568,6 +568,16 @@ export const resolveBeachWindProfile = (beach: Beach): { profile: WindProfile; s
  */
 const GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM = 8;
 
+/**
+ * How far off the land the wind must be blowing before the windsport flag stops shouting
+ * (see `isKnownWindSportRisk`). −0,3 is not a comfort margin, it is where the measured gap is:
+ * across the 192 sectors of the 24 flagged beaches the offshore group tops out at −0,31 and the
+ * next sector up sits at −0,06, so the line separates two populations instead of cutting one.
+ * Deliberately stricter than the −0,25 the resolver uses (windExposureModel), because this one
+ * silences a caution rather than adding one.
+ */
+const WINDSPORT_OFFSHORE_ONSHORE_MAX = -0.3;
+
 const geometryEscalatesToExposed = (
   profile: GeospatialExposureProfile | undefined,
   windSector: WindSector
@@ -913,7 +923,43 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   const amplificationApplies = profile.exposedToWindDirections.length === 0
     || profile.exposedToWindDirections.includes(windSector);
   const effectiveBeaufort = Math.min(12, baseBeaufort + (amplificationApplies ? localAmplificationBoost(profile.localWindAmplification) : 0));
-  const isKnownWindSportRisk = profile.knownWindSportSpot && baseBeaufort >= 4;
+  const isKnownWindSportSpotInWind = profile.knownWindSportSpot && baseBeaufort >= 4;
+  /**
+   * THE WINDSPORT FLAG IS NOW DIRECTIONAL — IT NO LONGER SHOUTS AT A WIND BLOWING OFF THE LAND.
+   *
+   * `knownWindSportSpot && beaufort >= 4` used to return 'exposed' from `exposureFromProfile`
+   * before a single direction was consulted, so the most famous windy beaches in the country
+   * read «Εκτεθειμένη» in all eight sectors — including the ones where the wind leaves the
+   * shore. Measured nationally 20/08/2026 (PORISMA §Γ28, 2.872 beaches × 8 sectors × 4
+   * intensities, no forecast calls): 67 sector-cases across 23 beaches said «Εκτεθειμένη» on a
+   * clearly offshore wind purely because of this flag — Πρασονήσι, Κουρεμένος, Βασιλική,
+   * Φτελιά, Μικρή Βίγλα, Χρυσή Ακτή Πάρου, Κω, Κέρκυρα. In every one of them the authored
+   * facing AGREES with the measured shoreline normal, so there is no argument about which
+   * surface is wrong: the flag simply never looked at the wind.
+   *
+   * ⚠️ WHY THE OBVIOUS FIX (drop the flag) WAS REJECTED. Measured on the same 24 beaches: with
+   * the flag gone, 63 offshore sectors correctly stopped being 'exposed' — but 39 ALONGSHORE
+   * sectors went quiet with them (onshore −0,06 … +0,05: Πρασονήσι @NE/@SW, Φτελιά @E/@W,
+   * Μικρή Βίγλα @NE/@SW, Κέρος @N/@S). Those are exactly the sectors where the meltemi runs
+   * parallel to the beach and howls. Only the DIRECTIONAL form touches the 76 offshore sectors
+   * and none of the other 116.
+   *
+   * ⚠️ AND IT STOPS AT «Μερική προστασία», NOT «Προστατευμένη» (decision Μίλτου 20/08/2026).
+   * `canClaimProtected` below keeps testing the UNDIRECTIONAL `isKnownWindSportSpotInWind`, so a
+   * windsport spot can never claim protection in any sector. With the protected claim shut and
+   * the flag quiet, `exposureFromProfile` lands on the angular fallback, which returns 'partial'.
+   * The water in front of the shore is flat under an offshore wind, but the coast is open 10-25
+   * km and an offshore 5-6 Bft carries an inflatable out to sea — that residual risk is what the
+   * middle word carries. An authored `exposedToWindDirections` entry still wins over this and
+   * keeps the sector 'exposed' (9 of the 76), which is the conservative direction.
+   *
+   * NOT CHANGED, DELIBERATELY: `isKnownWindSportCaution` (3 Bft amplified to 4) stays
+   * undirectional because it was never measured. Widening this rule to it needs its own count.
+   */
+  const windSportSectorOnshore = input.geospatialProfile?.sectors?.[windSector]?.onshore;
+  const windSportWindIsOffshore = typeof windSportSectorOnshore === 'number'
+    && windSportSectorOnshore < WINDSPORT_OFFSHORE_ONSHORE_MAX;
+  const isKnownWindSportRisk = isKnownWindSportSpotInWind && !windSportWindIsOffshore;
   const isKnownWindSportCaution = profile.knownWindSportSpot && baseBeaufort === 3 && effectiveBeaufort >= 4;
   // Strong enclosure geometry earns the protected claim on the LIVE sector, aligning scoring
   // with the map. Explicit exposed sectors and windsport spots always keep winning (below).
@@ -985,8 +1031,11 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     && typeof liveSectorGeometry.fetchKm === 'number'
     && liveSectorGeometry.fetchKm >= GEOMETRY_EXPOSURE_ESCALATION_FETCH_KM;
   const coastInDispute = conflictedFacing && Boolean(geometrySaysWideOpen);
+  // UNDIRECTIONAL on purpose: a windsport spot never claims 'protected', not even with the wind
+  // off the land. That is what keeps the offshore case at «Μερική προστασία» instead of letting
+  // it fall through to the calmest word (see `isKnownWindSportRisk` above).
   const canClaimProtected = (canClaimProtectedFromWind(profile, windSector) || geometryEnclosed)
-    && !isKnownWindSportRisk
+    && !isKnownWindSportSpotInWind
     && !coastInDispute;
   const isExplicitlyExposed = profile.exposedToWindDirections.includes(windSector);
   const isExplicitlyProtected = canClaimProtected;
@@ -1010,7 +1059,10 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     windDirectionDeg: input.windDirectionDeg,
     windSpeedKmh: input.windSpeedKmh,
     measuredWaveHeightM: input.waveHeightMeters,
-    explicitExposed: isKnownWindSportRisk || isExplicitlyExposed,
+    // Also undirectional: the resolver feeds the wave/intensity layer, and the directional
+    // change above was measured against the exposure WORD only. Keeping this untouched holds the
+    // blast radius to the word and the score, where it was counted.
+    explicitExposed: isKnownWindSportSpotInWind || isExplicitlyExposed,
     explicitProtected: canClaimProtected,
   });
   // Curated authored profiles encode local knowledge and a deliberately
