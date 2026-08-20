@@ -1,0 +1,798 @@
+{
+  "measuredAt": "2026-08-20T08:37:17.101Z",
+  "question": "Τι αλλάζει όταν το curated «protected» πάψει να αγοράζει την έκπτωση ×0,5 στο κύμα",
+  "touchedSectors": 29,
+  "touchedBeaches": 24,
+  "sectors": [
+    {
+      "beachId": 133,
+      "name": "Λιμνιώνας",
+      "region": "attica-kythira",
+      "sector": "NE",
+      "intensity": 42.7,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 133,
+      "name": "Λιμνιώνας",
+      "region": "attica-kythira",
+      "sector": "W",
+      "intensity": 40.3,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 340,
+      "name": "Γιάννακης",
+      "region": "central-greece-fokida-mainland",
+      "sector": "N",
+      "intensity": 43.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 340,
+      "name": "Γιάννακης",
+      "region": "central-greece-fokida-mainland",
+      "sector": "SE",
+      "intensity": 39.5,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 632,
+      "name": "Βαθύ",
+      "region": "crete-crete-heraklion",
+      "sector": "S",
+      "intensity": 40.5,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 632,
+      "name": "Βαθύ",
+      "region": "crete-crete-heraklion",
+      "sector": "NW",
+      "intensity": 42.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 904,
+      "name": "Μουρτεμένο",
+      "region": "epirus-thesprotia-mainland",
+      "sector": "N",
+      "intensity": 59.6,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 930,
+      "name": "Alipa beach",
+      "region": "ionian-islands-corfu",
+      "sector": "S",
+      "intensity": 44.7,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1131,
+      "name": "Φωκι",
+      "region": "ionian-islands-kefalonia",
+      "sector": "NE",
+      "intensity": 47.6,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1131,
+      "name": "Φωκι",
+      "region": "ionian-islands-kefalonia",
+      "sector": "S",
+      "intensity": 34.7,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1138,
+      "name": "Πλατύ Λιμάνι",
+      "region": "ionian-islands-kefalonia",
+      "sector": "NE",
+      "intensity": 45.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1216,
+      "name": "Πόρτο Βρώμη",
+      "region": "ionian-islands-zakynthos",
+      "sector": "SE",
+      "intensity": 33.7,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1229,
+      "name": "Παραλία Σκίνος",
+      "region": "ionian-islands-ithaca",
+      "sector": "SW",
+      "intensity": 40.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1368,
+      "name": "Τσίλια",
+      "region": "north-aegean-lesvos",
+      "sector": "W",
+      "intensity": 37.2,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1529,
+      "name": "Μεγάλο Αμόνι",
+      "region": "peloponnese-korinthia-mainland",
+      "sector": "NE",
+      "intensity": 47.1,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1529,
+      "name": "Μεγάλο Αμόνι",
+      "region": "peloponnese-korinthia-mainland",
+      "sector": "S",
+      "intensity": 35.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1530,
+      "name": "Μικρό Αμόνι",
+      "region": "peloponnese-korinthia-mainland",
+      "sector": "N",
+      "intensity": 41.8,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1591,
+      "name": "Πόρτο Κάγιο",
+      "region": "peloponnese-lakonia-mainland",
+      "sector": "E",
+      "intensity": 35.1,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1661,
+      "name": "Κάτω Κάμπος",
+      "region": "south-aegean-amorgos",
+      "sector": "SE",
+      "intensity": 33.8,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 1798,
+      "name": "Τρεις Κλεισιές βόρειος",
+      "region": "south-aegean-ios",
+      "sector": "W",
+      "intensity": 35.4,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2089,
+      "name": "Μέγα Λιβάδι",
+      "region": "south-aegean-serifos",
+      "sector": "NW",
+      "intensity": 38.3,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2096,
+      "name": "Αρτιμόνι",
+      "region": "south-aegean-sifnos",
+      "sector": "N",
+      "intensity": 36,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2143,
+      "name": "Παραλία Βάρη",
+      "region": "south-aegean-syros",
+      "sector": "SE",
+      "intensity": 34.8,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2211,
+      "name": "Γερολιμνιώνας",
+      "region": "south-aegean-schinoussa",
+      "sector": "N",
+      "intensity": 36.6,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2223,
+      "name": "Πάνω Μερσίνι",
+      "region": "south-aegean-polyaigos",
+      "sector": "SW",
+      "intensity": 41,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2229,
+      "name": "Τσαγκάρι",
+      "region": "south-aegean-agathonisi",
+      "sector": "NW",
+      "intensity": 33.7,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2269,
+      "name": "Παραλία Παλιόνησος",
+      "region": "south-aegean-kalymnos",
+      "sector": "NE",
+      "intensity": 33,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2377,
+      "name": "Λεντού",
+      "region": "south-aegean-lipsi",
+      "sector": "NW",
+      "intensity": 40.1,
+      "fetchKm": 0,
+      "level": "partial"
+    },
+    {
+      "beachId": 2469,
+      "name": "Άγιος Νικόλαος",
+      "region": "south-aegean-symi",
+      "sector": "E",
+      "intensity": 35.5,
+      "fetchKm": 0,
+      "level": "partial"
+    }
+  ],
+  "wave": [
+    {
+      "openWaterM": 0,
+      "beforeM": 0,
+      "afterM": 0
+    },
+    {
+      "openWaterM": 0.2,
+      "beforeM": 0.1,
+      "afterM": 0.2
+    },
+    {
+      "openWaterM": 0.4,
+      "beforeM": 0.2,
+      "afterM": 0.4
+    },
+    {
+      "openWaterM": 0.6,
+      "beforeM": 0.3,
+      "afterM": 0.6
+    },
+    {
+      "openWaterM": 0.8,
+      "beforeM": 0.4,
+      "afterM": 0.8
+    },
+    {
+      "openWaterM": 1,
+      "beforeM": 0.5,
+      "afterM": 1
+    },
+    {
+      "openWaterM": 1.2,
+      "beforeM": 0.6,
+      "afterM": 1.2
+    },
+    {
+      "openWaterM": 1.4,
+      "beforeM": 0.7,
+      "afterM": 1.4
+    },
+    {
+      "openWaterM": 1.6,
+      "beforeM": 0.8,
+      "afterM": 1.6
+    },
+    {
+      "openWaterM": 1.8,
+      "beforeM": 0.9,
+      "afterM": 1.8
+    },
+    {
+      "openWaterM": 2,
+      "beforeM": 1,
+      "afterM": 2
+    },
+    {
+      "openWaterM": 2.5,
+      "beforeM": 1.25,
+      "afterM": 2.5
+    }
+  ],
+  "calmWaterFilter": {
+    "threshold": 0.4,
+    "lostZones": 2,
+    "gainedZones": 0,
+    "rows": [
+      {
+        "openWaterM": 0,
+        "inBefore": true,
+        "inAfter": true
+      },
+      {
+        "openWaterM": 0.2,
+        "inBefore": true,
+        "inAfter": true
+      },
+      {
+        "openWaterM": 0.4,
+        "inBefore": true,
+        "inAfter": true
+      },
+      {
+        "openWaterM": 0.6,
+        "inBefore": true,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 0.8,
+        "inBefore": true,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 1,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 1.2,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 1.4,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 1.6,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 1.8,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 2,
+        "inBefore": false,
+        "inAfter": false
+      },
+      {
+        "openWaterM": 2.5,
+        "inBefore": false,
+        "inAfter": false
+      }
+    ]
+  },
+  "colour": {
+    "isEnclosedCove": true,
+    "cellsTotal": 72,
+    "cellsChanged": 0,
+    "stricter": 0,
+    "milder": 0,
+    "moves": []
+  },
+  "grid": [
+    {
+      "beaufort": 2,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "red",
+          "after": "red"
+        }
+      ]
+    },
+    {
+      "beaufort": 3,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "blue",
+          "after": "blue"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "red",
+          "after": "red"
+        }
+      ]
+    },
+    {
+      "beaufort": 4,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1,
+          "before": "yellow",
+          "after": "yellow"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "red",
+          "after": "red"
+        }
+      ]
+    },
+    {
+      "beaufort": 5,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "orange",
+          "after": "orange"
+        }
+      ]
+    },
+    {
+      "beaufort": 6,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2,
+          "before": "orange",
+          "after": "orange"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "red",
+          "after": "red"
+        }
+      ]
+    },
+    {
+      "beaufort": 7,
+      "cells": [
+        {
+          "seaStateM": 0,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 0.2,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 0.4,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 0.6,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 0.8,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 1,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 1.2,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 1.4,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 1.6,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 1.8,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 2,
+          "before": "red",
+          "after": "red"
+        },
+        {
+          "seaStateM": 2.5,
+          "before": "red",
+          "after": "red"
+        }
+      ]
+    }
+  ]
+}

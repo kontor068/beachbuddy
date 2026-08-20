@@ -2443,7 +2443,12 @@ export const calculateBeachScore = (
       windSpeedKmh: windSpeedKmph,
     }),
   });
-  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel);
+  // ΤΟ ΣΗΜΕΙΟ ΠΟΥ ΕΔΙΝΕ ΤΗΝ ΑΔΙΚΑΙΟΛΟΓΗΤΗ ΕΚΠΤΩΣΗ (διορθώθηκε 20/08/2026). Το `finalExposureLevel`
+  // μπορεί να λέει 'protected' επειδή ΑΝΘΡΩΠΟΣ επιθεώρησε τον όρμο, χωρίς ο τομέας να έχει
+  // περάσει το αυστηρό γεωμετρικό τεστ — και τότε η πινέζα στον χάρτη λέει 'partial'. Ο άνεμος
+  // κρατάει την επιθεώρηση· η θάλασσα όχι, γιατί κανείς δεν επιθεώρησε το κύμα.
+  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel,
+    windAssessment.protectionFromCuratedCoveOnly);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
   // damping that has been in place since 01/08.
   const shoreWaveM = typeof shoreModelWaveM === 'number'
@@ -2600,6 +2605,10 @@ export const calculateBeachScore = (
     seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
     exposureLevel: windAssessment.exposureLevel,
     seaArrivalExposureLevel,
+    // Καταγεγραμμένη προστασία απέναντι στον ΑΝΕΜΟ δεν αγοράζει έκπτωση στη ΘΑΛΑΣΣΑ. Σήμερα
+    // αυτή η πόρτα ούτως ή άλλως δεν ανοίγει σε curated τομείς (θέλει ένταση ≤25, έχουν ≥33)·
+    // περνάει για να μη γίνει σιωπηλή τρύπα αν χαλαρώσει ποτέ το ταβάνι έντασης.
+    curatedWindOnlyProtection: windAssessment.protectionFromCuratedCoveOnly,
     swellWaveHeightM: marine?.swellWaveHeightM,
   });
   const simpleWindSuitability = applySeaStateToWindSuitability(
@@ -2624,6 +2633,9 @@ export const calculateBeachScore = (
     // Μελιδόνι-class (18/08/2026): offshore wind over zero fetch at 4 Bft with the sea proven
     // quiet. Same profile, same live bearing, same severity the pin uses.
     glassWaterAtFour,
+    // Ο όρμος επιθεωρήθηκε για τον ΑΝΕΜΟ, όχι για το ΚΥΜΑ (20/08/2026). Χωρίς αυτό το τσιπ
+    // κρατούσε έκπτωση 50% στη θάλασσα ενώ η πινέζα δίπλα του δεν την έδινε — 24 παραλίες.
+    windAssessment.protectionFromCuratedCoveOnly,
   );
 
   return {

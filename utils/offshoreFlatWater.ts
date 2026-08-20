@@ -280,17 +280,26 @@ export const holdsGlassWaterAtFourBeaufort = ({
   swellWaveHeightM,
   exposureLevel,
   seaArrivalExposureLevel,
+  curatedWindOnlyProtection,
 }: OffshoreFlatWaterInput & {
   seaStateM?: number;
   /** Live swell height at this beach's marine sample point, metres. Unknown vetoes. */
   swellWaveHeightM?: number;
   exposureLevel?: string;
   seaArrivalExposureLevel?: string;
+  /**
+   * Curated-cove shelter is documented against the WIND only — see
+   * utils/waveCharacter.shoreSeaStateM. Measured 20/08/2026 this gate never fires on those 29
+   * sectors anyway (they run intensity 33,0-59,6, this door needs ≤25), so threading it changes
+   * nothing today; it is here so the next person cannot reintroduce the gap by relaxing the
+   * intensity ceiling without noticing.
+   */
+  curatedWindOnlyProtection?: boolean;
 }): boolean => {
   if (beaufort !== GLASS_AT_FOUR_BEAUFORT) return false;
   if (typeof swellWaveHeightM !== 'number' || !Number.isFinite(swellWaveHeightM)) return false;
   if (swellWaveHeightM >= SWELL_MIN_HEIGHT_M) return false;
-  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel);
+  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
   if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return false;
   if (atShoreM >= GLASS_AT_FOUR_MAX_SEA_STATE_M) return false;
   return sectorHoldsNoWindWave(profile, windDirectionDeg, {

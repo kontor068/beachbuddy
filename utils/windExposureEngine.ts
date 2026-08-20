@@ -48,6 +48,13 @@ export interface WindExposureAssessment {
   windSector: WindSector;
   exposureLevel: ExposureLevel;
   canClaimProtected: boolean;
+  /**
+   * The 'protected' verdict rests ONLY on the human cove inspection, not on the strict geometric
+   * test — meaning the PIN on the map does not say protected for this sector. The wind keeps the
+   * inspection; the wave must not inherit it. Feed this to utils/waveCharacter.shoreSeaStateM.
+   * See windExposureEngine.geometryEnclosedProtectionSource for the 20/08/2026 measurement.
+   */
+  protectionFromCuratedCoveOnly: boolean;
   /** Closed-cove (όρμος) morphology: >225° contiguous land-blocked arc with a ≤135°
    *  mouth and close (<0.5 km) arms, or a curated iconic cove; wind-sport/venturi
    *  spots vetoed. Static geometry — pair with canClaimProtected for "stays calm
@@ -366,7 +373,14 @@ export const applySeaStateToWindSuitability = (
    * reason `downwindSeaSample` is — the sea state only exists at the scoring layer — and from
    * the same profile, bearing and severity the map pin uses.
    */
-  glassWaterAtFour = false
+  glassWaterAtFour = false,
+  /**
+   * Το 'protected' αυτής της παραλίας στηρίζεται ΜΟΝΟ στην ανθρώπινη επιθεώρηση του όρμου, όχι
+   * στο αυστηρό γεωμετρικό τεστ — άρα η πινέζα λέει 'partial'. Χωρίς αυτό το τσιπ θα κρατούσε
+   * την έκπτωση ×0,5 στη θάλασσα που ο χάρτης ΔΕΝ δίνει, και οι δύο επιφάνειες θα διαφωνούσαν
+   * ακριβώς στις μέρες με φουρτούνα (≥1,2 μ.) — μετρημένο 20/08/2026, 24 παραλίες / 29 τομείς.
+   */
+  curatedWindOnlyProtection = false
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -378,6 +392,7 @@ export const applySeaStateToWindSuitability = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
+    curatedWindOnlyProtection,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability
@@ -617,35 +632,87 @@ export const canClaimProtectedFromWind = (
 const GEOMETRY_ENCLOSURE_BLOCKED_RATIO = 0.95;
 const GEOMETRY_ENCLOSURE_MAX_INTENSITY = 33;
 
-export const hasGeometryEnclosedProtection = (
+/**
+ * ΠΟΙΟΣ ΕΔΩΣΕ ΤΗΝ ΠΡΟΣΤΑΣΙΑ — και γιατί έπρεπε να γίνει ερώτηση (20/08/2026).
+ *
+ * Μέχρι σήμερα η συνάρτηση απαντούσε μόνο «ναι/όχι». Οι δύο απαντήσεις «ναι» όμως ΔΕΝ είναι
+ * ισοδύναμες και η διαφορά τους έχει μετρημένο κόστος:
+ *
+ *   'geometry' — πέρασε το ΙΔΙΟ αυστηρό τεστ που χρησιμοποιεί και το utils/mapExposure
+ *                (isStableProtectedSector: blockedRatio ≥ 0,95 ΚΑΙ ένταση < 33). Η πινέζα στην
+ *                οθόνη είναι ήδη protected. Κάρτα και χάρτης λένε το ίδιο.
+ *   'curated'  — ΠΑΡΑΚΑΜΨΕ το τεστ επειδή άνθρωπος επιθεώρησε τη μορφολογία (§17/08). Η ένταση
+ *                είναι 33,0-59,6, άρα το mapExposure ΔΕΝ τη λέει protected — η πινέζα λέει
+ *                'partial' (28 τομείς) ή 'exposed' (1: 904 Μουρτεμένο @N).
+ *
+ * ΤΙ ΕΣΠΑΣΕ ΑΥΤΗ Η ΔΙΑΦΟΡΑ. Το σχόλιο παρακάτω (γραμμή ~880) υποσχόταν «THIS CANNOT MANUFACTURE
+ * A FALSE CALM… it can only grant protection where the dot on screen is already protected», και
+ * το utils/waveCharacter.ts:267 υποσχόταν ότι κάθε 'protected' που φτάνει στην έκπτωση κύματος
+ * «has already passed the map's strict isStableProtectedSector gate». Από τις 17/08 και οι δύο
+ * υποσχέσεις είναι ψευδείς για τους 29 curated τομείς: το `exposureLevel` τους φτάνει αυτούσιο
+ * στο services/recommendationService.ts:2446 → shoreSeaStateM και ΚΟΒΕΙ ΤΟ ΚΥΜΑ ΣΤΟ ΜΙΣΟ
+ * (SHORE_DAMPING_BY_EXPOSURE.protected = 0,5) — έκπτωση για δοκιμή που δεν έγινε ποτέ.
+ *
+ * ΜΕΤΡΗΜΕΝΟ (20/08/2026, δύο ανεξάρτητοι ελεγκτές, πραγματικά modules offline): 24 παραλίες ·
+ * 29 τομείς · 145/145 συνδυασμοί σε 3-7 Μποφόρ αποκλίνουν. Ορατό χρώμα σε 45/126 κελιά, έως δύο
+ * σκαλιά· η τομή ανοίγει στα ≥1,2 μ. ανοιχτής θάλασσας (κάρτα πορτοκαλί / πινέζα κόκκινη).
+ * Εθνικά στα 5 Μποφόρ οι 29 είναι το 60,4% ΟΛΩΝ των «κάρτα ηπιότερη από πινέζα».
+ *
+ * ΓΙΑΤΙ ΟΧΙ Η ΠΡΟΦΑΝΗΣ ΔΙΟΡΘΩΣΗ. «Δώσε στον χάρτη την παράκαμψη» δοκιμάστηκε και αναιρέθηκε
+ * μέσα στην ίδια ώρα στις 17/08: το utils/mapExposure.hasCuratedSegmentProtectionSupport αφήνει
+ * μια παραλία να ΔΑΝΕΙΣΤΕΙ προστασία από γείτονα της ίδιας ακτής, άρα ένας επιθεωρημένος όρμος
+ * θα μοίραζε προστασία σε γείτονες που κανείς δεν επιθεώρησε (§Γ15). Μένει κλειστό.
+ *
+ * Η ΔΙΟΡΘΩΣΗ ΕΙΝΑΙ ΝΑ ΚΡΑΤΗΣΕΙ Η ΠΑΡΑΚΑΜΨΗ ΤΗΝ ΥΠΟΣΧΕΣΗ ΤΗΣ: «Downstream wave/swell ceilings
+ * are untouched» (σχόλιο γραμμής 588). Ο άνεμος παίρνει την ανθρώπινη επιθεώρηση· το κύμα όχι.
+ */
+export const geometryEnclosedProtectionSource = (
   profile: GeospatialExposureProfile | undefined,
   windSector: WindSector,
   suspectPin: boolean,
   /** Χωρίς αυτό η παράκαμψη του δαπέδου δεν ενεργοποιείται ΠΟΤΕ — ο κανόνας μένει ο παλιός. */
   beachId?: number
-): boolean => {
-  if (suspectPin) return false;
-  if (profile?.confidence !== 'high') return false;
+): 'geometry' | 'curated' | null => {
+  if (suspectPin) return null;
+  if (profile?.confidence !== 'high') return null;
   const sector = profile.sectors?.[windSector];
-  if (!sector) return false;
+  if (!sector) return null;
   const fullyLandBlocked = typeof sector.blockedRayRatio === 'number'
     && sector.blockedRayRatio >= GEOMETRY_ENCLOSURE_BLOCKED_RATIO;
-  if (!fullyLandBlocked) return false;
+  if (!fullyLandBlocked) return null;
 
   // Ο στεγνός τομέας μιας επιθεωρημένης παραλίας: μηδέν άνοιγμα σημαίνει μηδέν νερό, και η
   // ένταση που τον κρατάει έξω είναι ΜΟΝΟ το δάπεδο. Το `!== 'exposed'` είναι ζώνη ασφαλείας,
   // όχι φίλτρο — με fetchKm 0 η ένταση δεν φτάνει το 60 παρά μόνο σε τέλεια κατάματα άνεμο.
+  // Ο γεωμετρικός δρόμος δοκιμάζεται ΠΡΩΤΟΣ: όποιος τον περνάει δεν χρειάζεται την παράκαμψη,
+  // και η πινέζα του είναι ήδη protected. Η σειρά έχει σημασία μόνο για την ΕΤΙΚΕΤΑ που
+  // επιστρέφουμε — το «ναι/όχι» βγαίνει το ίδιο με πριν, ό,τι σειρά κι αν έχουν.
+  const lowResidualWind = sector.level === 'protected'
+    && typeof sector.intensity === 'number'
+    && sector.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY;
+  if (lowResidualWind) return 'geometry';
+
   const curatedDrySector = typeof beachId === 'number'
     && CURATED_ENCLOSED_COVE_IDS.has(beachId)
     && sector.fetchKm === 0
     && sector.level !== 'exposed';
-  if (curatedDrySector) return true;
+  if (curatedDrySector) return 'curated';
 
-  if (sector.level !== 'protected') return false;
-  const lowResidualWind = typeof sector.intensity === 'number'
-    && sector.intensity < GEOMETRY_ENCLOSURE_MAX_INTENSITY;
-  return lowResidualWind;
+  return null;
 };
+
+/**
+ * Το παλιό «ναι/όχι», αμετάβλητο για τους τρεις καλούντες που δεν χρειάζεται να ξέρουν ποιος
+ * έδωσε την προστασία (services/tripPlannerService, τα σχόλια του mapExposure και του
+ * recommendationService). ΜΗΝ το χρησιμοποιήσεις σε νέο σημείο που αγγίζει κύμα ή θάλασσα —
+ * εκεί η διαφορά 'geometry' vs 'curated' είναι ακριβώς το ζητούμενο.
+ */
+export const hasGeometryEnclosedProtection = (
+  profile: GeospatialExposureProfile | undefined,
+  windSector: WindSector,
+  suspectPin: boolean,
+  beachId?: number
+): boolean => geometryEnclosedProtectionSource(profile, windSector, suspectPin, beachId) !== null;
 
 // A "closed cove" (όρμος) per coastal geomorphology: a SMALL inlet enclosed beyond a
 // semicircle with a NARROW entrance flanked by close headlands (literature: often
@@ -869,14 +936,27 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   // ceiling, +1 effective Beaufort, a −18 instead of −8 gust penalty, a «Μέτρια» instead of
   // «Καλή» tier ceiling, and denial of the offshore-flat-water lift.
   //
-  // THIS CANNOT MANUFACTURE A FALSE CALM, and that is the whole argument for it: the gate is
-  // `hasGeometryEnclosedProtection`, the SAME strict test mapExposure already uses to paint a
-  // protected pin. So it can only grant protection where the dot on screen is already protected
-  // — it closes a gap between two surfaces rather than opening a new claim. Every other guard is
-  // untouched: an explicitly authored exposed sector still wins, `suspectPin` still vetoes,
-  // confidence must still be 'high', and `isKnownWindSportRisk` still overrides at the AND below.
-  const geometryEnclosed = !profile.exposedToWindDirections.includes(windSector)
-    && hasGeometryEnclosedProtection(input.geospatialProfile, windSector, profile.suspectPin, input.beach.id);
+  // THIS CANNOT MANUFACTURE A FALSE CALM — TRUE ONLY FOR THE 'geometry' PATH, AND THE ORIGINAL
+  // WORDING WAS LEFT STANDING WHEN THAT STOPPED BEING THE ONLY PATH (corrected 20/08/2026).
+  //
+  // As written on 05/08 the argument was sound: the gate was the SAME strict test mapExposure
+  // uses to paint a protected pin, so it could only grant protection where the dot on screen was
+  // already protected — closing a gap between two surfaces rather than opening a new claim.
+  //
+  // The curated-cove bypass (17/08) added a SECOND path that deliberately does NOT pass that
+  // test, and this comment was not updated. For those 29 sectors the pin is NOT protected, so
+  // the claim is new rather than gap-closing. That is defensible for the WIND — a human
+  // inspected the morphology — but it silently bought a 50% discount on the WAVE as well, which
+  // nobody inspected. `enclosedProtectionSource` now carries the distinction downstream; see
+  // geometryEnclosedProtectionSource above for the measurement.
+  //
+  // Every other guard is untouched: an explicitly authored exposed sector still wins,
+  // `suspectPin` still vetoes, confidence must still be 'high', and `isKnownWindSportRisk` still
+  // overrides at the AND below.
+  const enclosedProtectionSource = profile.exposedToWindDirections.includes(windSector)
+    ? null
+    : geometryEnclosedProtectionSource(input.geospatialProfile, windSector, profile.suspectPin, input.beach.id);
+  const geometryEnclosed = enclosedProtectionSource !== null;
   // ⚠️ 05/08/2026 — A FACING CONFLICT NOW WITHHOLDS THE PROTECTED CLAIM, AUTHORED OR NOT.
   //
   // `geospatialProfileConflictsWithAuthoredFacing` was wired into exactly one place — the όρμος
@@ -1091,6 +1171,14 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     windSector,
     exposureLevel,
     canClaimProtected,
+    /**
+     * true όταν το 'protected' στηρίζεται ΜΟΝΟ στην ανθρώπινη επιθεώρηση του όρμου και όχι στο
+     * αυστηρό γεωμετρικό τεστ — δηλαδή όταν η πινέζα στον χάρτη ΔΕΝ λέει protected. Ο άνεμος
+     * κρατάει την επιθεώρηση· το κύμα δεν την κληρονομεί (utils/waveCharacter.shoreSeaStateM).
+     */
+    protectionFromCuratedCoveOnly: enclosedProtectionSource === 'curated'
+      && canClaimProtected
+      && !canClaimProtectedFromWind(profile, windSector),
     enclosedCove,
     isKnownWindSportRisk,
     isExplicitlyExposed,

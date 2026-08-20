@@ -338,14 +338,23 @@ export const capToneBySeaState = (
    * and the chip must not be able to answer it differently. `undefined` keeps the pre-13/08
    * behaviour exactly; see shoreSeaStateM for why it can only ever refuse the shelter discount.
    */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /**
+   * true when this shore's 'protected' level came from the curated cove inspection rather than
+   * the strict geometric gate — the map pin says 'partial'. Threaded through so the sea-state
+   * discount can refuse it (utils/waveCharacter.shoreSeaStateM). Omitted keeps pre-20/08
+   * behaviour, and like every other geometry input here it is PASSED, not derived: the pin and
+   * the card must not be able to answer it differently.
+   */
+  curatedWindOnlyProtection?: boolean
 ): CalmnessTone => {
   if (exempt) return windTone;
   const openWaterCeiling = seaStateToneCeiling(seaStateM);
   if (!openWaterCeiling) return windTone;
 
   const relief = downwindSeaSample ? DOWNWIND_SAMPLE_CEILING_RELIEF : MAX_SHELTER_CEILING_RELIEF;
-  const shoreCeiling = seaStateToneCeiling(shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel));
+  const shoreCeiling = seaStateToneCeiling(
+    shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection));
   const rung = Math.min(
     MILDEST_RUNG,
     ceilingRung(shoreCeiling),
@@ -389,6 +398,7 @@ export const resolveConditionTone = ({
   downwindSeaSample = false,
   swimVerdictAvoid = false,
   seaArrivalExposureLevel,
+  curatedWindOnlyProtection = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -446,6 +456,14 @@ export const resolveConditionTone = ({
    * 13/08/2026). Passed rather than derived, like every other geometry input here.
    */
   seaArrivalExposureLevel?: string;
+  /**
+   * true when this shore's 'protected' level came from the curated cove inspection rather than
+   * the strict geometric gate — the map pin says 'partial'. Threaded through so the sea-state
+   * discount can refuse it (utils/waveCharacter.shoreSeaStateM). Omitted keeps pre-20/08
+   * behaviour, and like every other geometry input here it is PASSED, not derived: the pin and
+   * the card must not be able to answer it differently.
+   */
+  curatedWindOnlyProtection?: boolean;
 }): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
   /**
    * THE QUIET-SEA CLAUSE IS ENFORCED TWICE, ON PURPOSE.
@@ -466,7 +484,7 @@ export const resolveConditionTone = ({
     isEnclosedCove,
     offshoreFlatWater,
     glassWaterAtFour && (() => {
-      const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel);
+      const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
       return typeof atShoreM === 'number' && Number.isFinite(atShoreM)
         && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M;
     })()

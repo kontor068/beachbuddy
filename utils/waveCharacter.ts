@@ -267,6 +267,16 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
  * earned it: 'protected' here has already passed the map's strict isStableProtectedSector gate,
  * which demotes 459 sectors (3,9%) to partial before this function ever sees them.
  *
+ * ⚠️ THAT SENTENCE STOPPED BEING TRUE ON 17/08/2026 AND WAS REPAIRED ON 20/08. The curated-cove
+ * bypass (windExposureEngine.geometryEnclosedProtectionSource) hands 29 sectors in 24 beaches a
+ * 'protected' level WITHOUT the strict gate — their intensity is 33,0-59,6, so the map paints
+ * them 'partial' (28) or 'exposed' (1). For fifteen days those sectors collected a 50% discount
+ * on a test they never sat. Measured: 145/145 combinations across 3-7 Bft diverged, the colour
+ * differed in 45/126 cells by up to two rungs, and the gap opened at ≥1,2 m of open sea (card
+ * orange / pin red). Nationally at 5 Bft those 29 were 60,4% of every "card milder than pin".
+ * `curatedWindOnlyProtection` is how the caller says "this shelter was earned against the WIND
+ * only"; when true the discount is refused. One-directional: it can only ever REFUSE.
+ *
  * ⚠️ Callers must treat this as an input to a DECISION (colour, swim advice), never as the number
  * to print. The displayed height stays the honest open-water reading with its own label; changing
  * what we print is a separate decision that has not been taken.
@@ -297,14 +307,23 @@ export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 
 export const shoreSeaStateM = (
   openWaterSeaStateM: number | undefined,
   exposureLevel: string | undefined,
-  seaArrivalExposureLevel?: string | undefined
+  seaArrivalExposureLevel?: string | undefined,
+  /**
+   * true when the 'protected' level came from the curated cove bypass rather than the strict
+   * geometric gate — the shelter is documented against the WIND, nobody inspected the WAVE, and
+   * the pin on the map does not agree. Omitted (undefined) keeps the pre-20/08 behaviour, so no
+   * caller can be made calmer by forgetting it.
+   */
+  curatedWindOnlyProtection?: boolean
 ): number | undefined => {
   if (typeof openWaterSeaStateM !== 'number' || !Number.isFinite(openWaterSeaStateM)) return undefined;
   // Only 'protected' has ever carried a discount (see the block above), so the arrival test only
   // has to defend that one rung: an arrival sector we have judged and NOT called protected takes
   // the shore back to full height.
   const shelteredFromTheSea = seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected';
-  const damping = exposureLevel === 'protected' && shelteredFromTheSea
+  // Wind-only shelter buys nothing here: the discount is against the WAVE (see the block above).
+  const shelterEarnedAgainstTheWave = !curatedWindOnlyProtection;
+  const damping = exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave
     ? SHORE_DAMPING_BY_EXPOSURE.protected
     : exposureLevel === 'partial'
       ? SHORE_DAMPING_BY_EXPOSURE.partial
