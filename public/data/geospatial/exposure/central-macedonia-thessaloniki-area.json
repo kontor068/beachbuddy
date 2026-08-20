@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-16T17:54:52.909Z",
+  "generatedAt": "2026-08-20T19:25:24.749Z",
   "region": {
     "id": "central-macedonia-thessaloniki-area",
     "name": "Thessaloniki area"
@@ -36,48 +36,48 @@
     "maskConfidence": "high"
   },
   "summary": {
-    "beachCount": 16,
-    "generatedProfiles": 16,
+    "beachCount": 17,
+    "generatedProfiles": 17,
     "missingCoordinates": 0,
     "sectors": {
       "N": {
-        "protected": 9,
+        "protected": 10,
         "partial": 4,
         "exposed": 3
       },
       "NE": {
-        "protected": 6,
+        "protected": 7,
         "partial": 4,
         "exposed": 6
       },
       "E": {
-        "protected": 6,
+        "protected": 7,
         "partial": 0,
         "exposed": 10
       },
       "SE": {
-        "protected": 7,
+        "protected": 8,
         "partial": 1,
         "exposed": 8
       },
       "S": {
-        "protected": 7,
+        "protected": 8,
         "partial": 4,
         "exposed": 5
       },
       "SW": {
         "protected": 11,
         "partial": 0,
-        "exposed": 5
+        "exposed": 6
       },
       "W": {
         "protected": 11,
         "partial": 2,
-        "exposed": 3
+        "exposed": 4
       },
       "NW": {
         "protected": 12,
-        "partial": 2,
+        "partial": 3,
         "exposed": 2
       }
     }
@@ -163,8 +163,8 @@
     "512": {
       "beachId": 512,
       "name": {
-        "en": "Paralia Angelochoriou",
-        "gr": "Παραλία Αγγελοχωρίου"
+        "en": "Akti Siamo",
+        "gr": "Ακτή Σιάμο"
       },
       "coordinates": {
         "lat": 40.38156,
@@ -1313,6 +1313,83 @@
         "lon": 23.8346,
         "bearingDeg": 41.4,
         "distanceKm": 10
+      }
+    },
+    "3190": {
+      "beachId": 3190,
+      "name": {
+        "en": "Paralia Angelochoriou",
+        "gr": "Παραλία Αγγελοχωρίου"
+      },
+      "coordinates": {
+        "lat": 40.49358,
+        "lon": 22.81785
+      },
+      "facingDeg": 270.9,
+      "sectors": {
+        "N": {
+          "level": "protected",
+          "fetchKm": 1.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.016,
+          "intensity": 30.5
+        },
+        "NE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.696,
+          "intensity": 9.1
+        },
+        "E": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -1,
+          "intensity": 0
+        },
+        "SE": {
+          "level": "protected",
+          "fetchKm": 0,
+          "blockedRayRatio": 1,
+          "onshore": -0.718,
+          "intensity": 8.5
+        },
+        "S": {
+          "level": "protected",
+          "fetchKm": 5,
+          "blockedRayRatio": 0.8,
+          "onshore": -0.016,
+          "intensity": 31.2
+        },
+        "SW": {
+          "level": "exposed",
+          "fetchKm": 16.64,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.696,
+          "intensity": 84.8
+        },
+        "W": {
+          "level": "exposed",
+          "fetchKm": 13.4,
+          "blockedRayRatio": 1,
+          "onshore": 1,
+          "intensity": 100
+        },
+        "NW": {
+          "level": "partial",
+          "fetchKm": 4.88,
+          "blockedRayRatio": 1,
+          "onshore": 0.718,
+          "intensity": 51.5
+        }
+      },
+      "confidence": "high",
+      "marineSamplePoint": {
+        "lat": 40.4945,
+        "lon": 22.7386,
+        "bearingDeg": 270.9,
+        "distanceKm": 6.7
       }
     }
   }

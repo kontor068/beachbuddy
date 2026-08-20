@@ -39624,7 +39624,7 @@
         },
         {
           "id": 512,
-          "name": "Παραλία Αγγελοχωρίου",
+          "name": "Ακτή Σιάμο",
           "lat": 40.38156,
           "lon": 22.92624,
           "metadata": {
@@ -39660,12 +39660,14 @@
             "sourceUrls": [
               "https://greece.worldplaces.me/bars-in-angelochori/18123051-riviera-beach-bar.html",
               "https://www.xrysietairia.eu/company/riviera-beach-bar-483890",
-              "https://www.visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/825/angelohori-beach"
+              "https://www.visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/825/angelohori-beach",
+              "https://www.openstreetmap.org/way/471793547"
             ],
             "sourceNotes": [
               "Riviera sources support beach-bar/organized beach service in the Angelochori/Touzla area.",
               "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed.",
-              "Access corrected 2026-06-20 (access-road surface audit): prior 'asphalt_road' (Εύκολη πρόσβαση) was an unverified default; OSM shows the nearest drivable road to the pin is unclassified/dirt at ~32 m (no paved road within 160 m), and Google popularity is low/absent, so access set to passable_dirt_road (Χωματόδρομος)."
+              "Access corrected 2026-06-20 (access-road surface audit): prior 'asphalt_road' (Εύκολη πρόσβαση) was an unverified default; OSM shows the nearest drivable road to the pin is unclassified/dirt at ~32 m (no paved road within 160 m), and Google popularity is low/absent, so access set to passable_dirt_road (Χωματόδρομος).",
+              "Έλεγχος 20/08/2026 (PORISMA §Γ40γ): η κάρτα λεγόταν «Παραλία Αγγελοχωρίου» αλλά η πινέζα της (40,38156/22,92624) απέχει 15,47 χλμ από το Αγγελοχώρι του Δήμου Θερμαϊκού. Στο σημείο της πινέζας ο OpenStreetMap ονομάζει την παραλία «Akti Siamo» (way/471793547), με τον «Ποταμό» 450 μ. δυτικά και την τοποθεσία «Πηγαγδούλια» δίπλα — περιοχή Επανομής. Το ίδιο το σημείωμα πρόσβασης («χωματόδρομος, δεν φτάνει άσφαλτος») ταιριάζει με τις παραλίες της Επανομής, όχι με χωριό που έχει ασφαλτοστρωμένους δρόμους ως τη θάλασσα. Μετονομάστηκε· τα παλιά URL διατηρούνται στα legacySlugs."
             ],
             "nearbyCamping": [
               {
@@ -39694,7 +39696,11 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "legacySlugs": [
+            "paralia-angelochoriou",
+            "paralia-aggelochoriou"
+          ]
         },
         {
           "id": 513,
@@ -40807,6 +40813,46 @@
               "degrees": 41.4,
               "faces": [
                 "Northeast"
+              ],
+              "protectedFrom": [],
+              "confidence": "medium",
+              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            }
+          }
+        },
+        {
+          "id": 3190,
+          "name": "Παραλία Αγγελοχωρίου",
+          "lat": 40.49358,
+          "lon": 22.81785,
+          "metadata": {
+            "access": {
+              "type": "unknown",
+              "label": "Άγνωστη πρόσβαση",
+              "notes": "Από τον OpenStreetMap· η πρόσβαση δεν έχει επαληθευτεί επιτόπου."
+            },
+            "terrain": {
+              "types": [],
+              "label": "—"
+            },
+            "organized": false,
+            "shade": false,
+            "amenities": [],
+            "confidence": "low",
+            "language": "el",
+            "batch": "windsport_osm_gap_2026_08",
+            "needsVerification": true,
+            "sourceNotes": [
+              "Προστέθηκε 20/08/2026 από το πέρασμα σημείων windsurf (PORISMA §Γ40β/γ). Ο OpenStreetMap έχει εδώ παραλία (way/20002634, natural=beach) που φέρει ΚΑΙ ταμπέλα sport=windsurfing, με σύλλογο και σχολή δίπλα (node/6772979258, club=sport + school=sport). Είναι το Αγγελοχώρι του Δήμου Θερμαϊκού: μαρίνα Αγγελοχωρίου, λιμνοθάλασσα Natura 2000 και φρούριο Καραμπουρνού βρίσκονται όλα εντός 900 μ. Η κοντινότερη δική μας παραλία ήταν η Νέα Μηχανιώνα στα 4,48 χλμ, άρα η ακτή αυτή δεν καλυπτόταν από καμία εγγραφή. Πρόσβαση, παροχές, έδαφος και βάθος δεν έχουν επαληθευτεί — αναμένουν το πέρασμα OSM."
+            ],
+            "sourceUrls": [
+              "https://www.openstreetmap.org/way/20002634",
+              "https://www.openstreetmap.org/node/6772979258"
+            ],
+            "orientation": {
+              "degrees": 270.9,
+              "faces": [
+                "West"
               ],
               "protectedFrom": [],
               "confidence": "medium",

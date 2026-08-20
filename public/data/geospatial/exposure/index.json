@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-17T08:30:34.685Z",
+  "generatedAt": "2026-08-20T19:25:24.752Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
@@ -41,8 +41,8 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2872,
-    "generatedProfiles": 2872,
+    "beachCount": 2873,
+    "generatedProfiles": 2873,
     "missingCoordinates": 0,
     "indexedLandPolygons": 15946,
     "regions": {
@@ -960,48 +960,48 @@
       },
       "central-macedonia-thessaloniki-area": {
         "regionName": "Thessaloniki area",
-        "beachCount": 16,
-        "generatedProfiles": 16,
+        "beachCount": 17,
+        "generatedProfiles": 17,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 9,
+            "protected": 10,
             "partial": 4,
             "exposed": 3
           },
           "NE": {
-            "protected": 6,
+            "protected": 7,
             "partial": 4,
             "exposed": 6
           },
           "E": {
-            "protected": 6,
+            "protected": 7,
             "partial": 0,
             "exposed": 10
           },
           "SE": {
-            "protected": 7,
+            "protected": 8,
             "partial": 1,
             "exposed": 8
           },
           "S": {
-            "protected": 7,
+            "protected": 8,
             "partial": 4,
             "exposed": 5
           },
           "SW": {
             "protected": 11,
             "partial": 0,
-            "exposed": 5
+            "exposed": 6
           },
           "W": {
             "protected": 11,
             "partial": 2,
-            "exposed": 3
+            "exposed": 4
           },
           "NW": {
             "protected": 12,
-            "partial": 2,
+            "partial": 3,
             "exposed": 2
           }
         }

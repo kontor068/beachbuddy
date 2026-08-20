@@ -67,6 +67,10 @@ reports/photo-coverage/qa-focus/
 reports/photo-coverage/discover/
 reports/visual-qa/
 reports/tmp-*/
+# Πρόχειρα του ριζικού φακέλου (probe/revert ledgers μιας συνεδρίας). Αγκυρωμένα στη ρίζα
+# επίτηδες, ώστε να μην κρύψουν ποτέ αρχείο μέσα σε scripts/ ή utils/.
+/tmp-*.mjs
+/tmp-*.json
 # Raw EMODnet bathymetry transects: 25 MB of third-party floats, 1.000 samples
 # per beach, re-fetchable by re-running scripts/auditWaterDepth.mjs (~25 min).
 # The findings live in the report JSON next to it, which IS tracked — the same

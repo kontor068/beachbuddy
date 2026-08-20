@@ -1,6 +1,7 @@
 import type { Beach, GeospatialExposureProfile, WindSector } from '../types';
 import type { ExposureLevel } from './windExposure';
 import { resolveBeachWindProfile } from './windExposureEngine';
+import { KNOWN_WIND_SPORT_SPOT_IDS } from './windProfileOverrides';
 
 /**
  * Greek summer wind climatology helpers.
@@ -35,6 +36,24 @@ export const summarizeLocalWindBehavior = (
   sectors: WindSector[] = MELTEMI_SECTORS
 ): ExposureLevel | undefined => {
   if (beach) {
+    /**
+     * ⚠️ Ο ΚΑΤΑΛΟΓΟΣ ΣΗΜΕΙΩΝ ΠΕΡΝΑΕΙ ΠΡΙΝ ΤΗΝ ΠΥΛΗ `source !== 'unknown'`, ΕΠΙΤΗΔΕΣ.
+     *
+     * Η πύλη από κάτω λέει «εμπιστεύσου μόνο χειρόγραφη γνώση», και σωστά — αλλά μετράει τη
+     * χειρόγραφη γνώση ως ΟΛΟΚΛΗΡΟ προφίλ. Οι παραλίες του `KNOWN_WIND_SPORT_SPOT_IDS` δεν
+     * έχουν προφίλ, έχουν ΜΙΑ χειρόγραφη πληροφορία — και είναι ακριβώς η κρίσιμη εδώ.
+     *
+     * Μετρήθηκε 20/08/2026: 9 από τις 19 νέες καταχωρήσεις είχαν ψημένο `localWindStatus:
+     * 'protected'`, δηλαδή η ΣΤΑΤΙΚΗ σελίδα τους έλεγε «υπήνεμη στο μελτέμι» — ανάμεσά τους
+     * το Γιαλού Χωράφι του Αφιάρτη Καρπάθου, όπου γίνονται παγκόσμιοι αγώνες kite ΕΠΕΙΔΗ το
+     * μελτέμι το σαρώνει. Χωρίς αυτή τη γραμμή η κάρτα θα έλεγε «Εκτεθειμένη» και η σελίδα
+     * της ίδιας παραλίας «υπήνεμη», στο ίδιο δευτερόλεπτο.
+     *
+     * Ίδια συμπεριφορά με το `curated.knownWindSportSpot` δύο γραμμές πιο κάτω — μονόδρομη
+     * προς την προσοχή, χωρίς εξάρτηση από τομέα, όπως ήταν από την αρχή.
+     */
+    if (KNOWN_WIND_SPORT_SPOT_IDS.has(beach.id)) return 'exposed';
+
     const { profile: curated, source } = resolveBeachWindProfile(beach);
     if (source !== 'unknown') {
       if (curated.knownWindSportSpot) return 'exposed';

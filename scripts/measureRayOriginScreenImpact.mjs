@@ -141,6 +141,9 @@ let comfortChanged = 0;
 let avoidCrossed = 0;
 let calmer = 0;
 let rougher = 0;
+let coveGained = 0;
+let coveLost = 0;
+const coveGainedBeaches = new Set();
 let toneChanged = 0;
 let calmGained = 0;
 let calmLost = 0;
@@ -195,12 +198,17 @@ for (const region of regions) {
       bftSeen.set(bft, (bftSeen.get(bft) ?? 0) + 1);
       const toneA = resolveConditionTone({
         exposureLevel: a.exposureLevel, beaufort: bft,
-        isEnclosedCove: false, seaStateM: a.shoreDisplayWaveM,
+        isEnclosedCove: Boolean(a.enclosedCove), seaStateM: a.shoreDisplayWaveM,
       });
       const toneB = resolveConditionTone({
         exposureLevel: b.exposureLevel, beaufort: bft,
-        isEnclosedCove: false, seaStateM: b.shoreDisplayWaveM,
+        isEnclosedCove: Boolean(b.enclosedCove), seaStateM: b.shoreDisplayWaveM,
       });
+
+      // Ο όρμος εξαιρείται ΟΛΟΚΛΗΡΩΤΙΚΑ από το ταβάνι θάλασσας (suitabilityTone.ts:312),
+      // άρα ένας νέος όρμος από την αφετηρία είναι σκανδάλη #1 — μετριέται χωριστά.
+      if (!a.enclosedCove && b.enclosedCove) { coveGained += 1; coveGainedBeaches.add(beach.id); }
+      if (a.enclosedCove && !b.enclosedCove) coveLost += 1;
 
       const sameWave = a.shoreDisplayWaveM === b.shoreDisplayWaveM;
       const sameComfort = a.swimmingComfort === b.swimmingComfort;
@@ -268,6 +276,8 @@ console.log(`  — ο αριθμός πέφτει (πιο ήρεμο)           
 console.log(`  — ο αριθμός ανεβαίνει (πιο άγριο)                   ${rougher}`);
 console.log(`αλλάζει η ΑΝΕΣΗ ΚΟΛΥΜΒΗΣΗΣ                            ${comfortChanged}`);
 console.log(`ΠΕΡΝΑΕΙ ΤΟ ΟΡΙΟ «μην κολυμπήσεις»                     ${avoidCrossed}`);
+console.log(`ΝΕΟΣ ΟΡΜΟΣ (εξαιρείται από το ταβάνι θάλασσας)        ${coveGained}  (${coveGainedBeaches.size} παραλίες) ${coveGained === 0 ? '✅' : '⚠️ σκανδάλη #1'}`);
+console.log(`ΧΑΝΕΙ ΤΟΝ ΟΡΜΟ                                        ${coveLost}`);
 console.log(`\nΧΡΩΜΑ ΠΙΝΕΖΑΣ`);
 console.log(`  αλλάζει                                            ${toneChanged}  (${pct(toneChanged, scored)} των ωρών, ${toneBeaches.size} παραλίες)`);
 console.log(`  προς ΗΡΕΜΟΤΕΡΟ χρώμα (η επικίνδυνη φορά)           ${calmGained}`);

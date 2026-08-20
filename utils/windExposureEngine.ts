@@ -21,7 +21,7 @@ import {
 } from './windExposure';
 import { holdsFlatWaterUnderOffshoreWind } from './offshoreFlatWater';
 import { resolveWindExposure } from './windExposureModel';
-import { getWindProfileOverride } from './windProfileOverrides';
+import { getWindProfileOverride, KNOWN_WIND_SPORT_SPOT_IDS } from './windProfileOverrides';
 import { CURATED_ENCLOSED_COVE_IDS, CURATED_NON_COVE_IDS } from './enclosedCoves';
 import { resolveConditionTone, toWindSuitabilityColor } from './suitabilityTone';
 
@@ -541,7 +541,9 @@ const normalizeWindProfile = (
     fetchExposure: profile?.fetchExposure || fallbackFetch,
     exposedToWindDirections: profile?.exposedToWindDirections || [],
     protectedFromWindDirections: profile?.protectedFromWindDirections || [],
-    knownWindSportSpot: profile?.knownWindSportSpot || false,
+    // Το χειρόγραφο προφίλ έχει τον πρώτο λόγο· αν σιωπά, ρωτάμε τον κατάλογο σημείων
+    // (KNOWN_WIND_SPORT_SPOT_IDS) — προσθέτει τη σημαία, δεν αφαιρεί τίποτα.
+    knownWindSportSpot: profile?.knownWindSportSpot || KNOWN_WIND_SPORT_SPOT_IDS.has(beach.id),
     localWindAmplification: profile?.localWindAmplification || 'unknown',
     confidence: profile?.confidence || (source === 'unknown' ? 'low' : 'medium'),
     notes: profile?.notes || 'Local wind exposure profile is not verified yet.',
@@ -919,6 +921,13 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
   if (source === 'unknown' && canUseGeospatialWindProfileBackfill(input.beach, input.geospatialProfile)) {
     profile = buildGeospatialWindProfile(input.geospatialProfile);
     source = 'geospatial';
+  }
+  // Ο κατάλογος σημείων windsurf/kite μπαίνει ΤΕΛΕΥΤΑΙΟΣ, πάνω από τη γεωμετρική
+  // συμπλήρωση: το `buildGeospatialWindProfile` φτιάχνει ΝΕΟ προφίλ και θα έσβηνε τη σημαία
+  // που έβαλε το `normalizeWindProfile` παραπάνω. Καθαρή προσθήκη — καμία άλλη τιμή δεν
+  // αγγίζεται, ώστε η μετρημένη γεωμετρία της παραλίας να μένει ακέραιη.
+  if (!profile.knownWindSportSpot && KNOWN_WIND_SPORT_SPOT_IDS.has(input.beach.id)) {
+    profile = { ...profile, knownWindSportSpot: true };
   }
   const windSector = input.windDirection ? windSectorFromDirection(input.windDirection) : windSectorFromDegrees(input.windDirectionDeg);
   const baseBeaufort = input.beaufort;

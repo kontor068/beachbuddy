@@ -5,6 +5,7 @@ import {
   fetchForecastData,
   fetchMarineForecastData,
   fetchForecastDataBatch,
+  fetchOverWaterWindBatch,
   fetchMarineForecastDataBatch,
   forecastPointKey,
   mergeMarineForecastData,
@@ -18,6 +19,11 @@ import { loadGeospatialExposureProfilesForBeaches, type GeospatialExposureProfil
 import { resolveBeachMarinePoints, marinePointKey, type MarinePoint } from '../utils/marineSamplePoints';
 import { buildBeachForecastClusters, MAX_BEACH_FORECAST_CLUSTERS, type BeachForecastCluster } from '../utils/beachForecastClusters';
 import type { MarineForecastItem } from '../services/weatherService';
+import {
+  applyOverWaterWindDirectionToDays,
+  anyHourReachesOverWaterMinimum,
+  type OverWaterDirectionByTime,
+} from '../utils/overWaterWind';
 
 /**
  * Freshness of the forecast currently held in state, derived from its real fetch time.
@@ -330,6 +336,48 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
 
   const [windByPoint, marine] = await Promise.all([windPromise, marinePromise]);
 
+  /**
+   * ΤΟ ΣΤΡΩΜΑ ΑΝΕΜΟΥ ΠΑΝΩ ΑΠΟ ΝΕΡΟ — ΖΗΤΙΕΤΑΙ ΜΕΤΑ ΤΟΝ ΑΝΕΜΟ, ΚΑΙ ΓΙ' ΑΥΤΟ ΑΚΡΙΒΩΣ.
+   *
+   * Είναι το μόνο αίτημα της σελίδας που ΔΕΝ τρέχει παράλληλα, και είναι σκόπιμο. Κοστίζει μία
+   * πλήρη κλήση ανά κελί νερού — το ίδιο με ολόκληρο τον άνεμο της περιοχής (666 κελιά εθνικά
+   * έναντι 667 στεριανών) — και η μόνη νόμιμη έκπτωση που βρέθηκε είναι χρονική: στα ≤2 Μποφόρ
+   * η εθνική μέτρηση (PORISMA §Γ37) δεν βρήκε ΚΑΜΙΑ αλλαγή χρώματος σε 54.142 ώρες. Για να
+   * ασκηθεί αυτή η έκπτωση πρέπει να ξέρουμε πρώτα την ένταση, άρα το αίτημα περιμένει.
+   *
+   * Το κόστος της αναμονής το πληρώνει μια εκλέπτυνση, όχι η πρώτη ζωγραφιά: οι παραλίες είναι
+   * ήδη στην οθόνη με την πρόγνωση της περιοχής όταν τρέχει αυτό.
+   */
+  const seaCellByBeachId = new Map<number, string>();
+  for (const beach of island.beaches) {
+    if (beach.seaWindCell) seaCellByBeachId.set(beach.id, beach.seaWindCell);
+  }
+  const windReachesGate = clusters.some(cluster => anyHourReachesOverWaterMinimum(
+    windByPoint.get(forecastPointKey(cluster.lat, cluster.lon))?.data,
+  ));
+  const overWaterByCell = new Map<string, OverWaterDirectionByTime>();
+  if (windReachesGate && seaCellByBeachId.size) {
+    // Ζητιέται ΑΝΑ ΚΕΛΙ, όχι ανά παραλία: 1.851 παραλίες κάθονται σε 666 κελιά νερού και δύο
+    // παραλίες στο ίδιο κελί παίρνουν πανομοιότυπη διεύθυνση. Η συγχώνευση ΠΑΡΑΠΕΡΑ όμως
+    // (ένα κελί ανά ομάδα, ή χοντρότερο πλέγμα) μετρήθηκε 20/08 και βγάζει λάθος τομέα στο
+    // 13,9% / 12,1% των ωρών — ίδια τάξη με το σφάλμα που το στρώμα διορθώνει.
+    const points = [...new Set(seaCellByBeachId.values())].map(key => {
+      const [lat, lon] = key.split('_').map(Number);
+      return { key, lat, lon };
+    }).filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lon));
+    try {
+      const byPoint = await fetchOverWaterWindBatch(points.map(p => ({ lat: p.lat, lon: p.lon })));
+      for (const point of points) {
+        const entry = byPoint.get(forecastPointKey(point.lat, point.lon));
+        if (entry) overWaterByCell.set(point.key, entry.data);
+      }
+    } catch (error) {
+      // Μια αποτυχία εδώ σημαίνει «κράτα τη διεύθυνση του στεριανού κελιού», δηλαδή ακριβώς τη
+      // συμπεριφορά που είχε το site πριν υπάρξει το στρώμα. Ποτέ κενή κάρτα γι' αυτό.
+      console.warn('Over-water wind direction unavailable; beaches keep the land cell direction.', error);
+    }
+  }
+
   // A cluster whose wind is missing is simply left out, and its beaches keep the island
   // forecast they were already rendered with. Before batching, one failed cluster
   // rejected the whole Promise.all and every OTHER cluster's refinement was lost too.
@@ -346,7 +394,14 @@ const fetchBeachForecastContexts = async (island: Island): Promise<Record<number
     return cluster.beachIds.map(beachId => [
       beachId,
       {
-        forecast,
+        // ΑΝΑ ΠΑΡΑΛΙΑ, όχι ανά ομάδα. Δύο παραλίες της ίδιας ομάδας μοιράζονται στεριανό κελί
+        // αλλά ΟΧΙ πάντα κελί νερού (516 ομάδες → 197 από αυτές έχουν πάνω από ένα), και το να
+        // τους δώσουμε το ίδιο μετρήθηκε στο 13,9% λάθος τομέα. Όταν η παραλία δεν έχει κελί
+        // νερού — δεν πέρασε την πύλη των 3 χλμ — η συνάρτηση επιστρέφει τον ΙΔΙΟ πίνακα.
+        forecast: applyOverWaterWindDirectionToDays(
+          forecast,
+          overWaterByCell.get(seaCellByBeachId.get(beachId) ?? ''),
+        ),
         source: 'beach-cluster' as const,
         clusterKey: cluster.key,
         // Wind drives the safety-critical colours, so the cluster's freshness follows

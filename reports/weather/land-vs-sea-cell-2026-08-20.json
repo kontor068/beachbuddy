@@ -1,0 +1,284 @@
+{
+  "generatedAt": "2026-08-20T11:16:52.512Z",
+  "window": "21 ημέρες",
+  "question": "Το app διαβάζει cell_selection=land. Είναι πιο κοντά στο όργανο από το θαλασσινό κελί;",
+  "hours": 11458,
+  "dirHours": 8314,
+  "dirMinKmh": 7.5,
+  "overall": {
+    "land": {
+      "mae": 5.1697339849886434,
+      "bias": -2.368969453656825,
+      "bftExact": 38.3,
+      "bftUnder": 41.6
+    },
+    "sea": {
+      "mae": 5.039173328678663,
+      "bias": -1.324607435852692,
+      "bftExact": 41.6,
+      "bftUnder": 34.6
+    }
+  },
+  "whereCellsDiffer": {
+    "hours": 11096,
+    "land": {
+      "mae": 5.2194066330209035,
+      "bias": -2.493235760634451,
+      "bftExact": 37.9,
+      "bftUnder": 42.4
+    },
+    "sea": {
+      "mae": 5.084586517664032,
+      "bias": -1.4148020908435626,
+      "bftExact": 41.2,
+      "bftUnder": 35.2
+    }
+  },
+  "sectorClash": {
+    "hours": 1670,
+    "landRightPct": 32,
+    "seaRightPct": 47.3
+  },
+  "perStation": [
+    {
+      "icao": "LGIR",
+      "name": "Ηράκλειο",
+      "landDistKm": 3.0976892366269007,
+      "hours": 505,
+      "landMae": 8.94089504950494,
+      "seaMae": 4.922407920792084,
+      "landSectorPct": 46.8,
+      "seaSectorPct": 70.9
+    },
+    {
+      "icao": "LGSA",
+      "name": "Χανιά",
+      "landDistKm": 4.0942138870984,
+      "hours": 505,
+      "landMae": 4.00660594059406,
+      "seaMae": 5.306439603960399,
+      "landSectorPct": 49.8,
+      "seaSectorPct": 48.6
+    },
+    {
+      "icao": "LGRP",
+      "name": "Ρόδος",
+      "landDistKm": 3.995135927173531,
+      "hours": 502,
+      "landMae": 8.458358565737052,
+      "seaMae": 4.026143426294823,
+      "landSectorPct": 56.5,
+      "seaSectorPct": 59.5
+    },
+    {
+      "icao": "LGKO",
+      "name": "Κως",
+      "landDistKm": 3.368094092074464,
+      "hours": 504,
+      "landMae": 7.00787301587301,
+      "seaMae": 4.347317460317463,
+      "landSectorPct": 59.9,
+      "seaSectorPct": 64.3
+    },
+    {
+      "icao": "LGMK",
+      "name": "Μύκονος",
+      "landDistKm": 2.3927288225568586,
+      "hours": 504,
+      "landMae": 6.01263492063493,
+      "seaMae": 6.144373015873014,
+      "landSectorPct": 93.3,
+      "seaSectorPct": 87.7
+    },
+    {
+      "icao": "LGSR",
+      "name": "Σαντορίνη",
+      "landDistKm": 4.613565735844497,
+      "hours": 477,
+      "landMae": 6.3158993710691815,
+      "seaMae": 7.496972746331242,
+      "landSectorPct": 53.9,
+      "seaSectorPct": 61.6
+    },
+    {
+      "icao": "LGNX",
+      "name": "Νάξος",
+      "landDistKm": 2.1593260708193984,
+      "hours": 332,
+      "landMae": 6.523518072289158,
+      "seaMae": 5.930072289156628,
+      "landSectorPct": 90.8,
+      "seaSectorPct": 88.5
+    },
+    {
+      "icao": "LGPA",
+      "name": "Πάρος",
+      "landDistKm": 1.1792449573092885,
+      "hours": 505,
+      "landMae": 5.492126732673266,
+      "seaMae": 6.065600000000001,
+      "landSectorPct": 88.8,
+      "seaSectorPct": 85.2
+    },
+    {
+      "icao": "LGKR",
+      "name": "Κέρκυρα",
+      "landDistKm": 4.064631682388953,
+      "hours": 505,
+      "landMae": 3.4159999999999977,
+      "seaMae": 3.808300990099006,
+      "landSectorPct": 23.5,
+      "seaSectorPct": 31.3
+    },
+    {
+      "icao": "LGZA",
+      "name": "Ζάκυνθος",
+      "landDistKm": 0.8246803786288257,
+      "hours": 407,
+      "landMae": 3.4045700245700274,
+      "seaMae": 3.7249631449631466,
+      "landSectorPct": 65,
+      "seaSectorPct": 66.7
+    },
+    {
+      "icao": "LGKF",
+      "name": "Κεφαλονιά",
+      "landDistKm": 0.547222800924086,
+      "hours": 359,
+      "landMae": 4.980791086350977,
+      "seaMae": 5.264122562674094,
+      "landSectorPct": 60.4,
+      "seaSectorPct": 63.3
+    },
+    {
+      "icao": "LGPZ",
+      "name": "Άκτιο",
+      "landDistKm": 4.30039648761384,
+      "hours": 502,
+      "landMae": 3.6513386454183254,
+      "seaMae": 3.458111553784858,
+      "landSectorPct": 73,
+      "seaSectorPct": 69.9
+    },
+    {
+      "icao": "LGLM",
+      "name": "Λήμνος",
+      "landDistKm": 2.1075314787595905,
+      "hours": 488,
+      "landMae": 4.379991803278686,
+      "seaMae": 3.189631147540986,
+      "landSectorPct": 80.5,
+      "seaSectorPct": 84.6
+    },
+    {
+      "icao": "LGMT",
+      "name": "Μυτιλήνη",
+      "landDistKm": 3.161278507916704,
+      "hours": 500,
+      "landMae": 4.0663760000000035,
+      "seaMae": 5.345328000000004,
+      "landSectorPct": 25.5,
+      "seaSectorPct": 45.7
+    },
+    {
+      "icao": "LGSM",
+      "name": "Σάμος",
+      "landDistKm": 3.2448917391180663,
+      "hours": 473,
+      "landMae": 4.5631881606765345,
+      "seaMae": 4.091526427061311,
+      "landSectorPct": 72.4,
+      "seaSectorPct": 63.8
+    },
+    {
+      "icao": "LGHI",
+      "name": "Χίος",
+      "landDistKm": 3.792959362621521,
+      "hours": 382,
+      "landMae": 4.4550157068062886,
+      "seaMae": 5.356408376963356,
+      "landSectorPct": 87.5,
+      "seaSectorPct": 86.6
+    },
+    {
+      "icao": "LGKL",
+      "name": "Καλαμάτα",
+      "landDistKm": 2.3552434967188645,
+      "hours": 496,
+      "landMae": 3.9642499999999954,
+      "seaMae": 4.18679838709677,
+      "landSectorPct": 37,
+      "seaSectorPct": 41.4
+    },
+    {
+      "icao": "LGAL",
+      "name": "Αλεξανδρούπολη",
+      "landDistKm": 2.6507361069360997,
+      "hours": 501,
+      "landMae": 5.760998003992019,
+      "seaMae": 5.206131736526952,
+      "landSectorPct": 69,
+      "seaSectorPct": 73.4
+    },
+    {
+      "icao": "LGKV",
+      "name": "Καβάλα",
+      "landDistKm": 2.7377734218587513,
+      "hours": 503,
+      "landMae": 3.481741550695822,
+      "seaMae": 4.569001988071573,
+      "landSectorPct": 47.8,
+      "seaSectorPct": 50.9
+    },
+    {
+      "icao": "LGTS",
+      "name": "Θεσσαλονίκη",
+      "landDistKm": 3.297482822827411,
+      "hours": 505,
+      "landMae": 3.5978138613861335,
+      "seaMae": 3.5909465346534644,
+      "landSectorPct": 57.9,
+      "seaSectorPct": 52.6
+    },
+    {
+      "icao": "LGKC",
+      "name": "Κύθηρα",
+      "landDistKm": 3.105658573622793,
+      "hours": 175,
+      "landMae": 5.5297142857142845,
+      "seaMae": 5.16144,
+      "landSectorPct": 55,
+      "seaSectorPct": 64.4
+    },
+    {
+      "icao": "LGKP",
+      "name": "Κάρπαθος",
+      "landDistKm": 2.615592504938174,
+      "hours": 480,
+      "landMae": 7.816075000000007,
+      "seaMae": 11.609099999999993,
+      "landSectorPct": 31.2,
+      "seaSectorPct": 33.7
+    },
+    {
+      "icao": "LGBL",
+      "name": "Ν. Αγχίαλος",
+      "landDistKm": 3.730418607149195,
+      "hours": 495,
+      "landMae": 4.3116525252525255,
+      "seaMae": 4.802537373737374,
+      "landSectorPct": 29.3,
+      "seaSectorPct": 34
+    },
+    {
+      "icao": "LGRX",
+      "name": "Άραξος",
+      "landDistKm": 3.086559913090749,
+      "hours": 491,
+      "landMae": 5.251592668024438,
+      "seaMae": 4.910338085539719,
+      "landSectorPct": 55,
+      "seaSectorPct": 54.5
+    }
+  ]
+}

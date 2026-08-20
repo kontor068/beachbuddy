@@ -1,0 +1,163 @@
+{
+  "window": "21 ημέρες",
+  "hours": 20844,
+  "calmHours": 6869,
+  "buckets": {
+    "12": {
+      "hours": 2,
+      "pct": 0
+    },
+    "19": {
+      "hours": 2,
+      "pct": 0
+    },
+    "28": {
+      "hours": 1,
+      "pct": 0
+    },
+    "38": {
+      "hours": 0,
+      "pct": 0
+    }
+  },
+  "spread": {
+    "10": {
+      "hours": 2,
+      "pct": 0
+    },
+    "14": {
+      "hours": 2,
+      "pct": 0
+    },
+    "18": {
+      "hours": 2,
+      "pct": 0
+    },
+    "22": {
+      "hours": 1,
+      "pct": 0
+    }
+  },
+  "perStation": [
+    {
+      "icao": "LGMT",
+      "calmHours": 251,
+      "pct": 0.4
+    },
+    {
+      "icao": "LGKL",
+      "calmHours": 531,
+      "pct": 0.2
+    },
+    {
+      "icao": "LGIR",
+      "calmHours": 143,
+      "pct": 0
+    },
+    {
+      "icao": "LGSA",
+      "calmHours": 574,
+      "pct": 0
+    },
+    {
+      "icao": "LGRP",
+      "calmHours": 84,
+      "pct": 0
+    },
+    {
+      "icao": "LGKO",
+      "calmHours": 118,
+      "pct": 0
+    },
+    {
+      "icao": "LGMK",
+      "calmHours": 83,
+      "pct": 0
+    },
+    {
+      "icao": "LGSR",
+      "calmHours": 137,
+      "pct": 0
+    },
+    {
+      "icao": "LGPA",
+      "calmHours": 175,
+      "pct": 0
+    },
+    {
+      "icao": "LGSK",
+      "calmHours": 295,
+      "pct": 0
+    },
+    {
+      "icao": "LGKR",
+      "calmHours": 740,
+      "pct": 0
+    },
+    {
+      "icao": "LGZA",
+      "calmHours": 398,
+      "pct": 0
+    },
+    {
+      "icao": "LGKF",
+      "calmHours": 409,
+      "pct": 0
+    },
+    {
+      "icao": "LGPZ",
+      "calmHours": 416,
+      "pct": 0
+    },
+    {
+      "icao": "LGLM",
+      "calmHours": 181,
+      "pct": 0
+    },
+    {
+      "icao": "LGSM",
+      "calmHours": 185,
+      "pct": 0
+    },
+    {
+      "icao": "LGHI",
+      "calmHours": 72,
+      "pct": 0
+    },
+    {
+      "icao": "LGAL",
+      "calmHours": 220,
+      "pct": 0
+    },
+    {
+      "icao": "LGKV",
+      "calmHours": 439,
+      "pct": 0
+    },
+    {
+      "icao": "LGTS",
+      "calmHours": 515,
+      "pct": 0
+    },
+    {
+      "icao": "LGBL",
+      "calmHours": 386,
+      "pct": 0
+    },
+    {
+      "icao": "LGRX",
+      "calmHours": 436,
+      "pct": 0
+    }
+  ],
+  "suspect": {
+    "hours": 1190,
+    "modelMean": 4.588235294117661,
+    "obsMean": 7.6383327731092345,
+    "modelGust": 18.075294117647044,
+    "obsGust": 7.657008403361336,
+    "meanTooLowPct": 65.7,
+    "gustTooHighPct": 86.7,
+    "floorHelpsPct": 54.5
+  }
+}
