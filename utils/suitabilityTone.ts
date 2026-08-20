@@ -186,6 +186,59 @@ export const glassAtFourApplies = (
   glassWaterAtFour: boolean
 ): boolean => glassWaterAtFour && beaufort === 4 && exposureLevel === 'protected';
 
+/**
+ * ΤΟ 3 ΜΠΟΦΟΡ ΕΚΡΙΝΕ ΤΗΝ ΤΑΜΠΕΛΑ, ΟΧΙ ΤΟ ΚΥΜΑ (20/08/2026).
+ *
+ * Αφορμή: Μίλτος, τρεις παραλίες σε κάμερες — Καραβοστάσι Λασιθίου (743), Λυγαριά
+ * Φολεγάνδρου (1751), Αγία Μαρίνα Χανίων (546). Και οι τρεις κίτρινες, και οι τρεις λάδι.
+ * Κοινό τους: 3 Μποφόρ πάνω σε τομέα `exposed`. Ο κανόνας δεν ρωτούσε ΠΟΤΕ πόσο κύμα χτίζει
+ * πράγματι αυτός ο άνεμος — μόνο αν ο τομέας έχει την ταμπέλα.
+ *
+ * ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΠΑΡΑΓΩΓΟ, ΟΧΙ ΕΠΙΛΟΓΗ. Τρέξαμε το ΔΙΚΟ ΜΑΣ SMB
+ * (`utils/waveModel.estimateFetchLimitedWaveHeightM`) πάνω σε **όλους τους 6.283 τομείς που
+ * είναι μαρκαρισμένοι `exposed` σε 2.872 παραλίες**, σε όλο το εύρος των 3 Μποφόρ:
+ *
+ *   ταχύτητα   τομείς που φτάνουν 0,30 μ
+ *   12-14      **0,0%**  ← κανένας, σε ΚΑΜΙΑ γεωμετρία της χώρας
+ *   15         20,5%
+ *   17         67,3%
+ *   19         92,9%
+ *
+ * Το μεγαλύτερο fetch της χώρας είναι 25 χλμ (το ταβάνι των ακτίνων). Εκεί το κύμα πιάνει
+ * 0,30 μ **πρώτη φορά στα 14,82 χλμ/ώ**. Άρα κάτω από 14,8 η πρόταση «καμία ελληνική ακτή δεν
+ * μπορεί να έχει χτίσει 30 εκ. μ' αυτόν τον άνεμο» δεν είναι εκτίμηση — είναι εξαντλητικά
+ * ελεγμένη πάνω στην ίδια τη βάση μας.
+ *
+ * ΤΟ 14,8 ΚΑΙ ΟΧΙ ΤΟ 14,9: η πρώτη γραφή έλεγε 14,9 και η ίδια της η πύλη την έριξε. Το
+ * `estimateFetchLimitedWaveHeightM` στρογγυλοποιεί στα δύο δεκαδικά (`hs.toFixed(2)`), οπότε η
+ * ΕΜΦΑΝΙΖΟΜΕΝΗ τιμή γίνεται 0,30 από τα 14,82 — πριν η ωμή τιμή φτάσει το 0,30. Η γραμμή πρέπει
+ * να μπει στο νούμερο που ΒΛΕΠΕΙ ο επισκέπτης, όχι στο ωμό: 1.166 τομείς κάθονταν ανάμεσα.
+ *
+ * ΓΙΑΤΙ ΤΑΧΥΤΗΤΑ ΚΑΙ ΟΧΙ ΤΟ ΚΥΜΑ ΤΟΥ ΤΟΜΕΑ. Δοκιμάστηκε το προφανές — να περνιέται το fetch
+ * του ζωντανού τομέα και να υπολογίζεται το κύμα εδώ. **Κόπηκε**: πάνω από 14,9 το αποτέλεσμα
+ * εξαρτάται όντως από το fetch (ένα σκέτο όριο ταχύτητας συμφωνεί μόνο 83%), αλλά ΚΑΤΩ από
+ * 14,9 το fetch είναι αδιάφορο — 0% περνάει, σε κάθε γεωμετρία. Άρα η μόνη ζώνη όπου η
+ * απάντηση είναι βέβαιη είναι και η μόνη που δεν χρειάζεται γεωμετρία. Το να περάσουμε fetch
+ * μέσα από έξι σημεία κλήσης θα πρόσθετε ρίσκο απόκλισης κάρτας-πινέζας (§Γ27) για μια ζώνη
+ * όπου ούτως ή άλλως αφήνουμε το κίτρινο ανέπαφο.
+ *
+ * ΤΙ ΔΕΝ ΑΓΓΙΖΕΙ. Τίποτα από 4 Μποφόρ και πάνω. Τίποτα σε `protected`/`partial` (ήταν ήδη
+ * μπλε). Και το ταβάνι της θάλασσας τρέχει ΚΑΝΟΝΙΚΑ μετά από αυτό — αν όντως τρέχει φουσκοθαλασσιά,
+ * το `resolveConditionTone` μπορεί ακόμα να τραβήξει την πινέζα πίσω.
+ *
+ * ΧΩΡΙΣ ΤΑΧΥΤΗΤΑ ΔΕΝ ΕΦΑΡΜΟΖΕΤΑΙ. Ίδια αρχή με το `applyGustFloor`: μια διόρθωση που δεν ξέρει
+ * πού πατάει δεν εφαρμόζεται. Ο παλιός κανόνας επιβιώνει αυτούσιος όταν λείπει το νούμερο.
+ */
+export const THREE_BEAUFORT_NO_BUILDABLE_CHOP_MAX_KMH = 14.8;
+
+export const holdsNoBuildableChopAtThree = (
+  beaufort: number,
+  windSpeedKmh?: number
+): boolean => beaufort === 3
+  && typeof windSpeedKmh === 'number'
+  && Number.isFinite(windSpeedKmh)
+  && windSpeedKmh < THREE_BEAUFORT_NO_BUILDABLE_CHOP_MAX_KMH;
+
 export const resolveWindTone = (
   exposureLevel: ExposureLevel | string | undefined,
   beaufort: number,
@@ -200,7 +253,13 @@ export const resolveWindTone = (
    * (utils/offshoreFlatWater.holdsGlassWaterAtFourBeaufort). Only consulted at 4 Bft, and only
    * to lift yellow → blue.
    */
-  glassWaterAtFour = false
+  glassWaterAtFour = false,
+  /**
+   * The live hourly wind in km/h — the SAME number `beaufort` was derived from, after the gust
+   * floor. Only consulted at 3 Bft, and only to lift yellow → blue (holdsNoBuildableChopAtThree).
+   * Omitted → the 3 Bft rung behaves exactly as it did before this rule existed.
+   */
+  windSpeedKmh?: number
 ): CalmnessTone => {
   const isProtected = exposureLevel === 'protected';
   const isExposed = exposureLevel === 'exposed';
@@ -245,7 +304,13 @@ export const resolveWindTone = (
   // At 3 Bft only genuinely exposed coasts feel a real chop; protected and the uncertain
   // "partial" middle stay calm enough to read as blue — this keeps the "uncertain partial"
   // from looking worse than a sheltered neighbour.
-  if (beaufort >= 3) return isExposed ? 'yellow' : 'blue';
+  //
+  // THE ONE ESCAPE AT 3 BFT IS "THE SEA CANNOT PHYSICALLY BE THERE YET" (20/08/2026 — see
+  // holdsNoBuildableChopAtThree). Below that speed the rung was painting a warning colour for a
+  // sea our own model puts at 27 cm or less, ANYWHERE in the country.
+  if (beaufort >= 3) {
+    return isExposed && !holdsNoBuildableChopAtThree(beaufort, windSpeedKmh) ? 'yellow' : 'blue';
+  }
   return 'blue';
 };
 
@@ -399,11 +464,21 @@ export const resolveConditionTone = ({
   swimVerdictAvoid = false,
   seaArrivalExposureLevel,
   curatedWindOnlyProtection = false,
+  windSpeedKmh,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
   isEnclosedCove?: boolean;
   seaStateM?: number;
+  /**
+   * The live hourly wind in km/h that produced `beaufort` (after utils/windGustFloor).
+   *
+   * Passed rather than re-derived from `beaufort`, because the band is 8 km/h wide and the whole
+   * point of holdsNoBuildableChopAtThree is that its bottom half behaves differently from its
+   * top. Every caller that can compute a Beaufort already holds this number, so leaving it out
+   * is an omission, not a shortage — and an omission simply keeps the pre-20/08/2026 behaviour.
+   */
+  windSpeedKmh?: number;
   /**
    * Wind off the land over zero fetch (utils/offshoreFlatWater.holdsFlatWaterUnderOffshoreWind).
    * Passed rather than derived here so this module keeps knowing nothing about geometry — and so
@@ -487,7 +562,8 @@ export const resolveConditionTone = ({
       const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
       return typeof atShoreM === 'number' && Number.isFinite(atShoreM)
         && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M;
-    })()
+    })(),
+    windSpeedKmh
   ),
   seaStateM,
   // THE TWO CALM RULES DO NOT STACK. A cove is exempt from the sea ceiling because the grid cell

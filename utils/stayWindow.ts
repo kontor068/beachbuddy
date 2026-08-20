@@ -134,6 +134,13 @@ export interface StayHourReading {
    */
   exposureLevel?: string;
   beaufort: number;
+  /**
+   * The km/h `beaufort` was rounded from. Carried so the hour picker asks the ladder the same
+   * question the pin does — utils/suitabilityTone.holdsNoBuildableChopAtThree splits the 3 Bft
+   * band by speed, and an hour chosen on a coarser reading than the one painted is exactly the
+   * two-ladders drift this module was extracted to prevent.
+   */
+  windSpeedKmh?: number;
   seaStateM?: number;
 }
 
@@ -171,6 +178,7 @@ const toStayHourSamples = (readings: readonly StayHourReading[]): StayHourSample
     // claim than the truth.
     isEnclosedCove: false,
     seaStateM: reading.seaStateM,
+    windSpeedKmh: reading.windSpeedKmh,
   }),
 }));
 

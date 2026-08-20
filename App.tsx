@@ -4259,6 +4259,7 @@ export const App: React.FC = () => {
             dt: slot.dt,
             exposureLevel: profile?.sectors?.[windSectorFromDegrees(deg)]?.level,
             beaufort: getBeaufortLevel(speed * 3.6),
+            windSpeedKmh: speed * 3.6,
             seaStateM: item.marine?.waveHeightM,
           };
         })

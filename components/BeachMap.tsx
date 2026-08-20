@@ -1092,7 +1092,9 @@ const getExposureMarkerTone = (
   /** The engine refused a swim here — the colour is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /** The km/h `windBeaufort` was rounded from — utils/suitabilityTone.holdsNoBuildableChopAtThree. */
+  windSpeedKmh?: number
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1138,6 +1140,7 @@ const getExposureMarkerTone = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
+    windSpeedKmh,
   })];
 };
 
@@ -1257,7 +1260,9 @@ const createExposureIcon = (
   /** The engine refused a swim here — the pin is capped at ΜΕΤΡΙΑ (utils/suitabilityTone). */
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
-  seaArrivalExposureLevel?: string
+  seaArrivalExposureLevel?: string,
+  /** The km/h behind `windBeaufort` — see getExposureMarkerTone. */
+  windSpeedKmh?: number
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -1281,7 +1286,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, windSpeedKmh);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -2161,6 +2166,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
   };
 
   /**
+   * The km/h behind `beachBeaufort` — the pair must always describe the SAME reading, because
+   * utils/suitabilityTone.holdsNoBuildableChopAtThree splits the 3 Bft band by speed.
+   *
+   * Mirrors beachBeaufort branch for branch. The region fallback is returned ONLY when
+   * beachBeaufort also fell back to the region Beaufort: during a slider drag it uses
+   * `sliderDisplayBeaufort` instead, which describes a different hour than `windSpeedKmh` does,
+   * and a mismatched pair is worse than no pair. Undefined simply keeps the older behaviour.
+   */
+  const beachWindSpeedKmh = (item: SuitableBeach): number | undefined => {
+    const local = beachLocalWinds?.[item.beach.id];
+    if (typeof local?.speedKmh === 'number') return local.speedKmh;
+    return typeof windBeaufort === 'number' ? windSpeedKmh : undefined;
+  };
+
+  /**
    * Is the wind blowing OFF the land here, over no fetch? See utils/offshoreFlatWater.
    *
    * Fed the beach's OWN bearing (`local.deg`) rather than the region's, for the same reason
@@ -2267,6 +2287,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // A beach the app refuses a swim at cannot be counted as ΙΔΑΝΙΚΗ or ΚΑΛΗ in the legend
     // beside it — the same ceiling the card chip takes (utils/suitabilityTone).
     swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
+    windSpeedKmh: beachWindSpeedKmh(item),
   });
 
   const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone(beachToneInput(item));
@@ -3574,7 +3595,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? createBeachIcon(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel)}
+                : createExposureIcon(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, beachWindSpeedKmh(item))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

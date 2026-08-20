@@ -328,9 +328,11 @@ const getSimpleWindColor = (
   exposureLevel: ExposureLevel,
   beaufort: number,
   enclosedCove = false,
-  offshoreFlatWater = false
+  offshoreFlatWater = false,
+  /** utils/suitabilityTone.holdsNoBuildableChopAtThree — only read at 3 Bft. */
+  windSpeedKmh?: number
 ): SimpleWindSuitability['suitabilityColor'] => toWindSuitabilityColor(
-  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove, offshoreFlatWater })
+  resolveConditionTone({ exposureLevel, beaufort, isEnclosedCove: enclosedCove, offshoreFlatWater, windSpeedKmh })
 );
 
 /**
@@ -385,6 +387,7 @@ export const applySeaStateToWindSuitability = (
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
     beaufort: suitability.windBeaufort,
+    windSpeedKmh: suitability.windSpeedKmh,
     isEnclosedCove: enclosedCove,
     seaStateM,
     offshoreFlatWater: suitability.offshoreFlatWater,
@@ -430,9 +433,12 @@ export const buildSimpleWindSuitability = ({
   hasGeometry,
   enclosedCove = false,
   offshoreFlatWater = false,
+  windSpeedKmh,
 }: {
   exposureLevel: ExposureLevel;
   beaufort: number;
+  /** The km/h `beaufort` was rounded from. See SimpleWindSuitability.windSpeedKmh. */
+  windSpeedKmh?: number;
   windSector: WindSector;
   windDirection: WindDirection;
   windDirectionDeg: number;
@@ -450,7 +456,8 @@ export const buildSimpleWindSuitability = ({
     exposureStatus,
     beaufort,
     enclosedCove && exposureStatus === 'protected',
-    offshoreFlatWater
+    offshoreFlatWater,
+    windSpeedKmh
   );
   const windLabel = WIND_SECTOR_LABELS[windSector];
 
@@ -464,6 +471,7 @@ export const buildSimpleWindSuitability = ({
     confidence,
     windSector,
     windBeaufort: beaufort,
+    windSpeedKmh,
     offshoreFlatWater,
   } as const;
 
@@ -1215,6 +1223,7 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     hasGeometry,
     enclosedCove,
     offshoreFlatWater,
+    windSpeedKmh: input.windSpeedKmh,
   });
 
   return {

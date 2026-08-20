@@ -84,6 +84,13 @@ export interface SimpleWindSuitability {
    *  certainty (a 5–6 Bft day definitely has wind/waves, even on a sheltered shore). */
   windBeaufort?: number;
   /**
+   * The km/h `windBeaufort` was rounded from — carried for the same reason `windBeaufort` is:
+   * the sea-state pass re-derives the colour and must not be handed a different number than the
+   * wind-only colour was built from. Read by utils/suitabilityTone.holdsNoBuildableChopAtThree,
+   * where the 3 Bft band's bottom half behaves differently from its top.
+   */
+  windSpeedKmh?: number;
+  /**
    * The wind is blowing off the land over zero fetch at 5 Bft
    * (utils/offshoreFlatWater.holdsFlatWaterUnderOffshoreWind), so the surface is flat despite
    * the speed. Carried on the object — like `exposureStatus` and `windBeaufort` — so the
