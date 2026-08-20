@@ -1,0 +1,848 @@
+{
+  "generatedAt": "2026-08-20T12:36:48.140Z",
+  "window": "2026-08-04 → 2026-08-18",
+  "hours": 7633,
+  "landHours": 7078,
+  "seaHours": 555,
+  "gammaThirtyFourHours": {
+    "στεριά": {
+      "hours": 663,
+      "rawKmh": 5.48,
+      "baseKmh": 10.7,
+      "obsKmh": 8.68,
+      "residualKmh": 2.02,
+      "obsAtLeast3Pct": 36
+    },
+    "νερό": {
+      "hours": 70,
+      "rawKmh": 1.92,
+      "baseKmh": 3.54,
+      "obsKmh": 4.71,
+      "residualKmh": -1.17,
+      "obsAtLeast3Pct": 12.9
+    }
+  },
+  "weakLandByFloor": {
+    "ο δάπεδος μίλησε": {
+      "hours": 1411,
+      "oursKmh": 7.72,
+      "obsKmh": 8.8,
+      "biasKmh": -1.08,
+      "obsHigherPct": 38.8
+    },
+    "ο δάπεδος σώπασε": {
+      "hours": 1237,
+      "oursKmh": 7.01,
+      "obsKmh": 7.96,
+      "biasKmh": -0.94,
+      "obsHigherPct": 36.3
+    }
+  },
+  "byOursLand": [
+    {
+      "band": "0-4",
+      "hours": 282,
+      "oursKmh": 3.04,
+      "obsKmh": 3.24,
+      "biasKmh": -0.21,
+      "obsHigherPct": 34.4
+    },
+    {
+      "band": "4-8",
+      "hours": 1250,
+      "oursKmh": 6.04,
+      "obsKmh": 7,
+      "biasKmh": -0.96,
+      "obsHigherPct": 33.2
+    },
+    {
+      "band": "8-12",
+      "hours": 1116,
+      "oursKmh": 10,
+      "obsKmh": 11.28,
+      "biasKmh": -1.28,
+      "obsHigherPct": 43.5
+    },
+    {
+      "band": "12-16",
+      "hours": 1125,
+      "oursKmh": 14,
+      "obsKmh": 14.75,
+      "biasKmh": -0.75,
+      "obsHigherPct": 23.2
+    },
+    {
+      "band": "16-20",
+      "hours": 983,
+      "oursKmh": 17.82,
+      "obsKmh": 19.02,
+      "biasKmh": -1.2,
+      "obsHigherPct": 37.6
+    },
+    {
+      "band": "20-28",
+      "hours": 1318,
+      "oursKmh": 23.69,
+      "obsKmh": 23.84,
+      "biasKmh": -0.14,
+      "obsHigherPct": 28.5
+    },
+    {
+      "band": "28-200",
+      "hours": 1004,
+      "oursKmh": 34.04,
+      "obsKmh": 35.72,
+      "biasKmh": -1.68,
+      "obsHigherPct": 35
+    }
+  ],
+  "byOursSea": [
+    {
+      "band": "0-4",
+      "hours": 195,
+      "oursKmh": 2.19,
+      "obsKmh": 2.96,
+      "biasKmh": -0.77,
+      "obsHigherPct": 27.7
+    },
+    {
+      "band": "4-8",
+      "hours": 50,
+      "oursKmh": 5.58,
+      "obsKmh": 6.74,
+      "biasKmh": -1.16,
+      "obsHigherPct": 34
+    },
+    {
+      "band": "8-12",
+      "hours": 48,
+      "oursKmh": 9.91,
+      "obsKmh": 12.08,
+      "biasKmh": -2.17,
+      "obsHigherPct": 56.3
+    },
+    {
+      "band": "12-16",
+      "hours": 53,
+      "oursKmh": 13.88,
+      "obsKmh": 16.49,
+      "biasKmh": -2.61,
+      "obsHigherPct": 34
+    },
+    {
+      "band": "20-28",
+      "hours": 57,
+      "oursKmh": 24.79,
+      "obsKmh": 20.92,
+      "biasKmh": 3.87,
+      "obsHigherPct": 3.5
+    },
+    {
+      "band": "28-200",
+      "hours": 127,
+      "oursKmh": 33.69,
+      "obsKmh": 26.35,
+      "biasKmh": 7.34,
+      "obsHigherPct": 2.4
+    }
+  ],
+  "byObsLand": [
+    {
+      "band": "0-4",
+      "hours": 794,
+      "oursKmh": 6.88,
+      "obsKmh": 0.78,
+      "biasKmh": 6.1,
+      "obsHigherPct": 0.1
+    },
+    {
+      "band": "4-8",
+      "hours": 895,
+      "oursKmh": 8.84,
+      "obsKmh": 6.59,
+      "biasKmh": 2.25,
+      "obsHigherPct": 17.8
+    },
+    {
+      "band": "8-12",
+      "hours": 894,
+      "oursKmh": 11.15,
+      "obsKmh": 10.18,
+      "biasKmh": 0.97,
+      "obsHigherPct": 30.9
+    },
+    {
+      "band": "12-16",
+      "hours": 864,
+      "oursKmh": 13.81,
+      "obsKmh": 13.92,
+      "biasKmh": -0.11,
+      "obsHigherPct": 32.6
+    },
+    {
+      "band": "16-20",
+      "hours": 894,
+      "oursKmh": 16.84,
+      "obsKmh": 17.77,
+      "biasKmh": -0.93,
+      "obsHigherPct": 16.6
+    },
+    {
+      "band": "20-28",
+      "hours": 1545,
+      "oursKmh": 20.55,
+      "obsKmh": 23.66,
+      "biasKmh": -3.12,
+      "obsHigherPct": 43.7
+    },
+    {
+      "band": "28-200",
+      "hours": 1192,
+      "oursKmh": 30.34,
+      "obsKmh": 37.52,
+      "biasKmh": -7.19,
+      "obsHigherPct": 68.3
+    }
+  ],
+  "candidates": [
+    {
+      "name": "σήμερα (δάπεδος μόνο)",
+      "hours": 7633,
+      "maeKmh": 5.28,
+      "biasKmh": -0.78,
+      "weakBiasKmh": -1.02,
+      "bftExactPct": 40.9,
+      "bftUnderPct": 32.6,
+      "bftOverPct": 26.5,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 11,
+      "falseAlarmPct": 7.2,
+      "pushedTo3Pct": 0,
+      "pushedTo3JustifiedPct": 0
+    },
+    {
+      "name": "+2 ως τα 12 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.27,
+      "biasKmh": -0.51,
+      "weakBiasKmh": -0.33,
+      "bftExactPct": 42.7,
+      "bftUnderPct": 30.3,
+      "bftOverPct": 27,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 11,
+      "falseAlarmPct": 7.2,
+      "pushedTo3Pct": 0.6,
+      "pushedTo3JustifiedPct": 66
+    },
+    {
+      "name": "+3 ως τα 12 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.28,
+      "biasKmh": -0.38,
+      "weakBiasKmh": 0.02,
+      "bftExactPct": 43.2,
+      "bftUnderPct": 29.3,
+      "bftOverPct": 27.5,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 11,
+      "falseAlarmPct": 7.2,
+      "pushedTo3Pct": 1.4,
+      "pushedTo3JustifiedPct": 62.3
+    },
+    {
+      "name": "+3 ως τα 16 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.29,
+      "biasKmh": -0.16,
+      "weakBiasKmh": 0.43,
+      "bftExactPct": 44.4,
+      "bftUnderPct": 27.4,
+      "bftOverPct": 28.3,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 10.8,
+      "falseAlarmPct": 7.3,
+      "pushedTo3Pct": 4.7,
+      "pushedTo3JustifiedPct": 64.7
+    },
+    {
+      "name": "+3 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.29,
+      "biasKmh": 0,
+      "weakBiasKmh": 0.63,
+      "bftExactPct": 44.3,
+      "bftUnderPct": 27,
+      "bftOverPct": 28.7,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.5,
+      "falseCalmPct": 10.3,
+      "falseAlarmPct": 7.5,
+      "pushedTo3Pct": 5.7,
+      "pushedTo3JustifiedPct": 61.6
+    },
+    {
+      "name": "+4 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.35,
+      "biasKmh": 0.26,
+      "weakBiasKmh": 1.18,
+      "bftExactPct": 44.3,
+      "bftUnderPct": 26,
+      "bftOverPct": 29.7,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 10,
+      "falseAlarmPct": 7.8,
+      "pushedTo3Pct": 7.9,
+      "pushedTo3JustifiedPct": 57.8
+    },
+    {
+      "name": "+2 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.26,
+      "biasKmh": -0.26,
+      "weakBiasKmh": 0.08,
+      "bftExactPct": 44.1,
+      "bftUnderPct": 28.1,
+      "bftOverPct": 27.8,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.5,
+      "falseCalmPct": 10.6,
+      "falseAlarmPct": 7.4,
+      "pushedTo3Pct": 4,
+      "pushedTo3JustifiedPct": 65.9
+    },
+    {
+      "name": "+3 ως τα 25 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.3,
+      "biasKmh": 0.3,
+      "weakBiasKmh": 0.88,
+      "bftExactPct": 44.6,
+      "bftUnderPct": 25.1,
+      "bftOverPct": 30.3,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.6,
+      "falseCalmPct": 8.9,
+      "falseAlarmPct": 8.7,
+      "pushedTo3Pct": 7.2,
+      "pushedTo3JustifiedPct": 59
+    },
+    {
+      "name": "+5 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.43,
+      "biasKmh": 0.52,
+      "weakBiasKmh": 1.73,
+      "bftExactPct": 44.3,
+      "bftUnderPct": 25,
+      "bftOverPct": 30.7,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 9.8,
+      "falseAlarmPct": 7.9,
+      "pushedTo3Pct": 10.6,
+      "pushedTo3JustifiedPct": 54.4
+    },
+    {
+      "name": "+3 ως τα 19 (ΠΑΝΤΟΥ)",
+      "hours": 7633,
+      "maeKmh": 5.3,
+      "biasKmh": 0.1,
+      "weakBiasKmh": 0.87,
+      "bftExactPct": 44.5,
+      "bftUnderPct": 26.4,
+      "bftOverPct": 29.1,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.5,
+      "falseCalmPct": 10.3,
+      "falseAlarmPct": 7.6,
+      "pushedTo3Pct": 5.9,
+      "pushedTo3JustifiedPct": 62
+    },
+    {
+      "name": "+3 ως τα 12 (ΠΑΝΤΟΥ)",
+      "hours": 7633,
+      "maeKmh": 5.29,
+      "biasKmh": -0.3,
+      "weakBiasKmh": 0.22,
+      "bftExactPct": 43.3,
+      "bftUnderPct": 28.9,
+      "bftOverPct": 27.8,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.4,
+      "falseCalmPct": 11,
+      "falseAlarmPct": 7.2,
+      "pushedTo3Pct": 1.5,
+      "pushedTo3JustifiedPct": 63.4
+    },
+    {
+      "name": "x1.4 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.26,
+      "biasKmh": 0.07,
+      "weakBiasKmh": 0.47,
+      "bftExactPct": 44,
+      "bftUnderPct": 27.1,
+      "bftOverPct": 28.9,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.3,
+      "falseCalmPct": 9.8,
+      "falseAlarmPct": 8,
+      "pushedTo3Pct": 7.1,
+      "pushedTo3JustifiedPct": 59
+    },
+    {
+      "name": "x1.6 ως τα 19 (στεριά)",
+      "hours": 7633,
+      "maeKmh": 5.33,
+      "biasKmh": 0.49,
+      "weakBiasKmh": 1.22,
+      "bftExactPct": 44.3,
+      "bftUnderPct": 25.5,
+      "bftOverPct": 30.2,
+      "missedStrongPct": 38.1,
+      "colourOkPct": 68.1,
+      "falseCalmPct": 9.2,
+      "falseAlarmPct": 8.6,
+      "pushedTo3Pct": 10.5,
+      "pushedTo3JustifiedPct": 54.5
+    }
+  ],
+  "stationSplit": [
+    {
+      "name": "σήμερα (δάπεδος μόνο)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.06,
+        "biasKmh": -1.97,
+        "weakBiasKmh": -1.72,
+        "bftExactPct": 41.6,
+        "bftUnderPct": 37.2,
+        "bftOverPct": 21.1,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 15.7,
+        "falseAlarmPct": 4,
+        "pushedTo3Pct": 0,
+        "pushedTo3JustifiedPct": 0
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.47,
+        "biasKmh": 0.32,
+        "weakBiasKmh": -0.15,
+        "bftExactPct": 40.2,
+        "bftUnderPct": 28.4,
+        "bftOverPct": 31.4,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.6,
+        "falseAlarmPct": 10,
+        "pushedTo3Pct": 0,
+        "pushedTo3JustifiedPct": 0
+      }
+    },
+    {
+      "name": "+2 ως τα 12 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.04,
+        "biasKmh": -1.7,
+        "weakBiasKmh": -1.12,
+        "bftExactPct": 42.9,
+        "bftUnderPct": 35.7,
+        "bftOverPct": 21.5,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 15.7,
+        "falseAlarmPct": 4,
+        "pushedTo3Pct": 0.6,
+        "pushedTo3JustifiedPct": 65.2
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.48,
+        "biasKmh": 0.58,
+        "weakBiasKmh": 0.65,
+        "bftExactPct": 42.6,
+        "bftUnderPct": 25.3,
+        "bftOverPct": 32,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.6,
+        "falseAlarmPct": 10,
+        "pushedTo3Pct": 0.6,
+        "pushedTo3JustifiedPct": 66.7
+      }
+    },
+    {
+      "name": "+3 ως τα 12 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.04,
+        "biasKmh": -1.57,
+        "weakBiasKmh": -0.82,
+        "bftExactPct": 43.1,
+        "bftUnderPct": 35.1,
+        "bftOverPct": 21.8,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 15.7,
+        "falseAlarmPct": 4,
+        "pushedTo3Pct": 1.4,
+        "pushedTo3JustifiedPct": 64
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.51,
+        "biasKmh": 0.72,
+        "weakBiasKmh": 1.06,
+        "bftExactPct": 43.2,
+        "bftUnderPct": 24,
+        "bftOverPct": 32.7,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.6,
+        "falseAlarmPct": 10,
+        "pushedTo3Pct": 1.4,
+        "pushedTo3JustifiedPct": 60.7
+      }
+    },
+    {
+      "name": "+3 ως τα 16 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.02,
+        "biasKmh": -1.33,
+        "weakBiasKmh": -0.43,
+        "bftExactPct": 44.4,
+        "bftUnderPct": 33,
+        "bftOverPct": 22.6,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.2,
+        "falseCalmPct": 15.4,
+        "falseAlarmPct": 4.2,
+        "pushedTo3Pct": 5,
+        "pushedTo3JustifiedPct": 68.1
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.53,
+        "biasKmh": 0.91,
+        "weakBiasKmh": 1.5,
+        "bftExactPct": 44.3,
+        "bftUnderPct": 22.2,
+        "bftOverPct": 33.5,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.5,
+        "falseAlarmPct": 10.2,
+        "pushedTo3Pct": 4.4,
+        "pushedTo3JustifiedPct": 61.1
+      }
+    },
+    {
+      "name": "+3 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5,
+        "biasKmh": -1.14,
+        "weakBiasKmh": -0.24,
+        "bftExactPct": 44.4,
+        "bftUnderPct": 32.6,
+        "bftOverPct": 23,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.3,
+        "falseCalmPct": 14.8,
+        "falseAlarmPct": 4.4,
+        "pushedTo3Pct": 6,
+        "pushedTo3JustifiedPct": 66.1
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.56,
+        "biasKmh": 1.05,
+        "weakBiasKmh": 1.71,
+        "bftExactPct": 44.3,
+        "bftUnderPct": 21.8,
+        "bftOverPct": 33.9,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.6,
+        "falseCalmPct": 6.2,
+        "falseAlarmPct": 10.5,
+        "pushedTo3Pct": 5.3,
+        "pushedTo3JustifiedPct": 56.9
+      }
+    },
+    {
+      "name": "+4 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.03,
+        "biasKmh": -0.87,
+        "weakBiasKmh": 0.25,
+        "bftExactPct": 44.5,
+        "bftUnderPct": 31.5,
+        "bftOverPct": 24,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.3,
+        "falseCalmPct": 14.4,
+        "falseAlarmPct": 4.6,
+        "pushedTo3Pct": 8.7,
+        "pushedTo3JustifiedPct": 61.6
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.64,
+        "biasKmh": 1.3,
+        "weakBiasKmh": 2.33,
+        "bftExactPct": 44.1,
+        "bftUnderPct": 20.9,
+        "bftOverPct": 35,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.6,
+        "falseCalmPct": 6,
+        "falseAlarmPct": 10.7,
+        "pushedTo3Pct": 7.2,
+        "pushedTo3JustifiedPct": 53.5
+      }
+    },
+    {
+      "name": "+2 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5,
+        "biasKmh": -1.42,
+        "weakBiasKmh": -0.74,
+        "bftExactPct": 44,
+        "bftUnderPct": 33.6,
+        "bftOverPct": 22.4,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.2,
+        "falseCalmPct": 15.1,
+        "falseAlarmPct": 4.2,
+        "pushedTo3Pct": 4.4,
+        "pushedTo3JustifiedPct": 67.3
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.5,
+        "biasKmh": 0.81,
+        "weakBiasKmh": 1.09,
+        "bftExactPct": 44.1,
+        "bftUnderPct": 23.1,
+        "bftOverPct": 32.8,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.3,
+        "falseAlarmPct": 10.2,
+        "pushedTo3Pct": 3.7,
+        "pushedTo3JustifiedPct": 64.4
+      }
+    },
+    {
+      "name": "+3 ως τα 25 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 4.96,
+        "biasKmh": -0.82,
+        "weakBiasKmh": -0.01,
+        "bftExactPct": 45,
+        "bftUnderPct": 30.4,
+        "bftOverPct": 24.6,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.8,
+        "falseCalmPct": 13.1,
+        "falseAlarmPct": 5.4,
+        "pushedTo3Pct": 7.7,
+        "pushedTo3JustifiedPct": 62.8
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.61,
+        "biasKmh": 1.33,
+        "weakBiasKmh": 1.98,
+        "bftExactPct": 44.3,
+        "bftUnderPct": 20.2,
+        "bftOverPct": 35.5,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.4,
+        "falseCalmPct": 5,
+        "falseAlarmPct": 11.7,
+        "pushedTo3Pct": 6.7,
+        "pushedTo3JustifiedPct": 55.1
+      }
+    },
+    {
+      "name": "+5 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.08,
+        "biasKmh": -0.59,
+        "weakBiasKmh": 0.74,
+        "bftExactPct": 44.6,
+        "bftUnderPct": 30.2,
+        "bftOverPct": 25.2,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.2,
+        "falseCalmPct": 14.1,
+        "falseAlarmPct": 4.8,
+        "pushedTo3Pct": 12.1,
+        "pushedTo3JustifiedPct": 58.4
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.75,
+        "biasKmh": 1.54,
+        "weakBiasKmh": 2.95,
+        "bftExactPct": 44.1,
+        "bftUnderPct": 20.2,
+        "bftOverPct": 35.8,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.5,
+        "falseCalmPct": 5.8,
+        "falseAlarmPct": 10.9,
+        "pushedTo3Pct": 9.3,
+        "pushedTo3JustifiedPct": 49.7
+      }
+    },
+    {
+      "name": "+3 ως τα 19 (ΠΑΝΤΟΥ)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.01,
+        "biasKmh": -0.95,
+        "weakBiasKmh": 0.18,
+        "bftExactPct": 44.7,
+        "bftUnderPct": 31.4,
+        "bftOverPct": 23.9,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.3,
+        "falseCalmPct": 14.8,
+        "falseAlarmPct": 4.4,
+        "pushedTo3Pct": 6.6,
+        "pushedTo3JustifiedPct": 66.7
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.56,
+        "biasKmh": 1.06,
+        "weakBiasKmh": 1.72,
+        "bftExactPct": 44.3,
+        "bftUnderPct": 21.8,
+        "bftOverPct": 33.9,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.6,
+        "falseCalmPct": 6.2,
+        "falseAlarmPct": 10.5,
+        "pushedTo3Pct": 5.4,
+        "pushedTo3JustifiedPct": 56.8
+      }
+    },
+    {
+      "name": "+3 ως τα 12 (ΠΑΝΤΟΥ)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 5.06,
+        "biasKmh": -1.41,
+        "weakBiasKmh": -0.47,
+        "bftExactPct": 43.4,
+        "bftUnderPct": 34.2,
+        "bftOverPct": 22.4,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 15.7,
+        "falseAlarmPct": 4,
+        "pushedTo3Pct": 1.5,
+        "pushedTo3JustifiedPct": 66.1
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.51,
+        "biasKmh": 0.72,
+        "weakBiasKmh": 1.06,
+        "bftExactPct": 43.2,
+        "bftUnderPct": 24,
+        "bftOverPct": 32.7,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.7,
+        "falseCalmPct": 6.6,
+        "falseAlarmPct": 10,
+        "pushedTo3Pct": 1.4,
+        "pushedTo3JustifiedPct": 60.7
+      }
+    },
+    {
+      "name": "x1.4 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 4.95,
+        "biasKmh": -1.02,
+        "weakBiasKmh": -0.31,
+        "bftExactPct": 44.3,
+        "bftUnderPct": 32.3,
+        "bftOverPct": 23.4,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.2,
+        "falseCalmPct": 14.1,
+        "falseAlarmPct": 4.8,
+        "pushedTo3Pct": 7.7,
+        "pushedTo3JustifiedPct": 62.5
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.55,
+        "biasKmh": 1.08,
+        "weakBiasKmh": 1.45,
+        "bftExactPct": 43.8,
+        "bftUnderPct": 22.3,
+        "bftOverPct": 33.9,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.5,
+        "falseCalmPct": 5.8,
+        "falseAlarmPct": 10.9,
+        "pushedTo3Pct": 6.6,
+        "pushedTo3JustifiedPct": 55.3
+      }
+    },
+    {
+      "name": "x1.6 ως τα 19 (στεριά)",
+      "even": {
+        "hours": 3655,
+        "maeKmh": 4.98,
+        "biasKmh": -0.55,
+        "weakBiasKmh": 0.39,
+        "bftExactPct": 44.6,
+        "bftUnderPct": 30.5,
+        "bftOverPct": 24.9,
+        "missedStrongPct": 65.6,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 13.2,
+        "falseAlarmPct": 5.4,
+        "pushedTo3Pct": 12,
+        "pushedTo3JustifiedPct": 58.6
+      },
+      "odd": {
+        "hours": 3978,
+        "maeKmh": 5.66,
+        "biasKmh": 1.46,
+        "weakBiasKmh": 2.25,
+        "bftExactPct": 44,
+        "bftUnderPct": 20.9,
+        "bftOverPct": 35,
+        "missedStrongPct": 22.4,
+        "colourOkPct": 68.1,
+        "falseCalmPct": 5.4,
+        "falseAlarmPct": 11.6,
+        "pushedTo3Pct": 9.2,
+        "pushedTo3JustifiedPct": 49.6
+      }
+    }
+  ]
+}
