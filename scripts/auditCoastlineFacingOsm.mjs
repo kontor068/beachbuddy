@@ -46,6 +46,8 @@ const getArg = (name, fallback) => {
 };
 const LIMIT = Number(getArg('--limit', '0')) || 0;
 const CONTROL_N = Number(getArg('--control', '45'));
+// Ρητή λίστα παραλιών, για να ρωτηθεί ο ίδιος κριτής έξω από το αυτόματο φίλτρο του Σταδίου 1.
+const ONLY = String(getArg('--only', '')).split(',').map(x => Number(x.trim())).filter(Boolean);
 
 // ── δίκτυο ──────────────────────────────────────────────────────────────────
 const MIRRORS = [
@@ -150,6 +152,7 @@ const appDir = path.join(root, 'public/data/beaches/app');
 const expDir = path.join(root, 'public/data/geospatial/exposure');
 
 const disputed = [];
+const allBeaches = new Map();
 const control = [];
 for (const rf of fs.readdirSync(appDir).filter(f => f.endsWith('.json'))) {
   const region = rf.replace(/\.json$/, '');
@@ -164,6 +167,7 @@ for (const rf of fs.readdirSync(appDir).filter(f => f.endsWith('.json'))) {
   for (const beach of payload.island?.beaches || []) {
     const geo = profiles[beach.id];
     if (!geo?.sectors || !beach.coordinates) continue;
+    allBeaches.set(beach.id, { beach, geo, region });
     const sectors = [];
     let authored = null;
     for (const scen of SCEN) {
@@ -195,6 +199,37 @@ for (const rf of fs.readdirSync(appDir).filter(f => f.endsWith('.json'))) {
       control.push({ id: beach.id, name: beach.name?.gr || beach.name?.en, region, coordinates: beach.coordinates, agreed: auth2, geo: gf });
     }
   }
+}
+
+// ── ΡΗΤΑ ΕΠΙΛΕΓΜΕΝΕΣ ΠΑΡΑΛΙΕΣ (--only 2020) ────────────────────────────────
+// Ο ΙΔΙΟΣ κριτής, ρωτημένος για συγκεκριμένη παραλία. Χρειάστηκε στο §Γ36: η Αγία Ειρήνη Πάρου
+// δεν περνάει το φίλτρο του Σταδίου 1 (δεν έχει απόγειο τομέα που να λέει «Εκτεθειμένη»), αλλά
+// το χειρόγραφο facing της διαφωνεί 82° με το μετρημένο και κρίνει το ΜΕΛΤΕΜΙ της.
+// Η ΟΜΑΔΑ ΕΛΕΓΧΟΥ ΔΕΝ ΠΑΡΑΚΑΜΠΤΕΤΑΙ: ο κανόνας «αν δεν αναπαράγεις τις γνωστές απαντήσεις,
+// δεν κρίνεις καμία» ισχύει το ίδιο για μία παραλία όσο και για σαράντα.
+if (ONLY.length) {
+  disputed.length = 0;
+  for (const id of ONLY) {
+    const hit = allBeaches.get(id);
+    if (!hit) { console.error(`  ⚠ #${id}: δεν βρέθηκε παραλία με γεωμετρία και συντεταγμένες.`); continue; }
+    let authored = null;
+    try {
+      authored = assessBeachWindExposure({
+        beach: hit.beach, geospatialProfile: hit.geo, windDirectionDeg: 0, windDirection: WindDirection.N,
+        windSpeedKmh: 24, beaufort: 3, waveHeightMeters: 0.5,
+      }).windProfile?.beachFacingDirection ?? null;
+    } catch { /* noop */ }
+    const gf = hit.geo.facingDeg;
+    if (typeof authored !== 'number' || typeof gf !== 'number') {
+      console.error(`  ⚠ #${id}: λείπει χειρόγραφο ή μετρημένο facing — δεν υπάρχει διαφωνία να κριθεί.`);
+      continue;
+    }
+    disputed.push({
+      id, name: hit.beach.name?.gr || hit.beach.name?.en, region: hit.region,
+      coordinates: hit.beach.coordinates, sectors: [], authored, geo: gf, gap: angDiff(authored, gf),
+    });
+  }
+  if (!disputed.length) { console.error('ΣΤΑΜΑΤΩ: καμία από τις --only δεν έχει διαφωνία να κριθεί.'); process.exit(2); }
 }
 
 // Η ομάδα ελέγχου παίρνεται από ΤΙΣ ΙΔΙΕΣ περιοχές με τις αμφισβητούμενες, ώστε να μη συγκρίνω
@@ -276,7 +311,8 @@ for (const r of rows.sort((a, b) => a.verdict.localeCompare(b.verdict) || a.id -
 
 const outDir = path.join(root, 'reports/quality');
 fs.mkdirSync(outDir, { recursive: true });
-const outFile = path.join(outDir, 'coastline-facing-osm.json');
+// Ένα πέρασμα --only ΔΕΝ πατάει την εθνική αναφορά του §Γ28ε: γράφει δικό του αρχείο.
+const outFile = path.join(outDir, ONLY.length ? `coastline-facing-osm-only-${ONLY.join('-')}.json` : 'coastline-facing-osm.json');
 fs.writeFileSync(outFile, JSON.stringify({
   method: 'OSM natural=coastline, land-on-left rule; seaward = segment bearing + 90deg',
   control: { count: controlRows.length, medianDeltaDeg: Number(median.toFixed(1)), within45: within45 },

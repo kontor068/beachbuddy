@@ -1,0 +1,35 @@
+{
+  "method": "OSM natural=coastline, land-on-left rule; seaward = segment bearing + 90deg",
+  "control": {
+    "count": 45,
+    "medianDeltaDeg": 9.1,
+    "within45": 42
+  },
+  "verdicts": {
+    "ΑΝΑΞΙΟΠΙΣΤΟ (μύτη/μακριά)": 1
+  },
+  "rows": [
+    {
+      "id": 2020,
+      "name": "Αγία Ειρήνη",
+      "region": "south-aegean-paros",
+      "coordinates": {
+        "lat": 37.05565,
+        "lon": 25.10987
+      },
+      "sectors": [],
+      "authored": 225,
+      "geo": 307,
+      "gap": 82,
+      "osm": {
+        "facing": 277.2014180004338,
+        "nearestM": 6.825093570583217,
+        "segments": 22,
+        "spread": 64.88216258703301
+      },
+      "dA": 52.20141800043382,
+      "dG": 29.79858199956618,
+      "verdict": "ΑΝΑΞΙΟΠΙΣΤΟ (μύτη/μακριά)"
+    }
+  ]
+}
