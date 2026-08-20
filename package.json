@@ -102,6 +102,7 @@
     "quality:numbers": "npm run quality:data-coverage && npm run quality:photo-coverage && npm run quality:hreflang-build && npm run quality:jsonld-coverage && npm run quality:orphan-pages",
     "build:climate": "node scripts/splitBeachClimate.mjs",
     "quality:curated-cove": "node scripts/validateCuratedCoveWindOnly.mjs",
+    "quality:card-vs-pin": "node scripts/validateCardVsPinExposure.mjs",
     "quality:gust-floor": "node scripts/validateGustFloorContract.mjs"
   },
   "dependencies": {
