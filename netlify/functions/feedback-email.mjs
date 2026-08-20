@@ -263,6 +263,32 @@ const fieldLines = (payload) => [
   ['Ώρα', payload.timestamp],
 ].filter(([, value]) => value !== undefined && value !== null && String(value).trim() !== '');
 
+// Ένα ΠΑΤΗΣΙΜΟ που ανοίγει την παραλία. Η γραμμή «Σελίδα» ήταν σκέτο κείμενο και, όταν
+// το μονοπάτι έλειπε, έπεφτε πίσω στο Referer — δηλαδή στη γενική σελίδα. Ένα σχόλιο
+// χωρίς τρόπο να δεις ΠΟΙΑ παραλία εννοεί δεν είναι σχόλιο, είναι θόρυβος.
+const SITE_URL = 'https://calmbeach.gr';
+const BEACH_PAGE_PATTERN = /\/beaches\/[^/]+\/\d+-/;
+
+const beachLink = (payload) => {
+  const raw = payload.pagePath || '';
+  if (!raw) return '';
+  let url;
+  try {
+    // Δέξου και πλήρες URL (Referer) και σχετικό μονοπάτι (ό,τι στέλνει η εφαρμογή).
+    url = new URL(raw, SITE_URL);
+  } catch {
+    return '';
+  }
+  if (!isOwnHost(url.hostname.toLowerCase())) return '';
+  const isBeachPage = BEACH_PAGE_PATTERN.test(url.pathname);
+  // Η γενική σελίδα δεν λέει τίποτα· καλύτερα κανένα λινκ παρά λινκ που παραπλανά.
+  if (!isBeachPage && url.pathname.replace(/\/+$/, '') === '') return '';
+  const label = isBeachPage
+    ? `Άνοιξε: ${payload.beachName || (payload.beachId ? `#${payload.beachId}` : 'η παραλία')}`
+    : 'Άνοιξε τη σελίδα';
+  return `🔗 <a href="${escapeTelegram(url.href)}">${escapeTelegram(label)}</a>`;
+};
+
 const formatMessage = (payload) => {
   const header = `${payload.verdictEmoji} <b>Σχόλιο επισκέπτη: ${escapeTelegram(payload.verdictLabel)}</b>`;
   const rows = fieldLines(payload)
@@ -273,7 +299,9 @@ const formatMessage = (payload) => {
   // The human's own words go above the metadata, as a block — inlining them into a
   // "<b>Message:</b> …" row buries the only part worth reading on a phone.
   const body = payload.message ? [escapeTelegram(payload.message), ''] : [];
-  return [...lead, '', ...body, rows].join('\n').slice(0, MAX_MESSAGE_LENGTH);
+  const link = beachLink(payload);
+  const tail = link ? ['', link] : [];
+  return [...lead, '', ...body, rows, ...tail].join('\n').slice(0, MAX_MESSAGE_LENGTH);
 };
 
 // Durable, calibration-shaped copy of a beach-attached verdict. Skips free-text/no-beach

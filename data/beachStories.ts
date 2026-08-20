@@ -46,8 +46,19 @@ const loadRegionStories = (region: string): Promise<RegionStories | null> => {
   if (cached) return cached;
 
   const loader = regionStoryLoaders[`./beachStories/${region}.json`];
+  // ΓΙΑΤΙ ΤΟ `mod &&` ΚΑΙ ΤΟ `.catch` (20/08/2026). Χωρίς αυτά, ένα κείμενο που δεν
+  // κατέβηκε (κακό 4G) έβγαζε `undefined is not an object (evaluating 's.default')`
+  // ως unhandled rejection — δηλαδή 🔴 «ΚΡΙΣΙΜΟ: έσπασε σελίδα» στο Telegram για μια
+  // σελίδα που απλώς εμφανιζόταν χωρίς την παράγραφο «Πληροφορίες». Πραγματικό
+  // περιστατικό: iPhone στο /beaches/chania/596-falasarna/.
   const promise: Promise<RegionStories | null> = loader
-    ? loader().then(mod => (mod.default ?? (mod as unknown as RegionStories)))
+    ? loader()
+        .then(mod => (mod ? (mod.default ?? (mod as unknown as RegionStories)) : null))
+        .catch(() => {
+          // Μην κρατάς αποτυχία στη μνήμη: η επόμενη επίσκεψη στο ίδιο νησί ξαναπροσπαθεί.
+          regionStoriesCache.delete(region);
+          return null;
+        })
     : Promise.resolve(null);
   regionStoriesCache.set(region, promise);
   return promise;

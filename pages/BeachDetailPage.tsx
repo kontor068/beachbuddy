@@ -682,6 +682,7 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { NavigationBadge } from '../components/NavigationBadge';
+import { buildBeachDetailPath } from '../utils/beachUrls';
 import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote, localizedFreeAccessLabel, localizedFreeAccessExplanation } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -1094,6 +1095,18 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // βαθμονομείται απέναντι σε νούμερο που δεν είδε ποτέ (Λιά 1958: 1,78 vs ~0,10 μ.).
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       live: selectedDayIsToday && selectedHour === undefined,
+    }, {
+      // ΠΟΙΑ ΠΑΡΑΛΙΑ. Χωρίς αυτό το e-mail/Telegram έπεφτε πίσω στο Referer, που σε
+      // πλοήγηση μέσα στην εφαρμογή είναι συχνά η γενική σελίδα — και το σχόλιο έφτανε
+      // με λινκ CalmBeach χωρίς κανένα τρόπο να καταλάβεις για ποια παραλία μιλάει.
+      source: 'condition_feedback',
+      beachName: beachDisplayName,
+      islandName,
+      regionId,
+      language,
+      pagePath: regionId
+        ? buildBeachDetailPath(regionId, beach, language)
+        : (typeof window !== 'undefined' ? window.location.pathname : ''),
     });
     setFeedbackSubmitted(true);
   };
