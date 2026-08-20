@@ -1,0 +1,320 @@
+{
+  "generatedAt": "2026-08-20T15:09:43.879Z",
+  "days": 5,
+  "regionsAnswered": 110,
+  "regionsAsked": 110,
+  "avoidToneCeiling": "orange",
+  "listToneGroups": 2,
+  "note": "ΑΝΩ ΦΡΑΓΜΑ: το isListableInDirectory (γυμνιστών, μόνο-με-βάρκα στα ≥5 Μπφ) δεν είναι exported και δεν αντιγράφηκε εδώ. Μόνο αφαιρεί παραλίες, άρα το πραγματικό νούμερο είναι ≤.",
+  "screens": 550,
+  "screensWithList": 550,
+  "screensWithAvoidInList": 167,
+  "screensWhereFilterEmptiesList": 5,
+  "listedBeaches": 12751,
+  "listedAvoid": 1198,
+  "avoidBeachesTotal": 2803,
+  "avoidByTone": {
+    "orange": 2518,
+    "red": 285
+  },
+  "windowShape": {
+    "blue": 272,
+    "blue+yellow": 99,
+    "blue+orange": 114,
+    "yellow+orange": 56,
+    "orange": 5,
+    "yellow": 4
+  },
+  "windowShapeWithAvoid": {
+    "blue+orange": 114,
+    "yellow+orange": 48,
+    "orange": 5
+  },
+  "examples": [
+    {
+      "region": "attica-agistri",
+      "day": 4,
+      "name": "Δραγονέρα",
+      "beachId": 96,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-agistri",
+      "day": 4,
+      "name": "Ξεκοφτή",
+      "beachId": 97,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-agistri",
+      "day": 4,
+      "name": "Παραλία Μεγαλοχωρίου",
+      "beachId": 98,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Παραλία Ακρωτηρίου",
+      "beachId": 26,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.7,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Παραλία Αρτέμιδας",
+      "beachId": 37,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.92,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Παραλία Βραυρώνας",
+      "beachId": 39,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.98,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Αυλάκι",
+      "beachId": 46,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.92,
+      "shoreM": 0.2,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Πανόραμα",
+      "beachId": 47,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.92,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Αρμυρίκια",
+      "beachId": 55,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.92,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Πούντα Ζέζα",
+      "beachId": 71,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 1.02,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Ασημάκη",
+      "beachId": 74,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.94,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Ωρωπός Σκάλα Ωρωπού",
+      "beachId": 3028,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.7,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "day": 4,
+      "name": "Ωρωπός Χαλκούτσι",
+      "beachId": 3029,
+      "tone": "orange",
+      "beaufort": 5,
+      "waveM": 0.7,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-hydra",
+      "day": 4,
+      "name": "Σπηλιά",
+      "beachId": 109,
+      "tone": "orange",
+      "beaufort": 4,
+      "waveM": 0.64,
+      "shoreM": null,
+      "window": "yellow+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Αμμούτσι",
+      "beachId": 112,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Καλόγεροι",
+      "beachId": 113,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Βλυχάδα Πλατιάς Άμμου",
+      "beachId": 115,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Πλατιά Άμμος",
+      "beachId": 117,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλία Φούρνοι",
+      "beachId": 118,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Αγία Πατρικία",
+      "beachId": 119,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλία Αγία Πελαγία",
+      "beachId": 120,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλια Φυρή Άμμος",
+      "beachId": 121,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλια Καλαμίτσι",
+      "beachId": 122,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλία Λορέντζος",
+      "beachId": 123,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    },
+    {
+      "region": "attica-kythira",
+      "day": 0,
+      "name": "Παραλια Κακιά Λαγκάδα",
+      "beachId": 124,
+      "tone": "orange",
+      "beaufort": 3,
+      "waveM": 0.6,
+      "shoreM": null,
+      "window": "blue+orange"
+    }
+  ],
+  "worstRegions": {
+    "peloponnese-messinia-mainland": 86,
+    "crete-crete-rethymno": 56,
+    "south-aegean-ios": 55,
+    "ionian-islands-corfu": 54,
+    "south-aegean-paros": 54,
+    "attica-kythira": 44,
+    "epirus-thesprotia-mainland": 42,
+    "crete-crete-lasithi": 38
+  }
+}

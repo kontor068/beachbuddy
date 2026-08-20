@@ -68,6 +68,7 @@
     "measure:ensemble-brake": "node scripts/measureEnsembleBrakeImpact.mjs",
     "measure:scorecard": "node scripts/measureFalseCalmAgainstStations.mjs",
     "quality:gust-consumers": "node scripts/validateGustFloorConsumers.mjs",
+    "measure:avoid-swim-in-list": "node scripts/measureAvoidSwimInSuitableList.mjs --live",
     "quality:truth": "node scripts/validateColourAgainstRealWind.mjs",
     "quality:truth:national": "node scripts/validateColourAgainstRealWind.mjs --national",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
