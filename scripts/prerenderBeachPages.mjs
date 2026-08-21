@@ -6102,13 +6102,6 @@ const main = async () => {
   }
   console.log(`Guides hub: ${GUIDES_HUB_PATH} emitted for ${baseLocales.map(l => l.id).join(', ')} (${islandIntentPages.length} guide links).`);
 
-  // Regions whose sheltered guide is actually published under the new geospatial
-  // metric. Regions NOT in this set get a 301 from any previously-indexed
-  // /sheltered-beaches/{slug}/ to the region page (never a 404).
-  const publishedShelteredRegions = new Set(
-    islandIntentPages.filter(p => p.intent.key === 'sheltered').map(p => p.region.id),
-  );
-
   for (const region of beachIndex.regions || []) {
     const summaryPath = region.summaryDataPath || `/data/beaches/app/summary/${region.id}.json`;
     let payload;
@@ -6135,18 +6128,6 @@ const main = async () => {
       redirects.push(`${currentLegacyRegionPath}* ${currentRegionPath}:splat 301`);
     }
 
-    // 301 any retired sheltered guide (no longer clears the geospatial gate) to the
-    // region page — same beaches, natural parent — so indexed URLs never 404.
-    if (!publishedShelteredRegions.has(region.id)) {
-      const shelteredPath = `/sheltered-beaches/${encodeURIComponent(regionSlug(region, island))}/`;
-      for (const locale of baseLocales) {
-        const from = localizedPath(shelteredPath, locale);
-        const to = localizedPath(currentRegionPath, locale);
-        redirects.push(`${from} ${to} 301`);
-        redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
-      }
-    }
-
     const regionShelteredCount = countShelteredBeaches(island.beaches);
     const emittedLocales = localesForRegion(region.id);
     for (const locale of emittedLocales) {
@@ -6162,9 +6143,18 @@ const main = async () => {
       if (!Number.isInteger(beach.id) || !beach.name) continue;
 
       const routePath = beachPath(region, island, beach);
+      // A renamed slug must 301 in EVERY locale this beach was built in, not just
+      // the bare English URL. localesForRegion is the exact set the pages above
+      // were emitted in, so we never point at a page that was never generated.
+      // Measured 21/08/2026: 8 of the 24 indexed-but-dead URLs were /el|de|fr|it/
+      // variants of a rename whose English 301 was perfectly fine.
       for (const legacyPath of legacyBeachPaths(region, island, beach)) {
-        redirects.push(`${legacyPath} ${routePath} 301`);
-        redirects.push(`${legacyPath.replace(/\/$/, '')} ${routePath} 301`);
+        for (const locale of localesForRegion(region.id)) {
+          const from = localizedPath(legacyPath, locale);
+          const to = localizedPath(routePath, locale);
+          redirects.push(`${from} ${to} 301`);
+          redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+        }
       }
 
       // This beach's own photo when it has one, otherwise the regional background.
@@ -6353,6 +6343,46 @@ const main = async () => {
   ].join('\n');
 
   await writeFile(path.join(distDir, 'sitemap.xml'), sitemap, 'utf8');
+
+  // -------------------------------------------------------------------------
+  // Safety net for URLs Google still holds. Appended LAST on purpose.
+  //
+  // Two Netlify behaviours make this safe, both read in the official docs on
+  // 21/08/2026 rather than remembered:
+  //   - the engine applies the FIRST matching rule, so every precise 301 above
+  //     still wins;
+  //   - a non-forced rule is skipped when a real file exists at the path, so a
+  //     published page is never shadowed by the pattern that covers its
+  //     retired siblings.
+  // A ":placeholder" matches exactly one path segment, which is why neither
+  // /sunset-beaches/ nor /beaches/{region}/ is caught here.
+  //
+  // Written because the 21/08 audit found 24 ranking URLs returning a bare 404.
+  // See docs/team/10-seo-specialist.md (21/08) and scripts/auditIndexedUrlsResolve.mjs.
+  // -------------------------------------------------------------------------
+  for (const intent of islandIntents) {
+    for (const locale of prerenderLocales) {
+      // A guide that stops clearing its gate for a region — the 200-340° sunset
+      // rule cost Patmos, Lipsi, Telendos and Lasithi their page, 145 impressions
+      // — lands on the region page: same beaches, natural parent.
+      const from = localizedPath(`${intent.pathPrefix}/:slug/`, locale);
+      const to = localizedPath('/beaches/:slug/', locale);
+      redirects.push(`${from} ${to} 301`);
+      redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+    }
+  }
+  for (const locale of prerenderLocales) {
+    // A beach that is gone from the dataset entirely — deleted, merged, or moved
+    // to another region — has no legacy slug recorded anywhere, so nothing above
+    // can catch it. 9 of the 24 dead URLs were exactly this. The region page is
+    // the honest answer: the beach they wanted is not there any more, but its
+    // neighbours are.
+    const from = localizedPath('/beaches/:region/:beach/', locale);
+    const to = localizedPath('/beaches/:region/', locale);
+    redirects.push(`${from} ${to} 301`);
+    redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+  }
+
   if (redirects.length > 0) {
     await writeFile(path.join(distDir, '_redirects'), `${redirects.join('\n')}\n`, 'utf8');
   }
