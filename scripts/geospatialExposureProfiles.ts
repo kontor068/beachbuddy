@@ -90,6 +90,16 @@ type BeachExposureProfile = {
    * προηγούμενο αρχείο — δες `carriedMarineSamplePoints` στη main().
    */
   marineSamplePoint?: unknown;
+  /**
+   * Ίδια περίπτωση με το `marineSamplePoint` από πάνω: το ψήνει το scripts/bakeWindShadow, όχι
+   * αυτό το αρχείο, και δηλώνεται μόνο για να μεταφέρεται αυτούσιο (δες `carriedWindShadows`).
+   *
+   * ⚠️ ΧΩΡΙΣ ΑΥΤΗ ΤΗ ΓΡΑΜΜΗ Ο ΕΘΝΙΚΟΣ BUILDER ΔΕΝ ΧΤΙΖΕΙ ΚΑΘΟΛΟΥ (21/08/2026). Η μεταφορά
+   * μπήκε χωρίς τη δήλωση, οπότε ο μεταγλωττιστής έκοβε με «Property 'windShadow' does not exist»
+   * και κάθε `buildGeospatialExposureProfiles` έβγαινε exit 1 — αόρατο, γιατί το αρχείο δεν
+   * περνάει από το `tsc --noEmit` του κύριου tsconfig και καμία πύλη δεν το μεταγλωττίζει.
+   */
+  windShadow?: string;
 };
 
 /** Ανάλυση της λεπτής βεντάλιας: 24 τιμές ανά 15°. */

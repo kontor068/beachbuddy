@@ -57,7 +57,22 @@
  * Run: node scripts/measureFanSpreading.mjs            (δομικό μισό, χωρίς δίκτυο)
  *      node scripts/measureFanSpreading.mjs --live     (+ εθνικό πέρασμα, ~40 λεπτά)
  *      node scripts/measureFanSpreading.mjs --live --regions=south-aegean-naxos
+ *
+ * ΤΟ ΜΕΛΤΕΜΙ ΔΕΝ ΠΕΡΙΜΕΝΕΤΑΙ ΠΙΑ — ΔΙΑΛΕΓΕΤΑΙ (21/08/2026, βίβλος §Γ45). Η απόφαση Μίλτου ήταν
+ * «ξαναμέτρημα σε μέρα ΜΕΛΤΕΜΙΟΥ», γιατί η μέτρηση της 18/08 έγινε σε άπνοια 2-12 χμ/ώ, δηλαδή
+ * στο κάτω όριο, όπου η βεντάλια δεν έχει τι να απλώσει. Με το αρχείο προγνώσεων:
+ *
+ *      OPEN_METEO_REPLAY=2022-09-06 OPEN_METEO_REPLAY_SHIFT=1 \
+ *        node scripts/measureFanSpreading.mjs --live --regions=south-aegean-naxos
+ *
+ * Το `SHIFT` χρειάζεται ΚΑΙ αυτό, γιατί το εργαλείο ρωτάει «τι δείχνει η οθόνη ΣΗΜΕΡΑ»:
+ * μετακινεί τις ημερομηνίες των δεδομένων στο σήμερα, αφήνοντας τις τιμές άθικτες.
+ * ⛔ ΟΧΙ `OPEN_METEO_REPLAY_CLOCK` εδώ — μετρήθηκε 21/08/2026 ότι το πάγωμα ρολογιού ξυπνάει την
+ * άμυνα του `utils/athensTime.ts` («το ρολόι της συσκευής είναι λάθος») και γυρίζουν ΜΗΔΕΝ
+ * περιοχές. Διάλεξε μέρες με `npm run replay:wind-windows`, όχι με το μάτι.
  */
+import './lib/paidOpenMeteo.mjs';
+import './lib/replayOpenMeteo.mjs';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';

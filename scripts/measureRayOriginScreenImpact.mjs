@@ -29,6 +29,11 @@
  */
 import './lib/paidOpenMeteo.mjs';
 import './lib/proxiedOpenMeteo.mjs';
+// Το §Γ39 άφησε αυτή τη μέτρηση παρκαρισμένη «στο μελτέμι της Κυριακής 24/08», γιατί το ανοιχτό
+// 🟡 της §Μ9 είναι ότι ΔΕΝ δοκιμάστηκαν 6-7 Μποφόρ. Από 21/08 (§Γ45) η μέρα διαλέγεται:
+//   OPEN_METEO_REPLAY=2022-09-06 OPEN_METEO_REPLAY_SHIFT=1 node scripts/measureRayOriginScreenImpact.mjs
+// ΟΧΙ _CLOCK — ξυπνάει την άμυνα του athensTime και γυρίζουν μηδέν περιοχές (§Γ46).
+import './lib/replayOpenMeteo.mjs';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';

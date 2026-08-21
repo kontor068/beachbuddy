@@ -37,13 +37,22 @@
  *     OPEN_METEO_API_KEY=… OPEN_METEO_REPLAY=2025-07-22 node scripts/measureX.mjs
  *     OPEN_METEO_API_KEY=… OPEN_METEO_REPLAY=2025-07-22:2025-07-28 node scripts/measureX.mjs
  *
- * ⚠️ THE CLOCK IS A SEPARATE, DELIBERATE DECISION — OPEN_METEO_REPLAY_CLOCK=1.
- * Data alone is not enough for scripts that ask "what is happening RIGHT NOW", because they
- * compare the returned timestamps against the real system clock and find nothing in range. That
- * flag moves the process clock to 09:00 Greek time of the replay day. It is opt-in because a
- * frozen clock is a loaded gun: anything that writes a file stamped with "now", or that decides
- * cache freshness, will lie. NEVER set it in a script that WRITES production data — only in the
- * ones that read and report.
+ * ── SCRIPTS THAT ASK "WHAT IS HAPPENING RIGHT NOW" ──────────────────────────────────────────
+ * Data alone is not enough for those: they compare the returned timestamps against the clock and
+ * find nothing in range. There are two ways to bridge that, and ONE OF THEM IS A TRAP.
+ *
+ * ✅ OPEN_METEO_REPLAY_SHIFT=1 — MOVE THE DATA, KEEP THE CLOCK (use this one).
+ * Rewrites every timestamp in the RESPONSE forward by a whole number of days, so the replayed day
+ * lands on today while every value stays exactly what it was. The clock stays real, so the
+ * shipped code's own defences keep working.
+ *
+ * ⛔ OPEN_METEO_REPLAY_CLOCK=1 — MOVE THE CLOCK (measured 21/08/2026: it BREAKS the run).
+ * utils/athensTime.ts compares Date.now() against the origin's `Date` response header and, past
+ * 90 minutes of disagreement, decides the DEVICE is broken and starts "correcting" every
+ * displayed time (syncClockFromTrustedInstant, athensTime.ts:59). Replaying 2022 under a frozen
+ * clock reports `skewMinutes: -2081188` and every region returns empty. The flag is kept only
+ * because a script that touches no forecast response can still want it — but for anything that
+ * fetches, USE SHIFT. Never set either one in a script that WRITES production data.
  */
 
 const spec = (process.env.OPEN_METEO_REPLAY || '').trim();
@@ -72,6 +81,40 @@ const parseSpec = (raw) => {
 let enabled = false;
 let warnedNowParam = false;
 
+// ── SHIFT: move the replayed day onto today, without touching the clock ──────────────────────
+const SHIFT = process.env.OPEN_METEO_REPLAY_SHIFT === '1';
+/** Whole days between two YYYY-MM-DD, computed at noon UTC so DST can never round it to ±1. */
+const wholeDaysBetween = (fromDay, toDay) => Math.round(
+  (Date.parse(`${toDay}T12:00:00Z`) - Date.parse(`${fromDay}T12:00:00Z`)) / DAY_MS,
+);
+/** Greek UTC offset on a given day — a shift across a DST boundary silently moves every hour. */
+const athensOffsetMinutes = (day) => {
+  const probe = new Date(`${day}T12:00:00Z`);
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Athens', hour: '2-digit', hourCycle: 'h23',
+  }).formatToParts(probe);
+  return (Number(parts.find((p) => p.type === 'hour').value) - 12) * 60;
+};
+/** '2022-09-06T14:00' + N days → '2026-08-21T14:00'. Hour-of-day is preserved verbatim. */
+const shiftStamp = (stamp, days) => {
+  if (typeof stamp !== 'string' || stamp.length < 10) return stamp;
+  const shifted = new Date(`${stamp.slice(0, 10)}T12:00:00Z`);
+  shifted.setUTCDate(shifted.getUTCDate() + days);
+  return shifted.toISOString().slice(0, 10) + stamp.slice(10);
+};
+/** Every block Open-Meteo can return carries its own `time`; miss one and the series desync. */
+const shiftBody = (node, days) => {
+  if (Array.isArray(node)) return node.map((n) => shiftBody(n, days));
+  if (!node || typeof node !== 'object') return node;
+  for (const block of ['hourly', 'daily', 'minutely_15', 'current', 'current_weather']) {
+    const b = node[block];
+    if (!b) continue;
+    if (Array.isArray(b.time)) b.time = b.time.map((t) => shiftStamp(t, days));
+    else if (typeof b.time === 'string') b.time = shiftStamp(b.time, days);
+  }
+  return node;
+};
+
 export const replayWindow = () => (enabled ? parseSpec(spec) : null);
 export const isReplaying = () => enabled;
 
@@ -90,6 +133,12 @@ export const enableReplayOpenMeteo = ({ quiet = false } = {}) => {
 
   const nativeFetch = globalThis.fetch;
   if (typeof nativeFetch !== 'function') return false;
+
+  // Computed once, from the REAL clock — the whole point of SHIFT is that the clock stays real.
+  const todayAthens = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Athens', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(new Date());
+  const shiftDays = SHIFT ? wholeDaysBetween(window.from, todayAthens) : 0;
 
   globalThis.fetch = (input, init) => {
     try {
@@ -123,7 +172,20 @@ export const enableReplayOpenMeteo = ({ quiet = false } = {}) => {
         }
         for (const p of RELATIVE_PARAMS) q.delete(p);
 
-        return nativeFetch(url.toString(), init);
+        if (!SHIFT) return nativeFetch(url.toString(), init);
+        // Rebuild the response with the timestamps moved onto today. The headers are copied
+        // verbatim — especially `Date`, which utils/athensTime.ts reads as the trusted instant.
+        return nativeFetch(url.toString(), init).then(async (res) => {
+          if (!res.ok) return res;
+          try {
+            const body = shiftBody(await res.json(), shiftDays);
+            return new Response(JSON.stringify(body), {
+              status: res.status, statusText: res.statusText, headers: res.headers,
+            });
+          } catch {
+            return res; // a body we cannot parse is a body we do not touch
+          }
+        });
       }
     } catch {
       // A URL we cannot parse is a URL we do not touch.
@@ -151,6 +213,14 @@ export const enableReplayOpenMeteo = ({ quiet = false } = {}) => {
   enabled = true;
   if (!quiet) {
     console.log(`  🕰️  Open-Meteo REPLAY: ${window.from}${window.to ? ` → ${window.to}` : ''} (archive hosts).`);
+    if (SHIFT) {
+      console.log(`      SHIFT: οι σφραγίδες μετακινούνται +${shiftDays} μέρες → ${todayAthens}. Το ρολόι ΔΕΝ πειράχτηκε.`);
+      console.log('      ⚠️  Τα δεδομένα είναι του παρελθόντος με σημερινή ημερομηνία. Ό,τι γράψει το εργαλείο πρέπει να το λέει.');
+      if (athensOffsetMinutes(window.from) !== athensOffsetMinutes(todayAthens)) {
+        console.warn('      ⛔ ΑΛΛΑΓΗ ΩΡΑΣ ΑΝΑΜΕΣΑ ΣΤΙΣ ΔΥΟ ΗΜΕΡΟΜΗΝΙΕΣ: κάθε ώρα μετατοπίζεται κατά 60′.');
+        console.warn('         Διάλεξε μέρα στην ίδια εποχή του χρόνου, αλλιώς η μεσημβρινή κορυφή πέφτει λάθος.');
+      }
+    }
   }
   return true;
 };
