@@ -40,6 +40,16 @@ const SECTOR_ORDER: WindSector[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 export const SEA_ARRIVAL_ONSHORE_MIN = 0.3;
 
 /**
+ * «Δεν ξέρω» — ρητά, και ξεχωριστά από το «ξέρω και η θάλασσα δεν έρχεται εδώ» (που μένει
+ * `undefined`). Δεν είναι επίπεδο έκθεσης και δεν πρέπει ποτέ να συγκριθεί με ένα: υπάρχει για
+ * να ΜΗΝ ταιριάζει στους ελέγχους `=== undefined || === 'protected'` που δίνουν την έκπτωση
+ * καταφυγίου (utils/waveCharacter.shoreSeaStateM, utils/shoreBreak.shoreBreaksOnTheBeach).
+ * Ταξιδεύει πάνω στο ίδιο πεδίο ώστε η πινέζα και η κάρτα να μη μπορούν να απαντήσουν
+ * διαφορετικά — το μάθημα της πύλης κάρτα-vs-πινέζα.
+ */
+export const SEA_ARRIVAL_UNKNOWN = 'unknown';
+
+/**
  * ΤΟ ΚΥΜΑ ΔΕΝ ΕΡΧΕΤΑΙ ΑΠΟ ΕΚΕΙ ΠΟΥ ΦΥΣΑΕΙ (13/08/2026).
  *
  * The exposure level for the direction the SEA is arriving from — not the one today's WIND earned.
@@ -53,10 +63,22 @@ export const SEA_ARRIVAL_ONSHORE_MIN = 0.3;
  * sectors with 25 km of fetch and `blockedRayRatio` 0. We halved a wave that had a completely open
  * road in.
  *
- * ONE DIRECTION ONLY. This can never grant a discount — it can only refuse one. `undefined` (no
- * profile, no wave direction, or a sea that is not arriving onshore) leaves the old behaviour
- * exactly as it was, and a 'protected' arrival sector keeps the discount it already had. So the
- * change cannot make any beach in Greece look calmer than it looked yesterday.
+ * ONE DIRECTION ONLY. This can never grant a discount — it can only refuse one. A 'protected'
+ * arrival sector keeps the discount it already had, so the change cannot make any beach in Greece
+ * look calmer than it looked yesterday.
+ *
+ * TWO KINDS OF SILENCE, AND THEY ARE NOT THE SAME (μετρήθηκε 20/08/2026).
+ * The first version answered `undefined` to four different situations, and the national
+ * measurement (`scripts/measureUnknownSeaArrivalDiscount.mjs`, 8.616 beach-days) showed they are
+ * wildly unequal: 3.372 of 3.396 silences were «the sea is not running onto this shore» — an
+ * OPINION, and the discount it grants is earned. The remaining 24 were «no wave direction» or
+ * «no shore facing» — pure blindness, and there the ×0,5 was being handed out for nothing.
+ *
+ * So blindness now says so out loud with `SEA_ARRIVAL_UNKNOWN`, and every consumer that treats
+ * `undefined`/'protected' as shelter refuses it. Direction: stricter only, on 24 beach-days.
+ * The measured alternative — refusing the discount on ALL silence — was rejected: it repaints
+ * 240 pins blue→yellow on 180 beaches and cancels 2/3 of the glass-at-four gate, which is a
+ * feature recall, not a bug fix. See docs/team/PORISMA-KAIROS-2026-08.md §20/08 (αργά).
  *
  * It reads `sectors[…].level` — the engine's own verdict, saturation ramp and all — rather than a
  * raw `blockedRayRatio` threshold, for the reason utils/swellExposure documents at length: a bare
@@ -67,10 +89,10 @@ export const resolveSeaArrivalExposureLevel = (
   geospatialProfile: GeospatialExposureProfile | undefined,
   waveDirectionDeg: number | undefined
 ): string | undefined => {
-  if (!geospatialProfile) return undefined;
-  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return undefined;
+  if (!geospatialProfile) return SEA_ARRIVAL_UNKNOWN;
+  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return SEA_ARRIVAL_UNKNOWN;
   const facingDeg = geospatialProfile.facingDeg;
-  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return undefined;
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return SEA_ARRIVAL_UNKNOWN;
 
   const onshore = Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180);
   // A sea running along or away from this shore is not the sea that lands on it. Staying silent

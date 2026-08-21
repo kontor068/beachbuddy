@@ -96,8 +96,10 @@ export const shoreBreaksOnTheBeach = ({
   seaStatePeriodS,
 }: ShoreBreakInput): boolean => {
   if (!hasSteepCoarseShore(waterDepthType, terrainTypes)) return false;
-  // Same contract as the shore-damping: silence means no opinion, and a sector we HAVE judged
-  // protected is one the sea does not roll into.
+  // Same contract as the shore-damping: `undefined` means «the sea is not running onto this
+  // shore», and a sector we HAVE judged protected is one the sea does not roll into. Blindness is
+  // NOT silence — utils/seaArrival.SEA_ARRIVAL_UNKNOWN matches neither, so a beach whose wave
+  // direction we never got is judged on its own steep coarse shore instead of being waved through.
   if (seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected') return false;
   if (typeof seaStateWaveM !== 'number' || !Number.isFinite(seaStateWaveM)) return false;
   if (seaStateWaveM < SHORE_BREAK_MIN_WAVE_M) return false;
