@@ -3,8 +3,8 @@ import { ExposureLevel } from './windExposure';
 import { getLocalizedCopy } from './i18n';
 import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from './dateLabels';
 import { athensNow } from './athensTime';
-import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
-import { resolveWindTone, type CalmnessTone } from './suitabilityTone';
+import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM, shoreSeaStateM } from './waveCharacter';
+import { capIdealByShoreSea, resolveWindTone, type CalmnessTone } from './suitabilityTone';
 
 // CalmBeach communicates a FINAL EXPERIENCE, not raw weather. Every beach resolves to one
 // of four plain-language tiers derived from the composite suitability score (which already
@@ -187,7 +187,22 @@ export const getExperienceTier = (input: ExperienceTierInput): ExperienceTier =>
   // Where no tone is supplied (a caller that has no colour to give) the wind-only ladder from the
   // same module stands in, so even the fallback path is the shared rule rather than a third copy.
   const isProtected = input.exposureLevel === 'protected';
-  const tone = input.conditionTone ?? resolveWindTone(input.exposureLevel, bft);
+  // ΤΟ ΔΑΠΕΔΟ ΤΟΥ «ΙΔΑΝΙΚΗ» ΙΣΧΥΕΙ ΚΑΙ ΣΤΟ ΕΦΕΔΡΙΚΟ ΜΟΝΟΠΑΤΙ (21/08/2026).
+  //
+  // Ο εφεδρικός υπολογισμός είναι σκέτη σκάλα ΑΝΕΜΟΥ — δεν βλέπει θάλασσα. Μόλις μπήκε το δάπεδο
+  // στο `resolveConditionTone`, η πύλη `word-above-its-own-pin` βρήκε 99 συνδυασμούς όπου η λέξη
+  // έλεγε «Ιδανική» πάνω από κίτρινη πινέζα (0 Μποφόρ, 0,35 μ. στα 2,5 δευτ. → 0,50 μ. ακτής):
+  // ακριβώς ο «δεύτερος κανόνας που έμεινε πίσω» που περιγράφει το σχόλιο από πάνω.
+  //
+  // Δεν καλείται ολόκληρο το `resolveConditionTone` εδώ επίτηδες: θα έφερνε μαζί και το ταβάνι
+  // των 0,8/1,2 πάνω στο ΩΜΟ ύψος οθόνης, δηλαδή θα ανάσταινε το σφάλμα που καταργήθηκε στις
+  // 05/08 (840 προστατευμένες ακτές που διάβαζαν «Καλύτερα άλλη μέρα» κάτω από μη-κόκκινη
+  // πινέζα). Εφαρμόζεται ΜΟΝΟ το ένα σκαλί του δαπέδου, πάνω στον αποσβεσμένο αριθμό της ακτής.
+  const tone = input.conditionTone ?? capIdealByShoreSea(
+    resolveWindTone(input.exposureLevel, bft),
+    shoreSeaStateM(seaStateSeverityM(input.waveHeightM, input.wavePeriodS), input.exposureLevel),
+    false
+  );
   const toneCeiling = TONE_TIER_CEILING[tone];
   if (toneCeiling === 0) return 'skip';
 

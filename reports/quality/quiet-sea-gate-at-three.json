@@ -1,0 +1,467 @@
+{
+  "generatedAt": "2026-08-21T15:13:01.059Z",
+  "question": "Πόσο κοστίζει να ζητήσει ο κανόνας των 3 Μποφόρ αποδεδειγμένα ήσυχη θάλασσα, όπως η πόρτα των 4;",
+  "sample": {
+    "regions": 110,
+    "days": 5,
+    "beachDays": 14365
+  },
+  "constants": {
+    "threeBeaufortMaxKmh": 14.8,
+    "glassAtFourMaxSeaStateM": 0.4,
+    "complaintCardM": 0.5
+  },
+  "today": {
+    "blueBeachDays": 9223,
+    "blueOverPrintedWave": 606,
+    "blueOverPrintedWavePct": "6.6%",
+    "liftedByRule": 375,
+    "liftedByRulePct": "2.6%",
+    "liftedByRuleOverPrintedWave": 0,
+    "liftedBeaches": 260,
+    "liftedRegions": 43
+  },
+  "variants": [
+    {
+      "threshold": 0.3,
+      "unknownCloses": true,
+      "clawedBack": 6,
+      "clawedBackPctOfLifted": "1.6%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 1,
+      "beaches": 6,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 6
+    },
+    {
+      "threshold": 0.3,
+      "unknownCloses": false,
+      "clawedBack": 6,
+      "clawedBackPctOfLifted": "1.6%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 1,
+      "beaches": 6,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 6
+    },
+    {
+      "threshold": 0.4,
+      "unknownCloses": true,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    },
+    {
+      "threshold": 0.4,
+      "unknownCloses": false,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    },
+    {
+      "threshold": 0.5,
+      "unknownCloses": true,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    },
+    {
+      "threshold": 0.5,
+      "unknownCloses": false,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    },
+    {
+      "threshold": 0.6,
+      "unknownCloses": true,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    },
+    {
+      "threshold": 0.6,
+      "unknownCloses": false,
+      "clawedBack": 0,
+      "clawedBackPctOfLifted": "0.0%",
+      "clawedBackPctOfAll": "0.0%",
+      "regions": 0,
+      "beaches": 0,
+      "complaintCasesFixed": 0,
+      "quietCardCollateral": 0
+    }
+  ],
+  "blueFloors": [
+    {
+      "floor": 0.3,
+      "demoted": 1245,
+      "shareOfBlue": "13.5%",
+      "shareOfAll": "8.7%",
+      "beaches": 733,
+      "regions": 64,
+      "screensEmptied": 8,
+      "screensWithBlue": 419,
+      "topRegions": [
+        [
+          "central-greece-evia",
+          100
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          78
+        ],
+        [
+          "epirus-thesprotia-mainland",
+          75
+        ],
+        [
+          "peloponnese-messinia-mainland",
+          69
+        ],
+        [
+          "east-macedonia-and-thrace-thasos",
+          67
+        ],
+        [
+          "ionian-islands-kefalonia",
+          64
+        ],
+        [
+          "attica-kythira",
+          59
+        ],
+        [
+          "south-aegean-kos",
+          47
+        ]
+      ]
+    },
+    {
+      "floor": 0.4,
+      "demoted": 652,
+      "shareOfBlue": "7.1%",
+      "shareOfAll": "4.5%",
+      "beaches": 411,
+      "regions": 59,
+      "screensEmptied": 4,
+      "screensWithBlue": 419,
+      "topRegions": [
+        [
+          "epirus-thesprotia-mainland",
+          61
+        ],
+        [
+          "attica-kythira",
+          57
+        ],
+        [
+          "central-greece-evia",
+          54
+        ],
+        [
+          "peloponnese-messinia-mainland",
+          44
+        ],
+        [
+          "east-macedonia-and-thrace-thasos",
+          35
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          28
+        ],
+        [
+          "south-aegean-kos",
+          24
+        ],
+        [
+          "ionian-islands-kefalonia",
+          22
+        ]
+      ]
+    },
+    {
+      "floor": 0.5,
+      "demoted": 606,
+      "shareOfBlue": "6.6%",
+      "shareOfAll": "4.2%",
+      "beaches": 379,
+      "regions": 59,
+      "screensEmptied": 4,
+      "screensWithBlue": 419,
+      "topRegions": [
+        [
+          "epirus-thesprotia-mainland",
+          61
+        ],
+        [
+          "central-greece-evia",
+          54
+        ],
+        [
+          "peloponnese-messinia-mainland",
+          44
+        ],
+        [
+          "east-macedonia-and-thrace-thasos",
+          35
+        ],
+        [
+          "central-macedonia-halkidiki-mainland",
+          28
+        ],
+        [
+          "south-aegean-kos",
+          24
+        ],
+        [
+          "ionian-islands-kefalonia",
+          22
+        ],
+        [
+          "west-greece-achaia-mainland",
+          20
+        ]
+      ]
+    },
+    {
+      "floor": 0.6,
+      "demoted": 2,
+      "shareOfBlue": "0.0%",
+      "shareOfAll": "0.0%",
+      "beaches": 2,
+      "regions": 1,
+      "screensEmptied": 0,
+      "screensWithBlue": 419,
+      "topRegions": [
+        [
+          "attica-kythira",
+          2
+        ]
+      ]
+    }
+  ],
+  "blueOverWaveExamples": [
+    {
+      "region": "attica-kythira",
+      "beachId": 110,
+      "name": "Άγιος Νικόλαος",
+      "dayIndex": 2,
+      "beaufort": 2,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.76,
+      "severityM": 0.76
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 111,
+      "name": "Καλάμι",
+      "dayIndex": 2,
+      "beaufort": 2,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.76,
+      "severityM": 0.76
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 129,
+      "name": "Άγιος Λευτέρης",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.58,
+      "severityM": 0.59
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 132,
+      "name": "Παραλία Καλάμι",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.58,
+      "severityM": 0.59
+    },
+    {
+      "region": "attica-hydra",
+      "beachId": 102,
+      "name": "Αυλάκι",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.52,
+      "severityM": 0.52
+    },
+    {
+      "region": "attica-hydra",
+      "beachId": 103,
+      "name": "Καμίνια",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.52,
+      "severityM": 0.52
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 127,
+      "name": "Παραλία Δίπορος",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.52,
+      "severityM": 0.53
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 128,
+      "name": "Πετρίτης",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.52,
+      "severityM": 0.53
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 130,
+      "name": "Παραλία Λυκοδήμου",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "protected",
+      "cardShoreM": 0.52,
+      "severityM": 0.53
+    },
+    {
+      "region": "attica-aegina",
+      "beachId": 90,
+      "name": "Παραλία Μαραθώνα Α",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.58
+    },
+    {
+      "region": "attica-aegina",
+      "beachId": 91,
+      "name": "Παραλία Μαραθώνα Β",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.58
+    },
+    {
+      "region": "attica-aegina",
+      "beachId": 92,
+      "name": "Παραλία Σαρπά",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.58
+    },
+    {
+      "region": "attica-aegina",
+      "beachId": 94,
+      "name": "Σουβάλα",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.72
+    },
+    {
+      "region": "attica-aegina",
+      "beachId": 3022,
+      "name": "Αίγινα Μαραθώνας",
+      "dayIndex": 4,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.61
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 111,
+      "name": "Καλάμι",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.5
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 114,
+      "name": "Παραλία Καρπάθι",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.5
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 136,
+      "name": "Παραλία Καλαδί",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.66
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 137,
+      "name": "Βλυχάδα Ανατολική",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.65
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 138,
+      "name": "Κομπονάδα",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.63
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 151,
+      "name": "Ξεροπόταμος",
+      "dayIndex": 0,
+      "beaufort": 3,
+      "exposureLevel": "partial",
+      "cardShoreM": 0.5,
+      "severityM": 0.5
+    }
+  ],
+  "worstExamples": []
+}
