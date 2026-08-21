@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-08-20T08:37:17.101Z",
+  "measuredAt": "2026-08-21T15:14:19.445Z",
   "question": "Τι αλλάζει όταν το curated «protected» πάψει να αγοράζει την έκπτωση ×0,5 στο κύμα",
   "touchedSectors": 29,
   "touchedBeaches": 24,
@@ -398,10 +398,15 @@
   "colour": {
     "isEnclosedCove": true,
     "cellsTotal": 72,
-    "cellsChanged": 0,
-    "stricter": 0,
+    "cellsChanged": 4,
+    "stricter": 4,
     "milder": 0,
-    "moves": []
+    "moves": [
+      [
+        "blue→yellow",
+        4
+      ]
+    ]
   },
   "grid": [
     {
@@ -420,12 +425,12 @@
         {
           "seaStateM": 0.4,
           "before": "blue",
-          "after": "blue"
+          "after": "yellow"
         },
         {
           "seaStateM": 0.6,
           "before": "blue",
-          "after": "blue"
+          "after": "yellow"
         },
         {
           "seaStateM": 0.8,
@@ -485,12 +490,12 @@
         {
           "seaStateM": 0.4,
           "before": "blue",
-          "after": "blue"
+          "after": "yellow"
         },
         {
           "seaStateM": 0.6,
           "before": "blue",
-          "after": "blue"
+          "after": "yellow"
         },
         {
           "seaStateM": 0.8,

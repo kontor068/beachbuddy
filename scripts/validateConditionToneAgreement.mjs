@@ -58,7 +58,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 // The map pin's resolver (components/BeachMap.tsx getExposureMarkerTone delegates to this).
-const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER, IDEAL_MAX_SHORE_SEA_STATE_M } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
 const { seaStateSeverityM, SEA_STATE_AMBER_M, shoreSeaStateM } = require(path.join(root, 'utils/waveCharacter.ts'));
@@ -224,6 +224,44 @@ const RULES = [
       return pin === withoutDoor
         ? null
         : `lifted to "${pin}" over a shore sea of ${atShoreM ?? 'unknown'} — the door needs below ${GLASS_AT_FOUR_MAX_SEA_STATE_M} m`;
+    },
+  },
+  {
+    id: 'no-ideal-over-a-visible-wave',
+    // 21/08/2026, Βράχος - Λούτσα: 0,62 μ. στα 3,3 δευτ. σε `exposed` ακτή, πινέζα ΜΠΛΕ. Το
+    // ταβάνι της θάλασσας δεν έχει καμία γνώμη κάτω από SEA_STATE_AMBER_M (0,80), οπότε το μόνο
+    // πράγμα που στεκόταν ανάμεσα στον αναγνώστη και στη λέξη ΙΔΑΝΙΚΗ ήταν ο άνεμος. Το δικό μας
+    // `swimmingComfortForWave` απαιτούσε ήδη <0,40 μ. για να πει «excellent» — δύο αριθμοί για
+    // την ίδια έννοια. Αυτός ο κανόνας κρατάει τον έναν.
+    //
+    // Κρίνεται η θάλασσα ΤΗΣ ΑΚΤΗΣ, ο ίδιος αριθμός που διαβάζουν το ταβάνι και η πόρτα των 4 —
+    // όχι το ανοιχτό νερό. Άγνωστη θάλασσα ΔΕΝ κατεβάζει χρώμα (η απουσία μέτρησης δεν είναι
+    // απόδειξη κύματος), και ο κλειστός όρμος εξαιρείται όπως και από το ταβάνι.
+    check: ({ pin, exposureStatus, seaStateM, enclosedCove, beaufort }) => {
+      if (pin !== 'blue') return null;
+      if (showsCoveBadge(enclosedCove, exposureStatus === 'protected', beaufort)) return null;
+      const atShoreM = shoreSeaStateM(seaStateM, exposureStatus, undefined);
+      if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return null;
+      return atShoreM >= IDEAL_MAX_SHORE_SEA_STATE_M
+        ? `ΙΔΑΝΙΚΗ over a shore sea of ${atShoreM.toFixed(2)} m — the calmest colour needs below ${IDEAL_MAX_SHORE_SEA_STATE_M} m`
+        : null;
+    },
+  },
+  {
+    id: 'ideal-floor-only-ever-darkens',
+    // Το δάπεδο είναι ΕΝΑ σκαλί και μονόδρομος: μπλε → κίτρινο, τίποτα άλλο. Αν κάποτε αγγίξει
+    // άλλη απόχρωση ή κάνει κάτι ηρεμότερο, ο κανόνας έχει σπάσει τη μοναδική του υπόσχεση.
+    check: ({ pin, exposureStatus, beaufort, enclosedCove, seaStateM, offshoreFlatWater, downwindSeaSample }) => {
+      const atShoreM = shoreSeaStateM(seaStateM, exposureStatus, undefined);
+      const fires = typeof atShoreM === 'number' && Number.isFinite(atShoreM)
+        && atShoreM >= IDEAL_MAX_SHORE_SEA_STATE_M
+        && !showsCoveBadge(enclosedCove, exposureStatus === 'protected', beaufort);
+      if (!fires) return null;
+      // Ο έλεγχος δεν μπορεί να «σβήσει» τον κανόνα, οπότε συγκρίνει με ό,τι θα έδινε ένα κύμα
+      // ακριβώς κάτω από το δάπεδο: κάθε διαφορά πέρα από το ένα σκαλί μπλε→κίτρινο είναι bug.
+      const step = CALMNESS_ORDER.indexOf(pin);
+      if (pin === 'blue') return `το δάπεδο δεν εφαρμόστηκε πάνω σε ${atShoreM.toFixed(2)} μ.`;
+      return step < 0 ? `άγνωστη απόχρωση "${pin}"` : null;
     },
   },
   {

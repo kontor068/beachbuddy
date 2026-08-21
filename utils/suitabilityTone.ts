@@ -453,6 +453,55 @@ const capToneForSwimVerdict = (avoid: boolean | undefined, tone: CalmnessTone): 
     : SWIM_VERDICT_AVOID_TONE_CEILING;
 };
 
+/**
+ * «ΙΔΑΝΙΚΗ» ΔΕΝ ΓΡΑΦΕΤΑΙ ΠΑΝΩ ΑΠΟ ΚΥΜΑ ΠΟΥ ΤΥΠΩΝΕΙ Η ΙΔΙΑ Η ΟΘΟΝΗ (21/08/2026).
+ *
+ * Αφορμή: Μίλτος — «Βράχος - Λούτσα, 0,6 μ. κύμα και 3 Μποφόρ, την δίνεις μπλε σαν ιδανική ενώ
+ * έχει κύμα». Μετρημένο: κύμα 0,62 μ. στα 3,3 δευτ. → ισοδύναμο 0,72 μ., τομέας W `exposed`,
+ * άνοιγμα 25 χλμ. Και τα δύο δίχτυα σώπασαν, το καθένα για δικό του λόγο:
+ *
+ *   • `capToneBySeaState` δεν έχει ΚΑΜΙΑ γνώμη κάτω από SEA_STATE_AMBER_M (0,80 μ.). Το 0,72
+ *     περνάει άθικτο.
+ *   • η σκάλα του ανέμου στα ≤3 Μποφόρ γυρίζει μπλε χωρίς να ρωτήσει τη θάλασσα — και ο κανόνας
+ *     `holdsNoBuildableChopAtThree` (20/08) μιλάει μόνο για κύμα που ΧΤΙΖΕΙ ο σημερινός άνεμος,
+ *     όχι για κύμα που ΥΠΑΡΧΕΙ ΗΔΗ.
+ *
+ * ΤΟ ΝΟΥΜΕΡΟ ΔΕΝ ΕΙΝΑΙ ΚΑΙΝΟΥΡΓΙΟ — ΕΙΝΑΙ ΤΟ ΔΙΚΟ ΜΑΣ, ΞΕΧΑΣΜΕΝΟ. Το `swimmingComfortForWave`
+ * (services/recommendationService.ts) απαιτεί από την πρώτη μέρα κύμα **<0,40 μ.** για να πει
+ * «excellent», ενώ το χρώμα δεχόταν μέχρι 0,79. Δύο αριθμοί για την ΙΔΙΑ έννοια, σε δύο οθόνες
+ * που στέκονται δίπλα-δίπλα. Εδώ ευθυγραμμίζονται· δεν εφευρίσκεται κατώφλι.
+ *
+ * ΚΡΙΝΕΤΑΙ Η ΘΑΛΑΣΣΑ ΤΗΣ ΑΚΤΗΣ (`shoreSeaStateM`), ο ίδιος αριθμός που διαβάζουν και το ταβάνι
+ * της §4 και η πόρτα των 4 Μποφόρ — όχι το ανοιχτό νερό 10 χλμ έξω. Άρα η γεωμετρία εξακολουθεί
+ * να μετράει: μια πραγματικά προστατευμένη ακτή κρατάει την έκπτωση ×0,5 και μένει μπλε εκεί που
+ * μια εκτεθειμένη με το ίδιο ανοιχτό κύμα πέφτει.
+ *
+ * ΕΝΑ ΣΚΑΛΙ, ΜΟΝΟΔΡΟΜΟΣ. Μπλε → κίτρινο και τίποτα άλλο· δεν μπορεί να κάνει τίποτα ηρεμότερο
+ * και δεν αγγίζει καμία άλλη απόχρωση. Άγνωστη θάλασσα ΔΕΝ κατεβάζει χρώμα — ίδια αρχή με το
+ * `getSeaStateSeverity`: η απουσία μέτρησης δεν είναι απόδειξη κύματος, και το να εφευρίσκουμε
+ * ένα είναι ο τρόπος με τον οποίο φεύγουν ψεύτικες κίτρινες μέρες. (Η πόρτα των 4 Μποφόρ κάνει
+ * το ΑΝΤΙΘΕΤΟ με την άγνωστη θάλασσα, και σωστά: εκείνη ΑΝΟΙΓΕΙ το ηρεμότερο χρώμα, αυτή εδώ το
+ * κλείνει. Ο κανόνας είναι ο ίδιος — η έλλειψη απόδειξης δεν δικαιολογεί ποτέ την πιο τολμηρή
+ * κίνηση.)
+ *
+ * ΚΛΕΙΣΤΟΣ ΟΡΜΟΣ ΕΞΑΙΡΕΙΤΑΙ, με την ίδια έκφραση που εξαιρείται από το ταβάνι της θάλασσας: η
+ * μπόγια κάθεται ~10 χλμ έξω και δεν βλέπει μέσα σε κόλπο 50 μ. Δύο εξαιρέσεις με έναν κανόνα.
+ *
+ * ΕΘΝΙΚΗ ΜΕΤΡΗΣΗ ΠΡΙΝ ΜΠΕΙ: scripts/measureQuietSeaGateAtThree.mjs →
+ * reports/quality/quiet-sea-gate-at-three.json.
+ */
+export const IDEAL_MAX_SHORE_SEA_STATE_M = 0.4;
+
+export const capIdealByShoreSea = (
+  tone: CalmnessTone,
+  atShoreM: number | undefined,
+  exempt: boolean
+): CalmnessTone => {
+  if (tone !== 'blue' || exempt) return tone;
+  if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return tone;
+  return atShoreM >= IDEAL_MAX_SHORE_SEA_STATE_M ? 'yellow' : tone;
+};
+
 export const resolveConditionTone = ({
   exposureLevel,
   beaufort,
@@ -539,7 +588,24 @@ export const resolveConditionTone = ({
    * the card must not be able to answer it differently.
    */
   curatedWindOnlyProtection?: boolean;
-}): CalmnessTone => capToneForSwimVerdict(swimVerdictAvoid, capToneBySeaState(
+}): CalmnessTone => {
+  /**
+   * Η ΘΑΛΑΣΣΑ ΤΗΣ ΑΚΤΗΣ, ΥΠΟΛΟΓΙΣΜΕΝΗ ΜΙΑ ΦΟΡΑ, ΔΙΑΒΑΣΜΕΝΗ ΔΥΟ.
+   *
+   * Την ίδια έκφραση έτρεχε ήδη η ρήτρα της πόρτας των 4 Μποφόρ παρακάτω· τώρα τη μοιράζεται με
+   * το δάπεδο του ΙΔΑΝΙΚΗ (`capIdealByShoreSea`). Δύο κανόνες που κρίνουν «πόσο κύμα φτάνει
+   * εδώ» δεν επιτρέπεται να το υπολογίζουν χωριστά — έτσι ξεκινάει κάθε απόκλιση κάρτας-πινέζας.
+   */
+  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
+  /**
+   * Ο κλειστός όρμος εξαιρείται ΚΑΙ από το ταβάνι της θάλασσας ΚΑΙ από το δάπεδο του ΙΔΑΝΙΚΗ,
+   * για τον ίδιο λόγο: το κελί της πρόγνωσης κάθεται ~10 χλμ έξω και δεν βλέπει μέσα σε κόλπο
+   * 50 μ. Μία έκφραση, δύο αναγνώστες — αν χαλαρώσει ποτέ, χαλαρώνει σε αμφότερα μαζί.
+   */
+  const coveExempt = coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
+    && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater);
+
+  return capToneForSwimVerdict(swimVerdictAvoid, capIdealByShoreSea(capToneBySeaState(
   /**
    * THE QUIET-SEA CLAUSE IS ENFORCED TWICE, ON PURPOSE.
    *
@@ -558,11 +624,9 @@ export const resolveConditionTone = ({
     beaufort,
     isEnclosedCove,
     offshoreFlatWater,
-    glassWaterAtFour && (() => {
-      const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
-      return typeof atShoreM === 'number' && Number.isFinite(atShoreM)
-        && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M;
-    })(),
+    glassWaterAtFour
+      && typeof atShoreM === 'number' && Number.isFinite(atShoreM)
+      && atShoreM < GLASS_AT_FOUR_MAX_SEA_STATE_M,
     windSpeedKmh
   ),
   seaStateM,
@@ -575,12 +639,12 @@ export const resolveConditionTone = ({
   // lifted beach gives up the exemption. Where the sea is quiet this costs nothing (there is no
   // ceiling to be exempt from); where it is running, the beach lands on the orange it had before
   // this rule existed. Caught by validateConditionToneAgreement's offshore-lift-still-obeys-the-sea.
-  coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
-    && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater),
+  coveExempt,
   exposureLevel,
   downwindSeaSample,
   seaArrivalExposureLevel
-));
+), atShoreM, coveExempt));
+};
 
 /**
  * «Καταλληλότερες» IS THE COLOUR ARITHMETIC (02/08/2026).
