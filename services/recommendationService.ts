@@ -118,6 +118,12 @@ export interface BeachScore {
    * shelter discount on the same evidence; `undefined` = no opinion, behaviour unchanged.
    */
   seaArrivalExposureLevel?: string;
+  /**
+   * Τα σενάρια της πρόγνωσης διαφωνούν για τη ΜΕΡΑ που βαθμολογήθηκε
+   * (utils/forecastUncertainty). Ταξιδεύει ως την πινέζα ώστε χάρτης και κάρτα να
+   * φρενάρουν μαζί. Απουσία = δεν ξέρουμε = καμία αλλαγή.
+   */
+  forecastUncertain?: boolean;
   seaStateSource?: SeaStateSource;
   /** Which water the measurement describes — this beach's own shore, or the region cell. */
   seaStatePointSource?: SeaStatePointSource;
@@ -193,6 +199,12 @@ export interface BeachRecommendation {
    * shelter discount on the same evidence; `undefined` = no opinion, behaviour unchanged.
    */
   seaArrivalExposureLevel?: string;
+  /**
+   * Τα σενάρια της πρόγνωσης διαφωνούν για τη ΜΕΡΑ που βαθμολογήθηκε
+   * (utils/forecastUncertainty). Ταξιδεύει ως την πινέζα ώστε χάρτης και κάρτα να
+   * φρενάρουν μαζί. Απουσία = δεν ξέρουμε = καμία αλλαγή.
+   */
+  forecastUncertain?: boolean;
   /** Damped wind/fetch modeled wave height (m), including the conservative wind-chop floor. */
   modeledWaveHeightM?: number;
   /** Wind speed (km/h) this recommendation was scored with (beach-cluster when available), so a
@@ -1651,6 +1663,15 @@ export const calculateBeachScore = (
     }
   };
   const weatherSource = options?.weatherSource || 'island-fallback';
+  /**
+   * ΤΑ ΣΕΝΑΡΙΑ ΔΙΑΦΩΝΟΥΝ ΓΙΑ ΑΥΤΗ ΤΗ ΜΕΡΑ (§ΑΞ2/Α5, 21/08/2026).
+   *
+   * Διαβάζεται ΜΙΑ φορά εδώ και ταξιδεύει σε τρεις προορισμούς — την ετυμηγορία, το τσιπ της
+   * κάρτας και τη βαθμολογία που διαβάζει η πινέζα — ώστε καμία επιφάνεια να μην μπορεί να
+   * απαντήσει διαφορετικά. Υπάρχει μόνο πάνω σε ημέρα πρόγνωσης· ο «τωρινός καιρός»
+   * (WeatherData) δεν έχει αύριο, άρα δεν φρενάρει ποτέ.
+   */
+  const forecastUncertain = (weather as DailyForecast)?.forecastUncertain === true;
 
   // Safety check for missing weather data
   if (!weather || !weather.wind) {
@@ -2534,6 +2555,14 @@ export const calculateBeachScore = (
   if (confidence.level === 'low' && swimmingComfort === 'excellent') {
     swimmingComfort = 'good';
   }
+  /**
+   * Το ίδιο σχήμα με τη γραμμή από πάνω, με άλλη πηγή: εκεί «δεν εμπιστευόμαστε τα δεδομένα
+   * αυτής της παραλίας», εδώ «τα 51 σενάρια διαφωνούν για αυτή τη μέρα». Ένα σκαλί, μονόδρομος,
+   * ποτέ σήμερα (το φιλτράρισμα ημέρας γίνεται στην πηγή — utils/forecastUncertainty).
+   */
+  if (forecastUncertain && swimmingComfort === 'excellent') {
+    swimmingComfort = 'good';
+  }
   if (swimmingComfort === 'avoid_swimming') {
     finalScore = officialWarningOverride ? 0 : Math.min(finalScore, 45);
   }
@@ -2656,6 +2685,8 @@ export const calculateBeachScore = (
     // Ο όρμος επιθεωρήθηκε για τον ΑΝΕΜΟ, όχι για το ΚΥΜΑ (20/08/2026). Χωρίς αυτό το τσιπ
     // κρατούσε έκπτωση 50% στη θάλασσα ενώ η πινέζα δίπλα του δεν την έδινε — 24 παραλίες.
     windAssessment.protectionFromCuratedCoveOnly,
+    // Τα σενάρια διαφωνούν για αυτή τη μέρα — το τσιπ και η πινέζα παίρνουν το ΙΔΙΟ φρένο.
+    forecastUncertain,
   );
 
   return {
@@ -2686,6 +2717,9 @@ export const calculateBeachScore = (
     // απλώς δεν έφτανε ποτέ στην κάρτα. Μηδέν επιπλέον κλήσεις. DISPLAY-ONLY (απόφαση Μίλτου Α).
     seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,
     seaArrivalExposureLevel,
+    // Ταξιδεύει ως την πινέζα: components/BeachMap το περνάει αυτούσιο στο resolveConditionTone,
+    // όπως κάνει ήδη με το seaArrivalExposureLevel και το swimmingComfort.
+    forecastUncertain,
     seaStateSource,
     modeledWaveHeightM,
     windSpeedKmph,

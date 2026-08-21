@@ -108,6 +108,32 @@ export const LEGEND_TONE_ORDER: readonly CalmnessTone[] = ['blue', 'yellow', 'or
  * national 22.800). The badge inherits the same ceiling for the same reason — a "this bay is
  * calmer" mark over an avoid_swimming verdict is the identical contradiction wearing a new shape.
  */
+/**
+ * ΤΟ ΠΑΡΑΘΥΡΟ ΤΩΝ 5 ΜΠΟΦΟΡ ΕΙΝΑΙ ΠΛΕΟΝ ΑΠΟΦΑΣΗ, ΟΧΙ ΚΛΗΡΟΝΟΜΙΑ (§ΑΞ2/Α2, 21/08/2026).
+ *
+ * ΤΟ ΕΡΩΤΗΜΑ ΠΟΥ ΤΕΘΗΚΕ. Το κάτω όριο (`>= 5`) δεν είχε ποτέ δική του δικαιολογία: κληρονομήθηκε
+ * από το καταργημένο πράσινο χρώμα του όρμου (02/08), που ζούσε ακριβώς στα 5 Μποφόρ. Η εξαίρεση
+ * από το ταβάνι θάλασσας όμως στηρίζεται σε επιχείρημα που ΔΕΝ εξαρτάται από την ένταση του
+ * ανέμου: «το κελί της πρόγνωσης κάθεται ~10 χλμ έξω και δεν βλέπει μέσα σε κόλπο 50 μ.». Άρα ή
+ * το επιχείρημα είναι λάθος, ή το παράθυρο είναι πολύ στενό.
+ *
+ * ΤΙ ΜΕΤΡΗΘΗΚΕ (`scripts/measureToneOperatorCensus.mjs`, 110/110 περιοχές × 5 ημέρες =
+ * 14.365 παραλιο-ημέρες, πραγματικός κινητήρας):
+ *   • 740 παραλιο-ημέρες όρμων ζουν ΕΚΤΟΣ του παραθύρου· μόνο 14 παίρνουν σήμερα την εξαίρεση.
+ *   • Αν το παράθυρο έφευγε, θα άλλαζαν **85** — και **οι 85 προς το ΗΡΕΜΟΤΕΡΟ**
+ *     (20 στα 2 Μποφόρ, 48 στα 3, 17 στα 4).
+ *   • **9** από αυτές κουβαλούν ταυτόχρονα «μην κολυμπήσεις».
+ *
+ * Η ΑΠΟΦΑΣΗ (Μίλτος, 21/08/2026): **ΜΕΝΕΙ ΣΤΑ 5.** Τρεις λόγοι, με αυτή τη σειρά:
+ *   1. Και οι 85 αλλαγές πάνε προς την ΨΕΥΔΗ ΗΡΕΜΙΑ — τη σκανδάλη #1 της §9, τον έναν τρόπο με
+ *      τον οποίο αυτό το προϊόν βλάπτει.
+ *   2. Το κέρδος είναι 85 σε 14.365 (0,6%). Δεν πληρώνει το ρίσκο.
+ *   3. Οι 9 με «μην κολυμπήσεις» δείχνουν ότι η ζώνη δεν είναι καθαρή: εκεί το ταβάνι
+ *      ετυμηγορίας θα τις ξανάπιανε — θα φτιάχναμε αντίφαση για να τη λύσουμε αμέσως μετά.
+ *
+ * Αν ξανατεθεί, χρειάζεται ΝΕΑ μέτρηση σε ΜΕΛΤΕΜΙ (η παραπάνω έγινε σε ήρεμο πενθήμερο) και νέα
+ * απόφαση — όχι επιχείρημα από το σχήμα του κανόνα.
+ */
 export const COVE_CALM_MIN_BEAUFORT = 5;
 export const COVE_CALM_MAX_BEAUFORT = 5;
 
@@ -502,6 +528,28 @@ export const capIdealByShoreSea = (
   return atShoreM >= IDEAL_MAX_SHORE_SEA_STATE_M ? 'yellow' : tone;
 };
 
+/**
+ * ΤΟ ΦΡΕΝΟ ΤΗΣ ΑΒΕΒΑΙΟΤΗΤΑΣ ΤΗΣ ΠΡΟΓΝΩΣΗΣ (§ΑΞ2/Α5, 21/08/2026).
+ *
+ * Όταν τα 51 σενάρια του ECMWF διαφωνούν για ΑΥΤΗ τη μέρα σε αυτή την περιοχή (≥4 ώρες
+ * κολύμβησης με p90−p10 ≥2 βαθμίδες Μποφόρ), η πινέζα δεν επιτρέπεται να λέει ΙΔΑΝΙΚΗ. Ένα
+ * σκαλί, μπλε → κίτρινο, τίποτα άλλο· δεν μπορεί να κάνει τίποτα ηρεμότερο και δεν αγγίζει
+ * καμία άλλη απόχρωση.
+ *
+ * ΠΕΡΑΣΜΕΝΟ, ΟΧΙ ΠΑΡΑΓΟΜΕΝΟ, όπως κάθε άλλο όρισμα εδώ: η σημαία ζει πάνω στην ίδια την ημέρα
+ * της πρόγνωσης (utils/forecastUncertainty.applyForecastUncertaintyToDays) και ταξιδεύει μέσω
+ * της βαθμολογίας ως την πινέζα, ώστε η κάρτα και ο χάρτης να μην μπορούν να απαντήσουν
+ * διαφορετικά. Απουσία σημαίας = «δεν ξέρω» = καμία αλλαγή· ΠΟΤΕ δεν φρενάρει τη σημερινή μέρα
+ * (το φιλτράρισμα γίνεται στην πηγή, βλ. UNCERTAINTY_MIN_LEAD_DAYS).
+ *
+ * ΜΙΛΑΕΙ ΜΟΝΟ ΓΙΑ ΤΟΝ ΑΝΕΜΟ: το ensemble δεν δίνει κύμα. Γι' αυτό τρέχει ΤΕΛΕΥΤΑΙΟ, πάνω από
+ * ό,τι έχει ήδη αποφασίσει η θάλασσα — δεν αντικαθιστά καμία κρίση, μόνο κόβει την πιο τολμηρή.
+ */
+export const capBlueByForecastUncertainty = (
+  tone: CalmnessTone,
+  forecastUncertain: boolean | undefined,
+): CalmnessTone => (forecastUncertain && tone === 'blue' ? 'yellow' : tone);
+
 export const resolveConditionTone = ({
   exposureLevel,
   beaufort,
@@ -514,6 +562,7 @@ export const resolveConditionTone = ({
   seaArrivalExposureLevel,
   curatedWindOnlyProtection = false,
   windSpeedKmh,
+  forecastUncertain = false,
 }: {
   exposureLevel: ExposureLevel | string | undefined;
   beaufort: number;
@@ -588,6 +637,11 @@ export const resolveConditionTone = ({
    * the card must not be able to answer it differently.
    */
   curatedWindOnlyProtection?: boolean;
+  /**
+   * Τα σενάρια της πρόγνωσης διαφωνούν για αυτή τη μέρα — δες `capBlueByForecastUncertainty`.
+   * Παραλείπεται (ή `false`) → η συμπεριφορά είναι byte-identical με πριν τις 21/08/2026.
+   */
+  forecastUncertain?: boolean;
 }): CalmnessTone => {
   /**
    * Η ΘΑΛΑΣΣΑ ΤΗΣ ΑΚΤΗΣ, ΥΠΟΛΟΓΙΣΜΕΝΗ ΜΙΑ ΦΟΡΑ, ΔΙΑΒΑΣΜΕΝΗ ΔΥΟ.
@@ -605,7 +659,8 @@ export const resolveConditionTone = ({
   const coveExempt = coveHoldsCalmWater(isEnclosedCove, exposureLevel === 'protected', beaufort)
     && !offshoreLiftApplies(exposureLevel, beaufort, offshoreFlatWater);
 
-  return capToneForSwimVerdict(swimVerdictAvoid, capIdealByShoreSea(capToneBySeaState(
+  return capBlueByForecastUncertainty(
+    capToneForSwimVerdict(swimVerdictAvoid, capIdealByShoreSea(capToneBySeaState(
   /**
    * THE QUIET-SEA CLAUSE IS ENFORCED TWICE, ON PURPOSE.
    *
@@ -643,7 +698,9 @@ export const resolveConditionTone = ({
   exposureLevel,
   downwindSeaSample,
   seaArrivalExposureLevel
-), atShoreM, coveExempt));
+), atShoreM, coveExempt)),
+    forecastUncertain,
+  );
 };
 
 /**

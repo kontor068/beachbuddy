@@ -58,7 +58,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 // The map pin's resolver (components/BeachMap.tsx getExposureMarkerTone delegates to this).
-const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER, IDEAL_MAX_SHORE_SEA_STATE_M } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const { resolveConditionTone, capToneBySeaState, showsCoveBadge, COVE_BADGE_MAX_BEAUFORT, COVE_CALM_MIN_BEAUFORT, COVE_CALM_MAX_BEAUFORT, CALMNESS_ORDER, LEGEND_TONE_ORDER, IDEAL_MAX_SHORE_SEA_STATE_M } = require(path.join(root, 'utils/suitabilityTone.ts'));
 // The card chip's resolver (services/recommendationService.ts calls exactly this before returning).
 const { applySeaStateToWindSuitability } = require(path.join(root, 'utils/windExposureEngine.ts'));
 const { seaStateSeverityM, SEA_STATE_AMBER_M, shoreSeaStateM } = require(path.join(root, 'utils/waveCharacter.ts'));
@@ -548,7 +548,11 @@ if (!/sliderTone\s*=\s*windSliderTones\[/.test(mapSource) || !/mapToneTally/.tes
   // (utils/conditionCause) has to ask about the very same moment and a second literal copy of
   // that object is precisely the drift this rule exists to prevent. So the needles below are
   // looked for across BOTH halves of the expression rather than in one function body.
-  const inputs = mapSource.match(/const\s+beachToneInput\s*=[\s\S]{0,1800}?\n\s*\}\);/)?.[0] ?? '';
+  // ΤΟ ΟΡΙΟ ΕΙΝΑΙ ΦΡΑΓΜΑ ΑΝΑΖΗΤΗΣΗΣ, ΟΧΙ ΔΟΓΜΑ. Ανέβηκε 1.800 -> 2.600 στις 21/08/2026 όταν
+  // το αντικείμενο απέκτησε το `forecastUncertain` (§ΑΞ2/Α5) και ξεπέρασε το παλιό όριο: ένα
+  // regex που δεν φτάνει ως το κλείσιμο βγάζει ΚΕΝΟ, και το κενό μοιάζει με «λείπουν τα
+  // κλειδιά» — δηλαδή η πύλη κοκκίνιζε για λάθος λόγο. Αν ξαναφτάσει, ανέβασέ το· μη σβήσεις πεδία.
+const inputs = mapSource.match(/const\s+beachToneInput\s*=[\s\S]{0,2600}?\n\s*\}\);/)?.[0] ?? '';
   const resolver = mapSource.match(/const\s+beachConditionTone\s*=[\s\S]{0,1800}?(?:\n\s*\}\);|;)/)?.[0] ?? '';
   const fallback = (inputs || resolver)
     ? ''
@@ -1229,6 +1233,26 @@ const causeLineFailures = failures.filter(failure => failure.rule === 'a-cause-l
 console.log(`${causeLineFailures.length === 0 ? 'OK  ' : 'FAIL'} a-cause-line-never-reassures: ${causeLineFailures.length}`);
 for (const hit of causeLineFailures) console.log(`       ${hit.reason}`);
 
+
+/**
+ * ΤΟ ΠΑΡΑΘΥΡΟ ΤΟΥ ΟΡΜΟΥ ΕΙΝΑΙ ΚΑΡΦΩΤΟ ΣΤΑ 5 ΜΠΟΦΟΡ ΜΕ ΑΠΟΦΑΣΗ (βίβλος §ΑΞ2/Α2, 21/08/2026).
+ *
+ * Μετρήθηκε τι θα κόστιζε να ανοίξει: 85 παραλιο-ημέρες, ΟΛΕΣ προς το ηρεμότερο, 9 από αυτές
+ * πάνω από «μην κολυμπήσεις». Η απόφαση ήταν να μείνει. Χωρίς αυτή την καρφίτσα το κάτω όριο
+ * μοιάζει με τυπογραφικό, και ο επόμενος που θα το δει θα το «διορθώσει» — προς την κατεύθυνση
+ * που αυτό το προϊόν δεν επιτρέπεται να σφάλλει.
+ */
+{
+  if (COVE_CALM_MIN_BEAUFORT !== 5 || COVE_CALM_MAX_BEAUFORT !== 5) {
+    fail(`the cove's sea-ceiling exemption window moved to ${COVE_CALM_MIN_BEAUFORT}-${COVE_CALM_MAX_BEAUFORT} Bft. `
+      + 'It is pinned at exactly 5 BY DECISION with the measurement behind it: opening it makes 85 beach-days '
+      + 'calmer, 9 of them over an avoid-swimming verdict. Re-measure in a meltemi and take a new decision — '
+      + 'do not widen it because the shape of the rule looks odd.', 'cove-window-is-a-decision');
+  }
+  const hits = failures.filter(failure => failure.rule === 'cove-window-is-a-decision');
+  console.log(`${hits.length === 0 ? 'OK  ' : 'FAIL'} cove-window-is-a-decision: ${hits.length}`);
+  for (const hit of hits) console.log(`       ${hit.reason}`);
+}
 
 if (failures.length > 0) {
   console.error('\nFAILED: the map pin and the card chip do not describe the same conditions.');

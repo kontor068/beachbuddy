@@ -1,0 +1,240 @@
+{
+  "generatedAt": "2026-08-21T20:08:06.755Z",
+  "question": "Α7 ποιος βάφει · Α2 το παράθυρο του όρμου · Α4 η ζώνη αβεβαιότητας του ×0,5",
+  "scope": {
+    "regions": 110,
+    "days": 5,
+    "beachDays": 14365,
+    "note": "Άνεμος περιοχής, όχι τοπικός ανά πινέζα (§Κ1). Δείγμα = παραλιο-ημέρες."
+  },
+  "identityChecks": {
+    "composeMismatches": 0,
+    "dampingMismatches": 0,
+    "verdict": "ΟΚ — η σύνθεση ταυτίζεται με το resolveConditionTone σε κάθε γραμμή"
+  },
+  "a7_attribution": {
+    "finalTones": {
+      "blue": 7260,
+      "yellow": 3665,
+      "orange": 2992,
+      "red": 448
+    },
+    "decidedBy": {
+      "σκάλα ανέμου": 9639,
+      "ταβάνι θάλασσας": 884,
+      "δάπεδο ΙΔΑΝΙΚΗ": 1998,
+      "ταβάνι ετυμηγορίας": 1844
+    },
+    "decidedByPct": {
+      "σκάλα ανέμου": 67.1,
+      "ταβάνι θάλασσας": 6.15,
+      "δάπεδο ΙΔΑΝΙΚΗ": 13.91,
+      "ταβάνι ετυμηγορίας": 12.84
+    },
+    "doorsThatOpenedColour": {
+      "πόρτα 3 Μποφόρ": 962,
+      "πόρτα 4 Μποφόρ": 689,
+      "πόρτα 5 Μποφόρ": 200
+    },
+    "doorsUndoneDownstream": {
+      "πόρτα 3 Μποφόρ": 85,
+      "πόρτα 4 Μποφόρ": 0,
+      "πόρτα 5 Μποφόρ": 47
+    }
+  },
+  "a2_coveWindow": {
+    "coveEligibleRows": 740,
+    "exemptToday": 14,
+    "wouldChangeIfWindowRemoved": 85,
+    "ofWhichCarryAvoidSwimVerdict": 9,
+    "byBeaufort": {
+      "2": {
+        "rows": 20,
+        "withAvoidVerdict": 2,
+        "toCalmer": 20
+      },
+      "3": {
+        "rows": 48,
+        "withAvoidVerdict": 3,
+        "toCalmer": 48
+      },
+      "4": {
+        "rows": 17,
+        "withAvoidVerdict": 4,
+        "toCalmer": 17
+      }
+    },
+    "examples": [
+      {
+        "region": "attica-kythira",
+        "beachId": 133,
+        "name": "Λιμνιώνας",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.56,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "attica-kythira",
+        "beachId": 133,
+        "name": "Λιμνιώνας",
+        "beaufort": 2,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.4,
+        "swimmingComfort": "caution"
+      },
+      {
+        "region": "attica-kythira",
+        "beachId": 133,
+        "name": "Λιμνιώνας",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.96,
+        "swimmingComfort": "avoid_swimming"
+      },
+      {
+        "region": "attica-kythira",
+        "beachId": 142,
+        "name": "Φελωτή",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 1,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "attica-kythira",
+        "beachId": 133,
+        "name": "Λιμνιώνας",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.42,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "central-greece-evia",
+        "beachId": 3118,
+        "name": "Σπηλίτσες",
+        "beaufort": 2,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.48,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "central-greece-evia",
+        "beachId": 299,
+        "name": "Σουβάλα",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.45,
+        "swimmingComfort": "excellent"
+      },
+      {
+        "region": "central-greece-evia",
+        "beachId": 303,
+        "name": "Στενή",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.86,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "crete-crete-chania",
+        "beachId": 588,
+        "name": "Alonaki",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 1.12,
+        "swimmingComfort": "good"
+      },
+      {
+        "region": "crete-crete-chania",
+        "beachId": 597,
+        "name": "Finikas",
+        "beaufort": 3,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.84,
+        "swimmingComfort": "caution"
+      },
+      {
+        "region": "crete-crete-heraklion",
+        "beachId": 632,
+        "name": "Βαθύ",
+        "beaufort": 2,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.88,
+        "swimmingComfort": "avoid_swimming"
+      },
+      {
+        "region": "ionian-islands-ithaca",
+        "beachId": 1239,
+        "name": "Τρίτα Κουρβούλια",
+        "beaufort": 2,
+        "today": "yellow",
+        "ifWindowRemoved": "blue",
+        "severityM": 0.4,
+        "swimmingComfort": "excellent"
+      }
+    ]
+  },
+  "a4_dampingSensitivity": {
+    "baseline": 0.5,
+    "note": "Απομονώνει το δάπεδο «Ιδανική», την πόρτα των 4 Μποφόρ και τον τυπωμένο αριθμό. Το ταβάνι θάλασσας υπολογίζει μόνο του την απόσβεση, άρα ΔΕΝ μεταβάλλεται εδώ — το πραγματικό εύρος είναι μεγαλύτερο από αυτό που δείχνει ο πίνακας.",
+    "variants": {
+      "1": {
+        "toneChangedPct": 16.32,
+        "toneChanged": 2344,
+        "towardCalmer": 0,
+        "towardRougher": 2344,
+        "bandChanged": 1396,
+        "bandChangedPct": 9.72,
+        "bandBecameCalmer": 0,
+        "meanAbsCardDeltaM": 0.031,
+        "worstCardDeltaM": 0.79
+      },
+      "0.35": {
+        "toneChangedPct": 0.03,
+        "toneChanged": 5,
+        "towardCalmer": 5,
+        "towardRougher": 0,
+        "bandChanged": 955,
+        "bandChangedPct": 6.65,
+        "bandBecameCalmer": 955,
+        "meanAbsCardDeltaM": 0.012,
+        "worstCardDeltaM": -0.24
+      },
+      "0.5": {
+        "toneChangedPct": 0,
+        "toneChanged": 0,
+        "towardCalmer": 0,
+        "towardRougher": 0,
+        "bandChanged": 0,
+        "bandChangedPct": 0,
+        "bandBecameCalmer": 0,
+        "meanAbsCardDeltaM": 0,
+        "worstCardDeltaM": 0
+      },
+      "0.65": {
+        "toneChangedPct": 3.18,
+        "toneChanged": 457,
+        "towardCalmer": 0,
+        "towardRougher": 457,
+        "bandChanged": 501,
+        "bandChangedPct": 3.49,
+        "bandBecameCalmer": 0,
+        "meanAbsCardDeltaM": 0.011,
+        "worstCardDeltaM": 0.24
+      }
+    }
+  }
+}

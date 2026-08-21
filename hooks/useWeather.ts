@@ -13,6 +13,8 @@ import {
   SOFT_STALE_LIMIT_MS,
 } from '../services/weatherService';
 import { processForecastData } from '../utils/weatherUtils'; // Assuming I move this helper or recreate it
+import { applyForecastUncertaintyToDays, type UncertainByDay } from '../utils/forecastUncertainty';
+import { fetchForecastUncertainty } from '../services/ensembleSpreadService';
 import { athensNow, BEACH_DAY_ENDS_HOUR } from '../utils/athensTime';
 import { getLocalWeatherFixture } from '../utils/weatherFixtures';
 import { loadGeospatialExposureProfilesForBeaches, type GeospatialExposureProfileLookup } from '../services/geospatialExposureService';
@@ -436,6 +438,12 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
   // Real fetch time of the region forecast in state — the single source of truth for the
   // safety freshness gate (NOT "when loadWeatherData last ran").
   const [forecastFetchedAt, setForecastFetchedAt] = useState<number | null>(null);
+  /**
+   * Ποιες ΜΕΡΕΣ αυτής της περιοχής είναι αβέβαιες (§ΑΞ2/Α5). `null` = δεν ξέρουμε, και τότε
+   * τίποτα δεν φρενάρει. Κρατιέται χωριστά από την πρόγνωση επειδή έρχεται από άλλο endpoint,
+   * με δική του μνήμη 6 ωρών — και επειδή μια αποτυχία εδώ δεν επιτρέπεται να αγγίξει τον καιρό.
+   */
+  const [uncertainByDay, setUncertainByDay] = useState<UncertainByDay | null>(null);
   // Ticks every minute so a tab left open flips fresh→soft→stale even with no user action
   // and even if the day-boundary refetch fails.
   // athens-clock-exempt: freshness is an age in real ms against fetchedAt, never a wall clock.
@@ -617,6 +625,47 @@ export const useWeather = (selectedIsland: Island | undefined, language: Languag
       setLoading(false);
     }
   }, [selectedIsland, loadWeatherData]);
+
+  /**
+   * ΤΟ ΦΡΕΝΟ ΤΗΣ ΑΒΕΒΑΙΟΤΗΤΑΣ — ΜΙΑ ΚΛΗΣΗ ΑΝΑ ΠΕΡΙΟΧΗ (§ΑΞ2/Α5, 21/08/2026).
+   *
+   * Χωριστό effect από τον καιρό, επίτηδες: αν αυτό αργήσει ή πέσει, ο χάρτης έχει ήδη
+   * ζωγραφιστεί και απλώς δεν φρενάρει τίποτα. Το φρένο είναι διόρθωση, όχι προϋπόθεση.
+   * Μηδενίζεται σε κάθε αλλαγή περιοχής: η διασπορά είναι ΤΟΠΙΚΗ και οι μέρες της μιας
+   * περιοχής δεν λένε τίποτα για την άλλη.
+   */
+  useEffect(() => {
+    setUncertainByDay(null);
+    const lat = selectedIsland?.coordinates?.lat;
+    const lon = selectedIsland?.coordinates?.lon;
+    if (typeof lat !== 'number' || typeof lon !== 'number') return;
+    let cancelled = false;
+    fetchForecastUncertainty(lat, lon).then(days => {
+      if (!cancelled) setUncertainByDay(days);
+    });
+    return () => { cancelled = true; };
+  }, [selectedIsland?.id, selectedIsland?.coordinates?.lat, selectedIsland?.coordinates?.lon]);
+
+  /**
+   * Σημαδεύει τις αβέβαιες μέρες πάνω στην πρόγνωση — και στην περιοχής και στις ανά-παραλία.
+   *
+   * Οι δύο συναρτήσεις επιστρέφουν το ΙΔΙΟ αντικείμενο όταν δεν αλλάζει τίποτα, οπότε αυτό το
+   * effect δεν μπορεί να αυτοτροφοδοτηθεί παρόλο που εξαρτάται από ό,τι γράφει.
+   */
+  useEffect(() => {
+    if (!uncertainByDay) return;
+    setForecast(current => (applyForecastUncertaintyToDays(current, uncertainByDay) as DailyForecast[] | null) ?? current);
+    setBeachForecasts(current => {
+      let changed = false;
+      const next: Record<number, BeachForecastContext> = {};
+      for (const [beachId, context] of Object.entries(current)) {
+        const days = applyForecastUncertaintyToDays(context.forecast, uncertainByDay) as DailyForecast[];
+        if (days !== context.forecast) changed = true;
+        next[Number(beachId)] = days === context.forecast ? context : { ...context, forecast: days };
+      }
+      return changed ? next : current;
+    });
+  }, [uncertainByDay, forecast, beachForecasts]);
 
   useEffect(() => {
     setSelectedDayIndex(currentIndex => clampSelectedDayIndex(currentIndex, forecast?.length));

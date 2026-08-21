@@ -1,0 +1,556 @@
+{
+  "window": "21 ημέρες",
+  "generatedAt": "2026-08-21T20:09:14.291Z",
+  "trigger": "Αχαράβη Κέρκυρας 21/08/2026 17:45 — μοντέλο 9,2 χλμ/ώ με ριπή 30,6· LGKR 24012KT (22 χλμ/ώ σταθερά, καμία ριπή)",
+  "source": "Open-Meteo best_match (δωρεάν πόρτα) vs METAR/ASOS",
+  "pairedHours": 10974,
+  "stations": 30,
+  "overall": {
+    "n": 10974,
+    "bias": -2.34,
+    "slope": 0.711,
+    "obsMean": 16,
+    "modelMean": 13.65,
+    "exactPct": 38.2,
+    "tooLowPct": 41.7,
+    "tooLow2Pct": 6.5,
+    "tooHighPct": 20.1
+  },
+  "ionian": {
+    "n": 2169,
+    "bias": -0.57,
+    "slope": 0.595,
+    "obsMean": 9.1,
+    "modelMean": 8.53,
+    "exactPct": 34.4,
+    "tooLowPct": 33.4,
+    "tooLow2Pct": 4.6,
+    "tooHighPct": 32.2
+  },
+  "rest": {
+    "n": 8805,
+    "bias": -2.78,
+    "slope": 0.72,
+    "obsMean": 17.7,
+    "modelMean": 14.92,
+    "exactPct": 39.1,
+    "tooLowPct": 43.8,
+    "tooLow2Pct": 7,
+    "tooHighPct": 17.1
+  },
+  "weSayCalm": {
+    "hours": 5289,
+    "pctOfAll": 48.2,
+    "n": 5289,
+    "bias": -2.09,
+    "slope": 0.212,
+    "obsMean": 8.1,
+    "modelMean": 6.01,
+    "exactPct": 28.5,
+    "tooLowPct": 48.9,
+    "tooLow2Pct": 9.6,
+    "tooHighPct": 22.6,
+    "obsBeaufortHistogram": {
+      "0": {
+        "hours": 1093,
+        "pct": 20.7
+      },
+      "1": {
+        "hours": 426,
+        "pct": 8.1
+      },
+      "2": {
+        "hours": 1990,
+        "pct": 37.6
+      },
+      "3": {
+        "hours": 1534,
+        "pct": 29
+      },
+      "4": {
+        "hours": 232,
+        "pct": 4.4
+      },
+      "5": {
+        "hours": 14,
+        "pct": 0.3
+      }
+    },
+    "falseCalmHours": 246,
+    "falseCalmPct": 4.7,
+    "falseCalmIonianPct": 0.6
+  },
+  "phantomGust": {
+    "hours": 1217,
+    "pctOfWeSayCalm": 23,
+    "modelGustMean": 18.07,
+    "obsMean": 7.68,
+    "modelMean": 4.61,
+    "n": 1217,
+    "exactPct": 21.6,
+    "tooLowPct": 55.8,
+    "tooLow2Pct": 18.4,
+    "tooHighPct": 22.6
+  },
+  "byPointElevation": {
+    "στεριά (>20 μ.)": {
+      "n": 3039,
+      "bias": -4.22,
+      "slope": 0.734,
+      "obsMean": 20.29,
+      "modelMean": 16.08,
+      "exactPct": 36.7,
+      "tooLowPct": 50.6,
+      "tooLow2Pct": 10.6,
+      "tooHighPct": 12.7
+    },
+    "ακτή (1-20 μ.)": {
+      "n": 7140,
+      "bias": -1.85,
+      "slope": 0.68,
+      "obsMean": 14.55,
+      "modelMean": 12.7,
+      "exactPct": 39,
+      "tooLowPct": 39.3,
+      "tooLow2Pct": 5,
+      "tooHighPct": 21.7
+    },
+    "θάλασσα (0 μ.)": {
+      "n": 795,
+      "bias": 0.36,
+      "slope": 1.08,
+      "obsMean": 12.62,
+      "modelMean": 12.99,
+      "exactPct": 36.6,
+      "tooLowPct": 28.9,
+      "tooLow2Pct": 4,
+      "tooHighPct": 34.5
+    }
+  },
+  "byObservedSector": {
+    "Δ": {
+      "n": 1595,
+      "bias": -5.03,
+      "slope": 0.685,
+      "obsMean": 20.26,
+      "modelMean": 15.23,
+      "exactPct": 35.7,
+      "tooLowPct": 55.7,
+      "tooLow2Pct": 11.9,
+      "tooHighPct": 8.5
+    },
+    "ΒΔ": {
+      "n": 1546,
+      "bias": -4.29,
+      "slope": 0.735,
+      "obsMean": 19.4,
+      "modelMean": 15.11,
+      "exactPct": 39.8,
+      "tooLowPct": 52.8,
+      "tooLow2Pct": 8,
+      "tooHighPct": 7.3
+    },
+    "Ν": {
+      "n": 405,
+      "bias": -2.38,
+      "slope": 0.633,
+      "obsMean": 12.47,
+      "modelMean": 10.09,
+      "exactPct": 50.9,
+      "tooLowPct": 40.5,
+      "tooLow2Pct": 6.7,
+      "tooHighPct": 8.6
+    },
+    "ΝΔ": {
+      "n": 602,
+      "bias": -4.49,
+      "slope": 0.508,
+      "obsMean": 14.96,
+      "modelMean": 10.48,
+      "exactPct": 34.6,
+      "tooLowPct": 60.1,
+      "tooLow2Pct": 9,
+      "tooHighPct": 5.3
+    },
+    "Β": {
+      "n": 3929,
+      "bias": -0.37,
+      "slope": 0.727,
+      "obsMean": 15.88,
+      "modelMean": 15.51,
+      "exactPct": 32,
+      "tooLowPct": 28.1,
+      "tooLow2Pct": 4.4,
+      "tooHighPct": 39.9
+    },
+    "ΝΑ": {
+      "n": 299,
+      "bias": -3.97,
+      "slope": 0.629,
+      "obsMean": 12.81,
+      "modelMean": 8.84,
+      "exactPct": 37.5,
+      "tooLowPct": 57.2,
+      "tooLow2Pct": 13.4,
+      "tooHighPct": 5.4
+    },
+    "ΒΑ": {
+      "n": 1132,
+      "bias": -3.24,
+      "slope": 0.778,
+      "obsMean": 18.81,
+      "modelMean": 15.58,
+      "exactPct": 44.9,
+      "tooLowPct": 46.9,
+      "tooLow2Pct": 4.4,
+      "tooHighPct": 8.2
+    },
+    "Α": {
+      "n": 529,
+      "bias": -3.49,
+      "slope": 0.743,
+      "obsMean": 13.64,
+      "modelMean": 10.15,
+      "exactPct": 42.3,
+      "tooLowPct": 52.6,
+      "tooLow2Pct": 8.5,
+      "tooHighPct": 5.1
+    }
+  },
+  "byStation": {
+    "LGIR": {
+      "name": "Ηράκλειο",
+      "n": 483,
+      "bias": -8.37,
+      "slope": 0.609,
+      "obsMean": 21.09,
+      "modelMean": 12.72,
+      "exactPct": 26.1,
+      "tooLowPct": 72.3,
+      "tooLow2Pct": 28.4,
+      "tooHighPct": 1.7
+    },
+    "LGSA": {
+      "name": "Χανιά",
+      "n": 484,
+      "bias": 1.82,
+      "slope": 0.562,
+      "obsMean": 7.83,
+      "modelMean": 9.65,
+      "exactPct": 38.4,
+      "tooLowPct": 20,
+      "tooLow2Pct": 1.7,
+      "tooHighPct": 41.5
+    },
+    "LGRP": {
+      "name": "Ρόδος",
+      "n": 482,
+      "bias": -8.6,
+      "slope": 0.555,
+      "obsMean": 21.39,
+      "modelMean": 12.79,
+      "exactPct": 13.1,
+      "tooLowPct": 85.9,
+      "tooLow2Pct": 19.9,
+      "tooHighPct": 1
+    },
+    "LGKO": {
+      "name": "Κως",
+      "n": 483,
+      "bias": -6.38,
+      "slope": 0.606,
+      "obsMean": 17.39,
+      "modelMean": 11.01,
+      "exactPct": 29.4,
+      "tooLowPct": 69.2,
+      "tooLow2Pct": 14.7,
+      "tooHighPct": 1.4
+    },
+    "LGMK": {
+      "name": "Μύκονος",
+      "n": 484,
+      "bias": -5.01,
+      "slope": 0.829,
+      "obsMean": 33.62,
+      "modelMean": 28.61,
+      "exactPct": 42.1,
+      "tooLowPct": 50.4,
+      "tooLow2Pct": 6.6,
+      "tooHighPct": 7.4
+    },
+    "LGSR": {
+      "name": "Σαντορίνη",
+      "n": 459,
+      "bias": -4.58,
+      "slope": 0.584,
+      "obsMean": 19.86,
+      "modelMean": 15.27,
+      "exactPct": 37.9,
+      "tooLowPct": 50.3,
+      "tooLow2Pct": 6.8,
+      "tooHighPct": 11.8
+    },
+    "LGNX": {
+      "name": "Νάξος",
+      "n": 311,
+      "bias": 3.69,
+      "slope": 1.039,
+      "obsMean": 21.32,
+      "modelMean": 25,
+      "exactPct": 36.3,
+      "tooLowPct": 14.8,
+      "tooLow2Pct": 0.6,
+      "tooHighPct": 48.9
+    },
+    "LGPA": {
+      "name": "Πάρος",
+      "n": 484,
+      "bias": -4.47,
+      "slope": 0.781,
+      "obsMean": 23.35,
+      "modelMean": 18.88,
+      "exactPct": 43,
+      "tooLowPct": 50.2,
+      "tooLow2Pct": 7.2,
+      "tooHighPct": 6.8
+    },
+    "LGSK": {
+      "name": "Σκιάθος",
+      "n": 345,
+      "bias": 1.26,
+      "slope": 0.854,
+      "obsMean": 11.54,
+      "modelMean": 12.81,
+      "exactPct": 51.6,
+      "tooLowPct": 20.3,
+      "tooLow2Pct": 1.4,
+      "tooHighPct": 28.1
+    },
+    "LGKR": {
+      "name": "Κέρκυρα",
+      "n": 484,
+      "bias": -1.77,
+      "slope": 0.59,
+      "obsMean": 7.04,
+      "modelMean": 5.26,
+      "exactPct": 36.8,
+      "tooLowPct": 38,
+      "tooLow2Pct": 6.2,
+      "tooHighPct": 25.2
+    },
+    "LGZA": {
+      "name": "Ζάκυνθος",
+      "n": 387,
+      "bias": -0.64,
+      "slope": 0.658,
+      "obsMean": 9.68,
+      "modelMean": 9.04,
+      "exactPct": 41.6,
+      "tooLowPct": 34.6,
+      "tooLow2Pct": 3.4,
+      "tooHighPct": 23.8
+    },
+    "LGKF": {
+      "name": "Κεφαλονιά",
+      "n": 346,
+      "bias": 1.25,
+      "slope": 0.449,
+      "obsMean": 8.82,
+      "modelMean": 10.07,
+      "exactPct": 30.6,
+      "tooLowPct": 24,
+      "tooLow2Pct": 4.9,
+      "tooHighPct": 45.4
+    },
+    "LGPZ": {
+      "name": "Άκτιο",
+      "n": 481,
+      "bias": -1.56,
+      "slope": 0.773,
+      "obsMean": 10.98,
+      "modelMean": 9.42,
+      "exactPct": 42.2,
+      "tooLowPct": 37.8,
+      "tooLow2Pct": 5.2,
+      "tooHighPct": 20
+    },
+    "LGLM": {
+      "name": "Λήμνος",
+      "n": 469,
+      "bias": -2.53,
+      "slope": 0.74,
+      "obsMean": 18.93,
+      "modelMean": 16.4,
+      "exactPct": 46.9,
+      "tooLowPct": 38.2,
+      "tooLow2Pct": 1.7,
+      "tooHighPct": 14.9
+    },
+    "LGMT": {
+      "name": "Μυτιλήνη",
+      "n": 479,
+      "bias": -0.22,
+      "slope": 0.667,
+      "obsMean": 13.4,
+      "modelMean": 13.18,
+      "exactPct": 47,
+      "tooLowPct": 29.4,
+      "tooLow2Pct": 2.7,
+      "tooHighPct": 23.6
+    },
+    "LGSM": {
+      "name": "Σάμος",
+      "n": 455,
+      "bias": -1.98,
+      "slope": 0.58,
+      "obsMean": 15.29,
+      "modelMean": 13.31,
+      "exactPct": 43.5,
+      "tooLowPct": 36.3,
+      "tooLow2Pct": 7.9,
+      "tooHighPct": 20.2
+    },
+    "LGHI": {
+      "name": "Χίος",
+      "n": 367,
+      "bias": 1.96,
+      "slope": 1.095,
+      "obsMean": 16.46,
+      "modelMean": 18.42,
+      "exactPct": 52,
+      "tooLowPct": 14.2,
+      "tooLow2Pct": 0.3,
+      "tooHighPct": 33.8
+    },
+    "LGKL": {
+      "name": "Καλαμάτα",
+      "n": 475,
+      "bias": -0.52,
+      "slope": 0.5,
+      "obsMean": 9.16,
+      "modelMean": 8.64,
+      "exactPct": 36.8,
+      "tooLowPct": 32.2,
+      "tooLow2Pct": 3.4,
+      "tooHighPct": 30.9
+    },
+    "LGAL": {
+      "name": "Αλεξανδρούπολη",
+      "n": 481,
+      "bias": -3.22,
+      "slope": 0.598,
+      "obsMean": 16.95,
+      "modelMean": 13.73,
+      "exactPct": 33.3,
+      "tooLowPct": 45.5,
+      "tooLow2Pct": 5.2,
+      "tooHighPct": 21.2
+    },
+    "LGKV": {
+      "name": "Καβάλα",
+      "n": 483,
+      "bias": -0.21,
+      "slope": 0.739,
+      "obsMean": 10.38,
+      "modelMean": 10.17,
+      "exactPct": 46.4,
+      "tooLowPct": 28.8,
+      "tooLow2Pct": 2.5,
+      "tooHighPct": 24.8
+    },
+    "LGTS": {
+      "name": "Θεσσαλονίκη",
+      "n": 484,
+      "bias": -3.04,
+      "slope": 0.673,
+      "obsMean": 10.77,
+      "modelMean": 7.73,
+      "exactPct": 44.6,
+      "tooLowPct": 51.7,
+      "tooLow2Pct": 4.3,
+      "tooHighPct": 3.7
+    },
+    "LGKC": {
+      "name": "Κύθηρα",
+      "n": 162,
+      "bias": 0.75,
+      "slope": 1.23,
+      "obsMean": 16.13,
+      "modelMean": 16.88,
+      "exactPct": 45.7,
+      "tooLowPct": 25.3,
+      "tooLow2Pct": 5.6,
+      "tooHighPct": 29
+    },
+    "LGKP": {
+      "name": "Κάρπαθος",
+      "n": 459,
+      "bias": -6.45,
+      "slope": 0.604,
+      "obsMean": 36.87,
+      "modelMean": 30.42,
+      "exactPct": 35.9,
+      "tooLowPct": 59,
+      "tooLow2Pct": 6.8,
+      "tooHighPct": 5
+    },
+    "LGBL": {
+      "name": "Ν. Αγχίαλος",
+      "n": 476,
+      "bias": -2.74,
+      "slope": 0.479,
+      "obsMean": 11.11,
+      "modelMean": 8.37,
+      "exactPct": 42,
+      "tooLowPct": 45.2,
+      "tooLow2Pct": 5,
+      "tooHighPct": 12.8
+    },
+    "LGRX": {
+      "name": "Άραξος",
+      "n": 471,
+      "bias": 0.39,
+      "slope": 0.502,
+      "obsMean": 9.04,
+      "modelMean": 9.43,
+      "exactPct": 21,
+      "tooLowPct": 29.9,
+      "tooLow2Pct": 3,
+      "tooHighPct": 49
+    }
+  },
+  "gustFloorScenarios": {
+    "σήμερα (3,5 στη θάλασσα)": {
+      "touchedHours": 5406,
+      "touchedPct": 49.3,
+      "beaufortFixed": 1222,
+      "beaufortBroken": 860,
+      "exactPct": 41.1,
+      "tooLowPct": 33.4
+    },
+    "κατώφλι 3,0": {
+      "touchedHours": 5442,
+      "touchedPct": 49.6,
+      "beaufortFixed": 1228,
+      "beaufortBroken": 864,
+      "exactPct": 41.2,
+      "tooLowPct": 33.3
+    },
+    "κατώφλι 2,5": {
+      "touchedHours": 5523,
+      "touchedPct": 50.3,
+      "beaufortFixed": 1246,
+      "beaufortBroken": 870,
+      "exactPct": 41.2,
+      "tooLowPct": 33.2
+    },
+    "παντού (καμία εξαίρεση θάλασσας)": {
+      "touchedHours": 5683,
+      "touchedPct": 51.8,
+      "beaufortFixed": 1259,
+      "beaufortBroken": 874,
+      "exactPct": 41.3,
+      "tooLowPct": 33.1
+    }
+  }
+}

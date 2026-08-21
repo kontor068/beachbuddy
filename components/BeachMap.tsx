@@ -566,6 +566,51 @@ const MarkerConditionsPopup: React.FC<{
 };
 
 /** Λέει στον γονιό αν υπάρχει ανοιχτό popup — το Leaflet κρατάει ένα κάθε φορά. */
+/**
+ * ΤΟ ΤΑΜΠΕΛΑΚΙ ΑΚΟΛΟΥΘΕΙ ΤΟ ΣΚΡΟΛ ΤΩΝ ΚΑΡΤΩΝ (21/08/2026).
+ *
+ * Ο κατάλογος από κάτω κυλάει και η πινέζα της κάρτας που βρίσκεται στο κέντρο φωτίζεται ήδη
+ * (highlightedBeachId). Το ανοιχτό ταμπελάκι όμως έμενε καρφωμένο στην πινέζα που πατήθηκε, άρα
+ * ο αναγνώστης διάβαζε τις συνθήκες ΑΛΛΗΣ παραλίας από αυτήν που κοιτούσε.
+ *
+ * Δύο σκόπιμοι περιορισμοί:
+ *  • Δεν ΑΝΟΙΓΕΙ ταμπελάκι μόνο του. Αν κανείς δεν ζήτησε λεπτομέρειες, ένα πάνελ που ξεπετάγεται
+ *    στο σκρολ σκεπάζει τον μισό χάρτη (ο χάρτης στο κινητό είναι 13,5rem).
+ *  • Κρατάει το «ανοιχτό ή όχι» σε ref, όχι σε state: το Leaflet κλείνει το προηγούμενο ταμπελάκι
+ *    πριν ανοίξει το επόμενο, οπότε ένα state θα περνούσε στιγμιαία από το false και θα έκοβε την
+ *    αλυσίδα στην πρώτη κιόλας κάρτα.
+ */
+const MarkerPopupScrollFollower: React.FC<{
+  enabled: boolean;
+  highlightedBeachId?: number;
+  markerRefs: React.MutableRefObject<Map<number, L.Marker>>;
+}> = ({ enabled, highlightedBeachId, markerRefs }) => {
+  const map = useMap();
+  const isPopupOpenRef = useRef(false);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+    const open = () => { isPopupOpenRef.current = true; };
+    const close = () => { isPopupOpenRef.current = false; };
+    map.on('popupopen', open);
+    map.on('popupclose', close);
+    return () => {
+      map.off('popupopen', open);
+      map.off('popupclose', close);
+    };
+  }, [enabled, map]);
+
+  useEffect(() => {
+    if (!enabled || !isPopupOpenRef.current) return;
+    if (typeof highlightedBeachId !== 'number') return;
+    const marker = markerRefs.current.get(highlightedBeachId);
+    if (!marker || marker.isPopupOpen()) return;
+    marker.openPopup();
+  }, [enabled, highlightedBeachId, markerRefs]);
+
+  return null;
+};
+
 const MapPopupTracker: React.FC<{ onChange: (open: boolean) => void }> = ({ onChange }) => {
   const map = useMap();
 
@@ -1960,6 +2005,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }
   });
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+  // Ζωντανές πινέζες ανά παραλία, ώστε το ανοιχτό ταμπελάκι να μπορεί να μετακομίσει σε άλλη
+  // πινέζα όταν κυλάει ο κατάλογος (MarkerPopupScrollFollower).
+  const beachMarkerRefs = useRef<Map<number, L.Marker>>(new Map());
   /**
    * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΜΕ ΠΑΤΗΜΑ, ΟΧΙ ΜΕ ΜΟΝΙΜΟ ΚΕΙΜΕΝΟ (Μίλτος, 20/08/2026).
    *
@@ -2433,6 +2481,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // beside it — the same ceiling the card chip takes (utils/suitabilityTone).
     swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
     windSpeedKmh: beachWindSpeedKmh(item),
+    // Straight off the score, όπως τα δύο από πάνω (utils/forecastUncertainty).
+    forecastUncertain: item.forecastUncertain,
   });
 
   const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone(beachToneInput(item));
@@ -2637,11 +2687,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
     openBeach: { en: 'Open this beach', gr: 'Δες την παραλία', de: 'Strand ansehen', it: 'Vedi la spiaggia', fr: 'Voir la plage' },
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
-      en: 'The colour shows how good the beach is overall. Wind and sea are shown separately on each beach.',
-      gr: 'Το χρώμα δείχνει πόσο καλή είναι συνολικά η παραλία. Ο αέρας και η θάλασσα φαίνονται χωριστά σε κάθε παραλία.',
-      de: 'Die Farbe zeigt, wie gut der Strand insgesamt ist. Wind und See stehen bei jedem Strand getrennt.',
-      it: 'Il colore mostra quanto è buona la spiaggia nel complesso. Vento e mare sono indicati separatamente per ogni spiaggia.',
-      fr: 'La couleur indique la qualité globale de la plage. Le vent et la mer sont indiqués séparément pour chaque plage.',
+      // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
+      // το ίδιο πράγμα και δείχνει ΠΟΥ να πατήσει ο αναγνώστης για τα δύο χωριστά νούμερα.
+      en: 'The colour shows how good the beach is overall. Wind and sea are shown separately on each pin.',
+      gr: 'Το χρώμα δείχνει πόσο καλή είναι συνολικά η παραλία. Ο αέρας και η θάλασσα φαίνονται χωριστά σε κάθε πινέζα.',
+      de: 'Die Farbe zeigt, wie gut der Strand insgesamt ist. Wind und See stehen bei jeder Markierung getrennt.',
+      it: 'Il colore mostra quanto è buona la spiaggia nel complesso. Vento e mare sono indicati separatamente su ogni segnaposto.',
+      fr: 'La couleur indique la qualité globale de la plage. Le vent et la mer sont indiqués séparément sur chaque repère.',
     },
     resetView: { en: 'Reset view', gr: 'Επαναφορά θέασης', de: 'Ansicht zurücksetzen', it: 'Ripristina vista', fr: 'Réinitialiser la vue' },
     centerOnMe: { en: 'Center on my location', gr: 'Κέντραρε στη θέση μου', de: 'Auf meinen Standort zentrieren', it: 'Centra sulla mia posizione', fr: 'Centrer sur ma position' },
@@ -3709,6 +3761,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
           <VisibleBeachTracker beaches={markerBeaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
           <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
           {showMarkerConditions && <MapPopupTracker onChange={setHasOpenBeachPopup} />}
+          {showMarkerConditions && (
+            <MarkerPopupScrollFollower
+              enabled={showMarkerConditions}
+              highlightedBeachId={highlightedBeachId}
+              markerRefs={beachMarkerRefs}
+            />
+          )}
           <ZoomLabelController threshold={labelZoomThreshold} onLabelOpacityChange={setBeachLabelOpacity} />
 
           {/* User Location Marker */}
@@ -3765,6 +3824,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
               // mouseout again, sticking the hover card open. react-leaflet already applies
               // icon changes via marker.setIcon() on prop update, so the visual still updates.
               key={`${item.beachId}-${mapMode}-${mapExposureLevel}`}
+              ref={instance => {
+                if (instance) beachMarkerRefs.current.set(item.beachId, instance);
+                else beachMarkerRefs.current.delete(item.beachId);
+              }}
               position={[markerCoordinate.lat, markerCoordinate.lon]}
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'

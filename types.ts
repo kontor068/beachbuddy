@@ -779,6 +779,12 @@ export interface SuitableBeach {
    * `undefined` = no opinion, and every consumer then behaves exactly as it did before.
    */
   seaArrivalExposureLevel?: string;
+  /**
+   * Τα σενάρια της πρόγνωσης διαφωνούν για τη ΜΕΡΑ που βαθμολογήθηκε
+   * (utils/forecastUncertainty). Ταξιδεύει ως την πινέζα ώστε χάρτης και κάρτα να
+   * φρενάρουν μαζί. Απουσία = δεν ξέρουμε = καμία αλλαγή.
+   */
+  forecastUncertain?: boolean;
   /** Wind (km/h) this beach was scored with, so its card Beaufort matches its same-wind wave. */
   windSpeedKmph?: number;
   warnings?: WarningFlag[];
@@ -895,6 +901,12 @@ export interface DailyForecast {
   temp_max: number;
   hourly: ForecastItem[];
   marine?: MarineForecast;
+  /**
+   * Τα 51 σενάρια του ECMWF διαφωνούν για αυτή τη μέρα σε αυτή την περιοχή — δες
+   * utils/forecastUncertainty. Μπαίνει ΜΟΝΟ από αύριο και μετά, ποτέ σήμερα, και το μόνο που
+   * κάνει είναι να απαγορεύει το «ΙΔΑΝΙΚΗ»/«ιδανικά». Απουσία = δεν ξέρουμε = καμία αλλαγή.
+   */
+  forecastUncertain?: boolean;
 }
 
 export interface SavedItinerary {

@@ -282,6 +282,14 @@ const run = async () => {
     overallUncertainDayPct: Number(overallPct.toFixed(2)),
     verdict,
     worst: worstDays.slice(0, 60),
+    /**
+     * ΟΛΕΣ οι αβέβαιες περιοχο-ημέρες, όχι μόνο οι 60 χειρότερες (§ΑΞ1/Α5, 21/08/2026).
+     * Το `worst` είναι για ανάγνωση από άνθρωπο· αυτή η λίστα είναι για ΜΕΤΡΗΣΗ: το
+     * scripts/measureEnsembleBrakeImpact.mjs την ενώνει με την απογραφή χρωμάτων για να
+     * απαντήσει «πόσες παραλιο-ημέρες θα άλλαζαν αν το φρένο άναβε».
+     */
+    uncertainRegionDays: worstDays.map(({ region, lead, uncertainHours, gap, lo, hi }) => (
+      { region, lead, uncertainHours, gap, lo, hi })),
   }, null, 2), 'utf8');
   console.log(`\n💾 ${path.relative(root, file)}\n`);
 };

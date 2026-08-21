@@ -71,6 +71,8 @@ import { useWeather, type BeachMarineContext } from './hooks/useWeather';
 import { useLocation } from './hooks/useLocation';
 import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast, applyBeachWindToDailyForecast } from './utils/weatherUtils';
+import { applyForecastUncertaintyToDays } from './utils/forecastUncertainty';
+import { fetchForecastUncertainty } from './services/ensembleSpreadService';
 import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview, recordSearch } from './services/pageviewBeacon';
@@ -4072,11 +4074,16 @@ export const App: React.FC = () => {
         const center = allIslands.find(island => island.id === regionId)?.coordinates;
         if (!center) return null;
         try {
-          const [forecastResult, marineItems] = await Promise.all([
+          const [forecastResult, marineItems, uncertainDays] = await Promise.all([
             fetchForecastData(center.lat, center.lon),
             fetchMarineForecastData(center.lat, center.lon).then(result => result.data).catch(() => []),
+            // Το φρένο αβεβαιότητας ζητιέται ΚΑΙ εδώ, αλλιώς η ίδια μέρα θα έλεγε «Ιδανική» στο
+            // «Κοντά μου» και «Καλή» στη σελίδα της περιοχής. Μνήμη 6 ωρών ανά σημείο, οπότε μια
+            // περιοχή που έχει ήδη ρωτηθεί δεν κοστίζει τίποτα (services/ensembleSpreadService).
+            fetchForecastUncertainty(center.lat, center.lon),
           ]);
-          return [regionId, processForecastData(mergeMarineForecastData(forecastResult.data, marineItems))] as const;
+          const regionDays = processForecastData(mergeMarineForecastData(forecastResult.data, marineItems));
+          return [regionId, applyForecastUncertaintyToDays(regionDays, uncertainDays) as DailyForecast[]] as const;
         } catch (error) {
           console.warn('Near-me home-region forecast unavailable; that region\'s beaches fall back to the near-me area forecast.', { regionId, error });
           return null;
@@ -4187,10 +4194,27 @@ export const App: React.FC = () => {
     const out: BeachWeatherById = {};
     selectedIsland.beaches.forEach(beach => {
       const clusterDay = nearMeClusterForecasts[beach.id]?.[selectedDayIndex];
+      const homeDay = nearMeBeachForecastById[beach.id];
       const day = clusterDay
         ? (selectedHourDt == null ? clusterDay : adjustDailyForecastToHour(clusterDay, selectedHourDt, mapHourSlots))
-        : nearMeBeachForecastById[beach.id];
-      if (day) out[beach.id] = day;
+        : homeDay;
+      if (!day) return;
+      /**
+       * ΤΟ ΦΡΕΝΟ ΑΒΕΒΑΙΟΤΗΤΑΣ ΤΑΞΙΔΕΥΕΙ ΜΕ ΤΗΝ ΠΑΡΑΛΙΑ, ΟΧΙ ΜΕ ΤΟ ΚΕΛΙ (§ΑΞ3).
+       *
+       * Η πρόγνωση της ομάδας κατεβαίνει από σημείο κοντά στην παραλία και ΔΕΝ ρωτάει ensemble —
+       * θα ήταν μία επιπλέον κλήση ανά ομάδα για να μάθουμε αυτό που ξέρουμε ήδη. Η αβεβαιότητα
+       * είναι της ΜΕΡΑΣ και της ΠΕΡΙΟΧΗΣ (πλέγμα 25 χλμ), οπότε αντιγράφεται από την ημέρα της
+       * ΔΙΚΗΣ ΤΗΣ περιοχής — ίδια αρχή με το «κάθε παραλία κρίνεται από την περιοχή της».
+       * Χωρίς αυτό, η ίδια μέρα θα έλεγε «Ιδανική» στο «Κοντά μου» και «Καλή» στη σελίδα της
+       * περιοχής, που είναι ακριβώς η απόκλιση που κυνηγάει η πύλη κάρτα-vs-πινέζα.
+       */
+      const inherited = day.forecastUncertain === undefined
+        && homeDay?.forecastUncertain === true
+        && homeDay.date?.getTime?.() === day.date?.getTime?.()
+        ? { ...day, forecastUncertain: true }
+        : day;
+      out[beach.id] = inherited;
     });
     return out;
   }, [isNearMeRegionActive, selectedIsland, nearMeClusterForecasts, nearMeBeachForecastById, selectedDayIndex, selectedHourDt, mapHourSlots]);
