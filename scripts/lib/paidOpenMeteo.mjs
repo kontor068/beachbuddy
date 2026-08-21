@@ -37,6 +37,14 @@ const CUSTOMER_HOST = {
   'api.open-meteo.com': 'customer-api.open-meteo.com',
   'marine-api.open-meteo.com': 'customer-marine-api.open-meteo.com',
   'air-quality-api.open-meteo.com': 'customer-air-quality-api.open-meteo.com',
+  // Added 21/08/2026 with the Professional plan. These four are the hosts the Standard plan
+  // did not serve at all, so nothing could have used them before today. They are reached only
+  // by offline measurement scripts — netlify/functions/forecast.mjs deliberately does NOT
+  // proxy them, because nothing a visitor sees may depend on an archive lookup.
+  'historical-forecast-api.open-meteo.com': 'customer-historical-forecast-api.open-meteo.com',
+  'archive-api.open-meteo.com': 'customer-archive-api.open-meteo.com',
+  'ensemble-api.open-meteo.com': 'customer-ensemble-api.open-meteo.com',
+  'climate-api.open-meteo.com': 'customer-climate-api.open-meteo.com',
 };
 
 /** Never let a key reach a log line, an error message or a cache key. */

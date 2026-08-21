@@ -1,0 +1,1274 @@
+{
+  "generatedAt": "2026-08-21T12:02:40.495Z",
+  "criteria": {
+    "minBeaufort": 5,
+    "minHours": 6,
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "season": [
+      "06-01",
+      "09-30"
+    ]
+  },
+  "probes": [
+    {
+      "name": "Νάξος",
+      "lat": 37.081,
+      "lon": 25.368
+    },
+    {
+      "name": "Μύκονος",
+      "lat": 37.435,
+      "lon": 25.348
+    },
+    {
+      "name": "Πάρος",
+      "lat": 37.01,
+      "lon": 25.128
+    },
+    {
+      "name": "Ρόδος",
+      "lat": 36.405,
+      "lon": 28.086
+    },
+    {
+      "name": "Κως",
+      "lat": 36.793,
+      "lon": 27.092
+    },
+    {
+      "name": "Λήμνος",
+      "lat": 39.922,
+      "lon": 25.236
+    },
+    {
+      "name": "Μυτιλήνη",
+      "lat": 39.057,
+      "lon": 26.598
+    },
+    {
+      "name": "Ηράκλειο",
+      "lat": 35.34,
+      "lon": 25.18
+    },
+    {
+      "name": "Κέρκυρα",
+      "lat": 39.602,
+      "lon": 19.912
+    },
+    {
+      "name": "Ζάκυνθος",
+      "lat": 37.751,
+      "lon": 20.884
+    }
+  ],
+  "source": "historical-forecast-api.open-meteo.com (αρχείο των ίδιων μας των προγνώσεων)",
+  "counts": {
+    "meltemi": 144,
+    "storm": 6,
+    "calm": 26,
+    "daysExamined": 488
+  },
+  "perYear": {
+    "meltemi": {
+      "2022": 29,
+      "2023": 32,
+      "2024": 38,
+      "2025": 45
+    },
+    "storm": {
+      "2022": 5,
+      "2024": 1
+    },
+    "calm": {
+      "2022": 4,
+      "2024": 13,
+      "2025": 9
+    }
+  },
+  "meltemi": [
+    {
+      "date": "2022-07-20",
+      "regionsHit": 6,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Λήμνος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 1
+    },
+    {
+      "date": "2022-06-19",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 356
+    },
+    {
+      "date": "2022-07-04",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2022-07-17",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 7
+    },
+    {
+      "date": "2022-07-18",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 6
+    },
+    {
+      "date": "2022-07-21",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 4
+    },
+    {
+      "date": "2025-08-01",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Ρόδος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 349
+    },
+    {
+      "date": "2025-09-18",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Ρόδος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 1
+    },
+    {
+      "date": "2022-06-18",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 349
+    },
+    {
+      "date": "2022-06-28",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 357
+    },
+    {
+      "date": "2022-06-29",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 2
+    },
+    {
+      "date": "2022-07-02",
+      "regionsHit": 4,
+      "regions": [
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 350
+    },
+    {
+      "date": "2022-07-03",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2022-07-05",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 357
+    },
+    {
+      "date": "2022-07-10",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 346
+    },
+    {
+      "date": "2022-07-15",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2022-07-29",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 356
+    },
+    {
+      "date": "2022-08-02",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 355
+    },
+    {
+      "date": "2022-08-03",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2022-08-04",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 356
+    },
+    {
+      "date": "2022-08-05",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 353
+    },
+    {
+      "date": "2022-08-07",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 356
+    },
+    {
+      "date": "2022-09-07",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 359
+    },
+    {
+      "date": "2023-07-09",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 357
+    },
+    {
+      "date": "2023-07-17",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2023-07-18",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2023-07-19",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 5
+    },
+    {
+      "date": "2023-08-09",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 356
+    },
+    {
+      "date": "2023-09-04",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2023-09-08",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 4,
+      "totalRegions": 10,
+      "meanDirection": 7
+    },
+    {
+      "date": "2023-09-09",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2023-09-10",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 1
+    },
+    {
+      "date": "2023-09-11",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 2
+    },
+    {
+      "date": "2023-09-18",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Λήμνος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2024-06-19",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 4,
+      "totalRegions": 10,
+      "meanDirection": 6
+    },
+    {
+      "date": "2024-06-26",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 4
+    },
+    {
+      "date": "2024-06-28",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Ρόδος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 0,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2024-07-14",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2024-07-15",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2024-07-16",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 5,
+      "totalRegions": 10,
+      "meanDirection": 0
+    },
+    {
+      "date": "2024-07-25",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 0,
+      "totalRegions": 10,
+      "meanDirection": 353
+    },
+    {
+      "date": "2024-07-30",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 1
+    },
+    {
+      "date": "2024-08-16",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 2
+    },
+    {
+      "date": "2024-08-17",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2024-08-25",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 359
+    },
+    {
+      "date": "2024-09-30",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 348
+    },
+    {
+      "date": "2025-06-10",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 4,
+      "totalRegions": 10,
+      "meanDirection": 3
+    },
+    {
+      "date": "2025-06-14",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 355
+    },
+    {
+      "date": "2025-06-16",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 355
+    },
+    {
+      "date": "2025-06-22",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2025-06-29",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 0
+    },
+    {
+      "date": "2025-07-02",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 0
+    },
+    {
+      "date": "2025-07-03",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 2
+    },
+    {
+      "date": "2025-07-10",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Ζάκυνθος"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 5
+    },
+    {
+      "date": "2025-07-14",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2025-07-15",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 358
+    },
+    {
+      "date": "2025-07-26",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 1
+    },
+    {
+      "date": "2025-08-09",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 4
+    },
+    {
+      "date": "2025-08-25",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 355
+    },
+    {
+      "date": "2025-08-27",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 6,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 347
+    }
+  ],
+  "storm": [
+    {
+      "date": "2022-09-06",
+      "regionsHit": 7,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Λήμνος",
+        "Μυτιλήνη",
+        "Ηράκλειο"
+      ],
+      "peakBft": 7,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 359
+    },
+    {
+      "date": "2022-07-19",
+      "regionsHit": 6,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Λήμνος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 7,
+      "calmRegions": 0,
+      "totalRegions": 10,
+      "meanDirection": 4
+    },
+    {
+      "date": "2022-09-05",
+      "regionsHit": 6,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Κως",
+        "Λήμνος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 7,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 353
+    },
+    {
+      "date": "2024-06-29",
+      "regionsHit": 5,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη",
+        "Ηράκλειο"
+      ],
+      "peakBft": 7,
+      "calmRegions": 1,
+      "totalRegions": 10,
+      "meanDirection": 355
+    },
+    {
+      "date": "2022-06-03",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 7,
+      "calmRegions": 2,
+      "totalRegions": 10,
+      "meanDirection": 4
+    },
+    {
+      "date": "2022-07-14",
+      "regionsHit": 4,
+      "regions": [
+        "Νάξος",
+        "Μύκονος",
+        "Πάρος",
+        "Μυτιλήνη"
+      ],
+      "peakBft": 7,
+      "calmRegions": 3,
+      "totalRegions": 10,
+      "meanDirection": 359
+    }
+  ],
+  "calm": [
+    {
+      "date": "2022-08-23",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2022-08-26",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2022-09-30",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-01",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-02",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-09-24",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-09-25",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-09-27",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-09-28",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-07-22",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-09-23",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 3,
+      "calmRegions": 10,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2022-08-27",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-03",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-04",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-05",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-06-11",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-08-03",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-08-19",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2024-09-16",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-06-04",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-07-08",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-07-17",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-07-29",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-08-18",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-08-22",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 5,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    },
+    {
+      "date": "2025-08-30",
+      "regionsHit": 0,
+      "regions": [],
+      "peakBft": 4,
+      "calmRegions": 9,
+      "totalRegions": 10,
+      "meanDirection": null
+    }
+  ]
+}

@@ -23,6 +23,7 @@
     "audit:place-resolution": "node scripts/auditPlaceResolution.mjs",
     "audit:water-depth": "node scripts/auditWaterDepth.mjs",
     "audit:wind-profile-evidence": "node scripts/auditWindProfileEvidence.mjs",
+    "replay:wind-windows": "node scripts/findWindWindows.mjs",
     "validate:meltemi-matrix": "node scripts/validateMeltemiMatrix.mjs",
     "calibrate:feedback": "node scripts/calibrateFromFeedback.mjs",
     "quality:explain": "node scripts/runCriticalQualityChecks.mjs --explain",
