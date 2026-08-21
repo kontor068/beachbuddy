@@ -54,7 +54,7 @@ import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
-import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaDepartingShore } from '../utils/shoreWave';
+import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
@@ -1861,6 +1861,20 @@ export const calculateBeachScore = (
       { heightM: marine?.swellWaveHeightM, directionDeg: marine?.swellWaveDirectionDeg },
     ],
   });
+  /**
+   * Το ίδιο ερώτημα ανάποδα — utils/shoreWave.isSeaArrivingShore. Διαβάζει τα ΙΔΙΑ δύο συστατικά
+   * θάλασσας, γι' αυτό κάθεται εδώ: μια θάλασσα δεν μπορεί να φεύγει και να έρχεται μαζί, και οι
+   * δύο απαντήσεις πρέπει να βγαίνουν από την ίδια λίστα. Κλείνει την εκτίμηση ακτής όταν το νερό
+   * αποδεδειγμένα μπαίνει, ώστε ένας απόγειος άνεμος να μη σβήνει ένα κύμα που ήρθε από αλλού.
+   */
+  const arrivingSea = isSeaArrivingShore({
+    facingDeg: windAssessment.facingDeg,
+    profile: options?.geospatialProfile,
+    components: [
+      { heightM: marine?.waveHeightM, directionDeg: marine?.waveDirectionDeg },
+      { heightM: marine?.swellWaveHeightM, directionDeg: marine?.swellWaveDirectionDeg },
+    ],
+  });
   const geometricCeiling = resolveGeometricWaveCeiling({
     profile: options?.geospatialProfile,
     windSpeedKmh: windSpeedKmph,
@@ -2428,6 +2442,9 @@ export const calculateBeachScore = (
     // Computed once, next to the geometric ceiling that applies the identical test.
     arrivingSwellPresent,
     departingSea,
+    // Η μετρημένη θάλασσα που ΕΡΧΕΤΑΙ σωπαίνει την εκτίμηση ακτής (21/08 — Σταλίδα). Μονόδρομη:
+    // μόνο επαναφέρει το μετρημένο νούμερο, ποτέ δεν κατεβάζει κάποιο.
+    arrivingSea,
     // «Δεν υπάρχει νερό προς τα εκεί» — ο ζωντανός τομέας ΚΑΙ ολόκληρο το ημικύκλιο του ανέμου.
     // Ο έλεγχος γείτονα χρειάζεται τους 8 ωμούς τομείς, που η παρεμβολή δεν κουβαλάει, γι' αυτό
     // περνάει εδώ το ίδιο το προφίλ (βίβλος §Γ21).

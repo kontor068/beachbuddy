@@ -1,5 +1,5 @@
 import type { GeospatialExposureProfile } from '../types';
-import { estimateFetchLimitedWaveHeightM } from './waveModel';
+import { ARRIVAL_MIN_FETCH_KM, ARRIVAL_ONSHORE_MIN, estimateFetchLimitedWaveHeightM } from './waveModel';
 import { interpolateSectorGeometry } from './windExposureModel';
 import {
   OFFSHORE_FLAT_MAX_FETCH_KM,
@@ -325,6 +325,71 @@ export const isSeaDepartingShore = ({
   );
 };
 
+/**
+ * ΤΟ ΑΝΤΙΘΕΤΟ ΤΟΥ ΠΑΡΑΠΑΝΩ, ΚΑΙ Η ΔΙΚΛΕΙΔΑ ΠΟΥ ΕΛΕΙΠΕ (21/08/2026 — Σταλίδα).
+ *
+ * Οι δύο γεωμετρικές πύλες της `estimateShoreWaveHeightM` ρωτάνε ΤΟΝ ΑΝΕΜΟ: «από εκεί που
+ * φυσάει υπάρχει νερό να χτιστεί κύμα;». Όταν η απάντηση είναι όχι, η συνάρτηση δηλώνει ότι
+ * μπροστά στην άμμο δεν μπορεί να υπάρχει κύμα και τυπώνει το δάπεδο 0,10 μ.
+ *
+ * Αυτό είναι σωστό μόνο όσο το κύμα το φτιάχνει ο ΣΗΜΕΡΙΝΟΣ τοπικός άνεμος. Δεν το φτιάχνει
+ * πάντα: μια θάλασσα μπορεί να έχει χτιστεί αλλού, νωρίτερα, και να ταξιδεύει προς την ακτή
+ * ενώ από πάνω της φυσάει απόγειος. Τότε ο κώδικας απαντούσε «λάδι» σε νερό που ερχόταν.
+ *
+ * Η ΑΦΟΡΜΗ, με νούμερα. Σταλίδα Ηρακλείου (645), 21/08/2026 08:00-09:00. Νότιος απόγειος
+ * 6-11 χλμ/ώ, νότιος τομέας `fetchKm 0` / `blockedRayRatio 1` / `onshore −0,91` — και οι δύο
+ * πύλες ανοίγουν, το SMB πάνω σε μηδενικό άνοιγμα δίνει 0, το δάπεδο τυπώνει **0,10 μ.** και η
+ * κάρτα γράφει «θάλασσα λάδι». Την ίδια ώρα το ewam έδινε **0,28-0,30 μ. από 322-323°** σε ακτή
+ * που κοιτάει 24,2°: `onshore +0,48`, μέσα από τομέα ΒΔ με 10,4 χλμ άνοιγμα και N με 25 χλμ.
+ * Χρήστης στην παραλία ανέφερε κυματάκι. Δεύτερο σημάδι ότι ο αριθμός δεν στεκόταν: στις 10:00
+ * ο άνεμος γύριζε δυτικά, η ράμπα σώπαινε, και το ίδιο νούμερο πηδούσε 0,10 → 0,32 χωρίς να
+ * αλλάξει τίποτα στη θάλασσα.
+ *
+ * ΕΙΝΑΙ Η ΙΔΙΑ ΟΙΚΟΓΕΝΕΙΑ ΜΕ ΤΑ ΚΑΒΑΛΙΚΕΥΤΑ (13/08). Εκεί το `utils/waveCharacter.shoreSeaStateM`
+ * μοίραζε την έκπτωση ×0,5 επειδή η ακτή ήταν προστατευμένη από τον ΑΝΕΜΟ, και μπήκε δικλείδα
+ * (`utils/seaArrival.resolveSeaArrivalExposureLevel`) που ρωτάει από πού έρχεται το ΚΥΜΑ. Το
+ * `shoreWave` δεν πήρε ποτέ την ίδια δικλείδα, κι έτσι το ίδιο λάθος έζησε στο διπλανό αρχείο.
+ *
+ * ΙΔΙΑ ΝΟΥΜΕΡΑ ΜΕ ΤΟ ΚΑΠΑΚΙ ΤΟΥ ΑΣΘΕΝΟΥΣ ΑΝΕΜΟΥ, ΕΠΙΤΗΔΕΣ: `ARRIVAL_ONSHORE_MIN` (0,3) και
+ * `ARRIVAL_MIN_FETCH_KM` (2) είναι ΤΑ ΙΔΙΑ που χρησιμοποιεί η `waveModel.capLightWindMeasuredWaveM`
+ * για να πει «αυτή η θάλασσα είναι αληθινή, μην την κόψεις». Δύο μέρη του κώδικα δεν επιτρέπεται
+ * να διαφωνούν για το αν το νερό μπαίνει ή όχι. Το κατώφλι ύψους είναι το ήδη υπάρχον
+ * `DEPARTING_SEA_MIN_COMPONENT_M` — ο καθρέφτης του «φεύγει», με το ίδιο δάπεδο θορύβου.
+ *
+ * ⚠️ ΜΟΝΟΔΡΟΜΗ. Μπορεί ΜΟΝΟ να σωπάσει την εκτίμηση ακτής, δηλαδή μόνο να ΑΝΕΒΑΣΕΙ το νούμερο
+ * που τυπώνεται πίσω στη μετρημένη θάλασσα. Καμία παραλία δεν μπορεί να φανεί πιο ήρεμη από
+ * χθες εξαιτίας της. Σιωπή είναι η ασφαλής απάντηση και εδώ: συστατικό χωρίς κατεύθυνση, ή
+ * προφίλ που δεν ξέρουμε, μετράει ως «δεν έρχεται» και αφήνει τα πράγματα όπως ήταν.
+ *
+ * ΔΕΝ ΑΚΥΡΩΝΕΙ ΤΟΝ ΣΧΙΝΙΑ. Στις περιπτώσεις για τις οποίες γράφτηκε το αρχείο, ο απόγειος
+ * άνεμος έχει χτίσει ο ίδιος τη θάλασσα που βλέπει το κελί, άρα εκείνη ΦΕΥΓΕΙ (Σχινιάς
+ * `onshore −0,88`, Βάι −0,87, Ελαφονήσι −0,94) και η πύλη μένει κλειστή. Ανοίγει μόνο όταν το
+ * νερό έρχεται από αλλού απ' ό,τι ο άνεμος — ακριβώς η οικογένεια της Σταλίδας.
+ */
+export const isSeaArrivingShore = ({
+  facingDeg,
+  profile,
+  components,
+}: {
+  facingDeg?: number | null;
+  /** Χρειάζεται το ΠΡΟΦΙΛ, όχι τον ζωντανό τομέα: το άνοιγμα ζητιέται στη γωνία ΤΟΥ ΚΥΜΑΤΟΣ. */
+  profile?: GeospatialExposureProfile;
+  components: Array<{ heightM?: number; directionDeg?: number }>;
+}): boolean => {
+  if (!profile) return false;
+  if (typeof facingDeg !== 'number' || !Number.isFinite(facingDeg)) return false;
+
+  return components.some(component => {
+    const { heightM, directionDeg } = component;
+    if (typeof heightM !== 'number' || !Number.isFinite(heightM)) return false;
+    if (heightM < DEPARTING_SEA_MIN_COMPONENT_M) return false;
+    if (typeof directionDeg !== 'number' || !Number.isFinite(directionDeg)) return false;
+    if (Math.cos(((directionDeg - facingDeg) * Math.PI) / 180) <= ARRIVAL_ONSHORE_MIN) return false;
+    const { fetchKm } = interpolateSectorGeometry(profile, directionDeg);
+    return typeof fetchKm === 'number' && Number.isFinite(fetchKm) && fetchKm >= ARRIVAL_MIN_FETCH_KM;
+  });
+};
+
 export interface ShoreWaveInput {
   /** The open-water figure the page prints today, in metres. */
   openWaterWaveHeightM?: number;
@@ -380,6 +445,13 @@ export interface ShoreWaveInput {
    * δίνει ~0 → δάπεδο, ο όρμος με στόμιο δίνει το κύμα του στομίου. Δάπεδο και καπάκι ισχύουν.
    */
   dryFanWaveM?: number;
+  /**
+   * Μετρημένη απόδειξη ότι θάλασσα ΕΡΧΕΤΑΙ σε αυτή την ακτή — `isSeaArrivingShore` παραπάνω.
+   * Όταν είναι true η εκτίμηση ακτής σωπαίνει: οι δύο γεωμετρικές πύλες μαντεύουν με βάση τον
+   * άνεμο, ενώ εδώ η μέτρηση απαντά ΑΜΕΣΑ και ανάποδα. Παραλείπεται (undefined) → η παλιά
+   * συμπεριφορά, ώστε κανένας καλών να μη γίνεται πιο ήρεμος επειδή το ξέχασε.
+   */
+  arrivingSea?: boolean;
 }
 
 /**
@@ -398,8 +470,12 @@ export const estimateShoreWaveHeightM = ({
   departingSea,
   enclosedDrySector,
   dryFanWaveM,
+  arrivingSea,
 }: ShoreWaveInput): number | undefined => {
   if (arrivingSwellPresent) return undefined;
+  // Η μετρημένη θάλασσα που ΕΡΧΕΤΑΙ υπερισχύει κάθε εικασίας από τη γωνία του ανέμου — δες
+  // `isSeaArrivingShore` για τη Σταλίδα και για το γιατί δεν αγγίζει τον Σχινιά.
+  if (arrivingSea) return undefined;
   if (suspectPin) return undefined;
   if (confidence !== 'high') return undefined;
   if (typeof openWaterWaveHeightM !== 'number' || !Number.isFinite(openWaterWaveHeightM)) return undefined;

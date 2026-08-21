@@ -256,10 +256,16 @@ export interface SeaArrivalGeometry {
   fetchKm: number;
 }
 
-/** Onshore component above which a sea genuinely reaches this shore (matches swellExposure). */
-const ARRIVAL_ONSHORE_MIN = 0.3;
+/**
+ * Onshore component above which a sea genuinely reaches this shore (matches swellExposure).
+ *
+ * Exported since 21/08/2026 because utils/shoreWave asks the IDENTICAL question from the other
+ * side — "is a measured sea running onto this shore?" — and two copies of 0,3 in two files that
+ * must agree is how the card and the pin start answering differently.
+ */
+export const ARRIVAL_ONSHORE_MIN = 0.3;
 /** Fetch (km) above which the arrival sector is a real open-water corridor (matches coveWaveGuard). */
-const ARRIVAL_MIN_FETCH_KM = 2;
+export const ARRIVAL_MIN_FETCH_KM = 2;
 
 // There was also a SHADOWING branch here — offshore bearing plus near-zero fetch capped the sea at
 // 0.20 m — and it is deliberately gone. Three measurements killed it:

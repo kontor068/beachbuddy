@@ -103,6 +103,15 @@ const checks = [
     args: ['scripts/validateDrySectorGate.mjs'],
   },
   {
+    id: 'arriving-sea-shore-gate',
+    title: 'The shore estimate may not call flat a sea that is measurably arriving',
+    description: "Checks utils/shoreWave.isSeaArrivingShore against the real Σταλίδα profile and against the three beaches the shore estimate was written for, then fuzzes 20.000 random inputs to prove the flag is strictly one-directional: with an arriving sea the estimate returns silence and NEVER a different number, and with the flag off it is byte-identical to omitting it. Also asserts the onshore threshold is the SAME constant utils/seaArrival uses, so the card and the pin cannot drift apart about whether water gets in.",
+    protects: 'Prevents a false calm on the most ordinary summer morning there is. The two geometric gates in utils/shoreWave ask only where the WIND comes from; on 21/08/2026 Σταλίδα (645) printed the 0,10 m floor — «θάλασσα λάδι» — under a southerly land breeze while ewam had 0,28-0,30 m arriving from 322° onto a 24,2°-facing shore through 10-25 km of open water, and a visitor standing on the beach reported chop. Same family as Καβαλικευτά (13/08), where the identical blind spot was closed one file over. Measured nationally: strictly upward, no map colour moved.',
+    failureAction: 'Fix utils/shoreWave.ts. Never make a case pass by lowering ARRIVAL_ONSHORE_MIN or ARRIVAL_MIN_FETCH_KM — they are shared with the light-wind cap in utils/waveModel, and moving them here silently moves what the whole app believes about arriving water.',
+    command: process.execPath,
+    args: ['scripts/validateArrivingSeaShoreGate.mjs'],
+  },
+  {
     id: 'open-water-label',
     title: 'The wave figure names its water, and the card says why',
     description: 'Runs every beach with committed geometry against all 8 wind sectors through the real utils/coveWaveGuard, and checks the reading is labelled «Κύμα ανοιχτά» only where the number really is the area grid — never where the guard swapped in our own near-shore SMB. Then checks the card can still be understood: seaOpen and SHELTER_LABEL are present, non-empty and distinct in all five languages, the component renders both, and BeachDetailPage still passes weatherNow.liveSentence plus a shelter word derived from the map-aligned exposure level.',
