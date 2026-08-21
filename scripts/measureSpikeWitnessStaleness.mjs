@@ -27,6 +27,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+// Το σχόλιο του MARINE_TAIL_MODEL στο netlify/functions/forecast.mjs ζητάει ρητά «RE-RUN THAT
+// SCRIPT» πριν φαρδύνει άλλο η μνήμη των 12 ωρών, γιατί το μηδέν «μετρήθηκε σε ΜΙΑ ήρεμη μέρα
+// και δεν οριοθετεί τίποτα για καταιγίδα». Αυτά τα δύο το κάνουν εφικτό: πληρωμένοι host (ένα
+// δείγμα 96 σημείων έκαιγε το δωρεάν όριο) και OPEN_METEO_REPLAY για να διαλέξεις τη μέρα.
+//   OPEN_METEO_REPLAY=2022-09-06 node scripts/measureSpikeWitnessStaleness.mjs
+// ⚠️ ΜΙΑ ΔΙΑΦΟΡΑ ΣΤΟ REPLAY: στο αρχείο το ewam δίνει και τις 144 ώρες, ενώ ζωντανά σταματά
+// στις 94. Ο διαχωρισμός near/ουρά παρακάτω χάνει λοιπόν το νόημά του σε replay — το ποσοστό
+// «πόσο συχνά κόβει ο μάρτυρας» παραμένει έγκυρο και μάλιστα πληρέστερο.
+import './lib/paidOpenMeteo.mjs';
+import './lib/replayOpenMeteo.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i === -1 ? d : process.argv[i + 1]; };

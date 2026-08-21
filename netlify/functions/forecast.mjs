@@ -187,8 +187,15 @@ const MARINE_MODEL = 'ewam';
 // suppresses a rising sea — the one direction this project never accepts. Two things bound that:
 // the guard fired 0 times in 9.024 lead-hours when measured (scripts/measureSpikeWitnessStaleness.mjs,
 // report reports/quality/spike-witness-staleness.json), and the parser's own rule is «no witness
-// => no accusation», so absence is already the safe case. RE-RUN THAT SCRIPT before widening this
-// lifetime further — the zero was measured on ONE calm day and bounds nothing about a storm.
+// => no accusation», so absence is already the safe case.
+//
+// ✅ THE "ONE CALM DAY" CAVEAT IS RETIRED (21/08/2026). This comment used to end «the zero was
+// measured on ONE calm day and bounds nothing about a storm», which was true and unfixable until
+// the Professional plan opened the forecast archive. The same script now replays past days via
+// scripts/lib/replayOpenMeteo.mjs: four days, one per year 2022-2025, two of them peaking at 7 Bft
+// nationally (2022-09-06, 2024-06-29), 48 beaches each. 18.048 lead-hours + 9.600 tail-hours,
+// **0 firings everywhere**. Reports in reports/replay/spike-witness-<date>.json.
+// Pick replacement days with `npm run replay:wind-windows` rather than by eye.
 const MARINE_TAIL_MODEL = 'meteofrance_wave';
 
 // The water-temperature pin, on its own route since 14/08/2026 (see UPSTREAMS above and
