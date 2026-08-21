@@ -26,6 +26,7 @@ import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdi
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
+import { EvidenceSignature } from '../components/EvidenceSignature';
 import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
@@ -2240,6 +2241,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           amenitiesNote={showAmenityDisclaimer ? getAmenityDisclaimer(language) : null}
           language={language}
         />
+        {/* Η ΥΠΟΓΡΑΦΗ, ΜΙΑ ΦΟΡΑ ΑΝΑ ΟΘΟΝΗ (22/08/2026). Κάτω από την κάρτα και ΕΞΩ από αυτήν:
+            η κάρτα λέει ένα πράγμα δυνατά, και μια δεύτερη πρόταση μέσα της θα ανταγωνιζόταν
+            την ετυμηγορία. Δες components/EvidenceSignature για το τι επιτρέπεται να πει. */}
+        <EvidenceSignature language={language} className="mt-2" />
 
         {/* The tiered experience badge used to sit on the verdict row saying "Ιδανική στις
             20:00" right next to "Ήρεμα τώρα" — two pills, one meaning (reported 31/07).

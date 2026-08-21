@@ -58,6 +58,7 @@ import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTi
 import { getConsistentVisibleMapExposureLevels, type BeachWindReading } from '../utils/mapExposure';
 import { hasBoatOnlyAccess } from '../utils/access';
 import { getAccessReasonCopy } from '../utils/accessReasonCopy';
+import { EvidenceSignature } from './EvidenceSignature';
 import { WeatherSummary } from './WeatherSummary';
 import { BeachCard } from './BeachCard';
 import { BeachSearchEmptyState } from './BeachSearchEmptyState';
@@ -4623,6 +4624,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   </div>
                 </aside>
               </div>
+              {/* Η ΥΠΟΓΡΑΦΗ, ΜΙΑ ΦΟΡΑ ΑΝΑ ΟΘΟΝΗ (απόφαση Μίλτου, 22/08/2026). Κάτω από το βάθρο,
+                  γιατί εκεί λέμε «πήγαινε εκεί» — κι εκεί θέλει ο κόσμος να ξέρει ποιος το λέει.
+                  ΔΕΝ μπαίνει και στο πλαϊνό `topPicksSidebarSummary`: σε οθόνη ≥1024px θα φαινόταν
+                  δύο φορές, που είναι ακριβώς η ταπετσαρία που ο κανόνας απαγορεύει.
+                  Συμπληρώνει, δεν επαναλαμβάνει, το «Πώς βγαίνει το Top 3» από κάτω: εκείνο εξηγεί
+                  τη ΣΕΙΡΑ και είναι κλειστό στο κινητό· αυτή λέει γιατί η ετυμηγορία δεν είναι
+                  πρόγνωση καιρού, και είναι πάντα ορατή. */}
+              {hasTopRecommendationView && !infoOnly && (
+                <EvidenceSignature language={language} className="mt-1 text-center" />
+              )}
               {/* Both tab panels come FIRST, so «Πώς βγαίνει το Top 3» below them sits under the
                   cards on EITHER tab (Miltos, 12/08/2026). It used to live between the two, which
                   looks right on «Top 3» and wrong on «Υπόλοιπες»: with the podium carousel hidden,
