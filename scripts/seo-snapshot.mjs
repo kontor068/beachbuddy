@@ -882,6 +882,119 @@ const toPath = (pageUrl) => {
 // Assembly + token budget
 // ---------------------------------------------------------------------------
 
+// Which country each localized page was BUILT for. Greece is called out on its
+// own because it is the interesting third case: a German/French/Italian URL
+// being served to somebody searching from Greece.
+const GREECE = 'grc';
+const LOCALIZED_LOCALES = ['de', 'fr', 'it'];
+
+/**
+ * Splits every /de/, /fr/ and /it/ page's impressions and clicks three ways —
+ * its own country, Greece, everywhere else — and reports the CTR of each.
+ *
+ * Written 21/08/2026 to settle one question that locale-level data could not.
+ * The audit found 88 queries where the SAME beach, in different languages,
+ * competes with itself: 1.556 impressions and 6 clicks, a 0,39% CTR and the
+ * worst-converting slice of the whole site. `rovinia beach` (an ENGLISH query)
+ * returns our Italian page 114 times and gets zero clicks. hreflang is clean
+ * (0 errors across 9.539 pages, checked in the build), so the fix depends
+ * entirely on WHERE those impressions happen, and the two answers need
+ * completely different work:
+ *
+ *   - mostly in its own country, CTR near zero  → the SERP snippet is the
+ *     problem. Title and description work, not routing.
+ *   - mostly in Greece                          → Google is picking the wrong
+ *     URL out of the hreflang cluster. Nobody in Greece wants an Italian
+ *     title, so the clicks were never available. Routing work, not copy.
+ *
+ * Reports both numbers instead of choosing, because a mixed picture is a real
+ * outcome and rounding it to one verdict is how a measurement starts lying.
+ */
+function computeLocalizedAudience(raw, cap) {
+  const rows = raw.current?.page_country;
+  if (!rows) return { error: 'missing current page+country data' };
+
+  const emptyBucket = () => ({ impressions: 0, clicks: 0 });
+  const withCtr = (b) => ({ ...b, ctr: b.impressions ? r3(b.clicks / b.impressions) : 0 });
+
+  const byLocale = new Map();
+  const byPage = new Map();
+
+  for (const row of rows) {
+    const pageUrl = row.keys?.[0];
+    const country = row.keys?.[1];
+    if (!pageUrl || !country) continue;
+    const { locale } = parseUrl(pageUrl);
+    if (!LOCALIZED_LOCALES.includes(locale)) continue;
+
+    const own = LOCALE_COUNTRIES[locale] || [];
+    const bucket = own.includes(country) ? 'own' : country === GREECE ? 'greece' : 'elsewhere';
+
+    for (const [map, key] of [[byLocale, locale], [byPage, pageUrl]]) {
+      const entry = map.get(key) || { locale, own: emptyBucket(), greece: emptyBucket(), elsewhere: emptyBucket() };
+      entry[bucket].impressions += row.impressions || 0;
+      entry[bucket].clicks += row.clicks || 0;
+      map.set(key, entry);
+    }
+  }
+
+  const totalOf = (e) => ({
+    impressions: e.own.impressions + e.greece.impressions + e.elsewhere.impressions,
+    clicks: e.own.clicks + e.greece.clicks + e.elsewhere.clicks,
+  });
+
+  const locales = [...byLocale.entries()]
+    .map(([locale, e]) => {
+      const total = totalOf(e);
+      const greeceShare = total.impressions ? r3(e.greece.impressions / total.impressions) : 0;
+      const ownShare = total.impressions ? r3(e.own.impressions / total.impressions) : 0;
+      // Deliberately conservative: below 100 impressions nothing is claimed.
+      let reading;
+      if (total.impressions < 100) reading = 'no_traffic';
+      else if (greeceShare >= 0.4) reading = 'google_picks_wrong_url';
+      else if (e.own.impressions >= 100 && e.own.clicks / e.own.impressions < 0.01) reading = 'snippet_problem';
+      else reading = 'healthy';
+      return {
+        locale,
+        total: withCtr(total),
+        own: withCtr(e.own),
+        greece: withCtr(e.greece),
+        elsewhere: withCtr(e.elsewhere),
+        ownShare,
+        greeceShare,
+        reading,
+      };
+    })
+    .sort((a, b) => b.total.impressions - a.total.impressions);
+
+  const worstPages = [...byPage.entries()]
+    .map(([page, e]) => {
+      const total = totalOf(e);
+      return {
+        page: page.startsWith('http') ? new URL(page).pathname : page,
+        locale: e.locale,
+        impressions: total.impressions,
+        clicks: total.clicks,
+        ownShare: total.impressions ? r3(e.own.impressions / total.impressions) : 0,
+        greeceShare: total.impressions ? r3(e.greece.impressions / total.impressions) : 0,
+        ctr: total.impressions ? r3(total.clicks / total.impressions) : 0,
+        own: withCtr(e.own),
+        greece: withCtr(e.greece),
+      };
+    })
+    .filter((p) => p.impressions >= 20)
+    // Worst first means lowest CTR first, not most impressions first: a page with
+    // 150 impressions and 12 clicks is working and must not head a problem list.
+    .sort((a, b) => a.ctr - b.ctr || b.impressions - a.impressions)
+    .slice(0, cap);
+
+  return {
+    note: 'de/fr/it pages only. own = the country the language targets, greece = served to somebody in Greece.',
+    byLocale: locales,
+    worstPages,
+  };
+}
+
 const CAPS_DEFAULT = {
   queries: 200,
   pages: 150,
@@ -895,6 +1008,7 @@ const CAPS_DEFAULT = {
   newQueries: 30,
   byRegion: 50,
   byCountry: 20,
+  localizedAudiencePages: 25,
   contentRegions: 50,
   localeMatchCountries: 5,
 };
@@ -991,7 +1105,7 @@ function line(metric) {
 }
 
 function buildDigest(snapshot) {
-  const { meta, totals, bySegment, localeCountryMatch, strikingDistance, ctrGaps, pageCtrGaps, zeroClick, contentInventory, errors } = snapshot;
+  const { meta, totals, bySegment, localeCountryMatch, localizedAudience, strikingDistance, ctrGaps, pageCtrGaps, zeroClick, contentInventory, errors } = snapshot;
   const out = [];
   out.push(`# SEO snapshot — ${isoDay(new Date())}`);
   out.push('');
@@ -1056,6 +1170,30 @@ function buildDigest(snapshot) {
       out.push(`| ${l.locale} | ${l.totalImpressions} | ${l.matchedShare} | ${l.verdict} | ${top ? `${top.country} (${top.share})` : 'n/a'} |`);
     }
     out.push('');
+  }
+
+  if (localizedAudience && Array.isArray(localizedAudience.byLocale)) {
+    out.push('## Who actually sees the de/fr/it pages');
+    out.push('| locale | impr | ctr | in own country | ctr there | in Greece | ctr there | reading |');
+    out.push('| --- | --- | --- | --- | --- | --- | --- | --- |');
+    for (const l of localizedAudience.byLocale) {
+      out.push(
+        `| ${l.locale} | ${l.total.impressions} | ${l.total.ctr} | ${l.ownShare} | ${l.own.ctr} | ${l.greeceShare} | ${l.greece.ctr} | **${l.reading}** |`,
+      );
+    }
+    out.push('');
+    out.push('> `google_picks_wrong_url` = routing work (Google serves this language to Greece).');
+    out.push('> `snippet_problem` = title/description work (right country, nobody clicks).');
+    out.push('');
+    if (localizedAudience.worstPages?.length) {
+      out.push('### Localized pages earning the least per impression');
+      for (const p of localizedAudience.worstPages.slice(0, 10)) {
+        out.push(
+          `- ${p.page} · ${p.impressions} impr · ${p.clicks} clicks · own ${p.ownShare} (ctr ${p.own.ctr}) · greece ${p.greeceShare} (ctr ${p.greece.ctr})`,
+        );
+      }
+      out.push('');
+    }
   }
 
   out.push('## Top striking-distance (est. clicks)');
@@ -1200,6 +1338,7 @@ async function main() {
     byCountry: guard(errors, 'bySegment.byCountry', () => buildKeyedList('country', raw)),
     byDevice: guard(errors, 'bySegment.byDevice', () => buildKeyedList('device', raw, { normalizeKey: (k) => (k ? String(k).toLowerCase() : k) })),
     localeCountryMatch: guard(errors, 'localeCountryMatch', () => computeLocaleCountryMatch(raw, CAPS_DEFAULT.localeMatchCountries)),
+    localizedAudience: guard(errors, 'localizedAudience', () => computeLocalizedAudience(raw, CAPS_DEFAULT.localizedAudiencePages)),
     ctrCurve: curve,
     strikingDistance: guard(errors, 'strikingDistance', () => computeStrikingDistance(raw, curve, CAPS_DEFAULT.strikingDistance)),
     ctrGaps: guard(errors, 'ctrGaps', () => computeCtrGaps(raw, curve, CAPS_DEFAULT.ctrGaps, floors)),
