@@ -309,6 +309,17 @@ export interface BeachAnswerHeroProps {
    */
   shoreBreakNote?: string | null;
   /**
+   * «Ο αέρας έρχεται από τη στεριά — μπροστά σου το νερό είναι πιο ήρεμο απ’ ό,τι λέει ο αριθμός»
+   * — utils/offshoreWindNote, αποφασισμένη από τη σελίδα και ήδη διατυπωμένη, όπως το
+   * `shoreBreakNote` και το `climateNote`.
+   *
+   * ΓΙΑΤΙ ΕΔΩ ΚΑΙ ΟΧΙ ΣΤΗΝ ΚΑΡΤΑ: η κάρτα δοκίμασε δεύτερη γραμμή δίπλα στον αριθμό στις
+   * 13/08/2026 και ο Μίλτος την έκοψε («στο mobile έχει πολύ κείμενο»), με το `validateTileFit`
+   * να συμφωνεί — στα 390 px η γραμμή κοβόταν. Αυτή είναι η μία διάταξη της σελίδας που είναι
+   * χτισμένη για πρόταση περί θάλασσας.
+   */
+  offshoreWindNote?: string | null;
+  /**
    * The practical half of the decision: road, facilities, entry, what to pack.
    * Built by the page so this component never touches the beach record.
    */
@@ -437,6 +448,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   sunsetOverSea,
   climateNote,
   shoreBreakNote,
+  offshoreWindNote,
   practical = [],
   amenities = [],
   amenitiesTitle,
@@ -712,6 +724,17 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
               {climateNote.tone === 'better' ? '↓' : climateNote.tone === 'worse' ? '↑' : '≈'}
             </span>
             <span>{climateNote.text}</span>
+          </p>
+        )}
+
+        {offshoreWindNote && (
+          // Ουδέτερο μπλε, ΟΧΙ πορτοκαλί σαν το `shoreBreakNote`: εκείνο λέει «θα νιώσεις κάτι»,
+          // αυτό λέει «είναι πιο ήρεμα απ’ ό,τι διαβάζεις». Ίδιο χρώμα θα έκανε τα δύο να
+          // ακούγονται σαν την ίδια προειδοποίηση δύο φορές. Το γλυφικό είναι ο άνεμος, γιατί για
+          // τον άνεμο μιλάει η πρόταση — ο αναγνώστης πρέπει να δει σε ποιο πλακίδιο ανήκει.
+          <p className="flex items-start gap-2 rounded-2xl bg-sky-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-sky-900">
+            <span className="mt-px shrink-0" aria-hidden="true">↝</span>
+            <span>{offshoreWindNote}</span>
           </p>
         )}
 

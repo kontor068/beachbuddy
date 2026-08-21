@@ -1,6 +1,7 @@
 import type { LanguageCode } from '../types';
 import type { CalmnessTone } from './suitabilityTone';
 import type { CauseLineForm } from './conditionCause';
+import type { OffshoreWindNoteForm } from './offshoreWindNote';
 
 /**
  * THE ONE VOCABULARY FOR A CONDITION COLOUR.
@@ -218,3 +219,45 @@ export const causeLinePhrase = (
     .replace('{sea}', String(counts?.sea ?? 0));
   return { short: fill(words.short), full: fill(words.full) };
 };
+
+/**
+ * Η ΓΡΑΜΜΗ ΤΟΥ ΑΠΟΓΕΙΟΥ ΑΝΕΜΟΥ, ΔΙΠΛΑ ΣΤΟΝ ΑΡΙΘΜΟ ΤΟΥ ΚΥΜΑΤΟΣ (21/08/2026).
+ *
+ * Ζει εδώ και όχι σε δικό της αρχείο επειδή είναι ΤΡΙΤΟ μη-βαθμολογικό κανάλι της ίδιας
+ * οικογένειας με το `causeLineLabels` — και τα δύο εξηγούν κάτι που η οθόνη δείχνει χωρίς να το
+ * λέει. Η διαφορά: το `causeLine` εξηγεί το ΧΡΩΜΑ (και μόνο σε πορτοκαλί/κόκκινο, απόφαση Μίλτου
+ * 15/08), ενώ αυτή εξηγεί τον ΑΡΙΘΜΟ — που είναι αυτό που κοίταξε ο Μίλτος και τις δύο φορές που
+ * ανέφερε τη Λυγαριά (16/08 και 21/08) και το οποίο κανένα υπάρχον κανάλι δεν άγγιζε.
+ *
+ * ⚠️ ΤΟ ΔΕΥΤΕΡΟ ΜΙΣΟ ΤΗΣ ΔΕΥΤΕΡΗΣ ΦΡΑΣΗΣ ΕΙΝΑΙ ΥΠΟΧΡΕΩΤΙΚΟ, ΟΧΙ ΣΤΟΛΙΔΙ. Η βίβλος (§Μ2) κρατάει
+ * ανοιχτή εκκρεμότητα τη γραμμή «ο αέρας σε βγάζει στα ανοιχτά» — ΙΔΙΑ συνθήκη με αυτήν εδώ —
+ * και τη λέει «πιο επείγουσα, γιατί οι παραλίες που κερδίζουν θέση με απόγειο άνεμο είναι ακριβώς
+ * αυτές όπου ένα φουσκωτό φεύγει». Καθησυχαστικό μισό χωρίς το προειδοποιητικό = μονόπλευρη
+ * ανάγνωση της ίδιας μέτρησης. Μην αφαιρεθεί χωρίς νέα απόφαση.
+ */
+export const offshoreWindNoteLabels: Record<LanguageCode, Record<OffshoreWindNoteForm, string>> = {
+  en: {
+    'calmer-than-the-number': "The wind blows off the land — the water in front of you is calmer than the figure suggests.",
+    'calmer-but-pulls-out': "The wind blows off the land: the water is calmer than the figure suggests — but on a lilo or dinghy it will carry you out.",
+  },
+  gr: {
+    'calmer-than-the-number': "Ο αέρας έρχεται από τη στεριά — μπροστά σου το νερό είναι πιο ήρεμο απ’ ό,τι λέει ο αριθμός.",
+    'calmer-but-pulls-out': "Ο αέρας έρχεται από τη στεριά: το νερό είναι πιο ήρεμο απ’ ό,τι λέει ο αριθμός — αλλά με στρώμα ή φουσκωτό σε βγάζει ανοιχτά.",
+  },
+  fr: {
+    'calmer-than-the-number': "Le vent souffle de la terre — l’eau devant vous est plus calme que ne l’indique le chiffre.",
+    'calmer-but-pulls-out': "Le vent souffle de la terre : l’eau est plus calme que ne l’indique le chiffre — mais sur un matelas ou un canot, il vous emporte au large.",
+  },
+  de: {
+    'calmer-than-the-number': "Der Wind kommt vom Land — das Wasser vor dir ist ruhiger, als die Zahl vermuten lässt.",
+    'calmer-but-pulls-out': "Der Wind kommt vom Land: Das Wasser ist ruhiger, als die Zahl vermuten lässt — aber auf Luftmatratze oder Schlauchboot treibt er dich aufs offene Meer.",
+  },
+  it: {
+    'calmer-than-the-number': "Il vento soffia da terra — l’acqua davanti a te è più calma di quanto dica il numero.",
+    'calmer-but-pulls-out': "Il vento soffia da terra: l’acqua è più calma di quanto dica il numero — ma su un materassino o un gommone ti porta al largo.",
+  },
+};
+
+/** Η φράση για μία μορφή, με πτώση στα αγγλικά αν λείπει γλώσσα — ίδιο μοτίβο με το causeLinePhrase. */
+export const offshoreWindNotePhrase = (form: OffshoreWindNoteForm, language: LanguageCode): string =>
+  (offshoreWindNoteLabels[language] ?? offshoreWindNoteLabels.en)[form];

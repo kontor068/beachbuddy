@@ -592,6 +592,7 @@ const main = async () => {
   let totalMissingCoordinates = 0;
 
   let carriedMarineSamplePoints = 0;
+  let carriedWindShadows = 0;
 
   regions.forEach(region => {
     const profiles: BeachExposureProfile[] = [];
@@ -612,7 +613,7 @@ const main = async () => {
      */
     arrivalFans?.clear();
 
-    const previousProfiles: Record<string, { marineSamplePoint?: unknown }> = (() => {
+    const previousProfiles: Record<string, { marineSamplePoint?: unknown; windShadow?: unknown }> = (() => {
       const previousPath = path.join(outputDirectory, `${region.regionId}.json`);
       if (!existsSync(previousPath)) return {};
       try {
@@ -632,6 +633,19 @@ const main = async () => {
       if (carried) {
         profile.marineSamplePoint = carried;
         carriedMarineSamplePoints += 1;
+      }
+      /**
+       * ΙΔΙΑ ΠΑΓΙΔΑ, ΔΕΥΤΕΡΟ ΠΕΔΙΟ (21/08/2026). Το `windShadow` το ψήνει το
+       * `scripts/buildWindShadow.mjs` από τη λεπτή βεντάλια, όπως το `marineSamplePoint` ψήνεται
+       * αλλού. Χωρίς αυτή τη μεταφορά, ένα `--region X` θα έσβηνε τη γραμμή του απόγειου ανέμου
+       * για ολόκληρη την περιοχή — και θα έσβηνε ΣΙΩΠΗΛΑ, γιατί «χωρίς πεδίο → σιωπή» είναι η
+       * σωστή συμπεριφορά της ίδιας της μονάδας (utils/offshoreWindNote). Ακριβώς το ίδιο σχήμα
+       * που έκανε τη Λήμνο 3/41 χωρίς να σπάσει καμία πύλη.
+       */
+      const carriedShadow = previousProfiles[String(profile.beachId)]?.windShadow;
+      if (typeof carriedShadow === 'string' && carriedShadow.length === 24) {
+        profile.windShadow = carriedShadow;
+        carriedWindShadows += 1;
       }
       profiles.push(profile);
     });
@@ -803,6 +817,7 @@ const main = async () => {
     missingCoordinates: totalMissingCoordinates,
     indexedLandPolygons: polygons.length,
     carriedMarineSamplePoints,
+    carriedWindShadows,
   }, null, 2));
 };
 

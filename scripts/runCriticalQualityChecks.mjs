@@ -112,6 +112,15 @@ const checks = [
     args: ['scripts/validateArrivingSeaShoreGate.mjs'],
   },
   {
+    id: 'offshore-wind-note',
+    title: 'The offshore-wind line speaks rarely, and never reassures where it must not',
+    description: "Runs utils/offshoreWindNote against every committed windShadow (2.869 beaches) plus ten behavioural assertions, and pins the named witness both ways: Λυγαριά 636 MUST speak for wind from 310° and 314° (the two angles Miltos reported, land at 0,13-0,20 km) and MUST stay silent for 15°/30°/45°, where the cove mouth genuinely lets sea in. Also checks the borrowed thresholds have not drifted from FLAT_WATER_SEA_STATE_M / SEA_STATE_AMBER_M, that scripts/buildWindShadow bakes at the same 0,3 km the rule reads, and that both phrases exist in all five languages.",
+    protects: 'Prevents a false calm from the one channel allowed to reassure. Three rules that would have LOWERED the number were built, measured nationally and rejected (PORISMA §Μ6: 20.311/40.166 hours, 2.217 pin colours; the narrow-mouth variant 783; the period axis 21/08, no discrimination — 96,8% of the country under 5 s). This line changes no number, colour, verdict or ranking; it only speaks. What keeps it rare is the WAVE WINDOW, not the geometry: measured 21/08, 98,5% of beaches could fire at some wind and 8,85 of 24 directions qualify on average, while the shipped rule prints on 0,8% of hours and 3,2% of beaches. Widening the window turns it into wallpaper in one line.',
+    failureAction: 'Fix utils/offshoreWindNote.ts or re-run node scripts/buildWindShadow.mjs. Never make a case pass by widening OFFSHORE_NOTE_MIN_WAVE_M downward or narrowing OFFSHORE_NOTE_WINDOW_DEG — without the wave window the line printed on 21% of hours and 41,5% of beaches, and 87% of those hours had under 0,2 m of wave (reports/offshore-wind-note/frequency.json).',
+    command: process.execPath,
+    args: ['scripts/validateOffshoreWindNote.mjs'],
+  },
+  {
     id: 'open-water-label',
     title: 'The wave figure names its water, and the card says why',
     description: 'Runs every beach with committed geometry against all 8 wind sectors through the real utils/coveWaveGuard, and checks the reading is labelled «Κύμα ανοιχτά» only where the number really is the area grid — never where the guard swapped in our own near-shore SMB. Then checks the card can still be understood: seaOpen and SHELTER_LABEL are present, non-empty and distinct in all five languages, the component renders both, and BeachDetailPage still passes weatherNow.liveSentence plus a shelter word derived from the map-aligned exposure level.',
