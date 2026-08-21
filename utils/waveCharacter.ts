@@ -320,6 +320,12 @@ export const shoreSeaStateM = (
   // Only 'protected' has ever carried a discount (see the block above), so the arrival test only
   // has to defend that one rung: an arrival sector we have judged and NOT called protected takes
   // the shore back to full height.
+  //
+  // `undefined` here means «I have an opinion and it is: the sea is not running onto this shore»
+  // — 3.372 of 3.396 silences nationally, and the discount it grants is earned. Blindness (no
+  // wave direction, no shore facing) says so with utils/seaArrival.SEA_ARRIVAL_UNKNOWN = 'unknown',
+  // which deliberately matches NEITHER arm below, so it falls through to full height. Do not
+  // "tidy" this into a truthiness check: that would hand the discount back to the blind case.
   const shelteredFromTheSea = seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected';
   // Wind-only shelter buys nothing here: the discount is against the WAVE (see the block above).
   const shelterEarnedAgainstTheWave = !curatedWindOnlyProtection;

@@ -76,7 +76,7 @@ const { calculateBeachScore } = require(path.join(root, 'services/recommendation
 const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 const { seaStateSeverityM, shoreSeaStateM } = require(path.join(root, 'utils/waveCharacter.ts'));
 const { holdsGlassWaterAtFourBeaufort } = require(path.join(root, 'utils/offshoreFlatWater.ts'));
-const { SEA_ARRIVAL_ONSHORE_MIN } = require(path.join(root, 'utils/seaArrival.ts'));
+const { SEA_ARRIVAL_ONSHORE_MIN, SEA_ARRIVAL_UNKNOWN } = require(path.join(root, 'utils/seaArrival.ts'));
 
 const args = process.argv.slice(2);
 if (!args.includes('--live')) { console.error('Χρειάζεται --live.'); process.exit(1); }
@@ -142,6 +142,8 @@ const t = {
   seaCeilingBitesMore: 0,
   blindDiscountDays: 0,           // έκπτωση σε ώρες που ΔΕΝ ξέρουμε (λόγοι 1-3)
   earnedSilenceDays: 0,           // έκπτωση σε ώρες που η θάλασσα όντως δεν έρχεται (λόγος 4)
+  // Η ΕΠΙΛΟΓΗ ΠΟΥ ΥΛΟΠΟΙΗΘΗΚΕ: μόνο η τυφλή έκπτωση κόβεται ('unknown'), η σκόπιμη σιωπή μένει.
+  blindNow: 0, blindToneChanged: 0, blindToneStricter: 0, blindToneMilder: 0, blindGateLost: 0,
 };
 const reasons = new Map();
 const toneMoves = new Map();
@@ -180,8 +182,39 @@ const measureRegion = async (region) => {
 
       const arrival = score.seaArrivalExposureLevel;
       const waveDirectionDeg = score.marine?.waveDirectionDeg;
+
+      // ── Η ΥΛΟΠΟΙΗΜΕΝΗ ΕΠΙΛΟΓΗ: πόσο κοστίζει ΜΟΝΟ το κόψιμο της τυφλής έκπτωσης ──────
+      // «Πριν» = ο παλιός κώδικας, όπου η τυφλότητα απαντούσε `undefined` και έπαιρνε το ×0,5.
+      if (arrival === SEA_ARRIVAL_UNKNOWN) {
+        t.blindNow += 1;
+        const bft = score.simpleWindSuitability?.windBeaufort ?? 0;
+        const sev = seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS);
+        const gArgs = {
+          profile, windDirectionDeg: dayForecast.wind?.deg, beaufort: bft, seaStateM: sev,
+          exposureLevel: score.exposureLevel, swellWaveHeightM: score.marine?.swellWaveHeightM,
+          curatedWindOnlyProtection: false,
+        };
+        const gBefore = holdsGlassWaterAtFourBeaufort({ ...gArgs, seaArrivalExposureLevel: undefined });
+        const gNow = holdsGlassWaterAtFourBeaufort({ ...gArgs, seaArrivalExposureLevel: arrival });
+        if (gBefore && !gNow) t.blindGateLost += 1;
+        const tInput = {
+          exposureLevel: score.exposureLevel, beaufort: bft,
+          isEnclosedCove: Boolean(score.enclosedCove), seaStateM: sev,
+          offshoreFlatWater: Boolean(score.simpleWindSuitability?.offshoreFlatWater),
+          downwindSeaSample: Boolean(score.simpleWindSuitability?.downwindSeaSample),
+          swimVerdictAvoid: score.swimmingComfort === 'avoid_swimming',
+        };
+        const tBefore = resolveConditionTone({ ...tInput, seaArrivalExposureLevel: undefined, glassWaterAtFour: gBefore });
+        const tNow = resolveConditionTone({ ...tInput, seaArrivalExposureLevel: arrival, glassWaterAtFour: gNow });
+        if (tBefore !== tNow) {
+          const RANK = { blue: 0, green: 0, yellow: 1, orange: 2, red: 3 };
+          t.blindToneChanged += 1;
+          if ((RANK[tNow] ?? 0) > (RANK[tBefore] ?? 0)) t.blindToneStricter += 1; else t.blindToneMilder += 1;
+        }
+      }
+
       if (arrival === 'protected') t.arrivalKnownProtected += 1;
-      else if (arrival) { t.arrivalKnownOther += 1; continue; }   // ήδη αρνείται την έκπτωση
+      else if (arrival && arrival !== SEA_ARRIVAL_UNKNOWN) { t.arrivalKnownOther += 1; continue; }
       else {
         t.arrivalUnknown += 1;
         const why = silenceReason(profile, waveDirectionDeg);
@@ -270,7 +303,12 @@ for (const [why, c] of [...reasons.entries()].sort((a, b) => b[1] - a[1])) {
 }
 console.log(`  → ΔΙΚΑΙΟΛΟΓΗΜΕΝΗ σιωπή ${t.earnedSilenceDays} · ΣΤΑ ΤΥΦΛΑ ${t.blindDiscountDays}`);
 console.log('');
-console.log('ΑΝ ΤΟ ΑΓΝΩΣΤΟ ΕΠΑΥΕ ΝΑ ΔΙΝΕΙ ΕΚΠΤΩΣΗ');
+console.log('ΤΙ ΑΛΛΑΞΕ ΠΡΑΓΜΑΤΙΚΑ (κόπηκε ΜΟΝΟ η τυφλή έκπτωση)');
+console.log(`  τυφλές ώρες σήμερα               ${t.blindNow}`);
+console.log(`  ΑΛΛΑΖΕΙ ΧΡΩΜΑ                    ${t.blindToneChanged} (αυστηρότερο ${t.blindToneStricter} · ηπιότερο ${t.blindToneMilder})`);
+console.log(`  χάνει την πύλη των 4 Μποφ.       ${t.blindGateLost}`);
+console.log('');
+console.log('ΑΝ ΤΟ ΑΓΝΩΣΤΟ ΕΠΑΥΕ ΝΑ ΔΙΝΕΙ ΕΚΠΤΩΣΗ ΠΑΝΤΟΥ (η επιλογή που ΔΕΝ πάρθηκε)');
 console.log(`  η θάλασσα μετράει ψηλότερα σε    ${t.seaCeilingBitesMore}`);
 console.log(`  ΑΛΛΑΖΕΙ ΧΡΩΜΑ                    ${t.toneChanged} · ${changedBeaches.size} παραλίες · ${pct(t.toneChanged, t.beachDays)} των παραλιο-ημερών`);
 console.log(`    αυστηρότερο ${t.toneStricter} · ηπιότερο ${t.toneMilder}`);
