@@ -1125,7 +1125,21 @@ const WESTERLY = ['West', 'Northwest', 'Southwest'];
 // The count is rebuild-fresh, so it never goes stale the way "σήμερα" would.
 const CATEGORY_TITLE = {
   sheltered:  { en: { main: (islandName, count) => `${count} More Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: (islandName, count) => `${islandName}: ${count} Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
-  family:     { en: { main: islandName => `Family Beaches in ${islandName}`, tail: 'with Shallow Water' },      gr: { main: islandName => `${islandName}: Παραλίες για Οικογένειες`, tail: '& Παιδιά' } },
+  // EN family reordered 21/08/2026, measured on Search Console (28d to 16/08,
+  // page dimension). English demand for the family intent is ~120 impressions;
+  // the 47 EN family guides drew 4.695 and converted at 1,64% — the worst large
+  // group on the site, against 6,41% for EN snorkeling at the same position. The
+  // impressions do not come from family queries at all: they come from `preveza
+  // beaches`, `kavala beach`, `lemnos beaches`. The old title opened with the two
+  // words "Family Beaches", so a generic searcher discarded it on sight. Nothing
+  // new is claimed here — the shallow-water phrasing and the audience are both
+  // still present, only demoted behind the count and the place, and "for Families"
+  // is now the droppable tail. Wording checked against all 53 built pages: this
+  // shape keeps the brand suffix on 36 of them and never exceeds 60 characters,
+  // where "N Beaches in X with Shallow Water" kept the brand on 1 and overflowed
+  // on Larissa Coast. GR is untouched: it gets real intent queries
+  // (`ευβοια παραλιες για παιδια`, 280 impressions) and converts 2,2x better.
+  family:     { en: { main: (islandName, count) => `${count} Shallow-Water Beaches in ${islandName}`, tail: 'for Families' }, gr: { main: islandName => `${islandName}: Παραλίες για Οικογένειες`, tail: '& Παιδιά' } },
   snorkeling: { en: { main: islandName => `Best Snorkeling Beaches in ${islandName}`, tail: '' },               gr: { main: islandName => `${islandName}: Οι Καλύτερες Παραλίες για Snorkeling`, tail: '' } },
   organized:  { en: { main: islandName => `Organized Beaches in ${islandName}`, tail: 'with Sunbeds' },         gr: { main: islandName => `${islandName}: Οργανωμένες Παραλίες`, tail: 'με Ξαπλώστρες' } },
   // "Best sunset in {island}" is a literal query pattern in GSC, so EN reclaims
@@ -1171,7 +1185,7 @@ const categoryTitleFor = (key, islandName, language, count) => {
 // in meaning; only the countable head and the CTA are new.
 const CATEGORY_META = {
   sheltered:  { en: { phrase: 'sheltered picks',          basis: 'oriented away from northerly Meltemi winds' }, gr: { phrase: 'πιο απάνεμες επιλογές',     basis: 'με προσανατολισμό μακριά από το βόρειο μελτέμι' } },
-  family:     { en: { phrase: 'family-friendly beaches',  basis: 'with shallow water and easier access' },       gr: { phrase: 'οικογενειακές παραλίες',    basis: 'με ρηχά νερά και ευκολότερη πρόσβαση' },
+  family:     { en: { phrase: 'shallow, organised beaches', basis: 'all with easy access, picked for young children' },       gr: { phrase: 'οικογενειακές παραλίες',    basis: 'με ρηχά νερά και ευκολότερη πρόσβαση' },
               de: { phrase: 'familienfreundliche Strände', basis: 'mit flacherem Wasser und einfacherem Zugang' }, fr: { phrase: 'plages familiales',       basis: 'à eau généralement peu profonde et accès plus facile' }, it: { phrase: 'spiagge per famiglie',   basis: 'con acqua bassa e accesso più facile' } },
   snorkeling: { en: { phrase: 'snorkeling beaches',       basis: 'with clearer water and rocky seabed' },        gr: { phrase: 'παραλίες για snorkeling',   basis: 'με καθαρότερα νερά και βραχώδη βυθό' },
               de: { phrase: 'Schnorchelstrände',           basis: 'mit klarerem Wasser und felsigem Grund' },      fr: { phrase: 'plages de snorkeling',    basis: "à l'eau plus claire et au fond rocheux" },              it: { phrase: 'spiagge per snorkeling', basis: 'con acqua più limpida e fondale roccioso' } },
