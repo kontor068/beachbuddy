@@ -32,6 +32,8 @@ import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_K
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { beachShoreBreaks, hasSteepCoarseShore } from '../utils/shoreBreak';
+import { resolveOffshoreWindNote } from '../utils/offshoreWindNote';
+import { offshoreWindNotePhrase } from '../utils/conditionToneLabels';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
 import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../components/AccessibleCalmNearbySection';
@@ -1368,6 +1370,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     it: 'A riva però le onde frangono un po’ di più — qui il fondale scende subito.',
     fr: 'Au bord, les vagues déferlent un peu plus — ici, ça devient vite profond.',
   }[language];
+  /**
+   * Η ΓΡΑΜΜΗ ΤΟΥ ΑΠΟΓΕΙΟΥ ΑΝΕΜΟΥ (utils/offshoreWindNote) — Λυγαριά #636, 16/08 και 21/08/2026.
+   *
+   * Κρίνεται πάνω στο `displayWaveHeightM`, τον ΙΔΙΟ αριθμό που τυπώνει το πλακίδιο της θάλασσας,
+   * για τον ίδιο λόγο που το κάνει και το `shoreBreak` δύο γραμμές πιο πάνω: μια πρόταση που
+   * σχολιάζει νούμερο το οποίο ο αναγνώστης δεν βλέπει, σχολιάζει το τίποτα.
+   *
+   * ΔΕΝ αλλάζει τίποτα — ούτε τον αριθμό, ούτε το χρώμα, ούτε την ετυμηγορία, ούτε την κατάταξη.
+   * Τρεις κανόνες που ΑΛΛΑΖΑΝ τον αριθμό μετρήθηκαν εθνικά και απορρίφθηκαν (βίβλος §Μ6 και
+   * μπλοκ 21/08). Μετρημένη συχνότητα πριν μπει: **0,8% των ωρών, 3,2% των παραλιών**, διάμεσο
+   * 2 ώρες ανά παραλία (`reports/offshore-wind-note/frequency.json`).
+   */
+  const offshoreWindNoteForm = resolveOffshoreWindNote({
+    profile: geospatialExposure,
+    windFromDeg: weatherData.wind.deg,
+    beaufort: beaufortLevel,
+    displayWaveM: displayWaveHeightM,
+    swimVerdictAvoid: swimmingComfort === 'avoid_swimming',
+  });
   const seaConditionDisplay = getSeaConditionDisplay(seaConditionScore, isExposedForCopy, language, selectedDate, canClaimWindProtectionForCopy, seaCalmClaimAllowed, beaufortLevel, displayWaveHeightM, selectedHour, isBoatOnlyBeach, enclosedCove);
   const boatRideConditionLabel = {
     en: 'Ride',
@@ -2207,6 +2228,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           // Decided from the SAME height the sea tile prints (displayWaveHeightM), so the sentence
           // always qualifies the figure directly above it — the hour on this page, never the day.
           shoreBreakNote={showConditions && shoreBreaksHere ? shoreBreakSentence : null}
+          offshoreWindNote={showConditions && offshoreWindNoteForm ? offshoreWindNotePhrase(offshoreWindNoteForm, language) : null}
           /* The practical half. Not gated on `showConditions`: when the forecast fails we
              hide wind and waves, but the road is still a dirt road and the beach still has
              no shade — those are the facts that stay true and useful on a bad-data day. */

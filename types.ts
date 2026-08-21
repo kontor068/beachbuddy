@@ -668,6 +668,20 @@ export interface GeospatialExposureProfile {
    * enclosed coves, which have no open-water cell that describes their water.
    */
   marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
+  /**
+   * ΠΟΥ ΕΧΕΙ ΣΤΕΡΙΑ ΚΟΝΤΑ, ΑΝΑ 15° — 24 χαρακτήρες '0'/'1', θέση 0 = 0°, '1' = στεριά μέσα στα
+   * πρώτα 300 μ. προς τα εκεί (utils/offshoreWindNote.WIND_SHADOW_LAND_KM).
+   *
+   * Δεν είναι δεύτερο `fetchKm`. Οι 8 φέτες απαντούν «πόσο ανοιχτή θάλασσα υπάρχει» με βήμα
+   * ακτίνας 200 μ.· αυτό απαντάει «ήρθε ο άνεμος πάνω από στεριά;» με βήμα 50 μ., που είναι η
+   * μόνη ανάλυση στην οποία φαίνεται μια ράχη 100-150 μ. Μετρημένη διαφορά στη Λυγαριά #636:
+   * φέτα ΒΔ = 5,00 χλμ, πραγματικό = 0,13 (38,5×, reports/geometry/ray-step-aliasing.json).
+   *
+   * ΤΟ ΔΙΑΒΑΖΕΙ ΜΟΝΟ ΜΗ-ΒΑΘΜΟΛΟΓΙΚΟ ΚΑΝΑΛΙ (utils/offshoreWindNote). Καμία βαθμολογία, κανένα
+   * χρώμα, καμία ετυμηγορία δεν το αγγίζει — και δεν επιτρέπεται να αρχίσουν χωρίς εθνική
+   * μέτρηση, γιατί κάθε τέτοιος κανόνας μετρήθηκε τρεις φορές και απορρίφθηκε (βίβλος §Μ6).
+   */
+  windShadow?: string;
 }
 
 /**
