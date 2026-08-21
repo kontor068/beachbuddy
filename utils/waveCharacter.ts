@@ -277,9 +277,18 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
  * `curatedWindOnlyProtection` is how the caller says "this shelter was earned against the WIND
  * only"; when true the discount is refused. One-directional: it can only ever REFUSE.
  *
- * ⚠️ Callers must treat this as an input to a DECISION (colour, swim advice), never as the number
- * to print. The displayed height stays the honest open-water reading with its own label; changing
- * what we print is a separate decision that has not been taken.
+ * ⚠️ THE SECOND HALF OF THIS PARAGRAPH WAS TRUE UNTIL 13/08/2026 AND IS NOW FALSE. It used to end
+ * «never as the number to print … changing what we print is a separate decision that has not been
+ * taken». That decision WAS taken (βίβλος §Γ5): `shoreDisplayWaveM` is this value, and
+ * utils/beachConditionsReadout prints it on the card, the map and the beach page under the label
+ * «στην ακτή». Anyone reading the old sentence would conclude that a discount here is invisible
+ * to visitors. It is not — it is the number on screen.
+ *
+ * ⚠️ AND THE DISCOUNT IS NOT SMALL WHEN IT MATTERS. §Γ5 measured it nationally as «0,18 μ.
+ * διάμεσα» — but on a calm day, when there is no sea to halve. Replayed on a meltemi day
+ * (2022-09-06, βίβλος §Γ47) the same discount moves the printed figure by **1,40 m**, and pushes
+ * beaches across the «ήρεμα» line while their pin stays orange. The 0,5 itself has never been
+ * measured against anything: there is no external judge for a shoreline (§7δ).
  */
 export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
 

@@ -32,7 +32,20 @@
  *    scripts/measureShoreWaveRamp.mjs.
  *
  * Run: node scripts/measureShoreNumberEverywhere.mjs --live [--regions=a,b]
+ *
+ * ⚠️ ΓΡΑΦΤΗΚΕ 13/08 ΣΕ ΑΠΝΟΙΑ, ΚΑΙ ΑΥΤΟ ΕΙΝΑΙ ΟΡΙΟ ΤΟΥ ΕΥΡΗΜΑΤΟΣ ΤΟΥ. «Πόσο κατεβάζουμε το
+ * νούμερο» είναι ερώτηση που έχει νόημα μόνο όταν υπάρχει νούμερο να κατέβει: με 0,2 μ. ανοιχτά,
+ * ο μισός αριθμός είναι 0,1 μ. και κανείς δεν το προσέχει· με 2,0 μ. είναι 1,0 μ. και είναι η
+ * διαφορά ανάμεσα στο «μπάνιο» και στο «όχι». Από 21/08/2026 (βίβλος §Γ45) διαλέγεις τη μέρα:
+ *
+ *      OPEN_METEO_REPLAY=2022-09-06 OPEN_METEO_REPLAY_SHIFT=1 \
+ *        node scripts/measureShoreNumberEverywhere.mjs --live --regions=south-aegean-naxos
+ *
+ * ΟΧΙ `OPEN_METEO_REPLAY_CLOCK` — ξυπνάει την άμυνα του utils/athensTime.ts και γυρίζουν μηδέν
+ * περιοχές (§Γ46). Μέρες από `npm run replay:wind-windows`.
  */
+import './lib/paidOpenMeteo.mjs';
+import './lib/replayOpenMeteo.mjs';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -278,6 +291,9 @@ const totals = {
   bandMoves: {},
   intoCalm: 0,
   calmTone: {},
+  calmByJump: {},
+  calmByJumpComfort: {},
+  singleJumpWarnings: [],
   calmNumberRoughPin: 0,
   changedTone: {},
   changedWithRoughPin: 0,
@@ -316,6 +332,18 @@ for (const result of results) {
         totals.intoCalm += 1;
         // ΤΟ ΚΡΙΣΙΜΟ: αν η πινέζα δεν είναι ήδη ήρεμη, ο αριθμός θα λέει άλλο από το χρώμα δίπλα του.
         const pinCalm = row.tone === 'ideal' || row.tone === 'good';
+        // ΤΟ ΔΙΠΛΟ ΑΛΜΑ ΞΕΧΩΡΙΣΤΑ ΑΠΟ ΤΟ ΜΟΝΟ, ΚΑΙ ΤΙ ΛΕΕΙ Η ΕΤΥΜΗΓΟΡΙΑ ΣΕ ΚΑΘΕ ΕΝΑ (§Γ48).
+        // Ο φράχτης πιάνει ΜΟΝΟ το διπλό. Οι μονές αφέθηκαν επειδή «εκεί η ετυμηγορία είναι
+        // τυπικά καλή» — ισχυρισμός που πρέπει να ΜΕΤΡΙΕΤΑΙ, όχι να επαναλαμβάνεται.
+        const bucket = before === 'φουρτούνα' ? 'διπλό' : 'μονό';
+        totals.calmByJump[bucket] = (totals.calmByJump[bucket] ?? 0) + 1;
+        const key = bucket + ' · ' + (row.comfort ?? 'άγνωστη');
+        totals.calmByJumpComfort[key] = (totals.calmByJumpComfort[key] ?? 0) + 1;
+        if (bucket === 'μονό' && (row.comfort === 'avoid_swimming' || row.comfort === 'caution')
+          && totals.singleJumpWarnings.length < 20) {
+          totals.singleJumpWarnings.push({ region: result.regionId, name: row.name,
+            todayM: row.todayM, nextM: row.nextM, comfort: row.comfort, tone: row.tone });
+        }
         totals.calmTone[row.tone ?? 'άγνωστο'] = (totals.calmTone[row.tone ?? 'άγνωστο'] ?? 0) + 1;
         if (!pinCalm) totals.calmNumberRoughPin += 1;
         if (totals.examples.length < 15) {
@@ -351,6 +379,18 @@ console.log(`  ➜ ΠΕΡΝΑΝΕ ΣΕ «ήρεμα» ΕΝΩ ΔΕΝ ΗΤΑΝ: ${
 console.log('\n── ΤΟ ΧΡΩΜΑ ΤΗΣ ΠΙΝΕΖΑΣ ΣΕ ΑΥΤΕΣ ─────────────────────────────────────');
 console.log(`  ${Object.entries(totals.calmTone).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—'}`);
 console.log(`  ➜ ΑΡΙΘΜΟΣ «ήρεμα» ΜΕ ΠΙΝΕΖΑ ΠΟΥ ΔΕΝ ΕΙΝΑΙ: ${totals.calmNumberRoughPin} (${pct(totals.calmNumberRoughPin, totals.intoCalm)} αυτών, ${pct(totals.calmNumberRoughPin, totals.beaches)} του συνόλου)`);
+
+// ΔΙΠΛΟ vs ΜΟΝΟ ΑΛΜΑ, ΑΝΑ ΕΤΥΜΗΓΟΡΙΑ (§Γ48). Ο φράχτης πιάνει ΜΟΝΟ το διπλό· αν μια μονή
+// πτώση φέρει «μην κολυμπήσεις», η αντίφαση υπάρχει κι εκεί και ο φράχτης είναι πολύ στενός.
+console.log('\n── ΔΙΠΛΟ Ή ΜΟΝΟ ΑΛΜΑ, ΚΑΙ ΤΙ ΛΕΕΙ Η ΕΤΥΜΗΓΟΡΙΑ ─────────────────────');
+for (const [k, v] of Object.entries(totals.calmByJump)) console.log(`  ${k} άλμα: ${v}`);
+for (const [k, v] of Object.entries(totals.calmByJumpComfort).sort()) console.log(`    ${k}: ${v}`);
+if (totals.singleJumpWarnings.length) {
+  console.log(`  ⚠️  ΜΟΝΕΣ πτώσεις με προειδοποίηση (ο φράχτης ΔΕΝ τις πιάνει): ${totals.singleJumpWarnings.length}`);
+  totals.singleJumpWarnings.slice(0, 8).forEach(w => console.log(`    ${w.name} (${w.region}): ${w.todayM} → ${w.nextM} μ. · ${w.comfort} · πινέζα ${w.tone}`));
+} else {
+  console.log('  ✅ ΚΑΜΙΑ μονή πτώση δεν φέρει «προσοχή» ή «μην κολυμπήσεις» — ο στενός φράχτης αρκεί.');
+}
 
 if (totals.examples.length) {
   console.log('\n  Παραδείγματα:');

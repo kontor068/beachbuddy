@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-17T21:07:54.372Z",
+  "generatedAt": "2026-08-21T12:34:13.971Z",
   "dayIndex": 0,
-  "regionsAnswered": 110,
-  "regionsAsked": 110,
-  "beachesMeasured": 2872,
+  "regionsAnswered": 1,
+  "regionsAsked": 1,
+  "beachesMeasured": 42,
   "variants": [
     {
       "key": "today",
@@ -53,388 +53,112 @@
     "minBlockedRayRatio": 0.95
   },
   "structural": {
-    "profilesHigh": 2872,
-    "fanReadyProfiles": 2872,
-    "combos": 22976,
-    "drySectors": 8700,
-    "drySilent": 2082,
-    "drySilentBeaches": 1318,
-    "drySilentEnclosedToday": 104,
-    "gatedSilentNonDry": 2168,
-    "speakersToday": 7458,
+    "profilesHigh": 42,
+    "fanReadyProfiles": 42,
+    "combos": 336,
+    "drySectors": 139,
+    "drySilent": 38,
+    "drySilentBeaches": 24,
+    "drySilentEnclosedToday": 3,
+    "gatedSilentNonDry": 29,
+    "speakersToday": 111,
     "drySilentFan": {
       "s1": {
-        "under015": 670,
-        "from015to03": 1143,
-        "from03to05": 269,
+        "under015": 10,
+        "from015to03": 21,
+        "from03to05": 7,
         "over05": 0,
-        "meaningfulPanormos": 1388,
-        "medianM": 0.23,
-        "p90M": 0.32
+        "meaningfulPanormos": 28,
+        "medianM": 0.28,
+        "p90M": 0.33
       },
       "s2": {
-        "under015": 744,
-        "from015to03": 1144,
-        "from03to05": 194,
+        "under015": 11,
+        "from015to03": 22,
+        "from03to05": 5,
         "over05": 0,
-        "meaningfulPanormos": 1322,
-        "medianM": 0.2,
-        "p90M": 0.29
+        "meaningfulPanormos": 27,
+        "medianM": 0.26,
+        "p90M": 0.3
       },
       "s3": {
-        "under015": 785,
-        "from015to03": 1295,
-        "from03to05": 2,
+        "under015": 11,
+        "from015to03": 27,
+        "from03to05": 0,
         "over05": 0,
-        "meaningfulPanormos": 1287,
-        "medianM": 0.18,
+        "meaningfulPanormos": 27,
+        "medianM": 0.24,
         "p90M": 0.28
       }
     },
     "speakerDeltas": {
       "s1": {
-        "up": 7025,
-        "down": 8,
-        "medianAbsM": 0.088,
+        "up": 103,
+        "down": 0,
+        "medianAbsM": 0.092,
         "p90AbsM": 0.229,
         "maxAbsM": 0.34
       },
       "s2": {
-        "up": 6868,
-        "down": 9,
-        "medianAbsM": 0.052,
+        "up": 102,
+        "down": 0,
+        "medianAbsM": 0.054,
         "p90AbsM": 0.2,
-        "maxAbsM": 0.31
+        "maxAbsM": 0.3
       },
       "s3": {
-        "up": 6589,
-        "down": 10,
-        "medianAbsM": 0.035,
+        "up": 97,
+        "down": 0,
+        "medianAbsM": 0.036,
         "p90AbsM": 0.184,
-        "maxAbsM": 0.29
+        "maxAbsM": 0.28
       }
     }
   },
   "watchlist": [
     {
-      "region": "attica-athens-area-mainland",
-      "windDirectionDeg": 206,
-      "windKmh": 9.2,
-      "beachId": 22,
-      "name": "Λιμανάκια Βουλιαγμένης",
-      "confidence": "high",
-      "exposureLevel": "exposed",
-      "sectorKey": "SW",
-      "onshore": 0.755,
-      "fetchKm": 0,
-      "blockedRayRatio": 1,
-      "neighbourMax90Km": 15,
-      "fanM": {
-        "s1": 0.09,
-        "s2": 0.09,
-        "s3": 0.09
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s1": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s2": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s3": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "good"
-        }
-      }
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "windDirectionDeg": 124,
-      "windKmh": 2.6,
-      "beachId": 32,
-      "name": "Παραλία Σχινιά",
-      "confidence": "high",
-      "exposureLevel": "exposed",
-      "sectorKey": "SE",
-      "onshore": 0.649,
-      "fetchKm": 15.56,
-      "blockedRayRatio": 0.6,
-      "neighbourMax90Km": 18.72,
-      "fanM": {
-        "s1": 0.01,
-        "s2": 0.01,
-        "s3": 0.01
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s1": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s2": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s3": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        }
-      }
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "windDirectionDeg": 124,
-      "windKmh": 2.6,
-      "beachId": 33,
-      "name": "Παραλία Μαραθώνα",
-      "confidence": "high",
-      "exposureLevel": "exposed",
-      "sectorKey": "SE",
-      "onshore": 0.981,
-      "fetchKm": 22.92,
-      "blockedRayRatio": 0.2,
-      "neighbourMax90Km": 22.92,
-      "fanM": {
-        "s1": 0.01,
-        "s2": 0.01,
-        "s3": 0.01
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s1": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s2": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        },
-        "fan-all-s3": {
-          "printedM": 0.22,
-          "shoreM": null,
-          "comfort": "good"
-        }
-      }
-    },
-    {
       "region": "attica-kythira",
-      "windDirectionDeg": 270,
-      "windKmh": 11.5,
+      "windDirectionDeg": 25,
+      "windKmh": 32.9,
       "beachId": 133,
       "name": "Λιμνιώνας",
       "confidence": "high",
       "exposureLevel": "protected",
-      "sectorKey": "W",
-      "onshore": 0.342,
+      "sectorKey": "NE",
+      "onshore": 0.707,
       "fetchKm": 0,
       "blockedRayRatio": 1,
       "neighbourMax90Km": 10,
       "fanM": {
-        "s1": 0.09,
-        "s2": 0.08,
-        "s3": 0.08
+        "s1": 0.41,
+        "s2": 0.41,
+        "s3": 0.41
       },
       "byVariant": {
         "today": {
-          "printedM": 0.78,
+          "printedM": 1.08,
           "shoreM": null,
-          "comfort": "good"
+          "comfort": "avoid_swimming"
         },
         "fan-dry-s2": {
-          "printedM": 0.78,
+          "printedM": 1.08,
           "shoreM": null,
-          "comfort": "good"
+          "comfort": "avoid_swimming"
         },
         "fan-all-s1": {
-          "printedM": 0.78,
+          "printedM": 1.08,
           "shoreM": null,
-          "comfort": "good"
+          "comfort": "avoid_swimming"
         },
         "fan-all-s2": {
-          "printedM": 0.78,
+          "printedM": 1.08,
           "shoreM": null,
-          "comfort": "good"
+          "comfort": "avoid_swimming"
         },
         "fan-all-s3": {
-          "printedM": 0.78,
+          "printedM": 1.08,
           "shoreM": null,
-          "comfort": "good"
-        }
-      }
-    },
-    {
-      "region": "south-aegean-naxos",
-      "windDirectionDeg": 279,
-      "windKmh": 10.9,
-      "beachId": 2011,
-      "name": "Πάνορμος",
-      "confidence": "high",
-      "exposureLevel": "partial",
-      "sectorKey": "W",
-      "onshore": 0.745,
-      "fetchKm": 1.24,
-      "blockedRayRatio": 1,
-      "neighbourMax90Km": 6.2,
-      "fanM": {
-        "s1": 0.07,
-        "s2": 0.07,
-        "s3": 0.07
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "excellent"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "excellent"
-        },
-        "fan-all-s1": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "excellent"
-        },
-        "fan-all-s2": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "excellent"
-        },
-        "fan-all-s3": {
-          "printedM": 0.24,
-          "shoreM": null,
-          "comfort": "excellent"
-        }
-      }
-    },
-    {
-      "region": "south-aegean-tinos",
-      "windDirectionDeg": 286,
-      "windKmh": 2.6,
-      "beachId": 2151,
-      "name": "Άγιος Ιωάννης Πόρτο",
-      "confidence": "high",
-      "exposureLevel": "protected",
-      "sectorKey": "W",
-      "onshore": -0.955,
-      "fetchKm": 0,
-      "blockedRayRatio": 1,
-      "neighbourMax90Km": 0,
-      "fanM": {
-        "s1": 0,
-        "s2": 0,
-        "s3": 0
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s1": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s2": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s3": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        }
-      }
-    },
-    {
-      "region": "south-aegean-tinos",
-      "windDirectionDeg": 286,
-      "windKmh": 2.6,
-      "beachId": 2186,
-      "name": "Σταφίδα",
-      "confidence": "high",
-      "exposureLevel": "protected",
-      "sectorKey": "W",
-      "onshore": -1,
-      "fetchKm": 0,
-      "blockedRayRatio": 1,
-      "neighbourMax90Km": 0,
-      "fanM": {
-        "s1": 0,
-        "s2": 0,
-        "s3": 0
-      },
-      "byVariant": {
-        "today": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-dry-s2": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s1": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s2": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
-        },
-        "fan-all-s3": {
-          "printedM": 0.1,
-          "shoreM": 0.1,
-          "comfort": "excellent"
+          "comfort": "avoid_swimming"
         }
       }
     }
@@ -442,2582 +166,657 @@
   "summary": {
     "fan-dry-s2": {
       "label": "βεντάλια ΜΟΝΟ σε ξηρό τομέα (cos⁴, ~±33°)",
-      "beachesMeasured": 2872,
-      "spokeBefore": 559,
-      "spokeAfter": 627,
-      "newSpeakers": 68,
+      "beachesMeasured": 42,
+      "spokeBefore": 14,
+      "spokeAfter": 14,
+      "newSpeakers": 0,
       "lostVoice": 0,
-      "calmer": 98,
-      "calmerExamples": [
-        {
-          "region": "attica-aegina",
-          "name": "Σουβάλα",
-          "beachId": 94,
-          "onshore": -0.225,
-          "level": "protected",
-          "neighbour90Km": 9.76,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.15,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Νησίδα Φλέβες",
-          "beachId": 24,
-          "onshore": 0.071,
-          "level": "protected",
-          "neighbour90Km": 10.12,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
-          },
-          "beforeM": 0.24,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Δεύτερη Παραλία Σαρωνίδας",
-          "beachId": 63,
-          "onshore": -0.559,
-          "level": "protected",
-          "neighbour90Km": 10.12,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.21,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Παραλία Αγία Πελαγία",
-          "beachId": 120,
-          "onshore": -0.574,
-          "level": "protected",
-          "neighbour90Km": 11,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Λίμνη (Αγίας Πελαγίας)",
-          "beachId": 125,
-          "onshore": -0.407,
-          "level": "protected",
-          "neighbour90Km": 17.04,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Παραλία Λίμνη (Παλαιόπολη)",
-          "beachId": 135,
-          "onshore": -0.721,
-          "level": "protected",
-          "neighbour90Km": 11.8,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
-          },
-          "beforeM": 0.12,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Μελιδόνι",
-          "beachId": 140,
-          "onshore": -0.495,
-          "level": "protected",
-          "neighbour90Km": 11.6,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.01
-          },
-          "beforeM": 0.41,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Φελωτή",
-          "beachId": 142,
-          "onshore": -0.082,
-          "level": "protected",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.41,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Λεφτό",
-          "beachId": 143,
-          "onshore": -0.469,
-          "level": "protected",
-          "neighbour90Km": 15.04,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.01
-          },
-          "beforeM": 0.43,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Παραλία Σπαραγγάριο",
-          "beachId": 145,
-          "onshore": -0.34,
-          "level": "protected",
-          "neighbour90Km": 16.2,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.07,
-            "s3": 0.06
-          },
-          "beforeM": 0.41,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-salamina",
-          "name": "Ντουλάπι",
-          "beachId": 3058,
-          "onshore": -0.03,
-          "level": "protected",
-          "neighbour90Km": 11.88,
-          "fanM": {
-            "s1": 0.05,
-            "s2": 0.04,
-            "s3": 0.04
-          },
-          "beforeM": 0.13,
-          "afterM": 0.1
-        },
-        {
-          "region": "central-greece-evia",
-          "name": "Βύθουρη",
-          "beachId": 213,
-          "onshore": -0.613,
-          "level": "protected",
-          "neighbour90Km": 10,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
-          },
-          "beforeM": 0.15,
-          "afterM": 0.1
-        },
-        {
-          "region": "central-greece-evia",
-          "name": "Δαφνοπόταμος",
-          "beachId": 219,
-          "onshore": -0.556,
-          "level": "protected",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.03
-          },
-          "beforeM": 0.2,
-          "afterM": 0.1
-        },
-        {
-          "region": "central-greece-evia",
-          "name": "Μάγειρας",
-          "beachId": 252,
-          "onshore": 0.291,
-          "level": "protected",
-          "neighbour90Km": 10.04,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "central-greece-evia",
-          "name": "Σγούρα",
-          "beachId": 298,
-          "onshore": -0.465,
-          "level": "protected",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.03
-          },
-          "beforeM": 0.26,
-          "afterM": 0.1
-        }
-      ],
-      "calmerDryLive": 98,
+      "calmer": 0,
+      "calmerExamples": [],
+      "calmerDryLive": 0,
       "rougher": 0,
       "rougherExamples": [],
-      "calmerAlreadyProtected": 86,
-      "suppressedOver05": 2,
+      "calmerAlreadyProtected": 0,
+      "suppressedOver05": 0,
       "suppressedOver10": 0,
-      "suppressedMaxM": 0.66,
-      "panormosClassChanged": 91,
-      "comfortSofter": 5,
+      "suppressedMaxM": 0,
+      "panormosClassChanged": 0,
+      "comfortSofter": 0,
       "comfortStricter": 0,
-      "comfortMoves": {
-        "good → excellent": 5
-      },
-      "softerExamples": [
-        {
-          "region": "south-aegean-andros",
-          "name": "Άγιος Ιωάννης",
-          "beachId": 1687,
-          "onshore": -0.391,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Πλατανιστός",
-          "beachId": 1720,
-          "onshore": -0.282,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-ios",
-          "name": "Καρατζάς",
-          "beachId": 1769,
-          "onshore": 0.137,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 14.76,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tinos",
-          "name": "Βαθύ Πανόρμου",
-          "beachId": 2161,
-          "onshore": -0.078,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0,
-            "s2": 0,
-            "s3": 0
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tinos",
-          "name": "Σκληρός",
-          "beachId": 2185,
-          "onshore": -0.404,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 5.08,
-          "fanM": {
-            "s1": 0,
-            "s2": 0,
-            "s3": 0
-          },
-          "beforeM": 0.46,
-          "afterM": 0.1
-        }
-      ],
+      "comfortMoves": {},
+      "softerExamples": [],
       "stricterExamples": [],
-      "podiumRegionsChanged": 7,
-      "podiumOrderOnly": 3,
-      "podiumExamples": [
-        {
-          "region": "attica-kythira",
-          "before": [
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι",
-            "Παραλία Καλαδί"
-          ],
-          "after": [
-            "Μελιδόνι",
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "attica-salamina",
-          "before": [
-            "Παραλία Κανάκια",
-            "Χαρουπιάς",
-            "Ντουλάπι"
-          ],
-          "after": [
-            "Παραλία Κανάκια",
-            "Ντουλάπι",
-            "Χαρουπιάς"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "before": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Νιστέρι"
-          ],
-          "after": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Λιβάδι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-fournoi",
-          "before": [
-            "Βλυχάδα",
-            "Κασίδι",
-            "Πετροκόπι"
-          ],
-          "after": [
-            "Κασίδι",
-            "Βλυχάδα",
-            "Πετροκόπι"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "south-aegean-kos",
-          "before": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Λαγκάδα"
-          ],
-          "after": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Παραλία Καμήλα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-sifnos",
-          "before": [
-            "Χερρόνησος",
-            "Καμάρες",
-            "Αποκοφτό"
-          ],
-          "after": [
-            "Χερρόνησος",
-            "Αποκοφτό",
-            "Καμάρες"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "thessaly-magnesia-mainland---pelion",
-          "before": [
-            "Χορευτό",
-            "Παπά Νερό",
-            "Ποτιστικά"
-          ],
-          "after": [
-            "Χορευτό",
-            "Παπά Νερό",
-            "Άγιοι Σαράντα"
-          ],
-          "orderOnly": false
-        }
-      ],
-      "calmerMedianM": 0.09,
-      "calmerP90M": 0.3,
-      "calmerMaxM": 0.56,
+      "podiumRegionsChanged": 0,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [],
+      "calmerMedianM": 0,
+      "calmerP90M": 0,
+      "calmerMaxM": null,
       "rougherMedianM": 0,
       "rougherP90M": 0,
       "rougherMaxM": null
     },
     "fan-all-s1": {
       "label": "βεντάλια σε όλους τους φραγμένους (cos², ~±45°)",
-      "beachesMeasured": 2872,
-      "spokeBefore": 559,
-      "spokeAfter": 765,
-      "newSpeakers": 206,
+      "beachesMeasured": 42,
+      "spokeBefore": 14,
+      "spokeAfter": 17,
+      "newSpeakers": 3,
       "lostVoice": 0,
-      "calmer": 272,
+      "calmer": 7,
       "calmerExamples": [
         {
-          "region": "attica-aegina",
-          "name": "Σουβάλα",
-          "beachId": 94,
-          "onshore": -0.225,
+          "region": "attica-kythira",
+          "name": "Πετρίτης",
+          "beachId": 128,
+          "onshore": -0.291,
           "level": "protected",
-          "neighbour90Km": 9.76,
+          "neighbour90Km": 10.6,
           "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
+            "s1": 0.2,
+            "s2": 0.15,
+            "s3": 0.13
           },
-          "beforeM": 0.15,
-          "afterM": 0.1
+          "beforeM": 0.59,
+          "afterM": 0.2
         },
         {
-          "region": "attica-athens-area-mainland",
-          "name": "Παραλία Αστέρα Γλυφάδας",
-          "beachId": 12,
-          "onshore": 0.096,
+          "region": "attica-kythira",
+          "name": "Παραλία Λυκοδήμου",
+          "beachId": 130,
+          "onshore": -0.434,
+          "level": "protected",
+          "neighbour90Km": 15.28,
+          "fanM": {
+            "s1": 0.24,
+            "s2": 0.18,
+            "s3": 0.16
+          },
+          "beforeM": 0.59,
+          "afterM": 0.24
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
+          "level": "protected",
+          "neighbour90Km": 15.08,
+          "fanM": {
+            "s1": 0.23,
+            "s2": 0.17,
+            "s3": 0.14
+          },
+          "beforeM": 0.6,
+          "afterM": 0.23
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "beachId": 134,
+          "onshore": -0.687,
           "level": "partial",
-          "neighbour90Km": 8.16,
+          "neighbour90Km": 10.36,
           "fanM": {
-            "s1": 0.05,
-            "s2": 0.04,
-            "s3": 0.03
+            "s1": 0.23,
+            "s2": 0.18,
+            "s3": 0.16
           },
-          "beforeM": 0.28,
-          "afterM": 0.1
+          "beforeM": 1.05,
+          "afterM": 0.23
         },
         {
-          "region": "attica-athens-area-mainland",
-          "name": "Νησίδα Φλέβες",
-          "beachId": 24,
-          "onshore": 0.071,
+          "region": "attica-kythira",
+          "name": "Παραλία Λίμνη (Παλαιόπολη)",
+          "beachId": 135,
+          "onshore": -0.324,
           "level": "protected",
-          "neighbour90Km": 10.12,
+          "neighbour90Km": 11.16,
           "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
+            "s1": 0.25,
+            "s2": 0.21,
+            "s3": 0.19
           },
-          "beforeM": 0.24,
-          "afterM": 0.1
+          "beforeM": 1.32,
+          "afterM": 0.25
         },
         {
-          "region": "attica-east-attica-mainland",
-          "name": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "onshore": 0.479,
-          "level": "partial",
-          "neighbour90Km": 5.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Γαλάζια Ακτή",
-          "beachId": 54,
-          "onshore": -0.134,
+          "region": "attica-kythira",
+          "name": "Μελιδόνι",
+          "beachId": 140,
+          "onshore": -0.578,
           "level": "protected",
-          "neighbour90Km": 15.24,
+          "neighbour90Km": 0.24,
           "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
+            "s1": 0.08,
+            "s2": 0.07,
+            "s3": 0.07
           },
-          "beforeM": 0.24,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Πεύκο",
-          "beachId": 57,
-          "onshore": 0.24,
-          "level": "partial",
-          "neighbour90Km": 12.04,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Ευκάλυπτα",
-          "beachId": 60,
-          "onshore": -0.137,
-          "level": "protected",
-          "neighbour90Km": 11.48,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.26,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Δεύτερη Παραλία Σαρωνίδας",
-          "beachId": 63,
-          "onshore": -0.559,
-          "level": "protected",
-          "neighbour90Km": 10.12,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.21,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Μαύρο Λιθάρι / Eden Beach",
-          "beachId": 65,
-          "onshore": -0.546,
-          "level": "protected",
-          "neighbour90Km": 5.68,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Χάρακας",
-          "beachId": 75,
-          "onshore": -0.215,
-          "level": "protected",
-          "neighbour90Km": 4.6,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Άγιος Πέτρος",
-          "beachId": 78,
-          "onshore": -0.024,
-          "level": "partial",
-          "neighbour90Km": 14.32,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-hydra",
-          "name": "Μπίστι",
-          "beachId": 106,
-          "onshore": -0.568,
-          "level": "protected",
-          "neighbour90Km": 4,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.11,
+          "beforeM": 0.83,
           "afterM": 0.1
         },
         {
           "region": "attica-kythira",
-          "name": "Παραλία Αγία Πελαγία",
-          "beachId": 120,
-          "onshore": -0.574,
+          "name": "Παραλία Σπαραγγάριο",
+          "beachId": 145,
+          "onshore": -0.708,
           "level": "protected",
-          "neighbour90Km": 11,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Λίμνη (Αγίας Πελαγίας)",
-          "beachId": 125,
-          "onshore": -0.407,
-          "level": "protected",
-          "neighbour90Km": 17.04,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Διακόφτι",
-          "beachId": 131,
-          "onshore": -0.17,
-          "level": "protected",
-          "neighbour90Km": 14.36,
+          "neighbour90Km": 0.44,
           "fanM": {
             "s1": 0.09,
-            "s2": 0.09,
-            "s3": 0.08
+            "s2": 0.08,
+            "s3": 0.07
           },
-          "beforeM": 0.3,
+          "beforeM": 0.56,
           "afterM": 0.1
         }
       ],
-      "calmerDryLive": 156,
+      "calmerDryLive": 3,
       "rougher": 5,
       "rougherExamples": [
         {
-          "region": "crete-crete-chania",
-          "name": "Σεϊτάν Λιμάνι",
-          "beachId": 576,
-          "onshore": -0.754,
+          "region": "attica-kythira",
+          "name": "Ῥουτσούνας",
+          "beachId": 116,
+          "onshore": -0.613,
           "level": "protected",
-          "neighbour90Km": 10,
+          "neighbour90Km": 10.04,
           "fanM": {
-            "s1": 0.11,
-            "s2": 0.09,
-            "s3": 0.08
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
           },
-          "beforeM": 0.1,
-          "afterM": 0.11
+          "beforeM": 0.14,
+          "afterM": 0.19
         },
         {
-          "region": "crete-crete-chania",
-          "name": "Τραχήλι",
-          "beachId": 582,
+          "region": "attica-kythira",
+          "name": "Παραλία Λυγία",
+          "beachId": 126,
           "onshore": -1,
           "level": "protected",
-          "neighbour90Km": 10,
+          "neighbour90Km": 5,
           "fanM": {
-            "s1": 0.11,
+            "s1": 0.14,
             "s2": 0.11,
-            "s3": 0.1
-          },
-          "beforeM": 0.1,
-          "afterM": 0.11
-        },
-        {
-          "region": "crete-crete-chania",
-          "name": "Afrata",
-          "beachId": 585,
-          "onshore": -0.809,
-          "level": "protected",
-          "neighbour90Km": 10.2,
-          "fanM": {
-            "s1": 0.11,
-            "s2": 0.09,
             "s3": 0.08
           },
-          "beforeM": 0.1,
-          "afterM": 0.11
+          "beforeM": 0.11,
+          "afterM": 0.14
         },
         {
-          "region": "crete-gavdos",
-          "name": "Λακκούδι",
-          "beachId": 612,
-          "onshore": -0.772,
+          "region": "attica-kythira",
+          "name": "Παραλία Δίπορος",
+          "beachId": 127,
+          "onshore": -0.625,
           "level": "protected",
-          "neighbour90Km": 11.8,
+          "neighbour90Km": 10.04,
           "fanM": {
-            "s1": 0.2,
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
+          },
+          "beforeM": 0.14,
+          "afterM": 0.19
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Άγιος Λευτέρης",
+          "beachId": 129,
+          "onshore": -0.624,
+          "level": "protected",
+          "neighbour90Km": 10.08,
+          "fanM": {
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
+          },
+          "beforeM": 0.14,
+          "afterM": 0.19
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Λεφτό",
+          "beachId": 143,
+          "onshore": -0.602,
+          "level": "protected",
+          "neighbour90Km": 10,
+          "fanM": {
+            "s1": 0.21,
             "s2": 0.17,
-            "s3": 0.16
+            "s3": 0.14
           },
-          "beforeM": 0.15,
-          "afterM": 0.17
-        },
-        {
-          "region": "crete-gavdos",
-          "name": "Κόρφος",
-          "beachId": 613,
-          "onshore": -0.823,
-          "level": "protected",
-          "neighbour90Km": 5.36,
-          "fanM": {
-            "s1": 0.12,
-            "s2": 0.09,
-            "s3": 0.07
-          },
-          "beforeM": 0.1,
-          "afterM": 0.12
+          "beforeM": 0.17,
+          "afterM": 0.21
         }
       ],
-      "calmerAlreadyProtected": 216,
-      "suppressedOver05": 6,
-      "suppressedOver10": 0,
-      "suppressedMaxM": 0.92,
-      "panormosClassChanged": 226,
-      "comfortSofter": 18,
+      "calmerAlreadyProtected": 6,
+      "suppressedOver05": 7,
+      "suppressedOver10": 2,
+      "suppressedMaxM": 1.32,
+      "panormosClassChanged": 5,
+      "comfortSofter": 1,
       "comfortStricter": 0,
       "comfortMoves": {
-        "avoid_swimming → caution": 1,
-        "good → excellent": 15,
-        "caution → good": 2
+        "avoid_swimming → caution": 1
       },
       "softerExamples": [
         {
           "region": "attica-kythira",
-          "name": "Κυριακουλου",
-          "beachId": 147,
-          "onshore": 0.345,
-          "level": "partial",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
+          "level": "protected",
           "move": "avoid_swimming → caution",
-          "neighbour90Km": 20,
+          "neighbour90Km": 15.08,
           "fanM": {
-            "s1": 0.1,
-            "s2": 0.1,
-            "s3": 0.09
+            "s1": 0.23,
+            "s2": 0.17,
+            "s3": 0.14
           },
-          "beforeM": 0.92,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Καραβοστάσι",
-          "beachId": 743,
-          "onshore": 0.007,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 20,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Trachilias Beach",
-          "beachId": 774,
-          "onshore": 0.108,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 22.96,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.04
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Άγιος Ιωάννης",
-          "beachId": 1687,
-          "onshore": -0.391,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Αχλα",
-          "beachId": 1692,
-          "onshore": -0.232,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.2,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.42,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Νειμποριό",
-          "beachId": 1703,
-          "onshore": -0.389,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Πλατανιστός",
-          "beachId": 1720,
-          "onshore": -0.282,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-arki",
-          "name": "Πατελιά",
-          "beachId": 2498,
-          "onshore": 0.34,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 0.68,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "name": "Μαγαζάκι",
-          "beachId": 2240,
-          "onshore": -0.063,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 1.16,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.03,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-ios",
-          "name": "Καρατζάς",
-          "beachId": 1769,
-          "onshore": 0.137,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 14.76,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-lipsi",
-          "name": "Κάμπος",
-          "beachId": 2371,
-          "onshore": 0.12,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 10.72,
-          "fanM": {
-            "s1": 0.06,
-            "s2": 0.05,
-            "s3": 0.05
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-paros",
-          "name": "Λάγγερη",
-          "beachId": 2032,
-          "onshore": 0.349,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 2.56,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Έριστος",
-          "beachId": 2475,
-          "onshore": -0.084,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 11.08,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Τολός",
-          "beachId": 2484,
-          "onshore": 0.091,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 10.24,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.05
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tinos",
-          "name": "Βαθύ Πανόρμου",
-          "beachId": 2161,
-          "onshore": -0.078,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0,
-            "s2": 0,
-            "s3": 0
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
+          "beforeM": 0.6,
+          "afterM": 0.23
         }
       ],
       "stricterExamples": [],
-      "podiumRegionsChanged": 17,
-      "podiumOrderOnly": 4,
-      "podiumExamples": [
-        {
-          "region": "attica-kythira",
-          "before": [
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι",
-            "Παραλία Καλαδί"
-          ],
-          "after": [
-            "Μελιδόνι",
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "attica-salamina",
-          "before": [
-            "Παραλία Κανάκια",
-            "Χαρουπιάς",
-            "Ντουλάπι"
-          ],
-          "after": [
-            "Παραλία Κανάκια",
-            "Ντουλάπι",
-            "Χαρουπιάς"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "before": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Νιστέρι"
-          ],
-          "after": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Λιβάδι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-fournoi",
-          "before": [
-            "Βλυχάδα",
-            "Κασίδι",
-            "Πετροκόπι"
-          ],
-          "after": [
-            "Κασίδι",
-            "Βλυχάδα",
-            "Πετροκόπι"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "peloponnese-lakonia-mainland",
-          "before": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Άμπελο"
-          ],
-          "after": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Βλυχάδα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "peloponnese-messinia-mainland",
-          "before": [
-            "Περούλια",
-            "Μεμί",
-            "Παραλία Καλαμάτας"
-          ],
-          "after": [
-            "Περούλια",
-            "Διβάρι",
-            "Μαυροβούνι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-andros",
-          "before": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Χρυσή Αμμος"
-          ],
-          "after": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Νειμποριό"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "before": [
-            "Στενό",
-            "Καμινάκια",
-            "Άγιος Βασίλειος"
-          ],
-          "after": [
-            "Στενό",
-            "Καμινάκια",
-            "Μαγαζάκι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-folegandros",
-          "before": [
-            "Κοχλίδια",
-            "Άγιος Νικόλαος",
-            "Κάτεργο"
-          ],
-          "after": [
-            "Κοχλίδια",
-            "Βιτσέντζου",
-            "Άγιος Νικόλαος"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-ios",
-          "before": [
-            "Μυλοπότας",
-            "Αγία Θεοδότη",
-            "Τζαμαρία"
-          ],
-          "after": [
-            "Μαγγανάρι",
-            "Αγία Θεοδότη",
-            "Μυλοπότας"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-kos",
-          "before": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Λαγκάδα"
-          ],
-          "after": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Παραλία Καμήλα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-mykonos",
-          "before": [
-            "Ορνός",
-            "Καλαφάτη",
-            "Άγιος Στέφανος"
-          ],
-          "after": [
-            "Καλαφάτη",
-            "Ψαρρού",
-            "Καλό Λιβάδι"
-          ],
-          "orderOnly": false
-        }
-      ],
-      "calmerMedianM": 0.1,
-      "calmerP90M": 0.3,
-      "calmerMaxM": 0.82,
-      "rougherMedianM": 0.01,
-      "rougherP90M": 0.02,
-      "rougherMaxM": 0.02
+      "podiumRegionsChanged": 0,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [],
+      "calmerMedianM": 0.46,
+      "calmerP90M": 0.82,
+      "calmerMaxM": 1.07,
+      "rougherMedianM": 0.05,
+      "rougherP90M": 0.05,
+      "rougherMaxM": 0.05
     },
     "fan-all-s2": {
       "label": "βεντάλια σε όλους τους φραγμένους (cos⁴, ~±33°)",
-      "beachesMeasured": 2872,
-      "spokeBefore": 559,
-      "spokeAfter": 765,
-      "newSpeakers": 206,
+      "beachesMeasured": 42,
+      "spokeBefore": 14,
+      "spokeAfter": 17,
+      "newSpeakers": 3,
       "lostVoice": 0,
-      "calmer": 273,
+      "calmer": 7,
       "calmerExamples": [
         {
-          "region": "attica-aegina",
-          "name": "Σουβάλα",
-          "beachId": 94,
-          "onshore": -0.225,
+          "region": "attica-kythira",
+          "name": "Πετρίτης",
+          "beachId": 128,
+          "onshore": -0.291,
           "level": "protected",
-          "neighbour90Km": 9.76,
+          "neighbour90Km": 10.6,
           "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
+            "s1": 0.2,
+            "s2": 0.15,
+            "s3": 0.13
           },
-          "beforeM": 0.15,
-          "afterM": 0.1
+          "beforeM": 0.59,
+          "afterM": 0.15
         },
         {
-          "region": "attica-athens-area-mainland",
-          "name": "Παραλία Αστέρα Γλυφάδας",
-          "beachId": 12,
-          "onshore": 0.096,
+          "region": "attica-kythira",
+          "name": "Παραλία Λυκοδήμου",
+          "beachId": 130,
+          "onshore": -0.434,
+          "level": "protected",
+          "neighbour90Km": 15.28,
+          "fanM": {
+            "s1": 0.24,
+            "s2": 0.18,
+            "s3": 0.16
+          },
+          "beforeM": 0.59,
+          "afterM": 0.18
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
+          "level": "protected",
+          "neighbour90Km": 15.08,
+          "fanM": {
+            "s1": 0.23,
+            "s2": 0.17,
+            "s3": 0.14
+          },
+          "beforeM": 0.6,
+          "afterM": 0.17
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "beachId": 134,
+          "onshore": -0.687,
           "level": "partial",
-          "neighbour90Km": 8.16,
+          "neighbour90Km": 10.36,
           "fanM": {
-            "s1": 0.05,
-            "s2": 0.04,
-            "s3": 0.03
+            "s1": 0.23,
+            "s2": 0.18,
+            "s3": 0.16
           },
-          "beforeM": 0.28,
-          "afterM": 0.1
+          "beforeM": 1.05,
+          "afterM": 0.18
         },
         {
-          "region": "attica-athens-area-mainland",
-          "name": "Νησίδα Φλέβες",
-          "beachId": 24,
-          "onshore": 0.071,
+          "region": "attica-kythira",
+          "name": "Παραλία Λίμνη (Παλαιόπολη)",
+          "beachId": 135,
+          "onshore": -0.324,
           "level": "protected",
-          "neighbour90Km": 10.12,
+          "neighbour90Km": 11.16,
           "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
+            "s1": 0.25,
+            "s2": 0.21,
+            "s3": 0.19
           },
-          "beforeM": 0.24,
-          "afterM": 0.1
+          "beforeM": 1.32,
+          "afterM": 0.21
         },
         {
-          "region": "attica-east-attica-mainland",
-          "name": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "onshore": 0.479,
-          "level": "partial",
-          "neighbour90Km": 5.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Γαλάζια Ακτή",
-          "beachId": 54,
-          "onshore": -0.134,
+          "region": "attica-kythira",
+          "name": "Μελιδόνι",
+          "beachId": 140,
+          "onshore": -0.578,
           "level": "protected",
-          "neighbour90Km": 15.24,
+          "neighbour90Km": 0.24,
           "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
+            "s1": 0.08,
+            "s2": 0.07,
+            "s3": 0.07
           },
-          "beforeM": 0.24,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Πεύκο",
-          "beachId": 57,
-          "onshore": 0.24,
-          "level": "partial",
-          "neighbour90Km": 12.04,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Ευκάλυπτα",
-          "beachId": 60,
-          "onshore": -0.137,
-          "level": "protected",
-          "neighbour90Km": 11.48,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.26,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Δεύτερη Παραλία Σαρωνίδας",
-          "beachId": 63,
-          "onshore": -0.559,
-          "level": "protected",
-          "neighbour90Km": 10.12,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.21,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Μαύρο Λιθάρι / Eden Beach",
-          "beachId": 65,
-          "onshore": -0.546,
-          "level": "protected",
-          "neighbour90Km": 5.68,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Χάρακας",
-          "beachId": 75,
-          "onshore": -0.215,
-          "level": "protected",
-          "neighbour90Km": 4.6,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Άγιος Πέτρος",
-          "beachId": 78,
-          "onshore": -0.024,
-          "level": "partial",
-          "neighbour90Km": 14.32,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-hydra",
-          "name": "Μπίστι",
-          "beachId": 106,
-          "onshore": -0.568,
-          "level": "protected",
-          "neighbour90Km": 4,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.11,
+          "beforeM": 0.83,
           "afterM": 0.1
         },
         {
           "region": "attica-kythira",
-          "name": "Παραλία Αγία Πελαγία",
-          "beachId": 120,
-          "onshore": -0.574,
+          "name": "Παραλία Σπαραγγάριο",
+          "beachId": 145,
+          "onshore": -0.708,
           "level": "protected",
-          "neighbour90Km": 11,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Λίμνη (Αγίας Πελαγίας)",
-          "beachId": 125,
-          "onshore": -0.407,
-          "level": "protected",
-          "neighbour90Km": 17.04,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Διακόφτι",
-          "beachId": 131,
-          "onshore": -0.17,
-          "level": "protected",
-          "neighbour90Km": 14.36,
+          "neighbour90Km": 0.44,
           "fanM": {
             "s1": 0.09,
-            "s2": 0.09,
-            "s3": 0.08
+            "s2": 0.08,
+            "s3": 0.07
           },
-          "beforeM": 0.3,
+          "beforeM": 0.56,
           "afterM": 0.1
         }
       ],
-      "calmerDryLive": 156,
-      "rougher": 2,
-      "rougherExamples": [
+      "calmerDryLive": 3,
+      "rougher": 0,
+      "rougherExamples": [],
+      "calmerAlreadyProtected": 6,
+      "suppressedOver05": 7,
+      "suppressedOver10": 2,
+      "suppressedMaxM": 1.32,
+      "panormosClassChanged": 5,
+      "comfortSofter": 1,
+      "comfortStricter": 0,
+      "comfortMoves": {
+        "avoid_swimming → caution": 1
+      },
+      "softerExamples": [
         {
-          "region": "crete-crete-chania",
-          "name": "Τραχήλι",
-          "beachId": 582,
-          "onshore": -1,
+          "region": "attica-kythira",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
           "level": "protected",
-          "neighbour90Km": 10,
+          "move": "avoid_swimming → caution",
+          "neighbour90Km": 15.08,
           "fanM": {
-            "s1": 0.11,
-            "s2": 0.11,
-            "s3": 0.1
-          },
-          "beforeM": 0.1,
-          "afterM": 0.11
-        },
-        {
-          "region": "crete-gavdos",
-          "name": "Λακκούδι",
-          "beachId": 612,
-          "onshore": -0.772,
-          "level": "protected",
-          "neighbour90Km": 11.8,
-          "fanM": {
-            "s1": 0.2,
+            "s1": 0.23,
             "s2": 0.17,
-            "s3": 0.16
+            "s3": 0.14
           },
-          "beforeM": 0.15,
+          "beforeM": 0.6,
           "afterM": 0.17
         }
       ],
-      "calmerAlreadyProtected": 217,
-      "suppressedOver05": 6,
-      "suppressedOver10": 0,
-      "suppressedMaxM": 0.92,
-      "panormosClassChanged": 227,
-      "comfortSofter": 18,
-      "comfortStricter": 0,
-      "comfortMoves": {
-        "avoid_swimming → caution": 1,
-        "good → excellent": 15,
-        "caution → good": 2
-      },
-      "softerExamples": [
-        {
-          "region": "attica-kythira",
-          "name": "Κυριακουλου",
-          "beachId": 147,
-          "onshore": 0.345,
-          "level": "partial",
-          "move": "avoid_swimming → caution",
-          "neighbour90Km": 20,
-          "fanM": {
-            "s1": 0.1,
-            "s2": 0.1,
-            "s3": 0.09
-          },
-          "beforeM": 0.92,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Καραβοστάσι",
-          "beachId": 743,
-          "onshore": 0.007,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 20,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Trachilias Beach",
-          "beachId": 774,
-          "onshore": 0.108,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 22.96,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.04
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Άγιος Ιωάννης",
-          "beachId": 1687,
-          "onshore": -0.391,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Αχλα",
-          "beachId": 1692,
-          "onshore": -0.232,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.2,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.42,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Νειμποριό",
-          "beachId": 1703,
-          "onshore": -0.389,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Πλατανιστός",
-          "beachId": 1720,
-          "onshore": -0.282,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-arki",
-          "name": "Πατελιά",
-          "beachId": 2498,
-          "onshore": 0.34,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 0.68,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "name": "Μαγαζάκι",
-          "beachId": 2240,
-          "onshore": -0.063,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 1.16,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.03,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-ios",
-          "name": "Καρατζάς",
-          "beachId": 1769,
-          "onshore": 0.137,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 14.76,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-lipsi",
-          "name": "Κάμπος",
-          "beachId": 2371,
-          "onshore": 0.12,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 10.72,
-          "fanM": {
-            "s1": 0.06,
-            "s2": 0.05,
-            "s3": 0.05
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-paros",
-          "name": "Λάγγερη",
-          "beachId": 2032,
-          "onshore": 0.349,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 2.56,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Έριστος",
-          "beachId": 2475,
-          "onshore": -0.084,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 11.08,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Τολός",
-          "beachId": 2484,
-          "onshore": 0.091,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 10.24,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.05
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tinos",
-          "name": "Βαθύ Πανόρμου",
-          "beachId": 2161,
-          "onshore": -0.078,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0,
-            "s2": 0,
-            "s3": 0
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        }
-      ],
       "stricterExamples": [],
-      "podiumRegionsChanged": 17,
-      "podiumOrderOnly": 4,
-      "podiumExamples": [
-        {
-          "region": "attica-kythira",
-          "before": [
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι",
-            "Παραλία Καλαδί"
-          ],
-          "after": [
-            "Μελιδόνι",
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "attica-salamina",
-          "before": [
-            "Παραλία Κανάκια",
-            "Χαρουπιάς",
-            "Ντουλάπι"
-          ],
-          "after": [
-            "Παραλία Κανάκια",
-            "Ντουλάπι",
-            "Χαρουπιάς"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "before": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Νιστέρι"
-          ],
-          "after": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Λιβάδι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-fournoi",
-          "before": [
-            "Βλυχάδα",
-            "Κασίδι",
-            "Πετροκόπι"
-          ],
-          "after": [
-            "Κασίδι",
-            "Βλυχάδα",
-            "Πετροκόπι"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "peloponnese-lakonia-mainland",
-          "before": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Άμπελο"
-          ],
-          "after": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Βλυχάδα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "peloponnese-messinia-mainland",
-          "before": [
-            "Περούλια",
-            "Μεμί",
-            "Παραλία Καλαμάτας"
-          ],
-          "after": [
-            "Περούλια",
-            "Διβάρι",
-            "Μαυροβούνι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-andros",
-          "before": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Χρυσή Αμμος"
-          ],
-          "after": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Νειμποριό"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "before": [
-            "Στενό",
-            "Καμινάκια",
-            "Άγιος Βασίλειος"
-          ],
-          "after": [
-            "Στενό",
-            "Καμινάκια",
-            "Μαγαζάκι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-folegandros",
-          "before": [
-            "Κοχλίδια",
-            "Άγιος Νικόλαος",
-            "Κάτεργο"
-          ],
-          "after": [
-            "Κοχλίδια",
-            "Βιτσέντζου",
-            "Άγιος Νικόλαος"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-ios",
-          "before": [
-            "Μυλοπότας",
-            "Αγία Θεοδότη",
-            "Τζαμαρία"
-          ],
-          "after": [
-            "Μαγγανάρι",
-            "Αγία Θεοδότη",
-            "Μυλοπότας"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-kos",
-          "before": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Λαγκάδα"
-          ],
-          "after": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Παραλία Καμήλα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-mykonos",
-          "before": [
-            "Ορνός",
-            "Καλαφάτη",
-            "Άγιος Στέφανος"
-          ],
-          "after": [
-            "Καλαφάτη",
-            "Ψαρρού",
-            "Καλό Λιβάδι"
-          ],
-          "orderOnly": false
-        }
-      ],
-      "calmerMedianM": 0.1,
-      "calmerP90M": 0.3,
-      "calmerMaxM": 0.82,
-      "rougherMedianM": 0.01,
-      "rougherP90M": 0.01,
-      "rougherMaxM": 0.02
+      "podiumRegionsChanged": 0,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [],
+      "calmerMedianM": 0.46,
+      "calmerP90M": 0.87,
+      "calmerMaxM": 1.11,
+      "rougherMedianM": 0,
+      "rougherP90M": 0,
+      "rougherMaxM": null
     },
     "fan-all-s3": {
       "label": "βεντάλια σε όλους τους φραγμένους (cos⁶, ~±27°)",
-      "beachesMeasured": 2872,
-      "spokeBefore": 559,
-      "spokeAfter": 765,
-      "newSpeakers": 206,
+      "beachesMeasured": 42,
+      "spokeBefore": 14,
+      "spokeAfter": 17,
+      "newSpeakers": 3,
       "lostVoice": 0,
-      "calmer": 273,
+      "calmer": 12,
       "calmerExamples": [
         {
-          "region": "attica-aegina",
-          "name": "Σουβάλα",
-          "beachId": 94,
-          "onshore": -0.225,
+          "region": "attica-kythira",
+          "name": "Ῥουτσούνας",
+          "beachId": 116,
+          "onshore": -0.613,
           "level": "protected",
-          "neighbour90Km": 9.76,
+          "neighbour90Km": 10.04,
           "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
           },
-          "beforeM": 0.15,
-          "afterM": 0.1
+          "beforeM": 0.14,
+          "afterM": 0.11
         },
         {
-          "region": "attica-athens-area-mainland",
-          "name": "Παραλία Αστέρα Γλυφάδας",
-          "beachId": 12,
-          "onshore": 0.096,
-          "level": "partial",
-          "neighbour90Km": 8.16,
-          "fanM": {
-            "s1": 0.05,
-            "s2": 0.04,
-            "s3": 0.03
-          },
-          "beforeM": 0.28,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-athens-area-mainland",
-          "name": "Νησίδα Φλέβες",
-          "beachId": 24,
-          "onshore": 0.071,
+          "region": "attica-kythira",
+          "name": "Παραλία Λυγία",
+          "beachId": 126,
+          "onshore": -1,
           "level": "protected",
-          "neighbour90Km": 10.12,
+          "neighbour90Km": 5,
           "fanM": {
-            "s1": 0.04,
-            "s2": 0.03,
-            "s3": 0.02
-          },
-          "beforeM": 0.24,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "onshore": 0.479,
-          "level": "partial",
-          "neighbour90Km": 5.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Γαλάζια Ακτή",
-          "beachId": 54,
-          "onshore": -0.134,
-          "level": "protected",
-          "neighbour90Km": 15.24,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.24,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Πεύκο",
-          "beachId": 57,
-          "onshore": 0.24,
-          "level": "partial",
-          "neighbour90Km": 12.04,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Ευκάλυπτα",
-          "beachId": 60,
-          "onshore": -0.137,
-          "level": "protected",
-          "neighbour90Km": 11.48,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.26,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Δεύτερη Παραλία Σαρωνίδας",
-          "beachId": 63,
-          "onshore": -0.559,
-          "level": "protected",
-          "neighbour90Km": 10.12,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.21,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Μαύρο Λιθάρι / Eden Beach",
-          "beachId": 65,
-          "onshore": -0.546,
-          "level": "protected",
-          "neighbour90Km": 5.68,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.22,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Χάρακας",
-          "beachId": 75,
-          "onshore": -0.215,
-          "level": "protected",
-          "neighbour90Km": 4.6,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-east-attica-mainland",
-          "name": "Άγιος Πέτρος",
-          "beachId": 78,
-          "onshore": -0.024,
-          "level": "partial",
-          "neighbour90Km": 14.32,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.18,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-hydra",
-          "name": "Μπίστι",
-          "beachId": 106,
-          "onshore": -0.568,
-          "level": "protected",
-          "neighbour90Km": 4,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
+            "s1": 0.14,
+            "s2": 0.11,
+            "s3": 0.08
           },
           "beforeM": 0.11,
           "afterM": 0.1
         },
         {
           "region": "attica-kythira",
-          "name": "Παραλία Αγία Πελαγία",
-          "beachId": 120,
-          "onshore": -0.574,
+          "name": "Παραλία Δίπορος",
+          "beachId": 127,
+          "onshore": -0.625,
           "level": "protected",
-          "neighbour90Km": 11,
+          "neighbour90Km": 10.04,
           "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
           },
-          "beforeM": 0.3,
-          "afterM": 0.1
+          "beforeM": 0.14,
+          "afterM": 0.11
         },
         {
           "region": "attica-kythira",
-          "name": "Λίμνη (Αγίας Πελαγίας)",
-          "beachId": 125,
-          "onshore": -0.407,
+          "name": "Πετρίτης",
+          "beachId": 128,
+          "onshore": -0.291,
           "level": "protected",
-          "neighbour90Km": 17.04,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        },
-        {
-          "region": "attica-kythira",
-          "name": "Διακόφτι",
-          "beachId": 131,
-          "onshore": -0.17,
-          "level": "protected",
-          "neighbour90Km": 14.36,
-          "fanM": {
-            "s1": 0.09,
-            "s2": 0.09,
-            "s3": 0.08
-          },
-          "beforeM": 0.3,
-          "afterM": 0.1
-        }
-      ],
-      "calmerDryLive": 156,
-      "rougher": 1,
-      "rougherExamples": [
-        {
-          "region": "crete-gavdos",
-          "name": "Λακκούδι",
-          "beachId": 612,
-          "onshore": -0.772,
-          "level": "protected",
-          "neighbour90Km": 11.8,
+          "neighbour90Km": 10.6,
           "fanM": {
             "s1": 0.2,
-            "s2": 0.17,
+            "s2": 0.15,
+            "s3": 0.13
+          },
+          "beforeM": 0.59,
+          "afterM": 0.13
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Άγιος Λευτέρης",
+          "beachId": 129,
+          "onshore": -0.624,
+          "level": "protected",
+          "neighbour90Km": 10.08,
+          "fanM": {
+            "s1": 0.19,
+            "s2": 0.14,
+            "s3": 0.11
+          },
+          "beforeM": 0.14,
+          "afterM": 0.11
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Λυκοδήμου",
+          "beachId": 130,
+          "onshore": -0.434,
+          "level": "protected",
+          "neighbour90Km": 15.28,
+          "fanM": {
+            "s1": 0.24,
+            "s2": 0.18,
             "s3": 0.16
           },
-          "beforeM": 0.15,
+          "beforeM": 0.59,
           "afterM": 0.16
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
+          "level": "protected",
+          "neighbour90Km": 15.08,
+          "fanM": {
+            "s1": 0.23,
+            "s2": 0.17,
+            "s3": 0.14
+          },
+          "beforeM": 0.6,
+          "afterM": 0.14
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "beachId": 134,
+          "onshore": -0.687,
+          "level": "partial",
+          "neighbour90Km": 10.36,
+          "fanM": {
+            "s1": 0.23,
+            "s2": 0.18,
+            "s3": 0.16
+          },
+          "beforeM": 1.05,
+          "afterM": 0.16
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Λίμνη (Παλαιόπολη)",
+          "beachId": 135,
+          "onshore": -0.324,
+          "level": "protected",
+          "neighbour90Km": 11.16,
+          "fanM": {
+            "s1": 0.25,
+            "s2": 0.21,
+            "s3": 0.19
+          },
+          "beforeM": 1.32,
+          "afterM": 0.19
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Μελιδόνι",
+          "beachId": 140,
+          "onshore": -0.578,
+          "level": "protected",
+          "neighbour90Km": 0.24,
+          "fanM": {
+            "s1": 0.08,
+            "s2": 0.07,
+            "s3": 0.07
+          },
+          "beforeM": 0.83,
+          "afterM": 0.1
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Λεφτό",
+          "beachId": 143,
+          "onshore": -0.602,
+          "level": "protected",
+          "neighbour90Km": 10,
+          "fanM": {
+            "s1": 0.21,
+            "s2": 0.17,
+            "s3": 0.14
+          },
+          "beforeM": 0.17,
+          "afterM": 0.14
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Σπαραγγάριο",
+          "beachId": 145,
+          "onshore": -0.708,
+          "level": "protected",
+          "neighbour90Km": 0.44,
+          "fanM": {
+            "s1": 0.09,
+            "s2": 0.08,
+            "s3": 0.07
+          },
+          "beforeM": 0.56,
+          "afterM": 0.1
         }
       ],
-      "calmerAlreadyProtected": 217,
-      "suppressedOver05": 6,
-      "suppressedOver10": 0,
-      "suppressedMaxM": 0.92,
-      "panormosClassChanged": 227,
-      "comfortSofter": 18,
+      "calmerDryLive": 8,
+      "rougher": 0,
+      "rougherExamples": [],
+      "calmerAlreadyProtected": 11,
+      "suppressedOver05": 7,
+      "suppressedOver10": 2,
+      "suppressedMaxM": 1.32,
+      "panormosClassChanged": 10,
+      "comfortSofter": 1,
       "comfortStricter": 0,
       "comfortMoves": {
-        "avoid_swimming → caution": 1,
-        "good → excellent": 15,
-        "caution → good": 2
+        "avoid_swimming → caution": 1
       },
       "softerExamples": [
         {
           "region": "attica-kythira",
-          "name": "Κυριακουλου",
-          "beachId": 147,
-          "onshore": 0.345,
-          "level": "partial",
+          "name": "Παραλία Καλάμι",
+          "beachId": 132,
+          "onshore": -0.54,
+          "level": "protected",
           "move": "avoid_swimming → caution",
-          "neighbour90Km": 20,
+          "neighbour90Km": 15.08,
           "fanM": {
-            "s1": 0.1,
-            "s2": 0.1,
-            "s3": 0.09
+            "s1": 0.23,
+            "s2": 0.17,
+            "s3": 0.14
           },
-          "beforeM": 0.92,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Καραβοστάσι",
-          "beachId": 743,
-          "onshore": 0.007,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 20,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "crete-crete-lasithi",
-          "name": "Trachilias Beach",
-          "beachId": 774,
-          "onshore": 0.108,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 22.96,
-          "fanM": {
-            "s1": 0.04,
-            "s2": 0.04,
-            "s3": 0.04
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Άγιος Ιωάννης",
-          "beachId": 1687,
-          "onshore": -0.391,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Αχλα",
-          "beachId": 1692,
-          "onshore": -0.232,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.2,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.42,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Νειμποριό",
-          "beachId": 1703,
-          "onshore": -0.389,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10.16,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-andros",
-          "name": "Πλατανιστός",
-          "beachId": 1720,
-          "onshore": -0.282,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 10,
-          "fanM": {
-            "s1": 0.01,
-            "s2": 0.01,
-            "s3": 0.01
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-arki",
-          "name": "Πατελιά",
-          "beachId": 2498,
-          "onshore": 0.34,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 0.68,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "name": "Μαγαζάκι",
-          "beachId": 2240,
-          "onshore": -0.063,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 1.16,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.03,
-            "s3": 0.03
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-ios",
-          "name": "Καρατζάς",
-          "beachId": 1769,
-          "onshore": 0.137,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 14.76,
-          "fanM": {
-            "s1": 0.02,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.48,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-lipsi",
-          "name": "Κάμπος",
-          "beachId": 2371,
-          "onshore": 0.12,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 10.72,
-          "fanM": {
-            "s1": 0.06,
-            "s2": 0.05,
-            "s3": 0.05
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-paros",
-          "name": "Λάγγερη",
-          "beachId": 2032,
-          "onshore": 0.349,
-          "level": "partial",
-          "move": "good → excellent",
-          "neighbour90Km": 2.56,
-          "fanM": {
-            "s1": 0.03,
-            "s2": 0.02,
-            "s3": 0.02
-          },
-          "beforeM": 0.4,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Έριστος",
-          "beachId": 2475,
-          "onshore": -0.084,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 11.08,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.06
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tilos",
-          "name": "Τολός",
-          "beachId": 2484,
-          "onshore": 0.091,
-          "level": "partial",
-          "move": "caution → good",
-          "neighbour90Km": 10.24,
-          "fanM": {
-            "s1": 0.07,
-            "s2": 0.06,
-            "s3": 0.05
-          },
-          "beforeM": 0.84,
-          "afterM": 0.1
-        },
-        {
-          "region": "south-aegean-tinos",
-          "name": "Βαθύ Πανόρμου",
-          "beachId": 2161,
-          "onshore": -0.078,
-          "level": "protected",
-          "move": "good → excellent",
-          "neighbour90Km": 15,
-          "fanM": {
-            "s1": 0,
-            "s2": 0,
-            "s3": 0
-          },
-          "beforeM": 0.44,
-          "afterM": 0.1
+          "beforeM": 0.6,
+          "afterM": 0.14
         }
       ],
       "stricterExamples": [],
-      "podiumRegionsChanged": 17,
-      "podiumOrderOnly": 4,
-      "podiumExamples": [
-        {
-          "region": "attica-kythira",
-          "before": [
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι",
-            "Παραλία Καλαδί"
-          ],
-          "after": [
-            "Μελιδόνι",
-            "Φυρή Άμμος (Κάλαμος)",
-            "Παραλία Φούρνοι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "attica-salamina",
-          "before": [
-            "Παραλία Κανάκια",
-            "Χαρουπιάς",
-            "Ντουλάπι"
-          ],
-          "after": [
-            "Παραλία Κανάκια",
-            "Ντουλάπι",
-            "Χαρουπιάς"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "before": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Νιστέρι"
-          ],
-          "after": [
-            "Παραδείσος",
-            "Γλυκάδι",
-            "Λιβάδι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "north-aegean-fournoi",
-          "before": [
-            "Βλυχάδα",
-            "Κασίδι",
-            "Πετροκόπι"
-          ],
-          "after": [
-            "Κασίδι",
-            "Βλυχάδα",
-            "Πετροκόπι"
-          ],
-          "orderOnly": true
-        },
-        {
-          "region": "peloponnese-lakonia-mainland",
-          "before": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Άμπελο"
-          ],
-          "after": [
-            "Μεγάλη Άμμος",
-            "Παραλία Λεύκης",
-            "Βλυχάδα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "peloponnese-messinia-mainland",
-          "before": [
-            "Περούλια",
-            "Μεμί",
-            "Παραλία Καλαμάτας"
-          ],
-          "after": [
-            "Περούλια",
-            "Διβάρι",
-            "Μαυροβούνι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-andros",
-          "before": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Χρυσή Αμμος"
-          ],
-          "after": [
-            "Αγιος Πέτρος",
-            "Μπατσί",
-            "Νειμποριό"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-astypalaia",
-          "before": [
-            "Στενό",
-            "Καμινάκια",
-            "Άγιος Βασίλειος"
-          ],
-          "after": [
-            "Στενό",
-            "Καμινάκια",
-            "Μαγαζάκι"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-folegandros",
-          "before": [
-            "Κοχλίδια",
-            "Άγιος Νικόλαος",
-            "Κάτεργο"
-          ],
-          "after": [
-            "Κοχλίδια",
-            "Βιτσέντζου",
-            "Άγιος Νικόλαος"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-ios",
-          "before": [
-            "Μυλοπότας",
-            "Αγία Θεοδότη",
-            "Τζαμαρία"
-          ],
-          "after": [
-            "Μαγγανάρι",
-            "Αγία Θεοδότη",
-            "Μυλοπότας"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-kos",
-          "before": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Λαγκάδα"
-          ],
-          "after": [
-            "Κόλπος Αγίου Στεφάνου",
-            "Παραλία Άγιος Στέφανος",
-            "Παραλία Καμήλα"
-          ],
-          "orderOnly": false
-        },
-        {
-          "region": "south-aegean-mykonos",
-          "before": [
-            "Ορνός",
-            "Καλαφάτη",
-            "Άγιος Στέφανος"
-          ],
-          "after": [
-            "Καλαφάτη",
-            "Ψαρρού",
-            "Καλό Λιβάδι"
-          ],
-          "orderOnly": false
-        }
-      ],
-      "calmerMedianM": 0.1,
-      "calmerP90M": 0.3,
-      "calmerMaxM": 0.82,
-      "rougherMedianM": 0.01,
-      "rougherP90M": 0.01,
-      "rougherMaxM": 0.01
+      "podiumRegionsChanged": 0,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [],
+      "calmerMedianM": 0.43,
+      "calmerP90M": 0.73,
+      "calmerMaxM": 1.13,
+      "rougherMedianM": 0,
+      "rougherP90M": 0,
+      "rougherMaxM": null
     }
   }
 }
