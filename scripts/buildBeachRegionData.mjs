@@ -283,11 +283,22 @@ const metadataAccessToAccessibility = type => {
   }
 };
 
+// Same three terms the beach-type mapper treats as pebbles.
+const hasPebbleSurface = types => types.includes('pebbles')
+  || types.includes('small_pebbles')
+  || types.includes('fine_pebbles');
+
 const metadataTerrainToBeachType = types => {
   if (!types || types.length === 0) return 'unknown';
   const hasFineSand = types.includes('fine_sand');
   const hasCoarseSand = types.includes('coarse_sand');
-  const hasPebbles = types.includes('pebbles');
+  // `small_pebbles` / `fine_pebbles` are shore-surface terms exactly like `pebbles`;
+  // leaving them out made every ψιλό-βότσαλο beach fall through to 'sandy' and get
+  // labelled Αμμώδης on the card. `fine_gravel` stays out on purpose — in this data it
+  // describes the SEABED ("σκυρώδης βυθός"), not what you walk on.
+  const hasPebbles = types.includes('pebbles')
+    || types.includes('small_pebbles')
+    || types.includes('fine_pebbles');
   const hasStones = types.includes('large_stones');
   const hasRocks = types.includes('rocks');
 
@@ -302,7 +313,7 @@ const metadataTerrainToDepth = types => {
   if (types.includes('large_stones') || types.includes('rocks')) {
     return { deepWaters: true, shallowWaters: false, waterDepth: 'deep' };
   }
-  if (types.includes('pebbles') && !types.includes('fine_sand')) {
+  if (hasPebbleSurface(types) && !types.includes('fine_sand')) {
     return { deepWaters: false, shallowWaters: false, waterDepth: 'medium' };
   }
   return { deepWaters: false, shallowWaters: true, waterDepth: 'shallow' };

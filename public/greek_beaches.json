@@ -81578,32 +81578,40 @@
         },
         {
           "id": 3103,
-          "name": "Παραλία Καλάμι (Κέρκυρα)",
+          "name": "Καλάμι",
           "lat": 39.7435074,
           "lon": 19.9338657,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Άγνωστη πρόσβαση",
-              "notes": "From OpenStreetMap; access not field-verified."
+              "type": "asphalt_road",
+              "label": "Πρόσβαση με άσφαλτο",
+              "notes": "Στενός κατηφορικός ασφαλτόδρομος από τον κεντρικό δρόμο Κέρκυρας–Κασσιόπης, περίπου 30 χλμ από την πόλη και 7 χλμ από την Κασσιόπη. Μικρό πάρκινγκ και περιορισμένη στάθμευση στον δρόμο πάνω από την ακτή· γεμίζει πριν το μεσημέρι. Από τη στάθμευση μέχρι το νερό το έδαφος είναι επίπεδο."
             },
             "terrain": {
-              "types": [],
-              "label": "—"
+              "types": [
+                "small_pebbles"
+              ],
+              "label": "ψιλό βότσαλο"
             },
             "organized": true,
             "shade": false,
             "amenities": [
+              "ξαπλώστρες εποχικά",
+              "ομπρέλες εποχικά",
               "ταβέρνες",
-              "beach bar"
+              "beach bar",
+              "θαλάσσια σπορ εποχικά",
+              "parking ή στάθμευση δρόμου κοντά"
             ],
-            "confidence": "low",
+            "confidence": "high",
             "language": "el",
             "batch": "osm_coverage_gap_2026_06",
-            "needsVerification": true,
-            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Amenities from OSM POIs 2026-08-17: ταβέρνες · beach bar (12 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
+            "sourceNotes": "OSM coverage-gap import (2026-06): created from OpenStreetMap beach \"Παραλία Καλάμι (Κέρκυρα)\" (https://www.openstreetmap.org/way/42749230) in Corfu, Ionian Islands. Coordinates from OSM. Verified as a real, distinct Greek swimmable beach by adversarial web check (>534m from any existing beach). Google confirms a beach (152 ratings) 57m from the pin. Slot via nearest existing beach #3080 (508m). Access/terrain unknown — needs field verification. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Amenities from OSM POIs 2026-08-17: ταβέρνες · beach bar (12 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα. Συμπλήρωση από πηγές 2026-08-21: τρεις ανεξάρτητοι οδηγοί Κέρκυρας συμφωνούν σε βοτσαλωτή ακτή (λευκό ψιλό βότσαλο), ξαπλώστρες/ομπρέλες εποχικά, ταβέρνες και μπαρ στην ακτή, μικρό πάρκινγκ με περιορισμένη στάθμευση δρόμου, και καγιάκ/SUP/ενοικίαση σκάφους. Το βάθος («βαθαίνει γρήγορα») το δηλώνει ρητά μία πηγή και συμφωνεί με τη γειτονική Αγνί #929. Ντους/αποδυτήρια τα αναφέρει ΜΟΝΟ μία πηγή και ΔΕΝ καταχωρήθηκαν. Η σιγουριά ανέβηκε σε high για ταυτότητα, τοποθεσία και στατικά χαρακτηριστικά από πηγές· συντεταγμένες, βαθμολόγηση και ζωντανές συνθήκες θάλασσας/ανέμου δεν άλλαξαν. Μετονομάστηκε από «Παραλία Καλάμι (Κέρκυρα)» (ονομασία εισαγωγής OSM) σε «Καλάμι»· το παλιό slug κρατήθηκε στο legacySlugs. Η άσφαλτος επιβεβαιώθηκε ανεξάρτητα από το auditUnknownAccessFromOsm.mjs (2026-08-21): OSM way/42749231 highway=residential surface=asphalt στα 91 m.",
             "sourceUrls": [
-              "https://www.openstreetmap.org/way/42749230"
+              "https://www.openstreetmap.org/way/42749230",
+              "https://discover-corfu.com/beaches/kalami/",
+              "https://onlyincorfu.com/places/kalami-beach/",
+              "https://www.corfutravelco.com/travel-guide/kalami-corfu-resort-guide-beaches-restaurants-bars-amp-things-to-do"
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -81627,9 +81635,21 @@
               ],
               "protectedFrom": [],
               "confidence": "medium",
-              "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
-          }
+              "notes": "Παράχθηκε από το facingDeg της γεωμετρικής έκθεσης (μάσκα greece-land-osm-split.geojson, υψηλής ανάλυσης). Καταγράφει μόνο την κατεύθυνση που κοιτάει η ακτή· δεν πιστοποιεί προστασία, χαμηλό κύμα ή ζωντανές συνθήκες θάλασσας."
+            },
+            "waterDepth": {
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Οι πηγές περιγράφουν βοτσαλωτό βυθό που βαθαίνει γρήγορα λίγα μέτρα από την ακτή."
+            },
+            "aliases": [
+              "Παραλία Καλάμι",
+              "Kalami Beach"
+            ]
+          },
+          "legacySlugs": [
+            "paralia-kalami-kerkyra"
+          ]
         }
       ],
       "Paxos": [

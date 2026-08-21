@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-08-21T11:13:58.068Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 3013,
+      "name": "Γουβιά",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.6537085,
+      "lon": 19.8454166,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 88,
+      "evidence": "OSM way/288578221 highway=residential surface=asphalt στα 88 m"
+    },
+    {
+      "id": 3014,
+      "name": "Παλαιοκαστρίτσα",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.6757716,
+      "lon": 19.7119035,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 64,
+      "evidence": "OSM way/1200052720 highway=primary surface=asphalt «Κέρκυρας - Παλαιοκαστρίτσας» στα 64 m"
+    },
+    {
+      "id": 3068,
+      "name": "Μοσχοφίλι",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7816882,
+      "lon": 19.94921,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 3069,
+      "name": "Παραλία Κερασιά",
+      "regionId": "ionian-islands-corfu",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3078,
+      "name": "Βουβαλομάντρια",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7848673,
+      "lon": 19.9469849,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 28,
+      "evidence": "μόνο μονοπάτι κοντά (way/631377869 highway=path στα 28 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3079,
+      "name": "Βραχλή",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7856159,
+      "lon": 19.944811,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 162,
+      "evidence": "πλησιέστερος δρόμος way/631377869 highway=path στα 162 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 3080,
+      "name": "Παραλία Χουχούλιο",
+      "regionId": "ionian-islands-corfu",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3081,
+      "name": "Τζουφάκα",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7831304,
+      "lon": 19.947964,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 32,
+      "evidence": "μόνο μονοπάτι κοντά (way/1268632338 highway=path στα 32 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3099,
+      "name": "Άκολη (Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7767142,
+      "lon": 19.9546849,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 66,
+      "evidence": "μόνο μονοπάτι κοντά (way/1174532344 highway=path στα 66 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3100,
+      "name": "Αυλάκι (Κέρκυρα / Κασσιόπη)",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7799223,
+      "lon": 19.9401097,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 121,
+      "evidence": "πλησιέστερος δρόμος way/1174548808 highway=unclassified στα 121 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 3101,
+      "name": "Βρωμολίμνη (Ερημίτης, Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7734599,
+      "lon": 19.9553668,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 13,
+      "evidence": "μόνο μονοπάτι κοντά (way/186957601 highway=path στα 13 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3103,
+      "name": "Παραλία Καλάμι (Κέρκυρα)",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.7435074,
+      "lon": 19.9338657,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 91,
+      "evidence": "OSM way/42749231 highway=residential surface=asphalt στα 91 m"
+    }
+  ]
+}
