@@ -1,0 +1,697 @@
+{
+  "generatedAt": "2026-08-21T15:43:33.808Z",
+  "model": "ecmwf_ifs025",
+  "members": 51,
+  "forecastDays": 7,
+  "thresholds": {
+    "uncertainHour": "p90 - p10 >= 2 Beaufort rungs",
+    "twoRung": "p90 - p10 >= 2 Beaufort",
+    "uncertainDay": ">= 4 uncertain hours between 10:00 and 18:00",
+    "judgement": "<2% not worth it, >25% too loose"
+  },
+  "regionsAnswered": 110,
+  "regionsAsked": 110,
+  "byLead": [
+    {
+      "lead": 0,
+      "hours": 2640,
+      "oneRungPct": 0.23,
+      "twoRungPct": 0.23,
+      "uncertainDayPct": 0,
+      "uncertainDays": 0,
+      "days": 110,
+      "looksCalmMayNotBePct": 1.36,
+      "looksCalmHours": 12
+    },
+    {
+      "lead": 1,
+      "hours": 2640,
+      "oneRungPct": 2.08,
+      "twoRungPct": 2.08,
+      "uncertainDayPct": 1.82,
+      "uncertainDays": 2,
+      "days": 110,
+      "looksCalmMayNotBePct": 3.3,
+      "looksCalmHours": 29
+    },
+    {
+      "lead": 2,
+      "hours": 2640,
+      "oneRungPct": 2.92,
+      "twoRungPct": 2.92,
+      "uncertainDayPct": 0.91,
+      "uncertainDays": 1,
+      "days": 110,
+      "looksCalmMayNotBePct": 6.14,
+      "looksCalmHours": 54
+    },
+    {
+      "lead": 3,
+      "hours": 2640,
+      "oneRungPct": 4.58,
+      "twoRungPct": 4.58,
+      "uncertainDayPct": 2.73,
+      "uncertainDays": 3,
+      "days": 110,
+      "looksCalmMayNotBePct": 6.14,
+      "looksCalmHours": 54
+    },
+    {
+      "lead": 4,
+      "hours": 2640,
+      "oneRungPct": 11.93,
+      "twoRungPct": 11.93,
+      "uncertainDayPct": 6.36,
+      "uncertainDays": 7,
+      "days": 110,
+      "looksCalmMayNotBePct": 13.52,
+      "looksCalmHours": 119
+    },
+    {
+      "lead": 5,
+      "hours": 2640,
+      "oneRungPct": 32.01,
+      "twoRungPct": 32.01,
+      "uncertainDayPct": 33.64,
+      "uncertainDays": 37,
+      "days": 110,
+      "looksCalmMayNotBePct": 22.16,
+      "looksCalmHours": 195
+    },
+    {
+      "lead": 6,
+      "hours": 2640,
+      "oneRungPct": 34.13,
+      "twoRungPct": 34.13,
+      "uncertainDayPct": 34.55,
+      "uncertainDays": 38,
+      "days": 110,
+      "looksCalmMayNotBePct": 16.36,
+      "looksCalmHours": 144
+    }
+  ],
+  "overallUncertainDayPct": 11.43,
+  "verdict": "ΧΡΗΣΙΜΟ ΕΥΡΟΣ",
+  "worst": [
+    {
+      "region": "south-aegean-symi",
+      "beaches": 11,
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 4,
+      "lo": 2,
+      "hi": 6,
+      "stamp": "2026-08-27T16:00"
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "beaches": 3,
+      "lead": 4,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-25T13:00"
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "beaches": 3,
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T12:00"
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "beaches": 3,
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-27T13:00"
+    },
+    {
+      "region": "peloponnese-korinthia-mainland",
+      "beaches": 25,
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "attica-aegina",
+      "beaches": 17,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "attica-agistri",
+      "beaches": 6,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "attica-methana",
+      "beaches": 4,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "attica-poros",
+      "beaches": 11,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "attica-spetses",
+      "beaches": 12,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "crete-gavdos",
+      "beaches": 9,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T17:00"
+    },
+    {
+      "region": "peloponnese-korinthia-mainland",
+      "beaches": 25,
+      "lead": 4,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-25T16:00"
+    },
+    {
+      "region": "thessaly-skopelos",
+      "beaches": 22,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-27T14:00"
+    },
+    {
+      "region": "attica-kythira",
+      "beaches": 42,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-26T16:00"
+    },
+    {
+      "region": "peloponnese-lakonia-mainland",
+      "beaches": 69,
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5,
+      "stamp": "2026-08-27T15:00"
+    },
+    {
+      "region": "crete-gavdos",
+      "beaches": 9,
+      "lead": 2,
+      "uncertainHours": 4,
+      "gap": 3,
+      "lo": 1,
+      "hi": 4,
+      "stamp": "2026-08-23T17:00"
+    },
+    {
+      "region": "attica-hydra",
+      "beaches": 8,
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T10:00"
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "beaches": 66,
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "north-aegean-oinousses",
+      "beaches": 8,
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T10:00"
+    },
+    {
+      "region": "south-aegean-kythnos",
+      "beaches": 40,
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "south-aegean-serifos",
+      "beaches": 25,
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "attica-aegina",
+      "beaches": 17,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-agistri",
+      "beaches": 6,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-methana",
+      "beaches": 4,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-poros",
+      "beaches": 11,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-spetses",
+      "beaches": 12,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-west-attica-mainland",
+      "beaches": 7,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "east-macedonia-and-thrace-xanthi-mainland",
+      "beaches": 3,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "ionian-islands-corfu",
+      "beaches": 105,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "ionian-islands-erikoussa",
+      "beaches": 2,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "ionian-islands-mathraki",
+      "beaches": 1,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "south-aegean-anafi",
+      "beaches": 15,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-andros",
+      "beaches": 41,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "south-aegean-halki",
+      "beaches": 2,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-kea",
+      "beaches": 34,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-kimolos",
+      "beaches": 17,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "south-aegean-milos",
+      "beaches": 42,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T11:00"
+    },
+    {
+      "region": "south-aegean-nisyros",
+      "beaches": 2,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-patmos",
+      "beaches": 16,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 5,
+      "hi": 7,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-polyaigos",
+      "beaches": 4,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "south-aegean-santorini",
+      "beaches": 13,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "south-aegean-tilos",
+      "beaches": 12,
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "thessaly-alonissos",
+      "beaches": 39,
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "attica-hydra",
+      "beaches": 8,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "attica-kythira",
+      "beaches": 42,
+      "lead": 4,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-25T12:00"
+    },
+    {
+      "region": "central-greece-viotia-mainland",
+      "beaches": 8,
+      "lead": 4,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-25T12:00"
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "beaches": 66,
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T12:00"
+    },
+    {
+      "region": "ionian-islands-ithaca",
+      "beaches": 25,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T12:00"
+    },
+    {
+      "region": "ionian-islands-kefalonia",
+      "beaches": 77,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T12:00"
+    },
+    {
+      "region": "north-aegean-oinousses",
+      "beaches": 8,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "north-aegean-samos",
+      "beaches": 44,
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T12:00"
+    },
+    {
+      "region": "peloponnese-argolida-mainland",
+      "beaches": 34,
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-27T12:00"
+    },
+    {
+      "region": "peloponnese-arkadia-mainland",
+      "beaches": 17,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T12:00"
+    },
+    {
+      "region": "south-aegean-pserimos",
+      "beaches": 3,
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6,
+      "stamp": "2026-08-27T12:00"
+    },
+    {
+      "region": "south-aegean-sifnos",
+      "beaches": 20,
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-26T10:00"
+    },
+    {
+      "region": "thessaly-alonissos",
+      "beaches": 39,
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T11:00"
+    },
+    {
+      "region": "attica-hydra",
+      "beaches": 8,
+      "lead": 4,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-25T10:00"
+    },
+    {
+      "region": "attica-kythira",
+      "beaches": 42,
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T10:00"
+    },
+    {
+      "region": "central-greece-viotia-mainland",
+      "beaches": 8,
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4,
+      "stamp": "2026-08-26T12:00"
+    },
+    {
+      "region": "crete-crete-heraklion",
+      "beaches": 53,
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5,
+      "stamp": "2026-08-27T13:00"
+    }
+  ]
+}

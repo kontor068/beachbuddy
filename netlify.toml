@@ -53,6 +53,16 @@
   to = "/.netlify/functions/traffic-stats"
   status = 200
 
+# Πόσο στέρεη είναι η πρόγνωση της κάθε ημέρας (netlify/functions/ensemble-spread.mjs).
+# Ρωτάει 51 σενάρια upstream και επιστρέφει 7 ναι/όχι — δηλαδή <400 bytes στον επισκέπτη αντί
+# για ~200 KB. Δεν περνάει από το /api/forecast/* επίτηδες: εκείνο είναι strict allow-list proxy
+# που ΔΕΝ μετασχηματίζει σώματα, ενώ αυτό δεν κάνει τίποτα άλλο. Μνήμη CDN 6 ώρες, όσο και ο
+# κύκλος του μοντέλου, ώστε ο αριθμός των επισκεπτών να μην προσθέτει κλήσεις.
+[[redirects]]
+  from = "/api/ensemble-spread"
+  to = "/.netlify/functions/ensemble-spread"
+  status = 200
+
 # Durable condition-feedback export (for scripts/calibrateFromFeedback.mjs). Gated by FEEDBACK_EXPORT_KEY.
 [[redirects]]
   from = "/api/feedback-export"
