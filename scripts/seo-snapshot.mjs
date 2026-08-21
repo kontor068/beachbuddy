@@ -951,8 +951,12 @@ function computeLocalizedAudience(raw, cap) {
       // Deliberately conservative: below 100 impressions nothing is claimed.
       let reading;
       if (total.impressions < 100) reading = 'no_traffic';
-      else if (greeceShare >= 0.4) reading = 'google_picks_wrong_url';
-      else if (e.own.impressions >= 100 && e.own.clicks / e.own.impressions < 0.01) reading = 'snippet_problem';
+      // NOT 'Google picked the wrong URL'. GSC reports the country the searcher is
+      // IN, never the language they searched in — and Greece in August is full of
+      // Italian, German and French tourists. An Italian page served to somebody
+      // sitting in Corfu may be exactly right. This label says WHERE, not WHETHER.
+      else if (greeceShare >= 0.4) reading = 'mostly_served_inside_greece';
+      else if (e.own.impressions >= 100 && e.own.clicks / e.own.impressions < 0.01) reading = 'low_ctr_in_own_country';
       else reading = 'healthy';
       return {
         locale,
@@ -989,7 +993,10 @@ function computeLocalizedAudience(raw, cap) {
     .slice(0, cap);
 
   return {
-    note: 'de/fr/it pages only. own = the country the language targets, greece = served to somebody in Greece.',
+    note:
+      'de/fr/it pages only. own = the country the language targets, greece = the searcher was in Greece. '
+      + 'GSC gives country, never language, so "greece" includes foreign tourists already here — read it as WHERE, not as a fault. '
+      + 'Compare every CTR against ctrCurve at the same position before calling anything broken: at position 9 the whole site earns 1%.',
     byLocale: locales,
     worstPages,
   };
@@ -1077,6 +1084,7 @@ function assemble(meta, parts, caps) {
     localeCountryMatch: Array.isArray(parts.localeCountryMatch)
       ? parts.localeCountryMatch.map((l) => ({ ...l, topCountries: sliceIf(l.topCountries, caps.localeMatchCountries) }))
       : parts.localeCountryMatch,
+    localizedAudience: parts.localizedAudience,
     ctrCurve: parts.ctrCurve,
     strikingDistance: sliceIf(parts.strikingDistance, caps.strikingDistance),
     ctrGaps: sliceIf(parts.ctrGaps, caps.ctrGaps),
@@ -1182,8 +1190,10 @@ function buildDigest(snapshot) {
       );
     }
     out.push('');
-    out.push('> `google_picks_wrong_url` = routing work (Google serves this language to Greece).');
-    out.push('> `snippet_problem` = title/description work (right country, nobody clicks).');
+    out.push('> `mostly_served_inside_greece` = most impressions happen in Greece. Could be Greek users getting the wrong');
+    out.push('> language, or foreign tourists already here getting the right one — GSC reports country, not language.');
+    out.push('> `low_ctr_in_own_country` = shown where it should be, still not clicked. Check ctrCurve at the same');
+    out.push('> position first: at position 9 the whole site earns 1%, so this is only news if the position is good.');
     out.push('');
     if (localizedAudience.worstPages?.length) {
       out.push('### Localized pages earning the least per impression');

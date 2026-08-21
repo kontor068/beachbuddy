@@ -6383,10 +6383,34 @@ const main = async () => {
     redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
   }
 
+  // Every rule above is pushed twice, once with a trailing slash and once without.
+  // That was belt and braces, and the braces are not load-bearing: the official
+  // Netlify docs state that it "will match paths to rules regardless of whether or
+  // not they contain a trailing slash" (read 21/08/2026). Dropping the duplicate
+  // halves the file with no change in behaviour.
+  //
+  // Deduped on the PAIR, never on the source alone: two rules sharing a source but
+  // disagreeing on the target are a real conflict, and both must reach the file so
+  // the first-match rule decides. Swallowing one here would hide the bug instead.
+  // Splat rules are left untouched — a trailing * is not a trailing slash.
+  const beforeDedupe = redirects.length;
+  const seenRedirects = new Set();
+  for (let i = 0; i < redirects.length; i += 1) {
+    const [from, to] = redirects[i].split(' ');
+    if (!from || from.endsWith('*')) continue;
+    const key = `${from.endsWith('/') ? from.slice(0, -1) : from} ${to}`;
+    if (seenRedirects.has(key)) {
+      redirects.splice(i, 1);
+      i -= 1;
+      continue;
+    }
+    seenRedirects.add(key);
+  }
+
   if (redirects.length > 0) {
     await writeFile(path.join(distDir, '_redirects'), `${redirects.join('\n')}\n`, 'utf8');
   }
-  console.log(`Prerendered ${baseLocales.length} home pages, ${landingPageCount} SEO landing pages, ${islandIntentPageCount} island intent pages, ${regionPageCount} region pages, ${pageCount} beach pages, the /auth/callback/ shell, ${redirects.length} redirects and sitemap.xml`);
+  console.log(`Prerendered ${baseLocales.length} home pages, ${landingPageCount} SEO landing pages, ${islandIntentPageCount} island intent pages, ${regionPageCount} region pages, ${pageCount} beach pages, the /auth/callback/ shell, ${redirects.length} redirects (${beforeDedupe - redirects.length} duplicate slash-variants dropped) and sitemap.xml`);
 };
 
 main().catch(error => {
