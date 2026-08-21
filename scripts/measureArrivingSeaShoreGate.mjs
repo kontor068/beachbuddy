@@ -23,7 +23,8 @@
  *
  *   node scripts/measureArrivingSeaShoreGate.mjs --live [--days=1] [--regions=a,b]
  *
- * Τρέχει στα ΔΩΡΕΑΝ hosts του Open-Meteo — δεν ζητάει και δεν χρειάζεται πληρωμένο κλειδί.
+ * Χρησιμοποιεί το πληρωμένο πλάνο όταν υπάρχει `OPEN_METEO_API_KEY` (περιβάλλον ή .env), αλλιώς
+ * τρέχει στα δωρεάν hosts. Το κλειδί δεν τυπώνεται και δεν γράφεται ποτέ πουθενά.
  */
 import { createRequire } from 'node:module';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -31,6 +32,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import ts from 'typescript';
+import { enablePaidOpenMeteo } from './lib/paidOpenMeteo.mjs';
 
 /** Ποσες μερες ζηταμε πραγματικα - δες την επεξηγηση στο μπαλωμα του fetch. */
 const FETCH_DAYS = Math.min(6, Math.max(2, Number(process.argv.find(a => a.startsWith('--days='))?.slice('--days='.length) ?? 1) + 1));
@@ -58,6 +60,27 @@ const cacheFileFor = (url) => {
   for (let i = 0; i < url.length; i += 1) h = (Math.imul(31, h) + url.charCodeAt(i)) | 0;
   return path.join(CACHE_DIR, `${(h >>> 0).toString(36)}-${url.length}.json`);
 };
+/**
+ * ΤΟ ΠΛΗΡΩΜΕΝΟ ΠΛΑΝΟ ΜΠΑΙΝΕΙ ΠΡΩΤΟ, ΚΑΙ Η ΣΕΙΡΑ ΕΙΝΑΙ ΤΟ ΠΑΝ.
+ *
+ * Το `enablePaidOpenMeteo` αντικαθιστά κι αυτό το `globalThis.fetch` (δωρεάν host → πληρωμένος,
+ * συν `apikey`). Το δικό μας μπάλωμα παρακάτω κρατάει ό,τι βρει ΤΗΝ ΩΡΑ ΠΟΥ ΤΡΕΧΕΙ: αν έτρεχε
+ * πρώτο, θα κρατούσε το γυμνό fetch και θα έστελνε τα πάντα στους δωρεάν hosts με το κλειδί
+ * αχρησιμοποίητο — δηλαδή θα «περνούσε» σιωπηλά ενώ θα ξόδευε το δωρεάν όριο.
+ *
+ * Το κλειδί έρχεται από το περιβάλλον ή από το (gitignored) `.env`, ΔΕΝ τυπώνεται ποτέ, και δεν
+ * γράφεται πουθενά. Χωρίς κλειδί το script τρέχει κανονικά στα δωρεάν — απλώς πιο αργά.
+ */
+if (!process.env.OPEN_METEO_API_KEY) {
+  try {
+    const fromEnvFile = (readFileSync(path.join(root, '.env'), 'utf8')
+      .match(/^\s*OPEN_METEO_API_KEY\s*=\s*(.+)\s*$/m) || [])[1]?.trim();
+    if (fromEnvFile) process.env.OPEN_METEO_API_KEY = fromEnvFile.replace(/^["']|["']$/g, '');
+  } catch { /* χωρίς .env — κανονικό */ }
+}
+const PAID = enablePaidOpenMeteo({ quiet: true });
+console.log(`  Open-Meteo: ${PAID ? 'ΠΛΗΡΩΜΕΝΟ πλανο' : 'ΔΩΡΕΑΝ hosts'}`);
+
 const nativeFetch = globalThis.fetch;
 globalThis.fetch = async (input, init) => {
   const raw = typeof input === 'string' ? input : input?.url ?? String(input);
@@ -79,7 +102,8 @@ globalThis.fetch = async (input, init) => {
       return response;
     }
     const waitMs = 5000 * (attempt + 1);
-    process.stderr.write(`  429 - αναμονη ${waitMs / 1000}s (${attempt + 1}/5)...              `);
+    process.stderr.write(`
+  429 - αναμονη ${waitMs / 1000}s (${attempt + 1}/5)...              `);
     await new Promise(resolve => setTimeout(resolve, waitMs));
   }
 };
@@ -298,7 +322,7 @@ const measureRegion = async (region) => {
   return { ok: true };
 };
 
-console.log(`-- ${regions.length} περιοχες x ${DAYS} μερες - ΔΩΡΕΑΝ Open-Meteo --`);
+console.log(`-- ${regions.length} περιοχες x ${DAYS} μερες - ${PAID ? 'ΠΛΗΡΩΜΕΝΟ' : 'ΔΩΡΕΑΝ'} Open-Meteo --`);
 for (let i = 0; i < regions.length; i += 1) {
   const region = regions[i];
   process.stderr.write(`\r  ${i + 1}/${regions.length} ${region.regionId}                         `);
