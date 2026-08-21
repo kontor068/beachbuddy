@@ -1,0 +1,5113 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-21T08:47:58.735Z",
+    "siteUrl": "https://calmbeach.gr/",
+    "propertyType": "url-prefix",
+    "timezoneNote": "GSC data is bucketed in America/Los_Angeles days",
+    "periods": {
+      "current": {
+        "start": "2026-07-22",
+        "end": "2026-08-18",
+        "days": 28
+      },
+      "previous": {
+        "start": "2026-06-24",
+        "end": "2026-07-21",
+        "days": 28
+      },
+      "lastYear": {
+        "start": "2025-07-22",
+        "end": "2025-08-18",
+        "days": 28
+      },
+      "lastYearPrevious": {
+        "start": "2025-06-24",
+        "end": "2025-07-21",
+        "days": 28
+      }
+    },
+    "lagDays": 3,
+    "ctrCurveSampleMin": 5,
+    "ctrCurveImpressionMin": 200,
+    "ctrCurveTargetPos": 3,
+    "thresholds": {
+      "ctrGapMinImpressions": 72,
+      "pageCtrGapMinImpressions": 217,
+      "cannibalQueryMinImpressions": 145,
+      "cannibalUrlMinImpressions": 3
+    },
+    "jsonBytes": 67584,
+    "caps": {
+      "queries": 200,
+      "pages": 150,
+      "perAnalysis": 50,
+      "strikingDistance": 40,
+      "ctrGaps": 30,
+      "pageCtrGaps": 25,
+      "zeroClick": 30,
+      "cannibalization": 20,
+      "risingDecaying": 20,
+      "newQueries": 30,
+      "byRegion": 50,
+      "byCountry": 20,
+      "localizedAudiencePages": 25,
+      "contentRegions": 50,
+      "localeMatchCountries": 5
+    }
+  },
+  "totals": {
+    "current": {
+      "clicks": 5551,
+      "impressions": 144755,
+      "ctr": 0.038,
+      "position": 7.799
+    },
+    "previous": {
+      "clicks": 1125,
+      "impressions": 31501,
+      "ctr": 0.036,
+      "position": 10.825
+    },
+    "lastYear": {
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0
+    },
+    "lastYearPrevious": {
+      "clicks": 0,
+      "impressions": 0,
+      "ctr": 0,
+      "position": 0
+    },
+    "deltas": {
+      "vsPrevious": {
+        "clicks": 4426,
+        "clicksPct": 3.934,
+        "impressions": 113254,
+        "impressionsPct": 3.595,
+        "ctr": 0.003,
+        "position": -3.026
+      },
+      "vsLastYear": {
+        "clicks": 5551,
+        "clicksPct": null,
+        "impressions": 144755,
+        "impressionsPct": null,
+        "ctr": 0.038,
+        "position": 7.799
+      }
+    },
+    "seasonalityAdjusted": {
+      "clicksPctVsPrevious": 3.934,
+      "expectedFromSeasonality": null,
+      "excess": null
+    }
+  },
+  "dailySeries": [
+    {
+      "date": "2026-07-22",
+      "clicks": 58,
+      "impressions": 1380,
+      "position": 8.482
+    },
+    {
+      "date": "2026-07-23",
+      "clicks": 82,
+      "impressions": 1849,
+      "position": 7.948
+    },
+    {
+      "date": "2026-07-24",
+      "clicks": 86,
+      "impressions": 1805,
+      "position": 8.18
+    },
+    {
+      "date": "2026-07-25",
+      "clicks": 102,
+      "impressions": 2109,
+      "position": 8.081
+    },
+    {
+      "date": "2026-07-26",
+      "clicks": 99,
+      "impressions": 2311,
+      "position": 8.248
+    },
+    {
+      "date": "2026-07-27",
+      "clicks": 86,
+      "impressions": 2157,
+      "position": 8.212
+    },
+    {
+      "date": "2026-07-28",
+      "clicks": 103,
+      "impressions": 2431,
+      "position": 8.302
+    },
+    {
+      "date": "2026-07-29",
+      "clicks": 170,
+      "impressions": 3225,
+      "position": 7.972
+    },
+    {
+      "date": "2026-07-30",
+      "clicks": 216,
+      "impressions": 4042,
+      "position": 7.618
+    },
+    {
+      "date": "2026-07-31",
+      "clicks": 187,
+      "impressions": 4363,
+      "position": 8.093
+    },
+    {
+      "date": "2026-08-01",
+      "clicks": 173,
+      "impressions": 4793,
+      "position": 7.85
+    },
+    {
+      "date": "2026-08-02",
+      "clicks": 149,
+      "impressions": 4588,
+      "position": 8.148
+    },
+    {
+      "date": "2026-08-03",
+      "clicks": 152,
+      "impressions": 3828,
+      "position": 8.498
+    },
+    {
+      "date": "2026-08-04",
+      "clicks": 141,
+      "impressions": 3858,
+      "position": 8.157
+    },
+    {
+      "date": "2026-08-05",
+      "clicks": 144,
+      "impressions": 4012,
+      "position": 7.843
+    },
+    {
+      "date": "2026-08-06",
+      "clicks": 173,
+      "impressions": 4083,
+      "position": 7.776
+    },
+    {
+      "date": "2026-08-07",
+      "clicks": 146,
+      "impressions": 3759,
+      "position": 8.005
+    },
+    {
+      "date": "2026-08-08",
+      "clicks": 180,
+      "impressions": 4739,
+      "position": 7.758
+    },
+    {
+      "date": "2026-08-09",
+      "clicks": 276,
+      "impressions": 5911,
+      "position": 8.053
+    },
+    {
+      "date": "2026-08-10",
+      "clicks": 232,
+      "impressions": 5685,
+      "position": 7.599
+    },
+    {
+      "date": "2026-08-11",
+      "clicks": 212,
+      "impressions": 5347,
+      "position": 7.693
+    },
+    {
+      "date": "2026-08-12",
+      "clicks": 257,
+      "impressions": 6848,
+      "position": 7.495
+    },
+    {
+      "date": "2026-08-13",
+      "clicks": 416,
+      "impressions": 11877,
+      "position": 7.498
+    },
+    {
+      "date": "2026-08-14",
+      "clicks": 479,
+      "impressions": 12588,
+      "position": 7.233
+    },
+    {
+      "date": "2026-08-15",
+      "clicks": 387,
+      "impressions": 11446,
+      "position": 7.589
+    },
+    {
+      "date": "2026-08-16",
+      "clicks": 335,
+      "impressions": 9796,
+      "position": 7.725
+    },
+    {
+      "date": "2026-08-17",
+      "clicks": 251,
+      "impressions": 7745,
+      "position": 7.879
+    },
+    {
+      "date": "2026-08-18",
+      "clicks": 259,
+      "impressions": 8180,
+      "position": 8.059
+    }
+  ],
+  "bySegment": {
+    "byLocale": [
+      {
+        "key": "en",
+        "current": {
+          "clicks": 2689,
+          "impressions": 69664,
+          "ctr": 0.039,
+          "position": 7.598
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.984,
+            "impressionsPct": 3.05
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "el",
+        "current": {
+          "clicks": 2274,
+          "impressions": 58441,
+          "ctr": 0.039,
+          "position": 7.789
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.601,
+            "impressionsPct": 3.485
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "it",
+        "current": {
+          "clicks": 325,
+          "impressions": 12947,
+          "ctr": 0.025,
+          "position": 8.191
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 20.667,
+            "impressionsPct": 14.964
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "fr",
+        "current": {
+          "clicks": 163,
+          "impressions": 3738,
+          "ctr": 0.044,
+          "position": 8.171
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 11.538,
+            "impressionsPct": 9.803
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "de",
+        "current": {
+          "clicks": 117,
+          "impressions": 3493,
+          "ctr": 0.033,
+          "position": 8.997
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.158,
+            "impressionsPct": 4.077
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byPageType": [
+      {
+        "key": "beach",
+        "current": {
+          "clicks": 2061,
+          "impressions": 73354,
+          "ctr": 0.028,
+          "position": 7.62
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.647,
+            "impressionsPct": 4.001
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "other",
+        "current": {
+          "clicks": 2432,
+          "impressions": 62171,
+          "ctr": 0.039,
+          "position": 8.011
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.724,
+            "impressionsPct": 2.812
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "home",
+        "current": {
+          "clicks": 947,
+          "impressions": 8811,
+          "ctr": 0.107,
+          "position": 6.61
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 8.663,
+            "impressionsPct": 13.54
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "region",
+        "current": {
+          "clicks": 128,
+          "impressions": 3947,
+          "ctr": 0.032,
+          "position": 9.441
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 9.667,
+            "impressionsPct": 6.974
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byRegion": [
+      {
+        "key": "evia",
+        "current": {
+          "clicks": 113,
+          "impressions": 4478,
+          "ctr": 0.025,
+          "position": 7.502
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 10.3,
+            "impressionsPct": 8.973
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kefalonia",
+        "current": {
+          "clicks": 82,
+          "impressions": 3698,
+          "ctr": 0.022,
+          "position": 7.948
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 3.556,
+            "impressionsPct": 7.6
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lefkada",
+        "current": {
+          "clicks": 66,
+          "impressions": 3461,
+          "ctr": 0.019,
+          "position": 7.741
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 6.333,
+            "impressionsPct": 5.203
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "corfu",
+        "current": {
+          "clicks": 45,
+          "impressions": 2956,
+          "ctr": 0.015,
+          "position": 8.3
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.625,
+            "impressionsPct": 4.132
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "chania",
+        "current": {
+          "clicks": 99,
+          "impressions": 2941,
+          "ctr": 0.034,
+          "position": 7.753
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 32,
+            "impressionsPct": 10.488
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "milos",
+        "current": {
+          "clicks": 70,
+          "impressions": 2732,
+          "ctr": 0.026,
+          "position": 8.307
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.043,
+            "impressionsPct": 2.467
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rethymno",
+        "current": {
+          "clicks": 89,
+          "impressions": 2466,
+          "ctr": 0.036,
+          "position": 7.799
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 11.714,
+            "impressionsPct": 13.855
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "halkidiki",
+        "current": {
+          "clicks": 78,
+          "impressions": 2331,
+          "ctr": 0.033,
+          "position": 7.583
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 12,
+            "impressionsPct": 5.07
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "magnesia-pelion",
+        "current": {
+          "clicks": 66,
+          "impressions": 2114,
+          "ctr": 0.031,
+          "position": 7.167
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 7.25,
+            "impressionsPct": 4.905
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lemnos",
+        "current": {
+          "clicks": 54,
+          "impressions": 2019,
+          "ctr": 0.027,
+          "position": 7.297
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.375,
+            "impressionsPct": 5.471
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "heraklion",
+        "current": {
+          "clicks": 33,
+          "impressions": 1613,
+          "ctr": 0.02,
+          "position": 7.741
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 3.714,
+            "impressionsPct": 14.075
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lesvos",
+        "current": {
+          "clicks": 58,
+          "impressions": 1510,
+          "ctr": 0.038,
+          "position": 7.403
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 10.6,
+            "impressionsPct": 16.356
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kavala",
+        "current": {
+          "clicks": 42,
+          "impressions": 1439,
+          "ctr": 0.029,
+          "position": 7.5
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.25,
+            "impressionsPct": 5.482
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "salamina",
+        "current": {
+          "clicks": 19,
+          "impressions": 1438,
+          "ctr": 0.013,
+          "position": 8.353
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.375,
+            "impressionsPct": 1.703
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "paros",
+        "current": {
+          "clicks": 50,
+          "impressions": 1417,
+          "ctr": 0.035,
+          "position": 7.159
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.333,
+            "impressionsPct": 2.177
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "mykonos",
+        "current": {
+          "clicks": 29,
+          "impressions": 1320,
+          "ctr": 0.022,
+          "position": 7.368
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.9,
+            "impressionsPct": 3.217
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "east-attica",
+        "current": {
+          "clicks": 28,
+          "impressions": 1266,
+          "ctr": 0.022,
+          "position": 7.317
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 8.333,
+            "impressionsPct": 8.448
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "zakynthos",
+        "current": {
+          "clicks": 21,
+          "impressions": 1196,
+          "ctr": 0.018,
+          "position": 7.682
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2,
+            "impressionsPct": 4.589
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kythira",
+        "current": {
+          "clicks": 53,
+          "impressions": 1186,
+          "ctr": 0.045,
+          "position": 7.478
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.625,
+            "impressionsPct": 5.739
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "naxos",
+        "current": {
+          "clicks": 30,
+          "impressions": 1164,
+          "ctr": 0.026,
+          "position": 7.929
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.333,
+            "impressionsPct": 2.146
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rhodes",
+        "current": {
+          "clicks": 23,
+          "impressions": 1151,
+          "ctr": 0.02,
+          "position": 8.652
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 6.667,
+            "impressionsPct": 7.654
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "preveza",
+        "current": {
+          "clicks": 24,
+          "impressions": 1145,
+          "ctr": 0.021,
+          "position": 8.466
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 23,
+            "impressionsPct": 5.898
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "santorini",
+        "current": {
+          "clicks": 44,
+          "impressions": 1011,
+          "ctr": 0.044,
+          "position": 8.305
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.5,
+            "impressionsPct": 3.16
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "karpathos",
+        "current": {
+          "clicks": 26,
+          "impressions": 996,
+          "ctr": 0.026,
+          "position": 7.214
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 0.733,
+            "impressionsPct": 3.275
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "syros",
+        "current": {
+          "clicks": 19,
+          "impressions": 929,
+          "ctr": 0.02,
+          "position": 8.814
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.333,
+            "impressionsPct": 14.483
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "skyros",
+        "current": {
+          "clicks": 74,
+          "impressions": 917,
+          "ctr": 0.081,
+          "position": 6.617
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": 16.635
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "messinia",
+        "current": {
+          "clicks": 34,
+          "impressions": 914,
+          "ctr": 0.037,
+          "position": 7.791
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 10.333,
+            "impressionsPct": 4.022
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "pieria",
+        "current": {
+          "clicks": 55,
+          "impressions": 898,
+          "ctr": 0.061,
+          "position": 8.107
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 17.333,
+            "impressionsPct": 10.225
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ios",
+        "current": {
+          "clicks": 24,
+          "impressions": 886,
+          "ctr": 0.027,
+          "position": 7.248
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 23,
+            "impressionsPct": 8.844
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tinos",
+        "current": {
+          "clicks": 29,
+          "impressions": 877,
+          "ctr": 0.033,
+          "position": 7.099
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.625,
+            "impressionsPct": 5.594
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "chios",
+        "current": {
+          "clicks": 19,
+          "impressions": 852,
+          "ctr": 0.022,
+          "position": 6.771
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.333,
+            "impressionsPct": 3.325
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aetolia-acarnania",
+        "current": {
+          "clicks": 20,
+          "impressions": 841,
+          "ctr": 0.024,
+          "position": 7.183
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.667,
+            "impressionsPct": 3.861
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "andros",
+        "current": {
+          "clicks": 19,
+          "impressions": 820,
+          "ctr": 0.023,
+          "position": 7.698
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 18,
+            "impressionsPct": 4.899
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "west-attica",
+        "current": {
+          "clicks": 14,
+          "impressions": 806,
+          "ctr": 0.017,
+          "position": 8.7
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 13,
+            "impressionsPct": 2.766
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lakonia",
+        "current": {
+          "clicks": 35,
+          "impressions": 796,
+          "ctr": 0.044,
+          "position": 7.692
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 6,
+            "impressionsPct": 0.586
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "samos",
+        "current": {
+          "clicks": 25,
+          "impressions": 793,
+          "ctr": 0.032,
+          "position": 7.744
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 3.167,
+            "impressionsPct": 1.706
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kythnos",
+        "current": {
+          "clicks": 34,
+          "impressions": 790,
+          "ctr": 0.043,
+          "position": 6.53
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.778,
+            "impressionsPct": 5.475
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "athens-area",
+        "current": {
+          "clicks": 18,
+          "impressions": 784,
+          "ctr": 0.023,
+          "position": 8.024
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": 7.253
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "kos",
+        "current": {
+          "clicks": 7,
+          "impressions": 783,
+          "ctr": 0.009,
+          "position": 8.695
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 0.75,
+            "impressionsPct": 5.929
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lasithi",
+        "current": {
+          "clicks": 20,
+          "impressions": 781,
+          "ctr": 0.026,
+          "position": 7.389
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.667,
+            "impressionsPct": 4.962
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "alonissos",
+        "current": {
+          "clicks": 14,
+          "impressions": 702,
+          "ctr": 0.02,
+          "position": 6.491
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.8,
+            "impressionsPct": 4.359
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "viotia",
+        "current": {
+          "clicks": 20,
+          "impressions": 672,
+          "ctr": 0.03,
+          "position": 8.838
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 9,
+            "impressionsPct": 5.165
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "thasos",
+        "current": {
+          "clicks": 10,
+          "impressions": 646,
+          "ctr": 0.015,
+          "position": 8.525
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 9,
+            "impressionsPct": 4.569
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "thesprotia",
+        "current": {
+          "clicks": 23,
+          "impressions": 640,
+          "ctr": 0.036,
+          "position": 7.361
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.875,
+            "impressionsPct": 1.602
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "telendos",
+        "current": {
+          "clicks": 16,
+          "impressions": 626,
+          "ctr": 0.026,
+          "position": 8.711
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.333,
+            "impressionsPct": 2.864
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "korinthia",
+        "current": {
+          "clicks": 12,
+          "impressions": 622,
+          "ctr": 0.019,
+          "position": 7.137
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": null,
+            "impressionsPct": 5.347
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ithaca",
+        "current": {
+          "clicks": 12,
+          "impressions": 604,
+          "ctr": 0.02,
+          "position": 8.776
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 11,
+            "impressionsPct": 3.507
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "argolida",
+        "current": {
+          "clicks": 18,
+          "impressions": 599,
+          "ctr": 0.03,
+          "position": 6.983
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 17,
+            "impressionsPct": 3.754
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "lipsi",
+        "current": {
+          "clicks": 6,
+          "impressions": 541,
+          "ctr": 0.011,
+          "position": 7.137
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1,
+            "impressionsPct": 0.218
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "sifnos",
+        "current": {
+          "clicks": 25,
+          "impressions": 524,
+          "ctr": 0.048,
+          "position": 7.567
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 24,
+            "impressionsPct": 5.313
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byCountry": [
+      {
+        "key": "grc",
+        "current": {
+          "clicks": 4738,
+          "impressions": 97685,
+          "ctr": 0.049,
+          "position": 7.7
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.207,
+            "impressionsPct": 3.602
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "gbr",
+        "current": {
+          "clicks": 50,
+          "impressions": 10619,
+          "ctr": 0.005,
+          "position": 7.718
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.381,
+            "impressionsPct": 9.705
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "nld",
+        "current": {
+          "clicks": 44,
+          "impressions": 6039,
+          "ctr": 0.007,
+          "position": 6.774
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.5,
+            "impressionsPct": 2.004
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "ita",
+        "current": {
+          "clicks": 197,
+          "impressions": 5642,
+          "ctr": 0.035,
+          "position": 8.181
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 9.368,
+            "impressionsPct": 6.115
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "deu",
+        "current": {
+          "clicks": 72,
+          "impressions": 5009,
+          "ctr": 0.014,
+          "position": 7.5
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5,
+            "impressionsPct": 3.39
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "usa",
+        "current": {
+          "clicks": 22,
+          "impressions": 4653,
+          "ctr": 0.005,
+          "position": 8.567
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.143,
+            "impressionsPct": 4.367
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "fra",
+        "current": {
+          "clicks": 59,
+          "impressions": 1385,
+          "ctr": 0.043,
+          "position": 8.603
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.933,
+            "impressionsPct": 4.795
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "rou",
+        "current": {
+          "clicks": 50,
+          "impressions": 1191,
+          "ctr": 0.042,
+          "position": 8.418
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.571,
+            "impressionsPct": 1.738
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tur",
+        "current": {
+          "clicks": 20,
+          "impressions": 918,
+          "ctr": 0.022,
+          "position": 9.191
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.5,
+            "impressionsPct": 3.009
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "bgr",
+        "current": {
+          "clicks": 27,
+          "impressions": 825,
+          "ctr": 0.033,
+          "position": 7.805
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2,
+            "impressionsPct": 2.198
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aut",
+        "current": {
+          "clicks": 27,
+          "impressions": 704,
+          "ctr": 0.038,
+          "position": 7.976
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 5.75,
+            "impressionsPct": 3
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "che",
+        "current": {
+          "clicks": 26,
+          "impressions": 626,
+          "ctr": 0.042,
+          "position": 7.388
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.2,
+            "impressionsPct": 1.301
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "srb",
+        "current": {
+          "clicks": 10,
+          "impressions": 601,
+          "ctr": 0.017,
+          "position": 7.672
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 0.667,
+            "impressionsPct": 2.339
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "cyp",
+        "current": {
+          "clicks": 25,
+          "impressions": 544,
+          "ctr": 0.046,
+          "position": 7.994
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 24,
+            "impressionsPct": 1.989
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "swe",
+        "current": {
+          "clicks": 27,
+          "impressions": 466,
+          "ctr": 0.058,
+          "position": 8.247
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.455,
+            "impressionsPct": 1.026
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "esp",
+        "current": {
+          "clicks": 8,
+          "impressions": 414,
+          "ctr": 0.019,
+          "position": 7.795
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": -0.333,
+            "impressionsPct": 1.637
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "aus",
+        "current": {
+          "clicks": 9,
+          "impressions": 408,
+          "ctr": 0.022,
+          "position": 9.522
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 0.8,
+            "impressionsPct": 2.344
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "bel",
+        "current": {
+          "clicks": 14,
+          "impressions": 406,
+          "ctr": 0.034,
+          "position": 8.308
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.333,
+            "impressionsPct": 2.099
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "can",
+        "current": {
+          "clicks": 8,
+          "impressions": 394,
+          "ctr": 0.02,
+          "position": 8.117
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.667,
+            "impressionsPct": 2.615
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "pol",
+        "current": {
+          "clicks": 7,
+          "impressions": 365,
+          "ctr": 0.019,
+          "position": 7.838
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 6,
+            "impressionsPct": 2.763
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ],
+    "byDevice": [
+      {
+        "key": "mobile",
+        "current": {
+          "clicks": 4977,
+          "impressions": 105209,
+          "ctr": 0.047,
+          "position": 7.592
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 4.329,
+            "impressionsPct": 3.776
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "desktop",
+        "current": {
+          "clicks": 524,
+          "impressions": 38650,
+          "ctr": 0.014,
+          "position": 8.362
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 1.96,
+            "impressionsPct": 3.17
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      },
+      {
+        "key": "tablet",
+        "current": {
+          "clicks": 50,
+          "impressions": 896,
+          "ctr": 0.056,
+          "position": 7.748
+        },
+        "deltas": {
+          "vsPrevious": {
+            "clicksPct": 2.571,
+            "impressionsPct": 3.371
+          },
+          "vsLastYear": {
+            "clicksPct": null,
+            "impressionsPct": null
+          }
+        }
+      }
+    ]
+  },
+  "localeCountryMatch": [
+    {
+      "locale": "en",
+      "totalImpressions": 11883,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 6810,
+          "share": 0.573
+        },
+        {
+          "country": "usa",
+          "impressions": 462,
+          "share": 0.039
+        },
+        {
+          "country": "gbr",
+          "impressions": 439,
+          "share": 0.037
+        },
+        {
+          "country": "rou",
+          "impressions": 375,
+          "share": 0.032
+        },
+        {
+          "country": "ita",
+          "impressions": 334,
+          "share": 0.028
+        }
+      ],
+      "matchedShare": 0.093,
+      "verdict": "wrong_audience"
+    },
+    {
+      "locale": "el",
+      "totalImpressions": 8302,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 8027,
+          "share": 0.967
+        },
+        {
+          "country": "cyp",
+          "impressions": 49,
+          "share": 0.006
+        },
+        {
+          "country": "deu",
+          "impressions": 41,
+          "share": 0.005
+        },
+        {
+          "country": "usa",
+          "impressions": 31,
+          "share": 0.004
+        },
+        {
+          "country": "gbr",
+          "impressions": 31,
+          "share": 0.004
+        }
+      ],
+      "matchedShare": 0.967,
+      "verdict": "working"
+    },
+    {
+      "locale": "it",
+      "totalImpressions": 2925,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 1791,
+          "share": 0.612
+        },
+        {
+          "country": "ita",
+          "impressions": 1016,
+          "share": 0.347
+        },
+        {
+          "country": "usa",
+          "impressions": 33,
+          "share": 0.011
+        },
+        {
+          "country": "alb",
+          "impressions": 18,
+          "share": 0.006
+        },
+        {
+          "country": "che",
+          "impressions": 8,
+          "share": 0.003
+        }
+      ],
+      "matchedShare": 0.347,
+      "verdict": "wrong_audience"
+    },
+    {
+      "locale": "fr",
+      "totalImpressions": 904,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 512,
+          "share": 0.566
+        },
+        {
+          "country": "fra",
+          "impressions": 270,
+          "share": 0.299
+        },
+        {
+          "country": "che",
+          "impressions": 19,
+          "share": 0.021
+        },
+        {
+          "country": "bel",
+          "impressions": 19,
+          "share": 0.021
+        },
+        {
+          "country": "can",
+          "impressions": 8,
+          "share": 0.009
+        }
+      ],
+      "matchedShare": 0.299,
+      "verdict": "wrong_audience"
+    },
+    {
+      "locale": "de",
+      "totalImpressions": 664,
+      "topCountries": [
+        {
+          "country": "grc",
+          "impressions": 301,
+          "share": 0.453
+        },
+        {
+          "country": "deu",
+          "impressions": 213,
+          "share": 0.321
+        },
+        {
+          "country": "aut",
+          "impressions": 64,
+          "share": 0.096
+        },
+        {
+          "country": "che",
+          "impressions": 28,
+          "share": 0.042
+        },
+        {
+          "country": "ita",
+          "impressions": 9,
+          "share": 0.014
+        }
+      ],
+      "matchedShare": 0.321,
+      "verdict": "wrong_audience"
+    }
+  ],
+  "localizedAudience": {
+    "note": "de/fr/it pages only. own = the country the language targets, greece = served to somebody in Greece.",
+    "byLocale": [
+      {
+        "locale": "it",
+        "total": {
+          "impressions": 2925,
+          "clicks": 11,
+          "ctr": 0.004
+        },
+        "own": {
+          "impressions": 1016,
+          "clicks": 2,
+          "ctr": 0.002
+        },
+        "greece": {
+          "impressions": 1791,
+          "clicks": 9,
+          "ctr": 0.005
+        },
+        "elsewhere": {
+          "impressions": 118,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "ownShare": 0.347,
+        "greeceShare": 0.612,
+        "reading": "google_picks_wrong_url"
+      },
+      {
+        "locale": "fr",
+        "total": {
+          "impressions": 904,
+          "clicks": 7,
+          "ctr": 0.008
+        },
+        "own": {
+          "impressions": 270,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 512,
+          "clicks": 6,
+          "ctr": 0.012
+        },
+        "elsewhere": {
+          "impressions": 122,
+          "clicks": 1,
+          "ctr": 0.008
+        },
+        "ownShare": 0.299,
+        "greeceShare": 0.566,
+        "reading": "google_picks_wrong_url"
+      },
+      {
+        "locale": "de",
+        "total": {
+          "impressions": 664,
+          "clicks": 7,
+          "ctr": 0.011
+        },
+        "own": {
+          "impressions": 213,
+          "clicks": 1,
+          "ctr": 0.005
+        },
+        "greece": {
+          "impressions": 301,
+          "clicks": 5,
+          "ctr": 0.017
+        },
+        "elsewhere": {
+          "impressions": 150,
+          "clicks": 1,
+          "ctr": 0.007
+        },
+        "ownShare": 0.321,
+        "greeceShare": 0.453,
+        "reading": "google_picks_wrong_url"
+      }
+    ],
+    "worstPages": [
+      {
+        "page": "/it/beaches/corfu/1014-rovinia/",
+        "locale": "it",
+        "impressions": 477,
+        "clicks": 0,
+        "ownShare": 0.44,
+        "greeceShare": 0.535,
+        "ctr": 0,
+        "own": {
+          "impressions": 210,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 255,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/kefalonia/1096-kaminia/",
+        "locale": "it",
+        "impressions": 169,
+        "clicks": 0,
+        "ownShare": 0.089,
+        "greeceShare": 0.893,
+        "ctr": 0,
+        "own": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 151,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/santorini/2064-monolithos/",
+        "locale": "it",
+        "impressions": 113,
+        "clicks": 0,
+        "ownShare": 0.292,
+        "greeceShare": 0.681,
+        "ctr": 0,
+        "own": {
+          "impressions": 33,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 77,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/fr/beaches/corfu/1014-rovinia/",
+        "locale": "fr",
+        "impressions": 80,
+        "clicks": 0,
+        "ownShare": 0.313,
+        "greeceShare": 0.588,
+        "ctr": 0,
+        "own": {
+          "impressions": 25,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 47,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/de/beaches/kos/2339-limnionas/",
+        "locale": "de",
+        "impressions": 68,
+        "clicks": 0,
+        "ownShare": 0.294,
+        "greeceShare": 0.632,
+        "ctr": 0,
+        "own": {
+          "impressions": 20,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 43,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/kefalonia/1068-fteri/",
+        "locale": "it",
+        "impressions": 66,
+        "clicks": 0,
+        "ownShare": 0.167,
+        "greeceShare": 0.788,
+        "ctr": 0,
+        "own": {
+          "impressions": 11,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 52,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/heraklion/633-ammoudara/",
+        "locale": "it",
+        "impressions": 49,
+        "clicks": 0,
+        "ownShare": 0.286,
+        "greeceShare": 0.714,
+        "ctr": 0,
+        "own": {
+          "impressions": 14,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 35,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/secluded-beaches/chania/",
+        "locale": "it",
+        "impressions": 47,
+        "clicks": 0,
+        "ownShare": 0.766,
+        "greeceShare": 0.213,
+        "ctr": 0,
+        "own": {
+          "impressions": 36,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 10,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/paros/2031-krios/",
+        "locale": "it",
+        "impressions": 45,
+        "clicks": 0,
+        "ownShare": 0.467,
+        "greeceShare": 0.511,
+        "ctr": 0,
+        "own": {
+          "impressions": 21,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 23,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/rhodes/2457-prasonisi/",
+        "locale": "it",
+        "impressions": 44,
+        "clicks": 0,
+        "ownShare": 0.318,
+        "greeceShare": 0.682,
+        "ctr": 0,
+        "own": {
+          "impressions": 14,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 30,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/snorkeling-beaches/lefkada/",
+        "locale": "it",
+        "impressions": 44,
+        "clicks": 0,
+        "ownShare": 0.136,
+        "greeceShare": 0.091,
+        "ctr": 0,
+        "own": {
+          "impressions": 6,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 4,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/de/beaches/zakynthos/1194-porto-roxa/",
+        "locale": "de",
+        "impressions": 43,
+        "clicks": 0,
+        "ownShare": 0.209,
+        "greeceShare": 0.349,
+        "ctr": 0,
+        "own": {
+          "impressions": 9,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/fr/beaches/corfu/978-paralia-agios-georgios-pagon/",
+        "locale": "fr",
+        "impressions": 39,
+        "clicks": 0,
+        "ownShare": 0,
+        "greeceShare": 1,
+        "ctr": 0,
+        "own": {
+          "impressions": 0,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 39,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/chania/544-nea-chora/",
+        "locale": "it",
+        "impressions": 39,
+        "clicks": 0,
+        "ownShare": 0.513,
+        "greeceShare": 0.436,
+        "ctr": 0,
+        "own": {
+          "impressions": 20,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 17,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/corfu/987-paralia-gardeno/",
+        "locale": "it",
+        "impressions": 38,
+        "clicks": 0,
+        "ownShare": 0.395,
+        "greeceShare": 0.579,
+        "ctr": 0,
+        "own": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 22,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/snorkeling-beaches/mykonos/",
+        "locale": "it",
+        "impressions": 37,
+        "clicks": 0,
+        "ownShare": 0.946,
+        "greeceShare": 0,
+        "ctr": 0,
+        "own": {
+          "impressions": 35,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 0,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/de/beaches/corfu/1014-rovinia/",
+        "locale": "de",
+        "impressions": 36,
+        "clicks": 0,
+        "ownShare": 0.306,
+        "greeceShare": 0.444,
+        "ctr": 0,
+        "own": {
+          "impressions": 11,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 16,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/sifnos/2102-lazarou/",
+        "locale": "it",
+        "impressions": 33,
+        "clicks": 0,
+        "ownShare": 0.303,
+        "greeceShare": 0.697,
+        "ctr": 0,
+        "own": {
+          "impressions": 10,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 23,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/corfu/985-paralia-arkoudila/",
+        "locale": "it",
+        "impressions": 32,
+        "clicks": 0,
+        "ownShare": 0.531,
+        "greeceShare": 0.469,
+        "ctr": 0,
+        "own": {
+          "impressions": 17,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/corfu/1005-paralia-chomi/",
+        "locale": "it",
+        "impressions": 31,
+        "clicks": 0,
+        "ownShare": 0.452,
+        "greeceShare": 0.516,
+        "ctr": 0,
+        "own": {
+          "impressions": 14,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 16,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/lefkada/1144-pasas/",
+        "locale": "it",
+        "impressions": 30,
+        "clicks": 0,
+        "ownShare": 0.5,
+        "greeceShare": 0.4,
+        "ctr": 0,
+        "own": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 12,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/milos/1916-papafragkas/",
+        "locale": "it",
+        "impressions": 30,
+        "clicks": 0,
+        "ownShare": 0.6,
+        "greeceShare": 0.4,
+        "ctr": 0,
+        "own": {
+          "impressions": 18,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 12,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/lefkada/1164-kryoneri/",
+        "locale": "it",
+        "impressions": 29,
+        "clicks": 0,
+        "ownShare": 0.448,
+        "greeceShare": 0.552,
+        "ctr": 0,
+        "own": {
+          "impressions": 13,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 16,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/fr/beaches/paros/2040-molos/",
+        "locale": "fr",
+        "impressions": 25,
+        "clicks": 0,
+        "ownShare": 0.32,
+        "greeceShare": 0.6,
+        "ctr": 0,
+        "own": {
+          "impressions": 8,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        }
+      },
+      {
+        "page": "/it/beaches/kos/2355-faros/",
+        "locale": "it",
+        "impressions": 25,
+        "clicks": 0,
+        "ownShare": 0.4,
+        "greeceShare": 0.6,
+        "ctr": 0,
+        "own": {
+          "impressions": 10,
+          "clicks": 0,
+          "ctr": 0
+        },
+        "greece": {
+          "impressions": 15,
+          "clicks": 0,
+          "ctr": 0
+        }
+      }
+    ]
+  },
+  "ctrCurve": {
+    "note": "impression-weighted CTR per integer position (Σclicks/Σimpressions); anchored on positions with >=5 queries AND >=200 impressions, isotonic (non-increasing) smoothing, linearly interpolated to a continuous 1..20 curve. Shows raw weightedCtr and smoothedCtr.",
+    "targetPos": 3,
+    "byPosition": {
+      "1": {
+        "weightedCtr": 0.086,
+        "smoothedCtr": 0.297,
+        "sampleSize": 473,
+        "totalImpressions": 617,
+        "interpolated": false
+      },
+      "2": {
+        "weightedCtr": 0.434,
+        "smoothedCtr": 0.297,
+        "sampleSize": 223,
+        "totalImpressions": 954,
+        "interpolated": false
+      },
+      "3": {
+        "weightedCtr": 0.036,
+        "smoothedCtr": 0.06,
+        "sampleSize": 179,
+        "totalImpressions": 610,
+        "interpolated": false
+      },
+      "4": {
+        "weightedCtr": 0.078,
+        "smoothedCtr": 0.06,
+        "sampleSize": 156,
+        "totalImpressions": 566,
+        "interpolated": false
+      },
+      "5": {
+        "weightedCtr": 0.065,
+        "smoothedCtr": 0.06,
+        "sampleSize": 138,
+        "totalImpressions": 816,
+        "interpolated": false
+      },
+      "6": {
+        "weightedCtr": 0.047,
+        "smoothedCtr": 0.047,
+        "sampleSize": 180,
+        "totalImpressions": 696,
+        "interpolated": false
+      },
+      "7": {
+        "weightedCtr": 0.024,
+        "smoothedCtr": 0.024,
+        "sampleSize": 256,
+        "totalImpressions": 1729,
+        "interpolated": false
+      },
+      "8": {
+        "weightedCtr": 0.008,
+        "smoothedCtr": 0.01,
+        "sampleSize": 293,
+        "totalImpressions": 3071,
+        "interpolated": false
+      },
+      "9": {
+        "weightedCtr": 0.011,
+        "smoothedCtr": 0.01,
+        "sampleSize": 349,
+        "totalImpressions": 3431,
+        "interpolated": false
+      },
+      "10": {
+        "weightedCtr": 0.007,
+        "smoothedCtr": 0.007,
+        "sampleSize": 484,
+        "totalImpressions": 4008,
+        "interpolated": false
+      },
+      "11": {
+        "weightedCtr": 0.006,
+        "smoothedCtr": 0.006,
+        "sampleSize": 397,
+        "totalImpressions": 2663,
+        "interpolated": false
+      },
+      "12": {
+        "weightedCtr": 0.004,
+        "smoothedCtr": 0.004,
+        "sampleSize": 243,
+        "totalImpressions": 2426,
+        "interpolated": false
+      },
+      "13": {
+        "weightedCtr": 0.002,
+        "smoothedCtr": 0.002,
+        "sampleSize": 128,
+        "totalImpressions": 520,
+        "interpolated": false
+      },
+      "14": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0.001,
+        "sampleSize": 60,
+        "totalImpressions": 139,
+        "interpolated": true
+      },
+      "15": {
+        "weightedCtr": 0.008,
+        "smoothedCtr": 0.001,
+        "sampleSize": 37,
+        "totalImpressions": 129,
+        "interpolated": true
+      },
+      "16": {
+        "weightedCtr": 0,
+        "smoothedCtr": 0,
+        "sampleSize": 38,
+        "totalImpressions": 205,
+        "interpolated": false
+      },
+      "17": {
+        "weightedCtr": 0.008,
+        "smoothedCtr": 0,
+        "sampleSize": 39,
+        "totalImpressions": 132,
+        "interpolated": true
+      },
+      "18": {
+        "weightedCtr": 0.009,
+        "smoothedCtr": 0,
+        "sampleSize": 33,
+        "totalImpressions": 106,
+        "interpolated": true
+      },
+      "19": {
+        "weightedCtr": 0.014,
+        "smoothedCtr": 0,
+        "sampleSize": 23,
+        "totalImpressions": 142,
+        "interpolated": true
+      },
+      "20": {
+        "weightedCtr": 0.011,
+        "smoothedCtr": 0,
+        "sampleSize": 30,
+        "totalImpressions": 90,
+        "interpolated": true
+      }
+    }
+  },
+  "strikingDistance": [
+    {
+      "query": "beach",
+      "page": "/",
+      "impressions": 597,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.978,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 35.8
+    },
+    {
+      "query": "rovinia beach",
+      "page": "/it/beaches/corfu/1014-rovinia/",
+      "impressions": 335,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.304,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 20.1
+    },
+    {
+      "query": "καιρός δημήτρανι",
+      "page": "/el/beaches/salamina/3055-dimitrani/",
+      "impressions": 328,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.409,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 19.7
+    },
+    {
+      "query": "avali beach",
+      "page": "/it/beaches/lefkada/1147-avali/",
+      "impressions": 322,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.376,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 19.3
+    },
+    {
+      "query": "vrasidas beach",
+      "page": "/beaches/kavala/787-vrasidas/",
+      "impressions": 400,
+      "clicks": 7,
+      "ctr": 0.018,
+      "position": 8.808,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 17
+    },
+    {
+      "query": "προσηλι",
+      "page": "/el/beaches/west-attica/191-prosili/",
+      "impressions": 196,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.923,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 11.8
+    },
+    {
+      "query": "τελενδοσ παραλιεσ",
+      "page": "/el/beaches/telendos/",
+      "impressions": 207,
+      "clicks": 1,
+      "ctr": 0.005,
+      "position": 9.527,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 11.4
+    },
+    {
+      "query": "preveza beaches",
+      "page": "/family-beaches/preveza/",
+      "impressions": 189,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 12.127,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 11.3
+    },
+    {
+      "query": "avali beach",
+      "page": "/beaches/lefkada/1147-avali/",
+      "impressions": 184,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.582,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 11
+    },
+    {
+      "query": "κατσαδια λειψοι",
+      "page": "/el/beaches/lipsi/2373-katsadia/",
+      "impressions": 153,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.752,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 9.2
+    },
+    {
+      "query": "avali beach lefkada",
+      "page": "/beaches/lefkada/1147-avali/",
+      "impressions": 145,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.91,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 8.7
+    },
+    {
+      "query": "fyriplaka",
+      "page": "/beaches/milos/1927-fyriplaka/",
+      "impressions": 138,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.203,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 8.3
+    },
+    {
+      "query": "ευβοια παραλιεσ για παιδια",
+      "page": "/el/family-beaches/evia/",
+      "impressions": 353,
+      "clicks": 13,
+      "ctr": 0.037,
+      "position": 6.929,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 8.2
+    },
+    {
+      "query": "kalypso beach",
+      "page": "/fr/beaches/rethymno/679-kalypso/",
+      "impressions": 150,
+      "clicks": 1,
+      "ctr": 0.007,
+      "position": 7.753,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 8
+    },
+    {
+      "query": "avali beach lefkada",
+      "page": "/it/beaches/lefkada/1147-avali/",
+      "impressions": 123,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 6.52,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 7.4
+    },
+    {
+      "query": "athens nearby beaches family toddler april",
+      "page": "/family-beaches/athens-area/",
+      "impressions": 121,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.992,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 7.3
+    },
+    {
+      "query": "gialos beach lefkada",
+      "page": "/beaches/lefkada/1157-gialos/",
+      "impressions": 121,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.479,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 7.3
+    },
+    {
+      "query": "beach near me",
+      "page": "/",
+      "impressions": 119,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.244,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 7.1
+    },
+    {
+      "query": "melidoni beach kythira",
+      "page": "/beaches/kythira/140-melidoni/",
+      "impressions": 126,
+      "clicks": 1,
+      "ctr": 0.008,
+      "position": 10.246,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 6.6
+    },
+    {
+      "query": "beach near me now",
+      "page": "/",
+      "impressions": 110,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.545,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 6.6
+    },
+    {
+      "query": "preveza beach",
+      "page": "/family-beaches/preveza/",
+      "impressions": 113,
+      "clicks": 1,
+      "ctr": 0.009,
+      "position": 11.894,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 5.8
+    },
+    {
+      "query": "χαραμιδα",
+      "page": "/el/beaches/lesvos/1376-charamida/",
+      "impressions": 108,
+      "clicks": 1,
+      "ctr": 0.009,
+      "position": 11.056,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 5.5
+    },
+    {
+      "query": "kavala beach",
+      "page": "/family-beaches/kavala/",
+      "impressions": 88,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.989,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 5.3
+    },
+    {
+      "query": "patmos beaches",
+      "page": "/family-beaches/patmos/",
+      "impressions": 100,
+      "clicks": 1,
+      "ctr": 0.01,
+      "position": 10.21,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 5
+    },
+    {
+      "query": "lemnos beaches",
+      "page": "/family-beaches/lemnos/",
+      "impressions": 131,
+      "clicks": 3,
+      "ctr": 0.023,
+      "position": 9.466,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.9
+    },
+    {
+      "query": "κερεντζα πρεβεζα",
+      "page": "/el/beaches/preveza/887-kerentza/",
+      "impressions": 95,
+      "clicks": 1,
+      "ctr": 0.011,
+      "position": 9.221,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.7
+    },
+    {
+      "query": "fyriplaka beach",
+      "page": "/beaches/milos/1927-fyriplaka/",
+      "impressions": 77,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.156,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.6
+    },
+    {
+      "query": "παραλια λιβαδοστρασ",
+      "page": "/el/beaches/viotia/376-paralia-livadostras/",
+      "impressions": 77,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.753,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.6
+    },
+    {
+      "query": "βορεια ευβοια παραλιεσ για παιδια",
+      "page": "/el/family-beaches/evia/",
+      "impressions": 191,
+      "clicks": 7,
+      "ctr": 0.037,
+      "position": 4.649,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.5
+    },
+    {
+      "query": "χιοσ παραλιεσ για παιδια",
+      "page": "/el/family-beaches/chios/",
+      "impressions": 125,
+      "clicks": 3,
+      "ctr": 0.024,
+      "position": 8.504,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.5
+    },
+    {
+      "query": "χαλκιδα παραλιεσ για παιδια",
+      "page": "/el/family-beaches/evia/",
+      "impressions": 88,
+      "clicks": 1,
+      "ctr": 0.011,
+      "position": 9.352,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.3
+    },
+    {
+      "query": "aegina beaches",
+      "page": "/family-beaches/aegina/",
+      "impressions": 87,
+      "clicks": 1,
+      "ctr": 0.011,
+      "position": 9.207,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 4.2
+    },
+    {
+      "query": "σκυροσ παραλιεσ οργανωμενεσ",
+      "page": "/el/organized-beaches/skyros/",
+      "impressions": 96,
+      "clicks": 2,
+      "ctr": 0.021,
+      "position": 9.281,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.8
+    },
+    {
+      "query": "snorkeling halkidiki",
+      "page": "/snorkeling-beaches/halkidiki/",
+      "impressions": 80,
+      "clicks": 1,
+      "ctr": 0.013,
+      "position": 9.325,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.8
+    },
+    {
+      "query": "evia beaches",
+      "page": "/secluded-beaches/evia/",
+      "impressions": 64,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.875,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.8
+    },
+    {
+      "query": "diakoftis beach",
+      "page": "/beaches/karpathos/2314-paralia-diakoftis/",
+      "impressions": 62,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.145,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.7
+    },
+    {
+      "query": "μυτιληνη παραλιεσ για παιδια",
+      "page": "/el/family-beaches/lesvos/",
+      "impressions": 61,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.246,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.7
+    },
+    {
+      "query": "snorkeling rhodes",
+      "page": "/snorkeling-beaches/rhodes/",
+      "impressions": 76,
+      "clicks": 1,
+      "ctr": 0.013,
+      "position": 10.697,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.6
+    },
+    {
+      "query": "κακολιμανο",
+      "page": "/el/beaches/evia/226-kakolimano/",
+      "impressions": 60,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.267,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.6
+    },
+    {
+      "query": "kalypso beach crete",
+      "page": "/fr/beaches/rethymno/679-kalypso/",
+      "impressions": 59,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.203,
+      "targetPos": 3,
+      "targetCtr": 0.06,
+      "estClicks": 3.5
+    }
+  ],
+  "ctrGaps": [
+    {
+      "query": "avali beach",
+      "page": "/it/beaches/lefkada/1147-avali/",
+      "impressions": 322,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.376,
+      "expectedCtr": 0.024,
+      "ctrRatio": 0
+    },
+    {
+      "query": "rovinia beach",
+      "page": "/it/beaches/corfu/1014-rovinia/",
+      "impressions": 335,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.304,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "καιρός δημήτρανι",
+      "page": "/el/beaches/salamina/3055-dimitrani/",
+      "impressions": 328,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.409,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "avali beach lefkada",
+      "page": "/it/beaches/lefkada/1147-avali/",
+      "impressions": 123,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 6.52,
+      "expectedCtr": 0.024,
+      "ctrRatio": 0
+    },
+    {
+      "query": "beach",
+      "page": "/",
+      "impressions": 597,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.978,
+      "expectedCtr": 0.004,
+      "ctrRatio": 0
+    },
+    {
+      "query": "κατσαδια λειψοι",
+      "page": "/el/beaches/lipsi/2373-katsadia/",
+      "impressions": 153,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.752,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "beach radar",
+      "page": "/",
+      "impressions": 75,
+      "clicks": 2,
+      "ctr": 0.027,
+      "position": 6.027,
+      "expectedCtr": 0.047,
+      "ctrRatio": 0.567
+    },
+    {
+      "query": "avali beach lefkada",
+      "page": "/beaches/lefkada/1147-avali/",
+      "impressions": 145,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.91,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "fyriplaka",
+      "page": "/beaches/milos/1927-fyriplaka/",
+      "impressions": 138,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.203,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "προσηλι",
+      "page": "/el/beaches/west-attica/191-prosili/",
+      "impressions": 196,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.923,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0
+    },
+    {
+      "query": "avali beach",
+      "page": "/beaches/lefkada/1147-avali/",
+      "impressions": 184,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.582,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0
+    },
+    {
+      "query": "athens nearby beaches family toddler april",
+      "page": "/family-beaches/athens-area/",
+      "impressions": 121,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.992,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0
+    },
+    {
+      "query": "gialos beach lefkada",
+      "page": "/beaches/lefkada/1157-gialos/",
+      "impressions": 121,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.479,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0
+    },
+    {
+      "query": "fyriplaka beach",
+      "page": "/beaches/milos/1927-fyriplaka/",
+      "impressions": 77,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.156,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0
+    },
+    {
+      "query": "preveza beaches",
+      "page": "/family-beaches/preveza/",
+      "impressions": 189,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 12.127,
+      "expectedCtr": 0.004,
+      "ctrRatio": 0
+    },
+    {
+      "query": "beach near me",
+      "page": "/",
+      "impressions": 119,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.244,
+      "expectedCtr": 0.006,
+      "ctrRatio": 0
+    },
+    {
+      "query": "beach near me now",
+      "page": "/",
+      "impressions": 110,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.545,
+      "expectedCtr": 0.006,
+      "ctrRatio": 0
+    },
+    {
+      "query": "kavala beach",
+      "page": "/family-beaches/kavala/",
+      "impressions": 88,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.989,
+      "expectedCtr": 0.006,
+      "ctrRatio": 0
+    },
+    {
+      "query": "παραλια λιβαδοστρασ",
+      "page": "/el/beaches/viotia/376-paralia-livadostras/",
+      "impressions": 77,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.753,
+      "expectedCtr": 0.004,
+      "ctrRatio": 0
+    }
+  ],
+  "pageCtrGaps": [
+    {
+      "page": "/it/beaches/lefkada/1147-avali/",
+      "pageType": "beach",
+      "locale": "it",
+      "queries": 25,
+      "impressions": 588,
+      "clicks": 1,
+      "ctr": 0.002,
+      "position": 7.139,
+      "expectedCtr": 0.024,
+      "ctrRatio": 0.071,
+      "lostClicks": 13.1
+    },
+    {
+      "page": "/el/beaches/lipsi/2373-katsadia/",
+      "pageType": "beach",
+      "locale": "el",
+      "queries": 25,
+      "impressions": 251,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.135,
+      "expectedCtr": 0.024,
+      "ctrRatio": 0,
+      "lostClicks": 6
+    },
+    {
+      "page": "/it/beaches/corfu/1014-rovinia/",
+      "pageType": "beach",
+      "locale": "it",
+      "queries": 21,
+      "impressions": 477,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.335,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0,
+      "lostClicks": 4.8
+    },
+    {
+      "page": "/el/beaches/salamina/3055-dimitrani/",
+      "pageType": "beach",
+      "locale": "el",
+      "queries": 4,
+      "impressions": 411,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.012,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0,
+      "lostClicks": 4.1
+    },
+    {
+      "page": "/beaches/lefkada/1147-avali/",
+      "pageType": "beach",
+      "locale": "en",
+      "queries": 14,
+      "impressions": 380,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.268,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0,
+      "lostClicks": 3.8
+    },
+    {
+      "page": "/fr/beaches/rethymno/679-kalypso/",
+      "pageType": "beach",
+      "locale": "fr",
+      "queries": 19,
+      "impressions": 272,
+      "clicks": 1,
+      "ctr": 0.004,
+      "position": 7.776,
+      "expectedCtr": 0.01,
+      "ctrRatio": 0.368,
+      "lostClicks": 1.7
+    },
+    {
+      "page": "/el/beaches/west-attica/191-prosili/",
+      "pageType": "beach",
+      "locale": "el",
+      "queries": 25,
+      "impressions": 343,
+      "clicks": 1,
+      "ctr": 0.003,
+      "position": 9.977,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0.416,
+      "lostClicks": 1.4
+    },
+    {
+      "page": "/beaches/milos/1927-fyriplaka/",
+      "pageType": "beach",
+      "locale": "en",
+      "queries": 12,
+      "impressions": 289,
+      "clicks": 1,
+      "ctr": 0.003,
+      "position": 10.37,
+      "expectedCtr": 0.007,
+      "ctrRatio": 0.494,
+      "lostClicks": 1
+    }
+  ],
+  "zeroClick": [
+    {
+      "page": "/el/beaches/salamina/",
+      "impressions": 301,
+      "clicks": 0,
+      "position": 10.02,
+      "locale": "el",
+      "pageType": "region",
+      "region": "salamina"
+    },
+    {
+      "page": "/sheltered-beaches/alonissos/",
+      "impressions": 227,
+      "clicks": 0,
+      "position": 8.313,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/family-beaches/chania/",
+      "impressions": 199,
+      "clicks": 0,
+      "position": 9.673,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/el/beaches/andros/1688-agios-petros/",
+      "impressions": 197,
+      "clicks": 0,
+      "position": 9.868,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "andros"
+    },
+    {
+      "page": "/sunset-beaches/lefkada/",
+      "impressions": 185,
+      "clicks": 0,
+      "position": 8.173,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/sheltered-beaches/halkidiki/",
+      "impressions": 171,
+      "clicks": 0,
+      "position": 5.515,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/faq/",
+      "impressions": 161,
+      "clicks": 0,
+      "position": 4.882,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/accessible-beaches-greece/",
+      "impressions": 153,
+      "clicks": 0,
+      "position": 8.569,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/organized-beaches/hydra/",
+      "impressions": 141,
+      "clicks": 0,
+      "position": 11.936,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/de/beaches/kos/2339-limnionas/",
+      "impressions": 126,
+      "clicks": 0,
+      "position": 9.651,
+      "locale": "de",
+      "pageType": "beach",
+      "region": "kos"
+    },
+    {
+      "page": "/el/beaches/magnesia-pelion/2677-alykes-volos/",
+      "impressions": 125,
+      "clicks": 0,
+      "position": 8.992,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "magnesia-pelion"
+    },
+    {
+      "page": "/it/organized-beaches/kos/",
+      "impressions": 125,
+      "clicks": 0,
+      "position": 8.872,
+      "locale": "it",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/sheltered-beaches/syros/",
+      "impressions": 122,
+      "clicks": 0,
+      "position": 6.107,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/el/beaches/evia/260-navtiko/",
+      "impressions": 119,
+      "clicks": 0,
+      "position": 7.277,
+      "locale": "el",
+      "pageType": "beach",
+      "region": "evia"
+    },
+    {
+      "page": "/family-beaches/leros/",
+      "impressions": 115,
+      "clicks": 0,
+      "position": 9.913,
+      "locale": "en",
+      "pageType": "other",
+      "region": null
+    },
+    {
+      "page": "/beaches/halkidiki/469-paralia-latoura/",
+      "impressions": 110,
+      "clicks": 0,
+      "position": 8.064,
+      "locale": "en",
+      "pageType": "beach",
+      "region": "halkidiki"
+    },
+    {
+      "page": "/it/secluded-beaches/mykonos/",
+      "impressions": 110,
+      "clicks": 0,
+      "position": 9.127,
+      "locale": "it",
+      "pageType": "other",
+      "region": null
+    }
+  ],
+  "cannibalization": [
+    {
+      "query": "avali beach",
+      "urls": [
+        {
+          "page": "/it/beaches/lefkada/1147-avali/",
+          "impressions": 322,
+          "clicks": 0,
+          "position": 7.376
+        },
+        {
+          "page": "/beaches/lefkada/1147-avali/",
+          "impressions": 184,
+          "clicks": 0,
+          "position": 9.582
+        },
+        {
+          "page": "/de/beaches/lefkada/1147-avali/",
+          "impressions": 8,
+          "clicks": 0,
+          "position": 10.5
+        },
+        {
+          "page": "/fr/beaches/lefkada/1147-avali/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 5.667
+        }
+      ],
+      "urlCount": 4,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 517
+    },
+    {
+      "query": "rovinia beach",
+      "urls": [
+        {
+          "page": "/it/beaches/corfu/1014-rovinia/",
+          "impressions": 335,
+          "clicks": 0,
+          "position": 9.304
+        },
+        {
+          "page": "/fr/beaches/corfu/1014-rovinia/",
+          "impressions": 44,
+          "clicks": 0,
+          "position": 6.477
+        },
+        {
+          "page": "/de/beaches/corfu/1014-rovinia/",
+          "impressions": 26,
+          "clicks": 0,
+          "position": 6.808
+        }
+      ],
+      "urlCount": 3,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 405
+    },
+    {
+      "query": "preveza beaches",
+      "urls": [
+        {
+          "page": "/family-beaches/preveza/",
+          "impressions": 189,
+          "clicks": 0,
+          "position": 12.127
+        },
+        {
+          "page": "/organized-beaches/preveza/",
+          "impressions": 43,
+          "clicks": 0,
+          "position": 13.674
+        },
+        {
+          "page": "/sheltered-beaches/preveza/",
+          "impressions": 31,
+          "clicks": 0,
+          "position": 12.935
+        },
+        {
+          "page": "/sandy-beaches/preveza/",
+          "impressions": 10,
+          "clicks": 0,
+          "position": 10.4
+        },
+        {
+          "page": "/beaches/preveza/",
+          "impressions": 4,
+          "clicks": 1,
+          "position": 16.25
+        }
+      ],
+      "urlCount": 5,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 277
+    },
+    {
+      "query": "avali beach lefkada",
+      "urls": [
+        {
+          "page": "/beaches/lefkada/1147-avali/",
+          "impressions": 145,
+          "clicks": 0,
+          "position": 8.91
+        },
+        {
+          "page": "/it/beaches/lefkada/1147-avali/",
+          "impressions": 123,
+          "clicks": 0,
+          "position": 6.52
+        },
+        {
+          "page": "/de/beaches/lefkada/1147-avali/",
+          "impressions": 9,
+          "clicks": 0,
+          "position": 7.444
+        }
+      ],
+      "urlCount": 3,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 277
+    },
+    {
+      "query": "ναι",
+      "urls": [
+        {
+          "page": "/",
+          "impressions": 68,
+          "clicks": 1,
+          "position": 2.162
+        },
+        {
+          "page": "/sheltered-beaches/evia/",
+          "impressions": 19,
+          "clicks": 0,
+          "position": 2.737
+        },
+        {
+          "page": "/sheltered-beaches/kythira/",
+          "impressions": 17,
+          "clicks": 0,
+          "position": 3.059
+        },
+        {
+          "page": "/family-beaches/evia/",
+          "impressions": 10,
+          "clicks": 0,
+          "position": 2.5
+        },
+        {
+          "page": "/el/family-beaches/evia/",
+          "impressions": 9,
+          "clicks": 1,
+          "position": 3.111
+        },
+        {
+          "page": "/family-beaches/preveza/",
+          "impressions": 8,
+          "clicks": 0,
+          "position": 2.625
+        },
+        {
+          "page": "/sheltered-beaches/serifos/",
+          "impressions": 7,
+          "clicks": 0,
+          "position": 4
+        },
+        {
+          "page": "/secluded-beaches/evia/",
+          "impressions": 6,
+          "clicks": 0,
+          "position": 3.167
+        },
+        {
+          "page": "/sheltered-beaches/santorini/",
+          "impressions": 6,
+          "clicks": 0,
+          "position": 3
+        },
+        {
+          "page": "/sheltered-beaches/andros/",
+          "impressions": 5,
+          "clicks": 0,
+          "position": 3.2
+        },
+        {
+          "page": "/sheltered-beaches/naxos/",
+          "impressions": 5,
+          "clicks": 0,
+          "position": 2
+        },
+        {
+          "page": "/beaches/lemnos/",
+          "impressions": 4,
+          "clicks": 0,
+          "position": 6.75
+        },
+        {
+          "page": "/family-beaches/tinos/",
+          "impressions": 4,
+          "clicks": 0,
+          "position": 3.25
+        },
+        {
+          "page": "/sheltered-beaches/korinthia/",
+          "impressions": 4,
+          "clicks": 0,
+          "position": 3.25
+        },
+        {
+          "page": "/beaches/evia/217-giannitsi/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 3.333
+        },
+        {
+          "page": "/beaches/heraklion/626-matala/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 4
+        },
+        {
+          "page": "/family-beaches/chios/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 8
+        },
+        {
+          "page": "/family-beaches/lemnos/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 4.667
+        },
+        {
+          "page": "/sheltered-beaches/halkidiki/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 1.667
+        },
+        {
+          "page": "/sheltered-beaches/kythnos/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 5
+        },
+        {
+          "page": "/sheltered-beaches/preveza/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 2.667
+        }
+      ],
+      "urlCount": 21,
+      "regionVsBeachConflict": true,
+      "totalImpressions": 193
+    },
+    {
+      "query": "beach near me",
+      "urls": [
+        {
+          "page": "/",
+          "impressions": 119,
+          "clicks": 0,
+          "position": 11.244
+        },
+        {
+          "page": "/beaches/halkidiki/",
+          "impressions": 52,
+          "clicks": 0,
+          "position": 12.115
+        },
+        {
+          "page": "/family-beaches/preveza/",
+          "impressions": 8,
+          "clicks": 0,
+          "position": 10.125
+        },
+        {
+          "page": "/beaches/samos/",
+          "impressions": 5,
+          "clicks": 0,
+          "position": 10.6
+        },
+        {
+          "page": "/beaches/argolida/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 10
+        },
+        {
+          "page": "/beaches/lesvos/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 9.333
+        }
+      ],
+      "urlCount": 6,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 190
+    },
+    {
+      "query": "kavala beach",
+      "urls": [
+        {
+          "page": "/family-beaches/kavala/",
+          "impressions": 88,
+          "clicks": 0,
+          "position": 10.989
+        },
+        {
+          "page": "/organized-beaches/kavala/",
+          "impressions": 62,
+          "clicks": 1,
+          "position": 13.984
+        },
+        {
+          "page": "/sheltered-beaches/kavala/",
+          "impressions": 27,
+          "clicks": 0,
+          "position": 12.148
+        }
+      ],
+      "urlCount": 3,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 177
+    },
+    {
+      "query": "preveza beach",
+      "urls": [
+        {
+          "page": "/family-beaches/preveza/",
+          "impressions": 113,
+          "clicks": 1,
+          "position": 11.894
+        },
+        {
+          "page": "/organized-beaches/preveza/",
+          "impressions": 31,
+          "clicks": 0,
+          "position": 11.032
+        },
+        {
+          "page": "/beaches/preveza/",
+          "impressions": 10,
+          "clicks": 0,
+          "position": 16
+        },
+        {
+          "page": "/sheltered-beaches/preveza/",
+          "impressions": 9,
+          "clicks": 0,
+          "position": 16.667
+        },
+        {
+          "page": "/sandy-beaches/preveza/",
+          "impressions": 5,
+          "clicks": 0,
+          "position": 9.8
+        }
+      ],
+      "urlCount": 5,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 168
+    },
+    {
+      "query": "lemnos beaches",
+      "urls": [
+        {
+          "page": "/family-beaches/lemnos/",
+          "impressions": 131,
+          "clicks": 3,
+          "position": 9.466
+        },
+        {
+          "page": "/snorkeling-beaches/lemnos/",
+          "impressions": 24,
+          "clicks": 0,
+          "position": 14.458
+        }
+      ],
+      "urlCount": 2,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 155
+    },
+    {
+      "query": "kalypso beach",
+      "urls": [
+        {
+          "page": "/fr/beaches/rethymno/679-kalypso/",
+          "impressions": 150,
+          "clicks": 1,
+          "position": 7.753
+        },
+        {
+          "page": "/de/beaches/rethymno/679-kalypso/",
+          "impressions": 3,
+          "clicks": 0,
+          "position": 15.333
+        }
+      ],
+      "urlCount": 2,
+      "regionVsBeachConflict": false,
+      "totalImpressions": 153
+    }
+  ],
+  "risingDecaying": {
+    "risingQueries": [
+      {
+        "query": "calm beach",
+        "clicksCurrent": 321,
+        "clicksPrevious": 30,
+        "clicksDelta": 291,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calmbeach",
+        "clicksCurrent": 79,
+        "clicksPrevious": 15,
+        "clicksDelta": 64,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calm beach greece",
+        "clicksCurrent": 16,
+        "clicksPrevious": 0,
+        "clicksDelta": 16,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "καβαλα παραλιεσ για παιδια",
+        "clicksCurrent": 15,
+        "clicksPrevious": 0,
+        "clicksDelta": 15,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "ευβοια παραλιεσ για παιδια",
+        "clicksCurrent": 13,
+        "clicksPrevious": 0,
+        "clicksDelta": 13,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calm beaches",
+        "clicksCurrent": 12,
+        "clicksPrevious": 0,
+        "clicksDelta": 12,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "calm beaches near me",
+        "clicksCurrent": 9,
+        "clicksPrevious": 1,
+        "clicksDelta": 8,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "vrasidas beach",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "βορεια ευβοια παραλιεσ για παιδια",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλια μαρκεσι σκυροσ",
+        "clicksCurrent": 7,
+        "clicksPrevious": 0,
+        "clicksDelta": 7,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "beach conditions near me",
+        "clicksCurrent": 5,
+        "clicksPrevious": 0,
+        "clicksDelta": 5,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "δερμαρια πελασγιασ",
+        "clicksCurrent": 5,
+        "clicksPrevious": 0,
+        "clicksDelta": 5,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "νοτια ευβοια παραλιεσ για παιδια",
+        "clicksCurrent": 5,
+        "clicksPrevious": 0,
+        "clicksDelta": 5,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "ναι",
+        "clicksCurrent": 4,
+        "clicksPrevious": 0,
+        "clicksDelta": 4,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλια λαιμοσ βοιωτιασ",
+        "clicksCurrent": 4,
+        "clicksPrevious": 0,
+        "clicksDelta": 4,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "lefkada beaches with sunbeds",
+        "clicksCurrent": 4,
+        "clicksPrevious": 1,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "lemnos beaches",
+        "clicksCurrent": 3,
+        "clicksPrevious": 0,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "preveli beach aktuell",
+        "clicksCurrent": 3,
+        "clicksPrevious": 0,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "απανεμεσ παραλιεσ κιμωλοσ",
+        "clicksCurrent": 3,
+        "clicksPrevious": 0,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "καμερα σκοτινα",
+        "clicksCurrent": 3,
+        "clicksPrevious": 0,
+        "clicksDelta": 3,
+        "seasonalityLikely": null
+      }
+    ],
+    "decayingQueries": [
+      {
+        "query": "αιγινα παραλιεσ οργανωμενεσ",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "naxos snorkeling spots",
+        "clicksCurrent": 0,
+        "clicksPrevious": 2,
+        "clicksDelta": -2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλια ναυτιλος",
+        "clicksCurrent": 0,
+        "clicksPrevious": 2,
+        "clicksDelta": -2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "αργολιδα παραλιεσ για παιδια",
+        "clicksCurrent": 0,
+        "clicksPrevious": 2,
+        "clicksDelta": -2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλιεσ πιεριασ για παιδια",
+        "clicksCurrent": 0,
+        "clicksPrevious": 2,
+        "clicksDelta": -2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "σκοπελοσ παραλιεσ οργανωμενεσ",
+        "clicksCurrent": 0,
+        "clicksPrevious": 2,
+        "clicksDelta": -2,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "halkidiki snorkeling",
+        "clicksCurrent": 2,
+        "clicksPrevious": 3,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "andros snorkeling",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "gerania beach milos",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "halkidiki hidden beaches",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "kampanes",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "kimolos beaches",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "lolantonis",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "samothraki beaches",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "tilos beaches",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "άλλη",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "απομονωμένεσ παραλιεσ",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "λεροσ παραλιεσ",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλια λαιμος χαλκιδικη",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      },
+      {
+        "query": "παραλιες κοντα μου",
+        "clicksCurrent": 0,
+        "clicksPrevious": 1,
+        "clicksDelta": -1,
+        "seasonalityLikely": null
+      }
+    ],
+    "risingPages": [
+      {
+        "page": "/",
+        "clicksCurrent": 946,
+        "clicksPrevious": 96,
+        "clicksDelta": 850,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/family-beaches/evia/",
+        "clicksCurrent": 99,
+        "clicksPrevious": 4,
+        "clicksDelta": 95,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/skyros/335-markesi/",
+        "clicksCurrent": 62,
+        "clicksPrevious": 0,
+        "clicksDelta": 62,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/sheltered-beaches/kythira/",
+        "clicksCurrent": 52,
+        "clicksPrevious": 0,
+        "clicksDelta": 52,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/secluded-beaches/halkidiki/",
+        "clicksCurrent": 51,
+        "clicksPrevious": 5,
+        "clicksDelta": 46,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/pieria/510-skotina/",
+        "clicksCurrent": 44,
+        "clicksPrevious": 0,
+        "clicksDelta": 44,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/halkidiki/",
+        "clicksCurrent": 59,
+        "clicksPrevious": 23,
+        "clicksDelta": 36,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/lemnos/",
+        "clicksCurrent": 63,
+        "clicksPrevious": 29,
+        "clicksDelta": 34,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/family-beaches/kavala/",
+        "clicksCurrent": 33,
+        "clicksPrevious": 0,
+        "clicksDelta": 33,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/organized-beaches/lefkada/",
+        "clicksCurrent": 27,
+        "clicksPrevious": 3,
+        "clicksDelta": 24,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/evia/223-thapsa/",
+        "clicksCurrent": 24,
+        "clicksPrevious": 0,
+        "clicksDelta": 24,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/kythnos/",
+        "clicksCurrent": 24,
+        "clicksPrevious": 0,
+        "clicksDelta": 24,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/aegina/",
+        "clicksCurrent": 34,
+        "clicksPrevious": 11,
+        "clicksDelta": 23,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/de/beaches/rethymno/704-preveli/",
+        "clicksCurrent": 21,
+        "clicksPrevious": 0,
+        "clicksDelta": 21,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sheltered-beaches/skopelos/",
+        "clicksCurrent": 21,
+        "clicksPrevious": 0,
+        "clicksDelta": 21,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/skyros/",
+        "clicksCurrent": 20,
+        "clicksPrevious": 0,
+        "clicksDelta": 20,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/secluded-beaches/zakynthos/",
+        "clicksCurrent": 22,
+        "clicksPrevious": 3,
+        "clicksDelta": 19,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/beaches/lefkada/1157-gialos/",
+        "clicksCurrent": 19,
+        "clicksPrevious": 0,
+        "clicksDelta": 19,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sheltered-beaches/agistri/",
+        "clicksCurrent": 19,
+        "clicksPrevious": 0,
+        "clicksDelta": 19,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/halkidiki/462-paralia-stratoni/",
+        "clicksCurrent": 17,
+        "clicksPrevious": 0,
+        "clicksDelta": 17,
+        "seasonalityLikely": null
+      }
+    ],
+    "decayingPages": [
+      {
+        "page": "/el/organized-beaches/astypalaia/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 6,
+        "clicksDelta": -6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/corfu/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 6,
+        "clicksDelta": -6,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/secluded-beaches/kea/",
+        "clicksCurrent": 4,
+        "clicksPrevious": 9,
+        "clicksDelta": -5,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/sunset-beaches/skopelos/",
+        "clicksCurrent": 4,
+        "clicksPrevious": 8,
+        "clicksDelta": -4,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/skopelos/",
+        "clicksCurrent": 2,
+        "clicksPrevious": 6,
+        "clicksDelta": -4,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/sunset-beaches/kalymnos/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 4,
+        "clicksDelta": -4,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/preveza/",
+        "clicksCurrent": 8,
+        "clicksPrevious": 11,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/mykonos/",
+        "clicksCurrent": 3,
+        "clicksPrevious": 6,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/organized-beaches/leros/",
+        "clicksCurrent": 2,
+        "clicksPrevious": 5,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/beaches/lemnos/1433-gomati/",
+        "clicksCurrent": 1,
+        "clicksPrevious": 4,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/argolida/",
+        "clicksCurrent": 1,
+        "clicksPrevious": 4,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/de/organized-beaches/milos/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/de/sunset-beaches/milos/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/alonissos/2591-kalyvia-stamatiou/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/fthiotida/367-paralia-traganas/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/beaches/zakynthos/1203-kamaroti/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/el/sheltered-beaches/anafi/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/snorkeling-beaches/magnesia-pelion/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/beaches/lefkada/1171-porto-katsiki/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      },
+      {
+        "page": "/fr/beaches/naxos/",
+        "clicksCurrent": 0,
+        "clicksPrevious": 3,
+        "clicksDelta": -3,
+        "seasonalityLikely": null
+      }
+    ]
+  },
+  "newQueries": [
+    {
+      "query": "avali beach",
+      "impressions": 517,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.199
+    },
+    {
+      "query": "rovinia beach",
+      "impressions": 405,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.837
+    },
+    {
+      "query": "vrasidas beach",
+      "impressions": 400,
+      "clicks": 7,
+      "ctr": 0.018,
+      "position": 8.808
+    },
+    {
+      "query": "avali beach lefkada",
+      "impressions": 279,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 7.778
+    },
+    {
+      "query": "βορεια ευβοια παραλιεσ για παιδια",
+      "impressions": 191,
+      "clicks": 7,
+      "ctr": 0.037,
+      "position": 4.649
+    },
+    {
+      "query": "kavala beach",
+      "impressions": 176,
+      "clicks": 1,
+      "ctr": 0.006,
+      "position": 11.926
+    },
+    {
+      "query": "preveza beach",
+      "impressions": 164,
+      "clicks": 1,
+      "ctr": 0.006,
+      "position": 11.171
+    },
+    {
+      "query": "kalypso beach",
+      "impressions": 155,
+      "clicks": 1,
+      "ctr": 0.006,
+      "position": 8.129
+    },
+    {
+      "query": "evia beaches",
+      "impressions": 134,
+      "clicks": 1,
+      "ctr": 0.007,
+      "position": 9.761
+    },
+    {
+      "query": "melidoni beach kythira",
+      "impressions": 126,
+      "clicks": 1,
+      "ctr": 0.008,
+      "position": 10.246
+    },
+    {
+      "query": "χιοσ παραλιεσ για παιδια",
+      "impressions": 125,
+      "clicks": 3,
+      "ctr": 0.024,
+      "position": 8.504
+    },
+    {
+      "query": "gialos beach lefkada",
+      "impressions": 123,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.488
+    },
+    {
+      "query": "νοτια ευβοια παραλιεσ για παιδια",
+      "impressions": 109,
+      "clicks": 5,
+      "ctr": 0.046,
+      "position": 3.761
+    },
+    {
+      "query": "χαραμιδα",
+      "impressions": 108,
+      "clicks": 1,
+      "ctr": 0.009,
+      "position": 11.056
+    },
+    {
+      "query": "σκυροσ παραλιεσ οργανωμενεσ",
+      "impressions": 96,
+      "clicks": 2,
+      "ctr": 0.021,
+      "position": 9.281
+    },
+    {
+      "query": "κερεντζα πρεβεζα",
+      "impressions": 95,
+      "clicks": 1,
+      "ctr": 0.011,
+      "position": 9.221
+    },
+    {
+      "query": "καβαλα παραλιεσ για παιδια",
+      "impressions": 92,
+      "clicks": 15,
+      "ctr": 0.163,
+      "position": 5.13
+    },
+    {
+      "query": "χαλκιδα παραλιεσ για παιδια",
+      "impressions": 88,
+      "clicks": 1,
+      "ctr": 0.011,
+      "position": 9.352
+    },
+    {
+      "query": "preveli beach now",
+      "impressions": 87,
+      "clicks": 2,
+      "ctr": 0.023,
+      "position": 8.08
+    },
+    {
+      "query": "beach radar",
+      "impressions": 75,
+      "clicks": 2,
+      "ctr": 0.027,
+      "position": 6.027
+    },
+    {
+      "query": "gomati beach",
+      "impressions": 74,
+      "clicks": 1,
+      "ctr": 0.014,
+      "position": 9.108
+    },
+    {
+      "query": "αγκαθωπεσ συροσ beach bar",
+      "impressions": 74,
+      "clicks": 1,
+      "ctr": 0.014,
+      "position": 11.932
+    },
+    {
+      "query": "kavala beaches",
+      "impressions": 72,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 15.986
+    },
+    {
+      "query": "beaches in preveza",
+      "impressions": 65,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 13.169
+    },
+    {
+      "query": "σκοτινα καμερα",
+      "impressions": 64,
+      "clicks": 2,
+      "ctr": 0.031,
+      "position": 6.688
+    },
+    {
+      "query": "plathiena beach milos",
+      "impressions": 63,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.841
+    },
+    {
+      "query": "diakoftis beach",
+      "impressions": 62,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 10.145
+    },
+    {
+      "query": "kalypso beach crete",
+      "impressions": 62,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 8.355
+    },
+    {
+      "query": "κακολιμανο",
+      "impressions": 61,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 9.82
+    },
+    {
+      "query": "μυτιληνη παραλιεσ για παιδια",
+      "impressions": 61,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 11.246
+    }
+  ],
+  "contentInventory": {
+    "totalBeaches": 2873,
+    "beachesWithPage": 2873,
+    "beachesSeenInGsc": 2205,
+    "invisibleBeaches": 668,
+    "byRegion": [
+      {
+        "region": "central-macedonia-halkidiki-mainland",
+        "total": 133,
+        "seenInGsc": 76,
+        "invisible": 57
+      },
+      {
+        "region": "central-greece-evia",
+        "total": 130,
+        "seenInGsc": 88,
+        "invisible": 42
+      },
+      {
+        "region": "crete-crete-lasithi",
+        "total": 66,
+        "seenInGsc": 44,
+        "invisible": 22
+      },
+      {
+        "region": "attica-east-attica-mainland",
+        "total": 59,
+        "seenInGsc": 39,
+        "invisible": 20
+      },
+      {
+        "region": "thessaly-magnesia-mainland---pelion",
+        "total": 70,
+        "seenInGsc": 50,
+        "invisible": 20
+      },
+      {
+        "region": "peloponnese-lakonia-mainland",
+        "total": 69,
+        "seenInGsc": 50,
+        "invisible": 19
+      },
+      {
+        "region": "ionian-islands-corfu",
+        "total": 105,
+        "seenInGsc": 87,
+        "invisible": 18
+      },
+      {
+        "region": "north-aegean-lesvos",
+        "total": 62,
+        "seenInGsc": 44,
+        "invisible": 18
+      },
+      {
+        "region": "peloponnese-messinia-mainland",
+        "total": 57,
+        "seenInGsc": 41,
+        "invisible": 16
+      },
+      {
+        "region": "east-macedonia-and-thrace-thasos",
+        "total": 58,
+        "seenInGsc": 43,
+        "invisible": 15
+      },
+      {
+        "region": "south-aegean-rhodes",
+        "total": 62,
+        "seenInGsc": 49,
+        "invisible": 13
+      },
+      {
+        "region": "north-aegean-lemnos",
+        "total": 41,
+        "seenInGsc": 29,
+        "invisible": 12
+      },
+      {
+        "region": "south-aegean-karpathos",
+        "total": 49,
+        "seenInGsc": 37,
+        "invisible": 12
+      },
+      {
+        "region": "thessaly-skiathos",
+        "total": 33,
+        "seenInGsc": 21,
+        "invisible": 12
+      },
+      {
+        "region": "west-greece-aetolia-acarnania-mainland",
+        "total": 50,
+        "seenInGsc": 38,
+        "invisible": 12
+      },
+      {
+        "region": "crete-crete-chania",
+        "total": 90,
+        "seenInGsc": 80,
+        "invisible": 10
+      },
+      {
+        "region": "epirus-thesprotia-mainland",
+        "total": 39,
+        "seenInGsc": 29,
+        "invisible": 10
+      },
+      {
+        "region": "ionian-islands-kefalonia",
+        "total": 77,
+        "seenInGsc": 67,
+        "invisible": 10
+      },
+      {
+        "region": "north-aegean-chios",
+        "total": 36,
+        "seenInGsc": 26,
+        "invisible": 10
+      },
+      {
+        "region": "south-aegean-serifos",
+        "total": 25,
+        "seenInGsc": 15,
+        "invisible": 10
+      },
+      {
+        "region": "thessaly-alonissos",
+        "total": 39,
+        "seenInGsc": 29,
+        "invisible": 10
+      },
+      {
+        "region": "attica-kythira",
+        "total": 42,
+        "seenInGsc": 33,
+        "invisible": 9
+      },
+      {
+        "region": "north-aegean-samos",
+        "total": 44,
+        "seenInGsc": 35,
+        "invisible": 9
+      },
+      {
+        "region": "central-macedonia-thessaloniki-area",
+        "total": 17,
+        "seenInGsc": 9,
+        "invisible": 8
+      },
+      {
+        "region": "crete-crete-heraklion",
+        "total": 53,
+        "seenInGsc": 45,
+        "invisible": 8
+      },
+      {
+        "region": "peloponnese-argolida-mainland",
+        "total": 34,
+        "seenInGsc": 26,
+        "invisible": 8
+      },
+      {
+        "region": "peloponnese-arkadia-mainland",
+        "total": 17,
+        "seenInGsc": 9,
+        "invisible": 8
+      },
+      {
+        "region": "south-aegean-andros",
+        "total": 41,
+        "seenInGsc": 33,
+        "invisible": 8
+      },
+      {
+        "region": "south-aegean-kea",
+        "total": 34,
+        "seenInGsc": 26,
+        "invisible": 8
+      },
+      {
+        "region": "south-aegean-kos",
+        "total": 38,
+        "seenInGsc": 30,
+        "invisible": 8
+      },
+      {
+        "region": "south-aegean-koufonisia",
+        "total": 19,
+        "seenInGsc": 11,
+        "invisible": 8
+      },
+      {
+        "region": "central-greece-fokida-mainland",
+        "total": 21,
+        "seenInGsc": 14,
+        "invisible": 7
+      },
+      {
+        "region": "east-macedonia-and-thrace-kavala-mainland",
+        "total": 19,
+        "seenInGsc": 12,
+        "invisible": 7
+      },
+      {
+        "region": "south-aegean-kythnos",
+        "total": 40,
+        "seenInGsc": 33,
+        "invisible": 7
+      },
+      {
+        "region": "south-aegean-milos",
+        "total": 42,
+        "seenInGsc": 35,
+        "invisible": 7
+      },
+      {
+        "region": "south-aegean-syros",
+        "total": 24,
+        "seenInGsc": 17,
+        "invisible": 7
+      },
+      {
+        "region": "attica-athens-area-mainland",
+        "total": 26,
+        "seenInGsc": 20,
+        "invisible": 6
+      },
+      {
+        "region": "east-macedonia-and-thrace-samothraki",
+        "total": 11,
+        "seenInGsc": 5,
+        "invisible": 6
+      },
+      {
+        "region": "peloponnese-korinthia-mainland",
+        "total": 25,
+        "seenInGsc": 19,
+        "invisible": 6
+      },
+      {
+        "region": "south-aegean-astypalaia",
+        "total": 22,
+        "seenInGsc": 16,
+        "invisible": 6
+      },
+      {
+        "region": "south-aegean-naxos",
+        "total": 44,
+        "seenInGsc": 38,
+        "invisible": 6
+      },
+      {
+        "region": "south-aegean-tinos",
+        "total": 40,
+        "seenInGsc": 34,
+        "invisible": 6
+      },
+      {
+        "region": "central-greece-skyros",
+        "total": 21,
+        "seenInGsc": 16,
+        "invisible": 5
+      },
+      {
+        "region": "epirus-preveza-mainland",
+        "total": 26,
+        "seenInGsc": 21,
+        "invisible": 5
+      },
+      {
+        "region": "ionian-islands-paxos",
+        "total": 25,
+        "seenInGsc": 20,
+        "invisible": 5
+      },
+      {
+        "region": "south-aegean-kalymnos",
+        "total": 20,
+        "seenInGsc": 15,
+        "invisible": 5
+      },
+      {
+        "region": "south-aegean-lipsi",
+        "total": 18,
+        "seenInGsc": 13,
+        "invisible": 5
+      },
+      {
+        "region": "thessaly-larissa-coast-agia---kissavos",
+        "total": 9,
+        "seenInGsc": 4,
+        "invisible": 5
+      },
+      {
+        "region": "attica-aegina",
+        "total": 17,
+        "seenInGsc": 13,
+        "invisible": 4
+      },
+      {
+        "region": "attica-piraeus-area",
+        "total": 5,
+        "seenInGsc": 1,
+        "invisible": 4
+      }
+    ],
+    "note": "Regions sorted by invisible count desc; beachesWithPage assumes every dataset beach is prerendered."
+  },
+  "errors": {}
+}
