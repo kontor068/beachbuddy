@@ -112,6 +112,15 @@ const checks = [
     args: ['scripts/validateScriptTypes.mjs'],
   },
   {
+    id: 'ensemble-spread-parity',
+    title: 'The forecast-confidence signal judges on the same scale as the card',
+    description: 'Checks netlify/functions/ensemble-spread.mjs against the app: its copied Beaufort ladder must match utils/weatherUtils.getBeaufortLevel across 0-140 km/h in 0,5 steps, its four thresholds must equal the ones in scripts/measureEnsembleSpread.mjs (the tool the national numbers came from), five hand-built scenarios must classify correctly, and no confidence wording may appear outside comments.',
+    protects: 'Prevents a silent divergence in a copied constant. Netlify functions do not share a bundle with the app, so the Beaufort ladder is duplicated by necessity; if one side changes the confidence brake would judge on a different scale than the card it is meant to restrain, and nothing else would notice. Also keeps the measured numbers honest: PORISMA §Γ50 quotes 22,2% of swim hours at day +5 as looking calm while the 90th percentile says 5+ Bft — those figures describe the thresholds in the measurement tool, so a threshold change in the function alone would make the bible describe something that no longer runs.',
+    failureAction: 'Fix netlify/functions/ensemble-spread.mjs. Do NOT edit the measurement tool to match the function — the national figures came from the tool, so a threshold change means re-measuring nationally, not aligning on paper.',
+    command: process.execPath,
+    args: ['scripts/validateEnsembleSpread.mjs'],
+  },
+  {
     id: 'dry-sector-gate',
     title: 'The dry-sector bypass may only calm, and only where there is no water',
     description: 'Runs every high-confidence beach against all 8 wind sectors at three wind speeds and checks the shore-wave gate that bypasses the onshore test when the geometry reports no water in the wind\'s half-circle: the printed figure never rises, the shore height stays strictly below the open-water reading, no sector unlocks while an opening wider than 2 km sits within ±90° of the wind, and four named commitments hold (Λιμανάκια Βουλιαγμένης 22 and Πάνορμος Νάξου 2011 must NOT unlock; Σταφίδα 2186 and Άγιος Ιωάννης Πόρτο 2151 must).',
