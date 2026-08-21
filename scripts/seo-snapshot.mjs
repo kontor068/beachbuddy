@@ -1002,6 +1002,92 @@ function computeLocalizedAudience(raw, cap) {
   };
 }
 
+// Search intents as plain lowercase substrings — deliberately NOT regexes, so a new
+// word can be added by anyone without escaping anything.
+const INTENTS = [
+  { key: 'sheltered',  words: ['υπήνεμ', 'προστατευ', 'sheltered', 'calm', 'άπνο', 'ήρεμ', 'riparat', 'geschützt', 'abrit'] },
+  { key: 'brand',      words: ['calm beach', 'calmbeach'] },
+  { key: 'family',     words: ['παιδι', 'family', 'famiglia', 'kinder', 'enfant', 'οικογεν'] },
+  { key: 'snorkeling', words: ['snorkel', 'κατάδυ', 'βατραχ', 'μάσκα', 'immersion', 'schnorch'] },
+  { key: 'nearMe',     words: ['κοντά μου', 'near me', 'nearby', 'πρόσβασ', 'access', 'παρκ'] },
+  { key: 'best',       words: ['καλύτερ', 'best', 'migliori', 'beste', 'meilleur', 'top '] },
+  { key: 'organized',  words: ['οργανωμ', 'organized', 'ξαπλώστρ', 'sunbed', 'beach bar', 'καντίν', 'attrezzat'] },
+  { key: 'weather',    words: ['καιρός', 'weather', 'meteo', 'wetter', 'météo', 'πρόγνωση', 'forecast', 'θερμοκρασ'] },
+  { key: 'sunset',     words: ['ηλιοβασ', 'sunset', 'tramonto', 'sonnenunterg', 'coucher'] },
+  { key: 'sandy',      words: ['αμμο', 'αμμώ', 'sandy', 'sabbia', 'βοτσαλ', 'pebble', 'ghiaia', 'kies'] },
+  { key: 'camping',    words: ['camping', 'κάμπινγκ', 'campeggio', 'campsite'] },
+  { key: 'accessible', words: ['αμεα', 'accessible', 'disab', 'αναπηρ', 'rollstuhl', 'seatrac'] },
+  { key: 'dogs',       words: ['σκύλ', 'dog', 'pet friendly', 'cane', 'hund', 'chien'] },
+];
+
+/**
+ * Every intent measured against THE CURVE AT ITS OWN POSITION, never against the
+ * other intents.
+ *
+ * Exists because comparing CTRs to each other produced three confident, wrong
+ * findings on 21/08/2026: "the weather titles do not work" (2,5 clicks at stake),
+ * "accessibility is our biggest gap" (0,03 expected clicks) and "the languages
+ * cannibalise each other" (position 9, where the whole site earns 1,0%). All three
+ * dissolved the moment position was held constant. CTR is very nearly a function of
+ * position, so a table of CTRs is a table of positions wearing a disguise.
+ *
+ * `index` is the only column that means anything: clicks divided by what the curve
+ * says a page in that position earns. Below 1 there may be something to fix; at or
+ * above 1 there is nothing to fix, however small the raw percentage looks.
+ */
+function computeIntentVsCurve(raw, curve) {
+  const rows = raw.current?.query;
+  if (!rows) return { error: 'missing current query data' };
+  if (!curve?.byPosition) return { error: 'missing ctr curve' };
+
+  const blank = () => ({ queries: 0, impressions: 0, clicks: 0, expected: 0, posWeighted: 0 });
+  const acc = new Map(INTENTS.map((i) => [i.key, blank()]));
+  const unmatched = blank();
+
+  for (const row of rows) {
+    const q = String(row.keys?.[0] || '').toLowerCase();
+    if (!q) continue;
+    const impressions = row.impressions || 0;
+    const clicks = row.clicks || 0;
+    const expected = impressions * (curveCtrAt(curve, row.position || 20) ?? 0);
+    const add = (a) => {
+      a.queries += 1; a.impressions += impressions; a.clicks += clicks;
+      a.expected += expected; a.posWeighted += (row.position || 0) * impressions;
+    };
+    let hit = false;
+    for (const intent of INTENTS) {
+      if (!intent.words.some((w) => q.includes(w))) continue;
+      hit = true;
+      add(acc.get(intent.key));
+    }
+    if (!hit) add(unmatched);
+  }
+
+  const finish = (a, key) => ({
+    key,
+    queries: a.queries,
+    impressions: a.impressions,
+    clicks: a.clicks,
+    expectedClicks: r1(a.expected),
+    position: a.impressions ? r1(a.posWeighted / a.impressions) : null,
+    ctr: a.impressions ? r3(a.clicks / a.impressions) : 0,
+    // null, not 0: with under a click expected there is no ratio worth reporting, and
+    // a 0 would read as failure when it only means the sample is too small to judge.
+    index: a.expected >= 1 ? r3(a.clicks / a.expected) : null,
+  });
+
+  const intents = [...acc.entries()]
+    .filter(([, a]) => a.impressions > 0)
+    .map(([key, a]) => finish(a, key))
+    .sort((x, y) => y.impressions - x.impressions);
+
+  return {
+    note: 'index = clicks / clicks the curve predicts at this intent average position. >=1 means nothing to fix with copy. A query can match more than one intent.',
+    intents,
+    unmatched: finish(unmatched, 'noIntentWord'),
+  };
+}
+
 const CAPS_DEFAULT = {
   queries: 200,
   pages: 150,
@@ -1085,6 +1171,7 @@ function assemble(meta, parts, caps) {
       ? parts.localeCountryMatch.map((l) => ({ ...l, topCountries: sliceIf(l.topCountries, caps.localeMatchCountries) }))
       : parts.localeCountryMatch,
     localizedAudience: parts.localizedAudience,
+    intentVsCurve: parts.intentVsCurve,
     ctrCurve: parts.ctrCurve,
     strikingDistance: sliceIf(parts.strikingDistance, caps.strikingDistance),
     ctrGaps: sliceIf(parts.ctrGaps, caps.ctrGaps),
@@ -1113,7 +1200,7 @@ function line(metric) {
 }
 
 function buildDigest(snapshot) {
-  const { meta, totals, bySegment, localeCountryMatch, localizedAudience, strikingDistance, ctrGaps, pageCtrGaps, zeroClick, contentInventory, errors } = snapshot;
+  const { meta, totals, bySegment, localeCountryMatch, localizedAudience, intentVsCurve, strikingDistance, ctrGaps, pageCtrGaps, zeroClick, contentInventory, errors } = snapshot;
   const out = [];
   out.push(`# SEO snapshot — ${isoDay(new Date())}`);
   out.push('');
@@ -1204,6 +1291,23 @@ function buildDigest(snapshot) {
       }
       out.push('');
     }
+  }
+
+  if (intentVsCurve && Array.isArray(intentVsCurve.intents)) {
+    out.push('## Intent vs the curve at its own position');
+    out.push('| intent | pos | impr | clicks | expected | index |');
+    out.push('| --- | --- | --- | --- | --- | --- |');
+    const line = (i, label) => {
+      const idx = i.index === null ? 'n/a' : i.index + 'x';
+      const flag = i.index !== null && i.index < 0.8 ? ' (below)' : '';
+      out.push(`| ${label} | ${i.position} | ${i.impressions} | ${i.clicks} | ${i.expectedClicks} | **${idx}**${flag} |`);
+    };
+    for (const i of intentVsCurve.intents) line(i, i.key);
+    line(intentVsCurve.unmatched, '_no intent word_');
+    out.push('');
+    out.push('> index >= 1 means the intent already earns what its position allows, so there is');
+    out.push('> nothing to fix with copy. Never read a CTR anywhere else without its position.');
+    out.push('');
   }
 
   out.push('## Top striking-distance (est. clicks)');
@@ -1349,6 +1453,7 @@ async function main() {
     byDevice: guard(errors, 'bySegment.byDevice', () => buildKeyedList('device', raw, { normalizeKey: (k) => (k ? String(k).toLowerCase() : k) })),
     localeCountryMatch: guard(errors, 'localeCountryMatch', () => computeLocaleCountryMatch(raw, CAPS_DEFAULT.localeMatchCountries)),
     localizedAudience: guard(errors, 'localizedAudience', () => computeLocalizedAudience(raw, CAPS_DEFAULT.localizedAudiencePages)),
+    intentVsCurve: guard(errors, 'intentVsCurve', () => computeIntentVsCurve(raw, curve)),
     ctrCurve: curve,
     strikingDistance: guard(errors, 'strikingDistance', () => computeStrikingDistance(raw, curve, CAPS_DEFAULT.strikingDistance)),
     ctrGaps: guard(errors, 'ctrGaps', () => computeCtrGaps(raw, curve, CAPS_DEFAULT.ctrGaps, floors)),
@@ -1400,6 +1505,22 @@ async function main() {
   const mdPath = path.join(outDir, `${dayName}.md`);
   await writeFile(jsonPath, json, 'utf8');
   await writeFile(mdPath, buildDigest(snapshot), 'utf8');
+
+  // The full page list, dumped raw and gitignored (see .gitignore: reports/snapshots/_raw-*).
+  //
+  // It exists for ONE consumer: scripts/auditIndexedUrlsResolve.mjs, the gate that asks
+  // whether every URL Google has actually shown to somebody still resolves. That gate reads
+  // the newest _raw-pages-*.json it can find, and until now nothing ever wrote one — the
+  // only copy on disk was hand-dumped on 16/08, so the gate was quietly checking an ageing
+  // list and would have kept doing so for ever. A gate fed by a file nobody refreshes stops
+  // being a gate; it becomes a fossil. Written here because this is the one place that
+  // already holds the data and already talks to Search Console.
+  const rawPages = raw.current?.page;
+  if (Array.isArray(rawPages) && rawPages.length) {
+    const rawPath = path.join(outDir, `_raw-pages-${dayName}.json`);
+    await writeFile(rawPath, JSON.stringify(rawPages), 'utf8');
+    log(`Wrote ${path.relative(projectRoot, rawPath)} (${rawPages.length} URLs, for the indexed-URL gate)`);
+  }
 
   log(`Wrote ${path.relative(projectRoot, jsonPath)} (${(bytes / 1024).toFixed(1)} KB)`);
   log(`Wrote ${path.relative(projectRoot, mdPath)}`);

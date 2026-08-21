@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-08-21T08:47:58.735Z",
+    "generatedAt": "2026-08-21T10:48:53.305Z",
     "siteUrl": "https://calmbeach.gr/",
     "propertyType": "url-prefix",
     "timezoneNote": "GSC data is bucketed in America/Los_Angeles days",
@@ -36,7 +36,7 @@
       "cannibalQueryMinImpressions": 145,
       "cannibalUrlMinImpressions": 3
     },
-    "jsonBytes": 67584,
+    "jsonBytes": 69772,
     "caps": {
       "queries": 200,
       "pages": 150,
@@ -2012,7 +2012,7 @@
     }
   ],
   "localizedAudience": {
-    "note": "de/fr/it pages only. own = the country the language targets, greece = served to somebody in Greece.",
+    "note": "de/fr/it pages only. own = the country the language targets, greece = the searcher was in Greece. GSC gives country, never language, so \"greece\" includes foreign tourists already here — read it as WHERE, not as a fault. Compare every CTR against ctrCurve at the same position before calling anything broken: at position 9 the whole site earns 1%.",
     "byLocale": [
       {
         "locale": "it",
@@ -2038,7 +2038,7 @@
         },
         "ownShare": 0.347,
         "greeceShare": 0.612,
-        "reading": "google_picks_wrong_url"
+        "reading": "mostly_served_inside_greece"
       },
       {
         "locale": "fr",
@@ -2064,7 +2064,7 @@
         },
         "ownShare": 0.299,
         "greeceShare": 0.566,
-        "reading": "google_picks_wrong_url"
+        "reading": "mostly_served_inside_greece"
       },
       {
         "locale": "de",
@@ -2090,7 +2090,7 @@
         },
         "ownShare": 0.321,
         "greeceShare": 0.453,
-        "reading": "google_picks_wrong_url"
+        "reading": "mostly_served_inside_greece"
       }
     ],
     "worstPages": [
@@ -2570,6 +2570,151 @@
         }
       }
     ]
+  },
+  "intentVsCurve": {
+    "note": "index = clicks / clicks the curve predicts at this intent average position. >=1 means nothing to fix with copy. A query can match more than one intent.",
+    "intents": [
+      {
+        "key": "family",
+        "queries": 66,
+        "impressions": 1334,
+        "clicks": 50,
+        "expectedClicks": 40.8,
+        "position": 7.6,
+        "ctr": 0.037,
+        "index": 1.225
+      },
+      {
+        "key": "snorkeling",
+        "queries": 159,
+        "impressions": 1030,
+        "clicks": 23,
+        "expectedClicks": 13.7,
+        "position": 13.1,
+        "ctr": 0.022,
+        "index": 1.684
+      },
+      {
+        "key": "nearMe",
+        "queries": 137,
+        "impressions": 857,
+        "clicks": 25,
+        "expectedClicks": 12.2,
+        "position": 10.8,
+        "ctr": 0.029,
+        "index": 2.056
+      },
+      {
+        "key": "sheltered",
+        "queries": 51,
+        "impressions": 822,
+        "clicks": 444,
+        "expectedClicks": 205.1,
+        "position": 3.2,
+        "ctr": 0.54,
+        "index": 2.165
+      },
+      {
+        "key": "brand",
+        "queries": 13,
+        "impressions": 710,
+        "clicks": 439,
+        "expectedClicks": 197.8,
+        "position": 2.6,
+        "ctr": 0.618,
+        "index": 2.22
+      },
+      {
+        "key": "organized",
+        "queries": 120,
+        "impressions": 659,
+        "clicks": 19,
+        "expectedClicks": 10.9,
+        "position": 10.4,
+        "ctr": 0.029,
+        "index": 1.736
+      },
+      {
+        "key": "best",
+        "queries": 165,
+        "impressions": 651,
+        "clicks": 4,
+        "expectedClicks": 7.6,
+        "position": 13.5,
+        "ctr": 0.006,
+        "index": 0.529
+      },
+      {
+        "key": "weather",
+        "queries": 30,
+        "impressions": 400,
+        "clicks": 2,
+        "expectedClicks": 5.3,
+        "position": 8.5,
+        "ctr": 0.005,
+        "index": 0.378
+      },
+      {
+        "key": "sunset",
+        "queries": 67,
+        "impressions": 189,
+        "clicks": 2,
+        "expectedClicks": 3.8,
+        "position": 9.9,
+        "ctr": 0.011,
+        "index": 0.527
+      },
+      {
+        "key": "sandy",
+        "queries": 68,
+        "impressions": 178,
+        "clicks": 1,
+        "expectedClicks": 3.3,
+        "position": 15.2,
+        "ctr": 0.006,
+        "index": 0.302
+      },
+      {
+        "key": "camping",
+        "queries": 31,
+        "impressions": 53,
+        "clicks": 0,
+        "expectedClicks": 0.5,
+        "position": 23.8,
+        "ctr": 0,
+        "index": null
+      },
+      {
+        "key": "accessible",
+        "queries": 1,
+        "impressions": 4,
+        "clicks": 0,
+        "expectedClicks": 0,
+        "position": 27,
+        "ctr": 0,
+        "index": null
+      },
+      {
+        "key": "dogs",
+        "queries": 2,
+        "impressions": 3,
+        "clicks": 0,
+        "expectedClicks": 0.6,
+        "position": 18,
+        "ctr": 0,
+        "index": null
+      }
+    ],
+    "unmatched": {
+      "key": "noIntentWord",
+      "queries": 3601,
+      "impressions": 18727,
+      "clicks": 240,
+      "expectedClicks": 482.8,
+      "position": 10.8,
+      "ctr": 0.013,
+      "index": 0.497
+    }
   },
   "ctrCurve": {
     "note": "impression-weighted CTR per integer position (Σclicks/Σimpressions); anchored on positions with >=5 queries AND >=200 impressions, isotonic (non-increasing) smoothing, linearly interpolated to a continuous 1..20 curve. Shows raw weightedCtr and smoothedCtr.",
