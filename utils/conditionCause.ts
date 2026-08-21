@@ -44,7 +44,17 @@ export type ConditionCause =
    * third of the orange map is neither of them, and a line that named the wind or the sea there
    * would be naming something that did not happen.
    */
-  | 'verdict';
+  | 'verdict'
+  /**
+   * ΤΟ ΦΡΕΝΟ ΤΗΣ ΑΒΕΒΑΙΟΤΗΤΑΣ (§ΑΞ3, 21/08/2026). Άνεμος, θάλασσα και ετυμηγορία άφησαν την
+   * παραλία ΜΠΛΕ· το χρώμα έπεσε σε κίτρινο επειδή τα 51 σενάρια διαφωνούν για αυτή τη μέρα.
+   *
+   * ΧΩΡΙΣ ΑΥΤΗ ΤΗΝ ΤΙΜΗ Η ΓΡΑΜΜΗ ΑΙΤΙΑΣ ΘΑ ΕΛΕΓΕ ΨΕΜΑΤΑ. Το φρένο εφαρμόζεται σε ΚΑΙ ΤΙΣ ΤΡΕΙΣ
+   * συγκρίσεις παρακάτω, οπότε καμία δεν διαφέρει και η απάντηση θα έπεφτε σιωπηλά στο 'wind' —
+   * θα ονόμαζε τον άνεμο για κάτι που ο άνεμος δεν έκανε. Ίδιο λάθος με αυτό που γέννησε το
+   * 'verdict', και λύνεται με τον ίδιο τρόπο: ρωτιέται ΠΡΩΤΟ, γιατί εφαρμόζεται ΤΕΛΕΥΤΑΙΟ.
+   */
+  | 'forecast';
 
 /**
  * The exact argument object `resolveConditionTone` takes — derived from it rather than restated,
@@ -64,11 +74,17 @@ const isRougher = (a: CalmnessTone, b: CalmnessTone): boolean =>
  * one of the three comparisons can differ in the calmer direction — there is no tie to break.
  */
 export const resolveConditionCause = (input: ConditionCauseInput): ConditionCause => {
-  const windOnly = resolveConditionTone({ ...input, seaStateM: undefined, swimVerdictAvoid: false });
-  const windAndSea = resolveConditionTone({ ...input, swimVerdictAvoid: false });
   const actual = resolveConditionTone(input);
+  // Το φρένο της πρόγνωσης εφαρμόζεται ΤΕΛΕΥΤΑΙΟ, άρα ρωτιέται ΠΡΩΤΟ — και μετά σβήνει από όλες
+  // τις υπόλοιπες συγκρίσεις, αλλιώς θα σκίαζε ομοιόμορφα και τις τρεις.
+  const withoutBrake = resolveConditionTone({ ...input, forecastUncertain: false });
+  if (isRougher(actual, withoutBrake)) return 'forecast';
 
-  if (isRougher(actual, windAndSea)) return 'verdict';
+  const base = { ...input, forecastUncertain: false };
+  const windOnly = resolveConditionTone({ ...base, seaStateM: undefined, swimVerdictAvoid: false });
+  const windAndSea = resolveConditionTone({ ...base, swimVerdictAvoid: false });
+
+  if (isRougher(withoutBrake, windAndSea)) return 'verdict';
   if (isRougher(windAndSea, windOnly)) return 'sea';
   return 'wind';
 };
@@ -93,7 +109,7 @@ export interface ConditionCauseReading {
 export const describeConditionCause = (input: ConditionCauseInput): ConditionCauseReading => ({
   tone: resolveConditionTone(input),
   cause: resolveConditionCause(input),
-  windOnlyTone: resolveConditionTone({ ...input, seaStateM: undefined, swimVerdictAvoid: false }),
+  windOnlyTone: resolveConditionTone({ ...input, seaStateM: undefined, swimVerdictAvoid: false, forecastUncertain: false }),
   shoreSeaStateM: shoreSeaStateM(input.seaStateM, input.exposureLevel, input.seaArrivalExposureLevel,
     input.curatedWindOnlyProtection),
   beaufort: input.beaufort,

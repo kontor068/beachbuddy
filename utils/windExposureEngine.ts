@@ -382,7 +382,13 @@ export const applySeaStateToWindSuitability = (
    * την έκπτωση ×0,5 στη θάλασσα που ο χάρτης ΔΕΝ δίνει, και οι δύο επιφάνειες θα διαφωνούσαν
    * ακριβώς στις μέρες με φουρτούνα (≥1,2 μ.) — μετρημένο 20/08/2026, 24 παραλίες / 29 τομείς.
    */
-  curatedWindOnlyProtection = false
+  curatedWindOnlyProtection = false,
+  /**
+   * Τα 51 σενάρια της πρόγνωσης διαφωνούν για αυτή τη ΜΕΡΑ (utils/forecastUncertainty). Το τσιπ
+   * και η πινέζα παίρνουν το ίδιο φρένο, από την ίδια σημαία που κάθεται πάνω στην ημέρα —
+   * περασμένο, όχι παραγόμενο, όπως κάθε άλλο όρισμα εδώ.
+   */
+  forecastUncertain = false
 ): SimpleWindSuitability => {
   const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
     exposureLevel: suitability.exposureStatus,
@@ -396,6 +402,7 @@ export const applySeaStateToWindSuitability = (
     swimVerdictAvoid,
     seaArrivalExposureLevel,
     curatedWindOnlyProtection,
+    forecastUncertain,
   }));
   return suitabilityColor === suitability.suitabilityColor
     ? suitability

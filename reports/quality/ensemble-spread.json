@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T15:43:33.808Z",
+  "generatedAt": "2026-08-21T20:09:20.832Z",
   "model": "ecmwf_ifs025",
   "members": 51,
   "forecastDays": 7,
@@ -692,6 +692,712 @@
       "lo": 3,
       "hi": 5,
       "stamp": "2026-08-27T13:00"
+    }
+  ],
+  "uncertainRegionDays": [
+    {
+      "region": "south-aegean-symi",
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 4,
+      "lo": 2,
+      "hi": 6
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "lead": 4,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "peloponnese-korinthia-mainland",
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-aegina",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-agistri",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-methana",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-poros",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-spetses",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "crete-gavdos",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "peloponnese-korinthia-mainland",
+      "lead": 4,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "thessaly-skopelos",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "attica-kythira",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "peloponnese-lakonia-mainland",
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 3,
+      "lo": 2,
+      "hi": 5
+    },
+    {
+      "region": "crete-gavdos",
+      "lead": 2,
+      "uncertainHours": 4,
+      "gap": 3,
+      "lo": 1,
+      "hi": 4
+    },
+    {
+      "region": "attica-hydra",
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "north-aegean-oinousses",
+      "lead": 6,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-kythnos",
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-serifos",
+      "lead": 5,
+      "uncertainHours": 8,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-aegina",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-agistri",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-methana",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-poros",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-spetses",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-west-attica-mainland",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "east-macedonia-and-thrace-xanthi-mainland",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "ionian-islands-corfu",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "ionian-islands-erikoussa",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "ionian-islands-mathraki",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "south-aegean-anafi",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-andros",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-halki",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-kea",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-kimolos",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-milos",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-nisyros",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-patmos",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 5,
+      "hi": 7
+    },
+    {
+      "region": "south-aegean-polyaigos",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-santorini",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-tilos",
+      "lead": 6,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "thessaly-alonissos",
+      "lead": 5,
+      "uncertainHours": 7,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "attica-hydra",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "attica-kythira",
+      "lead": 4,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "central-greece-viotia-mainland",
+      "lead": 4,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "ionian-islands-ithaca",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "ionian-islands-kefalonia",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "north-aegean-oinousses",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "north-aegean-samos",
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "peloponnese-argolida-mainland",
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "peloponnese-arkadia-mainland",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "south-aegean-pserimos",
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-sifnos",
+      "lead": 5,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "thessaly-alonissos",
+      "lead": 6,
+      "uncertainHours": 6,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "attica-hydra",
+      "lead": 4,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "attica-kythira",
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "central-greece-viotia-mainland",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "crete-crete-heraklion",
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "crete-crete-rethymno",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "ionian-islands-othonoi",
+      "lead": 3,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "north-aegean-fournoi",
+      "lead": 1,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 1,
+      "hi": 3
+    },
+    {
+      "region": "north-aegean-fournoi",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "peloponnese-korinthia-mainland",
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "peloponnese-lakonia-mainland",
+      "lead": 3,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 1,
+      "hi": 3
+    },
+    {
+      "region": "south-aegean-antiparos",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-kasos",
+      "lead": 6,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 5,
+      "hi": 7
+    },
+    {
+      "region": "south-aegean-kea",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-mykonos",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "west-greece-achaia-mainland",
+      "lead": 5,
+      "uncertainHours": 5,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "attica-hydra",
+      "lead": 3,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "crete-crete-chania",
+      "lead": 5,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 1,
+      "hi": 3
+    },
+    {
+      "region": "crete-crete-heraklion",
+      "lead": 4,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "crete-crete-heraklion",
+      "lead": 5,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "crete-gavdos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "north-aegean-chios",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "north-aegean-fournoi",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 5,
+      "hi": 7
+    },
+    {
+      "region": "north-aegean-lesvos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "north-aegean-samos",
+      "lead": 4,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "north-aegean-samos",
+      "lead": 5,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 2,
+      "hi": 4
+    },
+    {
+      "region": "south-aegean-agathonisi",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 3,
+      "hi": 5
+    },
+    {
+      "region": "south-aegean-donousa",
+      "lead": 1,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 1,
+      "hi": 3
+    },
+    {
+      "region": "south-aegean-kalymnos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-kimolos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-milos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
+    },
+    {
+      "region": "south-aegean-mykonos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 5,
+      "hi": 7
+    },
+    {
+      "region": "south-aegean-telendos",
+      "lead": 6,
+      "uncertainHours": 4,
+      "gap": 2,
+      "lo": 4,
+      "hi": 6
     }
   ]
 }

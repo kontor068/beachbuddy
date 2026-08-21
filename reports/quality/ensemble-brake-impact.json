@@ -1,0 +1,226 @@
+{
+  "generatedAt": "2026-08-21T20:10:07.903Z",
+  "question": "Α5 — τι θα κόστιζε το φρένο αβεβαιότητας αν άναβε;",
+  "brakeUnderTest": {
+    "firesOn": "περιοχο-ημέρα που το ensemble λέει αβέβαιη (≥4 ώρες με διαφορά ≥2 βαθμίδες Μποφόρ)",
+    "leads": "≥1 (ποτέ σήμερα)",
+    "effect": "μπλε → κίτρινο, «ιδανικά» → «καλά». Ένα σκαλί, μονόδρομος.",
+    "doesNotTouch": "λίστα «Κατάλληλες», βάθρο, τυπωμένο κύμα, κόκκινα"
+  },
+  "sources": {
+    "ensemble": "reports/quality/ensemble-spread.json",
+    "ensembleGeneratedAt": "2026-08-21T20:09:20.832Z",
+    "census": ".tmp/tone-operator-census-cache.json",
+    "truncatedEnsembleList": false
+  },
+  "scope": {
+    "beachDays": 14365,
+    "regions": 110,
+    "uncertainRegionDays": 88
+  },
+  "impact": {
+    "beachDaysOnUncertainDays": 283,
+    "beachDaysOnUncertainDaysPct": 1.97,
+    "blueWouldTurnYellow": 113,
+    "blueWouldTurnYellowPct": 0.79,
+    "excellentWouldTurnGood": 83,
+    "excellentWouldTurnGoodPct": 0.58
+  },
+  "byLead": [
+    {
+      "lead": 1,
+      "regionsAffected": 2,
+      "beachDaysOnUncertainDays": 11,
+      "blueWouldTurnYellow": 6,
+      "excellentWouldTurnGood": 5
+    },
+    {
+      "lead": 2,
+      "regionsAffected": 1,
+      "beachDaysOnUncertainDays": 9,
+      "blueWouldTurnYellow": 4,
+      "excellentWouldTurnGood": 4
+    },
+    {
+      "lead": 3,
+      "regionsAffected": 3,
+      "beachDaysOnUncertainDays": 80,
+      "blueWouldTurnYellow": 43,
+      "excellentWouldTurnGood": 39
+    },
+    {
+      "lead": 4,
+      "regionsAffected": 7,
+      "beachDaysOnUncertainDays": 183,
+      "blueWouldTurnYellow": 60,
+      "excellentWouldTurnGood": 35
+    }
+  ],
+  "examples": [
+    {
+      "region": "attica-hydra",
+      "beachId": 101,
+      "name": "Άγιος Νικόλαος",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 5
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 110,
+      "name": "Άγιος Νικόλαος",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 111,
+      "name": "Καλάμι",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "good",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 114,
+      "name": "Παραλία Καρπάθι",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "good",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 126,
+      "name": "Παραλία Λυγία",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 134,
+      "name": "Παραλία Παλαιόπολη",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 135,
+      "name": "Παραλία Λίμνη (Παλαιόπολη)",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 140,
+      "name": "Μελιδόνι",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 142,
+      "name": "Φελωτή",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 143,
+      "name": "Λεφτό",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 144,
+      "name": "Καψάλι",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 145,
+      "name": "Παραλία Σπαραγγάριο",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 146,
+      "name": "Καψάλι Πίσω Γιαλός",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 147,
+      "name": "Κυριακουλου",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    },
+    {
+      "region": "attica-kythira",
+      "beachId": 149,
+      "name": "Παραλία Χαλκός",
+      "lead": 4,
+      "tone": "blue",
+      "wouldBecome": "yellow",
+      "swimmingComfort": "excellent",
+      "ensembleGapBeaufort": 2,
+      "uncertainHours": 6
+    }
+  ]
+}
