@@ -5617,7 +5617,7 @@ const renderBeachCard = (beach, island, region, locale, intentKey = null) => {
   // beaches with no shape: a deliberate placeholder, never a failed image. The
   // beach type is NOT repeated in either — the tag directly below carries it.
   const figure = photo
-    ? `<figure class="cb-fig"><img src="${escapeHtml(photo.src)}" srcset="${escapeHtml(photo.src)} 1x, ${escapeHtml(photo.src2x)} 2x" alt="${escapeHtml(beachName)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="400" height="300"></figure>`
+    ? `<figure class="cb-fig"><img src="${escapeHtml(photo.src)}" srcset="${escapeHtml(photo.src)} 1x, ${escapeHtml(photo.src2x)} 2x" alt="${escapeHtml(beachName)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="400" height="300">${photo.creditLabel ? `<figcaption class="cb-fig-credit">${escapeHtml(photo.creditLabel)}</figcaption>` : ''}</figure>`
     : renderShorelineFigure(beach, region, beachName, language)
       || `<div class="cb-fig cb-fig-none" aria-hidden="true"><svg viewBox="0 0 120 40" preserveAspectRatio="none" focusable="false"><path d="M0 26c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8v14H0z"/></svg></div>`;
 

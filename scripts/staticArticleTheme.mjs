@@ -85,6 +85,12 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 .cb-card:hover{border-color:#9ED4E3;box-shadow:0 12px 28px -16px rgba(11,32,39,.45)}
 .cb-card:focus-within{border-color:var(--cb-brand)}
 .cb-fig{position:relative;margin:0;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(140deg,#CFE9F1,#9FD3E2 55%,#E8DCC6)}
+/* Credit for a visitor's photo, laid over the bottom of the card image. The
+   figure is a fixed 4/3 box with overflow hidden, so a caption BELOW the image
+   would be clipped — hence the overlay. Added 21/08/2026: the guide cards had
+   been showing contributed photos with no attribution at all while the beach
+   pages credited the same photos correctly. */
+.cb-fig-credit{position:absolute;left:0;right:0;bottom:0;margin:0;padding:14px 8px 5px;font-size:10px;line-height:1.3;color:#fff;letter-spacing:.01em;background:linear-gradient(to top,rgba(11,32,39,.66),rgba(11,32,39,0));text-shadow:0 1px 2px rgba(0,0,0,.5);pointer-events:none}
 .cb-fig img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
 .cb-card:hover .cb-fig img{transform:scale(1.04)}
 /* No photo yet: a calm tinted panel with a wave motif, never a broken frame. */

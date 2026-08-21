@@ -106,9 +106,31 @@ const ACCOUNT_MARKERS = [
   { needle: 'supabase.co', why: 'a direct Supabase URL' },
 ];
 
+// ONE deliberate hole in the rule above, opened 21/08/2026 after it was found red
+// against LIVE production and had been for days — silently, because this gate runs
+// only in `quality:critical` and never in the build.
+//
+// An approved visitor photo is served straight from the PUBLIC storage bucket, and
+// it is SUPPOSED to be in prerendered content: that is the last mile of the whole
+// contribution pipeline, and the same gate below insists such content carries its
+// "from a visitor" label. Banning the hostname outright contradicted the feature
+// this gate itself protects.
+//
+// The hole is exactly one shape and no wider: /storage/v1/object/public/. Anything
+// else on supabase.co in static content — /auth/, /rest/, a signed or private
+// object — still fails, which is the protection that was actually intended.
+const PUBLIC_PHOTO_URL = /https?:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/[^"'\s)]*/gi;
+
 // Every locale's word for visitor-contributed content. A `data-ugc` block must
 // carry one of them.
 const UGC_LABELS = ['επισκέπτ', 'visitor', 'Besucher', 'visiteur', 'visitatori', 'visitatore'];
+
+// The other honest form of the same thing. A visitor photo is captioned
+// `<PhotoWord>: <name-or-visitor-phrase>` (UGC_PHOTO_WORD in prerenderBeachPages.mjs),
+// so a photo credited to a named person carries no UGC_LABELS word at all — and it
+// is BETTER attribution, not worse. Requiring the generic phrase would have forced
+// us to strip somebody's name to satisfy a checker.
+const PHOTO_CREDIT_WORDS = ['Photo:', 'Φωτογραφία:', 'Foto:'];
 
 const pages = walkHtml(distDir);
 let ugcBlocks = 0;
@@ -126,8 +148,30 @@ for (const file of pages) {
   const staticContent = mainMatch ? mainMatch[0] : '';
   if (!staticContent) continue;
 
+  // Take the visitor photos out of the way BEFORE looking for account markers, so
+  // the hostname they legitimately carry cannot masquerade as an account leak.
+  const photoUrls = staticContent.match(PUBLIC_PHOTO_URL) || [];
+  const contentWithoutPhotos = staticContent.replace(PUBLIC_PHOTO_URL, '');
+
+  // Stricter than before, not looser: a page showing a visitor photo must say so in
+  // its OWN static content. The data-ugc rule further down only ever covered beach
+  // pages; guide pages show the same photos and were never checked at all.
+  if (photoUrls.length > 0) {
+    const lower = staticContent.toLowerCase();
+    const saysVisitor = UGC_LABELS.some(label => lower.includes(label.toLowerCase()));
+    const saysCredit = PHOTO_CREDIT_WORDS.some(word => staticContent.includes(word));
+    if (!saysVisitor && !saysCredit) {
+      failures.push(
+        `${relative} shows a visitor photo with no credit anywhere on the page.\n` +
+        '    Uncredited, a photo taken by somebody else reads as ours. The caption must name\n' +
+        '    the contributor or say the photo came from a visitor — see beachUgcCardPhoto in\n' +
+        '    scripts/prerenderBeachPages.mjs.'
+      );
+    }
+  }
+
   for (const { needle, why } of ACCOUNT_MARKERS) {
-    if (staticContent.includes(needle)) {
+    if (contentWithoutPhotos.includes(needle)) {
       failures.push(
         `${relative} has ${why} in its prerendered content ("${needle}").\n` +
         '    Static content is what a crawler and a visitor with no JavaScript see. Account UI\n' +
