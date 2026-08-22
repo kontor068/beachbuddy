@@ -69,6 +69,29 @@ check('6 μέσα', dep(justInside, [{ ...BIG, directionDeg: justInside }]) === 
 check('6 έξω', dep(justOutside, [{ ...BIG, directionDeg: justOutside }]) === false,
   'γωνία ΕΞΩ από το κατώφλι πέρασε — το −0,8 δεν τηρείται');
 
+// 6β — ΟΙ ΔΥΟ ΑΞΟΝΕΣ ΕΙΝΑΙ ΧΩΡΙΣΤΟΙ ΑΠΟ 22/08/2026 (άνεμος −0,80 · νερό −0,65). Ο έλεγχος 6
+// παραπάνω κινεί ΚΑΙ ΤΑ ΔΥΟ μαζί, οπότε δεν μπορεί να δει αν το ένα ξέφυγε. Εδώ κινείται ένα
+// τη φορά — και ο τρίτος έλεγχος είναι ο σημαντικός: αποδεικνύει ότι η πύλη του ΑΝΕΜΟΥ ΔΕΝ
+// χαλάρωσε μαζί με του νερού. Αν κάποιος τα ξαναενώσει, αυτός σκάει.
+/** Κατεύθυνση (μοίρες) που δίνει ακριβώς αυτή τη συνιστώσα onshore, για ακτή που κοιτάει FACING. */
+const dirForOnshore = value => FACING + (Math.acos(value) * 180) / Math.PI;
+const OFFSHORE_WIND = FACING + 180;     // onshore −1,00 — όσο απόγειος γίνεται
+const seaInside = dirForOnshore(-0.67);
+const seaOutside = dirForOnshore(-0.63);
+const windTooWeak = dirForOnshore(-0.70);
+check('6β νερό μέσα', dep(OFFSHORE_WIND, [{ ...BIG, directionDeg: seaInside }]) === true,
+  'νερό στο −0,67 απορρίφθηκε ενώ το κατώφλι νερού είναι −0,65');
+check('6β νερό έξω', dep(OFFSHORE_WIND, [{ ...BIG, directionDeg: seaOutside }]) === false,
+  'νερό στο −0,63 πέρασε — το κατώφλι νερού −0,65 δεν τηρείται');
+check('6β ο άνεμος ΔΕΝ χαλάρωσε', dep(windTooWeak, [{ ...BIG, directionDeg: OFFSHORE_WIND }]) === false,
+  'άνεμος στο −0,70 πέρασε — η πύλη ανέμου πρέπει να μείνει στο −0,80, χωριστά από το νερό');
+check('6β τα δύο κατώφλια δεν ταυτίζονται',
+  shoreWave.DEPARTING_SEA_MAX_ONSHORE > OFFSHORE_FLAT_MAX_ONSHORE,
+  'το κατώφλι νερού δεν είναι χαλαρότερο από του ανέμου — η αλλαγή της 22/08 χάθηκε');
+check('6β το νερό δεν φτάνει τη ράμπα',
+  shoreWave.DEPARTING_SEA_MAX_ONSHORE < shoreWave.SHORE_RAMP_SILENT_ONSHORE,
+  'το κατώφλι νερού έφτασε το σημείο σιωπής της ράμπας (−0,5), που η μέτρηση απέρριψε');
+
 // 7 — ΤΟ ΞΕΚΛΕΙΔΩΜΑ ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΜΕΓΑΛΩΣΕΙ ΠΟΤΕ ΤΟΝ ΑΡΙΘΜΟ, ούτε να σπάσει τους άλλους φραγμούς.
 // Γεωμετρία τύπου Ελαφονησίου: άνοιγμα 5,44 χλμ και φραγμένες ακτίνες 0,8 — και οι δύο πύλες
 // κλειστές σήμερα.
@@ -94,6 +117,33 @@ check('7 η ράμπα μένει',
   estimateShoreWaveHeightM({ ...base, sector: { ...elafonisiLike, onshore: -0.3 }, departingSea: true }) === undefined,
   'ο έλεγχος της ράμπας παρακάμφθηκε');
 
+// 8 — Η ΕΞΑΙΡΕΣΗ ΤΟΥ ΦΡΑΧΤΗ ΤΗΣ ΓΡΑΜΜΗΣ ΗΡΕΜΙΑΣ (22/08/2026, βίβλος §Γ56).
+//
+// Ο φράχτης `fallsIntoCalm` (utils/beachConditionsReadout, commit c8385652 της 21/08) ανεβάζει
+// κάθε αριθμό ακτής που πέφτει κάτω από τη γραμμή ηρεμίας ενώ η ανοιχτή θάλασσα δεν έχει πέσει.
+// Γράφτηκε για την ΑΒΑΘΜΟΝΟΜΗΤΗ έκπτωση ×0,5 και έσβηνε μαζί και τη ΜΕΤΡΗΜΕΝΗ απόδειξη ότι όλο
+// το νερό φεύγει. Η εξαίρεση περνάει ΜΟΝΟ με το `shoreWaveFromDepartingSea`.
+const { buildBeachConditionsReadout } = require(path.join(root, 'utils/beachConditionsReadout.ts'));
+/** Ελαφονήσι 22/08 15:00: ανοιχτά 0,88 μ. στα 4,75 s, ακτή 0,41 μ. — ο φράχτης το έκανε 0,80. */
+const fenceCase = {
+  beachWindSpeedKmph: 25, waveHeightM: 0.88, seaStateWaveM: 0.88, seaStatePeriodS: 4.75,
+  shoreWaveHeightM: 0.41, shoreDisplayWaveM: 0.41, language: 'gr',
+};
+const fenced = buildBeachConditionsReadout(fenceCase);
+const exempt = buildBeachConditionsReadout({ ...fenceCase, shoreWaveFromDepartingSea: true });
+check('8 ο φράχτης ζει', fenced.waveM > 0.6,
+  'ο φράχτης δεν ανέβασε τον αριθμό — η εξαίρεση δεν έχει νόημα, ή ο φράχτης χάθηκε');
+check('8 η εξαίρεση περνάει', Math.abs(exempt.waveM - 0.41) < 0.005,
+  `με μετρημένη απόδειξη ο αριθμός έπρεπε να μείνει 0,41 — βγήκε ${exempt.waveM}`);
+check('8 μόνο προς τα κάτω', exempt.waveM <= fenced.waveM,
+  'η εξαίρεση ΑΝΕΒΑΣΕ τον αριθμό — μπορεί μόνο να τον αφήσει όπως τον μέτρησε το μοντέλο');
+check('8 δεν αγγίζει την έκπτωση ×0,5',
+  Math.abs(buildBeachConditionsReadout({ ...fenceCase, shoreWaveFromDepartingSea: false }).waveM - fenced.waveM) < 0.005,
+  'χωρίς μετρημένη απόδειξη ο φράχτης πρέπει να δουλεύει ΑΚΡΙΒΩΣ όπως στις 21/08');
+// Και ποτέ πάνω από την ανοιχτή θάλασσα, όπως κάθε άλλος αριθμός ακτής.
+check('8 ποτέ πάνω από τα ανοιχτά', exempt.waveM <= fenceCase.waveHeightM,
+  'ο αριθμός ακτής ξεπέρασε τη θάλασσα έξω');
+
 // ---- η καλωδίωση: το recommendationService πρέπει ΟΝΤΩΣ να το περνάει ------------------------
 const service = fs.readFileSync(path.join(root, 'services/recommendationService.ts'), 'utf8');
 check('καλωδίωση import', /isSeaDepartingShore/.test(service) && /from '\.\.\/utils\/shoreWave'/.test(service),
@@ -102,6 +152,23 @@ check('καλωδίωση χρήση', /departingSea,\s*\n\s*\}\);/.test(service
   'το departingSea δεν φτάνει στο estimateShoreWaveHeightM');
 check('καλωδίωση συστατικά', /waveDirectionDeg/.test(service) && /swellWaveDirectionDeg/.test(service),
   'δεν περνάνε και οι δύο κατευθύνσεις θάλασσας');
+check('καλωδίωση προέλευση', /shoreWaveFromDepartingSea/.test(service),
+  'το recommendationService δεν επιστρέφει την προέλευση του αριθμού ακτής');
+
+// ΚΑΙ ΟΤΙ ΦΤΑΝΕΙ ΣΤΗΝ ΟΘΟΝΗ. Το επαναλαμβανόμενο σφάλμα αυτού του project δεν είναι ο λάθος
+// υπολογισμός — είναι ο σωστός υπολογισμός που ΔΕΝ φτάνει στην κάρτα (βίβλος, 11/08). Και οι
+// ΤΡΕΙΣ κλήσεις του readout (κάρτα + δύο του χάρτη) πρέπει να το περνάνε, αλλιώς η κάρτα και η
+// πινέζα ξαναρχίζουν να λένε άλλο νούμερο για το ίδιο νερό.
+for (const [surface, file, expected] of [
+  ['κάρτα', 'components/BeachCard.tsx', 1],
+  ['χάρτης', 'components/BeachMap.tsx', 2],
+]) {
+  const source = fs.readFileSync(path.join(root, file), 'utf8');
+  const calls = (source.match(/buildBeachConditionsReadout\(\{[^}]*\}\)/g) || []);
+  const carrying = calls.filter(c => c.includes('shoreWaveFromDepartingSea')).length;
+  check(`καλωδίωση ${surface}`, calls.length === expected && carrying === expected,
+    `${carrying}/${calls.length} κλήσεις του readout περνάνε την προέλευση (αναμενόμενες ${expected})`);
+}
 
 if (process.argv.includes('--prove')) {
   // ΠΡΑΓΜΑΤΙΚΟ ΣΑΜΠΟΤΑΖ: αλλάζουμε τη σταθερά που διαβάζει η ΑΛΗΘΙΝΗ συνάρτηση και απαιτούμε να
@@ -109,8 +176,8 @@ if (process.argv.includes('--prove')) {
   const offshoreModule = require(path.join(root, 'utils/offshoreFlatWater.ts'));
   const original = offshoreModule.OFFSHORE_FLAT_MAX_ONSHORE;
   const sabotage = [
-    ['κατώφλι χαλαρωμένο στο 0', 0, () => dep(justOutside, [{ ...BIG, directionDeg: justOutside }]) === false],
-    ['κατώφλι σφιγμένο στο −2', -2, () => dep(0, [{ ...BIG, directionDeg: 0 }]) === true],
+    ['άνεμος χαλαρωμένος στο 0', 0, () => dep(justOutside, [{ ...BIG, directionDeg: justOutside }]) === false],
+    ['άνεμος σφιγμένος στο −2', -2, () => dep(0, [{ ...BIG, directionDeg: 0 }]) === true],
   ];
   let caught = 0;
   for (const [name, value, ruleStillHolds] of sabotage) {
@@ -121,18 +188,39 @@ if (process.argv.includes('--prove')) {
     else caught += 1;
   }
   check('--prove επαναφορά', offshoreModule.OFFSHORE_FLAT_MAX_ONSHORE === original, 'η σταθερά δεν επανήλθε');
+
+  // ΚΑΙ ΤΟ ΝΕΟ ΚΑΤΩΦΛΙ ΤΟΥ ΝΕΡΟΥ: πύλη που δεν σαμποτάρει και τους δύο άξονες ελέγχει τον έναν.
+  const seaOriginal = shoreWave.DEPARTING_SEA_MAX_ONSHORE;
+  const seaSabotage = [
+    ['νερό χαλαρωμένο στο 0', 0, () => dep(OFFSHORE_WIND, [{ ...BIG, directionDeg: dirForOnshore(-0.3) }]) === false],
+    ['νερό σφιγμένο στο −2', -2, () => dep(OFFSHORE_WIND, [{ ...BIG, directionDeg: OFFSHORE_WIND }]) === true],
+  ];
+  let seaCaught = 0;
+  for (const [name, value, ruleStillHolds] of seaSabotage) {
+    shoreWave.DEPARTING_SEA_MAX_ONSHORE = value;
+    const survived = ruleStillHolds();
+    shoreWave.DEPARTING_SEA_MAX_ONSHORE = seaOriginal;
+    if (survived) fail(`--prove: το σαμποτάζ «${name}» ΕΠΙΒΙΩΣΕ — η συνάρτηση δεν διαβάζει τη σταθερά νερού`);
+    else seaCaught += 1;
+  }
+  check('--prove επαναφορά νερού', shoreWave.DEPARTING_SEA_MAX_ONSHORE === seaOriginal,
+    'η σταθερά του νερού δεν επανήλθε');
+  caught += seaCaught;
+  sabotage.push(...seaSabotage);
   console.log(`--prove: ${caught}/${sabotage.length} σαμποτάζ εντοπίστηκαν`);
 }
 
 if (failures.length) {
   console.error(`\nFAILED: ${failures.length} κανόνας/ες «το νερό φεύγει» έσπασαν.\n`);
   failures.forEach(line => console.error(`  ${line}`));
-  console.error('\nΜΗΝ χαλαρώσεις το κατώφλι για να περάσει μια περίπτωση: το −0,8 βγήκε από εθνική');
-  console.error('μέτρηση (scripts/measureDepartingSeaNationally.mjs) όπου το −0,5 έδινε 576 ώρες×παραλία');
-  console.error('αντί για 44, με άλματα από 1,6 μ. κατευθείαν στο δάπεδο των 0,10 μ.');
+  console.error('\nΜΗΝ χαλαρώσεις κατώφλι για να περάσει μια περίπτωση. Και τα δύο βγήκαν από εθνική');
+  console.error('μέτρηση: ο ΑΝΕΜΟΣ −0,80 (measureDepartingSeaNationally.mjs, 16/08) και το ΝΕΡΟ −0,65');
+  console.error('(measureDepartingSeaThreshold.mjs, 22/08, 4 παράθυρα). Στο −0,60 το νερό αρχίζει να ρίχνει');
+  console.error('παραλίες από ≥1,00 μ. κατευθείαν στο δάπεδο των 0,10 μ. — εκεί σταματάει η γραμμή.');
   process.exit(1);
 }
 
-console.log(`PASSED: το ξεκλείδωμα «όλο το νερό φεύγει» τηρεί το κατώφλι ${OFFSHORE_FLAT_MAX_ONSHORE}, `
+console.log('PASSED: το ξεκλείδωμα «όλο το νερό φεύγει» τηρεί άνεμο '
+  + `${OFFSHORE_FLAT_MAX_ONSHORE} / νερό ${shoreWave.DEPARTING_SEA_MAX_ONSHORE}, `
   + `αγνοεί συστατικά κάτω από ${DEPARTING_SEA_MIN_COMPONENT_M} μ., σιωπά χωρίς κατεύθυνση, `
   + 'δεν παρακάμπτει αποθαλασσιά/εμπιστοσύνη/πινέζα/ράμπα, και ποτέ δεν μεγαλώνει τον αριθμό.');

@@ -769,6 +769,8 @@ export interface SuitableBeach {
    * ακτογραμμή δεν υπάρχει κριτής (§7δ). Γι' αυτό τυπώνεται με «~» και με τη δική του ετικέτα.
    */
   shoreDisplayWaveM?: number;
+  /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5 (§Γ55/§Γ56). */
+  shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY. Βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   /**

@@ -4829,6 +4829,7 @@ export const App: React.FC = () => {
         seaStateWaveM: scoreResult.seaStateWaveM,
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
+        shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
         seaTemperatureC: scoreResult.seaTemperatureC,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // The full marine forecast rides along for the map's downwind-sample flag
@@ -6179,6 +6180,7 @@ export const App: React.FC = () => {
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
+        shoreWaveFromDepartingSea: context.shoreWaveFromDepartingSea,
         seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -6214,6 +6216,7 @@ export const App: React.FC = () => {
         waveHeightM: context.waveHeightM,
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
+        shoreWaveFromDepartingSea: context.shoreWaveFromDepartingSea,
         seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -6256,6 +6259,7 @@ export const App: React.FC = () => {
       // στο μεγαλύτερο νούμερο και διαφωνεί με τη σελίδα της παραλίας (11/08/2026).
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
+      shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
       seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
@@ -6279,6 +6283,7 @@ export const App: React.FC = () => {
       seaStatePeriodS: item.seaStatePeriodS,
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
+      shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
       seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
@@ -8810,6 +8815,7 @@ export const App: React.FC = () => {
                       seaStateWaveM={r.seaStateWaveM}
                       shoreWaveHeightM={r.shoreWaveHeightM}
                       shoreDisplayWaveM={r.shoreDisplayWaveM}
+                      shoreWaveFromDepartingSea={r.shoreWaveFromDepartingSea}
                       seaTemperatureC={r.seaTemperatureC}
                       seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
@@ -9064,6 +9070,7 @@ export const App: React.FC = () => {
                           seaStateWaveM={r.seaStateWaveM}
                           shoreWaveHeightM={r.shoreWaveHeightM}
                           shoreDisplayWaveM={r.shoreDisplayWaveM}
+                          shoreWaveFromDepartingSea={r.shoreWaveFromDepartingSea}
                           seaTemperatureC={r.seaTemperatureC}
                           seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}

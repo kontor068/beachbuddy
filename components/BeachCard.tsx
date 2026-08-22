@@ -60,6 +60,7 @@ interface BeachCardProps {
    *  reader is standing in; see the wave line below. */
   shoreWaveHeightM?: number;
   shoreDisplayWaveM?: number;
+  shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   temperature?: number;
@@ -1197,6 +1198,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   seaStateWaveM,
   shoreWaveHeightM,
   shoreDisplayWaveM,
+  shoreWaveFromDepartingSea,
   seaTemperatureC,
   seaStatePeriodS,
   temperature,
@@ -1276,6 +1278,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
     seaStatePeriodS,
     shoreWaveHeightM,
     shoreDisplayWaveM,
+    shoreWaveFromDepartingSea,
     language,
   });
   const windBeaufort = conditionsReadout.beaufort;

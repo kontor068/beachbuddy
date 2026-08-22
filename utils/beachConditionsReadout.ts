@@ -39,6 +39,13 @@ export interface BeachConditionsReadoutInput {
   shoreWaveHeightM?: number;
   /** Το νερό στην ακτή, όπως ΤΥΠΩΝΕΤΑΙ (§Γ5). Προηγείται όπου υπάρχει. */
   shoreDisplayWaveM?: number;
+  /**
+   * Ο αριθμός ακτής στηρίζεται σε ΜΕΤΡΗΜΕΝΗ απόδειξη ότι όλο το νερό φεύγει
+   * (utils/shoreWave.isSeaDepartingShore), όχι στην αβαθμονόμητη έκπτωση ×0,5 της προστατευμένης
+   * ακτής. Μόνο τότε ο φράχτης της γραμμής ηρεμίας παρακάμπτεται — δες το σχόλιό του παρακάτω.
+   * Παραλείπεται → η συμπεριφορά της 21/08 αυτούσια, ώστε κανείς να μη γίνει ηρεμότερος κατά λάθος.
+   */
+  shoreWaveFromDepartingSea?: boolean;
   language: LanguageCode;
 }
 
@@ -78,6 +85,7 @@ export const buildBeachConditionsReadout = ({
   seaStatePeriodS,
   shoreWaveHeightM,
   shoreDisplayWaveM,
+  shoreWaveFromDepartingSea,
   language,
 }: BeachConditionsReadoutInput): BeachConditionsReadout => {
   // Prefer this beach's own scored wind so the Beaufort matches its (same-wind) wave; fall back to
@@ -139,7 +147,18 @@ export const buildBeachConditionsReadout = ({
    */
   const openSeverityM = seaStateSeverityM(seaStateWaveM ?? waveHeightM, seaStatePeriodS);
   const shownSeverityM = seaStateSeverityM(waveM, seaStatePeriodS);
+  /**
+   * ΜΙΑ ΕΞΑΙΡΕΣΗ, ΚΑΙ ΜΟΝΟ ΓΙΑ ΜΕΤΡΗΜΕΝΗ ΑΠΟΔΕΙΞΗ (22/08/2026, βίβλος §Γ55).
+   *
+   * Ο φράχτης από πάνω γράφτηκε γύρω από την έκπτωση ×0,5, που είναι ΕΙΚΑΣΙΑ: «η ακτή είναι
+   * προστατευμένη, άρα κόψε το κύμα στη μέση». Το `isSeaDepartingShore` δεν είναι εικασία — είναι
+   * η δηλωμένη κατεύθυνση κάθε συστατικού της θάλασσας, ελεγμένη απέναντι στη γωνία της ακτής.
+   * Ο φράχτης δεν είχε τρόπο να τα ξεχωρίσει και έσβηνε και τα δύο.
+   *
+   * ΤΟ ΚΟΣΤΟΣ ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΓΡΑΦΤΕΙ — scripts/measureDepartingSeaCalmFence.mjs. Δες §Γ56.
+   */
   const fallsIntoCalm = waveIsShore
+    && !shoreWaveFromDepartingSea
     && typeof openSeverityM === 'number' && openSeverityM >= SEA_STATE_AMBER_M
     && typeof shownSeverityM === 'number' && shownSeverityM < SEA_STATE_AMBER_M;
   const guardedWaveM = fallsIntoCalm

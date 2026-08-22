@@ -1097,6 +1097,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // τυπώνει το νερό της ακτής, όχι το ανοιχτό — οπότε χωρίς αυτό το πεδίο η αναφορά
       // βαθμονομείται απέναντι σε νούμερο που δεν είδε ποτέ (Λιά 1958: 1,78 vs ~0,10 μ.).
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
+      shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
       live: selectedDayIsToday && selectedHour === undefined,
     }, {
       // ΠΟΙΑ ΠΑΡΑΛΙΑ. Χωρίς αυτό το e-mail/Telegram έπεφτε πίσω στο Referer, που σε
