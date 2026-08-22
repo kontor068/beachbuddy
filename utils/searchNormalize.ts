@@ -50,11 +50,67 @@ export const normalizeSearchText = (value: string): string =>
     .replace(/\s+/g, ' ')
     .trim();
 
-export const toGreeklishSearchText = (value: string): string => {
+/**
+ * «Δεν βρήκαμε την Paralia Paroikias» (Μίλτος, 22/08/2026).
+ *
+ * The table above is ONE way to write Greek in Latin letters — the phonetic one, where
+ * οι/ει/η/υ all collapse to «i» and μπ/ντ become «b»/«d». Google Maps, road signs and
+ * every tourist use the OTHER one, letter by letter: Παροικιά → «Paroikia», Αγία
+ * Ειρήνη → «Agia Eirini», Ντράφι → «Ntrafi», Κολυμπήθρα → «Kolymbithra».
+ *
+ * Holding only the first spelling made 42 beaches nationally unfindable by the name printed
+ * on the map they came from — every «Αγία Ειρήνη», every «Άγιοι Ανάργυροι», every
+ * «Άγιος Βασίλειος». Measured over all 2.873 beaches, carrying both spellings closes
+ * all 42 and makes 3 extra same-region name pairs collide out of 143.128 — a trade worth
+ * taking. Latin-only names produce the same string twice and are deduped away below.
+ */
+const naturalLatinPairs: Array<[string, string]> = [
+  ['αι', 'ai'],
+  ['ει', 'ei'],
+  ['οι', 'oi'],
+  ['υι', 'yi'],
+  ['ου', 'ou'],
+  ['αυ', 'av'],
+  ['ευ', 'ev'],
+  ['ηυ', 'iv'],
+  ['μπ', 'b'],
+  ['ντ', 'nt'],
+  ['γκ', 'gk'],
+  ['γγ', 'ng'],
+  ['τσ', 'ts'],
+  ['τζ', 'tz'],
+  ['θ', 'th'],
+  ['χ', 'ch'],
+  ['ψ', 'ps'],
+  ['α', 'a'],
+  ['β', 'v'],
+  ['γ', 'g'],
+  ['δ', 'd'],
+  ['ε', 'e'],
+  ['ζ', 'z'],
+  ['η', 'i'],
+  ['ι', 'i'],
+  ['κ', 'k'],
+  ['λ', 'l'],
+  ['μ', 'm'],
+  ['ν', 'n'],
+  ['ξ', 'x'],
+  ['ο', 'o'],
+  ['π', 'p'],
+  ['ρ', 'r'],
+  ['σ', 's'],
+  ['ς', 's'],
+  ['τ', 't'],
+  ['υ', 'y'],
+  ['φ', 'f'],
+  ['ω', 'o'],
+];
+
+const transliterate = (value: string, pairs: Array<[string, string]>): string => {
   let result = normalizeSearchText(value);
 
-  for (const [greek, latin] of greeklishPairs) {
-    result = result.replace(new RegExp(greek, 'g'), latin);
+  for (const [greek, latin] of pairs) {
+    result = result.split(greek).join(latin);
   }
 
   return result
@@ -62,6 +118,12 @@ export const toGreeklishSearchText = (value: string): string => {
     .replace(/\s+/g, ' ')
     .trim();
 };
+
+export const toGreeklishSearchText = (value: string): string =>
+  transliterate(value, greeklishPairs);
+
+export const toNaturalLatinSearchText = (value: string): string =>
+  transliterate(value, naturalLatinPairs);
 
 /**
  * Every keystroke re-scored every beach name in the country, and each of those names went
@@ -80,8 +142,10 @@ export const getSearchVariants = (value: string): string[] => {
   const cached = searchVariantCache.get(value);
   if (cached) return cached;
 
-  const baseVariants = [normalizeSearchText(value), toGreeklishSearchText(value)]
-    .filter(Boolean);
+  const baseVariants = Array.from(new Set(
+    [normalizeSearchText(value), toGreeklishSearchText(value), toNaturalLatinSearchText(value)]
+      .filter(Boolean)
+  ));
   const variants = [...baseVariants];
 
   for (const variant of baseVariants) {

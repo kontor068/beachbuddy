@@ -472,6 +472,15 @@ const checks = [
     args: ['scripts/validateWaterClimatology.mjs'],
   },
   {
+    id: 'beach-name-search',
+    title: 'Κάθε παραλία βρίσκεται με το όνομά της',
+    description: 'Ρωτάει τον πραγματικό μηχανισμό αναζήτησης (utils/searchNormalize.ts) για καθεμία από τις 2.873 παραλίες, γραμμένη με τέσσερις τρόπους: ελληνικά, το αγγλικό της όνομα, φωνητικά λατινικά («Parikia») και γράμμα-γράμμα λατινικά όπως το γράφει το Google Maps («Paroikia»). Δίνει μόνο τα δύο ονόματα της παραλίας, χωρίς τα εναλλακτικά που δίνει η εφαρμογή, άρα είναι αυστηρότερη από την πραγματικότητα. Συνοδεύεται από καρφωτά ζεύγη και από τρια ζεύγη που ΔΕΝ επιτρέπεται να ταιριάξουν, ώστε να μην περνάει με έναν μηχανισμό που λέει «ναι» σε όλα.',
+    protects: 'Εμποδίζει το «τη δείχνει ο χάρτης, δεν τη βρίσκει η αναζήτηση». Μέχρι τις 22/08/2026 η αναζήτηση κρατούσε μόνο τη φωνητική λατινική γραφή, και 42 παραλίες — κάθε «Αγία Ειρήνη», κάθε «Άγιοι Ανάργυροι», κάθε «Άγιος Βασίλειος» — ήταν άφαντες για όποιον έγραφε το όνομα όπως το είδε στον χάρτη.',
+    failureAction: 'Δες τους δύο πίνακες μεταγραφής στο utils/searchNormalize.ts. Ποτέ μην σβήνεις μία γραφή για να περάσει η πύλη και ποτέ μην χαλαρώνεις το κατώφλι του fuzzySearchScore — πρόσθεσε τη γραφή που λείπει.',
+    command: process.execPath,
+    args: ['scripts/validateBeachNameSearch.mjs'],
+  },
+  {
     id: 'trip-query-parsing',
     title: 'Trip query parsing',
     description: 'Parses free-text trip sentences ("θα μείνω Νάξο για 5 μέρες") over the real region list: recall in 5 languages, precision against dates/quantities/beach names with numerals, a stopword sweep, order invariance, and every region resolving from its own name.',
