@@ -1,227 +1,33 @@
 {
   "method": "For every beach whose current request point fails the shared trust test, walk a ladder of alternative coordinates (nearest-to-facing sector first, longest push first, pin last), ask the API which cell each is served, and keep the first that passes. Never touches a beach that already passes, and never prefers a nearer cell.",
-  "beaches": 2872,
-  "alreadyTrusted": 2685,
-  "needingWork": 187,
-  "fixed": 11,
-  "unfixed": 176,
-  "gainedAPointOfTheirOwn": 6,
+  "beaches": 2873,
+  "alreadyTrusted": 2618,
+  "needingWork": 255,
+  "fixed": 1,
+  "unfixed": 254,
+  "gainedAPointOfTheirOwn": 0,
   "winnersByBearing": {
-    "facing": 6,
-    "sector-SE": 1,
-    "sector-NW": 2,
-    "sector-NE": 1,
-    "sector-E": 1
+    "sector-W": 1
   },
-  "applied": true,
+  "applied": false,
   "fixes": [
     {
-      "beachId": 182,
-      "region": "attica-piraeus-area",
-      "name": "Παραλία Περάματος",
-      "hadOwnPoint": false,
-      "before": "other-water",
-      "beforeDistanceKm": 8.24,
-      "beforePoint": {
-        "lat": 37.940854,
-        "lon": 23.621316
-      },
-      "via": "facing",
-      "pushKm": 0.7,
-      "round": 1,
-      "point": {
-        "lat": 37.9662,
-        "lon": 23.5482
-      }
-    },
-    {
-      "beachId": 291,
-      "region": "central-greece-evia",
-      "name": "Πόρτο Πεύκο",
-      "hadOwnPoint": false,
-      "before": "too-far",
-      "beforeDistanceKm": 104,
-      "beforePoint": {
-        "lat": 38.42677544076924,
-        "lon": 23.95085958615384
-      },
-      "via": "facing",
-      "pushKm": 1.42,
-      "round": 1,
-      "point": {
-        "lat": 38.8787,
-        "lon": 22.9646
-      }
-    },
-    {
-      "beachId": 2194,
-      "region": "south-aegean-koufonisia",
-      "name": "Αφρυανιά",
+      "beachId": 1437,
+      "region": "north-aegean-lemnos",
+      "name": "Κόκκινα (βόρειος όρμος)",
       "hadOwnPoint": true,
       "before": "other-water",
-      "beforeDistanceKm": 7.47,
+      "beforeDistanceKm": 15.36,
       "beforePoint": {
-        "lat": 36.9152,
-        "lon": 25.5346
+        "lat": 39.85,
+        "lon": 25.0866
       },
-      "via": "facing",
-      "pushKm": 3.66,
-      "round": 1,
-      "point": {
-        "lat": 36.9358,
-        "lon": 25.5497
-      }
-    },
-    {
-      "beachId": 2367,
-      "region": "south-aegean-leros",
-      "name": "Παραλία Μπλεφούτης",
-      "hadOwnPoint": false,
-      "before": "other-water",
-      "beforeDistanceKm": 4.69,
-      "beforePoint": {
-        "lat": 37.160242999999994,
-        "lon": 26.835714000000003
-      },
-      "via": "facing",
-      "pushKm": 1.64,
-      "round": 1,
-      "point": {
-        "lat": 37.2018,
-        "lon": 26.8135
-      }
-    },
-    {
-      "beachId": 2034,
-      "region": "south-aegean-paros",
-      "name": "Λίμνες",
-      "hadOwnPoint": false,
-      "before": "other-water",
-      "beforeDistanceKm": 11.27,
-      "beforePoint": {
-        "lat": 37.06816538461537,
-        "lon": 25.2118923076923
-      },
-      "via": "facing",
-      "pushKm": 1.08,
-      "round": 1,
-      "point": {
-        "lat": 37.1271,
-        "lon": 25.225
-      }
-    },
-    {
-      "beachId": 2087,
-      "region": "south-aegean-serifos",
-      "name": "Λιβαδάκια",
-      "hadOwnPoint": false,
-      "before": "other-water",
-      "beforeDistanceKm": 4.46,
-      "beforePoint": {
-        "lat": 37.1588854,
-        "lon": 24.48670748
-      },
-      "via": "sector-SE",
-      "pushKm": 1.72,
-      "round": 1,
-      "point": {
-        "lat": 37.1273,
-        "lon": 24.5288
-      }
-    },
-    {
-      "beachId": 2588,
-      "region": "thessaly-alonissos",
-      "name": "Γλυφά",
-      "hadOwnPoint": false,
-      "before": "other-water",
-      "beforeDistanceKm": 5.49,
-      "beforePoint": {
-        "lat": 39.171274576923075,
-        "lon": 23.89037688205129
-      },
-      "via": "facing",
-      "pushKm": 1.72,
-      "round": 1,
-      "point": {
-        "lat": 39.1989,
-        "lon": 23.9458
-      }
-    },
-    {
-      "beachId": 2020,
-      "region": "south-aegean-paros",
-      "name": "Αγία Ειρήνη",
-      "hadOwnPoint": true,
-      "before": "other-water",
-      "beforeDistanceKm": 5.01,
-      "beforePoint": {
-        "lat": 37.0829,
-        "lon": 25.0645
-      },
-      "via": "sector-NW",
-      "pushKm": 5.04,
+      "via": "sector-W",
+      "pushKm": 6.26,
       "round": 2,
       "point": {
-        "lat": 37.0877,
-        "lon": 25.0697
-      }
-    },
-    {
-      "beachId": 2182,
-      "region": "south-aegean-tinos",
-      "name": "Πλατύς Γιαλός",
-      "hadOwnPoint": true,
-      "before": "other-water",
-      "beforeDistanceKm": 6.39,
-      "beforePoint": {
-        "lat": 37.6655,
-        "lon": 25.1768
-      },
-      "via": "sector-NE",
-      "pushKm": 5.1,
-      "round": 2,
-      "point": {
-        "lat": 37.6725,
-        "lon": 25.1695
-      }
-    },
-    {
-      "beachId": 1141,
-      "region": "ionian-islands-lefkada",
-      "name": "Καμάρι",
-      "hadOwnPoint": true,
-      "before": "other-water",
-      "beforeDistanceKm": 6.34,
-      "beforePoint": {
-        "lat": 38.6757,
-        "lon": 20.7458
-      },
-      "via": "sector-E",
-      "pushKm": 0.76,
-      "round": 3,
-      "point": {
-        "lat": 38.655,
-        "lon": 20.728
-      }
-    },
-    {
-      "beachId": 1232,
-      "region": "ionian-islands-ithaca",
-      "name": "Κουτούπι",
-      "hadOwnPoint": true,
-      "before": "other-water",
-      "beforeDistanceKm": 11.29,
-      "beforePoint": {
-        "lat": 38.3487,
-        "lon": 20.654
-      },
-      "via": "sector-NW",
-      "pushKm": 4.46,
-      "round": 4,
-      "point": {
-        "lat": 38.4233,
-        "lon": 20.6178
+        "lat": 39.8299,
+        "lon": 25.0818
       }
     }
   ],
@@ -236,9 +42,27 @@
       "ladderLength": 7
     },
     {
+      "beachId": 71,
+      "region": "attica-east-attica-mainland",
+      "name": "Πούντα Ζέζα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 11,
+      "ladderLength": 11
+    },
+    {
       "beachId": 74,
       "region": "attica-east-attica-mainland",
       "name": "Ασημάκη",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 105,
+      "region": "attica-hydra",
+      "name": "Μανδράκι",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -252,6 +76,15 @@
       "verdict": "other-water",
       "candidatesTried": 1,
       "ladderLength": 1
+    },
+    {
+      "beachId": 182,
+      "region": "attica-piraeus-area",
+      "name": "Παραλία Περάματος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 6,
+      "ladderLength": 6
     },
     {
       "beachId": 152,
@@ -296,7 +129,7 @@
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 12,
-      "ladderLength": 17
+      "ladderLength": 15
     },
     {
       "beachId": 189,
@@ -322,8 +155,17 @@
       "name": "Άγιος Μηνάς",
       "hadOwnPoint": true,
       "verdict": "other-water",
+      "candidatesTried": 11,
+      "ladderLength": 11
+    },
+    {
+      "beachId": 220,
+      "region": "central-greece-evia",
+      "name": "Ελιά",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
       "candidatesTried": 12,
-      "ladderLength": 12
+      "ladderLength": 13
     },
     {
       "beachId": 222,
@@ -333,6 +175,15 @@
       "verdict": "other-water",
       "candidatesTried": 12,
       "ladderLength": 12
+    },
+    {
+      "beachId": 256,
+      "region": "central-greece-evia",
+      "name": "Μεγάλη Άμμος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 14
     },
     {
       "beachId": 258,
@@ -380,6 +231,15 @@
       "ladderLength": 2
     },
     {
+      "beachId": 282,
+      "region": "central-greece-evia",
+      "name": "Παραλία Φηγιά",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 15
+    },
+    {
       "beachId": 284,
       "region": "central-greece-evia",
       "name": "Πέλαγος",
@@ -387,6 +247,15 @@
       "verdict": "other-water",
       "candidatesTried": 12,
       "ladderLength": 13
+    },
+    {
+      "beachId": 291,
+      "region": "central-greece-evia",
+      "name": "Πόρτο Πεύκο",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 8,
+      "ladderLength": 8
     },
     {
       "beachId": 340,
@@ -405,6 +274,15 @@
       "verdict": "other-water",
       "candidatesTried": 11,
       "ladderLength": 11
+    },
+    {
+      "beachId": 343,
+      "region": "central-greece-fokida-mainland",
+      "name": "Κεντρί",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 15
     },
     {
       "beachId": 346,
@@ -431,7 +309,25 @@
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 12,
-      "ladderLength": 16
+      "ladderLength": 15
+    },
+    {
+      "beachId": 319,
+      "region": "central-greece-skyros",
+      "name": "Αχερούνες",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 324,
+      "region": "central-greece-skyros",
+      "name": "Πετρίτσα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 379,
@@ -450,6 +346,24 @@
       "verdict": "other-water",
       "candidatesTried": 10,
       "ladderLength": 10
+    },
+    {
+      "beachId": 390,
+      "region": "central-macedonia-halkidiki-mainland",
+      "name": "Diaporti",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 418,
+      "region": "central-macedonia-halkidiki-mainland",
+      "name": "Likithos",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 11,
+      "ladderLength": 11
     },
     {
       "beachId": 419,
@@ -623,6 +537,15 @@
       "ladderLength": 6
     },
     {
+      "beachId": 896,
+      "region": "epirus-thesprotia-mainland",
+      "name": "Ζαβία",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 897,
       "region": "epirus-thesprotia-mainland",
       "name": "Κάρβουνο",
@@ -637,8 +560,8 @@
       "name": "Μουρτεμένο",
       "hadOwnPoint": false,
       "verdict": "other-water",
-      "candidatesTried": 5,
-      "ladderLength": 5
+      "candidatesTried": 3,
+      "ladderLength": 3
     },
     {
       "beachId": 905,
@@ -646,8 +569,26 @@
       "name": "Μπέλα Βράκα",
       "hadOwnPoint": false,
       "verdict": "other-water",
-      "candidatesTried": 5,
-      "ladderLength": 5
+      "candidatesTried": 3,
+      "ladderLength": 3
+    },
+    {
+      "beachId": 906,
+      "region": "epirus-thesprotia-mainland",
+      "name": "Πάνα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 4,
+      "ladderLength": 4
+    },
+    {
+      "beachId": 908,
+      "region": "epirus-thesprotia-mainland",
+      "name": "Παραλία Έλενα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 9,
+      "ladderLength": 9
     },
     {
       "beachId": 913,
@@ -657,6 +598,15 @@
       "verdict": "other-water",
       "candidatesTried": 9,
       "ladderLength": 9
+    },
+    {
+      "beachId": 920,
+      "region": "epirus-thesprotia-mainland",
+      "name": "Πισίνα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 929,
@@ -695,6 +645,15 @@
       "ladderLength": 5
     },
     {
+      "beachId": 1227,
+      "region": "ionian-islands-ithaca",
+      "name": "Λούτσα",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 5,
+      "ladderLength": 5
+    },
+    {
       "beachId": 1228,
       "region": "ionian-islands-ithaca",
       "name": "Παραλία Μνήματα",
@@ -720,6 +679,15 @@
       "verdict": "other-water",
       "candidatesTried": 12,
       "ladderLength": 15
+    },
+    {
+      "beachId": 1232,
+      "region": "ionian-islands-ithaca",
+      "name": "Κουτούπι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 16
     },
     {
       "beachId": 1235,
@@ -767,6 +735,15 @@
       "ladderLength": 9
     },
     {
+      "beachId": 1085,
+      "region": "ionian-islands-kefalonia",
+      "name": "Αγία Σωτήρα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 13
+    },
+    {
       "beachId": 1088,
       "region": "ionian-islands-kefalonia",
       "name": "Αντίσαμος",
@@ -801,6 +778,24 @@
       "verdict": "other-water",
       "candidatesTried": 12,
       "ladderLength": 15
+    },
+    {
+      "beachId": 1108,
+      "region": "ionian-islands-kefalonia",
+      "name": "Λυγιά Φάρσων",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 14
+    },
+    {
+      "beachId": 1115,
+      "region": "ionian-islands-kefalonia",
+      "name": "Παλιοσταφίδα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 12
     },
     {
       "beachId": 1131,
@@ -857,6 +852,15 @@
       "ladderLength": 4
     },
     {
+      "beachId": 1141,
+      "region": "ionian-islands-lefkada",
+      "name": "Καμάρι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 14
+    },
+    {
       "beachId": 1165,
       "region": "ionian-islands-lefkada",
       "name": "Λυγιά",
@@ -881,7 +885,7 @@
       "hadOwnPoint": true,
       "verdict": "unknown",
       "candidatesTried": 12,
-      "ladderLength": 15
+      "ladderLength": 13
     },
     {
       "beachId": 1175,
@@ -965,6 +969,24 @@
       "ladderLength": 10
     },
     {
+      "beachId": 1275,
+      "region": "north-aegean-chios",
+      "name": "Ποταμοί",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 7,
+      "ladderLength": 7
+    },
+    {
+      "beachId": 1315,
+      "region": "north-aegean-fournoi",
+      "name": "Πετροκόπι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 1316,
       "region": "north-aegean-fournoi",
       "name": "Ελιδάκι",
@@ -972,6 +994,15 @@
       "verdict": "other-water",
       "candidatesTried": 1,
       "ladderLength": 1
+    },
+    {
+      "beachId": 1317,
+      "region": "north-aegean-fournoi",
+      "name": "Καμπί",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 1432,
@@ -1127,6 +1158,15 @@
       "ladderLength": 3
     },
     {
+      "beachId": 1492,
+      "region": "peloponnese-argolida-mainland",
+      "name": "Παραλία Φούρνων",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 1496,
       "region": "peloponnese-argolida-mainland",
       "name": "Βιβάρι",
@@ -1190,9 +1230,36 @@
       "ladderLength": 11
     },
     {
+      "beachId": 1589,
+      "region": "peloponnese-lakonia-mainland",
+      "name": "Πλύτρα - Παχιά Άμμος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 1594,
       "region": "peloponnese-lakonia-mainland",
       "name": "Πρώτο Αυλάκι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 3091,
+      "region": "peloponnese-lakonia-mainland",
+      "name": "Παραλία Κάτω Μέζαπος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 3109,
+      "region": "peloponnese-lakonia-mainland",
+      "name": "Καραβοστάσι (Πλύτρα)",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -1217,6 +1284,15 @@
       "ladderLength": 12
     },
     {
+      "beachId": 1618,
+      "region": "peloponnese-messinia-mainland",
+      "name": "Καντούνι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 12
+    },
+    {
       "beachId": 1632,
       "region": "peloponnese-messinia-mainland",
       "name": "Παραλία Γιάλοβα",
@@ -1226,6 +1302,24 @@
       "ladderLength": 13
     },
     {
+      "beachId": 2226,
+      "region": "south-aegean-agathonisi",
+      "name": "Γαδουρόλακκος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2228,
+      "region": "south-aegean-agathonisi",
+      "name": "Παραλία Σπηλιάς",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 1,
+      "ladderLength": 1
+    },
+    {
       "beachId": 2229,
       "region": "south-aegean-agathonisi",
       "name": "Τσαγκάρι",
@@ -1233,6 +1327,15 @@
       "verdict": "other-water",
       "candidatesTried": 7,
       "ladderLength": 7
+    },
+    {
+      "beachId": 1658,
+      "region": "south-aegean-amorgos",
+      "name": "Άγιος Παύλος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 1661,
@@ -1307,6 +1410,33 @@
       "ladderLength": 1
     },
     {
+      "beachId": 2233,
+      "region": "south-aegean-astypalaia",
+      "name": "Άγιος Κωνσταντίνος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 11,
+      "ladderLength": 11
+    },
+    {
+      "beachId": 2234,
+      "region": "south-aegean-astypalaia",
+      "name": "Βάι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2249,
+      "region": "south-aegean-astypalaia",
+      "name": "Ψιλή Άμμος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 9,
+      "ladderLength": 9
+    },
+    {
       "beachId": 1785,
       "region": "south-aegean-ios",
       "name": "Παπάς",
@@ -1319,6 +1449,24 @@
       "beachId": 1795,
       "region": "south-aegean-ios",
       "name": "Τζαμαρία",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2219,
+      "region": "south-aegean-iraklia",
+      "name": "Βορεινή Σπηλιά",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 9,
+      "ladderLength": 9
+    },
+    {
+      "beachId": 2253,
+      "region": "south-aegean-kalymnos",
+      "name": "Χαλί",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -1352,6 +1500,15 @@
       "ladderLength": 6
     },
     {
+      "beachId": 2270,
+      "region": "south-aegean-kalymnos",
+      "name": "Παραλία Σική",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 2271,
       "region": "south-aegean-kalymnos",
       "name": "Παραλία Συκάτης",
@@ -1370,18 +1527,63 @@
       "ladderLength": 10
     },
     {
+      "beachId": 1825,
+      "region": "south-aegean-kea",
+      "name": "Οτζιάς",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2194,
+      "region": "south-aegean-koufonisia",
+      "name": "Αφρυανιά",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 13
+    },
+    {
+      "beachId": 2202,
+      "region": "south-aegean-koufonisia",
+      "name": "Λίμνη Κάτω Κουφονησίου",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 13
+    },
+    {
       "beachId": 2203,
       "region": "south-aegean-koufonisia",
       "name": "Λουτρό",
       "hadOwnPoint": true,
       "verdict": "other-water",
-      "candidatesTried": 9,
-      "ladderLength": 9
+      "candidatesTried": 6,
+      "ladderLength": 6
     },
     {
       "beachId": 2210,
       "region": "south-aegean-koufonisia",
       "name": "Φύκιο",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 1859,
+      "region": "south-aegean-kythnos",
+      "name": "Άγιος Ιωάννης",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 1861,
+      "region": "south-aegean-kythnos",
+      "name": "Άγιος Στέφανος",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -1395,6 +1597,15 @@
       "verdict": "other-water",
       "candidatesTried": 1,
       "ladderLength": 1
+    },
+    {
+      "beachId": 1864,
+      "region": "south-aegean-kythnos",
+      "name": "Αγκορίτσα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 1867,
@@ -1442,9 +1653,27 @@
       "ladderLength": 5
     },
     {
+      "beachId": 2367,
+      "region": "south-aegean-leros",
+      "name": "Παραλία Μπλεφούτης",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 2368,
       "region": "south-aegean-leros",
       "name": "Όρμος Μπελφούτη",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2377,
+      "region": "south-aegean-lipsi",
+      "name": "Λεντού",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -1460,6 +1689,42 @@
       "ladderLength": 5
     },
     {
+      "beachId": 1903,
+      "region": "south-aegean-milos",
+      "name": "Αχιβαδολίμνη",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 14
+    },
+    {
+      "beachId": 1912,
+      "region": "south-aegean-milos",
+      "name": "Λαγκάδα",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 1913,
+      "region": "south-aegean-milos",
+      "name": "Ναυτικός Όμιλος Μήλου",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 12
+    },
+    {
+      "beachId": 1917,
+      "region": "south-aegean-milos",
+      "name": "Παπικινού",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 12
+    },
+    {
       "beachId": 1921,
       "region": "south-aegean-milos",
       "name": "Ριβάρι",
@@ -1469,9 +1734,54 @@
       "ladderLength": 14
     },
     {
+      "beachId": 1941,
+      "region": "south-aegean-mykonos",
+      "name": "Αγία Άννα Παράγκας",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 1971,
       "region": "south-aegean-mykonos",
       "name": "Ταρσανάς",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2006,
+      "region": "south-aegean-naxos",
+      "name": "Μικρή Βίγλα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 16
+    },
+    {
+      "beachId": 2011,
+      "region": "south-aegean-naxos",
+      "name": "Πάνορμος",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 8,
+      "ladderLength": 8
+    },
+    {
+      "beachId": 2015,
+      "region": "south-aegean-naxos",
+      "name": "Παραλία Σπεδό",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2020,
+      "region": "south-aegean-paros",
+      "name": "Αγία Ειρήνη",
       "hadOwnPoint": true,
       "verdict": "other-water",
       "candidatesTried": 10,
@@ -1503,6 +1813,15 @@
       "verdict": "other-water",
       "candidatesTried": 6,
       "ladderLength": 6
+    },
+    {
+      "beachId": 2034,
+      "region": "south-aegean-paros",
+      "name": "Λίμνες",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 7,
+      "ladderLength": 7
     },
     {
       "beachId": 2037,
@@ -1604,6 +1923,69 @@
       "ladderLength": 9
     },
     {
+      "beachId": 2071,
+      "region": "south-aegean-serifos",
+      "name": "Άγιος Σώστης",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 13
+    },
+    {
+      "beachId": 2074,
+      "region": "south-aegean-serifos",
+      "name": "Αυλόμωνας",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2076,
+      "region": "south-aegean-serifos",
+      "name": "Βάγια",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2078,
+      "region": "south-aegean-serifos",
+      "name": "Γάνεμα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2082,
+      "region": "south-aegean-serifos",
+      "name": "Καραβάς",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2085,
+      "region": "south-aegean-serifos",
+      "name": "Κουτάλας",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 7,
+      "ladderLength": 7
+    },
+    {
+      "beachId": 2087,
+      "region": "south-aegean-serifos",
+      "name": "Λιβαδάκια",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 4,
+      "ladderLength": 4
+    },
+    {
       "beachId": 2092,
       "region": "south-aegean-serifos",
       "name": "Σκάλα",
@@ -1622,6 +2004,15 @@
       "ladderLength": 10
     },
     {
+      "beachId": 2110,
+      "region": "south-aegean-sifnos",
+      "name": "Τσόπου",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 2112,
       "region": "south-aegean-sifnos",
       "name": "Φάρος",
@@ -1631,6 +2022,15 @@
       "ladderLength": 10
     },
     {
+      "beachId": 2113,
+      "region": "south-aegean-sifnos",
+      "name": "Φασολού",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 13
+    },
+    {
       "beachId": 2114,
       "region": "south-aegean-sifnos",
       "name": "Χερρόνησος",
@@ -1638,6 +2038,24 @@
       "verdict": "other-water",
       "candidatesTried": 1,
       "ladderLength": 1
+    },
+    {
+      "beachId": 2467,
+      "region": "south-aegean-symi",
+      "name": "Πέδι",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2469,
+      "region": "south-aegean-symi",
+      "name": "Άγιος Νικόλαος",
+      "hadOwnPoint": false,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 3171,
@@ -1658,6 +2076,15 @@
       "ladderLength": 10
     },
     {
+      "beachId": 2131,
+      "region": "south-aegean-syros",
+      "name": "Αχλάδι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 2134,
       "region": "south-aegean-syros",
       "name": "Γράμματα",
@@ -1665,6 +2092,24 @@
       "verdict": "other-water",
       "candidatesTried": 8,
       "ladderLength": 8
+    },
+    {
+      "beachId": 2135,
+      "region": "south-aegean-syros",
+      "name": "Δελφίνι",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2148,
+      "region": "south-aegean-syros",
+      "name": "Φοίνικας",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 2496,
@@ -1683,6 +2128,15 @@
       "verdict": "other-water",
       "candidatesTried": 9,
       "ladderLength": 9
+    },
+    {
+      "beachId": 2166,
+      "region": "south-aegean-tinos",
+      "name": "Κολυμπήθρα",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 2167,
@@ -1721,6 +2175,15 @@
       "ladderLength": 1
     },
     {
+      "beachId": 2182,
+      "region": "south-aegean-tinos",
+      "name": "Πλατύς Γιαλός",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
       "beachId": 2186,
       "region": "south-aegean-tinos",
       "name": "Σταφίδα",
@@ -1737,6 +2200,51 @@
       "verdict": "other-water",
       "candidatesTried": 1,
       "ladderLength": 1
+    },
+    {
+      "beachId": 2586,
+      "region": "thessaly-alonissos",
+      "name": "Βασίλη Μπαμπακιές",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 15
+    },
+    {
+      "beachId": 2588,
+      "region": "thessaly-alonissos",
+      "name": "Γλυφά",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 11,
+      "ladderLength": 11
+    },
+    {
+      "beachId": 2591,
+      "region": "thessaly-alonissos",
+      "name": "Καλύβια Σταματίου",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 12,
+      "ladderLength": 12
+    },
+    {
+      "beachId": 2601,
+      "region": "thessaly-alonissos",
+      "name": "Παραλία Βότση",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
+    },
+    {
+      "beachId": 2612,
+      "region": "thessaly-alonissos",
+      "name": "Τζώρτζη",
+      "hadOwnPoint": true,
+      "verdict": "other-water",
+      "candidatesTried": 10,
+      "ladderLength": 10
     },
     {
       "beachId": 2724,

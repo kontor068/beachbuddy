@@ -166,6 +166,15 @@ const checks = [
     args: ['scripts/validateBeachMarineResolution.mjs'],
   },
   {
+    id: 'sample-bearing-within-facing',
+    title: 'Καμία παραλία δεν ρωτάει για τη θάλασσα πίσω από την πλάτη της',
+    description: 'Διαβάζει κάθε κομμιταρισμένο marineSamplePoint και ελέγχει ότι η γωνία στην οποία σπρώχνεται το σημείο δεν απέχει πάνω από 90° από το facingDeg της παραλίας. Τα σφραγισμένα ως verified ΔΕΝ εξαιρούνται.',
+    protects: 'Μέχρι τις 22/08/2026 το resolveSampleBearing, όταν ο τομέας του προσώπου δεν είχε 8 χλμ ανοιχτό νερό, πετούσε την κατεύθυνση της παραλίας και έπαιρνε τον πιο ανοιχτό τομέα χωρίς όριο γωνίας — και η σκάλα του optimiseMarineSamplePoints έκανε το ίδιο και σφράγιζε το αποτέλεσμα ως verified, δηλαδή προστατευμένο κι από το build. 14 παραλίες ρωτούσαν για νερό >90° μακριά από αυτό που κοιτούν· η Κολώνα στην Άνδρο κοιτάει 89,9° και ρωτούσε στις 270°, την απέναντι θάλασσα του νησιού. Η διπλανή πύλη beach-marine-resolution δεν το έβλεπε: ελέγχει ότι κάθε παραλία ρωτάει ΞΕΧΩΡΙΣΤΑ, όχι ότι ρωτάει για ΤΟ ΔΙΚΟ ΤΗΣ νερό.',
+    failureAction: 'Τρέξε `node scripts/buildMarineSamplePoints.mjs`. Αν μια παραλία επιμένει, σβήσε το πεδίο verified από το marineSamplePoint της και ξανατρέξε. ΠΟΤΕ μην την περάσεις ανεβάζοντας το MAX_FACING_DIVERSION_DEG — το όριο είναι ο λόγος που υπάρχει η πύλη.',
+    command: process.execPath,
+    args: ['scripts/validateSampleBearingWithinFacing.mjs'],
+  },
+  {
     id: 'near-me-geometry',
     title: 'The cross-region view keeps its geometry',
     description: 'Builds a synthetic "Κοντά μου" region the way the app does and checks the loader never requests a profile file for it, resolves each beach to its OWN geometry under the re-keyed id, and asks once for a file that is genuinely missing.',

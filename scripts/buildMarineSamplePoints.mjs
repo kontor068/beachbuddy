@@ -93,8 +93,35 @@ const MIN_SECTOR_FETCH_KM = MIN_PUSH_KM / PUSH_FRACTION;
  */
 const PREFER_FACING_FETCH_KM = 2 * MIN_PUSH_KM / PUSH_FRACTION;
 
+/**
+ * ΠΟΣΟ ΜΑΚΡΙΑ ΑΠΟ ΑΥΤΟ ΠΟΥ ΚΟΙΤΑΕΙ Η ΠΑΡΑΛΙΑ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΠΑΕΙ Ο ΕΝΑΛΛΑΚΤΙΚΟΣ ΤΟΜΕΑΣ.
+ *
+ * Χωρίς αυτό το όριο, το `widest-sector` σκέλος παρακάτω δεν είχε ΚΑΝΕΝΑΝ περιορισμό γωνίας:
+ * αν ο τομέας του facing δεν έφτανε τα PREFER_FACING_FETCH_KM, η κατεύθυνση της παραλίας
+ * πεταγόταν ολόκληρη και έπαιρνε ο πιο ανοιχτός τομέας όπου κι αν ήταν — μέχρι και ακριβώς
+ * απέναντι. Μετρήθηκε εθνικά 22/08/2026 (scripts/measureFacingCappedSampleBearing.mjs): 14
+ * παραλίες ρωτούσαν για νερό >90° μακριά από αυτό που κοιτούν. Η ακραία, #1702 Κολώνα στην
+ * Άνδρο, κοιτάει 89,9° και ρωτούσε στις 270° — τη θάλασσα της άλλης πλευράς του νησιού.
+ *
+ * ΤΙ ΚΟΣΤΙΣΕ ΤΟ ΟΡΙΟ, μετρημένο πριν μπει: 2.760 παραλίες αμετάβλητες, 11 παίρνουν σημείο πιο
+ * κοντά στο πρόσωπό τους, 3 μένουν χωρίς δικό τους σημείο και διαβάζουν το σημείο της περιοχής
+ * — ο ίδιος fallback που ήδη ισχύει για όποια δεν έχει γεωμετρία. Σήμερα μόνο 2 αλλάζουν ύψος
+ * ≥0,10 μ.· ο λόγος που μπαίνει δεν είναι το ύψος αλλά ότι «η θάλασσα πίσω από την πλάτη σου»
+ * δεν είναι απάντηση στο ερώτημα «πώς είναι το νερό εδώ».
+ *
+ * ⚠️ ΔΕΝ ΛΥΝΕΙ ΤΟ ΖΕΥΓΑΡΙ ΤΗΣ ΚΕΡΚΥΡΑΣ και δεν προσποιείται ότι το λύνει. Τζουφάκα #3081 και
+ * Άκολη #3099 κοιτούν ΚΑΙ ΟΙ ΔΥΟ 54,2°, εκτρέπονται και οι δύο ΜΕΣΑ σε αυτό το παράθυρο (0°
+ * και 45°) και τύπωσαν 0,50 μ. και 0,02 μ. την ίδια ώρα. Αιτία εκεί είναι ότι το κατώφλι των 8
+ * χλμ είναι γκρεμός πάνω σε συνεχές μέγεθος (7,76 έναντι 7,24 χλμ). Ο συνεχής κανόνας που θα
+ * το έπιανε μετρήθηκε στο ίδιο script (--ratio): αγγίζει 188-226 παραλίες, δηλαδή δεκαπλάσιο
+ * αποτύπωμα, και ΔΕΝ μπαίνει με μία μέτρηση μιας ήρεμης μέρας. Θέλει μελτέμι.
+ */
+const MAX_FACING_DIVERSION_DEG = 90;
+
 const EARTH_RADIUS_KM = 6371;
 const toRad = deg => (deg * Math.PI) / 180;
+/** Μικρότερη γωνία ανάμεσα σε δύο κατευθύνσεις, 0-180°. */
+const angularDiffDeg = (a, b) => { const d = Math.abs(a - b) % 360; return d > 180 ? 360 - d : d; };
 const toDeg = rad => (rad * 180) / Math.PI;
 
 /** Great-circle destination from a point, given a bearing and distance. */
@@ -118,8 +145,11 @@ const destinationPoint = (lat, lon, bearingDeg, distanceKm) => {
  * The bearing to sample along. Preference order:
  *  1. The beach's own facing, when the sector it points into is genuinely open — this is the
  *     water the swimmer is looking at, so it is the water we want a wave for.
- *  2. Otherwise the most open sector, because that is where any sea reaching this beach is
- *     coming from.
+ *  2. Otherwise the most open sector WITHIN MAX_FACING_DIVERSION_DEG of that facing, because that
+ *     is where any sea reaching this beach is coming from — but a sector behind the beach is not
+ *     "reaching" it, it is a different body of water (see the constant for the measurement).
+ *  3. Nothing, when no sector inside that window is open enough. The beach then reads the region
+ *     point, which is the honest answer rather than a precise one about the wrong sea.
  */
 const resolveSampleBearing = profile => {
   const openSectors = SECTORS
@@ -127,17 +157,24 @@ const resolveSampleBearing = profile => {
     .filter(s => Number.isFinite(s.fetchKm));
   if (openSectors.length === 0) return null;
 
-  const widest = openSectors.reduce((best, s) => (s.fetchKm > best.fetchKm ? s : best));
-  if (widest.fetchKm < MIN_SECTOR_FETCH_KM) return null;
-
   const facing = profile.facingDeg;
-  if (typeof facing === 'number' && Number.isFinite(facing)) {
+  const hasFacing = typeof facing === 'number' && Number.isFinite(facing);
+  if (hasFacing) {
     const facingSector = SECTORS[((Math.round(facing / 45) % 8) + 8) % 8];
     const atFacing = profile.sectors?.[facingSector];
     if (atFacing && Number.isFinite(atFacing.fetchKm) && atFacing.fetchKm >= PREFER_FACING_FETCH_KM) {
       return { bearingDeg: facing, fetchKm: atFacing.fetchKm, via: 'facing' };
     }
   }
+
+  // Χωρίς facing δεν υπάρχει τίποτα να περιοριστεί — κρατάμε την παλιά συμπεριφορά ακέραιη.
+  const candidates = hasFacing
+    ? openSectors.filter(s => angularDiffDeg(facing, SECTOR_BEARING[s.sector]) <= MAX_FACING_DIVERSION_DEG)
+    : openSectors;
+  if (candidates.length === 0) return null;
+
+  const widest = candidates.reduce((best, s) => (s.fetchKm > best.fetchKm ? s : best));
+  if (widest.fetchKm < MIN_SECTOR_FETCH_KM) return null;
   return { bearingDeg: SECTOR_BEARING[widest.sector], fetchKm: widest.fetchKm, via: 'widest-sector' };
 };
 

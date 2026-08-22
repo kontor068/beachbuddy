@@ -75,6 +75,14 @@ const MIN_SECTOR_FETCH_KM = 1.2;
 /** Fractions of a sector's fetch to try, longest first. */
 const PUSH_STEPS = [0.5, 0.35, 0.22];
 
+/**
+ * Πόσο μακριά από το πρόσωπο της παραλίας επιτρέπεται να φτάσει η σκάλα.
+ * ΤΟ ΙΔΙΟ ΝΟΥΜΕΡΟ με το buildMarineSamplePoints.MAX_FACING_DIVERSION_DEG — τα δύο αρχεία
+ * αποφασίζουν για την ΙΔΙΑ ερώτηση («ποιο νερό ρωτάει αυτή η παραλία») και μια διαφορά τους
+ * σημαίνει ότι το build και η βελτιστοποίηση παλεύουν μεταξύ τους σε κάθε εκτέλεση.
+ */
+const MAX_FACING_DIVERSION_DEG = 90;
+
 const args = process.argv.slice(2);
 const apply = args.includes('--apply');
 const maxRounds = args.includes('--rounds') ? Number(args[args.indexOf('--rounds') + 1]) : 12;
@@ -114,7 +122,21 @@ const candidatesFor = ({ profile }) => {
   const facing = Number.isFinite(profile.facingDeg) ? profile.facingDeg : null;
   const open = SECTORS
     .map(sector => ({ sector, bearing: SECTOR_BEARING[sector], fetchKm: profile.sectors?.[sector]?.fetchKm }))
-    .filter(s => Number.isFinite(s.fetchKm) && s.fetchKm >= MIN_SECTOR_FETCH_KM);
+    .filter(s => Number.isFinite(s.fetchKm) && s.fetchKm >= MIN_SECTOR_FETCH_KM)
+    /**
+     * ΤΟ ΠΑΡΑΘΥΡΟ ΤΟΥ ΠΡΟΣΩΠΟΥ — ίδιο όριο με το buildMarineSamplePoints.MAX_FACING_DIVERSION_DEG.
+     *
+     * Η ταξινόμηση από κάτω βάζει ήδη τους κοντινούς στο facing τομείς πρώτους, αλλά ΣΕΙΡΑ ΔΕΝ
+     * ΕΙΝΑΙ ΟΡΙΟ: όταν κανείς από τους κοντινούς δεν περνούσε το τεστ, η σκάλα κατέβαινε αθόρυβα
+     * ως τον απέναντι τομέα και το σημείο έμενε εκεί με σφραγίδα `verified`, δηλαδή προστατευμένο
+     * και από το ίδιο το build. Μετρήθηκε 22/08/2026: 14 παραλίες ρωτούσαν για νερό >90° μακριά
+     * από αυτό που κοιτούν (#1702 Κολώνα, Άνδρος: κοιτάει 90°, ρωτούσε 270°).
+     *
+     * Καλύτερα η παραλία να μείνει «αδιόρθωτη» και να διαβάσει το σημείο της περιοχής, παρά να
+     * περάσει το τεστ εμπιστοσύνης απαντώντας με ακρίβεια για άλλη θάλασσα. Η πινέζα παραμένει
+     * τελευταία επιλογή παρακάτω και δεν την αγγίζει αυτό το φίλτρο.
+     */
+    .filter(s => facing === null || bearingGapDeg(s.bearing, facing) <= MAX_FACING_DIVERSION_DEG);
 
   // Closest to the beach's own facing first; among equals, the more open sector.
   open.sort((a, b) => {

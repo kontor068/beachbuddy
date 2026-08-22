@@ -1,0 +1,102 @@
+{
+  "method": "OSM natural=coastline, land-on-left rule; seaward = segment bearing + 90deg",
+  "control": {
+    "count": 45,
+    "medianDeltaDeg": 14.8,
+    "within45": 43
+  },
+  "verdicts": {
+    "ΙΣΟΠΑΛΙΑ": 3,
+    "ΑΝΑΞΙΟΠΙΣΤΟ (μύτη/μακριά)": 1
+  },
+  "rows": [
+    {
+      "id": 542,
+      "name": "Μέθεξις",
+      "region": "crete-crete-chania",
+      "coordinates": {
+        "lat": 35.2258285,
+        "lon": 23.6825897
+      },
+      "sectors": [],
+      "authored": 119.3,
+      "geo": 119.3,
+      "gap": 0,
+      "osm": {
+        "facing": 81.85622939554338,
+        "nearestM": 6.580335122568945,
+        "segments": 123,
+        "spread": 70.53717068546878
+      },
+      "dA": 37.44377060445663,
+      "dG": 37.44377060445663,
+      "verdict": "ΑΝΑΞΙΟΠΙΣΤΟ (μύτη/μακριά)"
+    },
+    {
+      "id": 575,
+      "name": "Ραπανιανά",
+      "region": "crete-crete-chania",
+      "coordinates": {
+        "lat": 35.5402,
+        "lon": 23.79262
+      },
+      "sectors": [],
+      "authored": 27.1,
+      "geo": 27.1,
+      "gap": 0,
+      "osm": {
+        "facing": 20.237989837582177,
+        "nearestM": 57.276529101290684,
+        "segments": 6,
+        "spread": 2.1975069619192595
+      },
+      "dA": 6.862010162417846,
+      "dG": 6.862010162417846,
+      "verdict": "ΙΣΟΠΑΛΙΑ"
+    },
+    {
+      "id": 584,
+      "name": "Χαλίκια",
+      "region": "crete-crete-chania",
+      "coordinates": {
+        "lat": 35.2335417,
+        "lon": 23.6867247
+      },
+      "sectors": [],
+      "authored": 139.1,
+      "geo": 139.1,
+      "gap": 0,
+      "osm": {
+        "facing": 150.8023569883477,
+        "nearestM": 5.809354095035544,
+        "segments": 8,
+        "spread": 6.399468713524769
+      },
+      "dA": 11.702356988347674,
+      "dG": 11.702356988347674,
+      "verdict": "ΙΣΟΠΑΛΙΑ"
+    },
+    {
+      "id": 3185,
+      "name": "Κολυμβάρι",
+      "region": "crete-crete-chania",
+      "coordinates": {
+        "lat": 35.544,
+        "lon": 23.7812
+      },
+      "sectors": [],
+      "authored": 53.1,
+      "geo": 53.1,
+      "gap": 0,
+      "osm": {
+        "facing": 38.253480927814905,
+        "nearestM": 28.831466486487937,
+        "segments": 3,
+        "spread": 9.587151845064454
+      },
+      "dA": 14.84651907218506,
+      "dG": 14.84651907218506,
+      "verdict": "ΙΣΟΠΑΛΙΑ"
+    }
+  ]
+}

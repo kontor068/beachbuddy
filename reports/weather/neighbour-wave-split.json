@@ -1,0 +1,470 @@
+{
+ "measuredAt": "2026-08-22T13:01:16.903Z",
+ "settings": {
+  "MAX_BEACH_KM": 1.5,
+  "MAX_FACING_DIFF_DEG": 45,
+  "REPORT_DELTA_M": 0.3
+ },
+ "pairsExamined": 1530,
+ "pointsAsked": 1663,
+ "findings": 19,
+ "bearingMismatchCount": 8,
+ "results": [
+  {
+   "region": "crete-crete-chania",
+   "beachKm": 0.94,
+   "facingDiff": 19.8,
+   "sampleKm": 2.5,
+   "deltaM": 0.42,
+   "ratio": 1.54,
+   "a": {
+    "id": 542,
+    "name": "Μέθεξις",
+    "facing": 119.3,
+    "bearing": 119.3,
+    "pushKm": 10,
+    "maxM": 0.78
+   },
+   "b": {
+    "id": 584,
+    "name": "Χαλίκια",
+    "facing": 139.1,
+    "bearing": 139.1,
+    "pushKm": 10,
+    "maxM": 1.2
+   }
+  },
+  {
+   "region": "crete-crete-chania",
+   "beachKm": 1.12,
+   "facingDiff": 26,
+   "sampleKm": 3.4,
+   "deltaM": 0.4,
+   "ratio": 1.87,
+   "a": {
+    "id": 575,
+    "name": "Ραπανιανά",
+    "facing": 27.1,
+    "bearing": 27.1,
+    "pushKm": 10,
+    "maxM": 0.86
+   },
+   "b": {
+    "id": 3185,
+    "name": "Κολυμβάρι",
+    "facing": 53.1,
+    "bearing": 53.1,
+    "pushKm": 10,
+    "maxM": 0.46
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 1.2,
+   "facingDiff": 27.3,
+   "sampleKm": 3.6,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 939,
+    "name": "Imerolia Beach",
+    "facing": 15.1,
+    "bearing": 15.1,
+    "pushKm": 6.18,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 944,
+    "name": "Karavi Beach",
+    "facing": 42.4,
+    "bearing": 42.4,
+    "pushKm": 4.72,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 1.42,
+   "facingDiff": 19,
+   "sampleKm": 5.9,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3067,
+    "name": "Κορφοβόνια",
+    "facing": 87.2,
+    "bearing": 45,
+    "pushKm": 2.66,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 3068,
+    "name": "Μοσχοφίλι",
+    "facing": 68.2,
+    "bearing": 0,
+    "pushKm": 5.92,
+    "maxM": 0.56
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 0.58,
+   "facingDiff": 18.2,
+   "sampleKm": 3.6,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3068,
+    "name": "Μοσχοφίλι",
+    "facing": 68.2,
+    "bearing": 0,
+    "pushKm": 5.92,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3079,
+    "name": "Βραχλή",
+    "facing": 50,
+    "bearing": 45,
+    "pushKm": 3.96,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 0.72,
+   "facingDiff": 14,
+   "sampleKm": 4.9,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3068,
+    "name": "Μοσχοφίλι",
+    "facing": 68.2,
+    "bearing": 0,
+    "pushKm": 5.92,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3099,
+    "name": "Άκολη (Κέρκυρα)",
+    "facing": 54.2,
+    "bearing": 45,
+    "pushKm": 3.62,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 1.06,
+   "facingDiff": 34.6,
+   "sampleKm": 7.6,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3068,
+    "name": "Μοσχοφίλι",
+    "facing": 68.2,
+    "bearing": 0,
+    "pushKm": 5.92,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3101,
+    "name": "Βρωμολίμνη (Ερημίτης, Κέρκυρα)",
+    "facing": 102.8,
+    "bearing": 102.8,
+    "pushKm": 1.74,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 0.2,
+   "facingDiff": 2.9,
+   "sampleKm": 6.1,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3078,
+    "name": "Βουβαλομάντρια",
+    "facing": 52.9,
+    "bearing": 0,
+    "pushKm": 8.4,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3079,
+    "name": "Βραχλή",
+    "facing": 50,
+    "bearing": 45,
+    "pushKm": 3.96,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 1.12,
+   "facingDiff": 1.3,
+   "sampleKm": 7.5,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3078,
+    "name": "Βουβαλομάντρια",
+    "facing": 52.9,
+    "bearing": 0,
+    "pushKm": 8.4,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3099,
+    "name": "Άκολη (Κέρκυρα)",
+    "facing": 54.2,
+    "bearing": 45,
+    "pushKm": 3.62,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 0.39,
+   "facingDiff": 4.2,
+   "sampleKm": 3.8,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3079,
+    "name": "Βραχλή",
+    "facing": 50,
+    "bearing": 45,
+    "pushKm": 3.96,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 3081,
+    "name": "Τζουφάκα",
+    "facing": 54.2,
+    "bearing": 0,
+    "pushKm": 5.9,
+    "maxM": 0.56
+   }
+  },
+  {
+   "region": "ionian-islands-corfu",
+   "beachKm": 0.92,
+   "facingDiff": 0,
+   "sampleKm": 5.1,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 3081,
+    "name": "Τζουφάκα",
+    "facing": 54.2,
+    "bearing": 0,
+    "pushKm": 5.9,
+    "maxM": 0.56
+   },
+   "b": {
+    "id": 3099,
+    "name": "Άκολη (Κέρκυρα)",
+    "facing": 54.2,
+    "bearing": 45,
+    "pushKm": 3.62,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "south-aegean-mykonos",
+   "beachKm": 0.56,
+   "facingDiff": 32.7,
+   "sampleKm": 8.5,
+   "deltaM": 0.34,
+   "ratio": 2.55,
+   "a": {
+    "id": 1940,
+    "name": "Αγία Άννα Καλαφάτης",
+    "facing": 143.2,
+    "bearing": 180,
+    "pushKm": 7.52,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 1952,
+    "name": "Καλαφάτη",
+    "facing": 110.5,
+    "bearing": 110.5,
+    "pushKm": 6.5,
+    "maxM": 0.56
+   }
+  },
+  {
+   "region": "east-macedonia-and-thrace-thasos",
+   "beachKm": 1.46,
+   "facingDiff": 35.8,
+   "sampleKm": 7.5,
+   "deltaM": 0.3,
+   "ratio": 2.5,
+   "a": {
+    "id": 802,
+    "name": "Άγιος Αντώνιος",
+    "facing": 266.7,
+    "bearing": 266.7,
+    "pushKm": 10,
+    "maxM": 0.2
+   },
+   "b": {
+    "id": 817,
+    "name": "Νότος",
+    "facing": 230.9,
+    "bearing": 230.9,
+    "pushKm": 10,
+    "maxM": 0.5
+   }
+  },
+  {
+   "region": "east-macedonia-and-thrace-thasos",
+   "beachKm": 0.95,
+   "facingDiff": 30,
+   "sampleKm": 4.1,
+   "deltaM": 0.3,
+   "ratio": 2.5,
+   "a": {
+    "id": 806,
+    "name": "Αλεξάντρα",
+    "facing": 219.5,
+    "bearing": 219.5,
+    "pushKm": 10,
+    "maxM": 0.5
+   },
+   "b": {
+    "id": 821,
+    "name": "Ποτός",
+    "facing": 249.5,
+    "bearing": 249.5,
+    "pushKm": 8.46,
+    "maxM": 0.2
+   }
+  },
+  {
+   "region": "east-macedonia-and-thrace-thasos",
+   "beachKm": 1.32,
+   "facingDiff": 24,
+   "sampleKm": 3,
+   "deltaM": 0.3,
+   "ratio": 2.5,
+   "a": {
+    "id": 819,
+    "name": "Πευκάρι",
+    "facing": 225.5,
+    "bearing": 225.5,
+    "pushKm": 10,
+    "maxM": 0.5
+   },
+   "b": {
+    "id": 821,
+    "name": "Ποτός",
+    "facing": 249.5,
+    "bearing": 249.5,
+    "pushKm": 8.46,
+    "maxM": 0.2
+   }
+  },
+  {
+   "region": "south-aegean-mykonos",
+   "beachKm": 1.27,
+   "facingDiff": 7.4,
+   "sampleKm": 3.9,
+   "deltaM": 0.3,
+   "ratio": 2.36,
+   "a": {
+    "id": 1940,
+    "name": "Αγία Άννα Καλαφάτης",
+    "facing": 143.2,
+    "bearing": 180,
+    "pushKm": 7.52,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 1953,
+    "name": "Καλό Λιβάδι",
+    "facing": 150.6,
+    "bearing": 150.6,
+    "pushKm": 10,
+    "maxM": 0.52
+   }
+  },
+  {
+   "region": "south-aegean-mykonos",
+   "beachKm": 0.64,
+   "facingDiff": 40.6,
+   "sampleKm": 6.4,
+   "deltaM": 0.3,
+   "ratio": 2.36,
+   "a": {
+    "id": 1953,
+    "name": "Καλό Λιβάδι",
+    "facing": 150.6,
+    "bearing": 150.6,
+    "pushKm": 10,
+    "maxM": 0.52
+   },
+   "b": {
+    "id": 1959,
+    "name": "Λούλος",
+    "facing": 191.2,
+    "bearing": 191.2,
+    "pushKm": 10,
+    "maxM": 0.22
+   }
+  },
+  {
+   "region": "south-aegean-mykonos",
+   "beachKm": 1.31,
+   "facingDiff": 11.5,
+   "sampleKm": 3.3,
+   "deltaM": 0.3,
+   "ratio": 2.36,
+   "a": {
+    "id": 1958,
+    "name": "Λιά",
+    "facing": 181.3,
+    "bearing": 181.3,
+    "pushKm": 10,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 1975,
+    "name": "Φραγκιά",
+    "facing": 169.8,
+    "bearing": 169.8,
+    "pushKm": 10,
+    "maxM": 0.52
+   }
+  },
+  {
+   "region": "south-aegean-mykonos",
+   "beachKm": 0.92,
+   "facingDiff": 15.8,
+   "sampleKm": 3.7,
+   "deltaM": 0.3,
+   "ratio": 2.36,
+   "a": {
+    "id": 1974,
+    "name": "Τσαγκάρη",
+    "facing": 185.6,
+    "bearing": 185.6,
+    "pushKm": 10,
+    "maxM": 0.22
+   },
+   "b": {
+    "id": 1975,
+    "name": "Φραγκιά",
+    "facing": 169.8,
+    "bearing": 169.8,
+    "pushKm": 10,
+    "maxM": 0.52
+   }
+  }
+ ]
+}
