@@ -48,7 +48,7 @@ import { summarizeLocalWindBehavior } from '../utils/windClimatology';
 import { getRegionWindContext, LOCAL_WIND_SECTORS } from '../utils/localWindContext.mjs';
 import { describeSimpleWindSuitability, describeWindExposure } from '../utils/windExposureCopy';
 import { getHardAccessKind, hasDifficultTopPickAccess, hasMainstreamTopPickAccess, hasTrulyEasyAccess, isAdventureBeach } from '../utils/access';
-import { passesTopPickSeaGate, TOP_PICK_PODIUM_SEATS } from './topPickRanking';
+import { passesTopPickSeaGate, TOP_PICK_PODIUM_SEATS, UNTRUSTED_CELL_SEA_FLOOR_M } from './topPickRanking';
 import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
@@ -96,6 +96,8 @@ export interface BeachScore {
   /** Display/effective wave height (m), lifted above raw marine grid data when local wind,
    *  gusts, and fetch indicate wind chop that the grid can under-represent. */
   waveHeightM?: number;
+  /** TRUE when the wave cell behind this sea describes other water — see SuitableBeach. */
+  marineCellUntrusted?: boolean;
   /**
    * The decision-grade sea state (m) — what every score, cap and comfort call inside
    * calculateBeachScore already uses. `waveHeightM` above is DISPLAY ONLY (the cove guard
@@ -1084,6 +1086,27 @@ export const hasTrustedWindEvidence = <T extends {
   return true;
 };
 
+/**
+ * ΔΙΑΒΑΖΕΙ ΤΟ ΝΕΡΟ ΑΛΛΟΥ ΚΟΛΠΟΥ, ΚΑΙ ΣΗΜΕΡΑ ΑΥΤΟ ΜΕΤΡΑΕΙ (22/08/2026).
+ *
+ * Ο δικός μας έλεγχος βρίσκει 255 παραλίες των οποίων το θαλάσσιο κελί περιγράφει άλλο νερό. Η
+ * σημαία ήταν ψημένη μέσα στα προφίλ γεωμετρίας και **καμία γραμμή παραγωγής δεν τη διάβαζε** —
+ * το ίδιο το εργαλείο που την έγραψε το σημείωνε στην έξοδό του.
+ *
+ * ΥΠΟ ΣΥΝΘΗΚΗ, ΟΧΙ ΠΑΝΤΑ (απόφαση Μίλτου, 22/08). Σε ήρεμη μέρα κάθε κελί λέει «λάδι» και ο
+ * αποκλεισμός θα πετούσε καλές παραλίες χωρίς κανένα όφελος — μετρημένα, θα άδειαζε 6 βάθρα αντί
+ * για 2. Μπαίνει μόνο όταν ο αριθμός του κύματος κάνει πραγματική δουλειά στη σειρά.
+ */
+const readsOtherWaterThatMattersToday = (item: {
+  marineCellUntrusted?: boolean;
+  seaStateWaveM?: number;
+  waveHeightM?: number;
+}): boolean => {
+  if (!item.marineCellUntrusted) return false;
+  const seaReliedOnM = item.seaStateWaveM ?? item.waveHeightM;
+  return typeof seaReliedOnM === 'number' && seaReliedOnM >= UNTRUSTED_CELL_SEA_FLOOR_M;
+};
+
 export const isTrustedTopRecommendationCandidate = <T extends {
   beachId?: number;
   beach?: Beach;
@@ -1092,6 +1115,9 @@ export const isTrustedTopRecommendationCandidate = <T extends {
   windProfileSource?: WindProfileSource;
   exposureLevel?: ExposureLevel;
   canClaimWindProtection?: boolean;
+  marineCellUntrusted?: boolean;
+  seaStateWaveM?: number;
+  waveHeightM?: number;
 }>(
   item: T,
   beachById?: Map<number, Beach>,
@@ -1099,6 +1125,7 @@ export const isTrustedTopRecommendationCandidate = <T extends {
 ): boolean => {
   const beach = getPriorityBeach(item, beachById);
   if (!beach || !hasTrustedTopPickStaticData(beach)) return false;
+  if (readsOtherWaterThatMattersToday(item)) return false;
   return hasTrustedWindEvidence(item, windBeaufort);
 };
 
@@ -1126,6 +1153,8 @@ export type TopPickExclusionReason =
   | 'access_walk'
   | 'access_unknown'
   | 'sea'
+  /** Το κύμα του σήμερα κρίνει, αλλά το κελί που το δίνει περιγράφει άλλο νερό. */
+  | 'sea_cell'
   | 'unverified';
 
 export const explainTopPickExclusion = (
@@ -1160,6 +1189,20 @@ export const explainTopPickExclusion = (
   if (hardAccessKind === 'dirt_road') return 'access_dirt';
   if (hardAccessKind === 'walk') return 'access_walk';
   if (hardAccessKind === 'unknown') return 'access_unknown';
+
+  /**
+   * ΠΡΙΝ ΤΗ ΘΑΛΑΣΣΑ, ΚΑΙ Η ΠΥΛΗ ΤΟ ΕΠΙΑΣΕ (22/08/2026).
+   *
+   * Η πρώτη μου εκδοχή έβαζε αυτόν τον λόγο ΜΕΤΑ το `'sea'`. Η πύλη έδειξε ότι 53 από τις
+   * παραλίες που φεύγουν έπαιρναν «Πιο ταραγμένη θάλασσα στη δική της ακτή σήμερα» — δηλαδή
+   * κατηγορούσαμε το νερό της παραλίας με βάση **ακριβώς τον αριθμό που δηλώνουμε ότι δεν
+   * εμπιστευόμαστε**. Όταν δεν ξέρουμε ποιο νερό διαβάζουμε, δεν έχουμε δικαίωμα να πούμε ότι
+   * είναι ταραγμένο· έχουμε δικαίωμα να πούμε μόνο ότι δεν ξέρουμε.
+   *
+   * Η ασφάλεια και η πρόσβαση μένουν από πάνω: η μία δεν χαλαρώνει ποτέ, η άλλη δεν εξαρτάται
+   * καθόλου από το νερό.
+   */
+  if (readsOtherWaterThatMattersToday(item)) return 'sea_cell';
 
   if (
     (typeof item.swimmingScore === 'number' && item.swimmingScore < 50) ||
@@ -2881,6 +2924,10 @@ export const calculateBeachScore = (
     orientation: beachOrientation,
     marine,
     waveHeightM: displayWaveHeightM,
+    // Η σημαία ταξιδεύει μαζί με το κύμα που αφορά. Είναι ήδη ψημένη στο προφίλ γεωμετρίας από
+    // το scripts/auditMarineCellTrust.mjs· μέχρι τις 22/08/2026 καμία γραμμή παραγωγής δεν τη
+    // διάβαζε, και το ίδιο το εργαλείο το σημείωνε.
+    marineCellUntrusted: options?.geospatialProfile?.marineCellTrusted === false ? true : undefined,
     seaStateWaveM: effectiveWaveHeightM,
     seaStatePeriodS,
     shoreWaveHeightM: shoreModelWaveM,
@@ -3274,6 +3321,7 @@ export const getTopRecommendedBeaches = (
       orientation: scoreResult.orientation,
       marine: scoreResult.marine,
       waveHeightM: scoreResult.waveHeightM,
+      marineCellUntrusted: scoreResult.marineCellUntrusted,
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
       // ΧΩΡΙΣ ΑΥΤΟ Η ΚΑΡΤΑ ΕΛΕΓΕ ΑΛΛΟ ΚΥΜΑ ΑΠΟ ΤΗ ΣΕΛΙΔΑ (11/08/2026): το πεδίο υπήρχε στον τύπο
@@ -3439,6 +3487,7 @@ export const getSuitableBeaches = (
         orientation: scoreResult.orientation,
         marine: scoreResult.marine,
         waveHeightM: scoreResult.waveHeightM,
+        marineCellUntrusted: scoreResult.marineCellUntrusted,
         seaStateWaveM: scoreResult.seaStateWaveM,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // Ίδιος λόγος με τον από πάνω builder — το ύψος στην ακτή ταξιδεύει μαζί με τα υπόλοιπα.

@@ -698,6 +698,12 @@ export interface GeospatialExposureProfile {
    */
   marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
   /**
+   * FALSE when our own audit found the wave cell this beach ends up asking describes OTHER water
+   * — another bay, or a cell too far away (scripts/auditMarineCellTrust.mjs, 255 beaches).
+   * Trusted beaches carry no flag at all, so absence means "nothing wrong was found".
+   */
+  marineCellTrusted?: boolean;
+  /**
    * ΠΟΥ ΕΧΕΙ ΣΤΕΡΙΑ ΚΟΝΤΑ, ΑΝΑ 15° — 24 χαρακτήρες '0'/'1', θέση 0 = 0°, '1' = στεριά μέσα στα
    * πρώτα 300 μ. προς τα εκεί (utils/offshoreWindNote.WIND_SHADOW_LAND_KM).
    *
@@ -757,6 +763,12 @@ export interface SuitableBeach {
   waveHeightM?: number;
   /** Decision-grade sea state (m) + its period. See BeachScore.seaStateWaveM. */
   seaStateWaveM?: number;
+  /**
+   * TRUE when the wave cell behind this item's sea describes other water (GeospatialExposure
+   * Profile.marineCellTrusted === false). Read by the podium's trust gate, and only on days the
+   * sea is doing the talking — see UNTRUSTED_CELL_SEA_FLOOR_M.
+   */
+  marineCellUntrusted?: boolean;
   seaStatePeriodS?: number;
   /**
    * THE MODELLED HEIGHT AT THE SAND (m), or undefined — which is the normal answer.

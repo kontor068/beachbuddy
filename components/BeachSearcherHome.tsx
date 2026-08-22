@@ -2759,6 +2759,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       it: 'Mare più mosso sulla sua costa oggi.',
     }),
     /**
+     * ΣΙΩΠΗ ΕΞ ΟΡΙΣΜΟΥ, ΜΕ ΜΙΑ ΕΞΑΙΡΕΣΗ — ίδιο σκεπτικό με το `unverified` από κάτω (22/08/2026).
+     *
+     * Μιλάει για ΕΜΑΣ: «το κύμα αυτής της παραλίας το παίρνουμε από κελί που περιγράφει άλλο
+     * νερό». Ο αναγνώστης που διαλέγει πού θα κολυμπήσει δεν μπορεί να κάνει τίποτα με αυτό, και
+     * σε μια λίστα που η σελίδα λέει «κατάλληλες» θα διαβαζόταν ως αποποίηση ευθύνης δίπλα στις
+     * παροχές των άλλων καρτών. Σπάει τη σιωπή του ΜΟΝΟ όταν η αντίφαση είναι ήδη ορατή — η
+     * παραλία φοράει το καλύτερο χρώμα της οθόνης και παρ' όλα αυτά δεν πήρε μετάλλιο.
+     */
+    sea_cell: '',
+    /**
      * SILENT SINCE 10/08/2026 — kept as a reason the code can still classify, printed nowhere.
      *
      * It was the only one of the four that describes US rather than the beach, and a reader
@@ -2800,11 +2810,27 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     fr: "Calme ici aujourd'hui — mais pas assez vérifiée pour la recommander.",
     it: 'Calma qui oggi — ma non abbastanza verificata per consigliarla.',
   });
+  /**
+   * Η ΑΔΕΛΦΗ ΦΡΑΣΗ ΤΗΣ ΑΠΟ ΠΑΝΩ, ΓΙΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΛΟΓΟ (22/08/2026). Εκεί λείπουν στοιχεία της
+   * παραλίας· εδώ ξέρουμε ακριβώς τι φταίει και το λέμε με το όνομά του: ο αριθμός του κύματος
+   * βγαίνει από διπλανό νερό. Δεν κατηγορεί την παραλία και δεν υπόσχεται ότι είναι χειρότερη —
+   * λέει πού κοιτάμε, και γιατί δεν βάζουμε το όνομά μας από κάτω.
+   */
+  const topColourOtherWaterNote = getLocalizedCopy(language, {
+    en: 'Calm here today — but its wave is measured in neighbouring water.',
+    gr: 'Ήρεμη εδώ σήμερα — αλλά το κύμα της το μετράμε σε διπλανό νερό.',
+    de: 'Heute ruhig hier — aber ihr Wellengang wird im Nachbarwasser gemessen.',
+    fr: "Calme ici aujourd'hui — mais sa houle est mesurée dans l'eau voisine.",
+    it: 'Calma qui oggi — ma la sua onda è misurata in acque vicine.',
+  });
   const resolveNotInTopPicksNote = (beachId: number): string | undefined => {
     const reason = topPickExclusionByBeachId.get(beachId);
     if (!reason) return undefined;
     if (reason === 'unverified' && topColourOutsideTopPicksIds?.has(beachId)) {
       return topColourUnverifiedNote;
+    }
+    if (reason === 'sea_cell' && topColourOutsideTopPicksIds?.has(beachId)) {
+      return topColourOtherWaterNote;
     }
     return topPickExclusionCopy[reason] || undefined;
   };

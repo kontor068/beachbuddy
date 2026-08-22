@@ -562,6 +562,15 @@ const checks = [
     args: ['scripts/validateSeabedEntryClaim.mjs', '--prove'],
   },
   {
+    id: 'untrusted-marine-cell',
+    title: 'Το λάθος νερό δεν προτείνεται όταν το κύμα αποφασίζει',
+    description: 'Drives the REAL scoring and the REAL podium trust gate over every region holding a beach our own audit flagged as reading a neighbouring bay wave cell (255 of them). Four assertions: the flag actually reaches the scored item — from BOTH item builders, one of which has forgotten a field before; on a CALM day the rule is completely inert, because every cell reads flat and excluding there would only cost good beaches; on a rough day the flagged beaches leave the podium and every one of those exclusions carries a name (sea_cell) rather than vanishing silently; and the sea floor stays above zero, because "always out" was measured (6 emptied podiums instead of 2) and deliberately not chosen. Self-proves with --prove: with the flag stripped from the same profiles, the same beaches on the same day must pass again — otherwise something other than the flag is doing the removing.',
+    protects: 'Prevents the beaches we KNOW are reading the wrong water from being recommended on the days that water decides — and prevents the opposite, a rule quietly hardening into an unconditional ban that empties podiums on calm days.',
+    failureAction: 'Read the failing assertion. If the flag stopped arriving, check both SuitableBeach builders in recommendationService copy marineCellUntrusted.',
+    command: process.execPath,
+    args: ['scripts/validateUntrustedCellGate.mjs', '--prove'],
+  },
+  {
     id: 'content-audit',
     title: 'Static content safety audit',
     description: 'Scans static copy and generated beach data for risky wording like guaranteed calm, protected, safe, ideal, or no-wave claims.',
