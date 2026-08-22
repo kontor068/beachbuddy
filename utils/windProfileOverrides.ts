@@ -2184,6 +2184,23 @@ const overrideEntries: OverrideEntry[] = [
   },
 ];
 
+/**
+ * The tokens above are literals typed by hand into this file, so their normalised form can
+ * never change between two calls — yet the lookup used to run `normalizeToken` over every
+ * one of them (~123 name tokens, ~300 island tokens), for every beach, on every scoring
+ * pass. A CPU profile of one region page on a throttled phone put 1.047 s of main thread
+ * inside this single function: more than the whole card grid, the map and React's own work
+ * put together, and it lands exactly in the seconds when the visitor is trying to scroll.
+ *
+ * Normalising them once at module load is the same comparison against the same strings —
+ * only without a few hundred thousand throwaway NFD copies.
+ */
+const normalizedOverrideEntries: OverrideEntry[] = overrideEntries.map(entry => ({
+  islandTokens: entry.islandTokens.map(normalizeToken),
+  nameTokens: entry.nameTokens.map(normalizeToken),
+  profile: entry.profile,
+}));
+
 const beachNameTokens = (beach: Pick<Beach, 'name' | 'aliases'>): string[] => [
   normalizeToken(beach.name?.en),
   normalizeToken(beach.name?.gr),
@@ -2265,7 +2282,16 @@ export const KNOWN_WIND_SPORT_SPOT_IDS: Set<number> = new Set([
         // εγγραφή προστέθηκε 20/08/2026 επειδή δεν υπήρχε καθόλου (§Γ40γ)
 ]);
 
-export const getWindProfileOverride = (
+/**
+ * A beach's name, aliases, island and region are fixed for the life of the page, so the
+ * answer here is a property of the beach and nothing else. Scoring asks for it again on
+ * every forecast that lands and every re-render that follows, which is why it is worth
+ * remembering. Keyed on the beach object itself, so nothing is assumed about ids and the
+ * entry disappears with the beach.
+ */
+const overrideByBeach = new WeakMap<object, WindProfile | undefined>();
+
+const resolveOverride = (
   beach: Pick<Beach, 'id' | 'name' | 'aliases' | 'location'>
 ): WindProfile | undefined => {
   const islands = beachIslandTokens(beach);
@@ -2277,8 +2303,17 @@ export const getWindProfileOverride = (
 
   const names = beachNameTokens(beach);
 
-  return overrideEntries.find(entry => (
-    entry.nameTokens.some(token => names.includes(normalizeToken(token))) &&
-    entry.islandTokens.some(token => islands.includes(normalizeToken(token)))
+  return normalizedOverrideEntries.find(entry => (
+    entry.nameTokens.some(token => names.includes(token)) &&
+    entry.islandTokens.some(token => islands.includes(token))
   ))?.profile;
+};
+
+export const getWindProfileOverride = (
+  beach: Pick<Beach, 'id' | 'name' | 'aliases' | 'location'>
+): WindProfile | undefined => {
+  if (overrideByBeach.has(beach)) return overrideByBeach.get(beach);
+  const resolved = resolveOverride(beach);
+  overrideByBeach.set(beach, resolved);
+  return resolved;
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Beach, LanguageCode, RecommendationConfidence, SimpleWindSuitability, SortOption, SwimmingComfort, Translation, WarningFlag, WindDirection } from '../types';
 import { BeachCard } from './BeachCard';
@@ -140,6 +140,70 @@ const noSwimmingMessage = (
   return messages[language];
 };
 
+/** Cards painted in the first React pass — roughly two phone screens. */
+const FIRST_WAVE = 12;
+
+/**
+ * A region page can hold 133 cards and BeachCard is a heavy component. Building the whole
+ * grid in one React pass measured 400-700ms of blocked main thread on a throttled phone,
+ * on top of the app's own ~1.6s boot: for those seconds a tap or a scroll does nothing and
+ * the page feels stuck. `content-visibility` on `.beach-grid-deferred > *` already skips
+ * PAINT for off-screen cards, but React still builds every one of them — that is the part
+ * that blocks.
+ *
+ * So the grid arrives in two waves: a screenful immediately, the rest as a low-priority
+ * update the browser is allowed to interrupt for a tap or a scroll. Nothing is hidden from
+ * search engines — a region page's crawlable copy is written by scripts/prerenderBeachPages
+ * and ships zero `.beach-card` in its HTML, so this grid is visitors-only.
+ *
+ * The wave is skipped when the visitor has already scrolled into the list: shrinking a list
+ * under someone's thumb would yank the page, and down there the render cost is already paid.
+ */
+const useWaveRender = (total: number): number => {
+  const [rendered, setRendered] = useState(() => Math.min(total, FIRST_WAVE));
+
+  useEffect(() => {
+    if (total <= FIRST_WAVE) {
+      setRendered(total);
+      return;
+    }
+
+    const scrolledIntoList = typeof window !== 'undefined' && window.scrollY > 400;
+    if (scrolledIntoList) {
+      setRendered(total);
+      return;
+    }
+
+    setRendered(Math.min(total, FIRST_WAVE));
+
+    let cancelled = false;
+    const release = () => {
+      if (cancelled) return;
+      // startTransition: React may abandon this render half-way to answer a tap.
+      startTransition(() => setRendered(total));
+    };
+
+    const w = window as unknown as {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (typeof w.requestIdleCallback === 'function') {
+      const handle = w.requestIdleCallback(release, { timeout: 500 });
+      return () => {
+        cancelled = true;
+        w.cancelIdleCallback?.(handle);
+      };
+    }
+    const timer = window.setTimeout(release, 120);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [total]);
+
+  return Math.min(rendered, total);
+};
+
 export const BeachList: React.FC<BeachListProps> = ({
   beaches,
   language,
@@ -166,6 +230,8 @@ export const BeachList: React.FC<BeachListProps> = ({
   protectedSortEmptyCopy,
   strongWindContext = false
 }) => {
+  const renderedCount = useWaveRender(beaches.length);
+
   if (beaches.length === 0) {
     if (severeWeatherNoSwimming) {
       const message = noSwimmingMessage(language, selectedDate, noSwimmingReason);
@@ -220,7 +286,7 @@ export const BeachList: React.FC<BeachListProps> = ({
 
   return (
     <div className="beach-grid-deferred grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
-      {beaches.map((b) => {
+      {beaches.slice(0, renderedCount).map((b) => {
         const isProtected = b.exposureLevel === 'protected' && b.canClaimWindProtection === true;
         const isExposed = b.exposureLevel ? b.exposureLevel !== 'protected' : true;
         
