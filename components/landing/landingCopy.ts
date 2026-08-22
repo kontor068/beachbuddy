@@ -304,11 +304,22 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Πώς το ελέγχουμε',
-          // «Διορθώνουμε κάθε βδομάδα» was cut, not lost: the story further down
-          // says the same thing concretely («μετακινούμε σημεία στον χάρτη,
-          // βγάζουμε ξαπλώστρες που δεν υπάρχουν πια»). Showing beats telling, and
-          // the page should not claim the same habit twice.
-          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε. Χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
+          // 22/08/2026 — REVERSES the earlier "showing beats telling" call that
+          // left the weekly re-check only in the story. It was true that the page
+          // must not claim the same habit twice, but the story is the SIXTH band
+          // on a phone and almost nobody reaches it, so in practice the habit was
+          // claimed zero times where it counts. It now lives here, in the trust
+          // band, and the sentence was REMOVED from story.paragraphs[2] — check
+          // that paragraph before restoring anything, in all five locales.
+          //
+          // Wording is deliberate: «ξαναπερνάει από έλεγχο», never «βελτιώνουμε».
+          // The same fact framed as improvement reads as "not finished yet"; framed
+          // as checking, it reads as maintenance. Do not write «κάθε μέρα» either —
+          // the real cadence is weekly and a second number on the page would
+          // contradict this one. And no date stamp: the static pages are not
+          // rebuilt daily, so a «last checked» line would freeze and say the
+          // opposite of what it is there to say.
+          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Κάθε βδομάδα ξαναπερνάει από έλεγχο ένα κομμάτι του χάρτη: μετακινούμε σημεία, βγάζουμε ξαπλώστρες και καντίνες που έκλεισαν. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε. Χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
         },
         {
           title: 'Το σχήμα της ακτής',
@@ -326,7 +337,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
         },
         {
-          title: 'Αυτό που φτιάχνουμε τώρα',
+          title: 'Αυτό που προσθέσαμε τελευταία',
           body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή.',
         },
       ],
@@ -424,7 +435,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και ουσιαστικά δεν έφυγε ποτέ. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του: άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
         'Το έχουμε πάθει κι εμείς: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία, και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα κάθε ακτής στην Ελλάδα: πού χτυπάει ο άνεμος, πού προστατεύει η στεριά.',
-        'Κάθε βδομάδα μετακινούμε σημεία στον χάρτη, βγάζουμε ξαπλώστρες και καντίνες που δεν υπάρχουν πια, προσθέτουμε παραλίες που λείπουν. Καμία παραλία δεν πληρώνει για να βγει ψηλότερα. Η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτα άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
+        'Καμία παραλία δεν πληρώνει για να βγει ψηλότερα. Η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτα άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
       ],
       pullQuote: 'Καμία φωτογραφία δεν σου λέει τι κάνει η θάλασσα σήμερα.',
       signatureName: 'Μίλτος',
@@ -480,7 +491,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'How we check it',
-          body: 'Official registries, satellite, and beaches we have walked ourselves. When we are not sure, we leave it out. A sunbed that is not there is worse than one we never mentioned.',
+          body: 'Official registries, satellite, and beaches we have walked ourselves. Every week another stretch of the map goes back through checks: we move pins, and drop sunbeds and canteens that have closed. When we are not sure, we leave it out. A sunbed that is not there is worse than one we never mentioned.',
         },
         {
           title: 'The shape of the coast',
@@ -491,7 +502,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
         },
         {
-          title: 'What we are building now',
+          title: 'What we added most recently',
           body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region.',
         },
       ],
@@ -534,7 +545,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'We are a small team with one thing in common: the sea. One of us was born on an island and never really left it. Another grew up moving from island to island, following a parent’s work — a different school, a different port, different beaches. Somewhere in there we learned the thing every local knows and no guidebook prints: which beach works when the wind is up, and which one does not.',
         'It has caught us out as visitors too: we drove an hour to a beach we had seen in a photo, and found it churning. So we map the shape of every shore — where the wind hits, where the land shelters — across the whole of Greece.',
-        'Every week we move pins on the map, delete sunbeds and canteens that are gone, add beaches that were missing. No beach pays to rank higher — the order comes from the wind and the shape of the coast, nothing else. That is where we need you: you know your beach better than any satellite.',
+        'No beach pays to rank higher — the order comes from the wind and the shape of the coast, nothing else. That is where we need you: you know your beach better than any satellite.',
       ],
       pullQuote: 'No photo tells you what the sea is doing today.',
       signatureName: 'Miltos',
@@ -590,7 +601,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Wie wir es prüfen',
-          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Im Zweifel lassen wir es weg. Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
+          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Jede Woche geht ein weiteres Stück der Karte erneut durch die Prüfung: Wir verschieben Punkte und löschen Liegen und Strandkioske, die geschlossen haben. Im Zweifel lassen wir es weg. Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
         },
         {
           title: 'Die Form der Küste',
@@ -601,7 +612,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
         },
         {
-          title: 'Woran wir gerade arbeiten',
+          title: 'Was zuletzt dazugekommen ist',
           body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon.',
         },
       ],
@@ -645,7 +656,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Wir sind ein kleines Team mit einer Gemeinsamkeit: dem Meer. Einer von uns ist auf einer Insel geboren und im Grunde nie weggegangen. Ein anderer ist von Insel zu Insel gezogen, wegen der Arbeit der Eltern — eine andere Schule, ein anderer Hafen, andere Strände. Irgendwo dabei haben wir gelernt, was jeder Einheimische weiß und in keinem Reiseführer steht: welcher Strand funktioniert, wenn es weht, und welcher nicht.',
         'Als Besucher hat es uns selbst erwischt: Wir fuhren eine Stunde zu einem Strand, den wir auf einem Foto gesehen hatten, und fanden ihn aufgewühlt vor. Deshalb kartieren wir die Form jeder Küste — wo der Wind auftrifft, wo das Land schützt — für ganz Griechenland.',
         // "Kantine" is a works/school canteen — the Greek καντίνα is a beach kiosk.
-        'Jede Woche verschieben wir Punkte auf der Karte, löschen Liegen und Strandkioske, die es nicht mehr gibt, und ergänzen fehlende Strände. Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
+        'Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
       ],
       pullQuote: 'Kein Foto sagt dir, was das Meer heute macht.',
       signatureName: 'Miltos',
@@ -699,7 +710,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Comment nous le vérifions',
-          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. En cas de doute, nous n’indiquons rien. Promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
+          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Chaque semaine, une nouvelle portion de la carte repasse au contrôle : nous déplaçons des points, nous retirons les transats et les buvettes qui ont fermé. En cas de doute, nous n’indiquons rien. Promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
         },
         {
           title: 'La forme de la côte',
@@ -710,7 +721,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
         },
         {
-          title: 'Ce que nous construisons en ce moment',
+          title: 'Ce que nous avons ajouté en dernier',
           body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région.',
         },
       ],
@@ -754,7 +765,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Nous sommes une petite équipe avec un point commun : la mer. L’un de nous est né sur une île et n’en est jamais vraiment parti. Un autre a grandi en changeant d’île, à cause du travail de ses parents — une autre école, un autre port, d’autres plages. C’est là que nous avons appris ce que sait chaque habitant et qu’aucun guide n’imprime : quelle plage marche quand il vente, et laquelle non.',
         'Cela nous est arrivé aussi, en tant que visiteurs : nous avons roulé une heure pour une plage vue en photo, et nous l’avons trouvée agitée. C’est pourquoi nous cartographions la forme de chaque côte — où le vent frappe, où la terre abrite — pour toute la Grèce.',
         // "cantine" is a school/works canteen in French — a beach καντίνα is a buvette.
-        'Chaque semaine, nous déplaçons des points sur la carte, nous retirons les transats et les buvettes qui n’existent plus, nous ajoutons les plages qui manquaient. Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
+        'Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
       ],
       pullQuote: 'Aucune photo ne vous dit ce que la mer fait aujourd’hui.',
       signatureName: 'Miltos',
@@ -810,7 +821,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       points: [
         {
           title: 'Come lo verifichiamo',
-          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Nel dubbio, non lo scriviamo. Promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
+          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Ogni settimana un altro pezzo della mappa torna sotto controllo: spostiamo punti, togliamo lettini e chioschi che hanno chiuso. Nel dubbio, non lo scriviamo. Promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
         },
         {
           title: 'La forma della costa',
@@ -821,7 +832,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
         },
         {
-          title: 'Quello che stiamo costruendo ora',
+          title: 'Quello che abbiamo aggiunto per ultimo',
           body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione.',
         },
       ],
@@ -864,7 +875,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'Siamo un piccolo team con una cosa in comune: il mare. Uno di noi è nato su un’isola e in fondo non è mai andato via. Un altro è cresciuto cambiando isola, per il lavoro dei genitori — un’altra scuola, un altro porto, altre spiagge. È lì che abbiamo imparato quello che sa ogni abitante e che nessuna guida scrive: quale spiaggia funziona quando tira vento, e quale no.',
         'È capitato anche a noi, come visitatori: abbiamo guidato un’ora per una spiaggia vista in foto, e l’abbiamo trovata mossa. Per questo mappiamo la forma di ogni costa — dove batte il vento, dove ripara la terra — per tutta la Grecia.',
-        'Ogni settimana spostiamo punti sulla mappa, togliamo lettini e chioschi che non ci sono più, aggiungiamo spiagge che mancavano. Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
+        'Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
       ],
       pullQuote: 'Nessuna foto ti dice cosa fa il mare oggi.',
       signatureName: 'Miltos',
