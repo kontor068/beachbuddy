@@ -1,5 +1,5 @@
 {
-  "measuredAt": "2026-08-22T16:28:40.770Z",
+  "measuredAt": "2026-08-22T17:39:10.391Z",
   "days": [
     {
       "windMs": 3,
@@ -30,27 +30,16 @@
     1.2
   ],
   "regions": 110,
-  "untrustedBeaches": 255,
+  "untrustedBeaches": 68,
   "byThreshold": {
     "0": {
-      "podiumSeatsChanged": 178,
+      "podiumSeatsChanged": 50,
       "podiumsEmptied": 6,
-      "podiumsShrunk": 10,
-      "untrustedLeadersRemoved": 44,
-      "regionDaysWithAnyChange": 81,
-      "regionDays": 330,
+      "podiumsShrunk": 0,
+      "untrustedLeadersRemoved": 12,
+      "regionDaysWithAnyChange": 29,
+      "regionDays": 150,
       "examples": [
-        {
-          "regionId": "attica-east-attica-mainland",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "seaM": 0.9,
-          "replacedBy": "Χάρακας"
-        },
         {
           "regionId": "attica-poros",
           "day": {
@@ -118,81 +107,81 @@
           "replacedBy": "Γρεγολίμανο"
         },
         {
-          "regionId": "ionian-islands-ithaca",
+          "regionId": "ionian-islands-meganisi",
           "day": {
             "windMs": 3,
             "waveM": 0.2
           },
-          "removed": "Λούτσα",
-          "beachId": 1227,
+          "removed": "Αθερινός",
+          "beachId": 1177,
           "seaM": 0.2,
-          "replacedBy": "Παραλία Μάρμακα"
+          "replacedBy": null
         },
         {
-          "regionId": "ionian-islands-ithaca",
+          "regionId": "ionian-islands-meganisi",
           "day": {
             "windMs": 5,
             "waveM": 0.4
           },
-          "removed": "Λούτσα",
-          "beachId": 1227,
+          "removed": "Αθερινός",
+          "beachId": 1177,
           "seaM": 0.4,
-          "replacedBy": "Παραλία Μάρμακα"
+          "replacedBy": null
         },
         {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.6,
-          "replacedBy": "Παραλία Σαρακήνικο"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.9,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
+          "regionId": "north-aegean-fournoi",
           "day": {
             "windMs": 3,
             "waveM": 0.2
           },
-          "removed": "Λυγιά",
-          "beachId": 1165,
+          "removed": "Καμπί",
+          "beachId": 1317,
           "seaM": 0.2,
-          "replacedBy": "Μικρός Γιαλός"
-        }
-      ]
-    },
-    "0.3": {
-      "podiumSeatsChanged": 128,
-      "podiumsEmptied": 4,
-      "podiumsShrunk": 9,
-      "untrustedLeadersRemoved": 31,
-      "regionDaysWithAnyChange": 59,
-      "regionDays": 330,
-      "examples": [
+          "replacedBy": null
+        },
         {
-          "regionId": "attica-east-attica-mainland",
+          "regionId": "north-aegean-fournoi",
+          "day": {
+            "windMs": 5,
+            "waveM": 0.4
+          },
+          "removed": "Καμπί",
+          "beachId": 1317,
+          "seaM": 0.4,
+          "replacedBy": null
+        },
+        {
+          "regionId": "north-aegean-fournoi",
+          "day": {
+            "windMs": 7,
+            "waveM": 0.6
+          },
+          "removed": "Καμπί",
+          "beachId": 1317,
+          "seaM": 0.6,
+          "replacedBy": null
+        },
+        {
+          "regionId": "north-aegean-fournoi",
           "day": {
             "windMs": 9,
             "waveM": 0.9
           },
-          "removed": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
+          "removed": "Καμπί",
+          "beachId": 1317,
           "seaM": 0.9,
-          "replacedBy": "Χάρακας"
-        },
+          "replacedBy": null
+        }
+      ]
+    },
+    "0.3": {
+      "podiumSeatsChanged": 32,
+      "podiumsEmptied": 4,
+      "podiumsShrunk": 0,
+      "untrustedLeadersRemoved": 7,
+      "regionDaysWithAnyChange": 20,
+      "regionDays": 150,
+      "examples": [
         {
           "regionId": "attica-poros",
           "day": {
@@ -227,72 +216,6 @@
           "replacedBy": "Γρεγολίμανο"
         },
         {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 5,
-            "waveM": 0.4
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.4,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.6,
-          "replacedBy": "Παραλία Σαρακήνικο"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.9,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 5,
-            "waveM": 0.4
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.4,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.6,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.9,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
           "regionId": "ionian-islands-meganisi",
           "day": {
             "windMs": 5,
@@ -313,73 +236,40 @@
           "beachId": 1317,
           "seaM": 0.4,
           "replacedBy": null
+        },
+        {
+          "regionId": "north-aegean-fournoi",
+          "day": {
+            "windMs": 7,
+            "waveM": 0.6
+          },
+          "removed": "Καμπί",
+          "beachId": 1317,
+          "seaM": 0.6,
+          "replacedBy": null
+        },
+        {
+          "regionId": "north-aegean-fournoi",
+          "day": {
+            "windMs": 9,
+            "waveM": 0.9
+          },
+          "removed": "Καμπί",
+          "beachId": 1317,
+          "seaM": 0.9,
+          "replacedBy": null
         }
       ]
     },
     "0.5": {
-      "podiumSeatsChanged": 79,
+      "podiumSeatsChanged": 13,
       "podiumsEmptied": 2,
-      "podiumsShrunk": 8,
-      "untrustedLeadersRemoved": 18,
-      "regionDaysWithAnyChange": 37,
-      "regionDays": 330,
+      "podiumsShrunk": 0,
+      "untrustedLeadersRemoved": 2,
+      "regionDaysWithAnyChange": 10,
+      "regionDays": 150,
       "examples": [
         {
-          "regionId": "attica-east-attica-mainland",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "seaM": 0.9,
-          "replacedBy": "Χάρακας"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.6,
-          "replacedBy": "Παραλία Σαρακήνικο"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.9,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.6,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.9,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
           "regionId": "north-aegean-fournoi",
           "day": {
             "windMs": 7,
@@ -400,128 +290,18 @@
           "beachId": 1317,
           "seaM": 0.9,
           "replacedBy": null
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.6,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.9,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-milos",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λαγκάδα",
-          "beachId": 1912,
-          "seaM": 0.9,
-          "replacedBy": "Φυριπλάκα"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Αγία Ειρήνη",
-          "beachId": 2020,
-          "seaM": 0.6,
-          "replacedBy": "Λιβάδια (Παροικιά)"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Μοναστήρι",
-          "beachId": 2039,
-          "seaM": 0.9,
-          "replacedBy": "Λιβάδια (Παροικιά)"
         }
       ]
     },
     "0.8": {
-      "podiumSeatsChanged": 79,
+      "podiumSeatsChanged": 13,
       "podiumsEmptied": 2,
-      "podiumsShrunk": 8,
-      "untrustedLeadersRemoved": 18,
-      "regionDaysWithAnyChange": 37,
-      "regionDays": 330,
+      "podiumsShrunk": 0,
+      "untrustedLeadersRemoved": 2,
+      "regionDaysWithAnyChange": 10,
+      "regionDays": 150,
       "examples": [
         {
-          "regionId": "attica-east-attica-mainland",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "seaM": 0.9,
-          "replacedBy": "Χάρακας"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.6,
-          "replacedBy": "Παραλία Σαρακήνικο"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.9,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.6,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.9,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
           "regionId": "north-aegean-fournoi",
           "day": {
             "windMs": 7,
@@ -542,128 +322,18 @@
           "beachId": 1317,
           "seaM": 0.9,
           "replacedBy": null
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.6,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.9,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-milos",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λαγκάδα",
-          "beachId": 1912,
-          "seaM": 0.9,
-          "replacedBy": "Φυριπλάκα"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Αγία Ειρήνη",
-          "beachId": 2020,
-          "seaM": 0.6,
-          "replacedBy": "Λιβάδια (Παροικιά)"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Μοναστήρι",
-          "beachId": 2039,
-          "seaM": 0.9,
-          "replacedBy": "Λιβάδια (Παροικιά)"
         }
       ]
     },
     "1.2": {
-      "podiumSeatsChanged": 79,
+      "podiumSeatsChanged": 13,
       "podiumsEmptied": 2,
-      "podiumsShrunk": 8,
-      "untrustedLeadersRemoved": 18,
-      "regionDaysWithAnyChange": 37,
-      "regionDays": 330,
+      "podiumsShrunk": 0,
+      "untrustedLeadersRemoved": 2,
+      "regionDaysWithAnyChange": 10,
+      "regionDays": 150,
       "examples": [
         {
-          "regionId": "attica-east-attica-mainland",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λομπάρδα / Mojito Bay",
-          "beachId": 50,
-          "seaM": 0.9,
-          "replacedBy": "Χάρακας"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.6,
-          "replacedBy": "Παραλία Σαρακήνικο"
-        },
-        {
-          "regionId": "ionian-islands-ithaca",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λούτσα",
-          "beachId": 1227,
-          "seaM": 0.9,
-          "replacedBy": "Παραλία Μάρμακα"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.6,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
-          "regionId": "ionian-islands-lefkada",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λυγιά",
-          "beachId": 1165,
-          "seaM": 0.9,
-          "replacedBy": "Μικρός Γιαλός"
-        },
-        {
           "regionId": "north-aegean-fournoi",
           "day": {
             "windMs": 7,
@@ -684,61 +354,6 @@
           "beachId": 1317,
           "seaM": 0.9,
           "replacedBy": null
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.6,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-leros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Δύο Λισκάρια",
-          "beachId": 2358,
-          "seaM": 0.9,
-          "replacedBy": "Γούρνα"
-        },
-        {
-          "regionId": "south-aegean-milos",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Λαγκάδα",
-          "beachId": 1912,
-          "seaM": 0.9,
-          "replacedBy": "Φυριπλάκα"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 7,
-            "waveM": 0.6
-          },
-          "removed": "Αγία Ειρήνη",
-          "beachId": 2020,
-          "seaM": 0.6,
-          "replacedBy": "Λιβάδια (Παροικιά)"
-        },
-        {
-          "regionId": "south-aegean-paros",
-          "day": {
-            "windMs": 9,
-            "waveM": 0.9
-          },
-          "removed": "Μοναστήρι",
-          "beachId": 2039,
-          "seaM": 0.9,
-          "replacedBy": "Λιβάδια (Παροικιά)"
         }
       ]
     }

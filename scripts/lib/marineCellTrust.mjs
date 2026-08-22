@@ -42,6 +42,35 @@ export const MIN_FETCH_RATIO = 0.8;
  */
 export const MAX_TRUSTED_DISTANCE_KM = 25;
 
+/**
+ * ΟΙ ΑΚΤΙΝΕΣ ΤΑΞΙΔΕΥΟΥΝ ΣΕ ΕΥΘΕΙΑ, Η ΘΑΛΑΣΣΑ ΟΧΙ (22/08/2026).
+ *
+ * Ο έλεγχος από πάνω ρωτάει «βλέπει η παραλία το κελί σε ευθεία γραμμή». Μετρήθηκε εθνικά ότι
+ * αυτό κόβει και κελιά που είναι **η ίδια θάλασσα, ένα βραχάκι παραδίπλα**: 157 από τις 246
+ * κομμένες έχουν δρόμο μέσα από νερό τόσο ίσιο όσο των ΕΜΠΙΣΤΩΝ παραλιών. Είναι το ίδιο μάθημα
+ * που η βίβλος έγραψε όταν έπεσε το πρώτο σχέδιο του γεωμετρικού ταβανιού — το κύμα μπαίνει από
+ * το στόμιο και απλώνεται σε γωνίες που καμία ευθεία δεν συνδέει με ανοιχτό νερό.
+ *
+ * ΤΟ ΟΡΙΟ ΒΓΑΙΝΕΙ ΑΠΟ ΓΕΩΜΕΤΡΙΑ, ΟΧΙ ΑΠΟ ΤΟ ΔΕΙΓΜΑ. Η πρώτη εκδοχή το βαθμονόμησε στις ΕΜΠΙΣΤΕΣ
+ * παραλίες (245/246 έχουν στράβωμα ≤ 1,30) — και αυτό ήταν **κυκλικό**: έμπιστες είναι ακριβώς
+ * όσες πέρασαν το τεστ ευθείας, άρα η διαδρομή τους είναι ίσια εξ ορισμού. Το σωστό μέτρο είναι
+ * το σχήμα της παράκαμψης: γύρω από ακρωτήρι κοστίζει περίπου **π/2 ≈ 1,57×** την ευθεία, γύρω
+ * από άκρη νησιού περίπου **π ≈ 3,14×**. Το 2,5 κάθεται ανάμεσά τους: επιτρέπει τα ακρωτήρια,
+ * κόβει τους γύρους ολόκληρου νησιού, όπου ο ίδιος άνεμος φτιάχνει άλλη θάλασσα.
+ *
+ * ΚΑΙ ΔΕΝ ΕΙΝΑΙ ΕΥΑΙΣΘΗΤΟ ΝΟΥΜΕΡΟ, ΜΕΤΡΗΜΕΝΟ: από 2,0 έως το άπειρο οι επιστροφές πάνε 180 → 192.
+ * Τη δουλειά την κάνουν οι άλλοι δύο μάρτυρες — 32 παραλίες δεν έχουν καθόλου δρόμο με νερό και
+ * 22 κάθονται πίσω από πραγματικό στένωμα.
+ *
+ * ⚠️ ΚΑΙ ΜΟΝΟ ΤΟΥ ΔΕΝ ΦΤΑΝΕΙ — ΟΝΟΜΑΣΤΙΚΑ. Το **Σχίσμα Ελούντας**, που τύπωνε 0,94 μ. πάνω από
+ * λάδι, έχει το κελί του στον ΙΔΙΟ κόλπο και άρα τέλεια «προσβάσιμο με νερό». Γι' αυτό απαιτείται
+ * ΚΑΙ ο δεύτερος μάρτυρας, το στένωμα (`scripts/lib/enclosureWitness.mjs`): όταν η παραλία
+ * κάθεται ≥ MIN_DEPTH_RATIO πλάτη στομίου πίσω από πραγματικό στένωμα, το κελί έξω από αυτό δεν
+ * περιγράφει το νερό της όσο ίσιος κι αν είναι ο δρόμος. Μετρημένο: Σχίσμα 3,54 → μένει έξω·
+ * Κολυμπήθρες 0,76 και ΑΣΤΕΝΩΤΗ → επιστρέφει, όπως λέει ρητά η βίβλος για τη Νάουσα.
+ */
+export const MAX_TRUSTED_DETOUR = 2.5;
+
 const EARTH_RADIUS_KM = 6371;
 const toRad = d => (d * Math.PI) / 180;
 const toDeg = r => (r * 180) / Math.PI;
@@ -138,7 +167,7 @@ export const isPointResolved = (cache, point) =>
  *
  * `profile` needs `coordinates` and `sectors`; `requestPoint` is what the runtime would send.
  */
-export const judge = (cache, profile, requestPoint, forceModelId) => {
+export const judge = (cache, profile, requestPoint, forceModelId, waterWitness) => {
   if (!requestPoint) return { verdict: 'no-point' };
   // Χωρίς `forceModelId` κρίνεται ό,τι θα έπαιρνε ΣΗΜΕΡΑ ο επισκέπτης. Με αυτό, κρίνεται ένα
   // συγκεκριμένο μοντέλο — για την αναζήτηση «υπάρχει συνδυασμός σημείου × μοντέλου που δουλεύει;».
@@ -158,8 +187,36 @@ export const judge = (cache, profile, requestPoint, forceModelId) => {
 
   const base = { modelId: served.modelId, distanceKm: d, bearingDeg: brg, fetchKm };
   if (d > MAX_TRUSTED_DISTANCE_KM) return { verdict: 'too-far', ...base };
-  if (fetchKm < MIN_FETCH_RATIO * d) return { verdict: 'other-water', ...base };
-  return { verdict: 'trusted', ...base };
+  if (fetchKm >= MIN_FETCH_RATIO * d) return { verdict: 'trusted', ...base };
+
+  /**
+   * Η ΕΥΘΕΙΑ ΑΠΕΤΥΧΕ — ΡΩΤΑΜΕ ΤΟ ΝΕΡΟ. `waterWitness` δίνεται ΜΟΝΟ από τον εθνικό έλεγχο, που
+   * έχει το ράστερ ακτογραμμής· χωρίς αυτόν η συνάρτηση συμπεριφέρεται ακριβώς όπως πριν.
+   *
+   * Ο βελτιστοποιητής σημείων ΔΕΝ τον δίνει, και σωστά: όταν ΔΙΑΛΕΓΕΙΣ σημείο, θέλεις ένα που
+   * περνάει τον αυστηρό έλεγχο. Η χαλάρωση αφορά μόνο την κρίση ενός σημείου που ήδη υπάρχει.
+   */
+  const witness = waterWitness ? waterWitness(profile, served) : null;
+  if (
+    witness
+    && typeof witness.detour === 'number' && witness.detour <= MAX_TRUSTED_DETOUR
+    && !(witness.constricted === true && typeof witness.depthRatio === 'number' && witness.depthRatio >= witness.minDepthRatio)
+  ) {
+    return {
+      verdict: 'trusted', ...base,
+      strictVerdict: 'other-water',
+      restoredBy: 'water-route',
+      detour: witness.detour,
+      waterPathKm: witness.waterPathKm,
+      mouthM: witness.mouthM,
+      depthRatio: witness.depthRatio,
+      constricted: witness.constricted,
+    };
+  }
+  return { verdict: 'other-water', ...base, ...(witness ? {
+    detour: witness.detour, waterPathKm: witness.waterPathKm,
+    mouthM: witness.mouthM, depthRatio: witness.depthRatio, constricted: witness.constricted,
+  } : {}) };
 };
 
 const MAX_RETRIES = 4;

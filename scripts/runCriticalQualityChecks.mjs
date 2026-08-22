@@ -564,11 +564,20 @@ const checks = [
   {
     id: 'untrusted-marine-cell',
     title: 'Το λάθος νερό δεν προτείνεται όταν το κύμα αποφασίζει',
-    description: 'Drives the REAL scoring and the REAL podium trust gate over every region holding a beach our own audit flagged as reading a neighbouring bay wave cell (255 of them). Four assertions: the flag actually reaches the scored item — from BOTH item builders, one of which has forgotten a field before; on a CALM day the rule is completely inert, because every cell reads flat and excluding there would only cost good beaches; on a rough day the flagged beaches leave the podium and every one of those exclusions carries a name (sea_cell) rather than vanishing silently; and the sea floor stays above zero, because "always out" was measured (6 emptied podiums instead of 2) and deliberately not chosen. Self-proves with --prove: with the flag stripped from the same profiles, the same beaches on the same day must pass again — otherwise something other than the flag is doing the removing.',
+    description: 'Drives the REAL scoring and the REAL podium trust gate over every region holding a beach our own audit flagged as reading a neighbouring bay wave cell (68 of them, down from 255 once the test itself was corrected — see the water-route gate). Four assertions: the flag actually reaches the scored item — from BOTH item builders, one of which has forgotten a field before; on a CALM day the rule is completely inert, because every cell reads flat and excluding there would only cost good beaches; on a rough day the flagged beaches leave the podium and every one of those exclusions carries a name (sea_cell) rather than vanishing silently; and the sea floor stays above zero, because "always out" was measured (6 emptied podiums instead of 2) and deliberately not chosen. Self-proves with --prove: with the flag stripped from the same profiles, the same beaches on the same day must pass again — otherwise something other than the flag is doing the removing.',
     protects: 'Prevents the beaches we KNOW are reading the wrong water from being recommended on the days that water decides — and prevents the opposite, a rule quietly hardening into an unconditional ban that empties podiums on calm days.',
     failureAction: 'Read the failing assertion. If the flag stopped arriving, check both SuitableBeach builders in recommendationService copy marineCellUntrusted.',
     command: process.execPath,
     args: ['scripts/validateUntrustedCellGate.mjs', '--prove'],
+  },
+  {
+    id: 'water-route-restoration',
+    title: 'Η εμπιστοσύνη που επέστρεψε στέκει στα ίδια της τα στοιχεία',
+    description: 'The straight-line trust test ("the ray towards the cell hit land") cut 255 beaches; measured nationally, most of them have their cell in the SAME sea, one headland away — rays travel in straight lines, water does not. The relaxation gives 193 of them back, which moves in the DANGEROUS direction (more beaches become recommendable), so this gate re-derives every single restoration from the numbers recorded beside it: the water detour must be within the geometric limit, and the beach must NOT sit two gap-widths behind a real constriction. It also refuses silent relaxations (trusted + other-water with no reason recorded), requires the constriction witness to still be keeping beaches out rather than being decorative, and pins the named adversary: Σχίσμα Ελούντας — the beach that printed 0,94 m over glass water from a cell in the same gulf — must never become trusted again. Self-proves with --prove: a restoration doctored to sit behind a constriction, one with an over-long detour, and one with no water route must each be refused, while the untouched row must still pass.',
+    protects: 'Prevents a safety relaxation from quietly widening past what it was measured for, and keeps the one beach that proves the second witness necessary permanently outside it.',
+    failureAction: 'Re-run node scripts/auditMarineCellTrust.mjs (no network needed, the cell cache covers it). If a restoration still fails, fix the rule in scripts/lib/marineCellTrust.mjs — never hand-edit the ledger.',
+    command: process.execPath,
+    args: ['scripts/validateWaterRouteRestoration.mjs', '--prove'],
   },
   {
     id: 'content-audit',

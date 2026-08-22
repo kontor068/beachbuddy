@@ -58,6 +58,12 @@ import {
   MODELS, MIN_FETCH_RATIO, MAX_TRUSTED_DISTANCE_KM,
   judge, resolvePoints, isPointResolved,
 } from './lib/marineCellTrust.mjs';
+/**
+ * Ο ΔΕΥΤΕΡΟΣ ΜΑΡΤΥΡΑΣ (22/08/2026): όταν η ευθεία γραμμή λέει «πίσω από στεριά», ρωτάμε το ΝΕΡΟ.
+ * Ίδιο ράστερ ακτογραμμής με το auditEnclosedWater — μία υλοποίηση, ένα ακρογιάλι.
+ */
+import { loadMask, makeIsLand } from './lib/coastlineMask.mjs';
+import { measureMouthWidthM, waterPathKm, MIN_DEPTH_RATIO } from './lib/enclosureWitness.mjs';
 
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -152,6 +158,41 @@ writeFileSync(CACHE_PATH, JSON.stringify(cache), 'utf8');
 // ── Judge every beach ────────────────────────────────────────────────────────
 const tally = key => ({ trusted: 0, 'other-water': 0, 'too-far': 0, unknown: 0, 'no-point': 0, _key: key });
 const pinStats = tally('pin (before sample points)');
+/**
+ * ΤΕΜΠΕΛΗΣ ΕΠΙΤΗΔΕΣ. Η μάσκα είναι 35 MB και η διαδρομή νερού κοστίζει ~2-3 δευτ. ανά παραλία·
+ * και τα δύο πληρώνονται ΜΟΝΟ για όσες κόβει η ευθεία γραμμή (~250 από 2.873), και το στένωμα
+ * κρατιέται σε μνήμη γιατί εξαρτάται μόνο από την παραλία, όχι από το κελί.
+ */
+let isLandFn = null;
+const mouthCache = new Map();
+const waterWitness = (profile, served) => {
+  if (!isLandFn) {
+    console.error('  Φόρτωση ακτογραμμής για τον δεύτερο μάρτυρα (νερό γύρω από ακρωτήρια)…');
+    isLandFn = makeIsLand(loadMask());
+  }
+  const { lat, lon } = profile.coordinates;
+  const route = waterPathKm(isLandFn, lat, lon, served.lat, served.lon);
+  const detour = route.path != null && route.straight > 0
+    ? Number((route.path / route.straight).toFixed(2))
+    : null;
+  if (detour === null) {
+    return { detour: null, waterPathKm: null, waterWhy: route.why, minDepthRatio: MIN_DEPTH_RATIO };
+  }
+  let mouth = mouthCache.get(profile.beachId);
+  if (!mouth) {
+    mouth = measureMouthWidthM(isLandFn, lat, lon);
+    mouthCache.set(profile.beachId, mouth);
+  }
+  return {
+    detour,
+    waterPathKm: route.path,
+    mouthM: mouth.mouthM,
+    depthRatio: mouth.depthRatio,
+    constricted: mouth.constricted,
+    minDepthRatio: MIN_DEPTH_RATIO,
+  };
+};
+
 const prodStats = tally('production');
 const sampleOnly = tally('  of which own sample point');
 const regionOnly = tally('  of which region fallback');
@@ -160,8 +201,10 @@ const perBeach = [];
 const worst = [];
 
 for (const { region, profile, requestPoint, viaSample } of beaches) {
+  // Η γραμμή «pin» είναι ιστορική σύγκριση (πριν από τα σημεία δειγματοληψίας) και μένει ΑΥΣΤΗΡΗ
+  // επίτηδες: αλλιώς δεν θα ξεχώριζε πια τι κέρδισαν τα σημεία.
   const pin = judge(cache, profile, profile.coordinates);
-  const prod = judge(cache, profile, requestPoint);
+  const prod = judge(cache, profile, requestPoint, undefined, waterWitness);
   pinStats[pin.verdict] += 1;
   prodStats[prod.verdict] += 1;
   (viaSample ? sampleOnly : regionOnly)[prod.verdict] += 1;
@@ -264,6 +307,17 @@ writeFileSync(PER_BEACH_PATH, `${JSON.stringify(perBeach.map(b => ({
   distanceKm: typeof b.distanceKm === 'number' ? Number(b.distanceKm.toFixed(2)) : null,
   bearingDeg: typeof b.bearingDeg === 'number' ? Number(b.bearingDeg.toFixed(0)) : null,
   fetchKm: typeof b.fetchKm === 'number' ? Number(b.fetchKm.toFixed(2)) : null,
+  // ΤΟ ΓΙΑΤΙ ΤΑΞΙΔΕΥΕΙ ΜΑΖΙ ΜΕ ΤΗΝ ΕΤΥΜΗΓΟΡΙΑ (22/08/2026). Χωρίς αυτά, μια παραλία που πήρε
+  // πίσω την εμπιστοσύνη της επειδή το νερό γυρίζει ένα ακρωτήρι θα ήταν αδιάκριτη από μια που
+  // πέρασε τον αυστηρό έλεγχο — και καμία πύλη δεν θα μπορούσε να ελέγξει τον κανόνα.
+  // Γράφονται ΜΟΝΟ όπου υπάρχουν, ώστε οι γραμμές των έμπιστων να μείνουν όπως ήταν.
+  ...(b.restoredBy ? { restoredBy: b.restoredBy, strictVerdict: b.strictVerdict } : {}),
+  ...(typeof b.detour === 'number' ? { detour: b.detour } : {}),
+  ...(typeof b.waterPathKm === 'number' ? { waterPathKm: b.waterPathKm } : {}),
+  ...(typeof b.mouthM === 'number' ? { mouthM: b.mouthM } : {}),
+  ...(typeof b.depthRatio === 'number' ? { depthRatio: b.depthRatio } : {}),
+  ...(typeof b.constricted === 'boolean' ? { constricted: b.constricted } : {}),
+  ...(b.waterWhy ? { waterWhy: b.waterWhy } : {}),
 })), null, 1)}\n`, 'utf8');
 console.log(`  per-beach: ${path.relative(root, PER_BEACH_PATH)}`);
 
@@ -286,6 +340,9 @@ if (apply) {
     if (dirty) { writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8'); changed += 1; }
   }
   console.log(`  baked marineCellTrusted:false into ${changed} region files (trusted beaches carry no flag).`);
-  console.log(`  NOTE: no runtime code reads marineCellTrusted yet. Baking it changes nothing a`);
-  console.log(`  visitor sees until something consumes it.`);
+  // Ήταν «no runtime code reads this yet» για έναν ολόκληρο μήνα. Από 22/08/2026 ΔΕΝ ισχύει:
+  // το `isTrustedTopRecommendationCandidate` το διαβάζει και βγάζει τη παραλία από το βάθρο τις
+  // μέρες που το κύμα αποφασίζει. Άρα το ψήσιμο ΑΛΛΑΖΕΙ πλέον προτάσεις.
+  console.log(`  ΠΡΟΣΟΧΗ: η σήμανση ΔΙΑΒΑΖΕΤΑΙ πια από τη μηχανή προτάσεων — αυτό το ψήσιμο αλλάζει`);
+  console.log(`  ποιες παραλίες μπαίνουν στο βάθρο τις μέρες που το κύμα αποφασίζει.`);
 }

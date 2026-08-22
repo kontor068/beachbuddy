@@ -61,6 +61,7 @@ import { fileURLToPath } from 'node:url';
 // scripts/auditCoveOriginBlindSpot.mjs reads the SAME coast. Two audits with two copies of the
 // mask would eventually disagree about where the land is, and neither would say so.
 import { rad, KM_PER_DEG_LAT, kmPerDegLon, loadMask, makeIsLand } from './lib/coastlineMask.mjs';
+import { measureMouthWidthM as sharedMeasureMouthWidthM } from './lib/enclosureWitness.mjs';
 // Witness 2 asks Open-Meteo where the nearest marine cell is. Routes through the paid plan when
 // OPEN_METEO_API_KEY is in the environment, and changes nothing when it is not — the free daily
 // allowance is small enough that a day of national measuring exhausts it and stops this audit
@@ -102,113 +103,14 @@ const SEED_SEARCH_KM = numArg('--seed-km', 1.2);
 const BOX_HALF_KM = numArg('--box', 15);
 const CELL_KM = numArg('--cell', 0.15);
 
-const measureMouthWidthM = (isLand, lat0, lon0) => {
-  const n = Math.ceil((2 * BOX_HALF_KM) / CELL_KM);
-  const dLat = CELL_KM / KM_PER_DEG_LAT;
-  const dLon = CELL_KM / kmPerDegLon(lat0);
-  const latAt = r => lat0 - BOX_HALF_KM / KM_PER_DEG_LAT + r * dLat;
-  const lonAt = c => lon0 - BOX_HALF_KM / kmPerDegLon(lat0) + c * dLon;
-
-  const sea = new Uint8Array(n * n);
-  for (let r = 0; r < n; r++) {
-    const la = latAt(r);
-    for (let c = 0; c < n; c++) sea[r * n + c] = isLand(lonAt(c), la) ? 0 : 1;
-  }
-
-  // Clearance from land, 8-connected with a 1 / √2 metric.
-  const INF = 1e9;
-  const clear = new Float32Array(n * n).fill(INF);
-  let frontier = [];
-  for (let i = 0; i < n * n; i++) if (!sea[i]) { clear[i] = 0; frontier.push(i); }
-  const NB = [[-1, 0, 1], [1, 0, 1], [0, -1, 1], [0, 1, 1], [-1, -1, 1.4142], [-1, 1, 1.4142], [1, -1, 1.4142], [1, 1, 1.4142]];
-  while (frontier.length) {
-    const next = [];
-    for (const idx of frontier) {
-      const r = (idx / n) | 0, c = idx % n;
-      for (const [dr, dc, w] of NB) {
-        const rr = r + dr, cc = c + dc;
-        if (rr < 0 || rr >= n || cc < 0 || cc >= n) continue;
-        const j = rr * n + cc;
-        const nd = clear[idx] + w;
-        if (nd < clear[j] - 1e-6) { clear[j] = nd; next.push(j); }
-      }
-    }
-    frontier = next;
-  }
-
-  // Seed: the middle of the water this beach faces.
-  const mid = n >> 1;
-  const span = Math.ceil(SEED_SEARCH_KM / CELL_KM);
-  let seed = -1, seedClear = -1;
-  for (let r = Math.max(0, mid - span); r <= Math.min(n - 1, mid + span); r++) {
-    for (let c = Math.max(0, mid - span); c <= Math.min(n - 1, mid + span); c++) {
-      const i = r * n + c;
-      if (!sea[i]) continue;
-      if (Math.hypot(r - mid, c - mid) > span) continue;
-      if (clear[i] > seedClear) { seedClear = clear[i]; seed = i; }
-    }
-  }
-  if (seed < 0) return { mouthM: null, reason: 'pin-not-in-sea' };
-
-  // Where each cell's bottleneck was imposed, so we can measure how deep inside the bay the beach
-  // sits relative to the gap it is fed through (see BAY_DEPTH_RATIO in the header).
-  const via = new Int32Array(n * n).fill(-1);
-  const best = new Float32Array(n * n);
-  best[seed] = clear[seed];
-  via[seed] = seed;
-  const heap = [[clear[seed], seed]];
-  const pop = () => {
-    let bi = 0;
-    for (let i = 1; i < heap.length; i++) if (heap[i][0] > heap[bi][0]) bi = i;
-    const v = heap[bi];
-    heap[bi] = heap[heap.length - 1];
-    heap.pop();
-    return v;
-  };
-  while (heap.length) {
-    const [bn, idx] = pop();
-    if (bn < best[idx] - 1e-6) continue;
-    const r = (idx / n) | 0, c = idx % n;
-    if (r === 0 || c === 0 || r === n - 1 || c === n - 1) {
-      // Straight-line distance from the beach to the narrowest point on its route out — how far
-      // inside the bay the beach sits relative to the gap that feeds it.
-      const g = via[idx];
-      const gr = (g / n) | 0, gc = g % n;
-      const depthKm = Math.hypot(gr - mid, gc - mid) * CELL_KM;
-      const mouthM = Math.round(2 * bn * CELL_KM * 1000);
-      return {
-        mouthM,
-        reason: 'ok',
-        bayDepthKm: Number(depthKm.toFixed(2)),
-        depthRatio: mouthM > 0 ? Number((depthKm * 1000 / mouthM).toFixed(2)) : null,
-        /**
-         * IS THERE A CONSTRICTION AT ALL? The single cleanest reading this raster gives.
-         *
-         * When the narrowest point of the route out is the seed itself, nothing downstream ever
-         * pinched: the water only widens from the beach to the open sea. That is an open coast, and
-         * the "mouth width" reported for it is not a mouth — it is just the seed's own clearance,
-         * i.e. an artefact of how far from land we were allowed to start. A real bay pinches
-         * somewhere beyond the seed, and that cell is its mouth.
-         */
-        constricted: via[idx] !== seed,
-      };
-    }
-    for (const [dr, dc] of NB) {
-      const rr = r + dr, cc = c + dc;
-      if (rr < 0 || rr >= n || cc < 0 || cc >= n) continue;
-      const j = rr * n + cc;
-      if (!sea[j]) continue;
-      const cand = Math.min(bn, clear[j]);
-      if (cand > best[j] + 1e-6) {
-        best[j] = cand;
-        // Carry the constriction forward, or record this cell as the new one when it is the tighter.
-        via[j] = clear[j] < bn ? j : via[idx];
-        heap.push([cand, j]);
-      }
-    }
-  }
-  return { mouthM: 0, reason: 'landlocked' };
-};
+// Η μέτρηση ζει πλέον στο scripts/lib/enclosureWitness.mjs (22/08/2026) — ΧΩΡΙΣ αλλαγή
+// συμπεριφοράς — ώστε ο έλεγχος εμπιστοσύνης θαλάσσιου κελιού να ρωτάει το ΙΔΙΟ ράστερ και τον
+// ίδιο κανόνα. Δύο αντίγραφα θα διαφωνούσαν κάποτε για το πού είναι η στεριά, σιωπηλά.
+const measureMouthWidthM = (isLand, lat0, lon0) => sharedMeasureMouthWidthM(isLand, lat0, lon0, {
+  seedSearchKm: SEED_SEARCH_KM,
+  boxHalfKm: BOX_HALF_KM,
+  cellKm: CELL_KM,
+});
 
 
 // ── Admission threshold ───────────────────────────────────────────────────────────────────────

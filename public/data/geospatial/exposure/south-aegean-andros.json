@@ -939,7 +939,6 @@
         "bearingDeg": 90,
         "distanceKm": 2.86
       },
-      "marineCellTrusted": false,
       "windShadow": "111111100000000011111111"
     },
     "1697": {
@@ -1174,7 +1173,6 @@
         "bearingDeg": 91.9,
         "distanceKm": 5.12
       },
-      "marineCellTrusted": false,
       "windShadow": "111110000111111111111111"
     },
     "1700": {
@@ -1403,7 +1401,8 @@
         }
       },
       "confidence": "high",
-      "windShadow": "111100000111111100001111"
+      "windShadow": "111100000111111100001111",
+      "marineCellTrusted": false
     },
     "1703": {
       "beachId": 1703,

@@ -15,24 +15,24 @@
     "_key": "pin (before sample points)"
   },
   "production": {
-    "trusted": 2618,
-    "other-water": 238,
+    "trusted": 2805,
+    "other-water": 51,
     "too-far": 8,
     "unknown": 9,
     "no-point": 0,
     "_key": "production"
   },
   "ownSamplePoint": {
-    "trusted": 2618,
-    "other-water": 162,
+    "trusted": 2752,
+    "other-water": 25,
     "too-far": 0,
     "unknown": 2,
     "no-point": 0,
     "_key": "  of which own sample point"
   },
   "regionFallback": {
-    "trusted": 0,
-    "other-water": 76,
+    "trusted": 53,
+    "other-water": 26,
     "too-far": 8,
     "unknown": 7,
     "no-point": 0,
@@ -43,7 +43,7 @@
     "meteofrance_wave": 45,
     "none": 9
   },
-  "productionTrusted": 2618,
+  "productionTrusted": 2805,
   "worst": [
     {
       "beachId": 258,
@@ -132,28 +132,6 @@
       "distanceKm": 26.1,
       "bearingDeg": 158,
       "fetchKm": 0
-    },
-    {
-      "beachId": 3037,
-      "region": "north-aegean-samos",
-      "name": "Σάμος Βαθύ Μαούνες",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 23.2,
-      "bearingDeg": 282,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 1397,
-      "region": "north-aegean-samos",
-      "name": "Γάγγου",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 23.6,
-      "bearingDeg": 280,
-      "fetchKm": 0.82
     },
     {
       "beachId": 1467,
@@ -266,69 +244,14 @@
       "fetchKm": 0.89
     },
     {
-      "beachId": 1237,
-      "region": "ionian-islands-ithaca",
-      "name": "Αμμούδι",
+      "beachId": 1702,
+      "region": "south-aegean-andros",
+      "name": "Κολώνα",
       "via": "region",
       "model": "ewam",
       "verdict": "other-water",
-      "distanceKm": 15.8,
-      "bearingDeg": 110,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 2114,
-      "region": "south-aegean-sifnos",
-      "name": "Χερρόνησος",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15.5,
-      "bearingDeg": 164,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 146,
-      "region": "attica-kythira",
-      "name": "Καψάλι Πίσω Γιαλός",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15.2,
-      "bearingDeg": 322,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 1480,
-      "region": "peloponnese-argolida-mainland",
-      "name": "Μπούκα",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 17,
-      "bearingDeg": 320,
-      "fetchKm": 1.97
-    },
-    {
-      "beachId": 1254,
-      "region": "north-aegean-chios",
-      "name": "Αγία Δύναμη",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15.3,
-      "bearingDeg": 356,
-      "fetchKm": 0.43
-    },
-    {
-      "beachId": 2031,
-      "region": "south-aegean-paros",
-      "name": "Κριός",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15,
-      "bearingDeg": 110,
+      "distanceKm": 14.9,
+      "bearingDeg": 45,
       "fetchKm": 0.24
     },
     {
@@ -341,50 +264,6 @@
       "distanceKm": 14.6,
       "bearingDeg": 108,
       "fetchKm": 0.03
-    },
-    {
-      "beachId": 2037,
-      "region": "south-aegean-paros",
-      "name": "Μαρτσέλο",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15.1,
-      "bearingDeg": 110,
-      "fetchKm": 0.59
-    },
-    {
-      "beachId": 1266,
-      "region": "north-aegean-chios",
-      "name": "Παραλία Αυλωνία",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 14,
-      "bearingDeg": 2,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 723,
-      "region": "crete-crete-lasithi",
-      "name": "Αμμούδι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 17,
-      "bearingDeg": 89,
-      "fetchKm": 3.15
-    },
-    {
-      "beachId": 2581,
-      "region": "thessaly-alonissos",
-      "name": "Γέρακας",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 13.7,
-      "bearingDeg": 196,
-      "fetchKm": 0
     },
     {
       "beachId": 1450,
@@ -420,105 +299,6 @@
       "fetchKm": 0
     },
     {
-      "beachId": 1242,
-      "region": "ionian-islands-ithaca",
-      "name": "Λιμένια",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 13.7,
-      "bearingDeg": 122,
-      "fetchKm": 1.37
-    },
-    {
-      "beachId": 3171,
-      "region": "south-aegean-symi",
-      "name": "Παραλία Πανορμίτη",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11.9,
-      "bearingDeg": 342,
-      "fetchKm": 0.02
-    },
-    {
-      "beachId": 2092,
-      "region": "south-aegean-serifos",
-      "name": "Σκάλα",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11.8,
-      "bearingDeg": 170,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 2039,
-      "region": "south-aegean-paros",
-      "name": "Μοναστήρι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 12.6,
-      "bearingDeg": 148,
-      "fetchKm": 1.73
-    },
-    {
-      "beachId": 1470,
-      "region": "north-aegean-lemnos",
-      "name": "Χαβούλι",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 14.6,
-      "bearingDeg": 252,
-      "fetchKm": 4
-    },
-    {
-      "beachId": 2030,
-      "region": "south-aegean-paros",
-      "name": "Κολυμπήθρες",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11.6,
-      "bearingDeg": 140,
-      "fetchKm": 1.15
-    },
-    {
-      "beachId": 1437,
-      "region": "north-aegean-lemnos",
-      "name": "Κόκκινα (βόρειος όρμος)",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 15.4,
-      "bearingDeg": 301,
-      "fetchKm": 5.11
-    },
-    {
-      "beachId": 2447,
-      "region": "south-aegean-rhodes",
-      "name": "Kavos Beach",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 10.1,
-      "bearingDeg": 24,
-      "fetchKm": 0.06
-    },
-    {
-      "beachId": 2032,
-      "region": "south-aegean-paros",
-      "name": "Λάγγερη",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 9.9,
-      "bearingDeg": 165,
-      "fetchKm": 0.08
-    },
-    {
       "beachId": 486,
       "region": "central-macedonia-halkidiki-mainland",
       "name": "Παραλία Γαλήνη",
@@ -528,28 +308,6 @@
       "distanceKm": 9.8,
       "bearingDeg": 210,
       "fetchKm": 0.17
-    },
-    {
-      "beachId": 1329,
-      "region": "north-aegean-lesvos",
-      "name": "Βαθύ Κριτήρι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11,
-      "bearingDeg": 62,
-      "fetchKm": 1.63
-    },
-    {
-      "beachId": 1225,
-      "region": "ionian-islands-ithaca",
-      "name": "Παραλία Δεξά",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 9.1,
-      "bearingDeg": 69,
-      "fetchKm": 0
     },
     {
       "beachId": 3135,
@@ -563,17 +321,6 @@
       "fetchKm": 1.15
     },
     {
-      "beachId": 929,
-      "region": "ionian-islands-corfu",
-      "name": "Agni Beach",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 11.3,
-      "bearingDeg": 148,
-      "fetchKm": 2.46
-    },
-    {
       "beachId": 1496,
       "region": "peloponnese-argolida-mainland",
       "name": "Βιβάρι",
@@ -583,17 +330,6 @@
       "distanceKm": 12,
       "bearingDeg": 144,
       "fetchKm": 3.19
-    },
-    {
-      "beachId": 1869,
-      "region": "south-aegean-kythnos",
-      "name": "Βασιλικό",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.8,
-      "bearingDeg": 313,
-      "fetchKm": 0.02
     },
     {
       "beachId": 1108,
@@ -607,28 +343,6 @@
       "fetchKm": 1.28
     },
     {
-      "beachId": 1235,
-      "region": "ionian-islands-ithaca",
-      "name": "Μικρή Πόλη",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 12.4,
-      "bearingDeg": 250,
-      "fetchKm": 3.92
-    },
-    {
-      "beachId": 1227,
-      "region": "ionian-islands-ithaca",
-      "name": "Λούτσα",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.4,
-      "bearingDeg": 70,
-      "fetchKm": 0
-    },
-    {
       "beachId": 1103,
       "region": "ionian-islands-kefalonia",
       "name": "Λίθος",
@@ -640,17 +354,6 @@
       "fetchKm": 0
     },
     {
-      "beachId": 1663,
-      "region": "south-aegean-amorgos",
-      "name": "Μαλτέζι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.2,
-      "bearingDeg": 30,
-      "fetchKm": 0
-    },
-    {
       "beachId": 560,
       "region": "crete-crete-chania",
       "name": "Παραλία Μελτεμάκι",
@@ -659,17 +362,6 @@
       "verdict": "other-water",
       "distanceKm": 8.1,
       "bearingDeg": 317,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 2130,
-      "region": "south-aegean-syros",
-      "name": "Αρμεός",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.1,
-      "bearingDeg": 164,
       "fetchKm": 0
     },
     {
@@ -706,28 +398,6 @@
       "fetchKm": 3.9
     },
     {
-      "beachId": 2612,
-      "region": "thessaly-alonissos",
-      "name": "Τζώρτζη",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.8,
-      "bearingDeg": 179,
-      "fetchKm": 0.23
-    },
-    {
-      "beachId": 1228,
-      "region": "ionian-islands-ithaca",
-      "name": "Παραλία Μνήματα",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.5,
-      "bearingDeg": 73,
-      "fetchKm": 0.04
-    },
-    {
       "beachId": 1375,
       "region": "north-aegean-lesvos",
       "name": "Χαλατσές",
@@ -737,116 +407,6 @@
       "distanceKm": 10.5,
       "bearingDeg": 59,
       "fetchKm": 3.18
-    },
-    {
-      "beachId": 182,
-      "region": "attica-piraeus-area",
-      "name": "Παραλία Περάματος",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.2,
-      "bearingDeg": 152,
-      "fetchKm": 0.89
-    },
-    {
-      "beachId": 1557,
-      "region": "peloponnese-lakonia-mainland",
-      "name": "Θυνί",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.2,
-      "bearingDeg": 0,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 1115,
-      "region": "ionian-islands-kefalonia",
-      "name": "Παλιοσταφίδα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7,
-      "bearingDeg": 164,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 1135,
-      "region": "ionian-islands-kefalonia",
-      "name": "Γιαγάνα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.6,
-      "bearingDeg": 127,
-      "fetchKm": 1.64
-    },
-    {
-      "beachId": 2469,
-      "region": "south-aegean-symi",
-      "name": "Άγιος Νικόλαος",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.3,
-      "bearingDeg": 303,
-      "fetchKm": 0.36
-    },
-    {
-      "beachId": 1229,
-      "region": "ionian-islands-ithaca",
-      "name": "Παραλία Σκίνος",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.9,
-      "bearingDeg": 76,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 3086,
-      "region": "thessaly-magnesia-mainland---pelion",
-      "name": "παραλία Νηές",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.2,
-      "bearingDeg": 52,
-      "fetchKm": 0.51
-    },
-    {
-      "beachId": 865,
-      "region": "epirus-preveza-mainland",
-      "name": "Άη Γιαννάκης",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.6,
-      "bearingDeg": 240,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 1272,
-      "region": "north-aegean-chios",
-      "name": "Παραλία Λιθί",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.2,
-      "bearingDeg": 277,
-      "fetchKm": 1.6
-    },
-    {
-      "beachId": 2186,
-      "region": "south-aegean-tinos",
-      "name": "Σταφίδα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.8,
-      "bearingDeg": 40,
-      "fetchKm": 0.21
     },
     {
       "beachId": 1632,
@@ -860,83 +420,6 @@
       "fetchKm": 2.92
     },
     {
-      "beachId": 2467,
-      "region": "south-aegean-symi",
-      "name": "Πέδι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.5,
-      "bearingDeg": 309,
-      "fetchKm": 0.03
-    },
-    {
-      "beachId": 908,
-      "region": "epirus-thesprotia-mainland",
-      "name": "Παραλία Έλενα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7,
-      "bearingDeg": 310,
-      "fetchKm": 0.54
-    },
-    {
-      "beachId": 913,
-      "region": "epirus-thesprotia-mainland",
-      "name": "Παραλία Καλάμι",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.8,
-      "bearingDeg": 203,
-      "fetchKm": 2.36
-    },
-    {
-      "beachId": 1454,
-      "region": "north-aegean-lemnos",
-      "name": "Μεγάλο Φαναράκι",
-      "via": "region",
-      "model": "meteofrance_wave",
-      "verdict": "other-water",
-      "distanceKm": 7.4,
-      "bearingDeg": 200,
-      "fetchKm": 0.97
-    },
-    {
-      "beachId": 1275,
-      "region": "north-aegean-chios",
-      "name": "Ποταμοί",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.8,
-      "bearingDeg": 324,
-      "fetchKm": 1.37
-    },
-    {
-      "beachId": 1259,
-      "region": "north-aegean-chios",
-      "name": "Ελίντα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 9.1,
-      "bearingDeg": 240,
-      "fetchKm": 2.78
-    },
-    {
-      "beachId": 1731,
-      "region": "south-aegean-antiparos",
-      "name": "Καλούδια",
-      "via": "region",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.3,
-      "bearingDeg": 11,
-      "fetchKm": 0
-    },
-    {
       "beachId": 1614,
       "region": "peloponnese-messinia-mainland",
       "name": "Διβάρι",
@@ -946,17 +429,6 @@
       "distanceKm": 7.1,
       "bearingDeg": 264,
       "fetchKm": 0.81
-    },
-    {
-      "beachId": 2015,
-      "region": "south-aegean-naxos",
-      "name": "Παραλία Σπεδό",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 6.1,
-      "bearingDeg": 187,
-      "fetchKm": 0
     },
     {
       "beachId": 161,
@@ -970,28 +442,6 @@
       "fetchKm": 0
     },
     {
-      "beachId": 2135,
-      "region": "south-aegean-syros",
-      "name": "Δελφίνι",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 9.9,
-      "bearingDeg": 299,
-      "fetchKm": 3.91
-    },
-    {
-      "beachId": 1232,
-      "region": "ionian-islands-ithaca",
-      "name": "Κουτούπι",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 12.6,
-      "bearingDeg": 338,
-      "fetchKm": 6.91
-    },
-    {
       "beachId": 469,
       "region": "central-macedonia-halkidiki-mainland",
       "name": "Παραλία Λατούρα",
@@ -1003,39 +453,6 @@
       "fetchKm": 0.06
     },
     {
-      "beachId": 50,
-      "region": "attica-east-attica-mainland",
-      "name": "Λομπάρδα / Mojito Bay",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 8.2,
-      "bearingDeg": 202,
-      "fetchKm": 2.66
-    },
-    {
-      "beachId": 2588,
-      "region": "thessaly-alonissos",
-      "name": "Γλυφά",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.5,
-      "bearingDeg": 205,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 2358,
-      "region": "south-aegean-leros",
-      "name": "Δύο Λισκάρια",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.4,
-      "bearingDeg": 308,
-      "fetchKm": 0
-    },
-    {
       "beachId": 1085,
       "region": "ionian-islands-kefalonia",
       "name": "Αγία Σωτήρα",
@@ -1045,28 +462,6 @@
       "distanceKm": 6.7,
       "bearingDeg": 312,
       "fetchKm": 1.4
-    },
-    {
-      "beachId": 324,
-      "region": "central-greece-skyros",
-      "name": "Πετρίτσα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.3,
-      "bearingDeg": 259,
-      "fetchKm": 0
-    },
-    {
-      "beachId": 2078,
-      "region": "south-aegean-serifos",
-      "name": "Γάνεμα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.7,
-      "bearingDeg": 285,
-      "fetchKm": 0.41
     },
     {
       "beachId": 152,
@@ -1091,28 +486,6 @@
       "fetchKm": 0
     },
     {
-      "beachId": 105,
-      "region": "attica-hydra",
-      "name": "Μανδράκι",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 7.6,
-      "bearingDeg": 267,
-      "fetchKm": 2.51
-    },
-    {
-      "beachId": 2492,
-      "region": "south-aegean-pserimos",
-      "name": "Παραλία Μαραθούντα",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.2,
-      "bearingDeg": 89,
-      "fetchKm": 0.12
-    },
-    {
       "beachId": 2255,
       "region": "south-aegean-kalymnos",
       "name": "Πεζόντα",
@@ -1124,17 +497,6 @@
       "fetchKm": 0.31
     },
     {
-      "beachId": 1825,
-      "region": "south-aegean-kea",
-      "name": "Οτζιάς",
-      "via": "sample",
-      "model": "ewam",
-      "verdict": "other-water",
-      "distanceKm": 5.2,
-      "bearingDeg": 302,
-      "fetchKm": 0.23
-    },
-    {
       "beachId": 1917,
       "region": "south-aegean-milos",
       "name": "Παπικινού",
@@ -1144,6 +506,193 @@
       "distanceKm": 6,
       "bearingDeg": 301,
       "fetchKm": 1.07
+    },
+    {
+      "beachId": 2261,
+      "region": "south-aegean-kalymnos",
+      "name": "Παραλία Αργίνωντα",
+      "via": "region",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 4.9,
+      "bearingDeg": 37,
+      "fetchKm": 0.02
+    },
+    {
+      "beachId": 187,
+      "region": "attica-west-attica-mainland",
+      "name": "Ακρογιάλι",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 7.2,
+      "bearingDeg": 205,
+      "fetchKm": 2.54
+    },
+    {
+      "beachId": 1913,
+      "region": "south-aegean-milos",
+      "name": "Ναυτικός Όμιλος Μήλου",
+      "via": "region",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 6.3,
+      "bearingDeg": 302,
+      "fetchKm": 1.74
+    },
+    {
+      "beachId": 2112,
+      "region": "south-aegean-sifnos",
+      "name": "Φάρος",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 4.4,
+      "bearingDeg": 81,
+      "fetchKm": 0
+    },
+    {
+      "beachId": 1101,
+      "region": "ionian-islands-kefalonia",
+      "name": "Κουμαριά",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 4.9,
+      "bearingDeg": 299,
+      "fetchKm": 0.51
+    },
+    {
+      "beachId": 159,
+      "region": "attica-poros",
+      "name": "Μικρό Νεώριο",
+      "via": "region",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 4.7,
+      "bearingDeg": 101,
+      "fetchKm": 0.38
+    },
+    {
+      "beachId": 2591,
+      "region": "thessaly-alonissos",
+      "name": "Καλύβια Σταματίου",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 9.5,
+      "bearingDeg": 207,
+      "fetchKm": 6.21
+    },
+    {
+      "beachId": 1863,
+      "region": "south-aegean-kythnos",
+      "name": "Αγία Ειρήνη",
+      "via": "region",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 3.3,
+      "bearingDeg": 293,
+      "fetchKm": 0.16
+    },
+    {
+      "beachId": 1903,
+      "region": "south-aegean-milos",
+      "name": "Αχιβαδολίμνη",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 8,
+      "bearingDeg": 326,
+      "fetchKm": 4.88
+    },
+    {
+      "beachId": 2368,
+      "region": "south-aegean-leros",
+      "name": "Όρμος Μπελφούτη",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 7,
+      "bearingDeg": 348,
+      "fetchKm": 3.93
+    },
+    {
+      "beachId": 1317,
+      "region": "north-aegean-fournoi",
+      "name": "Καμπί",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 3,
+      "bearingDeg": 137,
+      "fetchKm": 0.27
+    },
+    {
+      "beachId": 319,
+      "region": "central-greece-skyros",
+      "name": "Αχερούνες",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 3,
+      "bearingDeg": 271,
+      "fetchKm": 0.59
+    },
+    {
+      "beachId": 1893,
+      "region": "south-aegean-kythnos",
+      "name": "Σκινάρι",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 2.4,
+      "bearingDeg": 283,
+      "fetchKm": 0
+    },
+    {
+      "beachId": 1316,
+      "region": "north-aegean-fournoi",
+      "name": "Ελιδάκι",
+      "via": "region",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 2,
+      "bearingDeg": 133,
+      "fetchKm": 0
+    },
+    {
+      "beachId": 2234,
+      "region": "south-aegean-astypalaia",
+      "name": "Βάι",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 7.5,
+      "bearingDeg": 359,
+      "fetchKm": 5.59
+    },
+    {
+      "beachId": 1921,
+      "region": "south-aegean-milos",
+      "name": "Ριβάρι",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 5.2,
+      "bearingDeg": 358,
+      "fetchKm": 3.94
+    },
+    {
+      "beachId": 1971,
+      "region": "south-aegean-mykonos",
+      "name": "Ταρσανάς",
+      "via": "sample",
+      "model": "ewam",
+      "verdict": "other-water",
+      "distanceKm": 4.3,
+      "bearingDeg": 24,
+      "fetchKm": 3.16
     }
   ]
 }
