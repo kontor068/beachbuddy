@@ -1,0 +1,405 @@
+{
+  "day": "live",
+  "scoredBeachHours": 40222,
+  "changed": 20,
+  "beaches": 5,
+  "fromShoreFix": 8,
+  "fromBeaufortCeiling": 12,
+  "softened": 20,
+  "hardened": 0,
+  "twoSteps": 0,
+  "atOrAboveFiveBeaufort": 0,
+  "shoreAtLeastHalfMetre": 1,
+  "rows": [
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 12,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.82,
+      "shoreM": 0.39,
+      "windKmh": 24,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 13,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.86,
+      "shoreM": 0.41,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 14,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.88,
+      "shoreM": 0.4,
+      "windKmh": 24,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 15,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.88,
+      "shoreM": 0.41,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 16,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.88,
+      "shoreM": 0.42,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 17,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.86,
+      "shoreM": 0.42,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 18,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.84,
+      "shoreM": 0.43,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 19,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.82,
+      "shoreM": 0.41,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 595,
+      "region": "crete-crete-chania",
+      "name": "Ελαφονήσι",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.8,
+      "shoreM": 0.38,
+      "windKmh": 24,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 1721,
+      "region": "south-aegean-andros",
+      "name": "Πύργος",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 15,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "difficult_access",
+        "gusty_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1701,
+      "region": "south-aegean-andros",
+      "name": "Καμινάκι",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 15,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "difficult_access",
+        "gusty_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 8,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 11,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 9,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 15,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "exposed_to_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 10,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 17,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "exposed_to_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 11,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 17,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "exposed_to_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 12,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 17,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "exposed_to_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 1716,
+      "region": "south-aegean-andros",
+      "name": "Παραλία Φελού",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.6,
+      "shoreM": 0.1,
+      "windKmh": 15,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "exposed",
+      "warnings": [
+        "gusty_wind",
+        "onshore_chop"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 18,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.86,
+      "shoreM": 0.53,
+      "windKmh": 27,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea",
+        "afternoon_wind_build"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 19,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.78,
+      "shoreM": 0.47,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "afternoon_wind_build"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.7,
+      "shoreM": 0.43,
+      "windKmh": 23,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "afternoon_wind_build"
+      ]
+    }
+  ]
+}

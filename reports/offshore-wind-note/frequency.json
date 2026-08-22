@@ -1,0 +1,337 @@
+{
+  "measuredAt": "2026-08-21T11:36:30.678Z",
+  "scored": 40222,
+  "beachesSeen": 2873,
+  "minBeaufort": 3,
+  "maxWaveM": 0.8,
+  "minWaveM": 0.4,
+  "witnessId": 636,
+  "witnessLog": [
+    {
+      "hour": 7,
+      "windFromDeg": 245,
+      "bft": 2,
+      "waveM": 0.19,
+      "comfort": "caution",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 8,
+      "windFromDeg": 262,
+      "bft": 2,
+      "waveM": 0.2,
+      "comfort": "caution",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 9,
+      "windFromDeg": 289,
+      "bft": 3,
+      "waveM": 0.2,
+      "comfort": "excellent",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 10,
+      "windFromDeg": 300,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 11,
+      "windFromDeg": 307,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 12,
+      "windFromDeg": 309,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 13,
+      "windFromDeg": 310,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 14,
+      "windFromDeg": 310,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 15,
+      "windFromDeg": 311,
+      "bft": 4,
+      "waveM": 0.48,
+      "comfort": "caution",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 16,
+      "windFromDeg": 310,
+      "bft": 4,
+      "waveM": 0.48,
+      "comfort": "caution",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 17,
+      "windFromDeg": 309,
+      "bft": 4,
+      "waveM": 0.55,
+      "comfort": "caution",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "hour": 18,
+      "windFromDeg": 307,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 19,
+      "windFromDeg": 306,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "hour": 20,
+      "windFromDeg": 297,
+      "bft": 3,
+      "waveM": 0.5,
+      "comfort": "good",
+      "fires": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "windowDeg": 30,
+      "maxLandKm": 0.5,
+      "geometryOnly": 20457,
+      "fired": 678,
+      "beaches": 204,
+      "medianHoursPerBeach": 3,
+      "blockedByCalm": 9423,
+      "blockedByAvoid": 483,
+      "blockedByBigWave": 9,
+      "blockedBySmallWave": 9864,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 654,
+        "u08": 24
+      },
+      "witnessHours": 11
+    },
+    {
+      "windowDeg": 30,
+      "maxLandKm": 0.3,
+      "geometryOnly": 19180,
+      "fired": 582,
+      "beaches": 175,
+      "medianHoursPerBeach": 2,
+      "blockedByCalm": 8792,
+      "blockedByAvoid": 409,
+      "blockedByBigWave": 9,
+      "blockedBySmallWave": 9388,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 564,
+        "u08": 18
+      },
+      "witnessHours": 11
+    },
+    {
+      "windowDeg": 45,
+      "maxLandKm": 0.5,
+      "geometryOnly": 17027,
+      "fired": 358,
+      "beaches": 106,
+      "medianHoursPerBeach": 2,
+      "blockedByCalm": 7800,
+      "blockedByAvoid": 217,
+      "blockedByBigWave": 3,
+      "blockedBySmallWave": 8649,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 350,
+        "u08": 8
+      },
+      "witnessHours": 11
+    },
+    {
+      "windowDeg": 45,
+      "maxLandKm": 0.3,
+      "geometryOnly": 15849,
+      "fired": 317,
+      "beaches": 91,
+      "medianHoursPerBeach": 2,
+      "blockedByCalm": 7215,
+      "blockedByAvoid": 198,
+      "blockedByBigWave": 3,
+      "blockedBySmallWave": 8116,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 312,
+        "u08": 5
+      },
+      "witnessHours": 11
+    },
+    {
+      "windowDeg": 15,
+      "maxLandKm": 0.5,
+      "geometryOnly": 23516,
+      "fired": 1099,
+      "beaches": 313,
+      "medianHoursPerBeach": 3,
+      "blockedByCalm": 10913,
+      "blockedByAvoid": 796,
+      "blockedByBigWave": 9,
+      "blockedBySmallWave": 10699,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 1055,
+        "u08": 44
+      },
+      "witnessHours": 11
+    },
+    {
+      "windowDeg": 60,
+      "maxLandKm": 0.3,
+      "geometryOnly": 12360,
+      "fired": 140,
+      "beaches": 39,
+      "medianHoursPerBeach": 2,
+      "blockedByCalm": 5582,
+      "blockedByAvoid": 99,
+      "blockedByBigWave": 0,
+      "blockedBySmallWave": 6539,
+      "waveBuckets": {
+        "u02": 0,
+        "u04": 0,
+        "u06": 138,
+        "u08": 2
+      },
+      "witnessHours": 5
+    }
+  ]
+}

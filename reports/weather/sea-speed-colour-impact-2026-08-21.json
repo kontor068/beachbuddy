@@ -1,0 +1,407 @@
+{
+  "generatedAt": "2026-08-21T16:35:50.038Z",
+  "question": "Α = ταχύτητα από στεριανό κελί (σήμερα) · Β = ταχύτητα από θαλασσινό κελί όπου το στεριανό απέχει ≥3 χλμ (§Γ51). Διεύθυνση ΙΔΙΑ και στα δύο.",
+  "waveGate": "Ο νέος φραγμός capIdealByShoreSea (κύμα ≥0,40 μ. ⇒ όχι μπλε) εφαρμόζεται ΚΑΙ στα δύο σκέλη — οι δύο αλλαγές στοιβάζονται.",
+  "caveat": "Κύμα ΜΟΝΤΕΛΟΠΟΙΗΜΕΝΟ, όχι μετρημένο· οι όρμοι δεν εξαιρούνται εδώ. Το «χαμένο μπλε» είναι ταβάνι.",
+  "days": 5,
+  "beaches": 150,
+  "total": {
+    "hours": 8250,
+    "colourChangedPct": 12.02,
+    "worse": 317,
+    "better": 675,
+    "beaufortChangedPct": 29.61,
+    "beaufortUp": 503,
+    "cardChangedPct": 0.13,
+    "pinChangedPct": 0.13,
+    "toneBefore": {
+      "blue": "6015 (72.91%)",
+      "yellow": "1777 (21.54%)",
+      "orange": "366 (4.44%)",
+      "red": "92 (1.12%)"
+    },
+    "toneAfter": {
+      "blue": "6428 (77.92%)",
+      "yellow": "1381 (16.74%)",
+      "orange": "343 (4.16%)",
+      "red": "98 (1.19%)"
+    }
+  },
+  "onlyWhereItApplies": {
+    "hours": 5445,
+    "colourChangedPct": 18.22,
+    "worse": 317,
+    "better": 675,
+    "beaufortChangedPct": 44.87,
+    "beaufortUp": 503,
+    "cardChangedPct": 0.2,
+    "pinChangedPct": 0.2,
+    "toneBefore": {
+      "blue": "3982 (73.13%)",
+      "yellow": "1225 (22.5%)",
+      "orange": "235 (4.32%)",
+      "red": "3 (0.06%)"
+    },
+    "toneAfter": {
+      "blue": "4395 (80.72%)",
+      "yellow": "829 (15.22%)",
+      "orange": "212 (3.89%)",
+      "red": "9 (0.17%)"
+    }
+  },
+  "byLandCellDistance": {
+    "<3 χλμ": {
+      "hours": 2805,
+      "colourChangedPct": 0,
+      "worse": 0,
+      "better": 0,
+      "beaufortChangedPct": 0,
+      "beaufortUp": 0,
+      "cardChangedPct": 0,
+      "pinChangedPct": 0,
+      "toneBefore": {
+        "blue": "2033 (72.48%)",
+        "yellow": "552 (19.68%)",
+        "orange": "131 (4.67%)",
+        "red": "89 (3.17%)"
+      },
+      "toneAfter": {
+        "blue": "2033 (72.48%)",
+        "yellow": "552 (19.68%)",
+        "orange": "131 (4.67%)",
+        "red": "89 (3.17%)"
+      }
+    },
+    "3-5 χλμ": {
+      "hours": 3080,
+      "colourChangedPct": 15.55,
+      "worse": 126,
+      "better": 353,
+      "beaufortChangedPct": 44.16,
+      "beaufortUp": 235,
+      "cardChangedPct": 0,
+      "pinChangedPct": 0,
+      "toneBefore": {
+        "blue": "2352 (76.36%)",
+        "yellow": "637 (20.68%)",
+        "orange": "91 (2.95%)",
+        "red": "0 (0%)"
+      },
+      "toneAfter": {
+        "blue": "2580 (83.77%)",
+        "yellow": "439 (14.25%)",
+        "orange": "56 (1.82%)",
+        "red": "5 (0.16%)"
+      }
+    },
+    "5-7 χλμ": {
+      "hours": 1540,
+      "colourChangedPct": 22.86,
+      "worse": 137,
+      "better": 215,
+      "beaufortChangedPct": 45.78,
+      "beaufortUp": 193,
+      "cardChangedPct": 0.71,
+      "pinChangedPct": 0.71,
+      "toneBefore": {
+        "blue": "1051 (68.25%)",
+        "yellow": "394 (25.58%)",
+        "orange": "92 (5.97%)",
+        "red": "3 (0.19%)"
+      },
+      "toneAfter": {
+        "blue": "1162 (75.45%)",
+        "yellow": "256 (16.62%)",
+        "orange": "118 (7.66%)",
+        "red": "4 (0.26%)"
+      }
+    },
+    "≥7 χλμ": {
+      "hours": 825,
+      "colourChangedPct": 19.52,
+      "worse": 54,
+      "better": 107,
+      "beaufortChangedPct": 45.82,
+      "beaufortUp": 75,
+      "cardChangedPct": 0,
+      "pinChangedPct": 0,
+      "toneBefore": {
+        "blue": "579 (70.18%)",
+        "yellow": "194 (23.52%)",
+        "orange": "52 (6.3%)",
+        "red": "0 (0%)"
+      },
+      "toneAfter": {
+        "blue": "653 (79.15%)",
+        "yellow": "134 (16.24%)",
+        "orange": "38 (4.61%)",
+        "red": "0 (0%)"
+      }
+    }
+  },
+  "byBeaufortBefore": {
+    "0": {
+      "hours": 1,
+      "colourChangedPct": 0,
+      "worse": 0
+    },
+    "1": {
+      "hours": 534,
+      "colourChangedPct": 0,
+      "worse": 0
+    },
+    "2": {
+      "hours": 2920,
+      "colourChangedPct": 0.45,
+      "worse": 13
+    },
+    "3": {
+      "hours": 3118,
+      "colourChangedPct": 15.23,
+      "worse": 236
+    },
+    "4": {
+      "hours": 1305,
+      "colourChangedPct": 30.73,
+      "worse": 48
+    },
+    "5": {
+      "hours": 349,
+      "colourChangedPct": 25.21,
+      "worse": 20
+    },
+    "6": {
+      "hours": 23,
+      "colourChangedPct": 65.22,
+      "worse": 0
+    }
+  },
+  "topMovers": [
+    {
+      "id": 2177,
+      "name": "Παραλία Καβαλουρκό",
+      "region": "south-aegean-tinos",
+      "cellDistKm": 3.86,
+      "hours": 55,
+      "colourChanged": 48,
+      "changedPct": 87.27
+    },
+    {
+      "id": 195,
+      "name": "Αγία Παρασκευή",
+      "region": "central-greece-evia",
+      "cellDistKm": 10.5,
+      "hours": 55,
+      "colourChanged": 47,
+      "changedPct": 85.45
+    },
+    {
+      "id": 695,
+      "name": "Παραλία Κατσούνι",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 6.33,
+      "hours": 55,
+      "colourChanged": 39,
+      "changedPct": 70.91
+    },
+    {
+      "id": 676,
+      "name": "Βλυχί Νερό",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 10.68,
+      "hours": 55,
+      "colourChanged": 38,
+      "changedPct": 69.09
+    },
+    {
+      "id": 1269,
+      "name": "Παραλία Κάμπια",
+      "region": "north-aegean-chios",
+      "cellDistKm": 5.35,
+      "hours": 55,
+      "colourChanged": 38,
+      "changedPct": 69.09
+    },
+    {
+      "id": 1293,
+      "name": "Άρης Ποταμός",
+      "region": "north-aegean-ikaria",
+      "cellDistKm": 3.57,
+      "hours": 55,
+      "colourChanged": 35,
+      "changedPct": 63.64
+    },
+    {
+      "id": 1669,
+      "name": "Ψιλή Άμμος",
+      "region": "south-aegean-amorgos",
+      "cellDistKm": 4.5,
+      "hours": 55,
+      "colourChanged": 32,
+      "changedPct": 58.18
+    },
+    {
+      "id": 2282,
+      "name": "Καστέλια",
+      "region": "south-aegean-karpathos",
+      "cellDistKm": 3.06,
+      "hours": 55,
+      "colourChanged": 30,
+      "changedPct": 54.55
+    },
+    {
+      "id": 2086,
+      "name": "Λιά",
+      "region": "south-aegean-serifos",
+      "cellDistKm": 5.04,
+      "hours": 55,
+      "colourChanged": 30,
+      "changedPct": 54.55
+    },
+    {
+      "id": 1075,
+      "name": "Σίσσια",
+      "region": "ionian-islands-kefalonia",
+      "cellDistKm": 3.86,
+      "hours": 55,
+      "colourChanged": 27,
+      "changedPct": 49.09
+    },
+    {
+      "id": 1686,
+      "name": "Αγ.Κυπριανός",
+      "region": "south-aegean-andros",
+      "cellDistKm": 8.21,
+      "hours": 55,
+      "colourChanged": 27,
+      "changedPct": 49.09
+    },
+    {
+      "id": 1958,
+      "name": "Λιά",
+      "region": "south-aegean-mykonos",
+      "cellDistKm": 5.49,
+      "hours": 55,
+      "colourChanged": 25,
+      "changedPct": 45.45
+    },
+    {
+      "id": 1113,
+      "name": "Μύρτος",
+      "region": "ionian-islands-kefalonia",
+      "cellDistKm": 4.19,
+      "hours": 55,
+      "colourChanged": 23,
+      "changedPct": 41.82
+    },
+    {
+      "id": 1200,
+      "name": "Αμμούδι",
+      "region": "ionian-islands-zakynthos",
+      "cellDistKm": 3.37,
+      "hours": 55,
+      "colourChanged": 22,
+      "changedPct": 40
+    },
+    {
+      "id": 1250,
+      "name": "Μάναγρος",
+      "region": "north-aegean-chios",
+      "cellDistKm": 6.97,
+      "hours": 55,
+      "colourChanged": 22,
+      "changedPct": 40
+    },
+    {
+      "id": 2336,
+      "name": "Tropical",
+      "region": "south-aegean-kos",
+      "cellDistKm": 5.22,
+      "hours": 55,
+      "colourChanged": 22,
+      "changedPct": 40
+    },
+    {
+      "id": 1772,
+      "name": "Κλήμα",
+      "region": "south-aegean-ios",
+      "cellDistKm": 6.98,
+      "hours": 55,
+      "colourChanged": 20,
+      "changedPct": 36.36
+    },
+    {
+      "id": 1814,
+      "name": "Καστριανή",
+      "region": "south-aegean-kea",
+      "cellDistKm": 4.63,
+      "hours": 55,
+      "colourChanged": 20,
+      "changedPct": 36.36
+    },
+    {
+      "id": 1833,
+      "name": "Τηλέγραφος",
+      "region": "south-aegean-kea",
+      "cellDistKm": 3.57,
+      "hours": 55,
+      "colourChanged": 20,
+      "changedPct": 36.36
+    },
+    {
+      "id": 2301,
+      "name": "Άγιος Μηνάς",
+      "region": "south-aegean-karpathos",
+      "cellDistKm": 6.72,
+      "hours": 55,
+      "colourChanged": 18,
+      "changedPct": 32.73
+    },
+    {
+      "id": 3143,
+      "name": "Παραλία Ιαλυσός",
+      "region": "south-aegean-rhodes",
+      "cellDistKm": 5.13,
+      "hours": 55,
+      "colourChanged": 17,
+      "changedPct": 30.91
+    },
+    {
+      "id": 2686,
+      "name": "Καρνάγιο (Αγριά)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "cellDistKm": 5.14,
+      "hours": 55,
+      "colourChanged": 17,
+      "changedPct": 30.91
+    },
+    {
+      "id": 1354,
+      "name": "Παραλία Γυμνιστών Ερεσού",
+      "region": "north-aegean-lesvos",
+      "cellDistKm": 6.96,
+      "hours": 55,
+      "colourChanged": 16,
+      "changedPct": 29.09
+    },
+    {
+      "id": 1590,
+      "name": "Πορί",
+      "region": "peloponnese-lakonia-mainland",
+      "cellDistKm": 4.01,
+      "hours": 55,
+      "colourChanged": 16,
+      "changedPct": 29.09
+    },
+    {
+      "id": 1469,
+      "name": "Φαρακλού",
+      "region": "north-aegean-lemnos",
+      "cellDistKm": 6.39,
+      "hours": 55,
+      "colourChanged": 15,
+      "changedPct": 27.27
+    }
+  ],
+  "beachesTouched": 72
+}

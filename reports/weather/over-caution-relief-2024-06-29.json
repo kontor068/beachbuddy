@@ -1,0 +1,314 @@
+{
+  "day": "2024-06-29",
+  "scoredBeachHours": 40222,
+  "changed": 15,
+  "beaches": 5,
+  "fromShoreFix": 6,
+  "fromBeaufortCeiling": 9,
+  "softened": 15,
+  "hardened": 0,
+  "twoSteps": 0,
+  "atOrAboveFiveBeaufort": 0,
+  "shoreAtLeastHalfMetre": 1,
+  "rows": [
+    {
+      "id": 3024,
+      "region": "attica-aegina",
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "hour": 8,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.55,
+      "shoreM": 0.18,
+      "windKmh": 25,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "afternoon_wind_build"
+      ]
+    },
+    {
+      "id": 3024,
+      "region": "attica-aegina",
+      "name": "Αίγινα Αγ. Βασίλειος",
+      "hour": 9,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.55,
+      "shoreM": 0.14,
+      "windKmh": 27,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "afternoon_wind_build"
+      ]
+    },
+    {
+      "id": 627,
+      "region": "crete-crete-heraklion",
+      "name": "Μάρτσαλο",
+      "hour": 17,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 1.24,
+      "shoreM": 0.1,
+      "windKmh": 12,
+      "beaufort": 3,
+      "departing": false,
+      "exposure": "partial",
+      "warnings": [
+        "difficult_access",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 1188,
+      "region": "ionian-islands-zakynthos",
+      "name": "Κορακονήσι",
+      "hour": 19,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.8,
+      "shoreM": 0.23,
+      "windKmh": 21,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "rough_sea",
+        "heat_uv"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 11,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 1.44,
+      "shoreM": 0.51,
+      "windKmh": 26,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 12,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 1.3,
+      "shoreM": 0.4,
+      "windKmh": 22,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 13,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 1.14,
+      "shoreM": 0.39,
+      "windKmh": 21,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 14,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 1.04,
+      "shoreM": 0.36,
+      "windKmh": 20,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 15,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.94,
+      "shoreM": 0.35,
+      "windKmh": 20,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 16,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.92,
+      "shoreM": 0.33,
+      "windKmh": 19,
+      "beaufort": 3,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 17,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.92,
+      "shoreM": 0.29,
+      "windKmh": 17,
+      "beaufort": 3,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 18,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.94,
+      "shoreM": 0.29,
+      "windKmh": 17,
+      "beaufort": 3,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 19,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.94,
+      "shoreM": 0.27,
+      "windKmh": 16,
+      "beaufort": 3,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2457,
+      "region": "south-aegean-rhodes",
+      "name": "Πρασονήσι",
+      "hour": 20,
+      "before": "avoid_swimming",
+      "shoreOnly": "caution",
+      "now": "caution",
+      "openM": 0.92,
+      "shoreM": 0.25,
+      "windKmh": 16,
+      "beaufort": 3,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "low_confidence",
+        "gusty_wind",
+        "rough_sea"
+      ]
+    },
+    {
+      "id": 2480,
+      "region": "south-aegean-tilos",
+      "name": "Παραλία Κοκκίνι",
+      "hour": 11,
+      "before": "avoid_swimming",
+      "shoreOnly": "avoid_swimming",
+      "now": "caution",
+      "openM": 0.76,
+      "shoreM": 0.25,
+      "windKmh": 20,
+      "beaufort": 4,
+      "departing": true,
+      "exposure": "partial",
+      "warnings": [
+        "gusty_wind",
+        "afternoon_wind_build"
+      ]
+    }
+  ]
+}
