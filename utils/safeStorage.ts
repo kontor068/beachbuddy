@@ -145,3 +145,26 @@ export const setStoredJson = (key: string, value: unknown): boolean => {
     return false;
   }
 };
+
+/**
+ * Read from localStorage without ever throwing.
+ *
+ * The write path got this treatment on 21/08/2026; the read path was left raw and
+ * that is the more dangerous half. Three of these reads run inside React state
+ * initialisers (the remembered region, the saved preferences, the custom regions),
+ * and a browser that refuses `getItem` — locked-down privacy mode, a corrupted
+ * profile, storage disabled by policy — turns that into an exception during the
+ * first render. That is not a lost preference, it is a blank page.
+ *
+ * Returns `undefined` for "not there or not readable", which every caller already
+ * had to handle anyway.
+ */
+export const getStoredValue = (key: string): string | undefined => {
+  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') return undefined;
+
+  try {
+    return window.localStorage.getItem(key) ?? undefined;
+  } catch {
+    return undefined;
+  }
+};

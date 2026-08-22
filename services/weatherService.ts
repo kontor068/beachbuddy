@@ -124,36 +124,83 @@ const getStaleFallbackEntry = <T>(key: string): CacheEntry<T> | null => {
  * holding several regions' worth of a day's browsing.
  */
 const MAX_PERSISTED_FORECASTS = 48;
+
+/**
+ * The cap that actually binds. Counting entries assumed every entry is about the
+ * same size, and on 21/08/2026 that assumption broke: entries carry hourly seas,
+ * gusts and ensemble spread now, so 48 of them went past the browser's ~5 MB
+ * budget long before the count cap noticed. Storage filled, and the first
+ * unrelated write after that — picking a region — took the page down.
+ *
+ * 2.5 MB is half a conservative budget: enough for several regions' worth of a
+ * day's browsing, and it leaves the other half for everything that is not a
+ * cache (the sign-in, the consent log, saved beaches).
+ */
+const MAX_PERSISTED_BYTES = 2_500_000;
+
+/** Below this many entries the sweep cannot matter, so it is not worth the reads. */
+const BYTE_SWEEP_MIN_KEYS = 12;
+
 const PERSISTED_PREFIXES = ['forecast_', 'marine_', 'weather_'];
 
 const isForecastKey = (key: string): boolean => PERSISTED_PREFIXES.some(prefix => key.startsWith(prefix));
 
+/** Oldest first, with the byte cost of each entry. Unparseable entries sort oldest. */
+const describeStoredForecasts = (): Array<{ key: string; timestamp: number; bytes: number }> => {
+  const entries = Object.keys(localStorage).filter(isForecastKey).map(key => {
+    const raw = localStorage.getItem(key) || '';
+    let timestamp = 0;
+    try {
+      timestamp = Number(JSON.parse(raw || '{}')?.timestamp) || 0;
+    } catch {
+      /* unparseable entry — treat as oldest so it is the first to go */
+    }
+    // UTF-16 in the browser: two bytes per code unit, key included.
+    return { key, timestamp, bytes: (raw.length + key.length) * 2 };
+  });
+
+  entries.sort((a, b) => a.timestamp - b.timestamp);
+  return entries;
+};
+
 /**
- * Evict the oldest entries once the cap is passed. Key names are counted first
- * and the (expensive) JSON parse only happens on the rare write that actually
- * goes over, so the common path stays free.
+ * Evict oldest-first until the cache is inside BOTH caps. Key names are counted
+ * first so a nearly-empty cache costs nothing; the values are only read once
+ * there are enough entries for the byte cap to be reachable.
  */
 const enforceCacheCap = () => {
   try {
-    const keys = Object.keys(localStorage).filter(isForecastKey);
-    if (keys.length <= MAX_PERSISTED_FORECASTS) return;
+    const keyCount = Object.keys(localStorage).filter(isForecastKey).length;
+    if (keyCount <= MAX_PERSISTED_FORECASTS && keyCount < BYTE_SWEEP_MIN_KEYS) return;
 
-    const dated = keys.map(key => {
-      let timestamp = 0;
-      try {
-        timestamp = Number(JSON.parse(localStorage.getItem(key) || '{}')?.timestamp) || 0;
-      } catch {
-        /* unparseable entry — treat as oldest so it is the first to go */
-      }
-      return { key, timestamp };
-    });
+    const dated = describeStoredForecasts();
+    let total = dated.reduce((sum, entry) => sum + entry.bytes, 0);
+    let remaining = dated.length;
 
-    dated.sort((a, b) => a.timestamp - b.timestamp);
-    for (const { key } of dated.slice(0, dated.length - MAX_PERSISTED_FORECASTS)) {
-      localStorage.removeItem(key);
+    for (const entry of dated) {
+      if (remaining <= MAX_PERSISTED_FORECASTS && total <= MAX_PERSISTED_BYTES) break;
+      localStorage.removeItem(entry.key);
+      total -= entry.bytes;
+      remaining -= 1;
     }
   } catch {
     /* storage unavailable — nothing to enforce */
+  }
+};
+
+/**
+ * Last resort on a quota error: drop the oldest half rather than every weather
+ * key there is. Wiping the lot turned one full-storage moment into a cold cache
+ * for every region, which is a burst of refetches at exactly the wrong time.
+ */
+const evictOldestForecasts = (fraction: number): number => {
+  try {
+    const dated = describeStoredForecasts();
+    const drop = Math.max(1, Math.ceil(dated.length * fraction));
+    for (const { key } of dated.slice(0, drop)) localStorage.removeItem(key);
+    return Math.min(drop, dated.length);
+  } catch {
+    return 0;
   }
 };
 
@@ -177,8 +224,17 @@ const saveToCache = <T>(key: string, data: T, timestamp: number, persist: boolea
       return;
     }
 
+    // Half first — a full cache is not a reason to make every region cold.
+    evictOldestForecasts(0.5);
+    try {
+      localStorage.setItem(key, JSON.stringify(entry));
+      return;
+    } catch {
+      /* still no room — fall through and drop the rest */
+    }
+
     Object.keys(localStorage)
-      .filter(storageKey => storageKey.startsWith('forecast_') || storageKey.startsWith('marine_') || storageKey.startsWith('weather_'))
+      .filter(isForecastKey)
       .forEach(storageKey => localStorage.removeItem(storageKey));
 
     try {

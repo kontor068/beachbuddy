@@ -58,7 +58,7 @@ const TripPlanner = lazyWithChunkRecovery(
 );
 
 // Hooks & Utils
-import { setStoredJson, setStoredValue } from './utils/safeStorage';
+import { getStoredValue, setStoredJson, setStoredValue } from './utils/safeStorage';
 import { useAuth } from './hooks/useAuth';
 import { deleteAccount, releaseGuestIdentity } from './services/authService';
 // Type-only: the component itself stays behind the lazy import below.
@@ -1069,7 +1069,10 @@ const toneFilterDropCopy: Record<LanguageCode, (labels: string) => string> = {
 const beachMatchesMobileFilter = beachMatchesFilterKey;
 
 const readJsonArrayFromStorage = <T,>(key: string): T[] => {
-  const saved = localStorage.getItem(key);
+  // getStoredValue, not localStorage directly: this runs inside a state initialiser
+  // and a browser that refuses to read storage would blank the page instead of
+  // simply forgetting the saved list.
+  const saved = getStoredValue(key);
   if (!saved) return [];
 
   try {
@@ -2015,7 +2018,7 @@ export const App: React.FC = () => {
   );
 
   const [preferences, setPreferences] = useState<UserPreferences>(() => {
-    const saved = localStorage.getItem('userPreferences');
+    const saved = getStoredValue('userPreferences');
     if (!saved) return defaultPreferences;
     try {
       const parsed = JSON.parse(saved);

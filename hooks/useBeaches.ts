@@ -11,6 +11,7 @@ import {
 } from '../services/beachDataLoader';
 import type { BeachRegionIndexEntry } from '../services/beachDataLoader';
 import { getLocalizedCopy } from '../utils/i18n';
+import { getStoredValue } from '../utils/safeStorage';
 
 const loadRegionIsland = async (
   regionId: string,
@@ -66,7 +67,9 @@ const getBeachDataErrorMessage = (language: LanguageCode, key: BeachDataErrorKey
 export const useBeaches = (language: LanguageCode) => {
   const [staticIslands, setStaticIslands] = useState<Island[]>([]);
   const [customIslands] = useState<Island[]>(() => {
-    const saved = localStorage.getItem('customIslands');
+    // State initialiser: a browser that refuses to read storage must cost us the
+    // custom regions, not the whole render.
+    const saved = getStoredValue('customIslands');
     try {
       return saved ? JSON.parse(saved) : [];
     } catch (e) {

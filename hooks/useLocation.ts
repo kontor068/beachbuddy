@@ -3,11 +3,17 @@ import { Island } from '../types';
 import { getActiveWeatherFixtureTargetRegionId } from '../utils/weatherFixtures';
 import { parseBeachDetailPath, parseBeachRegionPath, regionMatchesRouteParam } from '../utils/beachUrls';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
+import { getStoredValue, setStoredValue } from '../utils/safeStorage';
+
+/** Both initialisers below read this, and reading storage can throw outright in a
+ *  locked-down browser — inside a state initialiser that is a blank page, not a
+ *  lost preference. One name so the two can never disagree about the key either. */
+const readSelectedIslandId = (): string | undefined => getStoredValue('selectedIslandId') || undefined;
 
 export const useLocation = (allIslands: Island[]) => {
   const [selectedIslandId, setSelectedIslandId] = useState<string | undefined>(() => {
     const route = parseBeachDetailPath() || parseBeachRegionPath();
-    return route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId') || undefined;
+    return route?.regionId || getActiveWeatherFixtureTargetRegionId() || readSelectedIslandId();
   });
 
   // True once the visitor has committed to a region — via a deep link, a weather
@@ -18,7 +24,7 @@ export const useLocation = (allIslands: Island[]) => {
   // region-scoped memo/effect keeps working unchanged (no null ripple in App.tsx).
   const [hasCommittedRegion, setHasCommittedRegion] = useState<boolean>(() => {
     const route = parseBeachDetailPath() || parseBeachRegionPath();
-    return Boolean(route?.regionId || getActiveWeatherFixtureTargetRegionId() || localStorage.getItem('selectedIslandId'));
+    return Boolean(route?.regionId || getActiveWeatherFixtureTargetRegionId() || readSelectedIslandId());
   });
 
   // Drives the value-proposition block (homepage hero headline + subheadline). Always shown:
@@ -48,7 +54,7 @@ export const useLocation = (allIslands: Island[]) => {
     setAdHocIsland(undefined);
     setSelectedIslandId(island.id);
     setHasCommittedRegion(true);
-    localStorage.setItem('selectedIslandId', island.id);
+    setStoredValue('selectedIslandId', island.id);
   }, []);
 
   // Selects a synthetic region held only in memory. Deliberately not persisted to

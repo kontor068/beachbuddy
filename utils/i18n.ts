@@ -1,5 +1,6 @@
 import { LanguageCode } from '../types';
 import { getBeachPathLanguage } from './beachUrls';
+import { setStoredValue } from './safeStorage';
 
 export const LANGUAGE_STORAGE_KEY = 'calmBeachLanguage';
 export const LANGUAGE_PREFERENCE_SET_KEY = 'calmBeachLanguagePreferenceSet';
@@ -45,8 +46,8 @@ export const getInitialLanguage = (): SupportedLanguage => {
 
 export const saveLanguagePreference = (language: SupportedLanguage) => {
   if (typeof window === 'undefined') return;
-  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
-  window.localStorage.setItem(LANGUAGE_PREFERENCE_SET_KEY, 'true');
+  setStoredValue(LANGUAGE_STORAGE_KEY, language);
+  setStoredValue(LANGUAGE_PREFERENCE_SET_KEY, 'true');
 };
 
 export const formatMessage = (

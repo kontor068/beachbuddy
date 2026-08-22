@@ -2,6 +2,7 @@
 
 @source not "./test-results";
 @source not "./reports";
+@source not "./dist-*";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

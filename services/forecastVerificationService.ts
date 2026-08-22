@@ -1,5 +1,6 @@
 import { DailyForecast, SuitableBeach } from '../types';
 import { wallClockDayKey } from '../utils/athensTime';
+import { setStoredJson } from '../utils/safeStorage';
 
 const FORECAST_SNAPSHOT_KEY = 'beach_buddy_forecast_snapshots';
 const MAX_SNAPSHOTS = 250;
@@ -23,10 +24,9 @@ interface ForecastSnapshot {
 const readSnapshots = (): ForecastSnapshot[] => {
   if (typeof localStorage === 'undefined') return [];
 
-  const stored = localStorage.getItem(FORECAST_SNAPSHOT_KEY);
-  if (!stored) return [];
-
   try {
+    const stored = localStorage.getItem(FORECAST_SNAPSHOT_KEY);
+    if (!stored) return [];
     const parsed = JSON.parse(stored);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -34,9 +34,13 @@ const readSnapshots = (): ForecastSnapshot[] => {
   }
 };
 
+// These snapshots are our own book-keeping — nothing a visitor ever sees. Losing
+// them costs an accuracy measurement; throwing here costs the whole page, which
+// is what happened on 21/08/2026: a full localStorage turned "pick a region" into
+// the root error boundary. setStoredJson never throws.
 const writeSnapshots = (snapshots: ForecastSnapshot[]) => {
   if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(FORECAST_SNAPSHOT_KEY, JSON.stringify(snapshots.slice(-MAX_SNAPSHOTS)));
+  setStoredJson(FORECAST_SNAPSHOT_KEY, snapshots.slice(-MAX_SNAPSHOTS));
 };
 
 export const recordForecastSnapshots = (
