@@ -476,11 +476,16 @@ body {
   opacity: 0.96;
 }
 
+/* No `filter:` here. A filter on this canvas makes the browser re-process the whole
+   map-sized layer on every animated frame, and what it bought was saturate(1.08)
+   contrast(1.04) — a few percent nobody can see. The colours are already in the strokes. */
+/* No `filter:` here. A filter on this canvas makes the browser re-process the whole
+   map-sized layer on every animated frame, and what it bought was saturate(1.08)
+   contrast(1.04) — a few percent nobody can see. The colours are already in the strokes. */
 .wind-flow-canvas {
   display: block;
   width: 100%;
   height: 100%;
-  filter: saturate(1.08) contrast(1.04);
 }
 
 /* The filled part of the hour track. Its WIDTH is written from JS (BeachMap's
