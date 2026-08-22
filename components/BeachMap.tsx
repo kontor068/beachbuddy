@@ -1675,10 +1675,8 @@ type WindParticle = {
   y: number;
   length: number;
   speed: number;
-  width: number;
-  alpha: number;
-  curve: number;
-  phase: number;
+  life: number;
+  maxLife: number;
 };
 
 const directionShortLabels: Record<LanguageCode, Record<string, string>> = {
@@ -1777,8 +1775,6 @@ const WindFlowOverlay: React.FC<{
     const flowRadians = (flowDegrees * Math.PI) / 180;
     const dx = Math.sin(flowRadians);
     const dy = -Math.cos(flowRadians);
-    const px = -dy;
-    const py = dx;
     const tone = getWindFlowTone(windBeaufort);
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const particles: WindParticle[] = [];
@@ -1810,12 +1806,10 @@ const WindFlowOverlay: React.FC<{
       }
 
       const beaufort = typeof windBeaufort === 'number' ? windBeaufort : 3;
-      particle.length = randomRange(preview ? 34 : 46, preview ? 82 : 112);
+      particle.length = randomRange(preview ? 26 : 34, preview ? 58 : 78);
       particle.speed = randomRange(22 + beaufort * 7, 40 + beaufort * 11);
-      particle.width = randomRange(1.15, beaufort >= 5 ? 2.35 : 1.95);
-      particle.alpha = randomRange(0.18, beaufort >= 5 ? 0.46 : 0.38);
-      particle.curve = randomRange(-8, 8);
-      particle.phase = randomRange(0, Math.PI * 2);
+      particle.life = 0;
+      particle.maxLife = randomRange(1.6, 4.2);
     };
 
     const resizeCanvas = () => {
@@ -1840,80 +1834,88 @@ const WindFlowOverlay: React.FC<{
       particles.length = targetCount;
     };
 
-    const drawParticle = (particle: WindParticle, time: number) => {
-      const tailX = particle.x - dx * particle.length;
-      const tailY = particle.y - dy * particle.length;
-      const headX = particle.x;
-      const headY = particle.y;
-      // A comet, not a dash: the trail fades out behind and the nose is the bright end.
-      // The old gradient faded at BOTH ends, so a still frame said nothing about which way
-      // the wind was going — you had to watch it move. This reads at a glance.
-      const gradient = context.createLinearGradient(tailX, tailY, headX, headY);
-      gradient.addColorStop(0, 'rgba(255,255,255,0)');
-      gradient.addColorStop(0.42, tone.color);
-      gradient.addColorStop(0.86, tone.glow);
-      gradient.addColorStop(1, 'rgba(255,255,255,0.95)');
+    /**
+     * Wind, not tadpoles. The old thread was drawn as a comet — a fat bright nose with a tail
+     * thinning away behind it — and at this size that shape reads as something swimming, no
+     * matter how straight it travels. Weather maps draw wind the opposite way: every thread is
+     * the same thin width and the same colour, and what sells the motion is that the picture is
+     * never wiped. Each frame only adds the millimetre a particle just moved and dims whatever
+     * was already on the canvas, so a soft streak grows behind it and dies out on its own.
+     */
+    const trailFadeSeconds = 0.32;
+    const threadWidth = preview ? 1 : 1.15;
 
+    /** Reduced motion: nothing moves, so no streak can build. Draw the threads full-length once. */
+    const drawStaticField = () => {
+      context.clearRect(0, 0, width, height);
+      context.globalCompositeOperation = 'source-over';
+      context.globalAlpha = tone.opacity * 0.5;
+      context.strokeStyle = tone.color;
+      context.lineWidth = threadWidth;
+      context.lineCap = 'butt';
       context.beginPath();
-      for (let step = 0; step <= 5; step += 1) {
-        const t = step / 5;
-        const baseX = tailX + (headX - tailX) * t;
-        const baseY = tailY + (headY - tailY) * t;
-        const bend = Math.sin(particle.phase + time * 0.0014 + t * Math.PI) * particle.curve * Math.sin(t * Math.PI);
-        const x = baseX + px * bend;
-        const y = baseY + py * bend;
-
-        if (step === 0) {
-          context.moveTo(x, y);
-        } else {
-          context.lineTo(x, y);
-        }
-      }
-
-      context.globalAlpha = particle.alpha;
-      context.strokeStyle = gradient;
-      context.lineWidth = particle.width;
-      context.lineCap = 'round';
-      // No canvas shadow here. A blurred stroke is the most expensive thing a 2D canvas can
-      // draw, and this loop asked for up to 128 of them per frame: measured on a throttled
-      // phone the layer ran at ~20 fps with it and a full 60 without, everything else equal.
-      // The halo it used to give is carried by the gradient's own soft tail instead.
+      particles.forEach(particle => {
+        context.moveTo(particle.x - dx * particle.length, particle.y - dy * particle.length);
+        context.lineTo(particle.x, particle.y);
+      });
       context.stroke();
-
-      // The nose. A small bright dot is what makes the direction readable in one look, and
-      // it costs a fraction of what the blur did.
-      context.beginPath();
-      context.arc(headX, headY, particle.width * 0.95, 0, Math.PI * 2);
-      context.fillStyle = 'rgba(255,255,255,0.9)';
-      context.fill();
       context.globalAlpha = 1;
     };
 
     const draw = (time: number) => {
       const deltaSeconds = Math.min(0.05, (time - lastTime) / 1000);
       lastTime = time;
-      context.clearRect(0, 0, width, height);
+
+      if (reducedMotion) {
+        drawStaticField();
+        return;
+      }
+
+      // Dim, don't erase. Tied to real elapsed time so a 30 fps phone and a 120 fps laptop
+      // show streaks of the same length instead of the phone showing stubs.
+      const fade = 1 - Math.exp(-deltaSeconds / trailFadeSeconds);
+      context.globalCompositeOperation = 'destination-out';
+      context.globalAlpha = 1;
+      context.fillStyle = `rgba(0, 0, 0, ${fade.toFixed(3)})`;
+      context.fillRect(0, 0, width, height);
+
       context.globalCompositeOperation = 'source-over';
+      context.globalAlpha = tone.opacity * 0.8;
+      context.strokeStyle = tone.color;
+      context.lineWidth = threadWidth;
+      context.lineCap = 'butt';
 
+      const margin = Math.max(width, height) * 0.22;
+      // One path for the whole field and a single stroke. The old loop built a fresh gradient,
+      // stroked a six-point curve and filled a circle for each of up to 128 particles, every
+      // frame; this is three canvas calls in total no matter how many threads there are.
+      context.beginPath();
       particles.forEach(particle => {
-        drawParticle(particle, time);
+        particle.life += deltaSeconds;
+        const nextX = particle.x + dx * particle.speed * deltaSeconds;
+        const nextY = particle.y + dy * particle.speed * deltaSeconds;
+        const spent =
+          particle.life > particle.maxLife ||
+          nextX < -margin ||
+          nextX > width + margin ||
+          nextY < -margin ||
+          nextY > height + margin;
 
-        if (!reducedMotion) {
-          const crossDrift = Math.sin(time * 0.00045 + particle.phase) * 2.2;
-          particle.x += (dx * particle.speed + px * crossDrift) * deltaSeconds;
-          particle.y += (dy * particle.speed + py * crossDrift) * deltaSeconds;
-
-          const margin = Math.max(width, height) * 0.22;
-          if (
-            particle.x < -margin ||
-            particle.x > width + margin ||
-            particle.y < -margin ||
-            particle.y > height + margin
-          ) {
-            resetParticle(particle, true);
-          }
+        // Recycling has to jump without drawing, or the reset would rule a line right across
+        // the map. The lifetime exists so the field keeps reseeding instead of settling into
+        // fixed lanes that the eye starts to read as stripes.
+        if (spent) {
+          resetParticle(particle, true);
+          return;
         }
+
+        context.moveTo(particle.x, particle.y);
+        context.lineTo(nextX, nextY);
+        particle.x = nextX;
+        particle.y = nextY;
       });
+      context.stroke();
+      context.globalAlpha = 1;
 
       animationFrame = shouldRun() ? requestAnimationFrame(draw) : 0;
     };
