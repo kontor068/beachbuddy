@@ -50,6 +50,7 @@ const ALLOWED = [
   [': windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM', 1, 'ίδιο καπάκι, ο άλλος κλάδος'],
   ['seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),', 1, 'το χρώμα της πινέζας — το resolveConditionTone εφαρμόζει ΜΟΝΟ του το shoreSeaStateM παρακάτω (utils/suitabilityTone.capToneBySeaState)'],
   ['seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),', 1, 'το τσιπ της κάρτας — ίδιος λόγος με το χρώμα'],
+  ['effectiveWaveHeightM, finalExposureLevel, arrivalBeforeGrazingRelief,', 1, 'ο μάρτυρας του φρένου §Γ59: ΙΔΙΑ δαμπάρισμα προς την ακτή, με την άφιξη γυρισμένη στη χθεσινή της τιμή· δεν τυπώνεται και δεν χρωματίζει τίποτα, απαντάει μόνο «θα έλεγες μην κολυμπήσεις;»'],
   ['seaStateWaveM: effectiveWaveHeightM,', 1, 'επιστρέφεται ΩΣ ανοιχτό, με το όνομά του'],
 ];
 

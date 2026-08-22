@@ -38,7 +38,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_GRAZING, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { hasListedSeatracRamp } from '../utils/accessibility';
@@ -2058,6 +2058,24 @@ export const calculateBeachScore = (
     : dampedShoreWaveM;
 
   /**
+   * Ο ΜΑΡΤΥΡΑΣ ΤΟΥ ΦΡΕΝΟΥ ΤΟΥ §Γ59 (22/08/2026) — «πόσο νερό θα λέγαμε ΧΩΡΙΣ τη χαλάρωση της
+   * λοξής θάλασσας». Πριν τις 22/08 η περίπτωση «περνάει ξυστά» ερχόταν εδώ ως `undefined`,
+   * οπότε το να τη γυρίσουμε πίσω σε `undefined` δίνει ΑΚΡΙΒΩΣ τη χθεσινή συμπεριφορά — όχι μια
+   * νέα, αυστηρότερη υπόθεση. Δεν τυπώνεται και δεν χρωματίζει τίποτα: το μόνο που κάνει είναι
+   * να απαντήσει «θα έλεγες μην κολυμπήσεις;» παρακάτω.
+   */
+  const arrivalBeforeGrazingRelief = seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING
+    ? undefined
+    : seaArrivalExposureLevel;
+  const dampedShoreWaveWithoutGrazingReliefM = shoreSeaStateM(
+    effectiveWaveHeightM, finalExposureLevel, arrivalBeforeGrazingRelief,
+    windAssessment.protectionFromCuratedCoveOnly);
+  const shoreWaveWithoutGrazingReliefM = typeof shoreModelWaveM === 'number'
+    ? Math.min(shoreModelWaveM, dampedShoreWaveWithoutGrazingReliefM ?? shoreModelWaveM)
+    : dampedShoreWaveWithoutGrazingReliefM;
+  const grazingSeaReliefApplied = shoreWaveWithoutGrazingReliefM !== shoreWaveM;
+
+  /**
    * ΤΟ ΝΕΡΟ ΣΤΗΝ ΠΑΡΑΛΙΑ — Ο ΕΝΑΣ ΑΡΙΘΜΟΣ ΓΙΑ ΚΑΘΕ ΕΡΩΤΗΣΗ «ΠΟΣΟ ΚΥΜΑ ΕΧΕΙ ΕΔΩ» (22/08/2026).
    *
    * ΤΟ ΠΡΟΒΛΗΜΑ ΠΟΥ ΛΥΝΕΙ, ΜΕ ΝΟΥΜΕΡΑ. Μέσα σε αυτό το αρχείο υπάρχουν ~24 πραγματικές χρήσεις
@@ -2137,7 +2155,8 @@ export const calculateBeachScore = (
     warnings.push({
       type: 'gusty_wind',
       severity: gustKmph >= GUST_WARN_ABS_KMH || (gustSpreadKmph || 0) >= GUST_WARN_SPREAD_KMH ? 'warning' : 'info',
-      message: `Gusts may reach ${Math.round(gustKmph)} km/h.`
+      message: `Gusts may reach ${Math.round(gustKmph)} km/h.`,
+      values: { gustKmph: Math.round(gustKmph) }
     });
     reasons.push('Gusty wind affects beach comfort');
   }
@@ -2258,7 +2277,10 @@ export const calculateBeachScore = (
     warnings.push({
       type: 'direct_swell',
       severity: swellHeightM >= 0.9 ? 'warning' : 'info',
-      message: `Swell direction may send waves into this beach${swellHeightM >= 0.5 ? ` (~${swellHeightM.toFixed(1)} m swell)` : ''}.`
+      message: `Swell direction may send waves into this beach${swellHeightM >= 0.5 ? ` (~${swellHeightM.toFixed(1)} m swell)` : ''}.`,
+      // Ίδιο κατώφλι με το αγγλικό μήνυμα: κάτω από 0,5 μ. δεν λέμε νούμερο, γιατί το νούμερο
+      // θα ήταν πιο σίγουρο απ᾽ όσο είμαστε.
+      values: swellHeightM >= 0.5 ? { swellHeightM: Number(swellHeightM.toFixed(1)) } : undefined
     });
     reasons.push('Direct swell exposure');
   }
@@ -2317,6 +2339,7 @@ export const calculateBeachScore = (
       type: 'afternoon_wind_build',
       severity: afternoonBuild.peakBeaufort >= 5 ? 'warning' : 'info',
       message: `Calmer now, but wind builds to ${afternoonBuild.peakBeaufort} Beaufort by about ${peakHour}:00 — better as a morning visit.`,
+      values: { peakBeaufort: afternoonBuild.peakBeaufort, peakHour },
     });
     reasons.push('Wind builds through the afternoon');
   }
@@ -2468,6 +2491,7 @@ export const calculateBeachScore = (
       type: 'long_period_swell',
       severity: swellSurgePenalty >= SWELL_SURGE_PENALTY_MID ? 'warning' : 'info',
       message: `Long-period swell (~${Math.round(surgePeriodS)} s) breaks harder than its ${surgeHeightM.toFixed(1)} m height suggests — expect a dumping shorebreak.`,
+      values: { swellPeriodS: Math.round(surgePeriodS), swellHeightM: Number(surgeHeightM.toFixed(1)) },
     });
     reasons.push('Long-period swell breaks hard');
   }
@@ -2604,29 +2628,56 @@ export const calculateBeachScore = (
     finalScore = Math.min(finalScore, windAssessment.finalScoreCap);
   }
 
-  let swimmingComfort = swimmingComfortFromScore(
+  /**
+   * Η ετυμηγορία για ΕΝΑ δεδομένο ύψος ακτής. Έγινε συνάρτηση στις 22/08/2026 ώστε το φρένο
+   * του §Γ59 από κάτω να μπορεί να ρωτήσει την ΙΔΙΑ λογική για τον αντίθετο αριθμό, χωρίς
+   * κανένα αντίγραφο που θα μπορούσε να ξεσυγχρονιστεί.
+   */
+  const comfortForShoreHeight = (shoreHeightM: number | undefined): SwimmingComfort => swimmingComfortFromScore(
     swimmingScore,
     effectiveBeaufort,
     effectiveWaveHeightM,
     officialWarningOverride,
-    shoreWaveM,
-    typeof shoreWaveM === 'number'
+    shoreHeightM,
+    typeof shoreHeightM === 'number'
       ? {
           // The same score and the same Beaufort, re-derived from the shore height. Only the two
           // terms the wave itself paid for move: the height penalty on the score and the ≥0,9 m
           // bump on the Beaufort. Wind, gusts, fetch, swell, rain and the afternoon build are all
           // charged exactly as they were — shelter has never bought relief from those and does
           // not now.
-          swimmingScore: swimmingScore + openWaterWavePenalty - waveHeightPenalty(shoreWaveM),
+          swimmingScore: swimmingScore + openWaterWavePenalty - waveHeightPenalty(shoreHeightM),
           effectiveBeaufort: getEffectiveBeaufortForComfort(
             comfortBeaufortInput,
             gustSpreadKmph,
             finalExposureLevel,
-            shoreWaveM
+            shoreHeightM
           ),
         }
       : undefined
   );
+
+  let swimmingComfort = comfortForShoreHeight(shoreWaveM);
+
+  /**
+   * ΤΟ ΜΟΝΟΔΡΟΜΟ ΦΡΕΝΟ ΤΟΥ §Γ59 (22/08/2026) — Η ΛΟΞΗ ΘΑΛΑΣΣΑ ΡΙΧΝΕΙ ΑΡΙΘΜΟ, ΠΟΤΕ ΠΡΟΕΙΔΟΠΟΙΗΣΗ.
+   *
+   * Η έκπτωση «η θάλασσα περνάει ξυστά» (utils/waveCharacter.shoreSeaStateM) κόβει το ύψος στο
+   * μισό. Η κλίμακα άνεσης επιτρέπει στην ακτή να ανεβάσει την ετυμηγορία ΕΝΑ σκαλί — και ένα
+   * σκαλί πάνω από το «μην κολυμπήσεις» είναι το «πρόσεχε». Δηλαδή, χωρίς φρένο, μια γεωμετρική
+   * εικασία θα μπορούσε να σβήσει την πιο βαριά λέξη που λέμε.
+   *
+   * Η μέτρηση της ίδιας μέρας βρήκε 0 τέτοιες περιπτώσεις σε 40.180 βαθμολογήσεις — αλλά σε
+   * ήρεμη μέρα. Σε μελτέμι η ίδια έκπτωση κουνάει το τυπωμένο νούμερο ως και 1,40 μ. (§Γ47),
+   * οπότε το φρένο μπαίνει πριν χρειαστεί, όχι αφού.
+   *
+   * Τρέχει την ΙΔΙΑ `comfortForShoreHeight` με το ύψος που θα είχε η ακτή χωρίς την έκπτωση.
+   * Μονόδρομο: μπορεί μόνο να επαναφέρει το 'avoid_swimming', ποτέ να το αφαιρέσει.
+   */
+  if (grazingSeaReliefApplied && swimmingComfort !== 'avoid_swimming'
+    && comfortForShoreHeight(shoreWaveWithoutGrazingReliefM) === 'avoid_swimming') {
+    swimmingComfort = 'avoid_swimming';
+  }
   // Roadmap #4: a strong afternoon build never leaves a 'good'/'excellent' headline.
   if (afternoonBuild.buildsRough && (swimmingComfort === 'good' || swimmingComfort === 'excellent')) {
     swimmingComfort = 'caution';

@@ -1,5 +1,5 @@
 import type { Beach } from '../types';
-import { SEA_STATE_AMBER_M, seaStateSeverityM } from './waveCharacter';
+import { SEA_ARRIVAL_GRAZING, SEA_STATE_AMBER_M, seaStateSeverityM } from './waveCharacter';
 
 /**
  * ΤΟ ΙΔΙΟ ΚΥΜΑ ΔΕΝ ΣΠΑΕΙ ΤΟ ΙΔΙΟ ΣΕ ΚΑΘΕ ΠΑΡΑΛΙΑ (13/08/2026).
@@ -100,7 +100,12 @@ export const shoreBreaksOnTheBeach = ({
   // shore», and a sector we HAVE judged protected is one the sea does not roll into. Blindness is
   // NOT silence — utils/seaArrival.SEA_ARRIVAL_UNKNOWN matches neither, so a beach whose wave
   // direction we never got is judged on its own steep coarse shore instead of being waved through.
-  if (seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected') return false;
+  // `SEA_ARRIVAL_GRAZING` προστέθηκε 22/08/2026 και ΠΡΙΝ από αυτό ερχόταν εδώ σαν `undefined`.
+  // Μπαίνει ρητά ώστε η συμπεριφορά αυτής της πύλης να μείνει ΑΚΡΙΒΩΣ όπως ήταν: θάλασσα που
+  // περνάει ξυστά δεν σκάει στην ακτή, όπως δεν έσκαγε και χθες.
+  if (seaArrivalExposureLevel === undefined
+    || seaArrivalExposureLevel === 'protected'
+    || seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING) return false;
   if (typeof seaStateWaveM !== 'number' || !Number.isFinite(seaStateWaveM)) return false;
   if (seaStateWaveM < SHORE_BREAK_MIN_WAVE_M) return false;
   /**

@@ -1,6 +1,9 @@
 import type { GeospatialExposureProfile, WindSector } from '../types';
 import { interpolateSectorGeometry } from './windExposureModel';
 import type { SeaArrivalGeometry } from './waveModel';
+import { SEA_ARRIVAL_GRAZING } from './waveCharacter';
+
+export { SEA_ARRIVAL_GRAZING };
 
 /**
  * Where a measured sea is arriving from, in this beach's own frame — the input that lets the
@@ -48,6 +51,22 @@ export const SEA_ARRIVAL_ONSHORE_MIN = 0.3;
  * διαφορετικά — το μάθημα της πύλης κάρτα-vs-πινέζα.
  */
 export const SEA_ARRIVAL_UNKNOWN = 'unknown';
+
+/**
+ * Πάνω από αυτό το συνιστάμενο η θάλασσα «μπαίνει» έστω και λοξά· στο 0 ή κάτω περνάει
+ * παράλληλα στην ακτή ή φεύγει από αυτήν. Είναι ΑΥΣΤΗΡΟΤΕΡΟ από το `SEA_ARRIVAL_ONSHORE_MIN`
+ * (0,3 ≈ 72,5° λοξά) επίτηδες: εκεί το ερώτημα είναι «να αρνηθώ την έκπτωση;», εδώ «να τη
+ * ΔΩΣΩ;», και το δεύτερο πρέπει να ζητάει περισσότερα από το πρώτο.
+ */
+export const SEA_GRAZING_ONSHORE_MAX = 0;
+
+/**
+ * Ακριβώς στις 90° το `Math.cos` δεν επιστρέφει 0 αλλά ~6·10⁻¹⁷ — θετικό. Χωρίς αυτή την
+ * ανοχή η πιο καθαρή περίπτωση «περνάει ξυστά» που υπάρχει θα έπεφτε έξω από τον κανόνα, και
+ * μάλιστα σιωπηλά. 10⁻⁶ αντιστοιχεί σε λιγότερο από ένα δεκάκις χιλιοστό της μοίρας.
+ */
+const GRAZING_COSINE_EPSILON = 1e-6;
+
 
 /**
  * ΤΟ ΚΥΜΑ ΔΕΝ ΕΡΧΕΤΑΙ ΑΠΟ ΕΚΕΙ ΠΟΥ ΦΥΣΑΕΙ (13/08/2026).
@@ -99,6 +118,12 @@ export const resolveSeaArrivalExposureLevel = (
   // here (rather than answering 'protected') is deliberate: silence means "no opinion, keep the
   // old behaviour", while an opinion of 'protected' would be this function actively granting a
   // discount — which is the one thing it must never do.
+  // Ξυστά ή φεύγοντας: η θάλασσα δεν πέφτει πάνω σε αυτή την ακτή — και αυτό είναι ΓΝΩΜΗ,
+  // βγαλμένη από πλήρη γεωμετρία, όχι σιωπή. Λέγεται με το όνομά της ώστε η ακτή να μπορεί να
+  // κερδίσει την έκπτωση, αντί να την παίρνει κρυφά μέσα από ένα `undefined`.
+  if (onshore <= SEA_GRAZING_ONSHORE_MAX + GRAZING_COSINE_EPSILON) return SEA_ARRIVAL_GRAZING;
+  // Ανάμεσα στο 0 και στο 0,3: μπαίνει πολύ λοξά. Δεν αρνούμαστε ό,τι έδινε το προηγούμενο
+  // καθεστώς, αλλά ούτε δίνουμε καινούργιο — σιωπή, όπως πριν.
   if (onshore <= SEA_ARRIVAL_ONSHORE_MIN) return undefined;
 
   const sector = SECTOR_ORDER[((Math.round(waveDirectionDeg / 45) % 8) + 8) % 8];

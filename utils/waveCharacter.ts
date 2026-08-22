@@ -290,6 +290,25 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
  * beaches across the «ήρεμα» line while their pin stays orange. The 0,5 itself has never been
  * measured against anything: there is no external judge for a shoreline (§7δ).
  */
+/**
+ * «Η θάλασσα περνάει ξυστά ή φεύγει» — τρίτη τιμή στο ΙΔΙΟ πεδίο `seaArrivalExposureLevel`,
+ * δίπλα στο `utils/seaArrival.SEA_ARRIVAL_UNKNOWN` και για τον ίδιο ακριβώς λόγο: ταξιδεύει
+ * μόνη της σε κάθε επιφάνεια που διαβάζει την άφιξη της θάλασσας (η κάρτα, η πινέζα, ο τόνος,
+ * το φίλτρο «Ήρεμο νερό»), οπότε καμία δεν μπορεί να απαντήσει διαφορετικά από τις άλλες. Ένα
+ * πέμπτο όρισμα εδώ θα έπρεπε να περαστεί χειροκίνητα σε πέντε σημεία κλήσης — και το ένα που
+ * θα ξεχνιόταν θα ήταν ακριβώς η επόμενη διαφωνία κάρτας-πινέζας.
+ *
+ * Ζει σε ΑΥΤΟ το αρχείο, όχι στο `utils/seaArrival`, επειδή αυτό εδώ δεν κάνει κανένα import:
+ * το `seaArrival` σέρνει μαζί του το γεωμετρικό μοντέλο, και μια λέξη-σταθερά δεν επιτρέπεται
+ * να κάνει βαρύ το φύλλο που τη διαβάζει.
+ *
+ * ΠΡΙΝ ΤΙΣ 22/08/2026 Η ΠΕΡΙΠΤΩΣΗ ΑΥΤΗ ΕΡΧΟΤΑΝ ΩΣ `undefined`. Κάθε έλεγχος
+ * `=== undefined || === 'protected'` πρέπει να δέχεται ΚΑΙ αυτή την τιμή, αλλιώς η αλλαγή
+ * γίνεται σιωπηλά αυστηρότερη κάπου που κανείς δεν κοίταξε. Υπάρχουν ακριβώς δύο τέτοιοι
+ * έλεγχοι: η `shoreSeaStateM` από κάτω και η `utils/shoreBreak.shoreBreaksOnTheBeach`.
+ */
+export const SEA_ARRIVAL_GRAZING = 'grazing';
+
 export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
 
 /**
@@ -335,13 +354,47 @@ export const shoreSeaStateM = (
   // wave direction, no shore facing) says so with utils/seaArrival.SEA_ARRIVAL_UNKNOWN = 'unknown',
   // which deliberately matches NEITHER arm below, so it falls through to full height. Do not
   // "tidy" this into a truthiness check: that would hand the discount back to the blind case.
-  const shelteredFromTheSea = seaArrivalExposureLevel === undefined || seaArrivalExposureLevel === 'protected';
+  const seaGrazesOrDeparts = seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING;
+  const shelteredFromTheSea = seaArrivalExposureLevel === undefined
+    || seaArrivalExposureLevel === 'protected'
+    // Ήταν `undefined` μέχρι τις 22/08/2026 και έπαιρνε την έκπτωση από εκεί. Γράφεται ρητά
+    // ώστε η νέα τιμή να μη γίνει σιωπηλή αυστηροποίηση για τις 'protected'.
+    || seaGrazesOrDeparts;
   // Wind-only shelter buys nothing here: the discount is against the WAVE (see the block above).
   const shelterEarnedAgainstTheWave = !curatedWindOnlyProtection;
+  /**
+   * §Γ59 — Η ΘΑΛΑΣΣΑ ΠΟΥ ΠΕΡΝΑΕΙ ΞΥΣΤΑ ΠΑΙΡΝΕΙ ΤΗΝ ΕΚΠΤΩΣΗ ΠΟΥ ΗΔΗ ΔΙΚΑΙΟΥΤΑΝ (22/08/2026).
+   *
+   * Η ΑΝΑΦΟΡΑ: Καραβοστάσι Ρεθύμνου #680 και Λυγαριά Ηρακλείου #636, από ζωντανή κάμερα, με το
+   * νερό να έρχεται 90-95° από την κάθετο της ακτής — δηλαδή να περνάει παράλληλα. Η εφαρμογή
+   * ΤΟ ΗΞΕΡΕ ήδη (`resolveSeaArrivalExposureLevel` απαντούσε «δεν έρχεται») και χρησιμοποιούσε
+   * τη γνώση **μόνο για να αρνηθεί** την έκπτωση σε μια 'protected' ακτή — ποτέ για να τη δώσει.
+   * Έτσι μια 'partial' ακτή τύπωνε ολόκληρο το νούμερο ενός κελιού 10 χλμ ανοιχτά, για κύμα που
+   * δεν πέφτει πάνω της.
+   *
+   * ΤΟ ΚΑΤΩΦΛΙ ΕΙΝΑΙ ΑΥΣΤΗΡΟΤΕΡΟ ΑΠΟ ΤΗ ΣΙΩΠΗ, ΕΠΙΤΗΔΕΣ. Η σιωπή (`undefined`) σημαίνει ως 72,5°
+   * λοξά· εδώ ζητάμε ≥90° (`utils/seaArrival.SEA_GRAZING_ONSHORE_MAX`). Το «να αρνηθώ έκπτωση»
+   * και το «να δώσω έκπτωση» δεν επιτρέπεται να έχουν το ίδιο κατώφλι.
+   *
+   * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΓΡΑΦΤΕΙ (`scripts/measureGrazingSeaImpact.mjs`, 40.180 βαθμολογήσεις
+   * ζωντανά 22/08): αγγίζει 1.617 ώρες σε 375 παραλίες, διάμεση πτώση 0,17 μ., και **καμία**
+   * σβησμένη προειδοποίηση «μην κολυμπήσεις». Το φαρδύ παράθυρο (72,5° λοξά + εκτεθειμένες)
+   * ΑΠΟΡΡΙΦΘΗΚΕ: έσβηνε 526 τέτοιες προειδοποιήσεις.
+   *
+   * ΤΟ ΦΡΕΝΟ ΔΕΝ ΕΙΝΑΙ ΕΔΩ. Αυτή η συνάρτηση δίνει έναν αριθμό, δεν βγάζει ετυμηγορία· η
+   * εγγύηση «ποτέ να μη σβήσει ένα μην-κολυμπήσεις» επιβάλλεται στο
+   * `services/recommendationService` (αναζήτησε `grazingSeaReliefApplied`), όπου υπάρχει η
+   * ετυμηγορία και για τους δύο αριθμούς. Η μέτρηση έδειξε 0 τέτοιες περιπτώσεις σε ήρεμη
+   * μέρα — αλλά η ίδια έκπτωση σε μελτέμι κουνάει το τυπωμένο νούμερο ως και 1,40 μ. (§Γ47),
+   * οπότε το φρένο είναι ασφάλεια, όχι διακοσμητικό.
+   */
+  const grazingSeaRelief = exposureLevel === 'partial' && seaGrazesOrDeparts && shelterEarnedAgainstTheWave;
   const damping = exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave
     ? SHORE_DAMPING_BY_EXPOSURE.protected
-    : exposureLevel === 'partial'
-      ? SHORE_DAMPING_BY_EXPOSURE.partial
-      : SHORE_DAMPING_BY_EXPOSURE.exposed;
+    : grazingSeaRelief
+      ? SHORE_DAMPING_BY_EXPOSURE.protected
+      : exposureLevel === 'partial'
+        ? SHORE_DAMPING_BY_EXPOSURE.partial
+        : SHORE_DAMPING_BY_EXPOSURE.exposed;
   return Number((openWaterSeaStateM * damping).toFixed(2));
 };
