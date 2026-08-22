@@ -448,14 +448,60 @@ if (!cardUsesReadout) {
   );
 }
 
+/**
+ * ⚠️ 22/08/2026 — Η ΑΠΑΙΤΗΣΗ ΑΝΤΙΚΑΤΑΣΤΑΘΗΚΕ ΓΙΑ ΔΕΥΤΕΡΗ ΦΟΡΑ ΑΠΟ ΙΣΧΥΡΟΤΕΡΗ, ΔΕΝ ΣΒΗΣΤΗΚΕ.
+ *
+ * Μέχρι σήμερα ζητούσαμε «το κελί του κύματος να ζωγραφίζει το ΝΟΥΜΕΡΟ» (`text: cardWaveText`),
+ * γιατί το νούμερο ήταν αυτό που ζούσε σε `title`/`aria-label` και δεν σχεδιαζόταν ποτέ σε
+ * τηλέφωνο. Από σήμερα η κάρτα δεν τυπώνει ΚΑΘΟΛΟΥ νούμερο: το ×0,5, ο εκθέτης 0,75 και το SMB
+ * δεν έχουν εξωτερικό κριτή, οπότε το εκατοστό υπόσχεται ακρίβεια που δεν έχουμε, και η ίδια η
+ * βίβλος λέει «ο επισκέπτης δεν διαβάζει εκατοστά, διαβάζει ΖΩΝΗ». Το κελί κρατά τη ΖΩΝΗ.
+ *
+ * Άρα ο έλεγχος δεν ρωτά πια «ζωγραφίζεται το νούμερο;» αλλά τρία αυστηρότερα:
+ *   1. Το κελί ζωγραφίζει τη ΛΕΞΗ (`text: cardWaveWord`) — όχι σιωπή, όχι μόνο εικονίδιο.
+ *   2. Η λέξη βγαίνει από ΤΟ ΙΔΙΟ readout με το νούμερο, με το νούμερο ως δίχτυ. Δεύτερο
+ *      λεξιλόγιο μέσα στην κάρτα θα ξεσυγχρονιζόταν από το ταμπελάκι της πινέζας.
+ *   3. Το νούμερο, όπου κι αν επιβιώνει μέσα στο κελί (title/aria), δεν κυκλοφορεί ΠΟΤΕ γυμνό:
+ *      πάει πάντα μαζί με το `cardWaveLabel` του — αυτό ήταν όλο το νόημα της 13/08.
+ */
 const waveItemBlock = cardSource.match(/if\s*\(cardWaveText\)\s*\{[\s\S]*?\n\s*\}/);
 if (!waveItemBlock) {
   failures.push('components/BeachCard.tsx: the podium wave item is no longer pushed from cardWaveText.');
-} else if (!/\btext:\s*cardWaveText\b/.test(waveItemBlock[0])) {
-  failures.push(
-    'components/BeachCard.tsx: the podium wave chip no longer renders cardWaveText as its visible text. '
-    + 'A label that lives only in title/aria-label is invisible on a phone — the exact defect this check exists for.'
-  );
+} else {
+  if (!/\btext:\s*cardWaveWord\b/.test(waveItemBlock[0])) {
+    failures.push(
+      'components/BeachCard.tsx: the podium wave chip no longer renders cardWaveWord as its visible text. '
+      + 'A sea signal that lives only in title/aria-label is invisible on a phone — the exact defect this check exists for.'
+    );
+  }
+  if (!/const cardWaveWord\s*=\s*conditionsFeel\?\.waveWord\s*\?\?\s*cardWaveValueText\b/.test(cardSource)) {
+    failures.push(
+      'components/BeachCard.tsx: the band word painted on the card no longer comes from the same readout as the '
+      + 'metre figure (conditionsFeel.waveWord, with cardWaveValueText as the net). A second vocabulary inside the '
+      + 'card is how the card and the map popup would start describing the same water differently.'
+    );
+  }
+  // Γραμμή-γραμμή, όχι με regex πάνω σε template literals: μια έκφραση που δεν ταιριάζει ποτέ
+  // είναι νεκρός έλεγχος που δείχνει πράσινος. Γι' αυτό ελέγχεται ΚΑΙ ότι το μπλοκ έχει όντως
+  // ιδιότητες να διαβάσει — αν πάψει να έχει, η πύλη το λέει αντί να σωπάσει.
+  const attributeLines = waveItemBlock[0]
+    .split('\n')
+    .filter(line => /^\s*(title|ariaLabel):/.test(line));
+  if (attributeLines.length === 0) {
+    failures.push(
+      'components/BeachCard.tsx: the podium wave chip has neither title nor aria-label. A screen reader would '
+      + 'hear the band word with nothing saying it is about the sea.'
+    );
+  }
+  for (const line of attributeLines) {
+    if (/cardWaveValueText/.test(line) && !/cardWaveLabel/.test(line)) {
+      failures.push(
+        `components/BeachCard.tsx: «${line.trim()}» carries the metre figure with no name beside it. `
+        + 'A bare number is the 13/08/2026 defect: two cards printed «1,4 μ.» and «~0,2 μ.» for two different waters '
+        + 'with nothing saying they were different.'
+      );
+    }
+  }
 }
 
 // The rendered span must still paint `item.text`. If someone drops it back to icon-only, or moves the

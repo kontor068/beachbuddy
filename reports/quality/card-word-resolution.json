@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-08-22T20:55:07.557Z",
+  "source": {
+    "cache": ".tmp/colour-cause-split-cache.json",
+    "codeStamp": "42747-168940-25798-14326@2026-08-22@d5@r2"
+  },
+  "scope": {
+    "regions": 110,
+    "screens": 550,
+    "beachDays": 14365
+  },
+  "meaningfulSeaM": 0.25,
+  "topWindBand": {
+    "beachDays": 161,
+    "shareOfAll": 0.01120779672815872,
+    "atOrAboveRedBeaufort": 0,
+    "screensWithBand": 5,
+    "screensHidingAColourStep": 0,
+    "medianSpreadBft": 0,
+    "p95SpreadBft": 0,
+    "onRecommendedSurface": {
+      "beachDays": 97,
+      "atOrAboveRedBeaufort": 0
+    }
+  },
+  "topWaveBand": {
+    "beachDays": 88,
+    "shareOfAll": 0.006126000696136443,
+    "screensWithBand": 18,
+    "screensSpreadOverMeaningful": 8,
+    "medianSpreadM": 0.1,
+    "p95SpreadM": 0.42,
+    "onRecommendedSurface": {
+      "beachDays": 0
+    }
+  },
+  "screenSpread": {
+    "medianBft": 0,
+    "p95Bft": 0,
+    "maxBft": 0,
+    "screensWhereSpreadIsZero": 550,
+    "screensTouchingTopBand": 5,
+    "screensStraddlingSixAndSeven": 0
+  },
+  "ties": {
+    "screens": 544,
+    "visibleBeaches": 12855,
+    "beachesSharingTheirWordsWithAnother": 12693,
+    "pairsCompared": 298684,
+    "tiedPairs": 186304,
+    "tiedPairsHidingAMeaningfulSeaGap": 877,
+    "medianSeaGapBehindATieM": 0.03,
+    "p95SeaGapBehindATieM": 0.15,
+    "medianWindGapBehindATieBft": 0,
+    "p95WindGapBehindATieBft": 0
+  },
+  "structuralProof": {
+    "redAtSevenBeaufort": true,
+    "redNeverInSuitableList": true,
+    "topBandIsSingleValuedWhereItRecommends": true,
+    "notes": []
+  },
+  "gates": {
+    "colourStepHiddenShare": 0,
+    "colourStepVerdict": "ΚΛΕΙΣΤΟ ΜΕ ΑΠΟΔΕΙΞΗ ΚΩΔΙΚΑ (στις προτάσεις «Δυνατός αέρας» = ακριβώς 6 Μποφόρ)",
+    "windHarnessIsRegionUniform": true,
+    "meaningfulSeaGapBehindTiesShare": 0.004707360013740982,
+    "tieVerdict": "ΑΔΡΑΝΕΣ",
+    "tieRateIsAnUpperBound": true
+  }
+}

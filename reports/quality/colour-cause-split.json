@@ -1,219 +1,139 @@
 {
-  "generatedAt": "2026-08-15T10:43:36.050Z",
+  "generatedAt": "2026-08-22T20:48:03.197Z",
   "days": 5,
   "flatWaterM": 0.4,
   "dominance": 0.8,
   "regionsAnswered": 110,
   "regionsAsked": 110,
-  "rows": 14310,
+  "rows": 14365,
   "screens": 550,
   "byCause": {
-    "wind": 13329,
-    "verdict": 981
+    "wind": 11362,
+    "sea": 1394,
+    "verdict": 1609
   },
-  "sixPlus": 616,
-  "sixPlusFlat": 380,
+  "sixPlus": 161,
+  "sixPlusFlat": 22,
   "perTone": {
-    "red": {
-      "beaches": 602,
-      "wind": 602,
+    "blue": {
+      "beaches": 7466,
+      "wind": 7466,
       "sea": 0,
+      "verdict": 0,
+      "flat": 7466,
+      "flatOpen": 6294,
+      "windAndFlat": 7466,
+      "avoid": 0,
+      "offshore": 0,
+      "sixPlus": 0
+    },
+    "yellow": {
+      "beaches": 3660,
+      "wind": 2340,
+      "sea": 1320,
+      "verdict": 0,
+      "flat": 1901,
+      "flatOpen": 1396,
+      "windAndFlat": 1901,
+      "avoid": 0,
+      "offshore": 212,
+      "sixPlus": 0
+    },
+    "orange": {
+      "beaches": 2915,
+      "wind": 1280,
+      "sea": 26,
+      "verdict": 1609,
+      "flat": 163,
+      "flatOpen": 7,
+      "windAndFlat": 110,
+      "avoid": 2667,
+      "offshore": 28,
+      "sixPlus": 97
+    },
+    "red": {
+      "beaches": 324,
+      "wind": 276,
+      "sea": 48,
       "verdict": 0,
       "flat": 0,
       "flatOpen": 0,
       "windAndFlat": 0,
-      "avoid": 602,
-      "offshore": 3,
-      "sixPlus": 145
-    },
-    "orange": {
-      "beaches": 2896,
-      "wind": 1915,
-      "sea": 0,
-      "verdict": 981,
-      "flat": 928,
-      "flatOpen": 12,
-      "windAndFlat": 923,
-      "avoid": 2356,
-      "offshore": 1,
-      "sixPlus": 471
-    },
-    "yellow": {
-      "beaches": 2280,
-      "wind": 2280,
-      "sea": 0,
-      "verdict": 0,
-      "flat": 2209,
-      "flatOpen": 1816,
-      "windAndFlat": 2209,
-      "avoid": 0,
-      "offshore": 393,
-      "sixPlus": 0
-    },
-    "blue": {
-      "beaches": 8532,
-      "wind": 8532,
-      "sea": 0,
-      "verdict": 0,
-      "flat": 8208,
-      "flatOpen": 8208,
-      "windAndFlat": 8208,
-      "avoid": 0,
-      "offshore": 0,
-      "sixPlus": 0
+      "avoid": 324,
+      "offshore": 2,
+      "sixPlus": 64
     }
   },
-  "orangeFlatShare": 0.32,
+  "orangeFlatShare": 0.056,
   "gate": "GO",
-  "groups": 851,
+  "groups": 1079,
   "formTotals": {
-    "σιωπή": 240,
-    "wind-pulls-out": 129,
-    "wind-not-wave": 482
+    "wind-not-wave": 542,
+    "wave-not-wind": 191,
+    "σιωπή": 320,
+    "wind-pulls-out": 12,
+    "split": 14
   },
   "formsByTone": {
-    "red": {
-      "σιωπή": 77
-    },
-    "orange": {
-      "wind-pulls-out": 75,
-      "σιωπή": 150,
-      "wind-not-wave": 10
+    "blue": {
+      "wind-not-wave": 403
     },
     "yellow": {
-      "wind-pulls-out": 54,
-      "wind-not-wave": 126,
-      "σιωπή": 2
+      "wave-not-wind": 180,
+      "σιωπή": 34,
+      "wind-not-wave": 139,
+      "wind-pulls-out": 7,
+      "split": 14
     },
-    "blue": {
-      "wind-not-wave": 346,
-      "σιωπή": 11
+    "orange": {
+      "σιωπή": 256,
+      "wind-pulls-out": 5,
+      "wave-not-wind": 2
+    },
+    "red": {
+      "σιωπή": 30,
+      "wave-not-wind": 9
     }
   },
-  "screensWithLine": 529,
-  "screensWithRepeat": 76,
+  "screensWithLine": 511,
+  "screensWithRepeat": 61,
   "policies": {
     "open": {
-      "screensWithLine": 529,
-      "screensWithRepeat": 76,
+      "screensWithLine": 511,
+      "screensWithRepeat": 61,
       "printed": {
-        "orange/wind-pulls-out": 75,
-        "yellow/wind-not-wave": 126,
-        "blue/wind-not-wave": 312,
-        "yellow/wind-pulls-out": 12,
-        "orange/wind-not-wave": 10
+        "yellow/wave-not-wind": 173,
+        "blue/wind-not-wave": 354,
+        "yellow/wind-not-wave": 139,
+        "yellow/wind-pulls-out": 2,
+        "red/wave-not-wind": 9,
+        "yellow/split": 14,
+        "orange/wind-pulls-out": 5,
+        "orange/wave-not-wind": 1
       },
-      "silencedByRepeat": 76,
-      "lines": 535
+      "silencedByRepeat": 62,
+      "lines": 697
     },
     "restricted": {
-      "screensWithLine": 91,
-      "screensWithRepeat": 42,
+      "screensWithLine": 15,
+      "screensWithRepeat": 1,
       "printed": {
-        "orange/wind-pulls-out": 75,
-        "yellow/wind-pulls-out": 12,
-        "orange/wind-not-wave": 10
+        "red/wave-not-wind": 9,
+        "orange/wind-pulls-out": 5,
+        "orange/wave-not-wind": 1
       },
-      "silencedByRepeat": 42,
-      "lines": 97
+      "silencedByRepeat": 1,
+      "lines": 15
     }
   },
   "examples": [
     {
-      "region": "attica-aegina",
-      "name": "Αγία Μαρίνα",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Αύρα",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Παραλία Κολώνα",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Παραλία Μαραθώνα Α",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Παραλία Μαραθώνα Β",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Παραλία Σαρπά",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Τούρλος",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-aegina",
-      "name": "Αίγινα Μαραθώνας",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
       "region": "attica-east-attica-mainland",
       "name": "Θέρετρο Αξιωματικών Ναυτικού",
-      "day": 0,
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
+      "shoreM": 0.28,
       "cardShoreM": 0.23,
       "avoid": false,
       "offshore": false
@@ -221,121 +141,209 @@
     {
       "region": "attica-east-attica-mainland",
       "name": "Παραλία Μαραθώνα",
-      "day": 0,
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
+      "shoreM": 0.36,
+      "cardShoreM": 0.28,
+      "avoid": false,
+      "offshore": false
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "name": "Lagonissi Grand Resort",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 5,
+      "shoreM": 0.32,
+      "cardShoreM": 0.25,
+      "avoid": false,
+      "offshore": false
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "name": "Κεντρική παραλία Σαρωνίδας",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 5,
+      "shoreM": 0.29,
       "cardShoreM": 0.23,
       "avoid": false,
       "offshore": false
     },
     {
       "region": "attica-east-attica-mainland",
-      "name": "Παραλία Αρτέμιδας",
-      "day": 0,
+      "name": "Παραλία Μαύρο Λιθάρι",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
+      "shoreM": 0.29,
       "cardShoreM": 0.23,
       "avoid": false,
       "offshore": false
     },
     {
       "region": "attica-east-attica-mainland",
-      "name": "Παραλία Βραυρώνας",
-      "day": 0,
+      "name": "Θυμάρι",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
+      "shoreM": 0.35,
+      "cardShoreM": 0.26,
       "avoid": false,
       "offshore": false
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Ερωτοσπηλιά",
-      "day": 0,
+      "region": "north-aegean-chios",
+      "name": "Μάναγρος",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.28,
+      "cardShoreM": 0.11,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Παραλία Τραχύλι",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.28,
+      "cardShoreM": 0.28,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Ελίντα",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Μακριά Άμμος",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Παραλία Αυλωνία",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Αυλωνιά Πυργίου",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.38,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Παραλία Βρουλίδια",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Παραλία Κάτω Φανά",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Παραλία Καρύντα",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-chios",
+      "name": "Τηγάνι",
+      "day": 2,
+      "tone": "orange",
+      "beaufort": 6,
+      "shoreM": 0.32,
+      "cardShoreM": 0.1,
+      "avoid": true,
+      "offshore": false
+    },
+    {
+      "region": "north-aegean-lemnos",
+      "name": "Αυλώνας",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
+      "shoreM": 0.3,
+      "cardShoreM": 0.27,
       "avoid": false,
       "offshore": false
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Παραλία Αγίου Σπυρίδωνα",
-      "day": 0,
+      "region": "north-aegean-lemnos",
+      "name": "Καρβουνόλακκα",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
+      "shoreM": 0.33,
+      "cardShoreM": 0.1,
       "avoid": false,
       "offshore": false
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Αυλάκι",
-      "day": 0,
+      "region": "north-aegean-lemnos",
+      "name": "Καταπόδι",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
+      "shoreM": 0.33,
+      "cardShoreM": 0.32,
       "avoid": false,
       "offshore": false
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Πανόραμα",
-      "day": 0,
+      "region": "north-aegean-lemnos",
+      "name": "Κόκκινα (βόρειος όρμος)",
+      "day": 2,
       "tone": "orange",
       "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Αρμυρίκια",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Πόρτο Εννέα",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Καλοπήγαδο",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
-      "avoid": false,
-      "offshore": false
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Τσονίμα",
-      "day": 0,
-      "tone": "orange",
-      "beaufort": 5,
-      "shoreM": 0.23,
-      "cardShoreM": 0.23,
+      "shoreM": 0.35,
+      "cardShoreM": 0.29,
       "avoid": false,
       "offshore": false
     }

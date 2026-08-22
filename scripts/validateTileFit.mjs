@@ -417,6 +417,25 @@ try {
   //
   // Η ένεση δεν διαγράφεται από το ιστορικό επίτηδες: αν ξαναμπεί ποτέ λέξη δίπλα στον αριθμό,
   // αυτό το μπλοκ πρέπει να ξαναγίνει injection — αλλιώς θα μετράει 20 φορές τη σύντομη μορφή.
+  //
+  // ✅ 22/08/2026 — Η ΕΝΕΣΗ ΞΑΝΑΜΠΗΚΕ, ΑΚΡΙΒΩΣ ΟΠΩΣ ΤΟ ΖΗΤΟΥΣΕ Η ΠΑΡΑΠΑΝΩ ΠΑΡΑΓΡΑΦΟΣ. Τα νούμερα
+  // έφυγαν από την κάρτα και στη θέση τους έμεινε Η ΛΕΞΗ. Οι λέξεις ΔΕΝ έχουν σταθερό πλάτος
+  // όπως τα νούμερα: το ζωντανό fixture (Πάρος, βοριάς 5 Μπφ) ζωγραφίζει «Πολύς αέρας» και μία
+  // μόνο λέξη κύματος, ενώ η χειρότερη περίπτωση του λεξιλογίου είναι η γαλλική «presque pas de
+  // vagues» — 21 χαρακτήρες, σχεδόν διπλάσιοι. Χωρίς ένεση αυτή η πύλη θα μετρούσε 40 φορές τη
+  // σύντομη μορφή και θα έλεγε «πράσινο» για λέξη που κόβεται.
+  //
+  // Οι λέξεις είναι αντίγραφο του `utils/conditionsFeelPhrase.ts` (FEEL_VOCABULARY). Δεν
+  // εισάγονται: αυτό το αρχείο τρέχει σε Playwright χωρίς transpiler για .ts. Το ξεσυγχρόνισμα
+  // το πιάνει το `validateConditionsFeelPhrase.ts`, που κόβει κάθε λέξη πάνω από 21 χαρακτήρες
+  // ακριβώς επειδή δεν θα τη μετρούσε κανείς εδώ.
+  const WORST_CASE_WORDS = {
+    gr: 'σχεδόν χωρίς κύμα',
+    en: 'noticeable waves',
+    fr: 'presque pas de vagues',
+    de: 'spürbare Wellen',
+    it: 'quasi senza onde',
+  };
   {
     const PODIUM_ROUTES = [['gr', '/el/'], ['en', '/'], ['de', '/de/'], ['fr', '/fr/'], ['it', '/it/']];
     let podiumMeasured = 0;
@@ -438,31 +457,64 @@ try {
           continue;
         }
         await wait(1200);
-        const probe = await page.evaluate(() => {
-          const chip = document.querySelector('[data-tilefit="podium-why-wave"]');
-          const spans = chip.querySelectorAll('span');
-          const textSpan = spans[spans.length - 1];
-          return {
-            natural: (textSpan.textContent || '').trim(),
-            chipScroll: chip.scrollWidth, chipClient: chip.clientWidth,
-            textScroll: textSpan.scrollWidth, textClient: textSpan.clientWidth,
-            rowScroll: chip.parentElement.scrollWidth, rowClient: chip.parentElement.clientWidth,
-          };
-        });
-        // Το chip πρέπει να έχει ΚΑΤΙ μέσα: ένα άδειο span δεν ξεχειλίζει ποτέ και θα περνούσε.
-        if (!probe.natural) {
-          failures.push(`${lang} @${width}px: the podium wave chip is empty — nothing was measured`);
-        }
-        podiumMeasured += 1;
-        measured += 1;
-        if (probe.textScroll > probe.textClient + 1
-          || probe.chipScroll > probe.chipClient + 1
-          || probe.rowScroll > probe.rowClient + 1) {
-          failures.push(
-            `${lang} @${width}px: the podium wave chip cannot hold «${probe.natural}» `
-            + `(text ${probe.textScroll}/${probe.textClient}px · chip ${probe.chipScroll}/${probe.chipClient}px `
-            + `· row ${probe.rowScroll}/${probe.rowClient}px). The wave figure would be cut.`
-          );
+        // ΚΑΙ ΤΑ ΔΥΟ ΚΕΛΙΑ: από τις 22/08 και ο άνεμος κρατά λέξη («Δυνατός αέρας»), όχι «6 Μπφ».
+        // Μέχρι τότε το κελί του ανέμου δεν μετρήθηκε ποτέ — δεν είχε τι να κοπεί.
+        for (const cell of ['wind', 'wave']) {
+          const probe = await page.evaluate(([key, injected]) => {
+            const chip = document.querySelector(`[data-tilefit="podium-why-${key}"]`);
+            if (!chip) return null;
+            const spans = chip.querySelectorAll('span');
+            const textSpan = spans[spans.length - 1];
+            const natural = (textSpan.textContent || '').trim();
+            const read = () => ({
+              chipScroll: chip.scrollWidth, chipClient: chip.clientWidth,
+              textScroll: textSpan.scrollWidth, textClient: textSpan.clientWidth,
+              rowScroll: chip.parentElement.scrollWidth, rowClient: chip.parentElement.clientWidth,
+              height: textSpan.getBoundingClientRect().height,
+            });
+            const live = read();
+            // Η ΕΝΕΣΗ: η μακρύτερη λέξη που μπορεί να παραχθεί στη γλώσσα, στο ΙΔΙΟ κελί.
+            textSpan.textContent = injected;
+            const worst = read();
+            textSpan.textContent = natural;
+            return { natural, injected, live, worst };
+          }, [cell, WORST_CASE_WORDS[lang]]);
+
+          if (!probe) {
+            failures.push(`${lang} @${width}px: no podium ${cell} chip — nothing was measured`);
+            continue;
+          }
+          // Το chip πρέπει να έχει ΚΑΤΙ μέσα: ένα άδειο span δεν ξεχειλίζει ποτέ και θα περνούσε.
+          if (!probe.natural) {
+            failures.push(`${lang} @${width}px: the podium ${cell} chip is empty — nothing was measured`);
+          }
+          // Η ΛΕΞΗ, ΟΧΙ ΝΟΥΜΕΡΟ: αν το κελί ξαναρχίσει να τυπώνει «6 Μπφ» ή «~0,1 μ.», η απόφαση
+          // της 22/08 έχει γυρίσει πίσω σιωπηλά και καμία άλλη πύλη δεν θα το έπιανε.
+          if (/[0-9]/.test(probe.natural)) {
+            failures.push(`${lang} @${width}px: the podium ${cell} chip prints a figure again — «${probe.natural}»`);
+          }
+          podiumMeasured += 1;
+          measured += 1;
+          for (const [what, m] of [['live', probe.live], ['worst-case', probe.worst]]) {
+            const text = what === 'live' ? probe.natural : probe.injected;
+            if (m.textScroll > m.textClient + 1
+              || m.chipScroll > m.chipClient + 1
+              || m.rowScroll > m.rowClient + 1) {
+              failures.push(
+                `${lang} @${width}px: the podium ${cell} chip cannot hold the ${what} «${text}» `
+                + `(text ${m.textScroll}/${m.textClient}px · chip ${m.chipScroll}/${m.chipClient}px `
+                + `· row ${m.rowScroll}/${m.rowClient}px). The word would be cut.`
+              );
+            }
+            // Το `line-clamp-2` κόβει ΣΙΩΠΗΛΑ στην τρίτη σειρά: δεν ξεχειλίζει, άρα ο έλεγχος
+            // πλάτους από πάνω δεν θα το έπιανε ποτέ. Κείμενο 11 px σε δύο σειρές ≈ 26 px.
+            if (m.height > 30) {
+              failures.push(
+                `${lang} @${width}px: the podium ${cell} chip needs ${Math.round(m.height)}px for the `
+                + `${what} «${text}» — that is a third line, and line-clamp-2 eats it silently.`
+              );
+            }
+          }
         }
         await ctx.close();
       }

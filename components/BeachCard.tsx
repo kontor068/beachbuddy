@@ -1902,30 +1902,47 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    * με ίσες στήλες βάζει τον διαχωριστή στο ίδιο σημείο σε όλες τις κάρτες του καρουζέλ.
    */
   /**
-   * ΤΑ ΝΟΥΜΕΡΑ ΑΠΟΚΤΟΥΝ ΕΠΙΚΕΦΑΛΙΔΑ ΣΕ ΛΕΞΕΙΣ (Μίλτος, 14/08/2026).
-   *
-   * «5 Μπφ | ~0,1 μ.» είναι δύο σωστές μετρήσεις που ζητούν από τον επισκέπτη να κάνει μόνος
-   * του τη μετάφραση — και το ζευγάρι λέει κάτι που κανένα από τα δύο δεν λέει χωριστά:
-   * φυσάει δυνατά ΚΑΙ η θάλασσα μπροστά σου είναι λάδι. Η φράση μπαίνει ΠΑΝΩ από τα νούμερα,
-   * δεν τα αντικαθιστά: ο κανόνας της §7δ (τα νούμερα μένουν στην οθόνη) και ο κανόνας του
-   * βάθρου (αριθμός, όχι ετυμηγορία) ισχύουν και οι δύο — απλώς τώρα υπάρχει και μια γραμμή
-   * που διαβάζεται σε ένα δευτερόλεπτο. Λεξιλόγιο και κατώφλια: utils/conditionsFeelPhrase.
+   * ΤΑ ΝΟΥΜΕΡΑ ΑΠΕΚΤΗΣΑΝ ΕΠΙΚΕΦΑΛΙΔΑ ΣΕ ΛΕΞΕΙΣ (Μίλτος, 14/08/2026) — ΚΑΙ ΣΤΙΣ 22/08 Η ΛΕΞΗ
+   * ΕΜΕΙΝΕ ΜΟΝΗ ΤΗΣ ΕΔΩ. Το ιστορικό μένει γιατί εξηγεί ΓΙΑΤΙ υπάρχει το λεξιλόγιο: «5 Μπφ |
+   * ~0,1 μ.» είναι δύο σωστές μετρήσεις που ζητούν από τον επισκέπτη να κάνει μόνος του τη
+   * μετάφραση, και το ζευγάρι λέει κάτι που κανένα από τα δύο δεν λέει χωριστά — φυσάει δυνατά
+   * ΚΑΙ η θάλασσα μπροστά σου είναι λάδι. Λεξιλόγιο και κατώφλια: utils/conditionsFeelPhrase.
+   * Ο όρος της §7δ (τα δύο νούμερα με τα ονόματά τους) ζει στη ΣΕΛΙΔΑ της παραλίας.
    */
-  // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το `cardSeaStateM`, που σε όρμο διαβάζει
-  // το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.». Το δένει η
+  // Η λέξη περιγράφει το νούμερο της ΑΚΤΗΣ — ποτέ το `cardSeaStateM`, που σε όρμο διαβάζει
+  // το ανοιχτό νερό και θα έλεγε «μεγάλο κύμα» εκεί που η πινέζα τυπώνει «~0,1 μ.». Το δένει η
   // `buildBeachConditionsReadout`, μία φορά για κάρτα και ταμπελάκι μαζί.
   const conditionsFeel = conditionsReadout.feel;
-  const conditionsFeelPhrase = conditionsFeel?.phrase;
+  /**
+   * ΟΙ ΛΕΞΕΙΣ ΕΙΝΑΙ ΠΛΕΟΝ ΤΟ ΠΕΡΙΕΧΟΜΕΝΟ ΤΗΣ ΚΑΡΤΑΣ, ΟΧΙ Η ΕΠΙΚΕΦΑΛΙΔΑ ΤΟΥ (Μίλτος, 22/08/2026).
+   *
+   * Από τις 14/08 η κάρτα έγραφε «Δυνατός αέρας» πάνω από «6 Μπφ» και «Θάλασσα λάδι» πάνω από
+   * «~0,1 μ.» — η λέξη ως επικεφαλίδα, το νούμερο ως απόδειξη από κάτω. Το νούμερο του κύματος
+   * όμως υπόσχεται ακρίβεια εκατοστού που η ίδια η βίβλος δηλώνει ότι ΔΕΝ έχουμε: το ×0,5 της
+   * προστατευμένης, ο εκθέτης 0,75 και το SMB δεν έχουν κανέναν εξωτερικό κριτή (§ΤΙ ΔΕΝ ΕΙΝΑΙ
+   * ΒΑΘΜΟΝΟΜΗΜΕΝΟ), και ο ΙΔΙΟΣ ο φράχτης ζώνης του ΣΤΑΔΙΟΥ 7 το λέει ρητά: «ο επισκέπτης δεν
+   * διαβάζει εκατοστά, διαβάζει ΖΩΝΗ». Η ζώνη είναι ακριβώς αυτό που λέει η λέξη.
+   *
+   * Άρα η κάρτα κρατά ΜΟΝΟ τη λέξη. Το νούμερο δεν σβήνεται — μετακομίζει ένα πάτημα πιο μέσα,
+   * εκεί που κάποιος το ζήτησε: το ταμπελάκι της πινέζας τυπώνει «λέξη · νούμερο» (BeachMap),
+   * και η σελίδα της παραλίας κρατά ΚΑΙ ΤΑ ΔΥΟ μεγέθη με τα ονόματά τους — εκεί ζει ο όρος της
+   * §7δ, σε οθόνη που έχει τον χώρο γι' αυτόν (BeachAnswerHero).
+   *
+   * ⚠️ ΔΥΟ ΚΕΛΙΑ, ΟΧΙ ΜΙΑ ΠΡΟΤΑΣΗ. Η ενωμένη φράση («Πολύς αέρας αλλά θάλασσα λάδι») δοκιμάστηκε
+   * και βγήκε στις 20/08 από τον υπολογιστή για συγκεκριμένο λόγο: αφήνει τον αναγνώστη να
+   * διαβάσει «αέρας» και «κύμα» σαν ΕΝΑ πράγμα, που είναι ακριβώς η παρανόηση του §Γ14. Ο αέρας
+   * και η θάλασσα μένουν δύο ξεχωριστά σήματα, με το δικό τους εικονίδιο το καθένα.
+   */
+  /** Η λέξη, με το νούμερο ως δίχτυ: αν το λεξιλόγιο σωπάσει (μη-πεπερασμένα μποφόρ), το κελί
+   *  δεν μένει ποτέ άδειο. Άδειο κελί δεν το πιάνει καμία πύλη πλάτους. */
+  const cardWindWord = conditionsFeel?.windWord ?? `${windBeaufort} ${beaufortUnitLabel}`;
+  const cardWaveWord = conditionsFeel?.waveWord ?? cardWaveValueText;
   const podiumWhyItems: Array<{
     key: string;
     icon: React.ReactNode;
     text: string;
     title?: string;
     ariaLabel?: string;
-    truncate?: boolean;
-    /** Η λέξη-αίσθηση ΠΑΝΩ από ΤΟ ΔΙΚΟ ΤΗΣ νούμερο (όχι μία ενιαία γραμμή πάνω από τα δύο μαζί —
-     *  αυτό διάβαζε σαν να «μπαίνει η μία στο κουτάκι της άλλης», Μίλτος 15/08/2026). */
-    feelWord?: string;
   }> = [
     {
       key: 'wind',
@@ -1933,28 +1950,21 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
       // όχι η επικεφαλίδα, και ένα εικονίδιο μεγαλύτερο από το κείμενό του τραβούσε το μάτι
       // στο λάθος πράγμα.
       icon: <Wind className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
-      // Χωρίς κύμα η φράση λέει μόνο τον αέρα, οπότε από πάνω θα διάβαζε το ίδιο πράγμα δύο
-      // φορές· εκεί μπαίνει στην ίδια σειρά με το νούμερο. ΜΕ κύμα, η λέξη μπαίνει σαν
-      // `feelWord` πάνω από το ίδιο αυτό νούμερο, όχι εδώ μέσα στο κείμενο.
-      text: !cardWaveText && conditionsFeelPhrase
-        ? `${conditionsFeelPhrase} · ${windBeaufort} ${beaufortUnitLabel}`
-        : `${windBeaufort} ${beaufortUnitLabel}`,
-      // Σκέτο «5 Μπφ» σε αναγνώστη οθόνης δεν λέει ΤΙ είναι το 5 — το κύμα δίπλα το λέει από
-      // την πρώτη μέρα, ο άνεμος όχι.
-      ariaLabel: `${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`,
-      feelWord: cardWaveText ? conditionsFeel?.windWord : undefined,
+      text: cardWindWord,
+      // Το νούμερο μένει στο `title`: σε υπολογιστή το βλέπει όποιος το γυρέψει με το ποντίκι,
+      // χωρίς να το χρωστάει κανείς άλλος στο κινητό. Δεν είναι ο μηχανισμός — ο μηχανισμός
+      // είναι η πινέζα και η σελίδα.
+      title: `${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}`,
+      ariaLabel: `${windOnShoreLabel}: ${cardWindWord}`,
     },
   ];
   if (cardWaveText) {
     podiumWhyItems.push({
       key: 'wave',
       icon: <Waves className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
-      text: cardWaveText,
-      title: cardWaveLabel,
-      // Το αναγνωστικό κείμενο κρατά τον ΤΙΤΛΟ + το σκέτο νούμερο, αλλιώς μετά την αλλαγή
-      // παραπάνω θα διαβαζόταν «Κύμα ανοιχτά: 1,5 μ. ανοιχτά».
-      ariaLabel: `${cardWaveLabel}: ${cardWaveValueText}`,
-      feelWord: conditionsFeel?.waveWord,
+      text: cardWaveWord,
+      title: `${cardWaveLabel}: ${cardWaveValueText}`,
+      ariaLabel: `${cardWaveLabel}: ${cardWaveWord}`,
     });
   }
   /**
@@ -2090,8 +2100,8 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
             {/* THE MOBILE «WHY» ROW — ONE row for both facts. The desktop column renders the wind
                 figure and the «Top μέχρι» hour as two rows, but this body is height-constrained
                 (the 31/07 defect was the «Πληροφορίες» button clipped off the card by exactly one
-                extra row), so here they share a line. Same rules as the desktop row: the Beaufort
-                is the pin's own reading, stated as a number — never a word, never a colour.
+                extra row), so here they share a line. Same rules as the desktop row: the wind cell
+                describes the pin's OWN reading — never a colour, never a verdict.
 
                 ΤΟ ΚΥΜΑ ΣΕ ΚΑΘΕ ΚΑΡΤΑ, ΟΧΙ ΜΟΝΟ ΣΤΟ ΒΑΘΡΟ (Μίλτος, 13/08/2026). Η γραμμή έδειχνε τα
                 δύο νούμερα μόνο στις τρεις κορυφαίες, οπότε η 4η παραλία της λίστας — που ο
@@ -2100,17 +2110,13 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                 μόνο για τα μποφόρ, γιατί αυτά τα λέει ήδη το chip από πάνω. */}
             {(isPodium || Boolean(cardWaveText)) && (
               <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 dark:border-sky-900/45 dark:bg-sky-950/25">
-                {/* Η ΛΕΞΗ ΠΑΝΩ ΑΠΟ ΤΟ ΔΙΚΟ ΤΗΣ ΝΟΥΜΕΡΟ, ΟΧΙ ΜΙΑ ΓΡΑΜΜΗ ΠΑΝΩ ΑΠΟ ΤΑ ΔΥΟ (15/08/2026).
-                    Πριν, «Δυνατός αέρας, θάλασσα λάδι» ήταν ΜΙΑ κεντραρισμένη γραμμή πάνω από ΟΛΟ
-                    το πλάτος — δεν ευθυγραμμιζόταν με καμία από τις δύο στήλες από κάτω, οπότε σε
-                    στενή οθόνη διάβαζε σαν η μία λέξη να «μπαίνει στο κουτάκι» της άλλης. Τώρα κάθε
-                    λέξη κάθεται ΜΕΣΑ στη στήλη του δικού της νούμερου: «Δυνατός αέρας» πάνω από
-                    «6 Μπφ», «Θάλασσα λάδι» πάνω από «~0,1 μ.». Χωρίς κύμα δεν υπάρχει δεύτερη
-                    στήλη, οπότε η λέξη μπαίνει στην ίδια σειρά με το νούμερο (βλ. `feelWord`
-                    πάνω, μόνο όταν υπάρχει `cardWaveText`). */}
-                <div className={`grid min-w-0 items-stretch font-bold leading-tight ${cardWaveText
-                  ? 'text-[10px] text-slate-600 dark:text-slate-300'
-                  : 'min-h-6 text-[11px] text-slate-800 dark:text-slate-200'} ${podiumWhyColumnsClass}`}>
+                {/* ΜΟΝΟ Η ΛΕΞΗ, ΣΕ ΔΥΟ ΚΕΛΙΑ (22/08/2026). Το κελί κρατούσε λέξη ΚΑΙ νούμερο
+                    («Δυνατός αέρας» πάνω από «6 Μπφ»). Το νούμερο έφυγε — η ζώνη είναι όλη η
+                    πληροφορία που έχουμε δικαίωμα να υποσχεθούμε — αλλά τα ΔΥΟ κελιά μένουν:
+                    αέρας και θάλασσα είναι δύο σήματα, όχι ένα (§Γ14). Δύο σειρές επιτρέπονται
+                    (`line-clamp-2`): «presque pas de vagues» δεν χωράει σε μία σε μισή κάρτα των
+                    320 px, και κομμένη λέξη είναι χειρότερη από δεύτερη σειρά. */}
+                <div className={`grid min-h-6 min-w-0 items-stretch text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white ${podiumWhyColumnsClass}`}>
                   {podiumWhyItems.map((item, index) => (
                     <span
                       key={item.key}
@@ -2124,17 +2130,9 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                       title={item.title}
                       aria-label={item.ariaLabel}
                     >
-                      {item.feelWord && (
-                        <span
-                          data-tilefit={`podium-why-${item.key}-feel`}
-                          className="block w-full min-w-0 truncate text-center text-[11px] font-extrabold leading-[1.15] text-slate-900 dark:text-white"
-                        >
-                          {item.feelWord}
-                        </span>
-                      )}
                       <span className="flex min-w-0 items-center justify-center gap-1">
                         {item.icon}
-                        <span className={item.truncate ? 'min-w-0 truncate' : 'min-w-0'}>{item.text}</span>
+                        <span className="min-w-0 text-center leading-[1.15] line-clamp-2">{item.text}</span>
                       </span>
                     </span>
                   ))}
@@ -2283,15 +2281,16 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
           </div>
           )}
 
-          {/* THE «WHY» ROW — a NUMBER, never a verdict. The podium deliberately silences every
+          {/* THE «WHY» ROW — a FACT, never a verdict. The podium deliberately silences every
               per-card condition opinion (windExposureMode 'none', hidden exposure badge, hidden
               score badge): the map above is the only surface allowed to colour a beach, and two
               ladders is the defect class this project keeps paying for. What was lost with them is
               any sign of WHY these three lead — the card read like a tourist listing (easy access,
-              sunbeds, taverna). A bare Beaufort figure restores the why without reopening the
-              ladder: it is the SAME per-beach reading the map pin used (beachWindSpeedKmph ←
-              perBeachMapWind), stated as a fact, with no word and no colour attached. Podium cards
-              only — the general list keeps its slimmer body. */}
+              sunbeds, taverna). This row restores the why without reopening the ladder: it is the
+              SAME per-beach reading the map pin used (beachWindSpeedKmph ← perBeachMapWind), said
+              as a band («Δυνατός αέρας»), with no colour and no judgement attached. The vocabulary
+              is forbidden from containing «ιδανική / απόφυγε / κατάλληλη» and a gate checks it in
+              five languages. Podium cards only — the general list keeps its slimmer body. */}
           {/* Η ΙΔΙΑ ΦΡΑΣΗ ΜΕ ΤΟ ΚΙΝΗΤΟ, ΚΑΙ ΕΠΙΤΕΛΟΥΣ ΤΟ ΚΥΜΑ (14/08/2026). Αυτή η γραμμή έδειχνε
               μόνο τα μποφόρ: ο υπολογιστής, που έχει τον περισσότερο χώρο, ήταν η μόνη οθόνη
               όπου το βάθρο δεν έλεγε πόσο κύμα έχει. Τώρα λέει και τα δύο, με την ίδια
@@ -2302,13 +2301,16 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
               υπολογιστής όχι, οπότε η ΙΔΙΑ παραλία διαβαζόταν διαφορετικά στις δύο οθόνες. Η
               ενωμένη μορφή έχει και δεύτερο κόστος: αφήνει τον αναγνώστη να διαβάσει «αέρας»
               και «κύμα» σαν ένα πράγμα, που είναι ακριβώς η παρανόηση της §Γ14 της βίβλου.
+              ⚠️ ΓΙ' ΑΥΤΟ ΚΑΙ ΣΤΙΣ 22/08, ΟΤΑΝ ΕΦΥΓΑΝ ΤΑ ΝΟΥΜΕΡΑ, ΔΕΝ ΞΑΝΑΜΠΗΚΕ Η ΕΝΩΜΕΝΗ ΦΡΑΣΗ:
+              η πιο μικρή γραμμή θα ήταν «Πολύς αέρας αλλά θάλασσα λάδι» σε μία σειρά, και θα
+              ξανάφερνε ακριβώς το λάθος που έβγαλε αυτό το μπλοκ δύο μέρες νωρίτερα.
               Ίδια δομή, ίδιο λεξιλόγιο, ίδια εικονίδια με το κινητό — μία γλώσσα, δύο οθόνες.
               Η γραμμή ανοίγει και στις κάρτες εκτός βάθρου όπου υπάρχει κύμα, ακριβώς όπως στο
               κινητό: μέχρι σήμερα ο υπολογιστής δεν έλεγε ΤΙΠΟΤΑ για αέρα/θάλασσα εκτός βάθρου. */}
           {(isPodium || Boolean(cardWaveText)) && (
             <div
               className="flex min-h-9 w-full min-w-0 items-stretch rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
-              aria-label={`${windOnShoreLabel}: ${windBeaufort} ${beaufortUnitLabel}${cardWaveText ? `. ${cardWaveLabel}: ${cardWaveValueText}` : ''}`}
+              aria-label={`${windOnShoreLabel}: ${cardWindWord}${cardWaveText ? `. ${cardWaveLabel}: ${cardWaveWord}` : ''}`}
             >
               {podiumWhyItems.map((item, index) => (
                 <span
@@ -2316,14 +2318,9 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                   title={item.title}
                   className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-2 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
                 >
-                  {item.feelWord && (
-                    <span className="block w-full min-w-0 truncate text-center text-[11px] font-extrabold leading-[1.15] text-slate-900 dark:text-white">
-                      {item.feelWord}
-                    </span>
-                  )}
-                  <span className="flex min-w-0 items-center justify-center gap-1 text-[11px] font-bold leading-tight text-slate-600 dark:text-slate-300">
+                  <span className="flex min-w-0 items-center justify-center gap-1 text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white">
                     {item.icon}
-                    <span className="min-w-0 truncate">{item.text}</span>
+                    <span className="min-w-0 text-center leading-[1.15] line-clamp-2">{item.text}</span>
                   </span>
                 </span>
               ))}

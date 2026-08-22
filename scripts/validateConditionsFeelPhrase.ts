@@ -16,6 +16,7 @@
  */
 import type { LanguageCode } from '../types';
 import { conditionToneLabels, causeLineLabels } from '../utils/conditionToneLabels';
+import { resolveWindTone, selectSuitableByTone } from '../utils/suitabilityTone';
 import { buildConditionsFeel, waveFeelLevel, windFeelLevel } from '../utils/conditionsFeelPhrase';
 import { SUPPORTED_LANGUAGES } from '../utils/i18n';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
@@ -29,6 +30,23 @@ import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 const MAX_PHRASE_CHARS = 62;
 /** Πάνω από αυτό δεν χωράει σε ΜΙΑ σειρά — επιτρεπτό, αλλά αξίζει να το ξέρουμε. */
 const SINGLE_LINE_CHARS = 40;
+
+/**
+ * ΑΠΟ ΤΙΣ 22/08/2026 Η ΛΕΞΗ ΣΤΕΚΕΙ ΜΟΝΗ ΤΗΣ ΣΕ ΜΙΣΗ ΚΑΡΤΑ — ΚΑΙ ΤΟ ΜΙΣΟ ΠΛΑΤΟΣ ΕΙΝΑΙ ΑΛΛΟ ΟΡΙΟ.
+ *
+ * Η κάρτα έπαψε να τυπώνει «6 Μπφ» και «~0,1 μ.»: κάθε κελί κρατά μόνο τη λέξη του. Το κελί
+ * είναι ΜΙΣΟ πλαίσιο (~140 px στα 320 px) μείον padding 12 px και εικονίδιο+κενό 16 px → ~112 px
+ * καθαρό κείμενο, σε 11 px extrabold ≈ 6 px/χαρακτήρα → ~18 χαρακτήρες η σειρά, δύο σειρές
+ * (`line-clamp-2`) → 36.
+ *
+ * Το `MAX_WORD_CHARS` κρατιέται στο 21 ΚΑΙ ΓΙΑ ΔΕΥΤΕΡΟ ΛΟΓΟ: το `scripts/validateTileFit.mjs`
+ * χτίζει τη χειρότερη περίπτωσή του με ένεση, από τις σημερινές πιο μακριές λέξεις (η γαλλική
+ * «presque pas de vagues», 21 χαρακτήρες). Λέξη μακρύτερη από αυτή δεν θα τη μετρούσε ΚΑΝΕΙΣ
+ * στην οθόνη — γι' αυτό σπάει εδώ, όχι εκεί.
+ */
+const MAX_WORD_CHARS = 21;
+/** Ένα ΑΣΠΑΣΤΟ κομμάτι (λέξη χωρίς κενό) πρέπει να χωρά σε μία σειρά του μισού κελιού. */
+const MAX_WORD_TOKEN_CHARS = 18;
 
 /** Λέξεις που θα έκαναν τη φράση ετυμηγορία αντί για περιγραφή. */
 const VERDICT_WORDS = [
@@ -62,6 +80,47 @@ for (const [language, forms] of Object.entries(causeLineLabels)) {
   }
 }
 
+/**
+ * Η ΠΑΝΩ ΒΑΘΜΙΔΑ ΤΗΣ ΛΕΞΗΣ ΕΙΝΑΙ ΑΝΟΙΧΤΗ — ΚΑΙ ΑΥΤΟ ΕΙΝΑΙ ΑΚΙΝΔΥΝΟ ΜΟΝΟ ΟΣΟ ΙΣΧΥΟΥΝ ΔΥΟ ΓΡΑΜΜΕΣ.
+ *
+ * Από τις 22/08 (§Γ66) η κάρτα δεν τυπώνει μποφόρ. Το «Δυνατός αέρας» καλύπτει 6, 7, 8, 9 — ενώ
+ * το ΧΡΩΜΑ κόβει στη μέση αυτής της βαθμίδας (πορτοκαλί ως 6, κόκκινο από 7). Αν και τα δύο
+ * έφταναν στην ίδια οθόνη προτάσεων, η λέξη θα έκρυβε σκαλί κινδύνου.
+ *
+ * ΔΕΝ ΤΟ ΚΑΝΕΙ, και ο λόγος είναι δομικός, όχι στατιστικός:
+ *   1. `resolveWindTone(..., ≥7)` επιστρέφει ΠΑΝΤΑ 'red', σε κάθε βαθμίδα έκθεσης.
+ *   2. Η λίστα προτάσεων δεν περιέχει κόκκινο (`SUITABLE_LIST_TONE_RANK`).
+ * Άρα όπου ΠΡΟΤΕΙΝΟΥΜΕ, «Δυνατός αέρας» σημαίνει ακριβώς 6.
+ *
+ * Η μέτρηση της 22/08 (`scripts/measureCardWordResolution.mjs`) έκλεισε το θέμα ΠΑΝΩ ΣΕ ΑΥΤΕΣ
+ * ΤΙΣ ΔΥΟ ΓΡΑΜΜΕΣ. Αν κάποιος τις αλλάξει, το κλείσιμο παύει να ισχύει και κανείς δεν θα το
+ * έπαιρνε είδηση — γι' αυτό ελέγχονται εδώ, όπου δεν χρειάζονται ούτε δεδομένα ούτε δίκτυο.
+ */
+for (const level of ['protected', 'partial', 'exposed'] as const) {
+  for (const beaufort of [7, 8, 9, 10, 12]) {
+    if (resolveWindTone(level, beaufort) !== 'red') {
+      failures.push(
+        `[${level}] ${beaufort} Μποφόρ δεν βάφει κόκκινο — η πάνω βαθμίδα της λέξης («Δυνατός αέρας») `
+        + 'μπορεί πλέον να φτάσει στις προτάσεις πάνω από 6 Μποφόρ, και η κάρτα δεν τυπώνει αριθμό '
+        + 'για να το ξεχωρίσει κανείς (§Γ66).'
+      );
+    }
+  }
+}
+{
+  const chosen = selectSuitableByTone(
+    [{ tone: 'red' as const }, { tone: 'orange' as const }],
+    item => item.tone,
+    () => 0,
+  );
+  if (chosen.some(item => item.tone === 'red')) {
+    failures.push(
+      'Η λίστα προτάσεων δέχτηκε κόκκινο. Μαζί με τον έλεγχο από πάνω, αυτό σημαίνει ότι μια κάρτα '
+      + 'μπορεί να γράψει «Δυνατός αέρας» πάνω σε 9 Μποφόρ μέσα στις προτάσεις (§Γ66).'
+    );
+  }
+}
+
 const longest: Record<string, { phrase: string; chars: number }> = {};
 let checked = 0;
 let overSingleLine = 0;
@@ -89,6 +148,19 @@ for (const language of SUPPORTED_LANGUAGES) {
       if (phrase.length > SINGLE_LINE_CHARS) overSingleLine += 1;
       if (!longest[language] || phrase.length > longest[language].chars) {
         longest[language] = { phrase, chars: phrase.length };
+      }
+
+      // ΤΟ ΚΑΘΕ ΜΙΣΟ ΜΟΝΟ ΤΟΥ: από τις 22/08 αυτό ακριβώς ζωγραφίζεται στην κάρτα, χωρίς νούμερο
+      // από κάτω του να «γεμίζει» το κελί.
+      for (const [half, word] of [['αέρας', feel.windWord], ['κύμα', feel.waveWord]] as const) {
+        if (!word) continue;
+        if (word.length > MAX_WORD_CHARS) {
+          failures.push(`[${language}] ${half}: «${word}» = ${word.length} χαρακτήρες, πάνω από ${MAX_WORD_CHARS} — δεν χωρά στο μισό κελί ΚΑΙ δεν τη μετρά το validateTileFit`);
+        }
+        const longestToken = word.split(/\s+/).reduce((max, token) => Math.max(max, token.length), 0);
+        if (longestToken > MAX_WORD_TOKEN_CHARS) {
+          failures.push(`[${language}] ${half}: «${word}» έχει άσπαστο κομμάτι ${longestToken} χαρακτήρων — θα κοπεί, δεν θα αλλάξει σειρά`);
+        }
       }
 
       // Η λέξη πρέπει να συμφωνεί με τον αριθμό που τυπώνεται από κάτω της.
