@@ -181,6 +181,20 @@
     box-shadow: 0 12px 32px -20px rgba(8, 145, 178, 0.3), 0 1px 2px rgba(15, 23, 42, 0.06);
   }
 
+  /* Same call as .beach-card above, for the same reason, one step later: measured
+     41 live backdrop-filter elements on a phone-sized Paros page — every one of them
+     a map label — each re-sampling what is painted beneath it on every scroll frame,
+     inside the sticky map card. The pill already carries its own dark gradient, so
+     the blur was buying almost nothing; the alpha below makes up the difference. */
+  /* Specificity, not order: the base pill rule lives further down this file, so a
+     bare `.beach-map-label__inner` here would lose to it. */
+  .leaflet-tooltip.beach-map-label .beach-map-label__inner {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background:
+      linear-gradient(135deg, rgba(8, 47, 73, 0.9), rgba(14, 116, 144, 0.84));
+  }
+
   .atmosphere.cyclades-atmosphere {
     background:
       linear-gradient(180deg, rgba(240, 249, 255, 0.5) 0%, rgba(224, 242, 254, 0.64) 42%, rgba(240, 249, 255, 0.86) 100%),

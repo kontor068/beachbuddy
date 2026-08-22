@@ -4037,11 +4037,19 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
 
   return (
-    <section className="relative isolate bg-sky-50 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
+    <section className="relative isolate bg-sky-100 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
       {/* Plain brand-blue field. Was a full-bleed island photo behind two white scrims;
           it only ever rendered for the 2 regions that had no hero strip, and the region
-          title now carries the sense of place on its own. */}
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-sky-100" aria-hidden="true" />
+          title now carries the sense of place on its own.
+
+          The colour used to be painted by a `position: fixed inset-0 -z-10` layer sitting
+          behind the whole scrolling page — the last remnant of that photo. A full-viewport
+          fixed layer under scrolling content is the one thing on this page that forces the
+          phone to re-composite the entire document on every scroll frame, and it is the
+          prime suspect for the white bands Miltos reported while scrolling a region page up
+          and down (22/08). It was also redundant: measured against the section carrying the
+          same colour itself, the two are pixel-identical at every scroll position except a
+          thin strip below the hero. Section background, no fixed layer. */}
 
       <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
         {regionTitleBlock}
