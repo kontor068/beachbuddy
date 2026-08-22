@@ -580,6 +580,58 @@ const MarkerConditionsPopup: React.FC<{
  *    πριν ανοίξει το επόμενο, οπότε ένα state θα περνούσε στιγμιαία από το false και θα έκοβε την
  *    αλυσίδα στην πρώτη κιόλας κάρτα.
  */
+/**
+ * The map is allowed to shuffle itself ONCE, to fit a label that has just been opened.
+ *
+ * Leaflet's `autoPan` is not a one-off: it re-runs every time the popup's layout is touched,
+ * and the popup's contents are live (wind, sea, the hour), so every re-render of the page
+ * asked the camera to re-fit it. Scrolling the beach list with a label open moved the camera
+ * on 48-77 frames of a single scroll — mostly sub-pixel, which is not a pan, it is a shiver,
+ * and it is what "τα ταμπελάκια τρέμουν" meant. With no label open the same scroll moved the
+ * camera exactly 0 times, which is what pointed here.
+ *
+ * So: the opening adjustment stays (a label near the edge would otherwise be cut off), and
+ * from the next frame the camera is left alone until the label is closed and reopened.
+ */
+const PopupPansOnlyOnOpen: React.FC = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    const frames = new Set<number>();
+
+    const onOpen = (event: L.PopupEvent) => {
+      const popup = event.popup;
+      if (!popup?.options?.autoPan) return;
+      // Two frames: the first lets Leaflet finish the layout pass it opened with, the second
+      // is where any further adjustment would have come from.
+      const first = window.requestAnimationFrame(() => {
+        const second = window.requestAnimationFrame(() => {
+          popup.options.autoPan = false;
+          frames.delete(second);
+        });
+        frames.add(second);
+        frames.delete(first);
+      });
+      frames.add(first);
+    };
+
+    // Restored on close so the NEXT label still gets its one adjustment.
+    const onClose = (event: L.PopupEvent) => {
+      if (event.popup?.options) event.popup.options.autoPan = true;
+    };
+
+    map.on('popupopen', onOpen);
+    map.on('popupclose', onClose);
+    return () => {
+      frames.forEach(handle => window.cancelAnimationFrame(handle));
+      map.off('popupopen', onOpen);
+      map.off('popupclose', onClose);
+    };
+  }, [map]);
+
+  return null;
+};
+
 const MarkerPopupScrollFollower: React.FC<{
   enabled: boolean;
   highlightedBeachId?: number;
@@ -1119,8 +1171,28 @@ const HighlightedBeachFollower = ({
       lat: center[0],
       lon: center[1],
     });
+    const target = L.latLng(markerCoordinate.lat, markerCoordinate.lon);
 
-    map.panTo([markerCoordinate.lat, markerCoordinate.lon], {
+    /**
+     * Only move when moving is worth it.
+     *
+     * Swiping the row of beaches walks the highlight along neighbours that sit a few pixels
+     * apart on the map, and each one used to start its own 0,35s pan. Measured on one swipe:
+     * the camera moved on 46 frames, median step 1,8px — a shiver, not a pan, and the map's
+     * name labels shook with it (reported from the phone: "τα ταμπελάκια τρέμουν").
+     *
+     * So the target has to be genuinely off-centre before the camera answers. Inside the
+     * middle third the beach is already comfortably in view and there is nothing to fix; the
+     * pan is saved for a highlight that is actually drifting to the edge, where it reads as a
+     * deliberate move rather than a twitch.
+     */
+    const size = map.getSize();
+    const offset = map.latLngToContainerPoint(target)
+      .subtract(map.latLngToContainerPoint(map.getCenter()));
+    const slack = Math.max(48, Math.min(size.x, size.y) * 0.22);
+    if (Math.abs(offset.x) <= slack && Math.abs(offset.y) <= slack) return;
+
+    map.panTo(target, {
       animate: true,
       duration: 0.35,
       easeLinearity: 0.25,
@@ -3891,6 +3963,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             enabled={fitBoundsToBeaches}
             fitKey={fitBoundsKey}
           />
+          <PopupPansOnlyOnOpen />
           <HighlightedBeachFollower
             beaches={beaches}
             center={center}
