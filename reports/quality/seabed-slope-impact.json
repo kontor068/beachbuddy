@@ -1,0 +1,106 @@
+{
+  "measuredAt": "2026-08-22T15:34:36.886Z",
+  "note": "frontDepthM = βάθος στα 100 μ. στον τομέα που κοιτάει η παραλία (EMODnet, ήδη στον δίσκο).",
+  "wavyDays": [
+    {
+      "windMs": 7,
+      "waveM": 0.5
+    },
+    {
+      "windMs": 8,
+      "waveM": 0.7
+    },
+    {
+      "windMs": 9,
+      "waveM": 0.9
+    },
+    {
+      "windMs": 10,
+      "waveM": 1.1
+    },
+    {
+      "windMs": 12,
+      "waveM": 1.4
+    }
+  ],
+  "beachesTotal": 2873,
+  "withFrontDepth": 2349,
+  "waterDepthBaseline": {
+    "shallow": 1430,
+    "medium": 720,
+    "deep": 720,
+    "moderate": 3
+  },
+  "thresholds": {
+    "8": {
+      "flagged": 348,
+      "waterDepthOfFlagged": {
+        "deep": 114,
+        "shallow": 150,
+        "medium": 84
+      },
+      "beachDaysJudged": 159,
+      "verdictChanged": 0,
+      "toneChanged": 0,
+      "droppedOutOfTopThree": 65,
+      "scoreDropTotal": 1028,
+      "examples": []
+    },
+    "10": {
+      "flagged": 197,
+      "waterDepthOfFlagged": {
+        "deep": 75,
+        "medium": 43,
+        "shallow": 79
+      },
+      "beachDaysJudged": 93,
+      "verdictChanged": 0,
+      "toneChanged": 0,
+      "droppedOutOfTopThree": 35,
+      "scoreDropTotal": 610,
+      "examples": []
+    },
+    "12": {
+      "flagged": 109,
+      "waterDepthOfFlagged": {
+        "deep": 50,
+        "medium": 24,
+        "shallow": 35
+      },
+      "beachDaysJudged": 39,
+      "verdictChanged": 0,
+      "toneChanged": 0,
+      "droppedOutOfTopThree": 15,
+      "scoreDropTotal": 255,
+      "examples": []
+    },
+    "15": {
+      "flagged": 38,
+      "waterDepthOfFlagged": {
+        "deep": 22,
+        "medium": 8,
+        "shallow": 8
+      },
+      "beachDaysJudged": 12,
+      "verdictChanged": 0,
+      "toneChanged": 0,
+      "droppedOutOfTopThree": 6,
+      "scoreDropTotal": 78,
+      "examples": []
+    },
+    "20": {
+      "flagged": 18,
+      "waterDepthOfFlagged": {
+        "shallow": 2,
+        "deep": 12,
+        "medium": 4
+      },
+      "beachDaysJudged": 3,
+      "verdictChanged": 0,
+      "toneChanged": 0,
+      "droppedOutOfTopThree": 0,
+      "scoreDropTotal": 19,
+      "examples": []
+    }
+  }
+}

@@ -32,6 +32,7 @@ import { LocalWindShelterSection, type LocalWindShelteredCove } from '../compone
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
+import { buildSteepSeabedNote, buildSteepSeabedSource } from '../utils/seabedEntry';
 import { beachShoreBreaks, hasSteepCoarseShore } from '../utils/shoreBreak';
 import { resolveOffshoreWindNote } from '../utils/offshoreWindNote';
 import { offshoreWindNotePhrase } from '../utils/conditionToneLabels';
@@ -2710,6 +2711,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               )}
               <p className={`text-sm font-medium mt-1 leading-snug ${swimWindowToneClasses.helper}`}>
                 {allDaySuitable ? allDaySwimCopy.helper : swimmingWindowHelper}
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* 6. «ΒΑΘΑΙΝΕΙ ΓΡΗΓΟΡΑ» — Η ΜΕΤΡΗΣΗ ΤΟΥ ΒΥΘΟΥ, ΩΣ ΠΛΗΡΟΦΟΡΙΑ (22/08/2026).
+            Στέκεται εδώ, μέσα στην ενότητα της παραλίας και όχι στις σημερινές συνθήκες,
+            γιατί δεν αλλάζει με τη μέρα: είναι σταθερό χαρακτηριστικό του βυθού.
+            Ουδέτερο χρώμα ΕΠΙΤΗΔΕΣ — δεν είναι προειδοποίηση, είναι γεγονός με νούμερο, και
+            το νούμερο αφήνει τον αναγνώστη να κρίνει μόνος του αντί να του πούμε τι να κάνει.
+            Το αντίστροφο («ρηχά, ιδανικά για παιδιά») ΔΕΝ λέγεται ποτέ από εδώ: η πηγή
+            εξομαλύνει τα ρηχά, άρα μόνο η βαθιά πλευρά της είναι αξιόπιστη.
+            Ο δρόμος των πόντων μετρήθηκε και απορρίφθηκε — βλ. utils/seabedEntry. */}
+        {typeof beach.steepSeabedDepthM === 'number' && (
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-slate-200/80 bg-white/70 p-4 shadow-sm">
+            <div className="rounded-2xl bg-slate-100 p-2.5 text-slate-600">
+              <Waves className="h-5 w-5" aria-hidden="true" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-bold leading-snug text-slate-900">
+                {buildSteepSeabedNote(language, beach.steepSeabedDepthM)}
+              </p>
+              <p className="mt-1 text-xs font-medium leading-snug text-slate-500">
+                {buildSteepSeabedSource(language)}
               </p>
             </div>
           </section>

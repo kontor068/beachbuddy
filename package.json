@@ -7,7 +7,7 @@
     "dev": "vite",
     "build:shorelines": "node scripts/buildShorelineThumbs.mjs",
     "quality:shorelines": "node scripts/validateShorelineShapes.mjs",
-    "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs && node scripts/splitBeachStories.mjs && node scripts/splitBeachClimate.mjs && node scripts/buildBeachGeoIndex.mjs",
+    "build:beach-data": "node scripts/buildBeachRegionData.mjs && node scripts/bakeLocalWindShelter.mjs && node scripts/bakeSeabedEntry.mjs && node scripts/splitBeachStories.mjs && node scripts/splitBeachClimate.mjs && node scripts/buildBeachGeoIndex.mjs",
     "build:geo-index": "node scripts/buildBeachGeoIndex.mjs",
     "camping:harvest": "node scripts/harvestCampsitesOsm.mjs",
     "camping:link": "node scripts/linkCampsitesToBeaches.mjs match",

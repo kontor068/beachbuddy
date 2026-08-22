@@ -553,6 +553,15 @@ const checks = [
     args: ['scripts/validateBestDayAheadOffer.mjs', '--prove'],
   },
   {
+    id: 'seabed-entry-claim',
+    title: 'Το «βαθαίνει γρήγορα» είναι μετρημένο, όχι ειπωμένο',
+    description: 'Re-derives the baked steepSeabedDepthM for all 2.873 beaches straight from the EMODnet bathymetry profile in the sector each beach FACES, and fails if a printed number is not backed by that measurement, is below the threshold, was silently dropped, disagrees between the app/summary/detail copies, or sits on a beach our own record calls shallow — where two witnesses disagree the page says nothing. Also checks the sentence in all five languages carries the number and never makes the reverse claim ("shallow", "ideal for kids"), because the source smooths shallow water and only its deep side survives a public statement. Self-proves with --prove: a claim with no reading, one below the threshold, and one on a shallow-recorded beach must each be refused, and a clean reading must still pass.',
+    protects: 'Prevents a measured depth printed on the beach page from drifting away from the measurement behind it, and stops the one-directional rule from quietly becoming a two-directional one.',
+    failureAction: 'Re-run node scripts/bakeSeabedEntry.mjs. If a beach still fails, fix utils/seabedEntry — do not hand-edit the baked number.',
+    command: process.execPath,
+    args: ['scripts/validateSeabedEntryClaim.mjs', '--prove'],
+  },
+  {
     id: 'content-audit',
     title: 'Static content safety audit',
     description: 'Scans static copy and generated beach data for risky wording like guaranteed calm, protected, safe, ideal, or no-wave claims.',

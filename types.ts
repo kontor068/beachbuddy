@@ -430,6 +430,13 @@ export interface Beach {
   // baked by the same single computation. Absent when the model abstains
   // (suspect pin / no profile) — absent means "make no claim", not "exposed".
   localWindStatus?: 'protected' | 'partial' | 'exposed';
+  // MEASURED depth (m) 100 m out in the direction the beach faces, baked by
+  // scripts/bakeSeabedEntry.ts from EMODnet bathymetry — present ONLY when it is deep enough
+  // to state and no other record disagrees. Absent means "make no claim", never "shallow":
+  // the source smooths shallow water, so only the deep side of it is trustworthy.
+  // It is INFORMATION, not a score — see utils/seabedEntry for why the scoring route was
+  // measured and dropped.
+  steepSeabedDepthM?: number;
   aliases?: string[];
   staticLabels?: {
     beachType?: string;
