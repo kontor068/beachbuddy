@@ -1,4 +1,5 @@
 import { AccessFeatureStatus, Beach, BeachSeatracAccess, LanguageCode } from '../types';
+import { athensNow } from './athensTime';
 
 /**
  * Localized copy + row builders for the disability / wheelchair sea-access (Seatrac) section.
@@ -53,6 +54,53 @@ export const getSeatracAccess = (beach: Beach): BeachSeatracAccess | undefined =
   beach.seatrac ?? beach.metadata?.seatrac;
 
 export const hasSeatracInfo = (beach: Beach): boolean => Boolean(getSeatracAccess(beach)?.hasSeatrac);
+
+/**
+ * ΕΠΟΧΙΚΟΤΗΤΑ ΡΑΜΠΑΣ (22/08/2026) — Η ΜΟΝΗ ΠΗΓΗ ΤΟΥ ΚΑΝΟΝΑ.
+ *
+ * Ο εξοπλισμός Seatrac τοποθετείται ~Ιούνιο και αφαιρείται Σεπτ/Οκτ (βλ. `types.ts` στο
+ * `BeachSeatracAccess.seasonal`). Και οι 135 εγγραφές που έχουμε φέρουν `seasonal: true` —
+ * καμία δεν είναι μόνιμη. Μέχρι σήμερα φίλτρο και σήμα διάβαζαν μόνο `status === 'online'`,
+ * οπότε τον Ιανουάριο δείχναμε ράμπα με την ίδια σιγουριά που τη δείχνουμε τον Ιούλιο —
+ * και το ίδιο το schema προειδοποιεί ότι λάθος εδώ μπορεί να εγκλωβίσει χρήστη αμαξιδίου.
+ *
+ * Ο κανόνας ΔΕΝ κρύβει την παραλία, κρύβει τη σιγουριά: εκτός σεζόν το σήμα γίνεται
+ * «εποχικό» και το φίλτρο συνεχίζει να τη δείχνει (άδειο φίλτρο τον χειμώνα δεν βοηθάει
+ * κανέναν, και η πληροφορία «εδώ υπάρχει ράμπα το καλοκαίρι» εξακολουθεί να είναι σωστή).
+ */
+export const SEATRAC_SEASON_FIRST_MONTH = 6; // Ιούνιος
+export const SEATRAC_SEASON_LAST_MONTH = 9; // Σεπτέμβριος
+
+export const isSeatracSeason = (now: Date = athensNow()): boolean => {
+  const month = now.getMonth() + 1;
+  return month >= SEATRAC_SEASON_FIRST_MONTH && month <= SEATRAC_SEASON_LAST_MONTH;
+};
+
+export type SeatracRampState = 'none' | 'in-season' | 'out-of-season';
+
+/**
+ * Το μοναδικό σημείο που απαντά «έχει ενεργή ράμπα και πόσο σίγουροι είμαστε;».
+ * Φίλτρο και σήμα ΠΡΕΠΕΙ να περνάνε από εδώ — δύο αντίγραφα του ίδιου κανόνα σε δύο
+ * επιφάνειες είναι ακριβώς το σφάλμα που γέννησε την πύλη «κάρτα vs πινέζα».
+ */
+export const getSeatracRampState = (beach: Beach, now?: Date): SeatracRampState => {
+  const seatrac = getSeatracAccess(beach);
+  if (seatrac?.hasSeatrac !== true || seatrac.status !== 'online') return 'none';
+  return isSeatracSeason(now) ? 'in-season' : 'out-of-season';
+};
+
+/** Κανόνας φίλτρου — αμετάβλητος επίτηδες: καταγεγραμμένη + ενεργή περνάει όλο τον χρόνο. */
+export const hasListedSeatracRamp = (beach: Beach): boolean => getSeatracRampState(beach) !== 'none';
+
+/** Εκτός σεζόν: η μία γραμμή που συνοδεύει το σήμα. */
+export const getSeatracOutOfSeasonNote = (language: LanguageCode): string =>
+  localized(language, {
+    en: 'Ramp is usually removed outside June–September — call ahead before you rely on it.',
+    gr: 'Η ράμπα συνήθως αφαιρείται εκτός Ιουνίου–Σεπτεμβρίου — τηλεφωνήστε πριν βασιστείτε σε αυτήν.',
+    fr: "La rampe est généralement retirée hors juin–septembre — appelez avant de vous y fier.",
+    de: 'Die Rampe wird außerhalb Juni–September meist entfernt — rufen Sie vorher an.',
+    it: "La rampa viene di solito rimossa fuori da giugno–settembre — telefona prima di farci affidamento.",
+  });
 
 export const getAccessibilityStatusRows = (beach: Beach, language: LanguageCode): AccessibilityStatusRow[] => {
   const seatrac = getSeatracAccess(beach);

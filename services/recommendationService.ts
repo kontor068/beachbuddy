@@ -41,6 +41,7 @@ import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+import { hasListedSeatracRamp } from '../utils/accessibility';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { assessBeachWindExposure, applySeaStateToWindSuitability } from '../utils/windExposureEngine';
 import { summarizeLocalWindBehavior } from '../utils/windClimatology';
@@ -566,10 +567,11 @@ const hasBlueFlag2026Award = (beach: Beach): boolean => (
 );
 // Safety-first: the "accessible" filter surfaces ONLY currently-active sea-access ramps.
 // Uninstalled / unverified Seatrac beaches must not pass (wrong info can strand a wheelchair user).
-const hasDisabledAccess = (beach: Beach): boolean => {
-  const seatrac = beach.seatrac ?? beach.metadata?.seatrac;
-  return Boolean(seatrac && seatrac.hasSeatrac && seatrac.status === 'online');
-};
+//
+// Ο κανόνας ζει σε ΕΝΑ σημείο (`utils/accessibility`) μαζί με την εποχικότητα, ώστε φίλτρο και
+// σήμα κάρτας να μην μπορούν να αποκλίνουν. Το φίλτρο περνάει όλο τον χρόνο· η σεζόν αλλάζει
+// μόνο το τι λέει το σήμα.
+const hasDisabledAccess = (beach: Beach): boolean => hasListedSeatracRamp(beach);
 
 export const beachMatchesUserPreferences = (beach: Beach, preferences?: UserPreferences): boolean => {
   if (!hasActivePreferences(preferences) || !preferences) return true;
@@ -2368,9 +2370,13 @@ export const calculateBeachScore = (
     if (22 - temp > 5) reasons.push("Cooler temperature");
   } else if (temp > 32) {
     if (temp - 32 > 3) reasons.push("Hot weather");
+    // Τρία σκαλιά, μονόδρομα: κανένα τσιπάκι δεν χάνεται σε σχέση με πριν — το ≥38 απλώς
+    // παύει να μοιάζει με συμβουλή άνεσης. Στους 38 °C η οδηγία δεν είναι «πήγαινε νωρίς»
+    // αλλά «μην είσαι εκεί το μεσημέρι», και η κάρτα το βάφει κόκκινο αντί για γαλάζιο.
+    // Το κατώφλι εμφάνισης (>32 °C) ΔΕΝ κουνήθηκε: το να ανέβει θέλει δική του μέτρηση.
     warnings.push({
       type: 'heat_uv',
-      severity: temp >= 36 ? 'warning' : 'info',
+      severity: temp >= 38 ? 'critical' : temp >= 36 ? 'warning' : 'info',
       message: 'Prefer morning or late afternoon in the heat.'
     });
   }

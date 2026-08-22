@@ -15,6 +15,7 @@ import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
+import { getSeatracOutOfSeasonNote, getSeatracRampState, SeatracRampState } from '../utils/accessibility';
 import { isCalmBeachCertified } from '../utils/certifiedBeaches';
 import { getSelectedDayPrefix, getSelectedDaySentencePrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -130,6 +131,8 @@ type CardCopy = {
   enclosedCoveChipA11y: string;
   blueFlag: string;
   accessible: string;
+  /** Εκτός Ιουν–Σεπτ ο εξοπλισμός συνήθως έχει αφαιρεθεί — το σήμα το λέει, δεν εξαφανίζεται. */
+  accessibleSeasonal: string;
   camping: string;
   /** CalmBeach Certified — first-party "we were here and verified it" seal. */
   certified: string;
@@ -151,6 +154,10 @@ type CardCopy = {
     someWaves: string;
     /** utils/shoreBreak — deep water + a coarse shore, so a small sea still lands hard. */
     shoreBreak: string;
+    /** `heat_uv` info/warning (>32 °C) — η ώρα της ημέρας μετράει περισσότερο από την παραλία. */
+    heat: string;
+    /** `heat_uv` critical (≥38 °C) — παύει να είναι συμβουλή άνεσης και γίνεται θέμα υγείας. */
+    extremeHeat: string;
     strongWind: string;
     windSportSpot: string;
     exposedToWind: (day: string, isToday: boolean) => string;
@@ -202,6 +209,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     enclosedCoveChipA11y: 'Enclosed bay: calmer water even in wind',
     blueFlag: 'Blue Flag',
     accessible: 'Accessible',
+    accessibleSeasonal: 'Accessible in summer',
     camping: 'Camping',
     certified: 'CalmBeach Certified',
     certifiedA11y: 'CalmBeach Certified — we visited this beach and verified its details on site',
@@ -219,6 +227,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       highWaves: 'High waves',
       someWaves: 'Some waves',
       shoreBreak: 'Calm sea, but the waves break a bit harder at the shore',
+      heat: 'Very hot — go early morning or late afternoon',
+      extremeHeat: 'Extreme heat — avoid the beach 12:00–17:00, bring water and shade',
       strongWind: 'Strong wind',
       windSportSpot: 'Wind/watersports spot',
       exposedToWind: (day, isToday) => (isToday ? 'More exposed to wind' : `More exposed to wind ${day}`),
@@ -280,6 +290,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     enclosedCoveChipA11y: 'Κλειστός όρμος: πιο ήρεμα νερά ακόμα κι όταν φυσάει',
     blueFlag: 'Γαλάζια Σημαία',
     accessible: 'Προσβάσιμη ΑμεΑ',
+    accessibleSeasonal: 'ΑμεΑ το καλοκαίρι',
     camping: 'Camping',
     certified: 'CalmBeach Certified',
     certifiedA11y: 'CalmBeach Certified — το επισκεφθήκαμε κι επαληθεύσαμε επιτόπου τα χαρακτηριστικά του',
@@ -297,6 +308,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       highWaves: 'Υψηλό κύμα',
       someWaves: 'Λίγο κύμα',
       shoreBreak: 'Ήρεμη θάλασσα, αλλά σκάει το κύμα λίγο παραπάνω στην ακτή',
+      heat: 'Πολλή ζέστη — πήγαινε νωρίς το πρωί ή αργά το απόγευμα',
+      extremeHeat: 'Καύσωνας — απόφυγε την παραλία 12:00–17:00, πάρε νερό και σκιά',
       strongWind: 'Δυνατός αέρας',
       windSportSpot: 'Παραλία για wind sports',
       exposedToWind: (day, isToday) => (isToday ? 'Πιο εκτεθειμένη στον άνεμο' : `Πιο εκτεθειμένη στον άνεμο ${day}`),
@@ -361,6 +374,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     enclosedCoveChipA11y: 'Baie fermée : eau plus calme même par vent',
     blueFlag: 'Pavillon Bleu',
     accessible: 'Accessible PMR',
+    accessibleSeasonal: 'PMR en été',
     camping: 'Camping',
     certified: 'CalmBeach Certified',
     certifiedA11y: 'CalmBeach Certified — nous avons visité cette plage et vérifié ses caractéristiques sur place',
@@ -378,6 +392,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       highWaves: 'Vagues hautes',
       someWaves: 'Un peu de clapot',
       shoreBreak: 'Mer calme, mais les vagues déferlent un peu plus au bord',
+      heat: 'Très chaud — venez tôt le matin ou en fin d’après-midi',
+      extremeHeat: 'Chaleur extrême — évitez la plage 12h–17h, prévoyez eau et ombre',
       strongWind: 'Vent fort',
       windSportSpot: 'Spot de sports nautiques',
       exposedToWind: (day, isToday) => (isToday ? 'Exposée au vent' : `Exposée au vent ${day}`),
@@ -439,6 +455,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     enclosedCoveChipA11y: 'Geschlossene Bucht: ruhigeres Wasser auch bei Wind',
     blueFlag: 'Blaue Flagge',
     accessible: 'Barrierefrei',
+    accessibleSeasonal: 'Barrierefrei im Sommer',
     camping: 'Camping',
     certified: 'CalmBeach Certified',
     certifiedA11y: 'CalmBeach Certified — wir waren vor Ort und haben die Angaben persönlich geprüft',
@@ -456,6 +473,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       highWaves: 'Hohe Wellen',
       someWaves: 'Etwas Welle',
       shoreBreak: 'Ruhige See, aber die Wellen brechen am Ufer etwas kräftiger',
+      heat: 'Sehr heiß — früh morgens oder spät nachmittags hingehen',
+      extremeHeat: 'Extreme Hitze — Strand 12–17 Uhr meiden, Wasser und Schatten mitnehmen',
       strongWind: 'Starker Wind',
       windSportSpot: 'Wind-/Wassersportspot',
       exposedToWind: (day, isToday) => (isToday ? 'Windexponiert' : `Windexponiert ${day}`),
@@ -517,6 +536,7 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
     enclosedCoveChipA11y: 'Baia chiusa: acqua più calma anche col vento',
     blueFlag: 'Bandiera Blu',
     accessible: 'Accessibile',
+    accessibleSeasonal: "Accessibile d'estate",
     camping: 'Campeggio',
     certified: 'CalmBeach Certified',
     certifiedA11y: 'CalmBeach Certified — abbiamo visitato la spiaggia e verificato le caratteristiche sul posto',
@@ -534,6 +554,8 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       highWaves: 'Onde alte',
       someWaves: 'Un po’ di onda',
       shoreBreak: 'Mare calmo, ma le onde frangono un po’ di più a riva',
+      heat: 'Molto caldo — vai la mattina presto o nel tardo pomeriggio',
+      extremeHeat: 'Caldo estremo — evita la spiaggia 12:00–17:00, porta acqua e ombra',
       strongWind: 'Vento forte',
       windSportSpot: 'Spot wind/watersport',
       exposedToWind: (day, isToday) => (isToday ? 'Esposta al vento' : `Esposta al vento ${day}`),
@@ -800,16 +822,26 @@ const BlueFlagBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = (
   );
 };
 
-const AccessibilityBadge: React.FC<{ language: LanguageCode; compact?: boolean }> = ({ language, compact = false }) => {
-  const label = getLocalizedCopy(language, cardCopy).accessible;
+// Εκτός Ιουν–Σεπτ ο εξοπλισμός συνήθως δεν είναι στο νερό. Το σήμα ΔΕΝ εξαφανίζεται (η
+// πληροφορία «εδώ υπάρχει ράμπα το καλοκαίρι» παραμένει σωστή) — αλλάζει λέξη και χρώμα,
+// και το tooltip λέει καθαρά να τηλεφωνήσει πρώτα. Ο κανόνας της σεζόν είναι στο
+// utils/accessibility, όχι εδώ.
+const AccessibilityBadge: React.FC<{ language: LanguageCode; state: SeatracRampState; compact?: boolean }> = ({ language, state, compact = false }) => {
+  const copy = getLocalizedCopy(language, cardCopy);
+  const outOfSeason = state === 'out-of-season';
+  const label = outOfSeason ? copy.accessibleSeasonal : copy.accessible;
+  const title = outOfSeason ? `${label} — ${getSeatracOutOfSeasonNote(language)}` : label;
+  const tone = outOfSeason
+    ? 'border-slate-200 text-slate-600'
+    : 'border-sky-100 text-sky-700';
 
   return (
     <span
-      title={label}
-      aria-label={label}
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-sky-100 bg-white font-bold leading-none text-sky-700 shadow-sm ring-1 ring-black/5 ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
+      title={title}
+      aria-label={title}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border bg-white font-bold leading-none shadow-sm ring-1 ring-black/5 ${tone} ${compact ? 'min-h-7 px-2 py-1 text-[10px]' : 'min-h-8 px-2.5 py-1 text-xs'}`}
     >
-      <AccessibilityIcon className="h-3.5 w-3.5 shrink-0 text-sky-600" aria-hidden="true" />
+      <AccessibilityIcon className={`h-3.5 w-3.5 shrink-0 ${outOfSeason ? 'text-slate-500' : 'text-sky-600'}`} aria-hidden="true" />
       <span className="whitespace-nowrap">{label}</span>
     </span>
   );
@@ -1017,6 +1049,12 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
         : copy.someWaves;
     case 'shore_break':
       return copy.shoreBreak;
+    // Υπήρχε από πάντα στον κινητήρα και ΔΕΝ είχε ποτέ λεζάντα εδώ, οπότε έπεφτε στο
+    // `default` και τύπωνε το αγγλικό μήνυμα του κινητήρα σε ελληνική, γαλλική, γερμανική
+    // και ιταλική κάρτα. Σπάνιο (μπαίνει 3ο-4ο στη σειρά και η κάρτα δείχνει δύο), αλλά
+    // ακριβώς σε ήρεμη καυτή μέρα — τότε που δεν υπάρχει άλλη προειδοποίηση να το κρύψει.
+    case 'heat_uv':
+      return warning.severity === 'critical' ? copy.extremeHeat : copy.heat;
     case 'strong_wind':
       return copy.strongWind;
     case 'wind_sport_spot':
@@ -1250,9 +1288,10 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   const isCertified = isCalmBeachCertified(beach.id);
   const hasBlueFlag2026 = beach.blueFlag2026?.awarded === true || metadata?.blueFlag2026?.awarded === true;
-  // Badge only for currently-active ramps (same safe rule as the accessibility filter).
-  const seatracAccess = beach.seatrac ?? metadata?.seatrac;
-  const hasAccessibleRamp = seatracAccess?.hasSeatrac === true && seatracAccess.status === 'online';
+  // Badge only for currently-active ramps — ίδιος κανόνας με το φίλτρο, μία πηγή, plus την
+  // εποχικότητα: εκτός Ιουν–Σεπτ ο εξοπλισμός συνήθως έχει αφαιρεθεί από το νερό.
+  const seatracRampState = getSeatracRampState(beach);
+  const hasAccessibleRamp = seatracRampState !== 'none';
   const hasNearbyCamping = (beach.nearbyCamping?.length ?? metadata?.nearbyCamping?.length ?? 0) > 0;
   const paidEntry = beach.paidEntry ?? metadata?.paidEntry;
   const isPartlyShelteredToday = exposureLevel === 'partial';
@@ -2074,7 +2113,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
             )}
             {isCertified && <CertifiedBadge language={language} />}
             {hasBlueFlag2026 && <BlueFlagBadge language={language} />}
-            {hasAccessibleRamp && <AccessibilityBadge language={language} />}
+            {hasAccessibleRamp && <AccessibilityBadge language={language} state={seatracRampState} />}
             {hasNearbyCamping && <CampingBadge language={language} />}
             {paidEntry && <PaidEntryBadge kind={paidEntry.kind} language={language} />}
           </div>
@@ -2323,7 +2362,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
           )}
           {isCertified && <CertifiedBadge language={language} compact />}
           {hasBlueFlag2026 && <BlueFlagBadge language={language} compact />}
-          {hasAccessibleRamp && <AccessibilityBadge language={language} compact />}
+          {hasAccessibleRamp && <AccessibilityBadge language={language} state={seatracRampState} compact />}
           {hasNearbyCamping && <CampingBadge language={language} compact />}
           {paidEntry && <PaidEntryBadge kind={paidEntry.kind} language={language} compact />}
         </div>
