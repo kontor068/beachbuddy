@@ -225,7 +225,29 @@ export type WarningFlagType =
 export interface WarningFlag {
   type: WarningFlagType;
   severity: 'info' | 'warning' | 'critical';
+  /**
+   * ΑΓΓΛΙΚΑ, ΚΑΙ ΔΕΝ ΕΙΝΑΙ ΓΙΑ ΤΗΝ ΟΘΟΝΗ. Το γράφει ο κινητήρας για τον εαυτό του, τα εργαλεία
+   * μέτρησης και τις αναφορές. Ό,τι διαβάζει επισκέπτης περνάει από το `warningLabel`
+   * (components/BeachCard.tsx), που έχει `case` για κάθε τύπο σε πέντε γλώσσες — και μια πύλη
+   * που σκάει αν λείψει έστω ένας (`scripts/validateWarningLabelCoverage.mjs`). Μέχρι τις
+   * 22/08/2026 έλειπαν έντεκα, και το `default` τύπωνε ΑΥΤΗ τη γραμμή σε Έλληνα επισκέπτη.
+   */
   message: string;
+  /**
+   * Τα νούμερα που το αγγλικό `message` έχει ήδη μπλέξει μέσα στην πρότασή του, ξεχωριστά,
+   * ώστε η ελληνική/γαλλική/γερμανική/ιταλική λεζάντα να τα ξαναχτίσει αντί να τα ψαρέψει με
+   * regex από αγγλικό κείμενο. Μπαίνει μόνο όπου υπάρχει νούμερο να πει.
+   */
+  values?: {
+    /** `gusty_wind`: η ριπή σε χλμ/ώρα. */
+    gustKmph?: number;
+    /** `afternoon_wind_build`: η κορυφή σε Μποφόρ και η ώρα της. */
+    peakBeaufort?: number;
+    peakHour?: number;
+    /** `direct_swell` / `long_period_swell`: ύψος σε μέτρα, περίοδος σε δευτερόλεπτα. */
+    swellHeightM?: number;
+    swellPeriodS?: number;
+  };
 }
 
 export interface BeachScore {

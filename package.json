@@ -124,7 +124,8 @@
     "measure:spike-witness": "node scripts/measureSpikeWitnessStaleness.mjs",
     "validate:split-marine": "node scripts/validateSplitMarineEquivalence.mjs",
     "measure:coastline-scale": "node scripts/measureCoastlineScaleStability.mjs",
-    "quality:grazing-sea": "node scripts/validateGrazingSeaRelief.mjs"
+    "quality:grazing-sea": "node scripts/validateGrazingSeaRelief.mjs",
+    "quality:warning-labels": "node scripts/validateWarningLabelCoverage.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",

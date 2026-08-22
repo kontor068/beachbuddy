@@ -158,6 +158,27 @@ type CardCopy = {
     heat: string;
     /** `heat_uv` critical (≥38 °C) — παύει να είναι συμβουλή άνεσης και γίνεται θέμα υγείας. */
     extremeHeat: string;
+    /**
+     * ΟΙ ΔΕΚΑ ΠΟΥ ΕΛΕΙΠΑΝ (22/08/2026). Μέχρι σήμερα κανένας από αυτούς τους τύπους δεν είχε
+     * λεζάντα εδώ, οπότε το `default` του `warningLabel` τύπωνε το αγγλικό μήνυμα του κινητήρα
+     * σε Έλληνα, Γάλλο, Γερμανό και Ιταλό επισκέπτη. Η πύλη
+     * `scripts/validateWarningLabelCoverage.mjs` δεν αφήνει να ξανασυμβεί.
+     *
+     * Δεν είναι μεταφράσεις του αγγλικού: το `message` γράφτηκε για μηχανή («High open-water
+     * fetch may build chop on this beach») και δεν λέγεται σε παραλιακή κάρτα σε καμία γλώσσα.
+     * Τα νούμερα έρχονται από το `WarningFlag.values`, όχι από regex πάνω στο αγγλικό.
+     */
+    gustyWind: (gustKmph: number) => string;
+    offshoreWind: string;
+    onshoreChop: string;
+    directSwell: (swellHeightM?: number) => string;
+    longPeriodSwell: (periodS: number) => string;
+    afternoonWindBuild: (peakBeaufort: number, peakHour: number) => string;
+    rainAllBeachHours: string;
+    rainSomeHours: string;
+    waterQualityRisk: string;
+    officialWarning: string;
+    crowded: string;
     strongWind: string;
     windSportSpot: string;
     exposedToWind: (day: string, isToday: boolean) => string;
@@ -229,6 +250,17 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       shoreBreak: 'Calm sea, but the waves break a bit harder at the shore',
       heat: 'Very hot — go early morning or late afternoon',
       extremeHeat: 'Extreme heat — avoid the beach 12:00–17:00, bring water and shade',
+      gustyWind: (gustKmph) => `Gusts to ${gustKmph} km/h`,
+      offshoreWind: 'Wind off the land — it pushes you out',
+      onshoreChop: 'Open sea in front — the wind builds chop',
+      directSwell: (swellHeightM) => (swellHeightM ? `Swell arrives head-on (~${swellHeightM} m)` : 'Swell arrives head-on'),
+      longPeriodSwell: (periodS) => `Long swell (~${periodS} s) — it dumps on the sand`,
+      afternoonWindBuild: (peakBeaufort, peakHour) => `Calm now — ${peakBeaufort} Bft by ${peakHour}:00`,
+      rainAllBeachHours: 'Rain through the beach hours',
+      rainSomeHours: 'Rain likely at times',
+      waterQualityRisk: 'Recent rain — water may be murky',
+      officialWarning: 'Official warning in force',
+      crowded: 'Likely crowded',
       strongWind: 'Strong wind',
       windSportSpot: 'Wind/watersports spot',
       exposedToWind: (day, isToday) => (isToday ? 'More exposed to wind' : `More exposed to wind ${day}`),
@@ -310,6 +342,17 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       shoreBreak: 'Ήρεμη θάλασσα, αλλά σκάει το κύμα λίγο παραπάνω στην ακτή',
       heat: 'Πολλή ζέστη — πήγαινε νωρίς το πρωί ή αργά το απόγευμα',
       extremeHeat: 'Καύσωνας — απόφυγε την παραλία 12:00–17:00, πάρε νερό και σκιά',
+      gustyWind: (gustKmph) => `Ριπές έως ${gustKmph} χλμ/ώρα`,
+      offshoreWind: 'Ο αέρας φυσάει από τη στεριά — σε βγάζει ανοιχτά',
+      onshoreChop: 'Ανοιχτό πέλαγος μπροστά — σηκώνει κύμα',
+      directSwell: (swellHeightM) => (swellHeightM ? `Η φουσκοθαλασσιά έρχεται κατευθείαν (~${swellHeightM} μ.)` : 'Η φουσκοθαλασσιά έρχεται κατευθείαν'),
+      longPeriodSwell: (periodS) => `Μακρύ κύμα (~${periodS} δευτ.) — σκάει βαριά στην άμμο`,
+      afternoonWindBuild: (peakBeaufort, peakHour) => `Ήρεμα τώρα — ${peakBeaufort} Μποφόρ κατά τις ${peakHour}:00`,
+      rainAllBeachHours: 'Βροχή όλες τις ώρες της παραλίας',
+      rainSomeHours: 'Πιθανή βροχή κάποιες ώρες',
+      waterQualityRisk: 'Πρόσφατη βροχή — ίσως θολό νερό',
+      officialWarning: 'Επίσημη προειδοποίηση σε ισχύ',
+      crowded: 'Πιθανόν πολύς κόσμος',
       strongWind: 'Δυνατός αέρας',
       windSportSpot: 'Παραλία για wind sports',
       exposedToWind: (day, isToday) => (isToday ? 'Πιο εκτεθειμένη στον άνεμο' : `Πιο εκτεθειμένη στον άνεμο ${day}`),
@@ -394,6 +437,17 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       shoreBreak: 'Mer calme, mais les vagues déferlent un peu plus au bord',
       heat: 'Très chaud — venez tôt le matin ou en fin d’après-midi',
       extremeHeat: 'Chaleur extrême — évitez la plage 12h–17h, prévoyez eau et ombre',
+      gustyWind: (gustKmph) => `Rafales jusqu’à ${gustKmph} km/h`,
+      offshoreWind: 'Vent de terre — il pousse vers le large',
+      onshoreChop: 'Le large devant — le vent lève du clapot',
+      directSwell: (swellHeightM) => (swellHeightM ? `La houle arrive de face (~${swellHeightM} m)` : 'La houle arrive de face'),
+      longPeriodSwell: (periodS) => `Houle longue (~${periodS} s) — elle casse fort sur le sable`,
+      afternoonWindBuild: (peakBeaufort, peakHour) => `Calme maintenant — ${peakBeaufort} Bft vers ${peakHour} h`,
+      rainAllBeachHours: 'Pluie sur toutes les heures de plage',
+      rainSomeHours: 'Pluie possible par moments',
+      waterQualityRisk: 'Pluie récente — eau peut-être trouble',
+      officialWarning: 'Alerte officielle en vigueur',
+      crowded: 'Probablement bondée',
       strongWind: 'Vent fort',
       windSportSpot: 'Spot de sports nautiques',
       exposedToWind: (day, isToday) => (isToday ? 'Exposée au vent' : `Exposée au vent ${day}`),
@@ -475,6 +529,17 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       shoreBreak: 'Ruhige See, aber die Wellen brechen am Ufer etwas kräftiger',
       heat: 'Sehr heiß — früh morgens oder spät nachmittags hingehen',
       extremeHeat: 'Extreme Hitze — Strand 12–17 Uhr meiden, Wasser und Schatten mitnehmen',
+      gustyWind: (gustKmph) => `Böen bis ${gustKmph} km/h`,
+      offshoreWind: 'Ablandiger Wind — er treibt dich hinaus',
+      onshoreChop: 'Offenes Meer davor — der Wind baut Welle auf',
+      directSwell: (swellHeightM) => (swellHeightM ? `Dünung kommt frontal (~${swellHeightM} m)` : 'Dünung kommt frontal'),
+      longPeriodSwell: (periodS) => `Lange Dünung (~${periodS} s) — sie bricht hart am Strand`,
+      afternoonWindBuild: (peakBeaufort, peakHour) => `Jetzt ruhig — ${peakBeaufort} Bft gegen ${peakHour} Uhr`,
+      rainAllBeachHours: 'Regen über die ganzen Strandstunden',
+      rainSomeHours: 'Zeitweise Regen möglich',
+      waterQualityRisk: 'Kürzlich Regen — Wasser evtl. trüb',
+      officialWarning: 'Amtliche Warnung aktiv',
+      crowded: 'Vermutlich voll',
       strongWind: 'Starker Wind',
       windSportSpot: 'Wind-/Wassersportspot',
       exposedToWind: (day, isToday) => (isToday ? 'Windexponiert' : `Windexponiert ${day}`),
@@ -556,6 +621,17 @@ const cardCopy: Record<LanguageCode, CardCopy> = {
       shoreBreak: 'Mare calmo, ma le onde frangono un po’ di più a riva',
       heat: 'Molto caldo — vai la mattina presto o nel tardo pomeriggio',
       extremeHeat: 'Caldo estremo — evita la spiaggia 12:00–17:00, porta acqua e ombra',
+      gustyWind: (gustKmph) => `Raffiche fino a ${gustKmph} km/h`,
+      offshoreWind: 'Vento da terra — ti spinge al largo',
+      onshoreChop: 'Mare aperto davanti — il vento alza onda',
+      directSwell: (swellHeightM) => (swellHeightM ? `L’onda lunga arriva di fronte (~${swellHeightM} m)` : 'L’onda lunga arriva di fronte'),
+      longPeriodSwell: (periodS) => `Onda lunga (~${periodS} s) — frange forte sulla sabbia`,
+      afternoonWindBuild: (peakBeaufort, peakHour) => `Calmo ora — ${peakBeaufort} Bft verso le ${peakHour}`,
+      rainAllBeachHours: 'Pioggia per tutte le ore da spiaggia',
+      rainSomeHours: 'Possibile pioggia a tratti',
+      waterQualityRisk: 'Pioggia recente — acqua forse torbida',
+      officialWarning: 'Allerta ufficiale in vigore',
+      crowded: 'Probabilmente affollata',
       strongWind: 'Vento forte',
       windSportSpot: 'Spot wind/watersport',
       exposedToWind: (day, isToday) => (isToday ? 'Esposta al vento' : `Esposta al vento ${day}`),
@@ -1055,6 +1131,39 @@ const warningLabel = (warning: WarningFlag, language: LanguageCode, selectedDate
     // ακριβώς σε ήρεμη καυτή μέρα — τότε που δεν υπάρχει άλλη προειδοποίηση να το κρύψει.
     case 'heat_uv':
       return warning.severity === 'critical' ? copy.extremeHeat : copy.heat;
+    // ΟΙ ΔΕΚΑ ΠΟΥ ΕΛΕΙΠΑΝ (22/08/2026). Τα νούμερα βγαίνουν από το `warning.values`, που ο
+    // κινητήρας γεμίζει δίπλα στο αγγλικό `message` — ποτέ με ανάγνωση του ίδιου του μηνύματος.
+    // Όπου λείπει νούμερο, η λεζάντα το λέει χωρίς αυτό αντί να τυπώσει «undefined».
+    case 'gusty_wind':
+      return typeof warning.values?.gustKmph === 'number'
+        ? copy.gustyWind(warning.values.gustKmph)
+        : copy.strongWind;
+    case 'offshore_wind':
+      return copy.offshoreWind;
+    case 'onshore_chop':
+      return copy.onshoreChop;
+    case 'direct_swell':
+      return copy.directSwell(warning.values?.swellHeightM);
+    case 'long_period_swell':
+      return typeof warning.values?.swellPeriodS === 'number'
+        ? copy.longPeriodSwell(warning.values.swellPeriodS)
+        : copy.shoreBreak;
+    case 'afternoon_wind_build':
+      return typeof warning.values?.peakBeaufort === 'number' && typeof warning.values?.peakHour === 'number'
+        ? copy.afternoonWindBuild(warning.values.peakBeaufort, warning.values.peakHour)
+        : copy.strongWind;
+    case 'rain_risk':
+      // Ο κινητήρας βάζει 'critical' ΜΟΝΟ όταν βρέχει σε ΟΛΕΣ τις ώρες παραλίας.
+      return warning.severity === 'critical' ? copy.rainAllBeachHours : copy.rainSomeHours;
+    case 'water_quality_risk':
+      return copy.waterQualityRisk;
+    case 'official_warning':
+      // ΣΚΟΠΙΜΑ σταθερή λεζάντα και όχι το `warning.message`: εκεί κάθεται ο λόγος όπως τον
+      // έγραψε η πηγή, σε άγνωστη γλώσσα και σε άγνωστο μήκος. Ο λόγος έχει τη θέση του στη
+      // σελίδα της παραλίας, όχι σε ένα τσιπάκι δέκα χαρακτήρων.
+      return copy.officialWarning;
+    case 'crowded':
+      return copy.crowded;
     case 'strong_wind':
       return copy.strongWind;
     case 'wind_sport_spot':
