@@ -276,7 +276,12 @@ const createForecastItem = (date: Date, hour: number, scenario: WeatherFixtureSc
   };
 };
 
-const createDailyForecast = (dayOffset: number, scenario: WeatherFixtureScenario): DailyForecast => {
+/**
+ * Exported (22/08/2026) so an OFFLINE quality gate can drive the real
+ * utils/bestDayAhead over a real region with a hand-built six-day sequence — a rough day
+ * followed by a calm one — instead of waiting for the weather to cooperate.
+ */
+export const createDailyForecast = (dayOffset: number, scenario: WeatherFixtureScenario): DailyForecast => {
   const day = resolveFixtureDay(scenario, dayOffset);
   const date = new Date();
   date.setDate(date.getDate() + dayOffset);

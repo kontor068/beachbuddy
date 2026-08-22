@@ -81,6 +81,7 @@ import { fetchForecastData, fetchForecastDataBatch, fetchMarineForecastData, fet
 import { buildBeachForecastClusters, type BeachForecastCluster } from './utils/beachForecastClusters';
 import { resolveBeachMarinePoints, marinePointKey } from './utils/marineSamplePoints';
 import { calculateSeaConditionScore, hasPoorSeaConditions } from './utils/seaConditions';
+import { buildBestDayAheadCopy, countSwimmableBeaches, findBestDayAhead, isSevereConditionsDay, type BestDayAhead } from './utils/bestDayAhead';
 import {
   MEANINGFUL_WIND_TOP_PICK_BEAUFORT,
   PROTECTED_FIRST_BEAUFORT,
@@ -5823,36 +5824,53 @@ export const App: React.FC = () => {
 
     const windSpeedKmph = selectedForecast.wind.speed * 3.6;
     const waveHeightM = selectedForecast.marine?.waveHeightM;
-    const weatherText = `${selectedForecast.weather.main} ${selectedForecast.weather.description}`.toLowerCase();
-    const hasSevereWeather =
-      currentBeaufort >= 5 ||
-      /thunder|storm|snow|squall|heavy rain|rainstorm/.test(weatherText) ||
-      (typeof waveHeightM === 'number' && waveHeightM >= 1);
-
-    if (!hasSevereWeather) return false;
+    // Same test, one place (utils/bestDayAhead), so the day we offer instead is held to the very
+    // bar today just failed — see isSevereConditionsDay.
+    if (!isSevereConditionsDay(selectedForecast, currentBeaufort)) return false;
     if (dailySuitableBeaches.length === 0) return true;
 
-    const swimmableBeaches = dailySuitableBeaches.filter(item => {
-      // Per-item wind (10/08): a day is only «no swimmable beaches» if no beach's OWN shore
-      // clears the bar — the region centre's figure no longer speaks for every coast here.
-      const itemWindKmph = item.windSpeedKmph ?? windSpeedKmph;
-      const itemWaveHeightM = item.seaStateWaveM ?? item.waveHeightM ?? waveHeightM;
-      const seaScore = calculateSeaConditionScore(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, false, item.seaStatePeriodS);
-      const hasGoodHourlySea = typeof item.hourlySeaScore !== 'number' || item.hourlySeaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE;
-      const hasSeriousWarning = item.warnings?.some(warning =>
-        warning.severity === 'critical' ||
-        warning.type === 'rough_sea' ||
-        warning.type === 'strong_wind'
-      );
-
-      return seaScore >= MIN_TOP_PICK_SEA_CONDITION_SCORE &&
-        hasGoodHourlySea &&
-        !hasSeriousWarning &&
-        !hasPoorSeaConditions(item.isExposed, itemWindKmph, item.exposureLevel, itemWaveHeightM, item.seaStatePeriodS);
-    });
-
-    return swimmableBeaches.length === 0;
+    // Per-item wind (10/08): a day is only «no swimmable beaches» if no beach's OWN shore
+    // clears the bar — the region centre's figure no longer speaks for every coast here.
+    //
+    // The predicate itself moved to utils/bestDayAhead (22/08/2026) so that the day we REFUSE
+    // and the day we OFFER instead are judged by the exact same lines. Two copies of this test
+    // would eventually disagree, and the disagreement would read as «you said Thursday was fine».
+    return countSwimmableBeaches(dailySuitableBeaches, windSpeedKmph, waveHeightM) === 0;
   }, [currentBeaufort, dailySuitableBeaches, isRainBlockedBeachWindow, isUnsafeWinter, selectedForecast, selectedIsland]);
+  /**
+   * «ΣΗΜΕΡΑ ΟΧΙ — Η ΠΕΜΠΤΗ ΝΑΙ» (22/08/2026).
+   *
+   * Computed ONLY on the days we would otherwise say nothing at all. It runs the real scoring
+   * pass on later days, so it is not free — but on a good day there is no question to answer,
+   * and on a bad one it stops at the first day that clears the bar (usually tomorrow). The six
+   * days are already in memory; nothing extra is fetched.
+   */
+  const bestDayAhead = useMemo<BestDayAhead | null>(() => {
+    if (!hasNoSwimmableBeachesToday || !selectedIsland || !forecast || forecast.length <= 1) return null;
+
+    return findBestDayAhead({
+      beaches: selectedIsland.beaches,
+      forecasts: forecast,
+      beachForecasts,
+      language,
+      geospatialProfiles: geospatialExposureProfiles,
+      fromDayIndex: selectedDayIndex,
+      excludeBeach: suppressNaturistFromRecommendations ? isNaturistBeach : undefined,
+    });
+  }, [hasNoSwimmableBeachesToday, selectedIsland, forecast, beachForecasts, language, geospatialExposureProfiles, selectedDayIndex, suppressNaturistFromRecommendations]);
+  const bestDayAheadCopy = useMemo(() => (
+    bestDayAhead ? buildBestDayAheadCopy(language, bestDayAhead.date) : null
+  ), [bestDayAhead, language]);
+  const handleBestDayAheadSelect = React.useCallback(() => {
+    if (!bestDayAhead) return;
+
+    setSelectedDayIndex(bestDayAhead.dayIndex);
+    trackEvent('forecast_day_selected', undefined, {
+      ...analyticsBaseParams,
+      source: 'best_day_ahead',
+      day_index: bestDayAhead.dayIndex,
+    });
+  }, [analyticsBaseParams, bestDayAhead, setSelectedDayIndex]);
   const showDecisionRecommendations = Boolean(
     forecast?.[selectedDayIndex] &&
     !isSevereWindNoTopRecommendationDay &&
@@ -8794,6 +8812,23 @@ export const App: React.FC = () => {
                     {dayTurnNote}
                   </p>
                 )}
+                {/* «ΣΗΜΕΡΑ ΟΧΙ — Η ΠΕΜΠΤΗ ΝΑΙ» (22/08/2026). Shown only under the no-ideal
+                    fallback: exactly where the page used to stop at «δεν υπάρχει καθαρή επιλογή»
+                    while six days of forecast — weather AND sea — sat unread in memory. It names
+                    the DAY and never a beach count; the list the visitor lands on is what answers,
+                    so no number here can be contradicted by the page one tap later. */}
+                {showNoIdealFallbackSection && bestDayAheadCopy && (
+                  <p className="mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm font-bold leading-relaxed text-cyan-900">
+                    <span>{bestDayAheadCopy.line}</span>
+                    <button
+                      type="button"
+                      onClick={handleBestDayAheadSelect}
+                      className="rounded-full bg-cyan-700 px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-sm transition hover:bg-cyan-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700"
+                    >
+                      {bestDayAheadCopy.action}
+                    </button>
+                  </p>
+                )}
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-6">
                 {recommendationSectionBeaches.map((r, i) => (
@@ -9122,6 +9157,8 @@ export const App: React.FC = () => {
                   hasActiveSearchOrFilters={hasActiveSearchOrFilters}
                   severeWeatherNoSwimming={shouldShowNoSwimmingMessage}
                   noSwimmingReason={isRainBlockedBeachWindow ? 'rain' : 'conditions'}
+                  bestDayAheadCopy={bestDayAheadCopy}
+                  onBestDayAheadSelect={handleBestDayAheadSelect}
                   favorites={favorites} onToggleFavorite={handleToggleFavorite}
                   protectedSortLabel={protectedSortLabel}
                   sortResultCounts={sortResultCounts}

@@ -544,6 +544,15 @@ const checks = [
     args: ['scripts/validatePlannerAgreement.mjs', '--strict'],
   },
   {
+    id: 'best-day-ahead',
+    title: 'Η πρόταση άλλης μέρας κρατάει ό,τι υπόσχεται',
+    description: 'Drives the REAL utils/bestDayAhead over a real region with hand-built six-day sequences: the offer is always the SOONEST day that has swimmable beaches (not the calmest, not the last), it looks forward from the day on screen rather than from today, it stays SILENT when every day ahead is a dead end, and a breezy-but-flat 5 Bft day — 17 Paros beaches clear the swimmable test on one — is never thrown away. Then it checks the words in all five languages: a day is named, no beach count is promised, and the sentence differs from the button. Self-proves with --prove: a picker that always offers tomorrow, one that offers the last suitable day, and the over-strict "only perfectly calm days" version must each make it fail.',
+    protects: 'Prevents the one line we show on a day we have nothing to say from sending someone to a day that turns out to be the same dead end, or from dressing "less awful" up as "good".',
+    failureAction: 'Read the failing scenario in scripts/validateBestDayAheadOffer.mjs and fix utils/bestDayAhead — do not relax the scenario.',
+    command: process.execPath,
+    args: ['scripts/validateBestDayAheadOffer.mjs', '--prove'],
+  },
+  {
     id: 'content-audit',
     title: 'Static content safety audit',
     description: 'Scans static copy and generated beach data for risky wording like guaranteed calm, protected, safe, ideal, or no-wave claims.',

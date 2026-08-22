@@ -1,0 +1,150 @@
+{
+  "measuredAt": "2026-08-22T15:14:30.458Z",
+  "regions": 43,
+  "skipped": [],
+  "regionDaysJudged": 258,
+  "severeDays": 60,
+  "deadEndDays": 13,
+  "offered": 11,
+  "offeredShare": "84.6%",
+  "silentAfterMeasure": 2,
+  "offsetHistogramDays": {
+    "1": 5,
+    "2": 3,
+    "3": 3
+  },
+  "contradictions": 0,
+  "contradictionRows": [],
+  "rows": [
+    {
+      "regionId": "south-aegean-amorgos",
+      "fromDayIndex": 3,
+      "beaufort": 4,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 1,
+      "offerSwimmable": 1,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-andros",
+      "fromDayIndex": 1,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 3,
+      "offerSwimmable": 17,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-andros",
+      "fromDayIndex": 2,
+      "beaufort": 6,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 2,
+      "offerSwimmable": 17,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-andros",
+      "fromDayIndex": 3,
+      "beaufort": 6,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 1,
+      "offerSwimmable": 17,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-donousa",
+      "fromDayIndex": 3,
+      "beaufort": 5,
+      "offered": false,
+      "offerDayIndex": null,
+      "offsetDays": null,
+      "offerSwimmable": null,
+      "offerIsDeadEnd": null
+    },
+    {
+      "regionId": "south-aegean-donousa",
+      "fromDayIndex": 4,
+      "beaufort": 3,
+      "offered": false,
+      "offerDayIndex": null,
+      "offsetDays": null,
+      "offerSwimmable": null,
+      "offerIsDeadEnd": null
+    },
+    {
+      "regionId": "south-aegean-iraklia",
+      "fromDayIndex": 3,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 1,
+      "offerSwimmable": 2,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-mykonos",
+      "fromDayIndex": 1,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 3,
+      "offerSwimmable": 31,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-mykonos",
+      "fromDayIndex": 2,
+      "beaufort": 6,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 2,
+      "offerSwimmable": 31,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-mykonos",
+      "fromDayIndex": 3,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 1,
+      "offerSwimmable": 31,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-tinos",
+      "fromDayIndex": 1,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 3,
+      "offerSwimmable": 33,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-tinos",
+      "fromDayIndex": 2,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 2,
+      "offerSwimmable": 33,
+      "offerIsDeadEnd": false
+    },
+    {
+      "regionId": "south-aegean-tinos",
+      "fromDayIndex": 3,
+      "beaufort": 5,
+      "offered": true,
+      "offerDayIndex": 4,
+      "offsetDays": 1,
+      "offerSwimmable": 33,
+      "offerIsDeadEnd": false
+    }
+  ]
+}

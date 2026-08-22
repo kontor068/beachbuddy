@@ -5,6 +5,7 @@ import { BeachCard } from './BeachCard';
 import { BeachSearchEmptyState } from './BeachSearchEmptyState';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
+import type { BestDayAheadCopy } from '../utils/bestDayAhead';
 import { ExposureLevel } from '../utils/windExposure';
 
 type BeachListBeach = Beach & {
@@ -48,6 +49,13 @@ interface BeachListProps {
   hasShownAlternativeRecommendations: boolean;
   severeWeatherNoSwimming?: boolean;
   noSwimmingReason?: 'rain' | 'conditions';
+  /**
+   * «ΣΗΜΕΡΑ ΟΧΙ — Η ΠΕΜΠΤΗ ΝΑΙ». The dead-end card above used to be the end of the
+   * conversation on a bad day; when a later day in the SAME six-day forecast clears the very
+   * same swimmable test, we name it here instead of leaving the visitor with nothing.
+   */
+  bestDayAheadCopy?: BestDayAheadCopy | null;
+  onBestDayAheadSelect?: () => void;
   hasActiveSearchOrFilters?: boolean;
   onClearSearchAndFilters?: () => void;
   /**
@@ -223,6 +231,8 @@ export const BeachList: React.FC<BeachListProps> = ({
   hasShownAlternativeRecommendations,
   severeWeatherNoSwimming = false,
   noSwimmingReason = 'conditions',
+  bestDayAheadCopy,
+  onBestDayAheadSelect,
   hasActiveSearchOrFilters = false,
   onClearSearchAndFilters,
   searchQuery = '',
@@ -250,6 +260,18 @@ export const BeachList: React.FC<BeachListProps> = ({
               <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-amber-800 dark:text-amber-200">
                 {message.body}
               </p>
+              {bestDayAheadCopy && onBestDayAheadSelect && (
+                <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm font-bold leading-relaxed text-amber-950 dark:text-amber-100">
+                  <span>{bestDayAheadCopy.line}</span>
+                  <button
+                    type="button"
+                    onClick={onBestDayAheadSelect}
+                    className="rounded-full bg-amber-900 px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-sm transition hover:bg-amber-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-900 dark:bg-amber-200 dark:text-amber-950 dark:hover:bg-amber-100"
+                  >
+                    {bestDayAheadCopy.action}
+                  </button>
+                </p>
+              )}
             </div>
           </div>
         </div>

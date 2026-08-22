@@ -4,6 +4,7 @@ import { BeachList } from './BeachList';
 import { BeachFilters } from './BeachFilters';
 import { getLocalizedCopy } from '../utils/i18n';
 import { getBeachFilterDirectoryTitle } from '../utils/filterSummary';
+import type { BestDayAheadCopy } from '../utils/bestDayAhead';
 
 interface RecommendationSectionProps {
   beaches: Beach[];
@@ -35,6 +36,9 @@ interface RecommendationSectionProps {
   hasShownAlternativeRecommendations: boolean;
   severeWeatherNoSwimming?: boolean;
   noSwimmingReason?: 'rain' | 'conditions';
+  /** «Σήμερα όχι — η Πέμπτη ναι»: forwarded straight to the no-swimming card in BeachList. */
+  bestDayAheadCopy?: BestDayAheadCopy | null;
+  onBestDayAheadSelect?: () => void;
   showControls?: boolean;
   searchSuggestions?: string[];
   protectedSortNoResults?: boolean;
@@ -76,6 +80,8 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
   hasShownAlternativeRecommendations,
   severeWeatherNoSwimming = false,
   noSwimmingReason = 'conditions',
+  bestDayAheadCopy,
+  onBestDayAheadSelect,
   showControls = true,
   searchSuggestions = [],
   protectedSortNoResults = false,
@@ -162,6 +168,8 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
           hasShownAlternativeRecommendations={hasShownAlternativeRecommendations}
           severeWeatherNoSwimming={severeWeatherNoSwimming}
           noSwimmingReason={noSwimmingReason}
+          bestDayAheadCopy={bestDayAheadCopy}
+          onBestDayAheadSelect={onBestDayAheadSelect}
           hasActiveSearchOrFilters={hasActiveSearchOrFilters}
           onClearSearchAndFilters={onClearSearchAndFilters}
           searchQuery={searchQuery}
