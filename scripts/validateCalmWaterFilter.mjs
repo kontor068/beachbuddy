@@ -22,7 +22,9 @@
  *      εκεί δεν υπάρχει τίποτα να κοπεί (0 στις 259 σκηνές με 0–2 Μπφ είχαν έστω μία παραλία με
  *      κύμα).
  *
- *   Δ. ΤΟ FEATURE ΔΕΝ ΕΙΝΑΙ ΝΕΚΡΟΣ ΚΩΔΙΚΑΣ. Το chip πρέπει να προσφέρεται σε ≥20% των σκηνών.
+ *   Δ. ΤΟ FEATURE ΔΕΝ ΕΙΝΑΙ ΝΕΚΡΟΣ ΚΩΔΙΚΑΣ — μετρημένο στον ΣΩΣΤΟ ΠΑΡΟΝΟΜΑΣΤΗ (23/08/2026).
+ *      Το chip πρέπει να προσφέρεται σε ≥1/3 των σκηνών ΟΠΟΥ ΤΟΥ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΜΙΛΗΣΕΙ, όχι
+ *      σε ≥20% του συνόλου. Δες το μπλοκ πάνω από το `evaluateReach` για το γιατί άλλαξε.
  *      Αν κάποια μελλοντική αλλαγή στα κατώφλια το κατεβάσει κάτω από αυτό, δεν έχουμε πια
  *      φίλτρο — έχουμε κουμπί που κανείς δεν βλέπει, και πρέπει να το μάθουμε από την πύλη και
  *      όχι από τη σιωπή.
@@ -213,6 +215,91 @@ for (const [regionId, region] of Object.entries(regions)) {
   for (const [dayIndex, entries] of byDay) scenes.push({ regionId, dayIndex, entries });
 }
 
+/**
+ * Δ — ΤΟ ΕΡΩΤΗΜΑ ΑΛΛΑΞΕ ΠΑΡΟΝΟΜΑΣΤΗ, ΟΧΙ ΑΥΣΤΗΡΟΤΗΤΑ (23/08/2026).
+ *
+ * ΤΙ ΕΓΙΝΕ. Το Δ ζητούσε «το chip να προσφέρεται σε ≥20% ΤΩΝ ΣΚΗΝΩΝ, αλλιώς είναι νεκρός
+ * κώδικας». Στις 22/08 ανανεώθηκε το εθνικό δείγμα (`measureColourCauseSplit --live`) και η
+ * πύλη κοκκίνισε στο **18,5%** — ενώ μία ώρα νωρίτερα, με το δείγμα της 15/08, ήταν πράσινη.
+ * Καμία γραμμή του `resolveCalmWaterState` δεν είχε αλλάξει. Άλλαξε ο ΚΑΙΡΟΣ.
+ *
+ * ΓΙΑΤΙ ΤΟ ΝΟΥΜΕΡΟ ΗΤΑΝ ΛΑΘΟΣ ΕΞ ΑΡΧΗΣ. Στις 550 σκηνές εκείνης της μέρας το chip σώπασε
+ * **403 φορές ΕΠΙΤΗΔΕΣ**: 209 «λίγος αέρας» (κάτω από τα μποφόρ που κάνουν την προστασία να
+ * σημαίνει κάτι) και 194 «υπάρχουν ήδη ιδανικές» (δεν χρειάζεται φίλτρο για να βρεις ήρεμο
+ * νερό όταν ο χάρτης έχει μπλε). Αυτές οι δύο σιωπές ΕΙΝΑΙ ο σχεδιασμός. Μετρώντας τις μέσα
+ * στον παρονομαστή, η πύλη τιμωρούσε το προϊόν επειδή ο καιρός ήταν καλός — και θα περνούσε
+ * θριαμβευτικά σε μια εβδομάδα μελτεμιού ακόμα κι αν το φίλτρο είχε σπάσει.
+ *
+ * ⛔ ΤΟ ΟΡΙΟ ΔΕΝ ΚΑΤΕΒΗΚΕ. Το να γράψει κανείς 0,15 αντί για 0,20 θα ήταν ακριβώς ο κανόνας που
+ * απαγορεύει η βίβλος («ΠΟΤΕ μην περάσεις την πύλη χαλαρώνοντας το κατώφλι»). Άλλαξε το
+ * ΕΡΩΤΗΜΑ: από «πόσο συχνά μιλάει;» σε «**από τις φορές που του επιτρέπεται να μιλήσει, μιλάει;**».
+ *
+ * ΤΡΕΙΣ ΕΛΕΓΧΟΙ, ΟΧΙ ΕΝΑΣ — γιατί ένας λόγος χωρίς φύλακα στον παρονομαστή του είναι το ίδιο
+ * τυφλός με τον προηγούμενο:
+ *
+ *   Δ1 · ΝΕΚΡΟΣ ΚΩΔΙΚΑΣ. Στις σκηνές που του επιτρέπεται, το chip μιλάει σε ≥1/3. Κάτω από αυτό,
+ *        στις ίδιες τις στιγμές που το προϊόν όρισε ως «η ώρα αυτού του φίλτρου», αποτυγχάνει
+ *        δύο στις τρεις — αυτό δεν είναι επιλεκτικότητα, είναι βλάβη.
+ *   Δ2 · Ο ΛΟΓΟΣ ΠΡΕΠΕΙ ΝΑ ΕΧΕΙ ΠΑΝΩ ΤΙ ΝΑ ΠΑΤΗΣΕΙ. Αν οι επιτρεπόμενες σκηνές πέσουν κάτω από
+ *        το 10% του συνόλου, ο λόγος βγαίνει από μια χούφτα και δεν σημαίνει τίποτα — τότε
+ *        σπάει ΕΔΩ, αντί να δίνει ένα καθησυχαστικό 100% από 4 σκηνές.
+ *   Δ3 · ΟΙ ΔΥΟ ΣΚΟΠΙΜΕΣ ΣΙΩΠΕΣ ΠΡΕΠΕΙ ΝΑ ΥΠΑΡΧΟΥΝ. Αν κάποια από τις δύο μηδενιστεί, κάποιος
+ *        την έσβησε από τον κώδικα — και τότε ο παρονομαστής μου έχει αλλάξει νόημα χωρίς να
+ *        το πάρει κανείς είδηση. Αυτό είναι το αυτοσαμποτάζ του ίδιου του παρονομαστή.
+ *
+ * Αυτοαποδεικνύεται: `node scripts/validateCalmWaterFilter.mjs --prove` (δεν θέλει δείγμα).
+ */
+const MIN_ELIGIBLE_OFFER_SHARE = 1 / 3;
+const MIN_ELIGIBLE_SHARE = 0.10;
+
+const evaluateReach = ({ total, offered: offeredCount, absentBy: absent }) => {
+  const problems = [];
+  const lightWind = absent['light-wind'] ?? 0;
+  const hasIdeal = absent['has-ideal'] ?? 0;
+  const eligible = total - lightWind - hasIdeal;
+  const eligibleShare = total > 0 ? eligible / total : 0;
+  const offerShare = eligible > 0 ? offeredCount / eligible : 0;
+
+  if (eligible <= 0 || offerShare < MIN_ELIGIBLE_OFFER_SHARE) {
+    problems.push(
+      `Δ1: από τις ${eligible} σκηνές όπου ΕΠΙΤΡΕΠΕΤΑΙ να μιλήσει, το chip μιλάει μόνο στις `
+      + `${offeredCount} (${(offerShare * 100).toFixed(1)}%, όριο ${(MIN_ELIGIBLE_OFFER_SHARE * 100).toFixed(0)}%) — νεκρός κώδικας`
+    );
+  }
+  if (eligibleShare < MIN_ELIGIBLE_SHARE) {
+    problems.push(
+      `Δ2: μόνο ${eligible} από ${total} σκηνές (${(eligibleShare * 100).toFixed(1)}%) επιτρέπουν στο chip να μιλήσει `
+      + `— ο λόγος του Δ1 βγαίνει από πολύ λίγα και δεν σημαίνει τίποτα`
+    );
+  }
+  if (lightWind === 0 || hasIdeal === 0) {
+    problems.push(
+      `Δ3: μία από τις δύο σκόπιμες σιωπές έχει μηδενιστεί (λίγος αέρας ${lightWind}, υπάρχουν ιδανικές ${hasIdeal}) `
+      + `— ο παρονομαστής του Δ1 έχει αλλάξει νόημα`
+    );
+  }
+  return { problems, eligible, eligibleShare, offerShare };
+};
+
+if (process.argv.includes('--prove')) {
+  const cases = [
+    ['υγιές (η εικόνα της 22/08)', { total: 550, offered: 102, absentBy: { 'light-wind': 209, 'has-ideal': 194, none: 42, all: 3 } }, false],
+    ['νεκρό chip', { total: 550, offered: 0, absentBy: { 'light-wind': 209, 'has-ideal': 194, none: 147, all: 0 } }, true],
+    ['λόγος από χούφτα', { total: 550, offered: 15, absentBy: { 'light-wind': 300, 'has-ideal': 230, none: 5, all: 0 } }, true],
+    ['σβήστηκε η σιωπή «υπάρχουν ιδανικές»', { total: 550, offered: 300, absentBy: { 'light-wind': 209, 'has-ideal': 0, none: 41, all: 0 } }, true],
+  ];
+  let bad = 0;
+  for (const [name, input, mustFail] of cases) {
+    const got = evaluateReach(input).problems;
+    const failed = got.length > 0;
+    const ok = failed === mustFail;
+    if (!ok) bad += 1;
+    console.log(`${ok ? '✅' : '❌'} ${name}: ${failed ? got.join(' · ') : 'καθαρό'}`);
+  }
+  console.log(bad ? `\n❌ ${bad} περιπτώσεις δεν συμπεριφέρθηκαν όπως πρέπει.` : '\n✅ Το Δ πιάνει και τις τρεις βλάβες και αφήνει το υγιές να περάσει.');
+  process.exit(bad ? 1 : 0);
+}
+
 const failures = [...syntheticFailures, ...layoutFailures];
 let offered = 0;
 const absentBy = { 'light-wind': 0, none: 0, all: 0 };
@@ -273,11 +360,9 @@ console.log(`  προσφέρεται σε: ${offered} (${(share * 100).toFixed(
 console.log(`  παραλίες ανά chip: διάμεσος ${median}${sizes.length ? ` (${sizes[0]}–${sizes[sizes.length - 1]})` : ''}`);
 console.log(`  σιωπή: λίγος αέρας ${absentBy['light-wind']} · υπάρχουν ιδανικές ${absentBy['has-ideal'] ?? 0} · καμία ${absentBy.none} · όλες ${absentBy.all}`);
 
-// Δ — το feature πρέπει να φαίνεται σε αρκετές οθόνες για να αξίζει τον χώρο που πιάνει.
-const MIN_OFFER_SHARE = 0.2;
-if (share < MIN_OFFER_SHARE) {
-  failures.push(`Δ: το chip προσφέρεται μόνο στο ${(share * 100).toFixed(1)}% των σκηνών (όριο ${MIN_OFFER_SHARE * 100}%) — νεκρός κώδικας`);
-}
+const reach = evaluateReach({ total: scenes.length, offered, absentBy });
+console.log(`  ΕΠΙΤΡΕΠΕΤΑΙ να μιλήσει σε: ${reach.eligible} σκηνές (${(reach.eligibleShare * 100).toFixed(1)}%) · από αυτές μιλάει στο ${(reach.offerShare * 100).toFixed(1)}%`);
+failures.push(...reach.problems);
 
 if (failures.length) {
   console.error(`\n❌ ${failures.length} αστοχίες:`);
