@@ -55,6 +55,8 @@ import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasure
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
+import { relievesOverCaution } from '../utils/overCautionRelief';
+import type { ShoreWaveInput } from '../utils/shoreWave';
 import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
@@ -110,6 +112,8 @@ export interface BeachScore {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
+  shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   /**
@@ -191,6 +195,8 @@ export interface BeachRecommendation {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
+  shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   /**
@@ -1928,6 +1934,176 @@ export const calculateBeachScore = (
     : typeof marine?.swellWavePeriodS === 'number' && Number.isFinite(marine.swellWavePeriodS)
       ? marine.swellWavePeriodS
       : undefined;
+
+  /**
+   * ⬆️ ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΥΠΟΛΟΓΙΖΕΤΑΙ ΕΔΩ, ΠΡΙΝ ΑΠΟ ΚΑΘΕ ΕΡΩΤΗΣΗ ΠΟΥ ΤΟ ΧΡΕΙΑΖΕΤΑΙ (22/08/2026).
+   *
+   * ΓΙΑΤΙ ΜΕΤΑΚΙΝΗΘΗΚΕ. Αυτό το μπλοκ ζούσε ~500 γραμμές παρακάτω, και ήταν ΑΥΤΟ ο λόγος που το
+   * ίδιο λάθος ξαναγράφτηκε τέσσερις φορές: όποια ερώτηση για «πόσο νερό έχει εδώ» έτυχε να
+   * γράφεται νωρίτερα στη συνάρτηση, ΔΕΝ ΕΙΧΕ άλλη επιλογή από το `effectiveWaveHeightM` — τη
+   * θάλασσα διάμεσα 10 χλμ ανοιχτά. Δεν ήταν κρίση κανενός· ήταν η σειρά των γραμμών.
+   *
+   * Τα κείμενα και οι προειδοποιήσεις κύματος (§3 παρακάτω) είναι το ζωντανό παράδειγμα: η κάρτα
+   * τύπωνε «~0,4 μ.» και από κάτω «Some wave risk (0.9 m)» με προειδοποίηση φουρτούνας, επειδή
+   * γράφονταν 500 γραμμές πριν υπάρξει ο αριθμός της ακτής.
+   *
+   * ΤΙ ΔΕΝ ΑΛΛΑΞΕ Η ΜΕΤΑΚΙΝΗΣΗ: τίποτα. Καμία εξάρτηση δεν ξαναγράφεται ανάμεσα στις δύο θέσεις
+   * (ελέγχθηκε) και η μετακίνηση αποδείχθηκε ΑΔΡΑΝΗΣ με εθνική σύγκριση όλων των πεδίων εξόδου
+   * πριν αλλάξει έστω ένας αναγνώστης — βίβλος §Γ58.
+   *
+   * ⚠️ ΜΗΝ ΤΟ ΞΑΝΑΚΑΤΕΒΑΣΕΙΣ. Αν χρειαστεί να μετακινηθεί, πρέπει να μείνει ΠΑΝΩ από την πρώτη
+   * ερώτηση που ρωτάει για το νερό της παραλίας — δηλαδή πάνω από τη «§3 Wave, fetch, and
+   * water-quality conditions».
+   */
+  const coveWave = resolveCoveAwareWaveHeightM({
+    geospatialProfile: options?.geospatialProfile,
+    facingDeg: windAssessment.facingDeg,
+    windDirectionDeg: weather.wind.deg,
+    windSpeedKmh: windSpeedKmph,
+    measuredWaveHeightM: realisticMeasuredWaveHeightM,
+    appModeledWaveHeightM: modeledWaveHeightM,
+    swellPresent: swell.hasSwell,
+  });
+  /**
+   * ΤΟ ΝΕΡΟ ΠΟΥ ΔΕΙΧΝΕΙ Η ΣΕΛΙΔΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΤΟ ΔΙΑΒΑΖΕΙ ΠΛΕΟΝ ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ (10/08/2026).
+   *
+   * `utils/shoreWave` has modelled the height at the sand since 05/08 and the beach page prints it
+   * («Κύμα στην ακτή ~0,2 μ.»), but it was declared display-only: the verdict kept reading the
+   * open-water grid. On Σχινιάς that produced both sentences on ONE screen — «Κύμα στην ακτή
+   * ~0,2 μ.» above «μην κολυμπήσεις», the second one computed from 1,22 m taken 9,4 km out in the
+   * South Evoian Gulf, in water the same offshore wind pushes AWAY from the beach.
+   *
+   * Reported by Miltos, 10/08/2026: «ο Σχινιάς έχει 24 km/h, γιατί δεν τον βάζεις στις τοπ;».
+   *
+   * This is a narrower claim than the blanket 0,5 damping the shore branch already used: that one
+   * applies to every 'protected' shore, this one only speaks where the ray-caster measured a
+   * land-blocked, essentially fetch-free sector, the wind has an OFFSHORE component (fully, below
+   * onshore −0,80, where the estimate is exactly what it always was; blended with the open-water
+   * reading between −0,80 and −0,50, where it fades to silence — see utils/shoreWave), the geometry is
+   * high-confidence with no suspect pin, and there is NO swell (ground swell wraps into shores the
+   * wind cannot reach — the one real false-calm route, closed by the gate itself). Where it does
+   * speak it is the app's own SMB height over the fetch that was actually measured, capped at the
+   * open-water reading, so it can never claim a calmer sea than the one outside.
+   *
+   * It feeds the SHORE branch only. The open-water branch, the score, the colour, the exposure
+   * level and every gate keep reading effectiveWaveHeightM, and the one-step cap still stands —
+   * so a genuinely running sea cannot travel from «μην κολυμπήσεις» to «καλή».
+   */
+  const shoreWaveInput: ShoreWaveInput = {
+    openWaterWaveHeightM: effectiveWaveHeightM,
+    windSpeedKmh: windSpeedKmph,
+    sector: {
+      fetchKm: coveWave.fetchKm,
+      blockedRayRatio: coveWave.blockedRayRatio,
+      onshore: coveWave.onshore,
+    },
+    confidence: options?.geospatialProfile?.confidence,
+    suspectPin: windAssessment.windProfile.suspectPin,
+    // Only a swell that can REACH this shore silences the estimate. `swell.exposed` is
+    // utils/swellExposure's onshore test (component > 0,3 AND an open sector); a meaningful swell
+    // whose direction we do not know counts as arriving, because there is no evidence it is not.
+    // Computed once, next to the geometric ceiling that applies the identical test.
+    arrivingSwellPresent,
+    departingSea,
+    // Η μετρημένη θάλασσα που ΕΡΧΕΤΑΙ σωπαίνει την εκτίμηση ακτής (21/08 — Σταλίδα). Μονόδρομη:
+    // μόνο επαναφέρει το μετρημένο νούμερο, ποτέ δεν κατεβάζει κάποιο.
+    arrivingSea,
+    // «Δεν υπάρχει νερό προς τα εκεί» — ο ζωντανός τομέας ΚΑΙ ολόκληρο το ημικύκλιο του ανέμου.
+    // Ο έλεγχος γείτονα χρειάζεται τους 8 ωμούς τομείς, που η παρεμβολή δεν κουβαλάει, γι' αυτό
+    // περνάει εδώ το ίδιο το προφίλ (βίβλος §Γ21).
+    enclosedDrySector: isEnclosedDrySector(
+      { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
+      options?.geospatialProfile,
+      weather.wind.deg
+    ),
+    // Η βεντάλια διασποράς (§Γ22): στον ξηρό τομέα, το μοντελοποιημένο ύψος γίνεται το ολοκλήρωμα
+    // cos²ˢ × SMB πάνω στους 8 τομείς — ο κλειστός όρμος δίνει το δάπεδο (ό,τι έδινε η §Γ21), ο
+    // όρμος με στόμιο το κύμα του στομίου του αντί για γυμνό δάπεδο ή το νούμερο του πελάγους.
+    dryFanWaveM: drySectorFanWaveHeightM({
+      sector: { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
+      profile: options?.geospatialProfile,
+      windDirectionDeg: weather.wind.deg,
+      windSpeedKmh: windSpeedKmph,
+    }),
+  };
+  const shoreModelWaveM = estimateShoreWaveHeightM(shoreWaveInput);
+  /**
+   * ΑΠΟ ΠΟΥ ΗΡΘΕ Ο ΑΡΙΘΜΟΣ ΤΗΣ ΑΚΤΗΣ — ΜΕΤΡΗΜΕΝΗ ΑΠΟΔΕΙΞΗ Η ΕΙΚΑΣΙΑ; (22/08/2026)
+   *
+   * Δεν είναι στολίδι για αναφορές: ο φράχτης της γραμμής ηρεμίας
+   * (utils/beachConditionsReadout, 21/08) γράφτηκε γύρω από την ΑΒΑΘΜΟΝΟΜΗΤΗ έκπτωση ×0,5 της
+   * προστατευμένης ακτής, και δεν είχε τρόπο να την ξεχωρίσει από μετρημένη απόδειξη ότι όλο το
+   * νερό φεύγει (`isSeaDepartingShore`). Χωρίς αυτό το πεδίο η οθόνη δεν μπορεί να κάνει τη
+   * διάκριση που η ίδια η βίβλος ζητάει.
+   *
+   * ΑΠΑΝΤΑΕΙ ΑΚΡΙΒΩΣ ΕΝΑ ΕΡΩΤΗΜΑ: «θα σιωπούσε η εκτίμηση ακτής χωρίς την απόδειξη;». Τρέχει την
+   * ΙΔΙΑ συνάρτηση με το ίδιο ακριβώς input και μόνο το `departingSea` σβηστό — καμία αντιγραφή
+   * λογικής, οπότε δεν μπορεί να ξεσυγχρονιστεί αν αλλάξουν οι πύλες της.
+   */
+  const shoreWaveFromDepartingSea = departingSea
+    && typeof shoreModelWaveM === 'number'
+    && estimateShoreWaveHeightM({ ...shoreWaveInput, departingSea: false }) === undefined;
+  // ΤΟ ΣΗΜΕΙΟ ΠΟΥ ΕΔΙΝΕ ΤΗΝ ΑΔΙΚΑΙΟΛΟΓΗΤΗ ΕΚΠΤΩΣΗ (διορθώθηκε 20/08/2026). Το `finalExposureLevel`
+  // μπορεί να λέει 'protected' επειδή ΑΝΘΡΩΠΟΣ επιθεώρησε τον όρμο, χωρίς ο τομέας να έχει
+  // περάσει το αυστηρό γεωμετρικό τεστ — και τότε η πινέζα στον χάρτη λέει 'partial'. Ο άνεμος
+  // κρατάει την επιθεώρηση· η θάλασσα όχι, γιατί κανείς δεν επιθεώρησε το κύμα.
+  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel,
+    windAssessment.protectionFromCuratedCoveOnly);
+  // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
+  // damping that has been in place since 01/08.
+  const shoreWaveM = typeof shoreModelWaveM === 'number'
+    ? Math.min(shoreModelWaveM, dampedShoreWaveM ?? shoreModelWaveM)
+    : dampedShoreWaveM;
+
+  /**
+   * ΤΟ ΝΕΡΟ ΣΤΗΝ ΠΑΡΑΛΙΑ — Ο ΕΝΑΣ ΑΡΙΘΜΟΣ ΓΙΑ ΚΑΘΕ ΕΡΩΤΗΣΗ «ΠΟΣΟ ΚΥΜΑ ΕΧΕΙ ΕΔΩ» (22/08/2026).
+   *
+   * ΤΟ ΠΡΟΒΛΗΜΑ ΠΟΥ ΛΥΝΕΙ, ΜΕ ΝΟΥΜΕΡΑ. Μέσα σε αυτό το αρχείο υπάρχουν ~24 πραγματικές χρήσεις
+   * του `effectiveWaveHeightM`. Κάποιες είναι ΣΩΣΤΕΣ — το ίδιο το μοντέλο, το γεωμετρικό ταβάνι,
+   * η ένδειξη «ανοιχτά», η σοβαρότητα που πάει στο `resolveConditionTone` (που εφαρμόζει το
+   * `shoreSeaStateM` μόνο του, παρακάτω). Κάποιες ήταν ΛΑΘΟΣ. Κανένας κανόνας δεν έλεγε ποια
+   * είναι ποια, οπότε κάθε νέο σημείο διάλεγε μόνο του — και τέσσερις φορές διάλεξε λάθος:
+   *
+   *   05/08 Σχινιάς · 10/08 Ωρωπός · 13/08 Καβαλικευτά · 22/08 Ελαφονήσι (τρία σημεία σε μία μέρα)
+   *
+   * Ο ΚΑΝΟΝΑΣ, ΓΡΑΜΜΕΝΟΣ ΜΙΑ ΦΟΡΑ:
+   *
+   *   • Ρωτάς «τι κάνει η ΘΑΛΑΣΣΑ σε αυτή την περιοχή;»  → `effectiveWaveHeightM`
+   *     (το μοντέλο, το ταβάνι, η ένδειξη «ανοιχτά», ό,τι δαμπάρει μόνο του παρακάτω)
+   *   • Ρωτάς «τι θα βρει ο κόσμος ΣΕ ΑΥΤΗ ΤΗΝ ΠΑΡΑΛΙΑ;» → `seaAtShoreM`
+   *     (κείμενα, προειδοποιήσεις, ετυμηγορία, βαθμοί που περιγράφουν την εμπειρία)
+   *
+   * Πέφτει πίσω στο ανοιχτό όταν δεν έχουμε αριθμό ακτής, οπότε καμία παραλία δεν μένει χωρίς
+   * απάντηση και καμία δεν γίνεται ηρεμότερη επειδή λείπουν δεδομένα.
+   *
+   * ⚠️ ΑΝ ΠΡΟΣΘΕΣΕΙΣ ΝΕΑ ΕΡΩΤΗΣΗ ΓΙΑ ΤΟ ΝΕΡΟ, ΔΙΑΛΕΞΕ ΑΠΟ ΤΑ ΔΥΟ ΠΑΡΑΠΑΝΩ — μην πάρεις ό,τι
+   * τυχαίνει να είναι σε εμβέλεια. Η πύλη scripts/validateWaterQuestionRouting.mjs μετράει πόσα
+   * σημεία ρωτάνε το καθένα και σκάει αν εμφανιστεί καινούργιο χωρίς να δηλωθεί.
+   */
+  const seaAtShoreM = typeof shoreWaveM === 'number' && Number.isFinite(shoreWaveM)
+    ? shoreWaveM
+    : effectiveWaveHeightM;
+
+  /**
+   * ΤΟ ΝΕΡΟ ΠΟΥ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΣΒΗΣΕΙ ΠΡΟΕΙΔΟΠΟΙΗΣΗ — ΑΥΣΤΗΡΟΤΕΡΟ ΑΠΟ ΤΟ ΠΑΡΑΠΑΝΩ.
+   *
+   * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΓΡΑΦΤΕΙ, ΚΑΙ Η ΠΡΩΤΗ ΕΚΔΟΧΗ ΗΤΑΝ ΛΑΘΟΣ. Δίνοντας το `seaAtShoreM` κατευθείαν
+   * στην προειδοποίηση φουρτούνας, έφευγαν 17 προειδοποιήσεις εθνικά — και οι 10 από αυτές σε
+   * παραλίες με ανοιχτή θάλασσα **1,2-1,64 μ.** και αριθμό ακτής κολλημένο στο δάπεδο 0,10 μ.
+   * Εκεί ο αριθμός ακτής ΔΕΝ είναι μέτρηση: είναι η αβαθμονόμητη έκπτωση ×0,5 συν το μοντέλο
+   * SMB (§7δ: «παραμένει αβαθμονόμητο και χωρίς κριτή»). Σβήνοντας την τελευταία επιφύλαξη με
+   * βάση αβαθμονόμητο μοντέλο, ποντάρεις στην επικίνδυνη κατεύθυνση.
+   *
+   * ΚΑΙ ΘΑ ΕΣΠΑΖΕ ΤΗ ΣΥΝΟΧΗ ΤΗΣ ΚΑΡΤΑΣ: σε αυτές ακριβώς τις παραλίες ο φράχτης της γραμμής
+   * ηρεμίας (§Γ56) ανεβάζει ούτως ή άλλως το τυπωμένο νούμερο πίσω στο 0,8 — οπότε η κάρτα θα
+   * έδειχνε «0,8 μ.» ΧΩΡΙΣ προειδοποίηση. Χειρότερο από πριν, όχι καλύτερο.
+   *
+   * Άρα η προειδοποίηση σωπαίνει με το ΙΔΙΟ κλειδί που ξεκλειδώνει και ο φράχτης: μετρημένη
+   * απόδειξη ότι όλο το νερό φεύγει. Ένα κλειδί για τις δύο πιο επικίνδυνες σιωπές.
+   */
+  const seaForCautionM = shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM
+    ? seaAtShoreM
+    : effectiveWaveHeightM;
   const seaStateSource: SeaStateSource = measuredWaveHeightM === undefined
     ? 'modeled'
     : effectiveWaveHeightM > (realisticMeasuredWaveHeightM ?? 0) + 0.005
@@ -2005,23 +2181,27 @@ export const calculateBeachScore = (
     }
     if (!waveRaisedByWind && measuredWaveHeightM <= 0.4 && finalExposureLevel === 'protected') {
       reasons.push("Low measured wave height");
-    } else if (effectiveWaveHeightM >= 1.2) {
-      reasons.push(`High wave forecast (${effectiveWaveHeightM.toFixed(1)} m)`);
+    // ΤΟ ΚΕΙΜΕΝΟ ΚΑΙ Η ΠΡΟΕΙΔΟΠΟΙΗΣΗ ΠΕΡΙΓΡΑΦΟΥΝ ΤΗΝ ΠΑΡΑΛΙΑ, ΟΧΙ ΤΟ ΠΕΛΑΓΟΣ (22/08/2026).
+    // Διάβαζαν `effectiveWaveHeightM` επειδή έτρεχαν ~500 γραμμές ΠΡΙΝ υπάρξει ο αριθμός της
+    // ακτής — όχι από κρίση. Αποτέλεσμα: η κάρτα τύπωνε «~0,4 μ.» και από κάτω «Some wave risk
+    // (0.9 m)» με προειδοποίηση φουρτούνας, για το ίδιο νερό, στην ίδια οθόνη (Ελαφονήσι).
+    } else if (seaForCautionM >= 1.2) {
+      reasons.push(`High wave forecast (${seaForCautionM.toFixed(1)} m)`);
       warnings.push({
         type: 'rough_sea',
-        severity: effectiveWaveHeightM >= 1.5 ? 'critical' : 'warning',
-        message: `Wave forecast is ${effectiveWaveHeightM.toFixed(1)} m.`
+        severity: seaForCautionM >= 1.5 ? 'critical' : 'warning',
+        message: `Wave forecast is ${seaForCautionM.toFixed(1)} m.`
       });
-    } else if (effectiveWaveHeightM >= 0.8) {
+    } else if (seaForCautionM >= 0.8) {
       reasons.push(finalExposureLevel === 'protected'
-        ? `Protected from moderate wave forecast (${effectiveWaveHeightM.toFixed(1)} m)`
-        : `Some wave risk (${effectiveWaveHeightM.toFixed(1)} m)`
+        ? `Protected from moderate wave forecast (${seaForCautionM.toFixed(1)} m)`
+        : `Some wave risk (${seaForCautionM.toFixed(1)} m)`
       );
       if (finalExposureLevel !== 'protected') {
         warnings.push({
           type: 'rough_sea',
           severity: 'warning',
-          message: `Some wave risk (${effectiveWaveHeightM.toFixed(1)} m).`
+          message: `Some wave risk (${seaForCautionM.toFixed(1)} m).`
         });
       }
     } else if (finalExposureLevel === 'protected') {
@@ -2231,9 +2411,12 @@ export const calculateBeachScore = (
   // It reads the swell-equivalent height, not the raw one — otherwise it would lift a steep
   // 0.45 m 2.5 s sea straight back up to "fine", which is the Σχινιάς failure re-entering
   // through the back door one line after being fixed.
+  // «Λίγος αέρας και μικρή θάλασσα» — η θάλασσα που κρίνεται είναι αυτή που θα κολυμπήσει
+  // κάποιος (22/08/2026). Η διόρθωση περιόδου (`seaStateSeverityM`) ΜΕΝΕΙ: είναι ο φραγμός που
+  // εμποδίζει ένα κοντό απότομο κύμα 0,45 μ. να περάσει για ήρεμο — δες το σχόλιο από πάνω.
   if (
     baseBeaufort <= 3 &&
-    (seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS) ?? effectiveWaveHeightM) <= 0.5
+    (seaStateSeverityM(seaAtShoreM, seaStatePeriodS) ?? seaAtShoreM) <= 0.5
   ) {
     const lightWindFloor = finalExposureLevel === 'protected' ? 9 : finalExposureLevel === 'partial' ? 8 : 7;
     seaScore = Math.max(seaScore, lightWindFloor);
@@ -2292,7 +2475,9 @@ export const calculateBeachScore = (
   if (temp < 18) swimmingScore -= 15;
   else if (temp < 22) swimmingScore -= (22 - temp) * 2;
 
-  if (isFamilyMode && (effectiveWaveHeightM > 0.5 || effectiveBeaufort >= 4)) {
+  // Ο βυθός και η είσοδος αρχίζουν να μετράνε όταν κουνάει ΕΚΕΙ ΠΟΥ ΠΑΤΑΕΙ ΤΟ ΠΑΙΔΙ — δηλαδή
+  // στην ακτή, όχι στο πέλαγος (22/08/2026).
+  if (isFamilyMode && (seaAtShoreM > 0.5 || effectiveBeaufort >= 4)) {
     if (seabedSlope === 'shallow_gradual') swimmingScore += 6;
     if (waterEntry === 'easy') swimmingScore += 5;
     if (seabedSlope === 'steep') {
@@ -2413,88 +2598,6 @@ export const calculateBeachScore = (
     finalScore = Math.min(finalScore, windAssessment.finalScoreCap);
   }
 
-  const coveWave = resolveCoveAwareWaveHeightM({
-    geospatialProfile: options?.geospatialProfile,
-    facingDeg: windAssessment.facingDeg,
-    windDirectionDeg: weather.wind.deg,
-    windSpeedKmh: windSpeedKmph,
-    measuredWaveHeightM: realisticMeasuredWaveHeightM,
-    appModeledWaveHeightM: modeledWaveHeightM,
-    swellPresent: swell.hasSwell,
-  });
-  /**
-   * ΤΟ ΝΕΡΟ ΠΟΥ ΔΕΙΧΝΕΙ Η ΣΕΛΙΔΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΤΟ ΔΙΑΒΑΖΕΙ ΠΛΕΟΝ ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ (10/08/2026).
-   *
-   * `utils/shoreWave` has modelled the height at the sand since 05/08 and the beach page prints it
-   * («Κύμα στην ακτή ~0,2 μ.»), but it was declared display-only: the verdict kept reading the
-   * open-water grid. On Σχινιάς that produced both sentences on ONE screen — «Κύμα στην ακτή
-   * ~0,2 μ.» above «μην κολυμπήσεις», the second one computed from 1,22 m taken 9,4 km out in the
-   * South Evoian Gulf, in water the same offshore wind pushes AWAY from the beach.
-   *
-   * Reported by Miltos, 10/08/2026: «ο Σχινιάς έχει 24 km/h, γιατί δεν τον βάζεις στις τοπ;».
-   *
-   * This is a narrower claim than the blanket 0,5 damping the shore branch already used: that one
-   * applies to every 'protected' shore, this one only speaks where the ray-caster measured a
-   * land-blocked, essentially fetch-free sector, the wind has an OFFSHORE component (fully, below
-   * onshore −0,80, where the estimate is exactly what it always was; blended with the open-water
-   * reading between −0,80 and −0,50, where it fades to silence — see utils/shoreWave), the geometry is
-   * high-confidence with no suspect pin, and there is NO swell (ground swell wraps into shores the
-   * wind cannot reach — the one real false-calm route, closed by the gate itself). Where it does
-   * speak it is the app's own SMB height over the fetch that was actually measured, capped at the
-   * open-water reading, so it can never claim a calmer sea than the one outside.
-   *
-   * It feeds the SHORE branch only. The open-water branch, the score, the colour, the exposure
-   * level and every gate keep reading effectiveWaveHeightM, and the one-step cap still stands —
-   * so a genuinely running sea cannot travel from «μην κολυμπήσεις» to «καλή».
-   */
-  const shoreModelWaveM = estimateShoreWaveHeightM({
-    openWaterWaveHeightM: effectiveWaveHeightM,
-    windSpeedKmh: windSpeedKmph,
-    sector: {
-      fetchKm: coveWave.fetchKm,
-      blockedRayRatio: coveWave.blockedRayRatio,
-      onshore: coveWave.onshore,
-    },
-    confidence: options?.geospatialProfile?.confidence,
-    suspectPin: windAssessment.windProfile.suspectPin,
-    // Only a swell that can REACH this shore silences the estimate. `swell.exposed` is
-    // utils/swellExposure's onshore test (component > 0,3 AND an open sector); a meaningful swell
-    // whose direction we do not know counts as arriving, because there is no evidence it is not.
-    // Computed once, next to the geometric ceiling that applies the identical test.
-    arrivingSwellPresent,
-    departingSea,
-    // Η μετρημένη θάλασσα που ΕΡΧΕΤΑΙ σωπαίνει την εκτίμηση ακτής (21/08 — Σταλίδα). Μονόδρομη:
-    // μόνο επαναφέρει το μετρημένο νούμερο, ποτέ δεν κατεβάζει κάποιο.
-    arrivingSea,
-    // «Δεν υπάρχει νερό προς τα εκεί» — ο ζωντανός τομέας ΚΑΙ ολόκληρο το ημικύκλιο του ανέμου.
-    // Ο έλεγχος γείτονα χρειάζεται τους 8 ωμούς τομείς, που η παρεμβολή δεν κουβαλάει, γι' αυτό
-    // περνάει εδώ το ίδιο το προφίλ (βίβλος §Γ21).
-    enclosedDrySector: isEnclosedDrySector(
-      { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
-      options?.geospatialProfile,
-      weather.wind.deg
-    ),
-    // Η βεντάλια διασποράς (§Γ22): στον ξηρό τομέα, το μοντελοποιημένο ύψος γίνεται το ολοκλήρωμα
-    // cos²ˢ × SMB πάνω στους 8 τομείς — ο κλειστός όρμος δίνει το δάπεδο (ό,τι έδινε η §Γ21), ο
-    // όρμος με στόμιο το κύμα του στομίου του αντί για γυμνό δάπεδο ή το νούμερο του πελάγους.
-    dryFanWaveM: drySectorFanWaveHeightM({
-      sector: { fetchKm: coveWave.fetchKm, blockedRayRatio: coveWave.blockedRayRatio },
-      profile: options?.geospatialProfile,
-      windDirectionDeg: weather.wind.deg,
-      windSpeedKmh: windSpeedKmph,
-    }),
-  });
-  // ΤΟ ΣΗΜΕΙΟ ΠΟΥ ΕΔΙΝΕ ΤΗΝ ΑΔΙΚΑΙΟΛΟΓΗΤΗ ΕΚΠΤΩΣΗ (διορθώθηκε 20/08/2026). Το `finalExposureLevel`
-  // μπορεί να λέει 'protected' επειδή ΑΝΘΡΩΠΟΣ επιθεώρησε τον όρμο, χωρίς ο τομέας να έχει
-  // περάσει το αυστηρό γεωμετρικό τεστ — και τότε η πινέζα στον χάρτη λέει 'partial'. Ο άνεμος
-  // κρατάει την επιθεώρηση· η θάλασσα όχι, γιατί κανείς δεν επιθεώρησε το κύμα.
-  const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel,
-    windAssessment.protectionFromCuratedCoveOnly);
-  // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
-  // damping that has been in place since 01/08.
-  const shoreWaveM = typeof shoreModelWaveM === 'number'
-    ? Math.min(shoreModelWaveM, dampedShoreWaveM ?? shoreModelWaveM)
-    : dampedShoreWaveM;
   let swimmingComfort = swimmingComfortFromScore(
     swimmingScore,
     effectiveBeaufort,
@@ -2542,13 +2645,28 @@ export const calculateBeachScore = (
    * long-period swell (a 0,5 m ground swell dumps harder than its height) and for the rain rule
    * below, which is allowed to overwrite the verdict after this point.
    */
-  const isLightWindSmallSea = (
-    baseBeaufort < MEANINGFUL_WIND_TOP_PICK_BEAUFORT + 1 &&
-    effectiveWaveHeightM < 0.6 &&
-    !officialWarningOverride &&
-    !directSwell &&
-    swellSurgePenalty <= 0
-  );
+  const isLightWindSmallSea = relievesOverCaution({
+    beaufort: baseBeaufort,
+    /**
+     * ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ, ΟΧΙ ΤΟ ΠΕΛΑΓΟΣ (διορθώθηκε 22/08/2026 — βίβλος §Γ57).
+     *
+     * Μέχρι σήμερα εδώ περνούσε `effectiveWaveHeightM`, δηλαδή το κελί διάμεσα 10 χλμ ανοιχτά.
+     * Ο μοναδικός φρουρός απέναντι στην υπερβολική αυστηρότητα ρωτούσε το ΙΔΙΟ νούμερο που
+     * προκαλεί την υπερβολική αυστηρότητα, κι έτσι δεν άνοιγε ποτέ στις παραλίες για τις οποίες
+     * γράφτηκε. Είναι το ίδιο ελάττωμα που το `swimmingComfortFromScore` καταγράφει από πάνω του
+     * ως «THE SHORE BRANCH WAS DEAD ON ARRIVAL» — ένα σκαλί πιο κάτω, αδιάγνωστο για 12 μέρες.
+     *
+     * Παίρνει ΑΚΡΙΒΩΣ το `shoreWaveM` που διαβάζει ο κλάδος ακτής της ετυμηγορίας δύο γραμμές
+     * πιο πάνω· χωρίς αυτό η ίδια συνάρτηση θα κρατούσε δύο διαφορετικές απαντήσεις στο
+     * ερώτημα «πόσο νερό έχει εδώ».
+     */
+    seaAtShoreM,
+    // Μόνο η ΜΕΤΡΗΜΕΝΗ απόδειξη ανεβάζει το ταβάνι ανέμου στα 4 Μποφόρ — όχι η γεωμετρική εικασία.
+    departingSea: shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM,
+    officialWarning: officialWarningOverride,
+    directSwell,
+    swellSurgePenalty,
+  });
   if (isLightWindSmallSea && swimmingComfort === 'avoid_swimming') {
     swimmingComfort = 'caution';
   }
@@ -2713,6 +2831,13 @@ export const calculateBeachScore = (
     // ετυμηγορίας διαβάζει δύο γραμμές πιο πάνω. Καμία δεύτερη μεταβλητή, κανένας δεύτερος
     // υπολογισμός — η οθόνη και η ετυμηγορία δεν μπορούν πια να διαφωνήσουν κατασκευαστικά.
     shoreDisplayWaveM: shoreWaveM,
+    /**
+     * Ο τυπωμένος αριθμός ακτής στηρίζεται σε ΜΕΤΡΗΜΕΝΗ απόδειξη ότι όλο το νερό φεύγει, όχι στην
+     * αβαθμονόμητη έκπτωση ×0,5. Ταξιδεύει ως την κάρτα και την πινέζα ώστε ο φράχτης της γραμμής
+     * ηρεμίας να μπορεί να ξεχωρίσει τα δύο (βίβλος §Γ55). Ισχύει μόνο όταν η εκτίμηση ακτής ΚΑΙ
+     * κέρδισε τον τελικό αριθμό — αλλιώς αυτό που τυπώνεται δεν είναι το μετρημένο νούμερο.
+     */
+    shoreWaveFromDepartingSea: shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM,
     // Ο αριθμός κατεβαίνει ήδη για κάθε παραλία μαζί με το κύμα (ίδια σημεία, ίδιο πακέτο) και
     // απλώς δεν έφτανε ποτέ στην κάρτα. Μηδέν επιπλέον κλήσεις. DISPLAY-ONLY (απόφαση Μίλτου Α).
     seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,

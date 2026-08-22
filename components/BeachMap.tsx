@@ -414,6 +414,7 @@ const BeachHoverPreviewCard: React.FC<{
     seaStatePeriodS: item.seaStatePeriodS,
     shoreWaveHeightM: item.shoreWaveHeightM,
     shoreDisplayWaveM: item.shoreDisplayWaveM,
+    shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
     language,
   });
   const hoverWaveText = hoverReadout.waveText;
@@ -521,6 +522,7 @@ const MarkerConditionsPopup: React.FC<{
     seaStatePeriodS: item.seaStatePeriodS,
     shoreWaveHeightM: item.shoreWaveHeightM,
     shoreDisplayWaveM: item.shoreDisplayWaveM,
+    shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
     language,
   });
   const beachName = item.name || item.beach.name[language] || item.beach.name.en;

@@ -212,6 +212,8 @@ export interface FeedbackData {
      * πρέπει να το διαβάζει ως «ίδιο με το ανοιχτό», όχι ως έλλειψη δεδομένων.
      */
     shoreDisplayWaveM?: number;
+    /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5 (§Γ55/§Γ56). */
+    shoreWaveFromDepartingSea?: boolean;
     /** True only when the user is looking at right now, not a remembered or future day. */
     live?: boolean;
   };

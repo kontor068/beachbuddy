@@ -97,6 +97,7 @@ type BeachCardContext = Beach & {
   seaStateWaveM?: SuitableBeach['seaStateWaveM'];
   shoreWaveHeightM?: SuitableBeach['shoreWaveHeightM'];
   shoreDisplayWaveM?: SuitableBeach['shoreDisplayWaveM'];
+  shoreWaveFromDepartingSea?: SuitableBeach['shoreWaveFromDepartingSea'];
   seaStatePeriodS?: SuitableBeach['seaStatePeriodS'];
   windSpeedKmph?: SuitableBeach['windSpeedKmph'];
   warnings?: SuitableBeach['warnings'];
@@ -2646,6 +2647,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         seaStateWaveM: context.seaStateWaveM,
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
+        shoreWaveFromDepartingSea: context.shoreWaveFromDepartingSea,
         seaStatePeriodS: context.seaStatePeriodS,
         windSpeedKmph: context.windSpeedKmph,
         warnings: context.warnings,
@@ -3677,6 +3679,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         seaStateWaveM={options.context?.seaStateWaveM ?? directContext.seaStateWaveM ?? weatherContext?.seaStateWaveM}
         shoreWaveHeightM={options.context?.shoreWaveHeightM ?? directContext.shoreWaveHeightM ?? weatherContext?.shoreWaveHeightM}
         shoreDisplayWaveM={options.context?.shoreDisplayWaveM ?? directContext.shoreDisplayWaveM ?? weatherContext?.shoreDisplayWaveM}
+        shoreWaveFromDepartingSea={options.context?.shoreWaveFromDepartingSea ?? directContext.shoreWaveFromDepartingSea ?? weatherContext?.shoreWaveFromDepartingSea}
         seaStatePeriodS={options.context?.seaStatePeriodS ?? directContext.seaStatePeriodS ?? weatherContext?.seaStatePeriodS}
         warnings={cardWarnings}
         confidence={options.context?.confidence ?? directContext.confidence ?? weatherContext?.confidence}

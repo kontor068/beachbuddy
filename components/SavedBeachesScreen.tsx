@@ -339,6 +339,7 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
                       waveHeightM={item.waveHeightM}
                       shoreWaveHeightM={item.shoreWaveHeightM}
                       shoreDisplayWaveM={item.shoreDisplayWaveM}
+                      shoreWaveFromDepartingSea={item.shoreWaveFromDepartingSea}
                       seaTemperatureC={item.seaTemperatureC}
                       favorites={favorites}
                       onToggleFavorite={onToggleFavorite}
