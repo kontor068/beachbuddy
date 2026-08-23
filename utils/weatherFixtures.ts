@@ -1,4 +1,5 @@
 import { DailyForecast, ForecastItem, Island, WeatherData } from '../types';
+import { athensNow } from './athensTime';
 
 const LOCAL_FIXTURE_PARAM = 'bbWeatherFixture';
 
@@ -283,7 +284,12 @@ const createForecastItem = (date: Date, hour: number, scenario: WeatherFixtureSc
  */
 export const createDailyForecast = (dayOffset: number, scenario: WeatherFixtureScenario): DailyForecast => {
   const day = resolveFixtureDay(scenario, dayOffset);
-  const date = new Date();
+  // athensNow(), not new Date(): the day this returns gets NAMED by the product
+  // (getSelectedDayOffset → «αύριο»), and that naming reads the Greek wall clock. On a
+  // machine behind Greece — a CI runner in UTC after 21:00 — «today + 1» from the device
+  // clock is ALREADY today in Athens, and the offer says «Σήμερα». Both sides must count
+  // days on the same clock. Measured 23/08/2026, when the gate fell on a green product.
+  const date = athensNow();
   date.setDate(date.getDate() + dayOffset);
   date.setHours(12, 0, 0, 0);
 
