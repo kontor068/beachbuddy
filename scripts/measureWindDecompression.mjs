@@ -271,7 +271,36 @@ const verdictFor = (exp) => Object.fromEntries(CANDIDATES.map(([name]) => {
 even.verdict = verdictFor(even);
 odd.verdict = verdictFor(odd);
 
+// ── 5β. Ο ΣΥΝΤΕΛΕΣΤΗΣ ΠΟΥ ΘΑ ΜΠΕΙ (24/08/2026, απόφαση Μίλτου: μπαίνει το linear@raw).
+// Τα δύο μισά έδειξαν ότι η μορφή ΓΕΝΙΚΕΥΕΙ (κερδίζει σε ξένους σταθμούς και ξένα παράθυρα
+// και με τα δύο σετ συντελεστών)· για την παραγωγή ο συντελεστής βγαίνει από ΟΛΟΥΣ τους
+// σταθμούς του A — αλλά ΜΟΝΟ από ώρες χερσαίου κελιού, γιατί εκεί μόνο θα εφαρμοστεί:
+// η εξαίρεση του θαλασσινού κελιού (SAR + ανεμόμετρα DEM-0: καμία συμπίεση πάνω από νερό,
+// ΥΠΕΡεκτίμηση στα δυνατά) είναι το μισό της διόρθωσης του δαπέδου και ΔΕΝ αναιρείται από
+// μέτρηση που έγινε 93% σε χερσαίους σταθμούς. Η κρίση γίνεται στον ΠΛΗΡΗ υποψήφιο
+// παραγωγής — χερσαίο κελί → max(raw, a + b×raw), θαλάσσιο → η σημερινή πόρτα αυτούσια —
+// απέναντι στην πλήρη σημερινή παραγωγή, σε ΟΛΕΣ τις ώρες των τριών ξένων παραθύρων.
+const landOf = rows => rows.filter(r => (r.elevation ?? 0) > 0);
+const shipCalibRows = landOf(rowsByWindow[CALIBRATION_WINDOW]);
+const shipLinear = fitLinear(shipCalibRows, 'raw');
+const shipValue = r => ((r.elevation ?? 0) > 0 ? Math.max(r.raw, shipLinear.apply(r.raw)) : r.prod);
+const shipJudge = {};
+for (const w of JUDGING_WINDOWS) {
+  shipJudge[w] = {
+    all: { prod: describe(rowsByWindow[w], r => r.prod), ship: describe(rowsByWindow[w], shipValue) },
+    land: { prod: describe(landOf(rowsByWindow[w]), r => r.prod), ship: describe(landOf(rowsByWindow[w]), shipValue) },
+  };
+}
+const shipFit = {
+  decidedBy: 'Μίλτος 24/08/2026 — μπαίνει το linear@raw, με την εξαίρεση θαλασσινού κελιού ανέπαφη',
+  params: shipLinear.params,
+  fittedOnLandRows: shipCalibRows.length,
+  landShareOfCalibration: pct(shipCalibRows.length, rowsByWindow[CALIBRATION_WINDOW].length),
+  judge: shipJudge,
+};
+
 const report = {
+  shipFit,
   generatedAt: new Date().toISOString(),
   question: 'Υπάρχει διόρθωση σχήματος που αντιστρέφει τη συμπίεση του best_match και στέκει σε παράθυρα και σταθμούς που δεν είδε;',
   method: 'Βαθμονόμηση στους ζυγούς/μονούς σταθμούς του παραθύρου A, κρίση στους άλλους μισούς στα B, C, D. Σύγκριση πάντα με την ΠΑΡΑΓΩΓΗ (applyGustFloor), όχι με τον ωμό μέσο (§Γ35).',
@@ -312,4 +341,13 @@ const printExp = (exp, title) => {
 };
 printExp(even, 'ΖΥΓΟΙ βαθμονομούν, ΜΟΝΟΙ κρίνουν');
 printExp(odd, 'ΜΟΝΟΙ βαθμονομούν, ΖΥΓΟΙ κρίνουν');
+
+console.log(`\n=== Ο ΥΠΟΨΗΦΙΟΣ ΠΑΡΑΓΩΓΗΣ — fit σε ${shipCalibRows.length} χερσαίες ώρες όλων των σταθμών του A (${shipFit.landShareOfCalibration}% του A) ===`);
+console.log('συντελεστές:', JSON.stringify(shipLinear.params));
+for (const w of JUDGING_WINDOWS) {
+  for (const [scope, label] of [['all', 'όλες οι ώρες'], ['land', 'μόνο χερσαία κελιά']]) {
+    const p = shipJudge[w][scope].prod, c = shipJudge[w][scope].ship;
+    console.log(`  [${w} ${label}] n=${p.n}  σωστόΜπφ ${p.bftExactPct}%→${c.bftExactPct}%  ψευτ.ηρεμία ${p.falseCalmPct}%→${c.falseCalmPct}%  χαμηλά@≥5Μπφ ${p.meltemiUnderPct}%→${c.meltemiUnderPct}%  ψευτ.συναγ. ${p.falseAlarmPct}%→${c.falseAlarmPct}%  ΧΡΩΜΑ ok ${p.toneOkPct}%→${c.toneOkPct}%`);
+  }
+}
 console.log(`\nΓράφτηκε: ${path.relative(root, outPath)}`);

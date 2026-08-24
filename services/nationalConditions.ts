@@ -155,7 +155,7 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
         if (typeof rawKmh !== 'number') return;
         // Third argument is the DEM at the POINT we asked about, not the cell's — same as
         // weatherService. utils/windGustFloor explains why the distinction was measured.
-        const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m, entry?.elevation);
+        const kmh = applyGustFloor(rawKmh, entry?.current?.wind_gusts_10m, entry?.elevation, 'kmh');
 
         // Match on the coordinates the API echoes back, NOT on array position.
         // Index matching looks fine until Open-Meteo drops or reorders one entry,

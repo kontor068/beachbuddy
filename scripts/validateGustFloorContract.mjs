@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 /**
- * Ο ΔΑΠΕΔΟΣ ΡΙΠΗΣ ΑΝΕΒΑΖΕΙ ΤΟΝ ΑΝΕΜΟ — ΚΑΙ ΔΕΝ ΑΓΓΙΖΕΙ ΤΙΠΟΤΑ ΑΛΛΟ.
+ * Η ΔΙΟΡΘΩΣΗ ΑΝΕΜΟΥ ΑΝΕΒΑΖΕΙ ΤΟΝ ΑΝΕΜΟ — ΚΑΙ ΔΕΝ ΑΓΓΙΖΕΙ ΤΙΠΟΤΑ ΑΛΛΟ.
+ *
+ * ⚠️ 24/08/2026: το χερσαίο σκέλος ΑΛΛΑΞΕ από «δάπεδος ριπής» σε «γραμμική αποσυμπίεση
+ * a + b×v» (μετρημένο σε 4 παράθυρα/30 σταθμούς, απόφαση Μίλτου — δες utils/windGustFloor.ts
+ * και reports/weather/wind-decompression-2026-08-24.json). Ο δάπεδος ριπής ζει πλέον ΜΟΝΟ στη
+ * θαλάσσια πόρτα. Η πύλη καρφώνει και τα δύο σκέλη, τους τέσσερις αριθμούς, ΚΑΙ την ισοδυναμία
+ * μονάδων (η τομή είναι σε χλμ/ώ ενώ η κύρια διαδρομή τρέχει σε m/s). Το ιστορικό από κάτω
+ * παραμένει — εξηγεί γιατί υπάρχει πύλη.
  *
  * ΓΙΑΤΙ ΥΠΑΡΧΕΙ ΑΥΤΗ Η ΠΥΛΗ. Στις 18/08/2026 μπήκε ο δάπεδος ριπής (`utils/windGustFloor.ts`,
  * commit 0a350a87): ο ωριαίος μέσος του μοντέλου στρώνει τις κορυφές, οπότε δεν επιτρέπεται να
@@ -59,37 +66,65 @@ require.extensions['.ts'] = (module, filename) => {
   }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})'), filename);
 };
 
-const { applyGustFloor, GUST_FLOOR_FACTOR, INCOHERENT_GUST_RATIO } = require(path.join(root, 'utils/windGustFloor.ts'));
+const { applyGustFloor, GUST_FLOOR_FACTOR, INCOHERENT_GUST_RATIO, WIND_DECOMP_INTERCEPT_KMH, WIND_DECOMP_SLOPE } =
+  require(path.join(root, 'utils/windGustFloor.ts'));
 const { calculateBeachScore } = require(path.join(root, 'services/recommendationService.ts'));
 
-/** Οι αποφασισμένες τιμές, 18/08/2026. Δες τη βίβλο και το utils/windGustFloor.ts. */
+/** Οι αποφασισμένες τιμές: 0,50/3,5 (18/08/2026, θαλάσσια πόρτα) · a/b (24/08/2026, χερσαία
+ * αποσυμπίεση — reports/weather/wind-decompression-2026-08-24.json, shipFit). */
 const DECIDED_FACTOR = 0.50;
 const DECIDED_RATIO = 3.5;
+const DECIDED_INTERCEPT_KMH = 2.392;
+const DECIDED_SLOPE = 1.0005;
+const linearKmh = v => Math.max(v, DECIDED_INTERCEPT_KMH + DECIDED_SLOPE * v);
 
 const failures = [];
 const fail = (check, detail) => failures.push(`${check}: ${detail}`);
 
-// ── Α. οι δύο πόρτες ────────────────────────────────────────────────────────
-// στεριά: ισχύει πάντα · θάλασσα: μόνο με ασύμβατη απάντηση.
+// ── Α. οι δύο πόρτες — και από 24/08/2026 δύο ΔΙΑΦΟΡΕΤΙΚΕΣ διορθώσεις ──────
+// στεριά: γραμμική αποσυμπίεση, πάντα, χωρίς να ρωτά τη ριπή · θάλασσα: μόνο με
+// αυτοαναιρούμενη απάντηση, και εκεί ισχύει ο ΠΑΛΙΟΣ δάπεδος ριπής.
 const LAND = 120;
 const SEA = 0;
 const doorCases = [
-  // [μέσος, ριπή, υψόμετρο, περιμένουμε δάπεδο;, γιατί]
-  [5, 20, LAND, true, 'στεριά, λόγος 4,0'],
-  [12, 20, LAND, false, 'στεριά αλλά ο μέσος είναι ήδη πάνω από το δάπεδο'],
-  [10, 20, LAND, true, 'στεριά, λόγος 2,0 — η στεριά δεν ρωτάει λόγο'],
-  [10, 20, SEA, false, 'θάλασσα, λόγος 2,0 — η εξαίρεση κρατάει'],
-  [5, 20, SEA, true, 'θάλασσα, λόγος 4,0 — η απάντηση αυτοαναιρείται'],
-  [4, 14, SEA, true, `θάλασσα, λόγος ακριβώς ${DECIDED_RATIO}`],
-  [4, 13.9, SEA, false, `θάλασσα, λόγος λίγο κάτω από ${DECIDED_RATIO}`],
-  [0, 20, SEA, false, 'θάλασσα με μηδενικό μέσο — ο λόγος δεν ορίζεται, δεν εφαρμόζεται'],
+  // [μέσος, ριπή, υψόμετρο, αναμενόμενο, γιατί]
+  [5, 20, LAND, linearKmh(5), 'στεριά, λόγος 4,0 — αποσυμπίεση, ΟΧΙ δάπεδος (ο δάπεδος θα έλεγε 10)'],
+  [12, 20, LAND, linearKmh(12), 'στεριά — η αποσυμπίεση εφαρμόζεται και όταν ο παλιός δάπεδος θα σιωπούσε'],
+  [10, 20, LAND, linearKmh(10), 'στεριά, λόγος 2,0 — η στεριά δεν ρωτάει λόγο'],
+  [10, undefined, LAND, linearKmh(10), 'στεριά ΧΩΡΙΣ ριπή — η αποσυμπίεση δεν τη χρειάζεται (κενό του δαπέδου, κλεισμένο)'],
+  [10, 20, SEA, 10, 'θάλασσα, λόγος 2,0 — η εξαίρεση κρατάει, ΚΑΜΙΑ αποσυμπίεση πάνω από νερό'],
+  [5, 20, SEA, Math.max(5, 20 * GUST_FLOOR_FACTOR), 'θάλασσα, λόγος 4,0 — αυτοαναιρούμενη απάντηση → παλιός δάπεδος'],
+  [4, 14, SEA, Math.max(4, 14 * GUST_FLOOR_FACTOR), `θάλασσα, λόγος ακριβώς ${DECIDED_RATIO}`],
+  [4, 13.9, SEA, 4, `θάλασσα, λόγος λίγο κάτω από ${DECIDED_RATIO}`],
+  [0, 20, SEA, 0, 'θάλασσα με μηδενικό μέσο — ο λόγος δεν ορίζεται, δεν εφαρμόζεται'],
 ];
-for (const [speed, gust, elev, shouldFire, why] of doorCases) {
+for (const [speed, gust, elev, expected, why] of doorCases) {
   const got = applyGustFloor(speed, gust, elev);
-  const expected = shouldFire ? Math.max(speed, gust * GUST_FLOOR_FACTOR) : speed;
-  if (got !== expected) fail('Α', `μέσος ${speed} ριπή ${gust} υψ. ${elev} (${why}) → ${got}, περίμενα ${expected}`);
+  if (Math.abs(got - expected) > 1e-9) fail('Α', `μέσος ${speed} ριπή ${gust} υψ. ${elev} (${why}) → ${got}, περίμενα ${expected}`);
 }
 console.log(`Α. οι δύο πόρτες ανοίγουν όπου πρέπει ......... ${failures.length ? '❌' : '✅'}`);
+
+// ── Α2. η ισοδυναμία μονάδων — η τομή έχει μονάδα, το λάθος είναι ×3,6 ──────
+// Η κύρια διαδρομή (weatherService) καλεί σε m/s· τα εργαλεία και το nationalConditions σε
+// km/h. Το ΙΔΙΟ φύσημα πρέπει να πάρει την ΙΔΙΑ διόρθωση όποια μονάδα κι αν φοράει.
+{
+  const beforeA2 = failures.length;
+  for (const kmh of [3, 8, 15, 26, 41, 60]) {
+    const viaKmh = applyGustFloor(kmh, kmh * 1.4, LAND, 'kmh');
+    const viaMs = applyGustFloor(kmh / 3.6, (kmh * 1.4) / 3.6, LAND, 'ms') * 3.6;
+    if (Math.abs(viaKmh - viaMs) > 1e-6) {
+      fail('Α2', `${kmh} χλμ/ώ: μέσω kmh → ${viaKmh}, μέσω ms → ${viaMs} — οι δύο μονάδες διαφωνούν`);
+    }
+  }
+  // Και το ανάποδο δίχτυ: αν κάποιος περάσει m/s ΧΩΡΙΣ να το δηλώσει, το αποτέλεσμα πρέπει να
+  // γέρνει προς τα ΠΑΝΩ (ψεύτικος συναγερμός), ποτέ προς την ψεύτικη ηρεμία.
+  for (const ms of [1, 4, 9]) {
+    if (applyGustFloor(ms, null, LAND) < applyGustFloor(ms, null, LAND, 'ms')) {
+      fail('Α2', `μέσος ${ms}: η αδήλωτη μονάδα έβγαλε ΛΙΓΟΤΕΡΟ άνεμο από τη σωστή — το λάθος πλευρίζει την ψεύτικη ηρεμία`);
+    }
+  }
+  console.log(`Α2. kmh και ms παίρνουν την ίδια διόρθωση ..... ${failures.length > beforeA2 ? '❌' : '✅'}`);
+}
 
 // ── Β. μονόδρομο ────────────────────────────────────────────────────────────
 const beforeB = failures.length;
@@ -106,22 +141,26 @@ console.log(`Β. ο δάπεδος μόνο ανεβάζει ...................
 
 // ── Γ. τα κενά κρατούν τη σημερινή συμπεριφορά ──────────────────────────────
 const beforeC = failures.length;
+// Η αποσυμπίεση χρειάζεται ΜΟΝΟ το υψόμετρο· χωρίς αυτό δεν ξέρει πού πατάει και σιωπά.
+// Στη ΘΑΛΑΣΣΑ η ριπή παραμένει προϋπόθεση (ο δάπεδος τη χρειάζεται) — άκυρη ριπή = σιωπή.
 const gapCases = [
-  [8, undefined, LAND, 'χωρίς ριπή'],
-  [8, null, LAND, 'ριπή null'],
-  [8, 0, LAND, 'ριπή μηδέν'],
-  [8, -3, LAND, 'ριπή αρνητική'],
-  [8, Number.NaN, LAND, 'ριπή NaN'],
-  [8, 40, undefined, 'χωρίς υψόμετρο'],
-  [8, 40, null, 'υψόμετρο null'],
-  [8, 40, Number.NaN, 'υψόμετρο NaN'],
+  [8, 40, undefined, 8, 'χωρίς υψόμετρο — καμία διόρθωση δεν ξέρει πού πατάει'],
+  [8, 40, null, 8, 'υψόμετρο null'],
+  [8, 40, Number.NaN, 8, 'υψόμετρο NaN'],
+  [8, undefined, SEA, 8, 'θάλασσα χωρίς ριπή — η πόρτα της ασυνέπειας δεν έχει τι να μετρήσει'],
+  [8, 0, SEA, 8, 'θάλασσα, ριπή μηδέν'],
+  [8, -3, SEA, 8, 'θάλασσα, ριπή αρνητική'],
+  [8, Number.NaN, SEA, 8, 'θάλασσα, ριπή NaN'],
+  // Στη στεριά η άκυρη ριπή ΔΕΝ σταματά πια την αποσυμπίεση — αυτό είναι το κλεισμένο κενό.
+  [8, 0, LAND, linearKmh(8), 'στεριά, ριπή μηδέν — η αποσυμπίεση δεν τη ρωτά'],
+  [8, Number.NaN, LAND, linearKmh(8), 'στεριά, ριπή NaN — ομοίως'],
 ];
-for (const [speed, gust, elev, why] of gapCases) {
+for (const [speed, gust, elev, expected, why] of gapCases) {
   const got = applyGustFloor(speed, gust, elev);
-  if (got !== speed) fail('Γ', `${why}: ο δάπεδος εφαρμόστηκε (${speed} → ${got}) ενώ δεν ξέρει πού πατάει`);
+  if (Math.abs(got - expected) > 1e-9) fail('Γ', `${why}: ${speed} → ${got}, περίμενα ${expected}`);
 }
 if (!Number.isNaN(applyGustFloor(Number.NaN, 40, LAND))) fail('Γ', 'μέσος NaN: περίμενα να επιστραφεί αυτούσιος');
-console.log(`Γ. χωρίς ριπή ή υψόμετρο δεν αγγίζει τίποτα ... ${failures.length > beforeC ? '❌' : '✅'}`);
+console.log(`Γ. τα κενά σιωπούν εκεί που πρέπει ............ ${failures.length > beforeC ? '❌' : '✅'}`);
 
 // ── Δ. οι δύο αριθμοί δεν μετακινούνται σιωπηλά ─────────────────────────────
 const beforeD = failures.length;
@@ -131,10 +170,17 @@ if (GUST_FLOOR_FACTOR !== DECIDED_FACTOR) {
 if (INCOHERENT_GUST_RATIO !== DECIDED_RATIO) {
   fail('Δ', `INCOHERENT_GUST_RATIO ${INCOHERENT_GUST_RATIO} ≠ ${DECIDED_RATIO} — το 3,0 μετρήθηκε και κόπηκε (σταθερό τίμημα ψεύτικου συναγερμού)`);
 }
-console.log(`Δ. 0,50 και 3,5 στη θέση τους ................. ${failures.length > beforeD ? '❌' : '✅'}`);
+if (WIND_DECOMP_INTERCEPT_KMH !== DECIDED_INTERCEPT_KMH) {
+  fail('Δ', `WIND_DECOMP_INTERCEPT_KMH ${WIND_DECOMP_INTERCEPT_KMH} ≠ ${DECIDED_INTERCEPT_KMH} — βγήκε από το shipFit της 24/08/2026 και μπήκε με απόφαση· νέα τιμή θέλει νέα μέτρηση ΚΑΙ νέα απόφαση`);
+}
+if (WIND_DECOMP_SLOPE !== DECIDED_SLOPE) {
+  fail('Δ', `WIND_DECOMP_SLOPE ${WIND_DECOMP_SLOPE} ≠ ${DECIDED_SLOPE} — ομοίως`);
+}
+console.log(`Δ. οι τέσσερις αριθμοί στη θέση τους .......... ${failures.length > beforeD ? '❌' : '✅'}`);
 
 // ── Ε. ο ωμός μέσος φτάνει ως την προειδοποίηση, σε ΚΑΙ ΤΑ ΔΥΟ μονοπάτια ────
-// Σενάριο: ωμός μέσος 20 χλμ/ώ, ριπή 52 → ο δάπεδος τον σηκώνει στα 26.
+// Σενάριο: ωμός μέσος 20 χλμ/ώ, ριπή 52, και μια διόρθωση (όποια κι αν είναι) που τον έχει
+// ανεβάσει στα 26 — το σενάριο ελέγχει ΤΟ ΜΟΝΟΠΑΤΙ ΤΗΣ ΠΡΟΕΙΔΟΠΟΙΗΣΗΣ, όχι τη διόρθωση.
 //   με τον ΩΜΟ:        spread 32 ≥ 30 → 'warning'
 //   με τον ΔΙΟΡΘΩΜΕΝΟ: spread 26 < 30 → 'info'   ← το σβήσιμο που ψάχνουμε
 const RAW_KMH = 20;
@@ -208,13 +254,15 @@ if (failures.length) {
   console.error(`\nFAILED: ${failures.length} πρόβλημα(τα).`);
   for (const f of failures.slice(0, 25)) console.error(`  - ${f}`);
   console.error('\nΕΠΟΜΕΝΟ ΒΗΜΑ: μην περάσεις την πύλη χαλαρώνοντας κανόνα.');
-  console.error('· Αν έπεσε το Δ: το 0,50 και το 3,5 είναι ΑΠΟΦΑΣΗ, όχι ρύθμιση. Διάβασε τον πίνακα');
-  console.error('  ανταλλαγής στο utils/windGustFloor.ts (κάθε σκαλί πάνω κόβει ψεύτικες ηρεμίες και');
-  console.error('  προσθέτει ψεύτικους συναγερμούς) και ζήτα νέα απόφαση πριν αλλάξεις τη σταθερά εδώ.');
+  console.error('· Αν έπεσε το Δ: και οι ΤΕΣΣΕΡΙΣ αριθμοί (0,50 · 3,5 · 2,392 · 1,0005) είναι ΑΠΟΦΑΣΕΙΣ');
+  console.error('  πάνω σε μετρήσεις, όχι ρυθμίσεις. Νέα τιμή = νέα μέτρηση (measureWindDecompression για');
+  console.error('  τα a/b) ΚΑΙ νέα απόφαση, πριν αλλάξει η σταθερά εδώ.');
+  console.error('· Αν έπεσε το Α2: κάποιος άλλαξε τη μεταχείριση μονάδων. Η κύρια διαδρομή περνάει m/s');
+  console.error('  και το δηλώνει· λάθος εκεί = ×3,6 στη διόρθωση, στη μισή χώρα.');
   console.error('· Αν έπεσε το Ε: κάπου το «ριπή μείον μέσος» μετριέται από τον ΔΙΟΡΘΩΜΕΝΟ μέσο. Ο ωμός');
   console.error('  ζει στο wind.speedBeforeGustFloor και υπάρχει ΜΟΝΟ για αυτό — δες types.ts:820.');
   console.error('· Αν έπεσε το Α: η εξαίρεση του θαλασσινού σημείου είναι μισή διόρθωση, όχι λεπτομέρεια·');
   console.error('  αφορά το 47,6% των σημείων ανέμου της χώρας.');
   process.exit(1);
 }
-console.log(`\nPASSED: δάπεδος ${GUST_FLOOR_FACTOR} · λόγος ${INCOHERENT_GUST_RATIO} · ο ωμός μέσος φτάνει ακέραιος στις προειδοποιήσεις ριπής.`);
+console.log(`\nPASSED: αποσυμπίεση ${WIND_DECOMP_INTERCEPT_KMH}+${WIND_DECOMP_SLOPE}×v (στεριά) · δάπεδος ${GUST_FLOOR_FACTOR} με λόγο ${INCOHERENT_GUST_RATIO} (θάλασσα) · ο ωμός μέσος φτάνει ακέραιος στις προειδοποιήσεις ριπής.`);

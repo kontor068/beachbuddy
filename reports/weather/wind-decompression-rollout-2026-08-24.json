@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-08-24T08:01:16.629Z",
+  "hours": 57460,
+  "beaches": 2873,
+  "changedKmhHours": 31982,
+  "up": 22161,
+  "down": 9821,
+  "medianAbsDeltaKmh": 2.4,
+  "p90AbsDeltaKmh": 4.3,
+  "seaCellHours": 25320,
+  "seaCellChanged": 0,
+  "bftChangedHours": 9548,
+  "bftUp": 5690,
+  "bftDown": 3858,
+  "beachesBftChanged": 1597,
+  "toneChangedHours": 6442,
+  "toneStricter": 3718,
+  "toneSofter": 2724,
+  "beachesToneChanged": 1383,
+  "beachesToneSofter": 585,
+  "toneMoves": {
+    "yellow → orange": 1060,
+    "blue → yellow": 2607,
+    "yellow → blue": 1502,
+    "orange → red": 51,
+    "orange → yellow": 1034,
+    "red → yellow": 41,
+    "red → blue": 3,
+    "orange → blue": 33,
+    "red → orange": 111
+  },
+  "byExposure": {
+    "exposed": {
+      "hours": 17420,
+      "bftChanged": 2254,
+      "toneChanged": 1883
+    },
+    "protected": {
+      "hours": 29375,
+      "bftChanged": 5827,
+      "toneChanged": 3794
+    },
+    "partial": {
+      "hours": 10665,
+      "bftChanged": 1467,
+      "toneChanged": 765
+    }
+  }
+}

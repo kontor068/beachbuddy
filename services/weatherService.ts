@@ -528,16 +528,18 @@ const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any
         weather: [mapWmoToWeather(hourly.weather_code[index], isDay)],
         clouds: { all: 0 },
         wind: {
-          // Gust floor applied HERE, at the one place raw Open-Meteo becomes a ForecastItem, so
-          // every colour, verdict, filter and wave calculation downstream reads the same corrected
-          // wind. See utils/windGustFloor.ts for the 32.000-hour measurement against real
-          // anemometers that produced the 0,50 factor — the hourly mean compresses peaks and the
-          // error was 2:1 towards "calmer than it is".
-          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM),
-          // Kept ONLY when the floor moved the number: everything that judges gustiness by
+          // Wind correction applied HERE, at the one place raw Open-Meteo becomes a ForecastItem,
+          // so every colour, verdict, filter and wave calculation downstream reads the same
+          // corrected wind. Since 24/08/2026 the land-cell arm is a linear decompression measured
+          // on ~32.000 station-hours (see utils/windGustFloor.ts) — and because its intercept is
+          // in km/h while THIS pipeline runs in m/s (wind_speed_unit=ms in the provider URL), the
+          // unit is declared explicitly. Passing the wrong unit here is a ×3,6 error on the
+          // correction; scripts/validateGustFloorContract.mjs pins the kmh↔ms equivalence.
+          speed: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM, 'ms'),
+          // Kept ONLY when the correction moved the number: everything that judges gustiness by
           // gust-minus-mean has to keep using the real mean, or the correction would erase the
           // very warnings it exists to strengthen. See types.ForecastItem.wind.
-          speedBeforeGustFloor: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM) !== hourly.wind_speed_10m[index]
+          speedBeforeGustFloor: applyGustFloor(hourly.wind_speed_10m[index], optionalNumber(hourly.wind_gusts_10m?.[index]), pointElevationM, 'ms') !== hourly.wind_speed_10m[index]
             ? hourly.wind_speed_10m[index]
             : undefined,
           deg: hourly.wind_direction_10m[index],
