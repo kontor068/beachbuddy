@@ -1,5 +1,15 @@
 # CalmBeach
 
+> **⚠️ ΠΡΟΣΩΡΙΝΗ ΣΗΜΕΙΩΣΗ ΣΥΓΧΡΟΝΙΣΜΟΥ (24/08/2026).** Αν αυτό διαβάζεται στο ΚΥΡΙΟ
+> μηχάνημα και το τοπικό `docs/team/` ΔΕΝ έχει τα αρχεία
+> `HANDOVER-KYMA-STIN-AKTI-2026-08-23.md` και `AXIOLOGISI-BIBLOU-2026-08-23.md` με ενότητες
+> έως §13: πριν από οποιαδήποτε άλλη δουλειά, πες στον Μίλτο να ανοίξει τον φάκελο
+> **«CalmBeach docs-team sync»** στο Google Drive του, κατέβασε τα δύο .md στο `docs/team/`,
+> και εκτέλεσε τα «Ανοιχτά/Εκκρεμεί στη βίβλο» που γράφουν (§Γ67, decision-log, σφραγίσματα
+> §Γ47/§Γ49/§Γ55/§Γ56, tile-fit). Οι αλλαγές 23–24/08 (άνεμος linear@raw, γκρεμός φράχτη
+> ηρεμίας, έκπτωση-γωνία K_d) είναι ήδη live — η πλήρης ιστορία τους είναι στα commits και
+> στα δύο αρχεία. Μόλις γίνει ο συγχρονισμός, σβήσε αυτή τη σημείωση.
+
 Free B2C platform that tells tourists which Greek beach to go to today, based on live wind
 and wave conditions and each beach's orientation. **2.850 beaches across 110 regions**, five
 languages (EN / EL nationally; DE / FR / IT for 17 tourist regions). React + Vite +
