@@ -38,6 +38,7 @@ import {
 import { AmenityChip, AmenityChipKey, AmenityStatusRow, getAmenityChips, getAmenityStatusRows } from '../utils/amenities';
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
+import { cardNotRecommendedLabel } from '../utils/conditionToneLabels';
 
 interface BeachCardProps {
   beach: Beach & { distance?: number };
@@ -2325,6 +2326,20 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                 </span>
               ))}
             </div>
+          )}
+
+          {/* «ΔΕΝ ΤΟ ΠΡΟΤΕΙΝΟΥΜΕ ΣΗΜΕΡΑ» — μία γραμμή, στην κάρτα της παραλίας (24/08/2026).
+              Απαντά στη ΜΟΝΗ ερώτηση που δεν απαντά τίποτα άλλο πάνω σε αυτή την κάρτα: γιατί
+              μια παραλία που ο χάρτης δείχνει κανονικά λείπει από τις προτάσεις. Τα δύο chip
+              από πάνω λένε τι κάνει ο αέρας και το κύμα· η πινέζα λέει το χρώμα· κανένα δεν
+              λέει ότι εμείς την κρατάμε έξω. Στα ΠΟΡΤΟΚΑΛΙ/ΚΟΚΚΙΝΑ chip της λεζάντας αυτό
+              δοκιμάστηκε πρώτα και κόπηκε αυθημερόν: εκεί είναι ομαδική πρόταση για δεκαεπτά
+              παραλίες και κόστιζε ύψος σε κάθε αναγνώστη. Εδώ τη διαβάζει μόνο όποιος κοιτάζει
+              ΑΥΤΗ την παραλία. Σιωπηλή στη συντριπτική πλειοψηφία των καρτών. */}
+          {swimmingComfort === 'avoid_swimming' && (
+            <p className="text-[11px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
+              {cardNotRecommendedLabel(language)}
+            </p>
           )}
 
           {topPickTimeLabel && (

@@ -363,9 +363,9 @@ if (doorStart < 0) {
 //   · `unlistableMapPinBeaches` περνά ΟΛΕΣ τις πινέζες από την πόρτα της προσφοράς — μία πηγή.
 //   · `directoryUncountedBeachIds` (κρυφές από το μέτρημα) = ΜΟΝΟ οι πολιτικά κρυφές
 //     (γυμνιστών) από εκείνη την πηγή.
-//   · `directoryUnrecommendedBeachIds` (μετρημένες αλλά με ρητή γραμμή) = οι υπόλοιπες, και
-//     πρέπει να ΦΤΑΝΕΙ στον χάρτη (unrecommendedBeachIds=…) — αλλιώς η λεζάντα μετράει χωρίς
-//     να εξηγεί, που είναι η μισή παλινδρόμηση.
+//   · `directoryUnrecommendedBeachIds` (μετρημένες, με εξήγηση στην ΚΑΡΤΑ τους) = οι υπόλοιπες,
+//     και πρέπει να ΦΤΑΝΕΙ στον χάρτη (unrecommendedBeachIds=…) — εκεί κρατάει αυτές τις
+//     παραλίες έξω από την προσφορά «Ήρεμο νερό», που είναι επιφάνεια σύστασης.
 //   · η λίστα των «κατάλληλων» συνεχίζει να περνά από το ΠΛΗΡΕΣ isListableInDirectory.
 const wiringChecks = [
   ['unlistableMapPinBeaches', 'isListableInDirectory',
@@ -390,8 +390,23 @@ for (const [readerName, mustContain, message] of wiringChecks) {
   }
 }
 if (!/unrecommendedBeachIds=\{directoryUnrecommendedBeachIds\}/.test(appSource)) {
-  failures.push('ΣΤ: το directoryUnrecommendedBeachIds δεν φτάνει στον χάρτη — η λεζάντα θα '
-    + 'μετράει μη-προτεινόμενες χωρίς τη γραμμή «τις N δεν τις προτείνουμε»');
+  failures.push('ΣΤ: το directoryUnrecommendedBeachIds δεν φτάνει στον χάρτη — το «Ήρεμο νερό» '
+    + 'θα ξαναπροσφέρει παραλίες στις οποίες λέμε «μην κολυμπήσεις»');
+}
+// Η ΕΞΗΓΗΣΗ ΖΕΙ ΣΤΗΝ ΚΑΡΤΑ, ΟΧΙ ΣΤΗ ΛΕΖΑΝΤΑ (Μίλτος, 24/08/2026). Δύο όψεις, μία απόφαση: η
+// κάρτα ΠΡΕΠΕΙ να λέει «δεν το προτείνουμε» για μια παραλία που η ίδια η εφαρμογή κρατάει έξω
+// (αλλιώς ο αριθμός της λεζάντας ξαναμένει ανεξήγητος, όπως στη Λέσβο), και το chip της
+// λεζάντας ΔΕΝ επιτρέπεται να ξαναποκτήσει ομαδική γραμμή για το ίδιο πράγμα.
+const cardSource = readFileSync(path.join(root, 'components/BeachCard.tsx'), 'utf8');
+if (!/cardNotRecommendedLabel\(language\)/.test(cardSource)
+  || !/swimmingComfort === 'avoid_swimming'/.test(cardSource)) {
+  failures.push('ΣΤ: η κάρτα δεν λέει πια «Δεν το προτείνουμε σήμερα» στις avoid_swimming — '
+    + 'η λεζάντα τις μετράει και καμία επιφάνεια δεν εξηγεί γιατί λείπουν από τις προτάσεις');
+}
+const mapSource = readFileSync(path.join(root, 'components/BeachMap.tsx'), 'utf8');
+if (/legendUnrecommendedPhrase|unrecommendedCountByTone/.test(mapSource)) {
+  failures.push('ΣΤ: η ομαδική γραμμή «τις N δεν τις προτείνουμε» επέστρεψε στο chip της '
+    + 'λεζάντας — κόπηκε στις 24/08 ως πολύ κείμενο μπροστά· η εξήγηση ανήκει στην κάρτα');
 }
 
 let provenRegressions = 0;
