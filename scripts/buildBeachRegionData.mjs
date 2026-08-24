@@ -319,15 +319,23 @@ const metadataTerrainToDepth = types => {
   return { deepWaters: false, shallowWaters: true, waterDepth: 'shallow' };
 };
 
-const metadataWaterDepthToCharacteristics = waterDepth => {
+// `shallow` is the one value that unlocks `familyFriendly` downstream, so it
+// must never be the answer to "I don't recognise this word". Until 23/08/2026
+// the default branch did exactly that: three Lefkada records spelled
+// `moderate` (Γιαλός #1157, Καμίνια #1163, Πόρτο Κατσίκι #1171 — a deep
+// drop-off beach) shipped as shallow, and Γιαλός as family-friendly.
+const metadataWaterDepthToCharacteristics = (waterDepth, beachId) => {
   switch (waterDepth) {
     case 'deep':
       return { deepWaters: true, shallowWaters: false, waterDepth: 'deep' };
     case 'medium':
+    case 'moderate':
       return { deepWaters: false, shallowWaters: false, waterDepth: 'medium' };
     case 'shallow':
-    default:
       return { deepWaters: false, shallowWaters: true, waterDepth: 'shallow' };
+    default:
+      console.warn(`[buildBeachRegionData] beach ${beachId}: unknown metadata.waterDepth.type "${waterDepth}" — treated as medium, not shallow. Fix the source value.`);
+      return { deepWaters: false, shallowWaters: false, waterDepth: 'medium' };
   }
 };
 
@@ -662,7 +670,7 @@ const buildBeach = (rawBeach, island) => {
     })();
   const snorkelingOverride = getMetadataActivityOverride(metadata, 'snorkeling');
   const depth = metadata?.waterDepth?.type
-    ? metadataWaterDepthToCharacteristics(metadata.waterDepth.type)
+    ? metadataWaterDepthToCharacteristics(metadata.waterDepth.type, rawBeach.id)
     : metadata ? metadataTerrainToDepth(metadata.terrain.types) : (() => {
       const isDeepWater = getDeterministicValue(rawBeach.id, 'depth') > 0.5;
       return {

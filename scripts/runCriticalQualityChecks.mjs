@@ -58,6 +58,15 @@ const checks = [
     args: ['scripts/validateWindExposureEngine.mjs'],
   },
   {
+    id: 'wind-exposure-ground-truth',
+    title: 'Η γεωμετρία απέναντι σε 128 γνωστές ακτές',
+    description: 'Τρέχει τα 128 ground-truth της γεωμετρίας (scripts/validateWindExposureGroundTruth.mjs): 41 γραμμένα με το χέρι από τοπική γνώση και 87 «άγκυρες» ανοιχτής θάλασσας που προτάθηκαν αυτόματα στις 11/06/2026 από τα ίδια τα προφίλ. Κάθε περίπτωση δένει με beachId· περνάει με ≥85% συμφωνία και μηδέν περιπτώσεις που δεν βρίσκουν την παραλία τους.',
+    protects: 'Μέχρι 23/08/2026 αυτό το σετ δεν έτρεχε πουθενά αυτόματα — ούτε package.json, ούτε εδώ, ούτε workflow. Έπεσε από 127 σε 126 χωρίς να το δει κανείς, και η «νέα» αποτυχία ήταν ψεύτικη: η περίπτωση έδενε με το όνομα «Paralia Angelochoriou», η #512 μετονομάστηκε σε Akti Siamo στις 20/08 και η #3190 πήρε το παλιό όνομα — το τεστ άλλαξε παραλία χωρίς να αλλάξει η γεωμετρία. Με το beachId αυτό δεν ξαναγίνεται, και μια παραλία που χάνεται από τα προφίλ φαίνεται αντί να παραλείπεται.',
+    failureAction: 'Διάβασε ποια περίπτωση έπεσε και προς ποια κατεύθυνση. protected→partial/exposed είναι συντηρητικό· exposed/rough→protected είναι η επικίνδυνη κατεύθυνση (§9 σκανδάλη #1) και θέλει μέτρηση πριν αλλάξει οτιδήποτε. ΜΗΝ χαλαρώσεις το 85% και ΜΗΝ σβήσεις περίπτωση για να περάσει η πύλη — αν μια παραλία άλλαξε id ή όνομα, διόρθωσε το beachId/name της περίπτωσης και γράψε γιατί. Η μία ανοιχτή αποτυχία (Πάνορμος Νάξου #2011 @S: partial αντί exposed) είναι καταγεγραμμένη διαφωνία χειρόγραφης γνώσης και γεωμετρίας (PORISMA §Γ20/§Γ21) και μένει ορατή επίτηδες.',
+    command: process.execPath,
+    args: ['scripts/validateWindExposureGroundTruth.mjs'],
+  },
+  {
     id: 'marine-model-parsing',
     title: 'Marine model/parser contract',
     description: 'Checks the pinned Open-Meteo marine models agree between client and edge proxy, that every requested marine variable is parsed from a model that actually serves it, and that the bare-field fallback survives.',
