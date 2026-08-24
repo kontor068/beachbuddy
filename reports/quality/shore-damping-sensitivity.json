@@ -1,0 +1,458 @@
+{
+  "generatedAt": "2026-08-24T06:53:02.598Z",
+  "replayWindow": "2022-09-06:2022-09-08",
+  "dayIndex": 0,
+  "regionsAnswered": 110,
+  "regionsAsked": 110,
+  "beachesMeasured": 2873,
+  "variants": [
+    {
+      "key": "base",
+      "label": "σήμερα ×0,50",
+      "value": 0.5
+    },
+    {
+      "key": "d035",
+      "label": "×0,35 (βαθύτερη έκπτωση — ΕΠΙΚΙΝΔΥΝΗ κατεύθυνση)",
+      "value": 0.35
+    },
+    {
+      "key": "d065",
+      "label": "×0,65 (ρηχότερη έκπτωση — προς την προσοχή)",
+      "value": 0.65
+    }
+  ],
+  "watchlist": [
+    {
+      "region": "attica-east-attica-mainland",
+      "beachId": 32,
+      "name": "Παραλία Σχινιά",
+      "byVariant": {
+        "base": {
+          "shoreM": 0.13,
+          "printedM": 0.78,
+          "band": "ήρεμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        },
+        "d035": {
+          "shoreM": 0.13,
+          "printedM": 0.78,
+          "band": "ήρεμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        },
+        "d065": {
+          "shoreM": 0.13,
+          "printedM": 0.78,
+          "band": "ήρεμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        }
+      },
+      "exposureLevel": "partial",
+      "seaArrival": "grazing"
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "beachId": 33,
+      "name": "Παραλία Μαραθώνα",
+      "byVariant": {
+        "base": {
+          "shoreM": 0.69,
+          "printedM": 0.78,
+          "band": "ήρεμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        },
+        "d035": {
+          "shoreM": 0.48,
+          "printedM": 0.78,
+          "band": "ήρεμα",
+          "comfort": "caution",
+          "tone": "orange"
+        },
+        "d065": {
+          "shoreM": 0.9,
+          "printedM": 0.9,
+          "band": "κύμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        }
+      },
+      "exposureLevel": "protected",
+      "seaArrival": "grazing"
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "beachId": 1162,
+      "name": "Καβαλικευτά",
+      "byVariant": {
+        "base": {
+          "shoreM": 0.9,
+          "printedM": 0.9,
+          "band": "κύμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        },
+        "d035": {
+          "shoreM": 0.9,
+          "printedM": 0.9,
+          "band": "κύμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        },
+        "d065": {
+          "shoreM": 0.9,
+          "printedM": 0.9,
+          "band": "κύμα",
+          "comfort": "avoid_swimming",
+          "tone": "orange"
+        }
+      },
+      "exposureLevel": "exposed",
+      "seaArrival": "exposed"
+    }
+  ],
+  "disagreement": {
+    "base": {
+      "calmNumber": 946,
+      "calmNumberPinNotCalm": 516
+    },
+    "d035": {
+      "calmNumber": 944,
+      "calmNumberPinNotCalm": 514
+    },
+    "d065": {
+      "calmNumber": 945,
+      "calmNumberPinNotCalm": 580
+    }
+  },
+  "summary": {
+    "d035": {
+      "label": "×0,35 (βαθύτερη έκπτωση — ΕΠΙΚΙΝΔΥΝΗ κατεύθυνση)",
+      "value": 0.35,
+      "beaches": 2873,
+      "printedCalmer": 547,
+      "printedRougher": 2,
+      "shoreMoved": 712,
+      "byExposure": {
+        "exposed": {
+          "beaches": 857,
+          "printedChanged": 0
+        },
+        "protected": {
+          "beaches": 1575,
+          "printedChanged": 427
+        },
+        "partial": {
+          "beaches": 441,
+          "printedChanged": 122
+        }
+      },
+      "bandMoves": {
+        "φουρτούνα → κύμα": 101,
+        "ήρεμα → κύμα": 2
+      },
+      "intoCalm": 0,
+      "intoCalmPinNotCalm": 0,
+      "comfortSofter": 18,
+      "comfortStricter": 0,
+      "comfortMoves": {
+        "avoid_swimming → caution": 18
+      },
+      "softerExamples": [
+        {
+          "region": "attica-east-attica-mainland",
+          "name": "Παραλία Μαραθώνα",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.78,
+          "printedAfterM": 0.78
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Καλάμι",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Ζάστανα",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.79,
+          "printedAfterM": 0.79
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Στενή",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.71,
+          "printedAfterM": 0.71
+        },
+        {
+          "region": "crete-crete-heraklion",
+          "name": "Παραλία Κρασά",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.76,
+          "printedAfterM": 0.76
+        },
+        {
+          "region": "crete-crete-heraklion",
+          "name": "Keratokambos",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.75,
+          "printedAfterM": 0.75
+        },
+        {
+          "region": "crete-crete-heraklion",
+          "name": "Άγιος Νικήτας",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.76,
+          "printedAfterM": 0.76
+        },
+        {
+          "region": "east-macedonia-and-thrace-thasos",
+          "name": "Όρμος Αγίου Ιωάννου",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "name": "Κόκκινα (βόρειος όρμος)",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "name": "Κόκκινα (νότιος όρμος)",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "north-aegean-lemnos",
+          "name": "Μεγάλο Φαναράκι",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "north-aegean-lesvos",
+          "name": "Ελεύκος",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        }
+      ],
+      "toneCalmer": 138,
+      "toneStricter": 0,
+      "toneMoves": {
+        "red → orange": 136,
+        "orange → yellow": 2
+      },
+      "toneCalmerExamples": [
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Παλαιόπολη",
+          "move": "red → orange",
+          "printedBeforeM": 1.05,
+          "printedAfterM": 0.92
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Παραλία Λίμνη (Παλαιόπολη)",
+          "move": "red → orange",
+          "printedBeforeM": 1.32,
+          "printedAfterM": 0.92
+        },
+        {
+          "region": "attica-kythira",
+          "name": "Λεφτό",
+          "move": "red → orange",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Καλάμι",
+          "move": "red → orange",
+          "printedBeforeM": 1.26,
+          "printedAfterM": 0.88
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Λιμνιώνα",
+          "move": "red → orange",
+          "printedBeforeM": 1.37,
+          "printedAfterM": 0.96
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Αμυγδαλιά",
+          "move": "red → orange",
+          "printedBeforeM": 1.7,
+          "printedAfterM": 1.19
+        },
+        {
+          "region": "central-greece-skyros",
+          "name": "Μώλος",
+          "move": "red → orange",
+          "printedBeforeM": 1.39,
+          "printedAfterM": 0.97
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Βουλόλιμνη",
+          "move": "red → orange",
+          "printedBeforeM": 1.4,
+          "printedAfterM": 0.98
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Μαχαιρίδα",
+          "move": "red → orange",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Μένιες (Δίκτυννα)",
+          "move": "red → orange",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Τερσανάς",
+          "move": "red → orange",
+          "printedBeforeM": 0.8,
+          "printedAfterM": 0.8
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Aghios Pavlos Beach",
+          "move": "red → orange",
+          "printedBeforeM": 1.58,
+          "printedAfterM": 1.11
+        }
+      ],
+      "podiumRegionsChanged": 0,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [],
+      "printedCalmerMedianM": 0.08,
+      "printedCalmerMaxM": 0.53,
+      "printedRougherMedianM": 0.29
+    },
+    "d065": {
+      "label": "×0,65 (ρηχότερη έκπτωση — προς την προσοχή)",
+      "value": 0.65,
+      "beaches": 2873,
+      "printedCalmer": 0,
+      "printedRougher": 578,
+      "shoreMoved": 680,
+      "byExposure": {
+        "exposed": {
+          "beaches": 857,
+          "printedChanged": 0
+        },
+        "protected": {
+          "beaches": 1575,
+          "printedChanged": 449
+        },
+        "partial": {
+          "beaches": 441,
+          "printedChanged": 129
+        }
+      },
+      "bandMoves": {
+        "ήρεμα → κύμα": 1,
+        "κύμα → φουρτούνα": 95
+      },
+      "intoCalm": 0,
+      "intoCalmPinNotCalm": 0,
+      "comfortSofter": 0,
+      "comfortStricter": 28,
+      "comfortMoves": {
+        "good → caution": 8,
+        "caution → avoid_swimming": 15,
+        "excellent → good": 5
+      },
+      "softerExamples": [],
+      "toneCalmer": 0,
+      "toneStricter": 253,
+      "toneMoves": {
+        "orange → red": 179,
+        "yellow → red": 6,
+        "blue → yellow": 65,
+        "yellow → orange": 3
+      },
+      "toneCalmerExamples": [],
+      "podiumRegionsChanged": 4,
+      "podiumOrderOnly": 0,
+      "podiumExamples": [
+        {
+          "region": "attica-east-attica-mainland",
+          "before": [
+            "Παραλία Αλθέας",
+            "Παραλία Σκάλες Αλθέας",
+            "Δεύτερη Παραλία Σαρωνίδας"
+          ],
+          "after": [
+            "Γαλάζια Ακτή",
+            "Ευκάλυπτα",
+            "Ηλιόπουλος"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "east-macedonia-and-thrace-rodopi-mainland",
+          "before": [
+            "Κομοτηνή Φανάρι Αρωγή",
+            "Μαρμαρίτσα",
+            "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια"
+          ],
+          "after": [
+            "Παραλία Ίμερου",
+            "Κομοτηνή Φανάρι Αρωγή",
+            "Μαρμαρίτσα"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "thessaly-skopelos",
+          "before": [
+            "Νεράκι",
+            "Παραλία Πανόρμου Σκοπέλου",
+            "Φτελιά"
+          ],
+          "after": [
+            "Νεράκι",
+            "Φτελιά",
+            "Αρμενόπετρα"
+          ],
+          "orderOnly": false
+        },
+        {
+          "region": "west-greece-ileia-mainland",
+          "before": [
+            "Παραλία Μαραθιάς",
+            "Παραλία Κουρούτα",
+            "Αρκούδι"
+          ],
+          "after": [
+            "Παραλία Μαραθιάς",
+            "Παραλία Κουρούτα",
+            "Παραλία Αγίου Ηλία"
+          ],
+          "orderOnly": false
+        }
+      ],
+      "printedCalmerMedianM": 0,
+      "printedCalmerMaxM": null,
+      "printedRougherMedianM": 0.1
+    }
+  }
+}
