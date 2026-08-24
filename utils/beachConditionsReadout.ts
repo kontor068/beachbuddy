@@ -1,8 +1,6 @@
 import type { LanguageCode } from '../types';
 import { getBeaufortLevel } from './weatherUtils';
-import {
-  seaStateSeverityM, choppinessFactor, SEA_STATE_AMBER_M,
-} from './waveCharacter';
+import { seaStateSeverityM } from './waveCharacter';
 import { buildConditionsFeel, type ConditionsFeel } from './conditionsFeelPhrase';
 
 /**
@@ -30,9 +28,10 @@ export interface BeachConditionsReadoutInput {
   beachWindSpeedKmph?: number;
   /** Ο άνεμος της περιοχής σε m/s — το ίδιο fallback που είχε η κάρτα. */
   regionWindSpeedMs?: number;
-  /** Το ανοιχτό νερό, όπως το μετράει το μοντέλο. */
+  /** Το ανοιχτό νερό, όπως το μετράει το μοντέλο. Ταβάνι του τυπωμένου αριθμού, ποτέ ο ίδιος. */
   waveHeightM?: number;
-  /** Decision-grade ύψος + περίοδος — μπαίνουν ΜΟΝΟ στο `seaStateM`, ποτέ στην οθόνη. */
+  /** Decision-grade ύψος + περίοδος. Γίνονται δεκτά για σταθερότητα των κλήσεων· από 24/08/2026
+   *  ΔΕΝ επηρεάζουν το τυπωμένο νούμερο — τα χρώματα τα κρίνουν μέσω `beachDecisionSeaStateM`. */
   seaStateWaveM?: number;
   seaStatePeriodS?: number;
   /** Το νερό στην ακτή: κλειδί απόφασης. Δεν αντικαθίσταται από το display. */
@@ -40,10 +39,9 @@ export interface BeachConditionsReadoutInput {
   /** Το νερό στην ακτή, όπως ΤΥΠΩΝΕΤΑΙ (§Γ5). Προηγείται όπου υπάρχει. */
   shoreDisplayWaveM?: number;
   /**
-   * Ο αριθμός ακτής στηρίζεται σε ΜΕΤΡΗΜΕΝΗ απόδειξη ότι όλο το νερό φεύγει
-   * (utils/shoreWave.isSeaDepartingShore), όχι στην αβαθμονόμητη έκπτωση ×0,5 της προστατευμένης
-   * ακτής. Μόνο τότε ο φράχτης της γραμμής ηρεμίας παρακάμπτεται — δες το σχόλιό του παρακάτω.
-   * Παραλείπεται → η συμπεριφορά της 21/08 αυτούσια, ώστε κανείς να μη γίνει ηρεμότερος κατά λάθος.
+   * Προέλευση του αριθμού ακτής (utils/shoreWave.isSeaDepartingShore). Γίνεται δεκτό για
+   * σταθερότητα των κλήσεων και για το analytics· από 24/08/2026 ΔΕΝ αλλάζει το τυπωμένο
+   * νούμερο — ο φράχτης της γραμμής ηρεμίας που το διάβαζε αφαιρέθηκε (απόφαση Μίλτου, Βάι).
    */
   shoreWaveFromDepartingSea?: boolean;
   language: LanguageCode;
@@ -81,11 +79,8 @@ export const buildBeachConditionsReadout = ({
   beachWindSpeedKmph,
   regionWindSpeedMs,
   waveHeightM,
-  seaStateWaveM,
-  seaStatePeriodS,
   shoreWaveHeightM,
   shoreDisplayWaveM,
-  shoreWaveFromDepartingSea,
   language,
 }: BeachConditionsReadoutInput): BeachConditionsReadout => {
   // Prefer this beach's own scored wind so the Beaufort matches its (same-wind) wave; fall back to
@@ -114,69 +109,35 @@ export const buildBeachConditionsReadout = ({
         : shoreM)
     : waveHeightM;
   /**
-   * ΤΟ ΝΟΥΜΕΡΟ ΔΕΝ ΛΕΕΙ «ΗΡΕΜΑ» ΟΤΑΝ Η ΘΑΛΑΣΣΑ ΕΞΩ ΔΕΝ ΕΙΝΑΙ (21/08/2026, βίβλος §Γ47/§Γ49).
+   * ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΠΑΝΤΑ ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ (24/08/2026, απόφαση Μίλτου — βλ. gate
+   * scripts/validateShoreBandJump.mjs για το πλήρες ιστορικό).
    *
-   * Ο επισκέπτης δεν διαβάζει εκατοστά — διαβάζει ΖΩΝΗ: «ήρεμα» κάτω από SEA_STATE_AMBER_M,
-   * «κύμα» ως SEA_STATE_ROUGH_M, «φουρτούνα» πάνω. Η έκπτωση ×0,5 της προστατευμένης ακτής
-   * (waveCharacter.SHORE_DAMPING_BY_EXPOSURE) περνάει τη γραμμή της ηρεμίας χωρίς να το ξέρει
-   * κανείς: η Παραλία Μαραθώνα τύπωνε 0,69 μ. — «ήρεμα» — πάνω από θάλασσα 1,38 μ., με την
-   * ετυμηγορία «μην κολυμπήσεις» και πορτοκαλί πινέζα. Τρία μηνύματα, το πιο συγκεκριμένο ψεύτικο.
+   * Εδώ ζούσε από τις 21/08 ο «φράχτης της γραμμής ηρεμίας» (§Γ47/§Γ49): όταν ο αριθμός ακτής
+   * έπεφτε κάτω από τη γραμμή AMBER ενώ το ανοιχτό νερό όχι, ανέβαζε το τυπωμένο νούμερο ως τη
+   * γραμμή. Το σκεπτικό του ήταν η ευθυγράμμιση με το χρώμα της πινέζας· το σύμπτωμά του
+   * φάνηκε στο Βάι (24/08/2026): ανοιχτά ~1,1 μ., ακτή 0,1 μ., και η κάρτα τύπωνε «~0,8 μ.» —
+   * ένα νούμερο που δεν ήταν ΟΥΤΕ η θάλασσα έξω ΟΥΤΕ το νερό στην άμμο, δίπλα σε σελίδα
+   * παραλίας που έλεγε το σωστό 0,1. Ο Μίλτος αποφάσισε: το νούμερο λέει την αλήθεια της
+   * ακτής· την προειδοποίηση την κουβαλούν το χρώμα της πινέζας και η ετυμηγορία, που κρίνουν
+   * ΟΠΩΣ ΚΑΙ ΠΡΙΝ με το decision-grade `seaStateM` — καμία απόφαση δεν άλλαξε εδώ.
    *
-   * ⚠️ Η ΠΡΩΤΗ ΕΚΔΟΧΗ ΑΥΤΟΥ ΤΟΥ ΦΡΑΧΤΗ ΗΤΑΝ ΠΟΛΥ ΣΤΕΝΗ, ΚΑΙ ΤΟ ΙΔΙΟ ΤΟ ΣΧΟΛΙΟ ΕΛΕΓΕ ΨΕΜΑ.
-   * Έπιανε μόνο το ΔΙΠΛΟ άλμα («φουρτούνα → ήρεμα») και δικαιολογούσε την εξαίρεση των μονών
-   * πτώσεων με τη φράση «εκεί η ετυμηγορία είναι συνήθως καλή». Αυτό ήταν **υπόθεση, γραμμένη σαν
-   * μέτρηση** — και όταν μετρήθηκε (2η μέρα μελτεμιού, 2024-06-29, 110/110 περιοχές) βγήκε
-   * **ακριβώς αντίστροφη**: από τις 121 μονές πτώσεις, **61 avoid_swimming + 47 caution = 108
-   * (89%)** φέρουν προειδοποίηση και μόνο **13** λένε «καλή».
-   *
-   * ΜΕΤΡΗΘΗΚΕ ΕΘΝΙΚΑ, ΔΥΟ ΠΑΡΑΘΥΡΑ (110/110 περιοχές, 2.873 παραλίες, μέσω lib/replayOpenMeteo):
-   *   2022-09-06 → 105 παραλίες περνούν στο «ήρεμα» (3,7%)· 2024-06-29 → 178 (6,2%).
-   *   **Και στα δύο, το 100% αυτών έχει πινέζα που ΔΕΝ είναι ήρεμη** (orange/yellow/red).
-   * Δηλαδή δεν υπάρχει ούτε μία περίπτωση όπου το «ήρεμα» του αριθμού να το επιβεβαιώνει το χρώμα
-   * δίπλα του. Γι' αυτό ο φράχτης πιάνει ΚΑΘΕ πτώση στο «ήρεμα», όχι μόνο τη διπλή: δεν είναι
-   * υπερ-αυστηρότητα (το λάθος του `quality:over-caution`), είναι ευθυγράμμιση με το χρώμα.
-   *
-   * ΜΟΝΟΔΡΟΜΟ: μόνο ΑΝΕΒΑΖΕΙ το τυπωμένο νούμερο, ποτέ δεν το κατεβάζει, και ποτέ πάνω από το
-   * ανοιχτό νερό (το καπάκι από πάνω έχει ήδη εφαρμοστεί και το δάπεδο είναι ακριβώς η γραμμή
-   * `AMBER`, που το ανοιχτό έχει ήδη περάσει). Δεν αγγίζει ΚΑΜΙΑ απόφαση: το `shoreWaveHeightM`
-   * που βαθμολογεί το βάθρο και το `shoreDisplayWaveM` που διαβάζει η ετυμηγορία μένουν ως έχουν
-   * — διόρθωση ΟΘΟΝΗΣ, ακριβώς όπως ήταν και η υπόσχεση του §Γ5.
-   *
-   * ΔΕΝ διορθώνει το ×0,5 — αυτό παραμένει αβαθμονόμητο και χωρίς κριτή (§7δ). Είναι φράχτης
-   * γύρω από το χειρότερο σύμπτωμά του, όχι απάντηση στην αιτία.
+   * Ό,τι μένει από τον φράχτη: το ταβάνι από πάνω (η ακτή δεν τυπώνεται ποτέ πάνω από το
+   * ανοιχτό νερό) και το «~» από κάτω (φαίνεται ότι ο αριθμός είναι εκτίμηση όταν διαφέρει από
+   * τη μέτρηση του ανοιχτού). Το ×0,5 της προστατευμένης ακτής παραμένει αβαθμονόμητο (§7δ) —
+   * αυτό δεν το έλυνε ούτε ο φράχτης· τύπωνε απλώς ένα τρίτο, δικό του νούμερο από πάνω.
    */
-  const openSeverityM = seaStateSeverityM(seaStateWaveM ?? waveHeightM, seaStatePeriodS);
-  const shownSeverityM = seaStateSeverityM(waveM, seaStatePeriodS);
-  /**
-   * ΜΙΑ ΕΞΑΙΡΕΣΗ, ΚΑΙ ΜΟΝΟ ΓΙΑ ΜΕΤΡΗΜΕΝΗ ΑΠΟΔΕΙΞΗ (22/08/2026, βίβλος §Γ55).
-   *
-   * Ο φράχτης από πάνω γράφτηκε γύρω από την έκπτωση ×0,5, που είναι ΕΙΚΑΣΙΑ: «η ακτή είναι
-   * προστατευμένη, άρα κόψε το κύμα στη μέση». Το `isSeaDepartingShore` δεν είναι εικασία — είναι
-   * η δηλωμένη κατεύθυνση κάθε συστατικού της θάλασσας, ελεγμένη απέναντι στη γωνία της ακτής.
-   * Ο φράχτης δεν είχε τρόπο να τα ξεχωρίσει και έσβηνε και τα δύο.
-   *
-   * ΤΟ ΚΟΣΤΟΣ ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΓΡΑΦΤΕΙ — scripts/measureDepartingSeaCalmFence.mjs. Δες §Γ56.
-   */
-  const fallsIntoCalm = waveIsShore
-    && !shoreWaveFromDepartingSea
-    && typeof openSeverityM === 'number' && openSeverityM >= SEA_STATE_AMBER_M
-    && typeof shownSeverityM === 'number' && shownSeverityM < SEA_STATE_AMBER_M;
-  const guardedWaveM = fallsIntoCalm
-    ? Number((SEA_STATE_AMBER_M / choppinessFactor(seaStatePeriodS)).toFixed(2))
-    : waveM;
-
   const waveDiffers = waveIsShore
     && typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-    && Math.abs((guardedWaveM as number) - waveHeightM) >= WAVE_DIFFERS_M;
-  const waveText = typeof guardedWaveM === 'number' && Number.isFinite(guardedWaveM)
-    ? `${waveDiffers ? '~' : ''}${guardedWaveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
+    && Math.abs((waveM as number) - waveHeightM) >= WAVE_DIFFERS_M;
+  const waveText = typeof waveM === 'number' && Number.isFinite(waveM)
+    ? `${waveDiffers ? '~' : ''}${waveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
     : undefined;
 
   const feel = buildConditionsFeel({
     beaufort,
     // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το severity-corrected `seaStateM`, που σε
     // όρμο διαβάζει το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.».
-    waveM: typeof guardedWaveM === 'number' && Number.isFinite(guardedWaveM) && waveText ? guardedWaveM : undefined,
+    waveM: typeof waveM === 'number' && Number.isFinite(waveM) && waveText ? waveM : undefined,
     language,
   });
 
@@ -184,7 +145,7 @@ export const buildBeachConditionsReadout = ({
     beaufort,
     beaufortText: `${beaufort} ${beaufortUnit(language)}`,
     windWord: feel?.windWord,
-    waveM: typeof guardedWaveM === 'number' && Number.isFinite(guardedWaveM) ? guardedWaveM : undefined,
+    waveM: typeof waveM === 'number' && Number.isFinite(waveM) ? waveM : undefined,
     waveText,
     waveWord: waveText ? feel?.waveWord : undefined,
     waveIsShore,

@@ -117,31 +117,28 @@ check('7 η ράμπα μένει',
   estimateShoreWaveHeightM({ ...base, sector: { ...elafonisiLike, onshore: -0.3 }, departingSea: true }) === undefined,
   'ο έλεγχος της ράμπας παρακάμφθηκε');
 
-// 8 — Η ΕΞΑΙΡΕΣΗ ΤΟΥ ΦΡΑΧΤΗ ΤΗΣ ΓΡΑΜΜΗΣ ΗΡΕΜΙΑΣ (22/08/2026, βίβλος §Γ56).
+// 8 — ΤΟ ΤΥΠΩΜΕΝΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ Ο ΑΡΙΘΜΟΣ ΑΚΤΗΣ, ΜΕ Ή ΧΩΡΙΣ ΑΠΟΔΕΙΞΗ (24/08/2026).
 //
-// Ο φράχτης `fallsIntoCalm` (utils/beachConditionsReadout, commit c8385652 της 21/08) ανεβάζει
-// κάθε αριθμό ακτής που πέφτει κάτω από τη γραμμή ηρεμίας ενώ η ανοιχτή θάλασσα δεν έχει πέσει.
-// Γράφτηκε για την ΑΒΑΘΜΟΝΟΜΗΤΗ έκπτωση ×0,5 και έσβηνε μαζί και τη ΜΕΤΡΗΜΕΝΗ απόδειξη ότι όλο
-// το νερό φεύγει. Η εξαίρεση περνάει ΜΟΝΟ με το `shoreWaveFromDepartingSea`.
+// Ιστορικό: εδώ ζούσε ο φράχτης `fallsIntoCalm` (21/08, §Γ47) και η εξαίρεσή του για τη
+// μετρημένη «θάλασσα που φεύγει» (§Γ55/§Γ56). Στις 24/08 ο Μίλτος τον γκρέμισε ολόκληρο
+// (Βάι: η κάρτα τύπωνε «~0,8 μ.» πάνω από άμμο 0,1 μ. — βλ. scripts/validateShoreBandJump.mjs).
+// Ό,τι μένει να φυλαχτεί εδώ: ο αριθμός ακτής τυπώνεται ΑΥΤΟΥΣΙΟΣ, ανεξάρτητα από το αν
+// συνοδεύεται από την απόδειξη — η σημαία `shoreWaveFromDepartingSea` παραμένει στο σκορ ως
+// προέλευση (analytics + μελλοντική βαθμονόμηση), όχι ως διακόπτης οθόνης.
 const { buildBeachConditionsReadout } = require(path.join(root, 'utils/beachConditionsReadout.ts'));
-/** Ελαφονήσι 22/08 15:00: ανοιχτά 0,88 μ. στα 4,75 s, ακτή 0,41 μ. — ο φράχτης το έκανε 0,80. */
+/** Ελαφονήσι 22/08 15:00: ανοιχτά 0,88 μ. στα 4,75 s, ακτή 0,41 μ. — ο παλιός φράχτης το έκανε 0,80. */
 const fenceCase = {
   beachWindSpeedKmph: 25, waveHeightM: 0.88, seaStateWaveM: 0.88, seaStatePeriodS: 4.75,
   shoreWaveHeightM: 0.41, shoreDisplayWaveM: 0.41, language: 'gr',
 };
-const fenced = buildBeachConditionsReadout(fenceCase);
-const exempt = buildBeachConditionsReadout({ ...fenceCase, shoreWaveFromDepartingSea: true });
-check('8 ο φράχτης ζει', fenced.waveM > 0.6,
-  'ο φράχτης δεν ανέβασε τον αριθμό — η εξαίρεση δεν έχει νόημα, ή ο φράχτης χάθηκε');
-check('8 η εξαίρεση περνάει', Math.abs(exempt.waveM - 0.41) < 0.005,
-  `με μετρημένη απόδειξη ο αριθμός έπρεπε να μείνει 0,41 — βγήκε ${exempt.waveM}`);
-check('8 μόνο προς τα κάτω', exempt.waveM <= fenced.waveM,
-  'η εξαίρεση ΑΝΕΒΑΣΕ τον αριθμό — μπορεί μόνο να τον αφήσει όπως τον μέτρησε το μοντέλο');
-check('8 δεν αγγίζει την έκπτωση ×0,5',
-  Math.abs(buildBeachConditionsReadout({ ...fenceCase, shoreWaveFromDepartingSea: false }).waveM - fenced.waveM) < 0.005,
-  'χωρίς μετρημένη απόδειξη ο φράχτης πρέπει να δουλεύει ΑΚΡΙΒΩΣ όπως στις 21/08');
+const plain = buildBeachConditionsReadout(fenceCase);
+const withEvidence = buildBeachConditionsReadout({ ...fenceCase, shoreWaveFromDepartingSea: true });
+check('8 ο αριθμός ακτής τυπώνεται αυτούσιος', Math.abs(plain.waveM - 0.41) < 0.005,
+  `χωρίς φράχτη ο αριθμός έπρεπε να είναι 0,41 — βγήκε ${plain.waveM}`);
+check('8 η απόδειξη δεν αλλάζει πια το νούμερο', Math.abs(withEvidence.waveM - plain.waveM) < 0.005,
+  'η σημαία shoreWaveFromDepartingSea δεν επιτρέπεται να αλλάζει το τυπωμένο νούμερο');
 // Και ποτέ πάνω από την ανοιχτή θάλασσα, όπως κάθε άλλος αριθμός ακτής.
-check('8 ποτέ πάνω από τα ανοιχτά', exempt.waveM <= fenceCase.waveHeightM,
+check('8 ποτέ πάνω από τα ανοιχτά', withEvidence.waveM <= fenceCase.waveHeightM,
   'ο αριθμός ακτής ξεπέρασε τη θάλασσα έξω');
 
 // ---- η καλωδίωση: το recommendationService πρέπει ΟΝΤΩΣ να το περνάει ------------------------
