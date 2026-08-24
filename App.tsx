@@ -5039,22 +5039,45 @@ export const App: React.FC = () => {
   );
 
   /**
-   * The pins the legend must NOT count.
+   * ΔΥΟ ΕΙΔΗ ΠΙΝΕΖΑΣ ΠΟΥ ΔΕΝ ΠΡΟΤΕΙΝΕΤΑΙ — ΚΑΙ ΜΟΝΟ ΤΟ ΕΝΑ ΛΕΙΠΕΙ ΑΠΟ ΤΟ ΜΕΤΡΗΜΑ (23/08/2026).
    *
-   * The map keeps every pin — a naturist beach is a real beach and stays findable — but the
-   * legend prints a NUMBER, and so does the list heading. Those two numbers have to describe the
-   * same set of beaches or the reader sees «Δύσκολη 35» and «Δύσκολες παραλίες (34)» on one
-   * screen. Only the tally is narrowed; the markers are untouched, because hiding a pin to fix a
-   * printed number would trade a legend-vs-list contradiction for a legend-vs-map one.
+   * Μέχρι σήμερα ΟΛΕΣ οι μη-προτεινόμενες (γυμνιστών, μόνο-με-σκάφος στα 5 Μπφ, «μην
+   * κολυμπήσεις») έφευγαν μαζί και από το μέτρημα της λεζάντας, ώστε λεζάντα και λίστα να λένε
+   * τον ίδιο αριθμό. Το «accepted cost: rare» της αρχικής απόφασης έπαψε να είναι σπάνιο τη μέρα
+   * που το ταβάνι του `avoid_swimming` (πορτοκαλί) συνάντησε μια ήρεμη μέρα με κοντό κύμα:
+   * Λέσβος 23/08, πρόγνωση 24/08 10:00 — 17 πορτοκαλί + 2 κόκκινες πινέζες στον χάρτη, «Μέτρια
+   * 1 παραλία» στη λεζάντα, 19 πινέζες που «δεν υπάρχουν». Ο αναγνώστης μετράει πινέζες· μια
+   * λεζάντα που διαφωνεί με τον χάρτη από πάνω της διαβάζεται σαν σφάλμα, όχι σαν απόφαση
+   * (αναφορά Μίλτου, αυτολεξεί: «δεν είναι κατανοητό για τον χρήστη»).
    *
-   * Accepted cost: if a suppressed beach is the ONLY one wearing a colour, that legend row
-   * disappears while its pin sits on the map unexplained. Rare, and strictly better than two
-   * numbers that disagree. `activeToneFilter` already ignores a tone with no count, so there is
-   * no dead end.
+   * Ο ΝΕΟΣ ΚΑΝΟΝΑΣ: η λεζάντα μετράει ό,τι βάφει ο χάρτης, εκτός από τις ΠΟΛΙΤΙΚΑ κρυφές.
+   *
+   *   • `directoryUncountedBeachIds` — ΜΟΝΟ γυμνιστών με σβηστό φίλτρο. Αυτές δεν πρέπει να
+   *     εμφανίζονται σε καμία επιφάνεια περιήγησης (απόφαση περί γυμνιστών), οπότε ούτε ο
+   *     αριθμός τους: μένουν εκτός μετρήματος, όπως πάντα. Σπάνιο στ' αλήθεια.
+   *   • `directoryUnrecommendedBeachIds` — «μην κολυμπήσεις» και μόνο-με-σκάφος στα ≥5 Μπφ.
+   *     ΜΕΤΡΙΟΥΝΤΑΙ. Η γραμμή της λεζάντας λέει ρητά «τις N δεν τις προτείνουμε»
+   *     (utils/conditionToneLabels.legendUnrecommendedPhrase), και το πάτημα του χρώματος τις
+   *     δείχνει με την ετυμηγορία τους πάνω στην κάρτα — η αφαίρεση του αναγνώστη κλείνει
+   *     επειδή του δίνουμε τον όρο που έλειπε, όχι επειδή κρύβουμε τον αριθμό.
+   *
+   * ΤΙ ΔΕΝ ΑΛΛΑΖΕΙ: η λίστα «Υπόλοιπες κατάλληλες» και το βάθρο συνεχίζουν να διαβάζουν το
+   * ΠΛΗΡΕΣ `isListableInDirectory` — καμία «μην κολυμπήσεις» δεν ξαναγίνεται «κατάλληλη» (η
+   * μέτρηση των 167/550 οθονών της 20/08 μένει σεβαστή). Άλλαξε μόνο ποιον αριθμό γράφει η
+   * λεζάντα και τι δείχνει το φίλτρο χρώματος, που ο τίτλος του είναι το ΧΡΩΜΑ («Μέτριες
+   * παραλίες»), όχι η λέξη «κατάλληλες».
    */
-  const directoryUncountedBeachIds = useMemo(
-    () => new Set(directoryMapPinBeaches.filter(item => !isListableInDirectory(item)).map(item => item.beachId)),
+  const unlistableMapPinBeaches = useMemo(
+    () => directoryMapPinBeaches.filter(item => !isListableInDirectory(item)),
     [directoryMapPinBeaches, isListableInDirectory]
+  );
+  const directoryUncountedBeachIds = useMemo(
+    () => new Set(unlistableMapPinBeaches.filter(item => isNaturistBeach(item.beach)).map(item => item.beachId)),
+    [unlistableMapPinBeaches]
+  );
+  const directoryUnrecommendedBeachIds = useMemo(
+    () => new Set(unlistableMapPinBeaches.filter(item => !isNaturistBeach(item.beach)).map(item => item.beachId)),
+    [unlistableMapPinBeaches]
   );
 
   /**
@@ -6405,9 +6428,18 @@ export const App: React.FC = () => {
     const listable = mapSuitableBeaches.filter(item => filteredBeachIds.has(item.beach.id) && isListable(item));
 
     // A colour picked on the legend OVERRIDES the tone selection for the list too, and
-    // `candidates` has already been narrowed to that colour. Same for the frames before the map
-    // has reported any colour at all — there the list falls back to its pre-tone source.
-    if (mapToneFilter || Object.keys(mapBeachTones).length === 0) return listable.length;
+    // `candidates` has already been narrowed to that colour. Ίδιος κανόνας με το
+    // toneSuitableDirectorySource (23/08/2026): στο φίλτρο χρώματος μετράνε ΟΛΕΣ οι πινέζες του
+    // χρώματος εκτός από τις πολιτικά κρυφές — όχι μόνο οι «κατάλληλες» — αλλιώς το κουμπί
+    // υπόσχεται λιγότερες από όσες θα δείξει η οθόνη.
+    if (mapToneFilter) {
+      return mapSuitableBeaches.filter(item => (
+        filteredBeachIds.has(item.beach.id) && !(naturistSuppressed && isNaturistBeach(item.beach))
+      )).length;
+    }
+    // Same for the frames before the map has reported any colour at all — there the list falls
+    // back to its pre-tone source.
+    if (Object.keys(mapBeachTones).length === 0) return listable.length;
 
     return selectSuitableByTone(
       listable,
@@ -7323,8 +7355,16 @@ export const App: React.FC = () => {
     // 8, because the source was ΙΔΑΝΙΚΕΣ+ΚΑΛΕΣ, the intersection with red was empty, and the
     // carousel quietly fell back to an unrelated set. When the reader asks for the difficult
     // ones they are not asking for a recommendation; they are asking to see those beaches.
+    //
+    // ΚΑΙ ΓΙΑ ΤΟΝ ΙΔΙΟ ΛΟΓΟ ΔΕΝ ΠΕΡΝΑΕΙ ΑΠΟ ΤΟ ΠΛΗΡΕΣ isListableInDirectory (23/08/2026): το
+    // πάτημα του χρώματος είναι «δείξε μου ΑΥΤΕΣ», όχι «πρότεινέ μου». Με το πλήρες φίλτρο, η
+    // Λέσβος έδειχνε 17 πορτοκαλί πινέζες και η λίστα από κάτω μία κάρτα — οι «μην κολυμπήσεις»
+    // έλειπαν από τη μόνη οθόνη που υπάρχει για να τις εξηγήσει (η κάρτα λέει την ετυμηγορία).
+    // Μόνο η πολιτική των γυμνιστών κρατιέται: το recommendableFiltered… την κουβαλάει ήδη.
     if (mapToneFilter) {
-      return listable.filter(item => mapBeachTones[item.beach.id] === mapToneFilter).sort(byPriority);
+      return recommendableFilteredMapSuitableBeaches
+        .filter(item => mapBeachTones[item.beach.id] === mapToneFilter)
+        .sort(byPriority);
     }
 
     /**
@@ -8510,6 +8550,7 @@ export const App: React.FC = () => {
           // that is what `toneScopedBeaches` (and therefore the chip counts) reads.
           toneSourceBeaches={mapSuitableBeaches}
           uncountedBeachIds={directoryUncountedBeachIds}
+          unrecommendedBeachIds={directoryUnrecommendedBeachIds}
           enableScrollWheelZoom={isDesktopViewport}
           isExposureLoading={isMapExposureLoading}
           compactPreviewHeightClassName="h-[13.5rem] sm:h-[26rem] lg:h-[32rem]"

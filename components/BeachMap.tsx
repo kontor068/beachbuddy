@@ -12,7 +12,7 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
-import { conditionToneLabels, conditionToneCountPhrase, causeLinePhrase, type CauseLineWords } from '../utils/conditionToneLabels';
+import { conditionToneLabels, conditionToneCountPhrase, causeLinePhrase, legendUnrecommendedPhrase, type CauseLineWords } from '../utils/conditionToneLabels';
 import {
   describeConditionCause, resolveCauseLineForm, causeLineMaySpeak, countCauseLineSplit,
   type ConditionCauseInput, type ConditionCauseReading, type CauseLineForm,
@@ -132,10 +132,17 @@ interface BeachMapProps {
    *  applied to it, so anything downstream that tries to describe a colour group ends up
    *  describing the chips instead. Defaults to `beaches`, i.e. exactly the previous behaviour. */
   toneSourceBeaches?: SuitableBeach[];
-  /** Beaches that are drawn on the map but can never appear in the list below it (naturist
-   *  beaches; boat-only shores in strong wind). Excluded from the legend COUNTS only — their
-   *  pins stay — so the legend's number and the list's number describe the same set. */
+  /** Beaches that are drawn on the map but must not surface in ANY browsing count or list
+   *  (naturist beaches with the filter off — a policy, not a condition). Excluded from the
+   *  legend counts entirely; their pins stay. Since 23/08/2026 this is ONLY that policy set —
+   *  condition-based exclusions moved to `unrecommendedBeachIds` below, which stays counted. */
   uncountedBeachIds?: Set<number>;
+  /** Beaches the app refuses to RECOMMEND today («μην κολυμπήσεις»; boat-only in ≥5 Bft) but
+   *  whose pins the reader can plainly see. COUNTED in the legend — a legend that disagrees
+   *  with the pins above it reads as a bug (Λέσβος 23/08: 17 πορτοκαλί πινέζες, «Μέτρια 1») —
+   *  and each affected row says «τις N δεν τις προτείνουμε» so the reader's subtraction closes.
+   *  Excluded from the calm-water offer, which is a recommendation surface. */
+  unrecommendedBeachIds?: Set<number>;
   /** «Ήρεμο νερό» is on. A SECOND way to cut the same list, so it and `toneFilter` are mutually
    *  exclusive at the caller — see utils/calmWaterFilter for why it does not live inside a colour. */
   calmWaterFilter?: boolean;
@@ -2142,6 +2149,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   onBeachTonesChange,
   toneSourceBeaches,
   uncountedBeachIds,
+  unrecommendedBeachIds,
   calmWaterFilter = false,
   onCalmWaterFilterChange,
   onCalmWaterStateChange
@@ -2712,12 +2720,26 @@ const BeachMap: React.FC<BeachMapProps> = ({
   //
   // `beachTonesById` stays COMPLETE — it is what onBeachTonesChange reports, and the "all
   // beaches" list needs a colour for beaches the directory never lists. Only the TALLY drops
-  // `uncountedBeachIds`, so the legend's number matches the list's. The fallback covers the
-  // degenerate case where every pin is uncountable, which would otherwise leave `dominant`
-  // undefined and put a calm blue slider thumb over a red map.
+  // `uncountedBeachIds` — since 23/08/2026 that is ONLY the policy-hidden set (naturist), so
+  // the legend counts every pin the reader can see. The condition-excluded set
+  // (`unrecommendedBeachIds`) is counted and each affected row explains itself instead
+  // (legendUnrecommendedPhrase). The fallback covers the degenerate case where every pin is
+  // uncountable, which would otherwise leave `dominant` undefined and put a calm blue slider
+  // thumb over a red map.
   const beachTonesById = beaches.map(item => ({ beachId: item.beachId, tone: beachConditionTone(item) }));
   const countedTones = beachTonesById.filter(e => !uncountedBeachIds?.has(e.beachId)).map(e => e.tone);
   const mapToneTally = tallyMapTones(countedTones.length ? countedTones : beachTonesById.map(e => e.tone));
+  // How many of each row's counted pins the app refuses to recommend today — feeds the row's
+  // own «τις N δεν τις προτείνουμε» line and nothing else: no colour, score or order reads it.
+  const unrecommendedCountByTone = ((): Map<CalmnessTone, number> => {
+    const counts = new Map<CalmnessTone, number>();
+    if (!unrecommendedBeachIds?.size) return counts;
+    beachTonesById.forEach(entry => {
+      if (uncountedBeachIds?.has(entry.beachId) || !unrecommendedBeachIds.has(entry.beachId)) return;
+      counts.set(entry.tone, (counts.get(entry.tone) ?? 0) + 1);
+    });
+    return counts;
+  })();
 
   /**
    * WHAT PUT EACH COLOUR HERE, TODAY — the cause line, one per colour group, or nothing.
@@ -2790,13 +2812,16 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * Πάνω στην ΠΛΗΡΗ δεξαμενή της περιοχής (`toneSourceBeaches`), όχι στα `beaches` που έχουν
    * ήδη περάσει από τα chips παροχών: αλλιώς το «Ήρεμο νερό 9» θα μετρούσε στην πραγματικότητα
    * «9 από όσες έχουν ξαπλώστρες». Ίδιος λόγος και ίδια πηγή με το `reportedToneEntries`.
-   * Οι `uncountedBeachIds` φεύγουν όπως και από το tally — ο αριθμός του chip πρέπει να
-   * περιγράφει το ίδιο σύνολο με τη λίστα από κάτω.
+   * Οι `uncountedBeachIds` ΚΑΙ οι `unrecommendedBeachIds` φεύγουν — το «Ήρεμο νερό» είναι
+   * επιφάνεια ΠΡΟΣΦΟΡΑΣ, όχι περιγραφής: μια παραλία όπου λέμε «μην κολυμπήσεις» δεν
+   * επιτρέπεται να προσφερθεί από ένα chip ηρεμίας, όσο ήρεμο κι αν είναι το νερό της
+   * (απόγειος άνεμος που σε βγάζει ανοιχτά είναι ακριβώς αυτή η περίπτωση). Η λεζάντα από
+   * 23/08/2026 τις ΜΕΤΡΑΕΙ — αυτή περιγράφει· εδώ προσφέρουμε.
    */
   const calmWaterSourceBeaches = toneSourceBeaches ?? beaches;
   const calmWaterState = ((): CalmWaterState => {
     const entries = calmWaterSourceBeaches
-      .filter(item => !uncountedBeachIds?.has(item.beachId))
+      .filter(item => !uncountedBeachIds?.has(item.beachId) && !unrecommendedBeachIds?.has(item.beachId))
       .map(item => ({ beachId: item.beachId, reading: describeConditionCause(beachToneInput(item)) }));
     return resolveCalmWaterState(entries);
   })();
@@ -3588,6 +3613,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
           // was cut is the second line under each row on a PHONE, never the noun inside it.
           const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
           const causeLine = causeLineByTone.get(row.tone);
+          // «τις N δεν τις προτείνουμε» — the term the reader's subtraction was missing. The
+          // row's number counts every pin of this colour (23/08/2026); when some of those are
+          // beaches the app refuses to recommend, saying so HERE is what lets the count agree
+          // with the map above and the list below at the same time.
+          const unrecommendedCount = unrecommendedCountByTone.get(row.tone) ?? 0;
+          const unrecommendedLine = unrecommendedCount > 0
+            ? legendUnrecommendedPhrase(language, unrecommendedCount, row.count)
+            : null;
           const body = (
             <>
               <span className="flex min-w-0 items-start gap-1.5">
@@ -3608,6 +3641,14 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     : <ChevronRight aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400" />
                 )}
               </span>
+              {unrecommendedLine && (
+                /* Fires only when this colour's count includes beaches the app refuses to
+                   recommend — the height is paid exactly on the days the number needs the
+                   explanation, and never as wallpaper. */
+                <span className="mt-0.5 block text-left text-[10px] font-semibold leading-snug text-slate-500 dark:text-slate-400">
+                  {unrecommendedLine}
+                </span>
+              )}
               {/* WIDE SCREENS EXPLAIN, PHONES COUNT (15/08/2026, Miltos's call).
                   This is the line that separates «Μέτρια» from «Καλή». On a desktop it is free —
                   the rows sit four across with room under each — so it stays visible and nobody
@@ -3648,7 +3689,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               /* The spoken label carries the cause too. A blind reader hears the count and the
                  button's action; without this they would be the only ones who never learn that
                  today's orange is wind and not wave. */
-              aria-label={`${countPhrase.text}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
+              aria-label={`${countPhrase.text}${unrecommendedLine ? ` — ${unrecommendedLine}` : ''}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
               className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
                 isActive

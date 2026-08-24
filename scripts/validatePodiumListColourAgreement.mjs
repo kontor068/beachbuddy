@@ -354,20 +354,44 @@ if (doorStart < 0) {
     );
   }
 }
-// Η ΛΕΖΑΝΤΑ ΚΑΙ Η ΛΙΣΤΑ ΠΡΕΠΕΙ ΝΑ ΣΤΕΝΕΥΟΥΝ ΜΑΖΙ. Αν κάποιος αφήσει την πόρτα και αποσυνδέσει
-// τον έναν από τους δύο αναγνώστες της, τα δύο νούμερα ξαναρχίζουν να διαφωνούν στην ίδια οθόνη.
-for (const [readerName, label] of [
-  ['directoryUncountedBeachIds', 'η λεζάντα (ποιες πινέζες ΔΕΝ μετράει)'],
-  ['toneSuitableDirectorySource', 'η λίστα των κατάλληλων'],
-]) {
+// Η ΛΕΖΑΝΤΑ ΚΑΙ Η ΛΙΣΤΑ ΔΙΑΒΑΖΟΥΝ ΤΗΝ ΙΔΙΑ ΠΟΡΤΑ — ΚΑΙ Η ΔΙΑΦΟΡΑ ΤΟΥΣ ΛΕΓΕΤΑΙ ΔΥΝΑΤΑ.
+//
+// Από 23/08/2026 (Λέσβος: 17 πορτοκαλί πινέζες, «Μέτρια 1») η λεζάντα ΜΕΤΡΑΕΙ τις
+// μη-προτεινόμενες και τυπώνει «τις N δεν τις προτείνουμε», αντί να τις σβήνει από τον αριθμό
+// ενώ ο αναγνώστης τις βλέπει βαμμένες στον χάρτη. Η καλωδίωση που το κάνει ασφαλές:
+//
+//   · `unlistableMapPinBeaches` περνά ΟΛΕΣ τις πινέζες από την πόρτα της προσφοράς — μία πηγή.
+//   · `directoryUncountedBeachIds` (κρυφές από το μέτρημα) = ΜΟΝΟ οι πολιτικά κρυφές
+//     (γυμνιστών) από εκείνη την πηγή.
+//   · `directoryUnrecommendedBeachIds` (μετρημένες αλλά με ρητή γραμμή) = οι υπόλοιπες, και
+//     πρέπει να ΦΤΑΝΕΙ στον χάρτη (unrecommendedBeachIds=…) — αλλιώς η λεζάντα μετράει χωρίς
+//     να εξηγεί, που είναι η μισή παλινδρόμηση.
+//   · η λίστα των «κατάλληλων» συνεχίζει να περνά από το ΠΛΗΡΕΣ isListableInDirectory.
+const wiringChecks = [
+  ['unlistableMapPinBeaches', 'isListableInDirectory',
+    'η κοινή πηγή (unlistableMapPinBeaches) δεν περνά από την πόρτα της προσφοράς'],
+  ['directoryUncountedBeachIds', 'isNaturistBeach',
+    'οι κρυφές από το μέτρημα (directoryUncountedBeachIds) δεν είναι πια μόνο η πολιτική των γυμνιστών'],
+  ['directoryUncountedBeachIds', 'unlistableMapPinBeaches',
+    'η λεζάντα (directoryUncountedBeachIds) αποσυνδέθηκε από την κοινή πηγή της πόρτας'],
+  ['directoryUnrecommendedBeachIds', 'unlistableMapPinBeaches',
+    'οι μη-προτεινόμενες (directoryUnrecommendedBeachIds) αποσυνδέθηκαν από την κοινή πηγή της πόρτας'],
+  ['toneSuitableDirectorySource', 'isListableInDirectory',
+    'η λίστα των κατάλληλων (toneSuitableDirectorySource) δεν περνά από την πόρτα της προσφοράς'],
+];
+for (const [readerName, mustContain, message] of wiringChecks) {
   const start = appSource.indexOf(`const ${readerName} = `);
   if (start < 0) {
     failures.push(`ΣΤ: δεν βρέθηκε το ${readerName} στο App.tsx`);
     continue;
   }
-  if (!appSource.slice(start, start + 1200).includes('isListableInDirectory')) {
-    failures.push(`ΣΤ: ${label} (${readerName}) δεν περνά από την πόρτα της προσφοράς`);
+  if (!appSource.slice(start, start + 1200).includes(mustContain)) {
+    failures.push(`ΣΤ: ${message}`);
   }
+}
+if (!/unrecommendedBeachIds=\{directoryUnrecommendedBeachIds\}/.test(appSource)) {
+  failures.push('ΣΤ: το directoryUnrecommendedBeachIds δεν φτάνει στον χάρτη — η λεζάντα θα '
+    + 'μετράει μη-προτεινόμενες χωρίς τη γραμμή «τις N δεν τις προτείνουμε»');
 }
 
 let provenRegressions = 0;
@@ -420,10 +444,19 @@ if (PROVE) {
     [
       'η λεζάντα αποσυνδέεται από την πόρτα',
       () => {
-        const start = appSource.indexOf('const directoryUncountedBeachIds = ');
+        // Σβήνει την πόρτα από την κοινή πηγή και ελέγχει ότι ο έλεγχος ΣΤ θα το έπιανε.
+        const start = appSource.indexOf('const unlistableMapPinBeaches = ');
         if (start < 0) return ['x'];
         const sabotaged = appSource.slice(start, start + 1200).replace(/isListableInDirectory/g, 'ALWAYS_TRUE_STUB');
         return sabotaged.includes('isListableInDirectory') ? [] : ['x'];
+      },
+    ],
+    [
+      'η λεζάντα μετράει χωρίς να εξηγεί',
+      () => {
+        // Σβήνει το πέρασμα του unrecommendedBeachIds προς τον χάρτη — ο έλεγχος ΣΤ το απαιτεί.
+        const sabotaged = appSource.replace(/unrecommendedBeachIds=\{directoryUnrecommendedBeachIds\}/g, '');
+        return /unrecommendedBeachIds=\{directoryUnrecommendedBeachIds\}/.test(sabotaged) ? [] : ['x'];
       },
     ],
   ];

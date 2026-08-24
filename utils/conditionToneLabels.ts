@@ -261,3 +261,51 @@ export const offshoreWindNoteLabels: Record<LanguageCode, Record<OffshoreWindNot
 /** Η φράση για μία μορφή, με πτώση στα αγγλικά αν λείπει γλώσσα — ίδιο μοτίβο με το causeLinePhrase. */
 export const offshoreWindNotePhrase = (form: OffshoreWindNoteForm, language: LanguageCode): string =>
   (offshoreWindNoteLabels[language] ?? offshoreWindNoteLabels.en)[form];
+
+/**
+ * «ΤΙΣ 16 ΔΕΝ ΤΙΣ ΠΡΟΤΕΙΝΟΥΜΕ» — η υπογραμμή της λεζάντας όταν μετράει πινέζες που η σελίδα
+ * αρνείται να προτείνει (23/08/2026).
+ *
+ * ΓΙΑΤΙ ΥΠΑΡΧΕΙ. Στη Λέσβο (23/08, πρόγνωση 24/08 10:00) ο χάρτης έβαφε 17 πορτοκαλί και 2
+ * κόκκινες, και η λεζάντα έλεγε «Μέτρια 1» — οι 18 ήταν `avoid_swimming` και το φίλτρο
+ * καταλληλότητας τις έσβηνε ΚΑΙ από το μέτρημα (App.directoryUncountedBeachIds). Ο αναγνώστης
+ * μετράει πινέζες: 19 πινέζες που «δεν υπάρχουν» στη λεζάντα διαβάζονται σαν σφάλμα, όχι σαν
+ * απόφαση. Από σήμερα η λεζάντα μετράει ό,τι βάφει ο χάρτης, και όταν ο αριθμός περιλαμβάνει
+ * παραλίες που δεν προτείνονται, αυτή η γραμμή δίνει στον αναγνώστη τον όρο που έλειπε από την
+ * αφαίρεσή του. ΜΟΝΟ οι πολιτικά κρυφές (γυμνιστών με σβηστό φίλτρο) μένουν έξω από το μέτρημα —
+ * εκείνη η σιωπή είναι σχεδιασμένη και σπάνια.
+ *
+ * ΔΕΝ λέει το γιατί ανά παραλία — το «γιατί» ζει στην κάρτα της καθεμιάς (ετυμηγορία, μόνο με
+ * σκάφος). Εδώ φτάνει το «δεν τις προτείνουμε»: αρκεί για να κλείσει η αριθμητική και να μη
+ * μοιάζει ο χάρτης χαλασμένος.
+ */
+export const legendUnrecommendedPhrase = (
+  language: LanguageCode,
+  excluded: number,
+  total: number,
+): string => {
+  const all = excluded >= total;
+  const one = excluded === 1;
+  switch (language) {
+    case 'gr':
+      return all
+        ? (total === 1 ? 'δεν την προτείνουμε σήμερα' : 'καμία δεν προτείνεται σήμερα')
+        : one ? 'τη μία δεν την προτείνουμε σήμερα' : `τις ${excluded} δεν τις προτείνουμε σήμερα`;
+    case 'fr':
+      return all
+        ? (total === 1 ? 'non recommandée aujourd’hui' : 'aucune recommandée aujourd’hui')
+        : one ? '1 non recommandée aujourd’hui' : `${excluded} non recommandées aujourd’hui`;
+    case 'de':
+      return all
+        ? (total === 1 ? 'heute nicht empfohlen' : 'heute keiner empfohlen')
+        : `${excluded} heute nicht empfohlen`;
+    case 'it':
+      return all
+        ? (total === 1 ? 'oggi non consigliata' : 'oggi nessuna consigliata')
+        : one ? '1 oggi non consigliata' : `${excluded} oggi non consigliate`;
+    default:
+      return all
+        ? (total === 1 ? 'not recommended today' : 'none recommended today')
+        : `${excluded} not recommended today`;
+  }
+};
