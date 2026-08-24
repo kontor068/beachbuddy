@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T06:53:02.598Z",
+  "generatedAt": "2026-08-24T09:17:34.757Z",
   "replayWindow": "2022-09-06:2022-09-08",
   "dayIndex": 0,
   "regionsAnswered": 110,
@@ -29,22 +29,22 @@
       "name": "Παραλία Σχινιά",
       "byVariant": {
         "base": {
-          "shoreM": 0.13,
-          "printedM": 0.78,
+          "shoreM": 0.12,
+          "printedM": 0.12,
           "band": "ήρεμα",
           "comfort": "avoid_swimming",
           "tone": "orange"
         },
         "d035": {
-          "shoreM": 0.13,
-          "printedM": 0.78,
+          "shoreM": 0.12,
+          "printedM": 0.12,
           "band": "ήρεμα",
           "comfort": "avoid_swimming",
           "tone": "orange"
         },
         "d065": {
-          "shoreM": 0.13,
-          "printedM": 0.78,
+          "shoreM": 0.12,
+          "printedM": 0.12,
           "band": "ήρεμα",
           "comfort": "avoid_swimming",
           "tone": "orange"
@@ -60,14 +60,14 @@
       "byVariant": {
         "base": {
           "shoreM": 0.69,
-          "printedM": 0.78,
+          "printedM": 0.69,
           "band": "ήρεμα",
           "comfort": "avoid_swimming",
           "tone": "orange"
         },
         "d035": {
           "shoreM": 0.48,
-          "printedM": 0.78,
+          "printedM": 0.48,
           "band": "ήρεμα",
           "comfort": "caution",
           "tone": "orange"
@@ -89,43 +89,43 @@
       "name": "Καβαλικευτά",
       "byVariant": {
         "base": {
-          "shoreM": 0.9,
-          "printedM": 0.9,
-          "band": "κύμα",
-          "comfort": "avoid_swimming",
-          "tone": "orange"
+          "shoreM": 0.17,
+          "printedM": 0.17,
+          "band": "ήρεμα",
+          "comfort": "good",
+          "tone": "blue"
         },
         "d035": {
-          "shoreM": 0.9,
-          "printedM": 0.9,
-          "band": "κύμα",
-          "comfort": "avoid_swimming",
-          "tone": "orange"
+          "shoreM": 0.17,
+          "printedM": 0.17,
+          "band": "ήρεμα",
+          "comfort": "good",
+          "tone": "blue"
         },
         "d065": {
-          "shoreM": 0.9,
-          "printedM": 0.9,
-          "band": "κύμα",
-          "comfort": "avoid_swimming",
-          "tone": "orange"
+          "shoreM": 0.17,
+          "printedM": 0.17,
+          "band": "ήρεμα",
+          "comfort": "good",
+          "tone": "blue"
         }
       },
       "exposureLevel": "exposed",
-      "seaArrival": "exposed"
+      "seaArrival": "unknown"
     }
   ],
   "disagreement": {
     "base": {
-      "calmNumber": 946,
-      "calmNumberPinNotCalm": 516
+      "calmNumber": 1720,
+      "calmNumberPinNotCalm": 1245
     },
     "d035": {
-      "calmNumber": 944,
-      "calmNumberPinNotCalm": 514
+      "calmNumber": 1860,
+      "calmNumberPinNotCalm": 1385
     },
     "d065": {
-      "calmNumber": 945,
-      "calmNumberPinNotCalm": 580
+      "calmNumber": 1666,
+      "calmNumberPinNotCalm": 1257
     }
   },
   "summary": {
@@ -133,9 +133,9 @@
       "label": "×0,35 (βαθύτερη έκπτωση — ΕΠΙΚΙΝΔΥΝΗ κατεύθυνση)",
       "value": 0.35,
       "beaches": 2873,
-      "printedCalmer": 547,
-      "printedRougher": 2,
-      "shoreMoved": 712,
+      "printedCalmer": 692,
+      "printedRougher": 0,
+      "shoreMoved": 706,
       "byExposure": {
         "exposed": {
           "beaches": 857,
@@ -143,114 +143,114 @@
         },
         "protected": {
           "beaches": 1575,
-          "printedChanged": 427
+          "printedChanged": 544
         },
         "partial": {
           "beaches": 441,
-          "printedChanged": 122
+          "printedChanged": 148
         }
       },
       "bandMoves": {
-        "φουρτούνα → κύμα": 101,
-        "ήρεμα → κύμα": 2
+        "κύμα → ήρεμα": 140,
+        "φουρτούνα → κύμα": 101
       },
-      "intoCalm": 0,
-      "intoCalmPinNotCalm": 0,
-      "comfortSofter": 18,
+      "intoCalm": 140,
+      "intoCalmPinNotCalm": 140,
+      "comfortSofter": 29,
       "comfortStricter": 0,
       "comfortMoves": {
-        "avoid_swimming → caution": 18
+        "avoid_swimming → caution": 29
       },
       "softerExamples": [
         {
           "region": "attica-east-attica-mainland",
           "name": "Παραλία Μαραθώνα",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.78,
-          "printedAfterM": 0.78
+          "printedBeforeM": 0.69,
+          "printedAfterM": 0.48
         },
         {
           "region": "attica-kythira",
           "name": "Παραλία Καλάμι",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.6,
+          "printedAfterM": 0.42
         },
         {
           "region": "central-greece-evia",
-          "name": "Ζάστανα",
+          "name": "Λιβάδι",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.79,
-          "printedAfterM": 0.79
+          "printedBeforeM": 0.94,
+          "printedAfterM": 0.66
         },
         {
           "region": "central-greece-evia",
-          "name": "Στενή",
+          "name": "Παραλία Κοτσικιάς",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.71,
-          "printedAfterM": 0.71
+          "printedBeforeM": 0.73,
+          "printedAfterM": 0.51
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Πίσω Συκιά",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.94,
+          "printedAfterM": 0.66
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Σαρακήνικο Αγίας Άννας",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.64,
+          "printedAfterM": 0.52
+        },
+        {
+          "region": "central-greece-evia",
+          "name": "Καστρί",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.35,
+          "printedAfterM": 0.35
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Alonaki",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.51,
+          "printedAfterM": 0.36
+        },
+        {
+          "region": "crete-crete-chania",
+          "name": "Ελαφονήσι",
+          "move": "avoid_swimming → caution",
+          "printedBeforeM": 0.61,
+          "printedAfterM": 0.43
         },
         {
           "region": "crete-crete-heraklion",
           "name": "Παραλία Κρασά",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.76,
-          "printedAfterM": 0.76
+          "printedBeforeM": 0.65,
+          "printedAfterM": 0.45
         },
         {
           "region": "crete-crete-heraklion",
           "name": "Keratokambos",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.75,
-          "printedAfterM": 0.75
+          "printedBeforeM": 0.6,
+          "printedAfterM": 0.42
         },
         {
           "region": "crete-crete-heraklion",
           "name": "Άγιος Νικήτας",
           "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.76,
-          "printedAfterM": 0.76
-        },
-        {
-          "region": "east-macedonia-and-thrace-thasos",
-          "name": "Όρμος Αγίου Ιωάννου",
-          "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
-        },
-        {
-          "region": "north-aegean-lemnos",
-          "name": "Κόκκινα (βόρειος όρμος)",
-          "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
-        },
-        {
-          "region": "north-aegean-lemnos",
-          "name": "Κόκκινα (νότιος όρμος)",
-          "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
-        },
-        {
-          "region": "north-aegean-lemnos",
-          "name": "Μεγάλο Φαναράκι",
-          "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
-        },
-        {
-          "region": "north-aegean-lesvos",
-          "name": "Ελεύκος",
-          "move": "avoid_swimming → caution",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.65,
+          "printedAfterM": 0.45
         }
       ],
-      "toneCalmer": 138,
+      "toneCalmer": 144,
       "toneStricter": 0,
       "toneMoves": {
-        "red → orange": 136,
+        "red → orange": 142,
         "orange → yellow": 2
       },
       "toneCalmerExamples": [
@@ -258,7 +258,7 @@
           "region": "attica-kythira",
           "name": "Παραλία Παλαιόπολη",
           "move": "red → orange",
-          "printedBeforeM": 1.05,
+          "printedBeforeM": 1.04,
           "printedAfterM": 0.92
         },
         {
@@ -272,8 +272,8 @@
           "region": "attica-kythira",
           "name": "Λεφτό",
           "move": "red → orange",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.15,
+          "printedAfterM": 0.15
         },
         {
           "region": "central-greece-evia",
@@ -314,22 +314,22 @@
           "region": "crete-crete-chania",
           "name": "Μαχαιρίδα",
           "move": "red → orange",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.1,
+          "printedAfterM": 0.1
         },
         {
           "region": "crete-crete-chania",
           "name": "Μένιες (Δίκτυννα)",
           "move": "red → orange",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.2,
+          "printedAfterM": 0.2
         },
         {
           "region": "crete-crete-chania",
           "name": "Τερσανάς",
           "move": "red → orange",
-          "printedBeforeM": 0.8,
-          "printedAfterM": 0.8
+          "printedBeforeM": 0.1,
+          "printedAfterM": 0.1
         },
         {
           "region": "crete-crete-chania",
@@ -342,17 +342,17 @@
       "podiumRegionsChanged": 0,
       "podiumOrderOnly": 0,
       "podiumExamples": [],
-      "printedCalmerMedianM": 0.08,
+      "printedCalmerMedianM": 0.14,
       "printedCalmerMaxM": 0.53,
-      "printedRougherMedianM": 0.29
+      "printedRougherMedianM": 0
     },
     "d065": {
       "label": "×0,65 (ρηχότερη έκπτωση — προς την προσοχή)",
       "value": 0.65,
       "beaches": 2873,
       "printedCalmer": 0,
-      "printedRougher": 578,
-      "shoreMoved": 680,
+      "printedRougher": 655,
+      "shoreMoved": 672,
       "byExposure": {
         "exposed": {
           "beaches": 857,
@@ -360,37 +360,37 @@
         },
         "protected": {
           "beaches": 1575,
-          "printedChanged": 449
+          "printedChanged": 508
         },
         "partial": {
           "beaches": 441,
-          "printedChanged": 129
+          "printedChanged": 147
         }
       },
       "bandMoves": {
-        "ήρεμα → κύμα": 1,
+        "ήρεμα → κύμα": 54,
         "κύμα → φουρτούνα": 95
       },
       "intoCalm": 0,
       "intoCalmPinNotCalm": 0,
       "comfortSofter": 0,
-      "comfortStricter": 28,
+      "comfortStricter": 31,
       "comfortMoves": {
-        "good → caution": 8,
-        "caution → avoid_swimming": 15,
+        "caution → avoid_swimming": 20,
+        "good → caution": 6,
         "excellent → good": 5
       },
       "softerExamples": [],
       "toneCalmer": 0,
-      "toneStricter": 253,
+      "toneStricter": 264,
       "toneMoves": {
-        "orange → red": 179,
+        "orange → red": 188,
         "yellow → red": 6,
-        "blue → yellow": 65,
-        "yellow → orange": 3
+        "blue → yellow": 66,
+        "yellow → orange": 4
       },
       "toneCalmerExamples": [],
-      "podiumRegionsChanged": 4,
+      "podiumRegionsChanged": 3,
       "podiumOrderOnly": 0,
       "podiumExamples": [
         {
@@ -434,25 +434,11 @@
             "Αρμενόπετρα"
           ],
           "orderOnly": false
-        },
-        {
-          "region": "west-greece-ileia-mainland",
-          "before": [
-            "Παραλία Μαραθιάς",
-            "Παραλία Κουρούτα",
-            "Αρκούδι"
-          ],
-          "after": [
-            "Παραλία Μαραθιάς",
-            "Παραλία Κουρούτα",
-            "Παραλία Αγίου Ηλία"
-          ],
-          "orderOnly": false
         }
       ],
       "printedCalmerMedianM": 0,
       "printedCalmerMaxM": null,
-      "printedRougherMedianM": 0.1
+      "printedRougherMedianM": 0.15
     }
   }
 }
