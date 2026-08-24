@@ -1,4 +1,7 @@
 /**
+ * ⚠️ 24/08/2026: η γωνία ΕΦΥΓΕ από την πόρτα των 5 (επιλογή D, utils/offshoreFlatWater) — το «χωρίς γωνία»
+ * εδώ ΔΕΝ είναι πια υπόθεση, είναι η παραγωγή. Το εργαλείο μένει ως ιστορικό της μέτρησης.
+ *
  * ΤΙ ΚΟΣΤΙΖΕΙ ΝΑ ΦΥΓΕΙ Η ΓΩΝΙΑ ΑΠΟ ΤΟ `offshoreFlatWater` — ΕΘΝΙΚΑ, ΠΡΙΝ ΓΡΑΦΤΕΙ ΓΡΑΜΜΗ.
  *
  * Η βίβλος (§Μ6, §Γ «Η ΛΥΓΑΡΙΑ ΔΕΝ ΔΙΟΡΘΩΘΗΚΕ») λέει ότι το `offshoreFlatWater` κρίνει με τη
@@ -145,7 +148,7 @@ const selfCheck = () => {
     // χέρι, ο αυτοέλεγχος θα απέτυχε επειδή το τεστ ήταν λάθος, όχι ο κώδικας.
     sectors: { [windSectorFromDegrees(windFrom)]: { level: 'protected', blockedRayRatio: 1, intensity: 0, fetchKm: 0.1 } },
   };
-  const real = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg: windFrom, beaufort: OFFSHORE_FLAT_BEAUFORT });
+  const real = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg: windFrom, beaufort: OFFSHORE_FLAT_BEAUFORT, swellWaveHeightM: 0 }); // 24/08: βέτο αποθαλασσιάς, άγνωστη = βέτο
   const mirrored = sectorHoldsNoWindWaveWithoutAngle(profile, windFrom);
   if (!mirrored) {
     console.error('ΑΥΤΟΕΛΕΓΧΟΣ: ο αντιγραμμένος πυρήνας κόβει εκεί που ο αληθινός δεν κόβει.');
@@ -248,7 +251,7 @@ const measureRegion = async (region) => {
       if (beaufort !== OFFSHORE_FLAT_BEAUFORT) continue;
       totals.atFiveBeaufort += 1;
 
-      const now = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort });
+      const now = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort, swellWaveHeightM: 0 }); // ΣΗΜ. 24/08: το εργαλείο δεν έχει θάλασσα ανά παραλία — μετράει μόνο τη γεωμετρία
       if (now) totals.litNow += 1;
 
       const after = sectorHoldsNoWindWaveWithoutAngle(profile, windDirectionDeg);

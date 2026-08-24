@@ -239,22 +239,27 @@ export const offshoreWindNoteLabels: Record<LanguageCode, Record<OffshoreWindNot
   en: {
     'calmer-than-the-number': "The wind blows off the land — the water in front of you is calmer than the figure suggests.",
     'calmer-but-pulls-out': "The wind blows off the land: the water is calmer than the figure suggests — but on a lilo or dinghy it will carry you out.",
+    'wind-feels-less': "The wind blows off the land — on the beach it will feel lighter than the figure suggests.",
   },
   gr: {
     'calmer-than-the-number': "Ο αέρας έρχεται από τη στεριά — μπροστά σου το νερό είναι πιο ήρεμο απ’ ό,τι λέει ο αριθμός.",
     'calmer-but-pulls-out': "Ο αέρας έρχεται από τη στεριά: το νερό είναι πιο ήρεμο απ’ ό,τι λέει ο αριθμός — αλλά με στρώμα ή φουσκωτό σε βγάζει ανοιχτά.",
+    'wind-feels-less': "Ο αέρας έρχεται από τη στεριά — στην παραλία θα τον νιώσεις πιο λίγο απ’ ό,τι λέει το νούμερο.",
   },
   fr: {
     'calmer-than-the-number': "Le vent souffle de la terre — l’eau devant vous est plus calme que ne l’indique le chiffre.",
     'calmer-but-pulls-out': "Le vent souffle de la terre : l’eau est plus calme que ne l’indique le chiffre — mais sur un matelas ou un canot, il vous emporte au large.",
+    'wind-feels-less': "Le vent souffle de la terre — sur la plage, il paraîtra plus faible que ne l’indique le chiffre.",
   },
   de: {
     'calmer-than-the-number': "Der Wind kommt vom Land — das Wasser vor dir ist ruhiger, als die Zahl vermuten lässt.",
     'calmer-but-pulls-out': "Der Wind kommt vom Land: Das Wasser ist ruhiger, als die Zahl vermuten lässt — aber auf Luftmatratze oder Schlauchboot treibt er dich aufs offene Meer.",
+    'wind-feels-less': "Der Wind kommt vom Land — am Strand wirst du ihn schwächer spüren, als die Zahl vermuten lässt.",
   },
   it: {
     'calmer-than-the-number': "Il vento soffia da terra — l’acqua davanti a te è più calma di quanto dica il numero.",
     'calmer-but-pulls-out': "Il vento soffia da terra: l’acqua è più calma di quanto dica il numero — ma su un materassino o un gommone ti porta al largo.",
+    'wind-feels-less': "Il vento soffia da terra — in spiaggia lo sentirai meno di quanto dica il numero.",
   },
 };
 

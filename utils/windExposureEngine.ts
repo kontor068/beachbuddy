@@ -1226,6 +1226,8 @@ export const assessBeachWindExposure = (input: BeachWindExposureInput): WindExpo
     profile: input.geospatialProfile,
     windDirectionDeg: input.windDirectionDeg,
     beaufort: baseBeaufort,
+    // Βέτο αποθαλασσιάς (24/08/2026, επιλογή D) — άγνωστη = βέτο, όπως στην πόρτα των 4.
+    swellWaveHeightM: input.swellHeightMeters,
   });
   const simpleWindSuitability = buildSimpleWindSuitability({
     exposureLevel,

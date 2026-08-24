@@ -226,7 +226,7 @@ const measureRegion = async (region) => {
       const isEnclosedCove = Boolean(score.enclosedCove);
 
       // Ίδια ορίσματα με services/recommendationService.ts — καμία δεύτερη συνταγή.
-      const offshoreFlatWater = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort });
+      const offshoreFlatWater = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort, swellWaveHeightM: score.marine?.swellWaveHeightM });
       const glassWaterAtFour = holdsGlassWaterAtFourBeaufort({
         profile, windDirectionDeg, beaufort, seaStateM, exposureLevel,
         seaArrivalExposureLevel, curatedWindOnlyProtection,

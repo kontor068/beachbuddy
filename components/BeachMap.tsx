@@ -2616,6 +2616,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
     profile: item.geospatialExposure,
     windDirectionDeg: beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg,
     beaufort: beachBeaufort(item),
+    // Same swell veto the 4 Bft door and hasDownwindSeaSample take (24/08/2026, option D).
+    swellWaveHeightM: item.marine?.swellWaveHeightM,
   });
 
   /**

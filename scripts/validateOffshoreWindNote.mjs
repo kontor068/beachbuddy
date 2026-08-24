@@ -42,7 +42,7 @@ const {
   resolveOffshoreWindNote, windArrivedOverLand,
   WIND_SHADOW_LAND_KM, WIND_SHADOW_SLOTS, OFFSHORE_NOTE_WINDOW_DEG,
   OFFSHORE_NOTE_MIN_BEAUFORT, OFFSHORE_NOTE_MIN_WAVE_M, OFFSHORE_NOTE_MAX_WAVE_M,
-  OFFSHORE_NOTE_WARNING_MIN_BEAUFORT,
+  OFFSHORE_NOTE_WARNING_MIN_BEAUFORT, WIND_NOTE_MIN_BEAUFORT, WIND_NOTE_MAX_BEAUFORT,
 } = note;
 const { offshoreWindNoteLabels } = require(path.join(root, 'utils/conditionToneLabels.ts'));
 
@@ -102,6 +102,15 @@ if (Number.isFinite(amberM) && amberM !== OFFSHORE_NOTE_MAX_WAVE_M) {
   fail(`Το πάνω όριο (${OFFSHORE_NOTE_MAX_WAVE_M}) ξέφυγε από το δανεικό SEA_STATE_AMBER_M (${amberM}).`);
 }
 
+/* ── 2β. ΤΟ ΤΑΒΑΝΙ ΤΗΣ ΜΟΡΦΗΣ ΤΟΥ ΑΝΕΜΟΥ ΕΙΝΑΙ ΤΟ ΤΑΒΑΝΙ ΤΗΣ «ΑΠΑΝΕΜΗΣ» ────────────────────── */
+// Δύο υποσχέσεις ανακούφισης στην ίδια οθόνη πρέπει να σβήνουν στο ίδιο Μποφόρ — αλλιώς η μία
+// θα λέει «θα τον νιώσεις πιο λίγο» ενώ η άλλη έχει ήδη γυρίσει σε «από πίσω».
+const heroSource = readFileSync(path.join(root, 'components/BeachAnswerHero.tsx'), 'utf8');
+const shelterMax = Number(/SHELTER_WORD_MAX_BEAUFORT\s*=\s*(\d+)/.exec(heroSource)?.[1]);
+if (!Number.isFinite(shelterMax)) fail('Δεν βρέθηκε SHELTER_WORD_MAX_BEAUFORT στο BeachAnswerHero — η πύλη δεν μπορεί να ελέγξει το ταβάνι.');
+else if (shelterMax !== WIND_NOTE_MAX_BEAUFORT) fail(`Το ταβάνι της μορφής του ανέμου (${WIND_NOTE_MAX_BEAUFORT}) ξέφυγε από το SHELTER_WORD_MAX_BEAUFORT της οθόνης (${shelterMax}).`);
+if (WIND_NOTE_MIN_BEAUFORT !== OFFSHORE_NOTE_WARNING_MIN_BEAUFORT) fail(`Το κάτω όριο της μορφής του ανέμου (${WIND_NOTE_MIN_BEAUFORT}) δεν είναι το ίδιο 4 με το OFFSHORE_NOTE_WARNING_MIN_BEAUFORT (${OFFSHORE_NOTE_WARNING_MIN_BEAUFORT}).`);
+
 /* ── 3. ΣΥΜΠΕΡΙΦΟΡΑ: ΠΟΤΕ ΔΕΝ ΚΑΘΗΣΥΧΑΖΕΙ ΕΚΕΙ ΠΟΥ ΔΕΝ ΠΡΕΠΕΙ ──────────────────────────────── */
 const base = {
   profile: { confidence: 'high', windShadow: '1'.repeat(WIND_SHADOW_SLOTS) },
@@ -115,7 +124,13 @@ const must = (label, input, expected) => {
   if (got !== expected) fail(`${label}: περίμενα ${expected === null ? 'σιωπή' : expected}, πήρα ${got === null ? 'σιωπή' : got}.`);
 };
 must('«μην κολυμπήσεις» πρέπει να τη σφραγίζει', { swimVerdictAvoid: true }, null);
-must('κύμα κάτω από το παράθυρο', { displayWaveM: OFFSHORE_NOTE_MIN_WAVE_M - 0.01 }, null);
+must('κύμα κάτω από το παράθυρο στα 4 Μποφόρ → η μορφή του ΑΝΕΜΟΥ', { displayWaveM: OFFSHORE_NOTE_MIN_WAVE_M - 0.01 }, 'wind-feels-less');
+must('μικρό κύμα στα 5 Μποφόρ → ακόμα η μορφή του ανέμου', { displayWaveM: 0.1, beaufort: WIND_NOTE_MAX_BEAUFORT }, 'wind-feels-less');
+must('μικρό κύμα στα 6 Μποφόρ → ΣΙΩΠΗ (ταβάνι Φυριπλάκας)', { displayWaveM: 0.1, beaufort: WIND_NOTE_MAX_BEAUFORT + 1 }, null);
+must('μικρό κύμα στα 3 Μποφόρ → σιωπή (δεν ξενίζει κανέναν)', { displayWaveM: 0.1, beaufort: WIND_NOTE_MIN_BEAUFORT - 1 }, null);
+must('μικρό κύμα ΚΑΙ «μην κολυμπήσεις» → σιωπή', { displayWaveM: 0.1, swimVerdictAvoid: true }, null);
+must('μικρό κύμα με ανοιχτό ορίζοντα → σιωπή', { displayWaveM: 0.1, profile: { confidence: 'high', windShadow: '0'.repeat(WIND_SHADOW_SLOTS) } }, null);
+must('μικρό κύμα με χαμηλή εμπιστοσύνη → σιωπή', { displayWaveM: 0.1, profile: { confidence: 'medium', windShadow: '1'.repeat(WIND_SHADOW_SLOTS) } }, null);
 must('κύμα πάνω από το παράθυρο', { displayWaveM: OFFSHORE_NOTE_MAX_WAVE_M + 0.01 }, null);
 must('κάτω από το ελάχιστο μποφόρ', { beaufort: OFFSHORE_NOTE_MIN_BEAUFORT - 1 }, null);
 must('χωρίς windShadow', { profile: { confidence: 'high' } }, null);

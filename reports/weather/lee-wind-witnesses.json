@@ -1,0 +1,54 @@
+{
+  "note": "Ανάγλυφο ανάντη στις δύο παραλίες-μάρτυρες (24/08/2026). ΔΕΝ είναι δείγμα — δες scripts/measureLeeWindBias.mjs.",
+  "dem": "opentopodata/srtm30m",
+  "witnesses": [
+    {
+      "id": 730,
+      "name": "Βάι",
+      "windFromDeg": 297,
+      "shown": "5 Μπφ",
+      "selfM": 0,
+      "reliefM": {
+        "1": 27,
+        "2": 47,
+        "4": 104
+      },
+      "profileAlongWind": [
+        1,
+        16,
+        14,
+        30,
+        42,
+        40,
+        20,
+        10,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2033,
+      "name": "Λιβάδια Παροικιάς",
+      "windFromDeg": 7,
+      "shown": "4-5 Μπφ",
+      "selfM": 3,
+      "reliefM": {
+        "1": 68,
+        "2": 87,
+        "4": 105
+      },
+      "profileAlongWind": [
+        23,
+        115,
+        139,
+        82,
+        107,
+        93,
+        3,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

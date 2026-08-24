@@ -219,7 +219,7 @@ const measureRegion = async (region) => {
       beaufort,
       isEnclosedCove: Boolean(score.enclosedCove),
       seaStateM: seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS),
-      offshoreFlatWater: holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort }),
+      offshoreFlatWater: holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort, swellWaveHeightM: score.marine?.swellWaveHeightM }),
       downwindSeaSample: hasDownwindSeaSample({
         profile, windDirectionDeg, swellWaveHeightM: score.marine?.swellWaveHeightM,
       }),

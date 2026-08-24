@@ -177,7 +177,7 @@ const measureRegion = async (region) => {
       const windDirectionDeg = dayForecast.wind?.deg;
       const beaufort = getBeaufortLevel(score.windSpeedKmph ?? (dayForecast.wind?.speed ?? 0) * 3.6);
       const seaStateM = seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS);
-      const offshoreFlatWater = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort });
+      const offshoreFlatWater = holdsFlatWaterUnderOffshoreWind({ profile, windDirectionDeg, beaufort, swellWaveHeightM: score.marine?.swellWaveHeightM });
 
       // ΟΛΟΚΛΗΡΗ η ανάγνωση του προϊόντος μπαίνει στη γραμμή, ώστε η σύνοψη παρακάτω να ρωτάει
       // ακριβώς ό,τι θα ρωτήσει ο χάρτης — καμία ενδιάμεση μετάφραση, τίποτα να ξεσυγχρονιστεί.

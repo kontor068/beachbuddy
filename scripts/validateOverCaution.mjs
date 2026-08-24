@@ -163,7 +163,7 @@ const pinTone = (entry, beaufort, sea, sabotage = {}) => {
     orientation: null,
   };
   const level = getVisibleMapExposureLevel(item, beaufort, entry.dir);
-  const off = holdsFlatWaterUnderOffshoreWind({ profile: entry.profile, windDirectionDeg: entry.dir, beaufort });
+  const off = holdsFlatWaterUnderOffshoreWind({ profile: entry.profile, windDirectionDeg: entry.dir, beaufort, swellWaveHeightM: sea.swellM });
   const dw = sabotage.noRelief
     ? false
     : hasDownwindSeaSample({ profile: entry.profile, windDirectionDeg: entry.dir, swellWaveHeightM: sea.swellM });

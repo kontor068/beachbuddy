@@ -54,10 +54,53 @@ const BEAUFORT_5_REFERENCE_WIND_KMH = 38;
  * geometric one — the geometric count answers a question no user ever asks.
  */
 
+/**
+ * ⚠️ 24/08/2026 — Η ΠΟΡΤΑ ΤΩΝ 5 ΜΠΟΦΟΡ ΠΗΡΕ ΤΑ ΦΙΛΤΡΑ ΤΗΣ ΠΟΡΤΑΣ ΤΩΝ 4 (απόφαση Μίλτου, επιλογή «D»).
+ *
+ * Ό,τι λέει το μπλοκ πιο πάνω για τη ΓΩΝΙΑ («more than 143° off head-on») και για το ταβάνι
+ * έντασης 15 είναι πλέον η ιστορία τού πώς φτάσαμε εδώ. Η αφορμή: Λιβάδια Παροικιάς #2033, μέρα
+ * μελτεμιού — βοριάς 5 Μποφ., τομέας N protected, μηδέν ανάπτυγμα, ένταση 11, κάμερα με νερό
+ * ήσυχο, και η πινέζα ΠΟΡΤΟΚΑΛΙ επειδή onshore −0,70 έναντι −0,80: το `facingDeg` (230°) είναι
+ * η όψη του στομίου, όχι η μεριά απ' όπου ήρθε ο αέρας. Ίδια ένσταση που έβγαλε τη γωνία από
+ * την πόρτα των 4 (Μελιδόνι, 18/08). Την ίδια μέρα μπήκε η γραμμή «θα τον νιώσεις πιο λίγο»
+ * (utils/offshoreWindNote 'wind-feels-less') και ο Μίλτος ρώτησε «δεν πρέπει να επηρεάζεται και
+ * το χρώμα;». Στατικά, όπου άναβε η γραμμή, η πόρτα κοβόταν στις μισές (4.047/8.496): γωνία
+ * 2.051, ένταση 1.661.
+ *
+ * ΜΕΤΡΗΘΗΚΕ ΕΘΝΙΚΑ ΠΡΙΝ ΑΛΛΑΞΕΙ (scripts/measureOffshoreLiftAtFiveBeaufort.mjs, 110 περιοχές × 3
+ * μέρες = 8.619 παραλιο-ημέρες, ζωντανός άνεμος + θάλασσα, reports/quality/offshore-lift-5bft.json).
+ * Το «μετά» είναι ο πραγματικός μηχανισμός (resolveConditionTone με offshoreFlatWater=true) με
+ * ΟΛΑ τα ταβάνια να τρέχουν — πορτοκαλί → κίτρινο, ποτέ μπλε:
+ *
+ *   ως έχει (γωνία + ένταση <15)                     0 νέες (198 ήδη κίτρινες)
+ *   χωρίς γωνία                                    105 παραλιο-ημέρες · 1,22% ·  89 παραλίες
+ *   χωρίς γωνία + ένταση <25                       172 · 2,00% · 141
+ *   + ΒΕΤΟ ΑΠΟΘΑΛΑΣΣΙΑΣ <0,5 μ. (ΜΠΗΚΕ)             109 · 1,26% ·  86   ← ανοιχτά ≥1 μ.: 3 (από 24)
+ *
+ * Γιατί το βέτο: Κύθηρα ημ.2, δυτικός 277° με αποθαλασσιά 0,8-1,16 μ. από τα δυτικά που τυλίγει
+ * σε ανατολικές ακτές (Διακόφτι όψη 10°, onshore −0,05) — χωρίς βέτο βάφονται κίτρινες. Ακριβώς
+ * το ψεύτικο «ήρεμο» για το οποίο η πόρτα των 4 πήρε το ίδιο βέτο. Άγνωστη αποθαλασσιά = βέτο,
+ * όπως εκεί: κανόνας που μόνο ηρεμεί δεν ανάβει σε έλλειψη στοιχείων.
+ *
+ * Γιατί ΟΧΙ η ρήτρα «ήσυχη ακτή <0,4» της πόρτας των 4: εκεί δικαιολογούσε το ΜΠΛΕ («Ιδανική»).
+ * Εδώ ο στόχος είναι κίτρινο («Μέτρια»), ασθενέστερος ισχυρισμός· και μετρήθηκε ότι με ήσυχη
+ * ανοιχτή θάλασσα <0,4 δεν άλλαζε ΚΑΜΙΑ πινέζα — θα μηδένιζε τη διόρθωση. Το νερό στην ακτή το
+ * κρίνει ήδη το ταβάνι που τρέχει μετά (capToneBySeaState).
+ *
+ * Οι δύο πόρτες είναι πλέον ΜΙΑ φυσική (ίδιο `sectorHoldsNoWindWave`, ίδια ένταση, ίδιο βέτο) και
+ * διαφέρουν μόνο στο πόσο ψηλά επιτρέπεται να φτάσει το χρώμα ανά σκαλί. Το
+ * `OFFSHORE_FLAT_MAX_ONSHORE` ΔΕΝ διαβάζεται πια από καμία πόρτα — μένει εξαγόμενο γιατί το
+ * utils/shoreWave (ράμπα ακτής) και οι πύλες του το κρατούν ως δικό τους κατώφλι.
+ */
+
 /** Fully blocked rays. Mirrors utils/mapExposure.GEOMETRY_PROTECTION_BLOCKED_RATIO, stricter. */
 export const OFFSHORE_FLAT_MIN_BLOCKED_RATIO = 1;
-/** Sector intensity ceiling — less than half the 33 the green-pin test allows. */
-export const OFFSHORE_FLAT_MAX_INTENSITY = 15;
+/**
+ * Sector intensity ceiling — ΚΟΙΝΟ και για τις δύο πόρτες από 24/08/2026 (ήταν 15 στα 5 Μποφ.,
+ * «less than half the 33 the green-pin test allows» — comfort margin, όχι μετρημένη γραμμή).
+ * Το 25 είναι ακόμα άνετα μέσα στην «Προστατευμένη» (<33)· δες GLASS_AT_FOUR_MAX_INTENSITY.
+ */
+export const OFFSHORE_FLAT_MAX_INTENSITY = 25;
 /**
  * Short enough that our OWN wave model calls it nothing — not "exactly zero".
  *
@@ -91,9 +134,12 @@ export const OFFSHORE_FLAT_MAX_FETCH_KM = 0.5;
  */
 export const OFFSHORE_FLAT_MAX_MODELLED_WAVE_M = 0.2;
 /**
- * cos(windFrom − facing) ≤ this, i.e. more than 143° off head-on. The same `onshoreComponent`
- * the cove guard and the wave model read, so three parts of the app cannot disagree about which
- * way the wind meets a shore.
+ * cos(windFrom − facing) ≤ this, i.e. more than 143° off head-on.
+ *
+ * ⚠️ ΑΠΟ 24/08/2026 ΚΑΜΙΑ ΠΟΡΤΑ ΑΥΤΟΥ ΤΟΥ ΑΡΧΕΙΟΥ ΔΕΝ ΤΟ ΔΙΑΒΑΖΕΙ (δες το μπλοκ «επιλογή D»).
+ * Μένει εξαγόμενο επειδή το utils/shoreWave (SHORE_RAMP_FULL_ONSHORE, πύλη ανέμου της ράμπας)
+ * και οι πύλες/εργαλεία του (validateDepartingSeaEvidence, measureShoreWaveRamp) το κρατούν ως
+ * δικό τους κατώφλι — εκεί η γωνία ΕΙΝΑΙ το σωστό ερώτημα (πού πάει το νερό), εδώ δεν ήταν.
  */
 export const OFFSHORE_FLAT_MAX_ONSHORE = -0.8;
 /** Below this a protected shore is already blue or yellow; above it, avoid_swimming. */
@@ -104,6 +150,11 @@ export interface OffshoreFlatWaterInput {
   /** Degrees the wind comes FROM, at THIS beach — not the region's. */
   windDirectionDeg?: number;
   beaufort?: number;
+  /**
+   * Live swell height at this beach's marine sample point, metres (24/08/2026). ≥ SWELL_MIN_HEIGHT_M
+   * vetoes; UNKNOWN vetoes too — the same clause `holdsGlassWaterAtFourBeaufort` carries.
+   */
+  swellWaveHeightM?: number;
 }
 
 /**
@@ -120,7 +171,7 @@ const sectorHoldsNoWindWave = (
    * intensity ceiling, and what it pays for that. Defaults reproduce the 5 Bft rule exactly, so
    * a caller that passes nothing cannot accidentally widen it.
    */
-  { maxIntensity = OFFSHORE_FLAT_MAX_INTENSITY, requireAngle = true } = {}
+  { maxIntensity = OFFSHORE_FLAT_MAX_INTENSITY, requireAngle = false } = {}
 ): boolean => {
   if (!profile) return false;
   if (typeof windDirectionDeg !== 'number' || !Number.isFinite(windDirectionDeg)) return false;
@@ -155,8 +206,15 @@ export const holdsFlatWaterUnderOffshoreWind = ({
   profile,
   windDirectionDeg,
   beaufort,
-}: OffshoreFlatWaterInput): boolean =>
-  beaufort === OFFSHORE_FLAT_BEAUFORT && sectorHoldsNoWindWave(profile, windDirectionDeg);
+  swellWaveHeightM,
+}: OffshoreFlatWaterInput): boolean => {
+  if (beaufort !== OFFSHORE_FLAT_BEAUFORT) return false;
+  // ΒΕΤΟ ΑΠΟΘΑΛΑΣΣΙΑΣ (24/08/2026, επιλογή D): μια θάλασσα που τυλίγει σε υπήνεμη ακτή δεν
+  // γίνεται «ήσυχη» επειδή ο αέρας φυσάει από τη στεριά. Άγνωστη = βέτο.
+  if (typeof swellWaveHeightM !== 'number' || !Number.isFinite(swellWaveHeightM)) return false;
+  if (swellWaveHeightM >= SWELL_MIN_HEIGHT_M) return false;
+  return sectorHoldsNoWindWave(profile, windDirectionDeg);
+};
 
 /**
  * THE SAME PHYSICS ONE BEAUFORT LOWER — AND THE ONE PLACE THIS PROJECT PAINTS «ΙΔΑΝΙΚΗ» OVER
@@ -224,11 +282,11 @@ export const holdsFlatWaterUnderOffshoreWind = ({
  */
 export const GLASS_AT_FOUR_BEAUFORT = 4;
 /**
- * Sector intensity ceiling for the 4 Bft door. Wider than the 5 Bft `OFFSHORE_FLAT_MAX_INTENSITY`
- * because that constant excluded Μελιδόνι at 15,1 — and still well inside the «Προστατευμένη»
- * band, which runs to 33 (utils/geospatialExposureModel).
+ * Sector intensity ceiling for the 4 Bft door. Was «wider than the 5 Bft OFFSHORE_FLAT_MAX_INTENSITY
+ * (15)» because 15 excluded Μελιδόνι at 15,1; από 24/08/2026 οι δύο πόρτες μοιράζονται το ίδιο 25
+ * (επιλογή D) — κρατιέται ως όνομα για τις πύλες/εργαλεία που το διαβάζουν, ΔΕΝ είναι δεύτερη σταθερά.
  */
-export const GLASS_AT_FOUR_MAX_INTENSITY = 25;
+export const GLASS_AT_FOUR_MAX_INTENSITY = OFFSHORE_FLAT_MAX_INTENSITY;
 /**
  * The sea must be genuinely quiet AT THE SHORE — `utils/waveCharacter.shoreSeaStateM` of the
  * steepness-adjusted severity, which is the EXACT number the colour ceiling judges by.

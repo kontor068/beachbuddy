@@ -720,6 +720,9 @@ const assessHourlyWave = (
     windSpeedKmh,
     beaufort,
     waveHeightMeters: item.marine?.waveHeightM,
+    // Χωρίς αυτό η ωριαία πόρτα των 5 Μποφ. θα έβλεπε «άγνωστη αποθαλασσιά» = βέτο, ενώ η
+    // ημερήσια (πιο κάτω) την περνάει — και κάρτα/χάρτης θα διαφωνούσαν για την ίδια ώρα.
+    swellHeightMeters: item.marine?.swellWaveHeightM,
     geospatialProfile,
   });
   const exposureLevel = windAssessment.exposureLevel;

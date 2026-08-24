@@ -1,0 +1,329 @@
+{
+  "question": "Υπερεκτιμά το μοντέλο τον άνεμο όταν υπάρχει ανάγλυφο ανάντη του σημείου;",
+  "method": "METAR 30 σταθμών· γωνία ΜΕΤΡΗΜΕΝΗ· ανάγλυφο = max DEM ανάντη − υψόμετρο σταθμού, μέσος όρος ακτίνων ±window· αφαίρεση μέσου κυψέλης (σταθμός × Μποφόρ οργάνου).",
+  "windows": [
+    {
+      "key": "A",
+      "range": [
+        "2026-06-20",
+        "2026-07-05"
+      ]
+    },
+    {
+      "key": "B",
+      "range": [
+        "2026-08-04",
+        "2026-08-18"
+      ]
+    },
+    {
+      "key": "C",
+      "range": [
+        "2026-07-10",
+        "2026-07-25"
+      ]
+    },
+    {
+      "key": "D",
+      "range": [
+        "2026-05-20",
+        "2026-06-05"
+      ]
+    }
+  ],
+  "settings": {
+    "demSource": "open-meteo",
+    "radiusKm": 2,
+    "windowDeg": 45,
+    "minObsKmhForDirection": 9.3,
+    "minCell": 20,
+    "sampleStepKm": 0.4,
+    "sampleMaxKm": 4
+  },
+  "counts": {
+    "pairs": 32263,
+    "withDirection": 20037,
+    "inCells": 19851
+  },
+  "reliefBands": [
+    {
+      "from": null,
+      "to": 25,
+      "hours": 14176,
+      "rawBias": -1.666,
+      "withinCellBias": 0.022
+    },
+    {
+      "from": 25,
+      "to": 75,
+      "hours": 3990,
+      "rawBias": -2.929,
+      "withinCellBias": -0.241
+    },
+    {
+      "from": 75,
+      "to": 150,
+      "hours": 1614,
+      "rawBias": 0.854,
+      "withinCellBias": 0.489
+    },
+    {
+      "from": 150,
+      "to": 300,
+      "hours": 71,
+      "rawBias": -1.375,
+      "withinCellBias": -2.062
+    },
+    {
+      "from": 300,
+      "to": 600,
+      "hours": 0,
+      "rawBias": null,
+      "withinCellBias": null
+    },
+    {
+      "from": 600,
+      "to": null,
+      "hours": 0,
+      "rawBias": null,
+      "withinCellBias": null
+    }
+  ],
+  "stationContrasts": [
+    {
+      "icao": "LGIR",
+      "name": "Ηράκλειο",
+      "hours": 1100,
+      "reliefSpreadM": 9,
+      "contrastKmh": -3.771
+    },
+    {
+      "icao": "LGSA",
+      "name": "Χανιά",
+      "hours": 614,
+      "reliefSpreadM": 34,
+      "contrastKmh": -1.655
+    },
+    {
+      "icao": "LGRP",
+      "name": "Ρόδος",
+      "hours": 1246,
+      "reliefSpreadM": 23,
+      "contrastKmh": 0.837
+    },
+    {
+      "icao": "LGKO",
+      "name": "Κως",
+      "hours": 1239,
+      "reliefSpreadM": 12,
+      "contrastKmh": -3.482
+    },
+    {
+      "icao": "LGMK",
+      "name": "Μύκονος",
+      "hours": 1263,
+      "reliefSpreadM": 9,
+      "contrastKmh": -0.213
+    },
+    {
+      "icao": "LGSR",
+      "name": "Σαντορίνη",
+      "hours": 1107,
+      "reliefSpreadM": 52,
+      "contrastKmh": 0.275
+    },
+    {
+      "icao": "LGNX",
+      "name": "Νάξος",
+      "hours": 833,
+      "reliefSpreadM": 1,
+      "contrastKmh": -4.494
+    },
+    {
+      "icao": "LGPA",
+      "name": "Πάρος",
+      "hours": 1195,
+      "reliefSpreadM": 29,
+      "contrastKmh": 0.743
+    },
+    {
+      "icao": "LGSK",
+      "name": "Σκιάθος",
+      "hours": 494,
+      "reliefSpreadM": 55,
+      "contrastKmh": 4.117
+    },
+    {
+      "icao": "LGKR",
+      "name": "Κέρκυρα",
+      "hours": 390,
+      "reliefSpreadM": 19,
+      "contrastKmh": -1.097
+    },
+    {
+      "icao": "LGZA",
+      "name": "Ζάκυνθος",
+      "hours": 431,
+      "reliefSpreadM": 5,
+      "contrastKmh": -0.636
+    },
+    {
+      "icao": "LGKF",
+      "name": "Κεφαλονιά",
+      "hours": 376,
+      "reliefSpreadM": 48,
+      "contrastKmh": -4.041
+    },
+    {
+      "icao": "LGPZ",
+      "name": "Άκτιο",
+      "hours": 658,
+      "reliefSpreadM": 1,
+      "contrastKmh": -2.509
+    },
+    {
+      "icao": "LGLM",
+      "name": "Λήμνος",
+      "hours": 838,
+      "reliefSpreadM": 7,
+      "contrastKmh": -0.069
+    },
+    {
+      "icao": "LGMT",
+      "name": "Μυτιλήνη",
+      "hours": 982,
+      "reliefSpreadM": 76,
+      "contrastKmh": -1.418
+    },
+    {
+      "icao": "LGSM",
+      "name": "Σάμος",
+      "hours": 1050,
+      "reliefSpreadM": 46,
+      "contrastKmh": -2.441
+    },
+    {
+      "icao": "LGHI",
+      "name": "Χίος",
+      "hours": 834,
+      "reliefSpreadM": 15,
+      "contrastKmh": 2.56
+    },
+    {
+      "icao": "LGKL",
+      "name": "Καλαμάτα",
+      "hours": 588,
+      "reliefSpreadM": 6,
+      "contrastKmh": -2.076
+    },
+    {
+      "icao": "LGAL",
+      "name": "Αλεξανδρούπολη",
+      "hours": 817,
+      "reliefSpreadM": 18,
+      "contrastKmh": 2.572
+    },
+    {
+      "icao": "LGKV",
+      "name": "Καβάλα",
+      "hours": 546,
+      "reliefSpreadM": 2,
+      "contrastKmh": -1.216
+    },
+    {
+      "icao": "LGTS",
+      "name": "Θεσσαλονίκη",
+      "hours": 794,
+      "reliefSpreadM": 10,
+      "contrastKmh": -0.835
+    },
+    {
+      "icao": "LGKC",
+      "name": "Κύθηρα",
+      "hours": 345,
+      "reliefSpreadM": 17,
+      "contrastKmh": -5.699
+    },
+    {
+      "icao": "LGKP",
+      "name": "Κάρπαθος",
+      "hours": 1098,
+      "reliefSpreadM": 7,
+      "contrastKmh": 2.989
+    },
+    {
+      "icao": "LGBL",
+      "name": "Ν. Αγχίαλος",
+      "hours": 644,
+      "reliefSpreadM": 12,
+      "contrastKmh": 0.453
+    },
+    {
+      "icao": "LGRX",
+      "name": "Άραξος",
+      "hours": 369,
+      "reliefSpreadM": 2,
+      "contrastKmh": -5.031
+    }
+  ],
+  "stationsWithRealReliefSpread": {
+    "withSpread50m": 3,
+    "total": 25,
+    "missingStations": [
+      "Σητεία (LGST)",
+      "Μήλος (LGML)",
+      "Λέρος (LGLE)",
+      "Ικαρία (LGIK)",
+      "Σκύρος (LGSY)"
+    ]
+  },
+  "perWindowSlopes": [
+    {
+      "radiusKm": 0.5,
+      "perWindow": {
+        "A": 2.46,
+        "B": -10.802,
+        "C": 8.866,
+        "D": 8.844
+      },
+      "all": 5.22
+    },
+    {
+      "radiusKm": 1,
+      "perWindow": {
+        "A": -1.03,
+        "B": -3.552,
+        "C": -0.754,
+        "D": 1.999
+      },
+      "all": -0.387
+    },
+    {
+      "radiusKm": 2,
+      "perWindow": {
+        "A": 0.085,
+        "B": -2.137,
+        "C": -0.39,
+        "D": 0.975
+      },
+      "all": 0.017
+    },
+    {
+      "radiusKm": 4,
+      "perWindow": {
+        "A": 0.289,
+        "B": -0.491,
+        "C": 0.4,
+        "D": 0.911
+      },
+      "all": 0.454
+    }
+  ],
+  "verdict": "ΔΕΝ ΜΠΑΙΝΕΙ ΔΙΟΡΘΩΣΗ: η κλίση γυρίζει πρόσημο μεταξύ παραθύρων σε ΚΑΘΕ ακτίνα — θόρυβος, όχι φυσική. Και ο κριτής δεν έχει δύναμη: μόνο 3/25 σταθμοί έχουν εύρος ανάγλυφου ≥50 μ.",
+  "limits": [
+    "Ο κριτής είναι αεροδρόμιο, όχι παραλία: τα αεροδρόμια χτίζονται σε επίπεδο έδαφος, οπότε το εύρος ανάγλυφου ανάντη είναι μικρότερο απ’ ό,τι σε μια παραλία κάτω από βουνό.",
+    "Μάιος-Αύγουστος μόνο· χειμώνας αδοκίμαστος.",
+    "Η γωνία METAR είναι στρογγυλεμένη στις 10° και σε αδύναμο άνεμο ασαφής — γι’ αυτό το κατώφλι έντασης.",
+    "Πηγή DEM: open-meteo. Κανένα DEM δεν βλέπει δέντρα, κτίρια ή λεπτή τραχύτητα — μόνο έδαφος."
+  ]
+}

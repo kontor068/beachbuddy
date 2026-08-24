@@ -2,41 +2,40 @@
  * ⚠️ 24/08/2026: η γωνία ΕΦΥΓΕ από την πόρτα των 5 (επιλογή D, utils/offshoreFlatWater) — το «χωρίς γωνία»
  * εδώ ΔΕΝ είναι πια υπόθεση, είναι η παραγωγή. Το εργαλείο μένει ως ιστορικό της μέτρησης.
  *
- * ΤΙ ΚΟΣΤΙΖΕΙ ΝΑ ΑΝΟΙΞΕΙ Η ΕΞΑΙΡΕΣΗ «ΑΕΡΑΣ ΑΠΟ ΤΗ ΣΤΕΡΙΑ» ΚΑΙ ΣΤΑ 4 ΜΠΟΦΟΡ — ΕΘΝΙΚΑ.
+ * ΤΙ ΚΟΣΤΙΖΕΙ ΝΑ ΠΑΡΕΙ Η ΠΟΡΤΑ ΤΩΝ 5 ΜΠΟΦΟΡ ΤΑ ΦΙΛΤΡΑ ΤΗΣ ΠΟΡΤΑΣ ΤΩΝ 4 — ΕΘΝΙΚΑ, ΜΕ ΖΩΝΤΑΝΗ ΘΑΛΑΣΣΑ.
  *
- * ΑΦΟΡΜΗ. Μελιδόνι Κυθήρων, 18/08/2026: δυτικός 4 Μποφ., τομέας W προστατευμένος με ΜΗΔΕΝ
- * ανάπτυγμα, θάλασσα λάδι στα μάτια του επισκέπτη — και κίτρινη πινέζα. Το κίτρινο δεν βγαίνει
- * από τη θάλασσα· βγαίνει από τη σκέτη γραμμή ταχύτητας utils/suitabilityTone.ts:213
- * («από 4 Μποφ. ό,τι δεν είναι exposed → yellow»), που δεν ρωτάει ποτέ αν ο άνεμος έχει πού να
- * σηκώσει κύμα εκεί. Η εξαίρεση που απαντά ακριβώς σε αυτό (utils/offshoreFlatWater) υπάρχει,
- * αλλά ανοίγει ΜΟΝΟ στα 5 Μποφ.
+ * ΑΦΟΡΜΗ (24/08/2026). Λιβάδια Παροικιάς #2033, μέρα μελτεμιού: βοριάς 5 Μποφ., τομέας N
+ * `protected` με ΜΗΔΕΝ ανάπτυγμα, ένταση 11, κάμερα με νερό ήσυχο — και η πινέζα πορτοκαλί, ενώ
+ * η νέα γραμμή του ανέμου (utils/offshoreWindNote 'wind-feels-less') της λέει «θα τον νιώσεις πιο
+ * λίγο». Η πόρτα των 5 Μποφ. (utils/offshoreFlatWater.holdsFlatWaterUnderOffshoreWind) την κόβει
+ * στη ΓΩΝΙΑ: onshore −0,70 έναντι −0,80, γιατί το `facingDeg` (230°) είναι η όψη του στομίου, όχι η
+ * μεριά απ' όπου ήρθε ο αέρας. Η ίδια ένσταση που έβγαλε τη γωνία από την πόρτα των 4 Μποφ.
+ * (Μελιδόνι, 18/08) — εκείνη η πόρτα πήρε ΚΑΙ ταβάνι έντασης 25 αντί 15. Η πόρτα των 5 έμεινε
+ * με τα παλιά φίλτρα.
  *
- * ΤΙ ΜΕΤΡΑΕΙ, ΚΑΙ ΓΙΑΤΙ ΔΥΟ ΠΑΡΑΛΛΑΓΕΣ
- *   V1 = η ΙΔΙΑ πύλη, ένα σκαλί πιο κάτω (4 Μποφ.). Καμία χαλάρωση κριτηρίου.
- *   V2 = V1 ΧΩΡΙΣ τη γραμμή της γωνίας. Το Μελιδόνι κόβεται στη γωνία (onshore −0,54 έναντι
- *        κατωφλιού −0,80) γιατί ο άνεμος φυσάει ΛΟΞΑ κατά μήκος της ακτής, όχι κάθετα από τη
- *        στεριά — και η γωνία μετριέται από το `facingDeg` του ΣΤΟΜΙΟΥ. Ίδια ένσταση με το
- *        scripts/measureOffshoreAngleGate.mjs, εδώ στη ζώνη των 4 Μποφ.
+ * Στατικά (κάθε παραλία × 8 γωνίες): όπου ανάβει η γραμμή του ανέμου, η πόρτα χρώματος περνάει
+ * 4.449 φορές και κόβεται 4.047 — γωνία 2.051, ένταση 1.661. Η γραμμή και η πινέζα διαφωνούν στις
+ * μισές. Το ερώτημα του Μίλτου: «δεν πρέπει να επηρεάζεται και το χρώμα;».
  *
- * ΔΕΝ ΑΝΤΙΓΡΑΦΕΤΑΙ ΚΩΔΙΚΑΣ ΓΙΑ ΤΟ V1: καλείται η ΠΡΑΓΜΑΤΙΚΗ
- * `holdsFlatWaterUnderOffshoreWind` με beaufort 5 — δηλαδή η ίδια γεωμετρία, ίδια κατώφλια,
- * ίδια συνάρτηση. Μόνο το V2 αντιγράφει τον πυρήνα (χωρίς τη γωνία) και το `selfCheck()`
- * σκάει αν η αντιγραφή αποκλίνει.
+ * ΤΙ ΜΕΤΡΑΕΙ — οι ΙΔΙΕΣ παραλλαγές με το εργαλείο των 4 Μποφ. (measureOffshoreLiftAtFourBeaufort),
+ * ένα σκαλί πιο πάνω:
+ *   V1 = η πόρτα ΟΠΩΣ ΕΙΝΑΙ (η πραγματική συνάρτηση) — η βάση.
+ *   V2 = V1 ΧΩΡΙΣ τη γωνία.
+ *   V3 = V2 + ταβάνι έντασης 25 (= ακριβώς τα φίλτρα της πόρτας των 4).
+ *   V4 = V3 + ανοιχτή θάλασσα (σοβαρότητα) κάτω από 0,4 μ. — συντηρητικό: η πόρτα των 4 κρίνει το
+ *        νερό ΣΤΗΝ ΑΚΤΗ (shoreSeaStateM), εδώ κρίνεται το ανοιχτό, που είναι ίσο ή μεγαλύτερο.
  *
- * ΤΟ «ΜΕΤΑ» ΔΕΝ ΞΑΝΑΓΡΑΦΕΙ ΤΗ ΣΚΑΛΑ. Μια παραλία που «σηκώνεται» κρίνεται με
- * `resolveConditionTone(... beaufort: 3 ...)`, δηλαδή διαβάζεται σαν να φυσούσε 3 Μποφ.: εκεί
- * μια προστατευμένη ακτή είναι ήδη μπλε. Έτσι ΟΛΑ τα ταβάνια που έρχονται μετά —
- * θαλασσοταραχή, ετυμηγορία κολύμβησης, όρμος — τρέχουν αυτούσια. Ο αυτοέλεγχος επιβεβαιώνει
- * ότι στα 3 και στα 4 Μποφ. ο κανόνας του όρμου συμπεριφέρεται ίδια, αλλιώς το κόλπο θα
- * μετρούσε και κάτι άλλο μαζί.
+ * ΤΟ «ΜΕΤΑ» ΕΙΝΑΙ Ο ΠΡΑΓΜΑΤΙΚΟΣ ΜΗΧΑΝΙΣΜΟΣ ΤΟΥ ΠΡΟΪΟΝΤΟΣ: `resolveConditionTone` με
+ * `offshoreFlatWater: true` — ό,τι κάνει σήμερα η πόρτα όταν περνάει (πορτοκαλί → κίτρινο, ποτέ
+ * μπλε). ΟΛΑ τα ταβάνια που τρέχουν μετά (θαλασσοταραχή, ετυμηγορία, όρμος) τρέχουν αυτούσια —
+ * γι' αυτό υπάρχει η στήλη «κρατήθηκε από θάλασσα».
  *
- * ΜΟΝΟΔΡΟΜΟ ΠΡΟΣ ΤΟΝ ΕΠΙΚΙΝΔΥΝΟ ΔΡΟΜΟ: κάθε αλλαγή που παράγει είναι «πιο ήρεμο». Άρα το
- * νούμερο που μετράει είναι πόσες παραλίες γίνονται ΜΠΛΕ και με τι θάλασσα από κάτω.
+ * ΜΟΝΟΔΡΟΜΟ ΠΡΟΣ ΤΟΝ ΕΠΙΚΙΝΔΥΝΟ ΔΡΟΜΟ: κάθε αλλαγή είναι «πιο ήρεμο». Μετριέται πόσες πινέζες
+ * γίνονται κίτρινες και με τι θάλασσα από κάτω. Η απόφαση είναι του Μίλτου (§7δ, σκανδάλη #1).
  *
- * ΔΕΝ αλλάζει τίποτα. Γράφει reports/quality/offshore-lift-4bft.json.
+ * ΔΕΝ αλλάζει τίποτα. Γράφει reports/quality/offshore-lift-5bft.json.
  *
- *   OPEN_METEO_API_KEY="$(npx netlify env:get OPEN_METEO_API_KEY --plain)" \
- *     node scripts/measureOffshoreLiftAtFourBeaufort.mjs --live [--days=3] [--regions=a,b]
+ *   OPEN_METEO_API_KEY=… node scripts/measureOffshoreLiftAtFiveBeaufort.mjs --live [--days=3] [--regions=a,b]
  */
 import { createRequire } from 'node:module';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -109,9 +108,9 @@ const { estimateFetchLimitedWaveHeightM } = require(path.join(root, 'utils/waveM
 
 const BEAUFORT_5_REFERENCE_WIND_KMH = 38;
 /** Η ζώνη που εξετάζουμε. Η σημερινή εξαίρεση ζει στο OFFSHORE_FLAT_BEAUFORT (=5). */
-const TARGET_BEAUFORT = 4;
+const TARGET_BEAUFORT = 5;
 /** Το «σαν να φυσούσε τόσο»: στα 3 Μποφ. μια προστατευμένη ακτή είναι ήδη μπλε. */
-const LIFTED_AS_BEAUFORT = 3;
+// Στα 5 Μποφ. το «μετά» δεν είναι άλλο σκαλί: είναι η ίδια η σημαία offshoreFlatWater=true (δες κεφαλίδα).
 
 const args = process.argv.slice(2);
 if (!args.includes('--live')) {
@@ -188,15 +187,15 @@ const selfCheck = () => {
   if (!mirrored) fail('ο αντιγραμμένος πυρήνας κόβει εκεί που ο αληθινός δεν κόβει.');
   if (real !== (mirrored.onshore <= OFFSHORE_FLAT_MAX_ONSHORE)) fail('πραγματικός και αντιγραμμένος πυρήνας διαφωνούν.');
   // 2. Το «σαν 3 Μποφ.» δίνει όντως μπλε, και τα 4 όντως κίτρινο.
-  const t3 = resolveConditionTone({ exposureLevel: 'protected', beaufort: LIFTED_AS_BEAUFORT });
+  const t3 = resolveConditionTone({ exposureLevel: 'protected', beaufort: TARGET_BEAUFORT, offshoreFlatWater: true });
   const t4 = resolveConditionTone({ exposureLevel: 'protected', beaufort: TARGET_BEAUFORT });
-  if (t3 !== 'blue') fail(`στα ${LIFTED_AS_BEAUFORT} Μποφ. μια προστατευμένη ακτή δεν βγαίνει μπλε (${t3}).`);
-  if (t4 !== 'yellow') fail(`στα ${TARGET_BEAUFORT} Μποφ. μια προστατευμένη ακτή δεν βγαίνει κίτρινη (${t4}).`);
+  if (t3 !== 'yellow') fail(`στα ${TARGET_BEAUFORT} Μποφ. με offshoreFlatWater η προστατευμένη ακτή δεν βγαίνει κίτρινη (${t3}) — ο μηχανισμός του «μετά» δεν είναι αυτός που νομίζουμε.`);
+  if (t4 !== 'orange') fail(`στα ${TARGET_BEAUFORT} Μποφ. μια προστατευμένη ακτή δεν βγαίνει πορτοκαλί (${t4}).`);
   // 3. Ο κανόνας του όρμου δεν αλλάζει ανάμεσα στα 3 και στα 4 — αλλιώς το κόλπο μετράει και άλλο.
   for (const seaStateM of [undefined, 0.4, 0.9, 1.4]) {
-    const a = resolveConditionTone({ exposureLevel: 'protected', beaufort: LIFTED_AS_BEAUFORT, isEnclosedCove: true, seaStateM });
-    const b = resolveConditionTone({ exposureLevel: 'protected', beaufort: LIFTED_AS_BEAUFORT, isEnclosedCove: false, seaStateM });
-    if (a !== b) fail(`στα ${LIFTED_AS_BEAUFORT} Μποφ. ο όρμος αλλάζει το αποτέλεσμα (θάλασσα ${seaStateM}) — το κόλπο μετράει δύο πράγματα.`);
+    const a = resolveConditionTone({ exposureLevel: 'protected', beaufort: TARGET_BEAUFORT, isEnclosedCove: true, seaStateM, offshoreFlatWater: true });
+    const b = resolveConditionTone({ exposureLevel: 'protected', beaufort: TARGET_BEAUFORT, isEnclosedCove: false, seaStateM, offshoreFlatWater: true });
+    if (a !== b) fail(`στα ${TARGET_BEAUFORT} Μποφ. ο όρμος αλλάζει το αποτέλεσμα (θάλασσα ${seaStateM}) — το κόλπο μετράει δύο πράγματα.`);
   }
 };
 selfCheck();
@@ -263,7 +262,7 @@ const v4Beaches = new Set();
 const rows = [];
 const byRegion = new Map();
 const spotlight = [];
-/** Ποια ρήτρα κόβει τις protected-στα-4 που ΔΕΝ περνάνε — αλλιώς το «δεν περνάει» δεν διδάσκει. */
+/** Ποια ρήτρα κόβει τις protected-στα-5 που ΔΕΝ περνάνε — αλλιώς το «δεν περνάει» δεν διδάσκει. */
 const blockedByHistogram = {};
 /** Πόσο ψηλή είναι η θάλασσα κάτω από κάθε αλλαγή σε ΜΠΛΕ. Το νούμερο της ασφάλειας. */
 const seaBuckets = { 'v1': {}, 'v2': {}, 'v3': {}, 'v4': {} };
@@ -320,15 +319,9 @@ const measureRegion = async (region) => {
       if (v3geom) totals.v3Passes += 1;
       // V4 = Ο ΚΩΔΙΚΑΣ ΠΟΥ ΕΦΥΓΕ. Καμία αντιγραφή: καλείται η πραγματική πύλη του προϊόντος, με
       // τα ίδια ορίσματα που της δίνει ο χάρτης και η κάρτα.
-      const v4 = holdsGlassWaterAtFourBeaufort({
-        profile,
-        windDirectionDeg,
-        beaufort,
-        seaStateM: seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS),
-        exposureLevel: score.exposureLevel,
-        seaArrivalExposureLevel: score.seaArrivalExposureLevel,
-        swellWaveHeightM: score.marine?.swellWaveHeightM,
-      });
+      const openSeaSeverityM = seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS);
+      // V4 στα 5 Μποφ.: όχι η πόρτα των 4 (beaufort === 4), αλλά V3 + ήσυχη ΑΝΟΙΧΤΗ θάλασσα (συντηρητικό, δες κεφαλίδα).
+      const v4 = Boolean(v3geom) && typeof openSeaSeverityM === 'number' && openSeaSeverityM < QUIET_SEA_MAX_M;
       if (v4) totals.v4Passes += 1;
 
       const toneInput = {
@@ -342,7 +335,7 @@ const measureRegion = async (region) => {
         seaArrivalExposureLevel: score.seaArrivalExposureLevel,
       };
       const before = resolveConditionTone({ ...toneInput, glassWaterAtFour: false });
-      const after = resolveConditionTone({ ...toneInput, beaufort: LIFTED_AS_BEAUFORT, glassWaterAtFour: false });
+      const after = resolveConditionTone({ ...toneInput, offshoreFlatWater: true, glassWaterAtFour: false });
       const changed = before !== after;
 
       const seaBucket = bucketOf(seaStateSeverityM(score.seaStateWaveM, score.seaStatePeriodS));
@@ -358,9 +351,9 @@ const measureRegion = async (region) => {
       note('v3', Boolean(v3geom));
       note('v4', v4);
 
-      if (beach.id === 140) {
+      if (beach.id === 2033 || beach.id === 730) {
         spotlight.push({
-          dayIndex, before, after, changed,
+          beachId: beach.id, name: beach.name?.gr ?? String(beach.id), dayIndex, before, after, changed,
           gates: { v1: Boolean(v1), v2: Boolean(v2geom), v3: Boolean(v3geom) },
           windFromDeg: Math.round(windDirectionDeg),
           onshore: Number(v3detail.onshore?.toFixed(2) ?? NaN),
@@ -425,10 +418,10 @@ process.stderr.write('\r                                                        
 
 const pct = (n, d) => `${((n / Math.max(1, d)) * 100).toFixed(2)}%`;
 console.log('');
-console.log('Η ΕΞΑΙΡΕΣΗ «ΑΕΡΑΣ ΑΠΟ ΤΗ ΣΤΕΡΙΑ» ΣΤΑ 4 ΜΠΟΦΟΡ');
+console.log('Η ΠΟΡΤΑ ΤΩΝ 5 ΜΠΟΦΟΡ ΜΕ ΤΑ ΦΙΛΤΡΑ ΤΗΣ ΠΟΡΤΑΣ ΤΩΝ 4 (πορτοκαλί → κίτρινο)');
 console.log(`  περιοχές                 ${totals.regionsMeasured} (παραλείφθηκαν ${totals.regionsSkipped})`);
 console.log(`  παραλιο-ημέρες           ${totals.beachDays}`);
-console.log(`  στα 4 Μποφ.              ${totals.atFour} · ${pct(totals.atFour, totals.beachDays)}`);
+console.log(`  στα 5 Μποφ.              ${totals.atFour} · ${pct(totals.atFour, totals.beachDays)}`);
 console.log(`  εκ των οποίων protected  ${totals.protectedAtFour} · ${pct(totals.protectedAtFour, totals.beachDays)}`);
 console.log('');
 console.log(`  V1 περνάει την πύλη      ${totals.v1Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v1Changed} (${pct(totals.v1Changed, totals.beachDays)} των παραλιο-ημερών) · ${v1Beaches.size} παραλίες`);
@@ -437,17 +430,17 @@ console.log(`  V2 (χωρίς γωνία)         ${totals.v2Passes}  → ΑΛΛ
 console.log(`     κρατήθηκε από θάλασσα ${totals.v2SeaHeld}`);
 console.log(`  V3 (+ ένταση <${RELAXED_MAX_INTENSITY})       ${totals.v3Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v3Changed} (${pct(totals.v3Changed, totals.beachDays)}) · ${v3Beaches.size} παραλίες`);
 console.log(`     κρατήθηκε από θάλασσα ${totals.v3SeaHeld}`);
-console.log(`  V4 (V3 + νερό <${QUIET_SEA_MAX_M}μ)  ${totals.v4Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v4Changed} (${pct(totals.v4Changed, totals.beachDays)}) · ${v4Beaches.size} παραλίες`);
+console.log(`  V4 (V3 + ανοιχτή <${QUIET_SEA_MAX_M}μ) ${totals.v4Passes}  → ΑΛΛΑΖΕΙ ΧΡΩΜΑ ${totals.v4Changed} (${pct(totals.v4Changed, totals.beachDays)}) · ${v4Beaches.size} παραλίες`);
 console.log('');
 console.log('  κατανομή Μποφ.           ' + Object.keys(beaufortHistogram).sort((a, b) => a - b).map(k => `${k}:${beaufortHistogram[k]}`).join(' '));
 console.log('');
-console.log('  ΠΟΙΑ ΘΑΛΑΣΣΑ ΒΑΦΕΤΑΙ ΜΠΛΕ (ύψος κάτω από κάθε αλλαγή)');
+console.log('  ΠΟΙΑ ΘΑΛΑΣΣΑ ΒΑΦΕΤΑΙ ΚΙΤΡΙΝΗ (σοβαρότητα ανοιχτά, κάτω από κάθε αλλαγή)');
 for (const v of ['v1', 'v2', 'v3', 'v4']) {
   const entries = Object.entries(seaBuckets[v]).sort((a, b) => a[0].localeCompare(b[0]));
   console.log(`    ${v.toUpperCase()}  ${entries.length ? entries.map(([k, n]) => `${k}:${n}`).join('  ') : '—'}`);
 }
 console.log('');
-console.log('  ΤΙ ΚΟΒΕΙ ΤΙΣ ΥΠΟΛΟΙΠΕΣ protected-στα-4');
+console.log('  ΤΙ ΚΟΒΕΙ ΤΙΣ ΥΠΟΛΟΙΠΕΣ protected-στα-5');
 for (const [reason, n] of Object.entries(blockedByHistogram).sort((a, b) => b[1] - a[1])) {
   console.log(`    ${reason.padEnd(30)} ${n}`);
 }
@@ -464,9 +457,9 @@ for (const row of rows.slice(0, 15)) {
 }
 if (spotlight.length) {
   console.log('');
-  console.log('  ΜΕΛΙΔΟΝΙ (id 140)');
+  console.log('  ΟΙ ΜΑΡΤΥΡΕΣ — Λιβάδια #2033, Βάι #730');
   for (const row of spotlight) {
-    console.log(`    ημ.${row.dayIndex} άνεμος ${row.windFromDeg}° · πύλες V1:${row.gates.v1} V2:${row.gates.v2} V3:${row.gates.v3}`
+    console.log(`    ${row.name} ημ.${row.dayIndex} άνεμος ${row.windFromDeg}° · πύλες V1:${row.gates.v1} V2:${row.gates.v2} V3:${row.gates.v3}`
       + ` · onshore ${row.onshore} ένταση ${row.intensity} ανάπτυγμα ${row.fetchKm}χλμ`);
     console.log(`         θάλασσα ${row.seaStateWaveM}μ/${row.seaStatePeriodS}s → σοβαρότητα ${row.seaStateSeverityM}μ · αποθαλασσιά ${row.swellM}μ`
       + ` · downwind ${row.downwindSeaSample} · άφιξη ${row.seaArrivalExposureLevel} · κολύμβηση ${row.swimmingComfort}`);
@@ -474,16 +467,16 @@ if (spotlight.length) {
   }
 } else {
   console.log('');
-  console.log('  ΜΕΛΙΔΟΝΙ (id 140): καμία αλλαγή σε αυτές τις μέρες.');
+  console.log('  ΜΑΡΤΥΡΕΣ (2033/730): δεν ήταν protected στα 5 Μποφ. αυτές τις μέρες.');
 }
 
 mkdirSync(reportDir, { recursive: true });
-const outPath = path.join(reportDir, 'offshore-lift-4bft.json');
+const outPath = path.join(reportDir, 'offshore-lift-5bft.json');
 writeFileSync(outPath, `${JSON.stringify({
   measuredAt: new Date().toISOString(),
   days: DAYS,
   targetBeaufort: TARGET_BEAUFORT,
-  liftedAsBeaufort: LIFTED_AS_BEAUFORT,
+  liftedVia: 'resolveConditionTone offshoreFlatWater=true',
   relaxedMaxIntensity: RELAXED_MAX_INTENSITY,
   totals,
   beaufortHistogram,
@@ -496,6 +489,6 @@ writeFileSync(outPath, `${JSON.stringify({
   quietSeaMaxM: QUIET_SEA_MAX_M,
   byRegion: Object.fromEntries(byRegion),
   rows,
-  spotlightMelidoni: spotlight,
+  spotlightWitnesses: spotlight,
 }, null, 2)}\n`);
 console.log(`\n→ ${path.relative(root, outPath)}`);
