@@ -810,6 +810,13 @@ export interface SuitableBeach {
    * ακτογραμμή δεν υπάρχει κριτής (§7δ). Γι' αυτό τυπώνεται με «~» και με τη δική του ετικέτα.
    */
   shoreDisplayWaveM?: number;
+  /**
+   * Η γωνιακή έκπτωση σκιάς K_d (utils/seaArrival.resolveShoreShadowDamping, 24/08/2026) που
+   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Ταξιδεύει με το score ώστε
+   * πινέζα, κάρτα και ετυμηγορία να διαβάζουν τον ΙΔΙΟ συντελεστή — passed, not derived.
+   * undefined = χωρίς γεωμετρία/κατεύθυνση → όλα πέφτουν στο ιστορικό 0,5.
+   */
+  shoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5 (§Γ55/§Γ56). */
   shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY. Βλ. utils/waterTemperatureCopy. */

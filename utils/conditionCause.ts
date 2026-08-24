@@ -111,7 +111,7 @@ export const describeConditionCause = (input: ConditionCauseInput): ConditionCau
   cause: resolveConditionCause(input),
   windOnlyTone: resolveConditionTone({ ...input, seaStateM: undefined, swimVerdictAvoid: false, forecastUncertain: false }),
   shoreSeaStateM: shoreSeaStateM(input.seaStateM, input.exposureLevel, input.seaArrivalExposureLevel,
-    input.curatedWindOnlyProtection),
+    input.curatedWindOnlyProtection, input.shoreShadowDamping),
   beaufort: input.beaufort,
   swimVerdictAvoid: input.swimVerdictAvoid ?? false,
   offshoreFlatWater: input.offshoreFlatWater ?? false,

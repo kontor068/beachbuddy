@@ -1344,6 +1344,8 @@ const getExposureMarkerTone = (
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
   seaArrivalExposureLevel?: string,
+  /** Η γωνιακή έκπτωση σκιάς K_d — utils/seaArrival, carried on the score (24/08/2026). */
+  shoreShadowDamping?: number,
   /** The km/h `windBeaufort` was rounded from — utils/suitabilityTone.holdsNoBuildableChopAtThree. */
   windSpeedKmh?: number
 ) => {
@@ -1391,6 +1393,7 @@ const getExposureMarkerTone = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
+    shoreShadowDamping,
     windSpeedKmh,
   })];
 };
@@ -1512,6 +1515,8 @@ const createExposureIcon = (
   swimVerdictAvoid = false,
   /** Exposure of the sector the SEA arrives from — utils/seaArrival, carried on the score. */
   seaArrivalExposureLevel?: string,
+  /** Η γωνιακή έκπτωση σκιάς K_d — utils/seaArrival, carried on the score (24/08/2026). */
+  shoreShadowDamping?: number,
   /** The km/h behind `windBeaufort` — see getExposureMarkerTone. */
   windSpeedKmh?: number
 ) => {
@@ -1537,7 +1542,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, windSpeedKmh);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, shoreShadowDamping, windSpeedKmh);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -2640,6 +2645,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // The shore discount is applied inside the door, from the same two fields the ceiling reads.
     exposureLevel: getMapExposureLevel(item),
     seaArrivalExposureLevel: item.seaArrivalExposureLevel,
+    shoreShadowDamping: item.shoreShadowDamping,
     // Same swell veto hasDownwindSeaSample takes, from the beach's own marine forecast.
     swellWaveHeightM: item.marine?.swellWaveHeightM,
   });
@@ -2703,6 +2709,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // Straight off the score — the pin, this legend count and the card chip all read the one
     // value calculateBeachScore computed, so none of them can rediscover it differently.
     seaArrivalExposureLevel: item.seaArrivalExposureLevel,
+    shoreShadowDamping: item.shoreShadowDamping,
     // A beach the app refuses a swim at cannot be counted as ΙΔΑΝΙΚΗ or ΚΑΛΗ in the legend
     // beside it — the same ceiling the card chip takes (utils/suitabilityTone).
     swimVerdictAvoid: item.swimmingComfort === 'avoid_swimming',
@@ -4067,7 +4074,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? beachIconFor(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : exposureIconFor(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, beachWindSpeedKmh(item))}
+                : exposureIconFor(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, item.shoreShadowDamping, beachWindSpeedKmh(item))}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T09:06:39.593Z",
+  "generatedAt": "2026-08-24T10:57:44.123Z",
   "replayWindow": "2022-09-06:2022-09-08",
   "params": {
     "OPEN_FETCH_KM": 10,
@@ -13,248 +13,74 @@
   "summary": {
     "beaches": 2873,
     "protectedBeaches": 1575,
-    "noWaveDir": 33,
+    "noWaveDir": 31,
     "buckets": {
-      "βαθιά σκιά": 1112,
-      "άκρη σκιάς": 116,
-      "κλειστός": 205,
-      "διάδρομος": 126
+      "βαθιά σκιά": 1102,
+      "άκρη σκιάς": 120,
+      "κλειστός": 208,
+      "διάδρομος": 124
     },
-    "corridorExamples": [
-      {
-        "region": "attica-methana",
-        "name": "Παραλία Νισάκι",
-        "theta": 14,
-        "beforeM": 0.43,
-        "afterM": 0.86,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "central-greece-evia",
-        "name": "Αμυγδαλιά",
-        "theta": 19,
-        "beforeM": 1.7,
-        "afterM": 3.4,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "crete-crete-chania",
-        "name": "Aghios Pavlos Beach",
-        "theta": 12,
-        "beforeM": 1.58,
-        "afterM": 3.16,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "east-macedonia-and-thrace-thasos",
-        "name": "Καλάμι",
-        "theta": 10,
-        "beforeM": 0.93,
-        "afterM": 1.86,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "ionian-islands-antipaxos",
-        "name": "Βρίκα",
-        "theta": 19,
-        "beforeM": 0.2,
-        "afterM": 0.4,
-        "comfort": "caution"
-      },
-      {
-        "region": "ionian-islands-corfu",
-        "name": "Kanoni Beach",
-        "theta": 20,
-        "beforeM": 0.2,
-        "afterM": 0.4,
-        "comfort": "good"
-      },
-      {
-        "region": "ionian-islands-corfu",
-        "name": "Παραλία Αγίου Σπυρίδωνα",
-        "theta": 19,
-        "beforeM": 0.2,
-        "afterM": 0.4,
-        "comfort": "good"
-      },
-      {
-        "region": "ionian-islands-kefalonia",
-        "name": "Σπίθι",
-        "theta": 2,
-        "beforeM": 0.2,
-        "afterM": 0.4,
-        "comfort": "good"
-      },
-      {
-        "region": "ionian-islands-paxos",
-        "name": "Ερημίτης",
-        "theta": 12,
-        "beforeM": 0.2,
-        "afterM": 0.4,
-        "comfort": "good"
-      },
-      {
-        "region": "south-aegean-kea",
-        "name": "Άγιος Φίλιππος",
-        "theta": 13,
-        "beforeM": 0.83,
-        "afterM": 1.66,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "south-aegean-kea",
-        "name": "Μαβιά",
-        "theta": 17,
-        "beforeM": 1.03,
-        "afterM": 2.06,
-        "comfort": "avoid_swimming"
-      },
-      {
-        "region": "south-aegean-kea",
-        "name": "Στέφα",
-        "theta": 19,
-        "beforeM": 1.11,
-        "afterM": 2.22,
-        "comfort": "avoid_swimming"
-      }
-    ],
+    "corridorExamples": [],
     "deepExamples": [
       {
-        "region": "attica-aegina",
-        "name": "Αγία Μαρίνα",
-        "theta": 81,
-        "kd": 0.136,
-        "beforeM": 0.35,
-        "afterM": 0.1
+        "region": "north-aegean-lesvos",
+        "name": "Μόλυβος",
+        "theta": 84,
+        "kd": 0.127,
+        "beforeM": 0.15,
+        "afterM": 0.14
       },
       {
-        "region": "attica-aegina",
-        "name": "Αύρα",
-        "theta": 94,
-        "kd": 0.102,
-        "beforeM": 0.22,
-        "afterM": 0.07
+        "region": "north-aegean-lesvos",
+        "name": "Παραλία Πέτρα",
+        "theta": 84,
+        "kd": 0.127,
+        "beforeM": 0.15,
+        "afterM": 0.14
       },
       {
-        "region": "attica-aegina",
-        "name": "Βοτσαλωτή Παραλία",
-        "theta": 136,
-        "kd": 0.1,
-        "beforeM": 0.1,
-        "afterM": 0.06
+        "region": "south-aegean-andros",
+        "name": "Της γριας το πήδημα",
+        "theta": 37,
+        "kd": 0.362,
+        "beforeM": 1.28,
+        "afterM": 1.27
       },
       {
-        "region": "attica-aegina",
-        "name": "Κλειδί",
-        "theta": 141,
-        "kd": 0.1,
-        "beforeM": 0.1,
-        "afterM": 0.08
+        "region": "south-aegean-kythnos",
+        "name": "Νίκα",
+        "theta": 76,
+        "kd": 0.152,
+        "beforeM": 0.44,
+        "afterM": 0.43
       },
       {
-        "region": "attica-aegina",
-        "name": "Παραλία Κολώνα",
-        "theta": 59,
-        "kd": 0.222,
-        "beforeM": 0.35,
-        "afterM": 0.16
-      },
-      {
-        "region": "attica-aegina",
-        "name": "Παραλία Μαραθώνα Α",
-        "theta": 94,
-        "kd": 0.102,
-        "beforeM": 0.23,
-        "afterM": 0.07
-      },
-      {
-        "region": "attica-aegina",
-        "name": "Παραλία Μαραθώνα Β",
-        "theta": 94,
-        "kd": 0.102,
-        "beforeM": 0.29,
-        "afterM": 0.07
-      },
-      {
-        "region": "attica-aegina",
-        "name": "Παραλία Σαρπά",
-        "theta": 141,
-        "kd": 0.1,
-        "beforeM": 0.38,
-        "afterM": 0.08
-      },
-      {
-        "region": "attica-aegina",
-        "name": "Τούρλος",
-        "theta": 85,
-        "kd": 0.125,
-        "beforeM": 0.41,
-        "afterM": 0.1
-      },
-      {
-        "region": "attica-aegina",
-        "name": "Αίγινα Μαραθώνας",
-        "theta": 94,
-        "kd": 0.102,
-        "beforeM": 0.36,
-        "afterM": 0.07
-      },
-      {
-        "region": "attica-athens-area-mainland",
-        "name": "Παραλία Φλοίσβου",
-        "theta": 88,
-        "kd": 0.117,
-        "beforeM": 0.1,
-        "afterM": 0.06
-      },
-      {
-        "region": "attica-athens-area-mainland",
-        "name": "Παλμύρα",
-        "theta": 88,
-        "kd": 0.117,
-        "beforeM": 0.1,
-        "afterM": 0.06
+        "region": "south-aegean-naxos",
+        "name": "Αγιασσός",
+        "theta": 91,
+        "kd": 0.109,
+        "beforeM": 0.33,
+        "afterM": 0.32
       }
     ],
-    "printedRougher": 15,
-    "printedCalmer": 845,
-    "bandMoves": {
-      "κύμα → ήρεμα": 101,
-      "φουρτούνα → ήρεμα": 68,
-      "ήρεμα → κύμα": 2,
-      "κύμα → φουρτούνα": 4,
-      "φουρτούνα → κύμα": 14
-    },
-    "intoCalm": 169,
-    "comfortStricter": 1,
-    "comfortSofter": 43,
-    "comfortMoves": {
-      "avoid_swimming → caution": 43,
-      "good → caution": 1
-    },
-    "stricterExamples": [
-      {
-        "region": "thessaly-magnesia-mainland---pelion",
-        "name": "Μικρό",
-        "move": "good → caution",
-        "bucket": "διάδρομος"
-      }
-    ],
-    "toneStricter": 22,
-    "toneSofter": 125,
-    "toneMoves": {
-      "red → orange": 123,
-      "orange → yellow": 2,
-      "orange → red": 5,
-      "blue → yellow": 17
-    },
+    "printedRougher": 1,
+    "printedCalmer": 5,
+    "bandMoves": {},
+    "intoCalm": 0,
+    "comfortStricter": 0,
+    "comfortSofter": 0,
+    "comfortMoves": {},
+    "stricterExamples": [],
+    "toneStricter": 0,
+    "toneSofter": 0,
+    "toneMoves": {},
     "podiumChanged": 0,
     "podiumOrderOnly": 0,
     "kdMedian": 0.1,
     "kdP10": 0.1,
     "kdP90": 0.41,
-    "rougherMedianM": 0.83,
-    "rougherMaxM": 1.7,
-    "calmerMedianM": 0.14
+    "rougherMedianM": 0.01,
+    "rougherMaxM": 0.01,
+    "calmerMedianM": 0.01
   }
 }

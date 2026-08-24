@@ -281,6 +281,7 @@ export const holdsGlassWaterAtFourBeaufort = ({
   exposureLevel,
   seaArrivalExposureLevel,
   curatedWindOnlyProtection,
+  shoreShadowDamping,
 }: OffshoreFlatWaterInput & {
   seaStateM?: number;
   /** Live swell height at this beach's marine sample point, metres. Unknown vetoes. */
@@ -295,11 +296,13 @@ export const holdsGlassWaterAtFourBeaufort = ({
    * intensity ceiling without noticing.
    */
   curatedWindOnlyProtection?: boolean;
+  /** Η γωνιακή έκπτωση σκιάς K_d του score — passed, not derived (utils/seaArrival, 24/08/2026). */
+  shoreShadowDamping?: number;
 }): boolean => {
   if (beaufort !== GLASS_AT_FOUR_BEAUFORT) return false;
   if (typeof swellWaveHeightM !== 'number' || !Number.isFinite(swellWaveHeightM)) return false;
   if (swellWaveHeightM >= SWELL_MIN_HEIGHT_M) return false;
-  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
+  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection, shoreShadowDamping);
   if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return false;
   if (atShoreM >= GLASS_AT_FOUR_MAX_SEA_STATE_M) return false;
   return sectorHoldsNoWindWave(profile, windDirectionDeg, {

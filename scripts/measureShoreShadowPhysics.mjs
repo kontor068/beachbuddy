@@ -131,7 +131,7 @@ const shadowOf = (profile, waveFromDeg) => {
 let ctx = null;          // { profile, waveDeg } — ορίζεται πριν από κάθε σκοράρισμα
 let kdEnabled = false;
 
-const patchedShoreSeaStateM = (openWaterSeaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection) => {
+const patchedShoreSeaStateM = (openWaterSeaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection, shadowDamping) => {
   if (typeof openWaterSeaStateM !== 'number' || !Number.isFinite(openWaterSeaStateM)) return undefined;
   const seaGrazesOrDeparts = seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING;
   const shelteredFromTheSea = seaArrivalExposureLevel === undefined
@@ -142,8 +142,14 @@ const patchedShoreSeaStateM = (openWaterSeaStateM, exposureLevel, seaArrivalExpo
 
   let damping;
   if (exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave) {
+    // kd variant: το K_d του ΕΡΓΑΛΕΙΟΥ από το ctx · base variant: ό,τι πέρασε η ΠΑΡΑΓΩΓΗ
+    // (από 24/08 η παραγωγή περνάει η ίδια K_d — άρα base = πραγματική οθόνη, και η σύγκριση
+    // base↔kd είναι ο έλεγχος ότι το ship αναπαράγει ακριβώς τη μετρημένη πρόταση).
     const shadow = kdEnabled && ctx ? shadowOf(ctx.profile, ctx.waveDeg) : null;
-    damping = shadow ? shadow.kd : SHORE_DAMPING_BY_EXPOSURE.protected;
+    const shipped = typeof shadowDamping === 'number' && Number.isFinite(shadowDamping)
+      ? Math.min(1, Math.max(0, shadowDamping))
+      : SHORE_DAMPING_BY_EXPOSURE.protected;
+    damping = shadow ? shadow.kd : shipped;
   } else if (grazingSeaRelief) {
     damping = SHORE_DAMPING_BY_EXPOSURE.protected;   // το §Γ59 μένει στο 0,5 του — εκτός εμβέλειας
   } else if (exposureLevel === 'partial') {
@@ -327,6 +333,7 @@ const measureRegion = async (region) => {
           profile, windDirectionDeg, swellWaveHeightM: score.marine?.swellWaveHeightM,
         }),
         seaArrivalExposureLevel: score.seaArrivalExposureLevel,
+        shoreShadowDamping: score.shoreShadowDamping,
         swimVerdictAvoid: score.swimmingComfort === 'avoid_swimming',
       });
       row.byVariant[variant] = {

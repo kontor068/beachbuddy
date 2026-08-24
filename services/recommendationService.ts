@@ -53,7 +53,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { resolveSeaArrival, resolveSeaArrivalExposureLevel } from '../utils/seaArrival';
+import { resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
@@ -115,6 +115,12 @@ export interface BeachScore {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /**
+   * Η γωνιακή έκπτωση σκιάς K_d (utils/seaArrival.resolveShoreShadowDamping, 24/08/2026) που
+   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Passed, not derived: πινέζα,
+   * κάρτα και ετυμηγορία διαβάζουν ΑΥΤΟ το πεδίο, ποτέ δικό τους υπολογισμό.
+   */
+  shoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
   shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
@@ -198,6 +204,12 @@ export interface BeachRecommendation {
   shoreWaveHeightM?: number;
   /** ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ ΓΙΑ ΚΑΘΕ ΠΑΡΑΛΙΑ (m) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. types.ts. */
   shoreDisplayWaveM?: number;
+  /**
+   * Η γωνιακή έκπτωση σκιάς K_d (utils/seaArrival.resolveShoreShadowDamping, 24/08/2026) που
+   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Passed, not derived: πινέζα,
+   * κάρτα και ετυμηγορία διαβάζουν ΑΥΤΟ το πεδίο, ποτέ δικό τους υπολογισμό.
+   */
+  shoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
   shoreWaveFromDepartingSea?: boolean;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
@@ -1892,6 +1904,13 @@ export const calculateBeachScore = (
     options?.geospatialProfile,
     marine?.waveDirectionDeg
   );
+  /**
+   * Η ΓΩΝΙΑΚΗ ΕΚΠΤΩΣΗ ΣΚΙΑΣ (K_d) — υπολογίζεται ΜΙΑ φορά εδώ και ταξιδεύει με το score παντού
+   * (ετυμηγορία, τυπωμένο νούμερο, ταβάνι χρώματος, πόρτα 4 Μπφ), ώστε καμία επιφάνεια να μην
+   * μπορεί να απαντήσει με άλλο συντελεστή. Ιστορία/μετρήσεις/όρια: utils/seaArrival.
+   * ΔΕΝ αλλάζει το ΑΝ δίνεται έκπτωση — μόνο το ΠΟΣΟ, και μόνο στο protected σκέλος.
+   */
+  const shoreShadowDamping = resolveShoreShadowDamping(options?.geospatialProfile, marine?.waveDirectionDeg);
   // Direct-swell geometry (utils/swellExposure). Computed HERE rather than at its old site further
   // down, because the geometric wave ceiling below needs it and the ceiling has to be decided before
   // the effective height exists. The warnings it raises still fire at the original place.
@@ -2093,7 +2112,7 @@ export const calculateBeachScore = (
   // περάσει το αυστηρό γεωμετρικό τεστ — και τότε η πινέζα στον χάρτη λέει 'partial'. Ο άνεμος
   // κρατάει την επιθεώρηση· η θάλασσα όχι, γιατί κανείς δεν επιθεώρησε το κύμα.
   const dampedShoreWaveM = shoreSeaStateM(effectiveWaveHeightM, finalExposureLevel, seaArrivalExposureLevel,
-    windAssessment.protectionFromCuratedCoveOnly);
+    windAssessment.protectionFromCuratedCoveOnly, shoreShadowDamping);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
   // damping that has been in place since 01/08.
   const shoreWaveM = typeof shoreModelWaveM === 'number'
@@ -2112,7 +2131,7 @@ export const calculateBeachScore = (
     : seaArrivalExposureLevel;
   const dampedShoreWaveWithoutGrazingReliefM = shoreSeaStateM(
     effectiveWaveHeightM, finalExposureLevel, arrivalBeforeGrazingRelief,
-    windAssessment.protectionFromCuratedCoveOnly);
+    windAssessment.protectionFromCuratedCoveOnly, shoreShadowDamping);
   const shoreWaveWithoutGrazingReliefM = typeof shoreModelWaveM === 'number'
     ? Math.min(shoreModelWaveM, dampedShoreWaveWithoutGrazingReliefM ?? shoreModelWaveM)
     : dampedShoreWaveWithoutGrazingReliefM;
@@ -2880,6 +2899,7 @@ export const calculateBeachScore = (
     seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
     exposureLevel: windAssessment.exposureLevel,
     seaArrivalExposureLevel,
+    shoreShadowDamping,
     // Καταγεγραμμένη προστασία απέναντι στον ΑΝΕΜΟ δεν αγοράζει έκπτωση στη ΘΑΛΑΣΣΑ. Σήμερα
     // αυτή η πόρτα ούτως ή άλλως δεν ανοίγει σε curated τομείς (θέλει ένταση ≤25, έχουν ≥33)·
     // περνάει για να μη γίνει σιωπηλή τρύπα αν χαλαρώσει ποτέ το ταβάνι έντασης.
@@ -2954,6 +2974,7 @@ export const calculateBeachScore = (
     // απλώς δεν έφτανε ποτέ στην κάρτα. Μηδέν επιπλέον κλήσεις. DISPLAY-ONLY (απόφαση Μίλτου Α).
     seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,
     seaArrivalExposureLevel,
+    shoreShadowDamping,
     // Ταξιδεύει ως την πινέζα: components/BeachMap το περνάει αυτούσιο στο resolveConditionTone,
     // όπως κάνει ήδη με το seaArrivalExposureLevel και το swimmingComfort.
     forecastUncertain,

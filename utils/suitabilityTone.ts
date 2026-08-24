@@ -437,7 +437,9 @@ export const capToneBySeaState = (
    * behaviour, and like every other geometry input here it is PASSED, not derived: the pin and
    * the card must not be able to answer it differently.
    */
-  curatedWindOnlyProtection?: boolean
+  curatedWindOnlyProtection?: boolean,
+  /** Η γωνιακή έκπτωση σκιάς K_d από το score — passed, not derived (utils/seaArrival). */
+  shoreShadowDamping?: number
 ): CalmnessTone => {
   if (exempt) return windTone;
   const openWaterCeiling = seaStateToneCeiling(seaStateM);
@@ -445,7 +447,7 @@ export const capToneBySeaState = (
 
   const relief = downwindSeaSample ? DOWNWIND_SAMPLE_CEILING_RELIEF : MAX_SHELTER_CEILING_RELIEF;
   const shoreCeiling = seaStateToneCeiling(
-    shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection));
+    shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection, shoreShadowDamping));
   const rung = Math.min(
     MILDEST_RUNG,
     ceilingRung(shoreCeiling),
@@ -561,6 +563,7 @@ export const resolveConditionTone = ({
   swimVerdictAvoid = false,
   seaArrivalExposureLevel,
   curatedWindOnlyProtection = false,
+  shoreShadowDamping,
   windSpeedKmh,
   forecastUncertain = false,
 }: {
@@ -638,6 +641,12 @@ export const resolveConditionTone = ({
    */
   curatedWindOnlyProtection?: boolean;
   /**
+   * Η γωνιακή έκπτωση σκιάς K_d του score (utils/seaArrival.resolveShoreShadowDamping,
+   * 24/08/2026). Passed, not derived — ίδιο συμβόλαιο με κάθε γεωμετρική είσοδο εδώ: πινέζα
+   * και chip δεν επιτρέπεται να απαντούν με άλλο συντελεστή. Παράλειψη = ιστορικό 0,5.
+   */
+  shoreShadowDamping?: number;
+  /**
    * Τα σενάρια της πρόγνωσης διαφωνούν για αυτή τη μέρα — δες `capBlueByForecastUncertainty`.
    * Παραλείπεται (ή `false`) → η συμπεριφορά είναι byte-identical με πριν τις 21/08/2026.
    */
@@ -650,7 +659,7 @@ export const resolveConditionTone = ({
    * το δάπεδο του ΙΔΑΝΙΚΗ (`capIdealByShoreSea`). Δύο κανόνες που κρίνουν «πόσο κύμα φτάνει
    * εδώ» δεν επιτρέπεται να το υπολογίζουν χωριστά — έτσι ξεκινάει κάθε απόκλιση κάρτας-πινέζας.
    */
-  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection);
+  const atShoreM = shoreSeaStateM(seaStateM, exposureLevel, seaArrivalExposureLevel, curatedWindOnlyProtection, shoreShadowDamping);
   /**
    * Ο κλειστός όρμος εξαιρείται ΚΑΙ από το ταβάνι της θάλασσας ΚΑΙ από το δάπεδο του ΙΔΑΝΙΚΗ,
    * για τον ίδιο λόγο: το κελί της πρόγνωσης κάθεται ~10 χλμ έξω και δεν βλέπει μέσα σε κόλπο
@@ -697,7 +706,12 @@ export const resolveConditionTone = ({
   coveExempt,
   exposureLevel,
   downwindSeaSample,
-  seaArrivalExposureLevel
+  seaArrivalExposureLevel,
+  // curatedWindOnlyProtection ΔΕΝ περνιόταν εδώ ούτε πριν τις 24/08 — προϋπάρχον κενό του
+  // ταβανιού (το atShoreM του δαπέδου/πόρτας το παίρνει κανονικά). Καταγράφεται και μένει
+  // ρητά ως έχει: δεν επιτρέπεται να αλλάξει συμπεριφορά σιωπηλά μέσα στην αλλαγή του K_d.
+  undefined,
+  shoreShadowDamping
 ), atShoreM, coveExempt)),
     forecastUncertain,
   );

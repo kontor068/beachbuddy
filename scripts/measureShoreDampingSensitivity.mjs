@@ -284,6 +284,7 @@ const measureRegion = async (region) => {
           profile, windDirectionDeg, swellWaveHeightM: score.marine?.swellWaveHeightM,
         }),
         seaArrivalExposureLevel: score.seaArrivalExposureLevel,
+        shoreShadowDamping: score.shoreShadowDamping,
         swimVerdictAvoid: score.swimmingComfort === 'avoid_swimming',
       });
 

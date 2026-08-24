@@ -129,3 +129,69 @@ export const resolveSeaArrivalExposureLevel = (
   const sector = SECTOR_ORDER[((Math.round(waveDirectionDeg / 45) % 8) + 8) % 8];
   return geospatialProfile.sectors?.[sector]?.level;
 };
+
+/**
+ * ─── Η ΕΚΠΤΩΣΗ ΤΗΣ ΠΡΟΣΤΑΤΕΥΜΕΝΗΣ ΑΚΤΗΣ ΕΙΝΑΙ ΓΩΝΙΑ, ΟΧΙ ΣΤΑΘΕΡΑ (24/08/2026) ───
+ *
+ * ΤΟ ΠΡΟΒΛΗΜΑ ΠΟΥ ΛΥΝΕΙ. Το ×0,5 του shoreSeaStateM ήταν επίπεδο: ίδια έκπτωση για παραλία
+ * λίγο πίσω από τον κάβο της και για παραλία στον πάτο κλειστού κόλπου — και ίδια για παραλία
+ * που το κύμα της μπαίνει από ΑΝΟΙΧΤΟ διάδρομο. Η ακτομηχανική (διαγράμματα περίθλασης
+ * SPM/Wiegel, ημιάπειρο εμπόδιο) το λέει αλλιώς: στο ΟΡΙΟ της σκιάς φτάνει ~το μισό ύψος
+ * (K_d ≈ 0,5 — το παλιό μας νούμερο είναι η τιμή της άκρης), 30° μέσα ≈ 0,25, 60°+ ≈ 0,1,
+ * και μέσα στον διάδρομο 1,0 — καμία έκπτωση.
+ *
+ * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΜΠΕΙ (§Γ35/§7δ): scripts/measureShoreShadowPhysics.mjs (εθνικό replay
+ * μελτεμιού, 110/110) + scripts/measureShadowDirectionSweep.mjs (κάθε παραλία × 8 διευθύνσεις):
+ * στο 73,6% των συνδυασμών που παίρνουν έκπτωση η φυσική λέει ΚΑΤΩ από το μισό του παλιού
+ * νούμερου, στο 2,9% (394 παραλίες σε κάποιον καιρό) λέει ΔΙΠΛΑΣΙΟ — έκπτωση πάνω σε κύμα
+ * που μπαίνει από ανοιχτά (π.χ. #3114 Αμυγδαλιά: τύπωνε 1,7 μ. σε θάλασσα 3,4 μ.).
+ * Αναφορές: reports/quality/shore-shadow-physics.json / shadow-direction-sweep.json.
+ * ΑΠΟΦΑΣΗ ΜΙΛΤΟΥ 24/08/2026, με τα εθνικά νούμερα μπροστά του: «και τα δύο μαζί» — και η
+ * άρνηση της έκπτωσης στον διάδρομο (προς την προσοχή) και η βαθύτερη σκιά (προς το ήρεμο).
+ *
+ * ΤΙ ΔΕΝ ΑΓΓΙΖΕΙ, ΕΠΙΤΗΔΕΣ:
+ *  - Το grazing σκέλος του §Γ59 (λοξή θάλασσα ≥90° σε partial ακτή) κρατά το 0,5 του — εκεί
+ *    υπάρχει ΜΕΤΡΗΜΕΝΗ μαρτυρία καμερών (Καραβοστάσι/Λυγαριά) και η μαρτυρία κερδίζει το
+ *    μοντέλο. Η εξαίρεση ζει στη shoreSeaStateM, όχι εδώ.
+ *  - Την ΠΥΛΗ του ποιος δικαιούται έκπτωση (resolveSeaArrivalExposureLevel πιο πάνω) — αυτή
+ *    η συνάρτηση αλλάζει μόνο ΤΟ ΠΟΣΟ, ποτέ το ΑΝ.
+ *
+ * ΟΡΙΑ, ΓΡΑΜΜΕΝΑ ΠΡΙΝ ΜΠΕΙ: σχήμα πρώτης τάξης (όχι πλήρης λύση περίθλασης)· ανάλυση 45°
+ * (8 τομείς) — η γωνία είναι σκαλωτή· η ΠΕΡΙΟΔΟΣ δεν μπαίνει ακόμα (η ρεστία στρίβει
+ * περισσότερο — μελλοντική αυστηροποίηση, όχι χαλάρωση)· ο βυθός (θραύση στα ρηχά) είναι
+ * επόμενο βήμα. Επαλήθευση στην άμμο: μόνο μάτια/κάμερες — οι λίστες υπόπτων στα reports.
+ *
+ * `undefined` = δεν ξέρω (χωρίς γεωμετρία ή χωρίς κατεύθυνση κύματος) → ο καλών κρατά το
+ * ιστορικό 0,5. Η άγνοια δεν επιτρέπεται ούτε να ηρεμήσει ούτε να αγριέψει μια παραλία.
+ */
+export const SHADOW_OPEN_FETCH_KM = 10;
+export const SHADOW_CORRIDOR_HALF_DEG = 22.5;
+export const SHADOW_DECAY_DEG = 45;
+export const SHADOW_KD_AT_EDGE = 0.5;
+export const SHADOW_KD_FLOOR = 0.1;
+
+const angularDistanceDeg = (a: number, b: number): number =>
+  Math.abs((((a - b) % 360) + 540) % 360 - 180);
+
+export const resolveShoreShadowDamping = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  waveDirectionDeg: number | undefined
+): number | undefined => {
+  if (!geospatialProfile?.sectors) return undefined;
+  if (typeof waveDirectionDeg !== 'number' || !Number.isFinite(waveDirectionDeg)) return undefined;
+  let thetaDeg: number | null = null;
+  for (let index = 0; index < SECTOR_ORDER.length; index += 1) {
+    const sector = geospatialProfile.sectors[SECTOR_ORDER[index]];
+    if (!sector || !(sector.fetchKm >= SHADOW_OPEN_FETCH_KM)) continue;
+    const d = angularDistanceDeg(waveDirectionDeg, index * 45);
+    if (thetaDeg === null || d < thetaDeg) thetaDeg = d;
+  }
+  // Κανένας ανοιχτός διάδρομος πουθενά = κλειστός κύκλος στεριάς: ό,τι κύμα υπάρχει έχει ήδη
+  // στρίψει τουλάχιστον μία ολόκληρη σκιά για να μπει.
+  if (thetaDeg === null) return SHADOW_KD_FLOOR;
+  if (thetaDeg <= SHADOW_CORRIDOR_HALF_DEG) return 1;
+  return Math.max(
+    SHADOW_KD_FLOOR,
+    SHADOW_KD_AT_EDGE * Math.exp(-(thetaDeg - SHADOW_CORRIDOR_HALF_DEG) / SHADOW_DECAY_DEG)
+  );
+};

@@ -342,7 +342,17 @@ export const shoreSeaStateM = (
    * the pin on the map does not agree. Omitted (undefined) keeps the pre-20/08 behaviour, so no
    * caller can be made calmer by forgetting it.
    */
-  curatedWindOnlyProtection?: boolean
+  curatedWindOnlyProtection?: boolean,
+  /**
+   * Η ΓΩΝΙΑΚΗ ΕΚΠΤΩΣΗ ΣΚΙΑΣ — K_d από την utils/seaArrival.resolveShoreShadowDamping
+   * (24/08/2026, απόφαση Μίλτου· εκεί όλη η ιστορία, οι μετρήσεις και τα όρια). Αντικαθιστά
+   * το επίπεδο 0,5 ΜΟΝΟ στο σκέλος της προστατευμένης· το grazing σκέλος του §Γ59 κρατά το
+   * 0,5 του (μετρημένη μαρτυρία καμερών > μοντέλο). Παραλείπεται/undefined = το ιστορικό 0,5,
+   * ώστε κανένας παλιός καλών να μην αλλάξει συμπεριφορά χωρίς να το δηλώσει. ΠΑΝΤΑ περνιέται,
+   * ποτέ δεν υπολογίζεται εδώ — αυτό το αρχείο μένει χωρίς imports, και πινέζα/κάρτα/ετυμηγορία
+   * πρέπει να παίρνουν το ΙΔΙΟ K_d από το score (η πύλη validateShoreShadowContract το φυλάει).
+   */
+  shadowDamping?: number
 ): number | undefined => {
   if (typeof openWaterSeaStateM !== 'number' || !Number.isFinite(openWaterSeaStateM)) return undefined;
   // Only 'protected' has ever carried a discount (see the block above), so the arrival test only
@@ -389,8 +399,14 @@ export const shoreSeaStateM = (
    * οπότε το φρένο είναι ασφάλεια, όχι διακοσμητικό.
    */
   const grazingSeaRelief = exposureLevel === 'partial' && seaGrazesOrDeparts && shelterEarnedAgainstTheWave;
+  // Το K_d φοράει ζώνη [0,1]: πάνω από 1 θα έκανε την ακτή πιο άγρια από το πέλαγος έξω
+  // (αδύνατο για περίθλαση), κάτω από 0 δεν σημαίνει τίποτα. Η πηγή εγγυάται [0,1..1]· η ζώνη
+  // κάνει την ιδιότητα αναλλοίωτη της συνάρτησης, όχι συνέπεια της πηγής.
+  const protectedDamping = typeof shadowDamping === 'number' && Number.isFinite(shadowDamping)
+    ? Math.min(1, Math.max(0, shadowDamping))
+    : SHORE_DAMPING_BY_EXPOSURE.protected;
   const damping = exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave
-    ? SHORE_DAMPING_BY_EXPOSURE.protected
+    ? protectedDamping
     : grazingSeaRelief
       ? SHORE_DAMPING_BY_EXPOSURE.protected
       : exposureLevel === 'partial'
