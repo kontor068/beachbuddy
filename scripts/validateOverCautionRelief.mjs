@@ -34,6 +34,7 @@ const {
   relievesOverCaution, OVER_CAUTION_MAX_SHORE_WAVE_M,
   OVER_CAUTION_MAX_BEAUFORT, OVER_CAUTION_DEPARTING_SEA_MAX_BEAUFORT,
 } = reliefModule;
+const { SEA_STATE_AMBER_M } = require(path.join(root, 'utils/waveCharacter.ts'));
 
 const failures = [];
 const fail = m => failures.push(m);
@@ -52,11 +53,22 @@ for (const bft of [5, 6, 7]) {
     `στα ${bft} Μποφόρ αφαιρέθηκε το «μην κολυμπήσεις» — η πόρτα του ανέμου έσπασε`);
 }
 
-// 3 — ΠΑΝΩ ΑΠΟ 0,6 μ. ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ, ΠΟΤΕ.
-check('3 μεγάλο νερό', relievesOverCaution({ ...calm, seaAtShoreM: 0.6, departingSea: true }) === false,
-  'ανακουφίστηκε με 0,60 μ. στην ακτή — το κατώφλι είναι «κάτω από 0,6»');
-check('3 λίγο κάτω', relievesOverCaution({ ...calm, seaAtShoreM: 0.59 }) === true,
-  'δεν ανακουφίστηκε με 0,59 μ. — το κατώφλι μετακινήθηκε');
+// 3 — ΑΠΟ ΕΚΕΙ ΠΟΥ Η ΘΑΛΑΣΣΑ ΜΙΛΑΕΙ ΣΤΟ ΧΡΩΜΑ (SEA_STATE_AMBER_M), ΠΟΤΕ.
+// Το κατώφλι έπαψε να είναι ιδιωτικό 0,6 στις 23/08/2026: στο κενό 0,6–0,8 το χρώμα έλεγε
+// «ήρεμο» και η ετυμηγορία «μην κολυμπήσεις» (Λέσβος 24/08 10:00 — 16 παραλίες στο κενό).
+check('3 μεγάλο νερό', relievesOverCaution({ ...calm, seaAtShoreM: 0.8, departingSea: true }) === false,
+  'ανακουφίστηκε με 0,80 μ. στην ακτή — το κατώφλι είναι «κάτω από SEA_STATE_AMBER_M»');
+check('3 λίγο κάτω', relievesOverCaution({ ...calm, seaAtShoreM: 0.79 }) === true,
+  'δεν ανακουφίστηκε με 0,79 μ. — το κατώφλι μετακινήθηκε');
+// 3β — ΤΟ ΚΟΝΤΟΚΥΜΑ ΜΕΤΡΑΕΙ ΟΣΟ ΝΙΩΘΕΤΑΙ: η σύγκριση γίνεται σε swell-equivalent ύψος,
+// το ΙΔΙΟ νόμισμα με το χρώμα. 0,7 μ. @ 3 s νιώθει ~0,87 → καμία ανακούφιση· το ίδιο ύψος
+// @ 5 s νιώθει 0,70 → ανακούφιση. Χωρίς περίοδο, σκέτο ύψος (καμία επιδείνωση από άγνοια).
+check('3β κοντόκυμα', relievesOverCaution({ ...calm, seaAtShoreM: 0.7, periodS: 3 }) === false,
+  'ανακουφίστηκε με 0,7 μ. @ 3 s — η σύγκριση έπαψε να γίνεται σε swell-equivalent ύψος');
+check('3β μακρύ κύμα', relievesOverCaution({ ...calm, seaAtShoreM: 0.7, periodS: 5 }) === true,
+  'δεν ανακουφίστηκε με 0,7 μ. @ 5 s — η περίοδος επιδεινώνει αντί να διακρίνει');
+check('3β χωρίς περίοδο', relievesOverCaution({ ...calm, seaAtShoreM: 0.7 }) === true,
+  'δεν ανακουφίστηκε με 0,7 μ. χωρίς περίοδο — η άγνοια της περιόδου έγινε ποινή');
 
 // 4 — ΤΑ 4 ΜΠΟΦΟΡ ΜΟΝΟ ΜΕ ΜΕΤΡΗΜΕΝΗ ΑΠΟΔΕΙΞΗ. Το παλιό όριο μένει άθικτο χωρίς αυτήν.
 check('4 χωρίς απόδειξη', relievesOverCaution({ ...calm, beaufort: 4 }) === false,
@@ -83,9 +95,10 @@ for (const bad of [undefined, null, NaN, Infinity]) {
     `ανακουφίστηκε με beaufort=${String(bad)}`);
 }
 
-// 7 — ΤΑ ΚΑΤΩΦΛΙΑ ΕΙΝΑΙ ΑΥΤΑ ΠΟΥ ΜΕΤΡΗΘΗΚΑΝ.
-check('7 κατώφλι νερού', OVER_CAUTION_MAX_SHORE_WAVE_M === 0.6,
-  `το κατώφλι νερού είναι ${OVER_CAUTION_MAX_SHORE_WAVE_M} αντί για 0,6`);
+// 7 — ΤΑ ΚΑΤΩΦΛΙΑ ΕΙΝΑΙ ΑΥΤΑ ΠΟΥ ΜΕΤΡΗΘΗΚΑΝ — ΚΑΙ ΤΟ ΝΕΡΟ ΕΙΝΑΙ ΕΝΑ ΚΑΤΩΦΛΙ ΜΕ ΤΟ ΧΡΩΜΑ.
+check('7 κατώφλι νερού', OVER_CAUTION_MAX_SHORE_WAVE_M === SEA_STATE_AMBER_M,
+  `το κατώφλι νερού είναι ${OVER_CAUTION_MAX_SHORE_WAVE_M} αντί ίσο με SEA_STATE_AMBER_M `
+  + `(${SEA_STATE_AMBER_M}) — τα δύο συστήματα ξαναχώρισαν και το κενό 0,6–0,8 θα ξαναγεννηθεί`);
 check('7 ταβάνι ανέμου', OVER_CAUTION_MAX_BEAUFORT === 4,
   `το ταβάνι χωρίς απόδειξη είναι ${OVER_CAUTION_MAX_BEAUFORT} αντί για 4`);
 check('7 ταβάνι με απόδειξη', OVER_CAUTION_DEPARTING_SEA_MAX_BEAUFORT === 5,
@@ -110,6 +123,9 @@ check('καλωδίωση όχι το πέλαγος', !/seaAtShoreM:\s*effectiv
   'το `seaAtShoreM` παίρνει κατευθείαν το `effectiveWaveHeightM` — η θάλασσα του ανοιχτού');
 check('καλωδίωση απόδειξη', /departingSea:[\s\S]{0,200}shoreWaveFromDepartingSea/.test(call),
   'το ταβάνι των 4 Μποφόρ δεν κλειδώνεται στη μετρημένη απόδειξη');
+check('καλωδίωση περίοδος', /periodS:\s*seaStatePeriodS/.test(call),
+  'η κλήση δεν περνάει το `seaStatePeriodS` — το κατώφλι θα συγκρίνει ύψος ενώ το χρώμα '
+  + 'συγκρίνει swell-equivalent, και το κοντόκυμα θα παίρνει ανακούφιση που το χρώμα αρνείται');
 check('καλωδίωση ένα σκαλί',
   /isLightWindSmallSea && swimmingComfort === 'avoid_swimming'\)\s*\{\s*\n\s*swimmingComfort = 'caution';/.test(service),
   'η ανακούφιση δεν είναι πια «μόνο avoid_swimming → caution» — μπορεί να δώσει παραπάνω από ένα σκαλί');

@@ -2739,11 +2739,14 @@ export const calculateBeachScore = (
    * the over-caution the 05/08 finding warned about, arriving through the one door that is a sum
    * rather than a measurement.
    *
-   * So below meaningful wind, with under 0,6 m of water, the accumulation may still say «πρόσεχε»
-   * — it may not say «μην κολυμπήσεις». The two REAL doors are untouched: this cannot fire at
-   * 4 Bft or above, cannot fire over 0,6 m, and stands aside for an official warning, for a
-   * long-period swell (a 0,5 m ground swell dumps harder than its height) and for the rain rule
-   * below, which is allowed to overwrite the verdict after this point.
+   * So below meaningful wind, in water the colour ladder itself calls quiet, the accumulation may
+   * still say «πρόσεχε» — it may not say «μην κολυμπήσεις». The two REAL doors are untouched:
+   * this cannot fire at 4 Bft or above, cannot fire from the point the sea starts to speak in our
+   * own colour (SEA_STATE_AMBER_M, swell-equivalent — ΕΝΑ κατώφλι με το χρώμα από 23/08/2026, όχι
+   * το παλιό ιδιωτικό 0,6 που άφηνε το κενό 0,6–0,8 όπου η Λέσβος έχασε 16 παραλίες από τη
+   * λεζάντα), and stands aside for an official warning, for a long-period swell (a 0,5 m ground
+   * swell dumps harder than its height) and for the rain rule below, which is allowed to
+   * overwrite the verdict after this point.
    */
   const isLightWindSmallSea = relievesOverCaution({
     beaufort: baseBeaufort,
@@ -2761,6 +2764,11 @@ export const calculateBeachScore = (
      * ερώτημα «πόσο νερό έχει εδώ».
      */
     seaAtShoreM,
+    // Η περίοδος πίσω από το ίδιο νερό: το κατώφλι της ανακούφισης συγκρίνεται σε
+    // swell-equivalent ύψος (23/08/2026), το ίδιο νόμισμα στο οποίο το χρώμα διαβάζει το
+    // SEA_STATE_AMBER_M — αλλιώς ένα κοντόκυμα θα έπαιρνε ανακούφιση εκεί που το χρώμα ήδη λέει
+    // ότι η θάλασσα μιλάει.
+    periodS: seaStatePeriodS,
     // Μόνο η ΜΕΤΡΗΜΕΝΗ απόδειξη ανεβάζει το ταβάνι ανέμου στα 4 Μποφόρ — όχι η γεωμετρική εικασία.
     departingSea: shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM,
     officialWarning: officialWarningOverride,
