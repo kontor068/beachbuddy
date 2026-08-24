@@ -1,0 +1,4981 @@
+{
+  "generatedAt": "2026-08-24T09:24:50.131Z",
+  "params": {
+    "OPEN_FETCH_KM": 10,
+    "CORRIDOR_HALF_DEG": 22.5,
+    "DECAY_DEG": 45,
+    "KD_AT_EDGE": 0.5,
+    "KD_FLOOR": 0.1
+  },
+  "beaches": 2870,
+  "combosGranted": 13684,
+  "combosAll": 22984,
+  "bucketCount": {
+    "άκρη σκιάς": 3048,
+    "βαθιά σκιά": 8292,
+    "διάδρομος": 558,
+    "κλειστός": 1786
+  },
+  "leakBeaches": [
+    {
+      "beachId": 417,
+      "name": "Lemos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SW(grazing)",
+        "W(grazing)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 0,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2376,
+      "name": "Κορακιά",
+      "region": "south-aegean-lipsi",
+      "corridorDirs": [
+        "E(grazing)",
+        "SE(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 131,
+      "name": "Διακόφτι",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "SE(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 327,
+      "name": "Πουριά",
+      "region": "central-greece-skyros",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 328,
+      "name": "Γυρίσματα",
+      "region": "central-greece-skyros",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 333,
+      "name": "Αγαλίπα",
+      "region": "central-greece-skyros",
+      "corridorDirs": [
+        "N(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 429,
+      "name": "Myti",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(grazing)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 0,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 442,
+      "name": "Sani Hill",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "S(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 446,
+      "name": "Τηγανιά",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "N(σιωπή)",
+        "S(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 448,
+      "name": "Tourkolimnionas",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NE(σιωπή)",
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 473,
+      "name": "Παραλία Αυλάκι",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 547,
+      "name": "Παραλία Αγίου Χαραλάμπους",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 641,
+      "name": "Κοκκίνη Χάνι",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 643,
+      "name": "Ανάληψη",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3033,
+      "name": "Χερσόνησος Αγκισαράς",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 617,
+      "name": "Λίβας",
+      "region": "crete-gavdos",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 619,
+      "name": "Λαβρακάς",
+      "region": "crete-gavdos",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3163,
+      "name": "Κάτω Καρυώτες",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3166,
+      "name": "Παλαιόπολη",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3167,
+      "name": "Φονιάς",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 841,
+      "name": "Καρνάγιο",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "E(grazing)",
+        "SE(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 883,
+      "name": "Παραλία Ριζών",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 884,
+      "name": "Λιμνιώνας",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 886,
+      "name": "Παραλία Βράχος - Λούτσα",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1044,
+      "name": "Φύκι",
+      "region": "ionian-islands-antipaxos",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3090,
+      "name": "Σπιάντζα στα Σφουγγάρια",
+      "region": "ionian-islands-antipaxos",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 991,
+      "name": "Παραλία Κληματιά",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "S(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 996,
+      "name": "Παραλία Λογγάς",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NE(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1059,
+      "name": "Μπραγκίνι",
+      "region": "ionian-islands-erikoussa",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1157,
+      "name": "Γιαλός",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1159,
+      "name": "Εγκρεμνοί",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)",
+        "S(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1212,
+      "name": "Παραλία Μαραθονήσι",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1213,
+      "name": "Παραλία Πλακάκι",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "SE(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1422,
+      "name": "Αλονίτσι",
+      "region": "north-aegean-agios-efstratios",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1429,
+      "name": "Φτελιό",
+      "region": "north-aegean-agios-efstratios",
+      "corridorDirs": [
+        "S(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3082,
+      "name": "Αγ.Ελένη",
+      "region": "north-aegean-chios",
+      "corridorDirs": [
+        "N(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1302,
+      "name": "Νας",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "NE(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1304,
+      "name": "Του Κοντού το Λάκωμα",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "N(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1306,
+      "name": "Πριόνι",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "NE(σιωπή)",
+        "SW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1393,
+      "name": "Άσπρος Κάβος",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "S(grazing)",
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1412,
+      "name": "Παραλία Κάμπου Βουρλιωτών",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1527,
+      "name": "Λευκή",
+      "region": "peloponnese-korinthia-mainland",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1576,
+      "name": "Παραλία Ελιάς",
+      "region": "peloponnese-lakonia-mainland",
+      "corridorDirs": [
+        "S(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1673,
+      "name": "Έξω Ρούκουνας",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1702,
+      "name": "Κολώνα",
+      "region": "south-aegean-andros",
+      "corridorDirs": [
+        "SW(grazing)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3073,
+      "name": "Koutsomiti",
+      "region": "south-aegean-astypalaia",
+      "corridorDirs": [
+        "S(σιωπή)",
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1793,
+      "name": "Σαπουνόχωμα",
+      "region": "south-aegean-ios",
+      "corridorDirs": [
+        "SE(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2290,
+      "name": "Μακριά",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "N(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2295,
+      "name": "Ποντικάλια",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "N(σιωπή)",
+        "S(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2314,
+      "name": "Παραλία Διακόφτης",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "NE(grazing)",
+        "E(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2487,
+      "name": "Μικρό Αυλάκι",
+      "region": "south-aegean-kasos",
+      "corridorDirs": [
+        "W(σιωπή)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2339,
+      "name": "Λιμνιώνας",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "W(grazing)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2353,
+      "name": "Παραλία Τρυπητή",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SE(σιωπή)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1862,
+      "name": "Άγιος Σώστης",
+      "region": "south-aegean-kythnos",
+      "corridorDirs": [
+        "NE(grazing)",
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1883,
+      "name": "Μαρκουλη",
+      "region": "south-aegean-kythnos",
+      "corridorDirs": [
+        "NE(grazing)",
+        "E(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2008,
+      "name": "Μικρό Αλυκό",
+      "region": "south-aegean-naxos",
+      "corridorDirs": [
+        "W(grazing)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2457,
+      "name": "Πρασονήσι",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "W(grazing)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 0,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2057,
+      "name": "Άγιος Γεώργιος",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "NE(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2061,
+      "name": "Καμάρι",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "N(grazing)",
+        "S(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2064,
+      "name": "Μονόλιθος",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "SE(σιωπή)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2067,
+      "name": "Περίβολος",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "NE(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2068,
+      "name": "Περίσσα",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "NE(grazing)",
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2480,
+      "name": "Παραλία Κοκκίνι",
+      "region": "south-aegean-tilos",
+      "corridorDirs": [
+        "N(grazing)",
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2608,
+      "name": "Σπαρτίνες",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "E(σιωπή)",
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2712,
+      "name": "Παραλία Μπάνικας",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)",
+        "NW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3155,
+      "name": "Οβριός",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(grazing)",
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2521,
+      "name": "Drepano Kite Surfer's Paradise Beach",
+      "region": "west-greece-aetolia-acarnania-mainland",
+      "corridorDirs": [
+        "E(grazing)",
+        "W(σιωπή)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 95,
+      "name": "Απόνησος",
+      "region": "attica-agistri",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 100,
+      "name": "Χαλικιάδα",
+      "region": "attica-agistri",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 4,
+      "name": "Α' Πλαζ Αλίμου «Στολίδι»",
+      "region": "attica-athens-area-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 23,
+      "name": "Λιμανάκια Βουλιαγμένης Γυμνιστών",
+      "region": "attica-athens-area-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 35,
+      "name": "Όρμος Ληδάκι",
+      "region": "attica-east-attica-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 55,
+      "name": "Αρμυρίκια",
+      "region": "attica-east-attica-mainland",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 102,
+      "name": "Αυλάκι",
+      "region": "attica-hydra",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 109,
+      "name": "Σπηλιά",
+      "region": "attica-hydra",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 112,
+      "name": "Αμμούτσι",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 121,
+      "name": "Παραλια Φυρή Άμμος",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 123,
+      "name": "Παραλία Λορέντζος",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 138,
+      "name": "Κομπονάδα",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 148,
+      "name": "Στενό Αυλάκι",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 149,
+      "name": "Παραλία Χαλκός",
+      "region": "attica-kythira",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 154,
+      "name": "Αλυκή",
+      "region": "attica-poros",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 162,
+      "name": "Πλάκα",
+      "region": "attica-poros",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 170,
+      "name": "Βρέλλος",
+      "region": "attica-spetses",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 171,
+      "name": "Καΐκι",
+      "region": "attica-spetses",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 174,
+      "name": "Λιγονέρι",
+      "region": "attica-spetses",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 3168,
+      "name": "Βαρδάρι",
+      "region": "attica-west-attica-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 206,
+      "name": "Ανεμάκι",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 213,
+      "name": "Βύθουρη",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 215,
+      "name": "Γαλατάκι",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 234,
+      "name": "Κοκκινιάς",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 245,
+      "name": "Λιβαδάκια",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 248,
+      "name": "Λιμνιωνάκι",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 286,
+      "name": "Πετάλη",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 298,
+      "name": "Σγούρα",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 300,
+      "name": "Σούρζα Μπουτ",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 311,
+      "name": "Χιλιαδού",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 313,
+      "name": "Χρυσή ακτή",
+      "region": "central-greece-evia",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 344,
+      "name": "Κόκκινα Χαλίκια",
+      "region": "central-greece-fokida-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3120,
+      "name": "Παραλία Κίρρα",
+      "region": "central-greece-fokida-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 369,
+      "name": "Σχοινιά",
+      "region": "central-greece-fthiotida-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 370,
+      "name": "Φλοίσβος Πλαζ",
+      "region": "central-greece-fthiotida-mainland",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 386,
+      "name": "Blue Dream",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 388,
+      "name": "Castello",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 397,
+      "name": "Golden",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 408,
+      "name": "Kavouri",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 409,
+      "name": "Kavourotrypes",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 414,
+      "name": "Kryfos Paradeisos",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 415,
+      "name": "Lagomandra",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 422,
+      "name": "Λιόση",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 427,
+      "name": "Mileniko",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 430,
+      "name": "Oneiro",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 434,
+      "name": "Pefkochori",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 435,
+      "name": "Παραλία Πλάγια-Φλογητά",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 438,
+      "name": "Porfi",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 439,
+      "name": "Porto Elea",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 444,
+      "name": "Μικρή Παραλία",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 452,
+      "name": "Varkes",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 453,
+      "name": "Voreas Limani",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 457,
+      "name": "Παραλία Βεργιάς",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 458,
+      "name": "Παραλία Νέας Ηράκλειας - Sahara",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 459,
+      "name": "Παραλία Νέας Καλλικράτειας",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 472,
+      "name": "Παραλία Ελάνη",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 476,
+      "name": "Παραλία Αρμενιστής",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 477,
+      "name": "Παραλία Ποσείδι",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 485,
+      "name": "Παραλία Τρίμη",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 494,
+      "name": "Παραλία Μπανάνα",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3088,
+      "name": "Μυκονιάτικα",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3122,
+      "name": "Παραλία Κρυοπηγή",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3123,
+      "name": "Παραλία Μουριές",
+      "region": "central-macedonia-halkidiki-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 505,
+      "name": "Παραλία Λεπτοκαρυάς",
+      "region": "central-macedonia-pieria-mainland",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 506,
+      "name": "Ολυμπιακή Ακτή",
+      "region": "central-macedonia-pieria-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 507,
+      "name": "Panteleimonas",
+      "region": "central-macedonia-pieria-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 510,
+      "name": "Σκοτίνα",
+      "region": "central-macedonia-pieria-mainland",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3097,
+      "name": "Άμμος (Αλυκή Κίτρους, Πιερία)",
+      "region": "central-macedonia-pieria-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 512,
+      "name": "Ακτή Σιάμο",
+      "region": "central-macedonia-thessaloniki-area",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 513,
+      "name": "Παραλία Αγίας Τριάδας",
+      "region": "central-macedonia-thessaloniki-area",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 527,
+      "name": "Άργιλος",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 542,
+      "name": "Μέθεξις",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 544,
+      "name": "Νέα Χώρα",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 551,
+      "name": "Παραλία Δώματα",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 552,
+      "name": "Παραλία Θανάσης",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 557,
+      "name": "Παραλία Λάκκοι",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 564,
+      "name": "Παραλία του Μάλεμε",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 567,
+      "name": "Παραλία Τρυπητής",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 568,
+      "name": "Παραλία Φραγκοκάστελλου",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 570,
+      "name": "Παραλία Ψηλός Βόλακας",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 571,
+      "name": "Παραλίες Βάταλου",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 576,
+      "name": "Σεϊτάν Λιμάνι",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 582,
+      "name": "Τραχήλι",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 583,
+      "name": "Φιλάκι",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 585,
+      "name": "Afrata",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 589,
+      "name": "Ammos",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 595,
+      "name": "Ελαφονήσι",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 596,
+      "name": "Φαλάσαρνα",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 609,
+      "name": "Tavronitis",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 610,
+      "name": "Timios Stavros beach",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3130,
+      "name": "Παραλία Λιβάδια",
+      "region": "crete-crete-chania",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 620,
+      "name": "Afrathia",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 623,
+      "name": "Καραβόβρυση",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 628,
+      "name": "Πόρος",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 629,
+      "name": "Ψιλή Άμμος",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 633,
+      "name": "Αμμουδάρα",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 634,
+      "name": "Καρτερός",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 642,
+      "name": "Γούβες",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 648,
+      "name": "Παραλία Κρασά",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 650,
+      "name": "Ληστής",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 652,
+      "name": "Κουδουμάς",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 657,
+      "name": "Μάχα",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 658,
+      "name": "Λεπριάς",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 659,
+      "name": "Κατάρτι",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 662,
+      "name": "Στενά",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 668,
+      "name": "Χρυσόστομος",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 670,
+      "name": "Σαραντάρι",
+      "region": "crete-crete-heraklion",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 716,
+      "name": "Αγία Φωτιά",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 718,
+      "name": "Αθερίνα",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 719,
+      "name": "Αλατσολίμνη",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 726,
+      "name": "Άσπες",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 727,
+      "name": "Αυλάκι",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 742,
+      "name": "Καλάμι",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 755,
+      "name": "Μπάλος Ελούντας",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 759,
+      "name": "Παραλία Βλυχάδια",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 761,
+      "name": "Παραλία της Γριάς το Πήδημα",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3128,
+      "name": "Παραλία Καλλιθέα",
+      "region": "crete-crete-lasithi",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 679,
+      "name": "Καλυψώ",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 680,
+      "name": "Καραβοστάσι",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 682,
+      "name": "Γλίμα",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 690,
+      "name": "Παραλία Ανατολικά",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 695,
+      "name": "Παραλία Κατσούνι",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 696,
+      "name": "Παραλία Κεφάλα",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 697,
+      "name": "Παραλία Ρεθύμνου",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 698,
+      "name": "Παχειά Άμμος",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 699,
+      "name": "Περιστερές",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 702,
+      "name": "Πολύριζος",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 707,
+      "name": "Σπήλιες",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 709,
+      "name": "Σχοινάρια",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3019,
+      "name": "Αγία Γαλήνη",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3089,
+      "name": "Sfagia",
+      "region": "crete-crete-rethymno",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 618,
+      "name": "Άγιος Ιωάννης",
+      "region": "crete-gavdos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 775,
+      "name": "Άγιος Γεώργιος Μάκρης",
+      "region": "east-macedonia-and-thrace-evros-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 776,
+      "name": "Παραλία Νέας Χιλής",
+      "region": "east-macedonia-and-thrace-evros-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 777,
+      "name": "Δίκελλα - Αγία Παρασκευή",
+      "region": "east-macedonia-and-thrace-evros-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 778,
+      "name": "Παραλία Αλεξανδρούπολης",
+      "region": "east-macedonia-and-thrace-evros-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 791,
+      "name": "Παραλία Κάριανης",
+      "region": "east-macedonia-and-thrace-kavala-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 793,
+      "name": "Παραλία Οφρυνίου",
+      "region": "east-macedonia-and-thrace-kavala-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3066,
+      "name": "Παραλία Φώλιας",
+      "region": "east-macedonia-and-thrace-kavala-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 797,
+      "name": "Μαρμαρίτσα",
+      "region": "east-macedonia-and-thrace-rodopi-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 800,
+      "name": "Σύναξη",
+      "region": "east-macedonia-and-thrace-rodopi-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3034,
+      "name": "Κομοτηνή Παραλία Κρυονερίου Μαρώνεια",
+      "region": "east-macedonia-and-thrace-rodopi-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 779,
+      "name": "Βάτος",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3160,
+      "name": "Γυαλί",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3164,
+      "name": "Κήπος",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3165,
+      "name": "Λάκκωμα",
+      "region": "east-macedonia-and-thrace-samothraki",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 814,
+      "name": "Λιμενάρια",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 815,
+      "name": "Μεταλλεία",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 825,
+      "name": "Σκίδια",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 829,
+      "name": "Ψιλή Άμμος",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 832,
+      "name": "Ilio Mare",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 839,
+      "name": "Γλυφονέρι",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 848,
+      "name": "Παχύς",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 852,
+      "name": "Σκάλα Πρίνου",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 854,
+      "name": "Σκάλα Σωτήρος",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3004,
+      "name": "Γκιόλα",
+      "region": "east-macedonia-and-thrace-thasos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 858,
+      "name": "Παραλία Μυρωδάτου",
+      "region": "east-macedonia-and-thrace-xanthi-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 862,
+      "name": "Artolithia Beach",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 863,
+      "name": "Παραλία Καναλίου",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 867,
+      "name": "Αλωνάκι Πρέβεζας",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 870,
+      "name": "Μονολίθι",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 881,
+      "name": "Παραλία Μύτικα",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 882,
+      "name": "Παραλία Καστροσυκιάς",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 885,
+      "name": "Παραλία Λυγιάς",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 887,
+      "name": "Κερέντζα",
+      "region": "epirus-preveza-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1049,
+      "name": "Ροδοβάνι",
+      "region": "ionian-islands-antipaxos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1054,
+      "name": "Μεσοβρίκα",
+      "region": "ionian-islands-antipaxos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1055,
+      "name": "Βρίκα",
+      "region": "ionian-islands-antipaxos",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 934,
+      "name": "Παραλία Άγιος Πέτρος (Λευκίμμη)",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 940,
+      "name": "Issos Beach",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 944,
+      "name": "Karavi Beach",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 947,
+      "name": "Marathias beach",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 950,
+      "name": "Παραμόνας",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 951,
+      "name": "Robolla Beach",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 952,
+      "name": "Santa Barbara beach",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 954,
+      "name": "Άγιος Στέφανος",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 962,
+      "name": "Κάβος",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 964,
+      "name": "Καμάρι",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 970,
+      "name": "Κρούζα",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 990,
+      "name": "Παραλία Κάνουλας",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 993,
+      "name": "Παραλία Λίμνη",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 998,
+      "name": "Παραλία Μπούκα",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1003,
+      "name": "Παραλία Στέλάρι",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1010,
+      "name": "Παραλία Χαλικούνα",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3078,
+      "name": "Βουβαλομάντρια",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3080,
+      "name": "Παραλία Χουχούλιο",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3102,
+      "name": "Παραλία Άγιος Γόρδης (Λευκίμμη)",
+      "region": "ionian-islands-corfu",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1230,
+      "name": "Παραλία Γιδάκι",
+      "region": "ionian-islands-ithaca",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1232,
+      "name": "Κουτούπι",
+      "region": "ionian-islands-ithaca",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1062,
+      "name": "Αμίδι",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1063,
+      "name": "Νότια Άβυθος Γυμνιστών",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1066,
+      "name": "Δαφνούδι",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1071,
+      "name": "Παραλία Σκάλας",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1072,
+      "name": "Μούντα (γυμνιστών)",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1074,
+      "name": "Πεσσάδα",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1075,
+      "name": "Σίσσια",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1084,
+      "name": "Αγία Ελένη",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1091,
+      "name": "Βραχινάρι",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1094,
+      "name": "Κακό Λαγκάδι",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1105,
+      "name": "Λεύκα",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1106,
+      "name": "Λιμένια",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1109,
+      "name": "Λυγιά Πεσσάδας",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1112,
+      "name": "Μούντα",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1114,
+      "name": "Νιψιάς",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1118,
+      "name": "Παραλία Αλατιές",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1121,
+      "name": "Παραλία Κόλπος Κορμοράνων",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1122,
+      "name": "Παραλία Παλιολινός",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1125,
+      "name": "Πλατιά Άμμος",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1128,
+      "name": "Σπίθι",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1129,
+      "name": "Σπαρτιάς",
+      "region": "ionian-islands-kefalonia",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1150,
+      "name": "Αμμόγλωσσα",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1152,
+      "name": "Ανώνυμη Παραλία Κομηλιό",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1156,
+      "name": "Γάϊδαρος",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1160,
+      "name": "Κάθισμα",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1161,
+      "name": "Κάστρο",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1162,
+      "name": "Καβαλικευτά",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1167,
+      "name": "Μύλος",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1169,
+      "name": "Πευκούλια",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1172,
+      "name": "Σκάλα Γιαλού",
+      "region": "ionian-islands-lefkada",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1061,
+      "name": "Πορτέλο",
+      "region": "ionian-islands-mathraki",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1022,
+      "name": "Αυτιά Γαϊδάρου",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1025,
+      "name": "Γλυφάδα",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1026,
+      "name": "Δεύτερη Σπιάντζα",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1028,
+      "name": "Κήπος",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1030,
+      "name": "Κανόνι",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1032,
+      "name": "Κλωνί Γουλή",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1040,
+      "name": "Πλάνος",
+      "region": "ionian-islands-paxos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1188,
+      "name": "Κορακονήσι",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1194,
+      "name": "Πόρτο Ρόξα",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1195,
+      "name": "Άγιος Νικόλαος Βασιλικού",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1202,
+      "name": "Βουρδέρη",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1207,
+      "name": "Μεγάλη Μυζήθρα",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1217,
+      "name": "Πόρτο Ζόρο",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1218,
+      "name": "Πόρτο Καμίνια",
+      "region": "ionian-islands-zakynthos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1419,
+      "name": "Άγιος Δημήτριος",
+      "region": "north-aegean-agios-efstratios",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1426,
+      "name": "Τρηγάρη",
+      "region": "north-aegean-agios-efstratios",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1430,
+      "name": "Ροδοκάλι",
+      "region": "north-aegean-agios-efstratios",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1247,
+      "name": "Παραλία Πυργιά (βόρειος όρμος)",
+      "region": "north-aegean-chios",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1249,
+      "name": "Λιλικάς",
+      "region": "north-aegean-chios",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1269,
+      "name": "Παραλία Κάμπια",
+      "region": "north-aegean-chios",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1273,
+      "name": "Παραλία Μυρσινίδι",
+      "region": "north-aegean-chios",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1293,
+      "name": "Άρης Ποταμός",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1303,
+      "name": "Παραλία Ξυλοσύρτη",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1307,
+      "name": "Σευχέλες",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1309,
+      "name": "Τράχηλα",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1310,
+      "name": "Φυρόδη",
+      "region": "north-aegean-ikaria",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1431,
+      "name": "Αυλώνας",
+      "region": "north-aegean-lemnos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1469,
+      "name": "Φαρακλού",
+      "region": "north-aegean-lemnos",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1324,
+      "name": "Αμμουδέλι",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1328,
+      "name": "Αυλάκι",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1331,
+      "name": "Βατραχιά",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1332,
+      "name": "Ελεύκος",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1336,
+      "name": "Κοχύλια",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1346,
+      "name": "Μπαλίνη",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1351,
+      "name": "Πάτος",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1364,
+      "name": "Ποδαράς",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1374,
+      "name": "Φυκιότρυπα",
+      "region": "north-aegean-lesvos",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1385,
+      "name": "Κοκκάρι",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1389,
+      "name": "Πλατάνα",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1395,
+      "name": "Αράπης",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1398,
+      "name": "Κακόρεμα",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1402,
+      "name": "Λεμονάκια",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1403,
+      "name": "Λιβαδάκι",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1407,
+      "name": "Μικρό Σεϊτάνι",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1416,
+      "name": "Τσαμαδού",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3136,
+      "name": "Παραλία Λέκκα",
+      "region": "north-aegean-samos",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1534,
+      "name": "Παραλία Λυκοποριάς",
+      "region": "peloponnese-korinthia-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1541,
+      "name": "Συκιά",
+      "region": "peloponnese-korinthia-mainland",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1596,
+      "name": "Πύλιζα",
+      "region": "peloponnese-lakonia-mainland",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1604,
+      "name": "Άγιος Νικόλαος",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1609,
+      "name": "Βουρλιά",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1624,
+      "name": "Λιβάδια",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1635,
+      "name": "Παραλία Καλαμίτσι",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1636,
+      "name": "Παραλία Κολονίδες",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1647,
+      "name": "Πετροχώρι",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1649,
+      "name": "Σέλιτσα",
+      "region": "peloponnese-messinia-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2225,
+      "name": "Βαθύ Πηγάδι",
+      "region": "south-aegean-agathonisi",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1657,
+      "name": "Αγία Άννα",
+      "region": "south-aegean-amorgos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1660,
+      "name": "Καμπί",
+      "region": "south-aegean-amorgos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1672,
+      "name": "Βαγιά",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1676,
+      "name": "Κατσούνι",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1679,
+      "name": "Μέγας Ποταμός",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1680,
+      "name": "Μικρός Ρούκουνας",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1681,
+      "name": "Ξετρυπητή",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1683,
+      "name": "Πράσσα",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1684,
+      "name": "Ρούκουνας",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1685,
+      "name": "Φλαμουρού",
+      "region": "south-aegean-anafi",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1693,
+      "name": "Βιτάλι",
+      "region": "south-aegean-andros",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1728,
+      "name": "Ακτή Παναγίας Φανερωμένης",
+      "region": "south-aegean-antiparos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2499,
+      "name": "Λιμνάρι",
+      "region": "south-aegean-arki",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1746,
+      "name": "Κάτεργο",
+      "region": "south-aegean-folegandros",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1748,
+      "name": "Λατινάκι",
+      "region": "south-aegean-folegandros",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1749,
+      "name": "Λιβαδάκι",
+      "region": "south-aegean-folegandros",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1753,
+      "name": "Πουντάκι",
+      "region": "south-aegean-folegandros",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1755,
+      "name": "Foniadiko",
+      "region": "south-aegean-ios",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1781,
+      "name": "Νεράκι",
+      "region": "south-aegean-ios",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1790,
+      "name": "Πλάκες",
+      "region": "south-aegean-ios",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1794,
+      "name": "Σοφιάς Αυλάκι",
+      "region": "south-aegean-ios",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2274,
+      "name": "Αμμοοπή",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2279,
+      "name": "Φορόκλι",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2280,
+      "name": "Φίσσες",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2281,
+      "name": "Γιαλού Χωράφι",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2289,
+      "name": "Λάλα",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2291,
+      "name": "Νάτι",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2293,
+      "name": "Λιμάνι Παναγιάς",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2300,
+      "name": "Όψη",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3182,
+      "name": "Διαφάνι",
+      "region": "south-aegean-karpathos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2486,
+      "name": "Χοχλάκια",
+      "region": "south-aegean-kasos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2489,
+      "name": "Αμμούα",
+      "region": "south-aegean-kasos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1810,
+      "name": "Καληδονύχι",
+      "region": "south-aegean-kea",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 1811,
+      "name": "Καλησκιά",
+      "region": "south-aegean-kea",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1819,
+      "name": "Μαβιά",
+      "region": "south-aegean-kea",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1830,
+      "name": "Στέφα",
+      "region": "south-aegean-kea",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2325,
+      "name": "Λακιτήρα",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2332,
+      "name": "Πολέμι / Magic Beach",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2333,
+      "name": "Παραλία Δαίδαλος",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2336,
+      "name": "Tropical",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2337,
+      "name": "Θερμά",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2342,
+      "name": "Παραλία Άγιος Φωκάς",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2348,
+      "name": "Παραλία Καμήλα",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2349,
+      "name": "Παραλία Καρνάγιο",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2351,
+      "name": "Παραλία Πασχάλη",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2352,
+      "name": "Παραλία Τρούλος",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2354,
+      "name": "Προτοκάραβος",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2355,
+      "name": "Φάρος",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2357,
+      "name": "Όρμος Μαστιχάρι",
+      "region": "south-aegean-kos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2197,
+      "name": "Πλατιά Πούντα (Ιταλίδα)",
+      "region": "south-aegean-koufonisia",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2207,
+      "name": "Πόρτα",
+      "region": "south-aegean-koufonisia",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3002,
+      "name": "Γάλα",
+      "region": "south-aegean-koufonisia",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1875,
+      "name": "Κακή Μαρία",
+      "region": "south-aegean-kythnos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2360,
+      "name": "Κιούρα",
+      "region": "south-aegean-leros",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2370,
+      "name": "Άγιος Νικόλαος",
+      "region": "south-aegean-lipsi",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2372,
+      "name": "Καμάρες",
+      "region": "south-aegean-lipsi",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2384,
+      "name": "Στίφη",
+      "region": "south-aegean-lipsi",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1906,
+      "name": "Θειορυχείο",
+      "region": "south-aegean-milos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1907,
+      "name": "Κάλαμος",
+      "region": "south-aegean-milos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1956,
+      "name": "Κάτω Τηγάνι",
+      "region": "south-aegean-mykonos",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1972,
+      "name": "Τηγάνι",
+      "region": "south-aegean-mykonos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1974,
+      "name": "Τσαγκάρη",
+      "region": "south-aegean-mykonos",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1988,
+      "name": "Αμμίτης",
+      "region": "south-aegean-naxos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 1991,
+      "name": "Βίντζι",
+      "region": "south-aegean-naxos",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2016,
+      "name": "Χίλια Βρύση",
+      "region": "south-aegean-naxos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3178,
+      "name": "Φαρακλό",
+      "region": "south-aegean-naxos",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2387,
+      "name": "Παχιά Άμμος",
+      "region": "south-aegean-nisyros",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2023,
+      "name": "Αμπελάς",
+      "region": "south-aegean-paros",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2404,
+      "name": "Παραλία Στεγνά (Grande Blue)",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 2405,
+      "name": "Παραλία Κρεμαστής",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2406,
+      "name": "Παραλία Καλλιθέας (Nicolas)",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2407,
+      "name": "Παραλία Καλλιθέας (Oasis)",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2408,
+      "name": "Παραλία Καλλιθέας (Tassos)",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2415,
+      "name": "Παραλία Έλλη",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2423,
+      "name": "Παραλία Καθαρά",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2433,
+      "name": "Παραλία Μάσαρη",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2435,
+      "name": "Παραλία Στεγνά",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2436,
+      "name": "Παραλία Τραουνού",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2444,
+      "name": "Παραλία Παλλάς",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 2448,
+      "name": "Παραλία Γαλούνι",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2456,
+      "name": "Παραλία Καλοβρυάκι",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2461,
+      "name": "Παραλία Λάρδου",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2463,
+      "name": "Παραλία Καρδάμης",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3143,
+      "name": "Παραλία Ιαλυσός",
+      "region": "south-aegean-rhodes",
+      "corridorDirs": [
+        "W(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2058,
+      "name": "Βλυχάδα",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2059,
+      "name": "Βουρβούλος",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2060,
+      "name": "Γυμνιστική παραλία Βλυχάδα",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2065,
+      "name": "Μπαξές",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2069,
+      "name": "Κάθαρος",
+      "region": "south-aegean-santorini",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2091,
+      "name": "Πλατύς Γιαλός",
+      "region": "south-aegean-serifos",
+      "corridorDirs": [
+        "N(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 2105,
+      "name": "Πουλάτη",
+      "region": "south-aegean-sifnos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2107,
+      "name": "Σεράλια",
+      "region": "south-aegean-sifnos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2119,
+      "name": "Σαντορινέικα",
+      "region": "south-aegean-sikinos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2147,
+      "name": "Σαντορινιοί",
+      "region": "south-aegean-syros",
+      "corridorDirs": [
+        "E(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2150,
+      "name": "Αγιος Δημήτριος",
+      "region": "south-aegean-tinos",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2154,
+      "name": "Άγιος Σώστης",
+      "region": "south-aegean-tinos",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2160,
+      "name": "Βαθύ Υστερνίων",
+      "region": "south-aegean-tinos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2168,
+      "name": "Κουσίνια",
+      "region": "south-aegean-tinos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2184,
+      "name": "Σάντα Μαργαρίτα",
+      "region": "south-aegean-tinos",
+      "corridorDirs": [
+        "NE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2584,
+      "name": "Άγιος Πέτρος",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2594,
+      "name": "Κοκκινόκαστρο",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "S(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 2599,
+      "name": "Μουρτίτσα",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "SW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2603,
+      "name": "Παραλία Μεγάλος Μουρτιάς",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2607,
+      "name": "Ρουσούμ Γιαλός",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2609,
+      "name": "Σπλιθάρι",
+      "region": "thessaly-alonissos",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2727,
+      "name": "Παραλία Τσιλιγιώργος",
+      "region": "thessaly-larissa-coast-agia---kissavos",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2729,
+      "name": "Πλατιά Άμμος",
+      "region": "thessaly-larissa-coast-agia---kissavos",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2731,
+      "name": "Παραλία Παπακώστα",
+      "region": "thessaly-larissa-coast-agia---kissavos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2732,
+      "name": "Παραλία Παλιουριάς",
+      "region": "thessaly-larissa-coast-agia---kissavos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2736,
+      "name": "Παραλία Κουτσουπιάς",
+      "region": "thessaly-larissa-coast-agia---kissavos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2673,
+      "name": "Άγιοι Σαράντα",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2674,
+      "name": "Άγιος Ιωάννης (Ζαγορά)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2702,
+      "name": "Νταμούχαρη",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 1,
+      "grantedDirs": 4
+    },
+    {
+      "beachId": 2705,
+      "name": "Παρίσαινα",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2709,
+      "name": "Παραλία Κορνέλια",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2713,
+      "name": "Παραλία Μπριάνου",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2715,
+      "name": "Παραλία Τουρκοπηγής",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2716,
+      "name": "Πλάκα (Ζαγορά)",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2721,
+      "name": "Φακίστρα",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2725,
+      "name": "Χορευτό",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3084,
+      "name": "Καλαμιές",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "SE(grazing)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3094,
+      "name": "Σουτραλί",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3154,
+      "name": "Μικρή Πάου",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3158,
+      "name": "Πράσινη Άμμος",
+      "region": "thessaly-magnesia-mainland---pelion",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2615,
+      "name": "Καθαρίνα",
+      "region": "thessaly-skiathos",
+      "corridorDirs": [
+        "SE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2637,
+      "name": "Παραλία Κάστρου",
+      "region": "thessaly-skiathos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2643,
+      "name": "Παραλία Τσουγκριάς",
+      "region": "thessaly-skiathos",
+      "corridorDirs": [
+        "NE(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2646,
+      "name": "Τρούλος",
+      "region": "thessaly-skiathos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3085,
+      "name": "Παραλία Λαλάριας",
+      "region": "thessaly-skiathos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2649,
+      "name": "Άγιος Ιωάννης",
+      "region": "thessaly-skopelos",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2651,
+      "name": "Αρμενόπετρα",
+      "region": "thessaly-skopelos",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2652,
+      "name": "Βαθιάς",
+      "region": "thessaly-skopelos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2660,
+      "name": "Πλάκα",
+      "region": "thessaly-skopelos",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2665,
+      "name": "Χόβολο",
+      "region": "thessaly-skopelos",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2502,
+      "name": "Άκολη",
+      "region": "west-greece-achaia-mainland",
+      "corridorDirs": [
+        "E(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2505,
+      "name": "Διγελιώτικα",
+      "region": "west-greece-achaia-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2506,
+      "name": "Μικρό Γιανισκάρι",
+      "region": "west-greece-achaia-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3047,
+      "name": "ΠΔΕ Καστελόκαμπος",
+      "region": "west-greece-achaia-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3049,
+      "name": "ΠΔΕ Λακκόπετρα",
+      "region": "west-greece-achaia-mainland",
+      "corridorDirs": [
+        "NW(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2533,
+      "name": "Λούρος",
+      "region": "west-greece-aetolia-acarnania-mainland",
+      "corridorDirs": [
+        "W(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 3045,
+      "name": "Άκτιο Βόνιτσας Πάλαιρος",
+      "region": "west-greece-aetolia-acarnania-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2566,
+      "name": "Αρκούδι",
+      "region": "west-greece-ileia-mainland",
+      "corridorDirs": [
+        "NW(grazing)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2570,
+      "name": "Μέλισσα",
+      "region": "west-greece-ileia-mainland",
+      "corridorDirs": [
+        "N(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2572,
+      "name": "Παραλία Αγίας Μαρίνας",
+      "region": "west-greece-ileia-mainland",
+      "corridorDirs": [
+        "S(σιωπή)"
+      ],
+      "deepDirs": 2,
+      "grantedDirs": 5
+    },
+    {
+      "beachId": 2576,
+      "name": "Παραλία Λεβεντοχωρίου",
+      "region": "west-greece-ileia-mainland",
+      "corridorDirs": [
+        "SW(σιωπή)"
+      ],
+      "deepDirs": 3,
+      "grantedDirs": 5
+    }
+  ],
+  "deepOnlyCount": 854
+}
