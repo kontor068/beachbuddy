@@ -62,6 +62,7 @@ import { beachShoreBreaks } from '../utils/shoreBreak';
 import { resolveGeometricWaveCeiling } from '../utils/geometricWaveCeiling';
 import { interpolateSectorGeometry } from '../utils/windExposureModel';
 import { getBeachPopularityRating } from '../utils/beachRating';
+import { getDisplayedBeaufortRange } from '../utils/beaufortRange';
 
 /** Where the decision-grade sea state came from — for calibration, not for UI. */
 export type SeaStateSource = 'measured' | 'measured-capped' | 'modeled';
@@ -145,6 +146,13 @@ export interface BeachScore {
   /** The wind speed (km/h) this score was computed from — beach-cluster wind when available.
    *  Surfaced so cards can show a Beaufort that matches their (same-wind) wave value. */
   windSpeedKmph?: number;
+  /**
+   * Το ΑΝΩ άκρο του εύρους Μποφόρ που τυπώνει το hero («3–4 Μπφ»), ή undefined όταν οι ριπές της
+   * ώρας δεν βγάζουν ολόκληρο σκαλί (utils/beaufortRange, 25/08/2026). DISPLAY-ONLY: χρώμα,
+   * ετυμηγορία, κατάταξη, λέξη ανέμου και κατώφλια ριπής διαβάζουν το ΚΑΤΩ άκρο, δηλαδή
+   * getBeaufortLevel(windSpeedKmph) — ό,τι διάβαζαν και πριν.
+   */
+  displayedBeaufortHigh?: number;
   warnings?: WarningFlag[];
   confidence?: RecommendationConfidence;
   weatherSource?: WeatherSource;
@@ -1797,6 +1805,17 @@ export const calculateBeachScore = (
   // spread μετριόταν από τον ανεβασμένο μέσο και έβγαινε μικρότερο — το ίδιο σβήσιμο
   // προειδοποιήσεων που η κύρια διαδρομή είχε ήδη κλείσει (γρ. 324-331).
   const gustSpreadKmph = getWeatherGustSpreadKmph(weather, hourlyForecast, rawMeanWindKmphForSpread ?? windSpeedKmph);
+  // Το εύρος της ΟΘΟΝΗΣ («3–4 Μπφ»): η ΣΤΕΡΙΑΝΗ ριπή της ίδιας ώρας — όχι η μέγιστη της ημέρας
+  // που δίνει το getWeatherGustKmph — απέναντι στον ωμό στεριανό μέσο. Display-only· τίποτα
+  // παρακάτω δεν το διαβάζει. Βλ. utils/beaufortRange για τον κανόνα και το σάρωμα που τον όρισε.
+  const sameHourGustKmph = typeof weather.wind.gust === 'number' && Number.isFinite(weather.wind.gust)
+    ? weather.wind.gust * 3.6
+    : undefined;
+  const displayedBeaufortHigh = getDisplayedBeaufortRange({
+    speedKmh: windSpeedKmph,
+    gustKmh: sameHourGustKmph,
+    spreadBaseKmh: rawMeanWindKmphForSpread,
+  })?.high;
   const temp = getWeatherTemp(weather);
   const marine = weather.marine;
   const waveHeightM = marine?.waveHeightM;
@@ -2997,6 +3016,7 @@ export const calculateBeachScore = (
     seaStateSource,
     modeledWaveHeightM,
     windSpeedKmph,
+    displayedBeaufortHigh,
     warnings,
     confidence,
     weatherSource,

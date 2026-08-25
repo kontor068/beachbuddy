@@ -213,6 +213,8 @@ const normalizePayload = (body, event) => {
     conditions: {
       exposureLevel: clamp(conditions.exposureLevel, 80),
       beaufort: finiteNumber(conditions.beaufort),
+      // «3–4» ή «3» — ό,τι τύπωσε το hero (utils/beaufortRange). Μικρό, ελεύθερο κείμενο.
+      beaufortShown: clamp(conditions.beaufortShown, 12) || undefined,
       windDir: clamp(conditions.windDir, 40),
       date: clamp(conditions.date, 40),
       // A "had waves" report is only evidence if the mail says what sea WE claimed. Height
@@ -231,6 +233,14 @@ const normalizePayload = (body, event) => {
   };
 };
 
+/** Το κάτω άκρο, μόνο όταν το hero έδειξε εύρος και το κάτω άκρο διαφέρει από ό,τι διαβάστηκε. */
+const beaufortLowRowValue = (conditions) => (
+  conditions.beaufortShown !== undefined && conditions.beaufort !== undefined
+    && String(conditions.beaufort) !== conditions.beaufortShown
+    ? conditions.beaufort
+    : ''
+);
+
 const fieldLines = (payload) => [
   // A landing message has no beach attached — an "Unknown" row would be noise.
   ['Παραλία', payload.beachName || (payload.beachId ? `#${payload.beachId}` : '')],
@@ -244,7 +254,12 @@ const fieldLines = (payload) => [
   // πρωινή επίσκεψη έδειχνε μέχρι τώρα ΜΟΝΟ τη δεύτερη και διαβαζόταν λάθος ως βραδινή παρατήρηση.
   ['Πότε ήταν στην παραλία', formatObservedTiming(payload.conditions.observedTiming)],
   ['Ώρα που έστειλε το σχόλιο', formatHour(payload.conditions.hour)],
-  ['Μποφόρ', payload.conditions.beaufort ?? ''],
+  // ΔΥΟ ΓΡΑΜΜΕΣ ΟΤΑΝ ΔΙΑΦΕΡΟΥΝ (25/08/2026). Το hero τυπώνει «3–4 Μπφ» όταν οι ριπές της ώρας
+  // βγάζουν ολόκληρο σκαλί (utils/beaufortRange)· ένα «είχε πιο πολύ αέρα» πρέπει να κριθεί
+  // απέναντι στο άνω άκρο που είδε ο επισκέπτης, ενώ το χρώμα κρίθηκε από το κάτω. Ίδιο μοτίβο
+  // με τις δύο γραμμές κύματος πιο κάτω — η δεύτερη γραμμή μπαίνει ΜΟΝΟ όταν διαφέρουν.
+  ['Μποφόρ που έβλεπε', payload.conditions.beaufortShown ?? payload.conditions.beaufort ?? ''],
+  ['Μποφόρ (κάτω άκρο, κρίνει χρώμα)', beaufortLowRowValue(payload.conditions)],
   ['Κατεύθυνση ανέμου', payload.conditions.windDir],
   ['Έκθεση', payload.conditions.exposureLevel],
   // ΔΥΟ ΑΡΙΘΜΟΙ, ΟΧΙ ΕΝΑΣ (15/08/2026). Μέχρι σήμερα το mail έλεγε «Κύμα που δείχναμε» και

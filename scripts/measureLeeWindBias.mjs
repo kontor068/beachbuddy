@@ -36,8 +36,13 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
-import { execFileSync } from 'node:child_process';
 import { STATIONS, fetchStationHours } from './lib/windStations.mjs';
+// Η γεωμετρία ανάντη (DEM ακτίνες, δειγματολήπτης υψομέτρων, curl-fetch) ζει από 25/08/2026 στο
+// lib/upwindDem.mjs — ίδιος κώδικας, μοιρασμένος με τον κριτή meteosearch. Κανένα αντίγραφο εδώ.
+import {
+  SLOTS, STEP_DEG, SAMPLE_STEP_KM, SAMPLE_MAX_KM, SAMPLES_PER_RAY,
+  destinationPoint, fetchJson, createElevationSampler, upwindRelief,
+} from './lib/upwindDem.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
@@ -68,159 +73,15 @@ const ALL_WINDOWS = {
 const WINDOW_KEYS = (arg('windows') || Object.keys(ALL_WINDOWS).join(',')).split(',').filter(k => ALL_WINDOWS[k]);
 
 // ── Γεωμετρία ανάντη ────────────────────────────────────────────────────────────────────────
-// 24 γωνίες ανά 15° (ίδια ανάλυση με το windShadow των παραλιών), δείγματα DEM κάθε 400 μ. ως
-// τα 4 χλμ. ΓΙΑΤΙ 400 μ. ΚΑΙ ΟΧΙ 200: το μέγεθος που ζητάμε είναι «πόσο ψηλά φτάνει το έδαφος
-// ανάντη», δηλαδή ένα ΜΕΓΙΣΤΟ πάνω σε ράχη χιλιομετρικής κλίμακας — δεν χρειάζεται πυκνότητα
-// ακτογραμμής. Το 200 μ. έδινε 18.030 σημεία = 181 κλήσεις και χτυπούσε το ωριαίο όριο της
-// δωρεάν πόρτας υψομέτρου· το 400 μ. δίνει 7.230 σημεία = 73 κλήσεις.
-const SLOTS = 24;
-const STEP_DEG = 360 / SLOTS;
-const SAMPLE_STEP_KM = 0.4;
-const SAMPLE_MAX_KM = 4.0;
-const SAMPLES_PER_RAY = Math.round(SAMPLE_MAX_KM / SAMPLE_STEP_KM);
-const EARTH_RADIUS_KM = 6371;
-const geometryCachePath = path.join(root, '.tmp', 'lee-wind', 'station-upwind-dem.json');
-
-const toRad = d => (d * Math.PI) / 180;
-const toDeg = r => (r * 180) / Math.PI;
-
-/** Ίδιος τύπος με utils/geospatialExposureModel.destinationPoint (great-circle). */
-const destinationPoint = (from, bearingDeg, distanceKm) => {
-  const angular = distanceKm / EARTH_RADIUS_KM;
-  const bearing = toRad(bearingDeg);
-  const lat1 = toRad(from.lat);
-  const lon1 = toRad(from.lon);
-  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(angular) + Math.cos(lat1) * Math.sin(angular) * Math.cos(bearing));
-  const lon2 = lon1 + Math.atan2(
-    Math.sin(bearing) * Math.sin(angular) * Math.cos(lat1),
-    Math.cos(angular) - Math.sin(lat1) * Math.sin(lat2),
-  );
-  return { lat: toDeg(lat2), lon: ((toDeg(lon2) + 540) % 360) - 180 };
-};
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-/**
- * ΓΙΑΤΙ curl ΚΑΙ ΟΧΙ `fetch`. Το keep-alive του undici σε αυτό το περιβάλλον πέφτει σε
- * ConnectTimeout μετά από ~12 διαδοχικές κλήσεις στην ίδια πόρτα, ενώ το ίδιο URL με curl
- * περνάει 19/20. Η δειγματοληψία θέλει 180+ κλήσεις στη σειρά — με fetch δεν τελειώνει ποτέ.
- * Ο μακρύς κατάλογος συντεταγμένων πάει σε αρχείο (`--data @`) γιατί ξεπερνά το όριο μήκους
- * γραμμής όταν μπει στο URL.
- */
-const curlJson = (url, body) => {
-  // ΟΧΙ --retry-all-errors: σε HTTP 4xx το curl ξαναπροσπαθεί ΚΑΙ ΓΡΑΦΕΙ ΚΑΘΕ ΣΩΜΑ, οπότε το
-  // JSON.parse έβλεπε τέσσερα κολλημένα αντικείμενα και έσκαγε με «Unexpected non-whitespace».
-  const args = ['-s', '--max-time', '120', '--retry', '2', '--retry-delay', '2'];
-  if (body) args.push('-G', url, '--data', `@${body}`);
-  else args.push(url);
-  return execFileSync('curl', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
-};
-
-const fetchJson = async (url, body = null, tries = 6) => {
-  let last;
-  for (let i = 0; i < tries; i++) {
-    try {
-      const text = curlJson(url, body);
-      if (!text.trim()) throw new Error('κενή απάντηση');
-      const json = JSON.parse(text);
-      if (json?.error) {
-        const reason = json.reason || 'άγνωστο σφάλμα';
-        // Το ωριαίο όριο δεν περνάει με επανάληψη — σταματάμε καθαρά, με την πρόοδο σωσμένη.
-        if (/limit exceeded/i.test(reason)) {
-          const err = new Error(`ΟΡΙΟ ΠΟΡΤΑΣ: ${reason}`);
-          err.rateLimited = true;
-          throw err;
-        }
-        throw new Error(`πόρτα: ${reason}`);
-      }
-      return json;
-    } catch (e) {
-      last = e;
-      if (e.rateLimited || i === tries - 1) break;
-      await sleep(3000 * (i + 1));
-    }
-  }
-  throw last;
-};
-
-/**
- * Υψόμετρα σε δέσμες των 100 (το όριο της πόρτας elevation του Open-Meteo), με ενδιάμεσο
- * σώσιμο: 180 κλήσεις είναι αρκετές για να πέσει η γραμμή στη μέση και η δειγματοληψία δεν
- * έχει λόγο να ξαναρχίζει από το μηδέν.
- */
-const partialPath = path.join(root, '.tmp', 'lee-wind', 'elevations-partial.json');
-
-/**
- * ΔΥΟ ΠΗΓΕΣ DEM, ΓΙΑΤΙ Η ΠΡΩΤΗ ΚΛΕΙΔΩΝΕΙ. Η πόρτα υψομέτρου του Open-Meteo (ΤΟ ΙΔΙΟ DEM 90 μ.
- * που διαβάζει ο δάπεδος ριπής για να πει στεριά/θάλασσα) έχει ωριαίο όριο που 73 κλήσεις το
- * αγγίζουν. Το opentopodata/srtm30m είναι ανεξάρτητη πόρτα πάνω σε SRTM 30 μ. Ελέγχθηκε στο
- * σημείο-μάρτυρα (Βάι, ανάντη ΔΒΔ): 90/176 μ. έναντι 109/189 του Open-Meteo στα ίδια σημεία —
- * ίδιο βουνό, άλλη ανάλυση. Για το μέγεθος που ζητάμε («πόσο ψηλά φτάνει το έδαφος ανάντη»)
- * η διαφορά δεν αλλάζει τίποτα· δηλώνεται στα όρια της αναφοράς.
- */
+// 24 γωνίες ανά 15°, δείγματα DEM κάθε 400 μ. ως τα 4 χλμ — οι σταθερές και το γιατί, στο
+// lib/upwindDem.mjs. Η cache μένει ΑΚΡΙΒΩΣ όπου ήταν (.tmp/lee-wind), ώστε τα παράθυρα του
+// 24/08 να ξανατρέχουν χωρίς δίκτυο.
+const leeCacheDir = path.join(root, '.tmp', 'lee-wind');
+const geometryCachePath = path.join(leeCacheDir, 'station-upwind-dem.json');
 const DEM_SOURCE = arg('dem') || (API_KEY ? 'open-meteo' : 'opentopodata');
-
-const fetchElevationBatch = async (batch) => {
-  const query = path.join(path.dirname(partialPath), 'query.txt');
-  if (DEM_SOURCE === 'open-meteo') {
-    fs.writeFileSync(query, `latitude=${batch.map(p => p.lat.toFixed(5)).join(',')}`
-      + `&longitude=${batch.map(p => p.lon.toFixed(5)).join(',')}`
-      + (API_KEY ? `&apikey=${encodeURIComponent(API_KEY)}` : ''));
-    const json = await fetchJson(API_KEY
-      ? 'https://customer-api.open-meteo.com/v1/elevation'
-      : 'https://api.open-meteo.com/v1/elevation', query);
-    if (!Array.isArray(json?.elevation) || json.elevation.length !== batch.length) {
-      throw new Error(`η πόρτα υψομέτρου γύρισε ${json?.elevation?.length} για ${batch.length} σημεία`);
-    }
-    return json.elevation;
-  }
-  const locations = batch.map(p => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`).join('%7C');
-  const json = await fetchJson(`https://api.opentopodata.org/v1/srtm30m?locations=${locations}`);
-  if (!Array.isArray(json?.results) || json.results.length !== batch.length) {
-    throw new Error(`opentopodata: ${json?.results?.length} αποτελέσματα για ${batch.length} σημεία`);
-  }
-  // Πάνω από θάλασσα το SRTM γυρίζει 0 ή null· και τα δύο σημαίνουν «όχι έδαφος πάνω από το νερό».
-  return json.results.map(r => (Number.isFinite(r.elevation) ? r.elevation : 0));
-};
-
-const fetchElevations = async (points) => {
-  fs.mkdirSync(path.dirname(partialPath), { recursive: true });
-  let out = [];
-  if (!REFRESH_GEOMETRY && fs.existsSync(partialPath)) {
-    const saved = JSON.parse(fs.readFileSync(partialPath, 'utf8'));
-    if (saved.total === points.length) {
-      out = saved.elevation;
-      process.stderr.write(`  (συνέχεια από ${out.length}/${points.length})\n`);
-    }
-  }
-  for (let i = out.length; i < points.length; i += 100) {
-    const batch = points.slice(i, i + 100);
-    out.push(...await fetchElevationBatch(batch));
-    if (out.length % 1000 < 100) {
-      fs.writeFileSync(partialPath, JSON.stringify({ total: points.length, elevation: out }));
-    }
-    process.stderr.write(`\r  υψόμετρα: ${out.length}/${points.length}`);
-    await sleep(DEM_SOURCE === 'opentopodata' ? 1100 : (API_KEY ? 120 : 300));
-  }
-  process.stderr.write('\n');
-  fs.writeFileSync(partialPath, JSON.stringify({ total: points.length, elevation: out }));
-  return out;
-};
-
-/** Τυλίγει τη δειγματοληψία ώστε το ωριαίο όριο να μη χάνει την πρόοδο ούτε να σκάει άσχημα. */
-const fetchElevationsResumable = async (points) => {
-  try {
-    return await fetchElevations(points);
-  } catch (e) {
-    if (e?.rateLimited) {
-      const saved = fs.existsSync(partialPath) ? JSON.parse(fs.readFileSync(partialPath, 'utf8')).elevation.length : 0;
-      console.error(`\n⏸  ${e.message}`);
-      console.error(`   σωσμένα ${saved}/${points.length} σημεία. Ξανατρέξε το ΙΔΙΟ σκριπτ την επόμενη ώρα — συνεχίζει από εκεί.`);
-      process.exit(2);
-    }
-    throw e;
-  }
-};
+const { fetchElevationsResumable } = createElevationSampler({
+  cacheDir: leeCacheDir, apiKey: API_KEY, demSource: DEM_SOURCE, refresh: REFRESH_GEOMETRY,
+});
 
 const buildStationGeometry = async () => {
   if (!REFRESH_GEOMETRY && fs.existsSync(geometryCachePath)) {
@@ -258,42 +119,6 @@ const buildStationGeometry = async () => {
     slots: SLOTS, sampleStepKm: SAMPLE_STEP_KM, sampleMaxKm: SAMPLE_MAX_KM, demSource: DEM_SOURCE, stations,
   }, null, 2));
   return stations;
-};
-
-/**
- * Ανάγλυφο ανάντη για μία γωνία προέλευσης: πόσο ΨΗΛΟΤΕΡΑ από το σημείο φτάνει το έδαφος μέσα
- * σε `radiusKm`, κατά μέσο όρο των ακτίνων του παραθύρου ±`windowDeg`.
- * Επιστρέφει και το κλάσμα δειγμάτων πάνω από το νερό (proxy στεριάς από το ΙΔΙΟ DEM).
- */
-const upwindRelief = (geometry, fromDeg, radiusKm, windowDeg) => {
-  const steps = Math.round(radiusKm / SAMPLE_STEP_KM);
-  const offsets = [];
-  for (let o = -windowDeg; o <= windowDeg; o += STEP_DEG) offsets.push(o);
-  let reliefSum = 0, landSum = 0, landCount = 0, rays = 0, reliefMax = -Infinity;
-  for (const offset of offsets) {
-    const slot = ((Math.round((fromDeg + offset) / STEP_DEG) % SLOTS) + SLOTS) % SLOTS;
-    const ray = geometry.rays[slot];
-    if (!Array.isArray(ray) || ray.length < steps) continue;
-    let peak = -Infinity;
-    for (let s = 0; s < steps; s++) {
-      const m = ray[s];
-      if (!Number.isFinite(m)) continue;
-      if (m > peak) peak = m;
-      landCount += 1;
-      if (m > 0) landSum += 1;
-    }
-    if (!Number.isFinite(peak)) continue;
-    const relief = peak - geometry.selfM;
-    reliefSum += relief;
-    if (relief > reliefMax) reliefMax = relief;
-    rays += 1;
-  }
-  if (!rays) return null;
-  return {
-    meanM: reliefSum / rays,
-    maxM: reliefMax,
-    landFrac: landCount ? landSum / landCount : 0,
-  };
 };
 
 // ── Δεδομένα: όργανο + μοντέλο στις συντεταγμένες του οργάνου ────────────────────────────────

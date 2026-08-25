@@ -23,6 +23,7 @@ import {
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, ObservedTiming, buildBeachExposureParams } from '../services/analyticsService';
+import { formatBeaufortLabel } from '../utils/beaufortRange';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
@@ -1086,6 +1087,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     storeConditionFeedback(beach.id, verdict, {
       exposureLevel,
       beaufort: getBeaufortLevel(windSpeedKmh),
+      // Ό,τι ΕΙΔΕ ο επισκέπτης («3–4»), ώστε ένα «είχε πιο πολύ αέρα» να κριθεί απέναντι στο άνω
+      // άκρο και όχι απέναντι στο κάτω που έκρινε το χρώμα (Νάξος #2017, 25/08/2026).
+      beaufortShown: beaufortShownLabel,
       windDir,
       date: selectedDate ? wallClockDayKey(selectedDate) : undefined,
       // The wave side of the record. Without what we CLAIMED the sea was, a "had waves" report
@@ -1350,6 +1354,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   );
   const detailBadgeScore = getDetailBadgeScore(score, seaConditionScore, isExposed);
   const beaufortLevel = getBeaufortLevel(windSpeedKmh);
+  // Το άνω άκρο του εύρους («3–4 Μπφ») — display-only, από τη ΣΤΕΡΙΑΝΗ ριπή της ώρας
+  // (utils/beaufortRange, 25/08/2026). Ό,τι ΚΡΙΝΕΙ — χρώμα, λέξη ανέμου, κατώφλια, το
+  // `beaufort` του feedback — διαβάζει το beaufortLevel, όπως και πριν. Το label πάει σε δύο
+  // σημεία της σελίδας (hero + γραμμή πρόσπτωσης) ώστε να μη λένε δύο διαφορετικά νούμερα.
+  const beaufortHigh = scoreResult.displayedBeaufortHigh;
+  const beaufortShownLabel = formatBeaufortLabel(beaufortLevel, beaufortHigh);
   const gustKmph = getWeatherGustKmph(weatherData, scoringHourlyForecast);
   const isBoatOnlyBeach = hasBoatOnlyAccess(beach);
   /**
@@ -1480,9 +1490,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     mapExposureLevel: mapAlignedExposureLevel,
     windDir: windDir as WindDirection,
     beaufort: beaufortLevel,
+    // Ίδιο label με το hero: αν εκείνο λέει «3–4 Μπφ», η πρόταση δεν επιτρέπεται να λέει «3 Μπφ».
+    beaufortLabel: beaufortShownLabel,
     language,
     suppressIncidence: false,
-  }), [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, language]);
+  }), [coveWave.onshore, mapAlignedExposureLevel, windDir, beaufortLevel, beaufortShownLabel, language]);
 
   // Το χαμηλό-αλλά-σπαστό νερό, που μέχρι τις 15/08/2026 δεν το ανέφερε τίποτα. Διαβάζει το ΩΜΟ
   // ύψος και την περίοδο — τα ίδια που τρέφουν τη σοβαρότητα — και μιλάει μόνο όταν το χρώμα
@@ -2188,6 +2200,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           explanationIsVerdict={heroExplanationIsVerdict}
           wind={showConditions ? {
             beaufort: beaufortLevel,
+            beaufortHigh,
             speedKmh: windSpeedKmh,
             directionLabel: t.windDirectionsShort?.[windDir as WindDirection] || windDirectionLabel,
             longDirectionLabel: windDirectionLabel,

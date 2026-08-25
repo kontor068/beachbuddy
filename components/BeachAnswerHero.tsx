@@ -3,6 +3,7 @@ import { MapPin, Clock, Check, X, CalendarClock } from 'lucide-react';
 import type { LanguageCode } from '../types';
 import { WindGlyph, SeaGlyph, WaterTempGlyph, SunsetGlyph, type GlyphTone } from './ConditionGlyphs';
 import { buildConditionsFeel } from '../utils/conditionsFeelPhrase';
+import { formatBeaufortLabel } from '../utils/beaufortRange';
 
 /**
  * The answer, above everything else — the whole beach day in one screen.
@@ -249,6 +250,12 @@ export interface BeachAnswerHeroProps {
   explanationIsVerdict?: boolean;
   wind: {
     beaufort: number;
+    /**
+     * Άνω άκρο του εύρους («3–4 Μπφ») όταν οι ριπές της ώρας βγάζουν ολόκληρο σκαλί —
+     * utils/beaufortRange. Μόνο το τυπωμένο νούμερο το διαβάζει· το γλυφ, η λέξη και το χρώμα
+     * μένουν στο `beaufort` (κάτω άκρο). Απουσία = σκέτο νούμερο, όπως πριν.
+     */
+    beaufortHigh?: number | null;
     speedKmh: number;
     /** Short compass form ("ΒΑ") — the instrument tile is only a quarter-width. */
     directionLabel: string;
@@ -464,7 +471,8 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
     readings.push({
       glyph: <WindGlyph beaufort={wind.beaufort} tone={glyphTone} className="h-full w-full" />,
       label: labels.wind,
-      value: `${wind.beaufort} ${language === 'gr' ? 'Μπφ' : 'Bft'}`,
+      // «3–4 Μπφ» όταν υπάρχει άνω άκρο, αλλιώς «3 Μπφ» — εν-παύλα όπως κάθε εύρος του προϊόντος.
+      value: `${formatBeaufortLabel(wind.beaufort, wind.beaufortHigh)} ${language === 'gr' ? 'Μπφ' : 'Bft'}`,
       // «Β» alone is a compass point; «Β · απάνεμη» is the reason for the colour. The
       // shelter half is what lets a reader see at a glance why a 2,0 m beach can beat a
       // 1,3 m one — it is the map-aligned exposure level, the same input the pin uses.

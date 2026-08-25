@@ -41,6 +41,12 @@ export interface ShoreIncidenceInput {
   mapExposureLevel?: ExposureLevel;
   windDir: WindDirection;
   beaufort: number;
+  /**
+   * Ό,τι ΤΥΠΩΝΕΙ το hero για το Μποφόρ («3–4» όταν οι ριπές βγάζουν σκαλί — utils/beaufortRange).
+   * Μόνο το κείμενο της πρότασης το χρησιμοποιεί· τα κατώφλια από κάτω κρίνουν με το `beaufort`.
+   * Απουσία = ο αριθμός, όπως πριν.
+   */
+  beaufortLabel?: string;
   language: LanguageCode;
   /**
    * The "weather now" card directly above this line already said how the wind meets this
@@ -88,7 +94,7 @@ const WIND_ADJ_NOM: Record<LanguageCode, Record<WindDirection, string>> = {
 
 const BFT_UNIT: LocalizedCopy<string> = { en: 'Bft', gr: 'Μπφ', de: 'Bft', fr: 'Bft', it: 'Bft' };
 
-type IncidenceSentence = (adj: string, bft: number, unit: string) => string;
+type IncidenceSentence = (adj: string, bft: number | string, unit: string) => string;
 
 const INCIDENCE_SENTENCE: Record<WindIncidence, LocalizedCopy<IncidenceSentence>> = {
   onshore: {
@@ -162,7 +168,7 @@ export const buildShoreIncidenceLine = (input: ShoreIncidenceInput): string | nu
     if (!contradictsPin && !input.suppressIncidence) {
       const adjTable = WIND_ADJ_NOM[language] ?? WIND_ADJ_NOM.en;
       const sentence = getLocalizedCopy(language, INCIDENCE_SENTENCE[incidence]);
-      parts.push(sentence(adjTable[input.windDir], beaufort, getLocalizedCopy(language, BFT_UNIT)));
+      parts.push(sentence(adjTable[input.windDir], input.beaufortLabel ?? beaufort, getLocalizedCopy(language, BFT_UNIT)));
     }
     // THE DRIFT WARNING IS NOT SUPPRESSED WITH THE SENTENCE ABOVE, and that is the point.
     //

@@ -187,6 +187,12 @@ export interface FeedbackData {
   conditions?: {
     exposureLevel?: string;
     beaufort?: number;
+    /**
+     * Ό,τι ΕΙΔΕ ο επισκέπτης στο hero: «3–4» όταν το εύρος άναψε (utils/beaufortRange), αλλιώς
+     * «3». Το `beaufort` από πάνω είναι το κάτω άκρο που έκρινε το χρώμα· ένα «είχε πιο πολύ
+     * αέρα» κρίνεται απέναντι σε αυτό εδώ (Νάξος #2017, 25/08/2026).
+     */
+    beaufortShown?: string;
     windDir?: string;
     date?: string;
     /** Athens hour the visitor CLICKED the feedback button — not necessarily when they swam. */
