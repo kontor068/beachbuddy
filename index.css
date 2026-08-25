@@ -736,6 +736,36 @@ body {
   border-bottom-right-radius: 2px;
 }
 
+/* Η ΜΠΑΡΑ ΤΟΥ ΖΟΥΜ ΦΕΥΓΕΙ ΟΣΟ ΕΙΝΑΙ ΑΝΟΙΧΤΟ ΤΑΜΠΕΛΑΚΙ ΠΙΝΕΖΑΣ (Μίλτος, 25/08/2026:
+   «όταν πατάω σε πινέζα να εξαφανίζεται το +- … μόνο όταν βλέπω καθαρό τον χάρτη θα
+   εμφανίζεις τα +-»).
+
+   ΤΟ ΕΝΑ ΚΑΘΟΤΑΝ ΠΑΝΩ ΣΤΟ ΑΛΛΟ, ΚΑΙ ΔΕΝ ΔΙΟΡΘΩΝΕΤΑΙ ΜΕ z-index. Το ταμπελάκι ζει μέσα στο
+   `.leaflet-map-pane` (z-index 400, δικό του stacking context) και τα κουμπιά στο
+   `.leaflet-control-container` από πάνω του — άρα ΚΑΜΙΑ τιμή z-index στο ταμπελάκι δεν το
+   ανεβάζει, όσο κι αν του αλλάξεις pane. Ο ίδιος τοίχος είναι ήδη καταγραμμένος στο
+   BeachMap.tsx, εκεί που η πυξίδα του ανέμου κάνει χώρο για τον ίδιο λόγο.
+
+   ΜΕΤΡΗΜΕΝΟ (iPhone 13 viewport, χάρτης καταλόγου 338×214 px): κάρτα x 118-352, μπάρα
+   x 310-354 — 42 px της κάρτας κάτω από τα κουμπιά, ακριβώς πάνω στη στήλη που κρατάει το
+   όνομα και το βελάκι. Όσο διαβάζεις μία παραλία, το ζουμ δεν είναι αυτό που κοιτάς.
+
+   Κρύβεται ΟΛΗ η στήλη (`.leaflet-control-zoom`) — μέσα της κάθονται και ο δορυφόρος και το
+   σπιτάκι, μέσω του attachToZoomBar. Η απόδοση πηγών (attribution) ΔΕΝ αγγίζεται ποτέ:
+   είναι υποχρέωση αδείας, όχι διακόσμηση.
+
+   `visibility` μαζί με `opacity`, ώστε τα κουμπιά να φεύγουν και από το δέντρο προσβασιμότητας
+   αντί να μένουν αόρατοι στόχοι· η καθυστέρηση στο visibility αφήνει το σβήσιμο να τελειώσει. */
+.leaflet-container .leaflet-control-zoom {
+  transition: opacity 140ms ease, visibility 0s linear 0s;
+}
+.leaflet-container.beach-map--popup-open .leaflet-control-zoom {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 140ms ease, visibility 0s linear 140ms;
+}
+
 /* Aerial imagery tone. Esri's World Imagery renders open sea nearly black; the SVG filter
    in components/BeachMap.tsx (AerialToneFilter) lifts dark tones per channel so the water
    reads as sea rather than void, while the shoreline keeps its own colour. Applied to the

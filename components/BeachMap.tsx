@@ -890,6 +890,18 @@ const MarkerPopupScrollFollower: React.FC<{
   return null;
 };
 
+/**
+ * Ένα ανοιχτό ταμπελάκι το ξέρουν δύο κόσμοι: ο React (η πυξίδα του ανέμου, που είναι δικό μας
+ * overlay) και το CSS (η μπάρα του ζουμ, που είναι κατασκευή του Leaflet). Εδώ ενημερώνονται και
+ * οι δύο, από το ίδιο ζευγάρι συμβάντων, ώστε να μη γίνει ποτέ το ένα χωρίς το άλλο.
+ *
+ * Η ΚΛΑΣΗ ΜΠΑΙΝΕΙ ΜΕ ΤΟ ΧΕΡΙ ΚΑΙ ΟΧΙ ΩΣ PROP. Το `className` του <MapContainer> είναι
+ * ΠΑΓΩΜΕΝΟ: το react-leaflet 5 το κρατάει σε `useState` στο πρώτο render (MapContainer.js) και
+ * δεν το ξαναγράφει ποτέ, οπότε ένα prop που αλλάζει δεν φτάνει στο DOM. Το `map.getContainer()`
+ * είναι το ίδιο ακριβώς στοιχείο, και το αγγίζουμε απευθείας.
+ */
+const POPUP_OPEN_CLASS = 'beach-map--popup-open';
+
 const MapPopupTracker: React.FC<{
   onChange: (open: boolean) => void;
   /** Το ανοιχτό ταμπελάκι, για όποιον χρειάζεται να ζητήσει από το Leaflet να το ξαναμετρήσει. */
@@ -898,9 +910,15 @@ const MapPopupTracker: React.FC<{
   const map = useMap();
 
   useEffect(() => {
-    const open = (event: L.PopupEvent) => { popupRef.current = event.popup; onChange(true); };
+    const container = map.getContainer();
+    const open = (event: L.PopupEvent) => {
+      popupRef.current = event.popup;
+      container.classList.add(POPUP_OPEN_CLASS);
+      onChange(true);
+    };
     const close = (event: L.PopupEvent) => {
       if (popupRef.current === event.popup) popupRef.current = null;
+      container.classList.remove(POPUP_OPEN_CLASS);
       onChange(false);
     };
     map.on('popupopen', open);
@@ -908,6 +926,9 @@ const MapPopupTracker: React.FC<{
     return () => {
       map.off('popupopen', open);
       map.off('popupclose', close);
+      // Ο χάρτης επιβιώνει αυτού του component (SPA back-navigation, αλλαγή προτύπου): αν η
+      // κλάση έμενε πίσω, η μπάρα του ζουμ θα ήταν κρυμμένη σε χάρτη χωρίς ανοιχτό ταμπελάκι.
+      container.classList.remove(POPUP_OPEN_CLASS);
     };
   }, [map, onChange, popupRef]);
 
@@ -2457,8 +2478,18 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * του αλλάξεις pane — μόνο ανεβάζοντας ΟΛΟ τον χάρτη πάνω από τα κουμπιά zoom, που είναι
    * χειρότερο. Και δεν χρειάζεται: όταν ο επισκέπτης ρωτάει για ΜΙΑ παραλία, η πυξίδα του
    * ανέμου ΤΗΣ ΠΕΡΙΟΧΗΣ δεν είναι αυτό που κοιτάει. Φεύγει όσο διαβάζει, ξαναγυρίζει μετά.
+   *
+   * ΤΟ ΙΔΙΟ ΙΣΧΥΕΙ ΚΑΙ ΓΙΑ ΤΗ ΜΠΑΡΑ ΤΟΥ ΖΟΥΜ (Μίλτος, 25/08/2026: «όταν πατάω σε πινέζα να
+   * εξαφανίζεται το +- … μόνο όταν βλέπω καθαρό τον χάρτη θα εμφανίζεις τα +-»). Ίδιος τοίχος,
+   * ίδια λύση: τα κουμπιά έτρωγαν 42 px της κάρτας σε χάρτη 338 px. Κρύβεται με κλάση στο
+   * `.leaflet-container` και όχι με unmount του <ZoomControl>, γιατί ο δορυφόρος και το σπιτάκι
+   * είναι ΚΑΡΦΩΜΕΝΑ μέσα σε αυτή τη μπάρα (attachToZoomBar) και θα έφευγαν μαζί της. Δες
+   * index.css, `.beach-map--popup-open`.
+   *
+   * ΚΑΘΕ ταμπελάκι, όχι μόνο παραλίας: ο κανόνας που ζητήθηκε είναι «καθαρός χάρτης», και ένα
+   * ανοιχτό «είσαι εδώ» δεν είναι καθαρός χάρτης περισσότερο από μια ανοιχτή κάρτα παραλίας.
    */
-  const [hasOpenBeachPopup, setHasOpenBeachPopup] = useState(false);
+  const [hasOpenMapPopup, setHasOpenMapPopup] = useState(false);
   /** Το ανοιχτό ταμπελάκι πινέζας — γεμίζει από το MapPopupTracker, το διαβάζει το
    *  MarkerConditionsPopup όταν ανοίγουν τα χαρακτηριστικά και πρέπει να ξαναμετρηθεί. */
   const openPopupRef = useRef<L.Popup | null>(null);
@@ -4273,7 +4304,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
               a legend filter would leave the desktop viewport list holding hidden pins. */}
           <VisibleBeachTracker beaches={markerBeaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
           <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
-          {showMarkerConditions && <MapPopupTracker onChange={setHasOpenBeachPopup} popupRef={openPopupRef} />}
+          {/* Χωρίς `showMarkerConditions &&`: ο χάρτης χωρίς κάρτες συνθηκών έχει ακόμα το
+              ταμπελάκι «είσαι εδώ», και ο κανόνας του καθαρού χάρτη δεν κάνει εξαιρέσεις. */}
+          <MapPopupTracker onChange={setHasOpenMapPopup} popupRef={openPopupRef} />
           {showMarkerConditions && (
             <MarkerPopupScrollFollower
               enabled={showMarkerConditions}
@@ -4480,7 +4513,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           />
         )}
 
-        {!hasOpenBeachPopup && (
+        {!hasOpenMapPopup && (
         <WindDirectionGraphic
           windDirection={windDirection}
           windDirectionDeg={mapWindDirectionDeg}
