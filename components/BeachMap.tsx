@@ -184,9 +184,6 @@ const keepClickInsidePopup = (el: HTMLElement | null): void => {
   if (el) L.DomEvent.disableClickPropagation(el);
 };
 
-/** Πόσα εικονίδια δείχνει η κλειστή σειρά πριν γράψει «+N» — δες MarkerConditionsPopup. */
-const COLLAPSED_FEATURE_ICONS = 5;
-
 /** «Χωρίς πλαφόν» για το ταμπελάκι της πινέζας. Ο κατάλογος έχει σήμερα το πολύ ~12 εγγραφές. */
 const ALL_FEATURE_CHIPS = 99;
 
@@ -603,13 +600,13 @@ const MarkerConditionsPopup: React.FC<{
   /** Τα δύο σήματα της κάρτας — δες factorIconClass. */
   windOnlyColor?: WindSuitabilityColor;
   seaOnlyColor?: WindSuitabilityColor;
-  /** «Χαρακτηριστικά» — η ετικέτα του πτυσσόμενου, για screen readers και για το tooltip. */
-  featuresLabel: string;
+  /** «Περισσότερες πληροφορίες» — η ΟΡΑΤΗ ετικέτα του πτυσσόμενου. */
+  moreInfoLabel: string;
   /** «Λιγότερα» — το κουμπί που ξαναμαζεύει την κάρτα στο μικρό της μέγεθος. */
   fewerLabel: string;
   /** Το ανοιχτό ταμπελάκι του Leaflet — δες το layout effect παρακάτω. */
   openPopupRef: React.MutableRefObject<L.Popup | null>;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, featuresLabel, fewerLabel, openPopupRef }) => {
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -725,31 +722,29 @@ const MarkerConditionsPopup: React.FC<{
       )}
 
       {featureChips.length > 0 && (
-        <div className={featuresOpen ? 'mt-1' : 'mt-0.5 border-t border-slate-100 pt-0.5'}>
-          {/* ΑΝΟΙΧΤΑ Η ΣΕΙΡΑ ΤΩΝ ΕΙΚΟΝΙΔΙΩΝ ΦΕΥΓΕΙ (25/08/2026). Λέει ακριβώς ό,τι λένε οι
-              λέξεις από κάτω, και τα 24 px της είναι η διαφορά ανάμεσα σε κάρτα που χωράει στον
-              χάρτη του κινητού (214 px) και σε κάρτα που κόβεται. Κλειστά είναι όλη η όψη. */}
+        <div className="mt-1">
+          {/* ΜΙΑ ΛΕΞΗ ΑΝΤΙ ΓΙΑ ΜΙΑ ΣΕΙΡΑ ΕΙΚΟΝΙΔΙΑ (Μίλτος, 25/08/2026: «τα εικονίδια στις πινέζες
+              με τα χαρακτηριστικά βγάλ' τα, βάλε μόνο κάτι σαν περισσότερες πληροφορίες»).
+
+              Η σειρά έδειχνε 5 εικονίδια και «+N». Χωρίς λέξη δίπλα τους δεν διαβάζονται: πέντε
+              σχήματα 12 px στη σειρά δεν λένε «άμμος, εύκολη πρόσβαση, ρηχά» — το λένε μόνο αφού
+              ανοίξεις και δεις τις λέξεις, δηλαδή ακριβώς όταν δεν τα χρειάζεσαι πια. Και το «+N»
+              ζητούσε από τον επισκέπτη να μετρήσει. Ένα κουμπί που λέει τι θα βρει από κάτω κάνει
+              την ίδια δουλειά σε ένα ΥΨΟΣ αντί για δύο ρόλους.
+
+              Ίδιο σχήμα με το «Λιγότερα» από κάτω, επίτηδες: ένα χάπι που ανοίγει, το ίδιο χάπι
+              που κλείνει. Η ορατή λέξη ΕΙΝΑΙ το προσβάσιμο όνομα — κανένα aria-label από πάνω
+              της, γιατί θα το αντικαθιστούσε αντί να το συμπληρώσει. */}
           {!featuresOpen && (
           <button
             ref={keepClickInsidePopup}
             type="button"
-            onClick={() => setFeaturesOpen(open => !open)}
-            aria-expanded={featuresOpen}
-            aria-label={featuresLabel}
-            title={featuresLabel}
-            className="flex min-h-6 w-full cursor-pointer items-center gap-1 text-left text-slate-500 transition hover:text-slate-700"
+            onClick={() => setFeaturesOpen(true)}
+            aria-expanded={false}
+            className="flex min-h-6 w-full cursor-pointer items-center justify-center gap-1 rounded-full bg-slate-50 text-[10px] font-black leading-none text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
           >
-            <span className="flex min-w-0 items-center gap-1.5 text-cyan-700/85" aria-hidden="true">
-              {featureChips.slice(0, COLLAPSED_FEATURE_ICONS).map(chip => (
-                <span key={chip.key} className="shrink-0">{chip.icon}</span>
-              ))}
-              {featureChips.length > COLLAPSED_FEATURE_ICONS && (
-                <span className="shrink-0 text-[10px] font-bold text-slate-400">
-                  +{featureChips.length - COLLAPSED_FEATURE_ICONS}
-                </span>
-              )}
-            </span>
-            <ChevronDown className="ml-auto h-3 w-3 shrink-0" aria-hidden="true" />
+            <ChevronDown className="h-3 w-3 shrink-0" aria-hidden="true" />
+            {moreInfoLabel}
           </button>
           )}
           {/* ΜΟΝΟΚΟΜΜΑΤΑ, ΧΩΡΙΣ ΚΥΛΙΣΗ (Μίλτος, 25/08/2026). Δύο στήλες σκέτο εικονίδιο+λέξη,
@@ -3223,9 +3218,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
     openBeach: { en: 'Open this beach', gr: 'Δες την παραλία', de: 'Strand ansehen', it: 'Vedi la spiaggia', fr: 'Voir la plage' },
-    // «Χαρακτηριστικά» και όχι «Παροχές»: η σειρά περιέχει και υπόστρωμα, πρόσβαση και
-    // κοσμοσυρροή, όχι μόνο ομπρέλες — δες buildHoverPreviewFeatureChips.
-    features: { en: 'Features', gr: 'Χαρακτηριστικά', de: 'Merkmale', it: 'Caratteristiche', fr: 'Caractéristiques' },
+    // «Πληροφορίες» και όχι «Χαρακτηριστικά»/«Παροχές»: η λίστα από κάτω περιέχει υπόστρωμα,
+    // πρόσβαση, βάθος, κοσμοσυρροή ΚΑΙ παροχές — δες buildHoverPreviewFeatureChips. Καμία από
+    // τις στενές λέξεις δεν τα καλύπτει όλα, και το κουμπί δεν είναι τίτλος κατηγορίας: είναι
+    // υπόσχεση ότι υπάρχει κι άλλο. Ζεύγος με το «Λιγότερα» από κάτω.
+    moreInfo: { en: 'More information', gr: 'Περισσότερες πληροφορίες', de: 'Mehr Informationen', it: 'Altre informazioni', fr: "Plus d'informations" },
     fewer: { en: 'Less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
@@ -4422,7 +4419,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     windSpeedKmh={beachWindSpeedKmh(item)}
                     windOnlyColor={item.simpleWindSuitability?.windOnlyColor}
                     seaOnlyColor={item.simpleWindSuitability?.seaOnlyColor}
-                    featuresLabel={mapCopy.features[language]}
+                    moreInfoLabel={mapCopy.moreInfo[language]}
                     fewerLabel={mapCopy.fewer[language]}
                     openPopupRef={openPopupRef}
                     openLabel={mapCopy.openBeach[language]}
