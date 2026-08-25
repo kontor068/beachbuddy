@@ -2019,6 +2019,27 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
     : podiumWhyItems.length === 2
       ? 'grid-cols-2'
       : 'grid-cols-1';
+  /**
+   * ΟΙ ΣΥΝΘΗΚΕΣ ΣΤΟΙΧΙΖΟΝΤΑΙ ΜΕ ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΑΠΟ ΚΑΤΩ (Μίλτος, 25/08/2026: «οι συνθήκες
+   * … δεν είναι στοιχισμένες με τα παρακάτω χαρακτηριστικά, φτιάξ' τα να είναι τα γράμματα
+   * στοιχισμένα»).
+   *
+   * Τα chips ήταν ΗΔΗ στοιχισμένα μεταξύ τους — δίστηλο πλέγμα «εικονίδιο | κείμενο», δες
+   * featureChipClass. Η σειρά των συνθηκών από πάνω τους όμως κένταρε το ζευγάρι εικονίδιο+λέξη
+   * μέσα στο μισό της, οπότε η αρχή του κειμένου κουνιόταν με το ΜΗΚΟΣ της λέξης: μετρημένο σε
+   * κάρτα 272 px, «Some wind» ξεκινούσε στα 53 px και «Almost no waves» στα 170 — καμία σχέση με
+   * τα 30 px όπου ξεκινούν όλα τα chips.
+   *
+   * Η στοίχιση εδώ δεν υπολογίζεται, ΚΛΗΡΟΝΟΜΕΙΤΑΙ: ίδιο εξωτερικό πλέγμα (`grid-cols-2 gap-1.5`
+   * πάνω στο ίδιο πλάτος), ίδιο εσωτερικό (`1rem` για το εικονίδιο, `gap-1.5` μετά), ίδιο
+   * οριζόντιο padding (`px-2`). Άρα τα γράμματα πέφτουν στην ίδια κάθετη γραμμή εξ ορισμού, και
+   * μένουν εκεί αν αύριο αλλάξει το πλάτος της κάρτας.
+   *
+   * ΜΟΝΟ ΣΤΙΣ ΔΥΟ ΣΤΗΛΕΣ. Με τρία κελιά δεν υπάρχει στήλη να στοιχιστείς — το πλέγμα από κάτω
+   * είναι δίστηλο. Με ένα, ισχύει ο ήδη γραμμένος κανόνας της μοναχικής γραμμής (δες
+   * featureChipClass): αριστερά θα άφηνε κενό μισής κάρτας δίπλα της, οπότε κεντράρεται.
+   */
+  const alignWhyWithFeatureGrid = podiumWhyItems.length === 2;
   if (variant === 'decision' || variant === 'default') {
     return (
       <div
@@ -2140,14 +2161,14 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                 κάρτα με μετρημένο κύμα δείχνει την ίδια γραμμή· χωρίς κύμα δεν μπαίνει γραμμή
                 μόνο για τα μποφόρ, γιατί αυτά τα λέει ήδη το chip από πάνω. */}
             {(isPodium || Boolean(cardWaveText)) && (
-              <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 dark:border-sky-900/45 dark:bg-sky-950/25">
+              <div className={`w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-sky-50/70 py-1 dark:border-sky-900/45 dark:bg-sky-950/25 ${alignWhyWithFeatureGrid ? '' : 'px-1.5'}`}>
                 {/* ΜΟΝΟ Η ΛΕΞΗ, ΣΕ ΔΥΟ ΚΕΛΙΑ (22/08/2026). Το κελί κρατούσε λέξη ΚΑΙ νούμερο
                     («Δυνατός αέρας» πάνω από «6 Μπφ»). Το νούμερο έφυγε — η ζώνη είναι όλη η
                     πληροφορία που έχουμε δικαίωμα να υποσχεθούμε — αλλά τα ΔΥΟ κελιά μένουν:
                     αέρας και θάλασσα είναι δύο σήματα, όχι ένα (§Γ14). Δύο σειρές επιτρέπονται
                     (`line-clamp-2`): «presque pas de vagues» δεν χωράει σε μία σε μισή κάρτα των
                     320 px, και κομμένη λέξη είναι χειρότερη από δεύτερη σειρά. */}
-                <div className={`grid min-h-6 min-w-0 items-stretch text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white ${podiumWhyColumnsClass}`}>
+                <div className={`grid min-h-6 min-w-0 items-stretch text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white ${podiumWhyColumnsClass}${alignWhyWithFeatureGrid ? ' gap-1.5' : ''}`}>
                   {podiumWhyItems.map((item, index) => (
                     <span
                       key={item.key}
@@ -2157,13 +2178,16 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
                       data-tilefit={`podium-why-${item.key}`}
                       // `my-0.5` κρατά τον διαχωριστή κοντύτερο από τη γραμμή: σε κείμενο 10 px μια
                       // κάθετη που φτάνει άκρη-άκρη διαβάζεται πιο βαριά από τα νούμερα που χωρίζει.
-                      className={`flex min-w-0 flex-col items-center justify-center gap-0.5 px-1.5 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                      className={`flex min-w-0 flex-col justify-center gap-0.5 ${alignWhyWithFeatureGrid ? 'px-2' : 'items-center px-1.5'} ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
                       title={item.title}
                       aria-label={item.ariaLabel}
                     >
-                      <span className="flex min-w-0 items-center justify-center gap-1">
-                        {item.icon}
-                        <span className="min-w-0 text-center leading-[1.15] line-clamp-2">{item.text}</span>
+                      {/* Το εικονίδιο μπαίνει σε κουτί 1rem, ακριβώς όπως στα chips
+                          (featureChipIconClass): έτσι η αρχή του κειμένου δεν εξαρτάται από το
+                          πόσο φαρδύ είναι το κάθε εικονίδιο. */}
+                      <span className={`min-w-0 items-center ${alignWhyWithFeatureGrid ? 'grid grid-cols-[1rem_minmax(0,1fr)] gap-1.5' : 'flex justify-center gap-1'}`}>
+                        <span className="flex h-4 w-4 shrink-0 items-center justify-center">{item.icon}</span>
+                        <span className={`min-w-0 leading-[1.15] line-clamp-2 ${alignWhyWithFeatureGrid ? 'text-left' : 'text-center'}`}>{item.text}</span>
                       </span>
                     </span>
                   ))}
@@ -2340,18 +2364,26 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
               κινητό: μέχρι σήμερα ο υπολογιστής δεν έλεγε ΤΙΠΟΤΑ για αέρα/θάλασσα εκτός βάθρου. */}
           {(isPodium || Boolean(cardWaveText)) && (
             <div
-              className="flex min-h-9 w-full min-w-0 items-stretch rounded-xl border border-sky-100 bg-sky-50/70 px-1.5 py-1 text-left dark:border-sky-900/45 dark:bg-sky-950/25"
+              // Στοιχίζεται με το πλέγμα των χαρακτηριστικών από κάτω ΑΚΡΙΒΩΣ όπως στο κινητό —
+              // δες alignWhyWithFeatureGrid. Ο υπολογιστής έχει ΔΙΚΗ ΤΟΥ σειρά συνθηκών (αυτή)
+              // και δικό του πλέγμα chip (`sm:grid` παρακάτω): μια διόρθωση μόνο στο κινητό θα
+              // άφηνε την ΙΔΙΑ κάρτα στοιχισμένη στο τηλέφωνο και ραγισμένη στην οθόνη.
+              className={`min-h-9 w-full min-w-0 rounded-xl border border-sky-100 bg-sky-50/70 py-1 text-left dark:border-sky-900/45 dark:bg-sky-950/25 ${
+                alignWhyWithFeatureGrid ? 'grid grid-cols-2 gap-1.5' : 'flex items-stretch px-1.5'
+              }`}
               aria-label={`${windOnShoreLabel}: ${cardWindWord}${cardWaveText ? `. ${cardWaveLabel}: ${cardWaveWord}` : ''}`}
             >
               {podiumWhyItems.map((item, index) => (
                 <span
                   key={item.key}
                   title={item.title}
-                  className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-2 ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
+                  className={`flex min-w-0 flex-col justify-center gap-0.5 px-2 ${alignWhyWithFeatureGrid ? '' : 'flex-1 items-center'} ${index > 0 ? 'my-0.5 border-l border-sky-200/80 dark:border-sky-900/60' : ''}`}
                 >
-                  <span className="flex min-w-0 items-center justify-center gap-1 text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white">
-                    {item.icon}
-                    <span className="min-w-0 text-center leading-[1.15] line-clamp-2">{item.text}</span>
+                  <span className={`min-w-0 items-center text-[11px] font-extrabold leading-tight text-slate-900 dark:text-white ${
+                    alignWhyWithFeatureGrid ? 'grid grid-cols-[1rem_minmax(0,1fr)] gap-1.5' : 'flex justify-center gap-1'
+                  }`}>
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center">{item.icon}</span>
+                    <span className={`min-w-0 leading-[1.15] line-clamp-2 ${alignWhyWithFeatureGrid ? 'text-left' : 'text-center'}`}>{item.text}</span>
                   </span>
                 </span>
               ))}
