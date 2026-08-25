@@ -1,7 +1,14 @@
 {
   "note": "Rows the pin audits flag that a name search has since resolved. Consumed by scripts/buildQualityLedger.mjs.",
-  "generatedAt": "2026-08-17T08:33:11.653Z",
+  "generatedAt": "2026-08-25T07:17:49.053Z",
   "cleared": [
+    {
+      "id": 283,
+      "name": "Παραλία Ψαροπούλι/Βασιλικών",
+      "at": "2026-08-24",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Ψαροπούλι/Βασιλικών» (way/166228614) is 0 m from our pin — same beach, unmapped polygon"
+    },
     {
       "id": 2652,
       "name": "Βαθιάς",
@@ -29,6 +36,20 @@
       "at": "2026-08-17",
       "verdict": "KEEP",
       "reason": "no OSM feature named «Καρνάγιο (Αγριά)» within 20 km — OSM has not mapped this beach; the pin is the only record we have"
+    },
+    {
+      "id": 2720,
+      "name": "Σουτραλί (Αγριά)",
+      "at": "2026-08-25",
+      "verdict": "KEEP",
+      "reason": "OSM «Σουτραλί» (way/320087252) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 3018,
+      "name": "Νέα Φλόγητα",
+      "at": "2026-08-24",
+      "verdict": "KEEP",
+      "reason": "OSM «Νέα Φλογητά» (node/146262610) is 0 m from our pin — same beach, unmapped polygon"
     },
     {
       "id": 3149,

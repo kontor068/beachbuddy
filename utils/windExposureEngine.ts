@@ -24,6 +24,7 @@ import { resolveWindExposure } from './windExposureModel';
 import { getWindProfileOverride, KNOWN_WIND_SPORT_SPOT_IDS } from './windProfileOverrides';
 import { CURATED_ENCLOSED_COVE_IDS, CURATED_NON_COVE_IDS } from './enclosedCoves';
 import { resolveConditionTone, toWindSuitabilityColor } from './suitabilityTone';
+import { resolveFactorTones } from './conditionCause';
 
 export interface BeachWindExposureInput {
   beach: Beach;
@@ -390,7 +391,12 @@ export const applySeaStateToWindSuitability = (
    */
   forecastUncertain = false
 ): SimpleWindSuitability => {
-  const suitabilityColor = toWindSuitabilityColor(resolveConditionTone({
+  /**
+   * ΕΝΑ INPUT, ΤΡΕΙΣ ΑΝΑΓΝΩΣΤΕΣ. Το τελικό χρώμα και τα δύο σήματα της κάρτας βγαίνουν από την
+   * ΙΔΙΑ έκφραση — αν κάποιος προσθέσει είσοδο στη σκάλα και ξεχάσει να την περάσει, τη χάνουν
+   * και τα τρία μαζί αντί να αρχίσουν να διαφωνούν σιωπηλά.
+   */
+  const toneInput = {
     exposureLevel: suitability.exposureStatus,
     beaufort: suitability.windBeaufort,
     windSpeedKmh: suitability.windSpeedKmh,
@@ -403,10 +409,16 @@ export const applySeaStateToWindSuitability = (
     seaArrivalExposureLevel,
     curatedWindOnlyProtection,
     forecastUncertain,
-  }));
+  };
+  const suitabilityColor = toWindSuitabilityColor(resolveConditionTone(toneInput));
+  const factors = resolveFactorTones(toneInput);
+  const windOnlyColor = toWindSuitabilityColor(factors.wind);
+  const seaOnlyColor = toWindSuitabilityColor(factors.sea);
   return suitabilityColor === suitability.suitabilityColor
+    && windOnlyColor === suitability.windOnlyColor
+    && seaOnlyColor === suitability.seaOnlyColor
     ? suitability
-    : { ...suitability, suitabilityColor };
+    : { ...suitability, suitabilityColor, windOnlyColor, seaOnlyColor };
 };
 
 const getSimpleExposureStatus = (

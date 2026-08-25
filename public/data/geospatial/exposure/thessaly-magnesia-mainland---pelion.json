@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-16T17:56:12.660Z",
+  "generatedAt": "2026-08-25T07:13:36.530Z",
   "region": {
     "id": "thessaly-magnesia-mainland---pelion",
     "name": "Magnesia (Pelion)"
@@ -56,9 +56,9 @@
         "exposed": 38
       },
       "SE": {
-        "protected": 25,
-        "partial": 24,
-        "exposed": 21
+        "protected": 26,
+        "partial": 22,
+        "exposed": 22
       },
       "S": {
         "protected": 38,
@@ -72,12 +72,12 @@
       },
       "W": {
         "protected": 44,
-        "partial": 9,
-        "exposed": 17
+        "partial": 8,
+        "exposed": 18
       },
       "NW": {
-        "protected": 47,
-        "partial": 16,
+        "protected": 46,
+        "partial": 17,
         "exposed": 7
       }
     }
@@ -2433,70 +2433,70 @@
         "lat": 39.40358,
         "lon": 23.181342
       },
-      "facingDeg": 66.4,
+      "facingDeg": 71.2,
       "sectors": {
         "N": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.4,
-          "intensity": 70
+          "onshore": 0.322,
+          "intensity": 66.1
         },
         "NE": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.931,
-          "intensity": 96.6
+          "onshore": 0.897,
+          "intensity": 94.9
         },
         "E": {
           "level": "exposed",
           "fetchKm": 25,
           "blockedRayRatio": 0,
-          "onshore": 0.916,
-          "intensity": 95.8
+          "onshore": 0.947,
+          "intensity": 97.3
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 10.04,
+          "level": "exposed",
+          "fetchKm": 10.08,
           "blockedRayRatio": 0.6,
-          "onshore": 0.365,
-          "intensity": 57.1
+          "onshore": 0.442,
+          "intensity": 60.5
         },
         "S": {
           "level": "protected",
-          "fetchKm": 0,
+          "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.4,
-          "intensity": 18
+          "onshore": -0.322,
+          "intensity": 20.3
         },
         "SW": {
           "level": "protected",
           "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.931,
-          "intensity": 2.1
+          "onshore": -0.897,
+          "intensity": 3.1
         },
         "W": {
           "level": "protected",
           "fetchKm": 0.04,
           "blockedRayRatio": 1,
-          "onshore": -0.916,
-          "intensity": 2.5
+          "onshore": -0.947,
+          "intensity": 1.6
         },
         "NW": {
           "level": "protected",
           "fetchKm": 10.08,
           "blockedRayRatio": 0.6,
-          "onshore": -0.365,
-          "intensity": 26.7
+          "onshore": -0.442,
+          "intensity": 23.4
         }
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.4395,
-        "lon": 23.2881,
-        "bearingDeg": 66.4,
+        "lat": 39.4325,
+        "lon": 23.2916,
+        "bearingDeg": 71.2,
         "distanceKm": 10
       },
       "windShadow": "000000000111111111111111"
@@ -3678,74 +3678,74 @@
         "gr": "Σουτραλί (Αγριά)"
       },
       "coordinates": {
-        "lat": 39.3455,
-        "lon": 22.9885
+        "lat": 39.32582,
+        "lon": 23.014129
       },
-      "facingDeg": 197.6,
+      "facingDeg": 254,
       "sectors": {
         "N": {
           "level": "protected",
-          "fetchKm": 0.6,
+          "fetchKm": 0.44,
           "blockedRayRatio": 1,
-          "onshore": -0.953,
-          "intensity": 1.4
+          "onshore": -0.276,
+          "intensity": 21.7
         },
         "NE": {
           "level": "protected",
-          "fetchKm": 0.64,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.888,
-          "intensity": 3.4
+          "onshore": -0.875,
+          "intensity": 3.8
         },
         "E": {
           "level": "protected",
-          "fetchKm": 1.08,
+          "fetchKm": 0,
           "blockedRayRatio": 1,
-          "onshore": -0.302,
-          "intensity": 20.9
+          "onshore": -0.961,
+          "intensity": 1.2
         },
         "SE": {
-          "level": "partial",
-          "fetchKm": 10.08,
-          "blockedRayRatio": 0.8,
-          "onshore": 0.46,
-          "intensity": 58.9
+          "level": "protected",
+          "fetchKm": 0.04,
+          "blockedRayRatio": 1,
+          "onshore": -0.485,
+          "intensity": 15.5
         },
         "S": {
           "level": "exposed",
-          "fetchKm": 23.56,
-          "blockedRayRatio": 0.6,
-          "onshore": 0.953,
-          "intensity": 97.7
+          "fetchKm": 13.52,
+          "blockedRayRatio": 0.8,
+          "onshore": 0.276,
+          "intensity": 63.8
         },
         "SW": {
           "level": "exposed",
-          "fetchKm": 13.04,
+          "fetchKm": 18.12,
           "blockedRayRatio": 1,
-          "onshore": 0.888,
-          "intensity": 94.4
+          "onshore": 0.875,
+          "intensity": 93.7
         },
         "W": {
-          "level": "partial",
-          "fetchKm": 3.24,
+          "level": "exposed",
+          "fetchKm": 9.48,
           "blockedRayRatio": 1,
-          "onshore": 0.302,
-          "intensity": 39.1
+          "onshore": 0.961,
+          "intensity": 70.3
         },
         "NW": {
-          "level": "protected",
-          "fetchKm": 0.76,
+          "level": "partial",
+          "fetchKm": 3.96,
           "blockedRayRatio": 1,
-          "onshore": -0.46,
-          "intensity": 16.2
+          "onshore": 0.485,
+          "intensity": 44.5
         }
       },
       "confidence": "high",
       "marineSamplePoint": {
-        "lat": 39.2598,
-        "lon": 22.9534,
-        "bearingDeg": 197.6,
-        "distanceKm": 10
+        "lat": 39.3141,
+        "lon": 22.9612,
+        "bearingDeg": 254,
+        "distanceKm": 4.74
       },
       "windShadow": "000000000000000000000000"
     },
@@ -3975,8 +3975,8 @@
         }
       },
       "confidence": "high",
-      "marineCellTrusted": false,
-      "windShadow": "111111111110000011111111"
+      "windShadow": "111111111110000011111111",
+      "marineCellTrusted": false
     },
     "2725": {
       "beachId": 2725,

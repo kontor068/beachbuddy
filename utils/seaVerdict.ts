@@ -1,5 +1,5 @@
 import type { ExposureLevel } from './windExposure';
-import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
+import { atDisplayedPrecisionM, SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, seaStateSeverityM } from './waveCharacter';
 
 /**
  * ONE sea verdict for the whole beach page.
@@ -50,8 +50,12 @@ export const isAtLeast = (severity: SeaSeverity, floor: SeaSeverity): boolean =>
  */
 export const getSeaStateSeverity = (severityM?: number): SeaSeverity => {
   if (typeof severityM !== 'number' || !Number.isFinite(severityM)) return 'calm';
-  if (severityM >= SEA_STATE_ROUGH_M) return 'rough';
-  if (severityM >= SEA_STATE_AMBER_M) return 'moderate';
+  // Ίδια στρογγυλοποίηση με το ταβάνι του χρώματος (utils/waveCharacter.atDisplayedPrecisionM,
+  // 24/08/2026): η λέξη και η πινέζα κρίνουν στην ακρίβεια που τυπώνει η οθόνη, και ΜΑΖΙ — μια
+  // λέξη «ήρεμα» κάτω από κίτρινη πινέζα είναι ακριβώς η αντίφαση αυτού του module.
+  const judged = atDisplayedPrecisionM(severityM) as number;
+  if (judged >= SEA_STATE_ROUGH_M) return 'rough';
+  if (judged >= SEA_STATE_AMBER_M) return 'moderate';
   return 'calm';
 };
 

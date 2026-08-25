@@ -74,7 +74,18 @@ const AXES = [
   { key: 'nav', label: 'Πλοήγηση («Οδηγίες»)', short: 'Πλοήγηση' },
   { key: 'access', label: 'Πρόσβαση', short: 'Πρόσβαση' },
   { key: 'amenities', label: 'Παροχές', short: 'Παροχές' },
-  { key: 'photo', label: 'Φωτογραφία', short: 'Φωτό' },
+  // ΤΟ ΜΟΝΟ ΚΕΝΟ ΠΟΥ ΔΕΝ ΚΛΕΙΝΕΙ ΜΕ ΣΚΡΙΠΤΑΚΙ. Μετρημένο τρεις φορές πάνω στο ΙΔΙΟ
+  // σύνολο των ~1.500 παραλιών χωρίς φωτογραφία: 0,36 · 0,5 · 1,8 δεκτές ανά 100
+  // δοκιμές από Commons/Wikidata/Openverse/Flickr. Το πέρασμα της 20/08 το έγραψε
+  // καθαρά: «111 από τις 113 παραλίες των τριών περιοχών δεν έχουν καμία ελεύθερη
+  // φωτογραφία που να αποδεικνύεται ότι τις δείχνει». Κλείνει μόνο με δικές μας
+  // φωτογραφίες ή με συνεισφορές επισκεπτών (scripts/syncApprovedPhotos.mjs).
+  //
+  // Το `sourced: 'human'` ΔΕΝ το βγάζει από τη μέτρηση — το ποσοστό, το ιστορικό και
+  // η κατάταξη μένουν ίδια. Λέει μόνο στο εβδομαδιαίο μήνυμα και στο ταμπλό να μην
+  // το προτείνουν ως «τι να διορθώσεις τώρα»: όταν το Φωτό 24% βγαίνει πρώτο σε κάθε
+  // περιοχή, σπρώχνει έξω τα δεκατρία κενά παροχών που όντως διορθώνονται σήμερα.
+  { key: 'photo', label: 'Φωτογραφία', short: 'Φωτό', sourced: 'human' },
   { key: 'character', label: 'Χαρακτήρας (άμμος · βάθος · μπροστά πού βλέπει)', short: 'Χαρακτήρας' },
   { key: 'text', label: 'Σιγουριά κειμένου', short: 'Κείμενο' },
 ];
@@ -110,9 +121,14 @@ for (const file of ['pin-placement-audit.json', 'pin-coastline-audit.json']) {
   const data = readJson(path.join(reportsDir, 'quality', file));
   if (!data) continue;
   for (const row of data.confirmed || []) if (row?.id != null) flaggedPins.add(Number(row.id));
-  // The coastline audit records its verdict per row instead of in a bucket.
+  // The coastline audit records its verdict per row instead of in a bucket, and it
+  // writes it upper-case ("INLAND"). Comparing case-sensitively silently dropped every
+  // row it ever produced — measured 24/08/2026: two pins 9,8 km and 5,0 km inland were
+  // invisible here and only reached the board because the placement audit had flagged
+  // them too. Lower-case both sides so the geometric test actually counts.
   for (const row of data.results || []) {
-    if (row?.id != null && (row.verdict === 'inland' || row.verdict === 'offshore')) {
+    const verdict = String(row?.verdict ?? '').toLowerCase();
+    if (row?.id != null && (verdict === 'inland' || verdict === 'offshore')) {
       flaggedPins.add(Number(row.id));
     }
   }

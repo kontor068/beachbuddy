@@ -3717,6 +3717,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         lessExposedToday={lessExposedToday}
         windSuitabilityText={options.windExposureMode ? undefined : windSuitabilityText}
         windSuitabilityColor={simpleWindSuitability?.suitabilityColor}
+        windOnlyColor={simpleWindSuitability?.windOnlyColor}
+        seaOnlyColor={simpleWindSuitability?.seaOnlyColor}
         windExposureMode={options.windExposureMode}
         hideExposureBadge={options.recommendationRank !== undefined}
         showTodayScoreBadge={shouldShowTodayScoreBadge}

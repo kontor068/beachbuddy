@@ -2,10 +2,10 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight } from 'lucide-react';
+import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight, ChevronDown } from 'lucide-react';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedLittleKnownLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
-import { SuitableBeach, Beach, LanguageCode, ForecastItem } from '../types';
+import { SuitableBeach, Beach, LanguageCode, ForecastItem, WindSuitabilityColor } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { getBeachPhotoLookup } from '../services/beachPhotos';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
@@ -394,6 +394,42 @@ const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): Ho
   return chips.slice(0, 4);
 };
 
+/**
+ * ΤΟ ΧΡΩΜΑ ΠΑΝΩ ΣΤΟ ΕΙΚΟΝΙΔΙΟ, ΤΟ ΥΨΟΣ ΕΞΩ ΑΠΟ ΤΟΝ ΧΑΡΤΗ (25/08/2026, απόφαση Μίλτου).
+ *
+ * Ο χάρτης τύπωνε «Λίγο κύμα · ~0,3 μ.» πάνω σε κάθε πινέζα. Ο Μίλτος το έκοψε με δύο λόγια:
+ * ψυχαναγκαστικό και επικίνδυνο. Ψυχαναγκαστικό γιατί ο επισκέπτης αρχίζει να συγκρίνει 0,2 με
+ * 0,3 σαν να ξεχωρίζουν μεταξύ τους· επικίνδυνο γιατί γεννά προσδοκία ακρίβειας που ένα κελί
+ * μοντέλου δέκα χιλιόμετρα ανοιχτά δεν μπορεί να στηρίξει (§Γ5). Μένει η ΛΕΞΗ — «θάλασσα
+ * λάδι», «λίγο κύμα» — και το χρώμα της. Ο αριθμός ζει στην κάρτα και στη σελίδα της παραλίας,
+ * όπου υπάρχει χώρος να συνοδευτεί από την προέλευσή του. Ο άνεμος κρατά τα Μποφόρ του: είναι
+ * κλίμακα, δεν υπόσχεται εκατοστά, και είναι το μόνο μέγεθος που μετράμε καλά.
+ *
+ * ΤΟ ΧΡΩΜΑ ΤΩΝ ΔΥΟ ΕΙΚΟΝΙΔΙΩΝ ΔΕΝ ΓΕΝΝΙΕΤΑΙ ΕΔΩ. Είναι τα ίδια δύο σήματα που ζωγραφίζει η
+ * κάρτα από τις 24/08 (`utils/conditionCause.resolveFactorTones` → `windOnlyColor` /
+ * `seaOnlyColor`, υπολογισμένα ΜΙΑ φορά μέσα στη βαθμολογία και μεταφερόμενα πάνω στο
+ * `simpleWindSuitability`), με τις ίδιες κλάσεις που χρησιμοποιεί το BeachCard:
+ * «τι θα ήταν το χρώμα αν η θάλασσα ήταν λάδι» και «πόσο το κατέβασε η θάλασσα».
+ *
+ * ΤΡΕΙΣ ΣΥΝΕΠΕΙΕΣ, ΓΡΑΜΜΕΝΕΣ ΓΙΑ ΝΑ ΜΗΝ ΞΑΝΑΣΥΖΗΤΗΘΟΥΝ:
+ *  1. Δεν είναι δεύτερη σκάλα. Πρώτη έκδοση αυτής της αλλαγής (ίδια μέρα, λίγες ώρες νωρίτερα)
+ *     έβαφε τα εικονίδια με το ΜΕΓΕΘΟΣ κάθε σήματος. Διαβαζόταν ωραία και ήταν λάθος: στο
+ *     CalmBeach τα τέσσερα χρώματα σημαίνουν παντού «πόσο καλά είναι ΕΔΩ», και η σκάλα του
+ *     μεγέθους δεν βλέπει γεωμετρία — σε κάθε εκτεθειμένη ακτή τα εικονίδια έβγαιναν ένα σκαλί
+ *     ηρεμότερα από την κουκκίδα (3 Μπφ: κουκκίδα κίτρινη, αεράκι μπλε). Το να φαίνεται κάτι
+ *     ηρεμότερο από την πινέζα είναι η μία κατεύθυνση στην οποία το project αρνείται να αποτύχει.
+ *  2. Το νερό μένει γαλάζιο όταν ΔΕΝ κατέβασε το χρώμα — όχι όποτε υπάρχει θάλασσα. Έτσι δεν
+ *     κάθεται κίτρινο κυματάκι δίπλα στη λέξη «σχεδόν χωρίς κύμα» (ο κανόνας ζει στο
+ *     resolveFactorTones, δεν αντιγράφεται εδώ).
+ *  3. Το ταμπελάκι διαβάζει το ΙΔΙΟ αντικείμενο με την κάρτα από κάτω, όχι τη σκάλα του χάρτη.
+ *     Όπου οι δύο διαφωνούν για την έκθεση, διαφωνούν ήδη σήμερα μεταξύ κάρτας και πινέζας —
+ *     είναι το γνωστό κενό που φυλάει το scripts/validateCardVsPinExposure.mjs, και δεν
+ *     μεγαλώνει από εδώ: αν το ταμπελάκι έβαφε με τη δική του σκάλα, θα γινόταν τρίτη φωνή.
+ */
+const factorIconClass = (color: WindSuitabilityColor | undefined): string => (
+  color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-sky-600/90'
+);
+
 const BeachHoverPreviewCard: React.FC<{
   item: SuitableBeach;
   position: HoverPreviewPosition;
@@ -403,7 +439,10 @@ const BeachHoverPreviewCard: React.FC<{
   featureChips: HoverPreviewFeatureChip[];
   localWind?: { deg: number; speedKmh: number };
   windLabel?: string;
-}> = ({ item, position, mapViewportRef, language, photoUrl, featureChips, localWind, windLabel }) => {
+  /** Τα δύο σήματα της κάρτας — δες factorIconClass. */
+  windOnlyColor?: WindSuitabilityColor;
+  seaOnlyColor?: WindSuitabilityColor;
+}> = ({ item, position, mapViewportRef, language, photoUrl, featureChips, localWind, windLabel, windOnlyColor, seaOnlyColor }) => {
   const viewportWidth = mapViewportRef.current?.clientWidth || HOVER_PREVIEW_WIDTH + 32;
   const viewportHeight = mapViewportRef.current?.clientHeight || HOVER_PREVIEW_HEIGHT + 32;
   const preferLeft = position.x + HOVER_PREVIEW_WIDTH + 18 > viewportWidth;
@@ -425,7 +464,6 @@ const BeachHoverPreviewCard: React.FC<{
     shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
     language,
   });
-  const hoverWaveText = hoverReadout.waveText;
   const hoverWaveWord = hoverReadout.waveWord;
 
   return (
@@ -464,19 +502,20 @@ const BeachHoverPreviewCard: React.FC<{
 
           {localWind && windLabel && (
             <p className="mt-1 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-700">
-              <Wind className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+              <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />
               <span>{windLabel} · {Math.round(localWind.speedKmh)} km/h</span>
             </p>
           )}
 
           {/* Η ΘΑΛΑΣΣΑ ΔΙΠΛΑ ΣΤΟΝ ΑΕΡΑ, ΠΟΤΕ ΜΑΖΙ ΤΟΥ (20/08/2026). Αυτή η κάρτα έδειχνε μόνο
               αέρα από την πρώτη μέρα, οπότε στον υπολογιστή η αιώρηση πάνω από μια πινέζα
-              απαντούσε το μισό ερώτημα. Ίδιο νούμερο με την κάρτα και με το ταμπελάκι της
-              πινέζας — μία πηγή, `utils/beachConditionsReadout`. */}
-          {hoverWaveText && (
+              απαντούσε το μισό ερώτημα. Ίδια λέξη με το ταμπελάκι της πινέζας — μία πηγή,
+              `utils/beachConditionsReadout`. Το ύψος έφυγε από τον χάρτη στις 25/08 (δες
+              CONDITION_FEEL_TONE): εδώ μένει η λέξη, με το εικονίδιο στο χρώμα της. */}
+          {hoverWaveWord && (
             <p className="mt-0.5 flex items-center gap-1 text-[10px] font-bold leading-tight text-slate-700">
-              <Waves className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
-              <span>{hoverWaveWord ? `${hoverWaveWord} · ` : ''}{hoverWaveText}</span>
+              <Waves className={`h-3 w-3 shrink-0 ${factorIconClass(seaOnlyColor)}`} aria-hidden="true" />
+              <span>{hoverWaveWord}</span>
             </p>
           )}
 
@@ -508,12 +547,15 @@ const BeachHoverPreviewCard: React.FC<{
  * πορτοκαλί ως κύμα (μετρημένο: στα 6+ Μποφόρ το νερό είναι <0,4 μ. στο 62,2% των περιπτώσεων).
  *
  * ΔΥΟ ΓΡΑΜΜΕΣ, ΠΟΤΕ ΜΙΑ ΜΕ «Η». Ο αέρας και η θάλασσα είναι δύο ανεξάρτητα σήματα και
- * γράφονται χωριστά, με το δικό τους εικονίδιο και το δικό τους νούμερο. Καμία λέξη
- * ετυμηγορίας εδώ μέσα και κανένα χρώμα καταλληλότητας: το χρώμα το κρατάει η κουκκίδα, μία
- * φορά. Τα εικονίδια είναι sky, όπως στην κάρτα — όχι μπλε/κίτρινο/πορτοκαλί/κόκκινο, γιατί
- * δεύτερος χρωματικός κώδικας στην ίδια οθόνη είναι ακριβώς η σύγχυση που λύνουμε.
+ * γράφονται χωριστά, με το δικό τους εικονίδιο. Καμία λέξη ετυμηγορίας εδώ μέσα και καμία
+ * βαθμολογία: την ετυμηγορία την κρατάει η κουκκίδα, μία φορά.
  *
- * ΤΑ ΝΟΥΜΕΡΑ ΕΙΝΑΙ ΤΑ ΙΔΙΑ ΜΕ ΤΗΣ ΚΑΡΤΑΣ, από την ίδια συνάρτηση
+ * ΤΟ ΥΨΟΣ ΚΥΜΑΤΟΣ ΕΦΥΓΕ ΑΠΟ ΕΔΩ (25/08/2026) — το «γιατί» και ο κανόνας των χρωμάτων είναι
+ * γραμμένα πάνω από το `CONDITION_FEEL_TONE`. Η γραμμή της θάλασσας κρατά μόνο τη λέξη, με το
+ * εικονίδιό της στο χρώμα αυτής της λέξης. Ο αέρας κρατά τα Μποφόρ του: είναι κλίμακα που δεν
+ * υπόσχεται εκατοστά, και χωρίς αυτόν ο επισκέπτης δεν έχει κανένα μέγεθος στον χάρτη.
+ *
+ * ΟΙ ΛΕΞΕΙΣ ΕΙΝΑΙ ΟΙ ΙΔΙΕΣ ΜΕ ΤΗΣ ΚΑΡΤΑΣ, από την ίδια συνάρτηση
  * (`utils/beachConditionsReadout`) — όχι από δεύτερο υπολογισμό εδώ.
  */
 const MarkerConditionsPopup: React.FC<{
@@ -522,7 +564,33 @@ const MarkerConditionsPopup: React.FC<{
   windSpeedKmh?: number;
   openLabel: string;
   onOpen?: () => void;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen }) => {
+  /** Τα δύο σήματα της κάρτας — δες factorIconClass. */
+  windOnlyColor?: WindSuitabilityColor;
+  seaOnlyColor?: WindSuitabilityColor;
+  /** «Χαρακτηριστικά» — η ετικέτα του πτυσσόμενου, για screen readers και για το tooltip. */
+  featuresLabel: string;
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, featuresLabel }) => {
+  /**
+   * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
+   * drop down»).
+   *
+   * Κλειστό: μία σειρά με τα εικονίδια και τίποτα άλλο — το ταμπελάκι ψηλώνει 18 px. Ανοιχτό:
+   * οι ίδιες τέσσερις λέξεις που δείχνει η κάρτα αιώρησης στον υπολογιστή. Έτσι το κινητό
+   * παίρνει επιτέλους την ίδια πληροφορία (η κάρτα αιώρησης δεν υπάρχει στην αφή) χωρίς να
+   * φάει χάρτη σε κάθε πάτημα: ο χάρτης στο κινητό είναι 216 px και το ταμπελάκι πατάει πάνω
+   * του — ό,τι προσθέσουμε μόνιμα εδώ, το πληρώνει κάθε επισκέπτης σε κάθε πινέζα.
+   *
+   * ΙΔΙΑ ΣΥΝΑΡΤΗΣΗ ΜΕ ΤΗΝ ΚΑΡΤΑ ΑΙΩΡΗΣΗΣ (`buildHoverPreviewFeatureChips`), όχι δεύτερη λίστα:
+   * ίδια σειρά προτεραιότητας (υπόστρωμα, πρόσβαση, ρηχά/βαθιά, οικογένεια, κοσμοσυρροή,
+   * παροχές), ίδιο πλαφόν των 4, ίδιες λέξεις στις πέντε γλώσσες. Υπολογίζεται μία φορά ανά
+   * παραλία — το `useMemo` υπάρχει επειδή το Leaflet κρατάει ζωντανό το περιεχόμενο του
+   * ταμπελακιού όσο ο επισκέπτης σέρνει την μπάρα της ώρας.
+   */
+  const [featuresOpen, setFeaturesOpen] = useState(false);
+  const featureChips = useMemo(
+    () => buildHoverPreviewFeatureChips(item.beach, language),
+    [item.beach, language]
+  );
   const readout = buildBeachConditionsReadout({
     beachWindSpeedKmph: windSpeedKmh,
     waveHeightM: item.waveHeightM,
@@ -557,20 +625,54 @@ const MarkerConditionsPopup: React.FC<{
       )}
       <div className="mt-0.5">
         <p className="flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
-          <Wind className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
+          <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />
           <span className="min-w-0 truncate">
             {readout.windWord ? `${readout.windWord} · ` : ''}{readout.beaufortText}
           </span>
         </p>
-        {readout.waveText && (
+        {readout.waveWord && (
           <p className="mt-0.5 flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
-            <Waves className="h-3 w-3 shrink-0 text-sky-600" aria-hidden="true" />
-            <span className="min-w-0 truncate">
-              {readout.waveWord ? `${readout.waveWord} · ` : ''}{readout.waveText}
-            </span>
+            <Waves className={`h-3 w-3 shrink-0 ${factorIconClass(seaOnlyColor)}`} aria-hidden="true" />
+            <span className="min-w-0 truncate">{readout.waveWord}</span>
           </p>
         )}
       </div>
+
+      {featureChips.length > 0 && (
+        <div className="mt-1 border-t border-slate-100 pt-1">
+          <button
+            type="button"
+            onClick={() => setFeaturesOpen(open => !open)}
+            aria-expanded={featuresOpen}
+            aria-label={featuresLabel}
+            title={featuresLabel}
+            className="flex min-h-6 w-full cursor-pointer items-center gap-1 text-left text-slate-500 transition hover:text-slate-700"
+          >
+            <span className="flex min-w-0 items-center gap-1.5 text-cyan-700/85" aria-hidden="true">
+              {featureChips.map(chip => (
+                <span key={chip.key} className="shrink-0">{chip.icon}</span>
+              ))}
+            </span>
+            <ChevronDown
+              className={`ml-auto h-3 w-3 shrink-0 transition-transform ${featuresOpen ? 'rotate-180' : ''}`}
+              aria-hidden="true"
+            />
+          </button>
+          {featuresOpen && (
+            <ul className="mt-0.5 space-y-0.5">
+              {featureChips.map(chip => (
+                <li
+                  key={chip.key}
+                  className="flex items-start gap-1.5 text-[10px] font-bold leading-tight text-slate-600"
+                >
+                  <span className="mt-px shrink-0 text-cyan-700">{chip.icon}</span>
+                  <span className="min-w-0 whitespace-normal break-normal">{chip.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -2722,6 +2824,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const beachConditionTone = (item: SuitableBeach): CalmnessTone => resolveConditionTone(beachToneInput(item));
 
+
   // Deliberately over EVERY beach on the map, never the filtered subset. The legend DOES collapse
   // to the picked row while a filter is on (see visibleWindColorGuideRows), but that is a display
   // choice made with an explicit way back. This tally must stay complete underneath it: computed
@@ -2928,6 +3031,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     windShort: { en: 'Wind', gr: 'Άνεμος', de: 'Wind', it: 'Vento', fr: 'Vent' },
     youAreHere: { en: 'You are here', gr: 'Είστε εδώ', de: 'Sie sind hier', it: 'Sei qui', fr: 'Vous êtes ici' },
     openBeach: { en: 'Open this beach', gr: 'Δες την παραλία', de: 'Strand ansehen', it: 'Vedi la spiaggia', fr: 'Voir la plage' },
+    // «Χαρακτηριστικά» και όχι «Παροχές»: η σειρά περιέχει και υπόστρωμα, πρόσβαση και
+    // κοσμοσυρροή, όχι μόνο ομπρέλες — δες buildHoverPreviewFeatureChips.
+    features: { en: 'Features', gr: 'Χαρακτηριστικά', de: 'Merkmale', it: 'Caratteristiche', fr: 'Caractéristiques' },
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
       // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
@@ -4113,11 +4219,19 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   autoPanPadding={[12, 12]}
                   minWidth={128}
                   maxWidth={230}
+                  // Το πτυσσόμενο των χαρακτηριστικών ανοίγει ΜΕΤΑ το autoPan (δες
+                  // PopupPansOnlyOnOpen), οπότε κανείς δεν θα ξαναμετακινήσει τον χάρτη για να
+                  // το χωρέσει. Χωρίς ταβάνι, σε χάρτη 216 px το ανοιχτό ταμπελάκι θα κοβόταν
+                  // στο πάνω χείλος· με ταβάνι, το Leaflet το κάνει να κυλάει μέσα του.
+                  maxHeight={compact || preview ? 150 : 260}
                 >
                   <MarkerConditionsPopup
                     item={item}
                     language={language}
                     windSpeedKmh={beachWindSpeedKmh(item)}
+                    windOnlyColor={item.simpleWindSuitability?.windOnlyColor}
+                    seaOnlyColor={item.simpleWindSuitability?.seaOnlyColor}
+                    featuresLabel={mapCopy.features[language]}
                     openLabel={mapCopy.openBeach[language]}
                     onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
                   />
@@ -4192,6 +4306,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
             featureChips={hoverPreviewFeatureChips}
             localWind={hoverLocalWind}
             windLabel={hoverLocalWindLabel}
+            windOnlyColor={hoveredBeach.simpleWindSuitability?.windOnlyColor}
+            seaOnlyColor={hoveredBeach.simpleWindSuitability?.seaOnlyColor}
           />
         )}
 

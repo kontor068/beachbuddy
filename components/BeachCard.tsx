@@ -39,6 +39,7 @@ import { AmenityChip, AmenityChipKey, AmenityStatusRow, getAmenityChips, getAmen
 import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { cardNotRecommendedLabel } from '../utils/conditionToneLabels';
+import { WIND_SUITABILITY_TONE_CLASSES } from '../utils/suitabilityTone';
 
 interface BeachCardProps {
   beach: Beach & { distance?: number };
@@ -97,6 +98,13 @@ interface BeachCardProps {
   lessExposedToday?: boolean;
   windSuitabilityText?: string;
   windSuitabilityColor?: WindSuitabilityColor;
+  /**
+   * ΤΑ ΔΥΟ ΣΗΜΑΤΑ, ΞΕΧΩΡΙΣΤΑ ΒΑΜΜΕΝΑ (24/08/2026) — δες τη γραμμή «podiumWhyItems» παρακάτω.
+   * Έρχονται έτοιμα από το `simpleWindSuitability`, όπως και το `windSuitabilityColor`: η κάρτα
+   * δεν υπολογίζει χρώμα, το ζωγραφίζει. Απόντα → η γραμμή μένει γαλάζια όπως πριν.
+   */
+  windOnlyColor?: WindSuitabilityColor;
+  seaOnlyColor?: WindSuitabilityColor;
   hideExposureBadge?: boolean;
   /**
    * Controls the wind-exposure chip on the card:
@@ -1377,6 +1385,8 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   lessExposedToday,
   windSuitabilityText,
   windSuitabilityColor,
+  windOnlyColor,
+  seaOnlyColor,
   hideExposureBadge = false,
   windExposureMode,
   showTodayScoreBadge = true,
@@ -1938,6 +1948,26 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    *  δεν μένει ποτέ άδειο. Άδειο κελί δεν το πιάνει καμία πύλη πλάτους. */
   const cardWindWord = conditionsFeel?.windWord ?? `${windBeaufort} ${beaufortUnitLabel}`;
   const cardWaveWord = conditionsFeel?.waveWord ?? cardWaveValueText;
+  /**
+   * ΤΟ ΚΑΘΕ ΣΗΜΑ ΣΤΟ ΧΡΩΜΑ ΤΟΥ ΔΙΚΟΥ ΤΟΥ ΠΑΡΑΓΟΝΤΑ (Μίλτος, 24/08/2026).
+   *
+   * «Θέλω σαν χρήστης με μια ματιά να καταλαβαίνω γιατί» — δύο γειτονικές κάρτες με ολόιδια
+   * νούμερα («3 Μπφ», «~0,1 μ.») και διαφορετικό χρώμα πινέζας. Μετρημένο εθνικότερα την ίδια
+   * μέρα: 308 από 8.526 ζεύγη γειτόνων ≤8 χλμ που τυπώνουν τα ίδια νούμερα φοράνε διαφορετικό
+   * χρώμα (3,6%) — και μέχρι σήμερα τίποτα στην κάρτα δεν έδειχνε ΠΟΙΟ από τα δύο τις χώρισε,
+   * γιατί τα δύο εικονίδια ήταν σταθερά γαλάζια ό,τι κι αν έλεγαν.
+   *
+   * ΚΑΜΙΑ ΝΕΑ ΚΡΙΣΗ ΕΔΩ. Τα δύο χρώματα έρχονται έτοιμα πάνω στο ίδιο αντικείμενο που φέρνει και
+   * το τελικό χρώμα (`SimpleWindSuitability`), υπολογισμένα μία φορά από το ίδιο input με την
+   * ίδια σκάλα (utils/conditionCause.resolveFactorTones). Η κάρτα ζωγραφίζει, δεν αποφασίζει.
+   *
+   * ΤΟ ΝΕΡΟ ΜΕΝΕΙ ΓΑΛΑΖΙΟ ΟΤΑΝ ΔΕΝ ΚΑΤΕΒΑΣΕ ΤΟ ΧΡΩΜΑ — αλλιώς θα καθόταν κίτρινο κυματάκι δίπλα
+   * στη λέξη «σχεδόν χωρίς κύμα», που είναι αντίφαση στην ίδια γραμμή. Άγνωστο χρώμα (παλιά
+   * κλήση χωρίς τα νέα πεδία) → ακριβώς η εμφάνιση που είχε η γραμμή πριν από σήμερα.
+   */
+  const factorIconClass = (color: WindSuitabilityColor | undefined): string => (
+    color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-sky-600/90 dark:text-sky-300/90'
+  );
   const podiumWhyItems: Array<{
     key: string;
     icon: React.ReactNode;
@@ -1950,7 +1980,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
       // 12px εικονίδιο, όχι 14: από τις 14/08 τα νούμερα είναι η ΑΠΟΔΕΙΞΗ κάτω από τη φράση,
       // όχι η επικεφαλίδα, και ένα εικονίδιο μεγαλύτερο από το κείμενό του τραβούσε το μάτι
       // στο λάθος πράγμα.
-      icon: <Wind className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
+      icon: <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />,
       text: cardWindWord,
       // Το νούμερο μένει στο `title`: σε υπολογιστή το βλέπει όποιος το γυρέψει με το ποντίκι,
       // χωρίς να το χρωστάει κανείς άλλος στο κινητό. Δεν είναι ο μηχανισμός — ο μηχανισμός
@@ -1962,7 +1992,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   if (cardWaveText) {
     podiumWhyItems.push({
       key: 'wave',
-      icon: <Waves className="h-3 w-3 shrink-0 text-sky-600/90 dark:text-sky-300/90" aria-hidden="true" />,
+      icon: <Waves className={`h-3 w-3 shrink-0 ${factorIconClass(seaOnlyColor)}`} aria-hidden="true" />,
       text: cardWaveWord,
       title: `${cardWaveLabel}: ${cardWaveValueText}`,
       ariaLabel: `${cardWaveLabel}: ${cardWaveWord}`,

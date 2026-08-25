@@ -89,22 +89,37 @@ export const composeDigest = ({ rows, beachRows, todos, measured, consoleUrl }) 
   const lines = ['🔎 <b>Ποιότητα παραλιών — η βδομάδα που ξεκινάει</b>', ''];
 
   for (const [i, row] of top.entries()) {
-    const worst = [...row.axes].sort((a, b) => a.pct - b.pct).slice(0, 2);
+    // Τα δύο χειρότερα ΜΟΝΟ από όσα κλείνουν με δουλειά αυτής της βδομάδας. Η
+    // φωτογραφία λείπει από τις μισές παραλίες της χώρας, οπότε ως άξονας βγαίνει
+    // πρώτη σχεδόν παντού — και έσπρωχνε έξω ό,τι όντως διορθώνεται. Μετρημένο
+    // 24/08/2026: η Κάρπαθος έδειχνε «Φωτό 37% · Πλοήγηση 69%» και δεν χωρούσαν τα
+    // δεκατρία κενά παροχών της. Το σύνολο των φωτογραφιών λέγεται μία φορά, πιο
+    // κάτω, σαν δικό του νούμερο.
+    const fixable = row.axes.filter((a) => a.sourced !== 'human');
+    const worst = [...(fixable.length ? fixable : row.axes)].sort((a, b) => a.pct - b.pct).slice(0, 2);
     lines.push(
       `${i + 1}. <b>${esc(row.label)}</b> — ${
         row.views ? `${num(row.views)} προβολές` : 'χωρίς προβολές'
       }, έλεγχος ${esc(agoLabel(row.lastAt))}`
     );
     lines.push(`   ${worst.map((a) => `${esc(a.short)} ${a.pct}%`).join(' · ')}`);
-    if (row.gaps.length) lines.push(`   <i>${esc(row.gaps.slice(0, 2).join(' · '))}</i>`);
+    const gaps = row.gaps.filter((g) => !/φωτογραφία/i.test(g));
+    if (gaps.length) lines.push(`   <i>${esc(gaps.slice(0, 2).join(' · '))}</i>`);
   }
 
   if (beachRows.length) {
     lines.push('', '<b>Σελίδες που τις βλέπουν και τους λείπει κάτι</b>');
     for (const beach of beachRows.slice(0, BEACHES_IN_MESSAGE)) {
+      // Ίδιος κανόνας μία σκάλα πιο κάτω: το Μαρκέσι έχει πρόσβαση, παροχές,
+      // χαρακτήρα και επιβεβαιωμένες οδηγίες — «λείπει: Φωτό, Κείμενο» το έδειχνε
+      // σαν μισοτελειωμένο ενώ του λείπει μία ματιά και μία φωτογραφία.
+      const fixableMissing = beach.missing.filter((a) => a.sourced !== 'human');
+      const photoOnly = fixableMissing.length === 0;
       lines.push(
         `• ${esc(beach.name)} <i>(${esc(beach.region)})</i> — ${num(beach.views)} προβολές, ` +
-          `λείπει: ${esc(beach.missing.map((a) => a.short).join(', '))}`
+          (photoOnly
+            ? 'λείπει μόνο φωτογραφία'
+            : `λείπει: ${esc(fixableMissing.map((a) => a.short).join(', '))}`)
       );
     }
   }
@@ -114,6 +129,20 @@ export const composeDigest = ({ rows, beachRows, todos, measured, consoleUrl }) 
     for (const todo of openTodos.slice(0, 3)) {
       lines.push(`• ${todo.beachName ? `${esc(todo.beachName)}: ` : ''}${esc(todo.text)}`);
     }
+  }
+
+  // Οι φωτογραφίες, μία φορά και ως δικό τους νούμερο. Δεν είναι ουρά εργασίας:
+  // δεν υπάρχει εντολή που τις κλείνει, οπότε δεν έχει νόημα να μπαίνουν στη λίστα
+  // «τι να διορθώσεις». Μπαίνουν εδώ για να φαίνεται το μέγεθος και ο ένας δρόμος
+  // που τις κλείνει — δικές μας φωτογραφίες ή επισκεπτών.
+  const photoAxis = LEDGER.totals?.byAxis?.photo;
+  if (photoAxis?.total) {
+    const missing = photoAxis.total - photoAxis.ok;
+    lines.push(
+      '',
+      `📷 <b>Φωτογραφίες:</b> λείπουν ${num(missing)} από ${num(photoAxis.total)} — ` +
+        'κλείνουν μόνο με δικές μας ή επισκεπτών, όχι με σκριπτάκι.'
+    );
   }
 
   // Ο αριθμός που κρατάει το μήνυμα τίμιο: αν το ημερολόγιο είναι μπαγιάτικο, ό,τι

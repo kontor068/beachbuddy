@@ -1,7 +1,7 @@
 import type { WindSuitabilityColor } from '../types';
 import type { ExposureLevel } from './windExposure';
 import { GLASS_AT_FOUR_MAX_SEA_STATE_M } from './offshoreFlatWater';
-import { seaStateToneCeiling, shoreSeaStateM, type SeaToneCeiling } from './waveCharacter';
+import { atDisplayedPrecisionM, seaStateToneCeiling, shoreSeaStateM, type SeaToneCeiling } from './waveCharacter';
 
 /** Shared visual tokens for the map marker and the compact card wave glyph. */
 export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
@@ -527,7 +527,11 @@ export const capIdealByShoreSea = (
 ): CalmnessTone => {
   if (tone !== 'blue' || exempt) return tone;
   if (typeof atShoreM !== 'number' || !Number.isFinite(atShoreM)) return tone;
-  return atShoreM >= IDEAL_MAX_SHORE_SEA_STATE_M ? 'yellow' : tone;
+  // Στην ακρίβεια που τυπώνεται, όπως και το ταβάνι της θάλασσας (24/08/2026). Εδώ το κέρδος
+  // είναι το πιο άμεσο από όλα: 0,39 και 0,41 τυπώνουν ΚΑΙ ΤΑ ΔΥΟ «0,4 μ.», και μέχρι σήμερα το
+  // ένα έβγαινε ΙΔΑΝΙΚΗ και το άλλο ΚΑΛΗ. Μετρημένο: 51 από τα 308 ζεύγη «ίδια νούμερα, άλλο
+  // χρώμα» της 24/08 τα χώριζε αυτή η γραμμή, με διαφορά ακτής 2-3 εκατοστά.
+  return (atDisplayedPrecisionM(atShoreM) as number) >= IDEAL_MAX_SHORE_SEA_STATE_M ? 'yellow' : tone;
 };
 
 /**

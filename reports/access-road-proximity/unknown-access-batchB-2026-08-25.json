@@ -1,0 +1,179 @@
+{
+  "generatedAt": "2026-08-25T09:27:47.453Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 616,
+      "name": "Πύργος",
+      "regionId": "crete-gavdos",
+      "lat": 34.86684,
+      "lon": 24.06605,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 34,
+      "evidence": "μόνο μονοπάτι κοντά (way/628988477 highway=path στα 34 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 617,
+      "name": "Λίβας",
+      "regionId": "crete-gavdos",
+      "lat": 34.86757,
+      "lon": 24.0918,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 11,
+      "evidence": "μόνο μονοπάτι κοντά (way/841052546 highway=path στα 23 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 1315,
+      "name": "Πετροκόπι",
+      "regionId": "north-aegean-fournoi",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1316,
+      "name": "Ελιδάκι",
+      "regionId": "north-aegean-fournoi",
+      "lat": 37.56258,
+      "lon": 26.4831,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 26,
+      "evidence": "μόνο μονοπάτι κοντά (way/1220686497 highway=path στα 26 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 1834,
+      "name": "Φρέας",
+      "regionId": "south-aegean-kea",
+      "lat": 37.57941,
+      "lon": 24.28003,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 51,
+      "evidence": "OSM way/72911193 highway=tertiary surface=asphalt στα 51 m"
+    },
+    {
+      "id": 1835,
+      "name": "Χυλιαμόδου",
+      "regionId": "south-aegean-kea",
+      "lat": 37.57733,
+      "lon": 24.2809,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 55,
+      "evidence": "OSM way/72911193 highway=tertiary surface=asphalt στα 55 m"
+    },
+    {
+      "id": 172,
+      "name": "Καμάρες",
+      "regionId": "attica-spetses",
+      "lat": 37.26689,
+      "lon": 23.10515,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 35,
+      "evidence": "μόνο μονοπάτι κοντά (way/602127045 highway=path στα 35 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 179,
+      "name": "Παραλία Νισάκι",
+      "regionId": "attica-methana",
+      "lat": 37.57725,
+      "lon": 23.38994,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 31,
+      "evidence": "OSM way/58897741 highway=service surface=concrete στα 31 m"
+    },
+    {
+      "id": 1026,
+      "name": "Δεύτερη Σπιάντζα",
+      "regionId": "ionian-islands-paxos",
+      "lat": 39.19383,
+      "lon": 20.19281,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 11,
+      "evidence": "μόνο μονοπάτι κοντά (way/171027051 highway=footway στα 11 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 1056,
+      "name": "Αγία Τριάδα",
+      "regionId": "ionian-islands-othonoi",
+      "lat": 39.8402,
+      "lon": 19.40793,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 20,
+      "evidence": "OSM way/609481079 highway=residential (κατηγορία πάντα στρωμένη) «Μεγάλου Αλεξάνδρου» στα 20 m"
+    },
+    {
+      "id": 1059,
+      "name": "Μπραγκίνι",
+      "regionId": "ionian-islands-erikoussa",
+      "lat": 39.876,
+      "lon": 19.58,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 124,
+      "evidence": "πλησιέστερος δρόμος way/265768877 highway=residential στα 124 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1203,
+      "name": "Καμαρωτή",
+      "regionId": "ionian-islands-zakynthos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1280,
+      "name": "Κατσούνι",
+      "regionId": "north-aegean-psara",
+      "lat": 38.54213,
+      "lon": 25.5655,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 52,
+      "evidence": "OSM way/305165006 highway=tertiary (κατηγορία πάντα στρωμένη) στα 52 m"
+    },
+    {
+      "id": 1968,
+      "name": "Πατέρα Πλάκα",
+      "regionId": "south-aegean-mykonos",
+      "lat": 37.40761,
+      "lon": 25.31271,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 37,
+      "evidence": "OSM way/729047168 highway=residential (κατηγορία πάντα στρωμένη) στα 37 m"
+    },
+    {
+      "id": 2050,
+      "name": "Πυργάκι",
+      "regionId": "south-aegean-paros",
+      "lat": 36.99319,
+      "lon": 25.21823,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 4,
+      "evidence": "OSM way/26012047 highway=residential surface=asphalt «Ράλλη Κοψίδη» στα 4 m"
+    },
+    {
+      "id": 2481,
+      "name": "Παραλία Λουμπούδι",
+      "regionId": "south-aegean-tilos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2494,
+      "name": "Παραλία Παπά",
+      "regionId": "south-aegean-telendos",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    }
+  ]
+}

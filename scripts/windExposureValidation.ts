@@ -403,7 +403,11 @@ const parosPhase21Ids = [
   2042, 2046, 2047, 2048, 2049, 2050, 2052,
 ];
 const androsPhase21Ids = [
-  1687, 1690, 1694, 1696, 1697, 1698, 1700, 1701, 1703, 1704, 1706, 1707, 1708, 1709, 1710,
+  // Το 1707 (Λεφκιβάρι) βγήκε 25/08/2026: κουβαλούσε από τον Μάιο σημαία απόκρυψης
+  // γραμμένη στη ΡΙΖΑ της εγγραφής, όπου ο builder δεν τη διαβάζει, οπότε σερβιριζόταν
+  // παρά την απόφαση. Μόλις η σημαία μπήκε μέσα στο metadata, η παραλία έπαψε να υπάρχει
+  // στο app data και δεν μπορεί πια να έχει windProfile override.
+  1687, 1690, 1694, 1696, 1697, 1698, 1700, 1701, 1703, 1704, 1706, 1708, 1709, 1710,
   1711, 1712, 1714, 1715, 1716, 1717, 1719, 1720, 1721, 1722, 1723, 1725,
 ];
 const milosP0Names = [
@@ -424,7 +428,12 @@ const naxosPhase1CoverageNames = [
   'Klidos', 'Paralia Klido', 'Ligaridia', 'Paralia Limnari', 'Lionas', 'Melino',
   'Mikra', 'Mikri Vigla', 'Mikri Vigla - Notia plevra', 'Mikro Alyko', 'Moutsouna',
   'Orkos', 'Panormos', 'Plaka', 'Pyrgaki', 'Rina', 'Paralia Spedo', 'Chilia Vrysi',
-  'Paralia Psili Ammos', 'Paralia Psofagrilia', 'Hawaii',
+  'Paralia Psili Ammos', 'Hawaii',
+  // Η «Paralia Psofagrilia» βγήκε 25/08/2026: η εγγραφή #2018 έφερε σημαία απόκρυψης από
+  // τον Μάιο («no reliable direct source for a distinct Naxos Psofagrilia beach»), αλλά η
+  // σημαία ήταν γραμμένη στη ρίζα της εγγραφής και ο builder διαβάζει μόνο μέσα από το
+  // metadata — οπότε σερβιριζόταν κανονικά και ο έλεγχος τη μετρούσε ως κάλυψη. Μόλις η
+  // σημαία μπήκε στη σωστή θέση, η παραλία έπαψε να υπάρχει στο app data.
   // Added 2026-08-13 from the hidden-beach discovery pass. They carry no-claim
   // (unverified) profiles, so they belong in the LOW-evidence half of the gate below —
   // never in naxosMediumEvidenceGateIds until someone actually verifies a shore.
@@ -439,7 +448,7 @@ const naxosNorthExposedNames = [
   'Chilia Vrysi',
 ];
 const naxosEastExposedNames = [
-  'Azalas', 'Ligaridia', 'Paralia Limnari', 'Lionas', 'Paralia Psofagrilia',
+  'Azalas', 'Ligaridia', 'Paralia Limnari', 'Lionas',   // Psofagrilia: βλ. σχόλιο πιο πάνω
 ];
 
 const parosBeaches = loadAppRegionBeaches('south-aegean-paros');
@@ -617,9 +626,9 @@ const allProfilesCovered = parosCoverage.overrideProfiles + androsCoverage.overr
 const naxosWindProfilesCovered = naxosCoverage.overrideProfiles;
 
 assert(parosBeaches.length === 39, 'Coverage: Paros app data must contain 39 beaches (37 original + Πίσω Λιβάδι #3176 and Μακριά Μύτη #3175 added 2026-08-13 from the hidden-beach discovery pass).');
-assert(androsBeaches.length === 41, 'Coverage: Andros app data must contain 41 beaches.');
+assert(androsBeaches.length === 40, 'Coverage: Andros app data must contain 40 beaches. Ήταν 41 μέχρι τις 25/08/2026: το Λεφκιβάρι #1707 κουβαλούσε από τον Μάιο σημαία απόκρυψης («no reliable direct source for a distinct Andros Lefkivari beach») γραμμένη στη ΡΙΖΑ της εγγραφής, όπου ο builder δεν τη διαβάζει, οπότε σερβιριζόταν παρά την απόφαση.');
 assert(milosBeaches.length === 42, 'Coverage: Milos app data must contain 42 beaches (41 original + Kleftiko #3000 added 2026-06-12 + Pachaina #3054 added 2026-06-19, − Rema #1937 removed in the 2026-06-20 Milos data refresh).');
-assert(naxosBeaches.length === 44, 'Coverage: Naxos app data must contain 44 beaches (39 original + Ακρωτήρι #3172, Γαλήνη #3173, Κανάκι #3174, Στελίδα #3177 and Φαρακλό #3178 added 2026-08-13 from the hidden-beach discovery pass).');
+assert(naxosBeaches.length === 43, 'Coverage: Naxos app data must contain 43 beaches (38 original + Ακρωτήρι #3172, Γαλήνη #3173, Κανάκι #3174, Στελίδα #3177 and Φαρακλό #3178 added 2026-08-13 from the hidden-beach discovery pass). Ήταν 44 μέχρι τις 25/08/2026: η Ψωφαγριλιά #2018 είχε την ίδια σημαία απόκρυψης σε λάθος θέση.');
 assert(parosCoverage.p0Profiles === parosP0Ids.length, 'Coverage: all Paros P0 beaches must have windProfile overrides.');
 assert(androsCoverage.p0Profiles === androsP0Ids.length, 'Coverage: all Andros P0 beaches must have windProfile overrides.');
 assert(milosCoverage.p0Profiles === milosP0Ids.length, 'Coverage: all Milos P0 beaches must have windProfile overrides.');
@@ -628,10 +637,10 @@ assert(androsCoverage.phase21Profiles === androsPhase21Ids.length, 'Coverage: al
 assert(milosCoverage.phase21Profiles === milosPhase3CoverageIds.length, 'Coverage: all Milos Phase 3 coverage beaches must have low-confidence windProfile overrides.');
 assert(naxosCoverage.phase21Profiles === naxosPhase1CoverageIds.length, 'Coverage: all Naxos Phase 1 beaches must have audited windProfile overrides.');
 assert(p0WindProfilesCovered === 29, 'Coverage: Phase 2 P0 should still cover 29 high-impact profiles.');
-assert(phase21WindProfilesAdded === 49, 'Coverage: Phase 2.1 should add 49 remaining profiles.');
+assert(phase21WindProfilesAdded === 48, 'Coverage: Phase 2.1 should add 48 remaining profiles. Ήταν 49 μέχρι τις 25/08/2026, οπότε το Λεφκιβάρι #1707 έπαψε να σερβίρεται (σημαία απόκρυψης σε λάθος θέση).');
 assert(parosCoverage.overrideProfiles === parosCoverage.total, 'Coverage: Paros must reach 39/39 windProfile coverage.');
-assert(androsCoverage.overrideProfiles === androsCoverage.total, 'Coverage: Andros must reach 41/41 windProfile coverage.');
-assert(allProfilesCovered === 80, 'Coverage: Paros and Andros must reach 80/80 combined windProfile coverage (79 → 80 when Paros went from 37 to 39 beaches on 2026-08-13).');
+assert(androsCoverage.overrideProfiles === androsCoverage.total, 'Coverage: Andros must reach 40/40 windProfile coverage.');
+assert(allProfilesCovered === 79, 'Coverage: Paros and Andros must reach 79/79 combined windProfile coverage (79 → 80 when Paros went from 37 to 39 beaches on 2026-08-13, back to 79 on 2026-08-25 when Andros lost Λεφκιβάρι #1707 to its long-standing hide flag).');
 assert(parosCoverage.unknownSourceProfiles === 0, 'Coverage: Paros should have no source-missing windProfiles after Phase 2.1.');
 assert(androsCoverage.unknownSourceProfiles === 0, 'Coverage: Andros should have no source-missing windProfiles after Phase 2.1.');
 // Kleftiko (#3000, added 2026-06-12) and Pachaina (#3054, added 2026-06-19) are served by
@@ -665,7 +674,7 @@ assertExactIds(
   assert(assessment.canClaimProtected, `Paros 5 Bft N: ${name} may claim protected only because beach-specific sheltered-bay evidence exists.`);
 });
 assert(naxosCoverage.overrideProfiles === naxosCoverage.total, 'Coverage: Naxos should reach 44/44 windProfile override coverage.');
-assert(naxosWindProfilesCovered === 44, 'Coverage: Naxos Phase 1 should cover 44/44 windProfiles (the 39 audited ones plus the five 2026-08-13 discoveries, which carry no-claim profiles).');
+assert(naxosWindProfilesCovered === 43, 'Coverage: Naxos Phase 1 should cover 43/43 windProfiles (the 38 audited ones plus the five 2026-08-13 discoveries, which carry no-claim profiles). Ήταν 44 μέχρι τις 25/08/2026, οπότε η #2018 Ψωφαγριλιά έπαψε να σερβίρεται: η σημαία απόκρυψης που της είχε μπει τον Μάιο ήταν γραμμένη στη ρίζα της εγγραφής, όπου ο builder δεν την διαβάζει.');
 assert(naxosCoverage.unknownSourceProfiles === 0, 'Coverage: Naxos should have no source-missing windProfiles after Phase 1 coverage.');
 assert(naxosCoverage.highConfidence === 0, 'Coverage: Naxos Phase 1 must not create high-confidence profiles from map/geospatial evidence alone.');
 assert(naxosCoverage.mediumConfidence === naxosMediumEvidenceGateIds.length, 'Coverage: Naxos medium-confidence upgrades must match the wind-profile evidence gate.');

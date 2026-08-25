@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-08-24T21:26:58.780Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 2666,
+      "name": "Δερμαριά (Πτελεός)",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2687,
+      "name": "Καστρί",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "lat": 39.142803,
+      "lon": 23.306397,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 65,
+      "evidence": "OSM way/510179391 highway=unclassified surface=asphalt στα 65 m"
+    },
+    {
+      "id": 2692,
+      "name": "Λεπετούς",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    }
+  ]
+}

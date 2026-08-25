@@ -8908,6 +8908,8 @@ export const App: React.FC = () => {
                       seaCalmClaimAllowed={r.seaCalmClaimAllowed}
                       windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
                       windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
+                      windOnlyColor={r.simpleWindSuitability?.windOnlyColor}
+                      seaOnlyColor={r.simpleWindSuitability?.seaOnlyColor}
                     />
                   </div>
                 ))}
@@ -9164,6 +9166,8 @@ export const App: React.FC = () => {
                           strongWindContext={isStrongRecommendationMode}
                           windSuitabilityText={describeSimpleWindSuitability(r.simpleWindSuitability, language)}
                           windSuitabilityColor={r.simpleWindSuitability?.suitabilityColor}
+                          windOnlyColor={r.simpleWindSuitability?.windOnlyColor}
+                          seaOnlyColor={r.simpleWindSuitability?.seaOnlyColor}
                         />
                       </div>
                     ))}

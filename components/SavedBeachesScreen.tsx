@@ -359,6 +359,8 @@ export const SavedBeachesScreen: React.FC<SavedBeachesScreenProps> = ({
                       bestBeachTime={item.bestBeachTime}
                       windSuitabilityText={describeSimpleWindSuitability(item.simpleWindSuitability, language)}
                       windSuitabilityColor={item.simpleWindSuitability?.suitabilityColor}
+                      windOnlyColor={item.simpleWindSuitability?.windOnlyColor}
+                      seaOnlyColor={item.simpleWindSuitability?.seaOnlyColor}
                       forceTodayScoreBadge
                     />
                   </div>

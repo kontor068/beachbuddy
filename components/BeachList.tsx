@@ -351,6 +351,8 @@ export const BeachList: React.FC<BeachListProps> = ({
               lessExposedToday={b.lessExposedToday}
               windSuitabilityText={b.windExposureReason}
               windSuitabilityColor={b.simpleWindSuitability?.suitabilityColor}
+              windOnlyColor={b.simpleWindSuitability?.windOnlyColor}
+              seaOnlyColor={b.simpleWindSuitability?.seaOnlyColor}
             />
           </div>
         );

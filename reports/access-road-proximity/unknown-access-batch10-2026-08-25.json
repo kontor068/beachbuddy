@@ -1,0 +1,242 @@
+{
+  "generatedAt": "2026-08-25T09:10:43.561Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "partial": true,
+  "results": [
+    {
+      "id": 2370,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.28785,
+      "lon": 26.79106,
+      "verdict": "difficult_dirt_road",
+      "label": "Δύσβατος χωματόδρομος",
+      "distM": 15,
+      "evidence": "OSM way/502564706 highway=track tracktype=grade5 στα 15 m"
+    },
+    {
+      "id": 2374,
+      "name": "Κισσίρια",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.30432,
+      "lon": 26.77668,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 26,
+      "evidence": "πλησιέστερος δρόμος way/300977663 highway=service στα 26 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 2376,
+      "name": "Κορακιά",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.27672,
+      "lon": 26.78208,
+      "verdict": "difficult_dirt_road",
+      "label": "Δύσβατος χωματόδρομος",
+      "distM": 12,
+      "evidence": "OSM way/1355835566 highway=track tracktype=grade3 στα 12 m"
+    },
+    {
+      "id": 2378,
+      "name": "Λύρα",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.27811,
+      "lon": 26.76705,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 2379,
+      "name": "Μερσίνη",
+      "regionId": "south-aegean-lipsi",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2380,
+      "name": "Ξηρόκαμπος",
+      "regionId": "south-aegean-lipsi",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 2383,
+      "name": "Πνιγμένος",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.28256,
+      "lon": 26.76445,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 23,
+      "evidence": "μόνο μονοπάτι κοντά (way/502586914 highway=footway στα 23 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 2384,
+      "name": "Στίφη",
+      "regionId": "south-aegean-lipsi",
+      "lat": 37.28113,
+      "lon": 26.76473,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 183,
+      "evidence": "πλησιέστερος δρόμος way/502586914 highway=footway στα 183 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 2385,
+      "name": "Τουρκόμνημα",
+      "regionId": "south-aegean-lipsi",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 892,
+      "name": "Δεή",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.41592,
+      "lon": 20.23087,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 56,
+      "evidence": "πλησιέστερος δρόμος way/27230961 highway=service στα 56 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 895,
+      "name": "Ζέρη",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.41307,
+      "lon": 20.23436,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 62,
+      "evidence": "OSM way/35939344 highway=residential (κατηγορία πάντα στρωμένη) στα 62 m"
+    },
+    {
+      "id": 897,
+      "name": "Κάρβουνο",
+      "regionId": "epirus-thesprotia-mainland",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 904,
+      "name": "Μουρτεμένο",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.39866,
+      "lon": 20.23383,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 40,
+      "evidence": "μόνο μονοπάτι κοντά (way/72348378 highway=footway στα 40 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 906,
+      "name": "Πάνα",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.40346,
+      "lon": 20.23009,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 189,
+      "evidence": "πλησιέστερος δρόμος way/283338181 highway=service στα 189 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 922,
+      "name": "Σοφάς",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.37848,
+      "lon": 20.28168,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 88,
+      "evidence": "πλησιέστερος δρόμος way/770909405 highway=service στα 88 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 925,
+      "name": "Παραλία Σαγιάδας",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.62755,
+      "lon": 20.17805,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 20,
+      "evidence": "OSM way/447734278 highway=service surface=asphalt στα 20 m"
+    },
+    {
+      "id": 926,
+      "name": "Keramidi Beach",
+      "regionId": "epirus-thesprotia-mainland",
+      "lat": 39.63917,
+      "lon": 20.15666,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 65,
+      "evidence": "OSM way/128684178 highway=primary surface=asphalt «Σαγιάδα - Μαυρομάτι» στα 65 m"
+    },
+    {
+      "id": 1472,
+      "name": "Ανεπίσημη Γυμνιστική Παραλία",
+      "regionId": "peloponnese-argolida-mainland",
+      "lat": 37.51982,
+      "lon": 22.94457,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 9,
+      "evidence": "μόνο μονοπάτι κοντά (way/405675922 highway=path στα 9 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 1474,
+      "name": "Γκλιάτη",
+      "regionId": "peloponnese-argolida-mainland",
+      "lat": 37.62526,
+      "lon": 23.15638,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 44,
+      "evidence": "OSM way/245811554 highway=residential (κατηγορία πάντα στρωμένη) στα 44 m"
+    },
+    {
+      "id": 1479,
+      "name": "Μικρή Βουρλιά",
+      "regionId": "peloponnese-argolida-mainland",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 1481,
+      "name": "Νεράκι",
+      "regionId": "peloponnese-argolida-mainland",
+      "lat": 37.55236,
+      "lon": 22.80837,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 18,
+      "evidence": "μόνο μονοπάτι κοντά (way/93325660 highway=footway στα 18 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 1501,
+      "name": "Κουνουπί",
+      "regionId": "peloponnese-argolida-mainland",
+      "lat": 37.305712,
+      "lon": 23.198374,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 122,
+      "evidence": "OSM way/700639257 highway=track στα 122 m"
+    },
+    {
+      "id": 1763,
+      "name": "Αντώναρου",
+      "regionId": "south-aegean-ios",
+      "lat": 36.65014,
+      "lon": 25.36017,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 12,
+      "evidence": "μόνο μονοπάτι κοντά (way/323974553 highway=path στα 12 m) — δεν ταξινομείται αυτόματα"
+    }
+  ]
+}

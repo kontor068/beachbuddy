@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-08-25T06:06:47.995Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 2517,
+      "name": "Abelakia",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.56514,
+      "lon": 20.90911,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 10,
+      "evidence": "OSM way/149240106 highway=residential (κατηγορία πάντα στρωμένη) στα 10 m"
+    },
+    {
+      "id": 2518,
+      "name": "Agrapidia",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.61464,
+      "lon": 20.92035,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 81,
+      "evidence": "OSM way/960648101 highway=residential (κατηγορία πάντα στρωμένη) στα 81 m"
+    },
+    {
+      "id": 2525,
+      "name": "Vali",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.57184,
+      "lon": 20.91396,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 78,
+      "evidence": "OSM way/72149639 highway=residential (κατηγορία πάντα στρωμένη) στα 78 m"
+    },
+    {
+      "id": 2529,
+      "name": "Βαθιά Βάλη",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.55551,
+      "lon": 20.90004,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 2536,
+      "name": "Μυρτάρι",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.92915,
+      "lon": 20.84865,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 11,
+      "evidence": "OSM way/102957399 highway=residential (κατηγορία πάντα στρωμένη) στα 11 m"
+    },
+    {
+      "id": 2538,
+      "name": "Παλιονήσι",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.89554,
+      "lon": 21.02416,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 9,
+      "evidence": "πλησιέστερος δρόμος way/946141636 highway=unclassified στα 9 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 2540,
+      "name": "Παραθάλασσο",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.40512,
+      "lon": 21.93296,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 41,
+      "evidence": "μόνο μονοπάτι κοντά (way/1325507286 highway=path στα 41 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3017,
+      "name": "Μεσολόγγι Τουρλίδα",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.3253662,
+      "lon": 21.4194283,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 80,
+      "evidence": "OSM way/1312577629 highway=tertiary (κατηγορία πάντα στρωμένη) στα 80 m"
+    },
+    {
+      "id": 3044,
+      "name": "Άκτιο Βόνιτσας Αγ. Δημήτριος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3045,
+      "name": "Άκτιο Βόνιτσας Πάλαιρος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.780444,
+      "lon": 20.878417,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 30,
+      "evidence": "OSM way/660982945 highway=unclassified surface=asphalt «Μακρύγιαλου» στα 30 m"
+    },
+    {
+      "id": 3046,
+      "name": "ΠΔΕ Αραχωβίτικα",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.331073,
+      "lon": 21.842379,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 47,
+      "evidence": "OSM way/813393162 highway=residential (κατηγορία πάντα στρωμένη) «Ελευθερίας» στα 47 m"
+    },
+    {
+      "id": 3050,
+      "name": "ΠΔΕ Μακύνεια",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.346195,
+      "lon": 21.716688,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 31,
+      "evidence": "OSM way/160184064 highway=residential surface=asphalt στα 31 m"
+    },
+    {
+      "id": 3051,
+      "name": "ΠΔΕ Πάτρα Αγ.Βασίλειος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.31823,
+      "lon": 21.81686,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 4,
+      "evidence": "OSM way/151561388 highway=residential (κατηγορία πάντα στρωμένη) «Ηρώων Πολυτεχνείου» στα 4 m"
+    },
+    {
+      "id": 3144,
+      "name": "Παραλία Κρυονέρι",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.33479,
+      "lon": 21.58131,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 18,
+      "evidence": "πλησιέστερος δρόμος way/111669240 highway=unclassified στα 18 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 3145,
+      "name": "Παραλία Μύτικας",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "lat": 38.67008,
+      "lon": 20.95103,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 33,
+      "evidence": "OSM way/120454975 highway=tertiary (κατηγορία πάντα στρωμένη) στα 33 m"
+    }
+  ]
+}

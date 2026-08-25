@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-08-25T06:28:57.106Z",
+  "radiusM": 350,
+  "results": [
+    {
+      "id": 32,
+      "name": "Παραλία Σχινιά",
+      "regionId": "attica-east-attica-mainland",
+      "lat": 38.13969,
+      "lon": 24.03493,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 256,
+      "name": "Μεγάλη Άμμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.03316,
+      "lon": 24.30627,
+      "verdict": "RESTORE",
+      "navMode": "coordinates",
+      "status": "verified",
+      "evidence": "OSM «Μεγάλη Άμμος» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+    },
+    {
+      "id": 976,
+      "name": "Μώλος",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.43713,
+      "lon": 20.03695,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 986,
+      "name": "Παραλία Αχαράβης",
+      "regionId": "ionian-islands-corfu",
+      "lat": 39.79668,
+      "lon": 19.80855,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    },
+    {
+      "id": 1588,
+      "name": "Παραλία Τρίνησα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "lat": 36.80523,
+      "lon": 22.65657,
+      "verdict": "KEEP",
+      "reason": "κανένα σημείο παραλίας του OSM σε 350 m — η πινέζα δεν επιβεβαιώνεται"
+    }
+  ]
+}

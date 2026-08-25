@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-08-25T06:22:42.659Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 527,
+      "name": "Άργιλος",
+      "regionId": "crete-crete-chania",
+      "lat": 35.1808438,
+      "lon": 24.2562054,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 135,
+      "evidence": "πλησιέστερος δρόμος way/217188248 highway=unclassified στα 135 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 536,
+      "name": "Λευκή Παραλία",
+      "regionId": "crete-crete-chania",
+      "lat": 35.55091,
+      "lon": 24.07978,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 97,
+      "evidence": "OSM way/27184525 highway=residential (κατηγορία πάντα στρωμένη) στα 97 m"
+    },
+    {
+      "id": 3032,
+      "name": "Αποκορώνου Αλμυρίδα",
+      "regionId": "crete-crete-chania",
+      "lat": 35.449916,
+      "lon": 24.198811,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 34,
+      "evidence": "OSM way/233277497 highway=service surface=asphalt στα 34 m"
+    },
+    {
+      "id": 3065,
+      "name": "Nopigia Beach",
+      "regionId": "crete-crete-chania",
+      "lat": 35.509676,
+      "lon": 23.720163,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 22,
+      "evidence": "OSM way/124192223 highway=tertiary (κατηγορία πάντα στρωμένη) στα 22 m"
+    },
+    {
+      "id": 3076,
+      "name": "Korfalonas Beach",
+      "regionId": "crete-crete-chania",
+      "lat": 35.4987352,
+      "lon": 23.6743717,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 90,
+      "evidence": "μόνο μονοπάτι κοντά (way/1512097243 highway=footway στα 90 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3077,
+      "name": "Paralia Drapanias",
+      "regionId": "crete-crete-chania",
+      "lat": 35.5021692,
+      "lon": 23.6971431,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 86,
+      "evidence": "OSM way/38510694 highway=residential surface=asphalt στα 86 m"
+    },
+    {
+      "id": 3130,
+      "name": "Παραλία Λιβάδια",
+      "regionId": "crete-crete-chania",
+      "lat": 35.35763,
+      "lon": 23.53209,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 10,
+      "evidence": "OSM way/43375027 highway=tertiary surface=asphalt στα 10 m"
+    }
+  ]
+}

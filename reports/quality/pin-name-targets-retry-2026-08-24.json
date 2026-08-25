@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-08-24T20:56:01.130Z",
+  "radiusM": 20000,
+  "samePlaceM": 250,
+  "results": [
+    {
+      "id": 283,
+      "name": "Παραλία Ψαροπούλι/Βασιλικών",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Ψαροπούλι/Βασιλικών» (way/166228614) is 0 m from our pin — same beach, unmapped polygon",
+      "candidates": [
+        {
+          "osm": "way/166228614",
+          "kind": "beach",
+          "lat": 38.9718897,
+          "lon": 23.3833864,
+          "names": [
+            "Παραλία Ψαροπούλι/Βασιλικών"
+          ],
+          "distM": 0
+        },
+        {
+          "osm": "node/1776841883",
+          "kind": "village",
+          "lat": 38.9834097,
+          "lon": 23.3700393,
+          "names": [
+            "Ψαροπούλι",
+            "Psaropouli"
+          ],
+          "distM": 1724
+        }
+      ]
+    },
+    {
+      "id": 3008,
+      "name": "Γεωπονικά",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    },
+    {
+      "id": 859,
+      "name": "Παραλία Γαλάνης Νέστου",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    }
+  ]
+}

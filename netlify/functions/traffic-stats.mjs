@@ -554,9 +554,15 @@ const axisDots = (row) =>
   row.axes
     .map((a) => {
       const level = a.pct >= 95 ? 'ok' : a.pct >= 75 ? 'mid' : a.pct >= 40 ? 'low' : 'bad';
-      return `<i class="qd ${level}" title="${esc(a.label)}: ${a.pct}% (${a.ok}/${a.total})${
+      // Ο άξονας που δεν κλείνει με εντολή κρατάει το νούμερό του αλλά χάνει το
+      // χρώμα του συναγερμού: κόκκινο σημαίνει «πιάσε δουλειά», και εδώ δεν υπάρχει
+      // δουλειά να πιάσεις — μόνο φωτογραφίες που πρέπει να τραβηχτούν.
+      const human = a.sourced === 'human';
+      const cls = human ? 'qd human' : `qd ${level}`;
+      const why = human ? ' · κλείνει μόνο με δικές μας ή επισκεπτών φωτογραφίες' : '';
+      return `<i class="${cls}" title="${esc(a.label)}: ${a.pct}% (${a.ok}/${a.total})${
         a.at ? ` · έλεγχος ${esc(a.at)}` : ''
-      }"><b>${a.pct}</b><u>${esc(a.short)}</u></i>`;
+      }${why}"><b>${a.pct}</b><u>${esc(a.short)}</u></i>`;
     })
     .join('');
 
@@ -1420,6 +1426,7 @@ const page = (data) => {
   .qd.mid{border-color:rgba(251,191,36,.30)} .qd.mid b{color:#fcd34d}
   .qd.low{border-color:rgba(251,146,60,.32)} .qd.low b{color:#fdba74}
   .qd.bad{border-color:rgba(251,113,133,.38)} .qd.bad b{color:#fda4af}
+  .qd.human{border-color:rgba(148,163,184,.28);border-style:dashed} .qd.human b{color:var(--mut)}
 
   /* "Το τσέκαρα" stays folded: it is one press per WEEK, and an open form on 110
      rows would bury the numbers the tab exists to show. */

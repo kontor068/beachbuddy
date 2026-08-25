@@ -52,6 +52,7 @@
     "quality:water-routing": "node scripts/validateWaterQuestionRouting.mjs",
     "quality:departing-sea": "node scripts/validateDepartingSeaEvidence.mjs --prove",
     "quality:three-beaufort-chop": "node scripts/validateThreeBeaufortChopGate.mjs",
+    "quality:displayed-precision": "node scripts/validateDisplayedPrecisionGate.mjs",
     "quality:offshore-wind-note": "node scripts/validateOffshoreWindNote.mjs",
     "build:wind-shadow": "node scripts/buildWindShadow.mjs",
     "quality:open-water-label": "node scripts/validateOpenWaterLabel.mjs",

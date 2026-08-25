@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-08-24T20:53:52.393Z",
+  "radiusM": 20000,
+  "samePlaceM": 250,
+  "results": [
+    {
+      "id": 283,
+      "name": "Παραλία Ψαροπούλι/Βασιλικών",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    },
+    {
+      "id": 3008,
+      "name": "Γεωπονικά",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    },
+    {
+      "id": 3018,
+      "name": "Νέα Φλόγητα",
+      "verdict": "KEEP",
+      "reason": "OSM «Νέα Φλογητά» (node/146262610) is 0 m from our pin — same beach, unmapped polygon",
+      "candidates": [
+        {
+          "osm": "node/146262610",
+          "kind": "village",
+          "lat": 40.2599201,
+          "lon": 23.2214367,
+          "names": [
+            "Νέα Φλογητά",
+            "Νέα Φλογητά",
+            "Nea Flogita"
+          ],
+          "distM": 0
+        }
+      ]
+    },
+    {
+      "id": 859,
+      "name": "Παραλία Γαλάνης Νέστου",
+      "verdict": "FLAG",
+      "reason": "Overpass unreachable"
+    },
+    {
+      "id": 3040,
+      "name": "Λουτράκι Λίμνη Βουλιαγμένης Ηραίου",
+      "verdict": "FLAG",
+      "target": [
+        38.032138,
+        22.871762
+      ],
+      "polygonDistM": 1079,
+      "confidence": "OSM hamlet node/1767693542 named «Λίμνη Βουλιαγμένη»",
+      "evidence": "name match 1079 m away; our pin had no beach mapped within 1,2 km",
+      "candidates": [
+        {
+          "osm": "node/1767693542",
+          "kind": "hamlet",
+          "lat": 38.0321378,
+          "lon": 22.8717625,
+          "names": [
+            "Λίμνη Βουλιαγμένη",
+            "Λίμνη Βουλιαγμένη",
+            "Vouliagmeni Lake",
+            "Λίμνη Ηραίου"
+          ],
+          "distM": 1079
+        }
+      ]
+    },
+    {
+      "id": 2608,
+      "name": "Σπαρτίνες",
+      "verdict": "MOVE",
+      "target": [
+        39.154255,
+        23.87782
+      ],
+      "polygonDistM": 3637,
+      "confidence": "OSM beach way/295333253 named «Σπαρτίνες»",
+      "evidence": "name match 3637 m away; our pin had no beach mapped within 1,2 km",
+      "candidates": [
+        {
+          "osm": "way/295333253",
+          "kind": "beach",
+          "lat": 39.1542549,
+          "lon": 23.8778198,
+          "names": [
+            "Σπαρτίνες",
+            "Σπαρτίνες",
+            "Spartines"
+          ],
+          "distM": 3637
+        }
+      ]
+    },
+    {
+      "id": 2651,
+      "name": "Αρμενόπετρα",
+      "verdict": "MOVE",
+      "target": [
+        39.146275,
+        23.627203
+      ],
+      "polygonDistM": 1301,
+      "confidence": "OSM beach node/4316028889 named «Ανεμόπετρα»",
+      "evidence": "name match 1301 m away; our pin had no beach mapped within 1,2 km",
+      "candidates": [
+        {
+          "osm": "node/4316028889",
+          "kind": "beach",
+          "lat": 39.1462746,
+          "lon": 23.627203,
+          "names": [
+            "Ανεμόπετρα",
+            "Αρμενόπετρα",
+            "Armenopetra"
+          ],
+          "distM": 1301
+        }
+      ]
+    },
+    {
+      "id": 2720,
+      "name": "Σουτραλί (Αγριά)",
+      "verdict": "MOVE",
+      "target": [
+        39.32582,
+        23.014129
+      ],
+      "polygonDistM": 3106,
+      "confidence": "OSM beach way/320087252 named «Σουτραλί»",
+      "evidence": "name match 3106 m away; our pin had no beach mapped within 1,2 km",
+      "candidates": [
+        {
+          "osm": "way/320087252",
+          "kind": "beach",
+          "lat": 39.3258203,
+          "lon": 23.0141285,
+          "names": [
+            "Σουτραλί"
+          ],
+          "distM": 3106
+        }
+      ]
+    }
+  ]
+}

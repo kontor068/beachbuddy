@@ -1,0 +1,2647 @@
+{
+  "note": "Λίστα για ανθρώπινη έγκριση. ΚΑΝΕΝΑ σκριπτ δεν ανεβάζει confidence — δες την κεφαλίδα του scripts/listConfidenceReadyBeaches.mjs.",
+  "generatedAt": "2026-08-25",
+  "criteria": [
+    "access",
+    "amenities",
+    "character",
+    "nav",
+    "source",
+    "unflagged"
+  ],
+  "viewsSource": null,
+  "totals": {
+    "scanned": 2867,
+    "notHigh": 579,
+    "ready": 90
+  },
+  "beaches": [
+    {
+      "id": 87,
+      "name": "Παραλία Ζινόβι",
+      "regionId": "attica-aegina",
+      "regionLabel": "Αίγινα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: βότσαλο, βράχια. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Υπάρχει φυσική σκιά σε σημεία από δέντρα, πεύκα, βράχια ή πρανή.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "parking ή στάθμευση δρόμου κοντά",
+          "φυσική σκιά σε σημεία"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 352.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/806126572"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 90,
+      "name": "Παραλία Μαραθώνα Α",
+      "regionId": "attica-aegina",
+      "regionLabel": "Αίγινα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Το Μαραθώνας Α είναι αμμώδες, οργανωμένο, ρηχό και ιδιαίτερα κατάλληλο για οικογένειες. Οι ξαπλώστρες λειτουργούν εποχικά μέσω των παραλιακών εστιατορίων/καφέ.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "fine_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 231.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/518890263"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2537,
+      "name": "Μυρτιά",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionLabel": "Αιτωλοακαρνανία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μυρτιά: προσβάσιμη παραλία της Αιτωλοακαρνανίας με δρόμο, εστίαση και εποχική οργάνωση ή αστικές παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 129.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://beachnearby.com/beach/%CE%BC%CF%85%CF%81%CF%84%CE%B9%CE%AC-municipal-unit-of-kalamos-peloponnese-western-greece-and-the-ionian"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2539,
+      "name": "Παλιοπόταμος",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionLabel": "Αιτωλοακαρνανία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "Η πηγή GreekMap αναφέρει χωματόδρομο λίγο πριν τον Λούρο που οδηγεί στις παραλίες Παλιοπόταμου/Σκρόφες.",
+        "amenities": [
+          "καντίνα"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "medium",
+        "facingDeg": 171.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.greekmap.eu/paralia-paliopotamos.htm"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2554,
+      "name": "Παραλία Λουτρακίου",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionLabel": "Αιτωλοακαρνανία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Λουτρακίου: προσβάσιμη παραλία της Αιτωλοακαρνανίας με δρόμο, εστίαση και εποχική οργάνωση ή αστικές παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 18.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://mapcarta.com/W973077907"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2521,
+      "name": "Drepano Kite Surfer's Paradise Beach",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionLabel": "Αιτωλοακαρνανία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Drepano Kite Surfer's Paradise Beach: ανοιχτή αμμώδης/λιμνοθαλάσσια ακτή με εύκολη πρόσβαση, γνωστή για kitesurf/windsurf, χωρίς πλήρη οργάνωση παραλίας.",
+        "amenities": [
+          "θαλάσσια σπορ",
+          "kitesurf spot",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 344.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/827337398"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2523,
+      "name": "Mirtia Strand",
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionLabel": "Αιτωλοακαρνανία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Mirtia Strand: προσβάσιμη παραλία της Αιτωλοακαρνανίας με δρόμο, εστίαση και εποχική οργάνωση ή αστικές παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 134,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://beaches-searcher.com/en/beach/300229176/mirtia-beach"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 35,
+      "name": "Όρμος Ληδάκι",
+      "regionId": "attica-east-attica-mainland",
+      "regionLabel": "Ανατολική Αττική",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "hiking_path_easy — εύκολο μονοπάτι ή σκαλιά",
+        "accessNotes": "",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "στάθμευση πάνω στον δρόμο",
+          "στάθμευση κοντά στον δρόμο"
+        ],
+        "terrain": [
+          "sand"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 64.3,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1424276477"
+        ],
+        "lastTouched": "2026-08-14",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 47,
+      "name": "Πανόραμα",
+      "regionId": "attica-east-attica-mainland",
+      "regionLabel": "Ανατολική Αττική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: βράχια, βότσαλο. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "parking ή στάθμευση δρόμου κοντά",
+          "ταβέρνα κοντά"
+        ],
+        "terrain": [
+          "rocks",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 69.4,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/7190835532"
+        ],
+        "lastTouched": "2026-08-14",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 25,
+      "name": "Παραλία Αγριλέζας",
+      "regionId": "attica-east-attica-mainland",
+      "regionLabel": "Ανατολική Αττική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: βότσαλο, βράχια. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Υπάρχει φυσική σκιά σε σημεία από δέντρα, πεύκα, βράχια ή πρανή.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "parking ή στάθμευση δρόμου κοντά",
+          "φυσική σκιά σε σημεία"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 34.5,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1189210164",
+          "https://www.egnomi.gr/article/129258/entopistike_nekri_stin_paralia_aggrilezas_80xroni_apo_ti_xalkida.html"
+        ],
+        "lastTouched": "2026-05-29",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 49,
+      "name": "Παραλία Κοκολόκο",
+      "regionId": "attica-east-attica-mainland",
+      "regionLabel": "Ανατολική Αττική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "Πρόσβαση μέσω χωματόδρομου· δεν φτάνει ασφάλτινος δρόμος ως την παραλία. Περιορισμένες παροχές.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "parking ή στάθμευση δρόμου κοντά",
+          "ταβέρνα κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 93.3,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/234839452",
+          "https://www.travelocity.com/Lavreotiki-Hotels-Daskalio-Beach-Hotel.h16612575.Hotel-Information",
+          "https://www.trip.com/hotels/keratea-hotel-detail-9911324/daskalio-beach-hotel/"
+        ],
+        "lastTouched": "2026-08-14",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 1475,
+      "name": "Καλαμάκι",
+      "regionId": "peloponnese-argolida-mainland",
+      "regionLabel": "Αργολίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Ήσυχη ακτή της Αργολίδας με πρόσβαση από δρόμο και βασικές υπηρεσίες στην ευρύτερη περιοχή. Κυρίως ελεύθερη.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 170,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/379093784"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1485,
+      "name": "Παραλία Ασίνης",
+      "regionId": "peloponnese-argolida-mainland",
+      "regionLabel": "Αργολίδα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Βοτσαλωτή οργανωμένη παραλία δίπλα στον αρχαιολογικό χώρο Ασίνης, με καφέ, ξαπλώστρες, ντους και εύκολη πρόσβαση.",
+        "amenities": [
+          "καφέ",
+          "ντους εποχικά",
+          "WC εποχικά",
+          "parking κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 153,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.elepod.gr/business/58090-beach-bar-restaurant-drepano",
+          "https://www.lefkos-gr.gr/lefkos-accommodation-nafplio-beaches-area.html"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1490,
+      "name": "Παραλία Σαλάντι",
+      "regionId": "peloponnese-argolida-mainland",
+      "regionLabel": "Αργολίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μεγάλη ήσυχη παραλία κοντά στο Σαλάντι, με οδική πρόσβαση και αρκετό ελεύθερο χώρο. Περιορισμένη οργάνωση.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 256.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/380458733"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1492,
+      "name": "Παραλία Φούρνων",
+      "regionId": "peloponnese-argolida-mainland",
+      "regionLabel": "Αργολίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Χωματόδρομος",
+        "accessNotes": "Πρόσβαση μέσω χωματόδρομου· δεν φτάνει ασφάλτινος δρόμος ως την παραλία. Περιορισμένες παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 285.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/380461615"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1508,
+      "name": "Βίλες",
+      "regionId": "peloponnese-arkadia-mainland",
+      "regionLabel": "Αρκαδία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μικρή παραλιακή ζώνη με πρόσβαση από δρόμο, κυρίως ελεύθερη και κοντά σε κατοικίες/καταλύματα.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 104.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/642525516"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1509,
+      "name": "Ζαρίτσι",
+      "regionId": "peloponnese-arkadia-mainland",
+      "regionLabel": "Αρκαδία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία κοντά στον Τυρό με εύκολη πρόσβαση από δρόμο. Ελεύθερη ακτή με λίγες υπηρεσίες κοντά.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά",
+          "beach bar εποχικά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 17.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/7187957476",
+          "https://www.choicegreece.com/en/discover/zaritsi-beach-in-tyros-arkadia"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1511,
+      "name": "Κρυονέρι",
+      "regionId": "peloponnese-arkadia-mainland",
+      "regionLabel": "Αρκαδία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία/όρμος με πρόσβαση από δρόμο και υπηρεσίες σε κοντινό οικισμό. Κυρίως ελεύθερη.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 66.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/522096191"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1512,
+      "name": "Λυγαριά",
+      "regionId": "peloponnese-arkadia-mainland",
+      "regionLabel": "Αρκαδία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μικρή παραλία με εύκολη πρόσβαση και φυσική σκιά σε σημεία. Περιορισμένες παροχές.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 95.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/4423744462"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 861,
+      "name": "Φράχτης",
+      "regionId": "epirus-arta-mainland",
+      "regionLabel": "Άρτα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Πρόσβαση από χωματόδρομο",
+        "accessNotes": "Δημοτική μελέτη μονοπατιών αναφέρει ότι η διαδρομή από Κορωνησία προς Παραλία Φράχτης κινείται σε χωματόδρομο δίπλα στη λιμνοθάλασσα.",
+        "amenities": [
+          "καντίνα εποχικά",
+          "ξαπλώστρες εποχικά",
+          "ομπρέλες εποχικά",
+          "ράμπα ΑμεΑ εποχικά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 111.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.arta.gr/stin-vasi-tous-gia-tin-fetini-kolymvitiki-periodo-oi-rabes-amea-stis-paralies-tis-koronisias/",
+          "https://www.arta.gr/30143-2/",
+          "https://www.arta.gr/wp-content/uploads/2025/06/0.-%CE%9C%CE%95%CE%9B%CE%95%CE%A4%CE%97_ARTAS_VER3-1-%CE%9C%CE%9F%CE%9D%CE%9F%CE%A0%CE%91%CE%A4%CE%99%CE%91.pdf",
+          "https://www.openstreetmap.org/node/9863945512"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2504,
+      "name": "Βάθη",
+      "regionId": "west-greece-achaia-mainland",
+      "regionLabel": "Αχαΐα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Βάθη: παραλία της Αχαΐας με οδική πρόσβαση και περιορισμένες παροχές.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 121.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1004055922",
+          "https://www.blueflag.gr/el/awards/2026"
+        ],
+        "lastTouched": "2026-06-01",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2506,
+      "name": "Μικρό Γιανισκάρι",
+      "regionId": "west-greece-achaia-mainland",
+      "regionLabel": "Αχαΐα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "difficult_dirt_road — Δύσκολος χωματόδρομος",
+        "accessNotes": "Οι πηγές για την περιοχή Γιανισκάρι περιγράφουν στενό, πετρώδη/χαλικώδη δρόμο με στροφές και ανάγκη για αργή οδήγηση. Δεν γράφεται ως αποκλειστικά 4x4.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 300.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.allaboutpeloponnisos.com/en/type/beaches/gianniskari",
+          "https://www.patrasinfo.com/en/gianniskari-beach/"
+        ],
+        "lastTouched": "2026-05-29",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2516,
+      "name": "Τρυπιά",
+      "regionId": "west-greece-achaia-mainland",
+      "regionLabel": "Αχαΐα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Τρυπιά: ακτή της Αχαΐας με δρόμο μέχρι κοντά, ελεύθερο χαρακτήρα και περιορισμένες παροχές.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 3.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/497716086"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 371,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "central-greece-viotia-mainland",
+      "regionLabel": "Βοιωτία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Άγιος Νικόλαος Βοιωτίας έχει πρόσβαση από άσφαλτο και παροχές οικισμού/παραθεριστικής ζώνης κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά",
+          "beach bar εποχικά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 216.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://i-lovegreece.com/el/features/%CE%B7%CF%80%CE%B5%CE%B9%CF%81%CF%89%CF%84%CE%B9%CE%BA%CE%AE-%CE%B5%CE%BB%CE%BB%CE%AC%CE%B4%CE%B1/%CF%83%CF%84%CE%B5%CF%81%CE%B5%CE%AC-%CE%B5%CE%BB%CE%BB%CE%AC%CE%B4%CE%B1/%CE%B2%CE%BF%CE%B9%CF%89%CF%84%CE%AF%CE%B1/%CE%B1%CE%BE%CE%B9%CE%BF%CE%B8%CE%AD%CE%B1%CF%84%CE%B1-%CE%B4%CF%81%CE%B1%CF%83%CF%84%CE%B7%CF%81%CE%B9%CF%8C%CF%84%CE%B7%CF%84%CE%B5%CF%82/1818-paralia-agios-nikolaos-sth-boiwtia",
+          "https://greece.terrabook.com/el/boeotia/page/paralia-agiou-nikolaou/",
+          "https://www.greektips.gr/index.php/proorismos/sterea-ellada/voiotia/perihgiseis/item/1356-%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CE%B2%CE%BF%CE%B9%CF%89%CF%84%CE%AF%CE%B1%CF%82"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 373,
+      "name": "Ζάλτσα",
+      "regionId": "central-greece-viotia-mainland",
+      "regionLabel": "Βοιωτία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "difficult_dirt_road — Δύσβατος χωματόδρομος",
+        "accessNotes": "Η Ζάλτσα είναι απομονωμένη βοιωτική ακτή με χωμάτινη και αρκετά δύσβατη πρόσβαση. Θέλει προσοχή, ειδικά μετά από κακοκαιρία. Προτίμησε όχημα με καλή απόσταση από το έδαφος και απόφυγε την πρόσβαση μετά από κακοκαιρία.",
+        "amenities": [
+          "χωρίς σταθερές παροχές",
+          "περιορισμένη ή άτυπη στάθμευση"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 287.2,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.hellenicaworld.com/Greece/Geo/gr/ZelitsaVoitias.html"
+        ],
+        "lastTouched": "2026-05-25",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 374,
+      "name": "Λαιμός",
+      "regionId": "central-greece-viotia-mainland",
+      "regionLabel": "Βοιωτία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Λαιμός είναι μικρό παραλιακό/βραχώδες σημείο με πρόσβαση από άσφαλτο και παροχές κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "rocks",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 185.2,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/501186572"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 377,
+      "name": "Παραλία Σαράντη",
+      "regionId": "central-greece-viotia-mainland",
+      "regionLabel": "Βοιωτία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Σαράντης είναι παραλιακός οικισμός με ασφαλτοστρωμένη πρόσβαση και οργανωμένα/ημι-οργανωμένα τμήματα.",
+        "amenities": [
+          "καντίνα κοντά",
+          "καφέ κοντά",
+          "ταβέρνα κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 173.1,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.allovergreece.com/Wheelchair-Accessible-Beach/Descr/R99/1148/el"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 776,
+      "name": "Παραλία Νέας Χιλής",
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "regionLabel": "Έβρος",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Αστική/περιαστική παραλία της Αλεξανδρούπολης πάνω στον παραλιακό δρόμο προς Μάκρη. Αμμώδης με ψιλό βότσαλο κατά τόπους και πλήρη οργάνωση.",
+        "amenities": [
+          "καφέ",
+          "μπαρ",
+          "εστιατόρια κοντά",
+          "beach bar"
+        ],
+        "terrain": [
+          "fine_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 191.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://minfin.gov.gr/wp-content/uploads/2023/09/%CE%98%CE%95%CE%A3%CE%95%CE%99%CE%A3-%CE%A0%CE%A1%CE%9F%CE%A3-%CE%A0%CE%91%CE%A1%CE%91%CE%A7%CE%A9%CE%A1%CE%97%CE%A3%CE%97-%CE%A3%CE%A4%CE%97%CE%9D-%CE%A0.%CE%95.-%CE%95%CE%92%CE%A1%CE%9F%CE%A5.pdf"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 228,
+      "name": "Καλαμίτσι",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "χωρίς επιβεβαιωμένες σταθερές παροχές",
+          "πρόσβαση/στάθμευση χρειάζεται τοπική επιβεβαίωση"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 224,
+        "nav": "coordinates (ελέγχθηκε 2026-08-17)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/269212468"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 232,
+      "name": "Κεφάλα",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — χωματόδρομος προς την περιοχή Κεφάλας",
+        "accessNotes": "Το OSM επιβεβαιώνει την παραλία Κεφάλα κοντά στο Μαρμάρι και πεζοπορική/τοπική πηγή περιγράφει βατό χωματόδρομο από Μεγάλη Άμμο προς άκρα Κεφάλα. Η τελική κατάβαση/στάθμευση στην ακτή παραμένει προς τοπική επιβεβαίωση.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 198.3,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/269212382",
+          "https://www.wikiloc.com/hiking-trails/marmari-paralia-megale-ammos-akra-kephala-148826667"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 245,
+      "name": "Λιβαδάκια",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 5,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/323843510",
+          "https://www.openstreetmap.org/relation/19798442"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 280,
+      "name": "Παραλία τσιρμοκόκκαλα",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η παραλία τσιρμοκόκκαλα βρίσκεται στη βόρεια Εύβοια κοντά σε οργανωμένες ζώνες, με οδική πρόσβαση και περιορισμένη οργάνωση.",
+        "amenities": [
+          "καφέ κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 60.5,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/166230462"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 289,
+      "name": "Πλατύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 145.2,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/269212420"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 290,
+      "name": "Πόρτο Λάφια",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Χωματόδρομος",
+        "accessNotes": "Πρόσβαση μέσω χωματόδρομου· δεν φτάνει ασφάλτινος δρόμος ως την παραλία. Περιορισμένες παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 168.5,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/516490067"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 294,
+      "name": "Πρασίδι",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Το Πρασίδι κοντά στην Κοτσικιά έχει πρόσβαση από καλό οδικό δίκτυο και παροχές της παραλιακής ζώνης κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 72.7,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.egnomi.gr/articleamp/127880/paralies_ston_dimo_mantoydioy_limnis_agias_annas.html"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 295,
+      "name": "Ροδιές",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Οι Ροδιές κοντά στη Χαλκίδα έχουν εύκολη πρόσβαση από άσφαλτο και παροχές οικιστικής ζώνης κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 41,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/544764745",
+          "https://www.openstreetmap.org/way/600437659"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 299,
+      "name": "Σουβάλα",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η Σουβάλα στη Χαλκίδα είναι αστική ακτή με άμεση πρόσβαση από άσφαλτο και παροχές πολύ κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 166.9,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/463568085"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 309,
+      "name": "Τσοκαΐτι",
+      "regionId": "central-greece-evia",
+      "regionLabel": "Εύβοια",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Το Τσοκαΐτι στη βόρεια Εύβοια έχει οδική πρόσβαση και ήπιες παροχές οικισμού κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 274.6,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/233740099",
+          "https://eviagreece.gr/item/paralia-tsokaith/"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2570,
+      "name": "Μέλισσα",
+      "regionId": "west-greece-ileia-mainland",
+      "regionLabel": "Ηλεία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μέλισσα: παραλία της Ηλείας με οδική πρόσβαση, αμμώδη χαρακτήρα και υπηρεσίες σε κοντινή απόσταση.",
+        "amenities": [
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 286.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/38058999"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2576,
+      "name": "Παραλία Λεβεντοχωρίου",
+      "regionId": "west-greece-ileia-mainland",
+      "regionLabel": "Ηλεία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Λεβεντοχωρίου: παραλία της Ηλείας με οδική πρόσβαση, αμμώδη χαρακτήρα και υπηρεσίες σε κοντινή απόσταση.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 292.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/121301729",
+          "https://www.patrasevents.gr/article/294856-oi-oreoteres-paralies-tis-ileias-ti-apostasi-exei-i-kathe-mia-apo-tin-patra-picsvideo",
+          "https://www.pyrgoshotels.gr/item/paralia-leventochoriou/"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2577,
+      "name": "Παραλία Μαραθιάς",
+      "regionId": "west-greece-ileia-mainland",
+      "regionLabel": "Ηλεία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Μαραθιάς: παραλία της Ηλείας με οδική πρόσβαση, αμμώδη χαρακτήρα και υπηρεσίες σε κοντινή απόσταση.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 229.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/764395198"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 831,
+      "name": "Hara",
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "regionLabel": "Θάσος",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Πρόσβαση με άσφαλτο στη βορειοδυτική Θάσο. Παραλιακό σημείο με εποχική οργάνωση και σκιά από δέντρα.",
+        "amenities": [
+          "beach bar",
+          "καφέ",
+          "ξαπλώστρες εποχικά",
+          "parking"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 320,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://wanderlog.com/place/details/10571912/hara-beach"
+        ],
+        "lastTouched": "2026-05-29",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 893,
+      "name": "Δεή πλους",
+      "regionId": "epirus-thesprotia-mainland",
+      "regionLabel": "Θεσπρωτία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Αστική/λιμενική πρόσβαση με άσφαλτο στην περιοχή Συβότων. Μικρή αμμώδης ακτή με παροχές κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "parking",
+          "beach bar εποχικά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 258.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/496411085"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 917,
+      "name": "Παραλία Μπούκα",
+      "regionId": "epirus-thesprotia-mainland",
+      "regionLabel": "Θεσπρωτία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Πρόσβαση με άσφαλτο στην παραλιακή ζώνη Ηγουμενίτσας/Δρεπάνου. Μεγάλη αμμώδης ακτή με οργανωμένα σημεία και δέντρα.",
+        "amenities": [
+          "ξαπλώστρες",
+          "ομπρέλες",
+          "parking"
+        ],
+        "terrain": [
+          "fine_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 244.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://beachnearby.com/beach/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BC%CF%80%CE%BF%CF%8D%CE%BA%CE%B1-igoumenitsa-municipality-epirus-and-western-macedonia"
+        ],
+        "lastTouched": "2026-05-25",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1235,
+      "name": "Μικρή Πόλη",
+      "regionId": "ionian-islands-ithaca",
+      "regionLabel": "Ιθάκη",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Πρόσβαση με τοπικό δρόμο στην Ιθάκη. Βοτσαλωτή/βραχώδης φυσική ακτή με περιορισμένες παροχές.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 248.4,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/10888976158"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1311,
+      "name": "Φύτεμα",
+      "regionId": "north-aegean-ikaria",
+      "regionLabel": "Ικαρία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Πρόσβαση από τοπικό δρόμο στην παραλιακή ζώνη. Ήσυχη, κυρίως ελεύθερη ακτή με λίγη φυσική σκιά.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 357.4,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/432340461"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 1848,
+      "name": "Λάκος",
+      "regionId": "south-aegean-kimolos",
+      "regionLabel": "Κίμωλος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Χωματόδρομος",
+        "accessNotes": "Πρόσβαση μέσω χωματόδρομου· δεν φτάνει ασφάλτινος δρόμος ως την παραλία. Περιορισμένες παροχές.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 245,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/496063593"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 4
+      }
+    },
+    {
+      "id": 129,
+      "name": "Άγιος Λευτέρης",
+      "regionId": "attica-kythira",
+      "regionLabel": "Κύθηρα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 261.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1101749917"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 1542,
+      "name": "Αγία Βαρβάρα",
+      "regionId": "peloponnese-lakonia-mainland",
+      "regionLabel": "Λακωνία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία/όρμος της Λακωνίας με πρόσβαση από δρόμο και βασικές υπηρεσίες κοντά. Κυρίως ελεύθερη.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 116.2,
+        "nav": "coordinates (ελέγχθηκε 2026-08-14)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/347275143",
+          "https://i-lovegreece.com/el/features/ηπειρωτική-ελλάδα/πελοπόννησος/λακωνία/αξιοθέατα-δραστηριότητες/4133-paralia-skoytari-agia-barbara-sth-lakwnia"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1558,
+      "name": "Καλαμάκια",
+      "regionId": "peloponnese-lakonia-mainland",
+      "regionLabel": "Λακωνία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Μικρή παραλία με πρόσβαση από δρόμο και υπηρεσίες σε κοντινό οικισμό. Κυρίως ελεύθερη.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά",
+          "beach bar εποχικά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 150.1,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/350603290"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1581,
+      "name": "Παραλία Λεύκης",
+      "regionId": "peloponnese-lakonia-mainland",
+      "regionLabel": "Λακωνία",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Αμμώδης ακτή στην Ελαφόνησο/περιοχή Λεύκης, με δρόμο μέχρι κοντά και πιο ήσυχο χαρακτήρα από τον Σίμο.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 72.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/235308728"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1463,
+      "name": "Πλάκα",
+      "regionId": "north-aegean-lemnos",
+      "regionLabel": "Λήμνος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 69.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/115659399"
+        ],
+        "lastTouched": "2026-08-16",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 1442,
+      "name": "Σκανδάλη",
+      "regionId": "north-aegean-lemnos",
+      "regionLabel": "Λήμνος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 102.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/264725687"
+        ],
+        "lastTouched": "2026-08-16",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2676,
+      "name": "Αγιά Θυμιά",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionLabel": "Μαγνησία (Πήλιο)",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "",
+        "amenities": [
+          "σνακ"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 234.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://artespelion.gr/%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AC/%CE%BF%CE%B4%CE%B7%CE%B3%CF%8C%CF%82-%CF%80%CE%B7%CE%BB%CE%AF%CE%BF%CF%85/%CE%BC%CE%BF%CE%BD%CE%BF%CE%AE%CE%BC%CE%B5%CF%81%CE%B5%CF%82-%CE%B5%CE%BA%CE%B4%CF%81%CE%BF%CE%BC%CE%AD%CF%82/%CE%BA%CE%B5%CE%BD%CF%84%CF%81%CE%B9%CE%BA%CF%8C-%CE%B4%CF%85%CF%84%CE%B9%CE%BA%CF%8C-%CF%80%CE%AE%CE%BB%CE%B9%CE%BF/",
+          "https://andromahistudios.com/?page_id=23"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 2710,
+      "name": "Παραλία Κριθάρια",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionLabel": "Μαγνησία (Πήλιο)",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Κριθάρια: γνωστή/προσβάσιμη παραλία Μαγνησίας-Πηλίου με δρόμο, εστίαση και εποχικές παροχές σε κοντινή απόσταση.",
+        "amenities": [
+          "ομπρέλες εποχικά",
+          "ξαπλώστρες εποχικά",
+          "καφέ",
+          "ντους εποχικά",
+          "WC εποχικά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 167.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.anchialos.com/kritharia"
+        ],
+        "lastTouched": "2026-06-11",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2712,
+      "name": "Παραλία Μπάνικας",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionLabel": "Μαγνησία (Πήλιο)",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Μπάνικας: παραλία Πηλίου/Μαγνησίας με τοπική οδική πρόσβαση, φυσική σκιά σε σημεία και περιορισμένες παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 46.2,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.tripadvisor.com/Attraction_Review-g1191431-d21345240-Reviews-Paralia_Mpanikas-Zagora_Mouresi_Magnesia_Region_Thessaly.html"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 2713,
+      "name": "Παραλία Μπριάνου",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionLabel": "Μαγνησία (Πήλιο)",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Μπριάνου: παραλία Πηλίου/Μαγνησίας με τοπική οδική πρόσβαση, φυσική σκιά σε σημεία και περιορισμένες παροχές.",
+        "amenities": [
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 45.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://beachnearby.com/beach/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BC%CF%80%CF%81%CE%B9%CE%AC%CE%BD%CE%BF%CF%85-municipal-unit-of-zagora-thessaly"
+        ],
+        "lastTouched": "2026-06-11",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2723,
+      "name": "Φτελιά",
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionLabel": "Μαγνησία (Πήλιο)",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Φτελιά: παραλία Πηλίου/Μαγνησίας με τοπική οδική πρόσβαση, φυσική σκιά σε σημεία και περιορισμένες παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 195.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.iefimerida.gr/travel/pilio-diakopes-aygoystoy"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 1656,
+      "name": "Velonas",
+      "regionId": "peloponnese-messinia-mainland",
+      "regionLabel": "Μεσσηνία",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Αμμώδης παραλία της βόρειας/δυτικής Μεσσηνίας με πρόσβαση από δρόμο. Κυρίως ελεύθερη, χωρίς σταθερή οργάνωση.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 181.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/8059000793",
+          "https://mapcarta.com/13681636",
+          "https://www.bedandbreakfast.eu/en/a/FmWUcMu7Nk1X/velonas-beach-mpakas-country-cottage",
+          "https://www.booking.com/hotel/gr/velonas-beach-mpakas-country-cottage.en-gb.html"
+        ],
+        "lastTouched": "2026-05-29",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 1996,
+      "name": "Κάμπος",
+      "regionId": "south-aegean-naxos",
+      "regionLabel": "Νάξος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "Road or passable dirt-road access. Added from verified Naxos audit sources.",
+        "amenities": [
+          "χωρίς σταθερές παροχές"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 311.5,
+        "nav": "coordinates (ελέγχθηκε 2026-08-13)",
+        "sourceUrls": [
+          "https://www.naxos.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BA%CE%AC%CE%BC%CF%80%CE%BF%CF%82-%CE%BD%CE%AC%CE%BE%CE%BF%CF%82/",
+          "https://www.allovergreece.com/Beaches/Descr/16/71/en"
+        ],
+        "lastTouched": "2026-08-14",
+        "noteCount": 6
+      }
+    },
+    {
+      "id": 2002,
+      "name": "Παραλία Λιμνάρι",
+      "regionId": "south-aegean-naxos",
+      "regionLabel": "Νάξος",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "hiking_path_easy — Δρόμος και σύντομη κατάβαση",
+        "accessNotes": "Το Λιμνάρι τεκμηριώνεται ως μικρός όρμος κοντά στον Λιώνα. Η πρόσβαση γίνεται με αυτοκίνητο/ταξί μέχρι κοντά και μετά χρειάζεται σύντομη κατάβαση.",
+        "amenities": [
+          "χωρίς σταθερές παροχές"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "medium",
+        "facingDeg": 86.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://beaches-searcher.com/en/beach/300224610/limnari-bay",
+          "https://wanderlog.com/place/details/4711702/limnari-bay-naxos-island"
+        ],
+        "lastTouched": "2026-08-14",
+        "noteCount": 4
+      }
+    },
+    {
+      "id": 1287,
+      "name": "Μπιλάλι",
+      "regionId": "north-aegean-oinousses",
+      "regionLabel": "Οινούσσες",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Γνωστή παραλία κοντά στον οικισμό, με σχετικά εύκολη πρόσβαση από δρόμο. Κυρίως ελεύθερη παραλία χωρίς πλήρη οργάνωση.",
+        "amenities": [
+          "parking κοντά",
+          "beach bar εποχικά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 190.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/498620799"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2736,
+      "name": "Παραλία Κουτσουπιάς",
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "regionLabel": "Παράλια Λάρισας (Αγιά - Κίσσαβος)",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Κουτσουπιάς: παραλία της ακτογραμμής Λάρισας με εύκολη οδική πρόσβαση, εστίαση/beach bars σεζόν και αμμοβότσαλο.",
+        "amenities": [
+          "ομπρέλες εποχικά",
+          "ξαπλώστρες εποχικά",
+          "beach bar",
+          "καφέ",
+          "ντους εποχικά",
+          "WC εποχικά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 50.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.xo.gr/profile/profile-911548209/en/",
+          "https://restaurantguru.com/Pareo-Koutsoupia"
+        ],
+        "lastTouched": "2026-06-11",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2727,
+      "name": "Παραλία Τσιλιγιώργος",
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "regionLabel": "Παράλια Λάρισας (Αγιά - Κίσσαβος)",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Παραλία Τσιλιγιώργος: μικρός κόλπος της παραλίας Λάρισας, με πρόσβαση από τον παραλιακό δρόμο ή σύντομη κάθοδο και χωρίς πλήρη οργάνωση.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 38.1,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://visitthessaly.gr/proorismoi/paralia-larisas-ametrita-hiliometra-aigaioy"
+        ],
+        "lastTouched": "2026-06-11",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 2729,
+      "name": "Πλατιά Άμμος",
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "regionLabel": "Παράλια Λάρισας (Αγιά - Κίσσαβος)",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Πλατιά Άμμος: παραλία της ακτογραμμής Λάρισας με εύκολη οδική πρόσβαση, εστίαση/beach bars σεζόν και αμμοβότσαλο.",
+        "amenities": [
+          "ομπρέλες εποχικά",
+          "ξαπλώστρες εποχικά",
+          "beach bar",
+          "καφέ",
+          "ντους εποχικά",
+          "WC εποχικά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 44.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://platiaammos.gr/en/",
+          "https://wanderlog.com/place/details/2915296"
+        ],
+        "lastTouched": "2026-06-11",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 7,
+      "name": "Παραλία Αγίου Αλεξάνδρου",
+      "regionId": "attica-athens-area-mainland",
+      "regionLabel": "Περιοχή Αθήνας",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: βότσαλο, βράχια. Η παραλία είναι κυρίως ελεύθερη/ανοργάνωτη. Η φυσική σκιά είναι περιορισμένη, οπότε χρειάζεται ομπρέλα.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 239.1,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/402072384"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 797,
+      "name": "Μαρμαρίτσα",
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "regionLabel": "Ροδόπη",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "hiking_path_difficult — Δύσκολη πρόσβαση",
+        "accessNotes": "Η διαθέσιμη πηγή περιγράφει δυσκολία πρόσβασης κοντά στο λιμανάκι του Αγίου Χαράλαμπου. Κράτα την ως φυσική ακτή χωρίς οργανωμένες παροχές.",
+        "amenities": [
+          "καμία οργανωμένη παροχή"
+        ],
+        "terrain": [
+          "rocks",
+          "large_stones"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 212.2,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.taxidologio.gr/paralia-marmaritsa-komotini.html",
+          "https://www.openstreetmap.org/node/4811497110"
+        ],
+        "lastTouched": "2026-05-28",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 2066,
+      "name": "Παραλία Κερκέζου",
+      "regionId": "south-aegean-santorini",
+      "regionLabel": "Σαντορίνη",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "passable_dirt_road — Πιθανός χωματόδρομος/αγροτικός δρόμος",
+        "accessNotes": "",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "medium",
+        "facingDeg": 342.2,
+        "nav": "coordinates (ελέγχθηκε 2026-06-16)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/444941596",
+          "https://vistayachting.com/the-ultimate-guide-for-the-best-santorini-beaches/"
+        ],
+        "lastTouched": "2026-08-15",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 335,
+      "name": "Μαρκέσι",
+      "regionId": "central-greece-skyros",
+      "regionLabel": "Σκύρος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "passable_dirt_road — Βατός χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "χωρίς σταθερές παροχές",
+          "περιορισμένη ή άτυπη στάθμευση"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 310,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/493712551"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 4
+      }
+    },
+    {
+      "id": 323,
+      "name": "Μπάσαλες",
+      "regionId": "central-greece-skyros",
+      "regionLabel": "Σκύρος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "",
+        "amenities": [
+          "χωρίς σταθερές παροχές",
+          "περιορισμένη ή άτυπη στάθμευση"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 92,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/493725116"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 4
+      }
+    },
+    {
+      "id": 318,
+      "name": "Φωκιοτρύπα",
+      "regionId": "central-greece-skyros",
+      "regionLabel": "Σκύρος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "difficult_dirt_road — Δύσβατος χωματόδρομος",
+        "accessNotes": "",
+        "amenities": [
+          "χωρίς σταθερές παροχές",
+          "περιορισμένη ή άτυπη στάθμευση"
+        ],
+        "terrain": [
+          "rocks",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 196.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/609998259"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 4
+      }
+    },
+    {
+      "id": 2137,
+      "name": "Λαγκονάκι",
+      "regionId": "south-aegean-syros",
+      "regionLabel": "Σύρος",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "hiking_path_easy — Εύκολο μονοπάτι",
+        "accessNotes": "Μικρή/απομονωμένη ακτή στο Σύρο, με πρόσβαση από μονοπάτι ή δευτερεύοντα δρόμο. Δεν υπάρχουν σταθερές παροχές.",
+        "amenities": [
+          "ταβέρνες κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 151.4,
+        "nav": "coordinates (ελέγχθηκε 2026-06-16)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/347501304"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 355,
+      "name": "Άι Γιάννης",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Άι Γιάννης στη Φθιώτιδα έχει οδική πρόσβαση και ήπιο παραθεριστικό χαρακτήρα κοντά στη Λιχάδα/βόρειο Ευβοϊκό.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 70.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/4712250192"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 362,
+      "name": "Παραλία Αγίου Γεωργίου Πελασγίας",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η παραλία Αγίου Γεωργίου Πελασγίας έχει οδική πρόσβαση και παροχές οικισμού/ταβερνών κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 193.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.stylida.gr/wp-content/uploads/2025/10/9%CE%A4%CE%A85%CE%A91%CE%96-%CE%9D%CE%A7%CE%99.pdf"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 364,
+      "name": "Παραλία Αγίου Σεραφείμ",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Άγιος Σεραφείμ έχει οδική πρόσβαση, ταβέρνες/καφέ και παραθεριστικές παροχές κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 58.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.xo.gr/maps/anazitisi-diefthynsis/paralia-agiou-serafeim-molos-35009/"
+        ],
+        "lastTouched": "2026-06-20",
+        "noteCount": 3
+      }
+    },
+    {
+      "id": 365,
+      "name": "Παραλία Βουγιουκλάκη",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η παραλία Βουγιουκλάκη είναι μικρό παραλιακό σημείο με πρόσβαση από άσφαλτο και περιορισμένες παροχές.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 273.9,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1084447689"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 367,
+      "name": "Παραλία Τραγάνας",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η παραλία Τραγάνας έχει εύκολη πρόσβαση από άσφαλτο και εποχικές παροχές/ταβέρνες στην περιοχή.",
+        "amenities": [
+          "καντίνα κοντά",
+          "καφέ κοντά",
+          "ταβέρνα κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 342.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.vrisko.gr/maps/diefthinsi/paralia-traganas-martino-fthiotidas-35005"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 368,
+      "name": "Παραλία Τριανταφυλλιάς",
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionLabel": "Φθιώτιδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η Τριανταφυλλιά έχει οδική πρόσβαση και φυσικό χαρακτήρα, με περιορισμένες παροχές.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 6.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/node/6019179221"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 337,
+      "name": "Άγιος Ισίδωρος",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Άγιος Ισίδωρος είναι εύκολα προσβάσιμη βοτσαλωτή παραλία με parking στον δρόμο από πάνω, λίγα οργανωμένα σημεία και παροχές κοντά.",
+        "amenities": [
+          "sunbeds εποχικά",
+          "ομπρέλες εποχικά",
+          "beach bar",
+          "καφέ κοντά",
+          "εστιατόριο κοντά",
+          "ντους εποχικά",
+          "αποδυτήρια εποχικά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 172.5,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.beachatlas.com/agios-isidoros-2"
+        ],
+        "lastTouched": "2026-05-25",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 339,
+      "name": "Άσπρα Χαλίκια",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Τα Άσπρα Χαλίκια είναι βοτσαλωτή ακτή της Φωκίδας με εύκολη οδική πρόσβαση και φυσικό χαρακτήρα.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 162.7,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/901947085"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 340,
+      "name": "Γιάννακης",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Ο Γιάννακης είναι μικρή βοτσαλωτή ακτή με πρόσβαση από το παραλιακό οδικό δίκτυο και παροχές κοντά.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 74.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/835017125"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 344,
+      "name": "Κόκκινα Χαλίκια",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Τα Κόκκινα Χαλίκια είναι βοτσαλωτή ακτή με οδική πρόσβαση και κυρίως ελεύθερο χαρακτήρα.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 207.6,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/520369138"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 346,
+      "name": "Μονιά",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η Μονιά είναι μικρό παραλιακό σημείο με άμεση πρόσβαση από τον παραλιακό δρόμο και περιορισμένη οργάνωση.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "pebbles",
+          "rocks"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 355.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/737417466"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 349,
+      "name": "Παραλία Αγίου Μηνά",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η παραλία Αγίου Μηνά στη Φωκίδα προσεγγίζεται από παραλιακό δρόμο και έχει ήπιο τοπικό χαρακτήρα.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνες κοντά",
+          "παροχές οικισμού κοντά",
+          "parking ή στάθμευση δρόμου κοντά",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 231.8,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1020814995",
+          "https://www.travel.gr/en/best-of-en/the-best-beaches-of-central-greece-serviced-or-secluded-with-amazing-waters/",
+          "https://e-desfina.gr/site/exhibition/%CE%B1%CE%B3%CE%B9%CE%BF%CF%82-%CE%BC%CE%B7%CE%BD%CE%B1%CF%82/"
+        ],
+        "lastTouched": "2026-07-20",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 351,
+      "name": "Παραλία Αστέρι",
+      "regionId": "central-greece-fokida-mainland",
+      "regionLabel": "Φωκίδα",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Το Αστέρι είναι μικρή ακτή/βραχώδες σημείο με οδική πρόσβαση και χωρίς οργανωμένες παροχές.",
+        "amenities": [
+          "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+          "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+        ],
+        "terrain": [
+          "rocks",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 130.4,
+        "nav": "coordinates (ελέγχθηκε 2026-06-16)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/1051976582"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 478,
+      "name": "Παραλία Ανθούπολης",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "regionLabel": "Χαλκιδική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Added from OpenStreetMap as a Halkidiki beach candidate. Access and amenities are conservative estimates and need local verification before high-confidence use.",
+        "amenities": [
+          "χωρίς επιβεβαιωμένες σταθερές παροχές",
+          "περιορισμένο ή άτυπο parking",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "pebbles"
+        ],
+        "waterDepth": "medium",
+        "facingDeg": 197.9,
+        "nav": "coordinates (ελέγχθηκε 2026-06-15)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/311539494",
+          "https://mapcarta.com/W311539494",
+          "https://beachnearby.com/beach/beach-of-anthoupolis-%CE%BF%CE%B9%CE%BA%CE%B9%CF%83%CE%BC%CF%8C%CF%82-%CE%B3%CE%B5%CF%89%CF%80%CE%BF%CE%BD%CE%B9%CE%BA%CE%AC-macedonia-and-thrace",
+          "https://georgalas-sun-beach-rooms.hotelschalkidiki.com/en/"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 387,
+      "name": "Brounou",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "regionLabel": "Χαλκιδική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "",
+        "amenities": [
+          "χωρίς σταθερές παροχές",
+          "περιορισμένη ή άτυπη στάθμευση"
+        ],
+        "terrain": [
+          "rocks",
+          "pebbles"
+        ],
+        "waterDepth": "deep",
+        "facingDeg": 50,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://chalkidikihub.gr/en/stay/five-senses-luxury-villas-vourvourou/guide",
+          "https://mapcarta.com/N13071522144",
+          "https://www.openstreetmap.org/node/13071522144"
+        ],
+        "lastTouched": "2026-08-17",
+        "noteCount": 2
+      }
+    },
+    {
+      "id": 413,
+      "name": "Kristina",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "regionLabel": "Χαλκιδική",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — άσφαλτος μέχρι κοντά στην παραλία",
+        "accessNotes": "Η Kristina βρίσκεται στη ζώνη Συκιάς/Κληματαριάς, με εύκολη οδική πρόσβαση και οργανωμένο beach-bar χαρακτήρα.",
+        "amenities": [
+          "καφέ κοντά",
+          "ταβέρνα κοντά",
+          "parking κοντά ή στάθμευση δρόμου",
+          "ξαπλώστρες, ομπρέλες εποχικά"
+        ],
+        "terrain": [
+          "fine_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 76.4,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.atlantic.travel/Letovanje/Grcka/Hoteli/Halkidiki-2-prst-Sitonija",
+          "https://mapcarta.com/N2642001091",
+          "https://www.openstreetmap.org/node/2642001091"
+        ],
+        "lastTouched": "2026-07-19",
+        "noteCount": 1
+      }
+    },
+    {
+      "id": 3185,
+      "name": "Κολυμβάρι",
+      "regionId": "crete-crete-chania",
+      "regionLabel": "Χανιά",
+      "views": null,
+      "confidence": "medium",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Ασφαλτόδρομος φτάνει στο παραλιακό μέτωπο του Κολυμβαρίου. Χαρτογραφημένο parking στο παλιό λιμάνι Κολυμβαρίου ~180 μ. βόρεια της πινέζας (OSM) και στάθμευση μέσα στον οικισμό.",
+        "amenities": [
+          "ξαπλώστρες, ομπρέλες εποχικά",
+          "ταβέρνες κοντά",
+          "καφέ κοντά",
+          "parking κοντά"
+        ],
+        "terrain": [
+          "coarse_sand",
+          "pebbles"
+        ],
+        "waterDepth": "medium",
+        "facingDeg": 53.1,
+        "nav": "coordinates (ελέγχθηκε 2026-08-16)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/376980748",
+          "https://www.openstreetmap.org/node/256817148",
+          "https://www.cretanbeaches.com/el/thalassios-tourismos/paralies-dytikis-kritis/paralia-kolymvari",
+          "https://www.experttravel.gr/el/destinations/greece-crete-chania-chaniabeaches-kolymbari"
+        ],
+        "lastTouched": null,
+        "noteCount": 5
+      }
+    },
+    {
+      "id": 1282,
+      "name": "Λήμνος",
+      "regionId": "north-aegean-psara",
+      "regionLabel": "Ψαρά",
+      "views": null,
+      "confidence": "low",
+      "evidence": {
+        "access": "asphalt_road — Πρόσβαση με άσφαλτο",
+        "accessNotes": "Εύκολη πρόσβαση από το οδικό δίκτυο των Ψαρών. Ήσυχη αμμώδης ακτή χωρίς σταθερή οργάνωση.",
+        "amenities": [
+          "parking κοντά"
+        ],
+        "terrain": [
+          "fine_sand",
+          "coarse_sand"
+        ],
+        "waterDepth": "shallow",
+        "facingDeg": 183.3,
+        "nav": "place (ελέγχθηκε 2026-06-22)",
+        "sourceUrls": [
+          "https://www.openstreetmap.org/way/497165271"
+        ],
+        "lastTouched": "2026-05-27",
+        "noteCount": 1
+      }
+    }
+  ]
+}

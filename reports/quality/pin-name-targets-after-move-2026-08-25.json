@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-08-25T07:16:04.861Z",
+  "radiusM": 20000,
+  "samePlaceM": 250,
+  "results": [
+    {
+      "id": 2720,
+      "name": "Σουτραλί (Αγριά)",
+      "verdict": "KEEP",
+      "reason": "OSM «Σουτραλί» (way/320087252) is 0 m from our pin — same beach, unmapped polygon",
+      "candidates": [
+        {
+          "osm": "way/320087252",
+          "kind": "beach",
+          "lat": 39.3258203,
+          "lon": 23.0141285,
+          "names": [
+            "Σουτραλί"
+          ],
+          "distM": 0
+        }
+      ]
+    }
+  ]
+}

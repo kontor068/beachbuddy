@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T19:25:24.752Z",
+  "generatedAt": "2026-08-25T07:13:36.534Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
       "name": "High-resolution coastline (greece-land-osm-split.geojson)",
-      "url": "C:\\Users\\Miltos\\Desktop\\beach\\.tmp\\geospatial\\greece-land-osm-split.geojson",
+      "url": "/workspaces/beachbuddy/.tmp/geospatial/greece-land-osm-split.geojson",
       "license": "Public domain / open data",
       "confidence": "high",
       "notes": "High-resolution coastline upgrade supplied via --land-geojson. Resolves headlands, islets and coves at beach scale."
@@ -44,7 +44,7 @@
     "beachCount": 2873,
     "generatedProfiles": 2873,
     "missingCoordinates": 0,
-    "indexedLandPolygons": 15946,
+    "indexedLandPolygons": 15976,
     "regions": {
       "attica-aegina": {
         "regionName": "Aegina",
@@ -5060,9 +5060,9 @@
             "exposed": 38
           },
           "SE": {
-            "protected": 25,
-            "partial": 24,
-            "exposed": 21
+            "protected": 26,
+            "partial": 22,
+            "exposed": 22
           },
           "S": {
             "protected": 38,
@@ -5076,12 +5076,12 @@
           },
           "W": {
             "protected": 44,
-            "partial": 9,
-            "exposed": 17
+            "partial": 8,
+            "exposed": 18
           },
           "NW": {
-            "protected": 47,
-            "partial": 16,
+            "protected": 46,
+            "partial": 17,
             "exposed": 7
           }
         }

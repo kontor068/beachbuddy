@@ -98,6 +98,21 @@ export interface SimpleWindSuitability {
    * built from, instead of a call site re-answering the question with different inputs.
    */
   offshoreFlatWater?: boolean;
+  /**
+   * ΤΑ ΔΥΟ ΣΗΜΑΤΑ ΤΗΣ ΚΑΡΤΑΣ, ΞΕΧΩΡΙΣΤΑ (24/08/2026) — utils/conditionCause.resolveFactorTones.
+   *
+   * `windOnlyColor` = τι θα ήταν το χρώμα αν η θάλασσα ήταν λάδι· `seaOnlyColor` = πόσο το
+   * κατέβασε η θάλασσα ('blue' όταν δεν το κατέβασε). Ταξιδεύουν ΠΑΝΩ ΣΤΟ ΙΔΙΟ αντικείμενο με το
+   * `suitabilityColor`, για τον ίδιο λόγο που ταξιδεύουν εκεί το `exposureStatus` και το
+   * `windBeaufort`: υπολογίζονται ΜΙΑ φορά, από το ίδιο input που παρήγαγε το τελικό χρώμα, ώστε
+   * καμία επιφάνεια να μην μπορεί να τα ξαναϋπολογίσει με άλλα δεδομένα.
+   *
+   * Προαιρετικά, γιατί τα γεμίζει μόνο το πέρασμα της θάλασσας (`applySeaStateToWindSuitability`):
+   * όποιος διαβάζει ένα αντικείμενο πριν από αυτό βλέπει `undefined` και δεν βάφει τίποτα —
+   * η ίδια αρχή με κάθε άλλη είσοδο εδώ, η απουσία δεν εφευρίσκει χρώμα.
+   */
+  windOnlyColor?: WindSuitabilityColor;
+  seaOnlyColor?: WindSuitabilityColor;
 }
 
 export interface BeachMapCoordinates {

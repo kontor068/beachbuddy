@@ -182,7 +182,9 @@ const cases = [
   { regionId: 'south-aegean-amorgos', beachId: 1664, name: 'Mouros', sector: 'S', expected: 'rough' }, // f=25 i=99.2 facing=169.9
   { regionId: 'south-aegean-anafi', beachId: 1683, name: 'Prassa', sector: 'NW', expected: 'rough' }, // f=25 i=99.9 facing=319
   { regionId: 'south-aegean-andros', beachId: 1698, name: 'Gyalia', sector: 'E', expected: 'rough' }, // f=25 i=100 facing=90.6
-  { regionId: 'south-aegean-antiparos', beachId: 1728, name: 'Akti Panagias Faneromenis', sector: 'SW', expected: 'rough' }, // f=25 i=98.9 facing=212.9
+  // #1728 «Ακτή Παναγίας Φανερωμένης» βγήκε 25/08/2026: είναι διπλότυπο της κάρτας
+  // Φανερωμένης Αντιπάρου, με τη σημαία απόκρυψης γραμμένη από τον Μάιο στη ΡΙΖΑ της
+  // εγγραφής — εκεί που ο builder δεν τη διαβάζει, οπότε σερβιριζόταν παρά την απόφαση.
   { regionId: 'south-aegean-arki', beachId: 2499, name: 'Limnari', sector: 'NE', expected: 'rough' }, // f=25 i=89.5 facing=82.9
   { regionId: 'south-aegean-astypalaia', beachId: 2232, name: 'Agios Ioannis', sector: 'SW', expected: 'rough' }, // f=25 i=99.9 facing=221.1
   { regionId: 'south-aegean-donousa', beachId: 2191, name: 'Limenari', sector: 'S', expected: 'rough' }, // f=24.92 i=91.9 facing=177.2

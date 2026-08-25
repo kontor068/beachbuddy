@@ -127,6 +127,45 @@ const MAX_CHOP_FACTOR = 1.75;
 export const SEA_STATE_AMBER_M = 0.8;
 export const SEA_STATE_ROUGH_M = 1.2;
 
+/**
+ * ΚΑΜΙΑ ΔΙΑΦΟΡΑ ΧΡΩΜΑΤΟΣ ΑΠΟ ΔΙΑΦΟΡΑ ΠΟΥ Η ΟΘΟΝΗ ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΔΕΙΞΕΙ (Μίλτος, 24/08/2026).
+ *
+ * ΑΦΟΡΜΗ. Τσερδάκια #2053 και Χρυσή Ακτή #2056, 1,1 χλμ απόσταση, ίδιο κελί ανέμου, ίδια έκθεση,
+ * ίδια ώρα: **3 Μποφόρ και «~0,1 μ.» και οι δύο** — η μία κίτρινη, η άλλη μπλε. Ολόκληρη η
+ * διαφορά ήταν 0,80 έναντι 0,78 μ. ανοιχτής θάλασσας, δηλαδή **δύο εκατοστά** σε αριθμό που η
+ * κάρτα δεν τυπώνει καν (τα δύο σημεία δειγματοληψίας απέχουν ~5 χλμ μεταξύ τους, 8,1 και 10 χλμ
+ * ανοιχτά). Το `SEA_STATE_AMBER_M` είναι ακριβώς 0,80: το ένα πάτησε πάνω του, το άλλο όχι.
+ *
+ * Ο ΑΡΙΘΜΟΣ ΤΥΠΩΝΕΤΑΙ ΜΕ ΕΝΑ ΔΕΚΑΔΙΚΟ (`utils/beachConditionsReadout` → `toFixed(1)`), άρα το
+ * μικρότερο πράγμα που ο επισκέπτης μπορεί να ΔΕΙ είναι 10 εκατοστά. Το να κρίνεται το χρώμα σε
+ * δύο δεκαδικά ενώ φαίνεται ένα σημαίνει ότι δύο κάρτες με ολόιδια νούμερα φοράνε νόμιμα
+ * διαφορετικό χρώμα — μετρημένο εθνικότερα την ίδια μέρα, 308 από 8.526 ζεύγη γειτόνων ≤8 χλμ
+ * (3,6%). Εδώ η κρίση κατεβαίνει στην ακρίβεια που δείχνουμε.
+ *
+ * ⚠️ ΕΙΝΑΙ ΜΟΝΟΔΡΟΜΟΣ ΠΡΟΣ ΤΗΝ ΠΡΟΣΟΧΗ, ΚΑΙ ΑΥΤΟ ΕΙΝΑΙ ΑΠΟΔΕΙΞΗ, ΟΧΙ ΕΛΠΙΔΑ. Και τα τρία
+ * κατώφλια σοβαρότητας είναι ακέραια πολλαπλάσια του βήματος (0,40 · 0,80 · 1,20 = 4/8/12 × 0,1),
+ * και κάθε σύγκριση είναι `>=`. Για κατώφλι t πολλαπλάσιο του 0,1 ισχύει `x >= t ⟹ round(x,1) >= t`
+ * — η στρογγυλοποίηση δεν μπορεί ΠΟΤΕ να ρίξει κάτω από το κατώφλι κάτι που ήταν πάνω. Μπορεί
+ * μόνο να ανεβάσει τη ζώνη [t−0,05, t) μέσα στο κατώφλι, δηλαδή να κάνει το χρώμα ΑΥΣΤΗΡΟΤΕΡΟ.
+ * Μετρημένο ξεχωριστά πριν μπει: 27 στις 3.984 παραλιο-ώρες αλλάζουν (0,7%), **καμία προς το
+ * ηρεμότερο**. Άρα δεν αγγίζει τη σκανδάλη #1 (ψευδής ηρεμία) — κινείται μόνο αντίθετά της.
+ * Αν κάποιος προσθέσει ποτέ κατώφλι που ΔΕΝ είναι πολλαπλάσιο του 0,1, η ιδιότητα σπάει σιωπηλά:
+ * γι' αυτό την καρφώνει η πύλη `scripts/validateDisplayedPrecisionGate.mjs`.
+ *
+ * ΔΕΝ ΜΠΑΙΝΕΙ ΣΤΟ `seaStateSeverityM`, ΕΠΙΤΗΔΕΣ. Εκείνο είναι ΜΕΓΕΘΟΣ και το διαβάζουν και
+ * καταστάσεις που δεν είναι κατώφλια — η κατάταξη του βάθρου (`utils/topPickScoreTable`) και το
+ * ύψος που ζωγραφίζει το γράφημα (`components/WaveHeightGraphic`). Στρογγυλοποιημένο εκεί θα
+ * ισοπέδωνε σειρά κατάταξης και θα έκανε το γράφημα σκαλωτό. Στρογγυλοποιεί η ΚΡΙΣΗ, όχι η
+ * μέτρηση.
+ */
+export const DISPLAYED_WAVE_STEP_M = 0.1;
+
+export const atDisplayedPrecisionM = (metres: number | undefined): number | undefined => (
+  typeof metres === 'number' && Number.isFinite(metres)
+    ? Number((Math.round(metres / DISPLAYED_WAVE_STEP_M) * DISPLAYED_WAVE_STEP_M).toFixed(1))
+    : metres
+);
+
 /** Deep-water wavelength (m) for a period: L0 = g·T²/(2π). Exported for the UI's "why". */
 export const deepWaterWavelengthM = (periodS: number): number => {
   if (!Number.isFinite(periodS) || periodS <= 0) return 0;
@@ -215,8 +254,14 @@ export type SeaToneCeiling = 'yellow' | 'orange' | 'red' | null;
  */
 export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeiling => {
   if (typeof seaStateM !== 'number' || !Number.isFinite(seaStateM)) return null;
-  if (seaStateM >= SEA_STATE_ROUGH_M) return 'red';
-  if (seaStateM >= SEA_STATE_AMBER_M) return 'yellow';
+  // Κρίνεται στην ακρίβεια που τυπώνεται — δες atDisplayedPrecisionM για το γιατί και για την
+  // απόδειξη ότι μπορεί μόνο να αυστηροποιήσει. Ο ΙΔΙΟΣ κανόνας τρέχει στη λέξη της ετυμηγορίας
+  // (utils/seaVerdict.getSeaStateSeverity) και στο δάπεδο ΙΔΑΝΙΚΗ: αν έμπαινε μόνο εδώ, το χρώμα
+  // θα γινόταν αυστηρότερο από τη λέξη δίπλα του και θα ξαναγεννιόταν η αντίφαση που το
+  // utils/seaVerdict υπάρχει για να κλείσει.
+  const judged = atDisplayedPrecisionM(seaStateM) as number;
+  if (judged >= SEA_STATE_ROUGH_M) return 'red';
+  if (judged >= SEA_STATE_AMBER_M) return 'yellow';
   return null;
 };
 
