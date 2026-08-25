@@ -8,7 +8,7 @@ import { parseMarineHourly, mergeMarineLegs } from '../utils/marineForecastParsi
 import { marinePointKey } from '../utils/marineSamplePoints';
 import { preferredMarineModelFor } from '../utils/marineModelPreference';
 import { applyGustFloor } from '../utils/windGustFloor';
-import type { OverWaterDirectionByTime } from '../utils/overWaterWind';
+import type { OverWaterWindByTime, OverWaterWindHour } from '../utils/overWaterWind';
 
 // --- Freshness policy (safety-critical) --------------------------------------
 // A forecast is a prediction for each hour, so a recently fetched payload still
@@ -720,7 +720,8 @@ const BATCH_MAX_POINTS = 32;
 // `overWaterWind` asks at the SEA CELL's own coordinates (data/forecast-sea-cells.generated.json),
 // so a healthy answer echoes back the same cell and 0.2 deg is as generous here as on the weather
 // route. It is NOT the marine tolerance: this route must not be allowed to silently answer from a
-// cell in another basin, which is the exact failure the layer exists to fix.
+// cell in another basin, which is the exact failure the layer exists to fix — and since 25/08/2026
+// it carries the SPEED too, so a wrong cell would now print a wrong number, not just a wrong arrow.
 const COORD_SANITY_TOLERANCE_DEG = { forecast: 0.2, marine: 1.0, sst: 1.0, marineTail: 1.0, overWaterWind: 0.2 } as const;
 
 /**
@@ -880,18 +881,32 @@ export const fetchForecastDataBatch = (
   });
 
 /**
- * WIND DIRECTION OVER THE WATER, for many sea cells at once. Key the result with `forecastPointKey`.
+ * WIND OVER THE WATER — direction and speed — for many sea cells at once. Key the result with
+ * `forecastPointKey`.
  *
- * Returns a plain `dt_txt -> degrees` map per cell, NOT a ForecastItem[]: nothing about this
- * response is a forecast a beach could be rendered from — it carries one field and no speed, and
- * feeding it anywhere except utils/overWaterWind.applyOverWaterWindDirection would hand a surface
- * a direction with no wind behind it.
+ * Returns a plain `dt_txt -> { deg, speed }` map per cell, NOT a ForecastItem[]: nothing about
+ * this response is a forecast a beach could be rendered from — no temperature, no weather code,
+ * and its gust is consumed right here (below) and never travels. Feeding it anywhere except
+ * utils/overWaterWind.applyOverWaterWind would hand a surface half a forecast.
+ *
+ * THE SPEED IS CORRECTED HERE, at the one place raw Open-Meteo becomes a number — the same
+ * doctrine as parseHourlyForecast above. The sea cell answers with the elevation of the water
+ * (0), so `applyGustFloor` takes its SEA door: untouched unless the model contradicts itself
+ * (gust/mean ≥ INCOHERENT_GUST_RATIO). That is exactly the leg that won §Γ52
+ * (scripts/measureSeaCellSpeedProduction.mjs: `applyGustFloor(seaSpeed, seaGust, S.elevation ?? 0)`),
+ * so what ships is what was judged. The unit is 'ms' because the provider URL pins
+ * `wind_speed_unit=ms` — the intercept of the land door is in km/h and the wrong unit here would
+ * be a ×3,6 error (validateGustFloorContract pins the equivalence).
  *
  * KEYED BY TIME, NEVER BY INDEX. The two responses come from different cells and can differ in
  * length (different model cut-offs). Pairing them by array position would eventually give a beach
- * another hour's direction — silently, because both are plausible angles. `dt_txt` is built with
- * exactly the same transform parseHourlyForecast uses, so the two line up or they do not merge
- * at all.
+ * another hour's wind — silently, because both are plausible. `dt_txt` is built with exactly the
+ * same transform parseHourlyForecast uses, so the two line up or they do not merge at all.
+ *
+ * FAILS LOUD. A response without direction OR without speed throws, the batch is skipped, and
+ * useWeather keeps the land-cell wind for those beaches — the exact behaviour the site had before
+ * the layer existed. A silent direction-only fallback would print the land NUMBER under the sea
+ * ARROW with no trace, which is the one mixture the layer must never produce.
  *
  * `persist: false` — this is a per-view sweep of up to 666 cells nationally. It has the same
  * in-memory cache as everything else, but writing every cell to localStorage would evict the
@@ -899,22 +914,33 @@ export const fetchForecastDataBatch = (
  */
 export const fetchOverWaterWindBatch = (
   points: ForecastPoint[],
-): Promise<Map<string, FetchResult<OverWaterDirectionByTime>>> =>
-  fetchPointsBatched<OverWaterDirectionByTime>(points, {
+): Promise<Map<string, FetchResult<OverWaterWindByTime>>> =>
+  fetchPointsBatched<OverWaterWindByTime>(points, {
     cachePrefix: 'overWaterWind',
     endpoint: 'over-water-wind',
     source: 'over-water-wind-batch',
     buildUrl: batch => activeForecastProvider.overWaterWindUrlBatch(batch),
-    parse: hourly => {
+    parse: (hourly, _point, envelope) => {
       const times: string[] | undefined = hourly?.time;
       const degrees: Array<number | null> | undefined = hourly?.wind_direction_10m;
-      if (!Array.isArray(times) || !Array.isArray(degrees)) {
-        throw new Error('Over-water wind response has no hourly direction');
+      const speeds: Array<number | null> | undefined = hourly?.wind_speed_10m;
+      const gusts: Array<number | null> | undefined = hourly?.wind_gusts_10m;
+      if (!Array.isArray(times) || !Array.isArray(degrees) || !Array.isArray(speeds)) {
+        throw new Error('Over-water wind response is missing hourly direction or speed');
       }
-      const out: Record<string, number> = {};
+      // Elevation of the WATER cell that answered — 0 over the sea. It is what selects the sea
+      // door of the gust floor; a missing field is treated as water, which is what this route
+      // asked for.
+      const seaElevationM = optionalNumber(envelope?.elevation) ?? 0;
+      const out: Record<string, OverWaterWindHour> = {};
       times.forEach((timeStr, index) => {
         const deg = degrees[index];
-        if (typeof deg === 'number' && Number.isFinite(deg)) out[timeStr.replace('T', ' ')] = deg;
+        if (typeof deg !== 'number' || !Number.isFinite(deg)) return;
+        const rawSpeed = optionalNumber(speeds[index]);
+        const speed = rawSpeed === undefined
+          ? undefined
+          : applyGustFloor(rawSpeed, optionalNumber(gusts?.[index]), seaElevationM, 'ms');
+        out[timeStr.replace('T', ' ')] = speed === undefined ? { deg } : { deg, speed };
       });
       if (!Object.keys(out).length) throw new Error('Over-water wind response is empty');
       return out;

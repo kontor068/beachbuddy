@@ -86,7 +86,7 @@ export const uncertainDaysFromResponse = (
  * Σημαδεύει τις αβέβαιες μέρες μιας πρόγνωσης.
  *
  * Επιστρέφει τον ΙΔΙΟ πίνακα όταν δεν αλλάζει τίποτα, ώστε το `useMemo` παραπάνω να μη νομίσει
- * ότι ήρθαν νέα δεδομένα — ίδια σύμβαση με το `applyOverWaterWindDirectionToDays`.
+ * ότι ήρθαν νέα δεδομένα — ίδια σύμβαση με το `applyOverWaterWindToDays`.
  */
 export const applyForecastUncertaintyToDays = (
   days: DailyForecast[] | null | undefined,

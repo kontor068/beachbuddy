@@ -354,11 +354,15 @@ const getWeatherGustSpreadKmph = (
         : typeof item.wind?.gust === 'number' && Number.isFinite(item.wind.gust)
           ? item.wind.gust * 3.6
           : undefined;
-      // The REAL mean, not the gust-floored one (utils/windGustFloor). Using the corrected mean
-      // here would shrink every spread and quietly cancel the gust warnings.
+      // The REAL LAND mean, not the gust-floored one (utils/windGustFloor) and not the sea
+      // cell's speed (utils/overWaterWind, 25/08/2026). The gust on this item is the LAND gust:
+      // measuring it against the corrected mean would shrink every spread, and against the sea
+      // mean it would not be a spread at all. Fallback chain: raw land → land after floor → speed.
       const rawSpeedMs = typeof item.wind?.speedBeforeGustFloor === 'number' && Number.isFinite(item.wind.speedBeforeGustFloor)
         ? item.wind.speedBeforeGustFloor
-        : item.wind?.speed;
+        : typeof item.wind?.speedBeforeOverWater === 'number' && Number.isFinite(item.wind.speedBeforeOverWater)
+          ? item.wind.speedBeforeOverWater
+          : item.wind?.speed;
       const speed = typeof rawSpeedMs === 'number' && Number.isFinite(rawSpeedMs)
         ? rawSpeedMs * 3.6
         : undefined;
@@ -755,9 +759,13 @@ const assessHourlyWave = (
     beaufort,
     windSpeedKmh,
     gustKmph,
+    // Land mean for the gust spread — falls back to the land speed the sea swap replaced
+    // (utils/overWaterWind), never to the sea speed: the gust here is the land gust.
     meanSpeedBeforeGustFloorKmh: typeof item.wind.speedBeforeGustFloor === 'number'
       ? item.wind.speedBeforeGustFloor * 3.6
-      : undefined,
+      : typeof item.wind.speedBeforeOverWater === 'number'
+        ? item.wind.speedBeforeOverWater * 3.6
+        : undefined,
     measuredWaveHeightM: measured,
     swell: { heightM: item.marine?.swellWaveHeightM, periodS: item.marine?.swellWavePeriodS },
     seaArrival: resolveSeaArrival(geospatialProfile, windAssessment.facingDeg, item.marine?.waveDirectionDeg),
@@ -1771,12 +1779,17 @@ export const calculateBeachScore = (
   // 1. Weather Data Conversion
   const hourlyForecast = options?.hourlyForecast || ('hourly' in weather ? weather.hourly : undefined);
   const windSpeedKmph = weather.wind.speed * 3.6;
-  // Ο ΩΜΟΣ μέσος, μόνο για τον υπολογισμό «πόσο ριπώδης» — ο δάπεδος ριπής
+  // Ο ΩΜΟΣ ΣΤΕΡΙΑΝΟΣ μέσος, μόνο για τον υπολογισμό «πόσο ριπώδης» — ο δάπεδος ριπής
   // (utils/windGustFloor) ανεβάζει τον μέσο, και αν το spread μετριόταν από τον ανεβασμένο θα
-  // έσβηνε τις ίδιες τις προειδοποιήσεις ριπών που ο δάπεδος υπάρχει για να ενισχύσει.
+  // έσβηνε τις ίδιες τις προειδοποιήσεις ριπών που ο δάπεδος υπάρχει για να ενισχύσει. Από
+  // 25/08/2026 το `speed` μπορεί να είναι του ΘΑΛΑΣΣΙΝΟΥ κελιού (utils/overWaterWind) ενώ η ριπή
+  // μένει της στεριάς — γι' αυτό η εφεδρεία είναι η στεριανή ταχύτητα που αντικαταστάθηκε, ποτέ
+  // το τυπωμένο νούμερο.
   const rawMeanWindKmphForSpread = typeof weather.wind.speedBeforeGustFloor === 'number'
     ? weather.wind.speedBeforeGustFloor * 3.6
-    : undefined;
+    : typeof weather.wind.speedBeforeOverWater === 'number'
+      ? weather.wind.speedBeforeOverWater * 3.6
+      : undefined;
   const windDir = degToCompass(weather.wind.deg);
   const baseBeaufort = getBeaufortLevel(windSpeedKmph);
   const gustKmph = getWeatherGustKmph(weather, hourlyForecast);

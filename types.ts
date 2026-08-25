@@ -415,8 +415,9 @@ export interface Beach {
    * is therefore the "leave this beach alone" instruction, and it is data, not code — re-bake
    * with a different gate and the whole thing moves.
    *
-   * Only the direction rides on it: utils/overWaterWind.ts is the sole consumer. Speed, gust and
-   * every Beaufort derived from them stay on `forecastCell`.
+   * Direction AND speed ride on it (speed since 25/08/2026 — §Γ51/§Γ52, decision Miltos):
+   * utils/overWaterWind.ts is the sole consumer. The gust and every gust-spread threshold stay on
+   * `forecastCell`'s land feed, which is what they were calibrated on.
    */
   seaWindCell?: string;
   mapCoordinates?: BeachMapCoordinates;
@@ -906,7 +907,7 @@ export interface Island {
 }
 
 export interface WeatherData {
-  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; speedBeforeOverWater?: number; };
   weather: { main: string; description: string; icon: string; };
   main: { temp: number; };
   marine?: MarineForecast;
@@ -923,8 +924,8 @@ export interface ForecastItem {
     gust: number;
     gustKnots?: number;
     /**
-     * The hourly mean EXACTLY as Open-Meteo reported it, before utils/windGustFloor raised it.
-     * Present only when the floor actually fired.
+     * The LAND cell's hourly mean EXACTLY as Open-Meteo reported it, before utils/windGustFloor
+     * raised it. Present only when the floor actually fired.
      *
      * Exists for one reason: five thresholds judge "is it gusty" from gust MINUS mean
      * (recommendationService GUST_*_SPREAD_KMH, waveModel WIND_CHOP_GUST_NOTE_SPREAD_KMH).
@@ -932,6 +933,10 @@ export interface ForecastItem {
      * measured nationally at 918 beach-hours losing the wave/note gate and 366 losing the
      * effective-Beaufort bump. Gustiness is a property of the real flow, so it must be measured
      * against the real mean, never the corrected one.
+     *
+     * It stays the LAND mean even after utils/overWaterWind swaps the sea cell's speed in
+     * (25/08/2026): the gust on this item is still the land gust, so the spread must be
+     * land-minus-land. Readers fall back `speedBeforeGustFloor ?? speedBeforeOverWater ?? speed`.
      */
     speedBeforeGustFloor?: number;
     /**
@@ -946,6 +951,21 @@ export interface ForecastItem {
      * cell whenever the two disagree and the land cell sits 3 km or more away.
      */
     degBeforeOverWater?: number;
+    /**
+     * The speed (m/s) that was on screen before utils/overWaterWind swapped in the sea cell's
+     * speed — i.e. the LAND cell's mean AFTER the gust floor / decompression. Present only when
+     * the swap actually moved the number.
+     *
+     * Measurement: reports/weather/sea-cell-speed-by-distance-*.json (§Γ51, two independent
+     * windows) and sea-cell-production-21d.json (§Γ52, production vs production, re-judged
+     * 25/08/2026 against the decompressed land leg). Decision Miltos 25/08/2026: sea speed for
+     * every beach whose land cell sits ≥3 km away.
+     *
+     * Two jobs: (1) a gate can measure the swap instead of guessing at it; (2) the gust-spread
+     * readers use it as the fallback mean when `speedBeforeGustFloor` is absent, because the
+     * gust on this item is the land gust and a land gust minus a sea mean is not a spread.
+     */
+    speedBeforeOverWater?: number;
   };
   rain?: { '3h'?: number };
   visibility: number;
@@ -960,7 +980,7 @@ export interface ForecastItem {
 
 export interface DailyForecast {
   date: Date;
-  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; };
+  wind: { speed: number; deg: number; gust?: number; gustKnots?: number; windGustKnots?: number; speedBeforeGustFloor?: number; speedBeforeOverWater?: number; };
   weather: { main: string; description: string; icon: string; };
   temp_min: number;
   temp_max: number;

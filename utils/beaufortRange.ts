@@ -1,0 +1,101 @@
+import { getBeaufortLevel } from './weatherUtils';
+
+/**
+ * ΤΟ ΕΥΡΟΣ ΜΠΟΦΟΡ ΣΤΗΝ ΟΘΟΝΗ — «3–4 Μπφ» ΟΤΑΝ ΟΙ ΡΙΠΕΣ ΒΓΑΖΟΥΝ ΟΛΟΚΛΗΡΟ ΣΚΑΛΙ ΠΑΝΩ ΑΠΟ ΤΟΝ ΜΕΣΟ.
+ *
+ * ΤΙ ΤΟ ΓΕΝΝΗΣΕ (25/08/2026, Ψιλή Άμμος Νάξου #2017, 15:00). Σχόλιο επισκέπτη: «είχε πιο πολύ
+ * αέρα απ' ό,τι δείχνατε». Τυπώναμε «3 Μπφ» — μέσος 13,9 χλμ/ώ ωμός, ~16,3 μετά την
+ * αποσυμπίεση — ενώ οι ριπές της ίδιας ώρας ήταν 27 χλμ/ώ (4 Μπφ). Ο άνθρωπος στην παραλία
+ * δεν νιώθει τον μέσο, νιώθει και τις ριπές: ο WMO δίνει λόγο ριπής/μέσου ~1,58 πάνω από στεριά
+ * και ~1,25 πάνω από νερό, οπότε στο σύνορο των δύο η ριπή είναι το μισό της εμπειρίας.
+ *
+ * ΓΙΑΤΙ ΟΧΙ Ο ΥΠΑΡΧΩΝ ΚΑΝΟΝΑΣ. Το `getEffectiveBeaufortForComfort` (recommendationService)
+ * ανεβάζει +1 σκαλί μόνο όταν το spread (ριπή − ωμός μέσος) φτάνει τα 22 χλμ/ώ· στη Νάξο ήταν
+ * 13,1. Εκείνος ο κανόνας κρίνει ΑΝΕΣΗ και δεν τυπώνεται πουθενά. Αυτός εδώ κρίνει τι ΔΕΙΧΝΟΥΜΕ,
+ * και δεν αγγίζει τίποτα άλλο: χρώμα, ετυμηγορία, κατάταξη, λέξη ανέμου (`conditionsFeelPhrase`),
+ * κατώφλια ριπής — όλα διαβάζουν το ΚΑΤΩ άκρο, δηλαδή ό,τι διάβαζαν και χθες.
+ *
+ * ΤΙ ΕΙΝΑΙ ΤΟ ΑΝΩ ΑΚΡΟ. Το Μποφόρ της ΣΤΕΡΙΑΝΗΣ ριπής της ίδιας ώρας (όχι της μέγιστης της
+ * ημέρας), κομμένο σε `maxStep` σκαλιά πάνω από τον μέσο. Το spread μετριέται στον ωμό στεριανό
+ * μέσο (`speedBeforeGustFloor ?? speedBeforeOverWater ?? speed`), όπως κάθε κατώφλι ριπής, γιατί
+ * από 25/08 η τυπωμένη ταχύτητα μπορεί να είναι του θαλασσινού κελιού ενώ η ριπή μένει της
+ * στεριάς (utils/overWaterWind).
+ *
+ * Ο ΚΑΝΟΝΑΣ ΕΠΙΛΕΓΕΤΑΙ ΜΕ ΜΕΤΡΗΣΗ, ΟΧΙ ΜΕ ΤΗ ΝΑΞΟ. Ο κανόνας «ανάβει σε 5-15% των ωρών ≥3 Μπφ
+ * εθνικά» γράφτηκε ΠΡΙΝ τρέξει το σάρωμα (`scripts/measureSeaSpeedRollout.mjs`, πίνακας
+ * `beaufortRangePrevalence`): κάτω από 5% δεν αξίζει τον χώρο, πάνω από 15% είναι ταπετσαρία —
+ * το ίδιο μέτρο με το οποίο το handover §16 έκοψε τη λέξη ανέμου χωρίς φίλτρο (52% = παντού).
+ * Η Νάξος είναι μάρτυρας λογικής, όχι κριτήριο: αν ο κανόνας που περνά τη ζώνη δεν ανάβει εκεί,
+ * δεν ανάβει.
+ *
+ * ΟΡΙΑ. Ριπή μοντέλου, όχι οργάνου — στο 23% των ήρεμων ωρών είναι φούσκα (§ΑΞ1/Α3), γι' αυτό
+ * το `minBaseBeaufort` και το `minSpreadKmh` και όχι σκέτο «ριπή ένα σκαλί πάνω».
+ */
+
+export interface BeaufortRangeRule {
+  /** Κάτω από αυτό το Μποφόρ μέσου δεν ανάβει — στα ≤2 Μπφ η ριπή του μοντέλου είναι συχνά φούσκα. */
+  minBaseBeaufort: number;
+  /** Πόσα σκαλιά πάνω από τον μέσο επιτρέπεται να φτάσει το άνω άκρο. */
+  maxStep: number;
+  /** Ελάχιστο spread ριπή − ωμός στεριανός μέσος (χλμ/ώ) για να μετρήσει η ριπή. */
+  minSpreadKmh: number;
+}
+
+export interface BeaufortRangeInput {
+  /** Η ταχύτητα που τυπώνεται (χλμ/ώ) — από 25/08 ίσως του θαλασσινού κελιού. */
+  speedKmh: number;
+  /** Η ΣΤΕΡΙΑΝΗ ριπή της ΙΔΙΑΣ ώρας (χλμ/ώ). */
+  gustKmh?: number;
+  /** Ο ωμός στεριανός μέσος (χλμ/ώ), βάση του spread. Χωρίς αυτόν, ο τυπωμένος. */
+  spreadBaseKmh?: number;
+}
+
+export interface BeaufortRange {
+  low: number;
+  high: number;
+}
+
+const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+
+/** Καθαρή συνάρτηση, ίδια για την οθόνη και για το σάρωμα που διαλέγει τον κανόνα. */
+export const resolveBeaufortRange = (input: BeaufortRangeInput, rule: BeaufortRangeRule): BeaufortRange | null => {
+  if (!finite(input.speedKmh)) return null;
+  const low = getBeaufortLevel(input.speedKmh);
+  if (low < rule.minBaseBeaufort) return null;
+  if (!finite(input.gustKmh) || input.gustKmh <= 0) return null;
+  const gustBeaufort = getBeaufortLevel(input.gustKmh);
+  if (gustBeaufort <= low) return null;
+  const spreadBase = finite(input.spreadBaseKmh) ? input.spreadBaseKmh : input.speedKmh;
+  if (input.gustKmh - spreadBase < rule.minSpreadKmh) return null;
+  return { low, high: Math.min(gustBeaufort, low + rule.maxStep) };
+};
+
+/**
+ * ⚠️ ΑΠΕΝΕΡΓΟ (25/08/2026) — ΠΕΡΙΜΕΝΕΙ ΑΠΟΦΑΣΗ ΜΙΛΤΟΥ.
+ *
+ * Το σάρωμα έτρεξε (`scripts/measureSeaSpeedRollout.mjs`, 2.861 παραλίες × 6 μέρες × ώρες 9-19,
+ * `reports/weather/sea-speed-rollout-2026-08-25.json`, πίνακας `beaufortRangePrevalence`) και
+ * ΚΑΜΙΑ παραλλαγή δεν πέφτει στη ζώνη 5-15% των ωρών με μέσο ≥3 Μπφ:
+ *
+ *   ριπή ≥1 σκαλί (R1)                       93,7%   ← το ελληνικό καλοκαίρι: η ριπή είναι ΠΑΝΤΑ σκαλί πάνω
+ *   + spread ≥8 / ≥12 / ≥16 / ≥22 χλμ/ώ      91,5% / 79,3% / 59,7% / 35,8%
+ *   μέσος ≥3 + spread ≥22 (η αυστηρότερη)    35,8% (19,8% όλων των ωρών)
+ *
+ * Δηλαδή το «3–4 Μπφ» θα ήταν ταπετσαρία με το ίδιο μέτρο που το handover §16 έκοψε τη λέξη
+ * ανέμου χωρίς φίλτρο (52% = παντού). Με τον προ-δηλωμένο κανόνα η επιλογή δεν είναι δική μας:
+ * `null` = η οθόνη τυπώνει σκέτο νούμερο, όπως πριν. Όλο το plumbing (score →
+ * `displayedBeaufortHigh` → hero → γραμμή πρόσπτωσης → `beaufortShown` στο feedback) μένει
+ * ζωντανό, ώστε μια απόφαση να είναι ΜΙΑ γραμμή εδώ — π.χ.
+ * `{ minBaseBeaufort: 3, maxStep: 1, minSpreadKmh: 22 }` για «ανάβει στο 1/3 των ανεμωδών ωρών».
+ */
+export const BEAUFORT_RANGE_RULE: BeaufortRangeRule | null = null;
+
+/** Το εν-παύλα (U+2013) όλων των εύρων του προϊόντος — Forecast «1–3 μποφ.», χάρτης «2–5 μποφ.». */
+export const BEAUFORT_RANGE_DASH = '–';
+
+export const getDisplayedBeaufortRange = (input: BeaufortRangeInput): BeaufortRange | null =>
+  (BEAUFORT_RANGE_RULE ? resolveBeaufortRange(input, BEAUFORT_RANGE_RULE) : null);
+
+/** «3–4» ή «3». Χωρίς μονάδα — τη μονάδα τη βάζει η επιφάνεια που ξέρει τη γλώσσα. */
+export const formatBeaufortLabel = (low: number, high?: number | null): string =>
+  (typeof high === 'number' && high > low ? `${low}${BEAUFORT_RANGE_DASH}${high}` : `${low}`);

@@ -60,6 +60,21 @@ const ALLOWED_RAW = new Set([
   'types.ts',
 ]);
 
+/**
+ * ΟΙ ΕΓΚΕΚΡΙΜΕΝΟΙ ΑΝΑΓΝΩΣΤΕΣ ΤΗΣ ΣΤΕΡΙΑΝΗΣ ΤΑΧΥΤΗΤΑΣ ΠΟΥ ΑΝΤΙΚΑΤΕΣΤΗΣΕ Η ΘΑΛΑΣΣΑ (25/08/2026).
+ *
+ * Η ταχύτητα του θαλασσινού κελιού (utils/overWaterWind, §Γ51/§Γ52) είναι κι αυτή διόρθωση
+ * μεροληψίας — μετρημένη καλύτερη στα αεροδρόμια, όχι φυσικό μέγεθος — και ισχύει ο ίδιος
+ * κανόνας: κανένας τρίτος κανόνας από πάνω της. Το `speedBeforeOverWater` υπάρχει για ΕΝΑΝ λόγο:
+ * η ριπή του στοιχείου μένει της ΣΤΕΡΙΑΣ, άρα «πόσο ριπώδης είναι η ώρα» πρέπει να πέφτει πίσω
+ * στη στεριανή ταχύτητα, όχι στη θαλάσσια. Όποιος άλλος το διαβάσει, να πει γιατί.
+ */
+const ALLOWED_OVER_WATER_RAW = new Set([
+  'services/recommendationService.ts',
+  'utils/overWaterWind.ts',
+  'types.ts',
+]);
+
 const walk = (dir) => {
   const out = [];
   let entries;
@@ -81,6 +96,7 @@ const rel = (file) => path.relative(root, file).split(path.sep).join('/');
 
 const applyCallers = new Set();
 const rawReaders = new Set();
+const overWaterRawReaders = new Set();
 for (const file of shippedFiles) {
   const source = readFileSync(file, 'utf8');
   const relPath = rel(file);
@@ -89,6 +105,7 @@ for (const file of shippedFiles) {
   const code = source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   if (/\bapplyGustFloor\s*\(/.test(code)) applyCallers.add(relPath);
   if (/\bspeedBeforeGustFloor\b/.test(code)) rawReaders.add(relPath);
+  if (/\bspeedBeforeOverWater\b/.test(code)) overWaterRawReaders.add(relPath);
 }
 
 /** Δεύτερη συνταγή: αρχείο που ΞΑΝΑΓΡΑΦΕΙ τον δάπεδο αντί να τον εισάγει. */
@@ -108,10 +125,14 @@ for (const file of ALLOWED_APPLY) {
 for (const file of rawReaders) {
   if (!ALLOWED_RAW.has(file)) failures.push(`ΝΕΟΣ αναγνώστης του ωμού μέσου: ${file}`);
 }
+for (const file of overWaterRawReaders) {
+  if (!ALLOWED_OVER_WATER_RAW.has(file)) failures.push(`ΝΕΟΣ αναγνώστης της στεριανής ταχύτητας πριν τη θάλασσα (speedBeforeOverWater): ${file}`);
+}
 
 console.log('── Κατάλογος καταναλωτών του δάπεδου ριπής ──');
 console.log(`  applyGustFloor:        ${[...applyCallers].sort().join(', ') || '—'}`);
 console.log(`  speedBeforeGustFloor:  ${[...rawReaders].sort().join(', ') || '—'}`);
+console.log(`  speedBeforeOverWater:  ${[...overWaterRawReaders].sort().join(', ') || '—'}`);
 if (localCopies.length) {
   console.log(`  ⚠️ τοπικά αντίγραφα σε εργαλεία (δεν ρίχνουν την πύλη): ${localCopies.join(', ')}`);
   console.log('     Ένα αντίγραφο αποκλίνει σιωπηλά. Αν αυτό το script στηρίζει συμπέρασμα της βίβλου,');

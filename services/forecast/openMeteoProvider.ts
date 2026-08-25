@@ -161,7 +161,9 @@ const MARINE_TAIL_MODEL = 'models=meteofrance_wave';
 // so it would quietly show sea-cell air temperature on a Greek July afternoon.
 //
 // That is a separate, measurable piece of work — an over-water wind layer — not a parameter to
-// slip in beside a wave change.
+// slip in beside a wave change. It exists now: `overWaterWindUrlBatch` below carries the sea
+// cell for direction (20/08/2026) and speed (25/08/2026), for the beaches whose land cell is
+// ≥3 km away — measured, gated in data, and merged per hour in utils/overWaterWind.
 const SEA_CELL = 'cell_selection=sea';
 
 // Optional proxy base (e.g. "https://calmbeach.gr/api"). Read once at module load.
@@ -274,19 +276,36 @@ export const openMeteoProvider: ForecastProvider = {
 
   // THE ONLY PLACE IN THE APP WHERE A *FORECAST* URL CARRIES `cell_selection=sea`.
   //
-  // It is safe here and nowhere else because this route asks for ONE field. The two URLs above
+  // It is safe here and nowhere else because this route asks for WIND ONLY. The two URLs above
   // also carry `temperature_2m`, so putting the sea cell on them would quietly print sea-cell
-  // air temperature on a July afternoon — half the reason the parameter never went in. The other
-  // half was that they carry the SPEED, which is calibrated on land-cell wind and stays there:
-  // PORISMA §Γ29 measured the sea cell winning on DIRECTION only, and losing on speed under 3 km.
+  // air temperature on a July afternoon. Only beaches with a baked `seaWindCell` (land cell
+  // ≥3 km away, data/forecast-sea-cells.generated.json) ever ask this route.
+  //
+  //   wind_direction_10m — PORISMA §Γ29/§Γ37β (20/08/2026): the sea cell reads the right 45°
+  //                        sector 1,4-1,5× more often than a land cell sitting ≥3 km away.
+  //   wind_speed_10m     — §Γ51/§Γ52 + reports/weather/sea-cell-production-21d.json, decision
+  //                        Miltos 25/08/2026: in that same population the sea cell's SPEED is
+  //                        also the better number (3-5 km: error 4,73→4,66 km/h, exact Beaufort
+  //                        43,5→44,9%, false calm 28,9→20,8%, both windows). Under 3 km the land
+  //                        cell wins and those beaches never reach this route.
+  //   wind_gusts_10m     — fetched ONLY to drive the sea door of utils/windGustFloor at parse
+  //                        time (the leg that won §Γ52). It never replaces the land gust: the
+  //                        five gust-spread thresholds were calibrated on the land feed.
+  //   wind_speed_unit=ms — this response is merged into a pipeline that runs in m/s
+  //                        (services/weatherService parses it with applyGustFloor(…, 'ms')).
+  //                        Omit it and Open-Meteo answers km/h: a ×3,6 error on every hour.
+  //
+  // Cost: unchanged. Open-Meteo's billing weight floors at 10 variables (see
+  // netlify/functions/forecast.mjs weightPerPoint), so three fields cost exactly what one did,
+  // and the request count, batching and CDN lifetime are untouched.
   //
   // `forecast_days=6` matches the weather route so the two series cover the same days and the
-  // direction can be merged into them hour-for-hour, by dt_txt and never by index.
+  // wind can be merged into them hour-for-hour, by dt_txt and never by index.
   overWaterWindUrlBatch(points) {
     const lats = points.map(p => p.lat).join(',');
     const lons = points.map(p => p.lon).join(',');
     return `${overWaterWindOrigin()}/v1/forecast?latitude=${lats}&longitude=${lons}`
-      + `&hourly=wind_direction_10m&forecast_days=6&timezone=Europe%2FAthens&${SEA_CELL}`;
+      + `&hourly=wind_direction_10m,wind_speed_10m,wind_gusts_10m&wind_speed_unit=ms&forecast_days=6&timezone=Europe%2FAthens&${SEA_CELL}`;
   },
 
   dustForecastUrl(lat, lon) {

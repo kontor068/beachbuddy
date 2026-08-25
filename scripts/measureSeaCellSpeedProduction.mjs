@@ -4,11 +4,21 @@
  *
  * ΓΙΑΤΙ. Το §Γ51 σύγκρινε ΩΜΟ στεριανό κελί με ΩΜΟ θαλασσινό κελί απέναντι στα ανεμόμετρα και
  * βρήκε τη θάλασσα καλύτερη στα 3-5 χλμ. Αλλά η παραγωγή ΔΕΝ δείχνει τον ωμό αριθμό: περνάει
- * πρώτα από τον δάπεδο ριπής (`utils/windGustFloor`), που σε σημείο με στεριά ανεβάζει τον μέσο
- * στο 0,50×ριπή ΠΑΝΤΑ, ενώ σε σημείο στο 0 μόνο αν ο λόγος ριπής ≥3,5.
+ * πρώτα από το `utils/windGustFloor` — σε σημείο με στεριά τη γραμμική αποσυμπίεση
+ * `max(μέσος, a + b×μέσος)` (από 24/08/2026), σε σημείο στο 0 μόνο τον δάπεδο ριπής όταν ο
+ * λόγος ριπής ≥3,5.
  *
- * Δηλαδή η αλλαγή πηγής ΔΕΝ αλλάζει μόνο το κελί — ΣΒΗΝΕΙ ΚΑΙ ΤΟΝ ΔΑΠΕΔΟ, γιατί το θαλασσινό
- * κελί απαντά με υψόμετρο 0. Αυτό το §Γ51 δεν το μέτρησε.
+ * Δηλαδή η αλλαγή πηγής ΔΕΝ αλλάζει μόνο το κελί — ΣΒΗΝΕΙ ΚΑΙ ΤΗ ΔΙΟΡΘΩΣΗ ΣΤΕΡΙΑΣ, γιατί το
+ * θαλασσινό κελί απαντά με υψόμετρο 0. Αυτό το §Γ51 δεν το μέτρησε.
+ *
+ * ΞΑΝΑΚΡΙΘΗΚΕ 25/08/2026. Η πρώτη εκδοχή (21/08, `sea-cell-production-2026-08-21.json`) έκρινε
+ * με ΤΟΠΙΚΟ ΑΝΤΙΓΡΑΦΟ του δαπέδου 0,50×ριπή — τον κανόνα που ίσχυε ως τις 24/08. Την ίδια μέρα
+ * ο στεριανός κανόνας έγινε αποσυμπίεση, οπότε το «παραγωγή έναντι παραγωγής» της 21/08 είχε
+ * πάψει να περιγράφει την παραγωγή. Από εδώ και πέρα το script ΦΟΡΤΩΝΕΙ τον πραγματικό
+ * `applyGustFloor` (transpile TS, όπως το measureSeaSpeedColourImpact) — δεν υπάρχει δεύτερο
+ * αντίγραφο του κανόνα για να ξαναπαλιώσει. Το 25/08 είναι ο stop-rule πριν μπει η ταχύτητα
+ * του θαλασσινού κελιού στην παραγωγή (απόφαση Μίλτου 25/08): αν η θάλασσα δεν κερδίζει και
+ * απέναντι στη ΣΗΜΕΡΙΝΗ στεριά, το swap δεν γράφεται.
  *
  * ΕΙΝΑΙ ΑΚΡΙΒΩΣ ΤΟ ΛΑΘΟΣ ΠΟΥ Η ΒΙΒΛΟΣ ΕΧΕΙ ΗΔΗ ΚΑΤΑΓΡΑΨΕΙ ΜΙΑ ΦΟΡΑ (§Γ35 για το §Γ34):
  * «σωστό ως μέτρηση και ΛΑΘΟΣ ως συμπέρασμα για την παραγωγή, γιατί συνέκρινε τον ωμό μέσο με
@@ -27,9 +37,25 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import ts from 'typescript';
+// Με OPEN_METEO_API_KEY στο περιβάλλον γυρίζει τις κλήσεις Open-Meteo στους πληρωμένους hosts
+// (25/08/2026: το δωρεάν ωριαίο όριο έκοψε την επανάκριση στη μέση). Χωρίς κλειδί: δωρεάν, όπως πριν.
+//   OPEN_METEO_API_KEY="$(npx netlify env:get OPEN_METEO_API_KEY --plain)" node scripts/measureSeaCellSpeedProduction.mjs 21
+import './lib/paidOpenMeteo.mjs';
 
+const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+require.extensions['.ts'] = (module, filename) => {
+  module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true },
+    fileName: filename,
+  }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})'), filename);
+};
+// Ο ΙΔΙΟΣ κανόνας που τρέχει στην παραγωγή (services/weatherService → utils/windGustFloor),
+// όχι αντίγραφο. Μονάδα 'kmh': έτσι ζητάμε τον άνεμο παρακάτω (wind_speed_unit=kmh).
+const { applyGustFloor, WIND_DECOMP_INTERCEPT_KMH, WIND_DECOMP_SLOPE, GUST_FLOOR_FACTOR, INCOHERENT_GUST_RATIO } = require(path.join(root, 'utils/windGustFloor.ts'));
 
 const STATIONS = [
   ['LGIR', 35.3397, 25.1803], ['LGSA', 35.5317, 24.1497], ['LGST', 35.2161, 26.1013],
@@ -45,14 +71,6 @@ const STATIONS = [
 ];
 
 const KT_TO_KMH = 1.852;
-const GUST_FLOOR_FACTOR = 0.50;
-const INCOHERENT_GUST_RATIO = 3.5;
-/** Αντίγραφο του `utils/windGustFloor.applyGustFloor` — ίδιοι κανόνες, χωρίς transpile TS. */
-const applyGustFloor = (speed, gust, elev) => {
-  if (!Number.isFinite(speed) || !Number.isFinite(gust) || gust <= 0 || !Number.isFinite(elev)) return speed;
-  if (elev <= 0 && !(speed > 0 && gust / speed >= INCOHERENT_GUST_RATIO)) return speed;
-  return Math.max(speed, gust * GUST_FLOOR_FACTOR);
-};
 const bft = kmh => (kmh < 1 ? 0 : kmh <= 5 ? 1 : kmh <= 11 ? 2 : kmh <= 19 ? 3
   : kmh <= 28 ? 4 : kmh <= 38 ? 5 : kmh <= 49 ? 6 : 7);
 const pct = (n, d) => (d ? Math.round(1000 * n / d) / 10 : 0);
@@ -127,9 +145,10 @@ STATIONS.forEach(([icao, lat, lon], i) => {
     rows.push({
       icao, landDist, obs: obs.kmh,
       landRawV: lS, seaRawV: sS,
-      // ΑΚΡΙΒΩΣ όπως η παραγωγή: στεριά με το υψόμετρο του σημείου, θάλασσα με 0.
-      landProd: applyGustFloor(lS, lG, L.elevation),
-      seaProd: applyGustFloor(sS, sG, S.elevation ?? 0),
+      // ΑΚΡΙΒΩΣ όπως η παραγωγή: στεριά με το υψόμετρο του σημείου (→ αποσυμπίεση), θάλασσα
+      // με το υψόμετρο που απάντησε το κελί νερού (0 → μόνο η πόρτα του λόγου ριπής).
+      landProd: applyGustFloor(lS, lG, L.elevation, 'kmh'),
+      seaProd: applyGustFloor(sS, sG, S.elevation ?? 0, 'kmh'),
     });
   }
 });
@@ -167,7 +186,13 @@ for (const r of calm) {
 
 const report = {
   window: label, generatedAt: new Date().toISOString(),
-  question: 'Κερδίζει το θαλασσινό κελί ΣΤΗΝ ΠΑΡΑΓΩΓΗ, δηλαδή αφού και τα δύο περάσουν από τον δάπεδο ριπής;',
+  question: 'Κερδίζει το θαλασσινό κελί ΣΤΗΝ ΠΑΡΑΓΩΓΗ, δηλαδή αφού και τα δύο περάσουν από το utils/windGustFloor;',
+  judgedWith: {
+    source: 'utils/windGustFloor.ts (φορτωμένο, όχι αντίγραφο)',
+    land: `max(v, ${WIND_DECOMP_INTERCEPT_KMH} + ${WIND_DECOMP_SLOPE}·v) — γραμμική αποσυμπίεση 24/08/2026`,
+    sea: `ανέγγιχτο, εκτός αν ριπή/μέσος ≥ ${INCOHERENT_GUST_RATIO} → max(v, ${GUST_FLOOR_FACTOR}·ριπή)`,
+  },
+  winRule: 'Η θάλασσα κερδίζει έναν κάδο μόνο με ΚΑΙ μικρότερο απόλυτο σφάλμα ΚΑΙ περισσότερα σωστά Μποφόρ — γραμμένο πριν τρέξει (§Γ51).',
   pairedHours: rows.length,
   RAW_landVsSea: Object.fromEntries(Object.entries(groups).map(([k, v]) => [k, judge(v, 'landRawV', 'seaRawV')])),
   PRODUCTION_landVsSea: Object.fromEntries(Object.entries(groups).map(([k, v]) => [k, judge(v, 'landProd', 'seaProd')])),

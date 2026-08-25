@@ -1,0 +1,84 @@
+{
+  "window": "21d",
+  "generatedAt": "2026-08-21T16:37:54.433Z",
+  "question": "Κερδίζει το θαλασσινό κελί ΣΤΗΝ ΠΑΡΑΓΩΓΗ, δηλαδή αφού και τα δύο περάσουν από τον δάπεδο ριπής;",
+  "pairedHours": 11068,
+  "RAW_landVsSea": {
+    "3-5 χλμ": {
+      "n": 6302,
+      "aErr": 5.12,
+      "bErr": 4.58,
+      "aBias": -2.7,
+      "bBias": -1.12,
+      "aExactPct": 36.5,
+      "bExactPct": 42.5,
+      "aTooLowPct": 44.7,
+      "bTooLowPct": 34.3,
+      "bWins": true
+    },
+    "<3 χλμ": {
+      "n": 4766,
+      "aErr": 4.98,
+      "bErr": 5.36,
+      "aBias": -1.84,
+      "bBias": -1.75,
+      "aExactPct": 40.6,
+      "bExactPct": 39.6,
+      "aTooLowPct": 37.5,
+      "bTooLowPct": 36.3,
+      "bWins": false
+    }
+  },
+  "PRODUCTION_landVsSea": {
+    "3-5 χλμ": {
+      "n": 6302,
+      "aErr": 5.24,
+      "bErr": 4.59,
+      "aBias": -0.51,
+      "bBias": -0.81,
+      "aExactPct": 39.3,
+      "bExactPct": 43.1,
+      "aTooLowPct": 33.3,
+      "bTooLowPct": 32.3,
+      "bWins": true
+    },
+    "<3 χλμ": {
+      "n": 4766,
+      "aErr": 4.8,
+      "bErr": 5.32,
+      "aBias": -1.34,
+      "bBias": -1.6,
+      "aExactPct": 43.4,
+      "bExactPct": 40.7,
+      "aTooLowPct": 33.2,
+      "bTooLowPct": 34.8,
+      "bWins": false
+    }
+  },
+  "PRODUCTION_whenLandSaysCalm": {
+    "3-5 χλμ": {
+      "n": 2755,
+      "aErr": 4.23,
+      "bErr": 3.84,
+      "aBias": -1.59,
+      "bBias": -1.25,
+      "aExactPct": 33.1,
+      "bExactPct": 38,
+      "aTooLowPct": 44.8,
+      "bTooLowPct": 38.1,
+      "bWins": true
+    },
+    "<3 χλμ": {
+      "n": 1791,
+      "aErr": 3.74,
+      "bErr": 4.03,
+      "aBias": -0.1,
+      "bBias": 0.36,
+      "aExactPct": 34.6,
+      "bExactPct": 36,
+      "aTooLowPct": 34.2,
+      "bTooLowPct": 29.2,
+      "bWins": false
+    }
+  }
+}

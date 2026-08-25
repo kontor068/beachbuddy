@@ -56,12 +56,13 @@ const UPSTREAMS = {
     customerHost: 'https://customer-marine-api.open-meteo.com',
     paths: new Set(['/v1/marine']),
   },
-  // Wind DIRECTION over the water (added 20/08/2026 — PORISMA §Γ29/§Γ37β). Same upstream host
-  // and path as `open-meteo`; it is a separate ROUTE here so that `cell_selection=sea` reaches
-  // ONLY this one. The weather route must never carry it: those URLs also carry temperature_2m
-  // and the wind SPEED, and both are calibrated on the land cell. Cache lifetime deliberately
-  // NOT overridden — it falls through to CDN_MAX_AGE_S.weather (60 min), which is the same
-  // upstream refresh cadence the direction follows.
+  // Wind over the water — DIRECTION (added 20/08/2026 — PORISMA §Γ29/§Γ37β) and SPEED (added
+  // 25/08/2026 — §Γ51/§Γ52, beaches whose land cell sits ≥3 km away). Same upstream host and
+  // path as `open-meteo`; it is a separate ROUTE here so that `cell_selection=sea` reaches ONLY
+  // this one. The weather route must never carry it: those URLs also carry temperature_2m.
+  // Cache lifetime deliberately NOT overridden — it falls through to CDN_MAX_AGE_S.weather
+  // (60 min), the same upstream refresh cadence the wind follows. Billing weight is unchanged by
+  // the extra fields (weightPerPoint floors at 10 variables).
   'open-meteo-wind-sea': {
     host: 'https://api.open-meteo.com',
     customerHost: 'https://customer-api.open-meteo.com',

@@ -1,0 +1,625 @@
+{
+  "generatedAt": "2026-08-25T14:10:41.548Z",
+  "question": "Α = παραγωγή ως 25/08 (στεριανή ταχύτητα) · Β = ο κανόνας που φεύγει 25/08 (θαλάσσια ταχύτητα όπου seaWindCell, ριπή στεριάς, διεύθυνση στο τυπωμένο Μπφ, φραγή αιτήματος ανά περιοχή). Πόσο αλλάζει η οθόνη, και πόσο συχνά θα άναβε το εύρος «3–4 Μπφ»;",
+  "winRule": {
+    "rollout": "better ≥ worse όπου εφαρμόζεται ΚΑΙ κάδοι ≥5 χλμ ≤ 1,5× τον κάδο 3-5 σε % αλλαγής χρώματος — γραμμένο πριν τρέξει (πλάνο 25/08).",
+    "beaufortRange": "η παραλλαγή που ανάβει σε 5-15% των ωρών με τυπωμένο μέσο ≥3 Μπφ — γραμμένο πριν τρέξει (πλάνο 25/08)."
+  },
+  "days": 6,
+  "beaches": 2861,
+  "landClusters": 1382,
+  "seaCells": 664,
+  "fetchVeto": {
+    "regionsBlocked": [],
+    "beachesBehind": 0,
+    "hoursBehind": 0,
+    "hoursBehindPctOfMapped": 0
+  },
+  "directionGateDisagreements": {
+    "hours": 20476,
+    "pctOfApplied": 16.93
+  },
+  "seaSpeedMissingHours": 0,
+  "total": {
+    "hours": 188826,
+    "colourChangedPct": 10.88,
+    "worse": 6443,
+    "better": 14099,
+    "beaufortChangedPct": 25.55,
+    "beaufortUp": 14347,
+    "beaufortDown": 33900,
+    "cardChangedPct": 2.56,
+    "pinChangedPct": 2.58,
+    "toneBefore": {
+      "blue": "119350 (63.21%)",
+      "yellow": "37542 (19.88%)",
+      "orange": "27224 (14.42%)",
+      "red": "4710 (2.49%)"
+    },
+    "toneAfter": {
+      "blue": "124735 (66.06%)",
+      "yellow": "34695 (18.37%)",
+      "orange": "25096 (13.29%)",
+      "red": "4300 (2.28%)"
+    }
+  },
+  "onlyWhereItApplies": {
+    "hours": 120978,
+    "colourChangedPct": 16.98,
+    "worse": 6443,
+    "better": 14099,
+    "beaufortChangedPct": 39.88,
+    "beaufortUp": 14347,
+    "beaufortDown": 33900,
+    "cardChangedPct": 3.99,
+    "pinChangedPct": 4.02,
+    "toneBefore": {
+      "blue": "77151 (63.77%)",
+      "yellow": "24338 (20.12%)",
+      "orange": "16742 (13.84%)",
+      "red": "2747 (2.27%)"
+    },
+    "toneAfter": {
+      "blue": "82536 (68.22%)",
+      "yellow": "21491 (17.76%)",
+      "orange": "14614 (12.08%)",
+      "red": "2337 (1.93%)"
+    }
+  },
+  "byLandCellDistance": {
+    "<3 χλμ": {
+      "hours": 67848,
+      "colourChangedPct": 0,
+      "worse": 0,
+      "better": 0,
+      "beaufortChangedPct": 0,
+      "beaufortUp": 0,
+      "beaufortDown": 0,
+      "cardChangedPct": 0,
+      "pinChangedPct": 0,
+      "toneBefore": {
+        "blue": "42199 (62.2%)",
+        "yellow": "13204 (19.46%)",
+        "orange": "10482 (15.45%)",
+        "red": "1963 (2.89%)"
+      },
+      "toneAfter": {
+        "blue": "42199 (62.2%)",
+        "yellow": "13204 (19.46%)",
+        "orange": "10482 (15.45%)",
+        "red": "1963 (2.89%)"
+      }
+    },
+    "3-5 χλμ": {
+      "hours": 66726,
+      "colourChangedPct": 16.19,
+      "worse": 3450,
+      "better": 7352,
+      "beaufortChangedPct": 38.54,
+      "beaufortUp": 7389,
+      "beaufortDown": 18326,
+      "cardChangedPct": 3.76,
+      "pinChangedPct": 3.78,
+      "toneBefore": {
+        "blue": "42245 (63.31%)",
+        "yellow": "13595 (20.37%)",
+        "orange": "9376 (14.05%)",
+        "red": "1510 (2.26%)"
+      },
+      "toneAfter": {
+        "blue": "45162 (67.68%)",
+        "yellow": "11905 (17.84%)",
+        "orange": "8241 (12.35%)",
+        "red": "1418 (2.13%)"
+      }
+    },
+    "5-7 χλμ": {
+      "hours": 32076,
+      "colourChangedPct": 17.66,
+      "worse": 1684,
+      "better": 3982,
+      "beaufortChangedPct": 40.94,
+      "beaufortUp": 4061,
+      "beaufortDown": 9071,
+      "cardChangedPct": 4.31,
+      "pinChangedPct": 4.36,
+      "toneBefore": {
+        "blue": "20356 (63.46%)",
+        "yellow": "6659 (20.76%)",
+        "orange": "4311 (13.44%)",
+        "red": "750 (2.34%)"
+      },
+      "toneAfter": {
+        "blue": "21942 (68.41%)",
+        "yellow": "5800 (18.08%)",
+        "orange": "3739 (11.66%)",
+        "red": "595 (1.85%)"
+      }
+    },
+    "≥7 χλμ": {
+      "hours": 22176,
+      "colourChangedPct": 18.37,
+      "worse": 1309,
+      "better": 2765,
+      "beaufortChangedPct": 42.39,
+      "beaufortUp": 2897,
+      "beaufortDown": 6503,
+      "cardChangedPct": 4.21,
+      "pinChangedPct": 4.27,
+      "toneBefore": {
+        "blue": "14550 (65.61%)",
+        "yellow": "4084 (18.42%)",
+        "orange": "3055 (13.78%)",
+        "red": "487 (2.2%)"
+      },
+      "toneAfter": {
+        "blue": "15432 (69.59%)",
+        "yellow": "3786 (17.07%)",
+        "orange": "2634 (11.88%)",
+        "red": "324 (1.46%)"
+      }
+    }
+  },
+  "byBeaufortBefore": {
+    "0": {
+      "hours": 35,
+      "beaufortChangedPct": 74.29,
+      "colourChangedPct": 0,
+      "worse": 0
+    },
+    "1": {
+      "hours": 12478,
+      "beaufortChangedPct": 23.94,
+      "colourChangedPct": 0.19,
+      "worse": 24
+    },
+    "2": {
+      "hours": 62515,
+      "beaufortChangedPct": 22.68,
+      "colourChangedPct": 1.23,
+      "worse": 771
+    },
+    "3": {
+      "hours": 58762,
+      "beaufortChangedPct": 29.21,
+      "colourChangedPct": 13.18,
+      "worse": 3678
+    },
+    "4": {
+      "hours": 31286,
+      "beaufortChangedPct": 26.53,
+      "colourChangedPct": 25.33,
+      "worse": 1894
+    },
+    "5": {
+      "hours": 18425,
+      "beaufortChangedPct": 22.84,
+      "colourChangedPct": 19.59,
+      "worse": 3
+    },
+    "6": {
+      "hours": 4399,
+      "beaufortChangedPct": 23.28,
+      "colourChangedPct": 5.3,
+      "worse": 73
+    },
+    "7": {
+      "hours": 697,
+      "beaufortChangedPct": 45.91,
+      "colourChangedPct": 32.57,
+      "worse": 0
+    },
+    "8": {
+      "hours": 214,
+      "beaufortChangedPct": 14.95,
+      "colourChangedPct": 3.74,
+      "worse": 0
+    },
+    "9": {
+      "hours": 15,
+      "beaufortChangedPct": 66.67,
+      "colourChangedPct": 0,
+      "worse": 0
+    }
+  },
+  "topMovers": [
+    {
+      "id": 772,
+      "name": "Palaria",
+      "region": "crete-crete-lasithi",
+      "cellDistKm": 3.38,
+      "hours": 66,
+      "colourChanged": 50,
+      "changedPct": 75.76
+    },
+    {
+      "id": 245,
+      "name": "Λιβαδάκια",
+      "region": "central-greece-evia",
+      "cellDistKm": 9.33,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 298,
+      "name": "Σγούρα",
+      "region": "central-greece-evia",
+      "cellDistKm": 4.31,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 690,
+      "name": "Παραλία Ανατολικά",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 7.15,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 691,
+      "name": "Παραλία Γιαλοπόταμα",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 7.7,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 692,
+      "name": "Παραλία Δυνόνησος",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 5.5,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 696,
+      "name": "Παραλία Κεφάλα",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 6.4,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 1413,
+      "name": "Ποτάμι",
+      "region": "north-aegean-samos",
+      "cellDistKm": 4.96,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 3136,
+      "name": "Παραλία Λέκκα",
+      "region": "north-aegean-samos",
+      "cellDistKm": 5.06,
+      "hours": 66,
+      "colourChanged": 47,
+      "changedPct": 71.21
+    },
+    {
+      "id": 249,
+      "name": "Λιμνιώνας Ψαχνών",
+      "region": "central-greece-evia",
+      "cellDistKm": 3.02,
+      "hours": 66,
+      "colourChanged": 46,
+      "changedPct": 69.7
+    },
+    {
+      "id": 530,
+      "name": "Γιαλισκάρι",
+      "region": "crete-crete-chania",
+      "cellDistKm": 3.12,
+      "hours": 66,
+      "colourChanged": 45,
+      "changedPct": 68.18
+    },
+    {
+      "id": 682,
+      "name": "Γλίμα",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 5.31,
+      "hours": 66,
+      "colourChanged": 45,
+      "changedPct": 68.18
+    },
+    {
+      "id": 695,
+      "name": "Παραλία Κατσούνι",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 5.84,
+      "hours": 66,
+      "colourChanged": 45,
+      "changedPct": 68.18
+    },
+    {
+      "id": 698,
+      "name": "Παχειά Άμμος",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 5.5,
+      "hours": 66,
+      "colourChanged": 45,
+      "changedPct": 68.18
+    },
+    {
+      "id": 701,
+      "name": "Ποδαρέ",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 5.07,
+      "hours": 66,
+      "colourChanged": 45,
+      "changedPct": 68.18
+    },
+    {
+      "id": 663,
+      "name": "Μαριδάκι",
+      "region": "crete-crete-heraklion",
+      "cellDistKm": 4.32,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 666,
+      "name": "Άγιος Νικήτας",
+      "region": "crete-crete-heraklion",
+      "cellDistKm": 6.59,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 685,
+      "name": "Λίγκρες",
+      "region": "crete-crete-rethymno",
+      "cellDistKm": 6.72,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 1415,
+      "name": "Τσάμπου",
+      "region": "north-aegean-samos",
+      "cellDistKm": 3.87,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2014,
+      "name": "Ρίνα",
+      "region": "south-aegean-naxos",
+      "cellDistKm": 4.8,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2015,
+      "name": "Παραλία Σπεδό",
+      "region": "south-aegean-naxos",
+      "cellDistKm": 6.54,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2214,
+      "name": "Πορτοκάλι",
+      "region": "south-aegean-schinoussa",
+      "cellDistKm": 11.15,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2217,
+      "name": "Φυκιό",
+      "region": "south-aegean-schinoussa",
+      "cellDistKm": 9.79,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2218,
+      "name": "Ψιλή Άμμος",
+      "region": "south-aegean-schinoussa",
+      "cellDistKm": 10.27,
+      "hours": 66,
+      "colourChanged": 44,
+      "changedPct": 66.67
+    },
+    {
+      "id": 2211,
+      "name": "Γερολιμνιώνας",
+      "region": "south-aegean-schinoussa",
+      "cellDistKm": 8.84,
+      "hours": 66,
+      "colourChanged": 43,
+      "changedPct": 65.15
+    }
+  ],
+  "beachesTouched": 1684,
+  "beaufortRangePrevalence": {
+    "hoursAll": 188826,
+    "hoursBase3": 104390,
+    "variants": {
+      "R1 ριπή ≥1 σκαλί": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 1,
+          "minSpreadKmh": 0
+        },
+        "firesPctAllHoursA": 92.8,
+        "firesPctAllHoursB": 92.81,
+        "firesPctOfBase3HoursB": 93.7,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 175251
+        }
+      },
+      "R2 ριπή, cap +2": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 2,
+          "minSpreadKmh": 0
+        },
+        "firesPctAllHoursA": 92.8,
+        "firesPctAllHoursB": 92.81,
+        "firesPctOfBase3HoursB": 93.7,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 73149,
+          "2": 102102
+        }
+      },
+      "R3 spread ≥8": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 1,
+          "minSpreadKmh": 8
+        },
+        "firesPctAllHoursA": 80.8,
+        "firesPctAllHoursB": 80.13,
+        "firesPctOfBase3HoursB": 91.5,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 151297
+        }
+      },
+      "R3 spread ≥12": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 1,
+          "minSpreadKmh": 12
+        },
+        "firesPctAllHoursA": 59.45,
+        "firesPctAllHoursB": 59.14,
+        "firesPctOfBase3HoursB": 79.29,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 111676
+        }
+      },
+      "R3 spread ≥16": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 1,
+          "minSpreadKmh": 16
+        },
+        "firesPctAllHoursA": 40.29,
+        "firesPctAllHoursB": 40.22,
+        "firesPctOfBase3HoursB": 59.71,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 75941
+        }
+      },
+      "R3 spread ≥22": {
+        "rule": {
+          "minBaseBeaufort": 0,
+          "maxStep": 1,
+          "minSpreadKmh": 22
+        },
+        "firesPctAllHoursA": 21.95,
+        "firesPctAllHoursB": 21.94,
+        "firesPctOfBase3HoursB": 35.79,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 41424
+        }
+      },
+      "R4 μέσος ≥3": {
+        "rule": {
+          "minBaseBeaufort": 3,
+          "maxStep": 1,
+          "minSpreadKmh": 0
+        },
+        "firesPctAllHoursA": 57.16,
+        "firesPctAllHoursB": 51.8,
+        "firesPctOfBase3HoursB": 93.7,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 97816
+        }
+      },
+      "R4 μέσος ≥3 + spread ≥8": {
+        "rule": {
+          "minBaseBeaufort": 3,
+          "maxStep": 1,
+          "minSpreadKmh": 8
+        },
+        "firesPctAllHoursA": 55.81,
+        "firesPctAllHoursB": 50.58,
+        "firesPctOfBase3HoursB": 91.5,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 95512
+        }
+      },
+      "R4 μέσος ≥3 + spread ≥12": {
+        "rule": {
+          "minBaseBeaufort": 3,
+          "maxStep": 1,
+          "minSpreadKmh": 12
+        },
+        "firesPctAllHoursA": 47.77,
+        "firesPctAllHoursB": 43.83,
+        "firesPctOfBase3HoursB": 79.29,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 82767
+        }
+      },
+      "R4 μέσος ≥3 + spread ≥16": {
+        "rule": {
+          "minBaseBeaufort": 3,
+          "maxStep": 1,
+          "minSpreadKmh": 16
+        },
+        "firesPctAllHoursA": 35.56,
+        "firesPctAllHoursB": 33.01,
+        "firesPctOfBase3HoursB": 59.71,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 62328
+        }
+      },
+      "R4 μέσος ≥3 + spread ≥22": {
+        "rule": {
+          "minBaseBeaufort": 3,
+          "maxStep": 1,
+          "minSpreadKmh": 22
+        },
+        "firesPctAllHoursA": 21.06,
+        "firesPctAllHoursB": 19.79,
+        "firesPctOfBase3HoursB": 35.79,
+        "inBand5to15": false,
+        "stepDistributionB": {
+          "1": 37362
+        }
+      }
+    },
+    "inBand5to15": []
+  },
+  "verdict": {
+    "rollout": "ΦΕΥΓΕΙ ΩΣ ΕΧΕΙ: όπου εφαρμόζεται οι αλλαγές χρώματος είναι κυρίως προς πιο ήρεμο και οι κάδοι ≥5 χλμ δεν ξεφεύγουν από τη μετρημένη ζώνη.",
+    "beaufortRange": "ΚΑΜΙΑ παραλλαγή στη ζώνη 5-15% — αποφασίζει ο Μίλτος."
+  },
+  "limits": [
+    "Κύμα ΜΟΝΤΕΛΟΠΟΙΗΜΕΝΟ με ουδέτερη θάλασσα 0,40 μ. και χωρίς εξαίρεση όρμων — το χαμένο μπλε είναι ταβάνι.",
+    "Μία ημερομηνία εκτέλεσης· ό,τι φυσάει σήμερα, όχι κλιματολογία.",
+    "Πάνω από 5 χλμ κανένα αεροδρόμιο δεν έκρινε — οι κάδοι 5-7 και ≥7 δείχνουν αποτύπωμα, όχι ορθότητα.",
+    "Η ριπή του εύρους είναι ριπή ΜΟΝΤΕΛΟΥ (στο 23% των ήρεμων ωρών φούσκα — §ΑΞ1/Α3)."
+  ]
+}
