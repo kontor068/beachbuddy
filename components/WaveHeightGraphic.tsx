@@ -8,6 +8,8 @@ import { getBoatRideMotionLevel, getBoatRideMotionRank, type BoatRideMotionLevel
 import type { ExposureLevel } from '../utils/windExposure';
 import { getSeaSeverity, getSeaStateSeverity, getWindSeverity, type SeaSeverity } from '../utils/seaVerdict';
 import { seaStateSeverityM } from '../utils/waveCharacter';
+// Το ίδιο δάπεδο 0,10 μ. με την κάρτα, την πινέζα και το πλακίδιο θάλασσας της σελίδας.
+import { WAVE_DISPLAY_FLOOR_M } from '../utils/waveModel';
 import {
   getWaveScale,
   getWaveBandClasses,
@@ -503,14 +505,33 @@ const getSceneMotionStyle = (intensity: number): React.CSSProperties => {
 // wave height is the depth of water around a standing swimmer.
 const ADULT_REFERENCE_HEIGHT_M = 1.7;
 
+/**
+ * ΤΟ ΔΑΠΕΔΟ ΤΩΝ 0,10 μ. ΜΠΑΙΝΕΙ ΣΤΟΝ ΜΟΡΦΟΠΟΙΗΤΗ, ΟΧΙ ΣΤΗΝ ΕΙΣΟΔΟ (25/08/2026).
+ *
+ * Το πλακίδιο θάλασσας της σελίδας πήρε το δάπεδο την ίδια μέρα (βλ.
+ * `utils/waveModel.printedWaveHeightM` για την αναφορά της Λυγιάς και τη μέτρηση). Αν αυτό εδώ
+ * έμενε απ' έξω, η ΙΔΙΑ σελίδα θα έγραφε «0,1 μ.» στο πλακίδιο και «~0,0 μ.» στα tooltip του
+ * γραφικού από κάτω — δύο νούμερα για το ίδιο νερό, που είναι ακριβώς η πληγή §Κ1.
+ *
+ * ⚠️ ΓΙΑΤΙ ΕΔΩ ΚΑΙ ΟΧΙ ΣΤΟ `waveHeightM` ΤΟΥ COMPONENT. Αυτό το γραφικό κρίνει την ετυμηγορία
+ * του από ΟΤΙ ΖΩΓΡΑΦΙΖΕΙ (βλ. τη σημείωση στο pages/BeachDetailPage γύρω από το
+ * `waveHeightM={shoreWaveHeightM ?? displayWaveHeightM}`). Πειράζοντας την είσοδο θα κουνούσα
+ * ζωγραφιά και ετυμηγορία για να διορθώσω μια συμβολοσειρά. Ο μορφοποιητής δεν τον διαβάζει
+ * καμία απόφαση: αλλάζει ΜΟΝΟ το τι τυπώνεται.
+ */
+const PRINTED_FLOOR_M = WAVE_DISPLAY_FLOOR_M;
+
 const formatWaveHeight = (m: number, language: LanguageCode): string => {
-  const value = m.toFixed(1);
+  const value = Math.max(m, PRINTED_FLOOR_M).toFixed(1);
   return language === 'gr' ? `~${value.replace('.', ',')} μ.` : `~${value} m`;
 };
 
 // A wave-height band, e.g. "~0,6–1,0 μ." — one unit, one tilde, so it reads as a single range.
 const formatWaveRange = (lowM: number, highM: number, language: LanguageCode): string => {
-  const fmt = (v: number) => (language === 'gr' ? v.toFixed(1).replace('.', ',') : v.toFixed(1));
+  const fmt = (raw: number) => {
+    const v = Math.max(raw, PRINTED_FLOOR_M);
+    return language === 'gr' ? v.toFixed(1).replace('.', ',') : v.toFixed(1);
+  };
   const unit = language === 'gr' ? ' μ.' : ' m';
   return `~${fmt(lowM)}–${fmt(highM)}${unit}`;
 };

@@ -42,6 +42,8 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+// Το δάπεδο των 0,10 μ. στον ΤΥΠΩΜΕΝΟ αριθμό — μία υλοποίηση με την κάρτα και την πινέζα.
+import { printedWaveHeightM } from '../utils/waveModel';
 import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
 import { buildChoppySeaLine } from '../utils/choppySeaCopy';
 import { resolveWaterTemperature } from '../utils/waterTemperatureCopy';
@@ -2212,10 +2214,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             // it with our near-shore SMB or nothing was measured. One source, so the label can
             // never disagree with the number it sits above.
             ? {
-                heightM: displayWaveHeightM ?? null,
+                /**
+                 * ΤΟ ΔΑΠΕΔΟ ΤΩΝ 0,10 μ. ΜΠΑΙΝΕΙ ΕΔΩ, ΣΤΟ ΣΗΜΕΙΟ ΠΟΥ ΤΥΠΩΝΕΤΑΙ (25/08/2026).
+                 *
+                 * Λυγιά Λευκάδας, 09:00: «0,0 μ.» δίπλα σε επισκέπτη που έβλεπε νερό να σκάει
+                 * στα βότσαλα. Όλη η ιστορία και η εθνική μέτρηση ζουν στο
+                 * `utils/waveModel.printedWaveHeightM`. Μπαίνει στα props του πλακιδίου και ΟΧΙ
+                 * στο ίδιο το `displayWaveHeightM`: εκείνο κρίνει shore-break, χαρακτηρισμό
+                 * θάλασσας και τη ζωντανή πρόταση του καιρού — αν το πείραζα εδώ, θα κουνούσα
+                 * αποφάσεις για να διορθώσω μια οθόνη.
+                 */
+                heightM: printedWaveHeightM(displayWaveHeightM) ?? null,
                 label: seaConditionDisplay.value,
                 isOpenWater: !isWaveEstimate,
-                shoreHeightM: shoreWaveHeightM,
+                shoreHeightM: printedWaveHeightM(shoreWaveHeightM),
               }
             : null}
           water={showConditions && waterReading

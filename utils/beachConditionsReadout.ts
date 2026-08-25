@@ -1,5 +1,6 @@
 import type { LanguageCode } from '../types';
 import { getBeaufortLevel } from './weatherUtils';
+import { printedWaveHeightM } from './waveModel';
 import { seaStateSeverityM } from './waveCharacter';
 import { buildConditionsFeel, type ConditionsFeel } from './conditionsFeelPhrase';
 
@@ -103,11 +104,26 @@ export const buildBeachConditionsReadout = ({
   const waveIsShore = typeof shoreM === 'number' && Number.isFinite(shoreM);
   // Ίδιο καπάκι με τη σελίδα της παραλίας: το κύμα στην ακτή δεν τυπώνεται ποτέ μεγαλύτερο από
   // το νερό έξω. Χωρίς αυτό, η κάρτα και η σελίδα έβγαζαν διαφορετικό νούμερο σε όρμους.
-  const waveM = waveIsShore
+  const cappedWaveM = waveIsShore
     ? (typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
         ? Math.min(shoreM as number, waveHeightM)
         : shoreM)
     : waveHeightM;
+  /**
+   * ΤΟ ΔΑΠΕΔΟ ΤΩΝ 0,10 μ., ΕΠΙΤΕΛΟΥΣ ΕΦΑΡΜΟΣΜΕΝΟ (25/08/2026 — Λυγιά Λευκάδας, 09:00).
+   *
+   * Η πλήρης ιστορία και η μέτρηση ζουν δίπλα στο `utils/waveModel.printedWaveHeightM`, ώστε
+   * να μην ξαναγραφτεί εδώ και ξεσυγχρονιστεί. Σε δύο γραμμές: ο αέρας ΗΤΑΝ άπνοια και η
+   * θάλασσα ΗΤΑΝ λάδι — αλλά «0,0 μ.» δεν είναι ήρεμη θάλασσα, είναι χαλασμένη ένδειξη, και
+   * ο ίδιος ο κώδικας το έγραφε σε τρία σημεία χωρίς να το εφαρμόζει σε αυτή τη διαδρομή.
+   *
+   * ΤΟ ΔΑΠΕΔΟ ΜΠΑΙΝΕΙ ΚΑΙ ΣΤΑ ΔΥΟ ΝΟΥΜΕΡΑ, ΕΠΙΤΗΔΕΣ. Αν έμπαινε μόνο στο νούμερο της ακτής,
+   * η σελίδα της παραλίας θα τύπωνε «στην ακτή ~0,1 μ.» δίπλα σε «ανοιχτά 0,0 μ.» — δηλαδή θα
+   * γεννούσε ψεύτικη διαφορά (και ένα «~») εκεί που δεν υπάρχει καμία. Με το ίδιο δάπεδο και
+   * στα δύο, οι δύο αναγνώσεις ταυτίζονται και η οθόνη λέει έναν αριθμό, μία φορά.
+   */
+  const waveM = printedWaveHeightM(cappedWaveM);
+  const openWaterPrintedM = printedWaveHeightM(waveHeightM);
   /**
    * ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΠΑΝΤΑ ΤΟ ΝΕΡΟ ΣΤΗΝ ΑΚΤΗ (24/08/2026, απόφαση Μίλτου — βλ. gate
    * scripts/validateShoreBandJump.mjs για το πλήρες ιστορικό).
@@ -127,8 +143,8 @@ export const buildBeachConditionsReadout = ({
    * αυτό δεν το έλυνε ούτε ο φράχτης· τύπωνε απλώς ένα τρίτο, δικό του νούμερο από πάνω.
    */
   const waveDiffers = waveIsShore
-    && typeof waveHeightM === 'number' && Number.isFinite(waveHeightM)
-    && Math.abs((waveM as number) - waveHeightM) >= WAVE_DIFFERS_M;
+    && typeof openWaterPrintedM === 'number' && typeof waveM === 'number'
+    && Math.abs(waveM - openWaterPrintedM) >= WAVE_DIFFERS_M;
   const waveText = typeof waveM === 'number' && Number.isFinite(waveM)
     ? `${waveDiffers ? '~' : ''}${waveM.toFixed(1).replace('.', language === 'gr' ? ',' : '.')} ${language === 'gr' ? 'μ.' : 'm'}`
     : undefined;
