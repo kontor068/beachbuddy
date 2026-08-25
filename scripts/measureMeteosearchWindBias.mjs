@@ -47,7 +47,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
-import { METEOSEARCH_STATIONS } from './lib/meteosearchStations.mjs';
+import { METEOSEARCH_STATIONS, METEOSEARCH_MONTHS } from './lib/meteosearchStations.mjs';
 import { parseMeteosearchMonthly } from './lib/meteosearchMonthly.mjs';
 import {
   fetchJson, createElevationSampler, rayPointsFor, geometryFromElevations, upwindRelief,
@@ -115,10 +115,29 @@ const readStationFiles = () => {
 
 const files = readStationFiles();
 if (!files.length) {
-  console.log(`Κανένα txt στο ${path.relative(root, INPUT_DIR)}/<σταθμός>/. Βήματα:`);
-  console.log('  1. https://meteosearch.meteo.gr σε browser ανθρώπου (το codespace μπλοκάρεται από Cloudflare).');
-  for (const st of METEOSEARCH_STATIONS) console.log(`  2. ${st.name}: μηνιαία txt 2026-05 … 2026-08 → .tmp/meteosearch/${st.id}/YYYY-MM.txt   (${st.note})`);
-  console.log('  3. node scripts/measureMeteosearchWindBias.mjs --dry-run   και έλεγχος με το μάτι· μετά χωρίς --dry-run.');
+  // Η λίστα αγορών, όχι γενική οδηγία: τα `id` είναι τα ΠΡΑΓΜΑΤΙΚΑ ονόματα του meteosearch
+  // (lib/meteosearchStations.mjs) και οι φάκελοι φτιάχνονται εδώ, ώστε το βήμα με τον browser
+  // να είναι «κατέβασε και ρίξε μέσα», χωρίς να θυμάται κανείς ονοματολογία.
+  console.log(`Κανένα txt στο ${path.relative(root, INPUT_DIR)}/<σταθμός>/.\n`);
+  console.log('ΓΙΑΤΙ ΧΡΕΙΑΖΕΤΑΙ ΑΝΘΡΩΠΟΣ: κάθε αυτόματη πόρτα δοκιμάστηκε 25/08/2026 και είναι κλειστή —');
+  console.log('  οι σελίδες .asp κόβονται από Cloudflare (403, και από εξωτερική διαδρομή)· το στατικό');
+  console.log('  /data/{σταθμός}/{ΕΤΟΣ-ΜΗΝΑΣ}.txt περνάει αλλά ο ιστότοπος του 2022 δεν το σερβίρει πια (404)·');
+  console.log('  τα αντίγραφα του Web Archive σταματούν στο 2021-04 και το αρχείο προγνώσεων ξεκινά το 2022.');
+  console.log('  Λεπτομέρειες: scripts/lib/meteosearchStations.mjs\n');
+  console.log('ΒΗΜΑΤΑ');
+  console.log('  1. Άνοιξε https://meteosearch.meteo.gr σε browser και βρες τον σταθμό στον χάρτη.');
+  console.log('  2. Κατέβασε το μηνιαίο αρχείο για κάθε μήνα και βάλ\' το στον έτοιμο φάκελο:\n');
+  for (const st of METEOSEARCH_STATIONS) {
+    const dir = path.join(INPUT_DIR, st.id);
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`     ${st.name}  →  ${path.relative(root, dir)}/{${METEOSEARCH_MONTHS.join(',')}}.txt`);
+    console.log(`       ${st.note}`);
+  }
+  console.log('\n  3. node scripts/measureMeteosearchWindBias.mjs --dry-run   (τυπώνει τις γραμμές που διάβασε');
+  console.log('     και τις ΣΩΣΤΕΣ συντεταγμένες από την κεφαλίδα — γράψ\' τες στο lib/meteosearchStations.mjs)');
+  console.log('  4. node scripts/measureMeteosearchWindBias.mjs            (η μέτρηση· ΔΕΝ αλλάζει τίποτα)\n');
+  console.log('Φτάνει και ΕΝΑΣ σταθμός για να αρχίσει να λέει κάτι — αλλά η αντίθεση υπήνεμου/ανοιχτού');
+  console.log('θέλει τουλάχιστον έναν μάρτυρα (sitia ή naousa) ΚΑΙ έναν ανοιχτό (mykonos ή ios).');
   process.exit(DRY_RUN ? 0 : 1);
 }
 
