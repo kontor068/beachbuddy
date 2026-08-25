@@ -28,12 +28,6 @@ export interface StableScrollOptions {
   maxMs?: number;
   /** How long the target has to sit still before we let go of the page. */
   holdMs?: number;
-  /**
-   * Teleport on the first frame instead of easing. For a landing that should feel like it was
-   * already there — the map — while still re-measuring afterwards, so content arriving underneath
-   * cannot leave the reader somewhere else.
-   */
-  instant?: boolean;
 }
 
 /**
@@ -62,16 +56,28 @@ export const smoothScrollToStableElement = (
   getTarget: () => HTMLElement | null,
   options: StableScrollOptions = {}
 ): (() => void) => {
-  const { offset = 0, maxMs = 5000, holdMs = 400, instant: alwaysInstant = false } = options;
+  const { offset = 0, maxMs = 5000, holdMs = 400 } = options;
   if (typeof window === 'undefined') return () => {};
 
   // Exponential ease-out: each frame closes the same FRACTION of whatever distance is left, so a
   // destination that moves mid-flight never restarts the animation. ~95% of the way in ~330 ms.
   const TAU_MS = 110;
   const SETTLED_PX = 1.5;
+  /**
+   * Inside this much of the mark, close the gap in ONE frame instead of easing.
+   *
+   * The tail of an exponential is smaller than the stuck-detection threshold below: with 3px left
+   * a frame moves ~0,4px, the page is read as unable to scroll, and the run ends a few pixels
+   * short — and, worse, stops correcting for anything that lands afterwards. One frame of 3px is
+   * invisible; three frames of "am I stuck?" are not.
+   */
+  const SNAP_PX = 6;
   /** Frames of "we asked to scroll and the page did not move" before we accept it cannot. */
   const STUCK_FRAMES = 3;
-  const instant = alwaysInstant || prefersReducedMotion();
+  // The only reason to teleport rather than glide. The map landing used to ask for it outright
+  // («a visible glide while the region mounts is confusing»); it does not any more — a glide that
+  // re-reads its destination every frame is bent by mounting content, not broken by it.
+  const instant = prefersReducedMotion();
 
   let cancelled = false;
   let frame = 0;
@@ -106,7 +112,19 @@ export const smoothScrollToStableElement = (
     lastFrameAt = now;
 
     const target = getTarget();
-    if (target) {
+    if (!target) {
+      // NOTHING TO LAND ON *YET* — which is not the same as "we have landed".
+      //
+      // A cross-region search replaces the page: the destination unmounts and its replacement
+      // arrives up to ~1,6s later. Leaving `stableSince` set from a target that has since
+      // disappeared made `held` true on the very next frame, so the run ended before the real
+      // destination existed — and the reader was left wherever the browser's scroll anchoring
+      // had dragged them while the new content mounted above (measured: ~1.400px BELOW the map).
+      // Waiting costs nothing: no scrollBy is issued, so a page with no map at all is untouched
+      // until maxMs, and the first touch still ends the run outright.
+      stableSince = null;
+      stuckFrames = 0;
+    } else {
       const delta = target.getBoundingClientRect().top - offset;
       if (Math.abs(delta) <= SETTLED_PX) {
         if (stableSince === null) stableSince = now;
@@ -119,7 +137,8 @@ export const smoothScrollToStableElement = (
         // own browser animation, each cancelling the last. The page crawled instead of moving, our
         // own easing never applied, and the stuck-detection below read the browser's unfinished
         // animation as "the page cannot scroll". The easing here is ours; the browser must obey.
-        window.scrollBy({ top: instant ? delta : delta * (1 - Math.exp(-dt / TAU_MS)), behavior: 'instant' });
+        const step = instant || Math.abs(delta) <= SNAP_PX ? delta : delta * (1 - Math.exp(-dt / TAU_MS));
+        window.scrollBy({ top: step, behavior: 'instant' });
         // Already at the end of the document (a short results page cannot bring its last section
         // to the top). Without this we would hold the page hostage for the full maxMs.
         stuckFrames = Math.abs(window.scrollY - before) < 0.5 ? stuckFrames + 1 : 0;

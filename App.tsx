@@ -3627,34 +3627,59 @@ export const App: React.FC = () => {
     startStableScroll(() => document.getElementById(id), stickyTop);
   };
 
+  /**
+   * How long the map landing will WAIT for the map to mount.
+   *
+   * Deliberately long, because waiting is FREE: the landing issues no scrollBy while it has no
+   * target, so nothing on screen moves during the wait — the page simply lands the moment the map
+   * is there. A region switch takes ~1,6s on a fast connection and several seconds on a throttled
+   * phone, which is exactly the case that used to fail. If the map never arrives, nobody is moved
+   * anywhere: the reader stays at the top of the region page. And the first touch ends the wait.
+   */
+  const MAP_LANDING_MAX_MS = 8000;
+
+  /**
+   * Land on the region's map — the pin the reader asked for, with its card right below.
+   *
+   * WHAT WE MEASURE (11/08). On mobile #directory-map-section is `position: sticky`, so once you
+   * are scrolled past its natural place its rect reports the STUCK position (8px). The old
+   * destination, scrollY + rect.top - 8, therefore evaluated to scrollY — "you are already there"
+   * — and nothing moved; then the shorter page clamped the offset the browser was still holding to
+   * the end of the document, which is how "no scroll at all" surfaced as «Κοντά μου» ending on the
+   * legal footer. #directory-map-anchor is a zero-height STATIC twin rendered right above the
+   * sticky section for this purpose, and it is the only thing that should ever be measured here.
+   *
+   * WHICH MAP (25/08). There are two on each viewport, and the wrong one used to win.
+   * `#map-section` / `#map-section-desktop` are not an alternative to the directory map, they are
+   * its LOADING STATE: BeachSearcherHome — and with it the directory map — lives in the header's
+   * `forecastSlot`, gated on `showHeaderForecast`, and the old maps render on exactly the opposite
+   * condition. Whichever is in the DOM, the other is not, and the old one is replaced the moment
+   * the region's forecast lands.
+   *
+   * On mobile that difference is not cosmetic: the old map sits near the BOTTOM of the beach list,
+   * ~1.600px further down the page. Picking a beach from search switches region, and for ~1,6s the
+   * only map on the page was that one. The landing jumped down onto it, the page rebuilt around
+   * that offset, and the browser's scroll anchoring dragged the reader further still as the real
+   * content mounted above. Measured on an iPhone-sized viewport: the run ended 1.388px BELOW the
+   * directory map — «με πας στο χαμηλά χαμηλά και όχι στην παραλία με τον χάρτη».
+   *
+   * So the old maps are not targets at all. There is ONE destination, and while it has not mounted
+   * the landing waits in place rather than committing to a stand-in it would have to take back.
+   */
   const scrollToMapSection = () => {
-    // Map landing is intentionally an INSTANT viewport jump: a visible glide while the nearby
-    // region mounts is confusing on mobile. What changed (11/08) is what we measure and for how
-    // long we keep measuring it — «Κοντά μου» from the landing page kept ending at the legal
-    // footer, and both halves of that were here:
-    //
-    //   • MEASUREMENT. On mobile #directory-map-section is `position: sticky`, so once you are
-    //     scrolled past its natural place its rect reports the STUCK position (8px). The old
-    //     destination, scrollY + rect.top - 8, therefore evaluated to scrollY — "you are already
-    //     there" — and nothing moved. Tapping from the top of the page worked, tapping from the
-    //     bottom of the landing did nothing, which is exactly the report. #directory-map-anchor
-    //     is a zero-height STATIC element rendered right above it for this purpose.
-    //   • CLAMP. Nothing moved, then the nearby page — 60 beaches instead of a whole landing —
-    //     rendered shorter than the scroll offset the browser was holding, so it clamped us to
-    //     the end of the document. That is how "no scroll at all" surfaces as "took me to the
-    //     legal bits". Re-measuring for a moment afterwards absorbs the same shrink when the
-    //     cards, forecasts and seas land one after another.
+    if (!selectedIsland) return;
     const targetIds = isDesktopViewport
-      ? ['directory-map-section-desktop', 'map-section-desktop']
-      : ['directory-map-anchor', 'directory-map-section', 'map-section'];
+      ? ['directory-map-section-desktop']
+      : ['directory-map-anchor', 'directory-map-section'];
     const getTarget = () => targetIds
       .map(id => document.getElementById(id))
       .find((element): element is HTMLElement => Boolean(element)) ?? null;
-    if (!getTarget()) return;
 
-    // Short and cancellable: the first frame is the same teleport as before, the rest only correct
-    // for layout arriving underneath, and the reader's first touch ends it outright.
-    startStableScroll(getTarget, 8, { instant: true, maxMs: 1500, holdMs: 250 });
+    // Eased, not teleported (Miltos, 25/08: «δείχνεις να μην είναι smooth η μετάβαση»). The old
+    // instant jump was a defence against a glide over a page that was still mounting — but the
+    // glide re-reads its destination every frame, so mounting content bends it instead of
+    // breaking it, and prefers-reduced-motion still gets the instant version from the util.
+    startStableScroll(getTarget, 8, { maxMs: MAP_LANDING_MAX_MS, holdMs: 250 });
   };
 
   /** The planner has no sticky offset — it should land flush at the top. */
