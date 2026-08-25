@@ -673,10 +673,28 @@ body {
   width: 16px;
   height: 16px;
 }
+/* ΕΝΑ ΣΚΑΛΙ ΜΙΚΡΟΤΕΡΑ (Μίλτος, 25/08/2026): «μείωσε το μέγεθος των + - του χάρτη».
+   Το Leaflet δίνει 26 px στο ποντίκι· εδώ 24. Γράφεται και με το `.leaflet-touch` δίπλα
+   επειδή τα δύο κλειδιά έχουν ΙΔΙΑ ισχύ (0,2,1) και αλλιώς η σειρά των αρχείων θα αποφάσιζε
+   — η ίδια παγίδα που είναι ήδη καταγραμμένη δύο μπλοκ πιο πάνω. Μπαίνει ΠΡΙΝ από το
+   @media (pointer: coarse), ώστε το δάχτυλο να το ξαναγράφει, όχι το αντίστροφο. */
+.leaflet-container .leaflet-bar a,
+.leaflet-container .leaflet-bar a:hover,
+.leaflet-container.leaflet-touch .leaflet-bar a,
+.leaflet-container.leaflet-touch .leaflet-bar a:hover {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+.leaflet-control-bar-button svg {
+  width: 14px;
+  height: 14px;
+}
+
 @media (pointer: coarse) {
   .leaflet-control-bar-button svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
   /* THE ICONS GREW HERE, THE BUTTONS NEVER DID. Measured on a real phone 05/08/2026: the
      whole column — zoom in, zoom out, satellite — was 30×30 px, against the 44 px that both
@@ -685,9 +703,13 @@ body {
      outright rather than depending on file order, the same trap documented above. */
   .leaflet-container.leaflet-touch .leaflet-bar a,
   .leaflet-container.leaflet-touch .leaflet-bar a:hover {
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
+    /* 44 → 40 px (Μίλτος, 25/08/2026). ΠΡΟΣΟΧΗ: το 44 ΔΕΝ ήταν αυθαίρετο — είναι το ελάχιστο
+       που δίνουν Apple και Google για στόχο δαχτύλου, και μπήκε στις 05/08/2026 ακριβώς επειδή
+       η στήλη ήταν 30 px και αστοχούσε. Στα 40 είμαστε πάλι κάτω από τη σύσταση, συνειδητά και
+       κατόπιν εντολής· αν αρχίσουν παράπονα «δεν πιάνεται το ζουμ», εδώ είναι η αιτία. */
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
   }
 }
 
@@ -728,15 +750,18 @@ body {
   }
 }
 
-/* Touch devices: grow the Leaflet zoom (+/-) buttons from the ~30px default to a
-   comfortable 44px tap target. Scoped to coarse pointers so desktop stays compact. */
+/* Touch devices: the Leaflet zoom (+/-) buttons, grown from the ~30px default.
+   ΔΕΥΤΕΡΟ ΑΝΤΙΓΡΑΦΟ ΤΟΥ ΙΔΙΟΥ ΚΑΝΟΝΑ — το κανονικό ζει ~90 γραμμές πιο πάνω, μαζί με το
+   ιστορικό του, και κερδίζει σε ισχύ (0,3,1 έναντι 0,1,1). Κρατιέται μόνο για το `font-size`
+   (το γράμμα «+»/«−» μέσα στο κουμπί) και οφείλει να λέει ΤΟ ΙΔΙΟ νούμερο: δύο μεγέθη για το
+   ίδιο κουμπί σε ένα αρχείο είναι ο τρόπος με τον οποίο μια αλλαγή φαίνεται να «μην πιάνει». */
 @media (pointer: coarse) {
   .leaflet-bar a,
   .leaflet-bar a:hover {
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
-    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
   }
 }
 

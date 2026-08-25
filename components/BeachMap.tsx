@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight, ChevronDown } from 'lucide-react';
+import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedLittleKnownLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem, WindSuitabilityColor } from '../types';
@@ -165,6 +165,31 @@ type HoverPreviewPosition = {
   y: number;
 };
 
+/**
+ * ΤΟ ΚΟΥΜΠΙ ΠΟΥ ΕΞΑΦΑΝΙΖΕΤΑΙ ΠΑΤΩΝΤΑΣ ΤΟ, ΚΛΕΙΝΕΙ ΚΑΙ ΤΟ ΤΑΜΠΕΛΑΚΙ (25/08/2026).
+ *
+ * Μετρημένο με πραγματικό κλικ σε Chromium: στη φάση CAPTURE πάνω στον χάρτη το κουμπί
+ * «Λιγότερα» είναι ακόμη στο DOM· στη φάση BUBBLE — εκεί ακριβώς που ακούει το Leaflet —
+ * είναι ΗΔΗ ξεκρεμασμένο, γιατί το React πρόλαβε να το αφαιρέσει μέσα στον ίδιο χειρισμό.
+ * Το Leaflet τότε ανεβαίνει τους γονείς ψάχνοντας τη σημαία `_leaflet_disable_click` (την
+ * καρφώνει στο κουτί του ταμπελακιού), αλλά ένας κόμβος που αφαιρέθηκε ΔΕΝ ΕΧΕΙ γονιό: η
+ * αναζήτηση τελειώνει στο κενό, το κλικ περνάει για κλικ στον χάρτη και το `closeOnClick`
+ * κλείνει ολόκληρη την κάρτα — αντί απλώς να μαζέψει τα χαρακτηριστικά.
+ *
+ * Η σημαία μπαίνει λοιπόν ΣΤΟ ΙΔΙΟ ΤΟ ΚΟΥΜΠΙ, όπου ελέγχεται πρώτη και δεν χρειάζεται γονιό.
+ * Ισχύει για κάθε κουμπί μέσα σε ταμπελάκι που μπορεί να αφαιρέσει τον εαυτό του — γι' αυτό
+ * μπαίνει και στα δύο, όχι μόνο σε αυτό που έδειξε το σφάλμα.
+ */
+const keepClickInsidePopup = (el: HTMLElement | null): void => {
+  if (el) L.DomEvent.disableClickPropagation(el);
+};
+
+/** Πόσα εικονίδια δείχνει η κλειστή σειρά πριν γράψει «+N» — δες MarkerConditionsPopup. */
+const COLLAPSED_FEATURE_ICONS = 5;
+
+/** «Χωρίς πλαφόν» για το ταμπελάκι της πινέζας. Ο κατάλογος έχει σήμερα το πολύ ~12 εγγραφές. */
+const ALL_FEATURE_CHIPS = 99;
+
 type HoverPreviewFeatureChip = {
   key: string;
   label: string;
@@ -323,7 +348,18 @@ const getHoverPreviewAmenityLabel = (chip: AmenityChip, language: LanguageCode):
   return labels[chip.key] || chip.label;
 };
 
-const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): HoverPreviewFeatureChip[] => {
+/**
+ * @param limit Πόσα το πολύ. Η κάρτα αιώρησης κρατά 4 (έχει φωτογραφία από πάνω και σταθερό
+ *   ύψος), το ταμπελάκι της πινέζας τα ζητάει ΟΛΑ από τις 25/08/2026 — «βάζε όλα τα
+ *   χαρακτηριστικά» (Μίλτος). Το πλαφόν είναι όρισμα και όχι δεύτερη συνάρτηση, ώστε η σειρά
+ *   προτεραιότητας να μείνει μία: υπόστρωμα, πρόσβαση, ρηχά/βαθιά, οικογένεια, κοσμοσυρροή,
+ *   μετά οι παροχές.
+ */
+const buildHoverPreviewFeatureChips = (
+  beach: Beach,
+  language: LanguageCode,
+  limit = 4
+): HoverPreviewFeatureChip[] => {
   const t = translations[language] || translations.en;
   const chips: HoverPreviewFeatureChip[] = [];
 
@@ -386,12 +422,12 @@ const buildHoverPreviewFeatureChips = (beach: Beach, language: LanguageCode): Ho
   }
 
   for (const chip of getAmenityChips(beach, language)) {
-    if (chips.length >= 4) break;
+    if (chips.length >= limit) break;
     if (chip.key === 'unknownFacilities' || chip.status === 'unknown' || chip.status === 'no') continue;
     addChip(`amenity-${chip.key}`, getHoverPreviewAmenityLabel(chip, language), hoverPreviewAmenityIcon(chip));
   }
 
-  return chips.slice(0, 4);
+  return chips.slice(0, limit);
 };
 
 /**
@@ -569,7 +605,11 @@ const MarkerConditionsPopup: React.FC<{
   seaOnlyColor?: WindSuitabilityColor;
   /** «Χαρακτηριστικά» — η ετικέτα του πτυσσόμενου, για screen readers και για το tooltip. */
   featuresLabel: string;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, featuresLabel }) => {
+  /** «Λιγότερα» — το κουμπί που ξαναμαζεύει την κάρτα στο μικρό της μέγεθος. */
+  fewerLabel: string;
+  /** Το ανοιχτό ταμπελάκι του Leaflet — δες το layout effect παρακάτω. */
+  openPopupRef: React.MutableRefObject<L.Popup | null>;
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, featuresLabel, fewerLabel, openPopupRef }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -588,9 +628,37 @@ const MarkerConditionsPopup: React.FC<{
    */
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const featureChips = useMemo(
-    () => buildHoverPreviewFeatureChips(item.beach, language),
+    () => buildHoverPreviewFeatureChips(item.beach, language, ALL_FEATURE_CHIPS),
     [item.beach, language]
   );
+  /**
+   * ΤΟ ΤΑΜΠΕΛΑΚΙ ΞΑΝΑΜΕΤΡΙΕΤΑΙ ΑΠΟ ΤΟ ΙΔΙΟ ΤΟ LEAFLET (25/08/2026).
+   *
+   * Το Leaflet μετράει το ταμπελάκι ΜΙΑ φορά, όταν ανοίγει: υπολογίζει πλάτος (`_updateLayout`),
+   * το τοποθετεί πάνω από την πινέζα (`_updatePosition`) και, αν δεν χωράει, μετακινεί τον χάρτη
+   * (`_adjustPan`). Όταν όμως το React μεγαλώνει το περιεχόμενο —εδώ: ανοίγουν τα
+   * χαρακτηριστικά— τίποτα από τα τρία δεν ξανατρέχει: η κάρτα ψηλώνει προς τα πάνω (είναι
+   * αγκυρωμένη στη μύτη της) και βγαίνει έξω από το πάνω χείλος.
+   *
+   * ΓΙΑΤΙ ΟΧΙ ΔΙΚΟ ΜΑΣ panBy: δοκιμάστηκε και μετρήθηκε — δύο περάσματα (layout + rAF) που
+   * υπολόγιζαν μόνα τους τη μετατόπιση άφηναν την κάρτα 51 px έξω από το κάδρο, γιατί το
+   * Leaflet ξανατοποθετούσε το κουτί του από πάνω τους. Το σωστό είναι να του ΠΟΥΜΕ να
+   * ξαναμετρήσει: το `update()` κάνει και τα τρία με τη δική του σειρά, και το `_adjustPan`
+   * μέσα του είναι ακριβώς ο κώδικας που δουλεύει ήδη σωστά στο άνοιγμα.
+   *
+   * Το `autoPan` ανοίγει για ΑΥΤΗ τη μία κλήση και ξανακλείνει. Δεν αναιρεί το
+   * `PopupPansOnlyOnOpen`: εκείνο κλείνει το autoPan για να μην τινάζεται ο χάρτης σε κάθε
+   * αλλαγή ΠΕΡΙΕΧΟΜΕΝΟΥ (ο αέρας και η ώρα αλλάζουν συνέχεια)· εδώ τρέχει μόνο όταν αλλάζει το
+   * ΣΧΗΜΑ, δηλαδή όταν ο επισκέπτης ανοιγοκλείνει ο ίδιος τα χαρακτηριστικά.
+   */
+  useLayoutEffect(() => {
+    const popup = openPopupRef.current;
+    if (!popup) return;
+    const hadAutoPan = popup.options.autoPan;
+    popup.options.autoPan = true;
+    popup.update();
+    popup.options.autoPan = hadAutoPan;
+  }, [featuresOpen, openPopupRef]);
   const readout = buildBeachConditionsReadout({
     beachWindSpeedKmph: windSpeedKmh,
     waveHeightM: item.waveHeightM,
@@ -603,8 +671,16 @@ const MarkerConditionsPopup: React.FC<{
   });
   const beachName = item.name || item.beach.name[language] || item.beach.name.en;
 
+  /**
+   * ΣΤΑΘΕΡΟ ΠΛΑΤΟΣ ΣΤΗ ΡΙΖΑ, ΚΑΙ ΟΧΙ min/max (25/08/2026). Το Leaflet μετράει το ταμπελάκι ΜΙΑ
+   * φορά, τη στιγμή που ανοίγει (`_updateLayout`), και δεν ξαναμετράει όταν το React αλλάζει το
+   * περιεχόμενο. Με ελαστικό πλάτος η μέτρηση έπεφτε στο `minWidth` των 128 px — μετρημένο σε
+   * Chromium — και μετά τα χαρακτηριστικά στοιβάζονταν 9 σε 9 σειρές μέσα σε κολόνα 128 px,
+   * φτιάχνοντας κάρτα 351 px πάνω σε χάρτη 215 px. Με σταθερό πλάτος, ό,τι μετρήθηκε κλειστό
+   * ισχύει και ανοιχτό.
+   */
   return (
-    <div className="min-w-[8rem] max-w-[12rem]">
+    <div className="w-[13.5rem]">
       {/* ΤΟ ΟΝΟΜΑ ΕΙΝΑΙ ΤΟ ΚΟΥΜΠΙ (Μίλτος, 20/08/2026: «πιάνει πολύ χάρτη»).
           Ξεχωριστό κουμπί «Δες την παραλία» κόστιζε 34 από τα 145 px του ταμπελακιού, πάνω σε
           χάρτη 214 px στο κινητό — δηλαδή έτρωγε τον χάρτη για να πει κάτι που το όνομα το λέει
@@ -623,6 +699,15 @@ const MarkerConditionsPopup: React.FC<{
       ) : (
         <p className="truncate text-[12px] font-black leading-tight text-slate-950">{beachName}</p>
       )}
+      {/* Η ΚΑΡΤΑ ΑΛΛΑΖΕΙ ΠΕΡΙΕΧΟΜΕΝΟ, ΔΕΝ ΜΕΓΑΛΩΝΕΙ (25/08/2026).
+          Ο χάρτης στο κινητό είναι 214 px και η κάρτα με όλα τα χαρακτηριστικά έβγαινε 211 px:
+          για να χωρέσει, ο χάρτης έπρεπε να μετακινηθεί ~55 px — και ΔΕΝ ΜΠΟΡΕΙ, γιατί τα όρια
+          περιήγησης (`maxBounds`, ίχνος: `_panInsideMaxBounds`) τον τραβούσαν αμέσως πίσω, οπότε
+          η κορυφή της κάρτας —όνομα και συνθήκες— κατέληγε έξω από το κάδρο. Λύση που δεν
+          παλεύει με τίποτα: οι δύο γραμμές των συνθηκών ΕΝΑΛΛΑΣΣΟΝΤΑΙ με τα χαρακτηριστικά.
+          Ίδιο ύψος κάρτας, καμία μετακίνηση χάρτη, τίποτα δεν κόβεται — και το «Λιγότερα»
+          επαναφέρει ακριβώς αυτό που ζήτησε ο Μίλτος: την αρχική κάρτα με τις συνθήκες. */}
+      {!featuresOpen && (
       <div className="mt-0.5">
         <p className="flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
           <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />
@@ -637,10 +722,16 @@ const MarkerConditionsPopup: React.FC<{
           </p>
         )}
       </div>
+      )}
 
       {featureChips.length > 0 && (
-        <div className="mt-1 border-t border-slate-100 pt-1">
+        <div className={featuresOpen ? 'mt-1' : 'mt-0.5 border-t border-slate-100 pt-0.5'}>
+          {/* ΑΝΟΙΧΤΑ Η ΣΕΙΡΑ ΤΩΝ ΕΙΚΟΝΙΔΙΩΝ ΦΕΥΓΕΙ (25/08/2026). Λέει ακριβώς ό,τι λένε οι
+              λέξεις από κάτω, και τα 24 px της είναι η διαφορά ανάμεσα σε κάρτα που χωράει στον
+              χάρτη του κινητού (214 px) και σε κάρτα που κόβεται. Κλειστά είναι όλη η όψη. */}
+          {!featuresOpen && (
           <button
+            ref={keepClickInsidePopup}
             type="button"
             onClick={() => setFeaturesOpen(open => !open)}
             aria-expanded={featuresOpen}
@@ -649,27 +740,51 @@ const MarkerConditionsPopup: React.FC<{
             className="flex min-h-6 w-full cursor-pointer items-center gap-1 text-left text-slate-500 transition hover:text-slate-700"
           >
             <span className="flex min-w-0 items-center gap-1.5 text-cyan-700/85" aria-hidden="true">
-              {featureChips.map(chip => (
+              {featureChips.slice(0, COLLAPSED_FEATURE_ICONS).map(chip => (
                 <span key={chip.key} className="shrink-0">{chip.icon}</span>
               ))}
+              {featureChips.length > COLLAPSED_FEATURE_ICONS && (
+                <span className="shrink-0 text-[10px] font-bold text-slate-400">
+                  +{featureChips.length - COLLAPSED_FEATURE_ICONS}
+                </span>
+              )}
             </span>
-            <ChevronDown
-              className={`ml-auto h-3 w-3 shrink-0 transition-transform ${featuresOpen ? 'rotate-180' : ''}`}
-              aria-hidden="true"
-            />
+            <ChevronDown className="ml-auto h-3 w-3 shrink-0" aria-hidden="true" />
           </button>
+          )}
+          {/* ΜΟΝΟΚΟΜΜΑΤΑ, ΧΩΡΙΣ ΚΥΛΙΣΗ (Μίλτος, 25/08/2026). Δύο στήλες σκέτο εικονίδιο+λέξη,
+              χωρίς φόντο καρτελακιού: μετρημένο στο κινητό, οι «πιλούλες» έβγαζαν 9 σειρές και
+              κάρτα 351 px πάνω σε χάρτη 215 px — δηλαδή έκρυβαν το όνομα και τις συνθήκες που
+              είναι η ΚΟΡΥΦΗ της κάρτας. Οι δύο στήλες κόβουν το ύψος στο μισό. Το ταβάνι ύψους
+              του Leaflet έμεινε αφαιρεμένο: ταμπελάκι που κυλάει μέσα του κρύβει ακριβώς ό,τι
+              μόλις ζήτησε να δει ο επισκέπτης. */}
           {featuresOpen && (
-            <ul className="mt-0.5 space-y-0.5">
+            <ul className="grid grid-cols-2 gap-x-2 gap-y-0.5">
               {featureChips.map(chip => (
                 <li
                   key={chip.key}
-                  className="flex items-start gap-1.5 text-[10px] font-bold leading-tight text-slate-600"
+                  className="flex items-start gap-1 text-[10px] font-bold leading-tight text-slate-600"
                 >
                   <span className="mt-px shrink-0 text-cyan-700">{chip.icon}</span>
-                  <span className="min-w-0 whitespace-normal break-normal">{chip.label}</span>
+                  <span className="min-w-0">{chip.label}</span>
                 </li>
               ))}
             </ul>
+          )}
+          {/* ΤΟ ΚΟΥΜΠΙ ΤΗΣ ΕΠΙΣΤΡΟΦΗΣ (Μίλτος, 25/08/2026). Το βελάκι της κεφαλίδας κλείνει ήδη
+              το πτυσσόμενο, αλλά με την κάρτα ανοιχτή και κεντραρισμένη ο επισκέπτης κοιτάζει
+              το ΚΑΤΩ μέρος της — και ψάχνει τρόπο να γυρίσει, όχι το βελάκι που άφησε πίσω.
+              Ρητό «Λιγότερα» εδώ, με ύψος αφής 24 px, δίπλα σε αυτό που μόλις διάβασε. */}
+          {featuresOpen && (
+            <button
+              ref={keepClickInsidePopup}
+              type="button"
+              onClick={() => setFeaturesOpen(false)}
+              className="mt-0.5 flex min-h-6 w-full cursor-pointer items-center justify-center gap-1 rounded-full bg-slate-50 text-[10px] font-black leading-none text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+            >
+              <ChevronUp className="h-3 w-3 shrink-0" aria-hidden="true" />
+              {fewerLabel}
+            </button>
           )}
         </div>
       )}
@@ -775,19 +890,26 @@ const MarkerPopupScrollFollower: React.FC<{
   return null;
 };
 
-const MapPopupTracker: React.FC<{ onChange: (open: boolean) => void }> = ({ onChange }) => {
+const MapPopupTracker: React.FC<{
+  onChange: (open: boolean) => void;
+  /** Το ανοιχτό ταμπελάκι, για όποιον χρειάζεται να ζητήσει από το Leaflet να το ξαναμετρήσει. */
+  popupRef: React.MutableRefObject<L.Popup | null>;
+}> = ({ onChange, popupRef }) => {
   const map = useMap();
 
   useEffect(() => {
-    const open = () => onChange(true);
-    const close = () => onChange(false);
+    const open = (event: L.PopupEvent) => { popupRef.current = event.popup; onChange(true); };
+    const close = (event: L.PopupEvent) => {
+      if (popupRef.current === event.popup) popupRef.current = null;
+      onChange(false);
+    };
     map.on('popupopen', open);
     map.on('popupclose', close);
     return () => {
       map.off('popupopen', open);
       map.off('popupclose', close);
     };
-  }, [map, onChange]);
+  }, [map, onChange, popupRef]);
 
   return null;
 };
@@ -854,14 +976,35 @@ const MapAutoResize = () => {
  * the prop to 9 as a probe put 38 there, which is how the precedence was proven rather than
  * guessed. `fitBoundsToBeaches` is the caller saying "frame my beaches, not my centre".
  */
-const RecenterMap = ({ center, zoom, enabled }: { center: [number, number]; zoom: number; enabled: boolean }) => {
+const RecenterMap = ({ center, zoom, enabled, heldRef }: {
+  center: [number, number];
+  zoom: number;
+  enabled: boolean;
+  /**
+   * Όσο δείχνει «ανοιχτό ταμπελάκι», αυτό εδώ ΔΕΝ αγγίζει τον χάρτη.
+   *
+   * ΓΙΑΤΙ (μετρημένο 25/08/2026, Κέρκυρα σε πλάτος κινητού): χωρίς `center` από τον γονιό, το
+   * κέντρο εδώ είναι ο ΜΕΣΟΣ ΟΡΟΣ των παραλιών του χάρτη. Κάθε μετακίνηση αλλάζει ποιες
+   * παραλίες είναι ορατές, ο γονιός γυρίζει άλλη λίστα, ο μέσος όρος κουνιέται, και αυτό το
+   * effect ξανακεντράρει — δηλαδή βρόχος που ΑΝΑΙΡΕΙ κάθε μετακίνηση που έκανε το Leaflet για
+   * να χωρέσει ένα ταμπελάκι. Το ίχνος το έδειξε καθαρά: `_adjustPan` έβαζε την κάρτα μέσα στο
+   * κάδρο (πάνω 2 px, κάτω 1 px) και μισό δευτερόλεπτο μετά δύο `setView` την πετούσαν 51 px έξω.
+   *
+   * REF ΚΑΙ ΟΧΙ PROP: αν το «ανοιχτό/κλειστό» ήταν στις εξαρτήσεις, το ΚΛΕΙΣΙΜΟ του ταμπελακιού
+   * θα ξαναέτρεχε το effect και ο χάρτης θα τιναζόταν τη στιγμή που ο επισκέπτης κλείνει την
+   * κάρτα — ακριβώς η ενόχληση που αποφεύγουμε. Μια αλλαγή κέντρου που χάθηκε όσο ήταν ανοιχτό
+   * το ταμπελάκι δεν είναι απώλεια: το κέντρο είναι παράγωγο της λίστας και θα ξανάρθει με την
+   * επόμενη πραγματική αλλαγή (άλλο νησί, άλλο φίλτρο).
+   */
+  heldRef?: React.MutableRefObject<unknown>;
+}) => {
   const map = useMap();
   const [lat, lon] = center;
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || heldRef?.current) return;
     map.setView(center, zoom);
-  }, [lat, lon, zoom, map, enabled]);
+  }, [lat, lon, zoom, map, enabled, heldRef]);
 
   return null;
 };
@@ -869,7 +1012,7 @@ const RecenterMap = ({ center, zoom, enabled }: { center: [number, number]; zoom
 // Extra buttons live *inside* Leaflet's own zoom bar rather than as separate
 // controls, so +/- and everything below them read as one rounded column instead
 // of a stack of detached boxes. Leaflet's `.leaflet-bar` styling (borders, radius,
-// hover, the 44px touch target we set in index.css) then applies for free.
+// hover, the 40px touch target we set in index.css) then applies for free.
 const attachToZoomBar = (
   map: L.Map,
   build: (bar: HTMLElement) => () => void,
@@ -1265,16 +1408,31 @@ const HighlightedBeachFollower = ({
   center,
   highlightedBeachId,
   enabled,
+  heldRef,
 }: {
   beaches: SuitableBeach[];
   center: [number, number];
   highlightedBeachId?: number;
   enabled?: boolean;
+  /**
+   * ΜΕ ΑΝΟΙΧΤΟ ΤΑΜΠΕΛΑΚΙ Η ΚΑΜΕΡΑ ΔΕΝ ΚΥΝΗΓΑΕΙ ΤΙΠΟΤΑ (25/08/2026).
+   *
+   * Ίδιος κανόνας με το RecenterMap από πάνω, και για τον ίδιο μετρημένο λόγο: οι εξαρτήσεις
+   * εδώ (`beaches`, `center`) αλλάζουν σε κάθε μετακίνηση του χάρτη, γιατί ο γονιός ξαναφτιάχνει
+   * τη λίστα από τις ΟΡΑΤΕΣ παραλίες. Έτσι, μόλις το Leaflet μετακινούσε τον χάρτη για να
+   * χωρέσει το ανοιγμένο ταμπελάκι, αυτό εδώ έβλεπε τη φωτισμένη παραλία εκτός κέντρου και
+   * τραβούσε τον χάρτη πίσω — η κάρτα κατέληγε 51 px έξω από το κάδρο (ίχνος:
+   * `setView → _tryAnimatedPan`, μισό δευτερόλεπτο μετά το `_adjustPan`).
+   *
+   * Όσο διαβάζεις μια κάρτα, η κάμερα μένει εκεί που την άφησε το ταμπελάκι. REF και όχι prop,
+   * ώστε το κλείσιμο να μην ξαναανάβει το effect και τινάξει τον χάρτη — δες RecenterMap.
+   */
+  heldRef?: React.MutableRefObject<unknown>;
 }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!enabled || typeof highlightedBeachId !== 'number') return;
+    if (!enabled || typeof highlightedBeachId !== 'number' || heldRef?.current) return;
 
     const highlightedBeach = beaches.find(item => item.beachId === highlightedBeachId);
     if (!highlightedBeach) return;
@@ -1309,7 +1467,7 @@ const HighlightedBeachFollower = ({
       duration: 0.35,
       easeLinearity: 0.25,
     });
-  }, [beaches, center, enabled, highlightedBeachId, map]);
+  }, [beaches, center, enabled, highlightedBeachId, map, heldRef]);
 
   return null;
 };
@@ -2183,8 +2341,8 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
 
   return (
     <div className={`pointer-events-none absolute z-[1000] ${positionClass}`}>
-      <div className={`flex items-center gap-1.5 rounded-xl border border-white/75 bg-white p-1.5 shadow-lg shadow-sky-900/12 ring-1 ${tone.ring} sm:gap-2 sm:rounded-2xl sm:p-2`}>
-        <div className="relative h-10 w-10 shrink-0 rounded-full border border-slate-200/80 bg-gradient-to-b from-white to-sky-50/80 shadow-inner sm:h-[3.65rem] sm:w-[3.65rem]">
+      <div className={`flex items-center gap-1 rounded-xl border border-white/75 bg-white p-1 shadow-lg shadow-sky-900/12 ring-1 ${tone.ring} sm:gap-1.5 sm:rounded-2xl sm:p-1.5`}>
+        <div className="relative h-9 w-9 shrink-0 rounded-full border border-slate-200/80 bg-gradient-to-b from-white to-sky-50/80 shadow-inner sm:h-[3.15rem] sm:w-[3.15rem]">
           <span className="absolute left-1/2 top-0.5 -translate-x-1/2 text-[7px] font-black leading-none text-slate-600 sm:top-1 sm:text-[9px]">{compass.n}</span>
           <span className="absolute right-0.5 top-1/2 -translate-y-1/2 text-[7px] font-black leading-none text-slate-600 sm:right-1 sm:text-[9px]">{compass.e}</span>
           <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[7px] font-black leading-none text-slate-600 sm:bottom-1 sm:text-[9px]">{compass.s}</span>
@@ -2198,7 +2356,7 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
             <line x1="32" y1="47" x2="32" y2="17" stroke={tone.arrow} strokeWidth="4.5" strokeLinecap="round" />
             <path d="M32 10 L43 24 H21 Z" fill={tone.arrow} />
           </svg>
-          <span className={`absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ${tone.dot}`} />
+          <span className={`absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ${tone.dot}`} />
         </div>
 
         <div className={`${compact || preview ? 'hidden sm:block' : 'block'} min-w-0 pr-0.5`}>
@@ -2301,6 +2459,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * ανέμου ΤΗΣ ΠΕΡΙΟΧΗΣ δεν είναι αυτό που κοιτάει. Φεύγει όσο διαβάζει, ξαναγυρίζει μετά.
    */
   const [hasOpenBeachPopup, setHasOpenBeachPopup] = useState(false);
+  /** Το ανοιχτό ταμπελάκι πινέζας — γεμίζει από το MapPopupTracker, το διαβάζει το
+   *  MarkerConditionsPopup όταν ανοίγουν τα χαρακτηριστικά και πρέπει να ξαναμετρηθεί. */
+  const openPopupRef = useRef<L.Popup | null>(null);
   const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
   const [hoverPreviewPosition, setHoverPreviewPosition] = useState<HoverPreviewPosition | null>(null);
   const [beachLabelOpacity, setBeachLabelOpacity] = useState(0);
@@ -3034,6 +3195,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // «Χαρακτηριστικά» και όχι «Παροχές»: η σειρά περιέχει και υπόστρωμα, πρόσβαση και
     // κοσμοσυρροή, όχι μόνο ομπρέλες — δες buildHoverPreviewFeatureChips.
     features: { en: 'Features', gr: 'Χαρακτηριστικά', de: 'Merkmale', it: 'Caratteristiche', fr: 'Caractéristiques' },
+    fewer: { en: 'Less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
       // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
@@ -4087,7 +4249,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           )}
 
           <MapAutoResize />
-          <RecenterMap center={center} zoom={zoom} enabled={!fitBoundsToBeaches} />
+          <RecenterMap center={center} zoom={zoom} enabled={!fitBoundsToBeaches} heldRef={openPopupRef} />
           <MapViewportGuardrails
             minZoom={viewportGuardrails.minZoom}
             maxBounds={viewportGuardrails.maxBounds}
@@ -4105,12 +4267,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
             center={center}
             highlightedBeachId={highlightedBeachId}
             enabled={followHighlightedBeach}
+            heldRef={openPopupRef}
           />
           {/* markerBeaches, not beaches: "what is in view" has to mean what the user can SEE, or
               a legend filter would leave the desktop viewport list holding hidden pins. */}
           <VisibleBeachTracker beaches={markerBeaches} center={center} onVisibleBeachIdsChange={onVisibleBeachIdsChange} />
           <MapUserInteractionTracker onUserInteraction={onUserInteraction} />
-          {showMarkerConditions && <MapPopupTracker onChange={setHasOpenBeachPopup} />}
+          {showMarkerConditions && <MapPopupTracker onChange={setHasOpenBeachPopup} popupRef={openPopupRef} />}
           {showMarkerConditions && (
             <MarkerPopupScrollFollower
               enabled={showMarkerConditions}
@@ -4218,12 +4381,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   autoPan
                   autoPanPadding={[12, 12]}
                   minWidth={128}
-                  maxWidth={230}
-                  // Το πτυσσόμενο των χαρακτηριστικών ανοίγει ΜΕΤΑ το autoPan (δες
-                  // PopupPansOnlyOnOpen), οπότε κανείς δεν θα ξαναμετακινήσει τον χάρτη για να
-                  // το χωρέσει. Χωρίς ταβάνι, σε χάρτη 216 px το ανοιχτό ταμπελάκι θα κοβόταν
-                  // στο πάνω χείλος· με ταβάνι, το Leaflet το κάνει να κυλάει μέσα του.
-                  maxHeight={compact || preview ? 150 : 260}
+                  maxWidth={248}
                 >
                   <MarkerConditionsPopup
                     item={item}
@@ -4232,6 +4390,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     windOnlyColor={item.simpleWindSuitability?.windOnlyColor}
                     seaOnlyColor={item.simpleWindSuitability?.seaOnlyColor}
                     featuresLabel={mapCopy.features[language]}
+                    fewerLabel={mapCopy.fewer[language]}
+                    openPopupRef={openPopupRef}
                     openLabel={mapCopy.openBeach[language]}
                     onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
                   />
