@@ -1,11 +1,17 @@
-import legalData from '../data/legalContent.json';
+import legalMeta from '../data/legalMeta.json';
 import { LanguageCode } from '../types';
 
-// Single source of truth for the Terms of Use, Privacy Policy and Cookie Policy.
-// The same JSON feeds the in-app modals (components/LegalFooter.tsx) AND the static
-// crawlable pages (public/{terms,privacy,cookies}/index.html via scripts/buildLegalPages.mjs),
-// so the two surfaces can never drift apart. Greek is authoritative; every non-Greek UI
-// language shows the English courtesy translation.
+// Single source of truth for the Terms of Use, Privacy Policy and Cookie Policy, in two
+// files that never overlap:
+//   data/legalMeta.json    — version, dates, operator identity. A few hundred bytes, and
+//                            needed on every first paint (footer, consent record, landing).
+//   data/legalContent.json — the three documents themselves. ~30 KB gzipped, and needed
+//                            only when someone opens a modal — so it is loaded on demand,
+//                            not shipped inside `beach-ui` to every visitor (it was, until
+//                            26/08/2026: 27 KB of every first paint for text nobody read).
+// The same two files feed the static crawlable pages (public/{terms,privacy,cookies}/
+// index.html via scripts/buildLegalPages.mjs), so the two surfaces can never drift apart.
+// Greek is authoritative; every non-Greek UI language shows the English courtesy translation.
 
 export type LegalKind = 'terms' | 'privacy' | 'cookies';
 
@@ -21,7 +27,7 @@ export interface LegalDoc {
   blocks: LegalBlock[];
 }
 
-interface LegalContent {
+interface LegalMeta {
   version: string;
   updated: { gr: string; en: string };
   history?: { version: string; date: string; summary: string }[];
@@ -40,20 +46,37 @@ interface LegalContent {
     website: string;
     dpaUrl: string;
   };
-  docs: Record<LegalKind, { gr: LegalDoc; en: LegalDoc }>;
 }
 
-const LEGAL = legalData as unknown as LegalContent;
+type LegalDocs = Record<LegalKind, { gr: LegalDoc; en: LegalDoc }>;
 
-export const LEGAL_VERSION = LEGAL.version;
-export const LEGAL_UPDATED = LEGAL.updated;
-export const LEGAL_OPERATOR = LEGAL.operator;
+const META = legalMeta as unknown as LegalMeta;
+
+export const LEGAL_VERSION = META.version;
+export const LEGAL_UPDATED = META.updated;
+export const LEGAL_OPERATOR = META.operator;
 
 /** All non-Greek UI languages fall back to the English (courtesy) translation. */
 export const legalLang = (language: LanguageCode): 'gr' | 'en' => (language === 'gr' ? 'gr' : 'en');
 
-export const getLegalDoc = (kind: LegalKind, language: LanguageCode): LegalDoc =>
-  LEGAL.docs[kind][legalLang(language)];
+let docsPromise: Promise<LegalDocs> | null = null;
+
+/** The document bodies, fetched once per session on the first modal open. */
+const loadLegalDocs = (): Promise<LegalDocs> => {
+  if (!docsPromise) {
+    docsPromise = import('../data/legalContent.json')
+      .then(module => module.default as unknown as LegalDocs)
+      .catch(error => {
+        // Let the next click try again instead of caching the failure for the session.
+        docsPromise = null;
+        throw error;
+      });
+  }
+  return docsPromise;
+};
+
+export const loadLegalDoc = (kind: LegalKind, language: LanguageCode): Promise<LegalDoc> =>
+  loadLegalDocs().then(docs => docs[kind][legalLang(language)]);
 
 export const legalLastUpdated = (language: LanguageCode): string =>
   language === 'gr' ? LEGAL_UPDATED.gr : LEGAL_UPDATED.en;

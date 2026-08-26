@@ -1,6 +1,7 @@
 // Generates the crawlable static legal pages (public/{terms,privacy,cookies}/index.html)
-// from the single source of truth data/legalContent.json — the SAME data the in-app
-// modals render (components/LegalDocument.tsx), so the two surfaces can never drift.
+// from the single source of truth — data/legalMeta.json (version, dates, operator) and
+// data/legalContent.json (the documents) — the SAME data the in-app modals render
+// (components/LegalDocument.tsx), so the two surfaces can never drift.
 //
 // Runs as the first step of `npm run build` so vite copies the fresh pages from public/
 // into dist/ (and from there into the native app assets via `cap sync`).
@@ -12,7 +13,8 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
-const data = JSON.parse(readFileSync(join(ROOT, 'data', 'legalContent.json'), 'utf8'));
+const data = JSON.parse(readFileSync(join(ROOT, 'data', 'legalMeta.json'), 'utf8'));
+const docs = JSON.parse(readFileSync(join(ROOT, 'data', 'legalContent.json'), 'utf8'));
 const op = data.operator;
 
 const SLUGS = { terms: 'terms', privacy: 'privacy', cookies: 'cookies' };
@@ -81,8 +83,8 @@ const footNav = (kind) => {
 };
 
 const page = (kind, { archived = false } = {}) => {
-  const gr = data.docs[kind].gr;
-  const en = data.docs[kind].en;
+  const gr = docs[kind].gr;
+  const en = docs[kind].en;
   // Google truncates around 60 chars. The full bilingual title runs to 109 on
   // /privacy/ ("Πολιτική Απορρήτου & Προστασίας Προσωπικών Δεδομένων — Calm
   // Beach / Privacy & Personal Data Protection Policy"), so the entire English

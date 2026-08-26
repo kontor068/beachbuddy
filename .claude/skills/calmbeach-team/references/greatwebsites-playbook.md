@@ -139,7 +139,7 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Structure URLs hierarchically by topic and avoid parameters like `?page=2`; never change a URL without a 301 (ch. 6 · /optimize-onsite). `[our note: this is a data/routing decision as much as an SEO one, because the slug comes out of the dataset.]`
 
 **Where CalmBeach already does this**
-- ~2,850 OpenStreetMap-derived beaches is exactly the "original dataset the giants don't have at this granularity" asset of ch. 9 — 8× the competitor's coverage.
+- ~2,850 OpenStreetMap-derived beaches is exactly the "original dataset the giants don't have at this granularity" asset of ch. 9.
 - The wind-exposure model produces genuinely original derived data per beach.
 - The dataset drives a consistent page structure across 9,474 pages, which is the "logical units" principle applied at scale.
 
@@ -224,7 +224,7 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Cover topics comprehensively; the giants' weakness is generic coverage, so specialist local depth is where a small site wins the category (ch. 2 · /before-start).
 
 **Where CalmBeach already does this**
-- "One quality page per important query" (ch. 10) is arguably the site's whole architecture: ~9,474 pages built around individual beaches and regions, versus a competitor with ~345 beaches.
+- "One quality page per important query" (ch. 10) is arguably the site's whole architecture: ~9,474 pages built around individual beaches and regions.
 - JSON-LD on 9,465 pages goes beyond what the book asks for — helping search engines understand structure is his principle, structured data is a stronger implementation of it than he describes.
 - A sitemap-driven pre-render pipeline naturally satisfies ch. 5's sitemap submission requirement.
 - Hierarchical, parameter-free URLs are the natural output of a pre-rendered static build (ch. 6).

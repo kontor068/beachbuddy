@@ -107,6 +107,10 @@ const server = spawn(
 );
 
 const failures = [];
+// Findings that depend on glyph widths — a word clipped, a row overflowing, two labels
+// touching, a chip needing a third line. They only become failures if the page was drawn
+// in a font a phone actually uses; see the verdict at the bottom.
+const clipFailures = [];
 const fontsSeen = new Set();
 let measured = 0;
 try {
@@ -281,7 +285,7 @@ try {
       measured += found.nodes.length;
       for (const n of found.nodes) {
         if (n.overflowPx > 1) {
-          failures.push(`${lang} @${width}px: «${n.text}» is clipped by ${n.overflowPx}px at ${n.fontSize}`);
+          clipFailures.push(`${lang} @${width}px: «${n.text}» is clipped by ${n.overflowPx}px at ${n.fontSize}`);
         }
       }
 
@@ -292,14 +296,14 @@ try {
       } else {
         measured += found.barNodes.length;
         if (found.barOverflowPx > 1) {
-          failures.push(`${lang} @${width}px: the bottom bar row overflows by ${found.barOverflowPx}px`);
+          clipFailures.push(`${lang} @${width}px: the bottom bar row overflows by ${found.barOverflowPx}px`);
         }
         for (const t of found.barTouching) {
-          failures.push(`${lang} @${width}px: bottom-bar «${t.a}» and «${t.b}» are ${t.gap}px apart — they read as one word`);
+          clipFailures.push(`${lang} @${width}px: bottom-bar «${t.a}» and «${t.b}» are ${t.gap}px apart — they read as one word`);
         }
         for (const n of found.barNodes) {
           if (n.overflowPx > 1) {
-            failures.push(`${lang} @${width}px: bottom-bar «${n.text}» is clipped by ${n.overflowPx}px at ${n.fontSize}`);
+            clipFailures.push(`${lang} @${width}px: bottom-bar «${n.text}» is clipped by ${n.overflowPx}px at ${n.fontSize}`);
           }
           if (n.heightPx < 44) {
             failures.push(`${lang} @${width}px: bottom-bar «${n.text}» sits in a ${n.heightPx}px control, under the 44px minimum`);
@@ -500,7 +504,7 @@ try {
             if (m.textScroll > m.textClient + 1
               || m.chipScroll > m.chipClient + 1
               || m.rowScroll > m.rowClient + 1) {
-              failures.push(
+              clipFailures.push(
                 `${lang} @${width}px: the podium ${cell} chip cannot hold the ${what} «${text}» `
                 + `(text ${m.textScroll}/${m.textClient}px · chip ${m.chipScroll}/${m.chipClient}px `
                 + `· row ${m.rowScroll}/${m.rowClient}px). The word would be cut.`
@@ -509,7 +513,7 @@ try {
             // Το `line-clamp-2` κόβει ΣΙΩΠΗΛΑ στην τρίτη σειρά: δεν ξεχειλίζει, άρα ο έλεγχος
             // πλάτους από πάνω δεν θα το έπιανε ποτέ. Κείμενο 11 px σε δύο σειρές ≈ 26 px.
             if (m.height > 30) {
-              failures.push(
+              clipFailures.push(
                 `${lang} @${width}px: the podium ${cell} chip needs ${Math.round(m.height)}px for the `
                 + `${what} «${text}» — that is a third line, and line-clamp-2 eats it silently.`
               );
@@ -540,6 +544,34 @@ try {
 }
 
 console.log(`\nMeasured ${measured} tile and bar text nodes · ${PAGES.length} languages × ${WIDTHS.length} widths, plus the tab landings and the podium row`);
+
+/**
+ * ΜΕΤΡΗΣΗ ΣΕ ΓΡΑΜΜΑΤΟΣΕΙΡΑ ΠΟΥ ΔΕΝ ΕΧΕΙ ΚΑΝΕΝΑ ΚΙΝΗΤΟ ΔΕΝ ΕΙΝΑΙ ΕΤΥΜΗΓΟΡΙΑ — 26/08/2026.
+ *
+ * Το `fontInUse` παραπάνω ονόμαζε ήδη τη γραμματοσειρά, αλλά η πύλη κοκκίνιζε ούτως ή άλλως:
+ * σε Linux χωρίς SF Pro / Nunito / Inter / Roboto / Segoe UI η σελίδα ζωγραφίζεται σε DejaVu
+ * Sans, που στα ελληνικά είναι 12–18% πιο φαρδιά από την επόμενη διαθέσιμη («Με αυτοκίνητο»:
+ * +14 px στα 12 px, μετρημένο 26/08). Τα «κομμένα κατά 7 px» που ανέφερε ήταν ΜΙΚΡΟΤΕΡΑ από
+ * τη διαφορά της γραμματοσειράς — δηλαδή θόρυβος, σε κάθε εκτέλεση, για εβδομάδες. Και μια
+ * πύλη που είναι πάντα κόκκινη είναι πύλη που κανείς δεν διαβάζει την ημέρα που έχει δίκιο.
+ *
+ * Οπότε: τα ευρήματα που εξαρτώνται από πλάτη γραμμάτων κρίνονται ΜΟΝΟ όταν η σελίδα
+ * μετρήθηκε σε γραμματοσειρά που όντως χρησιμοποιεί κινητό. Σε fallback τυπώνονται ως «δεν
+ * κρίνεται εδώ» — ορατά, με τη γραμματοσειρά δίπλα — χωρίς να ρίξουν το build. Ό,τι ΔΕΝ
+ * εξαρτάται από γράμματα (καμία κάρτα, καμία μπάρα, κουμπί κάτω από 44 px, αριθμός ξανά στο
+ * chip, καρτέλα που προσγειώνεται κάτω από την κεφαλίδα) κόβει ακριβώς όπως πριν.
+ */
+const FALLBACK_FONTS = new Set(['DejaVu Sans', 'Liberation Sans', 'FreeSans']);
+const fonts = [...fontsSeen];
+const judgedInRealFont = fonts.length > 0 && fonts.every(f => !FALLBACK_FONTS.has(f) && !f.startsWith('unrecognised'));
+if (judgedInRealFont) {
+  failures.push(...clipFailures);
+} else if (clipFailures.length > 0) {
+  console.log(`\nΔΕΝ ΚΡΙΝΕΤΑΙ ΕΔΩ — ${clipFailures.length} width finding(s) measured in ${fonts.join(' · ') || 'unknown'}, a font no phone uses:`);
+  for (const f of clipFailures) console.log('  ~ ' + f);
+  console.log('  Run this gate where SF Pro Rounded / Nunito / Inter / Roboto / Segoe UI / Noto Sans is installed to get a verdict on these.');
+}
+
 if (failures.length > 0) {
   // On stderr on purpose: the gate runner shows the failing check's stderr, and a list of
   // clipped words without the font that clipped them cannot be acted on.

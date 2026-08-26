@@ -792,7 +792,7 @@ export const getBeachRegionId = (region: string | null | undefined, prefecture: 
 // It mattered anyway, because the file it fetched had to sit in public/ to be fetchable,
 // and public/ is published — which is how the complete curated dataset ended up
 // downloadable in one request from the CDN. The dataset is the moat; the React code is
-// not. scripts/stripNationalDumpFromDist.mjs now keeps it off the CDN and FAILS THE
+// not. scripts/stripBuildInputsFromDist.mjs now keeps it off the CDN and FAILS THE
 // BUILD if shipped code ever asks for that URL again.
 //
 // If you need every beach at once, read the shards — do not resurrect a national fetch.

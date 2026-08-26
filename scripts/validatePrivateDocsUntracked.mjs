@@ -24,6 +24,11 @@ const MUST_STAY_PRIVATE = [
   ['docs/team/', 'the 18 role docs — positioning, legal history, our own weak points'],
   ['docs/competitor-strategy.md', 'the negotiating position against a named competitor'],
   ['reports/snapshots/_raw-queries.json', 'raw search queries'],
+  // Third-party photos (Flickr CC / Wikimedia) pulled down only so a human can eyeball
+  // candidates — redistributing them from a public repo, without the per-file attribution
+  // their licences require, is exactly what the .gitignore rule says not to do. 714 of
+  // them sat tracked for a month anyway (the rule was added after they were committed).
+  ['reports/photo-coverage/discover/', 'third-party contact sheets, unattributed'],
   ['.secrets/', 'credentials'],
   ['.env', 'credentials'],
   ['.env.local', 'credentials'],

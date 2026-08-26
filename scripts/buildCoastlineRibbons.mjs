@@ -4,10 +4,14 @@
  * For every region in public/data/beaches/index.json this extracts the stretches of
  * real OSM coastline that lie within RIBBON_MAX_DIST_M of at least one of the
  * region's live beaches, simplifies them, and annotates every vertex with the
- * nearest beach id + distance. The client (CoastlineRibbonLayer) colours each
- * stretch at runtime from that beach's live experience tier — geometry is static,
- * colour is live, and coastline farther than the cutoff is deliberately NOT
- * emitted so the ribbon never paints a verdict where we have no beach data.
+ * nearest beach id + distance. Coastline farther than the cutoff is deliberately
+ * NOT emitted so nothing downstream can paint a verdict where we have no beach data.
+ *
+ * The map layer that coloured these chains at runtime (CoastlineRibbonLayer) was
+ * removed on 26/08/2026 — nothing had imported it for weeks. The output is still
+ * required: buildShorelineThumbs.mjs reads it during `npm run build` to draw the
+ * shape/ thumbnails, which is the only coastline data that reaches the CDN now
+ * (scripts/stripBuildInputsFromDist.mjs deletes the flat chains from dist/).
  *
  * Input:  .tmp/geospatial/greece-land-osm-split.geojson  (fetchHighResLandMask.mjs)
  *         public/data/beaches/index.json + per-region beach files

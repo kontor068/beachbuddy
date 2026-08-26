@@ -150,12 +150,13 @@ self.addEventListener('fetch', event => {
   // follow the same rule — a cached shoreline outliving a pin correction is exactly the
   // staleness the build-time guard exists to prevent.
   // /greek_beaches.json was listed here until 13/08/2026. Nothing requests it any more —
-  // the national dump is no longer published (scripts/stripNationalDumpFromDist.mjs) and
-  // the app reads the per-region shards below.
+  // the national dump is no longer published (scripts/stripBuildInputsFromDist.mjs) and
+  // the app reads the per-region shards below. Same story for the flat
+  // /data/coastline/<region>.json chains since 26/08/2026: only shape/ is published.
   if (
     url.origin === self.location.origin &&
     (url.pathname.startsWith('/data/beaches/') ||
-      url.pathname.startsWith('/data/coastline/'))
+      url.pathname.startsWith('/data/coastline/shape/'))
   ) {
     event.respondWith(
       fetch(event.request, { cache: 'no-store' })

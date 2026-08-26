@@ -3,7 +3,7 @@ import { Compass, Cookie, FileText, LifeBuoy, Mail, ShieldCheck, SlidersHorizont
 import { LanguageCode } from '../types';
 import { getGuidesHubLink } from '../utils/beachGuides';
 import { getLocalizedCopy } from '../utils/i18n';
-import { getLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalKind } from '../utils/legalContent';
+import { loadLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalDoc, LegalKind } from '../utils/legalContent';
 import { LegalDocument } from './LegalDocument';
 import { CookieSettings } from './CookieSettings';
 import { WeatherDataAttribution } from './WeatherDataAttribution';
@@ -89,8 +89,24 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   }, []);
 
   // 'cookieSettings' is the interactive consent tool (no legal document); the rest render text.
-  const doc = activeModal && activeModal !== 'cookieSettings' ? getLegalDoc(activeModal, language) : null;
-  const modalTitle = activeModal === 'cookieSettings' ? c.cookieSettings : doc?.title;
+  // The document bodies live in their own chunk and arrive on the first click (see
+  // utils/legalContent.ts). The shell opens at once under the footer's own label; the full
+  // title and the text follow when the chunk lands. `loaded` remembers which document it
+  // holds so switching Terms → Privacy never shows the old text under the new heading.
+  const [loaded, setLoaded] = useState<{ kind: LegalKind; doc: LegalDoc } | null>(null);
+  useEffect(() => {
+    if (!activeModal || activeModal === 'cookieSettings') return;
+    const kind = activeModal;
+    let cancelled = false;
+    loadLegalDoc(kind, language)
+      .then(doc => { if (!cancelled) setLoaded({ kind, doc }); })
+      .catch(() => { /* offline before the chunk was ever cached: the shell stays, the text waits for the next open */ });
+    return () => { cancelled = true; };
+  }, [activeModal, language]);
+  const doc = activeModal && activeModal !== 'cookieSettings' && loaded?.kind === activeModal ? loaded.doc : null;
+  const modalTitle = activeModal === 'cookieSettings'
+    ? c.cookieSettings
+    : activeModal ? (doc?.title ?? c[activeModal]) : undefined;
   const ModalIcon = activeModal === 'cookieSettings'
     ? SlidersHorizontal
     : activeModal ? modalMeta[activeModal].icon : null;
