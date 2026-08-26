@@ -19,65 +19,65 @@ export const HERO_SOURCES: Record<HeroSlot, HeroSlotSources> = {
     "mobile": [
       {
         "width": 480,
-        "avif": "/landing/morning-mobile-480.avif",
-        "webp": "/landing/morning-mobile-480.webp"
+        "avif": "/landing/morning-mobile-480-v2.avif",
+        "webp": "/landing/morning-mobile-480-v2.webp"
       },
       {
         "width": 640,
-        "avif": "/landing/morning-mobile-640.avif",
-        "webp": "/landing/morning-mobile-640.webp"
+        "avif": "/landing/morning-mobile-640-v2.avif",
+        "webp": "/landing/morning-mobile-640-v2.webp"
       },
       {
         "width": 828,
-        "avif": "/landing/morning-mobile-828.avif",
-        "webp": "/landing/morning-mobile-828.webp"
+        "avif": "/landing/morning-mobile-828-v2.avif",
+        "webp": "/landing/morning-mobile-828-v2.webp"
       },
       {
         "width": 960,
-        "avif": "/landing/morning-mobile-960.avif",
-        "webp": "/landing/morning-mobile-960.webp"
+        "avif": "/landing/morning-mobile-960-v2.avif",
+        "webp": "/landing/morning-mobile-960-v2.webp"
       },
       {
         "width": 1200,
-        "avif": "/landing/morning-mobile-1200.avif",
-        "webp": "/landing/morning-mobile-1200.webp"
+        "avif": "/landing/morning-mobile-1200-v2.avif",
+        "webp": "/landing/morning-mobile-1200-v2.webp"
       },
       {
         "width": 1440,
-        "avif": "/landing/morning-mobile-1440.avif",
-        "webp": "/landing/morning-mobile-1440.webp"
+        "avif": "/landing/morning-mobile-1440-v2.avif",
+        "webp": "/landing/morning-mobile-1440-v2.webp"
       }
     ],
     "desktop": [
       {
         "width": 960,
-        "avif": "/landing/morning-desktop-960.avif",
-        "webp": "/landing/morning-desktop-960.webp"
+        "avif": "/landing/morning-desktop-960-v2.avif",
+        "webp": "/landing/morning-desktop-960-v2.webp"
       },
       {
         "width": 1280,
-        "avif": "/landing/morning-desktop-1280.avif",
-        "webp": "/landing/morning-desktop-1280.webp"
+        "avif": "/landing/morning-desktop-1280-v2.avif",
+        "webp": "/landing/morning-desktop-1280-v2.webp"
       },
       {
         "width": 1600,
-        "avif": "/landing/morning-desktop-1600.avif",
-        "webp": "/landing/morning-desktop-1600.webp"
+        "avif": "/landing/morning-desktop-1600-v2.avif",
+        "webp": "/landing/morning-desktop-1600-v2.webp"
       },
       {
         "width": 1920,
-        "avif": "/landing/morning-desktop-1920.avif",
-        "webp": "/landing/morning-desktop-1920.webp"
+        "avif": "/landing/morning-desktop-1920-v2.avif",
+        "webp": "/landing/morning-desktop-1920-v2.webp"
       },
       {
         "width": 2200,
-        "avif": "/landing/morning-desktop-2200.avif",
-        "webp": "/landing/morning-desktop-2200.webp"
+        "avif": "/landing/morning-desktop-2200-v2.avif",
+        "webp": "/landing/morning-desktop-2200-v2.webp"
       },
       {
         "width": 2560,
-        "avif": "/landing/morning-desktop-2560.avif",
-        "webp": "/landing/morning-desktop-2560.webp"
+        "avif": "/landing/morning-desktop-2560-v2.avif",
+        "webp": "/landing/morning-desktop-2560-v2.webp"
       }
     ]
   },
@@ -85,65 +85,65 @@ export const HERO_SOURCES: Record<HeroSlot, HeroSlotSources> = {
     "mobile": [
       {
         "width": 480,
-        "avif": "/landing/afternoon-mobile-480.avif",
-        "webp": "/landing/afternoon-mobile-480.webp"
+        "avif": "/landing/afternoon-mobile-480-v2.avif",
+        "webp": "/landing/afternoon-mobile-480-v2.webp"
       },
       {
         "width": 640,
-        "avif": "/landing/afternoon-mobile-640.avif",
-        "webp": "/landing/afternoon-mobile-640.webp"
+        "avif": "/landing/afternoon-mobile-640-v2.avif",
+        "webp": "/landing/afternoon-mobile-640-v2.webp"
       },
       {
         "width": 828,
-        "avif": "/landing/afternoon-mobile-828.avif",
-        "webp": "/landing/afternoon-mobile-828.webp"
+        "avif": "/landing/afternoon-mobile-828-v2.avif",
+        "webp": "/landing/afternoon-mobile-828-v2.webp"
       },
       {
         "width": 960,
-        "avif": "/landing/afternoon-mobile-960.avif",
-        "webp": "/landing/afternoon-mobile-960.webp"
+        "avif": "/landing/afternoon-mobile-960-v2.avif",
+        "webp": "/landing/afternoon-mobile-960-v2.webp"
       },
       {
         "width": 1200,
-        "avif": "/landing/afternoon-mobile-1200.avif",
-        "webp": "/landing/afternoon-mobile-1200.webp"
+        "avif": "/landing/afternoon-mobile-1200-v2.avif",
+        "webp": "/landing/afternoon-mobile-1200-v2.webp"
       },
       {
         "width": 1440,
-        "avif": "/landing/afternoon-mobile-1440.avif",
-        "webp": "/landing/afternoon-mobile-1440.webp"
+        "avif": "/landing/afternoon-mobile-1440-v2.avif",
+        "webp": "/landing/afternoon-mobile-1440-v2.webp"
       }
     ],
     "desktop": [
       {
         "width": 960,
-        "avif": "/landing/afternoon-desktop-960.avif",
-        "webp": "/landing/afternoon-desktop-960.webp"
+        "avif": "/landing/afternoon-desktop-960-v2.avif",
+        "webp": "/landing/afternoon-desktop-960-v2.webp"
       },
       {
         "width": 1280,
-        "avif": "/landing/afternoon-desktop-1280.avif",
-        "webp": "/landing/afternoon-desktop-1280.webp"
+        "avif": "/landing/afternoon-desktop-1280-v2.avif",
+        "webp": "/landing/afternoon-desktop-1280-v2.webp"
       },
       {
         "width": 1600,
-        "avif": "/landing/afternoon-desktop-1600.avif",
-        "webp": "/landing/afternoon-desktop-1600.webp"
+        "avif": "/landing/afternoon-desktop-1600-v2.avif",
+        "webp": "/landing/afternoon-desktop-1600-v2.webp"
       },
       {
         "width": 1920,
-        "avif": "/landing/afternoon-desktop-1920.avif",
-        "webp": "/landing/afternoon-desktop-1920.webp"
+        "avif": "/landing/afternoon-desktop-1920-v2.avif",
+        "webp": "/landing/afternoon-desktop-1920-v2.webp"
       },
       {
         "width": 2200,
-        "avif": "/landing/afternoon-desktop-2200.avif",
-        "webp": "/landing/afternoon-desktop-2200.webp"
+        "avif": "/landing/afternoon-desktop-2200-v2.avif",
+        "webp": "/landing/afternoon-desktop-2200-v2.webp"
       },
       {
         "width": 2560,
-        "avif": "/landing/afternoon-desktop-2560.avif",
-        "webp": "/landing/afternoon-desktop-2560.webp"
+        "avif": "/landing/afternoon-desktop-2560-v2.avif",
+        "webp": "/landing/afternoon-desktop-2560-v2.webp"
       }
     ]
   },
@@ -151,65 +151,65 @@ export const HERO_SOURCES: Record<HeroSlot, HeroSlotSources> = {
     "mobile": [
       {
         "width": 480,
-        "avif": "/landing/evening-mobile-480.avif",
-        "webp": "/landing/evening-mobile-480.webp"
+        "avif": "/landing/evening-mobile-480-v2.avif",
+        "webp": "/landing/evening-mobile-480-v2.webp"
       },
       {
         "width": 640,
-        "avif": "/landing/evening-mobile-640.avif",
-        "webp": "/landing/evening-mobile-640.webp"
+        "avif": "/landing/evening-mobile-640-v2.avif",
+        "webp": "/landing/evening-mobile-640-v2.webp"
       },
       {
         "width": 828,
-        "avif": "/landing/evening-mobile-828.avif",
-        "webp": "/landing/evening-mobile-828.webp"
+        "avif": "/landing/evening-mobile-828-v2.avif",
+        "webp": "/landing/evening-mobile-828-v2.webp"
       },
       {
         "width": 960,
-        "avif": "/landing/evening-mobile-960.avif",
-        "webp": "/landing/evening-mobile-960.webp"
+        "avif": "/landing/evening-mobile-960-v2.avif",
+        "webp": "/landing/evening-mobile-960-v2.webp"
       },
       {
         "width": 1200,
-        "avif": "/landing/evening-mobile-1200.avif",
-        "webp": "/landing/evening-mobile-1200.webp"
+        "avif": "/landing/evening-mobile-1200-v2.avif",
+        "webp": "/landing/evening-mobile-1200-v2.webp"
       },
       {
         "width": 1440,
-        "avif": "/landing/evening-mobile-1440.avif",
-        "webp": "/landing/evening-mobile-1440.webp"
+        "avif": "/landing/evening-mobile-1440-v2.avif",
+        "webp": "/landing/evening-mobile-1440-v2.webp"
       }
     ],
     "desktop": [
       {
         "width": 960,
-        "avif": "/landing/evening-desktop-960.avif",
-        "webp": "/landing/evening-desktop-960.webp"
+        "avif": "/landing/evening-desktop-960-v2.avif",
+        "webp": "/landing/evening-desktop-960-v2.webp"
       },
       {
         "width": 1280,
-        "avif": "/landing/evening-desktop-1280.avif",
-        "webp": "/landing/evening-desktop-1280.webp"
+        "avif": "/landing/evening-desktop-1280-v2.avif",
+        "webp": "/landing/evening-desktop-1280-v2.webp"
       },
       {
         "width": 1600,
-        "avif": "/landing/evening-desktop-1600.avif",
-        "webp": "/landing/evening-desktop-1600.webp"
+        "avif": "/landing/evening-desktop-1600-v2.avif",
+        "webp": "/landing/evening-desktop-1600-v2.webp"
       },
       {
         "width": 1920,
-        "avif": "/landing/evening-desktop-1920.avif",
-        "webp": "/landing/evening-desktop-1920.webp"
+        "avif": "/landing/evening-desktop-1920-v2.avif",
+        "webp": "/landing/evening-desktop-1920-v2.webp"
       },
       {
         "width": 2200,
-        "avif": "/landing/evening-desktop-2200.avif",
-        "webp": "/landing/evening-desktop-2200.webp"
+        "avif": "/landing/evening-desktop-2200-v2.avif",
+        "webp": "/landing/evening-desktop-2200-v2.webp"
       },
       {
         "width": 2560,
-        "avif": "/landing/evening-desktop-2560.avif",
-        "webp": "/landing/evening-desktop-2560.webp"
+        "avif": "/landing/evening-desktop-2560-v2.avif",
+        "webp": "/landing/evening-desktop-2560-v2.webp"
       }
     ]
   }

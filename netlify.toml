@@ -232,12 +232,12 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # Landing hero photos (avif/webp from scripts/buildLandingHeroAssets.mjs).
-# CAUTION: filenames are `<slot>-<crop>-<width>.<ext>` — NOT content-hashed. If
-# a source photo is ever swapped, re-running the script overwrites these same
-# filenames with different bytes, and this `immutable` header will keep any
-# CDN/browser serving the stale image for up to a year. Bump the filename
-# scheme (e.g. add a version suffix) in the script BEFORE swapping a source
-# photo, or drop `immutable` if that discipline can't be guaranteed.
+# Filenames are `<slot>-<crop>-<width>-v<N>.<ext>` — not content-hashed, so the
+# `-v<N>` IS the cache key and `immutable` is only safe while it moves. This is
+# not theory: on 26/08/2026 the photos were re-cut to level their horizons under
+# the old unversioned names, went live, and a laptop that had visited before
+# kept showing the tilted ones — the header had promised the bytes would never
+# change. ASSET_VERSION in the script MUST be bumped whenever the pixels do.
 [[headers]]
   for = "/landing/*"
   [headers.values]

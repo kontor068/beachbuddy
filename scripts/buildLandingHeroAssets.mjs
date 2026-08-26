@@ -39,6 +39,16 @@ const DESKTOP_ASPECT = 21 / 9; // wide band from sm: upward
 const MOBILE_WIDTHS = [480, 640, 828, 960, 1200, 1440];
 const DESKTOP_WIDTHS = [960, 1280, 1600, 1920, 2200, 2560];
 
+// Filenames carry this suffix because netlify.toml serves /landing/* as
+// `immutable, max-age=1 year`: the bytes behind a given URL may never change or
+// returning visitors keep the old photo for a year, and no deploy can reach
+// them. It is what happened on 26/08 — the straightened photos were live, and a
+// laptop that had seen the site before still showed the tilted ones.
+// BUMP THIS whenever the pixels change (new source photo, new crop, new
+// correction). A re-run deletes every older version from public/landing, so the
+// repository never accumulates them.
+const ASSET_VERSION = 'v2';
+
 const AVIF_OPTS = { quality: 50, effort: 4 };
 const WEBP_OPTS = { quality: 76, effort: 4 };
 
@@ -133,8 +143,8 @@ const buildCrop = async (source, rect, widths, destPrefix) => {
     const height = Math.round(width * (rect.height / rect.width));
     const base = sharp(source).extract(rect).resize({ width, height, fit: 'fill' });
 
-    const avifPath = `${destPrefix}-${width}.avif`;
-    const webpPath = `${destPrefix}-${width}.webp`;
+    const avifPath = `${destPrefix}-${width}-${ASSET_VERSION}.avif`;
+    const webpPath = `${destPrefix}-${width}-${ASSET_VERSION}.webp`;
     await base.clone().avif(AVIF_OPTS).toFile(path.join(outDir, avifPath));
     await base.clone().webp(WEBP_OPTS).toFile(path.join(outDir, webpPath));
     results.push({ width, avif: `/landing/${avifPath}`, webp: `/landing/${webpPath}` });
@@ -145,11 +155,13 @@ const buildCrop = async (source, rect, widths, destPrefix) => {
 const main = async () => {
   await mkdir(outDir, { recursive: true });
 
-  // Clean previously generated variants so a re-run never leaves orphans.
+  // Clean previously generated variants so a re-run never leaves orphans —
+  // including the ones from earlier ASSET_VERSIONs, which nothing references
+  // any more and which would otherwise sit in a public repo forever.
   const existing = await readdir(outDir).catch(() => []);
   await Promise.all(
     existing
-      .filter(f => /^(morning|afternoon|evening)-(mobile|desktop)-\d+\.(avif|webp)$/.test(f))
+      .filter(f => /^(morning|afternoon|evening)-(mobile|desktop)-\d+(-v\d+)?\.(avif|webp)$/.test(f))
       .map(f => rm(path.join(outDir, f)))
   );
 
