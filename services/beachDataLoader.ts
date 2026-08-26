@@ -351,6 +351,29 @@ export const loadBeachDetailData = async (
   beachId: number,
   detailDataPath?: string
 ): Promise<BeachDetailData> => {
+  // ONE BEACH, NOT THE REGION — 26/08/2026. This function has only ever returned a single
+  // record, but the only file it could fetch was the whole region: Halkidiki's detail tier
+  // is 723 KB (74,5 KB gzipped) for 133 beaches, and the one the visitor opened is ~2 KB of
+  // it. That is the route Google sends people down, and the service worker deliberately
+  // re-fetches /data/beaches/ on every request (network-first, no-store — a corrected pin
+  // must never be outlived by a cached copy), so the region was paid again on EVERY beach
+  // opened. scripts/splitBeachDetailPerBeach.mjs cuts every region into
+  // dist/…/detail/<region>/<id>.json after `vite build`. The region file stays as the
+  // fallback: a build that skipped the split (build:mobile), or a shard that is missing,
+  // still answers — a beat slower, never blank.
+  if (!detailDataPath) {
+    const beachPath = `/data/beaches/app/detail/${encodeURIComponent(regionId)}/${beachId}.json`;
+    try {
+      const response = await fetch(beachPath);
+      if (response.ok) {
+        const single = await response.json() as BeachDetailData;
+        if (single && single.id === beachId) return single;
+      }
+    } catch {
+      // Network error, or a service worker with nothing cached: fall through to the region file.
+    }
+  }
+
   const dataPath = detailDataPath || `/data/beaches/app/detail/${encodeURIComponent(regionId)}.json`;
   const response = await fetch(dataPath);
   if (!response.ok) {
