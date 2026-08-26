@@ -436,6 +436,7 @@ export interface Beach {
   windProfile?: WindProfile;
   blueFlag2026?: BeachMetadata['blueFlag2026'];
   seatrac?: BeachMetadata['seatrac'];
+  webcam?: BeachWebcam;
   nearbyCamping?: NearbyCampsite[];
   paidEntry?: BeachPaidEntry;
   // Categorical: sheltered from the region's local SUMMER wind (meltemi / maistros),
@@ -593,6 +594,23 @@ export interface BeachPaidEntry {
   match?: { officialNameGr?: string; officialNameEn?: string; matchMethod: string; matchScore: number };
 }
 
+/**
+ * A third-party PUBLIC webcam that shows this beach. Always linked, never embedded
+ * (no CSP change, no bandwidth, no licence question). Added 26/08/2026 after Search
+ * Console showed ~700 impressions/90d for «<beach> κάμερα / live cam» landing on beach
+ * pages that had no camera to offer. Only pages a person opened and saw a live image
+ * of THIS beach on go in — `verifiedAt` is that date, not a guess.
+ */
+export interface BeachWebcam {
+  /** The camera's page (not the stream URL). */
+  url: string;
+  /** Who runs it, shown next to the link so the reader knows it is not ours. */
+  operator: string;
+  /** ISO date someone opened the page and saw a live image of this beach. */
+  verifiedAt: string;
+  source: 'manual';
+}
+
 export interface BeachMetadata {
   access: {
     type: BeachAccessType;
@@ -652,6 +670,8 @@ export interface BeachMetadata {
     }>;
   };
   seatrac?: BeachSeatracAccess;
+  /** Hand-verified public webcam page. Source of truth read by the build. */
+  webcam?: BeachWebcam;
   /** Organized campsites within ~2.5 km (OpenStreetMap). Source of truth read by the build. */
   nearbyCamping?: NearbyCampsite[];
   /** "You pay to be here" flag (entrance fee / private club / sunbed-only). Source of truth read by the build. */

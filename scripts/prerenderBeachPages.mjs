@@ -1124,7 +1124,7 @@ const WESTERLY = ['West', 'Northwest', 'Southwest'];
 // only the underperformers get the count; the winners are left untouched.
 // The count is rebuild-fresh, so it never goes stale the way "σήμερα" would.
 const CATEGORY_TITLE = {
-  sheltered:  { en: { main: (islandName, count) => `${count} More Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: (islandName, count) => `${islandName}: ${count} Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
+  sheltered:  { en: { main: (islandName, count) => `${count} Sheltered Beaches in ${islandName}`, tail: 'for the Meltemi' }, gr: { main: (islandName, count) => `${islandName}: ${count} Πιο Απάνεμες Παραλίες`, tail: 'στο Μελτέμι' } },
   // EN family reordered 21/08/2026, measured on Search Console (28d to 16/08,
   // page dimension). English demand for the family intent is ~120 impressions;
   // the 47 EN family guides drew 4.695 and converted at 1,64% — the worst large
@@ -1245,7 +1245,7 @@ const islandIntents = [
       // actually shipping it. Name the real regime and drop the fixed lee arc.
       const a = LOCAL_WIND_ATOMS[getRegionWindContext(regionId)];
       const prep = regionPrepGr(regionId, islandName);
-      const enMain = `${count} More Sheltered Beaches in ${islandName}`;
+      const enMain = `${count} Sheltered Beaches in ${islandName}`;
       const enWithTail = `${enMain} for ${w.en}`;
       const enTitle = pickUnderLimit([`${enWithTail} | CalmBeach`, enWithTail, enMain], 60);
       const grMain = `${islandName}: ${count} Πιο Απάνεμες Παραλίες`;
@@ -1872,16 +1872,23 @@ const islandIntentQualifies = (intent, beaches) => {
   return Math.min(matched.length, ISLAND_INTENT_CAP) >= min;
 };
 
-const getIslandGuides = (island, region, locale, excludeKey = null) => {
+// `beach` (optional): on a beach page, the guides THIS beach belongs to come first
+// and are marked — a Rhodes snorkeling beach now links its own snorkeling guide
+// up front instead of the same five region-level chips every beach page shows.
+// Same predicates as page generation, so a marked chip never points at a guide
+// the beach is absent from.
+const getIslandGuides = (island, region, locale, excludeKey = null, beach = null) => {
   const beaches = Array.isArray(island.beaches) ? island.beaches : [];
-  return islandIntents
+  const guides = islandIntents
     .filter(intent => intent.key !== excludeKey)
     .filter(intent => islandIntentQualifies(intent, beaches))
     .map(intent => ({
       key: intent.key,
       href: localizedPath(islandIntentPath(intent, region, island), locale),
       label: intentNavLabel(intent.key, region.id, locale.language),
+      matches: beach ? intentPredicateFor(intent)(beach) === true : false,
     }));
+  return beach ? guides.sort((a, b) => Number(b.matches) - Number(a.matches)) : guides;
 };
 
 // A chip-list "beach guides" block linking to the island's guide articles —
@@ -1892,10 +1899,11 @@ const getIslandGuides = (island, region, locale, excludeKey = null) => {
 // clicks from anywhere on the site.
 const ALL_GUIDES_LABEL = { en: 'All beach guides →', gr: 'Όλοι οι οδηγοί →' };
 
-const renderIslandGuides = (island, region, locale, excludeKey, heading) => {
-  const guides = getIslandGuides(island, region, locale, excludeKey);
-  const items = guides.map(g =>
-    `<li style="margin:0;"><a href="${escapeHtml(g.href)}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label)}</a></li>`
+const renderIslandGuides = (island, region, locale, excludeKey, heading, beach = null) => {
+  const guides = getIslandGuides(island, region, locale, excludeKey, beach);
+  const items = guides.map(g => g.matches
+    ? `<li style="margin:0;"><a href="${escapeHtml(g.href)}" style="display:inline-block;border:1px solid #0e7490;border-radius:999px;padding:7px 13px;background:#ecfeff;color:#0e7490;text-decoration:none;font-weight:800;font-size:14px;">✓ ${escapeHtml(g.label)}</a></li>`
+    : `<li style="margin:0;"><a href="${escapeHtml(g.href)}" style="display:inline-block;border:1px solid #bae6fd;border-radius:999px;padding:7px 13px;background:white;color:#075985;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(g.label)}</a></li>`
   ).join('');
   // The hub link renders even for islands with no guides of their own — that is
   // exactly the page where a reader has nowhere else to go. But the hub itself is
@@ -2483,6 +2491,8 @@ const staticFallbackCopy = {
     beachType: 'Beach type',
     access: 'Access',
     coordinates: 'Coordinates',
+    webcam: 'Live webcam',
+    webcamNote: 'third-party camera, opens in a new tab',
     organizedBeach: 'Organized beach',
     beachBar: 'Beach bar',
     sunbeds: 'Sunbeds',
@@ -2508,6 +2518,8 @@ const staticFallbackCopy = {
     beachType: 'Τύπος παραλίας',
     access: 'Πρόσβαση',
     coordinates: 'Συντεταγμένες',
+    webcam: 'Live κάμερα',
+    webcamNote: 'κάμερα τρίτου, ανοίγει σε νέα καρτέλα',
     organizedBeach: 'Οργανωμένη παραλία',
     beachBar: 'Beach bar',
     sunbeds: 'Ξαπλώστρες',
@@ -2533,6 +2545,8 @@ const staticFallbackCopy = {
     beachType: 'Strandtyp',
     access: 'Zugang',
     coordinates: 'Koordinaten',
+    webcam: 'Live-Webcam',
+    webcamNote: 'Kamera eines Drittanbieters, öffnet in neuem Tab',
     organizedBeach: 'Organisierter Strand',
     beachBar: 'Beach Bar',
     sunbeds: 'Liegen',
@@ -2558,6 +2572,8 @@ const staticFallbackCopy = {
     beachType: 'Type de plage',
     access: 'Accès',
     coordinates: 'Coordonnées',
+    webcam: 'Webcam en direct',
+    webcamNote: 'caméra tierce, s’ouvre dans un nouvel onglet',
     organizedBeach: 'Plage aménagée',
     beachBar: 'Bar de plage',
     sunbeds: 'Transats',
@@ -2583,6 +2599,8 @@ const staticFallbackCopy = {
     beachType: 'Tipo di spiaggia',
     access: 'Accesso',
     coordinates: 'Coordinate',
+    webcam: 'Webcam in diretta',
+    webcamNote: 'telecamera di terzi, si apre in una nuova scheda',
     organizedBeach: 'Spiaggia attrezzata',
     beachBar: 'Beach bar',
     sunbeds: 'Lettini',
@@ -3862,6 +3880,18 @@ const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
         </figure>`;
 };
 
+// One <dl> row linking a hand-verified public webcam (12 beaches, 26/08/2026).
+// Linked, never embedded: the page stays first-party, and the operator's name is
+// the anchor so nobody mistakes the camera for ours. Search Console (90d to
+// 24/08/2026) showed ~700 impressions for «<beach> κάμερα / live cam / webcam»
+// landing on beach pages — the searcher wants to SEE the sea now; where a camera
+// exists this row hands them to it, next to the wind and waves we measure.
+const renderWebcamRow = (beach, copy) => {
+  const cam = beach?.webcam;
+  if (!cam?.url || !cam?.operator) return '';
+  return `<dt style="font-weight:700;">${escapeHtml(copy.webcam)}</dt><dd style="margin:0;"><a href="${escapeHtml(cam.url)}" target="_blank" rel="noopener noreferrer" style="color:#0e7490;font-weight:700;">${escapeHtml(cam.operator)} ↗</a> <span style="color:#64748b;font-size:14px;">(${escapeHtml(copy.webcamNote)})</span></dd>`;
+};
+
 const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prerenderLocales[0]) => {
   const language = locale.language;
   const copy = getStaticFallbackCopy(language);
@@ -3893,6 +3923,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
           <dt style="font-weight:700;">${escapeHtml(copy.region)}</dt><dd style="margin:0;">${escapeHtml(islandName)}, Greece</dd>
           ${renderDefinitionRow(copy.beachType, readableBeachType(beach, language))}
           ${renderDefinitionRow(copy.access, readableAccess(beach, language))}
+          ${renderWebcamRow(beach, copy)}
           <dt style="font-weight:700;">${escapeHtml(copy.coordinates)}</dt><dd style="margin:0;">${escapeHtml(beach.coordinates?.lat)}, ${escapeHtml(beach.coordinates?.lon)}</dd>
         </dl>
         ${amenityLabels.length > 0 ? `<ul style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0;list-style:none;">${amenityLabels.map(label => `<li style="border:1px solid #bae6fd;border-radius:999px;padding:6px 10px;background:white;color:#075985;font-weight:700;font-size:13px;">${escapeHtml(label)}</li>`).join('')}</ul>` : ''}
@@ -3906,7 +3937,7 @@ const staticBeachFallback = (beach, island, region, canonicalUrl, locale = prere
           de: `${islandName} Strandführer`,
           fr: `Guides plages — ${islandName}`,
           it: `Guide spiagge — ${islandName}`,
-        }))}
+        }), beach)}
         ${renderNationalGuides(locale, pickLang(language, {
           en: 'Beach guides across Greece',
           gr: 'Οδηγοί παραλιών σε όλη την Ελλάδα',
@@ -5614,6 +5645,140 @@ const withSnorkelingWindSection = (content, beaches, language) => {
   return { ...content, sections: [section, ...content.sections] };
 };
 
+// ---------------------------------------------------------------------------
+// Sub-area sections — the words people actually type for a big region.
+// Search Console, 90 days to 24/08/2026: «βόρεια εύβοια παραλίες για παιδιά» 222
+// impressions, «νότια εύβοια …» 128, «χαλκίδα …» 114, against 421 for the plain
+// «εύβοια …». One page already serves all four at position 4–8; these sections
+// give each phrase its own H2 (and FAQ entry) WITHOUT a new URL. Membership is
+// computed from coordinates, so the lists can never drift from the beach data,
+// and the copy states geography only — no shelter or calmness claim to guard.
+// Add a region here only when Search Console shows the sub-area words.
+const distanceKm = (a, lat, lon) => {
+  const la = Number(a?.coordinates?.lat); const lo = Number(a?.coordinates?.lon);
+  if (!Number.isFinite(la) || !Number.isFinite(lo)) return Infinity;
+  return 111 * Math.hypot(la - lat, (lo - lon) * Math.cos((la * Math.PI) / 180));
+};
+const nearChalkida = beach => distanceKm(beach, 38.4637, 23.5945) <= 25;
+const REGION_SUBAREAS = {
+  'central-greece-evia': [
+    { key: 'north', inName: { gr: 'στη Βόρεια Εύβοια', en: 'in North Evia' }, where: { gr: 'Αιδηψός, Λίμνη, Ιστιαία, Αγία Άννα', en: 'Aidipsos, Limni, Istiaia, Agia Anna' },
+      test: beach => Number(beach?.coordinates?.lat) >= 38.72 },
+    { key: 'chalkida', inName: { gr: 'κοντά στη Χαλκίδα', en: 'near Chalkida' }, where: { gr: 'έως 25 χλμ. από την πόλη', en: 'within 25 km of the town' },
+      test: nearChalkida },
+    { key: 'central', inName: { gr: 'στην Κεντρική Εύβοια', en: 'in Central Evia' }, where: { gr: 'Κύμη, Χιλιαδού, Αλιβέρι', en: 'Kymi, Chiliadou, Aliveri' },
+      test: beach => { const lat = Number(beach?.coordinates?.lat); return lat >= 38.33 && lat < 38.72 && !nearChalkida(beach); } },
+    { key: 'south', inName: { gr: 'στη Νότια Εύβοια', en: 'in South Evia' }, where: { gr: 'Κάρυστος, Μαρμάρι, Στύρα', en: 'Karystos, Marmari, Styra' },
+      test: beach => Number(beach?.coordinates?.lat) < 38.33 },
+  ],
+};
+// The family phrase is the one exception to CATEGORY_META: people search «παραλίες
+// για παιδιά», not «οικογενειακές παραλίες», and the heading should say their words.
+const subareaPhrase = (intentKey, language) => {
+  if (intentKey === 'family') return language === 'gr' ? 'παραλίες για παιδιά' : 'family beaches';
+  return CATEGORY_META[intentKey]?.[language]?.phrase || CATEGORY_META[intentKey]?.en?.phrase || 'beaches';
+};
+const withSubareaSections = (content, beaches, region, island, locale, intentKey) => {
+  const areas = REGION_SUBAREAS[region?.id];
+  const language = locale.language;
+  if (!areas || (language !== 'gr' && language !== 'en')) return content;
+  const total = beaches.length;
+  const phrase = subareaPhrase(intentKey, language);
+  const extra = [];
+  for (const area of areas) {
+    const members = beaches.filter(area.test);
+    if (members.length === 0) continue;
+    const names = members.map(beach => displayName(beach.name, `Beach ${beach.id}`, language));
+    const links = members.map((beach, i) => ({ href: localizedPath(beachPath(region, island, beach), locale), label: names[i] }));
+    const n = members.length;
+    const heading = language === 'gr'
+      ? `Ποιες ${phrase} είναι ${area.inName.gr};`
+      : `Which ${phrase} are ${area.inName.en}?`;
+    const body = language === 'gr'
+      ? `${n} από τις ${total} ${phrase} αυτής της σελίδας ${n === 1 ? 'βρίσκεται' : 'βρίσκονται'} ${area.inName.gr} (${area.where.gr}): ${names.join(', ')}. Άνοιξε κάθε παραλία για live άνεμο και κύμα πριν πας.`
+      : `${n} of the ${total} ${phrase} on this page ${n === 1 ? 'is' : 'are'} ${area.inName.en} (${area.where.en}): ${names.join(', ')}. Open each beach for live wind and waves before you go.`;
+    extra.push({ heading, body, links });
+  }
+  if (extra.length === 0) return content;
+  return { ...content, sections: [...content.sections, ...extra] };
+};
+
+// ---------------------------------------------------------------------------
+// "Which five would I try first?" — a snorkeling shortlist computed from the same
+// ranking the list already uses (seabed, then breadth of shelter, then real
+// popularity), with the reason spelled out per beach from our own fields. Started
+// on Rhodes only: /snorkeling-beaches/rhodes/ drew 1.748 impressions at position
+// ~10 with 14 clicks in the 90 days to 24/08/2026 — the largest single gap on the
+// site — while Halkidiki/Lemnos/Syros already convert at 13–15%. Widening this
+// set to every snorkeling guide is a many-page change: route it through the
+// 18·Google pre-launch gate first (docs/team/18-google.md §5), don't just add ids.
+const SNORKELING_FIRST_PICKS_REGIONS = new Set(['south-aegean-rhodes']);
+const DIRECTION_WORD = {
+  en: { North: 'north', Northeast: 'north-east', East: 'east', Southeast: 'south-east', South: 'south', Southwest: 'south-west', West: 'west', Northwest: 'north-west' },
+  gr: { North: 'βόρεια', Northeast: 'βορειοανατολικά', East: 'ανατολικά', Southeast: 'νοτιοανατολικά', South: 'νότια', Southwest: 'νοτιοδυτικά', West: 'δυτικά', Northwest: 'βορειοδυτικά' },
+};
+const withSnorkelingFirstPicksSection = (content, beaches, region, island, locale) => {
+  if (!SNORKELING_FIRST_PICKS_REGIONS.has(region?.id)) return content;
+  const language = locale.language;
+  if (language !== 'gr' && language !== 'en') return content;
+  const picks = rankIntentBeaches(beaches, 'snorkeling').slice(0, 5);
+  if (picks.length < 3) return content;
+  const gr = language === 'gr';
+  const seabedWord = beach => {
+    const score = snorkelSeabedScore(beach);
+    if (score === 3) return gr ? 'βραχώδης βυθός' : 'rocky seabed';
+    if (score === 2) return gr ? 'πετρώδης βυθός' : 'stony seabed';
+    if (score === 1) return gr ? 'βοτσαλωτός βυθός' : 'pebble seabed';
+    return gr ? 'αμμώδης βυθός' : 'sandy seabed';
+  };
+  // What the five SHARE is said once (on Rhodes all 18 are rocky and turn their
+  // back on 5 of 8 directions — repeating that five times reads like a template);
+  // what differs — which way each bay faces — is said per beach.
+  const seabeds = new Set(picks.map(seabedWord));
+  const breadths = new Set(picks.map(shelterBreadth));
+  const sharedSeabed = seabeds.size === 1 ? [...seabeds][0] : null;
+  const sharedBreadth = breadths.size === 1 ? [...breadths][0] : null;
+  const facesOf = beach => (beach.orientation?.faces || []).map(d => DIRECTION_WORD[language][d]).filter(Boolean).join('/');
+  const reason = beach => {
+    const parts = [];
+    if (!sharedSeabed) parts.push(seabedWord(beach));
+    const faces = facesOf(beach);
+    if (faces) parts.push(gr ? `κοιτάει ${faces}` : `faces ${faces}`);
+    const breadth = shelterBreadth(beach);
+    if (sharedBreadth === null && breadth > 0) parts.push(gr
+      ? `με βάση τον προσανατολισμό της γυρίζει την πλάτη σε ${breadth} από τις 8 κατευθύνσεις ανέμου`
+      : `by its orientation it turns its back on ${breadth} of the 8 wind directions`);
+    return parts.join(', ');
+  };
+  const shared = [];
+  // Greek needs the accusative here («έχουν βραχώδη βυθό»), not the nominative the tag uses.
+  const SEABED_ACC = { 'βραχώδης βυθός': 'βραχώδη βυθό', 'πετρώδης βυθός': 'πετρώδη βυθό', 'βοτσαλωτός βυθός': 'βοτσαλωτό βυθό', 'αμμώδης βυθός': 'αμμώδη βυθό' };
+  if (sharedSeabed) shared.push(gr ? `Και οι ${picks.length} έχουν ${SEABED_ACC[sharedSeabed] || sharedSeabed}` : `All ${picks.length} have a ${sharedSeabed}`);
+  if (sharedBreadth !== null && sharedBreadth > 0) shared.push(gr
+    ? `${shared.length ? 'με' : 'Με'} βάση τον προσανατολισμό τους γυρίζουν την πλάτη σε ${sharedBreadth} από τις 8 κατευθύνσεις ανέμου`
+    : `${shared.length ? 'by' : 'By'} their orientation they turn their back on ${sharedBreadth} of the 8 wind directions`);
+  const sharedLine = shared.length
+    ? (gr ? ` ${shared.join(' και ')} — διαφέρουν στο πού κοιτάει ο κάθε όρμος.` : ` ${shared.join(' and ')} — they differ in which way each bay faces.`)
+    : '';
+  const items = picks.map((beach, i) => {
+    const r = reason(beach);
+    return `${i + 1}) ${displayName(beach.name, `Beach ${beach.id}`, language)}${r ? ` — ${r}` : ''}`;
+  });
+  const links = picks.map(beach => ({ href: localizedPath(beachPath(region, island, beach), locale), label: displayName(beach.name, `Beach ${beach.id}`, language) }));
+  const section = gr
+    ? {
+      heading: 'Ποιες πέντε να δοκιμάσω πρώτες;',
+      body: `Αν έχεις μία μέρα, ξεκίνα από αυτές — με τη σειρά της λίστας: πρώτα ο βυθός, μετά από πόσες κατευθύνσεις ανέμου προστατεύει τον όρμο ο προσανατολισμός του, και τέλος η πραγματική δημοτικότητα.${sharedLine} ${items.join('· ')}. Ο προσανατολισμός είναι ισχυρή ένδειξη, όχι υπόσχεση — δες άνεμο και κύμα στη σελίδα κάθε παραλίας πριν πας.`,
+      links,
+    }
+    : {
+      heading: 'Which five would I try first?',
+      body: `If you only have a day, start with these — in the order of the list: seabed first, then how many wind directions each bay's orientation shields it from, then real popularity.${sharedLine} ${items.join('; ')}. Orientation is a strong hint, not a promise — check wind and waves on each beach page before you go.`,
+      links,
+    };
+  return { ...content, sections: [section, ...content.sections] };
+};
+
 // A card that leads with a photograph where we have one. Where we don't, a
 // tinted panel carrying the beach type — never an empty or broken frame.
 const renderBeachCard = (beach, island, region, locale, intentKey = null) => {
@@ -5731,6 +5896,9 @@ const staticIslandIntentFallback = (content, island, region, beaches, canonicalU
               <section class="cb-qa-item">
                 <h2>${escapeHtml(section.heading)}</h2>
                 <p>${escapeHtml(section.body)}</p>
+                ${Array.isArray(section.links) && section.links.length > 0
+                  ? `<p class="cb-qa-links">${section.links.map(link => `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`).join(' · ')}</p>`
+                  : ''}
               </section>`).join('')}
           </div>
 
@@ -6069,9 +6237,15 @@ const main = async () => {
       // THIS island's beaches — which of them face away from the Meltemi, by
       // name. It is the one thing on the page a template could not have written,
       // and the reason a three-beach guide is still worth publishing.
-      const withIntentSection = page.intent.key === 'snorkeling'
+      const withWind = page.intent.key === 'snorkeling'
         ? withSnorkelingWindSection(contentBase, page.beaches, locale.language)
         : contentBase;
+      // Rhodes-only computed shortlist (see SNORKELING_FIRST_PICKS_REGIONS) — goes first.
+      const withPicks = page.intent.key === 'snorkeling'
+        ? withSnorkelingFirstPicksSection(withWind, page.beaches, page.region, page.island, locale)
+        : withWind;
+      // Sub-area H2s for regions whose searchers name a part of the region (Evia).
+      const withIntentSection = withSubareaSections(withPicks, page.beaches, page.region, page.island, locale, page.intent.key);
       // "When is the sea calmest here?" — real per-month percentages from 10 years of
       // Copernicus reanalysis, appended to EVERY intent guide, not just the wind ones.
       // A family guide and a snorkeling guide get the same question from the same visitor

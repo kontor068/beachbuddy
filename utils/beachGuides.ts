@@ -123,6 +123,8 @@ export interface IslandGuideLink {
   label: string;
   /** True only under `vite dev`, where `href` is absolute — see resolveGuideHref. */
   external: boolean;
+  /** Set when a specific beach was passed: this beach is IN that guide's list. */
+  matches?: boolean;
 }
 
 /**
@@ -174,6 +176,8 @@ export const getIslandGuideLinks = (
   beaches: Beach[] | undefined,
   regionId: string | undefined,
   language: LanguageCode,
+  /** The beach whose page we are on: its own guides are marked and listed first. */
+  beach?: Beach | null,
 ): IslandGuideLink[] => {
   if (!regionId || !Array.isArray(beaches) || beaches.length === 0) return [];
   const slug = getRegionUrlSlug(regionId);
@@ -191,5 +195,8 @@ export const getIslandGuideLinks = (
       key: topic.key,
       ...resolveGuideHref(`${prefix}${topic.pathPrefix}/${encodeURIComponent(slug)}/`),
       label: topic.label[language] || topic.label.en,
-    }));
+      matches: beach ? topic.match(beach) === true : false,
+    }))
+    // Stable sort: the guides this beach belongs to first, the rest in topic order.
+    .sort((a, b) => Number(b.matches) - Number(a.matches));
 };

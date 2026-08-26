@@ -183,7 +183,7 @@ DE/FR/IT (Milos pilot): ίδια φόρμουλα, μεταφρασμένος ho
 | snorkeling | `{island}: Οι Καλύτερες Παραλίες για Snorkeling \| CalmBeach` (59 για «Κεφαλονιά») | `Best Snorkeling Beaches in {island} \| CalmBeach` |
 | family | `{island}: Παραλίες για Οικογένειες & Παιδιά \| CalmBeach` | `Family Beaches in {island} with Shallow Water \| CalmBeach` |
 | sunset | `{island}: Παραλίες για Ηλιοβασίλεμα (Δυτικές) \| CalmBeach` | `Sunset Beaches in {island} Facing West \| CalmBeach` |
-| sheltered | `{island}: Πιο Απάνεμες Παραλίες στο Μελτέμι \| CalmBeach` | `More Sheltered Beaches in {island} for the Meltemi` |
+| sheltered | `{island}: Πιο Απάνεμες Παραλίες στο Μελτέμι \| CalmBeach` | `{count} Sheltered Beaches in {island} for the Meltemi` |
 | organized | `{island}: Οργανωμένες Παραλίες με Ξαπλώστρες \| CalmBeach` | `Organized Beaches in {island} with Sunbeds \| CalmBeach` |
 | secluded | `{island}: Απομονωμένες Παραλίες χωρίς Κόσμο \| CalmBeach` | `Secluded Beaches in {island} Away from Crowds \| CalmBeach` |
 

@@ -837,6 +837,7 @@ const buildSummaryBeach = beach => {
     aliases: beach.aliases,
     ...(beach.metadata?.blueFlag2026 ? { blueFlag2026: beach.metadata.blueFlag2026 } : {}),
     ...(beach.metadata?.seatrac ? { seatrac: beach.metadata.seatrac } : {}),
+    ...(beach.metadata?.webcam ? { webcam: beach.metadata.webcam } : {}),
     ...(beach.metadata?.popularity ? { popularity: beach.metadata.popularity } : {}),
     // Trimmed to the nearest one — enough for the card's ⛺ chip without loading detail.
     ...(beach.metadata?.nearbyCamping?.length ? { nearbyCamping: beach.metadata.nearbyCamping.slice(0, 1) } : {}),
@@ -874,6 +875,9 @@ const buildSummaryBeach = beach => {
         },
       }
       : {}),
+    // Public webcam link (12 beaches on 26/08/2026). The prerendered beach page and the
+    // detail page both read this tier, so it has to ride along — it is one short object.
+    ...(beach.metadata?.webcam ? { webcam: beach.metadata.webcam } : {}),
     staticLabels: {
       beachType: beach.staticLabels?.beachType || beach.beachType,
       accessType,

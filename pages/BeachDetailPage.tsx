@@ -75,6 +75,7 @@ import {
   getAccessibilitySectionTitle,
   getAccessibilityCheckedLabel,
 } from '../utils/accessibility';
+import { getWebcamSectionTitle, getWebcamLead, getWebcamDisclaimer, getWebcamCheckedLabel } from '../utils/webcam';
 import { MapLoadBoundary } from '../components/MapLoadBoundary';
 import { DeferUntilVisible } from '../components/DeferUntilVisible';
 import { scrollToPageTop } from '../utils/scroll';
@@ -869,7 +870,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     return () => { cancelled = true; };
   }, [committedBeachId, beach.regionId, regionId]);
   const storyLocale: 'gr' | 'en' = language === 'gr' ? 'gr' : 'en';
-  const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language), [allBeaches, regionId, language]);
+  const guideLinks = useMemo(() => getIslandGuideLinks(allBeaches, regionId, language, beach), [allBeaches, regionId, language, beach]);
   const guidesHubLink = useMemo(() => getGuidesHubLink(language), [language]);
   const selectedDate = dayForecast.date;
   const selectedDayPrefix = getSelectedDayPrefix(selectedDate, athensNow(), language);
@@ -2965,6 +2966,57 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             components/GettingThereSection.tsx stays: it still owns the classifier and the
             short labels the tile reads. */}
 
+        {/* 7d. Live webcam — a hand-verified third-party public camera (types.ts BeachWebcam).
+
+            Linked, never embedded; the operator is the anchor so the picture is never
+
+            mistaken for ours. Search Console showed the demand (26/08/2026). */}
+
+        {beach.webcam?.url && (
+
+          <section className="space-y-3">
+
+            <h3 className="flex items-center gap-2 px-1 font-heading text-lg font-bold text-slate-950">
+
+              <Camera className="h-5 w-5 text-sky-700" aria-hidden />
+
+              {getWebcamSectionTitle(language)}
+
+            </h3>
+
+            <div className="space-y-1.5 rounded-2xl border border-sky-100 bg-sky-50/70 px-3 py-2.5">
+
+              <p className="text-sm font-bold text-slate-700">{getWebcamLead(language)}</p>
+
+              <a
+
+                href={beach.webcam.url}
+
+                target="_blank"
+
+                rel="noopener noreferrer"
+
+                className="inline-flex min-h-[44px] items-center gap-1 text-sm font-extrabold text-sky-700 underline decoration-sky-300 underline-offset-2"
+
+              >
+
+                {beach.webcam.operator} <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+
+              </a>
+
+              <p className="text-[11px] font-semibold leading-snug text-slate-600">
+
+                {getWebcamDisclaimer(language)} · {getWebcamCheckedLabel(language)}: {beach.webcam.verifiedAt}
+
+              </p>
+
+            </div>
+
+          </section>
+
+        )}
+
+
         {/* 8. Map Location */}
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.locationTitle[language]}</h3>
@@ -3345,9 +3397,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   rel={guide.external ? 'noopener noreferrer' : undefined}
                   /* 34 px measured on a real phone (05/08/2026) — these are standalone
                      pill links, not inline text, so the 44 px minimum applies to them. */
-                  className="inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50"
+                  className={guide.matches
+                    ? 'inline-flex min-h-[44px] items-center rounded-full border border-teal-600 bg-teal-50 px-3.5 py-1.5 text-sm font-extrabold text-teal-800 hover:bg-teal-100'
+                    : 'inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50'}
                 >
-                  {guide.label}
+                  {guide.matches ? `✓ ${guide.label}` : guide.label}
                 </a>
               ))}
               <a
