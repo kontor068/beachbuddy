@@ -6,13 +6,12 @@
 // focus point) — then emit each crop at 6 widths in both AVIF and WebP.
 // 3 slots x 2 crops x 6 widths x 2 formats = 72 files.
 //
-// The MORNING variants in public/landing were re-cut in place on 26/08/2026 to
-// level that photo's horizon, from the largest existing render of each crop,
-// because the source photos live on the main machine and this was not it. The
-// afternoon and evening variants are the untouched originals (an earlier pass
-// that same day rotated them too, wrongly, and was reverted from git). That
-// in-place pass is done and must not be repeated — running THIS script from the
-// original photos is the way back to full quality, and it straightens on its own.
+// The MORNING and AFTERNOON variants in public/landing were re-cut in place on
+// 26/08/2026 to level their horizons, from the largest existing render of each
+// crop, because the source photos live on the main machine and this was not it.
+// The evening variants are the untouched originals. Those in-place passes are
+// done and must not be repeated — running THIS script from the original photos
+// is the way back to full quality, and it straightens on its own.
 //
 // Run: node scripts/buildLandingHeroAssets.mjs
 // Regenerates components/landing/heroSources.ts (the manifest LandingHeroPhoto
@@ -45,12 +44,13 @@ const DESKTOP_WIDTHS = [960, 1280, 1600, 1920, 2200, 2560];
 // `immutable, max-age=1 year`: the bytes behind a given URL may never change or
 // returning visitors keep the old photo for a year, and no deploy can reach
 // them. It is what happened on 26/08 — the straightened photos were live, and a
-// laptop that had seen the site before still showed the tilted ones. (v3, hours
-// later: the afternoon and evening "corrections" were withdrawn — see levelDeg.)
+// laptop that had seen the site before still showed the tilted ones. (v3: the
+// afternoon and evening "corrections" were withdrawn. v4: the afternoon one came
+// back with the opposite sign, measured properly — see levelDeg.)
 // BUMP THIS whenever the pixels change (new source photo, new crop, new
 // correction). A re-run deletes every older version from public/landing, so the
 // repository never accumulates them.
-const ASSET_VERSION = 'v3';
+const ASSET_VERSION = 'v4';
 
 const AVIF_OPTS = { quality: 50, effort: 4 };
 const WEBP_OPTS = { quality: 76, effort: 4 };
@@ -65,15 +65,20 @@ const WEBP_OPTS = { quality: 76, effort: 4 };
 // it drops the horizon 45px from one end of the screen to the other, and the
 // straight things in frame (a lifeguard tower, a mast) visibly fall over.
 //
-// ONLY SET THIS FROM A REFERENCE THAT IS ACTUALLY LEVEL — the open sea/sky
-// horizon, or a man-made vertical. On 26/08/2026 all three were set from an
-// automatic "strongest edge per column" fit, and two of them were wrong: in the
-// afternoon photo the strongest edge is a distant island's shoreline, which
-// recedes and therefore climbs on its own, and in the evening one it is the
-// sunset colour band. Both photos were already level; the "correction" tilted
-// them a degree the OTHER way and shipped. What settled it in the end was a
-// level rule drawn across the picture and looked at — do that before believing
-// any number here, including these ones.
+// ONLY SET THIS FROM A REFERENCE THAT IS ACTUALLY LEVEL, AND LOOK AT IT.
+// On 26/08/2026 all three were set from an automatic "strongest edge per column"
+// fit and two came out wrong — in the evening photo the strongest edge is the
+// sunset colour band, in the afternoon one it is a dark band inside the water.
+// The evening photo had never leaned at all; the afternoon one leaned the
+// OPPOSITE way from what the fit said, so the "correction" doubled it. Three
+// deploys went out before a level rule was simply drawn on the picture and
+// looked at.
+//
+// What works, in order: an open sea/sky horizon; a distant island's waterline
+// (an island beyond the horizon has its base cut by it, so that line IS the
+// horizon — but track it BY COLOUR, since the water's own shadow bands beat it
+// on brightness); a man-made vertical. What never works: a near shoreline, a
+// ridge, a cloud, or any fit whose residuals are worse than about a pixel.
 const SLOTS = [
   {
     slot: 'morning',
@@ -88,19 +93,20 @@ const SLOTS = [
   {
     slot: 'afternoon',
     // Previous source (IMG20230622115305.jpg) had a visibly tilted horizon —
-    // swapped for a level shot with the same vivid midday turquoise. That swap
-    // did its job: this photo IS level. It has no open horizon at all (the
-    // island fills it), so there is nothing here to measure automatically and
-    // nothing to correct.
+    // swapped for a level shot with the same vivid midday turquoise. It is less
+    // tilted, not level: the island's waterline climbs 0.87 degrees to the RIGHT,
+    // hence the negative sign. No open horizon anywhere in the frame (the island
+    // fills it), which is why this one took three tries.
     file: 'IMG20240628121114.jpg',
-    levelDeg: 0,
+    levelDeg: -0.874,
     desktopFocusY: 0.42,
     mobileFocusX: 0.5,
   },
   {
     slot: 'evening',
     file: 'αρχείο λήψης (7).jpg',
-    // A level rule laid on the open horizon sits on it from end to end. Leave it.
+    // A level rule laid on the open horizon sits on it from end to end (fit over
+    // 258 columns: 0.003 degrees, residuals 0.7px). Leave it alone.
     levelDeg: 0,
     desktopFocusY: 1,    // sun sits at ~76% down the source; bottom-anchor keeps it + the horizon in the wide band
     mobileFocusX: 0.15,  // shifts the tall crop toward the sun
