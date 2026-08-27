@@ -1704,6 +1704,14 @@ const windLegendActiveClasses: Record<WindLegendDot, string> = {
 // nudge (handle wiggle + mobile helper line) never shows again on this device.
 const HOUR_SLIDER_HINT_KEY = 'cb.hourSlider.used';
 
+/**
+ * Πατημένο το ×, η εξήγηση των χρωμάτων δεν ξαναεμφανίζεται σε αυτή τη συσκευή.
+ * Ό,τι κρύβει είναι ΜΟΝΟ ο ορισμός της κλίμακας — τίποτα προειδοποιητικό, καμία
+ * ετυμηγορία, κανένα νούμερο. Αν ποτέ μπει κάτι που αφορά ασφάλεια σε αυτή τη θέση,
+ * ΔΕΝ επιτρέπεται να το σβήνει αυτό το κλειδί.
+ */
+const TONE_SCALE_HINT_DISMISSED_KEY = 'cb.toneScaleHint.dismissed';
+
 const windSliderTones: Record<WindLegendDot, {
   color: string;
   shadow: string;
@@ -2455,19 +2463,41 @@ const BeachMap: React.FC<BeachMapProps> = ({
   });
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
   /**
-   * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΣΥΡΤΑΡΑΚΙ, ΚΛΕΙΣΤΟ ΣΤΗΝ ΑΦΙΞΗ (Μίλτος, 27/08/2026).
+   * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΔΙΑΚΡΙΤΙΚΟΣ ΣΥΝΔΕΣΜΟΣ ΠΟΥ ΔΙΩΧΝΕΤΑΙ (Μίλτος, 27/08/2026).
    *
-   * Τρίτη στάση της ίδιας μέρας πάνω σε αυτή τη μία γραμμή, και οι τρεις είναι δικές του:
-   * ήταν πίσω από ⓘ (20/08), τυπώθηκε μόνιμα το πρωί, και τώρα γίνεται συρτάρι με ετικέτα.
-   * Δεν είναι επιστροφή στο ⓘ, και η διαφορά είναι όλη η ουσία: το ⓘ ήταν ένα εικονίδιο
-   * χωρίς λέξεις σε μια γωνία — δεν έλεγε τι κρύβει, οπότε όποιος δεν ήξερε ότι υπάρχει
-   * απάντηση δεν είχε λόγο να το πατήσει. Το συρτάρι φοράει την ίδια την ερώτηση («Τι
-   * σημαίνουν τα χρώματα;»), άρα διαφημίζει το περιεχόμενό του και ας μένει κλειστό.
+   * Η ίδια μία γραμμή έχει αλλάξει τέσσερις φορές σε μία μέρα, όλες με εντολή του: πίσω από
+   * ⓘ (20/08) → μόνιμα τυπωμένη → συρτάρι με πλαισιωμένο κουμπί → αυτό. Ο λόγος που το
+   * πλαισιωμένο κουμπί κόπηκε είναι ότι έπιανε όσο χώρο και η ίδια η πληροφορία: ένα κουμπί
+   * με περίγραμμα, σκιά και 32 px ύψος για να κρύψει μία πρόταση 24 px.
    *
-   * Κλειστό ΠΑΝΤΑ στην άφιξη, χωρίς μνήμη σε localStorage: κρατάει μηδέν ύψος πάνω από τις
-   * κάρτες, που είναι ο λόγος ύπαρξής του.
+   * Τώρα κλειστό είναι ένας συνδεσμάκι-κείμενο ~14 px, χωρίς πλαίσιο. Και επειδή ο ορισμός
+   * της κλίμακας διαβάζεται ΜΙΑ φορά στη ζωή, δίπλα του υπάρχει × που τον διώχνει για πάντα
+   * σε αυτή τη συσκευή (TONE_SCALE_HINT_DISMISSED_KEY) — η μόνη εκδοχή που δεν χρεώνει
+   * τίποτα στον επαναλαμβανόμενο επισκέπτη.
+   *
+   * `offered` ξεκινάει false και ανάβει σε useEffect, όπως το hourHintPending: ο διακομιστής
+   * δεν έχει localStorage, οπότε το να ξεκινάει από τη ΣΙΩΠΗ σημαίνει ότι όποιος το έδιωξε
+   * δεν το ξαναβλέπει ούτε για ένα καρέ.
    */
   const [showToneScaleHint, setShowToneScaleHint] = useState(false);
+  const [toneScaleHintOffered, setToneScaleHintOffered] = useState(false);
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(TONE_SCALE_HINT_DISMISSED_KEY) === '1') return;
+    } catch {
+      // Ιδιωτική περιήγηση / κλειστή αποθήκευση: το να φαίνεται είναι η ασφαλής πλευρά.
+    }
+    setToneScaleHintOffered(true);
+  }, []);
+  const dismissToneScaleHint = () => {
+    setToneScaleHintOffered(false);
+    setShowToneScaleHint(false);
+    try {
+      window.localStorage.setItem(TONE_SCALE_HINT_DISMISSED_KEY, '1');
+    } catch {
+      // Δεν γράφτηκε: θα ξαναφανεί την επόμενη επίσκεψη, που είναι ανεκτό.
+    }
+  };
   // Ζωντανές πινέζες ανά παραλία, ώστε το ανοιχτό ταμπελάκι να μπορεί να μετακομίσει σε άλλη
   // πινέζα όταν κυλάει ο κατάλογος (MarkerPopupScrollFollower).
   const beachMarkerRefs = useRef<Map<number, L.Marker>>(new Map());
@@ -3233,6 +3263,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // Η ετικέτα του συρταριού. Ερώτηση και όχι τίτλος («Επεξήγηση χρωμάτων»): ο επισκέπτης
     // αναγνωρίζει τη δική του απορία και ξέρει ότι από μέσα βγαίνει απάντηση.
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
+    // Το × λέει «το ξέρω», όχι «κλείσε». Ο επισκέπτης πρέπει να καταλάβει ότι το διώχνει
+    // ΓΙΑ ΠΑΝΤΑ και όχι μέχρι το επόμενο σκρολ — αλλιώς το πατάει και μετά απορεί πού πήγε.
+    toneScaleDismiss: {
+      en: 'Got it — do not show this again',
+      gr: 'Το ξέρω — να μην ξαναεμφανιστεί',
+      de: 'Verstanden — nicht mehr anzeigen',
+      it: 'Ho capito — non mostrare più',
+      fr: 'Compris — ne plus afficher',
+    },
     toneScaleHint: {
       // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
       // το ίδιο πράγμα και δείχνει ΠΟΥ να πατήσει ο αναγνώστης για τα δύο χωριστά νούμερα.
@@ -4072,28 +4111,53 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
-        {/* ΤΟ ΣΥΡΤΑΡΑΚΙ ΤΩΝ ΧΡΩΜΑΤΩΝ (Μίλτος, 27/08/2026) — δες το σχόλιο στο showToneScaleHint
-            για το γιατί δεν είναι επιστροφή στο ⓘ. Κλειστό κοστίζει μία γραμμή ~20 px, όσο η
-            ετικέτα του· ανοιχτό προσθέτει άλλα ~24 px. Το βελάκι γυρίζει αντί να αλλάζει
-            εικονίδιο, ώστε η κίνηση να δείχνει ότι κάτι ξεδιπλώνεται και δεν αντικαθίσταται.
-            Έχει το ίδιο `active:` βύθισμα με τα πλακίδια από πάνω: στο κινητό δεν υπάρχει
-            hover, και ένα κουμπί που δεν απαντάει στο άγγιγμα δεν διαβάζεται σαν κουμπί. */}
-        <button
-          type="button"
-          onClick={() => setShowToneScaleHint(open => !open)}
-          aria-expanded={showToneScaleHint}
-          className="inline-flex min-h-8 w-full cursor-pointer items-center gap-1 rounded-lg border border-slate-300 bg-white px-2 text-left text-[10px] font-semibold text-slate-600 shadow-sm transition active:translate-y-px active:bg-slate-100 active:shadow-none hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-        >
-          <ChevronDown
-            aria-hidden="true"
-            className={`h-3 w-3 shrink-0 text-slate-400 transition-transform ${showToneScaleHint ? 'rotate-180' : ''}`}
-          />
-          <span className="min-w-0">{mapCopy.toneScaleWhat[language]}</span>
-        </button>
-        {showToneScaleHint && (
-          <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
-            {mapCopy.toneScaleHint[language]}
-          </p>
+        {/* Η ΕΞΗΓΗΣΗ ΤΩΝ ΧΡΩΜΑΤΩΝ, ΔΙΑΚΡΙΤΙΚΑ ΚΑΙ ΜΕ ΕΞΟΔΟ (Μίλτος, 27/08/2026) — δες το
+            σχόλιο στο showToneScaleHint για ολόκληρη τη διαδρομή της μέρας.
+            Κλειστό: ένας σύνδεσμος-κείμενο 9 px με διακεκομμένη υπογράμμιση, χωρίς πλαίσιο,
+            χωρίς σκιά, ~14 px ύψος. Δεν μιμείται τα πλακίδια από πάνω επίτηδες: αυτά είναι
+            φίλτρα που αλλάζουν τον χάρτη, αυτό είναι ένας ορισμός — δύο διαφορετικά πράγματα
+            δεν πρέπει να φοράνε το ίδιο ρούχο, και η υπογράμμιση αρκεί για να φανεί ότι
+            πατιέται σε κάτι που δεν ισχυρίζεται ότι είναι κουμπί.
+            Το × δίπλα το διώχνει ΓΙΑ ΠΑΝΤΑ σε αυτή τη συσκευή. Είναι ο ορισμός της κλίμακας:
+            διαβάζεται μία φορά στη ζωή, οπότε ο επαναλαμβανόμενος επισκέπτης δεν έχει λόγο
+            να τον ξαναβλέπει ούτε ως γραμμούλα. Το ίδιο το × φοράει `min-h-8 min-w-8` γιατί
+            ένα 12 px εικονίδιο δεν πιάνεται με δάχτυλο — η επιφάνεια αφής είναι μεγαλύτερη
+            από το σχήμα, χωρίς να φαίνεται μεγαλύτερο. */}
+        {toneScaleHintOffered && (
+          <div className="flex items-start gap-1">
+            <div className="min-w-0 flex-1">
+              <button
+                type="button"
+                onClick={() => setShowToneScaleHint(open => !open)}
+                aria-expanded={showToneScaleHint}
+                className="inline-flex cursor-pointer items-center gap-0.5 rounded text-left text-[9px] font-medium text-slate-400 underline decoration-dotted underline-offset-2 transition hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:text-slate-500 dark:hover:text-slate-300"
+              >
+                <ChevronDown
+                  aria-hidden="true"
+                  className={`h-2.5 w-2.5 shrink-0 transition-transform ${showToneScaleHint ? 'rotate-180' : ''}`}
+                />
+                <span className="min-w-0">{mapCopy.toneScaleWhat[language]}</span>
+              </button>
+              {showToneScaleHint && (
+                <p className="mt-1 text-left text-[10px] font-medium leading-snug text-slate-500 dark:text-slate-400">
+                  {mapCopy.toneScaleHint[language]}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={dismissToneScaleHint}
+              aria-label={mapCopy.toneScaleDismiss[language]}
+              title={mapCopy.toneScaleDismiss[language]}
+              /* `-my-2`: η επιφάνεια αφής μένει 32 px, αλλά τα αρνητικά περιθώρια πάνω-κάτω
+                 την εμποδίζουν να ψηλώσει τη γραμμή — αλλιώς ένα × για δάχτυλο θα έκανε τον
+                 «διακριτικό σύνδεσμο» ψηλότερο από το κείμενο που συνοδεύει. Ό,τι πιάνει το
+                 δάχτυλο δεν είναι υποχρεωμένο να το βλέπει το μάτι. */
+              className="-my-2 -mr-1.5 inline-flex min-h-8 min-w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-slate-300 transition hover:bg-slate-100 hover:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+            >
+              <X aria-hidden="true" className="h-3 w-3" />
+            </button>
+          </div>
         )}
         {/* ΤΟ ΦΙΛΤΡΑΡΙΣΜΕΝΟ ΧΡΩΜΑ ΠΑΙΡΝΕΙ ΟΛΟΚΛΗΡΗ ΤΗΝ ΠΡΟΤΑΣΗ ΤΗΣ ΑΙΤΙΑΣ. Ο αναγνώστης μόλις
             πάτησε αυτό το χρώμα, άρα εδώ υπάρχει ο χώρος να τελειώσει η σκέψη — «Το χρώμα το
