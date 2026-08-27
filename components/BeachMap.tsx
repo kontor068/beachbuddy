@@ -2458,16 +2458,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
   // πινέζα όταν κυλάει ο κατάλογος (MarkerPopupScrollFollower).
   const beachMarkerRefs = useRef<Map<number, L.Marker>>(new Map());
   /**
-   * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΜΕ ΠΑΤΗΜΑ, ΟΧΙ ΜΕ ΜΟΝΙΜΟ ΚΕΙΜΕΝΟ (Μίλτος, 20/08/2026).
-   *
-   * Μόνιμη εξηγητική γραμμή πάνω από το υπόμνημα έχει ήδη απορριφθεί δύο φορές ως «ταπετσαρία»
-   * (docs/team/HANDOVER-colour-cause-line.md §1): φαίνεται κάθε μέρα, και τις περισσότερες δεν
-   * έχει τίποτα να πει. Ένα ⓘ κοστίζει μηδέν ύψος όταν είναι κλειστό και απαντά στον έναν που
-   * αναρωτήθηκε. Δεν είναι «γραμμή αιτίας» — αυτή ζει χωριστά και μιλάει μόνο στα χρώματα που
-   * τρομάζουν· αυτό εδώ εξηγεί τον ΡΟΛΟ της κλίμακας, μία φορά, για πάντα.
-   */
-  const [showToneScaleHint, setShowToneScaleHint] = useState(false);
-  /**
    * Η ΠΥΞΙΔΑ ΚΑΝΕΙ ΧΩΡΟ ΣΤΟ ΤΑΜΠΕΛΑΚΙ (20/08/2026).
    *
    * Το popup του Leaflet ζει μέσα στο `.leaflet-map-pane` (z-index 400, δικό του stacking
@@ -3226,7 +3216,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // υπόσχεση ότι υπάρχει κι άλλο. Ζεύγος με το «Λιγότερα» από κάτω.
     moreInfo: { en: 'More information', gr: 'Περισσότερες πληροφορίες', de: 'Mehr Informationen', it: 'Altre informazioni', fr: "Plus d'informations" },
     fewer: { en: 'Less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
-    toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
       // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
       // το ίδιο πράγμα και δείχνει ΠΟΥ να πατήσει ο αναγνώστης για τα δύο χωριστά νούμερα.
@@ -3897,7 +3886,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // Four is the whole ladder (blue/yellow/orange/red), so the fallback is only a guard against
     // a future fifth colour — it keeps the strip on one line rather than inventing a new shape.
     const columnClasses = sideBySideColumnClasses[rowCount] ?? 'grid-cols-4';
-    const gridClasses = `${isSideBySide ? `grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'grid gap-1'}${isPreview ? ' pr-5' : ''}`;
+    const gridClasses = isSideBySide ? `grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'grid gap-1';
 
     return (
       <div
@@ -4042,27 +4031,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
     const soleVisibleTone = visibleWindColorGuideRows.length === 1 ? visibleWindColorGuideRows[0].tone : null;
 
     return (
-      <div className={`relative ${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
-        {/* ΜΗΔΕΝ ΜΟΝΙΜΟ ΥΨΟΣ. Το κουμπί κάθεται απόλυτα στην πάνω-δεξιά γωνία και ο πίνακας
-            κρατάει `pr-5` ώστε να μη σκεπάζει ποτέ κελί. Κλειστό, η οθόνη είναι ίδια με χθες. */}
-        {isPreview && (
-          <button
-            type="button"
-            onClick={() => setShowToneScaleHint(open => !open)}
-            aria-expanded={showToneScaleHint}
-            aria-label={mapCopy.toneScaleWhat[language]}
-            title={mapCopy.toneScaleWhat[language]}
-            className="absolute right-0 top-0 z-10 inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-          >
-            <Info className="h-3.5 w-3.5" aria-hidden="true" />
-          </button>
-        )}
+      <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
-        {isPreview && showToneScaleHint && (
-          <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
-            {mapCopy.toneScaleHint[language]}
-          </p>
-        )}
+        {/* ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΤΥΠΩΜΕΝΟ, ΟΧΙ ΠΙΣΩ ΑΠΟ ΠΑΤΗΜΑ (Μίλτος, 27/08/2026).
+            Αντιστρέφει την απόφαση της 20/08, που είχε κρύψει αυτή τη μία γραμμή πίσω από ⓘ
+            επειδή μόνιμο κείμενο είχε ήδη απορριφθεί δύο φορές ως «ταπετσαρία»
+            (docs/team/HANDOVER-colour-cause-line.md §1). Ο λόγος που γυρίζει: η γραμμή δεν
+            είναι η «αιτία της ημέρας» — αυτή ζει χωριστά, μιλάει μόνο στα χρώματα που
+            τρομάζουν και σιωπά τις υπόλοιπες μέρες. Αυτή εδώ λέει τον ΡΟΛΟ της κλίμακας
+            («το χρώμα είναι το συνολικό, ο αέρας και η θάλασσα χωριστά στην πινέζα») και είναι
+            εξίσου αληθινή κάθε μέρα — ένας αναγνώστης που δεν ξέρει τι μετράει το χρώμα δεν
+            έχει λόγο να πατήσει ένα ⓘ για να το μάθει. Κοστίζει ~24 px, μία γραμμή.
+            Το ⓘ έφυγε τελείως: δεν υπάρχει πια τίποτα κρυμμένο να το δικαιολογεί. */}
+        <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+          {mapCopy.toneScaleHint[language]}
+        </p>
         {!isSevereWind && soleVisibleTone && (
           /* THE FILTERED COLOUR GETS THE WHOLE SENTENCE. The reader has just tapped this colour,
              so this is the one place with room to finish the thought — «Το χρώμα το φέρνει ο
