@@ -132,6 +132,46 @@ const isIgnorable = (message: string, source: string): boolean =>
   IGNORED_ERROR_PATTERNS.some(pattern => pattern.test(message) || pattern.test(source)) ||
   isSelfHealingChunkError(message);
 
+/**
+ * ΞΕΝΟΣ ΚΩΔΙΚΑΣ ΠΟΥ ΤΡΕΧΕΙ ΜΕΣΑ ΣΤΗ ΣΕΛΙΔΑ ΜΑΣ (27/08/2026).
+ *
+ * Το Telegram γέμισε 🔴 «έσπασε σελίδα σε επισκέπτη» από τρία σφάλματα που δεν
+ * μπορούν να είναι δικά μας:
+ *   • `SyntaxError: Unexpected token 'else'` και `Unexpected identifier 'https'`
+ *     στο /beaches/lemnos/1433-gomati/:1, από ενσωματωμένο browser εφαρμογής
+ *     (Android `wv`, SM-S936B).
+ *   • `undefined is not an object (evaluating 'r["@context"].toLowerCase')` στο
+ *     :3:185 σε δύο σελίδες παραλιών, από Safari macOS. Πουθενά στον κώδικά μας
+ *     δεν διαβάζεται το `@context` — είναι script που ψάχνει το JSON-LD μας.
+ *
+ * Αυτό που τα ενώνει: το `filename` του σφάλματος είναι η ΙΔΙΑ Η ΣΕΛΙΔΑ (.../:1),
+ * όχι κάποιο `/assets/*.js`. Όλη η JavaScript που στέλνουμε φεύγει ως module από
+ * `/assets/`, και το μόνο inline script που έχει η σελίδα μας είναι το τετράγραμμο
+ * χρονόμετρο του fallback στο index.html — που δεν κάνει τίποτα από τα παραπάνω.
+ * Άρα: αν ο browser δείχνει το ίδιο το HTML, το script το φύτεψε κάποιος άλλος
+ * (επέκταση browser, ή ο in-app browser του Facebook/Instagram) αφού φόρτωσε η
+ * σελίδα. Δεν το ελέγχουμε, δεν το διορθώνουμε, και ο επισκέπτης βλέπει κανονικά
+ * τη σελίδα του.
+ *
+ * Ένα συντακτικό λάθος στο ΔΙΚΟ μας bundle δεν θα εμφανιζόταν έτσι ούτε θα ήταν
+ * θέμα μιας συσκευής: το bundle χτίζεται μία φορά και θα έσπαγε σε όλους.
+ *
+ * Ελέγχεται ΜΟΝΟ εδώ, στον listener του `error`, όπου το `filename` το γράφει ο
+ * browser. Δεν μπαίνει στο isIgnorable(): εκεί το `source` είναι δικές μας λέξεις
+ * («RootErrorBoundary», «unhandledrejection») που ένα URL parse θα τις δεχόταν ως
+ * σχετικές διαδρομές και θα έσβηνε τα πραγματικά σφάλματα.
+ */
+const isForeignInlineScript = (filename: string): boolean => {
+  if (!filename) return false;
+  try {
+    const url = new URL(filename, window.location.href);
+    if (url.origin !== window.location.origin) return false;
+    return !/\.m?js$/i.test(url.pathname);
+  } catch {
+    return false;
+  }
+};
+
 /** Path without query or hash: `?near=1` and friends can carry location intent. */
 const currentPath = (): string => {
   try {
@@ -201,6 +241,8 @@ export const installGlobalErrorReporting = (): void => {
     // Failed <img>/<script> loads also fire this with no `error` object. A dead
     // Wikimedia photo is not a crash, and reporting them would drown the channel.
     if (!event.error) return;
+    // Ξένο inline script μέσα στη σελίδα μας — βλ. isForeignInlineScript().
+    if (isForeignInlineScript(event.filename)) return;
     reportClientError(event.error, { source: event.filename, line: event.lineno });
   });
 
