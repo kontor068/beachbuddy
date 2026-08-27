@@ -64,6 +64,9 @@ interface BeachCardProps {
   shoreWaveHeightM?: number;
   shoreDisplayWaveM?: number;
   shoreWaveFromDepartingSea?: boolean;
+  /** Από πού έρχεται η θάλασσα (BeachScore.seaArrivalExposureLevel) — κρίνει ΜΟΝΟ τη λέξη του κύματος
+   *  (utils/conditionsFeelPhrase.waveFeelLevelWithArrival, 27/08/2026). Αν λείψει, η λέξη μένει όπως πριν. */
+  seaArrivalExposureLevel?: string;
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   temperature?: number;
@@ -1355,6 +1358,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   shoreWaveHeightM,
   shoreDisplayWaveM,
   shoreWaveFromDepartingSea,
+  seaArrivalExposureLevel,
   seaTemperatureC,
   seaStatePeriodS,
   temperature,
@@ -1438,6 +1442,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
     shoreWaveHeightM,
     shoreDisplayWaveM,
     shoreWaveFromDepartingSea,
+    seaArrivalExposureLevel,
     language,
   });
   const windBeaufort = conditionsReadout.beaufort;

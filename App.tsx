@@ -4859,6 +4859,7 @@ export const App: React.FC = () => {
         shoreWaveHeightM: scoreResult.shoreWaveHeightM,
         shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
         shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
+        seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
         seaTemperatureC: scoreResult.seaTemperatureC,
         seaStatePeriodS: scoreResult.seaStatePeriodS,
         // The full marine forecast rides along for the map's downwind-sample flag
@@ -6252,6 +6253,7 @@ export const App: React.FC = () => {
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
         shoreWaveFromDepartingSea: context.shoreWaveFromDepartingSea,
+        seaArrivalExposureLevel: context.seaArrivalExposureLevel,
         seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -6288,6 +6290,7 @@ export const App: React.FC = () => {
         shoreWaveHeightM: context.shoreWaveHeightM,
         shoreDisplayWaveM: context.shoreDisplayWaveM,
         shoreWaveFromDepartingSea: context.shoreWaveFromDepartingSea,
+        seaArrivalExposureLevel: context.seaArrivalExposureLevel,
         seaTemperatureC: context.seaTemperatureC,
         warnings: context.warnings,
         confidence: context.confidence,
@@ -6331,6 +6334,7 @@ export const App: React.FC = () => {
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
       shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
+      seaArrivalExposureLevel: item.seaArrivalExposureLevel,
       seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
@@ -6355,6 +6359,7 @@ export const App: React.FC = () => {
       shoreWaveHeightM: item.shoreWaveHeightM,
       shoreDisplayWaveM: item.shoreDisplayWaveM,
       shoreWaveFromDepartingSea: item.shoreWaveFromDepartingSea,
+      seaArrivalExposureLevel: item.seaArrivalExposureLevel,
       seaTemperatureC: item.seaTemperatureC,
       warnings: item.warnings,
       confidence: item.confidence,
@@ -8922,6 +8927,7 @@ export const App: React.FC = () => {
                       shoreWaveHeightM={r.shoreWaveHeightM}
                       shoreDisplayWaveM={r.shoreDisplayWaveM}
                       shoreWaveFromDepartingSea={r.shoreWaveFromDepartingSea}
+                      seaArrivalExposureLevel={r.seaArrivalExposureLevel}
                       seaTemperatureC={r.seaTemperatureC}
                       seaStatePeriodS={r.seaStatePeriodS}
                       beachWindSpeedKmph={r.windSpeedKmph}
@@ -9179,6 +9185,7 @@ export const App: React.FC = () => {
                           shoreWaveHeightM={r.shoreWaveHeightM}
                           shoreDisplayWaveM={r.shoreDisplayWaveM}
                           shoreWaveFromDepartingSea={r.shoreWaveFromDepartingSea}
+                          seaArrivalExposureLevel={r.seaArrivalExposureLevel}
                           seaTemperatureC={r.seaTemperatureC}
                           seaStatePeriodS={r.seaStatePeriodS}
                           beachWindSpeedKmph={r.windSpeedKmph}

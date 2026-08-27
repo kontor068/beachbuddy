@@ -17,7 +17,13 @@
 import type { LanguageCode } from '../types';
 import { conditionToneLabels, causeLineLabels } from '../utils/conditionToneLabels';
 import { resolveWindTone, selectSuitableByTone } from '../utils/suitabilityTone';
-import { buildConditionsFeel, waveFeelLevel, windFeelLevel } from '../utils/conditionsFeelPhrase';
+import {
+  buildConditionsFeel, waveFeelLevel, waveFeelLevelWithArrival, windFeelLevel,
+  WAVE_WORD_ARRIVAL_GATE_MIN_PRINTED_M,
+} from '../utils/conditionsFeelPhrase';
+import { buildBeachConditionsReadout } from '../utils/beachConditionsReadout';
+import { SEA_ARRIVAL_GRAZING } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_UNKNOWN } from '../utils/seaArrival';
 import { SUPPORTED_LANGUAGES } from '../utils/i18n';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 
@@ -246,6 +252,60 @@ for (const [language, expected] of Object.entries({
     if (!legend.includes(word)) {
       failures.push(`[${language}] η λεζάντα του χάρτη δεν λέει πια «${word}» («${legend}») — ξαναδέστε τα μαζί`);
     }
+  }
+}
+
+/**
+ * Η ΛΕΞΗ «ΣΧΕΔΟΝ ΧΩΡΙΣ ΚΥΜΑ» ΚΟΙΤΑΕΙ ΤΗΝ ΑΦΙΞΗ (27/08/2026 — Συκιά Σιθωνίας #445, 13:00).
+ *
+ * Το πλήρες σκεπτικό και η εθνική μέτρηση ζουν δίπλα στο `waveFeelLevelWithArrival`. Εδώ
+ * ξαναπαίζουν οι μάρτυρες, ώστε ο κανόνας να μην μπορεί να ξεστρατίσει σιωπηλά:
+ *   • Συκιά: 0,28 μ. (τυπώνεται «0,3»), άφιξη 'exposed' → «λίγο κύμα», σε ΚΑΘΕ γλώσσα.
+ *   • Φυριπλάκα: 0,34 μ. με άφιξη partial / protected / ξυστά / «δεν έρχεται» / άγνωστη → μένει
+ *     «σχεδόν χωρίς κύμα». Η πύλη σιωπά σε ό,τι δεν είναι ρητά κατάμουτρα.
+ *   • Τυπωμένο «0,2» (0,20–0,24) κατάμουτρα → μένει: 0,2 μ. δεν είναι κύμα, από όπου κι αν έρχεται.
+ *   • Μονόδρομη: για κάθε ύψος και κάθε άφιξη, η λέξη με άφιξη ≥ λέξη χωρίς — ποτέ πιο ήρεμη.
+ *   • Ένα σκαλί το πολύ: ποτέ πάνω από «λίγο κύμα» — «αρκετό κύμα» μένει δουλειά του 0,8.
+ *   • ΔΙΟΧΕΤΕΥΣΗ: το ίδιο περνάει ΚΑΙ μέσα από το beachConditionsReadout (η διαδρομή κάρτας και
+ *     ταμπελακιού χάρτη). Το windShadow χάθηκε ακριβώς εδώ, στον δρόμο προς την οθόνη (§6, 27/08).
+ */
+{
+  const SYKIA_M = 0.28;
+  const FIRIPLAKA_M = 0.34;
+  const keepers: Array<string | undefined> = ['partial', 'protected', SEA_ARRIVAL_GRAZING, undefined, SEA_ARRIVAL_UNKNOWN, 'grazing'];
+  for (const language of SUPPORTED_LANGUAGES) {
+    const sykia = buildConditionsFeel({ beaufort: 3, waveM: SYKIA_M, seaArrivalExposureLevel: 'exposed', language });
+    if (sykia?.waveLevel !== 2 || !sykia.waveWordLiftedByArrival) {
+      failures.push(`[${language}] Συκιά #445 (0,28 μ. κατάμουτρα) δεν έγινε «λίγο κύμα»: «${sykia?.phrase}»`);
+    }
+    for (const arrival of keepers) {
+      const firiplaka = buildConditionsFeel({ beaufort: 4, waveM: FIRIPLAKA_M, seaArrivalExposureLevel: arrival, language });
+      if (firiplaka?.waveLevel !== 1 || firiplaka.waveWordLiftedByArrival) {
+        failures.push(`[${language}] Φυριπλάκα (0,34 μ., άφιξη ${String(arrival)}) ανέβηκε λέξη ενώ η θάλασσα δεν πέφτει κατάμουτρα: «${firiplaka?.phrase}»`);
+      }
+    }
+    const low = buildConditionsFeel({ beaufort: 2, waveM: 0.22, seaArrivalExposureLevel: 'exposed', language });
+    if (low?.waveLevel !== 1) {
+      failures.push(`[${language}] τυπωμένο «0,2» κατάμουτρα ανέβηκε λέξη — το κατώφλι ${WAVE_WORD_ARRIVAL_GATE_MIN_PRINTED_M} δεν κρατά`);
+    }
+  }
+  for (const waveM of [...WAVE_SAMPLES, 0.24, 0.25, 0.26, 0.28, 0.35]) {
+    for (const arrival of ['exposed', ...keepers]) {
+      const plain = waveFeelLevel(waveM);
+      const withArrival = waveFeelLevelWithArrival(waveM, arrival);
+      if (withArrival < plain) failures.push(`${waveM} m / ${String(arrival)}: η άφιξη έκανε τη λέξη ΠΙΟ ήρεμη (${plain} → ${withArrival})`);
+      if (withArrival > plain + 1 || (withArrival !== plain && withArrival > 2)) failures.push(`${waveM} m / ${String(arrival)}: η άφιξη ανέβασε πάνω από ένα σκαλί / πάνω από «λίγο κύμα» (${plain} → ${withArrival})`);
+      if (arrival !== 'exposed' && withArrival !== plain) failures.push(`${waveM} m / ${String(arrival)}: η πύλη μίλησε χωρίς ρητό 'exposed'`);
+    }
+  }
+  // Διοχέτευση: η διαδρομή της κάρτας.
+  const viaReadout = buildBeachConditionsReadout({ beachWindSpeedKmph: 13, waveHeightM: SYKIA_M, shoreDisplayWaveM: SYKIA_M, seaArrivalExposureLevel: 'exposed', language: 'gr' });
+  if (viaReadout.waveWord !== 'Λίγο κύμα') {
+    failures.push(`Η κάρτα (beachConditionsReadout) δεν πέρασε την άφιξη στη λέξη: «${viaReadout.waveWord}» για 0,28 μ. κατάμουτρα`);
+  }
+  const viaReadoutSilent = buildBeachConditionsReadout({ beachWindSpeedKmph: 13, waveHeightM: SYKIA_M, shoreDisplayWaveM: SYKIA_M, language: 'gr' });
+  if (viaReadoutSilent.waveWord !== 'Σχεδόν χωρίς κύμα') {
+    failures.push(`Η κάρτα χωρίς άφιξη άλλαξε συμπεριφορά: «${viaReadoutSilent.waveWord}» για 0,28 μ.`);
   }
 }
 

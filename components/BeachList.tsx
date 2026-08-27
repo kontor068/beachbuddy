@@ -20,6 +20,7 @@ type BeachListBeach = Beach & {
   shoreWaveHeightM?: number;
   shoreDisplayWaveM?: number;
   shoreWaveFromDepartingSea?: boolean;
+  seaArrivalExposureLevel?: string;
   seaStatePeriodS?: number;
   windSpeedKmph?: number;
   warnings?: WarningFlag[];
@@ -340,6 +341,7 @@ export const BeachList: React.FC<BeachListProps> = ({
               shoreWaveHeightM={b.shoreWaveHeightM}
               shoreDisplayWaveM={b.shoreDisplayWaveM}
               shoreWaveFromDepartingSea={b.shoreWaveFromDepartingSea}
+              seaArrivalExposureLevel={b.seaArrivalExposureLevel}
               seaStatePeriodS={b.seaStatePeriodS}
               warnings={b.warnings}
               confidence={b.confidence}

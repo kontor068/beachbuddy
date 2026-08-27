@@ -2265,6 +2265,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 label: seaConditionDisplay.value,
                 isOpenWater: !isWaveEstimate,
                 shoreHeightM: printedWaveHeightM(shoreWaveHeightM),
+                // Η ίδια «άφιξη» που διαβάζει η κάρτα — η λέξη «σχεδόν χωρίς κύμα» την κοιτάει από 27/08/2026.
+                arrivalExposureLevel: scoreResult.seaArrivalExposureLevel ?? null,
               }
             : null}
           water={showConditions && waterReading

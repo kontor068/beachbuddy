@@ -327,6 +327,12 @@ export interface BeachAnswerHeroProps {
      * not. Absent (the normal case) the tile behaves exactly as before.
      */
     shoreHeightM?: number | null;
+    /**
+     * Από πού έρχεται η θάλασσα (BeachScore.seaArrivalExposureLevel). Κρίνει ΜΟΝΟ τη λέξη του
+     * κύματος στη φράση (utils/conditionsFeelPhrase.waveFeelLevelWithArrival, Συκιά #445,
+     * 27/08/2026) — ίδια είσοδος με την κάρτα, ώστε οι δύο επιφάνειες να μη διαφωνούν.
+     */
+    arrivalExposureLevel?: string | null;
   } | null;
   water: { celsius: number; descriptor: string; tone: HeroTone } | null;
   sunsetTime?: string | null;
@@ -630,7 +636,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
   const conditionsFeel = wind
     // Το beaufortHigh μπαίνει για το ταβάνι του «αλλά» και μόνο: το πλακίδιο από πάνω
     // τυπώνει «5–6 Μπφ», και ανακούφιση δίπλα σε τυπωμένο 6 είναι η Φυριπλάκα ξανά.
-    ? buildConditionsFeel({ beaufort: wind.beaufort, beaufortHigh: wind.beaufortHigh, waveM: feelWaveM, language })
+    ? buildConditionsFeel({ beaufort: wind.beaufort, beaufortHigh: wind.beaufortHigh, waveM: feelWaveM, seaArrivalExposureLevel: sea?.arrivalExposureLevel, language })
     : null;
   // `divergent`, ΟΧΙ `contrast`: το δεύτερο πέφτει στα 6+ Μποφόρ για να μη μπει «αλλά» δίπλα σε
   // κόκκινη πινέζα — αν το διάβαζε αυτή η γραμμή, ο Φάραγγας (6 Μπφ πάνω από 0,1 μ.) θα ήταν ο

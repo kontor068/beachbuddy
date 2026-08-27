@@ -45,6 +45,8 @@ export interface BeachConditionsReadoutInput {
    * νούμερο — ο φράχτης της γραμμής ηρεμίας που το διάβαζε αφαιρέθηκε (απόφαση Μίλτου, Βάι).
    */
   shoreWaveFromDepartingSea?: boolean;
+  /** Από πού έρχεται η θάλασσα (BeachScore.seaArrivalExposureLevel) — μόνο για τη λέξη του κύματος, 27/08/2026. */
+  seaArrivalExposureLevel?: string | null;
   language: LanguageCode;
 }
 
@@ -82,6 +84,7 @@ export const buildBeachConditionsReadout = ({
   waveHeightM,
   shoreWaveHeightM,
   shoreDisplayWaveM,
+  seaArrivalExposureLevel,
   language,
 }: BeachConditionsReadoutInput): BeachConditionsReadout => {
   // Prefer this beach's own scored wind so the Beaufort matches its (same-wind) wave; fall back to
@@ -154,6 +157,8 @@ export const buildBeachConditionsReadout = ({
     // Το ΙΔΙΟ νούμερο που τυπώνεται από κάτω — ποτέ το severity-corrected `seaStateM`, που σε
     // όρμο διαβάζει το ανοιχτό νερό και θα έβαζε «μεγάλο κύμα» πάνω από ένα «~0,1 μ.».
     waveM: typeof waveM === 'number' && Number.isFinite(waveM) && waveText ? waveM : undefined,
+    // «Σχεδόν χωρίς κύμα» → «λίγο κύμα» όταν το κύμα πέφτει κατάμουτρα (Συκιά #445, 27/08/2026).
+    seaArrivalExposureLevel,
     language,
   });
 

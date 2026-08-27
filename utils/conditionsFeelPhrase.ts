@@ -1,6 +1,6 @@
 import type { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from './i18n';
-import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from './waveCharacter';
+import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M, atDisplayedPrecisionM } from './waveCharacter';
 
 /**
  * ΤΑ ΔΥΟ ΝΟΥΜΕΡΑ ΤΗΣ ΚΑΡΤΑΣ ΣΕ ΜΙΑ ΦΡΑΣΗ ΠΟΥ ΛΕΕΙ ΤΙ ΘΑ ΒΡΕΙΣ (Μίλτος, 14/08/2026).
@@ -64,6 +64,53 @@ export const waveFeelLevel = (metres: number): WaveFeelLevel => {
   if (metres < SEA_STATE_AMBER_M) return 2;
   if (metres < SEA_STATE_ROUGH_M) return 3;
   return 4;
+};
+
+/**
+ * Η ΛΕΞΗ «ΣΧΕΔΟΝ ΧΩΡΙΣ ΚΥΜΑ» ΚΟΙΤΑΕΙ ΑΝ ΤΟ ΚΥΜΑ ΠΕΦΤΕΙ ΚΑΤΑΜΟΥΤΡΑ (27/08/2026, Συκιά Σιθωνίας #445).
+ *
+ * ΤΙ ΕΓΙΝΕ. 13:00, η σελίδα έγραφε «0,3 μ. · Λίγος αέρας, σχεδόν χωρίς κύμα» και ο επισκέπτης
+ * έγραψε «είχε παραπάνω κύμα απ' όσο δείχνατε». Ο αριθμός ήταν σωστός — ewam 0,28 μ., ίδιο σε
+ * κάθε μοντέλο. Η ΛΕΞΗ όχι: το κύμα ερχόταν από 77° σε ακτή που βλέπει 77,6°, δηλαδή ευθεία
+ * πάνω της, μέσα από ανοιχτό τομέα 15 χλμ, με κοντή περίοδο, σε ρηχή άμμο. 0,3 μ. ανοιχτά που
+ * πέφτει ευθεία σε ρηχό πυθμένα σκάει στην ακτή σαν 0,3–0,5 μ. — «κύμα» για όποιον στέκεται
+ * στο νερό. Η βαθμίδα 0,2–0,4 δεν κοιτούσε ΠΟΥΘΕΝΑ αν το κύμα πέφτει πάνω στην παραλία ή την
+ * προσπερνάει — ενώ η εφαρμογή το ξέρει (utils/seaArrival.resolveSeaArrivalExposureLevel) και
+ * το χρησιμοποιεί ήδη για την έκπτωση της ακτής (§Γ59, K_d).
+ *
+ * Ο ΚΑΝΟΝΑΣ. Στη βαθμίδα «σχεδόν χωρίς κύμα», όταν ΚΑΙ ο τυπωμένος αριθμός είναι «0,3»+ (στην
+ * ακρίβεια της οθόνης — atDisplayedPrecisionM, όπως κρίνουν χρώμα και ετυμηγορία) ΚΑΙ η άφιξη
+ * είναι 'exposed' (κατάμουτρα, από ανοιχτό τομέα), η λέξη ανεβαίνει ΕΝΑ σκαλί: «λίγο κύμα».
+ * Μονόδρομη πύλη — αφαιρεί ηρεμία, ποτέ δεν την προσθέτει. Σιωπά σε 'partial', 'protected',
+ * ξυστά (SEA_ARRIVAL_GRAZING), undefined («δεν έρχεται πάνω») και 'unknown': κανόνας που κρίνει
+ * σε άγνωστα δεδομένα δεν μπαίνει. Αριθμός, χρώμα, ετυμηγορία, κατάταξη: αμετάβλητα.
+ *
+ * ΓΙΑΤΙ «0,3»+ ΚΑΙ ΟΧΙ ΟΛΗ Η ΒΑΘΜΙΔΑ — ΜΕΤΡΗΜΕΝΟ ΠΡΙΝ ΜΠΕΙ (scripts/measureWaveWordArrivalGate.mjs,
+ * 2.766 παραλίες × 3 ημέρες μελτεμιού, 91.179 ώρες-παραλίας, reports/weather/
+ * wave-word-arrival-gate-2026-08-27.json): όλη η βαθμίδα θα γύριζε 7,6% όλων των ωρών, το «0,3»+
+ * 5,4% — μέσα στη ζώνη 5-15% που το σπίτι θεωρεί «πληροφορία, όχι ταπετσαρία», και ακριβώς η
+ * στιγμή που η οθόνη ΗΔΗ γράφει «0,3 μ.» δίπλα σε «σχεδόν χωρίς κύμα». Η εναλλακτική «λεξιλογίου»
+ * (κατώφλι 0,4→0,3 χωρίς άφιξη) απορρίφθηκε: 18% των ωρών, και το 70% από αυτές θάλασσα που
+ * περνάει ξυστά — θα έλεγε «λίγο κύμα» στη Φυριπλάκα με 0,34 από τα πλάγια. Μάρτυρες: Συκιά
+ * 12:00-13:00 γυρίζει· Φυριπλάκα #1927 (partial/ξυστά) και Γλυφάδα #1993 (ξυστά) κρατούν.
+ * Η κατανομή των λέξεων (λάδι 21% · σχεδόν χωρίς 27% · λίγο 32% · αρκετό 12% · μεγάλο 9%)
+ * είναι ισορροπημένη — το λεξιλόγιο δεν ήταν το πρόβλημα, η τυφλότητά του στην άφιξη ήταν.
+ *
+ * Η ΠΥΛΗ: scripts/validateConditionsFeelPhrase.ts ξαναπαίζει Συκιά και Φυριπλάκα ΚΑΙ μέσα από
+ * το beachConditionsReadout (η διαδρομή της κάρτας), ώστε το πεδίο να μη χαθεί στον δρόμο όπως
+ * χάθηκε το windShadow (§6, 27/08).
+ */
+export const WAVE_WORD_ARRIVAL_GATE_MIN_PRINTED_M = 0.3;
+
+export const waveFeelLevelWithArrival = (
+  metres: number,
+  seaArrivalExposureLevel: string | undefined | null
+): WaveFeelLevel => {
+  const base = waveFeelLevel(metres);
+  if (base !== 1 || seaArrivalExposureLevel !== 'exposed') return base;
+  const printed = atDisplayedPrecisionM(metres);
+  if (typeof printed !== 'number' || printed < WAVE_WORD_ARRIVAL_GATE_MIN_PRINTED_M) return base;
+  return 2;
 };
 
 export const windFeelLevel = (beaufort: number): WindFeelLevel => {
@@ -144,6 +191,12 @@ export interface ConditionsFeelInput {
   beaufortHigh?: number | null;
   /** Το ύψος που ΤΥΠΩΝΕΤΑΙ δίπλα στη φράση. Χωρίς αυτό η φράση μιλά μόνο για τον αέρα. */
   waveM?: number;
+  /**
+   * Από πού έρχεται η θάλασσα πάνω στην ακτή — `BeachScore.seaArrivalExposureLevel`
+   * (utils/seaArrival). Διαβάζεται ΜΟΝΟ από το waveFeelLevelWithArrival (δες εκεί). Παραλείπεται =
+   * η λέξη κρίνεται όπως πριν τις 27/08/2026 — καμία επιφάνεια δεν γίνεται πιο ήρεμη αν το ξεχάσει.
+   */
+  seaArrivalExposureLevel?: string | null;
   language: LanguageCode;
 }
 
@@ -172,19 +225,22 @@ export interface ConditionsFeel {
    * (το τυπωμένο μέγιστο είναι το άνω άκρο του εύρους αν δόθηκε, αλλιώς ο μέσος).
    */
   contrast: boolean;
+  /** Η λέξη του κύματος ανέβηκε ένα σκαλί επειδή το κύμα πέφτει κατάμουτρα (waveFeelLevelWithArrival). */
+  waveWordLiftedByArrival: boolean;
 }
 
-export const buildConditionsFeel = ({ beaufort, beaufortHigh, waveM, language }: ConditionsFeelInput): ConditionsFeel | null => {
+export const buildConditionsFeel = ({ beaufort, beaufortHigh, waveM, seaArrivalExposureLevel, language }: ConditionsFeelInput): ConditionsFeel | null => {
   if (!Number.isFinite(beaufort)) return null;
   const vocabulary = getLocalizedCopy(language, FEEL_VOCABULARY);
   const windLevel = windFeelLevel(Math.max(0, Math.round(beaufort)));
   const windWord = vocabulary.wind[windLevel];
 
   if (typeof waveM !== 'number' || !Number.isFinite(waveM)) {
-    return { phrase: windWord, windWord, windLevel, divergent: false, contrast: false };
+    return { phrase: windWord, windWord, windLevel, divergent: false, contrast: false, waveWordLiftedByArrival: false };
   }
 
-  const waveLevel = waveFeelLevel(Math.max(0, waveM));
+  const waveLevel = waveFeelLevelWithArrival(Math.max(0, waveM), seaArrivalExposureLevel);
+  const waveWordLiftedByArrival = waveLevel !== waveFeelLevel(Math.max(0, waveM));
   const waveWordRaw = vocabulary.wave[waveLevel];
   const waveWord = waveWordRaw.charAt(0).toUpperCase() + waveWordRaw.slice(1);
   const divergent = Math.abs(windLevel - waveLevel) >= CONTRAST_GAP;
@@ -200,5 +256,6 @@ export const buildConditionsFeel = ({ beaufort, beaufortHigh, waveM, language }:
     waveLevel,
     divergent,
     contrast,
+    waveWordLiftedByArrival,
   };
 };
