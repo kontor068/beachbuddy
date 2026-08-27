@@ -189,11 +189,20 @@ export const conditionToneLabel = (tone: CalmnessTone, language: LanguageCode): 
  * (Μίλτος). These strings answer it for the beaches actually on screen at that hour — see
  * utils/conditionCause for which form a colour group earns, and when it earns silence instead.
  *
- * TWO LENGTHS, ONE MEANING. `short` sits inside the chip, in a ~150 px cell at 10 px — about 28
- * characters, which is why every language is checked against CAUSE_LINE_MAX_SHORT_CHARS and why
- * the French and Italian wordings are shorter than a literal translation would be. `full` is the
- * sentence under a chip the reader has actually tapped, where there is room to say the whole
- * thing.
+ * TWO LENGTHS, ONE MEANING. `short` was written for the chip itself — a ~150 px cell at 10 px,
+ * about 28 characters, which is why every language is checked against CAUSE_LINE_MAX_SHORT_CHARS
+ * and why the French and Italian wordings are shorter than a literal translation would be.
+ * `full` is the sentence under a chip the reader has actually tapped, where there is room to say
+ * the whole thing.
+ *
+ * ⚠️ SINCE 27/08/2026 `short` IS NO LONGER PRINTED IN THE CHIP (Miltos: «το the waves not the
+ * wind βγάλ' το, να μικρύνουν τα κουμπιά»). In a quarter-width cell it wrapped onto two lines
+ * and, because the grid levels every tile in the row, it made ALL FOUR taller for the sake of
+ * the one colour that had something to say. It still speaks in two places, and both are why
+ * these strings stay: the button's `aria-label`, where it costs no pixels at all, and — as
+ * `full`, the whole sentence — under the strip once the reader has picked a colour. Read this
+ * before shortening `short` further or wiring it back onto a tile: the constraint it was
+ * measured against is no longer on screen.
  *
  * THREE RULES THESE WORDS MUST KEEP, all enforced by
  * scripts/validateConditionToneAgreement.mjs (`a-cause-line-never-reassures`):
