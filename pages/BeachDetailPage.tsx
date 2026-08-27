@@ -26,7 +26,7 @@ import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdi
 import { formatBeaufortLabel } from '../utils/beaufortRange';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
+import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, SHELTER_WORD_LAND_GATE_MIN_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
 import { EvidenceSignature } from '../components/EvidenceSignature';
 import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
@@ -35,7 +35,7 @@ import { SwellRouterSection, type SwellShelteredCove } from '../components/Swell
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
 import { buildSteepSeabedNote, buildSteepSeabedSource } from '../utils/seabedEntry';
 import { beachShoreBreaks, hasSteepCoarseShore } from '../utils/shoreBreak';
-import { resolveOffshoreWindNote } from '../utils/offshoreWindNote';
+import { resolveOffshoreWindNote, windArrivedOverLand, WIND_SHADOW_SLOTS } from '../utils/offshoreWindNote';
 import { offshoreWindNotePhrase } from '../utils/conditionToneLabels';
 import { SwitchBeachCard } from '../components/SwitchBeachCard';
 import { assessBeachWindExposure } from '../utils/windExposureEngine';
@@ -2214,9 +2214,25 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             shelterLabel: beaufortLevel >= 3
               ? (() => {
                   const shelterCopy = SHELTER_LABEL[language] ?? SHELTER_LABEL.en;
-                  return mapAlignedExposureLevel === 'protected' && beaufortLevel > SHELTER_WORD_MAX_BEAUFORT
-                    ? shelterCopy.protectedStrongWind
-                    : shelterCopy[mapAlignedExposureLevel];
+                  if (mapAlignedExposureLevel === 'protected' && beaufortLevel > SHELTER_WORD_MAX_BEAUFORT) {
+                    return shelterCopy.protectedStrongWind;
+                  }
+                  /* «Απάνεμη» υπόσχεται ότι δεν θα σε δέρνει ο αέρας — όχι μόνο ότι δεν σου
+                     φέρνει κύμα. Από 4 Μπφ η υπόσχεση κρατιέται μόνο όταν ο άνεμος όντως
+                     πέρασε πάνω από στεριά· αλλιώς (Γλυφάδα Νάξου #1993, 27/08/2026: βοριάς
+                     κατά μήκος της ακτής, protected μόνο ως προς το κύμα) η λέξη πέφτει στο
+                     «πλάγια». Σε ελλιπές windShadow η πύλη σιωπά. Δες το μπλοκ του
+                     SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο BeachAnswerHero για το γιατί. */
+                  if (
+                    mapAlignedExposureLevel === 'protected'
+                    && beaufortLevel >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT
+                    && geospatialExposure?.confidence === 'high'
+                    && geospatialExposure.windShadow?.length === WIND_SHADOW_SLOTS
+                    && !windArrivedOverLand(geospatialExposure.windShadow, weatherData.wind.deg)
+                  ) {
+                    return shelterCopy.partial;
+                  }
+                  return shelterCopy[mapAlignedExposureLevel];
                 })()
               : null,
           } : null}
