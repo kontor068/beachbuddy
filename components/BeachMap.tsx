@@ -12,7 +12,7 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
-import { conditionToneCountPhrase, conditionToneCountLines, causeLinePhrase, type CauseLineWords } from '../utils/conditionToneLabels';
+import { conditionToneCountPhrase, conditionToneCountLines, causeLinePhrase, type CauseLineWords, type ConditionToneCountLine } from '../utils/conditionToneLabels';
 import {
   describeConditionCause, resolveCauseLineForm, causeLineMaySpeak, countCauseLineSplit,
   type ConditionCauseInput, type ConditionCauseReading, type CauseLineForm,
@@ -2397,6 +2397,322 @@ const WindDirectionGraphic: React.FC<WindDirectionGraphicProps> = ({
   );
 };
 
+/**
+ * ΤΑ ΠΛΑΚΙΔΙΑ ΤΩΝ ΧΡΩΜΑΤΩΝ — ΤΟ ΜΕΓΕΘΟΣ ΚΑΙ ΤΟ ΣΧΗΜΑ ΤΟΥΣ ΒΓΑΙΝΟΥΝ ΑΠΟ ΜΕΤΡΗΣΗ, ΟΧΙ ΑΠΟ ΤΥΠΟ.
+ *
+ * Τρεις μέρες αυτή η λωρίδα προσπάθησε να μαντέψει πόσο πιάνει μια φράση: πρώτα με σταθερά
+ * 9/10/11 px, μετά με «11 χαρακτήρες ανά κελί» και συντελεστές για την κουκκίδα και το βελάκι.
+ * Και τα δύο έσπασαν στο ίδιο σημείο — ο αριθμός των χαρακτήρων ΔΕΝ είναι το πλάτος τους:
+ * «Ιδανικές» και «Δύσκολες» έχουν και τα δύο 8 γράμματα και διαφέρουν 8% σε πλάτος, τα
+ * γερμανικά είναι μακρύτερα από τα γαλλικά, και τα έντονα ψηφία πιάνουν παραπάνω από τα πεζά.
+ * Όποιος τύπος τα κάλυπτε όλα, τα μίκραινε όλα.
+ *
+ * Το πλάτος μιας λέξης το ξέρει ένας μόνο: ο browser. Οπότε ρωτιέται αυτός. Μέσα στη λωρίδα
+ * ζει ένας αόρατος μετρητής (`data-legend-probe`) που περιέχει ΤΙΣ ΙΔΙΕΣ φράσεις στα ίδια
+ * βάρη, σε μέγεθος αναφοράς 100px· από εκεί βγαίνει το πλάτος κάθε γραμμής σε em, μετριέται
+ * το ωφέλιμο πλάτος ενός πλακιδίου, και το μέγεθος των γραμμάτων είναι απλή διαίρεση.
+ * Πλεονέκτημα που κανένας τύπος δεν έχει: όταν αλλάξει η διατύπωση, η αλλαγή μετριέται μόνη
+ * της — δεν υπάρχει σταθερά να ξεχαστεί.
+ *
+ * ΔΥΟ ΑΠΟΦΑΣΕΙΣ ΒΓΑΙΝΟΥΝ ΑΠΟ ΤΗ ΜΕΤΡΗΣΗ, ΚΑΙ ΟΙ ΔΥΟ ΜΙΑ ΦΟΡΑ ΓΙΑ ΟΛΗ ΤΗ ΛΩΡΙΔΑ — ποτέ ανά
+ * πλακίδιο, γιατί δύο πλακίδια που σπάνε σε διαφορετικό σημείο δεν στοιχίζονται ποτέ:
+ *   1. ΜΙΑ ΓΡΑΜΜΗ Ή ΔΥΟ. Με δύο χρώματα το πλακίδιο είναι μισή οθόνη και το «42 excellent
+ *      beaches» χωράει ολόκληρο — το να σπάει εκεί ήταν στρίμωγμα χωρίς λόγο (Μίλτος,
+ *      27/08/2026: «μην στριμώχνεις τη λέξη beaches αν έχεις χώρο»). Μία γραμμή διαλέγεται
+ *      μόνο αν χωράει σε μέγεθος που ΔΙΑΒΑΖΕΤΑΙ (ONE_LINE_MIN_PX)· αλλιώς δύο.
+ *   2. ΠΟΥ ΚΑΘΕΤΑΙ ΤΟ ΒΕΛΑΚΙ όταν οι γραμμές είναι δύο: στη γραμμή που περισσεύει. Στα
+ *      ελληνικά κοντή είναι η λέξη («Ιδανικές»), στα γερμανικά ο αριθμός με το επίθετο
+ *      («9 schwierige» / «Strände») — έτσι το βελάκι δεν πληρώνεται με μικρότερα γράμματα.
+ *
+ * Η μέτρηση τρέχει σε useLayoutEffect (πριν το πρώτο βάψιμο, άρα δεν αναβοσβήνει) και ξανά
+ * μέσω ResizeObserver όταν αλλάξει το πλάτος — γύρισμα οθόνης, άνοιγμα του χάρτη σε άλλο
+ * πλάτος, οτιδήποτε. Ο χάρτης φορτώνεται lazy, οπότε δεν υπάρχει server render να διαφωνήσει.
+ */
+/**
+ * Ο ΜΕΤΡΗΤΗΣ ΔΟΥΛΕΥΕΙ ΣΤΟ ΜΕΓΕΘΟΣ ΠΟΥ ΘΑ ΤΥΠΩΘΕΙ, ΚΑΙ ΞΑΝΑΜΕΤΡΑΕΙ ΜΕΧΡΙ ΝΑ ΚΑΤΣΕΙ.
+ *
+ * Πρώτη εκδοχή μετρούσε τις φράσεις σε μέγεθος αναφοράς 100px και διαιρούσε. Λάθος παραδοχή:
+ * το πλάτος ενός γράμματος ΔΕΝ είναι ακριβώς ανάλογο του μεγέθους — στα 9px ο browser
+ * στρογγυλεύει τα βήματα των γλυφών και το κείμενο βγαίνει λίγο φαρδύτερο απ' όσο υπόσχεται η
+ * μέτρηση στα 100px. Λίγο σημαίνει 2-4%, δηλαδή ακριβώς όσο χρειάζεται για να τυλιχτεί μια
+ * φράση που «χωρούσε». Τώρα ο μετρητής φοράει το ΙΔΙΟ μέγεθος με τα πλακίδια, και το
+ * useLayoutEffect ξανατρέχει με το νέο μέγεθος μέχρι η αλλαγή να πέσει κάτω από το μισό του
+ * pixel — συνήθως δύο περάσματα, όλα πριν το πρώτο βάψιμο.
+ */
+const LEGEND_MAX_MEASURE_PASSES = 6;
+/** Κουκκίδα 0,75em + κενό 0,35em, και βελάκι 0,95em + κενό 0,35em — ΟΣΟ ΛΕΝΕ ΟΙ ΚΛΑΣΕΙΣ πιο
+ *  κάτω. Αν αλλάξει το ένα χωρίς το άλλο, ο υπολογισμός υπόσχεται χώρο που δεν υπάρχει. */
+const LEGEND_DOT_EM = 1.1;
+const LEGEND_CHEVRON_EM = 1.3;
+/** Κάτω από αυτό δεν κατεβαίνουμε ό,τι κι αν γράφει η φράση: καλύτερα μια γραμμή παραπάνω
+ *  παρά γράμματα που δεν διαβάζονται. Πιάνει σε οθόνες κάτω από ~340 px. */
+const LEGEND_MIN_FONT_PX = 7.5;
+/** Μία γραμμή μόνο αν χωράει σε μέγεθος που διαβάζεται· αλλιώς η φράση σπάει στα δύο. */
+const LEGEND_ONE_LINE_MIN_PX = 9.5;
+/** Δύο τοις εκατό αέρα. Η μέτρηση είναι σωστή στο pixel, αλλά «χωράει ακριβώς» σημαίνει ότι
+ *  ένα στρογγύλεμα του browser αρκεί για να σπάσει η γραμμή — μετρημένο, σε φαρδιές οθόνες
+ *  όπου η φράση έβγαινε ίσα-ίσα και τυλιγόταν. */
+const LEGEND_FIT_SAFETY = 0.98;
+
+interface WindColorLegendTilesProps {
+  rows: Array<{ tone: CalmnessTone; count: number }>;
+  language: LanguageCode;
+  /** Το ταβάνι του μεγέθους: 11px η κανονική λωρίδα, 10px η μικρή προεπισκόπηση. */
+  maxFontPx: number;
+  /** Τέσσερα χρώματα σε μία σειρά κινητού — το κελί είναι ένα τέταρτο της οθόνης. */
+  isTightCell: boolean;
+  isToneFilterEnabled: boolean;
+  activeToneFilter: CalmnessTone | null;
+  onToneFilterChange?: (tone: CalmnessTone | null) => void;
+  colorName: Record<CalmnessTone, string>;
+  dotClasses: Record<CalmnessTone, string>;
+  activeClasses: Record<CalmnessTone, string>;
+  filterCopy: { showOnly: string; showAll: string };
+  causeShortByTone: Map<CalmnessTone, string>;
+}
+
+const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
+  rows, language, maxFontPx, isTightCell, isToneFilterEnabled, activeToneFilter,
+  onToneFilterChange, colorName, dotClasses, activeClasses, filterCopy, causeShortByTone,
+}) => {
+  const probeRef = useRef<HTMLSpanElement>(null);
+  const passesRef = useRef(0);
+  /* Το ΠΛΑΤΟΣ που μετρήθηκε τελευταία φορά. Ο ResizeObserver βλέπει και το ΥΨΟΣ, και το ύψος
+     αλλάζει από την ίδια μας τη διόρθωση (μικρότερα γράμματα, πιο κοντό πλακίδιο) — χωρίς
+     αυτόν τον φύλακα κάθε πέρασμα θα ξεκινούσε το επόμενο, για πάντα. */
+  const lastWidthRef = useRef(-1);
+  const [fit, setFit] = useState<{ fontPx: number; singleLine: boolean; chevronLine: number }>(
+    { fontPx: maxFontPx, singleLine: false, chevronLine: 0 },
+  );
+
+  const rowLines = rows.map(row => ({
+    tone: row.tone,
+    count: row.count,
+    lines: conditionToneCountLines(row.tone, language, row.count),
+  }));
+  // Ό,τι αλλάζει τα ΠΛΑΤΗ: οι λέξεις, οι αριθμοί, η γλώσσα, το ταβάνι, το αν υπάρχει βελάκι.
+  const measureKey = `${language}|${maxFontPx}|${isToneFilterEnabled}|${isTightCell}|${
+    rowLines.map(row => `${row.tone}:${row.count}`).join(',')}`;
+
+  useLayoutEffect(() => { passesRef.current = 0; }, [measureKey]);
+
+  useLayoutEffect(() => {
+    const probe = probeRef.current;
+    const strip = probe?.parentElement;
+    if (!probe || !strip) return;
+
+    const measure = () => {
+      const tile = strip.querySelector<HTMLElement>('[data-legend-tile]');
+      if (!tile) return;
+      const tileStyle = window.getComputedStyle(tile);
+      const inner = tile.clientWidth
+        - parseFloat(tileStyle.paddingLeft || '0')
+        - parseFloat(tileStyle.paddingRight || '0');
+      if (!(inner > 0)) return;
+      lastWidthRef.current = strip.clientWidth;
+
+      // Ο μετρητής τυπώνει στο ΤΩΡΙΝΟ μέγεθος, οπότε τα px του είναι τα px της οθόνης.
+      const at = fit.fontPx;
+      const widest = (selector: string) => Math.max(0, ...Array.from(
+        probe.querySelectorAll<HTMLElement>(selector),
+        el => el.getBoundingClientRect().width,
+      ));
+      const firstPx = widest('[data-legend-line="0"]');
+      const secondPx = widest('[data-legend-line="1"]');
+      const wholePx = widest('[data-legend-line="one"]');
+      if (!(firstPx > 0)) return;
+
+      const dotPx = LEGEND_DOT_EM * at;
+      const chevronPx = isToneFilterEnabled ? LEGEND_CHEVRON_EM * at : 0;
+      // Το βελάκι πάει στη γραμμή που περισσεύει· η πρώτη κουβαλάει ήδη την κουκκίδα.
+      const chevronLine = firstPx + dotPx <= secondPx ? 0 : 1;
+      const twoLinePx = Math.max(
+        firstPx + dotPx + (chevronLine === 0 ? chevronPx : 0),
+        secondPx + (chevronLine === 1 ? chevronPx : 0),
+      );
+      const oneLinePx = wholePx + dotPx + chevronPx;
+      const usable = inner * LEGEND_FIT_SAFETY;
+      // Το μέγεθος που θα χωρούσε ακριβώς, σε αναλογία με το μέγεθος που μόλις μετρήθηκε.
+      const scaled = (needed: number) => Math.min(maxFontPx, (at * usable) / needed);
+      const oneLineFont = scaled(oneLinePx);
+      const singleLine = secondPx === 0 || oneLineFont >= LEGEND_ONE_LINE_MIN_PX;
+      const fontPx = Math.max(LEGEND_MIN_FONT_PX, singleLine ? oneLineFont : scaled(twoLinePx));
+
+      setFit(previous => {
+        const settled = Math.abs(previous.fontPx - fontPx) < 0.05
+          && previous.singleLine === singleLine
+          && previous.chevronLine === chevronLine;
+        // Φρένο: αν για οποιονδήποτε λόγο δύο μεγέθη κυνηγιούνται μεταξύ τους, σταματάμε
+        // στο τελευταίο αντί να ξαναβάφουμε στο άπειρο.
+        if (settled || passesRef.current >= LEGEND_MAX_MEASURE_PASSES) return previous;
+        passesRef.current += 1;
+        return { fontPx, singleLine, chevronLine };
+      });
+    };
+
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
+      if (strip.clientWidth === lastWidthRef.current) return;
+      passesRef.current = 0;
+      measure();
+    });
+    observer.observe(strip);
+    return () => observer.disconnect();
+  }, [measureKey, isToneFilterEnabled, maxFontPx, fit.fontPx, fit.singleLine, fit.chevronLine]);
+
+  const typeStyle: CSSProperties = { fontSize: `${fit.fontPx.toFixed(2)}px` };
+  const textClasses = 'min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300';
+  /* ΤΟ ΚΕΝΟ ΕΙΝΑΙ ΣΕ em ΠΑΝΤΟΥ, όχι px σε κάποιες οθόνες. Ένα `sm:gap-1.5` (6px) δίπλα σε
+     γράμματα 11px είναι 0,55em αντί για 0,35em — δηλαδή 4px που ο υπολογισμός δεν ήξερε ότι
+     ξοδεύτηκαν, και η φράση έσπαγε ακριβώς στις οθόνες όπου υποτίθεται ότι περίσσευε χώρος. */
+  const gapClass = 'gap-[0.35em]';
+  /* ΤΟ ΜΟΝΟ ΠΛΑΚΙΔΙΟ ΠΟΥ ΜΕΝΕΙ ΜΕΤΑ ΤΟ ΦΙΛΤΡΟ ΚΕΝΤΡΑΡΕΤΑΙ (Μίλτος, 27/08/2026: «όταν πατάς
+     το κουμπί τα γράμματα παραμένουν στη γωνία, αφού πλέον δεν υπάρχουν άλλα βάλ' τα στο
+     κέντρο»). Με τέσσερα πλακίδια η αριστερή στοίχιση είναι αυτό που κάνει τις τέσσερις
+     κουκκίδες να διαβάζονται ως στήλη· μόλις μείνει ένα, η στήλη δεν υπάρχει και η φράση
+     κάθεται μόνη της στη γωνία μιας ολόκληρης λωρίδας. Το × φεύγει από τη ροή (απόλυτο στο
+     δεξί χείλος) γιατί αλλιώς το `ml-auto` του θα ρουφούσε όλο το κενό και θα ξανάσπρωχνε
+     τη φράση αριστερά — το κεντράρισμα θα ήταν κεντράρισμα μόνο στα λόγια. */
+  const isSoloTile = rows.length === 1;
+
+  const numberedText = (line: ConditionToneCountLine, key: React.Key) => (
+    <React.Fragment key={key}>
+      {line.before}
+      {line.count !== null && (
+        <span className="font-extrabold text-slate-700 dark:text-slate-200">{line.count}</span>
+      )}
+      {line.after}
+    </React.Fragment>
+  );
+
+  return (
+    <>
+      {/* Ο ΜΕΤΡΗΤΗΣ. Μηδενικού μεγέθους και κρυμμένος, αλλά ΜΕΣΑ στη λωρίδα ώστε να κληρονομεί
+          την ίδια γραμματοσειρά· τα παιδιά του μετριούνται κανονικά παρότι δεν φαίνονται. */}
+      <span
+        ref={probeRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute h-0 w-0 overflow-hidden"
+      >
+        <span
+          className="block font-semibold"
+          style={{ fontSize: `${fit.fontPx.toFixed(2)}px`, lineHeight: 1, whiteSpace: 'nowrap' }}
+        >
+          {rowLines.map(row => (
+            <React.Fragment key={row.tone}>
+              {row.lines.map((line, index) => (
+                <span key={index} data-legend-line={index} style={{ display: 'inline-block' }}>
+                  {numberedText(line, 'l')}
+                </span>
+              ))}
+              <span data-legend-line="one" style={{ display: 'inline-block' }}>
+                {row.lines.map((line, index) => (
+                  <React.Fragment key={index}>
+                    {index > 0 ? ' ' : ''}
+                    {numberedText(line, 'w')}
+                  </React.Fragment>
+                ))}
+              </span>
+            </React.Fragment>
+          ))}
+        </span>
+      </span>
+
+      {rowLines.map(row => {
+        const isActive = activeToneFilter === row.tone;
+        const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
+        const causeShort = causeShortByTone.get(row.tone);
+        const dot = (
+          /* Η κουκκίδα κεντράρεται στην πρώτη γραμμή με μέτρο em, όχι με σταθερά px: το
+             μέγεθος των γραμμάτων εδώ αλλάζει με το πλάτος, οπότε ένα σταθερό `mt-0.5`
+             ταίριαζε σε ένα μόνο μέγεθος. Στο leading-snug (1,375em) το μισό της διαφοράς
+             γραμμής-κουκκίδας είναι ~0,3em σε ΚΑΘΕ μέγεθος. */
+          <span
+            aria-label={colorName[row.tone]}
+            title={colorName[row.tone]}
+            role="img"
+            className={`mt-[0.3em] h-[0.75em] w-[0.75em] shrink-0 rounded-full ring-1 ${dotClasses[row.tone]}`}
+          />
+        );
+        const chevronPlacement = isSoloTile
+          ? 'absolute right-2 top-1/2 -translate-y-1/2'
+          : 'ml-auto mt-[0.2em]';
+        const chevron = isActive
+          ? <X aria-hidden="true" className={`${chevronPlacement} h-[0.95em] w-[0.95em] shrink-0 text-slate-500`} />
+          : <ChevronRight aria-hidden="true" className={`${chevronPlacement} h-[0.95em] w-[0.95em] shrink-0 text-slate-400`} />;
+
+        const body = fit.singleLine ? (
+          /* ΟΛΗ Η ΦΡΑΣΗ ΣΕ ΜΙΑ ΓΡΑΜΜΗ, γιατί η μέτρηση είπε ότι χωράει σε μέγεθος που
+             διαβάζεται. Το `break-words` μένει ως δίχτυ: αν κάποτε μπει λέξη που δεν χωράει
+             με τίποτα, σπάει αντί να ξεχειλίσει. */
+          <span className={`flex min-w-0 items-start ${gapClass} ${isSoloTile ? 'justify-center' : ''}`}>
+            {dot}
+            <span className={`min-w-0 break-words ${isSoloTile ? '' : 'flex-1'}`}>
+              {row.lines.map((line, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 ? ' ' : ''}
+                  {numberedText(line, index)}
+                </React.Fragment>
+              ))}
+            </span>
+            {isToneFilterEnabled && chevron}
+          </span>
+        ) : (
+          /* ΔΥΟ ΓΡΑΜΜΕΣ ΜΕ ΡΗΤΟ ΣΗΜΕΙΟ ΚΟΠΗΣ. Καμία δεν στοιχίζεται κάτω από την άλλη: η
+             δεύτερη πιάνει ΟΛΟ το πλάτος του πλακιδίου, γιατί η εσοχή της κουκκίδας είναι
+             ό,τι ακριβώς λείπει στο «13 παραλίες» για να μη σπάσει στα τρία. */
+          row.lines.map((line, index) => (
+            <span key={index} className={`flex min-w-0 items-start ${gapClass} ${isSoloTile ? 'justify-center' : ''}`}>
+              {index === 0 && dot}
+              <span className={`min-w-0 break-words ${isSoloTile ? '' : 'flex-1'}`}>{numberedText(line, index)}</span>
+              {isToneFilterEnabled && index === fit.chevronLine && chevron}
+            </span>
+          ))
+        );
+
+        if (!isToneFilterEnabled) {
+          return (
+            <div key={row.tone} data-legend-tile="" style={typeStyle} className={textClasses}>
+              {body}
+            </div>
+          );
+        }
+
+        return (
+          <button
+            key={row.tone}
+            type="button"
+            data-legend-tile=""
+            aria-pressed={isActive}
+            /* The spoken label carries the cause too. A blind reader hears the count and the
+               button's action; since 27/08/2026 the cause no longer prints inside the tile, so
+               this is the one place it still reaches them at zero cost in pixels. */
+            aria-label={`${countPhrase.text}${causeShort ? ` — ${causeShort}` : ''} — ${isActive ? filterCopy.showAll : filterCopy.showOnly}`}
+            onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
+            /* ΦΑΙΝΕΤΑΙ ΟΤΙ ΠΑΤΙΕΤΑΙ (Μίλτος, 27/08/2026): συμπαγές λευκό πάνω στο γκρίζο
+               πλαίσιο, περίγραμμα και σκιά για σηκωμένη επιφάνεια, 8 px ανάσα πάνω-κάτω, και
+               βύθισμα στο πάτημα — στο κινητό δεν υπάρχει hover, οπότε χωρίς `active:` το
+               κουμπί δεν απαντούσε ποτέ στο άγγιγμα. Το ύψος ακολουθεί το κείμενο (σταθερό
+               padding, όχι σταθερό ύψος): ο στόχος αφής πέφτει κάτω από τα 44 px συνειδητά,
+               όπως και τα χειριστήρια του χάρτη την ίδια μέρα. Στοίχιση από ΠΑΝΩ, ποτέ
+               κεντράρισμα: το πλέγμα ισοϋψώνει τα κελιά, άρα οτιδήποτε κρέμεται από κάτω σε
+               ένα πλακίδιο θα κατέβαζε κουκκίδα και αριθμό του σε άλλο ύψος από των διπλανών. */
+            style={typeStyle}
+            className={`${textClasses} ${isSoloTile ? 'relative text-center' : 'text-left'} flex w-full cursor-pointer flex-col justify-start rounded-lg border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+              isActive
+                ? `${activeClasses[row.tone]} shadow`
+                : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
+            }`}
+          >
+            {body}
+          </button>
+        );
+      })}
+    </>
+  );
+};
+
 const BeachMap: React.FC<BeachMapProps> = ({
   beaches,
   userLocation,
@@ -3912,6 +4228,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
     it: { showOnly: 'Mostra solo queste', showAll: 'Mostra tutte le spiagge' },
   });
 
+  /* Η σύντομη αιτία ανά χρώμα, μόνο για το aria-label των πλακιδίων: από τις 27/08/2026 δεν
+     τυπώνεται μέσα στο πλακίδιο (μεγάλωνε και τα τέσσερα για χάρη του ενός), αλλά για όποιον
+     ακούει τη σελίδα δεν κοστίζει ούτε ένα pixel — άρα εξακολουθεί να λέγεται. */
+  const causeShortByTone = new Map(
+    Array.from(causeLineByTone, ([tone, words]) => [tone, words.short] as const),
+  );
+
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
     // ONE ROW ON EVERY SCREEN (27/08/2026, Miltos's call). From 10/08 to 27/08 the phone laid
@@ -3947,65 +4270,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // Στα τέσσερα χρώματα το κελί είναι ένα τέταρτο της οθόνης: κάθε px που τρώει το
     // padding, το κενό ή η κουκκίδα το πληρώνει η φράση με μια γραμμή παραπάνω.
     const isTightCell = isSideBySide && rowCount >= 4;
-    /**
-     * ΤΟ ΜΕΓΕΘΟΣ ΤΩΝ ΓΡΑΜΜΑΤΩΝ ΤΟ ΟΡΙΖΕΙ Η ΜΑΚΡΥΤΕΡΗ ΦΡΑΣΗ ΤΗΣ ΛΩΡΙΔΑΣ (Μίλτος, 27/08/2026).
-     *
-     * Το ζητούμενο είναι μία και μόνη ιδιότητα: ΚΑΘΕ πλακίδιο να πιάνει ακριβώς δύο γραμμές,
-     * ώστε κουκκίδα, λέξη, αριθμός και ουσιαστικό να κάθονται στην ίδια σειρά με των διπλανών.
-     * Ένα σταθερό 9px δεν μπορεί να το υποσχεθεί: η ίδια λωρίδα είναι «Ιδανικές / 10 παραλίες»
-     * στα ελληνικά και «9 schwierige / Strände» στα γερμανικά, και το ίδιο κείμενο πέφτει σε
-     * οθόνη 320 και σε οθόνη 430 px. Δύο πράγματα καθορίζουν το αν χωράει: πόσο πλατύ είναι το
-     * κελί (= πόσα χρώματα μοιράζονται τη σειρά) και πόσο μακριά είναι η μακρύτερη γραμμή.
-     *
-     * Μετρημένο στον browser (Chromium, πλάτη 300→1024, και στις πέντε γλώσσες): σε κελί ενός
-     * τετάρτου, στα 2,35vw, χωρούν 11 χαρακτήρες σε μία γραμμή. Από εκεί προκύπτει ο τύπος —
-     * διπλάσιο κελί, διπλάσιο περιθώριο· κάθε χαρακτήρας πάνω από τους 11 αγοράζει τον χώρο
-     * του από το μέγεθος. Το ταβάνι των 11px είναι το μέγεθος που είχε πάντα η λωρίδα σε
-     * υπολογιστή (το πιάνει ήδη από ~470px, άρα δεν χρειάζεται πια breakpoint), και το πάτωμα
-     * των 7,5px είναι το σημείο κάτω από το οποίο δεν κατεβαίνουμε ό,τι κι αν γράφει: σε
-     * πολύ στενές οθόνες οι πιο μακριές φράσεις ξαναπιάνουν τρίτη γραμμή — συνειδητά, γιατί
-     * το εναλλακτικό είναι γράμματα που δεν διαβάζονται.
-     *
-     * ΤΟ ΒΕΛΑΚΙ ΜΕΤΡΑΕΙ, ΚΑΙ ΜΟΝΟ ΣΤΗΝ ΠΡΩΤΗ ΓΡΑΜΜΗ. Κάθεται δίπλα στη λέξη του χρώματος,
-     * άρα της κλέβει πλάτος· η δεύτερη γραμμή (αυτή που κρατά τον αριθμό στα ελληνικά) το
-     * έχει από κάτω ολόκληρο. Μετρημένο στην ίδια δοκιμή: πιάνει όσο περίπου δύο χαρακτήρες
-     * — γι' αυτό προστίθεται στη ΜΕΤΡΗΣΗ της πρώτης γραμμής αντί να κρύβεται το ίδιο, που
-     * ήταν η παλιά λύση και άφηνε το κουμπί χωρίς κανένα σημάδι ότι πατιέται.
-     */
-    /* Πόσο χώρο κλέβουν από τη γραμμή τους η κουκκίδα και το βελάκι, μετρημένο στην ίδια
-       δοκιμή σε χαρακτήρες (κουκκίδα 0,65em + κενό· βελάκι 0,9em + κενό). Είναι σταθερές
-       ΜΕΤΡΗΣΗΣ, όχι γούστου: αν αλλάξει το μέγεθος της κουκκίδας ή του βελακιού παρακάτω,
-       αλλάζουν κι αυτές — αλλιώς ο τύπος υπόσχεται χώρο που δεν υπάρχει. */
-    const DOT_CHARS = 0.9;
-    const CHEVRON_CHARS = 2.6;
-    const legendRowLines = visibleWindColorGuideRows.map(row =>
-      conditionToneCountLines(row.tone, language, row.count));
-    const lineChars = (index: number) => Math.max(0, ...legendRowLines.map(lines => {
-      const line = lines[index];
-      return line ? `${line.before}${line.count ?? ''}${line.after}`.trim().length : 0;
-    }));
-    // Η πρώτη γραμμή κουβαλάει την κουκκίδα, άρα ξεκινάει ήδη φορτωμένη.
-    const firstLineLoad = lineChars(0) + DOT_CHARS;
-    const secondLineLoad = lineChars(1);
-    /* ΤΟ ΒΕΛΑΚΙ ΚΑΘΕΤΑΙ ΣΤΗ ΓΡΑΜΜΗ ΠΟΥ ΕΧΕΙ ΧΩΡΟ, όχι πάντα στην πρώτη. Στα ελληνικά η
-       κοντή γραμμή είναι η λέξη («Ιδανικές») και η μακριά ο αριθμός («13 παραλίες»)· στα
-       γερμανικά και τα αγγλικά ισχύει το ανάποδο («9 schwierige» / «Strände»). Βάζοντάς το
-       στη γραμμή που περισσεύει, το βελάκι χωράει χωρίς να μικρύνει τα γράμματα — και
-       επειδή η επιλογή γίνεται μία φορά για ΟΛΗ τη λωρίδα, όλα τα πλακίδια το φοράνε στην
-       ίδια σειρά, που είναι ο λόγος που ξαναγράφτηκε αυτή η λωρίδα. */
-    const chevronLine = !isToneFilterEnabled ? -1 : (firstLineLoad <= secondLineLoad ? 0 : 1);
-    const widestLegendLine = Math.max(
-      firstLineLoad + (chevronLine === 0 ? CHEVRON_CHARS : 0),
-      secondLineLoad + (chevronLine === 1 ? CHEVRON_CHARS : 0),
-      1,
-    );
-    const legendFitVw = 2.35 * (4 / Math.max(rowCount, 1)) * Math.min(1, 11 / widestLegendLine);
-    // Ένα στυλ, όχι κλάση: ο αριθμός βγαίνει από μέτρηση των ΣΗΜΕΡΙΝΩΝ λέξεων, και οι κλάσεις
-    // του Tailwind πρέπει να είναι σταθερά κείμενα για να παραχθούν καν.
-    const legendTypeStyle: CSSProperties = {
-      fontSize: `clamp(7.5px, ${legendFitVw.toFixed(2)}vw, ${isPreview ? 10 : 11}px)`,
-    };
-    const gridClasses = isSideBySide ? `grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'grid gap-1';
+    /* ΤΟ ΜΕΓΕΘΟΣ ΚΑΙ ΤΟ ΣΧΗΜΑ ΤΩΝ ΠΛΑΚΙΔΙΩΝ ΔΕΝ ΥΠΟΛΟΓΙΖΟΝΤΑΙ ΕΔΩ — ΜΕΤΡΙΟΥΝΤΑΙ.
+       Το WindColorLegendTiles (πάνω από αυτό το component) ρωτάει τον browser πόσο πιάνουν
+       ΟΙ ΣΗΜΕΡΙΝΕΣ φράσεις και αποφασίζει, μία φορά για όλη τη λωρίδα, μέγεθος γραμμάτων,
+       μία ή δύο γραμμές, και σε ποια γραμμή κάθεται το βελάκι. Εδώ μένει μόνο το πλαίσιο:
+       πόσες στήλες, πόσο κενό, και το ταβάνι του μεγέθους (11px, ή 10px στην προεπισκόπηση).
+       Το `relative` δεν είναι διακοσμητικό: πάνω του κάθεται ο αόρατος μετρητής. */
+    const gridClasses = isSideBySide ? `relative grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'relative grid gap-1';
 
     return (
       <div
@@ -4022,143 +4293,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
               />
             </span>
           </div>
-        ) : visibleWindColorGuideRows.map(row => {
-          const isActive = activeToneFilter === row.tone;
-          // «Ιδανικές 4 παραλίες», not «Ιδανική 4». The bare number beside a singular adjective
-          // was read as a score or a rank; the noun is what makes it a count (12/08/2026, from
-          // real reader reports). It survived the 15/08 slimming for exactly that reason: what
-          // was cut is the second line under each row on a PHONE, never the noun inside it.
-          const countPhrase = conditionToneCountPhrase(row.tone, language, row.count);
-          /* ΔΥΟ ΓΡΑΜΜΕΣ ΜΕ ΡΗΤΟ ΣΗΜΕΙΟ ΚΟΠΗΣ, ΟΧΙ ΕΛΕΥΘΕΡΟ ΤΥΛΙΓΜΑ (Μίλτος, 27/08/2026):
-             «Ιδανικές» / «10 παραλίες» σε κάθε πλακίδιο, ώστε η λέξη, ο αριθμός και το
-             ουσιαστικό να πέφτουν στην ΙΔΙΑ σειρά με των διπλανών. Το γιατί — και πώς
-             κόβεται κάθε γλώσσα — είναι στο conditionToneCountLines. */
-          const countLines = conditionToneCountLines(row.tone, language, row.count);
-          const causeLine = causeLineByTone.get(row.tone);
-          const body = (
-            <>
-              {/* ΜΙΑ ΣΕΙΡΑ ΑΝΑ ΓΡΑΜΜΗ. Η κουκκίδα μπαίνει μέσα στην πρώτη· το βελάκι σε όποια
-                  από τις δύο έχει χώρο (chevronLine, πιο πάνω). Καμία από τις δύο γραμμές δεν
-                  στοιχίζεται κάτω από την άλλη: η δεύτερη πιάνει ΟΛΟ το πλάτος του πλακιδίου,
-                  γιατί τα ~10 px της εσοχής είναι ό,τι ακριβώς λείπει στο «13 παραλίες» για
-                  να μη σπάσει στα τρία. */}
-              {countLines.map((line, index) => (
-                <span key={index} className={`flex min-w-0 items-start ${isTightCell ? 'gap-[0.3em]' : 'gap-1'} sm:gap-1.5`}>
-                  {index === 0 && (
-                    /* Η κουκκίδα κεντράρεται στην ΠΡΩΤΗ γραμμή του κειμένου με μέτρο em, όχι
-                       με σταθερά px: το μέγεθος των γραμμάτων εδώ είναι ρευστό (δες
-                       legendTypeStyle), άρα ένα `mt-0.5` που ταίριαζε στα 11px έπεφτε ψηλά
-                       στα 8px. Στο leading-snug (1,375em) το μισό της διαφοράς
-                       γραμμής-κουκκίδας είναι ~0,25em σε ΚΑΘΕ μέγεθος — και για να μείνει
-                       αυτό αληθινό, στο στενό κελί η ίδια η κουκκίδα μετριέται σε em. */
-                    <span
-                      aria-label={windColorGuideCopy.colorName[row.tone]}
-                      title={windColorGuideCopy.colorName[row.tone]}
-                      role="img"
-                      className={`mt-[0.25em] ${isTightCell ? 'h-[0.65em] w-[0.65em]' : 'h-2 w-2'} shrink-0 rounded-full ring-1 sm:h-2.5 sm:w-2.5 ${windLegendDotClasses[row.tone]}`}
-                    />
-                  )}
-                  <span className="min-w-0 flex-1 break-words">
-                    {line.before}
-                    {line.count !== null && (
-                      <span className="font-extrabold text-slate-700 dark:text-slate-200">{line.count}</span>
-                    )}
-                    {line.after}
-                  </span>
-                  {/* ΤΟ ΣΗΜΑΔΙ ΟΤΙ ΠΑΤΙΕΤΑΙ, ΣΕ ΚΑΘΕ ΠΛΑΚΙΔΙΟ. Το `ml-auto` το στέλνει στο
-                      δεξί χείλος, όπου διαβάζεται ως «προχώρα», και το μέγεθός του είναι σε
-                      em ώστε να μη φουσκώνει σε σχέση με τα γράμματα όταν αυτά μικραίνουν. */}
-                  {index === chevronLine && (
-                    isActive
-                      ? <X aria-hidden="true" className="ml-auto mt-[0.15em] h-[0.9em] w-[0.9em] shrink-0 text-slate-500" />
-                      : <ChevronRight aria-hidden="true" className="ml-auto mt-[0.15em] h-[0.9em] w-[0.9em] shrink-0 text-slate-400" />
-                  )}
-                </span>
-              ))}
-              {/* ΤΙΠΟΤΑ ΑΛΛΟ ΜΕΣΑ ΣΤΟ ΠΛΑΚΙΔΙΟ (Μίλτος, 27/08/2026: «το the waves not the wind
-                  βγάλ' το, να μικρύνουν τα κουμπιά»). Εδώ πέρασαν και έφυγαν δύο κείμενα, και
-                  τα δύο για τον ίδιο λόγο — έκαναν το πλακίδιο ψηλότερο απ' όσο αξίζει ένα
-                  κουμπί που λέει έναν αριθμό:
-                    • η ΣΤΑΤΙΚΗ πρόταση ανά χρώμα («Λίγος αέρας, ήρεμο νερό»), το πρωί της
-                      27/08 — ήταν η ίδια κλίμακα ειπωμένη τέσσερις φορές·
-                    • η ΓΡΑΜΜΗ ΑΙΤΙΑΣ («Ο αέρας φέρνει κύμα»), εδώ, που έπιανε δύο γραμμές σε
-                      κελί ενός τετάρτου και μεγάλωνε ΟΛΑ τα πλακίδια της σειράς, αφού το
-                      πλέγμα τα ισοϋψώνει — ένα χρώμα μιλούσε, τέσσερα πλήρωναν.
-                  Η αιτία ΔΕΝ χάθηκε από την οθόνη: μόλις ο επισκέπτης πατήσει ένα χρώμα, η
-                  πλήρης πρότασή της (`causeLine.full`) τυπώνεται κάτω από τη λωρίδα, εκεί
-                  όπου υπάρχει πλάτος για ολόκληρη πρόταση αντί για κομμένη. Παραμένει επίσης
-                  στο aria-label του κουμπιού: για όποιον ακούει τη σελίδα δεν κοστίζει ούτε
-                  ένα pixel, άρα δεν υπάρχει λόγος να του αφαιρεθεί. Οι λέξεις ΔΕΝ σβήστηκαν
-                  από το conditionToneLabels — τις διαβάζουν πύλες. */}
-            </>
-          );
-          // ΤΟ ΜΕΓΕΘΟΣ ΕΙΝΑΙ ΤΟ ΤΙΜΗΜΑ ΤΩΝ ΣΤΗΛΩΝ, ΟΧΙ ΚΑΝΟΝΑΣ. Μέχρι σήμερα ήταν τρία σταθερά
-          // νούμερα (9 px στα τέσσερα χρώματα, 10 στα δύο-τρία, 11 από sm:) — και σταθερά
-          // νούμερα δεν μπορούν να υποσχεθούν ότι η φράση χωράει σε δύο γραμμές, γιατί δεν
-          // ξέρουν ούτε πόσο μακριά είναι ούτε πόσο πλατιά είναι η οθόνη. Τώρα το μέγεθος
-          // βγαίνει από τα δύο αυτά μεγέθη μαζί (legendTypeStyle, πιο πάνω) και το μόνο που
-          // μένει κλάση είναι το χρώμα και το βάρος. Ένα μοναδικό πλακίδιο (φίλτρο αναμμένο)
-          // πιάνει όλο το πλάτος, οπότε ο τύπος του δίνει έτσι κι αλλιώς το ταβάνι.
-          const textClasses = 'min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300';
-
-          if (!isToneFilterEnabled) {
-            return <div key={row.tone} style={legendTypeStyle} className={textClasses}>{body}</div>;
-          }
-
-          return (
-            <button
-              key={row.tone}
-              type="button"
-              aria-pressed={isActive}
-              /* The spoken label carries the cause too. A blind reader hears the count and the
-                 button's action; without this they would be the only ones who never learn that
-                 today's orange is wind and not wave. */
-              aria-label={`${countPhrase.text}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
-              onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
-              /* ΦΑΙΝΕΤΑΙ ΟΤΙ ΠΑΤΙΕΤΑΙ (Μίλτος, 27/08/2026). Μέχρι σήμερα το πλακίδιο ήταν
-                 ημιδιάφανο άσπρο με ανοιχτόγκριζο περίγραμμα πάνω σε ανοιχτόγκριζο πλαίσιο,
-                 χωρίς σκιά και — στο κινητό, μετά τη σμίκρυνση της ίδιας μέρας — χωρίς
-                 βελάκι: διαβαζόταν σαν ταμπελάκι υπομνήματος, όχι σαν κουμπί, και ο
-                 επισκέπτης δεν είχε λόγο να το ακουμπήσει. Τέσσερα σήματα το γυρίζουν, και
-                 κανένα δεν κοστίζει πλάτος (που το χρειάζεται η μία σειρά):
-                   • ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ πάνω στο γκρίζο πλαίσιο — αντίθεση αντί για διαφάνεια.
-                   • ΠΕΡΙΓΡΑΜΜΑ ΚΑΙ ΣΚΙΑ (slate-300 + shadow-sm): σηκωμένη επιφάνεια.
-                   • ΑΝΑΣΑ ΓΥΡΩ ΑΠΟ ΤΙΣ ΛΕΞΕΙΣ (`py-2`, 8 px πάνω-κάτω) αντί για τα 2 px που
-                     είχε — αρκετή για να διαβάζεται ως επιφάνεια, όχι ως γραμμή κειμένου.
-                   • ΑΝΤΙΔΡΑΣΗ ΣΤΟ ΠΑΤΗΜΑ (`active:`): βυθίζεται 1 px και χάνει τη σκιά.
-                     Στο κινητό δεν υπάρχει hover — χωρίς `active:` το κουμπί δεν απαντάει
-                     ποτέ στο άγγιγμα, που είναι ο μισός λόγος που δεν έμοιαζε με κουμπί.
-                 ΤΟ ΥΨΟΣ ΑΚΟΛΟΥΘΕΙ ΤΟ ΚΕΙΜΕΝΟ, ΔΕΝ ΕΠΙΒΑΛΛΕΤΑΙ (Μίλτος, 27/08/2026). Εδώ
-                 στάθηκε για λίγες ώρες ένα `min-h-11` (44 px, η σύσταση για στόχο αφής). Με
-                 τέσσερα χρώματα το κείμενο τυλίγεται σε δύο γραμμές και το γέμιζε· με δύο
-                 χρώματα όμως τα πλακίδια είναι διπλάσια σε πλάτος, η φράση χωράει σε ΜΙΑ
-                 γραμμή, και τα 44 px άφηναν ένα δάχτυλο λευκό πάνω και κάτω από το
-                 «Ιδανικές». Σταθερό padding αντί για σταθερό ύψος: ~28 px στη μία γραμμή,
-                 ~41 px στις δύο, πάντα αναλογικό. Ο στόχος αφής πέφτει κάτω από τα 44 —
-                 συνειδητά και συνεπώς με τα χειριστήρια του χάρτη, που ο Μίλτος τα πήγε
-                 στα 34 την ίδια μέρα· αν ποτέ ακουστεί «δεν πατιέται», εδώ είναι η αιτία.
-                 ΣΤΟΙΧΙΣΗ ΑΠΟ ΠΑΝΩ, ΟΧΙ ΚΕΝΤΡΑΡΙΣΜΑ (Μίλτος, 27/08/2026: «θέλω να είναι
-                 πάντα σωστά στοιχισμένα όλα»). Εδώ ήταν `justify-center` για να μην κολλάει
-                 πάνω ένα κοντό πλακίδιο δίπλα σε ένα που τυλίχτηκε — μόνο που το πλέγμα
-                 ισοϋψώνει τα κελιά στο ψηλότερο, κι έτσι ΚΑΘΕ διαφορά ύψους (μια δεύτερη
-                 γραμμή, ή η γραμμή αιτίας που ανάβει μόνο σε ένα-δύο χρώματα) κατέβαζε
-                 κουκκίδα, λέξη και αριθμό εκείνου του πλακιδίου σε άλλο ύψος από των
-                 διπλανών: τέσσερις κουκκίδες σε τέσσερα ύψη. Με στοίχιση από πάνω, η πρώτη
-                 γραμμή όλων ξεκινά στο ίδιο σημείο ό,τι κι αν κρέμεται από κάτω, και το
-                 ρητό κόψιμο της φράσης (conditionToneCountLines) βάζει τους αριθμούς στην
-                 ίδια σειρά. Η επιλεγμένη κατάσταση κρατά το δικό της χρώμα
-                 (windLegendActiveClasses) — αυτά αλλάζουν μόνο την ΑΠΑΤΗΤΗ όψη. */
-              style={legendTypeStyle}
-              className={`${textClasses} flex w-full cursor-pointer flex-col justify-start rounded-lg border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 text-left shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
-                isActive
-                  ? `${windLegendActiveClasses[row.tone]} shadow`
-                  : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
-              }`}
-            >
-              {body}
-            </button>
-          );
-        })}
+        ) : (
+          <WindColorLegendTiles
+            rows={visibleWindColorGuideRows}
+            language={language}
+            maxFontPx={isPreview ? 10 : 11}
+            isTightCell={isTightCell}
+            isToneFilterEnabled={isToneFilterEnabled}
+            activeToneFilter={activeToneFilter ?? null}
+            onToneFilterChange={onToneFilterChange}
+            colorName={windColorGuideCopy.colorName}
+            dotClasses={windLegendDotClasses}
+            activeClasses={windLegendActiveClasses}
+            filterCopy={toneFilterCopy}
+            causeShortByTone={causeShortByTone}
+          />
+        )}
         {/* The cove's explanatory line used to live here (removed 05/08/2026) — it now rides
             inside the beach cards themselves, next to the wind/wave stats, instead of as a
             standalone caption under the map legend (see BeachConditionScore's enclosedCove
