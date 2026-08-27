@@ -3899,6 +3899,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // Four is the whole ladder (blue/yellow/orange/red), so the fallback is only a guard against
     // a future fifth colour — it keeps the strip on one line rather than inventing a new shape.
     const columnClasses = sideBySideColumnClasses[rowCount] ?? 'grid-cols-4';
+    // Πόσο στενό είναι ένα κελί στο κινητό — το διαβάζουν και το βελάκι και το μέγεθος
+    // κειμένου, από ΕΝΑ σημείο, ώστε να μην μπορούν να πουν διαφορετικά πράγματα.
+    const hidesRowChevron = isSideBySide && rowCount >= 3;
     const gridClasses = isSideBySide ? `grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'grid gap-1';
 
     return (
@@ -3938,10 +3941,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   <span className="font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
                   {countPhrase.after}
                 </span>
+                {/* Το βελάκι κρύβεται ΜΟΝΟ όταν πραγματικά δεν χωράει: με τρία ή τέσσερα
+                    χρώματα τα 10 px του τα κλέβει από τη φράση και την τυλίγει σε τρίτη
+                    γραμμή. Με δύο χρώματα το πλακίδιο είναι διπλάσιο σε πλάτος, η φράση
+                    τελειώνει πολύ πριν το δεξί χείλος, και το `ml-auto` βελάκι γεμίζει
+                    ακριβώς εκείνο το κενό λέγοντας «πατιέμαι». Από sm: φαίνεται πάντα. */}
                 {isToneFilterEnabled && (
                   isActive
-                    ? <X aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-500 ${isSideBySide ? 'hidden sm:block' : ''}`} />
-                    : <ChevronRight aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400 ${isSideBySide ? 'hidden sm:block' : ''}`} />
+                    ? <X aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-500 ${hidesRowChevron ? 'hidden sm:block' : ''}`} />
+                    : <ChevronRight aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400 ${hidesRowChevron ? 'hidden sm:block' : ''}`} />
                 )}
               </span>
               {/* Η ΣΤΑΤΙΚΗ ΠΡΟΤΑΣΗ ΑΝΑ ΧΡΩΜΑ ΕΦΥΓΕ ΑΠΟ ΤΗΝ ΟΘΟΝΗ (Μίλτος, 27/08/2026).
@@ -3963,11 +3971,15 @@ const BeachMap: React.FC<BeachMapProps> = ({
               )}
             </>
           );
-          // A lone chip (a filter is on) has the whole width to itself and keeps its old size;
-          // chips sharing a phone row drop to 9px, which is what buys them the single line.
-          const sizeClasses = isSideBySide
-            ? 'text-[9px] sm:text-[11px]'
-            : (isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]');
+          // ΤΟ ΜΕΓΕΘΟΣ ΕΙΝΑΙ ΤΟ ΤΙΜΗΜΑ ΤΩΝ ΣΤΗΛΩΝ, ΟΧΙ ΚΑΝΟΝΑΣ. Τα 9 px τα πλήρωσε η μία
+          // σειρά με ΤΕΣΣΕΡΑ χρώματα· με δύο ή τρία υπάρχει διπλάσιο πλάτος και το κείμενο
+          // δεν έχει κανέναν λόγο να είναι μικρότερο απ' όσο χρειάζεται. Ένα μοναδικό
+          // πλακίδιο (φίλτρο αναμμένο) κρατάει το πλήρες μέγεθος. Στο sm: πάντα 11 px.
+          const sizeClasses = !isSideBySide
+            ? (isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]')
+            : rowCount >= 4
+              ? 'text-[9px] sm:text-[11px]'
+              : 'text-[10px] sm:text-[11px]';
           const textClasses = `${sizeClasses} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
 
           if (!isToneFilterEnabled) {
@@ -3992,15 +4004,25 @@ const BeachMap: React.FC<BeachMapProps> = ({
                  κανένα δεν κοστίζει πλάτος (που το χρειάζεται η μία σειρά):
                    • ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ πάνω στο γκρίζο πλαίσιο — αντίθεση αντί για διαφάνεια.
                    • ΠΕΡΙΓΡΑΜΜΑ ΚΑΙ ΣΚΙΑ (slate-300 + shadow-sm): σηκωμένη επιφάνεια.
-                   • ΥΨΟΣ 44 px (`min-h-11`), ο κανόνας για δάχτυλο σε οθόνη αφής — ήταν ~26.
-                     Κοστίζει ύψος μία φορά για όλη τη λωρίδα, όχι ανά χρώμα.
+                   • ΑΝΑΣΑ ΓΥΡΩ ΑΠΟ ΤΙΣ ΛΕΞΕΙΣ (`py-2`, 8 px πάνω-κάτω) αντί για τα 2 px που
+                     είχε — αρκετή για να διαβάζεται ως επιφάνεια, όχι ως γραμμή κειμένου.
                    • ΑΝΤΙΔΡΑΣΗ ΣΤΟ ΠΑΤΗΜΑ (`active:`): βυθίζεται 1 px και χάνει τη σκιά.
                      Στο κινητό δεν υπάρχει hover — χωρίς `active:` το κουμπί δεν απαντάει
                      ποτέ στο άγγιγμα, που είναι ο μισός λόγος που δεν έμοιαζε με κουμπί.
-                 Το `flex-col justify-center` κεντράρει το περιεχόμενο μέσα στο νέο ύψος.
-                 Η επιλεγμένη κατάσταση κρατά το δικό της χρώμα (windLegendActiveClasses)
-                 όπως πριν — αυτό εδώ αλλάζει μόνο πώς δείχνει η ΑΠΑΤΗΤΗ κατάσταση. */
-              className={`${textClasses} flex min-h-11 w-full cursor-pointer flex-col justify-center rounded-lg border px-1 py-1 text-left shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 sm:py-1.5 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                 ΤΟ ΥΨΟΣ ΑΚΟΛΟΥΘΕΙ ΤΟ ΚΕΙΜΕΝΟ, ΔΕΝ ΕΠΙΒΑΛΛΕΤΑΙ (Μίλτος, 27/08/2026). Εδώ
+                 στάθηκε για λίγες ώρες ένα `min-h-11` (44 px, η σύσταση για στόχο αφής). Με
+                 τέσσερα χρώματα το κείμενο τυλίγεται σε δύο γραμμές και το γέμιζε· με δύο
+                 χρώματα όμως τα πλακίδια είναι διπλάσια σε πλάτος, η φράση χωράει σε ΜΙΑ
+                 γραμμή, και τα 44 px άφηναν ένα δάχτυλο λευκό πάνω και κάτω από το
+                 «Ιδανικές». Σταθερό padding αντί για σταθερό ύψος: ~28 px στη μία γραμμή,
+                 ~41 px στις δύο, πάντα αναλογικό. Ο στόχος αφής πέφτει κάτω από τα 44 —
+                 συνειδητά και συνεπώς με τα χειριστήρια του χάρτη, που ο Μίλτος τα πήγε
+                 στα 34 την ίδια μέρα· αν ποτέ ακουστεί «δεν πατιέται», εδώ είναι η αιτία.
+                 Το `justify-center` μένει: το πλέγμα ισοϋψώνει τα κελιά, οπότε αν ένα χρώμα
+                 τυλιχτεί σε δεύτερη γραμμή και το διπλανό όχι, το κοντό κεντράρεται αντί να
+                 κολλήσει πάνω. Η επιλεγμένη κατάσταση κρατά το δικό της χρώμα
+                 (windLegendActiveClasses) — αυτά αλλάζουν μόνο την ΑΠΑΤΗΤΗ όψη. */
+              className={`${textClasses} flex w-full cursor-pointer flex-col justify-center rounded-lg border px-1.5 py-2 text-left shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                 isActive
                   ? `${windLegendActiveClasses[row.tone]} shadow`
                   : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
