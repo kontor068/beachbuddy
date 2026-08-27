@@ -212,7 +212,26 @@
 # pageviews: caught by an enforced violation from /el/beaches/lakonia/1552-viandini-vourkos/.
 # This is the failure mode the comment above warned about — one missing origin, every
 # page still returning 200. Strictly a loosening; nothing that worked can break.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+#
+# 27/08/2026 — `https://translate.googleapis.com` ΣΤΟ connect-src, για τον ίδιο λόγο.
+# Ενεργή παραβίαση από /el/organized-beaches/pieria/ σε Android 8.1 (Alcatel 5033D,
+# Chrome 138): ο επισκέπτης ζήτησε από τον browser να ΜΕΤΑΦΡΑΣΕΙ την ελληνική σελίδα.
+# Η μετάφραση του Chrome/Edge δεν είναι ξένος θόρυβος εδώ — είναι ρητά αναμενόμενη
+# διαδρομή: το utils/domTranslationGuard.ts γράφτηκε στις 20/08 ακριβώς επειδή «το site
+# είναι ελληνικό και το μισό κοινό του είναι τουρίστες». Το script του μεταφραστή το
+# βάζει ο ίδιος ο browser και δεν το αγγίζει το CSP· οι κλήσεις του όμως φεύγουν από
+# το πλαίσιο της σελίδας και τις έκοβε το connect-src.
+#
+# ΜΟΝΟ connect-src, όχι script-src: η ίδια η αναφορά αποδεικνύει ότι το script έτρεχε
+# (δεν θα υπήρχε κλήση αλλιώς), άρα δεν υπάρχει μετρημένο κενό εκεί — και μια πηγή
+# scripts παραπάνω μεγαλώνει την επιφάνεια XSS χωρίς λόγο. Αν λείπει, θα το πει η ίδια
+# η γραμμή αναφοράς με παραβίαση script-src.
+#
+# ΤΙ ΔΕΝ ΞΕΡΟΥΜΕ: η ομαδοποίηση των αναφορών είναι ανά origin+directive, οπότε αυτή η
+# μία ειδοποίηση δεν ξεχωρίζει αν κόπηκε μόνο το τηλεμετρικό /element/log ή ΚΑΙ οι
+# κλήσεις που κάνουν τη μετάφραση. Επειδή η δεύτερη περίπτωση σημαίνει τουρίστας που
+# βλέπει ελληνικά και δεν καταλαβαίνει, η απόφαση παίρνεται υπέρ του επισκέπτη.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
