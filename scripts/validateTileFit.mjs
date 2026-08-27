@@ -333,7 +333,30 @@ try {
       deviceScaleFactor: 2, isMobile: true, hasTouch: true, timezoneId: 'Europe/Athens',
     });
     const page = await ctx.newPage();
-    await page.goto(BASE + PAGES[0][1], { waitUntil: 'domcontentloaded', timeout: 90000 });
+    /**
+     * ΜΕ FIXTURE, ΟΠΩΣ ΤΟ ΒΑΘΡΟ — 27/08/2026.
+     *
+     * Οι τρεις στόχοι δεν υπάρχουν χωρίς πρόγνωση: το App.tsx ζωγραφίζει τη σελίδα παραλίας
+     * μόνο όταν έχει `detailForecastDay` (γρ. 6849), και μέσα της τα «Κύμα» / «Εναλλακτικές»
+     * κρέμονται από το `showConditions` (BeachDetailPage γρ. 830, 2086, 2098). Οπότε όταν το
+     * Open-Meteo δεν απαντήσει, η μπάρα μένει χωρίς καρτέλες και η πύλη γράφει «measured
+     * nothing» — σωστά, αλλά για λόγο που δεν αφορά το προϊόν.
+     *
+     * Συνέβη στο τρέξιμο 373 (27/08): το ίδιο commit πέρασε στο 374 χωρίς καμία αλλαγή στη
+     * σελίδα. Αυτό το μπλοκ είναι το ΤΕΛΕΥΤΑΙΟ φόρτωμα σελίδας παραλίας, μετά από ~20 άλλα,
+     * δηλαδή το πιο εκτεθειμένο σε ποσόστωση — γι' αυτό έπεσε εδώ κι όχι στα πλακίδια.
+     *
+     * Το fixture λύνει ακριβώς αυτό, και είναι ο ίδιος μηχανισμός που χρησιμοποιεί ήδη το
+     * βάθρο παρακάτω («το fixture είναι αυτό που κάνει το βάθρο να υπάρχει καθόλου»).
+     * Επιλέχθηκε το Unknown_Profile_N_5BFT επειδή ΔΕΝ κουβαλάει targetRegionId: δεν τραβάει
+     * την επιλεγμένη περιοχή αλλού, απλώς δίνει καιρό.
+     *
+     * ΔΕΝ χαλαρώνει τίποτα: το κατώφλι κάτω από τη σταθερή κεφαλίδα, η υπερεκτόξευση και το
+     * focus μένουν ακριβώς ίδια. Αλλάζει μόνο τι σημαίνει το `landed === 0` — από «δεν ήρθε
+     * ο καιρός» σε «οι καρτέλες έσπασαν», που είναι πραγματικό bug για τον επισκέπτη.
+     */
+    await page.goto(BASE + PAGES[0][1] + '?bbWeatherFixture=Unknown_Profile_N_5BFT',
+      { waitUntil: 'domcontentloaded', timeout: 90000 });
     await page.waitForSelector('[data-tabfit]', { timeout: 60000 }).catch(() => {});
     await wait(2000);
 
@@ -400,7 +423,9 @@ try {
       console.log(`tab «${label}» -> #${id}  top=${r.top}px (header ${headerH}px)  focused=${r.focused}`);
     }
     if (landed === 0) {
-      failures.push('no jump tab could be clicked on ' + PAGES[0][1] + ' — the landing check measured nothing');
+      failures.push('no jump tab could be clicked on ' + PAGES[0][1] + ' — the landing check measured '
+        + 'nothing. The page is driven by a weather fixture here, so this is NOT a missing forecast: '
+        + 'the bottom bar genuinely rendered without its jump tabs.');
     }
     await ctx.close();
   }
