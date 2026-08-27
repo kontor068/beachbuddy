@@ -1,0 +1,469 @@
+{
+  "ranAt": "2026-08-27T12:29:03.936Z",
+  "window": "92 days",
+  "stations": [
+    {
+      "icao": "LGIR",
+      "beachId": 634,
+      "beachKm": 2.2
+    },
+    {
+      "icao": "LGSA",
+      "beachId": 539,
+      "beachKm": 3.7
+    },
+    {
+      "icao": "LGST",
+      "beachId": 3131,
+      "beachKm": 1.7
+    },
+    {
+      "icao": "LGRP",
+      "beachId": 2405,
+      "beachKm": 3.9
+    },
+    {
+      "icao": "LGKO",
+      "beachId": 2333,
+      "beachKm": 4.1
+    },
+    {
+      "icao": "LGMK",
+      "beachId": 1961,
+      "beachKm": 2
+    },
+    {
+      "icao": "LGSR",
+      "beachId": 2064,
+      "beachKm": 1.5
+    },
+    {
+      "icao": "LGNX",
+      "beachId": 1981,
+      "beachKm": 1.8
+    },
+    {
+      "icao": "LGPA",
+      "beachId": 2044,
+      "beachKm": 1.3
+    },
+    {
+      "icao": "LGSK",
+      "beachId": 2621,
+      "beachKm": 0.8
+    },
+    {
+      "icao": "LGKR",
+      "beachId": 967,
+      "beachKm": 1.3
+    },
+    {
+      "icao": "LGZA",
+      "beachId": 1190,
+      "beachKm": 2.5
+    },
+    {
+      "icao": "LGKF",
+      "beachId": 1070,
+      "beachKm": 1.1
+    },
+    {
+      "icao": "LGPZ",
+      "beachId": 869,
+      "beachKm": 2.8
+    },
+    {
+      "icao": "LGLM",
+      "beachId": 1450,
+      "beachKm": 3.4
+    },
+    {
+      "icao": "LGMT",
+      "beachId": 1336,
+      "beachKm": 0.3
+    },
+    {
+      "icao": "LGSM",
+      "beachId": 1390,
+      "beachKm": 1.6
+    },
+    {
+      "icao": "LGHI",
+      "beachId": 1248,
+      "beachKm": 2.2
+    },
+    {
+      "icao": "LGTS",
+      "beachId": 524,
+      "beachKm": 3.5
+    },
+    {
+      "icao": "LGKC",
+      "beachId": 125,
+      "beachKm": 3.9
+    },
+    {
+      "icao": "LGML",
+      "beachId": 1903,
+      "beachKm": 2.5
+    },
+    {
+      "icao": "LGLE",
+      "beachId": 2368,
+      "beachKm": 1.5
+    },
+    {
+      "icao": "LGKP",
+      "beachId": 2309,
+      "beachKm": 0.7
+    },
+    {
+      "icao": "LGIK",
+      "beachId": 1296,
+      "beachKm": 0.6
+    },
+    {
+      "icao": "LGSY",
+      "beachId": 335,
+      "beachKm": 1.4
+    }
+  ],
+  "constants": {
+    "STATION_BEACH_MAX_KM": 5,
+    "MIN_INFORMATIVE_WAVE_M": 0.3,
+    "ARRIVAL_ONSHORE_MIN": 0.3,
+    "ARRIVAL_MIN_FETCH_KM": 2,
+    "GROUND_SWELL_MIN_PERIOD_S": 7
+  },
+  "rows": 29650,
+  "fired": 4435,
+  "reasons": {
+    "fires": 4435,
+    "agrees": 1123,
+    "wave-too-small": 12520,
+    "not-onshore": 9863,
+    "swell-not-wind-sea": 8,
+    "no-fetch": 50,
+    "no-wave": 1651
+  },
+  "overall": {
+    "base": {
+      "hours": 29650,
+      "maeKmh": 4.86,
+      "biasKmh": -0.25,
+      "exactBftPct": 45.6,
+      "underPct": 27.2,
+      "overPct": 27.2,
+      "lowAt5PlusPct": 32.9,
+      "falseCalmPct": 0.8,
+      "falseAlarmPct": 1
+    },
+    "candidates": {
+      "κύμα → άνεμος, πλήρης": {
+        "hours": 29650,
+        "maeKmh": 7.79,
+        "biasKmh": 3.7,
+        "exactBftPct": 40.7,
+        "underPct": 21.9,
+        "overPct": 37.4,
+        "lowAt5PlusPct": 22,
+        "falseCalmPct": 0.5,
+        "falseAlarmPct": 2.9,
+        "passes": false
+      },
+      "κύμα → άνεμος, +1 σκαλί το πολύ": {
+        "hours": 29650,
+        "maeKmh": 4.96,
+        "biasKmh": 0.38,
+        "exactBftPct": 43.7,
+        "underPct": 22.6,
+        "overPct": 33.7,
+        "lowAt5PlusPct": 23.4,
+        "falseCalmPct": 0.5,
+        "falseAlarmPct": 1.7,
+        "passes": false
+      }
+    }
+  },
+  "halves": {
+    "A": {
+      "base": {
+        "hours": 15765,
+        "maeKmh": 4.92,
+        "biasKmh": -1.62,
+        "exactBftPct": 44.9,
+        "underPct": 33.7,
+        "overPct": 21.4,
+        "lowAt5PlusPct": 36.4,
+        "falseCalmPct": 0.9,
+        "falseAlarmPct": 0.5
+      },
+      "candidates": {
+        "κύμα → άνεμος, πλήρης": {
+          "hours": 15765,
+          "maeKmh": 5.9,
+          "biasKmh": 0.73,
+          "exactBftPct": 42.6,
+          "underPct": 26.5,
+          "overPct": 30.9,
+          "lowAt5PlusPct": 23.1,
+          "falseCalmPct": 0.5,
+          "falseAlarmPct": 2,
+          "passes": false
+        },
+        "κύμα → άνεμος, +1 σκαλί το πολύ": {
+          "hours": 15765,
+          "maeKmh": 4.81,
+          "biasKmh": -1.09,
+          "exactBftPct": 46,
+          "underPct": 27.6,
+          "overPct": 26.4,
+          "lowAt5PlusPct": 24.8,
+          "falseCalmPct": 0.6,
+          "falseAlarmPct": 0.8,
+          "passes": true
+        }
+      }
+    },
+    "B": {
+      "base": {
+        "hours": 13885,
+        "maeKmh": 4.81,
+        "biasKmh": 1.31,
+        "exactBftPct": 46.4,
+        "underPct": 19.7,
+        "overPct": 33.8,
+        "lowAt5PlusPct": 26.2,
+        "falseCalmPct": 0.6,
+        "falseAlarmPct": 1.6
+      },
+      "candidates": {
+        "κύμα → άνεμος, πλήρης": {
+          "hours": 13885,
+          "maeKmh": 9.93,
+          "biasKmh": 7.07,
+          "exactBftPct": 38.6,
+          "underPct": 16.7,
+          "overPct": 44.8,
+          "lowAt5PlusPct": 20,
+          "falseCalmPct": 0.5,
+          "falseAlarmPct": 4,
+          "passes": false
+        },
+        "κύμα → άνεμος, +1 σκαλί το πολύ": {
+          "hours": 13885,
+          "maeKmh": 5.14,
+          "biasKmh": 2.04,
+          "exactBftPct": 41.1,
+          "underPct": 16.9,
+          "overPct": 42.1,
+          "lowAt5PlusPct": 20.6,
+          "falseCalmPct": 0.5,
+          "falseAlarmPct": 2.7,
+          "passes": false
+        }
+      }
+    }
+  },
+  "perMonth": {
+    "2026-06": {
+      "base": {
+        "hours": 5483,
+        "maeKmh": 5.12,
+        "biasKmh": 0.32,
+        "exactBftPct": 45.3,
+        "underPct": 25.2,
+        "overPct": 29.5,
+        "lowAt5PlusPct": 34.8,
+        "falseCalmPct": 0.5,
+        "falseAlarmPct": 1.7
+      },
+      "candidates": {
+        "κύμα → άνεμος, πλήρης": {
+          "hours": 5483,
+          "maeKmh": 8.39,
+          "biasKmh": 4.62,
+          "exactBftPct": 40.5,
+          "underPct": 19.7,
+          "overPct": 39.8,
+          "lowAt5PlusPct": 22.4,
+          "falseCalmPct": 0.3,
+          "falseAlarmPct": 3.2,
+          "passes": false
+        },
+        "κύμα → άνεμος, +1 σκαλί το πολύ": {
+          "hours": 5483,
+          "maeKmh": 5.24,
+          "biasKmh": 0.97,
+          "exactBftPct": 43.1,
+          "underPct": 20.4,
+          "overPct": 36.6,
+          "lowAt5PlusPct": 23.7,
+          "falseCalmPct": 0.3,
+          "falseAlarmPct": 2.4,
+          "passes": false
+        }
+      }
+    },
+    "2026-07": {
+      "base": {
+        "hours": 13059,
+        "maeKmh": 4.86,
+        "biasKmh": -0.25,
+        "exactBftPct": 45.4,
+        "underPct": 26.9,
+        "overPct": 27.6,
+        "lowAt5PlusPct": 34.3,
+        "falseCalmPct": 0.7,
+        "falseAlarmPct": 1.1
+      },
+      "candidates": {
+        "κύμα → άνεμος, πλήρης": {
+          "hours": 13059,
+          "maeKmh": 7.69,
+          "biasKmh": 3.58,
+          "exactBftPct": 40.4,
+          "underPct": 21.7,
+          "overPct": 38,
+          "lowAt5PlusPct": 23,
+          "falseCalmPct": 0.5,
+          "falseAlarmPct": 3.4,
+          "passes": false
+        },
+        "κύμα → άνεμος, +1 σκαλί το πολύ": {
+          "hours": 13059,
+          "maeKmh": 4.99,
+          "biasKmh": 0.39,
+          "exactBftPct": 43.7,
+          "underPct": 22.2,
+          "overPct": 34.1,
+          "lowAt5PlusPct": 24.2,
+          "falseCalmPct": 0.5,
+          "falseAlarmPct": 1.9,
+          "passes": false
+        }
+      }
+    },
+    "2026-08": {
+      "base": {
+        "hours": 11108,
+        "maeKmh": 4.74,
+        "biasKmh": -0.53,
+        "exactBftPct": 45.9,
+        "underPct": 28.4,
+        "overPct": 25.7,
+        "lowAt5PlusPct": 30.2,
+        "falseCalmPct": 0.9,
+        "falseAlarmPct": 0.5
+      },
+      "candidates": {
+        "κύμα → άνεμος, πλήρης": {
+          "hours": 11108,
+          "maeKmh": 7.61,
+          "biasKmh": 3.4,
+          "exactBftPct": 41.2,
+          "underPct": 23.3,
+          "overPct": 35.6,
+          "lowAt5PlusPct": 20.7,
+          "falseCalmPct": 0.6,
+          "falseAlarmPct": 2.2,
+          "passes": false
+        },
+        "κύμα → άνεμος, +1 σκαλί το πολύ": {
+          "hours": 11108,
+          "maeKmh": 4.8,
+          "biasKmh": 0.08,
+          "exactBftPct": 44.1,
+          "underPct": 24,
+          "overPct": 31.9,
+          "lowAt5PlusPct": 22.2,
+          "falseCalmPct": 0.7,
+          "falseAlarmPct": 1.1,
+          "passes": false
+        }
+      }
+    }
+  },
+  "byStation": {
+    "LGIR": {
+      "hours": 1679,
+      "fires": 1344
+    },
+    "LGSA": {
+      "hours": 1678,
+      "fires": 0
+    },
+    "LGRP": {
+      "hours": 1678,
+      "fires": 41
+    },
+    "LGKO": {
+      "hours": 1677,
+      "fires": 7
+    },
+    "LGMK": {
+      "hours": 1676,
+      "fires": 1451
+    },
+    "LGSR": {
+      "hours": 1559,
+      "fires": 476
+    },
+    "LGNX": {
+      "hours": 1096,
+      "fires": 10
+    },
+    "LGPA": {
+      "hours": 1652,
+      "fires": 0
+    },
+    "LGSK": {
+      "hours": 1206,
+      "fires": 448
+    },
+    "LGKR": {
+      "hours": 1681,
+      "fires": 0
+    },
+    "LGZA": {
+      "hours": 1357,
+      "fires": 0
+    },
+    "LGKF": {
+      "hours": 1211,
+      "fires": 388
+    },
+    "LGPZ": {
+      "hours": 1668,
+      "fires": 10
+    },
+    "LGLM": {
+      "hours": 1651,
+      "fires": 0
+    },
+    "LGMT": {
+      "hours": 1669,
+      "fires": 129
+    },
+    "LGSM": {
+      "hours": 1568,
+      "fires": 0
+    },
+    "LGHI": {
+      "hours": 1278,
+      "fires": 0
+    },
+    "LGTS": {
+      "hours": 1681,
+      "fires": 25
+    },
+    "LGKC": {
+      "hours": 579,
+      "fires": 106
+    },
+    "LGKP": {
+      "hours": 1406,
+      "fires": 0
+    }
+  }
+}
