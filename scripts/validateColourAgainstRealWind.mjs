@@ -387,9 +387,27 @@ if (!/perBeachMapWind/.test(appSource)) {
 if (!/const\s+beachBeaufort\s*=/.test(mapSource)) {
   wiringFailures.push('components/BeachMap.tsx no longer defines beachBeaufort — the marker is '
     + 'coloured from the region Beaufort again.');
-} else if (!/createExposureIcon\([^)]*beachBeaufort\(item\)/.test(mapSource)) {
-  wiringFailures.push('components/BeachMap.tsx defines beachBeaufort but the marker icon is not '
-    + 'built from it.');
+} else {
+  // The icon is not always built by a literal `createExposureIcon(...)` at the marker: since
+  // 23/08 the call goes through `exposureIconFor`, a memoising wrapper that keeps a stationary
+  // map from rebuilding thousands of DivIcons on every render. Pinning the old name made this
+  // gate fail on a product that was still correct, so it follows the indirection instead of the
+  // spelling: a wrapper counts as the icon builder ONLY if it provably forwards to
+  // createExposureIcon, and whichever builder the marker calls must be handed beachBeaufort(item).
+  const iconBuilders = new Set(['createExposureIcon']);
+  for (const [, name] of mapSource.matchAll(
+    /const\s+(\w+)\s*=\s*\([^)]*\)\s*(?::[^=]*)?=>[\s\S]{0,300}?\bcreateExposureIcon\(/g
+  )) iconBuilders.add(name);
+
+  // `[^;}]*?` rather than `[^)]*`: the argument list already carries nested calls
+  // (seaStateSeverityM(...), beachCoveBadge(...)), so stopping at the first `)` would report a
+  // break that does not exist the moment the arguments are reordered.
+  const builtFromBeachWind = [...iconBuilders].some(name =>
+    new RegExp(`\\b${name}\\([^;}]*?beachBeaufort\\(item\\)`).test(mapSource));
+  if (!builtFromBeachWind) {
+    wiringFailures.push('components/BeachMap.tsx defines beachBeaufort but the marker icon is not '
+      + `built from it (icon builders seen: ${[...iconBuilders].join(', ')}).`);
+  }
 }
 if (!/beaufort:\s*beachBeaufort\(item\)/.test(mapSource)) {
   wiringFailures.push('the legend/slider tally no longer reads beachBeaufort — the legend can '
