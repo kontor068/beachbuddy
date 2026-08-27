@@ -76,3 +76,63 @@ does not change what publishes to calmbeach.gr.
 - Merge/PR into `main` only when a change is verified on dev and you intend to ship.
 - A local `npm run build` is also treated as non-production (noindex), so a local
   `dist/` is safe even if accidentally served.
+
+## Working from more than one machine
+
+The site is developed from several places — a main PC, a MacBook (locally and
+through Codespaces), and phone sessions. Two things travel differently, and mixing
+them up is what breaks continuity between sessions.
+
+### Code — travels by git, nothing extra needed
+
+`main` is the single source of truth. On every machine:
+
+```bash
+git pull origin main      # before you start
+git push origin main      # when you stop, even if the work is half-done
+```
+
+Never leave work uncommitted on a machine you are about to walk away from — it
+exists nowhere else. To check what a machine is still holding on to:
+
+```bash
+git status                    # changed but never committed
+git log origin/main..HEAD     # committed but never pushed
+```
+
+### Project memory (`docs/team/`) — does NOT travel by git
+
+`docs/team/` is gitignored on purpose: this repository is public (see CLAUDE.md).
+The consequence is that a fresh clone — a Codespace, a phone session, a second
+laptop — starts with **no** `docs/team/` at all, and therefore without the status
+board, the role docs or the decision log. The code arrives; the memory does not.
+
+The fix is a **second, private repository** cloned inside `docs/team/`:
+
+```bash
+# ONCE, from the machine that has the full docs/team/ (the main PC).
+# Create an empty private repo `calmbeach-docs` on GitHub first.
+cd docs/team
+git init -b main
+git add -A && git commit -m "docs/team snapshot"
+git remote add origin https://github.com/kontor068/calmbeach-docs.git
+git push -u origin main
+
+# ONCE per other machine:
+git clone https://github.com/kontor068/calmbeach-docs.git docs/team
+```
+
+The parent repo ignores `docs/team/`, so the nested clone stays invisible to it —
+no submodule, and no path by which the private docs can reach the public repo.
+From then on the memory syncs exactly like the code does: `git pull` inside
+`docs/team` before you start, `git push` whenever a fact, decision or risk changes.
+
+### Git identity per machine
+
+Each machine needs its own `user.name` / `user.email`, or commits arrive signed by
+whoever originally set that laptop up:
+
+```bash
+git config user.name "kontor068"
+git config user.email "<the same address used on the other machines>"
+```
