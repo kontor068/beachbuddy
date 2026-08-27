@@ -3967,10 +3967,26 @@ const BeachMap: React.FC<BeachMapProps> = ({
                  today's orange is wind and not wave. */
               aria-label={`${countPhrase.text}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
-              className={`${textClasses} w-full cursor-pointer rounded-lg border px-1 py-1 text-left transition sm:px-2 sm:py-1.5 hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
+              /* ΦΑΙΝΕΤΑΙ ΟΤΙ ΠΑΤΙΕΤΑΙ (Μίλτος, 27/08/2026). Μέχρι σήμερα το πλακίδιο ήταν
+                 ημιδιάφανο άσπρο με ανοιχτόγκριζο περίγραμμα πάνω σε ανοιχτόγκριζο πλαίσιο,
+                 χωρίς σκιά και — στο κινητό, μετά τη σμίκρυνση της ίδιας μέρας — χωρίς
+                 βελάκι: διαβαζόταν σαν ταμπελάκι υπομνήματος, όχι σαν κουμπί, και ο
+                 επισκέπτης δεν είχε λόγο να το ακουμπήσει. Τέσσερα σήματα το γυρίζουν, και
+                 κανένα δεν κοστίζει πλάτος (που το χρειάζεται η μία σειρά):
+                   • ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ πάνω στο γκρίζο πλαίσιο — αντίθεση αντί για διαφάνεια.
+                   • ΠΕΡΙΓΡΑΜΜΑ ΚΑΙ ΣΚΙΑ (slate-300 + shadow-sm): σηκωμένη επιφάνεια.
+                   • ΥΨΟΣ 44 px (`min-h-11`), ο κανόνας για δάχτυλο σε οθόνη αφής — ήταν ~26.
+                     Κοστίζει ύψος μία φορά για όλη τη λωρίδα, όχι ανά χρώμα.
+                   • ΑΝΤΙΔΡΑΣΗ ΣΤΟ ΠΑΤΗΜΑ (`active:`): βυθίζεται 1 px και χάνει τη σκιά.
+                     Στο κινητό δεν υπάρχει hover — χωρίς `active:` το κουμπί δεν απαντάει
+                     ποτέ στο άγγιγμα, που είναι ο μισός λόγος που δεν έμοιαζε με κουμπί.
+                 Το `flex-col justify-center` κεντράρει το περιεχόμενο μέσα στο νέο ύψος.
+                 Η επιλεγμένη κατάσταση κρατά το δικό της χρώμα (windLegendActiveClasses)
+                 όπως πριν — αυτό εδώ αλλάζει μόνο πώς δείχνει η ΑΠΑΤΗΤΗ κατάσταση. */
+              className={`${textClasses} flex min-h-11 w-full cursor-pointer flex-col justify-center rounded-lg border px-1 py-1 text-left shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 sm:py-1.5 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                 isActive
-                  ? `${windLegendActiveClasses[row.tone]} shadow-sm`
-                  : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-slate-900/40'
+                  ? `${windLegendActiveClasses[row.tone]} shadow`
+                  : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
               }`}
             >
               {body}
