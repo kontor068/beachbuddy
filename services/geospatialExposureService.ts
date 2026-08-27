@@ -24,6 +24,8 @@ type RawGeospatialExposureProfile = {
   sectors: Record<WindSector, RawGeospatialSectorExposure>;
   confidence: DataConfidence;
   marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
+  /** «Έχει στεριά ≤0,3 χλμ ανά 15°;» — 24×'0'/'1', utils/offshoreWindNote. Δες το σχόλιο στο normalizeProfiles. */
+  windShadow?: string;
 };
 
 type RawGeospatialExposurePayload = {
@@ -75,6 +77,14 @@ const normalizeProfiles = (
       confidence: profile.confidence,
       source: profile.confidence === 'high' ? 'high-res-coastline' : 'natural-earth-baseline',
       marineSamplePoint: profile.marineSamplePoint,
+      /* ⚠️ 27/08/2026: αυτό το χτίσιμο πεδίο-πεδίο ΕΚΡΥΒΕ το windShadow από όλο τον client.
+         Το αρχείο στον δίσκο το είχε, ο τύπος (types.ts) το είχε, αλλά εδώ δεν αντιγραφόταν —
+         οπότε η γραμμή του απόγειου ανέμου (24/08, resolveOffshoreWindNote) δεν άναψε ΠΟΤΕ
+         στο live site (windArrivedOverLand σε undefined = false = σιωπή), και η πύλη της
+         λέξης «απάνεμη» (27/08) γεννήθηκε νεκρή για τον ίδιο λόγο — ο Μίλτος την είδε να
+         μη δουλεύει στη Γλυφάδα την ώρα που το JS ήταν ήδη live. Το γνωστό λάθος του
+         13/08 με άλλα ρούχα: κοίτα το JSX/αντικείμενο που ΦΤΑΝΕΙ στην οθόνη, όχι το αρχείο. */
+      windShadow: profile.windShadow,
     };
     return currentLookup;
   }, {});

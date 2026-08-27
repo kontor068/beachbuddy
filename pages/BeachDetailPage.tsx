@@ -2220,9 +2220,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   /* «Απάνεμη» υπόσχεται ότι δεν θα σε δέρνει ο αέρας — όχι μόνο ότι δεν σου
                      φέρνει κύμα. Από 4 Μπφ η υπόσχεση κρατιέται μόνο όταν ο άνεμος όντως
                      πέρασε πάνω από στεριά· αλλιώς (Γλυφάδα Νάξου #1993, 27/08/2026: βοριάς
-                     κατά μήκος της ακτής, protected μόνο ως προς το κύμα) η λέξη πέφτει στο
-                     «πλάγια». Σε ελλιπές windShadow η πύλη σιωπά. Δες το μπλοκ του
-                     SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο BeachAnswerHero για το γιατί. */
+                     κατά μήκος της ακτής, protected μόνο ως προς το κύμα) η λέξη λέει αυτό
+                     που βιώνει ο επισκέπτης: «φυσάει». Σε ελλιπές windShadow η πύλη σιωπά.
+                     Δες το μπλοκ του SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο BeachAnswerHero. */
                   if (
                     mapAlignedExposureLevel === 'protected'
                     && beaufortLevel >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT
@@ -2230,7 +2230,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     && geospatialExposure.windShadow?.length === WIND_SHADOW_SLOTS
                     && !windArrivedOverLand(geospatialExposure.windShadow, weatherData.wind.deg)
                   ) {
-                    return shelterCopy.partial;
+                    return shelterCopy.windFelt;
                   }
                   return shelterCopy[mapAlignedExposureLevel];
                 })()

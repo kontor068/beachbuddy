@@ -136,12 +136,12 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  * πύλη που μπορεί να αφαιρέσει ανακούφιση, ποτέ να την προσθέσει. Τα «πλάγια»/«κατάμουτρα»
  * δεν το χρειάζονται — δεν υπόσχονται τίποτα εξαρχής.
  */
-export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string }> = {
-  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on', protectedStrongWind: 'from behind' },
-  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα', protectedStrongWind: 'από πίσω' },
-  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal', protectedStrongWind: 'von hinten' },
-  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia', protectedStrongWind: 'da dietro' },
-  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face', protectedStrongWind: 'de dos' },
+export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string; windFelt: string }> = {
+  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on', protectedStrongWind: 'from behind', windFelt: 'windy' },
+  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα', protectedStrongWind: 'από πίσω', windFelt: 'φυσάει' },
+  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal', protectedStrongWind: 'von hinten', windFelt: 'windig' },
+  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia', protectedStrongWind: 'da dietro', windFelt: 'ventoso' },
+  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face', protectedStrongWind: 'de dos', windFelt: 'venteux' },
 };
 
 /**
@@ -163,9 +163,14 @@ export const SHELTER_WORD_MAX_BEAUFORT = 5;
  *
  * Η πύλη: επίπεδο 'protected' + άνεμος από αυτό το Μποφόρ και πάνω + high-confidence
  * `windShadow` που λέει «ΔΕΝ ήρθε από στεριά» (utils/offshoreWindNote.windArrivedOverLand,
- * το ίδιο βαθμονομημένο εργαλείο της γραμμής απόγειου ανέμου) → η λέξη πέφτει στο «πλάγια».
+ * το ίδιο βαθμονομημένο εργαλείο της γραμμής απόγειου ανέμου) → η λέξη γίνεται «φυσάει».
  * Μονόδρομη, όπως όλες οι πύλες της οικογένειας: αφαιρεί υπόσχεση, δεν προσθέτει ποτέ· σε
  * άγνωστο ή ελλιπές windShadow σιωπά και η λέξη μένει ως είχε.
+ *
+ * Η ΛΕΞΗ ΕΙΝΑΙ «ΦΥΣΑΕΙ», ΟΧΙ «ΠΛΑΓΙΑ» (Μίλτος, 27/08/2026, δεύτερη ανάγνωση): «πλάγια»
+ * περιγράφει γωνία και ο επισκέπτης δεν την καταλαβαίνει — η λέξη πρέπει να λέει τι ΒΙΩΝΕΙ.
+ * Αυτός που στέκεται στην άμμο με 4-5 Μπφ να τρέχουν δίπλα του βιώνει ένα πράγμα: φυσάει.
+ * Ίδια οικογένεια λέξης με το «Β · απάνεμη» — καθημερινή, χωρίς γλωσσάρι.
  *
  * ΚΑΤΩ ΟΡΙΟ 4, ΟΧΙ 3: στα 3 Μπφ η «απάνεμη» δεν ξενίζει κανέναν — ίδια λογική με το
  * WIND_NOTE_MIN_BEAUFORT της γραμμής ανέμου. Μετρημένο πριν μπει
