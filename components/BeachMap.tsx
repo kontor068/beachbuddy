@@ -2454,6 +2454,20 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }
   });
   const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+  /**
+   * ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΣΥΡΤΑΡΑΚΙ, ΚΛΕΙΣΤΟ ΣΤΗΝ ΑΦΙΞΗ (Μίλτος, 27/08/2026).
+   *
+   * Τρίτη στάση της ίδιας μέρας πάνω σε αυτή τη μία γραμμή, και οι τρεις είναι δικές του:
+   * ήταν πίσω από ⓘ (20/08), τυπώθηκε μόνιμα το πρωί, και τώρα γίνεται συρτάρι με ετικέτα.
+   * Δεν είναι επιστροφή στο ⓘ, και η διαφορά είναι όλη η ουσία: το ⓘ ήταν ένα εικονίδιο
+   * χωρίς λέξεις σε μια γωνία — δεν έλεγε τι κρύβει, οπότε όποιος δεν ήξερε ότι υπάρχει
+   * απάντηση δεν είχε λόγο να το πατήσει. Το συρτάρι φοράει την ίδια την ερώτηση («Τι
+   * σημαίνουν τα χρώματα;»), άρα διαφημίζει το περιεχόμενό του και ας μένει κλειστό.
+   *
+   * Κλειστό ΠΑΝΤΑ στην άφιξη, χωρίς μνήμη σε localStorage: κρατάει μηδέν ύψος πάνω από τις
+   * κάρτες, που είναι ο λόγος ύπαρξής του.
+   */
+  const [showToneScaleHint, setShowToneScaleHint] = useState(false);
   // Ζωντανές πινέζες ανά παραλία, ώστε το ανοιχτό ταμπελάκι να μπορεί να μετακομίσει σε άλλη
   // πινέζα όταν κυλάει ο κατάλογος (MarkerPopupScrollFollower).
   const beachMarkerRefs = useRef<Map<number, L.Marker>>(new Map());
@@ -3216,6 +3230,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // υπόσχεση ότι υπάρχει κι άλλο. Ζεύγος με το «Λιγότερα» από κάτω.
     moreInfo: { en: 'More information', gr: 'Περισσότερες πληροφορίες', de: 'Mehr Informationen', it: 'Altre informazioni', fr: "Plus d'informations" },
     fewer: { en: 'Less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
+    // Η ετικέτα του συρταριού. Ερώτηση και όχι τίτλος («Επεξήγηση χρωμάτων»): ο επισκέπτης
+    // αναγνωρίζει τη δική του απορία και ξέρει ότι από μέσα βγαίνει απάντηση.
+    toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
     toneScaleHint: {
       // Δεύτερη φορά «παραλία» στην ίδια εξήγηση διαβαζόταν σαν επανάληψη — η πινέζα λέει
       // το ίδιο πράγμα και δείχνει ΠΟΥ να πατήσει ο αναγνώστης για τα δύο χωριστά νούμερα.
@@ -4033,19 +4050,29 @@ const BeachMap: React.FC<BeachMapProps> = ({
     return (
       <div className={`${isPreview ? 'max-w-full space-y-1.5' : 'space-y-2 border-t border-slate-200 pt-2 dark:border-slate-700'}`}>
         {renderWindColorGuideRows(variant)}
-        {/* ΤΙ ΣΗΜΑΙΝΕΙ ΤΟ ΧΡΩΜΑ — ΤΥΠΩΜΕΝΟ, ΟΧΙ ΠΙΣΩ ΑΠΟ ΠΑΤΗΜΑ (Μίλτος, 27/08/2026).
-            Αντιστρέφει την απόφαση της 20/08, που είχε κρύψει αυτή τη μία γραμμή πίσω από ⓘ
-            επειδή μόνιμο κείμενο είχε ήδη απορριφθεί δύο φορές ως «ταπετσαρία»
-            (docs/team/HANDOVER-colour-cause-line.md §1). Ο λόγος που γυρίζει: η γραμμή δεν
-            είναι η «αιτία της ημέρας» — αυτή ζει χωριστά, μιλάει μόνο στα χρώματα που
-            τρομάζουν και σιωπά τις υπόλοιπες μέρες. Αυτή εδώ λέει τον ΡΟΛΟ της κλίμακας
-            («το χρώμα είναι το συνολικό, ο αέρας και η θάλασσα χωριστά στην πινέζα») και είναι
-            εξίσου αληθινή κάθε μέρα — ένας αναγνώστης που δεν ξέρει τι μετράει το χρώμα δεν
-            έχει λόγο να πατήσει ένα ⓘ για να το μάθει. Κοστίζει ~24 px, μία γραμμή.
-            Το ⓘ έφυγε τελείως: δεν υπάρχει πια τίποτα κρυμμένο να το δικαιολογεί. */}
-        <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
-          {mapCopy.toneScaleHint[language]}
-        </p>
+        {/* ΤΟ ΣΥΡΤΑΡΑΚΙ ΤΩΝ ΧΡΩΜΑΤΩΝ (Μίλτος, 27/08/2026) — δες το σχόλιο στο showToneScaleHint
+            για το γιατί δεν είναι επιστροφή στο ⓘ. Κλειστό κοστίζει μία γραμμή ~20 px, όσο η
+            ετικέτα του· ανοιχτό προσθέτει άλλα ~24 px. Το βελάκι γυρίζει αντί να αλλάζει
+            εικονίδιο, ώστε η κίνηση να δείχνει ότι κάτι ξεδιπλώνεται και δεν αντικαθίσταται.
+            Έχει το ίδιο `active:` βύθισμα με τα πλακίδια από πάνω: στο κινητό δεν υπάρχει
+            hover, και ένα κουμπί που δεν απαντάει στο άγγιγμα δεν διαβάζεται σαν κουμπί. */}
+        <button
+          type="button"
+          onClick={() => setShowToneScaleHint(open => !open)}
+          aria-expanded={showToneScaleHint}
+          className="inline-flex min-h-8 w-full cursor-pointer items-center gap-1 rounded-lg border border-slate-300 bg-white px-2 text-left text-[10px] font-semibold text-slate-600 shadow-sm transition active:translate-y-px active:bg-slate-100 active:shadow-none hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          <ChevronDown
+            aria-hidden="true"
+            className={`h-3 w-3 shrink-0 text-slate-400 transition-transform ${showToneScaleHint ? 'rotate-180' : ''}`}
+          />
+          <span className="min-w-0">{mapCopy.toneScaleWhat[language]}</span>
+        </button>
+        {showToneScaleHint && (
+          <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+            {mapCopy.toneScaleHint[language]}
+          </p>
+        )}
         {/* ΤΟ ΦΙΛΤΡΑΡΙΣΜΕΝΟ ΧΡΩΜΑ ΠΑΙΡΝΕΙ ΟΛΟΚΛΗΡΗ ΤΗΝ ΠΡΟΤΑΣΗ ΤΗΣ ΑΙΤΙΑΣ. Ο αναγνώστης μόλις
             πάτησε αυτό το χρώμα, άρα εδώ υπάρχει ο χώρος να τελειώσει η σκέψη — «Το χρώμα το
             φέρνει ο αέρας. Το νερό είναι ήρεμο, όμως ο αέρας σε τραβάει ανοιχτά». Τα πλακίδια
