@@ -140,14 +140,53 @@ const normalize = (body) => {
     };
   }
 
+  const message = clamp(body?.message, 300);
+  const source = clamp(body?.source, 200);
+  const foreign = isForeignInlineScript(source);
+
   return {
     kind: 'error',
-    message: clamp(body?.message, 300),
-    source: clamp(body?.source, 200),
+    message,
+    source,
     line: Number.isFinite(Number(body?.line)) ? Number(body.line) : 0,
     stack: clamp(body?.stack, MAX_STACK),
     disposition: '',
+    foreign,
+    // Ένα ξένο script που σκάει σε 300 σελίδες παραλιών είναι ΕΝΑ πράγμα, όχι 300.
+    // Το `source` εδώ ΕΙΝΑΙ η διεύθυνση της σελίδας, οπότε η κανονική υπογραφή
+    // (message|source|line) θα έφτιαχνε καινούρια «διαφορετικό σφάλμα» σε κάθε
+    // παραλία και θα έκαιγε μόνη της το όριο των 25 της ημέρας — το ίδιο ακριβώς
+    // λάθος που είχε γίνει με τα CSP reports και τα πλακίδια του χάρτη.
+    groupKey: foreign ? `inline|${message}` : undefined,
   };
+};
+
+/**
+ * ΞΕΝΟ INLINE SCRIPT ΜΕΣΑ ΣΤΗ ΣΕΛΙΔΑ ΜΑΣ (27/08/2026) — καταγράφεται, δεν χτυπάει
+ * το τηλέφωνο.
+ *
+ * Ολόκληρη η JavaScript που στέλνουμε φεύγει ως module από `/assets/*.js`· το μόνο
+ * inline script στο HTML μας είναι το τετράγραμμο χρονόμετρο του fallback. Άρα ένα
+ * σφάλμα που ο browser χρεώνει στην ΙΔΙΑ ΤΗ ΣΕΛΙΔΑ (`…/1433-gomati/:1`) και όχι σε
+ * αρχείο .js έρχεται από script που φύτεψε κάποιος άλλος μέσα στη σελίδα αφού
+ * φόρτωσε: επέκταση browser, ή ο ενσωματωμένος browser του Facebook/Instagram.
+ *
+ * Το ίδιο φίλτρο υπάρχει και στο services/errorReporter.ts, ώστε να μη στέλνονται
+ * καν. Μένει ΚΑΙ εδώ επειδή ο service worker κρατάει το παλιό build στα κινητά για
+ * μέρες μετά το deploy: χωρίς αυτό, οι ειδοποιήσεις θα συνέχιζαν να έρχονται από
+ * επισκέπτες που δεν έχουν πάρει ακόμα τη διόρθωση.
+ */
+const isForeignInlineScript = (source) => {
+  if (!source) return false;
+  let url;
+  try {
+    url = new URL(source);
+  } catch {
+    // «RootErrorBoundary», «unhandledrejection» — δικές μας λέξεις, όχι διευθύνσεις.
+    return false;
+  }
+  if (!isOwnHost(url.hostname.toLowerCase())) return false;
+  return !/\.m?js$/i.test(url.pathname);
 };
 
 /** Scheme+host of a URL, for grouping. Falls back to the raw value for the
@@ -298,6 +337,11 @@ export const handler = async (event) => {
 
     // Counted above, never pushed: a crawler is not a visitor. See CRAWLER_UA.
     if (isCrawler(context.userAgent)) {
+      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
+    }
+
+    // Ομοίως: ξένο script μέσα στη σελίδα μας. Βλ. isForeignInlineScript().
+    if (report.foreign) {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
     }
 
