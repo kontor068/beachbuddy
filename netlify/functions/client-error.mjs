@@ -389,6 +389,11 @@ export const handler = async (event) => {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
     }
 
+    // Ομοίως: ξένο script μέσα στη σελίδα μας. Βλ. isForeignInlineScript().
+    if (report.foreign) {
+      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
+    }
+
     if (repeats === 1) {
       // A day-level counter of DISTINCT signatures, so a pathological page that
       // manufactures unique messages cannot turn the channel into a firehose.
