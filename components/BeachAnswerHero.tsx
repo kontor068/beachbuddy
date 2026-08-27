@@ -136,15 +136,23 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  * σε όποιον δεν ξέρει τη γεωμετρία μας· η λέξη λέει τι ΒΙΩΝΕΙ κανείς, όπως και το «φυσάει»
  * του windFelt — ίδια οικογένεια, ένα σκαλί πιο πάνω.) Είναι ο ΙΔΙΟΣ κανόνας
  * που πήρε η κάρτα την ίδια μέρα (RELIEF_MAX_BEAUFORT, utils/conditionsFeelPhrase.ts): μονόδρομη
- * πύλη που μπορεί να αφαιρέσει ανακούφιση, ποτέ να την προσθέσει. Τα «πλάγια»/«κατάμουτρα»
- * δεν το χρειάζονται — δεν υπόσχονται τίποτα εξαρχής.
+ * πύλη που μπορεί να αφαιρέσει ανακούφιση, ποτέ να την προσθέσει. Το «κατάμουτρα» δεν το
+ * χρειάζεται — δεν υπόσχεται τίποτα εξαρχής.
+ *
+ * ΤΟ «ΠΛΑΓΙΑ» ΕΓΙΝΕ ΚΛΙΜΑΚΑ ΒΙΩΜΑΤΟΣ (Μίλτος, 27/08/2026, τρίτη ανάγνωση της ίδιας μέρας):
+ * «πλάγια» ήταν γωνία, όχι βίωμα. Ο αέρας που περνά από το πλάι σου δεν σου φέρνει μεγάλο
+ * κύμα, αλλά τον ΝΙΩΘΕΙΣ — και πόσο, το λέει ο αριθμός δίπλα: στα 3 Μπφ «αεράκι» (η λέξη
+ * `partial`), στα 4-5 «φυσάει» (`windFelt`), από 6 «φυσάει δυνατά» (`protectedStrongWind`).
+ * Η ΙΔΙΑ τριάδα λέξεων με την υπήνεμη ακτή — ένα λεξιλόγιο στο πλακίδιο, όχι δύο· τη
+ * διαφορά στο κύμα τη λένε το διπλανό πλακίδιο και το χρώμα. Κρίνεται στο ΤΥΠΩΜΕΝΟ μέγιστο
+ * (BeachDetailPage, printedBeaufortMax), όπως όλα τα ταβάνια της λέξης από σήμερα.
  */
 export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string; windFelt: string }> = {
-  en: { protected: 'sheltered', partial: 'side-on', exposed: 'head-on', protectedStrongWind: 'very windy', windFelt: 'windy' },
-  gr: { protected: 'απάνεμη', partial: 'πλάγια', exposed: 'κατάμουτρα', protectedStrongWind: 'φυσάει δυνατά', windFelt: 'φυσάει' },
-  de: { protected: 'geschützt', partial: 'seitlich', exposed: 'frontal', protectedStrongWind: 'sehr windig', windFelt: 'windig' },
-  it: { protected: 'riparata', partial: 'di lato', exposed: 'di faccia', protectedStrongWind: 'molto ventoso', windFelt: 'ventoso' },
-  fr: { protected: 'abrité', partial: 'de côté', exposed: 'de face', protectedStrongWind: 'très venteux', windFelt: 'venteux' },
+  en: { protected: 'sheltered', partial: 'breezy', exposed: 'head-on', protectedStrongWind: 'very windy', windFelt: 'windy' },
+  gr: { protected: 'απάνεμη', partial: 'αεράκι', exposed: 'κατάμουτρα', protectedStrongWind: 'φυσάει δυνατά', windFelt: 'φυσάει' },
+  de: { protected: 'geschützt', partial: 'leichter Wind', exposed: 'frontal', protectedStrongWind: 'sehr windig', windFelt: 'windig' },
+  it: { protected: 'riparata', partial: 'brezza', exposed: 'di faccia', protectedStrongWind: 'molto ventoso', windFelt: 'ventoso' },
+  fr: { protected: 'abrité', partial: 'brise', exposed: 'de face', protectedStrongWind: 'très venteux', windFelt: 'venteux' },
 };
 
 /**

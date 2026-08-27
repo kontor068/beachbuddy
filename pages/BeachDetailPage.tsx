@@ -2239,6 +2239,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   ) {
                     return shelterCopy.windFelt;
                   }
+                  /* «Πλάγια» → κλίμακα βιώματος (27/08/2026): αεράκι / φυσάει / φυσάει δυνατά,
+                     με τον ίδιο τυπωμένο αριθμό να διαλέγει — δες SHELTER_LABEL στο BeachAnswerHero. */
+                  if (mapAlignedExposureLevel === 'partial') {
+                    if (printedBeaufortMax > SHELTER_WORD_MAX_BEAUFORT) return shelterCopy.protectedStrongWind;
+                    if (printedBeaufortMax >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT) return shelterCopy.windFelt;
+                    return shelterCopy.partial;
+                  }
                   return shelterCopy[mapAlignedExposureLevel];
                 })()
               : null,
