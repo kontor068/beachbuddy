@@ -5721,6 +5721,11 @@ export const App: React.FC = () => {
             const dayLabel = getMobileMapDayLabel(day.date, language, t, topPickNow);
             const beaufort = getBeaufortLevel(day.wind.speed * 3.6);
             const isSelected = selectedDayIndex === index;
+            // After BEACH_DAY_ENDS_HOUR today is unreachable (clampSelectedDayIndex pushes the
+            // selection back to tomorrow). The desktop day cards in Forecast.tsx already fade
+            // and disable index 0 for that; this strip is a separate component and used to
+            // leave the chip looking live, so a tap did nothing visible. Same flag, same look.
+            const isDisabled = index === 0 && isEveningHandover;
             const buttonLabel = `${t.forecastFor} ${dayLabel}, ${dateFormatter.format(day.date)}: ${Math.round(day.temp_max)}°C, ${beaufort} ${t.units.beaufort}, ${day.weather.description}`;
 
             return (
@@ -5730,12 +5735,15 @@ export const App: React.FC = () => {
                 role="tab"
                 aria-selected={isSelected}
                 aria-label={buttonLabel}
+                disabled={isDisabled}
                 onClick={() => handleMobileMapDaySelect(index)}
                 data-testid="mobile-map-day-tab"
-                className={`relative z-10 flex min-h-12 min-w-[4.25rem] flex-1 cursor-pointer touch-manipulation select-none flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
-                  isSelected
-                    ? 'border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
-                    : 'border-sky-100 bg-white/88 text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
+                className={`relative z-10 flex min-h-12 min-w-[4.25rem] flex-1 touch-manipulation select-none flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
+                  isDisabled
+                    ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
+                    : isSelected
+                    ? 'cursor-pointer border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
+                    : 'cursor-pointer border-sky-100 bg-white/88 text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
                 }`}
               >
                 <span className={`max-w-full truncate text-[10px] font-extrabold leading-tight ${isSelected ? 'text-[#006b73]' : 'text-slate-700'}`}>
@@ -5753,7 +5761,7 @@ export const App: React.FC = () => {
         </div>
       </div>
     );
-  }, [forecast, handleMobileMapDaySelect, language, selectedDayIndex, t, topPickNow]);
+  }, [forecast, handleMobileMapDaySelect, isEveningHandover, language, selectedDayIndex, t, topPickNow]);
 
   useEffect(() => {
     if (trackedAppLoadedRef.current || !selectedIsland) return;
