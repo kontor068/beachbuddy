@@ -12,7 +12,7 @@ import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
-import { conditionToneLabels, conditionToneCountPhrase, causeLinePhrase, type CauseLineWords } from '../utils/conditionToneLabels';
+import { conditionToneCountPhrase, causeLinePhrase, type CauseLineWords } from '../utils/conditionToneLabels';
 import {
   describeConditionCause, resolveCauseLineForm, causeLineMaySpeak, countCauseLineSplit,
   type ConditionCauseInput, type ConditionCauseReading, type CauseLineForm,
@@ -3368,10 +3368,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * beaches cannot be omitted. As a bonus it answers a better question than the old table did —
    * not "what would 4 Bft mean" but "how many choices do I have right now".
    */
-  // The colour words live in utils/conditionToneLabels.ts rather than inline here, so the gate
-  // (validateConditionToneAgreement) can read the real table and fail on an empty or missing word
-  // in any of the five languages — a coloured pin the legend cannot explain.
-  const toneWords = conditionToneLabels[language] ?? conditionToneLabels.en;
   const windColorGuideCopy = getLocalizedCopy<{
     /** Spoken colour name; aria-label/title only, never rendered as text. */
     colorName: Record<WindLegendDot, string>;
@@ -3931,28 +3927,21 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     : <ChevronRight aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400 ${isSideBySide ? 'hidden sm:block' : ''}`} />
                 )}
               </span>
-              {/* WIDE SCREENS EXPLAIN, PHONES COUNT (15/08/2026, Miltos's call).
-                  This is the line that separates «Μέτρια» from «Καλή». On a desktop it is free —
-                  the rows sit four across with room under each — so it stays visible and nobody
-                  has to tap to learn what a colour means. On a phone the same four sentences are
-                  eight stacked lines immediately above the beach cards, which is what he read as
-                  crowded; there the legend counts, and the sentence returns as a caption under
-                  the grid the moment a single colour is left. Same string either way — the
-                  explanation is never rewritten per screen size, only relocated. */}
-              {causeLine ? (
-                /* TODAY'S CAUSE REPLACES THE SCALE'S SENTENCE — it does not stack on top of it.
-                   The static line explains how this colour differs from the one above it, which
-                   the reader can learn once; this one says what put THESE beaches here at THIS
-                   hour, which they cannot get anywhere else on the screen. On a wide screen the
-                   swap costs zero height, and on a phone (where the static line is hidden) it is
-                   the only line — about +24 px, and only on the days it fires. */
+              {/* Η ΣΤΑΤΙΚΗ ΠΡΟΤΑΣΗ ΑΝΑ ΧΡΩΜΑ ΕΦΥΓΕ ΑΠΟ ΤΗΝ ΟΘΟΝΗ (Μίλτος, 27/08/2026).
+                  Ήταν το «Λίγος αέρας, ήρεμο νερό» κάτω από κάθε πλακίδιο, ορατό μόνο από sm:
+                  και πάνω μετά τη 15/08. Τώρα δεν τυπώνεται πουθενά, σε καμία οθόνη: τη δουλειά
+                  της την κάνει η μία γραμμή κάτω από τη λωρίδα, που λέει τι μετράει το χρώμα
+                  αντί να το ξαναλέει τέσσερις φορές. Οι ίδιες οι λέξεις ΔΕΝ σβήστηκαν από το
+                  conditionToneLabels — δες το σχόλιο εκεί: το `red.meaning` το διαβάζει κρίσιμη
+                  πύλη. Ό,τι απομένει εδώ είναι η αιτία της ημέρας, που δεν είναι στατική. */}
+              {causeLine && (
+                /* ΤΙ ΕΦΕΡΕ ΑΥΤΟ ΤΟ ΧΡΩΜΑ ΣΗΜΕΡΑ — όχι πώς διαφέρει από το διπλανό. Λέει τι
+                   έβαλε ΑΥΤΕΣ τις παραλίες εδώ ΑΥΤΗ την ώρα, κάτι που ο αναγνώστης δεν το
+                   βρίσκει πουθενά αλλού στην οθόνη, και εμφανίζεται μόνο τις μέρες που έχει
+                   κάτι να πει — περίπου +24 px, όχι μόνιμα. */
                 <span className="mt-0.5 block text-left text-[9px] font-semibold leading-snug text-slate-600 sm:text-[10px] dark:text-slate-300">
                   <span aria-hidden="true" className="mr-0.5 text-slate-400">▸</span>
                   {causeLine.short}
-                </span>
-              ) : (
-                <span className="mt-0.5 hidden text-left text-[10px] font-medium leading-snug text-slate-500 sm:block dark:text-slate-400">
-                  {toneWords[row.tone].meaning}
                 </span>
               )}
             </>
@@ -4016,18 +4005,13 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const renderWindColorGuidePanel = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
-    // THE PHONE'S ONE EXPLANATORY LINE (15/08/2026), where four used to hang off four rows.
+    // ΤΟ ΜΟΝΑΔΙΚΟ ΧΡΩΜΑ ΠΟΥ ΕΜΕΙΝΕ ΣΤΟΝ ΧΑΡΤΗ — είτε επειδή ο αναγνώστης το φιλτράρισε, είτε
+    // επειδή ο χάρτης βάφει μόνο αυτό. Είναι η μία περίπτωση όπου υπάρχει χώρος να τελειώσει η
+    // πρόταση της αιτίας, γιατί μιλάει για το χρώμα που μόλις ζήτησε.
     //
-    // On a phone the rows print the colour and the count only — four sentences stacked under
-    // four numbers is what Miltos read as crowded, and they are not four separate facts but ONE
-    // ordered scale said four times. The moment a SINGLE colour is left, though — a filter is
-    // picked, or the map paints only one — that colour's own `meaning` earns its line and shows
-    // up here, because the reader has just asked about precisely that colour.
-    //
-    // `sm:hidden`, because on a wide screen the rows already carry all four meanings inline
-    // (his call: a desktop has the room and should explain without a tap). Without that the
-    // filtered desktop legend would print the same sentence twice, one under the other.
-    // Never rendered at >=7 Bft: there are no counted rows there, only the "unsuitable" line.
+    // Μέχρι τις 27/08 εδώ έπεφτε και το στατικό `meaning` του χρώματος όταν δεν υπήρχε αιτία·
+    // αυτό έφυγε μαζί με όλες τις ανά χρώμα προτάσεις. Χωρίς αιτία, δεν τυπώνεται τίποτα.
+    // Ποτέ στα >=7 Μποφόρ: εκεί δεν υπάρχουν μετρημένες σειρές, μόνο η γραμμή «ακατάλληλες».
     const soleVisibleTone = visibleWindColorGuideRows.length === 1 ? visibleWindColorGuideRows[0].tone : null;
 
     return (
@@ -4046,21 +4030,16 @@ const BeachMap: React.FC<BeachMapProps> = ({
         <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
           {mapCopy.toneScaleHint[language]}
         </p>
-        {!isSevereWind && soleVisibleTone && (
-          /* THE FILTERED COLOUR GETS THE WHOLE SENTENCE. The reader has just tapped this colour,
-             so this is the one place with room to finish the thought — «Το χρώμα το φέρνει ο
-             αέρας. Το νερό είναι ήρεμο, όμως ο αέρας σε τραβάει ανοιχτά». Not `sm:hidden` like
-             the scale's line it replaces: the chips carry the SHORT form, so on a wide screen
-             this adds the rest of the sentence rather than repeating it. */
-          causeLineByTone.get(soleVisibleTone) ? (
-            <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
-              {causeLineByTone.get(soleVisibleTone)?.full}
-            </p>
-          ) : (
-            <p className="px-0.5 text-left text-[10px] font-medium leading-snug text-slate-500 sm:hidden dark:text-slate-400">
-              {toneWords[soleVisibleTone].meaning}
-            </p>
-          )
+        {/* ΤΟ ΦΙΛΤΡΑΡΙΣΜΕΝΟ ΧΡΩΜΑ ΠΑΙΡΝΕΙ ΟΛΟΚΛΗΡΗ ΤΗΝ ΠΡΟΤΑΣΗ ΤΗΣ ΑΙΤΙΑΣ. Ο αναγνώστης μόλις
+            πάτησε αυτό το χρώμα, άρα εδώ υπάρχει ο χώρος να τελειώσει η σκέψη — «Το χρώμα το
+            φέρνει ο αέρας. Το νερό είναι ήρεμο, όμως ο αέρας σε τραβάει ανοιχτά». Τα πλακίδια
+            κρατούν τη ΣΥΝΤΟΜΗ μορφή, οπότε αυτό προσθέτει την υπόλοιπη πρόταση αντί να την
+            επαναλαμβάνει. Το `else` που έδειχνε το στατικό `meaning` έφυγε στις 27/08 μαζί με
+            όλες τις ανά χρώμα προτάσεις — χωρίς αιτία, εδώ δεν τυπώνεται πια τίποτα. */}
+        {!isSevereWind && soleVisibleTone && causeLineByTone.get(soleVisibleTone) && (
+          <p className="px-0.5 text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+            {causeLineByTone.get(soleVisibleTone)?.full}
+          </p>
         )}
         {/* Μία διέξοδος για ΚΑΘΕ κοπή του χάρτη, όχι μία ανά φίλτρο. Ο επισκέπτης δεν κρατάει
             λογαριασμό ποιο από τα δύο άναψε· θέλει να ξαναδεί όλες τις παραλίες. */}

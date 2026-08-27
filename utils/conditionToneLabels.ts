@@ -32,25 +32,29 @@ import type { OffshoreWindNoteForm } from './offshoreWindNote';
  * (01/08/2026) a beach can be orange on a light-wind day, so any wording tied to a Beaufort
  * band would be the old, wrong legend again.
  *
- * SINCE 15/08/2026 THE PHONE NO LONGER PRINTS ALL FOUR AT ONCE — THE DESKTOP STILL DOES.
- * Four colours meant four of these sentences stacked under four numbers, and on a phone that
- * is eight lines of text to deliver four numbers, directly above the beach cards. Miltos's
- * call, and the split is deliberate rather than a compromise: a wide screen has the room and
- * an explanation costs it nothing, while a phone has to choose between explaining the scale
- * and showing the beaches. So the phone shows the colour word and the count, and reveals a
- * `meaning` the moment a single colour is left (a filter is picked, or the map paints only
- * one); the desktop keeps all four visible with no tap required.
+ * ⚠️ SINCE 27/08/2026 `meaning` IS NOT RENDERED ANYWHERE. Read this before writing new copy
+ * into it or wiring it back onto a screen.
  *
- * Do NOT delete these strings because one screen size stopped showing four of them: they are
- * what the desktop legend and the filtered phone legend print, and `red.meaning` is read by
- * scripts/validateConditionsFeelPhrase.ts, which ties it to the beach card's own worst-case
- * phrase.
+ * Its history in one line: until 15/08 all four sentences printed under all four legend rows;
+ * from 15/08 only the desktop kept them, with the phone showing one when a single colour was
+ * left; on 27/08 Miltos removed the last of them from every screen size. What does that job
+ * now is ONE line under the whole strip — «the colour is the beach overall, wind and sea are
+ * on each pin» — which says what the scale IS instead of saying it four times, plus the cause
+ * line, which is not static and speaks only on the days it has something to say.
+ *
+ * SO WHY ARE THE STRINGS STILL HERE? Because `red.meaning` is read by
+ * scripts/validateConditionsFeelPhrase.ts, a critical gate: it ties «Δυνατός αέρας / μεγάλο
+ * κύμα» to the beach card's own worst-case phrase so the two cannot drift into two different
+ * vocabularies for the same weather. ⚠️ That gate was written when both strings sat on the SAME
+ * screen; now only the card's does, so the tie is weaker than its own comment claims. Open
+ * question for QA — repoint the gate at the vocabulary that still prints, or drop it — and
+ * until it is answered these strings must NOT be deleted: the gate would fail to compile.
  *
  * KEEP IT TO THE CAUSE, NOT THE ADVICE (10/08/2026). It used to carry a second clause — «κολυμπάς
  * άνετα», «για μια βουτιά ναι, για ώρες όχι» — and those clauses are what forced the legend into
- * four full-width rows stacked down a phone screen. The rows now sit two-up (four on a wide
- * screen), so every word here has to survive a column half the screen wide. The cause alone
- * separates the colours; the advice is already in the verdict on the card and the detail page.
+ * four full-width rows stacked down a phone screen. The advice is already in the verdict on the
+ * card and the detail page. (Since 27/08 nothing here is printed at all — see the warning above
+ * — but if it ever returns, it returns as a cause.)
  *
  * THE NUMBER HAS TO SAY WHAT IT COUNTS (12/08/2026). The row used to read «Ιδανική 4»: a singular
  * adjective next to a bare number, which readers took for a rating out of ten, a rank, or a
