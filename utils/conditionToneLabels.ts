@@ -125,6 +125,58 @@ export const conditionToneCountPhrase = (
   return { text: template.replace('{n}', String(count)), before, after };
 };
 
+/**
+ * Η ΙΔΙΑ ΦΡΑΣΗ, ΚΟΜΜΕΝΗ ΣΤΟ ΙΔΙΟ ΣΗΜΕΙΟ ΣΕ ΚΑΘΕ ΠΛΑΚΙΔΙΟ (27/08/2026, εντολή Μίλτου
+ * «να είναι πάντα σωστά στοιχισμένα όλα»).
+ *
+ * Το πρόβλημα δεν ήταν το κείμενο αλλά το ΠΟΥ έσπαγε: αφημένη να τυλιχτεί μόνη της, η
+ * «Ιδανικές 10 παραλίες» έπιανε τρεις γραμμές («Ιδανικές / 10 / παραλίες») ενώ η διπλανή
+ * «Καλές 7 παραλίες» δύο — άρα σε τέσσερα ισοπλατή πλακίδια η κουκκίδα, η λέξη και ο
+ * αριθμός κάθονταν σε τέσσερα διαφορετικά ύψη, και ο αριθμός έμενε ολομόναχος σε μια
+ * γραμμή σαν να ήταν βαθμολογία.
+ *
+ * Η κοπή γίνεται εδώ, μία φορά, για όλες τις γλώσσες:
+ *   • Όταν η φράση ΑΡΧΙΖΕΙ με λέξη (ελληνικά: «Ιδανικές {n} παραλίες») → γραμμή 1 η λέξη,
+ *     γραμμή 2 ο αριθμός ΜΑΖΙ με το ουσιαστικό του: «Ιδανικές» / «10 παραλίες».
+ *   • Όταν αρχίζει με τον αριθμό (en/de/fr/it: «{n} excellent beaches») → ο αριθμός κρατάει
+ *     τη λέξη που τον ακολουθεί και το υπόλοιπο πέφτει κάτω: «10 excellent» / «beaches».
+ * Ο αριθμός δεν μένει ποτέ μόνος του σε γραμμή, και κάθε πλακίδιο έχει τον ίδιο αριθμό
+ * γραμμών με τα διπλανά του — που είναι όλη η στοίχιση.
+ *
+ * Η φράση ΔΕΝ ξαναγράφεται και δεν αλλάζει σειρά λέξεων: είναι το ίδιο `countOne`/`countMany`
+ * του πίνακα, απλώς με ρητό σημείο αλλαγής γραμμής. Ό,τι ακούγεται (aria-label) εξακολουθεί
+ * να διαβάζει την ενιαία `text` του conditionToneCountPhrase.
+ */
+export interface ConditionToneCountLine {
+  /** Κείμενο πριν τον αριθμό αυτής της γραμμής. */
+  before: string;
+  /** Ο αριθμός, ή `null` όταν δεν ανήκει σε αυτή τη γραμμή. */
+  count: number | null;
+  /** Κείμενο μετά τον αριθμό αυτής της γραμμής. */
+  after: string;
+}
+
+export const conditionToneCountLines = (
+  tone: CalmnessTone,
+  language: LanguageCode,
+  count: number,
+): ConditionToneCountLine[] => {
+  const { before, after } = conditionToneCountPhrase(tone, language, count);
+  const lead = before.trim();
+  if (lead) {
+    return [
+      { before: lead, count: null, after: '' },
+      { before: '', count, after: after.replace(/\s+/g, ' ').trimEnd() },
+    ];
+  }
+  // Ο αριθμός μπροστά: κρατάει κολλητά τη ΜΙΑ λέξη που τον ακολουθεί, ώστε να μη μείνει
+  // ποτέ μόνος του σε γραμμή, και τα υπόλοιπα πάνε από κάτω.
+  const [, firstWord = '', rest = ''] = after.match(/^\s*(\S+)\s*([\s\S]*)$/) ?? [];
+  const first: ConditionToneCountLine = { before: '', count, after: firstWord ? ` ${firstWord}` : '' };
+  const tail = rest.trim();
+  return tail ? [first, { before: tail, count: null, after: '' }] : [first];
+};
+
 /** The word for a tone, in one language. Falls back to English for an unknown locale. */
 export const conditionToneLabel = (tone: CalmnessTone, language: LanguageCode): string =>
   (conditionToneLabels[language] ?? conditionToneLabels.en)[tone].label;
