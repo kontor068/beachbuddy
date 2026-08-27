@@ -166,6 +166,15 @@ const checks = [
     args: ['scripts/validateOffshoreWindNote.mjs'],
   },
   {
+    id: 'geospatial-profile-plumbing',
+    title: 'Ό,τι δηλώνει ο τύπος του προφίλ φτάνει στον client',
+    description: 'Τρέχει το ΠΡΑΓΜΑΤΙΚΟ loadGeospatialExposureProfiles με mock fetch πάνω στα πραγματικά αρχεία και των 110 περιοχών, διαβάζει από το types.ts (με τον compiler, όχι με regex) ποια πεδία δηλώνει το GeospatialExposureProfile, και απαιτεί κάθε δηλωμένο πεδίο που υπάρχει στο ωμό αρχείο να υπάρχει και στο αντικείμενο που παίρνει ο client. Καρφώνει τρεις μάρτυρες με τη σημασία τους (Γλυφάδα 1993: ο βοριάς ΔΕΝ ήρθε από στεριά· Φυριπλάκα 1927 και Λυγαριά 636: ήρθε), και αυτο-αποδεικνύεται ξαναπαίζοντας το ακριβές λάθος — σβήνει windShadow/sectors από το ξαναχτισμένο αντικείμενο και απαιτεί να σκάσει.',
+    protects: 'Το normalizeProfiles ξαναχτίζει το προφίλ πεδίο-πεδίο, και στις 27/08/2026 βρέθηκε να ΚΡΑΤΑΕΙ δύο πεδία έξω από τον client: το windShadow (η γραμμή απόγειου ανέμου της 24/08 δεν είχε ανάψει ΠΟΤΕ στο live — ο Μίλτος είδε τη Γλυφάδα να γράφει «απάνεμη» με τον σωστό κώδικα ήδη live) και το marineCellTrusted (67 παραλίες με κελί κύματος που περιγράφει άλλο νερό διαβάζονταν αξιόπιστες, άρα ο αποκλεισμός sea_cell του βάθρου δεν μπορούσε να ανάψει). Και τα δύο πέρασαν από 81 πύλες, γιατί όλες έλεγχαν δεδομένα και λογική — καμία τον μεταφορέα.',
+    failureAction: 'Πρόσθεσε το πεδίο που λείπει στο normalizeProfiles του services/geospatialExposureService.ts (και στον Raw τύπο του). Αν το πεδίο αφαιρέθηκε από το types.ts συνειδητά, άλλαξε ΜΑΖΙ του και τους καταναλωτές — ποτέ μην περνάς την πύλη βάζοντας πεδίο στο SERVICE_OWNED χωρίς ο ίδιος ο client να το παράγει.',
+    command: process.execPath,
+    args: ['scripts/validateGeospatialProfilePlumbing.mjs', '--prove'],
+  },
+  {
     id: 'open-water-label',
     title: 'The wave figure names its water, and the card says why',
     description: 'Runs every beach with committed geometry against all 8 wind sectors through the real utils/coveWaveGuard, and checks the reading is labelled «Κύμα ανοιχτά» only where the number really is the area grid — never where the guard swapped in our own near-shore SMB. Then checks the card can still be understood: seaOpen and SHELTER_LABEL are present, non-empty and distinct in all five languages, the component renders both, and BeachDetailPage still passes weatherNow.liveSentence plus a shelter word derived from the map-aligned exposure level.',

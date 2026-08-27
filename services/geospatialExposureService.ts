@@ -26,6 +26,8 @@ type RawGeospatialExposureProfile = {
   marineSamplePoint?: { lat: number; lon: number; bearingDeg: number; distanceKm: number };
   /** «Έχει στεριά ≤0,3 χλμ ανά 15°;» — 24×'0'/'1', utils/offshoreWindNote. Δες το σχόλιο στο normalizeProfiles. */
   windShadow?: string;
+  /** false = το κελί κύματος περιγράφει ΑΛΛΟ νερό (auditMarineCellTrust). Δες το σχόλιο στο normalizeProfiles. */
+  marineCellTrusted?: boolean;
 };
 
 type RawGeospatialExposurePayload = {
@@ -83,8 +85,13 @@ const normalizeProfiles = (
          στο live site (windArrivedOverLand σε undefined = false = σιωπή), και η πύλη της
          λέξης «απάνεμη» (27/08) γεννήθηκε νεκρή για τον ίδιο λόγο — ο Μίλτος την είδε να
          μη δουλεύει στη Γλυφάδα την ώρα που το JS ήταν ήδη live. Το γνωστό λάθος του
-         13/08 με άλλα ρούχα: κοίτα το JSX/αντικείμενο που ΦΤΑΝΕΙ στην οθόνη, όχι το αρχείο. */
+         13/08 με άλλα ρούχα: κοίτα το JSX/αντικείμενο που ΦΤΑΝΕΙ στην οθόνη, όχι το αρχείο.
+         Η πύλη scripts/validateGeospatialProfilePlumbing.mjs υπάρχει για να μην ξανασυμβεί:
+         την ώρα που γραφόταν έπιασε αμέσως ΚΑΙ το marineCellTrusted (67 παραλίες) να
+         χάνεται εδώ — χωρίς αυτό, ο client έβλεπε κάθε κελί κύματος ως αξιόπιστο και ο
+         αποκλεισμός sea_cell του βάθρου δεν μπορούσε να ανάψει ποτέ. */
       windShadow: profile.windShadow,
+      marineCellTrusted: profile.marineCellTrusted,
     };
     return currentLookup;
   }, {});
