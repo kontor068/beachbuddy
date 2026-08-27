@@ -349,11 +349,18 @@ if (!shelterBlock) {
       + 'track RELIEF_MAX_BEAUFORT (utils/conditionsFeelPhrase.ts) — same wind, same honesty.'
     );
   }
-  if (!/beaufortLevel\s*>\s*SHELTER_WORD_MAX_BEAUFORT/.test(detailSource)
+  // 27/08/2026: the ceiling reads printedBeaufortMax, not beaufortLevel — the gust RANGE
+  // («5–6 Μπφ», utils/beaufortRange) put a 6 on the tile while the ceiling only saw the 5
+  // (Γάνεμα #2078). The gate therefore demands BOTH halves: the ceiling compares the
+  // printed maximum, and that maximum is derived from beaufortLevel and beaufortHigh —
+  // otherwise a refactor could rename the variable and quietly compare something calmer.
+  if (!/printedBeaufortMax\s*>\s*SHELTER_WORD_MAX_BEAUFORT/.test(detailSource)
+    || !/printedBeaufortMax\s*=\s*Math\.max\(\s*beaufortLevel\s*,\s*beaufortHigh\s*\?\?\s*beaufortLevel\s*\)/.test(detailSource)
     || !/protectedStrongWind/.test(detailSource)) {
     failures.push(
       'pages/BeachDetailPage.tsx: the wind tile no longer swaps to protectedStrongWind above '
-      + 'SHELTER_WORD_MAX_BEAUFORT. At 6 Bft a north-facing-away beach would read «Β · απάνεμη» '
+      + 'SHELTER_WORD_MAX_BEAUFORT judged on the PRINTED maximum (max of beaufortLevel and '
+      + 'beaufortHigh). At a printed 6 a north-facing-away beach would read «Β · απάνεμη» '
       + 'again — geometrically true, but it tells the visitor there is no wind while there is.'
     );
   }

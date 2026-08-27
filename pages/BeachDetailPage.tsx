@@ -2214,7 +2214,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             shelterLabel: beaufortLevel >= 3
               ? (() => {
                   const shelterCopy = SHELTER_LABEL[language] ?? SHELTER_LABEL.en;
-                  if (mapAlignedExposureLevel === 'protected' && beaufortLevel > SHELTER_WORD_MAX_BEAUFORT) {
+                  /* ΤΑ ΤΑΒΑΝΙΑ ΤΗΣ ΛΕΞΗΣ ΔΙΑΒΑΖΟΥΝ ΤΟΝ ΜΕΓΑΛΥΤΕΡΟ ΤΥΠΩΜΕΝΟ ΑΡΙΘΜΟ (Γάνεμα
+                     Σερίφου #2078, 27/08/2026): το πλακίδιο έγραφε «5–6 Μπφ» και από κάτω
+                     «απάνεμη», γιατί το ταβάνι κοίταζε μόνο το κάτω άκρο (5) — αλλά ο
+                     αναγνώστης δίπλα σε «απάνεμη» βλέπει το 6, δηλαδή τη Φυριπλάκα ξανά,
+                     από την πίσω πόρτα του εύρους ριπών. Όποιος αριθμός τυπώνεται, αυτός
+                     δεσμεύει τη λέξη· χρώμα/ετυμηγορία/κατάταξη μένουν στο κάτω άκρο. */
+                  const printedBeaufortMax = Math.max(beaufortLevel, beaufortHigh ?? beaufortLevel);
+                  if (mapAlignedExposureLevel === 'protected' && printedBeaufortMax > SHELTER_WORD_MAX_BEAUFORT) {
                     return shelterCopy.protectedStrongWind;
                   }
                   /* «Απάνεμη» υπόσχεται ότι δεν θα σε δέρνει ο αέρας — όχι μόνο ότι δεν σου
@@ -2225,7 +2232,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                      Δες το μπλοκ του SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο BeachAnswerHero. */
                   if (
                     mapAlignedExposureLevel === 'protected'
-                    && beaufortLevel >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT
+                    && printedBeaufortMax >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT
                     && geospatialExposure?.confidence === 'high'
                     && geospatialExposure.windShadow?.length === WIND_SHADOW_SLOTS
                     && !windArrivedOverLand(geospatialExposure.windShadow, weatherData.wind.deg)

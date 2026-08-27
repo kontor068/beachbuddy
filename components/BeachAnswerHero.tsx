@@ -147,6 +147,12 @@ export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: s
 /**
  * Πάνω από αυτό, «απάνεμη» δεν λέγεται. Ίδιο νούμερο με το RELIEF_MAX_BEAUFORT της κάρτας,
  * και ίδιο με το σημείο όπου ο χάρτης αρχίζει να βάφει κόκκινο.
+ *
+ * ⚠️ ΑΠΟ 27/08/2026 ΚΡΙΝΕΤΑΙ ΣΤΟΝ ΜΕΓΑΛΥΤΕΡΟ ΤΥΠΩΜΕΝΟ ΑΡΙΘΜΟ, όχι μόνο στο κάτω άκρο:
+ * με το εύρος ριπών ζωντανό, το Γάνεμα Σερίφου (#2078) έγραψε «5–6 Μπφ» με «απάνεμη» από
+ * κάτω — το 5 περνούσε το ταβάνι, το 6 που έβλεπε ο αναγνώστης όχι. Η λέξη δεσμεύεται από
+ * ό,τι τυπώνεται δίπλα της (BeachDetailPage, printedBeaufortMax)· το ίδιο ισχύει και για
+ * το κατώφλι του «φυσάει» πιο κάτω.
  */
 export const SHELTER_WORD_MAX_BEAUFORT = 5;
 
@@ -619,7 +625,9 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
         : (typeof sea.heightM === 'number' && Number.isFinite(sea.heightM) ? sea.heightM : undefined))
     : undefined;
   const conditionsFeel = wind
-    ? buildConditionsFeel({ beaufort: wind.beaufort, waveM: feelWaveM, language })
+    // Το beaufortHigh μπαίνει για το ταβάνι του «αλλά» και μόνο: το πλακίδιο από πάνω
+    // τυπώνει «5–6 Μπφ», και ανακούφιση δίπλα σε τυπωμένο 6 είναι η Φυριπλάκα ξανά.
+    ? buildConditionsFeel({ beaufort: wind.beaufort, beaufortHigh: wind.beaufortHigh, waveM: feelWaveM, language })
     : null;
   // `divergent`, ΟΧΙ `contrast`: το δεύτερο πέφτει στα 6+ Μποφόρ για να μη μπει «αλλά» δίπλα σε
   // κόκκινη πινέζα — αν το διάβαζε αυτή η γραμμή, ο Φάραγγας (6 Μπφ πάνω από 0,1 μ.) θα ήταν ο

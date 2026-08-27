@@ -134,6 +134,14 @@ const FEEL_VOCABULARY: LocalizedCopy<FeelVocabulary> = {
 export interface ConditionsFeelInput {
   /** Τα μποφόρ ΤΗΣ ΠΑΡΑΛΙΑΣ — ό,τι διάβασε και η πινέζα, όχι της περιοχής. */
   beaufort: number;
+  /**
+   * Το άνω άκρο του ΤΥΠΩΜΕΝΟΥ εύρους («5–6 Μπφ»), όταν η επιφάνεια δείχνει εύρος
+   * (utils/beaufortRange, ενεργό από 27/08/2026). Κρίνει ΜΟΝΟ το ταβάνι της ανακούφισης:
+   * το «αλλά» δεν λέγεται δίπλα σε τυπωμένο 6, ακόμα κι αν ο μέσος είναι 5 (Γάνεμα #2078,
+   * 27/08 — ίδια μέρα και ίδιο σχήμα με το ταβάνι της «απάνεμης» στο BeachAnswerHero).
+   * Οι ΛΕΞΕΙΣ μένουν στον μέσο: «Πολύς αέρας» για μέσο 5 είναι σωστό, ο σύνδεσμος όχι.
+   */
+  beaufortHigh?: number | null;
   /** Το ύψος που ΤΥΠΩΝΕΤΑΙ δίπλα στη φράση. Χωρίς αυτό η φράση μιλά μόνο για τον αέρα. */
   waveM?: number;
   language: LanguageCode;
@@ -160,12 +168,13 @@ export interface ConditionsFeel {
    */
   divergent: boolean;
   /**
-   * Ο ΤΟΝΟΣ: μπήκε «αλλά» αντί για κόμμα. Πάντα `divergent && beaufort <= RELIEF_MAX_BEAUFORT`.
+   * Ο ΤΟΝΟΣ: μπήκε «αλλά» αντί για κόμμα. Πάντα `divergent && τυπωμένο-μέγιστο <= RELIEF_MAX_BEAUFORT`
+   * (το τυπωμένο μέγιστο είναι το άνω άκρο του εύρους αν δόθηκε, αλλιώς ο μέσος).
    */
   contrast: boolean;
 }
 
-export const buildConditionsFeel = ({ beaufort, waveM, language }: ConditionsFeelInput): ConditionsFeel | null => {
+export const buildConditionsFeel = ({ beaufort, beaufortHigh, waveM, language }: ConditionsFeelInput): ConditionsFeel | null => {
   if (!Number.isFinite(beaufort)) return null;
   const vocabulary = getLocalizedCopy(language, FEEL_VOCABULARY);
   const windLevel = windFeelLevel(Math.max(0, Math.round(beaufort)));
@@ -179,7 +188,9 @@ export const buildConditionsFeel = ({ beaufort, waveM, language }: ConditionsFee
   const waveWordRaw = vocabulary.wave[waveLevel];
   const waveWord = waveWordRaw.charAt(0).toUpperCase() + waveWordRaw.slice(1);
   const divergent = Math.abs(windLevel - waveLevel) >= CONTRAST_GAP;
-  const contrast = divergent && beaufort <= RELIEF_MAX_BEAUFORT;
+  // Το ταβάνι της ανακούφισης κρίνεται στον ΜΕΓΑΛΥΤΕΡΟ τυπωμένο αριθμό — δες ConditionsFeelInput.
+  const printedBeaufortMax = Math.max(beaufort, typeof beaufortHigh === 'number' && Number.isFinite(beaufortHigh) ? beaufortHigh : beaufort);
+  const contrast = divergent && printedBeaufortMax <= RELIEF_MAX_BEAUFORT;
   const join = contrast ? vocabulary.joinContrast : vocabulary.join;
   return {
     phrase: `${windWord}${join}${waveWordRaw}`,
