@@ -2461,7 +2461,11 @@ interface WindColorLegendTilesProps {
   maxFontPx: number;
   /** Τέσσερα χρώματα σε μία σειρά κινητού — το κελί είναι ένα τέταρτο της οθόνης. */
   isTightCell: boolean;
+  /** Πατιέται: υπάρχει φίλτρο ΚΑΙ υπάρχουν κι άλλα χρώματα να κρυφτούν. */
   isToneFilterEnabled: boolean;
+  /** Φοράει το πλακίδιο (λευκή κάρτα με περίγραμμα) — ο χάρτης της περιοχής, ναι· ο χάρτης
+   *  μιας παραλίας, όπου η λωρίδα είναι σκέτο υπόμνημα, όχι. */
+  showFrame: boolean;
   activeToneFilter: CalmnessTone | null;
   onToneFilterChange?: (tone: CalmnessTone | null) => void;
   colorName: Record<CalmnessTone, string>;
@@ -2472,7 +2476,7 @@ interface WindColorLegendTilesProps {
 }
 
 const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
-  rows, language, maxFontPx, isTightCell, isToneFilterEnabled, activeToneFilter,
+  rows, language, maxFontPx, isTightCell, isToneFilterEnabled, showFrame, activeToneFilter,
   onToneFilterChange, colorName, dotClasses, activeClasses, filterCopy, causeShortByTone,
 }) => {
   const probeRef = useRef<HTMLSpanElement>(null);
@@ -2575,6 +2579,10 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
      δεξί χείλος) γιατί αλλιώς το `ml-auto` του θα ρουφούσε όλο το κενό και θα ξανάσπρωχνε
      τη φράση αριστερά — το κεντράρισμα θα ήταν κεντράρισμα μόνο στα λόγια. */
   const isSoloTile = rows.length === 1;
+  /* Το ίδιο πλαίσιο για το κουμπί και για το πλακίδιο-χωρίς-πάτημα: αλλιώς ο χάρτης με ένα
+     χρώμα θα άλλαζε σχήμα σε σχέση με τον χάρτη που έχει τέσσερα. Το `relative` είναι για το
+     × του μοναδικού πλακιδίου, που βγαίνει από τη ροή. */
+  const frameClasses = `relative flex w-full flex-col justify-start rounded-lg border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 shadow-sm sm:px-2`;
 
   const numberedText = (line: ConditionToneCountLine, key: React.Key) => (
     <React.Fragment key={key}>
@@ -2672,8 +2680,20 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
         );
 
         if (!isToneFilterEnabled) {
+          /* ΧΩΡΙΣ ΠΑΤΗΜΑ. Δύο διαφορετικές περιπτώσεις καταλήγουν εδώ και δεν πρέπει να
+             μοιάζουν: ο χάρτης ΜΙΑΣ παραλίας δεν έχει τι να φιλτράρει και η λωρίδα του είναι
+             σκέτο υπόμνημα (χωρίς πλαίσιο, όπως ήταν πάντα)· ο χάρτης περιοχής με ΕΝΑ χρώμα
+             κρατάει το πλακίδιο του — ίδιο πλαίσιο, ίδιο μέγεθος, κεντραρισμένο — αλλά χωρίς
+             βελάκι και χωρίς όψη κουμπιού, γιατί δεν υπάρχει τίποτα να ξεχωρίσει. */
           return (
-            <div key={row.tone} data-legend-tile="" style={typeStyle} className={textClasses}>
+            <div
+              key={row.tone}
+              data-legend-tile=""
+              style={typeStyle}
+              className={showFrame
+                ? `${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900`
+                : textClasses}
+            >
               {body}
             </div>
           );
@@ -2699,7 +2719,7 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
                κεντράρισμα: το πλέγμα ισοϋψώνει τα κελιά, άρα οτιδήποτε κρέμεται από κάτω σε
                ένα πλακίδιο θα κατέβαζε κουκκίδα και αριθμό του σε άλλο ύψος από των διπλανών. */
             style={typeStyle}
-            className={`${textClasses} ${isSoloTile ? 'relative text-center' : 'text-left'} flex w-full cursor-pointer flex-col justify-start rounded-lg border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 shadow-sm transition active:translate-y-px active:shadow-none sm:px-2 hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+            className={`${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} cursor-pointer transition active:translate-y-px active:shadow-none hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
               isActive
                 ? `${activeClasses[row.tone]} shadow`
                 : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
@@ -4211,6 +4231,17 @@ const BeachMap: React.FC<BeachMapProps> = ({
     .map(tone => ({ tone, count: mapToneTally.counts.get(tone) ?? 0 }))
     .filter(row => row.count > 0)
     .filter(row => !activeToneFilter || row.tone === activeToneFilter);
+  /* ΠΟΣΑ ΧΡΩΜΑΤΑ ΦΟΡΑΕΙ ΟΛΟΣ Ο ΧΑΡΤΗΣ — διαβασμένο κατευθείαν από την ΙΔΙΑ μέτρηση, όχι από
+     τις ορατές σειρές: εκείνες τις κόβει το φίλτρο, οπότε με φίλτρο αναμμένο θα έδειχναν
+     πάντα «ένα χρώμα» και το κουμπί επιστροφής θα εξαφανιζόταν μαζί τους. */
+  const presentToneCount = LEGEND_TONE_ORDER
+    .filter(tone => (mapToneTally.counts.get(tone) ?? 0) > 0).length;
+  /* ΕΝΑ ΧΡΩΜΑ ΣΕ ΟΛΟΝ ΤΟΝ ΧΑΡΤΗ = ΔΕΝ ΥΠΑΡΧΕΙ ΤΙΠΟΤΑ ΝΑ ΞΕΧΩΡΙΣΕΙ (Μίλτος, 27/08/2026: «αν
+     όλες είναι κάτι συγκεκριμένο δεν χρειάζεται κουμπί, το κουμπί δεν θα δουλεύει»). Το φίλτρο
+     κρύβει τα ΑΛΛΑ χρώματα· όταν άλλα χρώματα δεν υπάρχουν, το πάτημα δεν αφαιρεί ούτε μία
+     πινέζα — δίνει μόνο ένα × για να ξεπατηθεί αυτό που δεν έκανε τίποτα. Το πλακίδιο μένει
+     πλακίδιο (ίδιο πλαίσιο, κεντραρισμένο), αλλά παύει να προσποιείται ότι είναι κουμπί. */
+  const isSingleToneMap = presentToneCount <= 1;
   const showGroupedExposureLegend = showWindExposureStatusLabels && !isSevereWind;
   // Legend cue turned off (Μίλτος, 15/08/2026) — the surf marker itself (isSurfMarker,
   // below) still shows on the pin, only this explanatory legend line is gone.
@@ -4218,8 +4249,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   // Tapping a row shows only those beaches — on the map AND in the cards below, which is why the
   // rows are only interactive when the parent actually wired the filter up. On the detail map,
-  // where there is nothing to filter, they stay plain text.
-  const isToneFilterEnabled = Boolean(onToneFilterChange) && !isSevereWind;
+  // where there is nothing to filter, they stay plain text — ΧΩΡΙΣ πλαίσιο, όπως πάντα.
+  const showToneTileFrame = Boolean(onToneFilterChange) && !isSevereWind;
+  // ...και με πλαίσιο μεν, χωρίς πάτημα δε, όταν ο χάρτης φοράει ένα μόνο χρώμα.
+  const isToneFilterEnabled = showToneTileFrame && !isSingleToneMap;
   const toneFilterCopy = getLocalizedCopy<{ showOnly: string; showAll: string }>(language, {
     en: { showOnly: 'Show only these', showAll: 'Show all beaches' },
     gr: { showOnly: 'Δείξε μόνο αυτές', showAll: 'Δείξε όλες τις παραλίες' },
@@ -4300,6 +4333,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
             maxFontPx={isPreview ? 10 : 11}
             isTightCell={isTightCell}
             isToneFilterEnabled={isToneFilterEnabled}
+            showFrame={showToneTileFrame}
             activeToneFilter={activeToneFilter ?? null}
             onToneFilterChange={onToneFilterChange}
             colorName={windColorGuideCopy.colorName}
