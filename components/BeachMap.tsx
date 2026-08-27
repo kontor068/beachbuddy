@@ -3873,20 +3873,35 @@ const BeachMap: React.FC<BeachMapProps> = ({
 
   const renderWindColorGuideRows = (variant: 'full' | 'preview') => {
     const isPreview = variant === 'preview';
-    // TWO-UP ON A PHONE, FOUR ACROSS ON A WIDE SCREEN (10/08/2026). These rows used to run
-    // full-width down the page: four colours, two lines each, and the beach cards started below
-    // the fold on a phone. Side by side they cost a quarter of that height. A single row (a
-    // filter is on) stays full width rather than sitting in a lonely half-column, and an odd
-    // last row spans both phone columns so the strip never ends with a gap.
+    // ONE ROW ON EVERY SCREEN (27/08/2026, Miltos's call). From 10/08 to 27/08 the phone laid
+    // these out two-up, which meant a third colour dropped onto a second line and a fourth made
+    // a 2×2 block — the reader saw two separate strips of buttons under the map and had to read
+    // them as one thing. Now the number of columns IS the number of colours on the map: two
+    // colours make two columns, four make four, and the strip is always a single line the eye
+    // crosses once. What pays for it is size, not content — the chip is smaller and tighter on a
+    // phone (9px text, 2px dot, no chevron) and returns to its old size from sm: up.
+    //
+    // The columns are looked up from a literal map, never built by string interpolation:
+    // Tailwind v4 scans the source for whole class names, and `grid-cols-${n}` would compile to
+    // nothing and silently stack the rows again — the exact bug this change removes.
+    // A single row (a filter is on) stays full width rather than sitting in a lonely column.
     // Since 15/08/2026 each cell is ONE line, not two — the per-colour sentence moved to a
-    // single caption under the grid — so the same 2×2 costs half the height it used to.
+    // single caption under the grid.
     const rowCount = visibleWindColorGuideRows.length;
     const isSideBySide = !isSevereWind && rowCount > 1;
-    const gridClasses = `${isSideBySide ? 'grid grid-cols-2 gap-1 sm:grid-cols-4' : 'grid gap-1'}${isPreview ? ' pr-5' : ''}`;
+    const sideBySideColumnClasses: Record<number, string> = {
+      2: 'grid-cols-2',
+      3: 'grid-cols-3',
+      4: 'grid-cols-4',
+    };
+    // Four is the whole ladder (blue/yellow/orange/red), so the fallback is only a guard against
+    // a future fifth colour — it keeps the strip on one line rather than inventing a new shape.
+    const columnClasses = sideBySideColumnClasses[rowCount] ?? 'grid-cols-4';
+    const gridClasses = `${isSideBySide ? `grid ${columnClasses} gap-1 sm:grid-cols-4 sm:gap-1.5` : 'grid gap-1'}${isPreview ? ' pr-5' : ''}`;
 
     return (
       <div
-        className={`${gridClasses} ${isPreview ? '' : 'rounded-lg bg-slate-50/80 p-2 dark:bg-slate-800/60'}`}
+        className={`${gridClasses} ${isPreview ? '' : 'rounded-lg bg-slate-50/80 p-1.5 sm:p-2 dark:bg-slate-800/60'}`}
       >
         {isSevereWind ? (
           <div className={`${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} col-span-full flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 font-semibold leading-snug text-slate-600 dark:text-slate-300`}>
@@ -3899,13 +3914,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
               />
             </span>
           </div>
-        ) : visibleWindColorGuideRows.map((row, rowIndex) => {
+        ) : visibleWindColorGuideRows.map(row => {
           const isActive = activeToneFilter === row.tone;
-          // Three colours in a two-column grid would leave a hole; the last one takes the whole
-          // phone row instead. At sm: the grid is four wide and every row fits on one line.
-          const spanClasses = isSideBySide && rowCount % 2 === 1 && rowIndex === rowCount - 1
-            ? 'col-span-2 sm:col-span-1'
-            : '';
           // «Ιδανικές 4 παραλίες», not «Ιδανική 4». The bare number beside a singular adjective
           // was read as a score or a rank; the noun is what makes it a count (12/08/2026, from
           // real reader reports). It survived the 15/08 slimming for exactly that reason: what
@@ -3914,22 +3924,22 @@ const BeachMap: React.FC<BeachMapProps> = ({
           const causeLine = causeLineByTone.get(row.tone);
           const body = (
             <>
-              <span className="flex min-w-0 items-start gap-1.5">
+              <span className="flex min-w-0 items-start gap-1 sm:gap-1.5">
                 <span
                   aria-label={windColorGuideCopy.colorName[row.tone]}
                   title={windColorGuideCopy.colorName[row.tone]}
                   role="img"
-                  className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ring-1 ${windLegendDotClasses[row.tone]}`}
+                  className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ring-1 sm:mt-1 sm:h-2.5 sm:w-2.5 ${windLegendDotClasses[row.tone]}`}
                 />
-                <span className="min-w-0">
+                <span className="min-w-0 break-words">
                   {countPhrase.before}
                   <span className="font-extrabold text-slate-700 dark:text-slate-200">{row.count}</span>
                   {countPhrase.after}
                 </span>
                 {isToneFilterEnabled && (
                   isActive
-                    ? <X aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-500" />
-                    : <ChevronRight aria-hidden="true" className="ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400" />
+                    ? <X aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-500 ${isSideBySide ? 'hidden sm:block' : ''}`} />
+                    : <ChevronRight aria-hidden="true" className={`ml-auto mt-0.5 h-3 w-3 shrink-0 text-slate-400 ${isSideBySide ? 'hidden sm:block' : ''}`} />
                 )}
               </span>
               {/* WIDE SCREENS EXPLAIN, PHONES COUNT (15/08/2026, Miltos's call).
@@ -3947,7 +3957,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                    hour, which they cannot get anywhere else on the screen. On a wide screen the
                    swap costs zero height, and on a phone (where the static line is hidden) it is
                    the only line — about +24 px, and only on the days it fires. */
-                <span className="mt-0.5 block text-left text-[10px] font-semibold leading-snug text-slate-600 dark:text-slate-300">
+                <span className="mt-0.5 block text-left text-[9px] font-semibold leading-snug text-slate-600 sm:text-[10px] dark:text-slate-300">
                   <span aria-hidden="true" className="mr-0.5 text-slate-400">▸</span>
                   {causeLine.short}
                 </span>
@@ -3958,7 +3968,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
               )}
             </>
           );
-          const textClasses = `${isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]'} ${spanClasses} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
+          // A lone chip (a filter is on) has the whole width to itself and keeps its old size;
+          // chips sharing a phone row drop to 9px, which is what buys them the single line.
+          const sizeClasses = isSideBySide
+            ? 'text-[9px] sm:text-[11px]'
+            : (isPreview ? 'text-[10px] sm:text-[11px]' : 'text-[11px]');
+          const textClasses = `${sizeClasses} min-w-0 font-semibold leading-snug text-slate-600 dark:text-slate-300`;
 
           if (!isToneFilterEnabled) {
             return <div key={row.tone} className={textClasses}>{body}</div>;
@@ -3974,7 +3989,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                  today's orange is wind and not wave. */
               aria-label={`${countPhrase.text}${causeLine ? ` — ${causeLine.short}` : ''} — ${isActive ? toneFilterCopy.showAll : toneFilterCopy.showOnly}`}
               onClick={() => onToneFilterChange?.(isActive ? null : row.tone)}
-              className={`${textClasses} w-full cursor-pointer rounded-lg border px-2 py-1.5 text-left transition hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
+              className={`${textClasses} w-full cursor-pointer rounded-lg border px-1 py-1 text-left transition sm:px-2 sm:py-1.5 hover:border-slate-400 hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:hover:bg-slate-800 ${
                 isActive
                   ? `${windLegendActiveClasses[row.tone]} shadow-sm`
                   : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-slate-900/40'
