@@ -116,7 +116,7 @@ export const NewsletterSection: React.FC<NewsletterSectionProps> = ({ language }
 
   return (
     <section ref={sectionRef} className="mx-auto w-full max-w-6xl px-5" aria-label={c.title}>
-      <div className="mx-auto max-w-2xl rounded-surface border border-line bg-white/72 p-6 shadow-surface ring-1 ring-white/45 backdrop-blur-xl sm:p-7">
+      <div className="mx-auto max-w-2xl rounded-3xl border border-white/70 bg-white/72 p-6 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:p-7">
         <p className="text-sm font-bold text-[#007a83]">{c.overline}</p>
         <h2 className="mt-2 text-balance text-xl font-bold leading-tight tracking-tight text-slate-950 sm:text-2xl">
           {c.title}
@@ -147,14 +147,14 @@ export const NewsletterSection: React.FC<NewsletterSectionProps> = ({ language }
                   inputMode="email"
                   aria-label={c.inputLabel}
                   aria-invalid={state === 'invalid'}
-                  className="min-h-12 w-full rounded-control border border-line bg-white px-4 text-[15px] font-medium text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
+                  className="min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-[15px] font-medium text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
                 />
               </label>
               <button
                 type="submit"
                 disabled={state === 'sending'}
                 aria-busy={state === 'sending'}
-                className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
+                className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
               >
                 {state === 'sending'
                   ? <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" aria-hidden="true" />

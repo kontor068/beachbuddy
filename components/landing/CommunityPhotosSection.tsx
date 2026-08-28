@@ -106,7 +106,7 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
           says they are load-bearing — dropping "a person checks it first" turns
           an approval queue into a broken promise the first time a photo does not
           appear — so the shrink came out of spacing and type size, not truth. */}
-      <div className="overflow-hidden rounded-surface bg-cyan-50/60 px-5 py-7 ring-1 ring-cyan-100 sm:rounded-surface sm:px-9 sm:py-9">
+      <div className="overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-cyan-50 via-white to-sky-100 px-5 py-7 ring-1 ring-cyan-200/70 sm:rounded-[2rem] sm:px-9 sm:py-9">
         <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-12">
           <div>
             <p className="flex flex-wrap items-center gap-2">
@@ -135,7 +135,7 @@ export const CommunityPhotosSection: React.FC<CommunityPhotosSectionProps> = ({
                 trackEvent('landing_photos_cta_clicked', undefined, { signed_in: isSignedIn ? 1 : 0 });
                 onStart();
               }}
-              className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cta px-5 text-sm font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
+              className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cta px-5 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2"
             >
               <Camera className="h-4 w-4" aria-hidden="true" />
               {c.cta}

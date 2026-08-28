@@ -57,7 +57,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
             aria-describedby={wouldReturnNoResults ? `${item.key}-no-results-hint` : undefined}
             className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 sm:min-h-10 sm:px-4 sm:text-sm ${
               isActive
-                ? 'bg-cta text-white border-cta shadow-cyan-200/70'
+                ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
                 : wouldReturnNoResults
                 ? 'border-white/50 bg-white/48 text-slate-700 shadow-none hover:border-cyan-300 hover:bg-white/72 hover:text-cyan-600'
                 : 'bg-white/62 text-slate-600 border-white/65 hover:border-cyan-300 hover:bg-white/80 hover:text-cyan-600'
@@ -78,7 +78,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
           onClick={() => setShowMoreFilters(true)}
             className={`flex min-h-11 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border px-3 py-2 text-xs font-semibold leading-tight transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm sm:min-h-10 sm:px-4 sm:text-sm ${
             hiddenActiveCount > 0
-              ? 'bg-cta text-white border-cta shadow-cyan-200/70'
+              ? 'bg-cyan-600 text-white border-cyan-600 shadow-cyan-200/70'
               : 'bg-white/58 text-slate-600 border-white/60 hover:border-cyan-300 hover:bg-white/78 hover:text-cyan-600'
           }`}
         >

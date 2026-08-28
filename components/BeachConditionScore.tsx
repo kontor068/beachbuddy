@@ -399,7 +399,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
 
     if (compact) {
       return (
-        <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-control border ${boatTone.border}`}>
+        <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border ${boatTone.border}`}>
           <div className={`flex items-center justify-center w-8 h-8 rounded-full text-white ${boatTone.bg}`}>
             <Ship className="w-4 h-4" />
           </div>
@@ -416,8 +416,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
     }
 
     return (
-      <div className="bg-white dark:bg-slate-800 rounded-control p-4 shadow-surface border border-line dark:border-slate-700">
-        <div className="flex items-center justify-between mb-4 pb-4 border-b border-line dark:border-slate-700">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
+        <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
           <div>
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-600 mb-1">{boatCopy.title}</h3>
             <div className="flex items-baseline gap-2">
@@ -511,7 +511,7 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
 
   if (compact) {
     return (
-      <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-control border ${conditionTone.border}`}>
+      <div className={`flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border ${conditionTone.border}`}>
         <div className={`flex items-center justify-center w-8 h-8 rounded-full text-white ${conditionTone.bg}`}>
           <Waves className="w-4 h-4" />
         </div>
@@ -536,8 +536,8 @@ export const BeachConditionScore: React.FC<BeachConditionScoreProps> = ({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-control p-4 shadow-surface border border-line dark:border-slate-700">
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-line dark:border-slate-700">
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-100 dark:border-slate-700">
+      <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
           <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-600 mb-1">
             {copy.seaConditionsTitle(day, useCurrentPhrase)}

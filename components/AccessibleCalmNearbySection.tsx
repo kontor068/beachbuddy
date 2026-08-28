@@ -66,7 +66,7 @@ export const AccessibleCalmNearbySection: React.FC<AccessibleCalmNearbySectionPr
             <button
               type="button"
               onClick={() => onSelect(cove.id)}
-              className="flex w-full items-center gap-2 rounded-control border border-sky-100 bg-sky-50/50 px-3 py-2 text-left transition-colors hover:bg-sky-50"
+              className="flex w-full items-center gap-2 rounded-xl border border-sky-100 bg-sky-50/50 px-3 py-2 text-left transition-colors hover:bg-sky-50"
             >
               <Accessibility className="h-4 w-4 flex-shrink-0 text-sky-600" aria-hidden="true" />
               <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">{cove.name}</span>

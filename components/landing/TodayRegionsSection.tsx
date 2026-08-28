@@ -107,7 +107,7 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
               key={island.id}
               href={buildBeachRegionPath(island, language)}
               onClick={event => handleClick(event, island)}
-              className="group relative flex min-h-[3.25rem] items-center gap-0.5 overflow-hidden rounded-control border border-line bg-surface px-3.5 py-2 shadow-surface ring-1 ring-white/50 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white hover:shadow-lifted hover:shadow-sky-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 motion-reduce:hover:translate-y-0 sm:gap-2 sm:px-4"
+              className="group relative flex min-h-[3.25rem] items-center gap-0.5 overflow-hidden rounded-2xl border border-white/70 bg-white/70 px-3.5 py-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/50 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white hover:shadow-md hover:shadow-sky-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 motion-reduce:hover:translate-y-0 sm:gap-2 sm:px-4"
             >
               <span
                 aria-hidden="true"
@@ -143,7 +143,7 @@ export const TodayRegionsSection: React.FC<TodayRegionsSectionProps> = ({
           onClick={onShowNearbyBeaches}
           disabled={isFindingLocation}
           aria-busy={isFindingLocation}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-90 disabled:hover:bg-cta"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-90 disabled:hover:bg-cta"
         >
           {isFindingLocation ? (
             <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" aria-hidden="true" />
