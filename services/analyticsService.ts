@@ -426,6 +426,28 @@ const ensureGoogleAnalyticsLoaded = () => {
       // Cap the _ga / _ga_<id> cookie lifetime at ~13 months so it matches the
       // duration stated in the Cookie Policy (GA4 otherwise defaults to 2 years).
       cookie_expires: 60 * 60 * 24 * 30 * 13,
+      // ΤΑ ΔΙΑΦΗΜΙΣΤΙΚΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΤΟΥ GA4, ΣΒΗΣΤΑ ΡΗΤΑ (28/08/2026).
+      //
+      // Ενεργή παραβίαση CSP από /beaches/evia/233-klimaki/: το GA4 προσπάθησε να
+      // στείλει το γεγονός `navigation_clicked` στο pagead2.googlesyndication.com
+      // /measurement/conversion — διαφημιστικό δίκτυο της Google, με το δικό μας
+      // αναγνωριστικό μέτρησης πάνω του. Το connect-src το έκοψε, σωστά.
+      //
+      // Δεν το θέλουμε ούτε κατ' ελάχιστον: δεν τρέχουμε διαφημίσεις πουθενά (μηδέν
+      // αναφορές σε AdSense/Google Ads σε όλο τον κώδικα), και το DEFAULT_DENIED_CONSENT
+      // παραπάνω αρνείται ad_storage, ad_user_data και ad_personalization ΑΚΟΜΑ ΚΑΙ όταν
+      // ο επισκέπτης δεχτεί — μόνο το analytics_storage ανοίγει. Το ping λοιπόν
+      // αντέφασκε με τη ρύθμιση που έχουμε ήδη δηλώσει.
+      //
+      // Οι δύο σημαίες το σταματούν στην ΠΗΓΗ, αντί να το αφήνουμε να φεύγει και να το
+      // κόβει ο browser σε κάθε σελίδα κάθε επισκέπτη. Η μέτρηση επισκεψιμότητας δεν
+      // αγγίζεται: αυτή πάει σε *.google-analytics.com και googletagmanager.com/td,
+      // που είναι και τα δύο επιτρεπτά στο CSP.
+      //
+      // ΑΝ ΞΑΝΑΕΜΦΑΝΙΣΤΕΙ: το «Google signals» είναι ΚΑΙ διακόπτης μέσα στον πίνακα του
+      // GA4 (Admin → Data collection), που δεν ελέγχεται από εδώ.
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
     });
     googleAnalyticsInitialized = true;
   }
