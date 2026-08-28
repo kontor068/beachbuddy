@@ -904,7 +904,11 @@ const calculateRecommendationConfidence = (
     reasons.push('beach metadata needs verification');
   }
 
-  const negativeFeedback = getNegativeFeedbackCount(beach.id);
+  // Με το πραγματικό id, όχι με τη θέση στη λίστα: στο «Κοντά μου» οι παραλίες παίρνουν
+  // νέα ids 1, 2, 3… ανά αναζήτηση, οπότε μια αρνητική αναφορά καταγραμμένη στο «#1»
+  // τιμωρούσε ό,τι τύχαινε να είναι #1 την επόμενη φορά — άλλη παραλία, άλλη μέρα.
+  // Έξω από το «Κοντά μου» το sourceBeachId δεν υπάρχει και τίποτα δεν αλλάζει.
+  const negativeFeedback = getNegativeFeedbackCount(beach.sourceBeachId ?? beach.id);
   if (negativeFeedback > 0) {
     score -= Math.min(15, negativeFeedback * 4);
     reasons.push('recent feedback flagged accuracy');
@@ -2688,7 +2692,11 @@ export const calculateBeachScore = (
 
   const bestBeachTime = calculateBestBeachTime(hourlyForecast || [], beach);
 
-  const negativeFeedback = getNegativeFeedbackCount(beach.id);
+  // Με το πραγματικό id, όχι με τη θέση στη λίστα: στο «Κοντά μου» οι παραλίες παίρνουν
+  // νέα ids 1, 2, 3… ανά αναζήτηση, οπότε μια αρνητική αναφορά καταγραμμένη στο «#1»
+  // τιμωρούσε ό,τι τύχαινε να είναι #1 την επόμενη φορά — άλλη παραλία, άλλη μέρα.
+  // Έξω από το «Κοντά μου» το sourceBeachId δεν υπάρχει και τίποτα δεν αλλάζει.
+  const negativeFeedback = getNegativeFeedbackCount(beach.sourceBeachId ?? beach.id);
   let feedbackPenalty = 0;
   if (negativeFeedback > 0) {
     feedbackPenalty = Math.min(15, negativeFeedback * 3);

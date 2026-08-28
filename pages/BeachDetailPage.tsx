@@ -846,6 +846,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
    * which is what the in-memory maps for this session are keyed by.
    */
   const committedBeachId = beach.sourceBeachId ?? beach.id;
+
+  /** Η περιοχή που ΑΝΗΚΕΙ η παραλία. Στο «Κοντά μου» το prop `regionId` είναι κενό —
+   *  η συγχωνευμένη περιοχή δεν είναι πραγματική — ενώ η ίδια η παραλία κουβαλάει τη
+   *  δική της. Ίδιο μοτίβο με το committedBeachId από πάνω. */
+  const feedbackRegionId = beach.regionId ?? regionId;
   const beachDisplayName = displayBeachName(beach.name, language);
   const islandDisplayName = islandName || 'Greece';
   const [storyExpanded, setStoryExpanded] = useState(false);
@@ -1085,7 +1090,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     // Pair the observed verdict with the modeled conditions so an offline pass can later
     // calibrate this beach/sector (roadmap #7). exposureLevel/windDir/windSpeedKmh are
     // derived below; this handler only runs on click, after they are initialised.
-    storeConditionFeedback(beach.id, verdict, {
+    // Η ΠΡΑΓΜΑΤΙΚΗ ΤΑΥΤΟΤΗΤΑ ΤΗΣ ΠΑΡΑΛΙΑΣ, ΟΧΙ Η ΘΕΣΗ ΤΗΣ ΣΤΗ ΛΙΣΤΑ (28/08/2026).
+    // Στο «Κοντά μου» το App.buildNearbyRegion συγχωνεύει παραλίες από πολλές περιοχές
+    // και δίνει στην καθεμία νέο id 1, 2, 3… επειδή τα πραγματικά ids είναι μοναδικά
+    // μόνο ΜΕΣΑ σε μια περιοχή. Το σχόλιο έφευγε λοιπόν με «ID παραλίας: 1» και
+    // «Νησί/περιοχή: Near me» — και το 1 δεν σημαίνει τίποτα: αύριο, από άλλο σημείο,
+    // είναι άλλη παραλία. Ό,τι χρειάζεται υπάρχει ήδη πάνω στο αντικείμενο, ακριβώς
+    // γι' αυτόν τον λόγο: committedBeachId (= sourceBeachId) και beach.regionId.
+    storeConditionFeedback(committedBeachId, verdict, {
       exposureLevel,
       beaufort: getBeaufortLevel(windSpeedKmh),
       // Ό,τι ΕΙΔΕ ο επισκέπτης («3–4»), ώστε ένα «είχε πιο πολύ αέρα» να κριθεί απέναντι στο άνω
@@ -1114,10 +1126,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       source: 'condition_feedback',
       beachName: beachDisplayName,
       islandName,
-      regionId,
+      regionId: feedbackRegionId,
       language,
-      pagePath: regionId
-        ? buildBeachDetailPath(regionId, beach, language)
+      // Ο σύνδεσμος χτίζεται με το ΠΡΑΓΜΑΤΙΚΟ id, αλλιώς στο «Κοντά μου» θα έδειχνε
+      // /beaches/kos/1-mpatis/ — διεύθυνση που δεν υπάρχει. Χωρίς περιοχή δεν
+      // εφευρίσκουμε διαδρομή: πέφτουμε στη σελίδα που είναι όντως ανοιχτή.
+      pagePath: feedbackRegionId
+        ? buildBeachDetailPath(feedbackRegionId, { ...beach, id: committedBeachId }, language)
         : (typeof window !== 'undefined' ? window.location.pathname : ''),
     });
     setFeedbackSubmitted(true);
