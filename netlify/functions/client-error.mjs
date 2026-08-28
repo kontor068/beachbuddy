@@ -232,7 +232,29 @@ const sendTelegram = async (text) => {
 // and, until 04/08/2026, as "🔴 έσπασε σελίδα σε επισκέπτη" for a visitor that does
 // not exist. Their reports are still counted in the blob store (worth knowing if a
 // crawler cannot render the site at all); they just never ring the phone.
-const CRAWLER_UA = /AdsBot|Googlebot|bingbot|Applebot|YandexBot|DuckDuckBot|Baiduspider|SemrushBot|AhrefsBot|PetalBot|facebookexternalhit|Bytespider|GPTBot|ClaudeBot|crawler|spider/i;
+// `HeadlessChrome` προστέθηκε 28/08/2026: παραβίαση CSP από /el/beach-guides/ με
+// HeadlessChrome/146 σε Windows. Ένας browser χωρίς οθόνη ΔΕΝ είναι επισκέπτης — είναι
+// εργαλείο (δικός μας έλεγχος, υπηρεσία παρακολούθησης, κάποιος που σαρώνει το site).
+// Δεν έχει μάτια να δει σπασμένη σελίδα, οπότε δεν δικαιολογεί ειδοποίηση· μετριέται
+// κανονικά όπως όλα τα ρομπότ.
+const CRAWLER_UA = /AdsBot|Googlebot|bingbot|Applebot|YandexBot|DuckDuckBot|Baiduspider|SemrushBot|AhrefsBot|PetalBot|facebookexternalhit|Bytespider|GPTBot|ClaudeBot|HeadlessChrome|crawler|spider/i;
+
+/**
+ * Ο ΜΕΤΡΗΤΗΣ ΤΑΧΥΤΗΤΑΣ ΠΟΥ ΒΑΖΕΙ ΤΟ ΙΔΙΟ ΤΟ NETLIFY (28/08/2026).
+ *
+ * Το Netlify εμφυτεύει `/.netlify/scripts/rum` σε κάθε σελίδα που σερβίρει (Real User
+ * Metrics). Δεν υπάρχει σε καμία γραμμή του κώδικά μας ούτε στο dist/ — μπαίνει τη
+ * στιγμή του σερβιρίσματος. Το beacon του πάει στο ingesteer.services-prod.nsvcs.net,
+ * που δεν είναι στο connect-src μας: ο browser το κόβει, η fetch απορρίπτεται, κανείς
+ * δεν την πιάνει, και έφτανε ως 🔴 «έσπασε σελίδα σε επισκέπτη» ενώ η σελίδα ήταν
+ * ολοκάθαρη. Ένα αίτιο, τρεις ειδοποιήσεις την ίδια νύχτα.
+ *
+ * Αναγνωρίζεται από τη ΣΤΟΙΒΑ, όχι από το μήνυμα: το μήνυμα είναι σκέτο «Failed to
+ * fetch» / «Load failed», λέξεις που τις λέει και ένα δικό ΜΑΣ αίτημα που απέτυχε.
+ * Το ίδιο φίλτρο υπάρχει και στο services/errorReporter.ts· μένει και εδώ για τα
+ * κινητά που κρατούν το παλιό build στη μνήμη του service worker.
+ */
+const NETLIFY_RUM = /\/\.netlify\/scripts\/rum/i;
 
 const isCrawler = (userAgent) => CRAWLER_UA.test(userAgent || '');
 
@@ -303,45 +325,67 @@ export const handler = async (event) => {
     buildId: clamp(body?.buildId, 60),
   };
 
+  // ΠΡΩΤΑ ΑΠΟΦΑΣΙΖΟΥΜΕ ΑΝ ΘΑ ΧΤΥΠΗΣΕΙ ΤΟ ΤΗΛΕΦΩΝΟ, ΜΕΤΑ ΜΕΤΡΑΜΕ (28/08/2026).
+  //
+  // Η σειρά αυτή ΔΕΝ είναι αισθητική. Ο μετρητής ανά υπογραφή απαντάει σε μία μόνο
+  // ερώτηση — «το έχουμε ήδη πει σήμερα αυτό;» — και μόνο η πρώτη εμφάνιση στέλνεται.
+  // Όσο οι σιωπηλές αναφορές μετριούνταν στον ΙΔΙΟ κάδο με τις κανονικές, μια σιωπηλή
+  // «έκαιγε» την πρώτη εμφάνιση και η επόμενη ΙΔΙΑ αναφορά από πραγματικό επισκέπτη
+  // έβρισκε μετρητή 2 και δεν έφευγε ποτέ.
+  //
+  // Δεν είναι θεωρητικό: το «Failed to fetch» του μετρητή ταχύτητας του Netlify έχει
+  // ακριβώς την ίδια υπογραφή (μήνυμα|unhandledrejection|0) με ένα δικό ΜΑΣ αίτημα
+  // που απέτυχε — η στοίβα, που τα ξεχωρίζει, δεν μπαίνει στην υπογραφή. Το ίδιο
+  // ίσχυε ήδη και για τα ρομπότ: ένα σφάλμα του Googlebot έκρυβε το πρώτο ίδιο
+  // σφάλμα ενός ανθρώπου. Δύο ξεχωριστοί κάδοι, `seen/` και `muted/`, το λύνουν:
+  // όλα μετριούνται, κανένα δεν κρύβει το άλλο.
+  const mutedReason = (() => {
+    // Μια αναφορά CSP σε δοκιμαστική λειτουργία δεν μπλόκαρε ΤΙΠΟΤΑ — εξ ορισμού.
+    // Είναι σημείωμα ότι η πολιτική θα εμπόδιζε κάτι αν ήταν ενεργή: χρήσιμο όταν
+    // πας να το κοιτάξεις, άχρηστο ως ειδοποίηση στις 9 το πρωί. Οι ΕΝΕΡΓΕΣ
+    // παραβιάσεις φτάνουν κανονικά — εκεί ο επισκέπτης όντως έχασε κάτι.
+    if (report.kind === 'csp' && report.disposition !== 'enforce') return 'csp-report-only';
+
+    // Το `object-src` αφορά Flash/Java/PDF plugins — πράγματα που το site ΔΕΝ
+    // χρησιμοποιεί πουθενά. Άρα ένα μπλοκάρισμα εκεί είναι πάντα κάτι που έβαλε ο
+    // ΞΕΝΟΣ browser μέσα στη σελίδα (20/08/2026: browser τηλεόρασης Vestel σε
+    // /el/organized-beaches/ithaca/) και δεν υπάρχει τίποτα να διορθώσουμε. Η
+    // πολιτική δούλεψε ακριβώς όπως πρέπει.
+    if (report.kind === 'csp' && /object-src/i.test(report.message)) return 'csp-object-src';
+
+    // Ένα ρομπότ δεν είναι επισκέπτης. Βλ. CRAWLER_UA.
+    if (isCrawler(context.userAgent)) return 'crawler';
+
+    // Ξένο script μέσα στη σελίδα μας. Βλ. isForeignInlineScript().
+    if (report.foreign) return 'foreign-inline-script';
+
+    // Ο μετρητής ταχύτητας του Netlify. Βλ. NETLIFY_RUM.
+    if (report.kind === 'error' && (NETLIFY_RUM.test(report.stack) || NETLIFY_RUM.test(report.source))) {
+      return 'netlify-rum';
+    }
+
+    return '';
+  })();
+
   try {
     connectLambda(event);
     const store = getStore(SEEN_STORE);
     const dayKey = new Date().toISOString().slice(0, 10);
     const signature = signatureOf(report);
-    const key = `seen/${dayKey}/${encodeURIComponent(signature)}`;
+    const key = `${mutedReason ? 'muted' : 'seen'}/${dayKey}/${encodeURIComponent(signature)}`;
 
     const prev = await store.get(key, { type: 'json' });
     const repeats = (prev?.count || 0) + 1;
-    await store.setJSON(key, { count: repeats, message: report.message, lastSeen: new Date().toISOString() });
+    await store.setJSON(key, {
+      count: repeats,
+      message: report.message,
+      lastSeen: new Date().toISOString(),
+      ...(mutedReason ? { muted: mutedReason } : {}),
+    });
 
-    // A report-only CSP violation blocked NOTHING — by definition. It is a note
-    // that the policy would have interfered if it were enforced, which is useful
-    // when you go looking and worthless as a push notification at 9am. It is still
-    // recorded above, so `netlify blobs:list client-errors` shows every origin and
-    // how often, which is how the policy gets finished.
-    //
-    // Enforced violations DO reach Telegram: at that point something on the page
-    // really was refused and a visitor really did lose it.
-    if (report.kind === 'csp' && report.disposition !== 'enforce') {
-      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
-    }
-
-    // Καταγράφεται, δεν χτυπάει το τηλέφωνο: το `object-src` αφορά Flash/Java/PDF
-    // plugins — πράγματα που το site ΔΕΝ χρησιμοποιεί πουθενά. Άρα ένα μπλοκάρισμα
-    // εκεί είναι πάντα κάτι που έβαλε ο ΞΕΝΟΣ browser μέσα στη σελίδα (20/08/2026:
-    // browser τηλεόρασης Vestel σε /el/organized-beaches/ithaca/) και δεν υπάρχει
-    // τίποτα να διορθώσουμε. Η πολιτική δούλεψε ακριβώς όπως πρέπει.
-    if (report.kind === 'csp' && /object-src/i.test(report.message)) {
-      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
-    }
-
-    // Counted above, never pushed: a crawler is not a visitor. See CRAWLER_UA.
-    if (isCrawler(context.userAgent)) {
-      return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
-    }
-
-    // Ομοίως: ξένο script μέσα στη σελίδα μας. Βλ. isForeignInlineScript().
-    if (report.foreign) {
+    // Καταγράφηκε παραπάνω, δεν χτυπάει το τηλέφωνο. Το `netlify blobs:list
+    // client-errors` δείχνει και τους δύο κάδους, με τον λόγο σιωπής δίπλα.
+    if (mutedReason) {
       return { statusCode: 204, headers: { 'Cache-Control': 'no-store' }, body: '' };
     }
 

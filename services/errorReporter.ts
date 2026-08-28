@@ -63,6 +63,18 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /^iabjs:/i,
   /Java object is gone/i,
   /navigation_performance_logger/i,
+  // 6. ΤΟ ΜΕΤΡΗΤΗ ΤΑΧΥΤΗΤΑΣ ΠΟΥ ΒΑΖΕΙ ΤΟ ΙΔΙΟ ΤΟ NETLIFY (28/08/2026). Το Netlify
+  //    εμφυτεύει `/.netlify/scripts/rum` σε κάθε σελίδα που σερβίρει (Real User
+  //    Metrics) — δεν υπάρχει σε καμία γραμμή του κώδικά μας ούτε στο dist/. Το
+  //    beacon του πάει στο ingesteer.services-prod.nsvcs.net, που ΔΕΝ είναι στο
+  //    connect-src μας, οπότε ο browser το κόβει· η fetch απορρίπτεται, κανείς δεν
+  //    την πιάνει, και έφτανε εδώ ως 🔴 «έσπασε σελίδα σε επισκέπτη» με σελίδα
+  //    ολοκάθαρη. Το μήνυμα είναι σκέτο «Failed to fetch» (Chrome) ή «Load failed»
+  //    (Safari) — λέξεις που δεν επιτρέπεται να τις μπλοκάρουμε γενικά, γιατί τις
+  //    λέει και ένα δικό μας αίτημα που απέτυχε. Γι' αυτό το αναγνωριστικό είναι η
+  //    ΣΤΟΙΒΑ, που ονομάζει το script — και γι' αυτό η isIgnorable() κοιτάει πλέον
+  //    και τη στοίβα.
+  /\/\.netlify\/scripts\/rum/i,
 ];
 
 /**
@@ -128,8 +140,10 @@ const isSelfHealingChunkError = (message: string): boolean => {
   }
 };
 
-const isIgnorable = (message: string, source: string): boolean =>
-  IGNORED_ERROR_PATTERNS.some(pattern => pattern.test(message) || pattern.test(source)) ||
+const isIgnorable = (message: string, source: string, stack: string): boolean =>
+  IGNORED_ERROR_PATTERNS.some(
+    pattern => pattern.test(message) || pattern.test(source) || pattern.test(stack),
+  ) ||
   isSelfHealingChunkError(message);
 
 /**
@@ -200,8 +214,9 @@ export const reportClientError = (
     const message = trimmed(err?.message, 300) || trimmed(error as string, 300) || 'Unknown error';
     const source = trimmed(context?.source, 200);
     const line = Number.isFinite(context?.line) ? Number(context?.line) : 0;
+    const stack = trimmed(err?.stack, 1400);
 
-    if (isIgnorable(message, source)) return;
+    if (isIgnorable(message, source, stack)) return;
 
     const signature = `${message}|${source}|${line}`;
     if (sentThisSession.has(signature) || sentThisSession.size >= MAX_PER_SESSION) return;
@@ -211,7 +226,7 @@ export const reportClientError = (
       message,
       source,
       line,
-      stack: trimmed(err?.stack, 1400),
+      stack,
       page: currentPath(),
       buildId: buildId(),
     });
