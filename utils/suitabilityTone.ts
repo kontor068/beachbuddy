@@ -3,7 +3,20 @@ import type { ExposureLevel } from './windExposure';
 import { GLASS_AT_FOUR_MAX_SEA_STATE_M } from './offshoreFlatWater';
 import { atDisplayedPrecisionM, seaStateToneCeiling, shoreSeaStateM, type SeaToneCeiling } from './waveCharacter';
 
-/** Shared visual tokens for the map marker and the compact card wave glyph. */
+/**
+ * Shared visual tokens for the map marker and the compact card wave glyph.
+ *
+ * THE HEX LIVES IN index.css, NOT HERE (28/08/2026). Until today these were Tailwind's
+ * stock ramp — bg-sky-500 / bg-yellow-400 / bg-orange-500 / bg-rose-600 — four fully
+ * saturated screen colours that belonged to no palette in this project. The `tone-*`
+ * tokens they now point at are defined once in the `@theme` block of index.css, with
+ * the reasoning and the measured contrast pairs written there. Read that comment before
+ * changing a single value: the four are a ladder, and the ladder's readability depends
+ * on their LIGHTNESS spacing, not on any one of them looking nice on its own.
+ *
+ * The keys stay blue/yellow/orange/red because that is what CalmnessTone calls them
+ * everywhere else, including in the quality gates. The colours moved; the scale did not.
+ */
 export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
   marker: string;
   ring: string;
@@ -11,28 +24,28 @@ export const WIND_SUITABILITY_TONE_CLASSES: Record<WindSuitabilityColor, {
   wave: string;
 }> = {
   blue: {
-    marker: 'bg-sky-500',
-    ring: 'ring-sky-200',
-    badge: 'bg-sky-100 text-sky-700',
-    wave: 'text-sky-500',
+    marker: 'bg-tone-blue',
+    ring: 'ring-tone-blue-soft',
+    badge: 'bg-tone-blue-tint text-tone-blue-ink',
+    wave: 'text-tone-blue',
   },
   yellow: {
-    marker: 'bg-yellow-400',
-    ring: 'ring-yellow-200',
-    badge: 'bg-yellow-100 text-yellow-700',
-    wave: 'text-yellow-400',
+    marker: 'bg-tone-yellow',
+    ring: 'ring-tone-yellow-soft',
+    badge: 'bg-tone-yellow-tint text-tone-yellow-ink',
+    wave: 'text-tone-yellow',
   },
   orange: {
-    marker: 'bg-orange-500',
-    ring: 'ring-orange-200',
-    badge: 'bg-orange-100 text-orange-700',
-    wave: 'text-orange-500',
+    marker: 'bg-tone-orange',
+    ring: 'ring-tone-orange-soft',
+    badge: 'bg-tone-orange-tint text-tone-orange-ink',
+    wave: 'text-tone-orange',
   },
   red: {
-    marker: 'bg-rose-600',
-    ring: 'ring-rose-300',
-    badge: 'bg-rose-100 text-rose-700',
-    wave: 'text-rose-600',
+    marker: 'bg-tone-red',
+    ring: 'ring-tone-red-soft',
+    badge: 'bg-tone-red-tint text-tone-red-ink',
+    wave: 'text-tone-red',
   },
 };
 

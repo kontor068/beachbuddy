@@ -108,6 +108,57 @@
   --color-sand: #fef3c7;
   --color-sea: #06b6d4;
   --color-olive: #84cc16;
+
+  /* ─── ΤΑ ΤΕΣΣΕΡΑ ΧΡΩΜΑΤΑ ΤΗΣ ΚΑΤΑΣΤΑΣΗΣ (28/08/2026) ──────────────────────────
+     Μέχρι σήμερα η πινέζα, η λεζάντα, η μπάρα ωρών και το κυματάκι της κάρτας
+     έγραφαν το χρώμα τους ως κλάσεις του Tailwind (bg-sky-500, bg-yellow-400,
+     bg-orange-500, bg-rose-600). Ήταν τα εργοστασιακά, πλήρως κορεσμένα χρώματα
+     οθόνης: πάνω σε δορυφορικό χάρτη με 130 παραλίες δίπλα-δίπλα δεν διαβάζονταν
+     σαν πληροφορία αλλά σαν θόρυβος, και δεν έμοιαζαν με τίποτε άλλο στο site.
+
+     Το #F97316 ήταν επιπλέον ΤΟ ΙΔΙΟ πορτοκαλί που είχε διωχθεί από το CTA στις
+     05/08/2026 (βλ. σχόλιο στο --color-cta πιο πάνω): έφυγε από ένα κουμπί και
+     έμεινε σε εκατόν τριάντα πινέζες.
+
+     Η νέα σκάλα κρατάει την ίδια σειρά και την ίδια σημασία, αλλά:
+       • χαμηλότερος κορεσμός — χρώματα τοπίου (άμμος, τερακότα, κεραμίδι), όχι νέον
+       • Η ΦΩΤΕΙΝΟΤΗΤΑ ΚΑΤΕΒΑΙΝΕΙ ΣΤΑΘΕΡΑ από το calm προς το red. Το παλιό κίτρινο
+         και πορτοκαλί είχαν σχεδόν ίδια φωτεινότητα, άρα σε δυνατό ήλιο ή σε
+         αχρωματοψία ήταν το ίδιο χρώμα. Τώρα ξεχωρίζουν και ασπρόμαυρα.
+       • το `-soft` (δαχτυλίδι πινέζας) είναι ΔΙΑΦΑΝΕΙΑ του ίδιου χρώματος, όχι
+         παστέλ γέμισμα: πάνω από δορυφόρο σβήνει αντί να λάμπει.
+
+     Τα ονόματα μένουν blue/yellow/orange/red γιατί αυτά είναι τα κλειδιά του
+     CalmnessTone σε όλο τον κώδικα και στις πύλες. Το χρώμα άλλαξε, η σκάλα όχι.
+
+     ΤΟ TEAL ΔΕΝ ΜΠΑΙΝΕΙ ΕΔΩ. Το #007a83 είναι το CTA και το σήμα του surf badge·
+     δύο πράγματα με το ίδιο χρώμα και άλλη σημασία είναι η επόμενη διόρθωση.
+
+     Κάθε ζευγάρι -ink πάνω σε -tint μετρήθηκε: 4,9:1 / 5,9:1 / 6,7:1 και το μπλε
+     ~7:1. Όλα περνούν το AA (4,5:1). Μην αλλάξεις το ένα χωρίς το άλλο. */
+  --color-tone-blue: #0284c7;
+  --color-tone-blue-soft: rgba(2, 132, 199, 0.32);
+  --color-tone-blue-tint: #dceffa;
+  --color-tone-blue-wash: #f0f8fd;
+  --color-tone-blue-ink: #075985;
+
+  --color-tone-yellow: #d9a441;
+  --color-tone-yellow-soft: rgba(217, 164, 65, 0.34);
+  --color-tone-yellow-tint: #f7ecd4;
+  --color-tone-yellow-wash: #fdf7ec;
+  --color-tone-yellow-ink: #855f13;
+
+  --color-tone-orange: #d9744a;
+  --color-tone-orange-soft: rgba(217, 116, 74, 0.34);
+  --color-tone-orange-tint: #f8e5da;
+  --color-tone-orange-wash: #fdf3ee;
+  --color-tone-orange-ink: #8f4020;
+
+  --color-tone-red: #b4423c;
+  --color-tone-red-soft: rgba(180, 66, 60, 0.36);
+  --color-tone-red-tint: #f6e0de;
+  --color-tone-red-wash: #fcf0ef;
+  --color-tone-red-ink: #86302b;
 }
 
 @layer base {
@@ -912,14 +963,29 @@ body {
   position: relative;
 }
 
+/* ΤΟ ΠΑΧΟΣ ΤΟΥΣ ΕΙΝΑΙ ΜΕΡΟΣ ΤΟΥ ΜΕΓΕΘΟΥΣ ΤΗΣ ΠΙΝΕΖΑΣ (28/08/2026).
+   Ήταν 2px στο +2px (supported) και 2px στο +3px (estimated). Μαζί με το τότε
+   `ring-4` η κουκκίδα των 16px έπιανε 24–26px στην οθόνη, με τα δύο τρίτα της
+   επιφάνειας να είναι φωτοστέφανο — και σε μια περιοχή με 130 παραλίες αυτό είναι
+   που διαβαζόταν σαν αλυσίδα από λαμπάκια αντί για χάρτη.
+
+   ΠΡΟΣΟΧΗ ΑΝ ΞΑΝΑΠΕΙΡΑΞΕΙΣ ΤΟ `ring` ΤΗΣ ΠΙΝΕΖΑΣ: το outline εδώ ΖΩΓΡΑΦΙΖΕΤΑΙ ΠΑΝΩ
+   ΣΤΟ ΔΑΧΤΥΛΙΔΙ, δεν προστίθεται δίπλα του. Με outline-offset 2px και ring-4, το
+   λευκό σκέπαζε ούτως ή άλλως τα εξωτερικά 2px του χρώματος — δηλαδή μόνο του το
+   `ring-4 → ring-2` δεν θα άλλαζε ΤΙΠΟΤΑ σε όσες πινέζες έχουν supported evidence.
+   Γι' αυτό τα δύο μεγέθη αλλάζουν πάντα μαζί. Σήμερα: χρώμα 0–2px, γραμμή evidence
+   1px στο +2px, σύνολο 22px.
+
+   Το evidence μένει διακριτό cue (συμπαγές λευκό vs διακεκομμένο σκούρο) — αυτό που
+   έφυγε είναι ο όγκος, όχι η πληροφορία. */
 .beach-map-marker-evidence-supported {
-  outline: 2px solid rgba(255, 255, 255, 0.95);
+  outline: 1px solid rgba(255, 255, 255, 0.95);
   outline-offset: 2px;
 }
 
 .beach-map-marker-evidence-estimated {
-  outline: 2px dashed rgba(15, 23, 42, 0.48);
-  outline-offset: 3px;
+  outline: 1px dashed rgba(15, 23, 42, 0.42);
+  outline-offset: 2px;
 }
 
 /* The hollow-centre ("donut") marker cue lived here until 01/08/2026 and is gone on purpose.
@@ -1026,7 +1092,7 @@ body {
   animation: beach-top-pick-marker-pulse 1.05s ease-in-out infinite;
   box-shadow:
     0 0 0 5px rgba(255, 255, 255, 0.96),
-    0 0 0 10px rgba(14, 165, 233, 0.42),
+    0 0 0 10px rgba(2, 132, 199, 0.42),
     0 10px 20px rgba(8, 47, 73, 0.24);
 }
 
@@ -1035,7 +1101,7 @@ body {
   position: absolute;
   inset: -10px;
   border-radius: 999px;
-  border: 2px solid rgba(14, 165, 233, 0.74);
+  border: 2px solid rgba(2, 132, 199, 0.74);
   animation: beach-top-pick-marker-radar 1.05s ease-out infinite;
   pointer-events: none;
 }
