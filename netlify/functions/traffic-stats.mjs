@@ -429,14 +429,38 @@ const ORDER_BTN = 'appearance:none;border:1px solid rgba(148,163,184,.35);border
   + 'background:rgba(148,163,184,.12);color:#cbd5e1;font:600 13px system-ui,sans-serif;'
   + 'cursor:pointer;padding:5px 9px;min-width:34px';
 
-const curatingCard = (curating, photo, index, total) => `
+const REMOVE_BTN = 'appearance:none;border:1px solid rgba(248,113,113,.4);border-radius:8px;'
+  + 'background:rgba(248,113,113,.12);color:#fca5a5;font:600 13px system-ui,sans-serif;'
+  + 'cursor:pointer;padding:5px 9px;text-decoration:none;display:inline-block';
+
+// ── ΚΑΤΕΒΑΣΜΑ ΜΙΑΣ ΔΗΜΟΣΙΕΥΜΕΝΗΣ ΦΩΤΟΓΡΑΦΙΑΣ (28/08/2026) ────────────────────
+// Μέχρι σήμερα αυτή η οθόνη μπορούσε να ΑΛΛΑΞΕΙ ΣΕΙΡΑ σε μια φωτογραφία και να
+// κρύψει όσες περνούσαν το όριο — δεν μπορούσε να βγάλει καμία. Το «🚫 Απόρριψη»
+// υπήρχε μόνο στην ουρά αναμονής, δηλαδή μόνο ΠΡΙΝ δημοσιευτεί κάτι. Άρα μια
+// φωτογραφία που αποδεικνυόταν λάθος αφού είχε βγει (λάθος παραλία, ίδια εικόνα
+// σε πολλές παραλίες, εικόνα κατεβασμένη από το ίντερνετ) δεν κατέβαινε από
+// πουθενά: το `moderate()` το υποστήριζε ήδη πλήρως — σβήνει τα bytes και από
+// τους δύο κουβάδες, ξαναγράφει τη ζωντανή λίστα και σηκώνει τη σημαία για το
+// επόμενο χτίσιμο — απλώς κανένα κουμπί δεν το καλούσε.
+//
+// ΔΥΟ ΠΑΤΗΜΑΤΑ, ΧΩΡΙΣ JAVASCRIPT. Η διαγραφή είναι οριστική και το αρχείο κάποιου
+// άλλου, οπότε δεν κρέμεται δίπλα στα βελάκια σαν άλλο ένα βελάκι. Το πρώτο
+// πάτημα είναι ΣΥΝΔΕΣΜΟΣ (GET) που ανοίγει την ερώτηση πάνω σε αυτή την κάρτα,
+// το δεύτερο είναι το POST που την εκτελεί — ίδια λογική με τα υπόλοιπα εδώ:
+// `confirm()` θα ήταν JavaScript στη μία σελίδα που επίτηδες δεν έχει καθόλου.
+const curatingCard = (curating, photo, index, total) => {
+  const ref = beachRef(curating.regionId, curating.beachId);
+  const beachHref = `?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(ref)}`;
+  const asking = String(curating.removeId || '') === String(photo.id);
+
+  return `
   <div class="item" style="${photo.shown ? '' : 'opacity:.55'}">
     <img src="${esc(photo.url)}" alt="" loading="lazy">
     <div class="body">
       <div class="who">${index === 0 ? '⭐ Εξώφυλλο' : `#${photo.position}`}
         ${photo.shown ? '' : '<span class="stars" style="color:#f59e0b">δεν φαίνεται</span>'}</div>
       ${photo.caption ? `<p class="cap">${esc(photo.caption)}</p>` : ''}
-      <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(beachRef(curating.regionId, curating.beachId))}"
+      <form method="post" action="${beachHref}"
             style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
         <input type="hidden" name="key" value="RAWFORMKEY">
         <input type="hidden" name="region" value="${esc(curating.regionId)}">
@@ -446,8 +470,21 @@ const curatingCard = (curating, photo, index, total) => `
         ${index === 0 ? '' : `<button name="action" value="move-up" style="${ORDER_BTN}" title="Πιο πάνω">↑</button>`}
         ${index === total - 1 ? '' : `<button name="action" value="move-down" style="${ORDER_BTN}" title="Πιο κάτω">↓</button>`}
       </form>
+      ${asking
+        ? `<form method="post" action="${beachHref}"
+                 style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px">
+             <input type="hidden" name="key" value="RAWFORMKEY">
+             <input type="hidden" name="kind" value="photo">
+             <input type="hidden" name="id" value="${esc(photo.id)}">
+             <span style="color:#fca5a5;font:600 13px system-ui,sans-serif">Σβήνεται οριστικά.</span>
+             <button name="action" value="reject" style="${REMOVE_BTN}">Ναι, σβήσ' την</button>
+             <a href="${beachHref}" style="${ORDER_BTN};text-decoration:none;line-height:1.6">Άκυρο</a>
+           </form>`
+        : `<a href="${beachHref}&amp;remove=${encodeURIComponent(photo.id)}"
+              style="${REMOVE_BTN};margin-top:8px" title="Βγάλ' την από την παραλία">🚫 Σβήσε τη φωτό</a>`}
     </div>
   </div>`;
+};
 
 const curatingPanel = (curating) => {
   if (!curating) return '';
@@ -470,7 +507,9 @@ const curatingPanel = (curating) => {
 <section class="panel">
   <h2>${esc(curating.name)}<em>${num(total)} εγκεκριμένες · φαίνονται ${num(shown)}</em></h2>
   <p class="empty" style="margin:0 0 10px">Η πρώτη είναι το εξώφυλλο — αυτή που βλέπει ο κόσμος στην κάρτα
-    και στην αναζήτηση. Κάθε αλλαγή είναι ζωντανή αμέσως, χωρίς χτίσιμο.</p>
+    και στην αναζήτηση. Κάθε αλλαγή είναι ζωντανή αμέσως, χωρίς χτίσιμο. Το «🚫 Σβήσε τη φωτό»
+    τη βγάζει οριστικά από αυτή την παραλία και διαγράφει το αρχείο — αν η ίδια εικόνα κάθεται
+    και σε άλλες παραλίες, κάθε μία θέλει το δικό της σβήσιμο από τη λίστα πιο κάτω.</p>
   <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos&amp;beach=${esc(beachRef(curating.regionId, curating.beachId))}"
         style="display:flex;gap:8px;align-items:center;margin:0 0 12px;flex-wrap:wrap">
     <input type="hidden" name="key" value="RAWFORMKEY">
@@ -516,7 +555,17 @@ const publishedBeachesPanel = (beaches, current) => {
 const FLASH = {
   approved: ['Εγκρίθηκε — είναι ήδη στη σελίδα της παραλίας (μέσα σε ένα-δυο λεπτά). Στη Google μπαίνει στο επόμενο χτίσιμο.', ''],
   approvedNotLive: ['Εγκρίθηκε, αλλά η ζωντανή λίστα δεν ανανεώθηκε — θα εμφανιστεί στο επόμενο χτίσιμο. Δες τα logs.', 'warn'],
-  rejected: ['Απορρίφθηκε, το αρχείο διαγράφηκε οριστικά και έφυγε αμέσως από το site.', ''],
+  // ΤΡΙΑ ΜΗΝΥΜΑΤΑ ΓΙΑ ΜΙΑ ΑΠΟΡΡΙΨΗ, γιατί είναι τρεις διαφορετικές αλήθειες.
+  // Μέχρι σήμερα υπήρχε ένα, γραμμένο για την ουρά αναμονής («έφυγε αμέσως από το
+  // site»), και ίσχυε επειδή τίποτα σε αναμονή δεν είχε βγει ποτέ. Από τη στιγμή
+  // που σβήνονται και ΔΗΜΟΣΙΕΥΜΕΝΕΣ φωτογραφίες, η ίδια πρόταση κρύβει το μισό:
+  // η φωτογραφία φεύγει αμέσως από την εφαρμογή που τρέχει ο κόσμος (ζωντανή
+  // λίστα), αλλά οι στατικές σελίδες που διαβάζει η Google την κουβαλάνε μέχρι το
+  // επόμενο χτίσιμο. Ποιο από τα τρία ισχύει το λέει το `result.live`: null όταν
+  // δεν είχε βγει ποτέ, αλλιώς το αποτέλεσμα της ανανέωσης της ζωντανής λίστας.
+  rejected: ['Απορρίφθηκε και το αρχείο διαγράφηκε οριστικά. Δεν είχε προλάβει να βγει πουθενά.', ''],
+  removed: ['Σβήστηκε: το αρχείο διαγράφηκε οριστικά και έφυγε αμέσως από το site. Στις σελίδες που διαβάζει η Google μένει μέχρι το επόμενο χτίσιμο.', ''],
+  removedNotLive: ['Σβήστηκε και το αρχείο διαγράφηκε, αλλά η ζωντανή λίστα δεν ανανεώθηκε — πάτα «🔄 Ανανέωσε τη ζωντανή λίστα» για να φύγει τώρα από το site.', 'warn'],
   already: ['Είχε ήδη κριθεί — δεν έγινε τίποτα δεύτερη φορά.', 'warn'],
   built: ['Ξεκίνησε το χτίσιμο. Σε λίγα λεπτά τα εγκεκριμένα θα είναι και στις στατικές σελίδες.', ''],
   refreshed: ['Η ζωντανή λίστα ανανεώθηκε — ό,τι είναι εγκεκριμένο φαίνεται τώρα στο site.', ''],
@@ -989,9 +1038,9 @@ const moderationTab = (queue, flashCode, curating, publishedBeaches) => {
 
   const waiting = queue.pendingPublish?.count || 0;
   const notLive = waiting
-    ? `<div class="flash warn"><b>${num(waiting)}</b> εγκεκριμένα είναι ήδη <b>ορατά στο site</b>.
-       Λείπουν μόνο από τις σελίδες που διαβάζει η Google — μπαίνουν <b>δωρεάν</b> στο επόμενο
-       ανέβασμα κώδικα, δεν χρειάζεται να κάνεις τίποτα.
+    ? `<div class="flash warn"><b>${num(waiting)}</b> αποφάσεις σου (εγκρίσεις ή σβησίματα) ισχύουν ήδη
+       <b>στο site</b>. Λείπουν μόνο από τις σελίδες που διαβάζει η Google — μπαίνουν <b>δωρεάν</b>
+       στο επόμενο ανέβασμα κώδικα, δεν χρειάζεται να κάνεις τίποτα.
        <form method="post" action="?key=KEYPLACEHOLDER&amp;tab=photos" style="margin-top:9px;display:flex;gap:8px;max-width:400px">
          <input type="hidden" name="key" value="RAWFORMKEY">
          <button class="yes" name="action" value="publish"
@@ -2823,17 +2872,27 @@ const moderationPost = async (event, key) => {
     const result = await moderate({ kind, id, action, event });
     if (result.alreadyDone) return back('already');
 
-    // APPROVING A PHOTO LANDS YOU ON THAT BEACH'S ORDER, with the new photo in it.
-    // This is the whole difference between "you can reorder photos" and "you do":
-    // the moment you have just looked at a photo and judged it is the only moment
-    // you know where it belongs among the others. A separate screen you have to
-    // remember to open is a screen nobody opens.
+    // ANY DECISION ON A PHOTO LANDS YOU ON THAT BEACH'S ORDER.
+    // For an approval this is the whole difference between "you can reorder photos"
+    // and "you do": the moment you have just looked at a photo and judged it is the
+    // only moment you know where it belongs among the others. A separate screen you
+    // have to remember to open is a screen nobody opens.
+    // For a removal it matters just as much, and used to be missed: taking a photo
+    // down sent you back to the top of the tab, so cleaning two bad photos off one
+    // beach cost two navigations back to it — and you could not see what the beach
+    // was left showing.
     const item = result.item || {};
-    const landing = kind === 'photo' && result.status === 'approved' && item.region_id
+    const landing = kind === 'photo' && item.region_id
       ? beachRef(item.region_id, item.beach_id)
       : '';
 
-    if (result.status !== 'approved') return back('rejected', landing);
+    // `live` is null when nothing had been published yet (the pending queue) and an
+    // object when a live photo was taken down — which is exactly the line between
+    // "it never got out" and "it is out of the app but still in the static pages".
+    if (result.status !== 'approved') {
+      if (!result.live) return back('rejected', landing);
+      return back(result.live.ok ? 'removed' : 'removedNotLive', landing);
+    }
     // Say which of the two publications happened. A photo whose live index upload
     // failed IS approved and WILL appear — at the next build — and telling you it
     // is on the site now would be the one wrong thing to say.
@@ -2894,18 +2953,24 @@ const parseBeachRef = (raw) => {
 
 const beachRef = (regionId, beachId) => `${regionId}:${beachId}`;
 
-const readCurating = async (raw) => {
+// `removeRaw` is the photo whose "σίγουρα;" is open, and it is deliberately just
+// a query parameter: the question is a page state, not a stored one, so leaving
+// the screen or reloading answers it with "no" — which is the right default for
+// a delete. It is never printed as markup, only compared against the ids we
+// already read from the database.
+const readCurating = async (raw, removeRaw) => {
   const ref = parseBeachRef(raw);
   if (!ref || !ugcConfigured()) return null;
+  const removeId = String(removeRaw || '');
   try {
     const [{ photos, maxShown }, name] = await Promise.all([
       listBeachPhotos(getSupabaseConfig(), ref.regionId, ref.beachId),
       beachLabel(ref.regionId, ref.beachId),
     ]);
-    return { ...ref, photos, maxShown, name };
+    return { ...ref, photos, maxShown, name, removeId };
   } catch (error) {
     console.error('Could not read a beach photo order.', error && error.message);
-    return { ...ref, photos: [], maxShown: 0, name: `Παραλία #${ref.beachId}`, problem: error.message || 'άγνωστο σφάλμα' };
+    return { ...ref, photos: [], maxShown: 0, name: `Παραλία #${ref.beachId}`, removeId, problem: error.message || 'άγνωστο σφάλμα' };
   }
 };
 
@@ -3343,7 +3408,7 @@ export const handler = async (event) => {
           rows: [], totals: {}, days: 0, startDay: todayKey,
           live: presence.live, pulse: presence.pulse, todayPoints: [], earlierPoints: [], mapDays: 0, nowMin,
           queue: await readQueue(event), flash: flashCode(params.done),
-          curating: await readCurating(params.beach),
+          curating: await readCurating(params.beach, params.remove),
           publishedBeaches: await readPublishedBeaches(),
           // Zero visitors does not mean zero weather calls — the prerendered pages and
           // the CDN keep the proxy busy, so the quota still belongs on an empty console.
@@ -3476,7 +3541,7 @@ export const handler = async (event) => {
         nowMin,
         queue: await readQueue(event),
         flash: flashCode(params.done),
-        curating: await readCurating(params.beach),
+        curating: await readCurating(params.beach, params.remove),
         publishedBeaches: await readPublishedBeaches(),
         capacity: await readCapacity(),
         qualityChecks: await readQualityChecks(),
