@@ -245,7 +245,21 @@
 # στέλνει δεδομένα επισκεπτών σε σέρβερ του Netlify χωρίς να ρωτήσει, ενώ το GA4 στο
 # services/analyticsService.ts περιμένει ρητή συγκατάθεση από το banner. Δύο μέτρα και
 # δύο σταθμά — η πολιτική απορρήτου χρειάζεται να αναφέρει το Netlify ως αποδέκτη.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+#
+# 28/08/2026 — `data:` ΣΤΟ font-src. Ενεργή παραβίαση «CSP blocked data (font-src)» από
+# /beaches/evia/288-piso-sykia/ σε Chrome 151. Μετρήθηκε πριν την αλλαγή: ΜΗΔΕΝ
+# γραμματοσειρές `data:` σε ολόκληρο το dist/ — οι δικές μας είναι αρχεία στο /fonts/
+# (τρία woff2 Commissioner) και τις καλύπτει το 'self'. Άρα η μπλοκαρισμένη ήρθε από
+# CSS που φύτεψε πρόσθετο του browser μέσα στη σελίδα, όπως το object-src του Vestel.
+#
+# Μπαίνει παρ' όλα αυτά αντί να σιωπήσει η αναφορά, για δύο λόγους. Πρώτον, το ίδιο το
+# img-src από πάνω επιτρέπει ήδη `data:` με το ίδιο σκεπτικό: οι γραμματοσειρές δεν
+# εκτελούν κώδικα και δεν βγάζουν δεδομένα έξω — ανήκουν στην ίδια ακίνδυνη κατηγορία.
+# Δεύτερον, και σοβαρότερα: το Vite ενσωματώνει αυτόματα ως `data:` κάθε asset κάτω από
+# 4 KB. Τα σημερινά woff2 είναι πολύ μεγαλύτερα, αλλά μια μικρή γραμματοσειρά εικονιδίων
+# αύριο θα γινόταν σιωπηλά `data:` — και με `font-src 'self'` θα εξαφανιζόταν από τη
+# σελίδα χωρίς να το πάρει κανείς είδηση. Σίγαση της αναφοράς θα έκρυβε ΚΑΙ αυτό.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
