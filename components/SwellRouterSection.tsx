@@ -117,8 +117,8 @@ export const SwellRouterSection: React.FC<SwellRouterSectionProps> = ({
 
   return (
     <section className="space-y-3" data-nosnippet="true">
-      <div className={`flex items-start gap-3 rounded-surface border px-4 py-3.5 shadow-surface ${exposed ? 'border-orange-200 bg-orange-50/70 shadow-orange-900/5' : 'border-emerald-200 bg-emerald-50/60 shadow-emerald-900/5'}`}>
-        <div className={`shrink-0 rounded-control p-2.5 text-white shadow-surface ${exposed ? 'bg-orange-500' : 'bg-emerald-500'}`}>
+      <div className={`flex items-start gap-3 rounded-[1.5rem] border px-4 py-3.5 shadow-sm ${exposed ? 'border-orange-200 bg-orange-50/70 shadow-orange-900/5' : 'border-emerald-200 bg-emerald-50/60 shadow-emerald-900/5'}`}>
+        <div className={`shrink-0 rounded-2xl p-2.5 text-white shadow-sm ${exposed ? 'bg-orange-500' : 'bg-emerald-500'}`}>
           {exposed ? <Waves className="h-5 w-5" aria-hidden /> : <ShieldCheck className="h-5 w-5" aria-hidden />}
         </div>
         <div className="min-w-0 space-y-1">
@@ -144,7 +144,7 @@ export const SwellRouterSection: React.FC<SwellRouterSectionProps> = ({
                 <button
                   type="button"
                   onClick={() => onSelect(cove.id)}
-                  className="flex w-full items-center gap-2 rounded-control border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left transition-colors hover:bg-emerald-50"
+                  className="flex w-full items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left transition-colors hover:bg-emerald-50"
                 >
                   <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">{cove.name}</span>
                   <span className="flex-shrink-0 text-xs font-bold text-slate-500">

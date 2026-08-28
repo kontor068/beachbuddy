@@ -53,9 +53,9 @@ export const SwitchBeachCard: React.FC<SwitchBeachCardProps> = ({
   <button
     type="button"
     onClick={onOpen}
-    className="flex w-full items-center gap-3 rounded-surface border border-sky-200 bg-sky-50/70 px-4 py-3.5 text-left shadow-surface transition-colors hover:bg-sky-50"
+    className="flex w-full items-center gap-3 rounded-[1.5rem] border border-sky-200 bg-sky-50/70 px-4 py-3.5 text-left shadow-sm shadow-sky-900/5 transition-colors hover:bg-sky-50"
   >
-    <div className="shrink-0 rounded-control bg-sky-600 p-2.5 text-white shadow-surface">
+    <div className="shrink-0 rounded-2xl bg-sky-600 p-2.5 text-white shadow-sm">
       <Navigation2 className="h-5 w-5" aria-hidden />
     </div>
     <div className="min-w-0 flex-1 space-y-0.5">

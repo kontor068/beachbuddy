@@ -3404,28 +3404,23 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   // <h1> deliberately: on a region page the region IS the page. The landing value-prop above
   // the search box steps down to a <p> so there is exactly one.
   const regionTitleBlock = selectedIsland && !isNearMeRegion ? (
-    /* Αριστερή στοίχιση και μελανί τίτλος (28/08/2026). Ήταν κεντραρισμένος και σε
-       τιρκουάζ: κεντραρισμένο κείμενο πάνω από αριστερά στοιχισμένο περιεχόμενο δίνει
-       δύο άξονες ανάγνωσης στην ίδια οθόνη, και το τιρκουάζ στον τίτλο ξόδευε το χρώμα
-       της μάρκας εκεί που η ιεραρχία μπορεί να βγει από το μέγεθος. Το τιρκουάζ μένει
-       για ό,τι θέλουμε να πατηθεί. Ίδιο κείμενο, ίδια σειρά. */
-    <div className="mb-4 px-1 text-left sm:mb-5">
-      <p className="flex items-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-slate-500">
+    <div className="mb-3 px-1 text-center sm:mb-4">
+      <p className="flex items-center justify-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-slate-500">
         <MapPin className="h-3 w-3 shrink-0 text-[#007a83]/70" aria-hidden="true" />
         <span className="min-w-0 truncate">{contextStripEyebrow}</span>
       </p>
-      <h1 className="mt-1 font-heading text-[2.15rem] font-extrabold leading-[1] tracking-[-0.03em] text-slate-950 sm:text-[2.75rem]">
+      <h1 className="mt-0.5 font-heading text-[2rem] font-extrabold leading-[1.05] tracking-tight text-[#007a83] sm:text-[2.6rem]">
         {selectedIsland.name[language]}
       </h1>
       {searchedBeachStripText && (
-        <p className="mt-1.5 max-w-md truncate text-sm font-semibold text-slate-600">
+        <p className="mx-auto mt-1.5 max-w-md truncate text-sm font-semibold text-slate-600">
           {searchedBeachStripText}
         </p>
       )}
     </div>
   ) : null;
   const conditionsOverviewContent = selectedIsland ? (
-    <section className="flex flex-col rounded-surface border border-line bg-surface p-3 shadow-surface sm:p-4 lg:absolute lg:inset-0 lg:overflow-hidden" aria-label={copy.conditionsOverviewAria}>
+    <section className="flex flex-col rounded-2xl border border-sky-200 bg-white p-3 shadow-sm shadow-sky-900/5 sm:p-4 lg:absolute lg:inset-0 lg:overflow-hidden" aria-label={copy.conditionsOverviewAria}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2 lg:shrink-0">
         <div>
           {isWeatherPanelMode && mobileWeatherForecastTitle && (
@@ -4073,7 +4068,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
   );
 
   return (
-    <section className="relative isolate bg-canvas text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
+    <section className="relative isolate bg-sky-100 text-slate-950" aria-label={copy.beachSearchAria} data-nosnippet="true">
       {/* Plain brand-blue field. Was a full-bleed island photo behind two white scrims;
           it only ever rendered for the 2 regions that had no hero strip, and the region
           title now carries the sense of place on its own.
@@ -4089,10 +4084,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
 
       <div className="relative mx-auto max-w-[110rem] px-4 pb-1 pt-2 sm:px-5 sm:pb-2 sm:pt-6 lg:px-6">
         {regionTitleBlock}
-        {/* ΧΩΡΙΣ ΚΑΡΤΑ (28/08/2026). Ήταν λευκό κουτί με περίγραμμα, ring και βαριά σκιά,
-            και μέσα του ένα input με ΔΙΚΟ ΤΟΥ περίγραμμα: δύο πλαίσια για ένα πεδίο. Τώρα
-            η επιφάνεια είναι το ίδιο το input — ένα κουτί, όχι δύο. */}
-        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 sm:pb-2">
+        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible rounded-[1.5rem] border border-white/60 bg-white/95 p-3 pb-1 shadow-xl shadow-slate-950/14 ring-1 ring-white/35 sm:p-4 sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
@@ -4207,7 +4199,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 }}
                 onKeyDown={handleSearchKeyDown}
                 placeholder={searchPlaceholder}
-                className={`min-h-12 w-full rounded-surface border border-line bg-surface pl-4 text-base font-medium text-slate-800 shadow-surface outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full sm:pl-5 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
+                className={`min-h-12 w-full rounded-[1.2rem] border border-slate-300 bg-white/92 pl-4 text-base font-medium text-slate-800 outline-none transition placeholder:text-slate-700 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600/20 sm:rounded-full sm:pl-5 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
                   searchDraft.trim().length > 0 ? 'pr-[8.75rem] lg:pr-[6.5rem]' : 'pr-24 lg:pr-14'
                 }`}
               />
@@ -4357,11 +4349,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   disabled={isFindingCurrentLocation}
                   className={`inline-flex min-h-10 w-full min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm ${
                     hasUserLocation
-                      ? 'border-transparent bg-cyan-50 text-[#007a83]'
-                      /* Ήσυχο, όχι δεύτερο CTA (28/08/2026): ήταν πλατύ γαλάζιο πλαίσιο
-                         ακριβώς κάτω από το πεδίο αναζήτησης, δηλαδή δύο κουτιά στη σειρά
-                         που ζητούσαν το ίδιο βάρος προσοχής. Ίδιο κουμπί, ίδιο ύψος αφής. */
-                      : 'border-transparent text-[#007a83] hover:bg-cyan-50'
+                      ? 'border-cyan-200 bg-cyan-50 text-[#007a83]'
+                      : 'border-sky-200 bg-white/80 text-slate-900 hover:border-cyan-300 hover:bg-cyan-50'
                   } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
                 >
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-[#007a83] sm:h-4 sm:w-4" />
@@ -4470,7 +4459,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             }`}>
               <div
                 id="directory-map-panel-desktop"
-                className="overflow-hidden rounded-surface border border-line bg-surface p-3 text-left shadow-surface sm:p-4"
+                className="overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/95 p-3 text-left shadow-sm shadow-sky-900/8 ring-1 ring-white/45 sm:p-4"
               >
                 {/* Above the map, not floating on it: Leaflet already owns the top-right corner
                     (zoom / layers / recentre) and the top-left carries the wind-direction card,
@@ -4542,7 +4531,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     του χάρτη είναι το δεύτερο μισό του ίδιου μπλοκ, και ένα 95% λευκό αφήνει
                     το μισοβαμμένο καρέ του σκρολ να φανεί από μέσα. Πάνω σε φόντο sky-100 η
                     διαφορά 95%→100% δεν διαβάζεται με μάτι· το φάντασμα διαβαζόταν. */}
-                <div className="relative overflow-hidden rounded-surface bg-surface pb-1 text-left shadow-lifted">
+                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55">
                   {mapPreview}
                 </div>
               </section>
@@ -4556,7 +4545,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {selectedIsland && hasTopRecommendationView && !infoOnly && (
             <section
               id="top-recommendations-section"
-              className="mb-3 rounded-surface border border-line bg-surface px-3 pb-1 pt-2 shadow-surface scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
+              className="mb-3 rounded-[1.35rem] border border-white/70 bg-white/95 px-3 pb-1 pt-2 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 scroll-mt-[25rem] sm:mb-5 sm:px-5 sm:pb-2 sm:pt-4 sm:scroll-mt-4"
               aria-label={mobileTopRecommendationsTitle}
             >
               <div className="mb-1.5 space-y-1 text-center sm:mb-3">
@@ -4573,7 +4562,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   <div
                     role="tablist"
                     aria-label={mobileTopRecommendationsTitle}
-                    className="mx-auto flex w-fit max-w-full items-center gap-1 rounded-full bg-canvas p-1"
+                    className="mx-auto flex w-fit max-w-full items-center gap-1 rounded-full border border-sky-100 bg-sky-50/70 p-1"
                   >
                     <button
                       type="button"
@@ -4582,7 +4571,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       onClick={() => setActivePicksTab('top')}
                       className={`min-h-9 min-w-0 rounded-full px-3 text-xs font-extrabold leading-tight transition sm:px-4 sm:text-sm ${
                         activePicksTab === 'top'
-                          ? 'bg-surface text-slate-950 shadow-surface'
+                          ? 'bg-white text-slate-950 shadow-sm ring-1 ring-sky-200'
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
@@ -4595,7 +4584,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                       onClick={() => setActivePicksTab('rest')}
                       className={`min-h-9 min-w-0 rounded-full px-3 text-xs font-extrabold leading-tight transition sm:px-4 sm:text-sm ${
                         activePicksTab === 'rest'
-                          ? 'bg-surface text-slate-950 shadow-surface'
+                          ? 'bg-white text-slate-950 shadow-sm ring-1 ring-sky-200'
                           : 'text-slate-600 hover:text-slate-900'
                       }`}
                     >
@@ -4667,7 +4656,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                     «γιατί αυτές;» (each pick's own explanation, which the podium never surfaced)
                     and «πώς βγαίνει η σειρά;». Gated at 1360px — below that the rail's min
                     width would push the third card into horizontal scroll. */}
-                <aside className="hidden w-0 min-w-[16rem] max-w-[26rem] flex-1 flex-col justify-center gap-4 self-stretch rounded-surface border border-line bg-surface p-5 text-left min-[1360px]:flex">
+                <aside className="hidden w-0 min-w-[16rem] max-w-[26rem] flex-1 flex-col justify-center gap-4 self-stretch rounded-2xl border border-sky-100 bg-white/78 p-5 text-left min-[1360px]:flex">
                   <div>
                     <h3 className="mb-1 text-sm font-extrabold text-slate-950">{topPicksWhyTitle}</h3>
                     {!shelteredFallbackPodium && (
@@ -4736,7 +4725,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   to «γιατί με αυτή τη σειρά» is a question the reader asks second, if at all. Open
                   by default it would push the list below the fold on a phone. */}
               {showTopPickCriteria && (
-                <details className="mt-2 rounded-surface border border-line bg-surface px-3 py-2 text-left min-[1360px]:hidden">
+                <details className="mt-2 rounded-2xl border border-sky-100 bg-white/78 px-3 py-2 text-left min-[1360px]:hidden">
                   <summary className="cursor-pointer list-none text-xs font-extrabold text-slate-800 marker:hidden">
                     {topPicksHowTitle}
                   </summary>
@@ -4832,7 +4821,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           )}
 
           {selectedIsland && !isMobileViewport && !isDirectorySuitableView && directoryDisplayBeachCards.length > 0 && (
-            <section id="all-beaches-section" className="mt-8 scroll-mt-4 rounded-surface border border-line bg-surface p-4 shadow-surface sm:p-5">
+            <section id="all-beaches-section" className="mt-7 scroll-mt-4 rounded-2xl border border-sky-200 bg-white p-4 shadow-sm shadow-sky-900/5 sm:p-5">
               <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
                 <div className="min-w-0">
                   <h2 className="text-xl font-bold leading-tight text-slate-950">

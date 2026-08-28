@@ -29,18 +29,19 @@ import { formatBeaufortLabel } from '../utils/beaufortRange';
 
 type HeroTone = 'calm' | 'moderate' | 'rough';
 
-/* ΕΠΙΠΕΔΗ ΑΠΟΧΡΩΣΗ, ΟΧΙ ΠΛΥΣΗ ΧΡΩΜΑΤΟΣ (28/08/2026). Ο τόνος — ήρεμα / μέτρια /
-   φουρτούνα — ΜΕΝΕΙ, γιατί είναι πληροφορία: το ίδιο χρώμα φοράει η πινέζα στον
-   χάρτη και η κάρτα στη λίστα, από τη μία ετυμηγορία του utils/seaVerdict.
-   Αυτό που φεύγει είναι ο τρόπος: ντεγκραντέ τριών στάσεων σε όλη την κάρτα, με
-   ένα θολωμένο φωτοστέφανο από πάνω. Πάνω σε φόντο που έλαμπε ήδη, το αποτέλεσμα
-   ήταν ότι έλαμπαν τα πάντα και δεν ξεχώριζε τίποτα — και το `blur-3xl` είναι μια
-   ολόκληρη στρώση σύνθεσης στο κινητό, εκεί που το ίδιο αρχείο CSS κόβει το
-   backdrop-filter από 40 κάρτες για ακριβώς αυτόν τον λόγο. */
-const TONE_SKIN: Record<HeroTone, { shell: string }> = {
-  calm: { shell: 'bg-teal-50/80 border-teal-100' },
-  moderate: { shell: 'bg-amber-50/80 border-amber-100' },
-  rough: { shell: 'bg-rose-50/80 border-rose-100' },
+const TONE_SKIN: Record<HeroTone, { shell: string; halo: string }> = {
+  calm: {
+    shell: 'from-teal-50 via-sky-50 to-white border-teal-100',
+    halo: 'bg-teal-200/35',
+  },
+  moderate: {
+    shell: 'from-amber-50 via-orange-50/60 to-white border-amber-100',
+    halo: 'bg-amber-200/35',
+  },
+  rough: {
+    shell: 'from-rose-50 via-orange-50/50 to-white border-rose-100',
+    halo: 'bg-rose-200/35',
+  },
 };
 
 const BEST_TIME_LABEL: Record<LanguageCode, string> = {
@@ -250,19 +251,11 @@ const TILE_TEXT = 'w-full [overflow-wrap:normal] [word-break:normal] [hyphens:no
    as the tallest label, so the numbers share one baseline whatever the language does to the
    words. `gap-1` here overrides the parent's gap-2 for the tracks the tile spans, so the inside
    of a tile keeps its old 4 px rhythm while the gap between tiles stays 8 px. */
-/* ΧΩΡΙΣ ΓΕΜΙΣΜΑ, ΧΩΡΙΣ ΔΑΧΤΥΛΙΔΙ, ΧΩΡΙΣ ΣΚΙΑ (28/08/2026). Οκτώ λευκά κουτάκια, το
-   καθένα με δικό του δαχτυλίδι και δική του σκιά, ΜΕΣΑ σε μια ήδη χρωματισμένη κάρτα:
-   τρία επίπεδα πλαισίου για μία ένδειξη. Οι μετρήσεις κάθονται τώρα απευθείας πάνω στην
-   κάρτα και τις ξεχωρίζει το κενό — όπως οι τρεις αριθμοί κάτω από τον χάρτη στη σελίδα
-   περιοχής. ΤΟ ΧΡΩΜΑ ΔΕΝ ΧΑΝΕΤΑΙ: όπου έλεγε κάτι (πράσινο «εντάξει», κεχριμπάρι
-   «πρόσεξε»), το λέει τώρα το εικονίδιο και ο ίδιος ο αριθμός, όχι μια γεμάτη πλάκα.
-   ΠΡΟΣΟΧΗ: padding και μεγέθη γραμμάτων ΔΕΝ αλλάζουν εδώ — είναι μετρημένα (βλ. σχόλιο
-   πιο πάνω) και τα φυλάει το scripts/validateTileFit.mjs. */
-const TILE_BOX = 'grid grid-rows-subgrid row-span-4 min-w-0 justify-items-center gap-1 rounded-control px-0 min-[380px]:px-1 py-3 text-center';
+const TILE_BOX = 'grid grid-rows-subgrid row-span-4 min-w-0 justify-items-center gap-1 rounded-2xl px-0 min-[380px]:px-1 py-3 text-center shadow-sm shadow-sky-900/5 ring-1';
 const TILE_HINT = 'text-[8px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
 
 const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint }) => (
-  <div data-tilefit="reading" className={TILE_BOX}>
+  <div data-tilefit="reading" className={`${TILE_BOX} bg-white/75 ring-white/60`}>
     <div className="h-6 w-9">{glyph}</div>
     <p className="text-[10px] font-bold tracking-wide text-slate-500">{label}</p>
     <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight text-slate-900 tabular-nums`}>{value}</p>
@@ -410,7 +403,13 @@ const Practical: React.FC<{ tile: PracticalTile }> = ({ tile }) => {
   return (
     <div
       data-tilefit="practical"
-      className={TILE_BOX}
+      className={`${TILE_BOX} ${
+        tile.tone === 'warn'
+          ? 'bg-amber-50/85 ring-amber-100'
+          : tile.tone === 'good'
+            ? 'bg-emerald-50/70 ring-emerald-100/80'
+            : 'bg-white/75 ring-white/60'
+      }`}
     >
       <Icon
         className={`h-6 w-6 ${
@@ -421,9 +420,7 @@ const Practical: React.FC<{ tile: PracticalTile }> = ({ tile }) => {
       {/* Three lines, not two: the "bring" tile may legitimately carry three short nouns
           ("Νερό, Αντηλιακό, Παπούτσια θαλάσσης") and they must ALL be visible — the tile
           is not clickable, so anything clamped away is simply lost to the reader. */}
-      <p className={`${TILE_TEXT} line-clamp-3 text-[10px] min-[380px]:text-[12px] font-black leading-[1.2] ${
-        tile.tone === 'warn' ? 'text-amber-800' : tile.tone === 'good' ? 'text-emerald-800' : 'text-slate-900'
-      }`}>
+      <p className={`${TILE_TEXT} line-clamp-3 text-[10px] min-[380px]:text-[12px] font-black leading-[1.2] text-slate-900`}>
         {tile.value}
       </p>
       {tile.hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-1`}>{tile.hint}</p>}
@@ -463,10 +460,13 @@ const AmenityPanel: React.FC<{
           return (
             <li
               key={row.key}
-              /* Ίδια λογική με τα πλακίδια από πάνω: το σήμα το δίνει το εικονίδιο —
-                 πράσινο τικ, κεχριμπαρένιο ημερολόγιο, γκρι σταυρός — όχι ένα γεμάτο
-                 κουτί γύρω από κάθε λέξη. Padding αμετάβλητο. */
-              className="flex min-w-0 items-center gap-2 rounded-control px-2.5 py-2.5"
+              className={`flex min-w-0 items-center gap-2 rounded-2xl px-2.5 py-2.5 shadow-sm shadow-sky-900/5 ring-1 ${
+                yes
+                  ? 'bg-emerald-50/70 ring-emerald-100/80'
+                  : partial
+                    ? 'bg-amber-50/70 ring-amber-100'
+                    : 'bg-white/60 ring-white/60'
+              }`}
             >
               <span
                 className={`grid h-4 w-4 shrink-0 place-items-center rounded-full ${
@@ -653,8 +653,10 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
 
   return (
     <section
-      className={`relative overflow-hidden rounded-surface border ${skin.shell} p-4 shadow-surface sm:p-5`}
+      className={`relative overflow-hidden rounded-[2rem] border bg-gradient-to-br ${skin.shell} p-4 shadow-sm shadow-sky-900/5 sm:p-5`}
     >
+      {/* A single soft halo behind the verdict, so the eye lands there first. */}
+      <div className={`pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full blur-3xl ${skin.halo}`} aria-hidden="true" />
 
       <div className="relative space-y-3.5">
         {/* Location only. The beach NAME is the sticky header's <h1>, permanently visible
@@ -681,7 +683,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
         {bestTimeLabel && (
           <div className="flex flex-wrap items-center gap-2.5">
             <span
-              className="inline-flex items-center gap-1.5 rounded-control bg-surface px-3 py-2 text-sm font-bold text-slate-800 shadow-surface ring-1 ring-line"
+              className="inline-flex items-center gap-1.5 rounded-2xl bg-white/80 px-3 py-2 text-sm font-bold text-slate-800 shadow-sm ring-1 ring-white/70"
               data-nosnippet="true"
             >
               <Clock className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
@@ -774,7 +776,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
 
         {climateNote && (
           <p
-            className={`flex items-start gap-2 rounded-control px-3 py-2.5 text-sm font-semibold leading-snug ${
+            className={`flex items-start gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold leading-snug ${
               climateNote.tone === 'better'
                 ? 'bg-teal-500/10 text-teal-900'
                 : climateNote.tone === 'worse'
@@ -794,7 +796,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           // αυτό λέει «είναι πιο ήρεμα απ’ ό,τι διαβάζεις». Ίδιο χρώμα θα έκανε τα δύο να
           // ακούγονται σαν την ίδια προειδοποίηση δύο φορές. Το γλυφικό είναι ο άνεμος, γιατί για
           // τον άνεμο μιλάει η πρόταση — ο αναγνώστης πρέπει να δει σε ποιο πλακίδιο ανήκει.
-          <p className="flex items-start gap-2 rounded-control bg-sky-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-sky-900">
+          <p className="flex items-start gap-2 rounded-2xl bg-sky-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-sky-900">
             <span className="mt-px shrink-0" aria-hidden="true">↝</span>
             <span>{offshoreWindNote}</span>
           </p>
@@ -805,7 +807,7 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           // on a calm-looking page saying "you will feel something", and a neutral grey would read
           // as trivia. The wave glyph is the same character the sea tile uses, so the reader can
           // see at a glance which figure this sentence belongs to.
-          <p className="flex items-start gap-2 rounded-control bg-amber-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-amber-900">
+          <p className="flex items-start gap-2 rounded-2xl bg-amber-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-amber-900">
             <span className="mt-px shrink-0" aria-hidden="true">〜</span>
             <span>{shoreBreakNote}</span>
           </p>

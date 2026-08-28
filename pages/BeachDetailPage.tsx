@@ -153,7 +153,7 @@ const BeachDetailShorelinePanel: React.FC<{
   const copy = shorelineCaptionCopy[language] || shorelineCaptionCopy.en;
 
   return (
-    <div className="overflow-hidden rounded-surface border border-line bg-sky-100 shadow-surface">
+    <div className="overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-sky-100 shadow-sm shadow-sky-900/5">
       {/* w-full is load-bearing: aspect-[16/9] plus max-h-56 with no explicit width lets the
           browser shrink the WIDTH (not just clamp height) once max-h-56 caps it below the
           16:9-for-full-width value, carving a blank strip beside the drawing. */}
@@ -167,7 +167,7 @@ const BeachDetailShorelinePanel: React.FC<{
           size="full"
         />
       </div>
-      <div className="border-t border-line bg-white/90 p-3">
+      <div className="border-t border-cyan-100/80 bg-white/90 p-3">
         <p className="text-sm font-bold text-cyan-900">{copy.title}</p>
         <p className="mt-1 text-xs font-semibold leading-snug text-slate-600">
           {copy.body}
@@ -185,7 +185,7 @@ const BeachDetailShorelinePanel: React.FC<{
 const BeachDetailPhotoPlaceholder: React.FC = () => {
   return (
     <div
-      className="relative aspect-[16/9] max-h-56 overflow-hidden rounded-surface border border-line bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50 shadow-surface"
+      className="relative aspect-[16/9] max-h-56 overflow-hidden rounded-[2rem] border border-cyan-100/80 bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50 shadow-sm shadow-sky-900/5"
       aria-hidden="true"
     >
       <div className="absolute -left-8 -top-10 h-32 w-32 rounded-full bg-cyan-200/40 blur-2xl" />
@@ -301,9 +301,9 @@ const PhotoContributionPrompt: React.FC<{
   const copy = photoContributionCopy[language] || photoContributionCopy.en;
 
   return (
-    <div className="rounded-surface border border-cyan-100/75 bg-white/82 p-3.5 shadow-surface backdrop-blur-sm">
+    <div className="rounded-[1.5rem] border border-cyan-100/75 bg-white/82 p-3.5 shadow-sm shadow-sky-900/5 backdrop-blur-sm">
       <div className="flex items-start gap-3">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-control border border-cyan-100 bg-cyan-50 text-cyan-700">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-cyan-100 bg-cyan-50 text-cyan-700">
           <Camera className="h-4 w-4" aria-hidden="true" />
         </div>
         <div className="min-w-0 flex-1">
@@ -314,7 +314,7 @@ const PhotoContributionPrompt: React.FC<{
             <button
               type="button"
               onClick={onAddPhoto}
-              className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cyan-600 px-4 text-xs font-bold text-white shadow-surface shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+              className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cyan-600 px-4 text-xs font-bold text-white shadow-sm shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
             >
               <Camera className="h-3.5 w-3.5" aria-hidden="true" />
               {copy.upload}
@@ -341,7 +341,7 @@ const PhotoContributionPrompt: React.FC<{
                 rel="noreferrer"
                 aria-label={copy.buttonLabel(beachName)}
                 onClick={onClick}
-                className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cyan-100 bg-cyan-600 px-4 text-xs font-bold text-white shadow-surface shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+                className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cyan-100 bg-cyan-600 px-4 text-xs font-bold text-white shadow-sm shadow-cyan-200/70 transition-colors hover:bg-cyan-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
               >
                 {copy.button}
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -2118,12 +2118,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     }] : []),
   ];
 
-  // Ίδιος ήρεμος καμβάς με τη σελίδα περιοχής (28/08/2026): ήταν ντεγκραντέ τριών στάσεων,
-  // που σε συνδυασμό με λευκές ημιδιάφανες κάρτες έκανε τα πάντα να λάμπουν.
   return (
-    <div className="min-h-screen bg-canvas pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-slate-50 to-white pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-20">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-line bg-white/84 px-4 py-4 shadow-surface backdrop-blur-md">
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/70 bg-white/84 px-4 py-4 shadow-sm shadow-sky-900/5 backdrop-blur-md">
         <button
           type="button"
           onClick={onBack}
@@ -2157,7 +2155,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
       <main className="max-w-4xl mx-auto px-4 pt-4 md:pt-6 space-y-5 md:space-y-7">
         {detailDataStatus === 'partial' && (
-          <div className="rounded-control border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
+          <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
             {language === 'gr'
               ? 'Δεν φορτώθηκαν όλες οι λεπτομέρειες. Δείχνουμε τα βασικά στοιχεία της παραλίας.'
               : 'Some beach details could not be loaded. Showing the core beach information.'}
@@ -2165,7 +2163,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         )}
 
         {conditionsUnavailable && (
-          <section role="status" data-nosnippet="true" className="flex items-start gap-3 rounded-surface border border-slate-300 bg-surface p-4 shadow-surface">
+          <section role="status" data-nosnippet="true" className="flex items-start gap-3 rounded-[1.75rem] border border-slate-300 bg-white/95 p-4 shadow-sm shadow-slate-900/5">
             <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-slate-500" aria-hidden="true" />
             <div className="min-w-0">
               <h2 className="text-sm font-black leading-snug text-slate-950">{copy.conditionsUnavailableTitle[language]}</h2>
@@ -2481,7 +2479,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               to be told their towel will stay put. Dropped along with every umbrella /
               towel / blowing-sand line on the page, on the owner's call. */}
           {localWindNote && (
-            <p className={`flex items-center gap-2 rounded-control px-3 py-2 text-sm font-semibold ${
+            <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${
               localWindNote.tone === 'windier'
                 ? 'bg-amber-50/70 text-amber-800'
                 : 'bg-teal-50/70 text-teal-800'
@@ -2545,7 +2543,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <section className="space-y-3">
           {realPhotos.length > 0 ? (
             <>
-              <div className="relative aspect-[16/10] overflow-hidden rounded-surface border border-line shadow-lifted sm:aspect-[4/3]">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/70 shadow-lg shadow-cyan-900/10 sm:aspect-[4/3]">
                 <img
                   src={realPhotos[0]}
                   alt={beachDisplayName}
@@ -2614,7 +2612,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   <button
                     type="button"
                     onClick={onAddPhoto}
-                    className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#007a83] px-4 text-sm font-extrabold text-white shadow-surface transition-colors hover:bg-[#00646c] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/40"
+                    className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#007a83] px-4 text-sm font-extrabold text-white shadow-sm transition-colors hover:bg-[#00646c] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/40"
                   >
                     <Camera className="h-4 w-4" aria-hidden="true" />
                     {(photoContributionCopy[language] || photoContributionCopy.en).betterCta}
@@ -2625,7 +2623,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               {realPhotos.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
                   {realPhotos.slice(1).map((url, i) => (
-                    <div key={i} className="flex-shrink-0 w-24 sm:w-32 aspect-square rounded-control overflow-hidden shadow-surface">
+                    <div key={i} className="flex-shrink-0 w-24 sm:w-32 aspect-square rounded-2xl overflow-hidden shadow-sm">
                       <img
                         src={url}
                         alt={`${beachDisplayName} ${i + 2}`}
@@ -2686,7 +2684,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <ScrollText className="h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" />
               {copy.beachStoryHeading[language]}
             </h3>
-            <div className="rounded-control border border-line bg-surface px-4 py-3.5">
+            <div className="rounded-2xl border border-slate-200/70 bg-white/55 px-4 py-3.5">
               {beachStory.title[storyLocale] && (
                 <p className="text-sm font-semibold text-teal-700">{beachStory.title[storyLocale]}</p>
               )}
@@ -2717,7 +2715,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {sunsetSea.everOverSea && (() => {
           const sunsetCopy = SUNSET_SEA_COPY[language] ?? SUNSET_SEA_COPY.en;
           return (
-            <section className="rounded-control border border-amber-100/70 bg-amber-50/70 px-4 py-3.5">
+            <section className="rounded-2xl border border-amber-100/70 bg-gradient-to-r from-amber-50/70 to-orange-50/55 px-4 py-3.5">
               <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-bold text-slate-800">
                 <Sunset className="h-4 w-4 shrink-0 text-orange-500" aria-hidden="true" />
                 {sunsetCopy.title}:
@@ -2735,7 +2733,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
              today is information you can plan around (blue). */}
         {showConditions && rainAdvisory && (
           <section
-            className={`flex items-start gap-3 rounded-surface border p-4 shadow-surface ${
+            className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${
               rainAdvisory.isRainingNow
                 ? 'border-amber-300/80 bg-amber-50/80 shadow-amber-900/5'
                 : 'border-sky-200/80 bg-sky-50/70 shadow-sky-900/5'
@@ -2744,7 +2742,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             data-nosnippet="true"
           >
             <div
-              className={`shrink-0 rounded-control p-2.5 text-white shadow-surface ${
+              className={`shrink-0 rounded-2xl p-2.5 text-white shadow-sm ${
                 rainAdvisory.isRainingNow ? 'bg-amber-500' : 'bg-sky-500'
               }`}
             >
@@ -2771,8 +2769,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
         {/* 5. Best Time Today */}
         {showConditions && bestTime && (usefulBestTimeWindow || allDaySuitable) && (
-          <section className={`flex items-start gap-3 rounded-surface border p-4 shadow-surface ${swimWindowToneClasses.section}`} data-nosnippet="true">
-            <div className={`rounded-control p-2.5 text-white shadow-surface ${swimWindowToneClasses.icon}`}>
+          <section className={`flex items-start gap-3 rounded-[1.75rem] border p-4 shadow-sm ${swimWindowToneClasses.section}`} data-nosnippet="true">
+            <div className={`rounded-2xl p-2.5 text-white shadow-sm ${swimWindowToneClasses.icon}`}>
               <Clock className="w-5 h-5" />
             </div>
             <div className="min-w-0">
@@ -2800,8 +2798,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             εξομαλύνει τα ρηχά, άρα μόνο η βαθιά πλευρά της είναι αξιόπιστη.
             Ο δρόμος των πόντων μετρήθηκε και απορρίφθηκε — βλ. utils/seabedEntry. */}
         {typeof beach.steepSeabedDepthM === 'number' && (
-          <section className="flex items-start gap-3 rounded-surface border border-line bg-surface p-4 shadow-surface">
-            <div className="rounded-control bg-slate-100 p-2.5 text-slate-600">
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-slate-200/80 bg-white/70 p-4 shadow-sm">
+            <div className="rounded-2xl bg-slate-100 p-2.5 text-slate-600">
               <Waves className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="min-w-0">
@@ -2823,8 +2821,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 7a-0. Paid entry — "you pay to be here" (entrance fee / private club / sunbed-only).
             Each kind gets its own honest explanation; never a vague "paid" tag. */}
         {paidEntry && (
-          <section className="flex items-start gap-3 rounded-surface border border-amber-200/80 bg-amber-50/70 p-4 shadow-surface shadow-amber-900/5">
-            <div className="shrink-0 rounded-control bg-amber-500 p-2.5 text-white shadow-surface">
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-amber-200/80 bg-amber-50/70 p-4 shadow-sm shadow-amber-900/5">
+            <div className="shrink-0 rounded-2xl bg-amber-500 p-2.5 text-white shadow-sm">
               {paidEntry.kind === 'entrance_fee'
                 ? <Ticket className="h-5 w-5" aria-hidden />
                 : <Euro className="h-5 w-5" aria-hidden />}
@@ -2857,8 +2855,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         {/* 7-cert. CalmBeach Certified — the first-party house seal. Shown only for beaches we
             have physically visited and verified (curated in utils/certifiedBeaches.ts). */}
         {certification && (
-          <section className="flex items-start gap-3 rounded-surface border border-teal-200/70 bg-teal-50/50 p-4 shadow-surface shadow-teal-900/5">
-            <div className="shrink-0 rounded-control bg-[#007a83] p-2.5 text-white shadow-surface">
+          <section className="flex items-start gap-3 rounded-[1.75rem] border border-teal-200/70 bg-teal-50/50 p-4 shadow-sm shadow-teal-900/5">
+            <div className="shrink-0 rounded-2xl bg-[#007a83] p-2.5 text-white shadow-sm">
               <BadgeCheck className="h-5 w-5" aria-hidden />
             </div>
             <div className="min-w-0 space-y-1.5">
@@ -2901,7 +2899,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   ? `${Math.round(camp.distanceMeters / 10) * 10} m`
                   : `${(camp.distanceMeters / 1000).toFixed(1)} km`;
                 return (
-                  <div key={camp.id} className="flex min-h-12 items-center justify-between gap-3 rounded-control border border-line bg-surface px-3 py-2 shadow-surface">
+                  <div key={camp.id} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-slate-800">{camp.name}</p>
                       <p className="text-[11px] font-semibold text-slate-500">
@@ -2951,7 +2949,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             <p className="px-1 text-sm font-bold text-slate-700">{getAccessibilityHeadline(beach, language)}</p>
 
             {seatracAccess.status === 'uninstalled' && (
-              <div role="alert" className="flex items-start gap-2 rounded-control border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold leading-snug text-orange-800">
+              <div role="alert" className="flex items-start gap-2 rounded-2xl border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-bold leading-snug text-orange-800">
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                 <span>{getAccessibilityHeadline(beach, language)}</span>
               </div>
@@ -2959,7 +2957,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
             <div className="grid gap-2 sm:grid-cols-2">
               {accessibilityRows.map((row) => (
-                <div key={row.key} className="flex min-h-12 items-center justify-between gap-3 rounded-control border border-line bg-surface px-3 py-2 shadow-surface">
+                <div key={row.key} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-white/80 bg-white/88 px-3 py-2 shadow-sm shadow-sky-900/5">
                   <span className="min-w-0 text-sm font-bold text-slate-700">{row.label}</span>
                   <span className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${amenityStatusClass(row.status)}`}>
                     {row.value}
@@ -2968,7 +2966,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               ))}
             </div>
 
-            <div className="space-y-1.5 rounded-control border border-sky-100 bg-sky-50/70 px-3 py-2.5">
+            <div className="space-y-1.5 rounded-2xl border border-sky-100 bg-sky-50/70 px-3 py-2.5">
               {seatracAccess.seasonal && (
                 <p className="text-xs font-semibold leading-snug text-slate-600">{getAccessibilitySeasonalNote(language)}</p>
               )}
@@ -3033,7 +3031,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
             </h3>
 
-            <div className="space-y-1.5 rounded-control border border-sky-100 bg-sky-50/70 px-3 py-2.5">
+            <div className="space-y-1.5 rounded-2xl border border-sky-100 bg-sky-50/70 px-3 py-2.5">
 
               <p className="text-sm font-bold text-slate-700">{getWebcamLead(language)}</p>
 
@@ -3070,7 +3068,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <section className="space-y-3" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.locationTitle[language]}</h3>
           <DeferUntilVisible
-            className="h-56 w-full overflow-hidden rounded-surface border border-line bg-slate-100 shadow-surface sm:h-64"
+            className="h-56 w-full overflow-hidden rounded-[2rem] border border-white/75 bg-slate-100 shadow-sm shadow-sky-900/5 sm:h-64"
             /* Same grey block Suspense already used, so nothing moves when the map arrives. */
             placeholder={<div className="h-full w-full bg-slate-100" />}
           >
@@ -3150,7 +3148,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             <button
               type="button"
               onClick={handleNavigation}
-              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-control bg-slate-900 px-4 font-bold text-white shadow-lifted transition-colors hover:bg-cyan-700"
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 px-4 font-bold text-white shadow-md transition-colors hover:bg-cyan-700"
             >
               <Navigation className="w-5 h-5" />
               {copy.openNavigation[language]}
@@ -3161,7 +3159,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
         {/* Feedback System — asks "was our forecast accurate?"; moot when we showed no conditions. */}
         {showConditions && (
-        <section className="bg-white p-4 rounded-surface border border-line shadow-surface space-y-4" data-nosnippet="true">
+        <section className="bg-white p-4 rounded-[1.75rem] border border-slate-100 shadow-sm space-y-4" data-nosnippet="true">
           <div className="space-y-1">
             <h3 className="text-base font-heading font-bold text-slate-900">{copy.feedbackTitle[language]}</h3>
             <p className="text-slate-700 text-sm leading-snug">{copy.feedbackText[language]}</p>
@@ -3169,7 +3167,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
 
           {(feedbackSubmitted || feedbackAlreadyGiven) ? (
             <div
-              className="flex items-start gap-3 rounded-control bg-emerald-50 px-4 py-4 text-emerald-800"
+              className="flex items-start gap-3 rounded-2xl bg-emerald-50 px-4 py-4 text-emerald-800"
               role="status"
             >
               <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
@@ -3193,28 +3191,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <button
                   type="button"
                   onClick={() => submitFeedback(pendingFeedbackVerdict, 'now')}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenNow[language]}
                 </button>
                 <button
                   type="button"
                   onClick={() => submitFeedback(pendingFeedbackVerdict, 'morning')}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMorning[language]}
                 </button>
                 <button
                   type="button"
                   onClick={() => submitFeedback(pendingFeedbackVerdict, 'midday')}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMidday[language]}
                 </button>
                 <button
                   type="button"
                   onClick={() => submitFeedback(pendingFeedbackVerdict, 'evening')}
-                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenEvening[language]}
                 </button>
@@ -3232,7 +3230,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleFeedback('accurate')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
               >
                 <ThumbsUp className="w-4 h-4" />
                 {{ en: 'It matched', gr: 'Ταίριαζε', de: 'Hat gestimmt', it: 'Corrispondeva', fr: 'Ça correspondait' }[language]}
@@ -3240,7 +3238,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleFeedback('had_waves')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-sky-100 text-sm font-bold text-sky-700 transition-all hover:bg-sky-50 active:scale-95"
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-sky-100 text-sm font-bold text-sky-700 transition-all hover:bg-sky-50 active:scale-95"
               >
                 <span aria-hidden>🌊</span>
                 {{ en: 'More waves', gr: 'Είχε πιο πολύ κύμα', de: 'Mehr Wellen', it: 'Più onde', fr: 'Plus de vagues' }[language]}
@@ -3248,7 +3246,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleFeedback('too_windy')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-amber-100 text-sm font-bold text-amber-700 transition-all hover:bg-amber-50 active:scale-95"
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-amber-100 text-sm font-bold text-amber-700 transition-all hover:bg-amber-50 active:scale-95"
               >
                 <span aria-hidden>💨</span>
                 {{ en: 'More wind', gr: 'Είχε πιο πολύ αέρα', de: 'Mehr Wind', it: 'Più vento', fr: 'Plus de vent' }[language]}
@@ -3256,7 +3254,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleFeedback('calmer')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                className="flex min-h-[44px] items-center justify-center gap-2 rounded-2xl border border-slate-200 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
               >
                 <span aria-hidden>😎</span>
                 {{ en: 'Calmer than you said', gr: 'Ήταν πιο ήρεμα', de: 'Ruhiger als gesagt', it: 'Più calmo del previsto', fr: 'Plus calme que prévu' }[language]}
@@ -3340,10 +3338,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                         type="button"
                         key={item.beachId}
                         onClick={() => onBeachClick(item.beach)}
-                        className="w-full p-3 bg-white rounded-surface border border-line flex items-center justify-between gap-3 text-left shadow-surface transition-colors hover:border-cyan-200 group"
+                        className="w-full p-3 bg-white rounded-3xl border border-slate-100 flex items-center justify-between gap-3 text-left shadow-sm transition-colors hover:border-cyan-200 group"
                       >
                         <div className="flex min-w-0 items-center gap-3">
-                          <div className="relative w-16 h-16 rounded-control overflow-hidden flex-shrink-0">
+                          <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0">
                             {itemPhoto ? (
                               <img
                                 src={itemPhoto}
@@ -3448,7 +3446,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                      pill links, not inline text, so the 44 px minimum applies to them. */
                   className={guide.matches
                     ? 'inline-flex min-h-[44px] items-center rounded-full border border-teal-600 bg-teal-50 px-3.5 py-1.5 text-sm font-extrabold text-teal-800 hover:bg-teal-100'
-                    : 'inline-flex min-h-[44px] items-center rounded-full border border-line bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50'}
+                    : 'inline-flex min-h-[44px] items-center rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-bold text-teal-700 hover:border-teal-300 hover:bg-teal-50'}
                 >
                   {guide.matches ? `✓ ${guide.label}` : guide.label}
                 </a>
@@ -3503,7 +3501,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           `navigation_clicked` drops after this, the lever to pull is that one button's
           fill, not the other four. */}
       {(canNavigate || jumpTabs.length > 0 || onAddPhoto) && (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl md:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200/80 bg-white/95 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl md:hidden">
           {/* data-tabfit: the same measurable hook the answer tiles carry. Five controls
               sharing a 320 px row, with labels in five languages, is the exact shape that
               clipped words in the hero — scripts/validateTileFit.mjs measures both now.
@@ -3578,8 +3576,8 @@ interface ConditionCardProps {
 }
 
 const ConditionCard: React.FC<ConditionCardProps> = ({ icon, label, value, subValue }) => (
-  <div className="bg-white p-3 rounded-surface border border-line shadow-surface flex flex-col items-start text-left gap-1.5 min-w-0">
-    <div className="p-2 bg-slate-50 rounded-control">
+  <div className="bg-white p-3 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-start text-left gap-1.5 min-w-0">
+    <div className="p-2 bg-slate-50 rounded-xl">
       {icon}
     </div>
     <span className="text-[10px] font-bold tracking-normal text-slate-600">{label}</span>
