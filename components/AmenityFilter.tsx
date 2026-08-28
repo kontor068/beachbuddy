@@ -435,13 +435,20 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 aria-pressed={isSelected}
                 aria-label={`${t.toggleFilterForLabel} ${t.filterOptions[filter]}`}
                 title={filter === 'organized' ? t.organizedTooltip : undefined}
-                className={`inline-flex min-h-10 items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold leading-none transition focus:outline-none focus:ring-2 focus:ring-cyan-600/30 ${
+                /* ΤΟ ΓΕΜΙΣΜΑ ΤΟΥ ΕΠΙΛΕΓΜΕΝΟΥ ΕΙΝΑΙ ΤΟ CTA ΤΗΣ ΜΑΡΚΑΣ, ΟΧΙ cyan-600 (28/08/2026).
+                   Μετρημένο: λευκό πάνω σε #0891b2 δίνει 3,68:1, κάτω από το 4,5 που ζητάει το
+                   WCAG AA — και δεν είναι μία γωνία της οθόνης, είναι κάθε πατημένο φίλτρο και
+                   το κουμπί που κλείνει το φύλλο. Το #007a83 (--color-cta) δίνει 5,11:1 και δεν
+                   είναι νέο χρώμα: είναι αυτό που μπήκε στις 05/08 ακριβώς γι' αυτόν τον λόγο
+                   σε όλο το υπόλοιπο site (βλ. σχόλιο στο index.css). Το φύλλο των φίλτρων απλώς
+                   δεν είχε περάσει από εκείνη τη σάρωση. */
+                className={`inline-flex min-h-10 items-center justify-center rounded-control border px-3 py-2 text-sm font-semibold leading-none transition focus:outline-none focus:ring-2 focus:ring-cyan-600/30 ${
                     compact ? 'gap-1.5' : 'gap-2'
                 } ${
                     isSelected
-                        ? 'border-cyan-600 bg-cyan-600 text-white shadow-md shadow-cyan-700/20'
-                        : 'border-slate-200 bg-white/82 text-slate-700 shadow-sm shadow-slate-900/5 hover:border-cyan-200 hover:bg-cyan-50/60 hover:text-slate-950'
-                } ${isUnavailable ? 'cursor-not-allowed opacity-40 hover:border-slate-200 hover:bg-white/82 hover:text-slate-700' : ''}`}
+                        ? 'border-cta bg-cta text-white shadow-surface'
+                        : 'border-line bg-surface text-slate-700 shadow-surface hover:border-cyan-200 hover:bg-cyan-50/60 hover:text-slate-950'
+                } ${isUnavailable ? 'cursor-not-allowed opacity-40 hover:border-line hover:bg-surface hover:text-slate-700' : ''}`}
             >
                 {filterIcons[filter as string]}
                 <span className="min-w-0 whitespace-normal text-center leading-tight">{t.filterOptions[filter]}</span>
@@ -459,9 +466,13 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
         </section>
     );
 
+    // ΧΩΡΙΣ ΠΛΑΙΣΙΟ (28/08/2026): ήταν το μόνο πράγμα στο φύλλο μέσα σε κάρτα με περίγραμμα,
+    // δαχτυλίδι ΚΑΙ σκιά — και μέσα της δύο ακόμη κουτιά. Η ταξινόμηση ξεχωρίζει από τη θέση
+    // της (πρώτη) και από τον τίτλο της, όπως κάθε άλλη ομάδα εδώ μέσα· δεν χρειάζεται και
+    // κορνίζα. Ο τίτλος παίρνει το ίδιο βάρος με τους υπόλοιπους («Πιο χρήσιμα», «Παροχές»).
     const renderSortSection = () => (
-        <section className="rounded-2xl border border-cyan-200 bg-white/92 p-3 shadow-sm shadow-cyan-900/8 ring-1 ring-cyan-50">
-            <h3 id="sort-heading" className="mb-3 px-0.5 text-base font-extrabold tracking-normal text-slate-900">{sheetCopy.sort}</h3>
+        <section>
+            <h3 id="sort-heading" className="mb-2.5 px-0.5 text-sm font-bold tracking-normal text-slate-600">{sheetCopy.sort}</h3>
             <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="sort-heading">
                 {visibleSortOptions.map(option => (
                     <button
@@ -473,8 +484,8 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                             visibleSortOptions.length === 3 && option.id === 'protected' ? 'col-span-2' : ''
                         } ${
                             option.isActive
-                                ? 'border-cyan-600 bg-cyan-600 text-white shadow-md shadow-cyan-700/20'
-                                : 'border-slate-200 bg-slate-50/80 text-slate-700 shadow-sm shadow-slate-900/5 hover:border-cyan-200 hover:bg-cyan-50/70 hover:text-slate-950'
+                                ? 'border-cta bg-cta text-white shadow-surface'
+                                : 'border-line bg-surface text-slate-700 shadow-surface hover:border-cyan-200 hover:bg-cyan-50/70 hover:text-slate-950'
                         }`}
                     >
                         {option.icon}
@@ -491,7 +502,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
     return (
         <div className="space-y-5">
             {activeFilterLabels.length > 0 && (
-                <section className="rounded-2xl border border-cyan-100 bg-cyan-50/55 p-3">
+                <section className="rounded-surface border border-cyan-100 bg-cyan-50/55 p-3">
                     <div className="mb-2 flex items-center justify-between gap-2">
                         <h3 className="text-sm font-bold tracking-normal text-cyan-800">{sheetCopy.selected}</h3>
                         <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs font-extrabold text-cyan-700 ring-1 ring-cyan-100">
@@ -525,7 +536,7 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                 {secondaryGroups.map(group => renderFilterSection(sheetCopy[group.titleKey], group.filters))}
             </div>
 
-            <div className="sticky bottom-0 border-t border-slate-200/85 bg-slate-50/96 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-16px_28px_rgba(15,23,42,0.06)] backdrop-blur">
+            <div className="sticky bottom-0 border-t border-line bg-canvas pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur">
                 {/* Amber is a register here ("this is not what you asked for"), not a tone claim. */}
                 {shouldOfferAllInstead && (
                     <p role="status" className="mb-2 text-center text-xs font-bold leading-snug text-amber-900">
@@ -533,10 +544,10 @@ export const CombinedFilter: React.FC<CombinedFilterProps> = ({
                     </p>
                 )}
                 <div className="flex items-center gap-3">
-                <button onClick={handleReset} className="min-h-12 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400/40">
+                <button onClick={handleReset} className="min-h-12 shrink rounded-control bg-surface px-3 py-2.5 text-sm font-bold text-slate-600 shadow-surface ring-1 ring-line transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400/40 sm:px-4">
                     {t.resetFilters}
                 </button>
-                <button onClick={handleApply} className="min-h-12 flex-1 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-lg shadow-cyan-700/20 transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-600/35">
+                <button onClick={handleApply} className="min-h-12 flex-1 shrink-0 basis-1/2 rounded-control bg-cta px-3 py-2.5 text-sm font-extrabold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus:ring-2 focus:ring-cyan-600/35 sm:px-4">
                     {shouldOfferAllInstead && typeof allViewResultCount === 'number'
                         ? sheetCopy.seeAllInstead(allViewResultCount)
                         : typeof liveResultCount === 'number'
