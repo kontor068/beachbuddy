@@ -2574,7 +2574,10 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
   /* Το ίδιο πλαίσιο για το κουμπί και για το πλακίδιο-χωρίς-πάτημα: αλλιώς ο χάρτης με ένα
      χρώμα θα άλλαζε σχήμα σε σχέση με τον χάρτη που έχει τέσσερα. Το `relative` είναι για το
      × του μοναδικού πλακιδίου, που βγαίνει από τη ροή. */
-  const frameClasses = `relative flex w-full flex-col justify-start rounded-lg border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 shadow-sm sm:px-2`;
+  /* Τα πλακίδια ΜΕΝΟΥΝ κουμπιά — φιλτράρουν τον χάρτη, άρα πρέπει να δείχνουν πατήσιμα.
+     Αλλάζει μόνο το ντύσιμο: μία ακτίνα και μία γραμμή από το σύστημα, αντί για δικό τους
+     rounded-lg + border-slate-300 + shadow-sm. */
+  const frameClasses = `relative flex w-full flex-col justify-start rounded-control border ${isTightCell ? 'px-1' : 'px-1.5'} py-2 shadow-surface sm:px-2`;
 
   const numberedText = (line: ConditionToneCountLine, key: React.Key) => (
     <React.Fragment key={key}>
@@ -2683,7 +2686,7 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
               data-legend-tile=""
               style={typeStyle}
               className={showFrame
-                ? `${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900`
+                ? `${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} border-line bg-surface dark:border-slate-600 dark:bg-slate-900`
                 : textClasses}
             >
               {body}
@@ -2711,10 +2714,10 @@ const WindColorLegendTiles: React.FC<WindColorLegendTilesProps> = ({
                κεντράρισμα: το πλέγμα ισοϋψώνει τα κελιά, άρα οτιδήποτε κρέμεται από κάτω σε
                ένα πλακίδιο θα κατέβαζε κουκκίδα και αριθμό του σε άλλο ύψος από των διπλανών. */
             style={typeStyle}
-            className={`${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} cursor-pointer transition active:translate-y-px active:shadow-none hover:border-slate-400 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+            className={`${textClasses} ${frameClasses} ${isSoloTile ? 'text-center' : 'text-left'} cursor-pointer transition active:translate-y-px active:shadow-none hover:border-cyan-300 hover:shadow-lifted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
               isActive
-                ? `${activeClasses[row.tone]} shadow`
-                : 'border-slate-300 bg-white active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
+                ? `${activeClasses[row.tone]} shadow-lifted`
+                : 'border-line bg-surface active:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:active:bg-slate-800 dark:hover:bg-slate-800'
             }`}
           >
             {body}
@@ -4517,7 +4520,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
     }`}>
       <div ref={mapViewportRef} className={`relative ${
         isCompactPreview
-          ? `${compactPreviewHeightClassName || 'h-[19rem] sm:h-[26rem] lg:h-[32rem]'} overflow-hidden rounded-[1.1rem] border border-sky-100`
+          /* ΑΠ' ΑΚΡΗ Σ' ΑΚΡΗ (28/08/2026): ο χάρτης είχε δική του γωνία και δικό του
+             περίγραμμα ΜΕΣΑ στην κάρτα που τον κρατάει — δεύτερο πλαίσιο γύρω από το ίδιο
+             πράγμα, με λευκή λωρίδα ανάμεσα. Η κάρτα κόβει ήδη τις γωνίες (overflow-hidden). */
+          ? `${compactPreviewHeightClassName || 'h-[19rem] sm:h-[26rem] lg:h-[32rem]'} overflow-hidden`
           : compact
             ? 'h-full'
             : preview
@@ -4872,7 +4878,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       {/* Hour slider docked under the map: colours and recommendations follow the selected hour */}
       {enableHourSlider && sliderHours.length >= 2 && activeHourItem && (
         <div
-          className="flex flex-wrap items-center gap-x-2 gap-y-0 border-t border-slate-200/80 bg-white/92 px-3 py-0 dark:border-slate-700 dark:bg-slate-900/90 sm:gap-x-3 sm:gap-y-1 sm:px-4 sm:py-3"
+          className="flex flex-wrap items-center gap-x-2 gap-y-0 border-t border-line bg-surface px-3 py-0 dark:border-slate-700 dark:bg-slate-900/90 sm:gap-x-3 sm:gap-y-1 sm:px-4 sm:py-3"
           onPointerDown={() => onUserInteraction?.()}
         >
           {/* The heading takes its own centred line on every size. It used to share the line with
@@ -5123,7 +5129,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
       )}
 
       {isCompactPreview && mapMode === 'wind' && (
-        <div className="mt-0 rounded-xl border border-sky-100 bg-white px-2 py-1 text-left shadow-sm shadow-sky-900/8 dark:border-slate-700 dark:bg-slate-900">
+        <div className="mt-0 px-2 py-1 text-left dark:bg-slate-900">
           {renderWindColorGuidePanel('preview')}
         </div>
       )}

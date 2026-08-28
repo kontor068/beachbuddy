@@ -6,9 +6,56 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+/* ─── ΤΥΠΟΓΡΑΦΙΑ ΤΙΤΛΩΝ: COMMISSIONER (28/08/2026) ────────────────────────────────
+   Οι τίτλοι έτρεχαν στο ίδιο στρογγυλό `ui-rounded / SF Pro Rounded` με το κείμενο.
+   Είναι φιλικό, αλλά διαβάζεται σαν εφαρμογή του 2019 και δεν ξεχωρίζει από το σώμα.
+
+   ΓΙΑΤΙ ΑΥΤΗ Η ΓΡΑΜΜΑΤΟΣΕΙΡΑ ΚΑΙ ΟΧΙ ΟΠΟΙΑΔΗΠΟΤΕ «ΜΟΝΤΕΡΝΑ»: δοκιμάστηκαν Instrument
+   Sans, Archivo, Satoshi, Mulish, Jost, Sora, Karla, Lexend — ΚΑΜΙΑ δεν έχει ελληνικά.
+   Σε ένα site που είναι πρώτα ελληνικό αυτό δεν είναι λεπτομέρεια, είναι φίλτρο. Η
+   Commissioner τα έχει πλήρη (σχεδιάστηκε από τον Κώστα Μπαρτσώκα).
+
+   ΤΟΠΙΚΑ ΑΡΧΕΙΑ, ΟΧΙ fonts.googleapis.com: ένα <link> στο Google θα έστελνε την IP κάθε
+   επισκέπτη σε τρίτο πριν προλάβει να πει ναι ή όχι στα cookies, και θα πρόσθετε δύο
+   συνδέσεις σε τρίτο host στο πρώτο βάψιμο. Τα υποσύνολα κατεβαίνουν χωριστά: ένας
+   Έλληνας επισκέπτης παίρνει 15 KB (greek) + όσο χρειαστεί για τα λατινικά· το latin-ext
+   δεν το αγγίζει ποτέ. `swap`, άρα τίποτα δεν περιμένει τη γραμματοσειρά για να φανεί. */
+
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/commissioner-greek-v1.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/commissioner-latin-ext-v1.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Commissioner';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/commissioner-latin-v1.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
 @theme {
-  --font-sans: ui-rounded, "SF Pro Rounded", "Nunito", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-heading: ui-rounded, "SF Pro Rounded", "Nunito", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Το σώμα φεύγει από το στρογγυλό και πάει σε ουδέτερο συστημικό sans: μηδέν κόστος
+     δικτύου (δεν κατεβαίνει τίποτα) και σταματά να «στρογγυλεύει» ολόκληρη τη σελίδα.
+     Οι τίτλοι κουβαλάνε πια την προσωπικότητα, όχι το σώμα. */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Commissioner", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --color-background: #F0F9FF;
@@ -36,6 +83,28 @@
   --color-accent: #0ea5e9;
   --color-accent-hover: #0284c7;
   --color-text: #0C4A6E;
+  /* ─── ΣΥΣΤΗΜΑ ΕΠΙΦΑΝΕΙΩΝ (28/08/2026) ──────────────────────────────────────────
+     Πριν από αυτά τα tokens, ΜΟΝΟ το components/BeachSearcherHome.tsx κουβαλούσε
+     10 διαφορετικές ακτίνες γωνίας, 11 σκιές, 9 διαφάνειες λευκού και 17 χρώματα
+     περιγράμματος. Κανείς δεν τα ξεχωρίζει συνειδητά — το μάτι όμως τα διαβάζει
+     σαν ακαταστασία, και είναι ο βασικός λόγος που η σελίδα έδειχνε παλιά.
+     Από εδώ και πέρα: δύο ακτίνες, δύο σκιές, ΕΝΑ λευκό, ΜΙΑ γραμμή.
+
+     Το λευκό είναι συμπαγές, όχι 88% ή 95%. Αυτό δεν είναι αισθητική επιλογή:
+     είναι η απόφαση της 28/08 για το φάντασμα του σκρολ στο Android Chrome
+     (βλ. σχόλιο στη μπάρα ημερών στο App.tsx) — μια ημιδιάφανη κάρτα αφήνει το
+     μισοβαμμένο καρέ να φανεί από μέσα. Μην ξαναβάλεις alpha σε επιφάνεια. */
+  --radius-control: 0.75rem;
+  --radius-surface: 1.25rem;
+  --color-surface: #ffffff;
+  --color-line: #e2ecef;
+  /* Ο ήρεμος καμβάς κάτω από τις κάρτες. Ήταν sky-100 (#e0f2fe): με λευκές κάρτες
+     από πάνω, τα πάντα έλαμπαν και τίποτα δεν ξεχώριζε. Το γαλάζιο μένει τώρα εκεί
+     που ΣΗΜΑΙΝΕΙ κάτι — χάρτης, κουκκίδες κατάστασης, ενεργή μέρα, CTA. */
+  --color-canvas: #f2f8f9;
+  --shadow-surface: 0 1px 2px rgba(11, 42, 51, 0.04), 0 10px 26px -22px rgba(11, 42, 51, 0.3);
+  --shadow-lifted: 0 2px 6px rgba(11, 42, 51, 0.06), 0 20px 44px -26px rgba(11, 42, 51, 0.36);
+
   --color-sand: #fef3c7;
   --color-sea: #06b6d4;
   --color-olive: #84cc16;
@@ -50,7 +119,9 @@
     @apply font-sans antialiased text-slate-900;
     font-family: var(--font-sans);
     font-feature-settings: "kern" 1;
-    background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 40%, #F0F9FF 100%);
+    /* Επίπεδος, σχεδόν λευκός καμβάς αντί για γαλάζιο ντεγκραντέ σε όλο το ύψος:
+       το χρώμα είναι πληροφορία σε αυτό το προϊόν, όχι ταπετσαρία. */
+    background: var(--color-canvas);
     background-attachment: scroll;
   }
 
@@ -713,6 +784,41 @@ body {
     width: 34px;
     height: 34px;
     line-height: 34px;
+  }
+}
+
+/* ΜΙΑ ΣΤΗΛΗ, ΟΧΙ ΤΕΣΣΕΡΑ ΚΟΥΤΙΑ (28/08/2026). Οι διαστάσεις ΔΕΝ αλλάζουν εδώ — είναι
+   αποφασισμένες δύο φορές παραπάνω και τεκμηριωμένες. Αλλάζει μόνο το ντύσιμο: η μπάρα
+   γίνεται ένα στρογγυλεμένο σώμα με μία σκιά, χωρίς τις εσωτερικές γκρίζες γραμμές που
+   έκαναν τα +/− να δείχνουν σαν χάρτης του 2014. */
+.leaflet-container .leaflet-bar {
+  border: 0;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  box-shadow: 0 2px 12px -5px rgba(11, 42, 51, 0.4);
+  background: #ffffff;
+}
+
+.leaflet-container .leaflet-bar a,
+.leaflet-container .leaflet-bar a:hover,
+.leaflet-container.leaflet-touch .leaflet-bar a,
+.leaflet-container.leaflet-touch .leaflet-bar a:hover {
+  border-bottom: 0;
+  background: transparent;
+  color: #0b2a33;
+}
+
+.leaflet-container .leaflet-bar a:hover {
+  background: rgba(2, 132, 199, 0.08);
+}
+
+/* Το θάμπωμα μόνο όπου υπάρχει ποντίκι — στο κινητό το backdrop-filter έχει ήδη κοπεί
+   συνειδητά παντού αλλού σε αυτό το αρχείο, για τον ίδιο λόγο (στρώσεις σύνθεσης). */
+@media (hover: hover) and (pointer: fine) {
+  .leaflet-container .leaflet-bar {
+    background: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
   }
 }
 
