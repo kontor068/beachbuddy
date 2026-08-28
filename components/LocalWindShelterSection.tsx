@@ -53,7 +53,7 @@ const SELF_TONE: Record<ExposureLevel, { badge: string; text: string }> = {
    its colour was making a claim about today that its words never made. On a day the
    regime wind is absent the panel goes neutral and says so in four words; on a day it
    IS blowing, nothing changes and the alarm colours stand. */
-const QUIET_TONE = { badge: 'bg-slate-50 border-slate-200', text: 'text-slate-700' };
+const QUIET_TONE = { badge: 'bg-slate-50 border-line', text: 'text-slate-700' };
 const NOT_BLOWING_TODAY: Copy = {
   en: 'Not blowing today.',
   gr: 'Σήμερα δεν φυσάει.',
@@ -95,7 +95,7 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
         {pick(copy.title, language)}
       </h3>
 
-      <div className="space-y-3 rounded-2xl border border-slate-200/70 bg-white/60 px-4 py-3.5">
+      <div className="space-y-3 rounded-control border border-line bg-surface px-4 py-3.5">
         {/* THIS beach first, the wind lesson after. `intro` is a definition of the local
             summer wind — the same three lines on every beach of the region — and it used to
             open the section, so the one sentence that is about the beach you are looking at
@@ -108,7 +108,7 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
           const quiet = !localWindBlowingNow && thisExposure !== 'protected';
           const skin = quiet ? QUIET_TONE : SELF_TONE[thisExposure];
           return (
-            <p className={`rounded-xl border px-3 py-2 text-sm font-semibold leading-relaxed ${skin.badge} ${skin.text}`}>
+            <p className={`rounded-control border px-3 py-2 text-sm font-semibold leading-relaxed ${skin.badge} ${skin.text}`}>
               {beachSubject(beachName, language, isBoatAccess)} {isBoatAccess && language === 'gr' ? copy.statusBoatGr[thisExposure] : pick(copy.status[thisExposure], language)}
               {quiet && <span className="text-slate-500"> {pick(NOT_BLOWING_TODAY, language)}</span>}
             </p>
@@ -122,7 +122,10 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
             <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">
               {pick(copy.shelteredHeading, language)}
             </p>
-            <ul className="space-y-1.5">
+            {/* ΓΡΑΜΜΕΣ, ΟΧΙ ΚΟΥΤΙΑ (28/08/2026): έξι πράσινες πλάκες, η καθεμία με
+                περίγραμμα, μέσα σε πράσινο πλαίσιο, μέσα σε λευκή κάρτα. Το βελάκι και το
+                ύψος αφής των 44px — που είναι μετρημένα — μένουν ακριβώς ως έχουν. */}
+            <ul>
               {shelteredCoves.map(cove => (
                 <li key={cove.id}>
                   <button
@@ -132,7 +135,7 @@ export const LocalWindShelterSection: React.FC<LocalWindShelterSectionProps> = (
                        They are the section's whole point — the way out of an exposed beach
                        towards a sheltered one — so they are the last thing that should be
                        fiddly to hit. */
-                    className="flex min-h-[44px] w-full items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left transition-colors hover:bg-emerald-50"
+                    className="flex min-h-[44px] w-full items-center gap-2 border-b border-line px-1 py-2 text-left transition-colors last:border-b-0 hover:bg-emerald-50/60"
                   >
                     <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-800">{cove.name}</span>
                     <span className="flex-shrink-0 text-xs font-bold text-slate-500">

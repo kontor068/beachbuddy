@@ -276,6 +276,17 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Self-hosted heading font (Commissioner, greek/latin/latin-ext subsets).
+# Χωρίς αυτόν τον κανόνα η προεπιλογή του Netlify βάζει revalidation σε κάθε
+# πλοήγηση για ένα αρχείο που δεν αλλάζει ποτέ. Το `-v1` ΣΤΟ ΟΝΟΜΑ είναι το
+# κλειδί της cache, ακριβώς όπως στο /landing/* παραπάνω: τα woff2 δεν έχουν
+# content hash, άρα αν κάποτε ξανακοπούν τα υποσύνολα ΠΡΕΠΕΙ να ανέβει το -vN
+# — αλλιώς ένα κινητό που έχει ξαναμπεί θα κρατήσει για έναν χρόνο τα παλιά.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Forecast edge proxy — LIVE IN PRODUCTION since 2026-07-27 (Step 3 of
 # reports/capacity/activation-runbook.md).
 #

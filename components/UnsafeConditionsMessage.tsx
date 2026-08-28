@@ -7,7 +7,7 @@ interface UnsafeConditionsMessageProps {
 
 const TipItem: React.FC<{ icon: React.ReactNode, text: string }> = ({ icon, text }) => (
     <li className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-8 h-8 bg-[var(--color-background-accent)] rounded-lg flex items-center justify-center text-[var(--color-accent)]">
+        <div className="flex-shrink-0 w-8 h-8 bg-[var(--color-background-accent)] rounded-control flex items-center justify-center text-[var(--color-accent)]">
             {icon}
         </div>
         <p className="text-[var(--color-text-secondary)] pt-1 text-sm sm:text-base">{text}</p>
@@ -25,7 +25,7 @@ export const UnsafeConditionsMessage: React.FC<UnsafeConditionsMessageProps> = (
 
     return (
         <div className="px-4 md:px-6 py-8 animate-fade-in-up">
-            <div className="text-center bg-[var(--color-foreground)] p-6 sm:p-8 rounded-2xl shadow-lg border border-[var(--color-border)] max-w-3xl mx-auto">
+            <div className="text-center bg-[var(--color-foreground)] p-6 sm:p-8 rounded-control shadow-lg border border-[var(--color-border)] max-w-3xl mx-auto">
                 <div className="mx-auto h-16 w-16 text-red-500 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center ring-4 ring-red-200 dark:ring-red-800/60">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

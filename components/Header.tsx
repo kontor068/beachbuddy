@@ -204,7 +204,7 @@ const Header: React.FC<HeaderProps> = ({
   // chips, map card, section strips) from sticking too — remove it and the
   // beach list scrolls behind the map. Fixed pins this one bar and touches
   // nothing else; the spacer below replaces the height it no longer occupies.
-  // The z-50 here is safe only because this element is ~60px tall. It used to
+  // The z-50 here is safe only because this element is ~54px tall. It used to
   // wrap the whole hero, map and today's picks (~1600px), and back then a
   // z-index turned it into a stacking context that swallowed every FOLLOWING
   // sibling painted at a lower z: the trip planner strip and the "more
@@ -214,7 +214,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header className={`${stickyTopBar ? 'fixed inset-x-0' : 'relative'} top-0 z-50 border-b border-white/70 bg-white/95 text-slate-800 shadow-sm shadow-sky-900/5`}>
-        <div className="relative flex h-[60px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[58px] lg:px-8">
+        <div className="relative flex h-[54px] w-full items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:h-[54px] lg:px-8">
           <button
             type="button"
             onClick={onGoHome}
@@ -225,12 +225,12 @@ const Header: React.FC<HeaderProps> = ({
             <img
               src="/calmbeach-mark.svg"
               alt="CalmBeach"
-              className="h-[39px] w-[39px] shrink-0"
+              className="h-[32px] w-[32px] shrink-0"
               width={39}
               height={39}
             />
             <div className="min-w-0">
-              <span className="block truncate text-[17.5px] font-extrabold leading-tight tracking-normal text-[#007a83] sm:text-[22px]">
+              <span className="block truncate text-[16px] font-extrabold leading-tight tracking-[-0.01em] text-[#007a83] sm:text-[19px]">
                 CalmBeach
               </span>
             </div>

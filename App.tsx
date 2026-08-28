@@ -5709,7 +5709,10 @@ export const App: React.FC = () => {
 
     return (
       <div
-        className="relative z-10 sm:hidden rounded-[1.1rem] border border-sky-100 bg-white p-1.5 shadow-sm shadow-sky-900/5"
+        /* ΧΩΡΙΣ ΚΑΡΤΑ ΓΥΡΩ ΑΠΟ ΤΙΣ ΜΕΡΕΣ (28/08/2026): ήταν κουτί με περίγραμμα και
+           σκιά, και μέσα του πέντε ακόμη κουτιά με περίγραμμα και σκιά το καθένα.
+           Οι μέρες κάθονται τώρα απευθείας πάνω στον καμβά. */
+        className="relative z-10 sm:hidden"
         data-testid="mobile-map-day-strip"
       >
         <div
@@ -5738,11 +5741,11 @@ export const App: React.FC = () => {
                 disabled={isDisabled}
                 onClick={() => handleMobileMapDaySelect(index)}
                 data-testid="mobile-map-day-tab"
-                className={`relative z-10 flex min-h-12 min-w-[4.25rem] flex-1 touch-manipulation select-none flex-col items-center justify-center rounded-2xl border px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
+                className={`relative z-10 flex min-h-12 min-w-[4.25rem] flex-1 touch-manipulation select-none flex-col items-center justify-center rounded-control px-1.5 py-1 text-center transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 ${
                   isDisabled
-                    ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
+                    ? 'cursor-not-allowed text-slate-600 opacity-45 shadow-none grayscale'
                     : isSelected
-                    ? 'cursor-pointer border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
+                    ? 'cursor-pointer bg-surface text-[#006b73] shadow-surface'
                     /* ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ, ΟΧΙ 88% (Μίλτος, 28/08/2026: «κοίτα πώς παραμορφώνει πάνω
                        στο λευκό»· «όταν κάνω σκρολ καθαρίζει»). Η μπάρα ημερών και ο χάρτης
                        είναι ένα μπλοκ που το Android Chrome ξαναβάφει με καθυστέρηση την ώρα
@@ -5750,17 +5753,23 @@ export const App: React.FC = () => {
                        κάρτες και οι μέρες δείχνουν ξεθωριασμένες· με συμπαγές λευκό, ό,τι κι αν
                        κάνει ο compositor, από πάνω υπάρχει τοίχος. Οπτικά είναι η ίδια κάρτα:
                        το 88% λευκό καθόταν ήδη πάνω σε λευκό φόντο. */
-                    : 'cursor-pointer border-sky-100 bg-white text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
+                    : 'cursor-pointer text-slate-600 hover:bg-surface hover:text-slate-900'
                 }`}
               >
-                <span className={`max-w-full truncate text-[10px] font-extrabold leading-tight ${isSelected ? 'text-[#006b73]' : 'text-slate-700'}`}>
+                <span className={`max-w-full truncate text-[10px] font-bold leading-tight ${isSelected ? 'text-[#006b73]' : 'text-slate-600'}`}>
                   {dayLabel}
                 </span>
-                <span className="mt-0.5 flex max-w-full items-center justify-center gap-0.5 leading-none">
-                  <WeatherIcon code={day.weather.icon} className="h-5 w-5 shrink-0 drop-shadow-sm" />
-                  <span className="truncate text-[10px] font-black tabular-nums text-slate-900">
-                    {beaufort} {t.units.beaufort}
+                {/* Ο αριθμός των μποφόρ γίνεται το μεγάλο στοιχείο και η μονάδα πέφτει από
+                    κάτω, ψιλή (28/08/2026). Στη μία γραμμή που ήταν, το «4 Μπφ» δίπλα στο
+                    εικονίδιο δεν χωρούσε σε 390px και κοβόταν σε «4 Μ…» σε ΚΑΘΕ chip. */}
+                <span className="mt-0.5 flex max-w-full items-center justify-center gap-1 leading-none">
+                  <WeatherIcon code={day.weather.icon} className="h-4 w-4 shrink-0" />
+                  <span className="truncate text-[15px] font-extrabold tabular-nums leading-none text-slate-900">
+                    {beaufort}
                   </span>
+                </span>
+                <span className="mt-0.5 truncate text-[9px] font-semibold uppercase leading-none tracking-wide text-slate-500">
+                  {t.units.beaufort}
                 </span>
               </button>
             );
