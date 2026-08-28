@@ -106,7 +106,7 @@ export const getDisplayTodayScore = (score: number): number => {
 const getBoatRideTone = (level: BoatRideMotionLevel, isEstimate = false) => {
   if (isEstimate) {
     return {
-      container: 'border-slate-200/90 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900/35 dark:text-slate-200',
+      container: 'border-line/90 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900/35 dark:text-slate-200',
       icon: 'text-slate-500 dark:text-slate-300',
       strong: 'text-slate-700 dark:text-slate-200',
     };
@@ -195,7 +195,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
 
   if (variant === 'hero') {
     return (
-      <div className={`inline-flex w-full max-w-full min-w-0 items-center gap-2 rounded-2xl border px-3 py-2 shadow-sm sm:w-fit ${tone.container}`}>
+      <div className={`inline-flex w-full max-w-full min-w-0 items-center gap-2 rounded-control border px-3 py-2 shadow-surface sm:w-fit ${tone.container}`}>
         <BadgeIcon className={`h-4 w-4 flex-shrink-0 ${tone.icon}`} />
         <span className="min-w-0 text-xs font-bold leading-tight sm:text-sm">
           <span>{label}</span>
@@ -205,7 +205,7 @@ export const TodayScoreBadge: React.FC<TodayScoreBadgeProps> = ({
   }
 
   return (
-    <div className={`inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold shadow-sm ${tone.container}`}>
+    <div className={`inline-flex min-h-9 w-full min-w-0 items-center justify-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold shadow-surface ${tone.container}`}>
       <BadgeIcon className={`h-3.5 w-3.5 flex-shrink-0 ${tone.icon}`} />
       <span className="min-w-0 truncate">{label}</span>
     </div>

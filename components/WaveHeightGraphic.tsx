@@ -948,7 +948,7 @@ const ShoreProfileScene: React.FC<{
   })).filter((streak) => streak.y < crestY - 6);
 
   return (
-    <svg viewBox="0 0 212 128" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
+    <svg viewBox="0 0 212 128" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-surface" style={sceneStyle}>
       <defs>
         <linearGradient id={skyGradientId} x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.92" />
@@ -1119,7 +1119,7 @@ const BoatScene: React.FC<{
   }));
 
   return (
-    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-sm" style={sceneStyle}>
+    <svg viewBox="0 0 160 116" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="h-auto w-full drop-shadow-surface" style={sceneStyle}>
       <defs>
         <linearGradient id={skyGradientId} x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="var(--cb-wave-sky)" stopOpacity="0.9" />
@@ -1447,12 +1447,12 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={`overflow-hidden rounded-2xl border border-cyan-100/70 bg-white/92 p-3.5 shadow-sm shadow-sky-900/5 ring-1 ring-white/60 dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
+      className={`overflow-hidden rounded-surface border border-line bg-surface p-3.5 shadow-surface dark:border-slate-700 dark:bg-slate-800 sm:p-4 ${className ?? ''}`}
     >
       <div className="space-y-3">
         {/* The panel takes the scene's own aspect ratio (212×128) so the shore fills it at every
             width instead of floating in a band of empty tint on narrow screens. */}
-        <div className={`flex w-full items-center justify-center overflow-hidden rounded-[2rem] p-1.5 ring-1 ring-white/70 ${boatAccess && boatLevel ? 'h-56 sm:h-64' : 'aspect-[53/32]'} ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
+        <div className={`flex w-full items-center justify-center overflow-hidden rounded-control p-1.5 ${boatAccess && boatLevel ? 'h-56 sm:h-64' : 'aspect-[53/32]'} ${panelClass} [&>svg]:h-full [&>svg]:w-full`}>
           {boatAccess && boatLevel
             ? <BoatScene scale={scale} level={boatLevel} windTier={windVisualTier} />
             : <ShoreProfileScene scale={scale} visualHeightM={visualWaveHeightM} windTier={windVisualTier} severityBand={severityBand} readingLabel={readingLabel} language={language} bandLowM={sceneRange?.lowM} bandHighM={sceneRange?.highM} steepShore={steepShore} />}
@@ -1466,7 +1466,7 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
             does not (how the wave actually feels to swim in, not just its height). */}
         {!boatCopy && (
           <div className="min-w-0 px-0.5">
-            <div className="inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-slate-100 bg-white/70 px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-sm shadow-sky-900/5 dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
+            <div className="inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-full border border-line bg-surface px-2.5 py-1 text-[11px] font-bold leading-tight text-slate-500 shadow-surface dark:border-slate-700 dark:bg-slate-900/30 dark:text-slate-400">
               <span>{swimFeelCopy.label}</span>
               <span className={swimmingFeelLabelClass}>{swimmingFeel}</span>
             </div>
@@ -1481,14 +1481,14 @@ export const WaveHeightGraphic: React.FC<WaveHeightGraphicProps> = ({
       </div>
 
       {showBoatNote && boatCopy && (
-        <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-amber-50/80 px-2.5 py-1.5 text-[11px] font-semibold leading-snug text-amber-800 dark:bg-amber-900/25 dark:text-amber-200">
+        <div className="mt-3 flex items-start gap-1.5 rounded-control bg-amber-50/80 px-2.5 py-1.5 text-[11px] font-semibold leading-snug text-amber-800 dark:bg-amber-900/25 dark:text-amber-200">
           <Ship className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           <span>{boatCopy.note}</span>
         </div>
       )}
 
       {showStrip && (
-        <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">
+        <div className="mt-3 border-t border-line pt-3 dark:border-slate-700">
           {trendKey && (
             <div className="mb-1 text-right text-[11px] font-semibold text-slate-500 dark:text-slate-400">
               {boatCopy ? boatCopy[trendKey] : copy[trendKey]}

@@ -77,7 +77,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       }`}
       aria-hidden={visible ? undefined : true}
     >
-      <div className="border-t border-slate-200/80 bg-white px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)]">
+      <div className="border-t border-line bg-white px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_28px_rgba(15,23,42,0.14)]">
         <div className="flex h-16 items-center justify-center">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;

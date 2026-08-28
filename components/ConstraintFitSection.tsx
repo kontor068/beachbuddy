@@ -67,7 +67,7 @@ export const ConstraintFitSection: React.FC<ConstraintFitSectionProps> = ({ lang
         {fits.map(fit => {
           const Icon = ICON[fit.key];
           return (
-            <div key={fit.key} className={`flex items-start gap-2 rounded-2xl border px-3 py-2 ${TONE[fit.key]}`}>
+            <div key={fit.key} className={`flex items-start gap-2 rounded-control border px-3 py-2 ${TONE[fit.key]}`}>
               <Icon className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
               <div className="min-w-0">
                 <p className="text-sm font-bold leading-tight">{pick(LABEL[fit.key], language)}</p>

@@ -87,7 +87,7 @@ export const CoveConditionsCard: React.FC<CoveConditionsCardProps> = ({
   const waterWord = waveHeightM < 0.3 ? pick(T.calmWater, language) : pick(T.mildWater, language);
 
   return (
-    <div className="rounded-2xl border border-sky-100 bg-gradient-to-b from-sky-50/70 to-white p-4" data-nosnippet="true">
+    <div className="rounded-control border border-sky-100 bg-gradient-to-b from-sky-50/70 to-white p-4" data-nosnippet="true">
       <div className="mb-3 flex items-center gap-2">
         <Compass className="h-4 w-4 text-sky-600" />
         <h4 className="font-heading text-sm font-bold uppercase tracking-wide text-sky-800">{pick(T.title, language)}</h4>
@@ -109,13 +109,13 @@ export const CoveConditionsCard: React.FC<CoveConditionsCardProps> = ({
       </dl>
       <p className="mt-1 text-right text-xs italic text-slate-400">{pick(T.shelters, language)}</p>
 
-      <div className="mt-3 rounded-xl bg-white/70 px-3 py-2.5">
+      <div className="mt-3 rounded-control bg-surface px-3 py-2.5">
         <p className="font-heading text-base font-extrabold text-slate-900">
           {waterWord} <span className="text-amber-600">{pick(T.strongWind, language)}</span>
         </p>
         <p className="mt-1 text-xs leading-relaxed text-slate-500">{pick(T.explain, language)}</p>
         {onshore < 0.15 && windBeaufort >= 4 && (
-          <p className="mt-1.5 rounded-lg bg-amber-50/80 px-2 py-1.5 text-xs font-semibold leading-relaxed text-amber-700">
+          <p className="mt-1.5 rounded-control bg-amber-50/80 px-2 py-1.5 text-xs font-semibold leading-relaxed text-amber-700">
             {pick(T.drift, language)}
           </p>
         )}
@@ -127,8 +127,8 @@ export const CoveConditionsCard: React.FC<CoveConditionsCardProps> = ({
         ) : (
           <>
             <span className="mr-1 text-xs text-slate-400">{pick(T.helpful, language)}</span>
-            <button type="button" aria-label="useful" onClick={() => send('up')} className="flex min-h-[36px] min-w-[44px] items-center justify-center rounded-xl border border-emerald-100 text-emerald-600 transition-all hover:bg-emerald-50 active:scale-95"><ThumbsUp className="h-4 w-4" /></button>
-            <button type="button" aria-label="not useful" onClick={() => send('down')} className="flex min-h-[36px] min-w-[44px] items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition-all hover:bg-slate-50 active:scale-95"><ThumbsDown className="h-4 w-4" /></button>
+            <button type="button" aria-label="useful" onClick={() => send('up')} className="flex min-h-[36px] min-w-[44px] items-center justify-center rounded-control border border-emerald-100 text-emerald-600 transition-all hover:bg-emerald-50 active:scale-95"><ThumbsUp className="h-4 w-4" /></button>
+            <button type="button" aria-label="not useful" onClick={() => send('down')} className="flex min-h-[36px] min-w-[44px] items-center justify-center rounded-control border border-line text-slate-500 transition-all hover:bg-slate-50 active:scale-95"><ThumbsDown className="h-4 w-4" /></button>
           </>
         )}
       </div>
