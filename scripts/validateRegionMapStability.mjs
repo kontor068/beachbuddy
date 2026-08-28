@@ -45,21 +45,26 @@ const startServer = () => {
   });
 };
 
+// ΑΥΤΑ ΕΙΝΑΙ ΤΑ ΟΝΟΜΑΤΑ ΠΟΥ ΨΑΧΝΕΙ Η ΠΥΛΗ ΜΕΣΑ ΣΤΟ DOM — αν μετονομαστεί μια κλάση
+// πινέζας και ξεχαστούν εδώ, η πύλη γράφει 'unknown' και στα δύο στιγμιότυπα, οπότε
+// συγκρίνει 'unknown' με 'unknown' και ΠΕΡΝΑΕΙ ΠΑΝΤΑ χωρίς να ελέγχει χρώμα.
+// Οι τέσσερις πρώτες είναι η σκάλα κατάστασης (utils/suitabilityTone, χρώματα στο
+// @theme του index.css)· οι υπόλοιπες είναι η σκάλα βαθμολογίας του recommendation mode.
 const colorTokens = [
-  'bg-sky-500',
-  'bg-yellow-400',
-  'bg-orange-500',
-  'bg-rose-600',
+  'bg-tone-blue',
+  'bg-tone-yellow',
+  'bg-tone-orange',
+  'bg-tone-red',
   'bg-emerald-500',
   'bg-amber-500',
   'bg-rose-500',
 ];
 
 const ringTokens = [
-  'ring-sky-200',
-  'ring-yellow-200',
-  'ring-orange-200',
-  'ring-rose-300',
+  'ring-tone-blue-soft',
+  'ring-tone-yellow-soft',
+  'ring-tone-orange-soft',
+  'ring-tone-red-soft',
   'ring-emerald-200',
   'ring-amber-200',
   'ring-rose-200',

@@ -108,6 +108,57 @@
   --color-sand: #fef3c7;
   --color-sea: #06b6d4;
   --color-olive: #84cc16;
+
+  /* ─── ΤΑ ΤΕΣΣΕΡΑ ΧΡΩΜΑΤΑ ΤΗΣ ΚΑΤΑΣΤΑΣΗΣ (28/08/2026) ──────────────────────────
+     Μέχρι σήμερα η πινέζα, η λεζάντα, η μπάρα ωρών και το κυματάκι της κάρτας
+     έγραφαν το χρώμα τους ως κλάσεις του Tailwind (bg-sky-500, bg-yellow-400,
+     bg-orange-500, bg-rose-600). Ήταν τα εργοστασιακά, πλήρως κορεσμένα χρώματα
+     οθόνης: πάνω σε δορυφορικό χάρτη με 130 παραλίες δίπλα-δίπλα δεν διαβάζονταν
+     σαν πληροφορία αλλά σαν θόρυβος, και δεν έμοιαζαν με τίποτε άλλο στο site.
+
+     Το #F97316 ήταν επιπλέον ΤΟ ΙΔΙΟ πορτοκαλί που είχε διωχθεί από το CTA στις
+     05/08/2026 (βλ. σχόλιο στο --color-cta πιο πάνω): έφυγε από ένα κουμπί και
+     έμεινε σε εκατόν τριάντα πινέζες.
+
+     Η νέα σκάλα κρατάει την ίδια σειρά και την ίδια σημασία, αλλά:
+       • χαμηλότερος κορεσμός — χρώματα τοπίου (άμμος, τερακότα, κεραμίδι), όχι νέον
+       • Η ΦΩΤΕΙΝΟΤΗΤΑ ΚΑΤΕΒΑΙΝΕΙ ΣΤΑΘΕΡΑ από το calm προς το red. Το παλιό κίτρινο
+         και πορτοκαλί είχαν σχεδόν ίδια φωτεινότητα, άρα σε δυνατό ήλιο ή σε
+         αχρωματοψία ήταν το ίδιο χρώμα. Τώρα ξεχωρίζουν και ασπρόμαυρα.
+       • το `-soft` (δαχτυλίδι πινέζας) είναι ΔΙΑΦΑΝΕΙΑ του ίδιου χρώματος, όχι
+         παστέλ γέμισμα: πάνω από δορυφόρο σβήνει αντί να λάμπει.
+
+     Τα ονόματα μένουν blue/yellow/orange/red γιατί αυτά είναι τα κλειδιά του
+     CalmnessTone σε όλο τον κώδικα και στις πύλες. Το χρώμα άλλαξε, η σκάλα όχι.
+
+     ΤΟ TEAL ΔΕΝ ΜΠΑΙΝΕΙ ΕΔΩ. Το #007a83 είναι το CTA και το σήμα του surf badge·
+     δύο πράγματα με το ίδιο χρώμα και άλλη σημασία είναι η επόμενη διόρθωση.
+
+     Κάθε ζευγάρι -ink πάνω σε -tint μετρήθηκε: 4,9:1 / 5,9:1 / 6,7:1 και το μπλε
+     ~7:1. Όλα περνούν το AA (4,5:1). Μην αλλάξεις το ένα χωρίς το άλλο. */
+  --color-tone-blue: #0284c7;
+  --color-tone-blue-soft: rgba(2, 132, 199, 0.32);
+  --color-tone-blue-tint: #dceffa;
+  --color-tone-blue-wash: #f0f8fd;
+  --color-tone-blue-ink: #075985;
+
+  --color-tone-yellow: #d9a441;
+  --color-tone-yellow-soft: rgba(217, 164, 65, 0.34);
+  --color-tone-yellow-tint: #f7ecd4;
+  --color-tone-yellow-wash: #fdf7ec;
+  --color-tone-yellow-ink: #855f13;
+
+  --color-tone-orange: #d9744a;
+  --color-tone-orange-soft: rgba(217, 116, 74, 0.34);
+  --color-tone-orange-tint: #f8e5da;
+  --color-tone-orange-wash: #fdf3ee;
+  --color-tone-orange-ink: #8f4020;
+
+  --color-tone-red: #b4423c;
+  --color-tone-red-soft: rgba(180, 66, 60, 0.36);
+  --color-tone-red-tint: #f6e0de;
+  --color-tone-red-wash: #fcf0ef;
+  --color-tone-red-ink: #86302b;
 }
 
 @layer base {
@@ -535,6 +586,122 @@ body {
   50% { opacity: 0.65; }
 }
 
+/* Ο κυματισμός ΚΙΝΕΙΤΑΙ πλέον (Μίλτος, 28/08/2026: «το κύμα θέλω να αλλάζει ανάλογα
+   πόσο μεγάλο είναι κ κάντο με κίνηση»). Το σχήμα έλεγε ήδη το νούμερο — το ύψος του
+   κυματισμού είναι το ίδιο το ύψος της γραμμής· τώρα το λέει και ο ρυθμός: ο σκελετός
+   ταξιδεύει ακριβώς ένα μήκος κύματος (24 μονάδες) ανά κύκλο, γρήγορα στα 1,5 μ. και
+   νωθρά στα 0,3 μ. Σε γαλήνη (< 0,05 μ.) δεν κινείται καθόλου — κινούμενη γραμμή κάτω
+   από «0,0 μ.» είναι το ίδιο ψέμα με τη σταγόνα πάνω από θερμοκρασία αέρα.
+   ΔΕΝ είναι οι «κινούμενες μπάρες κύματος» του ανταγωνιστή: μία γραμμή επιφάνειας,
+   χωρίς γέμισμα από κάτω, χωρίς βυθό. */
+.cb-glyph-swell {
+  animation: cb-glyph-swell var(--cb-glyph-swell-duration, 5s) linear infinite;
+}
+
+@keyframes cb-glyph-swell {
+  from { transform: translateX(0); }
+  to { transform: translateX(-24px); }
+}
+
+/* Ο σκελετός είναι σχεδιασμένος πιο φαρδύς από το πλαίσιο ώστε το ταξίδι να μη δείχνει
+   ποτέ άκρη. Η μάσκα σβήνει τα δύο άκρα, στη θέση των στρογγυλών απολήξεων που είχε η
+   ακίνητη εκδοχή· χωρίς αυτήν, η γραμμή θα κοβόταν μαχαιριά πάνω στο περίγραμμα. */
+.cb-glyph-sea {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+}
+
+/* ===== Animated weather glyphs (components/WeatherIcon.tsx) =====
+   Ο ήλιος γυρίζει, τα σύννεφα σέρνονται, η βροχή πέφτει (Μίλτος, 28/08/2026). Ισχύουν
+   οι ίδιοι τρεις κανόνες με τα υπόλοιπα: μόνο transform/opacity (καμία επαναδιάταξη σε
+   κάθε καρέ, με πέντε-εφτά εικονίδια ταυτόχρονα στη μπάρα ημερών), αργά και μικρά — τα
+   μεγέθη είναι σε μονάδες του viewBox 24άρι, άρα στα 16 px που τα δείχνει η μπάρα ένα
+   «0.5px» είναι το ένα τρίτο του εικονοστοιχείου — και σιωπή σε prefers-reduced-motion.
+   Η περιστροφή θέλει transform-box: view-box, αλλιώς το transform-origin πιάνει το κουτί
+   του κάθε path ξεχωριστά και οι οχτώ ακτίνες στριφογυρίζουν η καθεμιά γύρω από τον
+   εαυτό της αντί για το κέντρο του ήλιου. */
+.cb-wx-spin,
+.cb-wx-sway,
+.cb-wx-breathe {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+.cb-wx-spin { animation: cb-wx-spin 28s linear infinite; }
+
+@keyframes cb-wx-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cb-wx-sway { animation: cb-wx-sway 7s ease-in-out infinite; }
+
+@keyframes cb-wx-sway {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(7deg); }
+}
+
+.cb-wx-breathe { animation: cb-wx-breathe 6s ease-in-out infinite; }
+
+@keyframes cb-wx-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+
+.cb-wx-drift { animation: cb-wx-drift 9s ease-in-out infinite; }
+.cb-wx-drift-slow { animation: cb-wx-drift 14s ease-in-out infinite reverse; }
+
+@keyframes cb-wx-drift {
+  0%, 100% { transform: translateX(-0.5px); }
+  50% { transform: translateX(0.5px); }
+}
+
+.cb-wx-glow { animation: cb-wx-glow 5.5s ease-in-out infinite; }
+
+@keyframes cb-wx-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Η σταγόνα δεν «αναβοσβήνει»: ξεκινάει μέσα στο σύννεφο αόρατη, φαίνεται όσο πέφτει και
+   σβήνει πριν φύγει από το εικονίδιο. Τα delays στο WeatherIcon.tsx είναι που κάνουν τις
+   έξι σταγόνες ψιχάλα αντί για έξι λαμπάκια. */
+.cb-wx-drop { animation: cb-wx-drop 1.5s linear infinite; }
+
+@keyframes cb-wx-drop {
+  0% { transform: translateY(-1.6px); opacity: 0; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(2.6px); opacity: 0; }
+}
+
+.cb-wx-flake { animation: cb-wx-flake 3.6s ease-in-out infinite; }
+
+@keyframes cb-wx-flake {
+  0%, 100% { transform: translateY(-0.7px); opacity: 0.2; }
+  40% { opacity: 1; }
+  100% { transform: translateY(1.1px); }
+}
+
+/* Μία διπλή αστραπή κάθε 4,5 δευτερόλεπτα. Κεραυνός που αναβοσβήνει συνέχεια παύει να
+   διαβάζεται ως κεραυνός και διαβάζεται ως χαλασμένο εικονίδιο. */
+.cb-wx-bolt { animation: cb-wx-bolt 4.5s ease-in-out infinite; }
+
+@keyframes cb-wx-bolt {
+  0%, 54%, 100% { opacity: 1; }
+  57% { opacity: 0.12; }
+  60% { opacity: 1; }
+  64% { opacity: 0.2; }
+  68% { opacity: 1; }
+}
+
+.cb-wx-fog { animation: cb-wx-fog 6.5s ease-in-out infinite; }
+
+@keyframes cb-wx-fog {
+  0%, 100% { transform: translateX(-1.1px); opacity: 0.55; }
+  50% { transform: translateX(1.1px); opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cb-hero-rise,
   .cb-breeze-path,
@@ -542,7 +709,18 @@ body {
   .cb-wash,
   .cb-twinkle,
   .cb-glyph-stream,
-  .cb-glyph-glow {
+  .cb-glyph-glow,
+  .cb-glyph-swell,
+  .cb-wx-spin,
+  .cb-wx-sway,
+  .cb-wx-breathe,
+  .cb-wx-drift,
+  .cb-wx-drift-slow,
+  .cb-wx-glow,
+  .cb-wx-drop,
+  .cb-wx-flake,
+  .cb-wx-bolt,
+  .cb-wx-fog {
     animation: none !important;
   }
 }
@@ -912,14 +1090,47 @@ body {
   position: relative;
 }
 
+/* ΤΟ ΠΑΧΟΣ ΤΟΥΣ ΕΙΝΑΙ ΜΕΡΟΣ ΤΟΥ ΜΕΓΕΘΟΥΣ ΤΗΣ ΠΙΝΕΖΑΣ (28/08/2026).
+   Ήταν 2px στο +2px (supported) και 2px στο +3px (estimated). Μαζί με το τότε
+   `ring-4` η κουκκίδα των 16px έπιανε 24–26px στην οθόνη, με τα δύο τρίτα της
+   επιφάνειας να είναι φωτοστέφανο — και σε μια περιοχή με 130 παραλίες αυτό είναι
+   που διαβαζόταν σαν αλυσίδα από λαμπάκια αντί για χάρτη.
+
+   ΠΡΟΣΟΧΗ ΑΝ ΞΑΝΑΠΕΙΡΑΞΕΙΣ ΤΟ `ring` ΤΗΣ ΠΙΝΕΖΑΣ: το outline εδώ ΖΩΓΡΑΦΙΖΕΤΑΙ ΠΑΝΩ
+   ΣΤΟ ΔΑΧΤΥΛΙΔΙ, δεν προστίθεται δίπλα του. Με outline-offset 2px και ring-4, το
+   λευκό σκέπαζε ούτως ή άλλως τα εξωτερικά 2px του χρώματος — δηλαδή μόνο του το
+   `ring-4 → ring-2` δεν θα άλλαζε ΤΙΠΟΤΑ σε όσες πινέζες έχουν supported evidence.
+   Γι' αυτό τα δύο μεγέθη αλλάζουν πάντα μαζί. Σήμερα: χρώμα 0–2px, γραμμή evidence
+   1px στο +2px, σύνολο 22px.
+
+   Το evidence μένει διακριτό cue (συμπαγές λευκό vs διακεκομμένο σκούρο) — αυτό που
+   έφυγε είναι ο όγκος, όχι η πληροφορία. */
+/* ΜΙΑ ΠΙΝΕΖΑ, ΕΝΑΣ ΚΥΚΛΟΣ (28/08/2026, το ίδιο απόγευμα με το πρώτο πέρασμα).
+   Το πρώτο πέρασμα λέπτυνε αυτές τις γραμμές (2px → 1px) αλλά τις κράτησε στο
+   outline-offset: 2px, δηλαδή ΕΞΩ από το δαχτυλίδι. Αποτέλεσμα ζωντανά: λευκό
+   περίγραμμα κουκκίδας, κενό, και δεύτερος λευκός κύκλος απ' έξω. Ο Μίλτος το είδε
+   αμέσως στον χάρτη — «διπλός κύκλος». Είχε δίκιο, και δεν φαινόταν στη μακέτα
+   επειδή η μακέτα δεν ζωγράφιζε καθόλου το evidence.
+
+   Η διόρθωση δεν είναι να λεπτύνει κι άλλο: είναι να ΜΗΝ ΕΙΝΑΙ ΔΕΥΤΕΡΟΣ ΚΥΚΛΟΣ.
+     · supported → δεν ζωγραφίζει τίποτα. Το λευκό περίγραμμα 2px της ίδιας της
+       κουκκίδας κάνει ήδη όλη τη δουλειά του διαχωρισμού πάνω από δορυφόρο· ο
+       εξωτερικός λευκός κύκλος ήταν καθαρή επανάληψη.
+     · estimated → ζωγραφίζει ΠΑΝΩ στο δαχτυλίδι (offset 0, ίδιο πάχος 2px), οπότε
+       ο ένας κύκλος γίνεται διακεκομμένος αντί να έρθει δεύτερος.
+
+   Έτσι το cue δυναμώνει αντί να χαθεί: πριν είχαν και τα δύο κύκλο και ξεχώριζαν
+   από τη ΓΡΑΜΜΗ του· τώρα «γραμμή = εκτίμηση», που διαβάζεται με μια ματιά.
+
+   ΜΗΝ ΞΑΝΑΒΑΛΕΙΣ outline-offset ΕΔΩ. Κάθε θετικό offset είναι εξ ορισμού δεύτερος
+   ομόκεντρος κύκλος γύρω από την πινέζα — αυτό ακριβώς είναι που αφαιρέθηκε. */
 .beach-map-marker-evidence-supported {
-  outline: 2px solid rgba(255, 255, 255, 0.95);
-  outline-offset: 2px;
+  outline: none;
 }
 
 .beach-map-marker-evidence-estimated {
-  outline: 2px dashed rgba(15, 23, 42, 0.48);
-  outline-offset: 3px;
+  outline: 2px dashed rgba(15, 23, 42, 0.42);
+  outline-offset: 0;
 }
 
 /* The hollow-centre ("donut") marker cue lived here until 01/08/2026 and is gone on purpose.
@@ -1026,7 +1237,7 @@ body {
   animation: beach-top-pick-marker-pulse 1.05s ease-in-out infinite;
   box-shadow:
     0 0 0 5px rgba(255, 255, 255, 0.96),
-    0 0 0 10px rgba(14, 165, 233, 0.42),
+    0 0 0 10px rgba(2, 132, 199, 0.42),
     0 10px 20px rgba(8, 47, 73, 0.24);
 }
 
@@ -1035,7 +1246,7 @@ body {
   position: absolute;
   inset: -10px;
   border-radius: 999px;
-  border: 2px solid rgba(14, 165, 233, 0.74);
+  border: 2px solid rgba(2, 132, 199, 0.74);
   animation: beach-top-pick-marker-radar 1.05s ease-out infinite;
   pointer-events: none;
 }
@@ -1104,10 +1315,10 @@ body {
     --beach-map-marker-scale: 0.72;
   }
 
-  .beach-map-marker-evidence-supported,
+  /* Στο κινητό η κουκκίδα μπαίνει σε κλίμακα 0,72, οπότε η διακεκομμένη λεπταίνει
+     μαζί της. Το offset μένει 0 — βλ. τον κανόνα πιο πάνω. */
   .beach-map-marker-evidence-estimated {
     outline-width: 1.5px;
-    outline-offset: 2px;
   }
 
   .beach-map-user-marker-dot {

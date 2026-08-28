@@ -11,10 +11,11 @@ import React from 'react';
  * no depth, no seabed, no figure in the water.
  *
  * Motion follows the house signature already set in index.css: WIND is what moves
- * (flowing streamlines, like a meteorological chart). The sea deliberately does NOT
- * get animated cartoon wave-bands — that is the competitor's motif — so its glyph
- * is a still profile whose SHAPE carries the reading. Everything is CSS-only and
- * silenced under prefers-reduced-motion by the shared guard.
+ * (flowing streamlines, like a meteorological chart). Since 28/08/2026 the sea moves too —
+ * ΟΧΙ όμως με τις κινούμενες μπάρες κύματος του ανταγωνιστή: ένας σκελετός επιφάνειας που
+ * ταξιδεύει, χωρίς γέμισμα από κάτω και χωρίς βυθό, με ρυθμό που τον ορίζει το ίδιο το
+ * νούμερο δίπλα του. Everything is CSS-only and silenced under prefers-reduced-motion by
+ * the shared guard.
  */
 
 type GlyphTone = 'calm' | 'moderate' | 'rough';
@@ -75,10 +76,24 @@ export const WindGlyph: React.FC<{ beaufort: number; tone: GlyphTone; className?
   );
 };
 
+/** One periodic surface: a half-bump every 12 units, from x=-24 to x=72. */
+const buildWave = (y: number, a: number): string => {
+  const tail: string[] = [];
+  for (let i = 0; i < 7; i += 1) {
+    tail.push(`8 ${i % 2 === 0 ? a : -a} 12 0`);
+  }
+  return `M-24 ${y}c4 ${-a} 8 ${-a} 12 0s${tail.join(' ')}`;
+};
+
 /**
- * Sea surface in profile. Amplitude is the reading: a 0,2 m sea draws an almost
- * straight line, a 1,5 m sea draws a visible swell. No fill below the line — filling
+ * Sea surface in profile. TWO things are the reading and both come from the same number:
+ * how TALL the swell is drawn, and how FAST it travels. A 0,2 m sea is an almost straight
+ * line crawling; a 1,5 m sea is a visible swell running. No fill below the line — filling
  * it back-doors the depth claim the wave graphic spent three rounds removing.
+ *
+ * The path is drawn far wider than the 40-unit frame (-24 → 72) on purpose: the animation
+ * slides it by exactly one wavelength, so the loop is seamless and no rounded end ever
+ * walks into view. The frame's two edges are faded by `.cb-glyph-sea`'s mask instead.
  */
 export const SeaGlyph: React.FC<{ heightM: number | null; tone: GlyphTone; className?: string }> = ({
   heightM,
@@ -89,14 +104,41 @@ export const SeaGlyph: React.FC<{ heightM: number | null; tone: GlyphTone; class
   // 0–1,6 m maps onto 0,6–6 px of amplitude. Beyond 1,6 m the shape stops growing;
   // the number carries it from there and a taller squiggle would just read as noise.
   const amp = Math.min(6, 0.6 + (h / 1.6) * 5.4);
+  // Γαλήνη σημαίνει ακίνητο. Ίδιος κανόνας με τα 0 Μπφ στον άνεμο: γραμμή που τρέχει κάτω
+  // από «0,0 μ.» λέει κάτι που η μέτρηση δεν λέει.
+  const still = h < 0.05;
+  // 0,3 μ. → ~6,4 s τον κύκλο· 1,5 μ. και πάνω → 2,6 s. Ο δεύτερος, ξεθωριασμένος σκελετός
+  // πάει πιο αργά: δύο γραμμές στο ίδιο ακριβώς βήμα διαβάζονται σαν ένα παχύ αυτοκόλλητο.
+  const duration = Math.max(2.6, 6.8 - (h / 1.6) * 4.2);
   const stroke = TONE_STROKE[tone];
-  const wave = (y: number, a: number) =>
-    `M2 ${y}c4 ${-a} 8 ${-a} 12 0s8 ${a} 12 0 8 ${-a} 12 0`;
+
+  const swell = (index: number): React.SVGProps<SVGPathElement> =>
+    still
+      ? {}
+      : {
+          className: 'cb-glyph-swell',
+          style: {
+            '--cb-glyph-swell-duration': `${(duration * (index === 0 ? 1 : 1.35)).toFixed(2)}s`,
+          } as React.CSSProperties,
+        };
 
   return (
-    <svg viewBox="0 0 40 28" className={className} aria-hidden="true" fill="none">
-      <path d={wave(12, amp)} stroke={stroke} strokeWidth={2.4} strokeLinecap="round" />
-      <path d={wave(19, amp * 0.72)} stroke={stroke} strokeWidth={2} strokeLinecap="round" opacity={0.5} />
+    <svg viewBox="0 0 40 28" className={`cb-glyph-sea ${className ?? ''}`} aria-hidden="true" fill="none">
+      <path
+        d={buildWave(12, amp)}
+        stroke={stroke}
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        {...swell(0)}
+      />
+      <path
+        d={buildWave(19, amp * 0.72)}
+        stroke={stroke}
+        strokeWidth={2}
+        strokeLinecap="round"
+        opacity={0.5}
+        {...swell(1)}
+      />
     </svg>
   );
 };

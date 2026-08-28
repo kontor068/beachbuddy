@@ -460,7 +460,7 @@ const buildHoverPreviewFeatureChips = (
  *     μεγαλώνει από εδώ: αν το ταμπελάκι έβαφε με τη δική του σκάλα, θα γινόταν τρίτη φωνή.
  */
 const factorIconClass = (color: WindSuitabilityColor | undefined): string => (
-  color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-sky-600/90'
+  color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-tone-blue/90'
 );
 
 const BeachHoverPreviewCard: React.FC<{
@@ -1596,7 +1596,7 @@ const createBeachIcon = (
 
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}"></div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-md ring-2 ${ringClass}"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -1629,28 +1629,28 @@ const getExposureMarkerTone = (
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
-      colorClass: 'bg-sky-500',
-      ringClass: 'ring-sky-200',
-      bgClass: 'bg-sky-50',
-      textClass: 'text-sky-700',
+      colorClass: 'bg-tone-blue',
+      ringClass: 'ring-tone-blue-soft',
+      bgClass: 'bg-tone-blue-wash',
+      textClass: 'text-tone-blue-ink',
     },
     yellow: {
-      colorClass: 'bg-yellow-400',
-      ringClass: 'ring-yellow-200',
-      bgClass: 'bg-yellow-50',
-      textClass: 'text-yellow-700',
+      colorClass: 'bg-tone-yellow',
+      ringClass: 'ring-tone-yellow-soft',
+      bgClass: 'bg-tone-yellow-wash',
+      textClass: 'text-tone-yellow-ink',
     },
     orange: {
-      colorClass: 'bg-orange-500',
-      ringClass: 'ring-orange-200',
-      bgClass: 'bg-orange-50',
-      textClass: 'text-orange-700',
+      colorClass: 'bg-tone-orange',
+      ringClass: 'ring-tone-orange-soft',
+      bgClass: 'bg-tone-orange-wash',
+      textClass: 'text-tone-orange-ink',
     },
     red: {
-      colorClass: 'bg-rose-600',
-      ringClass: 'ring-rose-300',
-      bgClass: 'bg-rose-50',
-      textClass: 'text-rose-700',
+      colorClass: 'bg-tone-red',
+      ringClass: 'ring-tone-red-soft',
+      bgClass: 'bg-tone-red-wash',
+      textClass: 'text-tone-red-ink',
     },
   };
 
@@ -1686,18 +1686,18 @@ type WindLegendDot = CalmnessTone;
 type MapExposureEvidence = 'supported' | 'estimated';
 
 const windLegendDotClasses: Record<WindLegendDot, string> = {
-  blue: 'bg-sky-500 ring-sky-200',
-  yellow: 'bg-yellow-400 ring-yellow-200',
-  orange: 'bg-orange-500 ring-orange-200',
-  red: 'bg-rose-600 ring-rose-300',
+  blue: 'bg-tone-blue ring-tone-blue-soft',
+  yellow: 'bg-tone-yellow ring-tone-yellow-soft',
+  orange: 'bg-tone-orange ring-tone-orange-soft',
+  red: 'bg-tone-red ring-tone-red-soft',
 };
 
 /** Selected-state skin for a legend row used as a filter button — the row's own colour, softened. */
 const windLegendActiveClasses: Record<WindLegendDot, string> = {
-  blue: 'border-sky-400 bg-sky-50 dark:border-sky-400 dark:bg-sky-500/15',
-  yellow: 'border-yellow-400 bg-yellow-50 dark:border-yellow-400 dark:bg-yellow-500/15',
-  orange: 'border-orange-400 bg-orange-50 dark:border-orange-400 dark:bg-orange-500/15',
-  red: 'border-rose-500 bg-rose-50 dark:border-rose-400 dark:bg-rose-500/15',
+  blue: 'border-tone-blue bg-tone-blue-wash dark:border-tone-blue dark:bg-tone-blue/15',
+  yellow: 'border-tone-yellow bg-tone-yellow-wash dark:border-tone-yellow dark:bg-tone-yellow/15',
+  orange: 'border-tone-orange bg-tone-orange-wash dark:border-tone-orange dark:bg-tone-orange/15',
+  red: 'border-tone-red bg-tone-red-wash dark:border-tone-red dark:bg-tone-red/15',
 };
 
 // Set once the visitor has actually moved the hour slider, so the first-visit
@@ -1709,25 +1709,29 @@ const windSliderTones: Record<WindLegendDot, {
   shadow: string;
   focus: string;
 }> = {
+  // Τα ίδια τέσσερα χρώματα με τις πινέζες — γραμμένα ως hex επειδή περνούν σε inline
+  // style και σε box-shadow, όχι σε κλάση. Αν αλλάξει το @theme στο index.css, αλλάζει
+  // ΚΑΙ εδώ: ο κανόνας της 01/08 είναι ότι μπάρα, λεζάντα και παραλίες δεν επιτρέπεται
+  // να δείξουν ποτέ διαφορετικό χρώμα.
   blue: {
-    color: '#0ea5e9',
-    shadow: 'rgba(14, 165, 233, 0.38)',
-    focus: '#38bdf8',
+    color: '#0284c7',
+    shadow: 'rgba(2, 132, 199, 0.34)',
+    focus: '#38a8dd',
   },
   yellow: {
-    color: '#facc15',
-    shadow: 'rgba(202, 138, 4, 0.34)',
-    focus: '#facc15',
+    color: '#d9a441',
+    shadow: 'rgba(217, 164, 65, 0.34)',
+    focus: '#e0b664',
   },
   orange: {
-    color: '#f97316',
-    shadow: 'rgba(249, 115, 22, 0.38)',
-    focus: '#fb923c',
+    color: '#d9744a',
+    shadow: 'rgba(217, 116, 74, 0.34)',
+    focus: '#e28e6c',
   },
   red: {
-    color: '#e11d48',
-    shadow: 'rgba(225, 29, 72, 0.38)',
-    focus: '#fb7185',
+    color: '#b4423c',
+    shadow: 'rgba(180, 66, 60, 0.36)',
+    focus: '#c56561',
   },
 };
 
@@ -1813,7 +1817,7 @@ const createExposureIcon = (
   if (!showWindExposureColors) {
     return L.divIcon({
       className: 'custom-div-icon',
-      html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} bg-sky-500 w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ring-sky-200"></div>`,
+      html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} bg-tone-blue w-4 h-4 rounded-full border-2 border-white shadow-md ring-2 ring-tone-blue-soft"></div>`,
       iconSize: [16, 16],
       iconAnchor: [8, 8],
       popupAnchor: [0, -10]
@@ -1836,7 +1840,7 @@ const createExposureIcon = (
   // legend entry — because the legend entry was tried here too and did not rescue it.
   return L.divIcon({
     className: 'custom-div-icon',
-    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-lg ring-4 ${ringClass}">${coveBadge}</div>`,
+    html: `<div class="beach-map-marker-dot ${topPickClass} ${highlightedClass} ${evidenceClass} ${surfClass} ${colorClass} w-4 h-4 rounded-full border-2 border-white shadow-md ring-2 ${ringClass}">${coveBadge}</div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
     popupAnchor: [0, -10]
@@ -4457,7 +4461,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           ) : (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-sky-500 ring-2 ring-sky-200"></div>
+                <div className="h-3 w-3 rounded-full bg-tone-blue ring-2 ring-tone-blue-soft"></div>
                 <span className="text-slate-600 dark:text-slate-300">{mapCopy.calmWindNote[language]}</span>
               </div>
               {renderWindColorGuidePanel('full')}
@@ -4500,8 +4504,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
         </div>
       ) : (
         <div className="space-y-2">
-          <div className="flex min-w-0 items-center justify-center gap-1.5 rounded-full bg-sky-50 px-2 py-1.5 text-[10px] font-bold leading-none text-sky-700">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-sky-500 ring-1 ring-sky-200" />
+          <div className="flex min-w-0 items-center justify-center gap-1.5 rounded-full bg-tone-blue-wash px-2 py-1.5 text-[10px] font-bold leading-none text-tone-blue-ink">
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-tone-blue ring-1 ring-tone-blue-soft" />
             <span className="truncate">{mapCopy.calmWind[language]}</span>
           </div>
           {renderWindColorGuidePanel('preview')}

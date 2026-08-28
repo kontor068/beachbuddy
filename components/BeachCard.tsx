@@ -1971,7 +1971,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
    * κλήση χωρίς τα νέα πεδία) → ακριβώς η εμφάνιση που είχε η γραμμή πριν από σήμερα.
    */
   const factorIconClass = (color: WindSuitabilityColor | undefined): string => (
-    color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-sky-600/90 dark:text-sky-300/90'
+    color ? WIND_SUITABILITY_TONE_CLASSES[color].wave : 'text-tone-blue/90 dark:text-sky-300/90'
   );
   const podiumWhyItems: Array<{
     key: string;
