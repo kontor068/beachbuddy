@@ -4527,7 +4527,11 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 aria-label={copy.beachMapAria}
               >
                 {mapDayStrip}
-                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white/95 p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55">
+                {/* ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ ΚΑΙ ΕΔΩ, για τον ίδιο λόγο με τις κάρτες των ημερών: η κάρτα
+                    του χάρτη είναι το δεύτερο μισό του ίδιου μπλοκ, και ένα 95% λευκό αφήνει
+                    το μισοβαμμένο καρέ του σκρολ να φανεί από μέσα. Πάνω σε φόντο sky-100 η
+                    διαφορά 95%→100% δεν διαβάζεται με μάτι· το φάντασμα διαβαζόταν. */}
+                <div className="relative overflow-hidden rounded-[1.35rem] border border-sky-100 bg-white p-2 text-left shadow-lg shadow-sky-900/10 ring-1 ring-white/55">
                   {mapPreview}
                 </div>
               </section>
