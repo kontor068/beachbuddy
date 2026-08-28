@@ -3393,6 +3393,47 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
             : { en: 'less-than-ideal conditions', gr: 'όχι ιδανικές συνθήκες', de: 'nicht ideale Bedingungen', it: 'condizioni non ideali', fr: 'conditions pas idéales' };
     return `${name} · ${getLocalizedCopy(language, condition)} ${contextStripDayPrefix}`;
   })();
+  // «Κοντά μου» — ένα κουμπί, δύο πιθανές θέσεις.
+  //
+  // Μέχρι τις 28/08/2026 έπιανε ΔΙΚΗ ΤΟΥ πλήρη σειρά κάτω από το πεδίο αναζήτησης: 40px
+  // ύψος για ένα κουμπί δύο λέξεων, ακριβώς στο πιο ακριβό σημείο της οθόνης ενός κινητού
+  // 390px — και έσπρωχνε τον χάρτη και τις προτάσεις μια ολόκληρη γραμμή πιο κάτω.
+  // Μετακομίζει πάνω στη γραμμή της περιοχής («ΒΟΡΕΙΟ ΑΙΓΑΙΟ»), δεξιά: εκείνη η γραμμή
+  // έχει πάντα τα δύο τρίτα της άδεια, γιατί το μακρύτερο group label είναι 13 χαρακτήρες
+  // («Αργοσαρωνικός») και ούτως ή άλλως κόβεται με truncate. Σημασιολογικά ανήκει κιόλας
+  // εκεί: η γραμμή λέει «πού είσαι», το κουμπί λέει «όχι, δες πού είμαι ΠΡΑΓΜΑΤΙΚΑ».
+  //
+  // ΓΙΑΤΙ ΟΧΙ δίπλα στον <h1>, που είναι η ακόμα πιο άδεια γραμμή: μετρήθηκε στα 390px και
+  // κόβει τη στήλη του τίτλου στη μέση. «Λέσβος» κέρδιζε 40px, αλλά «Παράλια Λάρισας (Αγιά
+  // - Κίσσαβος)» τυλιγόταν από 2 σε 4 γραμμές και ΕΧΑΝΕ 28px. Δώδεκα από τις 140 περιοχές
+  // έχουν τόσο μακρύ όνομα. Η γραμμή του group label δεν έχει αυτό το πρόβλημα ποτέ.
+  //
+  // Το κουμπί είναι οπτικά 32px ώστε να μη φουσκώσει τη γραμμή, αλλά η περιοχή αφής μένει
+  // 44px μέσω του ::after — δεν κατεβάζουμε στόχο αφής για να κερδίσουμε pixel.
+  //
+  // Παραμένει mobile-only (`lg:hidden`), όπως ήταν: στο desktop δεν υπήρχε ποτέ.
+  const nearMeAction = onShowNearbyBeaches ?? onUseCurrentLocation;
+  const nearMeButton = nearMeAction && !isNearMeRegion ? (
+    <button
+      type="button"
+      onClick={nearMeAction}
+      disabled={isFindingCurrentLocation}
+      className={`relative inline-flex h-8 max-w-[9.5rem] shrink-0 items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition after:absolute after:inset-x-0 after:-inset-y-1.5 after:content-[''] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
+        hasUserLocation
+          ? 'border-transparent bg-cyan-50 text-[#007a83]'
+          /* Ήσυχο, όχι δεύτερο CTA (28/08/2026): ήταν πλατύ γαλάζιο πλαίσιο ακριβώς κάτω
+             από το πεδίο αναζήτησης, δηλαδή δύο κουτιά στη σειρά που ζητούσαν το ίδιο
+             βάρος προσοχής. */
+          : 'border-transparent text-[#007a83] hover:bg-cyan-50'
+      } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
+    >
+      <MapPin className="h-3.5 w-3.5 shrink-0 text-[#007a83]" />
+      <span className="min-w-0 truncate">
+        {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
+      </span>
+    </button>
+  ) : null;
+
   // Where am I — the page title, in our own type, above the search box.
   //
   // This replaced a full-width photo band (29/07). Losing the photo loses nothing we were
@@ -3410,10 +3451,13 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
        της μάρκας εκεί που η ιεραρχία μπορεί να βγει από το μέγεθος. Το τιρκουάζ μένει
        για ό,τι θέλουμε να πατηθεί. Ίδιο κείμενο, ίδια σειρά. */
     <div className="mb-4 px-1 text-left sm:mb-5">
-      <p className="flex items-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-slate-500">
-        <MapPin className="h-3 w-3 shrink-0 text-[#007a83]/70" aria-hidden="true" />
-        <span className="min-w-0 truncate">{contextStripEyebrow}</span>
-      </p>
+      <div className="flex items-center justify-between gap-3">
+        <p className="flex min-w-0 flex-1 items-center gap-1.5 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-slate-500">
+          <MapPin className="h-3 w-3 shrink-0 text-[#007a83]/70" aria-hidden="true" />
+          <span className="min-w-0 truncate">{contextStripEyebrow}</span>
+        </p>
+        {nearMeButton && <span className="shrink-0 lg:hidden">{nearMeButton}</span>}
+      </div>
       <h1 className="mt-1 font-heading text-[2.15rem] font-extrabold leading-[1] tracking-[-0.03em] text-slate-950 sm:text-[2.75rem]">
         {selectedIsland.name[language]}
       </h1>
@@ -3422,8 +3466,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
           {searchedBeachStripText}
         </p>
       )}
+      {/* Το σφάλμα εντοπισμού ζει δίπλα στο κουμπί που το προκάλεσε, όχι κάτω από την
+          αναζήτηση όπως πριν. Ένας κόμβος μόνο — η φόρμα το δείχνει μόνο όταν ΔΕΝ υπάρχει
+          αυτό το μπλοκ, ώστε να μην έχουμε δύο role="alert" για το ίδιο σφάλμα. */}
+      {currentLocationError && (
+        <p className="mt-1.5 text-xs font-semibold text-rose-600" role="alert">
+          {currentLocationError}
+        </p>
+      )}
     </div>
   ) : null;
+
   const conditionsOverviewContent = selectedIsland ? (
     <section className="flex flex-col rounded-surface border border-line bg-surface p-3 shadow-surface sm:p-4 lg:absolute lg:inset-0 lg:overflow-hidden" aria-label={copy.conditionsOverviewAria}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2 lg:shrink-0">
@@ -4342,48 +4395,30 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 </div>
               )}
             </div>
-            {/* Η σειρά κάτω από το πεδίο εμφανίζεται μόνο αν έχει κάτι να δείξει. Το «Κοντά μου»
-                φεύγει όταν βλέπεις ήδη τη λίστα «Κοντά μου» — το κουμπί θα ξαναέκανε αυτό που
-                μόλις έγινε. Το «Φίλτρο» μετακόμισε μέσα στο πεδίο αναζήτησης. */}
-            {(((onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion)
+            {/* Η σειρά κάτω από το πεδίο ΔΕΝ φιλοξενεί πια το «Κοντά μου» (28/08/2026) — βλ.
+                το σχόλιο πάνω από το `nearMeButton`. Μένει εδώ μόνο σαν εφεδρεία, για τη
+                στιγμή που δεν υπάρχει μπλοκ τίτλου περιοχής να το φιλοξενήσει (καμία
+                επιλεγμένη περιοχή), και για το desktop ταξινόμησης. */}
+            {((nearMeButton && !regionTitleBlock)
               || (selectedIsland && directorySortOptions.length > 0)) && (
             <div className="grid grid-cols-1 gap-1.5 sm:flex sm:items-center lg:flex-nowrap lg:justify-end">
-              {(onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion && (
-              <div className="flex items-center gap-1.5 lg:hidden">
-              {(onShowNearbyBeaches ?? onUseCurrentLocation) && !isNearMeRegion && (
-                <button
-                  type="button"
-                  onClick={onShowNearbyBeaches ?? onUseCurrentLocation}
-                  disabled={isFindingCurrentLocation}
-                  className={`inline-flex min-h-10 w-full min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold leading-none transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 sm:min-h-11 sm:px-4 sm:text-sm ${
-                    hasUserLocation
-                      ? 'border-transparent bg-cyan-50 text-[#007a83]'
-                      /* Ήσυχο, όχι δεύτερο CTA (28/08/2026): ήταν πλατύ γαλάζιο πλαίσιο
-                         ακριβώς κάτω από το πεδίο αναζήτησης, δηλαδή δύο κουτιά στη σειρά
-                         που ζητούσαν το ίδιο βάρος προσοχής. Ίδιο κουμπί, ίδιο ύψος αφής. */
-                      : 'border-transparent text-[#007a83] hover:bg-cyan-50'
-                  } ${isFindingCurrentLocation ? 'cursor-wait opacity-70' : ''}`}
-                >
-                  <MapPin className="h-3.5 w-3.5 shrink-0 text-[#007a83] sm:h-4 sm:w-4" />
-                  <span className="min-w-0 truncate">
-                    {isFindingCurrentLocation && !hasUserLocation ? copy.findingLocation : copy.currentLocation}
-                  </span>
-                </button>
-              )}
-              {/* ΕΦΥΓΕ ΤΟ «Ανέβασε φωτό» (11/08/2026). Καθόταν δίπλα στο «Κοντά μου»,
-                  ακριβώς κάτω από την αναζήτηση — δηλαδή πάνω στη γραμμή όπου κάποιος
-                  αποφασίζει ΠΟΥ ΘΑ ΠΑΕΙ, και ζητούσε το ακριβώς αντίθετο: κάτι από
-                  κάποιον που έχει ήδη πάει. Απόφαση Μίλτου. Η ίδια προσφορά μένει και
-                  στα τρία σημεία όπου έχει νόημα — στη σελίδα παραλίας (εκεί που
-                  λείπει η φωτογραφία), στο μενού λογαριασμού και στο landing. */}
-              </div>
+              {nearMeButton && !regionTitleBlock && (
+                <div className="flex items-center gap-1.5 lg:hidden">
+                  {nearMeButton}
+                  {/* ΕΦΥΓΕ ΤΟ «Ανέβασε φωτό» (11/08/2026). Καθόταν δίπλα στο «Κοντά μου»,
+                      ακριβώς κάτω από την αναζήτηση — δηλαδή πάνω στη γραμμή όπου κάποιος
+                      αποφασίζει ΠΟΥ ΘΑ ΠΑΕΙ, και ζητούσε το ακριβώς αντίθετο: κάτι από
+                      κάποιον που έχει ήδη πάει. Απόφαση Μίλτου. Η ίδια προσφορά μένει και
+                      στα τρία σημεία όπου έχει νόημα — στη σελίδα παραλίας (εκεί που
+                      λείπει η φωτογραφία), στο μενού λογαριασμού και στο landing. */}
+                </div>
               )}
               {selectedIsland && directorySortOptions.length > 0 && (
                 renderDirectorySortControl(desktopDirectorySortRef, 'relative hidden w-[13.5rem] shrink-0 lg:block')
               )}
             </div>
             )}
-            {currentLocationError && (
+            {currentLocationError && !regionTitleBlock && (
               <p className="text-xs font-semibold text-rose-600 sm:col-span-2" role="alert">
                 {currentLocationError}
               </p>
