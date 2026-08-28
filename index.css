@@ -535,6 +535,122 @@ body {
   50% { opacity: 0.65; }
 }
 
+/* Ο κυματισμός ΚΙΝΕΙΤΑΙ πλέον (Μίλτος, 28/08/2026: «το κύμα θέλω να αλλάζει ανάλογα
+   πόσο μεγάλο είναι κ κάντο με κίνηση»). Το σχήμα έλεγε ήδη το νούμερο — το ύψος του
+   κυματισμού είναι το ίδιο το ύψος της γραμμής· τώρα το λέει και ο ρυθμός: ο σκελετός
+   ταξιδεύει ακριβώς ένα μήκος κύματος (24 μονάδες) ανά κύκλο, γρήγορα στα 1,5 μ. και
+   νωθρά στα 0,3 μ. Σε γαλήνη (< 0,05 μ.) δεν κινείται καθόλου — κινούμενη γραμμή κάτω
+   από «0,0 μ.» είναι το ίδιο ψέμα με τη σταγόνα πάνω από θερμοκρασία αέρα.
+   ΔΕΝ είναι οι «κινούμενες μπάρες κύματος» του ανταγωνιστή: μία γραμμή επιφάνειας,
+   χωρίς γέμισμα από κάτω, χωρίς βυθό. */
+.cb-glyph-swell {
+  animation: cb-glyph-swell var(--cb-glyph-swell-duration, 5s) linear infinite;
+}
+
+@keyframes cb-glyph-swell {
+  from { transform: translateX(0); }
+  to { transform: translateX(-24px); }
+}
+
+/* Ο σκελετός είναι σχεδιασμένος πιο φαρδύς από το πλαίσιο ώστε το ταξίδι να μη δείχνει
+   ποτέ άκρη. Η μάσκα σβήνει τα δύο άκρα, στη θέση των στρογγυλών απολήξεων που είχε η
+   ακίνητη εκδοχή· χωρίς αυτήν, η γραμμή θα κοβόταν μαχαιριά πάνω στο περίγραμμα. */
+.cb-glyph-sea {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+}
+
+/* ===== Animated weather glyphs (components/WeatherIcon.tsx) =====
+   Ο ήλιος γυρίζει, τα σύννεφα σέρνονται, η βροχή πέφτει (Μίλτος, 28/08/2026). Ισχύουν
+   οι ίδιοι τρεις κανόνες με τα υπόλοιπα: μόνο transform/opacity (καμία επαναδιάταξη σε
+   κάθε καρέ, με πέντε-εφτά εικονίδια ταυτόχρονα στη μπάρα ημερών), αργά και μικρά — τα
+   μεγέθη είναι σε μονάδες του viewBox 24άρι, άρα στα 16 px που τα δείχνει η μπάρα ένα
+   «0.5px» είναι το ένα τρίτο του εικονοστοιχείου — και σιωπή σε prefers-reduced-motion.
+   Η περιστροφή θέλει transform-box: view-box, αλλιώς το transform-origin πιάνει το κουτί
+   του κάθε path ξεχωριστά και οι οχτώ ακτίνες στριφογυρίζουν η καθεμιά γύρω από τον
+   εαυτό της αντί για το κέντρο του ήλιου. */
+.cb-wx-spin,
+.cb-wx-sway,
+.cb-wx-breathe {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+.cb-wx-spin { animation: cb-wx-spin 28s linear infinite; }
+
+@keyframes cb-wx-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cb-wx-sway { animation: cb-wx-sway 7s ease-in-out infinite; }
+
+@keyframes cb-wx-sway {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(7deg); }
+}
+
+.cb-wx-breathe { animation: cb-wx-breathe 6s ease-in-out infinite; }
+
+@keyframes cb-wx-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+
+.cb-wx-drift { animation: cb-wx-drift 9s ease-in-out infinite; }
+.cb-wx-drift-slow { animation: cb-wx-drift 14s ease-in-out infinite reverse; }
+
+@keyframes cb-wx-drift {
+  0%, 100% { transform: translateX(-0.5px); }
+  50% { transform: translateX(0.5px); }
+}
+
+.cb-wx-glow { animation: cb-wx-glow 5.5s ease-in-out infinite; }
+
+@keyframes cb-wx-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Η σταγόνα δεν «αναβοσβήνει»: ξεκινάει μέσα στο σύννεφο αόρατη, φαίνεται όσο πέφτει και
+   σβήνει πριν φύγει από το εικονίδιο. Τα delays στο WeatherIcon.tsx είναι που κάνουν τις
+   έξι σταγόνες ψιχάλα αντί για έξι λαμπάκια. */
+.cb-wx-drop { animation: cb-wx-drop 1.5s linear infinite; }
+
+@keyframes cb-wx-drop {
+  0% { transform: translateY(-1.6px); opacity: 0; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(2.6px); opacity: 0; }
+}
+
+.cb-wx-flake { animation: cb-wx-flake 3.6s ease-in-out infinite; }
+
+@keyframes cb-wx-flake {
+  0%, 100% { transform: translateY(-0.7px); opacity: 0.2; }
+  40% { opacity: 1; }
+  100% { transform: translateY(1.1px); }
+}
+
+/* Μία διπλή αστραπή κάθε 4,5 δευτερόλεπτα. Κεραυνός που αναβοσβήνει συνέχεια παύει να
+   διαβάζεται ως κεραυνός και διαβάζεται ως χαλασμένο εικονίδιο. */
+.cb-wx-bolt { animation: cb-wx-bolt 4.5s ease-in-out infinite; }
+
+@keyframes cb-wx-bolt {
+  0%, 54%, 100% { opacity: 1; }
+  57% { opacity: 0.12; }
+  60% { opacity: 1; }
+  64% { opacity: 0.2; }
+  68% { opacity: 1; }
+}
+
+.cb-wx-fog { animation: cb-wx-fog 6.5s ease-in-out infinite; }
+
+@keyframes cb-wx-fog {
+  0%, 100% { transform: translateX(-1.1px); opacity: 0.55; }
+  50% { transform: translateX(1.1px); opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cb-hero-rise,
   .cb-breeze-path,
@@ -542,7 +658,18 @@ body {
   .cb-wash,
   .cb-twinkle,
   .cb-glyph-stream,
-  .cb-glyph-glow {
+  .cb-glyph-glow,
+  .cb-glyph-swell,
+  .cb-wx-spin,
+  .cb-wx-sway,
+  .cb-wx-breathe,
+  .cb-wx-drift,
+  .cb-wx-drift-slow,
+  .cb-wx-glow,
+  .cb-wx-drop,
+  .cb-wx-flake,
+  .cb-wx-bolt,
+  .cb-wx-fog {
     animation: none !important;
   }
 }
