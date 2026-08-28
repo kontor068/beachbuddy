@@ -231,7 +231,21 @@
 # μία ειδοποίηση δεν ξεχωρίζει αν κόπηκε μόνο το τηλεμετρικό /element/log ή ΚΑΙ οι
 # κλήσεις που κάνουν τη μετάφραση. Επειδή η δεύτερη περίπτωση σημαίνει τουρίστας που
 # βλέπει ελληνικά και δεν καταλαβαίνει, η απόφαση παίρνεται υπέρ του επισκέπτη.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+#
+# 28/08/2026 — `https://ingesteer.services-prod.nsvcs.net` ΣΤΟ connect-src: εκεί στέλνει
+# ο μετρητής ταχύτητας που εμφυτεύει ΤΟ ΙΔΙΟ ΤΟ NETLIFY (`/.netlify/scripts/rum`, Real
+# User Metrics) σε κάθε σελίδα που σερβίρει. Δεν είναι δικό μας script — δεν υπάρχει σε
+# καμία γραμμή του κώδικα ούτε στο dist/ — αλλά τρέχει μέσα στη σελίδα μας, οπότε το
+# αίτημά του το κρίνει η ΔΙΚΗ μας πολιτική. Κομμένο, έβγαζε τρεις ειδοποιήσεις τη νύχτα
+# 27→28/08 από ένα αίτιο: μία CSP και δύο «έσπασε σελίδα σε επισκέπτη» (η fetch
+# απορριπτόταν και κανείς δεν την έπιανε), με τις σελίδες ολοκάθαρες.
+#
+# ΑΠΟΦΑΣΗ ΤΟΥ ΜΙΛΤΟΥ, 28/08/2026: να δουλέψει. Η εναλλακτική ήταν να σβήσει η μέτρηση
+# από τον πίνακα του Netlify. ΤΟ ΤΙΜΗΜΑ, ΓΡΑΜΜΕΝΟ ΓΙΑ ΝΑ ΜΗΝ ΞΕΧΑΣΤΕΙ: η μέτρηση
+# στέλνει δεδομένα επισκεπτών σε σέρβερ του Netlify χωρίς να ρωτήσει, ενώ το GA4 στο
+# services/analyticsService.ts περιμένει ρητή συγκατάθεση από το banner. Δύο μέτρα και
+# δύο σταθμά — η πολιτική απορρήτου χρειάζεται να αναφέρει το Netlify ως αποδέκτη.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
