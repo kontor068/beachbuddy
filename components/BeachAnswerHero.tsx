@@ -145,13 +145,40 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  * Η ΙΔΙΑ τριάδα λέξεων με την υπήνεμη ακτή — ένα λεξιλόγιο στο πλακίδιο, όχι δύο· τη
  * διαφορά στο κύμα τη λένε το διπλανό πλακίδιο και το χρώμα. Κρίνεται στο ΤΥΠΩΜΕΝΟ μέγιστο
  * (BeachDetailPage, printedBeaufortMax), όπως όλα τα ταβάνια της λέξης από σήμερα.
+ *
+ * ⚠️ ΚΑΙ ΑΠΟ 4 ΜΠΦ Η «ΑΠΑΝΕΜΗ» ΔΕΝ ΛΕΓΕΤΑΙ ΚΑΘΟΛΟΥ — ΓΙΝΕΤΑΙ «ΦΥΣΑΕΙ ΛΙΓΟΤΕΡΟ»
+ * (Μίλτος, 28/08/2026 — screenshot από σελίδα παραλίας της Λέσβου).
+ *
+ * Η ΙΔΙΑ ΟΘΟΝΗ ΕΛΕΓΕ ΔΥΟ ΠΡΑΓΜΑΤΑ. Το πλακίδιο: «Άνεμος · 4–5 Μπφ · Β · απάνεμη». Η γραμμή
+ * αντίθεσης δύο εκατοστά πιο κάτω, από το ΙΔΙΟ νούμερο: «Αρκετός αέρας αλλά θάλασσα λάδι».
+ * Ο επισκέπτης δεν έχει τρόπο να ξέρει ότι το «4–5 Μπφ» είναι ο ωμός άνεμος του κελιού και το
+ * «απάνεμη» η γεωμετρία της ακτής: διαβάζει «φυσάει» και «δεν φυσάει» για την ίδια παραλία.
+ *
+ * ΓΙΑΤΙ ΥΠΟΧΩΡΕΙ Η ΛΕΞΗ ΚΑΙ ΟΧΙ Η ΦΡΑΣΗ. Η φράση περιγράφει κατά κατασκευή ΤΟ ΤΥΠΩΜΕΝΟ
+ * ΝΟΥΜΕΡΟ (utils/conditionsFeelPhrase, §ΠΟΙΟ ΚΥΜΑ ΠΕΡΙΓΡΑΦΕΙ) — αν τη μαλάκωνα, θα έλεγε
+ * «Λίγος αέρας» δίπλα σε τυπωμένο 4–5, δηλαδή θα ΠΡΟΣΘΕΤΕ ηρεμία· καμία πύλη αυτής της
+ * οικογένειας δεν το κάνει αυτό. Και το ίδιο το ταβάνι της λέξης (Γάνεμα #2078, 27/08) το έχει
+ * ήδη κρίνει: «η λέξη δεσμεύεται από ό,τι τυπώνεται δίπλα της». Εδώ δίπλα της τυπώνεται και ένα
+ * νούμερο ΚΑΙ μια πρόταση, και τα δύο λένε «φυσάει».
+ *
+ * ΓΙΑΤΙ ΟΧΙ ΣΚΕΤΟ «ΦΥΣΑΕΙ». Στα 4-5 Μπφ ΟΛΕΣ οι υπήνεμες ακτές θα διάβαζαν ό,τι και οι πλάγιες,
+ * και σε μελτεμιάρα μέρα αυτό είναι το μισό δίκτυο: το πλακίδιο θα έπαυε να λέει τον ΛΟΓΟ που
+ * υπάρχει το site. Το «φυσάει λιγότερο» κρατά τη διάκριση χωρίς να υπόσχεται νηνεμία, και
+ * απαντά ακριβώς στο νούμερο από πάνω του — λιγότερο ΑΠΟ ΑΥΤΟ. Ίδια οικογένεια λέξης με το
+ * «φυσάει» και το «φυσάει δυνατά»: τρία σκαλιά του ίδιου βιώματος, όχι τρία λεξιλόγια.
+ *
+ * ΜΟΝΟΔΡΟΜΗ, ΟΠΩΣ ΟΛΕΣ: «φυσάει λιγότερο» υπόσχεται ΛΙΓΟΤΕΡΑ από «απάνεμη», ποτέ περισσότερα.
+ * Το λέει μόνο η ακτή που ΚΑΙ η πινέζα τη βλέπει 'protected' ΚΑΙ ο άνεμός της ήρθε πάνω από
+ * στεριά (η πύλη του SHELTER_WORD_LAND_GATE_MIN_BEAUFORT, από κάτω)· χωρίς αυτό, ή με άγνωστο
+ * windShadow, μένει το σκέτο «φυσάει» που δεν υπόσχεται τίποτα. Αριθμός, χρώμα, ετυμηγορία,
+ * κατάταξη: αμετάβλητα — αλλάζει μία λέξη σε ένα πλακίδιο.
  */
-export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string; windFelt: string }> = {
-  en: { protected: 'sheltered', partial: 'breezy', exposed: 'head-on', protectedStrongWind: 'very windy', windFelt: 'windy' },
-  gr: { protected: 'απάνεμη', partial: 'αεράκι', exposed: 'κατάμουτρα', protectedStrongWind: 'φυσάει δυνατά', windFelt: 'φυσάει' },
-  de: { protected: 'geschützt', partial: 'leichter Wind', exposed: 'frontal', protectedStrongWind: 'sehr windig', windFelt: 'windig' },
-  it: { protected: 'riparata', partial: 'brezza', exposed: 'di faccia', protectedStrongWind: 'molto ventoso', windFelt: 'ventoso' },
-  fr: { protected: 'abrité', partial: 'brise', exposed: 'de face', protectedStrongWind: 'très venteux', windFelt: 'venteux' },
+export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; protectedStrongWind: string; windFelt: string; protectedWindFelt: string }> = {
+  en: { protected: 'sheltered', partial: 'breezy', exposed: 'head-on', protectedStrongWind: 'very windy', windFelt: 'windy', protectedWindFelt: 'less wind' },
+  gr: { protected: 'απάνεμη', partial: 'αεράκι', exposed: 'κατάμουτρα', protectedStrongWind: 'φυσάει δυνατά', windFelt: 'φυσάει', protectedWindFelt: 'φυσάει λιγότερο' },
+  de: { protected: 'geschützt', partial: 'leichter Wind', exposed: 'frontal', protectedStrongWind: 'sehr windig', windFelt: 'windig', protectedWindFelt: 'weniger Wind' },
+  it: { protected: 'riparata', partial: 'brezza', exposed: 'di faccia', protectedStrongWind: 'molto ventoso', windFelt: 'ventoso', protectedWindFelt: 'meno vento' },
+  fr: { protected: 'abrité', partial: 'brise', exposed: 'de face', protectedStrongWind: 'très venteux', windFelt: 'venteux', protectedWindFelt: 'moins de vent' },
 };
 
 /**
@@ -194,6 +221,12 @@ export const SHELTER_WORD_MAX_BEAUFORT = 5;
  * οι μάρτυρες κρατούν τη λέξη (Φυριπλάκα #1927, Βάι #730, Λιβάδια #2033 — ο αέρας τους
  * περνά πάνω από ράχη) και τα δύο feedback της γεννούν την αλλαγή (Γλυφάδα #1993 27/08,
  * Ψιλή Άμμος #2017 25/08) γυρίζουν σε «πλάγια».
+ *
+ * ΑΠΟ 28/08/2026 ΤΟ ΙΔΙΟ ΝΟΥΜΕΡΟ ΚΑΝΕΙ ΔΥΟ ΔΟΥΛΕΙΕΣ, γιατί είναι η ίδια δουλειά: από 4 Μπφ
+ * και πάνω η υπήνεμη ακτή ΔΕΝ λέει «απάνεμη» με τίποτα (δες το μπλοκ του SHELTER_LABEL) — η
+ * πύλη της στεριάς διαλέγει πλέον ΠΟΙΑ από τις δύο λέξεις που δεν υπόσχονται νηνεμία μπαίνει:
+ * «φυσάει λιγότερο» αν ο άνεμος ήρθε πάνω από στεριά, σκέτο «φυσάει» αν όχι (ή αν το
+ * windShadow λείπει / είναι χαμηλής βεβαιότητας — εκεί δεν διεκδικούμε τίποτα).
  */
 export const SHELTER_WORD_LAND_GATE_MIN_BEAUFORT = 4;
 

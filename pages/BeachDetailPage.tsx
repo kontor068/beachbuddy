@@ -2224,10 +2224,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             longDirectionLabel: windDirectionLabel,
             /* Only from ≥3 Bft: below that "sheltered" is a fact about a wind that is not
                blowing, and the light-wind floor in weatherNowCopy makes the same call.
-               …and only up to 5 Bft for the word «απάνεμη» itself: above that the shore is
-               still geometrically protected (the wind brings it no waves) but it is NOT calm
-               to stand on, so the label states the angle («από πίσω») instead of promising
-               shelter. See SHELTER_WORD_MAX_BEAUFORT in BeachAnswerHero for the why. */
+               …and the word «απάνεμη» itself lives ONLY at 3 Μπφ: from 4 up the shore is still
+               geometrically protected (the wind brings it no waves) but it is NOT calm to stand
+               on, so the label says what one feels — «φυσάει λιγότερο» / «φυσάει» — and from 6
+               «φυσάει δυνατά». See SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT and
+               SHELTER_WORD_LAND_GATE_MIN_BEAUFORT in BeachAnswerHero for the why. */
             shelterLabel: beaufortLevel >= 3
               ? (() => {
                   const shelterCopy = SHELTER_LABEL[language] ?? SHELTER_LABEL.en;
@@ -2242,19 +2243,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     return shelterCopy.protectedStrongWind;
                   }
                   /* «Απάνεμη» υπόσχεται ότι δεν θα σε δέρνει ο αέρας — όχι μόνο ότι δεν σου
-                     φέρνει κύμα. Από 4 Μπφ η υπόσχεση κρατιέται μόνο όταν ο άνεμος όντως
-                     πέρασε πάνω από στεριά· αλλιώς (Γλυφάδα Νάξου #1993, 27/08/2026: βοριάς
-                     κατά μήκος της ακτής, protected μόνο ως προς το κύμα) η λέξη λέει αυτό
-                     που βιώνει ο επισκέπτης: «φυσάει». Σε ελλιπές windShadow η πύλη σιωπά.
-                     Δες το μπλοκ του SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο BeachAnswerHero. */
-                  if (
-                    mapAlignedExposureLevel === 'protected'
-                    && printedBeaufortMax >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT
-                    && geospatialExposure?.confidence === 'high'
-                    && geospatialExposure.windShadow?.length === WIND_SHADOW_SLOTS
-                    && !windArrivedOverLand(geospatialExposure.windShadow, weatherData.wind.deg)
-                  ) {
-                    return shelterCopy.windFelt;
+                     φέρνει κύμα. Από 4 Μπφ δεν λέγεται πια καθόλου: δίπλα της τυπώνεται «4–5 Μπφ»
+                     ΚΑΙ η γραμμή «Αρκετός αέρας…», και ο επισκέπτης διαβάζει «φυσάει» και «δεν
+                     φυσάει» για την ίδια παραλία (Λέσβος, 28/08/2026). Μένει η ΔΙΑΚΡΙΣΗ, χωρίς
+                     υπόσχεση: «φυσάει λιγότερο» όταν ο άνεμος όντως πέρασε πάνω από στεριά,
+                     σκέτο «φυσάει» όταν όχι (Γλυφάδα Νάξου #1993, 27/08/2026: βοριάς κατά μήκος
+                     της ακτής, protected μόνο ως προς το κύμα) ή όταν το windShadow λείπει —
+                     σε άγνωστα δεδομένα δεν διεκδικούμε λιγότερο αέρα.
+                     Δες τα μπλοκ SHELTER_LABEL και SHELTER_WORD_LAND_GATE_MIN_BEAUFORT στο
+                     BeachAnswerHero. */
+                  if (mapAlignedExposureLevel === 'protected' && printedBeaufortMax >= SHELTER_WORD_LAND_GATE_MIN_BEAUFORT) {
+                    const windCameOverLand = geospatialExposure?.confidence === 'high'
+                      && geospatialExposure.windShadow?.length === WIND_SHADOW_SLOTS
+                      && windArrivedOverLand(geospatialExposure.windShadow, weatherData.wind.deg);
+                    return windCameOverLand ? shelterCopy.protectedWindFelt : shelterCopy.windFelt;
                   }
                   /* «Πλάγια» → κλίμακα βιώματος (27/08/2026): αεράκι / φυσάει / φυσάει δυνατά,
                      με τον ίδιο τυπωμένο αριθμό να διαλέγει — δες SHELTER_LABEL στο BeachAnswerHero. */

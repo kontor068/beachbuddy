@@ -298,6 +298,15 @@ if (!heroSentenceWired && !/explanation=\{[^}]*weatherNow\.liveSentence/.test(de
     + 'because statesShoreIncidence assumes the card said it.'
   );
 }
+// The 4 Bft gate has to be APPLIED, not merely spelled: a vocabulary with no call site ships
+// the original «4–5 Μπφ · απάνεμη» screen (Λέσβος, 28/08/2026).
+if (!/shelterCopy\.protectedWindFelt/.test(detailSource)) {
+  failures.push(
+    'pages/BeachDetailPage.tsx: the protected shore no longer uses SHELTER_LABEL.protectedWindFelt. '
+    + 'At 4-5 Bft the wind tile would go back to promising «απάνεμη» beside a printed 4–5 Μπφ and a '
+    + 'contrast line that says «Αρκετός αέρας».'
+  );
+}
 if (!/shelterLabel:/.test(detailSource) || !/SHELTER_LABEL\[language\]/.test(detailSource)) {
   failures.push(
     'pages/BeachDetailPage.tsx: the wind tile no longer gets shelterLabel from SHELTER_LABEL. '
@@ -338,6 +347,28 @@ if (!shelterBlock) {
       failures.push(
         `SHELTER_LABEL.${lang}: protectedStrongWind repeats the shelter word ("${strongWind}") — `
         + 'the Beaufort ceiling then changes nothing and the tile still reads "sheltered" at 6 Bft.'
+      );
+    }
+    // The 4-5 Bft form of "protected" (28/08/2026, Λέσβος). It must exist, must not BE the
+    // shelter word — that is the whole bug: «4–5 Μπφ · απάνεμη» over a line reading «Αρκετός
+    // αέρας…» — and must not be the plain windFelt word either, or a lee shore and a
+    // side-on one read identically on exactly the days the site exists for.
+    const felt = (row[1].match(/\bwindFelt:\s*'([^']*)'/) || [, ''])[1].trim();
+    const protectedFelt = (row[1].match(/\bprotectedWindFelt:\s*'([^']*)'/) || [, ''])[1].trim();
+    if (!protectedFelt) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: protectedWindFelt is missing. From 4 Bft a protected shore may `
+        + 'not promise calm — it says how much wind is felt, it does not claim there is none.'
+      );
+    } else if (protectedFelt === words[0]) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: protectedWindFelt repeats the shelter word ("${protectedFelt}") — `
+        + 'the 4 Bft gate then changes nothing and the tile still reads "sheltered" beside «Αρκετός αέρας».'
+      );
+    } else if (protectedFelt === felt) {
+      failures.push(
+        `SHELTER_LABEL.${lang}: protectedWindFelt repeats windFelt ("${protectedFelt}") — a lee `
+        + 'shore and a shore the wind runs along would read identically at 4-5 Bft.'
       );
     }
   }
