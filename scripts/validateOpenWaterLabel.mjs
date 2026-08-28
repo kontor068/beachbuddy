@@ -375,10 +375,11 @@ if (!shelterBlock) {
           `SHELTER_LABEL.${lang}: ${key} is missing. From 4 Bft the tile states how much wind is `
           + 'felt, in the same scale the list card uses — it may not fall back on a shelter promise.'
         );
-      } else if (word === words[0] || word === words[1]) {
+      } else if (words.includes(word)) {
         failures.push(
-          `SHELTER_LABEL.${lang}: ${key} repeats a calm-promising word ("${word}") — the tile would `
-          + 'again read "sheltered" beside a printed 4–5 Bft and a card that says «Αρκετός αέρας».'
+          `SHELTER_LABEL.${lang}: ${key} repeats a geometry word ("${word}") — above 3 Bft the tile `
+          + 'states how much wind is felt, never the angle: "sheltered" beside a printed 4–5 Bft is '
+          + 'the Λέσβος screen again, and "head-on" is a third scale beside the number and the colour.'
         );
       }
     }

@@ -2246,11 +2246,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                      λέει ΤΗΝ ΙΔΙΑ κρίση με τη λέξη της κάρτας, σε ρήμα: «Αρκετός αέρας» →
                      «φυσάει αρκετά», «Πολύς αέρας» → «φυσάει πολύ», «Δυνατός αέρας» → «φυσάει
                      δυνατά». Έτσι η σελίδα δεν μπορεί να πει «δεν φυσάει» κάτω από ένα «4–5 Μπφ»
-                     και μια γραμμή που λέει «Αρκετός αέρας». Το «κατάμουτρα» μένει σε κάθε
-                     ένταση: δεν υπόσχεται τίποτα και λέει κάτι που ο αριθμός δεν λέει.
+                     και μια γραμμή που λέει «Αρκετός αέρας».
+
+                     ΚΑΙ ΤΟ «ΚΑΤΑΜΟΥΤΡΑ» ΜΠΗΚΕ ΣΤΗΝ ΚΛΙΜΑΚΑ (Μίλτος, 28/08, δεύτερη ανάγνωση:
+                     «δεν μου αρέσει που το λέει ορισμένες φορές»). Ήταν η τελευταία λέξη που
+                     μιλούσε ΓΩΝΙΑ εκεί όπου όλες οι άλλες μιλούν ΕΝΤΑΣΗ — και σε δυνατό αέρα
+                     ακουγόταν σαν προειδοποίηση δικής της κλίμακας, δίπλα σε νούμερο που ήδη
+                     τα λέει όλα. Από 4 Μπφ και πάνω, λοιπόν, ΚΑΜΙΑ ακτή δεν λέει γεωμετρία:
+                     και οι τρεις εκθέσεις λένε πόσο φυσάει, με τα ίδια λόγια που λέει η κάρτα.
+                     Στα 3 Μπφ οι λέξεις της γεωμετρίας κρατούν —«απάνεμη», «αεράκι»,
+                     «κατάμουτρα»— γιατί εκεί καμία δεν διαφωνεί με το «Λίγος αέρας» της κάρτας
+                     και λένε κάτι που ο αριθμός δεν λέει.
                      Δες SHELTER_LABEL και SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT στο
                      BeachAnswerHero — εκεί ζει και τι αντικατέστησε την πύλη στεριάς της 27/08. */
-                  if (mapAlignedExposureLevel !== 'exposed' && printedBeaufortMax > SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT) {
+                  if (printedBeaufortMax > SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT) {
                     if (printedBeaufortMax > SHELTER_WORD_MAX_BEAUFORT) return shelterCopy.protectedStrongWind;
                     if (printedBeaufortMax >= SHELTER_WORD_MAX_BEAUFORT) return shelterCopy.windFeltLot;
                     return shelterCopy.windFeltSome;
