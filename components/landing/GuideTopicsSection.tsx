@@ -70,9 +70,9 @@ export const GuideTopicsSection: React.FC<GuideTopicsSectionProps> = ({ language
           order we chose, so <ol> is what it actually is. Screen readers announce
           "list item 1 of 6", which carries the same "these are articles, ranked"
           message the numerals carry visually. */}
-      <ol className="mt-5 grid gap-x-10 border-t border-slate-200/80 sm:mt-6 sm:grid-cols-2">
+      <ol className="mt-5 grid gap-x-10 border-t border-line sm:mt-6 sm:grid-cols-2">
         {links.map((link, index) => (
-          <li key={link.key} className="border-b border-slate-200/80">
+          <li key={link.key} className="border-b border-line">
             <a
               href={link.href}
               // In production these are same-origin prerendered pages and this is

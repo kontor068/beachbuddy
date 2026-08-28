@@ -4120,7 +4120,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               <button
                 type="button"
                 onClick={() => onBeachClick(item.beach)}
-                className={`${isPanel ? 'min-h-10 px-3' : 'px-2 py-1'} inline-flex items-center justify-center gap-1 rounded-xl bg-cyan-600 text-xs font-black text-white transition-colors hover:bg-cyan-700 cursor-pointer`}
+                className={`${isPanel ? 'min-h-10 px-3' : 'px-2 py-1'} inline-flex items-center justify-center gap-1 rounded-control bg-cta text-xs font-black text-white transition-colors hover:bg-cta-hover cursor-pointer`}
               >
                 <Info className="h-3.5 w-3.5" />
                 {mapCopy.view[language]}

@@ -195,7 +195,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
         placeholder={activePlaceholder}
-        className={`min-h-14 w-full rounded-2xl border border-white/70 bg-white pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lg shadow-sky-900/10 outline-none ring-1 ring-white/50 transition placeholder:text-[14px] placeholder:text-slate-500 max-[389px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
+        className={`min-h-14 w-full rounded-control border border-line bg-white pl-4 text-base font-medium text-ellipsis text-slate-800 shadow-lifted outline-none ring-1 ring-white/50 transition placeholder:text-[14px] placeholder:text-slate-500 max-[389px]:placeholder:text-[13px] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/25 sm:min-h-16 sm:rounded-full sm:pl-5 sm:text-lg sm:placeholder:text-lg [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
           hasValue ? 'pr-[6.5rem] sm:pr-28' : 'pr-14 sm:pr-16'
         }`}
       />
@@ -219,7 +219,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
 
       <button
         type="submit"
-        className="absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-slate-950 text-white shadow-md shadow-slate-900/20 transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 sm:h-12 sm:w-12"
+        className="absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-cta text-white shadow-surface transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 sm:h-12 sm:w-12"
         aria-label={labels.searchAria}
       >
         <Search className="h-5 w-5" aria-hidden="true" />
@@ -229,7 +229,7 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
         <div
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-2xl border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
+          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-control border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
         >
           {suggestions.length > 0 ? (
             <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
@@ -245,11 +245,11 @@ export const HomeSearchField: React.FC<HomeSearchFieldProps> = ({
                     aria-selected={isActive}
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => select(suggestion)}
-                    className={`flex min-h-14 w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-left transition ${
+                    className={`flex min-h-14 w-full cursor-pointer items-center gap-3 rounded-control px-3 py-2 text-left transition ${
                       isActive ? 'bg-cyan-50 text-slate-950' : 'text-slate-800 hover:bg-sky-50'
                     }`}
                   >
-                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${
+                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-control ${
                       suggestion.type === 'region' ? 'bg-cyan-50 text-[#007a83]' : 'bg-sky-50 text-sky-700'
                     }`}>
                       {suggestion.type === 'region' ? (

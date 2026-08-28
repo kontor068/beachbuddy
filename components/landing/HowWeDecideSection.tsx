@@ -29,7 +29,7 @@ export const HowWeDecideSection: React.FC<HowWeDecideSectionProps> = ({ language
 
   return (
     <section className="mx-auto w-full max-w-6xl px-5" aria-label={c.overline}>
-      <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-950 to-slate-950 px-6 py-10 sm:rounded-[2.5rem] sm:px-12 sm:py-14 lg:px-16">
+      <div className="overflow-hidden rounded-surface bg-gradient-to-br from-sky-950 to-slate-950 px-6 py-10 sm:rounded-surface sm:px-12 sm:py-14 lg:px-16">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
           <div>
             <p className="text-sm font-bold text-teal-300">{c.overline}</p>
