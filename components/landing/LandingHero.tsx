@@ -70,7 +70,7 @@ const WindStreams: React.FC = () => (
 // Slow, soft cloud wisps — airy life without a single moving wave band.
 const Clouds: React.FC = () => (
   <div className="pointer-events-none absolute inset-x-0 top-4 -z-10 h-44 overflow-hidden sm:top-8" aria-hidden="true">
-    <div className="cb-cloud absolute left-[10%] top-6 h-9 w-44 rounded-full bg-white/55 blur-2xl" style={cssVar('--cb-cloud-duration', '50s')} />
+    <div className="cb-cloud absolute left-[10%] top-6 h-9 w-44 rounded-full bg-surface blur-2xl" style={cssVar('--cb-cloud-duration', '50s')} />
     <div className="cb-cloud absolute right-[14%] top-16 h-11 w-56 rounded-full bg-white/40 blur-2xl" style={cssVar('--cb-cloud-duration', '66s')} />
     <div className="cb-cloud absolute left-[44%] top-2 h-7 w-32 rounded-full bg-white/45 blur-2xl" style={cssVar('--cb-cloud-duration', '58s')} />
   </div>
@@ -199,7 +199,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             type="button"
             onClick={onNearMe}
             disabled={isFindingLocation}
-            className={`inline-flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-2xl bg-cta px-7 text-base font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-full ${
+            className={`inline-flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-control bg-cta px-7 text-base font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 sm:min-h-16 sm:rounded-full ${
               isFindingLocation ? 'cursor-wait opacity-70' : ''
             }`}
           >

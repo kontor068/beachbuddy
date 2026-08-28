@@ -215,7 +215,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
           </span>
         </div>
 
-        <div className="mt-8 rounded-3xl border border-white/70 bg-white/72 p-6 shadow-sm shadow-sky-900/5 ring-1 ring-white/45 backdrop-blur-xl sm:p-7">
+        <div className="mt-8 rounded-surface border border-line bg-white/72 p-6 shadow-surface ring-1 ring-white/45 backdrop-blur-xl sm:p-7">
           <h3 className="text-lg font-bold leading-tight text-slate-950">{c.askTitle}</h3>
           <p className="mt-1 text-sm font-medium text-slate-500">{c.askHint}</p>
 
@@ -236,7 +236,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
                     className={`inline-flex min-h-9 items-center rounded-full border px-3.5 text-[13px] font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 ${
                       prompt === item.id
                         ? 'border-cyan-300 bg-cyan-50 text-[#007a83]'
-                        : 'border-slate-200 bg-white text-slate-600 hover:border-cyan-300 hover:bg-cyan-50/60 hover:text-[#007a83]'
+                        : 'border-line bg-white text-slate-600 hover:border-cyan-300 hover:bg-cyan-50/60 hover:text-[#007a83]'
                     }`}
                   >
                     {item.label}
@@ -253,7 +253,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
                 required
                 placeholder={c.formPlaceholder}
                 aria-label={c.askTitle}
-                className="mt-3 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[15px] font-medium leading-relaxed text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
+                className="mt-3 w-full resize-y rounded-control border border-line bg-white px-4 py-3 text-[15px] font-medium leading-relaxed text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
               />
 
               <label className="mt-3 block">
@@ -264,7 +264,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
                   onChange={event => setReplyTo(event.target.value)}
                   placeholder={c.formEmailPlaceholder}
                   autoComplete="email"
-                  className="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[15px] font-medium text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
+                  className="mt-1 w-full rounded-control border border-line bg-white px-4 py-2.5 text-[15px] font-medium text-slate-800 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-100"
                 />
               </label>
 
@@ -281,7 +281,7 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
                 type="submit"
                 disabled={state === 'sending' || message.trim().length < 3}
                 aria-busy={state === 'sending'}
-                className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lg shadow-teal-900/20 transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
+                className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cta px-6 text-sm font-bold text-white shadow-lifted transition hover:bg-cta-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
               >
                 {state === 'sending'
                   ? <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" aria-hidden="true" />
