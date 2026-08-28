@@ -5743,7 +5743,14 @@ export const App: React.FC = () => {
                     ? 'cursor-not-allowed border-slate-200/45 bg-white/42 text-slate-600 opacity-45 shadow-none grayscale'
                     : isSelected
                     ? 'cursor-pointer border-[#007a83] bg-cyan-50 text-[#006b73] shadow-sm shadow-cyan-900/10 ring-1 ring-cyan-100'
-                    : 'cursor-pointer border-sky-100 bg-white/88 text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
+                    /* ΣΥΜΠΑΓΕΣ ΛΕΥΚΟ, ΟΧΙ 88% (Μίλτος, 28/08/2026: «κοίτα πώς παραμορφώνει πάνω
+                       στο λευκό»· «όταν κάνω σκρολ καθαρίζει»). Η μπάρα ημερών και ο χάρτης
+                       είναι ένα μπλοκ που το Android Chrome ξαναβάφει με καθυστέρηση την ώρα
+                       του σκρολ. Με 88% αδιαφάνεια, το μισοβαμμένο καρέ φαίνεται ΜΕΣΑ από τις
+                       κάρτες και οι μέρες δείχνουν ξεθωριασμένες· με συμπαγές λευκό, ό,τι κι αν
+                       κάνει ο compositor, από πάνω υπάρχει τοίχος. Οπτικά είναι η ίδια κάρτα:
+                       το 88% λευκό καθόταν ήδη πάνω σε λευκό φόντο. */
+                    : 'cursor-pointer border-sky-100 bg-white text-slate-700 hover:border-cyan-200 hover:bg-cyan-50/70'
                 }`}
               >
                 <span className={`max-w-full truncate text-[10px] font-extrabold leading-tight ${isSelected ? 'text-[#006b73]' : 'text-slate-700'}`}>
