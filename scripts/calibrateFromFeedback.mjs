@@ -3,7 +3,11 @@
 // Turns captured `condition_feedback` into CONSERVATIVE, human-reviewable proposals. There
 // is no app backend, so this runs by hand over an export of the feedback (the GA4
 // `condition_feedback` events, or the app's local FEEDBACK_KEY records) — a JSON array of
-// FeedbackData { beachId, feedback, timestamp, conditions:{ exposureLevel, beaufort, windDir, date } }.
+// FeedbackData { beachId, feedback, timestamp, conditions:{ exposureLevel, beaufort, windDir, date, live } }.
+//
+// Οι εγγραφές με `conditions.live === false` ΔΕΝ μπαίνουν στο άθροισμα: εκεί η οθόνη ήταν
+// γυρισμένη σε άλλη μέρα ή ώρα, οπότε αυτό που είδε ο επισκέπτης και αυτό που δείξαμε δεν
+// αφορούν την ίδια στιγμή (αναλυτικά στο σχόλιο του `isComparable` πιο κάτω).
 //
 //   node scripts/calibrateFromFeedback.mjs --input .tmp/feedback-export.json
 //   node scripts/calibrateFromFeedback.mjs --demo        # synthetic example, proves the pipeline
@@ -53,10 +57,32 @@ if (DEMO) {
   if (!Array.isArray(feedback)) feedback = [];
 }
 
+// ΜΙΑ ΑΝΑΦΟΡΑ ΠΟΥ ΔΕΝ ΑΝΤΙΠΑΡΑΤΙΘΕΤΑΙ ΔΕΝ ΒΑΘΜΟΝΟΜΕΙ ΤΙΠΟΤΑ (29/08/2026).
+//
+// Κάθε εγγραφή κουβαλάει ΔΥΟ μισά: τι είδε ο άνθρωπος, και τι έλεγε η οθόνη. Το δεύτερο μισό
+// (`exposureLevel`, `beaufort`, `windDir`, το κύμα) ανήκει στην ώρα ΤΟΥ ΔΙΑΚΟΠΤΗ, όχι στην ώρα
+// της παρατήρησης. Όταν ο διακόπτης ήταν αλλού, τα δύο μισά μιλάνε για διαφορετικές στιγμές
+// και η διαφορά τους δεν είναι σφάλμα του μοντέλου — είναι απλώς άλλη ώρα.
+//
+// Κολοκύθα 747, 29/08/2026: «είχε πιο πολύ κύμα» από επισκέπτη που ήταν εκεί το απόγευμα, με
+// τη σελίδα γυρισμένη στις 10:00 της ΕΠΟΜΕΝΗΣ μέρας. Μετρημένο αθροιστικά αυτό θα μετρούσε
+// σαν κανονικό αρνητικό δείγμα και θα έσπρωχνε πρόταση «βάλε NW στο exposedToWindDirections»
+// για μια παραλία που εκείνη τη στιγμή είχε ήδη κόψει το κύμα στο μισό (K_d = 0,5). Δηλαδή θα
+// σκλήραινε το μοντέλο με βάση σύγκριση που δεν έγινε ποτέ.
+//
+// ΓΙΑΤΙ ΑΠΟΚΛΕΙΣΜΟΣ ΚΑΙ ΟΧΙ ΜΙΚΡΟΤΕΡΟ ΒΑΡΟΣ: με τα σημερινά κατώφλια (3 δείγματα) ένα βάρος
+// 0,3 απλώς καθυστερεί την ίδια λάθος πρόταση. Και ΓΙΑΤΙ ΜΟΝΟ `live === false`: το `undefined`
+// είναι εγγραφή από έκδοση της σελίδας πριν υπάρξει το πεδίο — άγνωστο, όχι μη-συγκρίσιμο, και
+// πετώντας το θα σβήναμε όλο το ιστορικό. Οι αποκλεισμένες μετριούνται και τυπώνονται, ώστε να
+// φαίνεται πόσα δεδομένα κοστίζει ο κανόνας αντί να εξαφανίζονται σιωπηλά.
+const isComparable = (fb) => fb?.conditions?.live !== false;
+const skippedNotComparable = feedback.filter(fb => typeof fb?.beachId === 'number' && !isComparable(fb)).length;
+
 // aggregate per (beachId, wind sector)
 const agg = new Map();
 for (const fb of feedback) {
   if (typeof fb?.beachId !== 'number') continue;
+  if (!isComparable(fb)) continue;
   const sector = fb.conditions?.windDir || '?';
   const key = `${fb.beachId}|${sector}`;
   if (!agg.has(key)) agg.set(key, { beachId: fb.beachId, sector, verdicts: {}, modeled: {}, n: 0 });
@@ -90,12 +116,15 @@ proposals.sort((x, y) => y.samples - x.samples);
 
 console.log(`=== FEEDBACK CALIBRATION ${DEMO ? '(demo)' : ''} ===`);
 console.log(`records: ${feedback.length} | (beach,sector) cells: ${agg.size} | proposals: ${proposals.length}`);
+if (skippedNotComparable > 0) {
+  console.log(`  skipped (η οθόνη ήταν σε άλλη μέρα/ώρα — δεν αντιπαρατίθεται): ${skippedNotComparable}`);
+}
 console.log(`  UNDER-WARN (safe, conservative): ${proposals.filter(p => p.type === 'UNDER_WARN').length}`);
 console.log(`  OVER-WARN  (soften, needs 2nd source): ${proposals.filter(p => p.type === 'OVER_WARN').length}`);
 for (const p of proposals.slice(0, 40)) {
   console.log(`  [${p.type}] #${p.beachId} ${p.name} (${p.region}) ${p.sector}: ${p.negative ?? p.calmer}/${p.samples}\n     -> ${p.action}`);
 }
-writeFileSync(outPath, JSON.stringify({ generatedFrom: DEMO ? 'demo' : inputPath, recordCount: feedback.length, proposals }, null, 2), 'utf8');
+writeFileSync(outPath, JSON.stringify({ generatedFrom: DEMO ? 'demo' : inputPath, recordCount: feedback.length, skippedNotComparable, proposals }, null, 2), 'utf8');
 console.log(`\nReport: ${outPath}`);
 if (feedback.length === 0 && !DEMO) {
   console.log('No feedback records yet — the pipeline is READY. Once GA `condition_feedback` data exists,');
