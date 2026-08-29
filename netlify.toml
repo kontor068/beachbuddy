@@ -246,6 +246,28 @@
 # services/analyticsService.ts περιμένει ρητή συγκατάθεση από το banner. Δύο μέτρα και
 # δύο σταθμά — η πολιτική απορρήτου χρειάζεται να αναφέρει το Netlify ως αποδέκτη.
 #
+# 29/08/2026 — `https://www.google.com` ΣΤΟ connect-src. Ενεργή παραβίαση από
+# /beaches/naxos/ (Opera 134): το GA4 έστειλε χτύπημα στο www.google.com/g/collect με
+# το δικό μας tid και cid.
+#
+# ΓΙΑΤΙ ΕΠΙΤΡΕΠΕΤΑΙ ΕΝΩ ΤΟ ΧΘΕΣΙΝΟ ΟΧΙ — η διαφορά είναι η ΔΙΑΔΡΟΜΗ, όχι η εταιρεία.
+# Χθες κόπηκε το pagead2.googlesyndication.com/measurement/conversion: διαφημιστικό
+# δίκτυο, διαδρομή μετατροπών. Εδώ η διαδρομή είναι `/g/collect`, η ίδια ακριβώς που
+# χρησιμοποιεί το GA4 για τη ΜΕΤΡΗΣΗ στο *.google-analytics.com — άλλος οικοδεσπότης,
+# ίδιο πράγμα. Και το αίτημα κουβαλάει τις δικές μας αρνήσεις πάνω του (npa=1,
+# gcs=G101: μετρήσεις ναι, διαφήμιση όχι), που δείχνει ότι οι σημαίες της 28/08
+# δουλεύουν και το περιεχόμενο μένει μη-εξατομικευμένο.
+#
+# Το μάθημα της 04/08 βαραίνει περισσότερο από τη στενότητα: μια διεύθυνση που λείπει
+# ΡΙΧΝΕΙ ΣΙΩΠΗΛΑ πραγματικές επισκέψεις, με κάθε σελίδα να απαντάει κανονικά 200 —
+# ακριβώς αυτό είχε γίνει τότε με το googletagmanager. Σε site που ζει από την
+# οργανική επισκεψιμότητα, λάθος νούμερα είναι χειρότερα από μια πλατύτερη γραμμή.
+#
+# ΤΙ ΔΕΝ ΞΕΡΩ, ΓΡΑΜΜΕΝΟ ΤΙΜΙΑ: δεν μπόρεσε να δοκιμαστεί ζωντανά αν αυτό το χτύπημα
+# διπλασιάζει ό,τι πάει ήδη στο google-analytics.com ή κουβαλάει δικά του δεδομένα. Η
+# αμφιβολία λύθηκε υπέρ του να ΜΗ χάνονται μετρήσεις. Είναι connect-src μόνο: επιτρέπει
+# αίτημα προς τον οικοδεσπότη, ΟΧΙ φόρτωση script από αυτόν.
+#
 # 28/08/2026 — `data:` ΣΤΟ font-src. Ενεργή παραβίαση «CSP blocked data (font-src)» από
 # /beaches/evia/288-piso-sykia/ σε Chrome 151. Μετρήθηκε πριν την αλλαγή: ΜΗΔΕΝ
 # γραμματοσειρές `data:` σε ολόκληρο το dist/ — οι δικές μας είναι αρχεία στο /fonts/
@@ -259,7 +281,7 @@
 # 4 KB. Τα σημερινά woff2 είναι πολύ μεγαλύτερα, αλλά μια μικρή γραμματοσειρά εικονιδίων
 # αύριο θα γινόταν σιωπηλά `data:` — και με `font-src 'self'` θα εξαφανιζόταν από τη
 # σελίδα χωρίς να το πάρει κανείς είδηση. Σίγαση της αναφοράς θα έκρυβε ΚΑΙ αυτό.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
