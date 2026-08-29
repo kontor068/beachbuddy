@@ -15,10 +15,18 @@
 
 // The quota these thresholds guard. Since 09/08/2026 the plan is PAID Open-Meteo
 // API Standard: 1,000,000 calls per MONTH — a monthly bucket, not a daily wall.
-// 1M/month averages ~33k/day, so the daily lines sit at ~55% (heads-up: a normal
-// August day should never see this) and ~76% (a day like this every day would
-// exhaust the month). They replaced the free-tier 5k/7k lines, which sat at 15%
-// and 21% of the new budget and would have cried wolf daily until ignored.
+// 1M/month averages ~33k/day, so the daily lines sit at ~55% and ~76% of that
+// average. They replaced the free-tier 5k/7k lines, which sat at 15% and 21% of the
+// new budget and would have cried wolf daily until ignored.
+//
+// ΠΡΟΣΟΧΗ ΣΤΗΝ ΑΡΙΘΜΗΤΙΚΗ (29/08/2026): ΟΥΤΕ η κόκκινη γραμμή εξαντλεί τον μήνα.
+// 25.000/ημέρα × 30 = 750.000, δηλαδή 75% του εκατομμυρίου· 18.000 × 30 = 540.000,
+// δηλαδή 54%. Η ειδοποίηση έλεγε ως σήμερα «μια τέτοια μέρα ΚΑΘΕ μέρα εξαντλεί τον
+// μήνα», και το σχόλιο εδώ έλεγε το ίδιο — και τα δύο λάθος. Είναι το είδος του
+// λάθους που σκοτώνει ένα κανάλι ειδοποιήσεων: μια προειδοποίηση που φωνάζει «τέλος»
+// ενώ είσαι στο 75% διαβάζεται μία φορά με αγωνία και μετά αγνοείται. Οι γραμμές ΔΕΝ
+// αλλάζουν — ως σημεία προσοχής στέκουν μια χαρά· αλλάζει το τι λέει η ειδοποίηση,
+// που πλέον τυπώνει τον ΠΡΑΓΜΑΤΙΚΟ μετρητή του κύκλου αντί για ισχυρισμό.
 export const MONTHLY_QUOTA = 1_000_000;
 export const DAILY_BUDGET = Math.round(MONTHLY_QUOTA / 30); // ~33k
 export const DEFAULT_THRESHOLDS = Object.freeze({ amber: 18000, red: 25000 });
@@ -197,7 +205,13 @@ export function recordRateLimited(prev, dayKey, increment = 1) {
 }
 
 /** Telegram message body for a threshold/429 alarm — Greek, severity-tagged, with a "what to do" line. */
-export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLDS) {
+/**
+ * @param usage Το αποτέλεσμα του monthlyUsage() για την ΙΔΙΑ κατάσταση, όταν υπάρχει.
+ *   Χωρίς αυτό η ειδοποίηση μιλάει γενικά· με αυτό λέει πόσο από το εκατομμύριο έχει
+ *   πραγματικά φαγωθεί και πού βγάζει ο ρυθμός — η μόνη πληροφορία πάνω στην οποία
+ *   μπορεί να δράσει κανείς.
+ */
+export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLDS, usage = null) {
   if (level === 'rate_limited') {
     // A 429 on the PAID plan is a different animal than on the free tier: the paid
     // hosts have no ~600/minute ceiling, so a refusal means either the monthly
@@ -213,9 +227,31 @@ export function formatCapacityAlert(level, count, thresholds = DEFAULT_THRESHOLD
   }
   const tag = level === 'red' ? '🟠 ΠΡΟΣΟΧΗ — παρακολούθησε' : '🔵 ΕΝΗΜΕΡΩΣΗ';
   const limit = level === 'red' ? thresholds.red : thresholds.amber;
+  const quota = usage?.quota || MONTHLY_QUOTA;
+  const el = n => Number(n).toLocaleString('el-GR');
+
+  // Ο κύκλος μέχρι τώρα, από τον πραγματικό μετρητή — όχι από ισχυρισμό.
+  const monthLine = usage
+    ? `Ο κύκλος μέχρι τώρα: <b>${el(usage.used)}</b> από ${el(quota)} (${usage.percent}%), μέρα ${usage.dayIndex}/${usage.cycleDays}.\n`
+    : '';
+
+  // Πού βγάζει ο ρυθμός. Χωρίς σφραγισμένες μέρες δεν προβλέπουμε — και το λέμε.
+  const paceLine = usage
+    ? (usage.projected === null
+      ? 'Δεν υπάρχουν ακόμα αρκετές σφραγισμένες μέρες για πρόβλεψη του κύκλου.\n'
+      : `Με τον ρυθμό των μετρημένων ημερών (~${el(usage.avgPerDay)}/ημέρα) ο κύκλος βγάζει ~${el(usage.projected)} — ${
+        usage.willExceed ? '<b>πάνω από το όριο</b>' : `${Math.round((usage.projected / quota) * 100)}% του ορίου`
+      }.\n`)
+    : '';
+
+  // Η οδηγία ακολουθεί την πρόβλεψη αντί να την προκαταλαμβάνει.
+  const whatToDo = level === 'red'
+    ? (usage?.willExceed
+      ? 'Τι να κάνεις: ο ρυθμός ΟΝΤΩΣ ξεπερνά το πακέτο — δες τον μετρητή μήνα στο customer portal και τι ανέβασε την κίνηση.'
+      : 'Τι να κάνεις: τίποτα επείγον. Η μέρα τρέχει ψηλά, αλλά ο κουβάς είναι μηνιαίος και ο ρυθμός δεν εξαντλεί το πακέτο. Παρακολούθησε αν επαναληφθεί.')
+    : 'Τι να κάνεις: καμία ενέργεια — ενημέρωση ότι η μέρα τρέχει πάνω από τον μέσο όρο. Ο μηνιαίος κουβάς απορροφά αιχμές.';
+
   return `${tag}\n<b>Χωρητικότητα: ${count} σταθμισμένες κλήσεις στο Open-Meteo σήμερα</b>\n` +
-    `Περάσαμε τη γραμμή των ${limit.toLocaleString('el-GR')}/ημέρα (πακέτο 1 εκατ./μήνα ≈ ${DAILY_BUDGET.toLocaleString('el-GR')}/ημέρα μέσος όρος).\n` +
-    (level === 'red'
-      ? 'Τι να κάνεις: μια τέτοια μέρα ΚΑΘΕ μέρα εξαντλεί τον μήνα. Μεμονωμένη αιχμή δεν πειράζει — ο κουβάς είναι μηνιαίος. Δες τον μετρητή μήνα στο customer portal.'
-      : 'Τι να κάνεις: καμία ενέργεια — ενημέρωση ότι η μέρα τρέχει πάνω από τον μέσο όρο. Ο μηνιαίος κουβάς απορροφά αιχμές.');
+    `Περάσαμε τη γραμμή των ${el(limit)}/ημέρα (πακέτο 1 εκατ./μήνα ≈ ${el(DAILY_BUDGET)}/ημέρα μέσος όρος).\n` +
+    monthLine + paceLine + whatToDo;
 }

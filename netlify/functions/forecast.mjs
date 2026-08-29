@@ -22,7 +22,7 @@
 import { createHash } from 'node:crypto';
 import { connectLambda, getStore } from '@netlify/blobs';
 import {
-  recordCalls, recordRateLimited, formatCapacityAlert, utcDayKey, DEFAULT_THRESHOLDS,
+  recordCalls, recordRateLimited, formatCapacityAlert, monthlyUsage, utcDayKey, DEFAULT_THRESHOLDS,
 } from './lib/capacityAlarm.mjs';
 
 // Each provider has two hosts: the free one, and Open-Meteo's reserved "customer-"
@@ -372,7 +372,11 @@ const meterUpstream = async ({ rateLimited, points = 1 }) => {
       } else {
         const r = recordCalls(prev, dayKey, points, th);
         state = r.next;
-        if (r.crossed) alert = formatCapacityAlert(r.crossed, state.count, th);
+        // Ο μετρητής του κύκλου υπολογίζεται ΜΟΝΟ όταν όντως στέλνουμε ειδοποίηση:
+        // είναι καθαρός υπολογισμός πάνω στην κατάσταση που μόλις γράψαμε, χωρίς
+        // επιπλέον I/O, αλλά ο δρόμος της πρόγνωσης τρέχει σε κάθε αστοχία μνήμης
+        // και δεν χρειάζεται να τον πληρώνει για μια ειδοποίηση που δεν θα σταλεί.
+        if (r.crossed) alert = formatCapacityAlert(r.crossed, state.count, th, monthlyUsage(state));
       }
 
       const written = await store.setJSON(
