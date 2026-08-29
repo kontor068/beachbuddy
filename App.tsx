@@ -5144,14 +5144,26 @@ export const App: React.FC = () => {
    * Αντί για empty state που εξηγεί μια αντίφαση, το ένα κουμπί σβήνει το άλλο — μία επιλογή τη
    * φορά, πάντα με αποτέλεσμα.
    */
+  /**
+   * ΤΟ ΧΡΩΜΑ ΕΙΝΑΙ ΦΙΛΤΡΟ, ΑΡΑ ΓΥΡΙΖΕΙ ΤΗ ΛΩΡΙΔΑ ΤΩΝ ΚΑΡΤΩΝ ΣΤΗΝ ΑΡΧΗ (29/08/2026).
+   *
+   * Κάθε άλλο φίλτρο της ίδιας λίστας το κάνει ήδη (handleToggleAdvancedFilter,
+   * handleTogglePreference, handleClearAdvancedFilter). Το χρώμα το ξεχνούσε: η λωρίδα έμενε
+   * εκεί που την είχε αφήσει το δάχτυλο, οπότε μετά το «Ιδανική 1 παραλία» η μία κάρτα που
+   * απέμεινε μπορεί να ήταν εκτός οθόνης και ο αναγνώστης έπρεπε να την ψάξει με σκρολ.
+   * Το ίδιο μηδενίζει και τη φωτισμένη κάρτα, που αλλιώς θα έδειχνε παραλία σβησμένη απ' το
+   * φίλτρο (Μίλτος, 29/08/2026).
+   */
   const selectMapToneFilter = useCallback((tone: CalmnessTone | null) => {
     setMapToneFilter(tone);
     if (tone) setCalmWaterFilter(false);
-  }, []);
+    if (!isDesktopViewport) setMobileResultListResetKey(key => key + 1);
+  }, [isDesktopViewport]);
   const selectCalmWaterFilter = useCallback((active: boolean) => {
     setCalmWaterFilter(active);
     if (active) setMapToneFilter(null);
-  }, []);
+    if (!isDesktopViewport) setMobileResultListResetKey(key => key + 1);
+  }, [isDesktopViewport]);
   /**
    * The podium's view of the map's own colours: ΙΔΑΝΙΚΗ → 0, ΔΥΣΚΟΛΗ → 3, unknown → undefined.
    *
@@ -5262,7 +5274,21 @@ export const App: React.FC = () => {
     if (!selectedIsland) return undefined;
     // The tone belongs in the key in BOTH branches: without it the fit effect sees the same key
     // and never re-runs, which is exactly the empty map above.
-    if (mapToneFilter) return `${selectedIsland.id}:tone:${mapToneFilter}`;
+    //
+    // ΚΑΙ ΤΟ ΣΥΝΟΛΟ ΜΑΖΙ ΤΟΥ, ΟΧΙ ΜΟΝΟ ΤΟ ΧΡΩΜΑ (29/08/2026). Ίδιο μάθημα με το «Ήρεμο νερό»
+    // από κάτω, που το εφάρμοζε ήδη: ΠΟΙΕΣ παραλίες φοράνε ένα χρώμα αλλάζει ενώ το φίλτρο μένει
+    // αναμμένο — η μπάρα της ώρας το αλλάζει, και το αλλάζει και η καθυστερημένη άφιξη των
+    // προφίλ έκθεσης στο κινητό. Κλειδωμένο στο χρώμα και μόνο, το κάδρο έβλεπε ίδιο κλειδί και
+    // ΔΕΝ ξανάτρεχε: ο χάρτης έμενε εκεί που τον είχε αφήσει η προηγούμενη ομάδα, με το πλακίδιο
+    // να λέει «Ιδανική 1 παραλία» και αυτή τη μία παραλία εκτός οθόνης (Μίλτος, 29/08/2026:
+    // «πάτησα τις ιδανικές … και δεν με πήγες στην παραλία στον χάρτη, έπρεπε να κάνω σκρολ»).
+    if (mapToneFilter) {
+      const toneSignature = applyMapToneFilter(mapFitBoundsBeaches)
+        .map(item => item.beachId)
+        .sort((a, b) => a - b)
+        .join('-');
+      return `${selectedIsland.id}:tone:${mapToneFilter}:${toneSignature}`;
+    }
     // Same lesson, same fix: «Ήρεμο νερό 9» on a viewport holding none of the nine is the Evia
     // bug wearing a different button. Keyed on the SET, not the flag, because the offer changes
     // as the hour slider moves while the filter stays on.
@@ -5277,7 +5303,7 @@ export const App: React.FC = () => {
       .sort((a, b) => a - b)
       .join('-');
     return `${selectedIsland.id}:q:${matchSignature}`;
-  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches, mapToneFilter, isCalmWaterActive, calmWaterOffer]);
+  }, [selectedIsland, isBeachNameSearchActive, filteredMapSuitableBeaches, mapToneFilter, applyMapToneFilter, mapFitBoundsBeaches, isCalmWaterActive, calmWaterOffer]);
   const isProtectedSortOnly = useMemo(() => {
     return sortBy === 'protected' &&
       beachSearchQuery.trim().length === 0 &&

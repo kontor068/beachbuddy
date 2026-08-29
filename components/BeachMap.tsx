@@ -1448,11 +1448,40 @@ const HighlightedBeachFollower = ({
   heldRef?: React.MutableRefObject<unknown>;
 }) => {
   const map = useMap();
+  /**
+   * ΠΟΙΑ ΦΩΤΙΣΜΕΝΗ ΠΑΡΑΛΙΑ ΕΧΕΙ ΗΔΗ ΑΠΑΝΤΗΘΕΙ (29/08/2026).
+   *
+   * Η κάμερα απαντάει στο ΓΕΓΟΝΟΣ «άλλαξε η φωτισμένη κάρτα», όχι στο «ξαναέτρεξε το effect».
+   * Οι εξαρτήσεις εδώ (`beaches`, `center`) αλλάζουν σε κάθε render — άλλη ώρα στην μπάρα, άλλο
+   * φίλτρο χρώματος, κάθε μετακίνηση του χάρτη — και χωρίς αυτό το ref κάθε τέτοιο render
+   * ξανατραβούσε τον χάρτη στην παλιά φωτισμένη παραλία. Έτσι ακριβώς ακυρωνόταν το κάδρο που
+   * μόλις είχε φτιάξει το FitBeachBounds: πατούσες «Ιδανική 1 παραλία» και ο χάρτης, αντί να
+   * σε πάει σε αυτήν, γύριζε στην παραλία της κάρτας που κοιτούσες πριν (Μίλτος, 29/08/2026:
+   * «πάτησα τις ιδανικές … και δεν με πήγες στην παραλία στον χάρτη»).
+   */
+  const followedBeachIdRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    if (!enabled || typeof highlightedBeachId !== 'number' || heldRef?.current) return;
+    /* Καμία φωτισμένη κάρτα = η επόμενη που θα φωτιστεί είναι καινούργια στροφή, ακόμα κι αν
+       είναι η ίδια παραλία (η λωρίδα βγαίνει από το κάδρο και ξαναμπαίνει). */
+    if (typeof highlightedBeachId !== 'number') {
+      followedBeachIdRef.current = undefined;
+      return;
+    }
+    if (!enabled || heldRef?.current) return;
 
     const highlightedBeach = beaches.find(item => item.beachId === highlightedBeachId);
+    /* «Δεν έχουν έρθει ακόμα πινέζες» ΔΕΝ είναι το ίδιο με «η πινέζα είναι κρυμμένη»: στο πρώτο
+       δεν σημειώνουμε τίποτα, ώστε να απαντήσουμε μόλις φορτωθούν. Στο δεύτερο —φίλτρο χρώματος
+       που έσβησε αυτή την πινέζα— η στροφή θεωρείται απαντημένη και ΔΕΝ ξαναζητιέται, αλλιώς θα
+       επέστρεφε τη στιγμή που το φίλτρο καθαρίζει. */
+    if (!highlightedBeach && beaches.length === 0) return;
+    if (followedBeachIdRef.current === highlightedBeachId) return;
+    followedBeachIdRef.current = highlightedBeachId;
+    /* Η κάμερα κυνηγάει ΜΟΝΟ ό,τι φαίνεται: το `beaches` εδώ είναι οι ΟΡΑΤΕΣ πινέζες
+       (markerBeaches), όχι όλη η περιοχή. Με ενεργό φίλτρο χρώματος η παλιά φωτισμένη παραλία
+       δεν υπάρχει πια πάνω στον χάρτη — και ένα pan σε αυτήν άφηνε τον αναγνώστη να κοιτάει μια
+       ακτή χωρίς ούτε μία πινέζα. */
     if (!highlightedBeach) return;
 
     const markerCoordinate = getBeachMapCoordinates(highlightedBeach.beach, {
@@ -4623,8 +4652,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
             fitKey={fitBoundsKey}
           />
           <PopupPansOnlyOnOpen />
+          {/* markerBeaches, όπως και ο VisibleBeachTracker από κάτω: η κάμερα δεν επιτρέπεται να
+              κυνηγήσει πινέζα που το φίλτρο έχει σβήσει από τον χάρτη. */}
           <HighlightedBeachFollower
-            beaches={beaches}
+            beaches={markerBeaches}
             center={center}
             highlightedBeachId={highlightedBeachId}
             enabled={followHighlightedBeach}
