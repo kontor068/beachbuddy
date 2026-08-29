@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon, Thermometer } from 'lucide-react';
+import { AlertTriangle, ShowerHead, MapPin, Star, Share2, Heart, Navigation, Info, Waves, Utensils, Trees, CircleDot, CircleDotDashed, Mountain, Droplets, ArrowDown, BadgeCheck, Leaf, Martini, Shield, Users, Clock3, Flag, Footprints, Wind, Tent, Ticket, Euro, Medal, Camera, Accessibility as AccessibilityIcon, Thermometer } from 'lucide-react';
 import { SHORE_LABELS, READ_LABELS } from './BeachAnswerHero';
 import { Beach, Accessibility, LanguageCode, BeachType, CrowdLevel, WarningFlag, RecommendationConfidence, SwimmingComfort, WindSuitabilityColor, PaidEntryKind } from '../types';
 import { Translation } from '../types';
@@ -822,6 +822,12 @@ export const AccessibilityInfo: React.FC<{ accessibility: Accessibility; t: Tran
 
 const amenityChipIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNode => {
   switch (chip.key) {
+    // ΟΧΙ τικ για το beach bar (29/08/2026): στην κάρτα οι έξι σταθερές θέσεις δείχνουν και
+    // τις παροχές που ΛΕΙΠΟΥΝ (αχνό, διακεκομμένο chip). Ένα εικονίδιο-τικ (BadgeCheck) μέσα
+    // σε «δεν έχει» διαβαζόταν ως «έχει, επιβεβαιωμένο» — αναφέρθηκε σε πραγματική παραλία.
+    // Το ποτήρι λέει «beach bar» χωρίς να δηλώνει ναι/όχι· το ναι/όχι το λέει το περίγραμμα.
+    case 'beachBar':
+      return <Martini className="h-3.5 w-3.5" />;
     case 'sunbeds':
       return <SunbedIcon className="h-3.5 w-3.5" />;
     case 'foodNearby':

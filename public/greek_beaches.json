@@ -125055,7 +125055,8 @@
             "organized": false,
             "shade": false,
             "amenities": [
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar"
             ],
             "confidence": "high",
             "language": "el",
@@ -125065,7 +125066,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 146968308 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and local tourism sources identify Mati/Chrysi Ammos near Romanos/Petrochori; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 146968308 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and local tourism sources identify Mati/Chrysi Ammos near Romanos/Petrochori; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Owner correction 2026-08-29: first-hand local report confirms a beach bar operates at Mati — the 2026-06-20 Places heuristic (zero food/drink POI within 180 m) was a false negative here. Restored the 'beach bar' amenity; organized/sunbeds left unchanged because only the bar was confirmed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/146968308",
               "https://messinia.mobi/en/article/fusi/paralies/paralia-mati-chrisi-ammos/122",
