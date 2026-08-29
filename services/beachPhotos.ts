@@ -896,8 +896,22 @@ const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> 
     'Moutsouna': [wm('Moutsouna.jpg')],
     'Λίωνας': [wm('Ducks at Lyonas beach, Naxos island, Greece.jpg')],
     'Lionas': [wm('Ducks at Lyonas beach, Naxos island, Greece.jpg')],
-    'Πυργάκι': [wm('Naxos - Pirgaki - Sand Beach - panoramio.jpg')],
-    'Pyrgaki': [wm('Naxos - Pirgaki - Sand Beach - panoramio.jpg')],
+    /**
+     * Πυργάκι και Καλαντός ΧΩΡΙΣ φωτογραφία (29/08/2026). Ο Μίλτος τις είδε στη σελίδα και
+     * είπε ότι δεν δείχνουν παραλία. Το Καλαντός το επιβεβαιώνει ο ίδιος ο τίτλος του αρχείου
+     * — «Sheep and goats at Kalandos», θέμα του είναι τα ζώα, όχι η αμμουδιά. Στο Πυργάκι ο
+     * τίτλος λέει «Sand Beach» αλλά το κάδρο δεν πείθει.
+     *
+     * Δεν μπήκε αντικαταστάτης επειδή δεν βρέθηκε άλλο επαληθευμένο αρχείο: το Wikimedia
+     * Commons είναι αποκλεισμένο από το δίκτυο αυτής της συνεδρίας, και ούτε στα τοπικά
+     * ευρετήρια υποψηφίων (reports/photo-coverage/deep-pass/geo-*, category-naxos.txt)
+     * υπάρχει δεύτερο αρχείο για καμία από τις δύο. Κενή κάρτα (source: 'none') αντί για
+     * λάθος φωτογραφία — η ίδια γραμμή που κρατάμε στα Ιόνια και στη Μήλο.
+     *
+     * Για να ξαναμπεί: βρες αρχείο Commons που δείχνει την ίδια την παραλία, δες το με τα
+     * μάτια σου, και βάλ' το εδώ ή στο data/beachPhotosById.generated.json (ids 2013
+     * Πυργάκι, 1995 Παραλία Καλαντός).
+     */
     'Παραλία Σπεδό': [wm('Spedos Naxos Greece 2011082815261NP6193.jpg')],
     'Paralia Spedo': [wm('Spedos Naxos Greece 2011082815261NP6193.jpg')],
     'Hawaii': [wm('Hawaii Beach on Naxos Island, Greece.jpg')],
@@ -905,7 +919,6 @@ const CYCLADES_BEACH_PHOTOS_BY_ISLAND: Record<string, Record<string, string[]>> 
     'Agii Theodori': [wm('Agii Theodori beach islet.jpg')],
     'Μικρό Αλυκό': [wm('Cyclades Naxos Kouroupia Plage 18062013 - panoramio.jpg')],
     'Mikro Alyko': [wm('Cyclades Naxos Kouroupia Plage 18062013 - panoramio.jpg')],
-    'Παραλία Καλαντός': [wm('Sheep and goats at Kalandos Naxos Greece DSCN1186.jpg')],
     'Κέδρος': [wm('Strand beach Aliko Naxos (23979680432).jpg')],
     'Πάνορμος': [wm('Πάνερμος.jpg')],
   },
