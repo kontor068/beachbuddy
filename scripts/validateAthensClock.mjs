@@ -38,6 +38,9 @@ const INSTANT_ONLY_MODULES = new Set([
   'services/forecastVerificationService.ts', // captured-at timestamps
   'services/nationalConditions.ts',   // fetch cache TTL
   'components/InstallPrompt.tsx',     // dismissal cool-down
+  // Usage-day keys + dismissal cool-down. The day key is deliberately the VIEWER's calendar
+  // day — it measures their own habit of coming back, not anything about Greek forecast time.
+  'components/AppRatingPrompt.tsx',
 ]);
 
 const EXEMPT_MARKER = 'athens-clock-exempt';

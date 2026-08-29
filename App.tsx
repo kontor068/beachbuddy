@@ -7,6 +7,7 @@ import { AlertTriangle, CheckCircle2, Clock3, Navigation, RefreshCw, Waves, Wind
 import Header from './components/Header';
 import SkeletonLoader from './components/SkeletonLoader';
 import { InstallPrompt } from './components/InstallPrompt';
+import { AppRatingPrompt } from './components/AppRatingPrompt';
 import { UnsafeConditionsMessage } from './components/UnsafeConditionsMessage';
 import { PreferenceFilters } from './components/PreferenceFilters';
 import { BeachFilters } from './components/BeachFilters';
@@ -9474,6 +9475,10 @@ export const App: React.FC = () => {
       )}
 
       <InstallPrompt language={language} />
+
+      {/* «Rate the app 1–10» — asks only from the 5th distinct day of use, and never
+          while another dialog (install prompt included) is on screen. */}
+      <AppRatingPrompt language={language} />
 
       {photoSheetOverlay}
 

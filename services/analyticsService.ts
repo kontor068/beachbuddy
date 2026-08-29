@@ -150,6 +150,12 @@ export type AnalyticsEvent =
   | 'install_prompt_accepted'
   | 'install_prompt_dismissed'
   | 'app_installed'
+  // The "rate the app 1–10" card (components/AppRatingPrompt.tsx). shown/dismissed measure
+  // whether the ask itself annoys people; submitted carries the two scores as metadata so
+  // GA4 can average them without waiting for the Telegram archive.
+  | 'app_rating_prompt_shown'
+  | 'app_rating_prompt_dismissed'
+  | 'app_rating_submitted'
   // One real Open-Meteo origin fetch (cache MISS only). The GA4 aggregate of these
   // ≈ our real calls/day and is the trigger signal for moving to a shared server cache.
   | 'open_meteo_fetch';
@@ -612,6 +618,49 @@ export const sendLandingMessage = async (payload: {
   } catch (error) {
     if (import.meta.env.DEV) {
       console.warn('[Feedback] Landing message delivery failed.', error);
+    }
+    return false;
+  }
+};
+
+/**
+ * The "rate the app" submission (components/AppRatingPrompt.tsx): two 1–10 scores plus an
+ * optional free-text note, over the same Telegram function as beach feedback. Like the
+ * landing message, deliberately NOT consent-gated — content the visitor chose to send us,
+ * not tracking. Resolves true only on a real 2xx so the card can offer a retry instead of
+ * pretending the rating went out.
+ */
+export const sendAppRating = async (payload: {
+  easeOfUse: number;
+  accuracy: number;
+  message?: string;
+  /** Distinct days of use before the card asked — context for reading the scores. */
+  usageDays?: number;
+  language?: string;
+}): Promise<boolean> => {
+  if (typeof fetch === 'undefined') return false;
+
+  try {
+    const response = await fetch('/.netlify/functions/feedback-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source: 'app_rating_prompt',
+        feedback: 'app_rating',
+        ratings: { easeOfUse: payload.easeOfUse, accuracy: payload.accuracy },
+        usageDays: payload.usageDays,
+        message: payload.message || '',
+        timestamp: new Date().toISOString(),
+        context: {
+          language: payload.language,
+          pagePath: typeof window !== 'undefined' ? window.location.pathname : '',
+        },
+      }),
+    });
+    return response.ok;
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn('[Feedback] App rating delivery failed.', error);
     }
     return false;
   }

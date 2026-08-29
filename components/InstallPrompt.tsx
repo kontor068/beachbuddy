@@ -192,6 +192,11 @@ export const InstallPrompt: React.FC<{ language: LanguageCode }> = ({ language }
     const reveal = (next: InstallMode) => {
       if (!engagedRef.current) return;
       if (!allowedToAsk(readState())) return;
+      // Never stack on top of another dialog — a modal the visitor opened, or the
+      // AppRatingPrompt card that shares this exact corner of the screen. Skipping
+      // one session is cheap; two overlapping cards are exactly the nagging both
+      // prompts were designed to avoid.
+      if (document.querySelector('[role="dialog"]')) return;
       setMode(next);
       // Next frame so the element mounts hidden, then transitions in.
       requestAnimationFrame(() => setVisible(true));
