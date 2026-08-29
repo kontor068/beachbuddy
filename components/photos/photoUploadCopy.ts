@@ -106,8 +106,8 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     // second narrator speaking in the first person singular.
     submitting: 'Στέλνεται…',
     preparing: 'Ετοιμάζεται η φωτογραφία…',
-    successTitle: 'Την πήραμε — ευχαριστούμε.',
-    successBody: 'Θα τη δει άνθρωπος πριν δημοσιευτεί. Αν περάσει, θα εμφανιστεί στην κάρτα της παραλίας.',
+    successTitle: 'Σ\' ευχαριστούμε πολύ — αυτό ακριβώς χρειαζόμαστε!',
+    successBody: 'Αληθινές φωτογραφίες σαν τη δική σου είναι αυτές που κάνουν το CalmBeach πιο χρήσιμο. Θα τη δει άνθρωπος πριν δημοσιευτεί, και μετά θα εμφανιστεί στην κάρτα της παραλίας.',
     successAgain: 'Στείλε κι άλλη',
     successDone: 'Τέλεια',
     errors: {
@@ -150,8 +150,8 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     submit: 'Send the photo',
     submitting: 'Sending…',
     preparing: 'Preparing your photo…',
-    successTitle: 'Got it — thank you.',
-    successBody: 'A person reviews it before it goes live. If it passes, it appears on the beach card.',
+    successTitle: 'Thank you — this is exactly what we need!',
+    successBody: 'Real photos like yours are what makes CalmBeach more useful. A person reviews it before it goes live, and then it appears on the beach card.',
     successAgain: 'Send another',
     successDone: 'Done',
     errors: {
@@ -194,8 +194,8 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     submit: 'Foto senden',
     submitting: 'Senden…',
     preparing: 'Foto wird vorbereitet…',
-    successTitle: 'Angekommen — danke.',
-    successBody: 'Ein Mensch prüft es vor der Veröffentlichung. Wenn es passt, erscheint es auf der Strandkarte.',
+    successTitle: 'Vielen Dank — genau das brauchen wir!',
+    successBody: 'Echte Fotos wie deins machen CalmBeach noch nützlicher. Ein Mensch prüft es vor der Veröffentlichung, danach erscheint es auf der Strandkarte.',
     successAgain: 'Noch eins senden',
     successDone: 'Fertig',
     errors: {
@@ -238,8 +238,8 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     submit: 'Envoyer la photo',
     submitting: 'Envoi…',
     preparing: 'Préparation de la photo…',
-    successTitle: 'Bien reçue — merci.',
-    successBody: 'Une personne la vérifie avant publication. Si elle passe, elle apparaîtra sur la fiche de la plage.',
+    successTitle: 'Merci beaucoup — c’est exactement ce qu’il nous faut !',
+    successBody: 'Les vraies photos comme la vôtre rendent CalmBeach encore plus utile. Une personne la vérifie avant publication, puis elle apparaît sur la fiche de la plage.',
     successAgain: 'En envoyer une autre',
     successDone: 'Terminé',
     errors: {
@@ -282,8 +282,8 @@ export const photoUploadCopy: Record<LanguageCode, PhotoUploadCopy> = {
     submit: 'Invia la foto',
     submitting: 'Invio…',
     preparing: 'Preparo la foto…',
-    successTitle: 'Ricevuta — grazie.',
-    successBody: 'Una persona la controlla prima della pubblicazione. Se passa, appare sulla scheda della spiaggia.',
+    successTitle: 'Grazie mille — è proprio quello che ci serve!',
+    successBody: 'Le foto vere come la tua rendono CalmBeach ancora più utile. Una persona la controlla prima della pubblicazione, poi appare sulla scheda della spiaggia.',
     successAgain: 'Inviane un’altra',
     successDone: 'Fatto',
     errors: {
