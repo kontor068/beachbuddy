@@ -30,8 +30,35 @@ export interface HeroConditions {
   sampledAt: number;
 }
 
-/** How recent a reading has to be before the UI may call it live. */
-const FRESH_MS = 60 * 60 * 1000;
+/**
+ * How recent a reading has to be before the UI may call it live.
+ *
+ * TIED TO OUR OWN CDN WINDOW, not chosen freely (29/08/2026). This was 60 min
+ * while netlify/functions/forecast.mjs served the weather route with
+ * `s-maxage=3600` + `stale-while-revalidate=1800` — a body the CDN is DESIGNED
+ * to hand out at up to 90 minutes old (the function's own comment calls 90 min
+ * "worst-case age of what a visitor sees"). The two numbers were set
+ * independently and never compared, so every reading aged 60–90 min — the last
+ * third of each cache cycle — arrived, was correctly back-dated by
+ * services/nationalConditions.ts, and was then thrown away as stale. The whole
+ * shelter strip silently lost its counts, its bars and its shelter ordering,
+ * degrading to the plain subtitle and the default region order. Reported from
+ * the live site as "the tiles went back to how they were".
+ *
+ * WIDENING THIS DOES NOT WEAKEN THE STALENESS DOCTRINE, and that is the only
+ * reason it is allowed to move: the dangerous path is the edge proxy's rescue
+ * store, which answers 200 with a body up to TWELVE HOURS old. That body still
+ * travels with its real age in X-Forecast-Age-Seconds, is still back-dated, and
+ * is still refused here by a wide margin. What changed is only that we stop
+ * discarding readings our own cache is deliberately serving.
+ *
+ * IF THE ROUTE'S CACHE WINDOW MOVES, MOVE THIS WITH IT: the ceiling is
+ * CDN_MAX_AGE_S.weather + CDN_STALE_WHILE_REVALIDATE_S in
+ * netlify/functions/forecast.mjs. It cannot be imported — that file is a Netlify
+ * function, not application code — so the two live apart and this comment is the
+ * only thing holding them together.
+ */
+const FRESH_MS = 90 * 60 * 1000;
 /**
  * How often we re-ask whether the reading is still recent enough to speak for
  * "today". Coarse on purpose: the answer changes at most once per session and a
@@ -80,7 +107,7 @@ export const useNationalConditions = (): HeroConditions => {
   // phone that opens this page at 09:00 and is picked up again at 15:00 — the
   // ordinary way a beach site is used — still has the 09:00 component mounted,
   // still holds `isFresh: true`, and would still be printing this morning's
-  // «σήμερα δεν φυσάει πολύ» six hours later. The whole point of the one-hour
+  // «σήμερα δεν φυσάει πολύ» six hours later. The whole point of the freshness
   // window is that it expires; a boolean frozen at mount never does.
   //
   // So: re-evaluate on a slow tick and whenever the tab comes back to the
