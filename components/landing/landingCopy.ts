@@ -54,6 +54,34 @@ export type LandingCopy = {
   today: {
     title: string;
     subtitle: string;
+    /**
+     * THE LIVE SUBTITLE, shown INSTEAD of `subtitle` once we know today's wind and the reading
+     * is genuinely recent (see TodayRegionsSection). `{wind}` is replaced by the matching
+     * `windFrom` entry. When the reading is missing or stale the plain `subtitle` stays — the
+     * section degrades to what it was, never to a sentence about a wind we cannot vouch for.
+     */
+    shelterSubtitle: string;
+    /**
+     * THE SAME SENTENCE FOR A DAY THE COUNTRY DOES NOT AGREE ON. When the Ionian has a southerly
+     * and the Aegean a northerly, no single wind word is true for both, so the numbers stay and
+     * the naming goes (utils/landingShelter.ts, dominantWindSector).
+     */
+    shelterSubtitleMixed: string;
+    /**
+     * The eight compass sectors as the live subtitle needs them, N first, clockwise. They are
+     * ADJECTIVES in Greek and English («βόρειος άνεμος» / "northerly"), NOUNS after a
+     * preposition in German, French and Italian ("aus Norden", "du nord", "da nord"), because
+     * that is what each sentence template above actually needs. Deliberately NOT reused from
+     * utils/windExposureCopy.ts: that file's labels only exist in en/gr and the landing runs
+     * in five languages.
+     */
+    windFrom: [string, string, string, string, string, string, string, string];
+    /**
+     * Screen-reader label for a tile carrying numbers. `{count}`, `{total}` and `{region}` are
+     * replaced. The visual tile shows a bare fraction next to a bar, which reads as nothing
+     * out loud — this is the sentence that says what the fraction means.
+     */
+    shelterAria: string;
     cta: string;
     /** Geolocation can take several seconds; the button must say it is working. */
     ctaPending: string;
@@ -273,6 +301,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // definition of explaining the obvious. It now promises the concrete thing
       // the next page delivers (wind), not the word «συνθήκες».
       subtitle: 'Αυτές ψάχνουν πιο πολύ οι επισκέπτες μας. Μπες σε μία και δες πού φυσάει σήμερα.',
+      // ΤΟ ΝΟΥΜΕΡΟ ΕΙΝΑΙ ΚΑΤΩ ΦΡΑΓΜΑ, ΚΑΙ Η ΛΕΞΗ ΕΙΝΑΙ Η ΙΔΙΑ ΜΕ ΤΟΥ ΧΑΡΤΗ (29/08/2026).
+      // «Προστατευμένη» τη λέει ο χάρτης της περιοχής ένα κλικ μετά, από την ίδια συνάρτηση —
+      // γι᾽ αυτό εδώ δεν λέμε «ήρεμες» ή «απάνεμες»: δύο λέξεις για το ίδιο πράγμα είναι δύο
+      // υποσχέσεις. Ο αριθμός ψήνεται στα 6 Μποφόρ, ώστε ο χάρτης να δείχνει πάντα
+      // τουλάχιστον τόσες (scripts/validateLandingShelterBound.mjs — 2.808 έλεγχοι).
+      shelterSubtitle: 'Σήμερα ο άνεμος είναι {wind}. Ο αριθμός δείχνει πόσες παραλίες κάθε περιοχής είναι προστατευμένες από αυτόν.',
+      shelterSubtitleMixed: 'Σήμερα ο άνεμος αλλάζει από περιοχή σε περιοχή. Ο αριθμός δείχνει πόσες παραλίες προστατεύονται σε καθεμιά.',
+      windFrom: ['βόρειος', 'βορειοανατολικός', 'ανατολικός', 'νοτιοανατολικός', 'νότιος', 'νοτιοδυτικός', 'δυτικός', 'βορειοδυτικός'],
+      shelterAria: '{region}: {count} από {total} παραλίες προστατευμένες από τον σημερινό άνεμο',
       // «Εκτίμηση ανοιχτής θάλασσας» is a caption on a chart, not a sentence.
       cta: 'Βρες προστατευμένη παραλία κοντά σου',
       ctaPending: 'Ψάχνουμε πού είσαι…',
@@ -480,6 +517,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     today: {
       title: 'Choose a region',
       subtitle: 'These are what our visitors look for most. Open one and see where the wind is today.',
+      shelterSubtitle: 'Today’s wind is {wind}. The number is how many beaches in each region are sheltered from it.',
+      shelterSubtitleMixed: 'The wind differs from region to region today. The number is how many beaches are sheltered in each one.',
+      windFrom: ['northerly', 'north-easterly', 'easterly', 'south-easterly', 'southerly', 'south-westerly', 'westerly', 'north-westerly'],
+      shelterAria: '{region}: {count} of {total} beaches sheltered from today’s wind',
       cta: 'Find a sheltered beach near you',
       ctaPending: 'Finding you…',
       allRegions: 'or see all regions',
@@ -588,6 +629,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     today: {
       title: 'Wähle eine Region',
       subtitle: 'Danach suchen unsere Besucher am häufigsten. Öffne eine und sieh, wo es heute weht.',
+      shelterSubtitle: 'Heute weht der Wind aus {wind}. Die Zahl zeigt, wie viele Strände jeder Region davor geschützt sind.',
+      shelterSubtitleMixed: 'Heute weht der Wind je nach Region anders. Die Zahl zeigt, wie viele Strände in jeder geschützt sind.',
+      windFrom: ['Norden', 'Nordosten', 'Osten', 'Südosten', 'Süden', 'Südwesten', 'Westen', 'Nordwesten'],
+      shelterAria: '{region}: {count} von {total} Stränden vor dem heutigen Wind geschützt',
       cta: 'Finde einen geschützten Strand in deiner Nähe',
       // Never "Ich" in a German UI, and never a first-person singular anywhere on
       // a page that speaks as "wir".
@@ -699,6 +744,12 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     today: {
       title: 'Choisissez une région',
       subtitle: 'Voilà ce que nos visiteurs cherchent le plus. Ouvrez-en une et voyez où ça souffle aujourd’hui.',
+      shelterSubtitle: 'Aujourd’hui le vent vient {wind}. Le chiffre indique combien de plages de chaque région en sont abritées.',
+      shelterSubtitleMixed: 'Aujourd’hui le vent change d’une région à l’autre. Le chiffre indique combien de plages sont abritées dans chacune.',
+      // Contracté sur place («du nord», «de l’est») : la phrase ci-dessus ne peut pas porter
+      // une préposition unique sans écorcher la moitié des directions.
+      windFrom: ['du nord', 'du nord-est', 'de l’est', 'du sud-est', 'du sud', 'du sud-ouest', 'de l’ouest', 'du nord-ouest'],
+      shelterAria: '{region} : {count} plages sur {total} abritées du vent d’aujourd’hui',
       cta: 'Trouver une plage abritée près de vous',
       ctaPending: 'Localisation en cours…',
       allRegions: 'ou voir toutes les régions',
@@ -808,6 +859,10 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     today: {
       title: 'Scegli una regione',
       subtitle: 'Queste sono le più cercate dai nostri visitatori. Aprine una e guarda dove tira vento oggi.',
+      shelterSubtitle: 'Oggi il vento arriva da {wind}. Il numero dice quante spiagge di ogni regione ne sono riparate.',
+      shelterSubtitleMixed: 'Oggi il vento cambia da regione a regione. Il numero dice quante spiagge sono riparate in ciascuna.',
+      windFrom: ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ovest', 'ovest', 'nord-ovest'],
+      shelterAria: '{region}: {count} spiagge su {total} riparate dal vento di oggi',
       // Italian has its own official sea-state ladder (calmo / poco mosso / mosso
       // / molto mosso / agitato) — use it rather than translating the English.
       cta: 'Trova una spiaggia riparata vicino a te',

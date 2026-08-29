@@ -28,7 +28,16 @@ export interface RegionConditionReading {
   regionId: string;
   beaufort: number;
   roughness: number;
-  dirDeg: number;
+  /**
+   * Πού ΕΡΧΕΤΑΙ ο άνεμος (μετεωρολογική σύμβαση), ή null όταν το μοντέλο δεν την έδωσε.
+   *
+   * ΗΤΑΝ `number` ΜΕ ΠΡΟΕΠΙΛΟΓΗ 0 — δηλαδή «βοριάς» — και δεν το πρόσεχε κανείς όσο δεν το
+   * διάβαζε κανένα component. Από τη στιγμή που η λωρίδα περιοχών χτίζει πάνω του («πόσες
+   * παραλίες έχουν την πλάτη τους στον σημερινό άνεμο»), μια απούσα κατεύθυνση θα τύπωνε
+   * σιωπηλά τους αριθμούς του βοριά σε μέρα νοτιά. Το null είναι το μόνο που αναγκάζει την
+   * επιφάνεια να μη λέει τίποτα αντί για κάτι λάθος.
+   */
+  dirDeg: number | null;
 }
 
 export interface NationalConditions {
@@ -182,7 +191,7 @@ export const getNationalConditions = async (): Promise<NationalConditions | null
           regionId: point.regionId,
           beaufort: bft,
           roughness: roughnessFromBeaufort(bft),
-          dirDeg: typeof entry?.current?.wind_direction_10m === 'number' ? entry.current.wind_direction_10m : 0,
+          dirDeg: typeof entry?.current?.wind_direction_10m === 'number' ? entry.current.wind_direction_10m : null,
         });
       });
       if (regions.length === 0) throw new Error('national conditions: no readings');
