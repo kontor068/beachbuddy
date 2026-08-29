@@ -197,6 +197,25 @@ export interface FeedbackData {
     date?: string;
     /** Athens hour the visitor CLICKED the feedback button — not necessarily when they swam. */
     hour?: number;
+    /**
+     * Η ΩΡΑ ΠΟΥ ΕΔΕΙΧΝΕ Η ΟΘΟΝΗ (0–23) — πρόσθετο 29/08/2026.
+     *
+     * ⚠️ ΟΧΙ εγγυημένα ώρα Ελλάδας, σε αντίθεση με το `hour` από πάνω. Η τιμή γεννιέται στο
+     * App.tsx ως `new Date(selectedHourDt * 1000).getHours()`, δηλαδή στη ζώνη ΤΗΣ ΣΥΣΚΕΥΗΣ.
+     * Μέσα στην Ελλάδα τα δύο ταυτίζονται· από το εξωτερικό όχι. Αυτό που εγγυάται το πεδίο
+     * είναι ότι ΑΥΤΟΣ ο αριθμός τυπώθηκε στη σελίδα — και μόνο αυτό λέει το mail.
+     *
+     * `undefined` σημαίνει ότι ο διακόπτης ώρας ήταν στο «τώρα», άρα τα νούμερα από κάτω
+     * είναι της τρέχουσας ώρας. Όταν ΕΧΕΙ τιμή, ο επισκέπτης είχε γυρίσει τον διακόπτη και
+     * τα `seaStateWaveM`/`shoreDisplayWaveM`/`beaufortShown` ανήκουν σε ΑΥΤΗΝ την ώρα — όχι
+     * στην ώρα που πάτησε το κουμπί (`hour`) και όχι στην ώρα που ήταν στην παραλία.
+     *
+     * Χωρίς αυτό το πεδίο τα δύο μισά της αναφοράς δεν ταιριάζουν μεταξύ τους: Μικρή Άμμος
+     * Θεσπρωτίας (902), 29/08/2026 — ο επισκέπτης δήλωσε «τώρα είναι εκεί» στις 11:00 και
+     * το mail έγραφε «0,18 μ.» για ώρα που κανείς δεν μπορούσε να μάθει. Το `live: false`
+     * έλεγε μόνο ΟΤΙ η οθόνη ήταν αλλού, ποτέ ΠΟΥ — δηλαδή η αναφορά ήταν αβαθμονόμητη.
+     */
+    shownHour?: number;
     /** When the visitor says they were actually at the beach — see ObservedTiming above. */
     observedTiming?: ObservedTiming;
     /** The sea state we claimed (m) and its period — what the report is evidence against. */

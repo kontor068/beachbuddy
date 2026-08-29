@@ -155,6 +155,12 @@ const formatWaveM = (value) => (typeof value === 'number' ? `${value.toFixed(2).
 const formatPeriodS = (value) => (typeof value === 'number' ? `${value.toFixed(1).replace('.', ',')} δευτ.` : '');
 const formatHour = (value) => (typeof value === 'number' ? `${String(value).padStart(2, '0')}:00 (ώρα Ελλάδας)` : '');
 
+/** Ώρα ημέρας ή τίποτα. Ό,τι έρχεται από το δίκτυο μπορεί να είναι οτιδήποτε — 0–23 ή έξω. */
+const hourInRange = (value) => {
+  const n = finiteNumber(value);
+  return typeof n === 'number' && Number.isInteger(n) && n >= 0 && n <= 23 ? n : undefined;
+};
+
 // What the visitor actually said about WHEN they were at the beach — added 16/08/2026 because
 // a report typed at 22:00 about a 09:00 visit was indistinguishable from an evening observation
 // with only the click time to go on. See ObservedTiming in services/analyticsService.ts.
@@ -166,6 +172,48 @@ const OBSERVED_TIMING_LABELS = {
   unsure: 'Δεν θυμάται',
 };
 const formatObservedTiming = (value) => OBSERVED_TIMING_LABELS[value] || '';
+
+/**
+ * ΣΕ ΠΟΙΑ ΩΡΑ ΑΝΗΚΟΥΝ ΤΑ ΝΟΥΜΕΡΑ ΠΑΡΑΚΑΤΩ — πρόσθετο 29/08/2026.
+ *
+ * Το κύμα, τα μποφόρ και η περίοδος είναι της ώρας που έδειχνε ο διακόπτης, όχι της ώρας
+ * που πάτησε το κουμπί. Μέχρι σήμερα το mail έλεγε μόνο «έβλεπε άλλη μέρα/ώρα» — δηλαδή
+ * ΟΤΙ η οθόνη ήταν αλλού, ποτέ ΠΟΥ. Μικρή Άμμος Θεσπρωτίας (902), 29/08/2026: «τώρα είναι
+ * εκεί» στις 11:00 και «0,18 μ.» για άγνωστη ώρα — δύο μισά που δεν αντιπαρατίθενται.
+ *
+ * Όταν ο διακόπτης ήταν στο «τώρα» το λέμε ΡΗΤΑ αντί να κρύψουμε τη γραμμή: αλλιώς
+ * «η οθόνη ήταν στο τώρα» και «δεν ξέρουμε» φαίνονται ίδια — και τα δύο ως κενό.
+ */
+const formatShownHour = (conditions) => {
+  // ΧΩΡΙΣ «(ώρα Ελλάδας)», σε αντίθεση με τις δύο γραμμές από πάνω. Το `hour` βγαίνει από
+  // `athensNow()`, αλλά το `shownHour` βγαίνει από `new Date(selectedHourDt * 1000).getHours()`
+  // (App.tsx) — δηλαδή τη ζώνη ΤΗΣ ΣΥΣΚΕΥΗΣ. Για επισκέπτη μέσα στην Ελλάδα είναι το ίδιο
+  // πράγμα· για κάποιον που κοιτάει από το εξωτερικό δεν είναι. Αυτό που ξέρουμε σίγουρα
+  // είναι ότι ΑΥΤΟ τύπωνε η σελίδα μπροστά του, οπότε αυτό ακριβώς λέμε — τίποτα παραπάνω.
+  const shown = typeof conditions.shownHour === 'number'
+    ? `${String(conditions.shownHour).padStart(2, '0')}:00 (όπως τυπώθηκε στη σελίδα)`
+    : '';
+  if (shown) return shown;
+  return conditions.live ? 'Την τρέχουσα ώρα (ο διακόπτης ήταν στο «τώρα»)' : '';
+};
+
+/**
+ * ΠΟΙΟ ΑΠΟ ΤΑ ΔΥΟ — η μέρα ή η ώρα (29/08/2026). Το «Όχι — έβλεπε άλλη μέρα/ώρα» διαβαζόταν
+ * ως άρνηση αυτού που μόλις είχε πει ο ίδιος ο επισκέπτης από πάνω («Τώρα είναι εκεί»), ενώ
+ * τα δύο πεδία δεν μιλάνε καν για το ίδιο πράγμα: το πάνω λέει πού ήταν ο ΑΝΘΡΩΠΟΣ, το κάτω
+ * πού ήταν ο ΔΙΑΚΟΠΤΗΣ της σελίδας. Ένα σχόλιο που αυτοαναιρείται πετιέται αδιάβαστο.
+ */
+const formatLive = (conditions) => {
+  if (conditions.live === undefined) return '';
+  if (conditions.live) return 'Ναι';
+  // Χωρίς `shownHour` ΔΕΝ ξέρουμε ποιο από τα δύο ήταν — σχόλιο από παλιότερη έκδοση της
+  // σελίδας, ή τιμή που κόπηκε στον έλεγχο 0–23. Εκεί κρατάμε το παλιό, ασαφές αλλά τίμιο
+  // κείμενο· ένα σίγουρο «άλλη μέρα» θα ήταν εφεύρεση, και σε σχόλιο που ήδη διαβαζόταν
+  // λάθος η εφεύρεση είναι ακριβώς το λάθος που διορθώνουμε.
+  return typeof conditions.shownHour === 'number'
+    ? 'Όχι — η σελίδα ήταν γυρισμένη σε άλλη ώρα (δες «Ώρα που έδειχνε η οθόνη»)'
+    : 'Όχι — η σελίδα έδειχνε άλλη μέρα ή ώρα';
+};
 
 /**
  * Ο αριθμός που είχε μπροστά του ο επισκέπτης. `shoreDisplayWaveM` λείπει όταν η οθόνη έπεσε
@@ -222,6 +270,10 @@ const normalizePayload = (body, event) => {
       // the period travels with it. `hour` and `live` say whether the visitor was standing
       // in it that morning or reading about next Tuesday — opposite strengths of evidence.
       hour: finiteNumber(conditions.hour),
+      // Η ώρα του διακόπτη — αυτή στην οποία ανήκουν το κύμα και τα μποφόρ παρακάτω.
+      // Περνάει από τον ίδιο έλεγχο 0–23 με τη μορφοποίηση, ώστε μια χαλασμένη τιμή να
+      // εξαφανίζει τη γραμμή αντί να τυπώνει «99:00» δίπλα σε σωστά νούμερα.
+      shownHour: hourInRange(conditions.shownHour),
       observedTiming: clamp(conditions.observedTiming, 20) || undefined,
       seaStateWaveM: finiteNumber(conditions.seaStateWaveM),
       seaStatePeriodS: finiteNumber(conditions.seaStatePeriodS),
@@ -254,6 +306,11 @@ const fieldLines = (payload) => [
   // πρωινή επίσκεψη έδειχνε μέχρι τώρα ΜΟΝΟ τη δεύτερη και διαβαζόταν λάθος ως βραδινή παρατήρηση.
   ['Πότε ήταν στην παραλία', formatObservedTiming(payload.conditions.observedTiming)],
   ['Ώρα που έστειλε το σχόλιο', formatHour(payload.conditions.hour)],
+  // ΤΡΙΤΗ ΩΡΑ, ΚΑΙ Η ΜΟΝΗ ΠΟΥ ΤΑΙΡΙΑΖΕΙ ΜΕ ΤΑ ΝΟΥΜΕΡΑ (29/08/2026). Οι δύο από πάνω είναι
+  // ανθρώπινες — πότε ήταν εκεί, πότε πάτησε το κουμπί. Αυτή εδώ είναι της ΣΕΛΙΔΑΣ, και τα
+  // «Μποφόρ που έβλεπε» / «Κύμα που έβλεπε» πιο κάτω ανήκουν σε αυτήν. Χωρίς τη γραμμή αυτή
+  // η αναφορά είναι αβαθμονόμητη: ξέρεις τι είδε ο άνθρωπος, όχι απέναντι σε τι.
+  ['Ώρα που έδειχνε η οθόνη', formatShownHour(payload.conditions)],
   // ΔΥΟ ΓΡΑΜΜΕΣ ΟΤΑΝ ΔΙΑΦΕΡΟΥΝ (25/08/2026). Το hero τυπώνει «3–4 Μπφ» όταν οι ριπές της ώρας
   // βγάζουν ολόκληρο σκαλί (utils/beaufortRange)· ένα «είχε πιο πολύ αέρα» πρέπει να κριθεί
   // απέναντι στο άνω άκρο που είδε ο επισκέπτης, ενώ το χρώμα κρίθηκε από το κάτω. Ίδιο μοτίβο
@@ -271,7 +328,7 @@ const fieldLines = (payload) => [
   ['Κύμα ανοιχτά (κρίνει χρώμα/ετυμηγορία)', formatWaveM(openWaterRowValue(payload.conditions))],
   ['Περίοδος κύματος', formatPeriodS(payload.conditions.seaStatePeriodS)],
   // Without this a report about next Tuesday reads exactly like one from the water's edge.
-  ['Ήταν επιτόπου τώρα', payload.conditions.live === undefined ? '' : (payload.conditions.live ? 'Ναι' : 'Όχι — έβλεπε άλλη μέρα/ώρα')],
+  ['Ήταν επιτόπου τώρα', formatLive(payload.conditions)],
   ['Γλώσσα', payload.language],
   ['Πηγή', payload.source],
   ['Σελίδα', payload.pagePath],

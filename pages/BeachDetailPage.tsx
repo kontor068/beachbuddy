@@ -1110,6 +1110,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // fallback — `observedTiming` (below) is what the visitor actually told us, and `live`
       // separates someone standing in the water from someone reading about next Tuesday.
       hour: athensNow().getHours(),
+      // ΚΑΙ Η ΩΡΑ ΠΟΥ ΕΔΕΙΧΝΕ Η ΟΘΟΝΗ (29/08/2026). Το `hour` από πάνω είναι μόνο πότε
+      // πάτησε το κουμπί· τα νούμερα που έφευγαν μαζί ανήκουν στην ώρα του διακόπτη, και
+      // αυτή δεν έφευγε ποτέ. Στη Μικρή Άμμο 902 το `live: false` έλεγε «έβλεπε άλλη ώρα»
+      // χωρίς να λέει ποια, οπότε το «0,18 μ.» δεν μπορούσε να αντιπαρατεθεί με τίποτα.
+      // `undefined` όταν ο διακόπτης είναι στο «τώρα» — τότε το `hour` ΕΙΝΑΙ η ώρα της οθόνης.
+      shownHour: selectedHour,
       observedTiming,
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
