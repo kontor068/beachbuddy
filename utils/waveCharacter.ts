@@ -354,6 +354,26 @@ export const seaStateToneCeiling = (seaStateM: number | undefined): SeaToneCeili
  */
 export const SEA_ARRIVAL_GRAZING = 'grazing';
 
+/**
+ * «Η θάλασσα δεν έχει από πού να μπει» — τέταρτη τιμή στο ίδιο πεδίο, ίδιο σκεπτικό ταξιδιού
+ * με το SEA_ARRIVAL_GRAZING από πάνω (μία τιμή στο score, πέντε αναγνώστες, καμία διαφωνία).
+ *
+ * ΤΙ ΣΗΜΑΙΝΕΙ, ΑΥΣΤΗΡΑ: η παραλία είναι ΤΣΕΠΗ (κανένας τομέας της δεν ανοίγει ≥10 χλμ νερού,
+ * πουθενά) ΚΑΙ στη γωνία απ' όπου το πλέγμα λέει ότι έρχεται το κύμα υπάρχει λιγότερο από
+ * 2 χλμ νερό — δηλαδή η θάλασσα του κελιού, μετρημένη χιλιόμετρα ανοιχτά, δεν έχει διάδρομο
+ * να φτάσει σε αυτή την άμμο. Το ποιος τη βγάζει και με ποιες ακριβώς συνθήκες ζει στο
+ * utils/seaArrival.resolveSeaArrivalExposureLevel — εδώ μόνο η λέξη, για τον λόγο του
+ * σχολίου πιο πάνω (αυτό το αρχείο δεν κάνει imports).
+ *
+ * Η ΑΦΟΡΜΗ (29/08/2026, τέσσερις αναφορές webcam σε μία ώρα): Λίνδος #2443, μελτέμι, κελί
+ * 1,1 μ. — μεγαλύτερο άνοιγμα του όρμου 5,3 χλμ, στη γωνία του κύματος 0,2 χλμ. Η κάμερα
+ * έδειχνε λάδι με λουόμενους· η εφαρμογή τύπωνε «1,1 μ. · Αρκετό κύμα» και ετυμηγορία «μην
+ * κολυμπήσεις», επειδή η έκπτωση σκιάς που η ίδια είχε υπολογίσει (K_d 0,1) ίσχυε ΜΟΝΟ όταν
+ * ο τομέας του ανέμου έβγαινε 'protected' — και ο βοριάς στη Λίνδο βγάζει 'partial'. Εθνικά,
+ * 171 τσέπες τύπωναν έτσι ολόκληρο το πέλαγος (scripts/measureShoreShadowGate.mjs).
+ */
+export const SEA_ARRIVAL_ENCLOSED = 'enclosed';
+
 export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
 
 /**
@@ -450,7 +470,25 @@ export const shoreSeaStateM = (
   const protectedDamping = typeof shadowDamping === 'number' && Number.isFinite(shadowDamping)
     ? Math.min(1, Math.max(0, shadowDamping))
     : SHORE_DAMPING_BY_EXPOSURE.protected;
-  const damping = exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave
+  /**
+   * Η ΤΣΕΠΗ ΠΑΙΡΝΕΙ ΤΗΝ ΕΚΠΤΩΣΗ ΠΟΥ Ο ΚΩΔΙΚΑΣ ΕΙΧΕ ΗΔΗ ΥΠΟΛΟΓΙΣΕΙ (29/08/2026 — Λίνδος #2443).
+   *
+   * Το 'enclosed' λέει «η θάλασσα δεν έχει από πού να μπει» — πλήρης γεωμετρία, όχι εικασία
+   * γωνίας (ορισμός και αφορμή στη σταθερά SEA_ARRIVAL_ENCLOSED πιο πάνω). Γι' αυτό περνάει
+   * ΜΠΡΟΣΤΑ και από τα δύο εμπόδια που κρατούσαν τη Λίνδο στο πέλαγος:
+   *   • το `exposureLevel` — αυτό απαντά «είσαι απάνεμη από τον ΣΗΜΕΡΙΝΟ άνεμο;», ενώ την
+   *     τσέπη τη σκεπάζει η στεριά της, με όποιον άνεμο·
+   *   • το `curatedWindOnlyProtection` — εκείνο αρνείται έκπτωση που κερδήθηκε μόνο απέναντι
+   *     στον άνεμο, ενώ εδώ η προστασία μετρήθηκε απέναντι στο ΚΥΜΑ (στη γωνία ΤΟΥ ζητήθηκε
+   *     το νερό και δεν βρέθηκε).
+   * Το K_d της τσέπης είναι το ήδη φραγμένο protectedDamping — για γνήσια τσέπη η πηγή δίνει
+   * το δάπεδο 0,1 (κλειστός κύκλος στεριάς). Το grazing σκέλος του §Γ59 δεν αγγίζεται: αν μια
+   * τιμή είναι 'enclosed' δεν είναι 'grazing', και αντίστροφα.
+   */
+  const seaEnclosed = seaArrivalExposureLevel === SEA_ARRIVAL_ENCLOSED;
+  const damping = seaEnclosed
+    ? protectedDamping
+    : exposureLevel === 'protected' && shelteredFromTheSea && shelterEarnedAgainstTheWave
     ? protectedDamping
     : grazingSeaRelief
       ? SHORE_DAMPING_BY_EXPOSURE.protected

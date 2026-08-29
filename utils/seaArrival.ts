@@ -1,9 +1,9 @@
 import type { GeospatialExposureProfile, WindSector } from '../types';
 import { interpolateSectorGeometry } from './windExposureModel';
-import type { SeaArrivalGeometry } from './waveModel';
-import { SEA_ARRIVAL_GRAZING } from './waveCharacter';
+import { ARRIVAL_MIN_FETCH_KM, type SeaArrivalGeometry } from './waveModel';
+import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING } from './waveCharacter';
 
-export { SEA_ARRIVAL_GRAZING };
+export { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING };
 
 /**
  * Where a measured sea is arriving from, in this beach's own frame — the input that lets the
@@ -127,6 +127,43 @@ export const resolveSeaArrivalExposureLevel = (
   if (onshore <= SEA_ARRIVAL_ONSHORE_MIN) return undefined;
 
   const sector = SECTOR_ORDER[((Math.round(waveDirectionDeg / 45) % 8) + 8) % 8];
+  /**
+   * Η ΤΣΕΠΗ, ΠΡΙΝ ΑΠΟ ΤΟ ΕΠΙΠΕΔΟ ΤΟΥ ΤΟΜΕΑ (29/08/2026 — Λίνδος #2443, κάμερα: λάδι με
+   * λουόμενους κάτω από «1,1 μ. · μην κολυμπήσεις»).
+   *
+   * Ως εδώ η θάλασσα «έρχεται πάνω» στην ακτή — αλλά αυτό κρίθηκε ΜΟΝΟ από τη γωνία. Το
+   * ερώτημα που δεν ρωτήθηκε ποτέ: υπάρχει ΝΕΡΟ σε εκείνη τη γωνία για να τη φέρει; Στη Λίνδο
+   * το κελί μετράει 1,1 μ. σε νερό 2,6 χλμ ανοιχτά, ενώ στη γωνία του κύματος ο όρμος ανοίγει
+   * 0,2 χλμ και ΠΟΥΘΕΝΑ γύρω του δεν ανοίγει πάνω από 5,3 — εκείνη η θάλασσα δεν χωράει να
+   * μπει. Η απάντηση λέγεται με το όνομά της ('enclosed', ορισμός στη σταθερά στο
+   * utils/waveCharacter) ώστε η shoreSeaStateM να δώσει την έκπτωση K_d που η ίδια η μηχανή
+   * είχε ήδη υπολογίσει (για τσέπη: το δάπεδο 0,1) και μέχρι σήμερα πετούσε όταν ο τομέας του
+   * ΑΝΕΜΟΥ δεν έβγαινε 'protected'.
+   *
+   * ΟΙ ΤΡΕΙΣ ΣΥΝΘΗΚΕΣ, ΟΛΕΣ ΑΠΑΡΑΙΤΗΤΕΣ:
+   *   • εμπιστοσύνη 'high' — καμία δήλωση ηρεμίας από μισοδιαβασμένη ακτογραμμή (ίδιος κανόνας
+   *     με την εκτίμηση ακτής στο utils/shoreWave)·
+   *   • ΤΣΕΠΗ: κανένας τομέας ≥ SHADOW_OPEN_FETCH_KM (10 χλμ) — παραλία με έστω έναν ανοιχτό
+   *     διάδρομο ΔΕΝ περνάει ποτέ από εδώ, όσο κλειστή κι αν είναι η γωνία της άφιξης·
+   *   • στη γωνία της άφιξης λιγότερο από ARRIVAL_MIN_FETCH_KM (2 χλμ) νερό — το ΙΔΙΟ κατώφλι
+   *     με το οποίο η capLightWindMeasuredWaveM αποφασίζει «αυτή η θάλασσα είναι αληθινή»:
+   *     τα δύο ερωτήματα είναι καθρέφτες και δεν επιτρέπεται να έχουν διαφορετικό νούμερο.
+   *     Ζητιέται με παρεμβολή (interpolateSectorGeometry), όχι με τον στρογγυλεμένο τομέα,
+   *     ώστε κύμα στα 22° να διαβάζει και τους δύο γείτονές του.
+   *
+   * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΜΠΕΙ (scripts/measureShoreShadowGate.mjs, 2.873 προφίλ × 12 διευθύνσεις ×
+   * 4 ύψη): αγγίζει 339 παραλίες / 2,8% των συνδυασμών, όλες προς το ηρεμότερο — γι' αυτό οι
+   * τρεις συνθήκες, και γι' αυτό η μονόδρομη σκάλα της ετυμηγορίας (swimmingComfortFromScore:
+   * η ακτή ανεβάζει το πολύ ΕΝΑ σκαλί) παραμένει το φρένο από πάνω της.
+   */
+  if (
+    geospatialProfile.confidence === 'high'
+    && geospatialProfile.sectors
+    && !SECTOR_ORDER.some(name => (geospatialProfile.sectors?.[name]?.fetchKm ?? 0) >= SHADOW_OPEN_FETCH_KM)
+    && interpolateSectorGeometry(geospatialProfile, waveDirectionDeg).fetchKm < ARRIVAL_MIN_FETCH_KM
+  ) {
+    return SEA_ARRIVAL_ENCLOSED;
+  }
   return geospatialProfile.sectors?.[sector]?.level;
 };
 
@@ -170,6 +207,40 @@ export const SHADOW_DECAY_DEG = 45;
 export const SHADOW_KD_AT_EDGE = 0.5;
 export const SHADOW_KD_FLOOR = 0.1;
 
+/**
+ * ─── Η ΠΛΑΓΙΑ ΘΑΛΑΣΣΑ ΣΕ ΑΝΟΙΧΤΗ ΑΚΤΗ ΔΕΝ ΠΑΙΡΝΕΙ ΒΑΘΙΑ ΣΚΙΑ (29/08/2026) ───
+ *
+ * Η ΑΦΟΡΜΗ: τρεις κάμερες μέσα σε μία ώρα, όλες με κύμα να σκάει κάτω από «θάλασσα λάδι» /
+ * «σχεδόν χωρίς κύμα» — Βάι #730 (πόρτα 16,3 χλμ, K_d 0,11), Κιτροπλατεία #746 (12,5 χλμ,
+ * K_d 0,11), Αλμυρός #720 (18,3 χλμ, K_d 0,30). Και στις τρεις το μελτέμι περνούσε ΠΛΑΓΙΑ
+ * μπροστά από ακτή που έχει κανονική πόρτα στο πέλαγος, και το σχήμα από κάτω τις χρεώνε
+ * 60-90° «περίθλασης» σαν να κάθονταν πίσω από μόλο.
+ *
+ * ΤΟ ΦΥΣΙΚΟ ΛΑΘΟΣ. Το K_d είναι μοντέλο περίθλασης — «πόσο ύψος μένει όταν το κύμα πρέπει να
+ * ΣΤΡΙΨΕΙ γύρω από εμπόδιο για να φτάσει εδώ». Σε ακτή με ανοιχτό διάδρομο, θάλασσα που
+ * περνάει πλάγια δεν στρίβει γύρω από τίποτα: μπαίνει από την πόρτα και διαθλάται στα ρηχά
+ * ΠΑΝΩ στην ακτή — αυτό ακριβώς έδειχναν οι κάμερες. Η βαθιά σκιά (0,1-0,3) έχει νόημα μόνο
+ * όταν η θάλασσα ΦΕΥΓΕΙ από την ακτή ή όταν δεν υπάρχει πόρτα καθόλου.
+ *
+ * Ο ΔΙΑΧΩΡΙΣΤΗΣ, ΜΕΤΡΗΜΕΝΟΣ ΣΤΟΥΣ ΜΑΡΤΥΡΕΣ (θάλασσα από Β, onshore = cos(γωνία−facing)):
+ *   κύμα υπάρχει   → Κιτροπλατεία −0,500 · Αλμυρός −0,321 · Βάι +0,082   (πλάγια/πάνω)
+ *   γνήσια απάνεμη → Γέρακας −0,768 · Πρέβελη −0,916 · Κουκουναριές −0,997 (φεύγει)
+ * Το −0,65 κάθεται ανάμεσα στους δύο πληθυσμούς με περιθώριο και προς τις δύο μεριές
+ * (πλησιέστεροι: −0,500 και −0,768) — δεν είναι βαθμονομημένο πάνω σε κανέναν μάρτυρα.
+ *
+ * ΤΟ ΠΑΤΩΜΑ ΕΙΝΑΙ Η ΑΚΡΗ ΤΗΣ ΣΚΙΑΣ (SHADOW_KD_AT_EDGE = 0,5), ΕΠΙΤΗΔΕΣ ΟΧΙ ΕΚΤΟ ΝΟΥΜΕΡΟ:
+ * πλάγια θάλασσα σε ανοιχτή ακτή δεν επιτρέπεται να εκπέσει βαθύτερα απ' όσο η ίδια η άκρη
+ * του διαγράμματος περίθλασης — και είναι το ΙΔΙΟ 0,5 που το grazing σκέλος του §Γ59 κρατά
+ * με μαρτυρία καμερών, οπότε οι δύο δρόμοι της «λοξής θάλασσας» δίνουν την ίδια έκπτωση.
+ *
+ * ΜΟΝΟΔΡΟΜΟ ΠΡΟΣ ΤΗΝ ΠΡΟΣΟΧΗ: το πάτωμα μόνο ΑΝΕΒΑΖΕΙ το K_d, δηλαδή μόνο ανεβάζει το
+ * τυπωμένο νούμερο. Μετρημένο εθνικά πριν μπει (scripts/measureShoreShadowGate.mjs): 17,1%
+ * των συνδυασμών, 2.463 παραλίες, ΟΛΕΣ προς τα πάνω, καμία προς την ηρεμία. Η τσέπη (καμία
+ * πόρτα ≥10 χλμ πουθενά) ΔΕΝ πατώνεται — η δική της βαθιά σκιά είναι το σωστό νούμερο, και
+ * χωρίς facingDeg δεν κρίνεται τίποτα (το K_d μένει ως έχει).
+ */
+export const SHADOW_CROSS_SEA_ONSHORE_MIN = -0.65;
+
 const angularDistanceDeg = (a: number, b: number): number =>
   Math.abs((((a - b) % 360) + 540) % 360 - 180);
 
@@ -190,8 +261,17 @@ export const resolveShoreShadowDamping = (
   // στρίψει τουλάχιστον μία ολόκληρη σκιά για να μπει.
   if (thetaDeg === null) return SHADOW_KD_FLOOR;
   if (thetaDeg <= SHADOW_CORRIDOR_HALF_DEG) return 1;
-  return Math.max(
+  const kd = Math.max(
     SHADOW_KD_FLOOR,
     SHADOW_KD_AT_EDGE * Math.exp(-(thetaDeg - SHADOW_CORRIDOR_HALF_DEG) / SHADOW_DECAY_DEG)
   );
+  // Το πάτωμα της πλάγιας θάλασσας (29/08/2026) — όλη η ιστορία, η φυσική και η μέτρηση στη
+  // σταθερά SHADOW_CROSS_SEA_ONSHORE_MIN πιο πάνω. Εδώ φτάνουμε μόνο όταν ΥΠΑΡΧΕΙ πόρτα ≥10 χλμ
+  // (η τσέπη επέστρεψε ήδη), οπότε: θάλασσα που δεν φεύγει καθαρά → όχι βαθύτερα από την άκρη.
+  const facingDeg = geospatialProfile.facingDeg;
+  if (typeof facingDeg === 'number' && Number.isFinite(facingDeg)) {
+    const onshore = Math.cos(((waveDirectionDeg - facingDeg) * Math.PI) / 180);
+    if (onshore > SHADOW_CROSS_SEA_ONSHORE_MIN) return Math.max(kd, SHADOW_KD_AT_EDGE);
+  }
+  return kd;
 };

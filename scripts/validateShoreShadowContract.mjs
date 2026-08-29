@@ -11,10 +11,16 @@
  *   Α. ΤΟ ΣΧΗΜΑ: διάδρομος (θ≤22,5°) → 1 (καμία έκπτωση)· άκρη σκιάς → 0,5· εκθετική
  *      απομείωση με βάθος· δάπεδο 0,10· κλειστός κύκλος → 0,10· μονότονο στο θ.
  *   Β. ΤΑ ΚΕΝΑ ΔΕΝ ΕΦΕΥΡΙΣΚΟΥΝ: χωρίς γεωμετρία ή κατεύθυνση → undefined → το ιστορικό 0,5.
- *   Γ. ΤΑ ΣΚΕΛΗ ΤΗΣ shoreSeaStateM: το K_d πιάνει ΜΟΝΟ το protected σκέλος· το grazing του
- *      §Γ59 κρατά το 0,5 του (μετρημένη μαρτυρία καμερών > μοντέλο)· partial/exposed ανέγγιχτα·
- *      ζώνη [0,1] ώστε η ακτή να μην τυπωθεί ποτέ πιο άγρια από το πέλαγος έξω.
- *   Δ. ΟΙ ΠΕΝΤΕ ΑΡΙΘΜΟΙ (10 χλμ · 22,5° · 45° · 0,5 · 0,1) δεν μετακινούνται σιωπηλά.
+ *   Γ. ΤΑ ΣΚΕΛΗ ΤΗΣ shoreSeaStateM: το K_d πιάνει το protected σκέλος ΚΑΙ το 'enclosed'
+ *      (29/08/2026 — η τσέπη που η θάλασσα δεν έχει από πού να μπει, βλ. SEA_ARRIVAL_ENCLOSED
+ *      στο utils/waveCharacter)· το grazing του §Γ59 κρατά το 0,5 του (μετρημένη μαρτυρία
+ *      καμερών > μοντέλο)· partial/exposed χωρίς enclosed ανέγγιχτα· ζώνη [0,1] ώστε η ακτή
+ *      να μην τυπωθεί ποτέ πιο άγρια από το πέλαγος έξω.
+ *   Γ2. ΤΟ ΠΑΤΩΜΑ ΤΗΣ ΠΛΑΓΙΑΣ ΘΑΛΑΣΣΑΣ (29/08/2026): σε ακτή με πόρτα ≥10 χλμ, θάλασσα που
+ *      δεν φεύγει καθαρά (onshore > −0,65) δεν εκπίπτει βαθύτερα από την άκρη (K_d ≥ 0,5)·
+ *      θάλασσα που ΦΕΥΓΕΙ (≤ −0,65) κρατά τη βαθιά σκιά· η τσέπη και το προφίλ χωρίς
+ *      facingDeg μένουν ως είχαν.
+ *   Δ. ΟΙ ΕΞΙ ΑΡΙΘΜΟΙ (10 χλμ · 22,5° · 45° · 0,5 · 0,1 · −0,65) δεν μετακινούνται σιωπηλά.
  *   Ε. Η ΚΑΛΩΔΙΩΣΗ: το scoring υπολογίζει το K_d ΜΙΑ φορά, το περνάει και στις δύο κλήσεις
  *      της shoreSeaStateM, το κουβαλάει στο score, και πινέζα/ταβάνι/πόρτα/αιτία το περνάνε
  *      αυτούσιο — έλεγχος πάνω στον πηγαίο κώδικα, ώστε ένα refactor να μην αποσυνδέσει
@@ -47,14 +53,17 @@ require.extensions['.ts'] = (module, filename) => {
 const {
   resolveShoreShadowDamping,
   SHADOW_OPEN_FETCH_KM, SHADOW_CORRIDOR_HALF_DEG, SHADOW_DECAY_DEG, SHADOW_KD_AT_EDGE, SHADOW_KD_FLOOR,
+  SHADOW_CROSS_SEA_ONSHORE_MIN,
 } = require(path.join(root, 'utils/seaArrival.ts'));
-const { shoreSeaStateM, SEA_ARRIVAL_GRAZING } = require(path.join(root, 'utils/waveCharacter.ts'));
+const { shoreSeaStateM, SEA_ARRIVAL_GRAZING, SEA_ARRIVAL_ENCLOSED } = require(path.join(root, 'utils/waveCharacter.ts'));
 const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 
 const failures = [];
 const fail = (check, detail) => failures.push(`${check}: ${detail}`);
 
-/** Προφίλ με ΕΝΑΝ ανοιχτό διάδρομο στον Ν (180°), όλα τα άλλα κλειστά. */
+/** Προφίλ με ΕΝΑΝ ανοιχτό διάδρομο στον Ν (180°), όλα τα άλλα κλειστά. ΧΩΡΙΣ facingDeg,
+ *  επίτηδες: έτσι το πάτωμα της πλάγιας θάλασσας (Γ2) μένει κλειστό και το Α ελέγχει το
+ *  γυμνό σχήμα της σκιάς, όπως από τις 24/08. Το Γ2 έχει δικό του προφίλ ΜΕ facingDeg. */
 const oneCorridor = { sectors: { N: { fetchKm: 0 }, NE: { fetchKm: 0 }, E: { fetchKm: 2 }, SE: { fetchKm: 0 },
   S: { fetchKm: 40 }, SW: { fetchKm: 3 }, W: { fetchKm: 0 }, NW: { fetchKm: 0 } } };
 const noCorridor = { sectors: { N: { fetchKm: 2 }, NE: { fetchKm: 0 }, E: { fetchKm: 1 }, SE: { fetchKm: 0 },
@@ -117,16 +126,48 @@ const beforeC = failures.length;
   if (shoreSeaStateM(H, 'protected', 'partial', undefined, 0.1) !== 2.0) fail('Γ', 'ρητό partial arrival δεν αρνήθηκε την έκπτωση');
   if (shoreSeaStateM(H, 'protected', undefined, true, 0.1) !== 2.0) fail('Γ', 'curated wind-only δεν αρνήθηκε την έκπτωση');
 }
-console.log(`Γ. K_d μόνο στο protected σκέλος, φραγμένο ... ${failures.length > beforeC ? '❌' : '✅'}`);
+console.log(`Γ. K_d στο protected σκέλος + enclosed, φραγμένο ${failures.length > beforeC ? '❌' : '✅'}`);
+
+// ── Γ2. το πάτωμα της πλάγιας θάλασσας και το 'enclosed' (29/08/2026) ───────
+const beforeC2 = failures.length;
+{
+  // Ίδιος διάδρομος με το Α, αλλά με facingDeg — η ακτή κοιτάει τον διάδρομό της (180°).
+  const facingCorridor = { ...oneCorridor, facingDeg: 180 };
+  // Θάλασσα από 300°: θ=120° από τον διάδρομο (βαθιά σκιά χθες), onshore cos(120°)=−0,5 > −0,65
+  // → ΠΛΑΓΙΑ σε ανοιχτή ακτή → πατώνει στην άκρη.
+  const crossSea = resolveShoreShadowDamping(facingCorridor, 300);
+  if (crossSea !== SHADOW_KD_AT_EDGE) fail('Γ2', `πλάγια θάλασσα σε ανοιχτή ακτή → ${crossSea}, περίμενα το πάτωμα ${SHADOW_KD_AT_EDGE}`);
+  // Θάλασσα από 0°: onshore cos(180°)=−1 ≤ −0,65 → ΦΕΥΓΕΙ → η βαθιά σκιά μένει (η Πρέβελη).
+  const departing = resolveShoreShadowDamping(facingCorridor, 0);
+  if (departing !== SHADOW_KD_FLOOR) fail('Γ2', `θάλασσα που φεύγει → ${departing}, η βαθιά σκιά ${SHADOW_KD_FLOOR} έπρεπε να μείνει`);
+  // Μέσα στον διάδρομο τίποτα δεν άλλαξε.
+  if (resolveShoreShadowDamping(facingCorridor, 180) !== 1) fail('Γ2', 'ο διάδρομος έπαψε να δίνει 1');
+  // Η τσέπη ΔΕΝ πατώνεται — η δική της βαθιά σκιά είναι το σωστό νούμερο (Λίνδος).
+  const pocket = resolveShoreShadowDamping({ ...noCorridor, facingDeg: 90 }, 90);
+  if (pocket !== SHADOW_KD_FLOOR) fail('Γ2', `τσέπη με θάλασσα κατάμουτρα → ${pocket}, περίμενα ${SHADOW_KD_FLOOR} — το πάτωμα δεν αφορά τσέπες`);
+  // Χωρίς facingDeg: ό,τι και στις 24/08 (το Α από πάνω το ελέγχει ήδη· εδώ ρητά).
+  const blind = resolveShoreShadowDamping(oneCorridor, 300);
+  if (!(blind >= SHADOW_KD_FLOOR && blind < SHADOW_KD_AT_EDGE)) fail('Γ2', `χωρίς facingDeg → ${blind}, έπρεπε να μείνει στη χθεσινή βαθιά σκιά`);
+
+  // Το 'enclosed' στη shoreSeaStateM: η έκπτωση δίνεται ό,τι κι αν λέει ο τομέας του ανέμου
+  // και το curated flag — η προστασία εδώ μετρήθηκε απέναντι στο ΚΥΜΑ.
+  const H = 2.0;
+  if (shoreSeaStateM(H, 'partial', SEA_ARRIVAL_ENCLOSED, undefined, 0.1) !== 0.2) fail('Γ2', 'enclosed σε partial δεν πήρε το K_d');
+  if (shoreSeaStateM(H, 'exposed', SEA_ARRIVAL_ENCLOSED, undefined, 0.1) !== 0.2) fail('Γ2', 'enclosed σε exposed δεν πήρε το K_d');
+  if (shoreSeaStateM(H, 'partial', SEA_ARRIVAL_ENCLOSED, true, 0.1) !== 0.2) fail('Γ2', 'το curated flag μπλόκαρε το enclosed — δεν έπρεπε (γεωμετρία απέναντι στο κύμα)');
+  if (shoreSeaStateM(H, 'partial', SEA_ARRIVAL_ENCLOSED, undefined, undefined) !== 1.0) fail('Γ2', 'enclosed χωρίς K_d δεν έπεσε στο ιστορικό 0,5');
+  if (shoreSeaStateM(H, 'partial', SEA_ARRIVAL_ENCLOSED, undefined, 1.7) !== 2.0) fail('Γ2', 'enclosed με K_d 1,7 δεν φράχτηκε στο 1');
+}
+console.log(`Γ2. πάτωμα πλάγιας θάλασσας + enclosed ....... ${failures.length > beforeC2 ? '❌' : '✅'}`);
 
 // ── Δ. οι πέντε αριθμοί ─────────────────────────────────────────────────────
 const beforeD = failures.length;
-const DECIDED = { SHADOW_OPEN_FETCH_KM: 10, SHADOW_CORRIDOR_HALF_DEG: 22.5, SHADOW_DECAY_DEG: 45, SHADOW_KD_AT_EDGE: 0.5, SHADOW_KD_FLOOR: 0.1 };
+const DECIDED = { SHADOW_OPEN_FETCH_KM: 10, SHADOW_CORRIDOR_HALF_DEG: 22.5, SHADOW_DECAY_DEG: 45, SHADOW_KD_AT_EDGE: 0.5, SHADOW_KD_FLOOR: 0.1, SHADOW_CROSS_SEA_ONSHORE_MIN: -0.65 };
 for (const [name, want] of Object.entries(DECIDED)) {
-  const got = { SHADOW_OPEN_FETCH_KM, SHADOW_CORRIDOR_HALF_DEG, SHADOW_DECAY_DEG, SHADOW_KD_AT_EDGE, SHADOW_KD_FLOOR }[name];
-  if (got !== want) fail('Δ', `${name} ${got} ≠ ${want} — μετρήθηκε εθνικά και μπήκε με απόφαση 24/08/2026· νέα τιμή = νέα μέτρηση + νέα απόφαση`);
+  const got = { SHADOW_OPEN_FETCH_KM, SHADOW_CORRIDOR_HALF_DEG, SHADOW_DECAY_DEG, SHADOW_KD_AT_EDGE, SHADOW_KD_FLOOR, SHADOW_CROSS_SEA_ONSHORE_MIN }[name];
+  if (got !== want) fail('Δ', `${name} ${got} ≠ ${want} — μετρήθηκε και μπήκε με απόφαση (24/08 τα πέντε, 29/08 το −0,65: διαχωρίζει τους μάρτυρες των καμερών, βλ. utils/seaArrival)· νέα τιμή = νέα μέτρηση + νέα απόφαση`);
 }
-console.log(`Δ. οι πέντε αριθμοί στη θέση τους ............ ${failures.length > beforeD ? '❌' : '✅'}`);
+console.log(`Δ. οι έξι αριθμοί στη θέση τους .............. ${failures.length > beforeD ? '❌' : '✅'}`);
 
 // ── Ε. η καλωδίωση, πάνω στον πηγαίο κώδικα ─────────────────────────────────
 const beforeE = failures.length;
@@ -175,4 +216,4 @@ if (failures.length) {
   console.error('· Αν έπεσε το Ε: κάποια επιφάνεια αποσυνδέθηκε από το score.shoreShadowDamping και θα υπολογίζει άλλο νούμερο από τις υπόλοιπες (§Κ1/§Γ56).');
   process.exit(1);
 }
-console.log(`\nPASSED: K_d = διάδρομος 1 · άκρη ${SHADOW_KD_AT_EDGE} · e^(−θ/${SHADOW_DECAY_DEG}°) · δάπεδο ${SHADOW_KD_FLOOR} — μία πηγή, πέντε αναγνώστες, φραγμένο [0,1].`);
+console.log(`\nPASSED: K_d = διάδρομος 1 · άκρη ${SHADOW_KD_AT_EDGE} · e^(−θ/${SHADOW_DECAY_DEG}°) · δάπεδο ${SHADOW_KD_FLOOR} · πάτωμα πλάγιας ${SHADOW_KD_AT_EDGE} (onshore > ${SHADOW_CROSS_SEA_ONSHORE_MIN}) · enclosed — μία πηγή, πέντε αναγνώστες, φραγμένο [0,1].`);

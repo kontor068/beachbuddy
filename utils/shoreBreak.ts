@@ -1,5 +1,5 @@
 import type { Beach } from '../types';
-import { SEA_ARRIVAL_GRAZING, SEA_STATE_AMBER_M, seaStateSeverityM } from './waveCharacter';
+import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING, SEA_STATE_AMBER_M, seaStateSeverityM } from './waveCharacter';
 
 /**
  * ΤΟ ΙΔΙΟ ΚΥΜΑ ΔΕΝ ΣΠΑΕΙ ΤΟ ΙΔΙΟ ΣΕ ΚΑΘΕ ΠΑΡΑΛΙΑ (13/08/2026).
@@ -103,9 +103,14 @@ export const shoreBreaksOnTheBeach = ({
   // `SEA_ARRIVAL_GRAZING` προστέθηκε 22/08/2026 και ΠΡΙΝ από αυτό ερχόταν εδώ σαν `undefined`.
   // Μπαίνει ρητά ώστε η συμπεριφορά αυτής της πύλης να μείνει ΑΚΡΙΒΩΣ όπως ήταν: θάλασσα που
   // περνάει ξυστά δεν σκάει στην ακτή, όπως δεν έσκαγε και χθες.
+  // `SEA_ARRIVAL_ENCLOSED` προστέθηκε 29/08/2026 (Λίνδος #2443): θάλασσα που δεν έχει από πού
+  // να μπει στον όρμο δεν μπορεί ούτε να σκάσει στην άμμο του. Πριν, η ίδια περίπτωση έφτανε
+  // εδώ με το επίπεδο του τομέα της ('partial' στη Λίνδο), δηλαδή περνούσε — η γραμμή μόνο
+  // ΑΦΑΙΡΕΙ μια προειδοποίηση που η γεωμετρία διαψεύδει, ποτέ δεν προσθέτει.
   if (seaArrivalExposureLevel === undefined
     || seaArrivalExposureLevel === 'protected'
-    || seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING) return false;
+    || seaArrivalExposureLevel === SEA_ARRIVAL_GRAZING
+    || seaArrivalExposureLevel === SEA_ARRIVAL_ENCLOSED) return false;
   if (typeof seaStateWaveM !== 'number' || !Number.isFinite(seaStateWaveM)) return false;
   if (seaStateWaveM < SHORE_BREAK_MIN_WAVE_M) return false;
   /**
