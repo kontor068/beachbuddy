@@ -3461,8 +3461,16 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       <h1 className="mt-1 font-heading text-[2.15rem] font-extrabold leading-[1] tracking-[-0.03em] text-slate-950 sm:text-[2.75rem]">
         {selectedIsland.name[language]}
       </h1>
+      {/* Δύο γραμμές, όχι μία με «…» (29/08/2026). Η φράση είναι «Παραλία Άναξου · καλά ως
+          τις 09:00, μετά εκτίθεται στον άνεμο»: 55–65 χαρακτήρες, που σε οθόνη 390px δεν
+          χωράνε ΠΟΤΕ σε μία γραμμή στα 14px — άρα το truncate έκοβε πάντα ακριβώς το μισό
+          που έχει την πληροφορία («μετά τι γίνεται»), και έμενε ένα «καλά ως τις 09:00,
+          μετά εκτίθ…» που δεν λέει τίποτα. Το κόστος είναι μία γραμμή (~18px) και μόνο
+          όταν η λίστα έχει πέσει σε μία παραλία· το line-clamp-2 κρατά το φρένο για ακραία
+          μακριά ονόματα παραλιών. Στο desktop το max-w-md τη χωράει έτσι κι αλλιώς σε μία
+          γραμμή, οπότε εκεί δεν αλλάζει τίποτα. */}
       {searchedBeachStripText && (
-        <p className="mt-1.5 max-w-md truncate text-sm font-semibold text-slate-600">
+        <p className="mt-1.5 line-clamp-2 max-w-md text-sm font-semibold leading-snug text-slate-600">
           {searchedBeachStripText}
         </p>
       )}
