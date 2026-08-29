@@ -4153,7 +4153,18 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         {/* ΧΩΡΙΣ ΚΑΡΤΑ (28/08/2026). Ήταν λευκό κουτί με περίγραμμα, ring και βαριά σκιά,
             και μέσα του ένα input με ΔΙΚΟ ΤΟΥ περίγραμμα: δύο πλαίσια για ένα πεδίο. Τώρα
             η επιφάνεια είναι το ίδιο το input — ένα κουτί, όχι δύο. */}
-        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 sm:pb-2">
+        {/* `max-sm:will-change-transform`: στο κινητό αυτό το section πρέπει να βάφεται ΠΑΝΩ
+            από το sticky μπλοκ ημερών+χάρτη (z-[120] έναντι z-30), οπότε ο compositor του
+            Android Chrome το ανεβάζει σε δικό του στρώμα μόνο όσο τα δύο αλληλεπικαλύπτονται
+            στο σκρολ — και σε αυτό το ανεβοκατέβασμα το στρώμα εμφανιζόταν άβαφο: η μπάρα
+            αναζήτησης χανόταν στο σκρολ και ξαναζωγραφιζόταν στο επόμενο (Μίλτος, 29/08,
+            στιγμιότυπο από Λέσβο). Το μόνιμο hint κρατά το στρώμα ζωντανό ώστε να μην
+            ξεστήνεται ποτέ μισοβαμμένο — το «επόμενο σκαλί» που το #9 (28/08) είχε αφήσει
+            ρητά για την περίπτωση που το μισοβαμμένο καρέ επέμενε. Μόνο max-sm: στο desktop
+            δεν υπάρχει sticky χάρτης, άρα ούτε λόγος για έξτρα στρώμα. Ασφαλές εδώ επειδή
+            το section δεν έχει κανέναν fixed απόγονο (ελέγχθηκε 29/08) — ένα transform hint
+            θα γινόταν containing block για fixed παιδιά και θα τα κάρφωνε πάνω του. */}
+        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 max-sm:will-change-transform sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
