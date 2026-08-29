@@ -17,10 +17,11 @@ import { NewsletterSection } from './NewsletterSection';
 // with a decision for TODAY and our honesty, NOT directory size or vibe browsing.
 //
 // Page rhythm: real-photo hero (rotating with the time of day) → "regions today"
-// (crawlable region links carrying today's live wind — our answer instead of a
-// competitor-style browse-by-region photo grid) → one dark contrast moment (the
-// trust manifesto) → footer. One national read backs the hero and the region
-// strip, so it stays a single cached call.
+// (crawlable region links, ranked by how many of each region's beaches are
+// protected from today's wind — our answer instead of a competitor-style
+// browse-by-region photo grid) → one dark contrast moment (the trust manifesto) →
+// footer. One national read backs the hero and the region strip, so it stays a
+// single cached call.
 
 interface LandingViewProps {
   language: LanguageCode;
@@ -110,7 +111,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       {/* Real <a href> navigation carrying today's live wind — the landing's only
           crawlable links, and the only path for visitors who will neither type
-          nor share their location. */}
+          nor share their location.
+
+          The national read below was already being paid for by the hero, which
+          used one field of it (roughness) and dropped the rest. The per-region
+          wind DIRECTION rides along in the same response, and since 29/08/2026 it
+          is what turns these tiles from thirteen identical names into a ranked
+          answer. `isFresh` is passed with it because the section says «σήμερα»:
+          without the flag it would print a three-hour-old direction as today's. */}
       <div className="mt-5 sm:mt-14">
         <TodayRegionsSection
           language={language}
@@ -119,6 +127,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           onShowNearbyBeaches={() => handleNearMe('regions')}
           isFindingLocation={isFindingLocation}
           locationError={locationError}
+          regionConditions={conditions.regions}
+          isConditionsFresh={conditions.isFresh}
           onOpenIslandSelector={() => {
             trackEvent('landing_all_regions_clicked');
             onOpenIslandSelector();

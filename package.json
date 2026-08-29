@@ -126,7 +126,9 @@
     "validate:split-marine": "node scripts/validateSplitMarineEquivalence.mjs",
     "measure:coastline-scale": "node scripts/measureCoastlineScaleStability.mjs",
     "quality:grazing-sea": "node scripts/validateGrazingSeaRelief.mjs",
-    "quality:warning-labels": "node scripts/validateWarningLabelCoverage.mjs"
+    "quality:warning-labels": "node scripts/validateWarningLabelCoverage.mjs",
+    "data:landing-shelter": "node scripts/buildLandingShelter.mjs",
+    "quality:landing-shelter": "node scripts/validateLandingShelterBound.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",
