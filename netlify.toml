@@ -28,6 +28,19 @@
 [functions."quality-digest"]
   schedule = "0 6 * * 1"
 
+# ΑΥΤΟΜΑΤΟΣ ΕΛΕΓΧΟΣ ΑΡΝΗΤΙΚΩΝ ΣΧΟΛΙΩΝ — κάθε μέρα 05:00 UTC (08:00 Ελλάδας το καλοκαίρι).
+#
+# Κάθε σχόλιο φτάνει ήδη στο Telegram μόνο του. Αυτό κοιτάει το ΣΥΝΟΛΟ των τελευταίων
+# 90 ημερών και μιλάει μόνο όταν η ίδια παραλία με τον ίδιο άνεμο μάζεψε αρκετές
+# αρνητικές αναφορές ώστε να μην είναι σύμπτωση — δηλαδή κάνει μόνο του αυτό που
+# μέχρι τώρα έβγαινε μόνο αν κατέβαζες το αρχείο και έτρεχες τη βαθμονόμηση.
+#
+# Ημερήσιο και όχι εβδομαδιαίο επειδή σιωπά από μόνο του: κρατάει στα Blobs τι έχει
+# ήδη πει και ξαναμιλάει μόνο για νέο ή μεγαλωμένο σήμα. Οι περισσότερες μέρες δεν
+# στέλνουν τίποτα. Βλ. netlify/functions/feedback-watch.mjs.
+[functions."feedback-watch"]
+  schedule = "0 5 * * *"
+
 # Edge-cached forecast proxy (capacity fix — see reports/capacity/capacity-model.md).
 # Routes the client's ForecastProvider calls to the allow-list proxy function, which
 # sets CDN cache headers so one upstream Open-Meteo call serves all users per TTL.

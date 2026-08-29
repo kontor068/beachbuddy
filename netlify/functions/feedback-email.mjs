@@ -335,6 +335,15 @@ const persistFeedback = async (event, payload) => {
       feedback: payload.feedback,
       timestamp: payload.timestamp,
       conditions: payload.conditions,
+      // ΟΝΟΜΑ ΚΑΙ ΜΟΝΟΠΑΤΙ ΜΑΖΙ ΜΕ ΤΗΝ ΑΝΑΦΟΡΑ (29/08/2026). Ο αυτόματος έλεγχος
+      // (feedback-watch.mjs) στέλνει μήνυμα που πρέπει να ονομάζει την παραλία και να
+      // ανοίγει τη σελίδα της· χωρίς αυτά έμενε το «#1853», που δεν είναι σχόλιο αλλά
+      // γρίφος. Το ημερολόγιο ποιότητας ξέρει μόνο τις παραλίες που έχουν κάποιο κενό,
+      // οπότε δεν αρκεί ως πηγή ονομάτων. Προαιρετικά πεδία: οι παλιές εγγραφές δεν τα
+      // έχουν και τα διαβάζει κανείς ως κενά.
+      beachName: payload.beachName || undefined,
+      regionId: payload.regionId || undefined,
+      pagePath: payload.pagePath || undefined,
     });
   } catch (error) {
     console.error('Feedback persistence failed.', error && error.message);
