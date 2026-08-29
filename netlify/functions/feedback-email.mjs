@@ -144,6 +144,9 @@ const VERDICTS = {
   calmer: { label: 'Ήταν πιο ήρεμα απ\' όσο έδειχνε', emoji: '😎', tag: '🟢 ΘΕΤΙΚΟ', note: 'Καμία ενέργεια — ίσως είμαστε πιο συντηρητικοί απ\' όσο χρειάζεται εδώ.' },
   // Free-text message from the landing story section (no beach attached).
   story_message: { label: 'Μήνυμα από την αρχική σελίδα', emoji: '✉️', tag: '💬 ΜΗΝΥΜΑ', note: 'Διάβασε το μήνυμα παρακάτω.' },
+  // The 1–10 "rate the app" card (components/AppRatingPrompt.tsx) — shown only to visitors
+  // on their 5th+ distinct day of use, so the scores come from people with a formed habit.
+  app_rating: { label: 'Αξιολόγηση εφαρμογής', emoji: '⭐', tag: '💬 ΑΞΙΟΛΟΓΗΣΗ', note: 'Βαθμοί 1–10 από επισκέπτη με τουλάχιστον 5 μέρες χρήσης — δες τους δύο βαθμούς και το σχόλιο.' },
 };
 
 const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Άγνωστο σχόλιο', 80), emoji: '📩', tag: '📩 ΑΓΝΩΣΤΟ', note: 'Δες τι στέλνει αυτή η φόρμα.' };
@@ -159,6 +162,18 @@ const formatHour = (value) => (typeof value === 'number' ? `${String(value).padS
 const hourInRange = (value) => {
   const n = finiteNumber(value);
   return typeof n === 'number' && Number.isInteger(n) && n >= 0 && n <= 23 ? n : undefined;
+};
+
+/** Βαθμός 1–10 ή τίποτα — μια χαλασμένη τιμή εξαφανίζει τη γραμμή αντί να τυπώσει «47/10». */
+const ratingInRange = (value) => {
+  const n = finiteNumber(value);
+  return typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 10 ? n : undefined;
+};
+
+/** Μέρες χρήσης: μικρός θετικός ακέραιος ή τίποτα. Το όριο κόβει προφανώς ψεύτικες τιμές. */
+const usageDaysInRange = (value) => {
+  const n = finiteNumber(value);
+  return typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 10_000 ? n : undefined;
 };
 
 // What the visitor actually said about WHEN they were at the beach — added 16/08/2026 because
@@ -238,9 +253,16 @@ const normalizePayload = (body, event) => {
   const feedback = body && typeof body === 'object' ? body : {};
   const conditions = feedback.conditions && typeof feedback.conditions === 'object' ? feedback.conditions : {};
   const context = feedback.context && typeof feedback.context === 'object' ? feedback.context : {};
+  const ratings = feedback.ratings && typeof feedback.ratings === 'object' ? feedback.ratings : {};
   const verdict = formatVerdict(feedback.feedback || feedback.verdict);
 
   return {
+    // The app-rating path: two 1–10 scores, no beach attached.
+    ratings: {
+      easeOfUse: ratingInRange(ratings.easeOfUse),
+      accuracy: ratingInRange(ratings.accuracy),
+    },
+    usageDays: usageDaysInRange(feedback.usageDays),
     source: clamp(feedback.source || context.source || 'unknown', 80),
     beachId: Number.isFinite(Number(feedback.beachId)) ? Number(feedback.beachId) : undefined,
     // Free-text path: without these three the landing message arrives empty.
@@ -298,6 +320,13 @@ const fieldLines = (payload) => [
   ['Παραλία', payload.beachName || (payload.beachId ? `#${payload.beachId}` : '')],
   ['Απάντηση σε', payload.replyTo],
   ['Ερώτηση', payload.prompt],
+  // Οι δύο βαθμοί της αξιολόγησης εφαρμογής — «8/10», ποτέ σκέτο «8», ώστε το μήνυμα να
+  // διαβάζεται σωστά και σε έναν μήνα, χωρίς να θυμάσαι την κλίμακα.
+  ['Ευκολία χρήσης', payload.ratings.easeOfUse !== undefined ? `${payload.ratings.easeOfUse}/10` : ''],
+  ['Ακρίβεια πρόβλεψης', payload.ratings.accuracy !== undefined ? `${payload.ratings.accuracy}/10` : ''],
+  // Πόσες διαφορετικές μέρες είχε ανοίξει την εφαρμογή πριν ρωτηθεί — ένα «4/10» από
+  // επισκέπτη 30 ημερών ζυγίζει αλλιώς από ένα «4/10» της πέμπτης μέρας.
+  ['Μέρες χρήσης', payload.usageDays ?? ''],
   ['ID παραλίας', payload.beachId ?? ''],
   ['Νησί/περιοχή', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
   ['Ημερομηνία', payload.conditions.date],
@@ -376,6 +405,30 @@ const formatMessage = (payload) => {
   return [...lead, '', ...body, rows, ...tail].join('\n').slice(0, MAX_MESSAGE_LENGTH);
 };
 
+// Durable copy of an app rating, under the `r/` prefix of the same store — the `f/` prefix
+// stays exclusively calibration-shaped beach verdicts so scripts/calibrateFromFeedback.mjs
+// never chokes on a record without a beach. Readable via /api/feedback-export?type=ratings.
+// Best-effort, like persistFeedback below: a Blobs outage must never eat the Telegram push.
+const persistAppRating = async (event, payload) => {
+  if (payload.feedback !== 'app_rating') return;
+
+  try {
+    connectLambda(event);
+    const store = getStore(FEEDBACK_STORE);
+    const dayKey = (payload.timestamp || new Date().toISOString()).slice(0, 10);
+    await store.setJSON(`r/${dayKey}/${randomUUID()}`, {
+      feedback: payload.feedback,
+      ratings: payload.ratings,
+      usageDays: payload.usageDays,
+      message: payload.message,
+      language: payload.language,
+      timestamp: payload.timestamp,
+    });
+  } catch (error) {
+    console.error('App rating persistence failed.', error && error.message);
+  }
+};
+
 // Durable, calibration-shaped copy of a beach-attached verdict. Skips free-text/no-beach
 // submissions (landing story messages) — nothing for scripts/calibrateFromFeedback.mjs to
 // aggregate there. Best-effort: a Blobs outage must never break the visitor-facing request.
@@ -436,6 +489,15 @@ export const handler = async (event) => {
     return json(400, { error: 'Message is empty.' });
   }
 
+  // Ένα app_rating χωρίς κανέναν έγκυρο βαθμό δεν λέει τίποτα — το κείμενο μόνο του
+  // έχει ήδη δικό του κανάλι (story_message)· εδώ οι βαθμοί ΕΙΝΑΙ το μήνυμα.
+  if (payload.feedback === 'app_rating'
+      && payload.ratings.easeOfUse === undefined
+      && payload.ratings.accuracy === undefined) {
+    return json(400, { error: 'Rating is empty.' });
+  }
+
+  await persistAppRating(event, payload);
   await persistFeedback(event, payload);
 
   const config = getConfig();

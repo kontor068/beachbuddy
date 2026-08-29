@@ -28,14 +28,19 @@ export const handler = async (event) => {
   // Optional window: only list days on/after this UTC day (YYYY-MM-DD).
   const since = /^\d{4}-\d{2}-\d{2}$/.test(params.since || '') ? params.since : null;
 
+  // Default `f/` = beach verdicts (the calibration input). `?type=ratings` switches to the
+  // `r/` prefix — the 1–10 app ratings, which live in the same store but are NOT shaped for
+  // calibrateFromFeedback.mjs, hence never mixed into the default dump.
+  const prefix = params.type === 'ratings' ? 'r/' : 'f/';
+
   try {
     connectLambda(event);
     const store = getStore(FEEDBACK_STORE);
 
     const records = [];
-    for await (const page of store.list({ prefix: 'f/', paginate: true })) {
+    for await (const page of store.list({ prefix, paginate: true })) {
       for (const blob of page.blobs) {
-        const dayKey = blob.key.slice('f/'.length, 'f/'.length + 10);
+        const dayKey = blob.key.slice(prefix.length, prefix.length + 10);
         if (since && dayKey < since) continue;
         const record = await store.get(blob.key, { type: 'json' });
         if (record) records.push(record);
