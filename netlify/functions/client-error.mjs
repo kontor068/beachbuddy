@@ -256,6 +256,32 @@ const CRAWLER_UA = /AdsBot|Googlebot|bingbot|Applebot|YandexBot|DuckDuckBot|Baid
  */
 const NETLIFY_RUM = /\/\.netlify\/scripts\/rum/i;
 
+/**
+ * ΤΟ ΔΙΚΤΥΟ ΔΕΝ ΠΕΡΑΣΕ — ΔΕΝ ΕΙΝΑΙ ΣΠΑΣΜΕΝΗ ΣΕΛΙΔΑ (απόφαση Μίλτου, 29/08/2026).
+ *
+ * «Load failed» (Safari), «Failed to fetch» (Chrome), «NetworkError…» (Firefox): έτσι
+ * λέει ο κάθε browser ότι ένα αίτημα δεν ολοκληρώθηκε. Το κοινό μας είναι ~86% κινητά,
+ * τουρίστες σε νησιά με 4G — μια χαμένη κλήση εκεί είναι καθημερινότητα, όχι συμβάν, και
+ * η εφαρμογή έχει εφεδρείες. Έφτανε όμως ως 🔴 «ΚΡΙΣΙΜΟ — δράσε τώρα», δηλαδή ακριβώς η
+ * κραυγή λύκου που κάνει κάποιον να σταματήσει να διαβάζει το κανάλι.
+ *
+ * ΟΙ ΑΓΚΥΡΕΣ ΕΙΝΑΙ Η ΟΥΣΙΑ, ΟΧΙ ΔΙΑΚΟΣΜΗΣΗ. Ταιριάζει ΜΟΝΟ όταν το μήνυμα είναι εξ
+ * ολοκλήρου αυτό. Το «Failed to fetch dynamically imported module» ΠΕΡΙΕΧΕΙ το «Failed
+ * to fetch», αλλά είναι άλλο πράγμα — κομμάτι κώδικα που δεν κατέβηκε — και έχει δικό
+ * του χειρισμό (CHUNK_LOAD_MESSAGE, 🟠 με δικές του οδηγίες). Χωρίς τις άγκυρες αυτή η
+ * σίγαση θα το κατάπινε μαζί, δηλαδή θα έκρυβε χαλασμένο deploy.
+ *
+ * Καταγράφονται κανονικά στον κάδο muted/ με τον λόγο δίπλα: αν κάποια μέρα ο αριθμός
+ * τους εκτοξευθεί, φαίνεται εκεί χωρίς να έχει χτυπήσει ποτέ το τηλέφωνο.
+ */
+const BARE_NETWORK_FAILURE = [
+  /^(?:TypeError:\s*)?Load failed\.?$/i,
+  /^(?:TypeError:\s*)?Failed to fetch\.?$/i,
+  /^(?:TypeError:\s*)?NetworkError when attempting to fetch resource\.?$/i,
+  /^(?:TypeError:\s*)?The network connection was lost\.?$/i,
+  /^(?:TypeError:\s*)?The request timed out\.?$/i,
+];
+
 const isCrawler = (userAgent) => CRAWLER_UA.test(userAgent || '');
 
 // A missing JS/CSS chunk is not a broken site: services/errorReporter.ts only forwards
@@ -400,6 +426,11 @@ export const handler = async (event) => {
     // Ο μετρητής ταχύτητας του Netlify. Βλ. NETLIFY_RUM.
     if (report.kind === 'error' && (NETLIFY_RUM.test(report.stack) || NETLIFY_RUM.test(report.source))) {
       return 'netlify-rum';
+    }
+
+    // Αίτημα που δεν πέρασε από το δίκτυο. Βλ. BARE_NETWORK_FAILURE.
+    if (report.kind === 'error' && BARE_NETWORK_FAILURE.some(p => p.test(report.message))) {
+      return 'network-failure';
     }
 
     return '';
