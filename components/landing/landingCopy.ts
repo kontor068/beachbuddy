@@ -92,13 +92,6 @@ export type LandingCopy = {
     quote: string;
     points: { title: string; body: string }[];
     more: string;
-    /**
-     * The ask, placed here rather than only at the foot of the story: this band
-     * has just admitted what we do not know, so inviting a correction is the
-     * natural next sentence — and it sits far higher up the page than the form
-     * it links to.
-     */
-    askLink: string;
   };
   /**
    * The way into the guide articles — 381 of them, and until this shipped the
@@ -340,29 +333,31 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Το «ήρεμα» δεν είναι το ίδιο για όλους. Μπορεί να θες ρηχά νερά, μπορεί μια άδεια αμμουδιά, μπορεί και κύμα για σερφ.',
       points: [
         {
-          title: 'Πώς το ελέγχουμε',
-          // 22/08/2026 — REVERSES the earlier "showing beats telling" call that
-          // left the weekly re-check only in the story. It was true that the page
-          // must not claim the same habit twice, but the story is the SIXTH band
-          // on a phone and almost nobody reaches it, so in practice the habit was
-          // claimed zero times where it counts. It now lives here, in the trust
-          // band, and the sentence was REMOVED from story.paragraphs[2] — check
-          // that paragraph before restoring anything, in all five locales.
-          //
-          // Wording is deliberate: «ξαναπερνάει από έλεγχο», never «βελτιώνουμε».
-          // The same fact framed as improvement reads as "not finished yet"; framed
-          // as checking, it reads as maintenance. Do not write «κάθε μέρα» either —
-          // the real cadence is weekly and a second number on the page would
-          // contradict this one. And no date stamp: the static pages are not
-          // rebuilt daily, so a «last checked» line would freeze and say the
-          // opposite of what it is there to say.
-          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Κάθε βδομάδα ξαναπερνάει από έλεγχο ένα κομμάτι του χάρτη: μετακινούμε σημεία, βγάζουμε ξαπλώστρες και καντίνες που έκλεισαν. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε. Χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
+          // TITLE IS A QUESTION THE VISITOR ACTUALLY HAS — «Πώς το ελέγχουμε»
+          // answered a question nobody had asked yet. The body keeps the three
+          // SOURCES and the weekly habit (that is authority) and drops the
+          // step-by-step of what we do to the map (that was procedure, and on a
+          // phone it made this the longest card on the page by far).
+          title: 'Από πού ξέρουμε τι υπάρχει',
+          // «ξαναπερνάει από έλεγχο», never «βελτιώνουμε»: the same fact framed as
+          // improvement reads as "not finished yet"; framed as checking, it reads
+          // as maintenance. Do not write «κάθε μέρα» — the real cadence is weekly
+          // and a second number on the page would contradict this one. And no date
+          // stamp: the static pages are not rebuilt daily, so a «last checked»
+          // line would freeze and say the opposite of what it is there to say.
+          // «με το χέρι» is the load-bearing addition: it says a person does this.
+          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Κάθε βδομάδα ένα κομμάτι του χάρτη ξαναπερνάει από έλεγχο, με το χέρι. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε: χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
         },
         {
-          title: 'Το σχήμα της ακτής',
-          // Active voice: «περασμένα μέσα από» is a participle nobody speaks —
-          // it also hid WHO does the work, which is the whole point of the card.
-          body: 'Παίρνουμε τον άνεμο και το κύμα ανά ώρα και τα περνάμε μέσα από το σχήμα της κάθε ακτής. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη.',
+          // WAS «Το σχήμα της ακτής», and the body was the recipe: wind and waves
+          // per hour, read through the shape of each shore. That is the one thing
+          // on this page a competitor could copy off the screen. The card now
+          // states the RESULT instead — every coast judged on its own, re-judged
+          // hourly — and closes with something the visitor can verify without us:
+          // two neighbouring beaches disagreeing on the same day. Nobody can fake
+          // that, which is why it persuades more than the method ever did.
+          title: 'Η φήμη δεν μετράει εδώ',
+          body: 'Κάθε ακτή της Ελλάδας είναι χαρτογραφημένη χωριστά και κρίνεται ξανά κάθε ώρα. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη — και γι’ αυτό δύο παραλίες δίπλα-δίπλα μπορεί να έχουν άλλη απάντηση την ίδια μέρα.',
         },
         {
           title: 'Τι δεν ξέρουμε (ακόμα)',
@@ -371,19 +366,30 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
           // αλλού γράφουμε ρητά «κοιτάμε τον άνεμο, τις ριπές και το κύμα».
           // Μια κάρτα μετριοφροσύνης που αντιφάσκει με το ίδιο το προϊόν ρίχνει
           // την αξιοπιστία και των δύο. Μένουν μόνο όσα όντως δεν ξέρουμε.
-          body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+          body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος και όχι έναν ακριβή αριθμό. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
         },
         {
-          title: 'Αυτό που προσθέσαμε τελευταία',
-          body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή.',
+          // REPLACES «Αυτό που προσθέσαμε τελευταία» (29/08/2026). That card had
+          // to be rewritten every time we shipped anything, and between rewrites
+          // it advertised something months old as "latest" — a card that decays
+          // into a lie on its own. What took its place is the strongest thing we
+          // can say and the only one that never goes stale.
+          //
+          // THE CLAIM MOVED UP, it was not invented here: it lived in
+          // story.paragraphs[2], the sixth band on a phone, where almost nobody
+          // reaches — the same reasoning that moved the weekly re-check into
+          // point 01 on 22/08. It was REMOVED from that paragraph in all five
+          // locales; check there before restoring anything.
+          //
+          // IT IS A PROMISE ABOUT RESULT ORDERING and nothing wider — deliberately
+          // not "we take no money from anyone", which an accommodation link would
+          // make false overnight (see the affiliate note in App.tsx). If paid
+          // placement ever enters the ranking, this card comes out first.
+          title: 'Ποιος μας πληρώνει',
+          body: 'Κανείς δεν αγοράζει θέση στη λίστα. Καμία παραλία, κανένα μαγαζί, κανένα ξενοδοχείο δεν μπορεί να πληρώσει για να βγει ψηλότερα — η σειρά βγαίνει από τον καιρό και την ακτή, από τίποτα άλλο.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
-      // WAS «Ξέρεις κάτι που δεν ξέρουμε; Πες μας» — word for word the same
-      // sentence as story.askTitle two screens below, which made the page sound
-      // like it had one idea and used it twice. A link wants a verb, not a
-      // question; the ξέρεις/ξέρουμε pair with point 03 above survives.
-      askLink: 'Πες μας τι ξέρεις εσύ',
     },
     guides: {
       // WAS A QUESTION («Ψάχνεις κάτι συγκεκριμένο;») over six bare adjectives,
@@ -462,9 +468,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // Do NOT add "the photos on this page are ours" (the hero shots are not the
     // team's own) and do not restore "we have been to plenty of these beaches"
     // (first-party verification currently covers a handful, so «πολλές» would not
-    // survive a reader asking for the number). The "no beach pays to rank" line
-    // is a PROMISE about result ordering — exposure and wind, nothing else. If
-    // paid placement ever enters the ranking, that line comes out first.
+    // survive a reader asking for the number). The "no beach pays to rank"
+    // promise NO LONGER LIVES HERE — it moved into manifesto point 04 on
+    // 29/08/2026, four bands higher, because almost nobody on a phone reached
+    // this letter. Do not restore it in these paragraphs; the page would then
+    // make the same promise twice.
     story: {
       overline: 'Ποιοι είμαστε',
       // Plain autobiographical fact, not a slogan — and it earns the next line.
@@ -472,7 +480,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'Είμαστε μια μικρή ομάδα με ένα κοινό: τη θάλασσα. Ο ένας γεννήθηκε σε νησί και ουσιαστικά δεν έφυγε ποτέ. Ο άλλος μεγάλωσε αλλάζοντας νησιά, λόγω της δουλειάς των γονιών του: άλλο σχολείο, άλλο λιμάνι, άλλες παραλίες. Κάπου εκεί μάθαμε αυτό που ξέρει κάθε ντόπιος και δεν γράφεται σε κανέναν οδηγό: ποια παραλία δουλεύει όταν φυσάει, και ποια όχι.',
         'Το έχουμε πάθει κι εμείς: οδηγήσαμε μία ώρα για μια παραλία που είχαμε δει σε φωτογραφία, και τη βρήκαμε με κύμα. Γι’ αυτό χαρτογραφούμε το σχήμα κάθε ακτής στην Ελλάδα: πού χτυπάει ο άνεμος, πού προστατεύει η στεριά.',
-        'Καμία παραλία δεν πληρώνει για να βγει ψηλότερα. Η σειρά βγαίνει από τον άνεμο και το σχήμα της ακτής, από τίποτα άλλο. Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
+        'Εκεί χρειαζόμαστε εσένα: την παραλία σου την ξέρεις καλύτερα από κάθε δορυφόρο.',
       ],
       pullQuote: 'Καμία φωτογραφία δεν σου λέει τι κάνει η θάλασσα σήμερα.',
       signatureName: 'Μίλτος',
@@ -531,24 +539,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '“Calm” is not the same thing for everyone. You might want shallow water, or an empty beach, or waves to surf.',
       points: [
         {
-          title: 'How we check it',
-          body: 'Official registries, satellite, and beaches we have walked ourselves. Every week another stretch of the map goes back through checks: we move pins, and drop sunbeds and canteens that have closed. When we are not sure, we leave it out. A sunbed that is not there is worse than one we never mentioned.',
+          title: 'How we know what is there',
+          body: 'Official registries, satellite, and beaches we have walked ourselves. Every week another stretch of the map goes back through checks, by hand. When we are not sure, we leave it out: promising a sunbed that is not there is worse than never mentioning it.',
         },
         {
-          title: 'The shape of the coast',
-          body: 'We take the wind and the waves hour by hour and read them through the shape of each shore. That is why a famous beach is not automatically the better one.',
+          title: 'Fame counts for nothing here',
+          body: 'Every stretch of Greek coast is mapped on its own and judged again every hour. That is why a famous beach is not automatically the better one — and why two beaches side by side can give a different answer on the same day.',
         },
         {
           title: 'What we do not know (yet)',
-          body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
+          body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range rather than one exact number. When you arrive, check the flags and the lifeguard.',
         },
         {
-          title: 'What we added most recently',
-          body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region.',
+          title: 'Who pays us',
+          body: 'Nobody buys a place in the list. No beach, no business, no hotel can pay to rank higher — the order comes from the weather and the coast, from nothing else.',
         },
       ],
       more: 'How CalmBeach works',
-      askLink: 'Tell us what you know',
     },
     guides: {
       title: 'Articles by region',
@@ -586,7 +593,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'We are a small team with one thing in common: the sea. One of us was born on an island and never really left it. Another grew up moving from island to island, following a parent’s work — a different school, a different port, different beaches. Somewhere in there we learned the thing every local knows and no guidebook prints: which beach works when the wind is up, and which one does not.',
         'It has caught us out as visitors too: we drove an hour to a beach we had seen in a photo, and found it churning. So we map the shape of every shore — where the wind hits, where the land shelters — across the whole of Greece.',
-        'No beach pays to rank higher — the order comes from the wind and the shape of the coast, nothing else. That is where we need you: you know your beach better than any satellite.',
+        'That is where we need you: you know your beach better than any satellite.',
       ],
       pullQuote: 'No photo tells you what the sea is doing today.',
       signatureName: 'Miltos',
@@ -645,24 +652,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '„Ruhig“ ist nicht für alle dasselbe. Vielleicht willst du flaches Wasser, vielleicht einen leeren Strand, vielleicht Wellen zum Surfen.',
       points: [
         {
-          title: 'Wie wir es prüfen',
-          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Jede Woche geht ein weiteres Stück der Karte erneut durch die Prüfung: Wir verschieben Punkte und löschen Liegen und Strandkioske, die geschlossen haben. Im Zweifel lassen wir es weg. Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
+          title: 'Woher wir wissen, was es gibt',
+          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Jede Woche geht ein weiteres Stück der Karte erneut durch die Prüfung, von Hand. Im Zweifel lassen wir es weg: Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
         },
         {
-          title: 'Die Form der Küste',
-          body: 'Wir nehmen Wind und Wellen Stunde für Stunde und lesen sie durch die Form jeder Küste. Deshalb ist ein berühmter Strand nicht automatisch der bessere.',
+          title: 'Ruhm zählt hier nicht',
+          body: 'Jeder Küstenabschnitt Griechenlands ist einzeln kartiert und wird stündlich neu beurteilt. Deshalb ist ein berühmter Strand nicht automatisch der bessere — und deshalb können zwei Strände nebeneinander am selben Tag unterschiedlich ausfallen.',
         },
         {
           title: 'Was wir (noch) nicht wissen',
-          body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
+          body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an und keine exakte Zahl. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
         },
         {
-          title: 'Was zuletzt dazugekommen ist',
-          body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon.',
+          title: 'Wer uns bezahlt',
+          body: 'Niemand kauft sich einen Platz in der Liste. Kein Strand, kein Betrieb, kein Hotel kann dafür zahlen, weiter oben zu stehen — die Reihenfolge ergibt sich aus dem Wetter und der Küste, aus nichts anderem.',
         },
       ],
       more: 'Wie CalmBeach funktioniert',
-      askLink: 'Sag uns, was du weißt',
     },
     guides: {
       title: 'Artikel nach Region',
@@ -701,7 +707,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Wir sind ein kleines Team mit einer Gemeinsamkeit: dem Meer. Einer von uns ist auf einer Insel geboren und im Grunde nie weggegangen. Ein anderer ist von Insel zu Insel gezogen, wegen der Arbeit der Eltern — eine andere Schule, ein anderer Hafen, andere Strände. Irgendwo dabei haben wir gelernt, was jeder Einheimische weiß und in keinem Reiseführer steht: welcher Strand funktioniert, wenn es weht, und welcher nicht.',
         'Als Besucher hat es uns selbst erwischt: Wir fuhren eine Stunde zu einem Strand, den wir auf einem Foto gesehen hatten, und fanden ihn aufgewühlt vor. Deshalb kartieren wir die Form jeder Küste — wo der Wind auftrifft, wo das Land schützt — für ganz Griechenland.',
         // "Kantine" is a works/school canteen — the Greek καντίνα is a beach kiosk.
-        'Kein Strand zahlt für eine bessere Platzierung — die Reihenfolge ergibt sich aus dem Wind und der Form der Küste, aus nichts anderem. Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
+        'Genau da brauchen wir dich: Du kennst deinen Strand besser als jeder Satellit.',
       ],
       pullQuote: 'Kein Foto sagt dir, was das Meer heute macht.',
       signatureName: 'Miltos',
@@ -760,24 +766,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '« Calme » ne veut pas dire la même chose pour tout le monde. Vous voulez peut-être de l’eau peu profonde, ou une plage déserte, ou des vagues pour surfer.',
       points: [
         {
-          title: 'Comment nous le vérifions',
-          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Chaque semaine, une nouvelle portion de la carte repasse au contrôle : nous déplaçons des points, nous retirons les transats et les buvettes qui ont fermé. En cas de doute, nous n’indiquons rien. Promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
+          title: 'Comment nous savons ce qui existe',
+          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Chaque semaine, une nouvelle portion de la carte repasse au contrôle, à la main. En cas de doute, nous n’indiquons rien : promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
         },
         {
-          title: 'La forme de la côte',
-          body: 'Nous prenons le vent et les vagues heure par heure et nous les lisons à travers la forme de chaque côte. C’est pourquoi une plage célèbre n’est pas automatiquement la meilleure.',
+          title: 'La réputation ne compte pas ici',
+          body: 'Chaque portion de côte grecque est cartographiée séparément et réévaluée chaque heure. C’est pourquoi une plage célèbre n’est pas automatiquement la meilleure — et pourquoi deux plages voisines peuvent donner une réponse différente le même jour.',
         },
         {
           title: 'Ce que nous ne savons pas (encore)',
-          body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
+          body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où une fourchette de hauteur de vagues plutôt qu’un chiffre exact. Sur place, regardez les drapeaux et le maître-nageur.',
         },
         {
-          title: 'Ce que nous avons ajouté en dernier',
-          body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région.',
+          title: 'Qui nous paie',
+          body: 'Personne n’achète sa place dans la liste. Aucune plage, aucun commerce, aucun hôtel ne peut payer pour apparaître plus haut — l’ordre vient de la météo et de la côte, de rien d’autre.',
         },
       ],
       more: 'Comment fonctionne CalmBeach',
-      askLink: 'Dites-nous ce que vous savez',
     },
     guides: {
       title: 'Articles par région',
@@ -816,7 +821,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Nous sommes une petite équipe avec un point commun : la mer. L’un de nous est né sur une île et n’en est jamais vraiment parti. Un autre a grandi en changeant d’île, à cause du travail de ses parents — une autre école, un autre port, d’autres plages. C’est là que nous avons appris ce que sait chaque habitant et qu’aucun guide n’imprime : quelle plage marche quand il vente, et laquelle non.',
         'Cela nous est arrivé aussi, en tant que visiteurs : nous avons roulé une heure pour une plage vue en photo, et nous l’avons trouvée agitée. C’est pourquoi nous cartographions la forme de chaque côte — où le vent frappe, où la terre abrite — pour toute la Grèce.',
         // "cantine" is a school/works canteen in French — a beach καντίνα is a buvette.
-        'Aucune plage ne paie pour être mieux classée — l’ordre vient du vent et de la forme de la côte, de rien d’autre. C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
+        'C’est là que nous avons besoin de vous : vous connaissez votre plage mieux que n’importe quel satellite.',
       ],
       pullQuote: 'Aucune photo ne vous dit ce que la mer fait aujourd’hui.',
       signatureName: 'Miltos',
@@ -875,24 +880,23 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '«Calmo» non è lo stesso per tutti. Forse vuoi acqua bassa, forse una spiaggia deserta, forse onde per fare surf.',
       points: [
         {
-          title: 'Come lo verifichiamo',
-          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Ogni settimana un altro pezzo della mappa torna sotto controllo: spostiamo punti, togliamo lettini e chioschi che hanno chiuso. Nel dubbio, non lo scriviamo. Promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
+          title: 'Come sappiamo che cosa c’è',
+          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Ogni settimana un altro pezzo della mappa torna sotto controllo, a mano. Nel dubbio, non lo scriviamo: promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
         },
         {
-          title: 'La forma della costa',
-          body: 'Prendiamo vento e onde ora per ora e li leggiamo attraverso la forma di ogni costa. Per questo una spiaggia famosa non è automaticamente la migliore.',
+          title: 'La fama qui non conta',
+          body: 'Ogni tratto di costa greca è mappato singolarmente e viene rivalutato ogni ora. Per questo una spiaggia famosa non è automaticamente la migliore — e per questo due spiagge vicine possono dare una risposta diversa nello stesso giorno.',
         },
         {
           title: 'Cosa non sappiamo (ancora)',
-          body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
+          body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde e non un numero esatto. Sul posto, guarda le bandiere e il bagnino.',
         },
         {
-          title: 'Quello che abbiamo aggiunto per ultimo',
-          body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione.',
+          title: 'Chi ci paga',
+          body: 'Nessuno compra un posto nella lista. Nessuna spiaggia, nessun locale, nessun hotel può pagare per stare più in alto — l’ordine nasce dal meteo e dalla costa, da nient’altro.',
         },
       ],
       more: 'Come funziona CalmBeach',
-      askLink: 'Dicci quello che sai tu',
     },
     guides: {
       title: 'Articoli per regione',
@@ -930,7 +934,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       paragraphs: [
         'Siamo un piccolo team con una cosa in comune: il mare. Uno di noi è nato su un’isola e in fondo non è mai andato via. Un altro è cresciuto cambiando isola, per il lavoro dei genitori — un’altra scuola, un altro porto, altre spiagge. È lì che abbiamo imparato quello che sa ogni abitante e che nessuna guida scrive: quale spiaggia funziona quando tira vento, e quale no.',
         'È capitato anche a noi, come visitatori: abbiamo guidato un’ora per una spiaggia vista in foto, e l’abbiamo trovata mossa. Per questo mappiamo la forma di ogni costa — dove batte il vento, dove ripara la terra — per tutta la Grecia.',
-        'Nessuna spiaggia paga per stare più in alto — l’ordine viene dal vento e dalla forma della costa, da nient’altro. È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
+        'È lì che abbiamo bisogno di te: la tua spiaggia la conosci meglio di qualsiasi satellite.',
       ],
       pullQuote: 'Nessuna foto ti dice cosa fa il mare oggi.',
       signatureName: 'Miltos',
