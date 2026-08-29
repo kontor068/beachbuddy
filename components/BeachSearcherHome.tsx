@@ -4153,7 +4153,24 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         {/* ΧΩΡΙΣ ΚΑΡΤΑ (28/08/2026). Ήταν λευκό κουτί με περίγραμμα, ring και βαριά σκιά,
             και μέσα του ένα input με ΔΙΚΟ ΤΟΥ περίγραμμα: δύο πλαίσια για ένα πεδίο. Τώρα
             η επιφάνεια είναι το ίδιο το input — ένα κουτί, όχι δύο. */}
-        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 sm:pb-2">
+        {/* ΧΩΡΙΣ z-index ΣΤΟ ΙΔΙΟ ΤΟ ΚΟΥΤΙ (29/08/2026) — και αυτό ΕΙΝΑΙ η διόρθωση, όχι
+            καθάρισμα. Το `z-[120]` έκανε αυτό το section το μόνο στοιχείο της κορυφής με δικό
+            του stacking context πάνω από τον διακοσμητικό καμβά (.atmosphere, z-index:-1), και
+            ήταν ΑΚΡΙΒΩΣ αυτό που χανόταν: ο χώρος του έμενε σωστός και το περιεχόμενο άβαφο,
+            μέχρι το επόμενο σκρολ να το ξαναζωγραφίσει. Μετρημένο από το στιγμιότυπο του Μίλτου
+            (Χαλκιδική, 29/08): κενό τίτλου→ημερών 105px CSS, ενώ σε υγιή σελίδα τα ίδια στοιχεία
+            απέχουν 82px κουτί (+ leading γλυφών) — δηλαδή τα 60px της μπάρας ήταν στη διάταξη,
+            απλώς δεν είχαν βαφτεί. Τρίτο επεισόδιο της ίδιας οικογένειας: λευκές λωρίδες 22/08
+            (αφαιρέθηκε στρώμα `fixed inset-0 -z-10`), ξεθωριασμένες μέρες 28/08 (μπλοκ z-30).
+            Δύο από τα τρία θύματα είναι τα δύο stacking contexts της κορυφής.
+
+            Το z-index χρειαζόταν μόνο για ένα πράγμα: να περνούν οι λίστες προτάσεων πάνω από
+            τον χάρτη (z-30, επόμενο αδερφάκι). Άρα πάει ΕΚΕΙ — z-[130] στα δύο dropdown, που
+            ζουν μέσα σε `div.relative` χωρίς δικό του context, οπότε ανταγωνίζονται τον χάρτη
+            κατευθείαν μέσα στο εξωτερικό `isolate`. Ίδια στρώση, χωρίς να σηκώνει επίπεδο η
+            μπάρα. Επαληθεύτηκε σε πραγματικό Chromium 412×915 ότι και οι δύο λίστες
+            εξακολουθούν να ζωγραφίζονται και να πατιούνται πάνω από τον χάρτη. */}
+        <section className="relative mx-auto w-full max-w-[110rem] overflow-visible pb-1 sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
@@ -4319,7 +4336,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                 <div
                   id={searchSuggestionListId}
                   role="listbox"
-                  className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
+                  className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[130] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70"
                 >
                   {searchSuggestions.length > 0 ? (
                     <div className="max-h-72 overflow-y-auto overscroll-contain p-1.5">
@@ -4382,7 +4399,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   τη μέση. Εμφανίζεται τη στιγμή που ο χρήστης πάει να γράψει, δηλαδή
                   ακριβώς όταν έχει ήδη πρόθεση. */}
               {shouldRenderIntentPanel && (
-                <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[80] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white p-2.5 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70">
+                <div className="absolute left-0 right-0 top-[calc(100%+0.45rem)] z-[130] overflow-hidden rounded-[1.1rem] border border-sky-100 bg-white p-2.5 text-left shadow-xl shadow-sky-950/12 ring-1 ring-white/70">
                   <p className="px-1 pb-1.5 text-[11px] font-black uppercase tracking-wide text-slate-600">
                     {intentPanelLeadCopy[language] || intentPanelLeadCopy.en}
                   </p>
