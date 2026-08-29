@@ -152,25 +152,30 @@ export const LandingView: React.FC<LandingViewProps> = ({
         />
       </div>
 
-      {/* The second way in, for the visitor who recognises none of the thirteen
-          region names and will not share their location.
-          PLACED AFTER THE PHOTO ASK, not before it. Above it read better — it is
-          navigation and belongs next to the other navigation — but it adds ~490px
-          on a phone, far more than the photo card lost when it was halved, so
-          putting it there would have pushed the photo ask down by roughly 300px
-          and quietly undone the 08/08 decision to move that ask up. Kept tight
-          (mt-10, not the mt-14 the other bands get) because it is an index, not a
-          chapter. */}
-      <div className="mt-10 sm:mt-14">
-        <GuideTopicsSection language={language} allIslands={allIslands} />
-      </div>
-
+      {/* MOVED ABOVE THE ARTICLE INDEX 29/08/2026, at Miltos's call. This band is
+          the reason to trust every number on the page, so it has to be read
+          BEFORE the visitor is offered somewhere else to go: the article index is
+          navigation, and navigation ends the visit. It also inherits the photo
+          ask's momentum instead of arriving after a ~490px list of links. */}
       <div className="mt-14 sm:mt-20">
         <HowWeDecideSection language={language} />
       </div>
 
-      {/* The human close: light and first-person right after the dark
-          institutional band, so the page ends on "help us" and not on caveats. */}
+      {/* The second way in, for the visitor who recognises none of the thirteen
+          region names and will not share their location. It is an index, not a
+          chapter, and it now sits last among the "where to go" blocks — after the
+          photo ask (moved up 08/08) and after the trust band, both of which it
+          would otherwise push down by roughly 300px on a phone. Kept tight
+          (mt-10, not the mt-14 the other bands get). */}
+      <div className="mt-10 sm:mt-14">
+        <GuideTopicsSection language={language} allIslands={allIslands} />
+      </div>
+
+      {/* The human close: light and first-person, so the page ends on "help us"
+          and not on caveats. It no longer sits directly under the dark band (the
+          article index moved between them on 29/08/2026), so the contrast that
+          used to carry it is gone — if the letter ever reads as an orphan here,
+          that is why. */}
       <div className="mt-14 sm:mt-20">
         <OurStorySection language={language} />
       </div>

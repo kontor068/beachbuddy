@@ -92,13 +92,6 @@ export type LandingCopy = {
     quote: string;
     points: { title: string; body: string }[];
     more: string;
-    /**
-     * The ask, placed here rather than only at the foot of the story: this band
-     * has just admitted what we do not know, so inviting a correction is the
-     * natural next sentence — and it sits far higher up the page than the form
-     * it links to.
-     */
-    askLink: string;
   };
   /**
    * The way into the guide articles — 381 of them, and until this shipped the
@@ -379,11 +372,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
-      // WAS «Ξέρεις κάτι που δεν ξέρουμε; Πες μας» — word for word the same
-      // sentence as story.askTitle two screens below, which made the page sound
-      // like it had one idea and used it twice. A link wants a verb, not a
-      // question; the ξέρεις/ξέρουμε pair with point 03 above survives.
-      askLink: 'Πες μας τι ξέρεις εσύ',
     },
     guides: {
       // WAS A QUESTION («Ψάχνεις κάτι συγκεκριμένο;») over six bare adjectives,
@@ -548,7 +536,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'How CalmBeach works',
-      askLink: 'Tell us what you know',
     },
     guides: {
       title: 'Articles by region',
@@ -662,7 +649,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Wie CalmBeach funktioniert',
-      askLink: 'Sag uns, was du weißt',
     },
     guides: {
       title: 'Artikel nach Region',
@@ -777,7 +763,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Comment fonctionne CalmBeach',
-      askLink: 'Dites-nous ce que vous savez',
     },
     guides: {
       title: 'Articles par région',
@@ -892,7 +877,6 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         },
       ],
       more: 'Come funziona CalmBeach',
-      askLink: 'Dicci quello che sai tu',
     },
     guides: {
       title: 'Articoli per regione',
