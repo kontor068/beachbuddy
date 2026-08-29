@@ -333,68 +333,42 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         'Το «ήρεμα» δεν είναι το ίδιο για όλους. Μπορεί να θες ρηχά νερά, μπορεί μια άδεια αμμουδιά, μπορεί και κύμα για σερφ.',
       points: [
         {
-          // THE FOUR CARDS ARE ONE ARGUMENT, IN ORDER (29/08/2026): what «calm»
-          // means for YOU → how that becomes today's list → where the underlying
-          // facts come from → what we still cannot see. Each card is a step; do
-          // not reorder them and do not swap one out for an unrelated claim.
-          //
-          // 01 EXTENDS THE QUOTE, it does not restate it. The quote beside it
-          // already spends its three examples on shallow water, an empty beach
-          // and waves to surf — so this card must spend DIFFERENT ones. Every
-          // item here is a real chip in UserPreferences (types.ts): sandy,
-          // pebbles, beachBar, quiet, snorkeling, familyFriendly, parking,
-          // easyAccess. Do not add a wish the app cannot actually filter on.
-          //
-          // «Τα διαλέγεις εσύ», not «τα κρατάμε»: the saved profile needs an
-          // account (BeachProfile.enabled), the chips do not — and this sentence
-          // has to stay true for the signed-out visitor reading it.
-          title: 'Το «ήρεμα» το ορίζεις εσύ',
-          body: 'Άμμος ή βότσαλο. Καντίνα με μουσική ή απόλυτη ησυχία. Βράχια για σνόρκελινγκ, παρέα με παιδιά, πάρκινγκ δίπλα, μπάσιμο χωρίς σκαλιά. Τα διαλέγεις εσύ — και η λίστα ξαναγράφεται γύρω από αυτά.',
-        },
-        {
-          // THE CENTREPIECE. It answers the only question that matters — «γιατί
-          // να σε πιστέψω;» — and it answers it by showing the work at the level
-          // a person can picture: the forecast, hour by hour, laid over each
-          // shore on its own. That is deliberately WHAT WE LOOK AT and not the
-          // formula: no exposure angles, no fetch, no Beaufort ceilings, no
-          // discounts. A visitor understands "where the wind reaches, where the
-          // land blocks it"; a competitor cannot rebuild anything from it.
-          //
-          // The two consequences at the end are the proof, and they are the part
-          // nobody can fake: neighbouring beaches disagreeing, and the famous one
-          // not winning by default. A reader who has been to that coast KNOWS
-          // both are true, which is what turns the claim into evidence.
-          title: 'Πώς βγαίνουν οι προτάσεις',
-          body: 'Παίρνουμε την πρόγνωση ώρα προς ώρα και τη ρίχνουμε πάνω σε κάθε ακτή χωριστά: πού φτάνει ο άνεμος, πού τον κόβει η στεριά. Μετά μένουν μόνο όσες ταιριάζουν σε αυτό που ζήτησες. Γι’ αυτό δύο παραλίες δίπλα-δίπλα μπορεί να έχουν άλλη απάντηση την ίδια μέρα — και γι’ αυτό η διάσημη δεν βγαίνει αυτόματα πρώτη.',
-        },
-        {
-          // The three SOURCES and the weekly habit — that is where the authority
-          // is. What was dropped from this card is the step-by-step of what we do
-          // to the map («μετακινούμε σημεία, βγάζουμε ξαπλώστρες που έκλεισαν»):
-          // it was procedure, and on a phone it made this the longest card on the
-          // page by a wide margin.
+          title: 'Πώς το ελέγχουμε',
+          // 22/08/2026 — REVERSES the earlier "showing beats telling" call that
+          // left the weekly re-check only in the story. It was true that the page
+          // must not claim the same habit twice, but the story is the SIXTH band
+          // on a phone and almost nobody reaches it, so in practice the habit was
+          // claimed zero times where it counts. It now lives here, in the trust
+          // band, and the sentence was REMOVED from story.paragraphs[2] — check
+          // that paragraph before restoring anything, in all five locales.
           //
           // Wording is deliberate: «ξαναπερνάει από έλεγχο», never «βελτιώνουμε».
-          // The same fact framed as improvement reads as "not finished yet";
-          // framed as checking, it reads as maintenance. Do not write «κάθε μέρα»
-          // — the real cadence is weekly. And no date stamp: the static pages are
-          // not rebuilt daily, so a «last checked» line would freeze and say the
-          // opposite of what it is there to say. «με το χέρι» is load-bearing: it
-          // says a person does this.
-          title: 'Από πού ξέρουμε τι υπάρχει',
-          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Κάθε βδομάδα ένα κομμάτι του χάρτη ξαναπερνάει από έλεγχο, με το χέρι. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε: χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
+          // The same fact framed as improvement reads as "not finished yet"; framed
+          // as checking, it reads as maintenance. Do not write «κάθε μέρα» either —
+          // the real cadence is weekly and a second number on the page would
+          // contradict this one. And no date stamp: the static pages are not
+          // rebuilt daily, so a «last checked» line would freeze and say the
+          // opposite of what it is there to say.
+          body: 'Επίσημα μητρώα, δορυφόρος και παραλίες που έχουμε πάει οι ίδιοι. Κάθε βδομάδα ξαναπερνάει από έλεγχο ένα κομμάτι του χάρτη: μετακινούμε σημεία, βγάζουμε ξαπλώστρες και καντίνες που έκλεισαν. Όταν δεν είμαστε σίγουροι, δεν το γράφουμε. Χειρότερο να υποσχεθούμε μια ξαπλώστρα που δεν υπάρχει, παρά να μην την αναφέρουμε καθόλου.',
         },
         {
-          // LAST ON PURPOSE: the three cards above show the working, so this one
-          // reads as confidence rather than as a disclaimer. Δεν είναι διακοσμητικό.
-          //
+          title: 'Το σχήμα της ακτής',
+          // Active voice: «περασμένα μέσα από» is a participle nobody speaks —
+          // it also hid WHO does the work, which is the whole point of the card.
+          body: 'Παίρνουμε τον άνεμο και το κύμα ανά ώρα και τα περνάμε μέσα από το σχήμα της κάθε ακτής. Γι’ αυτό μια διάσημη παραλία δεν βγαίνει αυτόματα καλύτερη.',
+        },
+        {
+          title: 'Τι δεν ξέρουμε (ακόμα)',
           // WAS «Ρεύματα, βυθό, τοπικές ριπές» — δύο από τα τρία ήταν ψέμα: το
           // badge «ρηχά/βαθιά νερά» στέκεται δίπλα στην ίδια κάρτα παραλίας και
           // αλλού γράφουμε ρητά «κοιτάμε τον άνεμο, τις ριπές και το κύμα».
           // Μια κάρτα μετριοφροσύνης που αντιφάσκει με το ίδιο το προϊόν ρίχνει
           // την αξιοπιστία και των δύο. Μένουν μόνο όσα όντως δεν ξέρουμε.
-          title: 'Τι δεν ξέρουμε (ακόμα)',
-          body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση — γι’ αυτό δίνουμε εύρος κύματος και όχι έναν ακριβή αριθμό. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+          body: 'Ρεύματα, βράχια κάτω από την επιφάνεια, μέδουσες. Δείχνουμε πρόγνωση, όχι μέτρηση, γι’ αυτό δίνουμε εύρος κύματος. Όταν φτάσεις, κοίτα τη σημαία και τον ναυαγοσώστη.',
+        },
+        {
+          title: 'Αυτό που προσθέσαμε τελευταία',
+          body: 'Πλάνο για όλες τις μέρες που μένεις: ποια παραλία ποια μέρα, με βάση την πρόγνωση. Δουλεύει ήδη μέσα σε κάθε περιοχή.',
         },
       ],
       more: 'Πώς δουλεύει το CalmBeach',
@@ -478,11 +452,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     // (first-party verification currently covers a handful, so «πολλές» would not
     // survive a reader asking for the number). The "no beach pays to rank" line
     // is a PROMISE about result ordering — exposure and wind, nothing else. If
-    // paid placement ever enters the ranking, that line comes out first. It was
-    // briefly tried as a card in the manifesto band and pulled back on 29/08/2026:
-    // those four cards are one argument about what «calm» means and how a
-    // suggestion is reached, and a card about money broke that thread. It belongs
-    // here, in the letter, where it reads as the writer's own commitment.
+    // paid placement ever enters the ranking, that line comes out first.
     story: {
       overline: 'Ποιοι είμαστε',
       // Plain autobiographical fact, not a slogan — and it earns the next line.
@@ -549,20 +519,20 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '“Calm” is not the same thing for everyone. You might want shallow water, or an empty beach, or waves to surf.',
       points: [
         {
-          title: 'You decide what calm means',
-          body: 'Sand or pebbles. A canteen with music, or nothing at all. Rocks for snorkelling, room for kids, parking right there, a way in without steps. You choose — and the list is rebuilt around it.',
+          title: 'How we check it',
+          body: 'Official registries, satellite, and beaches we have walked ourselves. Every week another stretch of the map goes back through checks: we move pins, and drop sunbeds and canteens that have closed. When we are not sure, we leave it out. A sunbed that is not there is worse than one we never mentioned.',
         },
         {
-          title: 'How the suggestions are made',
-          body: 'We take the forecast hour by hour and lay it over each shore on its own: where the wind reaches, where the land blocks it. Then only the beaches that match what you asked for are left. That is why two beaches side by side can give a different answer on the same day — and why the famous one does not come first by default.',
-        },
-        {
-          title: 'How we know what is there',
-          body: 'Official registries, satellite, and beaches we have walked ourselves. Every week another stretch of the map goes back through checks, by hand. When we are not sure, we leave it out: promising a sunbed that is not there is worse than never mentioning it.',
+          title: 'The shape of the coast',
+          body: 'We take the wind and the waves hour by hour and read them through the shape of each shore. That is why a famous beach is not automatically the better one.',
         },
         {
           title: 'What we do not know (yet)',
-          body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range rather than one exact number. When you arrive, check the flags and the lifeguard.',
+          body: 'Currents, rocks under the surface, jellyfish. We show a forecast, not a measurement — which is why we give a wave range. When you arrive, check the flags and the lifeguard.',
+        },
+        {
+          title: 'What we added most recently',
+          body: 'A plan for every day of your stay: which beach on which day, from the forecast. It already works inside each region.',
         },
       ],
       more: 'How CalmBeach works',
@@ -662,20 +632,20 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '„Ruhig“ ist nicht für alle dasselbe. Vielleicht willst du flaches Wasser, vielleicht einen leeren Strand, vielleicht Wellen zum Surfen.',
       points: [
         {
-          title: 'Was „ruhig“ heißt, entscheidest du',
-          body: 'Sand oder Kiesel. Ein Strandkiosk mit Musik oder gar nichts. Felsen zum Schnorcheln, Platz für Kinder, Parken direkt daneben, ein Zugang ohne Stufen. Du wählst — und die Liste wird darum herum neu gebaut.',
+          title: 'Wie wir es prüfen',
+          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Jede Woche geht ein weiteres Stück der Karte erneut durch die Prüfung: Wir verschieben Punkte und löschen Liegen und Strandkioske, die geschlossen haben. Im Zweifel lassen wir es weg. Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
         },
         {
-          title: 'Wie die Vorschläge entstehen',
-          body: 'Wir nehmen die Vorhersage Stunde für Stunde und legen sie über jeden Küstenabschnitt einzeln: wo der Wind ankommt, wo das Land ihn abhält. Danach bleiben nur die Strände übrig, die zu deinen Wünschen passen. Deshalb können zwei Strände nebeneinander am selben Tag unterschiedlich ausfallen — und deshalb steht der berühmte nicht automatisch oben.',
-        },
-        {
-          title: 'Woher wir wissen, was es gibt',
-          body: 'Amtliche Register, Satellit und Strände, an denen wir selbst waren. Jede Woche geht ein weiteres Stück der Karte erneut durch die Prüfung, von Hand. Im Zweifel lassen wir es weg: Eine Liege zu versprechen, die es nicht gibt, ist schlimmer, als sie gar nicht zu erwähnen.',
+          title: 'Die Form der Küste',
+          body: 'Wir nehmen Wind und Wellen Stunde für Stunde und lesen sie durch die Form jeder Küste. Deshalb ist ein berühmter Strand nicht automatisch der bessere.',
         },
         {
           title: 'Was wir (noch) nicht wissen',
-          body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an und keine exakte Zahl. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
+          body: 'Strömungen, Felsen unter der Oberfläche, Quallen. Wir zeigen eine Vorhersage, keine Messung — deshalb geben wir eine Wellenspanne an. Achte vor Ort auf die Flaggen und den Rettungsschwimmer.',
+        },
+        {
+          title: 'Was zuletzt dazugekommen ist',
+          body: 'Ein Plan für jeden Tag deines Aufenthalts: welcher Strand an welchem Tag, aus der Vorhersage. In jeder Region funktioniert er schon.',
         },
       ],
       more: 'Wie CalmBeach funktioniert',
@@ -776,20 +746,20 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '« Calme » ne veut pas dire la même chose pour tout le monde. Vous voulez peut-être de l’eau peu profonde, ou une plage déserte, ou des vagues pour surfer.',
       points: [
         {
-          title: 'C’est vous qui définissez le calme',
-          body: 'Du sable ou des galets. Une buvette avec de la musique, ou rien du tout. Des rochers pour le snorkeling, de la place pour les enfants, un parking juste à côté, un accès sans marches. Vous choisissez — et la liste se reconstruit autour de ça.',
+          title: 'Comment nous le vérifions',
+          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Chaque semaine, une nouvelle portion de la carte repasse au contrôle : nous déplaçons des points, nous retirons les transats et les buvettes qui ont fermé. En cas de doute, nous n’indiquons rien. Promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
         },
         {
-          title: 'Comment naissent les suggestions',
-          body: 'Nous prenons la prévision heure par heure et nous la posons sur chaque portion de côte séparément : où le vent arrive, où la terre l’arrête. Ne restent ensuite que les plages qui correspondent à ce que vous avez demandé. C’est pourquoi deux plages voisines peuvent donner une réponse différente le même jour — et pourquoi la plus célèbre n’arrive pas en tête par défaut.',
-        },
-        {
-          title: 'Comment nous savons ce qui existe',
-          body: 'Registres officiels, satellite et plages où nous sommes allés nous-mêmes. Chaque semaine, une nouvelle portion de la carte repasse au contrôle, à la main. En cas de doute, nous n’indiquons rien : promettre un transat qui n’existe pas est pire que de ne pas le mentionner du tout.',
+          title: 'La forme de la côte',
+          body: 'Nous prenons le vent et les vagues heure par heure et nous les lisons à travers la forme de chaque côte. C’est pourquoi une plage célèbre n’est pas automatiquement la meilleure.',
         },
         {
           title: 'Ce que nous ne savons pas (encore)',
-          body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où une fourchette de hauteur de vagues plutôt qu’un chiffre exact. Sur place, regardez les drapeaux et le maître-nageur.',
+          body: 'Les courants, les rochers sous la surface, les méduses. Nous montrons une prévision, pas une mesure — d’où la fourchette de hauteur de vagues. Sur place, regardez les drapeaux et le maître-nageur.',
+        },
+        {
+          title: 'Ce que nous avons ajouté en dernier',
+          body: 'Un plan pour chaque jour de votre séjour : quelle plage quel jour, à partir des prévisions. Il fonctionne déjà dans chaque région.',
         },
       ],
       more: 'Comment fonctionne CalmBeach',
@@ -890,20 +860,20 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
         '«Calmo» non è lo stesso per tutti. Forse vuoi acqua bassa, forse una spiaggia deserta, forse onde per fare surf.',
       points: [
         {
-          title: 'Che cosa vuol dire «calmo» lo decidi tu',
-          body: 'Sabbia o ciottoli. Un chiosco con la musica, oppure niente. Scogli per lo snorkeling, spazio per i bambini, parcheggio lì accanto, un ingresso senza scalini. Scegli tu — e la lista si ricostruisce intorno a questo.',
+          title: 'Come lo verifichiamo',
+          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Ogni settimana un altro pezzo della mappa torna sotto controllo: spostiamo punti, togliamo lettini e chioschi che hanno chiuso. Nel dubbio, non lo scriviamo. Promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
         },
         {
-          title: 'Come nascono i suggerimenti',
-          body: 'Prendiamo la previsione ora per ora e la appoggiamo su ogni tratto di costa separatamente: dove arriva il vento, dove la terra lo ferma. Poi restano solo le spiagge che corrispondono a quello che hai chiesto. Per questo due spiagge vicine possono dare una risposta diversa nello stesso giorno — e per questo quella famosa non finisce in cima per definizione.',
-        },
-        {
-          title: 'Come sappiamo che cosa c’è',
-          body: 'Registri ufficiali, satellite e spiagge che abbiamo visitato di persona. Ogni settimana un altro pezzo della mappa torna sotto controllo, a mano. Nel dubbio, non lo scriviamo: promettere un lettino che non c’è è peggio che non menzionarlo affatto.',
+          title: 'La forma della costa',
+          body: 'Prendiamo vento e onde ora per ora e li leggiamo attraverso la forma di ogni costa. Per questo una spiaggia famosa non è automaticamente la migliore.',
         },
         {
           title: 'Cosa non sappiamo (ancora)',
-          body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde e non un numero esatto. Sul posto, guarda le bandiere e il bagnino.',
+          body: 'Le correnti, gli scogli sotto la superficie, le meduse. Mostriamo una previsione, non una misura — per questo diamo un intervallo di altezza delle onde. Sul posto, guarda le bandiere e il bagnino.',
+        },
+        {
+          title: 'Quello che abbiamo aggiunto per ultimo',
+          body: 'Un piano per ogni giorno del tuo soggiorno: quale spiaggia in quale giorno, in base alle previsioni. Funziona già dentro ogni regione.',
         },
       ],
       more: 'Come funziona CalmBeach',
