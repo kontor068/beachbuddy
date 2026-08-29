@@ -283,9 +283,40 @@ export const installGlobalErrorReporting = (): void => {
 
   window.addEventListener('unhandledrejection', event => {
     const reason = event.reason;
-    reportClientError(
-      reason instanceof Error ? reason : { message: String(reason), stack: '' },
-      { source: 'unhandledrejection' },
-    );
+    if (reason instanceof Error) {
+      reportClientError(reason, { source: 'unhandledrejection' });
+      return;
+    }
+
+    // ΣΦΑΛΜΑ ΑΠΟ ΑΛΛΟ «ΣΥΜΠΑΝ» JAVASCRIPT — ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΕΙΝΑΙ ΔΙΚΟ ΜΑΣ (29/08/2026).
+    //
+    // Ήρθε «Error: Ea» από /beaches/naxos/ σε Chrome iPhone: δύο γράμματα, καμία στοίβα,
+    // τίποτα να πιαστεί. Το ίδιο το σχήμα του όμως το προδίδει. Το μήνυμα διαβάζεται
+    // «Error: Ea» και όχι σκέτο «Ea», που σημαίνει ότι πέρασε από αυτόν εδώ τον κλάδο
+    // — δηλαδή το `instanceof Error` είπε ΟΧΙ — ενώ το αντικείμενο είναι ΚΑΝΟΝΙΚΟ
+    // Error, όπως το βεβαιώνει το Object.prototype.toString.
+    //
+    // Αυτά τα δύο μαζί γίνονται μόνο με έναν τρόπο: το Error φτιάχτηκε σε ΞΕΧΩΡΙΣΤΟ
+    // περιβάλλον JavaScript. Το `instanceof` συγκρίνει με τον δικό ΜΑΣ κατασκευαστή
+    // Error, οπότε αστοχεί σε οτιδήποτε γεννήθηκε αλλού. Κώδικας του δικού μας bundle
+    // τρέχει πάντα στο ίδιο περιβάλλον με τη σελίδα και περνάει πάντα το instanceof·
+    // δεν έχουμε ούτε ένα <iframe> πουθενά, και τα σφάλματα ενός worker δεν φτάνουν
+    // εδώ. Άρα μένει μόνο κώδικας που φύτεψε ο browser ή κάποιο πρόσθετο στο δικό του
+    // απομονωμένο περιβάλλον μέσα στη σελίδα μας.
+    //
+    // Δομικός έλεγχος, όχι ακόμα μια φράση σε λίστα: πιάνει κάθε μελλοντικό μήνυμα
+    // αυτής της οικογένειας, όποιο κι αν είναι το κείμενό του.
+    const isCrossRealmError = Object.prototype.toString.call(reason) === '[object Error]';
+    if (isCrossRealmError) return;
+
+    // ΚΑΙ ΤΟ ΤΥΦΛΟ ΣΗΜΕΙΟ ΠΟΥ ΞΕΣΚΕΠΑΣΕ Η ΙΔΙΑ ΑΝΑΦΟΡΑ: εδώ γραφόταν `stack: ''`,
+    // δηλαδή πετούσαμε τη στοίβα ακόμα κι όταν υπήρχε. Γι' αυτό το «Error: Ea» έφτασε
+    // γυμνό και δεν μπορούσε να αποδοθεί σε κανέναν. Ό,τι μας δίνει η αιτία, το
+    // κρατάμε — τα φίλτρα εξετάζουν πλέον και τη στοίβα, οπότε μια στοίβα που
+    // ονομάζει επέκταση ή ξένο script αναγνωρίζεται από μόνη της.
+    const stack = typeof (reason as { stack?: unknown })?.stack === 'string'
+      ? (reason as { stack: string }).stack
+      : '';
+    reportClientError({ message: String(reason), stack }, { source: 'unhandledrejection' });
   });
 };
