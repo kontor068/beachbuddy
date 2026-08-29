@@ -166,7 +166,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
             <div>
               <div className="flex items-center justify-center gap-2 md:justify-start">
                 <img src="/calmbeach-mark.svg" alt="" aria-hidden="true" className="h-7 w-7" />
-                <span className="font-heading text-base font-extrabold tracking-tight text-slate-900">Calm Beach</span>
+                <span className="font-heading text-base font-extrabold tracking-tight text-slate-900">CalmBeach</span>
               </div>
               <p className="mt-2 text-sm font-medium text-slate-600">{c.tagline}</p>
               <a
@@ -245,7 +245,7 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               `items-baseline` aligns the text, not the boxes, so the two halves sit on one line
               instead of drifting apart. */}
           <div className="mt-5 flex flex-col gap-2 border-t border-slate-200/80 pt-4 text-left text-xs leading-relaxed text-slate-600 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 md:mt-4">
-            <p className="shrink-0 sm:whitespace-nowrap">© 2026 Calm Beach · {LEGAL_OPERATOR.legalName}</p>
+            <p className="shrink-0 sm:whitespace-nowrap">© 2026 CalmBeach · {LEGAL_OPERATOR.legalName}</p>
             {/* LEFT-ALIGNED ON A PHONE, and one single flow.
                 Centred fine print looked ragged (Miltos, 10/08): five credits of five different
                 lengths, each centred on its own line, gave the block a zig-zag edge on both
