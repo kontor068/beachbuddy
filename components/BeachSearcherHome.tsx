@@ -4153,18 +4153,7 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
         {/* ΧΩΡΙΣ ΚΑΡΤΑ (28/08/2026). Ήταν λευκό κουτί με περίγραμμα, ring και βαριά σκιά,
             και μέσα του ένα input με ΔΙΚΟ ΤΟΥ περίγραμμα: δύο πλαίσια για ένα πεδίο. Τώρα
             η επιφάνεια είναι το ίδιο το input — ένα κουτί, όχι δύο. */}
-        {/* `max-sm:will-change-transform`: στο κινητό αυτό το section πρέπει να βάφεται ΠΑΝΩ
-            από το sticky μπλοκ ημερών+χάρτη (z-[120] έναντι z-30), οπότε ο compositor του
-            Android Chrome το ανεβάζει σε δικό του στρώμα μόνο όσο τα δύο αλληλεπικαλύπτονται
-            στο σκρολ — και σε αυτό το ανεβοκατέβασμα το στρώμα εμφανιζόταν άβαφο: η μπάρα
-            αναζήτησης χανόταν στο σκρολ και ξαναζωγραφιζόταν στο επόμενο (Μίλτος, 29/08,
-            στιγμιότυπο από Λέσβο). Το μόνιμο hint κρατά το στρώμα ζωντανό ώστε να μην
-            ξεστήνεται ποτέ μισοβαμμένο — το «επόμενο σκαλί» που το #9 (28/08) είχε αφήσει
-            ρητά για την περίπτωση που το μισοβαμμένο καρέ επέμενε. Μόνο max-sm: στο desktop
-            δεν υπάρχει sticky χάρτης, άρα ούτε λόγος για έξτρα στρώμα. Ασφαλές εδώ επειδή
-            το section δεν έχει κανέναν fixed απόγονο (ελέγχθηκε 29/08) — ένα transform hint
-            θα γινόταν containing block για fixed παιδιά και θα τα κάρφωνε πάνω του. */}
-        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 max-sm:will-change-transform sm:pb-2">
+        <section className="relative z-[120] mx-auto w-full max-w-[110rem] overflow-visible pb-1 sm:pb-2">
         {/* Value proposition: tells a first-time visitor in one glance that CalmBeach ranks
             beaches by today's conditions — not a directory. Shown once to genuine newcomers on
             any entry point (homepage or a region page from search); never shown again to
@@ -4584,7 +4573,17 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
                   scrolled past its natural place, so "scroll to the map" computed a destination
                   equal to where you already were and did nothing. That is what sent «Κοντά μου»
                   from the landing page to the legal footer: the scroll was a no-op, then the
-                  shorter nearby page clamped the old offset to the bottom of the document. */}
+                  shorter nearby page clamped the old offset to the bottom of the document.
+
+                  ΜΕΤΡΗΘΗΚΕ 29/08/2026, ΚΑΙ ΔΙΑΨΕΥΔΕΙ ΤΗΝ ΠΑΡΑΠΑΝΩ ΠΑΡΑΓΡΑΦΟ: σήμερα το
+                  `sticky top-2` ΔΕΝ κολλάει καθόλου. Το `overflow-x: hidden` στο <body>
+                  (index.css, με δικό του «KEEP THIS») κάνει το body κουτί κύλισης που δεν
+                  κυλάει ποτέ, και αυτό ακυρώνει κάθε position:sticky σε επίπεδο σελίδας.
+                  Μετρημένο σε 390×844: το rect του section πάει −25 → −105 → −345 καθώς
+                  κατεβαίνει το σκρολ, αντί να σταματήσει στα 8px. Ο χάρτης φεύγει κανονικά
+                  προς τα πάνω. Ο anchor μένει γιατί είναι σωστός ούτως ή άλλως — αλλά μην
+                  χτίσεις τίποτα πάνω στην υπόθεση ότι κάτι εδώ κολλάει, όπως έγινε μία φορά
+                  (υπόθεση επικάλυψης μπάρας-αναζήτησης × χάρτη, που δεν συμβαίνει ποτέ). */}
               <div id="directory-map-anchor" aria-hidden="true" className="h-0 w-full" />
               <section
                 id="directory-map-section"
