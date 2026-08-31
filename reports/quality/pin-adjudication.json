@@ -1,6 +1,6 @@
 {
   "note": "Rows the pin audits flag that a name search has since resolved. Consumed by scripts/buildQualityLedger.mjs.",
-  "generatedAt": "2026-08-25T07:17:49.053Z",
+  "generatedAt": "2026-08-31T08:33:01.517Z",
   "cleared": [
     {
       "id": 283,
@@ -8,6 +8,62 @@
       "at": "2026-08-24",
       "verdict": "KEEP",
       "reason": "OSM «Παραλία Ψαροπούλι/Βασιλικών» (way/166228614) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 859,
+      "name": "Παραλία Γαλάνης Νέστου",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Galani Beach of Nestos» (way/1432017162) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2541,
+      "name": "Παραλία Άγαλμα",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Άγαλμα» (node/5472960260) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2543,
+      "name": "Παραλία Αγίας Τριάδας",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Αγίας Τριάδας» (node/9448237649) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2546,
+      "name": "Παραλία Αστροβίτσα",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Αστροβίτσα» (node/5472960263) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2550,
+      "name": "Παραλία Κανάλι",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Κανάλι» (node/5472960261) is 1 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2557,
+      "name": "Παραλία Ρεμπάκια",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Ρεμπάκια» (node/5472960262) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2560,
+      "name": "Παραλία Σιταραλώνων",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Παραλία Σιταραλώνων» (way/1066076315) is 0 m from our pin — same beach, unmapped polygon"
+    },
+    {
+      "id": 2562,
+      "name": "Σταμνά",
+      "at": "2026-08-31",
+      "verdict": "KEEP",
+      "reason": "OSM «Σταμνά» (way/977102979) is 0 m from our pin — same beach, unmapped polygon"
     },
     {
       "id": 2652,

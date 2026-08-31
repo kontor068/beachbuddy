@@ -20,7 +20,18 @@
  *
  * Read-only. Emits a report in the shape scripts/applyPinMoves.mjs consumes.
  *
+ * ΤΟ ΙΔΙΟ, ΧΩΡΙΣ ΔΙΚΤΥΟ — ΑΛΛΑ ΜΟΝΟ ΓΙΑ ΤΗ ΜΙΑ ΚΑΤΕΥΘΥΝΣΗ. Με `--osm-file` η αναζήτηση
+ * ονόματος γίνεται πάνω στον εθνικό θερισμό OSM που είναι ήδη committed. ΠΡΟΣΟΧΗ ΟΜΩΣ: εκείνο
+ * το αρχείο κρατάει μόνο ΕΠΩΝΥΜΕΣ παραλίες — όχι κόλπους, όχι οικισμούς, και όχι όσες ο OSM
+ * έχει ανώνυμες. Άρα ένα ταίριασμα ονόματος είναι απόδειξη· μια ΑΠΟΥΣΙΑ δεν είναι.
+ *
+ * Γι' αυτό στο offline πέρασμα η απουσία ΔΕΝ βγάζει KEEP αλλά INCONCLUSIVE, και το πέρασμα
+ * ΔΕΝ γράφει καθόλου το pin-adjudication.json. Το KEEP εκεί σημαίνει «καθάρισε την πινέζα από
+ * το ταμπλό για πάντα», και δεν επιτρέπεται να στηρίζεται σε «δεν το βρήκα στο μισό αρχείο».
+ * Ένα ταμπλό που μας κολακεύει είναι ταμπλό που σταματάει να ανοίγεται.
+ *
  * Run: node scripts/findPinTargetsByName.mjs --ids 2652,2656 [--radius 20000] [--json <out>]
+ *      node scripts/findPinTargetsByName.mjs --ids 2598,2608 --osm-file scripts/data/osm-beaches-national.json
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
@@ -34,6 +45,9 @@ const OUT = arg('--json', path.join('reports', 'pin-name-targets.json'));
 // A name hit closer than this to our pin means the pin is already on the right
 // beach — OSM just tags it as a node with no polygon. Not a move.
 const SAME_PLACE_M = 250;
+// Όταν δοθεί, η αναζήτηση ονόματος γίνεται στον δίσκο και το πέρασμα γίνεται «μόνο
+// επιβεβαίωση»: δεν καθαρίζει πινέζες και δεν γράφει adjudication.
+const OSM_FILE = arg('--osm-file');
 
 const R = 6371000;
 const rad = (x) => (x * Math.PI) / 180;
@@ -70,7 +84,29 @@ const nameMatches = (ours, theirs) => {
   return false;
 };
 
+// Ο εθνικός θερισμός, φορτωμένος μία φορά και σερβιρισμένος στο ΙΔΙΟ σχήμα που γυρίζει
+// ο Overpass, ώστε η κρίση πιο κάτω να μη χρειάζεται να ξέρει από πού ήρθαν τα σημεία.
+const offlineOsm = !OSM_FILE ? null : (() => {
+  const p = path.isAbsolute(OSM_FILE) ? OSM_FILE : path.join(rootDir, OSM_FILE);
+  const raw = JSON.parse(readFileSync(p, 'utf8'));
+  const list = (raw.candidates || [])
+    .filter((c) => Number.isFinite(c?.coordinates?.lat) && Number.isFinite(c?.coordinates?.lon))
+    .map((c) => ({
+      osm: c.id,
+      kind: 'beach', // ο θερισμός κρατάει μόνο natural=beach
+      lat: c.coordinates.lat,
+      lon: c.coordinates.lon,
+      names: [c.name, c.displayName, c.tags?.['name:el'], c.tags?.['name:en'], c.tags?.alt_name].filter(Boolean),
+    }));
+  if (!list.length) throw new Error(`Το ${OSM_FILE} δεν έχει καμία υποψήφια με συντεταγμένες.`);
+  return { generatedAt: raw.generatedAt || '—', list };
+})();
+
+const namedPlacesOffline = (lat, lon, radius) =>
+  offlineOsm.list.filter((c) => distM(lat, lon, c.lat, c.lon) <= radius);
+
 const fetchNamedPlaces = async (lat, lon, radius) => {
+  if (offlineOsm) return namedPlacesOffline(lat, lon, radius);
   // Beaches first, but bays and hamlets carry the name too when the sand itself
   // is unmapped — a named bay is a defensible target, a random node is not.
   const q = `[out:json][timeout:60];(` +
@@ -145,7 +181,13 @@ for (const b of targets) {
   const best = beachHits[0] || hits[0];
 
   if (!best) {
-    results.push({
+    // Offline, «δεν βρέθηκε» σημαίνει «δεν βρέθηκε ΣΤΟΝ ΘΕΡΙΣΜΟ», που κρατάει μόνο
+    // επώνυμες παραλίες. Δεν αρκεί για να κλείσει μια πινέζα για πάντα.
+    results.push(offlineOsm ? {
+      id: b.id, name: b.name, verdict: 'INCONCLUSIVE',
+      reason: `καμία επώνυμη παραλία «${b.name}» μέσα σε ${RADIUS / 1000} km ΣΤΟΝ ΘΕΡΙΣΜΟ (${String(offlineOsm.generatedAt).slice(0, 10)}) — ο θερισμός δεν έχει κόλπους/οικισμούς ούτε ανώνυμα πολύγωνα, οπότε αυτό δεν αποδεικνύει απουσία· θέλει ζωντανή ερώτηση Overpass`,
+      candidates: [],
+    } : {
       id: b.id, name: b.name, verdict: 'KEEP',
       reason: `no OSM feature named «${b.name}» within ${RADIUS / 1000} km — OSM has not mapped this beach; the pin is the only record we have`,
       candidates: [],
@@ -168,7 +210,7 @@ for (const b of targets) {
       candidates: hits.slice(0, 4),
     });
   }
-  await sleep(1500);
+  if (!offlineOsm) await sleep(1500);
 }
 
 const out = { generatedAt: new Date().toISOString(), radiusM: RADIUS, samePlaceM: SAME_PLACE_M, results };
@@ -180,6 +222,13 @@ writeFileSync(outPath, JSON.stringify(out, null, 2), 'utf8');
 // will keep listing an unmapped beach forever no matter how many times we clear
 // it. The weekly board reads that bucket. Without a durable adjudication file the
 // same six beaches accuse us every Monday and the real one hides among them.
+// ΤΙ ΕΠΙΤΡΕΠΕΤΑΙ ΝΑ ΚΑΘΑΡΙΣΕΙ ΤΟ OFFLINE ΠΕΡΑΣΜΑ. Ένα KEEP σβήνει την πινέζα από το ταμπλό
+// για πάντα, οπότε το ερώτημα είναι τι το στηρίζει. Offline, ένα KEEP μπορεί να προκύψει ΜΟΝΟ
+// από θετικό ταίριασμα ονόματος μέσα στα SAME_PLACE_M — η απουσία βγάζει INCONCLUSIVE, πιο
+// πάνω. Ένα «ο OSM έχει την ομώνυμη παραλία στα 0 m από την πινέζα μας» είναι ακριβώς η ίδια
+// απόδειξη που δέχεται και το ζωντανό πέρασμα· δεν γίνεται ασθενέστερη επειδή το στιγμιότυπο
+// κατέβηκε τον Αύγουστο. Και το να ΜΗΝ καθαρίζονται έχει το δικό του κόστος, γραμμένο πιο
+// κάτω: οι ίδιες παραλίες μας κατηγορούν κάθε Δευτέρα και η πραγματική κρύβεται ανάμεσά τους.
 const adjPath = path.join(rootDir, 'reports', 'quality', 'pin-adjudication.json');
 const adjudication = existsSync(adjPath)
   ? JSON.parse(readFileSync(adjPath, 'utf8'))

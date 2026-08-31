@@ -2777,11 +2777,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Σχινιά, East Attica\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Παραλία Σχινιά» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "popularity": {
               "tier": "popular",
@@ -28368,11 +28368,11 @@
               "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Η Biancoblusarti αφορά source-backed οργανωμένο beach-bar/τμήμα της παραλιακής ζώνης Σάρτης, όχι ανεξάρτητη φυσική παραλία. Χρησιμοποίησέ το ως venue/υποτμήμα της ίδιας αμμώδους ακτής.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
             ],
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-06-15: the app place query \"Paralia Biancoblusarti, Halkidiki (mainland)\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Biancoblusarti» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "orientation": {
               "degrees": 99.2,
@@ -30928,11 +30928,11 @@
             ],
             "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence follow-up 2026-05-28: Visit Central Macedonia describes Nea Potidea eastern beach as highly organized with beach bars, water sports, water park, umbrellas, sunbeds, easy highway access, coarse sand, and shallow first meters. Updated terrain to coarse sand and promoted Lagoon/Nea Potidea east record to medium.",
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-06-15: the app place query \"Paralia Lagoon, Halkidiki (mainland)\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Lagoon» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "nearbyCamping": [
               {
@@ -77946,11 +77946,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-06-15: the app place query \"Παραλία Μώλος, Corfu\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Μώλος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -78715,11 +78715,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-15",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-06-15: the app place query \"Παραλία Αχαράβης, Corfu\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Παραλία Αχαράβης» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "nearbyCamping": [
               {
@@ -102418,11 +102418,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Άγιος Ισίδωρος, Lesvos\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Άγιος Ισίδωρος» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "popularity": {
               "tier": "popular",
@@ -121980,11 +121980,11 @@
               "checkedAt": "2026-07-25"
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1",
-              "reason": "Place-resolution audit 2026-08-14: the app place query \"Παραλία Τρίνησα, Lakonia\" did not resolve and no nearby OSM beach corroborates the pin; navigation downgraded to locate."
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Παραλία Τρίνησα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -134935,11 +134935,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "in/near polygon but nearest access way 323m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Foniadiko» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -134997,11 +134997,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions. Ευθυγραμμίστηκε με τη γεωμετρία (14/08/2026): η γραμμένη κατεύθυνση υποσχόταν ηλιοβασίλεμα που η γεωμετρία διαψεύδει."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "nearest beach feature 727m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Gero Aggeli» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -135457,11 +135457,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Αντώναρου» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -135667,11 +135667,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Διαμμούδια» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -135870,11 +135870,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions. Ευθυγραμμίστηκε με τη γεωμετρία (14/08/2026): η γραμμένη κατεύθυνση υποσχόταν ηλιοβασίλεμα που η γεωμετρία διαψεύδει."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "accessType=passable_dirt_road but nearest way 443m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Καρατζάς» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -135974,11 +135974,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions. Ευθυγραμμίστηκε με τη γεωμετρία (14/08/2026): η γραμμένη κατεύθυνση υποσχόταν ηλιοβασίλεμα που η γεωμετρία διαψεύδει."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Κατσιβέλι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -136346,11 +136346,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Λουκά Αυλάκι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -136663,11 +136663,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "name-collision risk (no polygon evidence): exact \"neraki\" on Argolida (mainland)+Ios+Skopelos"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Νεράκι» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -136720,11 +136720,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Ντόμινο» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -137417,11 +137417,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Σοφιάς Αυλάκι» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -137911,11 +137911,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "no OSM beach feature within 3km"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Χάλαρα» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -140416,11 +140416,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "name-collision risk (no polygon evidence): exact \"agiosminas\" on Evia+Karpathos+Kimolos"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Άγιος Μηνάς» στα 1 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           },
           "staticLabels": {
@@ -160259,11 +160259,11 @@
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             },
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "nearest beach feature 327m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Φασολού» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             }
           }
         },
@@ -166051,11 +166051,11 @@
               "https://www.exploring-greece.gr/el/show/41269/%3Attd/THEA-SE-KATO-KUFONISSI-APO-AFRIANIA"
             ],
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "nearest beach feature 2131m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Αφρυανιά» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "orientation": {
               "degrees": 308.6,
@@ -166537,11 +166537,11 @@
             ],
             "confidenceBatch": "popular_island_source_promote_2026_06_05_mathraki_koufonisia_polyaigos",
             "googleMapsNavigation": {
-              "status": "needs-review",
-              "mode": "place",
-              "checkedAt": "2026-06-12",
-              "method": "osm-nav-audit-v1",
-              "reason": "nearest beach feature 1221m"
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-08-31",
+              "method": "osm-pin-corroboration-v1",
+              "reason": "OSM «Λίμνη» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες (εθνικός θερισμός OSM 2026-08-13)"
             },
             "orientation": {
               "degrees": 348.5,
