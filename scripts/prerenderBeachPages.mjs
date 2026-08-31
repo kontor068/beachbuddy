@@ -5576,6 +5576,20 @@ const orderRationale = (intentKey, language) => {
     fr: "L'ordre n'est pas aléatoire : d'abord les fonds les plus rocheux, et parmi eux les moins exposés selon leur orientation — c'est là que l'eau reste la plus claire. Vérifiez les conditions avant de partir.",
     it: "L'ordine non è casuale: prima i fondali più rocciosi e, tra questi, i meno esposti secondo l'orientamento — lì l'acqua resta più limpida. Controlla le condizioni prima di andare.",
   });
+  // The sheltered guides are the site's own subject and were the ONE intent
+  // listing beaches in an order the page never explained — exactly the shape the
+  // comment at the top of this block warns about. The order really is
+  // `shelterBreadth` first (rankIntentBeaches), then the Places review count, so
+  // the sentence names both; on regions where every listed bay shields the same
+  // number of directions, popularity is what the reader is actually seeing, and
+  // saying so is more honest than claiming a distinction that is not there.
+  if (intentKey === 'sheltered') return pickLang(language, {
+    en: 'The order is not random: first the bays whose orientation turns their back on the most wind directions, and among equal ones the beaches more people actually visit. Orientation is the shape of the coast, not a forecast — check wind and waves before you go.',
+    gr: 'Η σειρά δεν είναι τυχαία: πρώτα οι όρμοι που, με βάση τον προσανατολισμό τους, γυρίζουν την πλάτη στις περισσότερες κατευθύνσεις ανέμου, και ανάμεσα σε ίσους όσες παραλίες έχουν περισσότερο κόσμο. Ο προσανατολισμός είναι το σχήμα της ακτής, όχι πρόγνωση — έλεγξε άνεμο και κύμα πριν πας.',
+    de: 'Die Reihenfolge ist nicht zufällig: zuerst die Buchten, die nach ihrer Ausrichtung den meisten Windrichtungen den Rücken zuwenden, und unter gleichen die meistbesuchten. Die Ausrichtung ist die Form der Küste, keine Vorhersage — prüfe Wind und Wellen, bevor du losfährst.',
+    fr: "L'ordre n'est pas aléatoire : d'abord les baies qui, par leur orientation, tournent le dos au plus grand nombre de directions de vent, et à égalité les plus fréquentées. L'orientation est la forme de la côte, pas une prévision — vérifiez le vent et les vagues avant de partir.",
+    it: "L'ordine non è casuale: prima le insenature che, per orientamento, voltano le spalle al maggior numero di direzioni di vento e, a parità, le più frequentate. L'orientamento è la forma della costa, non una previsione — controlla vento e onde prima di andare.",
+  });
   return null;
 };
 
@@ -5777,6 +5791,177 @@ const withSnorkelingFirstPicksSection = (content, beaches, region, island, local
       links,
     };
   return { ...content, sections: [section, ...content.sections] };
+};
+
+// "And if the wind turns?" — the question every sheltered guide raises and none
+// of them answered. The list is built for ONE wind (the region's summer regime),
+// so a reader who arrives on a day it is not blowing has no way to re-choose.
+//
+// Foreign forums ask this in almost these words — "which beach when it is
+// windy?", "Finding the beach with the lightest winds??" (TripAdvisor Crete),
+// "Non windy beach" (Naxos) — and the answer locals give each other is always a
+// PAIR: "if St George is windy, Agios Prokopios is normally calm". That pair is
+// exactly what our orientation field can compute and a competitor's beach list
+// cannot.
+//
+// Why grouping by `faces` and not by our own ranking: on these regions every
+// listed beach has the same shelter breadth (5 of 8 directions), so a "top three"
+// would just restate the first three of the list — the template shape this
+// project refuses. What genuinely differs between them is which way each bay
+// looks, and that is the one fact that decides where to go when the wind moves.
+//
+// Started on the three sheltered guides that earned impressions and ZERO clicks
+// in the 28 days to 18/08/2026 (Alonissos 227, Halkidiki 171, Syros 122 —
+// reports/snapshots/2026-08-21.json, `zeroClick`). Widening this to all 244
+// sheltered guides is a many-page change: route it through the 18·Google
+// pre-launch gate first (docs/team/18-google.md §5), don't just add ids.
+// The swap a local would tell you: "if St George is windy, Agios Prokopios is
+// normally calm". Foreign forums ask for exactly this and answer each other with
+// pairs, never with lists — TripAdvisor Crete «which beach when it is windy?»,
+// Naxos «Non windy beach», Mumsnet «Any Greek Cyclades bearable with the Meltemi
+// in August?». We can compute it from fields we already bake, so it is the one
+// answer on this page a competitor's beach list cannot carry.
+//
+// The exposed beach is named ONLY by the model's verdict, never by its
+// orientation: `shelteredFromLocalWind` folds in fetch and open water, so a bay
+// can face south-east and still be exposed, and printing both would read as a
+// contradiction on our own page.
+const MELTEMI_SWAP_MAX_KM = 20;
+const MELTEMI_SWAP_PAIRS = 2;
+const meltemiSwapPairs = (beaches, island) => {
+  const all = Array.isArray(island?.beaches) ? island.beaches : [];
+  // Only beaches with a real Places review count: an exposed beach nobody has
+  // heard of is not the one the reader drove to and found unusable.
+  const exposed = all
+    .filter(beach => beach.shelteredFromLocalWind !== true && (beach.popularityScore ?? 0) > 0)
+    .sort((a, b) => (b.popularityScore ?? 0) - (a.popularityScore ?? 0));
+  const used = new Set();
+  const pairs = [];
+  for (const from of exposed) {
+    if (pairs.length >= MELTEMI_SWAP_PAIRS) break;
+    const lat = Number(from?.coordinates?.lat);
+    const lon = Number(from?.coordinates?.lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+    // Chosen from `beaches` — the list printed on THIS page — so the swap never
+    // sends the reader to a beach the page does not go on to show.
+    const to = beaches.find(candidate =>
+      !used.has(candidate.id) &&
+      candidate.id !== from.id &&
+      (candidate.orientation?.faces || []).length > 0 &&
+      distanceKm(candidate, lat, lon) <= MELTEMI_SWAP_MAX_KM);
+    if (!to) continue;
+    used.add(to.id);
+    pairs.push({ from, to, km: Math.round(distanceKm(to, lat, lon)) });
+  }
+  return pairs;
+};
+const SHELTERED_SWITCH_REGIONS = new Set([
+  'thessaly-alonissos',
+  'central-macedonia-halkidiki-mainland',
+  'south-aegean-syros',
+]);
+// Two examples per group: enough to make the group concrete, few enough that the
+// paragraph stays a sentence rather than a second list.
+const SHELTERED_SWITCH_EXAMPLES = 2;
+const withShelteredSwitchSection = (content, beaches, region, island, locale) => {
+  if (!SHELTERED_SWITCH_REGIONS.has(region?.id)) return content;
+  const language = locale.language;
+  if (language !== 'gr' && language !== 'en') return content;
+  const gr = language === 'gr';
+  // `beaches` arrives sorted by popularity, so the examples pulled off each group
+  // are the ones a reader is most likely to have heard of.
+  const groups = new Map();
+  for (const beach of beaches) {
+    const face = (beach.orientation?.faces || [])[0];
+    if (!face || !DIRECTION_WORD[language][face]) continue;
+    if (!groups.has(face)) groups.set(face, []);
+    groups.get(face).push(beach);
+  }
+  // Fewer than two groups means there is nothing to switch between, and the
+  // heading would be asking a question the page cannot answer.
+  const ordered = [...groups.entries()]
+    .filter(([, list]) => list.length >= 2)
+    .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+  if (ordered.length < 2) return content;
+  const top = ordered.slice(0, 3);
+  const links = [];
+  const phrases = top.map(([face, list]) => {
+    const examples = list.slice(0, SHELTERED_SWITCH_EXAMPLES);
+    for (const beach of examples) {
+      links.push({
+        href: localizedPath(beachPath(region, island, beach), locale),
+        label: displayName(beach.name, `Beach ${beach.id}`, language),
+      });
+    }
+    const names = examples.map(beach => displayName(beach.name, `Beach ${beach.id}`, language)).join(', ');
+    const word = DIRECTION_WORD[language][face];
+    return gr
+      ? `${list.length} κοιτάνε ${word} (${names})`
+      : `${list.length} face ${word} (${names})`;
+  });
+  const atoms = LOCAL_WIND_ATOMS[getRegionWindContext(region.id)];
+  const regime = atoms.word[language] || atoms.word.en;
+  const regimeDir = atoms.dir[language] || atoms.dir.en;
+  // The named swap, when a close enough pair exists. Greek names are introduced
+  // as «η παραλία X» so the sentence declines correctly whatever the name is.
+  const swapPairs = meltemiSwapPairs(beaches, island);
+  const swapSentence = pair => {
+    const from = displayName(pair.from.name, `Beach ${pair.from.id}`, language);
+    const to = displayName(pair.to.name, `Beach ${pair.to.id}`, language);
+    const face = DIRECTION_WORD[language][(pair.to.orientation?.faces || [])[0]];
+    return gr
+      ? `η παραλία ${from} έχει ανοιχτό νερό προς ${regimeDir} και πιάνει από τις πρώτες κύμα όταν φυσά ${regime}, ενώ η παραλία ${to}, ${pair.km} χλμ πιο πέρα, κοιτάει ${face} και με βάση τον προσανατολισμό της μένει συχνά πιο ήσυχη`
+      : `${from} takes open water toward ${regimeDir}, so it is among the first here to pick up chop in the ${regime}, while ${to}, ${pair.km} km away and facing ${face}, is oriented away from it and is usually the more comfortable call`;
+  };
+  // The reasoning is spelled out once, on the first pair. Any further pair is
+  // named as a bare swap — repeating the same clause per pair is the template
+  // shape this project avoids, and it buries the one line that carries meaning.
+  const swapShort = pair => {
+    const from = displayName(pair.from.name, `Beach ${pair.from.id}`, language);
+    const to = displayName(pair.to.name, `Beach ${pair.to.id}`, language);
+    const face = DIRECTION_WORD[language][(pair.to.orientation?.faces || [])[0]];
+    return gr
+      ? `${from} → ${to} (${pair.km} χλμ, κοιτάει ${face})`
+      : `${from} → ${to} (${pair.km} km, facing ${face})`;
+  };
+  const swapSection = swapPairs.length === 0 ? null : (() => {
+    const firstFrom = displayName(swapPairs[0].from.name, `Beach ${swapPairs[0].from.id}`, language);
+    const lead = swapSentence(swapPairs[0]);
+    const rest = swapPairs.slice(1).map(swapShort);
+    const restLine = rest.length
+      ? (gr ? ` Το ίδιο ζευγάρωμα ισχύει και αλλού: ${rest.join('· ')}.` : ` The same swap works elsewhere: ${rest.join('; ')}.`)
+      : '';
+    const swapLinks = swapPairs.flatMap(pair => [pair.to, pair.from].map(beach => ({
+      href: localizedPath(beachPath(region, island, beach), locale),
+      label: displayName(beach.name, `Beach ${beach.id}`, language),
+    })));
+    return gr
+      ? {
+        heading: `Έχει αέρα στην παραλία ${firstFrom} — πού να πάω αντ' αυτής;`,
+        body: `Δες την πρόγνωση μόλις ξυπνήσεις και διάλεξε κόλπο που γυρίζει την πλάτη στον άνεμο που όντως φυσάει. Στο δικό μας μοντέλο έκθεσης, ${lead}.${restLine} Ο προσανατολισμός είναι ισχυρή ένδειξη, όχι υπόσχεση — σύγκρινε ζωντανά άνεμο και κύμα και στις δύο σελίδες πριν πας.`,
+        links: swapLinks,
+      }
+      : {
+        heading: `If ${firstFrom} is too windy, where do I go instead?`,
+        body: `Check the forecast when you wake up, then pick a bay that turns its back on the wind that is actually blowing. In our exposure model ${lead}.${restLine} Orientation is a strong signal, not a promise — compare live wind and waves on both beach pages before you go.`,
+        links: swapLinks,
+      };
+  })();
+  const section = gr
+    ? {
+      heading: 'Κι αν γυρίσει ο άνεμος;',
+      body: `Η λίστα είναι φτιαγμένη για έναν άνεμο — ${regime} από ${regimeDir}. Οι παραλίες της όμως δεν κοιτάνε όλες την ίδια μεριά: ${phrases.join('· ')}. Τις μέρες που ο αέρας έρχεται από αλλού, αυτό είναι που αλλάζει την απόφαση: διάλεξε ομάδα που γυρίζει την πλάτη της εκεί απ' όπου φυσάει, με βάση τον προσανατολισμό της. Δες άνεμο και κύμα στη σελίδα κάθε παραλίας πριν πας.`,
+      links,
+    }
+    : {
+      heading: 'And if the wind turns?',
+      body: `This list is built for one wind — the ${regime} from ${regimeDir}. But the beaches on it do not all look the same way: ${phrases.join('; ')}. On days the air arrives from somewhere else, that is what changes the decision: pick a group whose bays turn their back on the direction it is actually coming from, based on their orientation. Check wind and waves on each beach page before you go.`,
+      links,
+    };
+  // Swap first when we have one: it answers the question in the words people
+  // actually ask it, and the orientation split reads as the follow-up.
+  const sections = swapSection ? [swapSection, section] : [section];
+  return { ...content, sections: [...sections, ...content.sections] };
 };
 
 // A card that leads with a photograph where we have one. Where we don't, a
@@ -6244,8 +6429,13 @@ const main = async () => {
       const withPicks = page.intent.key === 'snorkeling'
         ? withSnorkelingFirstPicksSection(withWind, page.beaches, page.region, page.island, locale)
         : withWind;
+      // Orientation-split shortlist for the sheltered guides that earned
+      // impressions and no clicks (see SHELTERED_SWITCH_REGIONS) — goes first.
+      const withSwitch = page.intent.key === 'sheltered'
+        ? withShelteredSwitchSection(withPicks, page.beaches, page.region, page.island, locale)
+        : withPicks;
       // Sub-area H2s for regions whose searchers name a part of the region (Evia).
-      const withIntentSection = withSubareaSections(withPicks, page.beaches, page.region, page.island, locale, page.intent.key);
+      const withIntentSection = withSubareaSections(withSwitch, page.beaches, page.region, page.island, locale, page.intent.key);
       // "When is the sea calmest here?" — real per-month percentages from 10 years of
       // Copernicus reanalysis, appended to EVERY intent guide, not just the wind ones.
       // A family guide and a snorkeling guide get the same question from the same visitor
