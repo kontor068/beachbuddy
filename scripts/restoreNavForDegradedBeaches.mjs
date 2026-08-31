@@ -21,7 +21,18 @@
  * βάρκα (εκεί η απουσία διαδρομής είναι ο κανόνας ασφαλείας, όχι βλάβη), ούτε ανεβάζει καμία
  * παραλία που ο OSM δεν επιβεβαιώνει.
  *
+ * ΤΟ ΙΔΙΟ ΕΡΩΤΗΜΑ, ΧΩΡΙΣ ΔΙΚΤΥΟ. Με `--osm-file` η ίδια ερώτηση απαντιέται από το εθνικό
+ * θερισμένο σύνολο του OSM που κάθεται ήδη στον δίσκο (scripts/data/osm-beaches-national.json,
+ * scripts/runNationalHarvestWithRetries.sh). Ίδιο κατώφλι, ίδια ετυμηγορία, ένα αντίγραφο της
+ * λογικής — αλλάζει μόνο από πού έρχονται τα σημεία. Χρήσιμο σε μηχάνημα χωρίς έξοδο στο
+ * Overpass, και ταχύτερο: 3.065 υποψήφιες στη μνήμη αντί για μία κλήση ανά παραλία.
+ *
+ * ΠΡΟΣΟΧΗ ΣΤΗΝ ΑΣΥΜΜΕΤΡΙΑ: το θερισμένο αρχείο κρατάει ΜΟΝΟ επώνυμες παραλίες (3.115 από 7.705
+ * στοιχεία). Άρα ένα ταίριασμα είναι απόδειξη, μια αστοχία ΔΕΝ είναι — μπορεί απλώς να είναι
+ * ανώνυμο πολύγωνο. Γι' αυτό το offline πέρασμα επιβεβαιώνει μόνο· δεν καταδικάζει καμία πινέζα.
+ *
  * Χρήση:  node scripts/restoreNavForDegradedBeaches.mjs [--regions a,b] [--radius 350] [--write]
+ *         node scripts/restoreNavForDegradedBeaches.mjs --osm-file scripts/data/osm-beaches-national.json
  */
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -37,6 +48,8 @@ const RADIUS = Number(arg('--radius', 350));
 const STAMP = arg('--stamp', new Date().toISOString().slice(0, 10));
 const OUT = arg('--json', path.join('reports', 'place-resolution', `nav-restore-${STAMP}.json`));
 const regionFilter = String(arg('--regions', '')).split(',').map((s) => s.trim()).filter(Boolean);
+// Όταν δοθεί, τα σημεία του OSM διαβάζονται από τον δίσκο αντί για το Overpass.
+const OSM_FILE = arg('--osm-file');
 
 // The same distance the place-resolution audit uses to call a pin OSM-corroborated.
 const PIN_OK_M = 350;
@@ -48,6 +61,24 @@ const isDegraded = (m) => {
   if (nav.placeId) return false;
   return nav.status === 'blocked' || nav.status === 'unresolved'
     || (nav.status === 'needs-review' && nav.mode !== 'coordinates');
+};
+
+// Το θερισμένο εθνικό σύνολο, φορτωμένο μία φορά και σερβιρισμένο στο ΙΔΙΟ σχήμα που
+// γυρίζει το Overpass, ώστε η ετυμηγορία πιο κάτω να μη χρειάζεται να ξέρει από πού ήρθαν.
+const offlineOsm = !OSM_FILE ? null : (() => {
+  const p = path.isAbsolute(OSM_FILE) ? OSM_FILE : path.join(rootDir, OSM_FILE);
+  const raw = JSON.parse(readFileSync(p, 'utf8'));
+  const list = (raw.candidates || []).filter((c) => Number.isFinite(c?.coordinates?.lat) && Number.isFinite(c?.coordinates?.lon));
+  if (!list.length) throw new Error(`Το ${OSM_FILE} δεν έχει καμία υποψήφια με συντεταγμένες.`);
+  return { generatedAt: raw.generatedAt || '—', list };
+})();
+
+/** Τα σημεία παραλίας γύρω από μια πινέζα — από το Overpass ή από τον δίσκο. */
+const beachPointsNear = async (b) => {
+  if (!offlineOsm) return fetchOverpassBeaches({ lat: b.lat, lon: b.lon }, RADIUS);
+  return offlineOsm.list
+    .map((c) => ({ displayName: { text: c.name }, location: { latitude: c.coordinates.lat, longitude: c.coordinates.lon } }))
+    .filter((p) => distanceMeters({ lat: b.lat, lon: b.lon }, { lat: p.location.latitude, lon: p.location.longitude }) <= RADIUS);
 };
 
 const targets = [];
@@ -67,7 +98,7 @@ console.log(`${targets.length} παραλίες χωρίς κουμπί «Οδη
 
 const results = [];
 for (const b of targets) {
-  const places = await fetchOverpassBeaches({ lat: b.lat, lon: b.lon }, RADIUS);
+  const places = await beachPointsNear(b);
   if (places === null) {
     results.push({ ...b, verdict: 'RETRY', reason: 'Overpass δεν απάντησε' });
   } else {
@@ -75,15 +106,24 @@ for (const b of targets) {
       .map((p) => ({ name: p.displayName?.text, distM: Math.round(distanceMeters({ lat: b.lat, lon: b.lon }, { lat: p.location.latitude, lon: p.location.longitude })) }))
       .filter((p) => p.distM <= PIN_OK_M)
       .sort((a, z) => a.distM - z.distM);
+    // Η προέλευση γράφεται ΜΕΣΑ στην απόδειξη: όποιος διαβάσει την εγγραφή σε έξι μήνες
+    // πρέπει να μπορεί να πει ποιο στιγμιότυπο του OSM τη στήριξε.
+    const src = offlineOsm ? ` (εθνικός θερισμός OSM ${String(offlineOsm.generatedAt).slice(0, 10)})` : '';
     if (near.length) {
       results.push({ ...b, verdict: 'RESTORE', navMode: 'coordinates', status: 'verified',
-        evidence: `OSM «${near[0].name}» στα ${near[0].distM} m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες` });
+        evidence: `OSM «${near[0].name}» στα ${near[0].distM} m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες${src}` });
     } else {
-      results.push({ ...b, verdict: 'KEEP', reason: `κανένα σημείο παραλίας του OSM σε ${RADIUS} m — η πινέζα δεν επιβεβαιώνεται` });
+      // Offline το αρχείο έχει μόνο ΕΠΩΝΥΜΕΣ παραλίες, οπότε η αστοχία δεν καταδικάζει
+      // την πινέζα — λέει μόνο ότι από εδώ δεν επιβεβαιώθηκε.
+      results.push({ ...b, verdict: 'KEEP', reason: offlineOsm
+        ? `καμία ΕΠΩΝΥΜΗ παραλία του OSM σε ${RADIUS} m${src} — δεν επιβεβαιώνεται από εδώ· θέλει ζωντανή ερώτηση Overpass πριν κριθεί`
+        : `κανένα σημείο παραλίας του OSM σε ${RADIUS} m — η πινέζα δεν επιβεβαιώνεται` });
     }
   }
   console.log(`  ${results.at(-1).verdict.padEnd(8)} #${b.id} ${b.name} — ${results.at(-1).evidence || results.at(-1).reason}`);
-  await sleep(1200);
+  // Η παύση είναι ευγένεια προς τους καθρέφτες του Overpass· διαβάζοντας από τον δίσκο
+  // δεν ενοχλεί κανέναν, και 27 παραλίες × 1,2 δλ είναι μισό λεπτό αναμονής στο τίποτα.
+  if (!offlineOsm) await sleep(1200);
 }
 
 const restore = results.filter((r) => r.verdict === 'RESTORE');
