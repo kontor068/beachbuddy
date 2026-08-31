@@ -365,6 +365,7 @@ const seoLandingPages = [
           { href: '/how-we-measure-wind-shelter/', label: 'How we measure wind shelter at each beach' },
           { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
           { href: '/accessible-beaches-greece/', label: 'Accessible beaches in Greece' },
+          { href: '/dogs-on-beaches-greece/', label: 'Dogs on Greek beaches: what the law says' },
         ],
       },
       el: {
@@ -412,6 +413,7 @@ const seoLandingPages = [
           { href: '/how-we-measure-wind-shelter/', label: 'Πώς υπολογίζουμε την προστασία από τον άνεμο' },
           { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/accessible-beaches-greece/', label: 'Προσβάσιμες παραλίες ΑμεΑ' },
+          { href: '/dogs-on-beaches-greece/', label: 'Σκύλοι στην παραλία: τι λέει ο νόμος' },
         ],
       },
     },
@@ -875,6 +877,7 @@ const seoLandingPages = [
           { href: '/', label: 'Open CalmBeach Greece' },
           { href: '/best-beaches-greece-today/', label: 'Compare Greek beaches by conditions' },
           { href: '/family-beaches-greece/', label: 'Family-friendly beaches' },
+          { href: '/dogs-on-beaches-greece/', label: 'Dogs on Greek beaches: what the law says' },
         ],
       },
       el: {
@@ -896,6 +899,114 @@ const seoLandingPages = [
           { href: '/', label: 'Άνοιξε το CalmBeach Greece' },
           { href: '/best-beaches-greece-today/', label: 'Σύγκριση παραλιών με συνθήκες' },
           { href: '/family-beaches-greece/', label: 'Οικογενειακές παραλίες με ήρεμα νερά' },
+          { href: '/dogs-on-beaches-greece/', label: 'Σκύλοι στην παραλία: τι λέει ο νόμος' },
+        ],
+      },
+    },
+  },
+  {
+    // The one beach question Greeks ask every summer that we had no answer for.
+    // Deliberately NOT a per-beach verdict and NOT a per-region guide: open data
+    // carries a `dog` tag for EIGHT beaches in the whole country (measured
+    // 31/08/2026 across scripts/data/osm-beaches-national.json and
+    // showers-osm-raw.json), and our own Search Console shows the `dogs` intent
+    // at 2 queries / 3 impressions in 28 days. A guide promising dog-friendly
+    // beaches we cannot identify is the same mistake the live-camera guide was
+    // refused for (see the note above the 'sandy' intent).
+    //
+    // What we CAN state is the national rule, because it keys off `organized` —
+    // a required boolean present on all 2.926 records — plus blueFlag2026. So
+    // the page explains the law and points at filters, and says outright that we
+    // do not publish a per-beach verdict and why.
+    pathName: '/dogs-on-beaches-greece/',
+    kind: 'info',
+    locales: {
+      en: {
+        title: 'Dogs on Greek Beaches: What the Law Says | CalmBeach',
+        description: 'Greek law 4830/2021 on dogs at the beach: what is allowed on unorganised, organised and Blue Flag beaches, and what local rules can change.',
+        h1: 'Dogs on Greek beaches: what the law allows',
+        intro: 'Greece has one national rule for dogs at the beach — article 19 of law 4830/2021 — and it turns on a single question: whether the beach is organised. This page explains that line in plain language, and where a municipality or port authority can still add its own restrictions.',
+        trustNote: 'This page summarises national legislation as we read it. It is information, not legal advice, and it does not replace the signage at the beach: municipalities and port authorities issue their own local regulations, and the concession holder decides for the area it runs.',
+        sections: [],
+        faq: [
+          {
+            q: 'Can I take my dog to the beach in Greece?',
+            a: 'On beaches that are not organised, yes. Article 19 of law 4830/2021 allows companion animals onto unorganised beaches, including into the sea. Out of the water the animal must be on a lead and under the supervision of the person responsible for it, who must also clean up after it. Organised beaches are the exception — see the next question.',
+          },
+          {
+            q: 'What counts as an organised beach, and what changes there?',
+            a: 'An organised beach is one run as a business or under a concession — sunbeds, umbrellas, a beach bar or a similar service. There, article 19 permits only assistance and therapy dogs as defined by the law, unless the operator has put up clearly visible signage allowing dogs. If there is no such sign, assume dogs are not admitted and ask the operator. More than half of the beaches recorded in CalmBeach are not marked as organised, so on most of the coast it is the first rule that applies.',
+          },
+          {
+            q: 'Are dogs allowed on Blue Flag beaches?',
+            a: 'No. Beaches awarded the Blue Flag do not admit dogs, with the exception of assistance dogs. That is a condition of the award itself, and it applies wherever the flag is flying, organised or not. In the CalmBeach app, Blue Flag beaches carry a badge on the beach card and you can filter for them.',
+          },
+          {
+            q: 'Does my dog have to be on a lead?',
+            a: 'Yes, out of the water. The law requires the animal to be on a lead and supervised while it is on land. In the sea itself, on an unorganised beach, the lead requirement does not apply — but the person responsible for the animal still is.',
+          },
+          {
+            q: 'Can a municipality ban dogs from a beach anyway?',
+            a: 'Yes. National law sets the baseline; municipal councils and port authorities can issue local regulations for particular beaches or particular hours, and those are binding. What the sign at the entrance says is what applies on the spot — if a sign contradicts this page, follow the sign.',
+          },
+          {
+            q: 'Why does CalmBeach not mark each beach as dog-friendly?',
+            a: 'Because we would be guessing. Open map data carries a dogs tag for only a handful of Greek beaches, and the rule also depends on signage and local decisions that change from one season to the next. What each beach page does state is whether that beach is recorded as organised, which is the question the law turns on. We would rather say that, and say it accurately, than publish a verdict for nearly three thousand beaches that we cannot stand behind.',
+          },
+          {
+            q: 'Where does this come from?',
+            a: 'Law 4830/2021 "New framework for the welfare of companion animals", article 19 (Government Gazette A′ 169/18.09.2021), and the award conditions of the Blue Flag programme, run in Greece by the Hellenic Society for the Protection of Nature. Local regulations are issued by each municipality and port authority; the beach itself is the only place they are always posted.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Open CalmBeach Greece' },
+          { href: '/beach-camping-greece/', label: 'Beaches with campsites nearby' },
+          { href: '/faq/', label: 'CalmBeach FAQ' },
+          { href: '/beach-guides/', label: 'All beach guides' },
+        ],
+      },
+      el: {
+        title: 'Σκύλοι στην παραλία: τι λέει ο νόμος | CalmBeach',
+        description: 'Ν. 4830/2021, άρθρο 19: πού επιτρέπονται οι σκύλοι στην παραλία — μη οργανωμένες, οργανωμένες, Γαλάζια Σημαία — και τι αλλάζουν οι τοπικές διατάξεις.',
+        h1: 'Σκύλοι στην παραλία: τι επιτρέπει ο νόμος',
+        intro: 'Στην Ελλάδα ο κανόνας για τους σκύλους στην παραλία είναι ένας και εθνικός — το άρθρο 19 του ν. 4830/2021 — και κρέμεται από μία ερώτηση: αν η παραλία είναι οργανωμένη ή όχι. Εδώ εξηγούμε αυτή τη γραμμή σε απλά λόγια, και πού μπορεί ένας δήμος ή ένα λιμεναρχείο να βάλει δικούς του περιορισμούς.',
+        trustNote: 'Η σελίδα συνοψίζει την εθνική νομοθεσία όπως τη διαβάζουμε εμείς. Είναι ενημέρωση, όχι νομική συμβουλή, και δεν αντικαθιστά τη σήμανση στην παραλία: δήμοι και λιμεναρχεία εκδίδουν δικές τους τοπικές κανονιστικές αποφάσεις, και για τον χώρο που εκμεταλλεύεται αποφασίζει ο υπεύθυνος λειτουργίας.',
+        sections: [],
+        faq: [
+          {
+            q: 'Μπορώ να πάω τον σκύλο μου στην παραλία;',
+            a: 'Σε μη οργανωμένη παραλία, ναι. Το άρθρο 19 του ν. 4830/2021 επιτρέπει την πρόσβαση ζώων συντροφιάς σε μη οργανωμένες παραλίες, καθώς και μέσα στη θάλασσα. Εκτός θαλάσσης το ζώο πρέπει να είναι δεμένο με λουρί και υπό την επίβλεψη του υπευθύνου του, ο οποίος οφείλει και να μαζεύει τα περιττώματά του. Οι οργανωμένες παραλίες είναι η εξαίρεση — δες την επόμενη ερώτηση.',
+          },
+          {
+            q: 'Τι θεωρείται οργανωμένη παραλία και τι αλλάζει εκεί;',
+            a: 'Οργανωμένη είναι η παραλία που λειτουργεί ως επιχείρηση ή με παραχώρηση — ομπρέλες, ξαπλώστρες, beach bar ή αντίστοιχη υπηρεσία. Εκεί το άρθρο 19 επιτρέπει μόνο σκύλους βοηθείας και θεραπείας, όπως ορίζονται στον νόμο, ή εφόσον ο υπεύθυνος λειτουργίας έχει τοποθετήσει ευδιάκριτη ένδειξη που επιτρέπει τα ζώα. Αν δεν υπάρχει τέτοια ένδειξη, θεώρησε ότι δεν επιτρέπονται και ρώτησε τον υπεύθυνο. Πάνω από τις μισές παραλίες που καταγράφουμε δεν είναι σημειωμένες ως οργανωμένες, οπότε στο μεγαλύτερο μέρος της ακτής ισχύει ο πρώτος κανόνας.',
+          },
+          {
+            q: 'Επιτρέπονται σκύλοι σε παραλίες με Γαλάζια Σημαία;',
+            a: 'Όχι. Στις βραβευμένες με Γαλάζια Σημαία παραλίες δεν επιτρέπονται σκύλοι, με εξαίρεση τους σκύλους βοηθείας. Είναι όρος του ίδιου του βραβείου και ισχύει όσο κυματίζει η σημαία, οργανωμένη ή όχι η παραλία. Στην εφαρμογή CalmBeach οι παραλίες με Γαλάζια Σημαία έχουν σχετικό σήμα στην κάρτα τους και υπάρχει φίλτρο γι’ αυτές.',
+          },
+          {
+            q: 'Χρειάζεται λουρί;',
+            a: 'Ναι, εκτός θαλάσσης. Ο νόμος ζητά το ζώο να είναι δεμένο και υπό επίβλεψη όσο βρίσκεται στην ξηρά. Μέσα στη θάλασσα, σε μη οργανωμένη παραλία, δεν ισχύει η υποχρέωση του λουριού — η ευθύνη του συνοδού όμως ισχύει πάντα.',
+          },
+          {
+            q: 'Μπορεί ένας δήμος να απαγορεύσει τους σκύλους σε μια παραλία;',
+            a: 'Ναι. Ο εθνικός νόμος βάζει τη βάση· δημοτικά συμβούλια και λιμενικές αρχές μπορούν να εκδώσουν τοπικές κανονιστικές αποφάσεις ή λιμενικές διατάξεις για συγκεκριμένες παραλίες ή συγκεκριμένες ώρες, και αυτές είναι δεσμευτικές. Ό,τι γράφει η πινακίδα στην είσοδο είναι αυτό που ισχύει επί τόπου· αν η πινακίδα λέει άλλα από αυτή τη σελίδα, ακολούθησε την πινακίδα.',
+          },
+          {
+            q: 'Γιατί το CalmBeach δεν σημειώνει κάθε παραλία ως φιλική σε σκύλους;',
+            a: 'Γιατί θα μαντεύαμε. Τα ανοιχτά δεδομένα χαρτών έχουν σχετική ένδειξη για ελάχιστες ελληνικές παραλίες, και ο κανόνας εξαρτάται επιπλέον από τη σήμανση και από τοπικές αποφάσεις που αλλάζουν από σεζόν σε σεζόν. Αυτό που γράφει η σελίδα κάθε παραλίας είναι αν είναι καταγεγραμμένη ως οργανωμένη — δηλαδή ακριβώς η ερώτηση από την οποία κρέμεται ο νόμος. Προτιμούμε να λέμε αυτό, και να το λέμε σωστά, παρά να δημοσιεύσουμε ετυμηγορία για σχεδόν τρεις χιλιάδες παραλίες που δεν μπορούμε να στηρίξουμε.',
+          },
+          {
+            q: 'Από πού προκύπτουν όλα αυτά;',
+            a: 'Από τον ν. 4830/2021 «Νέο πλαίσιο για την ευζωία των ζώων συντροφιάς», άρθρο 19 (ΦΕΚ Α′ 169/18.09.2021), και από τους όρους του βραβείου Γαλάζια Σημαία, που στην Ελλάδα το τρέχει η Ελληνική Εταιρία Προστασίας της Φύσης. Τις τοπικές κανονιστικές τις εκδίδει ο κάθε δήμος και το κατά τόπον λιμεναρχείο· η ίδια η παραλία είναι το μόνο μέρος όπου είναι πάντα αναρτημένες.',
+          },
+        ],
+        links: [
+          { href: '/', label: 'Άνοιξε το CalmBeach' },
+          { href: '/beach-camping-greece/', label: 'Παραλίες με camping κοντά' },
+          { href: '/faq/', label: 'Συχνές ερωτήσεις' },
+          { href: '/beach-guides/', label: 'Όλοι οι οδηγοί παραλιών' },
         ],
       },
     },
