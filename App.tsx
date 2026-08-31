@@ -2905,10 +2905,40 @@ export const App: React.FC = () => {
     setStoredValue('theme', 'light');
   }, []);
 
+  // The prerendered head this session booted on (pathname + <html lang>), or
+  // 'expired' once any client-side navigation has forced a head rewrite. See
+  // the head-sync effect below.
+  const servedHeadRef = useRef<{ pathname: string; locale: string } | 'expired' | null>(null);
+
   useEffect(() => {
+    // Capture the served <html lang> BEFORE we overwrite it: together with the
+    // pathname it identifies the prerendered head we booted on.
+    if (servedHeadRef.current === null && typeof document !== 'undefined') {
+      servedHeadRef.current = {
+        pathname: window.location.pathname,
+        locale: document.documentElement.lang || '',
+      };
+    }
     document.documentElement.lang = languageToLocale(language);
     const meta = seoCopy[language];
     const currentPathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+    // The prerendered head of the URL we booted on is the copy search engines
+    // index — it carries the audited title/description (weather hook, shelter
+    // verdict, hand-written overrides) that this effect cannot rebuild, and
+    // rebuilding it here used to flash the generic site title over every beach
+    // page while its data was still loading. While we are still on that URL, in
+    // the language it was served in, leave the head alone; rewrite only after a
+    // client-side navigation or a same-URL language switch, when the head on
+    // display no longer belongs to what the visitor is looking at.
+    const servedHead = servedHeadRef.current;
+    if (
+      servedHead && servedHead !== 'expired' &&
+      servedHead.pathname === currentPathname &&
+      servedHead.locale === languageToLocale(language)
+    ) {
+      return;
+    }
+    servedHeadRef.current = 'expired';
     const detailRoute = parseBeachDetailPath(currentPathname);
     const regionRoute = parseBeachRegionPath(currentPathname);
     const beachRoute = detailRoute || regionRoute;
@@ -2941,19 +2971,20 @@ export const App: React.FC = () => {
       detailBeach.id === detailRoute.beachId &&
       selectedIslandName
     );
-    // Match the prerendered <title>/<meta> exactly so hydration never overwrites
-    // the correct static head. Keep in sync with beachTitleFor /
-    // beachMetaDescription in scripts/prerenderBeachPages.mjs. The "live" hook is
-    // truthful on beach pages: this SPA shows live wind/waves once hydrated.
+    // This title is only ever seen after a client-side navigation (the guard
+    // above keeps the prerendered head on the boot URL), so no crawler reads
+    // it — but keep it in sync with BEACH_TITLE_HOOK / beachTitleFor in
+    // scripts/prerenderBeachPages.mjs so the tab title matches what the same
+    // page shows on a fresh load.
     const detailBeachLabel = detailBeach
       ? localizedBeachLabel(displayBeachName(detailBeach.name, language), language)
       : '';
     const beachTitleHook: Record<string, string> = {
-      en: 'Live Wind & Waves',
-      gr: 'Άνεμος & Κύμα Live',
-      de: 'Wind & Wellen live',
-      fr: 'Vent & vagues en direct',
-      it: 'Vento e onde live',
+      en: 'Weather, Wind & Waves',
+      gr: 'Καιρός, Άνεμος & Κύμα',
+      de: 'Wetter, Wind & Wellen',
+      fr: 'Météo, vent & vagues',
+      it: 'Meteo, vento e onde',
     };
     const buildDetailTitle = (): string => {
       const hook = beachTitleHook[language] || beachTitleHook.en;
