@@ -103,8 +103,22 @@ export const composeDigest = ({ rows, beachRows, todos, measured, consoleUrl }) 
       }, έλεγχος ${esc(agoLabel(row.lastAt))}`
     );
     lines.push(`   ${worst.map((a) => `${esc(a.short)} ${a.pct}%`).join(' · ')}`);
-    const gaps = row.gaps.filter((g) => !/φωτογραφία/i.test(g));
-    if (gaps.length) lines.push(`   <i>${esc(gaps.slice(0, 2).join(' · '))}</i>`);
+    // ΟΙ ΓΡΑΜΜΕΣ ΠΡΕΠΕΙ ΝΑ ΕΞΗΓΟΥΝ ΤΟΥΣ ΑΞΟΝΕΣ ΠΟΥ ΜΟΛΙΣ ΟΝΟΜΑΣΤΗΚΑΝ ΑΠΟ ΠΑΝΩ.
+    // Όσο κρατούσαμε τις δύο πρώτες μιας σταθερής σειράς αξόνων, το μήνυμα αναιρούσε
+    // τον εαυτό του: 31/08/2026 η Κύθνος έγραφε «Παροχές 26%» και από κάτω «1 χωρίς
+    // επιβεβαιωμένες οδηγίες · 3 με άγνωστη πρόσβαση» — οι 29 παραλίες χωρίς καμία
+    // παροχή, ο λόγος που η Κύθνος ήταν στη λίστα, δεν φαίνονταν πουθενά.
+    //
+    // Οι υπο-γραμμές («↳ … δεν δείχνουν κουμπί») μένουν στο ταμπλό· εδώ θα έτρωγαν τη
+    // θέση ενός ολόκληρου σωρού. Η πινέζα κρατάει πάντα δική της θέση: είναι στοιχείο
+    // ΛΑΘΟΣ, όχι στοιχείο που λείπει, και στέλνει τον κόσμο σε άλλο μέρος.
+    const named = new Set(worst.map((a) => a.key));
+    const usable = row.gaps.filter((g) => !g.sub && g.key !== 'photo');
+    const pinned = usable.filter((g) => g.key === 'pin');
+    const rest = usable.filter((g) => g.key !== 'pin');
+    const picked = rest.filter((g) => named.has(g.key));
+    const gaps = [...pinned, ...(picked.length ? picked : rest)].slice(0, 3);
+    if (gaps.length) lines.push(`   <i>${esc(gaps.map((g) => g.text).join(' · '))}</i>`);
   }
 
   if (beachRows.length) {

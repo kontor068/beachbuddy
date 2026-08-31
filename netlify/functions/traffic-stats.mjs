@@ -811,7 +811,7 @@ const qualityTab = (rows, beachRows, todos, flashCode, focusId) => {
         }
       </div>
       <div class="qdots">${axisDots(row)}</div>
-      ${row.gaps.length ? `<div class="qgaps">${row.gaps.map((g) => esc(g)).join(' · ')}</div>` : ''}
+      ${row.gaps.length ? `<div class="qgaps">${row.gaps.map((g) => esc(g.text)).join(' · ')}</div>` : ''}
       ${
         row.manual
           ? `<div class="qlast">✔ ${esc(row.manual.at)}${
@@ -841,7 +841,7 @@ const qualityTab = (rows, beachRows, todos, flashCode, focusId) => {
         } · τελευταίος έλεγχος ${esc(agoLabel(focus.lastAt))}</em>
         <a class="qclose" href="?key=KEYPLACEHOLDER&amp;tab=quality">κλείσε</a></h2>
         <div class="qdots">${axisDots(focus)}</div>
-        ${focus.gaps.length ? `<div class="qgaps">${focus.gaps.map((g) => esc(g)).join(' · ')}</div>` : ''}
+        ${focus.gaps.length ? `<div class="qgaps">${focus.gaps.map((g) => esc(g.text)).join(' · ')}</div>` : ''}
         <div class="qfeat" style="margin-top:9px">
           ${LEDGER.featureList
             .map((f) => {
