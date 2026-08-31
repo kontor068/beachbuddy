@@ -248,7 +248,14 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // «σε ποια ΝΑ πας», not «σε ποια πας»: the subjunctive is the decision still
       // being made — it answers the actual «πού να πάμε σήμερα;», where the
       // indicative would describe a choice already settled.
-      subtitle: 'Η ηρεμία δεν ξεκινάει στην παραλία. Ξεκινάει τη στιγμή που ξέρεις σε ποια να πας.',
+      // 30/08/2026 — the subtitle now names the mechanism.
+      // Neither line said «άνεμος» anywhere above the fold. The one thing nobody else
+      // does — reading today's wind against the shape of each shore — was stated in the
+      // <title> for Google (index.html:26) and nowhere a first-time visitor would read
+      // it. The kicker stays deleted (it was a slogan); this is the same number of lines
+      // saying something instead. It names the INPUTS, never a promise of calm: the map
+      // is what says which beach is sheltered, and it says so with a number.
+      subtitle: 'Η ηρεμία δεν ξεκινάει στην παραλία. Ξεκινάει από τον άνεμο που φυσάει σήμερα και από το πού κοιτάει η κάθε ακτή.',
       searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
       // Keep this short: native input placeholders are one-line only and share
       // mobile width with the submit button.
@@ -489,7 +496,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     hero: {
       title: 'Which beach in Greece suits you today?',
       titleAccent: 'today',
-      subtitle: 'Calm doesn’t start at the beach. It starts the moment you know which one to pick.',
+      subtitle: 'Calm doesn’t start at the beach. It starts with today’s wind and the direction each shore faces.',
       searchPlaceholder: 'Search a beach or region…',
       searchPlaceholderAlt: 'Where and how many days?',
       searchAria: 'Search a beach, a region, or a stay in days',
@@ -600,7 +607,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     hero: {
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
       titleAccent: 'heute',
-      subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt in dem Moment an, in dem du weißt, welcher der richtige ist.',
+      subtitle: 'Ruhe fängt nicht am Strand an. Sie fängt beim Wind von heute an — und bei der Richtung, in die jede Küste zeigt.',
       searchPlaceholder: 'Strand oder Region suchen…',
       searchPlaceholderAlt: 'Wohin und wie viele Tage?',
       searchAria: 'Strand, Region oder Aufenthalt in Tagen suchen',
@@ -714,7 +721,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     hero: {
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
       titleAccent: 'aujourd’hui',
-      subtitle: 'Le calme ne commence pas sur la plage. Il commence au moment où vous savez laquelle choisir.',
+      subtitle: 'Le calme ne commence pas sur la plage. Il commence avec le vent du jour et l’orientation de chaque rivage.',
       searchPlaceholder: 'Chercher une plage ou une région…',
       searchPlaceholderAlt: 'Où et combien de jours ?',
       searchAria: 'Chercher une plage, une région ou un séjour en jours',
@@ -828,7 +835,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     hero: {
       title: 'Quale spiaggia della Grecia fa per te oggi?',
       titleAccent: 'oggi',
-      subtitle: 'La calma non inizia in spiaggia. Inizia nel momento in cui sai quale scegliere.',
+      subtitle: 'La calma non inizia in spiaggia. Inizia dal vento di oggi e da come è orientata ogni costa.',
       searchPlaceholder: 'Cerca una spiaggia o una regione…',
       searchPlaceholderAlt: 'Dove e quanti giorni?',
       searchAria: 'Cerca una spiaggia, una zona o un soggiorno in giorni',

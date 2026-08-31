@@ -731,6 +731,27 @@ const checks = [
     args: ['scripts/validateBundleSecrets.mjs'],
   },
   {
+    // ADDED 30/08/2026. scripts/auditBundlePerformance.mjs and its budgets were written on
+    // 13/08 and then reachable only through `npm run growth:audit`, which nothing runs on a
+    // schedule — so for two weeks the project had a page-weight ceiling that could not stop
+    // anything crossing it. Nothing else in this list looks at what a phone downloads.
+    //
+    // It is safe to make blocking: measured on the build of 30/08 it reports 6 checks,
+    // 0 failures, 1 warning (initial JS+CSS at 415,7 KB gzip, over the 350 KB warn line and
+    // well under the 600 KB hard cap), and warnings do not set a non-zero exit. So this goes
+    // in green, with real headroom — not as a red gate people learn to scroll past, which is
+    // the failure the `logged-out-parity` note above describes.
+    //
+    // Reads dist/, so it must stay after the `build` gate.
+    id: 'bundle-budget',
+    title: 'What a phone actually downloads',
+    description: 'Gzips every built asset and checks four things a visitor pays for: the initial JS+CSS of a first paint (hard cap 600 KB gzip, warn at 350), the worst single visit — first paint + heaviest region + detail page + map (hard cap 750 KB), the largest single JS chunk (200 KB), and the CSS (warn at 60 KB). Total JS is a warning only, because ~225 of the chunks are one-per-region data files and a visit downloads exactly one.',
+    protects: 'Page weight is the one performance lever that gets worse by accident — a vendor library pulled into a shared chunk, an eagerly imported icon set, a heavy component that stops being lazy. Nothing else here measures it, and until Core Web Vitals reporting (utils/webVitals.ts) has months of field data, this is the only signal that a change made the site heavier.',
+    failureAction: 'Read .tmp/bundle-performance-report.json for which asset moved. The usual cause is a static import of something that should be behind React.lazy or a dynamic import — see the 11 lazy boundaries in App.tsx and services/supabaseClient.ts for the pattern. Never raise a budget to make it pass without saying, in the commit, what the extra kilobytes buy.',
+    command: npmBin,
+    args: ['run', 'perf:audit'],
+  },
+  {
     id: 'seo-audit',
     title: 'SEO prerender audit',
     description: 'Audits generated prerendered pages, sitemap, robots.txt, canonicals, hreflang links, structured data, internal links, image references, and SEO performance budgets.',

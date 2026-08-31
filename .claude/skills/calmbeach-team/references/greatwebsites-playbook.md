@@ -12,6 +12,34 @@ Everything below is a **summary in our own words** of his advice, reorganised by
 
 **Where anything below is our own connecting observation rather than the book's advice, it is marked `[our note]`.**
 
+## ⚠️ Re-checked against the code on 30/08/2026 — read this before quoting a gap
+
+The book half of this file (every "What the book tells this role") is unchanged and still
+accurate. **The CalmBeach half went stale in one month and was wrong in eight places.** It was
+written on 30/07/2026 partly from the project docs rather than from the repository, which is
+exactly the failure `CLAUDE.md` warns about, and the month that followed closed most of what it
+listed as missing.
+
+What the 30/07 version said was missing and **is not**:
+
+| The old claim | What is actually there (verified 30/08/2026) |
+|---|---|
+| "Search Console appears to be absent" — the file's own #1 | Verified (`index.html:13`), `sc-domain:calmbeach.gr`, service-account API pull in `scripts/seo-snapshot.mjs`, snapshots in `reports/snapshots/` through 21/08 |
+| "No CTR-vs-position work" | It is an automated report: CTR curve by position, index per intent, striking distance, page-level CTR gaps — `reports/snapshots/2026-08-21.md` |
+| "No feedback channel of any kind" | Three, all live to Telegram: landing form (`OurStorySection.tsx:141`), per-beach forecast verdict (`BeachDetailPage.tsx`), 1–10 rating prompt from day 5 (`AppRatingPrompt.tsx`) |
+| "No conversion event exists at all" | `navigation_clicked` is the declared GA4 conversion, and a delegated capture listener (`App.tsx:5841-5861`) measures **every** outbound link — mirrored first-party so it survives consent decline |
+| "No prominent contact route" | Footer contact column, two addresses (`LegalFooter.tsx:188`); phone and postal address in `/terms` |
+| "No informational content layer" | 381 island-intent guides, a guides hub, `/faq/`, `/how-we-measure-wind-shelter/`, per-beach editorial for 110 regions |
+| "No pillar pages, no deliberate internal-link clusters" | 8 topic verticals × island + hub + 13 national landings; `reports/seo/orphan-pages.json` → **0 orphans of 9.507** |
+| "Titles and metas … unless deliberately varied they will be near-duplicates" | Generated under hard caps (58/60 title, 155 meta) with a numeric distinctness gate — `scripts/validateBeachMetaDescriptions.mjs`, no snippet body on more than 7% of pages |
+
+Two more the file never mentioned because they did not exist yet: **error tracking** is live
+(`services/errorReporter.ts` → `netlify/functions/client-error.mjs` → Telegram) and the
+**Open-Meteo quota** has amber/red alarms (`netlify/functions/lib/capacityAlarm.mjs`).
+
+The rule this file broke, and the one to keep: **grep before writing a gap into this file, and
+put the file path next to it.** A gap with no path is 🟡, not a finding.
+
 ## Chapter index (all 14 URLs retrieved successfully, 2026-07-30)
 
 | # | Chapter | URL |
@@ -53,16 +81,17 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 
 **Where CalmBeach already does this**
 - The single primary objective is unambiguous: answer "which beach today?" That is exactly the focus discipline of ch. 3.
-- The differentiator is real and specific — a ray-casting wind-exposure model that tells you how sheltered a beach is *right now*. That is precisely the "local, small-scale information the giants can't provide" argument of ch. 13, and it is defensible against beachesofgreece.com (~345 beaches vs CalmBeach's ~2,850).
-- ~2,850 beaches with per-beach data is the hyper-local depth the book says is the underdog's weapon.
-- Shipping before perfection: 9,474 pages live, German only partial, photos on ~1,429 of 2,850 beaches. That is ch. 12's "start simply" in practice rather than in theory.
+- The differentiator is real and specific — a ray-casting wind-exposure model that tells you how sheltered a beach is *right now*. That is precisely the "local, small-scale information the giants can't provide" argument of ch. 13, and it is defensible against beachesofgreece.com (~345 beaches vs CalmBeach's ~2.870).
+- ~2.870 beaches with per-beach data is the hyper-local depth the book says is the underdog's weapon.
+- Shipping before perfection: ~9.500 pages live, DE/FR/IT deliberately scoped to 17 tourist regions, photos on 1.367 of 2.872 beaches. That is ch. 12's "start simply" in practice rather than in theory.
 
 **Where CalmBeach does not**
-- **There is no defined success metric.** No revenue, no conversion event, no target. Analytics measure visits, and visits are the metric the book explicitly calls insufficient ("traffic without conversions wastes resources", ch. 2). This is the biggest single gap in this file — every other decision (what to build, what to cut) is unprioritisable without it. For a free site the metric doesn't have to be money; it could be "beach page → map/directions click" or "returning visitors in-season". But it has to exist.
-- **No defined "next step" per page.** A beach page currently ends. There is no action the visitor is being moved toward — which by ch. 1's standard means the page has no goal. `[our note: this also blocks the affiliate plan; you cannot bolt a ferry affiliate onto pages that have never had a measured downstream action.]`
-- The differentiator is in the product but is not stated as a value proposition anywhere a first-time visitor reads it (ch. 4).
-- No persona work. Assumptions about tourists are implicit; the demographic/device data GA already collects has not been turned into decisions (ch. 3).
-- Retention is untouched — no reason or mechanism for a visitor to come back tomorrow, on a trip where they'll swim eight more times (ch. 3). Moderate-to-large: in-season repeat use is the cheapest growth available.
+*Re-checked 30/08/2026 — three of the five bullets here were wrong.*
+- **There is still no success metric expressed as a target.** But the raw material now exists and the 30/07 version of this bullet ("no conversion event") was false: `navigation_clicked` is the declared GA4 conversion, every outbound link is measured (`App.tsx:5841-5861`), and Search Console gives clicks, impressions and position. What is missing is the sentence "success this season means X" — a number someone commits to, not the instrumentation for it (ch. 2).
+- ~~No defined "next step" per page~~ — **wrong.** The beach page's next step is directions, and it is measured from three surfaces (`BeachDetailPage.tsx:1152`, `BeachCard.tsx:1643`, `BeachMap.tsx:4053`). The landing's is the region tile, named as such in `LandingHero.tsx:154`.
+- ~~The differentiator is not stated as a value proposition~~ — **closed 30/08/2026.** The hero subtitle now names today's wind and the direction each shore faces, in five languages (`landingCopy.ts`).
+- No persona work. Assumptions about tourists are implicit; the demographic/device data GA already collects has not been turned into decisions (ch. 3). **Still open** — though Search Console now answers part of it for free: 88,7% of clicks are mobile, Greece is 85% of them.
+- Retention: **partly closed.** A newsletter exists (`components/landing/NewsletterSection.tsx` → `netlify/functions/newsletter-subscribe.mjs`), so does a PWA install prompt (`components/InstallPrompt.tsx`) and an Android shell. What is missing is a *reason* to come back tomorrow — nothing tells a visitor still on the island that today's answer changed (ch. 3).
 
 ---
 
@@ -89,17 +118,19 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 
 **Where CalmBeach already does this**
 - The core promise — top beaches for today, fast — is aligned with the 8-second and 2–3-second budgets by design; "under 10 seconds to a recommendation" is the product's own stated UX target.
-- Top 3 recommendations rather than a wall of 2,850 options is exactly ch. 7's paradox-of-choice advice, applied without knowing it. `[our note: this is the single strongest UX decision already in the product and it should not be diluted by adding more headline options.]`
+- Top 3 recommendations rather than a wall of ~2.870 options is exactly ch. 7's paradox-of-choice advice, applied without knowing it. `[our note: this is the single strongest UX decision already in the product and it should not be diluted by adding more headline options.]`
 - Pre-rendered pages mean content is visible immediately, which serves the above-the-fold requirement.
 - Mobile is the assumed primary context for a tourist on a beach day.
 
 **Where CalmBeach does not**
-- **The value proposition is not above the fold.** A first-time visitor is not told, in one line, that this site scores shelter from today's wind — the thing nobody else does. Cheap to fix, high leverage (ch. 4, ch. 7, ch. 13).
-- **Explore mode + filters is where the choice paradox bites.** Seven filters over hundreds of results is the 24-jam scenario; the book would push toward fewer, defaulted, decision-shaped choices (ch. 7).
-- **Three-click rule is almost certainly violated** across 9,474 pages. Not fixable literally at that scale, but the practical question — can a tourist reach a *relevant* beach page in three interactions? — has not been tested (ch. 7).
-- No prominent contact route and no live feedback channel, which the book ties directly to lost trust (ch. 4). For a **safety-adjacent** site this is worse than his generic case: a visitor who spots dangerous wrong data has nowhere to report it.
-- No breadcrumbs verified, no current-page indicator audited, and the 16px / tap-spacing / 7:1 contrast checks have not been run (ch. 7).
-- No user testing of navigation with real people, which he asks for explicitly (ch. 7).
+*Re-checked 30/08/2026.*
+- ~~The value proposition is not above the fold~~ — **closed 30/08/2026.** The hero subtitle names the mechanism in five languages. The title and the deliberate absence of a kicker were left alone.
+- ~~Seven filters~~ — **miscounted.** The explore panel shows **five** and hides the other seven behind an "Άλλα" button (`PreferenceFilters.tsx:39`); five is inside the range the book itself calls good. The 20-filter sheet (`AmenityFilter.tsx:174`) opens only on request.
+- **Three-click rule: untested, and now testable.** `reports/seo/orphan-pages.json` proves every page is reachable (0 orphans of 9.507), which is not the same question. Nobody has watched a tourist try (ch. 7).
+- ~~No prominent contact route and no live feedback channel~~ — **wrong then, and further closed now.** Three feedback paths were already live to Telegram on 30/07. Since 30/08 there is also a "Κάτι δεν πάει καλά εδώ;" link in the footer of every page type including the ~9.500 prerendered ones, and one on the beach page carrying the beach id.
+- **Breadcrumbs: were emitted and invisible.** `index.tsx:122` mounts with `createRoot`, so React wiped the prerendered `<nav aria-label="breadcrumb">` — it existed for Google and for nobody else. Rebuilt in React 30/08/2026. Contrast at 7:1 and tap spacing: **still unaudited.**
+- **Type size: partly fixed.** The card and the beach page carried ~635 declarations below 16px against ~24 at or above, and `text-xs sm:text-sm` appeared zero times. Body prose on the beach page is now 16px and the wrapping card badges 12px (was 10px); the rest of the app is untouched (ch. 7).
+- No user testing of navigation with real people, which he asks for explicitly (ch. 7). **Still open, and still the cheapest thing nobody has done.**
 
 ---
 
@@ -117,15 +148,17 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Mobile floor: 16px type, spaced touch targets (ch. 7 · /optimize-ux).
 
 **Where CalmBeach already does this**
-- Pre-rendering 9,474 pages plus Netlify's CDN is close to the best-case architecture for LCP on content pages — better than the WordPress-on-a-Greek-server setup the book actually recommends (ch. 4, ch. 8).
+- Pre-rendering ~9.500 pages plus Netlify's CDN is close to the best-case architecture for LCP on content pages — better than the WordPress-on-a-Greek-server setup the book actually recommends (ch. 4, ch. 8).
 - Vite gives modern bundling and code-splitting by default, addressing his page-weight point.
 - Cloudflare DNS + Netlify edge removes the server-distance problem he raises for German and other non-Greek visitors.
 
 **Where CalmBeach does not**
-- **CWV are not measured at p75 on real users, split mobile/desktop.** Pre-rendering fixes first paint; it does nothing for React hydration cost, which is where FID/INP dies on a mid-range Android on 4G at a beach. Unmeasured, so unknown — and by ch. 8's own numbers this is where a hidden double-digit loss would live.
-- **Photos are the obvious weight risk.** ~1,429 beaches with photos and no stated responsive-image/format/lazy-load discipline in the project facts. This is the exact "high-resolution images" failure he names (ch. 8).
-- Map view is a heavy interactive component with layout-shift and CLS potential; not audited (ch. 8).
-- Heading hierarchy across ~9,474 templated pages has not been outline-verified — one template bug is 9,474 bad pages (ch. 6).
+*Re-checked 30/08/2026.*
+- ~~CWV are not measured~~ — **closed 30/08/2026.** `utils/webVitals.ts` reports LCP, INP and CLS from real visitors, dynamically imported after `load` (2,4 KB gzip, its own chunk). Read as p75 by device. Caveat written into the file: it reports through `trackEvent`, so it is a consenting-visitors sample, not the whole population.
+- **Photos: the discipline existed on one side only.** The prerenderer varied the width and shipped a real `srcset`; the React app shipped `sizes` with **no** `srcSet`, which a browser ignores entirely — every card and every hero pulled the same `width=800` file. Fixed 30/08/2026 via the shared `utils/photoSizing.mjs`, plus 400px thumbnails and `preconnect` to both Wikimedia hosts. And the prerendered hero — which follows the h1 directly, so it *is* the LCP element — was `loading="lazy"`; it now carries `fetchpriority="high"`.
+- **Page weight now has a gate.** `scripts/auditBundlePerformance.mjs` existed since 13/08 but nothing ran it; it is check `bundle-budget` in `quality:critical` since 30/08, green with headroom (415,7 KB gzip initial against a 600 KB cap).
+- Map view is a heavy interactive component with layout-shift potential; **not audited** — though it is lazy (`React.lazy`, `App.tsx:156`) and every `<img>` in app code carries width/height (ch. 8).
+- **Heading hierarchy: verified for region pages only.** `scripts/auditRegionPages.mjs` enforces exactly one h1 there; the 8.534 beach URLs have no equivalent gate, and no script anywhere checks for skipped levels (ch. 6).
 
 ---
 
@@ -139,15 +172,16 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Structure URLs hierarchically by topic and avoid parameters like `?page=2`; never change a URL without a 301 (ch. 6 · /optimize-onsite). `[our note: this is a data/routing decision as much as an SEO one, because the slug comes out of the dataset.]`
 
 **Where CalmBeach already does this**
-- ~2,850 OpenStreetMap-derived beaches is exactly the "original dataset the giants don't have at this granularity" asset of ch. 9.
+- ~2.870 OpenStreetMap-derived beaches is exactly the "original dataset the giants don't have at this granularity" asset of ch. 9.
 - The wind-exposure model produces genuinely original derived data per beach.
-- The dataset drives a consistent page structure across 9,474 pages, which is the "logical units" principle applied at scale.
+- The dataset drives a consistent page structure across ~9.500 pages, which is the "logical units" principle applied at scale.
 
 **Where CalmBeach does not**
-- **Accuracy of the OSM-derived data is unverified** at the individual-beach level (surface type, amenities, access). The book asks for "current and accurate"; on a **safety-adjacent** site, a wrong sand/rocks or wrong-access record is not a cosmetic error. No confidence score, no per-field provenance, no correction pipeline.
-- The original data is **not published as data** — no downloadable dataset, no methodology page, no stats/roundup content. That is the single link-earning asset the book names and it is sitting unused (ch. 9).
-- **~1,421 beaches have no photos.** Half the dataset renders thin pages, and the book's content-quality bar (ch. 4, ch. 6) is not met on them.
-- URL stability under future dataset regeneration is a risk: if a slug is derived from an OSM name and OSM changes, the URL changes, and ch. 6 says never do that without a 301.
+*Re-checked 30/08/2026.*
+- ~~No confidence score, no per-field provenance, no correction pipeline~~ — **wrong on all three.** Every one of the 2.926 records carries `metadata.confidence` (high 2.303 / medium 140 / low 483), `sourceNotes`, and `sourceUrls` on all but 24; `orientation`, `popularity`, `googleMapsNavigation` and `showerEvidence` each carry their own source and check date; 188 records are explicitly flagged `needsVerification` and 334 say `access: unknown` rather than guessing. The correction pipeline is ~40 `audit*.mjs` plus ~30 `apply*.mjs` scripts and ~200 dated region reports. **What is genuinely thin:** `amenities`, `access` and `terrain` — the OSM core — share one record-level confidence with no per-claim source, and the app files served to the browser strip almost all provenance.
+- The original data is **still not published as data** — no downloadable dataset. `/how-we-measure-wind-shelter/` now covers the methodology half. The link-earning asset of ch. 9 remains unused.
+- **1.505 beaches have no photo** (52,4%, `reports/photo-coverage/beach-photo-presence-summary.txt`, 17/08) — the correct number, higher than the 1.421 quoted in July.
+- **URL stability: IDs are frozen forever** (`scripts/freezeBeachIds.mjs`, approved 12/06), so a renamed beach keeps its address prefix. The slug is still recomputed from the English name on every build, with an opt-in `legacySlugs` array producing the 301 — which works only if someone remembers to add the old slug. `scripts/auditIndexedUrlsResolve.mjs` is the net under that, and it exists because the gap bit on 21/08.
 
 ---
 
@@ -170,9 +204,11 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Static pre-rendering means the site survives backend or API failure — stronger than the WordPress+MySQL stack the book assumes.
 
 **Where CalmBeach does not**
-- **The book's own logic cuts against parts of the stack**: Netlify + Cloudflare + Google Analytics + weather APIs are all third parties whose terms can change (ch. 3, ch. 11). Low probability, but there is no documented exit path from Netlify, and free-tier terms are exactly what he warns move under you.
-- No cost ceiling or quota alerting documented for the Netlify functions and the weather API — an August traffic spike is a bill or a hard stop, not a graceful degradation.
-- `/api/traffic` is a home-built counter with no stated retention, backup or rate-limit story.
+*Re-checked 30/08/2026.*
+- **The book's own logic cuts against parts of the stack**: Netlify + Cloudflare + Google Analytics + weather APIs are all third parties whose terms can change (ch. 3, ch. 11). Low probability, but there is no documented exit path from Netlify. **Unchanged.**
+- ~~No quota alerting for the weather API~~ — **wrong.** Amber at 18k and red at 25k calls a day, once each per day to Telegram, plus a separate 429 alarm, metered per weighted upstream call and unit-tested by a blocking gate (`netlify/functions/lib/capacityAlarm.mjs`). Caching is layered: 1 h for weather, 3 h for marine, 12 h for SST, a shared durable CDN cache, a 12 h last-known-good fallback and a 60-per-minute per-IP limit. **Function invocations still have no ceiling** — that half of the bullet stands.
+- ~~`/api/traffic` has no rate-limit story~~ — **wrong.** The write side (`pageview.mjs`) is cookieless, same-origin, POST-only and per-IP burst limited, all three enforced by the `analytics-guards` gate; the read side is key-gated. Retention and backup: still unstated.
+- **Not in the July version, and worth recording:** error and CSP reporting now exist end to end (`services/errorReporter.ts` → `netlify/functions/client-error.mjs` → Telegram, rate-limited), there is a deep health endpoint for an uptime monitor (`health.mjs`), and a scheduled weekly quality digest (`quality-digest.mjs`, Mondays 06:00).
 
 ---
 
@@ -193,10 +229,13 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Templated pages mean a fix applies uniformly to thousands of pages.
 
 **Where CalmBeach does not**
-- **The flip side of templating is untested**: one template regression = 9,474 broken pages. No stated per-locale or per-template smoke test.
-- Search Console Coverage is not being worked as a QA queue — with 9,474 pages and JSON-LD on 9,465, the 9 missing pages are the kind of drift ch. 5 says to catch.
-- No real-user testing of navigation, and no device/location matrix for either SERP checks or rendering (ch. 5, ch. 7).
-- No outline/heading verification pass (ch. 6), and no per-page-type PageSpeed baseline (ch. 8).
+*Re-checked 30/08/2026 — this section understated the project badly.*
+- ~~One template regression = 9.474 broken pages, no smoke test~~ — **wrong.** 85 checks run in CI on every pull request (`scripts/runCriticalQualityChecks.mjs`), roughly 55 of them on weather/sea truth and copy consistency, plus a Playwright layout probe that measures 400 text nodes at four widths in five languages (`tile-fit`). A second workflow re-validates ~2.900 beach-hours against real wind twice a week.
+- **Search Console IS worked as a queue.** `scripts/auditIndexedUrlsResolve.mjs` replays every URL Search Console recorded as served against `dist/` and `_redirects` — written after the 21/08 incident where 24 ranking URLs 404'd. Last run: 4.596 URLs, 0 failing. JSON-LD coverage is its own gate: 9.507 of 9.510, and the 3 without it are the legal pages, by design.
+- No real-user testing of navigation, and no device/location matrix (ch. 5, ch. 7). **Still open.**
+- **Heading verification exists for region pages only** (`auditRegionPages.mjs`), not for the 8.534 beach URLs, and nothing anywhere checks for skipped levels (ch. 6).
+- ~~No per-page-type PageSpeed baseline~~ — **partly closed 30/08/2026**: real-visitor LCP/INP/CLS now report (`utils/webVitals.ts`) and bundle weight is a blocking gate. Synthetic per-page PageSpeed runs: still none.
+- `[our note, unchanged and still right: the highest-value test here is not in the book. It is that the wind and wave figures are internally consistent and not stale — and that is precisely what the ~55 truth checks do.]`
 - `[our note: for a safety-adjacent site, the highest-value missing test isn't in the book at all — it's a sanity check that the wind/wave figures shown are internally consistent and not stale. The book's "current and accurate" (ch. 4) is the nearest thing it offers.]`
 
 ---
@@ -224,19 +263,20 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Cover topics comprehensively; the giants' weakness is generic coverage, so specialist local depth is where a small site wins the category (ch. 2 · /before-start).
 
 **Where CalmBeach already does this**
-- "One quality page per important query" (ch. 10) is arguably the site's whole architecture: ~9,474 pages built around individual beaches and regions.
-- JSON-LD on 9,465 pages goes beyond what the book asks for — helping search engines understand structure is his principle, structured data is a stronger implementation of it than he describes.
+- "One quality page per important query" (ch. 10) is arguably the site's whole architecture: ~~9.500 pages built around individual beaches and regions.
+- JSON-LD on 9.507 of 9.510 built pages goes beyond what the book asks for — helping search engines understand structure is his principle, structured data is a stronger implementation of it than he describes.
 - A sitemap-driven pre-render pipeline naturally satisfies ch. 5's sitemap submission requirement.
 - Hierarchical, parameter-free URLs are the natural output of a pre-rendered static build (ch. 6).
 - The site is a genuine informational asset that doesn't sell — ch. 10's "build trust first" position, currently by circumstance rather than strategy.
 
 **Where CalmBeach does not**
-- **Titles and metas at 9,474-page scale are template output.** Unless deliberately varied they will be near-duplicates across regions, which is precisely the "unique per page" requirement of ch. 6. Highest-yield audit available right now: sample 30 pages, check title length ≤ ~70 chars, metas ≤ ~160, and genuine uniqueness.
-- **Intent classification per page type has not been done.** "παραλίες Ρόδου" and "Myrtos beach" and "beaches near me with no wind" are three different intents; the book (ch. 10) says the SERP tells you which, and CalmBeach hasn't asked.
-- **No pillar pages, no deliberate internal-link clusters.** 9,474 pages linked mainly by template navigation is not the pillar/cluster structure of ch. 6; it also leaves crawl depth uncontrolled.
-- **~1,421 photo-less beach pages** fail his image and content-depth guidance (ch. 6) — and thin templated pages are a crawl-budget and quality liability at this scale.
-- No informational content layer (how to read wind for swimming, when the meltemi blows, snorkelling guides) — the authority-building play of ch. 10, and the natural fit for a site that can't sell anything yet.
-- hreflang across EN/EL/DE with partial German coverage is a real risk area the book never covers; it offers no help here beyond "don't change URLs".
+*Re-checked 30/08/2026 — five of the six bullets here were wrong.*
+- ~~Titles and metas will be near-duplicates~~ — **wrong.** Both are generated under hard length caps (58 chars for Greek titles, 60 elsewhere, 155 for metas) and guarded by `scripts/validateBeachMetaDescriptions.mjs`, which fails the build if any snippet body covers more than 7% of a language's pages or if the distinct-body count regresses. Its own header records the fix: 2.854 Greek pages once shared ~926 bodies, one sentence covering 241 of them. **One real gap survives:** titles have no distinctness test, and every Greek beach title drops the brand because `| CalmBeach` will not fit 58 chars.
+- **Intent classification: done, and it is a report.** `reports/snapshots/2026-08-21.md` scores 14 intents against the CTR curve at their own position — `sheltered` earns 2,17× what its position allows, `weather` 0,38×. That is exactly ch. 10's question, answered with our own data instead of by reading a SERP.
+- ~~No pillar pages, no deliberate internal-link clusters~~ — **wrong.** 8 topic verticals × island (381 guides), a hub, 13 national landings, and every beach page linking its region, up to 8 nearby beaches, up to 6 sheltered-nearby, its island guides and the hub. `reports/seo/orphan-pages.json`: **0 orphans of 9.507**. The region→guide asymmetry was found and fixed on 05/08.
+- **Photo-less pages: 1.505 of 2.872 (52,4%).** The real number, from `reports/photo-coverage/beach-photo-presence-summary.txt` (17/08) — worse than the 1.421 quoted here, not better. This is now the largest remaining content gap (ch. 6).
+- ~~No informational content layer~~ — **wrong.** 381 island-intent guides, `/faq/`, `/how-we-measure-wind-shelter/` and per-beach editorial for 110 regions. Some of it is the direct output of Search Console: the Euboea sub-areas and the Rhodes snorkelling picks were written on 26/08 because the 90-day export asked for them.
+- **hreflang is five languages now, and it is clean.** DE/FR/IT are emitted only for the 17 `LOCALIZED_REGIONS`, so no page points at a locale it was not generated in. `reports/seo/hreflang-integrity.json`: 9.539 pages, 0 broken targets, 0 broken x-default, 0 non-mutual, 0 incomplete sets.
 
 ---
 
@@ -257,16 +297,17 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 
 **Where CalmBeach already does this**
 - Solo-founder-authored content is exactly the model ch. 12 recommends, and for free rather than his €200–1,000.
-- ~1,429 beaches carry photos — real progress on his image requirement.
-- Three languages (EN/EL/DE) go well beyond the single-language site the book imagines, and match a tourist audience.
+- 1.367 beaches carry photos (47,6%, `reports/photo-coverage/beach-photo-presence-summary.txt`, 17/08/2026) — real progress on his image requirement, and every one of them attributed: a photo whose licence we cannot cite is simply not published.
+- Five languages — EN and EL nationally, DE/FR/IT for 17 tourist regions — go well beyond the single-language site the book imagines, and match a tourist audience.
 - The per-beach explanation of *why* a beach is recommended is ch. 4's "answer the question at the moment it arises", implemented as a product feature.
 
 **Where CalmBeach does not**
-- **~1,421 beaches with no photo.** By the book's own numbers (67% of decisions influenced by image quality, 80% remembered visually — ch. 6) these pages under-perform on both conversion and retention. Largest content gap, and the one with a clear, gradable path: photograph or license the top-traffic photo-less beaches first.
-- **German is partial.** A half-localized language is worse than his either/or scenario, because a German visitor gets a broken experience rather than a foreign-language one.
-- **No reviews, ratings or user experiences** anywhere — the trust mechanism he devotes most of ch. 4's statistics to. `[our note: on a safety-adjacent site, user reports of actual conditions are also the cheapest correction channel for bad data.]`
-- No video, against his 82%-of-traffic argument (ch. 4).
-- No editorial/informational writing at all beyond generated beach data — no guides, no local knowledge in prose, which is the specific asset ch. 2 and ch. 13 say beats the giants.
+*Re-checked 30/08/2026.*
+- **1.505 beaches with no photo (52,4%).** The correct figure, and by the book's own numbers (67% of decisions influenced by image quality — ch. 6) the largest content gap left. It has a gradable path already built: `npm run quality:photo-coverage` ranks the missing ones by importance. Six regions sit at zero. Separately, 27 photos exist but do not render because no credit line was found in `public/IMAGE_CREDITS.txt` — the licence is not optional, so they are withheld; adding the credit publishes them.
+- ~~German is partial~~ — **misread.** DE, FR and IT are deliberately scoped to 17 tourist regions (`LOCALIZED_REGIONS`), and hreflang is gated to match, so nobody is pointed at a page that does not exist. Not half-done: bounded. **The real problem is the opposite of the one this bullet feared** — those pages exist, rank, get impressions, and are barely clicked (see 12).
+- **No reviews or user experiences shown.** Still true and still the biggest trust gap — though the collection side now exists (see 16); what is missing is showing anything back.
+- No video, against his 82%-of-traffic argument (ch. 4). **Unchanged.**
+- ~~No editorial writing at all~~ — **wrong.** 381 island-intent guides, `/faq/`, the methodology article, and hand-written editorial for 110 regions in `data/beachStories.data.json`. Written by the founder, which is exactly what ch. 12 asks for.
 
 ---
 
@@ -288,15 +329,16 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 
 **Where CalmBeach already does this**
 - GA behind a consent gate plus a first-party `/api/traffic` counter means there is a measurement floor even for consent-refusing visitors — more robust than the single-GA setup the book assumes.
-- Competitive position against beachesofgreece.com is known (~2,850 vs ~345 beaches).
+- Competitive position against beachesofgreece.com is known (~2.870 vs ~345 beaches).
 
 **Where CalmBeach does not**
-- **Search Console is not named anywhere in the project facts** — and it is the first thing the book asks for (ch. 5). Without it there is no impressions data, no CTR-vs-position analysis, no Coverage queue, no Links view. On a 9,474-page site that is flying blind. `[our note: if only one item from this whole file gets done, it's this one.]`
-- **No CTR-vs-position work**, which is the specific high-yield analysis of ch. 5 and exactly what a title/meta rewrite should be driven by.
-- **Zero-click risk is unassessed and unusually high here**: "beach weather" style queries are precisely what Google answers in-SERP. His PAA and local-pack CTR collapse figures (50% → 23% / 15%) apply directly (ch. 2).
-- No keyword ceiling estimate — the site was built without knowing whether the demand exists at the volume assumed (ch. 2).
-- No named traffic channel strategy; the book insists you identify which channel actually works and concentrate there (ch. 1).
-- Analytics measure visits, not the "questions visitors need answered" (ch. 13) — no query-level or search-behaviour insight loop into content decisions.
+*Re-checked 30/08/2026 — this was the most wrong section in the file. It was written from the project docs, not the repository.*
+- ~~Search Console is not named anywhere~~ — **wrong, and it was the file's own #1.** Verified via meta tag (`index.html:13`) on a `sc-domain:calmbeach.gr` property, pulled automatically by service account (`scripts/seo-snapshot.mjs`), with snapshots committed to `reports/snapshots/` and manual exports to `data/analytics/search-console/`.
+- ~~No CTR-vs-position work~~ — **wrong.** It is the centrepiece of the automated snapshot: expected CTR per position, per-intent index, striking distance, page-level CTR gaps, top zero-click pages. Real numbers for 22/07–18/08: 5.551 clicks, 144.755 impressions, position 7,8, +393% on the previous 28 days.
+- **Zero-click: measured, and it is not the feared shape.** The snapshot lists the top zero-click pages by name. What it exposes instead is a locale problem: /it earns 0,4% CTR on 2.925 impressions and /fr 0,8%, against 3,9% for en/el, and all three are served mostly inside Greece.
+- No keyword ceiling estimate (ch. 2). **Moot now** — the site is indexed and the demand is being measured directly rather than estimated.
+- **The channel question is answered: it is Google.** 8.656 clicks in 90 days, essentially all organic; no other channel exists to compare against. The book's advice to concentrate where it works is being followed by default rather than by decision (ch. 1).
+- ~~No query-level insight loop into content~~ — **wrong.** 26/08/2026 is the worked example: the 90-day export said «βόρεια Εύβοια», «Ρόδος snorkeling» and «κάμερα», and all three became content the same session (`data/analytics/search-console/2026-08-26-notes-90d.md`).
 
 ---
 
@@ -319,10 +361,11 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Running costs are near-zero, so the ROI ratio of ch. 12 is structurally favourable when any revenue appears.
 
 **Where CalmBeach does not**
-- **No conversion event exists at all**, so the ch. 12 ROI calculation cannot be performed, and the 12–18-month affiliate plan has no baseline to be forecast from.
-- **No page has a defined next step** (ch. 1, ch. 4) — which is a monetisation blocker, not just a product one: affiliate links added later to pages with no measured outbound behaviour will be guesswork.
-- The founder's own time — the largest real cost, and one the book insists on counting (ch. 12) — is not tracked.
-- `[our note: the book's cheapest applicable idea here is measurable intent-to-leave: instrument outbound clicks (directions, ferry search, accommodation) now, with no affiliate deal in place. In 12 months that dataset is what makes an affiliate conversation possible.]`
+*Re-checked 30/08/2026.*
+- ~~No conversion event exists at all~~ — **wrong.** `navigation_clicked` is the declared GA4 conversion, and a delegated capture-phase listener measures every outbound link with its destination host (`App.tsx:5841-5861`). Both are mirrored first-party (`pageviewBeacon.ts`), so they survive consent decline and ad blockers.
+- ~~No page has a defined next step~~ — **wrong**, see 01. What is genuinely absent is a *commercial* next step, which is a different sentence and a deliberate one.
+- The founder's own time — the largest real cost, and one the book insists on counting (ch. 12) — **is still not tracked.** This is the one bullet here that survived the re-check unchanged, and it is now the binding constraint on everything else in this file.
+- `[our note from 30/07, and it was already done: "instrument outbound clicks now, with no affiliate deal in place — in 12 months that dataset is what makes an affiliate conversation possible." The instrumentation predates the note. The dataset is accumulating; nobody has looked at it yet, which is the actual next move.]`
 
 ---
 
@@ -340,13 +383,18 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Personal, direct communication is a small operator's structural advantage over a giant (ch. 13 · /closing).
 
 **Where CalmBeach already does this**
-- Nothing substantive. The site is one-directional today.
+
+*Rewritten 30/08/2026. The 30/07 version of this section said "nothing substantive" and "no feedback channel of any kind". Both were false on the day they were written.*
+- **Four inbound channels, all live to Telegram:** the landing form with three seed chips (`OurStorySection.tsx:141` → `netlify/functions/feedback-email.mjs`), the per-beach forecast verdict with a "when were you there?" second step (`BeachDetailPage.tsx`), a 1–10 rating prompt gated behind five days of use (`AppRatingPrompt.tsx`), and since 30/08 a "Κάτι δεν πάει καλά εδώ;" link in every footer and on every beach page.
+- **The verdict reports feed calibration**, not just an inbox: `feedback-email.mjs` → Netlify Blobs → `feedback-export.mjs` → `scripts/calibrateFromFeedback.mjs`. That is more than the book asks for.
+- Contact routes exist: two addresses in the footer, phone and postal address in `/terms`.
+- A newsletter and a photo-contribution ask both exist (`NewsletterSection.tsx`, `CommunityPhotosSection.tsx`).
 
 **Where CalmBeach does not**
-- **No feedback channel of any kind.** For a **safety-adjacent** site built on third-party OSM data, this is the highest-severity gap in this entire file after Search Console: the people standing on the beach are the only cheap source of ground truth about whether the data is right, and they have no way to tell you.
-- No reviews or user-reported conditions — the whole trust apparatus of ch. 4 is absent, and it happens to be the thing beachesofgreece.com also lacks (an opening).
-- No contact route (ch. 4), no retention mechanism, no community presence anywhere (ch. 1, ch. 3).
-- `[our note: the minimum viable version is one "report a problem with this beach" link per page going to an inbox. Hours of work, and it converts a passive dataset into a correcting one.]`
+- **Nothing collected is ever shown back.** Visitors report conditions and those reports reach Telegram and the calibration pass — no visitor ever sees another visitor's word. The trust apparatus the book devotes most of ch. 4's statistics to (91% read reviews, 84% trust them as a personal recommendation) is still entirely absent from the page, and beachesofgreece.com lacks it too, which is the opening.
+- The trust strip (`HowWeDecideSection.tsx`) is institutional self-description: no counts, no press, no third-party proof of any kind (ch. 4).
+- **The early jump-link to the form was removed on 29/08 and nothing replaced it** (commit `763db4a`) — the landing form now sits in band six and is reached only by scrolling. Deliberate, and worth watching: if the form goes quiet, that is why.
+- No community presence off-site — no group, no forum, nowhere the audience already is (ch. 1, ch. 3).
 
 ---
 
@@ -363,14 +411,15 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Websites need sustained investment of time, thought, energy and money — and the owner has to understand the site's value, limits and business role (ch. 4 · /website; ch. 12 · /cost).
 
 **Where CalmBeach already does this**
-- Netlify + Cloudflare + a static build sits at or below his minimal band — cheaper than the €200–300 minimum and much cheaper than €10–20/month hosting, for 9,474 pages.
+- Netlify + Cloudflare + a static build sits at or below his minimal band — cheaper than the €200–300 minimum and much cheaper than €10–20/month hosting, for ~9.500 pages.
 - "Start simply and upgrade on evidence" describes the stack accurately: no CMS, no database, no premium plugins.
 - No theme churn: one React + Vite codebase.
 
 **Where CalmBeach does not**
-- **The founder's hours are not counted as cost**, and the book is explicit that they must be (ch. 12). Weekend-only capacity is the binding constraint on everything in this file; without tracking it, prioritisation is guesswork.
-- **No quota/cost ceiling monitoring** for the weather API, Netlify build minutes, or function invocations. Peak-August traffic is the moment a free tier becomes either a bill or an outage.
-- The ROI calculation can't be run at all, because the benefit side is undefined (see 13).
+*Re-checked 30/08/2026.*
+- **The founder's hours are not counted as cost**, and the book is explicit that they must be (ch. 12). Weekend-only capacity is the binding constraint on everything in this file; without tracking it, prioritisation is guesswork. **Unchanged, and now the most consequential open item in the file.**
+- ~~No quota/cost ceiling monitoring~~ — **two of the three are covered.** The weather API has a daily ledger with amber/red Telegram alarms and a 429 alarm (`netlify/functions/lib/capacityAlarm.mjs`), unit-tested by a blocking gate; build credits have a hard brake that cancels builds for doc-only commits (`scripts/netlifyShouldSkipBuild.mjs`). **Function invocations have nothing** — no counter, no alarm, only prose in `reports/capacity/activation-runbook.md`. That is the one that is still exactly as the book describes it.
+- The ROI calculation still can't be run, but for a narrower reason than in July: the cost side is knowable and the benefit side is measured as *intent* (outbound clicks), not money (see 13).
 
 ---
 
@@ -394,17 +443,18 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 - Google Search still drives more traffic to websites than any other source (ch. 1 · /abstract).
 
 **Where CalmBeach already does this**
-- Clean crawl surface: 9,474 pre-rendered pages, so nothing depends on Google executing JavaScript to index content.
-- JSON-LD on 9,465 pages is a strong implementation of "help search engines understand your structure" (ch. 10).
+- Clean crawl surface: ~9.500 pre-rendered pages, so nothing depends on Google executing JavaScript to index content.
+- JSON-LD on 9.507 of 9.510 built pages is a strong implementation of "help search engines understand your structure" (ch. 10).
 - calmbeach.gr is a fresh domain, no inherited-penalty exposure (ch. 12).
 - Zero black-hat exposure: no paid links, no link schemes, no manipulation (ch. 9).
 
 **Where CalmBeach does not**
-- **Search Console appears to be absent** — the one Google-side tool the book treats as mandatory (ch. 5). Without it, Coverage errors and the 9 pages lacking JSON-LD are invisible, and so is the actual index count against the 9,474 expected.
-- **Zero-click exposure is structurally high** and unmeasured. Weather-type queries are exactly what Google answers itself, and local packs and PAA are common on beach queries — his mobile figures (rank-1 CTR 50% → 23% with PAA, → 15% with local pack, ch. 2) apply straight to this niche.
-- **Safety-adjacent content raises a bar the book never discusses.** Google's quality guidance treats content that affects people's health and safety differently, and the book gives no help there — this is exactly where `google-official-docs.md` must lead.
-- No Google Business Profile (not obviously applicable — no physical location — but the 46%-local-intent figure of ch. 11 says local surfaces matter to this audience).
-- hreflang handling for EN/EL/DE and partial German is a real Google-side risk the book does not address at all.
+*Re-checked 30/08/2026.*
+- ~~Search Console appears to be absent~~ — **wrong.** See 12. Coverage, index count and the pages without JSON-LD are all visible, and two of them are gates.
+- **Zero-click: measured rather than feared.** The snapshot names the top zero-click pages and scores every intent against the CTR curve at its own position. The `weather` intent does index below the curve (0,38×), which is the book's prediction holding — but `sheltered` runs at 2,17× and `brand` at 2,22×, so the niche is not uniformly zero-click.
+- **Safety-adjacent content raises a bar the book never discusses.** Unchanged and still the right warning: `google-official-docs.md` leads here, not this file. What has been built in the meantime is on the right side of it — a static safety disclaimer in the footer of every prerendered page, and a content gate that refuses guaranteed-calm wording.
+- No Google Business Profile (still not obviously applicable — no physical location).
+- **hreflang is now five languages and clean:** 9.539 pages, zero defects, DE/FR/IT emitted only where the page exists. The risk this bullet named is closed; the *content* risk is not — those locales get impressions and almost no clicks (see 12).
 
 ---
 
@@ -435,41 +485,96 @@ Listed so the gap is visible rather than papered over. The book is aimed at a sm
 
 **3. «Γράψε ο ίδιος το περιεχόμενο» — εμείς το παράγουμε αυτόματα.**
 *Το βιβλίο:* ο ιδιοκτήτης πρέπει να γράφει μόνος του το βασικό περιεχόμενο, γιατί κανένας επαγγελματίας δεν θα βάλει την ίδια ενέργεια και πεποίθηση (κεφ. 12 · /cost).
-*Το CalmBeach:* το περιεχόμενο 9.474 σελίδων παράγεται από dataset και templates. Δεν είναι γραμμένο ούτε από τον ιδιοκτήτη ούτε από επαγγελματία.
-*Δίκαια:* με 2.850 παραλίες, το χειρόγραφο περιεχόμενο είναι φυσικά αδύνατο για έναν άνθρωπο. Αλλά το βιβλίο θα έλεγε ότι οι ~1.421 σελίδες χωρίς φωτογραφία και χωρίς πρωτότυπο κείμενο δεν περνούν τον πήχη ποιότητας (κεφ. 4, κεφ. 6) — και εκεί δεν έχει άδικο.
+*Το CalmBeach:* οι σελίδες παραλίας παράγονται από dataset και templates. Αλλά ΟΧΙ όλο το περιεχόμενο, και αυτό είχε γραφτεί λάθος εδώ: υπάρχουν 381 οδηγοί ανά νησί/θέμα, ένα `/faq/`, το άρθρο μεθοδολογίας `/how-we-measure-wind-shelter/` και χειρόγραφο κείμενο για 110 περιοχές στο `data/beachStories.data.json` — γραμμένα από τον ιδιοκτήτη, ακριβώς όπως ζητά το βιβλίο (επαλήθευση 30/08/2026).
+*Δίκαια:* με 2.872 παραλίες, το χειρόγραφο κείμενο για την καθεμία είναι φυσικά αδύνατο για έναν άνθρωπο. Ο πήχης ποιότητας του βιβλίου (κεφ. 4, κεφ. 6) χτυπάει πλέον σε ένα σημείο, όχι σε δύο: τις 1.505 σελίδες χωρίς φωτογραφία.
 
 **4. Το rank #1 ως «ουτοπία» — αλλά εμείς στοιχηματίσαμε σε 9.474 σελίδες.**
 *Το βιβλίο:* μην κυνηγάς το rank #1, το 66% των αναζητήσεων δεν δίνει κλικ, διάλεξε λίγες μάχες που μπορείς να κερδίσεις και να μετατρέψεις (κεφ. 2 · /before-start).
 *Το CalmBeach:* η στρατηγική είναι μαζική κάλυψη — μία σελίδα για κάθε παραλία και περιοχή.
-*Δίκαια:* η μαζική κάλυψη είναι στην πραγματικότητα εφαρμογή της αρχής του «μία ποιοτική σελίδα ανά σημαντικό query» (κεφ. 10), και σε long-tail queries με μικρό ανταγωνισμό είναι λογική. Όμως ο συγγραφέας θα ρωτούσε: ποιο είναι το conversion; Χωρίς απάντηση, οι 9.474 σελίδες είναι κίνηση χωρίς αποτέλεσμα με τα δικά του κριτήρια.
+*Δίκαια:* η μαζική κάλυψη είναι στην πραγματικότητα εφαρμογή της αρχής του «μία ποιοτική σελίδα ανά σημαντικό query» (κεφ. 10), και τα νούμερα τη δικαιώνουν: 5.551 κλικ σε 28 μέρες, μέση θέση 7,8, +393% έναντι του προηγούμενου μήνα (`reports/snapshots/2026-08-21.md`). Το conversion που ρωτούσε ο συγγραφέας ΥΠΑΡΧΕΙ πλέον ως μέτρηση — `navigation_clicked` και κάθε outbound σύνδεσμος — αλλά είναι πρόθεση, όχι έσοδο. Η ερώτησή του μένει ανοιχτή στη σωστή της μορφή: τι κάνουμε με αυτή την πρόθεση.
 
 **5. Λίγες επιλογές μετατρέπουν καλύτερα — εμείς δίνουμε explore mode με 7 φίλτρα.**
 *Το βιβλίο:* το paradox of choice είναι πρόβλημα conversion — 24 επιλογές έδωσαν 3%, 6 επιλογές έδωσαν 30% (κεφ. 7 · /optimize-ux).
-*Το CalmBeach:* Top 3 (σωστό κατά το βιβλίο) αλλά και explore mode με όλες τις κατάλληλες παραλίες και 7 φίλτρα.
-*Δίκαια:* διαφορετικοί χρήστες θέλουν διαφορετικά πράγματα, και τα φίλτρα εξυπηρετούν αυτόν που ξέρει τι ζητά. Αλλά ο συγγραφέας θα έλεγε ότι για τον τουρίστα που δεν ξέρει την περιοχή — τον βασικό χρήστη — κάθε επιπλέον επιλογή είναι καθυστέρηση.
+*Το CalmBeach:* Top 3 (σωστό κατά το βιβλίο), και το explore mode δείχνει **5** φίλτρα με κουμπί «Άλλα» για τα υπόλοιπα 7 — `PreferenceFilters.tsx:39`, επαλήθευση 30/08/2026. Το «7 φίλτρα» της προηγούμενης έκδοσης αυτού του αρχείου ήταν λάθος μέτρηση. Το βαρύ φύλλο των 20 φίλτρων (`AmenityFilter.tsx:174`) ανοίγει μόνο με ρητό πάτημα.
+*Δίκαια:* πέντε ορατά φίλτρα είναι μέσα στο εύρος που το ίδιο το βιβλίο δίνει ως καλό (6 επιλογές → 30%). Η ένσταση δεν ισχύει πια όπως ήταν γραμμένη· αν κάτι μένει, είναι το φύλλο των 20.
 
 **6. Google My Business / πλατφόρμες — εμείς είμαστε μόνο στο site.**
 *Το βιβλίο:* μη διαλέγεις μεταξύ site και πλατφορμών, κράτα και τα δύο, και δώσε προτεραιότητα στους δυνατούς παίκτες του κλάδου σου (κεφ. 11 · /optimize-use-other-platforms).
-*Το CalmBeach:* καμία παρουσία εκτός του site.
-*Δίκαια:* το CalmBeach δεν έχει φυσική τοποθεσία ούτε προϊόν να πουλήσει, οπότε τα παραδείγματά του (Skroutz, Booking, GMB) δεν εφαρμόζονται άμεσα. Αλλά η γενική αρχή — να είσαι εκεί που είναι ήδη το κοινό σου — μένει αναπάντητη.
+*Το CalmBeach:* υπάρχει native shell για Android (`capacitor.config.ts`, `gr.calmbeach.app`) και PWA install prompt (`components/InstallPrompt.tsx`) — δηλαδή μία πλατφόρμα, όχι καμία, όπως έγραφε η προηγούμενη έκδοση. Κοινωνικά δίκτυα, φόρουμ και ομάδες: τίποτα.
+*Δίκαια:* το CalmBeach δεν έχει φυσική τοποθεσία ούτε προϊόν να πουλήσει, οπότε τα παραδείγματά του (Skroutz, Booking, GMB) δεν εφαρμόζονται άμεσα. Αλλά η γενική αρχή — να είσαι εκεί που είναι ήδη το κοινό σου — μένει αναπάντητη· και το κοινό ενός τουριστικού site είναι σε ομάδες ταξιδιού, όχι σε ένα app store.
 
 ---
 
 ## Τα 5 πράγματα από το βιβλίο που θα άλλαζαν κάτι σήμερα
 
-Για solo founder, μέσα στη σεζόν, με ώρες Σαββατοκύριακου. Από το πιο πολύτιμο προς το λιγότερο.
+**Ξαναγράφτηκε 30/08/2026.** Η προηγούμενη λίστα (30/07) είχε πέντε σημεία και τα τέσσερα
+είχαν ήδη γίνει — Search Console, κανάλια feedback, titles/metas, μέτρηση outbound. Παρακάτω
+είναι ό,τι έμεινε, μετά από έλεγχο στον κώδικα. Για solo founder, με ώρες Σαββατοκύριακου.
 
-**1. Στήσε Google Search Console τώρα (κεφ. 5 · /search-engines).**
-Μία ώρα δουλειάς: επαλήθευση με DNS, υποβολή sitemap. Είναι το πρώτο πράγμα που ζητά το βιβλίο και το μόνο που μας λείπει εντελώς. Χωρίς αυτό δεν ξέρουμε πόσες από τις 9.474 σελίδες είναι πραγματικά indexed, ούτε ποια queries φέρνουν impressions, ούτε πού είμαστε ορατοί αλλά δεν μας κλικάρουν. Κάθε άλλη απόφαση SEO είναι εικασία μέχρι να μπει αυτό — και είμαστε μέσα στη σεζόν, δηλαδή τώρα υπάρχουν τα δεδομένα.
+**1. Οι φωτογραφίες: 1.505 παραλίες στις 2.872 δεν έχουν καμία (κεφ. 6 · /optimize-onsite).**
+`reports/photo-coverage/beach-photo-presence-summary.txt` (17/08): 1.367 με φωτογραφία, 47,6%.
+Έξι περιοχές στο μηδέν (Αρκοί, Ερείκουσα, Μαθράκι, Οθωνοί, Οινούσσες, Ψαρά). Είναι το
+μεγαλύτερο κενό που έχει απομείνει και το μόνο με σαφή, βαθμωτή διαδρομή: το
+`npm run quality:photo-coverage` βγάζει ήδη ταξινομημένη τη λίστα «ποιες λείπουν και είναι
+σημαντικές». Επιπλέον 27 URL έχουν φωτογραφία αλλά δεν εμφανίζεται, επειδή λείπει η γραμμή
+credit από το `public/IMAGE_CREDITS.txt` — αυτές είναι δουλειά λεπτών, όχι ταξιδιού.
 
-**2. Βάλε ένα «report a problem» link σε κάθε σελίδα παραλίας (κεφ. 3 · /starting-the-journey, κεφ. 4 · /website).**
-Λίγες ώρες. Το βιβλίο λέει να δέχεσαι σχόλια και προτάσεις για να βρίσκεις ανάγκες που δεν καλύπτεις. Στη δική μας περίπτωση είναι πιο σοβαρό: το περιεχόμενο αφορά ασφάλεια, τα δεδομένα είναι από OpenStreetMap και δεν έχουν επαληθευτεί, και ο μόνος φθηνός έλεγχος είναι ο άνθρωπος που στέκεται στην παραλία. Σήμερα δεν έχει πού να το πει.
+**2. Τα ιταλικά και τα γαλλικά παίρνουν εμφανίσεις και δεν παίρνουν κλικ (κεφ. 5, κεφ. 10).**
+`reports/snapshots/2026-08-21.md`: /it 2.925 εμφανίσεις με CTR 0,4%, /fr 904 με 0,8%, ενώ
+en/el είναι στο 3,9%. Και τα τρία διαβάζονται `mostly_served_inside_greece`. Οι πέντε
+χειρότερες σελίδες σε CTR-έναντι-θέσης είναι όλες /it — μόνο η
+`/it/beaches/lefkada/1147-avali/` χάνει ~13 κλικ σε 28 μέρες από θέση 7,1. Αυτό είναι ακριβώς
+η ανάλυση «θέση προς CTR» του κεφ. 5 να δείχνει ένα συγκεκριμένο πράγμα, και δεν έχει
+απαντηθεί: είναι λάθος κοινό, λάθος τίτλος, ή Έλληνες που βλέπουν ιταλική σελίδα;
 
-**3. Μία γραμμή value proposition πάνω από το fold (κεφ. 4 · /website, κεφ. 7 · /optimize-ux, κεφ. 13 · /closing).**
-Μισή ώρα. Ο επισκέπτης έχει 2-3 δευτερόλεπτα για να καταλάβει τι είναι το site και 8 για να αποφασίσει αν μένει. Το μοντέλο έκθεσης στον άνεμο — αυτό που δεν έχει κανένας άλλος — δεν αναφέρεται πουθενά που να το διαβάσει κάποιος που μπαίνει πρώτη φορά. Το διαφορετικό μας υπάρχει στο προϊόν αλλά δεν λέγεται.
+**3. Ο ρυθμός κλήσεων των Netlify functions δεν έχει ταβάνι (κεφ. 12 · /cost).**
+Το Open-Meteo έχει συναγερμό (`netlify/functions/lib/capacityAlarm.mjs`, amber 18k / red 25k
+την ημέρα) και τα build credits έχουν φρένο (`scripts/netlifyShouldSkipBuild.mjs`). Οι
+invocations δεν έχουν τίποτα — μόνο πεζό κείμενο στο `reports/capacity/activation-runbook.md`
+(«αν πλησιάσουν τις 125k/μήνα»). Κανείς δεν μετράει και τίποτα δεν χτυπάει. Ο Αύγουστος είναι
+ακριβώς η στιγμή που ένα δωρεάν επίπεδο γίνεται είτε λογαριασμός είτε διακοπή.
 
-**4. Έλεγξε 30 τυχαίες σελίδες για titles και meta descriptions (κεφ. 6 · /optimize-onsite).**
-Δύο-τρεις ώρες. 60-70 χαρακτήρες για title, 155-160 για meta, και — το κρίσιμο — μοναδικά ανά σελίδα. Σε 9.474 templated σελίδες, ένα λάθος στο template είναι 9.474 σχεδόν ίδιοι τίτλοι. Είναι η πιο φθηνή διόρθωση με το μεγαλύτερο εύρος στο site, και αν το #1 μπει πρώτο, θα σου δείξει το Search Console ποιες σελίδες αξίζει να διορθώσεις πρώτες.
+**4. Κριτικές και συνθήκες από επισκέπτες, πουθενά ορατές (κεφ. 4 · /website).**
+Το βιβλίο αφιερώνει τα περισσότερα στατιστικά του κεφ. 4 σε αυτό: 91% διαβάζουν κριτικές, 84%
+τις εμπιστεύονται όσο μια προσωπική σύσταση. Εμείς **συλλέγουμε** ήδη αναφορές συνθηκών ανά
+παραλία — και δεν τις δείχνουμε ποτέ πίσω σε κανέναν· πάνε στο Telegram και στη βαθμονόμηση.
+Η λωρίδα εμπιστοσύνης (`HowWeDecideSection.tsx`) είναι θεσμικός αυτο-χαρακτηρισμός: μηδέν
+απόδειξη από τρίτους. `[our note: το AggregateRating JSON-LD μένει εκτός συζήτησης — οι
+αυτο-εξυπηρετούμενες κριτικές είναι ρητά εκτός πολιτικής Google· το ζήτημα είναι τι βλέπει ο
+άνθρωπος στη σελίδα, όχι τι διαβάζει ο crawler.]`
 
-**5. Μέτρα τα outbound clicks και τα Core Web Vitals σε p75 mobile (κεφ. 1 · /abstract, κεφ. 8 · /optimize-speed, κεφ. 12 · /cost).**
-Μισή μέρα. Δύο πράγματα, ίδια λογική: σταμάτα να είσαι στα τυφλά σε ό,τι έχει χρήματα από πίσω. (α) Κάθε σελίδα πρέπει να έχει «επόμενο βήμα» — κατέγραψε από τώρα τι πατάει ο κόσμος για να φύγει (χάρτης, οδηγίες, διαμονή), γιατί σε 12-18 μήνες αυτό είναι το μόνο δεδομένο που κάνει εφικτή μια συζήτηση για affiliates. (β) Το pre-rendering λύνει το πρώτο paint αλλά όχι το κόστος hydration του React σε μέτριο Android με 4G στην παραλία — και το βιβλίο δίνει νούμερα (BBC: -10% χρήστες ανά επιπλέον δευτερόλεπτο) που δείχνουν πόσο ακριβό είναι αν χαλάει.
+**5. Ο ίδιος ο χρόνος του ιδιοκτήτη δεν μετριέται (κεφ. 12 · /cost).**
+Το μόνο σημείο του βιβλίου που δεν έχει κουνηθεί καθόλου σε δύο εκδόσεις αυτού του αρχείου. Ο
+υπολογισμός ROI που ο συγγραφέας αποκαλεί «το πιο αξιόπιστο κριτήριο» θέλει και τις δύο
+πλευρές· εμείς δεν έχουμε ούτε την πλευρά του κόστους. Και επειδή οι ώρες Σαββατοκύριακου
+είναι ο δεσμευτικός περιορισμός για ΟΛΑ τα παραπάνω, χωρίς αυτό η ιεράρχηση είναι εικασία.
+
+---
+
+## Τι έκλεισε στις 30/08/2026
+
+Καταγραφή, ώστε να μην ξαναπροταθούν ως κενά:
+
+- **Το breadcrumb έγινε ορατό σε άνθρωπο.** Το `index.tsx` κάνει `createRoot`, όχι
+  `hydrateRoot`, οπότε η React έσβηνε το `<nav aria-label="breadcrumb">` που φτιάχνει ο
+  prerenderer: υπήρχε για τη Google και για κανέναν άλλο — τρίτη φορά η ίδια παγίδα, μετά τον
+  σύνδεσμο ODbL και τους οδηγούς. Τώρα το ξαναχτίζει η `pages/BeachDetailPage.tsx` (κεφ. 7).
+- **Κανάλι «κάτι δεν πάει καλά εδώ»** στο footer (React και στατικό, άρα και στις ~9.500
+  prerendered σελίδες) και στη σελίδα παραλίας με το id της παραλίας μέσα — η φθηνή διόρθωση
+  για τα OSM πεδία που δεν έχουν επαληθευτεί (κεφ. 3, κεφ. 4).
+- **Η κύρια φωτογραφία της prerendered σελίδας παραλίας έπαψε να είναι `loading="lazy"`.**
+  Έρχεται αμέσως μετά τον h1, άρα είναι το LCP, και φόρτωνε τελευταία. Μαζί: πραγματικό
+  `srcSet` στη React (το `sizes` χωρίς `srcSet` ήταν αδρανές και κάθε κάρτα κατέβαζε το
+  αρχείο των 800px), μικρογραφίες στα 400 αντί 800, `preconnect` στα δύο Wikimedia hosts
+  (κεφ. 8).
+- **Μέτρηση Core Web Vitals** σε πραγματικούς επισκέπτες — `utils/webVitals.ts`, LCP/INP/CLS,
+  δυναμικό import 2,4 KB μετά το `load`. Είναι δείγμα όσων δέχτηκαν cookies, όχι όλων· ο
+  λόγος είναι γραμμένος στο ίδιο αρχείο (κεφ. 8).
+- **Ταβάνι βάρους στο CI** — το `perf:audit` υπήρχε από 13/08 και δεν το έτρεχε τίποτα·
+  μπήκε στις κρίσιμες πύλες ως `bundle-budget`, πράσινο με περιθώριο (415,7 KB gzip αρχικό,
+  όριο 600) (κεφ. 8).
+- **Πάτωμα 16px στο κείμενο σώματος** της σελίδας παραλίας και 12px στα badges της κάρτας που
+  τυλίγονται (ήταν 10px). Το 88,7% των κλικ είναι κινητό (κεφ. 7).
+- **Ο άνεμος μπήκε στον υπότιτλο του ήρωα**, σε πέντε γλώσσες. Ο τίτλος και η απόφαση να μην
+  υπάρχει kicker δεν άλλαξαν — αλλά πλέον η σελίδα λέει στον άνθρωπο αυτό που το `<title>`
+  έλεγε μόνο στη Google (κεφ. 4, κεφ. 7, κεφ. 13).

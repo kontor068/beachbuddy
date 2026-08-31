@@ -1,6 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import { sitemapContentFingerprint } from '../utils/sitemapFingerprint.mjs';
+import { sizedPhotoUrl } from '../utils/photoSizing.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { amenityTextIncludesAny, SNACK_CANTEEN_AMENITY_TERMS } from '../utils/amenityMatching.js';
@@ -2149,9 +2150,8 @@ if (!waterClimatology) {
 // Cards are ~230px wide, so requesting the 800px original for every one of them
 // would be the single heaviest thing on the page. Wikimedia's Special:Redirect
 // takes a width param, so ask for what we actually paint (2x for retina).
-const sizedPhotoUrl = (url, width) => (
-  /[?&]width=\d+/.test(url) ? url.replace(/([?&]width=)\d+/, `$1${width}`) : url
-);
+// Moved to utils/photoSizing.mjs on 30/08/2026 so the React app can size photos the same
+// way instead of asking for width=800 everywhere; imported at the top of this file.
 
 // CC BY / CC BY-SA REQUIRE author + licence + a link to the source file page.
 // The photo map stores only the URL, so join it to the generated credit block in
@@ -3875,7 +3875,7 @@ const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
       : '';
   return `
         <figure style="margin:0 0 20px;">
-          <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
+          <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" fetchpriority="high" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
           ${creditLine}
         </figure>`;
 };

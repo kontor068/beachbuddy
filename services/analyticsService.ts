@@ -62,6 +62,16 @@ export type AnalyticsEvent =
   // costs us, and the chips come out again. Same discipline the trip planner's
   // unanswered "how many days?" bought the hard way.
   | 'beach_jump_clicked'
+  // "Something else wrong on this page?" — the correction route for the beach dataset,
+  // separate from the forecast-accuracy widget because it reports a wrong FACT (amenity,
+  // access, a beach that is not there) rather than a wrong forecast, and it survives the
+  // showConditions gate that hides that widget. It is a mailto, so this event is the only
+  // way to know it is used at all: the click is measurable, the send is not.
+  | 'beach_report_problem_clicked'
+  // Core Web Vitals from real visitors (utils/webVitals.ts). Carries `metric`
+  // (LCP | INP | CLS), `value` and Google's own `rating` bucket, so the answer to
+  // "is it fast on a phone" is read as p75 by device rather than as an average.
+  | 'web_vital'
   | 'beta_feedback_clicked'
   // National landing (components/landing/). `landing_viewed` is the denominator
   // for every drop-off question — without it the landing's reach is invisible,

@@ -6,6 +6,7 @@ import { App } from './App';
 import './index.css';
 import { initializeAnalytics } from './services/analyticsService';
 import { recordPageview } from './services/pageviewBeacon';
+import { startWebVitals } from './utils/webVitals';
 import { initializeNativeApp } from './utils/nativeBootstrap';
 import { isChunkLoadError, recoverFromChunkLoadError, registerChunkLoadErrorHandler } from './utils/chunkLoadRecovery';
 import { installGlobalErrorReporting, reportClientError } from './services/errorReporter';
@@ -152,6 +153,10 @@ initializeAnalytics();
 // First-party, consent-free real-visitor count for the initial load. SPA navigations
 // are counted from App.tsx's page-view effect. See services/pageviewBeacon.ts.
 recordPageview('load');
+// Real-visitor LCP / INP / CLS. Self-defers to the `load` event and dynamically imports the
+// library, so it costs the first paint nothing — see utils/webVitals.ts, including why this
+// is a consenting-visitors sample rather than the whole population.
+startWebVitals();
 registerChunkLoadErrorHandler();
 void initializeNativeApp();
 

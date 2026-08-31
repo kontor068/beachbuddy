@@ -12,6 +12,22 @@
     <meta name="color-scheme" content="light">
     <meta name="google-site-verification" content="2Bx8OQ9da4F9LX7ofT8UnybJk9PcrKY3GcYjTns5EpM" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
+    <!-- Every beach photo is a Wikimedia Commons URL, and Commons answers
+         Special:Redirect/file/… with a 302 to upload.wikimedia.org — so a single photo costs
+         two cold TLS handshakes to two hosts before a byte of image arrives. On a beach page
+         the photo follows the h1 directly in the prerendered HTML, which makes it the first
+         real paint. No crossorigin attribute: the image tags are not CORS requests (they
+         carry referrerpolicy="no-referrer"), and an anonymous-CORS preconnect would open a
+         connection the image fetch then refuses to reuse.
+
+         KEEP ANGLE BRACKETS OUT OF COMMENTS IN THIS FILE. This cost a build to find.
+         utils/sitemapFingerprint.mjs erases markup with a regex that runs from an opening
+         bracket to the FIRST closing one. A bracket inside a comment therefore ends the
+         match early, and the rest of the sentence survives as visible text on every page
+         built from this template — which moved all 9.829 sitemap lastmod dates at once.
+    -->
+    <link rel="preconnect" href="https://commons.wikimedia.org" />
+    <link rel="preconnect" href="https://upload.wikimedia.org" />
     <script>
       document.documentElement.classList.add('js');
       window.__calmBeachFallbackTimer = window.setTimeout(function () {

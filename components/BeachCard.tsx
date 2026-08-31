@@ -40,6 +40,7 @@ import { SandDotsIcon, SandPebblesIcon, SunbedIcon } from './BeachFeatureIcons';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { cardNotRecommendedLabel } from '../utils/conditionToneLabels';
 import { WIND_SUITABILITY_TONE_CLASSES } from '../utils/suitabilityTone';
+import { photoSrcSet } from '../utils/photoSizing.mjs';
 
 interface BeachCardProps {
   beach: Beach & { distance?: number };
@@ -839,6 +840,19 @@ const amenityChipIcon = (chip: Pick<AmenityChip, 'key'>): React.ReactNode => {
   }
 };
 
+/**
+ * Badge type sizes, 30/08/2026.
+ *
+ * The card carried 19 declarations at 10px and none at 16. 10px is below every published
+ * mobile floor, and this card is what 88,7% of our clicks land on. Every badge that renders
+ * into a `flex-wrap` row is now 12px: a wider chip there wraps, it does not clip.
+ *
+ * Two groups were left at 10px on purpose. The podium tile at ~2204 is measured by the
+ * tile-fit gate (scripts/validateTileFit.mjs) at four widths in five languages, and that
+ * probe — not this file — owns its type scale. The `compact ? text-[10px] : text-xs` pills
+ * are a deliberate density step inside a single non-wrapping row; raising the compact branch
+ * to 12px would make the ternary say nothing.
+ */
 const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach, language }) => {
   const chips = getAmenityChips(beach, language).slice(0, 2);
   if (chips.length === 0) return null;
@@ -846,7 +860,7 @@ const AmenityTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beach
   return (
     <div className="flex flex-wrap gap-2">
       {chips.map(chip => (
-        <div key={chip.key} className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+        <div key={chip.key} className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           {amenityChipIcon(chip)}
           <span>{chip.label}</span>
         </div>
@@ -981,7 +995,7 @@ const BeachTypeTag: React.FC<{ beachType: BeachType; t: Translation }> = ({ beac
   };
   
   return (
-    <div className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 tracking-wider flex items-center gap-1.5">
+    <div className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-xs font-bold text-slate-700 dark:text-slate-600 tracking-wider flex items-center gap-1.5">
       {icons[beachType]}
       <span>{t.filterOptions[beachType]}</span>
     </div>
@@ -995,7 +1009,7 @@ const CharacteristicTags: React.FC<{ characteristics: Beach['characteristics']; 
   return (
     <>
       {presentCharacteristics.map(char => (
-        <div key={char as string} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 tracking-wider">
+        <div key={char as string} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-xs font-bold text-slate-700 dark:text-slate-600 tracking-wider">
           {t.filterOptions[char as keyof typeof t.filterOptions]}
         </div>
       ))}
@@ -1073,14 +1087,14 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
   return (
     <>
       {terrainTypes.map(type => (
-        <div key={type} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
+        <div key={type} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-xs font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {terrainIcons[type] || <CircleDot className="w-3.5 h-3.5" />}
           <span>{localizedTerrainLabel(type, language)}</span>
         </div>
       ))}
       {waterDepth && !isWaterDepthUnverified(waterDepth) && (
         <div
-          className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${waterDepthStyles[waterDepth.type] || waterDepthStyles.shallow}`}
+          className={`px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1.5 ${waterDepthStyles[waterDepth.type] || waterDepthStyles.shallow}`}
           title={waterDepth.notes}
         >
           {waterDepthIcons[waterDepth.type] || <Droplets className="w-3.5 h-3.5" />}
@@ -1088,7 +1102,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
         </div>
       )}
       {metadata.shade && (
-        <div className="px-2 py-0.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 rounded text-[10px] font-bold flex items-center gap-1.5">
+        <div className="px-2 py-0.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 rounded text-xs font-bold flex items-center gap-1.5">
           <Trees className="w-3.5 h-3.5" />
           <span>{localizedShadeLabel(language)}</span>
         </div>
@@ -1097,7 +1111,7 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
         const pop = beach.popularity ?? metadata.popularity!;
         return (
           <div
-            className={`px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 ${popularityStyles[pop.tier] || popularityStyles.moderate}`}
+            className={`px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1.5 ${popularityStyles[pop.tier] || popularityStyles.moderate}`}
             title={pop.ratingCount ? `${pop.ratingCount} Google reviews` : undefined}
           >
             <Users className="w-3.5 h-3.5" />
@@ -1107,13 +1121,13 @@ const MetadataTags: React.FC<{ beach: Beach; language: LanguageCode }> = ({ beac
       })() : beach.environment?.quietEvidence === 'presumed' ? (
         // No Google entry at all. Same slot as the crowd badge — it answers the same question —
         // but its own muted styling, because it is an inference and should not look counted.
-        <div className="px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1.5 bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+        <div className="px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1.5 bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
           <Users className="w-3.5 h-3.5" />
           <span>{localizedLittleKnownLabel(language)}</span>
         </div>
       ) : null}
       {amenityChips.map(chip => (
-        <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
+        <div key={chip.key} className="px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded text-xs font-bold text-slate-700 dark:text-slate-600 flex items-center gap-1.5">
           {amenityChipIcon(chip)}
           <span>{chip.label}</span>
         </div>
@@ -2236,9 +2250,13 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
           ref={cardPhotoAreaRef}
           className={`relative order-1 h-28 shrink-0 overflow-hidden bg-sky-50 sm:order-none sm:h-auto sm:flex-none sm:aspect-[16/9] sm:min-h-36 sm:max-h-44 ${isCompact ? 'lg:min-h-28 lg:max-h-32' : ''}`}
         >
+          {/* `sizes` shipped here without a `srcSet`, which makes it inert: a card 160px tall on
+              a phone was pulling the same width=800 file as a full-width hero. The set gives
+              the browser the choice `sizes` was already describing. */}
           {cardPhoto ? (
             <img
               src={cardPhoto}
+              srcSet={photoSrcSet(cardPhoto, [400, 800])}
               alt={beachDisplayName}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               width={640}
@@ -2507,6 +2525,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
         {cardPhoto ? (
           <img
             src={cardPhoto}
+            srcSet={photoSrcSet(cardPhoto, [400, 800])}
             alt={beachDisplayName}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             width={640}
@@ -2539,7 +2558,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
         {/* Top badges overlay */}
         <div className="absolute top-3 left-3 flex max-w-[calc(100%-4.25rem)] flex-wrap gap-1.5">
           {!hideExposureBadge && (
-            <div className={`px-3 py-1 rounded-lg text-[10px] font-bold ${
+            <div className={`px-3 py-1 rounded-lg text-xs font-bold ${
               isProtectedToday ? 'bg-emerald-500/90 text-white' :
               isExposed ? 'bg-amber-500/90 text-white' : 'bg-sky-500/90 text-white'
             }`}>
@@ -2617,7 +2636,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
           ) : null}
 
           {crowdLevel && (
-            <span className={`text-[10px] font-bold ${
+            <span className={`text-xs font-bold ${
               crowdLevel === 'low' ? 'text-emerald-600' :
               crowdLevel === 'medium' ? 'text-amber-600' : 'text-rose-600'
             }`}>
@@ -2655,7 +2674,7 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
             {pickVisibleWarnings(warnings).map((warning, index) => (
               <span
                 key={`${warning.type}-${index}`}
-                className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${warningToneClass(warning)}`}
+                className={`rounded-full border px-2.5 py-1 text-xs font-bold ${warningToneClass(warning)}`}
               >
                 {strongWindContext && warning.type === 'exposed_to_wind'
                   ? displayOpenBeachLabel

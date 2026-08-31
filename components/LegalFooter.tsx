@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Compass, Cookie, FileText, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
+import { Compass, Cookie, FileText, Flag, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getGuidesHubLink } from '../utils/beachGuides';
 import { getLocalizedCopy } from '../utils/i18n';
 import { loadLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalDoc, LegalKind } from '../utils/legalContent';
+import { buildReportProblemMailto, currentPagePath } from '../utils/reportProblem';
 import { LegalDocument } from './LegalDocument';
 import { CookieSettings } from './CookieSettings';
 import { WeatherDataAttribution } from './WeatherDataAttribution';
@@ -42,6 +43,8 @@ const copy = {
     dataProtection: 'Data protection',
     tagline: 'Discover the best beach for today.',
     guides: 'Beach guides',
+    reportProblem: 'Something wrong here?',
+    reportProblemSubject: 'Wrong data on CalmBeach',
   },
   gr: {
     terms: 'Όροι Χρήσης',
@@ -63,6 +66,8 @@ const copy = {
     dataProtection: 'Προσωπικά δεδομένα',
     tagline: 'Βρες την ιδανική σου παραλία στην Ελλάδα σήμερα',
     guides: 'Οδηγοί παραλιών',
+    reportProblem: 'Κάτι δεν πάει καλά εδώ;',
+    reportProblemSubject: 'Λάθος στοιχείο στο CalmBeach',
   },
 };
 
@@ -75,6 +80,9 @@ const modalMeta: Record<LegalModal, { icon: typeof FileText }> = {
 export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const [activeModal, setActiveModal] = useState<LegalModalView | null>(null);
   const c = getLocalizedCopy(language, copy);
+  // Built at render, not at module load: the SPA changes pathname without remounting the
+  // footer, so a value captured once would name whichever page happened to load first.
+  const reportProblemHref = buildReportProblemMailto(c.reportProblemSubject, currentPagePath());
 
   useEffect(() => {
     const validViews: LegalModalView[] = ['terms', 'privacy', 'cookies', 'cookieSettings'];
@@ -201,6 +209,26 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
                       <span>{LEGAL_OPERATOR.privacyEmail}</span>
                       <span className="text-[11px] font-normal text-slate-500">{c.dataProtection}</span>
                     </span>
+                  </a>
+                </li>
+                {/*
+                 * The beach data is OSM-derived and unverified per field — 483 records carry
+                 * confidence:'low' and 334 an access type of 'unknown'. The person standing on
+                 * the beach is the only cheap way to find out which ones are wrong, and until
+                 * now they had nowhere to say it: the landing form is band 6 of the landing
+                 * page, and the two addresses above give no hint that a data correction is
+                 * welcome. The footer is the one surface that reaches every page type,
+                 * including the ~9.500 prerendered ones (the static twin lives in
+                 * prerenderBeachPages.mjs FOOTER_COPY).
+                 *
+                 * A mailto, not the form: the form lives on the landing page and this link has
+                 * to work from a beach page that never mounts it. The path rides in the body so
+                 * the report says which page it came from without asking the visitor to explain.
+                 */}
+                <li>
+                  <a href={reportProblemHref} className={contactLinkClass}>
+                    <Flag className="h-4 w-4 shrink-0 text-teal-600 transition-colors group-hover:text-teal-700" aria-hidden="true" />
+                    <span>{c.reportProblem}</span>
                   </a>
                 </li>
               </ul>

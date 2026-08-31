@@ -690,7 +690,9 @@ const hasUsefulTimeWindow = (start?: string, end?: string): boolean => {
 
 import { canOpenNavigation, openNavigation } from '../utils/navigation';
 import { NavigationBadge } from '../components/NavigationBadge';
-import { buildBeachDetailPath } from '../utils/beachUrls';
+import { buildBeachDetailPath, buildBeachRegionPath } from '../utils/beachUrls';
+import { buildReportProblemMailto, currentPagePath } from '../utils/reportProblem';
+import { photoSrcSet, sizedPhotoUrl } from '../utils/photoSizing.mjs';
 import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote, localizedFreeAccessLabel, localizedFreeAccessExplanation } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -934,6 +936,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     feedbackWhenMidday: { en: 'Around midday', gr: 'Το μεσημέρι', de: 'Am Mittag', it: 'A mezzogiorno', fr: 'Vers midi' },
     feedbackWhenEvening: { en: 'Afternoon / evening', gr: 'Απόγευμα / βράδυ', de: 'Nachmittags / abends', it: 'Pomeriggio / sera', fr: 'Après-midi / soir' },
     feedbackWhenSkip: { en: "I don't remember", gr: 'Δεν θυμάμαι', de: 'Weiß ich nicht mehr', it: 'Non ricordo', fr: 'Je ne me souviens plus' },
+    // Separate from the forecast-accuracy widget above on purpose. That widget asks one
+    // narrow question — did the sea match — and its answers feed the calibration pass
+    // (scripts/calibrateFromFeedback.mjs). A wrong amenity, a wrong access type or a beach
+    // that is not really there is a different report with a different destination, and it
+    // has to stay reachable when showConditions is false and the widget is not rendered.
+    reportData: { en: 'Something else wrong on this page?', gr: 'Κάτι άλλο δεν πάει καλά σε αυτή τη σελίδα;', de: 'Stimmt sonst etwas auf dieser Seite nicht?', it: "C'è altro di sbagliato in questa pagina?", fr: 'Autre chose ne va pas sur cette page ?' },
+    reportDataSubject: { en: 'Wrong data on CalmBeach', gr: 'Λάθος στοιχείο στο CalmBeach', de: 'Falsche Angabe auf CalmBeach', it: 'Dato errato su CalmBeach', fr: 'Donnée erronée sur CalmBeach' },
     nearby: { en: 'Nearby Recommendations', gr: 'Κοντινές προτάσεις', de: 'Empfehlungen in der Nahe', it: 'Consigli nelle vicinanze', fr: 'Recommandations proches' },
     decisionSummary: { en: selectedDayIsToday ? 'Today summary' : `Summary ${selectedDayPrefix}`, gr: `Σύνοψη για ${selectedDayPrefix}`, de: 'Kurzfassung', it: 'Riepilogo', fr: 'Resume' },
     /* Was "Συνθήκες σήμερα" — a heading so general it could have introduced any of the
@@ -1004,6 +1013,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     share: { en: 'Share', gr: 'Κοινοποίηση', de: 'Teilen', it: 'Condividi', fr: 'Partager' },
     favorite: { en: 'Favorite', gr: 'Αγαπημένο', de: 'Favorit', it: 'Preferito', fr: 'Favori' },
     back: { en: 'Back to beaches', gr: 'Πίσω στις παραλίες', de: 'Zuruck zu den Stranden', it: 'Torna alle spiagge', fr: 'Retour aux plages' },
+    // Breadcrumb wording is copied verbatim from the prerenderer's staticFallbackCopy
+    // (scripts/prerenderBeachPages.mjs:2509-2619) so the trail a crawler reads and the
+    // trail a person reads say the same thing.
+    breadcrumbNav: { en: 'Breadcrumb', gr: 'Διαδρομή', de: 'Navigationspfad', it: 'Percorso', fr: 'Fil d\'Ariane' },
+    breadcrumbHome: { en: 'Greek beaches', gr: 'Παραλίες Ελλάδας', de: 'Strände in Griechenland', it: 'Spiagge della Grecia', fr: 'Plages de Grèce' },
+    breadcrumbRegion: { en: '{island} beaches', gr: 'Παραλίες: {island}', de: 'Strände: {island}', it: 'Spiagge: {island}', fr: 'Plages : {island}' },
     mapUnavailable: { en: 'The map could not load right now.', gr: 'Ο χάρτης δεν φορτώθηκε τώρα.', de: 'Die Karte konnte gerade nicht geladen werden.', it: 'La mappa non si e caricata.', fr: 'La carte n a pas pu se charger.' },
     campingTitle: { en: 'Camping nearby', gr: 'Camping κοντά', de: 'Camping in der Nahe', it: 'Campeggi nelle vicinanze', fr: 'Camping a proximite' },
     campingWebsite: { en: 'Website', gr: 'Ιστότοπος', de: 'Website', it: 'Sito web', fr: 'Site web' },
@@ -2124,6 +2139,30 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     }] : []),
   ];
 
+  // Null in the cross-region «Κοντά μου» view: regionId is undefined there because the
+  // list is merged from many regions, so there is no single region to climb back to and
+  // the trail would be lying. Home is /el/ for Greek and / for everything else — de/fr/it
+  // have no home page of their own (mirrors homePathForLocale, prerenderBeachPages.mjs:294).
+  const breadcrumb = regionId && islandName
+    ? {
+        homeHref: language === 'gr' ? '/el/' : '/',
+        regionHref: buildBeachRegionPath(regionId, language),
+        regionLabel: copy.breadcrumbRegion[language].replace('{island}', islandName),
+      }
+    : null;
+
+  const handleBreadcrumbRegionClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    onBack();
+  };
+
   // Ίδιος ήρεμος καμβάς με τη σελίδα περιοχής (28/08/2026): ήταν ντεγκραντέ τριών στάσεων,
   // που σε συνδυασμό με λευκές ημιδιάφανες κάρτες έκανε τα πάντα να λάμπουν.
   return (
@@ -2162,6 +2201,43 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       </header>
 
       <main className="max-w-4xl mx-auto px-4 pt-4 md:pt-6 space-y-5 md:space-y-7">
+        {/*
+         * The prerenderer already builds this exact trail (renderBeachBreadcrumb,
+         * scripts/prerenderBeachPages.mjs:3102) — but index.tsx mounts with createRoot,
+         * not hydrateRoot, so React wipes #root and the breadcrumb died the moment the
+         * app loaded. It existed for Google and for nobody else. Same trap as the ODbL
+         * link (LegalFooter.tsx:124) and the guide links (GuideTopicsSection.tsx:13).
+         *
+         * Progressive enhancement, the pattern from TodayRegionsSection.tsx:139: the
+         * hrefs are real, so middle-click and "open in new tab" work and the trail is
+         * still a trail with JS off; a plain left-click on the region stays in the SPA
+         * via onBack (App.closeBeachDetails already rewrites the URL to the region).
+         * Home has no in-app equivalent, so it navigates for real.
+         */}
+        {breadcrumb && (
+          <nav aria-label={copy.breadcrumbNav[language]} className="-mt-1 text-[13px] font-bold">
+            <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+              <li>
+                <a href={breadcrumb.homeHref} className="text-cyan-700 hover:underline">
+                  {copy.breadcrumbHome[language]}
+                </a>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">›</li>
+              <li>
+                <a
+                  href={breadcrumb.regionHref}
+                  onClick={handleBreadcrumbRegionClick}
+                  className="text-cyan-700 hover:underline"
+                >
+                  {breadcrumb.regionLabel}
+                </a>
+              </li>
+              <li aria-hidden="true" className="text-slate-400">›</li>
+              <li aria-current="page" className="text-slate-600">{beachDisplayName}</li>
+            </ol>
+          </nav>
+        )}
+
         {detailDataStatus === 'partial' && (
           <div className="rounded-control border border-amber-100 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
             {language === 'gr'
@@ -2398,13 +2474,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             screens down, where "show me that wave picture again" is a real request. */}
         <section id="today-conditions" tabIndex={-1} className="scroll-mt-24 space-y-3 focus:outline-none" data-nosnippet="true">
           <h3 className="px-1 font-heading text-lg font-bold text-slate-950">{copy.conditions[language]}</h3>
+          {/* 16px is the mobile floor for body prose — the rule already written once at
+              components/landing/OurStorySection.tsx:160. Sentences a visitor is meant to
+              READ get text-base; de-emphasis belongs in the colour, not in a size people
+              have to squint at on a phone in daylight. */}
           {shoreIncidenceLine && (
-            <p className="px-1 text-sm leading-relaxed text-slate-700">{shoreIncidenceLine}</p>
+            <p className="px-1 text-base leading-relaxed text-slate-700">{shoreIncidenceLine}</p>
           )}
           {/* Πάνω από την εικόνα του κύματος, γιατί εξηγεί ΤΗΝ ΕΙΚΟΝΑ: το σχέδιο δείχνει ένα
               χαμηλό κύμα και ο επισκέπτης το διαβάζει ως «ήσυχα». Από κάτω θα ήταν διόρθωση. */}
           {choppySeaLine && (
-            <p className="px-1 text-sm leading-relaxed text-slate-700">{choppySeaLine}</p>
+            <p className="px-1 text-base leading-relaxed text-slate-700">{choppySeaLine}</p>
           )}
           <WaveHeightGraphic
             variant="full"
@@ -2553,8 +2633,14 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           {realPhotos.length > 0 ? (
             <>
               <div className="relative aspect-[16/10] overflow-hidden rounded-surface border border-line shadow-lifted sm:aspect-[4/3]">
+                {/* `sizes` was here with no `srcSet`, which a browser ignores completely: every
+                    viewport got the one baked width=800. Still lazy — this gallery sits below
+                    the conditions block and the section break, so it is never the first paint.
+                    (The prerendered page is the opposite case: there the photo follows the h1
+                    directly, which is why that one carries fetchpriority instead.) */}
                 <img
                   src={realPhotos[0]}
+                  srcSet={photoSrcSet(realPhotos[0], [400, 800, 1200])}
                   alt={beachDisplayName}
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
@@ -2633,8 +2719,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
                   {realPhotos.slice(1).map((url, i) => (
                     <div key={i} className="flex-shrink-0 w-24 sm:w-32 aspect-square rounded-control overflow-hidden shadow-surface">
+                      {/* A 96-128px box asking for the 800px file. No srcSet: the rendered size
+                          never varies enough to be worth a set, so one right-sized src is
+                          simpler and strictly smaller. */}
                       <img
-                        src={url}
+                        src={sizedPhotoUrl(url, 400)}
                         alt={`${beachDisplayName} ${i + 2}`}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
@@ -2706,7 +2795,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   boilerplate. */}
               <div className="mt-2 space-y-2">
                 {beachStory.paragraphs[storyLocale].map((paragraph, index) => (
-                  <p key={index} className="text-sm leading-relaxed text-slate-600">{paragraph}</p>
+                  <p key={index} className="text-base leading-relaxed text-slate-600">{paragraph}</p>
                 ))}
               </div>
             </div>
@@ -3171,7 +3260,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <section className="bg-white p-4 rounded-surface border border-line shadow-surface space-y-4" data-nosnippet="true">
           <div className="space-y-1">
             <h3 className="text-base font-heading font-bold text-slate-900">{copy.feedbackTitle[language]}</h3>
-            <p className="text-slate-700 text-sm leading-snug">{copy.feedbackText[language]}</p>
+            <p className="text-slate-700 text-base leading-snug">{copy.feedbackText[language]}</p>
           </div>
 
           {(feedbackSubmitted || feedbackAlreadyGiven) ? (
@@ -3272,6 +3361,22 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           )}
         </section>
         )}
+
+        {/* Outside the showConditions gate above: a wrong amenity is still wrong on a day we
+            cannot show the sea. The beach id goes in the body because it, not the name, is
+            what identifies the record — names repeat across regions. */}
+        <p className="text-center">
+          <a
+            href={buildReportProblemMailto(
+              copy.reportDataSubject[language],
+              `${beachDisplayName} (#${beach.id})\n${currentPagePath()}`
+            )}
+            onClick={() => trackEvent('beach_report_problem_clicked', beach.id, { locale: language === 'gr' ? 'el' : 'en' })}
+            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-slate-500 underline decoration-dotted underline-offset-4 hover:text-teal-700"
+          >
+            {copy.reportData[language]}
+          </a>
+        </p>
 
         {/* ---- Section break: this beach ends, the alternatives begin. ---- */}
         <SectionBreak label={copy.sectionNearby[language]} />
