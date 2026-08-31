@@ -194,6 +194,10 @@ const isIgnorable = (message: string, source: string, stack: string): boolean =>
  * browser. Δεν μπαίνει στο isIgnorable(): εκεί το `source` είναι δικές μας λέξεις
  * («RootErrorBoundary», «unhandledrejection») που ένα URL parse θα τις δεχόταν ως
  * σχετικές διαδρομές και θα έσβηνε τα πραγματικά σφάλματα.
+ *
+ * Ο ίδιος έλεγχος σε σχήμα ΣΤΟΙΒΑΣ ζει στο netlify/functions/client-error.mjs
+ * (isForeignInlineStack, 31/08/2026): πιάνει την ίδια οικογένεια όταν έρχεται από
+ * `unhandledrejection`, που δεν έχει καθόλου `filename` για να κοιτάξει κανείς εδώ.
  */
 const isForeignInlineScript = (filename: string): boolean => {
   if (!filename) return false;
