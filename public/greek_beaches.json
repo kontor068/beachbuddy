@@ -171286,12 +171286,14 @@
             "sourceUrls": [
               "https://www.greece-is.com/saria-hidden-aegean-paradise-off-shores-karpathos/",
               "https://www.meraviglioseisolegreche.com/en/attivita_isole/saria-island-karpathos/",
-              "https://griekenland.net/griekse-eilanden/karpathos/saria/"
+              "https://griekenland.net/griekse-eilanden/karpathos/saria/",
+              "https://www.islands.com/1945766/remote-island-saria-europe-greece-escape-crowds-beaches-snorkeling/"
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Alimounta/Pigadia beach sources support organized beach sections with sunbeds/umbrellas and nearby hotel/restaurant services.",
               "Karpathos strict evidence pass 2026-05-29: Multiple Saria-focused sources support Alimounta/Alimounda as a Saria beach reached by boat/excursion context, but there is no strong dedicated official beach page; kept medium.",
-              "Karpathos confidence continuation 2026-06-02: Greece Is and Saria-focused travel sources support Alimounda/Alimounta as a beach on Saria island reached as part of a boat excursion from Karpathos/Diafani context, not as a normal road-access Karpathos beach. Access was corrected from asphalt_road to boat_only and unsupported organized/nearby-taverna claims were removed. Confidence promoted to high for static identity/access correction only; windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were not changed."
+              "Karpathos confidence continuation 2026-06-02: Greece Is and Saria-focused travel sources support Alimounda/Alimounta as a beach on Saria island reached as part of a boat excursion from Karpathos/Diafani context, not as a normal road-access Karpathos beach. Access was corrected from asphalt_road to boat_only and unsupported organized/nearby-taverna claims were removed. Confidence promoted to high for static identity/access correction only; windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were not changed.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα (αναζήτηση 2026-09-01): «The island Saria contains beaches Palatia and Alimounta... accessible by boat excursions from Karpathos»· «Alimounda Beach is a calm, pool-like cove on the southern coast, surrounded by cliffs». Επιβεβαιώνει ταυτότητα + ότι δεν υπάρχει οδική πρόσβαση. Η στάμπα δεν αλλάζει τι βλέπει ο επισκέπτης: ο κανόνας ασφαλείας για boat_only γυρίζει ούτως ή άλλως σε «δείξε στον χάρτη»."
             ],
             "orientation": {
               "degrees": 174.1,
@@ -171301,6 +171303,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -171463,7 +171471,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -171478,7 +171488,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Visit Olympos names Evgonimos among the west-side bays of the Olympos area and describes nearby beaches as reached by trekking trails, jeep, or boat; KarpathosInfo describes the north beaches as mostly poor dirt-road/off-road access with little infrastructure. Kept low confidence because the source is area-level rather than a dedicated beach page.",
-              "Karpathos strict evidence pass 2026-05-29: Visit Olympos and KarpathosInfo support Evgonimos only as part of the remote Olympos/north-beach bay group; kept low because beach-specific access/service evidence remains area-level."
+              "Karpathos strict evidence pass 2026-05-29: Visit Olympos and KarpathosInfo support Evgonimos only as part of the remote Olympos/north-beach bay group; kept low because beach-specific access/service evidence remains area-level.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: οι πηγές (Visit Olympos, KarpathosInfo) περιγράφουν τη ζώνη των βόρειων/δυτικών κόλπων του Ολύμπου ως χωρίς υποδομή, ποτέ τον Ευγώνυμο χωριστά. Γράφτηκε η συγκρατημένη διατύπωση αντί για κενή λίστα· η σιγουριά ΕΜΕΙΝΕ χαμηλή για τον ίδιο λόγο που την κράτησε χαμηλή το πέρασμα της 29/05."
             ],
             "orientation": {
               "degrees": 294.1,
@@ -171648,7 +171659,10 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καμία οργανωμένη παροχή",
+              "πρόσβαση με εκδρομικό ή ιδιωτικό σκάφος"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "karpathos_confidence_continuation_2026_06_02",
@@ -171659,12 +171673,14 @@
             },
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
-              "https://www.allovergreece.com/Trekking/Descr/29/230/en"
+              "https://www.allovergreece.com/Trekking/Descr/29/230/en",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo describes Forokli as best reached by boat from Diafani, with local dirt roads in very poor condition; AllOverGreece backs the Olymbos-Forokli hiking route ending at the beach.",
               "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and AllOverGreece trekking evidence support Forokli identity/access by boat or Olymbos hiking route, but no dedicated beach page/facility evidence was found; kept medium.",
-              "Karpathos confidence continuation 2026-06-02: KarpathosInfo directly supports Forokli as a named north Karpathos beach best reached by boat from Diafani, with very poor dirt-road access, grey rocks/pebbles/tamarisks and no organization; AllOverGreece supports the Olymbos-Forokli hiking route ending at the beach. Confidence promoted to high for static identity/access/terrain evidence only. Difficult access remains encoded, so this must not be treated as an easy or ideal tourist recommendation. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed."
+              "Karpathos confidence continuation 2026-06-02: KarpathosInfo directly supports Forokli as a named north Karpathos beach best reached by boat from Diafani, with very poor dirt-road access, grey rocks/pebbles/tamarisks and no organization; AllOverGreece supports the Olymbos-Forokli hiking route ending at the beach. Confidence promoted to high for static identity/access/terrain evidence only. Difficult access remains encoded, so this must not be treated as an easy or ideal tourist recommendation. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01): «Forokli boasts a beautiful stretch of pebbles... totally unorganized with no facilities», 46 χλμ βόρεια των Πηγαδίων· πρόσβαση με σκάφος από Διαφάνι, οι χωματόδρομοι της περιοχής σε πολύ κακή κατάσταση ακόμη και με 4x4. Γράφτηκε η ρητή απουσία παροχών — η κενή λίστα διαβαζόταν ως «δεν το κοιτάξαμε»."
             ],
             "orientation": {
               "degrees": 133.8,
@@ -171712,7 +171728,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -171727,7 +171745,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Visit Olympos lists Fises among the Olympos west-side bays and describes the nearby beaches as accessible by trekking/jeep/boat; Karpathos.co.uk lists Physes/Fises among beaches north of Lefkos reached by boat. Kept low confidence because named access details are limited.",
-              "Karpathos strict evidence pass 2026-05-29: Visit Olympos and KarpathosInfo support Fises/Physes only as part of the remote west/north beach group; kept low after removing a dead source because named details remain sparse."
+              "Karpathos strict evidence pass 2026-05-29: Visit Olympos and KarpathosInfo support Fises/Physes only as part of the remote west/north beach group; kept low after removing a dead source because named details remain sparse.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: ίδια εικόνα με τον Ευγώνυμο — οι Φίσσες αναφέρονται μόνο μέσα στην ομάδα των απομακρυσμένων δυτικών/βόρειων ακτών με πρόσβαση από θάλασσα. Κενή λίστα -> συγκρατημένη διατύπωση· σιγουριά αμετάβλητη."
             ],
             "orientation": {
               "degrees": 281.2,
@@ -171846,11 +171865,13 @@
             "sourceUrls": [
               "https://karpathosinfo.com/kastelia-beach/",
               "https://karpathosinfo.com/amoopi-lakki/",
-              "https://www.getgreece.com/beaches/amoopi-beach-karpathos"
+              "https://www.getgreece.com/beaches/amoopi-beach-karpathos",
+              "https://karpathosinfo.com/kastelia-bay/"
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Amoopi/Kastelia area sources support organized coves with parasols, sunbeds and taverns.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and secondary Amoopi-area sources support Kastelia identity, Amoopi/Lakki location, cove terrain, snorkeling/rocky edges, organized umbrellas/sunbeds, and nearby taverns."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and secondary Amoopi-area sources support Kastelia identity, Amoopi/Lakki location, cove terrain, snorkeling/rocky edges, organized umbrellas/sunbeds, and nearby taverns.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα KarpathosInfo (αναζήτηση 2026-09-01): «Kastelia bay is located on the eastern coast of the island, in the southern areas of Amoopi (Lakki) village... well hidden by the hills»· «This place is organized only with some parasols and sunbeds for rent, because there are not enough place for other tourist services»· «Accessibility is by car, or on foot from the center of Amoopi». Διασταυρώνεται με τον δικό μας έλεγχο εγγύτητας δρόμου της 16/08 (ασφαλτόδρομος 74 m, μονοπάτι 14 m από την πινέζα): η διαδρομή με αυτοκίνητο προς τη συντεταγμένη είναι η σωστή."
             ],
             "orientation": {
               "degrees": 158.6,
@@ -171860,6 +171881,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -171883,7 +171910,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -171898,7 +171927,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Mapcarta/OSM locates Kaminaki as a beach near Kantri and Forokli; KarpathosInfo describes this north-beach belt as mostly poor dirt-road/off-road access with little infrastructure. Kept low confidence because direct access details for Kaminaki are sparse.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo supports the wider poor-road/off-road north-beach belt and Mapcarta/OSM supports Kaminaki identity/location; kept low because direct named details remain sparse."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo supports the wider poor-road/off-road north-beach belt and Mapcarta/OSM supports Kaminaki identity/location; kept low because direct named details remain sparse.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: το Καμινάκι στηρίζεται σε Mapcarta/OSM για ταυτότητα και σε περιγραφή ζώνης για την υποδομή. Κενή λίστα -> συγκρατημένη διατύπωση· σιγουριά αμετάβλητη."
             ],
             "orientation": {
               "degrees": 130.2,
@@ -171946,12 +171976,14 @@
             "sourceUrls": [
               "https://nikosboat.com/trips/excursion-to-southern-beaches/",
               "https://theguide.tab.travel/qfyln/nikos-boat/",
-              "https://karpathosinfo.com/karpathos-north-beaches/"
+              "https://karpathosinfo.com/karpathos-north-beaches/",
+              "https://www.tripadvisor.com/Attraction_Review-g1190441-d12492057-Reviews-Nikos_Boat-Diafani_Karpathos_Dodecanese_South_Aegean.html"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Nikos Boat lists Kantri as a regular boat-trip stop from Diafani and states that all listed beaches except Kantri are reachable by car or on foot too. Corrected from difficult dirt-road access to boat-only access.",
               "Karpathos strict evidence pass 2026-05-29: Nikos Boat and KarpathosInfo support Kantri as a Diafani boat-trip stop with remote north-beach context; kept medium because evidence is route/operator-level rather than a detailed beach page.",
-              "Karpathos continuation 2026-06-02: Nikos Boat directly lists Kantri as a usual Diafani southern-beaches boat-trip stop and states the listed beaches are small-stone, unorganized and that Kantri is the exception not reachable by car or on foot; KarpathosInfo supports north/remote Karpathos beach context with poor/off-road access and limited infrastructure. Promoted static metadata confidence to high with boat-only access. No windProfile, scoring, coordinates, photos, or live condition claims were changed."
+              "Karpathos continuation 2026-06-02: Nikos Boat directly lists Kantri as a usual Diafani southern-beaches boat-trip stop and states the listed beaches are small-stone, unorganized and that Kantri is the exception not reachable by car or on foot; KarpathosInfo supports north/remote Karpathos beach context with poor/off-road access and limited infrastructure. Promoted static metadata confidence to high with boat-only access. No windProfile, scoring, coordinates, photos, or live condition claims were changed.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα (αναζήτηση 2026-09-01): «Kantri is among the northern beaches of Karpathos accessible by boat trips» από το Διαφάνι. Επιβεβαιώνει ταυτότητα + απουσία οδικής πρόσβασης· ο κανόνας ασφαλείας για boat_only κρατά το «δείξε στον χάρτη»."
             ],
             "orientation": {
               "degrees": 89.7,
@@ -171961,6 +171993,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           },
           "staticLabels": {
@@ -172111,7 +172149,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "medium",
             "language": "el",
             "batch": "022_2101_2200",
@@ -172122,11 +172162,13 @@
             },
             "sourceUrls": [
               "https://www.greece.com/photos/destinations/Dodecanese/Karpathos/Settlement/Lefkos/Lare_beach/24753401",
-              "https://karpathosinfo.com/lefkos-beach/"
+              "https://karpathosinfo.com/lefkos-beach/",
+              "https://www.alltrails.com/greece/karpathos/beach"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: AllTrails backs a Kato Lefkos-Agios Georgios-Lare Beach route following road/dirt road to Lare Beach; Karpathos.co.uk lists Lares among beaches north of Lefkos reached by boat. Corrected from generic difficult dirt-road wording to difficult path/sea-access wording.",
-              "Karpathos strict evidence pass 2026-05-29: Live sources support Lare/Lares identity near Lefkos only through place/photo and area context after blocked/dead route sources were removed; kept medium."
+              "Karpathos strict evidence pass 2026-05-29: Live sources support Lare/Lares identity near Lefkos only through place/photo and area context after blocked/dead route sources were removed; kept medium.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα AllTrails (αναζήτηση 2026-09-01): η διαδρομή «Kato Lefkos - Agios Georgios - Lare Beach» δίνεται 6,4 χλμ / 1,5-2 ώρες, ξεκινώντας από την ακτή του Κάτω Λευκού — στηρίζει τη δύσκολη πεζοπορική πρόσβαση που ήδη καταγράφουμε. Καμία πηγή δεν αναφέρει παροχές στην ίδια την παραλία. Σιγουριά ΕΜΕΙΝΕ medium."
             ],
             "orientation": {
               "degrees": 300.5,
@@ -172243,7 +172285,10 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές",
+              "εκδρομικό σκάφος από Διαφάνι"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -172258,7 +172303,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Nikos Boat's guide profile lists Lala among boat-trip beaches south of Diafani and notes hiking can be combined with trips; the Nikos trips page tags Lala in the southern beaches excursion. Kept low confidence because access is boat/hiking-backed but there is no dedicated Lala beach page.",
-              "Karpathos strict evidence pass 2026-05-29: Nikos Boat evidence supports Lala as a boat-trip beach south of Diafani, but there is still no detailed independent beach page; kept low."
+              "Karpathos strict evidence pass 2026-05-29: Nikos Boat evidence supports Lala as a boat-trip beach south of Diafani, but there is still no detailed independent beach page; kept low.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: η Λάλα εμφανίζεται στις εκδρομές του Nikos Boat από το Διαφάνι (ήδη καταγεγραμμένο) και σε καμία αφιερωμένη σελίδα παραλίας. Κενή λίστα -> συγκρατημένη διατύπωση + ο τρόπος που πράγματι φτάνει ο κόσμος· σιγουριά αμετάβλητη."
             ],
             "orientation": {
               "degrees": 111.4,
@@ -172291,7 +172337,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "022_2101_2200",
@@ -172306,7 +172354,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: AllTrails backs the Diafani-Apokapos route as a moderate path/dirt-road coastal route; accommodation listings place Makria in the same nearby coastal cluster south of Diafani. Kept low confidence because Makria-specific access details are sparse.",
-              "Karpathos strict evidence pass 2026-05-29: Makria has weak live place evidence near Diafani plus area context, but no strong independent beach page or access/service evidence; kept low."
+              "Karpathos strict evidence pass 2026-05-29: Makria has weak live place evidence near Diafani plus area context, but no strong independent beach page or access/service evidence; kept low.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: η Μακριά αναφέρεται μόνο ως μέρος της παράκτιας ζώνης νότια του Διαφανιού (Απόκαπος/Παπά Μηνά). Κενή λίστα -> συγκρατημένη διατύπωση· σιγουριά αμετάβλητη."
             ],
             "orientation": {
               "degrees": 90,
@@ -172339,7 +172388,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καμία οργανωμένη παροχή"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "022_2101_2200",
@@ -172351,12 +172402,14 @@
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
               "https://www.visitolympos.com/",
-              "https://phileas.guide/guide/karpathos/entry/56643"
+              "https://phileas.guide/guide/karpathos/entry/56643",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/nati/"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo identifies Nati among the secluded north beaches and describes the area as reachable mainly by boat/off-road vehicles via poor dirt roads; Visit Olympos also lists Nati among north-beach excursions by jeep/ATV or boat.",
               "Existing-source confidence cleanup 2026-05-29: KarpathosInfo, Visit Olympos, and Phileas support Nati as a remote north/east Karpathos beach near the Olympos route, with gravel/difficult-road or sea access and no modern beach facilities. Confidence promoted to medium; no wind, wave, or live-condition claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, Visit Olympos, and Phileas support Nati as a named remote north/east Karpathos beach near the Olympos/Diafani excursion zone, with difficult/gravel or sea access and no modern beach facilities."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, Visit Olympos, and Phileas support Nati as a named remote north/east Karpathos beach near the Olympos/Diafani excursion zone, with difficult/gravel or sea access and no modern beach facilities.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα παραλίας: «There are no sunbeds or parasols available on the beach, nor any other amenities», 38 χλμ βόρεια των Πηγαδίων / 13 χλμ από Όλυμπο, μικρή ακτή με γκρίζα βότσαλα προστατευμένη από λόφους."
             ],
             "orientation": {
               "degrees": 126.2,
@@ -172418,11 +172471,13 @@
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/29/578/en",
               "https://karpathosinfo.com/saria-island/",
-              "https://travelkarpathos.gr/en/villages/diafani/"
+              "https://travelkarpathos.gr/en/villages/diafani/",
+              "https://www.tripadvisor.com/Attraction_Review-g189440-d10793165-Reviews-Saria_Island-Karpathos_Dodecanese_South_Aegean.html"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: AllOverGreece states Palatia on Saria can only be reached by boat from Diafani or Pigadia; KarpathosInfo backs Saria visits by boat trips from Pigadia/Diafani.",
-              "Karpathos strict evidence pass 2026-05-29: AllOverGreece, KarpathosInfo, and municipal Diafani/Saria context support Palatia on Saria, boat access from Diafani/Pigadia, pebble cove terrain, hiking access to nearby ruins/chapel, and no normal road access."
+              "Karpathos strict evidence pass 2026-05-29: AllOverGreece, KarpathosInfo, and municipal Diafani/Saria context support Palatia on Saria, boat access from Diafani/Pigadia, pebble cove terrain, hiking access to nearby ruins/chapel, and no normal road access.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα allovergreece/Tripadvisor (αναζήτηση 2026-09-01): «Palatia is the most famous beach of Saria, and can only be reached by boat from Diafani in the north or from Pigadia»· καθημερινές εκδρομές το καλοκαίρι και από τα δύο λιμάνια. Επιβεβαιώνει ταυτότητα + απουσία οδικής πρόσβασης."
             ],
             "orientation": {
               "degrees": 112.9,
@@ -172432,6 +172487,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -172520,7 +172581,10 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "καμία οργανωμένη παροχή",
+              "εκδρομικό σκάφος από Διαφάνι"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "023_2201_2300",
@@ -172532,11 +172596,13 @@
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
               "https://karpathosinfo.com/diafani-beach/",
-              "https://travelkarpathos.gr/en/villages/diafani/"
+              "https://travelkarpathos.gr/en/villages/diafani/",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/papa-mina/"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo describes Apokapos/Papa Minas as reached from Diafani by a poor dirt road, with walking often the better option, and as totally unorganized.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo north-beach and Diafani pages plus municipal Diafani context support Apokapos/Papa Minas identity south of Diafani, poor dirt-road or walking/boat access, pebble remote terrain, and unorganized status."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo north-beach and Diafani pages plus municipal Diafani context support Apokapos/Papa Minas identity south of Diafani, poor dirt-road or walking/boat access, pebble remote terrain, and unorganized status.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα: «offers no tourist facilities whatsoever and is best approached on foot through a hiking trail from Diafani that takes around an hour and a half, or by excursion boats operating from Diafani Port». Βοτσαλωτή, μη οργανωμένη."
             ],
             "orientation": {
               "degrees": 76.6,
@@ -172584,7 +172650,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "low",
             "language": "el",
             "batch": "023_2201_2300",
@@ -172599,7 +172667,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: AllTrails backs the Diafani-Apokapos route as a path/dirt-road coastal route; lodging/map listings place Pontikalia in the same nearby coastal cluster south of Diafani. Kept low confidence because Pontikalia-specific access details are sparse.",
-              "Karpathos strict evidence pass 2026-05-29: Diafani-area sources mention Pontikalia/Pentikalia only as a nearby boat-access beach; kept low because direct named details remain limited."
+              "Karpathos strict evidence pass 2026-05-29: Diafani-area sources mention Pontikalia/Pentikalia only as a nearby boat-access beach; kept low because direct named details remain limited.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Πέρασμα 2026-09-01: τα Ποντικάλια αναφέρονται ως στάση σε εκδρομές από το Διαφάνι, χωρίς δικά τους στοιχεία υποδομής. Κενή λίστα -> συγκρατημένη διατύπωση· σιγουριά αμετάβλητη."
             ],
             "orientation": {
               "degrees": 80.7,
@@ -172697,7 +172766,9 @@
             },
             "organized": false,
             "shade": false,
-            "amenities": [],
+            "amenities": [
+              "χωρίς επιβεβαιωμένες σταθερές παροχές"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "023_2201_2300",
@@ -172709,11 +172780,13 @@
             "sourceUrls": [
               "https://phileas.guide/guide/karpathos/entry/98608",
               "https://www.tripadvisor.com/Attraction_Review-g12883559-d23555267-Reviews-Perdikas_Potamos_Beach-Kato_Lefkos_Karpathos_Dodecanese_South_Aegean.html",
-              "https://karpathosinfo.com/lefkos-beach/"
+              "https://karpathosinfo.com/lefkos-beach/",
+              "https://www.alltrails.com/trail/greece/karpathos/lefkos-perdikas-o-potamos-beach-loop"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Phileas describes Perdikas o Potamos as a Lefkos nudist beach about 1 km from Fragkolimionas, with good road condition but a walk on the dirt road because there is no parking; AllTrails backs a Lefkos-Perdikas o Potamos walking loop. Corrected from difficult dirt-road access to easy path/short dirt-road walk.",
-              "Karpathos strict evidence pass 2026-05-29: Phileas, Tripadvisor place data, and Lefkos context support Perdikas o Potamos identity near Kato Lefkos, walking access from the Lefkos area, sparse parking/service context, and quiet/unorganized beach character."
+              "Karpathos strict evidence pass 2026-05-29: Phileas, Tripadvisor place data, and Lefkos context support Perdikas o Potamos identity near Kato Lefkos, walking access from the Lefkos area, sparse parking/service context, and quiet/unorganized beach character.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα AllTrails (αναζήτηση 2026-09-01): κυκλική διαδρομή Λευκός -> Της Πέρδικας ο Ποταμός στη δυτική ακτή, «easy to park and not crowded», χωρίς σκιά στη διαδρομή· το νησάκι Σώκαστρο χαρακτηρίζει τον κόλπο. Καμία αναφορά σε παροχές στην παραλία."
             ],
             "orientation": {
               "degrees": 273.7,
@@ -172760,8 +172833,12 @@
               "label": "βότσαλα και πέτρες"
             },
             "organized": false,
-            "shade": false,
-            "amenities": [],
+            "shade": true,
+            "amenities": [
+              "καμία οργανωμένη παροχή",
+              "βρύση με πόσιμο νερό πίσω από την παραλία",
+              "φυσική σκιά σε σημεία"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "023_2201_2300",
@@ -172772,12 +172849,14 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Vananda identity, nearby coordinates, on-foot or narrow dirt-road access, small secluded bay character, grey-pebble/stone terrain, and unorganized status. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal Diafani context support Vananda/Vanata near Diafani, walking or narrow dirt-road access, pebble terrain, small secluded-bay character, and limited/no organized facilities. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal Diafani context support Vananda/Vanata near Diafani, walking or narrow dirt-road access, pebble terrain, small secluded-bay character, and limited/no organized facilities. OSM is geometry support only.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα: «There is no taverna at the beach... The beach lacks any sort of facilities, though some natural shade is provided by the trees present on the shore and there is a fountain with drinking water just behind the beach». 2,5 χλμ από Διαφάνι, 30-35 λεπτά με τα πόδια. ΔΙΑΦΩΝΙΑ ΠΗΓΩΝ ΓΙΑ ΤΟΝ ΔΡΟΜΟ: greeka «a bit rough but can be traversed by any kind of vehicle» και ardanikarpathos «βατοί χωματόδρομοι», ενώ το KarpathosInfo (ήδη καταγεγραμμένο) λέει δύσκολος για μικρά αυτοκίνητα — ο χαρακτηρισμός ΕΜΕΙΝΕ δύσβατος, ο συντηρητικός προστατεύει τον επισκέπτη."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
               "https://travelkarpathos.gr/en/villages/diafani/",
-              "https://www.openstreetmap.org/way/409106843"
+              "https://www.openstreetmap.org/way/409106843",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/vananda/"
             ],
             "orientation": {
               "degrees": 95.7,
@@ -173056,7 +173135,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo states Agia Irini can be reached only by boat or sea kayak due to geographical conditions and describes it as abandoned/unserviced.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated beach page and Diafani/north-beach context support Agia Irini identity, remote west/northwest location, boat or sea-kayak access due to terrain, and abandoned/unserviced status."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated beach page and Diafani/north-beach context support Agia Irini identity, remote west/northwest location, boat or sea-kayak access due to terrain, and abandoned/unserviced status.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα KarpathosInfo (αναζήτηση 2026-09-01): «Agia Irini can be reached only by boat or sea kayak due to geographical conditions and is a large, but very secluded bay near Mesochori village, located on the west coastline» — ταυτίζεται λέξη προς λέξη με την ήδη καταγεγραμμένη σημείωσή μας. Επιβεβαιώνει ταυτότητα + απουσία οδικής πρόσβασης."
             ],
             "orientation": {
               "degrees": 286,
@@ -173066,6 +173146,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -173656,11 +173742,13 @@
             "sourceUrls": [
               "https://karpathosinfo.com/agios-nikolaos-beach-arkasa/",
               "https://travelkarpathos.gr/en/beaches/",
-              "https://karpathos.gr/wp-content/uploads/2026/04/10.-%CE%94%CE%99%CE%91%CE%9A%CE%97%CE%A1%CE%A5%CE%9E%CE%97-%CE%9D%CE%91%CE%A5%CE%91%CE%93%CE%9F%CE%A3%CE%A9%CE%A3%CE%A4%CE%95%CE%A3-2026-%CE%BC%CE%B5-%CE%91%CE%94%CE%91%CE%9C-%CE%BA%CE%B1%CE%B9-%CE%91%CE%94%CE%91.pdf"
+              "https://karpathos.gr/wp-content/uploads/2026/04/10.-%CE%94%CE%99%CE%91%CE%9A%CE%97%CE%A1%CE%A5%CE%9E%CE%97-%CE%9D%CE%91%CE%A5%CE%91%CE%93%CE%9F%CE%A3%CE%A9%CE%A3%CE%A4%CE%95%CE%A3-2026-%CE%BC%CE%B5-%CE%91%CE%94%CE%91%CE%9C-%CE%BA%CE%B1%CE%B9-%CE%91%CE%94%CE%91.pdf",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/agios-nikolaos/"
             ],
             "sourceNotes": [
               "Karpathos official 2026 lifeguard tender lists Ag. Nikolaos Arkasas, matching this Arkasa beach record.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, municipal tourism, and the official 2026 lifeguard tender support Agios Nikolaos Arkasa identity, west/southwest Arkasa location, organized beach services, restaurants, road access, and busy bathing-facility status."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, municipal tourism, and the official 2026 lifeguard tender support Agios Nikolaos Arkasa identity, west/southwest Arkasa location, organized beach services, restaurants, road access, and busy bathing-facility status.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/KarpathosInfo (αναζήτηση 2026-09-01): «The famous sandy beach Agios Nikolaos in village Arkasa... fine yellow sand... and awesome views of Kasos island»· «There is parking place over the beach»· «There is beach volley court on the beach, sunbeds and umbrellas»· «Around the beach there are hotels, taverna and beach bar». Διασταυρώνεται με τον έλεγχο εγγύτητας δρόμου της 16/08 (ασφαλτόδρομος 75 m, μονοπάτι 51 m): η διαδρομή με αυτοκίνητο προς τη συντεταγμένη είναι η σωστή."
             ],
             "orientation": {
               "degrees": 259.4,
@@ -173680,6 +173768,12 @@
                 "https://www.openstreetmap.org/node/11088911987"
               ],
               "checkedAt": "2026-07-25"
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -173702,8 +173796,11 @@
               "label": "βότσαλα, βράχια"
             },
             "organized": false,
-            "shade": false,
-            "amenities": [],
+            "shade": true,
+            "amenities": [
+              "ξαπλώστρες/ομπρέλες εποχικά",
+              "φυσική σκιά από αρμυρίκια"
+            ],
             "confidence": "high",
             "language": "el",
             "batch": "karpathos_confidence_continuation_2026_06_02",
@@ -173714,12 +173811,14 @@
             },
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
-              "https://www.visitolympos.com/"
+              "https://www.visitolympos.com/",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/agnontia/"
             ],
             "sourceNotes": [
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo states the dirt road to Agnontia is usually bad and recommends an off-road vehicle; Visit Olympos lists Agnontia among north beaches reached by jeep/ATV or boat.",
               "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and Visit Olympos support Agnontia as a named remote north beach reached by bad dirt road/off-road vehicle or boat; kept medium due lack of dedicated detailed source.",
-              "Karpathos confidence continuation 2026-06-02: KarpathosInfo directly supports Agnontia as a named remote north beach with matching coordinates, coarse sand/grey pebbles, tamarisk shade and a usually bad dirt road requiring an off-road vehicle; Visit Olympos remains supporting area context but was unavailable during the latest fetch. Confidence promoted to high for static identity/access/terrain evidence only. Difficult access remains encoded, so this must not be treated as an easy or ideal tourist recommendation. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed."
+              "Karpathos confidence continuation 2026-06-02: KarpathosInfo directly supports Agnontia as a named remote north beach with matching coordinates, coarse sand/grey pebbles, tamarisk shade and a usually bad dirt road requiring an off-road vehicle; Visit Olympos remains supporting area context but was unavailable during the latest fetch. Confidence promoted to high for static identity/access/terrain evidence only. Difficult access remains encoded, so this must not be treated as an easy or ideal tourist recommendation. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα: «You may be able to find some sunbeds and umbrellas on the beach during peak summer months»· «You can find some natural shade under the tamarisk trees of the beach»· «Usually the quality of the dirt road which leads to Agnotia beach is bad, so... you have to drive an off-road vehicle» — επιβεβαιώνει τον ήδη καταγεγραμμένο δύσβατο χωματόδρομο. Το `organized` ΕΜΕΙΝΕ false: μία μόνο πηγή, και με επιφύλαξη («may be able to find»)."
             ],
             "orientation": {
               "degrees": 123.2,
@@ -173729,6 +173828,12 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
+            },
+            "googleMapsNavigation": {
+              "status": "verified",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-01",
+              "method": "web-source-recheck-2026-09"
             }
           }
         },
@@ -174029,17 +174134,19 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "εστιατόρια κοντά",
               "καφέ κοντά",
-              "καταλύματα κοντά"
+              "καταλύματα κοντά",
+              "ξαπλώστρες εποχικά ή σε τμήματα",
+              "ομπρέλες εποχικά ή σε τμήματα",
+              "μπαρ κοντά"
             ],
-            "confidence": "low",
+            "confidence": "high",
             "language": "el",
             "batch": "hidden_karpathos_2026_08_16",
-            "needsVerification": true,
             "activities": {
               "surfing": false
             },
@@ -174050,10 +174157,13 @@
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/afoti-beach/",
-              "https://www.openstreetmap.org/way/225617242"
+              "https://www.openstreetmap.org/way/225617242",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/afoti/",
+              "https://www.allovergreece.com/Beaches/Descr/29/567/en"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Το βόρειο τμήμα του κόλπου των Πηγαδίων, ~1 χλμ από την πόλη, από τα ερείπια του εκκλησιού της Αγίας Φωτεινής και βόρεια. Ο οδηγός σημειώνει ρητά ότι δεν έχει καμία φυσική προστασία από τον άνεμο. Ταυτότητα: Tamaris Suites (94 m), εστιατόρια Capari (127 m), Nisiotiko (142 m), Mediterranean House (151 m), δρόμος οικισμού 75 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617242 (natural=beach, ανώνυμο) — νότιο τμήμα· ακτογραμμή στα 14 m· διασταύρωση με Nominatim «Παραλία Άφφωτη» στα 35.51089,27.20453. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3663m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Το βόρειο τμήμα του κόλπου των Πηγαδίων, ~1 χλμ από την πόλη, από τα ερείπια του εκκλησιού της Αγίας Φωτεινής και βόρεια. Ο οδηγός σημειώνει ρητά ότι δεν έχει καμία φυσική προστασία από τον άνεμο. Ταυτότητα: Tamaris Suites (94 m), εστιατόρια Capari (127 m), Nisiotiko (142 m), Mediterranean House (151 m), δρόμος οικισμού 75 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617242 (natural=beach, ανώνυμο) — νότιο τμήμα· ακτογραμμή στα 14 m· διασταύρωση με Nominatim «Παραλία Άφφωτη» στα 35.51089,27.20453. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3663m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες παραλίας: «Afoti is a continuation of Pigadia beach... extensive, fully organized and close to the capital»· «nice sandy shore adorned with a few pebbles... relatively shallow depth»· «only partly organized, with a few sunbeds and umbrellas lining the shore»· «On the promenade and in the surrounding area there are bars and tavernas». Η ίδια σελίδα περιγράφει την ακτή ως εκτεθειμένη — συμφωνεί με τη γεωμετρία που ήδη έχουμε (ανοιχτός κόλπος, χωρίς κάλυψη) και ΔΕΝ αντιγράφεται εδώ ως ισχυρισμός: την ένταση την κρίνει το μοντέλο ανέμου, όχι το κείμενο. Η σιγουριά ανέβηκε σε high και έφυγε η σημαία «θέλει επαλήθευση». Το `waterDepth` ΕΜΕΙΝΕ medium: η greeka λέει «relatively shallow», το KarpathosInfo «βαθαίνει σταδιακά» — το πεδίο τροφοδοτεί το μοντέλο βυθού και δεν αλλάζει χωρίς συμφωνία."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174095,18 +174205,19 @@
               ],
               "label": "άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "καφέ κοντά",
               "μπαρ κοντά",
               "εστιατόρια κοντά",
-              "καταλύματα κοντά"
+              "καταλύματα κοντά",
+              "ξαπλώστρες εποχικά ή σε τμήματα",
+              "ομπρέλες εποχικά ή σε τμήματα"
             ],
-            "confidence": "low",
+            "confidence": "high",
             "language": "el",
             "batch": "hidden_karpathos_2026_08_16",
-            "needsVerification": true,
             "activities": {
               "surfing": false
             },
@@ -174118,10 +174229,13 @@
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-beaches/vrontis-beach",
               "https://www.greeka.com/dodecanese/karpathos/beaches/vrontis/",
-              "https://www.openstreetmap.org/way/225617241"
+              "https://www.openstreetmap.org/way/225617241",
+              "https://www.allovergreece.com/Beaches/Descr/29/582/en",
+              "https://www.in2greece.com/english/places/summer/islands/karpathos-beaches.html"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Η μακρύτερη παραλία του κόλπου των Πηγαδίων, λίγες εκατοντάδες μέτρα ΒΔ από την παραλία της πόλης· 15-20 λεπτά με τα πόδια από την πρωτεύουσα. Ήταν ανώνυμο πολύγωνο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 160 m υπάρχουν καφέ (29 m), Island Bar (111 m), εστιατόριο Kali Kardia (137 m) και η οδός Ποσειδώνος (secondary/asphalt, 131 m) — οικισμός, όχι ερημιά. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617241 (natural=beach, ανώνυμο, περίμετρος 792 m) — κεντροειδές· ακτογραμμή στα 13 m. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3462m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Η μακρύτερη παραλία του κόλπου των Πηγαδίων, λίγες εκατοντάδες μέτρα ΒΔ από την παραλία της πόλης· 15-20 λεπτά με τα πόδια από την πρωτεύουσα. Ήταν ανώνυμο πολύγωνο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 160 m υπάρχουν καφέ (29 m), Island Bar (111 m), εστιατόριο Kali Kardia (137 m) και η οδός Ποσειδώνος (secondary/asphalt, 131 m) — οικισμός, όχι ερημιά. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617241 (natural=beach, ανώνυμο, περίμετρος 792 m) — κεντροειδές· ακτογραμμή στα 13 m. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3462m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «one of the longest beaches in Karpathos... possible to get there on foot from Pigadia»· «mostly sandy and stretches for 4 km»· «strewn with sand and pebbles, and it is partly organized with sunbeds and umbrellas»· «a number of restaurants and taverns in the area»· «Water Sports: NO»· «It never gets crowded and ranks among the quietest beaches near Karpathos Town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση». Το `organized` έγινε true ως ΜΕΡΙΚΩΣ οργανωμένη — γι' αυτό οι παροχές γράφτηκαν «εποχικά ή σε τμήματα» και όχι σκέτο «ξαπλώστρες»."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174163,17 +174277,18 @@
               ],
               "label": "χοντρή άμμος, βότσαλα"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ταβέρνες κοντά",
               "καφέ κοντά",
-              "καταλύματα κοντά"
+              "καταλύματα κοντά",
+              "ξαπλώστρες εποχικά",
+              "ομπρέλες εποχικά"
             ],
-            "confidence": "low",
+            "confidence": "high",
             "language": "el",
             "batch": "hidden_karpathos_2026_08_16",
-            "needsVerification": true,
             "activities": {
               "surfing": false
             },
@@ -174183,10 +174298,13 @@
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/diafani-beach/",
-              "https://www.openstreetmap.org/way/561329965"
+              "https://www.openstreetmap.org/way/561329965",
+              "https://www.greeka.com/dodecanese/karpathos/beaches/diafani-beach/",
+              "https://el.wikipedia.org/wiki/%CE%94%CE%B9%CE%B1%CF%86%CE%AC%CE%BD%CE%B9_%CE%9A%CE%B1%CF%81%CF%80%CE%AC%CE%B8%CE%BF%CF%85"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Η παραλία του δεύτερου λιμανιού της Καρπάθου, μπροστά στην προκυμαία του χωριού — δεν υπήρχε εγγραφή, ενώ γύρω της είχαμε ήδη έξι απομονωμένες ακτές. Ήταν ανώνυμο πολύγωνο στην OSM. Ο οδηγός τη δίνει >200 m μήκος, ~10 m πλάτος, με μόλο που τη χωρίζει στη μέση. Ταυτότητα: εστιατόρια Rahati (30 m), Chrissi Akti (37 m), Anixis (43 m), Blue (43 m), καφέ To Aktaio (52 m), δρόμος 21 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/561329965 (natural=beach, surface=pebblestone, ανώνυμο, περίμετρος 610 m) — κεντροειδές· ακτογραμμή στα 6 m. Slot κοντά στο #2298 (Βανάντα, 1643m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Η παραλία του δεύτερου λιμανιού της Καρπάθου, μπροστά στην προκυμαία του χωριού — δεν υπήρχε εγγραφή, ενώ γύρω της είχαμε ήδη έξι απομονωμένες ακτές. Ήταν ανώνυμο πολύγωνο στην OSM. Ο οδηγός τη δίνει >200 m μήκος, ~10 m πλάτος, με μόλο που τη χωρίζει στη μέση. Ταυτότητα: εστιατόρια Rahati (30 m), Chrissi Akti (37 m), Anixis (43 m), Blue (43 m), καφέ To Aktaio (52 m), δρόμος 21 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/561329965 (natural=beach, surface=pebblestone, ανώνυμο, περίμετρος 610 m) — κεντροειδές· ακτογραμμή στα 6 m. Slot κοντά στο #2298 (Βανάντα, 1643m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + Βικιπαίδεια (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «a long pebbly beach stretching for at least 200 meters, located right in front of Diafani's seaside promenade»· «small gray pebbles with a crystal clear sea»· «Its inviting azure waters deepen gradually» — στηρίζει το καταγεγραμμένο μέτριο βάθος· «the beach is cut in two by a pier used by excursion boats»· «The beach is organized with umbrellas and sunbeds, but there is still enough room left for visitors to lay down their own equipment»· «taverns and cafes that line the picturesque seafront». Σιγουριά -> high, έφυγε η σημαία. ΑΝΟΙΧΤΟ: δύο πηγές λένε μόνο βότσαλα, το record γράφει και χοντρή άμμο — δεν άλλαξε εδώ, θέλει τρίτη πηγή ή επιτόπου."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174237,12 +174355,12 @@
               "καφέ κοντά",
               "ξαπλώστρες εποχικά",
               "ομπρέλες εποχικά",
-              "καταλύματα κοντά"
+              "καταλύματα κοντά",
+              "μπαρ κοντά"
             ],
-            "confidence": "low",
+            "confidence": "high",
             "language": "el",
             "batch": "hidden_karpathos_2026_08_16",
-            "needsVerification": true,
             "activities": {
               "surfing": false
             },
@@ -174253,10 +174371,13 @@
             "sourceUrls": [
               "https://karpathosinfo.com/pigadia-beach/",
               "https://www.greeka.com/dodecanese/karpathos/beaches/pigadia-beach/",
-              "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
+              "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/",
+              "https://www.in2greece.com/english/places/summer/islands/karpathos-beaches/pigadia-beach.html",
+              "https://www.tripadvisor.com/Attraction_Review-g1188925-d4298041-Reviews-Pigadia_Beach-Karpathos_Town_Pigadia_Karpathos_Dodecanese_South_Aegean.html"
             ],
             "sourceNotes": [
-              "Hidden-beach discovery (2026-07): Η παραλία της πρωτεύουσας — δεν υπήρχε καμία εγγραφή για τα Πηγάδια, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει στη Χώρα. Η OSM ΔΕΝ έχει πολύγωνο παραλίας εδώ (μόνο ακτογραμμή), γι' αυτό ήταν αόρατη και στα δύο pipelines. Η πινέζα είναι εκτίμηση από τον οδηγό, ακουμπισμένη στην ακτογραμμή· ΔΕΝ προέρχεται από πολύγωνο παραλίας και χρειάζεται ανθρώπινη επιβεβαίωση. Ταυτότητα: δρόμοι πόλης 31-58 m, καφέ Non Solo Caffé (54 m), Hermanos (67 m). Συντεταγμένες: Οδηγός KarpathosInfo (μπροστά από τα ξενοδοχεία, ~100 m από το εξωτερικό λιμάνι) + πλησιέστερο σημείο ακτογραμμής OSM 35.50804,27.21289. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3496m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου."
+              "Hidden-beach discovery (2026-07): Η παραλία της πρωτεύουσας — δεν υπήρχε καμία εγγραφή για τα Πηγάδια, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει στη Χώρα. Η OSM ΔΕΝ έχει πολύγωνο παραλίας εδώ (μόνο ακτογραμμή), γι' αυτό ήταν αόρατη και στα δύο pipelines. Η πινέζα είναι εκτίμηση από τον οδηγό, ακουμπισμένη στην ακτογραμμή· ΔΕΝ προέρχεται από πολύγωνο παραλίας και χρειάζεται ανθρώπινη επιβεβαίωση. Ταυτότητα: δρόμοι πόλης 31-58 m, καφέ Non Solo Caffé (54 m), Hermanos (67 m). Συντεταγμένες: Οδηγός KarpathosInfo (μπροστά από τα ξενοδοχεία, ~100 m από το εξωτερικό λιμάνι) + πλησιέστερο σημείο ακτογραμμής OSM 35.50804,27.21289. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3496m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/in2greece/Tripadvisor (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «lies just a few minutes from the town center, stretching right to the left of Karpathos Port and the Archaeological Museum»· «stretches some 3 kilometres along the bay with fine golden sand»· «mainly covered with sand, gravel-like pebbles and stones, with medium depth in relation to other beaches on the island» — στηρίζει το καταγεγραμμένο μέτριο βάθος και το καταγεγραμμένο έδαφος· «well-organized with umbrellas and sunbeds, while several taverns, cafes, bars and hotels can be found along the beach»· «only a 5-15 minute walk from the town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση»."
             ],
             "googleMapsNavigation": {
               "status": "verified",
