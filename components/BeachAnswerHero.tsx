@@ -241,6 +241,17 @@ interface ReadingProps {
   label: string;
   value: string;
   hint?: string | null;
+  /**
+   * ΤΟ ΣΗΜΑΔΙ ΤΟΥ «ΣΚΑΕΙ ΣΤΗΝ ΑΚΤΗ» ΠΑΝΩ ΣΤΟ ΠΛΑΚΙΔΙΟ (Μίλτος, 02/09/2026, Καραβοστάσι).
+   *
+   * Η πρόταση από κάτω λέει ότι το 0,3 της ακτής θα το νιώσεις ολόκληρο· το πλακίδιο που
+   * τυπώνει το 0,3 πρέπει να το δείχνει κι αυτό, αλλιώς ο αριθμός διαβάζεται μόνος του και
+   * καθησυχάζει. ΔΙΑΚΡΙΤΙΚΑ, με τον κανόνα της 28/08 (χωρίς γέμισμα, χωρίς δαχτυλίδι): ο ίδιος
+   * ο αριθμός βάφεται κεχριμπαρί και ένα μικρό «〜» κάθεται στη γωνία — το ίδιο γλυφικό που
+   * ανοίγει την πρόταση, ώστε το μάτι να τα δέσει. Τίποτα δεν μπαίνει στη ροή του πλακιδίου:
+   * η γωνία είναι `absolute`, άρα το validateTileFit δεν έχει νέα λέξη να μετρήσει.
+   */
+  accent?: boolean;
 }
 
 /**
@@ -300,11 +311,14 @@ const TILE_TEXT = 'w-full [overflow-wrap:normal] [word-break:normal] [hyphens:no
 const TILE_BOX = 'grid grid-rows-subgrid row-span-4 min-w-0 justify-items-center gap-1 rounded-control px-0 min-[380px]:px-1 py-3 text-center';
 const TILE_HINT = 'text-[8px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
 
-const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint }) => (
-  <div data-tilefit="reading" className={TILE_BOX}>
+const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint, accent }) => (
+  <div data-tilefit="reading" className={`${TILE_BOX} relative`}>
+    {accent && (
+      <span className="absolute right-0.5 top-0.5 text-[11px] font-black leading-none text-amber-600" aria-hidden="true">〜</span>
+    )}
     <div className="h-6 w-9">{glyph}</div>
     <p className="text-[10px] font-bold tracking-wide text-slate-500">{label}</p>
-    <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight text-slate-900 tabular-nums`}>{value}</p>
+    <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight tabular-nums ${accent ? 'text-amber-800' : 'text-slate-900'}`}>{value}</p>
     {hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-2`}>{hint}</p>}
   </div>
 );
@@ -413,6 +427,9 @@ export interface BeachAnswerHeroProps {
    *
    * Here it sits beside `climateNote`, in the one layout on this page built for a sentence about
    * the sea. It is the only place with room for it and nothing that can push it out.
+   *
+   * 02/09/2026 — ΑΝΕΒΗΚΕ κάτω από τη σειρά των τεσσάρων πλακιδίων (ήταν τελευταίο στην κάρτα)
+   * και σημαδεύει και το πλακίδιο «Κύμα» (`ReadingProps.accent`). Ίδια πύλη, ίδιο κείμενο.
    */
   shoreBreakNote?: string | null;
   /**
@@ -631,6 +648,8 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
       hint: shoreLeads && typeof sea.heightM === 'number'
         ? shoreCopy.offshore(metres(sea.heightM))
         : sea.label,
+      // Το πλακίδιο σημαδεύεται ΜΟΝΟ όταν η πρόταση τυπώνεται — ίδια απόφαση, ίδια ώρα.
+      accent: Boolean(shoreBreakNote),
     });
   }
   if (water) {
@@ -746,6 +765,19 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           </div>
         )}
 
+        {shoreBreakNote && (
+          // ΑΚΡΙΒΩΣ ΚΑΤΩ ΑΠΟ ΤΑ ΠΛΑΚΙΔΙΑ, ΟΧΙ ΣΤΟΝ ΠΑΤΟ ΤΗΣ ΚΑΡΤΑΣ (Μίλτος, 02/09/2026, Καραβοστάσι).
+          // Καθόταν τελευταία, μετά τις παροχές και τη γραμμή των km/h — τέσσερα μπλοκ μακριά από
+          // το 0,3 που εξηγεί. Είναι η μία πρόταση που αλλάζει τι σημαίνει ο αριθμός, οπότε
+          // κάθεται δίπλα του. Κεχριμπάρι όπως πριν, λίγο πιο γεμάτο και πιο βαρύ από τις άλλες
+          // σημειώσεις: δεν είναι προειδοποίηση, αλλά είναι το «θα νιώσεις κάτι» σε σελίδα που
+          // κατά τα άλλα λέει «ήρεμα». Το γλυφικό είναι το ίδιο που έχει τώρα και το πλακίδιο.
+          <p className="flex items-start gap-2 rounded-control bg-amber-500/15 px-3 py-3 text-[15px] font-bold leading-snug text-amber-950" data-nosnippet="true">
+            <span className="mt-px shrink-0 text-amber-700" aria-hidden="true">〜</span>
+            <span>{shoreBreakNote}</span>
+          </p>
+        )}
+
         {/* Η ΓΡΑΜΜΗ ΤΗΣ ΑΝΤΙΘΕΣΗΣ — βλ. το σκεπτικό στο `contrastLine` παραπάνω. Ίδιο λεξιλόγιο
             με τις κάρτες της λίστας (utils/conditionsFeelPhrase), ώστε ο επισκέπτης που πάτησε
             μια κάρτα να ξαναβρεί εδώ τις ΙΔΙΕΣ λέξεις που τον έφεραν. Δεν είναι ετυμηγορία και
@@ -839,16 +871,6 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           </p>
         )}
 
-        {shoreBreakNote && (
-          // Amber, like `climateNote`'s 'worse' tone: it is not a warning, but it is the one line
-          // on a calm-looking page saying "you will feel something", and a neutral grey would read
-          // as trivia. The wave glyph is the same character the sea tile uses, so the reader can
-          // see at a glance which figure this sentence belongs to.
-          <p className="flex items-start gap-2 rounded-control bg-amber-500/10 px-3 py-2.5 text-sm font-semibold leading-snug text-amber-900">
-            <span className="mt-px shrink-0" aria-hidden="true">〜</span>
-            <span>{shoreBreakNote}</span>
-          </p>
-        )}
       </div>
     </section>
   );

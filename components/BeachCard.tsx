@@ -1257,6 +1257,9 @@ const waveWarningLabel = (warning: WarningFlag, waveHeightM: number | undefined,
 };
 
 const warningToneClass = (warning: WarningFlag): string => {
+  // Κεχριμπάρι όπως η ίδια πρόταση στη σελίδα (BeachAnswerHero): το γαλάζιο «info» διαβαζόταν
+  // σαν λεπτομέρεια, ενώ είναι το «θα νιώσεις κύμα» πάνω σε κάρτα που λέει «ήρεμα» (02/09/2026).
+  if (warning.type === 'shore_break') return 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-300';
   if (warning.severity === 'critical') return 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-300';
   if (warning.severity === 'warning') return 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-300';
   return 'border-sky-100 bg-sky-50 text-sky-700 dark:border-sky-900/40 dark:bg-sky-950/20 dark:text-sky-300';
