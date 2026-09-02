@@ -91484,19 +91484,23 @@
             "language": "el",
             "batch": "011_1001_1100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: removed unverified lifeguard claim until a direct official/current source URL is added.",
               "Copla, Soul and Lefkada Slow Guide support beach bars and organized services at Kathisma.",
-              "Lefkada strict evidence pass 2026-05-29: Copla, Soul Beach Bar, and Lefkada Slow Guide support Kathisma beach-bar and organized-service context. Lifeguard remains unverified and was not reintroduced. Promoted to high for static service evidence only."
+              "Lefkada strict evidence pass 2026-05-29: Copla, Soul Beach Bar, and Lefkada Slow Guide support Kathisma beach-bar and organized-service context. Lifeguard remains unverified and was not reintroduced. Promoted to high for static service evidence only.",
+              "Water-depth correction 2026-09-02, prompted by a visitor report on this beach (\"more wave than shown\", shore sea 0,32 m, NE wind, exposure protected). The record said `shallow` with the gentle-entry note, and NOTHING in the sourceNotes above backs it — they cover beach bars and organized services only (\"Promoted to high for static service evidence only\"). Two independent lines of evidence say the opposite. (1) OUR OWN bathymetry (public/data/geospatial/bathymetry/ionian-islands-lefkada.json, W sector — the shore this beach faces at 285,7°): first water 50 m, 0,95 m @100 m, 5,62 m @300 m, 15,48 m @500 m. That is the same profile as Kavalikefta #1162, which we already classify `deep` (100 m / 0,87 / 5,19 / 16,02), and deeper at every sample than Agiofylli #1158 `deep`. (2) Multiple independent published sources describe a seabed that drops within a few metres of the shore, strong undercurrents and repeated drownings. Terrain here is coarse sand + pebbles, so this is the Kavalikefta family: same coast, 1 km apart, same steep coarse shore. CONSEQUENCES, both intended: `shallow` was the only value unlocking `familyFriendly` (scripts/buildBeachRegionData.mjs:682), so the beach leaves the \"Ρηχά νερά\" AND \"Οικογενειακή\" filters; and `deep` + pebbles now satisfies utils/shoreBreak.hasSteepCoarseShore, so the page may say that the wave breaks on the shore here — the sentence this visitor was missing. Same class of error as the 23/08/2026 pass that caught Porto Katsiki #1171."
             ],
             "sourceUrls": [
               "https://copla.gr/",
               "https://soulbeachbar.gr/",
-              "https://lefkadaslowguide.gr/en/food-and-entertainment/bars-night-life/copla-beach-bar/"
+              "https://lefkadaslowguide.gr/en/food-and-entertainment/bars-night-life/copla-beach-bar/",
+              "https://www.tovima.gr/grace/epikairotita/kathisma-lefkadas-i-paralia-stolidi-pou-sychna-ginetai-pagida-thanatou/",
+              "https://www.ethnos.gr/ournetwork/article/367481/kathismaleykadaseinaipragmatitosoepikindynhkaithanathforahparaliatoyionioy",
+              "https://nikana.gr/en/tourist-guide/lefkada/beaches/2509/kathisma-beach"
             ],
             "orientation": {
               "degrees": 289.9,
