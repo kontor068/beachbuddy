@@ -97,6 +97,15 @@ export const READ_LABELS: Record<LanguageCode, { wind: string; sea: string; seaO
  * το νερό της ακτής, ένα μέγεθος για όλες τις παραλίες, οπότε δεν έχει τι να ξεχωρίσει με λέξη.
  * Ο τίτλος `atShore` ζει στο πλακίδιο της σελίδας, όπου υπάρχει χώρος για επικεφαλίδα.
  */
+/** Ο υπότιτλος του πλακιδίου «Κύμα» όταν το κύμα σκάει πάνω στην ακτή (utils/shoreBreak). */
+export const SHORE_BREAK_HINT: Record<LanguageCode, string> = {
+  en: 'breaks at the shore',
+  gr: 'σκάει στην ακτή',
+  de: 'bricht am Ufer',
+  it: 'frange a riva',
+  fr: 'déferle au bord',
+};
+
 export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v: string) => string }> = {
   en: { atShore: 'Waves at the shore', offshore: (v) => `${v} offshore` },
   gr: { atShore: 'Κύμα στην ακτή', offshore: (v) => `${v} ανοιχτά` },
@@ -242,14 +251,17 @@ interface ReadingProps {
   value: string;
   hint?: string | null;
   /**
-   * ΤΟ ΣΗΜΑΔΙ ΤΟΥ «ΣΚΑΕΙ ΣΤΗΝ ΑΚΤΗ» ΠΑΝΩ ΣΤΟ ΠΛΑΚΙΔΙΟ (Μίλτος, 02/09/2026, Καραβοστάσι).
+   * ΤΟ «ΣΚΑΕΙ ΣΤΗΝ ΑΚΤΗ» ΖΕΙ ΜΕΣΑ ΣΤΟ ΠΛΑΚΙΔΙΟ, ΟΧΙ ΔΙΠΛΑ ΤΟΥ (Μίλτος, 02/09/2026, Καραβοστάσι).
    *
-   * Η πρόταση από κάτω λέει ότι το 0,3 της ακτής θα το νιώσεις ολόκληρο· το πλακίδιο που
-   * τυπώνει το 0,3 πρέπει να το δείχνει κι αυτό, αλλιώς ο αριθμός διαβάζεται μόνος του και
-   * καθησυχάζει. ΔΙΑΚΡΙΤΙΚΑ, με τον κανόνα της 28/08 (χωρίς γέμισμα, χωρίς δαχτυλίδι): ο ίδιος
-   * ο αριθμός βάφεται κεχριμπαρί και ένα μικρό «〜» κάθεται στη γωνία — το ίδιο γλυφικό που
-   * ανοίγει την πρόταση, ώστε το μάτι να τα δέσει. Τίποτα δεν μπαίνει στη ροή του πλακιδίου:
-   * η γωνία είναι `absolute`, άρα το validateTileFit δεν έχει νέα λέξη να μετρήσει.
+   * Τρεις εκδοχές την ίδια μέρα. Πρώτα κεχριμπαρί κουτί στον πάτο της κάρτας («πολύ χαμηλά»),
+   * μετά το ίδιο κουτί κάτω από τα πλακίδια συν ένα «〜» πάνω από το εικονίδιο («πολύ πληροφορία,
+   * μπουκωμένο»): τρία μπλοκ κειμένου ανάμεσα στις δύο σειρές πλακιδίων, και το γλυφικό
+   * αιωρούνταν ξεκάρφωτο πάνω από το κύμα. Η τρίτη είναι αυτή: ο αριθμός και ο υπότιτλός του
+   * βάφονται κεχριμπαρί και ο υπότιτλος ΛΕΕΙ το γεγονός σε τρεις λέξεις («σκάει στην ακτή»)
+   * στη θέση του χαρακτηρισμού που η γραμμή της αντίθεσης από κάτω επαναλαμβάνει έτσι κι
+   * αλλιώς («λίγο κύμα»). Μηδέν νέα μπλοκ, μηδέν νέο ύψος· ο κανόνας της 28/08 (χωρίς γέμισμα,
+   * χωρίς δαχτυλίδι) κρατάει. Οι λέξεις είναι κοντές σε όλες τις γλώσσες — η πιο μακριά είναι
+   * «déferle», 7 γράμματα — ώστε το validateTileFit να μην έχει τίποτα να κόψει.
    */
   accent?: boolean;
 }
@@ -312,14 +324,11 @@ const TILE_BOX = 'grid grid-rows-subgrid row-span-4 min-w-0 justify-items-center
 const TILE_HINT = 'text-[8px] min-[380px]:text-[10px] font-semibold leading-[1.25] text-slate-500';
 
 const Reading: React.FC<ReadingProps> = ({ glyph, label, value, hint, accent }) => (
-  <div data-tilefit="reading" className={`${TILE_BOX} relative`}>
-    {accent && (
-      <span className="absolute right-0.5 top-0.5 text-[11px] font-black leading-none text-amber-600" aria-hidden="true">〜</span>
-    )}
+  <div data-tilefit="reading" className={TILE_BOX}>
     <div className="h-6 w-9">{glyph}</div>
     <p className="text-[10px] font-bold tracking-wide text-slate-500">{label}</p>
     <p className={`${TILE_TEXT} text-[14px] min-[380px]:text-[15px] font-black leading-tight tabular-nums ${accent ? 'text-amber-800' : 'text-slate-900'}`}>{value}</p>
-    {hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-2`}>{hint}</p>}
+    {hint && <p className={`${TILE_TEXT} ${TILE_HINT} line-clamp-2 ${accent ? 'text-amber-800' : ''}`}>{hint}</p>}
   </div>
 );
 
@@ -428,8 +437,11 @@ export interface BeachAnswerHeroProps {
    * Here it sits beside `climateNote`, in the one layout on this page built for a sentence about
    * the sea. It is the only place with room for it and nothing that can push it out.
    *
-   * 02/09/2026 — ΑΝΕΒΗΚΕ κάτω από τη σειρά των τεσσάρων πλακιδίων (ήταν τελευταίο στην κάρτα)
-   * και σημαδεύει και το πλακίδιο «Κύμα» (`ReadingProps.accent`). Ίδια πύλη, ίδιο κείμενο.
+   * 02/09/2026 — ΔΕΝ ΤΥΠΩΝΕΤΑΙ ΠΙΑ ΩΣ ΠΡΟΤΑΣΗ. Δοκιμάστηκε στον πάτο της κάρτας και κάτω από
+   * τα πλακίδια την ίδια μέρα («πολύ χαμηλά» → «μπουκωμένο»). Η πύλη μένει στη σελίδα, αλλά
+   * εδώ το γεγονός λέγεται από το ίδιο το πλακίδιο «Κύμα»: αριθμός και υπότιτλος κεχριμπαρί,
+   * υπότιτλος «σκάει στην ακτή» (`SHORE_BREAK_HINT`, `ReadingProps.accent`). Η τιμή διαβάζεται
+   * μόνο ως ναι/όχι· το κείμενο ζει στη σελίδα για όποια επιφάνεια το χρειαστεί ολόκληρο.
    */
   shoreBreakNote?: string | null;
   /**
@@ -645,10 +657,15 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
       value: hasShore
         ? `${shoreLeads ? '~' : ''}${metres(shoreM as number)}`
         : typeof sea.heightM === 'number' ? metres(sea.heightM) : '—',
+      // «σκάει στην ακτή» μπαίνει στη θέση του χαρακτηρισμού ΜΟΝΟ όταν η πύλη του shoreBreak
+      // είναι ανοιχτή (η σελίδα το κρίνει πάνω στον ίδιο αριθμό που τυπώνεται εδώ). Ο αριθμός
+      // του ανοιχτού (§7δ) προηγείται πάντα — στην πράξη οι δύο δεν συμπίπτουν: το ένα θέλει
+      // αέρα από τη στεριά χωρίς φουσκοθαλασσιά, το άλλο θάλασσα που έρχεται κατάμουτρα.
       hint: shoreLeads && typeof sea.heightM === 'number'
         ? shoreCopy.offshore(metres(sea.heightM))
-        : sea.label,
-      // Το πλακίδιο σημαδεύεται ΜΟΝΟ όταν η πρόταση τυπώνεται — ίδια απόφαση, ίδια ώρα.
+        : shoreBreakNote
+          ? (SHORE_BREAK_HINT[language] ?? SHORE_BREAK_HINT.en)
+          : sea.label,
       accent: Boolean(shoreBreakNote),
     });
   }
@@ -765,34 +782,6 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
           </div>
         )}
 
-        {shoreBreakNote && (
-          // ΑΚΡΙΒΩΣ ΚΑΤΩ ΑΠΟ ΤΑ ΠΛΑΚΙΔΙΑ, ΟΧΙ ΣΤΟΝ ΠΑΤΟ ΤΗΣ ΚΑΡΤΑΣ (Μίλτος, 02/09/2026, Καραβοστάσι).
-          // Καθόταν τελευταία, μετά τις παροχές και τη γραμμή των km/h — τέσσερα μπλοκ μακριά από
-          // το 0,3 που εξηγεί. Είναι η μία πρόταση που αλλάζει τι σημαίνει ο αριθμός, οπότε
-          // κάθεται δίπλα του. Κεχριμπάρι όπως πριν, λίγο πιο γεμάτο και πιο βαρύ από τις άλλες
-          // σημειώσεις: δεν είναι προειδοποίηση, αλλά είναι το «θα νιώσεις κάτι» σε σελίδα που
-          // κατά τα άλλα λέει «ήρεμα». Το γλυφικό είναι το ίδιο που έχει τώρα και το πλακίδιο.
-          <p className="flex items-start gap-2 rounded-control bg-amber-500/15 px-3 py-3 text-[15px] font-bold leading-snug text-amber-950" data-nosnippet="true">
-            <span className="mt-px shrink-0 text-amber-700" aria-hidden="true">〜</span>
-            <span>{shoreBreakNote}</span>
-          </p>
-        )}
-
-        {/* Η ΓΡΑΜΜΗ ΤΗΣ ΑΝΤΙΘΕΣΗΣ — βλ. το σκεπτικό στο `contrastLine` παραπάνω. Ίδιο λεξιλόγιο
-            με τις κάρτες της λίστας (utils/conditionsFeelPhrase), ώστε ο επισκέπτης που πάτησε
-            μια κάρτα να ξαναβρεί εδώ τις ΙΔΙΕΣ λέξεις που τον έφεραν. Δεν είναι ετυμηγορία και
-            δεν φέρνει δικό της χρώμα: το κέλυφος της κάρτας χρωματίζει ήδη. */}
-        {contrastLine && (
-          <p
-            className="px-1 text-center text-sm font-extrabold leading-snug text-slate-800"
-            data-tilefit="hero-contrast"
-            data-testid="conditions-feel"
-            data-nosnippet="true"
-          >
-            {contrastLine}
-          </p>
-        )}
-
         {/* WHY THIS BEACH READS THE WAY IT DOES — the sentence that makes the instruments
             make sense together.
 
@@ -816,6 +805,26 @@ export const BeachAnswerHero: React.FC<BeachAnswerHeroProps> = ({
         {explanation && explanationIsVerdict && (
           <p className="px-1 text-center text-base font-bold leading-snug text-slate-800" data-nosnippet="true">
             {explanation}
+          </p>
+        )}
+
+        {/* Η ΓΡΑΜΜΗ ΤΗΣ ΑΝΤΙΘΕΣΗΣ — βλ. το σκεπτικό στο `contrastLine` παραπάνω. Ίδιο λεξιλόγιο
+            με τις κάρτες της λίστας (utils/conditionsFeelPhrase), ώστε ο επισκέπτης που πάτησε
+            μια κάρτα να ξαναβρεί εδώ τις ΙΔΙΕΣ λέξεις που τον έφεραν. Δεν είναι ετυμηγορία και
+            δεν φέρνει δικό της χρώμα: το κέλυφος της κάρτας χρωματίζει ήδη.
+            02/09/2026 (Μίλτος, Καραβοστάσι: «πολύ πληροφορία, μπουκωμένο»): ήταν ΠΑΝΩ από την
+            ετυμηγορία, ίδιο μαύρο, ίδιο βάρος — δύο κεντραρισμένες έντονες γραμμές που
+            διεκδικούσαν το ίδιο μάτι. Τώρα είναι λεζάντα ΚΑΤΩ από την ετυμηγορία, πιο ανοιχτή
+            και πιο ελαφριά: η απάντηση («Καλή μέρα για μπάνιο εδώ») είναι μία, και οι λέξεις
+            της κάρτας τη συνοδεύουν. */}
+        {contrastLine && (
+          <p
+            className="px-1 text-center text-sm font-semibold leading-snug text-slate-600"
+            data-tilefit="hero-contrast"
+            data-testid="conditions-feel"
+            data-nosnippet="true"
+          >
+            {contrastLine}
           </p>
         )}
 
