@@ -22,7 +22,7 @@ import {
   WAVE_WORD_ARRIVAL_GATE_MIN_PRINTED_M,
 } from '../utils/conditionsFeelPhrase';
 import { buildBeachConditionsReadout } from '../utils/beachConditionsReadout';
-import { SEA_ARRIVAL_GRAZING } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM } from '../utils/waveCharacter';
 import { SEA_ARRIVAL_UNKNOWN } from '../utils/seaArrival';
 import { SUPPORTED_LANGUAGES } from '../utils/i18n';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
@@ -197,11 +197,59 @@ for (const language of SUPPORTED_LANGUAGES) {
 
 // Τα δύο κατώφλια του κύματος ΔΕΝ είναι δικά μας — αν αλλάξουν στο waveCharacter, η λέξη
 // πρέπει να ακολουθήσει, αλλιώς η κάρτα λέει «λίγο κύμα» εκεί που η μηχανή κιτρινίζει.
-if (waveFeelLevel(SEA_STATE_AMBER_M - 0.01) !== 2 || waveFeelLevel(SEA_STATE_AMBER_M) !== 3) {
+// Από 02/09/2026 η βαθμίδα κρίνεται στην ακρίβεια της οθόνης (βήμα 0,1), οπότε το «λίγο πριν
+// το κατώφλι» είναι 0,06 κάτω (0,74 → «0,7»), όχι 0,01 (0,79 τυπώνεται «0,8» και ΠΡΕΠΕΙ να
+// λέει ό,τι λέει το 0,8).
+if (waveFeelLevel(SEA_STATE_AMBER_M - 0.06) !== 2 || waveFeelLevel(SEA_STATE_AMBER_M) !== 3) {
   failures.push(`Το κατώφλι «κιτρινίζει» (${SEA_STATE_AMBER_M} m) δεν αλλάζει λέξη`);
 }
-if (waveFeelLevel(SEA_STATE_ROUGH_M - 0.01) !== 3 || waveFeelLevel(SEA_STATE_ROUGH_M) !== 4) {
+if (waveFeelLevel(SEA_STATE_ROUGH_M - 0.06) !== 3 || waveFeelLevel(SEA_STATE_ROUGH_M) !== 4) {
   failures.push(`Το κατώφλι «τραχιά» (${SEA_STATE_ROUGH_M} m) δεν αλλάζει λέξη`);
+}
+
+/**
+ * Η ΛΕΞΗ ΔΕΝ ΔΙΑΨΕΥΔΕΙ ΤΟ ΝΟΥΜΕΡΟ ΟΥΤΕ ΚΑΤΑ ΕΝΑ ΕΚΑΤΟΣΤΟ (02/09/2026 — Αρίλλα Θεσπρωτίας #890).
+ *
+ * 15:00, κάρτα «θάλασσα λάδι», σελίδα «0,2 μ.», άμμος με κυματάκι. Ο ίδιος αριθμός (0,15–0,199)
+ * τυπωνόταν στρογγυλεμένος και κρινόταν ωμός. Τρεις δεσμεύσεις:
+ *   1. Κάθε ωμή τιμή παίρνει τη λέξη του ΤΥΠΩΜΕΝΟΥ της αριθμού — σάρωση 0,00–1,60 ανά 0,01.
+ *   2. Η στρογγυλοποίηση δεν κατεβάζει ποτέ βαθμίδα (μονόδρομη προς την προσοχή) και ανεβάζει
+ *      το πολύ ένα σκαλί.
+ *   3. Η διαδρομή της κάρτας (beachConditionsReadout) και η διαδρομή της σελίδας
+ *      (buildConditionsFeel με το ωμό ύψος ακτής) συμφωνούν μεταξύ τους ΚΑΙ με το κείμενο.
+ */
+{
+  const rawLevel = (metres: number): number => {
+    if (metres < 0.2) return 0;
+    if (metres < 0.4) return 1;
+    if (metres < SEA_STATE_AMBER_M) return 2;
+    if (metres < SEA_STATE_ROUGH_M) return 3;
+    return 4;
+  };
+  for (let cents = 0; cents <= 160; cents += 1) {
+    const metres = cents / 100;
+    const printed = atDisplayedPrecisionM(metres) ?? metres;
+    const level = waveFeelLevel(metres);
+    if (level !== waveFeelLevel(printed)) {
+      failures.push(`${metres} m: η λέξη (${level}) δεν είναι η λέξη του τυπωμένου «${printed}» (${waveFeelLevel(printed)})`);
+    }
+    const raw = rawLevel(metres);
+    if (level < raw) failures.push(`${metres} m: η στρογγυλοποίηση ΗΡΕΜΗΣΕ τη λέξη (${raw} → ${level})`);
+    if (level > raw + 1) failures.push(`${metres} m: η στρογγυλοποίηση ανέβασε πάνω από ένα σκαλί (${raw} → ${level})`);
+  }
+  const ARILLA_M = 0.17;
+  const card = buildBeachConditionsReadout({ beachWindSpeedKmph: 11, waveHeightM: ARILLA_M, shoreDisplayWaveM: ARILLA_M, seaArrivalExposureLevel: 'exposed', language: 'gr' });
+  if (card.waveText !== '0,2 μ.' || card.waveWord !== 'Σχεδόν χωρίς κύμα') {
+    failures.push(`Αρίλλα (0,17 μ., 2 Μπφ): η κάρτα γράφει «${card.waveText}» με λέξη «${card.waveWord}» — «0,2 μ.» δεν επιτρέπεται να συνοδεύεται από «λάδι»`);
+  }
+  const hero = buildConditionsFeel({ beaufort: 2, waveM: ARILLA_M, seaArrivalExposureLevel: 'exposed', language: 'gr' });
+  if (hero?.waveLevel !== 1 || hero.waveWordLiftedByArrival) {
+    failures.push(`Αρίλλα (σελίδα, 0,17 μ.): επίπεδο ${hero?.waveLevel} — έπρεπε 1 (σχεδόν χωρίς κύμα), χωρίς πύλη άφιξης`);
+  }
+  const stillGlassy = buildBeachConditionsReadout({ beachWindSpeedKmph: 11, waveHeightM: 0.14, shoreDisplayWaveM: 0.14, language: 'gr' });
+  if (stillGlassy.waveText !== '0,1 μ.' || stillGlassy.waveWord !== 'Θάλασσα λάδι') {
+    failures.push(`0,14 μ. τυπώνεται «${stillGlassy.waveText}» με λέξη «${stillGlassy.waveWord}» — το «λάδι» έπρεπε να μείνει κάτω από το τυπωμένο 0,2`);
+  }
 }
 
 // Η περίπτωση για την οποία γράφτηκε το λεξιλόγιο: δυνατός αέρας πάνω από επίπεδο νερό.
