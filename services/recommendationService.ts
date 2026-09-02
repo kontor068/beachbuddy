@@ -2397,7 +2397,7 @@ export const calculateBeachScore = (
     warnings.push({
       type: 'shore_break',
       severity: 'info',
-      message: 'Calm sea, but the water is deep and the shore is coarse, so the waves break a bit harder at the beach.',
+      message: 'Calm sea, but the water gets deep fast here, so the waves break a bit harder right at the shore.',
     });
   }
 

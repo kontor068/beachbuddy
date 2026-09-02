@@ -22,33 +22,17 @@ import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING, SEA_STATE_AMBER_M, seaStateS
  * (23,2% of the country) every time a swell turned onshore. What the reader was missing was not a
  * worse verdict, it was the sentence "here, that wave breaks on the shore". So we say that.
  *
- * It stays silent unless all four hold, which is what keeps it from becoming wallpaper:
- *   1. the water is deep right off the beach (our own `waterDepth`),
- *   2. the shore is coarse — pebbles, stones, rock (our own `terrain`),
- *   3. the sea is genuinely arriving through a sector we have NOT judged protected
+ * It stays silent unless all three hold, which is what keeps it from becoming wallpaper:
+ *   1. the water is deep right off the beach (our own `waterDepth`) — until 02/09/2026 this also
+ *      required a coarse shore (pebbles, stones, rock); see hasSteepCoarseShore for why the
+ *      terrain gate was dropped,
+ *   2. the sea is genuinely arriving through a sector we have NOT judged protected
  *      (utils/seaArrival.resolveSeaArrivalExposureLevel — the same test the shore-damping uses),
- *   4. there is a wave at all.
+ *   3. there is a wave at all.
  *
- * Gate 3 is what stops it appearing on a flat-calm morning with the swell running the other way,
- * and gate 4 stops it on the days there is simply nothing to break.
+ * Gate 2 is what stops it appearing on a flat-calm morning with the swell running the other way,
+ * and gate 3 stops it on the days there is simply nothing to break.
  */
-
-/**
- * Shore materials that do not build a dissipative surf zone. `coarse_sand` is deliberately NOT
- * here: it is 1.162 beaches nationally and it still forms the gentle slope that spreads a wave
- * out. The line is drawn at material a wave cannot flatten.
- */
-export const COARSE_SHORE_TERRAIN: readonly string[] = [
-  'pebbles',
-  'small_pebbles',
-  'fine_pebbles',
-  'large_stones',
-  'stones',
-  'rocks',
-  'shingle',
-  'gravel',
-  'fine_gravel',
-];
 
 /**
  * Below this the sea has nothing to break with — a note about how a wave lands is noise when there
@@ -81,12 +65,29 @@ export interface ShoreBreakInput {
   seaStatePeriodS?: number;
 }
 
+/**
+ * ΤΟ ΒΑΘΟΣ ΑΡΚΕΙ — ΤΟ ΕΔΑΦΟΣ ΔΕΝ ΕΙΝΑΙ ΠΙΑ ΠΥΛΗ (02/09/2026, Καραβοστάσι Θεσπρωτίας #899).
+ *
+ * Μέχρι σήμερα η πύλη ζητούσε βαθιά νερά ΚΑΙ χοντρό έδαφος (βότσαλο, πέτρα, βράχο): η άμμος
+ * θεωρήθηκε ότι πάντα φτιάχνει την ήπια κλίση που απλώνει το κύμα. Το Καραβοστάσι το διέψευσε
+ * με φωτογραφία: μεγάλη αμμουδιά (λεπτή + χοντρή άμμος) που βαθαίνει απότομα, μοντέλο στο 0,3 μ.,
+ * σελίδα «λίγο κύμα», και το κύμα να γυρίζει ολόκληρο πάνω στην άμμο — ακριβώς η εικόνα των
+ * Καβαλικευτών, σε άμμο. Αυτό που κρατάει το κύμα ολόκληρο μέχρι την ακτή είναι η ΚΛΙΣΗ, όχι το
+ * υλικό· το υλικό ήταν απλώς ο μάρτυρας που είχαμε τότε για την κλίση. Το `waterDepth: deep`
+ * είναι ο ίδιος μάρτυρας, ειπωμένος πιο άμεσα.
+ *
+ * ΜΕΤΡΗΘΗΚΕ ΠΡΙΝ ΑΛΛΑΞΕΙ: από τις 741 «βαθιές» παραλίες, 693 περνούσαν ήδη (έχουν και βότσαλο).
+ * Οι υπόλοιπες **48** είναι όλες όσες κερδίζουν τη φράση — όχι οι 1.162 με χοντρή άμμο που φόβιζαν
+ * την πρώτη έκδοση, γιατί εκείνες στη συντριπτική τους πλειονότητα ΔΕΝ είναι καταγεγραμμένες
+ * βαθιές. Οι άλλες τρεις πύλες (άφιξη, ύψος, ταβάνι) μένουν ακριβώς όπως ήταν.
+ *
+ * Η παράμετρος `terrainTypes` μένει στην υπογραφή ώστε να μη χρειάζεται να αλλάξει κανένας από
+ * τους καλούντες (σελίδα, γραφικό, βαθμολογία)· δεν διαβάζεται πια.
+ */
 export const hasSteepCoarseShore = (
   waterDepthType?: string,
-  terrainTypes?: readonly string[]
-): boolean => waterDepthType === 'deep'
-  && Array.isArray(terrainTypes)
-  && terrainTypes.some(type => COARSE_SHORE_TERRAIN.includes(type));
+  _terrainTypes?: readonly string[]
+): boolean => waterDepthType === 'deep';
 
 export const shoreBreaksOnTheBeach = ({
   waterDepthType,
