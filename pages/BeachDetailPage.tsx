@@ -111,7 +111,7 @@ const ENABLE_DAY_PLAN_SECTION = false;
 // `npm run quality:lazy-recovery` now fails the build if a bare React.lazy comes back.
 const BeachMap = lazyWithChunkRecovery(() => import('../components/BeachMap'), 'BeachMap');
 
-import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { BeachPhotoFallback, deriveShorelineFeatures, ShorelineThumbnail, useShorelineShape } from '../components/ShorelineThumbnail';
 import type { ShorelineShape } from '../services/shorelineShapeService';
 
@@ -1547,8 +1547,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Show only curated beach-specific photos. Region/island fallbacks are hidden
   // because a wrong landmark damages trust more than a polished placeholder.
   const photoLookup = useMemo(() => {
-    return getBeachPhotoLookup(beach.name.gr, beach.name.en, beach.id, 5, islandName);
-  }, [beach.id, beach.name.en, beach.name.gr, islandName]);
+    return getBeachPhotoLookupForBeach(beach, 5, islandName);
+  }, [beach, islandName]);
   const realPhotos = useMemo(
     () => (photoLookup.source === 'exact' ? (photoLookup.detailPhotos || photoLookup.photos) : []),
     [photoLookup],
@@ -1570,8 +1570,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // REQUIRE naming the creator were rendering with nothing at all. Author + licence
   // come from scripts/harvestPhotoAttribution.mjs (Wikimedia Commons API).
   const photoCredit = useMemo(
-    () => (photoAttribution || !realPhotos.length ? null : getPhotoCredit(realPhotos[0], language, beach.id, 0)),
-    [photoAttribution, realPhotos, language, beach.id],
+    () => (photoAttribution || !realPhotos.length ? null : getPhotoCredit(realPhotos[0], language, committedBeachId, 0)),
+    [photoAttribution, realPhotos, language, committedBeachId],
   );
 
   /**
@@ -1599,10 +1599,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           creditHref: photoAttribution.sourcePageUrl || photoAttribution.licenseUrl,
         };
       }
-      const credit = getPhotoCredit(url, language, beach.id, index);
+      const credit = getPhotoCredit(url, language, committedBeachId, index);
       return { url, creditLabel: credit?.label, creditHref: credit?.href };
     }),
-    [realPhotos, photoAttribution, language, beach.id],
+    [realPhotos, photoAttribution, language, committedBeachId],
   );
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -3505,7 +3505,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                       canClaimWindProtection: item.canClaimWindProtection,
                       seaCalmClaimAllowed: item.seaCalmClaimAllowed,
                     });
-                    const itemPhotoLookup = getBeachPhotoLookup(item.beach.name.gr, item.beach.name.en, item.beachId, 1, islandName);
+                    const itemPhotoLookup = getBeachPhotoLookupForBeach(item.beach, 1, islandName);
                     const itemPhoto = itemPhotoLookup.source === 'exact' ? itemPhotoLookup.photos[0] : undefined;
 
                     return (

@@ -7,7 +7,7 @@ import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedLittleKnownLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem, WindSuitabilityColor } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
-import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
@@ -3911,13 +3911,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
   const hoverPreviewPhotoUrl = useMemo(() => {
     if (!hoveredBeach) return null;
     const lookupIslandName = islandName || hoveredBeach.beach.location?.island || hoveredBeach.beach.location?.region;
-    const lookup = getBeachPhotoLookup(
-      hoveredBeach.beach.name.gr,
-      hoveredBeach.beach.name.en,
-      hoveredBeach.beach.id,
-      1,
-      lookupIslandName
-    );
+    const lookup = getBeachPhotoLookupForBeach(hoveredBeach.beach, 1, lookupIslandName);
     return lookup.source === 'exact' ? lookup.photos[0] ?? null : null;
   }, [hoveredBeach, islandName]);
   const hoverPreviewFeatureChips = useMemo(

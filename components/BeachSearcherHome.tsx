@@ -40,7 +40,7 @@ import { displayBeachName, localizedAccessLabel, localizedPopularityLabel, local
 import { getTopPickDistinguishers, topPickNumberWord } from '../utils/topPickDistinguishers';
 import { isInfoOnlyRegionId } from '../utils/infoOnlyRegions';
 import type { CalmnessTone } from '../utils/suitabilityTone';
-import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { trackEvent } from '../services/analyticsService';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
@@ -1888,8 +1888,8 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
     return [...selectedIsland.beaches]
       .filter(beach => !(canHideBoatOnly && isBoatOnlyBlownOut(beach)))
       .sort((a, b) => {
-        const aPhoto = getBeachPhotoLookup(a.name.gr, a.name.en, a.id, 1, selectedIsland.name[language]).source === 'exact';
-        const bPhoto = getBeachPhotoLookup(b.name.gr, b.name.en, b.id, 1, selectedIsland.name[language]).source === 'exact';
+        const aPhoto = getBeachPhotoLookupForBeach(a, 1, selectedIsland.name[language]).source === 'exact';
+        const bPhoto = getBeachPhotoLookupForBeach(b, 1, selectedIsland.name[language]).source === 'exact';
         if (aPhoto !== bPhoto) return bPhoto ? 1 : -1;
 
         const byRecognition = getBeachTouristRecognitionScore(b) - getBeachTouristRecognitionScore(a);

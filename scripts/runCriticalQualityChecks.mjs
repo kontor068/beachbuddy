@@ -660,6 +660,15 @@ const checks = [
     },
   },
   {
+    id: 'merged-id-photo-lookups',
+    title: 'Το «Κοντά μου» δεν χάνει (ούτε μπερδεύει) φωτογραφίες',
+    description: 'Σαρώνει τις επιφάνειες και απαιτεί καμία τους να μη ρωτάει τον κατάλογο φωτογραφιών με σκέτο beach.id. Στο «Κοντά μου» το id είναι συνθετικό (1, 2, 3…) και το αληθινό ζει στο sourceBeachId.',
+    protects: 'Οι φωτογραφίες που στέλνουν οι επισκέπτες — και οι 1.097 του beachPhotosById — εξαφανίζονταν από το «Κοντά μου», και οκτώ παραλίες με id ≤ 40 δάνειζαν τη φωτογραφία τους σε ξένη παραλία.',
+    failureAction: 'Κάλεσε getBeachPhotoLookupForBeach(beach, count, islandName) από το services/beachPhotos.ts — ξέρει τον κανόνα sourceBeachId ?? id.',
+    command: process.execPath,
+    args: ['scripts/validateMergedBeachIdLookups.mjs', '--prove'],
+  },
+  {
     id: 'athens-clock',
     title: 'Athens wall-clock guard',
     description: 'Scans app code for a raw new Date()/Date.now() used as "now" instead of athensNow().',

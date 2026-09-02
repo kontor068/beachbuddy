@@ -29,6 +29,7 @@
     "quality:explain": "node scripts/runCriticalQualityChecks.mjs --explain",
     "quality:beach-data": "node scripts/validateCriticalBeachData.mjs",
     "quality:clock": "node scripts/validateAthensClock.mjs",
+    "quality:merged-id-photos": "node scripts/validateMergedBeachIdLookups.mjs --prove",
     "quality:lazy-recovery": "node scripts/checkLazyRecovery.mjs",
     "quality:bundle-secrets": "node scripts/validateBundleSecrets.mjs",
     "quality:capacity": "node scripts/validateCapacityLedger.mjs",

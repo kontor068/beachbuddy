@@ -11,7 +11,7 @@ import { TodayScoreBadge } from './TodayScoreBadge';
 import { SEA_STATE_AMBER_M, SEA_STATE_ROUGH_M } from '../utils/waveCharacter';
 import { buildBeachConditionsReadout, beachDecisionSeaStateM } from '../utils/beachConditionsReadout';
 import { buildWaterTemperatureCardLine } from '../utils/waterTemperatureCopy';
-import { getBeachPhotoLookup } from '../services/beachPhotos';
+import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { ExposureLevel } from '../utils/windExposure';
 import { hasBoatOnlyAccess, hasDirtRoadAccess } from '../utils/access';
@@ -1576,7 +1576,9 @@ const BeachCardImpl: React.FC<BeachCardProps> = ({
   const detailRegionId = beach.regionId ?? regionId;
   const detailBeach = typeof beach.sourceBeachId === 'number' ? { ...beach, id: beach.sourceBeachId } : beach;
   const detailHref = detailRegionId ? buildBeachDetailPath(detailRegionId, detailBeach, language) : undefined;
-  const photoLookup = getBeachPhotoLookup(name.gr, name.en, beach.id, 3, islandName);
+  // Ο κατάλογος ρωτιέται με την ΠΑΡΑΛΙΑ, όχι με το id της: στο «Κοντά μου» το `beach.id`
+  // είναι συνθετικό (1, 2, 3…) και το αληθινό ζει στο `sourceBeachId`. Βλ. beachPhotos.ts.
+  const photoLookup = getBeachPhotoLookupForBeach(beach, 3, islandName);
   const cardPhotos = photoLookup.source === 'exact' ? photoLookup.photos : [];
   const cardPhoto = photoIndex < cardPhotos.length ? cardPhotos[photoIndex] : null;
 

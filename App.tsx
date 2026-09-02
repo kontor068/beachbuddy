@@ -100,7 +100,7 @@ import {
 } from './services/topPickRanking';
 import { recordForecastSnapshots } from './services/forecastVerificationService';
 import { getRegionDust, type DustLevel } from './services/dustService';
-import { getBeachPhotoLookup } from './services/beachPhotos';
+import { getBeachPhotoLookupForBeach } from './services/beachPhotos';
 import { useLiveUgcPhotos } from './hooks/useLiveUgcPhotos';
 import { scrollToPageTop, smoothScrollToStableElement, type StableScrollOptions } from './utils/scroll';
 import { getInitialLanguage, getLocalizedCopy, languageToLocale, saveLanguagePreference, type SupportedLanguage } from './utils/i18n';
@@ -8039,13 +8039,7 @@ export const App: React.FC = () => {
       : !(calmAllAroundSummary?.isEveryBeachSuitable ?? false);
   const getExactBeachPhoto = (item: SuitableBeach | null) => {
     if (!item || !selectedIsland) return null;
-    const lookup = getBeachPhotoLookup(
-      item.beach.name.gr,
-      item.beach.name.en,
-      item.beach.id,
-      1,
-      selectedIsland.name[language]
-    );
+    const lookup = getBeachPhotoLookupForBeach(item.beach, 1, selectedIsland.name[language]);
     return lookup.source === 'exact'
       ? lookup.metadata?.imageUrl || lookup.detailPhotos?.[0] || lookup.photos[0] || null
       : null;

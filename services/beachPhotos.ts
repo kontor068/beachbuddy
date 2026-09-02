@@ -1633,6 +1633,53 @@ export const getBeachPhotoLookup = (
   return { photos: [], source: 'none' };
 };
 
+/** The shape any surface holds when it is about to draw a beach's photo. */
+export type PhotoLookupBeach = {
+  id: number;
+  name: { gr: string; en: string };
+  sourceBeachId?: number;
+  location?: { island?: string; region?: string };
+};
+
+/**
+ * ΡΩΤΑ ΓΙΑ ΤΗΝ ΠΑΡΑΛΙΑ, ΟΧΙ ΓΙΑ ΤΟ ID ΤΗΣ (Μίλτος, 02/09/2026).
+ *
+ * ΤΟ ΣΦΑΛΜΑ. Ο Μίλτος ανέβασε δύο δικές του φωτογραφίες στον Άριλα και στο «Κοντά μου» η
+ * κάρτα δεν έδειχνε καμία — ενώ με αναζήτηση ονόματος φαίνονταν κανονικά. Στο «Κοντά μου»
+ * η App.tsx ΧΤΙΖΕΙ μια συγχωνευμένη περιοχή και δίνει σε κάθε παραλία ΣΥΝΘΕΤΙΚΟ id 1, 2,
+ * 3… κρατώντας το αληθινό στο `sourceBeachId` — ακριβώς όπως ήδη κάνουν η γεωμετρία
+ * (geospatialExposureService), οι ιστορίες (data/beachStories) και τα σχήματα ακτής
+ * (ShorelineThumbnail). Ο κατάλογος φωτογραφιών ΔΕΝ το έκανε: ρωτούσε με το συνθετικό id.
+ *
+ * ΔΕΝ ΕΛΕΙΠΑΝ ΜΟΝΟ ΟΙ ΦΩΤΟΓΡΑΦΙΕΣ ΤΩΝ ΧΡΗΣΤΩΝ. Το `data/beachPhotosById.generated.json`
+ * είναι κι αυτό κλειδωμένο στο αληθινό id και κρατά 1.097 παραλίες — άρα στο «Κοντά μου»
+ * ΟΛΕΣ οι φωτογραφίες που ζουν εκεί έπεφταν έξω. Χειρότερα: οκτώ αληθινές παραλίες έχουν
+ * id ≤ 40 ΚΑΙ φωτογραφία (3, 31, 32, 33, 34, 36, 37, 40), οπότε η παραλία που τύχαινε να
+ * πάρει το συνθετικό id 3 τύπωνε τη φωτογραφία ΞΕΝΗΣ παραλίας. Λάθος φωτογραφία σε κάρτα
+ * είναι το ακριβώς αντίθετο από τον κανόνα που κρατά αυτό το αρχείο («καμία φωτογραφία
+ * είναι καλύτερη από λάθος φωτογραφία»).
+ *
+ * ΤΟ ΟΝΟΜΑ ΤΗΣ ΠΕΡΙΟΧΗΣ ΕΠΕΦΤΕ ΚΙ ΑΥΤΟ ΕΞΩ. Οι χάρτες ανά περιοχή (Αττική, Κρήτη,
+ * Κυκλάδες, Ιόνιο…) κλειδώνουν σε ΟΝΟΜΑ, και το «Κοντά μου» έστελνε το όνομα της
+ * συγχωνευμένης περιοχής — που δεν είναι τόπος. Γι᾿ αυτό η δεύτερη προσπάθεια με το
+ * `location.island` της ΙΔΙΑΣ της παραλίας: τρέχει μόνο όταν η πρώτη δεν βρήκε τίποτα,
+ * οπότε δεν μπορεί να χαλάσει καμία κλήση που ήδη δουλεύει.
+ */
+export const getBeachPhotoLookupForBeach = (
+  beach: PhotoLookupBeach,
+  count: number = 5,
+  islandName?: string,
+): BeachPhotoLookup => {
+  const beachId = beach.sourceBeachId ?? beach.id;
+  const primary = getBeachPhotoLookup(beach.name.gr, beach.name.en, beachId, count, islandName);
+  if (primary.source === 'exact') return primary;
+
+  const ownArea = beach.location?.island;
+  if (!ownArea || ownArea === islandName) return primary;
+
+  return getBeachPhotoLookup(beach.name.gr, beach.name.en, beachId, count, ownArea);
+};
+
 export const getBeachPhotos = (
   beachNameGr: string,
   beachNameEn: string,
