@@ -1139,7 +1139,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // βαθμονομείται απέναντι σε νούμερο που δεν είδε ποτέ (Λιά 1958: 1,78 vs ~0,10 μ.).
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
-      live: selectedDayIsToday && selectedHour === undefined,
+      // ΟΧΙ ΜΟΝΟ «Ο ΔΙΑΚΟΠΤΗΣ ΗΤΑΝ ΣΤΟ ΤΩΡΑ» — ΚΑΙ «Ο ΔΙΑΚΟΠΤΗΣ ΕΔΕΙΧΝΕ ΤΟ ΤΩΡΑ» (02/09/2026).
+      // Κάθισμα #1160: ο επισκέπτης πάτησε «Τώρα είμαι εκεί» στις 11:00 με τον διακόπτη
+      // γυρισμένο στις 11:00, και το mail έγραψε «Ήταν επιτόπου τώρα: Όχι — η σελίδα ήταν
+      // γυρισμένη σε άλλη ώρα». Δεν ήταν: το άγγιγμα του διακόπτη μετρούσε ως «αλλού» ακόμα κι
+      // όταν προσγειωνόταν στην τρέχουσα ώρα, και η καλύτερη μαρτυρία που παίρνουμε διαβαζόταν
+      // ως άχρηστη. Και τα δύο `getHours()` είναι της ΣΥΣΚΕΥΗΣ, άρα η σύγκριση ισχύει όπου κι αν
+      // στέκεται ο επισκέπτης — δεν χρειάζεται ώρα Ελλάδας εδώ.
+      // athens-clock-exempt: σύγκριση ΣΥΣΚΕΥΗΣ με ΣΥΣΚΕΥΗ — το `selectedHour` γεννιέται στο
+      // App.tsx ως `new Date(selectedHourDt * 1000).getHours()`, άρα ένα athensNow() εδώ θα
+      // διαφωνούσε μαζί του για κάθε επισκέπτη εκτός Ελλάδας. Ίδια ζώνη και στις δύο πλευρές.
+      live: selectedDayIsToday && (selectedHour === undefined || selectedHour === new Date().getHours()),
     }, {
       // ΠΟΙΑ ΠΑΡΑΛΙΑ. Χωρίς αυτό το e-mail/Telegram έπεφτε πίσω στο Referer, που σε
       // πλοήγηση μέσα στην εφαρμογή είναι συχνά η γενική σελίδα — και το σχόλιο έφτανε
