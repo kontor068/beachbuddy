@@ -72098,16 +72098,17 @@
             "language": "el",
             "batch": "thesprotia_tourist_evidence_pass_2026_06_01",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.visit-thesprotia.gr/item/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%BA%CE%B1%CF%81%CE%B1%CE%B2%CE%BF%CF%83%CF%84%CE%AC%CF%83%CE%B9-%CF%80%CE%AD%CF%81%CE%B4%CE%B9%CE%BA%CE%B1-%CE%B8%CE%B5%CF%83%CF%80%CF%81%CF%89%CF%84/"
             ],
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: kept beach bar; Karavostasi sources support Blue Bay Club sunbed/drink service and Chelidoni beach-bar/restaurant context.",
-              "Thesprotia tourist evidence pass 2026-06-01: Visit Thesprotia directly supports Karavostasi identity near Perdika, large organized beach character, sandy terrain, faster-deepening water, sunbeds, food/drink services, accommodation context, and water-activity rental context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
+              "Thesprotia tourist evidence pass 2026-06-01: Visit Thesprotia directly supports Karavostasi identity near Perdika, large organized beach character, sandy terrain, faster-deepening water, sunbeds, food/drink services, accommodation context, and water-activity rental context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
+              "Διόρθωση βάθους 2026-09-02: ο Μίλτος αναφέρει από την παραλία ότι το Καραβοστάσι ΔΕΝ έχει ρηχά νερά. Το ίδιο έλεγε ήδη η πηγή (Visit Thesprotia: «βαθαίνει σχετικά γρήγορα»), αλλά το waterDepth είχε μείνει «shallow» με γενική σημείωση — αντίφαση μέσα στην ίδια εγγραφή. waterDepth: shallow → deep. Συνέπειες στα παραγόμενα: shallowWaters false, familyFriendly false, ετικέτα «Βαθιά νερά». Συντεταγμένες, windProfile, βαθμολογία και φωτογραφίες αμετάβλητα."
             ],
             "googleMapsNavigation": {
               "status": "verified",
