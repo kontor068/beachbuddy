@@ -513,7 +513,7 @@ const BeachHoverPreviewCard: React.FC<{
             <img
               src={photoUrl}
               alt=""
-              className="h-full w-full object-cover"
+              className="h-full w-full beach-photo-frame"
               loading="lazy"
               decoding="async"
               referrerPolicy="no-referrer"

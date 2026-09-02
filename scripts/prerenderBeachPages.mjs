@@ -3984,9 +3984,12 @@ const renderBeachPhotoFigure = (beach, beachName, islandName, language) => {
     : photo.creditRequired
       ? `<figcaption style="margin:6px 0 0;font-size:12px;color:#64748b;">${escapeHtml(beachName)} — <a href="${escapeHtml(sourceUrl)}" rel="nofollow noopener" target="_blank" style="color:#64748b;">${escapeHtml(author)}</a>, ${escapeHtml(license)}</figcaption>`
       : '';
+  // `object-position:50% 65%` — ίδιο νούμερο με το `.beach-photo-frame` του index.css.
+  // Οι δύο τιμές ΠΡΕΠΕΙ να μένουν ίδιες: αυτή είναι η φωτογραφία που βλέπει ο επισκέπτης
+  // πριν φορτώσει το React, και μια διαφορά θα φαινόταν ως αναπήδηση του κάδρου.
   return `
         <figure style="margin:0 0 20px;">
-          <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" fetchpriority="high" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
+          <img src="${escapeHtml(photo.src2x)}" srcset="${escapeHtml(photo.src)} 400w, ${escapeHtml(photo.src2x)} 800w" sizes="(max-width:760px) 100vw, 720px" alt="${escapeHtml(alt)}" referrerpolicy="no-referrer" fetchpriority="high" decoding="async" width="800" height="600" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:50% 65%;border-radius:12px;display:block;">
           ${creditLine}
         </figure>`;
 };

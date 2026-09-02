@@ -4,7 +4,7 @@ import {
   Clock, Sun, Sunset, Backpack,
   Navigation, Share2, Heart, ChevronRight, ThumbsUp, ThumbsDown, CheckCircle2,
   Camera, ExternalLink, Accessibility, AlertTriangle, Tent, Ticket, Euro, ScrollText, Compass, Ship, BadgeCheck,
-  CloudRain, XCircle, Car, Umbrella
+  CloudRain, XCircle, Car, Umbrella, Maximize2
 } from 'lucide-react';
 import {
   Beach, LanguageCode, Translation, WindDirection,
@@ -693,6 +693,7 @@ import { NavigationBadge } from '../components/NavigationBadge';
 import { buildBeachDetailPath, buildBeachRegionPath } from '../utils/beachUrls';
 import { buildReportProblemMailto, currentPagePath } from '../utils/reportProblem';
 import { photoSrcSet, sizedPhotoUrl } from '../utils/photoSizing.mjs';
+import { PhotoLightbox, getOpenPhotoLabel, type LightboxPhoto } from '../components/photos/PhotoLightbox';
 import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote, localizedFreeAccessLabel, localizedFreeAccessExplanation } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -1548,7 +1549,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   const photoLookup = useMemo(() => {
     return getBeachPhotoLookup(beach.name.gr, beach.name.en, beach.id, 5, islandName);
   }, [beach.id, beach.name.en, beach.name.gr, islandName]);
-  const realPhotos = photoLookup.source === 'exact' ? (photoLookup.detailPhotos || photoLookup.photos) : [];
+  const realPhotos = useMemo(
+    () => (photoLookup.source === 'exact' ? (photoLookup.detailPhotos || photoLookup.photos) : []),
+    [photoLookup],
+  );
   const photoAttribution = photoLookup.metadata?.requiresAttribution ? photoLookup.metadata : undefined;
   // Shore composition ("Άμμος + Βότσαλα"), reusing the filter vocabulary so the word
   // matches what the filters already say in all five languages. 'unknown' maps to an
@@ -1569,6 +1573,39 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     () => (photoAttribution || !realPhotos.length ? null : getPhotoCredit(realPhotos[0], language, beach.id, 0)),
     [photoAttribution, realPhotos, language, beach.id],
   );
+
+  /**
+   * ΟΛΕΣ ΟΙ ΦΩΤΟΓΡΑΦΙΕΣ ΑΝΟΙΓΟΥΝ ΣΕ ΜΕΓΕΘΥΝΣΗ (Μίλτος, 02/09/2026).
+   *
+   * Η μεγάλη φωτογραφία και οι μικρές από κάτω ήταν και οι δύο σκέτα <img>: ο επισκέπτης
+   * έβλεπε ότι υπάρχουν κι άλλες φωτογραφίες της παραλίας και δεν είχε κανέναν τρόπο να τις
+   * δει. Και οι δύο όψεις κόβονται με `object-fit: cover` — η μικρή είναι τετράγωνη, οπότε
+   * πετάει σχεδόν όλο το πλάτος της παραλίας — άρα το lightbox δεν είναι «μεγαλύτερη εικόνα»,
+   * είναι η ΜΟΝΗ φορά που φαίνεται ολόκληρο το καρέ.
+   *
+   * Το credit ταξιδεύει με κάθε φωτογραφία, όχι μόνο με την πρώτη: από τη στιγμή που ανοίγει
+   * και η δεύτερη σε πλήρες μέγεθος, η άδεια που απαιτεί αναφορά δημιουργού (958 από τις
+   * 1.054 φωτογραφίες μας) την αφορά κι αυτήν.
+   */
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const lightboxPhotos = useMemo<LightboxPhoto[]>(
+    () => realPhotos.map((url, index) => {
+      // The Milos metadata path carries its own attribution line and covers a single photo,
+      // so it only ever applies to index 0; everything else reads the harvested table.
+      if (photoAttribution && index === 0) {
+        return {
+          url,
+          creditLabel: photoAttribution.attributionText,
+          creditHref: photoAttribution.sourcePageUrl || photoAttribution.licenseUrl,
+        };
+      }
+      const credit = getPhotoCredit(url, language, beach.id, index);
+      return { url, creditLabel: credit?.label, creditHref: credit?.href };
+    }),
+    [realPhotos, photoAttribution, language, beach.id],
+  );
+  const openLightbox = (index: number) => setLightboxIndex(index);
+  const closeLightbox = () => setLightboxIndex(null);
   const photoSuggestionUrl = useMemo(() => buildPhotoSuggestionUrl({
     beachId: beach.id,
     beachName: beachDisplayName,
@@ -2632,7 +2669,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         <section className="space-y-3">
           {realPhotos.length > 0 ? (
             <>
-              <div className="relative aspect-[16/10] overflow-hidden rounded-surface border border-line shadow-lifted sm:aspect-[4/3]">
+              <button
+                type="button"
+                onClick={() => openLightbox(0)}
+                aria-label={getOpenPhotoLabel(language, beachDisplayName, 1, realPhotos.length)}
+                className="group relative block w-full cursor-zoom-in aspect-[16/10] overflow-hidden rounded-surface border border-line shadow-lifted focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 sm:aspect-[4/3]"
+              >
                 {/* `sizes` was here with no `srcSet`, which a browser ignores completely: every
                     viewport got the one baked width=800. Still lazy — this gallery sits below
                     the conditions block and the section break, so it is never the first paint.
@@ -2642,7 +2684,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   src={realPhotos[0]}
                   srcSet={photoSrcSet(realPhotos[0], [400, 800, 1200])}
                   alt={beachDisplayName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full beach-photo-frame"
                   referrerPolicy="no-referrer"
                   loading="lazy"
                   decoding="async"
@@ -2650,7 +2692,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   height={600}
                   sizes="(min-width: 768px) 896px, calc(100vw - 32px)"
                 />
-              </div>
+                {/* The affordance. A photo that opens and a photo that does not look identical
+                    without it, and «πάτα τη φωτογραφία» is not something anyone tries on a page
+                    where nothing else was tappable. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-slate-950/55 text-white shadow-sm backdrop-blur-[2px] transition-colors group-hover:bg-slate-950/75"
+                >
+                  <Maximize2 className="h-4 w-4" />
+                </span>
+              </button>
               {photoAttribution && (
                 <p className="px-1 text-[11px] font-medium leading-snug text-slate-700">
                   <a
@@ -2718,21 +2769,31 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               {realPhotos.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
                   {realPhotos.slice(1).map((url, i) => (
-                    <div key={i} className="flex-shrink-0 w-24 sm:w-32 aspect-square rounded-control overflow-hidden shadow-surface">
+                    <button
+                      type="button"
+                      key={i}
+                      onClick={() => openLightbox(i + 1)}
+                      aria-label={getOpenPhotoLabel(language, beachDisplayName, i + 2, realPhotos.length)}
+                      className="group relative flex-shrink-0 w-24 sm:w-32 aspect-square cursor-zoom-in rounded-control overflow-hidden shadow-surface transition focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2 hover:shadow-lifted"
+                    >
                       {/* A 96-128px box asking for the 800px file. No srcSet: the rendered size
                           never varies enough to be worth a set, so one right-sized src is
                           simpler and strictly smaller. */}
                       <img
                         src={sizedPhotoUrl(url, 400)}
                         alt={`${beachDisplayName} ${i + 2}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full beach-photo-frame transition-transform duration-500 group-hover:scale-[1.05]"
                         referrerPolicy="no-referrer"
                         loading="lazy"
                         decoding="async"
                         width={256}
                         height={256}
                       />
-                    </div>
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 bg-slate-950/0 transition-colors group-hover:bg-slate-950/12"
+                      />
+                    </button>
                   ))}
                 </div>
               )}
@@ -3665,6 +3726,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           </div>
         </div>
       )}
+      {/* Η μεγέθυνση. Ζει στο τέλος του δέντρου γιατί σκεπάζει ολόκληρη τη σελίδα και δεν
+          πρέπει να μπορεί να κοπεί από κανένα overflow-hidden από πάνω της. */}
+      <PhotoLightbox
+        photos={lightboxPhotos}
+        index={lightboxIndex}
+        beachName={beachDisplayName}
+        language={language}
+        onClose={closeLightbox}
+        onIndexChange={setLightboxIndex}
+      />
     </div>
   );
 };
