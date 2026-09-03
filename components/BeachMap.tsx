@@ -663,7 +663,8 @@ const MarkerConditionsPopup: React.FC<{
    * «Περισσότερες πληροφορίες»: η κάρτα με σκηνή ΚΑΙ κουμπί έβγαινε ~210 px πάνω σε χάρτη 214 px
    * στο κινητό, δηλαδή έξω από το κάδρο. Το X του play κλείνει τη σκηνή και το κουμπί επιστρέφει.
    */
-  const [sceneOpen, setSceneOpen] = useState(false);
+  const [sceneMode, setSceneMode] = useState<null | 'inline' | 'fullscreen'>(null);
+  const sceneOpen = sceneMode !== null;
   const featureChips = useMemo(
     () => buildHoverPreviewFeatureChips(item.beach, language, ALL_FEATURE_CHIPS),
     [item.beach, language]
@@ -695,7 +696,7 @@ const MarkerConditionsPopup: React.FC<{
     popup.options.autoPan = true;
     popup.update();
     popup.options.autoPan = hadAutoPan;
-  }, [featuresOpen, sceneOpen, openPopupRef]);
+  }, [featuresOpen, sceneMode, openPopupRef]);
   const readout = buildBeachConditionsReadout({
     beachWindSpeedKmph: windSpeedKmh,
     waveHeightM: item.waveHeightM,
@@ -769,15 +770,22 @@ const MarkerConditionsPopup: React.FC<{
           ref={keepClickInsidePopup}
           type="button"
           onClick={() => {
-            const next = !sceneOpen;
-            setSceneOpen(next);
-            if (next) {
-              trackEvent('map_sea_motion_play', item.beach.id, {
-                beach_name: item.beach.name.en,
-                wind_kmh: typeof windSpeedKmh === 'number' ? Math.round(windSpeedKmh) : undefined,
-                wave_m: item.seaStateWaveM ?? item.waveHeightM,
-              });
+            if (sceneOpen) {
+              setSceneMode(null);
+              return;
             }
+            // ΚΙΝΗΤΟ → ΠΛΗΡΗΣ ΟΘΟΝΗ ΚΑΤΕΥΘΕΙΑΝ (03/09/2026). Ο χάρτης στο κινητό είναι 214 px· μια
+            // σκηνή 108 px μέσα στο ταμπελάκι κάλυπτε την πάνω μπάρα και έμενε λειψή. Στον
+            // υπολογιστή, μέσα στο ταμπελάκι με κουμπί μεγέθυνσης.
+            const phone = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+              && window.matchMedia('(max-width: 767px)').matches;
+            setSceneMode(phone ? 'fullscreen' : 'inline');
+            trackEvent('map_sea_motion_play', item.beach.id, {
+              beach_name: item.beach.name.en,
+              presentation: phone ? 'fullscreen' : 'inline',
+              wind_kmh: typeof windSpeedKmh === 'number' ? Math.round(windSpeedKmh) : undefined,
+              wave_m: item.seaStateWaveM ?? item.waveHeightM,
+            });
           }}
           aria-pressed={sceneOpen}
           aria-label={sceneOpen ? stopMotionLabel : playMotionLabel}
@@ -798,7 +806,7 @@ const MarkerConditionsPopup: React.FC<{
       </div>
       )}
 
-      {!featuresOpen && sceneOpen && (
+      {!featuresOpen && sceneMode === 'inline' && (
         // Το κενό έχει το ύψος σκηνής + λεζάντας, ώστε το Leaflet να μετρήσει σωστά ΠΡΙΝ φτάσει
         // το κομμάτι κώδικα — αλλιώς η κάρτα θα ψήλωνε δεύτερη φορά χωρίς να ξαναμετρηθεί.
         <Suspense fallback={<div className="mt-1 h-[7.9rem] w-full animate-pulse rounded-lg bg-sky-100" aria-hidden="true" />}>
@@ -808,11 +816,27 @@ const MarkerConditionsPopup: React.FC<{
             regionId={item.beach.regionId ?? regionId}
             windFromDeg={windFromDeg}
             windSpeedKmh={windSpeedKmh}
+            presentation="inline"
           />
         </Suspense>
       )}
 
-      {featureChips.length > 0 && !sceneOpen && (
+      {sceneMode === 'fullscreen' && (
+        // Πλήρης οθόνη: portal έξω από τον χάρτη, τίποτα δεν αλλάζει μέσα στο ταμπελάκι.
+        <Suspense fallback={null}>
+          <BeachSeaMotionScene
+            item={item}
+            language={language}
+            regionId={item.beach.regionId ?? regionId}
+            windFromDeg={windFromDeg}
+            windSpeedKmh={windSpeedKmh}
+            presentation="fullscreen"
+            onClose={() => setSceneMode(null)}
+          />
+        </Suspense>
+      )}
+
+      {featureChips.length > 0 && sceneMode !== 'inline' && (
         <div className="mt-1">
           {/* ΜΙΑ ΛΕΞΗ ΑΝΤΙ ΓΙΑ ΜΙΑ ΣΕΙΡΑ ΕΙΚΟΝΙΔΙΑ (Μίλτος, 25/08/2026: «τα εικονίδια στις πινέζες
               με τα χαρακτηριστικά βγάλ' τα, βάλε μόνο κάτι σαν περισσότερες πληροφορίες»).
@@ -4860,7 +4884,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   className="beach-map-conditions-popup"
                   closeButton={false}
                   autoPan
-                  autoPanPadding={[12, 12]}
+                  // Πάνω: 60 px, για να μην κάθεται η κάρτα (πια ψηλότερη με τη σκηνή) πάνω στη
+                  // μπάρα «Προτάσεις / Άνεμος» που ζει στην κορυφή του χάρτη.
+                  autoPanPaddingTopLeft={[12, 60]}
+                  autoPanPaddingBottomRight={[12, 12]}
                   minWidth={128}
                   maxWidth={248}
                 >

@@ -56,6 +56,14 @@ export type BeachSeaMotionSceneProps = {
   /** Από πού φυσάει (μετεωρολογικές μοίρες), για ΑΥΤΗ την παραλία αν υπάρχει τοπική ανάγνωση. */
   windFromDeg?: number;
   windSpeedKmh?: number;
+  /**
+   * 'inline': μέσα στο ταμπελάκι, με κουμπί για πλήρη οθόνη (υπολογιστής). 'fullscreen': ΜΟΝΟ
+   * η πλήρης οθόνη — στο κινητό ο χάρτης είναι 214 px και μια σκηνή 108 px μέσα του κάλυπτε
+   * την πάνω μπάρα (Μίλτος, 03/09/2026: «κάνει επικάλυψη με στοιχεία του χάρτη»).
+   */
+  presentation?: 'inline' | 'fullscreen';
+  /** Κλείσιμο της πλήρους οθόνης όταν presentation='fullscreen' — το ταμπελάκι ξαναδείχνει play. */
+  onClose?: () => void;
 };
 
 /* --------------------------------------------------------------- copy */
@@ -603,6 +611,17 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
    * ένας καμβάς που δοκίμασε WebGL δεν δίνει πια 2D context, γι' αυτό ξαναγεννιέται.
    */
   const [mode, setMode] = useState<'3d' | '2d'>('3d');
+  /**
+   * ΚΑΘΕ ΦΟΡΑ ΠΟΥ ΞΑΝΑΣΤΗΝΕΤΑΙ Ο ΖΩΓΡΑΦΟΣ, ΝΕΟΣ ΚΑΜΒΑΣ (03/09/2026, «πατάς play και δείχνει
+   * κενό»). Το καθάρισμα του ζωγράφου χάνει ρητά το WebGL context (loseContext) — σωστό για
+   * τη μνήμη, αλλά ένας καμβάς με χαμένο context δεν ξαναζωγραφίζει ΠΟΤΕ. Το ταμπελάκι
+   * ξαναρεντάρει συνέχεια (ο άνεμος και η ώρα αλλάζουν), το `item.beach` αλλάζει ταυτότητα, το
+   * effect ξανάτρεχε πάνω στον ίδιο νεκρό καμβά και η σκηνή έμενε άδεια μέχρι να ξανανοίξει
+   * το ταμπελάκι. Λύση: το effect εξαρτάται ΜΟΝΟ από πρωτογενείς τιμές (geometryKey), και ο
+   * καμβάς παίρνει το ίδιο key — ό,τι ξαναστήνει τον ζωγράφο ξαναγεννά και τον καμβά. Το ίδιο
+   * όταν το ίδιο το κινητό πετάξει το context (webglcontextlost): μετρητής, νέος καμβάς.
+   */
+  const [lostContexts, setLostContexts] = useState(0);
 
   const authoredFacing = resolveFacing(item);
   const facingDeg = shape?.facingDeg ?? authoredFacing ?? 0;
@@ -624,10 +643,28 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     metresPerUnit: shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5,
   };
 
+  const beachLat = beach.coordinates?.lat;
+  const beachLon = beach.coordinates?.lon;
+  const geometryKey = [
+    mode,
+    full ? 'full' : 'popup',
+    beach.id,
+    pointsKey,
+    shape ? `${shape.facingDeg}|${shape.frameWidthM}|${shape.pinDistanceM}` : 'noshape',
+    relief ? `${relief.lat0}|${relief.lon0}|${relief.rows}x${relief.cols}` : 'norelief',
+    typeof beachLat === 'number' && typeof beachLon === 'number' ? `${beachLat},${beachLon}` : 'nocoords',
+    lostContexts,
+  ].join(':');
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const points = parsePoints(pointsKey);
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      setLostContexts(count => count + 1);
+    };
+    canvas.addEventListener('webglcontextlost', onContextLost);
 
     let gl: SeaMotionGl | null = null;
     let draw2d: ((tSec: number, dtSec: number) => void) | null = null;
@@ -640,8 +677,8 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
         canvas.height = Math.max(200, Math.round(rect.height * dpr));
       }
       const metresPerUnit = shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5;
-      const sampler = relief && shape && typeof beach.coordinates?.lat === 'number' && typeof beach.coordinates?.lon === 'number'
-        ? makeReliefSampler(relief, shape, beach.coordinates.lat, beach.coordinates.lon)
+      const sampler = relief && shape && typeof beachLat === 'number' && typeof beachLon === 'number'
+        ? makeReliefSampler(relief, shape, beachLat, beachLon)
         : undefined;
       try {
         gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.1 : 0.12, relief: sampler, metresPerUnit });
@@ -649,6 +686,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
         gl = null;
       }
       if (!gl) {
+        canvas.removeEventListener('webglcontextlost', onContextLost);
         setMode('2d');
         return undefined;
       }
@@ -698,7 +736,10 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
 
     if (reduceMotion) {
       draw(start);
-      return () => gl?.dispose();
+      return () => {
+        canvas.removeEventListener('webglcontextlost', onContextLost);
+        gl?.dispose();
+      };
     }
 
     const loop = (now: number) => {
@@ -710,9 +751,13 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     frame = window.requestAnimationFrame(loop);
     return () => {
       window.cancelAnimationFrame(frame);
+      canvas.removeEventListener('webglcontextlost', onContextLost);
       gl?.dispose();
     };
-  }, [pointsKey, beach.id, mode, full, relief, shape, beach.coordinates]);
+    // Το geometryKey συνοψίζει κάθε τιμή που διαβάζει το effect· οι υπόλοιπες αλλαγές
+    // (άνεμος, κύμα) περνούν από το motionRef χωρίς να ξαναστήσουν τον ζωγράφο.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [geometryKey]);
 
   const hasWind = typeof windSpeedKmh === 'number' && Number.isFinite(windSpeedKmh) && typeof windFromDeg === 'number';
   const showWaveChip = typeof openWaveM === 'number' && Number.isFinite(openWaveM);
@@ -734,7 +779,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       aria-label={copy.aria(beachName)}
     >
       <canvas
-        key={`${mode}:${pointsKey}:${relief ? 'relief' : 'flat'}`}
+        key={geometryKey}
         ref={canvasRef}
         width={PW}
         height={PH}
@@ -817,7 +862,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
-          <p className="pointer-events-none absolute inset-x-0 bottom-16 sm:bottom-20 text-center text-[11px] font-semibold text-cyan-100/70">{copy.caption}</p>
+          <p className="pointer-events-none absolute inset-x-0 bottom-[5.5rem] sm:bottom-24 px-4 text-center text-[11px] font-semibold text-cyan-100/70">{copy.caption}</p>
         </>
       )}
     </div>
@@ -850,13 +895,28 @@ const FullScreenScene: React.FC<Omit<SceneViewProps, 'variant' | 'onExpand'> & {
   );
 };
 
-const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, regionId, windFromDeg, windSpeedKmh }) => {
+const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, regionId, windFromDeg, windSpeedKmh, presentation = 'inline', onClose }) => {
   const beach = item.beach;
   const homeRegionId = beach.regionId ?? regionId;
   const shape: ShorelineShape | undefined = useShorelineShape(homeRegionId, beach.sourceBeachId ?? beach.id);
   const relief = useBeachRelief(homeRegionId);
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const [fullOpen, setFullOpen] = useState(false);
+
+  if (presentation === 'fullscreen') {
+    if (typeof document === 'undefined') return null;
+    return (
+      <FullScreenScene
+        item={item}
+        language={language}
+        windFromDeg={windFromDeg}
+        windSpeedKmh={windSpeedKmh}
+        shape={shape}
+        relief={relief}
+        onClose={() => onClose?.()}
+      />
+    );
+  }
 
   return (
     <div className="mt-1">
