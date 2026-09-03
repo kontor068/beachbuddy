@@ -65,11 +65,12 @@ export const seawardness = (fromDeg: number, facingDeg: number) =>
   Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
 
 /**
- * Ύψος θάλασσας → ένταση 0..1,25, σχεδόν γραμμικά (εκθέτης 0,9) ώστε οι διαφορές να
- * ΔΙΑΒΑΖΟΝΤΑΙ: 0,3 μ. → 0,22, 0,8 μ. → 0,54, 1,6 μ. → 1, 2,2 μ. → 1,25 (ταβάνι).
+ * Ύψος θάλασσας → ένταση 0..1,25. Εκθέτης 1,15: λίγο ΠΙΟ αυστηρός από γραμμικός στα χαμηλά,
+ * ώστε η ήρεμη θάλασσα να είναι ρυτίδες και όχι φουσκοθαλασσιά (Μίλτος, 03/09/2026: «το κύμα
+ * υπερβολικό ακόμα και για ήρεμη θάλασσα»): 0,2 μ. → 0,09, 0,3 → 0,15, 0,8 → 0,45, 1,6 → 1.
  */
 export const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 0.9)) : 0;
+  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.15)) : 0;
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
@@ -82,7 +83,7 @@ const RELIEF_REACH_M = 16000;
  * με τα μέτρα (heightToAmp), ώστε 0,3 μ. να φαίνονται μικρά και 1,5 μ. μεγάλα — και όχι ρίζα,
  * που τα έφερνε κοντά (Μίλτος, 03/09/2026: «δεν ανταποκρίνεται στην πραγματικότητα»).
  */
-const WAVE_UNITS_AT_FULL = 4.2;
+const WAVE_UNITS_AT_FULL = 3.0;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -107,7 +108,8 @@ export const deriveMotion = (p: SeaMotionParams) => {
   // Άσπρες κορφές από ~4 Μπφ (20 km/h), πυκνές στα 6 (40+) — η κλίμακα Μποφόρ, οπτικά.
   const whitecaps = Math.max(0, windAmp - 0.45) * 0.9;
   const breakZone = Math.min(20, 2 + (p.shoreWaveM ?? 0) * 9);
-  const foamStrength = clamp01((p.shoreWaveM ?? 0) / 1.0);
+  // Αφρός από τα ~0,15 μ. και πάνω· μια ήρεμη θάλασσα γλείφει την άμμο, δεν σπάει.
+  const foamStrength = clamp01(((p.shoreWaveM ?? 0) - 0.15) / 1.0);
   return {
     tx, ty, arriving, openAmp, shoreAmp, hasWaves: openAmp > 0 || shoreAmp > 0,
     kWave, omega, hasWind, windSpeed: hasWind ? (windSpeed as number) : 0, wx, wy, windAmp,
@@ -252,11 +254,11 @@ void main() {
       float crest = sin(phase) + 0.30 * amp * sin(2.0 * phase + 0.7);
       z = amp * crest * ${WAVE_UNITS_AT_FULL.toFixed(1)};
       // Gerstner: το νερό κινείται και οριζόντια — η κορυφή μαζεύεται και γέρνει μπροστά.
-      disp += uWaveDir * (amp * cos(phase) * 1.2) * (0.5 + 0.5 * w);
+      disp += uWaveDir * (amp * cos(phase) * 0.9) * (0.5 + 0.5 * w);
       // Δεύτερο, μικρότερο κύμα λίγο λοξά και λίγο πιο κοντό: η θάλασσα δεν είναι ποτέ ΕΝΑ ημίτονο.
       vec2 crossDir = normalize(uWaveDir + vec2(-uWaveDir.y, uWaveDir.x) * 0.42);
       float crossPhase = uK * 1.6 * mix(dot(crossDir, aPos), dot(crossDir, aShore) - d, w) - uOmega * 1.25 * uTime + 1.3;
-      z += amp * sin(crossPhase) * 1.0;
+      z += amp * sin(crossPhase) * 0.6;
       vWave = z;
       if (uArriving > 0.5 && d < uBreakZone && uFoam > 0.0) {
         vFoam = uFoam * (0.5 + 0.5 * sin(phase)) * (1.0 - d / uBreakZone);
