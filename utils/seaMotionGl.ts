@@ -36,6 +36,8 @@ export type Point = [number, number];
 
 export type SeaMotionGl = {
   render: (params: SeaMotionParams, tSec: number, dtSec: number) => void;
+  /** Αλλάζει την ανάλυση του καμβά (για την αυτόματη προσαρμογή όταν το κινητό αργεί). */
+  setSize: (width: number, height: number) => void;
   dispose: () => void;
 };
 
@@ -53,9 +55,12 @@ export const travelVector = (fromDeg: number, facingDeg: number): [number, numbe
 export const seawardness = (fromDeg: number, facingDeg: number) =>
   Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
 
-/** Ύψος θάλασσας → ένταση 0..1, με ρίζα ώστε τα 0,3 μ. να φαίνονται και τα 2 μ. να μη σβήνουν. */
+/**
+ * Ύψος θάλασσας → ένταση 0..1,25, σχεδόν γραμμικά (εκθέτης 0,9) ώστε οι διαφορές να
+ * ΔΙΑΒΑΖΟΝΤΑΙ: 0,3 μ. → 0,22, 0,8 μ. → 0,54, 1,6 μ. → 1, 2,2 μ. → 1,25 (ταβάνι).
+ */
 export const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? clamp01(Math.sqrt(Math.max(0, h) / 1.6)) : 0;
+  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 0.9)) : 0;
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
@@ -63,6 +68,12 @@ export const WIND_SHADOW_UNITS = 34;
 const RELIEF_EXAGGERATION = 1.25;
 /** Ως πού απλώνει το πλέγμα (και η ομίχλη) όταν υπάρχει ανάγλυφο: απέναντι ακτές ως 16 χλμ. */
 const RELIEF_REACH_M = 16000;
+/**
+ * ΠΟΣΟ ΨΗΛΑ ΣΗΚΩΝΕΤΑΙ ΤΟ ΝΕΡΟ ΣΤΑ 1,6 μ. (μονάδες κουτιού). Η κλίμακα του κύματος είναι ΓΡΑΜΜΙΚΗ
+ * με τα μέτρα (heightToAmp), ώστε 0,3 μ. να φαίνονται μικρά και 1,5 μ. μεγάλα — και όχι ρίζα,
+ * που τα έφερνε κοντά (Μίλτος, 03/09/2026: «δεν ανταποκρίνεται στην πραγματικότητα»).
+ */
+const WAVE_UNITS_AT_FULL = 4.2;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -84,7 +95,8 @@ export const deriveMotion = (p: SeaMotionParams) => {
   const windAmp = hasWind ? Math.pow(clamp01((windSpeed as number) / 45), 0.8) : 0;
   const offshoreWind = hasWind && seawardness(p.windFromDeg as number, p.facingDeg) < -0.15;
   const ripSpeed = hasWind ? 4 + (windSpeed as number) * 0.35 : 0;
-  const whitecaps = Math.max(0, windAmp - 0.55) * 0.5;
+  // Άσπρες κορφές από ~4 Μπφ (20 km/h), πυκνές στα 6 (40+) — η κλίμακα Μποφόρ, οπτικά.
+  const whitecaps = Math.max(0, windAmp - 0.45) * 0.9;
   const breakZone = Math.min(20, 2 + (p.shoreWaveM ?? 0) * 9);
   const foamStrength = clamp01((p.shoreWaveM ?? 0) / 1.0);
   return {
@@ -102,7 +114,7 @@ const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 /** Ένα ρεύμα ανέμου γεννιέται ανάντη, ώστε να διασχίσει το κάδρο· στο πρώτο γέμισμα οπουδήποτε. */
 export const spawnStreak = (wx: number, wy: number, speedKmh: number, anywhere: boolean, area: { x0: number; x1: number; y0: number; y1: number }): Streak => {
-  const len = Math.min(18, 5 + speedKmh * 0.15);
+  const len = Math.min(22, 5 + speedKmh * 0.2);
   const life = rand(1.6, 3.4);
   const z = rand(2, 9);
   if (anywhere) {
@@ -116,6 +128,57 @@ export const spawnStreak = (wx: number, wy: number, speedKmh: number, anywhere: 
 };
 
 /* ------------------------------------------------------------- shaders */
+
+/** GLSL που μοιράζονται ο ουρανός και το έδαφος: θόρυβος, ο ίδιος ουρανός, το ίδιο tone mapping. */
+const SHARED_GLSL = `
+float hash21(vec2 p) {
+  p = fract(p * vec2(123.34, 456.21));
+  p += dot(p, p + 45.32);
+  return fract(p.x * p.y);
+}
+float vnoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  float a = hash21(i);
+  float b = hash21(i + vec2(1.0, 0.0));
+  float c = hash21(i + vec2(0.0, 1.0));
+  float d = hash21(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+float fbm(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 3; i++) {
+    v += a * vnoise(p);
+    p = p * 2.03 + vec2(17.1, 9.7);
+    a *= 0.5;
+  }
+  return v;
+}
+// Ο ουρανός ως συνάρτηση κατεύθυνσης: βαθύ μπλε στο ζενίθ, αχλή στον ορίζοντα, ήλιος με άλω,
+// λίγα σύννεφα. Τον ΙΔΙΟ ουρανό βλέπει το μάτι πάνω από τον ορίζοντα και το νερό στην
+// αντανάκλασή του — έτσι ο ήλιος γυαλίζει στο νερό ακριβώς εκεί που πρέπει.
+vec3 skyColor(vec3 dir, vec3 light, float time) {
+  float t = clamp(dir.z, 0.0, 1.0);
+  vec3 zenith = vec3(0.10, 0.32, 0.76);
+  vec3 horizon = vec3(0.66, 0.80, 0.92);
+  vec3 sky = mix(horizon, zenith, pow(t, 0.38));
+  float s = max(dot(dir, light), 0.0);
+  sky += vec3(1.0, 0.96, 0.88) * (pow(s, 1400.0) * 9.0 + pow(s, 40.0) * 0.32 + pow(s, 3.0) * 0.07);
+  if (dir.z > 0.02) {
+    vec2 cp = dir.xy / max(dir.z, 0.08) * 0.32 + vec2(time * 0.012, time * 0.004);
+    float cloud = fbm(cp);
+    float cover = smoothstep(0.52, 0.78, cloud) * smoothstep(0.02, 0.22, dir.z);
+    sky = mix(sky, vec3(0.98, 0.98, 0.99), cover * 0.8);
+  }
+  return sky;
+}
+// ACES: το tone mapping του κινηματογράφου — τα φωτεινά δεν «καίγονται», τα σκούρα κρατούν χρώμα.
+vec3 aces(vec3 x) {
+  return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
+}
+`;
 
 const TERRAIN_VS = `
 precision highp float;
@@ -145,17 +208,16 @@ varying float vDist;
 varying float vNoise;
 varying float vFoam;
 varying float vRip;
-varying float vRipPhase;
 varying float vShadow;
-varying float vClipY;
+varying float vWave;
 
 void main() {
   float d = aDist;
   float z = 0.0;
   vFoam = 0.0;
   vRip = 0.0;
-  vRipPhase = 0.0;
   vShadow = 1.0;
+  vWave = 0.0;
   if (d > 0.0) {
     if (uHasWaves > 0.5) {
       float w = uArriving * smoothstep(0.0, 1.0, 1.0 - d / ${REFRACTION_UNITS.toFixed(1)});
@@ -164,12 +226,14 @@ void main() {
       float travelled = mix(far, farAtShore - d, w);
       float phase = uK * travelled - uOmega * uTime;
       float amp = mix(uShoreAmp, uOpenAmp, clamp(d / 45.0, 0.0, 1.0));
-      // Λίγο πιο μυτερή κορυφή, πιο πλατιά κοιλάδα — όπως στέκει ένα πραγματικό κύμα.
-      z = amp * (sin(phase) + 0.28 * sin(2.0 * phase + 0.7)) * 3.6;
+      // Όσο ψηλώνει το κύμα, τόσο πιο μυτερή η κορυφή και πιο πλατιά η κοιλάδα (Gerstner).
+      float crest = sin(phase) + 0.30 * amp * sin(2.0 * phase + 0.7);
+      z = amp * crest * ${WAVE_UNITS_AT_FULL.toFixed(1)};
       // Δεύτερο, μικρότερο κύμα λίγο λοξά και λίγο πιο κοντό: η θάλασσα δεν είναι ποτέ ΕΝΑ ημίτονο.
       vec2 crossDir = normalize(uWaveDir + vec2(-uWaveDir.y, uWaveDir.x) * 0.42);
       float crossPhase = uK * 1.6 * mix(dot(crossDir, aPos), dot(crossDir, aShore) - d, w) - uOmega * 1.25 * uTime + 1.3;
-      z += amp * sin(crossPhase) * 0.9;
+      z += amp * sin(crossPhase) * 1.0;
+      vWave = z;
       if (uArriving > 0.5 && d < uBreakZone && uFoam > 0.0) {
         vFoam = uFoam * (0.5 + 0.5 * sin(phase)) * (1.0 - d / uBreakZone);
       }
@@ -177,24 +241,20 @@ void main() {
     float shadow = mix(1.0, clamp(d / ${WIND_SHADOW_UNITS.toFixed(1)}, 0.0, 1.0), uOffshore);
     float gust = 0.55 + 0.45 * sin(0.11 * aPos.x + 0.07 * aPos.y - 0.8 * uTime) * sin(0.09 * aPos.x - 0.13 * aPos.y + 0.5 * uTime);
     float ripA = uWindAmp * shadow * gust;
-    // Ο άνεμος σηκώνει και λίγο κοντό «κοφτό» κύμα (μήκος ~7 μονάδες, πάνω από το βήμα του
-    // πλέγματος για να μη βγαίνει σκαλοπάτια)· η ψιλή τσαλάκωση γίνεται στον fragment shader.
+    // Ο άνεμος σηκώνει κοντό «κοφτό» κύμα (μήκος ~7 μονάδες, πάνω από το βήμα του πλέγματος).
     float kChop = 0.9;
     float chop = sin(kChop * dot(uWindDir, aPos) - kChop * uRipSpeed * 0.7 * uTime + aNoise * 4.0);
-    z += chop * ripA * 0.45;
+    z += chop * ripA * 0.5;
     vRip = ripA;
-    vRipPhase = chop;
     vShadow = shadow;
   } else {
-    // Η στεριά: το ύψος ήρθε έτοιμο από τη CPU (ήπια πλαγιά άμμου, ή το πραγματικό ανάγλυφο
-    // όπου υπάρχει ψημένο), με λίγο τυχαίο τρέμουλο για να μη γυαλίζει επίπεδη.
+    // Η στεριά: το ύψος ήρθε έτοιμο από τη CPU (ήπια πλαγιά άμμου ή το πραγματικό ανάγλυφο).
     z = aHeight;
   }
   vWorld = vec3(aPos, z);
   vDist = d;
   vNoise = aNoise;
   gl_Position = uProj * uView * vec4(aPos, z, 1.0);
-  vClipY = gl_Position.y / max(gl_Position.w, 0.001);
 }
 `;
 
@@ -213,115 +273,145 @@ uniform float uFogNear;
 uniform float uFogFar;
 uniform float uFogMax;
 uniform float uMetresPerUnit;
+uniform float uWindAmp;
 varying vec3 vWorld;
 varying float vDist;
 varying float vNoise;
 varying float vFoam;
 varying float vRip;
-varying float vRipPhase;
 varying float vShadow;
-varying float vClipY;
-
-// Ίδια συνάρτηση με τον ουρανό: η ομίχλη παίρνει ΑΚΡΙΒΩΣ το χρώμα του ουρανού στο ίδιο ύψος
-// της οθόνης, ώστε η άκρη του πλέγματος να μη φαίνεται ποτέ.
-vec3 skyAt(float y) {
-  vec3 top = vec3(0.30, 0.58, 0.88);
-  vec3 horizon = vec3(0.80, 0.90, 0.96);
-  return mix(horizon, top, smoothstep(0.05, 1.0, y));
-}
+varying float vWave;
+${SHARED_GLSL}
 
 void main() {
   vec3 n = normalize(cross(dFdx(vWorld), dFdy(vWorld)));
   if (n.z < 0.0) n = -n;
-  if (vDist > 0.0 && vRip > 0.0) {
-    // Η τσαλάκωση του ανέμου (cat's paws) ως κλίση ανά εικονοστοιχείο: γυαλίζει, δεν σκαλοπατιάζει.
-    float kRip = 1.96;
-    float ph = kRip * dot(uWindDir, vWorld.xy) - kRip * uRipSpeed * uTime + vNoise * 6.0;
-    n = normalize(n + vec3(uWindDir * cos(ph) * vRip * 0.55, 0.0));
-  }
   vec3 v = normalize(uEye - vWorld);
-  float diffuse = max(dot(n, uLight), 0.0);
-  vec3 skyColor = vec3(0.62, 0.80, 0.94);
+  float dist = length(uEye - vWorld);
+  vec2 p = vWorld.xy;
+  // Η λεπτομέρεια σβήνει με την απόσταση — μακριά θα γινόταν μόνο τρεμούλιασμα.
+  float detail = 1.0 - smoothstep(60.0, 420.0, dist);
   vec3 color;
+
   if (vDist > 0.0) {
-    // Ρηχά ανοιχτόχρωμα, βαθύτερα σκούρο μπλε — η παλέτα της μινιατούρας, με βάθος.
-    float depth = smoothstep(0.0, 60.0, vDist);
-    vec3 shallow = vec3(0.55, 0.85, 0.90);
-    vec3 deep = vec3(0.12, 0.42, 0.66);
-    color = mix(shallow, deep, depth);
-    // Στα πολύ ρηχά φαίνεται η άμμος μέσα από το νερό.
-    color = mix(color, vec3(0.80, 0.78, 0.66), smoothstep(7.0, 0.0, vDist) * 0.55);
-    // Φως: κοιλάδες πιο σκούρες, κορυφές πιο φωτεινές.
-    color *= 0.55 + 0.55 * diffuse;
-    // Fresnel: όσο πιο πλάγια κοιτάς το νερό, τόσο περισσότερο καθρεφτίζει τον ουρανό.
-    float fresnel = 0.04 + 0.96 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
-    color = mix(color, skyColor, clamp(fresnel, 0.0, 1.0) * 0.65);
-    // Γυαλάδα του ήλιου, και σπινθηρίσματα που τρεμοπαίζουν στις κορυφές.
-    vec3 r = reflect(-uLight, n);
-    float spec = pow(max(dot(r, v), 0.0), 48.0);
-    color += vec3(1.0, 0.98, 0.9) * spec * (0.35 + 0.4 * vRip);
-    float sparkle = pow(max(dot(r, v), 0.0), 420.0) * (0.5 + 0.5 * sin(uTime * 7.0 + vNoise * 41.0)) * step(0.45, vNoise);
-    color += vec3(1.0) * sparkle * 1.6;
+    // ΝΕΡΟ. Κλίσεις ανά εικονοστοιχείο: η τσαλάκωση του ανέμου (cat's paws) + ψιλός θόρυβος
+    // που τον σέρνει ο άνεμος. Στη σκιά του ανέμου (vShadow → 0) το νερό μένει λάδι.
+    float kRip = 1.96;
+    float ph = kRip * dot(uWindDir, p) - kRip * uRipSpeed * uTime + vNoise * 6.0;
+    vec2 g = uWindDir * cos(ph) * vRip * 0.5;
+    vec2 q = p * 1.7 + uWindDir * uTime * (0.8 + uRipSpeed * 0.15);
+    float e = 0.18;
+    float n0 = fbm(q);
+    g += vec2(fbm(q + vec2(e, 0.0)) - n0, fbm(q + vec2(0.0, e)) - n0) / e * (0.04 + 0.14 * uWindAmp) * vShadow;
+    n = normalize(n + vec3(g * detail, 0.0));
+
+    // Το σώμα του νερού: τιρκουάζ στα ρηχά, βαθύ μπλε ανοιχτά, η άμμος να φαίνεται από κάτω.
+    float depth = smoothstep(0.0, 110.0, vDist);
+    vec3 shallow = vec3(0.30, 0.78, 0.78);
+    vec3 deep = vec3(0.04, 0.25, 0.50);
+    vec3 body = mix(shallow, deep, depth);
+    body = mix(body, vec3(0.78, 0.74, 0.60), smoothstep(6.0, 0.0, vDist) * 0.5);
+    float diff = max(dot(n, uLight), 0.0);
+    body *= 0.45 + 0.65 * diff;
+    // Φως ΜΕΣΑ από την κορυφή όταν ο ήλιος είναι πίσω της — αυτό το τιρκουάζ λαμπύρισμα.
+    float sss = pow(max(dot(v, -uLight), 0.0), 4.0) * max(vWave, 0.0) * 0.55;
+    body += vec3(0.05, 0.45, 0.40) * sss;
+
+    // Fresnel: όσο πιο πλάγια κοιτάς, τόσο πιο πολύ το νερό γίνεται καθρέφτης του ουρανού.
+    vec3 r = reflect(-v, n);
+    r.z = abs(r.z);
+    vec3 refl = skyColor(r, uLight, uTime);
+    float fres = 0.02 + 0.98 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
+    color = mix(body, refl, clamp(fres, 0.0, 1.0));
+    // Γυαλάδα και σπινθηρίσματα του ήλιου.
+    vec3 h = normalize(uLight + v);
+    float spec = pow(max(dot(n, h), 0.0), 900.0);
+    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0));
+
+    // Αφρός με υφή εκεί που σπάει, και άσπρες κορφές που ο άνεμος ξεσηκώνει.
+    float fm = fbm(p * 0.9 + vec2(0.0, -uTime * 0.6));
+    float foam = smoothstep(0.38, 0.78, fm + vFoam * 0.9) * step(0.001, vFoam);
+    foam = max(foam, vFoam * 0.45);
+    float capNoise = vnoise(p * 0.8 + uWindDir * uTime * 1.5);
+    float caps = smoothstep(0.64, 0.76, capNoise) * step(0.35, sin(ph)) * clamp(uWhitecaps * 1.6, 0.0, 1.0) * vShadow;
+    // Σε πολύ αέρα (≥ 6 Μπφ) ο αφρός τεντώνεται σε λωρίδες κατά μήκος του ανέμου.
+    vec2 along = vec2(dot(p, uWindDir) * 0.25, dot(p, vec2(-uWindDir.y, uWindDir.x)) * 1.6);
+    float streaks = smoothstep(0.72, 0.86, vnoise(along + vec2(-uTime * 0.9, 0.0))) * smoothstep(0.7, 1.0, uWindAmp) * vShadow;
+    foam = clamp(foam + caps + streaks * 0.5, 0.0, 1.0);
+    vec3 foamCol = vec3(0.96, 0.98, 1.0) * (0.7 + 0.4 * diff);
+    color = mix(color, foamCol, foam * (0.6 + 0.4 * detail));
+
     // Το λεπτό πλέγμα της προσομοίωσης: κάθε 10 μονάδες, σβήνει με την απόσταση.
     if (uGrid > 0.0) {
-      vec2 gp = vWorld.xy / 10.0;
-      vec2 g = abs(fract(gp) - 0.5) / max(fwidth(gp), vec2(1e-4));
-      float line = 1.0 - min(min(g.x, g.y), 1.0);
-      color = mix(color, vec3(0.35, 0.95, 1.0), line * uGrid);
+      vec2 gp = p / 10.0;
+      vec2 gw = abs(fract(gp) - 0.5) / max(fwidth(gp), vec2(1e-4));
+      float line = 1.0 - min(min(gw.x, gw.y), 1.0);
+      color = mix(color, vec3(0.35, 0.95, 1.0), line * uGrid * detail);
     }
-    // Αφρός εκεί που σπάει, και μικρές άσπρες κορφές σε δυνατό αέρα.
-    float speck = step(vNoise, vFoam * 0.9);
-    float white = clamp(vFoam * 0.75 + speck * 0.6, 0.0, 1.0);
-    if (uWhitecaps > 0.0 && vRipPhase > 0.6 && vNoise < uWhitecaps * vShadow) white = max(white, 0.8);
-    color = mix(color, vec3(1.0), white);
   } else {
-    vec3 sand = vec3(0.95, 0.90, 0.80);
-    vec3 inland = vec3(0.84, 0.79, 0.66);
+    // ΣΤΕΡΙΑ. Άμμος με κόκκο και ρυτίδες ανέμου, θάμνοι πιο ψηλά, γυμνός βράχος στα βουνά.
+    vec3 sand = vec3(0.92, 0.86, 0.72);
+    float grain = mix(vnoise(p * 7.0), vnoise(p * 29.0), 0.5);
+    sand *= 0.88 + 0.24 * grain * detail;
+    float ripples = sin(dot(p, vec2(-uWindDir.y, uWindDir.x)) * 3.5 + vnoise(p * 1.5) * 4.0);
+    sand *= 0.97 + 0.03 * ripples * detail;
+    vec3 inland = vec3(0.80, 0.74, 0.60);
     color = mix(sand, inland, smoothstep(0.0, 45.0, -vDist));
-    // Πιο ψηλά: θάμνοι και ελιές, μετά γυμνός βράχος — ανά πραγματικό μέτρο ύψους.
     float metres = vWorld.z * uMetresPerUnit / ${RELIEF_EXAGGERATION.toFixed(2)};
-    vec3 scrub = vec3(0.56, 0.60, 0.42);
-    vec3 rock = vec3(0.64, 0.61, 0.56);
+    vec3 scrub = vec3(0.50, 0.56, 0.36) * (0.85 + 0.3 * vnoise(p * 0.5));
+    vec3 rock = vec3(0.62, 0.59, 0.54) * (0.85 + 0.3 * vnoise(p * 0.9));
     color = mix(color, scrub, smoothstep(6.0, 40.0, metres));
     color = mix(color, rock, smoothstep(220.0, 700.0, metres));
-    // Βρεγμένη άμμος στη γραμμή του νερού.
-    if (vDist > -2.5) color = vec3(0.87, 0.83, 0.71);
-    color *= 0.6 + 0.45 * diffuse;
+    float diff = max(dot(n, uLight), 0.0);
+    color *= 0.42 + 0.68 * diff;
+    // Βρεγμένη άμμος στη γραμμή του νερού: σκουραίνει και καθρεφτίζει λίγο τον ουρανό.
+    float wet = smoothstep(-3.5, -0.3, vDist);
+    if (wet > 0.0) {
+      vec3 r = reflect(-v, n);
+      r.z = abs(r.z);
+      color = mix(color, color * 0.7 + skyColor(r, uLight, uTime) * 0.2, wet);
+    }
   }
-  // Ομίχλη προς τον ορίζοντα: το μακρινό νερό χάνεται στον ουρανό.
-  float dist = length(uEye - vWorld);
-  // Καμπύλη 1,6: η θολούρα μαζεύεται στο τέλος, ώστε ένα βουνό στα 10 χλμ να διαβάζεται ακόμα.
+
+  // Ομίχλη: το μακρινό λιώνει στον ουρανό της ίδιας κατεύθυνσης, κοντά στον ορίζοντα.
+  vec3 hazeDir = normalize(vec3(-v.x, -v.y, max(-v.z, 0.10)));
   float fog = pow(smoothstep(uFogNear, uFogFar, dist), 1.6) * uFogMax;
-  color = mix(color, skyAt(vClipY), fog);
-  // Κινηματογραφικό φινίρισμα: ελαφριά βινιέτα, λίγος κόκκος, λίγο πιο ζεστό φως.
+  color = mix(color, skyColor(hazeDir, uLight, uTime), fog);
+
+  // Φινίρισμα: έκθεση, ACES, ελαφριά βινιέτα, λίγος κόκκος.
+  color = aces(color * 1.15);
   vec2 uv = gl_FragCoord.xy / uResolution;
-  float vig = smoothstep(0.98, 0.35, distance(uv, vec2(0.5)));
-  color *= 0.72 + 0.28 * vig;
-  float grain = fract(sin(dot(gl_FragCoord.xy + uTime * 60.0, vec2(12.9898, 78.233))) * 43758.5453);
-  color += (grain - 0.5) * 0.03;
-  color = mix(color, color * vec3(1.06, 1.0, 0.94), 0.35);
+  float vig = smoothstep(1.0, 0.35, distance(uv, vec2(0.5)));
+  color *= 0.78 + 0.22 * vig;
+  float grainN = fract(sin(dot(gl_FragCoord.xy + uTime * 60.0, vec2(12.9898, 78.233))) * 43758.5453);
+  color += (grainN - 0.5) * 0.022;
   gl_FragColor = vec4(color, 1.0);
 }
 `;
 
 const SKY_VS = `
 attribute vec2 aClip;
-varying float vY;
+uniform vec3 uCamRight;
+uniform vec3 uCamUp;
+uniform vec3 uCamFwd;
+uniform vec2 uTanHalf;
+varying vec3 vDir;
 void main() {
-  vY = aClip.y;
+  // Η ακτίνα κάθε εικονοστοιχείου από τη βάση της κάμερας — γραμμική στον χώρο του clip.
+  vDir = uCamFwd + uCamRight * (aClip.x * uTanHalf.x) + uCamUp * (aClip.y * uTanHalf.y);
   gl_Position = vec4(aClip, 0.9999, 1.0);
 }
 `;
 
 const SKY_FS = `
 precision mediump float;
-varying float vY;
+uniform vec3 uLight;
+uniform float uTime;
+varying vec3 vDir;
+${SHARED_GLSL}
 void main() {
-  // Ο ορίζοντας έχει ΑΚΡΙΒΩΣ το χρώμα της ομίχλης του νερού, ώστε θάλασσα και ουρανός να
-  // λιώνουν ο ένας στον άλλο αντί να φαίνεται μια άκρη.
-  vec3 top = vec3(0.30, 0.58, 0.88);
-  vec3 horizon = vec3(0.80, 0.90, 0.96);
-  gl_FragColor = vec4(mix(horizon, top, smoothstep(0.05, 1.0, vY)), 1.0);
+  vec3 dir = normalize(vDir);
+  gl_FragColor = vec4(aces(skyColor(dir, uLight, uTime) * 1.15), 1.0);
 }
 `;
 
@@ -588,13 +678,18 @@ const TARGET = [100, 22, -4];
  * μακριά) και μετά περιστρέφεται ήπια γύρω από την παραλία, με λίγο ανεβοκατέβασμα — όπως
  * ένα drone που κρατά στόχο. Αυτό είναι που κάνει την εικόνα «βίντεο» αντί για διάγραμμα.
  */
-const cameraEye = (tSec: number, distanceScale: number, heightScale: number): number[] => {
+const cameraEye = (tSec: number, distanceScale: number, heightScale: number, windShake: number): number[] => {
   const intro = Math.min(1, tSec / 2.8);
   const ease = intro * intro * (3 - 2 * intro);
   const yaw = Math.sin(tSec * 0.11) * 0.16;
-  const radius = (150 + (1 - ease) * 95) * distanceScale;
-  const height = (66 + (1 - ease) * 70) * heightScale + Math.sin(tSec * 0.17) * 3;
-  return [TARGET[0] + Math.sin(yaw) * radius, TARGET[1] + Math.cos(yaw) * radius, TARGET[2] + height];
+  // Πιο κοντά και πιο χαμηλά από πριν (120/52 αντί 150/66): έτσι ένα κύμα μισού μέτρου
+  // ΦΑΙΝΕΤΑΙ, αντί να γίνεται υφή από ψηλά.
+  const radius = (120 + (1 - ease) * 110) * distanceScale;
+  const height = (52 + (1 - ease) * 80) * heightScale + Math.sin(tSec * 0.17) * 2.5;
+  // Το drone τρέμει στον αέρα: μηδέν ως 22 km/h, αισθητό στα 40+.
+  const shakeX = (Math.sin(tSec * 7.3) + Math.sin(tSec * 11.1) * 0.5) * windShake;
+  const shakeZ = (Math.sin(tSec * 9.7) + Math.sin(tSec * 13.7) * 0.5) * windShake * 0.6;
+  return [TARGET[0] + Math.sin(yaw) * radius + shakeX, TARGET[1] + Math.cos(yaw) * radius, TARGET[2] + height + shakeZ];
 };
 const LIGHT = (() => {
   const l = [-0.35, -0.45, 0.82];
@@ -678,22 +773,40 @@ export const createSeaMotionGl = (
     uFogNear: u(terrain, 'uFogNear'), uFogFar: u(terrain, 'uFogFar'), uFogMax: u(terrain, 'uFogMax'), uMetresPerUnit: u(terrain, 'uMetresPerUnit'),
   };
   // uWindDir, uRipSpeed και uTime διαβάζονται και από τους δύο shaders — μία τοποθεσία ο καθένας.
-  const S = { aClip: a(sky, 'aClip') };
+  const S = {
+    aClip: a(sky, 'aClip'), uCamRight: u(sky, 'uCamRight'), uCamUp: u(sky, 'uCamUp'), uCamFwd: u(sky, 'uCamFwd'),
+    uTanHalf: u(sky, 'uTanHalf'), uLight: u(sky, 'uLight'), uTime: u(sky, 'uTime'),
+  };
   const Ln = { aPos: a(lines, 'aPos'), aAlpha: a(lines, 'aAlpha'), uProj: u(lines, 'uProj'), uView: u(lines, 'uView') };
 
-  const width = canvas.width;
-  const height = canvas.height;
+  let width = canvas.width;
+  let height = canvas.height;
+  let proj = new Float32Array(16);
+  let fovy = 46;
+  let distanceScale = 1;
+  let heightScale = 1;
+  let tanHalfX = 0;
+  let tanHalfY = 0;
   // Όρθια οθόνη: το ίδιο κάθετο άνοιγμα θα έκοβε τα πλάγια και θα έφερνε την κάμερα «μέσα» στο
   // κύμα. Ανοίγει λίγο ο φακός και τραβιέται πίσω η κάμερα, ώστε η παραλία να χωρά ολόκληρη.
-  const aspect = width / height;
-  const fovy = Math.min(62, Math.max(46, 46 * Math.sqrt(2 / aspect)));
-  const distanceScale = aspect < 1 ? 1.3 : aspect < 1.6 ? 1.12 : 1;
-  const heightScale = aspect < 1 ? 0.8 : 1;
-  const proj = perspective(fovy, aspect, 4, relief ? 40000 : 1400);
+  const applySize = (w: number, h: number) => {
+    width = Math.max(16, Math.round(w));
+    height = Math.max(16, Math.round(h));
+    if (canvas.width !== width) canvas.width = width;
+    if (canvas.height !== height) canvas.height = height;
+    const aspect = width / height;
+    fovy = Math.min(62, Math.max(46, 46 * Math.sqrt(2 / aspect)));
+    distanceScale = aspect < 1 ? 1.3 : aspect < 1.6 ? 1.12 : 1;
+    heightScale = aspect < 1 ? 0.7 : 1;
+    proj = perspective(fovy, aspect, 4, relief ? 40000 : 1400);
+    tanHalfY = Math.tan((fovy * Math.PI) / 360);
+    tanHalfX = tanHalfY * aspect;
+  };
+  applySize(width, height);
 
   const streaks: Streak[] = [];
-  // 22 ρεύματα × 6 κορυφές × (x, y, z, alpha)
-  const lineData = new Float32Array(22 * 6 * 4);
+  // 30 ρεύματα × 6 κορυφές × (x, y, z, alpha)
+  const lineData = new Float32Array(30 * 6 * 4);
   const area = { x0: -40, x1: 240, y0: -90, y1: 125 };
 
   let disposed = false;
@@ -701,8 +814,17 @@ export const createSeaMotionGl = (
   const render = (params: SeaMotionParams, tSec: number, dtSec: number) => {
     if (disposed || !gl) return;
     const m = deriveMotion(params);
-    const eye = cameraEye(tSec, distanceScale, heightScale);
+    const windShake = clamp01((m.windSpeed - 22) / 30) * 0.9;
+    const eye = cameraEye(tSec, distanceScale, heightScale, windShake);
     const view = lookAt(eye, TARGET, [0, 0, 1]);
+    // Η βάση της κάμερας για τον ουρανό (ακτίνα ανά εικονοστοιχείο).
+    const f = [TARGET[0] - eye[0], TARGET[1] - eye[1], TARGET[2] - eye[2]];
+    const fl = Math.hypot(f[0], f[1], f[2]) || 1;
+    const fwd = [f[0] / fl, f[1] / fl, f[2] / fl];
+    const rgt = [fwd[1], -fwd[0], 0];
+    const rl = Math.hypot(rgt[0], rgt[1]) || 1;
+    rgt[0] /= rl; rgt[1] /= rl;
+    const up = [rgt[1] * fwd[2] - rgt[2] * fwd[1], rgt[2] * fwd[0] - rgt[0] * fwd[2], rgt[0] * fwd[1] - rgt[1] * fwd[0]];
 
     gl.viewport(0, 0, width, height);
     gl.disable(gl.BLEND);
@@ -711,6 +833,12 @@ export const createSeaMotionGl = (
     gl.disable(gl.DEPTH_TEST);
     gl.depthMask(false);
     gl.useProgram(sky);
+    gl.uniform3f(S.uCamRight, rgt[0], rgt[1], rgt[2]);
+    gl.uniform3f(S.uCamUp, up[0], up[1], up[2]);
+    gl.uniform3f(S.uCamFwd, fwd[0], fwd[1], fwd[2]);
+    gl.uniform2f(S.uTanHalf, tanHalfX, tanHalfY);
+    gl.uniform3f(S.uLight, LIGHT[0], LIGHT[1], LIGHT[2]);
+    gl.uniform1f(S.uTime, tSec);
     gl.bindBuffer(gl.ARRAY_BUFFER, skyVbo);
     gl.enableVertexAttribArray(S.aClip);
     gl.vertexAttribPointer(S.aClip, 2, gl.FLOAT, false, 0, 0);
@@ -770,10 +898,10 @@ export const createSeaMotionGl = (
 
     // Τα ρεύματα του ανέμου, λίγο πάνω από το νερό.
     if (m.hasWind && m.windAmp > 0) {
-      const wanted = Math.min(22, Math.max(3, Math.round(m.windSpeed / 3)));
+      const wanted = Math.min(30, Math.max(2, Math.round(m.windSpeed / 2.2)));
       while (streaks.length < wanted) streaks.push(spawnStreak(m.wx, m.wy, m.windSpeed, true, area));
       while (streaks.length > wanted) streaks.pop();
-      const speed = 6 + m.windSpeed * 0.55;
+      const speed = 8 + m.windSpeed * 0.6;
       let n = 0;
       for (let s = 0; s < streaks.length; s += 1) {
         const streak = streaks[s];
@@ -785,9 +913,9 @@ export const createSeaMotionGl = (
           streaks[s] = spawnStreak(m.wx, m.wy, m.windSpeed, false, area);
           continue;
         }
-        const fade = Math.sin((streak.age / streak.life) * Math.PI) * 0.85;
-        // Ουρά διάφανη, κεφαλή φωτεινή· πάχος 0,45 μονάδες κάθετα στην κίνηση.
-        const hw = 0.45;
+        const fade = Math.sin((streak.age / streak.life) * Math.PI) * (0.5 + 0.45 * m.windAmp);
+        // Ουρά διάφανη, κεφαλή φωτεινή· πάχος 0,5 μονάδες κάθετα στην κίνηση.
+        const hw = 0.5;
         const px = -m.wy * hw;
         const py = m.wx * hw;
         const tailX = streak.x - m.wx * streak.len;
@@ -842,5 +970,10 @@ export const createSeaMotionGl = (
     if (lose) lose.loseContext();
   };
 
-  return { render, dispose };
+  const setSize = (w: number, h: number) => {
+    if (disposed) return;
+    applySize(w, h);
+  };
+
+  return { render, setSize, dispose };
 };
