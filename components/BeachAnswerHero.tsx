@@ -202,13 +202,47 @@ export const SHORE_LABELS: Record<LanguageCode, { atShore: string; offshore: (v:
  * ακτή δεν υπόσχεται νηνεμία, με ή χωρίς σκιά, οπότε η Γλυφάδα διορθώνεται ούτως ή άλλως και
  * δεν χρειάζεται δεύτερος μηχανισμός. Η μέτρηση εκείνης της μέρας μένει στο
  * reports/weather/shelter-word-land-gate-2026-08-27.json.
+ *
+ * ⚠️ Η ΛΕΞΗ ΚΡΙΝΕΤΑΙ ΣΤΟΝ ΜΕΣΟ — ΤΟ ΤΑΒΑΝΙ ΜΟΝΟ ΣΒΗΝΕΙ ΥΠΟΣΧΕΣΕΙΣ (Μίλτος, 03/09/2026, Ζαβία).
+ *
+ * ΤΙ ΕΛΕΓΕ Η ΟΘΟΝΗ. Popup του χάρτη: «Λίγος αέρας · 3 Μπφ». Πλακίδιο μέσα, ίδια ώρα, ίδιος
+ * άνεμος: «3–4 Μπφ · Δ · φυσάει αρκετά». Ο κανόνας της 28/08 έβαζε το πλακίδιο στην κλίμακα
+ * της κάρτας — αλλά την έκρινε στον ΜΕΓΑΛΥΤΕΡΟ ΤΥΠΩΜΕΝΟ αριθμό (το 4 της ριπής), ενώ η κάρτα
+ * κρίνει τη λέξη της στον ΜΕΣΟ (το 3). Ίδια κλίμακα, άλλο νούμερο: στα «3–4» οι δύο επιφάνειες
+ * ξαναχώρισαν, ένα σκαλί κάτω από εκεί που τις είχαμε ενώσει.
+ *
+ * Ο ΚΑΝΟΝΑΣ ΑΠΟ ΣΗΜΕΡΑ. Η λέξη του πλακιδίου είναι ΠΑΝΤΑ το σκαλί της κάρτας για τον μέσο
+ * (utils/conditionsFeelPhrase.windFeelLevel — η ίδια συνάρτηση, όχι αντίγραφο), σε ρήμα:
+ *
+ *     κάρτα «Λίγος αέρας»   (3)  → πλακίδιο «φυσάει λίγο»     ← το σκαλί που έλειπε
+ *     κάρτα «Αρκετός αέρας» (4)  → πλακίδιο «φυσάει αρκετά»
+ *     κάρτα «Πολύς αέρας»   (5)  → πλακίδιο «φυσάει πολύ»
+ *     κάρτα «Δυνατός αέρας» (6+) → πλακίδιο «φυσάει δυνατά»
+ *
+ * Το τυπωμένο μέγιστο (το άνω άκρο του εύρους ριπών) ΔΕΝ ανεβάζει ποτέ τη λέξη. Κάνει ένα
+ * πράγμα μόνο: όταν περνά το κατώφλι της υπόσχεσης (SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT),
+ * σβήνει τις λέξεις γεωμετρίας —«απάνεμη», «αεράκι», «κατάμουτρα»— και στη θέση τους μπαίνει
+ * το ρήμα του μέσου. Έτσι η Ζαβία λέει «3–4 Μπφ · Δ · φυσάει λίγο» κάτω από popup «Λίγος
+ * αέρας», και η Σέριφος («5–6») δεν ξαναλέει «απάνεμη».
+ *
+ * ΓΙΑΤΙ ΟΧΙ «ΟΛΟΙ ΣΤΟ ΤΑΒΑΝΙ». Η ριπή είναι πρόβλεψη μοντέλου, φούσκα στο 23% των ήρεμων ωρών
+ * (§ΑΞ1/Α3). Αν έκρινε τη λέξη, μια ψεύτικη ριπή θα έγραφε «Αρκετός αέρας» σε παραλίες με
+ * κίτρινη πινέζα και μέσο 3. Μονόδρομη πύλη, όπως όλες: το ταβάνι αφαιρεί ηρεμία, δεν
+ * προσθέτει αέρα. Αν η ριπή είναι φούσκα, το χειρότερο είναι ένα «φυσάει λίγο» αντί για
+ * «απάνεμη» — όχι ένα «φυσάει αρκετά» που η κάρτα διαψεύδει.
+ *
+ * ΤΙ ΑΛΛΑΞΕ ΣΤΑ ΨΗΛΑ ΣΚΑΛΙΑ, ΡΗΤΑ: «4–5» λέει «φυσάει αρκετά» (ήταν «πολύ»), «5–6» λέει
+ * «φυσάει πολύ» (ήταν «δυνατά») — δηλαδή ό,τι λέει η κάρτα από όπου ήρθε ο επισκέπτης, που
+ * ήταν εξαρχής η εντολή της 28/08. Ο ΤΟΝΟΣ της γραμμής από κάτω («αλλά» / κόμμα) κρίνεται
+ * ακόμη στο τυπωμένο μέγιστο (conditionsFeelPhrase.contrast) — εκείνος ΕΙΝΑΙ υπόσχεση, και
+ * υποσχέσεις σβήνονται στο ταβάνι.
  */
-export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; windFeltSome: string; windFeltLot: string; protectedStrongWind: string }> = {
-  en: { protected: 'sheltered', partial: 'breezy', exposed: 'head-on', windFeltSome: 'some wind', windFeltLot: 'windy', protectedStrongWind: 'strong wind' },
-  gr: { protected: 'απάνεμη', partial: 'αεράκι', exposed: 'κατάμουτρα', windFeltSome: 'φυσάει αρκετά', windFeltLot: 'φυσάει πολύ', protectedStrongWind: 'φυσάει δυνατά' },
-  de: { protected: 'geschützt', partial: 'leichter Wind', exposed: 'frontal', windFeltSome: 'etwas Wind', windFeltLot: 'viel Wind', protectedStrongWind: 'starker Wind' },
-  it: { protected: 'riparata', partial: 'brezza', exposed: 'di faccia', windFeltSome: 'vento moderato', windFeltLot: 'molto vento', protectedStrongWind: 'vento forte' },
-  fr: { protected: 'abrité', partial: 'brise', exposed: 'de face', windFeltSome: 'vent modéré', windFeltLot: 'vent soutenu', protectedStrongWind: 'vent fort' },
+export const SHELTER_LABEL: Record<LanguageCode, { protected: string; partial: string; exposed: string; windFeltLittle: string; windFeltSome: string; windFeltLot: string; protectedStrongWind: string }> = {
+  en: { protected: 'sheltered', partial: 'breezy', exposed: 'head-on', windFeltLittle: 'light wind', windFeltSome: 'some wind', windFeltLot: 'windy', protectedStrongWind: 'strong wind' },
+  gr: { protected: 'απάνεμη', partial: 'αεράκι', exposed: 'κατάμουτρα', windFeltLittle: 'φυσάει λίγο', windFeltSome: 'φυσάει αρκετά', windFeltLot: 'φυσάει πολύ', protectedStrongWind: 'φυσάει δυνατά' },
+  de: { protected: 'geschützt', partial: 'leichter Wind', exposed: 'frontal', windFeltLittle: 'wenig Wind', windFeltSome: 'etwas Wind', windFeltLot: 'viel Wind', protectedStrongWind: 'starker Wind' },
+  it: { protected: 'riparata', partial: 'brezza', exposed: 'di faccia', windFeltLittle: 'poco vento', windFeltSome: 'vento moderato', windFeltLot: 'molto vento', protectedStrongWind: 'vento forte' },
+  fr: { protected: 'abrité', partial: 'brise', exposed: 'de face', windFeltLittle: 'vent léger', windFeltSome: 'vent modéré', windFeltLot: 'vent soutenu', protectedStrongWind: 'vent fort' },
 };
 
 /**

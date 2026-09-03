@@ -301,7 +301,7 @@ if (!heroSentenceWired && !/explanation=\{[^}]*weatherNow\.liveSentence/.test(de
 // The scale has to be APPLIED, not merely spelled: a vocabulary with no call site ships the
 // original «4–5 Μπφ · Β · απάνεμη» screen (Λέσβος, 28/08/2026). And the ceiling on the words
 // that promise calm has to stay at 3 — at 4 it would be the same screen again.
-for (const key of ['windFeltSome', 'windFeltLot']) {
+for (const key of ['windFeltLittle', 'windFeltSome', 'windFeltLot']) {
   if (!new RegExp(`shelterCopy\\.${key}`).test(detailSource)) {
     failures.push(
       `pages/BeachDetailPage.tsx: the wind tile no longer uses SHELTER_LABEL.${key}. At 4-5 Bft it `
@@ -367,9 +367,13 @@ if (!shelterBlock) {
     // who tapped a card cannot read "it blows" outside and "no wind" inside. Each rung must
     // exist, must be distinct from the other rungs, and must never BE one of the two words
     // that promise calm; otherwise «4–5 Μπφ · Β · απάνεμη» comes straight back.
+    // …and the 3 Bft rung (03/09/2026, Ζαβία): when the printed range («3–4») removes the calm
+    // promise but the MEAN is still 3, the tile must say what the card says at 3 («Λίγος
+    // αέρας» → «φυσάει λίγο») — not jump to the 4 Bft rung on the strength of a model gust.
+    const little = (row[1].match(/\bwindFeltLittle:\s*'([^']*)'/) || [, ''])[1].trim();
     const some = (row[1].match(/\bwindFeltSome:\s*'([^']*)'/) || [, ''])[1].trim();
     const lot = (row[1].match(/\bwindFeltLot:\s*'([^']*)'/) || [, ''])[1].trim();
-    for (const [key, word] of [['windFeltSome', some], ['windFeltLot', lot]]) {
+    for (const [key, word] of [['windFeltLittle', little], ['windFeltSome', some], ['windFeltLot', lot]]) {
       if (!word) {
         failures.push(
           `SHELTER_LABEL.${lang}: ${key} is missing. From 4 Bft the tile states how much wind is `
@@ -383,11 +387,11 @@ if (!shelterBlock) {
         );
       }
     }
-    const rungs = [some, lot, strongWind].filter(Boolean);
-    if (rungs.length === 3 && new Set(rungs).size !== 3) {
+    const rungs = [little, some, lot, strongWind].filter(Boolean);
+    if (rungs.length === 4 && new Set(rungs).size !== 4) {
       failures.push(
-        `SHELTER_LABEL.${lang}: two of the three wind rungs share a word (${rungs.join(' / ')}) — `
-        + '4, 5 and 6+ Bft would read identically in the tile.'
+        `SHELTER_LABEL.${lang}: two of the four wind rungs share a word (${rungs.join(' / ')}) — `
+        + '3, 4, 5 and 6+ Bft would read identically in the tile.'
       );
     }
   }
@@ -399,19 +403,28 @@ if (!shelterBlock) {
       + 'track RELIEF_MAX_BEAUFORT (utils/conditionsFeelPhrase.ts) — same wind, same honesty.'
     );
   }
-  // 27/08/2026: the ceiling reads printedBeaufortMax, not beaufortLevel — the gust RANGE
-  // («5–6 Μπφ», utils/beaufortRange) put a 6 on the tile while the ceiling only saw the 5
-  // (Γάνεμα #2078). The gate therefore demands BOTH halves: the ceiling compares the
-  // printed maximum, and that maximum is derived from beaufortLevel and beaufortHigh —
-  // otherwise a refactor could rename the variable and quietly compare something calmer.
-  if (!/printedBeaufortMax\s*>\s*SHELTER_WORD_MAX_BEAUFORT/.test(detailSource)
+  // 27/08/2026: the calm-promise gate reads printedBeaufortMax, not beaufortLevel — the gust
+  // RANGE («5–6 Μπφ», utils/beaufortRange) put a 6 on the tile while the ceiling only saw the 5
+  // (Γάνεμα #2078). 03/09/2026 (Ζαβία): that printed maximum decides ONLY whether the geometry
+  // words are allowed; the intensity rung itself is judged on the MEAN, through the SAME
+  // windFeelLevel() the list card uses — so «3–4 Μπφ» reads «φυσάει λίγο» beside a popup
+  // saying «Λίγος αέρας», and a model gust can never lift the word a rung the card denies.
+  // The gate demands all three halves: the promise gate compares the printed maximum, that
+  // maximum is derived from beaufortLevel and beaufortHigh, and the rung comes from
+  // windFeelLevel(beaufortLevel) — otherwise a refactor could quietly judge the word on the
+  // gust again, or compare something calmer than what is printed.
+  if (!/printedBeaufortMax\s*>\s*SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT/.test(detailSource)
     || !/printedBeaufortMax\s*=\s*Math\.max\(\s*beaufortLevel\s*,\s*beaufortHigh\s*\?\?\s*beaufortLevel\s*\)/.test(detailSource)
+    || !/windFeelLevel\(\s*beaufortLevel\s*\)/.test(detailSource)
+    || /windFeelLevel\(\s*printedBeaufortMax\s*\)/.test(detailSource)
     || !/protectedStrongWind/.test(detailSource)) {
     failures.push(
-      'pages/BeachDetailPage.tsx: the wind tile no longer swaps to protectedStrongWind above '
-      + 'SHELTER_WORD_MAX_BEAUFORT judged on the PRINTED maximum (max of beaufortLevel and '
-      + 'beaufortHigh). At a printed 6 a north-facing-away beach would read «Β · απάνεμη» '
-      + 'again — geometrically true, but it tells the visitor there is no wind while there is.'
+      'pages/BeachDetailPage.tsx: the wind tile must drop the geometry words when the PRINTED '
+      + 'maximum (max of beaufortLevel and beaufortHigh) passes SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT, '
+      + 'and then pick its rung from windFeelLevel(beaufortLevel) — the MEAN, the same call the '
+      + 'list card makes — up to protectedStrongWind. Judged on the maximum, «3–4 Μπφ» says '
+      + '«φυσάει αρκετά» under a popup saying «Λίγος αέρας» (Ζαβία, 03/09/2026); without the gate, '
+      + 'a printed 6 reads «Β · απάνεμη» again (Γάνεμα, 27/08/2026).'
     );
   }
   if (!/wind\.shelterLabel\s*\?\s*`\$\{wind\.directionLabel\}\s*·\s*\$\{wind\.shelterLabel\}`/.test(heroSource)) {
