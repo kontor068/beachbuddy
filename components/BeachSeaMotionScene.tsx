@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Maximize2, Waves, Wind, X } from 'lucide-react';
+import { CloudSun, Maximize2, Moon, Pause, Play, Sun, Volume2, VolumeX, Waves, Wind, X } from 'lucide-react';
 import type { Beach, LanguageCode, SuitableBeach } from '../types';
 import { SHORELINE_BOX, type ShorelineShape } from '../services/shorelineShapeService';
-import { useShorelineShape } from './ShorelineThumbnail';
+import { deriveShorelineFeatures, useShorelineShape } from './ShorelineThumbnail';
+import { sunPosition } from '../utils/sunPosition';
+import { startSeaSound, type SeaSound } from '../utils/seaSound';
+import { loadSatelliteMosaic, type SatelliteMosaic } from '../services/satelliteMosaic';
+import { toAthensWallClock } from '../utils/athensTime';
 import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams } from '../utils/seaMotionGl';
 import { loadBeachRelief, type BeachReliefGrid } from '../services/beachReliefService';
 
@@ -64,6 +68,25 @@ export type BeachSeaMotionSceneProps = {
   presentation?: 'inline' | 'fullscreen';
   /** Κλείσιμο της πλήρους οθόνης όταν presentation='fullscreen' — το ταμπελάκι ξαναδείχνει play. */
   onClose?: () => void;
+  /** Η ώρα που δείχνει ο χάρτης (unix δευτερόλεπτα). Χωρίς αυτήν: τώρα. Δίνει τον ήλιο. */
+  atDt?: number | null;
+  /**
+   * Οι ώρες της ημέρας για το «παίξε τη μέρα»: ΠΕΡΙΟΧΗΣ (το ίδιο σημείο πρόγνωσης με την μπάρα
+   * της ώρας), όχι της παραλίας. Η σκηνή κλιμακώνει το κύμα της ακτής με τον λόγο ακτή/ανοιχτά
+   * της τρέχουσας ώρας και το λέει με «~».
+   */
+  hourSeries?: SceneHour[];
+};
+
+export type SceneHour = {
+  dt: number;
+  windKmh?: number;
+  windFromDeg?: number;
+  waveM?: number;
+  waveFromDeg?: number;
+  periodS?: number;
+  /** 0..1 */
+  cloudCover?: number;
 };
 
 /* --------------------------------------------------------------- copy */
@@ -78,7 +101,21 @@ type SceneCopy = {
   wind: string;
   sea: string;
   shore: string;
+  playDay: string;
+  stopDay: string;
+  soundOn: string;
+  soundOff: string;
+  region: string;
+  /** Ως πού φτάνει το νερό σε έναν άνθρωπο 1,75 μ. */
+  reach: (level: 'ankle' | 'knee' | 'waist' | 'chest' | 'neck' | 'over') => string;
+  night: string;
 };
+
+const reachGr = { ankle: 'ως τον αστράγαλο', knee: 'ως το γόνατο', waist: 'ως τη μέση', chest: 'ως το στήθος', neck: 'ως τον λαιμό', over: 'πάνω από το κεφάλι' } as const;
+const reachEn = { ankle: 'ankle-deep', knee: 'knee-high', waist: 'waist-high', chest: 'chest-high', neck: 'neck-high', over: 'overhead' } as const;
+const reachDe = { ankle: 'knöcheltief', knee: 'kniehoch', waist: 'hüfthoch', chest: 'brusthoch', neck: 'halshoch', over: 'über Kopf' } as const;
+const reachFr = { ankle: 'aux chevilles', knee: 'aux genoux', waist: 'à la taille', chest: 'à la poitrine', neck: 'au cou', over: 'au-dessus de la tête' } as const;
+const reachIt = { ankle: 'alla caviglia', knee: 'al ginocchio', waist: 'alla vita', chest: 'al petto', neck: 'al collo', over: 'sopra la testa' } as const;
 
 const sceneCopy: Record<LanguageCode, SceneCopy> = {
   gr: {
@@ -91,6 +128,13 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     wind: 'ΑΝΕΜΟΣ',
     sea: 'ΘΑΛΑΣΣΑ',
     shore: 'ΑΚΤΗ',
+    playDay: 'Παίξε τη μέρα',
+    stopDay: 'Σταμάτα',
+    soundOn: 'Άνοιξε τον ήχο',
+    soundOff: 'Κλείσε τον ήχο',
+    region: 'περιοχή',
+    reach: level => reachGr[level],
+    night: 'νύχτα',
   },
   en: {
     caption: "Simulation from this hour's data, not a camera",
@@ -102,6 +146,13 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     wind: 'WIND',
     sea: 'SEA',
     shore: 'SHORE',
+    playDay: 'Play the day',
+    stopDay: 'Stop',
+    soundOn: 'Sound on',
+    soundOff: 'Sound off',
+    region: 'region',
+    reach: level => reachEn[level],
+    night: 'night',
   },
   de: {
     caption: 'Simulation aus den Daten dieser Stunde, keine Kamera',
@@ -113,6 +164,13 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     wind: 'WIND',
     sea: 'SEE',
     shore: 'UFER',
+    playDay: 'Tag abspielen',
+    stopDay: 'Stopp',
+    soundOn: 'Ton an',
+    soundOff: 'Ton aus',
+    region: 'Region',
+    reach: level => reachDe[level],
+    night: 'Nacht',
   },
   fr: {
     caption: "Simulation d'après les données de l'heure, pas une caméra",
@@ -124,6 +182,13 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     wind: 'VENT',
     sea: 'MER',
     shore: 'RIVAGE',
+    playDay: 'Jouer la journée',
+    stopDay: 'Arrêter',
+    soundOn: 'Activer le son',
+    soundOff: 'Couper le son',
+    region: 'région',
+    reach: level => reachFr[level],
+    night: 'nuit',
   },
   it: {
     caption: "Simulazione dai dati dell'ora, non una telecamera",
@@ -135,6 +200,13 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     wind: 'VENTO',
     sea: 'MARE',
     shore: 'RIVA',
+    playDay: 'Riproduci la giornata',
+    stopDay: 'Ferma',
+    soundOn: 'Attiva audio',
+    soundOff: 'Disattiva audio',
+    region: 'zona',
+    reach: level => reachIt[level],
+    night: 'notte',
   },
 };
 
@@ -560,7 +632,7 @@ const useBeachRelief = (regionId: string | undefined): BeachReliefGrid | undefin
  * παίρνουμε ότι η ακτή είναι προς τη θάλασσα από την πινέζα. Σφάλμα ως ~50 μ., αμελητέο
  * πάνω σε DEM 150 μ.
  */
-const makeReliefSampler = (grid: BeachReliefGrid, shape: ShorelineShape, lat: number, lon: number) => {
+const makeBoxToLatLon = (shape: ShorelineShape, lat: number, lon: number) => {
   const metresPerUnit = shape.frameWidthM / SHORELINE_BOX.width;
   const theta = (shape.facingDeg * Math.PI) / 180;
   const sin = Math.sin(theta);
@@ -569,13 +641,46 @@ const makeReliefSampler = (grid: BeachReliefGrid, shape: ShorelineShape, lat: nu
   const mPerLon = 111320 * Math.cos((lat * Math.PI) / 180);
   const originE = shape.pinDistanceM * sin;
   const originN = shape.pinDistanceM * cos;
-  return (x: number, y: number): number | null => {
+  return (x: number, y: number): [number, number] => {
     const cross = (x - SHORELINE_BOX.pinX) * metresPerUnit;
     const along = (SHORELINE_BOX.pinY - y) * metresPerUnit;
     const east = cross * cos + along * sin + originE;
     const north = -cross * sin + along * cos + originN;
-    return grid.sample(lat + north / mPerLat, lon + east / mPerLon);
+    return [lat + north / mPerLat, lon + east / mPerLon];
   };
+};
+
+const makeReliefSampler = (grid: BeachReliefGrid, shape: ShorelineShape, lat: number, lon: number) => {
+  const toLatLon = makeBoxToLatLon(shape, lat, lon);
+  return (x: number, y: number): number | null => {
+    const [plat, plon] = toLatLon(x, y);
+    return grid.sample(plat, plon);
+  };
+};
+
+/** Ως πού φτάνει το νερό σε άνθρωπο 1,75 μ. — ο πιο απλός τρόπος να διαβαστεί ένα ύψος. */
+const reachLevel = (metres: number): 'ankle' | 'knee' | 'waist' | 'chest' | 'neck' | 'over' =>
+  metres < 0.25 ? 'ankle' : metres < 0.55 ? 'knee' : metres < 1.0 ? 'waist' : metres < 1.4 ? 'chest' : metres < 1.7 ? 'neck' : 'over';
+
+const athensHourLabel = (dt: number) => {
+  const wall = toAthensWallClock(new Date(dt * 1000));
+  return `${String(wall.getHours()).padStart(2, '0')}:00`;
+};
+
+/** Σιλουέτα 1,75 μ. με τη στάθμη του νερού της ακτής πάνω της. */
+const PersonScale: React.FC<{ metres: number; size: number }> = ({ metres, size }) => {
+  const level = Math.max(0, Math.min(1, metres / 1.75));
+  const waterY = 30 - level * 28;
+  return (
+    <svg viewBox="0 0 16 32" style={{ width: size * 0.5, height: size }} className="shrink-0" aria-hidden="true">
+      <rect x="0" y={waterY} width="16" height={32 - waterY} fill="rgba(103,232,249,0.35)" />
+      <circle cx="8" cy="4" r="3" fill="#e2e8f0" />
+      <rect x="5.5" y="8" width="5" height="11" rx="2" fill="#e2e8f0" />
+      <rect x="5.5" y="19" width="2" height="12" rx="1" fill="#e2e8f0" />
+      <rect x="8.5" y="19" width="2" height="12" rx="1" fill="#e2e8f0" />
+      <path d={`M0 ${waterY} H16`} stroke="#67e8f9" strokeWidth="1" />
+    </svg>
+  );
 };
 
 type SceneViewProps = {
@@ -585,6 +690,9 @@ type SceneViewProps = {
   windSpeedKmh?: number;
   shape: ShorelineShape | undefined;
   relief: BeachReliefGrid | undefined;
+  mosaic: SatelliteMosaic | null;
+  atDt?: number | null;
+  hourSeries?: SceneHour[];
   variant: 'popup' | 'full';
   onExpand?: () => void;
   onClose?: () => void;
@@ -595,7 +703,7 @@ type SceneViewProps = {
  * παίρνει την ανάλυση της οθόνης στο μεγάλο (ως 1,5× για να μη ζεσταίνει το κινητό), τα HUD
  * μεγαλώνουν, ο ζωγράφος είναι ο ίδιος.
  */
-const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, windSpeedKmh, shape, relief, variant, onExpand, onClose }) => {
+const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, windSpeedKmh, shape, relief, mosaic, atDt, hourSeries, variant, onExpand, onClose }) => {
   const beach = item.beach;
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const beachName = item.name || beach.name[language] || beach.name.en;
@@ -627,24 +735,116 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
   const facingDeg = shape?.facingDeg ?? authoredFacing ?? 0;
   const hasFacing = shape !== undefined || authoredFacing !== null;
 
-  const waveFromDeg = item.marine?.waveDirectionDeg ?? item.marine?.swellWaveDirectionDeg;
-  const openWaveM = item.seaStateWaveM ?? item.waveHeightM;
-  const shoreWaveM = item.shoreDisplayWaveM ?? item.shoreWaveHeightM ?? openWaveM;
-  const periodS = item.seaStatePeriodS ?? item.marine?.wavePeriodS ?? 5;
-
-  motionRef.current = {
-    facingDeg,
-    windFromDeg,
-    windSpeedKmh,
-    waveFromDeg,
-    openWaveM,
-    shoreWaveM,
-    periodS: Math.min(14, Math.max(2.5, periodS)),
-    metresPerUnit: shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5,
-  };
+  const baseWaveFromDeg = item.marine?.waveDirectionDeg ?? item.marine?.swellWaveDirectionDeg;
+  const baseOpenWaveM = item.seaStateWaveM ?? item.waveHeightM;
+  const baseShoreWaveM = item.shoreDisplayWaveM ?? item.shoreWaveHeightM ?? baseOpenWaveM;
+  const basePeriodS = item.seaStatePeriodS ?? item.marine?.wavePeriodS ?? 5;
+  const metresPerUnit = shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5;
 
   const beachLat = beach.coordinates?.lat;
   const beachLon = beach.coordinates?.lon;
+
+  /**
+   * «ΠΑΙΞΕ ΤΗ ΜΕΡΑ»: διατρέχει τις ώρες 07:00–21:00 (Αθήνα) της ημέρας του χάρτη, ~1 s η
+   * καθεμιά. Οι τιμές είναι της ΠΕΡΙΟΧΗΣ (το σημείο της μπάρας της ώρας)· το κύμα της ακτής
+   * κλιμακώνεται με τον λόγο ακτή/ανοιχτά της ώρας που δείχνει ο χάρτης, γι' αυτό «~».
+   */
+  const dayHours = React.useMemo(() => {
+    if (!hourSeries || hourSeries.length === 0) return [] as SceneHour[];
+    const anchor = typeof atDt === 'number' ? atDt : hourSeries[0].dt;
+    const anchorDay = toAthensWallClock(new Date(anchor * 1000)).getDate();
+    return hourSeries.filter(h => {
+      const wall = toAthensWallClock(new Date(h.dt * 1000));
+      return wall.getDate() === anchorDay && wall.getHours() >= 7 && wall.getHours() <= 21;
+    });
+  }, [hourSeries, atDt]);
+  const [dayPlaying, setDayPlaying] = useState(false);
+  const [dayIndex, setDayIndex] = useState(0);
+  useEffect(() => {
+    if (!dayPlaying || dayHours.length === 0) return undefined;
+    const id = window.setInterval(() => setDayIndex(i => (i + 1) % dayHours.length), 1000);
+    return () => window.clearInterval(id);
+  }, [dayPlaying, dayHours.length]);
+  const playedHour = dayPlaying && dayHours.length > 0 ? dayHours[Math.min(dayIndex, dayHours.length - 1)] : null;
+  const shoreRatio = typeof baseOpenWaveM === 'number' && baseOpenWaveM > 0.05 && typeof baseShoreWaveM === 'number'
+    ? baseShoreWaveM / baseOpenWaveM
+    : 1;
+
+  const effWindFromDeg = playedHour ? playedHour.windFromDeg : windFromDeg;
+  const effWindKmh = playedHour ? playedHour.windKmh : windSpeedKmh;
+  const effWaveFromDeg = playedHour ? (playedHour.waveFromDeg ?? baseWaveFromDeg) : baseWaveFromDeg;
+  const effOpenWaveM = playedHour ? playedHour.waveM : baseOpenWaveM;
+  const effShoreWaveM = playedHour
+    ? (typeof playedHour.waveM === 'number' ? playedHour.waveM * shoreRatio : undefined)
+    : baseShoreWaveM;
+  const effPeriodS = playedHour ? (playedHour.periodS ?? basePeriodS) : basePeriodS;
+  const effDt = playedHour ? playedHour.dt : atDt;
+
+  // Η ΩΡΑ ΤΟΥ ΗΛΙΟΥ. Απόλυτος χρόνος (UTC) — ο ήλιος δεν ξέρει από ώρα τοίχου.
+  const sun = React.useMemo(() => {
+    if (typeof beachLat !== 'number' || typeof beachLon !== 'number') return null;
+    // athens-clock-exempt: ο ήλιος θέλει την απόλυτη στιγμή (UTC), όχι την ώρα τοίχου Αθήνας.
+    const instant = typeof effDt === 'number' ? new Date(effDt * 1000) : new Date();
+    return { ...sunPosition(instant, beachLat, beachLon), instant };
+  }, [effDt, beachLat, beachLon]);
+  const currentHour = React.useMemo(() => {
+    if (!hourSeries || typeof effDt !== 'number') return undefined;
+    let best: SceneHour | undefined;
+    for (const h of hourSeries) if (!best || Math.abs(h.dt - effDt) < Math.abs(best.dt - effDt)) best = h;
+    return best;
+  }, [hourSeries, effDt]);
+  const cloudCover = playedHour?.cloudCover ?? currentHour?.cloudCover ?? 0.1;
+
+  // ΤΟ ΧΡΩΜΑ ΤΟΥ ΝΕΡΟΥ ΑΠΟ ΤΟ ΒΑΘΟΣ ΤΗΣ ΠΑΡΑΛΙΑΣ: ρηχή → πλατιά τιρκουάζ ζώνη, βαθιά → στενή.
+  const shallowReach = React.useMemo(() => {
+    const depth = deriveShorelineFeatures(beach).depth;
+    return depth === 'shallow' ? 180 : depth === 'deep' ? 40 : 110;
+  }, [beach]);
+
+  motionRef.current = {
+    facingDeg,
+    windFromDeg: effWindFromDeg,
+    windSpeedKmh: effWindKmh,
+    waveFromDeg: effWaveFromDeg,
+    openWaveM: effOpenWaveM,
+    shoreWaveM: effShoreWaveM,
+    periodS: Math.min(14, Math.max(2.5, effPeriodS)),
+    metresPerUnit,
+    sunAzimuthDeg: sun?.azimuthDeg,
+    sunElevationDeg: sun?.elevationDeg,
+    cloudCover,
+    shallowReach,
+  };
+
+  // Ο ΗΧΟΣ: μόνο με πάτημα, σβήνει με τη σκηνή. Παίρνει τα ίδια νούμερα με την εικόνα.
+  const [soundOn, setSoundOn] = useState(false);
+  const soundRef = useRef<SeaSound | null>(null);
+  useEffect(() => {
+    if (!soundOn) {
+      soundRef.current?.stop();
+      soundRef.current = null;
+      return undefined;
+    }
+    const m = motionRef.current;
+    const levels = {
+      sea: Math.min(1, (m?.shoreWaveM ?? m?.openWaveM ?? 0) / 1.4),
+      wind: Math.min(1, (m?.windSpeedKmh ?? 0) / 45),
+      periodS: m?.periodS ?? 5,
+    };
+    soundRef.current = startSeaSound(levels);
+    return () => {
+      soundRef.current?.stop();
+      soundRef.current = null;
+    };
+  }, [soundOn]);
+  useEffect(() => {
+    const m = motionRef.current;
+    soundRef.current?.update({
+      sea: Math.min(1, (m?.shoreWaveM ?? m?.openWaveM ?? 0) / 1.4),
+      wind: Math.min(1, (m?.windSpeedKmh ?? 0) / 45),
+      periodS: m?.periodS ?? 5,
+    });
+  }, [effWindKmh, effOpenWaveM, effShoreWaveM, effPeriodS]);
   const geometryKey = [
     mode,
     full ? 'full' : 'popup',
@@ -652,6 +852,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     pointsKey,
     shape ? `${shape.facingDeg}|${shape.frameWidthM}|${shape.pinDistanceM}` : 'noshape',
     relief ? `${relief.lat0}|${relief.lon0}|${relief.rows}x${relief.cols}` : 'norelief',
+    mosaic ? `sat${mosaic.canvas.width}x${mosaic.canvas.height}` : 'nosat',
     typeof beachLat === 'number' && typeof beachLon === 'number' ? `${beachLat},${beachLon}` : 'nocoords',
     lostContexts,
   ].join(':');
@@ -679,12 +880,19 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     if (mode === '3d') {
       canvas.width = baseW;
       canvas.height = baseH;
-      const metresPerUnit = shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5;
-      const sampler = relief && shape && typeof beachLat === 'number' && typeof beachLon === 'number'
-        ? makeReliefSampler(relief, shape, beachLat, beachLon)
-        : undefined;
+      const hasCoords = Boolean(shape) && typeof beachLat === 'number' && typeof beachLon === 'number';
+      const sampler = relief && shape && hasCoords ? makeReliefSampler(relief, shape, beachLat as number, beachLon as number) : undefined;
+      let satelliteUv: ((x: number, y: number) => [number, number] | null) | undefined;
+      if (mosaic && shape && hasCoords) {
+        const toLatLon = makeBoxToLatLon(shape, beachLat as number, beachLon as number);
+        satelliteUv = (x, y) => {
+          const [plat, plon] = toLatLon(x, y);
+          return mosaic.toUv(plat, plon);
+        };
+      }
       try {
-        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.07 : 0.09, relief: sampler, metresPerUnit });
+        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.07 : 0.09, relief: sampler, metresPerUnit, satelliteUv });
+        if (gl && mosaic && satelliteUv) gl.setSatellite(mosaic.canvas);
       } catch {
         gl = null;
       }
@@ -783,10 +991,18 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geometryKey]);
 
-  const hasWind = typeof windSpeedKmh === 'number' && Number.isFinite(windSpeedKmh) && typeof windFromDeg === 'number';
+  const windSpeedShown = effWindKmh;
+  const windFromShown = effWindFromDeg;
+  const openWaveM = effOpenWaveM;
+  const shoreWaveM = effShoreWaveM;
+  const hasWind = typeof windSpeedShown === 'number' && Number.isFinite(windSpeedShown) && typeof windFromShown === 'number';
   const showWaveChip = typeof openWaveM === 'number' && Number.isFinite(openWaveM);
-  const waveArrowFrom = waveFromDeg ?? windFromDeg ?? facingDeg;
+  const waveArrowFrom = effWaveFromDeg ?? windFromShown ?? facingDeg;
   const shoreDiffers = typeof shoreWaveM === 'number' && typeof openWaveM === 'number' && Math.abs(shoreWaveM - openWaveM) >= 0.05;
+  const approx = playedHour ? '~' : '';
+  const reach = typeof shoreWaveM === 'number' ? reachLevel(shoreWaveM) : null;
+  const isNight = sun ? sun.elevationDeg < -4 : false;
+  const hourLabel = typeof effDt === 'number' ? athensHourLabel(effDt) : null;
 
   const chip = full
     ? 'flex items-center gap-1.5 whitespace-nowrap rounded-md border border-cyan-300/30 bg-slate-950/60 px-2.5 py-1.5 text-[13px] font-bold leading-none text-cyan-50 backdrop-blur-sm [font-variant-numeric:tabular-nums]'
@@ -822,8 +1038,8 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
             <div className={chip}>
               <Wind className={icon} aria-hidden="true" />
               <span className={chipLabel}>{copy.wind}</span>
-              <ArrowGlyph rotateDeg={(windFromDeg as number) + 180 - facingDeg} className={arrow} />
-              <span>{Math.round(windSpeedKmh as number)} km/h</span>
+              <ArrowGlyph rotateDeg={(windFromShown as number) + 180 - facingDeg} className={arrow} />
+              <span>{approx}{Math.round(windSpeedShown as number)} km/h</span>
             </div>
           ) : null}
         </div>
@@ -835,13 +1051,30 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               <ArrowGlyph rotateDeg={waveArrowFrom + 180 - facingDeg} className={arrow} />
               <span>
                 {full
-                  ? `${formatMetres(language, openWaveM as number)}${shoreDiffers ? ` → ~${formatMetres(language, shoreWaveM as number)}` : ''}`
+                  ? `${approx}${formatMetres(language, openWaveM as number)}${shoreDiffers ? ` → ~${formatMetres(language, shoreWaveM as number)}` : ''}`
                   : shoreDiffers
-                    ? `${formatMetres(language, openWaveM as number).replace(' m', '')}→~${formatMetres(language, shoreWaveM as number)}`
-                    : formatMetres(language, openWaveM as number)}
+                    ? `${approx}${formatMetres(language, openWaveM as number).replace(' m', '')}→~${formatMetres(language, shoreWaveM as number)}`
+                    : `${approx}${formatMetres(language, openWaveM as number)}`}
               </span>
             </div>
           ) : null}
+          {/* Η ΚΛΙΜΑΚΑ ΤΟΥ ΑΝΘΡΩΠΟΥ: ως πού φτάνει το νερό της ακτής σε 1,75 μ. */}
+          {reach && typeof shoreWaveM === 'number' && (
+            <div className={chip}>
+              <PersonScale metres={shoreWaveM} size={full ? 22 : 14} />
+              <span className={chipLabel}>{copy.shore}</span>
+              <span>{copy.reach(reach)}</span>
+            </div>
+          )}
+          {/* Η ΩΡΑ ΚΑΙ Ο ΗΛΙΟΣ: πού είναι, ή νύχτα. Στο «παίξε τη μέρα» τρέχει. */}
+          {full && hourLabel && sun && (
+            <div className={chip}>
+              {isNight ? <Moon className={icon} aria-hidden="true" /> : cloudCover > 0.5 ? <CloudSun className={icon} aria-hidden="true" /> : <Sun className={icon} aria-hidden="true" />}
+              <span>{hourLabel}</span>
+              <span className="opacity-70">{isNight ? copy.night : `☀ ${Math.round(sun.elevationDeg)}°`}</span>
+              {playedHour && <span className={chipLabel}>{copy.region}</span>}
+            </div>
+          )}
         </div>
       </div>
 
@@ -857,9 +1090,35 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
           {hasFacing && <CompassRing facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 56 : 26} />}
         </div>
         <div className="flex items-center gap-1.5">
+          {full && mosaic && (
+            <span className="pointer-events-none rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70">{mosaic.attribution}</span>
+          )}
+          {dayHours.length > 1 && (
+            <button
+              type="button"
+              onClick={() => { setDayPlaying(p => !p); setDayIndex(0); }}
+              aria-pressed={dayPlaying}
+              aria-label={dayPlaying ? copy.stopDay : copy.playDay}
+              title={dayPlaying ? copy.stopDay : copy.playDay}
+              className={`flex ${full ? 'h-8 gap-1.5 px-2.5 text-[10px]' : 'h-6 gap-1 px-1.5 text-[8px]'} cursor-pointer items-center rounded border border-cyan-300/40 bg-slate-950/70 font-black tracking-[0.14em] text-cyan-100 transition hover:bg-slate-900`}
+            >
+              {dayPlaying ? <Pause className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" /> : <Play className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" />}
+              {full ? (dayPlaying ? (hourLabel ?? copy.stopDay) : copy.playDay) : (dayPlaying ? hourLabel : null)}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setSoundOn(s => !s)}
+            aria-pressed={soundOn}
+            aria-label={soundOn ? copy.soundOff : copy.soundOn}
+            title={soundOn ? copy.soundOff : copy.soundOn}
+            className={`flex ${full ? 'h-8 w-8' : 'h-6 w-6'} cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900`}
+          >
+            {soundOn ? <Volume2 className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" /> : <VolumeX className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" />}
+          </button>
           <span className={`pointer-events-none flex items-center gap-1 rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
             <span className={`${full ? 'h-1.5 w-1.5' : 'h-1 w-1'} animate-pulse rounded-full bg-cyan-300`} aria-hidden="true" />
-            {copy.sim}
+            {full ? copy.sim : 'SIM'}
           </span>
           {!full && onExpand && (
             <button
@@ -919,11 +1178,31 @@ const FullScreenScene: React.FC<Omit<SceneViewProps, 'variant' | 'onExpand'> & {
   );
 };
 
-const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, regionId, windFromDeg, windSpeedKmh, presentation = 'inline', onClose }) => {
+/**
+ * Η δορυφορική φωτογραφία της στεριάς — φτάνει όταν φτάσει (9–16 πλακίδια), και ως τότε η
+ * σκηνή παίζει με την άμμο της. null = δεν ήρθε / δεν επιτράπηκε (CORS) — καμία διαφορά.
+ */
+const useSatelliteMosaic = (lat: number | undefined, lon: number | undefined): SatelliteMosaic | null => {
+  const [mosaic, setMosaic] = useState<SatelliteMosaic | null>(null);
+  useEffect(() => {
+    if (typeof lat !== 'number' || typeof lon !== 'number') return undefined;
+    let active = true;
+    loadSatelliteMosaic(lat, lon).then(result => {
+      if (active) setMosaic(result);
+    });
+    return () => {
+      active = false;
+    };
+  }, [lat, lon]);
+  return mosaic;
+};
+
+const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, regionId, windFromDeg, windSpeedKmh, presentation = 'inline', onClose, atDt, hourSeries }) => {
   const beach = item.beach;
   const homeRegionId = beach.regionId ?? regionId;
   const shape: ShorelineShape | undefined = useShorelineShape(homeRegionId, beach.sourceBeachId ?? beach.id);
   const relief = useBeachRelief(homeRegionId);
+  const mosaic = useSatelliteMosaic(beach.coordinates?.lat, beach.coordinates?.lon);
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const [fullOpen, setFullOpen] = useState(false);
 
@@ -937,6 +1216,9 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         windSpeedKmh={windSpeedKmh}
         shape={shape}
         relief={relief}
+        mosaic={mosaic}
+        atDt={atDt}
+        hourSeries={hourSeries}
         onClose={() => onClose?.()}
       />
     );
@@ -951,10 +1233,13 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         windSpeedKmh={windSpeedKmh}
         shape={shape}
         relief={relief}
+        mosaic={mosaic}
+        atDt={atDt}
+        hourSeries={hourSeries}
         variant="popup"
         onExpand={() => setFullOpen(true)}
       />
-      <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{copy.caption}</p>
+      <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{copy.caption}{mosaic ? ` · ${mosaic.attribution}` : ''}</p>
       {fullOpen && typeof document !== 'undefined' && (
         <FullScreenScene
           item={item}
@@ -963,6 +1248,9 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
           windSpeedKmh={windSpeedKmh}
           shape={shape}
           relief={relief}
+          mosaic={mosaic}
+          atDt={atDt}
+          hourSeries={hourSeries}
           onClose={() => setFullOpen(false)}
         />
       )}
