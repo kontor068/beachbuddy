@@ -8,7 +8,7 @@
  *
  * Τι κάνει: παίρνει το κουτί των παραλιών της περιοχής, το ανοίγει κατά --margin-km (7) προς
  * κάθε μεριά, το γεμίζει με σημεία ανά --step-m (150 μ.), ρωτά το DEM για το υψόμετρο του
- * καθενός και γράφει το πλέγμα στο public/data/coastline/relief/<region>.json ως Int16 base64.
+ * καθενός και γράφει το πλέγμα στο public/data/relief/<region>.json ως Int16 base64.
  * Ο 3D ζωγράφος (utils/seaMotionGl) το διαβάζει για να σηκώσει βουνά, ακρωτήρια και απέναντι
  * ακτές γύρω από κάθε παραλία της περιοχής.
  *
@@ -28,7 +28,8 @@ import { createElevationSampler } from './lib/upwindDem.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BEACHES_DIR = path.join(ROOT, 'public', 'data', 'beaches');
-const OUT_DIR = path.join(ROOT, 'public', 'data', 'coastline', 'relief');
+// Δικός του φάκελος, ΟΧΙ μέσα στο coastline/: εκείνον τον καθαρίζει το stripBuildInputsFromDist.
+const OUT_DIR = path.join(ROOT, 'public', 'data', 'relief');
 const M_PER_DEG_LAT = 111_320;
 
 const arg = (name, fallback) => {
