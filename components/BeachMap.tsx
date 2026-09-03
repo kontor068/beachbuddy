@@ -1074,16 +1074,23 @@ const HOME_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 2
 const HomeControl = ({
   center,
   zoom,
+  bounds,
   title,
 }: {
   center: [number, number];
   zoom: number;
+  /**
+   * Όταν δίνεται, το «σπίτι» είναι ΤΟ ΚΑΔΡΟ ΤΩΝ ΠΑΡΑΛΙΩΝ της περιοχής (ίδιο fit με το
+   * FitBeachBounds), όχι ένα κέντρο + zoom. Έτσι το κουμπί γυρίζει τον χάρτη ακριβώς εκεί που
+   * άνοιξε, αντί στο `zoom={11}` prop που στον χάρτη περιοχής δεν είναι ποτέ η πραγματική θέα.
+   */
+  bounds?: L.LatLngBounds;
   title: string;
 }) => {
   const map = useMap();
   // Keep the reset target current without re-creating the control on every render.
-  const targetRef = useRef<{ center: [number, number]; zoom: number }>({ center, zoom });
-  targetRef.current = { center, zoom };
+  const targetRef = useRef<{ center: [number, number]; zoom: number; bounds?: L.LatLngBounds }>({ center, zoom, bounds });
+  targetRef.current = { center, zoom, bounds };
 
   useEffect(() => {
     return attachToZoomBar(map, (bar) => {
@@ -1109,7 +1116,12 @@ const HomeControl = ({
       L.DomEvent.on(link, 'click', (event: Event) => {
         L.DomEvent.preventDefault(event);
         L.DomEvent.stopPropagation(event);
-        const { center: resetCenter, zoom: resetZoom } = targetRef.current;
+        const { center: resetCenter, zoom: resetZoom, bounds: resetBounds } = targetRef.current;
+        if (resetBounds) {
+          // Ίδιο padding / ταβάνι zoom με το FitBeachBounds, ώστε «σπίτι» = η θέα της άφιξης.
+          map.fitBounds(resetBounds, { animate: true, padding: [28, 28], maxZoom: 12 });
+          return;
+        }
         map.setView(resetCenter, resetZoom, { animate: true });
       });
       updateVisibility();
@@ -3819,12 +3831,6 @@ const BeachMap: React.FC<BeachMapProps> = ({
   
   const zoom = propZoom || (avgCenter ? 10 : (userLocation ? 10 : 6));
 
-  // The "home" button snaps to the user's own location when we have a GPS fix,
-  // zoomed in to a comfortable local view; otherwise it falls back to the region's
-  // default framing. Labelled accordingly.
-  const homeCenter: [number, number] = userLocation ? [userLocation.lat, userLocation.lon] : center;
-  const homeZoom = userLocation ? 13 : zoom;
-  const homeTitle = (userLocation ? mapCopy.centerOnMe : mapCopy.resetView)[language];
   const basemapTitle = (basemap === 'satellite' ? mapCopy.showMapView : mapCopy.showSatelliteView)[language];
   const toggleBasemap = () => {
     setBasemap((current) => {
@@ -3901,6 +3907,48 @@ const BeachMap: React.FC<BeachMapProps> = ({
       ),
     };
   }, [beaches, guardrailBeaches, center, userLocation]);
+
+  /**
+   * Το κουμπί «σπίτι» του χάρτη.
+   *
+   * Πάει στη ΔΙΚΗ ΣΟΥ θέση (GPS) μόνο αν αυτή είναι ΜΕΣΑ στην περιοχή που δείχνει ο χάρτης.
+   * Αλλιώς γυρίζει στο κάδρο της περιοχής — δηλαδή εκεί που άνοιξε ο χάρτης.
+   *
+   * ΓΙΑΤΙ (Μίλτος, 03/09/2026): πριν, με στίγμα GPS το «σπίτι» ήταν ΠΑΝΤΑ η θέση του επισκέπτη
+   * σε zoom 13. Όποιος κοίταζε π.χ. τη Μήλο από την Αθήνα και το πατούσε κατά λάθος, ζητούσε
+   * από τον χάρτη να πάει στην Αθήνα· τα όρια περιήγησης της περιοχής (`maxBounds`,
+   * `_panInsideMaxBounds`) τον τραβούσαν αμέσως πίσω, κι ο χάρτης κατέληγε κολλημένος σε
+   * zoom 13 σε μια τυχαία άκρη των ορίων, μέσα στη θάλασσα, χωρίς καμία πινέζα — «αλλαντάλλων».
+   * Και το κουμπί έμενε μόνιμα αναμμένο, αφού το «σπίτι» του ήταν εξ ορισμού εκτός οθόνης.
+   *
+   * Κανόνας: χωρίς όρια περιοχής (χάρτης χωρίς παραλίες) η θέση σου μετράει πάντα· με όρια,
+   * μόνο αν πέφτει μέσα τους. Στον χάρτη περιοχής (`fitBoundsToBeaches`) το «σπίτι» είναι το
+   * ίδιο κάδρο παραλιών που έβαλε το FitBeachBounds στην άφιξη, όχι το `zoom` prop.
+   */
+  const userIsInsideRegion = Boolean(userLocation) && (
+    !viewportGuardrails.maxBounds
+    || viewportGuardrails.maxBounds.contains(L.latLng(userLocation!.lat, userLocation!.lon))
+  );
+  const homeFit = useMemo(() => {
+    if (!fitBoundsToBeaches) return null;
+    const fallbackCenter = { lat: center[0], lon: center[1] };
+    const points = (fitBoundsBeaches || beaches)
+      .map(item => getBeachMapCoordinates(item.beach, fallbackCenter))
+      .filter(coordinate => Number.isFinite(coordinate.lat) && Number.isFinite(coordinate.lon));
+    if (points.length === 0) return null;
+    if (points.length === 1) {
+      return { center: [points[0].lat, points[0].lon] as [number, number], zoom: 12, bounds: undefined };
+    }
+    const bounds = L.latLngBounds(points.map(point => [point.lat, point.lon] as [number, number]));
+    const boundsCenter = bounds.getCenter();
+    return { center: [boundsCenter.lat, boundsCenter.lng] as [number, number], zoom, bounds };
+  }, [fitBoundsToBeaches, fitBoundsBeaches, beaches, center, zoom]);
+  const homeCenter: [number, number] = userIsInsideRegion
+    ? [userLocation!.lat, userLocation!.lon]
+    : (homeFit?.center ?? center);
+  const homeZoom = userIsInsideRegion ? 13 : (homeFit?.zoom ?? zoom);
+  const homeBounds = userIsInsideRegion ? undefined : homeFit?.bounds;
+  const homeTitle = (userIsInsideRegion ? mapCopy.centerOnMe : mapCopy.resetView)[language];
   const labelZoomThreshold = compact ? 13 : 12;
   const selectedBeach = selectedBeachId !== null
     ? beaches.find(item => item.beachId === selectedBeachId)
@@ -4610,7 +4658,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
           {(showBasemapToggle ?? !preview) && (
             <BasemapControl basemap={basemap} onToggle={toggleBasemap} title={basemapTitle} />
           )}
-          <HomeControl center={homeCenter} zoom={homeZoom} title={homeTitle} />
+          <HomeControl center={homeCenter} zoom={homeZoom} bounds={homeBounds} title={homeTitle} />
           {basemap === 'satellite' ? (
             <>
               <AerialToneFilter />
