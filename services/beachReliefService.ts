@@ -1,7 +1,7 @@
 /**
  * ΑΝΑΓΛΥΦΟ ΓΥΡΩ ΑΠΟ ΤΙΣ ΠΑΡΑΛΙΕΣ — για την «παραλία σε κίνηση» (πιλοτικά, 03/09/2026).
  *
- * Ένα πλέγμα υψομέτρων ανά περιοχή (`scripts/bakeBeachRelief.mjs`), ψημένο από DEM
+ * Ένα πλέγμα υψομέτρων ανά περιοχή (`scripts/bakeBeachRelief.mjs` → public/data/relief/), ψημένο από DEM
  * (opentopodata SRTM 30 μ. ή το DEM 90 μ. του Open-Meteo — δηλώνεται στο αρχείο), σε βήμα
  * ~150 μ., με 7 χλμ περιθώριο γύρω από τις παραλίες της περιοχής. Το διαβάζει μόνο ο 3D
  * ζωγράφος για να σηκώσει βουνά, ακρωτήρια και απέναντι ακτές γύρω από την παραλία.
@@ -79,7 +79,9 @@ const normalize = (raw: RawRelief): BeachReliefGrid | undefined => {
 export const loadBeachRelief = (regionId: string): Promise<BeachReliefGrid | undefined> => {
   const cached = cache.get(regionId);
   if (cached) return cached;
-  const request = fetch(`/data/coastline/relief/${regionId}.json`)
+  // ΟΧΙ κάτω από /data/coastline/: ο φύλακας του build (scripts/stripBuildInputsFromDist) ρίχνει
+  // κάθε κώδικα που ζητά εκείνον τον φάκελο εκτός από τα σχήματα — έριξε το πρώτο deploy (03/09).
+  const request = fetch(`/data/relief/${regionId}.json`)
     .then(response => (response.ok ? response.json() : undefined))
     .then(payload => (payload ? normalize(payload as RawRelief) : undefined))
     // Χωρίς αρχείο = χωρίς ανάγλυφο. Κανονική κατάσταση για κάθε περιοχή εκτός πιλότου.
