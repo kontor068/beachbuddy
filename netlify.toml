@@ -281,7 +281,26 @@
 # 4 KB. Τα σημερινά woff2 είναι πολύ μεγαλύτερα, αλλά μια μικρή γραμματοσειρά εικονιδίων
 # αύριο θα γινόταν σιωπηλά `data:` — και με `font-src 'self'` θα εξαφανιζόταν από τη
 # σελίδα χωρίς να το πάρει κανείς είδηση. Σίγαση της αναφοράς θα έκρυβε ΚΑΙ αυτό.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
+#
+# 03/09/2026 — `https://fonts.gstatic.com` ΣΤΟ font-src. Ενεργή παραβίαση «CSP blocked
+# https://fonts.gstatic.com/s/opensans/v44/….woff2 (font-src)» από
+# /el/beaches/corfu/969-krouzeri/ σε Chrome 109 / Windows 10 (δύο αναφορές, 14:02).
+# Μετρήθηκε πριν την αλλαγή: ΜΗΔΕΝ αναφορές σε gstatic, Google Fonts ή Open Sans σε
+# ολόκληρο τον πηγαίο κώδικα ΚΑΙ στο dist/ — η γραμματοσειρά μας είναι η Commissioner,
+# self-hosted από /fonts/. Άρα την Open Sans τη ζήτησε CSS που φύτεψε κάτι έξω από εμάς:
+# πρόσθετο του browser ή ο ίδιος ο μεταφραστής του Chrome (Chrome 109 = τελευταίο για
+# Windows 7/8.1, δηλαδή παλιό μηχάνημα με ό,τι κουβαλάει). Το ποιο από τα δύο δεν
+# ξεχωρίζει από την αναφορά — και δεν αλλάζει την απόφαση.
+#
+# Μπαίνει για τους ίδιους λόγους με το `data:` παραπάνω: οι γραμματοσειρές δεν εκτελούν
+# κώδικα και δεν βγάζουν δεδομένα έξω, οπότε ένας οικοδεσπότης γραμματοσειρών παραπάνω
+# δεν μεγαλώνει καθόλου την επιφάνεια XSS. Και το κόστος της σιωπής είναι διπλό: κάθε
+# επισκέπτης με το ίδιο πρόσθετο ή με μετάφραση θα ξαναχτυπάει το τηλέφωνο για κάτι που
+# δεν είναι δικό μας, και στη μεταξύ τους σελίδα βλέπει τη γραμματοσειρά αντικατάστασης
+# αντί για αυτή που ζήτησε το εργαλείο του. Μόνο font-src — ΟΧΙ style-src για το
+# fonts.googleapis.com: η αναφορά δείχνει ότι το CSS που ζήτησε τη γραμματοσειρά είχε ήδη
+# περάσει, άρα εκεί δεν υπάρχει μετρημένο κενό. Αν υπάρξει, θα το πει η ίδια η γραμμή.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://translate.googleapis.com https://ingesteer.services-prod.nsvcs.net https://api.open-meteo.com https://marine-api.open-meteo.com https://air-quality-api.open-meteo.com https://fbonloqkzgzwvhkbnktv.supabase.co; font-src 'self' data: https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /api/client-error"
 
 # Content-hashed build assets (Vite emits everything under /assets/ with a hash
 # in the filename, so each URL is immutable). Cache them for a year so the
