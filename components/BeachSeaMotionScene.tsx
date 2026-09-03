@@ -669,19 +669,22 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     let gl: SeaMotionGl | null = null;
     let draw2d: ((tSec: number, dtSec: number) => void) | null = null;
 
+    // Ανάλυση = μέγεθος στην οθόνη × πυκνότητα pixel (ταβάνι 2 στο ταμπελάκι, 1,5 στην πλήρη οθόνη).
+    const rect = canvas.getBoundingClientRect();
+    const dprCap = full ? 1.5 : 2;
+    const dpr = Math.min(dprCap, window.devicePixelRatio || 1);
+    const baseW = rect.width > 0 ? Math.round(rect.width * dpr) : PW;
+    const baseH = rect.height > 0 ? Math.round(rect.height * dpr) : PH;
+
     if (mode === '3d') {
-      if (full) {
-        const dpr = Math.min(1.5, window.devicePixelRatio || 1);
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = Math.max(320, Math.round(rect.width * dpr));
-        canvas.height = Math.max(200, Math.round(rect.height * dpr));
-      }
+      canvas.width = baseW;
+      canvas.height = baseH;
       const metresPerUnit = shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5;
       const sampler = relief && shape && typeof beachLat === 'number' && typeof beachLon === 'number'
         ? makeReliefSampler(relief, shape, beachLat, beachLon)
         : undefined;
       try {
-        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.1 : 0.12, relief: sampler, metresPerUnit });
+        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.07 : 0.09, relief: sampler, metresPerUnit });
       } catch {
         gl = null;
       }
@@ -711,24 +714,47 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     let frame = 0;
     let last = performance.now();
     const start = last;
-    let lastDrawn = -Infinity;
-    // 30 καρέ το δευτερόλεπτο φτάνουν για νερό. Αν ένα κινητό αργεί (πάνω από 14 ms το καρέ,
-    // μετρημένο), πέφτουμε στα 20 — καλύτερα λίγο πιο αραιά καρέ παρά ζεστό τηλέφωνο.
-    let minInterval = 31;
-    let slowFrames = 0;
+    /**
+     * ΟΜΑΛΟΤΗΤΑ = ΣΤΑΘΕΡΑ 60 ΚΑΡΕ, ΟΧΙ ΣΤΑΘΕΡΗ ΑΝΑΛΥΣΗ (Μίλτος, 03/09/2026: «smooth πολύ»).
+     * Αντί να κόβουμε καρέ (που φαίνεται σαν κόμπιασμα), μετράμε τον ρυθμό των καρέ: αν πέσει
+     * κάτω από ~42 fps για μισό δευτερόλεπτο, η ανάλυση του καμβά πέφτει ένα σκαλί (×0,8, ως
+     * 0,45×)· αν κρατάει άνετα 60 για τρία δευτερόλεπτα, ανεβαίνει πάλι. Η κάμερα και το νερό
+     * κινούνται πάντα με τον πραγματικό χρόνο, όχι ανά καρέ.
+     */
+    let scale = 1;
+    let interval = 16;
+    let stableFrames = 0;
+    let pendingResize = false;
+    const resample = () => {
+      // Η αλλαγή μεγέθους ΑΔΕΙΑΖΕΙ τον καμβά· γίνεται στην αρχή του επόμενου καρέ, ακριβώς
+      // πριν ζωγραφιστεί, ώστε η οθόνη να μη δείξει ποτέ κενό ανάμεσα.
+      pendingResize = true;
+      stableFrames = 0;
+      if (import.meta.env.DEV) console.debug(`[seaMotion] scale ${scale.toFixed(2)} (${Math.round(interval)} ms/frame)`);
+    };
 
     const draw = (now: number) => {
       const motion = motionRef.current;
+      if (gl && pendingResize) {
+        pendingResize = false;
+        gl.setSize(baseW * scale, baseH * scale);
+      }
       if (motion) {
         const dt = Math.min(0.1, (now - last) / 1000);
-        const began = performance.now();
         // Σε reduced-motion η κάμερα στέκεται στην τελική της θέση (t μετά το fly-in).
         const t = reduceMotion ? 3 : (now - start) / 1000;
         if (gl) gl.render(motion, t, dt);
         else if (draw2d) draw2d(t, dt);
-        if (performance.now() - began > 14) {
-          slowFrames += 1;
-          if (slowFrames >= 8) minInterval = 48;
+      }
+      if (gl && !reduceMotion) {
+        interval = interval * 0.9 + (now - last) * 0.1;
+        stableFrames += 1;
+        if (interval > 24 && scale > 0.45 && stableFrames > 30) {
+          scale = Math.max(0.45, scale * 0.8);
+          resample();
+        } else if (interval < 17.5 && scale < 1 && stableFrames > 180) {
+          scale = Math.min(1, scale * 1.2);
+          resample();
         }
       }
       last = now;
@@ -744,8 +770,6 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
 
     const loop = (now: number) => {
       frame = window.requestAnimationFrame(loop);
-      if (now - lastDrawn < minInterval) return;
-      lastDrawn = now;
       draw(now);
     };
     frame = window.requestAnimationFrame(loop);
