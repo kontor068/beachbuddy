@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Waves, Wind } from 'lucide-react';
 import type { Beach, LanguageCode, SuitableBeach } from '../types';
 import { SHORELINE_BOX, type ShorelineShape } from '../services/shorelineShapeService';
 import { useShorelineShape } from './ShorelineThumbnail';
+import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams } from '../utils/seaMotionGl';
 
 /**
  * Η ΠΑΡΑΛΙΑ ΣΕ ΚΙΝΗΣΗ — πειραματικό (03/09/2026, Μίλτος: «όταν πατάω το play να παίζει, όχι από
@@ -25,9 +26,12 @@ import { useShorelineShape } from './ShorelineThumbnail';
  * αυτό που η κάρτα ήδη γράφει, και η λεζάντα από κάτω το λέει ρητά («σχηματική απεικόνιση»).
  * Δεν παίρνει αποφάσεις, δεν αλλάζει χρώματα, δεν μπαίνει σε κατάταξη.
  *
- * ΓΙΑΤΙ CANVAS ΚΑΙ ΟΧΙ SVG. Οι κορυφές στρίβουν ανά εικονοστοιχείο — ένα SVG θα χρειαζόταν
- * δεκάδες διαδρομές που ξαναϋπολογίζονται σε κάθε καρέ. Εδώ είναι ένας πίνακας 400×200 και ένας
- * βρόχος· ~2–3 ms το καρέ σε κινητό, στα 30 fps, και σταματά μόλις κλείσει το ταμπελάκι.
+ * ΔΥΟ ΖΩΓΡΑΦΟΙ, ΙΔΙΑ ΦΥΣΙΚΗ. Κανονικά παίζει σε 3D (WebGL, `utils/seaMotionGl`): κάμερα πίσω
+ * από την παραλία που κοιτά τη θάλασσα, ανάγλυφη ακτή, κύματα με ύψος και φως, αφρός που
+ * σπάει μπροστά στον θεατή. Όπου δεν υπάρχει WebGL, ο 2D ζωγράφος από κάτω (ένας πίνακας
+ * 400×200 και ένας βρόχος, ~2–3 ms το καρέ) δείχνει το ίδιο από ψηλά. Και οι δύο διαβάζουν τα
+ * ίδια νούμερα από την ίδια `deriveMotion`, ώστε να μη διαφωνούν ποτέ. Σταματά μόλις κλείσει
+ * το ταμπελάκι.
  *
  * ΓΙΑΤΙ ΞΕΧΩΡΙΣΤΟ ΑΡΧΕΙΟ. Φορτώνεται τεμπέλικα από τον χάρτη (`lazyWithChunkRecovery`) μόνο
  * όταν κάποιος πατήσει το play — ο επισκέπτης που δεν το πατά δεν κατεβάζει ούτε byte.
@@ -213,40 +217,8 @@ const buildField = (points: Point[], seed: number): Field => {
 
 /* ------------------------------------------------------------- physics */
 
-type Motion = {
-  /** Το σχήμα κοιτά προς τα πάνω· αυτή είναι η μετεωρολογική διεύθυνση εκείνου του «πάνω». */
-  facingDeg: number;
-  hasFacing: boolean;
-  windFromDeg?: number;
-  windSpeedKmh?: number;
-  waveFromDeg?: number;
-  openWaveM?: number;
-  shoreWaveM?: number;
-  periodS: number;
-  /** Μέτρα ανά μονάδα κουτιού — για να μεταφράσουμε την περίοδο σε απόσταση κορυφών. */
-  metresPerUnit: number;
-};
-
-/**
- * Μια μετεωρολογική διεύθυνση («από πού») γίνεται μοναδιαίο διάνυσμα «προς τα πού» μέσα στο
- * κουτί, όπου το πάνω είναι η θάλασσα (facingDeg) και το δεξί είναι facingDeg+90 — ο ίδιος
- * ακριβώς μετασχηματισμός με το scripts/buildShorelineThumbs.mjs, ανάποδα.
- */
-const travelVector = (fromDeg: number, facingDeg: number): [number, number] => {
-  const rel = ((fromDeg + 180 - facingDeg) * Math.PI) / 180;
-  return [Math.sin(rel), -Math.cos(rel)];
-};
-
-/** Πόσο «μπροστά» στην παραλία κοιτά μια διεύθυνση: 1 = ίσια από τη θάλασσα, -1 = πίσω από τη στεριά. */
-const seawardness = (fromDeg: number, facingDeg: number) =>
-  Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
-
-/** Ύψος θάλασσας → ένταση 0..1, με ρίζα ώστε τα 0,3 μ. να φαίνονται και τα 2 μ. να μη σβήνουν. */
-const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? clamp01(Math.sqrt(Math.max(0, h) / 1.6)) : 0;
-
-const REFRACTION_UNITS = 38;
-const WIND_SHADOW_UNITS = 34;
+/** Το ίδιο σετ παραμέτρων με τον 3D ζωγράφο — δες utils/seaMotionGl. */
+type Motion = SeaMotionParams;
 
 type Streak = { x: number; y: number; age: number; life: number; len: number };
 
@@ -266,31 +238,9 @@ const renderFrame = (
   const data = image.data;
   const { sea, dist, shoreX, shoreY, noise, base } = field;
 
-  const waveFrom = motion.waveFromDeg ?? motion.windFromDeg ?? motion.facingDeg;
-  const [tx, ty] = travelVector(waveFrom, motion.facingDeg);
-  const arriving = seawardness(waveFrom, motion.facingDeg) > 0.05;
-  const openAmp = heightToAmp(motion.openWaveM);
-  const shoreAmp = heightToAmp(motion.shoreWaveM ?? motion.openWaveM);
-  const hasWaves = openAmp > 0 || shoreAmp > 0;
-
-  // Απόσταση κορυφών: βαθύ νερό L = 1,56·T² μέτρα, μεταφρασμένη στο κουτί και κρατημένη
-  // σε εύρος που διαβάζεται (9–34 μονάδες). Η ταχύτητα κρατά την περίοδο: μία κορυφή ανά T.
-  const realWavelength = (1.56 * motion.periodS * motion.periodS) / motion.metresPerUnit;
-  const wavelength = Math.min(34, Math.max(9, realWavelength));
-  const kWave = (2 * Math.PI) / wavelength;
-  const omega = ((2 * Math.PI) / motion.periodS) * 1.4;
-
-  const windSpeed = motion.windSpeedKmh;
-  const hasWind = typeof windSpeed === 'number' && Number.isFinite(windSpeed) && typeof motion.windFromDeg === 'number';
-  const [wx, wy] = hasWind ? travelVector(motion.windFromDeg as number, motion.facingDeg) : [0, 0];
-  const windAmp = hasWind ? Math.pow(clamp01((windSpeed as number) / 45), 0.8) : 0;
-  const offshoreWind = hasWind && seawardness(motion.windFromDeg as number, motion.facingDeg) < -0.15;
+  const m = deriveMotion(motion);
+  const { tx, ty, arriving, openAmp, shoreAmp, hasWaves, kWave, omega, hasWind, windSpeed, wx, wy, windAmp, offshoreWind, ripSpeed, whitecaps, breakZone, foamStrength } = m;
   const kRip = (2 * Math.PI) / 3.2;
-  const ripSpeed = hasWind ? 4 + (windSpeed as number) * 0.35 : 0;
-  const whitecaps = Math.max(0, windAmp - 0.55) * 0.5;
-
-  const breakZone = Math.min(20, 2 + (motion.shoreWaveM ?? 0) * 9);
-  const foamStrength = clamp01((motion.shoreWaveM ?? 0) / 1.0);
 
   for (let py = 0; py < PH; py += 1) {
     const y = VIEW_Y0 + (py + 0.5) / RES;
@@ -308,7 +258,7 @@ const renderFrame = (
         const n = noise[i];
 
         if (hasWaves) {
-          const w = arriving ? smooth(clamp01(1 - d / REFRACTION_UNITS)) : 0;
+          const w = arriving ? smooth(clamp01(1 - d / 38)) : 0;
           const far = tx * x + ty * y;
           const farAtShore = tx * shoreX[i] + ty * shoreY[i];
           const travelled = (1 - w) * far + w * (farAtShore - d);
@@ -335,7 +285,7 @@ const renderFrame = (
 
         if (windAmp > 0) {
           // Η τσαλάκωση του ανέμου: ψιλά, γρήγορα, με τυχαίο τρέμουλο (cat's paws).
-          const shadow = offshoreWind ? clamp01(d / WIND_SHADOW_UNITS) : 1;
+          const shadow = offshoreWind ? clamp01(d / 34) : 1;
           // Ριπές: αργά κινούμενα μπαλώματα, ώστε η τσαλάκωση να μην είναι ομοιόμορφη ρίγα.
           const gust = 0.55 + 0.45 * Math.sin(0.11 * x + 0.07 * y - 0.8 * tSec) * Math.sin(0.09 * x - 0.13 * y + 0.5 * tSec);
           const ripAmp = windAmp * shadow * gust;
@@ -380,10 +330,10 @@ const renderFrame = (
 
   // Τα ρεύματα του ανέμου.
   if (hasWind && windAmp > 0) {
-    const wanted = Math.min(22, Math.max(3, Math.round((windSpeed as number) / 3)));
+    const wanted = Math.min(22, Math.max(3, Math.round(windSpeed / 3)));
     while (streaks.length < wanted) streaks.push(spawnStreak(wx, wy, windSpeed as number, true));
     while (streaks.length > wanted) streaks.pop();
-    const speed = 6 + (windSpeed as number) * 0.55;
+    const speed = 6 + windSpeed * 0.55;
     ctx.lineCap = 'round';
     ctx.lineWidth = 1.1;
     for (let s = 0; s < streaks.length; s += 1) {
@@ -514,7 +464,11 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
   const motionRef = useRef<Motion | null>(null);
 
   const pointsKey = shape?.points ?? FALLBACK_POINTS;
-  const field = useMemo(() => buildField(parsePoints(pointsKey), beach.id), [pointsKey, beach.id]);
+  /**
+   * 3D πρώτα· αν το WebGL λείπει ή σκάσει, ένας ΝΕΟΣ καμβάς (το key) πέφτει στον 2D ζωγράφο —
+   * ένας καμβάς που δοκίμασε WebGL δεν δίνει πια 2D context, γι' αυτό ξαναγεννιέται.
+   */
+  const [mode, setMode] = useState<'3d' | '2d'>('3d');
 
   const authoredFacing = resolveFacing(item);
   const facingDeg = shape?.facingDeg ?? authoredFacing ?? 0;
@@ -527,7 +481,6 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
 
   motionRef.current = {
     facingDeg,
-    hasFacing,
     windFromDeg,
     windSpeedKmh,
     waveFromDeg,
@@ -540,9 +493,31 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    if (!ctx) return undefined;
-    const image = ctx.createImageData(PW, PH);
+    const points = parsePoints(pointsKey);
+
+    let gl: SeaMotionGl | null = null;
+    let draw2d: ((tSec: number, dtSec: number) => void) | null = null;
+
+    if (mode === '3d') {
+      try {
+        gl = createSeaMotionGl(canvas, points, beach.id);
+      } catch {
+        gl = null;
+      }
+      if (!gl) {
+        setMode('2d');
+        return undefined;
+      }
+    } else {
+      const ctx = canvas.getContext('2d', { alpha: false });
+      if (!ctx) return undefined;
+      const field = buildField(points, beach.id);
+      const image = ctx.createImageData(PW, PH);
+      draw2d = (tSec, dtSec) => {
+        const motion = motionRef.current;
+        if (motion) renderFrame(ctx, image, field, motion, tSec, streaksRef.current, dtSec);
+      };
+    }
 
     const reduceMotion =
       typeof window !== 'undefined' && typeof window.matchMedia === 'function'
@@ -563,7 +538,8 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
       if (motion) {
         const dt = Math.min(0.1, (now - last) / 1000);
         const began = performance.now();
-        renderFrame(ctx, image, field, motion, (now - start) / 1000, streaksRef.current, dt);
+        if (gl) gl.render(motion, (now - start) / 1000, dt);
+        else if (draw2d) draw2d((now - start) / 1000, dt);
         if (performance.now() - began > 14) {
           slowFrames += 1;
           if (slowFrames >= 8) minInterval = 48;
@@ -575,7 +551,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
     if (reduceMotion) {
       // Μία ακίνητη εικόνα: η γεωμετρία, οι κορυφές και ο αφρός χωρίς κίνηση.
       draw(start);
-      return undefined;
+      return () => gl?.dispose();
     }
 
     const loop = (now: number) => {
@@ -585,8 +561,11 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
       draw(now);
     };
     frame = window.requestAnimationFrame(loop);
-    return () => window.cancelAnimationFrame(frame);
-  }, [field]);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      gl?.dispose();
+    };
+  }, [pointsKey, beach.id, mode]);
 
   const hasWind = typeof windSpeedKmh === 'number' && Number.isFinite(windSpeedKmh) && typeof windFromDeg === 'number';
   const showWaveChip = typeof openWaveM === 'number' && Number.isFinite(openWaveM);
@@ -599,7 +578,9 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         role="img"
         aria-label={copy.aria(beachName)}
       >
-        <canvas ref={canvasRef} width={PW} height={PH} className="block h-full w-full" />
+        {/* Νέος καμβάς και όταν αλλάζει το σχήμα: το καθάρισμα του προηγούμενου χάνει ρητά το
+            WebGL context, και ένας καμβάς με χαμένο context δεν ξαναζωγραφίζει ποτέ. */}
+        <canvas key={`${mode}:${pointsKey}`} ref={canvasRef} width={PW} height={PH} className="block h-full w-full" />
 
         {hasWind && (
           <div className="absolute left-1 top-1 flex items-center gap-0.5 rounded-full bg-white/85 px-1 py-0.5 text-[9px] font-black leading-none text-slate-700 shadow-sm">
