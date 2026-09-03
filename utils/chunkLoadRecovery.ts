@@ -115,10 +115,31 @@ export const lazyWithChunkRecovery = <T extends React.ComponentType<unknown>>(
  */
 export const pickLazyExport = <T,>(name: string, source: string) => (module: Record<string, T> | undefined) => {
   const component = module?.[name];
-  if (!component) {
-    throw new Error(`Failed to fetch dynamically imported module: ${source} is missing export ${name}`);
-  }
-  return { default: component };
+  if (component) return { default: component };
+
+  // 03/09/2026 — «LandingView is missing export LandingView», iPhone Safari 26.6, live
+  // build e6cd326, ΚΑΙ μετά την επαναφόρτωση της ανάκαμψης. Το dist του ίδιου κώδικα
+  // τελειώνει με `export{Gt as LandingView,Gt as default}`, οπότε το αρχείο δεν έφταιγε:
+  // κάτι έφτασε στον browser ως module χωρίς τα exports του. Δύο μικρά μαθήματα από αυτό:
+  //
+  // 1. Όταν το module κουβαλάει `default` (LandingView, TripPlanner, AddBeachPhotoSheet
+  //    εξάγουν και τα δύο), το default ΕΙΝΑΙ το ίδιο component — δείξ' το, αντί να
+  //    ρίξεις τον επισκέπτη σε επαναφόρτωση για ένα όνομα.
+  // 2. Το μήνυμα λέει τι ΒΡΗΚΕ. «Λείπει το X» δεν ξεχωρίζει το άδειο module (το αρχείο
+  //    δεν ήρθε ποτέ ολόκληρο — θέμα δικτύου/cache) από module με άλλα exports (θέμα
+  //    build). Την επόμενη φορά η ειδοποίηση θα λέει από μόνη της ποιο από τα δύο ήταν.
+  //
+  // Το πρόθεμα «Failed to fetch dynamically imported module:» μένει απαράλλαχτο: πάνω
+  // του πατούν isChunkLoadError εδώ, το φίλτρο του services/errorReporter.ts και η
+  // κατηγοριοποίηση 🟠 στο netlify/functions/client-error.mjs.
+  const fallback = module?.default;
+  if (fallback) return { default: fallback };
+
+  const seen = module ? Object.keys(module) : [];
+  const detail = module
+    ? (seen.length ? `module has only: ${seen.join(', ')}` : 'module arrived empty')
+    : 'module is undefined';
+  throw new Error(`Failed to fetch dynamically imported module: ${source} is missing export ${name} (${detail})`);
 };
 
 export const registerChunkLoadErrorHandler = () => {
