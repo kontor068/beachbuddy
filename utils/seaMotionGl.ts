@@ -67,10 +67,11 @@ export const seawardness = (fromDeg: number, facingDeg: number) =>
 /**
  * Ύψος θάλασσας → ένταση 0..1,25. Εκθέτης 1,15: λίγο ΠΙΟ αυστηρός από γραμμικός στα χαμηλά,
  * ώστε η ήρεμη θάλασσα να είναι ρυτίδες και όχι φουσκοθαλασσιά (Μίλτος, 03/09/2026: «το κύμα
- * υπερβολικό ακόμα και για ήρεμη θάλασσα»): 0,2 μ. → 0,09, 0,3 → 0,15, 0,8 → 0,45, 1,6 → 1.
+ * υπερβολικό ακόμα και για ήρεμη θάλασσα», και «ακόμα πολύ» — εκθέτης 1,3):
+ * 0,2 μ. → 0,07, 0,3 → 0,11, 0,8 → 0,41, 1,6 → 1.
  */
 export const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.15)) : 0;
+  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.3)) : 0;
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
@@ -83,7 +84,7 @@ const RELIEF_REACH_M = 16000;
  * με τα μέτρα (heightToAmp), ώστε 0,3 μ. να φαίνονται μικρά και 1,5 μ. μεγάλα — και όχι ρίζα,
  * που τα έφερνε κοντά (Μίλτος, 03/09/2026: «δεν ανταποκρίνεται στην πραγματικότητα»).
  */
-const WAVE_UNITS_AT_FULL = 3.0;
+const WAVE_UNITS_AT_FULL = 2.0;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -270,7 +271,7 @@ void main() {
     // Ο άνεμος σηκώνει κοντό «κοφτό» κύμα (μήκος ~7 μονάδες, πάνω από το βήμα του πλέγματος).
     float kChop = 0.9;
     float chop = sin(kChop * dot(uWindDir, aPos) - kChop * uRipSpeed * 0.7 * uTime + aNoise * 4.0);
-    z += chop * ripA * 0.5;
+    z += chop * ripA * 0.25;
     vRip = ripA;
     vShadow = shadow;
   } else {
