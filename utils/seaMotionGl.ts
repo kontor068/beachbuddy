@@ -506,6 +506,7 @@ const PROP_FS = `
 precision mediump float;
 uniform float uKind;
 uniform float uDayLight;
+uniform float uTime;
 varying vec2 vCorner;
 float capsule(vec2 p, vec2 a, vec2 b, float r) {
   vec2 pa = p - a;
@@ -518,13 +519,29 @@ void main() {
   float d = 1.0;
   vec3 color = vec3(0.10, 0.12, 0.18);
   if (uKind < 0.5) {
-    // Άνθρωπος: κεφάλι, κορμός, δύο πόδια, δύο χέρια.
-    d = min(d, length(p - vec2(0.0, 0.90)) - 0.085);
-    d = min(d, capsule(p, vec2(0.0, 0.47), vec2(0.0, 0.79), 0.14));
-    d = min(d, capsule(p, vec2(-0.08, 0.03), vec2(-0.08, 0.48), 0.062));
-    d = min(d, capsule(p, vec2(0.08, 0.03), vec2(0.08, 0.48), 0.062));
-    d = min(d, capsule(p, vec2(-0.16, 0.50), vec2(-0.30, 0.74), 0.045));
-    d = min(d, capsule(p, vec2(0.16, 0.50), vec2(0.30, 0.74), 0.045));
+    // Άνθρωπος με μαγιό που χαιρετάει (Μίλτος: «σαν κούτσουρο» — σκούρα σιλουέτα σε 10 px
+    // δεν διαβάζεται· δέρμα + μαγιό + άσπρο περίγραμμα + χέρι που κουνιέται, ναι).
+    vec3 skin = vec3(0.86, 0.66, 0.50);
+    vec3 suit = vec3(0.0, 0.48, 0.51);
+    float sway = sin(uTime * 1.3) * 0.015;
+    float head = length(p - vec2(sway, 0.905)) - 0.075;
+    float torso = capsule(p, vec2(sway, 0.50), vec2(sway * 0.5, 0.80), 0.115);
+    float shorts = capsule(p, vec2(sway, 0.42), vec2(sway, 0.55), 0.125);
+    float legL = capsule(p, vec2(-0.07, 0.02), vec2(-0.06 + sway, 0.46), 0.052);
+    float legR = capsule(p, vec2(0.07, 0.02), vec2(0.06 + sway, 0.46), 0.052);
+    float armL = capsule(p, vec2(-0.12 + sway, 0.76), vec2(-0.24, 0.52), 0.04);
+    // Το δεξί χέρι ψηλά, κουνιέται: αυτό είναι που λέει «άνθρωπος» από μακριά.
+    float wave = sin(uTime * 2.4) * 0.09;
+    float armR = capsule(p, vec2(0.12 + sway, 0.76), vec2(0.22 + wave, 0.98), 0.04);
+    d = min(min(min(head, torso), min(shorts, min(legL, legR))), min(armL, armR));
+    color = skin;
+    if (torso < 0.0 && shorts >= 0.0 && p.y > 0.55) color = mix(skin, vec3(0.97), 0.0);
+    if (shorts < 0.0) color = suit;
+    // Άσπρο περίγραμμα γύρω από όλο το σώμα, για να ξεχωρίζει πάνω στο νερό.
+    if (d > 0.0 && d < 0.035) {
+      gl_FragColor = vec4(vec3(0.98) * (0.5 + 0.5 * uDayLight), 1.0);
+      return;
+    }
   } else {
     // Ομπρέλα: κοντάρι και θόλος με ρίγες.
     d = min(d, capsule(p, vec2(0.0, 0.0), vec2(0.0, 0.76), 0.02));
@@ -821,8 +838,10 @@ const cameraEye = (tSec: number, distanceScale: number, heightScale: number, win
   const yaw = Math.sin(tSec * 0.11) * 0.16;
   // Πιο κοντά και πιο χαμηλά από πριν (120/52 αντί 150/66): έτσι ένα κύμα μισού μέτρου
   // ΦΑΙΝΕΤΑΙ, αντί να γίνεται υφή από ψηλά.
-  const radius = (120 + (1 - ease) * 110) * distanceScale;
-  const height = (52 + (1 - ease) * 80) * heightScale + Math.sin(tSec * 0.17) * 2.5;
+  // Τέλος του fly-in: 100 μονάδες μακριά, 44 ψηλά — αρκετά κοντά ώστε ο άνθρωπος στη γραμμή
+  // του νερού (4,6 μονάδες) να διαβάζεται και στην πλήρη οθόνη του κινητού.
+  const radius = (100 + (1 - ease) * 130) * distanceScale;
+  const height = (44 + (1 - ease) * 88) * heightScale + Math.sin(tSec * 0.17) * 2.0;
   // Το drone τρέμει στον αέρα: μηδέν ως 22 km/h, αισθητό στα 40+.
   const shakeX = (Math.sin(tSec * 7.3) + Math.sin(tSec * 11.1) * 0.5) * windShake;
   const shakeZ = (Math.sin(tSec * 9.7) + Math.sin(tSec * 13.7) * 0.5) * windShake * 0.6;
@@ -924,6 +943,7 @@ export const createSeaMotionGl = (
   const P = {
     aCorner: a(props, 'aCorner'), uProj: u(props, 'uProj'), uView: u(props, 'uView'), uBase: u(props, 'uBase'),
     uRight: u(props, 'uRight'), uSize: u(props, 'uSize'), uKind: u(props, 'uKind'), uDayLight: u(props, 'uDayLight'),
+    uTime: u(props, 'uTime'),
   };
   const Pt = {
     aPos: a(pointsProgram, 'aPos'), aAlpha: a(pointsProgram, 'aAlpha'), uProj: u(pointsProgram, 'uProj'),
@@ -1093,8 +1113,10 @@ export const createSeaMotionGl = (
     gl.uniformMatrix4fv(P.uView, false, view);
     gl.uniform3f(P.uRight, rgt[0], rgt[1], rgt[2]);
     gl.uniform1f(P.uDayLight, dayLight);
-    gl.uniform3f(P.uBase, 100, 76.5, 0);
-    gl.uniform2f(P.uSize, personHeight * 0.62, personHeight);
+    gl.uniform1f(P.uTime, tSec);
+    // Στη γραμμή του νερού, ολόκληρος: το κύμα ανεβαίνει ως εκεί που λέει το HUD.
+    gl.uniform3f(P.uBase, 100, 78.8, 0.15);
+    gl.uniform2f(P.uSize, personHeight * 0.7, personHeight);
     gl.uniform1f(P.uKind, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.uniform3f(P.uBase, 108, 84, 1.4);

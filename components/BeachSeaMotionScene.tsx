@@ -674,11 +674,10 @@ const PersonScale: React.FC<{ metres: number; size: number }> = ({ metres, size 
   return (
     <svg viewBox="0 0 16 32" style={{ width: size * 0.5, height: size }} className="shrink-0" aria-hidden="true">
       <rect x="0" y={waterY} width="16" height={32 - waterY} fill="rgba(103,232,249,0.35)" />
-      <circle cx="8" cy="4" r="3" fill="#e2e8f0" />
-      <rect x="5.5" y="8" width="5" height="11" rx="2" fill="#e2e8f0" />
-      <rect x="5.5" y="19" width="2" height="12" rx="1" fill="#e2e8f0" />
-      <rect x="8.5" y="19" width="2" height="12" rx="1" fill="#e2e8f0" />
-      <path d={`M0 ${waterY} H16`} stroke="#67e8f9" strokeWidth="1" />
+      {/* Σιλουέτα: κεφάλι, ώμοι, χέρια ανοιχτά, πόδια — όχι κουτιά. */}
+      <circle cx="8" cy="3.6" r="2.6" fill="#f1f5f9" />
+      <path d="M8 6.6 C5.4 6.6 4.2 8.2 4 10.2 L2.2 16.4 L3.6 16.9 L5.1 12.2 L5.1 19 L5.6 31 L7.4 31 L8 21.5 L8.6 31 L10.4 31 L10.9 19 L10.9 12.2 L12.4 16.9 L13.8 16.4 L12 10.2 C11.8 8.2 10.6 6.6 8 6.6 Z" fill="#f1f5f9" />
+      <path d={`M0 ${waterY} H16`} stroke="#67e8f9" strokeWidth="1.2" />
     </svg>
   );
 };
