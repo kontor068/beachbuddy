@@ -192,6 +192,23 @@ const keepClickInsidePopup = (el: HTMLElement | null): void => {
  */
 const BeachSeaMotionScene = lazyWithChunkRecovery(() => import('./BeachSeaMotionScene'), 'BeachSeaMotionScene');
 
+/**
+ * ΠΙΛΟΤΟΣ: ΜΟΝΟ ΘΕΣΠΡΩΤΙΑ (Μίλτος, 03/09/2026: «πιλοτικά μόνο για τις παραλίες της Θεσπρωτίας
+ * για αρχή»). Το play εμφανίζεται μόνο σε παραλίες αυτών των περιοχών — είναι και οι μόνες με
+ * ψημένο ανάγλυφο (scripts/bakeBeachRelief.mjs). Για δοκιμή αλλού: `?seamotion=all` στο URL.
+ */
+const SEA_MOTION_PILOT_REGIONS = new Set(['epirus-thesprotia-mainland']);
+const seaMotionEverywhere = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  try {
+    return new URLSearchParams(window.location.search).get('seamotion') === 'all';
+  } catch {
+    return false;
+  }
+};
+const seaMotionAvailableFor = (beach: Beach, mapRegionId: string | undefined): boolean =>
+  SEA_MOTION_PILOT_REGIONS.has(beach.regionId ?? mapRegionId ?? '') || seaMotionEverywhere();
+
 /** «Χωρίς πλαφόν» για το ταμπελάκι της πινέζας. Ο κατάλογος έχει σήμερα το πολύ ~12 εγγραφές. */
 const ALL_FEATURE_CHIPS = 99;
 
@@ -617,10 +634,12 @@ const MarkerConditionsPopup: React.FC<{
   openPopupRef: React.MutableRefObject<L.Popup | null>;
   /** Από πού φυσάει σε ΑΥΤΗ την παραλία (τοπική ανάγνωση αν υπάρχει, αλλιώς της περιοχής). */
   windFromDeg?: number;
+  /** Η περιοχή του χάρτη — οι παραλίες ΜΙΑΣ περιοχής δεν κουβαλούν regionId (types.Beach). */
+  regionId?: string;
   /** «Δες το σε κίνηση» / «Κλείσε την κίνηση» — τα προσβάσιμα ονόματα του play. */
   playMotionLabel: string;
   stopMotionLabel: string;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, playMotionLabel, stopMotionLabel }) => {
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, playMotionLabel, stopMotionLabel }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -743,7 +762,9 @@ const MarkerConditionsPopup: React.FC<{
           )}
         </div>
         {/* ΤΟ PLAY ΚΑΘΕΤΑΙ ΔΙΠΛΑ ΣΤΙΣ ΔΥΟ ΓΡΑΜΜΕΣ, ΟΧΙ ΣΕ ΔΙΚΗ ΤΟΥ ΣΕΙΡΑ: μηδέν επιπλέον ύψος
-            στην κλειστή κάρτα. Στρογγυλό, 28 px — στόχος αφής δίπλα σε κείμενο 11 px. */}
+            στην κλειστή κάρτα. Στρογγυλό, 28 px — στόχος αφής δίπλα σε κείμενο 11 px.
+            Μόνο στις περιοχές του πιλότου (SEA_MOTION_PILOT_REGIONS). */}
+        {seaMotionAvailableFor(item.beach, regionId) && (
         <button
           ref={keepClickInsidePopup}
           type="button"
@@ -773,6 +794,7 @@ const MarkerConditionsPopup: React.FC<{
             <Play className="ml-px h-3.5 w-3.5 fill-current" aria-hidden="true" />
           )}
         </button>
+        )}
       </div>
       )}
 
@@ -783,6 +805,7 @@ const MarkerConditionsPopup: React.FC<{
           <BeachSeaMotionScene
             item={item}
             language={language}
+            regionId={item.beach.regionId ?? regionId}
             windFromDeg={windFromDeg}
             windSpeedKmh={windSpeedKmh}
           />
@@ -2874,7 +2897,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   unrecommendedBeachIds,
   calmWaterFilter = false,
   onCalmWaterFilterChange,
-  onCalmWaterStateChange
+  onCalmWaterStateChange,
+  regionId
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -4852,6 +4876,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     openLabel={mapCopy.openBeach[language]}
                     onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
                     windFromDeg={beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg}
+                    regionId={regionId}
                     playMotionLabel={mapCopy.playMotion[language]}
                     stopMotionLabel={mapCopy.stopMotion[language]}
                   />

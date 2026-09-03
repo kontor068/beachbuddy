@@ -3252,6 +3252,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             >
               <React.Suspense fallback={<div className="w-full h-full bg-slate-100 animate-pulse" />}>
                 <BeachMap
+                  regionId={beach.regionId ?? regionId}
                   beaches={[{
                     beachId: beach.id,
                     name: beachDisplayName,

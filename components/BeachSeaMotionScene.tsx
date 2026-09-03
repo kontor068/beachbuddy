@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Waves, Wind } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { Maximize2, Waves, Wind, X } from 'lucide-react';
 import type { Beach, LanguageCode, SuitableBeach } from '../types';
 import { SHORELINE_BOX, type ShorelineShape } from '../services/shorelineShapeService';
 import { useShorelineShape } from './ShorelineThumbnail';
 import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams } from '../utils/seaMotionGl';
+import { loadBeachRelief, type BeachReliefGrid } from '../services/beachReliefService';
 
 /**
  * Η ΠΑΡΑΛΙΑ ΣΕ ΚΙΝΗΣΗ — πειραματικό (03/09/2026, Μίλτος: «όταν πατάω το play να παίζει, όχι από
@@ -26,6 +28,13 @@ import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams
  * αυτό που η κάρτα ήδη γράφει, και η λεζάντα από κάτω το λέει ρητά («σχηματική απεικόνιση»).
  * Δεν παίρνει αποφάσεις, δεν αλλάζει χρώματα, δεν μπαίνει σε κατάταξη.
  *
+ * ΣΑΝ ΒΙΝΤΕΟ (Μίλτος, 03/09/2026: «σαν video, πολύ high tech φάση»). Η κάμερα μπαίνει με
+ * fly-in και περιστρέφεται αργά σαν drone, το νερό καθρεφτίζει τον ουρανό και σπινθηρίζει, η
+ * εικόνα έχει βινιέτα και κόκκο, και από πάνω κάθεται ένα HUD: σκούρα γυάλινα πλαίσια με
+ * μονοσπασμένους αριθμούς, γωνίες σκοπεύτρου, ένα λεπτό κυανό πλέγμα πάνω στη θάλασσα, και
+ * κουμπί που το ανοίγει σε ΠΛΗΡΗ ΟΘΟΝΗ. Όλα «high tech», τίποτα ψεύτικο: το HUD δείχνει
+ * μόνο τα νούμερα της ώρας και η λεζάντα λέει ότι δεν είναι κάμερα.
+ *
  * ΔΥΟ ΖΩΓΡΑΦΟΙ, ΙΔΙΑ ΦΥΣΙΚΗ. Κανονικά παίζει σε 3D (WebGL, `utils/seaMotionGl`): κάμερα πίσω
  * από την παραλία που κοιτά τη θάλασσα, ανάγλυφη ακτή, κύματα με ύψος και φως, αφρός που
  * σπάει μπροστά στον θεατή. Όπου δεν υπάρχει WebGL, ο 2D ζωγράφος από κάτω (ένας πίνακας
@@ -42,6 +51,8 @@ import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams
 export type BeachSeaMotionSceneProps = {
   item: SuitableBeach;
   language: LanguageCode;
+  /** Η περιοχή της παραλίας — για το σχήμα της ακτής και το ψημένο ανάγλυφο. */
+  regionId?: string;
   /** Από πού φυσάει (μετεωρολογικές μοίρες), για ΑΥΤΗ την παραλία αν υπάρχει τοπική ανάγνωση. */
   windFromDeg?: number;
   windSpeedKmh?: number;
@@ -49,31 +60,73 @@ export type BeachSeaMotionSceneProps = {
 
 /* --------------------------------------------------------------- copy */
 
-const sceneCopy: Record<LanguageCode, { caption: string; aria: (name: string) => string; noData: string }> = {
+type SceneCopy = {
+  caption: string;
+  aria: (name: string) => string;
+  noData: string;
+  expand: string;
+  close: string;
+  sim: string;
+  wind: string;
+  sea: string;
+  shore: string;
+};
+
+const sceneCopy: Record<LanguageCode, SceneCopy> = {
   gr: {
-    caption: 'Σχηματική απεικόνιση από τα δεδομένα της ώρας, όχι κάμερα',
+    caption: 'Προσομοίωση από τα δεδομένα της ώρας, όχι κάμερα',
     aria: name => `Κίνηση κύματος και ανέμου πάνω στην ακτογραμμή της παραλίας ${name}`,
     noData: 'Χωρίς δεδομένα ώρας',
+    expand: 'Άνοιξε σε πλήρη οθόνη',
+    close: 'Κλείσε την πλήρη οθόνη',
+    sim: 'ΠΡΟΣΟΜΟΙΩΣΗ',
+    wind: 'ΑΝΕΜΟΣ',
+    sea: 'ΘΑΛΑΣΣΑ',
+    shore: 'ΑΚΤΗ',
   },
   en: {
-    caption: "Schematic view from this hour's data, not a camera",
+    caption: "Simulation from this hour's data, not a camera",
     aria: name => `Wave and wind motion over the shoreline of ${name}`,
     noData: 'No data for this hour',
+    expand: 'Open full screen',
+    close: 'Close full screen',
+    sim: 'SIMULATION',
+    wind: 'WIND',
+    sea: 'SEA',
+    shore: 'SHORE',
   },
   de: {
-    caption: 'Schema aus den Daten dieser Stunde, keine Kamera',
+    caption: 'Simulation aus den Daten dieser Stunde, keine Kamera',
     aria: name => `Wellen- und Windbewegung über der Küstenlinie von ${name}`,
     noData: 'Keine Daten für diese Stunde',
+    expand: 'Vollbild öffnen',
+    close: 'Vollbild schließen',
+    sim: 'SIMULATION',
+    wind: 'WIND',
+    sea: 'SEE',
+    shore: 'UFER',
   },
   fr: {
-    caption: "Schéma d'après les données de l'heure, pas une caméra",
+    caption: "Simulation d'après les données de l'heure, pas une caméra",
     aria: name => `Mouvement de la houle et du vent sur le littoral de ${name}`,
     noData: 'Pas de données pour cette heure',
+    expand: 'Ouvrir en plein écran',
+    close: 'Fermer le plein écran',
+    sim: 'SIMULATION',
+    wind: 'VENT',
+    sea: 'MER',
+    shore: 'RIVAGE',
   },
   it: {
-    caption: "Schema dai dati dell'ora, non una telecamera",
+    caption: "Simulazione dai dati dell'ora, non una telecamera",
     aria: name => `Movimento di onda e vento sulla costa di ${name}`,
     noData: 'Nessun dato per questa ora',
+    expand: 'Apri a schermo intero',
+    close: 'Chiudi schermo intero',
+    sim: 'SIMULAZIONE',
+    wind: 'VENTO',
+    sea: 'MARE',
+    shore: 'RIVA',
   },
 };
 
@@ -409,7 +462,7 @@ const spawnStreak = (wx: number, wy: number, speedKmh: number, anywhere: boolean
 const ArrowGlyph: React.FC<{ rotateDeg: number; className?: string }> = ({ rotateDeg, className = '' }) => (
   <svg
     viewBox="0 0 12 12"
-    className={`h-3 w-3 shrink-0 ${className}`}
+    className={`shrink-0 ${className}`}
     style={{ transform: `rotate(${rotateDeg}deg)` }}
     aria-hidden="true"
   >
@@ -418,25 +471,31 @@ const ArrowGlyph: React.FC<{ rotateDeg: number; className?: string }> = ({ rotat
 );
 
 /**
- * Πού είναι ο Βορράς. Το σχήμα κοιτά τη θάλασσα προς τα πάνω, οπότε ο Βορράς γυρίζει κατά
- * -facingDeg· η βελόνα γυρίζει, το γράμμα μένει όρθιο στη μύτη της.
+ * Πού είναι ο Βορράς, και από πού έρχονται άνεμος και κύμα, σε ένα δαχτυλίδι σκοπεύτρου. Το
+ * σχήμα κοιτά τη θάλασσα προς τα πάνω, οπότε ο Βορράς γυρίζει κατά -facingDeg· η βελόνα γυρίζει,
+ * το γράμμα μένει όρθιο στη μύτη της.
  */
-const CompassMark: React.FC<{ facingDeg: number }> = ({ facingDeg }) => {
+const CompassRing: React.FC<{ facingDeg: number; windFromDeg?: number; waveFromDeg?: number; size: number }> = ({ facingDeg, windFromDeg, waveFromDeg, size }) => {
   const rad = (-facingDeg * Math.PI) / 180;
-  const tipX = 11 + 6.2 * Math.sin(rad);
-  const tipY = 11 - 6.2 * Math.cos(rad);
-  const labelX = 11 + 9.6 * Math.sin(rad);
-  const labelY = 11 - 9.6 * Math.cos(rad);
+  const tipX = 16 + 9 * Math.sin(rad);
+  const tipY = 16 - 9 * Math.cos(rad);
+  const labelX = 16 + 13.2 * Math.sin(rad);
+  const labelY = 16 - 13.2 * Math.cos(rad);
+  const tick = (fromDeg: number, color: string) => {
+    const a = ((fromDeg - facingDeg) * Math.PI) / 180;
+    const x = 16 + 11.5 * Math.sin(a);
+    const y = 16 - 11.5 * Math.cos(a);
+    return <circle cx={x.toFixed(2)} cy={y.toFixed(2)} r="1.7" fill={color} />;
+  };
   return (
-    <svg
-      viewBox="0 0 22 22"
-      className="absolute bottom-1 left-1 h-6 w-6"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="6.6" fill="rgba(255,255,255,0.85)" />
-      <path d={`M11 11 L${tipX.toFixed(2)} ${tipY.toFixed(2)}`} stroke="#e11d48" strokeWidth="1.8" strokeLinecap="round" />
-      <circle cx="11" cy="11" r="1.2" fill="#334155" />
-      <text x={labelX.toFixed(2)} y={labelY.toFixed(2)} textAnchor="middle" dominantBaseline="central" fontSize="6.5" fontWeight="900" fill="#334155">N</text>
+    <svg viewBox="0 0 32 32" style={{ width: size, height: size }} className="shrink-0" aria-hidden="true">
+      <circle cx="16" cy="16" r="14.5" fill="rgba(2,12,22,0.55)" stroke="rgba(103,232,249,0.45)" strokeWidth="0.8" />
+      <circle cx="16" cy="16" r="11.5" fill="none" stroke="rgba(103,232,249,0.22)" strokeWidth="0.6" strokeDasharray="1.2 2.4" />
+      <path d={`M16 16 L${tipX.toFixed(2)} ${tipY.toFixed(2)}`} stroke="#fb7185" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="16" cy="16" r="1.3" fill="#e2e8f0" />
+      <text x={labelX.toFixed(2)} y={labelY.toFixed(2)} textAnchor="middle" dominantBaseline="central" fontSize="7" fontWeight="900" fill="#f1f5f9">N</text>
+      {typeof windFromDeg === 'number' && tick(windFromDeg, '#67e8f9')}
+      {typeof waveFromDeg === 'number' && tick(waveFromDeg, '#93c5fd')}
     </svg>
   );
 };
@@ -453,11 +512,86 @@ const resolveFacing = (item: SuitableBeach): number | null => {
   return null;
 };
 
-const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, windFromDeg, windSpeedKmh }) => {
+/** Οι τέσσερις γωνίες του σκοπεύτρου — το πιο φθηνό «οθόνη drone» που υπάρχει. */
+const ViewfinderCorners: React.FC<{ inset: string; size: string }> = ({ inset, size }) => (
+  <>
+    {(['top-0 left-0 border-t border-l', 'top-0 right-0 border-t border-r', 'bottom-0 left-0 border-b border-l', 'bottom-0 right-0 border-b border-r'] as const).map(cls => (
+      <span key={cls} className={`pointer-events-none absolute ${cls} border-cyan-300/70`} style={{ margin: inset, width: size, height: size }} aria-hidden="true" />
+    ))}
+  </>
+);
+
+/**
+ * Το ψημένο ανάγλυφο της περιοχής, αν υπάρχει (πιλοτικά: Θεσπρωτία). Χωρίς αρχείο → undefined
+ * και η σκηνή παίζει με ήπια πλαγιά άμμου.
+ */
+const useBeachRelief = (regionId: string | undefined): BeachReliefGrid | undefined => {
+  const [relief, setRelief] = useState<BeachReliefGrid | undefined>(undefined);
+  useEffect(() => {
+    if (!regionId) {
+      setRelief(undefined);
+      return undefined;
+    }
+    let active = true;
+    loadBeachRelief(regionId).then(grid => {
+      if (active) setRelief(grid);
+    });
+    return () => {
+      active = false;
+    };
+  }, [regionId]);
+  return relief;
+};
+
+/**
+ * Από μονάδες κουτιού σε γεωγραφικές μοίρες — ο ΑΝΤΙΣΤΡΟΦΟΣ μετασχηματισμός του
+ * scripts/buildShorelineThumbs.mjs: το κουτί είναι γυρισμένο ώστε η θάλασσα να κοιτά πάνω
+ * (facingDeg) και έχει αρχή το σημείο της ακτογραμμής που είναι πιο κοντά στην πινέζα.
+ *
+ * ΠΑΡΑΔΟΧΗ: το σχήμα κρατά μόνο την ΑΠΟΣΤΑΣΗ πινέζας–ακτής (pinDistanceM), όχι τη διεύθυνση·
+ * παίρνουμε ότι η ακτή είναι προς τη θάλασσα από την πινέζα. Σφάλμα ως ~50 μ., αμελητέο
+ * πάνω σε DEM 150 μ.
+ */
+const makeReliefSampler = (grid: BeachReliefGrid, shape: ShorelineShape, lat: number, lon: number) => {
+  const metresPerUnit = shape.frameWidthM / SHORELINE_BOX.width;
+  const theta = (shape.facingDeg * Math.PI) / 180;
+  const sin = Math.sin(theta);
+  const cos = Math.cos(theta);
+  const mPerLat = 111320;
+  const mPerLon = 111320 * Math.cos((lat * Math.PI) / 180);
+  const originE = shape.pinDistanceM * sin;
+  const originN = shape.pinDistanceM * cos;
+  return (x: number, y: number): number | null => {
+    const cross = (x - SHORELINE_BOX.pinX) * metresPerUnit;
+    const along = (SHORELINE_BOX.pinY - y) * metresPerUnit;
+    const east = cross * cos + along * sin + originE;
+    const north = -cross * sin + along * cos + originN;
+    return grid.sample(lat + north / mPerLat, lon + east / mPerLon);
+  };
+};
+
+type SceneViewProps = {
+  item: SuitableBeach;
+  language: LanguageCode;
+  windFromDeg?: number;
+  windSpeedKmh?: number;
+  shape: ShorelineShape | undefined;
+  relief: BeachReliefGrid | undefined;
+  variant: 'popup' | 'full';
+  onExpand?: () => void;
+  onClose?: () => void;
+};
+
+/**
+ * Η ίδια σκηνή σε δύο μεγέθη: μέσα στο ταμπελάκι (216 px) και σε πλήρη οθόνη. Ο καμβάς
+ * παίρνει την ανάλυση της οθόνης στο μεγάλο (ως 1,5× για να μη ζεσταίνει το κινητό), τα HUD
+ * μεγαλώνουν, ο ζωγράφος είναι ο ίδιος.
+ */
+const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, windSpeedKmh, shape, relief, variant, onExpand, onClose }) => {
   const beach = item.beach;
-  const shape: ShorelineShape | undefined = useShorelineShape(beach.regionId, beach.sourceBeachId ?? beach.id);
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const beachName = item.name || beach.name[language] || beach.name.en;
+  const full = variant === 'full';
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streaksRef = useRef<Streak[]>([]);
@@ -499,8 +633,18 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
     let draw2d: ((tSec: number, dtSec: number) => void) | null = null;
 
     if (mode === '3d') {
+      if (full) {
+        const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = Math.max(320, Math.round(rect.width * dpr));
+        canvas.height = Math.max(200, Math.round(rect.height * dpr));
+      }
+      const metresPerUnit = shape?.frameWidthM ? shape.frameWidthM / SHORELINE_BOX.width : 5;
+      const sampler = relief && shape && typeof beach.coordinates?.lat === 'number' && typeof beach.coordinates?.lon === 'number'
+        ? makeReliefSampler(relief, shape, beach.coordinates.lat, beach.coordinates.lon)
+        : undefined;
       try {
-        gl = createSeaMotionGl(canvas, points, beach.id);
+        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.1 : 0.12, relief: sampler, metresPerUnit });
       } catch {
         gl = null;
       }
@@ -509,6 +653,8 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         return undefined;
       }
     } else {
+      canvas.width = PW;
+      canvas.height = PH;
       const ctx = canvas.getContext('2d', { alpha: false });
       if (!ctx) return undefined;
       const field = buildField(points, beach.id);
@@ -538,8 +684,10 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
       if (motion) {
         const dt = Math.min(0.1, (now - last) / 1000);
         const began = performance.now();
-        if (gl) gl.render(motion, (now - start) / 1000, dt);
-        else if (draw2d) draw2d((now - start) / 1000, dt);
+        // Σε reduced-motion η κάμερα στέκεται στην τελική της θέση (t μετά το fly-in).
+        const t = reduceMotion ? 3 : (now - start) / 1000;
+        if (gl) gl.render(motion, t, dt);
+        else if (draw2d) draw2d(t, dt);
         if (performance.now() - began > 14) {
           slowFrames += 1;
           if (slowFrames >= 8) minInterval = 48;
@@ -549,7 +697,6 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
     };
 
     if (reduceMotion) {
-      // Μία ακίνητη εικόνα: η γεωμετρία, οι κορυφές και ο αφρός χωρίς κίνηση.
       draw(start);
       return () => gl?.dispose();
     }
@@ -565,53 +712,176 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
       window.cancelAnimationFrame(frame);
       gl?.dispose();
     };
-  }, [pointsKey, beach.id, mode]);
+  }, [pointsKey, beach.id, mode, full, relief, shape, beach.coordinates]);
 
   const hasWind = typeof windSpeedKmh === 'number' && Number.isFinite(windSpeedKmh) && typeof windFromDeg === 'number';
   const showWaveChip = typeof openWaveM === 'number' && Number.isFinite(openWaveM);
   const waveArrowFrom = waveFromDeg ?? windFromDeg ?? facingDeg;
+  const shoreDiffers = typeof shoreWaveM === 'number' && typeof openWaveM === 'number' && Math.abs(shoreWaveM - openWaveM) >= 0.05;
+
+  const chip = full
+    ? 'flex items-center gap-1.5 whitespace-nowrap rounded-md border border-cyan-300/30 bg-slate-950/60 px-2.5 py-1.5 text-[13px] font-bold leading-none text-cyan-50 backdrop-blur-sm [font-variant-numeric:tabular-nums]'
+    : 'flex items-center gap-0.5 whitespace-nowrap rounded border border-cyan-300/30 bg-slate-950/60 px-1 py-0.5 text-[8px] font-bold leading-none text-cyan-50 backdrop-blur-sm [font-variant-numeric:tabular-nums]';
+  const chipLabel = full ? 'text-[9px] font-black tracking-[0.18em] text-cyan-300/80' : 'hidden';
+  const icon = full ? 'h-4 w-4 shrink-0 text-cyan-300' : 'h-3 w-3 shrink-0 text-cyan-300';
+  const arrow = full ? 'h-4 w-4 text-cyan-200' : 'h-3 w-3 text-cyan-200';
+  const edge = full ? 'p-3 sm:p-5' : 'p-1';
+
+  return (
+    <div
+      className={`relative w-full overflow-hidden bg-slate-950 ${full ? 'h-full' : 'h-[6.75rem] rounded-lg'}`}
+      role="img"
+      aria-label={copy.aria(beachName)}
+    >
+      <canvas
+        key={`${mode}:${pointsKey}:${relief ? 'relief' : 'flat'}`}
+        ref={canvasRef}
+        width={PW}
+        height={PH}
+        className="block h-full w-full"
+      />
+      <ViewfinderCorners inset={full ? '10px' : '4px'} size={full ? '22px' : '9px'} />
+
+      {/* Μικρό: άνεμος αριστερά, θάλασσα δεξιά. Πλήρης οθόνη: όνομα και τα δύο σε στήλη αριστερά,
+          ώστε να χωρούν και σε όρθιο κινητό δίπλα στο X. */}
+      <div className={`pointer-events-none absolute inset-x-0 top-0 flex items-start ${full ? 'flex-col gap-1.5 pr-16' : 'justify-between gap-2'} ${edge}`}>
+        {full && (
+          <p className="max-w-full truncate rounded-md border border-cyan-300/20 bg-slate-950/50 px-3 py-1.5 text-sm font-black text-white backdrop-blur-sm">{beachName}</p>
+        )}
+        <div className="flex flex-col items-start gap-1">
+          {hasWind ? (
+            <div className={chip}>
+              <Wind className={icon} aria-hidden="true" />
+              <span className={chipLabel}>{copy.wind}</span>
+              <ArrowGlyph rotateDeg={(windFromDeg as number) + 180 - facingDeg} className={arrow} />
+              <span>{Math.round(windSpeedKmh as number)} km/h</span>
+            </div>
+          ) : null}
+        </div>
+        <div className={`flex flex-col gap-1 ${full ? 'items-start' : 'items-end'}`}>
+          {showWaveChip ? (
+            <div className={chip}>
+              <Waves className={icon} aria-hidden="true" />
+              <span className={chipLabel}>{copy.sea}</span>
+              <ArrowGlyph rotateDeg={waveArrowFrom + 180 - facingDeg} className={arrow} />
+              <span>
+                {full
+                  ? `${formatMetres(language, openWaveM as number)}${shoreDiffers ? ` → ~${formatMetres(language, shoreWaveM as number)}` : ''}`
+                  : shoreDiffers
+                    ? `${formatMetres(language, openWaveM as number).replace(' m', '')}→~${formatMetres(language, shoreWaveM as number)}`
+                    : formatMetres(language, openWaveM as number)}
+              </span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      {!hasWind && !showWaveChip && (
+        <div className={`pointer-events-none absolute inset-x-0 ${full ? 'top-16' : 'top-6'} mx-auto w-fit rounded border border-cyan-300/30 bg-slate-950/60 px-2 py-1 text-[10px] font-bold text-cyan-50`}>
+          {copy.noData}
+        </div>
+      )}
+
+      {/* Κάτω: πυξίδα αριστερά, «ΠΡΟΣΟΜΟΙΩΣΗ» με παλλόμενη κουκκίδα και το κουμπί δεξιά. */}
+      <div className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 ${edge}`}>
+        <div className="pointer-events-none flex items-end gap-1.5">
+          {hasFacing && <CompassRing facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 56 : 26} />}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className={`pointer-events-none flex items-center gap-1 rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
+            <span className={`${full ? 'h-1.5 w-1.5' : 'h-1 w-1'} animate-pulse rounded-full bg-cyan-300`} aria-hidden="true" />
+            {copy.sim}
+          </span>
+          {!full && onExpand && (
+            <button
+              type="button"
+              onClick={onExpand}
+              aria-label={copy.expand}
+              title={copy.expand}
+              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900"
+            >
+              <Maximize2 className="h-3 w-3" aria-hidden="true" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {full && (
+        <>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={copy.close}
+            title={copy.close}
+            className="absolute right-3 top-3 sm:right-5 sm:top-5 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cyan-300/40 bg-slate-950/70 text-white transition hover:bg-slate-900"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+          <p className="pointer-events-none absolute inset-x-0 bottom-16 sm:bottom-20 text-center text-[11px] font-semibold text-cyan-100/70">{copy.caption}</p>
+        </>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Πλήρης οθόνη: portal στο body, πάνω από τον χάρτη και το ταμπελάκι. Κλείνει με το X, με Esc,
+ * και κλειδώνει το σκρολ της σελίδας όσο είναι ανοιχτό.
+ */
+const FullScreenScene: React.FC<Omit<SceneViewProps, 'variant' | 'onExpand'> & { onClose: () => void }> = props => {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') props.onClose();
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [props]);
+
+  return createPortal(
+    <div className="fixed inset-0 z-[3000] bg-slate-950" style={{ height: '100dvh' }} role="dialog" aria-modal="true">
+      <SceneView {...props} variant="full" />
+    </div>,
+    document.body
+  );
+};
+
+const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, language, regionId, windFromDeg, windSpeedKmh }) => {
+  const beach = item.beach;
+  const homeRegionId = beach.regionId ?? regionId;
+  const shape: ShorelineShape | undefined = useShorelineShape(homeRegionId, beach.sourceBeachId ?? beach.id);
+  const relief = useBeachRelief(homeRegionId);
+  const copy = sceneCopy[language] ?? sceneCopy.en;
+  const [fullOpen, setFullOpen] = useState(false);
 
   return (
     <div className="mt-1">
-      <div
-        className="relative h-[6.75rem] w-full overflow-hidden rounded-lg bg-sky-100"
-        role="img"
-        aria-label={copy.aria(beachName)}
-      >
-        {/* Νέος καμβάς και όταν αλλάζει το σχήμα: το καθάρισμα του προηγούμενου χάνει ρητά το
-            WebGL context, και ένας καμβάς με χαμένο context δεν ξαναζωγραφίζει ποτέ. */}
-        <canvas key={`${mode}:${pointsKey}`} ref={canvasRef} width={PW} height={PH} className="block h-full w-full" />
-
-        {hasWind && (
-          <div className="absolute left-1 top-1 flex items-center gap-0.5 rounded-full bg-white/85 px-1 py-0.5 text-[9px] font-black leading-none text-slate-700 shadow-sm">
-            <Wind className="h-3 w-3 shrink-0 text-cyan-800" aria-hidden="true" />
-            <ArrowGlyph rotateDeg={(windFromDeg as number) + 180 - facingDeg} className="text-cyan-800" />
-            <span>{Math.round(windSpeedKmh as number)} km/h</span>
-          </div>
-        )}
-
-        {showWaveChip && (
-          <div className="absolute right-1 top-1 flex items-center gap-0.5 rounded-full bg-white/85 px-1 py-0.5 text-[9px] font-black leading-none text-slate-700 shadow-sm">
-            <Waves className="h-3 w-3 shrink-0 text-sky-700" aria-hidden="true" />
-            <ArrowGlyph rotateDeg={waveArrowFrom + 180 - facingDeg} className="text-sky-700" />
-            <span>
-              {formatMetres(language, openWaveM as number)}
-              {typeof shoreWaveM === 'number' && Math.abs(shoreWaveM - (openWaveM as number)) >= 0.05
-                ? ` → ~${formatMetres(language, shoreWaveM)}`
-                : ''}
-            </span>
-          </div>
-        )}
-
-        {!hasWind && !showWaveChip && (
-          <div className="absolute inset-x-0 top-1 mx-auto w-fit rounded-full bg-white/85 px-1.5 py-0.5 text-[9px] font-black leading-none text-slate-600">
-            {copy.noData}
-          </div>
-        )}
-
-        {hasFacing && <CompassMark facingDeg={facingDeg} />}
-      </div>
+      <SceneView
+        item={item}
+        language={language}
+        windFromDeg={windFromDeg}
+        windSpeedKmh={windSpeedKmh}
+        shape={shape}
+        relief={relief}
+        variant="popup"
+        onExpand={() => setFullOpen(true)}
+      />
       <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{copy.caption}</p>
+      {fullOpen && typeof document !== 'undefined' && (
+        <FullScreenScene
+          item={item}
+          language={language}
+          windFromDeg={windFromDeg}
+          windSpeedKmh={windSpeedKmh}
+          shape={shape}
+          relief={relief}
+          onClose={() => setFullOpen(false)}
+        />
+      )}
     </div>
   );
 };

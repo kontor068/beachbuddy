@@ -59,6 +59,10 @@ export const heightToAmp = (h: number | undefined) =>
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
+/** Υπερβολή ύψους του ανάγλυφου: 1,25× — τα ελληνικά βουνά δίπλα στη θάλασσα είναι ήδη δραματικά. */
+const RELIEF_EXAGGERATION = 1.25;
+/** Ως πού απλώνει το πλέγμα (και η ομίχλη) όταν υπάρχει ανάγλυφο: απέναντι ακτές ως 16 χλμ. */
+const RELIEF_REACH_M = 16000;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -119,6 +123,7 @@ attribute vec2 aPos;
 attribute float aDist;
 attribute vec2 aShore;
 attribute float aNoise;
+attribute float aHeight;
 uniform mat4 uProj;
 uniform mat4 uView;
 uniform float uTime;
@@ -142,6 +147,7 @@ varying float vFoam;
 varying float vRip;
 varying float vRipPhase;
 varying float vShadow;
+varying float vClipY;
 
 void main() {
   float d = aDist;
@@ -159,7 +165,11 @@ void main() {
       float phase = uK * travelled - uOmega * uTime;
       float amp = mix(uShoreAmp, uOpenAmp, clamp(d / 45.0, 0.0, 1.0));
       // Λίγο πιο μυτερή κορυφή, πιο πλατιά κοιλάδα — όπως στέκει ένα πραγματικό κύμα.
-      z = amp * (sin(phase) + 0.28 * sin(2.0 * phase + 0.7)) * 4.2;
+      z = amp * (sin(phase) + 0.28 * sin(2.0 * phase + 0.7)) * 3.6;
+      // Δεύτερο, μικρότερο κύμα λίγο λοξά και λίγο πιο κοντό: η θάλασσα δεν είναι ποτέ ΕΝΑ ημίτονο.
+      vec2 crossDir = normalize(uWaveDir + vec2(-uWaveDir.y, uWaveDir.x) * 0.42);
+      float crossPhase = uK * 1.6 * mix(dot(crossDir, aPos), dot(crossDir, aShore) - d, w) - uOmega * 1.25 * uTime + 1.3;
+      z += amp * sin(crossPhase) * 0.9;
       if (uArriving > 0.5 && d < uBreakZone && uFoam > 0.0) {
         vFoam = uFoam * (0.5 + 0.5 * sin(phase)) * (1.0 - d / uBreakZone);
       }
@@ -176,13 +186,15 @@ void main() {
     vRipPhase = chop;
     vShadow = shadow;
   } else {
-    // Η στεριά ανεβαίνει ήπια προς την ενδοχώρα, με λίγο τυχαίο ανάγλυφο για να μη γυαλίζει.
-    z = min(10.0, -d * 0.24) + aNoise * 0.35;
+    // Η στεριά: το ύψος ήρθε έτοιμο από τη CPU (ήπια πλαγιά άμμου, ή το πραγματικό ανάγλυφο
+    // όπου υπάρχει ψημένο), με λίγο τυχαίο τρέμουλο για να μη γυαλίζει επίπεδη.
+    z = aHeight;
   }
   vWorld = vec3(aPos, z);
   vDist = d;
   vNoise = aNoise;
   gl_Position = uProj * uView * vec4(aPos, z, 1.0);
+  vClipY = gl_Position.y / max(gl_Position.w, 0.001);
 }
 `;
 
@@ -195,6 +207,12 @@ uniform float uWhitecaps;
 uniform vec2 uWindDir;
 uniform float uRipSpeed;
 uniform float uTime;
+uniform vec2 uResolution;
+uniform float uGrid;
+uniform float uFogNear;
+uniform float uFogFar;
+uniform float uFogMax;
+uniform float uMetresPerUnit;
 varying vec3 vWorld;
 varying float vDist;
 varying float vNoise;
@@ -202,6 +220,15 @@ varying float vFoam;
 varying float vRip;
 varying float vRipPhase;
 varying float vShadow;
+varying float vClipY;
+
+// Ίδια συνάρτηση με τον ουρανό: η ομίχλη παίρνει ΑΚΡΙΒΩΣ το χρώμα του ουρανού στο ίδιο ύψος
+// της οθόνης, ώστε η άκρη του πλέγματος να μη φαίνεται ποτέ.
+vec3 skyAt(float y) {
+  vec3 top = vec3(0.30, 0.58, 0.88);
+  vec3 horizon = vec3(0.80, 0.90, 0.96);
+  return mix(horizon, top, smoothstep(0.05, 1.0, y));
+}
 
 void main() {
   vec3 n = normalize(cross(dFdx(vWorld), dFdy(vWorld)));
@@ -214,17 +241,34 @@ void main() {
   }
   vec3 v = normalize(uEye - vWorld);
   float diffuse = max(dot(n, uLight), 0.0);
+  vec3 skyColor = vec3(0.62, 0.80, 0.94);
   vec3 color;
   if (vDist > 0.0) {
     // Ρηχά ανοιχτόχρωμα, βαθύτερα σκούρο μπλε — η παλέτα της μινιατούρας, με βάθος.
     float depth = smoothstep(0.0, 60.0, vDist);
-    vec3 shallow = vec3(0.72, 0.89, 0.93);
-    vec3 deep = vec3(0.16, 0.50, 0.72);
+    vec3 shallow = vec3(0.55, 0.85, 0.90);
+    vec3 deep = vec3(0.12, 0.42, 0.66);
     color = mix(shallow, deep, depth);
-    // Φως: κοιλάδες πιο σκούρες, κορυφές πιο φωτεινές· γυαλάδα του ήλιου στο νερό.
+    // Στα πολύ ρηχά φαίνεται η άμμος μέσα από το νερό.
+    color = mix(color, vec3(0.80, 0.78, 0.66), smoothstep(7.0, 0.0, vDist) * 0.55);
+    // Φως: κοιλάδες πιο σκούρες, κορυφές πιο φωτεινές.
     color *= 0.55 + 0.55 * diffuse;
-    float spec = pow(max(dot(reflect(-uLight, n), v), 0.0), 48.0);
+    // Fresnel: όσο πιο πλάγια κοιτάς το νερό, τόσο περισσότερο καθρεφτίζει τον ουρανό.
+    float fresnel = 0.04 + 0.96 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
+    color = mix(color, skyColor, clamp(fresnel, 0.0, 1.0) * 0.65);
+    // Γυαλάδα του ήλιου, και σπινθηρίσματα που τρεμοπαίζουν στις κορυφές.
+    vec3 r = reflect(-uLight, n);
+    float spec = pow(max(dot(r, v), 0.0), 48.0);
     color += vec3(1.0, 0.98, 0.9) * spec * (0.35 + 0.4 * vRip);
+    float sparkle = pow(max(dot(r, v), 0.0), 420.0) * (0.5 + 0.5 * sin(uTime * 7.0 + vNoise * 41.0)) * step(0.45, vNoise);
+    color += vec3(1.0) * sparkle * 1.6;
+    // Το λεπτό πλέγμα της προσομοίωσης: κάθε 10 μονάδες, σβήνει με την απόσταση.
+    if (uGrid > 0.0) {
+      vec2 gp = vWorld.xy / 10.0;
+      vec2 g = abs(fract(gp) - 0.5) / max(fwidth(gp), vec2(1e-4));
+      float line = 1.0 - min(min(g.x, g.y), 1.0);
+      color = mix(color, vec3(0.35, 0.95, 1.0), line * uGrid);
+    }
     // Αφρός εκεί που σπάει, και μικρές άσπρες κορφές σε δυνατό αέρα.
     float speck = step(vNoise, vFoam * 0.9);
     float white = clamp(vFoam * 0.75 + speck * 0.6, 0.0, 1.0);
@@ -234,14 +278,28 @@ void main() {
     vec3 sand = vec3(0.95, 0.90, 0.80);
     vec3 inland = vec3(0.84, 0.79, 0.66);
     color = mix(sand, inland, smoothstep(0.0, 45.0, -vDist));
+    // Πιο ψηλά: θάμνοι και ελιές, μετά γυμνός βράχος — ανά πραγματικό μέτρο ύψους.
+    float metres = vWorld.z * uMetresPerUnit / ${RELIEF_EXAGGERATION.toFixed(2)};
+    vec3 scrub = vec3(0.56, 0.60, 0.42);
+    vec3 rock = vec3(0.64, 0.61, 0.56);
+    color = mix(color, scrub, smoothstep(6.0, 40.0, metres));
+    color = mix(color, rock, smoothstep(220.0, 700.0, metres));
     // Βρεγμένη άμμος στη γραμμή του νερού.
     if (vDist > -2.5) color = vec3(0.87, 0.83, 0.71);
     color *= 0.6 + 0.45 * diffuse;
   }
   // Ομίχλη προς τον ορίζοντα: το μακρινό νερό χάνεται στον ουρανό.
   float dist = length(uEye - vWorld);
-  float fog = smoothstep(170.0, 520.0, dist);
-  color = mix(color, vec3(0.80, 0.90, 0.96), fog);
+  // Καμπύλη 1,6: η θολούρα μαζεύεται στο τέλος, ώστε ένα βουνό στα 10 χλμ να διαβάζεται ακόμα.
+  float fog = pow(smoothstep(uFogNear, uFogFar, dist), 1.6) * uFogMax;
+  color = mix(color, skyAt(vClipY), fog);
+  // Κινηματογραφικό φινίρισμα: ελαφριά βινιέτα, λίγος κόκκος, λίγο πιο ζεστό φως.
+  vec2 uv = gl_FragCoord.xy / uResolution;
+  float vig = smoothstep(0.98, 0.35, distance(uv, vec2(0.5)));
+  color *= 0.72 + 0.28 * vig;
+  float grain = fract(sin(dot(gl_FragCoord.xy + uTime * 60.0, vec2(12.9898, 78.233))) * 43758.5453);
+  color += (grain - 0.5) * 0.03;
+  color = mix(color, color * vec3(1.06, 1.0, 0.94), 0.35);
   gl_FragColor = vec4(color, 1.0);
 }
 `;
@@ -259,9 +317,11 @@ const SKY_FS = `
 precision mediump float;
 varying float vY;
 void main() {
-  vec3 top = vec3(0.45, 0.70, 0.92);
-  vec3 horizon = vec3(0.84, 0.92, 0.96);
-  gl_FragColor = vec4(mix(horizon, top, smoothstep(-0.2, 1.0, vY)), 1.0);
+  // Ο ορίζοντας έχει ΑΚΡΙΒΩΣ το χρώμα της ομίχλης του νερού, ώστε θάλασσα και ουρανός να
+  // λιώνουν ο ένας στον άλλο αντί να φαίνεται μια άκρη.
+  vec3 top = vec3(0.30, 0.58, 0.88);
+  vec3 horizon = vec3(0.80, 0.90, 0.96);
+  gl_FragColor = vec4(mix(horizon, top, smoothstep(0.05, 1.0, vY)), 1.0);
 }
 `;
 
@@ -370,16 +430,53 @@ const hashNoise = (i: number, seed: number) => {
  * άκρη. Κοντά στην παραλία βήμα 2 μονάδες· μακριά, λίγες αραιές σειρές ως εκεί που η ομίχλη
  * τα σβήνει όλα. Σύνολο ~37.000 κορυφές, κάτω από το όριο των 65.535 του Uint16.
  */
-const GRID = { x0: -130, x1: 330, y0: -140, y1: 132, step: 1.5 } as const;
+const GRID = { x0: -130, x1: 330, y0: -140, y1: 132 } as const;
 const FAR_ROWS = [-170, -210, -260, -330, -420, -540, -700];
+/** Το κάδρο που καλύπτει η ακτογραμμή της μινιατούρας — μέσα του η γραμμή είναι η αλήθεια. */
+const FRAME = { x0: -10, x1: 210, y0: -10, y1: 120 } as const;
 
-const buildMesh = (points: Point[], seed: number) => {
-  const cols = Math.floor((GRID.x1 - GRID.x0) / GRID.step) + 1;
-  const nearRows = Math.floor((GRID.y1 - GRID.y0) / GRID.step) + 1;
-  const rowYs: number[] = [...FAR_ROWS];
-  for (let r = 0; r < nearRows; r += 1) rowYs.push(GRID.y0 + r * GRID.step);
-  const rows = rowYs.length;
-  const vertices = new Float32Array(cols * rows * 6);
+type ReliefFn = (x: number, y: number) => number | null;
+
+/** Συντεταγμένες πλέγματος: ένα αραιό εξωτερικό (σε μέτρα) γύρω από ένα πυκνό εσωτερικό. */
+const axisCoordinates = (inner0: number, inner1: number, innerStep: number, outerUnits: number, outerStep: number): number[] => {
+  const out: number[] = [];
+  for (let v = inner0 - outerUnits; v < inner0 - outerStep * 0.5; v += outerStep) out.push(v);
+  for (let v = inner0; v <= inner1 + 1e-6; v += innerStep) out.push(v);
+  for (let v = inner1 + outerStep; v <= inner1 + outerUnits + 1e-6; v += outerStep) out.push(v);
+  return out;
+};
+
+const buildMesh = (
+  points: Point[],
+  seed: number,
+  step: number,
+  wideIndices: boolean,
+  relief: ReliefFn | undefined,
+  metresPerUnit: number
+) => {
+  let xs: number[];
+  let ys: number[];
+  if (relief && wideIndices) {
+    // Με ανάγλυφο: 16 χλμ προς τη θάλασσα και στα πλάγια, 2,5 χλμ πίσω από την κάμερα,
+    // σε βήμα 150 μ. — αρκετό για βουνά και απέναντι ακτές, όχι για ακτογραμμή (αυτή είναι
+    // δουλειά του πυκνού εσωτερικού).
+    const outerStep = 150 / metresPerUnit;
+    xs = axisCoordinates(GRID.x0, GRID.x1, step, RELIEF_REACH_M / metresPerUnit, outerStep);
+    const seaward = RELIEF_REACH_M / metresPerUnit;
+    const landward = 2500 / metresPerUnit;
+    ys = [];
+    for (let v = GRID.y0 - seaward; v < GRID.y0 - outerStep * 0.5; v += outerStep) ys.push(v);
+    for (let v = GRID.y0; v <= GRID.y1 + 1e-6; v += step) ys.push(v);
+    for (let v = GRID.y1 + outerStep; v <= GRID.y1 + landward + 1e-6; v += outerStep) ys.push(v);
+  } else {
+    xs = [];
+    for (let v = GRID.x0; v <= GRID.x1 + 1e-6; v += step) xs.push(v);
+    ys = [...FAR_ROWS];
+    for (let v = GRID.y0; v <= GRID.y1 + 1e-6; v += step) ys.push(v);
+  }
+  const cols = xs.length;
+  const rows = ys.length;
+  const vertices = new Float32Array(cols * rows * 7);
 
   const segments: Array<[number, number, number, number, number]> = [];
   for (let i = 1; i < points.length; i += 1) {
@@ -399,12 +496,16 @@ const buildMesh = (points: Point[], seed: number) => {
     }
     return points[points.length - 1][1];
   };
+  const smooth01 = (v: number) => {
+    const t = v < 0 ? 0 : v > 1 ? 1 : v;
+    return t * t * (3 - 2 * t);
+  };
 
   let v = 0;
   for (let r = 0; r < rows; r += 1) {
-    const y = rowYs[r];
+    const y = ys[r];
     for (let c = 0; c < cols; c += 1) {
-      const x = GRID.x0 + c * GRID.step;
+      const x = xs[c];
       let best = Infinity;
       let bx = x;
       let by = landYAt(x);
@@ -420,18 +521,46 @@ const buildMesh = (points: Point[], seed: number) => {
           by = cy;
         }
       }
-      const d = Math.sqrt(best);
-      const sea = y < landYAt(x);
+      let d = Math.sqrt(best);
+      const inFrame = x >= FRAME.x0 && x <= FRAME.x1 && y >= FRAME.y0 && y <= FRAME.y1;
+      const reliefM = relief ? relief(x, y) : null;
+      // Μέσα στο κάδρο η ακτογραμμή της μινιατούρας αποφασίζει στεριά/θάλασσα· έξω, το DEM
+      // (και χωρίς DEM, η γραμμή προεκτείνεται όπως πριν).
+      let sea: boolean;
+      if (inFrame || !relief) sea = y < landYAt(x);
+      else sea = reliefM === null ? true : reliefM <= 0.5;
+      // Έξω από το κάδρο η γραμμή δεν λέει τίποτα για τις αποστάσεις — ούτε διάθλαση ούτε αφρός.
+      if (!inFrame) d = Math.max(d, 60);
+
+      let height = 0;
+      if (!sea) {
+        const ramp = Math.min(10, d * 0.24);
+        // Λίγο τρέμουλο στην άμμο για να μη γυαλίζει επίπεδη — ΜΟΝΟ στο πυκνό πλέγμα: στα
+        // μακρόστενα κελιά του αραιού (1×36 μονάδες) το ίδιο τρέμουλο έβγαινε ρίγες.
+        const fine = x >= GRID.x0 && x <= GRID.x1 && y >= GRID.y0 && y <= GRID.y1;
+        const jitter = fine ? hashNoise(r * cols + c + 7919, seed) * 0.35 : 0;
+        if (reliefM !== null && relief) {
+          const demUnits = Math.max(0.3, (reliefM * RELIEF_EXAGGERATION) / metresPerUnit);
+          // Στην άμμο μένει η ήπια πλαγιά· 60 μονάδες μέσα το DEM παίρνει το πάνω χέρι.
+          height = (inFrame ? ramp + (demUnits - ramp) * smooth01(d / 60) : demUnits) + jitter;
+        } else {
+          height = ramp + jitter;
+        }
+      }
+
       vertices[v++] = x;
       vertices[v++] = y;
       vertices[v++] = sea ? d : -d;
       vertices[v++] = bx;
       vertices[v++] = by;
       vertices[v++] = hashNoise(r * cols + c, seed);
+      vertices[v++] = height;
     }
   }
 
-  const indices = new Uint16Array((cols - 1) * (rows - 1) * 6);
+  const indices = wideIndices
+    ? new Uint32Array((cols - 1) * (rows - 1) * 6)
+    : new Uint16Array((cols - 1) * (rows - 1) * 6);
   let k = 0;
   for (let r = 0; r < rows - 1; r += 1) {
     for (let c = 0; c < cols - 1; c += 1) {
@@ -452,15 +581,48 @@ const buildMesh = (points: Point[], seed: number) => {
  * Η κάμερα στέκεται πίσω από την παραλία, λίγο ψηλά — όπως κάποιος σε λόφο πάνω από την άμμο —
  * και κοιτά προς τη θάλασσα. Το κύμα έρχεται ΠΡΟΣ τον θεατή και σπάει μπροστά του.
  */
-const EYE = [100, 172, 66];
 const TARGET = [100, 22, -4];
+
+/**
+ * Η κάμερα ΔΕΝ είναι καρφωμένη: μπαίνει με ένα αργό fly-in (2,8 s, από πιο ψηλά και πιο
+ * μακριά) και μετά περιστρέφεται ήπια γύρω από την παραλία, με λίγο ανεβοκατέβασμα — όπως
+ * ένα drone που κρατά στόχο. Αυτό είναι που κάνει την εικόνα «βίντεο» αντί για διάγραμμα.
+ */
+const cameraEye = (tSec: number, distanceScale: number, heightScale: number): number[] => {
+  const intro = Math.min(1, tSec / 2.8);
+  const ease = intro * intro * (3 - 2 * intro);
+  const yaw = Math.sin(tSec * 0.11) * 0.16;
+  const radius = (150 + (1 - ease) * 95) * distanceScale;
+  const height = (66 + (1 - ease) * 70) * heightScale + Math.sin(tSec * 0.17) * 3;
+  return [TARGET[0] + Math.sin(yaw) * radius, TARGET[1] + Math.cos(yaw) * radius, TARGET[2] + height];
+};
 const LIGHT = (() => {
   const l = [-0.35, -0.45, 0.82];
   const n = Math.hypot(l[0], l[1], l[2]);
   return [l[0] / n, l[1] / n, l[2] / n];
 })();
 
-export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], seed: number): SeaMotionGl | null => {
+export type SeaMotionGlOptions = {
+  /** Ένταση του λεπτού πλέγματος πάνω στη θάλασσα (0 = χωρίς). */
+  grid: number;
+  /**
+   * Ανάγλυφο: υψόμετρο σε ΜΕΤΡΑ για ένα σημείο του κουτιού (x, y σε μονάδες), ή null έξω από
+   * το ψημένο πλέγμα (services/beachReliefService). Όταν δίνεται, το πλέγμα της σκηνής
+   * απλώνει ~12 χλμ γύρω, η στεριά παίρνει τα πραγματικά της ύψη και η ομίχλη αραιώνει
+   * ώστε να φαίνονται βουνά και απέναντι ακτές.
+   */
+  relief?: (x: number, y: number) => number | null;
+  /** Μέτρα ανά μονάδα κουτιού — χρειάζεται για να μεταφραστούν τα ύψη και οι αποστάσεις. */
+  metresPerUnit?: number;
+};
+
+
+export const createSeaMotionGl = (
+  canvas: HTMLCanvasElement,
+  points: Point[],
+  seed: number,
+  options: SeaMotionGlOptions = { grid: 0.12 }
+): SeaMotionGl | null => {
   let gl: WebGLRenderingContext | null = null;
   try {
     gl = (canvas.getContext('webgl', { antialias: true, alpha: false, powerPreference: 'low-power' })
@@ -476,8 +638,17 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
   const lines = link(gl, LINE_VS, LINE_FS);
   if (!terrain || !sky || !lines) return null;
 
-  const mesh = buildMesh(points, seed);
-  if (mesh.count > 65535) return null;
+  const wideIndices = Boolean(gl.getExtension('OES_element_index_uint'));
+  const metresPerUnit = options.metresPerUnit && options.metresPerUnit > 0 ? options.metresPerUnit : 5;
+  const relief = wideIndices ? options.relief : undefined;
+  const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit);
+  if (!wideIndices && mesh.count > 65535) return null;
+  // Με ανάγλυφο η ομίχλη φτάνει 14 χλμ, ώστε να φαίνονται βουνά και απέναντι ακτές· χωρίς,
+  // σβήνει το νερό λίγο πριν την άκρη του πλέγματος.
+  // Η άκρη του πλέγματος πέφτει ΑΚΡΙΒΩΣ εκεί που η ομίχλη γίνεται 100% — δεν φαίνεται ποτέ.
+  const fogNear = relief ? 260 : 170;
+  const fogFar = relief ? RELIEF_REACH_M / metresPerUnit : 520;
+  const fogMax = 1.0;
 
   const vbo = gl.createBuffer();
   const ibo = gl.createBuffer();
@@ -496,13 +667,15 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
   const a = (program: WebGLProgram, name: string) => gl!.getAttribLocation(program, name);
 
   const T = {
-    aPos: a(terrain, 'aPos'), aDist: a(terrain, 'aDist'), aShore: a(terrain, 'aShore'), aNoise: a(terrain, 'aNoise'),
+    aPos: a(terrain, 'aPos'), aDist: a(terrain, 'aDist'), aShore: a(terrain, 'aShore'), aNoise: a(terrain, 'aNoise'), aHeight: a(terrain, 'aHeight'),
     uProj: u(terrain, 'uProj'), uView: u(terrain, 'uView'), uTime: u(terrain, 'uTime'),
     uWaveDir: u(terrain, 'uWaveDir'), uArriving: u(terrain, 'uArriving'), uK: u(terrain, 'uK'), uOmega: u(terrain, 'uOmega'),
     uOpenAmp: u(terrain, 'uOpenAmp'), uShoreAmp: u(terrain, 'uShoreAmp'), uHasWaves: u(terrain, 'uHasWaves'),
     uWindDir: u(terrain, 'uWindDir'), uWindAmp: u(terrain, 'uWindAmp'), uOffshore: u(terrain, 'uOffshore'),
     uRipSpeed: u(terrain, 'uRipSpeed'), uBreakZone: u(terrain, 'uBreakZone'), uFoam: u(terrain, 'uFoam'),
     uEye: u(terrain, 'uEye'), uLight: u(terrain, 'uLight'), uWhitecaps: u(terrain, 'uWhitecaps'),
+    uResolution: u(terrain, 'uResolution'), uGrid: u(terrain, 'uGrid'),
+    uFogNear: u(terrain, 'uFogNear'), uFogFar: u(terrain, 'uFogFar'), uFogMax: u(terrain, 'uFogMax'), uMetresPerUnit: u(terrain, 'uMetresPerUnit'),
   };
   // uWindDir, uRipSpeed και uTime διαβάζονται και από τους δύο shaders — μία τοποθεσία ο καθένας.
   const S = { aClip: a(sky, 'aClip') };
@@ -510,8 +683,13 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
 
   const width = canvas.width;
   const height = canvas.height;
-  const proj = perspective(46, width / height, 4, 1400);
-  const view = lookAt(EYE, TARGET, [0, 0, 1]);
+  // Όρθια οθόνη: το ίδιο κάθετο άνοιγμα θα έκοβε τα πλάγια και θα έφερνε την κάμερα «μέσα» στο
+  // κύμα. Ανοίγει λίγο ο φακός και τραβιέται πίσω η κάμερα, ώστε η παραλία να χωρά ολόκληρη.
+  const aspect = width / height;
+  const fovy = Math.min(62, Math.max(46, 46 * Math.sqrt(2 / aspect)));
+  const distanceScale = aspect < 1 ? 1.3 : aspect < 1.6 ? 1.12 : 1;
+  const heightScale = aspect < 1 ? 0.8 : 1;
+  const proj = perspective(fovy, aspect, 4, relief ? 40000 : 1400);
 
   const streaks: Streak[] = [];
   // 22 ρεύματα × 6 κορυφές × (x, y, z, alpha)
@@ -523,6 +701,8 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
   const render = (params: SeaMotionParams, tSec: number, dtSec: number) => {
     if (disposed || !gl) return;
     const m = deriveMotion(params);
+    const eye = cameraEye(tSec, distanceScale, heightScale);
+    const view = lookAt(eye, TARGET, [0, 0, 1]);
 
     gl.viewport(0, 0, width, height);
     gl.disable(gl.BLEND);
@@ -544,7 +724,7 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
     gl.useProgram(terrain);
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    const stride = 6 * 4;
+    const stride = 7 * 4;
     gl.enableVertexAttribArray(T.aPos);
     gl.vertexAttribPointer(T.aPos, 2, gl.FLOAT, false, stride, 0);
     gl.enableVertexAttribArray(T.aDist);
@@ -553,6 +733,8 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
     gl.vertexAttribPointer(T.aShore, 2, gl.FLOAT, false, stride, 12);
     gl.enableVertexAttribArray(T.aNoise);
     gl.vertexAttribPointer(T.aNoise, 1, gl.FLOAT, false, stride, 20);
+    gl.enableVertexAttribArray(T.aHeight);
+    gl.vertexAttribPointer(T.aHeight, 1, gl.FLOAT, false, stride, 24);
 
     gl.uniformMatrix4fv(T.uProj, false, proj);
     gl.uniformMatrix4fv(T.uView, false, view);
@@ -570,14 +752,21 @@ export const createSeaMotionGl = (canvas: HTMLCanvasElement, points: Point[], se
     gl.uniform1f(T.uRipSpeed, m.ripSpeed);
     gl.uniform1f(T.uBreakZone, m.breakZone);
     gl.uniform1f(T.uFoam, m.foamStrength);
-    gl.uniform3f(T.uEye, EYE[0], EYE[1], EYE[2]);
+    gl.uniform3f(T.uEye, eye[0], eye[1], eye[2]);
+    gl.uniform2f(T.uResolution, width, height);
+    gl.uniform1f(T.uGrid, options.grid);
+    gl.uniform1f(T.uFogNear, fogNear);
+    gl.uniform1f(T.uFogFar, fogFar);
+    gl.uniform1f(T.uFogMax, fogMax);
+    gl.uniform1f(T.uMetresPerUnit, metresPerUnit);
     gl.uniform3f(T.uLight, LIGHT[0], LIGHT[1], LIGHT[2]);
     gl.uniform1f(T.uWhitecaps, m.whitecaps);
-    gl.drawElements(gl.TRIANGLES, mesh.indices.length, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, mesh.indices.length, wideIndices ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, 0);
     gl.disableVertexAttribArray(T.aPos);
     gl.disableVertexAttribArray(T.aDist);
     gl.disableVertexAttribArray(T.aShore);
     gl.disableVertexAttribArray(T.aNoise);
+    gl.disableVertexAttribArray(T.aHeight);
 
     // Τα ρεύματα του ανέμου, λίγο πάνω από το νερό.
     if (m.hasWind && m.windAmp > 0) {
