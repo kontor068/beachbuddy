@@ -770,6 +770,7 @@ const MarkerConditionsPopup: React.FC<{
             στην κλειστή κάρτα. Στρογγυλό, 28 px — στόχος αφής δίπλα σε κείμενο 11 px.
             Μόνο στις περιοχές του πιλότου (SEA_MOTION_PILOT_REGIONS). */}
         {seaMotionAvailableFor(item.beach, regionId) && (
+        <div className="flex shrink-0 flex-col items-center gap-px">
         <button
           ref={keepClickInsidePopup}
           type="button"
@@ -806,6 +807,9 @@ const MarkerConditionsPopup: React.FC<{
             <Play className="ml-px h-3.5 w-3.5 fill-current" aria-hidden="true" />
           )}
         </button>
+        {/* Πειραματικό: το λέει η ετικέτα, ώστε ένα ατελές κάδρο να μη διαβάζεται ως υπόσχεση. */}
+        <span className="text-[7px] font-black uppercase leading-none tracking-[0.12em] text-amber-600">beta</span>
+        </div>
         )}
       </div>
       )}

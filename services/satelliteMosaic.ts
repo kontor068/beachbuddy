@@ -28,7 +28,13 @@ export type SatelliteMosaic = {
 const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 const TILE_PX = 256;
 const ZOOM = 15;
-const MAX_TILES = 20;
+/**
+ * Στο zoom 15 ένα πλακίδιο είναι ~945 μ. στο πλάτος της Ελλάδας. Ακτίνα 1,2 χλμ → 3–4 πλακίδια
+ * ανά άξονα, δηλαδή 9–16 (≈150–300 KB). Το ταβάνι είναι δίχτυ ασφαλείας, όχι στόχος: με 20
+ * και ακτίνα 2 χλμ έβγαιναν 25 και το μωσαϊκό ακυρωνόταν ΠΑΝΤΑ (Μίλτος, 03/09/2026: «δεν
+ * εμφανίζεται δορυφορική φωτογραφία»).
+ */
+const MAX_TILES = 36;
 
 const lonToX = (lon: number, zoom: number) => ((lon + 180) / 360) * 2 ** zoom;
 const latToY = (lat: number, zoom: number) => {
@@ -53,7 +59,7 @@ const loadTile = (z: number, x: number, y: number): Promise<HTMLImageElement | n
 const cache = new Map<string, Promise<SatelliteMosaic | null>>();
 
 /** Μωσαϊκό γύρω από (lat, lon) με ακτίνα `radiusM` μέτρα. Μία φορά ανά παραλία. */
-export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 2000): Promise<SatelliteMosaic | null> => {
+export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 1200): Promise<SatelliteMosaic | null> => {
   const key = `${lat.toFixed(4)},${lon.toFixed(4)},${radiusM}`;
   const cached = cache.get(key);
   if (cached) return cached;

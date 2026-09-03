@@ -1118,6 +1118,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
           <span className={`pointer-events-none flex items-center gap-1 rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
             <span className={`${full ? 'h-1.5 w-1.5' : 'h-1 w-1'} animate-pulse rounded-full bg-cyan-300`} aria-hidden="true" />
             {full ? copy.sim : 'SIM'}
+            <span className="rounded bg-amber-300/90 px-1 text-slate-900">BETA</span>
           </span>
           {!full && onExpand && (
             <button
