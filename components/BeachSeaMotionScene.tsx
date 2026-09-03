@@ -690,6 +690,7 @@ type SceneViewProps = {
   shape: ShorelineShape | undefined;
   relief: BeachReliefGrid | undefined;
   mosaic: SatelliteMosaic | null;
+  mosaicNear: SatelliteMosaic | null;
   atDt?: number | null;
   hourSeries?: SceneHour[];
   variant: 'popup' | 'full';
@@ -702,7 +703,7 @@ type SceneViewProps = {
  * παίρνει την ανάλυση της οθόνης στο μεγάλο (ως 1,5× για να μη ζεσταίνει το κινητό), τα HUD
  * μεγαλώνουν, ο ζωγράφος είναι ο ίδιος.
  */
-const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, windSpeedKmh, shape, relief, mosaic, atDt, hourSeries, variant, onExpand, onClose }) => {
+const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, windSpeedKmh, shape, relief, mosaic, mosaicNear, atDt, hourSeries, variant, onExpand, onClose }) => {
   const beach = item.beach;
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const beachName = item.name || beach.name[language] || beach.name.en;
@@ -852,6 +853,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     shape ? `${shape.facingDeg}|${shape.frameWidthM}|${shape.pinDistanceM}` : 'noshape',
     relief ? `${relief.lat0}|${relief.lon0}|${relief.rows}x${relief.cols}` : 'norelief',
     mosaic ? `sat${mosaic.canvas.width}x${mosaic.canvas.height}` : 'nosat',
+    mosaicNear ? `near${mosaicNear.canvas.width}x${mosaicNear.canvas.height}` : 'nonear',
     typeof beachLat === 'number' && typeof beachLon === 'number' ? `${beachLat},${beachLon}` : 'nocoords',
     lostContexts,
   ].join(':');
@@ -882,16 +884,26 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       const hasCoords = Boolean(shape) && typeof beachLat === 'number' && typeof beachLon === 'number';
       const sampler = relief && shape && hasCoords ? makeReliefSampler(relief, shape, beachLat as number, beachLon as number) : undefined;
       let satelliteUv: ((x: number, y: number) => [number, number] | null) | undefined;
-      if (mosaic && shape && hasCoords) {
+      let satelliteUvNear: ((x: number, y: number) => [number, number] | null) | undefined;
+      if (shape && hasCoords) {
         const toLatLon = makeBoxToLatLon(shape, beachLat as number, beachLon as number);
-        satelliteUv = (x, y) => {
-          const [plat, plon] = toLatLon(x, y);
-          return mosaic.toUv(plat, plon);
-        };
+        if (mosaic) {
+          satelliteUv = (x, y) => {
+            const [plat, plon] = toLatLon(x, y);
+            return mosaic.toUv(plat, plon);
+          };
+        }
+        if (mosaicNear) {
+          satelliteUvNear = (x, y) => {
+            const [plat, plon] = toLatLon(x, y);
+            return mosaicNear.toUv(plat, plon);
+          };
+        }
       }
       try {
-        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.07 : 0.09, relief: sampler, metresPerUnit, satelliteUv });
+        gl = createSeaMotionGl(canvas, points, beach.id, { grid: full ? 0.07 : 0.09, relief: sampler, metresPerUnit, satelliteUv, satelliteUvNear });
         if (gl && mosaic && satelliteUv) gl.setSatellite(mosaic.canvas);
+        if (gl && mosaicNear && satelliteUvNear) gl.setSatellite(mosaicNear.canvas, true);
       } catch {
         gl = null;
       }
@@ -1182,18 +1194,18 @@ const FullScreenScene: React.FC<Omit<SceneViewProps, 'variant' | 'onExpand'> & {
  * Η δορυφορική φωτογραφία της στεριάς — φτάνει όταν φτάσει (9–16 πλακίδια), και ως τότε η
  * σκηνή παίζει με την άμμο της. null = δεν ήρθε / δεν επιτράπηκε (CORS) — καμία διαφορά.
  */
-const useSatelliteMosaic = (lat: number | undefined, lon: number | undefined): SatelliteMosaic | null => {
+const useSatelliteMosaic = (lat: number | undefined, lon: number | undefined, radiusM: number, zoom: number): SatelliteMosaic | null => {
   const [mosaic, setMosaic] = useState<SatelliteMosaic | null>(null);
   useEffect(() => {
     if (typeof lat !== 'number' || typeof lon !== 'number') return undefined;
     let active = true;
-    loadSatelliteMosaic(lat, lon).then(result => {
+    loadSatelliteMosaic(lat, lon, radiusM, zoom).then(result => {
       if (active) setMosaic(result);
     });
     return () => {
       active = false;
     };
-  }, [lat, lon]);
+  }, [lat, lon, radiusM, zoom]);
   return mosaic;
 };
 
@@ -1202,7 +1214,9 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
   const homeRegionId = beach.regionId ?? regionId;
   const shape: ShorelineShape | undefined = useShorelineShape(homeRegionId, beach.sourceBeachId ?? beach.id);
   const relief = useBeachRelief(homeRegionId);
-  const mosaic = useSatelliteMosaic(beach.coordinates?.lat, beach.coordinates?.lon);
+  // Ευρεία εικόνα (1,2 χλμ, zoom 15) και κοντινή υψηλής ανάλυσης (350 μ., zoom 17): ~200–300 KB μαζί.
+  const mosaic = useSatelliteMosaic(beach.coordinates?.lat, beach.coordinates?.lon, 1200, 15);
+  const mosaicNear = useSatelliteMosaic(beach.coordinates?.lat, beach.coordinates?.lon, 350, 17);
   const copy = sceneCopy[language] ?? sceneCopy.en;
   const [fullOpen, setFullOpen] = useState(false);
 
@@ -1217,6 +1231,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         shape={shape}
         relief={relief}
         mosaic={mosaic}
+        mosaicNear={mosaicNear}
         atDt={atDt}
         hourSeries={hourSeries}
         onClose={() => onClose?.()}
@@ -1234,6 +1249,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         shape={shape}
         relief={relief}
         mosaic={mosaic}
+        mosaicNear={mosaicNear}
         atDt={atDt}
         hourSeries={hourSeries}
         variant="popup"
@@ -1249,6 +1265,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
           shape={shape}
           relief={relief}
           mosaic={mosaic}
+          mosaicNear={mosaicNear}
           atDt={atDt}
           hourSeries={hourSeries}
           onClose={() => setFullOpen(false)}

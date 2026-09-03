@@ -58,9 +58,13 @@ const loadTile = (z: number, x: number, y: number): Promise<HTMLImageElement | n
 
 const cache = new Map<string, Promise<SatelliteMosaic | null>>();
 
-/** Μωσαϊκό γύρω από (lat, lon) με ακτίνα `radiusM` μέτρα. Μία φορά ανά παραλία. */
-export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 1200): Promise<SatelliteMosaic | null> => {
-  const key = `${lat.toFixed(4)},${lon.toFixed(4)},${radiusM}`;
+/**
+ * Μωσαϊκό γύρω από (lat, lon) με ακτίνα `radiusM` μέτρα. Μία φορά ανά παραλία.
+ * zoom 15 (~4,8 μ./pixel) για την ευρεία εικόνα, zoom 17 (~1,2 μ./pixel) για τα ~350 μ. γύρω
+ * από την παραλία — εκεί που κοιτά η κάμερα από κοντά.
+ */
+export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 1200, zoom = ZOOM): Promise<SatelliteMosaic | null> => {
+  const key = `${lat.toFixed(4)},${lon.toFixed(4)},${radiusM},${zoom}`;
   const cached = cache.get(key);
   if (cached) return cached;
 
@@ -72,16 +76,16 @@ export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 1200): P
     const south = lat - radiusM / mPerLat;
     const west = lon - radiusM / mPerLon;
     const east = lon + radiusM / mPerLon;
-    const x0 = Math.floor(lonToX(west, ZOOM));
-    const x1 = Math.floor(lonToX(east, ZOOM));
-    const y0 = Math.floor(latToY(north, ZOOM));
-    const y1 = Math.floor(latToY(south, ZOOM));
+    const x0 = Math.floor(lonToX(west, zoom));
+    const x1 = Math.floor(lonToX(east, zoom));
+    const y0 = Math.floor(latToY(north, zoom));
+    const y1 = Math.floor(latToY(south, zoom));
     const cols = x1 - x0 + 1;
     const rows = y1 - y0 + 1;
     if (cols * rows > MAX_TILES || cols <= 0 || rows <= 0) return null;
 
     const tiles = await Promise.all(
-      Array.from({ length: cols * rows }, (_, i) => loadTile(ZOOM, x0 + (i % cols), y0 + Math.floor(i / cols)))
+      Array.from({ length: cols * rows }, (_, i) => loadTile(zoom, x0 + (i % cols), y0 + Math.floor(i / cols)))
     );
     if (tiles.every(tile => tile === null)) return null;
 
@@ -102,13 +106,13 @@ export const loadSatelliteMosaic = (lat: number, lon: number, radiusM = 1200): P
       return null;
     }
 
-    const mosaicNorth = yToLat(y0, ZOOM);
-    const mosaicSouth = yToLat(y1 + 1, ZOOM);
-    const mosaicWest = xToLon(x0, ZOOM);
-    const mosaicEast = xToLon(x1 + 1, ZOOM);
+    const mosaicNorth = yToLat(y0, zoom);
+    const mosaicSouth = yToLat(y1 + 1, zoom);
+    const mosaicWest = xToLon(x0, zoom);
+    const mosaicEast = xToLon(x1 + 1, zoom);
     const toUv = (plat: number, plon: number): [number, number] | null => {
-      const u = (lonToX(plon, ZOOM) - x0) / cols;
-      const v = (latToY(plat, ZOOM) - y0) / rows;
+      const u = (lonToX(plon, zoom) - x0) / cols;
+      const v = (latToY(plat, zoom) - y0) / rows;
       if (u < 0 || u > 1 || v < 0 || v > 1) return null;
       return [u, v];
     };

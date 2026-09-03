@@ -45,8 +45,11 @@ export type SeaMotionGl = {
   render: (params: SeaMotionParams, tSec: number, dtSec: number) => void;
   /** Αλλάζει την ανάλυση του καμβά (για την αυτόματη προσαρμογή όταν το κινητό αργεί). */
   setSize: (width: number, height: number) => void;
-  /** Δίνει τη δορυφορική φωτογραφία της στεριάς (services/satelliteMosaic), όταν φτάσει. */
-  setSatellite: (source: TexImageSource | null) => void;
+  /**
+   * Δίνει τη δορυφορική φωτογραφία της στεριάς (services/satelliteMosaic), όταν φτάσει.
+   * `near` = η υψηλής ανάλυσης για τα ~350 μ. γύρω από την παραλία, αλλιώς η ευρεία.
+   */
+  setSatellite: (source: TexImageSource | null, near?: boolean) => void;
   dispose: () => void;
 };
 
@@ -196,6 +199,16 @@ vec3 skyColor(vec3 dir, vec3 light, float time, float dayLight, float cloudCover
   vec3 night = vec3(0.03, 0.05, 0.12) * (0.6 + 0.4 * t);
   return mix(night, sky, dayLight);
 }
+// Βάθος σε 4 bytes και πίσω — ο χάρτης σκιάς σε WebGL1 χωρίς depth texture.
+vec4 packDepth(float v) {
+  vec4 enc = vec4(1.0, 255.0, 65025.0, 16581375.0) * v;
+  enc = fract(enc);
+  enc -= enc.yzww * vec4(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0, 0.0);
+  return enc;
+}
+float unpackDepth(vec4 rgba) {
+  return dot(rgba, vec4(1.0, 1.0 / 255.0, 1.0 / 65025.0, 1.0 / 16581375.0));
+}
 // ACES: το tone mapping του κινηματογράφου — τα φωτεινά δεν «καίγονται», τα σκούρα κρατούν χρώμα.
 vec3 aces(vec3 x) {
   return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
@@ -210,8 +223,12 @@ attribute vec2 aShore;
 attribute float aNoise;
 attribute float aHeight;
 attribute vec2 aUv;
+attribute vec2 aUv2;
+attribute vec3 aNormal;
+attribute float aAo;
 uniform mat4 uProj;
 uniform mat4 uView;
+uniform mat4 uLightVP;
 uniform float uTime;
 uniform vec2 uWaveDir;
 uniform float uArriving;
@@ -234,6 +251,10 @@ varying float vRip;
 varying float vShadow;
 varying float vWave;
 varying vec2 vUv;
+varying vec2 vUv2;
+varying vec3 vNormal;
+varying float vAo;
+varying vec4 vShadowPos;
 
 void main() {
   float d = aDist;
@@ -282,6 +303,10 @@ void main() {
   vDist = d;
   vNoise = aNoise;
   vUv = aUv;
+  vUv2 = aUv2;
+  vNormal = aNormal;
+  vAo = aAo;
+  vShadowPos = uLightVP * vec4(aPos + disp, z, 1.0);
   gl_Position = uProj * uView * vec4(aPos + disp, z, 1.0);
 }
 `;
@@ -307,7 +332,18 @@ uniform float uCloudCover;
 uniform float uShallowReach;
 uniform sampler2D uSat;
 uniform float uHasSat;
+uniform sampler2D uSat2;
+uniform float uHasSat2;
+uniform sampler2D uShadowMap;
+uniform float uHasShadow;
+uniform float uShadowTexel;
+uniform float uOmega;
+uniform float uRunup;
 varying vec2 vUv;
+varying vec2 vUv2;
+varying vec3 vNormal;
+varying float vAo;
+varying vec4 vShadowPos;
 varying vec3 vWorld;
 varying float vDist;
 varying float vNoise;
@@ -317,9 +353,30 @@ varying float vShadow;
 varying float vWave;
 ${SHARED_GLSL}
 
+// Πόσο φως φτάνει εδώ: 0 = σκιά, 1 = ήλιος. 4 δείγματα γύρω από το σημείο (PCF) για μαλακή άκρη.
+float sunVisibility(float bias) {
+  if (uHasShadow < 0.5) return 1.0;
+  vec3 sc = vShadowPos.xyz / vShadowPos.w * 0.5 + 0.5;
+  if (sc.x < 0.0 || sc.x > 1.0 || sc.y < 0.0 || sc.y > 1.0 || sc.z > 1.0) return 1.0;
+  float lit = 0.0;
+  for (int i = 0; i < 4; i++) {
+    vec2 o = vec2(float(i == 1 || i == 3) - 0.5, float(i >= 2) - 0.5) * uShadowTexel * 1.5;
+    float d = unpackDepth(texture2D(uShadowMap, sc.xy + o));
+    lit += (sc.z - bias) > d ? 0.0 : 1.0;
+  }
+  return lit * 0.25;
+}
+
 void main() {
-  vec3 n = normalize(cross(dFdx(vWorld), dFdy(vWorld)));
-  if (n.z < 0.0) n = -n;
+  // Νερό: κλίση ανά pixel από τη γεωμετρία του καρέ. Στεριά: ομαλή κλίση από τις κορυφές —
+  // αυτό είναι που σβήνει το «πολυγωνικό» της παλιάς κονσόλας.
+  vec3 n;
+  if (vDist > 0.0) {
+    n = normalize(cross(dFdx(vWorld), dFdy(vWorld)));
+    if (n.z < 0.0) n = -n;
+  } else {
+    n = normalize(vNormal);
+  }
   vec3 v = normalize(uEye - vWorld);
   float dist = length(uEye - vWorld);
   vec2 p = vWorld.xy;
@@ -344,8 +401,11 @@ void main() {
     vec3 shallow = vec3(0.30, 0.78, 0.78);
     vec3 deep = vec3(0.04, 0.25, 0.50);
     vec3 body = mix(shallow, deep, depth);
-    body = mix(body, vec3(0.78, 0.74, 0.60), smoothstep(6.0, 0.0, vDist) * 0.5);
-    float diff = max(dot(n, uLight), 0.0);
+    // Ρηχά διάφανα: η άμμος φαίνεται μέσα από το νερό όσο πιο ρηχό είναι (βάθος ~ απόσταση).
+    float clarity = exp(-vDist * 0.22);
+    body = mix(body, vec3(0.80, 0.76, 0.62) * 0.9, clarity * 0.85);
+    float sun = sunVisibility(0.004);
+    float diff = max(dot(n, uLight), 0.0) * mix(1.0, sun, 0.8);
     body *= (0.45 + 0.65 * diff) * (0.2 + 0.8 * uDayLight);
     // Φως ΜΕΣΑ από την κορυφή όταν ο ήλιος είναι πίσω της — αυτό το τιρκουάζ λαμπύρισμα.
     float sss = pow(max(dot(v, -uLight), 0.0), 4.0) * max(vWave, 0.0) * 0.55;
@@ -360,7 +420,7 @@ void main() {
     // Γυαλάδα και σπινθηρίσματα του ήλιου.
     vec3 h = normalize(uLight + v);
     float spec = pow(max(dot(n, h), 0.0), 900.0);
-    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0)) * (1.0 - 0.7 * uCloudCover) * uDayLight;
+    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0)) * (1.0 - 0.7 * uCloudCover) * uDayLight * sun;
 
     // Αφρός με υφή εκεί που σπάει, και άσπρες κορφές που ο άνεμος ξεσηκώνει.
     float fm = fbm(p * 0.9 + vec2(0.0, -uTime * 0.6));
@@ -386,9 +446,12 @@ void main() {
     // ΣΤΕΡΙΑ. Με δορυφορική φωτογραφία όπου έφτασε, αλλιώς άμμος με κόκκο και ρυτίδες ανέμου,
     // θάμνοι πιο ψηλά, γυμνός βράχος στα βουνά.
     float grain = mix(vnoise(p * 7.0), vnoise(p * 29.0), 0.5);
-    float diff = max(dot(n, uLight), 0.0);
-    if (uHasSat > 0.5 && vUv.x >= 0.0) {
-      vec3 photo = texture2D(uSat, vUv).rgb;
+    float sun = sunVisibility(0.0015);
+    float diff = max(dot(n, uLight), 0.0) * mix(1.0, sun, 0.85);
+    bool nearPhoto = uHasSat2 > 0.5 && vUv2.x >= 0.0;
+    if (nearPhoto || (uHasSat > 0.5 && vUv.x >= 0.0)) {
+      // Κοντά στην παραλία η υψηλής ανάλυσης (~1,2 μ./pixel), πιο πέρα η ευρεία (~4,8 μ./pixel).
+      vec3 photo = nearPhoto ? texture2D(uSat2, vUv2).rgb : texture2D(uSat, vUv).rgb;
       // Η φωτογραφία είναι ~5 μ./pixel: κοντά στην κάμερα ο κόκκος της άμμου γεμίζει τα κενά.
       color = photo * (0.92 + 0.16 * grain * detail);
       // Στην άμμο δίπλα στο νερό, η φωτογραφία συχνά δείχνει θάλασσα (η γραμμή του νερού
@@ -408,14 +471,21 @@ void main() {
       color = mix(color, scrub, smoothstep(15.0, 60.0, metres));
       color = mix(color, rock, smoothstep(220.0, 700.0, metres));
     }
-    color *= (0.42 + 0.68 * diff) * (0.18 + 0.82 * uDayLight);
-    // Βρεγμένη άμμος στη γραμμή του νερού: σκουραίνει και καθρεφτίζει λίγο τον ουρανό.
-    float wet = smoothstep(-3.5, -0.3, vDist);
+    // Κοιλότητες πιο σκούρες (vAo από τη γεωμετρία), φως του ήλιου με σκιά.
+    color *= (0.42 + 0.68 * diff) * (0.18 + 0.82 * uDayLight) * vAo;
+    // ΤΟ ΓΛΕΙΨΙΜΟ ΤΟΥ ΚΥΜΑΤΟΣ: το νερό ανεβαίνει στην άμμο ως uRunup και υποχωρεί, στον ρυθμό
+    // του κύματος. Βρεγμένη ζώνη που καθρεφτίζει τον ουρανό, και μια λεπτή γραμμή αφρού στην άκρη.
+    float inland = -vDist;
+    float swash = 0.35 + 0.65 * (0.5 + 0.5 * sin(uOmega * uTime * 0.5 + vNoise * 0.6));
+    float wetLine = uRunup * swash;
+    float wet = smoothstep(uRunup + 1.5, uRunup * 0.2, inland);
     if (wet > 0.0) {
       vec3 r = reflect(-v, n);
       r.z = abs(r.z);
-      color = mix(color, color * 0.7 + skyColor(r, uLight, uTime, uDayLight, uCloudCover) * 0.2, wet);
+      color = mix(color, color * 0.8 + skyColor(r, uLight, uTime, uDayLight, uCloudCover) * 0.14, wet);
     }
+    float film = 1.0 - smoothstep(0.0, 0.6, abs(inland - wetLine));
+    color = mix(color, vec3(0.93, 0.96, 0.98) * (0.3 + 0.7 * uDayLight), film * 0.55 * step(inland, uRunup + 0.3));
   }
 
   // Ομίχλη: το μακρινό λιώνει στον ουρανό της ίδιας κατεύθυνσης, κοντά στον ορίζοντα.
@@ -431,6 +501,55 @@ void main() {
   float grainN = fract(sin(dot(gl_FragCoord.xy + uTime * 60.0, vec2(12.9898, 78.233))) * 43758.5453);
   color += (grainN - 0.5) * 0.022;
   gl_FragColor = vec4(color, 1.0);
+}
+`;
+
+/** Ο χάρτης σκιάς: το έδαφος από τη μεριά του ήλιου, βάθος σε RGBA. */
+const DEPTH_FS = `
+precision highp float;
+${SHARED_GLSL}
+void main() {
+  gl_FragColor = packDepth(gl_FragCoord.z);
+}
+`;
+
+/** FXAA: σβήνει τις σκάλες στις ακμές, ιδίως όταν η ανάλυση έχει πέσει για ταχύτητα. */
+const FXAA_VS = `
+attribute vec2 aClip;
+varying vec2 vUv;
+void main() {
+  vUv = aClip * 0.5 + 0.5;
+  gl_Position = vec4(aClip, 0.0, 1.0);
+}
+`;
+
+const FXAA_FS = `
+precision mediump float;
+uniform sampler2D uTex;
+uniform vec2 uInvRes;
+varying vec2 vUv;
+void main() {
+  vec3 luma = vec3(0.299, 0.587, 0.114);
+  vec3 rgbNW = texture2D(uTex, vUv + vec2(-1.0, -1.0) * uInvRes).rgb;
+  vec3 rgbNE = texture2D(uTex, vUv + vec2(1.0, -1.0) * uInvRes).rgb;
+  vec3 rgbSW = texture2D(uTex, vUv + vec2(-1.0, 1.0) * uInvRes).rgb;
+  vec3 rgbSE = texture2D(uTex, vUv + vec2(1.0, 1.0) * uInvRes).rgb;
+  vec3 rgbM = texture2D(uTex, vUv).rgb;
+  float lNW = dot(rgbNW, luma);
+  float lNE = dot(rgbNE, luma);
+  float lSW = dot(rgbSW, luma);
+  float lSE = dot(rgbSE, luma);
+  float lM = dot(rgbM, luma);
+  float lumaMin = min(lM, min(min(lNW, lNE), min(lSW, lSE)));
+  float lumaMax = max(lM, max(max(lNW, lNE), max(lSW, lSE)));
+  vec2 dir = vec2(-((lNW + lNE) - (lSW + lSE)), ((lNW + lSW) - (lNE + lSE)));
+  float dirReduce = max((lNW + lNE + lSW + lSE) * 0.03125, 0.0078125);
+  float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
+  dir = clamp(dir * rcpDirMin, vec2(-8.0), vec2(8.0)) * uInvRes;
+  vec3 rgbA = 0.5 * (texture2D(uTex, vUv + dir * (1.0 / 3.0 - 0.5)).rgb + texture2D(uTex, vUv + dir * (2.0 / 3.0 - 0.5)).rgb);
+  vec3 rgbB = rgbA * 0.5 + 0.25 * (texture2D(uTex, vUv + dir * -0.5).rgb + texture2D(uTex, vUv + dir * 0.5).rgb);
+  float lB = dot(rgbB, luma);
+  gl_FragColor = vec4((lB < lumaMin || lB > lumaMax) ? rgbA : rgbB, 1.0);
 }
 `;
 
@@ -511,6 +630,7 @@ uniform float uKind;
 uniform float uDayLight;
 uniform float uTime;
 varying vec2 vCorner;
+${SHARED_GLSL}
 float capsule(vec2 p, vec2 a, vec2 b, float r) {
   vec2 pa = p - a;
   vec2 ba = b - a;
@@ -556,7 +676,11 @@ void main() {
     if (dome < 0.0) color = mix(vec3(0.0, 0.48, 0.51), vec3(0.96), stripe);
   }
   if (d > 0.0) discard;
+#ifdef SHADOW_PASS
+  gl_FragColor = packDepth(gl_FragCoord.z);
+#else
   gl_FragColor = vec4(color * (0.35 + 0.65 * uDayLight), 1.0);
+#endif
 }
 `;
 
@@ -597,6 +721,23 @@ const perspective = (fovyDeg: number, aspect: number, near: number, far: number)
     0, 0, (far + near) * nf, -1,
     0, 0, 2 * far * near * nf, 0,
   ]);
+};
+
+const ortho = (l: number, r: number, b: number, t: number, n: number, f: number) => new Float32Array([
+  2 / (r - l), 0, 0, 0,
+  0, 2 / (t - b), 0, 0,
+  0, 0, -2 / (f - n), 0,
+  -(r + l) / (r - l), -(t + b) / (t - b), -(f + n) / (f - n), 1,
+]);
+
+const mul4 = (a: Float32Array, b: Float32Array) => {
+  const out = new Float32Array(16);
+  for (let c = 0; c < 4; c += 1) {
+    for (let r = 0; r < 4; r += 1) {
+      out[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+    }
+  }
+  return out;
 };
 
 const lookAt = (eye: number[], target: number[], up: number[]) => {
@@ -695,7 +836,8 @@ const buildMesh = (
   wideIndices: boolean,
   relief: ReliefFn | undefined,
   metresPerUnit: number,
-  satelliteUv: UvFn | undefined
+  satelliteUv: UvFn | undefined,
+  satelliteUvNear: UvFn | undefined
 ) => {
   let xs: number[];
   let ys: number[];
@@ -719,7 +861,10 @@ const buildMesh = (
   }
   const cols = xs.length;
   const rows = ys.length;
-  const vertices = new Float32Array(cols * rows * 9);
+  const FLOATS = 15;
+  const vertices = new Float32Array(cols * rows * FLOATS);
+  const heights = new Float32Array(cols * rows);
+  const seaMask = new Uint8Array(cols * rows);
 
   const segments: Array<[number, number, number, number, number]> = [];
   for (let i = 1; i < points.length; i += 1) {
@@ -802,6 +947,36 @@ const buildMesh = (
       const uv = !sea && satelliteUv ? satelliteUv(x, y) : null;
       vertices[v++] = uv ? uv[0] : -1;
       vertices[v++] = uv ? uv[1] : -1;
+      const uv2 = !sea && satelliteUvNear ? satelliteUvNear(x, y) : null;
+      vertices[v++] = uv2 ? uv2[0] : -1;
+      vertices[v++] = uv2 ? uv2[1] : -1;
+      heights[r * cols + c] = height;
+      seaMask[r * cols + c] = sea ? 1 : 0;
+      // Κλίση και σκίαση κοιλοτήτων: γεμίζουν στο δεύτερο πέρασμα, όταν ξέρουμε τους γείτονες.
+      vertices[v++] = 0; vertices[v++] = 0; vertices[v++] = 1;
+      vertices[v++] = 1;
+    }
+  }
+  // Δεύτερο πέρασμα: ομαλή κλίση από τους γείτονες (κεντρικές διαφορές, σε άνισο πλέγμα) και
+  // σκίαση κοιλοτήτων — όπου οι γείτονες είναι ψηλότεροι, το φως μπαίνει δύσκολα.
+  for (let r = 0; r < rows; r += 1) {
+    for (let c = 0; c < cols; c += 1) {
+      const i = r * cols + c;
+      if (seaMask[i]) continue;
+      const cl = Math.max(0, c - 1);
+      const cr = Math.min(cols - 1, c + 1);
+      const rd = Math.max(0, r - 1);
+      const ru = Math.min(rows - 1, r + 1);
+      const dzdx = (heights[r * cols + cr] - heights[r * cols + cl]) / Math.max(1e-3, xs[cr] - xs[cl]);
+      const dzdy = (heights[ru * cols + c] - heights[rd * cols + c]) / Math.max(1e-3, ys[ru] - ys[rd]);
+      const len = Math.hypot(dzdx, dzdy, 1) || 1;
+      const avg = (heights[r * cols + cl] + heights[r * cols + cr] + heights[ru * cols + c] + heights[rd * cols + c]) / 4;
+      const ao = 1 - Math.min(0.5, Math.max(0, (avg - heights[i]) * 0.12));
+      const o = i * FLOATS + 11;
+      vertices[o] = -dzdx / len;
+      vertices[o + 1] = -dzdy / len;
+      vertices[o + 2] = 1 / len;
+      vertices[o + 3] = ao;
     }
   }
 
@@ -870,6 +1045,8 @@ export type SeaMotionGlOptions = {
   metresPerUnit?: number;
   /** (x, y) του κουτιού → (u, v) στη δορυφορική υφή, ή null έξω από αυτήν. */
   satelliteUv?: (x: number, y: number) => [number, number] | null;
+  /** Το ίδιο για την υψηλής ανάλυσης υφή κοντά στην παραλία. */
+  satelliteUvNear?: (x: number, y: number) => [number, number] | null;
 };
 
 
@@ -894,12 +1071,15 @@ export const createSeaMotionGl = (
   const lines = link(gl, LINE_VS, LINE_FS);
   const props = link(gl, PROP_VS, PROP_FS);
   const pointsProgram = link(gl, POINT_VS, POINT_FS);
-  if (!terrain || !sky || !lines || !props || !pointsProgram) return null;
+  const terrainDepth = link(gl, TERRAIN_VS, DEPTH_FS);
+  const propsDepth = link(gl, PROP_VS, `#define SHADOW_PASS\n${PROP_FS}`);
+  const fxaa = link(gl, FXAA_VS, FXAA_FS);
+  if (!terrain || !sky || !lines || !props || !pointsProgram || !terrainDepth || !propsDepth || !fxaa) return null;
 
   const wideIndices = Boolean(gl.getExtension('OES_element_index_uint'));
   const metresPerUnit = options.metresPerUnit && options.metresPerUnit > 0 ? options.metresPerUnit : 5;
   const relief = wideIndices ? options.relief : undefined;
-  const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit, options.satelliteUv);
+  const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit, options.satelliteUv, options.satelliteUvNear);
   if (!wideIndices && mesh.count > 65535) return null;
   // Με ανάγλυφο η ομίχλη φτάνει 14 χλμ, ώστε να φαίνονται βουνά και απέναντι ακτές· χωρίς,
   // σβήνει το νερό λίγο πριν την άκρη του πλέγματος.
@@ -915,10 +1095,39 @@ export const createSeaMotionGl = (
   const propVbo = gl.createBuffer();
   const pointVbo = gl.createBuffer();
   const satTexture = gl.createTexture();
-  if (!vbo || !ibo || !skyVbo || !lineVbo || !propVbo || !pointVbo || !satTexture) return null;
+  const satNearTexture = gl.createTexture();
+  if (!vbo || !ibo || !skyVbo || !lineVbo || !propVbo || !pointVbo || !satTexture || !satNearTexture) return null;
   gl.bindBuffer(gl.ARRAY_BUFFER, propVbo);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1]), gl.STATIC_DRAW);
   let hasSat = false;
+  let hasSatNear = false;
+
+  // Ο χάρτης σκιάς: 1024² RGBA με βάθος πακεταρισμένο, plus renderbuffer βάθους για το z-test.
+  const SHADOW_SIZE = 1024;
+  const shadowTexture = gl.createTexture();
+  const shadowFbo = gl.createFramebuffer();
+  const shadowDepth = gl.createRenderbuffer();
+  if (!shadowTexture || !shadowFbo || !shadowDepth) return null;
+  gl.bindTexture(gl.TEXTURE_2D, shadowTexture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, SHADOW_SIZE, SHADOW_SIZE, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, shadowDepth);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, SHADOW_SIZE, SHADOW_SIZE);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shadowTexture, 0);
+  gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, shadowDepth);
+  const shadowsOk = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+  // Η σκηνή ζωγραφίζεται σε υφή και περνά από FXAA πριν φτάσει στην οθόνη.
+  const sceneTexture = gl.createTexture();
+  const sceneFbo = gl.createFramebuffer();
+  const sceneDepth = gl.createRenderbuffer();
+  if (!sceneTexture || !sceneFbo || !sceneDepth) return null;
+  let sceneOk = false;
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
   gl.bufferData(gl.ARRAY_BUFFER, mesh.vertices, gl.STATIC_DRAW);
@@ -930,19 +1139,71 @@ export const createSeaMotionGl = (
   const u = (program: WebGLProgram, name: string) => gl!.getUniformLocation(program, name);
   const a = (program: WebGLProgram, name: string) => gl!.getAttribLocation(program, name);
 
+  /** Οι κοινές θέσεις του vertex shader του εδάφους — τις θέλουν και η σκηνή και ο χάρτης σκιάς. */
+  const terrainVertexLocations = (program: WebGLProgram) => ({
+    aPos: a(program, 'aPos'), aDist: a(program, 'aDist'), aShore: a(program, 'aShore'), aNoise: a(program, 'aNoise'),
+    aHeight: a(program, 'aHeight'), aUv: a(program, 'aUv'), aUv2: a(program, 'aUv2'), aNormal: a(program, 'aNormal'), aAo: a(program, 'aAo'),
+    uProj: u(program, 'uProj'), uView: u(program, 'uView'), uLightVP: u(program, 'uLightVP'), uTime: u(program, 'uTime'),
+    uWaveDir: u(program, 'uWaveDir'), uArriving: u(program, 'uArriving'), uK: u(program, 'uK'), uOmega: u(program, 'uOmega'),
+    uOpenAmp: u(program, 'uOpenAmp'), uShoreAmp: u(program, 'uShoreAmp'), uHasWaves: u(program, 'uHasWaves'),
+    uWindDir: u(program, 'uWindDir'), uWindAmp: u(program, 'uWindAmp'), uOffshore: u(program, 'uOffshore'),
+    uRipSpeed: u(program, 'uRipSpeed'), uBreakZone: u(program, 'uBreakZone'), uFoam: u(program, 'uFoam'),
+  });
+  type TerrainVertexLocations = ReturnType<typeof terrainVertexLocations>;
+  const TD = terrainVertexLocations(terrainDepth);
+  const STRIDE = 15 * 4;
+  const bindTerrainAttribs = (L: TerrainVertexLocations) => {
+    gl!.bindBuffer(gl!.ARRAY_BUFFER, vbo);
+    gl!.bindBuffer(gl!.ELEMENT_ARRAY_BUFFER, ibo);
+    const attribs: Array<[number, number, number]> = [
+      [L.aPos, 2, 0], [L.aDist, 1, 8], [L.aShore, 2, 12], [L.aNoise, 1, 20], [L.aHeight, 1, 24],
+      [L.aUv, 2, 28], [L.aUv2, 2, 36], [L.aNormal, 3, 44], [L.aAo, 1, 56],
+    ];
+    for (const [loc, size, offset] of attribs) {
+      if (loc < 0) continue;
+      gl!.enableVertexAttribArray(loc);
+      gl!.vertexAttribPointer(loc, size, gl!.FLOAT, false, STRIDE, offset);
+    }
+  };
+  const unbindTerrainAttribs = (L: TerrainVertexLocations) => {
+    for (const loc of [L.aPos, L.aDist, L.aShore, L.aNoise, L.aHeight, L.aUv, L.aUv2, L.aNormal, L.aAo]) {
+      if (loc >= 0) gl!.disableVertexAttribArray(loc);
+    }
+  };
+  const uploadTerrainVertexUniforms = (L: TerrainVertexLocations, m: ReturnType<typeof deriveMotion>, tSec: number, projM: Float32Array, viewM: Float32Array, lightVP: Float32Array) => {
+    gl!.uniformMatrix4fv(L.uProj, false, projM);
+    gl!.uniformMatrix4fv(L.uView, false, viewM);
+    gl!.uniformMatrix4fv(L.uLightVP, false, lightVP);
+    gl!.uniform1f(L.uTime, tSec);
+    gl!.uniform2f(L.uWaveDir, m.tx, m.ty);
+    gl!.uniform1f(L.uArriving, m.arriving ? 1 : 0);
+    gl!.uniform1f(L.uK, m.kWave);
+    gl!.uniform1f(L.uOmega, m.omega);
+    gl!.uniform1f(L.uOpenAmp, m.openAmp);
+    gl!.uniform1f(L.uShoreAmp, m.shoreAmp);
+    gl!.uniform1f(L.uHasWaves, m.hasWaves ? 1 : 0);
+    gl!.uniform2f(L.uWindDir, m.wx, m.wy);
+    gl!.uniform1f(L.uWindAmp, m.windAmp);
+    gl!.uniform1f(L.uOffshore, m.offshoreWind ? 1 : 0);
+    gl!.uniform1f(L.uRipSpeed, m.ripSpeed);
+    gl!.uniform1f(L.uBreakZone, m.breakZone);
+    gl!.uniform1f(L.uFoam, m.foamStrength);
+  };
+
   const T = {
-    aPos: a(terrain, 'aPos'), aDist: a(terrain, 'aDist'), aShore: a(terrain, 'aShore'), aNoise: a(terrain, 'aNoise'), aHeight: a(terrain, 'aHeight'), aUv: a(terrain, 'aUv'),
-    uProj: u(terrain, 'uProj'), uView: u(terrain, 'uView'), uTime: u(terrain, 'uTime'),
-    uWaveDir: u(terrain, 'uWaveDir'), uArriving: u(terrain, 'uArriving'), uK: u(terrain, 'uK'), uOmega: u(terrain, 'uOmega'),
-    uOpenAmp: u(terrain, 'uOpenAmp'), uShoreAmp: u(terrain, 'uShoreAmp'), uHasWaves: u(terrain, 'uHasWaves'),
-    uWindDir: u(terrain, 'uWindDir'), uWindAmp: u(terrain, 'uWindAmp'), uOffshore: u(terrain, 'uOffshore'),
-    uRipSpeed: u(terrain, 'uRipSpeed'), uBreakZone: u(terrain, 'uBreakZone'), uFoam: u(terrain, 'uFoam'),
+    ...terrainVertexLocations(terrain),
     uEye: u(terrain, 'uEye'), uLight: u(terrain, 'uLight'), uWhitecaps: u(terrain, 'uWhitecaps'),
     uResolution: u(terrain, 'uResolution'), uGrid: u(terrain, 'uGrid'),
     uFogNear: u(terrain, 'uFogNear'), uFogFar: u(terrain, 'uFogFar'), uFogMax: u(terrain, 'uFogMax'), uMetresPerUnit: u(terrain, 'uMetresPerUnit'),
     uDayLight: u(terrain, 'uDayLight'), uCloudCover: u(terrain, 'uCloudCover'), uShallowReach: u(terrain, 'uShallowReach'),
-    uSat: u(terrain, 'uSat'), uHasSat: u(terrain, 'uHasSat'),
+    uSat: u(terrain, 'uSat'), uHasSat: u(terrain, 'uHasSat'), uSat2: u(terrain, 'uSat2'), uHasSat2: u(terrain, 'uHasSat2'),
+    uShadowMap: u(terrain, 'uShadowMap'), uHasShadow: u(terrain, 'uHasShadow'), uShadowTexel: u(terrain, 'uShadowTexel'), uRunup: u(terrain, 'uRunup'),
   };
+  const PD = {
+    aCorner: a(propsDepth, 'aCorner'), uProj: u(propsDepth, 'uProj'), uView: u(propsDepth, 'uView'), uBase: u(propsDepth, 'uBase'),
+    uRight: u(propsDepth, 'uRight'), uSize: u(propsDepth, 'uSize'), uKind: u(propsDepth, 'uKind'), uTime: u(propsDepth, 'uTime'),
+  };
+  const F = { aClip: a(fxaa, 'aClip'), uTex: u(fxaa, 'uTex'), uInvRes: u(fxaa, 'uInvRes') };
   const P = {
     aCorner: a(props, 'aCorner'), uProj: u(props, 'uProj'), uView: u(props, 'uView'), uBase: u(props, 'uBase'),
     uRight: u(props, 'uRight'), uSize: u(props, 'uSize'), uKind: u(props, 'uKind'), uDayLight: u(props, 'uDayLight'),
@@ -982,6 +1243,20 @@ export const createSeaMotionGl = (
     proj = perspective(fovy, aspect, 4, relief ? 40000 : 1400);
     tanHalfY = Math.tan((fovy * Math.PI) / 360);
     tanHalfX = tanHalfY * aspect;
+    // Η υφή της σκηνής ακολουθεί το μέγεθος του καμβά.
+    gl!.bindTexture(gl!.TEXTURE_2D, sceneTexture);
+    gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, width, height, 0, gl!.RGBA, gl!.UNSIGNED_BYTE, null);
+    gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MIN_FILTER, gl!.LINEAR);
+    gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_MAG_FILTER, gl!.LINEAR);
+    gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_S, gl!.CLAMP_TO_EDGE);
+    gl!.texParameteri(gl!.TEXTURE_2D, gl!.TEXTURE_WRAP_T, gl!.CLAMP_TO_EDGE);
+    gl!.bindRenderbuffer(gl!.RENDERBUFFER, sceneDepth);
+    gl!.renderbufferStorage(gl!.RENDERBUFFER, gl!.DEPTH_COMPONENT16, width, height);
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, sceneFbo);
+    gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, sceneTexture, 0);
+    gl!.framebufferRenderbuffer(gl!.FRAMEBUFFER, gl!.DEPTH_ATTACHMENT, gl!.RENDERBUFFER, sceneDepth);
+    sceneOk = gl!.checkFramebufferStatus(gl!.FRAMEBUFFER) === gl!.FRAMEBUFFER_COMPLETE;
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
   };
   applySize(width, height);
 
@@ -1025,6 +1300,55 @@ export const createSeaMotionGl = (
     rgt[0] /= rl; rgt[1] /= rl;
     const up = [rgt[1] * fwd[2] - rgt[2] * fwd[1], rgt[2] * fwd[0] - rgt[0] * fwd[2], rgt[0] * fwd[1] - rgt[1] * fwd[0]];
 
+    // Ο ΧΑΡΤΗΣ ΣΚΙΑΣ: το έδαφος, το νερό, ο άνθρωπος και η ομπρέλα από τη μεριά του ήλιου.
+    // Ορθογραφική προβολή ±340 μονάδες γύρω από την παραλία — ό,τι βλέπει η κάμερα κοντά.
+    const shadowCenter = [100, 20, 0];
+    const lightEye = [shadowCenter[0] + light[0] * 700, shadowCenter[1] + light[1] * 700, shadowCenter[2] + light[2] * 700];
+    const lightUp = Math.abs(light[2]) > 0.95 ? [0, 1, 0] : [0, 0, 1];
+    const lightView = lookAt(lightEye, shadowCenter, lightUp);
+    const lightProj = ortho(-340, 340, -340, 340, 200, 1300);
+    const lightVP = mul4(lightProj, lightView);
+    const personHalfW = personHeight * 0.35;
+    // Σκιά μόνο με ήλιο πάνω από τον ορίζοντα· τη νύχτα δεν υπάρχει.
+    const useShadows = shadowsOk && dayLight > 0.05;
+    if (useShadows) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFbo);
+      gl.viewport(0, 0, SHADOW_SIZE, SHADOW_SIZE);
+      gl.clearColor(1, 1, 1, 1);
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthMask(true);
+      gl.disable(gl.BLEND);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.useProgram(terrainDepth);
+      bindTerrainAttribs(TD);
+      uploadTerrainVertexUniforms(TD, m, tSec, lightProj, lightView, lightVP);
+      gl.drawElements(gl.TRIANGLES, mesh.indices.length, wideIndices ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, 0);
+      unbindTerrainAttribs(TD);
+      // Ο άνθρωπος και η ομπρέλα κοιτούν τον ήλιο στη σκιά, ώστε να ρίξουν ολόκληρη σιλουέτα.
+      const lr = [-light[1], light[0], 0];
+      const lrl = Math.hypot(lr[0], lr[1]) || 1;
+      gl.useProgram(propsDepth);
+      gl.bindBuffer(gl.ARRAY_BUFFER, propVbo);
+      gl.enableVertexAttribArray(PD.aCorner);
+      gl.vertexAttribPointer(PD.aCorner, 2, gl.FLOAT, false, 0, 0);
+      gl.uniformMatrix4fv(PD.uProj, false, lightProj);
+      gl.uniformMatrix4fv(PD.uView, false, lightView);
+      gl.uniform3f(PD.uRight, lr[0] / lrl, lr[1] / lrl, 0);
+      gl.uniform1f(PD.uTime, tSec);
+      gl.uniform3f(PD.uBase, 100, 78.8, 0.15);
+      gl.uniform2f(PD.uSize, personHalfW * 2, personHeight);
+      gl.uniform1f(PD.uKind, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      gl.uniform3f(PD.uBase, 108, 84, 1.4);
+      gl.uniform2f(PD.uSize, umbrellaHeight, umbrellaHeight);
+      gl.uniform1f(PD.uKind, 1);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      gl.disableVertexAttribArray(PD.aCorner);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    }
+
+    // Η ΣΚΗΝΗ ζωγραφίζεται στην υφή της (για το FXAA), αλλιώς κατευθείαν στον καμβά.
+    gl.bindFramebuffer(gl.FRAMEBUFFER, sceneOk ? sceneFbo : null);
     gl.viewport(0, 0, width, height);
     gl.disable(gl.BLEND);
 
@@ -1051,45 +1375,27 @@ export const createSeaMotionGl = (
     gl.depthMask(true);
     gl.clear(gl.DEPTH_BUFFER_BIT);
     gl.useProgram(terrain);
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    const stride = 9 * 4;
-    gl.enableVertexAttribArray(T.aPos);
-    gl.vertexAttribPointer(T.aPos, 2, gl.FLOAT, false, stride, 0);
-    gl.enableVertexAttribArray(T.aDist);
-    gl.vertexAttribPointer(T.aDist, 1, gl.FLOAT, false, stride, 8);
-    gl.enableVertexAttribArray(T.aShore);
-    gl.vertexAttribPointer(T.aShore, 2, gl.FLOAT, false, stride, 12);
-    gl.enableVertexAttribArray(T.aNoise);
-    gl.vertexAttribPointer(T.aNoise, 1, gl.FLOAT, false, stride, 20);
-    gl.enableVertexAttribArray(T.aHeight);
-    gl.vertexAttribPointer(T.aHeight, 1, gl.FLOAT, false, stride, 24);
-    gl.enableVertexAttribArray(T.aUv);
-    gl.vertexAttribPointer(T.aUv, 2, gl.FLOAT, false, stride, 28);
+    bindTerrainAttribs(T);
+    uploadTerrainVertexUniforms(T, m, tSec, proj, view, lightVP);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, satTexture);
     gl.uniform1i(T.uSat, 0);
     gl.uniform1f(T.uHasSat, hasSat ? 1 : 0);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, satNearTexture);
+    gl.uniform1i(T.uSat2, 1);
+    gl.uniform1f(T.uHasSat2, hasSatNear ? 1 : 0);
+    gl.activeTexture(gl.TEXTURE2);
+    gl.bindTexture(gl.TEXTURE_2D, shadowTexture);
+    gl.uniform1i(T.uShadowMap, 2);
+    gl.uniform1f(T.uHasShadow, useShadows ? 1 : 0);
+    gl.uniform1f(T.uShadowTexel, 1 / SHADOW_SIZE);
+    gl.uniform1f(T.uRunup, 1.2 + m.shoreAmp * 6);
+    gl.activeTexture(gl.TEXTURE0);
     gl.uniform1f(T.uDayLight, dayLight);
     gl.uniform1f(T.uCloudCover, cloudCover);
     gl.uniform1f(T.uShallowReach, shallowReach);
 
-    gl.uniformMatrix4fv(T.uProj, false, proj);
-    gl.uniformMatrix4fv(T.uView, false, view);
-    gl.uniform1f(T.uTime, tSec);
-    gl.uniform2f(T.uWaveDir, m.tx, m.ty);
-    gl.uniform1f(T.uArriving, m.arriving ? 1 : 0);
-    gl.uniform1f(T.uK, m.kWave);
-    gl.uniform1f(T.uOmega, m.omega);
-    gl.uniform1f(T.uOpenAmp, m.openAmp);
-    gl.uniform1f(T.uShoreAmp, m.shoreAmp);
-    gl.uniform1f(T.uHasWaves, m.hasWaves ? 1 : 0);
-    gl.uniform2f(T.uWindDir, m.wx, m.wy);
-    gl.uniform1f(T.uWindAmp, m.windAmp);
-    gl.uniform1f(T.uOffshore, m.offshoreWind ? 1 : 0);
-    gl.uniform1f(T.uRipSpeed, m.ripSpeed);
-    gl.uniform1f(T.uBreakZone, m.breakZone);
-    gl.uniform1f(T.uFoam, m.foamStrength);
     gl.uniform3f(T.uEye, eye[0], eye[1], eye[2]);
     gl.uniform2f(T.uResolution, width, height);
     gl.uniform1f(T.uGrid, options.grid);
@@ -1100,12 +1406,7 @@ export const createSeaMotionGl = (
     gl.uniform3f(T.uLight, light[0], light[1], light[2]);
     gl.uniform1f(T.uWhitecaps, m.whitecaps);
     gl.drawElements(gl.TRIANGLES, mesh.indices.length, wideIndices ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, 0);
-    gl.disableVertexAttribArray(T.aPos);
-    gl.disableVertexAttribArray(T.aDist);
-    gl.disableVertexAttribArray(T.aShore);
-    gl.disableVertexAttribArray(T.aNoise);
-    gl.disableVertexAttribArray(T.aHeight);
-    gl.disableVertexAttribArray(T.aUv);
+    unbindTerrainAttribs(T);
 
     // Ο άνθρωπος στη γραμμή του νερού και η ομπρέλα στην άμμο — κλίμακα με ένα βλέμμα.
     gl.useProgram(props);
@@ -1119,7 +1420,7 @@ export const createSeaMotionGl = (
     gl.uniform1f(P.uTime, tSec);
     // Στη γραμμή του νερού, ολόκληρος: το κύμα ανεβαίνει ως εκεί που λέει το HUD.
     gl.uniform3f(P.uBase, 100, 78.8, 0.15);
-    gl.uniform2f(P.uSize, personHeight * 0.7, personHeight);
+    gl.uniform2f(P.uSize, personHalfW * 2, personHeight);
     gl.uniform1f(P.uKind, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.uniform3f(P.uBase, 108, 84, 1.4);
@@ -1274,25 +1575,47 @@ export const createSeaMotionGl = (
         gl.disable(gl.BLEND);
       }
     }
+
+    // FXAA: από την υφή της σκηνής στον καμβά, με τις ακμές εξομαλυμένες.
+    if (sceneOk) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, width, height);
+      gl.disable(gl.DEPTH_TEST);
+      gl.depthMask(false);
+      gl.useProgram(fxaa);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, sceneTexture);
+      gl.uniform1i(F.uTex, 0);
+      gl.uniform2f(F.uInvRes, 1 / width, 1 / height);
+      gl.bindBuffer(gl.ARRAY_BUFFER, skyVbo);
+      gl.enableVertexAttribArray(F.aClip);
+      gl.vertexAttribPointer(F.aClip, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      gl.disableVertexAttribArray(F.aClip);
+      gl.depthMask(true);
+    }
   };
 
-  const setSatellite = (source: TexImageSource | null) => {
+  const setSatellite = (source: TexImageSource | null, near = false) => {
     if (disposed || !gl) return;
     if (!source) {
-      hasSat = false;
+      if (near) hasSatNear = false;
+      else hasSat = false;
       return;
     }
     try {
-      gl.bindTexture(gl.TEXTURE_2D, satTexture);
+      gl.bindTexture(gl.TEXTURE_2D, near ? satNearTexture : satTexture);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, source);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      hasSat = true;
+      if (near) hasSatNear = true;
+      else hasSat = true;
     } catch {
-      hasSat = false;
+      if (near) hasSatNear = false;
+      else hasSat = false;
     }
   };
 
@@ -1306,6 +1629,16 @@ export const createSeaMotionGl = (
     gl.deleteBuffer(propVbo);
     gl.deleteBuffer(pointVbo);
     gl.deleteTexture(satTexture);
+    gl.deleteTexture(satNearTexture);
+    gl.deleteTexture(shadowTexture);
+    gl.deleteFramebuffer(shadowFbo);
+    gl.deleteRenderbuffer(shadowDepth);
+    gl.deleteTexture(sceneTexture);
+    gl.deleteFramebuffer(sceneFbo);
+    gl.deleteRenderbuffer(sceneDepth);
+    gl.deleteProgram(terrainDepth);
+    gl.deleteProgram(propsDepth);
+    gl.deleteProgram(fxaa);
     gl.deleteProgram(terrain);
     gl.deleteProgram(sky);
     gl.deleteProgram(lines);
