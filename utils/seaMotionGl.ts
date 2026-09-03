@@ -70,11 +70,11 @@ export const seawardness = (fromDeg: number, facingDeg: number) =>
 /**
  * Ύψος θάλασσας → ένταση 0..1,25. Εκθέτης 1,15: λίγο ΠΙΟ αυστηρός από γραμμικός στα χαμηλά,
  * ώστε η ήρεμη θάλασσα να είναι ρυτίδες και όχι φουσκοθαλασσιά (Μίλτος, 03/09/2026: «το κύμα
- * υπερβολικό ακόμα και για ήρεμη θάλασσα», και «ακόμα πολύ» — εκθέτης 1,3):
- * 0,2 μ. → 0,07, 0,3 → 0,11, 0,8 → 0,41, 1,6 → 1.
+ * υπερβολικό ακόμα και για ήρεμη θάλασσα», «ακόμα πολύ», τρίτη φορά — εκθέτης 1,5):
+ * 0,2 μ. → 0,04, 0,3 → 0,08, 0,5 → 0,17, 0,8 → 0,35, 1,6 → 1.
  */
 export const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.3)) : 0;
+  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.5)) : 0;
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
@@ -87,7 +87,7 @@ const RELIEF_REACH_M = 16000;
  * με τα μέτρα (heightToAmp), ώστε 0,3 μ. να φαίνονται μικρά και 1,5 μ. μεγάλα — και όχι ρίζα,
  * που τα έφερνε κοντά (Μίλτος, 03/09/2026: «δεν ανταποκρίνεται στην πραγματικότητα»).
  */
-const WAVE_UNITS_AT_FULL = 2.0;
+const WAVE_UNITS_AT_FULL = 1.6;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -110,10 +110,10 @@ export const deriveMotion = (p: SeaMotionParams) => {
   const offshoreWind = hasWind && seawardness(p.windFromDeg as number, p.facingDeg) < -0.15;
   const ripSpeed = hasWind ? 4 + (windSpeed as number) * 0.35 : 0;
   // Άσπρες κορφές από ~4 Μπφ (20 km/h), πυκνές στα 6 (40+) — η κλίμακα Μποφόρ, οπτικά.
-  const whitecaps = Math.max(0, windAmp - 0.45) * 0.9;
-  const breakZone = Math.min(20, 2 + (p.shoreWaveM ?? 0) * 9);
-  // Αφρός από τα ~0,15 μ. και πάνω· μια ήρεμη θάλασσα γλείφει την άμμο, δεν σπάει.
-  const foamStrength = clamp01(((p.shoreWaveM ?? 0) - 0.15) / 1.0);
+  const whitecaps = Math.max(0, windAmp - 0.5) * 0.9;
+  const breakZone = Math.min(20, 1 + (p.shoreWaveM ?? 0) * 8);
+  // Αφρός από τα ~0,3 μ. και πάνω· μια ήρεμη θάλασσα γλείφει την άμμο, δεν σπάει.
+  const foamStrength = clamp01(((p.shoreWaveM ?? 0) - 0.3) / 1.0);
   return {
     tx, ty, arriving, openAmp, shoreAmp, hasWaves: openAmp > 0 || shoreAmp > 0,
     kWave, omega, hasWind, windSpeed: hasWind ? (windSpeed as number) : 0, wx, wy, windAmp,
@@ -339,6 +339,7 @@ uniform float uHasShadow;
 uniform float uShadowTexel;
 uniform float uOmega;
 uniform float uRunup;
+uniform float uOpenAmp;
 varying vec2 vUv;
 varying vec2 vUv2;
 varying vec3 vNormal;
@@ -389,11 +390,11 @@ void main() {
     // που τον σέρνει ο άνεμος. Στη σκιά του ανέμου (vShadow → 0) το νερό μένει λάδι.
     float kRip = 1.96;
     float ph = kRip * dot(uWindDir, p) - kRip * uRipSpeed * uTime + vNoise * 6.0;
-    vec2 g = uWindDir * cos(ph) * vRip * 0.5;
+    vec2 g = uWindDir * cos(ph) * vRip * 0.35;
     vec2 q = p * 1.7 + uWindDir * uTime * (0.8 + uRipSpeed * 0.15);
     float e = 0.18;
     float n0 = fbm(q);
-    g += vec2(fbm(q + vec2(e, 0.0)) - n0, fbm(q + vec2(0.0, e)) - n0) / e * (0.04 + 0.14 * uWindAmp) * vShadow;
+    g += vec2(fbm(q + vec2(e, 0.0)) - n0, fbm(q + vec2(0.0, e)) - n0) / e * (0.03 + 0.10 * uWindAmp) * vShadow;
     n = normalize(n + vec3(g * detail, 0.0));
 
     // Το σώμα του νερού: τιρκουάζ στα ρηχά, βαθύ μπλε ανοιχτά, η άμμος να φαίνεται από κάτω.
@@ -419,8 +420,10 @@ void main() {
     color = mix(body, refl, clamp(fres, 0.0, 1.0));
     // Γυαλάδα και σπινθηρίσματα του ήλιου.
     vec3 h = normalize(uLight + v);
+    // Σπινθηρίσματα ανάλογα με το πόσο ζωντανή είναι η θάλασσα: το λάδι γυαλίζει απαλά, όχι σαν κύμα.
+    float liveliness = clamp(uOpenAmp * 2.0 + uWindAmp * 0.6, 0.15, 1.0);
     float spec = pow(max(dot(n, h), 0.0), 900.0);
-    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0)) * (1.0 - 0.7 * uCloudCover) * uDayLight * sun;
+    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * liveliness * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0)) * (1.0 - 0.7 * uCloudCover) * uDayLight * sun;
 
     // Αφρός με υφή εκεί που σπάει, και άσπρες κορφές που ο άνεμος ξεσηκώνει.
     float fm = fbm(p * 0.9 + vec2(0.0, -uTime * 0.6));
