@@ -30,6 +30,13 @@ export type SeaMotionParams = {
   periodS: number;
   /** Μέτρα ανά μονάδα κουτιού — για να μεταφράσουμε την περίοδο σε απόσταση κορυφών. */
   metresPerUnit: number;
+  /** Πού είναι ο ήλιος (utils/sunPosition). Χωρίς αυτά: ήλιος απογεύματος από τα δεξιά. */
+  sunAzimuthDeg?: number;
+  sunElevationDeg?: number;
+  /** Νεφοκάλυψη 0..1 — πόσα σύννεφα στον ουρανό και πόσο θαμπός ο ήλιος. */
+  cloudCover?: number;
+  /** Ως πού (μονάδες) απλώνει το τιρκουάζ πριν το βαθύ μπλε — από το πεδίο βάθους της παραλίας. */
+  shallowReach?: number;
 };
 
 export type Point = [number, number];
@@ -38,6 +45,8 @@ export type SeaMotionGl = {
   render: (params: SeaMotionParams, tSec: number, dtSec: number) => void;
   /** Αλλάζει την ανάλυση του καμβά (για την αυτόματη προσαρμογή όταν το κινητό αργεί). */
   setSize: (width: number, height: number) => void;
+  /** Δίνει τη δορυφορική φωτογραφία της στεριάς (services/satelliteMosaic), όταν φτάσει. */
+  setSatellite: (source: TexImageSource | null) => void;
   dispose: () => void;
 };
 
@@ -159,20 +168,30 @@ float fbm(vec2 p) {
 // Ο ουρανός ως συνάρτηση κατεύθυνσης: βαθύ μπλε στο ζενίθ, αχλή στον ορίζοντα, ήλιος με άλω,
 // λίγα σύννεφα. Τον ΙΔΙΟ ουρανό βλέπει το μάτι πάνω από τον ορίζοντα και το νερό στην
 // αντανάκλασή του — έτσι ο ήλιος γυαλίζει στο νερό ακριβώς εκεί που πρέπει.
-vec3 skyColor(vec3 dir, vec3 light, float time) {
+vec3 skyColor(vec3 dir, vec3 light, float time, float dayLight, float cloudCover) {
   float t = clamp(dir.z, 0.0, 1.0);
-  vec3 zenith = vec3(0.10, 0.32, 0.76);
-  vec3 horizon = vec3(0.66, 0.80, 0.92);
+  // Χαμηλός ήλιος → ζεστός ορίζοντας, ιδίως προς τη μεριά του. Νύχτα → βαθύ μπλε.
+  float lowSun = 1.0 - smoothstep(0.05, 0.35, light.z);
+  vec3 horizonDay = vec3(0.66, 0.80, 0.92);
+  vec3 horizonWarm = vec3(0.98, 0.62, 0.36);
+  vec3 zenith = mix(vec3(0.10, 0.32, 0.76), vec3(0.10, 0.22, 0.52), lowSun * 0.6);
+  vec3 horizon = mix(horizonDay, horizonWarm, lowSun * 0.45);
   vec3 sky = mix(horizon, zenith, pow(t, 0.38));
+  float toward = max(dot(normalize(vec3(dir.xy, 0.0001)), normalize(vec3(light.xy, 0.0001))), 0.0);
+  sky = mix(sky, horizonWarm, lowSun * pow(toward, 3.0) * (1.0 - t) * 0.6);
   float s = max(dot(dir, light), 0.0);
-  sky += vec3(1.0, 0.96, 0.88) * (pow(s, 1400.0) * 9.0 + pow(s, 40.0) * 0.32 + pow(s, 3.0) * 0.07);
+  float sunVis = 1.0 - 0.75 * cloudCover;
+  sky += vec3(1.0, 0.94, 0.85) * (pow(s, 1400.0) * 9.0 + pow(s, 40.0) * 0.32 + pow(s, 3.0) * 0.07) * sunVis;
   if (dir.z > 0.02) {
     vec2 cp = dir.xy / max(dir.z, 0.08) * 0.32 + vec2(time * 0.012, time * 0.004);
     float cloud = fbm(cp);
-    float cover = smoothstep(0.52, 0.78, cloud) * smoothstep(0.02, 0.22, dir.z);
-    sky = mix(sky, vec3(0.98, 0.98, 0.99), cover * 0.8);
+    float lo = 0.58 - 0.42 * cloudCover;
+    float cover = smoothstep(lo, lo + 0.26, cloud) * smoothstep(0.02, 0.22, dir.z);
+    vec3 cloudCol = mix(vec3(0.98), vec3(0.72, 0.75, 0.82), cloudCover);
+    sky = mix(sky, cloudCol, cover * 0.85);
   }
-  return sky;
+  vec3 night = vec3(0.03, 0.05, 0.12) * (0.6 + 0.4 * t);
+  return mix(night, sky, dayLight);
 }
 // ACES: το tone mapping του κινηματογράφου — τα φωτεινά δεν «καίγονται», τα σκούρα κρατούν χρώμα.
 vec3 aces(vec3 x) {
@@ -187,6 +206,7 @@ attribute float aDist;
 attribute vec2 aShore;
 attribute float aNoise;
 attribute float aHeight;
+attribute vec2 aUv;
 uniform mat4 uProj;
 uniform mat4 uView;
 uniform float uTime;
@@ -210,10 +230,12 @@ varying float vFoam;
 varying float vRip;
 varying float vShadow;
 varying float vWave;
+varying vec2 vUv;
 
 void main() {
   float d = aDist;
   float z = 0.0;
+  vec2 disp = vec2(0.0);
   vFoam = 0.0;
   vRip = 0.0;
   vShadow = 1.0;
@@ -229,6 +251,8 @@ void main() {
       // Όσο ψηλώνει το κύμα, τόσο πιο μυτερή η κορυφή και πιο πλατιά η κοιλάδα (Gerstner).
       float crest = sin(phase) + 0.30 * amp * sin(2.0 * phase + 0.7);
       z = amp * crest * ${WAVE_UNITS_AT_FULL.toFixed(1)};
+      // Gerstner: το νερό κινείται και οριζόντια — η κορυφή μαζεύεται και γέρνει μπροστά.
+      disp += uWaveDir * (amp * cos(phase) * 1.2) * (0.5 + 0.5 * w);
       // Δεύτερο, μικρότερο κύμα λίγο λοξά και λίγο πιο κοντό: η θάλασσα δεν είναι ποτέ ΕΝΑ ημίτονο.
       vec2 crossDir = normalize(uWaveDir + vec2(-uWaveDir.y, uWaveDir.x) * 0.42);
       float crossPhase = uK * 1.6 * mix(dot(crossDir, aPos), dot(crossDir, aShore) - d, w) - uOmega * 1.25 * uTime + 1.3;
@@ -251,10 +275,11 @@ void main() {
     // Η στεριά: το ύψος ήρθε έτοιμο από τη CPU (ήπια πλαγιά άμμου ή το πραγματικό ανάγλυφο).
     z = aHeight;
   }
-  vWorld = vec3(aPos, z);
+  vWorld = vec3(aPos + disp, z);
   vDist = d;
   vNoise = aNoise;
-  gl_Position = uProj * uView * vec4(aPos, z, 1.0);
+  vUv = aUv;
+  gl_Position = uProj * uView * vec4(aPos + disp, z, 1.0);
 }
 `;
 
@@ -274,6 +299,12 @@ uniform float uFogFar;
 uniform float uFogMax;
 uniform float uMetresPerUnit;
 uniform float uWindAmp;
+uniform float uDayLight;
+uniform float uCloudCover;
+uniform float uShallowReach;
+uniform sampler2D uSat;
+uniform float uHasSat;
+varying vec2 vUv;
 varying vec3 vWorld;
 varying float vDist;
 varying float vNoise;
@@ -306,13 +337,13 @@ void main() {
     n = normalize(n + vec3(g * detail, 0.0));
 
     // Το σώμα του νερού: τιρκουάζ στα ρηχά, βαθύ μπλε ανοιχτά, η άμμος να φαίνεται από κάτω.
-    float depth = smoothstep(0.0, 110.0, vDist);
+    float depth = smoothstep(0.0, uShallowReach, vDist);
     vec3 shallow = vec3(0.30, 0.78, 0.78);
     vec3 deep = vec3(0.04, 0.25, 0.50);
     vec3 body = mix(shallow, deep, depth);
     body = mix(body, vec3(0.78, 0.74, 0.60), smoothstep(6.0, 0.0, vDist) * 0.5);
     float diff = max(dot(n, uLight), 0.0);
-    body *= 0.45 + 0.65 * diff;
+    body *= (0.45 + 0.65 * diff) * (0.2 + 0.8 * uDayLight);
     // Φως ΜΕΣΑ από την κορυφή όταν ο ήλιος είναι πίσω της — αυτό το τιρκουάζ λαμπύρισμα.
     float sss = pow(max(dot(v, -uLight), 0.0), 4.0) * max(vWave, 0.0) * 0.55;
     body += vec3(0.05, 0.45, 0.40) * sss;
@@ -320,13 +351,13 @@ void main() {
     // Fresnel: όσο πιο πλάγια κοιτάς, τόσο πιο πολύ το νερό γίνεται καθρέφτης του ουρανού.
     vec3 r = reflect(-v, n);
     r.z = abs(r.z);
-    vec3 refl = skyColor(r, uLight, uTime);
+    vec3 refl = skyColor(r, uLight, uTime, uDayLight, uCloudCover);
     float fres = 0.02 + 0.98 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
     color = mix(body, refl, clamp(fres, 0.0, 1.0));
     // Γυαλάδα και σπινθηρίσματα του ήλιου.
     vec3 h = normalize(uLight + v);
     float spec = pow(max(dot(n, h), 0.0), 900.0);
-    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0));
+    color += vec3(1.0, 0.97, 0.9) * spec * 1.1 * (0.4 + 0.6 * vnoise(p * 3.0 + uTime * 2.0)) * (1.0 - 0.7 * uCloudCover) * uDayLight;
 
     // Αφρός με υφή εκεί που σπάει, και άσπρες κορφές που ο άνεμος ξεσηκώνει.
     float fm = fbm(p * 0.9 + vec2(0.0, -uTime * 0.6));
@@ -338,7 +369,7 @@ void main() {
     vec2 along = vec2(dot(p, uWindDir) * 0.25, dot(p, vec2(-uWindDir.y, uWindDir.x)) * 1.6);
     float streaks = smoothstep(0.72, 0.86, vnoise(along + vec2(-uTime * 0.9, 0.0))) * smoothstep(0.7, 1.0, uWindAmp) * vShadow;
     foam = clamp(foam + caps + streaks * 0.5, 0.0, 1.0);
-    vec3 foamCol = vec3(0.96, 0.98, 1.0) * (0.7 + 0.4 * diff);
+    vec3 foamCol = vec3(0.96, 0.98, 1.0) * (0.7 + 0.4 * diff) * (0.25 + 0.75 * uDayLight);
     color = mix(color, foamCol, foam * (0.6 + 0.4 * detail));
 
     // Το λεπτό πλέγμα της προσομοίωσης: κάθε 10 μονάδες, σβήνει με την απόσταση.
@@ -349,34 +380,45 @@ void main() {
       color = mix(color, vec3(0.35, 0.95, 1.0), line * uGrid * detail);
     }
   } else {
-    // ΣΤΕΡΙΑ. Άμμος με κόκκο και ρυτίδες ανέμου, θάμνοι πιο ψηλά, γυμνός βράχος στα βουνά.
-    vec3 sand = vec3(0.92, 0.86, 0.72);
+    // ΣΤΕΡΙΑ. Με δορυφορική φωτογραφία όπου έφτασε, αλλιώς άμμος με κόκκο και ρυτίδες ανέμου,
+    // θάμνοι πιο ψηλά, γυμνός βράχος στα βουνά.
     float grain = mix(vnoise(p * 7.0), vnoise(p * 29.0), 0.5);
-    sand *= 0.88 + 0.24 * grain * detail;
-    float ripples = sin(dot(p, vec2(-uWindDir.y, uWindDir.x)) * 3.5 + vnoise(p * 1.5) * 4.0);
-    sand *= 0.97 + 0.03 * ripples * detail;
-    vec3 inland = vec3(0.80, 0.74, 0.60);
-    color = mix(sand, inland, smoothstep(0.0, 45.0, -vDist));
-    float metres = vWorld.z * uMetresPerUnit / ${RELIEF_EXAGGERATION.toFixed(2)};
-    vec3 scrub = vec3(0.50, 0.56, 0.36) * (0.85 + 0.3 * vnoise(p * 0.5));
-    vec3 rock = vec3(0.62, 0.59, 0.54) * (0.85 + 0.3 * vnoise(p * 0.9));
-    color = mix(color, scrub, smoothstep(6.0, 40.0, metres));
-    color = mix(color, rock, smoothstep(220.0, 700.0, metres));
     float diff = max(dot(n, uLight), 0.0);
-    color *= 0.42 + 0.68 * diff;
+    if (uHasSat > 0.5 && vUv.x >= 0.0) {
+      vec3 photo = texture2D(uSat, vUv).rgb;
+      // Η φωτογραφία είναι ~5 μ./pixel: κοντά στην κάμερα ο κόκκος της άμμου γεμίζει τα κενά.
+      color = photo * (0.92 + 0.16 * grain * detail);
+      // Στην άμμο δίπλα στο νερό, η φωτογραφία συχνά δείχνει θάλασσα (η γραμμή του νερού
+      // κινείται): σε 2,5 μονάδες από τη γραμμή προτιμάμε άμμο.
+      vec3 sand = vec3(0.92, 0.86, 0.72) * (0.88 + 0.24 * grain * detail);
+      color = mix(sand, color, smoothstep(-1.0, -6.0, vDist));
+    } else {
+      vec3 sand = vec3(0.92, 0.86, 0.72);
+      sand *= 0.88 + 0.24 * grain * detail;
+      float ripples = sin(dot(p, vec2(-uWindDir.y, uWindDir.x)) * 3.5 + vnoise(p * 1.5) * 4.0);
+      sand *= 0.97 + 0.03 * ripples * detail;
+      vec3 inland = vec3(0.80, 0.74, 0.60);
+      color = mix(sand, inland, smoothstep(0.0, 45.0, -vDist));
+      float metres = vWorld.z * uMetresPerUnit / ${RELIEF_EXAGGERATION.toFixed(2)};
+      vec3 scrub = vec3(0.50, 0.56, 0.36) * (0.85 + 0.3 * vnoise(p * 0.5));
+      vec3 rock = vec3(0.62, 0.59, 0.54) * (0.85 + 0.3 * vnoise(p * 0.9));
+      color = mix(color, scrub, smoothstep(15.0, 60.0, metres));
+      color = mix(color, rock, smoothstep(220.0, 700.0, metres));
+    }
+    color *= (0.42 + 0.68 * diff) * (0.18 + 0.82 * uDayLight);
     // Βρεγμένη άμμος στη γραμμή του νερού: σκουραίνει και καθρεφτίζει λίγο τον ουρανό.
     float wet = smoothstep(-3.5, -0.3, vDist);
     if (wet > 0.0) {
       vec3 r = reflect(-v, n);
       r.z = abs(r.z);
-      color = mix(color, color * 0.7 + skyColor(r, uLight, uTime) * 0.2, wet);
+      color = mix(color, color * 0.7 + skyColor(r, uLight, uTime, uDayLight, uCloudCover) * 0.2, wet);
     }
   }
 
   // Ομίχλη: το μακρινό λιώνει στον ουρανό της ίδιας κατεύθυνσης, κοντά στον ορίζοντα.
   vec3 hazeDir = normalize(vec3(-v.x, -v.y, max(-v.z, 0.10)));
   float fog = pow(smoothstep(uFogNear, uFogFar, dist), 1.6) * uFogMax;
-  color = mix(color, skyColor(hazeDir, uLight, uTime), fog);
+  color = mix(color, skyColor(hazeDir, uLight, uTime, uDayLight, uCloudCover), fog);
 
   // Φινίρισμα: έκθεση, ACES, ελαφριά βινιέτα, λίγος κόκκος.
   color = aces(color * 1.15);
@@ -407,11 +449,13 @@ const SKY_FS = `
 precision mediump float;
 uniform vec3 uLight;
 uniform float uTime;
+uniform float uDayLight;
+uniform float uCloudCover;
 varying vec3 vDir;
 ${SHARED_GLSL}
 void main() {
   vec3 dir = normalize(vDir);
-  gl_FragColor = vec4(aces(skyColor(dir, uLight, uTime) * 1.15), 1.0);
+  gl_FragColor = vec4(aces(skyColor(dir, uLight, uTime, uDayLight, uCloudCover) * 1.15), 1.0);
 }
 `;
 
@@ -430,9 +474,95 @@ void main() {
 
 const LINE_FS = `
 precision mediump float;
+uniform vec3 uColor;
 varying float vAlpha;
 void main() {
-  gl_FragColor = vec4(1.0, 1.0, 1.0, vAlpha);
+  gl_FragColor = vec4(uColor, vAlpha);
+}
+`;
+
+/**
+ * Ο ΑΝΘΡΩΠΟΣ ΚΑΙ Η ΟΜΠΡΕΛΑ — ΚΛΙΜΑΚΑ (Μίλτος: «να φαίνεται πόσο κύμα έχει»). Δύο επίπεδα
+ * σκίτσα που κοιτούν πάντα την κάμερα, στο ΙΔΙΟ κατακόρυφο μεγέθυνση με το νερό: ένας
+ * άνθρωπος 1,75 μ. στη γραμμή του νερού και μια ομπρέλα 2,2 μ. στην άμμο. Έτσι ένα κύμα
+ * 0,8 μ. φτάνει ως τη μέση του, ένα 1,6 μ. ως τον ώμο — χωρίς αριθμούς.
+ */
+const PROP_VS = `
+attribute vec2 aCorner;
+uniform mat4 uProj;
+uniform mat4 uView;
+uniform vec3 uBase;
+uniform vec3 uRight;
+uniform vec2 uSize;
+varying vec2 vCorner;
+void main() {
+  vec3 world = uBase + uRight * (aCorner.x * uSize.x * 0.5) + vec3(0.0, 0.0, (aCorner.y * 0.5 + 0.5) * uSize.y);
+  vCorner = vec2(aCorner.x, aCorner.y * 0.5 + 0.5);
+  gl_Position = uProj * uView * vec4(world, 1.0);
+}
+`;
+
+const PROP_FS = `
+precision mediump float;
+uniform float uKind;
+uniform float uDayLight;
+varying vec2 vCorner;
+float capsule(vec2 p, vec2 a, vec2 b, float r) {
+  vec2 pa = p - a;
+  vec2 ba = b - a;
+  float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+  return length(pa - ba * h) - r;
+}
+void main() {
+  vec2 p = vCorner;
+  float d = 1.0;
+  vec3 color = vec3(0.10, 0.12, 0.18);
+  if (uKind < 0.5) {
+    // Άνθρωπος: κεφάλι, κορμός, δύο πόδια, δύο χέρια.
+    d = min(d, length(p - vec2(0.0, 0.90)) - 0.085);
+    d = min(d, capsule(p, vec2(0.0, 0.47), vec2(0.0, 0.79), 0.14));
+    d = min(d, capsule(p, vec2(-0.08, 0.03), vec2(-0.08, 0.48), 0.062));
+    d = min(d, capsule(p, vec2(0.08, 0.03), vec2(0.08, 0.48), 0.062));
+    d = min(d, capsule(p, vec2(-0.16, 0.50), vec2(-0.30, 0.74), 0.045));
+    d = min(d, capsule(p, vec2(0.16, 0.50), vec2(0.30, 0.74), 0.045));
+  } else {
+    // Ομπρέλα: κοντάρι και θόλος με ρίγες.
+    d = min(d, capsule(p, vec2(0.0, 0.0), vec2(0.0, 0.76), 0.02));
+    vec2 q = vec2(p.x / 1.0, (p.y - 0.72) / 0.28);
+    float dome = length(q) - 1.0;
+    if (p.y < 0.72) dome = 1.0;
+    d = min(d, dome);
+    float stripe = step(0.5, fract((atan(p.x, max(p.y - 0.72, 0.001)) + 1.6) * 1.6));
+    if (dome < 0.0) color = mix(vec3(0.0, 0.48, 0.51), vec3(0.96), stripe);
+  }
+  if (d > 0.0) discard;
+  gl_FragColor = vec4(color * (0.35 + 0.65 * uDayLight), 1.0);
+}
+`;
+
+/** Σταγονίδια που ξεσηκώνει ο άνεμος από τις άσπρες κορφές, και τα πουλιά — σημεία. */
+const POINT_VS = `
+attribute vec3 aPos;
+attribute float aAlpha;
+uniform mat4 uProj;
+uniform mat4 uView;
+uniform float uPointScale;
+varying float vAlpha;
+void main() {
+  vec4 clip = uProj * uView * vec4(aPos, 1.0);
+  gl_Position = clip;
+  gl_PointSize = clamp(uPointScale / max(clip.w, 1.0), 1.5, 9.0);
+  vAlpha = aAlpha;
+}
+`;
+
+const POINT_FS = `
+precision mediump float;
+varying float vAlpha;
+void main() {
+  float r = length(gl_PointCoord - 0.5) * 2.0;
+  float a = (1.0 - smoothstep(0.55, 1.0, r)) * vAlpha;
+  gl_FragColor = vec4(1.0, 1.0, 1.0, a);
 }
 `;
 
@@ -536,13 +666,16 @@ const axisCoordinates = (inner0: number, inner1: number, innerStep: number, oute
   return out;
 };
 
+type UvFn = (x: number, y: number) => [number, number] | null;
+
 const buildMesh = (
   points: Point[],
   seed: number,
   step: number,
   wideIndices: boolean,
   relief: ReliefFn | undefined,
-  metresPerUnit: number
+  metresPerUnit: number,
+  satelliteUv: UvFn | undefined
 ) => {
   let xs: number[];
   let ys: number[];
@@ -566,7 +699,7 @@ const buildMesh = (
   }
   const cols = xs.length;
   const rows = ys.length;
-  const vertices = new Float32Array(cols * rows * 7);
+  const vertices = new Float32Array(cols * rows * 9);
 
   const segments: Array<[number, number, number, number, number]> = [];
   for (let i = 1; i < points.length; i += 1) {
@@ -624,7 +757,8 @@ const buildMesh = (
 
       let height = 0;
       if (!sea) {
-        const ramp = Math.min(10, d * 0.24);
+        // Χωρίς ανάγλυφο: ήπια αμμουδιά, ως ~6 μονάδες — όχι λόφος πίσω από κάθε παραλία.
+        const ramp = Math.min(6, d * 0.15);
         // Λίγο τρέμουλο στην άμμο για να μη γυαλίζει επίπεδη — ΜΟΝΟ στο πυκνό πλέγμα: στα
         // μακρόστενα κελιά του αραιού (1×36 μονάδες) το ίδιο τρέμουλο έβγαινε ρίγες.
         const fine = x >= GRID.x0 && x <= GRID.x1 && y >= GRID.y0 && y <= GRID.y1;
@@ -645,6 +779,9 @@ const buildMesh = (
       vertices[v++] = by;
       vertices[v++] = hashNoise(r * cols + c, seed);
       vertices[v++] = height;
+      const uv = !sea && satelliteUv ? satelliteUv(x, y) : null;
+      vertices[v++] = uv ? uv[0] : -1;
+      vertices[v++] = uv ? uv[1] : -1;
     }
   }
 
@@ -709,6 +846,8 @@ export type SeaMotionGlOptions = {
   relief?: (x: number, y: number) => number | null;
   /** Μέτρα ανά μονάδα κουτιού — χρειάζεται για να μεταφραστούν τα ύψη και οι αποστάσεις. */
   metresPerUnit?: number;
+  /** (x, y) του κουτιού → (u, v) στη δορυφορική υφή, ή null έξω από αυτήν. */
+  satelliteUv?: (x: number, y: number) => [number, number] | null;
 };
 
 
@@ -731,12 +870,14 @@ export const createSeaMotionGl = (
   const terrain = link(gl, TERRAIN_VS, TERRAIN_FS);
   const sky = link(gl, SKY_VS, SKY_FS);
   const lines = link(gl, LINE_VS, LINE_FS);
-  if (!terrain || !sky || !lines) return null;
+  const props = link(gl, PROP_VS, PROP_FS);
+  const pointsProgram = link(gl, POINT_VS, POINT_FS);
+  if (!terrain || !sky || !lines || !props || !pointsProgram) return null;
 
   const wideIndices = Boolean(gl.getExtension('OES_element_index_uint'));
   const metresPerUnit = options.metresPerUnit && options.metresPerUnit > 0 ? options.metresPerUnit : 5;
   const relief = wideIndices ? options.relief : undefined;
-  const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit);
+  const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit, options.satelliteUv);
   if (!wideIndices && mesh.count > 65535) return null;
   // Με ανάγλυφο η ομίχλη φτάνει 14 χλμ, ώστε να φαίνονται βουνά και απέναντι ακτές· χωρίς,
   // σβήνει το νερό λίγο πριν την άκρη του πλέγματος.
@@ -749,7 +890,13 @@ export const createSeaMotionGl = (
   const ibo = gl.createBuffer();
   const skyVbo = gl.createBuffer();
   const lineVbo = gl.createBuffer();
-  if (!vbo || !ibo || !skyVbo || !lineVbo) return null;
+  const propVbo = gl.createBuffer();
+  const pointVbo = gl.createBuffer();
+  const satTexture = gl.createTexture();
+  if (!vbo || !ibo || !skyVbo || !lineVbo || !propVbo || !pointVbo || !satTexture) return null;
+  gl.bindBuffer(gl.ARRAY_BUFFER, propVbo);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1]), gl.STATIC_DRAW);
+  let hasSat = false;
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
   gl.bufferData(gl.ARRAY_BUFFER, mesh.vertices, gl.STATIC_DRAW);
@@ -762,7 +909,7 @@ export const createSeaMotionGl = (
   const a = (program: WebGLProgram, name: string) => gl!.getAttribLocation(program, name);
 
   const T = {
-    aPos: a(terrain, 'aPos'), aDist: a(terrain, 'aDist'), aShore: a(terrain, 'aShore'), aNoise: a(terrain, 'aNoise'), aHeight: a(terrain, 'aHeight'),
+    aPos: a(terrain, 'aPos'), aDist: a(terrain, 'aDist'), aShore: a(terrain, 'aShore'), aNoise: a(terrain, 'aNoise'), aHeight: a(terrain, 'aHeight'), aUv: a(terrain, 'aUv'),
     uProj: u(terrain, 'uProj'), uView: u(terrain, 'uView'), uTime: u(terrain, 'uTime'),
     uWaveDir: u(terrain, 'uWaveDir'), uArriving: u(terrain, 'uArriving'), uK: u(terrain, 'uK'), uOmega: u(terrain, 'uOmega'),
     uOpenAmp: u(terrain, 'uOpenAmp'), uShoreAmp: u(terrain, 'uShoreAmp'), uHasWaves: u(terrain, 'uHasWaves'),
@@ -771,13 +918,24 @@ export const createSeaMotionGl = (
     uEye: u(terrain, 'uEye'), uLight: u(terrain, 'uLight'), uWhitecaps: u(terrain, 'uWhitecaps'),
     uResolution: u(terrain, 'uResolution'), uGrid: u(terrain, 'uGrid'),
     uFogNear: u(terrain, 'uFogNear'), uFogFar: u(terrain, 'uFogFar'), uFogMax: u(terrain, 'uFogMax'), uMetresPerUnit: u(terrain, 'uMetresPerUnit'),
+    uDayLight: u(terrain, 'uDayLight'), uCloudCover: u(terrain, 'uCloudCover'), uShallowReach: u(terrain, 'uShallowReach'),
+    uSat: u(terrain, 'uSat'), uHasSat: u(terrain, 'uHasSat'),
+  };
+  const P = {
+    aCorner: a(props, 'aCorner'), uProj: u(props, 'uProj'), uView: u(props, 'uView'), uBase: u(props, 'uBase'),
+    uRight: u(props, 'uRight'), uSize: u(props, 'uSize'), uKind: u(props, 'uKind'), uDayLight: u(props, 'uDayLight'),
+  };
+  const Pt = {
+    aPos: a(pointsProgram, 'aPos'), aAlpha: a(pointsProgram, 'aAlpha'), uProj: u(pointsProgram, 'uProj'),
+    uView: u(pointsProgram, 'uView'), uPointScale: u(pointsProgram, 'uPointScale'),
   };
   // uWindDir, uRipSpeed και uTime διαβάζονται και από τους δύο shaders — μία τοποθεσία ο καθένας.
   const S = {
     aClip: a(sky, 'aClip'), uCamRight: u(sky, 'uCamRight'), uCamUp: u(sky, 'uCamUp'), uCamFwd: u(sky, 'uCamFwd'),
     uTanHalf: u(sky, 'uTanHalf'), uLight: u(sky, 'uLight'), uTime: u(sky, 'uTime'),
+    uDayLight: u(sky, 'uDayLight'), uCloudCover: u(sky, 'uCloudCover'),
   };
-  const Ln = { aPos: a(lines, 'aPos'), aAlpha: a(lines, 'aAlpha'), uProj: u(lines, 'uProj'), uView: u(lines, 'uView') };
+  const Ln = { aPos: a(lines, 'aPos'), aAlpha: a(lines, 'aAlpha'), uProj: u(lines, 'uProj'), uView: u(lines, 'uView'), uColor: u(lines, 'uColor') };
 
   let width = canvas.width;
   let height = canvas.height;
@@ -805,8 +963,14 @@ export const createSeaMotionGl = (
   applySize(width, height);
 
   const streaks: Streak[] = [];
-  // 30 ρεύματα × 6 κορυφές × (x, y, z, alpha)
-  const lineData = new Float32Array(30 * 6 * 4);
+  // 30 ρεύματα × 6 κορυφές × (x, y, z, alpha), συν 2 πουλιά × 2 φτερά × 6 κορυφές
+  const lineData = new Float32Array((30 + 4) * 6 * 4);
+  // Σταγονίδια: ως 160, (x, y, z, vx, vy, vz, age, life)
+  const MAX_SPRAY = 160;
+  const spray: number[] = [];
+  const pointData = new Float32Array(MAX_SPRAY * 4);
+  const personHeight = (1.75 * WAVE_UNITS_AT_FULL) / 1.6;
+  const umbrellaHeight = (2.2 * WAVE_UNITS_AT_FULL) / 1.6;
   const area = { x0: -40, x1: 240, y0: -90, y1: 125 };
 
   let disposed = false;
@@ -815,6 +979,18 @@ export const createSeaMotionGl = (
     if (disposed || !gl) return;
     const m = deriveMotion(params);
     const windShake = clamp01((m.windSpeed - 22) / 30) * 0.9;
+    // Ο ήλιος: από αζιμούθιο/ύψος στο πλαίσιο του κουτιού (πάνω = facingDeg). Νύχτα: το φως
+    // μένει λίγο πάνω από τον ορίζοντα για τη λάμψη, αλλά το dayLight σβήνει τη σκηνή.
+    let light = LIGHT;
+    let dayLight = 1;
+    if (typeof params.sunAzimuthDeg === 'number' && typeof params.sunElevationDeg === 'number') {
+      const el = Math.max(4, params.sunElevationDeg) * (Math.PI / 180);
+      const rel = ((params.sunAzimuthDeg - params.facingDeg) * Math.PI) / 180;
+      light = [Math.sin(rel) * Math.cos(el), -Math.cos(rel) * Math.cos(el), Math.sin(el)];
+      dayLight = clamp01((params.sunElevationDeg + 4) / 18);
+    }
+    const cloudCover = clamp01(params.cloudCover ?? 0.1);
+    const shallowReach = params.shallowReach ?? 110;
     const eye = cameraEye(tSec, distanceScale, heightScale, windShake);
     const view = lookAt(eye, TARGET, [0, 0, 1]);
     // Η βάση της κάμερας για τον ουρανό (ακτίνα ανά εικονοστοιχείο).
@@ -837,8 +1013,10 @@ export const createSeaMotionGl = (
     gl.uniform3f(S.uCamUp, up[0], up[1], up[2]);
     gl.uniform3f(S.uCamFwd, fwd[0], fwd[1], fwd[2]);
     gl.uniform2f(S.uTanHalf, tanHalfX, tanHalfY);
-    gl.uniform3f(S.uLight, LIGHT[0], LIGHT[1], LIGHT[2]);
+    gl.uniform3f(S.uLight, light[0], light[1], light[2]);
     gl.uniform1f(S.uTime, tSec);
+    gl.uniform1f(S.uDayLight, dayLight);
+    gl.uniform1f(S.uCloudCover, cloudCover);
     gl.bindBuffer(gl.ARRAY_BUFFER, skyVbo);
     gl.enableVertexAttribArray(S.aClip);
     gl.vertexAttribPointer(S.aClip, 2, gl.FLOAT, false, 0, 0);
@@ -852,7 +1030,7 @@ export const createSeaMotionGl = (
     gl.useProgram(terrain);
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-    const stride = 7 * 4;
+    const stride = 9 * 4;
     gl.enableVertexAttribArray(T.aPos);
     gl.vertexAttribPointer(T.aPos, 2, gl.FLOAT, false, stride, 0);
     gl.enableVertexAttribArray(T.aDist);
@@ -863,6 +1041,15 @@ export const createSeaMotionGl = (
     gl.vertexAttribPointer(T.aNoise, 1, gl.FLOAT, false, stride, 20);
     gl.enableVertexAttribArray(T.aHeight);
     gl.vertexAttribPointer(T.aHeight, 1, gl.FLOAT, false, stride, 24);
+    gl.enableVertexAttribArray(T.aUv);
+    gl.vertexAttribPointer(T.aUv, 2, gl.FLOAT, false, stride, 28);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, satTexture);
+    gl.uniform1i(T.uSat, 0);
+    gl.uniform1f(T.uHasSat, hasSat ? 1 : 0);
+    gl.uniform1f(T.uDayLight, dayLight);
+    gl.uniform1f(T.uCloudCover, cloudCover);
+    gl.uniform1f(T.uShallowReach, shallowReach);
 
     gl.uniformMatrix4fv(T.uProj, false, proj);
     gl.uniformMatrix4fv(T.uView, false, view);
@@ -887,7 +1074,7 @@ export const createSeaMotionGl = (
     gl.uniform1f(T.uFogFar, fogFar);
     gl.uniform1f(T.uFogMax, fogMax);
     gl.uniform1f(T.uMetresPerUnit, metresPerUnit);
-    gl.uniform3f(T.uLight, LIGHT[0], LIGHT[1], LIGHT[2]);
+    gl.uniform3f(T.uLight, light[0], light[1], light[2]);
     gl.uniform1f(T.uWhitecaps, m.whitecaps);
     gl.drawElements(gl.TRIANGLES, mesh.indices.length, wideIndices ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, 0);
     gl.disableVertexAttribArray(T.aPos);
@@ -895,6 +1082,26 @@ export const createSeaMotionGl = (
     gl.disableVertexAttribArray(T.aShore);
     gl.disableVertexAttribArray(T.aNoise);
     gl.disableVertexAttribArray(T.aHeight);
+    gl.disableVertexAttribArray(T.aUv);
+
+    // Ο άνθρωπος στη γραμμή του νερού και η ομπρέλα στην άμμο — κλίμακα με ένα βλέμμα.
+    gl.useProgram(props);
+    gl.bindBuffer(gl.ARRAY_BUFFER, propVbo);
+    gl.enableVertexAttribArray(P.aCorner);
+    gl.vertexAttribPointer(P.aCorner, 2, gl.FLOAT, false, 0, 0);
+    gl.uniformMatrix4fv(P.uProj, false, proj);
+    gl.uniformMatrix4fv(P.uView, false, view);
+    gl.uniform3f(P.uRight, rgt[0], rgt[1], rgt[2]);
+    gl.uniform1f(P.uDayLight, dayLight);
+    gl.uniform3f(P.uBase, 100, 76.5, 0);
+    gl.uniform2f(P.uSize, personHeight * 0.62, personHeight);
+    gl.uniform1f(P.uKind, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.uniform3f(P.uBase, 108, 84, 1.4);
+    gl.uniform2f(P.uSize, umbrellaHeight, umbrellaHeight);
+    gl.uniform1f(P.uKind, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.disableVertexAttribArray(P.aCorner);
 
     // Τα ρεύματα του ανέμου, λίγο πάνω από το νερό.
     if (m.hasWind && m.windAmp > 0) {
@@ -944,6 +1151,7 @@ export const createSeaMotionGl = (
         gl.vertexAttribPointer(Ln.aAlpha, 1, gl.FLOAT, false, 16, 12);
         gl.uniformMatrix4fv(Ln.uProj, false, proj);
         gl.uniformMatrix4fv(Ln.uView, false, view);
+        gl.uniform3f(Ln.uColor, 1, 1, 1);
         gl.drawArrays(gl.TRIANGLES, 0, n / 4);
         gl.disableVertexAttribArray(Ln.aPos);
         gl.disableVertexAttribArray(Ln.aAlpha);
@@ -952,6 +1160,114 @@ export const createSeaMotionGl = (
       }
     } else {
       streaks.length = 0;
+    }
+
+    // Δύο γλάροι που παλεύουν με τον αέρα (πιο γρήγορο φτερούγισμα όσο φυσάει).
+    {
+      let n = 0;
+      const flap = Math.sin(tSec * (5 + m.windSpeed * 0.1));
+      for (let b = 0; b < 2; b += 1) {
+        const phase = tSec * 0.12 + b * 2.1;
+        const cx = 100 + Math.cos(phase) * (40 + b * 25) - m.wx * 10;
+        const cy = 30 + Math.sin(phase * 0.7) * 25 - m.wy * 10;
+        const cz = 24 + b * 6 + Math.sin(tSec * 0.9 + b) * 2;
+        const span = 2.6;
+        const put = (x: number, y: number, z: number, alpha: number) => {
+          lineData[n++] = x; lineData[n++] = y; lineData[n++] = z; lineData[n++] = alpha;
+        };
+        for (const side of [-1, 1]) {
+          const tipX = cx + rgt[0] * span * side;
+          const tipY = cy + rgt[1] * span * side;
+          const tipZ = cz + flap * 1.1;
+          const hw = 0.28;
+          put(cx, cy, cz + hw, 0.9); put(cx, cy, cz - hw, 0.9); put(tipX, tipY, tipZ, 0.9);
+          put(cx, cy, cz - hw, 0.9); put(tipX, tipY, tipZ - hw * 0.5, 0.9); put(tipX, tipY, tipZ, 0.9);
+        }
+      }
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.useProgram(lines);
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineVbo);
+      gl.bufferData(gl.ARRAY_BUFFER, lineData.subarray(0, n), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(Ln.aPos);
+      gl.vertexAttribPointer(Ln.aPos, 3, gl.FLOAT, false, 16, 0);
+      gl.enableVertexAttribArray(Ln.aAlpha);
+      gl.vertexAttribPointer(Ln.aAlpha, 1, gl.FLOAT, false, 16, 12);
+      gl.uniformMatrix4fv(Ln.uProj, false, proj);
+      gl.uniformMatrix4fv(Ln.uView, false, view);
+      gl.uniform3f(Ln.uColor, 0.16, 0.17, 0.2);
+      gl.drawArrays(gl.TRIANGLES, 0, n / 4);
+      gl.disableVertexAttribArray(Ln.aPos);
+      gl.disableVertexAttribArray(Ln.aAlpha);
+      gl.disable(gl.BLEND);
+    }
+
+    // Σταγονίδια από τις άσπρες κορφές: γεννιούνται στο νερό μπροστά από την κάμερα, τα
+    // παίρνει ο άνεμος, πέφτουν. Πλήθος ανάλογο του ανέμου πάνω από ~4 Μπφ.
+    if (m.whitecaps > 0) {
+      const born = Math.min(6, Math.round(m.whitecaps * 14));
+      for (let i = 0; i < born && spray.length < MAX_SPRAY * 8; i += 1) {
+        const x = rand(40, 160);
+        const y = rand(-40, 70);
+        spray.push(x, y, 1.5, m.wx * (6 + m.windSpeed * 0.3) + rand(-2, 2), m.wy * (6 + m.windSpeed * 0.3) + rand(-2, 2), rand(4, 9), 0, rand(0.6, 1.3));
+      }
+    }
+    {
+      let n = 0;
+      for (let i = 0; i < spray.length; i += 8) {
+        spray[i + 6] += dtSec;
+        if (spray[i + 6] > spray[i + 7]) {
+          spray.splice(i, 8);
+          i -= 8;
+          continue;
+        }
+        spray[i] += spray[i + 3] * dtSec;
+        spray[i + 1] += spray[i + 4] * dtSec;
+        spray[i + 5] -= 14 * dtSec;
+        spray[i + 2] += spray[i + 5] * dtSec;
+        const fade = 1 - spray[i + 6] / spray[i + 7];
+        pointData[n++] = spray[i]; pointData[n++] = spray[i + 1]; pointData[n++] = Math.max(0.5, spray[i + 2]); pointData[n++] = 0.75 * fade;
+      }
+      if (n > 0) {
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.depthMask(false);
+        gl.useProgram(pointsProgram);
+        gl.bindBuffer(gl.ARRAY_BUFFER, pointVbo);
+        gl.bufferData(gl.ARRAY_BUFFER, pointData.subarray(0, n), gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(Pt.aPos);
+        gl.vertexAttribPointer(Pt.aPos, 3, gl.FLOAT, false, 16, 0);
+        gl.enableVertexAttribArray(Pt.aAlpha);
+        gl.vertexAttribPointer(Pt.aAlpha, 1, gl.FLOAT, false, 16, 12);
+        gl.uniformMatrix4fv(Pt.uProj, false, proj);
+        gl.uniformMatrix4fv(Pt.uView, false, view);
+        gl.uniform1f(Pt.uPointScale, height * 0.9);
+        gl.drawArrays(gl.POINTS, 0, n / 4);
+        gl.disableVertexAttribArray(Pt.aPos);
+        gl.disableVertexAttribArray(Pt.aAlpha);
+        gl.depthMask(true);
+        gl.disable(gl.BLEND);
+      }
+    }
+  };
+
+  const setSatellite = (source: TexImageSource | null) => {
+    if (disposed || !gl) return;
+    if (!source) {
+      hasSat = false;
+      return;
+    }
+    try {
+      gl.bindTexture(gl.TEXTURE_2D, satTexture);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, source);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      hasSat = true;
+    } catch {
+      hasSat = false;
     }
   };
 
@@ -962,9 +1278,14 @@ export const createSeaMotionGl = (
     gl.deleteBuffer(ibo);
     gl.deleteBuffer(skyVbo);
     gl.deleteBuffer(lineVbo);
+    gl.deleteBuffer(propVbo);
+    gl.deleteBuffer(pointVbo);
+    gl.deleteTexture(satTexture);
     gl.deleteProgram(terrain);
     gl.deleteProgram(sky);
     gl.deleteProgram(lines);
+    gl.deleteProgram(props);
+    gl.deleteProgram(pointsProgram);
     // Ένα ταμπελάκι ανοιγοκλείνει πολλές φορές: το context απελευθερώνεται ρητά, όχι στον GC.
     const lose = gl.getExtension('WEBGL_lose_context');
     if (lose) lose.loseContext();
@@ -975,5 +1296,5 @@ export const createSeaMotionGl = (
     applySize(w, h);
   };
 
-  return { render, setSize, dispose };
+  return { render, setSize, setSatellite, dispose };
 };

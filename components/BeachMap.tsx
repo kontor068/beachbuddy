@@ -10,6 +10,7 @@ import { trackEvent, buildBeachExposureParams } from '../services/analyticsServi
 import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
+import type { SceneHour } from './BeachSeaMotionScene';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -636,10 +637,13 @@ const MarkerConditionsPopup: React.FC<{
   windFromDeg?: number;
   /** Η περιοχή του χάρτη — οι παραλίες ΜΙΑΣ περιοχής δεν κουβαλούν regionId (types.Beach). */
   regionId?: string;
+  /** Η ώρα που δείχνει ο χάρτης (unix s) και οι ώρες της περιοχής — για τον ήλιο και το «παίξε τη μέρα». */
+  atDt?: number | null;
+  hourSeries?: SceneHour[];
   /** «Δες το σε κίνηση» / «Κλείσε την κίνηση» — τα προσβάσιμα ονόματα του play. */
   playMotionLabel: string;
   stopMotionLabel: string;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, playMotionLabel, stopMotionLabel }) => {
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, atDt, hourSeries, playMotionLabel, stopMotionLabel }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -816,6 +820,8 @@ const MarkerConditionsPopup: React.FC<{
             regionId={item.beach.regionId ?? regionId}
             windFromDeg={windFromDeg}
             windSpeedKmh={windSpeedKmh}
+            atDt={atDt}
+            hourSeries={hourSeries}
             presentation="inline"
           />
         </Suspense>
@@ -830,6 +836,8 @@ const MarkerConditionsPopup: React.FC<{
             regionId={item.beach.regionId ?? regionId}
             windFromDeg={windFromDeg}
             windSpeedKmh={windSpeedKmh}
+            atDt={atDt}
+            hourSeries={hourSeries}
             presentation="fullscreen"
             onClose={() => setSceneMode(null)}
           />
@@ -3380,6 +3388,25 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * `sliderDisplayBeaufort` instead, which describes a different hour than `windSpeedKmh` does,
    * and a mismatched pair is worse than no pair. Undefined simply keeps the older behaviour.
    */
+  /**
+   * Οι ώρες της περιοχής για την «παραλία σε κίνηση» (ήλιος, σύννεφα, «παίξε τη μέρα»). Από τα
+   * ίδια hourSlots της μπάρας της ώρας — ΠΕΡΙΟΧΗΣ, όχι παραλίας, και η σκηνή το λέει.
+   */
+  const sceneHourSeries = useMemo<SceneHour[]>(
+    () => (hourSlots ?? []).map(slot => ({
+      dt: slot.dt,
+      windKmh: typeof slot.wind?.speed === 'number' ? slot.wind.speed * 3.6 : undefined,
+      windFromDeg: typeof slot.wind?.deg === 'number' ? slot.wind.deg : undefined,
+      waveM: slot.marine?.waveHeightM,
+      waveFromDeg: slot.marine?.waveDirectionDeg,
+      periodS: slot.marine?.wavePeriodS,
+      cloudCover: typeof slot.clouds?.all === 'number' ? Math.max(0, Math.min(1, slot.clouds.all / 100)) : undefined,
+    })),
+    [hourSlots]
+  );
+  // athens-clock-exempt: ο ήλιος της σκηνής θέλει την απόλυτη στιγμή (UTC), όχι ώρα τοίχου.
+  const sceneNowDt = Math.floor(Date.now() / 1000);
+
   const beachWindSpeedKmh = (item: SuitableBeach): number | undefined => {
     const local = beachLocalWinds?.[item.beach.id];
     if (typeof local?.speedKmh === 'number') return local.speedKmh;
@@ -4904,6 +4931,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
                     windFromDeg={beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg}
                     regionId={regionId}
+                    atDt={selectedHourDt ?? sceneNowDt}
+                    hourSeries={sceneHourSeries}
                     playMotionLabel={mapCopy.playMotion[language]}
                     stopMotionLabel={mapCopy.stopMotion[language]}
                   />
