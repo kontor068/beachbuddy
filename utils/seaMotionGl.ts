@@ -68,13 +68,14 @@ export const seawardness = (fromDeg: number, facingDeg: number) =>
   Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
 
 /**
- * Ύψος θάλασσας → ένταση 0..1,25. Εκθέτης 1,15: λίγο ΠΙΟ αυστηρός από γραμμικός στα χαμηλά,
- * ώστε η ήρεμη θάλασσα να είναι ρυτίδες και όχι φουσκοθαλασσιά (Μίλτος, 03/09/2026: «το κύμα
- * υπερβολικό ακόμα και για ήρεμη θάλασσα», «ακόμα πολύ», τρίτη φορά — εκθέτης 1,5):
- * 0,2 μ. → 0,04, 0,3 → 0,08, 0,5 → 0,17, 0,8 → 0,35, 1,6 → 1.
+ * Ύψος θάλασσας → ένταση 0..1,5, ΓΡΑΜΜΙΚΑ (1 = 1,6 μ.). Το ύψος στην οθόνη δεν το «μαγειρεύει»
+ * πια κανένας εκθέτης: το κύμα σχεδιάζεται σε πραγματική κλίμακα μέτρων (WAVE_EXAGGERATION)
+ * και η κάμερα στέκεται στο ύψος ανθρώπου — εκεί 0,3 μ. ΕΙΝΑΙ γλείψιμο και 1,5 μ. τοίχος
+ * (Μίλτος, 03/09/2026, τέταρτη φορά: «στο μικρό κύμα κ πάνω πάλι τα έχεις να φαίνονται
+ * μεγαλύτερα απ' ό,τι είναι»).
  */
 export const heightToAmp = (h: number | undefined) =>
-  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.25, Math.pow(Math.max(0, h) / 1.6, 1.5)) : 0;
+  typeof h === 'number' && Number.isFinite(h) ? Math.min(1.5, Math.max(0, h) / 1.6) : 0;
 
 export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
@@ -83,11 +84,15 @@ const RELIEF_EXAGGERATION = 1.25;
 /** Ως πού απλώνει το πλέγμα (και η ομίχλη) όταν υπάρχει ανάγλυφο: απέναντι ακτές ως 16 χλμ. */
 const RELIEF_REACH_M = 16000;
 /**
- * ΠΟΣΟ ΨΗΛΑ ΣΗΚΩΝΕΤΑΙ ΤΟ ΝΕΡΟ ΣΤΑ 1,6 μ. (μονάδες κουτιού). Η κλίμακα του κύματος είναι ΓΡΑΜΜΙΚΗ
- * με τα μέτρα (heightToAmp), ώστε 0,3 μ. να φαίνονται μικρά και 1,5 μ. μεγάλα — και όχι ρίζα,
- * που τα έφερνε κοντά (Μίλτος, 03/09/2026: «δεν ανταποκρίνεται στην πραγματικότητα»).
+ * ΠΡΑΓΜΑΤΙΚΗ ΚΛΙΜΑΚΑ, με μία κοινή μεγέθυνση 1,5× για ΟΛΑ τα κατακόρυφα κοντά στην ακτή: το
+ * κύμα, τον άνθρωπο, την ομπρέλα, τις σταγόνες. Έτσι ο λόγος «κύμα προς άνθρωπο» μένει τίμιος
+ * ό,τι κι αν δείχνει η οθόνη. Πριν, το 1 μ. κύματος ήταν 1 μονάδα κουτιού = 2–5 μ. στον χώρο,
+ * και μάλιστα ως πλάτος (όχι μισό ύψος): 4–10× μεγαλύτερο από την πραγματικότητα — γι' αυτό
+ * η ήρεμη θάλασσα έμοιαζε με φουσκοθαλασσιά όσο κι αν κατέβαινε ο εκθέτης.
  */
-const WAVE_UNITS_AT_FULL = 1.6;
+const WAVE_EXAGGERATION = 1.5;
+/** Πλάτος (μισό ύψος) του κύματος σε μονάδες κουτιού για ένταση 1 (= 1,6 μ. ύψος). */
+const waveUnitsFor = (metresPerUnit: number) => ((1.6 / 2) * WAVE_EXAGGERATION) / metresPerUnit;
 
 /**
  * Όλα τα νούμερα που αλλάζουν ανά καρέ, υπολογισμένα ΜΙΑ φορά από τα δεδομένα της ώρας — τα
@@ -100,7 +105,7 @@ export const deriveMotion = (p: SeaMotionParams) => {
   const openAmp = heightToAmp(p.openWaveM);
   const shoreAmp = heightToAmp(p.shoreWaveM ?? p.openWaveM);
   const realWavelength = (1.56 * p.periodS * p.periodS) / p.metresPerUnit;
-  const wavelength = Math.min(34, Math.max(12, realWavelength));
+  const wavelength = Math.min(34, Math.max(8, realWavelength));
   const kWave = (2 * Math.PI) / wavelength;
   const omega = ((2 * Math.PI) / p.periodS) * 1.4;
   const windSpeed = p.windSpeedKmh;
@@ -128,10 +133,10 @@ export type Streak = { x: number; y: number; z: number; age: number; life: numbe
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 /** Ένα ρεύμα ανέμου γεννιέται ανάντη, ώστε να διασχίσει το κάδρο· στο πρώτο γέμισμα οπουδήποτε. */
-export const spawnStreak = (wx: number, wy: number, speedKmh: number, anywhere: boolean, area: { x0: number; x1: number; y0: number; y1: number }): Streak => {
+export const spawnStreak = (wx: number, wy: number, speedKmh: number, anywhere: boolean, area: { x0: number; x1: number; y0: number; y1: number }, zScale = 1): Streak => {
   const len = Math.min(22, 5 + speedKmh * 0.2);
   const life = rand(1.6, 3.4);
-  const z = rand(2, 9);
+  const z = rand(2, 9) * zScale;
   if (anywhere) {
     return { x: rand(area.x0, area.x1), y: rand(area.y0, area.y1), z, age: rand(0, life), life, len };
   }
@@ -236,6 +241,9 @@ uniform float uK;
 uniform float uOmega;
 uniform float uOpenAmp;
 uniform float uShoreAmp;
+// Μονάδες κουτιού ανά ένταση: πλάτος κύματος και κοφτού κύματος ανέμου σε πραγματική κλίμακα.
+uniform float uWaveUnits;
+uniform float uChopUnits;
 uniform float uHasWaves;
 uniform vec2 uWindDir;
 uniform float uWindAmp;
@@ -274,14 +282,15 @@ void main() {
       float amp = mix(uShoreAmp, uOpenAmp, clamp(d / 45.0, 0.0, 1.0));
       // Όσο ψηλώνει το κύμα, τόσο πιο μυτερή η κορυφή και πιο πλατιά η κοιλάδα (Gerstner).
       float crest = sin(phase) + 0.30 * amp * sin(2.0 * phase + 0.7);
-      z = amp * crest * ${WAVE_UNITS_AT_FULL.toFixed(1)};
+      z = amp * crest * uWaveUnits;
       // Gerstner: το νερό κινείται και οριζόντια — η κορυφή μαζεύεται και γέρνει μπροστά.
-      disp += uWaveDir * (amp * cos(phase) * 0.9) * (0.5 + 0.5 * w);
+      disp += uWaveDir * (amp * cos(phase) * uWaveUnits * 0.8) * (0.5 + 0.5 * w);
       // Δεύτερο, μικρότερο κύμα λίγο λοξά και λίγο πιο κοντό: η θάλασσα δεν είναι ποτέ ΕΝΑ ημίτονο.
       vec2 crossDir = normalize(uWaveDir + vec2(-uWaveDir.y, uWaveDir.x) * 0.42);
       float crossPhase = uK * 1.6 * mix(dot(crossDir, aPos), dot(crossDir, aShore) - d, w) - uOmega * 1.25 * uTime + 1.3;
-      z += amp * sin(crossPhase) * 0.6;
-      vWave = z;
+      z += amp * sin(crossPhase) * 0.6 * uWaveUnits;
+      // Για τον fragment shader: η ένταση (0..1,5), όχι τα μέτρα — το φως μέσα από την κορυφή.
+      vWave = amp * crest;
       if (uArriving > 0.5 && d < uBreakZone && uFoam > 0.0) {
         vFoam = uFoam * (0.5 + 0.5 * sin(phase)) * (1.0 - d / uBreakZone);
       }
@@ -292,7 +301,7 @@ void main() {
     // Ο άνεμος σηκώνει κοντό «κοφτό» κύμα (μήκος ~7 μονάδες, πάνω από το βήμα του πλέγματος).
     float kChop = 0.9;
     float chop = sin(kChop * dot(uWindDir, aPos) - kChop * uRipSpeed * 0.7 * uTime + aNoise * 4.0);
-    z += chop * ripA * 0.25;
+    z += chop * ripA * uChopUnits;
     vRip = ripA;
     vShadow = shadow;
   } else {
@@ -925,8 +934,9 @@ const buildMesh = (
 
       let height = 0;
       if (!sea) {
-        // Χωρίς ανάγλυφο: ήπια αμμουδιά, ως ~6 μονάδες — όχι λόφος πίσω από κάθε παραλία.
-        const ramp = Math.min(6, d * 0.15);
+        // Χωρίς ανάγλυφο: ήπια αμμουδιά (κλίση ~5 %), ως ~6 μονάδες — όχι λόφος πίσω από κάθε
+        // παραλία, και όχι λόφος ΚΑΤΩ από την κάμερα που στέκεται 30 μ. πίσω από το νερό.
+        const ramp = Math.min(6, d * 0.05);
         // Λίγο τρέμουλο στην άμμο για να μη γυαλίζει επίπεδη — ΜΟΝΟ στο πυκνό πλέγμα: στα
         // μακρόστενα κελιά του αραιού (1×36 μονάδες) το ίδιο τρέμουλο έβγαινε ρίγες.
         const fine = x >= GRID.x0 && x <= GRID.x1 && y >= GRID.y0 && y <= GRID.y1;
@@ -1003,30 +1013,78 @@ const buildMesh = (
 /* ------------------------------------------------------------- factory */
 
 /**
- * Η κάμερα στέκεται πίσω από την παραλία, λίγο ψηλά — όπως κάποιος σε λόφο πάνω από την άμμο —
- * και κοιτά προς τη θάλασσα. Το κύμα έρχεται ΠΡΟΣ τον θεατή και σπάει μπροστά του.
+ * Το σημείο που κοιτά το drone στην αρχή: η θάλασσα μπροστά από την παραλία, λίγο κάτω από
+ * την επιφάνεια ώστε το κάδρο να «κρατά» και την ακτή και το ανάγλυφο πίσω της.
  */
-const TARGET = [100, 22, -4];
+const DRONE_TARGET = [100, 22, -4];
+/** Διάρκεια της καθόδου από το drone στο ύψος ανθρώπου. */
+const INTRO_S = 4.5;
+
+export type CameraRest = { eye: number[]; target: number[] };
 
 /**
- * Η κάμερα ΔΕΝ είναι καρφωμένη: μπαίνει με ένα αργό fly-in (2,8 s, από πιο ψηλά και πιο
- * μακριά) και μετά περιστρέφεται ήπια γύρω από την παραλία, με λίγο ανεβοκατέβασμα — όπως
- * ένα drone που κρατά στόχο. Αυτό είναι που κάνει την εικόνα «βίντεο» αντί για διάγραμμα.
+ * Η κάμερα ξεκινά ψηλά και μακριά (drone: όλη η μορφολογία, βουνά, απέναντι ακτές) και σε
+ * 4,5 s κατεβαίνει και σταματά ΣΤΟ ΥΨΟΣ ΑΝΘΡΩΠΟΥ πάνω στην άμμο, 30 μ. πίσω από το νερό,
+ * κοιτώντας τη θάλασσα. Από εκεί το κύμα διαβάζεται σε πραγματική κλίμακα: 0,3 μ. είναι ένα
+ * γλείψιμο στην άμμο, 1,5 μ. ένας τοίχος μπροστά στον άνθρωπο. Στο τέλος μένει ένα ελαφρύ
+ * «χειρός» λίκνισμα και, με δυνατό άνεμο, ένα τρέμουλο.
  */
-const cameraEye = (tSec: number, distanceScale: number, heightScale: number, windShake: number): number[] => {
-  const intro = Math.min(1, tSec / 2.8);
+const cameraPose = (tSec: number, distanceScale: number, heightScale: number, windShake: number, rest: CameraRest): CameraRest => {
+  const intro = Math.min(1, tSec / INTRO_S);
   const ease = intro * intro * (3 - 2 * intro);
   const yaw = Math.sin(tSec * 0.11) * 0.16;
-  // Πιο κοντά και πιο χαμηλά από πριν (120/52 αντί 150/66): έτσι ένα κύμα μισού μέτρου
-  // ΦΑΙΝΕΤΑΙ, αντί να γίνεται υφή από ψηλά.
-  // Τέλος του fly-in: 100 μονάδες μακριά, 44 ψηλά — αρκετά κοντά ώστε ο άνθρωπος στη γραμμή
-  // του νερού (4,6 μονάδες) να διαβάζεται και στην πλήρη οθόνη του κινητού.
-  const radius = (100 + (1 - ease) * 130) * distanceScale;
-  const height = (44 + (1 - ease) * 88) * heightScale + Math.sin(tSec * 0.17) * 2.0;
-  // Το drone τρέμει στον αέρα: μηδέν ως 22 km/h, αισθητό στα 40+.
-  const shakeX = (Math.sin(tSec * 7.3) + Math.sin(tSec * 11.1) * 0.5) * windShake;
-  const shakeZ = (Math.sin(tSec * 9.7) + Math.sin(tSec * 13.7) * 0.5) * windShake * 0.6;
-  return [TARGET[0] + Math.sin(yaw) * radius + shakeX, TARGET[1] + Math.cos(yaw) * radius, TARGET[2] + height + shakeZ];
+  const radius = 230 * distanceScale;
+  const height = 132 * heightScale;
+  const droneEye = [DRONE_TARGET[0] + Math.sin(yaw) * radius, DRONE_TARGET[1] + Math.cos(yaw) * radius, DRONE_TARGET[2] + height];
+  // Το τρέμουλο του drone είναι μεγάλο (μονάδες)· του ανθρώπου ελάχιστο. Μηδέν ως 22 km/h.
+  const shakeAmp = windShake * (0.9 * (1 - ease) + 0.05 * ease);
+  const shakeX = (Math.sin(tSec * 7.3) + Math.sin(tSec * 11.1) * 0.5) * shakeAmp;
+  const shakeZ = (Math.sin(tSec * 9.7) + Math.sin(tSec * 13.7) * 0.5) * shakeAmp * 0.6;
+  // Λίκνισμα χεριού στο τέλος: λίγα εκατοστά, αργά.
+  const swayX = (Math.sin(tSec * 0.9) * 0.03 + Math.sin(tSec * 1.7) * 0.015) * ease;
+  const swayZ = Math.sin(tSec * 1.3) * 0.02 * ease;
+  const mixv = (a: number[], b: number[]) => [a[0] + (b[0] - a[0]) * ease, a[1] + (b[1] - a[1]) * ease, a[2] + (b[2] - a[2]) * ease];
+  // Όρθια οθόνη: ένα βήμα πιο πίσω στην άμμο, να χωρά η παραλία.
+  const restEye = [rest.eye[0], rest.eye[1] + (distanceScale - 1) * 12, rest.eye[2]];
+  const eye = mixv(droneEye, restEye);
+  const target = mixv(DRONE_TARGET, rest.target);
+  eye[0] += shakeX + swayX;
+  eye[2] += shakeZ + swayZ;
+  target[0] += swayX;
+  target[2] += swayZ;
+  return { eye, target };
+};
+
+/** Το y της γραμμής του νερού για ένα x του κουτιού (γραμμική παρεμβολή στα σημεία της ακτής). */
+const shoreYAt = (points: Point[], x: number): number => {
+  if (points.length === 0) return SHORELINE_BOX.pinY;
+  if (x <= points[0][0]) return points[0][1];
+  for (let i = 1; i < points.length; i += 1) {
+    const [x1, y1] = points[i - 1];
+    const [x2, y2] = points[i];
+    if (x <= x2) return x2 === x1 ? y2 : y1 + ((y2 - y1) * (x - x1)) / (x2 - x1);
+  }
+  return points[points.length - 1][1];
+};
+
+/**
+ * Το ύψος του εδάφους (μονάδες) στο πιο κοντινό σημείο του πλέγματος σε (x, y) — για να
+ * σταθεί η κάμερα, ο άνθρωπος και η ομπρέλα ΠΑΝΩ στην άμμο, όχι μέσα της ή στον αέρα.
+ */
+const groundZAt = (mesh: { vertices: Float32Array; count: number }, x: number, y: number): number => {
+  let best = Infinity;
+  let z = 0;
+  for (let i = 0; i < mesh.count; i += 1) {
+    const o = i * 15;
+    const dx = mesh.vertices[o] - x;
+    const dy = mesh.vertices[o + 1] - y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < best) {
+      best = d2;
+      z = mesh.vertices[o + 6];
+    }
+  }
+  return Number.isFinite(z) ? z : 0;
 };
 const LIGHT = (() => {
   const l = [-0.35, -0.45, 0.82];
@@ -1081,6 +1139,9 @@ export const createSeaMotionGl = (
 
   const wideIndices = Boolean(gl.getExtension('OES_element_index_uint'));
   const metresPerUnit = options.metresPerUnit && options.metresPerUnit > 0 ? options.metresPerUnit : 5;
+  const waveUnits = waveUnitsFor(metresPerUnit);
+  // Κοφτό κύμα ανέμου: ~15 εκ. πλάτος στα 45 km/h, πάνω από το κύμα της θάλασσας.
+  const chopUnits = (0.15 * WAVE_EXAGGERATION) / metresPerUnit;
   const relief = wideIndices ? options.relief : undefined;
   const mesh = buildMesh(points, seed, wideIndices ? 1 : 1.5, wideIndices, relief, metresPerUnit, options.satelliteUv, options.satelliteUvNear);
   if (!wideIndices && mesh.count > 65535) return null;
@@ -1090,6 +1151,24 @@ export const createSeaMotionGl = (
   const fogNear = relief ? 260 : 170;
   const fogFar = relief ? RELIEF_REACH_M / metresPerUnit : 520;
   const fogMax = 1.0;
+
+  // Η ΘΕΣΗ ΑΝΑΠΑΥΣΗΣ ΤΗΣ ΚΑΜΕΡΑΣ: πάνω στην άμμο, 8 μ. πίσω από τη γραμμή του νερού (λίγα
+  // βήματα από το νερό — από τα 30 μ. η θάλασσα γινόταν μια λωρίδα), στο ύψος ματιού (1,6 μ.,
+  // με την κοινή μεγέθυνση 1,5×) πάνω από το έδαφος ΕΚΕΙ — όχι πάνω από τη θάλασσα. Κοιτά προς
+  // τα ανοιχτά με 6° κλίση προς τα κάτω: ο ορίζοντας στο πάνω τρίτο, η ζώνη που σπάει το κύμα
+  // στη μέση του κάδρου, λίγη άμμος από κάτω.
+  const restX = SHORELINE_BOX.pinX;
+  const restY = shoreYAt(points, restX) + 8 / metresPerUnit;
+  const eyeAbove = (1.6 * WAVE_EXAGGERATION) / metresPerUnit;
+  const restEyeZ = groundZAt(mesh, restX, restY) + eyeAbove;
+  const lookAhead = 60;
+  const cameraRest: CameraRest = {
+    eye: [restX, restY, restEyeZ],
+    target: [restX, restY - lookAhead, restEyeZ - lookAhead * Math.tan((6 * Math.PI) / 180)],
+  };
+  // Το κοντινό επίπεδο κοπής ακολουθεί το ύψος του ματιού: η άμμος στο κάτω μέρος του κάδρου
+  // απέχει ~1,9× το ύψος (κλίση 27° κάτω από τον ορίζοντα), άρα 1,4× δεν κόβει ποτέ.
+  const nearPlane = Math.min(2.5, Math.max(0.7, eyeAbove * 1.4));
 
   const vbo = gl.createBuffer();
   const ibo = gl.createBuffer();
@@ -1149,6 +1228,7 @@ export const createSeaMotionGl = (
     uProj: u(program, 'uProj'), uView: u(program, 'uView'), uLightVP: u(program, 'uLightVP'), uTime: u(program, 'uTime'),
     uWaveDir: u(program, 'uWaveDir'), uArriving: u(program, 'uArriving'), uK: u(program, 'uK'), uOmega: u(program, 'uOmega'),
     uOpenAmp: u(program, 'uOpenAmp'), uShoreAmp: u(program, 'uShoreAmp'), uHasWaves: u(program, 'uHasWaves'),
+    uWaveUnits: u(program, 'uWaveUnits'), uChopUnits: u(program, 'uChopUnits'),
     uWindDir: u(program, 'uWindDir'), uWindAmp: u(program, 'uWindAmp'), uOffshore: u(program, 'uOffshore'),
     uRipSpeed: u(program, 'uRipSpeed'), uBreakZone: u(program, 'uBreakZone'), uFoam: u(program, 'uFoam'),
   });
@@ -1185,6 +1265,8 @@ export const createSeaMotionGl = (
     gl!.uniform1f(L.uOpenAmp, m.openAmp);
     gl!.uniform1f(L.uShoreAmp, m.shoreAmp);
     gl!.uniform1f(L.uHasWaves, m.hasWaves ? 1 : 0);
+    gl!.uniform1f(L.uWaveUnits, waveUnits);
+    gl!.uniform1f(L.uChopUnits, chopUnits);
     gl!.uniform2f(L.uWindDir, m.wx, m.wy);
     gl!.uniform1f(L.uWindAmp, m.windAmp);
     gl!.uniform1f(L.uOffshore, m.offshoreWind ? 1 : 0);
@@ -1240,10 +1322,11 @@ export const createSeaMotionGl = (
     if (canvas.width !== width) canvas.width = width;
     if (canvas.height !== height) canvas.height = height;
     const aspect = width / height;
-    fovy = Math.min(62, Math.max(46, 46 * Math.sqrt(2 / aspect)));
+    // Φακός 38°–58°: λίγο πιο «κλειστός» από πριν, όπως το βλέμμα που κοιτά τη θάλασσα.
+    fovy = Math.min(58, Math.max(38, 38 * Math.sqrt(1.8 / aspect)));
     distanceScale = aspect < 1 ? 1.3 : aspect < 1.6 ? 1.12 : 1;
     heightScale = aspect < 1 ? 0.7 : 1;
-    proj = perspective(fovy, aspect, 4, relief ? 40000 : 1400);
+    proj = perspective(fovy, aspect, nearPlane, relief ? 40000 : 1400);
     tanHalfY = Math.tan((fovy * Math.PI) / 360);
     tanHalfX = tanHalfY * aspect;
     // Η υφή της σκηνής ακολουθεί το μέγεθος του καμβά.
@@ -1270,9 +1353,18 @@ export const createSeaMotionGl = (
   const MAX_SPRAY = 160;
   const spray: number[] = [];
   const pointData = new Float32Array(MAX_SPRAY * 4);
-  const personHeight = (1.75 * WAVE_UNITS_AT_FULL) / 1.6;
-  const umbrellaHeight = (2.2 * WAVE_UNITS_AT_FULL) / 1.6;
+  const personHeight = (1.75 * WAVE_EXAGGERATION) / metresPerUnit;
+  const umbrellaHeight = (2.2 * WAVE_EXAGGERATION) / metresPerUnit;
   const area = { x0: -40, x1: 240, y0: -90, y1: 125 };
+  // Τα κατακόρυφα των μικρών πραγμάτων (ρεύματα ανέμου, σταγόνες) στην ίδια κλίμακα.
+  const vScale = WAVE_EXAGGERATION / metresPerUnit;
+  // Ο άνθρωπος ΜΕΣΑ στο νερό, 10 μ. από την ακτή, λίγο αριστερά — το μέτρο του κύματος: η
+  // θάλασσα του κρύβει τα πόδια ως εκεί που λέει το HUD, και το κύμα ανεβαίνει πάνω του.
+  // Στέκεται στον πάτο (~0,35 μ. βάθος)· η επιφάνεια του νερού κρύβει ό,τι είναι από κάτω.
+  const personBase = [99.2, shoreYAt(points, 99.2) - 10 / metresPerUnit, -(0.35 * WAVE_EXAGGERATION) / metresPerUnit];
+  // Η ομπρέλα στην άμμο δεξιά, λίγο πίσω από την κάμερα: φαίνεται από το drone, όχι στο τέλος.
+  const umbrellaBase = [103, shoreYAt(points, 103) + 1.6, 0];
+  umbrellaBase[2] = groundZAt(mesh, umbrellaBase[0], umbrellaBase[1]) + 0.05;
 
   let disposed = false;
 
@@ -1292,10 +1384,11 @@ export const createSeaMotionGl = (
     }
     const cloudCover = clamp01(params.cloudCover ?? 0.1);
     const shallowReach = params.shallowReach ?? 110;
-    const eye = cameraEye(tSec, distanceScale, heightScale, windShake);
-    const view = lookAt(eye, TARGET, [0, 0, 1]);
+    const pose = cameraPose(tSec, distanceScale, heightScale, windShake, cameraRest);
+    const eye = pose.eye;
+    const view = lookAt(eye, pose.target, [0, 0, 1]);
     // Η βάση της κάμερας για τον ουρανό (ακτίνα ανά εικονοστοιχείο).
-    const f = [TARGET[0] - eye[0], TARGET[1] - eye[1], TARGET[2] - eye[2]];
+    const f = [pose.target[0] - eye[0], pose.target[1] - eye[1], pose.target[2] - eye[2]];
     const fl = Math.hypot(f[0], f[1], f[2]) || 1;
     const fwd = [f[0] / fl, f[1] / fl, f[2] / fl];
     const rgt = [fwd[1], -fwd[0], 0];
@@ -1338,11 +1431,11 @@ export const createSeaMotionGl = (
       gl.uniformMatrix4fv(PD.uView, false, lightView);
       gl.uniform3f(PD.uRight, lr[0] / lrl, lr[1] / lrl, 0);
       gl.uniform1f(PD.uTime, tSec);
-      gl.uniform3f(PD.uBase, 100, 78.8, 0.15);
+      gl.uniform3f(PD.uBase, personBase[0], personBase[1], personBase[2]);
       gl.uniform2f(PD.uSize, personHalfW * 2, personHeight);
       gl.uniform1f(PD.uKind, 0);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      gl.uniform3f(PD.uBase, 108, 84, 1.4);
+      gl.uniform3f(PD.uBase, umbrellaBase[0], umbrellaBase[1], umbrellaBase[2]);
       gl.uniform2f(PD.uSize, umbrellaHeight, umbrellaHeight);
       gl.uniform1f(PD.uKind, 1);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -1393,7 +1486,8 @@ export const createSeaMotionGl = (
     gl.uniform1i(T.uShadowMap, 2);
     gl.uniform1f(T.uHasShadow, useShadows ? 1 : 0);
     gl.uniform1f(T.uShadowTexel, 1 / SHADOW_SIZE);
-    gl.uniform1f(T.uRunup, 1.2 + m.shoreAmp * 6);
+    // Ως πού ανεβαίνει το νερό στην άμμο, σε μέτρα οριζόντια (2 μ. + 10 μ. ανά μέτρο κύματος).
+    gl.uniform1f(T.uRunup, (2 + (params.shoreWaveM ?? params.openWaveM ?? 0) * 10) / metresPerUnit);
     gl.activeTexture(gl.TEXTURE0);
     gl.uniform1f(T.uDayLight, dayLight);
     gl.uniform1f(T.uCloudCover, cloudCover);
@@ -1422,11 +1516,11 @@ export const createSeaMotionGl = (
     gl.uniform1f(P.uDayLight, dayLight);
     gl.uniform1f(P.uTime, tSec);
     // Στη γραμμή του νερού, ολόκληρος: το κύμα ανεβαίνει ως εκεί που λέει το HUD.
-    gl.uniform3f(P.uBase, 100, 78.8, 0.15);
+    gl.uniform3f(P.uBase, personBase[0], personBase[1], personBase[2]);
     gl.uniform2f(P.uSize, personHalfW * 2, personHeight);
     gl.uniform1f(P.uKind, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    gl.uniform3f(P.uBase, 108, 84, 1.4);
+    gl.uniform3f(P.uBase, umbrellaBase[0], umbrellaBase[1], umbrellaBase[2]);
     gl.uniform2f(P.uSize, umbrellaHeight, umbrellaHeight);
     gl.uniform1f(P.uKind, 1);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -1435,7 +1529,7 @@ export const createSeaMotionGl = (
     // Τα ρεύματα του ανέμου, λίγο πάνω από το νερό.
     if (m.hasWind && m.windAmp > 0) {
       const wanted = Math.min(30, Math.max(2, Math.round(m.windSpeed / 2.2)));
-      while (streaks.length < wanted) streaks.push(spawnStreak(m.wx, m.wy, m.windSpeed, true, area));
+      while (streaks.length < wanted) streaks.push(spawnStreak(m.wx, m.wy, m.windSpeed, true, area, vScale * 0.5));
       while (streaks.length > wanted) streaks.pop();
       const speed = 8 + m.windSpeed * 0.6;
       let n = 0;
@@ -1446,12 +1540,12 @@ export const createSeaMotionGl = (
         streak.y += m.wy * speed * dtSec;
         const out = streak.x < area.x0 - 20 || streak.x > area.x1 + 20 || streak.y < area.y0 - 20 || streak.y > area.y1 + 20;
         if (streak.age > streak.life || out) {
-          streaks[s] = spawnStreak(m.wx, m.wy, m.windSpeed, false, area);
+          streaks[s] = spawnStreak(m.wx, m.wy, m.windSpeed, false, area, vScale * 0.5);
           continue;
         }
         const fade = Math.sin((streak.age / streak.life) * Math.PI) * (0.5 + 0.45 * m.windAmp);
-        // Ουρά διάφανη, κεφαλή φωτεινή· πάχος 0,5 μονάδες κάθετα στην κίνηση.
-        const hw = 0.5;
+        // Ουρά διάφανη, κεφαλή φωτεινή· πάχος ~1 μ. κάθετα στην κίνηση.
+        const hw = 0.7 * vScale;
         const px = -m.wy * hw;
         const py = m.wx * hw;
         const tailX = streak.x - m.wx * streak.len;
@@ -1538,7 +1632,9 @@ export const createSeaMotionGl = (
       for (let i = 0; i < born && spray.length < MAX_SPRAY * 8; i += 1) {
         const x = rand(40, 160);
         const y = rand(-40, 70);
-        spray.push(x, y, 1.5, m.wx * (6 + m.windSpeed * 0.3) + rand(-2, 2), m.wy * (6 + m.windSpeed * 0.3) + rand(-2, 2), rand(4, 9), 0, rand(0.6, 1.3));
+        // Ταχύτητες σε μονάδες/s από μέτρα: ο άνεμος (km/h → m/s) και μια εκτόξευση 3–6 μ./s.
+        const windU = ((m.windSpeed / 3.6) * 0.8) / metresPerUnit;
+        spray.push(x, y, 0.4 * vScale, m.wx * windU + rand(-0.5, 0.5) * vScale, m.wy * windU + rand(-0.5, 0.5) * vScale, rand(3, 6) * vScale, 0, rand(0.6, 1.3));
       }
     }
     {
@@ -1552,10 +1648,10 @@ export const createSeaMotionGl = (
         }
         spray[i] += spray[i + 3] * dtSec;
         spray[i + 1] += spray[i + 4] * dtSec;
-        spray[i + 5] -= 14 * dtSec;
+        spray[i + 5] -= 9.8 * vScale * dtSec;
         spray[i + 2] += spray[i + 5] * dtSec;
         const fade = 1 - spray[i + 6] / spray[i + 7];
-        pointData[n++] = spray[i]; pointData[n++] = spray[i + 1]; pointData[n++] = Math.max(0.5, spray[i + 2]); pointData[n++] = 0.75 * fade;
+        pointData[n++] = spray[i]; pointData[n++] = spray[i + 1]; pointData[n++] = Math.max(0.1 * vScale, spray[i + 2]); pointData[n++] = 0.75 * fade;
       }
       if (n > 0) {
         gl.enable(gl.BLEND);
