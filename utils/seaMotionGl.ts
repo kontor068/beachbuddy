@@ -139,8 +139,15 @@ export const REFRACTION_UNITS = 38;
 export const WIND_SHADOW_UNITS = 34;
 /** Υπερβολή ύψους του ανάγλυφου: 1,25× — τα ελληνικά βουνά δίπλα στη θάλασσα είναι ήδη δραματικά. */
 const RELIEF_EXAGGERATION = 1.25;
-/** Ως πού απλώνει το πλέγμα (και η ομίχλη) όταν υπάρχει ανάγλυφο: απέναντι ακτές ως 16 χλμ. */
-const RELIEF_REACH_M = 16000;
+/**
+ * Ως πού απλώνει το πλέγμα όταν υπάρχει ανάγλυφο: 28 χλμ, ώστε από τη Θεσπρωτία να φαίνεται η
+ * Κέρκυρα απέναντι (20–25 χλμ). Δύο ζώνες: 150 μ. ως 6 χλμ (λόφοι πίσω από την παραλία), 450 μ.
+ * πιο πέρα (σιλουέτες βουνών) — λιγότερες κορυφές από τα 16 χλμ σε μία ζώνη που είχαμε πριν.
+ */
+const RELIEF_REACH_M = 28000;
+const RELIEF_NEAR_M = 6000;
+const RELIEF_NEAR_STEP_M = 150;
+const RELIEF_FAR_STEP_M = 450;
 /**
  * ΠΡΑΓΜΑΤΙΚΗ ΚΛΙΜΑΚΑ, με μία κοινή μεγέθυνση 1,5× για ΟΛΑ τα κατακόρυφα κοντά στην ακτή: το
  * κύμα, τον άνθρωπο, την ομπρέλα, τις σταγόνες. Έτσι ο λόγος «κύμα προς άνθρωπο» μένει τίμιος
@@ -892,11 +899,22 @@ const FRAME = { x0: -10, x1: 210, y0: -10, y1: 120 } as const;
 type ReliefFn = (x: number, y: number) => number | null;
 
 /** Συντεταγμένες πλέγματος: ένα αραιό εξωτερικό (σε μέτρα) γύρω από ένα πυκνό εσωτερικό. */
-const axisCoordinates = (inner0: number, inner1: number, innerStep: number, outerUnits: number, outerStep: number): number[] => {
+/** Οι συντεταγμένες μιας εξωτερικής ζώνης από το χείλος (edge) προς τα έξω, σε δύο βήματα. */
+const outerCoordinates = (edge: number, dir: 1 | -1, metresPerUnit: number, reachM: number): number[] => {
   const out: number[] = [];
-  for (let v = inner0 - outerUnits; v < inner0 - outerStep * 0.5; v += outerStep) out.push(v);
+  const near = RELIEF_NEAR_STEP_M / metresPerUnit;
+  const far = RELIEF_FAR_STEP_M / metresPerUnit;
+  let v = near;
+  while (v <= reachM / metresPerUnit + 1e-6) {
+    out.push(edge + dir * v);
+    v += v < RELIEF_NEAR_M / metresPerUnit - 1e-6 ? near : far;
+  }
+  return out;
+};
+const axisCoordinates = (inner0: number, inner1: number, innerStep: number, metresPerUnit: number, reachM: number): number[] => {
+  const out: number[] = outerCoordinates(inner0, -1, metresPerUnit, reachM).reverse();
   for (let v = inner0; v <= inner1 + 1e-6; v += innerStep) out.push(v);
-  for (let v = inner1 + outerStep; v <= inner1 + outerUnits + 1e-6; v += outerStep) out.push(v);
+  out.push(...outerCoordinates(inner1, 1, metresPerUnit, reachM));
   return out;
 };
 
@@ -915,17 +933,13 @@ const buildMesh = (
   let xs: number[];
   let ys: number[];
   if (relief && wideIndices) {
-    // Με ανάγλυφο: 16 χλμ προς τη θάλασσα και στα πλάγια, 2,5 χλμ πίσω από την κάμερα,
-    // σε βήμα 150 μ. — αρκετό για βουνά και απέναντι ακτές, όχι για ακτογραμμή (αυτή είναι
-    // δουλειά του πυκνού εσωτερικού).
-    const outerStep = 150 / metresPerUnit;
-    xs = axisCoordinates(GRID.x0, GRID.x1, step, RELIEF_REACH_M / metresPerUnit, outerStep);
-    const seaward = RELIEF_REACH_M / metresPerUnit;
-    const landward = 2500 / metresPerUnit;
-    ys = [];
-    for (let v = GRID.y0 - seaward; v < GRID.y0 - outerStep * 0.5; v += outerStep) ys.push(v);
+    // Με ανάγλυφο: 28 χλμ προς τη θάλασσα και στα πλάγια (δύο ζώνες), 2,5 χλμ πίσω από την
+    // κάμερα — αρκετό για βουνά και απέναντι ακτές, όχι για ακτογραμμή (αυτή είναι δουλειά
+    // του πυκνού εσωτερικού).
+    xs = axisCoordinates(GRID.x0, GRID.x1, step, metresPerUnit, RELIEF_REACH_M);
+    ys = outerCoordinates(GRID.y0, -1, metresPerUnit, RELIEF_REACH_M).reverse();
     for (let v = GRID.y0; v <= GRID.y1 + 1e-6; v += step) ys.push(v);
-    for (let v = GRID.y1 + outerStep; v <= GRID.y1 + landward + 1e-6; v += outerStep) ys.push(v);
+    ys.push(...outerCoordinates(GRID.y1, 1, metresPerUnit, 2500));
   } else {
     xs = [];
     for (let v = GRID.x0; v <= GRID.x1 + 1e-6; v += step) xs.push(v);
@@ -1105,9 +1119,7 @@ const cameraPose = (tSec: number, distanceScale: number, heightScale: number, wi
   const swayX = (Math.sin(tSec * 0.9) * 0.03 + Math.sin(tSec * 1.7) * 0.015) * ease;
   const swayZ = Math.sin(tSec * 1.3) * 0.02 * ease;
   const mixv = (a: number[], b: number[]) => [a[0] + (b[0] - a[0]) * ease, a[1] + (b[1] - a[1]) * ease, a[2] + (b[2] - a[2]) * ease];
-  // Όρθια οθόνη: ένα βήμα πιο πίσω στην άμμο, να χωρά η παραλία.
-  const restEye = [rest.eye[0], rest.eye[1] + (distanceScale - 1) * 12, rest.eye[2]];
-  const eye = mixv(droneEye, restEye);
+  const eye = mixv(droneEye, rest.eye);
   const target = mixv(DRONE_TARGET, rest.target);
   eye[0] += shakeX + swayX;
   eye[2] += shakeZ + swayZ;
@@ -1227,7 +1239,8 @@ export const createSeaMotionGl = (
   // σβήνει το νερό λίγο πριν την άκρη του πλέγματος.
   // Η άκρη του πλέγματος πέφτει ΑΚΡΙΒΩΣ εκεί που η ομίχλη γίνεται 100% — δεν φαίνεται ποτέ.
   const fogNear = relief ? 260 : 170;
-  const fogFar = relief ? RELIEF_REACH_M / metresPerUnit : 520;
+  // Η ομίχλη «τελειώνει» λίγο πέρα από το πλέγμα, ώστε η Κέρκυρα στα 25 χλμ να μένει σιλουέτα.
+  const fogFar = relief ? (RELIEF_REACH_M * 1.3) / metresPerUnit : 520;
   const fogMax = 1.0;
 
   // Η ΘΕΣΗ ΑΝΑΠΑΥΣΗΣ ΤΗΣ ΚΑΜΕΡΑΣ: πάνω στην άμμο, 8 μ. πίσω από τη γραμμή του νερού (λίγα
@@ -1244,9 +1257,9 @@ export const createSeaMotionGl = (
     eye: [restX, restY, restEyeZ],
     target: [restX, restY - lookAhead, restEyeZ - lookAhead * Math.tan((6 * Math.PI) / 180)],
   };
-  // Το κοντινό επίπεδο κοπής ακολουθεί το ύψος του ματιού: η άμμος στο κάτω μέρος του κάδρου
-  // απέχει ~1,9× το ύψος (κλίση 27° κάτω από τον ορίζοντα), άρα 1,4× δεν κόβει ποτέ.
-  const nearPlane = Math.min(2.5, Math.max(0.7, eyeAbove * 1.4));
+  // Το κοντινό επίπεδο κοπής ακολουθεί το ύψος του ματιού: στο όρθιο κινητό (φακός 58°, κλίση
+  // 6°) η άμμος στο κάτω μέρος του κάδρου απέχει ~1,4× το ύψος, άρα 0,8× δεν κόβει ποτέ.
+  const nearPlane = Math.min(2.5, Math.max(0.4, eyeAbove * 0.8));
 
   const vbo = gl.createBuffer();
   const ibo = gl.createBuffer();
