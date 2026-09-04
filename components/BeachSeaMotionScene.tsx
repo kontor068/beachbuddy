@@ -92,7 +92,6 @@ export type SceneHour = {
 /* --------------------------------------------------------------- copy */
 
 type SceneCopy = {
-  caption: string;
   aria: (name: string) => string;
   noData: string;
   expand: string;
@@ -138,7 +137,6 @@ const reachIt = { ankle: 'alla caviglia', knee: 'al ginocchio', waist: 'alla vit
 
 const sceneCopy: Record<LanguageCode, SceneCopy> = {
   gr: {
-    caption: 'Προσομοίωση από τα δεδομένα της ώρας, όχι κάμερα',
     aria: name => `Κίνηση κύματος και ανέμου πάνω στην ακτογραμμή της παραλίας ${name}`,
     noData: 'Χωρίς δεδομένα ώρας',
     expand: 'Άνοιξε σε πλήρη οθόνη',
@@ -160,7 +158,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     look: 'Σύρε για να κοιτάξεις γύρω',
   },
   en: {
-    caption: "Simulation from this hour's data, not a camera",
     aria: name => `Wave and wind motion over the shoreline of ${name}`,
     noData: 'No data for this hour',
     expand: 'Open full screen',
@@ -182,7 +179,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     look: 'Drag to look around',
   },
   de: {
-    caption: 'Simulation aus den Daten dieser Stunde, keine Kamera',
     aria: name => `Wellen- und Windbewegung über der Küstenlinie von ${name}`,
     noData: 'Keine Daten für diese Stunde',
     expand: 'Vollbild öffnen',
@@ -204,7 +200,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     look: 'Ziehen, um sich umzusehen',
   },
   fr: {
-    caption: "Simulation d'après les données de l'heure, pas une caméra",
     aria: name => `Mouvement de la houle et du vent sur le littoral de ${name}`,
     noData: 'Pas de données pour cette heure',
     expand: 'Ouvrir en plein écran',
@@ -226,7 +221,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     look: 'Glisser pour regarder autour',
   },
   it: {
-    caption: "Simulazione dai dati dell'ora, non una telecamera",
     aria: name => `Movimento di onda e vento sulla costa di ${name}`,
     noData: 'Nessun dato per questa ora',
     expand: 'Apri a schermo intero',
@@ -1177,6 +1171,20 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               {playedHour && <span className={chipLabel}>{copy.region}</span>}
             </div>
           )}
+          {/* Τι λέει η πυξίδα, με λόγια (μία γραμμή το καθένα): πώς πέφτει το κύμα, και ο άνεμος
+              σε σχέση με το κύμα. */}
+          {full && hasFacing && showWaveChip && (
+            <div className={chip}>
+              <span className="h-2 w-2 shrink-0 rounded-full bg-blue-200" aria-hidden="true" />
+              <span>{copy.approach(approachKind(waveArrowFrom, facingDeg))}</span>
+            </div>
+          )}
+          {full && hasFacing && showWaveChip && hasWind && (
+            <div className={chip}>
+              <span className="h-2 w-2 shrink-0 rounded-full bg-cyan-300" aria-hidden="true" />
+              <span>{copy.alignment(alignmentKind(windFromShown as number, waveArrowFrom))}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1189,28 +1197,11 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       {/* Κάτω: πυξίδα αριστερά, «ΠΡΟΣΟΜΟΙΩΣΗ» με παλλόμενη κουκκίδα και το κουμπί δεξιά. */}
       <div className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 ${edge}`}>
         <div className="pointer-events-none flex items-end gap-1.5">
-          {hasFacing && <DirectionRose facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 64 : 30} label={copy.rose} />}
-          {/* Τι λέει η πυξίδα, με λόγια: πώς πέφτει το κύμα, και ο άνεμος σε σχέση με το κύμα. */}
-          {full && hasFacing && (showWaveChip || hasWind) && (
-            <div className="flex flex-col gap-1 pb-0.5">
-              {showWaveChip && (
-                <span className="flex items-center gap-1.5 rounded-md border border-cyan-300/30 bg-slate-950/60 px-2 py-1 text-[11px] font-bold text-cyan-50 backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-blue-200" aria-hidden="true" />
-                  {copy.approach(approachKind(waveArrowFrom, facingDeg))}
-                </span>
-              )}
-              {hasWind && showWaveChip && (
-                <span className="flex items-center gap-1.5 rounded-md border border-cyan-300/30 bg-slate-950/60 px-2 py-1 text-[11px] font-bold text-cyan-50 backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-cyan-300" aria-hidden="true" />
-                  {copy.alignment(alignmentKind(windFromShown as number, waveArrowFrom))}
-                </span>
-              )}
-            </div>
-          )}
+          {hasFacing && <DirectionRose facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 60 : 30} label={copy.rose} />}
         </div>
         <div className="flex items-center gap-1.5">
           {full && mosaic && (
-            <span className="pointer-events-none rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70">{mosaic.attribution}</span>
+            <span className="pointer-events-none hidden whitespace-nowrap rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70 sm:inline">{mosaic.attribution}</span>
           )}
           {dayHours.length > 1 && (
             <button
@@ -1219,7 +1210,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               aria-pressed={dayPlaying}
               aria-label={dayPlaying ? copy.stopDay : copy.playDay}
               title={dayPlaying ? copy.stopDay : copy.playDay}
-              className={`flex ${full ? 'h-8 gap-1.5 px-2.5 text-[10px]' : 'h-6 gap-1 px-1.5 text-[8px]'} cursor-pointer items-center rounded border border-cyan-300/40 bg-slate-950/70 font-black tracking-[0.14em] text-cyan-100 transition hover:bg-slate-900`}
+              className={`flex ${full ? 'h-8 gap-1.5 px-2.5 text-[10px]' : 'h-6 gap-1 px-1.5 text-[8px]'} cursor-pointer items-center whitespace-nowrap rounded border border-cyan-300/40 bg-slate-950/70 font-black tracking-[0.14em] text-cyan-100 transition hover:bg-slate-900`}
             >
               {dayPlaying ? <Pause className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" /> : <Play className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" />}
               {full ? (dayPlaying ? (hourLabel ?? copy.stopDay) : copy.playDay) : (dayPlaying ? hourLabel : null)}
@@ -1265,7 +1256,6 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
-          <p className="pointer-events-none absolute inset-x-0 bottom-[5.5rem] sm:bottom-24 px-4 text-center text-[11px] font-semibold text-cyan-100/70">{copy.caption}</p>
         </>
       )}
     </div>
@@ -1363,7 +1353,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         variant="popup"
         onExpand={() => setFullOpen(true)}
       />
-      <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{copy.caption}{mosaic ? ` · ${mosaic.attribution}` : ''}</p>
+      {mosaic && <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{mosaic.attribution}</p>}
       {fullOpen && typeof document !== 'undefined' && (
         <FullScreenScene
           item={item}
