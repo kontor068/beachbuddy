@@ -51,6 +51,11 @@ export type AnalyticsEvent =
   | 'map_viewed'
   | 'map_marker_clicked'
   | 'map_sea_motion_play'
+  // Το ημερολόγιο δουλειάς της landing: άνοιξε το «όλα τα νέα», πάτησε σύνδεσμο περιοχής,
+  // ή ήρθε από τη γραμμή «Τελευταία βελτίωση» του footer.
+  | 'landing_worklog_expanded'
+  | 'landing_worklog_link_clicked'
+  | 'footer_latest_work_clicked'
   // Street map vs satellite imagery. Tells us whether the aerial view is a niche
   // toggle or the one people actually want to land on.
   | 'map_basemap_toggle'

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Compass, Cookie, FileText, Flag, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
+import { Compass, Cookie, FileText, Flag, LifeBuoy, Mail, ShieldCheck, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getGuidesHubLink } from '../utils/beachGuides';
 import { getLocalizedCopy } from '../utils/i18n';
+import { trackEvent } from '../services/analyticsService';
 import { loadLegalDoc, legalLastUpdated, LEGAL_OPERATOR, LegalDoc, LegalKind } from '../utils/legalContent';
+import { changelogShort, formatChangelogDate, latestChangelogEntry } from './landing/changelog';
+import { athensDayKey } from '../utils/athensTime';
 import { buildReportProblemMailto, currentPagePath } from '../utils/reportProblem';
 import { LegalDocument } from './LegalDocument';
 import { CookieSettings } from './CookieSettings';
@@ -45,6 +48,7 @@ const copy = {
     guides: 'Beach guides',
     reportProblem: 'Something wrong here?',
     reportProblemSubject: 'Wrong data on CalmBeach',
+    latestWork: 'Latest improvement',
   },
   gr: {
     terms: 'Όροι Χρήσης',
@@ -68,6 +72,7 @@ const copy = {
     guides: 'Οδηγοί παραλιών',
     reportProblem: 'Κάτι δεν πάει καλά εδώ;',
     reportProblemSubject: 'Λάθος στοιχείο στο CalmBeach',
+    latestWork: 'Τελευταία βελτίωση',
   },
 };
 
@@ -80,6 +85,8 @@ const modalMeta: Record<LegalModal, { icon: typeof FileText }> = {
 export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
   const [activeModal, setActiveModal] = useState<LegalModalView | null>(null);
   const c = getLocalizedCopy(language, copy);
+  const latestWork = latestChangelogEntry();
+  const latestWorkToday = athensDayKey();
   // Built at render, not at module load: the SPA changes pathname without remounting the
   // footer, so a value captured once would name whichever page happened to load first.
   const reportProblemHref = buildReportProblemMailto(c.reportProblemSubject, currentPagePath());
@@ -189,6 +196,26 @@ export const LegalFooter: React.FC<LegalFooterProps> = ({ language }) => {
               <p className="mt-3 flex items-start justify-center gap-2 text-xs leading-snug text-slate-500 md:justify-start">
                 <LifeBuoy className="mt-0.5 h-4 w-4 shrink-0 text-teal-600/80" aria-hidden="true" />
                 <span className="max-w-sm">{c.footerNote}</span>
+              </p>
+              {/* «ΓΙΝΕΤΑΙ ΔΟΥΛΕΙΑ» ΣΕ ΚΑΘΕ ΣΕΛΙΔΑ (04/09/2026): το 88% έρχεται από Google κατευθείαν
+                  σε σελίδα παραλίας και δεν βλέπει ποτέ τη landing. Μία γραμμή, μικρά γράμματα,
+                  η πιο πρόσφατη εγγραφή του ημερολογίου — και σύνδεσμος στο πλήρες, στη landing.
+                  Χειρόγραφη εγγραφή, όχι ημερομηνία build: το build τρέχει και για δεδομένα. */}
+              <p className="mt-3 text-xs leading-snug text-slate-500">
+                <a
+                  href="/#changelog"
+                  onClick={() => trackEvent('footer_latest_work_clicked', undefined, { locale: language })}
+                  className="inline-flex max-w-sm items-start gap-1.5 rounded text-left underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                >
+                  <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-teal-600/80" aria-hidden="true" />
+                  <span>
+                    <span className="font-semibold text-slate-600">{c.latestWork}</span>
+                    {' · '}
+                    <span className="tabular-nums">{formatChangelogDate(latestWork.date, language, latestWorkToday)}</span>
+                    {' · '}
+                    {changelogShort(latestWork, language)} →
+                  </span>
+                </a>
               </p>
             </div>
 
