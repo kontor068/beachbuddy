@@ -8,7 +8,7 @@ import { sunPosition } from '../utils/sunPosition';
 import { startSeaSound, type SeaSound } from '../utils/seaSound';
 import { loadSatelliteMosaic, type SatelliteMosaic } from '../services/satelliteMosaic';
 import { toAthensWallClock } from '../utils/athensTime';
-import { createSeaMotionGl, deriveMotion, type SeaMotionGl, type SeaMotionParams } from '../utils/seaMotionGl';
+import { alignmentKind, approachKind, createSeaMotionGl, deriveMotion, smoothMotion, type AlignmentKind, type ApproachKind, type SeaMotionGl, type SeaMotionLook, type SeaMotionParams } from '../utils/seaMotionGl';
 import { loadBeachRelief, type BeachReliefGrid } from '../services/beachReliefService';
 
 /**
@@ -109,7 +109,26 @@ type SceneCopy = {
   /** Ως πού φτάνει το νερό σε έναν άνθρωπο 1,75 μ. */
   reach: (level: 'ankle' | 'knee' | 'waist' | 'chest' | 'neck' | 'over') => string;
   night: string;
+  /** Πώς πέφτει το κύμα στην ακτή (γεωμετρία διεύθυνσης προς προσανατολισμό). */
+  approach: (kind: ApproachKind) => string;
+  /** Άνεμος σε σχέση με το κύμα. */
+  alignment: (kind: AlignmentKind) => string;
+  /** Η πυξίδα κατευθύνσεων, για τον αναγνώστη οθόνης. */
+  rose: string;
+  /** Το σύρσιμο για να κοιτάξεις γύρω. */
+  look: string;
 };
+
+const approachGr = { direct: 'κύμα κατά μέτωπο', oblique: 'κύμα λοξά', parallel: 'κύμα παράλληλα στην ακτή', offshore: 'κύμα από τη στεριά' } as const;
+const approachEn = { direct: 'waves head-on', oblique: 'waves at an angle', parallel: 'waves along the shore', offshore: 'waves from the land' } as const;
+const approachDe = { direct: 'Wellen frontal', oblique: 'Wellen schräg', parallel: 'Wellen längs der Küste', offshore: 'Wellen vom Land' } as const;
+const approachFr = { direct: 'houle de face', oblique: 'houle en biais', parallel: 'houle le long du rivage', offshore: 'houle venant de la terre' } as const;
+const approachIt = { direct: 'onde frontali', oblique: 'onde oblique', parallel: 'onde lungo la riva', offshore: 'onde da terra' } as const;
+const alignGr = { aligned: 'άνεμος μαζί με το κύμα', crossed: 'άνεμος σταυρωτά στο κύμα', against: 'άνεμος κόντρα στο κύμα' } as const;
+const alignEn = { aligned: 'wind with the waves', crossed: 'wind across the waves', against: 'wind against the waves' } as const;
+const alignDe = { aligned: 'Wind mit den Wellen', crossed: 'Wind quer zu den Wellen', against: 'Wind gegen die Wellen' } as const;
+const alignFr = { aligned: 'vent avec la houle', crossed: 'vent en travers de la houle', against: 'vent contre la houle' } as const;
+const alignIt = { aligned: 'vento con le onde', crossed: 'vento di traverso alle onde', against: 'vento contro le onde' } as const;
 
 const reachGr = { ankle: 'ως τον αστράγαλο', knee: 'ως το γόνατο', waist: 'ως τη μέση', chest: 'ως το στήθος', neck: 'ως τον λαιμό', over: 'πάνω από το κεφάλι' } as const;
 const reachEn = { ankle: 'ankle-deep', knee: 'knee-high', waist: 'waist-high', chest: 'chest-high', neck: 'neck-high', over: 'overhead' } as const;
@@ -135,6 +154,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     region: 'περιοχή',
     reach: level => reachGr[level],
     night: 'νύχτα',
+    approach: kind => approachGr[kind],
+    alignment: kind => alignGr[kind],
+    rose: 'Πυξίδα: από πού έρχονται κύμα και άνεμος σε σχέση με την ακτή',
+    look: 'Σύρε για να κοιτάξεις γύρω',
   },
   en: {
     caption: "Simulation from this hour's data, not a camera",
@@ -153,6 +176,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     region: 'region',
     reach: level => reachEn[level],
     night: 'night',
+    approach: kind => approachEn[kind],
+    alignment: kind => alignEn[kind],
+    rose: 'Compass: where waves and wind come from, relative to the shore',
+    look: 'Drag to look around',
   },
   de: {
     caption: 'Simulation aus den Daten dieser Stunde, keine Kamera',
@@ -171,6 +198,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     region: 'Region',
     reach: level => reachDe[level],
     night: 'Nacht',
+    approach: kind => approachDe[kind],
+    alignment: kind => alignDe[kind],
+    rose: 'Kompass: woher Wellen und Wind kommen, relativ zum Ufer',
+    look: 'Ziehen, um sich umzusehen',
   },
   fr: {
     caption: "Simulation d'après les données de l'heure, pas une caméra",
@@ -189,6 +220,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     region: 'région',
     reach: level => reachFr[level],
     night: 'nuit',
+    approach: kind => approachFr[kind],
+    alignment: kind => alignFr[kind],
+    rose: 'Boussole : d’où viennent houle et vent par rapport au rivage',
+    look: 'Glisser pour regarder autour',
   },
   it: {
     caption: "Simulazione dai dati dell'ora, non una telecamera",
@@ -207,6 +242,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     region: 'zona',
     reach: level => reachIt[level],
     night: 'notte',
+    approach: kind => approachIt[kind],
+    alignment: kind => alignIt[kind],
+    rose: 'Bussola: da dove arrivano onde e vento rispetto alla riva',
+    look: 'Trascina per guardarti intorno',
   },
 };
 
@@ -551,31 +590,35 @@ const ArrowGlyph: React.FC<{ rotateDeg: number; className?: string }> = ({ rotat
 );
 
 /**
- * Πού είναι ο Βορράς, και από πού έρχονται άνεμος και κύμα, σε ένα δαχτυλίδι σκοπεύτρου. Το
- * σχήμα κοιτά τη θάλασσα προς τα πάνω, οπότε ο Βορράς γυρίζει κατά -facingDeg· η βελόνα γυρίζει,
- * το γράμμα μένει όρθιο στη μύτη της.
+ * Η ΠΥΞΙΔΑ ΚΑΤΕΥΘΥΝΣΕΩΝ: το ρολόι της σκηνής. Η ακτή είναι η άμμος στο κάτω μέρος του δίσκου
+ * (η παραλία «κοιτά» προς τα πάνω, όπως όλη η σκηνή), το κύμα ένα παχύ βέλος που μπαίνει από
+ * την άκρη προς το κέντρο, ο άνεμος ένα λεπτό, και ο Βορράς ένα γράμμα στο χείλος. Έτσι, χωρίς
+ * αριθμούς, φαίνεται αν το κύμα έρχεται κατά μέτωπο (από πάνω), λοξά, ή παράλληλα στην ακτή
+ * (από τα πλάγια) — και αν ο άνεμος πάει μαζί του ή κόντρα.
  */
-const CompassRing: React.FC<{ facingDeg: number; windFromDeg?: number; waveFromDeg?: number; size: number }> = ({ facingDeg, windFromDeg, waveFromDeg, size }) => {
+const DirectionRose: React.FC<{ facingDeg: number; windFromDeg?: number; waveFromDeg?: number; size: number; label?: string }> = ({ facingDeg, windFromDeg, waveFromDeg, size, label }) => {
   const rad = (-facingDeg * Math.PI) / 180;
-  const tipX = 16 + 9 * Math.sin(rad);
-  const tipY = 16 - 9 * Math.cos(rad);
-  const labelX = 16 + 13.2 * Math.sin(rad);
-  const labelY = 16 - 13.2 * Math.cos(rad);
-  const tick = (fromDeg: number, color: string) => {
-    const a = ((fromDeg - facingDeg) * Math.PI) / 180;
-    const x = 16 + 11.5 * Math.sin(a);
-    const y = 16 - 11.5 * Math.cos(a);
-    return <circle cx={x.toFixed(2)} cy={y.toFixed(2)} r="1.7" fill={color} />;
-  };
+  const labelX = 16 + 12.4 * Math.sin(rad);
+  const labelY = 16 - 12.4 * Math.cos(rad);
+  // Ένα βέλος «από» τη διεύθυνση fromDeg προς το κέντρο: σχεδιάζεται σαν να έρχεται από πάνω
+  // και γυρίζει ολόκληρο κατά (fromDeg - facingDeg).
+  const arrow = (fromDeg: number, color: string, width: number, len: number, head: number) => (
+    <g transform={`rotate(${(fromDeg - facingDeg).toFixed(1)} 16 16)`}>
+      <path d={`M16 ${(16 - 13.2).toFixed(1)} L16 ${(16 - 13.2 + len).toFixed(1)}`} stroke={color} strokeWidth={width} strokeLinecap="round" />
+      <path d={`M${(16 - head).toFixed(1)} ${(16 - 13.2 + len - head * 1.2).toFixed(1)} L16 ${(16 - 13.2 + len + head * 0.4).toFixed(1)} L${(16 + head).toFixed(1)} ${(16 - 13.2 + len - head * 1.2).toFixed(1)} Z`} fill={color} />
+    </g>
+  );
   return (
-    <svg viewBox="0 0 32 32" style={{ width: size, height: size }} className="shrink-0" aria-hidden="true">
-      <circle cx="16" cy="16" r="14.5" fill="rgba(2,12,22,0.55)" stroke="rgba(103,232,249,0.45)" strokeWidth="0.8" />
-      <circle cx="16" cy="16" r="11.5" fill="none" stroke="rgba(103,232,249,0.22)" strokeWidth="0.6" strokeDasharray="1.2 2.4" />
-      <path d={`M16 16 L${tipX.toFixed(2)} ${tipY.toFixed(2)}`} stroke="#fb7185" strokeWidth="1.8" strokeLinecap="round" />
-      <circle cx="16" cy="16" r="1.3" fill="#e2e8f0" />
-      <text x={labelX.toFixed(2)} y={labelY.toFixed(2)} textAnchor="middle" dominantBaseline="central" fontSize="7" fontWeight="900" fill="#f1f5f9">N</text>
-      {typeof windFromDeg === 'number' && tick(windFromDeg, '#67e8f9')}
-      {typeof waveFromDeg === 'number' && tick(waveFromDeg, '#93c5fd')}
+    <svg viewBox="0 0 32 32" style={{ width: size, height: size }} className="shrink-0" role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
+      <circle cx="16" cy="16" r="14.5" fill="rgba(2,12,22,0.6)" stroke="rgba(103,232,249,0.45)" strokeWidth="0.8" />
+      {/* Η άμμος: το κάτω τμήμα του δίσκου, με τη γραμμή του νερού. */}
+      <path d="M2.8 22 A14.5 14.5 0 0 0 29.2 22 Z" fill="rgba(226,201,150,0.5)" />
+      <path d="M2.8 22 L29.2 22" stroke="rgba(255,255,255,0.55)" strokeWidth="0.7" />
+      <circle cx="16" cy="16" r="13.2" fill="none" stroke="rgba(103,232,249,0.18)" strokeWidth="0.5" strokeDasharray="1 2.3" />
+      {typeof windFromDeg === 'number' && arrow(windFromDeg, '#67e8f9', 1.1, 7.5, 1.6)}
+      {typeof waveFromDeg === 'number' && arrow(waveFromDeg, '#bfdbfe', 2.2, 9.5, 2.4)}
+      <circle cx="16" cy="16" r="1.1" fill="#f8fafc" />
+      <text x={labelX.toFixed(2)} y={labelY.toFixed(2)} textAnchor="middle" dominantBaseline="central" fontSize="5.6" fontWeight="900" fill="#fda4af">N</text>
     </svg>
   );
 };
@@ -712,6 +755,35 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streaksRef = useRef<Streak[]>([]);
   const motionRef = useRef<Motion | null>(null);
+  // Το σύρσιμο του θεατή: πού θέλει να κοιτάξει (μοίρες) και αν κρατά ακόμα το δάχτυλο.
+  const lookRef = useRef({ yawDeg: 0, pitchDeg: 0, dragging: false, pointerId: -1, x0: 0, y0: 0, yaw0: 0, pitch0: 0 });
+  const onLookStart = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    // Να μη σύρει τον χάρτη από κάτω (το popup του Leaflet).
+    e.stopPropagation();
+    const d = lookRef.current;
+    d.dragging = true;
+    d.pointerId = e.pointerId;
+    d.x0 = e.clientX;
+    d.y0 = e.clientY;
+    d.yaw0 = d.yawDeg;
+    d.pitch0 = d.pitchDeg;
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* παλιά WebView */ }
+  };
+  const onLookMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const d = lookRef.current;
+    if (!d.dragging || e.pointerId !== d.pointerId) return;
+    const w = Math.max(200, e.currentTarget.clientWidth);
+    // Όλο το πλάτος της οθόνης = 90° στροφή· όριο ±50° ώστε να μη γυρίσει πλάτη στη θάλασσα.
+    d.yawDeg = Math.max(-50, Math.min(50, d.yaw0 + ((e.clientX - d.x0) / w) * 90));
+    d.pitchDeg = Math.max(-12, Math.min(16, d.pitch0 - ((e.clientY - d.y0) / w) * 60));
+  };
+  const onLookEnd = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const d = lookRef.current;
+    if (e.pointerId !== d.pointerId) return;
+    d.dragging = false;
+    d.pointerId = -1;
+  };
 
   const pointsKey = shape?.points ?? FALLBACK_POINTS;
   /**
@@ -869,7 +941,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
     canvas.addEventListener('webglcontextlost', onContextLost);
 
     let gl: SeaMotionGl | null = null;
-    let draw2d: ((tSec: number, dtSec: number) => void) | null = null;
+    let draw2d: ((motion: Motion, tSec: number, dtSec: number) => void) | null = null;
 
     // Ανάλυση = μέγεθος στην οθόνη × πυκνότητα pixel (ταβάνι 2 στο ταμπελάκι, 1,5 στην πλήρη οθόνη).
     const rect = canvas.getBoundingClientRect();
@@ -919,9 +991,8 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       if (!ctx) return undefined;
       const field = buildField(points, beach.id);
       const image = ctx.createImageData(PW, PH);
-      draw2d = (tSec, dtSec) => {
-        const motion = motionRef.current;
-        if (motion) renderFrame(ctx, image, field, motion, tSec, streaksRef.current, dtSec);
+      draw2d = (motion, tSec, dtSec) => {
+        renderFrame(ctx, image, field, motion, tSec, streaksRef.current, dtSec);
       };
     }
 
@@ -952,6 +1023,10 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       if (import.meta.env.DEV) console.debug(`[seaMotion] scale ${scale.toFixed(2)} (${Math.round(interval)} ms/frame)`);
     };
 
+    // Τα νούμερα που ΔΕΙΧΝΟΥΜΕ πλησιάζουν ομαλά αυτά που ήρθαν (smoothMotion), και το βλέμμα
+    // ακολουθεί το δάχτυλο με λίγη αδράνεια και γυρίζει μόνο του στη θάλασσα όταν αφεθεί.
+    let shown: Motion | null = null;
+    const look: SeaMotionLook = { yawDeg: 0, pitchDeg: 0 };
     const draw = (now: number) => {
       const motion = motionRef.current;
       if (gl && pendingResize) {
@@ -960,10 +1035,20 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       }
       if (motion) {
         const dt = Math.min(0.1, (now - last) / 1000);
+        shown = reduceMotion ? motion : smoothMotion(shown, motion, dt);
         // Σε reduced-motion η κάμερα στέκεται στην τελική της θέση (t μετά το fly-in).
-        const t = reduceMotion ? 3 : (now - start) / 1000;
-        if (gl) gl.render(motion, t, dt);
-        else if (draw2d) draw2d(t, dt);
+        const t = reduceMotion ? 6 : (now - start) / 1000;
+        const drag = lookRef.current;
+        if (!drag.dragging) {
+          const back = 1 - Math.exp(-dt / 1.6);
+          drag.yawDeg -= drag.yawDeg * back;
+          drag.pitchDeg -= drag.pitchDeg * back;
+        }
+        const follow = 1 - Math.exp(-dt / 0.18);
+        look.yawDeg += (drag.yawDeg - look.yawDeg) * follow;
+        look.pitchDeg += (drag.pitchDeg - look.pitchDeg) * follow;
+        if (gl) gl.render(shown, t, dt, look);
+        else if (draw2d) draw2d(shown, t, dt);
       }
       if (gl && !reduceMotion) {
         interval = interval * 0.9 + (now - last) * 0.1;
@@ -1034,7 +1119,13 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
         ref={canvasRef}
         width={PW}
         height={PH}
-        className="block h-full w-full"
+        className="block h-full w-full cursor-grab active:cursor-grabbing"
+        style={{ touchAction: 'none' }}
+        title={copy.look}
+        onPointerDown={onLookStart}
+        onPointerMove={onLookMove}
+        onPointerUp={onLookEnd}
+        onPointerCancel={onLookEnd}
       />
       <ViewfinderCorners inset={full ? '10px' : '4px'} size={full ? '22px' : '9px'} />
 
@@ -1098,7 +1189,24 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
       {/* Κάτω: πυξίδα αριστερά, «ΠΡΟΣΟΜΟΙΩΣΗ» με παλλόμενη κουκκίδα και το κουμπί δεξιά. */}
       <div className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 ${edge}`}>
         <div className="pointer-events-none flex items-end gap-1.5">
-          {hasFacing && <CompassRing facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 56 : 26} />}
+          {hasFacing && <DirectionRose facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 64 : 30} label={copy.rose} />}
+          {/* Τι λέει η πυξίδα, με λόγια: πώς πέφτει το κύμα, και ο άνεμος σε σχέση με το κύμα. */}
+          {full && hasFacing && (showWaveChip || hasWind) && (
+            <div className="flex flex-col gap-1 pb-0.5">
+              {showWaveChip && (
+                <span className="flex items-center gap-1.5 rounded-md border border-cyan-300/30 bg-slate-950/60 px-2 py-1 text-[11px] font-bold text-cyan-50 backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-blue-200" aria-hidden="true" />
+                  {copy.approach(approachKind(waveArrowFrom, facingDeg))}
+                </span>
+              )}
+              {hasWind && showWaveChip && (
+                <span className="flex items-center gap-1.5 rounded-md border border-cyan-300/30 bg-slate-950/60 px-2 py-1 text-[11px] font-bold text-cyan-50 backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-cyan-300" aria-hidden="true" />
+                  {copy.alignment(alignmentKind(windFromShown as number, waveArrowFrom))}
+                </span>
+              )}
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-1.5">
           {full && mosaic && (
