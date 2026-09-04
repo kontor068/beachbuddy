@@ -237,7 +237,7 @@ export type LandingCopy = {
     daysAgo: (days: number) => string;
     showAll: (count: number) => string;
     showLess: string;
-    tags: { new: string; improved: string; beta: string; measured: string };
+    tags: { new: string; improved: string; beta: string };
   };
 };
 
@@ -412,8 +412,11 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       // the overline should say where the reader is standing. The old one was a
       // greeting-card phrase that promised nothing.
       overline: 'Πριν φύγεις',
-      title: 'Θες να μαθαίνεις τι φτιάχνουμε;',
-      body: 'Ένα σύντομο email πού και πού: τι προσθέσαμε, τι διορθώσαμε, τι μάθαμε για τον καιρό των παραλιών. Όχι προσφορές, όχι κάθε βδομάδα.',
+      // ΟΧΙ «τι φτιάχνουμε» (04/09/2026, Μίλτος: «κανιβαλισμός»): το ημερολόγιο ακριβώς από
+      // πάνω λέει ήδη τι φτιάξαμε. Εδώ μένει το ένα πράγμα που το ημερολόγιο δεν μπορεί —
+      // να σε βρει εκείνο, αντί να ξανάρθεις εσύ.
+      title: 'Να σου γράφουμε όταν βγαίνει το επόμενο;',
+      body: 'Ένα σύντομο email, μόνο όταν έχουμε κάτι να πούμε. Όχι προσφορές, όχι κάθε βδομάδα.',
       placeholder: 'name@example.com',
       inputLabel: 'Το email σου',
       cta: 'Γράψε με',
@@ -514,7 +517,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       daysAgo: days => `ενημερώθηκε πριν από ${days} μέρες`,
       showAll: count => `Όλα τα νέα (${count})`,
       showLess: 'Λιγότερα',
-      tags: { new: 'Νέο', improved: 'Βελτίωση', beta: 'Beta', measured: 'Μέτρηση' },
+      tags: { new: 'Νέο', improved: 'Βελτίωση', beta: 'Beta' },
     },
   },
   en: {
@@ -574,8 +577,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     newsletter: {
       overline: 'Before you go',
-      title: 'Want to hear what we are building?',
-      body: 'A short email now and then: what we added, what we fixed, what we learned about beach weather. No offers, and not every week.',
+      title: 'Shall we write when the next one ships?',
+      body: 'A short email, only when we have something to say. No offers, and not every week.',
       placeholder: 'name@example.com',
       inputLabel: 'Your email',
       cta: 'Sign me up',
@@ -634,7 +637,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       daysAgo: days => `updated ${days} days ago`,
       showAll: count => `All updates (${count})`,
       showLess: 'Show less',
-      tags: { new: 'New', improved: 'Improved', beta: 'Beta', measured: 'Measured' },
+      tags: { new: 'New', improved: 'Improved', beta: 'Beta' },
     },
   },
   de: {
@@ -696,8 +699,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     newsletter: {
       overline: 'Bevor du gehst',
-      title: 'Willst du hören, woran wir bauen?',
-      body: 'Ab und zu eine kurze E-Mail: was wir ergänzt, was wir korrigiert und was wir über das Wetter an den Stränden gelernt haben. Keine Angebote, und nicht jede Woche.',
+      title: 'Sollen wir schreiben, wenn das Nächste fertig ist?',
+      body: 'Eine kurze E-Mail, nur wenn wir etwas zu sagen haben. Keine Angebote, und nicht jede Woche.',
       placeholder: 'name@example.com',
       inputLabel: 'Deine E-Mail',
       cta: 'Eintragen',
@@ -757,7 +760,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       daysAgo: days => `vor ${days} Tagen aktualisiert`,
       showAll: count => `Alle Neuigkeiten (${count})`,
       showLess: 'Weniger',
-      tags: { new: 'Neu', improved: 'Verbessert', beta: 'Beta', measured: 'Gemessen' },
+      tags: { new: 'Neu', improved: 'Verbessert', beta: 'Beta' },
     },
   },
   fr: {
@@ -819,8 +822,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     newsletter: {
       overline: 'Avant de partir',
-      title: 'Vous voulez savoir ce que nous construisons ?',
-      body: 'Un court e-mail de temps en temps : ce que nous avons ajouté, ce que nous avons corrigé, ce que nous avons appris sur la météo des plages. Pas d’offres, et pas toutes les semaines.',
+      title: 'On vous écrit quand la prochaine nouveauté sort ?',
+      body: 'Un court e-mail, seulement quand nous avons quelque chose à dire. Pas d’offres, et pas toutes les semaines.',
       placeholder: 'nom@exemple.com',
       inputLabel: 'Votre e-mail',
       cta: 'Je m’inscris',
@@ -880,7 +883,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       daysAgo: days => `mis à jour il y a ${days} jours`,
       showAll: count => `Toutes les nouveautés (${count})`,
       showLess: 'Réduire',
-      tags: { new: 'Nouveau', improved: 'Amélioré', beta: 'Bêta', measured: 'Mesuré' },
+      tags: { new: 'Nouveau', improved: 'Amélioré', beta: 'Bêta' },
     },
   },
   it: {
@@ -942,8 +945,8 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
     },
     newsletter: {
       overline: 'Prima di andare',
-      title: 'Vuoi sapere cosa stiamo costruendo?',
-      body: 'Ogni tanto una mail breve: cosa abbiamo aggiunto, cosa abbiamo corretto, cosa abbiamo imparato sul meteo delle spiagge. Niente offerte, e non ogni settimana.',
+      title: 'Ti scriviamo quando esce la prossima novità?',
+      body: 'Una mail breve, solo quando abbiamo qualcosa da dire. Niente offerte, e non ogni settimana.',
       placeholder: 'nome@esempio.com',
       inputLabel: 'La tua email',
       cta: 'Iscrivimi',
@@ -1002,7 +1005,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       daysAgo: days => `aggiornato ${days} giorni fa`,
       showAll: count => `Tutte le novità (${count})`,
       showLess: 'Mostra meno',
-      tags: { new: 'Nuovo', improved: 'Migliorato', beta: 'Beta', measured: 'Misurato' },
+      tags: { new: 'Nuovo', improved: 'Migliorato', beta: 'Beta' },
     },
   },
 };

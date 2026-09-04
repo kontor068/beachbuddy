@@ -15,7 +15,7 @@ import { landingCopy } from './landingCopy';
 // αμέσως μετά το newsletter αποκτά λόγο ύπαρξης. Ίδια στενή στήλη, ίδιος τόνος.
 //
 // ΤΡΕΙΣ ΓΡΑΜΜΕΣ, όχι λίστα: μία πρόταση η καθεμία, ημερομηνία αριστερά, ταμπελάκι ΝΕΟ /
-// ΒΕΛΤΙΩΣΗ / BETA / ΜΕΤΡΗΣΗ. «Όλα τα νέα» ανοίγει επί τόπου ως 12, με <details> — χωρίς
+// ΒΕΛΤΙΩΣΗ / BETA. «Όλα τα νέα» ανοίγει επί τόπου ως 12, με <details> — χωρίς
 // JavaScript, χωρίς νέα σελίδα, χωρίς νέο URL.
 //
 // Ο ΣΚΕΠΤΙΚΙΣΤΗΣ: η φράση «ενημερώθηκε πριν από X μέρες» εμφανίζεται ΜΟΝΟ ως 30 μέρες
@@ -28,7 +28,6 @@ const TAG_CLASS: Record<ChangelogTag, string> = {
   new: 'bg-teal-50 text-teal-700 ring-teal-200',
   improved: 'bg-slate-100 text-slate-600 ring-slate-200',
   beta: 'bg-amber-100 text-amber-800 ring-amber-200',
-  measured: 'bg-sky-50 text-sky-700 ring-sky-200',
 };
 
 interface RecentWorkLogProps {

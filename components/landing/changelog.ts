@@ -8,11 +8,14 @@ import type { LanguageCode } from '../../types';
  * σε μία πρόταση. Κανόνας: η εγγραφή μπαίνει στο ΙΔΙΟ PR που βγάζει το πράγμα live — όχι
  * «αργότερα», γιατί αργότερα δεν έρχεται.
  *
+ * ΜΟΝΟ Ο,ΤΙ ΒΓΗΚΕ LIVE (Μίλτος, 04/09/2026): όχι πράγματα που δοκιμάσαμε και δεν μπήκαν,
+ * όχι μετρήσεις, όχι «τι μάθαμε». Ο επισκέπτης διαβάζει τι μπορεί να ΧΡΗΣΙΜΟΠΟΙΗΣΕΙ σήμερα.
+ *
  * Γλώσσες: ελληνικά και αγγλικά υποχρεωτικά· γερμανικά, γαλλικά, ιταλικά προαιρετικά, αλλιώς
  * πέφτουν στα αγγλικά. Πιο πρόσφατο ΠΡΩΤΟ. Η landing δείχνει τα 3 πρώτα, «όλα τα νέα» ανοίγει
  * ως 12· το footer δείχνει μόνο το πρώτο.
  */
-export type ChangelogTag = 'new' | 'improved' | 'beta' | 'measured';
+export type ChangelogTag = 'new' | 'improved' | 'beta';
 
 export type ChangelogEntry = {
   /** ISO ημερομηνία (YYYY-MM-DD) της ημέρας που βγήκε live. */
@@ -52,14 +55,6 @@ export const CHANGELOG: ChangelogEntry[] = [
     text: {
       gr: 'Η λωρίδα «περιοχές σήμερα» στην αρχική κατατάσσει τις περιοχές με το πόσες παραλίες τους είναι προστατευμένες από τον άνεμο που φυσάει τώρα.',
       en: 'The “regions today” strip on the home page now ranks regions by how many of their beaches are sheltered from the wind blowing right now.',
-    },
-  },
-  {
-    date: '2026-08-27',
-    tag: 'measured',
-    text: {
-      gr: 'Δοκιμάσαμε αν το κύμα μπορεί να διορθώσει τον άνεμο στην άμμο, σε 25 ανεμόμετρα αεροδρομίων επί 92 μέρες. Δεν μπορεί — άρα δεν μπήκε.',
-      en: 'We tested whether the wave can correct the wind on the sand, against 25 airport anemometers over 92 days. It can’t — so it didn’t ship.',
     },
   },
 ];
