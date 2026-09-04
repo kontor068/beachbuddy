@@ -41,8 +41,11 @@ export type SeaMotionParams = {
 
 export type Point = [number, number];
 
+/** Πού κοιτά ο θεατής όταν σέρνει με το δάχτυλο: στροφή αριστερά/δεξιά και πάνω/κάτω, μοίρες. */
+export type SeaMotionLook = { yawDeg: number; pitchDeg: number };
+
 export type SeaMotionGl = {
-  render: (params: SeaMotionParams, tSec: number, dtSec: number) => void;
+  render: (params: SeaMotionParams, tSec: number, dtSec: number, look?: SeaMotionLook) => void;
   /** Αλλάζει την ανάλυση του καμβά (για την αυτόματη προσαρμογή όταν το κινητό αργεί). */
   setSize: (width: number, height: number) => void;
   /**
@@ -66,6 +69,61 @@ export const travelVector = (fromDeg: number, facingDeg: number): [number, numbe
 /** 1 = ίσια από τη θάλασσα, -1 = πίσω από τη στεριά. */
 export const seawardness = (fromDeg: number, facingDeg: number) =>
   Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
+
+/** Γωνία 0..180 ανάμεσα σε δύο διευθύνσεις «από». */
+const angleBetween = (aDeg: number, bDeg: number) => {
+  const d = Math.abs(((aDeg - bDeg) % 360) + 360) % 360;
+  return d > 180 ? 360 - d : d;
+};
+
+export type ApproachKind = 'direct' | 'oblique' | 'parallel' | 'offshore';
+/**
+ * Πώς πέφτει το κύμα στην ακτή — ΚΑΘΑΡΗ ΓΕΩΜΕΤΡΙΑ, όχι επιστήμη: η γωνία ανάμεσα στο «από πού
+ * έρχεται» και στο «πού κοιτά η παραλία». Ως 30° κατά μέτωπο, ως 65° λοξά, ως 100° σχεδόν
+ * παράλληλα στην ακτή, πιο πέρα έρχεται από τη στεριά (η παραλία είναι απάνεμη σε αυτό).
+ */
+export const approachKind = (waveFromDeg: number, facingDeg: number): ApproachKind => {
+  const a = angleBetween(waveFromDeg, facingDeg);
+  return a <= 30 ? 'direct' : a <= 65 ? 'oblique' : a <= 100 ? 'parallel' : 'offshore';
+};
+
+export type AlignmentKind = 'aligned' | 'crossed' | 'against';
+/** Άνεμος και κύμα: από την ίδια μεριά (ως 45°), σταυρωτά, ή αντίθετα (πάνω από 120°). */
+export const alignmentKind = (windFromDeg: number, waveFromDeg: number): AlignmentKind => {
+  const a = angleBetween(windFromDeg, waveFromDeg);
+  return a <= 45 ? 'aligned' : a <= 120 ? 'crossed' : 'against';
+};
+
+/**
+ * ΟΜΑΛΗ ΜΕΤΑΒΑΣΗ ανάμεσα σε δύο ώρες δεδομένων: κάθε αριθμός πλησιάζει τον στόχο του με
+ * σταθερά χρόνου ~0,7 s (εκθετικά), οι διευθύνσεις από τη μικρή μεριά του κύκλου. Έτσι το
+ * κύμα «φουσκώνει» από 0,6 σε 1,4 μ. αντί να πηδήξει, και ο άνεμος γυρίζει αντί να αλλάξει.
+ * Το πρώτο καρέ (prev = null) παίρνει τον στόχο όπως είναι.
+ */
+export const smoothMotion = (prev: SeaMotionParams | null, target: SeaMotionParams, dtSec: number): SeaMotionParams => {
+  if (!prev || prev.facingDeg !== target.facingDeg || prev.metresPerUnit !== target.metresPerUnit) return { ...target };
+  const k = 1 - Math.exp(-dtSec / 0.7);
+  const num = (a: number | undefined, b: number | undefined) =>
+    typeof a === 'number' && typeof b === 'number' ? a + (b - a) * k : b;
+  const ang = (a: number | undefined, b: number | undefined) => {
+    if (typeof a !== 'number' || typeof b !== 'number') return b;
+    let d = ((b - a + 540) % 360) - 180;
+    if (Math.abs(d) < 0.01) d = 0;
+    return (((a + d * k) % 360) + 360) % 360;
+  };
+  return {
+    ...target,
+    windFromDeg: ang(prev.windFromDeg, target.windFromDeg),
+    windSpeedKmh: num(prev.windSpeedKmh, target.windSpeedKmh),
+    waveFromDeg: ang(prev.waveFromDeg, target.waveFromDeg),
+    openWaveM: num(prev.openWaveM, target.openWaveM),
+    shoreWaveM: num(prev.shoreWaveM, target.shoreWaveM),
+    periodS: num(prev.periodS, target.periodS) as number,
+    sunAzimuthDeg: ang(prev.sunAzimuthDeg, target.sunAzimuthDeg),
+    sunElevationDeg: num(prev.sunElevationDeg, target.sunElevationDeg),
+    cloudCover: num(prev.cloudCover, target.cloudCover),
+  };
+};
 
 /**
  * Ύψος θάλασσας → ένταση 0..1,5, ΓΡΑΜΜΙΚΑ (1 = 1,6 μ.). Το ύψος στην οθόνη δεν το «μαγειρεύει»
@@ -292,7 +350,10 @@ void main() {
       // Για τον fragment shader: η ένταση (0..1,5), όχι τα μέτρα — το φως μέσα από την κορυφή.
       vWave = amp * crest;
       if (uArriving > 0.5 && d < uBreakZone && uFoam > 0.0) {
-        vFoam = uFoam * (0.5 + 0.5 * sin(phase)) * (1.0 - d / uBreakZone);
+        // Ο αφρός ζει στην κορυφή που μόλις έσπασε (ημίτονο στο τετράγωνο), όχι σε όλη τη ζώνη —
+        // αλλιώς η φουρτούνα γίνεται χιονισμένο χωράφι.
+        float crestOnly = 0.5 + 0.5 * sin(phase);
+        vFoam = uFoam * crestOnly * crestOnly * (1.0 - d / uBreakZone);
       }
     }
     float shadow = mix(1.0, clamp(d / ${WIND_SHADOW_UNITS.toFixed(1)}, 0.0, 1.0), uOffshore);
@@ -436,7 +497,7 @@ void main() {
 
     // Αφρός με υφή εκεί που σπάει, και άσπρες κορφές που ο άνεμος ξεσηκώνει.
     float fm = fbm(p * 0.9 + vec2(0.0, -uTime * 0.6));
-    float foam = smoothstep(0.38, 0.78, fm + vFoam * 0.9) * step(0.001, vFoam);
+    float foam = smoothstep(0.40, 0.82, fm + vFoam * 0.8) * step(0.001, vFoam);
     foam = max(foam, vFoam * 0.45);
     float capNoise = vnoise(p * 0.8 + uWindDir * uTime * 1.5);
     float caps = smoothstep(0.64, 0.76, capNoise) * step(0.35, sin(ph)) * clamp(uWhitecaps * 1.6, 0.0, 1.0) * vShadow;
@@ -1029,7 +1090,7 @@ export type CameraRest = { eye: number[]; target: number[] };
  * γλείψιμο στην άμμο, 1,5 μ. ένας τοίχος μπροστά στον άνθρωπο. Στο τέλος μένει ένα ελαφρύ
  * «χειρός» λίκνισμα και, με δυνατό άνεμο, ένα τρέμουλο.
  */
-const cameraPose = (tSec: number, distanceScale: number, heightScale: number, windShake: number, rest: CameraRest): CameraRest => {
+const cameraPose = (tSec: number, distanceScale: number, heightScale: number, windShake: number, rest: CameraRest, look?: SeaMotionLook): CameraRest => {
   const intro = Math.min(1, tSec / INTRO_S);
   const ease = intro * intro * (3 - 2 * intro);
   const yaw = Math.sin(tSec * 0.11) * 0.16;
@@ -1052,6 +1113,23 @@ const cameraPose = (tSec: number, distanceScale: number, heightScale: number, wi
   eye[2] += shakeZ + swayZ;
   target[0] += swayX;
   target[2] += swayZ;
+  // Το βλέμμα του θεατή (σύρσιμο): γυρίζει το κεφάλι αριστερά/δεξιά και λίγο πάνω/κάτω, μόνο
+  // αφού κατέβει η κάμερα — το drone δεν ακούει το δάχτυλο.
+  if (look && (look.yawDeg !== 0 || look.pitchDeg !== 0) && ease > 0) {
+    const dx = target[0] - eye[0];
+    const dy = target[1] - eye[1];
+    const dz = target[2] - eye[2];
+    const yaw = (-look.yawDeg * ease * Math.PI) / 180;
+    const c = Math.cos(yaw);
+    const sn = Math.sin(yaw);
+    const rx = dx * c - dy * sn;
+    const ry = dx * sn + dy * c;
+    const horiz = Math.hypot(rx, ry) || 1;
+    const pitch = (look.pitchDeg * ease * Math.PI) / 180;
+    target[0] = eye[0] + rx;
+    target[1] = eye[1] + ry;
+    target[2] = eye[2] + dz + horiz * Math.tan(pitch);
+  }
   return { eye, target };
 };
 
@@ -1368,7 +1446,7 @@ export const createSeaMotionGl = (
 
   let disposed = false;
 
-  const render = (params: SeaMotionParams, tSec: number, dtSec: number) => {
+  const render = (params: SeaMotionParams, tSec: number, dtSec: number, look?: SeaMotionLook) => {
     if (disposed || !gl) return;
     const m = deriveMotion(params);
     const windShake = clamp01((m.windSpeed - 22) / 30) * 0.9;
@@ -1384,7 +1462,7 @@ export const createSeaMotionGl = (
     }
     const cloudCover = clamp01(params.cloudCover ?? 0.1);
     const shallowReach = params.shallowReach ?? 110;
-    const pose = cameraPose(tSec, distanceScale, heightScale, windShake, cameraRest);
+    const pose = cameraPose(tSec, distanceScale, heightScale, windShake, cameraRest, look);
     const eye = pose.eye;
     const view = lookAt(eye, pose.target, [0, 0, 1]);
     // Η βάση της κάμερας για τον ουρανό (ακτίνα ανά εικονοστοιχείο).
