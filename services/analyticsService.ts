@@ -50,6 +50,7 @@ export type AnalyticsEvent =
   | 'forecast_expanded'
   | 'map_viewed'
   | 'map_marker_clicked'
+  | 'map_sea_motion_play'
   // Street map vs satellite imagery. Tells us whether the aerial view is a niche
   // toggle or the one people actually want to land on.
   | 'map_basemap_toggle'

@@ -1,14 +1,16 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import React, { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Circle, MapContainer, TileLayer, Marker, Popup, Tooltip, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { BadgeCheck, ShowerHead, Footprints, Navigation, MapPin, Clock, Wind, X, Info, Utensils, Waves, Users, Tent, Ticket, Euro, AlertTriangle, ChevronRight, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import { isSurfSpotInSeason } from '../utils/surfSpots';
 import { displayBeachName, localizedPopularityLabel, localizedLittleKnownLabel, localizedPaidEntryLabel, localizedPaidEntryExplanation } from '../utils/localization';
 import { SuitableBeach, Beach, LanguageCode, ForecastItem, WindSuitabilityColor } from '../types';
 import { trackEvent, buildBeachExposureParams } from '../services/analyticsService';
 import { getBeachPhotoLookupForBeach } from '../services/beachPhotos';
 import { BeachPhotoFallback } from './ShorelineThumbnail';
+import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
+import type { SceneHour } from './BeachSeaMotionScene';
 import { degToCompass, getBeaufortLevel } from '../utils/weatherUtils';
 import { getSelectedDayPrefix } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
@@ -183,6 +185,30 @@ type HoverPreviewPosition = {
 const keepClickInsidePopup = (el: HTMLElement | null): void => {
   if (el) L.DomEvent.disableClickPropagation(el);
 };
+
+/**
+ * Η ΠΑΡΑΛΙΑ ΣΕ ΚΙΝΗΣΗ (πειραματικό, 03/09/2026). Κατεβαίνει ΜΟΝΟ όταν κάποιος πατήσει το play
+ * μέσα στο ταμπελάκι — ο χάρτης δεν βαραίνει για όσους δεν το ζητήσουν. Πάντα
+ * lazyWithChunkRecovery και όχι το γυμνό lazy του React — δες pages/BeachDetailPage.
+ */
+const BeachSeaMotionScene = lazyWithChunkRecovery(() => import('./BeachSeaMotionScene'), 'BeachSeaMotionScene');
+
+/**
+ * ΠΙΛΟΤΟΣ: ΜΟΝΟ ΘΕΣΠΡΩΤΙΑ (Μίλτος, 03/09/2026: «πιλοτικά μόνο για τις παραλίες της Θεσπρωτίας
+ * για αρχή»). Το play εμφανίζεται μόνο σε παραλίες αυτών των περιοχών — είναι και οι μόνες με
+ * ψημένο ανάγλυφο (scripts/bakeBeachRelief.mjs). Για δοκιμή αλλού: `?seamotion=all` στο URL.
+ */
+const SEA_MOTION_PILOT_REGIONS = new Set(['epirus-thesprotia-mainland']);
+const seaMotionEverywhere = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  try {
+    return new URLSearchParams(window.location.search).get('seamotion') === 'all';
+  } catch {
+    return false;
+  }
+};
+const seaMotionAvailableFor = (beach: Beach, mapRegionId: string | undefined): boolean =>
+  SEA_MOTION_PILOT_REGIONS.has(beach.regionId ?? mapRegionId ?? '') || seaMotionEverywhere();
 
 /** «Χωρίς πλαφόν» για το ταμπελάκι της πινέζας. Ο κατάλογος έχει σήμερα το πολύ ~12 εγγραφές. */
 const ALL_FEATURE_CHIPS = 99;
@@ -607,7 +633,17 @@ const MarkerConditionsPopup: React.FC<{
   fewerLabel: string;
   /** Το ανοιχτό ταμπελάκι του Leaflet — δες το layout effect παρακάτω. */
   openPopupRef: React.MutableRefObject<L.Popup | null>;
-}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef }) => {
+  /** Από πού φυσάει σε ΑΥΤΗ την παραλία (τοπική ανάγνωση αν υπάρχει, αλλιώς της περιοχής). */
+  windFromDeg?: number;
+  /** Η περιοχή του χάρτη — οι παραλίες ΜΙΑΣ περιοχής δεν κουβαλούν regionId (types.Beach). */
+  regionId?: string;
+  /** Η ώρα που δείχνει ο χάρτης (unix s) και οι ώρες της περιοχής — για τον ήλιο και το «παίξε τη μέρα». */
+  atDt?: number | null;
+  hourSeries?: SceneHour[];
+  /** «Δες το σε κίνηση» / «Κλείσε την κίνηση» — τα προσβάσιμα ονόματα του play. */
+  playMotionLabel: string;
+  stopMotionLabel: string;
+}> = ({ item, language, windSpeedKmh, openLabel, onOpen, windOnlyColor, seaOnlyColor, moreInfoLabel, fewerLabel, openPopupRef, windFromDeg, regionId, atDt, hourSeries, playMotionLabel, stopMotionLabel }) => {
   /**
    * ΤΑ ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΜΠΑΙΝΟΥΝ ΔΙΠΛΩΜΕΝΑ (25/08/2026, Μίλτος: «διακριτικά … ίσως με κάποιο
    * drop down»).
@@ -625,6 +661,14 @@ const MarkerConditionsPopup: React.FC<{
    * ταμπελακιού όσο ο επισκέπτης σέρνει την μπάρα της ώρας.
    */
   const [featuresOpen, setFeaturesOpen] = useState(false);
+  /**
+   * Η ΠΑΡΑΛΙΑ ΣΕ ΚΙΝΗΣΗ — ΚΛΕΙΣΤΗ ΑΠΟ ΠΡΟΕΠΙΛΟΓΗ (Μίλτος, 03/09/2026: «δεν θα παίζει by
+   * default»). Ανοίγει μόνο με το play δίπλα στις συνθήκες, και όσο παίζει παίρνει τη θέση του
+   * «Περισσότερες πληροφορίες»: η κάρτα με σκηνή ΚΑΙ κουμπί έβγαινε ~210 px πάνω σε χάρτη 214 px
+   * στο κινητό, δηλαδή έξω από το κάδρο. Το X του play κλείνει τη σκηνή και το κουμπί επιστρέφει.
+   */
+  const [sceneMode, setSceneMode] = useState<null | 'inline' | 'fullscreen'>(null);
+  const sceneOpen = sceneMode !== null;
   const featureChips = useMemo(
     () => buildHoverPreviewFeatureChips(item.beach, language, ALL_FEATURE_CHIPS),
     [item.beach, language]
@@ -656,7 +700,7 @@ const MarkerConditionsPopup: React.FC<{
     popup.options.autoPan = true;
     popup.update();
     popup.options.autoPan = hadAutoPan;
-  }, [featuresOpen, openPopupRef]);
+  }, [featuresOpen, sceneMode, openPopupRef]);
   const readout = buildBeachConditionsReadout({
     beachWindSpeedKmph: windSpeedKmh,
     waveHeightM: item.waveHeightM,
@@ -707,23 +751,104 @@ const MarkerConditionsPopup: React.FC<{
           Ίδιο ύψος κάρτας, καμία μετακίνηση χάρτη, τίποτα δεν κόβεται — και το «Λιγότερα»
           επαναφέρει ακριβώς αυτό που ζήτησε ο Μίλτος: την αρχική κάρτα με τις συνθήκες. */}
       {!featuresOpen && (
-      <div className="mt-0.5">
-        <p className="flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
-          <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />
-          <span className="min-w-0 truncate">
-            {readout.windWord ? `${readout.windWord} · ` : ''}{readout.beaufortText}
-          </span>
-        </p>
-        {readout.waveWord && (
-          <p className="mt-0.5 flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
-            <Waves className={`h-3 w-3 shrink-0 ${factorIconClass(seaOnlyColor)}`} aria-hidden="true" />
-            <span className="min-w-0 truncate">{readout.waveWord}</span>
+      <div className="mt-0.5 flex items-center gap-1">
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
+            <Wind className={`h-3 w-3 shrink-0 ${factorIconClass(windOnlyColor)}`} aria-hidden="true" />
+            <span className="min-w-0 truncate">
+              {readout.windWord ? `${readout.windWord} · ` : ''}{readout.beaufortText}
+            </span>
           </p>
+          {readout.waveWord && (
+            <p className="mt-0.5 flex items-center gap-1 text-[11px] font-bold leading-tight text-slate-700">
+              <Waves className={`h-3 w-3 shrink-0 ${factorIconClass(seaOnlyColor)}`} aria-hidden="true" />
+              <span className="min-w-0 truncate">{readout.waveWord}</span>
+            </p>
+          )}
+        </div>
+        {/* ΤΟ PLAY ΚΑΘΕΤΑΙ ΔΙΠΛΑ ΣΤΙΣ ΔΥΟ ΓΡΑΜΜΕΣ, ΟΧΙ ΣΕ ΔΙΚΗ ΤΟΥ ΣΕΙΡΑ: μηδέν επιπλέον ύψος
+            στην κλειστή κάρτα. Στρογγυλό, 28 px — στόχος αφής δίπλα σε κείμενο 11 px.
+            Μόνο στις περιοχές του πιλότου (SEA_MOTION_PILOT_REGIONS). */}
+        {seaMotionAvailableFor(item.beach, regionId) && (
+        <div className="flex shrink-0 flex-col items-center gap-px">
+        <button
+          ref={keepClickInsidePopup}
+          type="button"
+          onClick={() => {
+            if (sceneOpen) {
+              setSceneMode(null);
+              return;
+            }
+            // ΚΙΝΗΤΟ → ΠΛΗΡΗΣ ΟΘΟΝΗ ΚΑΤΕΥΘΕΙΑΝ (03/09/2026). Ο χάρτης στο κινητό είναι 214 px· μια
+            // σκηνή 108 px μέσα στο ταμπελάκι κάλυπτε την πάνω μπάρα και έμενε λειψή. Στον
+            // υπολογιστή, μέσα στο ταμπελάκι με κουμπί μεγέθυνσης.
+            const phone = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+              && window.matchMedia('(max-width: 767px)').matches;
+            setSceneMode(phone ? 'fullscreen' : 'inline');
+            trackEvent('map_sea_motion_play', item.beach.id, {
+              beach_name: item.beach.name.en,
+              presentation: phone ? 'fullscreen' : 'inline',
+              wind_kmh: typeof windSpeedKmh === 'number' ? Math.round(windSpeedKmh) : undefined,
+              wave_m: item.seaStateWaveM ?? item.waveHeightM,
+            });
+          }}
+          aria-pressed={sceneOpen}
+          aria-label={sceneOpen ? stopMotionLabel : playMotionLabel}
+          title={sceneOpen ? stopMotionLabel : playMotionLabel}
+          className={`flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition ${
+            sceneOpen
+              ? 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              : 'bg-cyan-50 text-cyan-800 hover:bg-cyan-100'
+          }`}
+        >
+          {sceneOpen ? (
+            <X className="h-3.5 w-3.5" aria-hidden="true" />
+          ) : (
+            <Play className="ml-px h-3.5 w-3.5 fill-current" aria-hidden="true" />
+          )}
+        </button>
+        {/* Πειραματικό: το λέει η ετικέτα, ώστε ένα ατελές κάδρο να μη διαβάζεται ως υπόσχεση. */}
+        <span className="text-[7px] font-black uppercase leading-none tracking-[0.12em] text-amber-600">beta</span>
+        </div>
         )}
       </div>
       )}
 
-      {featureChips.length > 0 && (
+      {!featuresOpen && sceneMode === 'inline' && (
+        // Το κενό έχει το ύψος σκηνής + λεζάντας, ώστε το Leaflet να μετρήσει σωστά ΠΡΙΝ φτάσει
+        // το κομμάτι κώδικα — αλλιώς η κάρτα θα ψήλωνε δεύτερη φορά χωρίς να ξαναμετρηθεί.
+        <Suspense fallback={<div className="mt-1 h-[7.9rem] w-full animate-pulse rounded-lg bg-sky-100" aria-hidden="true" />}>
+          <BeachSeaMotionScene
+            item={item}
+            language={language}
+            regionId={item.beach.regionId ?? regionId}
+            windFromDeg={windFromDeg}
+            windSpeedKmh={windSpeedKmh}
+            atDt={atDt}
+            hourSeries={hourSeries}
+            presentation="inline"
+          />
+        </Suspense>
+      )}
+
+      {sceneMode === 'fullscreen' && (
+        // Πλήρης οθόνη: portal έξω από τον χάρτη, τίποτα δεν αλλάζει μέσα στο ταμπελάκι.
+        <Suspense fallback={null}>
+          <BeachSeaMotionScene
+            item={item}
+            language={language}
+            regionId={item.beach.regionId ?? regionId}
+            windFromDeg={windFromDeg}
+            windSpeedKmh={windSpeedKmh}
+            atDt={atDt}
+            hourSeries={hourSeries}
+            presentation="fullscreen"
+            onClose={() => setSceneMode(null)}
+          />
+        </Suspense>
+      )}
+
+      {featureChips.length > 0 && sceneMode !== 'inline' && (
         <div className="mt-1">
           {/* ΜΙΑ ΛΕΞΗ ΑΝΤΙ ΓΙΑ ΜΙΑ ΣΕΙΡΑ ΕΙΚΟΝΙΔΙΑ (Μίλτος, 25/08/2026: «τα εικονίδια στις πινέζες
               με τα χαρακτηριστικά βγάλ' τα, βάλε μόνο κάτι σαν περισσότερες πληροφορίες»).
@@ -2808,7 +2933,8 @@ const BeachMap: React.FC<BeachMapProps> = ({
   unrecommendedBeachIds,
   calmWaterFilter = false,
   onCalmWaterFilterChange,
-  onCalmWaterStateChange
+  onCalmWaterStateChange,
+  regionId
 }) => {
   const mapViewportRef = useRef<HTMLDivElement>(null);
   const [mapMode, setMapMode] = useState<'recommendation' | 'wind'>('wind');
@@ -3266,6 +3392,25 @@ const BeachMap: React.FC<BeachMapProps> = ({
    * `sliderDisplayBeaufort` instead, which describes a different hour than `windSpeedKmh` does,
    * and a mismatched pair is worse than no pair. Undefined simply keeps the older behaviour.
    */
+  /**
+   * Οι ώρες της περιοχής για την «παραλία σε κίνηση» (ήλιος, σύννεφα, «παίξε τη μέρα»). Από τα
+   * ίδια hourSlots της μπάρας της ώρας — ΠΕΡΙΟΧΗΣ, όχι παραλίας, και η σκηνή το λέει.
+   */
+  const sceneHourSeries = useMemo<SceneHour[]>(
+    () => (hourSlots ?? []).map(slot => ({
+      dt: slot.dt,
+      windKmh: typeof slot.wind?.speed === 'number' ? slot.wind.speed * 3.6 : undefined,
+      windFromDeg: typeof slot.wind?.deg === 'number' ? slot.wind.deg : undefined,
+      waveM: slot.marine?.waveHeightM,
+      waveFromDeg: slot.marine?.waveDirectionDeg,
+      periodS: slot.marine?.wavePeriodS,
+      cloudCover: typeof slot.clouds?.all === 'number' ? Math.max(0, Math.min(1, slot.clouds.all / 100)) : undefined,
+    })),
+    [hourSlots]
+  );
+  // athens-clock-exempt: ο ήλιος της σκηνής θέλει την απόλυτη στιγμή (UTC), όχι ώρα τοίχου.
+  const sceneNowDt = Math.floor(Date.now() / 1000);
+
   const beachWindSpeedKmh = (item: SuitableBeach): number | undefined => {
     const local = beachLocalWinds?.[item.beach.id];
     if (typeof local?.speedKmh === 'number') return local.speedKmh;
@@ -3603,6 +3748,9 @@ const BeachMap: React.FC<BeachMapProps> = ({
     // υπόσχεση ότι υπάρχει κι άλλο. Ζεύγος με το «Λιγότερα» από κάτω.
     moreInfo: { en: 'More information', gr: 'Περισσότερες πληροφορίες', de: 'Mehr Informationen', it: 'Altre informazioni', fr: "Plus d'informations" },
     fewer: { en: 'Less', gr: 'Λιγότερα', de: 'Weniger', it: 'Meno', fr: 'Moins' },
+    // Το play της «παραλίας σε κίνηση» — προσβάσιμο όνομα και tooltip, δεν τυπώνεται ως κείμενο.
+    playMotion: { en: 'Watch wave and wind in motion', gr: 'Δες το κύμα και τον άνεμο σε κίνηση', de: 'Welle und Wind in Bewegung ansehen', it: 'Guarda onda e vento in movimento', fr: 'Voir la houle et le vent en mouvement' },
+    stopMotion: { en: 'Close the motion view', gr: 'Κλείσε την κίνηση', de: 'Bewegungsansicht schließen', it: 'Chiudi la vista in movimento', fr: 'Fermer la vue animée' },
     // Η ετικέτα του συρταριού. Ερώτηση και όχι τίτλος («Επεξήγηση χρωμάτων»): ο επισκέπτης
     // αναγνωρίζει τη δική του απορία και ξέρει ότι από μέσα βγαίνει απάντηση.
     toneScaleWhat: { en: 'What do the colours mean?', gr: 'Τι σημαίνουν τα χρώματα;', de: 'Was bedeuten die Farben?', it: 'Cosa significano i colori?', fr: 'Que signifient les couleurs ?' },
@@ -4767,7 +4915,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
                   className="beach-map-conditions-popup"
                   closeButton={false}
                   autoPan
-                  autoPanPadding={[12, 12]}
+                  // Πάνω: 60 px, για να μην κάθεται η κάρτα (πια ψηλότερη με τη σκηνή) πάνω στη
+                  // μπάρα «Προτάσεις / Άνεμος» που ζει στην κορυφή του χάρτη.
+                  autoPanPaddingTopLeft={[12, 60]}
+                  autoPanPaddingBottomRight={[12, 12]}
                   minWidth={128}
                   maxWidth={248}
                 >
@@ -4782,6 +4933,12 @@ const BeachMap: React.FC<BeachMapProps> = ({
                     openPopupRef={openPopupRef}
                     openLabel={mapCopy.openBeach[language]}
                     onOpen={onBeachClick ? () => onBeachClick(item.beach) : undefined}
+                    windFromDeg={beachLocalWinds?.[item.beach.id]?.deg ?? mapWindDirectionDeg}
+                    regionId={regionId}
+                    atDt={selectedHourDt ?? sceneNowDt}
+                    hourSeries={sceneHourSeries}
+                    playMotionLabel={mapCopy.playMotion[language]}
+                    stopMotionLabel={mapCopy.stopMotion[language]}
                   />
                 </Popup>
               )}

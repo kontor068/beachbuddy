@@ -26,7 +26,8 @@ import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdi
 import { formatBeaufortLabel } from '../utils/beaufortRange';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
-import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_MAX_BEAUFORT, SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
+import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
+import { windFeelLevel } from '../utils/conditionsFeelPhrase';
 import { EvidenceSignature } from '../components/EvidenceSignature';
 import { getBeachClimate, describeClimateComparison, type ClimateComparison } from '../data/beachClimate';
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
@@ -2377,11 +2378,21 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                      «κατάμουτρα»— γιατί εκεί καμία δεν διαφωνεί με το «Λίγος αέρας» της κάρτας
                      και λένε κάτι που ο αριθμός δεν λέει.
                      Δες SHELTER_LABEL και SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT στο
-                     BeachAnswerHero — εκεί ζει και τι αντικατέστησε την πύλη στεριάς της 27/08. */
+                     BeachAnswerHero — εκεί ζει και τι αντικατέστησε την πύλη στεριάς της 27/08.
+
+                     ΑΠΟ 03/09/2026 ΤΟ ΡΗΜΑ ΚΡΙΝΕΤΑΙ ΣΤΟΝ ΜΕΣΟ, ΟΧΙ ΣΤΟ ΤΑΒΑΝΙ (Ζαβία: popup
+                     «Λίγος αέρας · 3 Μπφ», πλακίδιο «3–4 Μπφ · φυσάει αρκετά»). Η κάρτα
+                     διαλέγει τη λέξη της με windFeelLevel(μέσος)· το πλακίδιο καλεί την ΙΔΙΑ
+                     συνάρτηση με τον ΙΔΙΟ αριθμό, οπότε δεν μπορούν να διαφωνήσουν. Το τυπωμένο
+                     μέγιστο κάνει ένα πράγμα μόνο: πάνω από το κατώφλι της υπόσχεσης σβήνει τις
+                     λέξεις γεωμετρίας. Δεν ανεβάζει ποτέ σκαλί — η ριπή είναι πρόβλεψη, και μια
+                     φούσκα της δεν επιτρέπεται να γράψει «φυσάει αρκετά» κάτω από κίτρινη πινέζα. */
                   if (printedBeaufortMax > SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT) {
-                    if (printedBeaufortMax > SHELTER_WORD_MAX_BEAUFORT) return shelterCopy.protectedStrongWind;
-                    if (printedBeaufortMax >= SHELTER_WORD_MAX_BEAUFORT) return shelterCopy.windFeltLot;
-                    return shelterCopy.windFeltSome;
+                    const cardWindLevel = windFeelLevel(beaufortLevel);
+                    if (cardWindLevel >= 4) return shelterCopy.protectedStrongWind;
+                    if (cardWindLevel === 3) return shelterCopy.windFeltLot;
+                    if (cardWindLevel === 2) return shelterCopy.windFeltSome;
+                    return shelterCopy.windFeltLittle;
                   }
                   return shelterCopy[mapAlignedExposureLevel];
                 })()
@@ -3241,6 +3252,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
             >
               <React.Suspense fallback={<div className="w-full h-full bg-slate-100 animate-pulse" />}>
                 <BeachMap
+                  regionId={beach.regionId ?? regionId}
                   beaches={[{
                     beachId: beach.id,
                     name: beachDisplayName,
