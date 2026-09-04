@@ -92,12 +92,10 @@ export type SceneHour = {
 /* --------------------------------------------------------------- copy */
 
 type SceneCopy = {
-  caption: string;
   aria: (name: string) => string;
   noData: string;
   expand: string;
   close: string;
-  sim: string;
   wind: string;
   sea: string;
   shore: string;
@@ -119,12 +117,10 @@ const reachIt = { ankle: 'alla caviglia', knee: 'al ginocchio', waist: 'alla vit
 
 const sceneCopy: Record<LanguageCode, SceneCopy> = {
   gr: {
-    caption: 'Προσομοίωση από τα δεδομένα της ώρας, όχι κάμερα',
     aria: name => `Κίνηση κύματος και ανέμου πάνω στην ακτογραμμή της παραλίας ${name}`,
     noData: 'Χωρίς δεδομένα ώρας',
     expand: 'Άνοιξε σε πλήρη οθόνη',
     close: 'Κλείσε την πλήρη οθόνη',
-    sim: 'ΠΡΟΣΟΜΟΙΩΣΗ',
     wind: 'ΑΝΕΜΟΣ',
     sea: 'ΘΑΛΑΣΣΑ',
     shore: 'ΑΚΤΗ',
@@ -137,12 +133,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     night: 'νύχτα',
   },
   en: {
-    caption: "Simulation from this hour's data, not a camera",
     aria: name => `Wave and wind motion over the shoreline of ${name}`,
     noData: 'No data for this hour',
     expand: 'Open full screen',
     close: 'Close full screen',
-    sim: 'SIMULATION',
     wind: 'WIND',
     sea: 'SEA',
     shore: 'SHORE',
@@ -155,12 +149,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     night: 'night',
   },
   de: {
-    caption: 'Simulation aus den Daten dieser Stunde, keine Kamera',
     aria: name => `Wellen- und Windbewegung über der Küstenlinie von ${name}`,
     noData: 'Keine Daten für diese Stunde',
     expand: 'Vollbild öffnen',
     close: 'Vollbild schließen',
-    sim: 'SIMULATION',
     wind: 'WIND',
     sea: 'SEE',
     shore: 'UFER',
@@ -173,12 +165,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     night: 'Nacht',
   },
   fr: {
-    caption: "Simulation d'après les données de l'heure, pas une caméra",
     aria: name => `Mouvement de la houle et du vent sur le littoral de ${name}`,
     noData: 'Pas de données pour cette heure',
     expand: 'Ouvrir en plein écran',
     close: 'Fermer le plein écran',
-    sim: 'SIMULATION',
     wind: 'VENT',
     sea: 'MER',
     shore: 'RIVAGE',
@@ -191,12 +181,10 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     night: 'nuit',
   },
   it: {
-    caption: "Simulazione dai dati dell'ora, non una telecamera",
     aria: name => `Movimento di onda e vento sulla costa di ${name}`,
     noData: 'Nessun dato per questa ora',
     expand: 'Apri a schermo intero',
     close: 'Chiudi schermo intero',
-    sim: 'SIMULAZIONE',
     wind: 'VENTO',
     sea: 'MARE',
     shore: 'RIVA',
@@ -1095,14 +1083,14 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
         </div>
       )}
 
-      {/* Κάτω: πυξίδα αριστερά, «ΠΡΟΣΟΜΟΙΩΣΗ» με παλλόμενη κουκκίδα και το κουμπί δεξιά. */}
+      {/* Κάτω: πυξίδα αριστερά, σήμα BETA με παλλόμενη κουκκίδα και τα κουμπιά δεξιά. */}
       <div className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 ${edge}`}>
-        <div className="pointer-events-none flex items-end gap-1.5">
+        <div className="pointer-events-none flex shrink-0 items-end gap-1.5">
           {hasFacing && <CompassRing facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 56 : 26} />}
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-1.5">
           {full && mosaic && (
-            <span className="pointer-events-none rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70">{mosaic.attribution}</span>
+            <span className="pointer-events-none whitespace-nowrap rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70">{mosaic.attribution}</span>
           )}
           {dayHours.length > 1 && (
             <button
@@ -1111,7 +1099,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               aria-pressed={dayPlaying}
               aria-label={dayPlaying ? copy.stopDay : copy.playDay}
               title={dayPlaying ? copy.stopDay : copy.playDay}
-              className={`flex ${full ? 'h-8 gap-1.5 px-2.5 text-[10px]' : 'h-6 gap-1 px-1.5 text-[8px]'} cursor-pointer items-center rounded border border-cyan-300/40 bg-slate-950/70 font-black tracking-[0.14em] text-cyan-100 transition hover:bg-slate-900`}
+              className={`flex ${full ? 'h-8 gap-1.5 px-2.5 text-[10px]' : 'h-6 gap-1 px-1.5 text-[8px]'} shrink-0 cursor-pointer items-center whitespace-nowrap rounded border border-cyan-300/40 bg-slate-950/70 font-black tracking-[0.14em] text-cyan-100 transition hover:bg-slate-900`}
             >
               {dayPlaying ? <Pause className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" /> : <Play className={full ? 'h-3.5 w-3.5' : 'h-3 w-3'} aria-hidden="true" />}
               {full ? (dayPlaying ? (hourLabel ?? copy.stopDay) : copy.playDay) : (dayPlaying ? hourLabel : null)}
@@ -1123,13 +1111,12 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
             aria-pressed={soundOn}
             aria-label={soundOn ? copy.soundOff : copy.soundOn}
             title={soundOn ? copy.soundOff : copy.soundOn}
-            className={`flex ${full ? 'h-8 w-8' : 'h-6 w-6'} cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900`}
+            className={`flex ${full ? 'h-8 w-8' : 'h-6 w-6'} shrink-0 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900`}
           >
             {soundOn ? <Volume2 className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" /> : <VolumeX className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" />}
           </button>
-          <span className={`pointer-events-none flex items-center gap-1 rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
+          <span className={`pointer-events-none flex shrink-0 items-center gap-1 whitespace-nowrap rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
             <span className={`${full ? 'h-1.5 w-1.5' : 'h-1 w-1'} animate-pulse rounded-full bg-cyan-300`} aria-hidden="true" />
-            {full ? copy.sim : 'SIM'}
             <span className="rounded bg-amber-300/90 px-1 text-slate-900">BETA</span>
           </span>
           {!full && onExpand && (
@@ -1138,7 +1125,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               onClick={onExpand}
               aria-label={copy.expand}
               title={copy.expand}
-              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900"
+              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900"
             >
               <Maximize2 className="h-3 w-3" aria-hidden="true" />
             </button>
@@ -1157,7 +1144,6 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
-          <p className="pointer-events-none absolute inset-x-0 bottom-[5.5rem] sm:bottom-24 px-4 text-center text-[11px] font-semibold text-cyan-100/70">{copy.caption}</p>
         </>
       )}
     </div>
@@ -1255,7 +1241,7 @@ const BeachSeaMotionScene: React.FC<BeachSeaMotionSceneProps> = ({ item, languag
         variant="popup"
         onExpand={() => setFullOpen(true)}
       />
-      <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{copy.caption}{mosaic ? ` · ${mosaic.attribution}` : ''}</p>
+      {mosaic && <p className="mt-0.5 text-[8.5px] font-semibold leading-tight text-slate-500">{mosaic.attribution}</p>}
       {fullOpen && typeof document !== 'undefined' && (
         <FullScreenScene
           item={item}
