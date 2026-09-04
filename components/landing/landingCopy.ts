@@ -229,6 +229,16 @@ export type LandingCopy = {
     mailSubject: string;
     mailFallback: string;
   };
+  /** Το ημερολόγιο δουλειάς κάτω από το γράμμα (components/landing/RecentWorkLog). */
+  workLog: {
+    title: string;
+    today: string;
+    yesterday: string;
+    daysAgo: (days: number) => string;
+    showAll: (count: number) => string;
+    showLess: string;
+    tags: { new: string; improved: string; beta: string; measured: string };
+  };
 };
 
 export const landingCopy: Record<LanguageCode, LandingCopy> = {
@@ -497,6 +507,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       mailSubject: 'Διόρθωση ή πρόταση για το CalmBeach',
       mailFallback: 'ή γράψε μας απευθείας',
     },
+    workLog: {
+      title: 'Τι φτιάξαμε τελευταία',
+      today: 'ενημερώθηκε σήμερα',
+      yesterday: 'ενημερώθηκε χθες',
+      daysAgo: days => `ενημερώθηκε πριν από ${days} μέρες`,
+      showAll: count => `Όλα τα νέα (${count})`,
+      showLess: 'Λιγότερα',
+      tags: { new: 'Νέο', improved: 'Βελτίωση', beta: 'Beta', measured: 'Μέτρηση' },
+    },
   },
   en: {
     hero: {
@@ -607,6 +626,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       askCta: 'Send it to us',
       mailSubject: 'Correction or suggestion for CalmBeach',
       mailFallback: 'or write to us directly',
+    },
+    workLog: {
+      title: 'What we built lately',
+      today: 'updated today',
+      yesterday: 'updated yesterday',
+      daysAgo: days => `updated ${days} days ago`,
+      showAll: count => `All updates (${count})`,
+      showLess: 'Show less',
+      tags: { new: 'New', improved: 'Improved', beta: 'Beta', measured: 'Measured' },
     },
   },
   de: {
@@ -722,6 +750,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       mailSubject: 'Korrektur oder Vorschlag für CalmBeach',
       mailFallback: 'oder schreib uns direkt',
     },
+    workLog: {
+      title: 'Was wir zuletzt gebaut haben',
+      today: 'heute aktualisiert',
+      yesterday: 'gestern aktualisiert',
+      daysAgo: days => `vor ${days} Tagen aktualisiert`,
+      showAll: count => `Alle Neuigkeiten (${count})`,
+      showLess: 'Weniger',
+      tags: { new: 'Neu', improved: 'Verbessert', beta: 'Beta', measured: 'Gemessen' },
+    },
   },
   fr: {
     hero: {
@@ -836,6 +873,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       mailSubject: 'Correction ou suggestion pour CalmBeach',
       mailFallback: 'ou écrivez-nous directement',
     },
+    workLog: {
+      title: 'Ce que nous avons construit récemment',
+      today: 'mis à jour aujourd’hui',
+      yesterday: 'mis à jour hier',
+      daysAgo: days => `mis à jour il y a ${days} jours`,
+      showAll: count => `Toutes les nouveautés (${count})`,
+      showLess: 'Réduire',
+      tags: { new: 'Nouveau', improved: 'Amélioré', beta: 'Bêta', measured: 'Mesuré' },
+    },
   },
   it: {
     hero: {
@@ -948,6 +994,15 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       askCta: 'Mandacelo',
       mailSubject: 'Correzione o suggerimento per CalmBeach',
       mailFallback: 'oppure scrivici direttamente',
+    },
+    workLog: {
+      title: 'Cosa abbiamo costruito di recente',
+      today: 'aggiornato oggi',
+      yesterday: 'aggiornato ieri',
+      daysAgo: days => `aggiornato ${days} giorni fa`,
+      showAll: count => `Tutte le novità (${count})`,
+      showLess: 'Mostra meno',
+      tags: { new: 'Nuovo', improved: 'Migliorato', beta: 'Beta', measured: 'Misurato' },
     },
   },
 };

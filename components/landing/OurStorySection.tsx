@@ -6,6 +6,7 @@ import { canTrackAnalytics, sendLandingMessage, trackEvent } from '../../service
 import { COOKIE_CONSENT_CHANGED_EVENT } from '../../services/legalConsent';
 import { LEGAL_OPERATOR } from '../../utils/legalContent';
 import { landingCopy } from './landingCopy';
+import { RecentWorkLog } from './RecentWorkLog';
 
 // The human close. Everything above this point is a machine talking — live
 // numbers, geometry, hedged forecasts. This is the one place a person does.
@@ -317,6 +318,10 @@ export const OurStorySection: React.FC<OurStorySectionProps> = ({ language }) =>
             </p>
           )}
         </div>
+
+        {/* «Να τι κάναμε με τη βοήθεια»: το ημερολόγιο δουλειάς, στην ίδια στήλη, μετά την
+            παράκληση — ώστε το γράμμα να τελειώνει σε πράξεις και όχι σε αίτημα. */}
+        <RecentWorkLog language={language} />
       </div>
     </section>
   );
