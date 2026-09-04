@@ -735,6 +735,19 @@ interface BeachDetailPageProps {
   mapWind?: { deg: number; speedKmh: number };
   /** The hour the global slider is showing (0-23), so the wave strip marks the right bar. */
   selectedHour?: number;
+  /**
+   * ΔΕΙΧΝΕΙ Η ΟΘΟΝΗ ΤΗΝ ΩΡΑ ΠΟΥ ΖΕΙ Ο ΕΠΙΣΚΕΠΤΗΣ; — πρόσθετο 04/09/2026.
+   *
+   * ΔΕΝ είναι το ίδιο με `selectedHour === undefined`. Εκείνο απαντά «έμεινε ο διακόπτης
+   * ανέγγιχτος;»· αυτό απαντά «είναι η ώρα της οθόνης η τωρινή;» — και τα δύο διαφέρουν
+   * μόλις ο επισκέπτης ακουμπήσει τη μπάρα και την ξαναγυρίσει στο τώρα.
+   *
+   * Κρίνεται στο timestamp του slot (App.isSelectedHourNow), όχι σε αριθμό ώρας: το
+   * `selectedHour` γεννιέται στη ζώνη ΤΗΣ ΣΥΣΚΕΥΗΣ (βλ. analyticsService
+   * FeedbackData.conditions.shownHour), οπότε μια σύγκριση με την ώρα Ελλάδας θα έβγαζε
+   * λάθος ακριβώς για τους ξένους επισκέπτες — δηλαδή για τους περισσότερους.
+   */
+  selectedHourIsNow?: boolean;
   /** SAFETY hard cutoff: the region forecast is past the 12 h cutoff and could not be refreshed. When
    *  true, every wind/sea/score/verdict block is blanked and a banner is shown; only the
    *  static content (name, photo, access, map, info) stays. Never show stale conditions. */
@@ -826,6 +839,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   weatherSource = 'island-fallback',
   mapExposureLevelOverride,
   selectedHour,
+  selectedHourIsNow = false,
   conditionsUnavailable = false,
   lastForecastAt,
   onAddPhoto
@@ -1141,7 +1155,23 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // βαθμονομείται απέναντι σε νούμερο που δεν είδε ποτέ (Λιά 1958: 1,78 vs ~0,10 μ.).
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
-      live: selectedDayIsToday && selectedHour === undefined,
+      /**
+       * ΗΤΑΝ Η ΟΘΟΝΗ ΣΤΗΝ ΤΩΡΙΝΗ ΩΡΑ — ΟΧΙ «ΕΜΕΙΝΕ Ο ΔΙΑΚΟΠΤΗΣ ΑΝΕΓΓΙΧΤΟΣ» (04/09/2026).
+       *
+       * Μέχρι σήμερα η γραμμή ήταν σκέτο `selectedHour === undefined`, δηλαδή έλεγχε αν ο
+       * επισκέπτης άγγιξε ΠΟΤΕ τη μπάρα των ωρών. Όποιος την κουνούσε και την ξαναγύριζε στο
+       * τώρα γραφόταν «δεν ήταν εκεί»: Καλαντός Νάξου (1995), 04/09/2026 — σχόλιο στις 18:28
+       * ώρα Ελλάδας με τον διακόπτη στο slot των 18:00, και το Telegram τύπωσε «Όχι — η σελίδα
+       * ήταν γυρισμένη σε άλλη ώρα» ακριβώς από κάτω από το «Απόγευμα / βράδυ» που είχε
+       * δηλώσει ο ίδιος. Ένα σχόλιο που αυτοαναιρείται πετιέται αδιάβαστο — και πετιέται το
+       * ΠΙΟ πολύτιμο είδος, αυτό που στέλνει κάποιος όρθιος μέσα στο νερό.
+       *
+       * Η σωστή απάντηση υπήρχε ήδη στο App.tsx (`isSelectedHourNow`) και τροφοδοτούσε μόνο
+       * τον τίτλο του podium· εδώ φτάνει ως prop. Οι δύο όροι ΔΕΝ είναι περιττοί: ο πρώτος
+       * πιάνει την ανέγγιχτη σελίδα (δεν υπάρχει slot να συγκριθεί), ο δεύτερος τον διακόπτη
+       * που κάθεται πάνω στην τρέχουσα ώρα.
+       */
+      live: selectedDayIsToday && (selectedHour === undefined || selectedHourIsNow),
     }, {
       // ΠΟΙΑ ΠΑΡΑΛΙΑ. Χωρίς αυτό το e-mail/Telegram έπεφτε πίσω στο Referer, που σε
       // πλοήγηση μέσα στην εφαρμογή είναι συχνά η γενική σελίδα — και το σχόλιο έφτανε

@@ -6981,6 +6981,10 @@ export const App: React.FC = () => {
             detailDataStatus={detailDataStatus}
             beachWeatherById={detailBeachWeatherById}
             selectedHour={selectedHourDt != null ? new Date(selectedHourDt * 1000).getHours() : undefined}
+            // Το ΙΔΙΟ «τώρα» που κρίνει τον τίτλο του podium, ώστε το σχόλιο ενός επισκέπτη που
+            // στέκεται στην παραλία να μη γράφεται «δεν ήταν εκεί» επειδή απλώς ακούμπησε τη
+            // μπάρα των ωρών (βλ. BeachDetailPage submitFeedback → live).
+            selectedHourIsNow={isSelectedHourNow}
             geospatialExposureProfiles={geospatialExposureProfiles}
             weatherSource="island-fallback"
             mapExposureLevelOverride={canonicalMapExposureLevels.get(detailBeach.id)}
