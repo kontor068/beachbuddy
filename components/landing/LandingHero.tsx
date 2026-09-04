@@ -161,7 +161,11 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
         </h1>
 
         <p
-          className="cb-hero-rise mx-auto mt-5 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-lg"
+          // Four lines on a phone since the 04/09 subtitle. leading-normal (not
+          // relaxed) and mt-4 (not 5) make them read as one block under the title
+          // instead of a paragraph. Type size stays 16px — the floor for body
+          // text on a phone in sunlight; shrinking it was considered and refused.
+          className="cb-hero-rise mx-auto mt-4 max-w-xl text-base font-normal leading-normal text-slate-600 sm:text-lg"
           style={riseDelay(170)}
         >
           {c.subtitle}

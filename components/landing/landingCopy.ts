@@ -254,12 +254,17 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       //  - «σήμερα», NEVER «σε πραγματικό χρόνο»: we show an hourly forecast served
       //    from a cache, and the same page says «Δείχνουμε πρόγνωση, όχι μέτρηση».
       //  - «αξίζουν», not «ταιριάζουν»: the title just above already says «ταιριάζει».
+      //  - No «σήμερα» at the end (cut 04/09, same day): the title's accent word IS
+      //    «σήμερα», and «της μέρας» in the middle already carries it. Same cut in
+      //    every locale — the trailing today/heute/aujourd'hui/oggi is gone.
+      //  - «κάθε ακτής», not «της κάθε ακτής»: one article fewer, one line fewer on
+      //    some phones.
       //  - It promises no calm anywhere, so it stays true on a 7-Beaufort day when
       //    every region tile reads 3/16 — that is the day the sentence earns its keep.
       //  - One «και» only, and no comma before it — Miltos's ear, 04/09.
       // Do not reinstate a kicker line above the title; that was removed on purpose
       // (LandingHero.tsx) and this is not the way back in.
-      subtitle: 'Διαβάζουμε το σχήμα της κάθε ακτής, τον άνεμο και το κύμα της μέρας, βάζουμε τις προτιμήσεις σου και σου δείχνουμε ποιες παραλίες αξίζουν σήμερα.',
+      subtitle: 'Διαβάζουμε το σχήμα κάθε ακτής, τον άνεμο και το κύμα της μέρας, βάζουμε τις προτιμήσεις σου και σου δείχνουμε ποιες παραλίες αξίζουν.',
       searchPlaceholder: 'Αναζήτησε παραλία ή περιοχή…',
       // Keep this short: native input placeholders are one-line only and share
       // mobile width with the submit button.
@@ -502,7 +507,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       titleAccent: 'today',
       // Mirrors the Greek line (see the gr block for the word choices): the coast
       // word matches the trust band's «The shape of the coast»; no «real time».
-      subtitle: 'We read the shape of each coast, today’s wind and waves, add what you’re looking for and show you which beaches are worth it today.',
+      subtitle: 'We read the shape of each coast, today’s wind and waves, add what you’re looking for and show you which beaches are worth it.',
       searchPlaceholder: 'Search a beach or region…',
       searchPlaceholderAlt: 'Where and how many days?',
       searchAria: 'Search a beach, a region, or a stay in days',
@@ -614,7 +619,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Welcher Strand in Griechenland passt heute zu dir?',
       titleAccent: 'heute',
       // Mirrors the Greek line; «Form der Küste» matches the trust band, no «Echtzeit».
-      subtitle: 'Wir lesen die Form jeder Küste, den Wind und die Wellen des Tages, nehmen deine Wünsche dazu und zeigen dir, welche Strände sich heute lohnen.',
+      subtitle: 'Wir lesen die Form jeder Küste, den Wind und die Wellen des Tages, nehmen deine Wünsche dazu und zeigen dir, welche Strände sich lohnen.',
       searchPlaceholder: 'Strand oder Region suchen…',
       searchPlaceholderAlt: 'Wohin und wie viele Tage?',
       searchAria: 'Strand, Region oder Aufenthalt in Tagen suchen',
@@ -729,7 +734,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quelle plage de Grèce vous convient aujourd’hui ?',
       titleAccent: 'aujourd’hui',
       // Mirrors the Greek line; «forme de la côte» matches the trust band, no « temps réel ».
-      subtitle: 'Nous lisons la forme de chaque côte, le vent et les vagues du jour, ajoutons vos préférences et vous montrons quelles plages valent le coup aujourd’hui.',
+      subtitle: 'Nous lisons la forme de chaque côte, le vent et les vagues du jour, ajoutons vos préférences et vous montrons quelles plages valent le coup.',
       searchPlaceholder: 'Chercher une plage ou une région…',
       searchPlaceholderAlt: 'Où et combien de jours ?',
       searchAria: 'Chercher une plage, une région ou un séjour en jours',
@@ -844,7 +849,7 @@ export const landingCopy: Record<LanguageCode, LandingCopy> = {
       title: 'Quale spiaggia della Grecia fa per te oggi?',
       titleAccent: 'oggi',
       // Mirrors the Greek line; «forma della costa» matches the trust band, no «tempo reale».
-      subtitle: 'Leggiamo la forma di ogni costa, il vento e le onde del giorno, aggiungiamo le tue preferenze e ti mostriamo quali spiagge valgono la pena oggi.',
+      subtitle: 'Leggiamo la forma di ogni costa, il vento e le onde del giorno, aggiungiamo le tue preferenze e ti mostriamo quali spiagge valgono la pena.',
       searchPlaceholder: 'Cerca una spiaggia o una regione…',
       searchPlaceholderAlt: 'Dove e quanti giorni?',
       searchAria: 'Cerca una spiaggia, una zona o un soggiorno in giorni',
