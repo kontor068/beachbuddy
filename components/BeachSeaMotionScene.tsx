@@ -96,7 +96,6 @@ type SceneCopy = {
   noData: string;
   expand: string;
   close: string;
-  sim: string;
   wind: string;
   sea: string;
   shore: string;
@@ -141,7 +140,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     noData: 'Χωρίς δεδομένα ώρας',
     expand: 'Άνοιξε σε πλήρη οθόνη',
     close: 'Κλείσε την πλήρη οθόνη',
-    sim: 'ΠΡΟΣΟΜΟΙΩΣΗ',
     wind: 'ΑΝΕΜΟΣ',
     sea: 'ΘΑΛΑΣΣΑ',
     shore: 'ΑΚΤΗ',
@@ -162,7 +160,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     noData: 'No data for this hour',
     expand: 'Open full screen',
     close: 'Close full screen',
-    sim: 'SIMULATION',
     wind: 'WIND',
     sea: 'SEA',
     shore: 'SHORE',
@@ -183,7 +180,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     noData: 'Keine Daten für diese Stunde',
     expand: 'Vollbild öffnen',
     close: 'Vollbild schließen',
-    sim: 'SIMULATION',
     wind: 'WIND',
     sea: 'SEE',
     shore: 'UFER',
@@ -204,7 +200,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     noData: 'Pas de données pour cette heure',
     expand: 'Ouvrir en plein écran',
     close: 'Fermer le plein écran',
-    sim: 'SIMULATION',
     wind: 'VENT',
     sea: 'MER',
     shore: 'RIVAGE',
@@ -225,7 +220,6 @@ const sceneCopy: Record<LanguageCode, SceneCopy> = {
     noData: 'Nessun dato per questa ora',
     expand: 'Apri a schermo intero',
     close: 'Chiudi schermo intero',
-    sim: 'SIMULAZIONE',
     wind: 'VENTO',
     sea: 'MARE',
     shore: 'RIVA',
@@ -1194,12 +1188,12 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
         </div>
       )}
 
-      {/* Κάτω: πυξίδα αριστερά, «ΠΡΟΣΟΜΟΙΩΣΗ» με παλλόμενη κουκκίδα και το κουμπί δεξιά. */}
+      {/* Κάτω: πυξίδα αριστερά, σήμα BETA με παλλόμενη κουκκίδα και τα κουμπιά δεξιά. */}
       <div className={`absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 ${edge}`}>
         <div className="pointer-events-none flex items-end gap-1.5">
           {hasFacing && <DirectionRose facingDeg={facingDeg} windFromDeg={hasWind ? windFromDeg : undefined} waveFromDeg={showWaveChip ? waveArrowFrom : undefined} size={full ? 60 : 30} label={copy.rose} />}
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-1.5">
           {full && mosaic && (
             <span className="pointer-events-none hidden whitespace-nowrap rounded bg-slate-950/50 px-1 py-0.5 text-[8px] text-cyan-100/70 sm:inline">{mosaic.attribution}</span>
           )}
@@ -1222,13 +1216,12 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
             aria-pressed={soundOn}
             aria-label={soundOn ? copy.soundOff : copy.soundOn}
             title={soundOn ? copy.soundOff : copy.soundOn}
-            className={`flex ${full ? 'h-8 w-8' : 'h-6 w-6'} cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900`}
+            className={`flex ${full ? 'h-8 w-8' : 'h-6 w-6'} shrink-0 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900`}
           >
             {soundOn ? <Volume2 className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" /> : <VolumeX className={full ? 'h-4 w-4' : 'h-3 w-3'} aria-hidden="true" />}
           </button>
-          <span className={`pointer-events-none flex items-center gap-1 rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
+          <span className={`pointer-events-none flex shrink-0 items-center gap-1 whitespace-nowrap rounded border border-cyan-300/30 bg-slate-950/60 ${full ? 'px-2 py-1 text-[10px]' : 'px-1 py-0.5 text-[7px]'} font-black tracking-[0.16em] text-cyan-200 backdrop-blur-sm`}>
             <span className={`${full ? 'h-1.5 w-1.5' : 'h-1 w-1'} animate-pulse rounded-full bg-cyan-300`} aria-hidden="true" />
-            {full ? copy.sim : 'SIM'}
             <span className="rounded bg-amber-300/90 px-1 text-slate-900">BETA</span>
           </span>
           {!full && onExpand && (
@@ -1237,7 +1230,7 @@ const SceneView: React.FC<SceneViewProps> = ({ item, language, windFromDeg, wind
               onClick={onExpand}
               aria-label={copy.expand}
               title={copy.expand}
-              className="flex h-6 w-6 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900"
+              className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded border border-cyan-300/40 bg-slate-950/70 text-cyan-100 transition hover:bg-slate-900"
             >
               <Maximize2 className="h-3 w-3" aria-hidden="true" />
             </button>
