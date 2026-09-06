@@ -39,7 +39,7 @@ const copy = {
     beachData: 'Beach data',
     beachDataLicence: 'contributors, under the',
     footerNote:
-      'Calm Beach is an informational beach guide. Always check local conditions, warning flags, lifeguards, and official advice before swimming.',
+      'CalmBeach is an informational beach guide. Always check local conditions, warning flags, lifeguards, and official advice before swimming.',
     legalLinks: 'Legal',
     manageCookies: 'Manage cookies',
     contact: 'Contact',
@@ -63,7 +63,7 @@ const copy = {
     beachData: 'Δεδομένα παραλιών',
     beachDataLicence: 'συνεισφέροντες, με άδεια',
     footerNote:
-      'Το Calm Beach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, σημαίες, ναυαγοσώστες και επίσημες οδηγίες.',
+      'Το CalmBeach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, σημαίες, ναυαγοσώστες και επίσημες οδηγίες.',
     legalLinks: 'Νομικά',
     manageCookies: 'Διαχείριση cookies',
     contact: 'Επικοινωνία',

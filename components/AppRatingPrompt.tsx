@@ -128,7 +128,7 @@ const COPY: LocalizedCopy<Copy> = {
     close: 'Fermer',
   },
   de: {
-    title: 'Wie gefällt dir Calm Beach?',
+    title: 'Wie gefällt dir CalmBeach?',
     subtitle: 'Zwei kurze Taps — bewerte uns von 1 bis 10.',
     ease: 'Benutzerfreundlichkeit',
     accuracy: 'Genauigkeit der Vorhersage',
@@ -140,7 +140,7 @@ const COPY: LocalizedCopy<Copy> = {
     close: 'Schließen',
   },
   it: {
-    title: 'Come ti sembra Calm Beach?',
+    title: 'Come ti sembra CalmBeach?',
     subtitle: 'Due tocchi rapidi — dacci un voto da 1 a 10.',
     ease: 'Facilità d’uso',
     accuracy: 'Precisione delle previsioni',

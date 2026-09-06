@@ -65,7 +65,7 @@ const prerenderLocales = [
     pathPrefix: '/el',
     homeTitle: 'Πού έχει ήρεμη θάλασσα σήμερα στην Ελλάδα | CalmBeach',
     homeDescription: 'Δες ποιες ελληνικές παραλίες έχουν ήρεμη θάλασσα σήμερα: ζωντανός άνεμος, κύμα και η προστασία που δίνει το σχήμα της κάθε ακτής.',
-    homeImageAlt: 'Calm Beach Greece προτάσεις παραλιών',
+    homeImageAlt: 'CalmBeach Greece προτάσεις παραλιών',
   },
   {
     id: 'de',
@@ -2645,7 +2645,7 @@ const staticFallbackCopy = {
     aboutHeading: 'About this beach',
   },
   gr: {
-    brand: 'Calm Beach Greece',
+    brand: 'CalmBeach Greece',
     region: 'Περιοχή',
     beachType: 'Τύπος παραλίας',
     access: 'Πρόσβαση',
@@ -2662,9 +2662,9 @@ const staticFallbackCopy = {
     quiet: 'Πιο ήσυχη',
     snorkeling: 'Snorkeling',
     openAppBeach: 'Άνοιξε την εφαρμογή για live σκορ, άνεμο, κύμα, καλύτερη ώρα και κοντινές εναλλακτικές.',
-    openAppRegion: 'Ο καιρός και η θάλασσα αλλάζουν μέσα στη μέρα. Το Calm Beach δείχνει live προτάσεις παραλιών μέσα στην εφαρμογή.',
-    viewBeach: 'Δες την παραλία στο Calm Beach Greece',
-    viewRegion: islandName => `Δες τις παραλίες για ${islandName} στο Calm Beach Greece`,
+    openAppRegion: 'Ο καιρός και η θάλασσα αλλάζουν μέσα στη μέρα. Το CalmBeach δείχνει live προτάσεις παραλιών μέσα στην εφαρμογή.',
+    viewBeach: 'Δες την παραλία στο CalmBeach Greece',
+    viewRegion: islandName => `Δες τις παραλίες για ${islandName} στο CalmBeach Greece`,
     regionHeading: islandName => `Παραλίες: ${islandName}`,
     regionDescription: (islandName, count) => `Σύγκρινε ${count} παραλίες σε ${islandName} με βάση άνεμο, κύμα, καιρό, έκθεση, πρόσβαση και τύπο παραλίας πριν διαλέξεις πού να κολυμπήσεις.`,
     home: 'Παραλίες Ελλάδας',
@@ -2794,7 +2794,7 @@ const HOME_REGION_IDS = [
 // OpenStreetMap and was credited nowhere in the product.
 const FOOTER_COPY = {
   en: {
-    note: 'Calm Beach is an informational beach guide. Always check local conditions, warning flags, lifeguards and official advice before swimming.',
+    note: 'CalmBeach is an informational beach guide. Always check local conditions, warning flags, lifeguards and official advice before swimming.',
     legal: 'Legal',
     terms: 'Terms of Use',
     privacy: 'Privacy Policy',
@@ -2807,7 +2807,7 @@ const FOOTER_COPY = {
     data: 'Beach data derived from OpenStreetMap, © OpenStreetMap contributors, available under the Open Database License (ODbL). Weather and marine forecasts by Open-Meteo (CC BY 4.0).',
   },
   gr: {
-    note: 'Το Calm Beach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, τις σημαίες, τους ναυαγοσώστες και τις επίσημες οδηγίες.',
+    note: 'Το CalmBeach είναι οδηγός πληροφόρησης. Πριν κολυμπήσεις, έλεγχε πάντα τις τοπικές συνθήκες, τις σημαίες, τους ναυαγοσώστες και τις επίσημες οδηγίες.',
     legal: 'Νομικά',
     terms: 'Όροι Χρήσης',
     privacy: 'Πολιτική Απορρήτου',
@@ -2820,7 +2820,7 @@ const FOOTER_COPY = {
     data: 'Τα δεδομένα παραλιών προέρχονται από το OpenStreetMap, © συνεισφέροντες OpenStreetMap, με άδεια Open Database License (ODbL). Οι προγνώσεις καιρού και θάλασσας από το Open-Meteo (CC BY 4.0).',
   },
   de: {
-    note: 'Calm Beach ist ein informativer Strandführer. Prüfe vor dem Schwimmen immer die örtlichen Bedingungen, Warnflaggen, Rettungsschwimmer und offiziellen Hinweise.',
+    note: 'CalmBeach ist ein informativer Strandführer. Prüfe vor dem Schwimmen immer die örtlichen Bedingungen, Warnflaggen, Rettungsschwimmer und offiziellen Hinweise.',
     legal: 'Rechtliches',
     terms: 'Nutzungsbedingungen',
     privacy: 'Datenschutzerklärung',
@@ -2833,7 +2833,7 @@ const FOOTER_COPY = {
     data: 'Stranddaten abgeleitet aus OpenStreetMap, © OpenStreetMap-Mitwirkende, verfügbar unter der Open Database License (ODbL). Wetter- und Seegangsvorhersagen von Open-Meteo (CC BY 4.0).',
   },
   fr: {
-    note: "Calm Beach est un guide de plages à titre informatif. Vérifiez toujours les conditions locales, les drapeaux, les sauveteurs et les consignes officielles avant de nager.",
+    note: "CalmBeach est un guide de plages à titre informatif. Vérifiez toujours les conditions locales, les drapeaux, les sauveteurs et les consignes officielles avant de nager.",
     legal: 'Mentions légales',
     terms: "Conditions d'utilisation",
     privacy: 'Politique de confidentialité',
@@ -2846,7 +2846,7 @@ const FOOTER_COPY = {
     data: 'Données de plages dérivées d’OpenStreetMap, © les contributeurs OpenStreetMap, disponibles sous Open Database License (ODbL). Prévisions météo et marines par Open-Meteo (CC BY 4.0).',
   },
   it: {
-    note: 'Calm Beach è una guida informativa alle spiagge. Prima di nuotare controlla sempre le condizioni locali, le bandiere di avvertimento, i bagnini e le indicazioni ufficiali.',
+    note: 'CalmBeach è una guida informativa alle spiagge. Prima di nuotare controlla sempre le condizioni locali, le bandiere di avvertimento, i bagnini e le indicazioni ufficiali.',
     legal: 'Note legali',
     terms: 'Termini di utilizzo',
     privacy: 'Informativa sulla privacy',
@@ -2902,7 +2902,7 @@ const staticLegalFooter = (locale = prerenderLocales[0], pagePath = '') => {
           </ul>
         </nav>
         <p style="margin:0 0 6px;font-size:12px;color:#64748b;">${escapeHtml(c.data)}</p>
-        <p style="margin:0;font-size:12px;color:#94a3b8;">© 2026 Calm Beach</p>
+        <p style="margin:0;font-size:12px;color:#94a3b8;">© 2026 CalmBeach</p>
       </footer>`;
 };
 
@@ -2958,7 +2958,7 @@ const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLi
   return `
     <div id="root">
       <main data-static-fallback style="max-width:860px;margin:0 auto;padding:40px 20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a;background:#f8fafc;">
-        <p style="margin:0 0 8px;color:#0e7490;font-weight:800;">Calm Beach Greece</p>
+        <p style="margin:0 0 8px;color:#0e7490;font-weight:800;">CalmBeach Greece</p>
         <h1 style="margin:0 0 14px;font-size:36px;line-height:1.08;">${escapeHtml(homeHeading)}</h1>
         <p style="margin:0 0 22px;font-size:18px;line-height:1.55;color:#334155;">${escapeHtml(locale.homeDescription)}</p>
         <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 24px;padding:0;list-style:none;">

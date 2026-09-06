@@ -3104,10 +3104,10 @@ export const App: React.FC = () => {
       : selectedIslandName
         ? getLocalizedCopy(language, {
           en: `${selectedIslandName} Beaches | CalmBeach Greece`,
-          gr: `Παραλίες: ${selectedIslandName} | Calm Beach Greece`,
-          fr: `Plages de ${selectedIslandName} | Calm Beach Greece`,
-          de: `Strände in ${selectedIslandName} | Calm Beach Greece`,
-          it: `Spiagge a ${selectedIslandName} | Calm Beach Greece`,
+          gr: `Παραλίες: ${selectedIslandName} | CalmBeach Greece`,
+          fr: `Plages de ${selectedIslandName} | CalmBeach Greece`,
+          de: `Strände in ${selectedIslandName} | CalmBeach Greece`,
+          it: `Spiagge a ${selectedIslandName} | CalmBeach Greece`,
         })
         : meta.title;
     const detailDescription = canUseDetailSeo && detailBeach
