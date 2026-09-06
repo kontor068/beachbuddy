@@ -1890,8 +1890,16 @@ const FAMILY_INTRO_OVERRIDES = {
 Το κλειδί για μια καλή μέρα με παιδιά εδώ είναι η κατεύθυνση του ανέμου. Δες τον ζωντανό δείκτη ανέμου και κύματος στη σελίδα της παραλίας πριν ξεκινήσεις: αν έχει σηκωθεί ο Βαρδάρης —ο βόρειος άνεμος της περιοχής— μια πιο νότια επιλογή θα έχει λιγότερο κύμα στην ακτή, κι ένα ρηχό, πιο μαζεμένο σημείο κάνει τη διαφορά όταν κολυμπάνε μικρά παιδιά.`,
   },
   'central-greece-evia': {
+    // GSC (90 days to 24/08/2026): searchers name the PART of the island —
+    // «βόρεια εύβοια παραλίες για παιδιά» 222 impr, «νότια …» 128, «χαλκίδα …»
+    // 114 — but the SERP snippet never said those words, and the page sat below
+    // the CTR curve. Same URL on purpose (decision log 05/08: no new sub-region
+    // pages); the title/description now carry the three place words that the
+    // in-page sub-area sections (REGION_SUBAREAS) already answer.
+    title: 'Παραλίες για Παιδιά στην Εύβοια: Βόρεια, Χαλκίδα, Νότια',
+    description: 'Παραλίες για παιδιά σε όλη την Εύβοια — Βόρεια (Πευκί, Γρεγολίμανο), κοντά στη Χαλκίδα και Νότια. Δες live άνεμο & κύμα για κάθε παραλία πριν πας.',
     h1: 'Παραλίες για παιδιά στην Εύβοια',
-    intro: `Για οικογένειες από την Αθήνα, η Εύβοια είναι η πιο κοντινή απάντηση στο «παραλίες για παιδιά» — και η βόρεια πλευρά της κρύβει μια ολόκληρη σειρά από ρηχές, οργανωμένες αμμουδιές. Η Παραλία Πευκί είναι η πιο δημοφιλής: μεγάλη, με άμμο και βότσαλο, ξαπλώστρες, beach bar και πάρκινγκ, με ρηχά νερά που βολεύουν παιδιά κάθε ηλικίας. Δίπλα, το Ψαροπούλι (Βασιλικά) και η Χρυσή Ακτή δίνουν παρόμοια εικόνα — αμμώδεις, οργανωμένες, με ομαλό βυθό. Ξεχωριστή περίπτωση το Γρεγολίμανο: ένας κλειστός, ρηχός και οργανωμένος όρμος — από τα πιο μαζεμένα σημεία για νήπια. Αν θέλεις κάτι πιο ήσυχο, η Λευκή Ακτή, οι Αλυκές και η Ψιλή Άμμος δίνουν εξίσου ρηχές, οικογενειακές επιλογές. Η απόσταση διαφέρει και αξίζει να τη μετρήσεις όταν ταξιδεύεις με μικρά: η Χαλκίδα είναι μόλις μία ώρα από την Αθήνα, ενώ το Πευκί και ο βορράς του νησιού θέλουν περίπου τρεις. Στις αμμοβοτσαλωτές, όπως το Πευκί, τα παπουτσάκια θαλάσσης βοηθούν τα παιδικά πόδια.
+    intro: `Για οικογένειες από την Αθήνα, η Εύβοια είναι η πιο κοντινή απάντηση στο «παραλίες για παιδιά» — και η βόρεια πλευρά της κρύβει μια ολόκληρη σειρά από ρηχές, οργανωμένες αμμουδιές. Η Παραλία Πευκί είναι η πιο δημοφιλής: μεγάλη, με άμμο και βότσαλο, ξαπλώστρες, beach bar και πάρκινγκ, με ρηχά νερά που βολεύουν παιδιά κάθε ηλικίας. Δίπλα, το Ψαροπούλι (Βασιλικά) και η Χρυσή Ακτή δίνουν παρόμοια εικόνα — αμμώδεις, οργανωμένες, με ομαλό βυθό. Ξεχωριστή περίπτωση το Γρεγολίμανο: ένας κλειστός, ρηχός και οργανωμένος όρμος — από τα πιο μαζεμένα σημεία για νήπια. Αν θέλεις κάτι πιο ήσυχο, η Λευκή Ακτή, οι Αλυκές και η Ψιλή Άμμος δίνουν εξίσου ρηχές, οικογενειακές επιλογές — οι Αλυκές κοντά στη Χαλκίδα, οι άλλες δύο στη νότια Εύβοια, προς Μαρμάρι και Κάρυστο· κάθε γωνιά του νησιού έχει τη δική της ενότητα πιο κάτω. Η απόσταση διαφέρει και αξίζει να τη μετρήσεις όταν ταξιδεύεις με μικρά: η Χαλκίδα είναι μόλις μία ώρα από την Αθήνα, ενώ το Πευκί και ο βορράς του νησιού θέλουν περίπου τρεις. Στις αμμοβοτσαλωτές, όπως το Πευκί, τα παπουτσάκια θαλάσσης βοηθούν τα παιδικά πόδια.
 
 Αυτό που κάνει τη λίστα μας διαφορετική είναι το κριτήριο πίσω της. Δεν διαλέγουμε με βάση τη φήμη, αλλά με βάση τον προσανατολισμό και την έκθεση κάθε ακτής στον άνεμο. Πολλές από αυτές, όπως το Γρεγολίμανο και η Χρυσή Ακτή, με βάση τον προσανατολισμό τους μένουν πιο υπήνεμες στους βόρειους ανέμους, ενώ άλλες, όπως η Λευκή Ακτή, βολεύουν καλύτερα όταν ο άνεμος γυρίζει. Η κατάταξη στηρίζεται σε πραγματικά δεδομένα, όχι σε γενικές τουριστικές προτάσεις.
 
@@ -2585,9 +2593,19 @@ const injectBeachHead = (html, meta) => {
   nextHtml = nextHtml.replace(/\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
 
   const jsonLd = JSON.stringify(meta.jsonLd).replace(/</g, '\\u003c');
+  // og:locale:alternate mirrors the hreflang set (minus x-default and the page's
+  // own locale) — one more explicit language signal on pages where Google has
+  // been picking a wrong-language URL for the query.
+  const ogLocaleAlternates = (meta.alternateUrls || [])
+    .filter(alternate => alternate.hreflang !== 'x-default')
+    .map(alternate => prerenderLocales.find(locale => locale.hreflang === alternate.hreflang)?.ogLocale)
+    .filter(ogLocale => ogLocale && ogLocale !== (meta.ogLocale || 'en_US'));
   const extraHead = [
     ...(meta.alternateUrls || []).map(alternate => (
       `<link rel="alternate" hreflang="${escapeHtml(alternate.hreflang)}" href="${escapeHtml(alternate.href)}" />`
+    )),
+    ...ogLocaleAlternates.map(ogLocale => (
+      `<meta property="og:locale:alternate" content="${escapeHtml(ogLocale)}" />`
     )),
     `<script type="application/ld+json">${jsonLd}</script>`,
   ].join('\n    ');
@@ -3885,18 +3903,29 @@ const beachMetaDescription = (beach, region, beachName, islandName, language) =>
     // characters to the verdict rather than the other way round.
     const shelter = beachMetaShelterLine(beach, region, language);
     const cta = BEACH_META_CTA.story[language];
+    // The CTA is the one clause that differentiates us in the SERP (live wind &
+    // waves — TripAdvisor cannot say it), so it outranks story length: try every
+    // opener length WITH the CTA first, and only if none fits at 70 chars give
+    // the characters back to the story. The old order bailed out CTA-less at the
+    // first length where `opener + shelter` fit — exactly on the famous beaches
+    // whose long stories earned the most impressions (Kathisma, Vrasidas, Elia).
     if (shelter) {
       for (const openerLength of [115, 100, 85, 70]) {
         const opener = truncateForMeta(safeStoryParagraph, openerLength);
         const withCta = `${opener} ${shelter} ${cta}`;
         if (withCta.length <= 155) return withCta;
+      }
+      for (const openerLength of [115, 100, 85, 70]) {
+        const opener = truncateForMeta(safeStoryParagraph, openerLength);
         const withoutCta = `${opener} ${shelter}`;
         if (withoutCta.length <= 155) return withoutCta;
       }
     }
-    const opener = truncateForMeta(safeStoryParagraph, 115);
-    const withCta = `${opener} ${cta}`;
-    if (withCta.length <= 155) return withCta;
+    for (const openerLength of [115, 100, 85, 70]) {
+      const opener = truncateForMeta(safeStoryParagraph, openerLength);
+      const withCta = `${opener} ${cta}`;
+      if (withCta.length <= 155) return withCta;
+    }
     return truncateForMeta(safeStoryParagraph, 155);
   }
   return beachTraitMetaDescription(beach, region, beachName, islandName, language);
@@ -5020,8 +5049,11 @@ const GUIDES_HUB_PATH = '/beach-guides/';
 
 const guidesHubCopy = {
   en: {
-    title: 'Greek Beach Guides — by Topic and Island | CalmBeach',
-    description: 'Every CalmBeach beach guide in one place: family, more sheltered, snorkeling, organized, secluded and sunset beaches, island by island.',
+    // GSC 09/2026: the query «calm beach» lands here at position ~5 with 0.7%
+    // CTR — the old title never said the one word the searcher typed. "Calmer"
+    // (comparative, no «today») clears riskyClaimFindings on this static page.
+    title: 'Greek Beach Guides — Find the Calmer Beach | CalmBeach',
+    description: 'Which Greek beach stays calmer when the wind blows? Family, more sheltered, snorkeling, organized, secluded and sunset guides, island by island.',
     h1: 'Beach guides',
     intro: 'Every guide we publish, grouped by what you are looking for and then by island. Each one lists the beaches that actually match, and links straight through to live wind and wave conditions.',
     nationalHeading: 'Greece-wide guides',
@@ -5029,8 +5061,8 @@ const guidesHubCopy = {
     empty: 'No guides published yet.',
   },
   gr: {
-    title: 'Οδηγοί Παραλιών — ανά Θέμα και Νησί | CalmBeach',
-    description: 'Όλοι οι οδηγοί παραλιών του CalmBeach σε ένα σημείο: οικογενειακές, υπήνεμες, για snorkeling, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα, νησί προς νησί.',
+    title: 'Οδηγοί Παραλιών — Ποια Παραλία Μένει Πιο Ήρεμη | CalmBeach',
+    description: 'Ποια παραλία μένει πιο ήρεμη όταν φυσάει; Οικογενειακές, πιο υπήνεμες, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα — νησί προς νησί, στο CalmBeach.',
     h1: 'Οδηγοί παραλιών',
     intro: 'Όλοι οι οδηγοί που δημοσιεύουμε, ομαδοποιημένοι πρώτα κατά θέμα και μετά κατά νησί. Ο καθένας δείχνει τις παραλίες που ταιριάζουν πραγματικά και οδηγεί κατευθείαν στις τρέχουσες συνθήκες ανέμου και κύματος.',
     nationalHeading: 'Οδηγοί για όλη την Ελλάδα',
@@ -6429,14 +6461,21 @@ const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prer
   return htmlWithHead.replace(/<div id="root">\s*<\/div>/i, staticBeachFallback(beach, island, region, canonicalUrl, locale));
 };
 
-const sitemapEntry = (url, imageUrl, lastmod) => ({ url, imageUrl, lastmod });
+const sitemapEntry = (url, imageUrl, lastmod, alternates) => ({ url, imageUrl, lastmod, alternates });
 
+// Every locale URL of the same page repeats the FULL alternate set (incl. its own
+// URL and x-default) — that is what the sitemap hreflang spec requires for the
+// annotations to count. The <head> tags stay the primary channel; this is the
+// redundant second channel for pages where Google picked a wrong-language URL.
 const renderSitemapEntry = (entry, fallbackLastmod) => {
   const imageTag = entry.imageUrl
     ? `<image:image><image:loc>${escapeXml(entry.imageUrl)}</image:loc></image:image>`
     : '';
+  const alternateTags = (entry.alternates || [])
+    .map(alternate => `<xhtml:link rel="alternate" hreflang="${escapeXml(alternate.hreflang)}" href="${escapeXml(alternate.href)}"/>`)
+    .join('');
 
-  return `  <url><loc>${escapeXml(entry.url)}</loc><lastmod>${entry.lastmod || fallbackLastmod}</lastmod>${imageTag}</url>`;
+  return `  <url><loc>${escapeXml(entry.url)}</loc><lastmod>${entry.lastmod || fallbackLastmod}</lastmod>${alternateTags}${imageTag}</url>`;
 };
 
 const main = async () => {
@@ -6477,7 +6516,7 @@ const main = async () => {
     }));
     await mkdir(homeOutputDir, { recursive: true });
     await writeFile(path.join(homeOutputDir, 'index.html'), withStaticFooter(buildHomePage(baseHtml, locale, homeOgImageUrl, baseLocales, regionLinks), locale), 'utf8');
-    sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl));
+    sitemapEntries.push(sitemapEntry(canonicalUrlFor('/', locale), homeSitemapImageUrl, undefined, alternateUrlsFor('/', baseLocales)));
   }
 
   // Consolidation 301s for the retired generic landing pages.
@@ -6580,7 +6619,7 @@ const main = async () => {
       const landingOutputDir = outputDirForRoute(localizedPath(landing.pathName, locale));
       await mkdir(landingOutputDir, { recursive: true });
       await writeFile(path.join(landingOutputDir, 'index.html'), withStaticFooter(buildSeoLandingPage(baseHtml, landing, content, locale, homeOgImageUrl, dynamic), locale), 'utf8');
-      sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, locale), homeSitemapImageUrl));
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(landing.pathName, locale), homeSitemapImageUrl, undefined, landingAlternateUrls(landing)));
       landingPageCount += 1;
     }
   }
@@ -6617,7 +6656,14 @@ const main = async () => {
         ? buildShelteredGeometryIntro(page.region.id, shelterGeo, locale.language)
         : null;
       const contentBase = familyOverride
-        ? { ...baseContent, h1: familyOverride.h1, intro: familyOverride.intro }
+        ? {
+            ...baseContent,
+            h1: familyOverride.h1,
+            intro: familyOverride.intro,
+            // Optional SERP-facing overrides (Evia: the sub-area place words).
+            ...(familyOverride.title ? { title: familyOverride.title } : {}),
+            ...(familyOverride.description ? { description: familyOverride.description } : {}),
+          }
         : shelteredIntro
           ? { ...baseContent, intro: shelteredIntro }
           : baseContent;
@@ -6665,7 +6711,7 @@ const main = async () => {
       const intentOutputDir = outputDirForRoute(localizedPath(pathName, locale));
       await mkdir(intentOutputDir, { recursive: true });
       await writeFile(path.join(intentOutputDir, 'index.html'), buildIslandIntentPage(baseHtml, page.intent, content, page.island, page.region, page.beaches, intentOgImageUrl, locale, emittedLocales, intentHero), 'utf8');
-      sitemapEntries.push(sitemapEntry(canonicalUrlFor(pathName, locale), intentSitemapImageUrl));
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(pathName, locale), intentSitemapImageUrl, undefined, alternateUrlsFor(pathName, emittedLocales)));
       islandIntentPageCount += 1;
     }
   }
@@ -6678,7 +6724,7 @@ const main = async () => {
     const hubOutputDir = outputDirForRoute(localizedPath(GUIDES_HUB_PATH, locale));
     await mkdir(hubOutputDir, { recursive: true });
     await writeFile(path.join(hubOutputDir, 'index.html'), withStaticFooter(buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales), locale), 'utf8');
-    sitemapEntries.push(sitemapEntry(canonicalUrlFor(GUIDES_HUB_PATH, locale), homeSitemapImageUrl));
+    sitemapEntries.push(sitemapEntry(canonicalUrlFor(GUIDES_HUB_PATH, locale), homeSitemapImageUrl, undefined, alternateUrlsFor(GUIDES_HUB_PATH, baseLocales)));
     pageCount += 1;
   }
   console.log(`Guides hub: ${GUIDES_HUB_PATH} emitted for ${baseLocales.map(l => l.id).join(', ')} (${islandIntentPages.length} guide links).`);
@@ -6716,7 +6762,7 @@ const main = async () => {
       const regionOutputDir = outputDirForRoute(localizedRegionPath);
       await mkdir(regionOutputDir, { recursive: true });
       await writeFile(path.join(regionOutputDir, 'index.html'), withStaticFooter(buildRegionPage(baseHtml, island, region, regionOgImageUrl, locale, emittedLocales, regionShelteredCount), locale), 'utf8');
-      sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl, regionLastmod));
+      sitemapEntries.push(sitemapEntry(canonicalUrlFor(currentRegionPath, locale), regionSitemapImageUrl, regionLastmod, alternateUrlsFor(currentRegionPath, emittedLocales)));
       regionPageCount += 1;
     }
 
@@ -6756,7 +6802,7 @@ const main = async () => {
         const outputDir = outputDirForRoute(localizedRoutePath);
         await mkdir(outputDir, { recursive: true });
         await writeFile(path.join(outputDir, 'index.html'), withStaticFooter(buildBeachPage(baseHtml, island, beach, region, beachOgUrl, locale, emittedLocales), locale), 'utf8');
-        sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl, regionLastmod));
+        sitemapEntries.push(sitemapEntry(canonicalUrlFor(routePath, locale), regionSitemapImageUrl, regionLastmod, alternateUrlsFor(routePath, emittedLocales)));
         pageCount += 1;
       }
     }
@@ -6917,7 +6963,7 @@ const main = async () => {
   const lastmod = today;
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
     ...sitemapEntries.map(entry => renderSitemapEntry(entry, lastmod)),
     '</urlset>',
     '',
