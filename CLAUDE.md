@@ -1,14 +1,5 @@
 # CalmBeach
 
-> **⚠️ ΠΡΟΣΩΡΙΝΗ ΣΗΜΕΙΩΣΗ ΣΥΓΧΡΟΝΙΣΜΟΥ (ενημερώθηκε 06/09/2026).** Αν αυτό διαβάζεται στο
-> ΚΥΡΙΟ μηχάνημα και το τοπικό `docs/team/` ΔΕΝ έχει το αρχείο `HANDOVER-SYNC-2026-09-06.md`:
-> πριν από οποιαδήποτε άλλη δουλειά, πες στον Μίλτο να ανοίξει τον φάκελο
-> **«CalmBeach docs-team sync»** στο Google Drive του και να κατεβάσει στο `docs/team/` όλα τα
-> `.md` εκτός από όσα ξεκινούν με `SUPERSEDED-` (7 αρχεία). Μετά τρέξε **`/sync`** — διαβάζει
-> το handover, ενημερώνει τα docs, τρέχει τους ελέγχους και σβήνει αυτή τη σημείωση. Ο κώδικας
-> 23/08–04/09 (άνεμος linear@raw, έκπτωση-γωνία K_d, λέξη κύματος στο τυπωμένο νούμερο,
-> «η παραλία σε κίνηση» BETA, hydration τίτλων για τη Google) είναι ήδη live στο `main`.
-
 Free B2C platform that tells tourists which Greek beach to go to today, based on live wind
 and wave conditions and each beach's orientation. **2.850 beaches across 110 regions**, five
 languages (EN / EL nationally; DE / FR / IT for 17 tourist regions). React + Vite +
