@@ -1269,7 +1269,7 @@ const CATEGORY_TITLE = {
   // sand-versus-pebbles distinction belongs in the description, where it has room
   // to be a sentence.
   sandy:      { en: { main: (islandName, count) => `${count} Sandy Beaches in ${islandName}`, tail: '' },                       gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες με Άμμο`, tail: '' } },
-  beachbar:   { en: { main: (islandName, count) => `${count} Beaches with a Beach Bar in ${islandName}`, tail: '' },            gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες με Beach Bar`, tail: '' } },
+  beachbar:   { en: { main: (islandName, count) => `${count} Beaches with a Beach Bar in ${islandName}`, tail: '', short: (islandName, count) => `${count} Beach Bar Beaches in ${islandName}` },            gr: { main: (islandName, count) => `${islandName}: ${count} Παραλίες με Beach Bar`, tail: '', short: (islandName, count) => `${islandName}: Παραλίες με Beach Bar` } },
 };
 // Same deterministic tiers as beach titles: T1 full → T2 drop brand → T3 drop
 // qualifier tail → T4 bare "{island}: {keyword}".
@@ -1280,9 +1280,12 @@ const categoryTitleFor = (key, islandName, language, count) => {
   const tail = typeof spec.tail === 'function' ? spec.tail(count) : spec.tail;
   const withTail = tail ? `${main} ${tail}` : main;
   const max = language === 'gr' ? 58 : 60;
-  const tiers = [`${withTail} | CalmBeach`, withTail, main];
+  // T4: an optional compact phrasing for the handful of region names long enough
+  // to push even the bare `main` over the SERP limit (seen: "5 Beaches with a
+  // Beach Bar in Larissa Coast (Agia - Kissavos)" at 61 chars).
+  const tiers = [`${withTail} | CalmBeach`, withTail, main, ...(spec.short ? [spec.short(islandName, count)] : [])];
   for (const tier of tiers) if (tier.length <= max) return tier;
-  return main;
+  return tiers[tiers.length - 1];
 };
 
 // Category meta, en/gr only (spec §3.2): "{count} {phrase} — {island}: {basis}.
@@ -6484,6 +6487,25 @@ const main = async () => {
     readJson(beachIndexPath),
     listRootPublicAssets(),
   ]);
+
+  // NOT re-runnable on a built dist, and this must fail loudly instead of
+  // corrupting quietly. The script writes the prerendered HOME to
+  // dist/index.html — the very file it reads as the pristine Vite shell. Run it
+  // a second time and every page is stamped from the home page: the
+  // `<div id="root"></div>` replacement no longer matches (root is populated),
+  // so the per-page static content silently disappears while the home hero —
+  // «Which Greek Beach Is Calm Today?» — lands on all ~9.800 pages. Found
+  // 06/09/2026: two standalone re-runs did exactly that, and the only symptom
+  // was a WARN nobody would read. Rebuild with `npm run build` (Vite recreates
+  // the shell) before prerendering again.
+  // The discriminator is the EMPTY root div — the exact thing every page build
+  // replaces. (Not the `data-static-fallback` string: the pristine shell also
+  // contains it, in a CSS selector.)
+  if (!/<div id="root">\s*<\/div>/i.test(baseHtml)) {
+    throw new Error(
+      'dist/index.html is already a prerendered page, not the Vite shell — a re-run would bake the home page into every URL. Run `npm run build` instead.'
+    );
+  }
 
   const homeOgImageUrl = toAbsolutePublicUrl(publicAssets.has(homeOgImagePath) ? homeOgImagePath : defaultOgImagePath);
   const homeSitemapImageUrl = toSitemapImageUrl(homeOgImageUrl, publicAssets);

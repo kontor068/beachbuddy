@@ -2999,73 +2999,91 @@ export const App: React.FC = () => {
     };
     const buildDetailMeta = (): string => {
       if (!detailBeach) return regionDescription;
-      if (language !== 'en' && language !== 'gr') {
-        return getLocalizedCopy(language, {
-          en: `See practical info for ${detailBeachLabel} in ${selectedIslandName}, including location, beach type, wind exposure, map and tips to help you decide when to visit.`,
-          gr: `Δες πρακτικές πληροφορίες για ${detailBeachLabel} σε ${selectedIslandName}, όπως τοποθεσία, τύπο παραλίας, έκθεση στον άνεμο, χάρτη και χρήσιμες συμβουλές.`,
-          fr: `Plage ${detailBeachLabel}, ${selectedIslandName} (Grèce). Vérifiez le vent, les vagues, la météo et l’exposition de la plage avant d’y aller.`,
-          de: `Strand ${detailBeachLabel}, ${selectedIslandName} (Griechenland). Prüfe vor dem Besuch Wind, Wellen, Wetter und die Lage des Strandes.`,
-          it: `Spiaggia ${detailBeachLabel}, ${selectedIslandName} (Grecia). Controlla vento, onde, meteo ed esposizione della spiaggia prima di andare.`,
-        });
-      }
-      const isEn = language === 'en';
-      const typeTrait: Record<string, { en: string; gr: string }> = {
-        sandy: { en: 'Sandy beach', gr: 'Αμμώδης παραλία' },
-        pebbles: { en: 'Pebble beach', gr: 'Παραλία με βότσαλο' },
-        'sandy-pebbles': { en: 'Sand & pebble beach', gr: 'Παραλία με άμμο & βότσαλο' },
-        rocky: { en: 'Rocky beach', gr: 'Βραχώδης παραλία' },
+      // All five languages run the SAME trait template, mirrored 1:1 from
+      // scripts/prerenderBeachPages.mjs (BEACH_TYPE_TRAIT, TRAIT_PHRASES,
+      // BEACH_META_SHELTER, BEACH_META_CTA). de/fr/it used to bail out here to a
+      // fixed one-size sentence — the exact gap the prerender closed after
+      // measuring Italian pages at the same rank as Greek with half the CTR.
+      // The shelter verdict reads the baked `localWindStatus` (3 levels), never
+      // the old boolean, so a client-side navigation shows the same wording as
+      // a fresh load of the same URL.
+      type MetaLang = 'en' | 'gr' | 'de' | 'fr' | 'it';
+      const lang: MetaLang = (['en', 'gr', 'de', 'fr', 'it'] as const).includes(language as MetaLang) ? (language as MetaLang) : 'en';
+      const typeTrait: Record<string, Record<MetaLang, string>> = {
+        sandy:           { en: 'Sandy beach',         gr: 'Αμμώδης παραλία',           de: 'Sandstrand',           fr: 'Plage de sable',           it: 'Spiaggia di sabbia' },
+        pebbles:         { en: 'Pebble beach',        gr: 'Παραλία με βότσαλο',        de: 'Kiesstrand',           fr: 'Plage de galets',          it: 'Spiaggia di ciottoli' },
+        'sandy-pebbles': { en: 'Sand & pebble beach', gr: 'Παραλία με άμμο & βότσαλο', de: 'Sand- und Kiesstrand', fr: 'Plage de sable et galets', it: 'Spiaggia di sabbia e ciottoli' },
+        rocky:           { en: 'Rocky beach',         gr: 'Βραχώδης παραλία',          de: 'Felsstrand',           fr: 'Plage rocheuse',           it: 'Spiaggia rocciosa' },
+      };
+      const phrase: Record<string, Record<MetaLang, string>> = {
+        organisedWithSunbeds: { en: 'organised with sunbeds', gr: 'οργανωμένη με ξαπλώστρες', de: 'organisiert mit Liegen', fr: 'aménagée avec transats', it: 'attrezzata con lettini' },
+        organised:            { en: 'organised',              gr: 'οργανωμένη',               de: 'organisiert',            fr: 'aménagée',               it: 'attrezzata' },
+        sunbeds:              { en: 'with sunbeds',           gr: 'με ξαπλώστρες',            de: 'mit Liegen',             fr: 'avec transats',          it: 'con lettini' },
+        parking:              { en: 'with parking',           gr: 'με πάρκινγκ',              de: 'mit Parkplatz',          fr: 'avec parking',           it: 'con parcheggio' },
+        food:                 { en: 'with food nearby',       gr: 'με φαγητό κοντά',          de: 'mit Essen in der Nähe',  fr: 'restauration à proximité', it: 'con ristoro vicino' },
+        family:               { en: 'family-friendly',        gr: 'οικογενειακή',             de: 'familienfreundlich',     fr: 'familiale',              it: 'adatta alle famiglie' },
+        snorkeling:           { en: 'good for snorkeling',    gr: 'καλή για snorkeling',      de: 'gut zum Schnorcheln',    fr: 'bien pour le snorkeling', it: 'buona per lo snorkeling' },
       };
       const features: string[] = [];
       const organized = detailBeach.amenities?.organized;
       const sunbeds = detailBeach.amenities?.sunbeds;
-      if (organized && sunbeds) features.push(isEn ? 'organised with sunbeds' : 'οργανωμένη με ξαπλώστρες');
-      else if (organized) features.push(isEn ? 'organised' : 'οργανωμένη');
-      else if (sunbeds) features.push(isEn ? 'with sunbeds' : 'με ξαπλώστρες');
-      if (detailBeach.amenities?.parking) features.push(isEn ? 'with parking' : 'με πάρκινγκ');
-      if (detailBeach.amenities?.restaurant || detailBeach.amenities?.taverna) features.push(isEn ? 'with food nearby' : 'με φαγητό κοντά');
-      if (detailBeach.environment?.familyFriendly) features.push(isEn ? 'family-friendly' : 'οικογενειακή');
-      if (detailBeach.activities?.snorkeling) features.push(isEn ? 'good for snorkeling' : 'καλή για snorkeling');
-      // Short verdict forms mirrored from BEACH_META_SHELTER in
-      // scripts/prerenderBeachPages.mjs — the SAME baked `localWindStatus`,
-      // never a second hand-written scale. The old code here still read the
-      // boolean `shelteredFromLocalWind` and said «συχνά υπήνεμη», a wording
-      // the prerender retired; after a client-side navigation the tab/share
-      // description contradicted what the same page said on a fresh load.
-      const metaShelter: Record<string, Record<string, { en: string; gr: string }>> = {
+      if (organized && sunbeds) features.push(phrase.organisedWithSunbeds[lang]);
+      else if (organized) features.push(phrase.organised[lang]);
+      else if (sunbeds) features.push(phrase.sunbeds[lang]);
+      if (detailBeach.amenities?.parking) features.push(phrase.parking[lang]);
+      if (detailBeach.amenities?.restaurant || detailBeach.amenities?.taverna) features.push(phrase.food[lang]);
+      if (detailBeach.environment?.familyFriendly) features.push(phrase.family[lang]);
+      if (detailBeach.activities?.snorkeling) features.push(phrase.snorkeling[lang]);
+      const metaShelter: Record<string, Record<string, Record<MetaLang, string>>> = {
         aegean: {
-          protected: { en: 'Usually a sheltered shore in the meltemi.', gr: 'Συνήθως προστατευμένη ακτή στα μελτέμια.' },
-          partial:   { en: 'Partial shelter in the meltemi.',           gr: 'Μερική προστασία στα μελτέμια.' },
-          exposed:   { en: 'Exposed shore in the meltemi.',             gr: 'Εκτεθειμένη ακτή στα μελτέμια.' },
+          protected: { en: 'Usually a sheltered shore in the meltemi.', gr: 'Συνήθως προστατευμένη ακτή στα μελτέμια.', de: 'Beim Meltemi meist geschützte Küste.', fr: 'Côte généralement abritée au meltemi.', it: 'Costa di solito riparata dal meltemi.' },
+          partial:   { en: 'Partial shelter in the meltemi.',           gr: 'Μερική προστασία στα μελτέμια.',           de: 'Teilweiser Schutz beim Meltemi.',      fr: 'Abri partiel au meltemi.',              it: 'Riparo parziale dal meltemi.' },
+          exposed:   { en: 'Exposed shore in the meltemi.',             gr: 'Εκτεθειμένη ακτή στα μελτέμια.',           de: 'Beim Meltemi exponierte Küste.',       fr: 'Côte exposée au meltemi.',              it: 'Costa esposta al meltemi.' },
         },
         ionian: {
-          protected: { en: 'Usually a sheltered shore in the maistros.', gr: 'Συνήθως προστατευμένη ακτή στον μαΐστρο.' },
-          partial:   { en: 'Partial shelter in the maistros.',           gr: 'Μερική προστασία στον μαΐστρο.' },
-          exposed:   { en: 'Exposed shore in the maistros.',             gr: 'Εκτεθειμένη ακτή στον μαΐστρο.' },
+          protected: { en: 'Usually a sheltered shore in the maistros.', gr: 'Συνήθως προστατευμένη ακτή στον μαΐστρο.', de: 'Beim Maistros meist geschützte Küste.', fr: 'Côte généralement abritée au maïstro.', it: 'Costa di solito riparata dal maestrale.' },
+          partial:   { en: 'Partial shelter in the maistros.',           gr: 'Μερική προστασία στον μαΐστρο.',           de: 'Teilweiser Schutz beim Maistros.',      fr: 'Abri partiel au maïstro.',              it: 'Riparo parziale dal maestrale.' },
+          exposed:   { en: 'Exposed shore in the maistros.',             gr: 'Εκτεθειμένη ακτή στον μαΐστρο.',           de: 'Beim Maistros exponierte Küste.',       fr: 'Côte exposée au maïstro.',              it: 'Costa esposta al maestrale.' },
         },
         thermaic: {
-          protected: { en: 'Usually a sheltered shore in the summer wind.', gr: 'Συνήθως προστατευμένη ακτή στον καλοκαιρινό αέρα.' },
-          partial:   { en: 'Partial shelter in the summer wind.',           gr: 'Μερική προστασία στον καλοκαιρινό αέρα.' },
-          exposed:   { en: 'Exposed shore in the summer wind.',             gr: 'Εκτεθειμένη ακτή στον καλοκαιρινό αέρα.' },
+          protected: { en: 'Usually a sheltered shore in the summer wind.', gr: 'Συνήθως προστατευμένη ακτή στον καλοκαιρινό αέρα.', de: 'Beim Sommerwind meist geschützte Küste.', fr: "Côte généralement abritée par le vent d'été.", it: 'Costa di solito riparata dal vento estivo.' },
+          partial:   { en: 'Partial shelter in the summer wind.',           gr: 'Μερική προστασία στον καλοκαιρινό αέρα.',           de: 'Teilweiser Schutz beim Sommerwind.',      fr: "Abri partiel par le vent d'été.",             it: 'Riparo parziale dal vento estivo.' },
+          exposed:   { en: 'Exposed shore in the summer wind.',             gr: 'Εκτεθειμένη ακτή στον καλοκαιρινό αέρα.',           de: 'Beim Sommerwind exponierte Küste.',       fr: "Côte exposée au vent d'été.",                 it: 'Costa esposta al vento estivo.' },
         },
       };
       const status = detailBeach.localWindStatus;
       const shelter = status === 'protected' || status === 'partial' || status === 'exposed'
-        ? metaShelter[getRegionWindContext(selectedIsland?.id ?? '')]?.[status]?.[isEn ? 'en' : 'gr'] ?? ''
+        ? metaShelter[getRegionWindContext(selectedIsland?.id ?? '')]?.[status]?.[lang] ?? ''
         : '';
-      const typePhrase = typeTrait[detailBeach.beachType]?.[isEn ? 'en' : 'gr'];
+      const typePhrase = typeTrait[detailBeach.beachType]?.[lang];
       const sentence = (count: number): string => {
         const parts = [typePhrase, ...features.slice(0, count)].filter(Boolean) as string[];
         return parts.length ? `${parts.join(', ')}.` : '';
       };
       const head = `${detailBeachLabel}, ${selectedIslandName}: `;
-      // CTAs mirror BEACH_META_CTA (long/short/tiny) in prerenderBeachPages.mjs.
-      const ctaLong = isEn
-        ? 'Check live wind, waves and weather before you go — map, access and nearby beaches.'
-        : 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.';
-      const ctaShort = isEn
-        ? 'Check live wind, waves and weather before you go.'
-        : 'Δες live άνεμο, κύμα και καιρό πριν πας.';
-      const ctaTiny = isEn ? 'Check live weather, wind & waves.' : 'Δες live καιρό, άνεμο & κύμα.';
+      const cta = {
+        long: {
+          en: 'Check live wind, waves and weather before you go — map, access and nearby beaches.',
+          gr: 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.',
+          de: 'Prüfe Wind, Wellen und Wetter live, bevor du losfährst — Karte, Zufahrt und Strände in der Nähe.',
+          fr: 'Vérifiez le vent, les vagues et la météo en direct avant de partir — carte, accès et plages voisines.',
+          it: 'Controlla vento, onde e meteo in diretta prima di partire — mappa, accesso e spiagge vicine.',
+        },
+        short: {
+          en: 'Check live wind, waves and weather before you go.',
+          gr: 'Δες live άνεμο, κύμα και καιρό πριν πας.',
+          de: 'Prüfe Wind, Wellen und Wetter live, bevor du losfährst.',
+          fr: 'Vérifiez le vent, les vagues et la météo en direct avant de partir.',
+          it: 'Controlla vento, onde e meteo in diretta prima di partire.',
+        },
+        tiny: {
+          en: 'Check live weather, wind & waves.',
+          gr: 'Δες live καιρό, άνεμο & κύμα.',
+          de: 'Wetter, Wind & Wellen live prüfen.',
+          fr: 'Météo, vent et vagues en direct.',
+          it: 'Meteo, vento e onde in diretta.',
+        },
+      } as const;
       // Same shedding order as the prerender: drop traits before the verdict or
       // the CTA — the verdict is the clause a competitor cannot copy, the CTA is
       // what turns a description into a click.
@@ -3073,11 +3091,11 @@ export const App: React.FC = () => {
         .map(count => [sentence(count), shelter].filter(Boolean).join(' '))
         .filter(Boolean);
       const candidates = [
-        ...bodies.map(body => `${head}${body} ${ctaTiny}`),
+        ...bodies.map(body => `${head}${body} ${cta.tiny[lang]}`),
         ...bodies.map(body => `${head}${body}`),
-        `${head}${ctaLong}`,
-        `${head}${ctaShort}`,
-        `${head}${ctaTiny}`,
+        `${head}${cta.long[lang]}`,
+        `${head}${cta.short[lang]}`,
+        `${head}${cta.tiny[lang]}`,
       ];
       return candidates.find(candidate => candidate.length <= 155) || candidates[candidates.length - 1].slice(0, 155);
     };
