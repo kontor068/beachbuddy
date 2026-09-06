@@ -5058,18 +5058,48 @@ const guidesHubCopy = {
     title: 'Greek Beach Guides — Find the Calmer Beach | CalmBeach',
     description: 'Which Greek beach stays calmer when the wind blows? Family, more sheltered, snorkeling, organized, secluded and sunset guides, island by island.',
     h1: 'Beach guides',
-    intro: 'Every guide we publish, grouped by what you are looking for and then by island. Each one lists the beaches that actually match, and links straight through to live wind and wave conditions.',
-    nationalHeading: 'Greece-wide guides',
-    islandsLabel: island => island,
+    eyebrow: 'Greece, island by island',
+    deck: 'Pick what you are looking for, then the island. Each guide lists the beaches that match and links straight through to live wind and wave conditions.',
+    prose: [
+      'Every guide here starts from the shape of the coast: which way a beach faces, what stands between it and the open sea, and where waves can reach it from. That is why two beaches on the same island can give you a completely different day in the same wind.',
+      'These are not "prettiest beach" lists. Each one is a selection based on data we can point at — orientation, access, facilities, what the seabed is made of — and every beach named links to its own page with current wind and waves.',
+    ],
+    navHeading: 'Jump to a topic',
+    nationalHeading: 'Guides for the whole of Greece',
+    ctaLead: 'Not sure which island yet? Open the map and compare the whole country at a glance.',
+    ctaButton: 'Open CalmBeach',
+    faqHeading: 'How these guides are made',
+    faq: [
+      { q: 'Where do the beaches in each guide come from?', a: 'From the beach dataset behind the site: coastline orientation, access type, facilities and terrain, plus curated corrections. A beach appears in a guide only when its own record matches the topic — nothing is written to fill a page.' },
+      { q: 'Why does a guide only exist for some islands?', a: 'A guide is published only when an island has enough matching beaches to be worth reading. Below that threshold the page would be a list of two names, so it is not published at all.' },
+      { q: 'Do the guides show current conditions?', a: 'No — a guide page is fixed text. Wind, waves and water temperature live on each beach page and on the map, which update through the day. Use the guide to choose where, then check the beach page before you go.' },
+    ],
+    stats: { guides: 'guides', islands: 'islands & regions', beaches: 'beaches listed', topics: 'topics' },
+    counted: n => `${n} ${n === 1 ? 'beach' : 'beaches'}`,
     empty: 'No guides published yet.',
   },
   gr: {
     title: 'Οδηγοί Παραλιών — Ποια Παραλία Μένει Πιο Ήρεμη | CalmBeach',
     description: 'Ποια παραλία μένει πιο ήρεμη όταν φυσάει; Οικογενειακές, πιο υπήνεμες, οργανωμένες, απομονωμένες και για ηλιοβασίλεμα — νησί προς νησί, στο CalmBeach.',
     h1: 'Οδηγοί παραλιών',
-    intro: 'Όλοι οι οδηγοί που δημοσιεύουμε, ομαδοποιημένοι πρώτα κατά θέμα και μετά κατά νησί. Ο καθένας δείχνει τις παραλίες που ταιριάζουν πραγματικά και οδηγεί κατευθείαν στις τρέχουσες συνθήκες ανέμου και κύματος.',
+    eyebrow: 'Ελλάδα, νησί προς νησί',
+    deck: 'Διάλεξε πρώτα τι ψάχνεις και μετά νησί. Κάθε οδηγός δείχνει τις παραλίες που ταιριάζουν και οδηγεί κατευθείαν στις τρέχουσες συνθήκες ανέμου και κύματος.',
+    prose: [
+      'Κάθε οδηγός εδώ ξεκινάει από το σχήμα της ακτής: προς τα πού βλέπει η παραλία, τι στέκεται ανάμεσα σε αυτήν και το ανοιχτό πέλαγος, και από πού μπορεί να τη βρει το κύμα. Γι’ αυτό δύο παραλίες στο ίδιο νησί μπορεί να σου δώσουν εντελώς διαφορετική μέρα με τον ίδιο άνεμο.',
+      'Δεν είναι λίστες με «τις ωραιότερες». Είναι επιλογές με βάση δεδομένα που μπορούμε να δείξουμε — προσανατολισμός, πρόσβαση, παροχές, τι έχει ο βυθός — και κάθε παραλία που αναφέρεται οδηγεί στη δική της σελίδα με άνεμο και κύμα.',
+    ],
+    navHeading: 'Πήγαινε σε θέμα',
     nationalHeading: 'Οδηγοί για όλη την Ελλάδα',
-    islandsLabel: island => island,
+    ctaLead: 'Δεν έχεις αποφασίσει ακόμη νησί; Άνοιξε τον χάρτη και δες όλη την Ελλάδα με μια ματιά.',
+    ctaButton: 'Άνοιγμα CalmBeach',
+    faqHeading: 'Πώς φτιάχνονται αυτοί οι οδηγοί',
+    faq: [
+      { q: 'Από πού βγαίνουν οι παραλίες κάθε οδηγού;', a: 'Από τα δεδομένα των παραλιών που τρέχουν πίσω από το site: προσανατολισμός ακτής, τύπος πρόσβασης, παροχές και έδαφος, μαζί με χειροκίνητες διορθώσεις. Μια παραλία μπαίνει σε έναν οδηγό μόνο όταν την ταιριάζει η ίδια της η καρτέλα — τίποτα δεν γράφεται για να γεμίσει σελίδα.' },
+      { q: 'Γιατί κάποια νησιά δεν έχουν οδηγό;', a: 'Ένας οδηγός δημοσιεύεται μόνο όταν το νησί έχει αρκετές παραλίες που ταιριάζουν ώστε να αξίζει να τον διαβάσεις. Κάτω από αυτό το όριο η σελίδα θα ήταν μια λίστα με δύο ονόματα, οπότε δεν βγαίνει καθόλου.' },
+      { q: 'Οι οδηγοί δείχνουν τις τωρινές συνθήκες;', a: 'Όχι — η σελίδα του οδηγού είναι σταθερό κείμενο. Ο άνεμος, το κύμα και η θερμοκρασία του νερού ζουν στη σελίδα κάθε παραλίας και στον χάρτη, που ανανεώνονται μέσα στη μέρα. Χρησιμοποίησε τον οδηγό για να διαλέξεις πού, και δες τη σελίδα της παραλίας πριν ξεκινήσεις.' },
+    ],
+    stats: { guides: 'οδηγοί', islands: 'νησιά & περιοχές', beaches: 'παραλίες', topics: 'θέματα' },
+    counted: n => `${n} ${n === 1 ? 'παραλία' : 'παραλίες'}`,
     empty: 'Δεν έχουν δημοσιευτεί ακόμη οδηγοί.',
   },
 };
@@ -5082,6 +5112,60 @@ const GUIDES_HUB_TOPIC_HEADINGS = {
   organized:  { en: 'Organized beaches',           gr: 'Οργανωμένες παραλίες' },
   secluded:   { en: 'Secluded beaches',            gr: 'Απομονωμένες παραλίες' },
   sunset:     { en: 'Sunset beaches',              gr: 'Παραλίες για ηλιοβασίλεμα' },
+  sandy:      { en: 'Sandy beaches',                gr: 'Παραλίες με άμμο' },
+  beachbar:   { en: 'Beaches with a beach bar',     gr: 'Παραλίες με beach bar' },
+};
+
+// One line per topic saying what the guide actually selects for. Without it the
+// hub was ~350 links under five nouns — a reader could not tell what separates
+// "secluded" from "sunset" without opening both. Each line describes the REAL
+// match rule in islandIntents (environment.familyFriendly, activities.snorkeling,
+// amenities.organized, environment.remote, west-facing orientation), so it can
+// never promise something the list was not filtered on.
+const GUIDES_HUB_TOPIC_LEADS = {
+  family: {
+    en: 'Beaches recorded as family-friendly: shallow water and a gentle way into the sea, usually with shade or a canteen somewhere nearby.',
+    gr: 'Παραλίες καταγεγραμμένες ως φιλικές για οικογένειες: ρηχά νερά και ομαλή είσοδος στη θάλασσα, συνήθως με σκιά ή καντίνα κάπου κοντά.',
+  },
+  snorkeling: {
+    en: 'Where the seabed has rock or seagrass close in, so there is something to look at the moment you put your head under.',
+    gr: 'Εκεί που ο βυθός έχει βράχο ή ποσειδωνία κοντά στην ακτή, οπότε υπάρχει κάτι να δεις μόλις βάλεις το κεφάλι στο νερό.',
+  },
+  organized: {
+    en: 'Umbrellas, sunbeds and beach service, from the facilities recorded for each beach rather than from a review score.',
+    gr: 'Ομπρέλες, ξαπλώστρες και εξυπηρέτηση, από τις καταγεγραμμένες παροχές κάθε παραλίας — όχι από βαθμολογία κριτικών.',
+  },
+  secluded: {
+    en: 'Away from the road and the crowd. Most of these ask for a short walk, a dirt track or a boat, so read the access line before you set off.',
+    gr: 'Μακριά από τον δρόμο και τον κόσμο. Οι περισσότερες θέλουν λίγο περπάτημα, χωματόδρομο ή σκάφος — διάβασε τη γραμμή πρόσβασης πριν ξεκινήσεις.',
+  },
+  sunset: {
+    en: 'Shores whose orientation faces west, so the sun goes down into the sea in front of you instead of behind the hill.',
+    gr: 'Ακτές με προσανατολισμό προς τα δυτικά, ώστε ο ήλιος να δύει μέσα στη θάλασσα μπροστά σου και όχι πίσω από τον λόφο.',
+  },
+  sandy: {
+    en: 'Sand only. Mixed sand-and-pebble shores are left out on purpose — someone looking for sand is choosing it over pebbles.',
+    gr: 'Μόνο άμμος. Οι ανάμικτες ακτές με βότσαλο μένουν εκτός επίτηδες — όποιος ψάχνει άμμο τη διαλέγει αντί για βότσαλο.',
+  },
+  beachbar: {
+    en: 'A bar on the sand itself, not a taverna up the road: somewhere you can get a drink without leaving the beach.',
+    gr: 'Μπαρ πάνω στην παραλία, όχι ταβέρνα στον δρόμο: κάπου να πιεις κάτι χωρίς να φύγεις από την άμμο.',
+  },
+};
+
+const GUIDES_HUB_SHELTERED_LEADS = {
+  aegean: {
+    en: 'Where to go when the meltemi blows: coasts whose orientation puts them away from the northerly, based on the exposure model.',
+    gr: 'Πού να πας όταν φυσάει μελτέμι: ακτές που ο προσανατολισμός τους τις βγάζει από τον βοριά, με βάση το μοντέλο έκθεσης.',
+  },
+  ionian: {
+    en: 'Ionian coasts that are usually more comfortable when the maistros picks up in the afternoon.',
+    gr: 'Ιόνιες ακτές που συνήθως είναι πιο άνετες όταν σηκώνεται ο μαΐστρος το απόγευμα.',
+  },
+  thermaic: {
+    en: 'Coasts around the Thermaic gulf whose orientation keeps the Vardaris and the afternoon sea breeze off them.',
+    gr: 'Ακτές στον Θερμαϊκό που ο προσανατολισμός τους τις κρατάει μακριά από τον Βαρδάρη και το απογευματινό μπουκάρισμα.',
+  },
 };
 
 // The sheltered guides are NOT one topic: a Cycladic island is sheltered from
@@ -5095,8 +5179,8 @@ const shelteredHubHeading = (windContext, language) => {
   return language === 'gr' ? `Υπήνεμες ${label.elIn}` : `Sheltered in ${label.en}`;
 };
 
-// islandIntentPages -> [{ key, heading, islands: [{ name, href }] }], in the
-// islandIntents display order, islands collated in the reader's alphabet.
+// islandIntentPages -> [{ key, heading, lead, beaches, islands: [{ name, href, count }] }],
+// in the islandIntents display order, islands collated in the reader's alphabet.
 // `sheltered` expands into one group per wind regime present.
 const groupGuidesByTopic = (islandIntentPages, locale) => {
   const language = locale.language;
@@ -5104,8 +5188,13 @@ const groupGuidesByTopic = (islandIntentPages, locale) => {
   const toIsland = (page, intent) => ({
     name: displayName(page.island.name, page.region.id, language),
     href: localizedPath(islandIntentPath(intent, page.region, page.island), locale),
+    // How many beaches the guide behind this tile actually lists. It is the
+    // difference between a link and a decision: an island with 3 matches and one
+    // with 24 looked identical on the old hub.
+    count: Array.isArray(page.beaches) ? page.beaches.length : 0,
   });
   const byName = (a, b) => a.name.localeCompare(b.name, collator);
+  const withTotals = group => ({ ...group, beaches: group.islands.reduce((sum, island) => sum + island.count, 0) });
 
   return islandIntents.flatMap(intent => {
     const pages = islandIntentPages.filter(page => page.intent.key === intent.key);
@@ -5116,71 +5205,136 @@ const groupGuidesByTopic = (islandIntentPages, locale) => {
         .map(windContext => ({
           key: `sheltered-${windContext}`,
           heading: shelteredHubHeading(windContext, language),
+          lead: GUIDES_HUB_SHELTERED_LEADS[windContext]?.[language] || GUIDES_HUB_SHELTERED_LEADS[windContext]?.en || '',
           islands: pages
             .filter(page => getRegionWindContext(page.region.id) === windContext)
             .map(page => toIsland(page, intent))
             .sort(byName),
         }))
-        .filter(group => group.islands.length > 0);
+        .filter(group => group.islands.length > 0)
+        .map(withTotals);
     }
 
-    return [{
+    return [withTotals({
       key: intent.key,
       heading: GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.[language]
         || GUIDES_HUB_TOPIC_HEADINGS[intent.key]?.en
         || INTENT_NAV_LABELS[intent.key]?.[language]
         || intent.key,
+      lead: GUIDES_HUB_TOPIC_LEADS[intent.key]?.[language] || GUIDES_HUB_TOPIC_LEADS[intent.key]?.en || '',
       islands: pages.map(page => toIsland(page, intent)).sort(byName),
-    }];
+    })];
   });
 };
 
-const staticGuidesHubPage = (topics, locale) => {
+// The hub was the last static page still built from slate-grey inline styles: a
+// bare <h1> on grey, then ~350 undifferentiated links under five nouns. It now
+// runs on the same design system as the guide articles it links to
+// (STATIC_ARTICLE_CSS) — hero, topic rules, tiles carrying a count, editorial
+// Q&A, CTA — so a reader arriving from search meets one product, not two.
+const staticGuidesHubPage = (topics, locale, totals, heroImage) => {
   const copy = guidesHubCopy[locale.language] || guidesHubCopy.en;
   const chrome = landingChromeCopy[locale.language] || landingChromeCopy.en;
+  const brandCopy = getStaticFallbackCopy(locale.language);
   const homeHref = localizedPath('/', locale);
 
+  const stat = (value, key) => (value > 0
+    ? `<li class="cb-stat"><b>${value}</b><span>${escapeHtml(copy.stats[key])}</span></li>`
+    : '');
+  const stats = [
+    stat(totals.guides, 'guides'),
+    stat(totals.islands, 'islands'),
+    stat(totals.beaches, 'beaches'),
+    stat(totals.topics, 'topics'),
+  ].filter(Boolean).join('');
+
+  const topicNav = topics.length > 1 ? `
+          <nav class="cb-hub-nav" aria-label="${escapeHtml(copy.navHeading)}">
+            <h2>${escapeHtml(copy.navHeading)}</h2>
+            <ul class="cb-chips">
+              ${topics.map(topic => `<li><a class="cb-chip" href="#guides-${escapeHtml(topic.key)}">${escapeHtml(topic.heading)}<b>${topic.islands.length}</b></a></li>`).join('')}
+            </ul>
+          </nav>` : '';
+
   const renderTopic = topic => `
-        <section style="margin:0 0 26px;border-top:1px solid #bae6fd;padding-top:16px;">
-          <h2 style="margin:0 0 10px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(topic.heading)} <span style="font-weight:600;font-size:15px;color:#64748b;">(${topic.islands.length})</span></h2>
-          <ul style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:0;padding:0;list-style:none;">
-            ${topic.islands.map(island => `<li style="margin:0;"><a href="${escapeHtml(island.href)}" style="display:block;border:1px solid #bae6fd;border-radius:10px;padding:8px 11px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(island.name)}</a></li>`).join('')}
-          </ul>
-        </section>`;
+          <section id="guides-${escapeHtml(topic.key)}">
+            <div class="cb-rule"><h2>${escapeHtml(topic.heading)}</h2></div>
+            ${topic.lead ? `<p class="cb-hub-lead">${escapeHtml(topic.lead)}</p>` : ''}
+            <ul class="cb-hub-grid">
+              ${topic.islands.map(island => `
+                <li><a class="cb-hub-tile" href="${escapeHtml(island.href)}">
+                  <span class="cb-hub-place">${escapeHtml(island.name)}</span>
+                  ${island.count > 0 ? `<span class="cb-hub-count">${escapeHtml(copy.counted(island.count))}</span>` : ''}
+                </a></li>`).join('')}
+            </ul>
+          </section>`;
 
   const nationalLinks = NATIONAL_GUIDE_LINKS
-    .map(link => `<li style="margin:0;"><a href="${escapeHtml(localizedPath(link.path, locale))}" style="display:block;border:1px solid #bae6fd;border-radius:12px;padding:12px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:800;">${escapeHtml(link.label[locale.language] || link.label.en)}</a></li>`)
+    .map(link => `<li><a href="${escapeHtml(localizedPath(link.path, locale))}">${escapeHtml(link.label[locale.language] || link.label.en)}</a></li>`)
     .join('');
 
   return `
     <div id="root">
-      <main style="max-width:880px;margin:0 auto;padding:0 20px 56px;color:#0f172a;background:#f8fafc;">
-        <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;">
-          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#0e7490;font-weight:800;font-size:18px;">
-            <img src="/calmbeach-mark.svg" alt="" width="32" height="32" style="display:block;" />
-            CalmBeach Greece
-          </a>
-          <a href="${escapeHtml(homeHref)}" style="display:inline-flex;align-items:center;border:1px solid #bae6fd;border-radius:999px;padding:8px 14px;background:white;color:#0e7490;text-decoration:none;font-weight:700;font-size:14px;">${escapeHtml(chrome.openApp)}</a>
-        </header>
-        <section style="padding:24px 0 20px;">
-          <h1 style="margin:0 0 14px;font-size:38px;line-height:1.08;">${escapeHtml(copy.h1)}</h1>
-          <p style="margin:0;font-size:18px;line-height:1.6;color:#334155;">${escapeHtml(copy.intro)}</p>
-        </section>
-        ${topics.length > 0 ? topics.map(renderTopic).join('') : `<p style="color:#475569;">${escapeHtml(copy.empty)}</p>`}
-        <section style="margin:28px 0 0;border-top:1px solid #bae6fd;padding-top:18px;">
-          <h2 style="margin:0 0 12px;font-size:22px;line-height:1.2;color:#075985;">${escapeHtml(copy.nationalHeading)}</h2>
-          <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none;">${nationalLinks}</ul>
-        </section>
-        <p data-nosnippet="true" style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5;">${escapeHtml(chrome.disclaimer)}</p>
+      <main data-static-fallback>
+        <div class="cb-wrap">
+          <div class="cb-bar">
+            <a class="cb-logo" href="${escapeHtml(homeHref)}"><img src="/calmbeach-mark.svg" alt="" width="30" height="30">${escapeHtml(brandCopy.brand)}</a>
+            <a class="cb-openapp" href="${escapeHtml(homeHref)}">${escapeHtml(chrome.openApp)}</a>
+          </div>
+
+          <header class="cb-hero">
+            ${heroImage}
+            <div class="cb-hero-body">
+              <p class="cb-eyebrow">${escapeHtml(copy.eyebrow)}</p>
+              <h1 class="cb-h1">${escapeHtml(copy.h1)}</h1>
+              <p class="cb-hero-sub">${escapeHtml(copy.deck)}</p>
+              ${stats ? `<ul class="cb-stats">${stats}</ul>` : ''}
+            </div>
+          </header>
+
+          <div class="cb-prose">${copy.prose.map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>
+          ${topicNav}
+
+          ${topics.length > 0 ? topics.map(renderTopic).join('') : `<p class="cb-hub-lead">${escapeHtml(copy.empty)}</p>`}
+
+          <div class="cb-rule"><h2>${escapeHtml(copy.nationalHeading)}</h2></div>
+          <ul class="cb-hub-national">${nationalLinks}</ul>
+
+          <div class="cb-rule"><h2>${escapeHtml(copy.faqHeading)}</h2></div>
+          <div class="cb-qa">
+            ${copy.faq.map(item => `
+              <section class="cb-qa-item">
+                <h2>${escapeHtml(item.q)}</h2>
+                <p>${escapeHtml(item.a)}</p>
+              </section>`).join('')}
+          </div>
+
+          <div class="cb-cta">
+            <p>${escapeHtml(copy.ctaLead)}</p>
+            <a href="${escapeHtml(homeHref)}">${escapeHtml(copy.ctaButton)} →</a>
+          </div>
+
+          <p class="cb-note" data-nosnippet="true">${escapeHtml(chrome.disclaimer)}</p>
+        </div>
       </main>
     </div>
   `;
 };
 
-const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emittedLocales) => {
+const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emittedLocales, publicAssets) => {
   const copy = guidesHubCopy[locale.language] || guidesHubCopy.en;
   const canonicalUrl = canonicalUrlFor(GUIDES_HUB_PATH, locale);
   const topics = groupGuidesByTopic(islandIntentPages, locale);
+  // The hero photograph is the site's own home background, which is Sarakiniko —
+  // a national hub is the one page where that is not a borrowed image standing in
+  // for somewhere else. If the asset is missing the hero runs on its gradient.
+  const heroImage = publicAssets ? renderHeroPicture(heroSourcesFor(defaultOgImagePath, publicAssets), copy.h1) : '';
+  const totals = {
+    guides: islandIntentPages.length,
+    islands: new Set(islandIntentPages.map(page => page.region.id)).size,
+    beaches: new Set(islandIntentPages.flatMap(page => (page.beaches || []).map(beach => beach.id))).size,
+    topics: topics.length,
+  };
 
   const jsonLd = [
     {
@@ -5210,7 +5364,10 @@ const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emitt
       { name: 'CalmBeach Greece', url: homeUrlForLocale(locale) },
       { name: copy.h1, url: canonicalUrl },
     ]),
-  ];
+    // The three questions are rendered as visible <h2>/<p> pairs by
+    // staticGuidesHubPage, from this same array — never schema-only.
+    faqJsonLd(copy.faq.map(item => ({ q: item.q, a: item.a }))),
+  ].filter(Boolean);
 
   const htmlWithHead = injectBeachHead(baseHtml, {
     title: copy.title,
@@ -5226,7 +5383,7 @@ const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emitt
   });
 
   return withStaticBeacon(stripClientScripts(htmlWithHead), 'hub')
-    .replace(/<div id="root">\s*<\/div>/i, staticGuidesHubPage(topics, locale));
+    .replace(/<div id="root">\s*<\/div>/i, staticGuidesHubPage(topics, locale, totals, heroImage));
 };
 
 const buildHomePage = (baseHtml, locale, imageUrl, emittedLocales = baseLocales, regionLinks = []) => {
@@ -6745,7 +6902,7 @@ const main = async () => {
   for (const locale of baseLocales) {
     const hubOutputDir = outputDirForRoute(localizedPath(GUIDES_HUB_PATH, locale));
     await mkdir(hubOutputDir, { recursive: true });
-    await writeFile(path.join(hubOutputDir, 'index.html'), withStaticFooter(buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales), locale), 'utf8');
+    await writeFile(path.join(hubOutputDir, 'index.html'), withStaticFooter(buildGuidesHubPage(baseHtml, islandIntentPages, locale, homeOgImageUrl, baseLocales, publicAssets), locale), 'utf8');
     sitemapEntries.push(sitemapEntry(canonicalUrlFor(GUIDES_HUB_PATH, locale), homeSitemapImageUrl, undefined, alternateUrlsFor(GUIDES_HUB_PATH, baseLocales)));
     pageCount += 1;
   }

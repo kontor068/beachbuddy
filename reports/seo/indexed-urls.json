@@ -1,12 +1,50 @@
 {
-  "generatedAt": "2026-09-06T14:00:18.762Z",
-  "snapshot": "reports/snapshots/_raw-pages-2026-08-21.json",
+  "generatedAt": "2026-09-06T18:19:34.574Z",
+  "snapshot": "reports/snapshots/_raw-pages-2026-09-06.json",
   "redirectRules": 1422,
-  "urlsChecked": 4596,
-  "servedDirectly": 4541,
-  "servedViaRedirect": 55,
-  "failing": 0,
-  "lostImpressions": 0,
+  "urlsChecked": 7389,
+  "servedDirectly": 7332,
+  "servedViaRedirect": 52,
+  "failing": 5,
+  "lostImpressions": 5,
   "lostClicks": 0,
-  "failures": []
+  "failures": [
+    {
+      "url": "/beaches/rethimno/693-paralia-episkopis",
+      "impressions": 1,
+      "clicks": 0,
+      "reason": "404 — no file, no redirect",
+      "chain": [
+        "/beaches/rethimno"
+      ]
+    },
+    {
+      "url": "/sheltered-by-the-shore-opposite/naxos/agios-prokopios",
+      "impressions": 1,
+      "clicks": 0,
+      "reason": "404 — no file, no redirect",
+      "chain": []
+    },
+    {
+      "url": "/sheltered-by-the-shore-opposite/naxos/alyko",
+      "impressions": 1,
+      "clicks": 0,
+      "reason": "404 — no file, no redirect",
+      "chain": []
+    },
+    {
+      "url": "/snorkeling-beaches/lefkada/port-katsiki",
+      "impressions": 1,
+      "clicks": 0,
+      "reason": "404 — no file, no redirect",
+      "chain": []
+    },
+    {
+      "url": "/snorkeling-beaches/naxos/%600.6.15%60",
+      "impressions": 1,
+      "clicks": 0,
+      "reason": "404 — no file, no redirect",
+      "chain": []
+    }
+  ]
 }

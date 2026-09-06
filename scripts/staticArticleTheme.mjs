@@ -134,6 +134,24 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 /* ---- Why the list is in this order ---- */
 .cb-order-note{margin:0 0 16px;font-size:14.5px;line-height:1.6;color:var(--cb-ink-soft);border-left:3px solid var(--cb-brand);padding-left:12px}
 
+/* ---- Guides hub ----------------------------------------------------------
+   The hub used to be the one static page still built from slate-grey inline
+   styles: a bare <h1> and ~350 naked links. It is a NAVIGATION page, so its job
+   is to help a reader choose a topic, not to list everything alphabetically —
+   hence the topic lead lines and the per-island beach count on each tile. ---- */
+.cb-hub-nav{margin:clamp(20px,3.5vw,28px) 0 0}
+.cb-hub-nav h2{margin:0 0 9px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cb-muted)}
+.cb-chip b{margin-left:7px;font-weight:800;color:var(--cb-muted)}
+.cb-hub-lead{margin:0 0 15px;font-size:15.5px;line-height:1.62;color:var(--cb-ink-soft);max-width:72ch}
+.cb-hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.cb-hub-tile{display:flex;flex-direction:column;gap:2px;border:1px solid var(--cb-line);border-radius:12px;padding:11px 13px;background:#fff;text-decoration:none;transition:border-color .2s,box-shadow .2s,transform .2s}
+.cb-hub-tile:hover{border-color:var(--cb-brand);box-shadow:0 10px 22px -16px rgba(11,32,39,.5);transform:translateY(-1px)}
+.cb-hub-place{font-size:15.5px;font-weight:800;letter-spacing:-.01em;color:var(--cb-brand-deep);line-height:1.25}
+.cb-hub-count{font-size:12.5px;font-weight:600;color:var(--cb-muted)}
+.cb-hub-national{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:11px;margin:0;padding:0;list-style:none}
+.cb-hub-national a{display:flex;align-items:center;min-height:58px;border:1px solid var(--cb-sand-line);border-radius:var(--cb-r);padding:13px 16px;background:var(--cb-sand);color:var(--cb-brand-deep);text-decoration:none;font-weight:800;font-size:15px;line-height:1.3;transition:border-color .2s,box-shadow .2s}
+.cb-hub-national a:hover{border-color:var(--cb-brand);box-shadow:0 10px 22px -16px rgba(11,32,39,.5)}
+
 /* ---- Safety + legal strip. Quiet by design: it must be findable, not loud. ---- */
 .cb-legal{margin:0;padding:18px 0 44px;border-top:1px solid var(--cb-line);color:var(--cb-muted);font-size:13px;line-height:1.6}
 .cb-legal p{margin:0 0 10px}
@@ -144,6 +162,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--cb-brand);outline-o
 @media (max-width:640px){
   .cb-prose p:first-child::first-letter{font-size:2.6em}
   .cb-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px}
+  .cb-hub-grid{grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:8px}
   .cb-stat b{font-size:17px}
 }
 @media (prefers-reduced-motion:reduce){
