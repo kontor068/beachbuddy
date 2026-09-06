@@ -32,6 +32,44 @@ import { buildBeachConditionsReadout } from '../utils/beachConditionsReadout';
 import { WIND_SUITABILITY_TONE_CLASSES, resolveConditionTone, showsCoveBadge, CALMNESS_ORDER, LEGEND_TONE_ORDER, type CalmnessTone } from '../utils/suitabilityTone';
 import { hasDownwindSeaSample, holdsFlatWaterUnderOffshoreWind, holdsGlassWaterAtFourBeaufort } from '../utils/offshoreFlatWater';
 
+/**
+ * ΠΡΟΣΤΑΣΙΑ ΑΠΟ CRASH ΤΟΥ ΙΔΙΟΥ ΤΟΥ LEAFLET (30/08/2026 — bug report κινητού: "Cannot read
+ * properties of undefined (reading 'classList')" σε /el/beaches/serifos/, Android Chrome,
+ * build 333501f).
+ *
+ * ΕΝΤΟΠΙΣΜΟΣ: αποκωδικοποιήθηκε το minified ίχνος με το sourcemap του `map-vendor` chunk. Η
+ * γραμμή που έσκαγε είναι `addClass(this._mapPane, 'leaflet-pan-anim')` ΜΕΣΑ στο ίδιο το
+ * `L.Map.prototype.panBy` (leaflet-src.js:3456) — δικός μας κώδικας δεν εμφανίζεται πουθενά
+ * στο ίχνος. Καλείται από το «φλικάρισμα»: όταν ο επισκέπτης σέρνει τον χάρτη με το δάχτυλο
+ * και τον αφήνει (`Handler.Drag._onDragEnd`, leaflet-src.js:13880 — inertia: true είναι το
+ * προεπιλεγμένο του Leaflet), υπολογίζεται πόσο θα «γλιστρήσει» ακόμα και προγραμματίζεται ένα
+ * `requestAnimationFrame` που καλεί `map.panBy(...)` ένα καρέ αργότερα (leaflet-src.js:13914),
+ * ΧΩΡΙΣ κανέναν έλεγχο αν ο χάρτης θα υπάρχει ακόμα τότε.
+ *
+ * Αν μέσα σε αυτό το ένα καρέ ο επισκέπτης έχει ήδη φύγει από τη σελίδα (SPA πλοήγηση, πίσω
+ * στο πρόγραμμα περιήγησης), το `<MapContainer>` έχει κάνει ήδη unmount, το react-leaflet έχει
+ * καλέσει `map.remove()`, και αυτό σβήνει το `_mapPane`. Το προγραμματισμένο `panBy` τρέχει
+ * ούτως ή άλλως πάνω σε χάρτη που δεν υπάρχει πια, και το `addClass(undefined, …)` σκάει
+ * διαβάζοντας `classList` από undefined. Ελάττωμα του ίδιου του Leaflet — υπάρχει σε κάθε site
+ * που κάνει unmount έναν χάρτη ενώ ένα φλικάρισμα είναι σε εξέλιξη — και δεν έχει διορθωθεί
+ * στην τρέχουσα σταθερή έκδοση (1.9.4· η 2.0 είναι ακόμα alpha, ελέγχθηκε στο npm 30/08/2026).
+ *
+ * Ο μόνος ελεγχόμενος τρόπος να μπλοκάρουμε ΑΥΤΟ το crash χωρίς να αγγίξουμε `node_modules`
+ * (θα χανόταν σε κάθε `npm install`) είναι να τυλίξουμε το `panBy` μία φορά, στο φόρτωμα του
+ * module: αν το `_mapPane` δεν υπάρχει πια, το καθυστερημένο inertia pan απλά δεν κάνει τίποτα
+ * αντί να πετάξει exception. Καμία άλλη συμπεριφορά δεν αλλάζει — όσο ο χάρτης είναι ζωντανός
+ * το `_mapPane` υπάρχει πάντα, και το wrapper περνάει κατευθείαν στο πραγματικό `panBy`.
+ */
+type MapWithInternals = L.Map & { _mapPane?: unknown; __calmbeachPanBySafe?: boolean };
+if (!(L.Map.prototype as MapWithInternals).__calmbeachPanBySafe) {
+  const originalPanBy = L.Map.prototype.panBy;
+  L.Map.prototype.panBy = function (this: MapWithInternals, offset, options) {
+    if (!this._mapPane) return this;
+    return originalPanBy.call(this, offset, options);
+  };
+  (L.Map.prototype as MapWithInternals).__calmbeachPanBySafe = true;
+}
+
 interface BeachMapProps {
   beaches: SuitableBeach[];
   userLocation?: { lat: number; lon: number };
