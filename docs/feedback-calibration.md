@@ -24,7 +24,8 @@ Telegram alone is push-only and ephemeral — clearing the chat loses every repo
 and step 1 below had nothing to read. So every **beach-attached** verdict (skips the
 landing-page free-text message, which has no beach to calibrate) is also written to
 **Netlify Blobs**, store `feedback-log`, key `f/<day>/<uuid>`, shape
-`{ beachId, feedback, timestamp, conditions }` — exactly what step 2 consumes. This is
+`{ beachId, feedback, timestamp, conditions }` — exactly what step 2 consumes — plus the optional
+`beachName` / `regionId` / `pagePath` the automatic watch below needs to name and link the beach. This is
 best-effort and never blocks the Telegram push or the visitor-facing response.
 
 Read it back with the export endpoint (`netlify/functions/feedback-export.mjs`, gated by
@@ -46,6 +47,36 @@ purely offline — a visitor's own negative reports immediately temper that beac
 `calmer` is the opposite signal and deliberately does NOT up-rank live (softening stays
 evidence-gated, below). The cross-device, model-level calibration is the offline pass.
 
+## Automatic watch (live, shipped 29/08/2026)
+Every single verdict already lands in Telegram the moment it is tapped — but one report is not a
+signal. One "too windy" can be offshore wind, a mis-remembered hour, or a bad day; the error is the
+PATTERN (same beach, same wind sector, three and four times), and a stream of individual messages
+weeks apart is exactly where a pattern is invisible. Until now it surfaced only if you remembered to
+download the export and run the calibration by hand.
+
+`netlify/functions/feedback-watch.mjs` is that pass, run automatically: a **daily** scheduled function
+(`netlify.toml`, 05:00 UTC) that reads the last **90 days** of the `feedback-log` store, aggregates it
+and pushes a Telegram message naming the beaches that crossed the thresholds.
+
+- **One arithmetic, two readers.** The aggregation and the thresholds live in
+  `netlify/functions/lib/feedbackSignals.mjs`, which is also what `scripts/calibrateFromFeedback.mjs`
+  imports. Two copies would drift within a month, and a phone message naming a different beach than
+  the report is worse than no message.
+- **It stays quiet.** It remembers what it already said (Blobs key `watch/alerted` in the same store)
+  and speaks again only for a NEW signal, a changed type, or one that grew by ≥3 samples. Most days
+  send nothing. The memory is written only after Telegram accepted the message, so a failed send
+  never silences a signal; a prune drops cells untouched for 180 days.
+- **Names and links travel with the record.** `feedback-email.mjs` now also stores `beachName`,
+  `regionId` and `pagePath` on each durable record, so the alert can say "Μπονάτσα (Κίμωλος)" and
+  open the page instead of printing `#1853`. Older records fall back to the quality ledger, which
+  only knows beaches that have some gap — hence the record is the primary source.
+- **Preview before it goes out:** `/.netlify/functions/feedback-watch?preview=1` under `netlify dev`
+  renders the message and the counts without sending (Netlify answers 403 to scheduled functions on
+  the public internet, so this door is not reachable from outside).
+
+Same env vars as the instant push (`FEEDBACK_TELEGRAM_BOT_TOKEN` / `FEEDBACK_TELEGRAM_CHAT_ID`);
+without them the function logs and sends nothing.
+
 ## Calibration (offline, run periodically)
 Steps 1-3 are now executable via **`scripts/calibrateFromFeedback.mjs`** (it does the aggregation +
 emits conservative, human-reviewable proposals; step 3's edits and step 4 stay manual):
@@ -65,5 +96,6 @@ emits conservative, human-reviewable proposals; step 3's edits and step 4 stay m
 4. Re-run `npm run validate:meltemi-matrix` + the engine/ground-truth gates and review the diff.
 
 So the verdicts become new ground-truth labels feeding the same validation matrix from roadmap #1 —
-human observations close the loop without an ML model or a live backend. A future backend could
-automate steps 1-2, but the conservative, evidence-gated step 3 must stay human-reviewed.
+human observations close the loop without an ML model or a live backend. Steps 1-2 now also run
+by themselves every morning (see "Automatic watch" above); the conservative, evidence-gated step 3
+stays human-reviewed.

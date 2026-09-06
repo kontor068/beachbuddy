@@ -14,6 +14,10 @@
 // shown) only proposes a SOFTENING for manual review and only with extra evidence.
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+// Η αριθμητική ζει σε ΕΝΑ μέρος: την ίδια τη μοιράζεται ο αυτόματος έλεγχος
+// (netlify/functions/feedback-watch.mjs), ώστε το μήνυμα στο Telegram και αυτή η
+// αναφορά να μη λένε ποτέ διαφορετικά πράγματα για τα ίδια δεδομένα.
+import { aggregateFeedback, buildProposals } from '../netlify/functions/lib/feedbackSignals.mjs';
 
 const argVal = (name) => { const i = process.argv.indexOf(name); return i === -1 ? undefined : process.argv[i + 1]; };
 const DEMO = process.argv.includes('--demo');
@@ -23,11 +27,7 @@ const KEEP_MISMATCHED = process.argv.includes('--keep-mismatched');
 const inputPath = argVal('--input') || '.tmp/feedback-export.json';
 const outPath = argVal('--out') || '.tmp/feedback-calibration-report.json';
 
-const MIN_SAMPLES = 3;            // a (beach,sector) needs this many reports before we propose anything
-const UNDER_WARN_FRACTION = 0.5; // >= half "worse than shown" -> propose raising exposure (safe)
-const SOFTEN_MIN_SAMPLES = 6;    // softening is the less-conservative direction -> demand more
-const SOFTEN_FRACTION = 0.66;
-const NEGATIVE = new Set(['had_waves', 'too_windy', 'not_accurate']);
+// Κατώφλια & «αρνητικές» ετικέτες: lib/feedbackSignals.mjs (μία πηγή).
 
 /**
  * ΤΑ ΝΟΥΜΕΡΑ ΤΗΣ ΟΘΟΝΗΣ ΚΑΙ Η ΜΝΗΜΗ ΤΟΥ ΕΠΙΣΚΕΠΤΗ ΠΡΕΠΕΙ ΝΑ ΜΙΛΑΝΕ ΓΙΑ ΤΗΝ ΙΔΙΑ ΩΡΑ.
@@ -126,47 +126,24 @@ if (DEMO) {
   if (!Array.isArray(feedback)) feedback = [];
 }
 
-// aggregate per (beachId, wind sector)
-const agg = new Map();
+// ΠΡΩΤΑ η χρονική πύλη, ΜΕΤΑ το άθροισμα. Μια αναφορά μετράει μόνο αν οι αριθμοί που
+// κουβαλάει ανήκουν στη στιγμή που ο άνθρωπος ήταν όντως στο νερό (βλ. timingMismatch).
 const excluded = [];
+const usable = [];
 for (const fb of feedback) {
   if (typeof fb?.beachId !== 'number') continue;
-  // Πριν από κάθε μέτρημα: μιλάει η αναφορά για την ώρα των αριθμών που κουβαλάει;
   const mismatch = KEEP_MISMATCHED ? null : timingMismatch(fb);
   if (mismatch) {
     excluded.push({ beachId: fb.beachId, feedback: fb.feedback, timestamp: fb.timestamp, reason: mismatch });
     continue;
   }
-  const sector = fb.conditions?.windDir || '?';
-  const key = `${fb.beachId}|${sector}`;
-  if (!agg.has(key)) agg.set(key, { beachId: fb.beachId, sector, verdicts: {}, modeled: {}, n: 0 });
-  const a = agg.get(key);
-  a.verdicts[fb.feedback] = (a.verdicts[fb.feedback] || 0) + 1;
-  if (fb.conditions?.exposureLevel) a.modeled[fb.conditions.exposureLevel] = (a.modeled[fb.conditions.exposureLevel] || 0) + 1;
-  a.n++;
+  usable.push(fb);
 }
 
-const proposals = [];
-for (const a of agg.values()) {
-  const neg = Object.entries(a.verdicts).filter(([k]) => NEGATIVE.has(k)).reduce((s, [, v]) => s + v, 0);
-  const calmer = a.verdicts['calmer'] || 0;
-  const modeledCalm = (a.modeled['protected'] || 0) + (a.modeled['partial'] || 0);
-  const info = beachInfo.get(a.beachId) || {};
-  if (a.n >= MIN_SAMPLES && neg / a.n >= UNDER_WARN_FRACTION && modeledCalm > 0) {
-    proposals.push({
-      type: 'UNDER_WARN', beachId: a.beachId, name: info.name, region: info.region, sector: a.sector,
-      samples: a.n, negative: neg, autoSafe: true,
-      action: `Model showed calm/partial but ${neg}/${a.n} reported waves/wind from ${a.sector}. Add '${a.sector}' to exposedToWindDirections (or raise localWindAmplification) in utils/windProfileOverrides.ts, and lock a 'rough' anchor in scripts/validateWindExposureGroundTruth.mjs.`,
-    });
-  } else if (a.n >= SOFTEN_MIN_SAMPLES && calmer / a.n >= SOFTEN_FRACTION) {
-    proposals.push({
-      type: 'OVER_WARN', beachId: a.beachId, name: info.name, region: info.region, sector: a.sector,
-      samples: a.n, calmer, autoSafe: false,
-      action: `Model showed exposed but ${calmer}/${a.n} reported calmer from ${a.sector}. SOFTEN ONLY with a 2nd independent source (manual review per the evidence rule) — never auto-applied.`,
-    });
-  }
-}
-proposals.sort((x, y) => y.samples - x.samples);
+// Το άθροισμα και τα κατώφλια ζουν στο lib/feedbackSignals.mjs — ίδια αριθμητική με το
+// μήνυμα του Telegram, ώστε τα δύο να μη λένε ποτέ διαφορετικά πράγματα.
+const agg = aggregateFeedback(usable);
+const proposals = buildProposals(agg, (id) => beachInfo.get(id));
 
 console.log(`=== FEEDBACK CALIBRATION ${DEMO ? '(demo)' : ''} ===`);
 console.log(`records: ${feedback.length} | usable: ${feedback.length - excluded.length} | (beach,sector) cells: ${agg.size} | proposals: ${proposals.length}`);
