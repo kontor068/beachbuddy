@@ -4355,11 +4355,11 @@
             "language": "el",
             "batch": "001_first_100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "East Attica OSM identity/location pass 2026-05-27: OSM way 234839450 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
+            "sourceNotes": "East Attica OSM identity/location pass 2026-05-27: OSM way 234839450 is a same-name, transliterated, or compatible-name beach feature at the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.63 m at 100 m offshore on the SE bearing the beach faces (124.5°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/234839450"
             ],
@@ -4599,12 +4599,13 @@
             "language": "el",
             "batch": "001_first_100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "East Attica medium-upgrade pass 2026-05-29: Lavrio Guide and Lavrio Port Authority concession material directly support Kalopigado / Vromopousi beach identity, family-access visitor context, parking, and seasonal organized-use traceability. Confidence promoted to high."
+              "East Attica medium-upgrade pass 2026-05-29: Lavrio Guide and Lavrio Port Authority concession material directly support Kalopigado / Vromopousi beach identity, family-access visitor context, parking, and seasonal organized-use traceability. Confidence promoted to high.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 15.12 m at 100 m offshore on the SE bearing the beach faces (145.4°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/234839449",
@@ -4716,12 +4717,13 @@
             "language": "el",
             "batch": "001_first_100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "East Attica medium-upgrade pass 2026-05-29: MyKeratea and Lavrio Guide directly support Tsonima beach identity in Keratea/Lavreotiki, small beach character, sand/pebble surface, and roadside parking context. Confidence promoted to high."
+              "East Attica medium-upgrade pass 2026-05-29: MyKeratea and Lavrio Guide directly support Tsonima beach identity in Keratea/Lavreotiki, small beach character, sand/pebble surface, and roadside parking context. Confidence promoted to high.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 16.59 m at 100 m offshore on the SE bearing the beach faces (136.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/234873004",
@@ -12083,14 +12085,14 @@
             "language": "el",
             "batch": "002_101_200",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://visitporos.com/beaches.html"
             ],
-            "sourceNotes": "Visit Poros places Monastiri after Askeli under the monastery with shaded beach context.",
+            "sourceNotes": "Visit Poros places Monastiri after Askeli under the monastery with shaded beach context. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.59 m at 100 m offshore on the S bearing the beach faces (185.5°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "orientation": {
               "degrees": 160.8,
               "faces": [
@@ -15180,9 +15182,9 @@
             "language": "el",
             "batch": "evia_tourist_evidence_pass_2026_05_29",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.gtp.gr/LocPage.asp?id=72959&lng=1",
@@ -15191,7 +15193,8 @@
             "sourceNotes": [
               "Evia source-backed cleanup 2026-05-27: OSM way 970726302 matches Agios Nikolaos beach at 38.36877,24.21069. GTP and the Municipality of Kymi-Aliveri identify Koskina beach as also called Agios Nikolaos and describe easy road access/no organization, supporting the conservative access and no-organized-service wording.",
               "Evia tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched)."
+              "Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched).",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.65 m at 100 m offshore on the E bearing the beach faces (85.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 80.3,
@@ -15239,9 +15242,9 @@
             "language": "el",
             "batch": "003_201_300",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.thalattahotel.gr/el/explore/beaches/paralia-agias-annas-agkale",
@@ -15250,7 +15253,8 @@
             "sourceNotes": [
               "Evia source-backed cleanup 2026-05-27: OSM way 166232034 matches Agkali/Agia Anna beach at 38.86199,23.44969. Thalatta and local Agali Hotel sources place the beach at Paralia Agias Annas/Agkali; existing nearby food/settlement context is kept conservative without restoring organized-service claims.",
               "Tourism-priority evidence pass 2026-05-29: Thalatta and Hotel Agali pages support Agkali/Agia Anna beach identity, north Evia location, large visitor beach context, road/local-service context, and nearby accommodation/restaurant/tourist-service context. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
-              "Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched)."
+              "Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched).",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 15.48 m at 100 m offshore on the NE bearing the beach faces (63.9°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 68.9,
@@ -20643,9 +20647,9 @@
             "language": "el",
             "batch": "003_201_300",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://villa-greco.gr/our-place/",
@@ -20654,7 +20658,8 @@
             ],
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: kept beach bar; Psaropouli/Vasilika sources support beach bars, cafes and seasonal sunbed service along the beach.",
-              "Evia tourist-priority evidence pass 2026-05-29: Psaropouli/Vasilika has live local accommodation/Evia sources supporting the large developed beach identity, road access, beach bars, cafes, tavernas and seasonal sunbed service. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed."
+              "Evia tourist-priority evidence pass 2026-05-29: Psaropouli/Vasilika has live local accommodation/Evia sources supporting the large developed beach identity, road access, beach bars, cafes, tavernas and seasonal sunbed service. Confidence promoted to high for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live sea/wind/calm/protected/safe claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 28.5 m at 100 m offshore on the NE bearing the beach faces (56.8°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 57.5,
@@ -23309,11 +23314,11 @@
             "language": "el",
             "batch": "skyros_official_municipality_continuation_2026_06_05",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 21 2026-05-27: official Skyros municipality beaches page directly lists Kalamitsa, supporting Skyros beach identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Skyros official municipality continuation 2026-06-05: the Municipality of Skyros beach guide directly supports this beach in the island beach list with morphology/access/service context where available. The official page lists it among the central/easy-access Skyros beaches or named southern bays, and existing metadata remains conservative where details are not explicit. Promoted for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true — our own editorial story explicitly describes an organized beach (sunbeds added from the story).",
+            "sourceNotes": "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only. Source follow-up pass 21 2026-05-27: official Skyros municipality beaches page directly lists Kalamitsa, supporting Skyros beach identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Skyros official municipality continuation 2026-06-05: the Municipality of Skyros beach guide directly supports this beach in the island beach list with morphology/access/service context where available. The official page lists it among the central/easy-access Skyros beaches or named southern bays, and existing metadata remains conservative where details are not explicit. Promoted for static identity/access/terrain/service metadata only; coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true — our own editorial story explicitly describes an organized beach (sunbeds added from the story). Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.94 m at 100 m offshore on the SW bearing the beach faces (205.1°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.skyros.gr/discover/general-information/beaches/"
             ],
@@ -26547,13 +26552,14 @@
             "language": "el",
             "batch": "004_301_400",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
               "Phase 2 final global organized-service cleanup 2026-05-26: downgraded unsupported organized-service claim because no direct source URL is recorded; kept nearby food/parking notes only.",
-              "Source follow-up pass 21 2026-05-27: official Stylida municipality PDF directly references Paralia Agiou Georgiou Pelasgias, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed."
+              "Source follow-up pass 21 2026-05-27: official Stylida municipality PDF directly references Paralia Agiou Georgiou Pelasgias, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.94 m at 100 m offshore on the SW bearing the beach faces (206.3°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.stylida.gr/wp-content/uploads/2025/10/9%CE%A4%CE%A85%CE%A91%CE%96-%CE%9D%CE%A7%CE%99.pdf"
@@ -35315,12 +35321,13 @@
             ],
             "sourceNotes": [
               "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: OSM natural=beach candidate confirmed inside Chalkidiki Regional Unit by reverse geocoding.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.78 m at 100 m offshore on the SW bearing the beach faces (246.9°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "blueFlag2026": {
               "awarded": true,
@@ -91487,19 +91494,23 @@
             "language": "el",
             "batch": "011_1001_1100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
               "Phase 2 audit 2026-05-25: removed unverified lifeguard claim until a direct official/current source URL is added.",
               "Copla, Soul and Lefkada Slow Guide support beach bars and organized services at Kathisma.",
-              "Lefkada strict evidence pass 2026-05-29: Copla, Soul Beach Bar, and Lefkada Slow Guide support Kathisma beach-bar and organized-service context. Lifeguard remains unverified and was not reintroduced. Promoted to high for static service evidence only."
+              "Lefkada strict evidence pass 2026-05-29: Copla, Soul Beach Bar, and Lefkada Slow Guide support Kathisma beach-bar and organized-service context. Lifeguard remains unverified and was not reintroduced. Promoted to high for static service evidence only.",
+              "Water-depth correction 2026-09-02, prompted by a visitor report on this beach (\"more wave than shown\", shore sea 0,32 m, NE wind, exposure protected). The record said `shallow` with the gentle-entry note, and NOTHING in the sourceNotes above backs it — they cover beach bars and organized services only (\"Promoted to high for static service evidence only\"). Two independent lines of evidence say the opposite. (1) OUR OWN bathymetry (public/data/geospatial/bathymetry/ionian-islands-lefkada.json, W sector — the shore this beach faces at 285,7°): first water 50 m, 0,95 m @100 m, 5,62 m @300 m, 15,48 m @500 m. That is the same profile as Kavalikefta #1162, which we already classify `deep` (100 m / 0,87 / 5,19 / 16,02), and deeper at every sample than Agiofylli #1158 `deep`. (2) Multiple independent published sources describe a seabed that drops within a few metres of the shore, strong undercurrents and repeated drownings. Terrain here is coarse sand + pebbles, so this is the Kavalikefta family: same coast, 1 km apart, same steep coarse shore. CONSEQUENCES, both intended: `shallow` was the only value unlocking `familyFriendly` (scripts/buildBeachRegionData.mjs:682), so the beach leaves the \"Ρηχά νερά\" AND \"Οικογενειακή\" filters; and `deep` + pebbles now satisfies utils/shoreBreak.hasSteepCoarseShore, so the page may say that the wave breaks on the shore here — the sentence this visitor was missing. Same class of error as the 23/08/2026 pass that caught Porto Katsiki #1171."
             ],
             "sourceUrls": [
               "https://copla.gr/",
               "https://soulbeachbar.gr/",
-              "https://lefkadaslowguide.gr/en/food-and-entertainment/bars-night-life/copla-beach-bar/"
+              "https://lefkadaslowguide.gr/en/food-and-entertainment/bars-night-life/copla-beach-bar/",
+              "https://www.tovima.gr/grace/epikairotita/kathisma-lefkadas-i-paralia-stolidi-pou-sychna-ginetai-pagida-thanatou/",
+              "https://www.ethnos.gr/ournetwork/article/367481/kathismaleykadaseinaipragmatitosoepikindynhkaithanathforahparaliatoyionioy",
+              "https://nikana.gr/en/tourist-guide/lefkada/beaches/2509/kathisma-beach"
             ],
             "orientation": {
               "degrees": 289.9,
@@ -101880,11 +101891,11 @@
             "language": "el",
             "batch": "popular_island_source_promote_2026_06_05_fournoi",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Phase 2 Fournoi OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 1m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Explore Fourni supports Vitsilia/Vitsila as a southeastern Fournoi beach 6.1 km from the port, about 10 minutes by car, with small rocks and tree shade. The source does not document organized services, so amenities stay conservative. Scenic/clear-water wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage. Static source wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Access-road audit 2026-07-19: OSM shows the nearest paved road ~?m away with only a track/footpath nearer (46m/—m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": "Phase 2 Fournoi OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 1m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Explore Fourni supports Vitsilia/Vitsila as a southeastern Fournoi beach 6.1 km from the port, about 10 minutes by car, with small rocks and tree shade. The source does not document organized services, so amenities stay conservative. Scenic/clear-water wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage. Static source wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims. Access-road audit 2026-07-19: OSM shows the nearest paved road ~?m away with only a track/footpath nearer (46m/—m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted). Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.19 m at 100 m offshore on the E bearing the beach faces (84.8°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/301949372",
               "https://explorefourni.gr/destination-item/vitsilia/"
@@ -102310,11 +102321,11 @@
             "language": "el",
             "batch": "013_1201_1300",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Source follow-up pass 34 2026-05-28: direct Visit Lesvos beach page supports Aghios Ermogenis beach identity/location in the Mytilini/Gera Bay area. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lesvos strict evidence pass 2026-05-29: Visit Lesvos direct page and beach index plus LesvosOnline support Aghios Ermogenis identity in the Mytilini/Gera Bay area and accessible beach context. High is for static identity/location/access evidence only. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Operator on-site correction 2026-07-17: this Blue Flag cove is organized with sunbeds (ξαπλώστρες) — organized + sunbeds amenity set true. Coordinates, access, windProfile and scoring unchanged. Access-road audit 2026-07-19: OSM shows the nearest paved road ~448m away with only a track/footpath nearer (106m/24m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": "Source follow-up pass 34 2026-05-28: direct Visit Lesvos beach page supports Aghios Ermogenis beach identity/location in the Mytilini/Gera Bay area. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lesvos strict evidence pass 2026-05-29: Visit Lesvos direct page and beach index plus LesvosOnline support Aghios Ermogenis identity in the Mytilini/Gera Bay area and accessible beach context. High is for static identity/location/access evidence only. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Operator on-site correction 2026-07-17: this Blue Flag cove is organized with sunbeds (ξαπλώστρες) — organized + sunbeds amenity set true. Coordinates, access, windProfile and scoring unchanged. Access-road audit 2026-07-19: OSM shows the nearest paved road ~448m away with only a track/footpath nearer (106m/24m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted). Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.62 m at 100 m offshore on the SE bearing the beach faces (140.1°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.visitlesvos.gr/en/pois/aghios-ermogenis/",
               "https://www.visitlesvos.gr/en/natural-environment/beaches/",
@@ -102982,14 +102993,15 @@
             "language": "el",
             "batch": "013_1201_1300",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
               "Source follow-up pass 34 2026-05-28: direct Visit Lesvos beach page supports Vatera beach identity/location in the Polichnitos region. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Lesvos strict evidence pass 2026-05-29: Visit Lesvos, Experience Lesvos and Lesvos.com support Vatera as a major long south-coast beach with tourist activity and sand/pebble beach context. Static beauty/calm wording is not used as live-condition truth.",
-              "Operator local-knowledge correction 2026-07-19: Vatera is a major organized beach with seasonal sunbeds/umbrellas — organized flag was false and amenities listed only 'nearby' items (false negative). The beach's own access note ('πολλές εποχικές παροχές') already supported this. Corrected on operator confirmation."
+              "Operator local-knowledge correction 2026-07-19: Vatera is a major organized beach with seasonal sunbeds/umbrellas — organized flag was false and amenities listed only 'nearby' items (false negative). The beach's own access note ('πολλές εποχικές παροχές') already supported this. Corrected on operator confirmation.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 15.76 m at 100 m offshore on the S bearing the beach faces (186.2°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.visitlesvos.gr/en/pois/vatera/",
@@ -108403,12 +108415,13 @@
             "language": "el",
             "batch": "014_1301_1400",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.64 m at 100 m offshore on the SW bearing the beach faces (213.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/3548396419"
@@ -113066,11 +113079,11 @@
             "language": "el",
             "batch": "015_1401_1500",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Access-road audit 2026-07-19: OSM shows the nearest paved road ~502m away with only a track/footpath nearer (233m/5m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": "Phase 2 Argolida OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 0m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources. Access-road audit 2026-07-19: OSM shows the nearest paved road ~502m away with only a track/footpath nearer (233m/5m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted). Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.54 m at 100 m offshore on the S bearing the beach faces (170.0°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/379093784"
             ],
@@ -114104,14 +114117,14 @@
             "language": "el",
             "batch": "argolida_tourist_evidence_pass_2026_06_01",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw039236074101"
             ],
-            "sourceNotes": "Source follow-up pass 44: official bathing-water profile supports Kantia beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Kantia beach (Argolida) is very well organized with sun loungers, beach bars, tavernas, showers and free parking along its length. [https://greece.terrabook.com/el/argolis/page/paralia-kantias/]; beach bar+sunbeds added.",
+            "sourceNotes": "Source follow-up pass 44: official bathing-water profile supports Kantia beach identity/location in Argolida. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Argolida tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed. Web-verified 2026-07-19 (web-high): organized — Kantia beach (Argolida) is very well organized with sun loungers, beach bars, tavernas, showers and free parking along its length. [https://greece.terrabook.com/el/argolis/page/paralia-kantias/]; beach bar+sunbeds added. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.43 m at 100 m offshore on the S bearing the beach faces (195.3°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -119894,12 +119907,13 @@
             "language": "el",
             "batch": "015_1401_1500",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.37 m at 100 m offshore on the S bearing the beach faces (180.2°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/454480726"
@@ -140001,16 +140015,17 @@
             "language": "el",
             "batch": "018_1701_1800",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://destinationkea.com/en/sightseeing/beaches/1000/",
               "https://destinationkea.com/wp-content/uploads/2018/09/KEA-SIGHTS-AND-PATHS-ENG.pdf"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Ο Τηλέγραφος προσεγγίζεται με ιδιαίτερα δύσβατο χωματόδρομο ή με σκάφος. Δεν υπάρχουν source-backed υπηρεσίες, οπότε χρειάζονται νερό και προμήθειες.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Ο Τηλέγραφος προσεγγίζεται με ιδιαίτερα δύσβατο χωματόδρομο ή με σκάφος. Δεν υπάρχουν source-backed υπηρεσίες, οπότε χρειάζονται νερό και προμήθειες.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.7 m at 100 m offshore on the E bearing the beach faces (109.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 129,
@@ -143090,9 +143105,9 @@
             "language": "el",
             "batch": "019_1801_1900",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.kythnos.net/beaches/lefkes-beach.php",
@@ -143101,7 +143116,8 @@
             ],
             "sourceNotes": [
               "Kythnos source pass 2026-05-26: Kythnos.net identifies Lefkes as the eastern beach in front of the homonymous settlement, with sand and pebbles, several trees for shade, a nearby tavern in the settlement, car access from Dryopida/Merichas, and a marked walking path from Dryopida. Unsupported parking wording was removed.",
-              "Tourism-priority evidence pass 2026-05-29: Kythnos.net beach/settlement pages and the Municipality of Kythnos beach page support Lefkes identity/location in east Kythnos, sand/pebble terrain, non-organized but shaded beach context, tavern nearby, and road/trail access context from Dryopida/Merichas. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added."
+              "Tourism-priority evidence pass 2026-05-29: Kythnos.net beach/settlement pages and the Municipality of Kythnos beach page support Lefkes identity/location in east Kythnos, sand/pebble terrain, non-organized but shaded beach context, tavern nearby, and road/trail access context from Dryopida/Merichas. Promoted to high for static beach facts only; no wind, wave, calm-water, protection, or live-condition claim was added.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.08 m at 100 m offshore on the S bearing the beach faces (170.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 109.7,
@@ -144912,9 +144928,9 @@
             "language": "el",
             "batch": "019_1801_1900",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.travel.gr/en/experiences-ee/a-guide-to-the-best-beaches-on-the-island-of-milos/",
@@ -144922,7 +144938,8 @@
             ],
             "sourceNotes": [
               "Phase 2 Batch 3D source check 2026-05-25: travel.gr backs neighbouring Katergo near Gerontas as reached from clifftop parking/path and with no facilities; keep difficult path access.",
-              "Milos source confidence pass 2026-05-29: travel.gr and FotoTravel support Katergo as a named Milos beach near Gerontas with harder access context and no organized-service upgrade. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Milos source confidence pass 2026-05-29: travel.gr and FotoTravel support Katergo as a named Milos beach near Gerontas with harder access context and no organized-service upgrade. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.92 m at 100 m offshore on the S bearing the beach faces (164.8°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 174.2,
@@ -157298,11 +157315,11 @@
             "language": "el",
             "batch": "020_1901_2000",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Σταδιακό βάθος",
-              "notes": "Η πηγή αναφέρει αμμώδη βυθό και σταδιακή αύξηση βάθους."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Serifos tourist evidence pass 2026-05-29: e-Serifos supports Agios Sostis as a fine-sand beach reached by car plus short path, with tamarisk shade and gradually deepening sandy seabed. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Serifos tourist evidence pass 2026-05-29: e-Serifos supports Agios Sostis as a fine-sand beach reached by car plus short path, with tamarisk shade and gradually deepening sandy seabed. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.49 m at 100 m offshore on the SE bearing the beach faces (121.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://serifos-en.e-serifos.com/explore-serifos/beaches.php",
               "https://serifoskeys.com/serifos-beaches/"
@@ -158220,9 +158237,9 @@
             "language": "el",
             "batch": "021_2001_2100",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.discover-serifos.com/en/discover/beaches/accessible-by-land/koutalas",
@@ -158230,7 +158247,7 @@
               "https://serifos.gr/en/tour-item/koutalas/",
               "https://serifos-en.e-serifos.com/explore-serifos/beaches.php"
             ],
-            "sourceNotes": "Serifos tourist evidence pass 2026-05-29: Serifos.gr, Discover Serifos and e-Serifos support Koutalas as a car-accessible bay beach with sand/pebbles, tamarisk shade, mine-installation context and café-restaurant. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+            "sourceNotes": "Serifos tourist evidence pass 2026-05-29: Serifos.gr, Discover Serifos and e-Serifos support Koutalas as a car-accessible bay beach with sand/pebbles, tamarisk shade, mine-installation context and café-restaurant. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.45 m at 100 m offshore on the S bearing the beach faces (164.0°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "orientation": {
               "degrees": 164,
               "faces": [
@@ -158896,9 +158913,9 @@
             "language": "el",
             "batch": "sifnos_tourist_evidence_pass_2026_05_29",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://sifnoswizard.com/listings/apokofto-2/",
@@ -158906,7 +158923,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: removed organized claim; Apokofto sources explicitly support no sunbeds/no facilities beyond nearby tavern/cafe.",
-              "Sifnos tourist evidence pass 2026-05-29: Sifnos Wizard and Kalispera support Apokofto as a sandy beach below Chrysopigi/Faros-area access, with nearby tavern/cafe context and no sunbed/facility overclaim. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed."
+              "Sifnos tourist evidence pass 2026-05-29: Sifnos Wizard and Kalispera support Apokofto as a sandy beach below Chrysopigi/Faros-area access, with nearby tavern/cafe context and no sunbed/facility overclaim. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.51 m at 100 m offshore on the SE bearing the beach faces (124.9°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 141,
@@ -161276,11 +161294,11 @@
             "language": "el",
             "batch": "syros_tourist_evidence_pass_2026_05_29",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Coordinates updated from OSM same-name candidate https://www.openstreetmap.org/way/329290961. Audit/data update 2026-05-23. Official Syros page was found for Ambela, but no direct beach-bar claim; downgraded to organized/cafe amenities only. Syros tourist evidence pass 2026-05-29: SyrosIsland supports Ambela as a sandy beach after Megas Gialos with umbrellas and nearby snacks, coffee and restaurant service. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Syros SW near Megas Gialos (matches lat/lng): Greeka 'a small, sandy shore with some scattered pebbles... soft sand' - predominant [https://www.greeka.com/cyclades/syros/beaches/ampela/].",
+            "sourceNotes": "Coordinates updated from OSM same-name candidate https://www.openstreetmap.org/way/329290961. Audit/data update 2026-05-23. Official Syros page was found for Ambela, but no direct beach-bar claim; downgraded to organized/cafe amenities only. Syros tourist evidence pass 2026-05-29: SyrosIsland supports Ambela as a sandy beach after Megas Gialos with umbrellas and nearby snacks, coffee and restaurant service. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"fine_sand+coarse_sand\" contradicted the OSM natural=beach surface \"pebblestone\" (crowd-verified); set to pebbles. Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Syros SW near Megas Gialos (matches lat/lng): Greeka 'a small, sandy shore with some scattered pebbles... soft sand' - predominant [https://www.greeka.com/cyclades/syros/beaches/ampela/]. Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.61 m at 100 m offshore on the SE bearing the beach faces (140.0°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://www.syrosisland.gr/en/place/ampela-beach/"
             ],
@@ -176088,16 +176106,17 @@
             "language": "el",
             "batch": "023_2201_2300",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/32/965/en"
             ],
             "sourceNotes": [
               "Agios Stefanos Kos beach guide supports organized beach-bar/sunbed service.",
-              "Kos tourist-priority confidence pass 2026-05-29: existing Kos official/local source URLs were live-checked and unavailable or blocked links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Kos tourist-priority confidence pass 2026-05-29: existing Kos official/local source URLs were live-checked and unavailable or blocked links were replaced or removed where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 21.99 m at 100 m offshore on the SE bearing the beach faces (132.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 128.4,
@@ -180016,9 +180035,9 @@
             "language": "el",
             "batch": "patmos_confidence_continuation_2026_06_02",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.patmos-island.com/en/BEACHES/PETRA.html",
@@ -180030,7 +180049,8 @@
             ],
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Petra sources support umbrellas/sunbeds and canteen or nearby tavernas.",
-              "Patmos confidence continuation 2026-06-02: municipality brochure, PatmosAlykes, All About Patmos and GetGreece support Petra as a Grikos-area organized beach by Kalikatsou rock, with pebbles/sand, sunbeds/umbrellas/canteen or tavern context and easy visitor access. Confidence promoted to high; no windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed."
+              "Patmos confidence continuation 2026-06-02: municipality brochure, PatmosAlykes, All About Patmos and GetGreece support Petra as a Grikos-area organized beach by Kalikatsou rock, with pebbles/sand, sunbeds/umbrellas/canteen or tavern context and easy visitor access. Confidence promoted to high; no windProfile, scoring, coordinates, photos, or live calm/protected/safe claims were changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.69 m at 100 m offshore on the E bearing the beach faces (109.8°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 85.5,
@@ -180460,9 +180480,9 @@
             "language": "el",
             "batch": "024_2301_2400",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://oasisbeachkallithea.com/",
@@ -180471,7 +180491,8 @@
             "sourceNotes": [
               "Rhodes confidence pass 2026-05-29: direct beach/tourism sources support static identity/location and access/amenity context enough to set static metadata confidence to high. No windProfile, coordinates, scoring, photos, or live sea/wind behavior were changed.",
               "Oasis official page supports beach bar/restaurant service at Kallithea.",
-              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"coarse_sand+pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks."
+              "Terrain corrected 2026-06-20 (OSM surface audit): our type \"coarse_sand+pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 14.54 m at 100 m offshore on the SE bearing the beach faces (141.9°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "verification_sources": [
               "https://oasisbeachkallithea.com/",
@@ -187376,9 +187397,9 @@
             "language": "el",
             "batch": "popular_island_source_promote_2026_06_05_erikoussa_othonoi_kastellorizo_telendos",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceUrls": [
               "https://www.cavoblue.com/en/s/225/dodecanese/kalymnos/telendos/paradise-beach"
@@ -187386,7 +187407,8 @@
             "sourceNotes": [
               "Source follow-up pass 49: CavoBlue Telendos page supports Paradise beach identity/location. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "CavoBlue supports Paradise on Telendos as a small organized nudist beach with sand/fine pebbles, reached on foot from the port in about 20 minutes. Mamaka Tours also places Paradise as the extension after Potha. No live condition claim was added.",
-              "Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage for recorded access, terrain, depth, shade and service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims."
+              "Island confidence pass 2026-06-05: promoted to high for static beach facts only after reviewing direct island/beach source coverage for recorded access, terrain, depth, shade and service context. Source scenic/calm/clear wording was not imported into scoring, windProfile, photos, water-quality, or live condition claims.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 13.7 m at 100 m offshore on the NE bearing the beach faces (53.0°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "orientation": {
               "degrees": 53,
@@ -195517,11 +195539,11 @@
             "language": "el",
             "batch": "025_2401_2500",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Official Municipality material supports Milia as a beach in a small gulf surrounded by thick pine forest with notable water/underwater scenery; Greece Destination supports Milia in the island beach set. Raised to high for identity, setting and natural-shade context only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched).",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: Official Municipality material supports Milia as a beach in a small gulf surrounded by thick pine forest with notable water/underwater scenery; Greece Destination supports Milia in the island beach set. Raised to high for identity, setting and natural-shade context only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched). Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.49 m at 100 m offshore on the NW bearing the beach faces (325.5°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed.",
             "sourceUrls": [
               "https://alonissos.gr/en/places-to-go/beaches-in-alonissos/",
               "https://greecedestination.gr/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CF%83%CF%84%CE%B7%CE%BD-%CE%B1%CE%BB%CF%8C%CE%BD%CE%BD%CE%B7%CF%83%CE%BF/"
@@ -197328,14 +197350,15 @@
             "language": "el",
             "batch": "026_2501_2600",
             "waterDepth": {
-              "type": "shallow",
-              "label": "Ρηχά νερά",
-              "notes": "Η Ambelakia/Xenia πηγή περιγράφει μαλακή άμμο και ρηχότερη είσοδο στο οργανωμένο τμήμα."
+              "type": "deep",
+              "label": "Βαθιά νερά",
+              "notes": "Το βάθος ανεβαίνει γρήγορα μετά την είσοδο στη θάλασσα."
             },
             "sourceNotes": [
               "OSM source pass 2026-05-27: compatible-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed.",
               "Skiathos source confidence pass 2026-05-29: OSM/Mapcarta, World Beach Guide, AllOverGreece Ambelakia/Xenia and Mystique Beach Club directory references support the stored location as the Ambelakia/Xenia-Mystique beach area near Koukounaries, with sandy organized beach-bar context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Water depth corrected 2026-09-02: the record said \"shallow\" but none of its sourceNotes mention shallow water or children — the value came from a description and was never checked. EMODnet bathymetry gives 12.1 m at 100 m offshore on the SE bearing the beach faces (154.6°, exposure profile), profile confidence high — at or above the ratified steep threshold of 12 m, which the smoothing of the source cannot fabricate. Recorded as \"deep\". \"shallow\" was the only value unlocking familyFriendly, so the beach also leaves the shallow-water and family filters. Same class of error as Kathisma #1160 (02/09/2026). No other field changed."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/167043660",
