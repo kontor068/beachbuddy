@@ -157,6 +157,15 @@ const checks = [
     args: ['scripts/validateArrivingSeaShoreGate.mjs'],
   },
   {
+    id: 'orientation-sync',
+    title: 'The card and the engine agree on which way each beach faces',
+    description: "Walks every region's beach records against its geospatial exposure profiles and requires every GENERATED orientation (notes start with the 'Generated from Natural Earth geospatial exposure facingDeg' signature) with a high-confidence profile to sit within 1 degree of the profile's facingDeg. Hand-authored orientations are exempt (human decisions outrank the gate) but are printed for visibility. Self-proves by sabotaging one record +30 degrees in memory and requiring the gate to catch it, and refuses to pass if fewer than 1.500 generated records were actually checked.",
+    protects: "Prevents the silent scissor found on 06/09/2026: 794 beaches (27,8%) told visitors a different compass direction than the engine scored with — 5 of them nearly 180 degrees apart — because orientation is written once as a copy of facingDeg and no tool ever re-wrote it after geometry rebuilds. The stale copy was not cosmetic: 654 beaches scored wind with the old number (resolveFacingDeg trusts 'authored' below 60 degrees of disagreement), 123 sat on the wrong side of the sunset-filter gate, and 71 lost their cove claim to a phantom conflict between the geometry and its own older self. The independent OSM coastline judge ruled for the engine 49-2 (reports/quality/facing-mismatch-osm-verdicts.json).",
+    failureAction: "Run node scripts/syncGeneratedOrientationFromGeospatial.mjs --write && npm run build:beach-data — this re-syncs generated orientations from the current facingDeg. NEVER pass the gate by widening the 1-degree tolerance or editing the generated-notes signature, and never 'fix' a hand-authored orientation to silence the info line: those three Milos records are human decisions and stay.",
+    command: process.execPath,
+    args: ['scripts/validateOrientationSyncGate.mjs'],
+  },
+  {
     id: 'offshore-wind-note',
     title: 'The offshore-wind line speaks rarely, and never reassures where it must not',
     description: "Runs utils/offshoreWindNote against every committed windShadow (2.869 beaches) plus ten behavioural assertions, and pins the named witness both ways: Λυγαριά 636 MUST speak for wind from 310° and 314° (the two angles Miltos reported, land at 0,13-0,20 km) and MUST stay silent for 15°/30°/45°, where the cove mouth genuinely lets sea in. Also checks the borrowed thresholds have not drifted from FLAT_WATER_SEA_STATE_M / SEA_STATE_AMBER_M, that scripts/buildWindShadow bakes at the same 0,3 km the rule reads, and that both phrases exist in all five languages.",

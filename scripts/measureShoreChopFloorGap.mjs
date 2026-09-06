@@ -80,6 +80,54 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // scripts/auditPerBeachWaveImpact.mjs for why this is pointed at globalThis rather than forked.
 if (typeof globalThis.window === 'undefined') globalThis.window = globalThis;
 
+/**
+ * Η ΠΛΗΡΩΜΕΝΗ ΠΟΡΤΑ, ΜΟΝΟ ΜΕΣΑ ΣΕ ΑΥΤΗ ΤΗ ΔΙΕΡΓΑΣΙΑ (06/09/2026, απόφαση Μίλτου).
+ *
+ * Το πρώτο εθνικό πέρασμα χτύπησε τη ΔΩΡΕΑΝ πόρτα (`marine-api.open-meteo.com`) και πήρε 429 σε
+ * ολόκληρες περιοχές. Δεν είναι μόνο θέμα ταχύτητας: μια περιοχή χωρίς θάλασσα αναφέρει «καμία
+ * αλλαγή», δηλαδή το πιο βολικό ψέμα που θα μπορούσε να πει αυτή η μέτρηση (η δικλείδα παρακάτω
+ * την πιάνει, αλλά τότε η κάλυψη πέφτει κάτω από το 90% και το αποτέλεσμα δεν είναι εθνικό).
+ *
+ * ΚΑΜΙΑ ΓΡΑΜΜΗ ΠΑΡΑΓΩΓΗΣ ΔΕΝ ΑΛΛΑΖΕΙ. Το `services/weatherService.ts` χτίζει τα ίδια URL· εδώ
+ * μόνο ο `fetch` αυτής της διεργασίας τα γυρίζει στον customer host με το κλειδί, ακριβώς όπως
+ * κάνει η `netlify/functions/forecast.mjs:760` στην παραγωγή. Χωρίς κλειδί, τίποτα δεν αλλάζει
+ * και η μέτρηση τρέχει όπως πριν — δεν σπάει, απλώς αργεί.
+ */
+const openMeteoKey = (() => {
+  for (const file of ['.env.local', '.env']) {
+    try {
+      const match = readFileSync(path.join(root, file), 'utf8').match(/^OPEN_METEO_API_KEY=(.+)$/m);
+      if (match && match[1].trim()) return match[1].trim().replace(/^["']|["']$/g, '');
+    } catch { /* δεν υπάρχει */ }
+  }
+  return '';
+})();
+
+const PAID_HOST = {
+  'https://api.open-meteo.com': 'https://customer-api.open-meteo.com',
+  'https://marine-api.open-meteo.com': 'https://customer-marine-api.open-meteo.com',
+};
+
+let paidCalls = 0;
+if (openMeteoKey) {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = (input, init) => {
+    const url = typeof input === 'string' ? input : input?.url;
+    if (typeof url === 'string') {
+      for (const [free, paid] of Object.entries(PAID_HOST)) {
+        if (url.startsWith(free)) {
+          paidCalls += 1;
+          return originalFetch(`${paid}${url.slice(free.length)}&apikey=${encodeURIComponent(openMeteoKey)}`, init);
+        }
+      }
+    }
+    return originalFetch(input, init);
+  };
+  console.log('  Πληρωμένη πόρτα Open-Meteo: ΕΝΕΡΓΗ');
+} else {
+  console.log('  ⚠️ Χωρίς κλειδί — δωρεάν πόρτα, αργά και με 429.');
+}
+
 require.extensions['.ts'] = (module, filename) => {
   if (filename.endsWith(`${path.sep}services${path.sep}analyticsService.ts`)) {
     module._compile(
@@ -150,6 +198,9 @@ const MEAN_CANDIDATE_MIN_BEAUFORT = 4;
 let recorded = [];
 let unmatched = 0;
 let matched = 0;
+/** Από ΠΟΙΟ σημείο ήρθε η αστοχία — αλλιώς το 31% μένει ανεξήγητο νούμερο. */
+const unmatchedBySite = { model: 0, card: 0 };
+let currentSite = null;
 
 waveModelModule.resolveDisplayWaveHeightM = (input) => {
   const out = originalResolveDisplay(input);
@@ -206,7 +257,7 @@ let activeCandidate = null;
 
 const floorFor = (openWaterM) => {
   const call = floorForOpenWater(openWaterM);
-  if (!call) { unmatched += 1; return null; }
+  if (!call) { unmatched += 1; unmatchedBySite[currentSite] += 1; return null; }
   matched += 1;
   if (activeCandidate.gate === 'mean' && !(call.beaufort >= MEAN_CANDIDATE_MIN_BEAUFORT)) return null;
   const floor = getWindChopWaveFloorM(
@@ -221,6 +272,7 @@ shoreWaveModule.estimateShoreWaveHeightM = (input) => {
   // Σιωπή μένει σιωπή — μονόδρομη.
   if (base === undefined) return base;
 
+  currentSite = 'model';
   const floor = floorFor(input.openWaterWaveHeightM);
   if (floor === null || !(floor > base)) return base;
 
@@ -236,6 +288,7 @@ waveCharacterModule.shoreSeaStateM = (openWaterSeaStateM, ...rest) => {
   // `undefined` = καμία έκπτωση ακτής· η κάρτα δείχνει ήδη το ανοιχτό, που έχει περάσει το δάπεδο.
   if (typeof base !== 'number' || !Number.isFinite(base)) return base;
 
+  currentSite = 'card';
   const floor = floorFor(openWaterSeaStateM);
   if (floor === null || !(floor > base)) return base;
 
@@ -375,7 +428,7 @@ const CONCURRENCY = 1;
 const REGION_DELAY_MS = 250;
 const RETRY_BACKOFF_MS = [20000, 45000, 90000];
 const MIN_COVERAGE = 0.9;
-const POINTS_PER_MINUTE = 120;
+const POINTS_PER_MINUTE = openMeteoKey ? 600 : 120;
 const pointWindow = [];
 const paceForPoints = async (count) => {
   for (;;) {
@@ -575,7 +628,8 @@ const comfortRank = (value) => {
 
 console.log(`\nΚάλυψη: ${results.length}/${regions.length} περιοχές (${pct(results.length, regions.length)}) · ${allRows.length} παραλίες`);
 if (coverage < MIN_COVERAGE) console.log('⚠️ ΚΑΤΩ ΑΠΟ ΤΟ ΟΡΙΟ 90% — τα ποσοστά είναι ενδεικτικά, όχι εθνικά.');
-console.log(`Αντιστοίχιση δαπέδου: ${matched} ταιριάξανε · ${unmatched} ΟΧΙ${unmatched ? ' ⚠️' : ''}`);
+console.log(`Κλήσεις Open-Meteo (πληρωμένη πόρτα): ${paidCalls}`);
+console.log(`Αντιστοίχιση δαπέδου: ${matched} ταιριάξανε · ${unmatched} ΟΧΙ (εκτίμηση ${unmatchedBySite.model} · έκπτωση ${unmatchedBySite.card})${unmatched ? ' ⚠️' : ''}`);
 console.log(`Ανεβασμένα νούμερα που φτάνουν το κατώφλι χρώματος 0,80 μ.: ${toneReachable}${toneReachable ? ' ⚠️ ΤΟ ΧΡΩΜΑ ΜΠΟΡΕΙ ΝΑ ΑΛΛΑΞΕΙ' : ' — το χρώμα δεν αγγίζεται'}`);
 
 const summary = {};

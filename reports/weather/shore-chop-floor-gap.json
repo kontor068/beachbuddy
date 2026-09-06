@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T14:31:23.466Z",
+  "generatedAt": "2026-09-06T15:13:00.725Z",
   "coverage": 1,
   "regions": 1,
   "beaches": 49,
@@ -17,383 +17,83 @@
   "summary": {
     "model": {
       "label": "δάπεδο στην ΕΚΤΙΜΗΣΗ ακτής (≥4 Μπφ)",
-      "raised": 8,
-      "raisedPct": "16.3%",
-      "medianDeltaM": 0.06,
-      "p90DeltaM": 0.25,
-      "maxDeltaM": 0.3,
-      "silencedToOpenSea": 0,
-      "wordChanged": 5,
-      "comfortWorse": 0,
-      "comfortBetter": 0,
-      "byBeaufort": {
-        "4": 8
-      },
-      "byOrigin": {
-        "measured": 0,
-        "guess": 8
-      },
-      "podiumRegionsChanged": 0,
-      "podiumRegions": [],
-      "worstExamples": [
-        {
-          "beachId": 2315,
-          "name": "Χριστού Πηγάδι",
-          "beaufort": 4,
-          "exposureLevel": "partial",
-          "from": 0.1,
-          "to": 0.4,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2272,
-          "name": "Αχάτα",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.1,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2298,
-          "name": "Βανάντα",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.1,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2295,
-          "name": "Ποντικάλια",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.13,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2290,
-          "name": "Μακριά",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.14,
-          "to": 0.2,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2292,
-          "name": "Παλάτια",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.1,
-          "to": 0.11,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2294,
-          "name": "Παπάς Μηνάς",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.34,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2310,
-          "name": "Παραλία Άγιος Θεόδωρος",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.1,
-          "to": 0.11,
-          "fromDepartingSea": false
-        }
-      ]
-    },
-    "card": {
-      "label": "δάπεδο στην ΕΚΠΤΩΣΗ ×0,5/K_d (≥4 Μπφ)",
-      "raised": 20,
-      "raisedPct": "40.8%",
-      "medianDeltaM": 0.02,
-      "p90DeltaM": 0.05,
-      "maxDeltaM": 0.17,
+      "raised": 0,
+      "raisedPct": "0.0%",
+      "medianDeltaM": null,
+      "p90DeltaM": null,
+      "maxDeltaM": null,
       "silencedToOpenSea": 0,
       "wordChanged": 0,
       "comfortWorse": 0,
       "comfortBetter": 0,
-      "byBeaufort": {
-        "4": 20
-      },
+      "byBeaufort": {},
       "byOrigin": {
         "measured": 0,
-        "guess": 20
+        "guess": 0
       },
       "podiumRegionsChanged": 0,
       "podiumRegions": [],
-      "worstExamples": [
-        {
-          "beachId": 2275,
-          "name": "Απέλλα",
-          "beaufort": 4,
-          "exposureLevel": "partial",
-          "from": 0.38,
-          "to": 0.55,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2281,
-          "name": "Γιαλού Χωράφι",
-          "beaufort": 4,
-          "exposureLevel": "partial",
-          "from": 0.41,
-          "to": 0.55,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2309,
-          "name": "Μακρύγιαλος",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.05,
-          "to": 0.1,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2282,
-          "name": "Καστέλια",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.1,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2305,
-          "name": "Δαματριά",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.1,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2274,
-          "name": "Αμμοοπή",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.1,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2283,
-          "name": "Καμινάκι",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.1,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2286,
-          "name": "Λακκί",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.1,
-          "fromDepartingSea": false
-        }
-      ]
+      "worstExamples": []
+    },
+    "card": {
+      "label": "δάπεδο στην ΕΚΠΤΩΣΗ ×0,5/K_d (≥4 Μπφ)",
+      "raised": 0,
+      "raisedPct": "0.0%",
+      "medianDeltaM": null,
+      "p90DeltaM": null,
+      "maxDeltaM": null,
+      "silencedToOpenSea": 0,
+      "wordChanged": 0,
+      "comfortWorse": 0,
+      "comfortBetter": 0,
+      "byBeaufort": {},
+      "byOrigin": {
+        "measured": 0,
+        "guess": 0
+      },
+      "podiumRegionsChanged": 0,
+      "podiumRegions": [],
+      "worstExamples": []
     },
     "both": {
       "label": "δάπεδο ΚΑΙ ΣΤΑ ΔΥΟ — ο αριθμός που βλέπει ο κόσμος (≥4 Μπφ)",
-      "raised": 29,
-      "raisedPct": "59.2%",
-      "medianDeltaM": 0.26,
-      "p90DeltaM": 0.29,
-      "maxDeltaM": 0.45,
+      "raised": 0,
+      "raisedPct": "0.0%",
+      "medianDeltaM": null,
+      "p90DeltaM": null,
+      "maxDeltaM": null,
       "silencedToOpenSea": 0,
-      "wordChanged": 26,
+      "wordChanged": 0,
       "comfortWorse": 0,
       "comfortBetter": 0,
-      "byBeaufort": {
-        "4": 29
-      },
+      "byBeaufort": {},
       "byOrigin": {
         "measured": 0,
-        "guess": 29
+        "guess": 0
       },
       "podiumRegionsChanged": 0,
       "podiumRegions": [],
-      "worstExamples": [
-        {
-          "beachId": 2315,
-          "name": "Χριστού Πηγάδι",
-          "beaufort": 4,
-          "exposureLevel": "partial",
-          "from": 0.1,
-          "to": 0.55,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2309,
-          "name": "Μακρύγιαλος",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.05,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2282,
-          "name": "Καστέλια",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2305,
-          "name": "Δαματριά",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2274,
-          "name": "Αμμοοπή",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2283,
-          "name": "Καμινάκι",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2286,
-          "name": "Λακκί",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2288,
-          "name": "Μικρή Αμμοοπή",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        }
-      ]
+      "worstExamples": []
     },
     "bothFull": {
       "label": "ΚΑΙ ΣΤΑ ΔΥΟ, χωρίς την πύλη των 4 Μποφόρ (με ριπή)",
-      "raised": 29,
-      "raisedPct": "59.2%",
-      "medianDeltaM": 0.26,
-      "p90DeltaM": 0.29,
-      "maxDeltaM": 0.45,
+      "raised": 0,
+      "raisedPct": "0.0%",
+      "medianDeltaM": null,
+      "p90DeltaM": null,
+      "maxDeltaM": null,
       "silencedToOpenSea": 0,
-      "wordChanged": 26,
+      "wordChanged": 0,
       "comfortWorse": 0,
       "comfortBetter": 0,
-      "byBeaufort": {
-        "4": 29
-      },
+      "byBeaufort": {},
       "byOrigin": {
         "measured": 0,
-        "guess": 29
+        "guess": 0
       },
       "podiumRegionsChanged": 0,
       "podiumRegions": [],
-      "worstExamples": [
-        {
-          "beachId": 2315,
-          "name": "Χριστού Πηγάδι",
-          "beaufort": 4,
-          "exposureLevel": "partial",
-          "from": 0.1,
-          "to": 0.55,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2309,
-          "name": "Μακρύγιαλος",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.05,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2282,
-          "name": "Καστέλια",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2305,
-          "name": "Δαματριά",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.06,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2274,
-          "name": "Αμμοοπή",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2283,
-          "name": "Καμινάκι",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2286,
-          "name": "Λακκί",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        },
-        {
-          "beachId": 2288,
-          "name": "Μικρή Αμμοοπή",
-          "beaufort": 4,
-          "exposureLevel": "protected",
-          "from": 0.08,
-          "to": 0.35,
-          "fromDepartingSea": false
-        }
-      ]
+      "worstExamples": []
     }
   },
   "witness": {
@@ -408,21 +108,21 @@
     "fetchKm": 0,
     "byKey": {
       "base": {
-        "shownM": 0.09,
-        "shoreM": 0.1,
-        "word": 0,
+        "shownM": 0.35,
+        "shoreM": 0.35,
+        "word": 1,
         "comfort": "good"
       },
       "model": {
-        "shownM": 0.09,
+        "shownM": 0.35,
         "shoreM": 0.35,
-        "word": 0,
+        "word": 1,
         "comfort": "good"
       },
       "card": {
-        "shownM": 0.1,
-        "shoreM": 0.1,
-        "word": 0,
+        "shownM": 0.35,
+        "shoreM": 0.35,
+        "word": 1,
         "comfort": "good"
       },
       "both": {
