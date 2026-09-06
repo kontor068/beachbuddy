@@ -74,7 +74,7 @@ import { translations } from './translations';
 import { degToCompass, getBeaufortLevel, isWinterSeason, processForecastData, applyMarineToDailyForecast, applyBeachWindToDailyForecast } from './utils/weatherUtils';
 import { applyForecastUncertaintyToDays } from './utils/forecastUncertainty';
 import { fetchForecastUncertainty } from './services/ensembleSpreadService';
-import { getRegionWindContext, LOCAL_WIND_LABEL } from './utils/localWindContext.mjs';
+import { getRegionWindContext } from './utils/localWindContext.mjs';
 import { trackEvent, trackPageView, buildBeachExposureParams } from './services/analyticsService';
 import { recordPageview, recordSearch } from './services/pageviewBeacon';
 import { loadAppReadyRegion, loadBeachDetailData, loadBeachGeoIndex, loadBeachRegionIndex, loadBeachSearchIndex, mergeBeachDetailData, type BeachSearchIndexBeachEntry } from './services/beachDataLoader';
@@ -3025,25 +3025,59 @@ export const App: React.FC = () => {
       if (detailBeach.amenities?.restaurant || detailBeach.amenities?.taverna) features.push(isEn ? 'with food nearby' : 'με φαγητό κοντά');
       if (detailBeach.environment?.familyFriendly) features.push(isEn ? 'family-friendly' : 'οικογενειακή');
       if (detailBeach.activities?.snorkeling) features.push(isEn ? 'good for snorkeling' : 'καλή για snorkeling');
-      if (detailBeach.shelteredFromLocalWind === true) {
-        const w = LOCAL_WIND_LABEL[getRegionWindContext(selectedIsland?.id ?? '')];
-        features.push(isEn ? `often sheltered from ${w.en}` : `συχνά υπήνεμη ${w.elIn}`);
-      }
-      const parts = [typeTrait[detailBeach.beachType]?.[isEn ? 'en' : 'gr'], ...features.slice(0, 3)].filter(Boolean);
-      const traits = parts.length ? `${parts.join(', ')}.` : '';
+      // Short verdict forms mirrored from BEACH_META_SHELTER in
+      // scripts/prerenderBeachPages.mjs — the SAME baked `localWindStatus`,
+      // never a second hand-written scale. The old code here still read the
+      // boolean `shelteredFromLocalWind` and said «συχνά υπήνεμη», a wording
+      // the prerender retired; after a client-side navigation the tab/share
+      // description contradicted what the same page said on a fresh load.
+      const metaShelter: Record<string, Record<string, { en: string; gr: string }>> = {
+        aegean: {
+          protected: { en: 'Usually a sheltered shore in the meltemi.', gr: 'Συνήθως προστατευμένη ακτή στα μελτέμια.' },
+          partial:   { en: 'Partial shelter in the meltemi.',           gr: 'Μερική προστασία στα μελτέμια.' },
+          exposed:   { en: 'Exposed shore in the meltemi.',             gr: 'Εκτεθειμένη ακτή στα μελτέμια.' },
+        },
+        ionian: {
+          protected: { en: 'Usually a sheltered shore in the maistros.', gr: 'Συνήθως προστατευμένη ακτή στον μαΐστρο.' },
+          partial:   { en: 'Partial shelter in the maistros.',           gr: 'Μερική προστασία στον μαΐστρο.' },
+          exposed:   { en: 'Exposed shore in the maistros.',             gr: 'Εκτεθειμένη ακτή στον μαΐστρο.' },
+        },
+        thermaic: {
+          protected: { en: 'Usually a sheltered shore in the summer wind.', gr: 'Συνήθως προστατευμένη ακτή στον καλοκαιρινό αέρα.' },
+          partial:   { en: 'Partial shelter in the summer wind.',           gr: 'Μερική προστασία στον καλοκαιρινό αέρα.' },
+          exposed:   { en: 'Exposed shore in the summer wind.',             gr: 'Εκτεθειμένη ακτή στον καλοκαιρινό αέρα.' },
+        },
+      };
+      const status = detailBeach.localWindStatus;
+      const shelter = status === 'protected' || status === 'partial' || status === 'exposed'
+        ? metaShelter[getRegionWindContext(selectedIsland?.id ?? '')]?.[status]?.[isEn ? 'en' : 'gr'] ?? ''
+        : '';
+      const typePhrase = typeTrait[detailBeach.beachType]?.[isEn ? 'en' : 'gr'];
+      const sentence = (count: number): string => {
+        const parts = [typePhrase, ...features.slice(0, count)].filter(Boolean) as string[];
+        return parts.length ? `${parts.join(', ')}.` : '';
+      };
       const head = `${detailBeachLabel}, ${selectedIslandName}: `;
+      // CTAs mirror BEACH_META_CTA (long/short/tiny) in prerenderBeachPages.mjs.
       const ctaLong = isEn
         ? 'Check live wind, waves and weather before you go — map, access and nearby beaches.'
         : 'Δες live άνεμο, κύμα και καιρό πριν πας — χάρτης, πρόσβαση και κοντινές παραλίες.';
       const ctaShort = isEn
         ? 'Check live wind, waves and weather before you go.'
         : 'Δες live άνεμο, κύμα και καιρό πριν πας.';
-      const ctaTiny = isEn ? 'Check live wind & waves.' : 'Δες live άνεμο & κύμα.';
+      const ctaTiny = isEn ? 'Check live weather, wind & waves.' : 'Δες live καιρό, άνεμο & κύμα.';
+      // Same shedding order as the prerender: drop traits before the verdict or
+      // the CTA — the verdict is the clause a competitor cannot copy, the CTA is
+      // what turns a description into a click.
+      const bodies = [3, 2, 1, 0]
+        .map(count => [sentence(count), shelter].filter(Boolean).join(' '))
+        .filter(Boolean);
       const candidates = [
-        traits ? `${head}${traits} ${ctaLong}` : `${head}${ctaLong}`,
-        traits ? `${head}${traits} ${ctaShort}` : `${head}${ctaShort}`,
-        traits ? `${head}${traits} ${ctaTiny}` : `${head}${ctaTiny}`,
-        traits ? `${head}${traits}` : `${head}${ctaTiny}`,
+        ...bodies.map(body => `${head}${body} ${ctaTiny}`),
+        ...bodies.map(body => `${head}${body}`),
+        `${head}${ctaLong}`,
+        `${head}${ctaShort}`,
+        `${head}${ctaTiny}`,
       ];
       return candidates.find(candidate => candidate.length <= 155) || candidates[candidates.length - 1].slice(0, 155);
     };
