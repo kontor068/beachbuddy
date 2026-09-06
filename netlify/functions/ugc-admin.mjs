@@ -189,7 +189,7 @@ const renderPage = async (key, flash, event) => {
     ${flash ? `<p class="note ok">${escapeHtml(flash)}</p>` : ''}
     ${problem ? `<p class="note">Πρόβλημα ανάγνωσης: ${escapeHtml(problem.message || problem)}</p>` : ''}
     ${pending?.count ? `<div class="note">
-      <b>${escapeHtml(pending.count)}</b> εγκεκριμένα είναι ήδη <b>ορατά στο site</b>.
+      <b>${escapeHtml(pending.count)}</b> αποφάσεις (εγκρίσεις ή σβησίματα) ισχύουν ήδη <b>στο site</b>.
       Αυτό που λείπει είναι μόνο οι σελίδες που διαβάζει η Google — μπαίνουν <b>δωρεάν</b>
       στο επόμενο κανονικό ανέβασμα κώδικα, δεν χρειάζεται να κάνεις τίποτα.
       ${process.env.NETLIFY_BUILD_HOOK_URL ? `
