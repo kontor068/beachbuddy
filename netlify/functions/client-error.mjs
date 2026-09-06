@@ -142,14 +142,15 @@ const normalize = (body) => {
 
   const message = clamp(body?.message, 300);
   const source = clamp(body?.source, 200);
-  const foreign = isForeignInlineScript(source);
+  const stack = clamp(body?.stack, MAX_STACK);
+  const foreign = isForeignInlineScript(source) || isForeignInlineStack(stack);
 
   return {
     kind: 'error',
     message,
     source,
     line: Number.isFinite(Number(body?.line)) ? Number(body.line) : 0,
-    stack: clamp(body?.stack, MAX_STACK),
+    stack,
     disposition: '',
     foreign,
     // Ένα ξένο script που σκάει σε 300 σελίδες παραλιών είναι ΕΝΑ πράγμα, όχι 300.
@@ -187,6 +188,65 @@ const isForeignInlineScript = (source) => {
   }
   if (!isOwnHost(url.hostname.toLowerCase())) return false;
   return !/\.m?js$/i.test(url.pathname);
+};
+
+/**
+ * ΤΟ ΙΔΙΟ ΞΕΝΟ SCRIPT, ΑΠΟ ΤΗΝ ΑΛΛΗ ΠΟΡΤΑ (31/08/2026).
+ *
+ * Ήρθε 🔴 «έσπασε σελίδα σε επισκέπτη» με μήνυμα «Ea» από /beaches/astypalaia/ σε
+ * Chrome iPhone, και η στοίβα του ονόμαζε τρεις φορές την ΙΔΙΑ ΤΗ ΣΕΛΙΔΑ
+ * (…/astypalaia/:453:350, :194:41, :195:338) — ούτε μία φορά αρχείο /assets/*.js.
+ * Δηλαδή ακριβώς η isForeignInlineScript() από πάνω, αλλά αόρατη σε αυτήν: η
+ * αναφορά ήρθε από `unhandledrejection`, όπου το `source` δεν είναι διεύθυνση αλλά
+ * η δική μας λέξη «unhandledrejection», οπότε ο έλεγχος έβγαινε αμέσως false.
+ *
+ * ΔΕΝ είναι το «Error: Ea» της 29/08 με άλλο ρούχο. Εκείνο ΑΠΕΤΥΧΕ το instanceof,
+ * δηλαδή γεννήθηκε σε ξεχωριστό περιβάλλον JavaScript (πρόσθετο browser), και το
+ * πιάνει ο δομικός έλεγχος στο services/errorReporter.ts. Αυτό εδώ ΠΕΡΑΣΕ το
+ * instanceof — γεννήθηκε στο ίδιο περιβάλλον με τη σελίδα, που είναι ακριβώς ό,τι
+ * κάνει ένα script φυτεμένο μέσα στο HTML μας (το CSP μας επιτρέπει
+ * 'unsafe-inline'). Δύο διαφορετικές πόρτες για την ίδια οικογένεια· η μία ήταν
+ * κλειστή, η άλλη ορθάνοιχτη.
+ *
+ * Ο κανόνας είναι δομικός, όχι άλλη μια φράση σε λίστα: κάθε σφάλμα δικού μας
+ * κώδικα έχει ΤΟΥΛΑΧΙΣΤΟΝ μία γραμμή στοίβας σε /assets/*.js, γιατί από εκεί φεύγει
+ * ολόκληρη η JavaScript μας. Στοίβα που ονομάζει μόνο σελίδες μας και κανένα δικό
+ * μας αρχείο δεν μπορεί να είναι δική μας.
+ *
+ * Δύο ασφάλειες ώστε να μη σωπάσει ποτέ αληθινό σφάλμα:
+ *   • ΕΝΑ και μόνο δικό μας αρχείο οπουδήποτε στη στοίβα ακυρώνει την απόφαση.
+ *   • «Σελίδα μας» μετράει μόνο διαδρομή που τελειώνει σε «/» και δεν ξεκινάει από
+ *     «/assets/» — έτσι είναι όλες οι σελίδες μας, και κανένα δικό μας αρχείο. Η
+ *     στοίβα κόβεται στους 1.400 χαρακτήρες: ούτε το μισοκομμένο
+ *     «/assets/index-Dop3» ούτε το «/assets/» επιτρέπεται να περάσουν για σελίδα.
+ * Χωρίς στοίβα δεν αποφασίζει τίποτα.
+ *
+ * Μπαίνει ΜΟΝΟ εδώ κι όχι και στον πελάτη, σε αντίθεση με το φίλτρο από πάνω: έτσι
+ * ισχύει από την πρώτη στιγμή για ΟΛΑ τα κινητά — και για όσα κρατάνε ακόμα παλιό
+ * build στον service worker — και η αναφορά εξακολουθεί να μετριέται στον κάδο
+ * `muted/` αντί να χάνεται εντελώς.
+ */
+const STACK_FRAME_URL = /\bhttps?:\/\/[^\s)'"]+/g;
+
+const isForeignInlineStack = (stack) => {
+  if (!stack) return false;
+
+  let sawOwnDocument = false;
+  for (const raw of stack.match(STACK_FRAME_URL) || []) {
+    let url;
+    try {
+      // «…/astypalaia/:194:41» → η διεύθυνση χωρίς γραμμή/στήλη.
+      url = new URL(raw.replace(/[)\]]+$/, '').replace(/:\d+(?::\d+)?$/, ''));
+    } catch {
+      continue;
+    }
+    if (!isOwnHost(url.hostname.toLowerCase())) continue;
+    // Ό,τι ζει κάτω από /assets/ είναι δικό μας αρχείο, ακόμα κι αν η κομμένη
+    // στοίβα δεν πρόλαβε να γράψει την κατάληξη .js.
+    if (/\.m?js$/i.test(url.pathname) || url.pathname.startsWith('/assets/')) return false;
+    if (url.pathname.endsWith('/')) sawOwnDocument = true;
+  }
+  return sawOwnDocument;
 };
 
 /** Scheme+host of a URL, for grouping. Falls back to the raw value for the
