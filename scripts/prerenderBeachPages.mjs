@@ -2781,6 +2781,8 @@ const FOOTER_COPY = {
     faq: 'FAQ',
     method: 'How we measure shelter',
     guides: 'Beach guides',
+    report: 'Something wrong here?',
+    reportSubject: 'Wrong data on CalmBeach',
     data: 'Beach data derived from OpenStreetMap, © OpenStreetMap contributors, available under the Open Database License (ODbL). Weather and marine forecasts by Open-Meteo (CC BY 4.0).',
   },
   gr: {
@@ -2792,6 +2794,8 @@ const FOOTER_COPY = {
     faq: 'Συχνές ερωτήσεις',
     method: 'Πώς μετράμε την προστασία',
     guides: 'Οδηγοί παραλιών',
+    report: 'Κάτι δεν πάει καλά εδώ;',
+    reportSubject: 'Λάθος στοιχείο στο CalmBeach',
     data: 'Τα δεδομένα παραλιών προέρχονται από το OpenStreetMap, © συνεισφέροντες OpenStreetMap, με άδεια Open Database License (ODbL). Οι προγνώσεις καιρού και θάλασσας από το Open-Meteo (CC BY 4.0).',
   },
   de: {
@@ -2803,6 +2807,8 @@ const FOOTER_COPY = {
     faq: 'FAQ',
     method: 'Wie wir Windschutz messen',
     guides: 'Strandführer',
+    report: 'Stimmt hier etwas nicht?',
+    reportSubject: 'Falsche Angabe auf CalmBeach',
     data: 'Stranddaten abgeleitet aus OpenStreetMap, © OpenStreetMap-Mitwirkende, verfügbar unter der Open Database License (ODbL). Wetter- und Seegangsvorhersagen von Open-Meteo (CC BY 4.0).',
   },
   fr: {
@@ -2814,6 +2820,8 @@ const FOOTER_COPY = {
     faq: 'FAQ',
     method: "Comment nous mesurons l'abri",
     guides: 'Guides des plages',
+    report: "Une erreur sur cette page ?",
+    reportSubject: 'Donnée erronée sur CalmBeach',
     data: 'Données de plages dérivées d’OpenStreetMap, © les contributeurs OpenStreetMap, disponibles sous Open Database License (ODbL). Prévisions météo et marines par Open-Meteo (CC BY 4.0).',
   },
   it: {
@@ -2825,11 +2833,31 @@ const FOOTER_COPY = {
     faq: 'FAQ',
     method: 'Come misuriamo il riparo',
     guides: 'Guide alle spiagge',
+    report: "C'è qualcosa di sbagliato?",
+    reportSubject: 'Dato errato su CalmBeach',
     data: 'Dati delle spiagge derivati da OpenStreetMap, © contributori OpenStreetMap, disponibili con licenza Open Database License (ODbL). Previsioni meteo e marine di Open-Meteo (CC BY 4.0).',
   },
 };
 
-const staticLegalFooter = (locale = prerenderLocales[0]) => {
+// Same single source of truth the legal pages and the in-app modals read
+// (data/legalMeta.json -> scripts/buildLegalPages.mjs:18), so the address can never
+// drift between the static footer and everything else that prints it.
+const CONTACT_EMAIL = JSON.parse(
+  readFileSync(path.join(projectRoot, 'data', 'legalMeta.json'), 'utf8')
+).operator.contactEmail;
+
+// The beach dataset is OSM-derived and unverified field by field, so the visitor standing
+// on the beach is the cheapest correction we can get. A mailto works from every one of the
+// ~9.500 pages with no JS, and the path rides in the body so the report says which page it
+// came from. Mirrored by components/LegalFooter.tsx, which replaces this footer on mount
+// and reads the path from window.location instead.
+const reportProblemMailto = (c, pagePath) => {
+  const body = pagePath ? `\n\n---\n${pagePath}` : '';
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(c.reportSubject)}`
+    + (body ? `&body=${encodeURIComponent(body)}` : '');
+};
+
+const staticLegalFooter = (locale = prerenderLocales[0], pagePath = '') => {
   const c = FOOTER_COPY[locale.language] || FOOTER_COPY.en;
   // Legal documents are single bilingual pages at the root; the FAQ and the guides
   // hub are the only two that exist per locale (en + el only — de/fr/it fall back
@@ -2849,6 +2877,7 @@ const staticLegalFooter = (locale = prerenderLocales[0]) => {
             ${link(`${localePrefix}/faq/`, c.faq)}
             ${link(`${localePrefix}/how-we-measure-wind-shelter/`, c.method)}
             ${link(`${localePrefix}/beach-guides/`, c.guides)}
+            ${link(reportProblemMailto(c, pagePath), c.report)}
           </ul>
         </nav>
         <p style="margin:0 0 6px;font-size:12px;color:#64748b;">${escapeHtml(c.data)}</p>
@@ -2864,7 +2893,14 @@ const staticLegalFooter = (locale = prerenderLocales[0]) => {
 // NOT applied to island-intent guide pages: those already carry
 // renderArticleLegalStrip(), which says something different per intent. Applying
 // both gave them two <footer> elements (caught in the build output, 30/07).
-const withStaticFooter = (html, locale) => html.replace('</main>', `</main>${staticLegalFooter(locale)}`);
+const withStaticFooter = (html, locale) => {
+  // Read the path back off the canonical this page already carries rather than threading it
+  // through six call sites; the canonical is written before the footer is appended and is
+  // self-referential on every page type, so it is the page's own address by definition.
+  const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
+  const pagePath = canonical ? canonical[1].replace(siteUrl, '') : '';
+  return html.replace('</main>', `</main>${staticLegalFooter(locale, pagePath)}`);
+};
 
 const staticHomeFallback = (canonicalUrl, locale = prerenderLocales[0], regionLinks = []) => {
   const isGreek = locale.language === 'gr';
