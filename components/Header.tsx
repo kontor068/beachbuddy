@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, Check, ChevronDown, CloudSun, Languages, User } from 'lucide-react';
-import type { BeachProfile } from '../types';
+import { CalendarDays, Check, ChevronDown, CloudSun, Languages, Menu as MenuIcon, User, X } from 'lucide-react';
+import type { BeachProfile, Island } from '../types';
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { getLocalizedCopy, languageToDateLocale, SUPPORTED_LANGUAGES, type SupportedLanguage } from '../utils/i18n';
 import { getSelectedDayOffset, getSelectedDaySentencePrefix } from '../utils/dateLabels';
@@ -13,6 +13,13 @@ import { athensNow } from '../utils/athensTime';
 const AccountPanel = lazyWithChunkRecovery(
   () => import('./account/AccountPanel'),
   'AccountPanel'
+);
+
+// Ίδιος λόγος: το μενού σέρνει μαζί του τους συνδέσμους των άρθρων και το
+// ημερολόγιο, και η κεφαλίδα ζωγραφίζεται σε ΚΑΘΕ σελίδα. Έρχεται στο πάτημα.
+const MainMenu = lazyWithChunkRecovery(
+  () => import('./MainMenu'),
+  'MainMenu'
 );
 
 interface HeaderProps {
@@ -47,6 +54,12 @@ interface HeaderProps {
   onAddPhoto?: () => void;
   beachProfile?: BeachProfile;
   onBeachProfileChange?: (next: BeachProfile) => void;
+  // Το μενού της κεφαλίδας: άρθρα, φωτογραφία, «τι φτιάξαμε». Χωρίς το ευρετήριο
+  // περιοχών τα άρθρα δεν μπορούν να ονομαστούν, οπότε το μενού δείχνει ό,τι
+  // άλλο έχει και σιωπά για αυτά.
+  allIslands?: Island[];
+  /** Ίδιο πράγμα με το onAddPhoto, χωριστά μόνο για να μετρηθεί από πού ήρθε. */
+  onMenuAddPhoto?: () => void;
   /** Sticky top bar. Landing page only — inside a region the bar scrolls away
       as it always did, so the map and the picks keep the full screen. */
   stickyTopBar?: boolean;
@@ -60,12 +73,12 @@ const languageLabels: Record<SupportedLanguage, { short: string; label: string }
   it: { short: 'IT', label: 'Italiano' },
 };
 
-const headerCopy: Record<SupportedLanguage, { changeLanguage: string; home: string }> = {
-  en: { changeLanguage: 'Change language', home: 'CalmBeach home' },
-  gr: { changeLanguage: 'Αλλαγή γλώσσας', home: 'Αρχική CalmBeach' },
-  fr: { changeLanguage: 'Changer de langue', home: 'Accueil CalmBeach' },
-  de: { changeLanguage: 'Sprache ändern', home: 'CalmBeach Startseite' },
-  it: { changeLanguage: 'Cambia lingua', home: 'Home CalmBeach' },
+const headerCopy: Record<SupportedLanguage, { changeLanguage: string; home: string; menu: string }> = {
+  en: { changeLanguage: 'Change language', home: 'CalmBeach home', menu: 'Menu' },
+  gr: { changeLanguage: 'Αλλαγή γλώσσας', home: 'Αρχική CalmBeach', menu: 'Μενού' },
+  fr: { changeLanguage: 'Changer de langue', home: 'Accueil CalmBeach', menu: 'Menu' },
+  de: { changeLanguage: 'Sprache ändern', home: 'CalmBeach Startseite', menu: 'Menü' },
+  it: { changeLanguage: 'Cambia lingua', home: 'Home CalmBeach', menu: 'Menu' },
 };
 
 // Written per-component rather than added to translations.ts: that file is its own
@@ -110,16 +123,21 @@ const Header: React.FC<HeaderProps> = ({
   onBeachProfileChange,
   onOpenFavorites,
   stickyTopBar = false,
+  allIslands,
+  onMenuAddPhoto,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
+  const mainMenuRef = useRef<HTMLDivElement>(null);
   const accountLabels = getLocalizedCopy(language, accountCopy);
   const [currentDate, setCurrentDate] = useState(() => athensNow());
   const languageMenuRef = useRef<HTMLDivElement>(null);
   const languageLabel = languageLabels[language].label;
   const switchLanguageLabel = getLocalizedCopy(language, headerCopy).changeLanguage;
   const homeLabel = getLocalizedCopy(language, headerCopy).home;
+  const menuLabel = getLocalizedCopy(language, headerCopy).menu;
   const headerDateLabel = useMemo(() => {
     return new Intl.DateTimeFormat(languageToDateLocale(language), {
       weekday: 'long',
@@ -192,6 +210,19 @@ const Header: React.FC<HeaderProps> = ({
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isAccountMenuOpen]);
+
+  useEffect(() => {
+    if (!isMainMenuOpen) return undefined;
+
+    // Το πάνελ είναι αγκυρωμένο μέσα σε αυτό το ref σε κάθε πλάτος (δεν βγαίνει
+    // σε portal), οπότε ο έλεγχος περιεκτικότητας αρκεί από μόνος του.
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!mainMenuRef.current?.contains(event.target as Node)) setIsMainMenuOpen(false);
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [isMainMenuOpen]);
 
   // NOTE: the <header> IS the bar and nothing else — forecastSlot is a sibling,
   // not a child. A sticky element only travels inside its parent box, so while
@@ -371,6 +402,34 @@ const Header: React.FC<HeaderProps> = ({
                     );
                   })}
                 </div>
+              )}
+            </div>
+
+            {/* ΤΟ ΜΕΝΟΥ, τελευταίο δεξιά — εκεί που το ψάχνει το χέρι. Κρατάει ό,τι
+                δεν είναι η απόφαση του σήμερα: άρθρα, φωτογραφία, ημερολόγιο. */}
+            <div ref={mainMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsMainMenuOpen(open => !open)}
+                className="inline-flex min-h-10 items-center justify-center rounded-full px-2.5 transition hover:bg-sky-50 hover:text-[#007a83] focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700/30"
+                aria-label={menuLabel}
+                aria-haspopup="dialog"
+                aria-expanded={isMainMenuOpen}
+              >
+                {isMainMenuOpen
+                  ? <X className="h-5 w-5 text-[#007a83]" aria-hidden="true" />
+                  : <MenuIcon className="h-5 w-5 text-[#007a83]" aria-hidden="true" />}
+              </button>
+
+              {isMainMenuOpen && (
+                <Suspense fallback={null}>
+                  <MainMenu
+                    language={language}
+                    allIslands={allIslands}
+                    onAddPhoto={onMenuAddPhoto}
+                    onClose={() => setIsMainMenuOpen(false)}
+                  />
+                </Suspense>
               )}
             </div>
           </div>

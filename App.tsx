@@ -8779,6 +8779,8 @@ export const App: React.FC = () => {
         onSignOut={() => { void auth.signOut(); }}
         onDeleteAccount={deleteAccount}
         onAddPhoto={() => handleAddPhoto('account_panel')}
+        allIslands={allIslands}
+        onMenuAddPhoto={auth.isAvailable ? () => handleAddPhoto('main_menu') : undefined}
         beachProfile={beachProfile}
         onBeachProfileChange={handleBeachProfileChange}
         forecastSlot={showHeaderForecast && !showLanding ? (

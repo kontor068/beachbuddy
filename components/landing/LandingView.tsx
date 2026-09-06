@@ -6,7 +6,6 @@ import type { DirectorySearchSuggestion } from '../BeachSearcherHome';
 import { useNationalConditions } from '../../hooks/useNationalConditions';
 import { LandingHero } from './LandingHero';
 import { TodayRegionsSection } from './TodayRegionsSection';
-import { GuideTopicsSection } from './GuideTopicsSection';
 import { HowWeDecideSection } from './HowWeDecideSection';
 import { CommunityPhotosSection } from './CommunityPhotosSection';
 import { OurStorySection } from './OurStorySection';
@@ -161,21 +160,21 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <HowWeDecideSection language={language} />
       </div>
 
-      {/* The second way in, for the visitor who recognises none of the thirteen
-          region names and will not share their location. It is an index, not a
-          chapter, and it now sits last among the "where to go" blocks — after the
-          photo ask (moved up 08/08) and after the trust band, both of which it
-          would otherwise push down by roughly 300px on a phone. Kept tight
-          (mt-10, not the mt-14 the other bands get). */}
-      <div className="mt-10 sm:mt-14">
-        <GuideTopicsSection language={language} allIslands={allIslands} />
-      </div>
+      {/* ΤΑ ΑΡΘΡΑ ΕΦΥΓΑΝ ΑΠΟ ΕΔΩ 06/09/2026 (Μίλτος): πήγαν στο μενού της
+          κεφαλίδας (components/MainMenu.tsx), μαζί με τη φωτογραφία και το
+          ημερολόγιο. Ήταν ~490px στο κινητό ανάμεσα στην εμπιστοσύνη και το
+          γράμμα, δηλαδή πλοήγηση στη μέση μιας σελίδας που απαντάει· και η
+          πλοήγηση τελειώνει την επίσκεψη. Ο crawler δεν χάνει τίποτα: τα έξι
+          links δεν ήταν ποτέ στο στατικό HTML (το GuideTopicsSection περίμενε το
+          ευρετήριο περιοχών), και το prerender συνεχίζει να γράφει μόνο του το
+          «popular beach guides» nav μαζί με το /beach-guides/. Το υποσέλιδο
+          κρατάει επίσης τον σύνδεσμο των οδηγών σε κάθε σελίδα.
+          Το GuideTopicsSection ΔΕΝ διαγράφηκε — μένει έτοιμο αν το θέλουμε πίσω. */}
 
       {/* The human close: light and first-person, so the page ends on "help us"
-          and not on caveats. It no longer sits directly under the dark band (the
-          article index moved between them on 29/08/2026), so the contrast that
-          used to carry it is gone — if the letter ever reads as an orphan here,
-          that is why. */}
+          and not on caveats. It follows the trust band directly again (the
+          article index sat between them from 29/08 to 06/09/2026), so it inherits
+          the dark band's contrast the way it did originally. */}
       <div className="mt-14 sm:mt-20">
         <OurStorySection language={language} />
       </div>

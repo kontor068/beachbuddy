@@ -92,6 +92,13 @@ export type AnalyticsEvent =
   // measuring them is to find out which QUESTION people arrive with, which is
   // the only thing that says what the next article should be about.
   | 'landing_guide_clicked'
+  // Το μενού της κεφαλίδας (components/MainMenu.tsx), από 06/09/2026 το μοναδικό
+  // σημείο της εφαρμογής που προσφέρει τα άρθρα. Χωριστά ονόματα από τα
+  // `landing_*`: αν μπουν στον ίδιο μετρητή, δεν θα μάθουμε ποτέ αν το μενού
+  // αποδίδει καλύτερα ή χειρότερα από τη λίστα που αντικατέστησε.
+  | 'menu_guide_clicked'
+  | 'menu_add_photo_clicked'
+  | 'menu_latest_work_clicked'
   | 'landing_contact_clicked'
   // The story section, measured with two sentinels rather than one observer on
   // the section itself: the section is taller than a phone viewport, so a
