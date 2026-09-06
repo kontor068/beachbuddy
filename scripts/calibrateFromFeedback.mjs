@@ -3,7 +3,11 @@
 // Turns captured `condition_feedback` into CONSERVATIVE, human-reviewable proposals. There
 // is no app backend, so this runs by hand over an export of the feedback (the GA4
 // `condition_feedback` events, or the app's local FEEDBACK_KEY records) — a JSON array of
-// FeedbackData { beachId, feedback, timestamp, conditions:{ exposureLevel, beaufort, windDir, date } }.
+// FeedbackData { beachId, feedback, timestamp, conditions:{ exposureLevel, beaufort, windDir, date, live } }.
+//
+// Οι εγγραφές με `conditions.live === false` ΔΕΝ μπαίνουν στο άθροισμα: εκεί η οθόνη ήταν
+// γυρισμένη σε άλλη μέρα ή ώρα, οπότε αυτό που είδε ο επισκέπτης και αυτό που δείξαμε δεν
+// αφορούν την ίδια στιγμή (αναλυτικά στο σχόλιο του `isComparable` πιο κάτω).
 //
 //   node scripts/calibrateFromFeedback.mjs --input .tmp/feedback-export.json
 //   node scripts/calibrateFromFeedback.mjs --demo        # synthetic example, proves the pipeline
