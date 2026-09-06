@@ -3,9 +3,9 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { FilterKey, LanguageCode, SortOption } from '../types';
 import { Translation } from '../types';
 import { 
-  Trees, 
-  Utensils, 
-  Waves, 
+  Trees,
+  Utensils,
+  Martini,
   ParkingCircle,
   ShowerHead,
   CircleDot,
@@ -67,7 +67,7 @@ const filterIcons: Record<string, React.ReactNode> = {
   organized: <BadgeCheck className="h-5 w-5 shrink-0" />,
   naturalShade: <Trees className="h-5 w-5 shrink-0" />,
   taverna: <Utensils className="h-5 w-5 shrink-0" />,
-  beachBar: <Waves className="h-5 w-5 shrink-0" />,
+  beachBar: <Martini className="h-5 w-5 shrink-0" />,
   sunbeds: <SunbedIcon className="h-5 w-5 shrink-0" />,
   parking: <ParkingCircle className="h-5 w-5 shrink-0" />,
   shower: <ShowerHead className="h-5 w-5 shrink-0" />,

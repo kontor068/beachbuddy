@@ -69533,7 +69533,8 @@
             "organized": false,
             "shade": false,
             "amenities": [
-              "parking"
+              "parking",
+              "καντίνα εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -69546,10 +69547,11 @@
             "sourceUrls": [
               "https://imagininggreece.com/artefacts/ai-giannakis-beach-parga",
               "https://travelpreveza.gr/en/beach/paralia-ai-giannakis/",
+              "https://www.travelparga.gr/en/ai-giannakis/",
               "https://nikana.gr/en/tourist-guide/epirus/beaches/2526/ai-giannakis-beach",
               "https://www.feelgreece.com/en/ai-giannakis-beach"
             ],
-            "sourceNotes": "Phase 2 audit 2026-05-25: removed beach bar claim; Ai Giannakis sources describe canteen/basic supplies or explicitly no beach bars/sunbeds. Preveza tourist evidence pass 2026-06-01: Travel Preveza and local travel sources support Ai Giannakis beach identity near Parga, sandy/coarse-sand beach character, road access, parking/basic services context, and no fixed beach-bar certainty. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — feelgreece/travelparga: only a canteen + shaded seats; the beach does NOT have sunbeds/parasols — bring your own. Round1 over-read. [https://www.feelgreece.com/en/ai-giannakis-beach].",
+            "sourceNotes": "Phase 2 audit 2026-05-25: removed beach bar claim; Ai Giannakis sources describe canteen/basic supplies or explicitly no beach bars/sunbeds. Preveza tourist evidence pass 2026-06-01: Travel Preveza and local travel sources support Ai Giannakis beach identity near Parga, sandy/coarse-sand beach character, road access, parking/basic services context, and no fixed beach-bar certainty. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Amenity re-verify 2026-07-20 (no-API): checked and confirmed NOT organized — feelgreece/travelparga: only a canteen + shaded seats; the beach does NOT have sunbeds/parasols — bring your own. Round1 over-read. [https://www.feelgreece.com/en/ai-giannakis-beach]. Amenity completed 2026-08-29 (audit false-negative review): the canteen that our own 2026-07-20 note documented was never written into the amenities list — added «καντίνα εποχικά» (travelparga.gr: a cantina operates right on the beach in summer with drinks and meals; reviews note it is not always open). Sunbeds stay absent and organized stays false, which the same sources confirm.",
             "orientation": {
               "degrees": 151.3,
               "faces": [
@@ -107231,12 +107233,14 @@
               ],
               "label": "μεσαία/μεγάλα λευκά βότσαλα, βράχια"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
               "ντους",
               "αποδυτήρια",
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -107246,11 +107250,13 @@
               "label": "Βαθιά νερά",
               "notes": "Driver of Samos describes clear deep waters for the Pappa/Aspros Kavos beach area. This is static depth profile only."
             },
-            "sourceNotes": "Samos confidence continuation 2026-06-02: promoted to high for static metadata only. Driver of Samos identifies Pappa/Papa Beach as also known as Aspros Kavos near Heraion and supports easy access via a signed 750 m dirt road, parking, medium/large white pebbles, rocky sides, organized sunbeds/umbrellas, showers/changing cabins and beach-bar/taverna context. Electra Samos independently lists Aspros Kavos Heraion/White Kavos with medium and large pebbles. This remains encoded as passable dirt-road access, not asphalt. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed; possible Pappa/Aspros Kavos duplicate cleanup remains future work. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": "Samos confidence continuation 2026-06-02: promoted to high for static metadata only. Driver of Samos identifies Pappa/Papa Beach as also known as Aspros Kavos near Heraion and supports easy access via a signed 750 m dirt road, parking, medium/large white pebbles, rocky sides, organized sunbeds/umbrellas, showers/changing cabins and beach-bar/taverna context. Electra Samos independently lists Aspros Kavos Heraion/White Kavos with medium and large pebbles. This remains encoded as passable dirt-road access, not asphalt. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed; possible Pappa/Aspros Kavos duplicate cleanup remains future work. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Amenity restored 2026-08-29 (audit false-negative review): this beach IS Pappa Beach, run by the family beach bar-restaurant of the same name — Tripadvisor attraction page (waiter service to the sunbeds, umbrella + 2 sunbeds 10€, showers/changing rooms), separate Tripadvisor restaurant listing (Pappas Beach), and samosin.gr (small organized pebbly beach, tavern on the beach, sunbeds fill early). Consistent with our own 2026-06-02 Driver of Samos note above, which the 2026-06-20 clear contradicted. Restored organized=true plus seasonal bar/sunbed amenities; showers/changing rooms were already recorded.",
             "sourceUrls": [
               "https://driverofsamos.gr/en/samos-beaches/pappa-beach-samos",
               "https://electra-samos.gr/location/beaches/aspros-kavos-heraion/",
-              "https://www.openstreetmap.org/way/1084990871"
+              "https://www.openstreetmap.org/way/1084990871",
+              "https://www.tripadvisor.com/Attraction_Review-g2540464-d4742164-Reviews-Pappa_Beach_Ireon_Samos_Official-Iraion_Samos_Northeast_Aegean_Islands.html",
+              "https://www.samosin.gr/item/beach-papa/"
             ],
             "orientation": {
               "degrees": 138.8,
@@ -125056,7 +125062,8 @@
             "organized": false,
             "shade": false,
             "amenities": [
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar"
             ],
             "confidence": "high",
             "language": "el",
@@ -125066,7 +125073,7 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 146968308 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and local tourism sources identify Mati/Chrysi Ammos near Romanos/Petrochori; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 146968308 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and local tourism sources identify Mati/Chrysi Ammos near Romanos/Petrochori; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Owner correction 2026-08-29: first-hand local report confirms a beach bar operates at Mati — the 2026-06-20 Places heuristic (zero food/drink POI within 180 m) was a false negative here. Restored the 'beach bar' amenity; organized/sunbeds left unchanged because only the bar was confirmed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/146968308",
               "https://messinia.mobi/en/article/fusi/paralies/paralia-mati-chrisi-ammos/122",
@@ -127441,10 +127448,12 @@
               ],
               "label": "λεπτή άμμος, χοντρή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": false,
             "amenities": [
-              "parking κοντά"
+              "parking κοντά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -127454,13 +127463,15 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 235409032 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and Trifylia visitor sources directly identify Kartela beach near Kyparissia and support organized/parking details; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 235409032 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Messinia and Trifylia visitor sources directly identify Kartela beach near Kyparissia and support organized/parking details; upgraded from OSM-only low confidence. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Amenity restored 2026-08-29 (audit false-negative review, triggered by owner-confirmed false negative at Mati #1626): three independent sources describe Kartela(s) near Kyparissia as an organized beach with umbrellas, sunbeds, beach bar and beach volley — messinia.mobi article 4372 (already a source here), visit-kalamata.gr and sandee.com (reviews: sunbeds free with consumption from the beach bar). The Places 180 m radius heuristic was a false negative for seasonal bars. Restored organized=true plus seasonal bar/sunbed amenities; no business name recorded because none was confirmed.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/235409032",
               "https://messinia.mobi/en/article/fusi/paralies/paralia-kartela/121",
               "https://messinia.mobi/el/article/fusi/paralies/kartelas-paralia/4372",
               "https://greece.terrabook.com/el/messinia/page/kartelas/",
-              "https://apollo-hotel.gr/paralies/"
+              "https://apollo-hotel.gr/paralies/",
+              "https://visit-kalamata.gr/en/kartelasen/",
+              "https://sandee.com/greece/peloponnese/kyparissia/kartelas"
             ],
             "orientation": {
               "degrees": 293.8,
@@ -127491,13 +127502,15 @@
               ],
               "label": "λεπτή άμμος"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
               "beach volley",
               "ντουζ",
               "αποδυτήρια",
-              "ναυαγοσώστης εποχικά"
+              "ναυαγοσώστης εποχικά",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -127507,9 +127520,11 @@
               "label": "Μέτρια νερά",
               "notes": "Το βάθος κρατιέται ως μέτριο/κανονικό γιατί οι πηγές δεν τεκμηριώνουν με ασφάλεια ούτε ρηχά ούτε βαθιά νερά."
             },
-            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 300965745 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Oasi/Bouka accommodation and visitor sources support the beach-area identity, but Oasi appears to be a local/Bouka sub-area rather than a widely documented standalone beach; upgraded only to medium. Popular-source confidence pass BY 2026-06-02: The Municipality of Messini tourist leaflet supports Bouka as a large organized beach 4 km from Messini city, Terrabook supports Bouka as a wide fine-sand organized beach on the Messini municipal coast with umbrellas, loungers, beach bar, volleyball, showers, changing rooms and lifeguard, Messinia.mobi supports Bouka as Messini main beach with fine sand and organized services, and GMP Bouka supports the local Bouka/Oasi accommodation-beach context. Existing OSM supports the mapped beach geometry. Promoted to high for static identity/location, sandy terrain, easy-access urban-coast context and organized amenities only; Blue Flag/water-quality, quiet-water, wind/wave, scoring, windProfile, coordinates, photos, and live calm/protected/safe claims were not imported. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — No positive access confirmation found for the Messinia Oasi; OSM shows no paved within 300m + a track. Honest-unverified.. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
+            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 300965745 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Oasi/Bouka accommodation and visitor sources support the beach-area identity, but Oasi appears to be a local/Bouka sub-area rather than a widely documented standalone beach; upgraded only to medium. Popular-source confidence pass BY 2026-06-02: The Municipality of Messini tourist leaflet supports Bouka as a large organized beach 4 km from Messini city, Terrabook supports Bouka as a wide fine-sand organized beach on the Messini municipal coast with umbrellas, loungers, beach bar, volleyball, showers, changing rooms and lifeguard, Messinia.mobi supports Bouka as Messini main beach with fine sand and organized services, and GMP Bouka supports the local Bouka/Oasi accommodation-beach context. Existing OSM supports the mapped beach geometry. Promoted to high for static identity/location, sandy terrain, easy-access urban-coast context and organized amenities only; Blue Flag/water-quality, quiet-water, wind/wave, scoring, windProfile, coordinates, photos, and live calm/protected/safe claims were not imported. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — No positive access confirmation found for the Messinia Oasi; OSM shows no paved within 300m + a track. Honest-unverified.. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access. Amenity restored 2026-08-29 (audit false-negative review, triggered by owner-confirmed false negative at Mati #1626): Oasi Beach Bar & Restaurant operates on this exact stretch of Bouka — first-party site oasibeachbar.com plus a Tripadvisor listing (OASI, Messini, described as a daytime beach bar near Kalamata airport); allaboutpeloponnisos.com describes Bouka as one of the most organized beaches of the Messinian coast with sunbeds/umbrellas at the Oasi section. This also resolves the internal contradiction the 2026-06-20 clear created with our own 2026-06-02 note (Terrabook: umbrellas, loungers, beach bar) and with access.notes calling it organized. Restored organized=true plus seasonal bar/sunbed amenities.",
             "sourceUrls": [
               "https://www.openstreetmap.org/way/300965745",
+              "https://www.oasibeachbar.com/",
+              "https://www.allaboutpeloponnisos.com/en/type/beaches/i-mpouka",
               "https://eservices.messini.gr/files/items/3/3482/toyristiko_fylladio_dimoy_messinis_el-eng.pdf",
               "https://greece.terrabook.com/messinia/page/beach-bouka/",
               "https://messinia.mobi/en/article/fusi/paralies/paralia-mpoukas/115",
@@ -195432,7 +195447,8 @@
             "organized": false,
             "shade": false,
             "amenities": [
-              "περιορισμένο parking πιο πάνω"
+              "περιορισμένο parking πιο πάνω",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -195446,7 +195462,7 @@
               "https://www.allovergreece.com/Beaches/Descr/50/1113/el",
               "https://alonissos.gr/en/places-to-go/beaches-in-alonissos/"
             ],
-            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: AllOverGreece directly supports Megali Ammos Alonissos with difficult dirt-road/parking-plus-walk access and seasonal beach equipment; the official page includes Megali Ammos among named local beaches. Raised to high for static identity/access/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-07-25 (no-API): moved from 39.18000,23.87960 to 39.181275,23.878219 — pin is 185 m from the OSM beach outline (confidence OSM polygon 185 m).",
+            "sourceNotes": "Alonissos tourist evidence pass 2026-05-29: AllOverGreece directly supports Megali Ammos Alonissos with difficult dirt-road/parking-plus-walk access and seasonal beach equipment; the official page includes Megali Ammos among named local beaches. Raised to high for static identity/access/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-07-25 (no-API): moved from 39.18000,23.87960 to 39.181275,23.878219 — pin is 185 m from the OSM beach outline (confidence OSM polygon 185 m). Amenity partially restored 2026-08-29 (audit false-negative review): greeka.com and allovergreece.com both describe a small seasonal umbrella/sunbed rental section (~10€/day for two loungers, rest of the beach free) run informally with basic snacks/drinks — NOT a beach bar; greeka explicitly says no restaurants or beach bars nearby. Restored seasonal sunbeds only; organized stays false and the bar stays absent, which matches the sources.",
             "orientation": {
               "degrees": 305.3,
               "faces": [
@@ -200200,10 +200216,12 @@
               ],
               "label": "ψιλή άμμος, μικρά βότσαλα και βράχια στα άκρα"
             },
-            "organized": false,
+            "organized": true,
             "shade": true,
             "amenities": [
-              "parking"
+              "parking",
+              "beach bar εποχικά",
+              "ξαπλώστρες, ομπρέλες εποχικά"
             ],
             "confidence": "high",
             "language": "el",
@@ -200213,10 +200231,12 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Kastani beach identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Kastani as the Mamma Mia beach, about 15 km from Chora, with car access, parking, final unpaved road section, sandy/pebbly shore, pine shade and beach-bar/sunbed-umbrella service. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-08-17 (no-API): moved from 39.08650,23.68650 to 39.121625,23.654908 — name match 4763 m away; our pin had no beach mapped within 1,2 km (confidence OSM beach way/289896970 named «Καστάνη»).",
+            "sourceNotes": "Source follow-up pass 39 2026-05-28: direct Municipality of Skopelos destination page supports Kastani beach identity/location on Skopelos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Skopelos tourist evidence pass 2026-06-01: Municipality of Skopelos and Skopelos.com support Kastani as the Mamma Mia beach, about 15 km from Chora, with car access, parking, final unpaved road section, sandy/pebbly shore, pine shade and beach-bar/sunbed-umbrella service. Coordinates, windProfile, scoring, photos and live calm/protected/safe claims were not changed. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched. Pin corrected 2026-08-17 (no-API): moved from 39.08650,23.68650 to 39.121625,23.654908 — name match 4763 m away; our pin had no beach mapped within 1,2 km (confidence OSM beach way/289896970 named «Καστάνη»). Amenity restored 2026-08-29 (audit false-negative review): the 2026-06-20 Places query ran against the OLD pin, 4,7 km from the actual beach — its zero-POI result described the wrong spot. Kastani Beach Bar operates here every summer: dedicated skopelos.com beach-bar page (umbrellas, sunbeds, cocktails/snacks, DJ events), its own Facebook page (BeachBarKastani), and 2025-2026 Tripadvisor reviews quoting ~12€ sunbed+umbrella. Restored organized=true plus seasonal bar/sunbed amenities, consistent with our own 2026-06-01 Municipality/Skopelos.com evidence note above.",
             "sourceUrls": [
               "https://visit.skopelos.gr/en/destinations/kastani/",
-              "https://skopelos.com/beaches/kastani-beach/"
+              "https://skopelos.com/beaches/kastani-beach/",
+              "https://skopelos.com/beach-bars/kastani-beach-bar/",
+              "https://www.facebook.com/BeachBarKastani/"
             ],
             "orientation": {
               "degrees": 268.6,

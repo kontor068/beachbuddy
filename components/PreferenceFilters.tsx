@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { VolumeX, BadgeCheck, Search, Waves, Droplets, Mountain, SlidersHorizontal, Users, MapPin, Flag, Accessibility } from 'lucide-react';
+import { VolumeX, Martini, Search, Waves, Droplets, Mountain, SlidersHorizontal, Users, MapPin, Flag, Accessibility } from 'lucide-react';
 import { UserPreferences } from '../types';
 import { getPreferenceFilterLabel, QUICK_PREFERENCE_FILTERS } from '../utils/preferenceFilterLabels';
 import { SandDotsIcon } from './BeachFeatureIcons';
@@ -23,7 +23,7 @@ export const PreferenceFilters: React.FC<PreferenceFiltersProps> = ({ preference
     sandy: <SandDotsIcon size={16} />,
     pebbles: <Mountain size={16} />,
     quiet: <VolumeX size={16} />,
-    beachBar: <BadgeCheck size={16} />,
+    beachBar: <Martini size={16} />,
     easyAccess: <MapPin size={16} />,
     snorkeling: <Search size={16} />,
     familyFriendly: <Users size={16} />,
