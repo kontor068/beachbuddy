@@ -261,7 +261,14 @@ export interface FeedbackData {
     shoreDisplayWaveM?: number;
     /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5 (§Γ55/§Γ56). */
     shoreWaveFromDepartingSea?: boolean;
-    /** True only when the user is looking at right now, not a remembered or future day. */
+    /**
+     * True only when the user is looking at right now, not a remembered or future day.
+     *
+     * «Τώρα» = σήμερα ΚΑΙ η οθόνη στην τρέχουσα ώρα — είτε επειδή ο διακόπτης δεν αγγίχτηκε
+     * ποτέ, είτε επειδή κάθεται πάνω στο slot που τρέχει (App.isSelectedHourNow). Μέχρι τις
+     * 04/09/2026 μετρούσε μόνο το πρώτο, οπότε όποιος κουνούσε τη μπάρα και την ξαναγύριζε
+     * στο τώρα καταγραφόταν ως «δεν ήταν εκεί» και το σχόλιό του έβγαινε από τη βαθμονόμηση.
+     */
     live?: boolean;
     /**
      * Ο ΔΙΑΚΟΠΤΗΣ ΤΗΣ ΜΕΡΑΣ ΗΤΑΝ ΣΤΟ «ΣΗΜΕΡΑ» — πρόσθετο 29/08/2026.
