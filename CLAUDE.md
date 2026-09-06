@@ -23,9 +23,11 @@ noticing is worse than no recommendation.
 **`docs/team/` is gitignored on purpose — this repository is public.** The docs hold
 commercial positioning, legal history and a map of our own weak points, so they stay on disk
 like `docs/competitor-strategy.md` and `reports/snapshots/`. Two consequences: never suggest
-committing them or "backing them up with git", and never restate their commercial, legal or
-security contents inside a tracked file (code comments, README, `.claude/`). Git is not the
-backup here — a copy outside the repo is.
+committing them **to this repo**, and never restate their commercial, legal or security
+contents inside a tracked file (code comments, README, `.claude/`). They travel between
+machines through a separate **private** repo cloned inside `docs/team/` — see
+[Working from more than one machine](docs/DEV-ENVIRONMENT.md#working-from-more-than-one-machine).
+If that clone is missing the folder is simply empty, and the session is working without memory.
 
 **Keep the docs current.** When a fact is established, a decision taken, or a risk changes,
 update the relevant doc in the same session. Nobody will go back and do it later.
