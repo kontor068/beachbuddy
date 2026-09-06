@@ -323,8 +323,139 @@ const normalizePayload = (body, event) => {
       // σελίδα αλλά λείπει από αυτή τη λίστα φτάνει και πετιέται σιωπηλά. Βλ. formatLive.
       selectedDayIsToday:
         typeof conditions.selectedDayIsToday === 'boolean' ? conditions.selectedDayIsToday : undefined,
+      // ΑΠΟ ΠΟΥ ΕΡΧΕΤΑΙ ΤΟ ΚΥΜΑ ΚΑΙ ΠΡΟΣ ΤΑ ΠΟΥ ΚΟΙΤΑΕΙ Η ΑΚΤΗ (06/09/2026). Κυρά Παναγιά
+      // Καρπάθου #2308: «ΒΔ 4–5 Μπφ, protected, ακτή 0,10 μ., ανοιχτά 0,74 μ.» — και το σχόλιο
+      // δεν κρινόταν, γιατί ο αριθμός της ακτής εξαρτάται από τη ΓΩΝΙΑ κύματος-ακτής
+      // (utils/shoreWave) που δεν ταξίδευε. Ο πελάτης τα έστελνε εν μέρει ήδη (το
+      // shoreWaveFromDepartingSea έφευγε από 22/08 και πετιόταν εδώ)· τώρα διαβάζονται όλα.
+      shoreWaveFromDepartingSea: typeof conditions.shoreWaveFromDepartingSea === 'boolean'
+        ? conditions.shoreWaveFromDepartingSea
+        : undefined,
+      windSpeedKmh: finiteNumber(conditions.windSpeedKmh),
+      facingDeg: finiteNumber(conditions.facingDeg),
+      waveDirectionDeg: finiteNumber(conditions.waveDirectionDeg),
+      swellWaveHeightM: finiteNumber(conditions.swellWaveHeightM),
+      swellWavePeriodS: finiteNumber(conditions.swellWavePeriodS),
+      swellWaveDirectionDeg: finiteNumber(conditions.swellWaveDirectionDeg),
+      seaArrivalExposureLevel: clamp(conditions.seaArrivalExposureLevel, 20) || undefined,
+      shoreWaveSource: clamp(conditions.shoreWaveSource, 20) || undefined,
     },
   };
+};
+
+// ── Η γωνία κύματος-ακτής, σε λέξεις (06/09/2026) ────────────────────────────────────────
+// Ο αναγνώστης του μηνύματος πρέπει να μπορεί να κρίνει ένα «είχε πιο πολύ κύμα» χωρίς να
+// ξανατρέξει την πρόγνωση. Τα τρία κατώφλια είναι ΤΑ ΙΔΙΑ που χρησιμοποιεί ο κώδικας για να
+// αποφασίσει αν η εκτίμηση ακτής μιλάει: utils/waveModel ARRIVAL_ONSHORE_MIN (0,30 — «μπαίνει»),
+// utils/seaArrival SEA_GRAZING_ONSHORE_MAX (0 — «ξυστά») και utils/shoreWave
+// DEPARTING_SEA_MAX_ONSHORE (−0,65 — «φεύγει»). Αν αλλάξουν εκεί, άλλαξέ τα κι εδώ: το μήνυμα
+// περιγράφει τι έκρινε η μηχανή, όχι τι θα έκρινε ένας ναυτικός.
+const COMPASS_GR = ['Β', 'ΒΑ', 'Α', 'ΝΑ', 'Ν', 'ΝΔ', 'Δ', 'ΒΔ'];
+const compassGr = (deg) => COMPASS_GR[Math.round((((deg % 360) + 360) % 360) / 45) % 8];
+const formatDeg = (deg) => `${Math.round(deg)}° (${compassGr(deg)})`;
+const formatOnshore = (value) => value.toFixed(2).replace('.', ',');
+
+const describeSeaAngle = (fromDeg, facingDeg) => {
+  const onshore = Math.cos(((fromDeg - facingDeg) * Math.PI) / 180);
+  const word = onshore > 0.3
+    ? 'ΜΠΑΙΝΕΙ στην ακτή'
+    : onshore > 0
+      ? 'μπαίνει πολύ λοξά'
+      : onshore > -0.65
+        ? 'περνάει ξυστά / παράλληλα'
+        : 'ΦΕΥΓΕΙ από την ακτή';
+  return `${word} (συνιστώσα ${formatOnshore(onshore)})`;
+};
+
+const formatFacing = (conditions) => (
+  typeof conditions.facingDeg === 'number' ? formatDeg(conditions.facingDeg) : ''
+);
+
+const formatWindSpeed = (conditions) => (
+  typeof conditions.windSpeedKmh === 'number' ? `${Math.round(conditions.windSpeedKmh)} χλμ/ώ` : ''
+);
+
+const formatWaveOrigin = (conditions) => {
+  if (typeof conditions.waveDirectionDeg !== 'number') return '';
+  const base = formatDeg(conditions.waveDirectionDeg);
+  return typeof conditions.facingDeg === 'number'
+    ? `${base} — ${describeSeaAngle(conditions.waveDirectionDeg, conditions.facingDeg)}`
+    : base;
+};
+
+/** Η αποθαλασσιά μπαίνει μόνο όταν υπάρχει — κάτω από 5 εκ. είναι θόρυβος πλέγματος. */
+const formatSwell = (conditions) => {
+  if (typeof conditions.swellWaveHeightM !== 'number' || conditions.swellWaveHeightM < 0.05) return '';
+  const parts = [formatWaveM(conditions.swellWaveHeightM)];
+  if (typeof conditions.swellWavePeriodS === 'number') parts.push(formatPeriodS(conditions.swellWavePeriodS));
+  if (typeof conditions.swellWaveDirectionDeg === 'number') {
+    parts.push(`από ${formatDeg(conditions.swellWaveDirectionDeg)}`);
+    if (typeof conditions.facingDeg === 'number') {
+      parts.push(describeSeaAngle(conditions.swellWaveDirectionDeg, conditions.facingDeg));
+    }
+  }
+  return parts.join(' · ');
+};
+
+// Τι έκρινε η εφαρμογή για τη ΜΕΡΙΑ που έρχεται η θάλασσα (utils/seaArrival). Άγνωστη τιμή
+// τυπώνεται ωμή αντί να χαθεί — καλύτερα ένα κλειδί που δεν ξέρουμε παρά μια κενή γραμμή.
+const SEA_ARRIVAL_LABELS = {
+  exposed: 'ανοιχτή από εκεί που έρχεται (εκτεθειμένη)',
+  partial: 'μισάνοιχτη από εκεί που έρχεται (μερική)',
+  protected: 'κλειστή από εκεί που έρχεται (προστατευμένη)',
+  grazing: 'περνάει ξυστά ή φεύγει — δεν προσγειώνεται εδώ',
+  enclosed: 'κλειστός όρμος',
+  unknown: 'δεν ξέρει από πού έρχεται',
+};
+const formatSeaArrival = (conditions) => {
+  const level = conditions.seaArrivalExposureLevel;
+  if (!level) return '';
+  return SEA_ARRIVAL_LABELS[level] || level;
+};
+
+// Από ποιον δρόμο βγήκε ο αριθμός που είδε ο επισκέπτης (services/recommendationService BeachScore.shoreWaveSource).
+// Η φράση για το 'shore_model' λέει ΚΑΙ το όριό του: σωπαίνει μόνο αν το κύμα μπαίνει καθαρά,
+// οπότε ένα κύμα που περνάει ξυστά μπορεί να αφήσει το δάπεδο 0,10 μ. να τυπωθεί.
+const SHORE_SOURCE_LABELS = {
+  shore_model: 'εκτίμηση ακτής από τη γεωμετρία του ΑΝΕΜΟΥ (utils/shoreWave) — σωπαίνει μόνο αν το κύμα ΜΠΑΙΝΕΙ καθαρά (συνιστώσα >0,30)',
+  shelter_damping: 'έκπτωση σκιάς / λοξής θάλασσας πάνω στο ανοιχτό νερό (utils/waveCharacter)',
+  open_water: 'ίδιο με το ανοιχτό νερό — καμία δεύτερη γνώμη',
+};
+const formatShoreSource = (conditions) => {
+  const base = SHORE_SOURCE_LABELS[conditions.shoreWaveSource] || conditions.shoreWaveSource || '';
+  if (!base) return '';
+  return conditions.shoreWaveFromDepartingSea
+    ? `${base} · με μετρημένη απόδειξη ότι όλο το νερό φεύγει`
+    : base;
+};
+
+// ── Η ώρα που δεν βγαίνει (06/09/2026) ───────────────────────────────────────────────────
+// Κυρά Παναγιά #2308: «Πότε ήταν στην παραλία: Το μεσημέρι», σταλμένο 10:00 της ίδιας μέρας,
+// με την οθόνη γυρισμένη στις 12:00. Δεν μπορεί να περιγράφει το σημερινό μεσημέρι — ή μιλάει
+// για άλλη μέρα, ή σχολιάζει την πρόγνωση που έβλεπε. Το μήνυμα το άφηνε να διαβαστεί ως
+// παρατήρηση και έστελνε τον αναγνώστη να ψάξει σφάλμα σε ώρα που δεν είχε έρθει ακόμη.
+// Τα κατώφλια είναι γενναιόδωρα επίτηδες: «μεσημέρι» πριν τις 11:00 και «απόγευμα/βράδυ»
+// πριν τις 15:00 — για να μη σημαδεύεται ποτέ ένα σχόλιο που θα μπορούσε να είναι αληθινό.
+const OBSERVED_TIMING_EARLIEST_HOUR = { midday: 11, evening: 15 };
+
+const athensDayKey = (iso) => {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Athens', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(date);
+};
+
+const observedTimingWarning = (payload) => {
+  const conditions = payload.conditions;
+  const earliest = OBSERVED_TIMING_EARLIEST_HOUR[conditions.observedTiming];
+  if (earliest === undefined || typeof conditions.hour !== 'number') return '';
+  // Μόνο όταν η σελίδα έδειχνε τη ΣΗΜΕΡΙΝΗ μέρα: για άλλη μέρα το «Ήταν επιτόπου τώρα» το λέει ήδη.
+  if (!conditions.date || conditions.date !== athensDayKey(payload.timestamp)) return '';
+  if (conditions.hour >= earliest) return '';
+  return `⚠️ Η ΩΡΑ ΔΕΝ ΒΓΑΙΝΕΙ: λέει «${OBSERVED_TIMING_LABELS[conditions.observedTiming]}» αλλά το έστειλε `
+    + `${formatHour(conditions.hour)} της ίδιας μέρας. Δεν περιγράφει κάτι που είδε σήμερα — μάλλον άλλη μέρα, `
+    + 'ή σχολιάζει την πρόγνωση που έβλεπε. Τα νούμερα παρακάτω είναι της οθόνης, όχι της παρατήρησης.';
 };
 
 /** Το κάτω άκρο, μόνο όταν το hero έδειξε εύρος και το κάτω άκρο διαφέρει από ό,τι διαβάστηκε. */
@@ -367,7 +498,9 @@ const fieldLines = (payload) => [
   ['Μποφόρ που έβλεπε', payload.conditions.beaufortShown ?? payload.conditions.beaufort ?? ''],
   ['Μποφόρ (κάτω άκρο, κρίνει χρώμα)', beaufortLowRowValue(payload.conditions)],
   ['Κατεύθυνση ανέμου', payload.conditions.windDir],
+  ['Άνεμος', formatWindSpeed(payload.conditions)],
   ['Έκθεση', payload.conditions.exposureLevel],
+  ['Η ακτή κοιτάει', formatFacing(payload.conditions)],
   // ΔΥΟ ΑΡΙΘΜΟΙ, ΟΧΙ ΕΝΑΣ (15/08/2026). Μέχρι σήμερα το mail έλεγε «Κύμα που δείχναμε» και
   // έστελνε το ανοιχτό νερό — που από τις 13/08 ΔΕΝ είναι αυτό που βλέπει ο επισκέπτης. Στη Λιά
   // Μυκόνου ανέφερε 1,78 μ. ενώ η οθόνη έδειχνε ~0,10 μ., δηλαδή παραπλανούσε τον μόνο άνθρωπο
@@ -376,6 +509,14 @@ const fieldLines = (payload) => [
   ['Κύμα που έβλεπε (ακτή)', formatWaveM(shoreShownWaveM(payload.conditions))],
   ['Κύμα ανοιχτά (κρίνει χρώμα/ετυμηγορία)', formatWaveM(openWaterRowValue(payload.conditions))],
   ['Περίοδος κύματος', formatPeriodS(payload.conditions.seaStatePeriodS)],
+  // ΟΙ ΤΕΣΣΕΡΙΣ ΓΡΑΜΜΕΣ ΠΟΥ ΚΡΙΝΟΥΝ ΕΝΑ «ΕΙΧΕ ΠΙΟ ΠΟΛΥ ΚΥΜΑ» (06/09/2026): από πού έρχεται το
+  // κύμα σε σχέση με την ακτή, αν υπάρχει αποθαλασσιά, τι έκρινε η εφαρμογή για τη μεριά που
+  // έρχεται η θάλασσα, και από ποιον δρόμο βγήκε ο αριθμός που είδε ο επισκέπτης. Λείπουν
+  // (παλιότερη έκδοση της σελίδας) → οι γραμμές απλώς δεν τυπώνονται.
+  ['Κύμα ανοιχτά από', formatWaveOrigin(payload.conditions)],
+  ['Αποθαλασσιά', formatSwell(payload.conditions)],
+  ['Μεριά που έρχεται η θάλασσα (κρίση εφαρμογής)', formatSeaArrival(payload.conditions)],
+  ['Ο αριθμός ακτής βγήκε από', formatShoreSource(payload.conditions)],
   // Without this a report about next Tuesday reads exactly like one from the water's edge.
   ['Ήταν επιτόπου τώρα', formatLive(payload.conditions)],
   ['Γλώσσα', payload.language],
@@ -417,6 +558,8 @@ const formatMessage = (payload) => {
     .join('\n');
   const lead = [payload.verdictTag, header];
   if (payload.verdictNote) lead.push(`Τι σημαίνει: ${escapeTelegram(payload.verdictNote)}`);
+  const timingWarning = observedTimingWarning(payload);
+  if (timingWarning) lead.push(escapeTelegram(timingWarning));
   // The human's own words go above the metadata, as a block — inlining them into a
   // "<b>Message:</b> …" row buries the only part worth reading on a phone.
   const body = payload.message ? [escapeTelegram(payload.message), ''] : [];

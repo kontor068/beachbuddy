@@ -124,6 +124,18 @@ export interface BeachScore {
   shoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
   shoreWaveFromDepartingSea?: boolean;
+  /**
+   * ΠΟΙΟΣ ΔΡΟΜΟΣ ΕΔΩΣΕ ΤΟ `shoreDisplayWaveM` (06/09/2026) — για το σχόλιο επισκέπτη, όχι για
+   * την οθόνη. Ένα «είχε πιο πολύ κύμα» κρίνεται αλλιώς αν το 0,10 μ. βγήκε από τη γεωμετρία
+   * του ανέμου (SMB/βεντάλια — utils/shoreWave), αλλιώς αν βγήκε από την έκπτωση σκιάς ×0,5, κι
+   * αλλιώς αν είναι απλώς το ανοιχτό νερό. Κυρά Παναγιά Καρπάθου #2308: το μήνυμα δεν έλεγε.
+   *  - 'shore_model'      η εκτίμηση ακτής κέρδισε (και τα δύο άκρα της: ράμπα ή βεντάλια).
+   *  - 'shelter_damping'  η έκπτωση της προστατευμένης/λοξής θάλασσας (utils/waveCharacter).
+   *  - 'open_water'       ίδιο με το ανοιχτό νερό — καμία δεύτερη γνώμη.
+   * Passed, not derived: υπολογίζεται μία φορά δίπλα στο shoreDisplayWaveM. Δεν χρωματίζει,
+   * δεν κρίνει και δεν τυπώνεται στη σελίδα.
+   */
+  shoreWaveSource?: 'shore_model' | 'shelter_damping' | 'open_water';
   /** Θερμοκρασία νερού (°C) — DISPLAY-ONLY, ποτέ κλειδί απόφασης. Βλ. utils/waterTemperatureCopy. */
   seaTemperatureC?: number;
   /**
@@ -3013,6 +3025,15 @@ export const calculateBeachScore = (
      * κέρδισε τον τελικό αριθμό — αλλιώς αυτό που τυπώνεται δεν είναι το μετρημένο νούμερο.
      */
     shoreWaveFromDepartingSea: shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM,
+    // Από ποιον δρόμο βγήκε ο τυπωμένος αριθμός ακτής (BeachScore.shoreWaveSource παραπάνω).
+    // Διαβάζεται μόνο από το σχόλιο επισκέπτη· δεν χρωματίζει και δεν κρίνει τίποτα.
+    shoreWaveSource: typeof shoreWaveM !== 'number'
+      ? undefined
+      : shoreWaveM === shoreModelWaveM
+        ? 'shore_model'
+        : shoreWaveM < effectiveWaveHeightM
+          ? 'shelter_damping'
+          : 'open_water',
     // Ο αριθμός κατεβαίνει ήδη για κάθε παραλία μαζί με το κύμα (ίδια σημεία, ίδιο πακέτο) και
     // απλώς δεν έφτανε ποτέ στην κάρτα. Μηδέν επιπλέον κλήσεις. DISPLAY-ONLY (απόφαση Μίλτου Α).
     seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,
