@@ -263,6 +263,30 @@ export interface FeedbackData {
     shoreWaveFromDepartingSea?: boolean;
     /** True only when the user is looking at right now, not a remembered or future day. */
     live?: boolean;
+    /**
+     * ΤΑ ΣΤΟΙΧΕΙΑ ΠΟΥ ΚΡΙΝΟΥΝ ΕΝΑ «ΕΙΧΕ ΠΙΟ ΠΟΛΥ ΚΥΜΑ» — πρόσθετα 06/09/2026 (Κυρά Παναγιά
+     * Καρπάθου #2308). Το μήνυμα έλεγε «ΒΔ 4–5 Μπφ, protected, ακτή 0,10 μ., ανοιχτά 0,74 μ.»
+     * και δεν μπορούσε να απαντηθεί: ο αριθμός της ακτής κρίνεται από το ΑΠΟ ΠΟΥ έρχεται το
+     * κύμα σε σχέση με το πού κοιτάει η ακτή (utils/shoreWave isSeaArrivingShore /
+     * isSeaDepartingShore), και τίποτα από τα δύο δεν ταξίδευε. Χωρίς αυτά, κάθε τέτοιο σχόλιο
+     * θέλει να ξανατρέξει κανείς την πρόγνωση της ώρας εκείνης για να μάθει τι είδε η μηχανή.
+     *
+     * Πάνε ΜΟΝΟ στο Telegram/Blobs, όχι στο GA (δες TELEGRAM_ONLY_CONDITION_KEYS): το GA κόβει
+     * στις 20 παραμέτρους και τα πεδία που ήδη στέλνει είναι αυτά που διαβάζουν οι αναφορές.
+     */
+    /** Ταχύτητα ανέμου (χλμ/ώ) πίσω από το Μποφόρ — η είσοδος του μοντέλου κύματος. */
+    windSpeedKmh?: number;
+    /** Προς τα πού κοιτάει η ακτή (μοίρες) — αυτό που διάβασε η μηχανή, όχι το χειρόγραφο πεδίο. */
+    facingDeg?: number;
+    /** Από πού έρχεται το κύμα των ανοιχτών (μοίρες), την ώρα που έδειχνε η οθόνη. */
+    waveDirectionDeg?: number;
+    swellWaveHeightM?: number;
+    swellWavePeriodS?: number;
+    swellWaveDirectionDeg?: number;
+    /** Τι έκρινε η εφαρμογή για τη μεριά που έρχεται η θάλασσα (utils/seaArrival). */
+    seaArrivalExposureLevel?: string;
+    /** Ποιος δρόμος έδωσε τον τυπωμένο αριθμό ακτής — βλ. recommendationService BeachScore.shoreWaveSource. */
+    shoreWaveSource?: string;
   };
 }
 
@@ -876,6 +900,24 @@ export const storeFeedback = (
  * per beach/sector and nudge the model / ground truth) is an offline pass over exported
  * GA data — there is no app backend to close the loop live.
  */
+/**
+ * Τα διαγνωστικά πεδία της θάλασσας (06/09/2026) μένουν έξω από το GA event: το
+ * sanitizeAnalyticsMetadata κρατάει τις πρώτες 20 παραμέτρους, οπότε χωρίς αυτό το φίλτρο θα
+ * έβγαζε σιωπηλά ό,τι έτυχε να είναι τελευταίο — π.χ. το `live`, που το διαβάζουν οι εξαγωγές.
+ * Το Telegram και τα Blobs παίρνουν το πλήρες αντικείμενο (sendFeedbackEmail παρακάτω).
+ */
+const TELEGRAM_ONLY_CONDITION_KEYS: ReadonlyArray<keyof NonNullable<FeedbackData['conditions']>> = [
+  'windSpeedKmh', 'facingDeg', 'waveDirectionDeg',
+  'swellWaveHeightM', 'swellWavePeriodS', 'swellWaveDirectionDeg',
+  'seaArrivalExposureLevel', 'shoreWaveSource',
+];
+
+const gaConditions = (conditions?: FeedbackData['conditions']): Record<string, unknown> => {
+  if (!conditions) return {};
+  const omitted = new Set<string>(TELEGRAM_ONLY_CONDITION_KEYS);
+  return Object.fromEntries(Object.entries(conditions).filter(([key]) => !omitted.has(key)));
+};
+
 export const storeConditionFeedback = (
   beachId: number,
   verdict: ConditionFeedbackVerdict,
@@ -886,7 +928,7 @@ export const storeConditionFeedback = (
   const existing = getFeedback();
   existing.push(data);
   setStorageItem(FEEDBACK_KEY, JSON.stringify(existing));
-  trackEvent('condition_feedback', beachId, { verdict, ...(conditions || {}) });
+  trackEvent('condition_feedback', beachId, { verdict, ...gaConditions(conditions) });
   sendFeedbackEmail({
     source: context?.source || 'condition_feedback',
     beachId,

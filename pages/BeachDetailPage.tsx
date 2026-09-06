@@ -1142,6 +1142,20 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       shoreWaveFromDepartingSea: scoreResult.shoreWaveFromDepartingSea,
       live: selectedDayIsToday && selectedHour === undefined,
+      // ΑΠΟ ΠΟΥ ΕΡΧΕΤΑΙ ΤΟ ΚΥΜΑ ΚΑΙ ΠΡΟΣ ΤΑ ΠΟΥ ΚΟΙΤΑΕΙ Η ΑΚΤΗ (06/09/2026, Κυρά Παναγιά
+      // #2308). Ο αριθμός της ακτής κρίνεται από τη γωνία κύματος-ακτής (utils/shoreWave) και
+      // το μήνυμα δεν την κουβαλούσε — άρα ένα «είχε πιο πολύ κύμα» δεν μπορούσε να κριθεί
+      // χωρίς να ξανατρέξει κανείς την πρόγνωση εκείνης της ώρας. `weatherData` είναι το ΙΔΙΟ
+      // αντικείμενο ώρας που βαθμολόγησε το scoreResult, οπότε τα πεδία ανήκουν στην «ώρα που
+      // έδειχνε η οθόνη», όπως και το κύμα από πάνω.
+      windSpeedKmh,
+      facingDeg: typeof scoreResult.facingDeg === 'number' ? scoreResult.facingDeg : undefined,
+      waveDirectionDeg: weatherData.marine?.waveDirectionDeg,
+      swellWaveHeightM: weatherData.marine?.swellWaveHeightM,
+      swellWavePeriodS: weatherData.marine?.swellWavePeriodS,
+      swellWaveDirectionDeg: weatherData.marine?.swellWaveDirectionDeg,
+      seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
+      shoreWaveSource: scoreResult.shoreWaveSource,
     }, {
       // ΠΟΙΑ ΠΑΡΑΛΙΑ. Χωρίς αυτό το e-mail/Telegram έπεφτε πίσω στο Referer, που σε
       // πλοήγηση μέσα στην εφαρμογή είναι συχνά η γενική σελίδα — και το σχόλιο έφτανε
