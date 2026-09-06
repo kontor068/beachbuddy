@@ -4630,6 +4630,59 @@ const stripClientScripts = html => html
   // body class. Inline that instead of blocking paint on the whole app stylesheet.
   .replace(/\s*<link rel="stylesheet"[^>]*href="\/assets\/[^"]*\.css"[^>]*>\s*/gi, `\n    <style>${STATIC_PAGE_BASE_CSS}</style>\n    `);
 
+// ── The static pages' own visitor beacon ─────────────────────────────────────
+// stripClientScripts removes every module script, so these pages never boot React
+// and never load services/pageviewBeacon.ts — which left the guides (~56% of our
+// GSC clicks) invisible to BOTH counters, GA4 and /api/hit (measured 13/08/2026,
+// docs/team/12-growth-analytics.md §(2)). Decided 06/09: they carry this inline
+// mini-beacon instead of the app bundle — ~1 KB, no framework, nothing render-
+// blocking, so the reason these pages are script-free (speed) is preserved.
+//
+// It mirrors services/pageviewBeacon.ts on the wire AND in localStorage
+// (cb_optout / cb_seen / cb_day / cb_pv, same meanings), so a visitor who lands
+// on a guide and clicks through into the app is ONE person to the server: same
+// daily hash, and the first-of-day / pageview-index flags carry on instead of
+// restarting. Blocked storage degrades to the same 'unknown' / '' / 0 the app
+// sends. Heartbeats keep the live map and dwell honest for guide readers, under
+// the app's three rules: visible tab only, every 60s, hard stop after an hour.
+const staticBeaconSnippet = (pageType) => `<script>
+(function(){
+  var g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};
+  var s=function(k,v){try{localStorage.setItem(k,v);return localStorage.getItem(k)===v}catch(e){return false}};
+  if(g('cb_optout')==='1')return;
+  var d=new Date().toISOString().slice(0,10);
+  var v=g('cb_seen')?'ret':(s('cb_seen','1')?'new':'unknown');
+  var f=g('cb_day')===d?'0':(s('cb_day',d)?'1':'');
+  var pv=(g('cb_pv')||'').split(':');
+  var n=pv[0]===d?(+pv[1]||0)+1:1;
+  if(!s('cb_pv',d+':'+n))n=0;
+  var seg=location.pathname.split('/').filter(Boolean);
+  if(seg.length&&['el','de','fr','it'].indexOf(seg[0])>-1)seg=seg.slice(1);
+  var sec=seg.length?(seg[0]==='beaches'&&seg[1]?seg[1]:seg[0]).slice(0,32):'home';
+  var send=function(u){try{if(navigator.sendBeacon){navigator.sendBeacon(u);return}}catch(e){}try{fetch(u,{method:'POST',keepalive:true,cache:'no-store'})}catch(e){}};
+  send('/api/hit?t=${pageType}&v='+v+'&s='+encodeURIComponent(sec)+'&f='+f+'&n='+n
+    +'&pg='+encodeURIComponent(location.pathname.slice(0,64))
+    +'&w='+(innerWidth||0)
+    +'&r='+encodeURIComponent((document.referrer||'').slice(0,200)));
+  var hb=0;
+  setInterval(function(){
+    if(document.visibilityState!=='visible'||hb>=60)return;
+    hb++;send('/api/hit?hb=1&s='+encodeURIComponent(sec));
+  },60000);
+})();
+</script>`;
+
+// Injection failing silently would recreate the exact blind spot this fixes, a
+// month from now, with nobody looking — so a shell without a </body> fails the
+// build loudly instead.
+const withStaticBeacon = (html, pageType) => {
+  const out = html.replace(/<\/body>/i, `${staticBeaconSnippet(pageType)}\n</body>`);
+  if (!out.includes('/api/hit')) {
+    throw new Error('static beacon not injected — the built shell has no </body>');
+  }
+  return out;
+};
+
 const landingChromeCopy = {
   en: {
     openApp: 'Open app',
@@ -4953,7 +5006,7 @@ const buildSeoLandingPage = (baseHtml, landing, content, locale, imageUrl, dynam
   });
 
   const dynamicHtml = renderLandingDynamic(landing, locale, dynamic);
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale, dynamicHtml));
+  return withStaticBeacon(stripClientScripts(htmlWithHead), 'landing').replace(/<div id="root">\s*<\/div>/i, staticSeoLandingPage(content, locale, dynamicHtml));
 };
 
 // --- Guides hub ----------------------------------------------------------------
@@ -5137,7 +5190,7 @@ const buildGuidesHubPage = (baseHtml, islandIntentPages, locale, imageUrl, emitt
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead)
+  return withStaticBeacon(stripClientScripts(htmlWithHead), 'hub')
     .replace(/<div id="root">\s*<\/div>/i, staticGuidesHubPage(topics, locale));
 };
 
@@ -6304,7 +6357,7 @@ const buildIslandIntentPage = (baseHtml, intent, content, island, region, beache
     jsonLd,
   });
 
-  return stripClientScripts(htmlWithHead).replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale, intent, hero));
+  return withStaticBeacon(stripClientScripts(htmlWithHead), 'guide').replace(/<div id="root">\s*<\/div>/i, staticIslandIntentFallback(content, island, region, beaches, canonicalUrl, locale, intent, hero));
 };
 
 const buildBeachPage = (baseHtml, island, beach, region, imageUrl, locale = prerenderLocales[0], emittedLocales = baseLocales) => {
