@@ -40,6 +40,15 @@ const checks = [
     args: ['scripts/validateShorelineShapes.mjs'],
   },
   {
+    id: 'quality-ledger-fresh',
+    title: 'Το ημερολόγιο ποιότητας ξέρει τους τελευταίους ελέγχους',
+    description: 'Ελέγχει ότι το `qualityLedger.generated.mjs` χτίστηκε ΜΕΤΑ το τελευταίο commit που άγγιξε το reports/ ή τα δεδομένα παραλιών. Δεν ξαναχτίζει και δεν συγκρίνει περιεχόμενο — μόνο ημερομηνίες, ώστε να μη χτυπάει άδικα.',
+    protects: 'Η καρτέλα «Ποιότητα» και το εβδομαδιαίο μήνυμα του Telegram διαβάζουν αυτό το αρχείο. Μετρημένο 08/09/2026: το ξανατσεκάρισμα της Καρπάθου (01/09) δεν είχε περάσει στο ημερολόγιο, οπότε το μήνυμα έβγαλε την Κάρπαθο πρώτη με παροχές 73% και «έλεγχος πριν 22 μέρες» ενώ ήταν 100% και επτά μερών — δουλειά που ζητιόταν δεύτερη φορά επειδή κανείς δεν είχε ξαναχτίσει το αρχείο.',
+    failureAction: 'Τρέξε `npm run quality:ledger` και κάνε commit το netlify/functions/lib/qualityLedger.generated.mjs.',
+    command: process.execPath,
+    args: ['scripts/validateQualityLedger.mjs'],
+  },
+  {
     id: 'exclude-flag-placement',
     title: 'Η σημαία απόκρυψης είναι εκεί που τη διαβάζει ο builder',
     description: 'Ελέγχει ότι κάθε `excludeFromApp: true` κάθεται μέσα στο metadata και όχι στη ρίζα της εγγραφής. Ο builder διαβάζει μόνο το πρώτο (buildBeachRegionData.mjs:1001)· γραμμένη ένα επίπεδο πιο πάνω, η σημαία δεν κρύβει τίποτα.',
