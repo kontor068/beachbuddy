@@ -1314,7 +1314,7 @@ const page = (data) => {
   const lateRegions = qualityRows.filter((r) => r.overdue > 0).length;
   const beachGapRows = buildBeachGapRows(data.totals?.pages);
 
-  const today = rows[0] || { unique: 0, hits: 0, newV: 0, retV: 0, unkV: 0 };
+  const today = rows[0] || { unique: 0, hashes: 0, dupes: 0, hits: 0, newV: 0, retV: 0, unkV: 0 };
   const sumUnique = rows.reduce((s, r) => s + r.unique, 0);
   const sumHits = rows.reduce((s, r) => s + r.hits, 0);
   const sumNew = rows.reduce((s, r) => s + r.newV, 0);
@@ -1325,9 +1325,12 @@ const page = (data) => {
 
   /**
    * The honest "how many people" band. The floor is the tagged count (devices whose
-   * first ping of the day we caught); the ceiling is the unique-hash count, which
-   * double-counts a phone that changed IP mid-day. We show both ends, and the
-   * midpoint as the working number — never a fake-precise single figure.
+   * first ping of the day we caught); the ceiling is the hash count AFTER subtracting
+   * the connection changes we caught (`dup`, see the rows above) — before 08/09/2026
+   * that subtraction did not exist and the ceiling ran ~95% above the floor, which is
+   * why the midpoint used to overstate. We show both ends and the midpoint, never a
+   * fake-precise single figure; as `dup` collection matures the two ends converge on
+   * their own and the band closes.
    */
   const band = (r) => {
     const tagged = r.newV + r.retV + r.unkV;
@@ -1939,7 +1942,14 @@ const page = (data) => {
 
 <div class="kpis">
   ${kpi('Τώρα στο site', `<span id="liveNum">${num(live.length)}</span>`, `<span id="liveCountries">${new Set(live.map((l) => l.cc)).size}</span> χώρες αυτή τη στιγμή`, '', 'hot')}
-  ${kpi('Συσκευές/συνδέσεις σήμερα', num(today.unique), 'ακριβής μέτρηση — ένα κλειδί ανά επισκέπτη', sparkline(uniqSeries, '#22d3ee'))}
+  ${kpi(
+    'Επισκέπτες σήμερα',
+    num(today.unique),
+    today.dupes
+      ? `${num(today.hashes)} συνδέσεις − ${num(today.dupes)} διπλές (ίδιο κινητό, άλλο δίκτυο)`
+      : 'ένα κλειδί ανά επισκέπτη',
+    sparkline(uniqSeries, '#22d3ee')
+  )}
   ${kpi(
     '≈ Άτομα σήμερα',
     todayBand.lo === todayBand.hi ? num(todayBand.mid) : `~${num(todayBand.mid)}`,
@@ -2136,7 +2146,7 @@ ${searchTermsTab(data.searchTerms)}
   <b>Πώς διαβάζονται οι αριθμοί.</b>
   <span class="tag exact">ακριβές</span> Μοναδικοί επισκέπτες ανά μέρα και «σελίδες ≥2» — μετρώνται χωρίς race, ένας επισκέπτης = ένα κλειδί.
   <span class="tag best">κατά προσέγγιση</span> Προβολές, χώρες, συσκευές, χρόνος: γράφονται με read-modify-write, άρα σε ταυτόχρονες επισκέψεις χάνεται καμιά — υποεκτιμούν ελαφρώς, ποτέ δεν φουσκώνουν.
-  <span class="tag est">εκτίμηση</span> «≈ Άτομα»: το κάτω άκρο είναι όσοι πιάστηκαν με ετικέτα νέος/επιστρέφων, το πάνω οι μοναδικές συσκευές/συνδέσεις (το ίδιο κινητό με αλλαγμένη IP μετριέται 2 φορές). Δείχνουμε και τα δύο άκρα.<br>
+  <span class="tag est">εκτίμηση</span> «≈ Άτομα»: το κάτω άκρο είναι όσοι πιάστηκαν με ετικέτα νέος/επιστρέφων, το πάνω οι μοναδικές συνδέσεις <b>αφού αφαιρεθούν</b> όσες αναγνωρίσαμε ως το ίδιο κινητό που άλλαξε δίκτυο μέσα στη μέρα (από 08/09/2026 — πριν από αυτή την ημερομηνία δεν αφαιρούνταν και το πάνω άκρο ήταν φουσκωμένο ~2×, οπότε <b>μέρες πριν και μετά τις 08/09 δεν συγκρίνονται</b>). Δείχνουμε και τα δύο άκρα.<br>
   «Νέοι» + «Επιστρ.» μπορεί να μη βγάζουν το σύνολο των μοναδικών: όποιος έχει μπλοκαρισμένη αποθήκευση στον browser δεν μπορεί να πει αν ξαναήρθε, και δεν τον χρεώνουμε σε καμία από τις δύο στήλες.
   Ο «χρόνος» μετράει μόνο όσο η καρτέλα είναι <b>ορατή</b> και σταματά μετά από 5 λεπτά σιωπής — δεν φουσκώνει από ξεχασμένες καρτέλες. «Bounce» = επισκέπτες που είδαν μία μόνο σελίδα.
   Ο χάρτης δείχνει την πόλη που δίνει το δίκτυο· όπου δεν υπάρχει πόλη, βάζουμε το κέντρο της χώρας και το σχεδιάζουμε <b>κούφιο</b>.
@@ -3568,9 +3578,19 @@ export const handler = async (event) => {
       mergeInto(merged.funnel, t.funnel);
 
       const kinds = t.kinds || {};
+      // The raw hash count double-counts a phone that changed IP mid-day. `dup` is how
+      // many times we caught that happening (pageview.mjs, the `else if (!already)`
+      // branch), so subtracting it turns a ceiling into a people count. Two guards:
+      // never fall below the tagged population (that floor is exact), and days before
+      // 08/09/2026 have no `dup` at all — they keep their old, inflated number rather
+      // than being silently rewritten.
+      const dupes = kinds.dup || 0;
+      const tagged = (kinds.new || 0) + (kinds.ret || 0) + (kinds.unknown || 0);
       rows.push({
         day: d.day,
-        unique: d.unique,
+        unique: Math.max(tagged, d.unique - dupes),
+        hashes: d.unique,
+        dupes,
         hits: t.hits || 0,
         newV: kinds.new || 0,
         retV: kinds.ret || 0,
