@@ -330,6 +330,89 @@ const funnelPanel = (funnel, actions, visitors) => {
   </section>`;
 };
 
+// ── the articles, on their own ───────────────────────────────────────────────
+// The guide articles are plain static pages: they never boot the app, so the
+// Google Analytics tag — which lives inside the app — has never fired on one.
+// Measured 2026-09-08: 2 pageviews across every article in 30 days, and those
+// two came from people already inside the app. Our own inline beacon, added
+// 2026-09-06, is the ONLY source that sees them at all. That is why they get a
+// panel instead of one row inside "Είδος σελίδας": nowhere else on the internet
+// is this number available, so it must not be easy to miss here.
+const GUIDE_FAMILY = {
+  sheltered: 'Προφυλαγμένες', organized: 'Οργανωμένες', snorkeling: 'Με βατήρα / σνόρκελ',
+  sunset: 'Ηλιοβασίλεμα', family: 'Οικογενειακές', secluded: 'Απόμερες',
+};
+const GUIDE_RE = /^\/(?:(?:el|de|fr|it)\/)?(sheltered|organized|snorkeling|sunset|family|secluded)-beaches\/([^/]+)/;
+const HUB_RE = /^\/(?:(?:el|de|fr|it)\/)?beach-guides/;
+
+const guidesPanel = (totals, sumUnique, sumHits) => {
+  const funnel = totals.funnel || {};
+  const activity = totals.activity || {};
+  const readers = funnel.g || 0;
+  const continued = funnel.gb || 0;
+  const views = (activity.guide || 0) + (activity.hub || 0);
+
+  const byFamily = {};
+  const articles = [];
+  for (const [p, v] of Object.entries(totals.pages || {})) {
+    const m = GUIDE_RE.exec(p);
+    if (m) {
+      byFamily[m[1]] = (byFamily[m[1]] || 0) + v;
+      articles.push([p, v]);
+    } else if (HUB_RE.test(p)) {
+      articles.push([p, v]);
+    }
+  }
+  articles.sort((a, b) => b[1] - a[1]);
+
+  const readerPct = sumUnique ? Math.round((readers / sumUnique) * 100) : 0;
+  const viewPct = sumHits ? Math.round((views / sumHits) * 100) : 0;
+  // Only meaningful once `gb` has been collecting; before that it is honestly
+  // absent rather than shown as a zero, which would read as "nobody continued".
+  const contPct = readers ? Math.round((continued / readers) * 100) : 0;
+
+  const top = articles.slice(0, 8);
+  const maxA = Math.max(1, ...top.map(([, v]) => v));
+  const artRows = top.length
+    ? top
+        .map(
+          ([p, v]) =>
+            `<li><span class="bl">${esc(p)}</span><span class="bb"><i style="width:${((v / maxA) * 100).toFixed(1)}%"></i></span>
+             <span class="bn">${num(v)}</span><span class="bp">${views ? Math.round((v / views) * 100) : 0}%</span></li>`
+        )
+        .join('')
+    : '<li class="dim"><span class="bl">Κανένα άρθρο δεν διαβάστηκε στο παράθυρο</span></li>';
+
+  const fam = Object.entries(byFamily).sort((a, b) => b[1] - a[1]);
+  const maxF = Math.max(1, ...fam.map(([, v]) => v));
+  const famRows = fam.length
+    ? fam
+        .map(
+          ([k, v]) =>
+            `<li><span class="bl">${esc(GUIDE_FAMILY[k] || k)}</span><span class="bb"><i style="width:${((v / maxF) * 100).toFixed(1)}%"></i></span>
+             <span class="bn">${num(v)}</span><span class="bp">${views ? Math.round((v / views) * 100) : 0}%</span></li>`
+        )
+        .join('')
+    : '<li class="dim"><span class="bl">Καμία ακόμη</span></li>';
+
+  return `<section class="panel">
+    <h2>Άρθρα (οδηγοί)<em>μόνο εδώ μετριούνται — η Google δεν τα βλέπει καθόλου</em></h2>
+    <p class="note"><b>${num(readers)}</b> επισκέπτες (${readerPct}% όλων) διάβασαν άρθρο, με <b>${num(
+      views
+    )}</b> προβολές (${viewPct}% όλων).${
+      continued
+        ? ` Από αυτούς, <b>${num(continued)}</b> (${contPct}%) συνέχισαν μετά σε συγκεκριμένη παραλία.`
+        : ' Το «πόσοι συνέχισαν σε παραλία» μετριέται από σήμερα και μετά — θα εμφανιστεί μόλις μαζευτεί.'
+    }</p>
+    <ul class="bars">${famRows}</ul>
+  </section>
+  <section class="panel">
+    <h2>Ποια άρθρα διαβάζονται<em>μονοπάτι · προβολές στο παράθυρο</em></h2>
+    <ul class="bars wide">${artRows}</ul>
+    <p class="note">Οι σελίδες αυτές είναι σκέτο κείμενο χωρίς την εφαρμογή, γι' αυτό δεν εμφανίζονται ποτέ στο Google Analytics. Η μέτρησή τους ξεκίνησε στις 06/09/2026 — ό,τι είναι πριν από αυτή την ημερομηνία δεν υπάρχει πουθενά.</p>
+  </section>`;
+};
+
 /**
  * A breakdown list with proportional bars. `total` is the exact unique count when
  * we have one, so the "Λοιπά / χωρίς στοιχεία" row makes the list add up to the
@@ -1975,6 +2058,8 @@ ${capacityPanel(data.capacity && data.capacity.usage, data.capacity && data.capa
 <div id="tabStats" role="tabpanel" hidden>
 
 ${funnelPanel(totals.funnel, totals.actions, sumUnique)}
+
+${guidesPanel(totals, sumUnique, sumHits)}
 
 <section class="panel">
   <h2>Ημερήσια πορεία<em>από την πρώτη μέρα μέτρησης — καμία μέρα χωρίς μέτρηση δεν εμφανίζεται</em></h2>

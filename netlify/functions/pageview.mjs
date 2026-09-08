@@ -432,6 +432,11 @@ export const handler = async (event) => {
     if (step && !done[step]) {
       done[step] = 1;
       newSteps.push(step);
+      // Did an article actually send someone to a beach? `done` already holds the
+      // steps this visitor reached earlier today, so the first time they open a
+      // beach we can tell whether a guide came first. Counted once per person,
+      // like every other step, and only forward: guide → beach, never the reverse.
+      if (step === 'b' && done.g) newSteps.push('gb');
     }
     if (action === 'nav' && !done.n) {
       done.n = 1;
