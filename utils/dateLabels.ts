@@ -4,8 +4,18 @@ import { athensNow } from './athensTime';
 const normalizeLocalDate = (date: Date): Date =>
   new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
+/**
+ * An Invalid Date passes every `if (date)` check but answers NaN to getTime() and getDay(),
+ * so `weekdays[date.getDay()]` returns undefined while the signature still promises a string.
+ * That undefined reached `.toLocaleLowerCase()` in the rain copy and took the whole page down
+ * (08/09/2026, /el/beaches/hydra/101-agios-nikolaos/). Treat an unusable date as "no date
+ * given", which every label here already handles by falling back to today.
+ */
+export const isUsableDate = (value?: Date): value is Date =>
+  value instanceof Date && Number.isFinite(value.getTime());
+
 export const getSelectedDayOffset = (selectedDate?: Date, currentDate: Date = athensNow()): number => {
-  if (!selectedDate) return 0;
+  if (!isUsableDate(selectedDate)) return 0;
   const selected = normalizeLocalDate(selectedDate);
   const current = normalizeLocalDate(currentDate);
   return Math.round((selected.getTime() - current.getTime()) / 86_400_000);
@@ -101,7 +111,10 @@ const dayTextByLanguage: Record<NonGreekLanguage, {
 };
 
 const getNonGreekDayText = (language: LanguageCode) =>
-  dayTextByLanguage[language === 'gr' ? 'en' : language];
+  // A language code we don't carry a table for (an old URL, a stale saved preference) would
+  // otherwise return undefined here and crash on the very next `.today` — same class of
+  // failure as the Invalid Date above, so it falls back to English rather than to nothing.
+  dayTextByLanguage[language === 'gr' ? 'en' : language] ?? dayTextByLanguage.en;
 
 const capitalizeFirst = (value: string): string =>
   value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : value;
@@ -116,14 +129,14 @@ export const getSelectedDayLabel = (
     if (offset === 0) return 'σήμερα';
     if (offset === 1) return 'αύριο';
     if (offset === 2) return 'μεθαύριο';
-    return selectedDate ? greekWeekdayAccusative[selectedDate.getDay()].replace(/^(τη|την|το)\s+/, '') : 'σήμερα';
+    return isUsableDate(selectedDate) ? greekWeekdayAccusative[selectedDate.getDay()].replace(/^(τη|την|το)\s+/, '') : 'σήμερα';
   }
 
   const labels = getNonGreekDayText(language);
   if (offset === 0) return labels.today;
   if (offset === 1) return labels.tomorrow;
   if (offset === 2) return labels.dayAfterTomorrow;
-  return selectedDate ? labels.weekdays[selectedDate.getDay()] : labels.today;
+  return isUsableDate(selectedDate) ? labels.weekdays[selectedDate.getDay()] : labels.today;
 };
 
 export const getSelectedDayPrefix = (
@@ -136,14 +149,14 @@ export const getSelectedDayPrefix = (
     if (offset === 0) return 'σήμερα';
     if (offset === 1) return 'αύριο';
     if (offset === 2) return 'μεθαύριο';
-    return selectedDate ? greekWeekdayAccusative[selectedDate.getDay()] : 'σήμερα';
+    return isUsableDate(selectedDate) ? greekWeekdayAccusative[selectedDate.getDay()] : 'σήμερα';
   }
 
   const labels = getNonGreekDayText(language);
   if (offset === 0) return labels.today;
   if (offset === 1) return labels.tomorrow;
   if (offset === 2) return labels.dayAfterTomorrow;
-  return selectedDate ? labels.prefixWeekdays[selectedDate.getDay()] : labels.today;
+  return isUsableDate(selectedDate) ? labels.prefixWeekdays[selectedDate.getDay()] : labels.today;
 };
 
 export const getSelectedDaySentencePrefix = (
@@ -162,14 +175,14 @@ export const getSelectedDayAdjective = (
     if (offset === 0) return 'σημερινός';
     if (offset === 1) return 'αυριανός';
     if (offset === 2) return 'μεθαυριανός';
-    return selectedDate ? greekWeekdayGenitive[selectedDate.getDay()] : 'σημερινός';
+    return isUsableDate(selectedDate) ? greekWeekdayGenitive[selectedDate.getDay()] : 'σημερινός';
   }
 
   const labels = getNonGreekDayText(language);
   if (offset === 0) return labels.adjectiveToday;
   if (offset === 1) return labels.adjectiveTomorrow;
   if (offset === 2) return labels.adjectiveDayAfterTomorrow;
-  return selectedDate ? labels.adjectiveWeekdays[selectedDate.getDay()] : labels.adjectiveToday;
+  return isUsableDate(selectedDate) ? labels.adjectiveWeekdays[selectedDate.getDay()] : labels.adjectiveToday;
 };
 
 const forecastLeadCopy: Record<NonGreekLanguage, {

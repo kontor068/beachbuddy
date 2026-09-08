@@ -205,7 +205,15 @@ export const processForecastData = (forecastItems: ForecastItem[]): DailyForecas
   const todayString = athensNow().toLocaleDateString('en-CA');
   const dailyData: { [key: string]: { items: ForecastItem[], temps: number[] } } = {};
   forecastItems.forEach(item => {
-    const dayString = new Date(item.dt * 1000).toLocaleDateString('en-CA');
+    // An hour with a non-finite `dt` produces an Invalid Date, whose toLocaleDateString is the
+    // literal 'Invalid Date' — which sorts AFTER any 'YYYY-MM-DD' string, so the "day already
+    // passed" filter below let it through and parseLocalDay then handed the whole app a
+    // DailyForecast whose `date` was itself invalid. Every day label downstream indexes a
+    // weekday array with getDay() (NaN), got undefined back and crashed the page on the first
+    // string method. Seen 08/09/2026 on /el/beaches/hydra/101-agios-nikolaos/ (iOS 17.3).
+    const itemDate = new Date(item.dt * 1000);
+    if (!Number.isFinite(itemDate.getTime())) return;
+    const dayString = itemDate.toLocaleDateString('en-CA');
     if (dayString < todayString) return;
     if (!dailyData[dayString]) dailyData[dayString] = { items: [], temps: [] };
     dailyData[dayString].items.push(item);
