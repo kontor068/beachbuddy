@@ -2480,6 +2480,30 @@ const legacyBeachPaths = (region, island, beach) => {
 
 const legacyRegionPath = regionId => `/beaches/${encodeURIComponent(regionId)}/`;
 
+/**
+ * Regions whose URL SLUG changed, keyed by region id.
+ *
+ * `regionSlug()` derives the address from the region's ENGLISH NAME, so correcting a
+ * spelling silently retires every URL under the old one — the region page and all of its
+ * beaches, in every locale. `legacySlugs` on a beach covers a renamed beach; nothing
+ * covered a renamed region until 08/09/2026, when the indexed-URL audit found
+ * /beaches/rethimno/693-paralia-episkopis/ ranking at POSITION 1 and answering 404: the
+ * English name became "Rethymno" and the "i" spelling was never redirected. It is not even
+ * a clean 404 — the /beaches/:region/:beach/ safety net below catches it first and 301s it
+ * to /beaches/rethimno/, which does not exist either, so Google sees a redirect INTO a
+ * dead end. Add a row here whenever a region's English name changes.
+ */
+const LEGACY_REGION_SLUGS = {
+  'crete-crete-rethymno': ['rethimno'],
+};
+
+const legacyRegionPaths = (region, island) => {
+  const currentPath = regionPath(region, island);
+  return Array.from(new Set((LEGACY_REGION_SLUGS[region?.id] || [])
+    .map(slug => `/beaches/${encodeURIComponent(normalizeSlug(slug))}/`)
+    .filter(pathName => pathName !== currentPath)));
+};
+
 const setOrAppendHeadTag = (html, pattern, tag) => {
   if (pattern.test(html)) return html.replace(pattern, tag);
   return html.replace('</head>', `    ${tag}\n  </head>`);
@@ -6933,6 +6957,19 @@ const main = async () => {
       redirects.push(`${currentLegacyRegionPath.replace(/\/$/, '')} ${currentRegionPath} 301`);
       redirects.push(`${currentLegacyRegionPath}* ${currentRegionPath}:splat 301`);
     }
+    // A renamed region slug, in every locale the region was actually built in — the same
+    // rule the beach renames above already follow. The splat carries the beach segment
+    // across, so /beaches/rethimno/693-paralia-episkopis/ lands on the real beach page
+    // rather than on the region (or, as it did until today, on a 404).
+    for (const legacyPath of legacyRegionPaths(region, island)) {
+      for (const locale of localesForRegion(region.id)) {
+        const from = localizedPath(legacyPath, locale);
+        const to = localizedPath(currentRegionPath, locale);
+        if (from === to) continue;
+        redirects.push(`${from} ${to} 301`);
+        redirects.push(`${from}* ${to}:splat 301`);
+      }
+    }
 
     const regionShelteredCount = countShelteredBeaches(island.beaches);
     const emittedLocales = localesForRegion(region.id);
@@ -7175,6 +7212,49 @@ const main = async () => {
       const to = localizedPath('/beaches/:slug/', locale);
       redirects.push(`${from} ${to} 301`);
       redirects.push(`${from.replace(/\/$/, '')} ${to} 301`);
+    }
+  }
+
+  // A guide URL with a THIRD segment — /snorkeling-beaches/naxos/agios-prokopios.
+  // A guide page lists beaches; it has no children, so every such address is a link
+  // that was wrong when it was crawled. Three of the five dead URLs found on 08/09/2026
+  // were this shape, one of them the literal `0.6.15` in backticks — proof that a
+  // RELATIVE href once escaped into generated guide copy, since only a relative link
+  // resolves against the guide's own directory. The guide itself is the honest answer.
+  //
+  // TWO PLACEHOLDERS, NOT ":slug/*". The first attempt here was
+  // `/snorkeling-beaches/:slug/* /snorkeling-beaches/:slug/`, and the audit still
+  // reported all three URLs dead: scripts/auditIndexedUrlsResolve.mjs treats everything
+  // before a trailing `/*` as a LITERAL prefix, so a placeholder combined with a splat
+  // matches nothing there — and a rule our own gate cannot read is a rule we cannot
+  // prove. Netlify documents each form on its own; only the exact-segment form is
+  // verifiable end to end, so that is the one that ships.
+  //
+  // It also removes the loop risk entirely: this rule needs three segments and produces
+  // two, so it can never match its own output regardless of rule order.
+  for (const intent of islandIntents) {
+    for (const locale of prerenderLocales) {
+      const from = localizedPath(`${intent.pathPrefix}/:slug/:extra/`, locale);
+      const to = localizedPath(`${intent.pathPrefix}/:slug/`, locale);
+      redirects.push(`${from} ${to} 301`);
+    }
+  }
+
+  // Guide topics that no longer exist under that name. `/sheltered-by-the-shore-opposite/`
+  // is indexed on Google (Naxos, 08/09/2026) and is not in islandIntents any more, so
+  // nothing above can catch it — the prefix itself is dead, not just one region's page.
+  // Point each retired topic at the live topic that answers the same question; a row
+  // whose target was never built falls through to that topic's own rules above.
+  const RETIRED_GUIDE_PREFIXES = {
+    '/sheltered-by-the-shore-opposite': '/sheltered-beaches',
+  };
+  for (const [retired, replacement] of Object.entries(RETIRED_GUIDE_PREFIXES)) {
+    for (const locale of prerenderLocales) {
+      const to = localizedPath(`${replacement}/:slug/`, locale);
+      redirects.push(`${localizedPath(`${retired}/:slug/`, locale)} ${to} 301`);
+      // Same three-segment shape as the live topics above — both indexed URLs under this
+      // dead prefix carry a beach segment (/naxos/agios-prokopios, /naxos/alyko).
+      redirects.push(`${localizedPath(`${retired}/:slug/:extra/`, locale)} ${to} 301`);
     }
   }
   for (const locale of prerenderLocales) {
