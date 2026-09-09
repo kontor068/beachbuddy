@@ -587,11 +587,13 @@ export const handler = async (event) => {
           if (!already || !already.dw) prev.engaged = (prev.engaged || 0) + 1;
         }
 
-        // Once per unique visitor. The visitor blob is read with strong consistency
-        // (09/09/2026), so `already` is authoritative and a 2nd pageview can no longer
-        // pass as a first one. The client's own "first ping of the day" flag stays as
-        // a second lock: f='0' (definitely not first) is what turns a fresh hash into a
-        // `dup` below instead of a new visitor. f='1'/'' keep the blob gate.
+        // Once per unique visitor: the blob check is the gate, but Blobs reads are
+        // eventually consistent (~up to 60s), so a visitor's 2nd pageview inside that
+        // window can still read `already` as empty. The client knows its own "first
+        // ping of the day" for certain (localStorage); f='0' (definitely not first)
+        // suppresses that race and is what turns a fresh hash into a `dup` below
+        // instead of a new visitor. f='1'/'' keep the blob gate. (A strong read here
+        // was tried 09/09/2026 and took the whole counter down — see `already`.)
         if (!already && params.f !== '0') {
           prev.refs = prev.refs || {};
           prev.channels = prev.channels || {};
