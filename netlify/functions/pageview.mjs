@@ -455,7 +455,7 @@ export const handler = async (event) => {
     // Heartbeats and action pings carry no referrer/page-type, so they must not
     // overwrite what the visitor's FIRST pageview recorded — otherwise everyone who
     // stayed a minute ended up filed as "direct".
-    await store.setJSON(visitorKey, {
+    const visitorState = {
       r: isPageview ? ref : (already && already.r) || ref,
       p: isPageview ? pageType : (already && already.p) || pageType,
       s: (already && already.s) || section,
@@ -466,7 +466,31 @@ export const handler = async (event) => {
       // σελίδα" is the mean of these, not a guess from pageview counts.
       dw: ((already && already.dw) || 0) + dwellDelta,
       did: done,
-    });
+    };
+    // Is this hash REALLY new? `already` came from an eventually consistent read, so
+    // a 2nd hit seconds after the 1st can read the blob as absent. Measured
+    // 09/09/2026 09:24-09:45 UTC: 10 new keys produced 13 "new visitor" entries —
+    // 3 phantoms, which the dashboard then subtracted as `dup`. The store settles it:
+    // a write with `onlyIfNew` succeeds only if no blob exists, and `modified:false`
+    // means the key was there all along — same visitor, not a new one. Everything
+    // that must happen once per NEW KEY (map point, first-hit tag, dup) keys off
+    // this, not off `already`. Wrapped so any surprise from the conditional write
+    // degrades to the plain write this always was: the counter must never go dark
+    // over a refinement (it did once today, see the `already` read above).
+    let isNewKey = !already;
+    if (!already) {
+      let settled = false;
+      try {
+        const first = await store.setJSON(visitorKey, visitorState, { onlyIfNew: true });
+        if (first.modified) settled = true;
+        else isNewKey = false;
+      } catch {
+        // fall through to the unconditional write below
+      }
+      if (!settled) await store.setJSON(visitorKey, visitorState);
+    } else {
+      await store.setJSON(visitorKey, visitorState);
+    }
 
     // (2) PRESENCE. One key per visitor per minute, with the map data encoded in the
     //     key itself. "Who is online now" is then a prefix list with no blob reads,
@@ -482,7 +506,7 @@ export const handler = async (event) => {
 
     // (3) MAP. Written once per unique visitor per day, again with everything in the
     //     key, so a whole day's world map costs one list() call.
-    if (!already) {
+    if (isNewKey) {
       try {
         await store.setJSON(
           `geo/${dayKey}/${hash}~${geo.country}~${geo.lat ?? ''}~${geo.lon ?? ''}~${city}~${device}~${kind}~${geo.approx ? 'a' : ''}`,
@@ -594,7 +618,7 @@ export const handler = async (event) => {
         // suppresses that race and is what turns a fresh hash into a `dup` below
         // instead of a new visitor. f='1'/'' keep the blob gate. (A strong read here
         // was tried 09/09/2026 and took the whole counter down — see `already`.)
-        if (!already && params.f !== '0') {
+        if (isNewKey && params.f !== '0') {
           prev.refs = prev.refs || {};
           prev.channels = prev.channels || {};
           prev.sections = prev.sections || {};
@@ -618,7 +642,7 @@ export const handler = async (event) => {
           if (viewport) bump(prev.viewports, viewport);
           bump(prev.kinds, kind);
           prev.cities = prune(prev.cities, 200);
-        } else if (!already) {
+        } else if (isNewKey) {
           // SAME PERSON, NEW CONNECTION. The server has never seen this hash, yet the
           // browser is certain it already pinged today (f='0' comes from its own
           // localStorage). That combination has one explanation: a phone that moved
