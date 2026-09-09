@@ -107,7 +107,7 @@ const queryOverpass = async (lat, lon) => {
       if (res.status === 429 || res.status === 504) { await sleep(3000 * (attempt + 1)); continue; }
       if (!res.ok) throw new Error(`overpass ${res.status}`);
       const els = (await res.json()).elements || [];
-      let paved = Infinity, track = Infinity, foot = Infinity;
+      let paved = Infinity, track = Infinity, foot = Infinity, service = Infinity;
       for (const w of els) {
         if (!w.center) continue;
         const d = haversine(lat, lon, w.center.lat, w.center.lon);
@@ -115,8 +115,9 @@ const queryOverpass = async (lat, lon) => {
         if (c === 'paved') paved = Math.min(paved, d);
         else if (c === 'track') track = Math.min(track, d);
         else if (c === 'foot') foot = Math.min(foot, d);
+        else if (c === 'service') service = Math.min(service, d);
       }
-      return { paved, track, foot, radius };
+      return { paved, track, foot, service, radius };
     } catch (e) {
       if (attempt === 4) throw e;
       await sleep(2000 * (attempt + 1));
@@ -148,7 +149,9 @@ const rows = [];
 let done = 0;
 for (const b of candidates) {
   let osm = cache[b.id];
-  if (!osm || osm.radius !== radius) {
+  // The service-road distance was added after the first cache generation; entries without
+  // it predate the field and must be refetched once, or an old cache hides every service road.
+  if (!osm || osm.radius !== radius || osm.service === undefined) {
     osm = await queryOverpass(b.lat, b.lon);
     cache[b.id] = osm;
     writeFileSync(cachePath, JSON.stringify(cache), 'utf8');
@@ -161,6 +164,7 @@ for (const b of candidates) {
     pavedM: osm.paved === Infinity ? null : osm.paved,
     trackM: osm.track === Infinity ? null : osm.track,
     footM: osm.foot === Infinity ? null : osm.foot,
+    serviceM: osm.service === Infinity ? null : osm.service,
     suspect,
     osm: `https://www.openstreetmap.org/#map=18/${b.lat}/${b.lon}`,
   });
@@ -186,6 +190,6 @@ writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n', 'utf8');
 
 const f = (v) => v == null ? '  —  ' : `${String(v).padStart(4)}m`;
 console.log(`\nSUSPECT (no paved road ≤${pavedThreshold}m): ${suspects.length}/${rows.length}`);
-for (const s of suspects) console.log(`  #${s.id} paved:${f(s.pavedM)} track:${f(s.trackM)} foot:${f(s.footM)}  ${s.name} [${s.regionId}]`);
+for (const s of suspects) console.log(`  #${s.id} paved:${f(s.pavedM)} service:${f(s.serviceM)} track:${f(s.trackM)} foot:${f(s.footM)}  ${s.name} [${s.regionId}]`);
 console.log(`\nper-region: ${JSON.stringify(byRegion)}`);
 console.log(`report → ${path.relative(rootDir, outPath)}`);

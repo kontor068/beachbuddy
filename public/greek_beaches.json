@@ -646,11 +646,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJnUVDpEy-oRQRoXqYmaTrmLY",
-              "query": "Παραλία Αγίου Αλεξάνδρου, Athens area"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Γλυφάδας Ακτή Α\", which by name belongs to Παραλία Γλυφάδας Ακτή Α; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "crowded",
@@ -733,7 +732,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJnUVDpEy-oRQRoXqYmaTrmLY",
               "query": "Παραλία Γλυφάδας Ακτή Α, Athens area"
@@ -10868,10 +10867,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-08-17",
-              "method": "osm-pin-corroboration-v1",
-              "reason": "OSM «Καψάλι» στα 0 m — η πινέζα επιβεβαιώνεται, άρα οι οδηγίες με συντεταγμένη είναι έγκυρες"
+              "mode": "place",
+              "checkedAt": "2026-09-09",
+              "method": "osm-nav-audit-v1",
+              "placeId": "ChIJdWWpC9jpnRQRaSvf4_1pKM8",
+              "query": "Καψάλι, "
             },
             "popularity": {
               "tier": "popular",
@@ -23740,11 +23740,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJf36haHNrpBQRFyqw1GOe1WU",
-              "query": "Μπάσαλες, Skyros"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Μαγαζιά\", which by name belongs to Μαγαζιά; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -23888,7 +23887,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJf36haHNrpBQRFyqw1GOe1WU",
               "query": "Μαγαζιά, Skyros"
@@ -28211,7 +28210,8 @@
             ],
             "sourceNotes": [
               "Beach guides consistently describe Kalogria as organized with beach bars/tavernas and popular parking pressure in season.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/169010917 «Ακτή Καλογριάς» 1 m from our pin, and its transliteration «Akti Kalogrias» is the name we already held («Akti Kalogrias»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -28260,7 +28260,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Ακτή Καλογριάς"
         },
         {
           "id": 384,
@@ -28531,11 +28532,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJuQ5KbS-9qBQRyn1MS6xcLms",
-              "query": "Παραλία Brounou, Halkidiki"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Βουρβουρούς (Vourvourou Beach)\", which by name belongs to Vourvourou; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -28677,7 +28677,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki medium-confidence pass 2026-05-29: Visit Eastern Halkidiki directly describes Chrisi Akti in the Olympiada area as a large golden beach with fine sand, shallow water and organized seaside context; WorldPlaces supports the local Chrysi Akti/Olympiada coordinate context. Static confidence only; no live calm/protection claim added. Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched).",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/27406026 «Χρυσή αμμουδιά» 0 m from our pin, and its transliteration «Chrysi ammoudia» is the name we already held («Chrysi Ammoudia»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.visit-easternhalkidiki.gr/what-to-do/swim/",
               "https://greece.worldplaces.me/view-place/17916808-olympiada-sygkrtima-chrys-akt.html"
@@ -28697,7 +28699,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Χρυσή Αμμουδιά"
         },
         {
           "id": 390,
@@ -28819,7 +28822,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence follow-up 2026-05-28: Visit Central Macedonia describes Ierissos Beach as a 5 km sandy, organized, easily accessible settlement beach with sunbeds, umbrellas, WC, showers, cafeterias and bars. Promoted Dimotiki Plaz 1 to medium as part of the same Ierissos municipal beach stretch.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/363020035 «Δημοτική Πλαζ 1» 0 m from our pin, and its transliteration «Dimotiki Plaz 1» is the name we already held («Dimotiki Plaz 1»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/250/ierissos-beach",
               "https://athos.discoverhalkidiki.com/en/fast-food/corali-beach-bar-ierissos"
@@ -28868,7 +28873,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Δημοτική Πλαζ 1"
         },
         {
           "id": 392,
@@ -28907,7 +28913,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence follow-up 2026-05-28: Visit Central Macedonia describes Ierissos Beach as a 5 km sandy, organized, easily accessible settlement beach with sunbeds, umbrellas, WC, showers, cafeterias and bars. Promoted Dimotiki Plaz 2 to medium as part of the same Ierissos municipal beach stretch.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/363019945 «Δημοτική Πλαζ 2» 0 m from our pin, and its transliteration «Dimotiki Plaz 2» is the name we already held («Dimotiki Plaz 2»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/250/ierissos-beach",
               "https://athos.discoverhalkidiki.com/en/fast-food/corali-beach-bar-ierissos"
@@ -28956,7 +28964,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Δημοτική Πλαζ 2"
         },
         {
           "id": 393,
@@ -28995,7 +29004,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence follow-up 2026-05-28: Visit Central Macedonia describes Ierissos Beach as a 5 km sandy, organized, easily accessible settlement beach with sunbeds, umbrellas, WC, showers, cafeterias and bars. Promoted Dimotiki Plaz 3 to medium as part of the same Ierissos municipal beach stretch.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/363019768 «Δημοτική Πλαζ 3» 0 m from our pin, and its transliteration «Dimotiki Plaz 3» is the name we already held («Dimotiki Plaz 3»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/250/ierissos-beach",
               "https://athos.discoverhalkidiki.com/en/fast-food/corali-beach-bar-ierissos"
@@ -29044,7 +29055,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Δημοτική Πλαζ 3"
         },
         {
           "id": 394,
@@ -29651,7 +29663,9 @@
               "https://www.gr-beaches.com/iliovasilema_beach__halkidiki__greece.en.aspx",
               "https://www.gr-beaches.com/west_kassandra.en.aspx"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29 second pass: direct same-beach source supports the static identity and visitor-metadata trace for this record. This raises static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence cleanup 2026-05-28: GR-Beaches west Kassandra page identifies Iliovasilema beach by the nearby beach bar that organizes umbrellas and deckchairs. Amenity corrected 2026-06-20 (amenity-evidence audit): the organized + beach-bar/sunbeds claim was an unverified default — Google Places shows zero food/drink POI within 180 m and the beach has <20/no Google reviews. Cleared organized=false and removed the bar/sunbed amenities; other amenities, coordinates, windProfile and claims untouched.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/1420917773 «Ηλιοβασίλεμα» 0 m from our pin, and its transliteration «Iliovasilema» is the name we already held («Iliovasilema»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "coordinates",
@@ -29667,7 +29681,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Ηλιοβασίλεμα"
         },
         {
           "id": 402,
@@ -29784,7 +29799,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η ακτή έχει άμμο και βράχια/σχηματισμούς σε σημεία, οπότε η είσοδος θέλει προσοχή όπου υπάρχουν πέτρες."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence cleanup 2026-05-28: Visit Central Macedonia supports Kakoudia near Ierissos as an unorganized natural beach with sand, sculpted rocks and no beach bars/sunbeds/umbrellas. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — Turn off the main road onto a DIRT road that leads to the beach; ample parking, unorganized/virgin beach. [https://www.visit-halkidiki.gr/portfolio-view/kakoudia-beach/]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/363019603 «Κακούδια» 0 m from our pin, and its transliteration «Kakoydia» is the name we already held («Kakoudia»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/118/kakoudia-beach",
               "https://www.openstreetmap.org/way/363019603"
@@ -29830,7 +29847,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Κακούδια"
         },
         {
           "id": 404,
@@ -30264,7 +30282,9 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Halkidiki medium-confidence pass 2026-05-29: GR-Beaches directly confirms Kavouri beach near Vergia/Nea Plagia as a small narrow sandy beach behind rocks, reached by small steps, with no organization and difficult parking. Confidence promoted for static identity and visitor metadata only.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/437116702 «Καβούρι» 0 m from our pin, and its transliteration «Kavoyri» is the name we already held («Kavouri»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.gr-beaches.com/kavouri_beach__halkidiki__greece.en.aspx",
               "https://www.openstreetmap.org/way/437116702"
@@ -30284,7 +30304,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Καβούρι"
         },
         {
           "id": 409,
@@ -30325,7 +30346,9 @@
               "https://www.visit-halkidiki.gr/portfolio-view/kavourotrypes-beach-orange-portokali/",
               "https://halkidiki.info/en/regions/sithonia-en/orange-portokali-kavourotrypes/"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Local guides describe Kavourotrypes/Orange as small coves reached by dirt track, with an organized cove and difficult/limited parking in season.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/367613244 «Καβουρότρυπες» 6 m from our pin, and its transliteration «Kavourotrypes» is the name we already held («Kavourotrypes»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -30367,7 +30390,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Καβουρότρυπες"
         },
         {
           "id": 410,
@@ -30403,7 +30427,9 @@
               "label": "Μέτρια βάθυνση",
               "notes": "Η τοπική πηγή αναφέρει μέτριο βάθος και βραχώδες περιβάλλον κάτω από τα Στάγειρα."
             },
-            "sourceNotes": "Halkidiki medium-confidence pass 2026-05-29: TravelPlanner, Olympiada local guide material and Visit Central Macedonia support Kefalas as a small wild beach near Olympiada/Ancient Stagira, with limited/no organization and path-style access. Static metadata only; live wind/sea behavior unchanged.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/35830390 «Κεφάλας» 0 m from our pin, and its transliteration «Kefalas» is the name we already held («Kefalas»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://travelplanner.ro/blog/despre-kephalas-beach-olympiada-halkidiki/",
               "https://visit-centralmacedonia.gr/en/where-to-go/61/1-halkidiki/260/olympiada",
@@ -30425,7 +30451,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Κεφάλας"
         },
         {
           "id": 411,
@@ -30553,7 +30580,8 @@
             ],
             "sourceNotes": [
               "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki Guide supports tavern with beach bar at organized Komitsa.",
-              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed."
+              "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/297788643 «Κομίτσα» 0 m from our pin, and its transliteration «Komitsa» is the name we already held («Komitsa»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "blueFlag2026": {
               "awarded": true,
@@ -30610,7 +30638,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Κομίτσα"
         },
         {
           "id": 413,
@@ -31459,7 +31488,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki tourist-priority evidence pass 2026-05-29: kept low because no stronger live source was found beyond OSM identity/location. Access, terrain/services, windProfile, coordinates, scoring, photos, and live sea/wind behavior were not changed.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: node/9801070886 «Λιβάδι» 0 m from our pin, and its transliteration «Livadi» is the name we already held («Livadi»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/node/9801070886"
             ],
@@ -31472,7 +31503,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Λιβάδι"
         },
         {
           "id": 424,
@@ -31953,7 +31985,9 @@
               "label": "Μέτριο βάθος",
               "notes": "Sandy cape/beach area; depth can change quickly around the tip depending on exact entry point and sea state."
             },
-            "sourceNotes": "Official Visit Central Macedonia and local Halkidiki guide sources confirm Myti Beach at Possidi. Static visitor metadata updated; live weather/sea conditions still determine suitability.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: node/9807492948 «Μύτη» 0 m from our pin, and its transliteration «Myti» is the name we already held («Myti»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/107/myti-beach-posidi-",
               "https://gohalkidiki.com/posidi/",
@@ -32001,7 +32035,8 @@
           },
           "staticLabels": {
             "accessType": "passable_dirt_road"
-          }
+          },
+          "nameGr": "Μύτη"
         },
         {
           "id": 430,
@@ -33012,7 +33047,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος αναφέρεται ως πιο ήπια/ρηχή, αλλά η τελική καταλληλότητα παραμένει θέμα σημερινών συνθηκών."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Halkidiki low-confidence cleanup 2026-05-28: AllOverGreece supports Porto Koufo identity, sandy beach, easy access, village tavernas nearby and partial facilities.,Static calm/wave-free wording from the source was not promoted into windProfile or live recommendation claims.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/293401091 «Πόρτο Κουφό» 0 m from our pin, and its transliteration «Porto Koufo» is the name we already held («Porto Koufo»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.allovergreece.com/Region-Top-Beach/Descr/1028/en",
               "https://www.openstreetmap.org/way/293401091"
@@ -33041,7 +33078,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Πόρτο Κουφό"
         },
         {
           "id": 441,
@@ -33785,7 +33823,9 @@
               "https://www.pyrgos-bungalows.gr/beach-bar-pyrgos",
               "https://sithonia.discoverhalkidiki.com/en/beach-bars/pyrgos-beach-bar"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Pyrgos sources support beach-bar service at Trani Ammouda.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/54842604 «Τρανή Αμμούδα» 0 m from our pin, and its transliteration «Trani Ammoyda» is the name we already held («Trani Ammouda»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -33810,7 +33850,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Τρανή Αμμούδα"
         },
         {
           "id": 450,
@@ -33925,7 +33966,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Halkidiki tourist-priority evidence pass 2026-05-29: kept low because no stronger live source was found beyond OSM identity/location. Access, terrain/services, windProfile, coordinates, scoring, photos, and live sea/wind behavior were not changed.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: relation/16920175 «Τσιφλίκι» 0 m from our pin, and its transliteration «Tsifliki» is the name we already held («Tsifliki»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/relation/16920175"
             ],
@@ -33938,7 +33981,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Τσιφλίκι"
         },
         {
           "id": 452,
@@ -33979,7 +34023,9 @@
               "https://www.gr-beaches.com/varkes_beach__halkidiki__greece.en.aspx",
               "https://kassandra.discoverhalkidiki.com/en/beach-bars/rementzo-restaurant-liosi-beach-bar"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29 second pass: direct same-beach source supports the static identity and visitor-metadata trace for this record. This raises static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Nearby Afitos/Varkes area source supports Liosi Beach Bar and organized beach service.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: node/3019068032 «Βάρκες» 0 m from our pin, and its transliteration «Varkes» is the name we already held («Varkes»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
@@ -34004,7 +34050,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Βάρκες"
         },
         {
           "id": 453,
@@ -34090,7 +34137,9 @@
               "label": "Βαθιά νερά",
               "notes": "Τοπικές πηγές αναφέρουν ότι η είσοδος βαθαίνει γρήγορα στη Βουλίτσα."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Source follow-up pass 48 2026-05-28: direct Voulitsa beach pages support identity/location between Nea Roda and Komitsa, sandy cove, good-condition dirt-road access, beach-bar organization, parking, and quicker depth increase. No windProfile or scoring fields were changed.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/497178601 «Βουλίτσα» 0 m from our pin, and its transliteration «Voulitsa» is the name we already held («Voulitsa»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://halkidiki.guide/en/Beach-Voulitsa_Beach-p128-r3224056-Nea_Roda",
               "https://athosvillas.gr/en/voulitsa-beach/"
@@ -34130,7 +34179,8 @@
           },
           "staticLabels": {
             "accessType": "passable_dirt_road"
-          }
+          },
+          "nameGr": "Βουλίτσα"
         },
         {
           "id": 455,
@@ -34173,14 +34223,16 @@
               "https://www.hotelvergos.com/en/beach-bar.php",
               "https://www.halkidiki.com/vourvourou/index.htm"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29 second pass: direct same-beach source supports the static identity and visitor-metadata trace for this record. This raises static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Vourvourou sources support local beach bars and Hotel Vergos beach-bar service.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/444580840 «Βουρβουρού» 0 m from our pin, and its transliteration «Vourvouroy» is the name we already held («Vourvourou»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJuQ5KbS-9qBQRyn1MS6xcLms",
-              "query": "Παραλία Vourvourou, Halkidiki"
+              "query": "Vourvourou, Halkidiki"
             },
             "popularity": {
               "tier": "popular",
@@ -34198,7 +34250,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Βουρβουρού"
         },
         {
           "id": 456,
@@ -38801,7 +38854,8 @@
               "https://visit-centralmacedonia.gr/en/what-to-do/73/sun-sea/201/skala-alykon"
             ],
             "sourceNotes": [
-              "Popular regions source pass 2026-06-02: Pieria Guide supports the Alykes Kitrous beach area and nearby beach-bar/food options. The official Visit Central Macedonia page for Skala Alykon/Alykes Kitrous supports a sandy beach and sandy seabed, initially shallow water, organized beach bars, showers, sunbeds, free space and road access. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed."
+              "Popular regions source pass 2026-06-02: Pieria Guide supports the Alykes Kitrous beach area and nearby beach-bar/food options. The official Visit Central Macedonia page for Skala Alykon/Alykes Kitrous supports a sandy beach and sandy seabed, initially shallow water, organized beach bars, showers, sunbeds, free space and road access. Coordinates, windProfile, scoring, photos, and live calm/protected/safe claims were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/1374667622 «Παραλία Αλυκές Κίτρους» 0 m from our pin, and its transliteration «Paralia Alykes Kitrous» is the name we already held («Alykes Kitrous»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -38827,7 +38881,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Παραλία Αλυκές Κίτρους"
         },
         {
           "id": 504,
@@ -38871,7 +38926,8 @@
             ],
             "sourceNotes": [
               "Pieria Guide supports beach-bar availability in the Alyki/Alykes Kitrous beach area.",
-              "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
+              "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/1428019724 «Αλυκή» 0 m from our pin, and its transliteration «Alyki» is the name we already held («Alyki»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -38897,7 +38953,8 @@
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
             }
-          }
+          },
+          "nameGr": "Αλυκή"
         },
         {
           "id": 505,
@@ -45791,7 +45848,8 @@
             "sourceNotes": [
               "Chania medium-to-high pass 2026-05-29: direct structured beach source supports static access, terrain, depth, and facility metadata for this exact record. Confidence is high for static metadata only; coordinates, windProfile, scoring, and live-condition behavior were not changed.",
               "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Access notes cleared 2026-08-14: the text repeated access.label verbatim and then described our verification process (\"Επιβεβαιώθηκε από direct source…\"), identically on 34 Chania records. The claim itself was true — this beach has its own sourceUrls — but it says nothing about the beach, and the card printed the same sentence twice. Removed text: \"άσφαλτος μέχρι κοντά στην παραλία. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία.\" Access type and label were not changed."
+              "Access notes cleared 2026-08-14: the text repeated access.label verbatim and then described our verification process (\"Επιβεβαιώθηκε από direct source…\"), identically on 34 Chania records. The claim itself was true — this beach has its own sourceUrls — but it says nothing about the beach, and the card printed the same sentence twice. Removed text: \"άσφαλτος μέχρι κοντά στην παραλία. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία.\" Access type and label were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/373975751 «Άγιος Ονούφριος» 1 m from our pin, and its transliteration «Agios Onoyfrios» is the name we already held («Agios Onoufrios»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/agios-onoufrios-beach",
@@ -45873,7 +45931,8 @@
               "source": "google-places",
               "checkedAt": "2026-06-17"
             }
-          }
+          },
+          "nameGr": "Άγιος Ονούφριος"
         },
         {
           "id": 588,
@@ -46371,7 +46430,8 @@
             "sourceNotes": [
               "Chania medium-to-high pass 2026-05-29: direct structured beach source supports static access, terrain, depth, and facility metadata for this exact record. Confidence is high for static metadata only; coordinates, windProfile, scoring, and live-condition behavior were not changed.",
               "Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed.",
-              "Access notes cleared 2026-08-14: the text repeated access.label verbatim and then described our verification process (\"Επιβεβαιώθηκε από direct source…\"), identically on 34 Chania records. The claim itself was true — this beach has its own sourceUrls — but it says nothing about the beach, and the card printed the same sentence twice. Removed text: \"άσφαλτος μέχρι κοντά στην παραλία. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία.\" Access type and label were not changed."
+              "Access notes cleared 2026-08-14: the text repeated access.label verbatim and then described our verification process (\"Επιβεβαιώθηκε από direct source…\"), identically on 34 Chania records. The claim itself was true — this beach has its own sourceUrls — but it says nothing about the beach, and the card printed the same sentence twice. Removed text: \"άσφαλτος μέχρι κοντά στην παραλία. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία.\" Access type and label were not changed.",
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/48474061 «Χρυσή Ακτή» 0 m from our pin, and its transliteration «Chrysi Akti» is the name we already held («Chrysi Akti»). Only nameGr was added; the English name, the slug and every URL are unchanged."
             ],
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/chrissi-akti-beach-golden-chania",
@@ -46459,7 +46519,8 @@
           },
           "staticLabels": {
             "accessType": "asphalt_road"
-          }
+          },
+          "nameGr": "Χρυσή Ακτή"
         },
         {
           "id": 595,
@@ -46717,7 +46778,9 @@
               "label": "Ρηχά νερά",
               "notes": "Ρηχά νερά. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία."
             },
-            "sourceNotes": "Chania medium-to-high pass 2026-05-29: direct structured beach source supports static access, terrain, depth, and facility metadata for this exact record. Confidence is high for static metadata only; coordinates, windProfile, scoring, and live-condition behavior were not changed. Access notes cleared 2026-08-14: the text repeated access.label verbatim and then described our verification process (\"Επιβεβαιώθηκε από direct source…\"), identically on 34 Chania records. The claim itself was true — this beach has its own sourceUrls — but it says nothing about the beach, and the card printed the same sentence twice. Removed text: \"άσφαλτος μέχρι κοντά στην παραλία. Επιβεβαιώθηκε από direct source για τη συγκεκριμένη παραλία.\" Access type and label were not changed.",
+            "sourceNotes": [
+              "Greek display name recovered 2026-09-09 from the national OSM harvest: way/383275428 «Γεωργιούπολη» 0 m from our pin, and its transliteration «Georgioypoli» is the name we already held («Georgioupoli»). Only nameGr was added; the English name, the slug and every URL are unchanged."
+            ],
             "sourceUrls": [
               "https://www.cretanbeaches.com/en/sea-tourism/west-crete-beaches/georgioupolis-beaches-chania-kavros",
               "https://www.cretanbeaches.com/el/%CE%B8%CE%B1%CE%BB%CE%AC%CF%83%CF%83%CE%B9%CE%BF%CF%82-%CF%84%CE%BF%CF%85%CF%81%CE%B9%CF%83%CE%BC%CF%8C%CF%82/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B5%CF%82-%CE%B4%CF%85%CF%84%CE%B9%CE%BA%CE%AE%CF%82-%CE%BA%CF%81%CE%AE%CF%84%CE%B7%CF%82/%CF%80%CE%B1%CF%81%CE%B1%CE%BB%CE%AF%CE%B1-%CE%B3%CE%B5%CF%89%CF%81%CE%B3%CE%B9%CE%BF%CF%8D%CF%80%CE%BF%CE%BB%CE%B7-%CE%BA%CE%B1%CE%B2%CF%81%CF%8C%CF%82"
@@ -46750,7 +46813,8 @@
               ],
               "checkedAt": "2026-07-25"
             }
-          }
+          },
+          "nameGr": "Γεωργιούπολη"
         },
         {
           "id": 599,
@@ -56409,7 +56473,9 @@
             "language": "el",
             "batch": "seatrac_d2_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Ροδάκινο\" (Rodakino), Agios Vasileios, Crete. Nominatim hit nom-way-240800941; Overpass natural=beach corroboration 272 m. Slot via nearest existing beach #684 (0 m). Conservative — access/terrain unknown, amenities only as stated. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + beach bar added — bar POI on the sand: \"Korakas Beach\" (bar, 54m). Water depth from EMODnet bathymetry 2026-08-25: 6.11 m at 100 m offshore on the S bearing (beach faces 176.9°), profile confidence high. Above the national p75 of 5.9 m, so the water is demonstrably not shallow; recorded as \"medium\". Bathymetry can prove the steep side only, never the shallow one — no \"shallow\" is ever written from it. Previously the field was absent and the app inferred depth from shore surface. No other field changed.",
+            "sourceNotes": [
+              "Excluded from the app 09/09/2026 during the 11-region quality sweep: duplicate pin of an existing beach, created by the Seatrac directory geocode import. Checked against Nominatim + Overpass; the beach we already serve at these coordinates is the real one. Zero-tolerance rule for accessibility claims: an unverified Seatrac claim must not ship on a pin that belongs to another beach."
+            ],
             "sourceUrls": [
               "https://seatrac.gr/"
             ],
@@ -56461,7 +56527,9 @@
               "type": "medium",
               "label": "Μέτριο βάθος",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
-            }
+            },
+            "excludeFromApp": true,
+            "excludeReason": "duplicate_of_684_korakas — «Ροδάκινο» is the village/area name, not a beach. The Seatrac directory import geocoded it onto Κόρακας's exact pin (35.1872025, 24.3151783 — identical to 7 decimals). Verified 09/09/2026 against Nominatim (Ροδάκινο resolves to Άνω/Κάτω Ροδάκινο villages, inland at 35.20) and Overpass (the 6 real beaches of that coast — Κόρακας, Πολύριζος, Κλήματα, Χόχλακας, Αγία Μαρίνα, Περιστερές — are all already in our data at matching coordinates). Shipping it gave visitors two beach pages on one pin, the second carrying an UNVERIFIED Seatrac disabled-access claim (status listed-unverified, confidence low) on coordinates that belong to another beach. The seatrac block is kept on this record so the directory lead is not lost; it must NOT be copied onto Κόρακας without evidence of which of the six actually has the ramp."
           }
         },
         {
@@ -57205,11 +57273,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJgVmJ9o_3kBQRuaZJ5t5FMqE",
-              "query": "Παραλία Άμμος Ξερόκαμπου, Lasithi, Crete"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Μαζιδά Άμμος\", which by name belongs to Μαζιδά Άμμος; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -59425,10 +59492,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJgVmJ9o_3kBQRuaZJ5t5FMqE",
-              "query": "Μαζιδά Άμμος, Lasithi, Crete"
+              "query": "Μαζιδά Άμμος, Lasithi"
             },
             "popularity": {
               "tier": "popular",
@@ -66994,11 +67061,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ6_bkCuWSrhQRB-EFl4qwlcM",
-              "query": "Παραλία Γλυφάδα (Θάσος), Thasos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Γλυφάδας\", which by name belongs to Γλυφάδα; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -67358,10 +67424,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ6_bkCuWSrhQRB-EFl4qwlcM",
-              "query": "Παραλία Γλυφάδα, Thasos"
+              "query": "Γλυφάδα, Thasos"
             },
             "popularity": {
               "tier": "quiet",
@@ -72495,11 +72561,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ2YGYp6qGXBMRXlJYzVN2oAw",
-              "query": "Παραλία Μουρτεμένο, Thesprotia"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Μπέλα Βράκα\", which by name belongs to Μπέλα Βράκα; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "crowded",
@@ -72567,7 +72632,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ2YGYp6qGXBMRXlJYzVN2oAw",
               "query": "Μπέλα Βράκα, Thesprotia"
@@ -75837,11 +75902,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJM1x0Z_qYXBMRQLrcJ_l9ChU",
-              "query": "Maltas beach, Corfu"
+              "reason": "placeId removed 2026-09-09: this pin held \"Santa Barbara Beach, Martas\", which by name belongs to Santa Barbara beach; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -76299,7 +76363,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJM1x0Z_qYXBMRQLrcJ_l9ChU",
               "query": "Santa Barbara beach, Corfu"
@@ -84662,11 +84726,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJgySe29hiZxMRudGZTJ1AWUs",
-              "query": "Νότια Άβυθος Γυμνιστών, Kefalonia"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Άβυθος\", which by name belongs to Παραλία Άβυθος; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "crowded",
@@ -85571,11 +85634,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJc87hyARiZxMRoaNGJgexkgo",
-              "query": "Τραπεζάκι (γυμνιστών), Kefalonia"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Τραπεζάκι\", which by name belongs to Τραπεζάκι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -88826,7 +88888,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJgySe29hiZxMRudGZTJ1AWUs",
               "query": "Παραλία Άβυθος, Kefalonia"
@@ -89319,7 +89381,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJc87hyARiZxMRoaNGJgexkgo",
               "query": "Τραπεζάκι, Kefalonia"
@@ -89454,11 +89516,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8WBVerSRXRMRi6UMiS912mk",
-              "query": "Παραλία Ψαμούσα, Kefalonia"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Λιθοβάτης\", which by name belongs to Λιθοβάτης; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -89580,7 +89641,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ8WBVerSRXRMRi6UMiS912mk",
               "query": "Λιθοβάτης, Kefalonia"
@@ -104096,9 +104157,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-09-09",
+              "method": "osm-nav-audit-v1",
+              "placeId": "ChIJyRUl1lOauhQRjfDcnrbj9hY",
+              "query": "Μόλυβος, "
             },
             "popularity": {
               "tier": "quiet",
@@ -104588,11 +104651,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJARV6AnbDuhQRn8VNsu0W2A4",
-              "query": "Παραλία Γυμνιστών Χρούσος, Lesvos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Χρούσος\", which by name belongs to Χρούσος; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -106051,9 +106113,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-09-09",
+              "method": "osm-nav-audit-v1",
+              "placeId": "ChIJe8V0c2FcuhQRuEAUK08XSLA",
+              "query": "Χαραμίδα, "
             },
             "popularity": {
               "tier": "popular",
@@ -106180,10 +106244,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJARV6AnbDuhQRn8VNsu0W2A4",
-              "query": "Παραλία Χρούσος, Lesvos"
+              "query": "Χρούσος, Lesvos"
             },
             "popularity": {
               "tier": "quiet",
@@ -108592,11 +108656,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJCzsB0GoVvBQRODuukfF0eNQ",
-              "query": "Παραλία Κάμπου Βουρλιωτών, Samos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Μικρή Τσαμπού\", which by name belongs to Τσάμπου; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -108835,7 +108898,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJCzsB0GoVvBQRODuukfF0eNQ",
               "query": "Τσάμπου, Samos"
@@ -111524,11 +111587,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ7-VPWyqPrxQRWF2X25hjU7g",
-              "query": "Μεγάλο Φαναράκι, Lemnos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Μικρό Φαναράκι\", which by name belongs to Μικρό Φαναράκι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -111597,7 +111659,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ7-VPWyqPrxQRWF2X25hjU7g",
               "query": "Μικρό Φαναράκι, Lemnos"
@@ -112979,11 +113041,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ6UbllzqInxQRr1iruxtLQ_M",
-              "query": "Γκλιάτη, Argolida"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Γιαλάσι\", which by name belongs to Γιαλάσι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -115133,7 +115194,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ6UbllzqInxQRr1iruxtLQ_M",
               "query": "Γιαλάσι, Argolida"
@@ -115698,11 +115759,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJIfNdfzvFnxQRzkhvPCe8Ekg",
-              "query": "Άγιος Χριστόφορος - Ζαρίτισι Τυρού, Arkadia"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Ζαρίτσι - Άγιος Χριστόφορος\", which by name belongs to Ζαρίτσι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -116005,10 +116065,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJIfNdfzvFnxQRzkhvPCe8Ekg",
-              "query": "Παραλία Ζαρίτσι, Arkadia"
+              "query": "Ζαρίτσι, Arkadia"
             },
             "popularity": {
               "tier": "quiet",
@@ -129692,11 +129752,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJs6G6KQ15lxQRiLjUSDMhUiU",
-              "query": "Μικρός Ρούκουνας, Anafi"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Ρούκουνας\", which by name belongs to Ρούκουνας; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -129942,7 +130001,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJs6G6KQ15lxQRiLjUSDMhUiU",
               "query": "Ρούκουνας, Anafi"
@@ -134460,11 +134519,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJewvtyNdUmBQR4fPMxmZBwf4",
-              "query": "Παραλία Λατινάκι, Folegandros"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Λιβάδι\", which by name belongs to Λιβάδι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -134611,10 +134669,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJewvtyNdUmBQR4fPMxmZBwf4",
-              "query": "Παραλία Λιβάδι, Folegandros"
+              "query": "Λιβάδι, Folegandros"
             },
             "popularity": {
               "tier": "moderate",
@@ -138487,11 +138545,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJm7cFi-0WohQRMnEh6WYiFv0",
-              "query": "Καληδονύχι, Kea"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Συκαμιά\", which by name belongs to Συκαμιά; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "quiet",
@@ -141667,9 +141724,11 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "coordinates",
-              "checkedAt": "2026-08-14",
-              "method": "osm-nav-audit-v1"
+              "mode": "place",
+              "checkedAt": "2026-09-09",
+              "method": "osm-nav-audit-v1",
+              "placeId": "ChIJZ4dNaWemmBQRzYxOuNrMFeI",
+              "query": "Άγιος Δημήτριος, "
             },
             "popularity": {
               "tier": "moderate",
@@ -172148,11 +172207,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ-1bo2bcBlBQRGnWR8ePEIik",
-              "query": "Παραλία Λακκί, Karpathos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Βοτσαλάκια\", which by name belongs to Βοτσαλάκια; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -172977,7 +173035,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ-1bo2bcBlBQRGnWR8ePEIik",
               "query": "Βοτσαλάκια, Karpathos"
@@ -174677,11 +174735,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJV25WeLQClhQR_qKlcP7Mtow",
-              "query": "Κόλπος Αγίου Στεφάνου, Kos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Άγιος Στέφανος\", which by name belongs to Παραλία Άγιος Στέφανος; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "crowded",
@@ -174811,11 +174868,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJoX_60hoIvhQRMwNRKLntjj8",
-              "query": "Γυμνιστική Παραλία Τιγκάκι, Kos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Τιγκάκι\", which by name belongs to Τιγκάκι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -175721,10 +175777,10 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJoX_60hoIvhQRMwNRKLntjj8",
-              "query": "Παραλία Τιγκάκι, Kos"
+              "query": "Τιγκάκι, Kos"
             },
             "popularity": {
               "tier": "moderate",
@@ -177552,11 +177608,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJqwVva7vBvRQRsqVxStIQ2BU",
-              "query": "Βρομόλιθος, Leros"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλια Βρωμολιθος\", which by name belongs to Παραλία Βρωμόλιθος; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -177763,7 +177818,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJqwVva7vBvRQRsqVxStIQ2BU",
               "query": "Παραλία Βρωμόλιθος, Leros"
@@ -178436,11 +178491,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJyZ0wRBC4vRQRHUtY8kM2ImE",
-              "query": "Κορακιά, Lipsi"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Χοχλακούρα\", which by name belongs to Χοχλάκουρα; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "moderate",
@@ -179015,7 +179069,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJyZ0wRBC4vRQRHUtY8kM2ImE",
               "query": "Χοχλάκουρα, Lipsi"
@@ -187485,11 +187539,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ_apUZAC1vRQRAZFzUHAY48I",
-              "query": "Παραλία Πατελιά, Arki"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Λιμνάρι\", which by name belongs to Λιμνάρι; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "secluded",
@@ -187553,7 +187606,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJ_apUZAC1vRQRAZFzUHAY48I",
               "query": "Λιμνάρι, Arki"
@@ -192205,7 +192258,8 @@
             "needsVerification": true,
             "sourceNotes": [
               "Seatrac Phase D2 geocode (2026-06): created from no-match seed \"Μεσολόγγι Τουρλίδα\" (Mesolongi Tourlida), Mesolongi, West Greece. Nominatim hit nom-way-958950607; Overpass natural=beach corroboration 180 m. Slot via nearest existing beach #2559 (0 m). Conservative — access/terrain unknown, amenities only as stated.",
-              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα."
+              "Amenities from OSM POIs 2026-08-17: ταβέρνες κοντά (4 σημεία στα 800 m· πύλη: ≥2 εντός 250 m ή 1 με όνομα εντός 150 m). Ήταν κενή λίστα.",
+              "Excluded from the app 09/09/2026 during the 11-region quality sweep: duplicate pin of an existing beach, created by the Seatrac directory geocode import. Checked against Nominatim + Overpass; the beach we already serve at these coordinates is the real one. Zero-tolerance rule for accessibility claims: an unverified Seatrac claim must not ship on a pin that belongs to another beach."
             ],
             "sourceUrls": [
               "https://seatrac.gr/"
@@ -192261,7 +192315,9 @@
               "protectedFrom": [],
               "confidence": "medium",
               "notes": "Generated from Natural Earth geospatial exposure facingDeg. This records shoreline-facing direction only; it does not verify shelter, low-wave behavior, or live sea conditions."
-            }
+            },
+            "excludeFromApp": true,
+            "excludeReason": "duplicate_of_2559_tourlida — «Μεσολόγγι Τουρλίδα» is the Seatrac directory's town+beach label for the beach we already serve as #2559 Παραλία Τουρλίδας. The import geocoded it onto #2559's exact pin (38.3253662, 21.4194283). Verified 09/09/2026: the two records sit 0 m apart and no second beach exists there. Same defect class as #3011: a duplicate live page carrying an UNVERIFIED Seatrac disabled-access claim (status listed-unverified, confidence low). The seatrac block is kept here, not moved to #2559, because nobody has confirmed the ramp."
           }
         },
         {
@@ -200397,11 +200453,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
-              "placeId": "ChIJIT6dAeTpphQRg5gO6PN5ehk",
-              "query": "Παραλία Νεράκι, Skopelos"
+              "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Φτελιά\", which by name belongs to Φτελιά; reverted to coordinate routing."
             },
             "popularity": {
               "tier": "popular",
@@ -200785,7 +200840,7 @@
             "googleMapsNavigation": {
               "status": "verified",
               "mode": "place",
-              "checkedAt": "2026-06-22",
+              "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJIT6dAeTpphQRg5gO6PN5ehk",
               "query": "Φτελιά, Skopelos"

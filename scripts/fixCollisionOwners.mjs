@@ -19,7 +19,10 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const sourcePath = path.join(rootDir, 'public', 'greek_beaches.json');
 const upDir = path.join(rootDir, 'reports', 'place-resolution');
 const APPLY = process.argv.includes('--apply');
-const date = '2026-06-21';
+// Stamp the day the reassignment actually runs. This was hardcoded to '2026-06-21',
+// so every later run wrote a checkedAt three months in the past — and the quality
+// ledger dates its 'navigation last checked' axis from exactly this field.
+const date = new Date().toISOString().slice(0, 10);
 
 const fixes = JSON.parse(readFileSync(path.join(upDir, 'google-upgrade-fixes.json'), 'utf8'));
 const up = JSON.parse(readFileSync(path.join(upDir, 'google-upgrade.json'), 'utf8'));
@@ -99,7 +102,7 @@ if (APPLY && swaps.length) {
   const stripHolder = (s) => {
     if (!s.from) return; const h = byId.get(s.from.id);
     if (h?.metadata?.googleMapsNavigation?.placeId === s.placeId) {
-      h.metadata.googleMapsNavigation = { status: 'verified', mode: 'coordinates', checkedAt: date, method: 'osm-nav-audit-v1', reason: `placeId removed 2026-06-21: this pin held "${s.placeName}", which by name belongs to ${s.to.name}; reverted to coordinate routing.` };
+      h.metadata.googleMapsNavigation = { status: 'verified', mode: 'coordinates', checkedAt: date, method: 'osm-nav-audit-v1', reason: `placeId removed ${date}: this pin held "${s.placeName}", which by name belongs to ${s.to.name}; reverted to coordinate routing.` };
       stripped++;
     }
   };

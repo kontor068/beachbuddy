@@ -1,0 +1,634 @@
+{
+ "generatedAt": "2026-09-09T11:33:28.303Z",
+ "scanned": 2861,
+ "maxM": 150,
+ "counts": {
+  "certain": 1,
+  "likely": 4,
+  "proximityOnly": 16,
+  "sameNameFar": 2
+ },
+ "certain": [
+  {
+   "distanceM": 37,
+   "nameRelation": "one_contains_other",
+   "a": {
+    "id": 2058,
+    "name": "Βλυχάδα",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 7,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2060,
+    "name": "Γυμνιστική παραλία Βλυχάδα",
+    "score": 4,
+    "photo": false,
+    "placeId": false,
+    "amenities": 0,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-santorini",
+   "richerId": 2058,
+   "poorerId": 2060
+  }
+ ],
+ "likely": [
+  {
+   "distanceM": 40,
+   "nameRelation": "shares_word:πλακα+ορμος",
+   "a": {
+    "id": 1387,
+    "name": "Πλάκα (ανατολικός όρμος)",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 1388,
+    "name": "Πλάκα (δυτικός όρμος)",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "north-aegean-samos",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 45,
+   "nameRelation": "shares_word:παραλια",
+   "a": {
+    "id": 979,
+    "name": "Παραλία Άγιος Γόρδης",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 7,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 1006,
+    "name": "Παραλία Αγίου Γορδίου",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 7,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "ionian-islands-corfu",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 78,
+   "nameRelation": "one_contains_other",
+   "a": {
+    "id": 232,
+    "name": "Κεφάλα",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 257,
+    "name": "Μικρή Κεφάλα",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "central-greece-evia",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 109,
+   "nameRelation": "shares_word:παραλια",
+   "a": {
+    "id": 991,
+    "name": "Παραλία Κληματιά",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 993,
+    "name": "Παραλία Λίμνη",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "ionian-islands-corfu",
+   "richerId": null,
+   "poorerId": null
+  }
+ ],
+ "proximityOnly": [
+  {
+   "distanceM": 0,
+   "nameRelation": null,
+   "a": {
+    "id": 684,
+    "name": "Κόρακας",
+    "score": 8,
+    "photo": false,
+    "placeId": false,
+    "amenities": 4,
+    "story": true,
+    "aliases": 7
+   },
+   "b": {
+    "id": 3011,
+    "name": "Ροδάκινο",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "crete-crete-rethymno",
+   "richerId": 684,
+   "poorerId": 3011
+  },
+  {
+   "distanceM": 0,
+   "nameRelation": null,
+   "a": {
+    "id": 2559,
+    "name": "Παραλία Τουρλίδας",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 3017,
+    "name": "Μεσολόγγι Τουρλίδα",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "west-greece-aetolia-acarnania-mainland",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 63,
+   "nameRelation": null,
+   "a": {
+    "id": 2201,
+    "name": "Λίμνη Πάνω Κουφονησίου",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 11
+   },
+   "b": {
+    "id": 2207,
+    "name": "Πόρτα",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-koufonisia",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 63,
+   "nameRelation": null,
+   "a": {
+    "id": 2033,
+    "name": "Λιβάδια (Παροικιά)",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 5,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2041,
+    "name": "Ναυτικός όμιλος Πάρου",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 5,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-paros",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 70,
+   "nameRelation": null,
+   "a": {
+    "id": 2580,
+    "name": "Ελιά",
+    "score": 7,
+    "photo": false,
+    "placeId": false,
+    "amenities": 3,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2596,
+    "name": "Λεφτό Γιαλός",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 6,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "thessaly-alonissos",
+   "richerId": 2596,
+   "poorerId": 2580
+  },
+  {
+   "distanceM": 87,
+   "nameRelation": null,
+   "a": {
+    "id": 725,
+    "name": "Άργιλος",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 769,
+    "name": "Χιόνα Ξερόκαμπου",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "crete-crete-lasithi",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 87,
+   "nameRelation": null,
+   "a": {
+    "id": 2370,
+    "name": "Άγιος Νικόλαος",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2385,
+    "name": "Τουρκόμνημα",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-lipsi",
+   "richerId": 2370,
+   "poorerId": 2385
+  },
+  {
+   "distanceM": 103,
+   "nameRelation": null,
+   "a": {
+    "id": 2399,
+    "name": "Παραλία Κάμπου",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 5,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 3015,
+    "name": "Πάτμος Κάμπος",
+    "score": 4,
+    "photo": false,
+    "placeId": false,
+    "amenities": 0,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-patmos",
+   "richerId": 2399,
+   "poorerId": 3015
+  },
+  {
+   "distanceM": 107,
+   "nameRelation": null,
+   "a": {
+    "id": 1744,
+    "name": "Βιτσέντζου",
+    "score": 4,
+    "photo": false,
+    "placeId": false,
+    "amenities": 0,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 1748,
+    "name": "Λατινάκι",
+    "score": 4,
+    "photo": false,
+    "placeId": false,
+    "amenities": 0,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-folegandros",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 111,
+   "nameRelation": null,
+   "a": {
+    "id": 346,
+    "name": "Μονιά",
+    "score": 7,
+    "photo": false,
+    "placeId": false,
+    "amenities": 3,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 354,
+    "name": "Σκούλες Μικρή και Μεγάλη",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "central-greece-fokida-mainland",
+   "richerId": 346,
+   "poorerId": 354
+  },
+  {
+   "distanceM": 120,
+   "nameRelation": null,
+   "a": {
+    "id": 1139,
+    "name": "Breath of Zorbas beach",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 5,
+    "story": true,
+    "aliases": 3
+   },
+   "b": {
+    "id": 1142,
+    "name": "Παραλία Νικιάνας",
+    "score": 8,
+    "photo": false,
+    "placeId": false,
+    "amenities": 4,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "ionian-islands-lefkada",
+   "richerId": 1139,
+   "poorerId": 1142
+  },
+  {
+   "distanceM": 125,
+   "nameRelation": null,
+   "a": {
+    "id": 725,
+    "name": "Άργιλος",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 736,
+    "name": "Γεροντόλακκος",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "crete-crete-lasithi",
+   "richerId": null,
+   "poorerId": null
+  },
+  {
+   "distanceM": 128,
+   "nameRelation": null,
+   "a": {
+    "id": 2043,
+    "name": "Παραλία Αγκάλη Χρυσής Ακτής",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2056,
+    "name": "Χρυσή Ακτή",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 7,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "south-aegean-paros",
+   "richerId": 2056,
+   "poorerId": 2043
+  },
+  {
+   "distanceM": 147,
+   "nameRelation": null,
+   "a": {
+    "id": 2606,
+    "name": "Πλάκες",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2607,
+    "name": "Ρουσούμ Γιαλός",
+    "score": 9,
+    "photo": false,
+    "placeId": false,
+    "amenities": 7,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "thessaly-alonissos",
+   "richerId": 2607,
+   "poorerId": 2606
+  },
+  {
+   "distanceM": 149,
+   "nameRelation": null,
+   "a": {
+    "id": 1201,
+    "name": "Ατσίγγανος",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 1214,
+    "name": "Παραλία Σελίνας Φιλίππων",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 4
+   },
+   "region": "ionian-islands-zakynthos",
+   "richerId": 1201,
+   "poorerId": 1214
+  },
+  {
+   "distanceM": 149,
+   "nameRelation": null,
+   "a": {
+    "id": 2466,
+    "name": "Γυμνιστική Περιοχή Νος",
+    "score": 6,
+    "photo": false,
+    "placeId": false,
+    "amenities": 2,
+    "story": true,
+    "aliases": 4
+   },
+   "b": {
+    "id": 2472,
+    "name": "Παραλία της Σάρα",
+    "score": 5,
+    "photo": false,
+    "placeId": false,
+    "amenities": 1,
+    "story": true,
+    "aliases": 6
+   },
+   "region": "south-aegean-symi",
+   "richerId": 2466,
+   "poorerId": 2472
+  }
+ ],
+ "sameNameFar": [
+  {
+   "region": "south-aegean-astypalaia",
+   "distanceM": 1704,
+   "a": {
+    "id": 2248,
+    "name": "Στενό",
+    "lat": 36.57797,
+    "lon": 26.36681,
+    "score": 7
+   },
+   "b": {
+    "id": 3092,
+    "name": "Στενό",
+    "lat": 36.5664406,
+    "lon": 26.3542429,
+    "score": 4
+   },
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting",
+   "resolved": {
+    "verdict": "DIFFERENT_BEACHES",
+    "action": "RENAME #3092 «Στενό» → «Μαρμάρι»",
+    "why": "Στενό means the narrow neck of land; Astypalaia's true isthmus (128 m wide) sits ~400 m from #2248, while #3092 is 1.6 km from it. #3092 is 110 m from the published Μαρμάρι position (allovergreece), and the only OSM feature naming it \"The Steno\" is a v1 English node added 2026-04-23 in a \"Road refinements\" changeset — a drive-by misnaming. Note #2241 Μαμούνια sits 325 m away and its notes already claim the Marmari/Mamounia zone, so check for overlap before adding photos."
+   }
+  },
+  {
+   "region": "thessaly-alonissos",
+   "distanceM": 8524,
+   "a": {
+    "id": 2597,
+    "name": "Μεγάλη Άμμος",
+    "lat": 39.181275,
+    "lon": 23.878219,
+    "score": 5
+   },
+   "b": {
+    "id": 3093,
+    "name": "Μεγάλη Άμμος",
+    "lat": 39.2315332,
+    "lon": 23.9529184,
+    "score": 4
+   },
+   "resolution": "unresolved — check which member sits on the OSM beach of this name (scripts/auditPinVsOsm.mjs), then confirm what beach is actually at the other coordinate before merging or deleting",
+   "resolved": {
+    "verdict": "DIFFERENT_BEACHES",
+    "action": "RENAME #3093 «Μεγάλη Άμμος» → «Στη Μεγάλη Άμμο»",
+    "why": "Alonissos reuses toponyms. #3093 is OSM way/493697014 «Στη Μεγάλη Άμμο» in the NE-coast chain we already carry separately (Καλύβια Σταματίου 640 m SW, Στροβίλι 510 m NE); #2597 is the Πατητήρι-side «Μεγάλη Άμμος» that guides place \"μετά το Τουρκονέρι\" — and Τουρκονέρι/Άγιοι Ανάργυροι are indeed its neighbours. Renaming removes the apparent duplicate without losing a real beach."
+   }
+  }
+ ]
+}

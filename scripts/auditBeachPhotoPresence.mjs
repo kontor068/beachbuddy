@@ -2,261 +2,93 @@
  * Audit which beaches served by the app have a curated photo and which do not.
  *
  * It reads the BUILT app region files in public/data/beaches/app/*.json (the
- * exact beaches + final names + island label the UI renders) and replays the
- * photo-matching rules from services/beachPhotos.ts (verbatim: the same
- * normalizeLookup, the same alias resolvers, the same UNVERIFIED/strict gates,
- * and the same Milos verified-image branch).
+ * exact beaches + final names + island label the UI renders) and asks the REAL
+ * resolver — `getBeachPhotoLookup` from services/beachPhotos.ts, bundled with
+ * esbuild — exactly what the app asks it.
+ *
+ * WHY IT NO LONGER MIRRORS THE RESOLVER (09/09/2026). This script used to
+ * re-implement the matching rules by scraping the table literals out of
+ * services/beachPhotos.ts and re-evaluating them in a sandbox. That copy drifted
+ * and then broke outright: it threw a SyntaxError on CYCLADES_BEACH_PHOTOS_BY_ISLAND,
+ * so reports/photo-coverage/beach-photo-presence.json went stale — and the admin
+ * Quality board reads that file for its photo axis, so every region's photo
+ * percentage was frozen at whatever the last successful run produced. The copy was
+ * also plainly wrong about the Ionian ("app intentionally renders no beach photo"),
+ * while the real resolver serves per-beach Ionian photos. A hand-written mirror of
+ * a 1,600-line resolver cannot be kept honest; asking the resolver can.
  *
  * Output: reports/photo-coverage/beach-photo-presence.csv  (+ .json + summary)
  * Each row: region file, island, beach id, Greek name, English name,
- *           has_photo (yes/no), photo_source (table that matched, or '').
+ *           has_photo (yes/no), photo_source.
+ *
+ * `photo_source` keeps the vocabulary its consumers expect:
+ *   by-id:geo-verified — data/beachPhotosById.generated.json (checked first)
+ *   global             — the global name-keyed BEACH_PHOTOS table is what serves it
+ *   area-or-island     — an area/island-scoped table serves it
+ *   ''                 — no photo
+ * `global` is what scripts/auditNameCollisionPhotos.mjs looks for: those are the
+ * beaches a name collision could hand another island's picture to.
  *
  * Run:  node scripts/auditBeachPhotoPresence.mjs
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const appDir = path.join(rootDir, 'public', 'data', 'beaches', 'app');
-const photosSrc = path.join(rootDir, 'services', 'beachPhotos.ts');
-const milosImagesPath = path.join(rootDir, 'src', 'data', 'beachImages.milos.json');
 const byIdPath = path.join(rootDir, 'data', 'beachPhotosById.generated.json');
 const outDir = path.join(rootDir, 'reports', 'photo-coverage');
 
 const BEACH_PHOTOS_BY_ID = JSON.parse(fs.readFileSync(byIdPath, 'utf8'));
 
-// ---------------------------------------------------------------------------
-// 1. Pull the photo data tables straight out of services/beachPhotos.ts so the
-//    key sets can never drift from the app. We evaluate the file in a sandbox
-//    where `wm()` and the external image URLs are stubbed to harmless markers —
-//    we only care about *which beach-name keys exist*, not the URLs.
-// ---------------------------------------------------------------------------
-const ts = fs.readFileSync(photosSrc, 'utf8');
+// An island name no alias resolver can match, so the lookup skips every
+// area/island-scoped table and falls through to the global BEACH_PHOTOS table.
+// Comparing that answer with the real-island answer tells us which table serves
+// the beach without re-implementing a single matching rule.
+const NO_SUCH_ISLAND = '__calmbeach_audit_no_such_island__';
 
-const grab = (name) => {
-  // Match `const NAME ... = {  ... };` or `= [ ... ];` at top level.
-  const re = new RegExp(`const ${name}[^=]*=\\s*`, 'm');
-  const m = re.exec(ts);
-  if (!m) throw new Error(`Could not locate ${name} in beachPhotos.ts`);
-  let start = m.index + m[0].length;
-  // `const X = new Set([ ... ])` — skip to the inner array literal.
-  if (ts.slice(start, start + 8).startsWith('new Set(')) {
-    start = ts.indexOf('[', start);
+const bundleResolver = async () => {
+  const outFile = path.join(rootDir, '.tmp', 'beachPhotos.presence.bundle.cjs');
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  await build({
+    entryPoints: [path.join(rootDir, 'services', 'beachPhotos.ts')],
+    bundle: true,
+    platform: 'node',
+    format: 'cjs',
+    outfile: outFile,
+    logLevel: 'error',
+    loader: { '.json': 'json' },
+  });
+  const mod = await import(`file://${outFile}?t=${Date.now()}`);
+  if (typeof mod.getBeachPhotoLookup !== 'function') {
+    throw new Error('services/beachPhotos.ts no longer exports getBeachPhotoLookup');
   }
-  // Walk braces/brackets to find the matching close.
-  const open = ts[start];
-  const close = open === '{' ? '}' : ']';
-  let depth = 0;
-  let i = start;
-  let inStr = null;
-  for (; i < ts.length; i++) {
-    const c = ts[i];
-    if (inStr) {
-      if (c === '\\') { i++; continue; }
-      if (c === inStr) inStr = null;
-      continue;
-    }
-    if (c === '"' || c === "'" || c === '`') { inStr = c; continue; }
-    if (c === open) depth++;
-    else if (c === close) { depth--; if (depth === 0) { i++; break; } }
-  }
-  return ts.slice(start, i);
+  return { getBeachPhotoLookup: mod.getBeachPhotoLookup, outFile };
 };
 
-// Sandbox helpers: wm()/URLs collapse to a single marker so arrays become
-// truthy non-empty lists of strings (length is all the matcher checks).
-const wm = () => 'PHOTO';
-const MILOS_UNSPLASH_COVE = 'PHOTO';
-const MILOS_PEXELS_SOUTH_BAY = 'PHOTO';
-const MILOS_PEXELS_GERAKAS = 'PHOTO';
-const MILOS_PEXELS_BOATS_CLIFFS = 'PHOTO';
-const MILOS_FLICKR_KLEFTIKO = 'PHOTO';
-const MILOS_FLICKR_PIRATES_LAIR = 'PHOTO';
+const { getBeachPhotoLookup, outFile } = await bundleResolver();
 
-// The big lookup tables reference named photo-array constants declared above
-// them (e.g. ATTICA_VOULA_A_PLAZ_PHOTOS = [wm(...)]). Collect every such
-// top-level `const NAME = [ ... ];` photo array and stub it in the sandbox.
-const photoArrayConsts = {};
-{
-  const re = /const ([A-Z][A-Z0-9_]*_PHOTOS)\s*=\s*\[/g;
-  let m;
-  while ((m = re.exec(ts))) {
-    const name = m[1];
-    const start = m.index + m[0].length - 1; // at '['
-    let depth = 0;
-    let i = start;
-    let inStr = null;
-    for (; i < ts.length; i++) {
-      const c = ts[i];
-      if (inStr) { if (c === '\\') { i++; continue; } if (c === inStr) inStr = null; continue; }
-      if (c === '"' || c === "'" || c === '`') { inStr = c; continue; }
-      if (c === '[') depth++;
-      else if (c === ']') { depth--; if (depth === 0) { i++; break; } }
-    }
-    const literal = ts.slice(start, i);
-    // eslint-disable-next-line no-new-func
-    photoArrayConsts[name] = Function(
-      'wm', 'MILOS_UNSPLASH_COVE', 'MILOS_PEXELS_SOUTH_BAY', 'MILOS_PEXELS_GERAKAS',
-      'MILOS_PEXELS_BOATS_CLIFFS', 'MILOS_FLICKR_KLEFTIKO', 'MILOS_FLICKR_PIRATES_LAIR',
-      `return (${literal});`,
-    )(wm, MILOS_UNSPLASH_COVE, MILOS_PEXELS_SOUTH_BAY, MILOS_PEXELS_GERAKAS,
-      MILOS_PEXELS_BOATS_CLIFFS, MILOS_FLICKR_KLEFTIKO, MILOS_FLICKR_PIRATES_LAIR);
-  }
-}
-const sandboxNames = [
-  'wm', 'MILOS_UNSPLASH_COVE', 'MILOS_PEXELS_SOUTH_BAY', 'MILOS_PEXELS_GERAKAS',
-  'MILOS_PEXELS_BOATS_CLIFFS', 'MILOS_FLICKR_KLEFTIKO', 'MILOS_FLICKR_PIRATES_LAIR',
-  ...Object.keys(photoArrayConsts),
-];
-const sandboxValues = [
-  wm, MILOS_UNSPLASH_COVE, MILOS_PEXELS_SOUTH_BAY, MILOS_PEXELS_GERAKAS,
-  MILOS_PEXELS_BOATS_CLIFFS, MILOS_FLICKR_KLEFTIKO, MILOS_FLICKR_PIRATES_LAIR,
-  ...Object.values(photoArrayConsts),
-];
+const sameUrls = (a, b) => a.length === b.length && a.every((url, i) => url === b[i]);
 
-const evalLiteral = (name) => {
-  const literal = grab(name);
-  // eslint-disable-next-line no-new-func
-  return Function(...sandboxNames, `return (${literal});`)(...sandboxValues);
-};
+const classify = (gr, en, beachId, islandName) => {
+  const real = getBeachPhotoLookup(gr, en, beachId, 3, islandName);
+  if (real.source !== 'exact') return { has: false, source: '' };
 
-const BEACH_PHOTOS = evalLiteral('BEACH_PHOTOS');
-const ATTICA_BEACH_PHOTOS_BY_AREA = evalLiteral('ATTICA_BEACH_PHOTOS_BY_AREA');
-const CRETE_BEACH_PHOTOS_BY_AREA = evalLiteral('CRETE_BEACH_PHOTOS_BY_AREA');
-const MACEDONIA_BEACH_PHOTOS_BY_AREA = evalLiteral('MACEDONIA_BEACH_PHOTOS_BY_AREA');
-const THRACE_BEACH_PHOTOS_BY_AREA = evalLiteral('THRACE_BEACH_PHOTOS_BY_AREA');
-const NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA = evalLiteral('NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA');
-const MILOS_BEACH_PHOTOS = evalLiteral('MILOS_BEACH_PHOTOS');
-// CYCLADES_BEACH_PHOTOS_BY_ISLAND references MILOS_BEACH_PHOTOS by identity.
-sandboxNames.push('MILOS_BEACH_PHOTOS');
-sandboxValues.push(MILOS_BEACH_PHOTOS);
-const CYCLADES_BEACH_PHOTOS_BY_ISLAND = evalLiteral('CYCLADES_BEACH_PHOTOS_BY_ISLAND');
-const UNVERIFIED_BEACH_PHOTO_KEYS = new Set(evalLiteral('UNVERIFIED_BEACH_PHOTO_KEYS'));
-const VERIFIED_MILOS_BEACH_PHOTO_KEYS = new Set(evalLiteral('VERIFIED_MILOS_BEACH_PHOTO_KEYS'));
-const CYCLADES_ISLAND_ALIASES = evalLiteral('CYCLADES_ISLAND_ALIASES');
-const ATTICA_AREA_ALIASES = evalLiteral('ATTICA_AREA_ALIASES');
-const MACEDONIA_AREA_ALIASES = evalLiteral('MACEDONIA_AREA_ALIASES');
-const CRETE_AREA_ALIASES = evalLiteral('CRETE_AREA_ALIASES');
-const THRACE_AREA_ALIASES = evalLiteral('THRACE_AREA_ALIASES');
-const NORTH_AEGEAN_AREA_ALIASES = evalLiteral('NORTH_AEGEAN_AREA_ALIASES');
-const IONIAN_ISLAND_ALIASES = evalLiteral('IONIAN_ISLAND_ALIASES');
-
-// Milos verified images (the special branch).
-const milosImages = JSON.parse(fs.readFileSync(milosImagesPath, 'utf8'));
-
-// ---------------------------------------------------------------------------
-// 2. Re-implementation of the lookup helpers — copied 1:1 from beachPhotos.ts.
-// ---------------------------------------------------------------------------
-const normalizeLookup = (value) =>
-  value
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9α-ω]+/gi, '');
-
-const aliasKey = (aliases, name) => {
-  if (!name) return null;
-  const n = normalizeLookup(name);
-  if (aliases[n]) return aliases[n];
-  for (const [alias, key] of Object.entries(aliases)) {
-    if (n.includes(alias) || alias.includes(n)) return key;
-  }
-  return null;
-};
-
-const findPhotos = (photosByName, gr, en, strictAllowedKeys) => {
-  const ng = normalizeLookup(gr);
-  const ne = normalizeLookup(en);
-  if (strictAllowedKeys && !strictAllowedKeys.has(ng) && !strictAllowedKeys.has(ne)) return [];
-  if (UNVERIFIED_BEACH_PHOTO_KEYS.has(ng) || UNVERIFIED_BEACH_PHOTO_KEYS.has(ne)) return [];
-  if (photosByName[gr]?.length) return photosByName[gr];
-  if (photosByName[en]?.length) return photosByName[en];
-  for (const [key, photos] of Object.entries(photosByName)) {
-    const nk = normalizeLookup(key);
-    if (nk === ng || nk === ne) return photos;
-  }
-  return [];
-};
-
-const isMilosIsland = (island) => {
-  const n = normalizeLookup(island || '');
-  return n === 'milos' || n === 'μηλος';
-};
-
-// Mirror of getBeachPhotoLookup → returns { has: bool, source: string }.
-// BEACH_PHOTOS_BY_ID is checked FIRST in services/beachPhotos.ts (GPS-verified,
-// keyed by beachId — see scripts/harvestGeoPhotos.mjs) and must be checked first
-// here too: this branch was missing until 30/07/2026, which made this script
-// undercount coverage by ~1,000 beaches (reported 12% has-photo vs the real ~50%).
-const lookup = (gr, en, beachId, islandName) => {
   const byId = BEACH_PHOTOS_BY_ID[String(beachId)];
   if (byId && byId.length) return { has: true, source: 'by-id:geo-verified' };
 
-  const atticaKey = aliasKey(ATTICA_AREA_ALIASES, islandName);
-  if (atticaKey) {
-    const t = ATTICA_BEACH_PHOTOS_BY_AREA[atticaKey];
-    if (t && findPhotos(t, gr, en).length) return { has: true, source: `attica:${atticaKey}` };
-    if (t) return { has: false, source: '' };
-  }
-  const creteKey = aliasKey(CRETE_AREA_ALIASES, islandName);
-  if (creteKey) {
-    const t = CRETE_BEACH_PHOTOS_BY_AREA[creteKey];
-    if (t && findPhotos(t, gr, en).length) return { has: true, source: `crete:${creteKey}` };
-    if (t) return { has: false, source: '' };
-  }
-  const macKey = aliasKey(MACEDONIA_AREA_ALIASES, islandName);
-  if (macKey) {
-    const t = MACEDONIA_BEACH_PHOTOS_BY_AREA[macKey];
-    if (t && findPhotos(t, gr, en).length) return { has: true, source: `macedonia:${macKey}` };
-    if (t) return { has: false, source: '' };
-  }
-  const thraceKey = aliasKey(THRACE_AREA_ALIASES, islandName);
-  if (thraceKey) {
-    const t = THRACE_BEACH_PHOTOS_BY_AREA[thraceKey];
-    if (t && findPhotos(t, gr, en).length) return { has: true, source: `thrace:${thraceKey}` };
-    if (t) return { has: false, source: '' };
-  }
-  const naKey = aliasKey(NORTH_AEGEAN_AREA_ALIASES, islandName);
-  if (naKey) {
-    const t = NORTH_AEGEAN_BEACH_PHOTOS_BY_AREA[naKey];
-    if (t && findPhotos(t, gr, en).length) return { has: true, source: `north-aegean:${naKey}` };
-    if (t) return { has: false, source: '' };
-  }
-  const cycKey = aliasKey(CYCLADES_ISLAND_ALIASES, islandName);
-  if (cycKey) {
-    if (cycKey === 'milos') {
-      const byId = isMilosIsland(islandName)
-        ? milosImages.find((e) => String(e.beachId) === String(beachId) && e.imageStatus === 'verified')
-        : undefined;
-      const ng = normalizeLookup(gr);
-      const ne = normalizeLookup(en);
-      const byName = !byId && isMilosIsland(islandName)
-        ? milosImages.find((e) =>
-            e.imageStatus === 'verified' &&
-            (normalizeLookup(e.beachName || '') === ng ||
-             normalizeLookup(e.beachName || '') === ne ||
-             normalizeLookup(e.beachNameEl || '') === ng ||
-             normalizeLookup(e.beachNameEl || '') === ne))
-        : undefined;
-      const hit = byId || byName;
-      return hit?.imageUrl ? { has: true, source: 'milos:verified-image' } : { has: false, source: '' };
-    }
-    const t = CYCLADES_BEACH_PHOTOS_BY_ISLAND[cycKey];
-    const allowed = cycKey === 'milos' ? VERIFIED_MILOS_BEACH_PHOTO_KEYS : undefined;
-    if (t && findPhotos(t, gr, en, allowed).length) return { has: true, source: `cyclades:${cycKey}` };
-    return { has: false, source: '' };
-  }
-  // Ionian: app intentionally renders no beach photo.
-  if (aliasKey(IONIAN_ISLAND_ALIASES, islandName)) return { has: false, source: '' };
+  const global = getBeachPhotoLookup(gr, en, beachId, 3, NO_SUCH_ISLAND);
+  const servedByGlobal =
+    global.source === 'exact' && sameUrls(real.photos ?? [], global.photos ?? []);
 
-  if (findPhotos(BEACH_PHOTOS, gr, en).length) return { has: true, source: 'global' };
-  return { has: false, source: '' };
+  return { has: true, source: servedByGlobal ? 'global' : 'area-or-island' };
 };
 
 // ---------------------------------------------------------------------------
-// 3. Walk every built app region file and classify each beach.
+// Walk every built app region file and classify each beach.
 // ---------------------------------------------------------------------------
 const files = fs.readdirSync(appDir).filter((f) => f.endsWith('.json'));
 const rows = [];
@@ -270,7 +102,7 @@ for (const file of files) {
     const gr = b.name?.gr || '';
     const en = b.name?.en || '';
     // App passes island.name[language]; English form resolves the same alias key.
-    const res = lookup(gr, en, b.id, islandNameEn);
+    const res = classify(gr, en, b.id, islandNameEn);
     rows.push({
       regionFile: file.replace(/\.json$/, ''),
       island: islandNameGr,
@@ -287,7 +119,7 @@ rows.sort((a, b) =>
   a.island.localeCompare(b.island, 'el') || a.nameGr.localeCompare(b.nameGr, 'el'));
 
 // ---------------------------------------------------------------------------
-// 4. Write CSV + JSON + summary.
+// Write CSV + JSON + summary.
 // ---------------------------------------------------------------------------
 fs.mkdirSync(outDir, { recursive: true });
 const csvEsc = (v) => {
@@ -325,6 +157,8 @@ const summaryLines = [
 ];
 const summary = summaryLines.join('\n');
 fs.writeFileSync(path.join(outDir, 'beach-photo-presence-summary.txt'), summary, 'utf8');
+
+fs.rmSync(outFile, { force: true });
 
 console.log(summary);
 console.log('');

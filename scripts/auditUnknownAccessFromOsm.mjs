@@ -176,6 +176,22 @@ const classify = (lat, lon, roads) => {
     };
   }
 
+  // Say WHY the nearest road was not accepted. This message used to always read
+  // "too far to be the beach's road", which is wrong whenever the road is close but
+  // its class/surface simply does not prove asphalt — a human reading the report then
+  // went looking for a distance problem that was not there (#3172 Ακρωτήρι: an
+  // unclassified road 24 m away, reported as "too far").
+  const whyRejected = (road) => {
+    if (road.distM > TRACK_M) return 'πολύ μακριά για να είναι ο δρόμος της παραλίας';
+    if (UNPAVED_SURFACE.has(road.surface)) return 'δηλωμένος άστρωτος — δεν στοιχειοθετεί άσφαλτο';
+    if (DRIVABLE_CLASS.has(road.highway)) {
+      return road.distM > PAVED_M
+        ? `οδηγήσιμος αλλά πάνω από τα ${PAVED_M} m που δεχόμαστε ως πρόσβαση παραλίας`
+        : 'η κατηγορία του δεν αποδεικνύει στρωμένο δρόμο και δεν φέρει surface';
+    }
+    return 'δεν είναι κατηγορία δρόμου πρόσβασης';
+  };
+
   // Reported, never proposed: a path tells you nothing about how hard the descent is.
   const paths = withDist.filter((r) => ['path', 'footway', 'steps', 'bridleway'].includes(r.highway) && r.distM <= TRACK_M);
   const nearestAny = withDist[0];
@@ -186,7 +202,7 @@ const classify = (lat, lon, roads) => {
     evidence: paths.length
       ? `μόνο μονοπάτι κοντά (${paths[0].osm} highway=${paths[0].highway} στα ${paths[0].distM} m) — δεν ταξινομείται αυτόματα`
       : nearestAny
-        ? `πλησιέστερος δρόμος ${nearestAny.osm} highway=${nearestAny.highway} στα ${nearestAny.distM} m — πολύ μακριά για να είναι ο δρόμος της παραλίας`
+        ? `πλησιέστερος δρόμος ${nearestAny.osm} highway=${nearestAny.highway}${nearestAny.surface ? ` surface=${nearestAny.surface}` : ''} στα ${nearestAny.distM} m — ${whyRejected(nearestAny)}`
         : `κανένας δρόμος στον OSM σε ${RADIUS} m`,
   };
 };

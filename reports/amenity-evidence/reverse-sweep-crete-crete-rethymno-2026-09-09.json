@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-09-09T12:10:53.092Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 48,
+    "omissionsStrong": 1,
+    "omissionsMedium": 1,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 0
+  },
+  "omissions": [
+    {
+      "id": 677,
+      "name": "Γεροπόταμος",
+      "regionId": "crete-crete-rethymno",
+      "strength": "strong",
+      "currentAmenities": [
+        "ταβέρνα",
+        "parking"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 65m)"
+      ],
+      "ratingCount": 1160
+    },
+    {
+      "id": 673,
+      "name": "Άγιος Γεώργιος",
+      "regionId": "crete-crete-rethymno",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Georgios Taverna\" (fast_food_restaurant, 66m)"
+      ],
+      "ratingCount": 65
+    }
+  ],
+  "errors": []
+}

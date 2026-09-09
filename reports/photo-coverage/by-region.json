@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-16T11:11:19.219Z",
+  "generatedAt": "2026-09-09T11:27:24.868Z",
   "filter": null,
   "national": {
-    "total": 2862,
+    "total": 2861,
     "withPhoto": 1399,
-    "missing": 1463,
+    "missing": 1462,
     "pct": 48.9
   },
   "regions": [
@@ -13,10 +13,10 @@
       "region": "Naxos",
       "regionGr": "Νάξος",
       "group": "cyclades",
-      "total": 44,
-      "withPhoto": 28,
-      "missing": 16,
-      "pct": 63.6
+      "total": 43,
+      "withPhoto": 26,
+      "missing": 17,
+      "pct": 60.5
     },
     {
       "id": "south-aegean-milos",
@@ -33,10 +33,10 @@
       "region": "Andros",
       "regionGr": "Άνδρος",
       "group": "cyclades",
-      "total": 41,
+      "total": 40,
       "withPhoto": 15,
-      "missing": 26,
-      "pct": 36.6
+      "missing": 25,
+      "pct": 37.5
     },
     {
       "id": "south-aegean-ios",
@@ -49,16 +49,6 @@
       "pct": 22.5
     },
     {
-      "id": "south-aegean-kythnos",
-      "region": "Kythnos",
-      "regionGr": "Κύθνος",
-      "group": "cyclades",
-      "total": 40,
-      "withPhoto": 24,
-      "missing": 16,
-      "pct": 60
-    },
-    {
       "id": "south-aegean-tinos",
       "region": "Tinos",
       "regionGr": "Τήνος",
@@ -67,6 +57,16 @@
       "withPhoto": 19,
       "missing": 21,
       "pct": 47.5
+    },
+    {
+      "id": "south-aegean-kythnos",
+      "region": "Kythnos",
+      "regionGr": "Κύθνος",
+      "group": "cyclades",
+      "total": 39,
+      "withPhoto": 24,
+      "missing": 15,
+      "pct": 61.5
     },
     {
       "id": "south-aegean-mykonos",
@@ -93,10 +93,10 @@
       "region": "Kea",
       "regionGr": "Κέα",
       "group": "cyclades",
-      "total": 34,
+      "total": 32,
       "withPhoto": 7,
-      "missing": 27,
-      "pct": 20.6
+      "missing": 25,
+      "pct": 21.9
     },
     {
       "id": "south-aegean-serifos",
@@ -149,6 +149,16 @@
       "pct": 23.5
     },
     {
+      "id": "south-aegean-amorgos",
+      "region": "Amorgos",
+      "regionGr": "Αμοργός",
+      "group": "cyclades",
+      "total": 16,
+      "withPhoto": 9,
+      "missing": 7,
+      "pct": 56.3
+    },
+    {
       "id": "south-aegean-folegandros",
       "region": "Folegandros",
       "regionGr": "Φολέγανδρος",
@@ -159,24 +169,14 @@
       "pct": 93.8
     },
     {
-      "id": "south-aegean-amorgos",
-      "region": "Amorgos",
-      "regionGr": "Αμοργός",
-      "group": "cyclades",
-      "total": 15,
-      "withPhoto": 8,
-      "missing": 7,
-      "pct": 53.3
-    },
-    {
       "id": "south-aegean-anafi",
       "region": "Anafi",
       "regionGr": "Ανάφη",
       "group": "cyclades",
-      "total": 15,
+      "total": 14,
       "withPhoto": 7,
-      "missing": 8,
-      "pct": 46.7
+      "missing": 7,
+      "pct": 50
     },
     {
       "id": "south-aegean-santorini",
@@ -193,10 +193,10 @@
       "region": "Antiparos",
       "regionGr": "Αντίπαρος",
       "group": "cyclades",
-      "total": 12,
+      "total": 11,
       "withPhoto": 4,
-      "missing": 8,
-      "pct": 33.3
+      "missing": 7,
+      "pct": 36.4
     },
     {
       "id": "south-aegean-schinoussa",
@@ -254,19 +254,19 @@
       "regionGr": "Ρόδος",
       "group": "dodecanese",
       "total": 62,
-      "withPhoto": 46,
-      "missing": 16,
-      "pct": 74.2
+      "withPhoto": 47,
+      "missing": 15,
+      "pct": 75.8
     },
     {
       "id": "south-aegean-karpathos",
       "region": "Karpathos",
       "regionGr": "Κάρπαθος",
       "group": "dodecanese",
-      "total": 45,
-      "withPhoto": 18,
-      "missing": 27,
-      "pct": 40
+      "total": 49,
+      "withPhoto": 19,
+      "missing": 30,
+      "pct": 38.8
     },
     {
       "id": "south-aegean-kos",
@@ -563,20 +563,20 @@
       "region": "Chania",
       "regionGr": "Χανιά",
       "group": "crete",
-      "total": 89,
+      "total": 90,
       "withPhoto": 52,
-      "missing": 37,
-      "pct": 58.4
+      "missing": 38,
+      "pct": 57.8
     },
     {
       "id": "crete-crete-lasithi",
       "region": "Lasithi",
       "regionGr": "Λασίθι",
       "group": "crete",
-      "total": 63,
+      "total": 66,
       "withPhoto": 40,
-      "missing": 23,
-      "pct": 63.5
+      "missing": 26,
+      "pct": 60.6
     },
     {
       "id": "crete-crete-heraklion",
@@ -654,9 +654,9 @@
       "regionGr": "Λέσβος",
       "group": "north_aegean",
       "total": 62,
-      "withPhoto": 17,
-      "missing": 45,
-      "pct": 27.4
+      "withPhoto": 15,
+      "missing": 47,
+      "pct": 24.2
     },
     {
       "id": "north-aegean-samos",
@@ -673,10 +673,10 @@
       "region": "Lemnos",
       "regionGr": "Λήμνος",
       "group": "north_aegean",
-      "total": 40,
+      "total": 41,
       "withPhoto": 10,
-      "missing": 30,
-      "pct": 25
+      "missing": 31,
+      "pct": 24.4
     },
     {
       "id": "north-aegean-chios",
@@ -823,10 +823,10 @@
       "region": "Evia",
       "regionGr": "Εύβοια",
       "group": "euboea",
-      "total": 130,
-      "withPhoto": 45,
-      "missing": 85,
-      "pct": 34.6
+      "total": 128,
+      "withPhoto": 44,
+      "missing": 84,
+      "pct": 34.4
     },
     {
       "id": "attica-east-attica-mainland",
@@ -893,10 +893,10 @@
       "region": "Thessaloniki area",
       "regionGr": "Περιοχή Θεσσαλονίκης",
       "group": "mainland_macedonia",
-      "total": 16,
-      "withPhoto": 10,
+      "total": 17,
+      "withPhoto": 11,
       "missing": 6,
-      "pct": 62.5
+      "pct": 64.7
     },
     {
       "id": "central-macedonia-pieria-mainland",
@@ -943,10 +943,10 @@
       "region": "Xanthi",
       "regionGr": "Ξάνθη",
       "group": "mainland_thrace",
-      "total": 3,
-      "withPhoto": 2,
+      "total": 2,
+      "withPhoto": 1,
       "missing": 1,
-      "pct": 66.7
+      "pct": 50
     },
     {
       "id": "peloponnese-lakonia-mainland",
@@ -983,10 +983,10 @@
       "region": "Korinthia",
       "regionGr": "Κορινθία",
       "group": "mainland_peloponnese",
-      "total": 25,
-      "withPhoto": 9,
+      "total": 24,
+      "withPhoto": 8,
       "missing": 16,
-      "pct": 36
+      "pct": 33.3
     },
     {
       "id": "west-greece-achaia-mainland",
@@ -1004,9 +1004,9 @@
       "regionGr": "Αρκαδία",
       "group": "mainland_peloponnese",
       "total": 17,
-      "withPhoto": 9,
-      "missing": 8,
-      "pct": 52.9
+      "withPhoto": 10,
+      "missing": 7,
+      "pct": 58.8
     },
     {
       "id": "west-greece-aetolia-acarnania-mainland",
@@ -1093,10 +1093,10 @@
       "region": "Magnesia (Pelion)",
       "regionGr": "Μαγνησία (Πήλιο)",
       "group": "mainland_thessaly",
-      "total": 70,
-      "withPhoto": 22,
-      "missing": 48,
-      "pct": 31.4
+      "total": 69,
+      "withPhoto": 24,
+      "missing": 45,
+      "pct": 34.8
     },
     {
       "id": "thessaly-larissa-coast-agia---kissavos",

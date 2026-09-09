@@ -1,0 +1,956 @@
+{
+  "generatedAt": "2026-09-09T12:08:41.933Z",
+  "radiusM": 150,
+  "regionFilter": null,
+  "partial": false,
+  "counts": {
+    "latinNamed": 152,
+    "confirmed": 24,
+    "review": 3,
+    "rejected": 8,
+    "noEvidence": 117
+  },
+  "confirmed": [
+    {
+      "id": 383,
+      "region": "Halkidiki (mainland)",
+      "ours": "Akti Kalogrias",
+      "proposedNameGr": "Ακτή Καλογριάς",
+      "osmName": "Ακτή Καλογριάς",
+      "osmTransliteration": "Akti Kalogrias",
+      "osmId": "way/169010917",
+      "distanceM": 1
+    },
+    {
+      "id": 389,
+      "region": "Halkidiki (mainland)",
+      "ours": "Chrysi Ammoudia",
+      "proposedNameGr": "Χρυσή Αμμουδιά",
+      "osmName": "Χρυσή αμμουδιά",
+      "osmTransliteration": "Chrysi ammoudia",
+      "osmId": "way/27406026",
+      "distanceM": 0
+    },
+    {
+      "id": 391,
+      "region": "Halkidiki (mainland)",
+      "ours": "Dimotiki Plaz 1",
+      "proposedNameGr": "Δημοτική Πλαζ 1",
+      "osmName": "Δημοτική Πλαζ 1",
+      "osmTransliteration": "Dimotiki Plaz 1",
+      "osmId": "way/363020035",
+      "distanceM": 0
+    },
+    {
+      "id": 392,
+      "region": "Halkidiki (mainland)",
+      "ours": "Dimotiki Plaz 2",
+      "proposedNameGr": "Δημοτική Πλαζ 2",
+      "osmName": "Δημοτική Πλαζ 2",
+      "osmTransliteration": "Dimotiki Plaz 2",
+      "osmId": "way/363019945",
+      "distanceM": 0
+    },
+    {
+      "id": 393,
+      "region": "Halkidiki (mainland)",
+      "ours": "Dimotiki Plaz 3",
+      "proposedNameGr": "Δημοτική Πλαζ 3",
+      "osmName": "Δημοτική Πλαζ 3",
+      "osmTransliteration": "Dimotiki Plaz 3",
+      "osmId": "way/363019768",
+      "distanceM": 0
+    },
+    {
+      "id": 401,
+      "region": "Halkidiki (mainland)",
+      "ours": "Iliovasilema",
+      "proposedNameGr": "Ηλιοβασίλεμα",
+      "osmName": "Ηλιοβασίλεμα",
+      "osmTransliteration": "Iliovasilema",
+      "osmId": "way/1420917773",
+      "distanceM": 0
+    },
+    {
+      "id": 403,
+      "region": "Halkidiki (mainland)",
+      "ours": "Kakoudia",
+      "proposedNameGr": "Κακούδια",
+      "osmName": "Κακούδια",
+      "osmTransliteration": "Kakoydia",
+      "osmId": "way/363019603",
+      "distanceM": 0
+    },
+    {
+      "id": 408,
+      "region": "Halkidiki (mainland)",
+      "ours": "Kavouri",
+      "proposedNameGr": "Καβούρι",
+      "osmName": "Καβούρι",
+      "osmTransliteration": "Kavoyri",
+      "osmId": "way/437116702",
+      "distanceM": 0
+    },
+    {
+      "id": 409,
+      "region": "Halkidiki (mainland)",
+      "ours": "Kavourotrypes",
+      "proposedNameGr": "Καβουρότρυπες",
+      "osmName": "Καβουρότρυπες",
+      "osmTransliteration": "Kavourotrypes",
+      "osmId": "way/367613244",
+      "distanceM": 6
+    },
+    {
+      "id": 410,
+      "region": "Halkidiki (mainland)",
+      "ours": "Kefalas",
+      "proposedNameGr": "Κεφάλας",
+      "osmName": "Κεφάλας",
+      "osmTransliteration": "Kefalas",
+      "osmId": "way/35830390",
+      "distanceM": 0
+    },
+    {
+      "id": 412,
+      "region": "Halkidiki (mainland)",
+      "ours": "Komitsa",
+      "proposedNameGr": "Κομίτσα",
+      "osmName": "Κομίτσα",
+      "osmTransliteration": "Komitsa",
+      "osmId": "way/297788643",
+      "distanceM": 0
+    },
+    {
+      "id": 423,
+      "region": "Halkidiki (mainland)",
+      "ours": "Livadi",
+      "proposedNameGr": "Λιβάδι",
+      "osmName": "Λιβάδι",
+      "osmTransliteration": "Livadi",
+      "osmId": "node/9801070886",
+      "distanceM": 0
+    },
+    {
+      "id": 429,
+      "region": "Halkidiki (mainland)",
+      "ours": "Myti",
+      "proposedNameGr": "Μύτη",
+      "osmName": "Μύτη",
+      "osmTransliteration": "Myti",
+      "osmId": "node/9807492948",
+      "distanceM": 0
+    },
+    {
+      "id": 440,
+      "region": "Halkidiki (mainland)",
+      "ours": "Porto Koufo",
+      "proposedNameGr": "Πόρτο Κουφό",
+      "osmName": "Πόρτο Κουφό",
+      "osmTransliteration": "Porto Koufo",
+      "osmId": "way/293401091",
+      "distanceM": 0
+    },
+    {
+      "id": 449,
+      "region": "Halkidiki (mainland)",
+      "ours": "Trani Ammouda",
+      "proposedNameGr": "Τρανή Αμμούδα",
+      "osmName": "Τρανή Αμμούδα",
+      "osmTransliteration": "Trani Ammoyda",
+      "osmId": "way/54842604",
+      "distanceM": 0
+    },
+    {
+      "id": 451,
+      "region": "Halkidiki (mainland)",
+      "ours": "Tsifliki",
+      "proposedNameGr": "Τσιφλίκι",
+      "osmName": "Τσιφλίκι",
+      "osmTransliteration": "Tsifliki",
+      "osmId": "relation/16920175",
+      "distanceM": 0
+    },
+    {
+      "id": 452,
+      "region": "Halkidiki (mainland)",
+      "ours": "Varkes",
+      "proposedNameGr": "Βάρκες",
+      "osmName": "Βάρκες",
+      "osmTransliteration": "Varkes",
+      "osmId": "node/3019068032",
+      "distanceM": 0
+    },
+    {
+      "id": 454,
+      "region": "Halkidiki (mainland)",
+      "ours": "Voulitsa",
+      "proposedNameGr": "Βουλίτσα",
+      "osmName": "Βουλίτσα",
+      "osmTransliteration": "Voulitsa",
+      "osmId": "way/497178601",
+      "distanceM": 0
+    },
+    {
+      "id": 455,
+      "region": "Halkidiki (mainland)",
+      "ours": "Vourvourou",
+      "proposedNameGr": "Βουρβουρού",
+      "osmName": "Βουρβουρού",
+      "osmTransliteration": "Vourvouroy",
+      "osmId": "way/444580840",
+      "distanceM": 0
+    },
+    {
+      "id": 503,
+      "region": "Pieria (mainland)",
+      "ours": "Alykes Kitrous",
+      "proposedNameGr": "Παραλία Αλυκές Κίτρους",
+      "osmName": "Παραλία Αλυκές Κίτρους",
+      "osmTransliteration": "Paralia Alykes Kitrous",
+      "osmId": "way/1374667622",
+      "distanceM": 0
+    },
+    {
+      "id": 504,
+      "region": "Pieria (mainland)",
+      "ours": "Alyki",
+      "proposedNameGr": "Αλυκή",
+      "osmName": "Αλυκή",
+      "osmTransliteration": "Alyki",
+      "osmId": "way/1428019724",
+      "distanceM": 0
+    },
+    {
+      "id": 587,
+      "region": "Crete (Chania)",
+      "ours": "Agios Onoufrios",
+      "proposedNameGr": "Άγιος Ονούφριος",
+      "osmName": "Άγιος Ονούφριος",
+      "osmTransliteration": "Agios Onoyfrios",
+      "osmId": "way/373975751",
+      "distanceM": 1
+    },
+    {
+      "id": 594,
+      "region": "Crete (Chania)",
+      "ours": "Chrysi Akti",
+      "proposedNameGr": "Χρυσή Ακτή",
+      "osmName": "Χρυσή Ακτή",
+      "osmTransliteration": "Chrysi Akti",
+      "osmId": "way/48474061",
+      "distanceM": 0
+    },
+    {
+      "id": 598,
+      "region": "Crete (Chania)",
+      "ours": "Georgioupoli",
+      "proposedNameGr": "Γεωργιούπολη",
+      "osmName": "Γεωργιούπολη",
+      "osmTransliteration": "Georgioypoli",
+      "osmId": "way/383275428",
+      "distanceM": 0
+    }
+  ],
+  "review": [
+    {
+      "id": 430,
+      "region": "Halkidiki (mainland)",
+      "ours": "Oneiro",
+      "proposedNameGr": "Παραλία Ονείρου",
+      "osmName": "Παραλία ονείρου",
+      "osmTransliteration": "Paralia oneirou",
+      "osmId": "way/258910912",
+      "distanceM": 0
+    },
+    {
+      "id": 445,
+      "region": "Halkidiki (mainland)",
+      "ours": "Sykia",
+      "proposedNameGr": "Παραλία Συκιάς",
+      "osmName": "Παραλία Συκιάς",
+      "osmTransliteration": "Paralia Sykias",
+      "osmId": "way/166089621",
+      "distanceM": 1
+    },
+    {
+      "id": 507,
+      "region": "Pieria (mainland)",
+      "ours": "Panteleimonas",
+      "proposedNameGr": "Παραλία Παντελεήμονα",
+      "osmName": "Παραλία Παντελεήμονα",
+      "osmTransliteration": "Paralia Panteleimona",
+      "osmId": "way/1314227826",
+      "distanceM": 0
+    }
+  ],
+  "rejected": [
+    {
+      "id": 414,
+      "region": "Halkidiki (mainland)",
+      "ours": "Kryfos Paradeisos",
+      "proposedNameGr": "Κρυφός Παράδεισος Παραλία Γυμνιστών",
+      "osmName": "Κρυφός Παράδεισος Παραλία Γυμνιστών",
+      "osmTransliteration": "Kryfos Paradeisos Paralia Gymniston",
+      "osmId": "way/166089614",
+      "distanceM": 0
+    },
+    {
+      "id": 431,
+      "region": "Halkidiki (mainland)",
+      "ours": "Ouranoupoli",
+      "proposedNameGr": "Καμπούδι / Άκραθως",
+      "osmName": "Καμπούδι / Άκραθως",
+      "osmTransliteration": "Kampoydi / Akrathos",
+      "osmId": "way/1201385670",
+      "distanceM": 0
+    },
+    {
+      "id": 432,
+      "region": "Halkidiki (mainland)",
+      "ours": "Paradisos",
+      "proposedNameGr": "Παραλία Παράδεισος",
+      "osmName": "Παραλία Παράδεισος",
+      "osmTransliteration": "Paralia Paradeisos",
+      "osmId": "way/228864771",
+      "distanceM": 0
+    },
+    {
+      "id": 434,
+      "region": "Halkidiki (mainland)",
+      "ours": "Pefkochori",
+      "proposedNameGr": "Παραλία Πευκοχωρίου",
+      "osmName": "Παραλία Πευκοχωρίου",
+      "osmTransliteration": "Paralia Pevkochoriou",
+      "osmId": "way/371590433",
+      "distanceM": 0
+    },
+    {
+      "id": 439,
+      "region": "Halkidiki (mainland)",
+      "ours": "Porto Elea",
+      "proposedNameGr": "Παραλία Ζωγράφου",
+      "osmName": "Παραλία Ζωγράφου",
+      "osmTransliteration": "Paralia Zografou",
+      "osmId": "way/259925271",
+      "distanceM": 74
+    },
+    {
+      "id": 453,
+      "region": "Halkidiki (mainland)",
+      "ours": "Voreas Limani",
+      "proposedNameGr": "Βοριάς Λιμάνι",
+      "osmName": "Βοριάς Λιμάνι",
+      "osmTransliteration": "Vorias Limani",
+      "osmId": "node/4253415196",
+      "distanceM": 1
+    },
+    {
+      "id": 597,
+      "region": "Crete (Chania)",
+      "ours": "Finikas",
+      "proposedNameGr": "Finikas Beach-Παραλία Φοίνικας",
+      "osmName": "Finikas Beach-Παραλία Φοίνικας",
+      "osmTransliteration": "Finikas Beach-Paralia Foinikas",
+      "osmId": "way/122219649",
+      "distanceM": 1
+    },
+    {
+      "id": 2345,
+      "region": "Kos",
+      "ours": "Cavo Paradiso",
+      "proposedNameGr": "Παραλία Παράδεισος",
+      "osmName": "Παραλία Παράδεισος",
+      "osmTransliteration": "Paralia Paradeisos",
+      "osmId": "way/238852509",
+      "distanceM": 121
+    }
+  ],
+  "noEvidence": [
+    {
+      "id": 58,
+      "name": "Lagonissi Grand Resort",
+      "region": "East Attica (mainland)"
+    },
+    {
+      "id": 3064,
+      "name": "Dermária",
+      "region": "Fthiotida (mainland)"
+    },
+    {
+      "id": 378,
+      "name": "Achlada",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 384,
+      "name": "Babylon",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 385,
+      "name": "Biancoblusarti",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 386,
+      "name": "Blue Dream",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 387,
+      "name": "Brounou",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 388,
+      "name": "Castello",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 390,
+      "name": "Diaporti",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 396,
+      "name": "Goa",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 397,
+      "name": "Golden",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 398,
+      "name": "Griavas",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 411,
+      "name": "Klimataria",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 413,
+      "name": "Kristina",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 415,
+      "name": "Lagomandra",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 416,
+      "name": "Lagoon",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 417,
+      "name": "Lemos",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 418,
+      "name": "Likithos",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 421,
+      "name": "Linaraki",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 424,
+      "name": "Marathias",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 426,
+      "name": "Mikri Elia",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 427,
+      "name": "Mileniko",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 433,
+      "name": "Paralia Valti",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 438,
+      "name": "Porfi",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 441,
+      "name": "Psakoudia",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 442,
+      "name": "Sani Hill",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 447,
+      "name": "Totos",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 448,
+      "name": "Tourkolimnionas",
+      "region": "Halkidiki (mainland)"
+    },
+    {
+      "id": 585,
+      "name": "Afrata",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 586,
+      "name": "Aghios Pavlos Beach",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 588,
+      "name": "Alonaki",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 589,
+      "name": "Ammos",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 590,
+      "name": "Aptera",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 591,
+      "name": "Aspri Limni",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 592,
+      "name": "Astropelekitá",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 599,
+      "name": "Grammeno",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 600,
+      "name": "Ilingas",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 603,
+      "name": "Kalyves",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 605,
+      "name": "Kera",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 607,
+      "name": "Platanakia",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 608,
+      "name": "Stomio beach",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 609,
+      "name": "Tavronitis",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 610,
+      "name": "Timios Stavros beach",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 3065,
+      "name": "Nopigia Beach",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 3076,
+      "name": "Korfalonas Beach",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 3077,
+      "name": "Paralia Drapanias",
+      "region": "Crete (Chania)"
+    },
+    {
+      "id": 620,
+      "name": "Afrathia",
+      "region": "Crete (Heraklion)"
+    },
+    {
+      "id": 651,
+      "name": "Keratokambos",
+      "region": "Crete (Heraklion)"
+    },
+    {
+      "id": 654,
+      "name": "Star Beach",
+      "region": "Crete (Heraklion)"
+    },
+    {
+      "id": 669,
+      "name": "Pantanassa",
+      "region": "Crete (Heraklion)"
+    },
+    {
+      "id": 714,
+      "name": "Livadi beach",
+      "region": "Crete (Rethymno)"
+    },
+    {
+      "id": 715,
+      "name": "Thalassi beach",
+      "region": "Crete (Rethymno)"
+    },
+    {
+      "id": 3089,
+      "name": "Sfagia",
+      "region": "Crete (Rethymno)"
+    },
+    {
+      "id": 772,
+      "name": "Palaria",
+      "region": "Crete (Lasithi)"
+    },
+    {
+      "id": 773,
+      "name": "Palm Bay Beach",
+      "region": "Crete (Lasithi)"
+    },
+    {
+      "id": 774,
+      "name": "Trachilias Beach",
+      "region": "Crete (Lasithi)"
+    },
+    {
+      "id": 783,
+      "name": "Monastiraki Beach",
+      "region": "Kavala (mainland)"
+    },
+    {
+      "id": 830,
+      "name": "Blue Lake",
+      "region": "Thasos"
+    },
+    {
+      "id": 831,
+      "name": "Hara",
+      "region": "Thasos"
+    },
+    {
+      "id": 832,
+      "name": "Ilio Mare",
+      "region": "Thasos"
+    },
+    {
+      "id": 862,
+      "name": "Artolithia Beach",
+      "region": "Preveza (mainland)"
+    },
+    {
+      "id": 926,
+      "name": "Keramidi Beach",
+      "region": "Thesprotia (mainland)"
+    },
+    {
+      "id": 927,
+      "name": "Acquasanta Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 928,
+      "name": "Agias Triades Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 929,
+      "name": "Agni Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 930,
+      "name": "Alipa beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 931,
+      "name": "Alonaki Bay",
+      "region": "Corfu"
+    },
+    {
+      "id": 932,
+      "name": "Benitses beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 933,
+      "name": "Black Rocks Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 935,
+      "name": "Dafnila Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 936,
+      "name": "Dassia Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 937,
+      "name": "Galiskari Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 938,
+      "name": "Glyfa Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 939,
+      "name": "Imerolia Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 940,
+      "name": "Issos Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 941,
+      "name": "Kalamionas Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 942,
+      "name": "Kaminaki Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 943,
+      "name": "Kanoni Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 944,
+      "name": "Karavi Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 945,
+      "name": "Kogevina Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 946,
+      "name": "Maltas beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 947,
+      "name": "Marathias beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 948,
+      "name": "Moraitika Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 949,
+      "name": "Nissaki Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 951,
+      "name": "Robolla Beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 952,
+      "name": "Santa Barbara beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 953,
+      "name": "skalia beach",
+      "region": "Corfu"
+    },
+    {
+      "id": 1018,
+      "name": "Mongonisi",
+      "region": "Paxos"
+    },
+    {
+      "id": 1064,
+      "name": "Central Square Beach",
+      "region": "Kefalonia"
+    },
+    {
+      "id": 1065,
+      "name": "Cronidis Beach",
+      "region": "Kefalonia"
+    },
+    {
+      "id": 1139,
+      "name": "Breath of Zorbas beach",
+      "region": "Lefkada"
+    },
+    {
+      "id": 1248,
+      "name": "Bella Vista",
+      "region": "Chios"
+    },
+    {
+      "id": 1654,
+      "name": "Kartela",
+      "region": "Messinia (mainland)"
+    },
+    {
+      "id": 1655,
+      "name": "Oasi",
+      "region": "Messinia (mainland)"
+    },
+    {
+      "id": 1656,
+      "name": "Velonas",
+      "region": "Messinia (mainland)"
+    },
+    {
+      "id": 1755,
+      "name": "Foniadiko",
+      "region": "Ios"
+    },
+    {
+      "id": 1756,
+      "name": "Gero Aggeli",
+      "region": "Ios"
+    },
+    {
+      "id": 1757,
+      "name": "Kalo Avlaki",
+      "region": "Ios"
+    },
+    {
+      "id": 1758,
+      "name": "Plakotos",
+      "region": "Ios"
+    },
+    {
+      "id": 1980,
+      "name": "Super Paradise",
+      "region": "Mykonos"
+    },
+    {
+      "id": 3073,
+      "name": "Koutsomiti",
+      "region": "Astypalaia"
+    },
+    {
+      "id": 2336,
+      "name": "Tropical",
+      "region": "Kos"
+    },
+    {
+      "id": 2447,
+      "name": "Kavos Beach",
+      "region": "Rhodes"
+    },
+    {
+      "id": 2454,
+      "name": "Mavros Kavos",
+      "region": "Rhodes"
+    },
+    {
+      "id": 2517,
+      "name": "Abelakia",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2518,
+      "name": "Agrapidia",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2519,
+      "name": "Athiki",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2520,
+      "name": "Bouka Beach",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2521,
+      "name": "Drepano Kite Surfer's Paradise Beach",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2522,
+      "name": "Kitesurf Spot",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2523,
+      "name": "Mirtia Strand",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2524,
+      "name": "Mylos beach",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 2525,
+      "name": "Vali",
+      "region": "Aetolia-Acarnania (mainland)"
+    },
+    {
+      "id": 3095,
+      "name": "Elias Cove",
+      "region": "Alonissos"
+    },
+    {
+      "id": 3074,
+      "name": "Angeletou beach",
+      "region": "Skopelos"
+    },
+    {
+      "id": 3075,
+      "name": "Perivoliou Beach",
+      "region": "Skopelos"
+    },
+    {
+      "id": 3096,
+      "name": "Olive Bay",
+      "region": "Magnesia (mainland - Pelion)"
+    }
+  ]
+}
