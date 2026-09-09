@@ -47,6 +47,9 @@ import { connectLambda, getStore } from '@netlify/blobs';
 import { readGeo } from './lib/geoLookup.mjs';
 
 const TRAFFIC_STORE = 'traffic';
+// How many times a day-rollup write may collide with another hit before this hit
+// gives up on being counted. Each attempt is one strong read + one conditional write.
+const ROLLUP_ATTEMPTS = 6;
 
 /** UTC day key, e.g. "2026-07-22". */
 const utcDayKey = (date) => date.toISOString().slice(0, 10);
@@ -415,7 +418,11 @@ export const handler = async (event) => {
     // (1) RACE-FREE uniqueness: one blob per unique visitor per day. We read it first
     //     to learn whether this is the visitor's FIRST hit today and to carry the
     //     session clock, then (over)write it — presence is all the unique count needs.
-    const already = await store.get(visitorKey, { type: 'json' });
+    // Strong consistency (09/09/2026): the default read is eventually consistent,
+    // so a 2nd pageview seconds after the 1st could read the blob as absent and be
+    // treated as a brand-new visitor — re-tagged, re-mapped, re-counted. Everything
+    // below that says "!already" relies on this read being the truth.
+    const already = await store.get(visitorKey, { type: 'json', consistency: 'strong' });
     const firstSeen = (already && already.t0) || nowSec;
     const lastSeen = (already && already.t1) || nowSec;
     // Only count time between pings that are close enough to be the same visit; a
@@ -512,107 +519,127 @@ export const handler = async (event) => {
       }
     }
 
-    // (4) Best-effort day rollup. `hits` counts every pageview; the qualitative
-    //     breakdowns are counted once per UNIQUE visitor (only on their first hit of
-    //     the day) so they read as "visitors", not "pageviews". Read-modify-write, so
-    //     under heavy concurrency a count can be lost — an acceptable slight
-    //     under-estimate (the daily UNIQUE total, listed separately, stays exact).
+    // (4) Day rollup. `hits` counts every pageview; the qualitative breakdowns are
+    //     counted once per UNIQUE visitor (only on their first hit of the day) so
+    //     they read as "visitors", not "pageviews".
+    //
+    //     This used to be a plain read-modify-write, documented as "an acceptable
+    //     slight under-estimate". Measured 09/09/2026 it was neither: every new
+    //     visitor key must land exactly one entry here (tagged or dup), and 252 keys
+    //     had produced 184 entries (137 tagged + 47 dup) — 27% of the day's writes were
+    //     overwritten by a concurrent hit that had read the same `prev`. The same ~25% was missing
+    //     from hits, dwell, the funnel, countries, actions: everything in this object.
+    //
+    //     Now a compare-and-set: read with its ETag, apply this hit, write only if
+    //     nobody wrote in between (`onlyIfMatch`), otherwise re-read and re-apply.
+    //     `onlyIfNew` covers the first write of a day. The mutation is a pure function
+    //     of this request, so replaying it on a fresh copy is safe. If the attempts
+    //     run out the hit is dropped exactly as before — but that now takes
+    //     ROLLUP_ATTEMPTS colliding writers in a row, not two.
     try {
       const key = `totals/${dayKey}`;
-      const prev = (await store.get(key, { type: 'json' })) || {};
+      for (let attempt = 0; attempt < ROLLUP_ATTEMPTS; attempt++) {
+        const got = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+        const prev = (got && got.data) || {};
 
-      if (isPageview) {
-        prev.hits = (prev.hits || 0) + 1;
-        prev.types = prev.types || {};
-        prev.views = prev.views || {};
-        prev.pages = prev.pages || {};
-        prev.hours = prev.hours || {};
-        prev.activity = prev.activity || {};
-        bump(prev.types, pageType);
-        bump(prev.activity, activity); // what this pageview WAS: beach, guide, region…
-        bump(prev.views, section); // every pageview — true section popularity
-        if (path) bump(prev.pages, path);
-        bump(prev.hours, String(athensHour(now)));
-        // The visitor's SECOND pageview is what turns a bounce into a real visit.
-        // Driven by the client's own counter, so it is exact rather than racy.
-        if (pvIndex === 2) prev.multiPage = (prev.multiPage || 0) + 1;
-        prev.pages = prune(prev.pages, 300);
-        prev.views = prune(prev.views, 200);
+        if (isPageview) {
+          prev.hits = (prev.hits || 0) + 1;
+          prev.types = prev.types || {};
+          prev.views = prev.views || {};
+          prev.pages = prev.pages || {};
+          prev.hours = prev.hours || {};
+          prev.activity = prev.activity || {};
+          bump(prev.types, pageType);
+          bump(prev.activity, activity); // what this pageview WAS: beach, guide, region…
+          bump(prev.views, section); // every pageview — true section popularity
+          if (path) bump(prev.pages, path);
+          bump(prev.hours, String(athensHour(now)));
+          // The visitor's SECOND pageview is what turns a bounce into a real visit.
+          // Driven by the client's own counter, so it is exact rather than racy.
+          if (pvIndex === 2) prev.multiPage = (prev.multiPage || 0) + 1;
+          prev.pages = prune(prev.pages, 300);
+          prev.views = prune(prev.views, 200);
+        }
+
+        // The journey: how many PEOPLE (not clicks) reached each step today.
+        if (newSteps.length) {
+          prev.funnel = prev.funnel || {};
+          for (const s of newSteps) bump(prev.funnel, s);
+        }
+
+        if (action) {
+          prev.actions = prev.actions || {};
+          bump(prev.actions, action);
+          // Unique-ish: only the visitor's first action of each kind would need per
+          // visitor state, so this is a raw click count — labelled as such in the UI.
+        }
+
+        if (dwellDelta) {
+          prev.dwellSec = (prev.dwellSec || 0) + dwellDelta;
+          // A visitor becomes "engaged" the first time they accrue any dwell at all,
+          // i.e. on their second ping. That is exactly the denominator we want for
+          // average time on site.
+          if (!already || !already.dw) prev.engaged = (prev.engaged || 0) + 1;
+        }
+
+        // Once per unique visitor. The visitor blob is read with strong consistency
+        // (09/09/2026), so `already` is authoritative and a 2nd pageview can no longer
+        // pass as a first one. The client's own "first ping of the day" flag stays as
+        // a second lock: f='0' (definitely not first) is what turns a fresh hash into a
+        // `dup` below instead of a new visitor. f='1'/'' keep the blob gate.
+        if (!already && params.f !== '0') {
+          prev.refs = prev.refs || {};
+          prev.channels = prev.channels || {};
+          prev.sections = prev.sections || {};
+          prev.devices = prev.devices || {};
+          prev.browsers = prev.browsers || {};
+          prev.os = prev.os || {};
+          prev.countries = prev.countries || {};
+          prev.cities = prev.cities || {};
+          prev.langs = prev.langs || {};
+          prev.viewports = prev.viewports || {};
+          prev.kinds = prev.kinds || {};
+          bump(prev.refs, ref);
+          bump(prev.channels, sourceChannel(ref));
+          bump(prev.sections, section); // first section seen = the entry point
+          bump(prev.devices, device);
+          bump(prev.browsers, browser);
+          bump(prev.os, os);
+          bump(prev.countries, geo.country);
+          if (city) bump(prev.cities, `${geo.country}/${city}`);
+          if (lang) bump(prev.langs, lang);
+          if (viewport) bump(prev.viewports, viewport);
+          bump(prev.kinds, kind);
+          prev.cities = prune(prev.cities, 200);
+        } else if (!already) {
+          // SAME PERSON, NEW CONNECTION. The server has never seen this hash, yet the
+          // browser is certain it already pinged today (f='0' comes from its own
+          // localStorage). That combination has one explanation: a phone that moved
+          // between WiFi and mobile data, so the IP — half of the hash — changed. One
+          // human, two keys.
+          //
+          // We cannot merge the two keys: the hash is deliberately irreversible and the
+          // IP is never stored, so there is nothing to join on. What we CAN do is count
+          // how many times it happened, and let the dashboard subtract it from the daily
+          // unique total instead of showing a ceiling nobody should quote.
+          //
+          // Measured 08/09/2026 before this existed: 778 hashes vs 397 people actually
+          // tagged, a ~48% gap every day. Only part of it was this: 09/09 caught 53 dup
+          // in 272 keys (~19%). The rest was the rollup itself losing writes — see (4).
+          // Counted here rather than as its own blob key so it costs nothing: this
+          // rollup is already being written, and since (4) became a compare-and-set it
+          // is not lost under concurrency either.
+          prev.kinds = prev.kinds || {};
+          bump(prev.kinds, 'dup');
+        }
+
+
+        const condition = got ? (got.etag ? { onlyIfMatch: got.etag } : undefined) : { onlyIfNew: true };
+        const written = await store.setJSON(key, prev, condition);
+        if (written.modified) break;
+        // Someone wrote first. A few random ms so two colliders do not lock-step.
+        await new Promise((resolve) => setTimeout(resolve, 15 + Math.random() * 60));
       }
-
-      // The journey: how many PEOPLE (not clicks) reached each step today.
-      if (newSteps.length) {
-        prev.funnel = prev.funnel || {};
-        for (const s of newSteps) bump(prev.funnel, s);
-      }
-
-      if (action) {
-        prev.actions = prev.actions || {};
-        bump(prev.actions, action);
-        // Unique-ish: only the visitor's first action of each kind would need per
-        // visitor state, so this is a raw click count — labelled as such in the UI.
-      }
-
-      if (dwellDelta) {
-        prev.dwellSec = (prev.dwellSec || 0) + dwellDelta;
-        // A visitor becomes "engaged" the first time they accrue any dwell at all,
-        // i.e. on their second ping. That is exactly the denominator we want for
-        // average time on site.
-        if (!already || !already.dw) prev.engaged = (prev.engaged || 0) + 1;
-      }
-
-      // Once per unique visitor: the blob check is the gate, but Blobs reads are
-      // eventually consistent (~up to 60s), so a visitor's 2nd pageview inside that
-      // window still reads `already` as empty and was re-counted here. The client
-      // knows its own "first ping of the day" for certain (localStorage); f='0'
-      // (definitely not first) suppresses that race. f='1'/'' keep the blob gate.
-      if (!already && params.f !== '0') {
-        prev.refs = prev.refs || {};
-        prev.channels = prev.channels || {};
-        prev.sections = prev.sections || {};
-        prev.devices = prev.devices || {};
-        prev.browsers = prev.browsers || {};
-        prev.os = prev.os || {};
-        prev.countries = prev.countries || {};
-        prev.cities = prev.cities || {};
-        prev.langs = prev.langs || {};
-        prev.viewports = prev.viewports || {};
-        prev.kinds = prev.kinds || {};
-        bump(prev.refs, ref);
-        bump(prev.channels, sourceChannel(ref));
-        bump(prev.sections, section); // first section seen = the entry point
-        bump(prev.devices, device);
-        bump(prev.browsers, browser);
-        bump(prev.os, os);
-        bump(prev.countries, geo.country);
-        if (city) bump(prev.cities, `${geo.country}/${city}`);
-        if (lang) bump(prev.langs, lang);
-        if (viewport) bump(prev.viewports, viewport);
-        bump(prev.kinds, kind);
-        prev.cities = prune(prev.cities, 200);
-      } else if (!already) {
-        // SAME PERSON, NEW CONNECTION. The server has never seen this hash, yet the
-        // browser is certain it already pinged today (f='0' comes from its own
-        // localStorage). That combination has one explanation: a phone that moved
-        // between WiFi and mobile data, so the IP — half of the hash — changed. One
-        // human, two keys.
-        //
-        // We cannot merge the two keys: the hash is deliberately irreversible and the
-        // IP is never stored, so there is nothing to join on. What we CAN do is count
-        // how many times it happened, and let the dashboard subtract it from the daily
-        // unique total instead of showing a ceiling nobody should quote.
-        //
-        // Measured 08/09/2026 before this existed: 778 hashes vs 397 people actually
-        // tagged — the gap is ~48% every day, because 89% of our traffic is mobile.
-        // Counted here rather than as its own blob key so it costs nothing: this
-        // rollup is already being written. Same best-effort class as the breakdowns
-        // around it, so it can lose a count under concurrency — which only ever makes
-        // us subtract too little, never too much.
-        prev.kinds = prev.kinds || {};
-        bump(prev.kinds, 'dup');
-      }
-
-      await store.setJSON(key, prev);
     } catch {
       // Totals are advisory; never fail the request over them.
     }
