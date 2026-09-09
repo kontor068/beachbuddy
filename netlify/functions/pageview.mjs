@@ -637,6 +637,14 @@ export const handler = async (event) => {
         const condition = got ? (got.etag ? { onlyIfMatch: got.etag } : undefined) : { onlyIfNew: true };
         const written = await store.setJSON(key, prev, condition);
         if (written.modified) break;
+        if (attempt === ROLLUP_ATTEMPTS - 1) {
+          // Safety net: if the conditional write keeps failing (a pathological burst,
+          // or a platform where the condition is not honoured), fall back to the plain
+          // write this used to be. Worst case is then EXACTLY the old behaviour — one
+          // colliding hit may be lost — never worse than before this change.
+          await store.setJSON(key, prev);
+          break;
+        }
         // Someone wrote first. A few random ms so two colliders do not lock-step.
         await new Promise((resolve) => setTimeout(resolve, 15 + Math.random() * 60));
       }
