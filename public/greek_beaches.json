@@ -150202,7 +150202,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -150226,7 +150226,8 @@
             "sourceNotes": [
               "Naxos missing-beaches audit 2026-05-23",
               "Coordinate source: AllOverGreece Naxos Agii Theodori beach.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.allovergreece.com/Beaches/Descr/16/68/en",
@@ -150871,7 +150872,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -150898,7 +150899,8 @@
             "sourceNotes": [
               "Naxos missing-beaches audit 2026-05-23 Small Chora-side beach; coordinate source: OpenStreetMap way 1204646781. Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed. Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (barNear, foodOnSand). Terrain web-verify 2026-07-20 (no-API): corrected to SAND — Naxos Chora, below Portara (matches lat/lng): the smaller Chora beach, 'small stretch of sand', a man-made sandy beach for a quick [https://www.naxos.gr/vintzi-beach/?lang=en].",
               "Paros/Naxos audit 2026-08-13: organized:true with an empty amenities list — nothing on disk backs the claim (reverseAmenitySweep.mjs, organized-but-empty). Set to false per the under-claim rule.",
-              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 155 m of the pin: περίπτερο 87 m, «Στης Ειρήνης» 113 m, καφέ «Diogenes» 129 m, «Babylonia» 135 m, μπαρ 145 m, «Vassilis Tavern» 147 m, «Taverna Apostolis» 154 m. The list was empty."
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 155 m of the pin: περίπτερο 87 m, «Στης Ειρήνης» 113 m, καφέ «Diogenes» 129 m, «Babylonia» 135 m, μπαρ 145 m, «Vassilis Tavern» 147 m, «Taverna Apostolis» 154 m. The list was empty.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1204646781",
@@ -150934,7 +150936,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "Road or passable dirt-road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -150959,7 +150961,8 @@
               "Naxos missing-beaches audit 2026-05-23",
               "Naxos source-backed cleanup 2026-05-27: AllOverGreece describes Glatza as a remote sandy bay next to Amitis with no shade, so terrain was corrected from pebbles/rocks to fine sand. Coordinate source: OpenStreetMap way 500669911.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road or passable dirt-road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/500669911"
@@ -151070,7 +151073,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -151097,7 +151100,8 @@
               "Chora-side Grotta beach; coordinate source: ToposText location 371254XGro.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Terrain corrected 2026-06-20 (OSM surface audit): our type \"pebbles\" contradicted the OSM natural=beach surface \"stone\" (crowd-verified); set to rocks.",
-              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 165 m of the pin: «Kozi» 99 m, σούπερ μάρκετ «Pantelias» 110 m, φούρνος 112 m, «Metaxi mas» 125 m, «Ελληνική Διατροφή» 134 m, «Taverna Apostolis» 135 m. The list was empty."
+              "Paros/Naxos amenity sweep 2026-08-14: OSM maps a full cluster within 165 m of the pin: «Kozi» 99 m, σούπερ μάρκετ «Pantelias» 110 m, φούρνος 112 m, «Metaxi mas» 125 m, «Ελληνική Διατροφή» 134 m, «Taverna Apostolis» 135 m. The list was empty.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://topostext.org/place/371254XGro",
@@ -151208,7 +151212,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "Road or passable dirt-road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -151237,7 +151241,8 @@
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Paros/Naxos audit 2026-08-13: placeId ChIJ16MPVNanohQRZ7U2svHoJzI resolves to «Mikra Bay», which is #2005 Μικρά’s own place, 754 m away. The pin is also 760 m from the nearest mapped beach polygon of any kind (Overpass 1,5 km). Identity unverified — routing by coordinates and confidence downgraded until someone confirms a beach exists here.",
               "Paros/Naxos audit 2026-08-14: pin re-measured: 84 m from the OSM coastline (nearest point 37.16467,25.47615), i.e. genuinely on the shore — the earlier \"760 m from any beach\" figure was distance to the nearest TAGGED natural=beach polygon, and OSM leaves plenty of real Greek beaches untagged. Deletion rejected on that evidence. Confidence stays low because no source describes the shore itself; the name matches the Κάμπος settlement 780 m inland.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road or passable dirt-road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.gtp.gr/LocPage.asp?id=63231&lng=2",
@@ -151396,7 +151401,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Δρόμος προς την παραλία",
-              "notes": "Η επίσημη πηγή αναφέρει οδική πρόσβαση και θερινό λεωφορείο μία φορά την ημέρα. Κρατάμε συντηρητικό access μέχρι να επιβεβαιωθεί η ποιότητα του τελικού δρόμου."
+              "notes": "Οδική πρόσβαση, με θερινό λεωφορείο μία φορά την ημέρα. Η ποιότητα του τελευταίου τμήματος του δρόμου δεν έχει επιβεβαιωθεί."
             },
             "terrain": {
               "types": [
@@ -151425,7 +151430,8 @@
               "Naxos evidence pass 2026-05-29: added the official Naxos guide PDF to Naxos.net and OSM, corroborating Klidos as a southeast-coast complex of sandy quiet beaches with road/locality context.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Paros/Naxos audit 2026-08-13: placeId ChIJDy-QhX0EmBQRenTLBEstyZ4 resolves to «Παραλία Κλειδώ» (#2000, 45 m from its own pin) 383 m away. OSM keeps them as two polygons (way/404481267 vs way/1157948744), so the record stays — the borrowed place and its 4,2/15 rating do not.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Η επίσημη πηγή αναφέρει οδική πρόσβαση και θερινό λεωφορείο μία φορά την ημέρα. Κρατάμε συ…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/404481267",
@@ -151463,7 +151469,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "Road or passable dirt-road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -151490,7 +151496,8 @@
               "Moved out of Koufonisia: coordinates are on southeast Naxos. Coordinate source: OpenStreetMap way 1157948744.",
               "Naxos evidence pass 2026-05-29: added the official Naxos guide PDF to Naxos.net and OSM, corroborating Kleido/Klidos identity, southeast-coast sandy beach context, and location evidence.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road or passable dirt-road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1157948744",
@@ -151794,7 +151801,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -151822,7 +151829,8 @@
               "Coordinate source: AllOverGreece Naxos Mikra beach.",
               "Naxos evidence pass 2026-05-29: added the live official Mikra Beach page to corroborate AllOverGreece for identity, sandy surface, road access, summer public transport, and quiet/nature-oriented static context.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy."
+              "Paros/Naxos audit 2026-08-13: shade:true had no supporting signal — no umbrellas in amenities, no tree/tamarisk mention in any source note. Dropped rather than inverted: the card renders shade only when true, so this removes a claim instead of adding the opposite one. It also stopped the beach matching a \"needs shade\" family search it could not satisfy.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.allovergreece.com/Beaches/Descr/16/70/en"
@@ -151940,7 +151948,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -151968,7 +151976,8 @@
               "Naxos source-backed cleanup 2026-05-27: Naxos.net supports the south/Sahara side of Mikri Vigla as a long white-sand beach with asphalt access except the final good-condition dirt section. Less organized Naxos beach added after missing-beach audit.",
               "Coordinate source: OpenStreetMap way 363516878.",
               "Naxos evidence pass 2026-05-29: added the live official Mikri Vigla-Parthena-Limanaki page to corroborate the south/Sahara side context already supported by Naxos.net and OSM.",
-              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/363516878"
@@ -152038,7 +152047,8 @@
             "sourceNotes": [
               "Naxos 2026 amenities/access audit: Alyko-area audit: quiet sandy cove with natural shade and no fixed beach facilities claimed.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Paros/Naxos audit 2026-08-13: popularity 4,6/1135 was identical to #1987 Αλυκό while the two records resolve to different Google places (ChIJLZLuafoRmBQR-nKbZ0SswTE vs ChIJJcnPsP0RmBQRJ_anR1gu33Y). The rating count belongs to Αλυκό; removed rather than guessed."
+              "Paros/Naxos audit 2026-08-13: popularity 4,6/1135 was identical to #1987 Αλυκό while the two records resolve to different Google places (ChIJLZLuafoRmBQR-nKbZ0SswTE vs ChIJJcnPsP0RmBQRJ_anR1gu33Y). The rating count belongs to Αλυκό; removed rather than guessed.",
+              "Navigation 2026-09-09: place card «Παραλία, Μικρολίμανο» at 17 m carries another name — dropped to coordinate routing (offline check, no API call). Pin unchanged."
             ],
             "verification_sources": [
               "https://www.naxos.gr/alyko-small-alyko-kedros-hawaii-beaches/?lang=en"
@@ -152058,11 +152068,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJLZLuafoRmBQR-nKbZ0SswTE",
-              "query": "Μικρό Αλυκό, Naxos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJLZLuafoRmBQR-nKbZ0SswTE removed 2026-09-09: the cached Google card is «Παραλία, Μικρολίμανο» (17 m) — a neighbouring beach with a different name, or a card with no usable name. Reverted to coordinate routing; the button stays."
             }
           }
         },
@@ -152587,7 +152596,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Βατός χωματόδρομος",
-              "notes": "Road or passable dirt-road access. Added from verified Naxos audit sources."
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -152614,7 +152623,8 @@
               "Remote Naxos cove/pebbly beach added after missing-beach audit.",
               "Coordinate source: OpenStreetMap way 1336837770.",
               "Naxos evidence confidence pass 2026-05-29: high confidence here required a live official Naxos page or a direct beach-specific source plus map/geographic corroboration, with concrete static facts such as identity, location, surface, access, parking, amenities, or no-service context. High does not certify live calm/protected/safe conditions; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Road or passable dirt-road access. Added from verified Naxos audit sources.…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "verification_sources": [
               "https://www.openstreetmap.org/way/1336837770",
@@ -152866,8 +152876,10 @@
               "notes": "Κανένας χαρτογραφημένος δρόμος ή μονοπάτι σε 350 m (OSM). Δεν ξέρουμε πώς φτάνει κανείς — μη βασιστείτε σε αυτή την εγγραφή για διαδρομή."
             },
             "terrain": {
-              "types": [],
-              "label": "μη επιβεβαιωμένο έδαφος ακτής"
+              "types": [
+                "pebbles"
+              ],
+              "label": "βότσαλο"
             },
             "organized": false,
             "shade": false,
@@ -152889,7 +152901,8 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Ακτή στη βόρεια Νάξο, ~1 χλμ από τη Γλατζά. Τοπωνύμιο: place=hamlet «Ακρωτήρι» στα 371 m. ΠΡΟΣΟΧΗ: δεν βρέθηκε κανένας δρόμος ούτε μονοπάτι σε ακτίνα 350 m — η πρόσβαση παραμένει άγνωστη και μπορεί να είναι μόνο με τα πόδια ή με σκάφος. Συντεταγμένες: OSM way/1195230333 (ανώνυμο natural=beach) + οικισμός «Ακρωτήρι» 371 m. Slot κοντά στο #1992 (Γλατζά, 1018m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
-              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used."
+              "Paros/Naxos amenity sweep 2026-08-14: Overpass found no amenity, shop, tourism or beach_resort object within 500 m of the pin. The empty list was correct but silent; replaced with the honest wording. Not proof of absence — OSM under-maps rural Greece — so the softer phrase was used.",
+              "Terrain 2026-09-09: the record's own source polygon (OSM way/1195230333) is tagged surface=cobblestone; terrain set to pebbles from that tag. Water depth left to derive from terrain. Not field-verified."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -171910,7 +171923,8 @@
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Lefkos/Gialou Chorafi and nearby Potali sources support organized sunbed service and basic amenities.",
               "Karpathos strict evidence pass 2026-05-29: AllOverGreece and KarpathosInfo support the Lefkos/Gialou Chorafi identity, settlement location, sandy family beach context, organized umbrellas/sunbeds, tavern access, and nearby services.",
-              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν.",
+              "Navigation 2026-09-09: place card «Παραλία Φραγκολιμιώνα» at 342 m carries another name — dropped to coordinate routing (offline check, no API call). Pin unchanged."
             ],
             "orientation": {
               "degrees": 191.9,
@@ -171923,11 +171937,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJw1yjqRqvlhQRbBzW6bvzjhs",
-              "query": "Παραλία Γιαλού Χωράφι, Karpathos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJw1yjqRqvlhQRbBzW6bvzjhs removed 2026-09-09: the cached Google card is «Παραλία Φραγκολιμιώνα» (342 m) — a neighbouring beach with a different name, or a card with no usable name. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -172060,7 +172073,7 @@
             "access": {
               "type": "boat_only",
               "label": "Μόνο με σκάφος",
-              "notes": "Το Κάντρι αναφέρεται ως stop στις εκδρομές από Διαφάνι και είναι η εξαίρεση που οι πηγές δεν δίνουν ως προσβάσιμη με αυτοκίνητο ή πεζοπορία."
+              "notes": "Το Κάντρι είναι στάση των εκδρομικών σκαφών από το Διαφάνι. Δεν υπάρχει γνωστή πρόσβαση με αυτοκίνητο ή με τα πόδια."
             },
             "terrain": {
               "types": [
@@ -172093,7 +172106,8 @@
               "Phase 2 Batch 3G source check 2026-05-25: Nikos Boat lists Kantri as a regular boat-trip stop from Diafani and states that all listed beaches except Kantri are reachable by car or on foot too. Corrected from difficult dirt-road access to boat-only access.",
               "Karpathos strict evidence pass 2026-05-29: Nikos Boat and KarpathosInfo support Kantri as a Diafani boat-trip stop with remote north-beach context; kept medium because evidence is route/operator-level rather than a detailed beach page.",
               "Karpathos continuation 2026-06-02: Nikos Boat directly lists Kantri as a usual Diafani southern-beaches boat-trip stop and states the listed beaches are small-stone, unorganized and that Kantri is the exception not reachable by car or on foot; KarpathosInfo supports north/remote Karpathos beach context with poor/off-road access and limited infrastructure. Promoted static metadata confidence to high with boat-only access. No windProfile, scoring, coordinates, photos, or live condition claims were changed.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα (αναζήτηση 2026-09-01): «Kantri is among the northern beaches of Karpathos accessible by boat trips» από το Διαφάνι. Επιβεβαιώνει ταυτότητα + απουσία οδικής πρόσβασης· ο κανόνας ασφαλείας για boat_only κρατά το «δείξε στον χάρτη»."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα (αναζήτηση 2026-09-01): «Kantri is among the northern beaches of Karpathos accessible by boat trips» από το Διαφάνι. Επιβεβαιώνει ταυτότητα + απουσία οδικής πρόσβασης· ο κανόνας ασφαλείας για boat_only κρατά το «δείξε στον χάρτη».",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το Κάντρι αναφέρεται ως stop στις εκδρομές από Διαφάνι και είναι η εξαίρεση που οι πηγές δ…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "orientation": {
               "degrees": 140,
@@ -172211,7 +172225,8 @@
             "sourceNotes": [
               "Phase 2 organized audit 2026-05-25: kept organized claim; Amoopi/Lakki sources support full organization with parasols, sunbeds and taverns.",
               "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, GetGreece, and municipal tourism support Lakki as part of the Amoopi beach cluster, with organized coves, umbrellas/sunbeds, restaurants/taverns, and easy resort access.",
-              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν."
+              "Επανέλεγχος Καρπάθου 2026-08-16: αφαιρέθηκε το σημείωμα πρόσβασης — ήταν η ίδια πρόταση σε 6 παραλίες Καρπάθου (7 εθνικά) και επαναλάμβανε την ταμπέλα πρόσβασης και τη λίστα παροχών. Ο τύπος πρόσβασης (asphalt_road) και οι παροχές μένουν ως έχουν.",
+              "Popularity retracted 2026-09-09: the stored rating {\"tier\":\"moderate\",\"rating\":4.4,\"ratingCount\":246,\"source\":\"google-places\",\"checkedAt\":\"2026-06-17\"} is identical to #2299 Βοτσαλάκια (its own card «Παραλία Βοτσαλάκια» is what produced the 4.4/246) — a Google figure borrowed through the old place-card collision, not a measurement of this beach. Left unknown (not quiet) until a rating for THIS beach exists."
             ],
             "orientation": {
               "degrees": 141.8,
@@ -172228,13 +172243,6 @@
               "checkedAt": "2026-09-09",
               "method": "osm-nav-audit-v1",
               "reason": "placeId removed 2026-09-09: this pin held \"Παραλία Βοτσαλάκια\", which by name belongs to Βοτσαλάκια; reverted to coordinate routing."
-            },
-            "popularity": {
-              "tier": "moderate",
-              "rating": 4.4,
-              "ratingCount": 246,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           }
         },
@@ -172486,7 +172494,7 @@
             "access": {
               "type": "difficult_dirt_road",
               "label": "Δύσβατος χωματόδρομος",
-              "notes": "Απομονωμένη ακτή της Καρπάθου, με δύσκολη χωμάτινη/χαλικώδη πρόσβαση ή προσέγγιση από θάλασσα. Η πηγή Phileas αναφέρει ότι 4x4 προτιμάται αλλά μπορεί να περάσει και κανονικό όχημα, οπότε δεν κρατάμε αυστηρό 4x4-only claim. Χωρίς οργανωμένες παροχές."
+              "notes": "Απομονωμένη ακτή με δύσκολη χωμάτινη/χαλικώδη πρόσβαση ή προσέγγιση από θάλασσα. Προτιμάται 4x4, αν και κανονικό όχημα μπορεί να περάσει με προσοχή. Χωρίς οργανωμένες παροχές."
             },
             "terrain": {
               "types": [
@@ -172518,7 +172526,8 @@
               "Phase 2 Batch 3E source check 2026-05-25: KarpathosInfo identifies Nati among the secluded north beaches and describes the area as reachable mainly by boat/off-road vehicles via poor dirt roads; Visit Olympos also lists Nati among north-beach excursions by jeep/ATV or boat.",
               "Existing-source confidence cleanup 2026-05-29: KarpathosInfo, Visit Olympos, and Phileas support Nati as a remote north/east Karpathos beach near the Olympos route, with gravel/difficult-road or sea access and no modern beach facilities. Confidence promoted to medium; no wind, wave, or live-condition claim was added.",
               "Karpathos strict evidence pass 2026-05-29: KarpathosInfo, Visit Olympos, and Phileas support Nati as a named remote north/east Karpathos beach near the Olympos/Diafani excursion zone, with difficult/gravel or sea access and no modern beach facilities.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα παραλίας: «There are no sunbeds or parasols available on the beach, nor any other amenities», 38 χλμ βόρεια των Πηγαδίων / 13 χλμ από Όλυμπο, μικρή ακτή με γκρίζα βότσαλα προστατευμένη από λόφους."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα παραλίας: «There are no sunbeds or parasols available on the beach, nor any other amenities», 38 χλμ βόρεια των Πηγαδίων / 13 χλμ από Όλυμπο, μικρή ακτή με γκρίζα βότσαλα προστατευμένη από λόφους.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Απομονωμένη ακτή της Καρπάθου, με δύσκολη χωμάτινη/χαλικώδη πρόσβαση ή προσέγγιση από θάλα…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "orientation": {
               "degrees": 117.9,
@@ -172643,7 +172652,10 @@
               "https://hellas-beach.gr/2015/10/13/karpathos-lefkos/",
               "https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/"
             ],
-            "sourceNotes": "Phase 2 Batch 3G source check 2026-05-25: AllOverGreece places Panagias Limani next to Gialos and describes it as unorganized; In2Greece describes Lefkos as a west-coast beach area with Panagias Limani as one of its three bays. Corrected unsupported boat-only wording to village/road access. Karpathos strict evidence pass 2026-05-29: AllOverGreece and Lefkos-area sources support Panagias Limani/Limanaki identity within the Lefkos bay cluster, village/road access, unorganized or lightly served character, and nearby settlement services. Amenity re-verify 2026-07-20 (no-API): organized confirmed by TWO independent sources — (1) Municipality of Karpathos lists Limani Panagias (Lefkos) as 'Organized beach with umbrella [https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/]; (2) Second source hellas-beach.gr (independent of round-1 karpathos.gr) names this exact beach in Lefkos bay, Karp [https://hellas-beach.gr/2015/10/13/karpathos-lefkos/]; sunbeds added.",
+            "sourceNotes": [
+              "Phase 2 Batch 3G source check 2026-05-25: AllOverGreece places Panagias Limani next to Gialos and describes it as unorganized; In2Greece describes Lefkos as a west-coast beach area with Panagias Limani as one of its three bays. Corrected unsupported boat-only wording to village/road access. Karpathos strict evidence pass 2026-05-29: AllOverGreece and Lefkos-area sources support Panagias Limani/Limanaki identity within the Lefkos bay cluster, village/road access, unorganized or lightly served character, and nearby settlement services. Amenity re-verify 2026-07-20 (no-API): organized confirmed by TWO independent sources — (1) Municipality of Karpathos lists Limani Panagias (Lefkos) as 'Organized beach with umbrella [https://karpathos.gr/en/discover/oles-oi-paralies-tou-nisiou/]; (2) Second source hellas-beach.gr (independent of round-1 karpathos.gr) names this exact beach in Lefkos bay, Karp [https://hellas-beach.gr/2015/10/13/karpathos-lefkos/]; sunbeds added.",
+              "Navigation 2026-09-09: place card «Παραλία Λευκός» at 239 m carries another name — dropped to coordinate routing (offline check, no API call). Pin unchanged."
+            ],
             "orientation": {
               "degrees": 262.6,
               "faces": [
@@ -172655,11 +172667,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJg4eHrC-vlhQRAJtKkxZpwA8",
-              "query": "Παραλία Λιμάνι Παναγιάς, Karpathos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJg4eHrC-vlhQRAJtKkxZpwA8 removed 2026-09-09: the cached Google card is «Παραλία Λευκός» (239 m) — a neighbouring beach with a different name, or a card with no usable name. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "crowded",
@@ -172932,7 +172943,7 @@
             "access": {
               "type": "difficult_dirt_road",
               "label": "Δύσκολος χωματόδρομος ή πεζή πρόσβαση",
-              "notes": "Το KarpathosInfo αναφέρει πρόσβαση με τα πόδια ή με αυτοκίνητο από στενό χωματόδρομο, συνήθως δύσκολο για μικρά αυτοκίνητα."
+              "notes": "Πρόσβαση με τα πόδια ή με αυτοκίνητο από στενό χωματόδρομο, συνήθως δύσκολο για μικρά αυτοκίνητα."
             },
             "terrain": {
               "types": [
@@ -172959,7 +172970,8 @@
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Vananda identity, nearby coordinates, on-foot or narrow dirt-road access, small secluded bay character, grey-pebble/stone terrain, and unorganized status. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
               "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal Diafani context support Vananda/Vanata near Diafani, walking or narrow dirt-road access, pebble terrain, small secluded-bay character, and limited/no organized facilities. OSM is geometry support only.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα: «There is no taverna at the beach... The beach lacks any sort of facilities, though some natural shade is provided by the trees present on the shore and there is a fountain with drinking water just behind the beach». 2,5 χλμ από Διαφάνι, 30-35 λεπτά με τα πόδια. ΔΙΑΦΩΝΙΑ ΠΗΓΩΝ ΓΙΑ ΤΟΝ ΔΡΟΜΟ: greeka «a bit rough but can be traversed by any kind of vehicle» και ardanikarpathos «βατοί χωματόδρομοι», ενώ το KarpathosInfo (ήδη καταγεγραμμένο) λέει δύσκολος για μικρά αυτοκίνητα — ο χαρακτηρισμός ΕΜΕΙΝΕ δύσβατος, ο συντηρητικός προστατεύει τον επισκέπτη."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka (αναζήτηση 2026-09-01), αφιερωμένη σελίδα: «There is no taverna at the beach... The beach lacks any sort of facilities, though some natural shade is provided by the trees present on the shore and there is a fountain with drinking water just behind the beach». 2,5 χλμ από Διαφάνι, 30-35 λεπτά με τα πόδια. ΔΙΑΦΩΝΙΑ ΠΗΓΩΝ ΓΙΑ ΤΟΝ ΔΡΟΜΟ: greeka «a bit rough but can be traversed by any kind of vehicle» και ardanikarpathos «βατοί χωματόδρομοι», ενώ το KarpathosInfo (ήδη καταγεγραμμένο) λέει δύσκολος για μικρά αυτοκίνητα — ο χαρακτηρισμός ΕΜΕΙΝΕ δύσβατος, ο συντηρητικός προστατεύει τον επισκέπτη.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το KarpathosInfo αναφέρει πρόσβαση με τα πόδια ή με αυτοκίνητο από στενό χωματόδρομο, συνή…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
@@ -173005,7 +173017,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "εύκολη οδική πρόσβαση",
-              "notes": "Η παραλία βρίσκεται στο κέντρο της Αμμοοπής, δίπλα σε μεγάλο χώρο στάθμευσης και στάση τοπικού λεωφορείου σύμφωνα με την πηγή.",
+              "notes": "Στο κέντρο της Αμμοοπής, δίπλα σε μεγάλο χώρο στάθμευσης και στάση του τοπικού λεωφορείου.",
               "roadSurfaceUnverified": true
             },
             "terrain": {
@@ -173034,7 +173046,10 @@
               "label": "Ρηχά νερά",
               "notes": "Η KarpathosInfo περιγράφει ρηχό βυθό με χοντρή άμμο, βότσαλα και αρκετά βράχια μέσα στη θάλασσα."
             },
-            "sourceNotes": "Source-backed cleanup 2026-05-29: KarpathosInfo supports Votsalakia coordinates near the stored record, Amoopi access by car/local bus, coarse sand/pebbles/rocks, shallow water, organized services, taverns, beach bars, showers, parking, and snorkeling/diving use. Source sea-surface and wind wording was not imported as static condition data. Karpathos strict evidence pass 2026-05-29: KarpathosInfo directly supports Votsalakia identity in Amoopi, road/local-bus access, coarse sand/pebbles/rocks, organized services, taverns, beach bars, showers, parking, and snorkeling/diving use. OSM is geometry support only. Access-road audit 2026-07-19: OSM shows the nearest paved road ~437m away with only a track/footpath nearer (—m/53m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+            "sourceNotes": [
+              "Source-backed cleanup 2026-05-29: KarpathosInfo supports Votsalakia coordinates near the stored record, Amoopi access by car/local bus, coarse sand/pebbles/rocks, shallow water, organized services, taverns, beach bars, showers, parking, and snorkeling/diving use. Source sea-surface and wind wording was not imported as static condition data. Karpathos strict evidence pass 2026-05-29: KarpathosInfo directly supports Votsalakia identity in Amoopi, road/local-bus access, coarse sand/pebbles/rocks, organized services, taverns, beach bars, showers, parking, and snorkeling/diving use. OSM is geometry support only. Access-road audit 2026-07-19: OSM shows the nearest paved road ~437m away with only a track/footpath nearer (—m/53m); the confident \"asphalt\" label is not ground-verified. Display downgraded to unverified (no dirt-road claim asserted).",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Η παραλία βρίσκεται στο κέντρο της Αμμοοπής, δίπλα σε μεγάλο χώρο στάθμευσης και στάση τοπ…»). Same facts, plain Greek; empty where the access label already says it all."
+            ],
             "sourceUrls": [
               "https://karpathosinfo.com/votsalakia-beach/",
               "https://karpathosinfo.com/amoopi-lakki/",
@@ -173145,7 +173160,7 @@
             "access": {
               "type": "difficult_dirt_road",
               "label": "Δύσκολος χωματόδρομος",
-              "notes": "Το KarpathosInfo αναφέρει χωματόδρομο περίπου 3,8 χλμ. από τον κεντρικό ασφαλτόδρομο, στενό και με στροφές. Η εφαρμογή κρατά συντηρητικά τη σήμανση δύσκολου χωματόδρομου."
+              "notes": "Χωματόδρομος περίπου 3,8 χλμ από τον κεντρικό ασφαλτόδρομο, στενός και με στροφές."
             },
             "terrain": {
               "types": [
@@ -173170,7 +173185,8 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Agios Minas/Philios identity, nearby coordinates, narrow winding dirt-road approach from the asphalt road, grey-pebble terrain, tavern, seasonal slight organization with parasols/sunbeds, and excursion-boat visits from Diafani. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Agios Minas/Philios identity, Olympos-route location, grey-pebble terrain, road or boat access, tavern context, and seasonal light organization. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Agios Minas/Philios identity, Olympos-route location, grey-pebble terrain, road or boat access, tavern context, and seasonal light organization. OSM is geometry support only.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το KarpathosInfo αναφέρει χωματόδρομο περίπου 3,8 χλμ. από τον κεντρικό ασφαλτόδρομο, στεν…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/karpathos-north-beaches/",
@@ -173273,7 +173289,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Το KarpathosInfo δίνει πρόσβαση με άσφαλτο για την παραλία Αργιλαοπόταμος και συντεταγμένες πολύ κοντά στο stored record."
+              "notes": "Ασφαλτόδρομος μέχρι την παραλία."
             },
             "terrain": {
               "types": [
@@ -173301,7 +173317,8 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Agrilaopotamos identity, nearby coordinates, asphalt-road access, sandy terrain with some pebbles/rocks, shallow depth, parking, beach-bar context, and wind/kite-surf use. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Agrilaopotamos identity, south-island location, asphalt access, sandy shallow terrain with some pebbles/rocks, parking/canteen or beach-bar context, and wind/kite-surf use. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Agrilaopotamos identity, south-island location, asphalt access, sandy shallow terrain with some pebbles/rocks, parking/canteen or beach-bar context, and wind/kite-surf use. OSM is geometry support only.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το KarpathosInfo δίνει πρόσβαση με άσφαλτο για την παραλία Αργιλαοπόταμος και συντεταγμένε…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/agrilaopotamos-beach/",
@@ -173331,7 +173348,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Άσφαλτος μέχρι την περιοχή, χωματόδρομος πίσω από την παραλία",
-              "notes": "Το KarpathosInfo αναφέρει άσφαλτο για την πρόσβαση και χωματόδρομο πίσω από την παραλία Βάθια, οπότε η εφαρμογή κρατά συντηρητικά passable_dirt_road."
+              "notes": "Άσφαλτος μέχρι κοντά στην παραλία· το τελευταίο κομμάτι είναι χωματόδρομος πίσω από την ακτή."
             },
             "terrain": {
               "types": [
@@ -173358,7 +173375,8 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Vatha/Paralia Vatha identity, nearby coordinates, coarse-sand/pebble/stone terrain, shallow depth, beach-bar and windsurf-station facilities, seasonal loungers/parasols, and asphalt plus beach-back dirt-road access. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated and Afiartis pages support Vatha identity near the airport/Afiartis zone, coarse-sand/pebble/stone terrain, shallow beach character, beach-bar/windsurf-station services, seasonal loungers/parasols, and road access. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated and Afiartis pages support Vatha identity near the airport/Afiartis zone, coarse-sand/pebble/stone terrain, shallow beach character, beach-bar/windsurf-station services, seasonal loungers/parasols, and road access. OSM is geometry support only.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το KarpathosInfo αναφέρει άσφαλτο για την πρόσβαση και χωματόδρομο πίσω από την παραλία Βά…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/vatha-beach/",
@@ -173537,7 +173555,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Χωματόδρομος",
-              "notes": "Το KarpathosInfo δίνει πρόσβαση από χωματόδρομο για την παραλία Κήπος Μιχαλιού, οπότε η εφαρμογή κρατά συντηρητικά τη σήμανση χωματόδρομου."
+              "notes": "Πρόσβαση από χωματόδρομο."
             },
             "terrain": {
               "types": [
@@ -173563,7 +173581,8 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo directly supports Michaliou Kipos/Kipos identity, nearby coordinates, dirt-road access, sand/pebble/rock terrain, usually shallow/moderate depth, seasonal sunbeds/parasols and possible canteen. OSM is kept only as the existing geometry trace. No same-day sea-condition, windProfile, or scoring claim was added.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated and Afiartis pages support Michaliou Kipos/Kipos identity, airport-area location, dirt-road access, sand/pebble/rock terrain, seasonal sunbeds/parasols, and possible canteen. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo dedicated and Afiartis pages support Michaliou Kipos/Kipos identity, airport-area location, dirt-road access, sand/pebble/rock terrain, seasonal sunbeds/parasols, and possible canteen. OSM is geometry support only.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Το KarpathosInfo δίνει πρόσβαση από χωματόδρομο για την παραλία Κήπος Μιχαλιού, οπότε η εφ…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/michaliou-kipos-beach/",
@@ -174023,7 +174042,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "Χωματόδρομος",
-              "notes": "Η επίσημη registry ταυτοποιεί τον Διακόφτη στην Κάρπαθο, ενώ άμεσος τοπικός οδηγός αναφέρει πρόσβαση με αυτοκίνητο, μηχανή ή γουρούνα μέσω χωματόδρομου πίσω από το αεροδρόμιο."
+              "notes": "Πρόσβαση με αυτοκίνητο, μηχανή ή γουρούνα μέσω χωματόδρομου πίσω από το αεροδρόμιο."
             },
             "terrain": {
               "types": [
@@ -174051,7 +174070,8 @@
             "sourceNotes": [
               "Phase 2 Karpathos OSM identity/location pass 2026-05-27: OpenStreetMap natural=beach same-name or compatible-name match is 37m from stored coordinates and supports identity/location only; confidence, access, services, and amenities remain unchanged pending stronger local or official sources.",
               "Karpathos source-backed cleanup 2026-05-29: the official bathing-water registry supports Diakoftis identity/location in Karpathos, and KarpathosInfo supports dirt-road vehicle access behind the airport, white-sand terrain with rocks in places, shallow water, parking, beach bar, parasols and sunbeds. Confidence promoted to medium; source wind/calm wording was deliberately not imported into metadata, windProfile, or scoring.",
-              "Karpathos strict evidence pass 2026-05-29: The official bathing-water registry, KarpathosInfo, and municipal tourism support Diakoftis identity/location, airport/Afiartis access, white-sand/shallow terrain, parking, beach bar, parasols, and sunbeds. No source wind/calm wording was imported."
+              "Karpathos strict evidence pass 2026-05-29: The official bathing-water registry, KarpathosInfo, and municipal tourism support Diakoftis identity/location, airport/Afiartis access, white-sand/shallow terrain, parking, beach bar, parasols, and sunbeds. No source wind/calm wording was imported.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Η επίσημη registry ταυτοποιεί τον Διακόφτη στην Κάρπαθο, ενώ άμεσος τοπικός οδηγός αναφέρε…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw149280431101",
@@ -174164,7 +174184,7 @@
             "access": {
               "type": "passable_dirt_road",
               "label": "βατός χωματόδρομος",
-              "notes": "Η πρόσβαση περιγράφεται από το δυτικό άκρο του αεροδρομίου, αφήνοντας τον ασφαλτόδρομο, με μικρό χώρο στάθμευσης και σύντομο περπάτημα ως την ακτή."
+              "notes": "Από το δυτικό άκρο του αεροδρομίου, αφήνοντας τον ασφαλτόδρομο. Μικρός χώρος στάθμευσης και σύντομο περπάτημα ως την ακτή."
             },
             "terrain": {
               "types": [
@@ -174189,7 +174209,9 @@
             },
             "sourceNotes": [
               "Source-backed cleanup 2026-05-29: KarpathosInfo supports Psoraris coordinates near the stored record, dirt-road/car access with a small parking area, coarse sand/pebbles/rocks, shallow water, and usually unorganized status. Source sea-surface and wind wording was not imported as static condition data.",
-              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Psoraris identity near Diakoftis/airport, rocky/coarse beach terrain, road/dirt-road access and small parking, usually unorganized status, and quiet beach character. OSM is geometry support only."
+              "Karpathos strict evidence pass 2026-05-29: KarpathosInfo and municipal tourism support Psoraris identity near Diakoftis/airport, rocky/coarse beach terrain, road/dirt-road access and small parking, usually unorganized status, and quiet beach character. OSM is geometry support only.",
+              "Popularity retracted 2026-09-09: the stored rating {\"tier\":\"popular\",\"rating\":4.7,\"ratingCount\":539,\"source\":\"google-places\",\"checkedAt\":\"2026-06-17\"} is identical to #2307 Κήπος Μιχαλιού (identical 4.7/539 on a different card is not a measurement of Ψωράρης) — a Google figure borrowed through the old place-card collision, not a measurement of this beach. Left unknown (not quiet) until a rating for THIS beach exists.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Η πρόσβαση περιγράφεται από το δυτικό άκρο του αεροδρομίου, αφήνοντας τον ασφαλτόδρομο, με…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "sourceUrls": [
               "https://karpathosinfo.com/psoraris-beach/",
@@ -174212,13 +174234,6 @@
               "method": "osm-nav-audit-v1",
               "placeId": "ChIJPS4USABVkRQRmYzN6m0_wuQ",
               "query": "Παραλία Ψωράρης, Karpathos"
-            },
-            "popularity": {
-              "tier": "popular",
-              "rating": 4.7,
-              "ratingCount": 539,
-              "source": "google-places",
-              "checkedAt": "2026-06-17"
             }
           },
           "staticLabels": {
@@ -174234,7 +174249,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Δρόμος οικισμού στα 75 m και ασφαλτοστρωμένη διακλάδωση στα 129 m κατά την OSM. Ο οδηγός αναφέρει χώρο στάθμευσης πίσω από την παραλία, χωρίς επιτόπου επιβεβαίωση."
+              "notes": "Δρόμος του οικισμού στα 75 μ. και ασφαλτοστρωμένη διακλάδωση στα 130 μ. Χώρος στάθμευσης πίσω από την παραλία, χωρίς επιτόπια επιβεβαίωση."
             },
             "terrain": {
               "types": [
@@ -174272,7 +174287,8 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Το βόρειο τμήμα του κόλπου των Πηγαδίων, ~1 χλμ από την πόλη, από τα ερείπια του εκκλησιού της Αγίας Φωτεινής και βόρεια. Ο οδηγός σημειώνει ρητά ότι δεν έχει καμία φυσική προστασία από τον άνεμο. Ταυτότητα: Tamaris Suites (94 m), εστιατόρια Capari (127 m), Nisiotiko (142 m), Mediterranean House (151 m), δρόμος οικισμού 75 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617242 (natural=beach, ανώνυμο) — νότιο τμήμα· ακτογραμμή στα 14 m· διασταύρωση με Nominatim «Παραλία Άφφωτη» στα 35.51089,27.20453. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3663m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες παραλίας: «Afoti is a continuation of Pigadia beach... extensive, fully organized and close to the capital»· «nice sandy shore adorned with a few pebbles... relatively shallow depth»· «only partly organized, with a few sunbeds and umbrellas lining the shore»· «On the promenade and in the surrounding area there are bars and tavernas». Η ίδια σελίδα περιγράφει την ακτή ως εκτεθειμένη — συμφωνεί με τη γεωμετρία που ήδη έχουμε (ανοιχτός κόλπος, χωρίς κάλυψη) και ΔΕΝ αντιγράφεται εδώ ως ισχυρισμός: την ένταση την κρίνει το μοντέλο ανέμου, όχι το κείμενο. Η σιγουριά ανέβηκε σε high και έφυγε η σημαία «θέλει επαλήθευση». Το `waterDepth` ΕΜΕΙΝΕ medium: η greeka λέει «relatively shallow», το KarpathosInfo «βαθαίνει σταδιακά» — το πεδίο τροφοδοτεί το μοντέλο βυθού και δεν αλλάζει χωρίς συμφωνία."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες παραλίας: «Afoti is a continuation of Pigadia beach... extensive, fully organized and close to the capital»· «nice sandy shore adorned with a few pebbles... relatively shallow depth»· «only partly organized, with a few sunbeds and umbrellas lining the shore»· «On the promenade and in the surrounding area there are bars and tavernas». Η ίδια σελίδα περιγράφει την ακτή ως εκτεθειμένη — συμφωνεί με τη γεωμετρία που ήδη έχουμε (ανοιχτός κόλπος, χωρίς κάλυψη) και ΔΕΝ αντιγράφεται εδώ ως ισχυρισμός: την ένταση την κρίνει το μοντέλο ανέμου, όχι το κείμενο. Η σιγουριά ανέβηκε σε high και έφυγε η σημαία «θέλει επαλήθευση». Το `waterDepth` ΕΜΕΙΝΕ medium: η greeka λέει «relatively shallow», το KarpathosInfo «βαθαίνει σταδιακά» — το πεδίο τροφοδοτεί το μοντέλο βυθού και δεν αλλάζει χωρίς συμφωνία.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Δρόμος οικισμού στα 75 m και ασφαλτοστρωμένη διακλάδωση στα 129 m κατά την OSM. Ο οδηγός α…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174305,7 +174321,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Ασφαλτόδρομος (Ποσειδώνος) στα 131 m και δρόμοι οικισμού στα 88 m από την ακτή κατά την OSM. Δεν επιβεβαιώθηκε επιτόπου οργανωμένο parking."
+              "notes": "Ασφαλτόδρομος (Ποσειδώνος) στα 130 μ. και δρόμοι του οικισμού στα 90 μ. από την ακτή. Οργανωμένο parking δεν έχει επιβεβαιωθεί."
             },
             "terrain": {
               "types": [
@@ -174344,7 +174360,8 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Η μακρύτερη παραλία του κόλπου των Πηγαδίων, λίγες εκατοντάδες μέτρα ΒΔ από την παραλία της πόλης· 15-20 λεπτά με τα πόδια από την πρωτεύουσα. Ήταν ανώνυμο πολύγωνο στην OSM, γι' αυτό δεν την έπιανε το coverage pipeline. Ταυτότητα: μέσα σε 160 m υπάρχουν καφέ (29 m), Island Bar (111 m), εστιατόριο Kali Kardia (137 m) και η οδός Ποσειδώνος (secondary/asphalt, 131 m) — οικισμός, όχι ερημιά. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/225617241 (natural=beach, ανώνυμο, περίμετρος 792 m) — κεντροειδές· ακτογραμμή στα 13 m. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3462m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «one of the longest beaches in Karpathos... possible to get there on foot from Pigadia»· «mostly sandy and stretches for 4 km»· «strewn with sand and pebbles, and it is partly organized with sunbeds and umbrellas»· «a number of restaurants and taverns in the area»· «Water Sports: NO»· «It never gets crowded and ranks among the quietest beaches near Karpathos Town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση». Το `organized` έγινε true ως ΜΕΡΙΚΩΣ οργανωμένη — γι' αυτό οι παροχές γράφτηκαν «εποχικά ή σε τμήματα» και όχι σκέτο «ξαπλώστρες»."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/allovergreece (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «one of the longest beaches in Karpathos... possible to get there on foot from Pigadia»· «mostly sandy and stretches for 4 km»· «strewn with sand and pebbles, and it is partly organized with sunbeds and umbrellas»· «a number of restaurants and taverns in the area»· «Water Sports: NO»· «It never gets crowded and ranks among the quietest beaches near Karpathos Town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση». Το `organized` έγινε true ως ΜΕΡΙΚΩΣ οργανωμένη — γι' αυτό οι παροχές γράφτηκαν «εποχικά ή σε τμήματα» και όχι σκέτο «ξαπλώστρες».",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Ασφαλτόδρομος (Ποσειδώνος) στα 131 m και δρόμοι οικισμού στα 88 m από την ακτή κατά την OS…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174377,7 +174394,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Πάνω στην προκυμαία του χωριού: δρόμος οικισμού στα 21-25 m κατά την OSM, με λεωφορείο από τα Πηγάδια κατά τον οδηγό."
+              "notes": "Πάνω στην προκυμαία του χωριού, με δρόμο στα 20-25 μ. Λεωφορείο από τα Πηγάδια."
             },
             "terrain": {
               "types": [
@@ -174413,7 +174430,8 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Η παραλία του δεύτερου λιμανιού της Καρπάθου, μπροστά στην προκυμαία του χωριού — δεν υπήρχε εγγραφή, ενώ γύρω της είχαμε ήδη έξι απομονωμένες ακτές. Ήταν ανώνυμο πολύγωνο στην OSM. Ο οδηγός τη δίνει >200 m μήκος, ~10 m πλάτος, με μόλο που τη χωρίζει στη μέση. Ταυτότητα: εστιατόρια Rahati (30 m), Chrissi Akti (37 m), Anixis (43 m), Blue (43 m), καφέ To Aktaio (52 m), δρόμος 21 m. Χωρίς επιτόπου επιβεβαίωση. Συντεταγμένες: OSM way/561329965 (natural=beach, surface=pebblestone, ανώνυμο, περίμετρος 610 m) — κεντροειδές· ακτογραμμή στα 6 m. Slot κοντά στο #2298 (Βανάντα, 1643m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + Βικιπαίδεια (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «a long pebbly beach stretching for at least 200 meters, located right in front of Diafani's seaside promenade»· «small gray pebbles with a crystal clear sea»· «Its inviting azure waters deepen gradually» — στηρίζει το καταγεγραμμένο μέτριο βάθος· «the beach is cut in two by a pier used by excursion boats»· «The beach is organized with umbrellas and sunbeds, but there is still enough room left for visitors to lay down their own equipment»· «taverns and cafes that line the picturesque seafront». Σιγουριά -> high, έφυγε η σημαία. ΑΝΟΙΧΤΟ: δύο πηγές λένε μόνο βότσαλα, το record γράφει και χοντρή άμμο — δεν άλλαξε εδώ, θέλει τρίτη πηγή ή επιτόπου."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka + Βικιπαίδεια (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «a long pebbly beach stretching for at least 200 meters, located right in front of Diafani's seaside promenade»· «small gray pebbles with a crystal clear sea»· «Its inviting azure waters deepen gradually» — στηρίζει το καταγεγραμμένο μέτριο βάθος· «the beach is cut in two by a pier used by excursion boats»· «The beach is organized with umbrellas and sunbeds, but there is still enough room left for visitors to lay down their own equipment»· «taverns and cafes that line the picturesque seafront». Σιγουριά -> high, έφυγε η σημαία. ΑΝΟΙΧΤΟ: δύο πηγές λένε μόνο βότσαλα, το record γράφει και χοντρή άμμο — δεν άλλαξε εδώ, θέλει τρίτη πηγή ή επιτόπου.",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Πάνω στην προκυμαία του χωριού: δρόμος οικισμού στα 21-25 m κατά την OSM, με λεωφορείο από…»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "googleMapsNavigation": {
               "status": "verified",
@@ -174446,7 +174464,7 @@
             "access": {
               "type": "asphalt_road",
               "label": "Πρόσβαση με άσφαλτο",
-              "notes": "Μέσα στη Χώρα: ασφαλτόδρομος (28ης Οκτωβρίου) στα 58 m και δρόμοι πόλης στα 31 m κατά την OSM. Ο οδηγός σημειώνει ότι η στάθμευση δυσκολεύει τον Ιούνιο-Αύγουστο."
+              "notes": "Μέσα στη Χώρα (οδός 28ης Οκτωβρίου, στα 60 μ.). Η στάθμευση δυσκολεύει τον Ιούνιο-Αύγουστο."
             },
             "terrain": {
               "types": [
@@ -174486,7 +174504,8 @@
             ],
             "sourceNotes": [
               "Hidden-beach discovery (2026-07): Η παραλία της πρωτεύουσας — δεν υπήρχε καμία εγγραφή για τα Πηγάδια, ενώ είναι το πρώτο πράγμα που ψάχνει όποιος μένει στη Χώρα. Η OSM ΔΕΝ έχει πολύγωνο παραλίας εδώ (μόνο ακτογραμμή), γι' αυτό ήταν αόρατη και στα δύο pipelines. Η πινέζα είναι εκτίμηση από τον οδηγό, ακουμπισμένη στην ακτογραμμή· ΔΕΝ προέρχεται από πολύγωνο παραλίας και χρειάζεται ανθρώπινη επιβεβαίωση. Ταυτότητα: δρόμοι πόλης 31-58 m, καφέ Non Solo Caffé (54 m), Hermanos (67 m). Συντεταγμένες: Οδηγός KarpathosInfo (μπροστά από τα ξενοδοχεία, ~100 m από το εξωτερικό λιμάνι) + πλησιέστερο σημείο ακτογραμμής OSM 35.50804,27.21289. Slot κοντά στο #2288 (Μικρή Αμμοοπή, 3496m). Πρόσβαση/χαρακτηριστικά από οδηγούς — ΔΕΝ έχουν επιβεβαιωθεί επιτόπου.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/in2greece/Tripadvisor (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «lies just a few minutes from the town center, stretching right to the left of Karpathos Port and the Archaeological Museum»· «stretches some 3 kilometres along the bay with fine golden sand»· «mainly covered with sand, gravel-like pebbles and stones, with medium depth in relation to other beaches on the island» — στηρίζει το καταγεγραμμένο μέτριο βάθος και το καταγεγραμμένο έδαφος· «well-organized with umbrellas and sunbeds, while several taverns, cafes, bars and hotels can be found along the beach»· «only a 5-15 minute walk from the town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση»."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα greeka/in2greece/Tripadvisor (αναζήτηση 2026-09-01), αφιερωμένες σελίδες: «lies just a few minutes from the town center, stretching right to the left of Karpathos Port and the Archaeological Museum»· «stretches some 3 kilometres along the bay with fine golden sand»· «mainly covered with sand, gravel-like pebbles and stones, with medium depth in relation to other beaches on the island» — στηρίζει το καταγεγραμμένο μέτριο βάθος και το καταγεγραμμένο έδαφος· «well-organized with umbrellas and sunbeds, while several taverns, cafes, bars and hotels can be found along the beach»· «only a 5-15 minute walk from the town». Σιγουριά -> high, έφυγε η σημαία «θέλει επαλήθευση».",
+              "Access note rewritten 2026-09-09 for the visitor (was editor/source-speak or English: «Μέσα στη Χώρα: ασφαλτόδρομος (28ης Οκτωβρίου) στα 58 m και δρόμοι πόλης στα 31 m κατά την …»). Same facts, plain Greek; empty where the access label already says it all."
             ],
             "googleMapsNavigation": {
               "status": "verified",

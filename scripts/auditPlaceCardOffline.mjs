@@ -125,7 +125,7 @@ const BAD_CARD_TYPE = /lodging|hotel|restaurant|bar|cafe|store|parking|resort|ca
 
 // --- walk ------------------------------------------------------------------------------
 const files = fs.readdirSync(summaryDir).filter((f) => f.endsWith('.json'));
-const placeRows = { ok: [], long: [], section: [], wrong: [], uncached: [], badType: [] };
+const placeRows = { ok: [], long: [], section: [], wrong: [], uncached: [], badType: [], nearDifferentName: [] };
 const pinRows = { on: 0, near: 0, far: [] };
 let scanned = 0;
 
@@ -145,8 +145,15 @@ for (const file of files) {
       const d = Math.round(distanceM(pin, card.top.loc));
       const row = { ...base, placeId: nav.placeId, card: card.top.name, cardType: card.top.primaryType || '', distanceM: d };
       if (BAD_CARD_TYPE.test(row.cardType) && !/beach/.test(row.cardType)) { placeRows.badType.push(row); continue; }
-      if (d <= FAR_M) { placeRows.ok.push(row); continue; }
       const rel = nameRelation(row.name, row.card);
+      if (d <= FAR_M) {
+        // Near but named after another beach: two coves 300 m apart sharing one card (Γιαλού
+        // Χωράφι holding «Παραλία Φραγκολιμιώνα»). Not auto-fixed — adjacent beaches often
+        // share a Google listing legitimately — but never silently OK either.
+        if (rel === 'different') placeRows.nearDifferentName.push(row);
+        else placeRows.ok.push(row);
+        continue;
+      }
       if (rel === 'same') placeRows.long.push(row);
       else if (rel === 'section') placeRows.section.push(row);
       else placeRows.wrong.push(row);
@@ -180,6 +187,10 @@ placeRows.wrong.forEach((r) => console.log(line(r)));
 if (placeRows.badType.length) {
   console.log(`  WRONG TYPE — the card is a business, not a beach: ${placeRows.badType.length}`);
   placeRows.badType.forEach((r) => console.log(`${line(r)} [${r.cardType}]`));
+}
+if (placeRows.nearDifferentName.length) {
+  console.log(`  NEAR but a DIFFERENT name — a human decides (adjacent coves may share one listing): ${placeRows.nearDifferentName.length}`);
+  placeRows.nearDifferentName.forEach((r) => console.log(line(r)));
 }
 console.log(`\nPINS (coordinate-routed or no nav block — the pin is the destination)`);
 console.log(`  on a named OSM beach ≤150 m: ${pinRows.on}   within ${FAR_M} m: ${pinRows.near}   farther: ${pinRows.far.length}`);
