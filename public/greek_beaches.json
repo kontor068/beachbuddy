@@ -1991,7 +1991,8 @@
             ],
             "sourceNotes": [
               "Phase 2 source check 2026-05-25: Athens Attica backs Limanakia Vouliagmenis access as foot-only descent from paths to small rocky coves; keep difficult foot-access wording.",
-              "Athens Riviera continuation 2026-06-02: Athens Attica, Visit Vari-Voula-Vouliagmeni, and This is Athens all support Limanakia as rocky coves off the coastal road, reached on foot/paths with steep rocky sea entry. Promoted static metadata confidence to high while preserving hard-access and unorganized/free-beach constraints. No windProfile, scoring, coordinates, photos, or live condition claims were changed."
+              "Athens Riviera continuation 2026-06-02: Athens Attica, Visit Vari-Voula-Vouliagmeni, and This is Athens all support Limanakia as rocky coves off the coastal road, reached on foot/paths with steep rocky sea entry. Promoted static metadata confidence to high while preserving hard-access and unorganized/free-beach constraints. No windProfile, scoring, coordinates, photos, or live condition claims were changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Λίμνη Βουλιαγμένης» (875 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "orientation": {
               "degrees": 165,
@@ -2004,11 +2005,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ28amvrjqoRQR-Ik7ke_Ji0o",
-              "query": "Παραλία Λιμανάκια Βουλιαγμένης, Athens area"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ28amvrjqoRQR-Ik7ke_Ji0o removed 2026-09-09: the cached Google answer for this card is «Παραλία Λίμνη Βουλιαγμένης», a differently-named place 875 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -2075,7 +2075,8 @@
             ],
             "sourceNotes": [
               "Phase 2 source check 2026-05-25: Athens Attica backs Limanakia Vouliagmenis access as foot-only descent from paths to small rocky coves; keep difficult foot-access wording.",
-              "High-confidence Athens Riviera follow-up 2026-06-02: Athens Attica, the Vari-Voula-Vouliagmeni tourism page and the Official Athens Guide support Limanakia as rocky natural coves reached from the coastal road, with steep rocky water entry and non-sandy/free-beach character. Hard rocky access remains encoded and this must not be treated as an easy or ideal top recommendation. No official nudist-status, windProfile, scoring, live calm/protected/safe, or ideal-beach claim was added."
+              "High-confidence Athens Riviera follow-up 2026-06-02: Athens Attica, the Vari-Voula-Vouliagmeni tourism page and the Official Athens Guide support Limanakia as rocky natural coves reached from the coastal road, with steep rocky water entry and non-sandy/free-beach character. Hard rocky access remains encoded and this must not be treated as an easy or ideal top recommendation. No official nudist-status, windProfile, scoring, live calm/protected/safe, or ideal-beach claim was added.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Λίμνη Βουλιαγμένης» (1251 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "orientation": {
               "degrees": 136.3,
@@ -2088,11 +2089,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ28amvrjqoRQR-Ik7ke_Ji0o",
-              "query": "Λιμανάκια Βουλιαγμένης Γυμνιστών, Athens area"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ28amvrjqoRQR-Ik7ke_Ji0o removed 2026-09-09: the cached Google answer for this card is «Παραλία Λίμνη Βουλιαγμένης», a differently-named place 1251 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -24877,17 +24877,18 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "OSM source pass 2026-05-27: same-name natural=beach feature near stored coordinates supports identity/location only. Confidence, access, services, amenities, and scoring were not changed. Access honest-downgrade 2026-07-20 (no-API): OSM showed no paved road within 300m + a track; web check — On Trizonia island — reached by a ~20min walk from the harbor through olive groves; Trizonia is car-free (boat access only). \"Asphalt\" is wrong. [https://www.xpatathens.com/living-in-athens/taste-experience/travel-in-greece/item/9005-trizonia-island-a-secret-paradise-in-greece]. Set roadSurfaceUnverified so the UI shows \"likely easy, not verified\" instead of asserting paved access.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Red Beach (Κοκκινη Παραλια)» (1049 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/901947085"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJN2NOfhqlXxMRBFwvdDmpS2Q",
-              "query": "Άσπρα Χαλίκια, Fokida"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJN2NOfhqlXxMRBFwvdDmpS2Q removed 2026-09-09: the cached Google answer for this card is «Red Beach (Κοκκινη Παραλια)», a differently-named place 1049 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -29137,7 +29138,9 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Source follow-up pass 48 2026-05-28: Visit Ammouliani directly lists Faka among Ammouliani beaches; BeachAtlas supports Faka beach coordinates/identity, sandy natural character, no infrastructure, and foot/boat access; GreeceGuide also lists Faka among the well-known Ammouliani beaches. No windProfile or scoring fields were changed.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Καραγάτσια» (989 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://visit-ammouliani.com/blog/seaside-16",
               "https://www.beachatlas.com/faka",
@@ -29145,11 +29148,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9Zz6DHDHqBQRP4MLV1PqzgY",
-              "query": "Παραλία Faka, Halkidiki"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ9Zz6DHDHqBQRP4MLV1PqzgY removed 2026-09-09: the cached Google answer for this card is «Καραγάτσια», a differently-named beach 989 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -31024,18 +31026,19 @@
               "label": "Βαθιά νερά",
               "notes": "Το βάθος συνήθως ανεβαίνει πιο γρήγορα μετά την είσοδο στη θάλασσα."
             },
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Source follow-up pass 48 2026-05-28: Halkidikeys supports Lemos beach identity/location near Porto Koufo, two small beach sides, difficult unsignposted road access, and unorganized status. Visit Halkidiki guide references the Diaporti/Lemos area. Depth, windProfile, and scoring were not changed.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Secret beach» (489 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://halkidikeys.com/lemos-beach-sithonia/",
               "https://www.visit-halkidiki.gr/wp-content/uploads/mediakit/Full-guide-Halkidiki%202019.pdf"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ8Rf4JsEcphQRyb9p2yYzZxQ",
-              "query": "Παραλία Παραλία Lemos, Halkidiki"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ8Rf4JsEcphQRyb9p2yYzZxQ removed 2026-09-09: the cached Google answer for this card is «Secret beach», a differently-named beach 489 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -32984,14 +32987,15 @@
               "https://www.gr-beaches.com/akti_zografou.en.aspx",
               "https://www.portoelea.com/2021/07/22/porto-elea-beach-bar/"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29 second pass: direct same-beach source supports the static identity and visitor-metadata trace for this record. This raises static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: Porto Elea official source supports Porto Elea beach-bar service.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Ζωγράφου» (796 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ7xLsWky7qBQR-Y6DSyYqkk4",
-              "query": "Παραλία Ζωγράφου, Halkidiki"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ7xLsWky7qBQR-Y6DSyYqkk4 removed 2026-09-09: the cached Google answer for this card is «Παραλία Ζωγράφου», a differently-named beach 796 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "secluded",
@@ -37767,7 +37771,9 @@
               "https://www.visit-centralmacedonia.gr/en/where-to-go/61/1-halkidiki/387/ormos-panagias",
               "https://www.openstreetmap.org/relation/16387456"
             ],
-            "sourceNotes": "Halkidiki direct-source confidence pass 2026-05-29: direct beach page or official/regional tourism page supports this record enough to promote static metadata confidence to high. This is static metadata confidence only; coordinates, windProfile, recommendation scoring, photos, and live sea/wind behavior were not changed. Previous note: OSM natural=beach candidate confirmed inside Chalkidiki Regional Unit by reverse geocoding.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Τρανή Αμμούδα» (1282 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "waterDepth": {
               "type": "shallow",
               "label": "Ρηχά νερά",
@@ -37775,11 +37781,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJJ5xJ-FCWqBQRGIfFGw5GyrM",
-              "query": "Παραλία Όρμος Παναγίας, Halkidiki"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJJ5xJ-FCWqBQRGIfFGw5GyrM removed 2026-09-09: the cached Google answer for this card is «Τρανή Αμμούδα», a differently-named beach 1282 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "crowded",
@@ -39389,7 +39394,8 @@
             ],
             "sourceNotes": [
               "Nami and Aloha sources support beach-bar service at Paralia Katerinis.",
-              "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed."
+              "Popular confidence pass 2026-06-02 L: official regional tourism, official bathing-profile, Blue Flag, or direct dedicated beach sources support the recorded static identity, access, terrain, depth, and service context for this record. Promoted to high for static beach facts only; windProfile, scoring, coordinates, photos, and live calm/protected/safe claims were not changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία» (939 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "seatrac": {
               "hasSeatrac": true,
@@ -39421,11 +39427,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcdZDJDMAWBMRQKu54iy9AAQ",
-              "query": "Παραλία Κατερίνης, Pieria"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJcdZDJDMAWBMRQKu54iy9AAQ removed 2026-09-09: the cached Google answer for this card is «Παραλία», a differently-named place 939 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "secluded",
@@ -51381,7 +51386,8 @@
               "Heraklion source confidence pass 2026-05-29: CretanBeaches and OSM support Keratokambos beach identity/location and south-coast village beach context. Static metadata confidence promoted to high; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
               "Access notes removed 2026-08-14: the paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach, and was shared verbatim by 8 Cretan records while each of them carries shade=false. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
               "Access notes replaced 2026-08-14: the previous paragraph described μια παραλία της Αττικής (πιθανότατα #0 Παραλία Φλοίσβου), not this beach — it named Σχινιάς and promised tamarisk shade, and 8 Cretan records carried it verbatim. Replaced with \"Πρόσβαση με άσφαλτο.\", which states only this record's own access.type. Removed text: \"Πρόσβαση: άσφαλτος μέχρι κοντά στην παραλία. Έδαφος/ακτή: κυρίως ψιλό βότσαλο. Η παραλία είναι ελεύθερη/ανοργάνωτη, σχετικά ήσυχη σε σχέση με τον Σχινιά, με αρμυρίκια και φυσική σκιά σε σημεία.\" Access type and label were not changed.",
-              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information."
+              "Access notes cleared 2026-08-14: the note said \"Πρόσβαση με άσφαλτο.\" immediately under the access chip \"άσφαλτος μέχρι κοντά στην παραλία\" — the same fact twice. The label keeps the information.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Μονομπούκα» (427 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "orientation": {
               "degrees": 201.1,
@@ -51394,11 +51400,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJC2wdQpqRmhQR63Pg3EXG7io",
-              "query": "Παραλία Keratokambos, Heraklion, Crete"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJC2wdQpqRmhQR63Pg3EXG7io removed 2026-09-09: the cached Google answer for this card is «Παραλία Μονομπούκα», a differently-named place 427 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -69114,17 +69119,18 @@
             "language": "el",
             "batch": "seatrac_directory_2026_06",
             "needsVerification": true,
-            "sourceNotes": "Seatrac directory import (2026-06): created from official seatrac.gr entry \"Λεύκιππος Άβδηρα\" (id 4918), Ξάνθη, East Macedonia and Thrace. Coordinates from seatrac.gr. Slot via nearest existing beach #858 (3877 m). Conservative — access/terrain unknown; accessibility added by the Seatrac importer. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Coco Beach Bar\" 52m from the pin. Access set to asphalt_road 2026-08-25 from TWO independent sources, as the 16/08 + 18/08 decision requires. (1) OSM road network: OSM way/795020282 highway=tertiary (κατηγορία πάντα στρωμένη) στα 15 m. (2) Seatrac accessibility ramp in service (verified 2026-06-14) — a wheelchair ramp is not installed where a paved road does not reach. Previously 'unknown'. No other field changed.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Πόρτο Μόλο» (773 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://seatrac.gr/el/paralies/avdera-lefkippos/"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJN2DeS9R-rhQRoj5ikFUDRxg",
-              "query": "Παραλία Λεύκιππος Άβδηρα, Xanthi"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJN2DeS9R-rhQRoj5ikFUDRxg removed 2026-09-09: the cached Google answer for this card is «Παραλία Πόρτο Μόλο», a differently-named place 773 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "seatrac": {
               "hasSeatrac": true,
@@ -72024,7 +72030,8 @@
               "Phase 2 final global low-evidence cleanup 2026-05-26: no direct source is recorded for stronger access/confidence claims; record kept as low-confidence baseline until source-backed review.",
               "Thesprotia OSM identity/location pass 2026-05-27: OSM way 231814512 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
               "Thesprotia/Sivota follow-up 2026-05-29: direct Karvouno beach/villa sources support identity/location near Sivota, sandy shore, organized beach services, beach bar, sunbeds, umbrellas, shower, changing room, toilet, nearby parking, and boat/pier access. Road surface remains unknown because the sources do not explicitly verify asphalt. Confidence promoted/aligned to medium; no wind, wave, protected-bay, or live-condition claim was imported.",
-              "Thesprotia tourist evidence pass 2026-06-01: AllOverGreece and Karvouno Villas support Karvouno beach identity near Sivota, sandy terrain, easy access, organized beach services, beach bar, shower/changing/toilet facilities, parking, and boat/pier context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed."
+              "Thesprotia tourist evidence pass 2026-06-01: AllOverGreece and Karvouno Villas support Karvouno beach identity near Sivota, sandy terrain, easy access, organized beach services, beach bar, shower/changing/toilet facilities, parking, and boat/pier context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Πισίνα» (1293 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://www.allovergreece.com/Region-Top-Beach/Descr/1288/en",
@@ -72032,11 +72039,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJmb18QPaDXBMRVyJk5jARjTc",
-              "query": "Παραλία Κάρβουνο, Thesprotia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJmb18QPaDXBMRVyJk5jARjTc removed 2026-09-09: the cached Google answer for this card is «Παραλία Πισίνα», a differently-named place 1293 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "crowded",
@@ -75756,7 +75762,8 @@
             },
             "sourceNotes": [
               "Corfu low-confidence follow-up 2026-05-28: Lovin Corfu directly describes Karavi as a tiny Kassiopi beach reached by foot/path, pebbled, relatively deep within a few meters and unorganized without facilities. Updated access/terrain/depth/services/source and promoted to medium.",
-              "Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Corfu tourist-priority confidence pass 2026-05-29: existing direct Corfu beach/local source URLs were live-checked and broken/blocked links were replaced where needed. Static metadata confidence promoted to high for identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Καλαμιώνας» (627 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://lovincorfu.com/places/karavi-beach/",
@@ -75773,11 +75780,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJR82gOZFBWxMR3XitKcsPDJA",
-              "query": "Karavi Beach, Corfu"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJR82gOZFBWxMR3XitKcsPDJA removed 2026-09-09: the cached Google answer for this card is «Παραλία Καλαμιώνας», a differently-named place 627 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -83251,7 +83257,8 @@
             },
             "sourceNotes": [
               "AllOverGreece direct Porto Ozia page supports the named beach/harbor location, fine gravel, and shallow water near the coast. Amenities remain conservative.",
-              "Paxos tourist-priority evidence pass 2026-05-29: AllOverGreece supports Porto Ozia identity, harbor/coastal location, fine-gravel terrain, and shallow near-shore context; Paxos Glyfada supports the wider Gaios/Mongonissi beach sequence. OSM is geometry support only."
+              "Paxos tourist-priority evidence pass 2026-05-29: AllOverGreece supports Porto Ozia identity, harbor/coastal location, fine-gravel terrain, and shallow near-shore context; Paxos Glyfada supports the wider Gaios/Mongonissi beach sequence. OSM is geometry support only.",
+              "Navigation 2026-09-09: Google place card opened «Domes Beach Resort at Agali» (1101 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://www.allovergreece.com/Beaches/Descr/66/789/en",
@@ -83269,11 +83276,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJJ58uRACNXBMRv4oqpSnMjpI",
-              "query": "Παραλία Παραλία Οζιάς, Paxos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJJ58uRACNXBMRv4oqpSnMjpI removed 2026-09-09: the cached Google answer for this card is «Domes Beach Resort at Agali», a differently-named place 1101 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "secluded",
@@ -92842,7 +92848,8 @@
             },
             "sourceNotes": [
               "Source follow-up pass 41 2026-05-28: official Visit Meganisi beaches page supports Spilia/Roka beach identity/location on Meganisi. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Popular regions source-promote pass Q 2026-06-02: the official Visit Meganisi beaches page and direct local Meganisi guide support Spilia/Roca identity below Spartochori, gently shelving pebble shoreline, road/steps access, organized beach-bar context, Taverna Spilia/Roca Beach service, rentable sunbeds, and free/nearby parking. Promoted to high for static beach facts only; source calm-water wording was not imported into windProfile, scoring, coordinates, photos, or live calm/protected/safe claims."
+              "Popular regions source-promote pass Q 2026-06-02: the official Visit Meganisi beaches page and direct local Meganisi guide support Spilia/Roca identity below Spartochori, gently shelving pebble shoreline, road/steps access, organized beach-bar context, Taverna Spilia/Roca Beach service, rentable sunbeds, and free/nearby parking. Promoted to high for static beach facts only; source calm-water wording was not imported into windProfile, scoring, coordinates, photos, or live calm/protected/safe claims.",
+              "Navigation 2026-09-09: Google place card opened «Nylec Beach» (1150 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://www.visitmeganisi.com/beaches",
@@ -92860,11 +92867,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJobw4bofJXRMRxKhDOgWEZD0",
-              "query": "Παραλία Σπηλιά, Meganisi"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJobw4bofJXRMRxKhDOgWEZD0 removed 2026-09-09: the cached Google answer for this card is «Nylec Beach», a differently-named place 1150 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -93164,7 +93170,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Strict evidence re-audit 2026-05-29: MyZakynthos directly supports Amboula Beach with soft sand, sunbeds/umbrellas, tavern, parking, and deeper-water caution after the first meters. Kept high for static beach facts only. Blue Flag 2026 import 2026-06-01: official Blue Flag Greece awards page lists one or more matching awarded beach sections for this record. Static certification metadata only; coordinates, access, windProfile, scoring, photos, confidence and live calm/protected/safe claims were not changed. Amenity re-verify 2026-07-20 (no-API): organized confirmed by TWO independent sources — (1) Ampoula (Tragaki/Tsilivi side) is a very small Blue Flag beach 'partly serviced with umbre [https://www.zante.info/el/ανακοίνωσης/παραλία-Αμπούλα/]; (2) greeka.com/zakynthos/beaches/amboula and kalimera-greece.eu (2nd sources, ≠ round1 zante.info): 'The partially [https://www.kalimera-greece.eu/zakynthos-beaches/amboula-beach-zakynthos/]; sunbeds added.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Katragaki beach» (632 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://www.myzakynthos.com/places/amboula/",
               "https://www.blueflag.gr/el/awards/2026",
@@ -93205,11 +93213,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ9YqMNZBGZxMRvb7WmQCZp9c",
-              "query": "Παραλία Αμπούλα, Zakynthos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ9YqMNZBGZxMRvb7WmQCZp9c removed 2026-09-09: the cached Google answer for this card is «Katragaki beach», a differently-named place 632 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -110812,7 +110819,8 @@
             },
             "sourceNotes": [
               "Lemnos OSM identity/location pass 2026-05-27: OSM way 264725687 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims.",
-              "Lemnos robot-copy sweep 2026-08-16: access.notes cleared. Removed text: \"Ακτή κοντά στον οικισμό Σκανδάλης με πρόσβαση από δρόμο. Κυρίως ελεύθερη παραλία με περιορισμένες παροχές.\" — ήταν το ίδιο πρότυπο με αλλαγμένο μόνο το όνομα οικισμού σε 3 παραλίες της Λήμνου, και κάθε κομμάτι του το έλεγε ήδη η ταμπέλα πρόσβασης ή η λίστα παροχών. Δεν περιείχε ένδειξη χωματόδρομου (utils/access.ts hasDirtRoadAccess)."
+              "Lemnos robot-copy sweep 2026-08-16: access.notes cleared. Removed text: \"Ακτή κοντά στον οικισμό Σκανδάλης με πρόσβαση από δρόμο. Κυρίως ελεύθερη παραλία με περιορισμένες παροχές.\" — ήταν το ίδιο πρότυπο με αλλαγμένο μόνο το όνομα οικισμού σε 3 παραλίες της Λήμνου, και κάθε κομμάτι του το έλεγε ήδη η ταμπέλα πρόσβασης ή η λίστα παροχών. Δεν περιείχε ένδειξη χωματόδρομου (utils/access.ts hasDirtRoadAccess).",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Λουρί» (534 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
             ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/264725687"
@@ -110828,11 +110836,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJqR7-jEvyrxQRNcS01QWY1mk",
-              "query": "Παραλία Σκανδάλη, Lemnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJqR7-jEvyrxQRNcS01QWY1mk removed 2026-09-09: the cached Google answer for this card is «Παραλία Λουρί», a differently-named beach 534 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -112601,7 +112608,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Source follow-up pass 52 2026-05-28: the Municipality of Lemnos accessibility guide references the Tourkikos Gialos coastline, supporting identity/location traceability only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Lemnos tourist evidence pass 2026-06-01: Limnos Tourist Guide directly supports Tourkikos Gialos by Myrina port with sandy/shallow beach character, in-town asphalt-road access, municipal umbrellas and cafe/sunbed context. Confidence was raised to high for source-backed static beach facts only; coordinates, windProfile, scoring, photos, amenities, and live calm/protected/safe claims were not changed. Medium-omission multi-signal pass 2026-07-19 (no-API): organized flag corrected to true — 2 independent signals (storyOrganized, ownAmenityFood).",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Ρωμέικος Γιαλός» (891 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://www.limnos.gov.gr/files/007/ERMIS/odigos_prosvasimotitas.pdf",
               "https://limnosguide.com.gr/en/organized-beaches/tourkikos-gialos"
@@ -112617,11 +112626,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJL1kMtxeFrxQR_2tkSqYkX1s",
-              "query": "Τούρκικος Γιαλός, Lemnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJL1kMtxeFrxQR_2tkSqYkX1s removed 2026-09-09: the cached Google answer for this card is «Παραλία Ρωμέικος Γιαλός», a differently-named beach 891 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -118343,14 +118351,15 @@
               "https://www.visitloutraki.com/en/place/heraion-lake-vouliagmeni",
               "https://www.visitloutraki.com/en/place/limni-vouliagmenis"
             ],
-            "sourceNotes": "Source follow-up pass 44: Visit Loutraki page supports Lake Vouliagmeni/Heraion beach identity/location in Korinthia. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed. Next popular-area confidence pass 2026-06-02: Visit Loutraki supports the Heraion/Lake Vouliagmeni beach identity near Loutraki, sandy beach/lagoonside setting, initially shallow water, taverns/restaurants, sea-sports/activity context and beach-bar/resto services. Static metadata only; windProfile, scoring, photos and live calm/protected/safe claims were not changed. Pin corrected 2026-07-25 (no-API): moved from 38.02429,22.87236 to 38.026243,22.873217 — pin is 230 m from the OSM beach outline (confidence OSM polygon 230 m).",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Πλαζ Λίντο» (569 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJQ1BYhsJsoBQR9ZLz5LDEhW4",
-              "query": "Πλαζ Λίμνης Ηραίου, Korinthia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJQ1BYhsJsoBQR9ZLz5LDEhW4 removed 2026-09-09: the cached Google answer for this card is «Πλαζ Λίντο», a differently-named place 569 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -121136,18 +121145,18 @@
             },
             "sourceNotes": [
               "Lakonia source follow-up 2026-05-28: official bathing-water profile for Valtaki/Navagio-Glyfada supports sandy coast and seabed, road access, gentle seabed slope to about 5 m around 100 m from shore, organized west edge with showers/sunbeds/bins, nearby food business, and Dimitrios shipwreck identity.",
-              "Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed."
+              "Lakonia tourist evidence pass 2026-06-01: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Γλυφάδα» (465 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/el/bathingprofiles/elbw039250112101"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJFQ_f4sbfYRMRrhzcIwP18to",
-              "query": "Παραλία Βαλτάκι, Lakonia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJFQ_f4sbfYRMRrhzcIwP18to removed 2026-09-09: the cached Google answer for this card is «Παραλία Γλυφάδα», a differently-named place 465 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -126424,7 +126433,9 @@
               "label": "Ρηχά νερά",
               "notes": "Η είσοδος στη θάλασσα είναι πιο ήπια και το βάθος αυξάνει πιο σταδιακά."
             },
-            "sourceNotes": "Messinia OSM identity/location pass 2026-05-27: OSM way 564384707 is a same-name, transliterated, or compatible-name beach feature at or very near the current coordinates. This verifies identity/location only; confidence stays low and access/services remain unchanged until direct local sources support stronger claims. Messinia low-confidence source pass 2026-05-29: Kardamyli and Terrabook sources directly identify Salio/Salia beach in Old Kardamyli and support the basic beach record; upgraded from OSM-only low confidence.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Καλαμιτσίου» (1388 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "sourceUrls": [
               "https://www.openstreetmap.org/way/564384707",
               "https://www.kardamili-greece.com/en/amenities/beaches/salio-beach.html",
@@ -126433,11 +126444,10 @@
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJocyBQH_AYRMR5L12Z8p37HE",
-              "query": "Παραλία Σάλιο, Messinia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJocyBQH_AYRMR5L12Z8p37HE removed 2026-09-09: the cached Google answer for this card is «Παραλία Καλαμιτσίου», a differently-named place 1388 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -130361,8 +130371,8 @@
           "lon": 24.82933,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -130387,7 +130397,8 @@
               "https://www.androstours.com/andros-island-greece/"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-09-09: OSM way/272822007 highway=track στα 41 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 117.4,
@@ -131010,8 +131021,8 @@
           "lon": 24.69421,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
               "notes": ""
             },
             "terrain": {
@@ -131036,7 +131047,8 @@
               "https://androsgreece.net/2016/07/23/andros-beaches-lowdown/"
             ],
             "sourceNotes": [
-              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged."
+              "National internal-note sweep 2026-08-15: access.notes cleared. Removed text: \"Δεν υπάρχει ακόμη source-backed ένδειξη για χωματόδρομο, μονοπάτι ή εύκολη οδική πρόσβαση. Κράτα την πρόσβαση ως μη επιβεβαιωμένη μέχρι να προστεθεί άμεση πηγή.\". It was an internal editorial instruction printed verbatim on the Greek card only (BeachCard.tsx:2366) while every other language showed the localized access label; what it stated is already carried by access.label/type. access.type, access.label, amenities, orientation, confidence and scoring unchanged.",
+              "Access from OSM road network 2026-09-09: OSM way/1219782417 highway=track στα 105 m. Previously 'unknown'. No other field changed."
             ],
             "orientation": {
               "degrees": 306.5,
@@ -131562,9 +131574,9 @@
           "lon": 24.69441,
           "metadata": {
             "access": {
-              "type": "unknown",
-              "label": "Πρόσβαση μη επιβεβαιωμένη",
-              "notes": "BeachSearcher αναφέρει ότι το Limanaki είναι προσβάσιμο με αυτοκίνητο/ταξί και βρίσκεται κοντά σε δρόμο, αλλά δεν τεκμηριώνει την επιφάνεια ή ποιότητα του δρόμου. Κρατιέται ως μη επιβεβαιωμένη πρόσβαση."
+              "type": "passable_dirt_road",
+              "label": "Βατός χωματόδρομος",
+              "notes": ""
             },
             "terrain": {
               "types": [
@@ -131588,7 +131600,7 @@
               "https://www.greece.com/destinations/Cyclades/Andros/Beach/Limanaki.html",
               "https://www.androstours.com/andros-island-greece/"
             ],
-            "sourceNotes": "Popular source-backed confidence pass Z 2026-06-02: BeachSearcher directly supports Limanaki near Mermigkies/Makrotantalo with sandy terrain, no amenities, road-adjacent car/taxi access, and slight-to-moderate depth increase; Greece.com and AndrosTours support the Limanaki Andros beach identity/listing. Promoted to high for static metadata only; unsupported asphalt-road surface was neutralized to unknown access, unsupported deep-water metadata was corrected to medium, and unsupported app surfing/snorkeling flags were pinned to false. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed.",
+            "sourceNotes": "Popular source-backed confidence pass Z 2026-06-02: BeachSearcher directly supports Limanaki near Mermigkies/Makrotantalo with sandy terrain, no amenities, road-adjacent car/taxi access, and slight-to-moderate depth increase; Greece.com and AndrosTours support the Limanaki Andros beach identity/listing. Promoted to high for static metadata only; unsupported asphalt-road surface was neutralized to unknown access, unsupported deep-water metadata was corrected to medium, and unsupported app surfing/snorkeling flags were pinned to false. No windProfile, scoring, coordinates, photos, or live calm/protected/safe claims changed. Access from OSM road network 2026-09-09: OSM way/96714292 highway=track tracktype=grade2 στα 54 m. Previously 'unknown'. No other field changed.",
             "activities": {
               "snorkeling": false,
               "surfing": false
@@ -131775,7 +131787,9 @@
               "https://www.e-kyklades.gr/tourism/andros_beaches?lang=en",
               "https://mapcarta.com/W269341394"
             ],
-            "sourceNotes": "Andros fourth low/no-source batch 2026-05-27: Andros Secrets and the municipality identify Mikri/Megali Peza as northern, remote, sandy/soft-pebble beaches reached by road routes from Gavrio/Fellos via Kalyvari or Chartes/Hartes; Mapcarta/OSM supports the Mikri Peza beach location. Kept no-service wording. Andros strict evidence pass 2026-05-29: Andros Secrets, the municipality and e-kyklades support Mikri/Megali Peza identity, remote northern location and no-service beach character. OSM/Mapcarta remains only supplementary location context.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Μεγάλη Πεζά» (436 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "orientation": {
               "degrees": 334.1,
               "faces": [
@@ -131787,11 +131801,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJRf_Za5ytoxQRwEveAuLx7RI",
-              "query": "Παραλία Μικρά Πέζα, Andros"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJRf_Za5ytoxQRwEveAuLx7RI removed 2026-09-09: the cached Google answer for this card is «Παραλία Μεγάλη Πεζά», a differently-named beach 436 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -149432,7 +149445,8 @@
             ],
             "sourceNotes": [
               "Mykonos Properties supports Tourlos as a sand/pebble beach with shallow water, sunbeds/umbrellas, beachfront tavernas/cafes, easy access, and nearby parking.",
-              "Mykonos tourist-priority confidence pass 2026-05-29: existing Mykonos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for app-included Mykonos beaches, covering identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed."
+              "Mykonos tourist-priority confidence pass 2026-05-29: existing Mykonos beach/local source URLs were live-checked and unavailable links were replaced or removed where needed. Static metadata confidence promoted to high for app-included Mykonos beaches, covering identity, location, and source-backed beach context only; coordinates, windProfile, scoring, photos, and live sea/wind claims were not changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Άγιος Στέφανος» (1331 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "orientation": {
               "degrees": 254.6,
@@ -149445,11 +149459,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJn0GDjZC_ohQRuL3YINxyBKM",
-              "query": "Παραλία Τούρλος, Mykonos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJn0GDjZC_ohQRuL3YINxyBKM removed 2026-09-09: the cached Google answer for this card is «Παραλία Άγιος Στέφανος», a differently-named place 1331 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "crowded",
@@ -159964,7 +159977,8 @@
             "sourceNotes": [
               "e-sifnos map coordinates for Spilia.",
               "Source follow-up pass 36 2026-05-28: direct e-Sifnos beaches page/map supports Spilia beach identity/location on Sifnos. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
-              "Sifnos tourist evidence pass 2026-05-29: Sifnos Wizard and e-Sifnos support Spilia as a tiny rocky/pebbly Sifnos coast, with beach-specific identity and non-organized character. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed."
+              "Sifnos tourist evidence pass 2026-05-29: Sifnos Wizard and e-Sifnos support Spilia as a tiny rocky/pebbly Sifnos coast, with beach-specific identity and non-organized character. Confidence is high for static identity/access/terrain/service evidence only. Coordinates, windProfile, scoring, photos and live sea/wind/safety claims were not changed.",
+              "Navigation 2026-09-09: Google place card opened «Καμάρες παραλία» (577 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "waterDepth": {
               "type": "deep",
@@ -159986,11 +160000,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJkSdP1dGSmBQRgQzBtByaeDE",
-              "query": "Παραλία Σπηλιά, Sifnos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJkSdP1dGSmBQRgQzBtByaeDE removed 2026-09-09: the cached Google answer for this card is «Καμάρες παραλία», a differently-named place 577 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "popular",
@@ -164830,7 +164843,9 @@
               "https://tinosecret.gr/en/beaches-tinos/",
               "https://tinos-guide.gr/tinos-beaches.html"
             ],
-            "sourceNotes": "Popular source-backed confidence pass Y 2026-06-02: Tinosecret directly supports Panousa in southwest Tinos, about 6.5km from Chora, with dirt-road/descent access, sand/pebbles/rocks, normal depth, no organization, no natural shade and quiet static character; Tinos Guide and the Tinosecret beach guide support the Panousa beach identity/listing. Promoted to high for static metadata only. Source wind/exposure wording was not imported into windProfile, scoring, or live calm/protected/safe claims.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Άγιος Ρωμανός» (1164 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "orientation": {
               "degrees": 289.3,
               "faces": [
@@ -164842,11 +164857,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJx3m8153tohQROc-tltfnQ8g",
-              "query": "Παραλία Πανούσα, Tinos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJx3m8153tohQROc-tltfnQ8g removed 2026-09-09: the cached Google answer for this card is «Παραλία Άγιος Ρωμανός», a differently-named beach 1164 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -165596,7 +165610,9 @@
               "https://tinosecret.gr/en/listing-item/panormos-stafida/",
               "https://tinos.infotouch.gr/beaches/unorganized/stafida"
             ],
-            "sourceNotes": "Tinos local-source pass 2026-05-26: Tinosecret places Stafida in Panormos, about 27km from Chora, with sand, normal depth, no organization, a few umbrellas, and tamarisk shade. Infotouch supports unorganized status, soft sand with a few pebbles, tree shade, and nearby Panormos restaurants/cafes. Static wind/calm wording was not promoted into live-condition claims. Tinos strict evidence pass 2026-05-29: Tinosecret and Infotouch directly support Stafida/Panormos identity, terrain, unorganized status, shade and nearby Panormos food/cafe context. No live wind/calm claim is added. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true — dataset's own amenities already list an on-beach sunbeds.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Αγιά Θάλασσα» (955 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
+            ],
             "orientation": {
               "degrees": 104.3,
               "faces": [
@@ -165608,11 +165624,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJcwqAEq3xohQRPgud995CTeM",
-              "query": "Παραλία Σταφίδα, Tinos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJcwqAEq3xohQRPgud995CTeM removed 2026-09-09: the cached Google answer for this card is «Παραλία Αγιά Θάλασσα», a differently-named beach 955 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -169172,7 +169187,9 @@
               "https://www.athinorama.gr/travel/destinations/ellada/dodekanisa/astupalaia/paralies",
               "https://www.fototravel.info/en/greece/dodecanese/astypalea/magazaki-beach"
             ],
-            "sourceNotes": "Island confidence pass 2026-06-05: Astypalaia Magazaki promoted to high for static beach facts only. Existing Athinorama and FotoTravel beach-source coverage supports identity/location plus short path descent access and recorded sand/pebble terrain context. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed. Reverse amenity sweep 2026-07-19 (no-API): organized flag corrected to true + sunbeds added — OSM beach_resort \"Μαγαζάκι\" 1m from the pin.",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Παραλία Αστυπάλαιας» (729 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "confidenceBatch": "popular_island_source_promote_2026_06_05_astypalaia",
             "orientation": {
               "degrees": 192.4,
@@ -169185,11 +169202,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJTUeCPUa0lxQRCw-BgRJ1Tj8",
-              "query": "Μαγαζάκι, Astypalaia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJTUeCPUa0lxQRCw-BgRJ1Tj8 removed 2026-09-09: the cached Google answer for this card is «Παραλία Αστυπάλαιας», a differently-named place 729 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",
@@ -169251,7 +169267,9 @@
               "https://greece-moments.com/en/astypalea-sights/",
               "https://www.allovergreece.com/Beaches/Descr/27/459/en"
             ],
-            "sourceNotes": "Popular-source confidence pass DG 2026-06-05: Astypalaia Mamounia promoted to high for static beach facts only. GreekTravel supports Marmari a few hundred meters down the road from Astypalaia Camping with the Ta Mamounia cafe; Greece Moments supports Marmari beach by the main road with Mamounia All Day Bar drinks/snacks in summer; AllOverGreece supports Marmari beach near these coordinates with sand/pebble terrain, very easy access and no full organized-beach profile. This pass corrects the legacy src/data boat-only mirror. No coordinates, windProfile, scoring, photos, water-quality, or live calm/protected/safe claims were changed. Amenity corrected 2026-06-20 (amenity-evidence re-verify @400m): the taverna/beach-bar claim had zero Google food/drink POI within 400 m and <50/no reviews; unverified \"nearby\" default removed (other amenities untouched).",
+            "sourceNotes": [
+              "Navigation 2026-09-09: Google place card opened «Μαρμάρι» (405 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
+            ],
             "confidenceBatch": "popular_island_source_promote_2026_06_05_astypalaia_mamounia",
             "orientation": {
               "degrees": 174.7,
@@ -169264,11 +169282,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJz8xrfbS1lxQRgbIVKeMBAkA",
-              "query": "Παραλία Μαμούνια, Astypalaia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJz8xrfbS1lxQRgbIVKeMBAkA removed 2026-09-09: the cached Google answer for this card is «Μαρμάρι», a differently-named place 405 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -172878,7 +172895,8 @@
             "sourceNotes": [
               "Phase 2 Batch 3G source check 2026-05-25: Phileas describes Perdikas o Potamos as a Lefkos nudist beach about 1 km from Fragkolimionas, with good road condition but a walk on the dirt road because there is no parking; AllTrails backs a Lefkos-Perdikas o Potamos walking loop. Corrected from difficult dirt-road access to easy path/short dirt-road walk.",
               "Karpathos strict evidence pass 2026-05-29: Phileas, Tripadvisor place data, and Lefkos context support Perdikas o Potamos identity near Kato Lefkos, walking access from the Lefkos area, sparse parking/service context, and quiet/unorganized beach character.",
-              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα AllTrails (αναζήτηση 2026-09-01): κυκλική διαδρομή Λευκός -> Της Πέρδικας ο Ποταμός στη δυτική ακτή, «easy to park and not crowded», χωρίς σκιά στη διαδρομή· το νησάκι Σώκαστρο χαρακτηρίζει τον κόλπο. Καμία αναφορά σε παροχές στην παραλία."
+              "Κάρπαθος ξαναέλεγχος 2026-09-01 (web-source-recheck-2026-09): Απόσπασμα AllTrails (αναζήτηση 2026-09-01): κυκλική διαδρομή Λευκός -> Της Πέρδικας ο Ποταμός στη δυτική ακτή, «easy to park and not crowded», χωρίς σκιά στη διαδρομή· το νησάκι Σώκαστρο χαρακτηρίζει τον κόλπο. Καμία αναφορά σε παροχές στην παραλία.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Φραγκολιμιώνα» (866 m away, different name) — checked offline against the cached Google Places answer, no API call. Dropped to coordinate routing. Pin unchanged."
             ],
             "orientation": {
               "degrees": 221.7,
@@ -172891,11 +172909,10 @@
             },
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJw1yjqRqvlhQRbBzW6bvzjhs",
-              "query": "Παραλία Της Πέρδικας Ποταμός, Karpathos"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJw1yjqRqvlhQRbBzW6bvzjhs removed 2026-09-09: the cached Google answer for this card is «Παραλία Φραγκολιμιώνα», a differently-named beach 866 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -201364,18 +201381,18 @@
               "Source follow-up pass 5 2026-05-27: direct official bathing-water profile supports beach identity/location only. Confidence, coordinates, access, services, amenities, wind profile, and scoring were not changed.",
               "Magnesia/Pelion low-confidence cleanup 2026-05-28: official bathing-water profile supports sandy coast/seabed, normal-to-steep depth, asphalt road access, and organized facilities. Wind profile and scoring were not changed.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
-              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.46 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/1188080253, name \"Plakes beach\", match score 0.85, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.3025,22.894. Only coordinates changed; windProfile, scoring, photos and live claims untouched."
+              "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 1.46 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/way/1188080253, name \"Plakes beach\", match score 0.85, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.3025,22.894. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Μάραθος» (1034 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://bathingwaterprofiles.gr/sites/all/themes/danland/docs/pdf_profiles/ELBW089105018.pdf"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJv220_eRppxQRttlatQcojf4",
-              "query": "Παραλία Πλάκες (Βόλος), Magnesia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJv220_eRppxQRttlatQcojf4 removed 2026-09-09: the cached Google answer for this card is «Παραλία Μάραθος», a differently-named place 1034 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "quiet",
@@ -202702,18 +202719,18 @@
               "Low-confidence cleanup 2026-05-29: Maistrali Hotel local Pelion beach guide directly supports Lagoudi as an Afissos/Pagasitic beach with small-pebble terrain and tree shade above the beach. Access surface, services, wind profile, scoring, and live-condition claims were not strengthened.",
               "Pelion tourist evidence pass 2026-05-29: live direct sources support the recorded static beach identity plus concrete access, terrain, amenity, or limitation details already captured in this record. Promoted to high for static facts only; no coordinates, windProfile, scoring, or live calm/protected/safe claim was changed.",
               "Thessaly re-geocoding 2026-06-11 (batch-approved): coordinates moved 14.07 km from the imported village/POI point to the OSM-mapped beach (https://www.openstreetmap.org/relation/568991, name \"Λαγούδι\", match score 1, coastal-verified on the osmdata 2026-06-10 land mask). Previous pin: 39.207,23.2985. Only coordinates changed; windProfile, scoring, photos and live claims untouched.",
-              "Access from OSM road network 2026-08-17: OSM way/300219247 highway=tertiary surface=concrete «Διακλάδωση Αφήσου» στα 73 m. Previously 'unknown'. No other field changed."
+              "Access from OSM road network 2026-08-17: OSM way/300219247 highway=tertiary surface=concrete «Διακλάδωση Αφήσου» στα 73 m. Previously 'unknown'. No other field changed.",
+              "Navigation 2026-09-09: Google place card opened «Παραλία Παράδεισος Πήλιο» (1201 m away, different name; reviewed by eye from the offline place-card report) — dropped to coordinate routing, no API call. Pin unchanged."
             ],
             "sourceUrls": [
               "https://www.maistralihotel.com/gr/Pelion-beaches/"
             ],
             "googleMapsNavigation": {
               "status": "verified",
-              "mode": "place",
-              "checkedAt": "2026-06-22",
-              "method": "osm-nav-audit-v1",
-              "placeId": "ChIJ1U85PRkXpxQRwqH3Ugu-3WQ",
-              "query": "Παραλία Λαγούδι, Magnesia"
+              "mode": "coordinates",
+              "checkedAt": "2026-09-09",
+              "method": "offline-place-card-check-v1",
+              "reason": "placeId ChIJ1U85PRkXpxQRwqH3Ugu-3WQ removed 2026-09-09: the cached Google answer for this card is «Παραλία Παράδεισος Πήλιο», a differently-named place 1201 m from our pin, so the button opened another beach. Reverted to coordinate routing; the button stays."
             },
             "popularity": {
               "tier": "moderate",

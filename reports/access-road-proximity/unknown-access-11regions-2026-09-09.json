@@ -1,0 +1,605 @@
+{
+  "generatedAt": "2026-09-09T12:39:40.967Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "results": [
+    {
+      "id": 3172,
+      "name": "Ακρωτήρι",
+      "regionId": "south-aegean-naxos",
+      "lat": 37.14053,
+      "lon": 25.45029,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 24,
+      "evidence": "πλησιέστερος δρόμος way/521878936 highway=unclassified στα 24 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 527,
+      "name": "Άργιλος",
+      "regionId": "crete-crete-chania",
+      "lat": 35.1808438,
+      "lon": 24.2562054,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 135,
+      "evidence": "πλησιέστερος δρόμος way/217188248 highway=unclassified στα 135 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 536,
+      "name": "Λευκή Παραλία",
+      "regionId": "crete-crete-chania",
+      "lat": 35.55091,
+      "lon": 24.07978,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 97,
+      "evidence": "OSM way/27184525 highway=residential (κατηγορία πάντα στρωμένη) στα 97 m"
+    },
+    {
+      "id": 3065,
+      "name": "Nopigia Beach",
+      "regionId": "crete-crete-chania",
+      "lat": 35.509676,
+      "lon": 23.720163,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 22,
+      "evidence": "OSM way/124192223 highway=tertiary (κατηγορία πάντα στρωμένη) στα 22 m"
+    },
+    {
+      "id": 3076,
+      "name": "Korfalonas Beach",
+      "regionId": "crete-crete-chania",
+      "lat": 35.4987352,
+      "lon": 23.6743717,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 90,
+      "evidence": "μόνο μονοπάτι κοντά (way/1512097243 highway=footway στα 90 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3077,
+      "name": "Paralia Drapanias",
+      "regionId": "crete-crete-chania",
+      "lat": 35.5021692,
+      "lon": 23.6971431,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 86,
+      "evidence": "OSM way/38510694 highway=residential surface=asphalt στα 86 m"
+    },
+    {
+      "id": 3130,
+      "name": "Παραλία Λιβάδια",
+      "regionId": "crete-crete-chania",
+      "lat": 35.35763,
+      "lon": 23.53209,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 10,
+      "evidence": "OSM way/43375027 highway=tertiary surface=asphalt στα 10 m"
+    },
+    {
+      "id": 1438,
+      "name": "Λιμάνι Αγιάς",
+      "regionId": "north-aegean-lemnos",
+      "lat": 39.82625,
+      "lon": 25.35411,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 72,
+      "evidence": "πλησιέστερος δρόμος way/974922859 highway=service στα 72 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1447,
+      "name": "Βάθρακας",
+      "regionId": "north-aegean-lemnos",
+      "lat": 39.99132,
+      "lon": 25.10226,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 1452,
+      "name": "Κόκκινα (νότιος όρμος)",
+      "regionId": "north-aegean-lemnos",
+      "lat": 39.81749,
+      "lon": 25.14801,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 1467,
+      "name": "Τηγάνι",
+      "regionId": "north-aegean-lemnos",
+      "lat": 39.95912,
+      "lon": 25.32187,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 73,
+      "evidence": "μόνο μονοπάτι κοντά (way/986638454 highway=footway στα 131 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 3089,
+      "name": "Sfagia",
+      "regionId": "crete-crete-rethymno",
+      "lat": 35.4187326,
+      "lon": 24.6913027,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 38,
+      "evidence": "OSM way/134430463 highway=residential surface=asphalt στα 38 m"
+    },
+    {
+      "id": 113,
+      "name": "Καλόγεροι",
+      "regionId": "attica-kythira",
+      "lat": 36.37649,
+      "lon": 22.92462,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 114,
+      "name": "Παραλία Καρπάθι",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 115,
+      "name": "Βλυχάδα Πλατιάς Άμμου",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 125,
+      "name": "Λίμνη (Αγίας Πελαγίας)",
+      "regionId": "attica-kythira",
+      "lat": 36.30767,
+      "lon": 23.00365,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 8,
+      "evidence": "μόνο μονοπάτι κοντά (way/1092275565 highway=path στα 8 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 141,
+      "name": "Κακόπετρα",
+      "regionId": "attica-kythira",
+      "lat": 36.1576,
+      "lon": 23.04691,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 142,
+      "name": "Φελωτή",
+      "regionId": "attica-kythira",
+      "lat": 36.15444,
+      "lon": 22.96379,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 48,
+      "evidence": "πλησιέστερος δρόμος way/749303477 highway=unclassified στα 48 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 143,
+      "name": "Λεφτό",
+      "regionId": "attica-kythira",
+      "lat": 36.1468,
+      "lon": 23.0511,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 8,
+      "evidence": "μόνο μονοπάτι κοντά (way/1195542532 highway=path στα 8 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 145,
+      "name": "Παραλία Σπαραγγάριο",
+      "regionId": "attica-kythira",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 147,
+      "name": "Κυριακουλου",
+      "regionId": "attica-kythira",
+      "lat": 36.14112,
+      "lon": 23.0181,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 1,
+      "evidence": "μόνο μονοπάτι κοντά (way/1195534799 highway=path στα 1 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 148,
+      "name": "Στενό Αυλάκι",
+      "regionId": "attica-kythira",
+      "lat": 36.13709,
+      "lon": 23.04849,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 12,
+      "evidence": "μόνο μονοπάτι κοντά (way/520038600 highway=path στα 12 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 150,
+      "name": "Βρουλέα",
+      "regionId": "attica-kythira",
+      "lat": 36.13453,
+      "lon": 23.04695,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 23,
+      "evidence": "πλησιέστερος δρόμος way/389540061 highway=service στα 23 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1152,
+      "name": "Ανώνυμη Παραλία Κομηλιό",
+      "regionId": "ionian-islands-lefkada",
+      "lat": 38.71515,
+      "lon": 20.576,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 3098,
+      "name": "Άι Γιάννης (Λευκάδα)",
+      "regionId": "ionian-islands-lefkada",
+      "lat": 38.8315858,
+      "lon": 20.6698745,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 47,
+      "evidence": "OSM way/148105848 highway=residential (κατηγορία πάντα στρωμένη) στα 47 m"
+    },
+    {
+      "id": 194,
+      "name": "Αγία Ειρήνη Μαρμαρίου",
+      "regionId": "central-greece-evia",
+      "lat": 38.0829,
+      "lon": 24.28413,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 20,
+      "evidence": "πλησιέστερος δρόμος way/822132709 highway=unclassified στα 20 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 196,
+      "name": "Άγιος Αθανάσιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00736,
+      "lon": 24.43941,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 71,
+      "evidence": "OSM way/959654608 highway=residential (κατηγορία πάντα στρωμένη) στα 71 m"
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00803,
+      "lon": 24.43653,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 37,
+      "evidence": "OSM way/208079621 highway=residential (κατηγορία πάντα στρωμένη) στα 37 m"
+    },
+    {
+      "id": 203,
+      "name": "Ακρωτήρι",
+      "regionId": "central-greece-evia",
+      "lat": 37.99944,
+      "lon": 24.45739,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 94,
+      "evidence": "OSM way/85711613 highway=tertiary (κατηγορία πάντα στρωμένη) στα 94 m"
+    },
+    {
+      "id": 206,
+      "name": "Ανεμάκι",
+      "regionId": "central-greece-evia",
+      "lat": 38.67235,
+      "lon": 23.91184,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 44,
+      "evidence": "μόνο μονοπάτι κοντά (way/240764695 highway=footway στα 44 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 212,
+      "name": "Βαρελλαίων",
+      "regionId": "central-greece-evia",
+      "lat": 38.16693,
+      "lon": 24.32879,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 57,
+      "evidence": "πλησιέστερος δρόμος way/208278009 highway=unclassified στα 57 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 217,
+      "name": "Γιαννίτσι",
+      "regionId": "central-greece-evia",
+      "lat": 38.15871,
+      "lon": 24.39763,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 94,
+      "evidence": "πλησιέστερος δρόμος way/822439120 highway=service στα 94 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 220,
+      "name": "Ελιά",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 221,
+      "name": "Ζάστανα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 231,
+      "name": "Κατσούλι",
+      "regionId": "central-greece-evia",
+      "lat": 37.99775,
+      "lon": 24.38913,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 60,
+      "evidence": "OSM way/207438610 highway=tertiary surface=asphalt στα 60 m"
+    },
+    {
+      "id": 234,
+      "name": "Κοκκινιάς",
+      "regionId": "central-greece-evia",
+      "lat": 38.67852,
+      "lon": 23.89218,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 73,
+      "evidence": "πλησιέστερος δρόμος way/954151367 highway=service στα 73 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 239,
+      "name": "Λάκα Σαραβάνου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 244,
+      "name": "Λιβαδάκι",
+      "regionId": "central-greece-evia",
+      "lat": 38.00395,
+      "lon": 24.39191,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 152,
+      "evidence": "πλησιέστερος δρόμος way/207438610 highway=tertiary στα 152 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 246,
+      "name": "Λιβάδι",
+      "regionId": "central-greece-evia",
+      "lat": 37.98743,
+      "lon": 24.55737,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 171,
+      "evidence": "πλησιέστερος δρόμος way/207362939 highway=service στα 171 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 257,
+      "name": "Μικρή Κεφάλα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 258,
+      "name": "Μνήματα",
+      "regionId": "central-greece-evia",
+      "lat": 37.97637,
+      "lon": 24.39573,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 71,
+      "evidence": "OSM way/207451454 highway=residential (κατηγορία πάντα στρωμένη) στα 71 m"
+    },
+    {
+      "id": 260,
+      "name": "Ναυτικό",
+      "regionId": "central-greece-evia",
+      "lat": 38.67549,
+      "lon": 23.98239,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 264,
+      "name": "Παραλία Ακταίου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 279,
+      "name": "Παραλία Σκιάθου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 286,
+      "name": "Πετάλη",
+      "regionId": "central-greece-evia",
+      "lat": 38.69488,
+      "lon": 23.79772,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 42,
+      "evidence": "πλησιέστερος δρόμος way/323848293 highway=unclassified στα 42 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 288,
+      "name": "Πίσω Συκιά",
+      "regionId": "central-greece-evia",
+      "lat": 37.98963,
+      "lon": 24.55969,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 22,
+      "evidence": "πλησιέστερος δρόμος way/269212364 highway=service στα 22 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 302,
+      "name": "Σπίθα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 303,
+      "name": "Στενή",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 306,
+      "name": "Σχοινοδαύλεια",
+      "regionId": "central-greece-evia",
+      "lat": 38.14178,
+      "lon": 24.44799,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 49,
+      "evidence": "μόνο μονοπάτι κοντά (way/211302442 highway=path στα 112 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 307,
+      "name": "Τριανταφυλλένια",
+      "regionId": "central-greece-evia",
+      "lat": 38.08666,
+      "lon": 24.27901,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 50,
+      "evidence": "πλησιέστερος δρόμος way/822117433 highway=unclassified στα 50 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 3062,
+      "name": "Αλμυρίχι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 3121,
+      "name": "Παραλία Πήλι",
+      "regionId": "central-greece-evia",
+      "lat": 38.76503,
+      "lon": 23.58976,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 144,
+      "evidence": "πλησιέστερος δρόμος way/325285533 highway=unclassified στα 144 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 1690,
+      "name": "Αρτεμίδι",
+      "regionId": "south-aegean-andros",
+      "lat": 37.9538,
+      "lon": 24.82933,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 41,
+      "evidence": "OSM way/272822007 highway=track στα 41 m"
+    },
+    {
+      "id": 1700,
+      "name": "Καλαμίτσι",
+      "regionId": "south-aegean-andros",
+      "lat": 37.93265,
+      "lon": 24.69421,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 105,
+      "evidence": "OSM way/1219782417 highway=track στα 105 m"
+    },
+    {
+      "id": 1708,
+      "name": "Λιμανάκι",
+      "regionId": "south-aegean-andros",
+      "lat": 37.92202,
+      "lon": 24.69441,
+      "verdict": "passable_dirt_road",
+      "label": "Βατός χωματόδρομος",
+      "distM": 54,
+      "evidence": "OSM way/96714292 highway=track tracktype=grade2 στα 54 m"
+    },
+    {
+      "id": 2162,
+      "name": "Εμπρος Διαλισκάρ",
+      "regionId": "south-aegean-tinos",
+      "lat": 37.5518,
+      "lon": 25.12043,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 49,
+      "evidence": "πλησιέστερος δρόμος way/264645940 highway=unclassified στα 49 m — πολύ μακριά για να είναι ο δρόμος της παραλίας"
+    },
+    {
+      "id": 2182,
+      "name": "Πλατύς Γιαλός",
+      "regionId": "south-aegean-tinos",
+      "lat": 37.64008,
+      "lon": 25.12852,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    },
+    {
+      "id": 2185,
+      "name": "Σκληρός",
+      "regionId": "south-aegean-tinos",
+      "lat": 37.63499,
+      "lon": 25.18739,
+      "verdict": "unknown",
+      "label": null,
+      "distM": null,
+      "evidence": "κανένας δρόμος στον OSM σε 200 m"
+    }
+  ]
+}
