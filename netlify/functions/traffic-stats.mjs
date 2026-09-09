@@ -1323,23 +1323,14 @@ const page = (data) => {
   const sumEngaged = rows.reduce((s, r) => s + r.engaged, 0);
   const sumMulti = rows.reduce((s, r) => s + r.multiPage, 0);
 
-  /**
-   * The honest "how many people" band. The floor is the tagged count (devices whose
-   * first ping of the day we caught); the ceiling is the hash count AFTER subtracting
-   * the connection changes we caught (`dup`, see the rows above) — before 08/09/2026
-   * that subtraction did not exist and the ceiling ran ~95% above the floor, which is
-   * why the midpoint used to overstate. We show both ends and the midpoint, never a
-   * fake-precise single figure; as `dup` collection matures the two ends converge on
-   * their own and the band closes.
-   */
-  const band = (r) => {
-    const tagged = r.newV + r.retV + r.unkV;
-    if (!tagged) return { lo: r.unique, hi: r.unique, mid: r.unique };
-    const lo = Math.min(tagged, r.unique);
-    const hi = Math.max(tagged, r.unique);
-    return { lo, hi, mid: Math.round((lo + hi) / 2) };
-  };
-  const todayBand = band(today);
+  // The "≈ Άτομα" band that used to live here is GONE (09/09/2026). It showed a range
+  // whose floor was the tagged count — and that floor is NOT a lower bound on people,
+  // it is a lossy counter: the tag is written in the same read-modify-write day rollup
+  // as every breakdown, so it drops increments under concurrency. It sits stably at
+  // ~52% of the hash count (08/09: 421/830 · 09/09: 137/252) while the duplicates we
+  // can actually PROVE are 19% (09/09: 47 of 252). Presenting a lossy counter as "the
+  // low estimate" made the dashboard show three different numbers for one question and
+  // pushed the working figure ~40% too low. One number now: Επισκέπτες = hashes − dup.
 
   // Returning share, computed from the tagged population ONLY. (The previous version
   // divided a tagged number by the exact unique total — two different denominators —
@@ -1367,7 +1358,6 @@ const page = (data) => {
 
   const dayRows = rows
     .map((r) => {
-      const b = band(r);
       const bounce = r.unique ? Math.max(0, Math.min(100, Math.round((1 - Math.min(r.multiPage, r.unique) / r.unique) * 100))) : 0;
       const avg = r.engaged ? r.dwellSec / r.engaged : 0;
       return `<tr>
@@ -1950,14 +1940,6 @@ const page = (data) => {
       : 'ένα κλειδί ανά επισκέπτη',
     sparkline(uniqSeries, '#22d3ee')
   )}
-  ${kpi(
-    '≈ Άτομα σήμερα',
-    todayBand.lo === todayBand.hi ? num(todayBand.mid) : `~${num(todayBand.mid)}`,
-    todayBand.lo === todayBand.hi
-      ? 'οι δύο μετρήσεις συμφωνούν'
-      : `μεταξύ ${num(todayBand.lo)} και ${num(todayBand.hi)}`,
-    sparkline(uniqSeries, '#f0abfc')
-  )}
   ${kpi('Προβολές σήμερα', num(today.hits), `${today.unique ? (today.hits / today.unique).toFixed(1) : '—'} ανά επισκέπτη`, sparkline(hitsSeries, '#22d3ee'))}
   ${kpi('Νέοι σήμερα', num(today.newV), `${num(today.retV)} επιστρέφοντες σήμερα`, sparkline(newSeries, '#34d399'))}
   ${kpi('Επιστρέφοντες', `${retPct}%`, `στις ${rows.length} μέρες του παραθύρου`, '')}
@@ -2146,7 +2128,7 @@ ${searchTermsTab(data.searchTerms)}
   <b>Πώς διαβάζονται οι αριθμοί.</b>
   <span class="tag exact">ακριβές</span> Μοναδικοί επισκέπτες ανά μέρα και «σελίδες ≥2» — μετρώνται χωρίς race, ένας επισκέπτης = ένα κλειδί.
   <span class="tag best">κατά προσέγγιση</span> Προβολές, χώρες, συσκευές, χρόνος: γράφονται με read-modify-write, άρα σε ταυτόχρονες επισκέψεις χάνεται καμιά — υποεκτιμούν ελαφρώς, ποτέ δεν φουσκώνουν.
-  <span class="tag est">εκτίμηση</span> «≈ Άτομα»: το κάτω άκρο είναι όσοι πιάστηκαν με ετικέτα νέος/επιστρέφων, το πάνω οι μοναδικές συνδέσεις <b>αφού αφαιρεθούν</b> όσες αναγνωρίσαμε ως το ίδιο κινητό που άλλαξε δίκτυο μέσα στη μέρα (από 08/09/2026 — πριν από αυτή την ημερομηνία δεν αφαιρούνταν και το πάνω άκρο ήταν φουσκωμένο ~2×, οπότε <b>μέρες πριν και μετά τις 08/09 δεν συγκρίνονται</b>). Δείχνουμε και τα δύο άκρα.<br>
+  <span class="tag est">εκτίμηση</span> «Επισκέπτες σήμερα» = μοναδικές συνδέσεις <b>μείον</b> όσες αναγνωρίσαμε ως το ίδιο κινητό που άλλαξε δίκτυο μέσα στη μέρα (WiFi ↔ δεδομένα: αλλάζει η IP, άρα και το κλειδί). Μετριούνται από <b>08/09/2026</b> και είναι ~19% της ημέρας, οπότε <b>μέρες πριν και μετά τις 08/09 δεν συγκρίνονται</b> — οι παλιές είναι ~20% φουσκωμένες. Αφαιρούνται μόνο οι <b>αποδεδειγμένες</b> διπλές (ο browser λέει ο ίδιος ότι δεν είναι το πρώτο του χτύπημα σήμερα)· όποιος έχει μπλοκαρισμένη αποθήκευση δεν μπορεί να μας το πει, άρα ο αριθμός παραμένει ελαφρώς <b>πάνω</b> από την αλήθεια — ποτέ κάτω.<br>
   «Νέοι» + «Επιστρ.» μπορεί να μη βγάζουν το σύνολο των μοναδικών: όποιος έχει μπλοκαρισμένη αποθήκευση στον browser δεν μπορεί να πει αν ξαναήρθε, και δεν τον χρεώνουμε σε καμία από τις δύο στήλες.
   Ο «χρόνος» μετράει μόνο όσο η καρτέλα είναι <b>ορατή</b> και σταματά μετά από 5 λεπτά σιωπής — δεν φουσκώνει από ξεχασμένες καρτέλες. «Bounce» = επισκέπτες που είδαν μία μόνο σελίδα.
   Ο χάρτης δείχνει την πόλη που δίνει το δίκτυο· όπου δεν υπάρχει πόλη, βάζουμε το κέντρο της χώρας και το σχεδιάζουμε <b>κούφιο</b>.
