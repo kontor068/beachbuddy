@@ -418,11 +418,13 @@ export const handler = async (event) => {
     // (1) RACE-FREE uniqueness: one blob per unique visitor per day. We read it first
     //     to learn whether this is the visitor's FIRST hit today and to carry the
     //     session clock, then (over)write it — presence is all the unique count needs.
-    // Strong consistency (09/09/2026): the default read is eventually consistent,
-    // so a 2nd pageview seconds after the 1st could read the blob as absent and be
-    // treated as a brand-new visitor — re-tagged, re-mapped, re-counted. Everything
-    // below that says "!already" relies on this read being the truth.
-    const already = await store.get(visitorKey, { type: 'json', consistency: 'strong' });
+    // NOT `consistency: 'strong'`. Tried 09/09/2026 09:09-09:2x UTC: in this Lambda
+    // runtime the strong-read path throws (it needs an uncached edge URL the event
+    // context does not carry), and because this is the first store call of the hit
+    // the whole handler bailed out — zero visitors, zero presence, zero rollup for
+    // every hit while it was live. Eventual reads it is; the rollup below protects
+    // itself with an ETag instead of relying on this read being fresh.
+    const already = await store.get(visitorKey, { type: 'json' });
     const firstSeen = (already && already.t0) || nowSec;
     const lastSeen = (already && already.t1) || nowSec;
     // Only count time between pings that are close enough to be the same visit; a
@@ -539,7 +541,10 @@ export const handler = async (event) => {
     try {
       const key = `totals/${dayKey}`;
       for (let attempt = 0; attempt < ROLLUP_ATTEMPTS; attempt++) {
-        const got = await store.getWithMetadata(key, { type: 'json', consistency: 'strong' });
+        // Eventual read on purpose — see the `already` read above for why strong is
+        // not available here. A stale copy is harmless: its ETag will not match, the
+        // write is refused, and the next attempt re-reads.
+        const got = await store.getWithMetadata(key, { type: 'json' });
         const prev = (got && got.data) || {};
 
         if (isPageview) {
