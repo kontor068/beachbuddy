@@ -44,6 +44,7 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { isWitnessedArrivalSea } from '../utils/seaArrival';
 // Το δάπεδο των 0,10 μ. στον ΤΥΠΩΜΕΝΟ αριθμό — μία υλοποίηση με την κάρτα και την πινέζα.
 import { printedWaveHeightM } from '../utils/waveModel';
 import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
@@ -1375,7 +1376,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       let waveM = point.effectiveWaveHeightM;
       const item = hourItems.get(point.hour);
       if (item && geospatialExposure) {
-        const hourSwellPresent = hasSwellPresence(item.marine?.swellWaveHeightM, item.marine?.swellWaveDirectionDeg);
+        // Ίδιο με τη βαθμολογία: ρεστία ή μαρτυρημένη άφιξη (Μώλος 0-30°, §Γ77) = θάλασσα απ' έξω που μπαίνει.
+        const hourSwellPresent = hasSwellPresence(item.marine?.swellWaveHeightM, item.marine?.swellWaveDirectionDeg)
+          || isWitnessedArrivalSea(geospatialExposure, [
+            { heightM: item.marine?.waveHeightM, directionDeg: item.marine?.waveDirectionDeg },
+            { heightM: item.marine?.swellWaveHeightM, directionDeg: item.marine?.swellWaveDirectionDeg },
+          ]);
         const hourCove = resolveCoveAwareWaveHeightM({
           geospatialProfile: geospatialExposure,
           facingDeg: scoreResult.facingDeg ?? null,

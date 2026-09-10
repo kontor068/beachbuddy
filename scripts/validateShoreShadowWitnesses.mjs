@@ -168,9 +168,71 @@ for (const [beachId, regionFile, expectedWord, checks, why] of WITNESSES) {
   }
 }
 
+/**
+ * Ο ΜΩΛΟΣ ΠΑΡΟΥ #2040 — ΜΑΡΤΥΡΑΣ ΤΟΥ ΚΡΙΤΗ ΣΤΗΝ ΑΜΜΟ, ΜΟΝΟ ΓΙΑ ΚΥΜΑ 0-30° (11/09/2026, βίβλος §Γ77).
+ * Ο Sentinel-2 είδε αφρό θραύσης σε όλο τον κόλπο με κύμα 1,1-1,7 μ. από 16-18°, εκεί που η τσέπη
+ * τύπωνε 0,1 του ανοιχτού. Τρεις κανόνες έλεγαν «δεν μπαίνει θάλασσα» (τσέπη, εκτίμηση ακτής, φρουρός
+ * όρμου)· αν ξαναμιλήσει έστω ένας, με κάποιον αέρα η κάρτα ξαναγράφει «Θάλασσα λάδι». Γι' αυτό η
+ * θάλασσα από 16° δοκιμάζεται με ΤΡΕΙΣ αέρηδες (μελτέμι, δυτικός απόγειος, ελαφρύς), και ένας έλεγχος
+ * έξω από το τόξο (νοτιάς πίσω από την Πάρο) πρέπει να μείνει λάδι — η μαρτυρία δεν διαρρέει.
+ */
+const MOLOS = { id: 2040, region: 'south-aegean-paros' };
+const molosDay = ({ windDeg, windKmh, seaDeg, seaM }) => {
+  const wind = { speed: toMs(windKmh), speedBeforeGustFloor: toMs(windKmh), deg: windDeg, gust: toMs(windKmh * 1.2) };
+  const item = (hour) => ({ ...hourItem(hour), wind });
+  return {
+    date: new Date(2026, 7, 29), wind, weather: { main: 'Clear', description: 'clear sky', icon: '01d' },
+    temp_min: 26, temp_max: 30, hourly: [item(11), item(13), item(15)],
+    marine: { waveHeightM: seaM, wavePeriodS: 5.2, swellWaveHeightM: 0.25, swellWaveDirectionDeg: seaDeg, swellWavePeriodS: 3.5,
+      waveDirectionDeg: seaDeg, seaSurfaceTemperatureC: 26 },
+  };
+};
+const MOLOS_CASES = [
+  // [άνεμος°, χλμ/ώ, θάλασσα°, μ., ελάχιστο τυπωμένο, λέξεις που ΑΠΑΓΟΡΕΥΟΝΤΑΙ, γιατί]
+  [0, 24, 16, 1.5, 0.6, ['Θάλασσα λάδι', 'Σχεδόν χωρίς κύμα'], 'μελτέμι + θάλασσα από 16° — η μέρα του δορυφόρου'],
+  [270, 24, 16, 1.5, 0.6, ['Θάλασσα λάδι', 'Σχεδόν χωρίς κύμα'], 'δυτικός απόγειος + θάλασσα από 16° — εδώ η εκτίμηση ακτής έσβηνε το κύμα'],
+  [20, 15, 18, 1.5, 0.6, ['Θάλασσα λάδι', 'Σχεδόν χωρίς κύμα'], 'ελαφρύς ΒΒΑ 15 χλμ/ώ (φυσάει μέσα στον κόλπο) + θάλασσα από 18° — εδώ ο φρουρός όρμου τύπωνε το SMB (0,11 μ.)'],
+];
+{
+  const raw = findBy(loadJson(`public/data/beaches/${MOLOS.region}.json`), (n) => n.id === MOLOS.id && typeof n.lat === 'number');
+  const summary = findBy(loadJson(`public/data/beaches/app/summary/${MOLOS.region}.json`), (n) => n.id === MOLOS.id && n.orientation);
+  const profile = findBy(loadJson(`public/data/geospatial/exposure/${MOLOS.region}.json`), (n) => n.beachId === MOLOS.id);
+  if (!raw || !summary || !profile) {
+    failures.push(`#${MOLOS.id} Μώλος: λείπουν δεδομένα (raw=${!!raw} summary=${!!summary} profile=${!!profile})`);
+  } else {
+    const beach = {
+      id: MOLOS.id, name: summary.name, coordinates: { lat: raw.lat, lon: raw.lon }, region: raw.region,
+      protectedFrom: summary.protectedFrom, orientation: summary.orientation, amenities: summary.amenities ?? {},
+      waterDepth: summary.waterDepth, metadata: raw.metadata,
+    };
+    const run = (spec) => {
+      const forecast = molosDay(spec);
+      const score = calculateBeachScore(beach, forecast, undefined, undefined, {
+        weatherSource: 'beach-cluster', hourlyForecast: forecast.hourly, geospatialProfile: profile,
+      });
+      const readout = buildBeachConditionsReadout({
+        beachWindSpeedKmph: spec.windKmh, waveHeightM: score.waveHeightM,
+        shoreWaveHeightM: score.shoreWaveHeightM, shoreDisplayWaveM: score.shoreDisplayWaveM,
+        seaArrivalExposureLevel: score.seaArrivalExposureLevel, language: 'gr',
+      });
+      return { score, readout };
+    };
+    for (const [windDeg, windKmh, seaDeg, seaM, minPrinted, banned, why] of MOLOS_CASES) {
+      const { score, readout } = run({ windDeg, windKmh, seaDeg, seaM });
+      if (!(readout.waveM >= minPrinted)) failures.push(`#2040 Μώλος (${why}): τυπώνει ${readout.waveM} μ. < ${minPrinted} (${readout.waveText})`);
+      if (banned.includes(readout.waveWord)) failures.push(`#2040 Μώλος (${why}): λέξη «${readout.waveWord}» — ο δορυφόρος είδε κύμα να σκάει`);
+      if (!(score.shoreShadowDamping >= 0.5)) failures.push(`#2040 Μώλος (${why}): K_d ${score.shoreShadowDamping} < 0,5 μέσα στο τόξο`);
+    }
+    // έξω από το τόξο: νοτιάς πίσω από όλη την Πάρο — η μαρτυρία ΔΕΝ ισχύει, η βαθιά σκιά μένει
+    const control = run({ windDeg: 270, windKmh: 24, seaDeg: 180, seaM: 1.5 });
+    if (control.readout.waveWord !== 'Θάλασσα λάδι') failures.push(`#2040 Μώλος (ΕΛΕΓΧΟΣ νοτιάς 180°): λέξη «${control.readout.waveWord}» — η μαρτυρία των 0-30° διέρρευσε`);
+    if (!(control.score.shoreShadowDamping <= 0.12)) failures.push(`#2040 Μώλος (ΕΛΕΓΧΟΣ νοτιάς 180°): K_d ${control.score.shoreShadowDamping} — η βαθιά σκιά πίσω από το νησί χάθηκε`);
+  }
+}
+
 if (failures.length) {
   console.error(`FAILED: ${failures.length} μάρτυρας/ες διαφωνούν με τις κάμερες της 29/08/2026:`);
   for (const f of failures) console.error(`  - ${f}`);
   process.exit(1);
 }
-console.log('PASSED: και οι 7 μάρτυρες της 29/08/2026 συμφωνούν με τις κάμερες — Βάι/Κιτροπλατεία/Αλμυρός ανέβηκαν, Λίνδος ηρέμησε, οι τρεις απάνεμες αμετάβλητες.');
+console.log('PASSED: και οι 7 μάρτυρες της 29/08/2026 συμφωνούν με τις κάμερες — Βάι/Κιτροπλατεία/Αλμυρός ανέβηκαν, Λίνδος ηρέμησε, οι τρεις απάνεμες αμετάβλητες· Μώλος #2040 (δορυφόρος): κύμα με κάθε αέρα στις 0-30°, λάδι με νοτιά.');

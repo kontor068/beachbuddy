@@ -2,7 +2,8 @@
  * Εξάγει το ΓΕΩΜΕΤΡΙΚΟ K_d (βίβλος §Γ71) ανά παραλία × διεύθυνση κύματος (0..355, βήμα 5°),
  * για τον κριτή αφρού Sentinel-2 (scripts/judgeShoreSurfSentinel2.py).
  *
- * «Γεωμετρικό» = χωρίς την εξαίρεση των μαρτύρων (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS): ο κριτής
+ * «Γεωμετρικό» = χωρίς την εξαίρεση των μαρτύρων (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS και τα τόξα
+ * JUDGE_WITNESSED_ARRIVAL_ARCS — `beachId: -1` παρακάμπτει και τα δύο): ο κριτής
  * κρίνει τη ΓΕΩΜΕΤΡΙΑ, όχι το πάτωμα που μπήκε πάνω της. Ίδιο κόλπο με την πύλη
  * shore-shadow-contract Δ0 (`beachId: -1`).
  *

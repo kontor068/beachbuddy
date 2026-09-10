@@ -53,7 +53,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping } from '../utils/seaArrival';
+import { isWitnessedArrivalSea, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM, type CoveWave } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
@@ -2020,7 +2020,16 @@ export const calculateBeachScore = (
    * δύο απαντήσεις πρέπει να βγαίνουν από την ίδια λίστα. Κλείνει την εκτίμηση ακτής όταν το νερό
    * αποδεδειγμένα μπαίνει, ώστε ένας απόγειος άνεμος να μη σβήνει ένα κύμα που ήρθε από αλλού.
    */
-  const arrivingSea = isSeaArrivingShore({
+  /**
+   * ΜΑΡΤΥΡΗΜΕΝΗ ΑΦΙΞΗ (utils/seaArrival isWitnessedArrivalSea, 11/09/2026, βίβλος §Γ77): εκεί ο κριτής στην
+   * άμμο ΕΙΔΕ τη θάλασσα αυτής της κατεύθυνσης να σκάει, άρα ούτε η εκτίμηση ακτής («δεν έχει 2 χλμ νερό»)
+   * ούτε ο φρουρός όρμου («δεν υπάρχει ρεστία») επιτρέπεται να την ξανασβήσουν. Σήμερα μόνο Μώλος #2040, 0-30°.
+   */
+  const witnessedSea = isWitnessedArrivalSea(options?.geospatialProfile, [
+    { heightM: marine?.waveHeightM, directionDeg: marine?.waveDirectionDeg },
+    { heightM: marine?.swellWaveHeightM, directionDeg: marine?.swellWaveDirectionDeg },
+  ]);
+  const arrivingSea = witnessedSea || isSeaArrivingShore({
     facingDeg: windAssessment.facingDeg,
     profile: options?.geospatialProfile,
     components: [
@@ -2088,7 +2097,8 @@ export const calculateBeachScore = (
     windSpeedKmh: windSpeedKmph,
     measuredWaveHeightM: realisticMeasuredWaveHeightM,
     appModeledWaveHeightM: modeledWaveHeightM,
-    swellPresent: swell.hasSwell,
+    // Μαρτυρημένη άφιξη = θάλασσα απ' έξω που μπαίνει — ίδια σημασία με τη ρεστία για τον φρουρό (§Γ77).
+    swellPresent: swell.hasSwell || witnessedSea,
   });
   /**
    * ΤΟ ΝΕΡΟ ΠΟΥ ΔΕΙΧΝΕΙ Η ΣΕΛΙΔΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΤΟ ΔΙΑΒΑΖΕΙ ΠΛΕΟΝ ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ (10/08/2026).
@@ -2936,7 +2946,7 @@ export const calculateBeachScore = (
   const coveDisplayM = Math.max(coveWave.waveHeightM, modeledWaveHeightM);
   const displayWaveHeightM = coveWave.coveApplied
     ? Math.min(coveDisplayM, effectiveWaveHeightM)
-    : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
+    : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && !witnessedSea && coveDisplayCandidateM < effectiveWaveHeightM
       ? coveDisplayCandidateM
       : effectiveWaveHeightM;
 

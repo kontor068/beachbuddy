@@ -281,6 +281,69 @@ const angularDistanceDeg = (a: number, b: number): number =>
  */
 export const JUDGE_WITNESSED_ARRIVAL_BEACH_IDS: ReadonlySet<number> = new Set([2189, 1696]);
 
+/**
+ * ΜΑΡΤΥΡΕΣ ΑΦΙΞΗΣ ΜΟΝΟ ΣΕ ΕΝΑ ΤΟΞΟ ΔΙΕΥΘΥΝΣΕΩΝ (11/09/2026, βίβλος §Γ77).
+ *
+ * Μώλος Πάρου #2040 — ο πρώτος μάρτυρας με τον κανόνα της §Γ75 (παρατήρηση ΣΤΗΝ ΑΚΤΗ). Ο κόλπος
+ * κοιτάει ανατολικά και ο βοριάς μπαίνει στρίβοντας στο στόμιο. Η γεωμετρία τον κάνει «τσέπη» (κανένας
+ * τομέας ≥10 χλμ) και στις 11°-25° ο κανόνας της τσέπης τυπώνει 0,1 του ανοιχτού κύματος — ενώ στις
+ * 0-10° και από τις 26° τυπώνει ΟΛΟ το ύψος. Ο Sentinel-2 είδε αφρό θραύσης σε όλο τον κόλπο μέσα στην
+ * «τρύπα»: 04/10/22 (1,11 μ. από 16°) και 18/10/24 (1,73 μ. από 18°) — SWIR 0,45 / 0,33 = αληθινός
+ * αφρός, όχι σύννεφο — εκεί που τυπώναμε 0,11 / 0,17 μ.· ήρεμες μέρες 0/24· με το μάτι και από
+ * ανεξάρτητο «δικηγόρο του διαβόλου» (scripts/verifyShoreFoamSwir.py, reports/wave-model/shore-surf-swir-check.json).
+ *
+ * ΓΙΑΤΙ ΤΟΞΟ ΚΑΙ ΟΧΙ Η ΛΙΣΤΑ ΠΑΡΑΠΑΝΩ: η λίστα σηκώνει το K_d σε ΚΑΘΕ διεύθυνση. Στον Μώλο αυτό θα
+ * ανέβαζε και τις 150-330° (Ν-ΒΔ, πίσω από όλη την Πάρο) από 0,1 σε 0,5 — χωρίς καμία μαρτυρία εκεί
+ * (π.χ. 1,92 μ. από 151° θα έγραφε 0,96 μ. αντί 0,19). Ο ίδιος ψεύτικος συναγερμός που η §Γ75 έβγαλε
+ * από Μουτσούνα/Φράγκου. Το τόξο 0-30° καλύπτει την τρύπα (11-25°) με περιθώριο· έξω από αυτό η
+ * γεωμετρία μένει όπως είναι.
+ *
+ * ΤΟ ΜΙΣΟ, ΟΧΙ ΟΛΟ: ο αφρός στα 1,11 μ. και η απουσία του στα 0,78 μ. βάζουν την ακτή περίπου στο
+ * 0,3-0,6 του ανοιχτού → η άκρη της σκιάς SHADOW_KD_AT_EDGE (0,5), όπως κάθε μάρτυρας.
+ * ΜΟΝΟΔΡΟΜΟ: μόνο ανεβάζει το K_d. Το τόξο μεγαλώνει ΜΟΝΟ με νέα παρατήρηση στην ακτή ΚΑΙ απόφαση
+ * Μίλτου. Πύλη: shore-shadow-contract Δ0β (καρφώνει το τόξο και αποδεικνύει ότι δεν διαρρέει έξω)·
+ * shore-shadow-witnesses (ολόκληρος ο κινητήρας, με αέρα από βορρά ΚΑΙ από δύση).
+ *
+ * ΤΡΕΙΣ ΚΑΝΟΝΕΣ ΡΩΤΟΥΝ «ΜΠΑΙΝΕΙ Η ΘΑΛΑΣΣΑ;» ΚΑΙ Η ΜΑΡΤΥΡΙΑ ΙΣΧΥΕΙ ΚΑΙ ΓΙΑ ΤΟΥΣ ΤΡΕΙΣ (βρέθηκε 11/09
+ * με μέτρηση όλου του κινητήρα): η τσέπη (εδώ, K_d), η εκτίμηση ακτής (utils/shoreWave isSeaArrivingShore
+ * — ζητάει 2 χλμ νερό στη γωνία, ο Μώλος έχει 1,4) και ο φρουρός όρμου (utils/coveWaveGuard — τυπώνει
+ * το SMB του όρμου όταν δεν «υπάρχει» ρεστία). Με μόνο το K_d, με δυτικό ή ελαφρύ αέρα η κάρτα έμενε
+ * «Θάλασσα λάδι 0,1 μ.». Ο κοινός έλεγχος είναι το isWitnessedArrivalSea πιο κάτω.
+ * Στην άκρη του τόξου (0°/359°) η λέξη μπορεί να αλλάζει με 2° διαφορά κατεύθυνσης — όπως κάθε όριο
+ * της τσέπης· δηλωμένο, όχι σφάλμα (το 0-10° το στηρίζουν οι μέρες 6-12° με αφρό, §Γ77).
+ */
+export const JUDGE_WITNESSED_ARRIVAL_ARCS: ReadonlyMap<number, Readonly<{ centerDeg: number; halfWidthDeg: number }>> = new Map([
+  [2040, Object.freeze({ centerDeg: 15, halfWidthDeg: 15 })],
+]);
+
+/** Μέσα σε τόξο μαρτυρημένης άφιξης ΑΥΤΗΣ της παραλίας; (JUDGE_WITNESSED_ARRIVAL_ARCS) */
+export const isJudgeWitnessedArrivalDirection = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  waveDirectionDeg: number | undefined
+): boolean => {
+  const beachId = geospatialProfile?.beachId;
+  const arc = typeof beachId === 'number' ? JUDGE_WITNESSED_ARRIVAL_ARCS.get(beachId) : undefined;
+  return Boolean(arc) && typeof waveDirectionDeg === 'number' && Number.isFinite(waveDirectionDeg)
+    && angularDistanceDeg(waveDirectionDeg, arc!.centerDeg) <= arc!.halfWidthDeg;
+};
+
+/**
+ * Ύψος από το οποίο ένα συστατικό θάλασσας «υπάρχει» — ΙΔΙΟ με το DEPARTING_SEA_MIN_COMPONENT_M του
+ * utils/shoreWave (ο καθρέφτης «φεύγει/έρχεται» έχει ένα δάπεδο θορύβου· η πύλη Δ0β κρατά την ισότητα).
+ */
+export const WITNESSED_SEA_MIN_COMPONENT_M = 0.15;
+
+/**
+ * Φτάνει εδώ θάλασσα από τόξο μαρτυρημένης άφιξης; — το ΕΝΑ ερώτημα που ρωτούν η εκτίμηση ακτής και ο
+ * φρουρός όρμου πριν πουν «εδώ δεν μπαίνει τίποτα». Μονόδρομο: μπορεί μόνο να σωπάσει τις δύο εκτιμήσεις
+ * που ΚΑΤΕΒΑΖΟΥΝ το νούμερο, ποτέ να κάνει παραλία πιο ήρεμη.
+ */
+export const isWitnessedArrivalSea = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  components: Array<{ heightM?: number; directionDeg?: number }>
+): boolean => components.some((c) => typeof c.heightM === 'number' && Number.isFinite(c.heightM)
+  && c.heightM >= WITNESSED_SEA_MIN_COMPONENT_M && isJudgeWitnessedArrivalDirection(geospatialProfile, c.directionDeg));
+
 export const resolveShoreShadowDamping = (
   geospatialProfile: GeospatialExposureProfile | undefined,
   waveDirectionDeg: number | undefined
@@ -289,6 +352,9 @@ export const resolveShoreShadowDamping = (
   if (typeof kd !== 'number') return kd;
   const beachId = geospatialProfile?.beachId;
   if (typeof beachId === 'number' && JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(beachId)) {
+    return Math.max(kd, SHADOW_KD_AT_EDGE);
+  }
+  if (isJudgeWitnessedArrivalDirection(geospatialProfile, waveDirectionDeg)) {
     return Math.max(kd, SHADOW_KD_AT_EDGE);
   }
   return kd;

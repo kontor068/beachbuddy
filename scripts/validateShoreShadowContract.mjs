@@ -51,7 +51,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 const {
-  resolveShoreShadowDamping, JUDGE_WITNESSED_ARRIVAL_BEACH_IDS,
+  resolveShoreShadowDamping, JUDGE_WITNESSED_ARRIVAL_BEACH_IDS, JUDGE_WITNESSED_ARRIVAL_ARCS, resolveSeaArrivalExposureLevel,
   SHADOW_OPEN_FETCH_KM, SHADOW_CORRIDOR_HALF_DEG, SHADOW_DECAY_DEG, SHADOW_KD_AT_EDGE, SHADOW_KD_FLOOR,
   SHADOW_CROSS_SEA_ONSHORE_MIN,
 } = require(path.join(root, 'utils/seaArrival.ts'));
@@ -141,7 +141,9 @@ const beforeWitness = failures.length;
   for (const f of fs.readdirSync(dir).filter((n) => n.endsWith(".json"))) {
     let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")); } catch { continue; }
     const list = Array.isArray(d) ? d : Array.isArray(d?.profiles) ? d.profiles : (d?.profiles ? Object.values(d.profiles) : []);
-    for (const p of list) if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(p?.beachId)) byId.set(p.beachId, p);
+    for (const p of list) {
+      if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(p?.beachId) || JUDGE_WITNESSED_ARRIVAL_ARCS.has(p?.beachId)) byId.set(p.beachId, p);
+    }
   }
   // Οι μάρτυρες καρφώνονται ονομαστικά, αλλιώς η αφαίρεση ενός από τον κώδικα θα περνούσε σιωπηλά
   // (η πύλη θα έλεγχε μόνο όσους έμειναν). Βγαίνουν ΜΟΝΟ με κριτή στην άμμο ΚΑΙ απόφαση Μίλτου.
@@ -151,7 +153,75 @@ const beforeWitness = failures.length;
   // …και ΟΣΟΙ ΚΡΙΘΗΚΑΝ ΣΤΗΝ ΑΜΜΟ ΣΕ ΣΚΙΑ δεν ξαναμπαίνουν με μοντέλα κελιού (reports/wave-model/
   // shore-surf-arrival-summary.json, 10/09): ένα νέο «δύο μοντέλα συμφωνούν» δεν αρκεί να τους ξαναβάλει.
   for (const shadowSeen of [2009, 1428, 2191, 1284, 1668]) {
-    if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(shadowSeen)) fail('Δ0', `#${shadowSeen} μπήκε ξανά στους μάρτυρες — ο κριτής στην άμμο (Sentinel-2) την έδειξε σε αληθινή σκιά (βίβλος §Γ75)· θέλει νέα παρατήρηση ΣΤΗΝ ΑΚΤΗ, όχι μοντέλο κελιού`);
+    if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(shadowSeen) || JUDGE_WITNESSED_ARRIVAL_ARCS.has(shadowSeen)) fail('Δ0', `#${shadowSeen} μπήκε ξανά στους μάρτυρες — ο κριτής στην άμμο (Sentinel-2) την έδειξε σε αληθινή σκιά (βίβλος §Γ75)· θέλει νέα παρατήρηση ΣΤΗΝ ΑΚΤΗ, όχι μοντέλο κελιού`);
+  }
+
+  // ── Δ0β. ΜΑΡΤΥΡΕΣ ΣΕ ΤΟΞΟ (11/09/2026, βίβλος §Γ77) ──────────────────────────────────────────────
+  // Μώλος Πάρου #2040: K_d ≥ 0,5 ΜΟΝΟ για κύμα 0-30° (τρύπα της «τσέπης» στις 11-25°, αφρός Sentinel-2
+  // στις 16° και 18° με υπογραφή αφρού SWIR). Καρφώνεται ΜΕ ΤΙΜΗ: νέο ή φαρδύτερο τόξο θέλει παρατήρηση
+  // στην ακτή ΚΑΙ απόφαση Μίλτου ΚΑΙ ορατή αλλαγή εδώ. Αποδεικνύεται ότι (α) το πάτωμα κρατά μέσα στο τόξο,
+  // (β) ΔΕΝ διαρρέει έξω (Ν-ΒΔ πίσω από την Πάρο μένει στη βαθιά σκιά), (γ) ο αριθμός που τυπώνεται στις
+  // μαρτυρημένες διευθύνσεις ανεβαίνει πραγματικά, (δ) όλη η τρύπα της τσέπης γύρω από τις μαρτυρίες
+  // πέφτει μέσα στο τόξο — αν ένα ξαναχτίσιμο της γεωμετρίας τη φαρδύνει, η πύλη σκάει αντί να μείνει μισοδιορθωμένη.
+  const PINNED_ARCS = new Map([[2040, { centerDeg: 15, halfWidthDeg: 15, witnessedDeg: [16, 18] }]]);
+  // το «υπάρχει θάλασσα» της μαρτυρίας = το «υπάρχει θάλασσα» της εκτίμησης ακτής (ένα δάπεδο θορύβου)
+  {
+    const { WITNESSED_SEA_MIN_COMPONENT_M } = require(path.join(root, 'utils/seaArrival.ts'));
+    const { DEPARTING_SEA_MIN_COMPONENT_M } = require(path.join(root, 'utils/shoreWave.ts'));
+    if (WITNESSED_SEA_MIN_COMPONENT_M !== DEPARTING_SEA_MIN_COMPONENT_M) {
+      fail('Δ0β', `δάπεδο μαρτυρημένης θάλασσας ${WITNESSED_SEA_MIN_COMPONENT_M} ≠ DEPARTING_SEA_MIN_COMPONENT_M ${DEPARTING_SEA_MIN_COMPONENT_M} — δύο κανόνες «μπαίνει/φεύγει» με άλλο κατώφλι`);
+    }
+  }
+  const SECTORS8 = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const sectorLevelAt = (p, deg) => p?.sectors?.[SECTORS8[Math.round((((deg % 360) + 360) % 360) / 45) % 8]]?.level;
+  const printedFraction = (p, deg, kd) => shoreSeaStateM(1, sectorLevelAt(p, deg), resolveSeaArrivalExposureLevel(p, deg), false, kd);
+  const angDist = (a, b) => Math.abs((((a - b) % 360) + 540) % 360 - 180);
+  for (const [id, pin] of PINNED_ARCS) {
+    const arc = JUDGE_WITNESSED_ARRIVAL_ARCS.get(id);
+    if (!arc) { fail('Δ0β', `το τόξο του #${id} αφαιρέθηκε — θέλει κριτή στην άμμο ΚΑΙ απόφαση Μίλτου, όχι σιωπηλή διαγραφή`); continue; }
+    if (arc.centerDeg !== pin.centerDeg || arc.halfWidthDeg !== pin.halfWidthDeg) {
+      fail('Δ0β', `το τόξο του #${id} άλλαξε (${arc.centerDeg}±${arc.halfWidthDeg}° αντί ${pin.centerDeg}±${pin.halfWidthDeg}°) — φαρδύτερο τόξο θέλει νέα παρατήρηση στην ακτή`);
+    }
+  }
+  for (const id of JUDGE_WITNESSED_ARRIVAL_ARCS.keys()) {
+    if (!PINNED_ARCS.has(id)) fail('Δ0β', `νέο τόξο μάρτυρα #${id} χωρίς να καρφωθεί εδώ — θέλει παρατήρηση στην ακτή, απόφαση Μίλτου και ορατή αλλαγή της πύλης`);
+    if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(id)) fail('Δ0β', `#${id} είναι ΚΑΙ στη λίστα όλων των διευθύνσεων — σιωπηλή αναβάθμιση του τόξου σε 360°`);
+  }
+  for (const [id, pin] of PINNED_ARCS) {
+    const arc = JUDGE_WITNESSED_ARRIVAL_ARCS.get(id);
+    const p = byId.get(id);
+    if (!arc || !p) { if (arc) fail('Δ0β', `ο μάρτυρας τόξου #${id} δεν βρέθηκε στα προφίλ`); continue; }
+    let deepInside = false, deepOutside = false;
+    for (let deg = 0; deg < 360; deg += 1) {
+      const kd = resolveShoreShadowDamping(p, deg);
+      const stranger = resolveShoreShadowDamping({ ...p, beachId: -1 }, deg);
+      const inside = angDist(deg, arc.centerDeg) <= arc.halfWidthDeg;
+      if (inside) {
+        if (!(kd >= SHADOW_KD_AT_EDGE - 1e-9)) fail('Δ0β', `#${id} στις ${deg}° (μέσα στο τόξο) → K_d ${kd}, κάτω από την άκρη ${SHADOW_KD_AT_EDGE}`);
+        if (stranger < SHADOW_KD_AT_EDGE - 1e-9) deepInside = true;
+      } else {
+        if (kd !== stranger) fail('Δ0β', `#${id} στις ${deg}° (ΕΞΩ από το τόξο) → K_d ${kd} ≠ γεωμετρία ${stranger} — η εξαίρεση διαρρέει`);
+        if (stranger < SHADOW_KD_AT_EDGE - 1e-9) deepOutside = true;
+      }
+    }
+    if (!deepInside) fail('Δ0β', `#${id}: μέσα στο τόξο δεν υπάρχει βαθιά σκιά χωρίς την εξαίρεση — το πάτωμα δεν ασκεί τίποτα`);
+    if (!deepOutside) fail('Δ0β', `#${id}: έξω από το τόξο δεν υπάρχει βαθιά σκιά — ο έλεγχος «δεν διαρρέει» δεν αποδεικνύει τίποτα`);
+    for (const deg of pin.witnessedDeg) {
+      const printed = printedFraction(p, deg, resolveShoreShadowDamping(p, deg));
+      if (!(printed >= SHADOW_KD_AT_EDGE - 1e-9)) fail('Δ0β', `#${id} στις ${deg}° (εκεί που ο δορυφόρος είδε αφρό) τυπώνει ${printed} του ανοιχτού — έπρεπε ≥ ${SHADOW_KD_AT_EDGE}`);
+      // ολόκληρη η τρύπα της τσέπης γύρω από τη μαρτυρία πέφτει μέσα στο τόξο
+      for (const stepDir of [-1, 1]) {
+        for (let k = 0, d = deg; k < 180; k += 1, d = (d + stepDir + 360) % 360) {
+          if (resolveSeaArrivalExposureLevel(p, d) !== SEA_ARRIVAL_ENCLOSED) break;
+          if (angDist(d, arc.centerDeg) > arc.halfWidthDeg) { fail('Δ0β', `#${id}: η τρύπα της τσέπης φτάνει στις ${d}°, έξω από το τόξο — μισοδιορθωμένη`); break; }
+        }
+      }
+    }
+    for (const deg of [150, 180, 270, 330]) {
+      const mine = printedFraction(p, deg, resolveShoreShadowDamping(p, deg));
+      const theirs = printedFraction(p, deg, resolveShoreShadowDamping({ ...p, beachId: -1 }, deg));
+      if (mine !== theirs) fail('Δ0β', `#${id} στις ${deg}° (πίσω από το νησί) τυπώνει ${mine} αντί ${theirs} — η εξαίρεση άγγιξε διεύθυνση χωρίς μαρτυρία`);
+    }
   }
   for (const id of JUDGE_WITNESSED_ARRIVAL_BEACH_IDS) {
     const p = byId.get(id);
@@ -166,7 +236,7 @@ const beforeWitness = failures.length;
     if (!sawDeepShadowWithoutIt) fail('Δ0', `#${id}: χωρίς την εξαίρεση δεν υπάρχει βαθιά σκιά πουθενά — ο έλεγχος δεν ασκεί τίποτα`);
   }
 }
-console.log(`Δ0. οι μάρτυρες του κριτή κρατούν K_d ≥ 0,5 ... ${failures.length > beforeWitness ? '❌' : '✅'}`);
+console.log(`Δ0. μάρτυρες κριτή: K_d ≥ 0,5 (Κέδρος/Βίντζι παντού · Μώλος μόνο 0-30°, καμία διαρροή) ... ${failures.length > beforeWitness ? '❌' : '✅'}`);
 
 // ── Γ2. το πάτωμα της πλάγιας θάλασσας και το 'enclosed' (29/08/2026) ───────
 const beforeC2 = failures.length;

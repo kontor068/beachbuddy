@@ -34,6 +34,9 @@ const { createDailyForecast } = require(path.join(root, 'utils/weatherFixtures.t
 const { calculateBeachScore } = require(path.join(root, 'services/recommendationService.ts'));
 const { resolveCoveAwareWaveHeightM } = require(path.join(root, 'utils/coveWaveGuard.ts'));
 const { SWELL_MIN_HEIGHT_M, hasSwellPresence } = require(path.join(root, 'utils/swellExposure.ts'));
+// 11/09/2026 (§Γ77): όπου υπάρχει ΜΑΡΤΥΡΗΜΕΝΗ άφιξη (Μώλος 0-30°), η βαθμολογία σωπαίνει σκόπιμα τον
+// φρουρό όρμου — εκεί η διαφορά από την «παλιά σελίδα» είναι η διόρθωση, όχι σφάλμα. Εξαιρείται ρητά.
+const { isWitnessedArrivalSea } = require(path.join(root, 'utils/seaArrival.ts'));
 
 // Ο ΠΑΛΙΟΣ καθρέφτης της σελίδας, αυτούσιος (git show f1acdbac:pages/BeachDetailPage.tsx, γρ. 1319).
 const oldPageSwellPresent = (marine) => (marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
@@ -45,7 +48,7 @@ const DIRS = [0, 45, 90, 135, 180, 225, 270, 315];
 const WINDS_MS = [3, 7, 11];
 const SWELLS_M = [0.2, 0.5, 0.9]; // κάτω, ΑΚΡΙΒΩΣ πάνω και πάνω από το κατώφλι 0,5
 
-let runs = 0, mismatches = 0, coveOn = 0;
+let runs = 0, mismatches = 0, coveOn = 0, witnessed = 0;
 const examples = [];
 for (const file of readdirSync(exposureDir).filter((n) => n.endsWith('.json') && n !== 'index.json')) {
   let beaches, profiles;
@@ -72,6 +75,8 @@ for (const file of readdirSync(exposureDir).filter((n) => n.endsWith('.json') &&
         swellPresent: oldPageSwellPresent(day.marine),
       });
       const now = s.coveWave ?? { coveApplied: false, waveHeightM: 0 };
+      if (isWitnessedArrivalSea(profile, [{ heightM: day.marine?.waveHeightM, directionDeg: day.marine?.waveDirectionDeg },
+        { heightM: day.marine?.swellWaveHeightM, directionDeg: day.marine?.swellWaveDirectionDeg }])) { witnessed += 1; continue; }
       runs += 1;
       if (old.coveApplied) coveOn += 1;
       const same = old.coveApplied === now.coveApplied
@@ -92,7 +97,7 @@ for (const h of [undefined, 0, 0.2, 0.49, 0.5, 0.51, 1.2]) for (const d of [unde
   if (oldPageSwellPresent({ swellWaveHeightM: h, swellWaveDirectionDeg: d }) !== hasSwellPresence(h, d)) swellDiff += 1;
 }
 
-console.log(`φρουρός όρμου: ${runs} παραλίες×καιροί · ο όρμος άναψε ${coveOn} φορές · διαφορές παλιάς↔νέας σελίδας: ${mismatches}`);
+console.log(`φρουρός όρμου: ${runs} παραλίες×καιροί · ο όρμος άναψε ${coveOn} φορές · διαφορές παλιάς↔νέας σελίδας: ${mismatches} · εξαιρέθηκαν ${witnessed} με μαρτυρημένη άφιξη (§Γ77)`);
 console.log(`έλεγχος ρεστίας ωριαίας μπάρας: ${swellChecks} τιμές · διαφορές: ${swellDiff}`);
 for (const e of examples) console.log('  ', JSON.stringify(e));
 if (mismatches || swellDiff || coveOn < 100) {
