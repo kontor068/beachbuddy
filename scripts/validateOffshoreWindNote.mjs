@@ -171,14 +171,56 @@ if (OFFSHORE_NOTE_WINDOW_DEG < 45) {
     + '(λιγότερες γωνίες χρειάζεται να είναι κλειστές). Μετρημένο: ±30° διπλασιάζει τις παραλίες (3,2% → 6,1%).');
 }
 
-/* ── 6. ΚΑΘΕ ΓΛΩΣΣΑ ΕΧΕΙ ΚΑΙ ΤΙΣ ΔΥΟ ΦΡΑΣΕΙΣ ─────────────────────────────────────────────── */
+/* ── 6. ΚΑΘΕ ΓΛΩΣΣΑ ΕΧΕΙ ΟΛΕΣ ΤΙΣ ΦΡΑΣΕΙΣ ────────────────────────────────────────────────── */
 for (const [language, forms] of Object.entries(offshoreWindNoteLabels)) {
-  for (const form of ['calmer-than-the-number', 'calmer-but-pulls-out']) {
+  for (const form of ['calmer-than-the-number', 'calmer-but-pulls-out', 'wind-feels-less']) {
     const text = forms?.[form];
     if (typeof text !== 'string' || text.trim().length < 20) {
       fail(`Λείπει ή είναι κολοβή η φράση «${form}» στα ${language}.`);
     }
   }
+}
+
+/* ── 7. ΑΠΟ 4 ΜΠΟΦΟΡ, ΚΑΘΕ ΦΡΑΣΗ ΚΟΥΒΑΛΑΕΙ ΤΟ «ΣΕ ΒΓΑΖΕΙ ΑΝΟΙΧΤΑ» (10/09/2026) ───────────────── */
+// Η τρίτη μορφή (24/08) γράφτηκε μόνο με το καθησυχαστικό μισό, ενώ ανάβει ΑΚΡΙΒΩΣ στη χειρότερη
+// εκδοχή για φουσκωτό: 4-5 Μποφόρ απόγειος πάνω από λάδι. Η πύλη έλεγχε μόνο ότι οι φράσεις
+// υπάρχουν, όχι τι λένε — γι' αυτό πέρασε. Τώρα ρωτάει τη ΜΗΧΑΝΗ ποιες μορφές ανάβουν από το
+// κατώφλι της προειδοποίησης και πάνω, σε όλο το εύρος κύματος, και απαιτεί το προειδοποιητικό
+// μισό σε κάθε μία, σε κάθε γλώσσα. Μια νέα μορφή που θα προστεθεί αύριο πιάνεται αυτόματα.
+const PULL_OUT_HALF = {
+  en: 'carry you out',
+  gr: 'σε βγάζει ανοιχτά',
+  fr: 'emporte au large',
+  de: 'aufs offene Meer',
+  it: 'ti porta al largo',
+};
+const formsFiringWithWarning = new Set();
+for (let bft = OFFSHORE_NOTE_WARNING_MIN_BEAUFORT; bft <= 7; bft += 1) {
+  for (let wave = 0; wave <= OFFSHORE_NOTE_MAX_WAVE_M + 0.001; wave += 0.01) {
+    const form = resolveOffshoreWindNote({ ...base, beaufort: bft, displayWaveM: Number(wave.toFixed(2)) });
+    if (form) formsFiringWithWarning.add(form);
+  }
+}
+if (!formsFiringWithWarning.size) fail('Καμία μορφή δεν ανάβει από 4 Μποφόρ — η δοκιμή δεν μπορεί να ελέγξει την προειδοποίηση.');
+const missingPullOut = (labels) => {
+  const out = [];
+  for (const form of formsFiringWithWarning) {
+    for (const [language, needle] of Object.entries(PULL_OUT_HALF)) {
+      const text = labels?.[language]?.[form];
+      if (typeof text !== 'string' || !text.includes(needle)) out.push(`${form}/${language}`);
+    }
+  }
+  return out;
+};
+for (const miss of missingPullOut(offshoreWindNoteLabels)) {
+  fail(`Η φράση ${miss} ανάβει από ${OFFSHORE_NOTE_WARNING_MIN_BEAUFORT} Μποφόρ και ΔΕΝ λέει ότι ο αέρας σε βγάζει ανοιχτά — `
+    + 'καθησυχαστικό μισό χωρίς το προειδοποιητικό (βίβλος §Μ11).');
+}
+// Αυτοσαμποτάζ: με την τρίτη φράση όπως γράφτηκε στις 24/08 η πύλη ΠΡΕΠΕΙ να πέφτει.
+const as2408 = JSON.parse(JSON.stringify(offshoreWindNoteLabels));
+as2408.gr['wind-feels-less'] = 'Ο αέρας έρχεται από τη στεριά — στην παραλία θα τον νιώσεις πιο λίγο απ’ ό,τι λέει το νούμερο.';
+if (!missingPullOut(as2408).includes('wind-feels-less/gr')) {
+  fail('Το αυτοσαμποτάζ δεν έπιασε τη φράση της 24/08 — ο έλεγχος της προειδοποίησης είναι διακοσμητικός.');
 }
 
 /* ── ΑΠΟΤΕΛΕΣΜΑ ──────────────────────────────────────────────────────────────────────────── */
