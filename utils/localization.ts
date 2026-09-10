@@ -17,9 +17,17 @@ const greeklishPairs: Array<[string, string]> = [
   ['φ', 'f'], ['χ', 'ch'], ['ψ', 'ps'], ['ω', 'o'],
 ];
 
+// The tonos is dropped BEFORE the pairs run: the digraph pairs above are unaccented, so a
+// stressed «ού» used to miss 'ου' and fall through to ο+ύ → "oy" («Χαβούλη» → "Chavoyli"), and
+// «αύ»/«εύ» the same way → "ay"/"ey" («Μαύρο» → "Mayro"). Measured 10/09/2026 over 2,859 beaches:
+// 248 display names change, and agreement with the stored English name (what the static pages
+// and Google show) goes 2/248 → 231/248. Only the acute goes — the diaeresis stays, because it
+// is exactly what says «these two vowels are NOT a digraph» (ϊ, ϋ are mapped letter by letter).
+const stripTonos = (value: string): string => value.normalize('NFD').replace(/́/g, '').normalize('NFC');
+
 export const toGreeklish = (value: string | undefined): string => {
   if (!value) return '';
-  return greeklishPairs.reduce((text, [from, to]) => text.split(from).join(to), value)
+  return greeklishPairs.reduce((text, [from, to]) => text.split(from).join(to), stripTonos(value))
     .replace(/\s+/g, ' ')
     .trim();
 };
