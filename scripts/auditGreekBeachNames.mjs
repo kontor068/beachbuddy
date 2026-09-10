@@ -91,6 +91,66 @@ const harvestPath = path.join(rootDir, 'scripts', 'data', 'osm-beaches-national.
 const harvestRaw = JSON.parse(fs.readFileSync(harvestPath, 'utf8'));
 const osm = Array.isArray(harvestRaw) ? harvestRaw : Object.values(harvestRaw).find((v) => Array.isArray(v));
 
+// SECOND EVIDENCE PATH: our own curated Greek story (added 10/09/2026).
+// OSM only helps where a mapper wrote a Greek `name`. For Chania it did not: 19 beaches with a
+// Latin name, 0 Greek names in the harvest even at 300 m. But we have already written Greek
+// prose about many of them — «Η παραλία Αφράτα ανοίγεται σε έναν μικρό βοτσαλωτό κόλπο…» names
+// the beach in the first sentence, in Greek, by a human who was writing about THIS beach.
+// That is a stronger source than a map tag, and it costs nothing to read.
+const storiesById = new Map();
+const storiesDir = path.join(rootDir, 'data', 'beachStories');
+if (fs.existsSync(storiesDir)) {
+  for (const file of fs.readdirSync(storiesDir)) {
+    if (!file.endsWith('.json')) continue;
+    let parsed;
+    try { parsed = JSON.parse(fs.readFileSync(path.join(storiesDir, file), 'utf8')); } catch { continue; }
+    const table = parsed.beaches || parsed;
+    for (const [id, story] of Object.entries(table)) {
+      if (!story || typeof story !== 'object') continue;
+      const parts = [story.title?.gr, ...(story.paragraphs?.gr || [])].filter((s) => typeof s === 'string');
+      if (parts.length) storiesById.set(String(id), parts.join(' '));
+    }
+  }
+}
+
+// Greek → Latin is deterministic (Latin → Greek is not: an "i" can be ι, η, υ, ει or οι).
+// So we never guess a spelling — we transliterate every Greek phrase the story contains and
+// keep the one that comes back as the Latin name we already hold.
+const GREEK_TO_LATIN = [
+  ['ΟΥ', 'OU'], ['ΑΥ', 'AV'], ['ΕΥ', 'EV'], ['ΜΠ', 'B'], ['ΝΤ', 'D'], ['ΓΓ', 'NG'], ['ΤΣ', 'TS'], ['ΤΖ', 'TZ'], ['ΧΡ', 'CHR'],
+  ['ου', 'ou'], ['αυ', 'av'], ['ευ', 'ev'], ['μπ', 'b'], ['ντ', 'd'], ['γγ', 'ng'], ['τσ', 'ts'], ['τζ', 'tz'],
+  ['α', 'a'], ['ά', 'a'], ['β', 'v'], ['γ', 'g'], ['δ', 'd'], ['ε', 'e'], ['έ', 'e'], ['ζ', 'z'], ['η', 'i'], ['ή', 'i'],
+  ['θ', 'th'], ['ι', 'i'], ['ί', 'i'], ['ϊ', 'i'], ['ΐ', 'i'], ['κ', 'k'], ['λ', 'l'], ['μ', 'm'], ['ν', 'n'], ['ξ', 'x'],
+  ['ο', 'o'], ['ό', 'o'], ['π', 'p'], ['ρ', 'r'], ['σ', 's'], ['ς', 's'], ['τ', 't'], ['υ', 'y'], ['ύ', 'y'], ['ϋ', 'y'],
+  ['ΰ', 'y'], ['φ', 'f'], ['χ', 'ch'], ['ψ', 'ps'], ['ω', 'o'], ['ώ', 'o'],
+  ['Α', 'A'], ['Ά', 'A'], ['Β', 'V'], ['Γ', 'G'], ['Δ', 'D'], ['Ε', 'E'], ['Έ', 'E'], ['Ζ', 'Z'], ['Η', 'I'], ['Ή', 'I'],
+  ['Θ', 'Th'], ['Ι', 'I'], ['Ί', 'I'], ['Κ', 'K'], ['Λ', 'L'], ['Μ', 'M'], ['Ν', 'N'], ['Ξ', 'X'], ['Ο', 'O'], ['Ό', 'O'],
+  ['Π', 'P'], ['Ρ', 'R'], ['Σ', 'S'], ['Τ', 'T'], ['Υ', 'Y'], ['Ύ', 'Y'], ['Φ', 'F'], ['Χ', 'Ch'], ['Ψ', 'Ps'], ['Ω', 'O'], ['Ώ', 'O'],
+];
+const greekToLatin = (value) =>
+  GREEK_TO_LATIN.reduce((text, [from, to]) => text.split(from).join(to), String(value || ''));
+
+// Words that are never the beach's own name, so a phrase made only of them can never win.
+const STOPWORDS = /^(ο|η|το|οι|τα|του|της|των|στο|στη|στην|στον|στα|στις|στους|και|με|σε|από|για|παραλία|παραλίας|κόλπος|κόλπο|ακτή|ακτής|χωριό|χωριού|νησί|περιοχή|μια|ένα|ένας|αυτή|αυτό|είναι)$/i;
+
+const findNameInStory = (beachId, ourLatinName) => {
+  const text = storiesById.get(String(beachId));
+  if (!text) return null;
+  const target = foldLatin(ourLatinName);
+  if (!target) return null;
+  // Every capitalised Greek run of 1-3 words is a candidate; the fold decides.
+  const words = text.split(/[^Ά-ώΪ-ΰ]+/).filter(Boolean);
+  for (let i = 0; i < words.length; i += 1) {
+    if (!/^[Α-ΩΆΈΉΊΌΎΏ]/.test(words[i])) continue;
+    for (let span = 1; span <= 3 && i + span <= words.length; span += 1) {
+      const phrase = words.slice(i, i + span).join(' ');
+      if (phrase.split(' ').every((w) => STOPWORDS.test(w))) continue;
+      if (foldLatin(greekToLatin(phrase)) === target) return phrase;
+    }
+  }
+  return null;
+};
+
 // --- name comparison -------------------------------------------------------------------
 const HAS_GREEK = /[Ͱ-Ͽ]/;
 
@@ -156,6 +216,21 @@ for (const beach of candidates) {
     if (d <= RADIUS_M && (!best || d < best.d)) best = { d, entry };
   }
   if (!best || !HAS_GREEK.test(best.entry.name || '')) {
+    // No Greek name on the map — ask our own story before giving up.
+    const fromStory = findNameInStory(beach.id, beach.name);
+    if (fromStory) {
+      confirmed.push({
+        id: beach.id,
+        region: beach.__trail.split('/').pop(),
+        ours: beach.name,
+        proposedNameGr: tidyCapitalisation(fromStory),
+        osmName: null,
+        osmTransliteration: greekToLatin(fromStory),
+        osmId: 'own-story',
+        distanceM: 0,
+      });
+      continue;
+    }
     noEvidence.push({ id: beach.id, name: beach.name, region: beach.__trail.split('/').pop() });
     continue;
   }

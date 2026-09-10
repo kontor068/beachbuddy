@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-09-10T06:03:13.720Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 90,
+    "omissionsStrong": 1,
+    "omissionsMedium": 6,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 3
+  },
+  "omissions": [
+    {
+      "id": 600,
+      "name": "Ilingas",
+      "regionId": "crete-crete-chania",
+      "strength": "strong",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "βραχώδης σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/beach-club ON sand: \"\" (bar, 54m)"
+      ],
+      "ratingCount": 936
+    },
+    {
+      "id": 541,
+      "name": "Μαχαιρίδα",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά στην ευρύτερη περιοχή",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 609
+    },
+    {
+      "id": 538,
+      "name": "Λύκος",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (restaurant, 20m)"
+      ],
+      "ratingCount": 206
+    },
+    {
+      "id": 552,
+      "name": "Παραλία Θανάσης",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Thanasis\" (restaurant, 20m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 569,
+      "name": "Παραλία Χαλέπα",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Οξω Νού\" (cafe, 51m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 571,
+      "name": "Παραλίες Βάταλου",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Stavros\" (restaurant, 76m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 582,
+      "name": "Τραχήλι",
+      "regionId": "crete-crete-chania",
+      "strength": "medium",
+      "currentAmenities": [
+        "φυσική σκιά σε σημεία"
+      ],
+      "evidence": [
+        "bar/resort 153m away: \"Ammos Beach\" (beach_resort)"
+      ],
+      "ratingCount": null
+    }
+  ],
+  "errors": [
+    {
+      "id": 535,
+      "name": "Κυανή Ακτή",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ομπρέλες εποχικά",
+        "ξαπλώστρες εποχικά",
+        "beach bar",
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "parking κοντά"
+      ],
+      "ratingCount": 100
+    },
+    {
+      "id": 545,
+      "name": "Ορθή Άμμος",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (3) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες/ομπρέλες εποχικά",
+        "φαγητό/νερό κοντά",
+        "καταλύματα κοντά"
+      ],
+      "ratingCount": 585
+    },
+    {
+      "id": 588,
+      "name": "Alonaki",
+      "regionId": "crete-crete-chania",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες/ομπρέλες εποχικά",
+        "φαγητό/νερό κοντά",
+        "φυσική σκιά σε σημεία"
+      ],
+      "ratingCount": 34
+    }
+  ]
+}

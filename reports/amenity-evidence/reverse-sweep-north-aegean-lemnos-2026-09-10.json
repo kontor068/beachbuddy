@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-09-10T06:03:14.022Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 41,
+    "omissionsStrong": 0,
+    "omissionsMedium": 1,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 0
+  },
+  "omissions": [
+    {
+      "id": 1445,
+      "name": "Ζεματάς",
+      "regionId": "north-aegean-lemnos",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά",
+        "καφέ κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (cafe, 80m)",
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 874
+    }
+  ],
+  "errors": []
+}
