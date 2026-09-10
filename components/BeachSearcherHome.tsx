@@ -2346,13 +2346,23 @@ export const BeachSearcherHome: React.FC<BeachSearcherHomeProps> = ({
       fr: 'Comment nous choisissons les plus abritées',
       it: 'Come scegliamo le più riparate',
     })
-    : getLocalizedCopy(language, {
-      en: `How the Top ${topPickCount} is picked`,
-      gr: `Πώς βγαίνει το Top ${topPickCount}`,
-      de: `So entsteht die Top ${topPickCount}`,
-      fr: `Comment le Top ${topPickCount} est choisi`,
-      it: `Come nasce la Top ${topPickCount}`,
-    });
+    // Μία κάρτα = «Top επιλογή», ποτέ «Top 1» (βίβλος §Γ10: το ψηφίο διαβάζεται ως ισχυρισμός
+    // κατάταξης που δεν έχουμε). Ίδιες λέξεις με την ετικέτα της ίδιας της κάρτας πιο πάνω.
+    : isSingleTopPick
+      ? getLocalizedCopy(language, {
+        en: 'How the Top pick is chosen',
+        gr: 'Πώς βγαίνει η Top επιλογή',
+        de: 'So entsteht die Top-Empfehlung',
+        fr: 'Comment le meilleur choix est choisi',
+        it: 'Come nasce la scelta top',
+      })
+      : getLocalizedCopy(language, {
+        en: `How the Top ${topPickCount} is picked`,
+        gr: `Πώς βγαίνει το Top ${topPickCount}`,
+        de: `So entsteht die Top ${topPickCount}`,
+        fr: `Comment le Top ${topPickCount} est choisi`,
+        it: `Come nasce la Top ${topPickCount}`,
+      });
   const topPicksHowBullets = [
     getLocalizedCopy(language, {
       en: 'We look at wind, gusts and waves for the hour you are viewing — not a daily average.',
