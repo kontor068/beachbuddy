@@ -107,6 +107,12 @@ const PINS = [
   ['ασήμαντη διαφορά θάλασσας στο βάθρο', constOf('services/topPickRanking.ts', 'PODIUM_SEA_MEANINGFUL_DIFFERENCE_M'), 'services/topPickRanking.ts', (v) => `**<${gr(v)} μ. δεν μετράνε**`],
   ['περίοδος αναφοράς κύματος', constOf('utils/waveCharacter.ts', 'SEA_REFERENCE_PERIOD_S'), 'utils/waveCharacter.ts', (v) => `(${v}δλ / T)`],
   ['δάπεδο τυπωμένου αριθμού ακτής', constOf('utils/shoreWave.ts', 'SHORE_DISPLAY_FLOOR_M'), 'utils/shoreWave.ts', (v) => `Δάπεδο ${gr(v.toFixed(2))} μ.`],
+  // Οι πόρτες «απόγειος-γυαλί» — προστέθηκαν 10/09/2026, όταν ο έλεγχος του ημερολογίου βρήκε ότι
+  // το εγχειρίδιο έγραφε ακόμα «ένταση <15, onshore ≤ −0,8» για την πόρτα των 5, ενώ από 24/08
+  // (0d80c6e3) είναι ένταση <25, χωρίς γωνία, με βέτο αποθαλασσιάς. Ξέφυγε και από το πρώτο πέρασμα.
+  ['πόρτες απόγειου: ένταση', constOf('utils/offshoreFlatWater.ts', 'OFFSHORE_FLAT_MAX_INTENSITY'), 'utils/offshoreFlatWater.ts', (v) => `**ένταση <${v}** (η ίδια με την πόρτα των 4)`],
+  ['πόρτες απόγειου: βέτο αποθαλασσιάς', constOf('utils/swellExposure.ts', 'SWELL_MIN_HEIGHT_M'), 'utils/swellExposure.ts', (v) => `θάλασσα ≥${gr(v)} μ. στο σημείο δειγματοληψίας`],
+  ['πόρτα των 4: ήσυχη ακτή', constOf('utils/offshoreFlatWater.ts', 'GLASS_AT_FOUR_MAX_SEA_STATE_M'), 'utils/offshoreFlatWater.ts', (v) => `θάλασσα ακτής <${gr(v.toFixed(2))} μ., **ΚΑΙ** καμία αποθαλασσιά`],
 ];
 
 // Σταθερές που δεν είναι `export const` — διαβάζονται από το σώμα του αρχείου.
@@ -204,6 +210,7 @@ const DEAD_PHRASES = [
   ['η έκπτωση ×0,5 της «προστατευμένης»\n**κερδίζεται', 'η απόσβεση ΑΚΤΗΣ είναι πια γωνία K_d(θ) (§Γ71) — το ×0,5 μένει μόνο ως εφεδρεία'],
   ['το νούμερο **ανεβαίνει** ως τη γραμμή', 'ο φράχτης της γραμμής ηρεμίας γκρεμίστηκε 24/08 (§Γ70)'],
   ['**67 έλεγχοι**', 'οι πύλες μεγαλώνουν συνέχεια — ο αριθμός μετριέται, δεν γράφεται από μνήμη'],
+  ['`fetchKm≤0,5`, ένταση <15, `onshore ≤ −0,8`.', 'η πόρτα των 5 δεν κοιτάει γωνία από 24/08 (0d80c6e3) — ένταση <25 και βέτο αποθαλασσιάς'],
 ];
 for (const [phrase, why] of DEAD_PHRASES) {
   if (flat(MANUAL).includes(flat(phrase))) fail('Γ', `νεκρή διατύπωση στο εγχειρίδιο: «${phrase}» — ${why}`);
