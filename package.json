@@ -77,6 +77,7 @@
     "quality:gust-consumers": "node scripts/validateGustFloorConsumers.mjs",
     "measure:avoid-swim-in-list": "node scripts/measureAvoidSwimInSuitableList.mjs --live",
     "quality:truth": "node scripts/validateColourAgainstRealWind.mjs",
+    "quality:truth-stations": "node scripts/validateColourAgainstStations.mjs --prove",
     "quality:truth:national": "node scripts/validateColourAgainstRealWind.mjs --national",
     "content:audit": "node scripts/auditStaticBeachContent.mjs",
     "seo:audit": "node scripts/auditSeoPrerender.mjs",

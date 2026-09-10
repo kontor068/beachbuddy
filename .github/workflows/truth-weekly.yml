@@ -18,6 +18,16 @@
 #     so the workflow needs zero configuration to be useful.
 #
 # NOTE: cron only fires from the DEFAULT branch — this starts working when it reaches main.
+#
+# SECOND JOB, 10/09/2026 — THE SAME QUESTION ASKED OF A REAL INSTRUMENT. The first job compares the
+# colours against OUR OWN forecast wind: it proves the colour code does not lie about the wind we
+# know, not that the wind we know is true — self-referential (docs/team bible §Γ74-Η). The second
+# job paints the colour from our wind (same gust-floor correction, same tone code) at 30 coastal
+# airports and compares it with what their anemometers actually measured (METAR, Iowa State ASOS
+# archive, open). It fails only when «blue where the instrument says orange/red» is worse than every
+# 4-day window of the summer calibration (scripts/validateColourAgainstStations.mjs --calibrate).
+# It needs the paid Open-Meteo key as the repo secret OPEN_METEO_API_KEY (same value as Netlify);
+# without it the job FAILS on purpose — a watcher that skips is a watcher that lies.
 
 name: Truth gate — the lock's watcher
 
@@ -59,6 +69,43 @@ jobs:
             curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
               -d chat_id="${CHAT}" \
               --data-urlencode text="🔴 Πύλη αλήθειας: ψευδο-ήρεμο σημάδι ή αποτυχία μέτρησης — η σκανδάλη #2 του κλειδώματος. ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              > /dev/null
+          else
+            echo "No Telegram secrets — relying on GitHub's scheduled-failure e-mail."
+          fi
+
+  stations:
+    name: Map colours vs real anemometers (30 coastal airports)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run the station truth gate (METAR vs the wind and colour we would show)
+        env:
+          OPEN_METEO_API_KEY: ${{ secrets.OPEN_METEO_API_KEY }}
+        run: npm run quality:truth-stations
+
+      - name: Alert Telegram (only if secrets are configured)
+        if: failure()
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$CHAT" ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+              -d chat_id="${CHAT}" \
+              --data-urlencode text="🔴 Φύλακας με όργανο: βάφουμε μπλε εκεί που τα ανεμόμετρα αεροδρομίων δίνουν πορτοκαλί/κόκκινο πιο συχνά από κάθε τετραήμερο του καλοκαιριού — ή λείπει το κλειδί Open-Meteo. ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
               > /dev/null
           else
             echo "No Telegram secrets — relying on GitHub's scheduled-failure e-mail."

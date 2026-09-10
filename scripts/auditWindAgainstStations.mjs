@@ -20,6 +20,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { METAR_COASTAL_STATIONS } from './metarCoastalStations.mjs';
 
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -33,24 +34,8 @@ const { getBeaufortLevel } = require(path.join(root, 'utils/weatherUtils.ts'));
 const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
 const { applyGustFloor } = require(path.join(root, 'utils/windGustFloor.ts'));
 
-/** Παράκτια ελληνικά αεροδρόμια με ανεμόμετρο που δημοσιεύει METAR. */
-const STATIONS = [
-  ['LGIR', 'Ηράκλειο', 35.3397, 25.1803], ['LGSA', 'Χανιά', 35.5317, 24.1497],
-  ['LGST', 'Σητεία', 35.2161, 26.1013], ['LGRP', 'Ρόδος', 36.4054, 28.0862],
-  ['LGKO', 'Κως', 36.7933, 27.0917], ['LGMK', 'Μύκονος', 37.4351, 25.3481],
-  ['LGSR', 'Σαντορίνη', 36.3992, 25.4793], ['LGNX', 'Νάξος', 37.0811, 25.3681],
-  ['LGPA', 'Πάρος', 37.0103, 25.1281], ['LGSK', 'Σκιάθος', 39.1771, 23.5037],
-  ['LGKR', 'Κέρκυρα', 39.6019, 19.9117], ['LGZA', 'Ζάκυνθος', 37.7509, 20.8843],
-  ['LGKF', 'Κεφαλονιά', 38.1201, 20.5005], ['LGPZ', 'Άκτιο', 38.9255, 20.7653],
-  ['LGLM', 'Λήμνος', 39.9217, 25.2364], ['LGMT', 'Μυτιλήνη', 39.0567, 26.5983],
-  ['LGSM', 'Σάμος', 37.6900, 26.9117], ['LGHI', 'Χίος', 38.3432, 26.1406],
-  ['LGKL', 'Καλαμάτα', 37.0683, 22.0255], ['LGAL', 'Αλεξανδρούπολη', 40.8559, 25.9563],
-  ['LGKV', 'Καβάλα', 40.9133, 24.6192], ['LGTS', 'Θεσσαλονίκη', 40.5197, 22.9709],
-  ['LGKC', 'Κύθηρα', 36.2743, 23.0170], ['LGML', 'Μήλος', 36.6969, 24.4769],
-  ['LGLE', 'Λέρος', 37.1849, 26.8003], ['LGKP', 'Κάρπαθος', 35.4214, 27.1460],
-  ['LGIK', 'Ικαρία', 37.6827, 26.3470], ['LGSY', 'Σκύρος', 38.9676, 24.4872],
-  ['LGBL', 'Ν. Αγχίαλος', 39.2196, 22.7943], ['LGRX', 'Άραξος', 38.1511, 21.4256],
-];
+/** Παράκτια ελληνικά αεροδρόμια — κοινή λίστα με τον εβδομαδιαίο φύλακα (scripts/metarCoastalStations.mjs). */
+const STATIONS = METAR_COASTAL_STATIONS;
 
 /**
  * Δέχεται είτε αριθμό ημερών πίσω, είτε ρητό παράθυρο «YYYY-MM-DD:YYYY-MM-DD».
@@ -85,7 +70,9 @@ const token = (fs.readFileSync(path.join(root, '.env'), 'utf8').match(/^\s*NETLI
 const siteId = JSON.parse(fs.readFileSync(path.join(root, '.netlify/state.json'), 'utf8')).siteId;
 const envRes = await fetch(`https://api.netlify.com/api/v1/accounts/-/env/OPEN_METEO_API_KEY?site_id=${siteId}`,
   { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(20000) });
-const API_KEY = ((await envRes.json()).values || []).map(v => v.value).find(Boolean);
+// Πρώτα το περιβάλλον (secret / τοπική μεταβλητή)· 10/09/2026 η αναζήτηση στο Netlify γύρισε κενή και
+// ο κριτής θα έσκαγε «χωρίς κλειδί» ενώ το κλειδί υπήρχε — ίδια σειρά με τον εβδομαδιαίο φύλακα.
+const API_KEY = process.env.OPEN_METEO_API_KEY?.trim() || ((await envRes.json()).values || []).map(v => v.value).find(Boolean);
 if (!API_KEY) { console.error('χωρίς κλειδί'); process.exit(1); }
 
 // ── 1. ΜΕΤΡΗΣΕΙΣ ──────────────────────────────────────────────────────────────
