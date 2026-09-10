@@ -33,7 +33,7 @@ def main():
 
     shadow = json.loads((ROOT / "reports/quality/shadow-vs-blocked-arrival.json").read_text(encoding="utf-8"))
     candidates = [r for r in shadow["rows"] if r.get("deepShadow")]
-    beaches = {(b["id"], b["region"]): b for b in load_beaches()}
+    beaches = {(b["id"], b["regionFile"]): b for b in load_beaches()}
     by_id = {}
     for b in beaches.values():
         by_id.setdefault(b["id"], []).append(b)

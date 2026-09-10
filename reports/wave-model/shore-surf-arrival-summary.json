@@ -1,0 +1,865 @@
+{
+ "method": "R = (κλειστή − ήρεμη) / (ανοιχτή − ήρεμη), διάμεσοι αφρού λωρίδας άμμου, Sentinel-2 B08 χωρίς γυάλισμα",
+ "beaches": [
+  {
+   "id": 2009,
+   "region": "south-aegean-naxos",
+   "name": "Μουτσούνα",
+   "group": "μάρτυρας",
+   "closed": {
+    "n": 17,
+    "median": 0.02
+   },
+   "open": {
+    "n": 3,
+    "median": 0.156
+   },
+   "calm": {
+    "n": 13,
+    "median": 0.082
+   },
+   "arrivalRatio": -0.84,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 1428,
+   "region": "north-aegean-agios-efstratios",
+   "name": "Φράγκου",
+   "group": "μάρτυρας",
+   "closed": {
+    "n": 16,
+    "median": 0.0155
+   },
+   "open": {
+    "n": 7,
+    "median": 0.334
+   },
+   "calm": {
+    "n": 12,
+    "median": 0.0295
+   },
+   "arrivalRatio": -0.05,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 2231,
+   "region": "south-aegean-astypalaia",
+   "name": "Άγιος Ιωάννης Ρίχτης",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 1,
+    "median": 0.0
+   },
+   "open": {
+    "n": 2,
+    "median": 0.08600000000000001
+   },
+   "calm": {
+    "n": 14,
+    "median": 0.020499999999999997
+   },
+   "arrivalRatio": -0.31,
+   "verdict": "λίγες κλειστές μέρες"
+  },
+  {
+   "id": 1446,
+   "region": "north-aegean-lemnos",
+   "name": "Άγιος Ιωάννης",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 9,
+    "median": 0.018
+   },
+   "open": {
+    "n": 1,
+    "median": 0.534
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.0
+   },
+   "arrivalRatio": 0.03,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 817,
+   "region": "east-macedonia-and-thrace-thasos",
+   "name": "Νότος",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 1,
+    "median": 0.125
+   },
+   "calm": {
+    "n": 5,
+    "median": 0.018
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1696,
+   "region": "south-aegean-andros",
+   "name": "Βίντζι",
+   "group": "μάρτυρας",
+   "closed": {
+    "n": 5,
+    "median": 0.007
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.071
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1370,
+   "region": "north-aegean-lesvos",
+   "name": "Τσιχλιώτα",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 3,
+    "median": 0.965
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.045
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2106,
+   "region": "south-aegean-sifnos",
+   "name": "Σάουρες",
+   "group": "+16",
+   "closed": {
+    "n": 2,
+    "median": 0.4635
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 6,
+    "median": 0.476
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1701,
+   "region": "south-aegean-andros",
+   "name": "Καμινάκι",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 2,
+    "median": 0.3595
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.0
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1714,
+   "region": "south-aegean-andros",
+   "name": "Μπουρός",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.082
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1694,
+   "region": "south-aegean-andros",
+   "name": "Βλυχάδα",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 2,
+    "median": 0.256
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.008
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 227,
+   "region": "central-greece-evia",
+   "name": "Καλάμι",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 14,
+    "median": 0.10650000000000001
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2476,
+   "region": "south-aegean-tilos",
+   "name": "Αγία Πέτρος",
+   "group": "44",
+   "closed": {
+    "n": 3,
+    "median": 0.0
+   },
+   "open": {
+    "n": 2,
+    "median": 0.1855
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.008
+   },
+   "arrivalRatio": -0.05,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 1067,
+   "region": "ionian-islands-kefalonia",
+   "name": "Έμπλυση",
+   "group": "44",
+   "closed": {
+    "n": 1,
+    "median": 0.018
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 13,
+    "median": 0.053
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2191,
+   "region": "south-aegean-donousa",
+   "name": "Λιμενάρι",
+   "group": "+16",
+   "closed": {
+    "n": 21,
+    "median": 0.004
+   },
+   "open": {
+    "n": 4,
+    "median": 0.0645
+   },
+   "calm": {
+    "n": 9,
+    "median": 0.002
+   },
+   "arrivalRatio": 0.03,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 1880,
+   "region": "south-aegean-kythnos",
+   "name": "Λαγκούση",
+   "group": "+16",
+   "closed": {
+    "n": 8,
+    "median": 0.075
+   },
+   "open": {
+    "n": 2,
+    "median": 0.11000000000000001
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.0375
+   },
+   "arrivalRatio": 0.52,
+   "verdict": "ΜΙΣΗ ΣΚΙΑ"
+  },
+  {
+   "id": 1848,
+   "region": "south-aegean-kimolos",
+   "name": "Λάκος",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 4,
+    "median": 0.0565
+   },
+   "calm": {
+    "n": 9,
+    "median": 0.024
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 160,
+   "region": "attica-poros",
+   "name": "Μοναστήρι",
+   "group": "+16",
+   "closed": {
+    "n": 4,
+    "median": 0.012
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 14,
+    "median": 0.016
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1257,
+   "region": "north-aegean-chios",
+   "name": "Αποθήκα",
+   "group": "+16",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 5,
+    "median": 0.143
+   },
+   "calm": {
+    "n": 8,
+    "median": 0.002
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1891,
+   "region": "south-aegean-kythnos",
+   "name": "Ποταμιά",
+   "group": "44",
+   "closed": {
+    "n": 1,
+    "median": 0.052
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 12,
+    "median": 0.069
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1071,
+   "region": "ionian-islands-kefalonia",
+   "name": "Παραλία Σκάλας",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 8,
+    "median": 0.2895
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.0165
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1864,
+   "region": "south-aegean-kythnos",
+   "name": "Αγκορίτσα",
+   "group": "+16",
+   "closed": {
+    "n": 8,
+    "median": 0.10200000000000001
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.035500000000000004
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2361,
+   "region": "south-aegean-leros",
+   "name": "Παραλία Λακκίου",
+   "group": "+16",
+   "closed": {
+    "n": 10,
+    "median": 0.058499999999999996
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 3,
+    "median": 0.122
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2148,
+   "region": "south-aegean-syros",
+   "name": "Φοίνικας",
+   "group": "+16",
+   "closed": {
+    "n": 2,
+    "median": 0.041999999999999996
+   },
+   "open": {
+    "n": 2,
+    "median": 0.441
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.181
+   },
+   "arrivalRatio": -0.53,
+   "verdict": "λίγες κλειστές μέρες"
+  },
+  {
+   "id": 2363,
+   "region": "south-aegean-leros",
+   "name": "Κόκκινη παραλία",
+   "group": "+16",
+   "closed": {
+    "n": 12,
+    "median": 0.077
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 5,
+    "median": 0.164
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 301,
+   "region": "central-greece-evia",
+   "name": "Σουτσίνι",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 12,
+    "median": 0.047
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2662,
+   "region": "thessaly-skopelos",
+   "name": "Στάφυλος",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 3,
+    "median": 0.138
+   },
+   "open": {
+    "n": 3,
+    "median": 0.107
+   },
+   "calm": {
+    "n": 11,
+    "median": 0.089
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (το όργανο δεν βλέπει αφρό εδώ)"
+  },
+  {
+   "id": 2189,
+   "region": "south-aegean-donousa",
+   "name": "Κέδρος",
+   "group": "μάρτυρας",
+   "closed": {
+    "n": 18,
+    "median": 0.004
+   },
+   "open": {
+    "n": 3,
+    "median": 0.024
+   },
+   "calm": {
+    "n": 11,
+    "median": 0.008
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (το όργανο δεν βλέπει αφρό εδώ)"
+  },
+  {
+   "id": 2485,
+   "region": "south-aegean-kasos",
+   "name": "Χέλατρος",
+   "group": "44",
+   "closed": {
+    "n": 5,
+    "median": 0.019
+   },
+   "open": {
+    "n": 2,
+    "median": 0.45349999999999996
+   },
+   "calm": {
+    "n": 8,
+    "median": 0.027
+   },
+   "arrivalRatio": -0.02,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 1284,
+   "region": "north-aegean-psara",
+   "name": "Ψιλή",
+   "group": "+16",
+   "closed": {
+    "n": 21,
+    "median": 0.011
+   },
+   "open": {
+    "n": 5,
+    "median": 0.269
+   },
+   "calm": {
+    "n": 9,
+    "median": 0.014
+   },
+   "arrivalRatio": -0.01,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 61,
+   "region": "attica-east-attica-mainland",
+   "name": "Τσονίμα",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 13,
+    "median": 0.061
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1062,
+   "region": "ionian-islands-kefalonia",
+   "name": "Αμίδι",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 2,
+    "median": 0.3605
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 14,
+    "median": 0.041499999999999995
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2141,
+   "region": "south-aegean-syros",
+   "name": "Μέγας Λάκος",
+   "group": "44",
+   "closed": {
+    "n": 1,
+    "median": 0.005
+   },
+   "open": {
+    "n": 2,
+    "median": 0.2565
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.092
+   },
+   "arrivalRatio": -0.53,
+   "verdict": "λίγες κλειστές μέρες"
+  },
+  {
+   "id": 1662,
+   "region": "south-aegean-amorgos",
+   "name": "Λεβρωσός",
+   "group": "+16",
+   "closed": {
+    "n": 8,
+    "median": 0.0
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 8,
+    "median": 0.0
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1669,
+   "region": "south-aegean-amorgos",
+   "name": "Ψιλή Άμμος",
+   "group": "44",
+   "closed": {
+    "n": 12,
+    "median": 0.002
+   },
+   "open": {
+    "n": 2,
+    "median": 0.301
+   },
+   "calm": {
+    "n": 8,
+    "median": 0.0
+   },
+   "arrivalRatio": 0.01,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 1829,
+   "region": "south-aegean-kea",
+   "name": "Σπαθί",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 11,
+    "median": 0.017
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2226,
+   "region": "south-aegean-agathonisi",
+   "name": "Γαδουρόλακκος",
+   "group": "+16",
+   "closed": {
+    "n": 5,
+    "median": 0.026
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 13,
+    "median": 0.069
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1668,
+   "region": "south-aegean-amorgos",
+   "name": "Χόχλακας",
+   "group": "+16",
+   "closed": {
+    "n": 6,
+    "median": 0.002
+   },
+   "open": {
+    "n": 2,
+    "median": 0.14400000000000002
+   },
+   "calm": {
+    "n": 8,
+    "median": 0.0
+   },
+   "arrivalRatio": 0.01,
+   "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+  },
+  {
+   "id": 611,
+   "region": "crete-gavdos",
+   "name": "Τρυπητή",
+   "group": "+16",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 4,
+    "median": 0.41900000000000004
+   },
+   "calm": {
+    "n": 7,
+    "median": 0.034
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 543,
+   "region": "crete-crete-chania",
+   "name": "Μένιες (Δίκτυννα)",
+   "group": "+16",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 11,
+    "median": 0.13
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 2501,
+   "region": "south-aegean-marathi",
+   "name": "Τηγανάκια",
+   "group": "+16",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 13,
+    "median": 0.034
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 59,
+   "region": "attica-east-attica-mainland",
+   "name": "Καλοπήγαδο",
+   "group": "44",
+   "closed": {
+    "n": 0,
+    "median": null
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 12,
+    "median": 0.08049999999999999
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  },
+  {
+   "id": 1069,
+   "region": "ionian-islands-kefalonia",
+   "name": "Κιμηλιά",
+   "group": "23-άλλη",
+   "closed": {
+    "n": 20,
+    "median": 0.0495
+   },
+   "open": {
+    "n": 0,
+    "median": null
+   },
+   "calm": {
+    "n": 10,
+    "median": 0.044
+   },
+   "arrivalRatio": null,
+   "verdict": "δεν κρίνεται (λείπουν μέρες)"
+  }
+ ]
+}

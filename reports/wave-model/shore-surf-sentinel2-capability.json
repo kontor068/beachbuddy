@@ -1,0 +1,6087 @@
+{
+ "generatedAt": "2026-09-10T13:47:47.893745+00:00",
+ "question": "Σκάει κύμα στην παραλία τις μέρες που το ανοιχτό κύμα έρχεται από «κλειστή» μεριά;",
+ "method": "Sentinel-2 L2A B08 10 μ., αφρός = pixel λωρίδας ακτής (10-30 μ. από τη σταθερή στεριά) με NIR > max(0,04, P90 ανοιχτού νερού + 0,02). Παραλία = λωρίδα ≤300 μ. από την πινέζα· θετικός έλεγχος ίδιας εικόνας = λωρίδα >400 μ. που κοιτάει το κύμα της ημέρας (≤60°). Κύμα: Copernicus MEDSEA 09:00 UTC. K_d: γεωμετρία χωρίς εξαίρεση μαρτύρων.",
+ "classes": {
+  "closed": "ανοιχτό ≥0.8 μ. από K_d ≤0.2",
+  "open": "ανοιχτό ≥0.8 μ. από K_d ≥0.9",
+  "calm": "ανοιχτό <0.25 μ."
+ },
+ "caveat": "Καθόλου αφρός = όχι κύμα που σκάει ~0,5 μ.+, όχι μηδέν κύμα. Στιγμιότυπο ~12:15 τοπική.",
+ "beaches": [
+  {
+   "id": 2009,
+   "region": "south-aegean-naxos",
+   "name": "Μουτσούνα",
+   "summary": {
+    "openDays": 3,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-22",
+     "class": "calm",
+     "wave": [
+      0.21,
+      3.0,
+      3.9
+     ],
+     "beachFoam": 0.156,
+     "exposedFoam": 0.101,
+     "exposedPx": 654,
+     "beachPx": 270,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-26",
+     "class": "calm",
+     "wave": [
+      0.18,
+      214.0,
+      6.3
+     ],
+     "beachFoam": 0.093,
+     "exposedFoam": 0.067,
+     "exposedPx": 356,
+     "beachPx": 270,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      1.02,
+      150.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.1,
+      14.0,
+      2.9
+     ],
+     "beachFoam": 0.196,
+     "exposedFoam": 0.173,
+     "exposedPx": 707,
+     "beachPx": 270,
+     "thr": 0.0554
+    },
+    {
+     "day": "2024-02-29",
+     "class": "open",
+     "wave": [
+      1.2,
+      134.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.055)"
+    },
+    {
+     "day": "2024-03-27",
+     "class": "open",
+     "wave": [
+      0.96,
+      113.0,
+      4.7
+     ],
+     "beachFoam": 0.116,
+     "exposedFoam": 0.129,
+     "exposedPx": 768,
+     "beachPx": 267,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-10",
+     "class": "calm",
+     "wave": [
+      0.23,
+      359.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-04-01",
+     "class": "open",
+     "wave": [
+      1.32,
+      106.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.04,
+      170.0,
+      5.7
+     ],
+     "beachFoam": 0.156,
+     "exposedFoam": 0.107,
+     "exposedPx": 609,
+     "beachPx": 270,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-08",
+     "class": "open",
+     "wave": [
+      0.87,
+      196.0,
+      5.7
+     ],
+     "beachFoam": 0.172,
+     "exposedFoam": 0.217,
+     "exposedPx": 345,
+     "beachPx": 244,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-03-27",
+     "class": "open",
+     "wave": [
+      0.83,
+      195.0,
+      4.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.11,
+      234.0,
+      4.7
+     ],
+     "beachFoam": 0.185,
+     "exposedFoam": 0.171,
+     "exposedPx": 217,
+     "beachPx": 270,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-27",
+     "class": "calm",
+     "wave": [
+      0.21,
+      25.0,
+      3.9
+     ],
+     "beachFoam": 0.133,
+     "exposedFoam": 0.104,
+     "exposedPx": 750,
+     "beachPx": 270,
+     "thr": 0.0449
+    }
+   ]
+  },
+  {
+   "id": 1428,
+   "region": "north-aegean-agios-efstratios",
+   "name": "Φράγκου",
+   "summary": {
+    "openDays": 7,
+    "openFoamDays": 6,
+    "calmDays": 5,
+    "calmFoamDays": 1,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      0.98,
+      169.0,
+      4.7
+     ],
+     "beachFoam": 0.015,
+     "exposedFoam": 0.175,
+     "exposedPx": 103,
+     "beachPx": 65,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.22,
+      161.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-07-24",
+     "class": "calm",
+     "wave": [
+      0.22,
+      47.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.046)"
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      1.67,
+      190.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.22,
+      163.0,
+      2.7
+     ],
+     "beachFoam": 0.151,
+     "exposedFoam": 0.242,
+     "exposedPx": 182,
+     "beachPx": 312,
+     "thr": 0.054
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.07,
+      52.0,
+      2.2
+     ],
+     "beachFoam": 0.147,
+     "exposedFoam": null,
+     "exposedPx": 4,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-11",
+     "class": "open",
+     "wave": [
+      2.0,
+      184.0,
+      6.3
+     ],
+     "beachFoam": 0.362,
+     "exposedFoam": 0.34,
+     "exposedPx": 324,
+     "beachPx": 301,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-12-26",
+     "class": "open",
+     "wave": [
+      1.19,
+      163.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-02-24",
+     "class": "open",
+     "wave": [
+      0.88,
+      186.0,
+      4.7
+     ],
+     "beachFoam": 0.299,
+     "exposedFoam": 0.302,
+     "exposedPx": 374,
+     "beachPx": 311,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      1.21,
+      187.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.12,
+      35.0,
+      1.5
+     ],
+     "beachFoam": 0.212,
+     "exposedFoam": 0.071,
+     "exposedPx": 28,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-01-29",
+     "class": "open",
+     "wave": [
+      1.1,
+      163.0,
+      5.7
+     ],
+     "beachFoam": 0.356,
+     "exposedFoam": 0.536,
+     "exposedPx": 181,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-15",
+     "class": "open",
+     "wave": [
+      1.36,
+      168.0,
+      5.2
+     ],
+     "beachFoam": 0.334,
+     "exposedFoam": 0.392,
+     "exposedPx": 212,
+     "beachPx": 311,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-04-06",
+     "class": "open",
+     "wave": [
+      0.91,
+      184.0,
+      4.3
+     ],
+     "beachFoam": 0.228,
+     "exposedFoam": 0.274,
+     "exposedPx": 350,
+     "beachPx": 311,
+     "thr": 0.0489
+    },
+    {
+     "day": "2025-11-20",
+     "class": "open",
+     "wave": [
+      1.35,
+      179.0,
+      5.2
+     ],
+     "beachFoam": 0.417,
+     "exposedFoam": 0.334,
+     "exposedPx": 296,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-19",
+     "class": "calm",
+     "wave": [
+      0.19,
+      172.0,
+      2.9
+     ],
+     "beachFoam": 0.17,
+     "exposedFoam": 0.255,
+     "exposedPx": 243,
+     "beachPx": 312,
+     "thr": 0.0426
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.14,
+      298.0,
+      2.4
+     ],
+     "beachFoam": 0.173,
+     "exposedFoam": 0.168,
+     "exposedPx": 666,
+     "beachPx": 312,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2231,
+   "region": "south-aegean-astypalaia",
+   "name": "Άγιος Ιωάννης Ρίχτης",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 3
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.15,
+      259.0,
+      4.7
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.181,
+     "exposedPx": 343,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-12-08",
+     "class": "open",
+     "wave": [
+      1.23,
+      166.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-03-28",
+     "class": "open",
+     "wave": [
+      1.04,
+      228.0,
+      6.9
+     ],
+     "beachFoam": 0.115,
+     "exposedFoam": 0.198,
+     "exposedPx": 540,
+     "beachPx": 253,
+     "thr": 0.0426
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      1.54,
+      139.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.084)"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.15,
+      343.0,
+      1.8
+     ],
+     "beachFoam": 0.08,
+     "exposedFoam": 0.231,
+     "exposedPx": 39,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-07",
+     "class": "open",
+     "wave": [
+      2.63,
+      167.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-12",
+     "class": "open",
+     "wave": [
+      2.4,
+      161.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-27",
+     "class": "open",
+     "wave": [
+      1.39,
+      135.0,
+      5.2
+     ],
+     "beachFoam": 0.057,
+     "exposedFoam": 0.04,
+     "exposedPx": 627,
+     "beachPx": 261,
+     "thr": 0.0437
+    },
+    {
+     "day": "2024-08-04",
+     "class": "calm",
+     "wave": [
+      0.18,
+      246.0,
+      5.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.051,
+     "exposedPx": 429,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-08-19",
+     "class": "calm",
+     "wave": [
+      0.14,
+      310.0,
+      2.0
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.0,
+     "exposedPx": 107,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-12",
+     "class": "open",
+     "wave": [
+      1.87,
+      139.0,
+      5.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.044)"
+    },
+    {
+     "day": "2025-04-01",
+     "class": "open",
+     "wave": [
+      2.28,
+      122.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-05-16",
+     "class": "open",
+     "wave": [
+      1.91,
+      142.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.098)"
+    },
+    {
+     "day": "2025-08-31",
+     "class": "calm",
+     "wave": [
+      0.19,
+      216.0,
+      2.4
+     ],
+     "beachFoam": 0.069,
+     "exposedFoam": 0.008,
+     "exposedPx": 615,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.47,
+      170.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-11-29",
+     "class": "open",
+     "wave": [
+      0.99,
+      151.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-15",
+     "class": "open",
+     "wave": [
+      3.45,
+      138.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-07-27",
+     "class": "calm",
+     "wave": [
+      0.22,
+      323.0,
+      2.4
+     ],
+     "beachFoam": 0.031,
+     "exposedFoam": 0.014,
+     "exposedPx": 73,
+     "beachPx": 261,
+     "thr": 0.057
+    }
+   ]
+  },
+  {
+   "id": 1446,
+   "region": "north-aegean-lemnos",
+   "name": "Άγιος Ιωάννης",
+   "summary": {
+    "openDays": 1,
+    "openFoamDays": 1,
+    "calmDays": 4,
+    "calmFoamDays": 0,
+    "glintSkipped": 2
+   },
+   "days": [
+    {
+     "day": "2022-07-24",
+     "class": "calm",
+     "wave": [
+      0.12,
+      14.0,
+      3.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.382,
+     "exposedPx": 68,
+     "beachPx": 328,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      1.2,
+      235.0,
+      5.7
+     ],
+     "beachFoam": 0.534,
+     "exposedFoam": 0.388,
+     "exposedPx": 818,
+     "beachPx": 328,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.09,
+      269.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.09,
+      204.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.001,
+     "exposedPx": 948,
+     "beachPx": 328,
+     "thr": 0.0447
+    },
+    {
+     "day": "2025-07-08",
+     "class": "calm",
+     "wave": [
+      0.08,
+      32.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.043,
+     "exposedPx": 47,
+     "beachPx": 328,
+     "thr": 0.0574
+    },
+    {
+     "day": "2026-07-20",
+     "class": "calm",
+     "wave": [
+      0.1,
+      35.0,
+      3.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.051)"
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.11,
+      277.0,
+      2.4
+     ],
+     "beachFoam": 0.003,
+     "exposedFoam": 0.0,
+     "exposedPx": 712,
+     "beachPx": 328,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 817,
+   "region": "east-macedonia-and-thrace-thasos",
+   "name": "Νότος",
+   "summary": {
+    "openDays": 1,
+    "openFoamDays": 0,
+    "calmDays": 2,
+    "calmFoamDays": 0,
+    "glintSkipped": 6
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.09,
+      165.0,
+      2.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.334)"
+    },
+    {
+     "day": "2022-07-24",
+     "class": "calm",
+     "wave": [
+      0.05,
+      123.0,
+      2.9
+     ],
+     "beachFoam": 0.022,
+     "exposedFoam": 0.562,
+     "exposedPx": 276,
+     "beachPx": 273,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      0.94,
+      181.0,
+      6.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.287)"
+    },
+    {
+     "day": "2023-04-15",
+     "class": "open",
+     "wave": [
+      0.87,
+      167.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.11,
+      249.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.314)"
+    },
+    {
+     "day": "2024-12-10",
+     "class": "open",
+     "wave": [
+      0.98,
+      176.0,
+      6.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.260)"
+    },
+    {
+     "day": "2025-07-08",
+     "class": "calm",
+     "wave": [
+      0.06,
+      172.0,
+      1.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.336)"
+    },
+    {
+     "day": "2025-11-22",
+     "class": "open",
+     "wave": [
+      1.2,
+      173.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-18",
+     "class": "open",
+     "wave": [
+      1.02,
+      264.0,
+      5.7
+     ],
+     "beachFoam": 0.125,
+     "exposedFoam": 0.056,
+     "exposedPx": 520,
+     "beachPx": 273,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-20",
+     "class": "calm",
+     "wave": [
+      0.05,
+      115.0,
+      3.2
+     ],
+     "beachFoam": 0.018,
+     "exposedFoam": 0.607,
+     "exposedPx": 257,
+     "beachPx": 273,
+     "thr": 0.0471
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.12,
+      261.0,
+      2.4
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.306)"
+    }
+   ]
+  },
+  {
+   "id": 1696,
+   "region": "south-aegean-andros",
+   "name": "Βίντζι",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 4,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2023-03-26",
+     "class": "calm",
+     "wave": [
+      0.08,
+      329.0,
+      1.2
+     ],
+     "beachFoam": 0.071,
+     "exposedFoam": 0.324,
+     "exposedPx": 589,
+     "beachPx": 324,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.03,
+      134.0,
+      1.4
+     ],
+     "beachFoam": 0.17,
+     "exposedFoam": 0.21,
+     "exposedPx": 894,
+     "beachPx": 324,
+     "thr": 0.0566
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.22,
+      23.0,
+      3.6
+     ],
+     "beachFoam": 0.109,
+     "exposedFoam": 0.24,
+     "exposedPx": 881,
+     "beachPx": 320,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-05",
+     "class": "calm",
+     "wave": [
+      0.11,
+      345.0,
+      4.3
+     ],
+     "beachFoam": 0.077,
+     "exposedFoam": 0.159,
+     "exposedPx": 615,
+     "beachPx": 324,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-10",
+     "class": "calm",
+     "wave": [
+      0.23,
+      14.0,
+      4.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.17,
+      335.0,
+      3.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.042)"
+    }
+   ]
+  },
+  {
+   "id": 1370,
+   "region": "north-aegean-lesvos",
+   "name": "Τσιχλιώτα",
+   "summary": {
+    "openDays": 3,
+    "openFoamDays": 3,
+    "calmDays": 4,
+    "calmFoamDays": 0,
+    "glintSkipped": 2
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      1.43,
+      196.0,
+      5.2
+     ],
+     "beachFoam": 0.3,
+     "exposedFoam": 0.266,
+     "exposedPx": 233,
+     "beachPx": 160,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-02-19",
+     "class": "calm",
+     "wave": [
+      0.18,
+      280.0,
+      4.7
+     ],
+     "beachFoam": 0.101,
+     "exposedFoam": 0.078,
+     "exposedPx": 616,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-04-02",
+     "class": "open",
+     "wave": [
+      1.54,
+      205.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.34,
+      191.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.056)"
+    },
+    {
+     "day": "2022-06-21",
+     "class": "calm",
+     "wave": [
+      0.21,
+      279.0,
+      3.2
+     ],
+     "beachFoam": 0.035,
+     "exposedFoam": 0.132,
+     "exposedPx": 615,
+     "beachPx": 258,
+     "thr": 0.0427
+    },
+    {
+     "day": "2022-09-14",
+     "class": "calm",
+     "wave": [
+      0.2,
+      327.0,
+      3.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-10-24",
+     "class": "calm",
+     "wave": [
+      0.15,
+      290.0,
+      4.3
+     ],
+     "beachFoam": 0.116,
+     "exposedFoam": 0.112,
+     "exposedPx": 519,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      2.06,
+      204.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.06,
+      316.0,
+      2.4
+     ],
+     "beachFoam": 0.035,
+     "exposedFoam": 0.144,
+     "exposedPx": 327,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-11",
+     "class": "open",
+     "wave": [
+      2.47,
+      205.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-12-07",
+     "class": "open",
+     "wave": [
+      1.35,
+      194.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-01-29",
+     "class": "open",
+     "wave": [
+      1.5,
+      202.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-04-16",
+     "class": "calm",
+     "wave": [
+      0.15,
+      331.0,
+      3.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.041)"
+    },
+    {
+     "day": "2026-01-08",
+     "class": "open",
+     "wave": [
+      3.8,
+      215.0,
+      7.6
+     ],
+     "beachFoam": 1.0,
+     "exposedFoam": 0.902,
+     "exposedPx": 711,
+     "beachPx": 258,
+     "thr": 0.0423
+    },
+    {
+     "day": "2026-01-09",
+     "class": "open",
+     "wave": [
+      1.53,
+      291.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-26",
+     "class": "open",
+     "wave": [
+      2.13,
+      181.0,
+      6.9
+     ],
+     "beachFoam": 0.965,
+     "exposedFoam": 0.811,
+     "exposedPx": 449,
+     "beachPx": 258,
+     "thr": 0.053
+    },
+    {
+     "day": "2026-02-20",
+     "class": "open",
+     "wave": [
+      2.45,
+      204.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-03-27",
+     "class": "open",
+     "wave": [
+      1.9,
+      198.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    }
+   ]
+  },
+  {
+   "id": 2106,
+   "region": "south-aegean-sifnos",
+   "name": "Σάουρες",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 3,
+    "calmFoamDays": 3,
+    "glintSkipped": 5
+   },
+   "days": [
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      1.07,
+      195.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.206)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.14,
+      8.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.256)"
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.08,
+      206.0,
+      3.2
+     ],
+     "beachFoam": 0.561,
+     "exposedFoam": 0.083,
+     "exposedPx": 397,
+     "beachPx": 335,
+     "thr": 0.045
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.17,
+      16.0,
+      2.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.227)"
+    },
+    {
+     "day": "2025-03-27",
+     "class": "open",
+     "wave": [
+      1.85,
+      131.0,
+      5.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.272)"
+    },
+    {
+     "day": "2025-06-02",
+     "class": "calm",
+     "wave": [
+      0.22,
+      0.0,
+      2.9
+     ],
+     "beachFoam": 0.466,
+     "exposedFoam": 0.066,
+     "exposedPx": 211,
+     "beachPx": 335,
+     "thr": 0.05
+    },
+    {
+     "day": "2025-07-22",
+     "class": "calm",
+     "wave": [
+      0.1,
+      303.0,
+      3.6
+     ],
+     "beachFoam": 0.483,
+     "exposedFoam": 0.118,
+     "exposedPx": 586,
+     "beachPx": 317,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.19,
+      9.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.280)"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.78,
+      179.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    }
+   ]
+  },
+  {
+   "id": 1701,
+   "region": "south-aegean-andros",
+   "name": "Καμινάκι",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 2,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 3
+   },
+   "days": [
+    {
+     "day": "2022-11-21",
+     "class": "open",
+     "wave": [
+      1.59,
+      221.0,
+      5.7
+     ],
+     "beachFoam": 0.369,
+     "exposedFoam": 0.295,
+     "exposedPx": 728,
+     "beachPx": 225,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      1.27,
+      204.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      1.7,
+      204.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.1,
+      25.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.062)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.13,
+      22.0,
+      3.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.009,
+     "exposedPx": 341,
+     "beachPx": 232,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-26",
+     "class": "open",
+     "wave": [
+      1.64,
+      283.0,
+      6.3
+     ],
+     "beachFoam": 0.35,
+     "exposedFoam": 0.231,
+     "exposedPx": 769,
+     "beachPx": 163,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-07-08",
+     "class": "calm",
+     "wave": [
+      0.14,
+      2.0,
+      3.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.072)"
+    },
+    {
+     "day": "2025-07-23",
+     "class": "calm",
+     "wave": [
+      0.2,
+      239.0,
+      3.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.18,
+      204.0,
+      2.0
+     ],
+     "beachFoam": 0.034,
+     "exposedFoam": 0.033,
+     "exposedPx": 609,
+     "beachPx": 232,
+     "thr": 0.0548
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.22,
+      20.0,
+      3.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.036,
+     "exposedPx": 357,
+     "beachPx": 232,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-11-20",
+     "class": "open",
+     "wave": [
+      0.95,
+      215.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    }
+   ]
+  },
+  {
+   "id": 1714,
+   "region": "south-aegean-andros",
+   "name": "Μπουρός",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 4,
+    "calmFoamDays": 1,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2023-03-26",
+     "class": "calm",
+     "wave": [
+      0.08,
+      329.0,
+      1.2
+     ],
+     "beachFoam": 0.09,
+     "exposedFoam": 0.336,
+     "exposedPx": 393,
+     "beachPx": 278,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.03,
+      134.0,
+      1.4
+     ],
+     "beachFoam": 0.219,
+     "exposedFoam": 0.273,
+     "exposedPx": 1087,
+     "beachPx": 279,
+     "thr": 0.0563
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.22,
+      23.0,
+      3.6
+     ],
+     "beachFoam": 0.115,
+     "exposedFoam": 0.395,
+     "exposedPx": 651,
+     "beachPx": 279,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-05",
+     "class": "calm",
+     "wave": [
+      0.11,
+      345.0,
+      4.3
+     ],
+     "beachFoam": 0.082,
+     "exposedFoam": 0.178,
+     "exposedPx": 465,
+     "beachPx": 279,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-10",
+     "class": "calm",
+     "wave": [
+      0.23,
+      14.0,
+      4.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.17,
+      335.0,
+      3.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.048)"
+    }
+   ]
+  },
+  {
+   "id": 1694,
+   "region": "south-aegean-andros",
+   "name": "Βλυχάδα",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 3
+   },
+   "days": [
+    {
+     "day": "2022-11-21",
+     "class": "open",
+     "wave": [
+      1.59,
+      221.0,
+      5.7
+     ],
+     "beachFoam": 0.373,
+     "exposedFoam": 0.269,
+     "exposedPx": 714,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      1.27,
+      204.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      1.7,
+      204.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.1,
+      25.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.062)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.13,
+      22.0,
+      3.2
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.083,
+     "exposedPx": 145,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-26",
+     "class": "open",
+     "wave": [
+      1.64,
+      283.0,
+      6.3
+     ],
+     "beachFoam": 0.139,
+     "exposedFoam": 0.273,
+     "exposedPx": 743,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-07-08",
+     "class": "calm",
+     "wave": [
+      0.14,
+      2.0,
+      3.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.074)"
+    },
+    {
+     "day": "2025-07-23",
+     "class": "calm",
+     "wave": [
+      0.2,
+      239.0,
+      3.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.18,
+      204.0,
+      2.0
+     ],
+     "beachFoam": 0.012,
+     "exposedFoam": 0.063,
+     "exposedPx": 527,
+     "beachPx": 252,
+     "thr": 0.0549
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.22,
+      20.0,
+      3.9
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.107,
+     "exposedPx": 150,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-11-20",
+     "class": "open",
+     "wave": [
+      0.95,
+      215.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    }
+   ]
+  },
+  {
+   "id": 227,
+   "region": "central-greece-evia",
+   "name": "Καλάμι",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 3,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.05,
+      61.0,
+      3.6
+     ],
+     "beachFoam": 0.2,
+     "exposedFoam": 0.45,
+     "exposedPx": 436,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-07-24",
+     "class": "calm",
+     "wave": [
+      0.23,
+      65.0,
+      4.3
+     ],
+     "beachFoam": 0.287,
+     "exposedFoam": 0.347,
+     "exposedPx": 495,
+     "beachPx": 240,
+     "thr": 0.0486
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.08,
+      70.0,
+      2.9
+     ],
+     "beachFoam": 0.117,
+     "exposedFoam": 0.38,
+     "exposedPx": 550,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.09,
+      151.0,
+      1.8
+     ],
+     "beachFoam": 0.133,
+     "exposedFoam": 0.448,
+     "exposedPx": 901,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.14,
+      61.0,
+      3.9
+     ],
+     "beachFoam": 0.096,
+     "exposedFoam": 0.308,
+     "exposedPx": 432,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-22",
+     "class": "calm",
+     "wave": [
+      0.23,
+      57.0,
+      5.2
+     ],
+     "beachFoam": 0.221,
+     "exposedFoam": 0.456,
+     "exposedPx": 375,
+     "beachPx": 240,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2476,
+   "region": "south-aegean-tilos",
+   "name": "Αγία Πέτρος",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 6,
+    "calmFoamDays": 1,
+    "glintSkipped": 3
+   },
+   "days": [
+    {
+     "day": "2023-01-02",
+     "class": "calm",
+     "wave": [
+      0.24,
+      328.0,
+      2.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.073,
+     "exposedPx": 41,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-01-09",
+     "class": "calm",
+     "wave": [
+      0.22,
+      294.0,
+      4.7
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.122,
+     "exposedPx": 74,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      0.95,
+      160.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.119)"
+    },
+    {
+     "day": "2023-10-21",
+     "class": "calm",
+     "wave": [
+      0.19,
+      200.0,
+      2.2
+     ],
+     "beachFoam": 0.495,
+     "exposedFoam": 0.042,
+     "exposedPx": 408,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-07",
+     "class": "open",
+     "wave": [
+      2.81,
+      190.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-12",
+     "class": "open",
+     "wave": [
+      1.89,
+      181.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-27",
+     "class": "open",
+     "wave": [
+      0.91,
+      167.0,
+      4.7
+     ],
+     "beachFoam": 0.08,
+     "exposedFoam": 0.061,
+     "exposedPx": 964,
+     "beachPx": 251,
+     "thr": 0.06
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.24,
+      269.0,
+      5.7
+     ],
+     "beachFoam": 0.1,
+     "exposedFoam": 0.121,
+     "exposedPx": 124,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-12",
+     "class": "open",
+     "wave": [
+      0.92,
+      169.0,
+      5.2
+     ],
+     "beachFoam": 0.291,
+     "exposedFoam": 0.269,
+     "exposedPx": 938,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-05-16",
+     "class": "open",
+     "wave": [
+      1.25,
+      164.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.111)"
+    },
+    {
+     "day": "2025-08-31",
+     "class": "calm",
+     "wave": [
+      0.17,
+      240.0,
+      2.9
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.012,
+     "exposedPx": 167,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-10-17",
+     "class": "calm",
+     "wave": [
+      0.23,
+      288.0,
+      5.7
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.012,
+     "exposedPx": 82,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-10-27",
+     "class": "open",
+     "wave": [
+      0.84,
+      199.0,
+      3.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-15",
+     "class": "open",
+     "wave": [
+      2.24,
+      166.0,
+      6.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.057)"
+    }
+   ]
+  },
+  {
+   "id": 1067,
+   "region": "ionian-islands-kefalonia",
+   "name": "Έμπλυση",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 6,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-01-16",
+     "class": "open",
+     "wave": [
+      0.82,
+      25.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-07-02",
+     "class": "calm",
+     "wave": [
+      0.21,
+      285.0,
+      3.6
+     ],
+     "beachFoam": 0.279,
+     "exposedFoam": 0.326,
+     "exposedPx": 393,
+     "beachPx": 287,
+     "thr": 0.0407
+    },
+    {
+     "day": "2022-10-05",
+     "class": "open",
+     "wave": [
+      0.97,
+      27.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-22",
+     "class": "calm",
+     "wave": [
+      0.21,
+      271.0,
+      3.9
+     ],
+     "beachFoam": 0.289,
+     "exposedFoam": 0.32,
+     "exposedPx": 328,
+     "beachPx": 287,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-13",
+     "class": "calm",
+     "wave": [
+      0.23,
+      301.0,
+      3.6
+     ],
+     "beachFoam": 0.265,
+     "exposedFoam": 0.268,
+     "exposedPx": 537,
+     "beachPx": 287,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-07-21",
+     "class": "calm",
+     "wave": [
+      0.23,
+      269.0,
+      3.9
+     ],
+     "beachFoam": 0.261,
+     "exposedFoam": 0.252,
+     "exposedPx": 322,
+     "beachPx": 287,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-16",
+     "class": "calm",
+     "wave": [
+      0.22,
+      272.0,
+      3.9
+     ],
+     "beachFoam": 0.282,
+     "exposedFoam": 0.331,
+     "exposedPx": 329,
+     "beachPx": 287,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-21",
+     "class": "calm",
+     "wave": [
+      0.16,
+      258.0,
+      3.9
+     ],
+     "beachFoam": 0.286,
+     "exposedFoam": 0.371,
+     "exposedPx": 291,
+     "beachPx": 287,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2191,
+   "region": "south-aegean-donousa",
+   "name": "Λιμενάρι",
+   "summary": {
+    "openDays": 4,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.24,
+      324.0,
+      2.2
+     ],
+     "beachFoam": 0.006,
+     "exposedFoam": 0.005,
+     "exposedPx": 207,
+     "beachPx": 487,
+     "thr": 0.054
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      0.97,
+      120.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.17,
+      324.0,
+      2.0
+     ],
+     "beachFoam": 0.053,
+     "exposedFoam": 0.092,
+     "exposedPx": 207,
+     "beachPx": 487,
+     "thr": 0.0484
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.22,
+      233.0,
+      2.9
+     ],
+     "beachFoam": 0.002,
+     "exposedFoam": 0.003,
+     "exposedPx": 725,
+     "beachPx": 487,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-27",
+     "class": "open",
+     "wave": [
+      1.35,
+      122.0,
+      5.2
+     ],
+     "beachFoam": 0.021,
+     "exposedFoam": 0.012,
+     "exposedPx": 574,
+     "beachPx": 483,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-04-21",
+     "class": "open",
+     "wave": [
+      0.91,
+      218.0,
+      4.3
+     ],
+     "beachFoam": 0.108,
+     "exposedFoam": 0.13,
+     "exposedPx": 793,
+     "beachPx": 482,
+     "thr": 0.044
+    },
+    {
+     "day": "2025-04-01",
+     "class": "open",
+     "wave": [
+      1.75,
+      118.0,
+      6.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.076)"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.08,
+      175.0,
+      4.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-08",
+     "class": "open",
+     "wave": [
+      1.55,
+      219.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-31",
+     "class": "open",
+     "wave": [
+      1.52,
+      227.0,
+      5.7
+     ],
+     "beachFoam": 0.195,
+     "exposedFoam": 0.275,
+     "exposedPx": 749,
+     "beachPx": 478,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-02-20",
+     "class": "open",
+     "wave": [
+      0.85,
+      181.0,
+      3.6
+     ],
+     "beachFoam": 0.014,
+     "exposedFoam": 0.026,
+     "exposedPx": 764,
+     "beachPx": 486,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-03-27",
+     "class": "open",
+     "wave": [
+      1.47,
+      214.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.17,
+      253.0,
+      4.7
+     ],
+     "beachFoam": 0.002,
+     "exposedFoam": 0.008,
+     "exposedPx": 614,
+     "beachPx": 487,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-28",
+     "class": "calm",
+     "wave": [
+      0.22,
+      341.0,
+      4.3
+     ],
+     "beachFoam": 0.006,
+     "exposedFoam": 0.074,
+     "exposedPx": 122,
+     "beachPx": 487,
+     "thr": 0.0503
+    },
+    {
+     "day": "2026-05-31",
+     "class": "calm",
+     "wave": [
+      0.14,
+      353.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.012,
+     "exposedPx": 81,
+     "beachPx": 487,
+     "thr": 0.0523
+    }
+   ]
+  },
+  {
+   "id": 1880,
+   "region": "south-aegean-kythnos",
+   "name": "Λαγκούση",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.1,
+      199.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.101)"
+    },
+    {
+     "day": "2022-11-21",
+     "class": "open",
+     "wave": [
+      0.94,
+      199.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      0.88,
+      188.0,
+      5.7
+     ],
+     "beachFoam": 0.08,
+     "exposedFoam": 0.351,
+     "exposedPx": 845,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.05,
+      29.0,
+      3.6
+     ],
+     "beachFoam": 0.007,
+     "exposedFoam": 0.061,
+     "exposedPx": 537,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.14,
+      36.0,
+      2.0
+     ],
+     "beachFoam": 0.003,
+     "exposedFoam": 0.053,
+     "exposedPx": 603,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-27",
+     "class": "open",
+     "wave": [
+      1.24,
+      132.0,
+      5.2
+     ],
+     "beachFoam": 0.14,
+     "exposedFoam": 0.303,
+     "exposedPx": 1104,
+     "beachPx": 286,
+     "thr": 0.0505
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.07,
+      30.0,
+      4.3
+     ],
+     "beachFoam": 0.091,
+     "exposedFoam": 0.438,
+     "exposedPx": 585,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-21",
+     "class": "calm",
+     "wave": [
+      0.22,
+      233.0,
+      2.0
+     ],
+     "beachFoam": 0.049,
+     "exposedFoam": 0.312,
+     "exposedPx": 962,
+     "beachPx": 286,
+     "thr": 0.0469
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.11,
+      29.0,
+      4.7
+     ],
+     "beachFoam": 0.094,
+     "exposedFoam": 0.043,
+     "exposedPx": 537,
+     "beachPx": 286,
+     "thr": 0.0579
+    }
+   ]
+  },
+  {
+   "id": 1848,
+   "region": "south-aegean-kimolos",
+   "name": "Λάκος",
+   "summary": {
+    "openDays": 4,
+    "openFoamDays": 0,
+    "calmDays": 4,
+    "calmFoamDays": 0,
+    "glintSkipped": 2
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      1.45,
+      252.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.14,
+      249.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-05-15",
+     "class": "calm",
+     "wave": [
+      0.1,
+      245.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.075)"
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      0.96,
+      243.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-04-05",
+     "class": "open",
+     "wave": [
+      1.05,
+      281.0,
+      4.7
+     ],
+     "beachFoam": 0.082,
+     "exposedFoam": 0.09,
+     "exposedPx": 923,
+     "beachPx": 293,
+     "thr": 0.0425
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.12,
+      350.0,
+      1.8
+     ],
+     "beachFoam": 0.028,
+     "exposedFoam": 0.119,
+     "exposedPx": 511,
+     "beachPx": 290,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-26",
+     "class": "open",
+     "wave": [
+      2.54,
+      290.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-12-01",
+     "class": "open",
+     "wave": [
+      0.81,
+      254.0,
+      4.7
+     ],
+     "beachFoam": 0.031,
+     "exposedFoam": 0.053,
+     "exposedPx": 1017,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-12-06",
+     "class": "open",
+     "wave": [
+      1.01,
+      266.0,
+      5.2
+     ],
+     "beachFoam": 0.085,
+     "exposedFoam": 0.143,
+     "exposedPx": 966,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.24,
+      311.0,
+      2.7
+     ],
+     "beachFoam": 0.024,
+     "exposedFoam": 0.055,
+     "exposedPx": 819,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-04",
+     "class": "calm",
+     "wave": [
+      0.18,
+      310.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.13,
+      347.0,
+      2.9
+     ],
+     "beachFoam": 0.038,
+     "exposedFoam": 0.137,
+     "exposedPx": 540,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-02-08",
+     "class": "open",
+     "wave": [
+      1.1,
+      261.0,
+      5.2
+     ],
+     "beachFoam": 0.027,
+     "exposedFoam": 0.065,
+     "exposedPx": 993,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.23,
+      332.0,
+      2.4
+     ],
+     "beachFoam": 0.038,
+     "exposedFoam": 0.115,
+     "exposedPx": 672,
+     "beachPx": 293,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 160,
+   "region": "attica-poros",
+   "name": "Μοναστήρι",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.18,
+      167.0,
+      3.9
+     ],
+     "beachFoam": 0.073,
+     "exposedFoam": 0.301,
+     "exposedPx": 651,
+     "beachPx": 246,
+     "thr": 0.0571
+    },
+    {
+     "day": "2023-08-28",
+     "class": "calm",
+     "wave": [
+      0.08,
+      69.0,
+      5.7
+     ],
+     "beachFoam": 0.016,
+     "exposedFoam": 0.0,
+     "exposedPx": 71,
+     "beachPx": 246,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.17,
+      346.0,
+      2.4
+     ],
+     "beachFoam": 0.016,
+     "exposedFoam": null,
+     "exposedPx": 0,
+     "beachPx": 246,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.13,
+      164.0,
+      3.6
+     ],
+     "beachFoam": 0.02,
+     "exposedFoam": 0.057,
+     "exposedPx": 630,
+     "beachPx": 246,
+     "thr": 0.0576
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.07,
+      96.0,
+      2.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.021,
+     "exposedPx": 144,
+     "beachPx": 246,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-20",
+     "class": "calm",
+     "wave": [
+      0.07,
+      106.0,
+      2.4
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.04,
+     "exposedPx": 202,
+     "beachPx": 246,
+     "thr": 0.0491
+    }
+   ]
+  },
+  {
+   "id": 1257,
+   "region": "north-aegean-chios",
+   "name": "Αποθήκα",
+   "summary": {
+    "openDays": 5,
+    "openFoamDays": 1,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 4
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      1.37,
+      194.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.06,
+      193.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.066)"
+    },
+    {
+     "day": "2022-11-18",
+     "class": "open",
+     "wave": [
+      1.39,
+      203.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      2.32,
+      204.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-21",
+     "class": "calm",
+     "wave": [
+      0.24,
+      312.0,
+      2.9
+     ],
+     "beachFoam": 0.02,
+     "exposedFoam": 0.018,
+     "exposedPx": 282,
+     "beachPx": 248,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.17,
+      217.0,
+      2.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.093)"
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.21,
+      294.0,
+      3.2
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.0,
+     "exposedPx": 321,
+     "beachPx": 248,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.21,
+      320.0,
+      3.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.019,
+     "exposedPx": 268,
+     "beachPx": 248,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-07",
+     "class": "open",
+     "wave": [
+      2.61,
+      194.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      1.33,
+      214.0,
+      5.7
+     ],
+     "beachFoam": 0.13,
+     "exposedFoam": 0.097,
+     "exposedPx": 404,
+     "beachPx": 247,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-27",
+     "class": "open",
+     "wave": [
+      1.1,
+      161.0,
+      5.7
+     ],
+     "beachFoam": 0.143,
+     "exposedFoam": 0.535,
+     "exposedPx": 310,
+     "beachPx": 230,
+     "thr": 0.0593
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.15,
+      295.0,
+      2.4
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.059)"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.27,
+      190.0,
+      5.7
+     ],
+     "beachFoam": 0.181,
+     "exposedFoam": 0.072,
+     "exposedPx": 400,
+     "beachPx": 248,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-08",
+     "class": "open",
+     "wave": [
+      2.77,
+      210.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-31",
+     "class": "open",
+     "wave": [
+      1.21,
+      221.0,
+      5.2
+     ],
+     "beachFoam": 0.032,
+     "exposedFoam": 0.075,
+     "exposedPx": 295,
+     "beachPx": 248,
+     "thr": 0.0534
+    },
+    {
+     "day": "2026-02-20",
+     "class": "open",
+     "wave": [
+      1.75,
+      208.0,
+      5.7
+     ],
+     "beachFoam": 0.464,
+     "exposedFoam": 0.232,
+     "exposedPx": 353,
+     "beachPx": 248,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-03-27",
+     "class": "open",
+     "wave": [
+      1.72,
+      205.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.24,
+      329.0,
+      3.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.070)"
+    }
+   ]
+  },
+  {
+   "id": 1891,
+   "region": "south-aegean-kythnos",
+   "name": "Ποταμιά",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 2,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.11,
+      222.0,
+      4.7
+     ],
+     "beachFoam": 0.505,
+     "exposedFoam": 0.077,
+     "exposedPx": 156,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.1,
+      13.0,
+      3.6
+     ],
+     "beachFoam": 0.027,
+     "exposedFoam": 0.274,
+     "exposedPx": 365,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.18,
+      335.0,
+      2.9
+     ],
+     "beachFoam": 0.024,
+     "exposedFoam": 0.2,
+     "exposedPx": 70,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.15,
+      23.0,
+      4.3
+     ],
+     "beachFoam": 0.096,
+     "exposedFoam": 0.448,
+     "exposedPx": 422,
+     "beachPx": 293,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.19,
+      22.0,
+      4.7
+     ],
+     "beachFoam": 0.208,
+     "exposedFoam": 0.306,
+     "exposedPx": 418,
+     "beachPx": 293,
+     "thr": 0.0483
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.21,
+      8.0,
+      4.7
+     ],
+     "beachFoam": 0.058,
+     "exposedFoam": 0.221,
+     "exposedPx": 312,
+     "beachPx": 293,
+     "thr": 0.0411
+    }
+   ]
+  },
+  {
+   "id": 1071,
+   "region": "ionian-islands-kefalonia",
+   "name": "Παραλία Σκάλας",
+   "summary": {
+    "openDays": 8,
+    "openFoamDays": 5,
+    "calmDays": 4,
+    "calmFoamDays": 0,
+    "glintSkipped": 4
+   },
+   "days": [
+    {
+     "day": "2022-01-13",
+     "class": "open",
+     "wave": [
+      2.04,
+      60.0,
+      5.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.253)"
+    },
+    {
+     "day": "2022-10-18",
+     "class": "open",
+     "wave": [
+      0.9,
+      60.0,
+      4.7
+     ],
+     "beachFoam": 0.164,
+     "exposedFoam": 0.124,
+     "exposedPx": 501,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-12-19",
+     "class": "open",
+     "wave": [
+      0.99,
+      57.0,
+      4.7
+     ],
+     "beachFoam": 0.121,
+     "exposedFoam": 0.087,
+     "exposedPx": 469,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-01-18",
+     "class": "open",
+     "wave": [
+      1.15,
+      183.0,
+      8.4
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-01-26",
+     "class": "open",
+     "wave": [
+      1.2,
+      113.0,
+      8.4
+     ],
+     "beachFoam": 0.785,
+     "exposedFoam": 0.887,
+     "exposedPx": 661,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-17",
+     "class": "open",
+     "wave": [
+      0.99,
+      49.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.156)"
+    },
+    {
+     "day": "2023-07-12",
+     "class": "calm",
+     "wave": [
+      0.1,
+      301.0,
+      2.9
+     ],
+     "beachFoam": 0.075,
+     "exposedFoam": null,
+     "exposedPx": 2,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-13",
+     "class": "calm",
+     "wave": [
+      0.16,
+      61.0,
+      2.7
+     ],
+     "beachFoam": 0.065,
+     "exposedFoam": 0.03,
+     "exposedPx": 501,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-12-17",
+     "class": "open",
+     "wave": [
+      1.38,
+      59.0,
+      5.2
+     ],
+     "beachFoam": 0.402,
+     "exposedFoam": 0.339,
+     "exposedPx": 496,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-28",
+     "class": "open",
+     "wave": [
+      1.03,
+      43.0,
+      4.7
+     ],
+     "beachFoam": 0.449,
+     "exposedFoam": 0.378,
+     "exposedPx": 291,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-07-01",
+     "class": "calm",
+     "wave": [
+      0.09,
+      309.0,
+      3.6
+     ],
+     "beachFoam": 0.014,
+     "exposedFoam": null,
+     "exposedPx": 2,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-08-03",
+     "class": "calm",
+     "wave": [
+      0.17,
+      251.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.079)"
+    },
+    {
+     "day": "2024-08-13",
+     "class": "calm",
+     "wave": [
+      0.15,
+      47.0,
+      2.4
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.050)"
+    },
+    {
+     "day": "2024-08-15",
+     "class": "calm",
+     "wave": [
+      0.12,
+      248.0,
+      5.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.059,
+     "exposedPx": 17,
+     "beachPx": 213,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-11-06",
+     "class": "open",
+     "wave": [
+      0.94,
+      58.0,
+      4.7
+     ],
+     "beachFoam": 0.033,
+     "exposedFoam": 0.061,
+     "exposedPx": 490,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-11-08",
+     "class": "open",
+     "wave": [
+      0.9,
+      62.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-12-28",
+     "class": "open",
+     "wave": [
+      1.12,
+      60.0,
+      4.7
+     ],
+     "beachFoam": 0.336,
+     "exposedFoam": 0.425,
+     "exposedPx": 501,
+     "beachPx": 214,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-02",
+     "class": "open",
+     "wave": [
+      1.01,
+      60.0,
+      4.3
+     ],
+     "beachFoam": 0.243,
+     "exposedFoam": 0.425,
+     "exposedPx": 501,
+     "beachPx": 214,
+     "thr": 0.0432
+    }
+   ]
+  },
+  {
+   "id": 1864,
+   "region": "south-aegean-kythnos",
+   "name": "Αγκορίτσα",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.1,
+      199.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.101)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.05,
+      29.0,
+      3.6
+     ],
+     "beachFoam": 0.016,
+     "exposedFoam": 0.128,
+     "exposedPx": 541,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.14,
+      36.0,
+      2.0
+     ],
+     "beachFoam": 0.022,
+     "exposedFoam": 0.1,
+     "exposedPx": 633,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.07,
+      30.0,
+      4.3
+     ],
+     "beachFoam": 0.151,
+     "exposedFoam": 0.631,
+     "exposedPx": 605,
+     "beachPx": 312,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-21",
+     "class": "calm",
+     "wave": [
+      0.22,
+      233.0,
+      2.0
+     ],
+     "beachFoam": 0.067,
+     "exposedFoam": 0.395,
+     "exposedPx": 1113,
+     "beachPx": 312,
+     "thr": 0.0442
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.11,
+      29.0,
+      4.7
+     ],
+     "beachFoam": 0.054,
+     "exposedFoam": 0.124,
+     "exposedPx": 541,
+     "beachPx": 312,
+     "thr": 0.0587
+    }
+   ]
+  },
+  {
+   "id": 2361,
+   "region": "south-aegean-leros",
+   "name": "Παραλία Λακκίου",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 2,
+    "calmFoamDays": 1,
+    "glintSkipped": 3
+   },
+   "days": [
+    {
+     "day": "2022-01-17",
+     "class": "calm",
+     "wave": [
+      0.19,
+      315.0,
+      3.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-05-27",
+     "class": "calm",
+     "wave": [
+      0.24,
+      295.0,
+      3.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.067)"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.17,
+      306.0,
+      2.4
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.055)"
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.21,
+      296.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.068)"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.15,
+      289.0,
+      2.9
+     ],
+     "beachFoam": 0.207,
+     "exposedFoam": 0.235,
+     "exposedPx": 868,
+     "beachPx": 237,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-19",
+     "class": "calm",
+     "wave": [
+      0.13,
+      241.0,
+      4.7
+     ],
+     "beachFoam": 0.122,
+     "exposedFoam": 0.223,
+     "exposedPx": 959,
+     "beachPx": 237,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2148,
+   "region": "south-aegean-syros",
+   "name": "Φοίνικας",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 2,
+    "calmDays": 5,
+    "calmFoamDays": 1,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      1.37,
+      214.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-02-19",
+     "class": "calm",
+     "wave": [
+      0.21,
+      5.0,
+      2.7
+     ],
+     "beachFoam": 0.181,
+     "exposedFoam": 0.785,
+     "exposedPx": 498,
+     "beachPx": 210,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.11,
+      216.0,
+      5.2
+     ],
+     "beachFoam": 0.479,
+     "exposedFoam": 0.517,
+     "exposedPx": 956,
+     "beachPx": 211,
+     "thr": 0.058
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.1,
+      329.0,
+      1.7
+     ],
+     "beachFoam": 0.199,
+     "exposedFoam": 0.718,
+     "exposedPx": 684,
+     "beachPx": 211,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-10-27",
+     "class": "open",
+     "wave": [
+      0.8,
+      221.0,
+      5.2
+     ],
+     "beachFoam": 0.403,
+     "exposedFoam": 0.58,
+     "exposedPx": 1068,
+     "beachPx": 211,
+     "thr": 0.0495
+    },
+    {
+     "day": "2023-11-03",
+     "class": "open",
+     "wave": [
+      1.01,
+      223.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-12-06",
+     "class": "open",
+     "wave": [
+      0.97,
+      227.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      1.3,
+      229.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-25",
+     "class": "open",
+     "wave": [
+      2.17,
+      223.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.11,
+      265.0,
+      2.7
+     ],
+     "beachFoam": 0.137,
+     "exposedFoam": 0.535,
+     "exposedPx": 974,
+     "beachPx": 211,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-12-10",
+     "class": "open",
+     "wave": [
+      1.1,
+      218.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-01-29",
+     "class": "open",
+     "wave": [
+      0.95,
+      216.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.068)"
+    },
+    {
+     "day": "2025-03-10",
+     "class": "calm",
+     "wave": [
+      0.22,
+      210.0,
+      2.0
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.18,
+      330.0,
+      2.0
+     ],
+     "beachFoam": 0.194,
+     "exposedFoam": 0.734,
+     "exposedPx": 672,
+     "beachPx": 211,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.21,
+      339.0,
+      2.7
+     ],
+     "beachFoam": 0.227,
+     "exposedFoam": 0.741,
+     "exposedPx": 587,
+     "beachPx": 211,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2363,
+   "region": "south-aegean-leros",
+   "name": "Κόκκινη παραλία",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 2
+   },
+   "days": [
+    {
+     "day": "2022-01-17",
+     "class": "calm",
+     "wave": [
+      0.19,
+      315.0,
+      3.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-05-27",
+     "class": "calm",
+     "wave": [
+      0.24,
+      295.0,
+      3.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.043)"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.17,
+      306.0,
+      2.4
+     ],
+     "beachFoam": 0.191,
+     "exposedFoam": 0.267,
+     "exposedPx": 686,
+     "beachPx": 299,
+     "thr": 0.0538
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.21,
+      296.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.067)"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.15,
+      289.0,
+      2.9
+     ],
+     "beachFoam": 0.164,
+     "exposedFoam": 0.154,
+     "exposedPx": 636,
+     "beachPx": 299,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-19",
+     "class": "calm",
+     "wave": [
+      0.13,
+      241.0,
+      4.7
+     ],
+     "beachFoam": 0.151,
+     "exposedFoam": 0.168,
+     "exposedPx": 578,
+     "beachPx": 299,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 301,
+   "region": "central-greece-evia",
+   "name": "Σουτσίνι",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.11,
+      15.0,
+      3.6
+     ],
+     "beachFoam": 0.142,
+     "exposedFoam": 0.686,
+     "exposedPx": 86,
+     "beachPx": 254,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-07-24",
+     "class": "calm",
+     "wave": [
+      0.2,
+      59.0,
+      4.7
+     ],
+     "beachFoam": 0.047,
+     "exposedFoam": 0.115,
+     "exposedPx": 200,
+     "beachPx": 254,
+     "thr": 0.0527
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      0.99,
+      81.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-14",
+     "class": "calm",
+     "wave": [
+      0.08,
+      348.0,
+      1.5
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.048)"
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.06,
+      116.0,
+      2.4
+     ],
+     "beachFoam": 0.087,
+     "exposedFoam": 0.354,
+     "exposedPx": 751,
+     "beachPx": 254,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.11,
+      46.0,
+      3.2
+     ],
+     "beachFoam": 0.047,
+     "exposedFoam": 0.0,
+     "exposedPx": 118,
+     "beachPx": 254,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-22",
+     "class": "calm",
+     "wave": [
+      0.23,
+      45.0,
+      4.7
+     ],
+     "beachFoam": 0.15,
+     "exposedFoam": 0.759,
+     "exposedPx": 116,
+     "beachPx": 254,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2662,
+   "region": "thessaly-skopelos",
+   "name": "Στάφυλος",
+   "summary": {
+    "openDays": 3,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-08-16",
+     "class": "calm",
+     "wave": [
+      0.19,
+      224.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2022-09-10",
+     "class": "calm",
+     "wave": [
+      0.12,
+      101.0,
+      2.7
+     ],
+     "beachFoam": 0.086,
+     "exposedFoam": 0.297,
+     "exposedPx": 696,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-04-13",
+     "class": "calm",
+     "wave": [
+      0.12,
+      226.0,
+      1.8
+     ],
+     "beachFoam": 0.098,
+     "exposedFoam": 0.395,
+     "exposedPx": 319,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-29",
+     "class": "open",
+     "wave": [
+      0.84,
+      175.0,
+      3.9
+     ],
+     "beachFoam": 0.144,
+     "exposedFoam": 0.556,
+     "exposedPx": 766,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      0.93,
+      206.0,
+      6.9
+     ],
+     "beachFoam": 0.101,
+     "exposedFoam": 0.45,
+     "exposedPx": 575,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-25",
+     "class": "open",
+     "wave": [
+      0.88,
+      237.0,
+      3.6
+     ],
+     "beachFoam": 0.107,
+     "exposedFoam": 0.567,
+     "exposedPx": 238,
+     "beachPx": 327,
+     "thr": 0.0484
+    },
+    {
+     "day": "2024-07-13",
+     "class": "calm",
+     "wave": [
+      0.2,
+      59.0,
+      3.9
+     ],
+     "beachFoam": 0.067,
+     "exposedFoam": 0.412,
+     "exposedPx": 313,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-30",
+     "class": "calm",
+     "wave": [
+      0.12,
+      123.0,
+      1.2
+     ],
+     "beachFoam": 0.076,
+     "exposedFoam": 0.275,
+     "exposedPx": 898,
+     "beachPx": 327,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-20",
+     "class": "calm",
+     "wave": [
+      0.13,
+      80.0,
+      3.9
+     ],
+     "beachFoam": 0.089,
+     "exposedFoam": 0.339,
+     "exposedPx": 475,
+     "beachPx": 327,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2189,
+   "region": "south-aegean-donousa",
+   "name": "Κέδρος",
+   "summary": {
+    "openDays": 3,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.22,
+      328.0,
+      2.2
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.057,
+     "exposedPx": 282,
+     "beachPx": 252,
+     "thr": 0.0514
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      0.93,
+      121.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.16,
+      328.0,
+      2.7
+     ],
+     "beachFoam": 0.107,
+     "exposedFoam": 0.085,
+     "exposedPx": 282,
+     "beachPx": 252,
+     "thr": 0.0484
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.2,
+      233.0,
+      2.9
+     ],
+     "beachFoam": 0.012,
+     "exposedFoam": 0.004,
+     "exposedPx": 1052,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-27",
+     "class": "open",
+     "wave": [
+      1.29,
+      121.0,
+      5.2
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.028,
+     "exposedPx": 649,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-04-01",
+     "class": "open",
+     "wave": [
+      1.67,
+      116.0,
+      6.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.076)"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.09,
+      176.0,
+      4.3
+     ],
+     "beachFoam": 0.124,
+     "exposedFoam": 0.063,
+     "exposedPx": 543,
+     "beachPx": 251,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-02-20",
+     "class": "open",
+     "wave": [
+      0.81,
+      182.0,
+      3.6
+     ],
+     "beachFoam": 0.024,
+     "exposedFoam": 0.022,
+     "exposedPx": 867,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.16,
+      246.0,
+      4.7
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.001,
+     "exposedPx": 993,
+     "beachPx": 252,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-28",
+     "class": "calm",
+     "wave": [
+      0.22,
+      342.0,
+      4.3
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.112,
+     "exposedPx": 107,
+     "beachPx": 252,
+     "thr": 0.0537
+    },
+    {
+     "day": "2026-07-27",
+     "class": "calm",
+     "wave": [
+      0.24,
+      5.0,
+      3.6
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.069,
+     "exposedPx": 29,
+     "beachPx": 252,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2485,
+   "region": "south-aegean-kasos",
+   "name": "Χέλατρος",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 4
+   },
+   "days": [
+    {
+     "day": "2022-06-11",
+     "class": "open",
+     "wave": [
+      1.68,
+      196.0,
+      7.6
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.100)"
+    },
+    {
+     "day": "2022-09-16",
+     "class": "calm",
+     "wave": [
+      0.19,
+      266.0,
+      3.9
+     ],
+     "beachFoam": 0.023,
+     "exposedFoam": 0.064,
+     "exposedPx": 871,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-09-26",
+     "class": "calm",
+     "wave": [
+      0.23,
+      321.0,
+      3.6
+     ],
+     "beachFoam": 0.038,
+     "exposedFoam": 0.152,
+     "exposedPx": 277,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-01-27",
+     "class": "open",
+     "wave": [
+      2.54,
+      146.0,
+      8.4
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-04-04",
+     "class": "open",
+     "wave": [
+      2.06,
+      199.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-06-16",
+     "class": "open",
+     "wave": [
+      1.45,
+      175.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.102)"
+    },
+    {
+     "day": "2023-09-06",
+     "class": "open",
+     "wave": [
+      1.24,
+      138.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.097)"
+    },
+    {
+     "day": "2024-01-07",
+     "class": "open",
+     "wave": [
+      2.84,
+      196.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-02-26",
+     "class": "open",
+     "wave": [
+      1.53,
+      176.0,
+      6.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.051)"
+    },
+    {
+     "day": "2024-03-12",
+     "class": "open",
+     "wave": [
+      1.64,
+      176.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.2,
+      269.0,
+      4.3
+     ],
+     "beachFoam": 0.011,
+     "exposedFoam": 0.128,
+     "exposedPx": 842,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-02-17",
+     "class": "open",
+     "wave": [
+      1.46,
+      165.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-05-23",
+     "class": "calm",
+     "wave": [
+      0.15,
+      275.0,
+      3.6
+     ],
+     "beachFoam": 0.031,
+     "exposedFoam": 0.245,
+     "exposedPx": 780,
+     "beachPx": 261,
+     "thr": 0.0508
+    },
+    {
+     "day": "2025-10-17",
+     "class": "calm",
+     "wave": [
+      0.21,
+      296.0,
+      4.3
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.043,
+     "exposedPx": 554,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.29,
+      193.0,
+      5.7
+     ],
+     "beachFoam": 0.08,
+     "exposedFoam": 0.174,
+     "exposedPx": 1221,
+     "beachPx": 261,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-23",
+     "class": "open",
+     "wave": [
+      2.19,
+      176.0,
+      9.2
+     ],
+     "beachFoam": 0.827,
+     "exposedFoam": 0.383,
+     "exposedPx": 853,
+     "beachPx": 248,
+     "thr": 0.0444
+    },
+    {
+     "day": "2026-02-15",
+     "class": "open",
+     "wave": [
+      2.23,
+      157.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-04-13",
+     "class": "calm",
+     "wave": [
+      0.24,
+      349.0,
+      2.4
+     ],
+     "beachFoam": 0.042,
+     "exposedFoam": 0.416,
+     "exposedPx": 185,
+     "beachPx": 261,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 1284,
+   "region": "north-aegean-psara",
+   "name": "Ψιλή",
+   "summary": {
+    "openDays": 5,
+    "openFoamDays": 3,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 4
+   },
+   "days": [
+    {
+     "day": "2022-01-05",
+     "class": "open",
+     "wave": [
+      1.28,
+      171.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.096)"
+    },
+    {
+     "day": "2022-04-10",
+     "class": "open",
+     "wave": [
+      1.38,
+      173.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-05-15",
+     "class": "calm",
+     "wave": [
+      0.12,
+      279.0,
+      1.8
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.096)"
+    },
+    {
+     "day": "2022-11-18",
+     "class": "open",
+     "wave": [
+      1.44,
+      192.0,
+      5.2
+     ],
+     "beachFoam": 0.14,
+     "exposedFoam": 0.212,
+     "exposedPx": 1113,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-11",
+     "class": "open",
+     "wave": [
+      2.26,
+      196.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-08-03",
+     "class": "calm",
+     "wave": [
+      0.23,
+      188.0,
+      2.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.041)"
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.22,
+      350.0,
+      4.3
+     ],
+     "beachFoam": 0.052,
+     "exposedFoam": 0.122,
+     "exposedPx": 703,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.18,
+      353.0,
+      2.9
+     ],
+     "beachFoam": 0.049,
+     "exposedFoam": 0.076,
+     "exposedPx": 725,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      1.26,
+      203.0,
+      6.3
+     ],
+     "beachFoam": 0.269,
+     "exposedFoam": 0.211,
+     "exposedPx": 1008,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-12-07",
+     "class": "open",
+     "wave": [
+      1.29,
+      170.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-03-14",
+     "class": "open",
+     "wave": [
+      1.25,
+      170.0,
+      5.2
+     ],
+     "beachFoam": 0.196,
+     "exposedFoam": 0.241,
+     "exposedPx": 1176,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-22",
+     "class": "calm",
+     "wave": [
+      0.2,
+      190.0,
+      2.0
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.044)"
+    },
+    {
+     "day": "2025-11-17",
+     "class": "open",
+     "wave": [
+      1.3,
+      169.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.32,
+      177.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-08",
+     "class": "open",
+     "wave": [
+      3.26,
+      204.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-20",
+     "class": "open",
+     "wave": [
+      2.26,
+      190.0,
+      5.7
+     ],
+     "beachFoam": 0.577,
+     "exposedFoam": 0.465,
+     "exposedPx": 1069,
+     "beachPx": 286,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-03-27",
+     "class": "open",
+     "wave": [
+      2.06,
+      188.0,
+      5.7
+     ],
+     "beachFoam": 0.619,
+     "exposedFoam": 0.432,
+     "exposedPx": 1074,
+     "beachPx": 286,
+     "thr": 0.0433
+    },
+    {
+     "day": "2026-06-15",
+     "class": "calm",
+     "wave": [
+      0.17,
+      341.0,
+      3.2
+     ],
+     "beachFoam": 0.077,
+     "exposedFoam": 0.179,
+     "exposedPx": 653,
+     "beachPx": 286,
+     "thr": 0.0414
+    }
+   ]
+  },
+  {
+   "id": 61,
+   "region": "attica-east-attica-mainland",
+   "name": "Τσονίμα",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.18,
+      184.0,
+      4.3
+     ],
+     "beachFoam": 0.09,
+     "exposedFoam": 0.378,
+     "exposedPx": 357,
+     "beachPx": 310,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.06,
+      57.0,
+      3.9
+     ],
+     "beachFoam": 0.061,
+     "exposedFoam": 0.471,
+     "exposedPx": 622,
+     "beachPx": 310,
+     "thr": 0.0406
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.12,
+      51.0,
+      1.7
+     ],
+     "beachFoam": 0.032,
+     "exposedFoam": 0.447,
+     "exposedPx": 589,
+     "beachPx": 310,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.08,
+      67.0,
+      4.3
+     ],
+     "beachFoam": 0.065,
+     "exposedFoam": 0.354,
+     "exposedPx": 684,
+     "beachPx": 310,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-21",
+     "class": "calm",
+     "wave": [
+      0.19,
+      192.0,
+      4.7
+     ],
+     "beachFoam": 0.061,
+     "exposedFoam": 0.238,
+     "exposedPx": 341,
+     "beachPx": 310,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.12,
+      30.0,
+      1.8
+     ],
+     "beachFoam": 0.1,
+     "exposedFoam": 0.422,
+     "exposedPx": 431,
+     "beachPx": 310,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 1062,
+   "region": "ionian-islands-kefalonia",
+   "name": "Αμίδι",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2023-07-22",
+     "class": "calm",
+     "wave": [
+      0.21,
+      276.0,
+      3.9
+     ],
+     "beachFoam": 0.096,
+     "exposedFoam": 0.036,
+     "exposedPx": 56,
+     "beachPx": 228,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-13",
+     "class": "calm",
+     "wave": [
+      0.21,
+      321.0,
+      3.6
+     ],
+     "beachFoam": 0.004,
+     "exposedFoam": 0.0,
+     "exposedPx": 89,
+     "beachPx": 228,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-07-21",
+     "class": "calm",
+     "wave": [
+      0.24,
+      276.0,
+      3.9
+     ],
+     "beachFoam": 0.044,
+     "exposedFoam": 0.071,
+     "exposedPx": 56,
+     "beachPx": 228,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-16",
+     "class": "calm",
+     "wave": [
+      0.23,
+      279.0,
+      3.9
+     ],
+     "beachFoam": 0.039,
+     "exposedFoam": 0.0,
+     "exposedPx": 63,
+     "beachPx": 228,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-21",
+     "class": "calm",
+     "wave": [
+      0.16,
+      264.0,
+      3.9
+     ],
+     "beachFoam": 0.026,
+     "exposedFoam": null,
+     "exposedPx": 13,
+     "beachPx": 228,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-02",
+     "class": "calm",
+     "wave": [
+      0.2,
+      33.0,
+      2.0
+     ],
+     "beachFoam": 0.026,
+     "exposedFoam": 0.032,
+     "exposedPx": 345,
+     "beachPx": 228,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 2141,
+   "region": "south-aegean-syros",
+   "name": "Μέγας Λάκος",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 5,
+    "calmFoamDays": 1,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-02-19",
+     "class": "calm",
+     "wave": [
+      0.19,
+      17.0,
+      2.4
+     ],
+     "beachFoam": 0.144,
+     "exposedFoam": 0.223,
+     "exposedPx": 699,
+     "beachPx": 443,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-26",
+     "class": "calm",
+     "wave": [
+      0.22,
+      227.0,
+      6.9
+     ],
+     "beachFoam": 0.185,
+     "exposedFoam": 0.234,
+     "exposedPx": 757,
+     "beachPx": 443,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-04-05",
+     "class": "open",
+     "wave": [
+      1.06,
+      270.0,
+      4.7
+     ],
+     "beachFoam": 0.348,
+     "exposedFoam": 0.35,
+     "exposedPx": 695,
+     "beachPx": 443,
+     "thr": 0.0407
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.09,
+      319.0,
+      1.7
+     ],
+     "beachFoam": 0.187,
+     "exposedFoam": 0.371,
+     "exposedPx": 776,
+     "beachPx": 443,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-11-26",
+     "class": "open",
+     "wave": [
+      2.24,
+      281.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-05",
+     "class": "open",
+     "wave": [
+      0.95,
+      251.0,
+      4.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-25",
+     "class": "open",
+     "wave": [
+      1.57,
+      230.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-05-04",
+     "class": "open",
+     "wave": [
+      1.01,
+      266.0,
+      4.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.056)"
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.1,
+      284.0,
+      2.2
+     ],
+     "beachFoam": 0.181,
+     "exposedFoam": 0.257,
+     "exposedPx": 797,
+     "beachPx": 443,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-12-10",
+     "class": "open",
+     "wave": [
+      0.8,
+      227.0,
+      5.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-03-10",
+     "class": "calm",
+     "wave": [
+      0.16,
+      233.0,
+      2.0
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.15,
+      322.0,
+      2.0
+     ],
+     "beachFoam": 0.226,
+     "exposedFoam": 0.372,
+     "exposedPx": 775,
+     "beachPx": 443,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-11-27",
+     "class": "open",
+     "wave": [
+      1.05,
+      218.0,
+      7.6
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-09",
+     "class": "open",
+     "wave": [
+      1.05,
+      291.0,
+      4.7
+     ],
+     "beachFoam": 0.165,
+     "exposedFoam": 0.215,
+     "exposedPx": 777,
+     "beachPx": 443,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 1662,
+   "region": "south-aegean-amorgos",
+   "name": "Λεβρωσός",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.23,
+      325.0,
+      2.4
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.058,
+     "exposedPx": 589,
+     "beachPx": 233,
+     "thr": 0.0569
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.16,
+      337.0,
+      2.0
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.14,
+     "exposedPx": 541,
+     "beachPx": 233,
+     "thr": 0.0541
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.2,
+      339.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.041)"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.16,
+      350.0,
+      2.9
+     ],
+     "beachFoam": 0.06,
+     "exposedFoam": 0.002,
+     "exposedPx": 467,
+     "beachPx": 233,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.16,
+      290.0,
+      4.3
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.021,
+     "exposedPx": 768,
+     "beachPx": 233,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-31",
+     "class": "calm",
+     "wave": [
+      0.18,
+      351.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.019,
+     "exposedPx": 466,
+     "beachPx": 233,
+     "thr": 0.0563
+    }
+   ]
+  },
+  {
+   "id": 1669,
+   "region": "south-aegean-amorgos",
+   "name": "Ψιλή Άμμος",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.23,
+      325.0,
+      2.4
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.068,
+     "exposedPx": 865,
+     "beachPx": 258,
+     "thr": 0.0562
+    },
+    {
+     "day": "2023-03-28",
+     "class": "open",
+     "wave": [
+      1.14,
+      264.0,
+      5.7
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.172,
+     "exposedPx": 1049,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.16,
+      337.0,
+      2.0
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.187,
+     "exposedPx": 779,
+     "beachPx": 258,
+     "thr": 0.0541
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.2,
+      339.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.044)"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.16,
+      350.0,
+      2.9
+     ],
+     "beachFoam": 0.047,
+     "exposedFoam": 0.002,
+     "exposedPx": 600,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-31",
+     "class": "open",
+     "wave": [
+      1.81,
+      254.0,
+      5.7
+     ],
+     "beachFoam": 0.594,
+     "exposedFoam": 0.13,
+     "exposedPx": 732,
+     "beachPx": 249,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.16,
+      290.0,
+      4.3
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.021,
+     "exposedPx": 1092,
+     "beachPx": 258,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-31",
+     "class": "calm",
+     "wave": [
+      0.18,
+      351.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.035,
+     "exposedPx": 597,
+     "beachPx": 258,
+     "thr": 0.0556
+    }
+   ]
+  },
+  {
+   "id": 1829,
+   "region": "south-aegean-kea",
+   "name": "Σπαθί",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.1,
+      188.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.060)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.09,
+      32.0,
+      3.6
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.027,
+     "exposedPx": 655,
+     "beachPx": 299,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.11,
+      50.0,
+      1.7
+     ],
+     "beachFoam": 0.003,
+     "exposedFoam": 0.023,
+     "exposedPx": 841,
+     "beachPx": 299,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.15,
+      32.0,
+      4.3
+     ],
+     "beachFoam": 0.07,
+     "exposedFoam": 0.376,
+     "exposedPx": 655,
+     "beachPx": 299,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-21",
+     "class": "calm",
+     "wave": [
+      0.18,
+      220.0,
+      4.7
+     ],
+     "beachFoam": 0.017,
+     "exposedFoam": 0.109,
+     "exposedPx": 329,
+     "beachPx": 299,
+     "thr": 0.0417
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.18,
+      24.0,
+      4.3
+     ],
+     "beachFoam": 0.03,
+     "exposedFoam": 0.032,
+     "exposedPx": 501,
+     "beachPx": 299,
+     "thr": 0.0583
+    }
+   ]
+  },
+  {
+   "id": 2226,
+   "region": "south-aegean-agathonisi",
+   "name": "Γαδουρόλακκος",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.19,
+      328.0,
+      2.2
+     ],
+     "beachFoam": 0.028,
+     "exposedFoam": 0.02,
+     "exposedPx": 202,
+     "beachPx": 143,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.18,
+      268.0,
+      3.2
+     ],
+     "beachFoam": 0.143,
+     "exposedFoam": 0.111,
+     "exposedPx": 964,
+     "beachPx": 322,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-08-04",
+     "class": "calm",
+     "wave": [
+      0.24,
+      317.0,
+      3.2
+     ],
+     "beachFoam": 0.112,
+     "exposedFoam": 0.067,
+     "exposedPx": 505,
+     "beachPx": 322,
+     "thr": 0.0536
+    },
+    {
+     "day": "2024-08-19",
+     "class": "calm",
+     "wave": [
+      0.23,
+      298.0,
+      4.3
+     ],
+     "beachFoam": 0.106,
+     "exposedFoam": 0.086,
+     "exposedPx": 643,
+     "beachPx": 322,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.11,
+      312.0,
+      2.4
+     ],
+     "beachFoam": 0.152,
+     "exposedFoam": 0.099,
+     "exposedPx": 546,
+     "beachPx": 322,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-19",
+     "class": "calm",
+     "wave": [
+      0.13,
+      311.0,
+      1.4
+     ],
+     "beachFoam": 0.115,
+     "exposedFoam": 0.05,
+     "exposedPx": 585,
+     "beachPx": 322,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 1668,
+   "region": "south-aegean-amorgos",
+   "name": "Χόχλακας",
+   "summary": {
+    "openDays": 2,
+    "openFoamDays": 1,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.23,
+      325.0,
+      2.4
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.073,
+     "exposedPx": 850,
+     "beachPx": 240,
+     "thr": 0.0554
+    },
+    {
+     "day": "2023-03-28",
+     "class": "open",
+     "wave": [
+      1.14,
+      264.0,
+      5.7
+     ],
+     "beachFoam": 0.013,
+     "exposedFoam": 0.171,
+     "exposedPx": 989,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.16,
+      337.0,
+      2.0
+     ],
+     "beachFoam": 0.008,
+     "exposedFoam": 0.187,
+     "exposedPx": 780,
+     "beachPx": 240,
+     "thr": 0.0542
+    },
+    {
+     "day": "2024-06-05",
+     "class": "calm",
+     "wave": [
+      0.2,
+      339.0,
+      2.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.043)"
+    },
+    {
+     "day": "2024-10-03",
+     "class": "calm",
+     "wave": [
+      0.16,
+      350.0,
+      2.9
+     ],
+     "beachFoam": 0.058,
+     "exposedFoam": 0.002,
+     "exposedPx": 614,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-31",
+     "class": "open",
+     "wave": [
+      1.81,
+      254.0,
+      5.7
+     ],
+     "beachFoam": 0.275,
+     "exposedFoam": 0.134,
+     "exposedPx": 689,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-06",
+     "class": "calm",
+     "wave": [
+      0.16,
+      290.0,
+      4.3
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.023,
+     "exposedPx": 1045,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-05-31",
+     "class": "calm",
+     "wave": [
+      0.18,
+      351.0,
+      2.9
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.036,
+     "exposedPx": 612,
+     "beachPx": 240,
+     "thr": 0.055
+    }
+   ]
+  },
+  {
+   "id": 611,
+   "region": "crete-gavdos",
+   "name": "Τρυπητή",
+   "summary": {
+    "openDays": 4,
+    "openFoamDays": 3,
+    "calmDays": 3,
+    "calmFoamDays": 0,
+    "glintSkipped": 4
+   },
+   "days": [
+    {
+     "day": "2022-01-30",
+     "class": "open",
+     "wave": [
+      1.29,
+      211.0,
+      10.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-11-21",
+     "class": "open",
+     "wave": [
+      0.98,
+      230.0,
+      7.6
+     ],
+     "beachFoam": 0.053,
+     "exposedFoam": 0.165,
+     "exposedPx": 486,
+     "beachPx": 243,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-12-01",
+     "class": "open",
+     "wave": [
+      1.0,
+      215.0,
+      6.9
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-01-10",
+     "class": "open",
+     "wave": [
+      1.13,
+      212.0,
+      4.7
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-01-20",
+     "class": "open",
+     "wave": [
+      1.3,
+      197.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-03-25",
+     "class": "open",
+     "wave": [
+      0.88,
+      239.0,
+      6.3
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-08-07",
+     "class": "calm",
+     "wave": [
+      0.18,
+      281.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.069)"
+    },
+    {
+     "day": "2024-12-10",
+     "class": "open",
+     "wave": [
+      0.86,
+      200.0,
+      5.2
+     ],
+     "beachFoam": 0.342,
+     "exposedFoam": 0.208,
+     "exposedPx": 741,
+     "beachPx": 240,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-03-27",
+     "class": "open",
+     "wave": [
+      1.9,
+      118.0,
+      5.7
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.048)"
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.17,
+      359.0,
+      4.3
+     ],
+     "beachFoam": 0.053,
+     "exposedFoam": 0.087,
+     "exposedPx": 356,
+     "beachPx": 243,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-13",
+     "class": "calm",
+     "wave": [
+      0.14,
+      358.0,
+      2.2
+     ],
+     "beachFoam": 0.074,
+     "exposedFoam": 0.09,
+     "exposedPx": 346,
+     "beachPx": 243,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-04",
+     "class": "open",
+     "wave": [
+      1.04,
+      202.0,
+      5.2
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-01-24",
+     "class": "open",
+     "wave": [
+      1.14,
+      224.0,
+      9.2
+     ],
+     "beachFoam": 0.496,
+     "exposedFoam": 0.683,
+     "exposedPx": 656,
+     "beachPx": 238,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-03-15",
+     "class": "open",
+     "wave": [
+      1.2,
+      100.0,
+      10.2
+     ],
+     "beachFoam": 0.592,
+     "exposedFoam": 0.284,
+     "exposedPx": 292,
+     "beachPx": 240,
+     "thr": 0.0407
+    },
+    {
+     "day": "2026-04-04",
+     "class": "open",
+     "wave": [
+      1.22,
+      244.0,
+      8.4
+     ],
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-07-20",
+     "class": "calm",
+     "wave": [
+      0.15,
+      314.0,
+      3.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.108)"
+    },
+    {
+     "day": "2026-07-28",
+     "class": "calm",
+     "wave": [
+      0.23,
+      287.0,
+      5.2
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.067)"
+    },
+    {
+     "day": "2026-09-06",
+     "class": "calm",
+     "wave": [
+      0.2,
+      4.0,
+      2.9
+     ],
+     "beachFoam": 0.021,
+     "exposedFoam": 0.48,
+     "exposedPx": 404,
+     "beachPx": 243,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 543,
+   "region": "crete-crete-chania",
+   "name": "Μένιες (Δίκτυννα)",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 1,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.21,
+      38.0,
+      3.6
+     ],
+     "beachFoam": 0.075,
+     "exposedFoam": 0.615,
+     "exposedPx": 592,
+     "beachPx": 281,
+     "thr": 0.054
+    },
+    {
+     "day": "2024-08-07",
+     "class": "calm",
+     "wave": [
+      0.14,
+      7.0,
+      3.2
+     ],
+     "beachFoam": 0.06,
+     "exposedFoam": 0.566,
+     "exposedPx": 488,
+     "beachPx": 281,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.13,
+      10.0,
+      4.7
+     ],
+     "beachFoam": 0.153,
+     "exposedFoam": 0.082,
+     "exposedPx": 502,
+     "beachPx": 281,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.13,
+      21.0,
+      3.9
+     ],
+     "beachFoam": 0.146,
+     "exposedFoam": 0.106,
+     "exposedPx": 521,
+     "beachPx": 281,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-28",
+     "class": "calm",
+     "wave": [
+      0.16,
+      324.0,
+      5.2
+     ],
+     "beachFoam": 0.32,
+     "exposedFoam": 0.694,
+     "exposedPx": 36,
+     "beachPx": 281,
+     "thr": 0.0509
+    }
+   ]
+  },
+  {
+   "id": 2501,
+   "region": "south-aegean-marathi",
+   "name": "Τηγανάκια",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 6,
+    "calmFoamDays": 0,
+    "glintSkipped": 0
+   },
+   "days": [
+    {
+     "day": "2022-05-17",
+     "class": "calm",
+     "wave": [
+      0.16,
+      344.0,
+      2.0
+     ],
+     "beachFoam": 0.0,
+     "exposedFoam": 0.0,
+     "exposedPx": 232,
+     "beachPx": 136,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-26",
+     "class": "calm",
+     "wave": [
+      0.15,
+      17.0,
+      2.0
+     ],
+     "beachFoam": 0.109,
+     "exposedFoam": 0.081,
+     "exposedPx": 1252,
+     "beachPx": 523,
+     "thr": 0.0531
+    },
+    {
+     "day": "2023-08-05",
+     "class": "calm",
+     "wave": [
+      0.06,
+      317.0,
+      3.2
+     ],
+     "beachFoam": 0.099,
+     "exposedFoam": 0.066,
+     "exposedPx": 1154,
+     "beachPx": 523,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-08-04",
+     "class": "calm",
+     "wave": [
+      0.18,
+      345.0,
+      2.0
+     ],
+     "beachFoam": 0.088,
+     "exposedFoam": 0.056,
+     "exposedPx": 1153,
+     "beachPx": 523,
+     "thr": 0.0424
+    },
+    {
+     "day": "2024-08-19",
+     "class": "calm",
+     "wave": [
+      0.14,
+      342.0,
+      1.8
+     ],
+     "beachFoam": 0.086,
+     "exposedFoam": 0.079,
+     "exposedPx": 1051,
+     "beachPx": 523,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-19",
+     "class": "calm",
+     "wave": [
+      0.03,
+      325.0,
+      1.2
+     ],
+     "beachFoam": 0.119,
+     "exposedFoam": 0.025,
+     "exposedPx": 1133,
+     "beachPx": 523,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 59,
+   "region": "attica-east-attica-mainland",
+   "name": "Καλοπήγαδο",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-05-25",
+     "class": "calm",
+     "wave": [
+      0.18,
+      184.0,
+      4.3
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.054)"
+    },
+    {
+     "day": "2023-09-22",
+     "class": "calm",
+     "wave": [
+      0.06,
+      57.0,
+      3.9
+     ],
+     "beachFoam": 0.075,
+     "exposedFoam": 0.363,
+     "exposedPx": 700,
+     "beachPx": 268,
+     "thr": 0.0402
+    },
+    {
+     "day": "2024-09-26",
+     "class": "calm",
+     "wave": [
+      0.12,
+      51.0,
+      1.7
+     ],
+     "beachFoam": 0.037,
+     "exposedFoam": 0.316,
+     "exposedPx": 680,
+     "beachPx": 268,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "class": "calm",
+     "wave": [
+      0.08,
+      67.0,
+      4.3
+     ],
+     "beachFoam": 0.179,
+     "exposedFoam": 0.402,
+     "exposedPx": 733,
+     "beachPx": 268,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-21",
+     "class": "calm",
+     "wave": [
+      0.19,
+      192.0,
+      4.7
+     ],
+     "beachFoam": 0.075,
+     "exposedFoam": 0.158,
+     "exposedPx": 215,
+     "beachPx": 268,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-29",
+     "class": "calm",
+     "wave": [
+      0.12,
+      30.0,
+      1.8
+     ],
+     "beachFoam": 0.104,
+     "exposedFoam": 0.325,
+     "exposedPx": 545,
+     "beachPx": 268,
+     "thr": 0.04
+    }
+   ]
+  },
+  {
+   "id": 1069,
+   "region": "ionian-islands-kefalonia",
+   "name": "Κιμηλιά",
+   "summary": {
+    "openDays": 0,
+    "openFoamDays": 0,
+    "calmDays": 5,
+    "calmFoamDays": 0,
+    "glintSkipped": 1
+   },
+   "days": [
+    {
+     "day": "2022-09-08",
+     "class": "calm",
+     "wave": [
+      0.23,
+      267.0,
+      4.3
+     ],
+     "beachFoam": 0.009,
+     "exposedFoam": 0.0,
+     "exposedPx": 300,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-22",
+     "class": "calm",
+     "wave": [
+      0.23,
+      267.0,
+      3.9
+     ],
+     "beachFoam": 0.072,
+     "exposedFoam": 0.01,
+     "exposedPx": 300,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-13",
+     "class": "calm",
+     "wave": [
+      0.23,
+      311.0,
+      3.6
+     ],
+     "beachFoam": 0.032,
+     "exposedFoam": 0.009,
+     "exposedPx": 777,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-21",
+     "class": "calm",
+     "wave": [
+      0.19,
+      253.0,
+      3.9
+     ],
+     "beachFoam": 0.081,
+     "exposedFoam": 0.058,
+     "exposedPx": 189,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-02",
+     "class": "calm",
+     "wave": [
+      0.15,
+      321.0,
+      3.9
+     ],
+     "beachFoam": 0.027,
+     "exposedFoam": 0.013,
+     "exposedPx": 840,
+     "beachPx": 222,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-03",
+     "class": "calm",
+     "wave": [
+      0.17,
+      283.0,
+      2.9
+     ],
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.068)"
+    }
+   ]
+  }
+ ]
+}
