@@ -32,8 +32,6 @@ const ledgerFile = path.join(rootDir, 'netlify', 'functions', 'lib', 'qualityLed
 /** Τα μονοπάτια που, αν αλλάξουν, αλλάζουν και το ημερολόγιο. */
 const INPUTS = ['reports', 'public/data/beaches'];
 
-const isoDay = (value) => (value ? String(value).slice(0, 10) : '');
-
 /** Η μέρα του τελευταίου commit που άγγιξε τη διαδρομή, ή '' αν το git δεν ξέρει. */
 const lastCommitDay = (target) => {
   try {
@@ -42,7 +40,11 @@ const lastCommitDay = (target) => {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     });
-    return isoDay(out.trim());
+    const at = out.trim();
+    // Σε UTC, όπως το generatedAt του buildQualityLedger (new Date().toISOString()). Με τη μέρα της
+    // τοπικής ώρας του commit, ένα commit 00:00-03:00 ώρα Ελλάδας «φαινόταν» μία μέρα μετά από ένα
+    // ημερολόγιο χτισμένο το ίδιο λεπτό, και η πύλη έπεφτε ώσπου να ξαναχτιστεί την επόμενη μέρα UTC.
+    return at ? new Date(at).toISOString().slice(0, 10) : '';
   } catch {
     return '';
   }
