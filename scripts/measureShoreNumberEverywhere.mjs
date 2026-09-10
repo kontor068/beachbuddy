@@ -295,8 +295,10 @@ const totals = {
   calmByJumpComfort: {},
   singleJumpWarnings: [],
   calmNumberRoughPin: 0,
+  calmNumberRoughPinLoose: 0,
   changedTone: {},
   changedWithRoughPin: 0,
+  changedWithRoughPinLoose: 0,
   modelSpoke: 0,
   examples: [],
 };
@@ -317,9 +319,17 @@ for (const result of results) {
     totals.drops.push(drop);
     // Η ζώνη κινείται μόνο όταν ο καιρός τυχαίνει να είναι πάνω στα κατώφλια. Η σχέση αριθμού και
     // πινέζας ισχύει ΚΑΘΕ μέρα, γι' αυτό μετριέται σε ΟΛΕΣ όσες αλλάζουν, όχι μόνο σε όσες αλλάζουν ζώνη.
-    const pinCalmNow = row.tone === 'ideal' || row.tone === 'good';
+    // ⚠️ ΔΙΟΡΘΩΘΗΚΕ 10/09/2026 — ΗΤΑΝ ΤΑΥΤΟΛΟΓΙΑ. Έγραφε `tone === 'ideal' || tone === 'good'`,
+    // λέξεις που η resolveConditionTone ΔΕΝ επιστρέφει ΠΟΤΕ (γυρίζει 'red'|'orange'|'yellow'|
+    // 'blue'). Άρα η «ήρεμη πινέζα» ήταν πάντα ψευδής και ο μετρητής μετρούσε ΟΛΕΣ τις παραλίες
+    // που άλλαξαν, όχι όσες διαφωνούν με το χρώμα τους. Εντοπίστηκε 23/08 (AXIOLOGISI §2.2) και
+    // έμεινε. Μετριούνται πλέον ΚΑΙ ΟΙ ΔΥΟ αναγνώσεις, ώστε να μη χρειάζεται απόφαση για να
+    // δουλέψει η μέτρηση: αυστηρή = μόνο μπλε (η πινέζα υπόσχεται ηρεμία), χαλαρή = μπλε+κίτρινη.
+    const pinCalmNow = row.tone === 'blue';
+    const pinCalmLooseNow = row.tone === 'blue' || row.tone === 'yellow';
     totals.changedTone[row.tone ?? 'άγνωστο'] = (totals.changedTone[row.tone ?? 'άγνωστο'] ?? 0) + 1;
     if (!pinCalmNow) totals.changedWithRoughPin += 1;
+    if (!pinCalmLooseNow) totals.changedWithRoughPinLoose += 1;
     totals.byExposure[level].changed += 1;
     totals.byExposure[level].drops.push(drop);
 
@@ -331,7 +341,8 @@ for (const result of results) {
       if (after === 'ήρεμα' && before !== 'ήρεμα') {
         totals.intoCalm += 1;
         // ΤΟ ΚΡΙΣΙΜΟ: αν η πινέζα δεν είναι ήδη ήρεμη, ο αριθμός θα λέει άλλο από το χρώμα δίπλα του.
-        const pinCalm = row.tone === 'ideal' || row.tone === 'good';
+        const pinCalm = row.tone === 'blue';
+        const pinCalmLoose = row.tone === 'blue' || row.tone === 'yellow';
         // ΤΟ ΔΙΠΛΟ ΑΛΜΑ ΞΕΧΩΡΙΣΤΑ ΑΠΟ ΤΟ ΜΟΝΟ, ΚΑΙ ΤΙ ΛΕΕΙ Η ΕΤΥΜΗΓΟΡΙΑ ΣΕ ΚΑΘΕ ΕΝΑ (§Γ48).
         // Ο φράχτης πιάνει ΜΟΝΟ το διπλό. Οι μονές αφέθηκαν επειδή «εκεί η ετυμηγορία είναι
         // τυπικά καλή» — ισχυρισμός που πρέπει να ΜΕΤΡΙΕΤΑΙ, όχι να επαναλαμβάνεται.
@@ -346,6 +357,7 @@ for (const result of results) {
         }
         totals.calmTone[row.tone ?? 'άγνωστο'] = (totals.calmTone[row.tone ?? 'άγνωστο'] ?? 0) + 1;
         if (!pinCalm) totals.calmNumberRoughPin += 1;
+        if (!pinCalmLoose) totals.calmNumberRoughPinLoose += 1;
         if (totals.examples.length < 15) {
           totals.examples.push({
             region: result.regionId, name: row.name, exposure: row.exposureLevel,
@@ -378,7 +390,8 @@ for (const [move, count] of moves) console.log(`  ${move}: ${count}`);
 console.log(`  ➜ ΠΕΡΝΑΝΕ ΣΕ «ήρεμα» ΕΝΩ ΔΕΝ ΗΤΑΝ: ${totals.intoCalm} (${pct(totals.intoCalm, totals.beaches)}) — αυτό είναι το ρίσκο.`);
 console.log('\n── ΤΟ ΧΡΩΜΑ ΤΗΣ ΠΙΝΕΖΑΣ ΣΕ ΑΥΤΕΣ ─────────────────────────────────────');
 console.log(`  ${Object.entries(totals.calmTone).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—'}`);
-console.log(`  ➜ ΑΡΙΘΜΟΣ «ήρεμα» ΜΕ ΠΙΝΕΖΑ ΠΟΥ ΔΕΝ ΕΙΝΑΙ: ${totals.calmNumberRoughPin} (${pct(totals.calmNumberRoughPin, totals.intoCalm)} αυτών, ${pct(totals.calmNumberRoughPin, totals.beaches)} του συνόλου)`);
+console.log(`  ➜ ΑΡΙΘΜΟΣ «ήρεμα» ΜΕ ΠΙΝΕΖΑ ΠΟΥ ΔΕΝ ΕΙΝΑΙ ΜΠΛΕ: ${totals.calmNumberRoughPin} (${pct(totals.calmNumberRoughPin, totals.intoCalm)} αυτών, ${pct(totals.calmNumberRoughPin, totals.beaches)} του συνόλου)`);
+console.log(`  ➜   το ίδιο με χαλαρότερο ορισμό (μπλε+κίτρινη = ήρεμη): ${totals.calmNumberRoughPinLoose} — ανοιχτή απόφαση Μίλτου, ποιος ορισμός μετράει`);
 
 // ΔΙΠΛΟ vs ΜΟΝΟ ΑΛΜΑ, ΑΝΑ ΕΤΥΜΗΓΟΡΙΑ (§Γ48). Ο φράχτης πιάνει ΜΟΝΟ το διπλό· αν μια μονή
 // πτώση φέρει «μην κολυμπήσεις», η αντίφαση υπάρχει κι εκεί και ο φράχτης είναι πολύ στενός.
@@ -420,8 +433,10 @@ writeFileSync(reportPath, `${JSON.stringify({
   intoCalm: totals.intoCalm,
   calmTone: totals.calmTone,
   calmNumberRoughPin: totals.calmNumberRoughPin,
+  calmNumberRoughPinLoose: totals.calmNumberRoughPinLoose,
   changedTone: totals.changedTone,
   changedWithRoughPin: totals.changedWithRoughPin,
+  changedWithRoughPinLoose: totals.changedWithRoughPinLoose,
   examples: totals.examples,
 }, null, 2)}\n`);
 console.log(`\nΑναφορά: ${path.relative(root, reportPath)}`);
