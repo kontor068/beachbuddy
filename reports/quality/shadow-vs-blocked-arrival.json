@@ -1,200 +1,18 @@
 {
   "summary": {
-    "generatedAt": "2026-09-10T11:27:01.713Z",
+    "generatedAt": "2026-09-10T12:27:48.872Z",
     "source": "reports/quality/blocked-direction-wave.json (16/08/2026, ίδιες γραμμές)",
     "question": "Πόσες από τις παραλίες όπου το κύμα μετρήθηκε να φτάνει από «κλειστή» μεριά παίρνουν σήμερα βαθιά σκιά K_d<0,5;",
     "rows": 44,
     "missingProfile": 0,
     "discounted": 44,
-    "deepShadow": 23,
-    "deepShadowMeasuredAbove05PrintedBelow03": 19,
+    "deepShadow": 6,
+    "deepShadowMeasuredAbove05PrintedBelow03": 2,
     "byLand": {
       "atLeast8km": 1,
-      "under8km": 22
+      "under8km": 5
     },
     "worst": [
-      {
-        "id": 2191,
-        "region": "south-aegean-donousa",
-        "name": "Λιμενάρι",
-        "landKm": 2.8,
-        "waveDirDeg": 344,
-        "measuredM": 1.88,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.19,
-        "shoreWithEdgeFloorM": 0.94,
-        "deepShadow": true
-      },
-      {
-        "id": 1284,
-        "region": "north-aegean-psara",
-        "name": "Ψιλή",
-        "landKm": 1.8,
-        "waveDirDeg": 355,
-        "measuredM": 1.76,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.18,
-        "shoreWithEdgeFloorM": 0.88,
-        "deepShadow": true
-      },
-      {
-        "id": 1662,
-        "region": "south-aegean-amorgos",
-        "name": "Λεβρωσός",
-        "landKm": 1.3,
-        "waveDirDeg": 342,
-        "measuredM": 1.76,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.18,
-        "shoreWithEdgeFloorM": 0.88,
-        "deepShadow": true
-      },
-      {
-        "id": 1257,
-        "region": "north-aegean-chios",
-        "name": "Αποθήκα",
-        "landKm": 2.5,
-        "waveDirDeg": 341,
-        "measuredM": 1.64,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.16,
-        "shoreWithEdgeFloorM": 0.82,
-        "deepShadow": true
-      },
-      {
-        "id": 1668,
-        "region": "south-aegean-amorgos",
-        "name": "Χόχλακας",
-        "landKm": 1,
-        "waveDirDeg": 342,
-        "measuredM": 1.76,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.17,
-        "shoreM": 0.29,
-        "shoreWithEdgeFloorM": 0.88,
-        "deepShadow": true
-      },
-      {
-        "id": 2106,
-        "region": "south-aegean-sifnos",
-        "name": "Σάουρες",
-        "landKm": 4.5,
-        "waveDirDeg": 356,
-        "measuredM": 1.34,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.14,
-        "shoreWithEdgeFloorM": 0.67,
-        "deepShadow": true
-      },
-      {
-        "id": 543,
-        "region": "crete-crete-chania",
-        "name": "Μένιες (Δίκτυννα)",
-        "landKm": 0.8,
-        "waveDirDeg": 14,
-        "measuredM": 1.18,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.15,
-        "shoreM": 0.18,
-        "shoreWithEdgeFloorM": 0.59,
-        "deepShadow": true
-      },
-      {
-        "id": 1880,
-        "region": "south-aegean-kythnos",
-        "name": "Λαγκούση",
-        "landKm": 2.8,
-        "waveDirDeg": 18,
-        "measuredM": 1.08,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.11,
-        "shoreWithEdgeFloorM": 0.54,
-        "deepShadow": true
-      },
-      {
-        "id": 1864,
-        "region": "south-aegean-kythnos",
-        "name": "Αγκορίτσα",
-        "landKm": 2.3,
-        "waveDirDeg": 18,
-        "measuredM": 1.08,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.11,
-        "shoreWithEdgeFloorM": 0.54,
-        "deepShadow": true
-      },
-      {
-        "id": 611,
-        "region": "crete-gavdos",
-        "name": "Τρυπητή",
-        "landKm": 1,
-        "waveDirDeg": 6,
-        "measuredM": 1.08,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.13,
-        "shoreM": 0.14,
-        "shoreWithEdgeFloorM": 0.54,
-        "deepShadow": true
-      },
-      {
-        "id": 2501,
-        "region": "south-aegean-marathi",
-        "name": "Τηγανάκια",
-        "landKm": 0.8,
-        "waveDirDeg": 313,
-        "measuredM": 1.02,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.1,
-        "shoreWithEdgeFloorM": 0.51,
-        "deepShadow": true
-      },
-      {
-        "id": 2361,
-        "region": "south-aegean-leros",
-        "name": "Παραλία Λακκίου",
-        "landKm": 2.3,
-        "waveDirDeg": 309,
-        "measuredM": 0.94,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.09,
-        "shoreWithEdgeFloorM": 0.47,
-        "deepShadow": true
-      },
-      {
-        "id": 2363,
-        "region": "south-aegean-leros",
-        "name": "Κόκκινη παραλία",
-        "landKm": 2,
-        "waveDirDeg": 309,
-        "measuredM": 0.94,
-        "level": "protected",
-        "arrival": "grazing",
-        "kd": 0.1,
-        "shoreM": 0.09,
-        "shoreWithEdgeFloorM": 0.47,
-        "deepShadow": true
-      },
       {
         "id": 2231,
         "region": "south-aegean-astypalaia",
@@ -210,17 +28,73 @@
         "deepShadow": true
       },
       {
-        "id": 2226,
-        "region": "south-aegean-agathonisi",
-        "name": "Γαδουρόλακκος",
-        "landKm": 1.3,
-        "waveDirDeg": 293,
-        "measuredM": 0.8,
+        "id": 1071,
+        "region": "ionian-islands-kefalonia",
+        "name": "Παραλία Σκάλας",
+        "landKm": 2.5,
+        "waveDirDeg": 252,
+        "measuredM": 0.6,
+        "level": "protected",
+        "arrival": "grazing",
+        "kd": 0.17,
+        "shoreM": 0.1,
+        "shoreWithEdgeFloorM": 0.3,
+        "deepShadow": true
+      },
+      {
+        "id": 1446,
+        "region": "north-aegean-lemnos",
+        "name": "Άγιος Ιωάννης",
+        "landKm": 6.5,
+        "waveDirDeg": 357,
+        "measuredM": 0.4,
+        "level": "protected",
+        "arrival": "grazing",
+        "kd": 0.12,
+        "shoreM": 0.05,
+        "shoreWithEdgeFloorM": 0.2,
+        "deepShadow": true
+      },
+      {
+        "id": 1069,
+        "region": "ionian-islands-kefalonia",
+        "name": "Κιμηλιά",
+        "landKm": 0.5,
+        "waveDirDeg": 281,
+        "measuredM": 0.32,
         "level": "protected",
         "arrival": "grazing",
         "kd": 0.1,
-        "shoreM": 0.08,
-        "shoreWithEdgeFloorM": 0.4,
+        "shoreM": 0.03,
+        "shoreWithEdgeFloorM": 0.16,
+        "deepShadow": true
+      },
+      {
+        "id": 817,
+        "region": "east-macedonia-and-thrace-thasos",
+        "name": "Νότος",
+        "landKm": 6,
+        "waveDirDeg": 91,
+        "measuredM": 0.28,
+        "level": "protected",
+        "arrival": "grazing",
+        "kd": 0.11,
+        "shoreM": 0.03,
+        "shoreWithEdgeFloorM": 0.14,
+        "deepShadow": true
+      },
+      {
+        "id": 1062,
+        "region": "ionian-islands-kefalonia",
+        "name": "Αμίδι",
+        "landKm": 1.8,
+        "waveDirDeg": 292,
+        "measuredM": 0.26,
+        "level": "protected",
+        "arrival": "grazing",
+        "kd": 0.18,
+        "shoreM": 0.05,
+        "shoreWithEdgeFloorM": 0.13,
         "deepShadow": true
       }
     ]
@@ -333,10 +207,10 @@
       "measuredM": 1.34,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.14,
+      "kd": 0.5,
+      "shoreM": 0.67,
       "shoreWithEdgeFloorM": 0.67,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1701,
@@ -431,10 +305,10 @@
       "measuredM": 1.88,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.19,
+      "kd": 0.5,
+      "shoreM": 0.94,
       "shoreWithEdgeFloorM": 0.94,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1880,
@@ -445,10 +319,10 @@
       "measuredM": 1.08,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.11,
+      "kd": 0.5,
+      "shoreM": 0.54,
       "shoreWithEdgeFloorM": 0.54,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1848,
@@ -473,10 +347,10 @@
       "measuredM": 0.52,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.05,
+      "kd": 0.5,
+      "shoreM": 0.26,
       "shoreWithEdgeFloorM": 0.26,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1257,
@@ -487,10 +361,10 @@
       "measuredM": 1.64,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.16,
+      "kd": 0.5,
+      "shoreM": 0.82,
       "shoreWithEdgeFloorM": 0.82,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1891,
@@ -529,10 +403,10 @@
       "measuredM": 1.08,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.11,
+      "kd": 0.5,
+      "shoreM": 0.54,
       "shoreWithEdgeFloorM": 0.54,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 2361,
@@ -543,10 +417,10 @@
       "measuredM": 0.94,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.09,
+      "kd": 0.5,
+      "shoreM": 0.47,
       "shoreWithEdgeFloorM": 0.47,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 2148,
@@ -557,10 +431,10 @@
       "measuredM": 0.66,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.07,
+      "kd": 0.5,
+      "shoreM": 0.33,
       "shoreWithEdgeFloorM": 0.33,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 2363,
@@ -571,10 +445,10 @@
       "measuredM": 0.94,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.09,
+      "kd": 0.5,
+      "shoreM": 0.47,
       "shoreWithEdgeFloorM": 0.47,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 301,
@@ -599,10 +473,10 @@
       "measuredM": 0.74,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.16,
-      "shoreM": 0.12,
+      "kd": 0.5,
+      "shoreM": 0.37,
       "shoreWithEdgeFloorM": 0.37,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 2189,
@@ -641,10 +515,10 @@
       "measuredM": 1.76,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.18,
+      "kd": 0.5,
+      "shoreM": 0.88,
       "shoreWithEdgeFloorM": 0.88,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 61,
@@ -697,10 +571,10 @@
       "measuredM": 1.76,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.18,
+      "kd": 0.5,
+      "shoreM": 0.88,
       "shoreWithEdgeFloorM": 0.88,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1669,
@@ -739,10 +613,10 @@
       "measuredM": 0.8,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.08,
+      "kd": 0.5,
+      "shoreM": 0.4,
       "shoreWithEdgeFloorM": 0.4,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 1668,
@@ -753,10 +627,10 @@
       "measuredM": 1.76,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.17,
-      "shoreM": 0.29,
+      "kd": 0.5,
+      "shoreM": 0.88,
       "shoreWithEdgeFloorM": 0.88,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 611,
@@ -767,10 +641,10 @@
       "measuredM": 1.08,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.13,
-      "shoreM": 0.14,
+      "kd": 0.5,
+      "shoreM": 0.54,
       "shoreWithEdgeFloorM": 0.54,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 543,
@@ -781,10 +655,10 @@
       "measuredM": 1.18,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.15,
-      "shoreM": 0.18,
+      "kd": 0.5,
+      "shoreM": 0.59,
       "shoreWithEdgeFloorM": 0.59,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 2501,
@@ -795,10 +669,10 @@
       "measuredM": 1.02,
       "level": "protected",
       "arrival": "grazing",
-      "kd": 0.1,
-      "shoreM": 0.1,
+      "kd": 0.5,
+      "shoreM": 0.51,
       "shoreWithEdgeFloorM": 0.51,
-      "deepShadow": true
+      "deepShadow": false
     },
     {
       "id": 59,

@@ -1,0 +1,384 @@
+{
+  "generatedAt": "2026-09-10T12:22:50.394735+00:00",
+  "judge_dataset": "cmems_mod_med_wav_anfc_4.2km_PT1H-i",
+  "judge_timestep_utc": "2026-08-16T16:00",
+  "question": "Βλέπει και δεύτερο ανεξάρτητο μοντέλο κύμα εκεί που ο κώδικας δίνει βαθιά σκιά (K_d<0,5);",
+  "caveat": "Συμφωνία ≠ σωστό νούμερο στην ακτή. Με στεριά <8 χλμ. η σκιά μπορεί να είναι μικρότερη από το κελί των 4,2 χλμ.",
+  "summary": {
+    "candidates": 23,
+    "judged": 23,
+    "judgeSeesWaveGe05": 16,
+    "judgeSeesWaveGe05_landAtLeast8km": 0,
+    "judgeSeesWaveGe05_ourShoreBelow03": 16
+  },
+  "rows": [
+    {
+      "id": 2231,
+      "region": "south-aegean-astypalaia",
+      "name": "Άγιος Ιωάννης Ρίχτης",
+      "landKm": 8.3,
+      "ewam_m": 0.94,
+      "copernicus_m": 0.34,
+      "our_shore_m": 0.1,
+      "kd": 0.11,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 36.5208,
+        "lon": 26.375,
+        "distance_km": 3.37
+      }
+    },
+    {
+      "id": 1446,
+      "region": "north-aegean-lemnos",
+      "name": "Άγιος Ιωάννης",
+      "landKm": 6.5,
+      "ewam_m": 0.4,
+      "copernicus_m": 0.41,
+      "our_shore_m": 0.05,
+      "kd": 0.12,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 39.9375,
+        "lon": 25.0417,
+        "distance_km": 2.13
+      }
+    },
+    {
+      "id": 817,
+      "region": "east-macedonia-and-thrace-thasos",
+      "name": "Νότος",
+      "landKm": 6,
+      "ewam_m": 0.28,
+      "copernicus_m": 0.14,
+      "our_shore_m": 0.03,
+      "kd": 0.11,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 40.6042,
+        "lon": 24.5833,
+        "distance_km": 3.33
+      }
+    },
+    {
+      "id": 2106,
+      "region": "south-aegean-sifnos",
+      "name": "Σάουρες",
+      "landKm": 4.5,
+      "ewam_m": 1.34,
+      "copernicus_m": 1.42,
+      "our_shore_m": 0.14,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 36.9375,
+        "lon": 24.75,
+        "distance_km": 0.57
+      }
+    },
+    {
+      "id": 2191,
+      "region": "south-aegean-donousa",
+      "name": "Λιμενάρι",
+      "landKm": 2.8,
+      "ewam_m": 1.88,
+      "copernicus_m": 1.98,
+      "our_shore_m": 0.19,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.1042,
+        "lon": 25.8333,
+        "distance_km": 2.25
+      }
+    },
+    {
+      "id": 1880,
+      "region": "south-aegean-kythnos",
+      "name": "Λαγκούση",
+      "landKm": 2.8,
+      "ewam_m": 1.08,
+      "copernicus_m": 0.73,
+      "our_shore_m": 0.11,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.3958,
+        "lon": 24.4583,
+        "distance_km": 0.44
+      }
+    },
+    {
+      "id": 160,
+      "region": "attica-poros",
+      "name": "Μοναστήρι",
+      "landKm": 2.8,
+      "ewam_m": 0.52,
+      "copernicus_m": 0.65,
+      "our_shore_m": 0.05,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.5208,
+        "lon": 23.5417,
+        "distance_km": 5.47
+      }
+    },
+    {
+      "id": 1257,
+      "region": "north-aegean-chios",
+      "name": "Αποθήκα",
+      "landKm": 2.5,
+      "ewam_m": 1.64,
+      "copernicus_m": 1.38,
+      "our_shore_m": 0.16,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 38.2292,
+        "lon": 25.875,
+        "distance_km": 1.91
+      }
+    },
+    {
+      "id": 1071,
+      "region": "ionian-islands-kefalonia",
+      "name": "Παραλία Σκάλας",
+      "landKm": 2.5,
+      "ewam_m": 0.6,
+      "copernicus_m": 0.15,
+      "our_shore_m": 0.1,
+      "kd": 0.17,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 38.0625,
+        "lon": 20.8333,
+        "distance_km": 3.12
+      }
+    },
+    {
+      "id": 1864,
+      "region": "south-aegean-kythnos",
+      "name": "Αγκορίτσα",
+      "landKm": 2.3,
+      "ewam_m": 1.08,
+      "copernicus_m": 0.73,
+      "our_shore_m": 0.11,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.3958,
+        "lon": 24.4583,
+        "distance_km": 0.76
+      }
+    },
+    {
+      "id": 2361,
+      "region": "south-aegean-leros",
+      "name": "Παραλία Λακκίου",
+      "landKm": 2.3,
+      "ewam_m": 0.94,
+      "copernicus_m": 0.94,
+      "our_shore_m": 0.09,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.1042,
+        "lon": 26.7917,
+        "distance_km": 3.64
+      }
+    },
+    {
+      "id": 2148,
+      "region": "south-aegean-syros",
+      "name": "Φοίνικας",
+      "landKm": 2.3,
+      "ewam_m": 0.66,
+      "copernicus_m": 1.16,
+      "our_shore_m": 0.07,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.3958,
+        "lon": 24.8333,
+        "distance_km": 4.04
+      }
+    },
+    {
+      "id": 2363,
+      "region": "south-aegean-leros",
+      "name": "Κόκκινη παραλία",
+      "landKm": 2,
+      "ewam_m": 0.94,
+      "copernicus_m": 0.94,
+      "our_shore_m": 0.09,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.1042,
+        "lon": 26.7917,
+        "distance_km": 4.14
+      }
+    },
+    {
+      "id": 2662,
+      "region": "thessaly-skopelos",
+      "name": "Στάφυλος",
+      "landKm": 2,
+      "ewam_m": 0.74,
+      "copernicus_m": 0.5,
+      "our_shore_m": 0.12,
+      "kd": 0.16,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 39.0625,
+        "lon": 23.75,
+        "distance_km": 2.57
+      }
+    },
+    {
+      "id": 1284,
+      "region": "north-aegean-psara",
+      "name": "Ψιλή",
+      "landKm": 1.8,
+      "ewam_m": 1.76,
+      "copernicus_m": 1.55,
+      "our_shore_m": 0.18,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 38.5208,
+        "lon": 25.5,
+        "distance_km": 2.0
+      }
+    },
+    {
+      "id": 1062,
+      "region": "ionian-islands-kefalonia",
+      "name": "Αμίδι",
+      "landKm": 1.8,
+      "ewam_m": 0.26,
+      "copernicus_m": 0.18,
+      "our_shore_m": 0.05,
+      "kd": 0.18,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 38.3542,
+        "lon": 20.4583,
+        "distance_km": 1.81
+      }
+    },
+    {
+      "id": 1662,
+      "region": "south-aegean-amorgos",
+      "name": "Λεβρωσός",
+      "landKm": 1.3,
+      "ewam_m": 1.76,
+      "copernicus_m": 1.95,
+      "our_shore_m": 0.18,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 36.9375,
+        "lon": 25.9583,
+        "distance_km": 3.46
+      }
+    },
+    {
+      "id": 2226,
+      "region": "south-aegean-agathonisi",
+      "name": "Γαδουρόλακκος",
+      "landKm": 1.3,
+      "ewam_m": 0.8,
+      "copernicus_m": 0.77,
+      "our_shore_m": 0.08,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.4375,
+        "lon": 26.9583,
+        "distance_km": 1.87
+      }
+    },
+    {
+      "id": 1668,
+      "region": "south-aegean-amorgos",
+      "name": "Χόχλακας",
+      "landKm": 1,
+      "ewam_m": 1.76,
+      "copernicus_m": 1.95,
+      "our_shore_m": 0.29,
+      "kd": 0.17,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 36.9375,
+        "lon": 25.9583,
+        "distance_km": 3.31
+      }
+    },
+    {
+      "id": 611,
+      "region": "crete-gavdos",
+      "name": "Τρυπητή",
+      "landKm": 1,
+      "ewam_m": 1.08,
+      "copernicus_m": 0.53,
+      "our_shore_m": 0.14,
+      "kd": 0.13,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 34.8125,
+        "lon": 24.125,
+        "distance_km": 0.9
+      }
+    },
+    {
+      "id": 543,
+      "region": "crete-crete-chania",
+      "name": "Μένιες (Δίκτυννα)",
+      "landKm": 0.8,
+      "ewam_m": 1.18,
+      "copernicus_m": 1.3,
+      "our_shore_m": 0.18,
+      "kd": 0.15,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 35.6458,
+        "lon": 23.7917,
+        "distance_km": 3.0
+      }
+    },
+    {
+      "id": 2501,
+      "region": "south-aegean-marathi",
+      "name": "Τηγανάκια",
+      "landKm": 0.8,
+      "ewam_m": 1.02,
+      "copernicus_m": 0.64,
+      "our_shore_m": 0.1,
+      "kd": 0.1,
+      "judgeSeesWave": true,
+      "cell": {
+        "lat": 37.3542,
+        "lon": 26.7917,
+        "distance_km": 4.29
+      }
+    },
+    {
+      "id": 1069,
+      "region": "ionian-islands-kefalonia",
+      "name": "Κιμηλιά",
+      "landKm": 0.5,
+      "ewam_m": 0.32,
+      "copernicus_m": 0.27,
+      "our_shore_m": 0.03,
+      "kd": 0.1,
+      "judgeSeesWave": false,
+      "cell": {
+        "lat": 38.4792,
+        "lon": 20.5,
+        "distance_km": 5.5
+      }
+    }
+  ]
+}
