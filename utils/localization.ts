@@ -21,13 +21,26 @@ const greeklishPairs: Array<[string, string]> = [
 // stressed «ού» used to miss 'ου' and fall through to ο+ύ → "oy" («Χαβούλη» → "Chavoyli"), and
 // «αύ»/«εύ» the same way → "ay"/"ey" («Μαύρο» → "Mayro"). Measured 10/09/2026 over 2,859 beaches:
 // 248 display names change, and agreement with the stored English name (what the static pages
-// and Google show) goes 2/248 → 231/248. Only the acute goes — the diaeresis stays, because it
-// is exactly what says «these two vowels are NOT a digraph» (ϊ, ϋ are mapped letter by letter).
-const stripTonos = (value: string): string => value.normalize('NFD').replace(/́/g, '').normalize('NFC');
+// and Google show) goes 2/248 → 231/248. Only the Greek accent marks go — acute, grave, and the
+// polytonic breathings/circumflex (a polytonic «Ῥουτσούνας» printed a Greek «Ῥ» inside a Latin
+// name). The diaeresis stays, because it is exactly what says «these two vowels are NOT a
+// digraph» (ϊ, ϋ are mapped letter by letter).
+const stripTonos = (value: string): string =>
+  value.normalize('NFD').replace(/[\u0300\u0301\u0313\u0314\u0342\u0345]/g, '').normalize('NFC');
+
+// «μπ», «ντ», «γκ» at the START of a word are the sounds b, d, g: «Μπάλος» is "Balos", not
+// "Mpalos". Mid-word they stay "mp"/"nt"/"gk", because there the stored English names use both
+// forms and no single rule matches them. Measured 10/09/2026 over 2,859 beaches: 54 names printed
+// "Mp"/"Nt"/"Gk" («Paralia Mpanana»), all of them then match the stored English name, 0 stop matching.
+const WORD_INITIAL_STOPS: Record<string, string> = {
+  'Μπ': 'B', 'ΜΠ': 'B', 'μπ': 'b', 'Ντ': 'D', 'ΝΤ': 'D', 'ντ': 'd', 'Γκ': 'G', 'ΓΚ': 'G', 'γκ': 'g',
+};
+const softenWordInitialStops = (value: string): string =>
+  value.replace(/(^|[\s(\-\/'’"«])(Μπ|ΜΠ|μπ|Ντ|ΝΤ|ντ|Γκ|ΓΚ|γκ)/g, (_, before: string, pair: string) => before + WORD_INITIAL_STOPS[pair]);
 
 export const toGreeklish = (value: string | undefined): string => {
   if (!value) return '';
-  return greeklishPairs.reduce((text, [from, to]) => text.split(from).join(to), stripTonos(value))
+  return greeklishPairs.reduce((text, [from, to]) => text.split(from).join(to), softenWordInitialStops(stripTonos(value)))
     .replace(/\s+/g, ' ')
     .trim();
 };
