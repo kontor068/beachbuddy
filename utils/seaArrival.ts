@@ -257,8 +257,15 @@ const angularDistanceDeg = (a: number, b: number): number =>
  * — το μισό κύμα, όπως ίσχυε πριν τις 24/08 — ώσπου μια εθνική μέτρηση να πει αν υπάρχουν κι άλλες.
  * ΜΟΝΟΔΡΟΜΟ: μόνο ανεβάζει το K_d (προς την προσοχή)· ο ανοιχτός διάδρομος μένει 1, όπως πριν.
  * Η λίστα μεγαλώνει ΜΟΝΟ με μαρτυρία εξωτερικού κριτή, ποτέ «επειδή μοιάζει». Πύλη: shore-shadow-contract.
+ *
+ * +2 ΤΗΝ ΙΔΙΑ ΜΕΡΑ, ΜΕ ΤΗΝ ΙΔΙΑ ΜΑΡΤΥΡΙΑ (scripts/measureShadowVsBlockedArrival.mjs, 10/09): ο
+ * Κέδρος Δονούσας #2189 και το Βίντζι Άνδρου #1696 ήταν οι δύο «μάρτυρες» του ίδιου κριτή στις
+ * 16/08 — Copernicus 2,32 και 1,65 μ., ewam 1,88 και 1,80 — και είναι μέσα στις 44 παραλίες όπου
+ * το κύμα ήρθε από «κλειστή» μεριά. Με τον ζωντανό κώδικα έπαιρναν K_d 0,10: ~0,19 μ. στην ακτή.
+ * Οι άλλες ~19 της ίδιας μέτρησης έχουν μόνο ΕΝΑ μοντέλο ως μαρτυρία (ewam) — δεν μπαίνουν εδώ·
+ * ο γενικός κανόνας είναι απόφαση Μίλτου (βίβλος §Γ74-Θ).
  */
-export const JUDGE_WITNESSED_ARRIVAL_BEACH_IDS: ReadonlySet<number> = new Set([2009, 1428]);
+export const JUDGE_WITNESSED_ARRIVAL_BEACH_IDS: ReadonlySet<number> = new Set([2009, 1428, 2189, 1696]);
 
 export const resolveShoreShadowDamping = (
   geospatialProfile: GeospatialExposureProfile | undefined,
