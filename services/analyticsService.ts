@@ -705,6 +705,8 @@ export const sendAppRating = async (payload: {
   /** Distinct days of use before the card asked — context for reading the scores. */
   usageDays?: number;
   language?: string;
+  /** The beach the visitor tapped after a low accuracy score (components/AppRatingPrompt). */
+  beach?: { id: number; name: string; region?: string; day: string };
 }): Promise<boolean> => {
   if (typeof fetch === 'undefined') return false;
 
@@ -719,9 +721,13 @@ export const sendAppRating = async (payload: {
         usageDays: payload.usageDays,
         message: payload.message || '',
         timestamp: new Date().toISOString(),
+        beachId: payload.beach?.id,
+        beachViewedDay: payload.beach?.day,
         context: {
           language: payload.language,
           pagePath: typeof window !== 'undefined' ? window.location.pathname : '',
+          beachName: payload.beach?.name,
+          islandName: payload.beach?.region,
         },
       }),
     });

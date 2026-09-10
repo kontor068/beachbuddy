@@ -695,6 +695,7 @@ import { buildBeachDetailPath, buildBeachRegionPath } from '../utils/beachUrls';
 import { buildReportProblemMailto, currentPagePath } from '../utils/reportProblem';
 import { photoSrcSet, sizedPhotoUrl } from '../utils/photoSizing.mjs';
 import { PhotoLightbox, getOpenPhotoLabel, type LightboxPhoto } from '../components/photos/PhotoLightbox';
+import { recordRecentBeachView } from '../utils/recentBeachViews';
 import { displayBeachName, localizedPaidEntryLabel, localizedPaidEntryExplanation, localizedPaidEntryVerifyNote, localizedFreeAccessLabel, localizedFreeAccessExplanation } from '../utils/localization';
 
 interface BeachDetailPageProps {
@@ -1084,6 +1085,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       source: 'detail_page',
       ...buildBeachExposureParams(beach),
     });
+    recordRecentBeachView({ id: beach.id, name: beachDisplayName, region: islandDisplayName });
   }, [beach.id, beach.name.en, beachDisplayName, islandDisplayName, language]);
 
   // Swipe-right to go back (mobile)

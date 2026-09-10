@@ -41,6 +41,9 @@ const INSTANT_ONLY_MODULES = new Set([
   // Usage-day keys + dismissal cool-down. The day key is deliberately the VIEWER's calendar
   // day — it measures their own habit of coming back, not anything about Greek forecast time.
   'components/AppRatingPrompt.tsx',
+  // Same reasoning, same reader: the day the visitor opened a beach, on THEIR calendar — the
+  // rating card sends it so we know which day to replay. Never used to pick a forecast hour.
+  'utils/recentBeachViews.ts',
 ]);
 
 const EXEMPT_MARKER = 'athens-clock-exempt';

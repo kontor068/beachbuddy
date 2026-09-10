@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { LanguageCode } from '../types';
 import { getLocalizedCopy, type LocalizedCopy } from '../utils/i18n';
 import { sendAppRating, trackEvent } from '../services/analyticsService';
+import { readRecentBeachViews, type RecentBeachView } from '../utils/recentBeachViews';
 
 // A deliberately low-key "rate the app" card, same posture as InstallPrompt: it appears only
 // for a visitor who has come back on several DIFFERENT days (a returning user has an opinion;
@@ -23,6 +24,12 @@ const REVEAL_DELAY_MS = 20_000;
 const COOLDOWN_MS = 60 * 24 * 60 * 60 * 1000; // back off ~2 months after a dismissal
 const MAX_DISMISSALS = 2; // after the user says no twice, stop asking for good
 const MAX_MESSAGE_LENGTH = 800;
+// At or below this accuracy score the card asks WHICH beach. A low score with no beach cannot
+// be investigated: on 10/09/2026 a «4/10» from the Lemnos page took a full check of wind and
+// sea against real instruments, found the forecast right, and still could not say what went
+// wrong — because nobody knew which beach (or even which island) the visitor meant.
+const LOW_ACCURACY_MAX = 5;
+const MAX_BEACH_CHIPS = 4;
 
 type PromptState = {
   /** Count of distinct local calendar days the app was opened. */
@@ -83,6 +90,9 @@ type Copy = {
   ease: string;
   accuracy: string;
   commentPlaceholder: string;
+  /** Shown only after a low accuracy score. */
+  whichBeach: string;
+  lowAccuracyPlaceholder: string;
   send: string;
   sending: string;
   thanks: string;
@@ -97,6 +107,8 @@ const COPY: LocalizedCopy<Copy> = {
     ease: 'Ease of use',
     accuracy: 'Forecast accuracy',
     commentPlaceholder: 'Anything else? What you liked, what bugged you, ideas… (optional)',
+    whichBeach: 'Which beach didn’t match?',
+    lowAccuracyPlaceholder: 'Which beach and day? What did you find there — wind, waves? (optional)',
     send: 'Send',
     sending: 'Sending…',
     thanks: 'Thank you — it really helps!',
@@ -109,6 +121,8 @@ const COPY: LocalizedCopy<Copy> = {
     ease: 'Ευκολία χρήσης',
     accuracy: 'Ακρίβεια πρόβλεψης',
     commentPlaceholder: 'Θες να προσθέσεις κάτι; Τι σου άρεσε, τι σε δυσκόλεψε, ιδέες… (προαιρετικό)',
+    whichBeach: 'Σε ποια παραλία δεν έπεσε μέσα;',
+    lowAccuracyPlaceholder: 'Ποια παραλία και ποια μέρα; Τι βρήκες εκεί — αέρα, κύμα; (προαιρετικό)',
     send: 'Αποστολή',
     sending: 'Στέλνεται…',
     thanks: 'Ευχαριστούμε — βοηθάει πραγματικά!',
@@ -121,6 +135,8 @@ const COPY: LocalizedCopy<Copy> = {
     ease: 'Facilité d’utilisation',
     accuracy: 'Précision des prévisions',
     commentPlaceholder: 'Un mot de plus ? Ce qui vous a plu, gêné, vos idées… (facultatif)',
+    whichBeach: 'Quelle plage ne correspondait pas ?',
+    lowAccuracyPlaceholder: 'Quelle plage, quel jour ? Qu’avez-vous trouvé sur place — vent, vagues ? (facultatif)',
     send: 'Envoyer',
     sending: 'Envoi…',
     thanks: 'Merci — cela nous aide vraiment !',
@@ -133,6 +149,8 @@ const COPY: LocalizedCopy<Copy> = {
     ease: 'Benutzerfreundlichkeit',
     accuracy: 'Genauigkeit der Vorhersage',
     commentPlaceholder: 'Noch etwas? Was dir gefällt, was stört, Ideen… (optional)',
+    whichBeach: 'Welcher Strand hat nicht gepasst?',
+    lowAccuracyPlaceholder: 'Welcher Strand, welcher Tag? Was war dort — Wind, Wellen? (optional)',
     send: 'Senden',
     sending: 'Wird gesendet…',
     thanks: 'Danke — das hilft uns wirklich!',
@@ -145,6 +163,8 @@ const COPY: LocalizedCopy<Copy> = {
     ease: 'Facilità d’uso',
     accuracy: 'Precisione delle previsioni',
     commentPlaceholder: 'Vuoi aggiungere qualcosa? Cosa ti è piaciuto, cosa no, idee… (facoltativo)',
+    whichBeach: 'Quale spiaggia non corrispondeva?',
+    lowAccuracyPlaceholder: 'Quale spiaggia, quale giorno? Cosa hai trovato — vento, onde? (facoltativo)',
     send: 'Invia',
     sending: 'Invio…',
     thanks: 'Grazie — ci aiuta davvero!',
@@ -192,7 +212,11 @@ export const AppRatingPrompt: React.FC<{ language: LanguageCode }> = ({ language
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [recentBeaches, setRecentBeaches] = useState<RecentBeachView[]>([]);
+  const [pickedBeachId, setPickedBeachId] = useState<number | null>(null);
   const usageDaysRef = useRef(0);
+  const lowAccuracy = accuracy !== null && accuracy <= LOW_ACCURACY_MAX;
+  const pickedBeach = lowAccuracy ? recentBeaches.find(entry => entry.id === pickedBeachId) : undefined;
   const copy = getLocalizedCopy(language, COPY);
 
   useEffect(() => {
@@ -210,6 +234,7 @@ export const AppRatingPrompt: React.FC<{ language: LanguageCode }> = ({ language
       // the very reason we're asking them.
       if (document.querySelector('[role="dialog"]')) return;
       if (!allowedToAsk(readState())) return;
+      setRecentBeaches(readRecentBeachViews().slice(0, MAX_BEACH_CHIPS));
       setStage('form');
       requestAnimationFrame(() => setVisible(true));
       trackEvent('app_rating_prompt_shown', undefined, { usageDays: usageDaysRef.current });
@@ -242,6 +267,7 @@ export const AppRatingPrompt: React.FC<{ language: LanguageCode }> = ({ language
       message: message.trim().slice(0, MAX_MESSAGE_LENGTH),
       usageDays: usageDaysRef.current,
       language,
+      beach: pickedBeach,
     });
 
     setSending(false);
@@ -257,11 +283,12 @@ export const AppRatingPrompt: React.FC<{ language: LanguageCode }> = ({ language
       easeOfUse,
       accuracy,
       hasMessage: message.trim().length > 0,
+      hasBeach: Boolean(pickedBeach),
       usageDays: usageDaysRef.current,
     });
     setStage('thanks');
     window.setTimeout(close, 2200);
-  }, [easeOfUse, accuracy, message, sending, language, close]);
+  }, [easeOfUse, accuracy, message, sending, language, close, pickedBeach]);
 
   if (!stage) return null;
 
@@ -298,10 +325,36 @@ export const AppRatingPrompt: React.FC<{ language: LanguageCode }> = ({ language
             <ScoreRow label={copy.ease} value={easeOfUse} onChange={setEaseOfUse} />
             <ScoreRow label={copy.accuracy} value={accuracy} onChange={setAccuracy} />
 
+            {lowAccuracy && recentBeaches.length > 0 && (
+              <div className="mt-3">
+                <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">{copy.whichBeach}</div>
+                <div role="radiogroup" aria-label={copy.whichBeach} className="mt-1.5 flex flex-wrap gap-1.5">
+                  {recentBeaches.map(entry => (
+                    <button
+                      key={entry.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={pickedBeachId === entry.id}
+                      // A second tap un-picks: the question is optional, and a mis-tap must not
+                      // pin the score on the wrong beach.
+                      onClick={() => setPickedBeachId(current => (current === entry.id ? null : entry.id))}
+                      className={`min-h-9 max-w-full touch-manipulation cursor-pointer truncate rounded-full px-3 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 ${
+                        pickedBeachId === entry.id
+                          ? 'bg-teal-600 text-white shadow-sm'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                      }`}
+                    >
+                      {entry.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <textarea
               value={message}
               onChange={event => setMessage(event.target.value)}
-              placeholder={copy.commentPlaceholder}
+              placeholder={lowAccuracy ? copy.lowAccuracyPlaceholder : copy.commentPlaceholder}
               rows={2}
               maxLength={MAX_MESSAGE_LENGTH}
               className="mt-3 w-full resize-none rounded-xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-600 dark:border-slate-600 dark:bg-slate-900/50 dark:text-slate-100 dark:placeholder:text-slate-500"

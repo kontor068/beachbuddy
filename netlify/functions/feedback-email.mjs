@@ -278,6 +278,9 @@ const normalizePayload = (body, event) => {
       accuracy: ratingInRange(ratings.accuracy),
     },
     usageDays: usageDaysInRange(feedback.usageDays),
+    // The visitor's own day (YYYY-MM-DD) on which they opened the beach they blamed in an app
+    // rating — the day to replay the forecast for. Anything that isn't a date is dropped.
+    beachViewedDay: /^\d{4}-\d{2}-\d{2}$/.test(String(feedback.beachViewedDay ?? '')) ? feedback.beachViewedDay : undefined,
     source: clamp(feedback.source || context.source || 'unknown', 80),
     beachId: Number.isFinite(Number(feedback.beachId)) ? Number(feedback.beachId) : undefined,
     // Free-text path: without these three the landing message arrives empty.
@@ -478,6 +481,9 @@ const fieldLines = (payload) => [
   // Πόσες διαφορετικές μέρες είχε ανοίξει την εφαρμογή πριν ρωτηθεί — ένα «4/10» από
   // επισκέπτη 30 ημερών ζυγίζει αλλιώς από ένα «4/10» της πέμπτης μέρας.
   ['Μέρες χρήσης', payload.usageDays ?? ''],
+  // Μόνο σε αξιολόγηση με χαμηλή ακρίβεια όπου ο επισκέπτης πάτησε παραλία: η μέρα που την
+  // είχε ανοίξει — η μέρα που πρέπει να ξαναπαιχτεί η πρόγνωση.
+  ['Είδε την παραλία στις', payload.beachViewedDay ?? ''],
   ['ID παραλίας', payload.beachId ?? ''],
   ['Νησί/περιοχή', [payload.islandName, payload.regionId].filter(Boolean).join(' / ')],
   ['Ημερομηνία', payload.conditions.date],
@@ -586,6 +592,9 @@ const persistAppRating = async (event, payload) => {
       message: payload.message,
       language: payload.language,
       timestamp: payload.timestamp,
+      beachId: payload.beachId,
+      beachName: payload.beachName || undefined,
+      beachViewedDay: payload.beachViewedDay,
     });
   } catch (error) {
     console.error('App rating persistence failed.', error && error.message);
@@ -598,6 +607,10 @@ const persistAppRating = async (event, payload) => {
 const persistFeedback = async (event, payload) => {
   if (typeof payload.beachId !== 'number' || !Number.isFinite(payload.beachId)) return;
   if (!payload.feedback || payload.feedback === 'story_message' || payload.feedback === 'unknown') return;
+  // An app rating can carry a beach since 10/09/2026 (the visitor's answer to «which beach?»),
+  // but it is a 1–10 score, not a verdict about conditions — in `f/` it would be read by
+  // calibrateFromFeedback as a beach verdict it cannot parse. It lives in `r/` only.
+  if (payload.feedback === 'app_rating') return;
 
   try {
     connectLambda(event);
