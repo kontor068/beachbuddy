@@ -1,9 +1,14 @@
 import fs from 'node:fs';
 // Κριτής meteo.gr (ημερήσιες συνόψεις από meteosearch.meteo.gr, κατεβασμένες με λογαριασμό — όριο 30/μέρα)
 // έναντι best_match στις συντεταγμένες του σταθμού. Είσοδος: docs/team/data/meteo-gr/<σταθμός>-<YYYY-MM>.txt
-// Τρέξιμο: OPEN_METEO_API_KEY=... node scripts/auditMeteoGrStations.mjs
+// Τρέξιμο: node scripts/auditMeteoGrStations.mjs  (χωρίς κλειδί — δωρεάν historical-forecast-api)
 const DIR = process.argv[2] || 'docs/team/data/meteo-gr';
 const ST = { ierapetra:[35.00,25.70,'ακτή'], lentas:[34.9331,24.9372,'ακτή'], paleochora:[35.20,23.70,'ακτή'], plakias:[35.20,24.40,'ακτή'], sfakia:[35.20,24.10,'ΒΟΥΝΟ 770μ'], malia:[35.293,25.478,'βόρεια, ξενοδοχείο'], sisi:[35.30,25.50,'βόρεια, μελτέμι'], 'plaka-elounda':[35.292,25.726,'Ελούντα, ξενοδοχείο 47μ'], elafonisi:[35.20,23.50,'δυτική, 67μ'], falasarna:[35.50,23.60,'δυτική'] };
+
+// Συντεταγμένες από την κεφαλίδα του αρχείου (3 μορφές Davis). Χωρίς συντεταγμένες = ο σταθμός παραλείπεται.
+const parseCoord=(txt,key)=>{const r=new RegExp(key+String.raw`:\s*(\d+)(?:deg|°)\s*(\d+)(?:min|')?\s*(?:(\d+)")?`).exec(txt);if(r)return +r[1]+(+r[2])/60+((+r[3]||0))/3600;const d=new RegExp(key+String.raw`:\s*(\d+\.\d+)`).exec(txt);return d?+d[1]:null;};
+const headerCoords=f=>{const t=fs.readFileSync(DIR+'/'+f,'utf8').slice(0,600);const lat=parseCoord(t,'LAT'),lon=parseCoord(t,'LONG');const el=(/ELEV:\s*(\d+)/.exec(t)||[])[1];return lat&&lon?[lat,lon,'κεφαλίδα'+(el?' '+el+'μ':'')]:null;};
+for(const f of fs.readdirSync(DIR).filter(x=>x.endsWith('.txt'))){const st=f.replace(/-\d{4}-\d{2}\.txt$/,'');if(ST[st])continue;const c=headerCoords(f);if(c)ST[st]=c;else console.log('ΧΩΡΙΣ ΣΥΝΤΕΤΑΓΜΕΝΕΣ (παραλείπεται):',st);}
 const obs={};
 // Δύο μορφές Davis (στήλες RH ή heat/cool degree-days), ίδια ουρά: AVG SPEED · HIGH · TIME · DOM DIR.
 for(const f of fs.readdirSync(DIR).filter(x=>x.endsWith('.txt'))){const st=f.replace(/-\d{4}-\d{2}\.txt$/,'');const mo=f.match(/(\d{4}-\d{2})/)[1];
@@ -11,12 +16,23 @@ for(const f of fs.readdirSync(DIR).filter(x=>x.endsWith('.txt'))){const st=f.rep
     if(t.length<10||!/^\d{1,2}$/.test(t[0])||!/^[NESW]{1,3}$/.test(t[t.length-1]))continue;
     const avg=+t[t.length-4],gust=+t[t.length-3];if(!isFinite(avg)||!isFinite(gust))continue;
     (obs[st]=obs[st]||{})[mo+'-'+t[0].padStart(2,'0')]={avg,gust,dir:t[t.length-1]};}}
-const names=Object.keys(ST);
-const key=process.env.OPEN_METEO_API_KEY;
-const base=key?'https://customer-api.open-meteo.com/v1/forecast':'https://api.open-meteo.com/v1/forecast';
-const url=`${base}?latitude=${names.map(n=>ST[n][0]).join(',')}&longitude=${names.map(n=>ST[n][1]).join(',')}&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens&start_date=2026-06-07&end_date=2026-08-31&models=best_match${key?'&apikey='+encodeURIComponent(key):''}`;
-const res=await fetch(url,{signal:AbortSignal.timeout(60000)});if(!res.ok){console.error('HTTP',res.status,await res.text());process.exit(1);}
-const data=await res.json();const arr=Array.isArray(data)?data:[data];
+const names=Object.keys(ST).filter(n=>obs[n]);
+// Το αρχείο του Open-Meteo φτάνει μόνο 92 μέρες πίσω και ΓΛΙΣΤΡΑΕΙ κάθε μέρα. Για να μένουν οι σταθμοί
+// συγκρίσιμοι όποια μέρα κι αν κατέβηκαν, οι ώρες του μοντέλου κρατιούνται σε cache ανά σταθμό την πρώτη
+// φορά (docs/team/data/meteo-gr/model-cache/) και ξαναδιαβάζονται από εκεί.
+const CACHE=DIR+'/model-cache';fs.mkdirSync(CACHE,{recursive:true});
+// Η κανονική πόρτα (api.open-meteo.com) γυρίζει null πριν από ~56 μέρες. Η δωρεάν πόρτα ΑΡΧΕΙΟΥ ΠΡΟΓΝΩΣΕΩΝ
+// (historical-forecast-api) δίνει τα ίδια best_match runs χωρίς κενά από το 2022 — καμία ανάγκη κλειδιού
+// (η customer-έκδοσή της θέλει Professional, που δεν έχουμε).
+const base='https://historical-forecast-api.open-meteo.com/v1/forecast';
+const start='2026-06-01';
+const need=names.filter(n=>!fs.existsSync(`${CACHE}/${n}.json`));
+if(need.length){const url=`${base}?latitude=${need.map(n=>ST[n][0]).join(',')}&longitude=${need.map(n=>ST[n][1]).join(',')}&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m&wind_speed_unit=kmh&timezone=Europe%2FAthens&start_date=${start}&end_date=2026-08-31&models=best_match`;
+  const res=await fetch(url,{signal:AbortSignal.timeout(60000)});if(!res.ok){console.error('HTTP',res.status,await res.text());process.exit(1);}
+  const data=await res.json();const got=Array.isArray(data)?data:[data];
+  need.forEach((n,i)=>fs.writeFileSync(`${CACHE}/${n}.json`,JSON.stringify({fetchedAt:new Date().toISOString(),start,latitude:got[i].latitude,longitude:got[i].longitude,elevation:got[i].elevation,hourly:got[i].hourly})));
+  console.log(`μοντέλο: ${need.length} νέοι σταθμοί από ${start}, cache ${CACHE}`);}
+const arr=names.map(n=>JSON.parse(fs.readFileSync(`${CACHE}/${n}.json`,'utf8')));
 const bft=k=>k<1?0:k<6?1:k<12?2:k<20?3:k<29?4:k<39?5:k<50?6:k<62?7:8;
 const DECOMP=v=>2.392+1.0005*v;
 const out={};
@@ -36,4 +52,4 @@ names.forEach((n,i)=>{const h=arr[i].hourly;const days={};
   console.log(`${n} (${ST[n][2]}) — πλέγμα ${arr[i].latitude},${arr[i].longitude} υψ. ${arr[i].elevation}μ`);
   out[n]={all:stat(rows,'όλες'),north:stat(rows.filter(r=>/^N/.test(r.dir)),'Β/ΒΑ/ΒΔ μέρες'),other:stat(rows.filter(r=>!/^N/.test(r.dir)),'άλλες'),direction:dirStat(rows),rows};
 });
-fs.writeFileSync('reports/weather/lee-coast-stations-2026-summer.json',JSON.stringify({question:'Κρύβει το best_match τον αέρα σε υπήνεμες νότιες ακτές της Κρήτης; Κριτής: 5 σταθμοί meteo.gr (ημερήσιες συνόψεις), Ιουν-Αυγ 2026',stations:ST,results:out},null,1));
+fs.writeFileSync('reports/weather/meteo-gr-stations-2026-summer.json',JSON.stringify({question:'Πού λέει σωστά/λάθος τον άνεμο το best_match στις ακτές; Κριτής: σταθμοί meteo.gr (ημερήσιες συνόψεις), Ιουν-Αυγ 2026, εθνικά',stations:ST,results:out},null,1));
