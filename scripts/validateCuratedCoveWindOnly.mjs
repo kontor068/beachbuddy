@@ -140,6 +140,35 @@ if (sabotage === corrected) {
 }
 console.log(`Ε. το αυτοσαμποτάζ πιάνεται ................... ${failures.some(f => f.startsWith('Ε')) ? '❌' : '✅'}`);
 
+// ── ΣΤ. ΚΑΙ ΤΟ ΤΑΒΑΝΙ ΘΑΛΑΣΣΑΣ ΒΛΕΠΕΙ ΤΗ ΣΗΜΑΙΑ (10/09/2026) ─────────────────────────
+// Ως τις 10/09 η σημαία έφτανε στο δάπεδο «Ιδανική» και στην πόρτα των 4, αλλά στο ΤΑΒΑΝΙ
+// θαλάσσης περνούσε `undefined`: ο όρμος έπαιρνε εκεί την έκπτωση κύματος που το §Γ25 λέει ότι
+// δεν παίρνει, και η κάρτα έβγαινε ένα σκαλί πιο ήπια από την πινέζα με θάλασσα ≥1,2 μ. Εδώ
+// οδηγούμε το ΠΡΑΓΜΑΤΙΚΟ resolveConditionTone: με τη σημαία, το χρώμα πρέπει να είναι ΙΔΙΟ με
+// εκείνο χωρίς καμία έκπτωση (K_d = 1) σε όλο το πλέγμα — εκτός από τα ακριβώς 5 Μποφόρ
+// κλειστού όρμου, όπου η εξαίρεση όρμου είναι γραμμένη απόφαση (§ΑΞ3/Α2).
+const { resolveConditionTone } = require(path.join(root, 'utils/suitabilityTone.ts'));
+const beforeF = failures.length;
+let exercised = 0;
+for (const beaufort of [2, 3, 4, 5, 6, 7]) {
+  for (const seaStateM of [0.5, 0.9, 1.3, 1.6, 2.0]) {
+    for (const isEnclosedCove of [false, true]) {
+      if (isEnclosedCove && beaufort === 5) continue;
+      for (const kd of [undefined, 0.1, 0.5]) {
+        const base = { exposureLevel: 'protected', beaufort, seaStateM, isEnclosedCove };
+        const withFlag = resolveConditionTone({ ...base, curatedWindOnlyProtection: true, shoreShadowDamping: kd });
+        const noDiscount = resolveConditionTone({ ...base, curatedWindOnlyProtection: true, shoreShadowDamping: 1 });
+        const discounted = resolveConditionTone({ ...base, curatedWindOnlyProtection: false, shoreShadowDamping: kd });
+        if (withFlag !== noDiscount) fail('ΣΤ', `${beaufort} Μπφ, θάλασσα ${seaStateM}, K_d ${kd}: ο όρμος «μόνο άνεμος» βγήκε ${withFlag}, ενώ χωρίς έκπτωση κύματος είναι ${noDiscount}`);
+        if (discounted !== withFlag) exercised += 1;
+      }
+    }
+  }
+}
+// Αυτοσαμποτάζ: αν η έκπτωση δεν άλλαζε ποτέ το χρώμα, ο έλεγχος θα περνούσε χωρίς να ασκεί τίποτα.
+if (exercised === 0) fail('ΣΤ', 'σε όλο το πλέγμα η έκπτωση κύματος δεν άλλαξε ούτε ένα χρώμα — ο έλεγχος δεν ασκεί τίποτα');
+console.log(`ΣΤ. το ταβάνι θάλασσας αρνείται την έκπτωση (${exercised} περιπτώσεις ασκήθηκαν) ${failures.length > beforeF ? '❌' : '✅'}`);
+
 if (failures.length) {
   console.error(`\nFAILED: ${failures.length} πρόβλημα(τα).`);
   for (const f of failures.slice(0, 25)) console.error(`  - ${f}`);
