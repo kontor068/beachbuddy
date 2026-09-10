@@ -244,7 +244,36 @@ export const SHADOW_CROSS_SEA_ONSHORE_MIN = -0.65;
 const angularDistanceDeg = (a: number, b: number): number =>
   Math.abs((((a - b) % 360) + 540) % 360 - 180);
 
+/**
+ * ΠΑΡΑΛΙΕΣ ΟΠΟΥ ΕΞΩΤΕΡΙΚΟΣ ΚΡΙΤΗΣ ΕΙΔΕ ΤΟ ΚΥΜΑ ΝΑ ΦΤΑΝΕΙ ΑΠΟ ΤΗ «ΚΛΕΙΣΤΗ» ΜΕΡΙΑ (10/09/2026).
+ *
+ * Στις 16/08/2026 (βίβλος, ΠΡΟΣΘΗΚΗ «Το κύμα που δεν έχει δρόμο να φτάσει») δύο ανεξάρτητα μοντέλα
+ * — ewam και Copernicus MEDSEA 4,2 χλμ — μέτρησαν το ΙΔΙΟ: στη Μουτσούνα #2009 φτάνει κύμα 1,61 μ.
+ * και στη Φράγκου #1428 0,80 μ., από τη μεριά που η γεωμετρία μας λέει κλειστή (10,3 και 8,5 χλμ
+ * στεριάς). Το K_d(θ) της 24/08 υποθέτει ακριβώς το αντίθετο και τους έδινε «βαθιά σκιά», K_d 0,10
+ * με βοριά — δηλαδή ~0,16 μ. στην ακτή εκεί που ο κριτής είδε 1,6 μ. (βίβλος §Γ71 σημείωση, §Γ74-Ζ).
+ *
+ * ΑΠΟΦΑΣΗ ΜΙΛΤΟΥ 10/09/2026: σε αυτές τις δύο το K_d δεν πέφτει κάτω από την άκρη της σκιάς (0,5)
+ * — το μισό κύμα, όπως ίσχυε πριν τις 24/08 — ώσπου μια εθνική μέτρηση να πει αν υπάρχουν κι άλλες.
+ * ΜΟΝΟΔΡΟΜΟ: μόνο ανεβάζει το K_d (προς την προσοχή)· ο ανοιχτός διάδρομος μένει 1, όπως πριν.
+ * Η λίστα μεγαλώνει ΜΟΝΟ με μαρτυρία εξωτερικού κριτή, ποτέ «επειδή μοιάζει». Πύλη: shore-shadow-contract.
+ */
+export const JUDGE_WITNESSED_ARRIVAL_BEACH_IDS: ReadonlySet<number> = new Set([2009, 1428]);
+
 export const resolveShoreShadowDamping = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  waveDirectionDeg: number | undefined
+): number | undefined => {
+  const kd = resolveShoreShadowDampingFromGeometry(geospatialProfile, waveDirectionDeg);
+  if (typeof kd !== 'number') return kd;
+  const beachId = geospatialProfile?.beachId;
+  if (typeof beachId === 'number' && JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(beachId)) {
+    return Math.max(kd, SHADOW_KD_AT_EDGE);
+  }
+  return kd;
+};
+
+const resolveShoreShadowDampingFromGeometry = (
   geospatialProfile: GeospatialExposureProfile | undefined,
   waveDirectionDeg: number | undefined
 ): number | undefined => {

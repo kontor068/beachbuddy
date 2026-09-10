@@ -51,7 +51,7 @@ require.extensions['.ts'] = (module, filename) => {
 };
 
 const {
-  resolveShoreShadowDamping,
+  resolveShoreShadowDamping, JUDGE_WITNESSED_ARRIVAL_BEACH_IDS,
   SHADOW_OPEN_FETCH_KM, SHADOW_CORRIDOR_HALF_DEG, SHADOW_DECAY_DEG, SHADOW_KD_AT_EDGE, SHADOW_KD_FLOOR,
   SHADOW_CROSS_SEA_ONSHORE_MIN,
 } = require(path.join(root, 'utils/seaArrival.ts'));
@@ -127,6 +127,40 @@ const beforeC = failures.length;
   if (shoreSeaStateM(H, 'protected', undefined, true, 0.1) !== 2.0) fail('Γ', 'curated wind-only δεν αρνήθηκε την έκπτωση');
 }
 console.log(`Γ. K_d στο protected σκέλος + enclosed, φραγμένο ${failures.length > beforeC ? '❌' : '✅'}`);
+
+// ── Δ. οι μάρτυρες του κριτή δεν πέφτουν ποτέ σε «βαθιά σκιά» (10/09/2026) ───
+// Μουτσούνα #2009 και Φράγκου #1428: ο Copernicus ΚΑΙ το ewam είδαν το κύμα να φτάνει από τη
+// «κλειστή» μεριά (16/08). Απόφαση Μίλτου 10/09: εκεί K_d ≥ 0,5 σε ΚΑΘΕ διεύθυνση. Η πύλη
+// διαβάζει τα ΠΡΑΓΜΑΤΙΚΑ προφίλ, και αποδεικνύει ότι η εξαίρεση δεν διαρρέει σε άλλη παραλία
+// (το ίδιο προφίλ με άλλον αριθμό πρέπει να ξαναπέφτει στη βαθιά σκιά).
+const beforeWitness = failures.length;
+{
+  const dir = path.join(root, 'public/data/geospatial/exposure');
+  const byId = new Map();
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith(".json"))) {
+    let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")); } catch { continue; }
+    const list = Array.isArray(d) ? d : Array.isArray(d?.profiles) ? d.profiles : (d?.profiles ? Object.values(d.profiles) : []);
+    for (const p of list) if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(p?.beachId)) byId.set(p.beachId, p);
+  }
+  // Η λίστα επιτρέπεται μόνο να ΜΕΓΑΛΩΝΕΙ: οι δύο μάρτυρες της 16/08 καρφώνονται ονομαστικά,
+  // αλλιώς η αφαίρεση ενός από τον κώδικα θα περνούσε σιωπηλά (η πύλη θα έλεγχε μόνο όσους έμειναν).
+  for (const pinned of [2009, 1428]) {
+    if (!JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(pinned)) fail('Δ0', `ο μάρτυρας #${pinned} αφαιρέθηκε από τη λίστα — θέλει νέα μέτρηση κριτή ΚΑΙ απόφαση Μίλτου, όχι σιωπηλή διαγραφή`);
+  }
+  for (const id of JUDGE_WITNESSED_ARRIVAL_BEACH_IDS) {
+    const p = byId.get(id);
+    if (!p) { fail('Δ0', `ο μάρτυρας #${id} δεν βρέθηκε στα προφίλ — η εξαίρεση δεν προστατεύει τίποτα`); continue; }
+    let sawDeepShadowWithoutIt = false;
+    for (let deg = 0; deg < 360; deg += 5) {
+      const kd = resolveShoreShadowDamping(p, deg);
+      if (typeof kd === 'number' && kd < SHADOW_KD_AT_EDGE - 1e-9) fail('Δ0', `#${id} στις ${deg}° → K_d ${kd}, κάτω από την άκρη ${SHADOW_KD_AT_EDGE}`);
+      const asStranger = resolveShoreShadowDamping({ ...p, beachId: -1 }, deg);
+      if (typeof asStranger === 'number' && asStranger < SHADOW_KD_AT_EDGE - 1e-9) sawDeepShadowWithoutIt = true;
+    }
+    if (!sawDeepShadowWithoutIt) fail('Δ0', `#${id}: χωρίς την εξαίρεση δεν υπάρχει βαθιά σκιά πουθενά — ο έλεγχος δεν ασκεί τίποτα`);
+  }
+}
+console.log(`Δ0. οι μάρτυρες του κριτή κρατούν K_d ≥ 0,5 ... ${failures.length > beforeWitness ? '❌' : '✅'}`);
 
 // ── Γ2. το πάτωμα της πλάγιας θάλασσας και το 'enclosed' (29/08/2026) ───────
 const beforeC2 = failures.length;
