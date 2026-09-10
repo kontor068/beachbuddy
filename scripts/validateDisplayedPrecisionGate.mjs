@@ -219,6 +219,42 @@ if (!liedCalm && !seaSpokeQuietly) {
   ok('Ζ·σήματα', `${cases} συνδυασμοί: κανένα σήμα δεν διαφωνεί με το χρώμα της κάρτας`);
 }
 
+/* ------------------------------ Η. η συμβουλή «ιδανικά» και η πινέζα μπλε συμφωνούν (10/09/2026) */
+
+// Το δάπεδο «Ιδανική» της πινέζας κρίνει το 0,40 στο στρογγυλεμένο νούμερο· η συμβουλή μπάνιου
+// το έκρινε ωμό, οπότε σε 0,35-0,39 μ. η πινέζα ήταν κίτρινη και η συμβουλή «ιδανικά» (βίβλος §Γ52:
+// «το ΙΔΙΟ κατώφλι»). Οδηγεί την ΠΡΑΓΜΑΤΙΚΗ συνάρτηση της συμβουλής σε όλο το 0,00-0,80.
+{
+  require.extensions['.ts'] = (module, filename) => {
+    if (filename.endsWith(`${path.sep}services${path.sep}analyticsService.ts`)) {
+      module._compile('exports.getNegativeFeedbackCount = function () { return 0; };'
+        + 'exports.recordOpenMeteoCall = function () {};', filename);
+      return;
+    }
+    module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true, jsx: ts.JsxEmit.React },
+      fileName: filename,
+    }).outputText.replace(/import\.meta/g, '({env:{DEV:true}})'), filename);
+  };
+  if (typeof globalThis.window === 'undefined') globalThis.window = globalThis;
+  const { swimmingComfortForWave } = require(path.join(root, 'services/recommendationService.ts'));
+  if (typeof swimmingComfortForWave !== 'function') {
+    fail('Η·συμβουλή', 'η swimmingComfortForWave δεν είναι εξαγόμενη — η πύλη δεν μπορεί να ελέγξει τη συμβουλή');
+  } else {
+    let split = 0;
+    for (let cm = 0; cm <= 80; cm += 1) {
+      const raw = cm / 100;
+      const pinAllowsBlue = (atDisplayedPrecisionM(raw)) < IDEAL_MAX_SHORE_SEA_STATE_M;
+      const advice = swimmingComfortForWave(95, 1, raw);
+      if (advice === 'excellent' && !pinAllowsBlue) {
+        split += 1;
+        if (split <= 3) fail('Η·συμβουλή', `νερό ${raw.toFixed(2)} μ.: η πινέζα δεν μπορεί να είναι μπλε αλλά η συμβουλή λέει «ιδανικά»`);
+      }
+    }
+    if (!split) ok('Η·συμβουλή', 'σε όλο το 0,00-0,80 μ. η συμβουλή «ιδανικά» εμφανίζεται μόνο όπου η πινέζα επιτρέπεται να είναι μπλε');
+  }
+}
+
 /* ------------------------------------------------------------------ έξοδος */
 
 if (PROVE) {

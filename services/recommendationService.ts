@@ -38,7 +38,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { SEA_ARRIVAL_GRAZING, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { hasListedSeatracRamp } from '../utils/accessibility';
@@ -476,7 +476,7 @@ const getEffectiveBeaufortForComfort = (
 /** Harshest → mildest. Shelter relief below is counted in these steps. */
 const SWIMMING_COMFORT_ORDER: readonly SwimmingComfort[] = ['avoid_swimming', 'caution', 'good', 'excellent'];
 
-const swimmingComfortForWave = (
+export const swimmingComfortForWave = (
   swimmingScore: number,
   effectiveBeaufort: number,
   waveHeightM?: number
@@ -487,7 +487,12 @@ const swimmingComfortForWave = (
   if (effectiveBeaufort >= 5 || (typeof waveHeightM === 'number' && waveHeightM >= 0.8) || swimmingScore < 60) {
     return 'caution';
   }
-  if (effectiveBeaufort <= 2 && (waveHeightM === undefined || waveHeightM < 0.4) && swimmingScore >= 85) {
+  // «ιδανικά» στην ΑΚΡΙΒΕΙΑ ΠΟΥ ΤΥΠΩΝΕΤΑΙ (10/09/2026, βίβλος §Γ52/§Γ74). Το δάπεδο «Ιδανική» της
+  // πινέζας (utils/suitabilityTone.capIdealByShoreSea) κρίνει το 0,40 στο στρογγυλεμένο νούμερο από
+  // 24/08· εδώ έμενε ωμό, οπότε σε νερό 0,35-0,39 μ. η πινέζα έβγαινε κίτρινη και η συμβουλή
+  // «ιδανικά» — δύο νούμερα για την ίδια ιδέα, αυτό που το §Γ52 υποσχέθηκε να κλείσει. Μόνο προς
+  // την προσοχή (excellent → good, ένα σκαλί)· πύλη displayed-precision (Η).
+  if (effectiveBeaufort <= 2 && (waveHeightM === undefined || (atDisplayedPrecisionM(waveHeightM) as number) < 0.4) && swimmingScore >= 85) {
     return 'excellent';
   }
   return 'good';
