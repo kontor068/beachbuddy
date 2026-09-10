@@ -228,6 +228,39 @@ const shifted = applyForecastUncertaintyToDays(days.slice(1), onlyPlusTwo);
 if (shifted[0].forecastUncertain || shifted[1].forecastUncertain !== true) {
   fail('Ε', 'μετά την πτώση της πρώτης ημέρας η σήμανση μετακινήθηκε — η αντιστοίχιση γίνεται με δείκτη αντί για ημερομηνία');
 }
+// ── Ε2. Η απάντηση που το CDN κράτησε από ΧΘΕΣ (10/09/2026) ────────────────────────────────────
+// Το endpoint μένει στο CDN 6ω + 6ω stale. Απάντηση που υπολογίστηκε χθες το βράδυ και φτάνει
+// μετά τα μεσάνυχτα έχει το «lead» μετρημένο από ΧΘΕΣ. Ως τις 10/09 ο browser το πρόσθετε στο
+// ΔΙΚΟ του σήμερα, οπότε το φρένο της αυριανής πήγαινε στη μεθαυριανή — και το χθεσινό «lead 1»,
+// που είναι το ΣΗΜΕΡΑ, φρενάριζε το σήμερα. Ο server στέλνει πια την ημερομηνία κάθε μέρας.
+const keyAt = (offset) => { const d = new Date(now.getTime()); d.setDate(d.getDate() + offset); return wallClockDayKey(d); };
+const staleFromYesterday = {
+  available: true,
+  days: [
+    { lead: 0, date: keyAt(-1), uncertain: true, uncertainHours: 8, worstGapRungs: 4 }, // χθες
+    { lead: 1, date: keyAt(0), uncertain: true, uncertainHours: 8, worstGapRungs: 4 },  // ΣΗΜΕΡΑ
+    { lead: 2, date: keyAt(1), uncertain: true, uncertainHours: 8, worstGapRungs: 4 },  // αύριο
+    { lead: 3, date: keyAt(2), uncertain: false, uncertainHours: 0, worstGapRungs: 1 }, // μεθαύριο, βέβαιη
+  ],
+};
+const fromStale = uncertainDaysFromResponse(staleFromYesterday, now) || {};
+if (fromStale[todayKey]) fail('Ε2', 'χθεσινή απάντηση φρενάρισε το ΣΗΜΕΡΑ (το χθεσινό «lead 1») — παραβιάζει το «ποτέ σήμερα»');
+if (fromStale[keyAt(1)] !== true) fail('Ε2', 'η αβεβαιότητα της ΑΥΡΙΑΝΗΣ χάθηκε — η απάντηση κλειδώθηκε με δείκτη αντί για ημερομηνία');
+if (fromStale[keyAt(2)]) fail('Ε2', 'η βέβαιη μεθαυριανή φρενάρισε — η σήμανση μετακινήθηκε μία μέρα μπροστά (το λάθος πριν τις 10/09)');
+if (fromStale[keyAt(-1)]) fail('Ε2', 'σημαδεύτηκε μέρα του ΠΑΡΕΛΘΟΝΤΟΣ');
+// Αυτοσαμποτάζ: η ΙΔΙΑ απάντηση χωρίς ημερομηνίες πέφτει στην εφεδρεία του δείκτη και ΠΡΕΠΕΙ να
+// δείχνει το παλιό λάθος — το χθεσινό «lead 2» προσγειώνεται στη ΒΕΒΑΙΗ μεθαυριανή. Αν δεν το
+// δείχνει, το σενάριο δεν αναπαράγει αυτό που ισχυρίζεται ότι διορθώνει.
+const legacy = uncertainDaysFromResponse({ available: true, days: staleFromYesterday.days.map(({ date, ...rest }) => rest) }, now) || {};
+if (legacy[keyAt(2)] !== true) {
+  fail('Ε2', 'χωρίς ημερομηνία η εφεδρεία του δείκτη δεν συμπεριφέρθηκε όπως πριν — το σενάριο δεν δοκιμάζει αυτό που λέει');
+}
+// Και ο server στέλνει όντως την ημερομηνία (αλλιώς η διόρθωση του πελάτη δεν ανάβει ποτέ).
+const serverSource = readFileSync(path.join(root, 'netlify/functions/ensemble-spread.mjs'), 'utf8');
+if (!/date:\s*typeof times\[lead \* 24\] === 'string'/.test(serverSource)) {
+  fail('Ε2', 'το netlify/functions/ensemble-spread.mjs δεν στέλνει πια `date` ανά μέρα — ο browser θα ξαναπέσει στον δείκτη');
+}
+console.log(`Ε2. η χθεσινή απάντηση μετά τα μεσάνυχτα πέφτει στη σωστή μέρα ... ${failures.length > beforeE ? '❌' : '✅'}`);
 console.log(`Ε. ημερομηνία, όχι δείκτης ... ${failures.length > beforeE ? '❌' : '✅'}`);
 
 // ── ΣΤ. Αυτοσαμποτάζ ─────────────────────────────────────────────────────────────────────────

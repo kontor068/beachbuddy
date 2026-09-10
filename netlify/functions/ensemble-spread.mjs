@@ -143,8 +143,13 @@ export default async (request) => {
     model: MODEL,
     members: memberKeys.length,
     // Ένα ναι/όχι ανά ημέρα πρόγνωσης, 0 = σήμερα. Αυτό είναι ΟΛΟ το ωφέλιμο φορτίο.
+    // `date` (10/09/2026): η ΠΡΑΓΜΑΤΙΚΗ ημερομηνία Ελλάδας κάθε μέρας, από τις ώρες του ίδιου του
+    // upstream (timezone=Europe/Athens). Χωρίς αυτήν ο browser πρόσθετε το `lead` στη ΔΙΚΗ του
+    // ημερομηνία — και μια απάντηση που το CDN κράτησε από χθες (έως 6ω + 6ω) μετακινούσε το φρένο
+    // μία μέρα μπροστά μετά τα μεσάνυχτα. Το `lead` μένει για παλιούς πελάτες στη μνήμη τους.
     days: uncertainHours.map((n, lead) => ({
       lead,
+      date: typeof times[lead * 24] === 'string' ? times[lead * 24].slice(0, 10) : undefined,
       uncertain: n >= UNCERTAIN_HOURS_FOR_DAY,
       uncertainHours: n,
       worstGapRungs: worstGap[lead],

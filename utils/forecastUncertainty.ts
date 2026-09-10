@@ -55,15 +55,21 @@ export type UncertainByDay = Readonly<Record<string, boolean>>;
 /** Η απάντηση του `/api/ensemble-spread`, όπως τη γράφει το netlify/functions/ensemble-spread.mjs. */
 export interface EnsembleSpreadResponse {
   available?: boolean;
-  days?: Array<{ lead?: number; uncertain?: boolean; uncertainHours?: number; worstGapRungs?: number }> | null;
+  days?: Array<{ lead?: number; date?: string; uncertain?: boolean; uncertainHours?: number; worstGapRungs?: number }> | null;
 }
 
 /**
  * Μετατρέπει την απάντηση του endpoint σε κλειδιά ημερομηνίας.
  *
- * Το `lead` είναι σχετικό με τη στιγμή που απάντησε το upstream· εδώ γίνεται απόλυτη ημερομηνία
- * ώστε μια απάντηση από τη μνήμη του CDN (έως 6 ώρες) να μη μετακινηθεί κατά μία μέρα αν στο
- * μεταξύ άλλαξε η ημερομηνία στην Ελλάδα.
+ * ⚠️ ΔΙΟΡΘΩΘΗΚΕ 10/09/2026. Το σχόλιο εδώ υποσχόταν ότι μια απάντηση από τη μνήμη του CDN δεν
+ * μετακινείται κατά μία μέρα — αλλά ο κώδικας πρόσθετε το `lead` στο `now` του BROWSER, όχι στη
+ * μέρα που το υπολόγισε το upstream. Απάντηση των 22:00 σερβιρισμένη στη 01:00 (s-maxage 6ω + swr
+ * 6ω) έβαζε το φρένο της αυριανής στη μεθαυριανή. Τώρα:
+ *   • κλειδί = η ΗΜΕΡΟΜΗΝΙΑ που στέλνει ο server (`date`, ώρα Ελλάδας του upstream)· το `lead`
+ *     μένει μόνο εφεδρεία για απάντηση χωρίς `date` (παλιά μνήμη CDN/συσκευής)·
+ *   • «ποτέ σήμερα» κρίνεται στην ΗΜΕΡΟΜΗΝΙΑ, όχι στο `lead`: το «lead 1» μιας χθεσινής απάντησης
+ *     είναι το ΣΗΜΕΡΑ και δεν φρενάρεται, όπως ορίζει η βίβλος (§ΑΞ3). Ούτε και παρελθόν.
+ * Η πύλη forecast-uncertainty-brake ξαναπαίζει ακριβώς το σενάριο των μεσανύχτων.
  */
 export const uncertainDaysFromResponse = (
   payload: EnsembleSpreadResponse | null | undefined,
@@ -71,13 +77,21 @@ export const uncertainDaysFromResponse = (
 ): UncertainByDay | null => {
   if (!payload?.available || !Array.isArray(payload.days)) return null;
   const out: Record<string, boolean> = {};
+  const todayKey = wallClockDayKey(now);
   for (const day of payload.days) {
     if (typeof day?.lead !== 'number' || !Number.isFinite(day.lead)) continue;
     if (day.lead < UNCERTAINTY_MIN_LEAD_DAYS) continue; // ποτέ σήμερα, ούτε καν στα δεδομένα
     if (day.uncertain !== true) continue;               // μόνο τα ΝΑΙ ταξιδεύουν
-    const stamp = new Date(now.getTime());
-    stamp.setDate(stamp.getDate() + day.lead);
-    out[wallClockDayKey(stamp)] = true;
+    let key: string;
+    if (typeof day.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day.date)) {
+      key = day.date;
+    } else {
+      const stamp = new Date(now.getTime());
+      stamp.setDate(stamp.getDate() + day.lead);
+      key = wallClockDayKey(stamp);
+    }
+    if (key <= todayKey) continue; // σήμερα ή παρελθόν από μπαγιάτικη απάντηση: ποτέ φρένο
+    out[key] = true;
   }
   return out;
 };
