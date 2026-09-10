@@ -6,7 +6,37 @@ const normalizeAmenityText = value => String(value || '')
   .replace(/\s+/g, ' ')
   .trim();
 
-const termInText = (text, term) => text.includes(normalizeAmenityText(term));
+// «ΧΩΡΙΣ ΞΑΠΛΩΣΤΡΕΣ» ΔΕΝ ΣΗΜΑΙΝΕΙ ΞΑΠΛΩΣΤΡΕΣ (10/09/2026).
+//
+// Until now a term counted wherever its letters appeared, so «χωρίς ομπρέλες/ξαπλώστρες» on
+// Ζέπκου, «φέρνεις δική σου ομπρέλα» on Σχοινιά and «χωρίς ξαπλώστρες» on Αχίλλι all made the
+// card say «Ξαπλώστρες: ναι» — the beach's own text said the opposite of what we printed.
+// Measured nationally before this change: 480 amenity lines carry a negation word, and exactly
+// 5 beaches changed a card flag (4 sunbeds, 1 taverna), every one of them from a false «yes».
+//
+// A term is negated only when a negation word stands BEFORE it inside the same clause. Commas,
+// semicolons and middle dots end a clause; a slash does not, because it means "or" here
+// («χωρίς ομπρέλες/ξαπλώστρες» negates both). So «ταβέρνα κοντά, χωρίς parking» still has a
+// taverna and has no parking.
+const NEGATION_BEFORE_TERM = /(^|\s)(χωρις|δεν υπαρχ\S*|δεν εχει|καμια|κανενα|ουτε|no|without|not|φερνεις|φερτε|bring your own|byo)(\s|$)/;
+const CLAUSE_BREAK = /[,;·]/g;
+
+const isNegatedAt = (text, index) => {
+  let start = 0;
+  CLAUSE_BREAK.lastIndex = 0;
+  let match;
+  while ((match = CLAUSE_BREAK.exec(text)) !== null && match.index < index) start = match.index + 1;
+  return NEGATION_BEFORE_TERM.test(text.slice(start, index));
+};
+
+const termInText = (text, term) => {
+  const needle = normalizeAmenityText(term);
+  if (!needle) return false;
+  for (let at = text.indexOf(needle); at !== -1; at = text.indexOf(needle, at + 1)) {
+    if (!isNegatedAt(text, at)) return true;
+  }
+  return false;
+};
 
 export const BEACH_BAR_AMENITY_TERMS = [
   'beach bar',

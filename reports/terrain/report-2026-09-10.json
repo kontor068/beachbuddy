@@ -1,72 +1,17 @@
 {
-  "generatedAt": "2026-09-10T06:17:30.429Z",
+  "generatedAt": "2026-09-10T07:14:20.867Z",
   "totals": {
-    "beaches": 41,
-    "osmHasSurface": 2,
-    "match": 2,
+    "beaches": 130,
+    "osmHasSurface": 25,
+    "match": 25,
     "mismatch": 0
   },
   "mismatches": [],
   "all": [
     {
-      "id": 1431,
-      "name": "Αυλώνας",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1432,
-      "name": "Διαπόρι (δυτική ακτή)",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1433,
-      "name": "Γομάτι",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1434,
-      "name": "Καρβουνόλακκα",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "coarse_sand",
-        "pebbles",
-        "rocks"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1435,
-      "name": "Κάσπακας",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1436,
-      "name": "Καταπόδι",
-      "regionId": "north-aegean-lemnos",
+      "id": 193,
+      "name": "Αγία Ειρήνη Καρύστου",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "pebbles",
         "rocks"
@@ -75,21 +20,9 @@
       "status": "no-surface"
     },
     {
-      "id": 1437,
-      "name": "Κόκκινα (βόρειος όρμος)",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "pebbles",
-        "rocks"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1438,
-      "name": "Λιμάνι Αγιάς",
-      "regionId": "north-aegean-lemnos",
+      "id": 194,
+      "name": "Αγία Ειρήνη Μαρμαρίου",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
@@ -98,42 +31,9 @@
       "status": "no-surface"
     },
     {
-      "id": 1439,
-      "name": "Λουρί",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1440,
-      "name": "Παναγιάς Πηγάδελι",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "coarse_sand",
-        "rocks"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1441,
-      "name": "Παρθενόμυθος",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1442,
-      "name": "Σκανδάλη",
-      "regionId": "north-aegean-lemnos",
+      "id": 195,
+      "name": "Αγία Παρασκευή",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
@@ -142,9 +42,9 @@
       "status": "no-surface"
     },
     {
-      "id": 1443,
-      "name": "Σκίδι",
-      "regionId": "north-aegean-lemnos",
+      "id": 196,
+      "name": "Άγιος Αθανάσιος",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "pebbles",
         "rocks"
@@ -153,9 +53,20 @@
       "status": "no-surface"
     },
     {
-      "id": 1444,
-      "name": "Τρυγή",
-      "regionId": "north-aegean-lemnos",
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 198,
+      "name": "Άγιος Βασίλειος",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
@@ -164,31 +75,54 @@
       "status": "no-surface"
     },
     {
-      "id": 1445,
-      "name": "Ζεματάς",
-      "regionId": "north-aegean-lemnos",
+      "id": 199,
+      "name": "Άγιος Δημήτριος",
+      "regionId": "central-greece-evia",
       "ourTypes": [
-        "fine_sand"
+        "pebbles",
+        "coarse_sand"
       ],
-      "osmSurface": "sand",
-      "osmCat": "SAND",
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 200,
+      "name": "Άγιος Μηνάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 201,
+      "name": "Άγιος Νικόλαος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
       "status": "match"
     },
     {
-      "id": 1446,
-      "name": "Άγιος Ιωάννης",
-      "regionId": "north-aegean-lemnos",
+      "id": 202,
+      "name": "Αγκάλη",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
       ],
       "osmSurface": null,
-      "status": "no-surface"
+      "status": "no-osm-beach"
     },
     {
-      "id": 1447,
-      "name": "Βάθρακας",
-      "regionId": "north-aegean-lemnos",
+      "id": 203,
+      "name": "Ακρωτήρι",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "pebbles",
         "rocks"
@@ -197,213 +131,20 @@
       "status": "no-surface"
     },
     {
-      "id": 1448,
-      "name": "Διαπόρι (ανατολική ακτή)",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1449,
-      "name": "Κέρος",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1450,
-      "name": "Καλλιθέα",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1451,
-      "name": "Κατάλακκο",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1452,
-      "name": "Κόκκινα (νότιος όρμος)",
-      "regionId": "north-aegean-lemnos",
+      "id": 204,
+      "name": "Ακτή Βουβάλι",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "pebbles",
-        "rocks"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1453,
-      "name": "Μαντρί",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
         "coarse_sand"
       ],
       "osmSurface": null,
       "status": "no-surface"
     },
     {
-      "id": 1454,
-      "name": "Μεγάλο Φαναράκι",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1455,
-      "name": "Μικρό Φαναράκι",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1456,
-      "name": "Νεφτίνα",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1457,
-      "name": "Εβγάτης",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1458,
-      "name": "Θάνος",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1459,
-      "name": "Παραλία Κότσινα",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1460,
-      "name": "Παραλία Μακρύς Γυαλός",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1461,
-      "name": "Πλατύ",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1462,
-      "name": "Στίβι ή Πλαγίσος Μώλος",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1463,
-      "name": "Πλάκα",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "coarse_sand",
-        "pebbles"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1464,
-      "name": "Ρηχά νερά",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1465,
-      "name": "Ρωμαίικος Γυαλός",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "coarse_sand",
-        "pebbles"
-      ],
-      "osmSurface": null,
-      "status": "no-surface"
-    },
-    {
-      "id": 1466,
-      "name": "Σαράβαρη",
-      "regionId": "north-aegean-lemnos",
-      "ourTypes": [
-        "fine_sand",
-        "coarse_sand"
-      ],
-      "osmSurface": null,
-      "status": "no-osm-beach"
-    },
-    {
-      "id": 1467,
-      "name": "Τηγάνι",
-      "regionId": "north-aegean-lemnos",
+      "id": 205,
+      "name": "Αλυκές",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
@@ -413,9 +154,65 @@
       "status": "match"
     },
     {
-      "id": 1468,
-      "name": "Τούρκικος Γιαλός",
-      "regionId": "north-aegean-lemnos",
+      "id": 206,
+      "name": "Ανεμάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 208,
+      "name": "Αρχάμπολη",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 209,
+      "name": "Ατάλαντος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 210,
+      "name": "Βαθυχάντακο",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 211,
+      "name": "Βαλοπούλα",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "coarse_sand",
         "pebbles"
@@ -424,20 +221,532 @@
       "status": "no-surface"
     },
     {
-      "id": 1469,
-      "name": "Φαρακλού",
-      "regionId": "north-aegean-lemnos",
+      "id": 212,
+      "name": "Βαρελλαίων",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": "cobblestone",
+      "osmCat": "ROCKS",
+      "status": "match"
+    },
+    {
+      "id": 213,
+      "name": "Βύθουρη",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_pebbles",
+        "pebbles"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 214,
+      "name": "Γάιδαρος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 215,
+      "name": "Γαλατάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 216,
+      "name": "Γαλλίδα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 217,
+      "name": "Γιαννίτσι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 218,
+      "name": "Γρεγολίμανο",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 219,
+      "name": "Δαφνοπόταμος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 220,
+      "name": "Ελιά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 221,
+      "name": "Ζάστανα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": "gravel",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 222,
+      "name": "Ζέφυρος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "dirt",
+      "osmCat": null,
+      "status": "osm-other"
+    },
+    {
+      "id": 223,
+      "name": "Θαψά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 224,
+      "name": "Κάβος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 225,
+      "name": "Κακιά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 226,
+      "name": "Κακολίμανο",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 227,
+      "name": "Καλάμι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 228,
+      "name": "Καλαμίτσι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 229,
+      "name": "Κάλαμος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 230,
+      "name": "Καναπίτσα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 231,
+      "name": "Κατσούλι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 232,
+      "name": "Κεφάλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 233,
+      "name": "Κλιμάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 234,
+      "name": "Κοκκινιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 235,
+      "name": "Κορασίδα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 236,
+      "name": "Κόσκινα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 237,
+      "name": "Κουρέντι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 238,
+      "name": "Κρεμάλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 239,
+      "name": "Λάκα Σαραβάνου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 240,
+      "name": "Λευκή Ακτή",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 241,
+      "name": "Λημνιώνας Μαρμαρίου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 242,
+      "name": "Λιανή Άμμος Χαλκίδας",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "Παραλία_Λιανή_Άμμος",
+      "osmCat": null,
+      "status": "osm-other"
+    },
+    {
+      "id": 243,
+      "name": "Λιανή Άμμος Πετριών",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 244,
+      "name": "Λιβαδάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 245,
+      "name": "Λιβαδάκια",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 246,
+      "name": "Λιβάδι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 247,
+      "name": "Λιμνιώνα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 248,
+      "name": "Λιμνιωνάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 249,
+      "name": "Λιμνιώνας Ψαχνών",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 250,
+      "name": "Λινάρι",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "rocks",
         "pebbles"
       ],
+      "osmSurface": "Άμμος",
+      "osmCat": null,
+      "status": "osm-other"
+    },
+    {
+      "id": 251,
+      "name": "Λουτράκι Μπούρου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
       "osmSurface": null,
       "status": "no-surface"
     },
     {
-      "id": 1470,
-      "name": "Χαβούλι",
-      "regionId": "north-aegean-lemnos",
+      "id": 252,
+      "name": "Μάγειρας",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 253,
+      "name": "Μακρύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 254,
+      "name": "Μάρμαρα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 255,
+      "name": "Μαύρικας",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 256,
+      "name": "Μεγάλη Άμμος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 257,
+      "name": "Μικρή Κεφάλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 258,
+      "name": "Μνήματα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 259,
+      "name": "Μπουρνόντας",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "fine_sand"
       ],
@@ -445,12 +754,700 @@
       "status": "no-surface"
     },
     {
-      "id": 3184,
-      "name": "Άγιος Ερμόλαος",
-      "regionId": "north-aegean-lemnos",
+      "id": 260,
+      "name": "Ναυτικό",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 261,
+      "name": "Νησιώτισσα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": "fine_gravel",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 262,
+      "name": "Παπαθανασίου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 263,
+      "name": "Παραλία Αγίου Νικολάου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 264,
+      "name": "Παραλία Ακταίου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 265,
+      "name": "Παραλία \"Αστέρια\"",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 266,
+      "name": "Παραλία Αχλαδίου (Φραγκάκη)",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 267,
+      "name": "Παραλία Βλαχιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 268,
+      "name": "Παραλία Γιάλτρων",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 269,
+      "name": "Παραλία Δάφνης",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 270,
+      "name": "Παραλία Εύα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "dirt/sand",
+      "osmCat": null,
+      "status": "osm-other"
+    },
+    {
+      "id": 271,
+      "name": "Παραλία Καλλιανού",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 272,
+      "name": "Παραλία Κοτσικιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 273,
+      "name": "Παραλία Κρύας Βρύσης",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 274,
+      "name": "Παραλία Μετοχίου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 275,
+      "name": "Παραλία Μουρτιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 276,
+      "name": "Παραλία Πευκί",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 277,
+      "name": "Παραλία Πολιτικών",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 278,
+      "name": "Παραλία Ροδάκι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 279,
+      "name": "Παραλία Σκιάθου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 280,
+      "name": "Παραλία τσιρμοκόκκαλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 281,
+      "name": "Παραλία Φάρου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 282,
+      "name": "Παραλία Φηγιά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 283,
+      "name": "Παραλία Ψαροπούλι/Βασιλικών",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-osm-beach"
+    },
+    {
+      "id": 284,
+      "name": "Πέλαγος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 285,
+      "name": "Πέρα Κατσούλι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 286,
+      "name": "Πετάλη",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 287,
+      "name": "Πηνελόπη",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 288,
+      "name": "Πίσω Συκιά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 289,
+      "name": "Πλατύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 290,
+      "name": "Πόρτο Λάφια",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 291,
+      "name": "Πόρτο Πεύκο",
+      "regionId": "central-greece-evia",
       "ourTypes": [
         "fine_sand",
         "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 292,
+      "name": "Ποτάμι Καρύστου",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 293,
+      "name": "Ποτάμι Βλαχιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 294,
+      "name": "Πρασίδι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 295,
+      "name": "Ροδιές",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 296,
+      "name": "Σαρακήνικο Βλαχιάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 297,
+      "name": "Σαρακήνικο Αγίας Άννας",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 298,
+      "name": "Σγούρα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 299,
+      "name": "Σουβάλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 300,
+      "name": "Σούρζα Μπουτ",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 301,
+      "name": "Σουτσίνι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 302,
+      "name": "Σπίθα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 303,
+      "name": "Στενή",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 304,
+      "name": "Στόμιο",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 305,
+      "name": "Συκιές",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 306,
+      "name": "Σχοινοδαύλεια",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 307,
+      "name": "Τριανταφυλλένια",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 308,
+      "name": "Τσίλαρος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 309,
+      "name": "Τσοκαΐτι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 310,
+      "name": "Χερόμυλος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 311,
+      "name": "Χιλιαδού",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "coarse_sand",
+        "pebbles"
+      ],
+      "osmSurface": "sand",
+      "osmCat": "SAND",
+      "status": "match"
+    },
+    {
+      "id": 312,
+      "name": "Χιλιαδού παραλία Γυμνιστών",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": "pebblestone",
+      "osmCat": "PEBBLES",
+      "status": "match"
+    },
+    {
+      "id": 313,
+      "name": "Χρυσή ακτή",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "coarse_sand"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 314,
+      "name": "Ψιλή Άμμος",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "fine_sand",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "no-surface"
+    },
+    {
+      "id": 3062,
+      "name": "Αλμυρίχι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3114,
+      "name": "Αμυγδαλιά",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3115,
+      "name": "Ευαγγελισμός",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3116,
+      "name": "Ζαχαριάς",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3117,
+      "name": "Καστρί",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3118,
+      "name": "Σπηλίτσες",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "pebbles",
+        "sand",
+        "rocks"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3119,
+      "name": "Παραλία Μαγούλα",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles"
+      ],
+      "osmSurface": null,
+      "status": "error"
+    },
+    {
+      "id": 3121,
+      "name": "Παραλία Πήλι",
+      "regionId": "central-greece-evia",
+      "ourTypes": [
+        "sand",
+        "pebbles"
       ],
       "osmSurface": null,
       "status": "error"

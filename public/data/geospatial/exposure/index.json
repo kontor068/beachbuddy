@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-25T07:13:36.534Z",
+  "generatedAt": "2026-09-10T11:01:45.148Z",
   "purpose": "Offline directional geospatial exposure baseline for CalmBeach. Not user-facing proof of calm/protected conditions.",
   "source": {
     "landMask": {
       "name": "High-resolution coastline (greece-land-osm-split.geojson)",
-      "url": "/workspaces/beachbuddy/.tmp/geospatial/greece-land-osm-split.geojson",
+      "url": "C:\\Users\\Miltos\\Desktop\\beach\\.tmp\\geospatial\\greece-land-osm-split.geojson",
       "license": "Public domain / open data",
       "confidence": "high",
       "notes": "High-resolution coastline upgrade supplied via --land-geojson. Resolves headlands, islets and coves at beach scale."
@@ -41,10 +41,10 @@
   },
   "summary": {
     "regionCount": 110,
-    "beachCount": 2873,
-    "generatedProfiles": 2873,
+    "beachCount": 2872,
+    "generatedProfiles": 2872,
     "missingCoordinates": 0,
-    "indexedLandPolygons": 15976,
+    "indexedLandPolygons": 15946,
     "regions": {
       "attica-aegina": {
         "regionName": "Aegina",
@@ -864,47 +864,47 @@
       },
       "central-macedonia-halkidiki-mainland": {
         "regionName": "Halkidiki",
-        "beachCount": 133,
-        "generatedProfiles": 133,
+        "beachCount": 132,
+        "generatedProfiles": 132,
         "missingCoordinates": 0,
         "sectors": {
           "N": {
-            "protected": 65,
+            "protected": 64,
             "partial": 31,
             "exposed": 37
           },
           "NE": {
-            "protected": 60,
+            "protected": 59,
             "partial": 17,
             "exposed": 56
           },
           "E": {
-            "protected": 56,
+            "protected": 55,
             "partial": 25,
             "exposed": 52
           },
           "SE": {
             "protected": 65,
             "partial": 30,
-            "exposed": 38
+            "exposed": 37
           },
           "S": {
             "protected": 72,
             "partial": 22,
-            "exposed": 39
+            "exposed": 38
           },
           "SW": {
             "protected": 79,
             "partial": 8,
-            "exposed": 46
+            "exposed": 45
           },
           "W": {
             "protected": 78,
             "partial": 21,
-            "exposed": 34
+            "exposed": 33
           },
           "NW": {
-            "protected": 76,
+            "protected": 75,
             "partial": 39,
             "exposed": 18
           }

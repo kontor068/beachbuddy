@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-09-10T11:17:06.148Z",
+  "radiusM": 200,
+  "pavedM": 100,
+  "trackM": 150,
+  "partial": true,
+  "results": [
+    {
+      "id": 194,
+      "name": "Αγία Ειρήνη Μαρμαρίου",
+      "regionId": "central-greece-evia",
+      "lat": 38.0829,
+      "lon": 24.28413,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 20,
+      "evidence": "πλησιέστερος δρόμος way/822132709 highway=unclassified surface=ground στα 20 m — δηλωμένος άστρωτος — δεν στοιχειοθετεί άσφαλτο"
+    },
+    {
+      "id": 196,
+      "name": "Άγιος Αθανάσιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00736,
+      "lon": 24.43941,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 71,
+      "evidence": "OSM way/959654608 highway=residential (κατηγορία πάντα στρωμένη) στα 71 m"
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "lat": 38.00803,
+      "lon": 24.43653,
+      "verdict": "asphalt_road",
+      "label": "Πρόσβαση με άσφαλτο",
+      "distM": 37,
+      "evidence": "OSM way/208079621 highway=residential (κατηγορία πάντα στρωμένη) στα 37 m"
+    },
+    {
+      "id": 203,
+      "name": "Ακρωτήρι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 206,
+      "name": "Ανεμάκι",
+      "regionId": "central-greece-evia",
+      "lat": 38.67235,
+      "lon": 23.91184,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 44,
+      "evidence": "μόνο μονοπάτι κοντά (way/240764695 highway=footway στα 44 m) — δεν ταξινομείται αυτόματα"
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "lat": 38.40449,
+      "lon": 23.99741,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 51,
+      "evidence": "πλησιέστερος δρόμος way/317811970 highway=service στα 51 m — η κατηγορία του δεν αποδεικνύει στρωμένο δρόμο και δεν φέρει surface"
+    },
+    {
+      "id": 212,
+      "name": "Βαρελλαίων",
+      "regionId": "central-greece-evia",
+      "lat": 38.16693,
+      "lon": 24.32879,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 57,
+      "evidence": "πλησιέστερος δρόμος way/208278009 highway=unclassified surface=ground στα 57 m — δηλωμένος άστρωτος — δεν στοιχειοθετεί άσφαλτο"
+    },
+    {
+      "id": 217,
+      "name": "Γιαννίτσι",
+      "regionId": "central-greece-evia",
+      "lat": 38.15871,
+      "lon": 24.39763,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 94,
+      "evidence": "πλησιέστερος δρόμος way/822439120 highway=service surface=ground στα 94 m — δηλωμένος άστρωτος — δεν στοιχειοθετεί άσφαλτο"
+    },
+    {
+      "id": 220,
+      "name": "Ελιά",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 221,
+      "name": "Ζάστανα",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 231,
+      "name": "Κατσούλι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 234,
+      "name": "Κοκκινιάς",
+      "regionId": "central-greece-evia",
+      "lat": 38.67852,
+      "lon": 23.89218,
+      "verdict": "unknown",
+      "label": null,
+      "distM": 73,
+      "evidence": "πλησιέστερος δρόμος way/954151367 highway=service στα 73 m — η κατηγορία του δεν αποδεικνύει στρωμένο δρόμο και δεν φέρει surface"
+    },
+    {
+      "id": 239,
+      "name": "Λάκα Σαραβάνου",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    },
+    {
+      "id": 244,
+      "name": "Λιβαδάκι",
+      "regionId": "central-greece-evia",
+      "verdict": "RETRY",
+      "evidence": "Overpass δεν απάντησε"
+    }
+  ]
+}

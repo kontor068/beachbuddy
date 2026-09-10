@@ -1,0 +1,264 @@
+{
+  "generatedAt": "2026-09-10T06:57:03.806Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 130,
+    "omissionsStrong": 0,
+    "omissionsMedium": 16,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 0
+  },
+  "omissions": [
+    {
+      "id": 223,
+      "name": "Θαψά",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "πρόσβαση και με καΐκι εποχικά από Κύμη",
+        "απαιτείται κατάλληλο όχημα"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 1033
+    },
+    {
+      "id": 306,
+      "name": "Σχοινοδαύλεια",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"\" (fast_food_restaurant, 70m)"
+      ],
+      "ratingCount": 1004
+    },
+    {
+      "id": 261,
+      "name": "Νησιώτισσα",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 920
+    },
+    {
+      "id": 249,
+      "name": "Λιμνιώνας Ψαχνών",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 775
+    },
+    {
+      "id": 195,
+      "name": "Αγία Παρασκευή",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "εποχική καντίνα κοντά",
+        "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα (καλοκαιρινή)\" (restaurant, 37m)"
+      ],
+      "ratingCount": 745
+    },
+    {
+      "id": 226,
+      "name": "Κακολίμανο",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καντίνα κοντά",
+        "γήπεδο beach volley",
+        "ταβέρνες/καφέ στον κοντινό οικισμό",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Κακολίμανο (Καραβάς Γεώργιος)\" (cafe, 50m)"
+      ],
+      "ratingCount": 310
+    },
+    {
+      "id": 268,
+      "name": "Παραλία Γιάλτρων",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"ST/BY\" (cafe, 45m)"
+      ],
+      "ratingCount": 132
+    },
+    {
+      "id": 295,
+      "name": "Ροδιές",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Beach Cafe/Bar\" (fast_food_restaurant, 33m)"
+      ],
+      "ratingCount": 100
+    },
+    {
+      "id": 253,
+      "name": "Μακρύς Γιαλός",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Meltémia\" (restaurant, 73m)"
+      ],
+      "ratingCount": 6
+    },
+    {
+      "id": 290,
+      "name": "Πόρτο Λάφια",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Καντίνα Πόρτο Λάφια\" (restaurant, 44m)"
+      ],
+      "ratingCount": 1
+    },
+    {
+      "id": 197,
+      "name": "Άγιος Αντώνιος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση",
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Το Κύμα\" (restaurant, 45m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 207,
+      "name": "Αράλιμος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "περιορισμένη ή άτυπη στάθμευση"
+      ],
+      "evidence": [
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 222,
+      "name": "Ζέφυρος",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ/beach bar κοντά",
+        "παροχές Νέας Αρτάκης κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Ζέφυρος\" (cafe, 68m)",
+        "beach pin's own Google type is food: restaurant"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 263,
+      "name": "Παραλία Αγίου Νικολάου",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνα κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Nayra cafe bar\" (coffee_shop, 45m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 281,
+      "name": "Παραλία Φάρου",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνες κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"To Thalami\" (restaurant, 59m)"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 303,
+      "name": "Στενή",
+      "regionId": "central-greece-evia",
+      "strength": "medium",
+      "currentAmenities": [
+        "ελεύθερη παραλία χωρίς πλήρη οργάνωση",
+        "περιορισμένη στάθμευση ή στάθμευση δρόμου κοντά",
+        "ταβέρνα κοντά"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Θάλασσα\" (restaurant, 43m)"
+      ],
+      "ratingCount": null
+    }
+  ],
+  "errors": []
+}

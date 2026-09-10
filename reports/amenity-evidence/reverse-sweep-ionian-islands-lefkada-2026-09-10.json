@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-09-10T06:57:03.133Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 33,
+    "omissionsStrong": 0,
+    "omissionsMedium": 2,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 1
+  },
+  "omissions": [
+    {
+      "id": 1167,
+      "name": "Μύλος",
+      "regionId": "ionian-islands-lefkada",
+      "strength": "medium",
+      "currentAmenities": [
+        "καραβάκι από Άγιο Νικήτα εποχικά"
+      ],
+      "evidence": [
+        "bar/resort 179m away: \"Utopia Sunset\" (bar)"
+      ],
+      "ratingCount": 6161
+    },
+    {
+      "id": 1140,
+      "name": "Δεσίμι",
+      "regionId": "ionian-islands-lefkada",
+      "strength": "medium",
+      "currentAmenities": [
+        "ταβέρνες",
+        "parking"
+      ],
+      "evidence": [
+        "taverna/cafe ON sand: \"Taverna Pirofani\" (restaurant, 78m)"
+      ],
+      "ratingCount": 1224
+    }
+  ],
+  "errors": [
+    {
+      "id": 1162,
+      "name": "Καβαλικευτά",
+      "regionId": "ionian-islands-lefkada",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "εστίαση εποχικά",
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "parking με χρέωση ή κοντά"
+      ],
+      "ratingCount": 2189
+    }
+  ]
+}

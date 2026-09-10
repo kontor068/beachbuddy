@@ -100,6 +100,13 @@ type BeachExposureProfile = {
    * περνάει από το `tsc --noEmit` του κύριου tsconfig και καμία πύλη δεν το μεταγλωττίζει.
    */
   windShadow?: string;
+  /**
+   * ΤΡΙΤΟ ΠΕΔΙΟ ΤΗΣ ΙΔΙΑΣ ΟΙΚΟΓΕΝΕΙΑΣ (10/09/2026). Το `marineCellTrusted: false` («αυτή η
+   * παραλία διαβάζει κύμα από νερό που δεν βλέπει») το γράφει το `scripts/auditMarineCellTrust`,
+   * όχι αυτό το αρχείο, και το φυλάει το `validateMarineCellTrustLedger`. Δηλώνεται μόνο για να
+   * μεταφέρεται αυτούσιο — δες `carriedMarineCellTrust` στη main().
+   */
+  marineCellTrusted?: boolean;
 };
 
 /** Ανάλυση της λεπτής βεντάλιας: 24 τιμές ανά 15°. */
@@ -603,6 +610,7 @@ const main = async () => {
 
   let carriedMarineSamplePoints = 0;
   let carriedWindShadows = 0;
+  let carriedMarineCellTrust = 0;
 
   regions.forEach(region => {
     const profiles: BeachExposureProfile[] = [];
@@ -623,7 +631,7 @@ const main = async () => {
      */
     arrivalFans?.clear();
 
-    const previousProfiles: Record<string, { marineSamplePoint?: unknown; windShadow?: unknown }> = (() => {
+    const previousProfiles: Record<string, { marineSamplePoint?: unknown; windShadow?: unknown; marineCellTrusted?: unknown }> = (() => {
       const previousPath = path.join(outputDirectory, `${region.regionId}.json`);
       if (!existsSync(previousPath)) return {};
       try {
@@ -656,6 +664,19 @@ const main = async () => {
       if (typeof carriedShadow === 'string' && carriedShadow.length === 24) {
         profile.windShadow = carriedShadow;
         carriedWindShadows += 1;
+      }
+      /**
+       * ΤΡΙΤΗ ΦΟΡΑ Η ΙΔΙΑ ΠΑΓΙΔΑ (10/09/2026). Μετακίνηση πινέζας στη Νέα Φλογητά (#3018) → η
+       * αλυσίδα §932 ξαναέχτισε τη Χαλκιδική με `--region`, και τέσσερις παραλίες (#464 Λιβάρι,
+       * #469 Λατούρα, #486 Γαλήνη, #3007 Αμμουλιανή) έχασαν σιωπηλά το `marineCellTrusted: false`.
+       * Το έπιασε το `validateMarineCellTrustLedger` — αλλιώς η σήμανση «διαβάζει ξένο νερό» θα
+       * είχε ξεθωριάσει όπως ακριβώς φοβόταν η κεφαλίδα του. Μεταφέρεται όπως τα δύο παραπάνω:
+       * αυτούσια, χωρίς νέα μέτρηση — αυτό το κάνει το `auditMarineCellTrust`.
+       */
+      const carriedTrust = previousProfiles[String(profile.beachId)]?.marineCellTrusted;
+      if (typeof carriedTrust === 'boolean') {
+        profile.marineCellTrusted = carriedTrust;
+        carriedMarineCellTrust += 1;
       }
       profiles.push(profile);
     });
@@ -828,6 +849,7 @@ const main = async () => {
     indexedLandPolygons: polygons.length,
     carriedMarineSamplePoints,
     carriedWindShadows,
+    carriedMarineCellTrust,
   }, null, 2));
 };
 

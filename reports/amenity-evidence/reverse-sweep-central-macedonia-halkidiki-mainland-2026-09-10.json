@@ -1,0 +1,264 @@
+{
+  "generatedAt": "2026-09-10T06:57:03.665Z",
+  "method": "reverse-amenity-sweep-v1 (no-API, on-disk signals only)",
+  "signalsUsed": {
+    "ownGoogleType": 1589,
+    "nearbyCacheCoverage": 1326,
+    "editorialStories": 824
+  },
+  "totals": {
+    "beachesScanned": 133,
+    "omissionsStrong": 0,
+    "omissionsMedium": 5,
+    "errorsOrganizedButEmpty": 0,
+    "errorsFlagMismatch": 0,
+    "errorsClaimUnsupported": 11
+  },
+  "omissions": [
+    {
+      "id": 474,
+      "name": "Παραλία Χρουσώ",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "χωρίς επιβεβαιωμένες σταθερές παροχές",
+        "περιορισμένο ή άτυπο parking"
+      ],
+      "evidence": [
+        "editorial story mentions a beach bar / club"
+      ],
+      "ratingCount": 2874
+    },
+    {
+      "id": 403,
+      "name": "Kakoudia",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 941
+    },
+    {
+      "id": 470,
+      "name": "Παραλία Καστρί",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 638
+    },
+    {
+      "id": 469,
+      "name": "Παραλία Λατούρα",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "parking κοντά",
+        "καμία οργανωμένη παροχή πάνω στην παραλία",
+        "φέρνεις δικό σου νερό/ομπρέλα"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 593
+    },
+    {
+      "id": 488,
+      "name": "Παραλία Σπαθιών",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "strength": "medium",
+      "currentAmenities": [
+        "καμία οργανωμένη παροχή",
+        "φέρνεις δικό σου νερό/ομπρέλα",
+        "snorkeling"
+      ],
+      "evidence": [
+        "editorial story mentions sunbeds/umbrellas"
+      ],
+      "ratingCount": 473
+    }
+  ],
+  "errors": [
+    {
+      "id": 391,
+      "name": "Dimotiki Plaz 1",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "ντους εποχικά",
+        "WC εποχικά",
+        "parking κοντά"
+      ],
+      "ratingCount": null
+    },
+    {
+      "id": 405,
+      "name": "Kallithea",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 1855
+    },
+    {
+      "id": 426,
+      "name": "Mikri Elia",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 92
+    },
+    {
+      "id": 435,
+      "name": "Plagia Flogita",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (6) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 613
+    },
+    {
+      "id": 445,
+      "name": "Sykia",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου",
+        "beach bar εποχικά",
+        "ξαπλώστρες, ομπρέλες εποχικά"
+      ],
+      "ratingCount": 0
+    },
+    {
+      "id": 455,
+      "name": "Vourvourou",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (1) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά",
+        "ομπρέλες εποχικά",
+        "beach bar εποχικά",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "parking κοντά ή στάθμευση δρόμου"
+      ],
+      "ratingCount": 423
+    },
+    {
+      "id": 462,
+      "name": "Παραλία Στρατώνι",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (3) show no food/bar within 200m",
+      "currentAmenities": [
+        "ξαπλώστρες εποχικά ή σε τμήματα",
+        "ομπρέλες εποχικά ή σε τμήματα",
+        "καφέ κοντά",
+        "ταβέρνα κοντά",
+        "παροχές οικισμού κοντά",
+        "parking ή στάθμευση δρόμου κοντά"
+      ],
+      "ratingCount": 197
+    },
+    {
+      "id": 463,
+      "name": "Παραλία Κάμπος (Πυργαδίκια)",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar but cached nearby POIs (2) show no food/bar within 200m",
+      "currentAmenities": [
+        "beach bar εποχικά",
+        "φαγητό/αναψυκτικά εποχικά",
+        "parking",
+        "ναυαγοσώστης εποχικά",
+        "snorkeling",
+        "θαλάσσια σπορ εποχικά"
+      ],
+      "ratingCount": 107
+    },
+    {
+      "id": 465,
+      "name": "Παραλία Σαλονικιού",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims bar sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "μικρά beach bars εποχικά",
+        "ξαπλώστρες/ομπρέλες σε τμήματα εποχικά",
+        "parking κοντά ή στάθμευση δρόμου",
+        "ελεύθερος χώρος"
+      ],
+      "ratingCount": 39
+    },
+    {
+      "id": 482,
+      "name": "Παραλία Ζέπκου",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "χωρίς ομπρέλες/ξαπλώστρες",
+        "πρόσβαση από κεντρικό δρόμο",
+        "camping στην ευρύτερη περιοχή"
+      ],
+      "ratingCount": 19
+    },
+    {
+      "id": 484,
+      "name": "Παραλία Σχοινιά",
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "kind": "claim-unsupported-by-cache",
+      "detail": "claims  sunbeds but cached nearby POIs (0) show no food/bar within 200m",
+      "currentAmenities": [
+        "χωρίς σταθερές παροχές",
+        "φέρνεις δική σου ομπρέλα/νερό",
+        "μικρό diving center εποχικά κοντά",
+        "περιορισμένο ή άτυπο parking"
+      ],
+      "ratingCount": 35
+    }
+  ]
+}
