@@ -1,0 +1,73 @@
+{
+  "window": [
+    "2026-09-03",
+    "2026-09-10"
+  ],
+  "points": [
+    "Πλατύ",
+    "Θάνος",
+    "Άγιος Ιωάννης",
+    "Κάσπακας",
+    "ανοιχτά δυτικά (έλεγχος)"
+  ],
+  "rows": [
+    {
+      "point": "Κάσπακας",
+      "id": 1435,
+      "pass": "s1c-sar-desc-0.01deg_P1D-i",
+      "hourUtc": "2026-09-05T04",
+      "sarKmh": 14.0,
+      "sarBft": 3,
+      "shownKmh": 7.6,
+      "shownBft": 2,
+      "modelGustKmh": 17.6
+    },
+    {
+      "point": "Άγιος Ιωάννης",
+      "id": 1446,
+      "pass": "s1c-sar-desc-0.01deg_P1D-i",
+      "hourUtc": "2026-09-05T04",
+      "sarKmh": 14.4,
+      "sarBft": 3,
+      "shownKmh": 7.6,
+      "shownBft": 2,
+      "modelGustKmh": 17.6
+    },
+    {
+      "point": "Πλατύ",
+      "id": 1461,
+      "pass": "s1c-sar-desc-0.01deg_P1D-i",
+      "hourUtc": "2026-09-05T04",
+      "sarKmh": 14.0,
+      "sarBft": 3,
+      "shownKmh": 7.6,
+      "shownBft": 2,
+      "modelGustKmh": 17.6
+    },
+    {
+      "point": "ανοιχτά δυτικά (έλεγχος)",
+      "id": "open",
+      "pass": "s1c-sar-desc-0.01deg_P1D-i",
+      "hourUtc": "2026-09-05T04",
+      "sarKmh": 16.9,
+      "sarBft": 3,
+      "shownKmh": 20.3,
+      "shownBft": 4,
+      "modelGustKmh": 27.4
+    },
+    {
+      "point": "ανοιχτά δυτικά (έλεγχος)",
+      "id": "open",
+      "pass": "s1c-sar-desc-0.01deg_P1D-i",
+      "hourUtc": "2026-09-10T04",
+      "sarKmh": 15.8,
+      "sarBft": 3,
+      "shownKmh": 14.5,
+      "shownBft": 3,
+      "modelGustKmh": 19.4
+    }
+  ],
+  "underReadHours": 3,
+  "overReadHours": 0,
+  "leeHours": 3
+}

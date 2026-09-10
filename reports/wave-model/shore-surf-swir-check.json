@@ -1,0 +1,666 @@
+{
+ "threshold": 0.62,
+ "calm": [
+  {
+   "id": 2040,
+   "name": "Μώλος",
+   "sayCalmDays": 8,
+   "surfRealFoam": 2,
+   "brightNotFoam": 1,
+   "calmDays": 24,
+   "pValue": 0.02938,
+   "verdict": "ΣΚΑΕΙ",
+   "evidence": [
+    {
+     "day": "2022-10-04",
+     "waveM": 1.11,
+     "dirDeg": 16.0,
+     "printedM": 0.11,
+     "swirRatio": 0.45
+    },
+    {
+     "day": "2024-10-18",
+     "waveM": 1.73,
+     "dirDeg": 18.0,
+     "printedM": 0.17,
+     "swirRatio": 0.33
+    }
+   ],
+   "rejected": [
+    {
+     "day": "2025-06-30",
+     "waveM": 1.81,
+     "dirDeg": 15.0,
+     "printedM": 0.18,
+     "swirRatio": 0.69
+    }
+   ]
+  },
+  {
+   "id": 1216,
+   "name": "Πόρτο Βρώμη",
+   "sayCalmDays": 65,
+   "surfRealFoam": 0,
+   "brightNotFoam": 12,
+   "calmDays": 14,
+   "pValue": 1.0,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": [],
+   "rejected": [
+    {
+     "day": "2022-08-21",
+     "waveM": 1.72,
+     "dirDeg": 310.0,
+     "printedM": 0.17,
+     "swirRatio": 1.25
+    },
+    {
+     "day": "2023-07-27",
+     "waveM": 1.79,
+     "dirDeg": 302.0,
+     "printedM": 0.18,
+     "swirRatio": 0.92
+    },
+    {
+     "day": "2023-08-06",
+     "waveM": 1.69,
+     "dirDeg": 282.0,
+     "printedM": 0.17,
+     "swirRatio": 0.99
+    },
+    {
+     "day": "2023-08-11",
+     "waveM": 0.82,
+     "dirDeg": 307.0,
+     "printedM": 0.08,
+     "swirRatio": 1.3
+    },
+    {
+     "day": "2023-08-31",
+     "waveM": 1.11,
+     "dirDeg": 275.0,
+     "printedM": 0.11,
+     "swirRatio": 0.7
+    },
+    {
+     "day": "2024-07-31",
+     "waveM": 1.02,
+     "dirDeg": 306.0,
+     "printedM": 0.1,
+     "swirRatio": 0.94
+    },
+    {
+     "day": "2024-08-05",
+     "waveM": 0.96,
+     "dirDeg": 312.0,
+     "printedM": 0.1,
+     "swirRatio": 0.79
+    },
+    {
+     "day": "2024-09-29",
+     "waveM": 1.68,
+     "dirDeg": 299.0,
+     "printedM": 0.17,
+     "swirRatio": 0.97
+    },
+    {
+     "day": "2025-07-28",
+     "waveM": 1.03,
+     "dirDeg": 301.0,
+     "printedM": 0.1,
+     "swirRatio": 0.84
+    },
+    {
+     "day": "2025-08-05",
+     "waveM": 0.93,
+     "dirDeg": 311.0,
+     "printedM": 0.09,
+     "swirRatio": 1.2
+    },
+    {
+     "day": "2025-09-04",
+     "waveM": 1.5,
+     "dirDeg": 312.0,
+     "printedM": 0.15,
+     "swirRatio": 1.05
+    },
+    {
+     "day": "2025-09-06",
+     "waveM": 0.77,
+     "dirDeg": 309.0,
+     "printedM": 0.08,
+     "swirRatio": 0.92
+    }
+   ]
+  },
+  {
+   "id": 2199,
+   "name": "Παραλία Λεωνίδα",
+   "sayCalmDays": 66,
+   "surfRealFoam": 0,
+   "brightNotFoam": 12,
+   "calmDays": 24,
+   "pValue": 1.0,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": [],
+   "rejected": [
+    {
+     "day": "2022-07-06",
+     "waveM": 0.57,
+     "dirDeg": 15.0,
+     "printedM": 0.06,
+     "swirRatio": 0.96
+    },
+    {
+     "day": "2023-07-06",
+     "waveM": 0.55,
+     "dirDeg": 351.0,
+     "printedM": 0.06,
+     "swirRatio": 1.02
+    },
+    {
+     "day": "2024-05-06",
+     "waveM": 0.65,
+     "dirDeg": 29.0,
+     "printedM": 0.07,
+     "swirRatio": 0.89
+    },
+    {
+     "day": "2024-06-30",
+     "waveM": 0.89,
+     "dirDeg": 24.0,
+     "printedM": 0.09,
+     "swirRatio": 0.93
+    },
+    {
+     "day": "2025-06-22",
+     "waveM": 0.8,
+     "dirDeg": 16.0,
+     "printedM": 0.08,
+     "swirRatio": 0.95
+    },
+    {
+     "day": "2025-06-30",
+     "waveM": 1.24,
+     "dirDeg": 33.0,
+     "printedM": 0.12,
+     "swirRatio": 1.02
+    },
+    {
+     "day": "2025-07-02",
+     "waveM": 0.77,
+     "dirDeg": 28.0,
+     "printedM": 0.08,
+     "swirRatio": 1.01
+    },
+    {
+     "day": "2025-07-10",
+     "waveM": 0.74,
+     "dirDeg": 319.0,
+     "printedM": 0.07,
+     "swirRatio": 1.11
+    },
+    {
+     "day": "2025-07-25",
+     "waveM": 0.59,
+     "dirDeg": 14.0,
+     "printedM": 0.06,
+     "swirRatio": 1.05
+    },
+    {
+     "day": "2026-05-26",
+     "waveM": 0.55,
+     "dirDeg": 33.0,
+     "printedM": 0.06,
+     "swirRatio": 0.98
+    },
+    {
+     "day": "2026-06-27",
+     "waveM": 0.62,
+     "dirDeg": 25.0,
+     "printedM": 0.06,
+     "swirRatio": 0.99
+    },
+    {
+     "day": "2026-07-05",
+     "waveM": 0.87,
+     "dirDeg": 22.0,
+     "printedM": 0.09,
+     "swirRatio": 1.07
+    }
+   ]
+  },
+  {
+   "id": 161,
+   "name": "Παραλία Ρώσικος Ναύσταθμος",
+   "sayCalmDays": 16,
+   "surfRealFoam": 1,
+   "brightNotFoam": 2,
+   "calmDays": 28,
+   "pValue": 0.61936,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": [
+    {
+     "day": "2026-07-30",
+     "waveM": 0.78,
+     "dirDeg": 355.0,
+     "printedM": 0.08,
+     "swirRatio": 0.53
+    }
+   ],
+   "rejected": [
+    {
+     "day": "2022-07-19",
+     "waveM": 0.79,
+     "dirDeg": 8.0,
+     "printedM": 0.08,
+     "swirRatio": 0.67
+    },
+    {
+     "day": "2022-09-07",
+     "waveM": 0.93,
+     "dirDeg": 12.0,
+     "printedM": 0.09,
+     "swirRatio": 0.98
+    }
+   ]
+  }
+ ],
+ "wavy": [
+  {
+   "id": 1334,
+   "name": "Καλό Λιμάνι",
+   "realControlDays": 30,
+   "beachFoam": 1,
+   "beachDark": 10,
+   "fakeControlDays": 2,
+   "pValue": 0.0,
+   "verdict": "ΗΣΥΧΗ",
+   "evidence": [
+    {
+     "day": "2022-03-11",
+     "waveM": 1.36,
+     "dirDeg": 344.0,
+     "beachFoam": 0.148,
+     "neighbourFoam": 0.624,
+     "swirRatio": 0.26
+    },
+    {
+     "day": "2022-08-05",
+     "waveM": 0.84,
+     "dirDeg": 336.0,
+     "beachFoam": 0.042,
+     "neighbourFoam": 0.349,
+     "swirRatio": 0.56
+    },
+    {
+     "day": "2022-08-10",
+     "waveM": 0.84,
+     "dirDeg": 335.0,
+     "beachFoam": 0.069,
+     "neighbourFoam": 0.405,
+     "swirRatio": 0.42
+    },
+    {
+     "day": "2022-09-07",
+     "waveM": 1.1,
+     "dirDeg": 339.0,
+     "beachFoam": 0.078,
+     "neighbourFoam": 0.509,
+     "swirRatio": 0.46
+    },
+    {
+     "day": "2022-10-17",
+     "waveM": 1.17,
+     "dirDeg": 342.0,
+     "beachFoam": 0.09,
+     "neighbourFoam": 0.611,
+     "swirRatio": 0.23
+    },
+    {
+     "day": "2023-08-20",
+     "waveM": 0.94,
+     "dirDeg": 335.0,
+     "beachFoam": 0.042,
+     "neighbourFoam": 0.33,
+     "swirRatio": 0.53
+    },
+    {
+     "day": "2023-09-12",
+     "waveM": 0.8,
+     "dirDeg": 336.0,
+     "beachFoam": 0.048,
+     "neighbourFoam": 0.372,
+     "swirRatio": 0.45
+    },
+    {
+     "day": "2023-09-17",
+     "waveM": 0.91,
+     "dirDeg": 337.0,
+     "beachFoam": 0.081,
+     "neighbourFoam": 0.466,
+     "swirRatio": 0.44
+    },
+    {
+     "day": "2023-09-19",
+     "waveM": 1.01,
+     "dirDeg": 339.0,
+     "beachFoam": 0.078,
+     "neighbourFoam": 0.383,
+     "swirRatio": 0.34
+    },
+    {
+     "day": "2024-04-11",
+     "waveM": 0.86,
+     "dirDeg": 338.0,
+     "beachFoam": 0.057,
+     "neighbourFoam": 0.407,
+     "swirRatio": 0.31
+    },
+    {
+     "day": "2024-06-20",
+     "waveM": 0.86,
+     "dirDeg": 338.0,
+     "beachFoam": 0.087,
+     "neighbourFoam": 0.413,
+     "swirRatio": 0.57
+    },
+    {
+     "day": "2024-06-30",
+     "waveM": 1.0,
+     "dirDeg": 340.0,
+     "beachFoam": 0.03,
+     "neighbourFoam": 0.335,
+     "swirRatio": 0.58
+    },
+    {
+     "day": "2024-07-10",
+     "waveM": 0.83,
+     "dirDeg": 339.0,
+     "beachFoam": 0.039,
+     "neighbourFoam": 0.355,
+     "swirRatio": 0.57
+    },
+    {
+     "day": "2024-07-25",
+     "waveM": 0.91,
+     "dirDeg": 337.0,
+     "beachFoam": 0.027,
+     "neighbourFoam": 0.345,
+     "swirRatio": 0.52
+    },
+    {
+     "day": "2024-09-08",
+     "waveM": 0.84,
+     "dirDeg": 337.0,
+     "beachFoam": 0.051,
+     "neighbourFoam": 0.37,
+     "swirRatio": 0.4
+    },
+    {
+     "day": "2024-09-21",
+     "waveM": 1.28,
+     "dirDeg": 339.0,
+     "beachFoam": 0.115,
+     "neighbourFoam": 0.589,
+     "swirRatio": 0.39
+    },
+    {
+     "day": "2025-06-10",
+     "waveM": 0.9,
+     "dirDeg": 344.0,
+     "beachFoam": 0.048,
+     "neighbourFoam": 0.355,
+     "swirRatio": 0.61
+    },
+    {
+     "day": "2025-06-22",
+     "waveM": 1.03,
+     "dirDeg": 344.0,
+     "beachFoam": 0.066,
+     "neighbourFoam": 0.481,
+     "swirRatio": 0.39
+    },
+    {
+     "day": "2025-07-15",
+     "waveM": 1.1,
+     "dirDeg": 337.0,
+     "beachFoam": 0.051,
+     "neighbourFoam": 0.414,
+     "swirRatio": 0.45
+    },
+    {
+     "day": "2025-08-11",
+     "waveM": 0.95,
+     "dirDeg": 339.0,
+     "beachFoam": 0.036,
+     "neighbourFoam": 0.309,
+     "swirRatio": 0.5
+    },
+    {
+     "day": "2025-08-29",
+     "waveM": 0.96,
+     "dirDeg": 335.0,
+     "beachFoam": 0.072,
+     "neighbourFoam": 0.338,
+     "swirRatio": 0.45
+    },
+    {
+     "day": "2025-09-18",
+     "waveM": 1.17,
+     "dirDeg": 344.0,
+     "beachFoam": 0.066,
+     "neighbourFoam": 0.514,
+     "swirRatio": 0.29
+    },
+    {
+     "day": "2026-01-09",
+     "waveM": 1.59,
+     "dirDeg": 298.0,
+     "beachFoam": 0.252,
+     "neighbourFoam": 0.347,
+     "swirRatio": 0.3
+    },
+    {
+     "day": "2026-03-09",
+     "waveM": 0.89,
+     "dirDeg": 345.0,
+     "beachFoam": 0.111,
+     "neighbourFoam": 0.417,
+     "swirRatio": 0.26
+    },
+    {
+     "day": "2026-04-18",
+     "waveM": 1.12,
+     "dirDeg": 343.0,
+     "beachFoam": 0.081,
+     "neighbourFoam": 0.467,
+     "swirRatio": 0.32
+    },
+    {
+     "day": "2026-06-27",
+     "waveM": 0.85,
+     "dirDeg": 349.0,
+     "beachFoam": 0.063,
+     "neighbourFoam": 0.314,
+     "swirRatio": 0.59
+    },
+    {
+     "day": "2026-08-14",
+     "waveM": 1.12,
+     "dirDeg": 344.0,
+     "beachFoam": 0.042,
+     "neighbourFoam": 0.321,
+     "swirRatio": 0.45
+    },
+    {
+     "day": "2026-08-16",
+     "waveM": 1.17,
+     "dirDeg": 338.0,
+     "beachFoam": 0.087,
+     "neighbourFoam": 0.349,
+     "swirRatio": 0.44
+    },
+    {
+     "day": "2026-09-03",
+     "waveM": 0.98,
+     "dirDeg": 340.0,
+     "beachFoam": 0.054,
+     "neighbourFoam": 0.352,
+     "swirRatio": 0.42
+    },
+    {
+     "day": "2026-09-08",
+     "waveM": 0.87,
+     "dirDeg": 341.0,
+     "beachFoam": 0.039,
+     "neighbourFoam": 0.348,
+     "swirRatio": 0.55
+    }
+   ]
+  },
+  {
+   "id": 467,
+   "name": "Παραλία Τορώνης",
+   "realControlDays": 2,
+   "beachFoam": 0,
+   "beachDark": 1,
+   "fakeControlDays": 4,
+   "pValue": 0.026244,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": [
+    {
+     "day": "2025-12-28",
+     "waveM": 1.0,
+     "dirDeg": 289.0,
+     "beachFoam": 0.098,
+     "neighbourFoam": 0.301,
+     "swirRatio": 0.6
+    },
+    {
+     "day": "2026-02-18",
+     "waveM": 1.35,
+     "dirDeg": 294.0,
+     "beachFoam": 0.033,
+     "neighbourFoam": 0.346,
+     "swirRatio": 0.59
+    }
+   ]
+  },
+  {
+   "id": 601,
+   "name": "Καλάμι",
+   "realControlDays": 8,
+   "beachFoam": 1,
+   "beachDark": 2,
+   "fakeControlDays": 6,
+   "pValue": 2e-05,
+   "verdict": "ΗΣΥΧΗ",
+   "evidence": [
+    {
+     "day": "2022-10-22",
+     "waveM": 1.29,
+     "dirDeg": 16.0,
+     "beachFoam": 0.103,
+     "neighbourFoam": 0.425,
+     "swirRatio": 0.5
+    },
+    {
+     "day": "2022-11-01",
+     "waveM": 0.97,
+     "dirDeg": 6.0,
+     "beachFoam": 0.064,
+     "neighbourFoam": 0.359,
+     "swirRatio": 0.59
+    },
+    {
+     "day": "2024-10-16",
+     "waveM": 0.88,
+     "dirDeg": 16.0,
+     "beachFoam": 0.034,
+     "neighbourFoam": 0.343,
+     "swirRatio": 0.61
+    },
+    {
+     "day": "2024-10-26",
+     "waveM": 1.1,
+     "dirDeg": 12.0,
+     "beachFoam": 0.056,
+     "neighbourFoam": 0.34,
+     "swirRatio": 0.54
+    },
+    {
+     "day": "2024-11-25",
+     "waveM": 0.87,
+     "dirDeg": 38.0,
+     "beachFoam": 0.051,
+     "neighbourFoam": 0.367,
+     "swirRatio": 0.48
+    },
+    {
+     "day": "2025-01-19",
+     "waveM": 0.82,
+     "dirDeg": 23.0,
+     "beachFoam": 0.017,
+     "neighbourFoam": 0.352,
+     "swirRatio": 0.38
+    },
+    {
+     "day": "2026-02-18",
+     "waveM": 1.22,
+     "dirDeg": 334.0,
+     "beachFoam": 0.734,
+     "neighbourFoam": 0.418,
+     "swirRatio": 0.41
+    },
+    {
+     "day": "2026-04-19",
+     "waveM": 1.19,
+     "dirDeg": 22.0,
+     "beachFoam": 0.188,
+     "neighbourFoam": 0.518,
+     "swirRatio": 0.46
+    }
+   ]
+  },
+  {
+   "id": 1858,
+   "name": "Άγιος Δημήτριος",
+   "realControlDays": 2,
+   "beachFoam": 2,
+   "beachDark": 0,
+   "fakeControlDays": 12,
+   "pValue": 1.0,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": [
+    {
+     "day": "2022-10-02",
+     "waveM": 1.37,
+     "dirDeg": 295.0,
+     "beachFoam": 0.31,
+     "neighbourFoam": 0.467,
+     "swirRatio": 0.6
+    },
+    {
+     "day": "2024-03-25",
+     "waveM": 2.97,
+     "dirDeg": 219.0,
+     "beachFoam": 0.275,
+     "neighbourFoam": 0.778,
+     "swirRatio": 0.61
+    }
+   ]
+  },
+  {
+   "id": 3095,
+   "name": "Elias Cove",
+   "realControlDays": 0,
+   "beachFoam": 0,
+   "beachDark": 0,
+   "fakeControlDays": 3,
+   "pValue": 1.0,
+   "verdict": "δεν αποδεικνύεται",
+   "evidence": []
+  }
+ ]
+}
