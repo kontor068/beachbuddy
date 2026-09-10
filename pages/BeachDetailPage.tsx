@@ -33,7 +33,7 @@ import { getBeachClimate, describeClimateComparison, type ClimateComparison } fr
 import { LocalWindShelterSection, type LocalWindShelteredCove } from '../components/LocalWindShelterSection';
 import { GettingThereSection, accessKindShortLabel, classifyAccessKind, ACCESS_KIND_ICON } from '../components/GettingThereSection';
 import { SwellRouterSection, type SwellShelteredCove } from '../components/SwellRouterSection';
-import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
+import { assessSwellExposure, hasSwellPresence } from '../utils/swellExposure';
 import { buildSteepSeabedNote, buildSteepSeabedSource } from '../utils/seabedEntry';
 import { beachShoreBreaks, hasSteepCoarseShore } from '../utils/shoreBreak';
 import { resolveOffshoreWindNote } from '../utils/offshoreWindNote';
@@ -1310,23 +1310,16 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // max(measured, modeled) surfaces the wrong (larger) number. There we show the fetch-limited SMB
   // instead — UNLESS meaningful swell is present (it can wrap into the bay, the one real false-calm
   // risk), where we keep max(). DISPLAY ONLY: scoring / level / colour / ranking are untouched
-  // (they still use scoreResult.waveHeightM below). swellPresent mirrors assessSwellExposure's
-  // hasSwell (presence, not the geometric 'exposed' flag which is structurally false for a blocked
-  // cove and would reopen the wrap-in false-calm).
-  // Read the threshold from assessSwellExposure's own constant, never a literal: this page and
-  // calculateBeachScore each run their own copy of the guard, and the day the two swell gates
-  // disagree the card and its detail page print different wave numbers for the same beach.
-  const swellPresent = (weatherData.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
-    && typeof weatherData.marine?.swellWaveDirectionDeg === 'number';
-  const coveWave = resolveCoveAwareWaveHeightM({
-    geospatialProfile: geospatialExposure,
-    facingDeg: scoreResult.facingDeg ?? null,
-    windDirectionDeg: weatherData.wind.deg,
-    windSpeedKmh,
-    measuredWaveHeightM,
-    appModeledWaveHeightM: scoreResult.modeledWaveHeightM ?? 0,
-    swellPresent,
-  });
+  // (they still use scoreResult.waveHeightM below). The guard reads swell PRESENCE (assessSwellExposure's
+  // hasSwell), not the geometric 'exposed' flag which is structurally false for a blocked cove and
+  // would reopen the wrap-in false-calm.
+  //
+  // ΕΝΑΣ ΥΠΟΛΟΓΙΣΜΟΣ, ΟΧΙ ΔΥΟ (10/09/2026, βίβλος §Γ74). Ως τώρα αυτή η σελίδα έτρεχε ΔΙΚΟ ΤΗΣ
+  // αντίγραφο του φρουρού — με δικό της «καθρέφτη» του ελέγχου ρεστίας — για την ετικέτα
+  // «εκτίμηση» και τη σημείωση όρμου, ενώ ο αριθμός ερχόταν ήδη από τη βαθμολογία. Διαβάζει πια
+  // το αποτέλεσμα της ΙΔΙΑΣ της βαθμολογίας. Μετρημένο πριν μπει: ίδια απάντηση σε κάθε παραλία ×
+  // καιρό (`scripts/measureCoveGuardSingleSource.mjs`).
+  const coveWave = scoreResult.coveWave ?? { coveApplied: false, waveHeightM: 0 };
   /**
    * ΕΝΑΣ ΑΡΙΘΜΟΣ ΓΙΑ ΤΟ ΚΥΜΑ, ΟΧΙ ΔΥΟ ΥΠΟΛΟΓΙΣΜΟΙ (11/08/2026).
    *
@@ -1382,8 +1375,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       let waveM = point.effectiveWaveHeightM;
       const item = hourItems.get(point.hour);
       if (item && geospatialExposure) {
-        const hourSwellPresent = (item.marine?.swellWaveHeightM ?? 0) >= SWELL_MIN_HEIGHT_M
-          && typeof item.marine?.swellWaveDirectionDeg === 'number';
+        const hourSwellPresent = hasSwellPresence(item.marine?.swellWaveHeightM, item.marine?.swellWaveDirectionDeg);
         const hourCove = resolveCoveAwareWaveHeightM({
           geospatialProfile: geospatialExposure,
           facingDeg: scoreResult.facingDeg ?? null,

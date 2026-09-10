@@ -10,6 +10,8 @@
  *      διαφωνούν, η δημόσια σελίδα δεν είναι το σημείο για να μαντέψουμε.
  *   γ) να πει κάποια στιγμή το αντίστροφο — «ρηχά, ιδανικά για παιδιά». Η πηγή εξομαλύνει τα
  *      ρηχά· μόνο η βαθιά της πλευρά αντέχει δημόσια δήλωση.
+ *   δ) (10/09/2026) να ξαναμπεί ο βυθός στη ΒΑΘΜΟΛΟΓΙΑ — ο Μίλτος αποφάσισε «να το λέμε, όχι να το
+ *      βαθμολογούμε» (§Γ63), κι όμως ένα +6/−12 έμενε κοιμισμένο στον κώδικα ως 10/09.
  *
  * ΤΟ ΚΡΙΝΕΙ Η ΠΗΓΗ, ΟΧΙ ΑΝΤΙΓΡΑΦΟ: ο κανόνας και τα λόγια διαβάζονται από το `utils/seabedEntry`
  * — αν αλλάξει το κατώφλι εκεί, αλλάζει και η πύλη μαζί του.
@@ -127,7 +129,30 @@ for (const language of ['en', 'gr', 'fr', 'de', 'it']) {
   if (line === source) note(`copy/${language}: φράση και πηγή ταυτόσημες.`);
 }
 
+// Δ) Ο ΒΥΘΟΣ ΔΕΝ ΒΑΘΜΟΛΟΓΕΙΤΑΙ (απόφαση Μίλτου 22/08/2026, βίβλος §Γ63). Ένα +6/−12 για
+// `seabedSlope`/`waterEntry` έμενε κοιμισμένο στη βαθμολογία ως 10/09 — δεν έτρεχε μόνο επειδή τα
+// πεδία ήταν κενά. Επιτρέπεται να ρωτηθεί ΜΟΝΟ αν είναι «unknown» (σημείωση ποιότητας δεδομένων)·
+// κάθε σύγκριση με πραγματική τιμή μέσα σε κώδικα βαθμολογίας/ετυμηγορίας είναι το μπλοκ που ξαναμπαίνει.
+const SCORED_SEABED = /\b(seabedSlope|waterEntry)\s*(===|!==|==|!=)\s*['"](?!unknown['"])[a-z_]+['"]/;
+const scoringSources = ['services', 'utils'].flatMap((dir) => readdirSync(path.join(root, dir))
+  .filter((name) => /\.(ts|tsx)$/.test(name))
+  .map((name) => path.join(root, dir, name)));
+const scoredSeabedLines = (source) => source.split('\n')
+  .map((line, index) => ({ line, index }))
+  .filter(({ line }) => !/^\s*(\/\/|\*)/.test(line) && SCORED_SEABED.test(line));
+for (const file of scoringSources) {
+  for (const { index, line } of scoredSeabedLines(readFileSync(file, 'utf8'))) {
+    note(`${path.relative(root, file)}:${index + 1}: ο βυθός ξαναμπαίνει στη βαθμολογία («${line.trim()}») — §Γ63: λέγεται, δεν βαθμολογείται.`);
+  }
+}
+
 if (PROVE) {
+  // Το μπλοκ που αφαιρέθηκε 10/09, αυτούσιο: η πύλη ΠΡΕΠΕΙ να το πιάσει.
+  const removedBlock = "    if (seabedSlope === 'shallow_gradual') swimmingScore += 6;\n    if (waterEntry === 'difficult' || waterEntry === 'rocks_only') {";
+  if (scoredSeabedLines(removedBlock).length !== 2) note('--prove: το παλιό μπλοκ βαθμολογίας βυθού ΔΕΝ πιάστηκε.');
+  if (scoredSeabedLines("  if (seabedSlope === 'unknown' && isFamilyMode) {").length !== 0) {
+    note('--prove: η σημείωση «unknown» πιάστηκε σαν βαθμολογία — η πύλη θα έσκαγε σε νόμιμο κώδικα.');
+  }
   const sabotage = [
     {
       id: 'χωρίς μέτρηση',

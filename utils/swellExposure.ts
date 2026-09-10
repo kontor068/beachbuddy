@@ -41,6 +41,15 @@ export interface SwellExposure {
   directionDeg?: number;
 }
 
+/**
+ * ΥΠΑΡΧΕΙ ΡΕΣΤΙΑ ΠΟΥ ΜΕΤΡΑΕΙ; — το `hasSwell` του assessSwellExposure, για όσους χρειάζονται μόνο αυτό
+ * (η ωριαία μπάρα κύματος της σελίδας παραλίας). Ως 10/09/2026 η σελίδα κρατούσε δικό της «καθρέφτη»
+ * αυτού του ελέγχου· τη μέρα που θα διαφωνούσαν, κάρτα και σελίδα θα τύπωναν άλλο κύμα (βίβλος §Γ74).
+ */
+export const hasSwellPresence = (heightM: number | undefined, directionDeg: number | undefined): boolean =>
+  typeof directionDeg === 'number' && Number.isFinite(directionDeg)
+  && typeof heightM === 'number' && Number.isFinite(heightM) && heightM >= SWELL_MIN_HEIGHT_M;
+
 export const assessSwellExposure = (
   profile: GeospatialExposureProfile | undefined,
   beachOrientationDeg: number | null,
@@ -50,7 +59,7 @@ export const assessSwellExposure = (
   const directionDeg = typeof input.swellDirectionDeg === 'number' && Number.isFinite(input.swellDirectionDeg) ? input.swellDirectionDeg : undefined;
   const periodS = typeof input.swellPeriodS === 'number' && Number.isFinite(input.swellPeriodS) ? input.swellPeriodS : undefined;
 
-  const hasSwell = directionDeg !== undefined && heightM >= SWELL_MIN_HEIGHT_M;
+  const hasSwell = hasSwellPresence(input.swellHeightM, input.swellDirectionDeg);
 
   let exposed = false;
   if (hasSwell) {

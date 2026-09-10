@@ -54,7 +54,7 @@ import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
 import { resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping } from '../utils/seaArrival';
-import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
+import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM, type CoveWave } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
 import type { ShoreWaveInput } from '../utils/shoreWave';
@@ -182,6 +182,12 @@ export interface BeachScore {
   seaCalmClaimAllowed?: boolean;
   facingDeg?: number | null;
   simpleWindSuitability?: SimpleWindSuitability;
+  /**
+   * Ο ΦΡΟΥΡΟΣ ΟΡΜΟΥ ΟΠΩΣ ΤΟΝ ΕΤΡΕΞΕ Η ΒΑΘΜΟΛΟΓΙΑ (utils/coveWaveGuard, 10/09/2026). Η σελίδα παραλίας
+   * τον έτρεχε ΞΑΝΑ, με δικά της ορίσματα, για την ετικέτα «εκτίμηση» και τη σημείωση όρμου (βίβλος
+   * §Γ74)· διαβάζει πια αυτόν, ώστε ετικέτα, σημείωση και αριθμός να βγαίνουν από ΕΝΑΝ υπολογισμό.
+   */
+  coveWave?: Pick<CoveWave, 'coveApplied' | 'waveHeightM' | 'fetchKm' | 'onshore'>;
 }
 
 export interface BestBeachTime {
@@ -2623,20 +2629,12 @@ export const calculateBeachScore = (
   if (temp < 18) swimmingScore -= 15;
   else if (temp < 22) swimmingScore -= (22 - temp) * 2;
 
-  // Ο βυθός και η είσοδος αρχίζουν να μετράνε όταν κουνάει ΕΚΕΙ ΠΟΥ ΠΑΤΑΕΙ ΤΟ ΠΑΙΔΙ — δηλαδή
-  // στην ακτή, όχι στο πέλαγος (22/08/2026).
-  if (isFamilyMode && (seaAtShoreM > 0.5 || effectiveBeaufort >= 4)) {
-    if (seabedSlope === 'shallow_gradual') swimmingScore += 6;
-    if (waterEntry === 'easy') swimmingScore += 5;
-    if (seabedSlope === 'steep') {
-      swimmingScore -= 12;
-      reasons.push('Steeper entry is less family-friendly today');
-    }
-    if (waterEntry === 'difficult' || waterEntry === 'rocks_only') {
-      swimmingScore -= 12;
-      reasons.push('Water entry may be harder for families');
-    }
-  }
+  // Ο ΒΥΘΟΣ ΔΕΝ ΒΑΘΜΟΛΟΓΕΙΤΑΙ — ΛΕΓΕΤΑΙ (βίβλος §Γ63, απόφαση Μίλτου 22/08/2026). Εδώ ζούσε ένα
+  // +6/+5/−12 για `seabedSlope`/`waterEntry` σε οικογενειακή λειτουργία. Δεν έτρεξε ποτέ (τα πεδία
+  // είναι κενά σε όλες τις παραλίες) και η μέτρηση `scripts/measureSeabedSlopeImpact.mjs` έδειξε
+  // 0 ετυμηγορίες / 0 χρώματα σε κάθε κατώφλι. Αφαιρέθηκε 10/09/2026: αν γέμιζαν ποτέ τα πεδία,
+  // θα άρχιζε να βαθμολογεί σιωπηλά, ενάντια στην απόφαση. Ο βυθός μιλά μόνο ως γεγονός με νούμερο
+  // (`utils/seabedEntry.ts`). Η πύλη `validateSeabedEntryClaim.mjs` σκάει αν ξαναμπεί.
   if (officialWarningOverride) swimmingScore = 0;
   swimmingScore = clampScore(swimmingScore);
 
@@ -3066,6 +3064,12 @@ export const calculateBeachScore = (
     seaCalmClaimAllowed: windAssessment.seaCalmClaimAllowed,
     facingDeg: windAssessment.facingDeg,
     simpleWindSuitability,
+    coveWave: {
+      coveApplied: coveWave.coveApplied,
+      waveHeightM: coveWave.waveHeightM,
+      fetchKm: coveWave.fetchKm,
+      onshore: coveWave.onshore,
+    },
   };
 };
 
