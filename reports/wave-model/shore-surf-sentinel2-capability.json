@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-10T13:47:47.893745+00:00",
+ "generatedAt": "2026-09-10T16:33:53.938630+00:00",
  "question": "Σκάει κύμα στην παραλία τις μέρες που το ανοιχτό κύμα έρχεται από «κλειστή» μεριά;",
  "method": "Sentinel-2 L2A B08 10 μ., αφρός = pixel λωρίδας ακτής (10-30 μ. από τη σταθερή στεριά) με NIR > max(0,04, P90 ανοιχτού νερού + 0,02). Παραλία = λωρίδα ≤300 μ. από την πινέζα· θετικός έλεγχος ίδιας εικόνας = λωρίδα >400 μ. που κοιτάει το κύμα της ημέρας (≤60°). Κύμα: Copernicus MEDSEA 09:00 UTC. K_d: γεωμετρία χωρίς εξαίρεση μαρτύρων.",
  "classes": {
@@ -752,11 +752,11 @@
    "region": "east-macedonia-and-thrace-thasos",
    "name": "Νότος",
    "summary": {
-    "openDays": 1,
-    "openFoamDays": 0,
-    "calmDays": 2,
+    "openDays": 3,
+    "openFoamDays": 3,
+    "calmDays": 5,
     "calmFoamDays": 0,
-    "glintSkipped": 6
+    "glintSkipped": 1
    },
    "days": [
     {
@@ -767,7 +767,7 @@
       165.0,
       2.7
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.334)"
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.054)"
     },
     {
      "day": "2022-07-24",
@@ -777,11 +777,11 @@
       123.0,
       2.9
      ],
-     "beachFoam": 0.022,
-     "exposedFoam": 0.562,
+     "beachFoam": 0.033,
+     "exposedFoam": 0.558,
      "exposedPx": 276,
-     "beachPx": 273,
-     "thr": 0.04
+     "beachPx": 153,
+     "thr": 0.0427
     },
     {
      "day": "2023-03-11",
@@ -791,7 +791,11 @@
       181.0,
       6.9
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.287)"
+     "beachFoam": 0.266,
+     "exposedFoam": 0.496,
+     "exposedPx": 891,
+     "beachPx": 248,
+     "thr": 0.04
     },
     {
      "day": "2023-04-15",
@@ -811,7 +815,11 @@
       249.0,
       2.2
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.314)"
+     "beachFoam": 0.121,
+     "exposedFoam": 0.565,
+     "exposedPx": 927,
+     "beachPx": 248,
+     "thr": 0.0563
     },
     {
      "day": "2024-12-10",
@@ -821,7 +829,11 @@
       176.0,
       6.9
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.260)"
+     "beachFoam": 0.363,
+     "exposedFoam": 0.417,
+     "exposedPx": 823,
+     "beachPx": 248,
+     "thr": 0.04
     },
     {
      "day": "2025-07-08",
@@ -831,7 +843,11 @@
       172.0,
       1.2
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.336)"
+     "beachFoam": 0.125,
+     "exposedFoam": 0.212,
+     "exposedPx": 827,
+     "beachPx": 248,
+     "thr": 0.0416
     },
     {
      "day": "2025-11-22",
@@ -851,10 +867,10 @@
       264.0,
       5.7
      ],
-     "beachFoam": 0.125,
+     "beachFoam": 0.222,
      "exposedFoam": 0.056,
      "exposedPx": 520,
-     "beachPx": 273,
+     "beachPx": 153,
      "thr": 0.04
     },
     {
@@ -865,11 +881,11 @@
       115.0,
       3.2
      ],
-     "beachFoam": 0.018,
-     "exposedFoam": 0.607,
+     "beachFoam": 0.02,
+     "exposedFoam": 0.599,
      "exposedPx": 257,
-     "beachPx": 273,
-     "thr": 0.0471
+     "beachPx": 153,
+     "thr": 0.0499
     },
     {
      "day": "2026-09-06",
@@ -879,7 +895,11 @@
       261.0,
       2.4
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.306)"
+     "beachFoam": 0.109,
+     "exposedFoam": 0.553,
+     "exposedPx": 928,
+     "beachPx": 248,
+     "thr": 0.04
     }
    ]
   },
@@ -1200,11 +1220,11 @@
    "region": "south-aegean-sifnos",
    "name": "Σάουρες",
    "summary": {
-    "openDays": 0,
+    "openDays": 2,
     "openFoamDays": 0,
-    "calmDays": 3,
-    "calmFoamDays": 3,
-    "glintSkipped": 5
+    "calmDays": 6,
+    "calmFoamDays": 1,
+    "glintSkipped": 0
    },
    "days": [
     {
@@ -1215,7 +1235,11 @@
       195.0,
       5.2
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.206)"
+     "beachFoam": 0.02,
+     "exposedFoam": 0.093,
+     "exposedPx": 581,
+     "beachPx": 199,
+     "thr": 0.04
     },
     {
      "day": "2023-09-22",
@@ -1225,7 +1249,11 @@
       8.0,
       2.2
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.256)"
+     "beachFoam": 0.126,
+     "exposedFoam": 0.285,
+     "exposedPx": 193,
+     "beachPx": 454,
+     "thr": 0.04
     },
     {
      "day": "2024-06-05",
@@ -1235,11 +1263,11 @@
       206.0,
       3.2
      ],
-     "beachFoam": 0.561,
-     "exposedFoam": 0.083,
-     "exposedPx": 397,
-     "beachPx": 335,
-     "thr": 0.045
+     "beachFoam": 0.306,
+     "exposedFoam": 0.141,
+     "exposedPx": 583,
+     "beachPx": 454,
+     "thr": 0.0403
     },
     {
      "day": "2024-09-26",
@@ -1249,7 +1277,11 @@
       16.0,
       2.7
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.227)"
+     "beachFoam": 0.015,
+     "exposedFoam": 0.237,
+     "exposedPx": 114,
+     "beachPx": 202,
+     "thr": 0.04
     },
     {
      "day": "2025-03-27",
@@ -1259,7 +1291,11 @@
       131.0,
       5.7
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.272)"
+     "beachFoam": 0.184,
+     "exposedFoam": 0.246,
+     "exposedPx": 810,
+     "beachPx": 190,
+     "thr": 0.0573
     },
     {
      "day": "2025-06-02",
@@ -1269,10 +1305,10 @@
       0.0,
       2.9
      ],
-     "beachFoam": 0.466,
-     "exposedFoam": 0.066,
-     "exposedPx": 211,
-     "beachPx": 335,
+     "beachFoam": 0.165,
+     "exposedFoam": 0.128,
+     "exposedPx": 109,
+     "beachPx": 443,
      "thr": 0.05
     },
     {
@@ -1283,10 +1319,10 @@
       303.0,
       3.6
      ],
-     "beachFoam": 0.483,
-     "exposedFoam": 0.118,
-     "exposedPx": 586,
-     "beachPx": 317,
+     "beachFoam": 0.12,
+     "exposedFoam": 0.039,
+     "exposedPx": 307,
+     "beachPx": 449,
      "thr": 0.04
     },
     {
@@ -1297,7 +1333,11 @@
       9.0,
       4.3
      ],
-     "skipped": "γυάλισμα (P90 ανοιχτού 0.280)"
+     "beachFoam": 0.123,
+     "exposedFoam": 0.267,
+     "exposedPx": 195,
+     "beachPx": 454,
+     "thr": 0.04
     },
     {
      "day": "2025-11-27",
@@ -3484,8 +3524,8 @@
       2.7
      ],
      "beachFoam": 0.181,
-     "exposedFoam": 0.785,
-     "exposedPx": 498,
+     "exposedFoam": 0.226,
+     "exposedPx": 212,
      "beachPx": 210,
      "thr": 0.04
     },
@@ -3498,8 +3538,8 @@
       5.2
      ],
      "beachFoam": 0.479,
-     "exposedFoam": 0.517,
-     "exposedPx": 956,
+     "exposedFoam": 0.31,
+     "exposedPx": 807,
      "beachPx": 211,
      "thr": 0.058
     },
@@ -3512,8 +3552,8 @@
       1.7
      ],
      "beachFoam": 0.199,
-     "exposedFoam": 0.718,
-     "exposedPx": 684,
+     "exposedFoam": 0.303,
+     "exposedPx": 340,
      "beachPx": 211,
      "thr": 0.04
     },
@@ -3525,11 +3565,11 @@
       221.0,
       5.2
      ],
-     "beachFoam": 0.403,
-     "exposedFoam": 0.58,
-     "exposedPx": 1068,
+     "beachFoam": 0.393,
+     "exposedFoam": 0.292,
+     "exposedPx": 797,
      "beachPx": 211,
-     "thr": 0.0495
+     "thr": 0.05
     },
     {
      "day": "2023-11-03",
@@ -3580,8 +3620,8 @@
       2.7
      ],
      "beachFoam": 0.137,
-     "exposedFoam": 0.535,
-     "exposedPx": 974,
+     "exposedFoam": 0.18,
+     "exposedPx": 689,
      "beachPx": 211,
      "thr": 0.04
     },
@@ -3624,8 +3664,8 @@
       2.0
      ],
      "beachFoam": 0.194,
-     "exposedFoam": 0.734,
-     "exposedPx": 672,
+     "exposedFoam": 0.314,
+     "exposedPx": 328,
      "beachPx": 211,
      "thr": 0.04
     },
@@ -3638,8 +3678,8 @@
       2.7
      ],
      "beachFoam": 0.227,
-     "exposedFoam": 0.741,
-     "exposedPx": 587,
+     "exposedFoam": 0.251,
+     "exposedPx": 263,
      "beachPx": 211,
      "thr": 0.04
     }
@@ -4800,8 +4840,8 @@
       2.4
      ],
      "beachFoam": 0.144,
-     "exposedFoam": 0.223,
-     "exposedPx": 699,
+     "exposedFoam": 0.181,
+     "exposedPx": 709,
      "beachPx": 443,
      "thr": 0.04
     },
@@ -4814,8 +4854,8 @@
       6.9
      ],
      "beachFoam": 0.185,
-     "exposedFoam": 0.234,
-     "exposedPx": 757,
+     "exposedFoam": 0.118,
+     "exposedPx": 779,
      "beachPx": 443,
      "thr": 0.04
     },
@@ -4828,10 +4868,10 @@
       4.7
      ],
      "beachFoam": 0.348,
-     "exposedFoam": 0.35,
-     "exposedPx": 695,
+     "exposedFoam": 0.242,
+     "exposedPx": 735,
      "beachPx": 443,
-     "thr": 0.0407
+     "thr": 0.0408
     },
     {
      "day": "2023-09-22",
@@ -4842,8 +4882,8 @@
       1.7
      ],
      "beachFoam": 0.187,
-     "exposedFoam": 0.371,
-     "exposedPx": 776,
+     "exposedFoam": 0.292,
+     "exposedPx": 800,
      "beachPx": 443,
      "thr": 0.04
     },
@@ -4896,8 +4936,8 @@
       2.2
      ],
      "beachFoam": 0.181,
-     "exposedFoam": 0.257,
-     "exposedPx": 797,
+     "exposedFoam": 0.165,
+     "exposedPx": 812,
      "beachPx": 443,
      "thr": 0.04
     },
@@ -4930,8 +4970,8 @@
       2.0
      ],
      "beachFoam": 0.226,
-     "exposedFoam": 0.372,
-     "exposedPx": 775,
+     "exposedFoam": 0.29,
+     "exposedPx": 804,
      "beachPx": 443,
      "thr": 0.04
     },
@@ -4954,8 +4994,8 @@
       4.7
      ],
      "beachFoam": 0.165,
-     "exposedFoam": 0.215,
-     "exposedPx": 777,
+     "exposedFoam": 0.119,
+     "exposedPx": 800,
      "beachPx": 443,
      "thr": 0.04
     }
