@@ -29,6 +29,13 @@ import {
  * exactly the number they read before (docs/team/PORISMA-KAIROS-2026-08.md §4 Σ3 explains why
  * those must stay bound to the printed open-water figure).
  *
+ * ⚠️ HISTORY, NOT THE CURRENT CONTRACT (noted 10/09/2026). The paragraph above describes 05/08.
+ * Since then the shore number stopped being display-only: it feeds the swim verdict (bible §7η,
+ * milder-of-two capped at one step), 25 of the podium's 100 points (utils/topPickScoreTable) and
+ * the over-caution relief (§Γ57); the four conditions below became a ramp (§Γ4) with bypasses for
+ * departing water and dry sectors (§Γ21/§Γ22); and §Γ5 made it the ONE number printed everywhere.
+ * Read the bible's manual, Stage 4, for what holds today.
+ *
  * WHERE IT IS ALLOWED TO SPEAK — the four conditions, all required:
  *   1. The live wind sector is near-totally land-blocked, has essentially no fetch, and the wind
  *      is blowing off the land. These are the IDENTICAL constants the offshore-flat-water lift

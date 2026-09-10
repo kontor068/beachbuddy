@@ -7797,6 +7797,9 @@ export const App: React.FC = () => {
    * not a "suitable" subset that would be everything anyway) and the daily rotation of #2/#3 in
    * utils/topPickVariety, whose ROTATION_MAX_BEAUFORT is 2 — it could only ever have fired on the
    * days the podium was hidden.
+   * ⚠️ 10/09/2026: the rotation was DISCONNECTED the same day (see the comment near
+   * `rotateEquivalentTopPicks` above) — it has no caller. On a calm day the podium shows the same
+   * three beaches, ordered by the score table.
    */
   const shouldShowDirectoryTopRecommendations = Boolean(
     showDecisionRecommendations &&
