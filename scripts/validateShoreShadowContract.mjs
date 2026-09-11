@@ -414,10 +414,11 @@ for (const rel of prodFiles) {
     if (!sea || sea.field !== 'seaStateWaveM' || !(keys.has('enclosedCove') || keys.has('simpleWindSuitability'))) return;
     toneObjectsFromScore += 1;
     // Το αντικείμενο χρώματος κουβαλά το K_d του ΧΡΩΜΑΤΟΣ (toneShoreShadowDamping), όχι το πλήρες.
-    for (const [field, fromField] of [['shoreShadowDamping', 'toneShoreShadowDamping'], ['seaArrivalExposureLevel', 'seaArrivalExposureLevel']]) {
+    // + το φρένο της αβέβαιης μέρας (11/09/2026): το τσιπ το έπαιρνε, η πινέζα ποτέ.
+    for (const [field, fromField] of [['shoreShadowDamping', 'toneShoreShadowDamping'], ['seaArrivalExposureLevel', 'seaArrivalExposureLevel'], ['forecastUncertain', 'forecastUncertain']]) {
       const c = copies.get(field);
       if (!c || c.from !== sea.from || c.field !== fromField) {
-        fail('Ε', `${rel}:${lineOf(sf, n)} — αντικείμενο χρώματος χτισμένο από το \`${sea.from}\` δεν έχει \`${field}: ${sea.from}.${fromField}\`${c ? ` (έχει \`${c.from}.${c.field}\`)` : ''} — ${field === 'shoreShadowDamping' ? 'το χρώμα θα πάρει άλλο K_d από το τσιπ (ή το πλήρες, που το κάνει πιο ήρεμο από το ×0,5)' : 'K_d χωρίς άφιξη δίνει έκπτωση εκεί που η πινέζα την αρνείται'}`);
+        fail('Ε', `${rel}:${lineOf(sf, n)} — αντικείμενο χρώματος χτισμένο από το \`${sea.from}\` δεν έχει \`${field}: ${sea.from}.${fromField}\`${c ? ` (έχει \`${c.from}.${c.field}\`)` : ''} — ${field === 'shoreShadowDamping' ? 'το χρώμα θα πάρει άλλο K_d από το τσιπ (ή το πλήρες, που το κάνει πιο ήρεμο από το ×0,5)' : field === 'forecastUncertain' ? 'σε αβέβαιη μέρα η πινέζα θα μείνει «Ιδανική» δίπλα σε τσιπ «Καλή»' : 'K_d χωρίς άφιξη δίνει έκπτωση εκεί που η πινέζα την αρνείται'}`);
       }
     }
   });
@@ -475,6 +476,8 @@ if (toneObjectsFromScore < 4) fail('Ε', `βρέθηκαν ${toneObjectsFromScor
       return t === 'shoreShadowDamping' || t === 'item.shoreShadowDamping';
     });
     if (!passesKd) fail('Ε', `components/BeachMap.tsx:${lineOf(sf, n)} — ${callee}(…) ανά παραλία χωρίς K_d: αυτό το χρώμα θα διαφωνεί με την πινέζα δίπλα του`);
+    const passesUncertain = n.arguments.some((a) => ['forecastUncertain', 'item.forecastUncertain'].includes(a.getText(sf)));
+    if (!passesUncertain) fail('Ε', `components/BeachMap.tsx:${lineOf(sf, n)} — ${callee}(…) ανά παραλία χωρίς το φρένο αβέβαιης μέρας: θα μένει «Ιδανική» δίπλα σε τσιπ «Καλή»`);
   });
   if (perBeachCalls < 3) fail('Ε', `components/BeachMap.tsx: βρέθηκαν ${perBeachCalls} ανά-παραλία κλήσεις της σκάλας — περίμενα ≥3 (εικονίδιο πινέζας, δημιουργός εικονιδίου, ταμπελάκι πάνελ)`);
   // Το beachToneInput ΤΟ ΙΔΙΟ (λεζάντα, πίνακας χρωμάτων προς το App → βάθρο/λίστα/φίλτρο χρώματος,
@@ -494,6 +497,7 @@ if (toneObjectsFromScore < 4) fail('Ε', `βρέθηκαν ${toneObjectsFromScor
   // λεζάντα/λίστα κρατούν το K_d (δεύτερος ελεγκτής 11/09: σβήνοντας αυτή τη γραμμή, όλες οι πύλες περνούσαν).
   let markerFns = 0;
   let markerForwardsKd = false;
+  let markerForwardsUncertain = false;
   walk(sf, (n) => {
     if (!ts.isVariableDeclaration(n) || !ts.isIdentifier(n.name) || n.name.text !== 'getExposureMarkerTone' || !n.initializer) return;
     markerFns += 1;
@@ -501,10 +505,12 @@ if (toneObjectsFromScore < 4) fail('Ε', `βρέθηκαν ${toneObjectsFromScor
       if (!ts.isCallExpression(m) || m.expression.getText(sf) !== 'resolveConditionTone') return;
       const arg = m.arguments[0];
       if (arg && ts.isObjectLiteralExpression(arg) && arg.properties.some((p) => propName(p) === 'shoreShadowDamping')) markerForwardsKd = true;
+      if (arg && ts.isObjectLiteralExpression(arg) && arg.properties.some((p) => propName(p) === 'forecastUncertain')) markerForwardsUncertain = true;
     });
   });
   if (markerFns !== 1) fail('Ε', `components/BeachMap.tsx: βρέθηκαν ${markerFns} ορισμοί getExposureMarkerTone — περίμενα 1· αν μετονομάστηκε, μετάφερε τον έλεγχο`);
   else if (!markerForwardsKd) fail('Ε', 'components/BeachMap.tsx: το getExposureMarkerTone δεν προωθεί το shoreShadowDamping στο resolveConditionTone — πινέζα και ταμπελάκι στο ×0,5, λεζάντα και λίστα με K_d');
+  if (markerFns === 1 && !markerForwardsUncertain) fail('Ε', 'components/BeachMap.tsx: το getExposureMarkerTone δεν προωθεί το forecastUncertain στο resolveConditionTone — σε αβέβαιη μέρα πινέζα «Ιδανική», τσιπ «Καλή»');
   if (toneInputFns !== 1) fail('Ε', `components/BeachMap.tsx: βρέθηκαν ${toneInputFns} ορισμοί beachToneInput — περίμενα 1· αν μετονομάστηκε, μετάφερε τον έλεγχο`);
   else if (!toneInputCarriesKd) fail('Ε', 'components/BeachMap.tsx: το beachToneInput δεν περνάει `shoreShadowDamping: item.shoreShadowDamping` — λεζάντα, πίνακας χρωμάτων (βάθρο/λίστα), γραμμή αιτίας και «Ήρεμο νερό» ξαναπέφτουν στο ×0,5 ενώ η πινέζα δίπλα όχι');
 }
@@ -681,14 +687,17 @@ const beforeZ = failures.length;
   // Εκεί που η εθνική μέτρηση (reports/quality/pin-shore-shadow-wiring.json) βρήκε ότι το K_d αλλάζει
   // χρώμα: αντίθετος άνεμος 20 χλμ/ώ με Hs 1,6 (πορτοκαλί↔κόκκινο, K_d=1), θάλασσα 2,5 μ. με 35 χλμ/ώ
   // (κόκκινο↔πορτοκαλί, K_d<0,5), ελαφρύς άνεμος 8 χλμ/ώ με Hs 1,0 (μπλε↔κίτρινο). 8 διευθύνσεις.
-  const REGIMES = [{ hs: 1.6, kmh: 20, opposite: true }, { hs: 2.5, kmh: 35 }, { hs: 1.0, kmh: 8 }];
+  // + ΑΒΕΒΑΙΗ ΜΕΡΑ (11/09/2026): ελαφρύς άνεμος, μικρή θάλασσα (εκεί ζει το μπλε) με forecastUncertain — το
+  // φρένο του τσιπ (μπλε → κίτρινο) πρέπει να φτάνει ΚΑΙ στην πινέζα και στον μικρό χάρτη.
+  const REGIMES = [{ hs: 1.6, kmh: 20, opposite: true }, { hs: 2.5, kmh: 35 }, { hs: 1.0, kmh: 8 }, { hs: 0.3, kmh: 8, uncertain: true }];
   const scenarios = [];
-  for (let deg = 0; deg < 360; deg += 45) for (const r of REGIMES) scenarios.push({ waveDeg: deg, windDeg: r.opposite ? (deg + 180) % 360 : deg, kmh: r.kmh, hs: r.hs });
+  for (let deg = 0; deg < 360; deg += 45) for (const r of REGIMES) scenarios.push({ waveDeg: deg, windDeg: r.opposite ? (deg + 180) % 360 : deg, kmh: r.kmh, hs: r.hs, uncertain: Boolean(r.uncertain) });
 
   const z = {
     pairs: 0, regionsSeen: 0, pinStarved: 0, pinDiffers: 0, chipStarved: 0, chipDiffers: 0, chipCallMissing: 0,
     pageDiffers: 0, sameShorePairs: 0, sameShoreKdDiffers: 0, sameShoreColourDiffers: 0, pinEqPage: 0,
-    pinSeesMissingKd: 0, chipSeesMissingKd: 0, toneKdNotHelper: 0, pinCalmerThanLegacy: 0, chipCalmerThanLegacy: 0, examples: [],
+    pinSeesMissingKd: 0, chipSeesMissingKd: 0, toneKdNotHelper: 0, pinCalmerThanLegacy: 0, chipCalmerThanLegacy: 0,
+    uncertainPairs: 0, uncertainStarved: 0, uncertainBites: 0, uncertainBluerThanChip: 0, examples: [],
   };
   const example = (e) => { if (z.examples.length < 6) z.examples.push(e); };
   const regionsWithBeaches = new Set();
@@ -698,6 +707,7 @@ const beforeZ = failures.length;
       id: 'kd-wiring', label: 'kd-wiring', windDirectionDeg: sc.windDeg, windSpeedMs: windMs,
       windGustMs: windMs * 1.35, waveHeightM: sc.hs, waveDirectionDeg: sc.waveDeg,
     });
+    if (sc.uncertain) day.forecastUncertain = true;
     const beaufort = getBeaufortLevel(day.wind.speed * 3.6);
     const label = `κύμα ${sc.waveDeg}° Hs ${sc.hs} μ. · άνεμος ${sc.windDeg}° ${sc.kmh} χλμ/ώ`;
     for (const { regionId, beaches, profilesById } of regions) {
@@ -732,6 +742,13 @@ const beforeZ = failures.length;
         if (pin !== pinWithScoreKd) { z.pinDiffers += 1; example(`Ζ1 ${where}: πινέζα ${pin}, με το K_d του score ${pinWithScoreKd}`); }
         const { shoreShadowDamping: _dropped, ...itemWithoutKd } = item;
         const pinLegacy = resolveConditionTone(pinToneInput(itemWithoutKd, ctx));
+        if (sc.uncertain) {
+          z.uncertainPairs += 1;
+          if (item.forecastUncertain !== true) z.uncertainStarved += 1;
+          if (resolveConditionTone(pinToneInput({ ...item, forecastUncertain: false }, ctx)) !== pin) z.uncertainBites += 1;
+          const chipNow = s.simpleWindSuitability?.suitabilityColor;
+          if (pin === 'blue' && chipNow && chipNow !== 'blue') { z.uncertainBluerThanChip += 1; example(`αβέβαιη ${where}: πινέζα blue, τσιπ ${chipNow}`); }
+        }
         if (pinLegacy !== pinWithScoreKd) z.pinSeesMissingKd += 1;
         // Ζ1β — ΜΟΝΟΔΡΟΜΟ: ποτέ πιο ήρεμη από το ιστορικό ×0,5.
         if (TONE_RANK_Z[pin] > TONE_RANK_Z[pinLegacy]) { z.pinCalmerThanLegacy += 1; example(`Ζ1β ${where}: πινέζα ${pin}, με το ιστορικό ×0,5 ${pinLegacy}`); }
@@ -773,11 +790,15 @@ const beforeZ = failures.length;
   if (z.pageDiffers) fail('Ζ', `${z.pageDiffers} φορές ο μικρός χάρτης της σελίδας έχει άλλο χρώμα από την πινέζα της περιοχής`);
   if (z.sameShoreKdDiffers || z.sameShoreColourDiffers) fail('Ζ', `ίδια ακτή, ίδια δεδομένα, αλλά ${z.sameShoreKdDiffers} με άλλο K_d και ${z.sameShoreColourDiffers} με άλλο χρώμα πινέζα/σελίδα`);
   // Μη-τυφλότητα: το δείγμα πρέπει να ΜΠΟΡΕΙ να δει ένα χαμένο K_d, αλλιώς τα μηδενικά από πάνω δεν λένε τίποτα.
+  if (z.uncertainStarved) fail('Ζ', `${z.uncertainStarved} αντικείμενα χάρτη σε ΑΒΕΒΑΙΗ μέρα χωρίς το forecastUncertain του score — η πινέζα δεν παίρνει το φρένο του τσιπ`);
+  if (z.uncertainBluerThanChip) fail('Ζ', `${z.uncertainBluerThanChip} πινέζες «Ιδανική» σε αβέβαιη μέρα δίπλα σε τσιπ που δεν είναι μπλε`);
+  if (!z.uncertainBites) fail('Ζ', 'σε κανένα ζεύγος αβέβαιης μέρας το φρένο δεν αλλάζει την πινέζα — το σενάριο δεν ασκείται, η πύλη είναι τυφλή');
   if (!z.pinSeesMissingKd) fail('Ζ', 'σε κανένα ζεύγος η πινέζα δεν αλλάζει χωρίς K_d — τα σενάρια δεν ασκούν το K_d, η πύλη είναι τυφλή');
   if (!z.chipSeesMissingKd) fail('Ζ', 'σε κανένα ζεύγος το τσιπ δεν αλλάζει χωρίς K_d — τα σενάρια δεν ασκούν το K_d, η πύλη είναι τυφλή');
   if (z.sameShorePairs < z.pairs / 4) fail('Ζ', `μόνο ${z.sameShorePairs}/${z.pairs} ζεύγη «ίδια ακτή» — το Ζ4 κρίνει πολύ λίγα για να λέει κάτι`);
   const share = (a) => `${((100 * a) / Math.max(1, z.pairs)).toFixed(2)}%`;
   console.log(`   δείγμα: ${z.pairs} ζεύγη · ${z.regionsSeen} περιοχές · ${scenarios.length} σενάρια · ${((Date.now() - tZ) / 1000).toFixed(1)} s`);
+  console.log(`   αβέβαιη μέρα: ${z.uncertainPairs} ζεύγη · το φρένο έκανε ${z.uncertainBites} πινέζες «Ιδανική» → «Καλή» · πινέζα μπλε δίπλα σε μη μπλε τσιπ: ${z.uncertainBluerThanChip}`);
   console.log(`   χωρίς K_d θα άλλαζαν: πινέζα ${z.pinSeesMissingKd} · τσιπ ${z.chipSeesMissingKd}  |  ίδια ακτή ${z.sameShorePairs} (${share(z.sameShorePairs)}) · πινέζα == χρώμα σελίδας συνολικά ${share(z.pinEqPage)}`);
   for (const e of z.examples) console.log(`   · ${e}`);
 }

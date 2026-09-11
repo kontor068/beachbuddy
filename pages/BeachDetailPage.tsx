@@ -3349,6 +3349,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     // σε 63.596 ζεύγη του πλέγματος (scripts/measurePinShoreShadowWiring).
                     seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
                     shoreShadowDamping: scoreResult.toneShoreShadowDamping,
+                    forecastUncertain: scoreResult.forecastUncertain,
                     enclosedCove
                   }]}
                   userLocation={userLocation}

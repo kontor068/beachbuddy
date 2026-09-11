@@ -4987,6 +4987,8 @@ export const App: React.FC = () => {
         // το ιστορικό 0,5 (utils/waveCharacter.colourShadowDamping). Ως τότε έφτανε undefined. Μπαίνει ΜΕΤΑ
         // το geospatialExposure (παράθυρο του κανόνα region-map-gets-the-marine). Φυλάει: validateShoreShadowContract Ε/Ζ.
         shoreShadowDamping: scoreResult.toneShoreShadowDamping,
+        // Το φρένο της αβέβαιης μέρας, όπως στο τσιπ (11/09/2026) — ως τότε δεν έφτανε ποτέ στην πινέζα.
+        forecastUncertain: scoreResult.forecastUncertain,
       };
     });
   }, [geospatialExposureProfiles, language, nearMeBeachForecastById, beachAreaForecastById, preferences, selectedForecast, selectedIsland, userLocation, withBeachOwnWind]);

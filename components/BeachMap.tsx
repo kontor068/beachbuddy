@@ -1831,7 +1831,10 @@ const getExposureMarkerTone = (
   /** Η γωνιακή έκπτωση σκιάς K_d — utils/seaArrival, carried on the score (24/08/2026). */
   shoreShadowDamping?: number,
   /** The km/h `windBeaufort` was rounded from — utils/suitabilityTone.holdsNoBuildableChopAtThree. */
-  windSpeedKmh?: number
+  windSpeedKmh?: number,
+  /** Τα σενάρια διαφωνούν για αυτή τη μέρα (από αύριο και μετά) — το τσιπ το παίρνει ήδη· χωρίς αυτό η
+   *  πινέζα έμενε «Ιδανική» δίπλα σε κάρτα «Καλή» (11/09/2026, utils/forecastUncertainty). */
+  forecastUncertain = false
 ) => {
   const tones: Record<CalmnessTone, { colorClass: string; ringClass: string; bgClass: string; textClass: string }> = {
     blue: {
@@ -1879,6 +1882,7 @@ const getExposureMarkerTone = (
     seaArrivalExposureLevel,
     shoreShadowDamping,
     windSpeedKmh,
+    forecastUncertain,
   })];
 };
 
@@ -2006,7 +2010,9 @@ const createExposureIcon = (
   /** Η γωνιακή έκπτωση σκιάς K_d — utils/seaArrival, carried on the score (24/08/2026). */
   shoreShadowDamping?: number,
   /** The km/h behind `windBeaufort` — see getExposureMarkerTone. */
-  windSpeedKmh?: number
+  windSpeedKmh?: number,
+  /** Τα σενάρια διαφωνούν για αυτή τη μέρα — ίδιο φρένο με το τσιπ (utils/forecastUncertainty). */
+  forecastUncertain = false
 ) => {
   const topPickClass = isTopPick ? 'beach-map-top-pick-marker-dot' : '';
   const surfClass = isSurfSpot ? 'beach-map-marker-surf' : '';
@@ -2030,7 +2036,7 @@ const createExposureIcon = (
     });
   }
 
-  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, shoreShadowDamping, windSpeedKmh);
+  const { colorClass, ringClass } = getExposureMarkerTone(exposureLevel, showWindExposureColors, windBeaufort, isEnclosedCove, seaStateM, offshoreFlatWater, glassWaterAtFour, downwindSeaSample, swimVerdictAvoid, seaArrivalExposureLevel, shoreShadowDamping, windSpeedKmh, forecastUncertain);
   // REMOVED 01/08/2026: the hollow-centre ("donut") cue on exposed markers.
   //
   // It was a non-colour cue — the shape carried the exposed/not-exposed split so it stayed
@@ -4264,7 +4270,10 @@ const BeachMap: React.FC<BeachMapProps> = ({
       // Η άφιξη της θάλασσας και το K_d του score, όπως στην πινέζα (11/09/2026) — ΜΑΖΙ: το K_d
       // χωρίς την άφιξη θα έδινε έκπτωση εκεί που η πινέζα την αρνείται.
       item.seaArrivalExposureLevel,
-      item.shoreShadowDamping
+      item.shoreShadowDamping,
+      // Ο ίδιος άνεμος παραλίας και το ίδιο φρένο αβέβαιης μέρας με την πινέζα (11/09/2026).
+      beachWindSpeedKmh(item),
+      item.forecastUncertain
     );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (
@@ -4973,7 +4982,7 @@ const BeachMap: React.FC<BeachMapProps> = ({
               zIndexOffset={isHighlightedMarker ? 1000 : isTopPickMarker ? 700 : 0}
               icon={mapMode === 'recommendation'
                 ? beachIconFor(item, showRecommendationWindColors, isTopPickMarker, isHighlightedMarker, isSurfMarker)
-                : exposureIconFor(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, item.shoreShadowDamping, beachWindSpeedKmh(item))}
+                : exposureIconFor(mapExposureLevel, showWindExposureColors, beachBeaufort(item), isTopPickMarker, mapExposureEvidence, isHighlightedMarker, Boolean(item.enclosedCove), isSurfMarker, seaStateSeverityM(item.seaStateWaveM, item.seaStatePeriodS), beachCoveBadge(item), beachOffshoreFlatWater(item), beachGlassWaterAtFour(item), beachDownwindSeaSample(item), item.swimmingComfort === 'avoid_swimming', item.seaArrivalExposureLevel, item.shoreShadowDamping, beachWindSpeedKmh(item), item.forecastUncertain)}
               eventHandlers={{
                 click: () => {
                   trackEvent('map_marker_clicked', item.beachId, {
