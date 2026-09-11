@@ -44,7 +44,7 @@ const ALLOWED = [
   [': effectiveWaveHeightM;', 3, 'τα τρία fallback: seaAtShoreM, seaForCautionM, displayWaveHeightM — όταν δεν υπάρχει αριθμός ακτής'],
   [': effectiveWaveHeightM > (realisticMeasuredWaveHeightM ?? 0) + 0.005', 1, 'seaStateSource: λέει ΑΠΟ ΠΟΥ ήρθε το ανοιχτό νούμερο'],
   ['effectiveWaveHeightM', 1, 'τελευταίο όρισμα του getEffectiveBeaufortForComfort (ο κλάδος ανοιχτού· ο κλάδος ακτής το ξαναβγάζει από το shoreWaveM)'],
-  ['if (beachShoreBreaks(beach, seaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {', 1, 'το shoreBreak κρίνει ΜΟΝΟ του την άφιξη (σωπαίνει σε protected/undefined) — δεν χρειάζεται δαμπαρισμένο ύψος'],
+  ['if (beachShoreBreaks(beach, geometricSeaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {', 1, 'το shoreBreak κρίνει ΜΟΝΟ του την άφιξη (σωπαίνει σε protected/undefined) — δεν χρειάζεται δαμπαρισμένο ύψος'],
   ['measuredWaveHeightM !== undefined ? effectiveWaveHeightM : modeledWaveHeightM', 1, 'η ποινή ανοιχτού νερού στον βαθμό — ΕΠΙΣΤΡΕΦΕΤΑΙ αυτούσια στον κλάδο ακτής της ετυμηγορίας'],
   ['? Math.min(coveDisplayM, effectiveWaveHeightM)', 1, 'το καπάκι του όρμου: ποτέ πάνω από το ανοιχτό'],
   [': windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM', 1, 'ίδιο καπάκι, ο άλλος κλάδος'],

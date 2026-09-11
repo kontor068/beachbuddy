@@ -310,6 +310,102 @@ const MOLOS_CASES = [
   }
 }
 
+/**
+ * ΚΑΛΟ ΛΙΜΑΝΙ ΛΕΣΒΟΥ #1334 — ΜΑΡΤΥΡΑΣ ΗΡΕΜΙΑΣ (11/09/2026, βίβλος §Γ79-Β). Το ΑΝΤΙΘΕΤΟ του Μώλου: ο
+ * δορυφόρος είδε 29 μέρες ΒΒΔ χωρίς αφρό στον δυτικό όρμο, και η εφαρμογή τύπωνε ολόκληρο το πέλαγος.
+ * Εδώ η διόρθωση ΚΑΤΕΒΑΖΕΙ νούμερα — η επικίνδυνη κατεύθυνση — άρα η πύλη κρίνει τα φρένα, όχι μόνο το
+ * αποτέλεσμα. Κάθε σενάριο ΜΕ και ΧΩΡΙΣ το τόξο ηρεμίας (το Map του utils/seaArrival):
+ *   έξω από το 341°-7° ΑΚΡΙΒΩΣ ίδια οθόνη · μέσα ΠΟΤΕ ψηλότερο νούμερο · ΠΟΤΕ δεν χάνεται «μην κολυμπήσεις»
+ *   · ΠΟΤΕ δεν χάνεται η προειδοποίηση θραύσης · όταν μιλάει το μοντέλο ανέμου ή ο άνεμος είναι 'exposed',
+ *   ΑΚΡΙΒΩΣ ίδια οθόνη. Και καμία άλλη παραλία της Λέσβου δεν αλλάζει.
+ */
+{
+  const KL = { id: 1334, region: 'north-aegean-lesvos' };
+  const raw = findBy(loadJson(`public/data/beaches/${KL.region}.json`), (n) => n.id === KL.id && typeof n.lat === 'number');
+  const summary = findBy(loadJson(`public/data/beaches/app/summary/${KL.region}.json`), (n) => n.id === KL.id && n.orientation);
+  const profilesPayload = loadJson(`public/data/geospatial/exposure/${KL.region}.json`);
+  const profile = findBy(profilesPayload, (n) => n.beachId === KL.id);
+  if (!raw || !summary || !profile) {
+    failures.push(`#${KL.id} Καλό Λιμάνι: λείπουν δεδομένα (raw=${!!raw} summary=${!!summary} profile=${!!profile})`);
+  } else {
+    const { CALM_WITNESSED_ARRIVAL_ARCS } = require(path.join(root, 'utils/seaArrival.ts'));
+    const calmArc = CALM_WITNESSED_ARRIVAL_ARCS.get(KL.id);
+    const angDistKL = (a, b) => Math.abs((((a - b) % 360) + 540) % 360 - 180);
+    const beach = {
+      id: KL.id, name: summary.name, coordinates: { lat: raw.lat, lon: raw.lon }, region: raw.region,
+      protectedFrom: summary.protectedFrom, orientation: summary.orientation, amenities: summary.amenities ?? {},
+      waterDepth: summary.waterDepth, metadata: raw.metadata,
+    };
+    const scoreOf = (b, p, spec) => {
+      const forecast = molosDay(spec);
+      return calculateBeachScore(b, forecast, undefined, undefined, { weatherSource: 'beach-cluster', hourlyForecast: forecast.hourly, geospatialProfile: p });
+    };
+    const runKL = (spec) => {
+      const score = scoreOf(beach, profile, spec);
+      const readout = buildBeachConditionsReadout({
+        beachWindSpeedKmph: spec.windKmh, waveHeightM: score.waveHeightM, shoreWaveHeightM: score.shoreWaveHeightM,
+        shoreDisplayWaveM: score.shoreDisplayWaveM, seaArrivalExposureLevel: score.seaArrivalExposureLevel, language: 'gr',
+      });
+      return { score, readout };
+    };
+    const withoutCalmArc = (fn) => {
+      CALM_WITNESSED_ARRIVAL_ARCS.delete(KL.id);
+      try { return fn(); } finally { CALM_WITNESSED_ARRIVAL_ARCS.set(KL.id, calmArc); }
+    };
+    const hasShoreBreak = (s) => (s.warnings ?? []).some((w) => w?.type === 'shore_break');
+    const k = { runs: 0, leaks: 0, higher: 0, lowered: 0, avoidLost: 0, shoreBreakLost: 0, guardLeak: 0, examples: [] };
+    const noteKL = (e) => { if (k.examples.length < 6) k.examples.push(e); };
+    const dirs = [...Array.from({ length: 72 }, (_, i) => i * 5), 339, 340, 341, 342, 352, 353, 6, 7, 8, 9];
+    const winds = [[null, 15], [null, 25], [null, 35], [20, 20], [270, 20], [180, 20], [90, 12]];
+    for (const seaDeg of dirs) for (const seaM of [0.6, 1.1, 1.7]) for (const [wd, windKmh] of winds) {
+      const spec = { windDeg: wd ?? seaDeg, windKmh, seaDeg, seaM };
+      const after = runKL(spec);
+      const before = withoutCalmArc(() => runKL(spec));
+      k.runs += 1;
+      const a = after.readout.waveM ?? 0;
+      const b = before.readout.waveM ?? 0;
+      const where = `θάλασσα ${seaDeg}° ${seaM} μ. · άνεμος ${spec.windDeg}° ${windKmh} χλμ/ώ: ${b} → ${a} μ., ${before.score.swimmingComfort} → ${after.score.swimmingComfort}`;
+      const same = a === b && after.readout.waveWord === before.readout.waveWord
+        && after.score.swimmingComfort === before.score.swimmingComfort
+        && after.score.seaArrivalExposureLevel === before.score.seaArrivalExposureLevel;
+      if (angDistKL(seaDeg, calmArc.centerDeg) > calmArc.halfWidthDeg) {
+        if (!same) { k.leaks += 1; noteKL(`ΔΙΑΡΡΟΗ ${where}`); }
+        continue;
+      }
+      if ((before.score.seaStateSource === 'modeled' || before.score.exposureLevel === 'exposed') && !same) { k.guardLeak += 1; noteKL(`ΦΡΑΧΤΗΣ ΑΝΕΜΟΥ ${where}`); }
+      if (a > b + 1e-9) { k.higher += 1; noteKL(`ΨΗΛΟΤΕΡΑ ${where}`); }
+      if (a < b - 1e-9) k.lowered += 1;
+      if (before.score.swimmingComfort === 'avoid_swimming' && after.score.swimmingComfort !== 'avoid_swimming') { k.avoidLost += 1; noteKL(`ΕΣΒΗΣΕ «μην κολυμπήσεις» ${where}`); }
+      if (hasShoreBreak(before.score) && !hasShoreBreak(after.score)) { k.shoreBreakLost += 1; noteKL(`ΕΣΒΗΣΕ ΘΡΑΥΣΗ ${where}`); }
+    }
+    if (k.leaks) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας άλλαξε την οθόνη ΕΞΩ από το τόξο σε ${k.leaks} σενάρια — ${k.examples.join(' · ')}`);
+    if (k.guardLeak) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας μίλησε ενώ ο αριθμός ήταν κύμα ανέμου ή ο άνεμος 'exposed' (${k.guardLeak}) — ${k.examples.join(' · ')}`);
+    if (k.higher) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας ΑΝΕΒΑΣΕ νούμερο (${k.higher}) — ${k.examples.join(' · ')}`);
+    if (k.avoidLost) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας έσβησε «μην κολυμπήσεις» (${k.avoidLost}) — το φρένο δεν έπιασε — ${k.examples.join(' · ')}`);
+    if (k.shoreBreakLost) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας έσβησε προειδοποίηση θραύσης (${k.shoreBreakLost}) — ${k.examples.join(' · ')}`);
+    if (!k.lowered) failures.push('#1334 Καλό Λιμάνι: σε κανένα σενάριο δεν κατέβηκε το νούμερο — ο μάρτυρας δεν ασκείται, η πύλη είναι τυφλή');
+
+    // Καμία άλλη παραλία της Λέσβου: ΒΒΔ θάλασσες μέσα στο τόξο, με και χωρίς.
+    let othersChanged = 0;
+    const lesvosBeaches = loadJson(`public/data/beaches/app/${KL.region}.json`).island?.beaches ?? [];
+    const lesvosProfiles = profilesPayload.profiles ?? {};
+    for (const spec of [{ windDeg: 350, windKmh: 25, seaDeg: 345, seaM: 1.4 }, { windDeg: 0, windKmh: 20, seaDeg: 355, seaM: 1.1 },
+      { windDeg: 10, windKmh: 30, seaDeg: 5, seaM: 1.7 }, { windDeg: 330, windKmh: 15, seaDeg: 342, seaM: 0.8 }]) {
+      for (const b of lesvosBeaches) {
+        if (b.id === KL.id) continue;
+        const p = lesvosProfiles[String(b.id)];
+        if (!p) continue;
+        const sa = scoreOf(b, p, spec);
+        const sb = withoutCalmArc(() => scoreOf(b, p, spec));
+        if (sa.waveHeightM !== sb.waveHeightM || sa.shoreDisplayWaveM !== sb.shoreDisplayWaveM
+          || sa.swimmingComfort !== sb.swimmingComfort || sa.seaArrivalExposureLevel !== sb.seaArrivalExposureLevel) othersChanged += 1;
+      }
+    }
+    if (othersChanged) failures.push(`#1334 Καλό Λιμάνι: ο μάρτυρας ηρεμίας άλλαξε ${othersChanged} ΑΛΛΕΣ παραλίες της Λέσβου`);
+    console.log(`   Καλό Λιμάνι, όλος ο κύκλος: ${k.runs} σενάρια · χαμηλότερα ${k.lowered} · διαρροές ${k.leaks} · φράχτης ανέμου ${k.guardLeak} · ψηλότερα ${k.higher} · χάθηκε «μην κολυμπήσεις» ${k.avoidLost} · χάθηκε θραύση ${k.shoreBreakLost} · άλλες παραλίες ${othersChanged}`);
+  }
+}
+
 if (failures.length) {
   console.error(`FAILED: ${failures.length} μάρτυρας/ες διαφωνούν με τις κάμερες της 29/08/2026:`);
   for (const f of failures) console.error(`  - ${f}`);

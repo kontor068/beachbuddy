@@ -202,6 +202,24 @@ const beforeWitness = failures.length;
       fail('Δ0β', `δάπεδο μαρτυρημένης θάλασσας ${WITNESSED_SEA_MIN_COMPONENT_M} ≠ DEPARTING_SEA_MIN_COMPONENT_M ${DEPARTING_SEA_MIN_COMPONENT_M} — δύο κανόνες «μπαίνει/φεύγει» με άλλο κατώφλι`);
     }
   }
+  // Δ0γ. ΜΑΡΤΥΡΕΣ ΗΡΕΜΙΑΣ (11/09/2026, §Γ79-Β) — η ΕΠΙΚΙΝΔΥΝΗ κατεύθυνση, άρα καρφωμένοι με τιμή: Καλό
+  // Λιμάνι #1334, 341°-7° (πλαίσιο του site). Νέος ή φαρδύτερος = νέα παρατήρηση + απόφαση + ορατή αλλαγή εδώ.
+  // Καμία παραλία δεν είναι ταυτόχρονα μάρτυρας ΑΦΙΞΗΣ και ΗΡΕΜΙΑΣ (θα αλληλοαναιρούνταν σιωπηλά).
+  {
+    const { CALM_WITNESSED_ARRIVAL_ARCS } = require(path.join(root, 'utils/seaArrival.ts'));
+    const PINNED_CALM = new Map([[1334, { centerDeg: 354, halfWidthDeg: 13 }]]);
+    for (const [id, pin] of PINNED_CALM) {
+      const arc = CALM_WITNESSED_ARRIVAL_ARCS.get(id);
+      if (!arc) fail('Δ0γ', `το τόξο ηρεμίας του #${id} αφαιρέθηκε — χωρίς νέα παρατήρηση και απόφαση όχι`);
+      else if (arc.centerDeg !== pin.centerDeg || arc.halfWidthDeg !== pin.halfWidthDeg) {
+        fail('Δ0γ', `το τόξο ηρεμίας του #${id} άλλαξε (${arc.centerDeg}±${arc.halfWidthDeg}° αντί ${pin.centerDeg}±${pin.halfWidthDeg}°) — ηρεμότερο σε περισσότερες διευθύνσεις θέλει νέα μαρτυρία`);
+      }
+    }
+    for (const id of CALM_WITNESSED_ARRIVAL_ARCS.keys()) {
+      if (!PINNED_CALM.has(id)) fail('Δ0γ', `νέο τόξο ηρεμίας #${id} χωρίς να καρφωθεί εδώ — προς το ηρεμότερο θέλει ≥20 μέρες SWIR, θετικό έλεγχο, replay στο πλαίσιο του site ΚΑΙ απόφαση`);
+      if (JUDGE_WITNESSED_ARRIVAL_BEACH_IDS.has(id) || JUDGE_WITNESSED_ARRIVAL_ARCS.has(id)) fail('Δ0γ', `#${id} είναι ΚΑΙ μάρτυρας άφιξης ΚΑΙ ηρεμίας`);
+    }
+  }
   const SECTORS8 = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const sectorLevelAt = (p, deg) => p?.sectors?.[SECTORS8[Math.round((((deg % 360) + 360) % 360) / 45) % 8]]?.level;
   const printedFraction = (p, deg, kd) => shoreSeaStateM(1, sectorLevelAt(p, deg), resolveSeaArrivalExposureLevel(p, deg), false, kd);

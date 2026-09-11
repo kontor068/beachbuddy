@@ -325,6 +325,46 @@ export const JUDGE_WITNESSED_ARRIVAL_ARCS: ReadonlyMap<number, Readonly<{ center
   [2040, Object.freeze({ centerDeg: 15, halfWidthDeg: 15 })],
 ]);
 
+/**
+ * ΜΑΡΤΥΡΕΣ ΗΡΕΜΙΑΣ — ΤΟ ΑΝΤΙΘΕΤΟ ΤΟΥ ΜΩΛΟΥ, ΜΕ ΑΥΣΤΗΡΟΤΕΡΟ ΚΑΝΟΝΑ (11/09/2026, βίβλος §Γ79-Β).
+ *
+ * Καλό Λιμάνι Λέσβου #1334 — «λέμε κύμα, η παραλία είναι ήσυχη». Ο δυτικός όρμος στον λαιμό της
+ * χερσονήσου τον σκεπάζει η ΙΔΙΑ η χερσόνησος από τον ΒΒΔ (ακτίνα 50 μ.: στεριά στα ~100 μ. από 315° ως
+ * 360°), αλλά οι 8 τομείς των 45° δεν το βλέπουν: ο Β βγαίνει 'partial' με 0 χλμ νερό και η θάλασσα
+ * 341-352° τυπώνεται ΟΛΟΚΛΗΡΗ. Sentinel-2 + SWIR: 29 μέρες ΒΒΔ με αληθινό αφρό στη διπλανή ακτή, ο
+ * δυτικός όρμος μέγιστο 0,172 και ΚΑΜΙΑ μέρα ≥0,2· έλεγχος θετικός (298°, ανοιχτός διάδρομος) 0,311 —
+ * το όργανο ΒΛΕΠΕΙ αφρό εκεί όταν υπάρχει. Replay της πρόγνωσης του ίδιου του site: οι μέρες αυτές
+ * διαβάζονταν 341°…7° (το Copernicus 335-349° — άλλο πλαίσιο, §Γ77-Β), και τυπώναμε ≥0,9 του ανοιχτού
+ * σε 25 από 30. scripts/measureCalmWitnessProposal.mjs, reports/wave-model/calm-witness-proposal.json.
+ *
+ * ΠΡΟΣ ΤΟ ΗΡΕΜΟΤΕΡΟ = Η ΕΠΙΚΙΝΔΥΝΗ ΚΑΤΕΥΘΥΝΣΗ, ΑΡΑ ΤΡΙΑ ΦΡΕΝΑ (απόφαση 11/09, «Α»):
+ *   • τόξο στο πλαίσιο του SITE, χωρίς περιθώριο πέρα από τις μαρτυρημένες μέρες (341°-7°)·
+ *   • ΔΕΝ ισχύει όταν ο αριθμός της ακτής βγαίνει από το μοντέλο ανέμου ή ο σημερινός άνεμος μπαίνει από
+ *     ανοιχτό τομέα ('exposed') — ο κριτής είδε μόνο θάλασσα απ' έξω, όχι κύμα ανέμου μέσα στον όρμο·
+ *   • ΠΟΤΕ δεν σβήνει «μην κολυμπήσεις» και δεν αγγίζει την προειδοποίηση θραύσης στην ακτή — αλλάζει μόνο
+ *     αριθμό, λέξη και χρώμα (services/recommendationService, calmWitnessed).
+ * Μέσα στο τόξο η άφιξη γίνεται 'enclosed' με K_d το πολύ 0,5 (η άκρη της σκιάς — η γεωμετρία δίνει ήδη
+ * 0,5 εκεί, το πάτωμα της πλάγιας θάλασσας). Ο δορυφόρος λέει «δεν σκάει», όχι ύψος: το 0,5 είναι η
+ * μικρότερη δήλωση ηρεμίας, όχι μέτρηση. Νέο τόξο μόνο με το ίδιο πρότυπο (≥20 καθαρές μέρες με SWIR, θετικός
+ * έλεγχος στην ίδια λωρίδα, replay στο πλαίσιο του site, φυσικό εμπόδιο στη γεωμετρία των 5°) ΚΑΙ απόφαση.
+ * Πύλες: shore-shadow-contract (καρφώνει το τόξο) · shore-shadow-witnesses (όλος ο κύκλος με/χωρίς).
+ */
+export const CALM_WITNESSED_ARRIVAL_ARCS: ReadonlyMap<number, Readonly<{ centerDeg: number; halfWidthDeg: number }>> = new Map([
+  [1334, Object.freeze({ centerDeg: 354, halfWidthDeg: 13 })],
+]);
+
+/** Μέσα σε τόξο μαρτυρημένης ΗΡΕΜΙΑΣ αυτής της παραλίας; (CALM_WITNESSED_ARRIVAL_ARCS) — μόνο γεωμετρία·
+ *  τα φρένα ανέμου/ετυμηγορίας τα βάζει η βαθμολογία, που ξέρει από πού ήρθε ο αριθμός. */
+export const isCalmWitnessedArrivalDirection = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  waveDirectionDeg: number | undefined
+): boolean => {
+  const beachId = geospatialProfile?.beachId;
+  const arc = typeof beachId === 'number' ? CALM_WITNESSED_ARRIVAL_ARCS.get(beachId) : undefined;
+  return Boolean(arc) && typeof waveDirectionDeg === 'number' && Number.isFinite(waveDirectionDeg)
+    && angularDistanceDeg(waveDirectionDeg, arc!.centerDeg) <= arc!.halfWidthDeg;
+};
+
 /** Μέσα σε τόξο μαρτυρημένης άφιξης ΑΥΤΗΣ της παραλίας; (JUDGE_WITNESSED_ARRIVAL_ARCS) */
 export const isJudgeWitnessedArrivalDirection = (
   geospatialProfile: GeospatialExposureProfile | undefined,

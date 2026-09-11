@@ -38,7 +38,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM, colourShadowDamping, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_ENCLOSED, SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM, colourShadowDamping, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { hasListedSeatracRamp } from '../utils/accessibility';
@@ -53,7 +53,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { applyWitnessedSeaFloorM, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping, witnessedArrivalSeaM } from '../utils/seaArrival';
+import { SHADOW_KD_AT_EDGE, applyWitnessedSeaFloorM, isCalmWitnessedArrivalDirection, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping, witnessedArrivalSeaM } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM, type CoveWave } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
@@ -287,6 +287,11 @@ interface ScoreOptions {
   hourlyForecast?: ForecastItem[];
   recentRainMm?: number;
   geospatialProfile?: GeospatialExposureProfile;
+  /**
+   * ΕΣΩΤΕΡΙΚΟ — μόνο για το φρένο του μάρτυρα ηρεμίας (§Γ79-Β): η ίδια βαθμολογία ΧΩΡΙΣ τον μάρτυρα,
+   * για να κριθεί ΑΚΡΙΒΩΣ αν θα έλεγε «μην κολυμπήσεις». Κανένας άλλος καλών δεν το περνάει.
+   */
+  calmWitnessOff?: boolean;
 }
 
 export type GeospatialExposureLookup = Record<number, GeospatialExposureProfile>;
@@ -1973,7 +1978,9 @@ export const calculateBeachScore = (
   // but "have we judged the sector it comes through OPEN". It is what stops a shore sheltered from
   // today's WIND from also being treated as sheltered from a sea arriving from somewhere else —
   // see utils/seaArrival and utils/waveCharacter.shoreSeaStateM for the Καβαλικευτά case.
-  const seaArrivalExposureLevel = resolveSeaArrivalExposureLevel(
+  // Η ΓΕΩΜΕΤΡΙΑ. Ο μάρτυρας ηρεμίας (πιο κάτω, calmWitnessed) μπορεί να τη διορθώσει, γι' αυτό η τελική
+  // τιμή που διαβάζουν όλοι ορίζεται εκεί, μόλις είναι γνωστό από πού ήρθε ο αριθμός της θάλασσας.
+  const geometricSeaArrivalExposureLevel = resolveSeaArrivalExposureLevel(
     options?.geospatialProfile,
     marine?.waveDirectionDeg
   );
@@ -1983,10 +1990,7 @@ export const calculateBeachScore = (
    * μπορεί να απαντήσει με άλλο συντελεστή. Ιστορία/μετρήσεις/όρια: utils/seaArrival.
    * ΔΕΝ αλλάζει το ΑΝ δίνεται έκπτωση — μόνο το ΠΟΣΟ, και μόνο στο protected σκέλος.
    */
-  const shoreShadowDamping = resolveShoreShadowDamping(options?.geospatialProfile, marine?.waveDirectionDeg);
-  // Το ίδιο K_d όπως το διαβάζει το ΧΡΩΜΑ (τσιπ εδώ, πινέζα/μικρός χάρτης από το score): μόνο προς το
-  // προσεκτικότερο, ποτέ κάτω από το ιστορικό 0,5 — utils/waveCharacter.colourShadowDamping.
-  const toneShoreShadowDamping = colourShadowDamping(shoreShadowDamping);
+  const geometricShoreShadowDamping = resolveShoreShadowDamping(options?.geospatialProfile, marine?.waveDirectionDeg);
   // Direct-swell geometry (utils/swellExposure). Computed HERE rather than at its old site further
   // down, because the geometric wave ceiling below needs it and the ceiling has to be decided before
   // the effective height exists. The warnings it raises still fire at the original place.
@@ -2079,6 +2083,41 @@ export const calculateBeachScore = (
     geometricCeilingM: geometricCeiling?.ceilingM,
   });
   const waveRaisedByWind = measuredWaveHeightM !== undefined && effectiveWaveHeightM > measuredWaveHeightM + 0.05;
+  // Από πού ήρθε ο αριθμός της θάλασσας. Ανέβηκε εδώ (11/09/2026) γιατί ο μάρτυρας ηρεμίας από κάτω τον
+  // χρειάζεται· δεν εξαρτάται από τίποτα που υπολογίζεται μετά.
+  const seaStateSource: SeaStateSource = measuredWaveHeightM === undefined
+    ? 'modeled'
+    : effectiveWaveHeightM > (realisticMeasuredWaveHeightM ?? 0) + 0.005
+      ? 'modeled'
+      : realisticMeasuredWaveHeightM! < measuredWaveHeightM - 0.005
+        ? 'measured-capped'
+        : 'measured';
+
+  /**
+   * ΜΑΡΤΥΡΑΣ ΗΡΕΜΙΑΣ (utils/seaArrival CALM_WITNESSED_ARRIVAL_ARCS, 11/09/2026, βίβλος §Γ79-Β) — σήμερα
+   * μόνο Καλό Λιμάνι Λέσβου #1334, θάλασσα 341°-7°: ο δορυφόρος είδε 29 μέρες ΒΒΔ χωρίς αφρό στον όρμο
+   * ενώ η διπλανή ακτή έσκαγε, και η χερσόνησος τον σκεπάζει σε ακτίνα 100 μ. Εκεί η άφιξη γίνεται
+   * 'enclosed' με K_d το πολύ 0,5 — ο αριθμός, η λέξη και το χρώμα πέφτουν στο μισό.
+   * ΦΡΕΝΑ (κατεύθυνση προς το ηρεμότερο): όχι όταν ο αριθμός είναι κύμα του ανέμου ('modeled') ή ο
+   * άνεμος μπαίνει από ανοιχτό τομέα ('exposed')· «μην κολυμπήσεις» και θραύση στην ακτή δεν σβήνουν
+   * ποτέ (πιο κάτω: το φρένο ετυμηγορίας, beachShoreBreaks με τη γεωμετρική άφιξη).
+   */
+  const calmWitnessed = !options?.calmWitnessOff
+    && isCalmWitnessedArrivalDirection(options?.geospatialProfile, marine?.waveDirectionDeg)
+    && seaStateSource !== 'modeled'
+    && finalExposureLevel !== 'exposed';
+  const seaArrivalExposureLevel = calmWitnessed ? SEA_ARRIVAL_ENCLOSED : geometricSeaArrivalExposureLevel;
+  /**
+   * Η ΓΩΝΙΑΚΗ ΕΚΠΤΩΣΗ ΣΚΙΑΣ (K_d) — ορίζεται ΜΙΑ φορά εδώ και ταξιδεύει με το score παντού
+   * (ετυμηγορία, τυπωμένο νούμερο, ταβάνι χρώματος, πόρτα 4 Μπφ), ώστε καμία επιφάνεια να μην
+   * μπορεί να απαντήσει με άλλο συντελεστή. Ιστορία/μετρήσεις/όρια: utils/seaArrival.
+   */
+  const shoreShadowDamping = calmWitnessed
+    ? Math.min(geometricShoreShadowDamping ?? SHADOW_KD_AT_EDGE, SHADOW_KD_AT_EDGE)
+    : geometricShoreShadowDamping;
+  // Το ίδιο K_d όπως το διαβάζει το ΧΡΩΜΑ (τσιπ εδώ, πινέζα/μικρός χάρτης από το score): μόνο προς το
+  // προσεκτικότερο, ποτέ κάτω από το ιστορικό 0,5 — utils/waveCharacter.colourShadowDamping.
+  const toneShoreShadowDamping = colourShadowDamping(shoreShadowDamping);
 
   // ── The single decision-grade sea state ───────────────────────────────────────────────
   // `waveHeightM` on the returned score is DISPLAY-ONLY by doctrine (the cove guard rewrites it),
@@ -2286,13 +2325,6 @@ export const calculateBeachScore = (
   const seaForCautionM = shoreWaveFromDepartingSea && shoreWaveM === shoreModelWaveM
     ? seaAtShoreM
     : effectiveWaveHeightM;
-  const seaStateSource: SeaStateSource = measuredWaveHeightM === undefined
-    ? 'modeled'
-    : effectiveWaveHeightM > (realisticMeasuredWaveHeightM ?? 0) + 0.005
-      ? 'modeled'
-      : realisticMeasuredWaveHeightM! < measuredWaveHeightM - 0.005
-        ? 'measured-capped'
-        : 'measured';
 
   // Long-period swell surge (roadmap #2): prefer the swell channel, else the wave
   // channel; period-gated so it is a strict no-op on short wind-sea.
@@ -2454,7 +2486,8 @@ export const calculateBeachScore = (
    * utils/shoreBreak for why a 0,3 m sea is nothing on flat sand and a plunging break on a steep
    * pebble bank, and for the four gates that keep this quiet on the days it would be noise.
    */
-  if (beachShoreBreaks(beach, seaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {
+  // Η θραύση στην ακτή κρίνεται με τη ΓΕΩΜΕΤΡΙΚΗ άφιξη: ο μάρτυρας ηρεμίας δεν σβήνει προειδοποιήσεις (§Γ79-Β).
+  if (beachShoreBreaks(beach, geometricSeaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {
     warnings.push({
       type: 'shore_break',
       severity: 'info',
@@ -2892,6 +2925,19 @@ export const calculateBeachScore = (
   });
   if (isLightWindSmallSea && swimmingComfort === 'avoid_swimming') {
     swimmingComfort = 'caution';
+  }
+  /**
+   * ΤΟ ΦΡΕΝΟ ΤΟΥ ΜΑΡΤΥΡΑ ΗΡΕΜΙΑΣ (§Γ79-Β): κατεβάζει αριθμό και χρώμα, ΠΟΤΕ το «μην κολυμπήσεις». Ρωτάει
+   * ΟΛΗ τη βαθμολογία χωρίς τον μάρτυρα, όχι ένα αντίγραφο ενός κομματιού της: η πρώτη εκδοχή
+   * ξαναϋπολόγιζε μόνο το ύψος ακτής και έχανε το «μην κολυμπήσεις» σε 7/1.722 σενάρια, γιατί κι άλλοι όροι
+   * του βαθμού διαβάζουν το νερό της παραλίας (πύλη validateShoreShadowWitnesses). Τρέχει ΜΟΝΟ όταν ο
+   * μάρτυρας μιλάει (σήμερα μία παραλία, ένα τόξο) και η εσωτερική κλήση δεν ξαναμπαίνει εδώ.
+   * Κάθεται ΜΕΤΑ την ανακούφιση ελαφρού ανέμου: εκείνη διαβάζει το (χαμηλωμένο) νερό της ακτής και
+   * έβγαζε «πρόσεχε» εκεί που χωρίς μάρτυρα θα λέγαμε «μην κολυμπήσεις» — 7 σενάρια στην ίδια πύλη.
+   */
+  if (calmWitnessed && swimmingComfort !== 'avoid_swimming'
+    && calculateBeachScore(beach, weather, userLocation, preferences, { ...options, calmWitnessOff: true }).swimmingComfort === 'avoid_swimming') {
+    swimmingComfort = 'avoid_swimming';
   }
   if (confidence.level === 'low' && swimmingComfort === 'excellent') {
     swimmingComfort = 'good';
