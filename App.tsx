@@ -4983,6 +4983,10 @@ export const App: React.FC = () => {
         windExposureReason: describeSimpleWindSuitability(scoreResult.simpleWindSuitability, language),
         distance,
         geospatialExposure,
+        // Το K_d του ΧΡΩΜΑΤΟΣ (11/09/2026) — ίδιο με το τσιπ: μόνο προς το προσεκτικότερο, ποτέ κάτω από
+        // το ιστορικό 0,5 (utils/waveCharacter.colourShadowDamping). Ως τότε έφτανε undefined. Μπαίνει ΜΕΤΑ
+        // το geospatialExposure (παράθυρο του κανόνα region-map-gets-the-marine). Φυλάει: validateShoreShadowContract Ε/Ζ.
+        shoreShadowDamping: scoreResult.toneShoreShadowDamping,
       };
     });
   }, [geospatialExposureProfiles, language, nearMeBeachForecastById, beachAreaForecastById, preferences, selectedForecast, selectedIsland, userLocation, withBeachOwnWind]);

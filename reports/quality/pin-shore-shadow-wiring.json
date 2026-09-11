@@ -1,0 +1,2367 @@
+{
+ "generatedAt": "2026-09-11T09:02:18.730Z",
+ "script": "scripts/measurePinShoreShadowWiring.mjs",
+ "runtimeSeconds": 366.2,
+ "design": "colour paths read utils/waveCharacter.colourShadowDamping(K_d) = max(K_d, 0.5) (score.toneShoreShadowDamping); verdict and printed shore number keep the full K_d",
+ "variants": {
+  "legacy": "live before the change: map item without shoreShadowDamping; chip = real applySeaStateToWindSuitability with the first 9 recorded arguments (no K_d); mini-map and pin panel without sea arrival and K_d",
+  "now": "production in the working tree: map-item / mini-map score fields read from the App.tsx / pages/BeachDetailPage.tsx syntax tree; chip = score colour",
+  "full_reference": "the rejected design: the full score.shoreShadowDamping on every colour path (reference column only)"
+ },
+ "scope": {
+  "regions": 110,
+  "beachesWithProfile": 2856,
+  "beachesInRegions": 2856,
+  "profiles": 2872,
+  "profilesWithoutAppBeach": 16,
+  "excluded": "Molos #2040 (carries the committed witness change; reported per grid under molos2040 and frozen at legacy in region-level sets)"
+ },
+ "gridDefinitions": {
+  "main": {
+   "waveDirectionsDeg": "0..345 step 15",
+   "hsM": [
+    0.5,
+    1,
+    1.6
+   ],
+   "winds": [
+    "wave side 20 km/h",
+    "wave side 35 km/h",
+    "opposite 20 km/h"
+   ]
+  },
+  "lightWind": {
+   "waveDirectionsDeg": "0..345 step 15",
+   "hsM": [
+    0.5,
+    1,
+    1.6
+   ],
+   "winds": [
+    "wave side 8 km/h",
+    "wave side 15 km/h",
+    "opposite 15 km/h"
+   ]
+  },
+  "bigSea": {
+   "waveDirectionsDeg": "0..345 step 15",
+   "hsM": [
+    2,
+    2.5,
+    3
+   ],
+   "winds": [
+    "wave side 35 km/h",
+    "wave side 45 km/h",
+    "opposite 20 km/h"
+   ]
+  },
+  "weather": "utils/weatherFixtures.createDailyForecast day 0; gust 1.35x; swell max(0.2, 0.35xHs) from the wave direction; no forecastUncertain; one wind/sea for the whole country"
+ },
+ "mapObjectScoreFields": {
+  "app": [
+   "seaArrivalExposureLevel<-seaArrivalExposureLevel",
+   "shoreShadowDamping<-toneShoreShadowDamping"
+  ],
+  "pageMiniMap": [
+   "seaArrivalExposureLevel<-seaArrivalExposureLevel",
+   "shoreShadowDamping<-toneShoreShadowDamping"
+  ],
+  "appCopiesToneKd": true,
+  "pageCopiesToneKd": true,
+  "pageCopiesArrival": true
+ },
+ "surfaces": {
+  "pin": "resolveConditionTone(components/BeachMap.tsx beachToneInput) over the App.tsx mapSuitableBeaches item; level from getConsistentVisibleMapExposureLevels as App.tsx canonicalMapExposureLevels",
+  "chipAndPageColour": "score.simpleWindSuitability.suitabilityColor (card chip, page colour, TodayScoreBadge conditionTone)",
+  "tierWord": "getExperienceTier + getExperienceTierLabel(gr) with the page hero TodayScoreBadge arguments (BeachDetailPage.tsx:2542-2562), conditionTone = chip",
+  "waveIcon": "simpleWindSuitability.seaOnlyColor (resolveFactorTones of the chip toneInput)",
+  "offerList": "App.tsx toneSuitableDirectorySource: selectSuitableByTone over directoryListabilityGate items (naturist, boat-only at >=5 Bft, avoid_swimming out) by pin colour; all region beaches, Molos frozen at legacy and not counted",
+  "calmWater": "per beach isCalmWaterPick(describeConditionCause(pin input)); region offer resolveCalmWaterState over the same listable items (BeachMap.tsx:3688-3694)",
+  "pageMiniMap": "pages/BeachDetailPage.tsx <BeachMap beaches={[{...}]}> item (fields from its syntax tree); legacy without seaArrivalExposureLevel + shoreShadowDamping",
+  "pinPanelBadge": "BeachMap renderBeachInfo getExposureMarkerTone: pin arguments without windSpeedKmh/forecastUncertain; legacy without its seaArrival + K_d arguments",
+  "direction": "calmer = towards blue (CALMNESS_ORDER) / towards excellent (tier); offer-list and calm-water additions are split by cause: the beach own colour/pick vs the window moving because another beach got rougher"
+ },
+ "grids": {
+  "main": {
+   "pairs": 616680,
+   "scenarios": 216,
+   "screens": 23760,
+   "listablePairs": 290754,
+   "seconds": 122.8,
+   "kdBands": {
+    "1 (corridor)": 172611,
+    "0.5": 218025,
+    "0.1 (floor)": 187272,
+    "0.1-0.5": 38772
+   },
+   "verdicts": {
+    "avoid_swimming": 320161,
+    "good": 141128,
+    "caution": 155391
+   },
+   "toneKdReachesShoreNumber": {
+    "pin": 3738,
+    "chip": 3702
+   },
+   "legacyToNow": {
+    "pin": {
+     "changed": 1974,
+     "calmer": 0,
+     "rougher": 1974,
+     "moves": {
+      "blue → yellow": 728,
+      "orange → red": 1246
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1974
+     },
+     "rougherByVerdict": {
+      "good": 728,
+      "avoid_swimming": 1169,
+      "caution": 77
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     }
+    },
+    "tierWord": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "fair → skip": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     },
+     "labels": {
+      "changed": 1234,
+      "sameTier": 0,
+      "moves": {
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1234
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1231,
+      "blue → red": 3
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 0,
+     "removed": 1243
+    },
+    "offerList": {
+     "added": 64,
+     "removed": 77,
+     "addedByCause": {
+      "own-pin-same (window moved)": 64
+     },
+     "removedByCause": {
+      "own-pin-rougher": 77
+     },
+     "addedByTone": {
+      "orange": 64
+     },
+     "addedByVerdict": {
+      "caution": 63,
+      "good": 1
+     },
+     "screensWithAddition": 35,
+     "windowMoves": {
+      "blue+yellow → yellow+orange": 35
+     },
+     "examples": [
+      {
+       "regionId": "south-aegean-kos",
+       "scenario": "κύμα 15° Hs 0.5 μ. · άνεμος 195° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#2335 orange/caution",
+        "#2355 orange/caution"
+       ],
+       "addedCount": 2,
+       "triggeredBy": [
+        "#2347 Παραλία Κάτα blue→yellow"
+       ]
+      },
+      {
+       "regionId": "central-greece-skyros",
+       "scenario": "κύμα 30° Hs 0.5 μ. · άνεμος 210° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#334 orange/caution"
+       ],
+       "addedCount": 1,
+       "triggeredBy": [
+        "#325 Μαγαζιά blue→yellow"
+       ]
+      },
+      {
+       "regionId": "peloponnese-messinia-mainland",
+       "scenario": "κύμα 30° Hs 0.5 μ. · άνεμος 210° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#1608 orange/caution",
+        "#1617 orange/caution",
+        "#1633 orange/caution"
+       ],
+       "addedCount": 3,
+       "triggeredBy": [
+        "#1620 Κρυονέρι blue→yellow",
+        "#1653 Χελωναριά blue→yellow"
+       ]
+      },
+      {
+       "regionId": "crete-crete-rethymno",
+       "scenario": "κύμα 60° Hs 0.5 μ. · άνεμος 240° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#704 orange/caution"
+       ],
+       "addedCount": 1,
+       "triggeredBy": [
+        "#3089 Sfagia blue→yellow"
+       ]
+      }
+     ]
+    },
+    "calmWaterOffer": {
+     "added": 392,
+     "removed": 104,
+     "addedByCause": {
+      "own-pick-same (has-ideal → offered)": 391,
+      "own-pick-same (all → offered)": 1
+     },
+     "removedByCause": {
+      "own-pick-lost": 104
+     },
+     "screensOfferAppeared": 89,
+     "screensOfferVanished": 14,
+     "absentReasonMoves": {
+      "absent:has-ideal → offered": 88,
+      "absent:all → absent:none": 3,
+      "offered → absent:none": 14,
+      "absent:has-ideal → absent:none": 21,
+      "absent:all → offered": 1
+     },
+     "examples": [
+      {
+       "regionId": "north-aegean-agios-efstratios",
+       "scenario": "κύμα 0° Hs 0.5 μ. · άνεμος 180° 20 χλμ/ώ (opposite-20)",
+       "state": "absent:has-ideal → offered",
+       "added": [
+        "#1421 yellow/good",
+        "#1423 yellow/caution",
+        "#1425 yellow/good"
+       ],
+       "addedCount": 3,
+       "triggeredBy": [
+        "#1426 Τρηγάρη blue→yellow"
+       ]
+      },
+      {
+       "regionId": "attica-agistri",
+       "scenario": "κύμα 15° Hs 0.5 μ. · άνεμος 195° 20 χλμ/ώ (opposite-20)",
+       "state": "absent:has-ideal → offered",
+       "added": [
+        "#100 yellow/caution"
+       ],
+       "addedCount": 1,
+       "triggeredBy": [
+        "#96 Δραγονέρα blue→yellow"
+       ]
+      },
+      {
+       "regionId": "ionian-islands-lefkada",
+       "scenario": "κύμα 15° Hs 0.5 μ. · άνεμος 195° 20 χλμ/ώ (opposite-20)",
+       "state": "absent:has-ideal → offered",
+       "added": [
+        "#1143 yellow/good",
+        "#1156 yellow/caution",
+        "#1157 yellow/caution",
+        "#1159 yellow/caution",
+        "#1162 yellow/caution",
+        "#1165 yellow/caution"
+       ],
+       "addedCount": 7,
+       "triggeredBy": [
+        "#1167 Μύλος blue→yellow"
+       ]
+      },
+      {
+       "regionId": "thessaly-skiathos",
+       "scenario": "κύμα 15° Hs 0.5 μ. · άνεμος 195° 20 χλμ/ώ (opposite-20)",
+       "state": "absent:has-ideal → offered",
+       "added": [
+        "#2622 yellow/caution",
+        "#2624 yellow/caution",
+        "#2627 yellow/good",
+        "#2630 yellow/good",
+        "#2632 yellow/good",
+        "#2645 yellow/good"
+       ],
+       "addedCount": 7,
+       "triggeredBy": [
+        "#2617 Μανδράκι blue→yellow"
+       ]
+      }
+     ]
+    },
+    "pinEqualsPageFlow": {
+     "enter": 734,
+     "leave": 6,
+     "leaveMoves": {
+      "pin orange→red / chip orange→orange": 6
+     }
+    },
+    "pageMiniMap": {
+     "changed": 65548,
+     "calmer": 14974,
+     "rougher": 50574,
+     "moves": {
+      "blue → yellow": 24379,
+      "red → orange": 14974,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 4325,
+      "0.5": 8907,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14837,
+      "caution": 137
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 34441,
+      "0.5": 12014,
+      "0.1 (floor)": 4119
+     },
+     "rougherByVerdict": {
+      "good": 24379,
+      "avoid_swimming": 26118,
+      "caution": 77
+     },
+     "byArrival": {
+      "exposed:rougher": 34377,
+      "partial:rougher": 14223,
+      "undefined:rougher": 1638,
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 2099,
+      "grazing:rougher": 336
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 41897,
+     "calmer": 14974,
+     "rougher": 26923,
+     "moves": {
+      "blue → yellow": 728,
+      "red → orange": 14974,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 4325,
+      "0.5": 8907,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14837,
+      "caution": 137
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 18463,
+      "0.5": 6357,
+      "0.1 (floor)": 2103
+     },
+     "rougherByVerdict": {
+      "good": 728,
+      "avoid_swimming": 26118,
+      "caution": 77
+     },
+     "byArrival": {
+      "undefined:rougher": 1638,
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 2099,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "grazing:rougher": 336
+     }
+    }
+   },
+   "legacyToFull_reference": {
+    "pin": {
+     "changed": 1974,
+     "calmer": 0,
+     "rougher": 1974,
+     "moves": {
+      "blue → yellow": 728,
+      "orange → red": 1246
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1974
+     },
+     "rougherByVerdict": {
+      "good": 728,
+      "avoid_swimming": 1169,
+      "caution": 77
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     }
+    },
+    "tierWord": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "fair → skip": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     },
+     "labels": {
+      "changed": 1234,
+      "sameTier": 0,
+      "moves": {
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1234
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1231,
+      "blue → red": 3
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1157,
+      "caution": 77
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 64149,
+     "removed": 1243,
+     "addedByVerdict": {
+      "good": 22124,
+      "caution": 42025
+     }
+    },
+    "offerList": {
+     "added": 64,
+     "removed": 77,
+     "addedByCause": {
+      "own-pin-same (window moved)": 64
+     },
+     "removedByCause": {
+      "own-pin-rougher": 77
+     },
+     "addedByTone": {
+      "orange": 64
+     },
+     "addedByVerdict": {
+      "caution": 63,
+      "good": 1
+     },
+     "screensWithAddition": 35,
+     "windowMoves": {
+      "blue+yellow → yellow+orange": 35
+     },
+     "examples": [
+      {
+       "regionId": "south-aegean-kos",
+       "scenario": "κύμα 15° Hs 0.5 μ. · άνεμος 195° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#2335 orange/caution",
+        "#2355 orange/caution"
+       ],
+       "addedCount": 2,
+       "triggeredBy": [
+        "#2347 Παραλία Κάτα blue→yellow"
+       ]
+      },
+      {
+       "regionId": "central-greece-skyros",
+       "scenario": "κύμα 30° Hs 0.5 μ. · άνεμος 210° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#334 orange/caution"
+       ],
+       "addedCount": 1,
+       "triggeredBy": [
+        "#325 Μαγαζιά blue→yellow"
+       ]
+      },
+      {
+       "regionId": "peloponnese-messinia-mainland",
+       "scenario": "κύμα 30° Hs 0.5 μ. · άνεμος 210° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#1608 orange/caution",
+        "#1617 orange/caution",
+        "#1633 orange/caution"
+       ],
+       "addedCount": 3,
+       "triggeredBy": [
+        "#1620 Κρυονέρι blue→yellow",
+        "#1653 Χελωναριά blue→yellow"
+       ]
+      },
+      {
+       "regionId": "crete-crete-rethymno",
+       "scenario": "κύμα 60° Hs 0.5 μ. · άνεμος 240° 20 χλμ/ώ (opposite-20)",
+       "window": "blue+yellow → yellow+orange",
+       "added": [
+        "#704 orange/caution"
+       ],
+       "addedCount": 1,
+       "triggeredBy": [
+        "#3089 Sfagia blue→yellow"
+       ]
+      }
+     ]
+    },
+    "calmWaterOffer": {
+     "added": 58072,
+     "removed": 137,
+     "addedByCause": {
+      "own-pick-same (has-ideal → offered)": 391,
+      "own-pick-gained": 57680,
+      "own-pick-same (all → offered)": 1
+     },
+     "removedByCause": {
+      "own-pick-lost": 104,
+      "own-pick-same (offered → all)": 33
+     },
+     "screensOfferAppeared": 7866,
+     "screensOfferVanished": 25,
+     "absentReasonMoves": {
+      "absent:has-ideal → offered": 88,
+      "absent:all → absent:none": 3,
+      "offered → absent:none": 14,
+      "absent:none → offered": 7777,
+      "absent:none → absent:all": 1290,
+      "absent:has-ideal → absent:none": 21,
+      "offered → absent:all": 11,
+      "absent:all → offered": 1
+     },
+     "examples": [
+      {
+       "regionId": "north-aegean-agios-efstratios",
+       "scenario": "κύμα 0° Hs 0.5 μ. · άνεμος 180° 20 χλμ/ώ (opposite-20)",
+       "state": "absent:has-ideal → offered",
+       "added": [
+        "#1421 yellow/good",
+        "#1423 yellow/caution",
+        "#1425 yellow/good"
+       ],
+       "addedCount": 3,
+       "triggeredBy": [
+        "#1426 Τρηγάρη blue→yellow"
+       ]
+      },
+      {
+       "regionId": "attica-aegina",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 20 χλμ/ώ (onshore-20)",
+       "state": "absent:none → offered",
+       "added": [
+        "#84 yellow/good",
+        "#85 yellow/good"
+       ],
+       "addedCount": 2
+      },
+      {
+       "regionId": "attica-athens-area-mainland",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 20 χλμ/ώ (onshore-20)",
+       "state": "absent:none → offered",
+       "added": [
+        "#0 yellow/good",
+        "#1 yellow/good",
+        "#2 yellow/good",
+        "#4 yellow/good",
+        "#6 yellow/good",
+        "#8 yellow/good"
+       ],
+       "addedCount": 11
+      },
+      {
+       "regionId": "attica-east-attica-mainland",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 20 χλμ/ώ (onshore-20)",
+       "state": "absent:none → offered",
+       "added": [
+        "#31 yellow/good",
+        "#33 yellow/good",
+        "#43 yellow/good",
+        "#44 yellow/good",
+        "#50 yellow/good",
+        "#51 yellow/good"
+       ],
+       "addedCount": 24
+      }
+     ]
+    },
+    "pinEqualsPageFlow": {
+     "enter": 734,
+     "leave": 6,
+     "leaveMoves": {
+      "pin orange→red / chip orange→orange": 6
+     }
+    },
+    "pageMiniMap": {
+     "changed": 65548,
+     "calmer": 14974,
+     "rougher": 50574,
+     "moves": {
+      "blue → yellow": 24379,
+      "red → orange": 14974,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 4325,
+      "0.5": 8907,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14837,
+      "caution": 137
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 34441,
+      "0.5": 12014,
+      "0.1 (floor)": 4119
+     },
+     "rougherByVerdict": {
+      "good": 24379,
+      "avoid_swimming": 26118,
+      "caution": 77
+     },
+     "byArrival": {
+      "exposed:rougher": 34377,
+      "partial:rougher": 14223,
+      "undefined:rougher": 1638,
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 2099,
+      "grazing:rougher": 336
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 41897,
+     "calmer": 14974,
+     "rougher": 26923,
+     "moves": {
+      "blue → yellow": 728,
+      "red → orange": 14974,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 4325,
+      "0.5": 8907,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14837,
+      "caution": 137
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 18463,
+      "0.5": 6357,
+      "0.1 (floor)": 2103
+     },
+     "rougherByVerdict": {
+      "good": 728,
+      "avoid_swimming": 26118,
+      "caution": 77
+     },
+     "byArrival": {
+      "undefined:rougher": 1638,
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 2099,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "grazing:rougher": 336
+     }
+    }
+   },
+   "state": {
+    "legacy": {
+     "pinEqChip": 606082,
+     "orangePinOverAvoid": 156839,
+     "redPinOverAvoid": 163322,
+     "orangeChipOverAvoid": 162626,
+     "calmPinOverWary": 74403,
+     "calmChipOverWary": 77617,
+     "miniNeRegionPin": 63574,
+     "badgeNeRegionPin": 39923,
+     "calmWaterPicks": 59454,
+     "labels": {
+      "Μέτρια σήμερα": 152771,
+      "Ιδανική σήμερα": 30615,
+      "Καλή επιλογή σήμερα": 179191,
+      "Καλύτερα άλλη μέρα": 162043,
+      "Έχει κύμα σήμερα": 92060
+     },
+     "offerMembers": 287739,
+     "calmWaterOffered": 7698,
+     "calmOfferScreens": 2551,
+     "pinEqChipShare": "98.28%"
+    },
+    "now": {
+     "pinEqChip": 606810,
+     "orangePinOverAvoid": 155670,
+     "redPinOverAvoid": 164491,
+     "orangeChipOverAvoid": 161469,
+     "calmPinOverWary": 74403,
+     "calmChipOverWary": 77617,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 58211,
+     "labels": {
+      "Μέτρια σήμερα": 152771,
+      "Ιδανική σήμερα": 30615,
+      "Καλή επιλογή σήμερα": 179191,
+      "Καλύτερα άλλη μέρα": 163277,
+      "Έχει κύμα σήμερα": 90826
+     },
+     "offerMembers": 287726,
+     "calmWaterOffered": 7986,
+     "calmOfferScreens": 2626,
+     "pinEqChipShare": "98.40%"
+    },
+    "full_reference": {
+     "pinEqChip": 606810,
+     "orangePinOverAvoid": 155670,
+     "redPinOverAvoid": 164491,
+     "orangeChipOverAvoid": 161469,
+     "calmPinOverWary": 74403,
+     "calmChipOverWary": 77617,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 122360,
+     "labels": {
+      "Μέτρια σήμερα": 152771,
+      "Ιδανική σήμερα": 30615,
+      "Καλή επιλογή σήμερα": 179191,
+      "Καλύτερα άλλη μέρα": 163277,
+      "Έχει κύμα σήμερα": 90826
+     },
+     "offerMembers": 287726,
+     "calmWaterOffered": 65633,
+     "calmOfferScreens": 10392,
+     "pinEqChipShare": "98.40%"
+    }
+   },
+   "molos2040": {
+    "pairs": 216,
+    "legacyToNow": {
+     "pageMiniMap": {
+      "red → orange": 6,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "pinPanelBadge": {
+      "red → orange": 6,
+      "orange → red": 8
+     },
+     "calmWaterPick": {
+      "added": 0,
+      "removed": 0
+     }
+    },
+    "legacyToFull_reference": {
+     "pageMiniMap": {
+      "red → orange": 6,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "pinPanelBadge": {
+      "red → orange": 6,
+      "orange → red": 8
+     },
+     "calmWaterPick": {
+      "added": 27,
+      "removed": 0
+     }
+    }
+   }
+  },
+  "lightWind": {
+   "pairs": 616680,
+   "scenarios": 216,
+   "screens": 23760,
+   "listablePairs": 416591,
+   "seconds": 121,
+   "kdBands": {
+    "1 (corridor)": 172611,
+    "0.5": 218025,
+    "0.1 (floor)": 187272,
+    "0.1-0.5": 38772
+   },
+   "verdicts": {
+    "good": 193377,
+    "excellent": 155414,
+    "avoid_swimming": 197400,
+    "caution": 70489
+   },
+   "toneKdReachesShoreNumber": {
+    "pin": 3795,
+    "chip": 3759
+   },
+   "legacyToNow": {
+    "pin": {
+     "changed": 2536,
+     "calmer": 0,
+     "rougher": 2536,
+     "moves": {
+      "blue → yellow": 1277,
+      "orange → red": 1259
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2536
+     },
+     "rougherByVerdict": {
+      "good": 1192,
+      "excellent": 85,
+      "avoid_swimming": 1181,
+      "caution": 78
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "blue → yellow": 1259,
+      "orange → red": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     }
+    },
+    "tierWord": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "excellent → good": 1259,
+      "fair → skip": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     },
+     "labels": {
+      "changed": 2509,
+      "sameTier": 0,
+      "moves": {
+       "Ιδανική σήμερα → Καλή επιλογή σήμερα": 1259,
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1250
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "blue → yellow": 1259,
+      "orange → red": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 0,
+     "removed": 1277
+    },
+    "offerList": {
+     "added": 0,
+     "removed": 78,
+     "removedByCause": {
+      "own-pin-rougher": 78
+     },
+     "screensWithAddition": 0
+    },
+    "calmWaterOffer": {
+     "added": 0,
+     "removed": 0,
+     "screensOfferAppeared": 0,
+     "screensOfferVanished": 0,
+     "absentReasonMoves": {
+      "absent:has-ideal → absent:none": 38
+     }
+    },
+    "pinEqualsPageFlow": {
+     "enter": 14,
+     "leave": 13,
+     "leaveMoves": {
+      "pin blue→yellow / chip blue→blue": 8,
+      "pin orange→red / chip orange→orange": 5
+     }
+    },
+    "pageMiniMap": {
+     "changed": 88203,
+     "calmer": 34830,
+     "rougher": 53373,
+     "moves": {
+      "yellow → blue": 22747,
+      "blue → yellow": 26730,
+      "orange → red": 26643,
+      "red → orange": 12083
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 3620,
+      "0.1 (floor)": 10735,
+      "0.5": 19834,
+      "0.1-0.5": 641
+     },
+     "calmerByVerdict": {
+      "excellent": 9094,
+      "good": 13635,
+      "caution": 1820,
+      "avoid_swimming": 10281
+     },
+     "rougherByKdBand": {
+      "0.5": 12989,
+      "0.1 (floor)": 4292,
+      "1 (corridor)": 36092
+     },
+     "rougherByVerdict": {
+      "good": 25902,
+      "excellent": 827,
+      "avoid_swimming": 26565,
+      "caution": 79
+     },
+     "byArrival": {
+      "grazing:calmer": 28859,
+      "enclosed:calmer": 5971,
+      "partial:rougher": 15465,
+      "exposed:rougher": 35372,
+      "undefined:rougher": 1974,
+      "grazing:rougher": 562
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 88203,
+     "calmer": 34830,
+     "rougher": 53373,
+     "moves": {
+      "yellow → blue": 22747,
+      "blue → yellow": 26730,
+      "orange → red": 26643,
+      "red → orange": 12083
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 3620,
+      "0.1 (floor)": 10735,
+      "0.5": 19834,
+      "0.1-0.5": 641
+     },
+     "calmerByVerdict": {
+      "excellent": 9094,
+      "good": 13635,
+      "caution": 1820,
+      "avoid_swimming": 10281
+     },
+     "rougherByKdBand": {
+      "0.5": 12989,
+      "0.1 (floor)": 4292,
+      "1 (corridor)": 36092
+     },
+     "rougherByVerdict": {
+      "good": 25902,
+      "excellent": 827,
+      "avoid_swimming": 26565,
+      "caution": 79
+     },
+     "byArrival": {
+      "grazing:calmer": 28859,
+      "enclosed:calmer": 5971,
+      "partial:rougher": 15465,
+      "exposed:rougher": 35372,
+      "undefined:rougher": 1974,
+      "grazing:rougher": 562
+     }
+    }
+   },
+   "legacyToFull_reference": {
+    "pin": {
+     "changed": 2536,
+     "calmer": 0,
+     "rougher": 2536,
+     "moves": {
+      "blue → yellow": 1277,
+      "orange → red": 1259
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2536
+     },
+     "rougherByVerdict": {
+      "good": 1192,
+      "excellent": 85,
+      "avoid_swimming": 1181,
+      "caution": 78
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "blue → yellow": 1259,
+      "orange → red": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     }
+    },
+    "tierWord": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "excellent → good": 1259,
+      "fair → skip": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     },
+     "labels": {
+      "changed": 2509,
+      "sameTier": 0,
+      "moves": {
+       "Ιδανική σήμερα → Καλή επιλογή σήμερα": 1259,
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1250
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 2509,
+     "calmer": 0,
+     "rougher": 2509,
+     "moves": {
+      "blue → yellow": 1259,
+      "orange → red": 1250
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 2509
+     },
+     "rougherByVerdict": {
+      "good": 1177,
+      "excellent": 82,
+      "avoid_swimming": 1174,
+      "caution": 76
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 48203,
+     "removed": 1277,
+     "addedByVerdict": {
+      "good": 24021,
+      "caution": 24182
+     }
+    },
+    "offerList": {
+     "added": 0,
+     "removed": 78,
+     "removedByCause": {
+      "own-pin-rougher": 78
+     },
+     "screensWithAddition": 0
+    },
+    "calmWaterOffer": {
+     "added": 41248,
+     "removed": 13,
+     "addedByCause": {
+      "own-pick-gained": 41248
+     },
+     "removedByCause": {
+      "own-pick-same (offered → all)": 13
+     },
+     "screensOfferAppeared": 5794,
+     "screensOfferVanished": 4,
+     "absentReasonMoves": {
+      "absent:has-ideal → absent:none": 38,
+      "absent:none → offered": 5794,
+      "absent:none → absent:all": 926,
+      "offered → absent:all": 4
+     },
+     "examples": [
+      {
+       "regionId": "attica-aegina",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 15 χλμ/ώ (onshore-15)",
+       "state": "absent:none → offered",
+       "added": [
+        "#84 yellow/good",
+        "#85 yellow/good",
+        "#3024 yellow/good"
+       ],
+       "addedCount": 3
+      },
+      {
+       "regionId": "attica-athens-area-mainland",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 15 χλμ/ώ (onshore-15)",
+       "state": "absent:none → offered",
+       "added": [
+        "#0 yellow/good",
+        "#1 yellow/good",
+        "#2 yellow/good",
+        "#4 yellow/good",
+        "#6 yellow/good",
+        "#8 yellow/good"
+       ],
+       "addedCount": 13
+      },
+      {
+       "regionId": "attica-east-attica-mainland",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 15 χλμ/ώ (onshore-15)",
+       "state": "absent:none → offered",
+       "added": [
+        "#31 yellow/good",
+        "#32 yellow/good",
+        "#33 yellow/good",
+        "#43 yellow/good",
+        "#44 yellow/good",
+        "#50 yellow/good"
+       ],
+       "addedCount": 25
+      },
+      {
+       "regionId": "attica-kythira",
+       "scenario": "κύμα 0° Hs 1 μ. · άνεμος 0° 15 χλμ/ώ (onshore-15)",
+       "state": "absent:none → offered",
+       "added": [
+        "#126 yellow/good",
+        "#134 yellow/good",
+        "#135 yellow/good",
+        "#140 yellow/good",
+        "#142 yellow/good",
+        "#143 yellow/good"
+       ],
+       "addedCount": 11
+      }
+     ]
+    },
+    "pinEqualsPageFlow": {
+     "enter": 14,
+     "leave": 13,
+     "leaveMoves": {
+      "pin blue→yellow / chip blue→blue": 8,
+      "pin orange→red / chip orange→orange": 5
+     }
+    },
+    "pageMiniMap": {
+     "changed": 88203,
+     "calmer": 34830,
+     "rougher": 53373,
+     "moves": {
+      "yellow → blue": 22747,
+      "blue → yellow": 26730,
+      "orange → red": 26643,
+      "red → orange": 12083
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 3620,
+      "0.1 (floor)": 10735,
+      "0.5": 19834,
+      "0.1-0.5": 641
+     },
+     "calmerByVerdict": {
+      "excellent": 9094,
+      "good": 13635,
+      "caution": 1820,
+      "avoid_swimming": 10281
+     },
+     "rougherByKdBand": {
+      "0.5": 12989,
+      "0.1 (floor)": 4292,
+      "1 (corridor)": 36092
+     },
+     "rougherByVerdict": {
+      "good": 25902,
+      "excellent": 827,
+      "avoid_swimming": 26565,
+      "caution": 79
+     },
+     "byArrival": {
+      "grazing:calmer": 28859,
+      "enclosed:calmer": 5971,
+      "partial:rougher": 15465,
+      "exposed:rougher": 35372,
+      "undefined:rougher": 1974,
+      "grazing:rougher": 562
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 88203,
+     "calmer": 34830,
+     "rougher": 53373,
+     "moves": {
+      "yellow → blue": 22747,
+      "blue → yellow": 26730,
+      "orange → red": 26643,
+      "red → orange": 12083
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 3620,
+      "0.1 (floor)": 10735,
+      "0.5": 19834,
+      "0.1-0.5": 641
+     },
+     "calmerByVerdict": {
+      "excellent": 9094,
+      "good": 13635,
+      "caution": 1820,
+      "avoid_swimming": 10281
+     },
+     "rougherByKdBand": {
+      "0.5": 12989,
+      "0.1 (floor)": 4292,
+      "1 (corridor)": 36092
+     },
+     "rougherByVerdict": {
+      "good": 25902,
+      "excellent": 827,
+      "avoid_swimming": 26565,
+      "caution": 79
+     },
+     "byArrival": {
+      "grazing:calmer": 28859,
+      "enclosed:calmer": 5971,
+      "partial:rougher": 15465,
+      "exposed:rougher": 35372,
+      "undefined:rougher": 1974,
+      "grazing:rougher": 562
+     }
+    }
+   },
+   "state": {
+    "legacy": {
+     "pinEqChip": 612910,
+     "orangePinOverAvoid": 91353,
+     "redPinOverAvoid": 106047,
+     "orangeChipOverAvoid": 92398,
+     "calmPinOverWary": 26349,
+     "calmChipOverWary": 26349,
+     "miniNeRegionPin": 85667,
+     "badgeNeRegionPin": 85667,
+     "calmWaterPicks": 169319,
+     "labels": {
+      "Καλή επιλογή σήμερα": 173847,
+      "Ιδανική σήμερα": 155888,
+      "Μέτρια σήμερα": 125052,
+      "Καλύτερα άλλη μέρα": 105649,
+      "Έχει κύμα σήμερα": 56244
+     },
+     "offerMembers": 415729,
+     "calmWaterOffered": 181,
+     "calmOfferScreens": 100,
+     "pinEqChipShare": "99.39%"
+    },
+    "now": {
+     "pinEqChip": 612911,
+     "orangePinOverAvoid": 90172,
+     "redPinOverAvoid": 107228,
+     "orangeChipOverAvoid": 91224,
+     "calmPinOverWary": 26349,
+     "calmChipOverWary": 26349,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 168042,
+     "labels": {
+      "Καλή επιλογή σήμερα": 175106,
+      "Ιδανική σήμερα": 154629,
+      "Μέτρια σήμερα": 125052,
+      "Καλύτερα άλλη μέρα": 106899,
+      "Έχει κύμα σήμερα": 54994
+     },
+     "offerMembers": 415651,
+     "calmWaterOffered": 181,
+     "calmOfferScreens": 100,
+     "pinEqChipShare": "99.39%"
+    },
+    "full_reference": {
+     "pinEqChip": 612911,
+     "orangePinOverAvoid": 90172,
+     "redPinOverAvoid": 107228,
+     "orangeChipOverAvoid": 91224,
+     "calmPinOverWary": 26349,
+     "calmChipOverWary": 26349,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 216245,
+     "labels": {
+      "Καλή επιλογή σήμερα": 175106,
+      "Ιδανική σήμερα": 154629,
+      "Μέτρια σήμερα": 125052,
+      "Καλύτερα άλλη μέρα": 106899,
+      "Έχει κύμα σήμερα": 54994
+     },
+     "offerMembers": 415651,
+     "calmWaterOffered": 41416,
+     "calmOfferScreens": 5890,
+     "pinEqChipShare": "99.39%"
+    }
+   },
+   "molos2040": {
+    "pairs": 216,
+    "legacyToNow": {
+     "pageMiniMap": {
+      "yellow → blue": 10,
+      "red → orange": 5,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "pinPanelBadge": {
+      "yellow → blue": 10,
+      "red → orange": 5,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "calmWaterPick": {
+      "added": 0,
+      "removed": 0
+     }
+    },
+    "legacyToFull_reference": {
+     "pageMiniMap": {
+      "yellow → blue": 10,
+      "red → orange": 5,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "pinPanelBadge": {
+      "yellow → blue": 10,
+      "red → orange": 5,
+      "blue → yellow": 8,
+      "orange → red": 8
+     },
+     "calmWaterPick": {
+      "added": 30,
+      "removed": 0
+     }
+    }
+   }
+  },
+  "bigSea": {
+   "pairs": 616680,
+   "scenarios": 216,
+   "screens": 23760,
+   "listablePairs": 78650,
+   "seconds": 121.9,
+   "kdBands": {
+    "1 (corridor)": 172611,
+    "0.5": 218025,
+    "0.1 (floor)": 187272,
+    "0.1-0.5": 38772
+   },
+   "verdicts": {
+    "avoid_swimming": 534539,
+    "caution": 81718,
+    "good": 423
+   },
+   "toneKdReachesShoreNumber": {
+    "pin": 3738,
+    "chip": 3702
+   },
+   "legacyToNow": {
+    "pin": {
+     "changed": 1246,
+     "calmer": 0,
+     "rougher": 1246,
+     "moves": {
+      "orange → red": 1246
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1246
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1171,
+      "caution": 75
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     }
+    },
+    "tierWord": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "fair → skip": 1234
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     },
+     "labels": {
+      "changed": 1234,
+      "sameTier": 0,
+      "moves": {
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1234
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 1234,
+     "calmer": 0,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1228,
+      "blue → red": 6
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 0,
+     "removed": 0
+    },
+    "offerList": {
+     "added": 0,
+     "removed": 75,
+     "removedByCause": {
+      "own-pin-rougher": 75
+     },
+     "screensWithAddition": 0
+    },
+    "calmWaterOffer": {
+     "added": 0,
+     "removed": 0,
+     "screensOfferAppeared": 0,
+     "screensOfferVanished": 0
+    },
+    "pinEqualsPageFlow": {
+     "enter": 6,
+     "leave": 6,
+     "leaveMoves": {
+      "pin orange→red / chip orange→orange": 6
+     }
+    },
+    "pageMiniMap": {
+     "changed": 40532,
+     "calmer": 14337,
+     "rougher": 26195,
+     "moves": {
+      "red → orange": 14337,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 3694,
+      "0.5": 8901,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14290,
+      "caution": 47
+     },
+     "rougherByKdBand": {
+      "0.5": 6357,
+      "0.1 (floor)": 2103,
+      "1 (corridor)": 17735
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 26120,
+      "caution": 75
+     },
+     "byArrival": {
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 1462,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "undefined:rougher": 973,
+      "grazing:rougher": 273
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 40532,
+     "calmer": 14337,
+     "rougher": 26195,
+     "moves": {
+      "red → orange": 14337,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 3694,
+      "0.5": 8901,
+      "0.1-0.5": 270
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 14290,
+      "caution": 47
+     },
+     "rougherByKdBand": {
+      "0.5": 6357,
+      "0.1 (floor)": 2103,
+      "1 (corridor)": 17735
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 26120,
+      "caution": 75
+     },
+     "byArrival": {
+      "grazing:calmer": 12875,
+      "enclosed:calmer": 1462,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "undefined:rougher": 973,
+      "grazing:rougher": 273
+     }
+    }
+   },
+   "legacyToFull_reference": {
+    "pin": {
+     "changed": 85692,
+     "calmer": 84446,
+     "rougher": 1246,
+     "moves": {
+      "orange → red": 1246,
+      "red → orange": 84446
+     },
+     "calmerByKdBand": {
+      "0.1 (floor)": 68190,
+      "0.1-0.5": 16256
+     },
+     "calmerByVerdict": {
+      "caution": 37522,
+      "avoid_swimming": 46924
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1246
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1171,
+      "caution": 75
+     }
+    },
+    "chipAndPageColour": {
+     "changed": 85776,
+     "calmer": 84542,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1234,
+      "red → orange": 84542
+     },
+     "calmerByKdBand": {
+      "0.1 (floor)": 68286,
+      "0.1-0.5": 16256
+     },
+     "calmerByVerdict": {
+      "caution": 37532,
+      "avoid_swimming": 47010
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     }
+    },
+    "tierWord": {
+     "changed": 85344,
+     "calmer": 84110,
+     "rougher": 1234,
+     "moves": {
+      "fair → skip": 1234,
+      "skip → fair": 84110
+     },
+     "calmerByKdBand": {
+      "0.1 (floor)": 67862,
+      "0.1-0.5": 16248
+     },
+     "calmerByVerdict": {
+      "caution": 37526,
+      "avoid_swimming": 46584
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     },
+     "labels": {
+      "changed": 85344,
+      "sameTier": 0,
+      "moves": {
+       "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα": 1234,
+       "Καλύτερα άλλη μέρα → Έχει κύμα σήμερα": 84110
+      }
+     }
+    },
+    "waveIcon": {
+     "changed": 85776,
+     "calmer": 84542,
+     "rougher": 1234,
+     "moves": {
+      "orange → red": 1228,
+      "red → blue": 79672,
+      "red → orange": 4870,
+      "blue → red": 6
+     },
+     "calmerByKdBand": {
+      "0.1 (floor)": 68286,
+      "0.1-0.5": 16256
+     },
+     "calmerByVerdict": {
+      "caution": 37532,
+      "avoid_swimming": 47010
+     },
+     "rougherByKdBand": {
+      "1 (corridor)": 1234
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 1159,
+      "caution": 75
+     }
+    },
+    "chipReasonTextChanged": 0,
+    "calmWaterPickPerBeach": {
+     "added": 59289,
+     "removed": 0,
+     "addedByVerdict": {
+      "caution": 59289
+     }
+    },
+    "offerList": {
+     "added": 35950,
+     "removed": 75,
+     "addedByCause": {
+      "own-pin-calmer": 35950
+     },
+     "removedByCause": {
+      "own-pin-rougher": 75
+     },
+     "addedByTone": {
+      "orange": 35950
+     },
+     "addedByVerdict": {
+      "caution": 35950
+     },
+     "screensWithAddition": 5800,
+     "windowMoves": {
+      " → orange": 3437,
+      "orange → orange": 2327,
+      "yellow → yellow+orange": 36
+     },
+     "examples": [
+      {
+       "regionId": "attica-aegina",
+       "scenario": "κύμα 0° Hs 2.5 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "window": " → orange",
+       "added": [
+        "#84 orange/caution",
+        "#85 orange/caution"
+       ],
+       "addedCount": 2,
+       "triggeredBy": [
+        "#84 Βοτσαλωτή Παραλία red→orange",
+        "#85 Κλειδί red→orange"
+       ]
+      },
+      {
+       "regionId": "attica-athens-area-mainland",
+       "scenario": "κύμα 0° Hs 2.5 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "window": "orange → orange",
+       "added": [
+        "#0 orange/caution",
+        "#1 orange/caution",
+        "#2 orange/caution",
+        "#4 orange/caution",
+        "#6 orange/caution",
+        "#8 orange/caution"
+       ],
+       "addedCount": 10,
+       "triggeredBy": [
+        "#0 Παραλία Φλοίσβου red→orange",
+        "#1 Παλμύρα red→orange",
+        "#2 Παραλία Μπάτη red→orange",
+        "#4 Α' Πλαζ Αλίμου «Στολίδι» red→orange"
+       ]
+      },
+      {
+       "regionId": "attica-east-attica-mainland",
+       "scenario": "κύμα 0° Hs 2.5 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "window": "orange → orange",
+       "added": [
+        "#31 orange/caution",
+        "#33 orange/caution",
+        "#43 orange/caution",
+        "#44 orange/caution",
+        "#51 orange/caution",
+        "#52 orange/caution"
+       ],
+       "addedCount": 21,
+       "triggeredBy": [
+        "#31 Θέρετρο Αξιωματικών Ναυτικού red→orange",
+        "#33 Παραλία Μαραθώνα red→orange",
+        "#43 Ερωτοσπηλιά red→orange",
+        "#44 Παραλία Αγίου Σπυρίδωνα red→orange"
+       ]
+      },
+      {
+       "regionId": "attica-kythira",
+       "scenario": "κύμα 0° Hs 2.5 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "window": "orange → orange",
+       "added": [
+        "#126 orange/caution",
+        "#135 orange/caution",
+        "#140 orange/caution",
+        "#143 orange/caution",
+        "#144 orange/caution",
+        "#145 orange/caution"
+       ],
+       "addedCount": 9,
+       "triggeredBy": [
+        "#126 Παραλία Λυγία red→orange",
+        "#135 Παραλία Λίμνη (Παλαιόπολη) red→orange",
+        "#140 Μελιδόνι red→orange",
+        "#143 Λεφτό red→orange"
+       ]
+      }
+     ]
+    },
+    "calmWaterOffer": {
+     "added": 44783,
+     "removed": 108,
+     "addedByCause": {
+      "own-pick-gained": 44783
+     },
+     "removedByCause": {
+      "own-pick-same (offered → all)": 108
+     },
+     "screensOfferAppeared": 5241,
+     "screensOfferVanished": 45,
+     "absentReasonMoves": {
+      "absent:none → offered": 5241,
+      "offered → absent:all": 45,
+      "absent:none → absent:all": 3319
+     },
+     "examples": [
+      {
+       "regionId": "attica-aegina",
+       "scenario": "κύμα 0° Hs 2 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "state": "absent:none → offered",
+       "added": [
+        "#84 orange/caution",
+        "#85 orange/caution"
+       ],
+       "addedCount": 2
+      },
+      {
+       "regionId": "attica-athens-area-mainland",
+       "scenario": "κύμα 0° Hs 2 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "state": "absent:none → offered",
+       "added": [
+        "#0 orange/caution",
+        "#1 orange/caution",
+        "#2 orange/caution",
+        "#4 orange/caution",
+        "#6 orange/caution",
+        "#8 orange/caution"
+       ],
+       "addedCount": 11
+      },
+      {
+       "regionId": "attica-east-attica-mainland",
+       "scenario": "κύμα 0° Hs 2 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "state": "absent:none → offered",
+       "added": [
+        "#31 orange/caution",
+        "#33 orange/caution",
+        "#43 orange/caution",
+        "#44 orange/caution",
+        "#50 orange/caution",
+        "#51 orange/caution"
+       ],
+       "addedCount": 24
+      },
+      {
+       "regionId": "attica-kythira",
+       "scenario": "κύμα 0° Hs 2 μ. · άνεμος 0° 35 χλμ/ώ (onshore-35)",
+       "state": "absent:none → offered",
+       "added": [
+        "#126 orange/caution",
+        "#135 orange/caution",
+        "#140 orange/caution",
+        "#142 orange/caution",
+        "#143 orange/caution",
+        "#144 orange/caution"
+       ],
+       "addedCount": 10
+      }
+     ]
+    },
+    "pinEqualsPageFlow": {
+     "enter": 66,
+     "leave": 726,
+     "leaveMoves": {
+      "pin red→red / chip red→orange": 436,
+      "pin red→orange / chip red→red": 284,
+      "pin orange→red / chip orange→orange": 6
+     }
+    },
+    "pageMiniMap": {
+     "changed": 124978,
+     "calmer": 98783,
+     "rougher": 26195,
+     "moves": {
+      "red → orange": 98783,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 71884,
+      "0.5": 8901,
+      "0.1-0.5": 16526
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 61214,
+      "caution": 37569
+     },
+     "rougherByKdBand": {
+      "0.5": 6357,
+      "0.1 (floor)": 2103,
+      "1 (corridor)": 17735
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 26120,
+      "caution": 75
+     },
+     "byArrival": {
+      "grazing:calmer": 89087,
+      "enclosed:calmer": 7164,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "undefined:rougher": 973,
+      "grazing:rougher": 273,
+      "undefined:calmer": 2462,
+      "protected:calmer": 70
+     }
+    },
+    "pinPanelBadge": {
+     "changed": 124978,
+     "calmer": 98783,
+     "rougher": 26195,
+     "moves": {
+      "red → orange": 98783,
+      "orange → red": 26195
+     },
+     "calmerByKdBand": {
+      "1 (corridor)": 1472,
+      "0.1 (floor)": 71884,
+      "0.5": 8901,
+      "0.1-0.5": 16526
+     },
+     "calmerByVerdict": {
+      "avoid_swimming": 61214,
+      "caution": 37569
+     },
+     "rougherByKdBand": {
+      "0.5": 6357,
+      "0.1 (floor)": 2103,
+      "1 (corridor)": 17735
+     },
+     "rougherByVerdict": {
+      "avoid_swimming": 26120,
+      "caution": 75
+     },
+     "byArrival": {
+      "grazing:calmer": 89087,
+      "enclosed:calmer": 7164,
+      "partial:rougher": 7567,
+      "exposed:rougher": 17382,
+      "undefined:rougher": 973,
+      "grazing:rougher": 273,
+      "undefined:calmer": 2462,
+      "protected:calmer": 70
+     }
+    }
+   },
+   "state": {
+    "legacy": {
+     "pinEqChip": 613537,
+     "orangePinOverAvoid": 61882,
+     "redPinOverAvoid": 472657,
+     "orangeChipOverAvoid": 64399,
+     "calmPinOverWary": 123,
+     "calmChipOverWary": 147,
+     "miniNeRegionPin": 39286,
+     "badgeNeRegionPin": 39286,
+     "calmWaterPicks": 570,
+     "labels": {
+      "Καλύτερα άλλη μέρα": 518212,
+      "Έχει κύμα σήμερα": 97352,
+      "Μέτρια σήμερα": 912,
+      "Καλή επιλογή σήμερα": 204
+     },
+     "offerMembers": 34022,
+     "calmWaterOffered": 411,
+     "calmOfferScreens": 248,
+     "pinEqChipShare": "99.49%"
+    },
+    "now": {
+     "pinEqChip": 613537,
+     "orangePinOverAvoid": 60711,
+     "redPinOverAvoid": 473828,
+     "orangeChipOverAvoid": 63240,
+     "calmPinOverWary": 123,
+     "calmChipOverWary": 147,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 570,
+     "labels": {
+      "Καλύτερα άλλη μέρα": 519446,
+      "Έχει κύμα σήμερα": 96118,
+      "Μέτρια σήμερα": 912,
+      "Καλή επιλογή σήμερα": 204
+     },
+     "offerMembers": 33947,
+     "calmWaterOffered": 411,
+     "calmOfferScreens": 248,
+     "pinEqChipShare": "99.49%"
+    },
+    "full_reference": {
+     "pinEqChip": 612877,
+     "orangePinOverAvoid": 107635,
+     "redPinOverAvoid": 426904,
+     "orangeChipOverAvoid": 110250,
+     "calmPinOverWary": 123,
+     "calmChipOverWary": 147,
+     "miniNeRegionPin": 0,
+     "badgeNeRegionPin": 0,
+     "calmWaterPicks": 59859,
+     "labels": {
+      "Καλύτερα άλλη μέρα": 435336,
+      "Έχει κύμα σήμερα": 180228,
+      "Μέτρια σήμερα": 912,
+      "Καλή επιλογή σήμερα": 204
+     },
+     "offerMembers": 69897,
+     "calmWaterOffered": 45086,
+     "calmOfferScreens": 5444,
+     "pinEqChipShare": "99.38%"
+    }
+   },
+   "molos2040": {
+    "pairs": 216,
+    "legacyToNow": {
+     "pageMiniMap": {
+      "orange → red": 8,
+      "red → orange": 5
+     },
+     "pinPanelBadge": {
+      "orange → red": 8,
+      "red → orange": 5
+     },
+     "calmWaterPick": {
+      "added": 0,
+      "removed": 0
+     }
+    },
+    "legacyToFull_reference": {
+     "pin": {
+      "red → orange": 56
+     },
+     "chipAndPageColour": {
+      "red → orange": 56
+     },
+     "tierWord": {
+      "skip → fair": 56
+     },
+     "waveIcon": {
+      "red → blue": 52,
+      "red → orange": 4
+     },
+     "pageMiniMap": {
+      "orange → red": 8,
+      "red → orange": 61
+     },
+     "pinPanelBadge": {
+      "orange → red": 8,
+      "red → orange": 61
+     },
+     "calmWaterPick": {
+      "added": 3,
+      "removed": 0
+     }
+    }
+   }
+  }
+ },
+ "examplesLegacyToNowRougher": [
+  {
+   "grid": "main",
+   "beach": "Μικρό Αλυκό",
+   "regionId": "south-aegean-naxos",
+   "beachId": 2008,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": "grazing",
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → red",
+   "chipFull": "red",
+   "tierWord": "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα",
+   "waveIcon": "orange → red",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 300° Hs 1.6 μ. · άνεμος 300° 20 χλμ/ώ (onshore-20)",
+   "pagePrintedWaveM": 1.6,
+   "pageWaveText": "1,6 μ.",
+   "openSeaStateM": 1.6
+  },
+  {
+   "grid": "main",
+   "beach": "Μαρκουλη",
+   "regionId": "south-aegean-kythnos",
+   "beachId": 1883,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": "grazing",
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → orange",
+   "chipFull": "orange",
+   "tierWord": "Έχει κύμα σήμερα → Έχει κύμα σήμερα",
+   "waveIcon": "orange → orange",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 75° Hs 1.6 μ. · άνεμος 75° 20 χλμ/ώ (onshore-20)",
+   "pagePrintedWaveM": 0.8,
+   "pageWaveText": "~0,8 μ.",
+   "openSeaStateM": 1.6
+  },
+  {
+   "grid": "main",
+   "beach": "Λαγκονάκι",
+   "regionId": "south-aegean-syros",
+   "beachId": 2137,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "red → red",
+   "chipFull": "red",
+   "tierWord": "Καλύτερα άλλη μέρα → Καλύτερα άλλη μέρα",
+   "waveIcon": "red → red",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 240° Hs 1.6 μ. · άνεμος 240° 20 χλμ/ώ (onshore-20)",
+   "pagePrintedWaveM": 1.6,
+   "pageWaveText": "1,6 μ.",
+   "openSeaStateM": 1.6
+  },
+  {
+   "grid": "main",
+   "beach": "Βοτσαλωτή Παραλία",
+   "regionId": "attica-aegina",
+   "beachId": 84,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "good",
+   "pin": "blue → yellow",
+   "pinFull": "yellow",
+   "chip": "yellow → yellow",
+   "chipFull": "yellow",
+   "tierWord": "Καλή επιλογή σήμερα → Καλή επιλογή σήμερα",
+   "waveIcon": "blue → blue",
+   "offerList": "in → in",
+   "calmWater": "— → —",
+   "miniMap": "blue → yellow",
+   "scenario": "κύμα 120° Hs 0.5 μ. · άνεμος 300° 20 χλμ/ώ (opposite-20)",
+   "pagePrintedWaveM": 0.5,
+   "pageWaveText": "0,5 μ.",
+   "openSeaStateM": 0.5
+  },
+  {
+   "grid": "lightWind",
+   "beach": "Απόνησος",
+   "regionId": "attica-agistri",
+   "beachId": 95,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "good",
+   "pin": "blue → yellow",
+   "pinFull": "yellow",
+   "chip": "blue → yellow",
+   "chipFull": "yellow",
+   "tierWord": "Ιδανική σήμερα → Καλή επιλογή σήμερα",
+   "waveIcon": "blue → yellow",
+   "offerList": "in → in",
+   "calmWater": "— → —",
+   "miniMap": "blue → yellow",
+   "scenario": "κύμα 0° Hs 0.5 μ. · άνεμος 180° 15 χλμ/ώ (opposite-15)",
+   "pagePrintedWaveM": 0.5,
+   "pageWaveText": "0,5 μ.",
+   "openSeaStateM": 0.5
+  },
+  {
+   "grid": "lightWind",
+   "beach": "Παραλία Έδεμ",
+   "regionId": "attica-athens-area-mainland",
+   "beachId": 3,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → red",
+   "chipFull": "red",
+   "tierWord": "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα",
+   "waveIcon": "orange → red",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 165° Hs 1.6 μ. · άνεμος 345° 15 χλμ/ώ (opposite-15)",
+   "pagePrintedWaveM": 1.6,
+   "pageWaveText": "1,6 μ.",
+   "openSeaStateM": 1.6
+  },
+  {
+   "grid": "lightWind",
+   "beach": "Καλησκιά",
+   "regionId": "south-aegean-kea",
+   "beachId": 1811,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": "grazing",
+   "verdict": "good",
+   "pin": "blue → yellow",
+   "pinFull": "yellow",
+   "chip": "blue → blue",
+   "chipFull": "blue",
+   "tierWord": "Ιδανική σήμερα → Ιδανική σήμερα",
+   "waveIcon": "blue → blue",
+   "offerList": "in → in",
+   "calmWater": "— → —",
+   "miniMap": "blue → yellow",
+   "scenario": "κύμα 75° Hs 0.5 μ. · άνεμος 255° 15 χλμ/ώ (opposite-15)",
+   "pagePrintedWaveM": 0.1,
+   "pageWaveText": "0,1 μ.",
+   "openSeaStateM": 0.5
+  },
+  {
+   "grid": "bigSea",
+   "beach": "Παραλία Αγκώνα",
+   "regionId": "attica-east-attica-mainland",
+   "beachId": 29,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → red",
+   "chipFull": "red",
+   "tierWord": "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα",
+   "waveIcon": "orange → red",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 300° Hs 2 μ. · άνεμος 120° 20 χλμ/ώ (opposite-20)",
+   "pagePrintedWaveM": 2,
+   "pageWaveText": "2,0 μ.",
+   "openSeaStateM": 2
+  },
+  {
+   "grid": "bigSea",
+   "beach": "Βλυχάδα",
+   "regionId": "south-aegean-santorini",
+   "beachId": 2058,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": "grazing",
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → orange",
+   "chipFull": "orange",
+   "tierWord": "Έχει κύμα σήμερα → Έχει κύμα σήμερα",
+   "waveIcon": "orange → orange",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 120° Hs 2 μ. · άνεμος 300° 20 χλμ/ώ (opposite-20)",
+   "pagePrintedWaveM": 1,
+   "pageWaveText": "~1,0 μ.",
+   "openSeaStateM": 2
+  },
+  {
+   "grid": "bigSea",
+   "beach": "Άγιος Νικόλαος",
+   "regionId": "attica-hydra",
+   "beachId": 101,
+   "kd": 1,
+   "toneKd": 1,
+   "arrival": null,
+   "verdict": "avoid_swimming",
+   "pin": "orange → red",
+   "pinFull": "red",
+   "chip": "orange → red",
+   "chipFull": "red",
+   "tierWord": "Έχει κύμα σήμερα → Καλύτερα άλλη μέρα",
+   "waveIcon": "orange → red",
+   "offerList": "out → out",
+   "calmWater": "— → —",
+   "miniMap": "orange → red",
+   "scenario": "κύμα 120° Hs 2 μ. · άνεμος 300° 20 χλμ/ώ (opposite-20)",
+   "pagePrintedWaveM": 2,
+   "pageWaveText": "2,0 μ.",
+   "openSeaStateM": 2
+  }
+ ],
+ "controls": {
+  "determinismDiffs": 0,
+  "chipCallMissing": 0,
+  "chipCallResultNotOnScore": 0,
+  "chipArgNotToneKd": 0,
+  "chipMirrorMismatch": 0,
+  "toneKdNotHelper": 0,
+  "toneKdNotMaxHalf": 0,
+  "mapItemNotToneKd": 0,
+  "pageMiniMapNotToneKdOrArrival": 0,
+  "kdAtOrBelowHalfLegacyNeNow": 0,
+  "kdUndefinedAnyVariantDiffers": 0,
+  "pinNotReadableButChanged": 0,
+  "chipNotReadableButChanged": 0,
+  "windOnlyIconChanged": 0,
+  "nowCalmerPin": 0,
+  "nowCalmerChip": 0,
+  "nowCalmerTier": 0,
+  "nowCalmerSeaIcon": 0,
+  "nowCalmPickAdded": 0,
+  "miniNowNeRegionPinNow": 0,
+  "fullDirectionViolations": 0,
+  "pairs": 1850688,
+  "determinismPairsChecked": 1850688
+ },
+ "notProven": [
+  "whether K_d itself is right (judged by shore observation, not code)",
+  "real weather: one synthetic wind/sea for the whole country, flat through the day, no cluster wind, no forecastUncertain; shares are shares of these pairs, not summer frequencies",
+  "card tier word uses BeachCard inputs (not rebuilt); only the chip differs between variants, so its direction follows the page-hero measurement",
+  "podium, legend counts, colour filter, hour slider, other days, and pins drawn from the two recommendationService list builders (same fields as the App item)"
+ ]
+}

@@ -3343,6 +3343,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                     // that ceiling (utils/suitabilityTone.coveHoldsCalmWater).
                     seaStateWaveM: scoreResult.seaStateWaveM,
                     seaStatePeriodS: scoreResult.seaStatePeriodS,
+                    // ΑΠΟ ΠΟΥ ΕΡΧΕΤΑΙ Η ΘΑΛΑΣΣΑ ΚΑΙ ΠΟΣΗ ΦΤΑΝΕΙ (11/09/2026). Τα δύο πάνε μαζί: το K_d
+                    // μόνο του, χωρίς την άφιξη, θα έδινε έκπτωση εκεί που η πινέζα της περιοχής
+                    // την αρνείται. Χωρίς αυτά ο μικρός χάρτης διαφωνούσε με την πινέζα της περιοχής
+                    // σε 63.596 ζεύγη του πλέγματος (scripts/measurePinShoreShadowWiring).
+                    seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
+                    shoreShadowDamping: scoreResult.toneShoreShadowDamping,
                     enclosedCove
                   }]}
                   userLocation={userLocation}

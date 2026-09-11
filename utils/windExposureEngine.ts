@@ -389,7 +389,14 @@ export const applySeaStateToWindSuitability = (
    * και η πινέζα παίρνουν το ίδιο φρένο, από την ίδια σημαία που κάθεται πάνω στην ημέρα —
    * περασμένο, όχι παραγόμενο, όπως κάθε άλλο όρισμα εδώ.
    */
-  forecastUncertain = false
+  forecastUncertain = false,
+  /**
+   * Το K_d του ΧΡΩΜΑΤΟΣ από το score (`toneShoreShadowDamping` = utils/waveCharacter.colourShadowDamping)
+   * — το ίδιο που παίρνει η πινέζα. Ακολουθεί τη γεωμετρία μόνο προς το προσεκτικότερο: όπου λέει
+   * ανοιχτό το τσιπ σκληραίνει (1.234 πορτοκαλί→κόκκινο στο κύριο πλέγμα, scripts/measurePinShoreShadowWiring),
+   * όπου λέει βαθιά σκιά μένει όπως ήταν. Περασμένο, όχι παραγόμενο· undefined = το ιστορικό 0,5.
+   */
+  shoreShadowDamping?: number
 ): SimpleWindSuitability => {
   /**
    * ΕΝΑ INPUT, ΤΡΕΙΣ ΑΝΑΓΝΩΣΤΕΣ. Το τελικό χρώμα και τα δύο σήματα της κάρτας βγαίνουν από την
@@ -407,6 +414,7 @@ export const applySeaStateToWindSuitability = (
     downwindSeaSample,
     swimVerdictAvoid,
     seaArrivalExposureLevel,
+    shoreShadowDamping,
     curatedWindOnlyProtection,
     forecastUncertain,
   };

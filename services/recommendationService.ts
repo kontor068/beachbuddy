@@ -38,7 +38,7 @@ import { displayBeachName } from '../utils/localization';
 import { beachSentenceName } from '../utils/beachCopy';
 import { getSearchVariants, isSearchMatch } from '../utils/searchNormalize';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
-import { SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
+import { SEA_ARRIVAL_GRAZING, atDisplayedPrecisionM, colourShadowDamping, seaStateSeverityM, shoreSeaStateM } from '../utils/waveCharacter';
 import { getSelectedDayPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow } from '../utils/athensTime';
 import { hasListedSeatracRamp } from '../utils/accessibility';
@@ -118,10 +118,16 @@ export interface BeachScore {
   shoreDisplayWaveM?: number;
   /**
    * Η γωνιακή έκπτωση σκιάς K_d (utils/seaArrival.resolveShoreShadowDamping, 24/08/2026) που
-   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Passed, not derived: πινέζα,
-   * κάρτα και ετυμηγορία διαβάζουν ΑΥΤΟ το πεδίο, ποτέ δικό τους υπολογισμό.
+   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Passed, not derived: αριθμός ακτής
+   * και ετυμηγορία διαβάζουν ΑΥΤΟ το πεδίο, ποτέ δικό τους υπολογισμό.
    */
   shoreShadowDamping?: number;
+  /**
+   * Το ίδιο K_d όπως το διαβάζει το ΧΡΩΜΑ (τσιπ, πινέζα, μικρός χάρτης, «Ήρεμο νερό»): ποτέ κάτω από
+   * το ιστορικό 0,5 — utils/waveCharacter.colourShadowDamping (11/09/2026). Τα αντικείμενα του χάρτη
+   * το αντιγράφουν στο δικό τους `shoreShadowDamping`.
+   */
+  toneShoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5. */
   shoreWaveFromDepartingSea?: boolean;
   /**
@@ -1978,6 +1984,9 @@ export const calculateBeachScore = (
    * ΔΕΝ αλλάζει το ΑΝ δίνεται έκπτωση — μόνο το ΠΟΣΟ, και μόνο στο protected σκέλος.
    */
   const shoreShadowDamping = resolveShoreShadowDamping(options?.geospatialProfile, marine?.waveDirectionDeg);
+  // Το ίδιο K_d όπως το διαβάζει το ΧΡΩΜΑ (τσιπ εδώ, πινέζα/μικρός χάρτης από το score): μόνο προς το
+  // προσεκτικότερο, ποτέ κάτω από το ιστορικό 0,5 — utils/waveCharacter.colourShadowDamping.
+  const toneShoreShadowDamping = colourShadowDamping(shoreShadowDamping);
   // Direct-swell geometry (utils/swellExposure). Computed HERE rather than at its old site further
   // down, because the geometric wave ceiling below needs it and the ceiling has to be decided before
   // the effective height exists. The warnings it raises still fire at the original place.
@@ -2988,7 +2997,10 @@ export const calculateBeachScore = (
     seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),
     exposureLevel: windAssessment.exposureLevel,
     seaArrivalExposureLevel,
-    shoreShadowDamping,
+    // Η πόρτα των 4 Μπφ τροφοδοτεί ΜΟΝΟ το τσιπ — άρα το K_d του ΧΡΩΜΑΤΟΣ, όπως η πόρτα της πινέζας
+    // (components/BeachMap). Με το πλήρες K_d άνοιγε σε 1.604 σενάρια που η πινέζα την κρατούσε κλειστή·
+    // δεν φαινόταν μόνο επειδή η σκάλα την ξαναελέγχει (ελεγκτής 11/09).
+    shoreShadowDamping: toneShoreShadowDamping,
     // Καταγεγραμμένη προστασία απέναντι στον ΑΝΕΜΟ δεν αγοράζει έκπτωση στη ΘΑΛΑΣΣΑ. Σήμερα
     // αυτή η πόρτα ούτως ή άλλως δεν ανοίγει σε curated τομείς (θέλει ένταση ≤25, έχουν ≥33)·
     // περνάει για να μη γίνει σιωπηλή τρύπα αν χαλαρώσει ποτέ το ταβάνι έντασης.
@@ -3022,6 +3034,9 @@ export const calculateBeachScore = (
     windAssessment.protectionFromCuratedCoveOnly,
     // Τα σενάρια διαφωνούν για αυτή τη μέρα — το τσιπ και η πινέζα παίρνουν το ΙΔΙΟ φρένο.
     forecastUncertain,
+    // Το K_d του ΧΡΩΜΑΤΟΣ — το ίδιο που παίρνει η πινέζα από το score (toneShoreShadowDamping).
+    // Ακολουθεί το K_d μόνο προς το προσεκτικότερο (11/09/2026, validateShoreShadowContract Ε/Ζ).
+    toneShoreShadowDamping,
   );
 
   return {
@@ -3073,6 +3088,7 @@ export const calculateBeachScore = (
     seaTemperatureC: weather.marine?.seaSurfaceTemperatureC,
     seaArrivalExposureLevel,
     shoreShadowDamping,
+    toneShoreShadowDamping,
     // Ταξιδεύει ως την πινέζα: components/BeachMap το περνάει αυτούσιο στο resolveConditionTone,
     // όπως κάνει ήδη με το seaArrivalExposureLevel και το swimmingComfort.
     forecastUncertain,
@@ -3471,6 +3487,7 @@ export const getTopRecommendedBeaches = (
       shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
       seaTemperatureC: scoreResult.seaTemperatureC,
       seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
+      shoreShadowDamping: scoreResult.toneShoreShadowDamping,
       windSpeedKmph: scoreResult.windSpeedKmph,
       warnings: scoreResult.warnings,
       confidence: scoreResult.confidence,
@@ -3634,6 +3651,7 @@ export const getSuitableBeaches = (
         shoreDisplayWaveM: scoreResult.shoreDisplayWaveM,
         seaTemperatureC: scoreResult.seaTemperatureC,
         seaArrivalExposureLevel: scoreResult.seaArrivalExposureLevel,
+        shoreShadowDamping: scoreResult.toneShoreShadowDamping,
         windSpeedKmph: scoreResult.windSpeedKmph,
         warnings: scoreResult.warnings,
         confidence: scoreResult.confidence,

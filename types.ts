@@ -847,10 +847,10 @@ export interface SuitableBeach {
    */
   shoreDisplayWaveM?: number;
   /**
-   * Η γωνιακή έκπτωση σκιάς K_d (utils/seaArrival.resolveShoreShadowDamping, 24/08/2026) που
-   * εφάρμοσε/θα εφάρμοζε το protected σκέλος της shoreSeaStateM. Ταξιδεύει με το score ώστε
-   * πινέζα, κάρτα και ετυμηγορία να διαβάζουν τον ΙΔΙΟ συντελεστή — passed, not derived.
-   * undefined = χωρίς γεωμετρία/κατεύθυνση → όλα πέφτουν στο ιστορικό 0,5.
+   * Το K_d που διαβάζει το ΧΡΩΜΑ αυτής της παραλίας (πινέζα, λεζάντα, «Ήρεμο νερό», πόρτα 4 Μπφ):
+   * το `toneShoreShadowDamping` του score = utils/waveCharacter.colourShadowDamping(K_d) — ποτέ
+   * βαθύτερη έκπτωση από το ιστορικό 0,5 (11/09/2026). ΟΧΙ το πλήρες K_d του αριθμού ακτής και της
+   * ετυμηγορίας· αυτά μένουν στο score. undefined = χωρίς γεωμετρία/κατεύθυνση → ιστορικό 0,5.
    */
   shoreShadowDamping?: number;
   /** Ο αριθμός ακτής ήρθε από μετρημένη απόδειξη ότι το νερό φεύγει, όχι από την έκπτωση ×0,5 (§Γ55/§Γ56). */

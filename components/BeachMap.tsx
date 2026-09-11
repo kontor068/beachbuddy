@@ -4260,7 +4260,11 @@ const BeachMap: React.FC<BeachMapProps> = ({
       beachOffshoreFlatWater(item),
       beachGlassWaterAtFour(item),
       beachDownwindSeaSample(item),
-      item.swimmingComfort === 'avoid_swimming'
+      item.swimmingComfort === 'avoid_swimming',
+      // Η άφιξη της θάλασσας και το K_d του score, όπως στην πινέζα (11/09/2026) — ΜΑΖΙ: το K_d
+      // χωρίς την άφιξη θα έδινε έκπτωση εκεί που η πινέζα την αρνείται.
+      item.seaArrivalExposureLevel,
+      item.shoreShadowDamping
     );
     const exposureReason = getMapExposureReason(exposureLevel);
     const badge = mapMode === 'recommendation' ? (

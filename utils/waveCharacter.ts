@@ -377,6 +377,26 @@ export const SEA_ARRIVAL_ENCLOSED = 'enclosed';
 export const SHORE_DAMPING_BY_EXPOSURE = { protected: 0.5, partial: 1, exposed: 1 } as const;
 
 /**
+ * ΤΟ K_d ΠΟΥ ΔΙΑΒΑΖΕΙ ΤΟ ΧΡΩΜΑ — ΠΟΤΕ ΒΑΘΥΤΕΡΗ ΕΚΠΤΩΣΗ ΑΠΟ ΤΟ ΙΣΤΟΡΙΚΟ ×0,5 (11/09/2026).
+ *
+ * Ως τις 11/09 πινέζα, τσιπ κάρτας και μικρός χάρτης δεν έπαιρναν καθόλου το K_d (έφτανε undefined →
+ * ×0,5), ενώ ο αριθμός ακτής και η ετυμηγορία το έπαιρναν. Το πλήρες K_d στο χρώμα μετρήθηκε
+ * (scripts/measurePinShoreShadowWiring.mjs) και απορρίφθηκε από δύο ανεξάρτητους ελεγκτές: σε θάλασσα
+ * ≥2,4 μ. το δάπεδο 0,1 της βαθιάς σκιάς έκανε χιλιάδες σελίδες με «μην κολυμπήσεις» να γράφουν
+ * «Έχει κύμα σήμερα» αντί «Καλύτερα άλλη μέρα», διπλασίαζε τις «Καταλληλότερες» και το «Ήρεμο νερό»,
+ * και γύριζε το εικονίδιο κύματος από κόκκινο σε μπλε. Αυτό είναι προϊόν, όχι καλωδίωση.
+ *
+ * Άρα το χρώμα παίρνει το K_d ΜΟΝΟ προς το προσεκτικότερο: όπου η γεωμετρία λέει ανοιχτό (K_d > 0,5)
+ * το χρώμα το ακολουθεί (π.χ. 728 πινέζες «Ιδανική» πάνω από σελίδα «Καλή» διορθώνονται)· όπου λέει
+ * βαθιά σκιά, το χρώμα μένει ακριβώς όπως ήταν (0,5 ≡ undefined στη shoreSeaStateM). Ο αριθμός ακτής
+ * και η ετυμηγορία ΔΕΝ περνούν από εδώ — κρατούν το πλήρες K_d του score.
+ */
+export const colourShadowDamping = (shadowDamping: number | undefined): number | undefined =>
+  typeof shadowDamping === 'number' && Number.isFinite(shadowDamping)
+    ? Math.max(shadowDamping, SHORE_DAMPING_BY_EXPOSURE.protected)
+    : undefined;
+
+/**
  * ⚠️ THE DISCOUNT IS EARNED AGAINST THE WAVE, NOT AGAINST THE WIND (13/08/2026).
  *
  * `exposureLevel` answers "is this shore sheltered from the wind blowing right now". For most of
