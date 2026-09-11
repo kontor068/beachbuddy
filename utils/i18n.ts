@@ -1,6 +1,6 @@
 import { LanguageCode } from '../types';
 import { getBeachPathLanguage } from './beachUrls';
-import { setStoredValue } from './safeStorage';
+import { getStoredValue, setStoredValue } from './safeStorage';
 
 export const LANGUAGE_STORAGE_KEY = 'calmBeachLanguage';
 export const LANGUAGE_PREFERENCE_SET_KEY = 'calmBeachLanguagePreferenceSet';
@@ -37,8 +37,11 @@ export const getInitialLanguage = (): SupportedLanguage => {
   const pathLanguage = getBeachPathLanguage(window.location.pathname);
   if (pathLanguage && isSupportedLanguage(pathLanguage)) return pathLanguage;
 
-  const hasExplicitPreference = window.localStorage.getItem(LANGUAGE_PREFERENCE_SET_KEY) === 'true';
-  const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  // getStoredValue, not localStorage directly: this runs inside a state initialiser
+  // on every page's first render, and a browser that refuses storage access (locked
+  // -down privacy mode, an embedded WebView) throws on the raw property read.
+  const hasExplicitPreference = getStoredValue(LANGUAGE_PREFERENCE_SET_KEY) === 'true';
+  const stored = getStoredValue(LANGUAGE_STORAGE_KEY);
   if (hasExplicitPreference && isSupportedLanguage(stored)) return stored;
 
   return 'en';

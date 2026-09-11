@@ -54,26 +54,30 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
   }
 
   private handleReset = () => {
-    const keysToClear = [
-      'favorites',
-      'savedItineraries',
-      'customIslands',
-      'userPreferences',
-      'selectedIslandId'
-    ];
-    keysToClear.forEach((key) => localStorage.removeItem(key));
-
-    // The forecast caches are by far the biggest thing this app stores, and a FULL
-    // localStorage is one of the reasons a visitor ends up looking at this button
-    // in the first place (a quota error crashes any unguarded write). Clearing the
-    // five keys above would not free a byte of it, so the button would "fix"
-    // nothing and the next tap would crash again. These entries all refetch.
+    // This button exists for a visitor already looking at a broken page, so it
+    // must never itself throw — a browser that refuses storage access entirely
+    // (locked-down privacy mode, an embedded WebView) would otherwise crash the
+    // one way out and leave the same error on screen forever.
     try {
+      const keysToClear = [
+        'favorites',
+        'savedItineraries',
+        'customIslands',
+        'userPreferences',
+        'selectedIslandId'
+      ];
+      keysToClear.forEach((key) => localStorage.removeItem(key));
+
+      // The forecast caches are by far the biggest thing this app stores, and a FULL
+      // localStorage is one of the reasons a visitor ends up looking at this button
+      // in the first place (a quota error crashes any unguarded write). Clearing the
+      // five keys above would not free a byte of it, so the button would "fix"
+      // nothing and the next tap would crash again. These entries all refetch.
       Object.keys(localStorage)
         .filter((key) => key.startsWith('forecast_') || key.startsWith('marine_') || key.startsWith('weather_'))
         .forEach((key) => localStorage.removeItem(key));
     } catch {
-      /* nothing else to try — reload anyway */
+      /* storage is not readable at all — nothing to clear, reload anyway */
     }
 
     window.location.reload();

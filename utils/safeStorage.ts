@@ -112,7 +112,7 @@ const isQuotaError = (error: unknown): boolean =>
  * not survive a reload is a small loss, and a blank page is a total one.
  */
 export const setStoredValue = (key: string, value: string): boolean => {
-  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') return false;
+  if (typeof window === 'undefined') return false;
 
   try {
     window.localStorage.setItem(key, value);
@@ -158,9 +158,15 @@ export const setStoredJson = (key: string, value: unknown): boolean => {
  *
  * Returns `undefined` for "not there or not readable", which every caller already
  * had to handle anyway.
+ *
+ * 11/09/2026: the `typeof window.localStorage === 'undefined'` guard that used to
+ * sit before the try block was itself unsafe — on a browser that blocks storage
+ * access outright (embedded WebView, strict privacy mode), reading the
+ * `localStorage` property throws before `typeof` can finish evaluating it. The
+ * guard has to be inside the try, not before it.
  */
 export const getStoredValue = (key: string): string | undefined => {
-  if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') return undefined;
+  if (typeof window === 'undefined') return undefined;
 
   try {
     return window.localStorage.getItem(key) ?? undefined;
