@@ -1,0 +1,5641 @@
+{
+  "generatedAt": "2026-09-11T10:44:21.886Z",
+  "judge": "METAR ASOS (Iowa State), 30 παράκτια αεροδρόμια",
+  "model": "customer-historical-forecast-api.open-meteo.com best_match, στις συντεταγμένες του σταθμού, μετά το applyGustFloor",
+  "summers": [
+    [
+      "2024",
+      "2024-06-01",
+      "2024-09-10"
+    ],
+    [
+      "2025",
+      "2025-06-01",
+      "2025-09-10"
+    ],
+    [
+      "2026",
+      "2026-06-01",
+      "2026-09-10"
+    ]
+  ],
+  "pairs": 156375,
+  "definitions": {
+    "meltemi": "βοριάς 300°-60° ≥ 20 χλμ/ώ για ≥3 ώρες 10-19",
+    "lag": "μοντέλο − όργανο σε ώρες· + = το μοντέλο αργεί"
+  },
+  "daySetSizes": {
+    "2024": {
+      "μελτέμι (όργανο)": 823,
+      "μελτέμι (μοντέλο)": 840,
+      "μελτέμι (και τα δύο)": 663,
+      "υπόλοιπες μέρες": 1356
+    },
+    "2025": {
+      "μελτέμι (όργανο)": 944,
+      "μελτέμι (μοντέλο)": 887,
+      "μελτέμι (και τα δύο)": 771,
+      "υπόλοιπες μέρες": 1303
+    },
+    "2026": {
+      "μελτέμι (όργανο)": 861,
+      "μελτέμι (μοντέλο)": 879,
+      "μελτέμι (και τα δύο)": 701,
+      "υπόλοιπες μέρες": 1313
+    },
+    "όλα": {
+      "μελτέμι (όργανο)": 2628,
+      "μελτέμι (μοντέλο)": 2606,
+      "μελτέμι (και τα δύο)": 2135,
+      "υπόλοιπες μέρες": 3972
+    }
+  },
+  "hourly": {
+    "2024": {
+      "μελτέμι (όργανο)": {
+        "6": {
+          "n": 780,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 15.8,
+          "shownMeanKmh": 16.1,
+          "underPct": 24.6,
+          "overPct": 30,
+          "toneCalmerPct": 16.9,
+          "falseBluePct": 11.3
+        },
+        "7": {
+          "n": 799,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 16.6,
+          "shownMeanKmh": 16.5,
+          "underPct": 28.4,
+          "overPct": 28.7,
+          "toneCalmerPct": 18.7,
+          "falseBluePct": 11.9
+        },
+        "8": {
+          "n": 822,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 18.7,
+          "shownMeanKmh": 17.8,
+          "underPct": 29.4,
+          "overPct": 24.7,
+          "toneCalmerPct": 20,
+          "falseBluePct": 12.7
+        },
+        "9": {
+          "n": 823,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 21.2,
+          "shownMeanKmh": 20.6,
+          "underPct": 27.3,
+          "overPct": 24.7,
+          "toneCalmerPct": 19.8,
+          "falseBluePct": 11.1
+        },
+        "10": {
+          "n": 821,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 23.1,
+          "shownMeanKmh": 23,
+          "underPct": 26.2,
+          "overPct": 25.3,
+          "toneCalmerPct": 19.9,
+          "falseBluePct": 10.3
+        },
+        "11": {
+          "n": 823,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 24,
+          "shownMeanKmh": 24.5,
+          "underPct": 20.4,
+          "overPct": 28.2,
+          "toneCalmerPct": 16.8,
+          "falseBluePct": 7.7
+        },
+        "12": {
+          "n": 822,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 24.8,
+          "shownMeanKmh": 24.2,
+          "underPct": 26.2,
+          "overPct": 22.6,
+          "toneCalmerPct": 22.9,
+          "falseBluePct": 10.3
+        },
+        "13": {
+          "n": 821,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 25,
+          "shownMeanKmh": 24.9,
+          "underPct": 23.6,
+          "overPct": 25.2,
+          "toneCalmerPct": 20.6,
+          "falseBluePct": 8.6
+        },
+        "14": {
+          "n": 822,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 25.2,
+          "underPct": 22.6,
+          "overPct": 22.1,
+          "toneCalmerPct": 19.2,
+          "falseBluePct": 7.6
+        },
+        "15": {
+          "n": 823,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 25.5,
+          "shownMeanKmh": 24.9,
+          "underPct": 26,
+          "overPct": 22.6,
+          "toneCalmerPct": 21.8,
+          "falseBluePct": 9
+        },
+        "16": {
+          "n": 821,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 25.6,
+          "shownMeanKmh": 24.9,
+          "underPct": 24.2,
+          "overPct": 20.3,
+          "toneCalmerPct": 20.1,
+          "falseBluePct": 7.8
+        },
+        "17": {
+          "n": 822,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 24.4,
+          "underPct": 25.4,
+          "overPct": 21.2,
+          "toneCalmerPct": 21.9,
+          "falseBluePct": 8.3
+        },
+        "18": {
+          "n": 822,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 24.5,
+          "shownMeanKmh": 23.2,
+          "underPct": 28.6,
+          "overPct": 20.3,
+          "toneCalmerPct": 23.8,
+          "falseBluePct": 10.3
+        },
+        "19": {
+          "n": 821,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 22.8,
+          "shownMeanKmh": 21.4,
+          "underPct": 27.9,
+          "overPct": 19.6,
+          "toneCalmerPct": 22.7,
+          "falseBluePct": 10.8
+        },
+        "20": {
+          "n": 821,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 20.4,
+          "shownMeanKmh": 18.7,
+          "underPct": 31.9,
+          "overPct": 18.4,
+          "toneCalmerPct": 26.1,
+          "falseBluePct": 15.3
+        },
+        "21": {
+          "n": 762,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 18.1,
+          "shownMeanKmh": 16.8,
+          "underPct": 32.8,
+          "overPct": 21.1,
+          "toneCalmerPct": 23.7,
+          "falseBluePct": 15.7
+        },
+        "22": {
+          "n": 735,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 16.5,
+          "shownMeanKmh": 15.5,
+          "underPct": 32.4,
+          "overPct": 23.4,
+          "toneCalmerPct": 20.9,
+          "falseBluePct": 14.3
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "6": {
+          "n": 746,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 18,
+          "shownMeanKmh": 18.5,
+          "underPct": 23.7,
+          "overPct": 30.6,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 9.8
+        },
+        "7": {
+          "n": 793,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 18.6,
+          "shownMeanKmh": 19,
+          "underPct": 25.5,
+          "overPct": 30.6,
+          "toneCalmerPct": 17.4,
+          "falseBluePct": 9.8
+        },
+        "8": {
+          "n": 838,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 20.4,
+          "shownMeanKmh": 20.2,
+          "underPct": 26.5,
+          "overPct": 28.5,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 9.8
+        },
+        "9": {
+          "n": 840,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 23.1,
+          "shownMeanKmh": 23,
+          "underPct": 25.5,
+          "overPct": 27.9,
+          "toneCalmerPct": 17.8,
+          "falseBluePct": 8.1
+        },
+        "10": {
+          "n": 838,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.6,
+          "obsMeanKmh": 24.7,
+          "shownMeanKmh": 25.4,
+          "underPct": 23.4,
+          "overPct": 31.4,
+          "toneCalmerPct": 15.6,
+          "falseBluePct": 5.8
+        },
+        "11": {
+          "n": 840,
+          "biasKmh": 1.2,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 25.5,
+          "shownMeanKmh": 26.7,
+          "underPct": 17.7,
+          "overPct": 34.6,
+          "toneCalmerPct": 11.6,
+          "falseBluePct": 2.8
+        },
+        "12": {
+          "n": 839,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 26.4,
+          "shownMeanKmh": 26.4,
+          "underPct": 22.8,
+          "overPct": 28.7,
+          "toneCalmerPct": 16.2,
+          "falseBluePct": 4.1
+        },
+        "13": {
+          "n": 838,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 27,
+          "underPct": 20.5,
+          "overPct": 30.5,
+          "toneCalmerPct": 14.2,
+          "falseBluePct": 2.4
+        },
+        "14": {
+          "n": 839,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 26.8,
+          "shownMeanKmh": 27.1,
+          "underPct": 20.9,
+          "overPct": 28.6,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 2.5
+        },
+        "15": {
+          "n": 840,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 26.7,
+          "underPct": 21.7,
+          "overPct": 27.6,
+          "toneCalmerPct": 14.8,
+          "falseBluePct": 3.4
+        },
+        "16": {
+          "n": 838,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 26.9,
+          "shownMeanKmh": 26.6,
+          "underPct": 22.3,
+          "overPct": 25.9,
+          "toneCalmerPct": 15.4,
+          "falseBluePct": 3.1
+        },
+        "17": {
+          "n": 839,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 26.1,
+          "underPct": 23.5,
+          "overPct": 26.1,
+          "toneCalmerPct": 17,
+          "falseBluePct": 3.6
+        },
+        "18": {
+          "n": 839,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 25.8,
+          "shownMeanKmh": 24.8,
+          "underPct": 27.7,
+          "overPct": 24.4,
+          "toneCalmerPct": 20.4,
+          "falseBluePct": 6
+        },
+        "19": {
+          "n": 838,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 24.1,
+          "shownMeanKmh": 23.1,
+          "underPct": 25.7,
+          "overPct": 22.9,
+          "toneCalmerPct": 18.8,
+          "falseBluePct": 6.3
+        },
+        "20": {
+          "n": 838,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 21.7,
+          "shownMeanKmh": 20.4,
+          "underPct": 29.2,
+          "overPct": 20.8,
+          "toneCalmerPct": 22.5,
+          "falseBluePct": 11
+        },
+        "21": {
+          "n": 777,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 19.3,
+          "shownMeanKmh": 18.6,
+          "underPct": 28.2,
+          "overPct": 24.7,
+          "toneCalmerPct": 20.8,
+          "falseBluePct": 11.9
+        },
+        "22": {
+          "n": 737,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 17.5,
+          "shownMeanKmh": 17.2,
+          "underPct": 27.1,
+          "overPct": 27.5,
+          "toneCalmerPct": 18.2,
+          "falseBluePct": 11.2
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "6": {
+          "n": 629,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 17.4,
+          "shownMeanKmh": 17.7,
+          "underPct": 23.5,
+          "overPct": 30.4,
+          "toneCalmerPct": 17.6,
+          "falseBluePct": 11
+        },
+        "7": {
+          "n": 643,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 18.1,
+          "shownMeanKmh": 18.3,
+          "underPct": 26.1,
+          "overPct": 29.5,
+          "toneCalmerPct": 19.3,
+          "falseBluePct": 11.2
+        },
+        "8": {
+          "n": 663,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 20.3,
+          "shownMeanKmh": 19.7,
+          "underPct": 27,
+          "overPct": 26.7,
+          "toneCalmerPct": 20.4,
+          "falseBluePct": 11.9
+        },
+        "9": {
+          "n": 663,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 22.9,
+          "shownMeanKmh": 22.8,
+          "underPct": 22.9,
+          "overPct": 27.8,
+          "toneCalmerPct": 18.9,
+          "falseBluePct": 9
+        },
+        "10": {
+          "n": 661,
+          "biasKmh": 0.8,
+          "rawBiasKmh": -1.4,
+          "obsMeanKmh": 24.6,
+          "shownMeanKmh": 25.4,
+          "underPct": 20,
+          "overPct": 29.7,
+          "toneCalmerPct": 16.1,
+          "falseBluePct": 6.5
+        },
+        "11": {
+          "n": 663,
+          "biasKmh": 1.5,
+          "rawBiasKmh": -0.7,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 26.9,
+          "underPct": 13.7,
+          "overPct": 33.6,
+          "toneCalmerPct": 11.5,
+          "falseBluePct": 3.1
+        },
+        "12": {
+          "n": 662,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 26.2,
+          "shownMeanKmh": 26.5,
+          "underPct": 19.6,
+          "overPct": 26.6,
+          "toneCalmerPct": 16.7,
+          "falseBluePct": 4.4
+        },
+        "13": {
+          "n": 661,
+          "biasKmh": 0.8,
+          "rawBiasKmh": -1.4,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 27.1,
+          "underPct": 16.6,
+          "overPct": 28.9,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 2.7
+        },
+        "14": {
+          "n": 662,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 27.2,
+          "underPct": 17.7,
+          "overPct": 25.7,
+          "toneCalmerPct": 14,
+          "falseBluePct": 2.8
+        },
+        "15": {
+          "n": 663,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 26.7,
+          "underPct": 20.7,
+          "overPct": 25.3,
+          "toneCalmerPct": 16.1,
+          "falseBluePct": 4.2
+        },
+        "16": {
+          "n": 661,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 26.8,
+          "shownMeanKmh": 26.6,
+          "underPct": 19.7,
+          "overPct": 23,
+          "toneCalmerPct": 15.3,
+          "falseBluePct": 3.5
+        },
+        "17": {
+          "n": 662,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 26.2,
+          "underPct": 21,
+          "overPct": 23.4,
+          "toneCalmerPct": 17.6,
+          "falseBluePct": 4.3
+        },
+        "18": {
+          "n": 662,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 25.7,
+          "shownMeanKmh": 24.8,
+          "underPct": 25.4,
+          "overPct": 22.7,
+          "toneCalmerPct": 21.3,
+          "falseBluePct": 7.3
+        },
+        "19": {
+          "n": 661,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 23.9,
+          "shownMeanKmh": 23,
+          "underPct": 23.4,
+          "overPct": 21.6,
+          "toneCalmerPct": 19.2,
+          "falseBluePct": 7.3
+        },
+        "20": {
+          "n": 661,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 21.5,
+          "shownMeanKmh": 20.2,
+          "underPct": 28.9,
+          "overPct": 19.8,
+          "toneCalmerPct": 24.6,
+          "falseBluePct": 13
+        },
+        "21": {
+          "n": 608,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 19.2,
+          "shownMeanKmh": 18.2,
+          "underPct": 28.9,
+          "overPct": 22.4,
+          "toneCalmerPct": 22.8,
+          "falseBluePct": 14.1
+        },
+        "22": {
+          "n": 588,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 17.7,
+          "shownMeanKmh": 16.9,
+          "underPct": 29.4,
+          "overPct": 24.7,
+          "toneCalmerPct": 20.9,
+          "falseBluePct": 13.3
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "6": {
+          "n": 1144,
+          "biasKmh": 1.8,
+          "rawBiasKmh": -0.4,
+          "obsMeanKmh": 6.1,
+          "shownMeanKmh": 8,
+          "underPct": 18.6,
+          "overPct": 42.8,
+          "toneCalmerPct": 6.2,
+          "falseBluePct": 5.5
+        },
+        "7": {
+          "n": 1262,
+          "biasKmh": 1.8,
+          "rawBiasKmh": -0.4,
+          "obsMeanKmh": 6.1,
+          "shownMeanKmh": 7.8,
+          "underPct": 18.7,
+          "overPct": 42.2,
+          "toneCalmerPct": 5.3,
+          "falseBluePct": 4.9
+        },
+        "8": {
+          "n": 1349,
+          "biasKmh": 1.3,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 6.4,
+          "shownMeanKmh": 7.6,
+          "underPct": 21.4,
+          "overPct": 42.3,
+          "toneCalmerPct": 6.8,
+          "falseBluePct": 5.9
+        },
+        "9": {
+          "n": 1355,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 7.8,
+          "shownMeanKmh": 8.4,
+          "underPct": 26.2,
+          "overPct": 36.8,
+          "toneCalmerPct": 9.5,
+          "falseBluePct": 7.9
+        },
+        "10": {
+          "n": 1356,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 9.7,
+          "shownMeanKmh": 9.4,
+          "underPct": 31.1,
+          "overPct": 23.2,
+          "toneCalmerPct": 11.7,
+          "falseBluePct": 9.5
+        },
+        "11": {
+          "n": 1356,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 11.1,
+          "shownMeanKmh": 10.6,
+          "underPct": 32.8,
+          "overPct": 18.2,
+          "toneCalmerPct": 13,
+          "falseBluePct": 10.6
+        },
+        "12": {
+          "n": 1355,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 12.8,
+          "shownMeanKmh": 11.9,
+          "underPct": 33.5,
+          "overPct": 16.9,
+          "toneCalmerPct": 14.7,
+          "falseBluePct": 12.1
+        },
+        "13": {
+          "n": 1356,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 14.1,
+          "shownMeanKmh": 13.6,
+          "underPct": 27.7,
+          "overPct": 21.2,
+          "toneCalmerPct": 15.3,
+          "falseBluePct": 11.6
+        },
+        "14": {
+          "n": 1356,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 15.2,
+          "shownMeanKmh": 14.9,
+          "underPct": 26,
+          "overPct": 21.2,
+          "toneCalmerPct": 16.7,
+          "falseBluePct": 11.8
+        },
+        "15": {
+          "n": 1356,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 16.1,
+          "shownMeanKmh": 15.5,
+          "underPct": 26.8,
+          "overPct": 19.8,
+          "toneCalmerPct": 17.8,
+          "falseBluePct": 11.3
+        },
+        "16": {
+          "n": 1356,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 16.3,
+          "shownMeanKmh": 15.8,
+          "underPct": 27.4,
+          "overPct": 20.7,
+          "toneCalmerPct": 19,
+          "falseBluePct": 11.8
+        },
+        "17": {
+          "n": 1355,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 16,
+          "shownMeanKmh": 15.5,
+          "underPct": 26.6,
+          "overPct": 22.1,
+          "toneCalmerPct": 17.4,
+          "falseBluePct": 10.5
+        },
+        "18": {
+          "n": 1356,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 15.4,
+          "shownMeanKmh": 14.6,
+          "underPct": 29.1,
+          "overPct": 19.2,
+          "toneCalmerPct": 18.6,
+          "falseBluePct": 11.8
+        },
+        "19": {
+          "n": 1355,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 14,
+          "shownMeanKmh": 13.3,
+          "underPct": 29.2,
+          "overPct": 22,
+          "toneCalmerPct": 17.8,
+          "falseBluePct": 12.2
+        },
+        "20": {
+          "n": 1355,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 11.8,
+          "shownMeanKmh": 11.1,
+          "underPct": 33.3,
+          "overPct": 20.9,
+          "toneCalmerPct": 17.6,
+          "falseBluePct": 12.6
+        },
+        "21": {
+          "n": 1338,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 9.2,
+          "shownMeanKmh": 9.2,
+          "underPct": 29.9,
+          "overPct": 28,
+          "toneCalmerPct": 11.2,
+          "falseBluePct": 9
+        },
+        "22": {
+          "n": 1321,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 7.7,
+          "shownMeanKmh": 8.2,
+          "underPct": 27.1,
+          "overPct": 33.8,
+          "toneCalmerPct": 9.8,
+          "falseBluePct": 7.9
+        }
+      }
+    },
+    "2025": {
+      "μελτέμι (όργανο)": {
+        "6": {
+          "n": 931,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 18.2,
+          "shownMeanKmh": 18.3,
+          "underPct": 26.2,
+          "overPct": 28.4,
+          "toneCalmerPct": 17.2,
+          "falseBluePct": 10.1
+        },
+        "7": {
+          "n": 941,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 18.6,
+          "shownMeanKmh": 18.8,
+          "underPct": 27.2,
+          "overPct": 29.9,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 10.2
+        },
+        "8": {
+          "n": 943,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 20.6,
+          "shownMeanKmh": 19.9,
+          "underPct": 28.8,
+          "overPct": 25.6,
+          "toneCalmerPct": 18.7,
+          "falseBluePct": 10.6
+        },
+        "9": {
+          "n": 944,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 23.4,
+          "shownMeanKmh": 22.1,
+          "underPct": 33.1,
+          "overPct": 22.2,
+          "toneCalmerPct": 22.7,
+          "falseBluePct": 11
+        },
+        "10": {
+          "n": 941,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 24.2,
+          "underPct": 31.3,
+          "overPct": 22.4,
+          "toneCalmerPct": 23.2,
+          "falseBluePct": 9.5
+        },
+        "11": {
+          "n": 944,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 25.5,
+          "underPct": 31,
+          "overPct": 23,
+          "toneCalmerPct": 22.8,
+          "falseBluePct": 8.6
+        },
+        "12": {
+          "n": 944,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 27.2,
+          "shownMeanKmh": 25.5,
+          "underPct": 31.8,
+          "overPct": 19.5,
+          "toneCalmerPct": 23.1,
+          "falseBluePct": 8.1
+        },
+        "13": {
+          "n": 943,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 27.5,
+          "shownMeanKmh": 26.2,
+          "underPct": 29.9,
+          "overPct": 22.7,
+          "toneCalmerPct": 22.8,
+          "falseBluePct": 7.1
+        },
+        "14": {
+          "n": 944,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 26.5,
+          "underPct": 32.5,
+          "overPct": 20.9,
+          "toneCalmerPct": 24.3,
+          "falseBluePct": 6.9
+        },
+        "15": {
+          "n": 944,
+          "biasKmh": -1.9,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 27.9,
+          "shownMeanKmh": 25.9,
+          "underPct": 29.7,
+          "overPct": 18.4,
+          "toneCalmerPct": 21.6,
+          "falseBluePct": 6.4
+        },
+        "16": {
+          "n": 943,
+          "biasKmh": -2,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 27.6,
+          "shownMeanKmh": 25.7,
+          "underPct": 32.9,
+          "overPct": 18,
+          "toneCalmerPct": 24.3,
+          "falseBluePct": 7.3
+        },
+        "17": {
+          "n": 941,
+          "biasKmh": -2.1,
+          "rawBiasKmh": -4.3,
+          "obsMeanKmh": 27.1,
+          "shownMeanKmh": 25,
+          "underPct": 33.2,
+          "overPct": 17.9,
+          "toneCalmerPct": 25.3,
+          "falseBluePct": 8.2
+        },
+        "18": {
+          "n": 944,
+          "biasKmh": -2.3,
+          "rawBiasKmh": -4.5,
+          "obsMeanKmh": 26.2,
+          "shownMeanKmh": 23.9,
+          "underPct": 33.7,
+          "overPct": 17.4,
+          "toneCalmerPct": 25.4,
+          "falseBluePct": 8.8
+        },
+        "19": {
+          "n": 942,
+          "biasKmh": -2.4,
+          "rawBiasKmh": -4.6,
+          "obsMeanKmh": 24.4,
+          "shownMeanKmh": 22,
+          "underPct": 37.8,
+          "overPct": 17.3,
+          "toneCalmerPct": 29.3,
+          "falseBluePct": 12.7
+        },
+        "20": {
+          "n": 941,
+          "biasKmh": -2.7,
+          "rawBiasKmh": -4.9,
+          "obsMeanKmh": 22.1,
+          "shownMeanKmh": 19.4,
+          "underPct": 37.1,
+          "overPct": 17.7,
+          "toneCalmerPct": 27.8,
+          "falseBluePct": 14.8
+        },
+        "21": {
+          "n": 882,
+          "biasKmh": -1.9,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 19.5,
+          "shownMeanKmh": 17.6,
+          "underPct": 34.2,
+          "overPct": 21,
+          "toneCalmerPct": 23.5,
+          "falseBluePct": 15.2
+        },
+        "22": {
+          "n": 857,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 18,
+          "shownMeanKmh": 16.6,
+          "underPct": 35.4,
+          "overPct": 24.9,
+          "toneCalmerPct": 21.9,
+          "falseBluePct": 15.1
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "6": {
+          "n": 848,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 19.4,
+          "shownMeanKmh": 19.7,
+          "underPct": 24.8,
+          "overPct": 30,
+          "toneCalmerPct": 17.2,
+          "falseBluePct": 9.3
+        },
+        "7": {
+          "n": 884,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 19.6,
+          "shownMeanKmh": 20.3,
+          "underPct": 25.1,
+          "overPct": 32.9,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 9
+        },
+        "8": {
+          "n": 886,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 21.5,
+          "shownMeanKmh": 21.5,
+          "underPct": 25.8,
+          "overPct": 29.2,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 8.7
+        },
+        "9": {
+          "n": 887,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 24.3,
+          "shownMeanKmh": 23.9,
+          "underPct": 29.5,
+          "overPct": 27.2,
+          "toneCalmerPct": 20.6,
+          "falseBluePct": 8.2
+        },
+        "10": {
+          "n": 885,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 26.1,
+          "shownMeanKmh": 25.9,
+          "underPct": 28,
+          "overPct": 28.7,
+          "toneCalmerPct": 20,
+          "falseBluePct": 6.3
+        },
+        "11": {
+          "n": 887,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 27.2,
+          "shownMeanKmh": 27.2,
+          "underPct": 26,
+          "overPct": 30.9,
+          "toneCalmerPct": 17.8,
+          "falseBluePct": 3.9
+        },
+        "12": {
+          "n": 887,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 27.8,
+          "shownMeanKmh": 27.3,
+          "underPct": 26.5,
+          "overPct": 26.2,
+          "toneCalmerPct": 17.5,
+          "falseBluePct": 2.9
+        },
+        "13": {
+          "n": 886,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 27.9,
+          "underPct": 24.6,
+          "overPct": 30.5,
+          "toneCalmerPct": 16.8,
+          "falseBluePct": 1.8
+        },
+        "14": {
+          "n": 887,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 28.5,
+          "shownMeanKmh": 28.1,
+          "underPct": 26.3,
+          "overPct": 28.3,
+          "toneCalmerPct": 17.5,
+          "falseBluePct": 1.3
+        },
+        "15": {
+          "n": 887,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 28.3,
+          "shownMeanKmh": 27.4,
+          "underPct": 24.8,
+          "overPct": 24.9,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 1.8
+        },
+        "16": {
+          "n": 886,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 28.1,
+          "shownMeanKmh": 27,
+          "underPct": 27.3,
+          "overPct": 24.3,
+          "toneCalmerPct": 18.1,
+          "falseBluePct": 2.4
+        },
+        "17": {
+          "n": 884,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 27.4,
+          "shownMeanKmh": 26.3,
+          "underPct": 27.6,
+          "overPct": 24.1,
+          "toneCalmerPct": 18.7,
+          "falseBluePct": 3
+        },
+        "18": {
+          "n": 887,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 25.1,
+          "underPct": 29.8,
+          "overPct": 22.2,
+          "toneCalmerPct": 20.3,
+          "falseBluePct": 4.5
+        },
+        "19": {
+          "n": 885,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 23.2,
+          "underPct": 33.4,
+          "overPct": 20.9,
+          "toneCalmerPct": 24.6,
+          "falseBluePct": 8.2
+        },
+        "20": {
+          "n": 884,
+          "biasKmh": -2.1,
+          "rawBiasKmh": -4.3,
+          "obsMeanKmh": 22.6,
+          "shownMeanKmh": 20.5,
+          "underPct": 32.9,
+          "overPct": 21.5,
+          "toneCalmerPct": 24.5,
+          "falseBluePct": 11.4
+        },
+        "21": {
+          "n": 824,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 20.1,
+          "shownMeanKmh": 18.8,
+          "underPct": 31.8,
+          "overPct": 24.2,
+          "toneCalmerPct": 22.1,
+          "falseBluePct": 13.1
+        },
+        "22": {
+          "n": 794,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 18.6,
+          "shownMeanKmh": 17.6,
+          "underPct": 31.2,
+          "overPct": 28.7,
+          "toneCalmerPct": 20.6,
+          "falseBluePct": 13.2
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "6": {
+          "n": 758,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 20,
+          "shownMeanKmh": 20.2,
+          "underPct": 24.9,
+          "overPct": 29.2,
+          "toneCalmerPct": 18,
+          "falseBluePct": 9.6
+        },
+        "7": {
+          "n": 768,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 20.5,
+          "shownMeanKmh": 20.7,
+          "underPct": 26.2,
+          "overPct": 30.1,
+          "toneCalmerPct": 17.9,
+          "falseBluePct": 9.6
+        },
+        "8": {
+          "n": 770,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 22.5,
+          "shownMeanKmh": 22.1,
+          "underPct": 27.1,
+          "overPct": 26.8,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 9.6
+        },
+        "9": {
+          "n": 771,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 24.5,
+          "underPct": 30.2,
+          "overPct": 24.9,
+          "toneCalmerPct": 21.7,
+          "falseBluePct": 8.6
+        },
+        "10": {
+          "n": 769,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 27.3,
+          "shownMeanKmh": 26.6,
+          "underPct": 29,
+          "overPct": 25.7,
+          "toneCalmerPct": 21.2,
+          "falseBluePct": 6.6
+        },
+        "11": {
+          "n": 771,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 28.4,
+          "shownMeanKmh": 27.9,
+          "underPct": 27.8,
+          "overPct": 26.5,
+          "toneCalmerPct": 19.5,
+          "falseBluePct": 4.4
+        },
+        "12": {
+          "n": 771,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 29,
+          "shownMeanKmh": 27.9,
+          "underPct": 28.3,
+          "overPct": 21.8,
+          "toneCalmerPct": 19,
+          "falseBluePct": 3.1
+        },
+        "13": {
+          "n": 770,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 29.2,
+          "shownMeanKmh": 28.5,
+          "underPct": 26.5,
+          "overPct": 25.6,
+          "toneCalmerPct": 18.2,
+          "falseBluePct": 1.8
+        },
+        "14": {
+          "n": 771,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 29.6,
+          "shownMeanKmh": 28.7,
+          "underPct": 28.3,
+          "overPct": 23.9,
+          "toneCalmerPct": 19.2,
+          "falseBluePct": 1.4
+        },
+        "15": {
+          "n": 771,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 29.4,
+          "shownMeanKmh": 27.9,
+          "underPct": 26.8,
+          "overPct": 20.9,
+          "toneCalmerPct": 18,
+          "falseBluePct": 2
+        },
+        "16": {
+          "n": 770,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 29.2,
+          "shownMeanKmh": 27.6,
+          "underPct": 29.5,
+          "overPct": 20.6,
+          "toneCalmerPct": 20,
+          "falseBluePct": 2.7
+        },
+        "17": {
+          "n": 768,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 28.4,
+          "shownMeanKmh": 26.9,
+          "underPct": 29.2,
+          "overPct": 20.2,
+          "toneCalmerPct": 20,
+          "falseBluePct": 3.3
+        },
+        "18": {
+          "n": 771,
+          "biasKmh": -1.9,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 27.5,
+          "shownMeanKmh": 25.7,
+          "underPct": 31,
+          "overPct": 19.7,
+          "toneCalmerPct": 21.7,
+          "falseBluePct": 4.7
+        },
+        "19": {
+          "n": 769,
+          "biasKmh": -2.1,
+          "rawBiasKmh": -4.3,
+          "obsMeanKmh": 25.8,
+          "shownMeanKmh": 23.7,
+          "underPct": 35.1,
+          "overPct": 18.7,
+          "toneCalmerPct": 26.6,
+          "falseBluePct": 8.8
+        },
+        "20": {
+          "n": 768,
+          "biasKmh": -2.5,
+          "rawBiasKmh": -4.7,
+          "obsMeanKmh": 23.5,
+          "shownMeanKmh": 21,
+          "underPct": 33.3,
+          "overPct": 19.3,
+          "toneCalmerPct": 25.8,
+          "falseBluePct": 11.6
+        },
+        "21": {
+          "n": 715,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 21,
+          "shownMeanKmh": 19.3,
+          "underPct": 32.7,
+          "overPct": 22,
+          "toneCalmerPct": 23.7,
+          "falseBluePct": 14.1
+        },
+        "22": {
+          "n": 693,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 19.5,
+          "shownMeanKmh": 18.2,
+          "underPct": 33.2,
+          "overPct": 26.6,
+          "toneCalmerPct": 22.3,
+          "falseBluePct": 14.2
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "6": {
+          "n": 1162,
+          "biasKmh": 1.8,
+          "rawBiasKmh": -0.4,
+          "obsMeanKmh": 6.1,
+          "shownMeanKmh": 7.9,
+          "underPct": 19.2,
+          "overPct": 46,
+          "toneCalmerPct": 6.4,
+          "falseBluePct": 5.5
+        },
+        "7": {
+          "n": 1297,
+          "biasKmh": 1.9,
+          "rawBiasKmh": -0.3,
+          "obsMeanKmh": 5.9,
+          "shownMeanKmh": 7.7,
+          "underPct": 17.8,
+          "overPct": 45.4,
+          "toneCalmerPct": 6.1,
+          "falseBluePct": 5.1
+        },
+        "8": {
+          "n": 1300,
+          "biasKmh": 1.2,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 6.2,
+          "shownMeanKmh": 7.4,
+          "underPct": 20.8,
+          "overPct": 41.3,
+          "toneCalmerPct": 6.9,
+          "falseBluePct": 5.8
+        },
+        "9": {
+          "n": 1300,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.6,
+          "obsMeanKmh": 7.7,
+          "shownMeanKmh": 8.3,
+          "underPct": 25.3,
+          "overPct": 37.5,
+          "toneCalmerPct": 9.5,
+          "falseBluePct": 7.7
+        },
+        "10": {
+          "n": 1298,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 9.5,
+          "shownMeanKmh": 9.3,
+          "underPct": 30.1,
+          "overPct": 24.5,
+          "toneCalmerPct": 10.6,
+          "falseBluePct": 8.6
+        },
+        "11": {
+          "n": 1298,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 11,
+          "shownMeanKmh": 10.6,
+          "underPct": 31.7,
+          "overPct": 19.2,
+          "toneCalmerPct": 11.9,
+          "falseBluePct": 10
+        },
+        "12": {
+          "n": 1302,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 12.8,
+          "shownMeanKmh": 11.9,
+          "underPct": 35.4,
+          "overPct": 16.4,
+          "toneCalmerPct": 15.7,
+          "falseBluePct": 12.7
+        },
+        "13": {
+          "n": 1302,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 14.3,
+          "shownMeanKmh": 13.8,
+          "underPct": 27.6,
+          "overPct": 20.2,
+          "toneCalmerPct": 15,
+          "falseBluePct": 11.4
+        },
+        "14": {
+          "n": 1303,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 15.3,
+          "shownMeanKmh": 15.2,
+          "underPct": 24.4,
+          "overPct": 22.3,
+          "toneCalmerPct": 14.7,
+          "falseBluePct": 10.3
+        },
+        "15": {
+          "n": 1303,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 16.1,
+          "shownMeanKmh": 15.7,
+          "underPct": 25.3,
+          "overPct": 20.6,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 10.6
+        },
+        "16": {
+          "n": 1302,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 16.4,
+          "shownMeanKmh": 16,
+          "underPct": 25.9,
+          "overPct": 21.6,
+          "toneCalmerPct": 17.6,
+          "falseBluePct": 10.5
+        },
+        "17": {
+          "n": 1302,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 16.1,
+          "shownMeanKmh": 15.7,
+          "underPct": 27.5,
+          "overPct": 20.5,
+          "toneCalmerPct": 17.9,
+          "falseBluePct": 10.7
+        },
+        "18": {
+          "n": 1303,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 15.6,
+          "shownMeanKmh": 14.9,
+          "underPct": 29.1,
+          "overPct": 19.3,
+          "toneCalmerPct": 19.3,
+          "falseBluePct": 11.6
+        },
+        "19": {
+          "n": 1302,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 14.3,
+          "shownMeanKmh": 13.5,
+          "underPct": 29,
+          "overPct": 19.9,
+          "toneCalmerPct": 17.5,
+          "falseBluePct": 11.8
+        },
+        "20": {
+          "n": 1302,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 12,
+          "shownMeanKmh": 11.2,
+          "underPct": 32.3,
+          "overPct": 19.9,
+          "toneCalmerPct": 16.2,
+          "falseBluePct": 12.5
+        },
+        "21": {
+          "n": 1289,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 9.3,
+          "shownMeanKmh": 9.2,
+          "underPct": 30.3,
+          "overPct": 27.6,
+          "toneCalmerPct": 12.9,
+          "falseBluePct": 10.1
+        },
+        "22": {
+          "n": 1282,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 7.6,
+          "shownMeanKmh": 8.2,
+          "underPct": 27.5,
+          "overPct": 34.9,
+          "toneCalmerPct": 10.3,
+          "falseBluePct": 8.1
+        }
+      }
+    },
+    "2026": {
+      "μελτέμι (όργανο)": {
+        "6": {
+          "n": 817,
+          "biasKmh": 0.8,
+          "rawBiasKmh": -1.3,
+          "obsMeanKmh": 16.4,
+          "shownMeanKmh": 17.3,
+          "underPct": 21.3,
+          "overPct": 32.9,
+          "toneCalmerPct": 15.5,
+          "falseBluePct": 9.5
+        },
+        "7": {
+          "n": 851,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 16.8,
+          "shownMeanKmh": 17.5,
+          "underPct": 24.6,
+          "overPct": 35.3,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 11.4
+        },
+        "8": {
+          "n": 858,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 19,
+          "shownMeanKmh": 18.5,
+          "underPct": 29,
+          "overPct": 27.3,
+          "toneCalmerPct": 21.3,
+          "falseBluePct": 12.6
+        },
+        "9": {
+          "n": 858,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 21.7,
+          "shownMeanKmh": 21,
+          "underPct": 28.9,
+          "overPct": 26.9,
+          "toneCalmerPct": 22.1,
+          "falseBluePct": 11.9
+        },
+        "10": {
+          "n": 859,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 23.6,
+          "shownMeanKmh": 23.2,
+          "underPct": 27.4,
+          "overPct": 26.9,
+          "toneCalmerPct": 22.2,
+          "falseBluePct": 10.1
+        },
+        "11": {
+          "n": 859,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 24.8,
+          "shownMeanKmh": 24.7,
+          "underPct": 26.3,
+          "overPct": 26,
+          "toneCalmerPct": 21.6,
+          "falseBluePct": 8.5
+        },
+        "12": {
+          "n": 861,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 25.8,
+          "shownMeanKmh": 24.9,
+          "underPct": 26.9,
+          "overPct": 22.5,
+          "toneCalmerPct": 22.5,
+          "falseBluePct": 8.9
+        },
+        "13": {
+          "n": 861,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 25.8,
+          "underPct": 25.1,
+          "overPct": 22.6,
+          "toneCalmerPct": 21,
+          "falseBluePct": 8.1
+        },
+        "14": {
+          "n": 859,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 26.2,
+          "underPct": 23.4,
+          "overPct": 21.8,
+          "toneCalmerPct": 19.4,
+          "falseBluePct": 6.9
+        },
+        "15": {
+          "n": 861,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 25.9,
+          "underPct": 24.9,
+          "overPct": 22.3,
+          "toneCalmerPct": 19.6,
+          "falseBluePct": 6.4
+        },
+        "16": {
+          "n": 859,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 26.8,
+          "shownMeanKmh": 25.8,
+          "underPct": 25.4,
+          "overPct": 21,
+          "toneCalmerPct": 19.9,
+          "falseBluePct": 6.6
+        },
+        "17": {
+          "n": 860,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 26.4,
+          "shownMeanKmh": 25.3,
+          "underPct": 25.8,
+          "overPct": 22.2,
+          "toneCalmerPct": 20.9,
+          "falseBluePct": 6.2
+        },
+        "18": {
+          "n": 861,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 25.1,
+          "shownMeanKmh": 23.8,
+          "underPct": 31,
+          "overPct": 19.7,
+          "toneCalmerPct": 25.3,
+          "falseBluePct": 9.6
+        },
+        "19": {
+          "n": 860,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 23.5,
+          "shownMeanKmh": 21.9,
+          "underPct": 34.4,
+          "overPct": 17.2,
+          "toneCalmerPct": 27.7,
+          "falseBluePct": 12.2
+        },
+        "20": {
+          "n": 859,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 20.8,
+          "shownMeanKmh": 19.1,
+          "underPct": 31.5,
+          "overPct": 18.4,
+          "toneCalmerPct": 24.3,
+          "falseBluePct": 13.1
+        },
+        "21": {
+          "n": 799,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 18.5,
+          "shownMeanKmh": 17.3,
+          "underPct": 32.4,
+          "overPct": 22.2,
+          "toneCalmerPct": 23.6,
+          "falseBluePct": 14.9
+        },
+        "22": {
+          "n": 782,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 17.4,
+          "shownMeanKmh": 16.3,
+          "underPct": 31.2,
+          "overPct": 25.1,
+          "toneCalmerPct": 20.7,
+          "falseBluePct": 13.5
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "6": {
+          "n": 772,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.1,
+          "obsMeanKmh": 18,
+          "shownMeanKmh": 19,
+          "underPct": 20.1,
+          "overPct": 35,
+          "toneCalmerPct": 15.1,
+          "falseBluePct": 8.5
+        },
+        "7": {
+          "n": 871,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 18.9,
+          "shownMeanKmh": 19.9,
+          "underPct": 23.1,
+          "overPct": 36.2,
+          "toneCalmerPct": 15.9,
+          "falseBluePct": 9.2
+        },
+        "8": {
+          "n": 876,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 21.1,
+          "shownMeanKmh": 21,
+          "underPct": 26.8,
+          "overPct": 29.5,
+          "toneCalmerPct": 19.5,
+          "falseBluePct": 9.8
+        },
+        "9": {
+          "n": 876,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 23.7,
+          "shownMeanKmh": 23.3,
+          "underPct": 26.6,
+          "overPct": 29.6,
+          "toneCalmerPct": 18.8,
+          "falseBluePct": 7.9
+        },
+        "10": {
+          "n": 877,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 25.5,
+          "shownMeanKmh": 25.6,
+          "underPct": 26,
+          "overPct": 31.7,
+          "toneCalmerPct": 18,
+          "falseBluePct": 5.6
+        },
+        "11": {
+          "n": 877,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 27,
+          "underPct": 24.4,
+          "overPct": 30.9,
+          "toneCalmerPct": 16.3,
+          "falseBluePct": 3.4
+        },
+        "12": {
+          "n": 879,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 27.5,
+          "shownMeanKmh": 27.1,
+          "underPct": 24.8,
+          "overPct": 28.9,
+          "toneCalmerPct": 16,
+          "falseBluePct": 3.1
+        },
+        "13": {
+          "n": 879,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 27.8,
+          "underPct": 22.9,
+          "overPct": 27.5,
+          "toneCalmerPct": 14.5,
+          "falseBluePct": 2.5
+        },
+        "14": {
+          "n": 877,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 28.3,
+          "shownMeanKmh": 28.1,
+          "underPct": 22.7,
+          "overPct": 26.9,
+          "toneCalmerPct": 14.3,
+          "falseBluePct": 1.5
+        },
+        "15": {
+          "n": 879,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 28.3,
+          "shownMeanKmh": 27.6,
+          "underPct": 24.3,
+          "overPct": 26.2,
+          "toneCalmerPct": 15.4,
+          "falseBluePct": 1.9
+        },
+        "16": {
+          "n": 877,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 28.2,
+          "shownMeanKmh": 27.5,
+          "underPct": 24.4,
+          "overPct": 25.9,
+          "toneCalmerPct": 15.4,
+          "falseBluePct": 1.6
+        },
+        "17": {
+          "n": 877,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 27.7,
+          "shownMeanKmh": 26.8,
+          "underPct": 25.7,
+          "overPct": 25.1,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 2
+        },
+        "18": {
+          "n": 879,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 26.4,
+          "shownMeanKmh": 25.3,
+          "underPct": 29.2,
+          "overPct": 24.1,
+          "toneCalmerPct": 19.6,
+          "falseBluePct": 4.6
+        },
+        "19": {
+          "n": 878,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 23.3,
+          "underPct": 33.6,
+          "overPct": 20.3,
+          "toneCalmerPct": 24.3,
+          "falseBluePct": 8.1
+        },
+        "20": {
+          "n": 877,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 22.2,
+          "shownMeanKmh": 20.6,
+          "underPct": 30.4,
+          "overPct": 20.6,
+          "toneCalmerPct": 22.2,
+          "falseBluePct": 10.1
+        },
+        "21": {
+          "n": 816,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 20,
+          "shownMeanKmh": 19.1,
+          "underPct": 30.5,
+          "overPct": 25.2,
+          "toneCalmerPct": 22.5,
+          "falseBluePct": 11.6
+        },
+        "22": {
+          "n": 782,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 18.7,
+          "shownMeanKmh": 18.1,
+          "underPct": 28.9,
+          "overPct": 28.1,
+          "toneCalmerPct": 19.4,
+          "falseBluePct": 10.9
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "6": {
+          "n": 668,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 17.9,
+          "shownMeanKmh": 18.9,
+          "underPct": 20.8,
+          "overPct": 34.3,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 9.4
+        },
+        "7": {
+          "n": 695,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 18.3,
+          "shownMeanKmh": 19.2,
+          "underPct": 22.7,
+          "overPct": 36.7,
+          "toneCalmerPct": 17.8,
+          "falseBluePct": 10.8
+        },
+        "8": {
+          "n": 698,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 20.7,
+          "shownMeanKmh": 20.5,
+          "underPct": 27.7,
+          "overPct": 28.9,
+          "toneCalmerPct": 22.1,
+          "falseBluePct": 11.8
+        },
+        "9": {
+          "n": 698,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 23.4,
+          "shownMeanKmh": 23.2,
+          "underPct": 25.4,
+          "overPct": 30.2,
+          "toneCalmerPct": 20.8,
+          "falseBluePct": 9.4
+        },
+        "10": {
+          "n": 699,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 25.2,
+          "shownMeanKmh": 25.6,
+          "underPct": 23.6,
+          "overPct": 31.8,
+          "toneCalmerPct": 19.4,
+          "falseBluePct": 6.6
+        },
+        "11": {
+          "n": 699,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 27,
+          "underPct": 21.6,
+          "overPct": 30.3,
+          "toneCalmerPct": 17.1,
+          "falseBluePct": 3.9
+        },
+        "12": {
+          "n": 701,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 27.2,
+          "shownMeanKmh": 27.1,
+          "underPct": 22,
+          "overPct": 25.8,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 3.8
+        },
+        "13": {
+          "n": 701,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 27.7,
+          "shownMeanKmh": 28,
+          "underPct": 19.1,
+          "overPct": 25.1,
+          "toneCalmerPct": 14.7,
+          "falseBluePct": 2.8
+        },
+        "14": {
+          "n": 699,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 28.1,
+          "shownMeanKmh": 28.3,
+          "underPct": 18.5,
+          "overPct": 24.9,
+          "toneCalmerPct": 13.8,
+          "falseBluePct": 1.5
+        },
+        "15": {
+          "n": 701,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 27.9,
+          "underPct": 20.7,
+          "overPct": 25.2,
+          "toneCalmerPct": 15.1,
+          "falseBluePct": 1.9
+        },
+        "16": {
+          "n": 699,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 28.2,
+          "shownMeanKmh": 27.8,
+          "underPct": 21,
+          "overPct": 24.5,
+          "toneCalmerPct": 15.1,
+          "falseBluePct": 1.9
+        },
+        "17": {
+          "n": 700,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 27.8,
+          "shownMeanKmh": 27.2,
+          "underPct": 22.9,
+          "overPct": 25.1,
+          "toneCalmerPct": 17.2,
+          "falseBluePct": 2.3
+        },
+        "18": {
+          "n": 701,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 25.6,
+          "underPct": 27.2,
+          "overPct": 22.8,
+          "toneCalmerPct": 21.1,
+          "falseBluePct": 5.3
+        },
+        "19": {
+          "n": 700,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 23.5,
+          "underPct": 32.1,
+          "overPct": 19,
+          "toneCalmerPct": 25.8,
+          "falseBluePct": 9.4
+        },
+        "20": {
+          "n": 699,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 22.1,
+          "shownMeanKmh": 20.6,
+          "underPct": 29.5,
+          "overPct": 19.7,
+          "toneCalmerPct": 24,
+          "falseBluePct": 11.7
+        },
+        "21": {
+          "n": 641,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 19.9,
+          "shownMeanKmh": 18.9,
+          "underPct": 30.6,
+          "overPct": 22.8,
+          "toneCalmerPct": 24.3,
+          "falseBluePct": 14.1
+        },
+        "22": {
+          "n": 625,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 18.9,
+          "shownMeanKmh": 17.9,
+          "underPct": 30.1,
+          "overPct": 25.6,
+          "toneCalmerPct": 21.5,
+          "falseBluePct": 12.9
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "6": {
+          "n": 1190,
+          "biasKmh": 2.4,
+          "rawBiasKmh": 0.2,
+          "obsMeanKmh": 5.4,
+          "shownMeanKmh": 7.8,
+          "underPct": 15,
+          "overPct": 47.3,
+          "toneCalmerPct": 5,
+          "falseBluePct": 4.3
+        },
+        "7": {
+          "n": 1298,
+          "biasKmh": 2.3,
+          "rawBiasKmh": 0.1,
+          "obsMeanKmh": 5.4,
+          "shownMeanKmh": 7.7,
+          "underPct": 15.4,
+          "overPct": 47.3,
+          "toneCalmerPct": 4.8,
+          "falseBluePct": 4.4
+        },
+        "8": {
+          "n": 1313,
+          "biasKmh": 1.5,
+          "rawBiasKmh": -0.7,
+          "obsMeanKmh": 5.9,
+          "shownMeanKmh": 7.5,
+          "underPct": 17.7,
+          "overPct": 44.5,
+          "toneCalmerPct": 5.6,
+          "falseBluePct": 4.9
+        },
+        "9": {
+          "n": 1313,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.3,
+          "obsMeanKmh": 7.3,
+          "shownMeanKmh": 8.2,
+          "underPct": 21.6,
+          "overPct": 38.8,
+          "toneCalmerPct": 8.1,
+          "falseBluePct": 6.7
+        },
+        "10": {
+          "n": 1313,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 9.2,
+          "shownMeanKmh": 9.3,
+          "underPct": 25.1,
+          "overPct": 26,
+          "toneCalmerPct": 9.6,
+          "falseBluePct": 7.8
+        },
+        "11": {
+          "n": 1312,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 10.6,
+          "shownMeanKmh": 10.5,
+          "underPct": 28,
+          "overPct": 19.1,
+          "toneCalmerPct": 10.1,
+          "falseBluePct": 8.3
+        },
+        "12": {
+          "n": 1311,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 12.4,
+          "shownMeanKmh": 11.7,
+          "underPct": 30.2,
+          "overPct": 17.3,
+          "toneCalmerPct": 13.8,
+          "falseBluePct": 11.2
+        },
+        "13": {
+          "n": 1313,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 13.9,
+          "shownMeanKmh": 13.5,
+          "underPct": 26.4,
+          "overPct": 19.8,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 10.7
+        },
+        "14": {
+          "n": 1312,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 15,
+          "shownMeanKmh": 14.9,
+          "underPct": 23.2,
+          "overPct": 24.3,
+          "toneCalmerPct": 14.8,
+          "falseBluePct": 10.1
+        },
+        "15": {
+          "n": 1311,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 15.8,
+          "shownMeanKmh": 15.5,
+          "underPct": 24.6,
+          "overPct": 23.3,
+          "toneCalmerPct": 16.9,
+          "falseBluePct": 11.2
+        },
+        "16": {
+          "n": 1312,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 16.1,
+          "shownMeanKmh": 15.8,
+          "underPct": 25.2,
+          "overPct": 22.8,
+          "toneCalmerPct": 18.4,
+          "falseBluePct": 11.5
+        },
+        "17": {
+          "n": 1312,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 15.8,
+          "shownMeanKmh": 15.6,
+          "underPct": 23.6,
+          "overPct": 23.6,
+          "toneCalmerPct": 16.9,
+          "falseBluePct": 10.4
+        },
+        "18": {
+          "n": 1313,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 15,
+          "shownMeanKmh": 14.8,
+          "underPct": 25.4,
+          "overPct": 21,
+          "toneCalmerPct": 16,
+          "falseBluePct": 10.7
+        },
+        "19": {
+          "n": 1311,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 13.8,
+          "shownMeanKmh": 13.3,
+          "underPct": 26.9,
+          "overPct": 18.7,
+          "toneCalmerPct": 16.4,
+          "falseBluePct": 11.7
+        },
+        "20": {
+          "n": 1311,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 11.6,
+          "shownMeanKmh": 11.2,
+          "underPct": 30.6,
+          "overPct": 21.4,
+          "toneCalmerPct": 15.4,
+          "falseBluePct": 12.1
+        },
+        "21": {
+          "n": 1304,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 8.8,
+          "shownMeanKmh": 9.2,
+          "underPct": 26.2,
+          "overPct": 29.3,
+          "toneCalmerPct": 10.7,
+          "falseBluePct": 8.6
+        },
+        "22": {
+          "n": 1290,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.3,
+          "obsMeanKmh": 7.1,
+          "shownMeanKmh": 8.1,
+          "underPct": 23.7,
+          "overPct": 36.1,
+          "toneCalmerPct": 7.2,
+          "falseBluePct": 6.3
+        }
+      }
+    },
+    "όλα": {
+      "μελτέμι (όργανο)": {
+        "6": {
+          "n": 2528,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 16.9,
+          "shownMeanKmh": 17.3,
+          "underPct": 24.1,
+          "overPct": 30.3,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 10.3
+        },
+        "7": {
+          "n": 2591,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 17.4,
+          "shownMeanKmh": 17.7,
+          "underPct": 26.7,
+          "overPct": 31.3,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 11.1
+        },
+        "8": {
+          "n": 2623,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 19.5,
+          "shownMeanKmh": 18.8,
+          "underPct": 29.1,
+          "overPct": 25.8,
+          "toneCalmerPct": 20,
+          "falseBluePct": 11.9
+        },
+        "9": {
+          "n": 2625,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 22.2,
+          "shownMeanKmh": 21.3,
+          "underPct": 29.9,
+          "overPct": 24.5,
+          "toneCalmerPct": 21.6,
+          "falseBluePct": 11.3
+        },
+        "10": {
+          "n": 2621,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 24.1,
+          "shownMeanKmh": 23.5,
+          "underPct": 28.4,
+          "overPct": 24.8,
+          "toneCalmerPct": 21.8,
+          "falseBluePct": 10
+        },
+        "11": {
+          "n": 2626,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 25.2,
+          "shownMeanKmh": 24.9,
+          "underPct": 26.2,
+          "overPct": 25.6,
+          "toneCalmerPct": 20.5,
+          "falseBluePct": 8.3
+        },
+        "12": {
+          "n": 2627,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 26,
+          "shownMeanKmh": 24.9,
+          "underPct": 28.4,
+          "overPct": 21.5,
+          "toneCalmerPct": 22.8,
+          "falseBluePct": 9
+        },
+        "13": {
+          "n": 2625,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 25.7,
+          "underPct": 26.4,
+          "overPct": 23.5,
+          "toneCalmerPct": 21.5,
+          "falseBluePct": 7.9
+        },
+        "14": {
+          "n": 2625,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 26.8,
+          "shownMeanKmh": 26,
+          "underPct": 26.4,
+          "overPct": 21.6,
+          "toneCalmerPct": 21.1,
+          "falseBluePct": 7.1
+        },
+        "15": {
+          "n": 2628,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 25.6,
+          "underPct": 26.9,
+          "overPct": 21,
+          "toneCalmerPct": 21,
+          "falseBluePct": 7.2
+        },
+        "16": {
+          "n": 2623,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 26.7,
+          "shownMeanKmh": 25.5,
+          "underPct": 27.7,
+          "overPct": 19.7,
+          "toneCalmerPct": 21.5,
+          "falseBluePct": 7.2
+        },
+        "17": {
+          "n": 2623,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 24.9,
+          "underPct": 28.3,
+          "overPct": 20.3,
+          "toneCalmerPct": 22.8,
+          "falseBluePct": 7.6
+        },
+        "18": {
+          "n": 2627,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 23.6,
+          "underPct": 31.2,
+          "overPct": 19.1,
+          "toneCalmerPct": 24.8,
+          "falseBluePct": 9.5
+        },
+        "19": {
+          "n": 2623,
+          "biasKmh": -1.9,
+          "rawBiasKmh": -4,
+          "obsMeanKmh": 23.6,
+          "shownMeanKmh": 21.8,
+          "underPct": 33.6,
+          "overPct": 18,
+          "toneCalmerPct": 26.7,
+          "falseBluePct": 11.9
+        },
+        "20": {
+          "n": 2621,
+          "biasKmh": -2.1,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 21.1,
+          "shownMeanKmh": 19.1,
+          "underPct": 33.7,
+          "overPct": 18.2,
+          "toneCalmerPct": 26.1,
+          "falseBluePct": 14.4
+        },
+        "21": {
+          "n": 2443,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 18.7,
+          "shownMeanKmh": 17.3,
+          "underPct": 33.2,
+          "overPct": 21.4,
+          "toneCalmerPct": 23.6,
+          "falseBluePct": 15.3
+        },
+        "22": {
+          "n": 2374,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 17.4,
+          "shownMeanKmh": 16.2,
+          "underPct": 33.1,
+          "overPct": 24.5,
+          "toneCalmerPct": 21.2,
+          "falseBluePct": 14.3
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "6": {
+          "n": 2366,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 18.5,
+          "shownMeanKmh": 19.1,
+          "underPct": 22.9,
+          "overPct": 31.8,
+          "toneCalmerPct": 16.3,
+          "falseBluePct": 9.2
+        },
+        "7": {
+          "n": 2548,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 19.1,
+          "shownMeanKmh": 19.8,
+          "underPct": 24.5,
+          "overPct": 33.3,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 9.3
+        },
+        "8": {
+          "n": 2600,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 21,
+          "shownMeanKmh": 20.9,
+          "underPct": 26.4,
+          "overPct": 29.1,
+          "toneCalmerPct": 18.3,
+          "falseBluePct": 9.4
+        },
+        "9": {
+          "n": 2603,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 23.7,
+          "shownMeanKmh": 23.4,
+          "underPct": 27.2,
+          "overPct": 28.2,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 8.1
+        },
+        "10": {
+          "n": 2600,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 25.5,
+          "shownMeanKmh": 25.6,
+          "underPct": 25.8,
+          "overPct": 30.6,
+          "toneCalmerPct": 17.9,
+          "falseBluePct": 5.9
+        },
+        "11": {
+          "n": 2604,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 27,
+          "underPct": 22.8,
+          "overPct": 32.1,
+          "toneCalmerPct": 15.3,
+          "falseBluePct": 3.4
+        },
+        "12": {
+          "n": 2605,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 27.2,
+          "shownMeanKmh": 27,
+          "underPct": 24.7,
+          "overPct": 27.9,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 3.3
+        },
+        "13": {
+          "n": 2603,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 27.5,
+          "shownMeanKmh": 27.6,
+          "underPct": 22.7,
+          "overPct": 29.5,
+          "toneCalmerPct": 15.2,
+          "falseBluePct": 2.2
+        },
+        "14": {
+          "n": 2603,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 27.9,
+          "shownMeanKmh": 27.7,
+          "underPct": 23.3,
+          "overPct": 27.9,
+          "toneCalmerPct": 15.3,
+          "falseBluePct": 1.8
+        },
+        "15": {
+          "n": 2606,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 27.8,
+          "shownMeanKmh": 27.2,
+          "underPct": 23.6,
+          "overPct": 26.2,
+          "toneCalmerPct": 15.6,
+          "falseBluePct": 2.4
+        },
+        "16": {
+          "n": 2601,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 27.7,
+          "shownMeanKmh": 27,
+          "underPct": 24.7,
+          "overPct": 25.3,
+          "toneCalmerPct": 16.3,
+          "falseBluePct": 2.3
+        },
+        "17": {
+          "n": 2600,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 27.2,
+          "shownMeanKmh": 26.4,
+          "underPct": 25.6,
+          "overPct": 25.1,
+          "toneCalmerPct": 17.4,
+          "falseBluePct": 2.9
+        },
+        "18": {
+          "n": 2605,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 26.2,
+          "shownMeanKmh": 25.1,
+          "underPct": 28.9,
+          "overPct": 23.6,
+          "toneCalmerPct": 20.1,
+          "falseBluePct": 5
+        },
+        "19": {
+          "n": 2601,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 24.6,
+          "shownMeanKmh": 23.2,
+          "underPct": 31,
+          "overPct": 21.3,
+          "toneCalmerPct": 22.6,
+          "falseBluePct": 7.6
+        },
+        "20": {
+          "n": 2599,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 22.2,
+          "shownMeanKmh": 20.5,
+          "underPct": 30.9,
+          "overPct": 21,
+          "toneCalmerPct": 23.1,
+          "falseBluePct": 10.9
+        },
+        "21": {
+          "n": 2417,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 19.8,
+          "shownMeanKmh": 18.8,
+          "underPct": 30.2,
+          "overPct": 24.7,
+          "toneCalmerPct": 21.8,
+          "falseBluePct": 12.2
+        },
+        "22": {
+          "n": 2313,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 18.3,
+          "shownMeanKmh": 17.7,
+          "underPct": 29.1,
+          "overPct": 28.1,
+          "toneCalmerPct": 19.4,
+          "falseBluePct": 11.8
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "6": {
+          "n": 2055,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 18.5,
+          "shownMeanKmh": 19,
+          "underPct": 23.2,
+          "overPct": 31.2,
+          "toneCalmerPct": 17.4,
+          "falseBluePct": 10
+        },
+        "7": {
+          "n": 2106,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 19.1,
+          "shownMeanKmh": 19.5,
+          "underPct": 25,
+          "overPct": 32.1,
+          "toneCalmerPct": 18.3,
+          "falseBluePct": 10.5
+        },
+        "8": {
+          "n": 2131,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 21.3,
+          "shownMeanKmh": 20.8,
+          "underPct": 27.3,
+          "overPct": 27.5,
+          "toneCalmerPct": 20.5,
+          "falseBluePct": 11.1
+        },
+        "9": {
+          "n": 2132,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 23.9,
+          "shownMeanKmh": 23.5,
+          "underPct": 26.4,
+          "overPct": 27.5,
+          "toneCalmerPct": 20.5,
+          "falseBluePct": 9
+        },
+        "10": {
+          "n": 2129,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 25.8,
+          "shownMeanKmh": 25.9,
+          "underPct": 24.4,
+          "overPct": 28.9,
+          "toneCalmerPct": 19,
+          "falseBluePct": 6.6
+        },
+        "11": {
+          "n": 2133,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 26.8,
+          "shownMeanKmh": 27.3,
+          "underPct": 21.4,
+          "overPct": 30,
+          "toneCalmerPct": 16.2,
+          "falseBluePct": 3.8
+        },
+        "12": {
+          "n": 2134,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 27.6,
+          "shownMeanKmh": 27.2,
+          "underPct": 23.5,
+          "overPct": 24.6,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 3.7
+        },
+        "13": {
+          "n": 2132,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 27.8,
+          "shownMeanKmh": 27.9,
+          "underPct": 21,
+          "overPct": 26.5,
+          "toneCalmerPct": 15.8,
+          "falseBluePct": 2.4
+        },
+        "14": {
+          "n": 2132,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 28.2,
+          "shownMeanKmh": 28.1,
+          "underPct": 21.8,
+          "overPct": 24.8,
+          "toneCalmerPct": 15.8,
+          "falseBluePct": 1.9
+        },
+        "15": {
+          "n": 2135,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 28.1,
+          "shownMeanKmh": 27.6,
+          "underPct": 22.9,
+          "overPct": 23.7,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 2.6
+        },
+        "16": {
+          "n": 2130,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 28.1,
+          "shownMeanKmh": 27.4,
+          "underPct": 23.7,
+          "overPct": 22.6,
+          "toneCalmerPct": 16.9,
+          "falseBluePct": 2.7
+        },
+        "17": {
+          "n": 2130,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 27.6,
+          "shownMeanKmh": 26.8,
+          "underPct": 24.6,
+          "overPct": 22.8,
+          "toneCalmerPct": 18.4,
+          "falseBluePct": 3.3
+        },
+        "18": {
+          "n": 2134,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 25.4,
+          "underPct": 28,
+          "overPct": 21.6,
+          "toneCalmerPct": 21.4,
+          "falseBluePct": 5.7
+        },
+        "19": {
+          "n": 2130,
+          "biasKmh": -1.5,
+          "rawBiasKmh": -3.7,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 23.4,
+          "underPct": 30.5,
+          "overPct": 19.7,
+          "toneCalmerPct": 24,
+          "falseBluePct": 8.5
+        },
+        "20": {
+          "n": 2128,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4,
+          "obsMeanKmh": 22.4,
+          "shownMeanKmh": 20.6,
+          "underPct": 30.7,
+          "overPct": 19.6,
+          "toneCalmerPct": 24.8,
+          "falseBluePct": 12.1
+        },
+        "21": {
+          "n": 1964,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 20.1,
+          "shownMeanKmh": 18.8,
+          "underPct": 30.9,
+          "overPct": 22.4,
+          "toneCalmerPct": 23.6,
+          "falseBluePct": 14.1
+        },
+        "22": {
+          "n": 1906,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 18.7,
+          "shownMeanKmh": 17.7,
+          "underPct": 31,
+          "overPct": 25.7,
+          "toneCalmerPct": 21.6,
+          "falseBluePct": 13.5
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "6": {
+          "n": 3496,
+          "biasKmh": 2,
+          "rawBiasKmh": -0.2,
+          "obsMeanKmh": 5.9,
+          "shownMeanKmh": 7.9,
+          "underPct": 17.6,
+          "overPct": 45.4,
+          "toneCalmerPct": 5.9,
+          "falseBluePct": 5.1
+        },
+        "7": {
+          "n": 3857,
+          "biasKmh": 2,
+          "rawBiasKmh": -0.2,
+          "obsMeanKmh": 5.8,
+          "shownMeanKmh": 7.8,
+          "underPct": 17.3,
+          "overPct": 45,
+          "toneCalmerPct": 5.4,
+          "falseBluePct": 4.8
+        },
+        "8": {
+          "n": 3962,
+          "biasKmh": 1.3,
+          "rawBiasKmh": -0.9,
+          "obsMeanKmh": 6.2,
+          "shownMeanKmh": 7.5,
+          "underPct": 20,
+          "overPct": 42.7,
+          "toneCalmerPct": 6.4,
+          "falseBluePct": 5.5
+        },
+        "9": {
+          "n": 3968,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 7.6,
+          "shownMeanKmh": 8.3,
+          "underPct": 24.4,
+          "overPct": 37.7,
+          "toneCalmerPct": 9.1,
+          "falseBluePct": 7.4
+        },
+        "10": {
+          "n": 3967,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 9.4,
+          "shownMeanKmh": 9.4,
+          "underPct": 28.8,
+          "overPct": 24.6,
+          "toneCalmerPct": 10.6,
+          "falseBluePct": 8.7
+        },
+        "11": {
+          "n": 3966,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 10.9,
+          "shownMeanKmh": 10.6,
+          "underPct": 30.9,
+          "overPct": 18.8,
+          "toneCalmerPct": 11.7,
+          "falseBluePct": 9.6
+        },
+        "12": {
+          "n": 3968,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 12.7,
+          "shownMeanKmh": 11.9,
+          "underPct": 33,
+          "overPct": 16.9,
+          "toneCalmerPct": 14.7,
+          "falseBluePct": 12
+        },
+        "13": {
+          "n": 3971,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 14.1,
+          "shownMeanKmh": 13.6,
+          "underPct": 27.2,
+          "overPct": 20.4,
+          "toneCalmerPct": 14.8,
+          "falseBluePct": 11.2
+        },
+        "14": {
+          "n": 3971,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 15.2,
+          "shownMeanKmh": 15,
+          "underPct": 24.6,
+          "overPct": 22.6,
+          "toneCalmerPct": 15.4,
+          "falseBluePct": 10.7
+        },
+        "15": {
+          "n": 3970,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 16,
+          "shownMeanKmh": 15.6,
+          "underPct": 25.6,
+          "overPct": 21.2,
+          "toneCalmerPct": 17.1,
+          "falseBluePct": 11.1
+        },
+        "16": {
+          "n": 3970,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 16.3,
+          "shownMeanKmh": 15.9,
+          "underPct": 26.2,
+          "overPct": 21.7,
+          "toneCalmerPct": 18.3,
+          "falseBluePct": 11.3
+        },
+        "17": {
+          "n": 3969,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 15.9,
+          "shownMeanKmh": 15.6,
+          "underPct": 25.9,
+          "overPct": 22.1,
+          "toneCalmerPct": 17.4,
+          "falseBluePct": 10.5
+        },
+        "18": {
+          "n": 3972,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 15.3,
+          "shownMeanKmh": 14.7,
+          "underPct": 27.9,
+          "overPct": 19.8,
+          "toneCalmerPct": 18,
+          "falseBluePct": 11.4
+        },
+        "19": {
+          "n": 3968,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 14,
+          "shownMeanKmh": 13.4,
+          "underPct": 28.4,
+          "overPct": 20.2,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 11.9
+        },
+        "20": {
+          "n": 3968,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 11.8,
+          "shownMeanKmh": 11.2,
+          "underPct": 32.1,
+          "overPct": 20.7,
+          "toneCalmerPct": 16.4,
+          "falseBluePct": 12.4
+        },
+        "21": {
+          "n": 3931,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 9.1,
+          "shownMeanKmh": 9.2,
+          "underPct": 28.8,
+          "overPct": 28.3,
+          "toneCalmerPct": 11.6,
+          "falseBluePct": 9.2
+        },
+        "22": {
+          "n": 3893,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.6,
+          "obsMeanKmh": 7.5,
+          "shownMeanKmh": 8.2,
+          "underPct": 26.1,
+          "overPct": 34.9,
+          "toneCalmerPct": 9.1,
+          "falseBluePct": 7.4
+        }
+      }
+    }
+  },
+  "buckets": {
+    "2024": {
+      "μελτέμι (όργανο)": {
+        "πρωί 08-11": {
+          "n": 3289,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 21.8,
+          "shownMeanKmh": 21.4,
+          "underPct": 25.8,
+          "overPct": 25.7,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 10.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 4109,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 24.8,
+          "underPct": 24.5,
+          "overPct": 22.6,
+          "toneCalmerPct": 20.9,
+          "falseBluePct": 8.6
+        },
+        "απόγευμα 17-20": {
+          "n": 3286,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 23.3,
+          "shownMeanKmh": 21.9,
+          "underPct": 28.5,
+          "overPct": 19.9,
+          "toneCalmerPct": 23.6,
+          "falseBluePct": 11.2
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "πρωί 08-11": {
+          "n": 3356,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 23.5,
+          "shownMeanKmh": 23.8,
+          "underPct": 23.3,
+          "overPct": 30.6,
+          "toneCalmerPct": 15.7,
+          "falseBluePct": 6.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 4194,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 26.8,
+          "underPct": 21.6,
+          "overPct": 28.3,
+          "toneCalmerPct": 14.9,
+          "falseBluePct": 3.1
+        },
+        "απόγευμα 17-20": {
+          "n": 3354,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.1,
+          "obsMeanKmh": 24.5,
+          "shownMeanKmh": 23.6,
+          "underPct": 26.5,
+          "overPct": 23.6,
+          "toneCalmerPct": 19.7,
+          "falseBluePct": 6.7
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 2650,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 23.3,
+          "shownMeanKmh": 23.7,
+          "underPct": 20.9,
+          "overPct": 29.4,
+          "toneCalmerPct": 16.7,
+          "falseBluePct": 7.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 3309,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 26.8,
+          "underPct": 18.9,
+          "overPct": 25.9,
+          "toneCalmerPct": 15.3,
+          "falseBluePct": 3.5
+        },
+        "απόγευμα 17-20": {
+          "n": 2646,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 24.4,
+          "shownMeanKmh": 23.6,
+          "underPct": 24.7,
+          "overPct": 21.9,
+          "toneCalmerPct": 20.7,
+          "falseBluePct": 7.9
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "πρωί 08-11": {
+          "n": 5416,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 8.7,
+          "shownMeanKmh": 9,
+          "underPct": 27.9,
+          "overPct": 30.1,
+          "toneCalmerPct": 10.3,
+          "falseBluePct": 8.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 6779,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 14.9,
+          "shownMeanKmh": 14.3,
+          "underPct": 28.3,
+          "overPct": 20,
+          "toneCalmerPct": 16.7,
+          "falseBluePct": 11.7
+        },
+        "απόγευμα 17-20": {
+          "n": 5421,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 14.3,
+          "shownMeanKmh": 13.6,
+          "underPct": 29.6,
+          "overPct": 21,
+          "toneCalmerPct": 17.9,
+          "falseBluePct": 11.8
+        }
+      }
+    },
+    "2025": {
+      "μελτέμι (όργανο)": {
+        "πρωί 08-11": {
+          "n": 3772,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 24,
+          "shownMeanKmh": 22.9,
+          "underPct": 31.1,
+          "overPct": 23.3,
+          "toneCalmerPct": 21.9,
+          "falseBluePct": 9.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 4718,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 27.6,
+          "shownMeanKmh": 26,
+          "underPct": 31.3,
+          "overPct": 19.9,
+          "toneCalmerPct": 23.2,
+          "falseBluePct": 7.2
+        },
+        "απόγευμα 17-20": {
+          "n": 3768,
+          "biasKmh": -2.4,
+          "rawBiasKmh": -4.6,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 22.6,
+          "underPct": 35.4,
+          "overPct": 17.6,
+          "toneCalmerPct": 26.9,
+          "falseBluePct": 11.1
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "πρωί 08-11": {
+          "n": 3545,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 24.8,
+          "shownMeanKmh": 24.6,
+          "underPct": 27.4,
+          "overPct": 29,
+          "toneCalmerPct": 19,
+          "falseBluePct": 6.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 4433,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 28.1,
+          "shownMeanKmh": 27.5,
+          "underPct": 25.9,
+          "overPct": 26.8,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 2
+        },
+        "απόγευμα 17-20": {
+          "n": 3540,
+          "biasKmh": -1.6,
+          "rawBiasKmh": -3.8,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 23.8,
+          "underPct": 30.9,
+          "overPct": 22.2,
+          "toneCalmerPct": 22,
+          "falseBluePct": 6.8
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 3081,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 25.9,
+          "shownMeanKmh": 25.2,
+          "underPct": 28.5,
+          "overPct": 26,
+          "toneCalmerPct": 20.4,
+          "falseBluePct": 7.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 3853,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 29.3,
+          "shownMeanKmh": 28.1,
+          "underPct": 27.9,
+          "overPct": 22.6,
+          "toneCalmerPct": 18.9,
+          "falseBluePct": 2.2
+        },
+        "απόγευμα 17-20": {
+          "n": 3076,
+          "biasKmh": -2,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 26.3,
+          "shownMeanKmh": 24.3,
+          "underPct": 32.2,
+          "overPct": 19.5,
+          "toneCalmerPct": 23.5,
+          "falseBluePct": 7.1
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "πρωί 08-11": {
+          "n": 5196,
+          "biasKmh": 0.3,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 8.6,
+          "shownMeanKmh": 8.9,
+          "underPct": 27,
+          "overPct": 30.6,
+          "toneCalmerPct": 9.7,
+          "falseBluePct": 8
+        },
+        "μεσημέρι 12-16": {
+          "n": 6512,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 15,
+          "shownMeanKmh": 14.5,
+          "underPct": 27.7,
+          "overPct": 20.2,
+          "toneCalmerPct": 15.9,
+          "falseBluePct": 11.1
+        },
+        "απόγευμα 17-20": {
+          "n": 5209,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 14.5,
+          "shownMeanKmh": 13.8,
+          "underPct": 29.5,
+          "overPct": 19.9,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 11.7
+        }
+      }
+    },
+    "2026": {
+      "μελτέμι (όργανο)": {
+        "πρωί 08-11": {
+          "n": 3434,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 22.3,
+          "shownMeanKmh": 21.9,
+          "underPct": 27.9,
+          "overPct": 26.8,
+          "toneCalmerPct": 21.8,
+          "falseBluePct": 10.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 4301,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 26.4,
+          "shownMeanKmh": 25.7,
+          "underPct": 25.1,
+          "overPct": 22,
+          "toneCalmerPct": 20.5,
+          "falseBluePct": 7.4
+        },
+        "απόγευμα 17-20": {
+          "n": 3440,
+          "biasKmh": -1.4,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 24,
+          "shownMeanKmh": 22.5,
+          "underPct": 30.7,
+          "overPct": 19.4,
+          "toneCalmerPct": 24.5,
+          "falseBluePct": 10.3
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "πρωί 08-11": {
+          "n": 3506,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 24.3,
+          "shownMeanKmh": 24.2,
+          "underPct": 26,
+          "overPct": 30.4,
+          "toneCalmerPct": 18.1,
+          "falseBluePct": 6.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 4391,
+          "biasKmh": -0.4,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 27.6,
+          "underPct": 23.8,
+          "overPct": 27.1,
+          "toneCalmerPct": 15.1,
+          "falseBluePct": 2.1
+        },
+        "απόγευμα 17-20": {
+          "n": 3511,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 24,
+          "underPct": 29.7,
+          "overPct": 22.5,
+          "toneCalmerPct": 20.7,
+          "falseBluePct": 6.2
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 2794,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 23.9,
+          "shownMeanKmh": 24.1,
+          "underPct": 24.6,
+          "overPct": 30.3,
+          "toneCalmerPct": 19.8,
+          "falseBluePct": 7.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 3501,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 27.9,
+          "shownMeanKmh": 27.8,
+          "underPct": 20.3,
+          "overPct": 25.1,
+          "toneCalmerPct": 15.2,
+          "falseBluePct": 2.4
+        },
+        "απόγευμα 17-20": {
+          "n": 2800,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 25.3,
+          "shownMeanKmh": 24.2,
+          "underPct": 27.9,
+          "overPct": 21.7,
+          "toneCalmerPct": 22,
+          "falseBluePct": 7.2
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "πρωί 08-11": {
+          "n": 5251,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.6,
+          "obsMeanKmh": 8.3,
+          "shownMeanKmh": 8.9,
+          "underPct": 23.1,
+          "overPct": 32.1,
+          "toneCalmerPct": 8.4,
+          "falseBluePct": 6.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 6559,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 14.6,
+          "shownMeanKmh": 14.3,
+          "underPct": 25.9,
+          "overPct": 21.5,
+          "toneCalmerPct": 15.6,
+          "falseBluePct": 11
+        },
+        "απόγευμα 17-20": {
+          "n": 5247,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 14,
+          "shownMeanKmh": 13.7,
+          "underPct": 26.6,
+          "overPct": 21.2,
+          "toneCalmerPct": 16.2,
+          "falseBluePct": 11.2
+        }
+      }
+    },
+    "όλα": {
+      "μελτέμι (όργανο)": {
+        "πρωί 08-11": {
+          "n": 10495,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 22.7,
+          "shownMeanKmh": 22.1,
+          "underPct": 28.4,
+          "overPct": 25.2,
+          "toneCalmerPct": 21,
+          "falseBluePct": 10.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 13128,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 25.5,
+          "underPct": 27.2,
+          "overPct": 21.4,
+          "toneCalmerPct": 21.6,
+          "falseBluePct": 7.7
+        },
+        "απόγευμα 17-20": {
+          "n": 10494,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -3.9,
+          "obsMeanKmh": 24.1,
+          "shownMeanKmh": 22.4,
+          "underPct": 31.7,
+          "overPct": 18.9,
+          "toneCalmerPct": 25.1,
+          "falseBluePct": 10.9
+        }
+      },
+      "μελτέμι (μοντέλο)": {
+        "πρωί 08-11": {
+          "n": 10407,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.1,
+          "obsMeanKmh": 24.2,
+          "shownMeanKmh": 24.2,
+          "underPct": 25.6,
+          "overPct": 30,
+          "toneCalmerPct": 17.6,
+          "falseBluePct": 6.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 13018,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 27.6,
+          "shownMeanKmh": 27.3,
+          "underPct": 23.8,
+          "overPct": 27.4,
+          "toneCalmerPct": 15.8,
+          "falseBluePct": 2.4
+        },
+        "απόγευμα 17-20": {
+          "n": 10405,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 25.1,
+          "shownMeanKmh": 23.8,
+          "underPct": 29.1,
+          "overPct": 22.7,
+          "toneCalmerPct": 20.8,
+          "falseBluePct": 6.6
+        }
+      },
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 8525,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 24.4,
+          "shownMeanKmh": 24.4,
+          "underPct": 24.9,
+          "overPct": 28.5,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 7.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 10663,
+          "biasKmh": -0.3,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 28,
+          "shownMeanKmh": 27.6,
+          "underPct": 22.6,
+          "overPct": 24.4,
+          "toneCalmerPct": 16.5,
+          "falseBluePct": 2.7
+        },
+        "απόγευμα 17-20": {
+          "n": 8522,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 24.1,
+          "underPct": 28.4,
+          "overPct": 20.9,
+          "toneCalmerPct": 22.1,
+          "falseBluePct": 7.4
+        }
+      },
+      "υπόλοιπες μέρες": {
+        "πρωί 08-11": {
+          "n": 15863,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 8.5,
+          "shownMeanKmh": 8.9,
+          "underPct": 26,
+          "overPct": 30.9,
+          "toneCalmerPct": 9.5,
+          "falseBluePct": 7.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 19850,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.7,
+          "obsMeanKmh": 14.8,
+          "shownMeanKmh": 14.4,
+          "underPct": 27.3,
+          "overPct": 20.6,
+          "toneCalmerPct": 16.1,
+          "falseBluePct": 11.3
+        },
+        "απόγευμα 17-20": {
+          "n": 15877,
+          "biasKmh": -0.6,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 14.3,
+          "shownMeanKmh": 13.7,
+          "underPct": 28.6,
+          "overPct": 20.7,
+          "toneCalmerPct": 17.3,
+          "falseBluePct": 11.5
+        }
+      }
+    },
+    "όλα · Νότιο Αιγαίο/Κρήτη": {
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 4887,
+          "biasKmh": -1,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 27.5,
+          "shownMeanKmh": 26.4,
+          "underPct": 30.9,
+          "overPct": 26,
+          "toneCalmerPct": 23.7,
+          "falseBluePct": 8.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 6116,
+          "biasKmh": -1.3,
+          "rawBiasKmh": -3.3,
+          "obsMeanKmh": 31.4,
+          "shownMeanKmh": 30.2,
+          "underPct": 27.7,
+          "overPct": 21.1,
+          "toneCalmerPct": 17.9,
+          "falseBluePct": 1.3
+        },
+        "απόγευμα 17-20": {
+          "n": 4888,
+          "biasKmh": -3.3,
+          "rawBiasKmh": -5.3,
+          "obsMeanKmh": 29.1,
+          "shownMeanKmh": 25.8,
+          "underPct": 39.2,
+          "overPct": 13.5,
+          "toneCalmerPct": 29.1,
+          "falseBluePct": 8.9
+        }
+      }
+    },
+    "όλα · Βόρειο/Ανατ. Αιγαίο": {
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 3042,
+          "biasKmh": 1.6,
+          "rawBiasKmh": -0.8,
+          "obsMeanKmh": 21.6,
+          "shownMeanKmh": 23.2,
+          "underPct": 14,
+          "overPct": 33.2,
+          "toneCalmerPct": 11.9,
+          "falseBluePct": 5.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 3802,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 23.7,
+          "shownMeanKmh": 24.6,
+          "underPct": 15.1,
+          "overPct": 28.3,
+          "toneCalmerPct": 14.3,
+          "falseBluePct": 4.5
+        },
+        "απόγευμα 17-20": {
+          "n": 3038,
+          "biasKmh": 1.7,
+          "rawBiasKmh": -0.7,
+          "obsMeanKmh": 19.7,
+          "shownMeanKmh": 21.4,
+          "underPct": 12.5,
+          "overPct": 33.2,
+          "toneCalmerPct": 11.3,
+          "falseBluePct": 5.3
+        }
+      }
+    },
+    "όλα · Ιόνιο/δυτικά": {
+      "μελτέμι (και τα δύο)": {
+        "πρωί 08-11": {
+          "n": 596,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.8,
+          "obsMeanKmh": 14.1,
+          "shownMeanKmh": 13.6,
+          "underPct": 30.4,
+          "overPct": 24.3,
+          "toneCalmerPct": 17.7,
+          "falseBluePct": 12.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 745,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.2,
+          "obsMeanKmh": 21.1,
+          "shownMeanKmh": 22.2,
+          "underPct": 18.7,
+          "overPct": 32.1,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 4.9
+        },
+        "απόγευμα 17-20": {
+          "n": 596,
+          "biasKmh": -0.7,
+          "rawBiasKmh": -3,
+          "obsMeanKmh": 23.8,
+          "shownMeanKmh": 23.1,
+          "underPct": 21.5,
+          "overPct": 19.5,
+          "toneCalmerPct": 20.3,
+          "falseBluePct": 5.9
+        }
+      }
+    }
+  },
+  "timing": {
+    "2024": {
+      "onsetKmh": {
+        "daysWithFullData": 434,
+        "n": 416,
+        "meanLagH": 0.89,
+        "medianLagH": 0,
+        "modelLaterPct": 45.4,
+        "modelEarlierPct": 14.4,
+        "sameHourPct": 40.1,
+        "distribution": {
+          "0": 167,
+          "1": 65,
+          "2": 39,
+          "3": 85,
+          "-3": 13,
+          "-2": 15,
+          "-1": 32
+        },
+        "obsReachedModelNever": 12,
+        "modelReachedObsNever": 3
+      },
+      "onsetHalf": {
+        "daysWithFullData": 434,
+        "n": 344,
+        "meanLagH": 1.19,
+        "medianLagH": 1,
+        "modelLaterPct": 62.5,
+        "modelEarlierPct": 17.4,
+        "sameHourPct": 20.1,
+        "distribution": {
+          "0": 69,
+          "1": 89,
+          "2": 49,
+          "3": 77,
+          "-3": 18,
+          "-2": 15,
+          "-1": 27
+        },
+        "obsReachedModelNever": 3,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 434,
+        "n": 430,
+        "meanLagH": -1.14,
+        "medianLagH": -1,
+        "modelLaterPct": 10.7,
+        "modelEarlierPct": 54.4,
+        "sameHourPct": 34.9,
+        "distribution": {
+          "0": 150,
+          "1": 26,
+          "2": 13,
+          "3": 7,
+          "-3": 94,
+          "-2": 72,
+          "-1": 68
+        },
+        "obsReachedModelNever": 3,
+        "modelReachedObsNever": 1
+      },
+      "decayHalf": {
+        "daysWithFullData": 434,
+        "n": 346,
+        "meanLagH": -0.99,
+        "medianLagH": -1,
+        "modelLaterPct": 19.7,
+        "modelEarlierPct": 58.4,
+        "sameHourPct": 22,
+        "distribution": {
+          "0": 76,
+          "1": 42,
+          "2": 14,
+          "3": 12,
+          "-3": 72,
+          "-2": 61,
+          "-1": 69
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 1
+      }
+    },
+    "2025": {
+      "onsetKmh": {
+        "daysWithFullData": 524,
+        "n": 514,
+        "meanLagH": 0.71,
+        "medianLagH": 0,
+        "modelLaterPct": 38.7,
+        "modelEarlierPct": 15.2,
+        "sameHourPct": 46.1,
+        "distribution": {
+          "0": 237,
+          "1": 48,
+          "2": 59,
+          "3": 92,
+          "-3": 14,
+          "-2": 27,
+          "-1": 37
+        },
+        "obsReachedModelNever": 6,
+        "modelReachedObsNever": 2
+      },
+      "onsetHalf": {
+        "daysWithFullData": 524,
+        "n": 369,
+        "meanLagH": 0.82,
+        "medianLagH": 1,
+        "modelLaterPct": 50.9,
+        "modelEarlierPct": 22.8,
+        "sameHourPct": 26.3,
+        "distribution": {
+          "0": 97,
+          "1": 64,
+          "2": 49,
+          "3": 75,
+          "-3": 18,
+          "-2": 22,
+          "-1": 44
+        },
+        "obsReachedModelNever": 1,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 524,
+        "n": 516,
+        "meanLagH": -1.03,
+        "medianLagH": 0,
+        "modelLaterPct": 11.6,
+        "modelEarlierPct": 49.4,
+        "sameHourPct": 39,
+        "distribution": {
+          "0": 201,
+          "1": 41,
+          "2": 13,
+          "3": 6,
+          "-3": 107,
+          "-2": 72,
+          "-1": 76
+        },
+        "obsReachedModelNever": 6,
+        "modelReachedObsNever": 0
+      },
+      "decayHalf": {
+        "daysWithFullData": 524,
+        "n": 370,
+        "meanLagH": -0.98,
+        "medianLagH": -1,
+        "modelLaterPct": 19.5,
+        "modelEarlierPct": 57,
+        "sameHourPct": 23.5,
+        "distribution": {
+          "0": 87,
+          "1": 38,
+          "2": 16,
+          "3": 18,
+          "-3": 85,
+          "-2": 62,
+          "-1": 64
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 0
+      }
+    },
+    "2026": {
+      "onsetKmh": {
+        "daysWithFullData": 517,
+        "n": 501,
+        "meanLagH": 0.71,
+        "medianLagH": 0,
+        "modelLaterPct": 44.5,
+        "modelEarlierPct": 19.2,
+        "sameHourPct": 36.3,
+        "distribution": {
+          "0": 182,
+          "1": 67,
+          "2": 61,
+          "3": 95,
+          "-3": 29,
+          "-2": 35,
+          "-1": 32
+        },
+        "obsReachedModelNever": 13,
+        "modelReachedObsNever": 2
+      },
+      "onsetHalf": {
+        "daysWithFullData": 517,
+        "n": 409,
+        "meanLagH": 1.18,
+        "medianLagH": 1,
+        "modelLaterPct": 59.2,
+        "modelEarlierPct": 19.8,
+        "sameHourPct": 21,
+        "distribution": {
+          "0": 86,
+          "1": 92,
+          "2": 44,
+          "3": 106,
+          "-3": 18,
+          "-2": 24,
+          "-1": 39
+        },
+        "obsReachedModelNever": 2,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 517,
+        "n": 509,
+        "meanLagH": -0.89,
+        "medianLagH": 0,
+        "modelLaterPct": 14.9,
+        "modelEarlierPct": 49.9,
+        "sameHourPct": 35.2,
+        "distribution": {
+          "0": 179,
+          "1": 40,
+          "2": 21,
+          "3": 15,
+          "-3": 94,
+          "-2": 85,
+          "-1": 75
+        },
+        "obsReachedModelNever": 5,
+        "modelReachedObsNever": 2
+      },
+      "decayHalf": {
+        "daysWithFullData": 517,
+        "n": 407,
+        "meanLagH": -1.03,
+        "medianLagH": -1,
+        "modelLaterPct": 18.4,
+        "modelEarlierPct": 56,
+        "sameHourPct": 25.6,
+        "distribution": {
+          "0": 104,
+          "1": 42,
+          "2": 22,
+          "3": 11,
+          "-3": 93,
+          "-2": 72,
+          "-1": 63
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 4
+      }
+    },
+    "όλα": {
+      "onsetKmh": {
+        "daysWithFullData": 1475,
+        "n": 1431,
+        "meanLagH": 0.76,
+        "medianLagH": 0,
+        "modelLaterPct": 42.7,
+        "modelEarlierPct": 16.4,
+        "sameHourPct": 41,
+        "distribution": {
+          "0": 586,
+          "1": 180,
+          "2": 159,
+          "3": 272,
+          "-3": 56,
+          "-2": 77,
+          "-1": 101
+        },
+        "obsReachedModelNever": 31,
+        "modelReachedObsNever": 7
+      },
+      "onsetHalf": {
+        "daysWithFullData": 1475,
+        "n": 1122,
+        "meanLagH": 1.06,
+        "medianLagH": 1,
+        "modelLaterPct": 57.5,
+        "modelEarlierPct": 20.1,
+        "sameHourPct": 22.5,
+        "distribution": {
+          "0": 252,
+          "1": 245,
+          "2": 142,
+          "3": 258,
+          "-3": 54,
+          "-2": 61,
+          "-1": 110
+        },
+        "obsReachedModelNever": 6,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 1475,
+        "n": 1455,
+        "meanLagH": -1.02,
+        "medianLagH": -1,
+        "modelLaterPct": 12.5,
+        "modelEarlierPct": 51.1,
+        "sameHourPct": 36.4,
+        "distribution": {
+          "0": 530,
+          "1": 107,
+          "2": 47,
+          "3": 28,
+          "-3": 295,
+          "-2": 229,
+          "-1": 219
+        },
+        "obsReachedModelNever": 14,
+        "modelReachedObsNever": 3
+      },
+      "decayHalf": {
+        "daysWithFullData": 1475,
+        "n": 1123,
+        "meanLagH": -1,
+        "medianLagH": -1,
+        "modelLaterPct": 19.1,
+        "modelEarlierPct": 57.1,
+        "sameHourPct": 23.8,
+        "distribution": {
+          "0": 267,
+          "1": 122,
+          "2": 52,
+          "3": 41,
+          "-3": 250,
+          "-2": 195,
+          "-1": 196
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 5
+      }
+    }
+  },
+  "timingByGroup": {
+    "Νότιο Αιγαίο/Κρήτη": {
+      "days": 1225,
+      "onsetKmh": {
+        "daysWithFullData": 954,
+        "n": 951,
+        "meanLagH": 1,
+        "medianLagH": 0,
+        "modelLaterPct": 45.8,
+        "modelEarlierPct": 10.8,
+        "sameHourPct": 43.3,
+        "distribution": {
+          "0": 412,
+          "1": 116,
+          "2": 112,
+          "3": 208,
+          "-3": 24,
+          "-2": 36,
+          "-1": 43
+        },
+        "obsReachedModelNever": 2,
+        "modelReachedObsNever": 1
+      },
+      "onsetHalf": {
+        "daysWithFullData": 954,
+        "n": 743,
+        "meanLagH": 0.73,
+        "medianLagH": 1,
+        "modelLaterPct": 55.2,
+        "modelEarlierPct": 23.1,
+        "sameHourPct": 21.7,
+        "distribution": {
+          "0": 161,
+          "1": 168,
+          "2": 103,
+          "3": 139,
+          "-3": 49,
+          "-2": 45,
+          "-1": 78
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 954,
+        "n": 950,
+        "meanLagH": -1.29,
+        "medianLagH": -1,
+        "modelLaterPct": 6.5,
+        "modelEarlierPct": 54,
+        "sameHourPct": 39.5,
+        "distribution": {
+          "0": 375,
+          "1": 47,
+          "2": 13,
+          "3": 2,
+          "-3": 231,
+          "-2": 148,
+          "-1": 134
+        },
+        "obsReachedModelNever": 2,
+        "modelReachedObsNever": 1
+      },
+      "decayHalf": {
+        "daysWithFullData": 954,
+        "n": 739,
+        "meanLagH": -1.02,
+        "medianLagH": -1,
+        "modelLaterPct": 18.9,
+        "modelEarlierPct": 57.5,
+        "sameHourPct": 23.5,
+        "distribution": {
+          "0": 174,
+          "1": 80,
+          "2": 32,
+          "3": 28,
+          "-3": 172,
+          "-2": 125,
+          "-1": 128
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 4
+      }
+    },
+    "Βόρειο/Ανατ. Αιγαίο": {
+      "days": 761,
+      "onsetKmh": {
+        "daysWithFullData": 439,
+        "n": 415,
+        "meanLagH": 0.19,
+        "medianLagH": 0,
+        "modelLaterPct": 33,
+        "modelEarlierPct": 28.4,
+        "sameHourPct": 38.6,
+        "distribution": {
+          "0": 160,
+          "1": 51,
+          "2": 34,
+          "3": 52,
+          "-3": 30,
+          "-2": 35,
+          "-1": 53
+        },
+        "obsReachedModelNever": 22,
+        "modelReachedObsNever": 1
+      },
+      "onsetHalf": {
+        "daysWithFullData": 439,
+        "n": 298,
+        "meanLagH": 1.85,
+        "medianLagH": 1,
+        "modelLaterPct": 62.1,
+        "modelEarlierPct": 11.7,
+        "sameHourPct": 26.2,
+        "distribution": {
+          "0": 78,
+          "1": 60,
+          "2": 26,
+          "3": 99,
+          "-3": 3,
+          "-2": 12,
+          "-1": 20
+        },
+        "obsReachedModelNever": 6,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 439,
+        "n": 423,
+        "meanLagH": -0.43,
+        "medianLagH": 0,
+        "modelLaterPct": 24.3,
+        "modelEarlierPct": 43.3,
+        "sameHourPct": 32.4,
+        "distribution": {
+          "0": 137,
+          "1": 50,
+          "2": 30,
+          "3": 23,
+          "-3": 48,
+          "-2": 67,
+          "-1": 68
+        },
+        "obsReachedModelNever": 12,
+        "modelReachedObsNever": 2
+      },
+      "decayHalf": {
+        "daysWithFullData": 439,
+        "n": 303,
+        "meanLagH": -1.03,
+        "medianLagH": -1,
+        "modelLaterPct": 17.8,
+        "modelEarlierPct": 57.1,
+        "sameHourPct": 25.1,
+        "distribution": {
+          "0": 76,
+          "1": 30,
+          "2": 13,
+          "3": 11,
+          "-3": 66,
+          "-2": 52,
+          "-1": 55
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 1
+      }
+    },
+    "Ιόνιο/δυτικά": {
+      "days": 149,
+      "onsetKmh": {
+        "daysWithFullData": 82,
+        "n": 65,
+        "meanLagH": 0.97,
+        "medianLagH": 1,
+        "modelLaterPct": 58.5,
+        "modelEarlierPct": 20,
+        "sameHourPct": 21.5,
+        "distribution": {
+          "0": 14,
+          "1": 13,
+          "2": 13,
+          "3": 12,
+          "-3": 2,
+          "-2": 6,
+          "-1": 5
+        },
+        "obsReachedModelNever": 7,
+        "modelReachedObsNever": 5
+      },
+      "onsetHalf": {
+        "daysWithFullData": 82,
+        "n": 81,
+        "meanLagH": 1.28,
+        "medianLagH": 1,
+        "modelLaterPct": 61.7,
+        "modelEarlierPct": 22.2,
+        "sameHourPct": 16,
+        "distribution": {
+          "0": 13,
+          "1": 17,
+          "2": 13,
+          "3": 20,
+          "-3": 2,
+          "-2": 4,
+          "-1": 12
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 0
+      },
+      "decayKmh": {
+        "daysWithFullData": 82,
+        "n": 82,
+        "meanLagH": -0.84,
+        "medianLagH": -1,
+        "modelLaterPct": 20.7,
+        "modelEarlierPct": 57.3,
+        "sameHourPct": 22,
+        "distribution": {
+          "0": 18,
+          "1": 10,
+          "2": 4,
+          "3": 3,
+          "-3": 16,
+          "-2": 14,
+          "-1": 17
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 0
+      },
+      "decayHalf": {
+        "daysWithFullData": 82,
+        "n": 81,
+        "meanLagH": -0.68,
+        "medianLagH": -1,
+        "modelLaterPct": 25.9,
+        "modelEarlierPct": 53.1,
+        "sameHourPct": 21,
+        "distribution": {
+          "0": 17,
+          "1": 12,
+          "2": 7,
+          "3": 2,
+          "-3": 12,
+          "-2": 18,
+          "-1": 13
+        },
+        "obsReachedModelNever": 0,
+        "modelReachedObsNever": 0
+      }
+    }
+  },
+  "byStation": {
+    "LGIR": {
+      "name": "Ηράκλειο",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 187,
+      "pointElevationM": 24,
+      "onsetHalfLagH": 1.58,
+      "decayHalfLagH": -1.06,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 746,
+          "biasKmh": -6.2,
+          "rawBiasKmh": -8.6,
+          "obsMeanKmh": 24.5,
+          "shownMeanKmh": 18.3,
+          "underPct": 60.2,
+          "overPct": 4.4,
+          "toneCalmerPct": 52.4,
+          "falseBluePct": 21.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 934,
+          "biasKmh": -4.3,
+          "rawBiasKmh": -6.7,
+          "obsMeanKmh": 28.9,
+          "shownMeanKmh": 24.6,
+          "underPct": 41.4,
+          "overPct": 3.7,
+          "toneCalmerPct": 38.8,
+          "falseBluePct": 1.6
+        },
+        "απόγευμα 17-20": {
+          "n": 747,
+          "biasKmh": -6.4,
+          "rawBiasKmh": -8.8,
+          "obsMeanKmh": 25.4,
+          "shownMeanKmh": 19.1,
+          "underPct": 60.5,
+          "overPct": 2.3,
+          "toneCalmerPct": 56.4,
+          "falseBluePct": 21.8
+        }
+      }
+    },
+    "LGSA": {
+      "name": "Χανιά",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 20,
+      "pointElevationM": 138,
+      "onsetHalfLagH": 0.21,
+      "decayHalfLagH": -2.58,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 80,
+          "biasKmh": 1.1,
+          "rawBiasKmh": -1.3,
+          "obsMeanKmh": 18.9,
+          "shownMeanKmh": 20.1,
+          "underPct": 17.5,
+          "overPct": 32.5,
+          "toneCalmerPct": 15.8,
+          "falseBluePct": 8.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 100,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 22.4,
+          "shownMeanKmh": 21.9,
+          "underPct": 15,
+          "overPct": 30,
+          "toneCalmerPct": 15,
+          "falseBluePct": 4.7
+        },
+        "απόγευμα 17-20": {
+          "n": 80,
+          "biasKmh": -2.5,
+          "rawBiasKmh": -4.9,
+          "obsMeanKmh": 17,
+          "shownMeanKmh": 14.6,
+          "underPct": 36.3,
+          "overPct": 10,
+          "toneCalmerPct": 27.1,
+          "falseBluePct": 19.2
+        }
+      }
+    },
+    "LGST": {
+      "name": "Σητεία",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 0,
+      "pointElevationM": 104,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGRP": {
+      "name": "Ρόδος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 1,
+      "pointElevationM": 3,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 4,
+          "biasKmh": 1,
+          "rawBiasKmh": -1.4,
+          "obsMeanKmh": 25.5,
+          "shownMeanKmh": 26.5,
+          "underPct": 0,
+          "overPct": 0,
+          "toneCalmerPct": 0,
+          "falseBluePct": 0
+        },
+        "μεσημέρι 12-16": {
+          "n": 5,
+          "biasKmh": 0.9,
+          "rawBiasKmh": -1.5,
+          "obsMeanKmh": 21.5,
+          "shownMeanKmh": 22.3,
+          "underPct": 0,
+          "overPct": 20,
+          "toneCalmerPct": 0,
+          "falseBluePct": 0
+        },
+        "απόγευμα 17-20": {
+          "n": 4,
+          "biasKmh": -2.5,
+          "rawBiasKmh": -5,
+          "obsMeanKmh": 24.1,
+          "shownMeanKmh": 21.5,
+          "underPct": 25,
+          "overPct": 0,
+          "toneCalmerPct": 25,
+          "falseBluePct": 16.7
+        }
+      }
+    },
+    "LGKO": {
+      "name": "Κως",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 112,
+      "pointElevationM": 119,
+      "onsetHalfLagH": 1.39,
+      "decayHalfLagH": -0.63,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 447,
+          "biasKmh": -4,
+          "rawBiasKmh": -6.4,
+          "obsMeanKmh": 24.9,
+          "shownMeanKmh": 21,
+          "underPct": 45.2,
+          "overPct": 12.8,
+          "toneCalmerPct": 38.6,
+          "falseBluePct": 19.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 560,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 27.3,
+          "shownMeanKmh": 26.3,
+          "underPct": 23.6,
+          "overPct": 20.4,
+          "toneCalmerPct": 21.4,
+          "falseBluePct": 3.5
+        },
+        "απόγευμα 17-20": {
+          "n": 448,
+          "biasKmh": -2.9,
+          "rawBiasKmh": -5.3,
+          "obsMeanKmh": 26.5,
+          "shownMeanKmh": 23.7,
+          "underPct": 36.2,
+          "overPct": 13.8,
+          "toneCalmerPct": 34.9,
+          "falseBluePct": 11
+        }
+      }
+    },
+    "LGMK": {
+      "name": "Μύκονος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 241,
+      "pointElevationM": 122,
+      "onsetHalfLagH": -0.42,
+      "decayHalfLagH": -0.74,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 964,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 33,
+          "shownMeanKmh": 33.7,
+          "underPct": 18.3,
+          "overPct": 30.8,
+          "toneCalmerPct": 11.2,
+          "falseBluePct": 3.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 1205,
+          "biasKmh": -1.7,
+          "rawBiasKmh": -4.1,
+          "obsMeanKmh": 38,
+          "shownMeanKmh": 36.3,
+          "underPct": 26,
+          "overPct": 13.8,
+          "toneCalmerPct": 12.9,
+          "falseBluePct": 0.8
+        },
+        "απόγευμα 17-20": {
+          "n": 964,
+          "biasKmh": -3.1,
+          "rawBiasKmh": -5.5,
+          "obsMeanKmh": 35.9,
+          "shownMeanKmh": 32.8,
+          "underPct": 33,
+          "overPct": 8.3,
+          "toneCalmerPct": 16.6,
+          "falseBluePct": 3.8
+        }
+      }
+    },
+    "LGSR": {
+      "name": "Σαντορίνη",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 171,
+      "pointElevationM": 26,
+      "onsetHalfLagH": 0.81,
+      "decayHalfLagH": -1.19,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 683,
+          "biasKmh": -2.7,
+          "rawBiasKmh": -5.2,
+          "obsMeanKmh": 26.2,
+          "shownMeanKmh": 23.4,
+          "underPct": 32.7,
+          "overPct": 12.7,
+          "toneCalmerPct": 28.8,
+          "falseBluePct": 9.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 855,
+          "biasKmh": -2.9,
+          "rawBiasKmh": -5.3,
+          "obsMeanKmh": 29.5,
+          "shownMeanKmh": 26.6,
+          "underPct": 32.9,
+          "overPct": 10.8,
+          "toneCalmerPct": 22.5,
+          "falseBluePct": 2.3
+        },
+        "απόγευμα 17-20": {
+          "n": 684,
+          "biasKmh": -4.2,
+          "rawBiasKmh": -6.6,
+          "obsMeanKmh": 27.9,
+          "shownMeanKmh": 23.6,
+          "underPct": 40.2,
+          "overPct": 8.2,
+          "toneCalmerPct": 30.8,
+          "falseBluePct": 8.7
+        }
+      }
+    },
+    "LGNX": {
+      "name": "Νάξος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 206,
+      "pointElevationM": 0,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 818,
+          "biasKmh": 6.2,
+          "rawBiasKmh": 6.2,
+          "obsMeanKmh": 21.5,
+          "shownMeanKmh": 27.6,
+          "underPct": 5.9,
+          "overPct": 66.6,
+          "toneCalmerPct": 3.9,
+          "falseBluePct": 1.4
+        },
+        "μεσημέρι 12-16": {
+          "n": 1025,
+          "biasKmh": 6.2,
+          "rawBiasKmh": 6.2,
+          "obsMeanKmh": 25,
+          "shownMeanKmh": 31.3,
+          "underPct": 4.1,
+          "overPct": 62.6,
+          "toneCalmerPct": 1.7,
+          "falseBluePct": 0.1
+        },
+        "απόγευμα 17-20": {
+          "n": 821,
+          "biasKmh": 2.3,
+          "rawBiasKmh": 2.3,
+          "obsMeanKmh": 23.7,
+          "shownMeanKmh": 26,
+          "underPct": 12.5,
+          "overPct": 40.8,
+          "toneCalmerPct": 9.6,
+          "falseBluePct": 3.1
+        }
+      }
+    },
+    "LGPA": {
+      "name": "Πάρος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 193,
+      "pointElevationM": 31,
+      "onsetHalfLagH": 0.8,
+      "decayHalfLagH": -1.33,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 771,
+          "biasKmh": -1.2,
+          "rawBiasKmh": -3.6,
+          "obsMeanKmh": 28.6,
+          "shownMeanKmh": 27.4,
+          "underPct": 27,
+          "overPct": 22.6,
+          "toneCalmerPct": 19.8,
+          "falseBluePct": 4.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 965,
+          "biasKmh": -1.8,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 33.4,
+          "shownMeanKmh": 31.6,
+          "underPct": 24.2,
+          "overPct": 16.9,
+          "toneCalmerPct": 12.2,
+          "falseBluePct": 0.6
+        },
+        "απόγευμα 17-20": {
+          "n": 772,
+          "biasKmh": -4.4,
+          "rawBiasKmh": -6.8,
+          "obsMeanKmh": 30.1,
+          "shownMeanKmh": 25.7,
+          "underPct": 43.3,
+          "overPct": 9.6,
+          "toneCalmerPct": 34.6,
+          "falseBluePct": 9.5
+        }
+      }
+    },
+    "LGSK": {
+      "name": "Σκιάθος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 22,
+      "pointElevationM": 9,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 88,
+          "biasKmh": 7.1,
+          "rawBiasKmh": 4.7,
+          "obsMeanKmh": 22.1,
+          "shownMeanKmh": 29.2,
+          "underPct": 8,
+          "overPct": 69.3,
+          "toneCalmerPct": 4.9,
+          "falseBluePct": 2.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 110,
+          "biasKmh": 6,
+          "rawBiasKmh": 3.6,
+          "obsMeanKmh": 20.1,
+          "shownMeanKmh": 26.1,
+          "underPct": 4.5,
+          "overPct": 60,
+          "toneCalmerPct": 3.9,
+          "falseBluePct": 3.3
+        },
+        "απόγευμα 17-20": {
+          "n": 88,
+          "biasKmh": 7,
+          "rawBiasKmh": 4.6,
+          "obsMeanKmh": 10.6,
+          "shownMeanKmh": 17.6,
+          "underPct": 4.5,
+          "overPct": 67,
+          "toneCalmerPct": 1.5,
+          "falseBluePct": 1.5
+        }
+      }
+    },
+    "LGKR": {
+      "name": "Κέρκυρα",
+      "group": "Ιόνιο/δυτικά",
+      "days": 7,
+      "pointElevationM": 0,
+      "onsetHalfLagH": 2,
+      "decayHalfLagH": -0.71,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 28,
+          "biasKmh": -4.2,
+          "rawBiasKmh": -4.2,
+          "obsMeanKmh": 13.4,
+          "shownMeanKmh": 9.1,
+          "underPct": 67.9,
+          "overPct": 14.3,
+          "toneCalmerPct": 33.3,
+          "falseBluePct": 23.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 35,
+          "biasKmh": -0.9,
+          "rawBiasKmh": -0.9,
+          "obsMeanKmh": 19.7,
+          "shownMeanKmh": 18.8,
+          "underPct": 20,
+          "overPct": 14.3,
+          "toneCalmerPct": 18.1,
+          "falseBluePct": 6.7
+        },
+        "απόγευμα 17-20": {
+          "n": 28,
+          "biasKmh": -7.1,
+          "rawBiasKmh": -7.1,
+          "obsMeanKmh": 28.6,
+          "shownMeanKmh": 21.5,
+          "underPct": 75,
+          "overPct": 0,
+          "toneCalmerPct": 75,
+          "falseBluePct": 16.7
+        }
+      }
+    },
+    "LGZA": {
+      "name": "Ζάκυνθος",
+      "group": "Ιόνιο/δυτικά",
+      "days": 29,
+      "pointElevationM": 2,
+      "onsetHalfLagH": 1.73,
+      "decayHalfLagH": -1.27,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 116,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 14.8,
+          "shownMeanKmh": 15.2,
+          "underPct": 19.8,
+          "overPct": 25.9,
+          "toneCalmerPct": 13.8,
+          "falseBluePct": 10.1
+        },
+        "μεσημέρι 12-16": {
+          "n": 145,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 21.9,
+          "shownMeanKmh": 22.5,
+          "underPct": 11,
+          "overPct": 23.4,
+          "toneCalmerPct": 9.2,
+          "falseBluePct": 3.7
+        },
+        "απόγευμα 17-20": {
+          "n": 116,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 21.5,
+          "shownMeanKmh": 21,
+          "underPct": 15.5,
+          "overPct": 19.8,
+          "toneCalmerPct": 14.1,
+          "falseBluePct": 8.9
+        }
+      }
+    },
+    "LGKF": {
+      "name": "Κεφαλονιά",
+      "group": "Ιόνιο/δυτικά",
+      "days": 64,
+      "pointElevationM": 15,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 256,
+          "biasKmh": 0.4,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 12.5,
+          "shownMeanKmh": 13,
+          "underPct": 23.4,
+          "overPct": 32,
+          "toneCalmerPct": 11.8,
+          "falseBluePct": 8.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 320,
+          "biasKmh": 3,
+          "rawBiasKmh": 0.6,
+          "obsMeanKmh": 19.5,
+          "shownMeanKmh": 22.5,
+          "underPct": 13.8,
+          "overPct": 43.4,
+          "toneCalmerPct": 11.6,
+          "falseBluePct": 5
+        },
+        "απόγευμα 17-20": {
+          "n": 256,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 25.1,
+          "shownMeanKmh": 25.6,
+          "underPct": 14.5,
+          "overPct": 24.2,
+          "toneCalmerPct": 12.9,
+          "falseBluePct": 0.5
+        }
+      }
+    },
+    "LGPZ": {
+      "name": "Άκτιο",
+      "group": "Ιόνιο/δυτικά",
+      "days": 0,
+      "pointElevationM": 1,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGLM": {
+      "name": "Λήμνος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 163,
+      "pointElevationM": 3,
+      "onsetHalfLagH": 0.38,
+      "decayHalfLagH": -2.07,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 652,
+          "biasKmh": -0.5,
+          "rawBiasKmh": -2.9,
+          "obsMeanKmh": 25.8,
+          "shownMeanKmh": 25.3,
+          "underPct": 16.4,
+          "overPct": 19,
+          "toneCalmerPct": 11.2,
+          "falseBluePct": 2.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 815,
+          "biasKmh": -3.1,
+          "rawBiasKmh": -5.5,
+          "obsMeanKmh": 26.1,
+          "shownMeanKmh": 23,
+          "underPct": 29.4,
+          "overPct": 5.6,
+          "toneCalmerPct": 26.6,
+          "falseBluePct": 6.4
+        },
+        "απόγευμα 17-20": {
+          "n": 652,
+          "biasKmh": -1.1,
+          "rawBiasKmh": -3.5,
+          "obsMeanKmh": 16.9,
+          "shownMeanKmh": 15.8,
+          "underPct": 20.2,
+          "overPct": 11.2,
+          "toneCalmerPct": 18.9,
+          "falseBluePct": 10.3
+        }
+      }
+    },
+    "LGMT": {
+      "name": "Μυτιλήνη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 161,
+      "pointElevationM": 7,
+      "onsetHalfLagH": 2.38,
+      "decayHalfLagH": -0.16,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 644,
+          "biasKmh": 0.1,
+          "rawBiasKmh": -2.3,
+          "obsMeanKmh": 18.5,
+          "shownMeanKmh": 18.6,
+          "underPct": 21,
+          "overPct": 23,
+          "toneCalmerPct": 19.1,
+          "falseBluePct": 11.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 805,
+          "biasKmh": -0.8,
+          "rawBiasKmh": -3.2,
+          "obsMeanKmh": 23.4,
+          "shownMeanKmh": 22.6,
+          "underPct": 16.5,
+          "overPct": 14.3,
+          "toneCalmerPct": 16.4,
+          "falseBluePct": 6.4
+        },
+        "απόγευμα 17-20": {
+          "n": 643,
+          "biasKmh": 0.7,
+          "rawBiasKmh": -1.7,
+          "obsMeanKmh": 20.6,
+          "shownMeanKmh": 21.2,
+          "underPct": 10.7,
+          "overPct": 25,
+          "toneCalmerPct": 10.6,
+          "falseBluePct": 6
+        }
+      }
+    },
+    "LGSM": {
+      "name": "Σάμος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 132,
+      "pointElevationM": 3,
+      "onsetHalfLagH": 4.31,
+      "decayHalfLagH": -0.69,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 528,
+          "biasKmh": 1.5,
+          "rawBiasKmh": -0.9,
+          "obsMeanKmh": 20,
+          "shownMeanKmh": 21.6,
+          "underPct": 11.2,
+          "overPct": 32,
+          "toneCalmerPct": 11.2,
+          "falseBluePct": 6.8
+        },
+        "μεσημέρι 12-16": {
+          "n": 660,
+          "biasKmh": 3.4,
+          "rawBiasKmh": 1,
+          "obsMeanKmh": 21.7,
+          "shownMeanKmh": 25.1,
+          "underPct": 10.6,
+          "overPct": 42.7,
+          "toneCalmerPct": 10.6,
+          "falseBluePct": 6.5
+        },
+        "απόγευμα 17-20": {
+          "n": 527,
+          "biasKmh": 4.7,
+          "rawBiasKmh": 2.3,
+          "obsMeanKmh": 23.1,
+          "shownMeanKmh": 27.8,
+          "underPct": 3.2,
+          "overPct": 54.6,
+          "toneCalmerPct": 3,
+          "falseBluePct": 0.1
+        }
+      }
+    },
+    "LGHI": {
+      "name": "Χίος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 164,
+      "pointElevationM": 3,
+      "onsetHalfLagH": 2.8,
+      "decayHalfLagH": 0.4,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 654,
+          "biasKmh": 5.1,
+          "rawBiasKmh": 2.7,
+          "obsMeanKmh": 22.8,
+          "shownMeanKmh": 27.8,
+          "underPct": 5.2,
+          "overPct": 56,
+          "toneCalmerPct": 4.8,
+          "falseBluePct": 1.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 817,
+          "biasKmh": 5.5,
+          "rawBiasKmh": 3.1,
+          "obsMeanKmh": 22.4,
+          "shownMeanKmh": 27.9,
+          "underPct": 1.6,
+          "overPct": 56.9,
+          "toneCalmerPct": 1.6,
+          "falseBluePct": 1
+        },
+        "απόγευμα 17-20": {
+          "n": 652,
+          "biasKmh": 4.8,
+          "rawBiasKmh": 2.4,
+          "obsMeanKmh": 17.8,
+          "shownMeanKmh": 22.7,
+          "underPct": 5.2,
+          "overPct": 55.1,
+          "toneCalmerPct": 3.3,
+          "falseBluePct": 2.5
+        }
+      }
+    },
+    "LGKL": {
+      "name": "Καλαμάτα",
+      "group": "Ιόνιο/δυτικά",
+      "days": 21,
+      "pointElevationM": 5,
+      "onsetHalfLagH": 1.48,
+      "decayHalfLagH": -1.05,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 84,
+          "biasKmh": -1,
+          "rawBiasKmh": -3.4,
+          "obsMeanKmh": 14.9,
+          "shownMeanKmh": 13.9,
+          "underPct": 33.3,
+          "overPct": 13.1,
+          "toneCalmerPct": 19.4,
+          "falseBluePct": 15.5
+        },
+        "μεσημέρι 12-16": {
+          "n": 105,
+          "biasKmh": 3.5,
+          "rawBiasKmh": 1.1,
+          "obsMeanKmh": 18.9,
+          "shownMeanKmh": 22.4,
+          "underPct": 7.6,
+          "overPct": 47.6,
+          "toneCalmerPct": 2.5,
+          "falseBluePct": 1.6
+        },
+        "απόγευμα 17-20": {
+          "n": 84,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 22.5,
+          "shownMeanKmh": 22.3,
+          "underPct": 15.5,
+          "overPct": 19,
+          "toneCalmerPct": 14.7,
+          "falseBluePct": 6
+        }
+      }
+    },
+    "LGAL": {
+      "name": "Αλεξανδρούπολη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 99,
+      "pointElevationM": 4,
+      "onsetHalfLagH": 0.62,
+      "decayHalfLagH": -1.06,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 396,
+          "biasKmh": 0.6,
+          "rawBiasKmh": -1.8,
+          "obsMeanKmh": 20.2,
+          "shownMeanKmh": 20.8,
+          "underPct": 16.2,
+          "overPct": 29.8,
+          "toneCalmerPct": 14.4,
+          "falseBluePct": 4.9
+        },
+        "μεσημέρι 12-16": {
+          "n": 495,
+          "biasKmh": -2,
+          "rawBiasKmh": -4.4,
+          "obsMeanKmh": 25.6,
+          "shownMeanKmh": 23.6,
+          "underPct": 20.4,
+          "overPct": 13.9,
+          "toneCalmerPct": 19.5,
+          "falseBluePct": 2.6
+        },
+        "απόγευμα 17-20": {
+          "n": 396,
+          "biasKmh": -2.3,
+          "rawBiasKmh": -4.7,
+          "obsMeanKmh": 23.3,
+          "shownMeanKmh": 21,
+          "underPct": 27.3,
+          "overPct": 12.4,
+          "toneCalmerPct": 25.4,
+          "falseBluePct": 7.7
+        }
+      }
+    },
+    "LGKV": {
+      "name": "Καβάλα",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 5,
+      "pointElevationM": 2,
+      "onsetHalfLagH": 1,
+      "decayHalfLagH": -1.5,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 20,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -1.9,
+          "obsMeanKmh": 15.6,
+          "shownMeanKmh": 16.2,
+          "underPct": 25,
+          "overPct": 30,
+          "toneCalmerPct": 15,
+          "falseBluePct": 11.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 25,
+          "biasKmh": 2.6,
+          "rawBiasKmh": 0.2,
+          "obsMeanKmh": 24.6,
+          "shownMeanKmh": 27.2,
+          "underPct": 8,
+          "overPct": 56,
+          "toneCalmerPct": 8,
+          "falseBluePct": 2.7
+        },
+        "απόγευμα 17-20": {
+          "n": 20,
+          "biasKmh": 2.3,
+          "rawBiasKmh": -0.1,
+          "obsMeanKmh": 21.7,
+          "shownMeanKmh": 24,
+          "underPct": 10,
+          "overPct": 35,
+          "toneCalmerPct": 10,
+          "falseBluePct": 3.3
+        }
+      }
+    },
+    "LGTS": {
+      "name": "Θεσσαλονίκη",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 12,
+      "pointElevationM": 1,
+      "onsetHalfLagH": 1.56,
+      "decayHalfLagH": 0.78,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 48,
+          "biasKmh": -0.2,
+          "rawBiasKmh": -2.6,
+          "obsMeanKmh": 23.2,
+          "shownMeanKmh": 23,
+          "underPct": 25,
+          "overPct": 29.2,
+          "toneCalmerPct": 22.2,
+          "falseBluePct": 9.7
+        },
+        "μεσημέρι 12-16": {
+          "n": 60,
+          "biasKmh": 0.2,
+          "rawBiasKmh": -2.2,
+          "obsMeanKmh": 26.6,
+          "shownMeanKmh": 26.8,
+          "underPct": 13.3,
+          "overPct": 21.7,
+          "toneCalmerPct": 11.7,
+          "falseBluePct": 0
+        },
+        "απόγευμα 17-20": {
+          "n": 48,
+          "biasKmh": 0,
+          "rawBiasKmh": -2.4,
+          "obsMeanKmh": 22.3,
+          "shownMeanKmh": 22.3,
+          "underPct": 22.9,
+          "overPct": 18.8,
+          "toneCalmerPct": 20.1,
+          "falseBluePct": 10.4
+        }
+      }
+    },
+    "LGKC": {
+      "name": "Κύθηρα",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 13,
+      "pointElevationM": 315,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 50,
+          "biasKmh": 9.1,
+          "rawBiasKmh": 6.7,
+          "obsMeanKmh": 24,
+          "shownMeanKmh": 33.1,
+          "underPct": 2,
+          "overPct": 80,
+          "toneCalmerPct": 2,
+          "falseBluePct": 0
+        },
+        "μεσημέρι 12-16": {
+          "n": 63,
+          "biasKmh": 8.3,
+          "rawBiasKmh": 5.9,
+          "obsMeanKmh": 27.1,
+          "shownMeanKmh": 35.4,
+          "underPct": 1.6,
+          "overPct": 66.7,
+          "toneCalmerPct": 1.6,
+          "falseBluePct": 0
+        },
+        "απόγευμα 17-20": {
+          "n": 45,
+          "biasKmh": 0.5,
+          "rawBiasKmh": -2,
+          "obsMeanKmh": 22.7,
+          "shownMeanKmh": 23.1,
+          "underPct": 28.9,
+          "overPct": 28.9,
+          "toneCalmerPct": 25.9,
+          "falseBluePct": 10.4
+        }
+      }
+    },
+    "LGML": {
+      "name": "Μήλος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 0,
+      "pointElevationM": 0,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGLE": {
+      "name": "Λέρος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 0,
+      "pointElevationM": 4,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGKP": {
+      "name": "Κάρπαθος",
+      "group": "Νότιο Αιγαίο/Κρήτη",
+      "days": 81,
+      "pointElevationM": 8,
+      "onsetHalfLagH": -0.22,
+      "decayHalfLagH": 1.22,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 324,
+          "biasKmh": -6.2,
+          "rawBiasKmh": -8.7,
+          "obsMeanKmh": 39.1,
+          "shownMeanKmh": 32.9,
+          "underPct": 59,
+          "overPct": 4,
+          "toneCalmerPct": 27.8,
+          "falseBluePct": 0.6
+        },
+        "μεσημέρι 12-16": {
+          "n": 404,
+          "biasKmh": -9.2,
+          "rawBiasKmh": -11.6,
+          "obsMeanKmh": 42,
+          "shownMeanKmh": 32.8,
+          "underPct": 71.8,
+          "overPct": 1.5,
+          "toneCalmerPct": 28.7,
+          "falseBluePct": 0.2
+        },
+        "απόγευμα 17-20": {
+          "n": 323,
+          "biasKmh": -8.1,
+          "rawBiasKmh": -10.5,
+          "obsMeanKmh": 39.1,
+          "shownMeanKmh": 31,
+          "underPct": 71.2,
+          "overPct": 4.6,
+          "toneCalmerPct": 28.9,
+          "falseBluePct": 1.7
+        }
+      }
+    },
+    "LGIK": {
+      "name": "Ικαρία",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 0,
+      "pointElevationM": 21,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGSY": {
+      "name": "Σκύρος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 0,
+      "pointElevationM": 8,
+      "onsetHalfLagH": null,
+      "decayHalfLagH": null,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "μεσημέρι 12-16": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        },
+        "απόγευμα 17-20": {
+          "n": 0,
+          "biasKmh": null,
+          "rawBiasKmh": null,
+          "obsMeanKmh": null,
+          "shownMeanKmh": null,
+          "underPct": null,
+          "overPct": null,
+          "toneCalmerPct": null,
+          "falseBluePct": null
+        }
+      }
+    },
+    "LGBL": {
+      "name": "Ν. Αγχίαλος",
+      "group": "Βόρειο/Ανατ. Αιγαίο",
+      "days": 3,
+      "pointElevationM": 11,
+      "onsetHalfLagH": 0.33,
+      "decayHalfLagH": -0.67,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 12,
+          "biasKmh": 1.4,
+          "rawBiasKmh": -1,
+          "obsMeanKmh": 15,
+          "shownMeanKmh": 16.4,
+          "underPct": 25,
+          "overPct": 33.3,
+          "toneCalmerPct": 8.3,
+          "falseBluePct": 8.3
+        },
+        "μεσημέρι 12-16": {
+          "n": 15,
+          "biasKmh": 1.3,
+          "rawBiasKmh": -1.1,
+          "obsMeanKmh": 22.1,
+          "shownMeanKmh": 23.4,
+          "underPct": 6.7,
+          "overPct": 33.3,
+          "toneCalmerPct": 6.7,
+          "falseBluePct": 4.4
+        },
+        "απόγευμα 17-20": {
+          "n": 12,
+          "biasKmh": -0.1,
+          "rawBiasKmh": -2.5,
+          "obsMeanKmh": 18.5,
+          "shownMeanKmh": 18.4,
+          "underPct": 16.7,
+          "overPct": 33.3,
+          "toneCalmerPct": 16.7,
+          "falseBluePct": 5.6
+        }
+      }
+    },
+    "LGRX": {
+      "name": "Άραξος",
+      "group": "Ιόνιο/δυτικά",
+      "days": 28,
+      "pointElevationM": 12,
+      "onsetHalfLagH": 0.52,
+      "decayHalfLagH": 0.19,
+      "buckets": {
+        "πρωί 08-11": {
+          "n": 112,
+          "biasKmh": -2.4,
+          "rawBiasKmh": -4.8,
+          "obsMeanKmh": 16.6,
+          "shownMeanKmh": 14.2,
+          "underPct": 45.5,
+          "overPct": 16.1,
+          "toneCalmerPct": 29.8,
+          "falseBluePct": 19
+        },
+        "μεσημέρι 12-16": {
+          "n": 140,
+          "biasKmh": -4.3,
+          "rawBiasKmh": -6.7,
+          "obsMeanKmh": 26.2,
+          "shownMeanKmh": 21.9,
+          "underPct": 45.7,
+          "overPct": 7.9,
+          "toneCalmerPct": 45.7,
+          "falseBluePct": 8.1
+        },
+        "απόγευμα 17-20": {
+          "n": 112,
+          "biasKmh": -2.5,
+          "rawBiasKmh": -4.9,
+          "obsMeanKmh": 22.8,
+          "shownMeanKmh": 20.3,
+          "underPct": 34.8,
+          "overPct": 13.4,
+          "toneCalmerPct": 34.2,
+          "falseBluePct": 12.2
+        }
+      }
+    }
+  }
+}

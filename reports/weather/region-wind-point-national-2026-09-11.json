@@ -1,0 +1,1451 @@
+{
+  "window": [
+    "2026-07-02",
+    "2026-09-01"
+  ],
+  "regions": [
+    {
+      "regionId": "north-aegean-samos",
+      "regionName": "Σάμος",
+      "beaches": 44,
+      "elevation": {
+        "centroid": 471,
+        "medoid": 18
+      },
+      "meanDiffKmh": 4.9,
+      "bftChangesPct": 55.1,
+      "toneStricterPct": 44.1,
+      "toneCalmerPct": 0.1
+    },
+    {
+      "regionId": "south-aegean-tinos",
+      "regionName": "Τήνος",
+      "beaches": 40,
+      "elevation": {
+        "centroid": 129,
+        "medoid": 5
+      },
+      "meanDiffKmh": 3.9,
+      "bftChangesPct": 46.4,
+      "toneStricterPct": 26.8,
+      "toneCalmerPct": 0.9
+    },
+    {
+      "regionId": "thessaly-larissa-coast-agia---kissavos",
+      "regionName": "Παράλια Λάρισας (Αγιά - Κίσσαβος)",
+      "beaches": 9,
+      "elevation": {
+        "centroid": 137,
+        "medoid": 0
+      },
+      "meanDiffKmh": 3.3,
+      "bftChangesPct": 63.4,
+      "toneStricterPct": 24,
+      "toneCalmerPct": 5.2
+    },
+    {
+      "regionId": "south-aegean-kos",
+      "regionName": "Κως",
+      "beaches": 38,
+      "elevation": {
+        "centroid": 127,
+        "medoid": 5
+      },
+      "meanDiffKmh": 2.7,
+      "bftChangesPct": 38.5,
+      "toneStricterPct": 29.8,
+      "toneCalmerPct": 3.4
+    },
+    {
+      "regionId": "south-aegean-marathi",
+      "regionName": "Μαράθι",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 20
+      },
+      "meanDiffKmh": 2.4,
+      "bftChangesPct": 29.5,
+      "toneStricterPct": 23.4,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "north-aegean-lesvos",
+      "regionName": "Λέσβος",
+      "beaches": 62,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 1.8,
+      "bftChangesPct": 34.6,
+      "toneStricterPct": 22,
+      "toneCalmerPct": 1.8
+    },
+    {
+      "regionId": "west-greece-aetolia-acarnania-mainland",
+      "regionName": "Αιτωλοακαρνανία",
+      "beaches": 49,
+      "elevation": {
+        "centroid": 210,
+        "medoid": 8
+      },
+      "meanDiffKmh": 1.8,
+      "bftChangesPct": 46.4,
+      "toneStricterPct": 14.4,
+      "toneCalmerPct": 6.1
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-rodopi-mainland",
+      "regionName": "Ροδόπη",
+      "beaches": 6,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 15
+      },
+      "meanDiffKmh": 1.7,
+      "bftChangesPct": 32.5,
+      "toneStricterPct": 10.5,
+      "toneCalmerPct": 0.8
+    },
+    {
+      "regionId": "south-aegean-milos",
+      "regionName": "Μήλος",
+      "beaches": 42,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 1
+      },
+      "meanDiffKmh": 1.7,
+      "bftChangesPct": 27.7,
+      "toneStricterPct": 16.6,
+      "toneCalmerPct": 0.8
+    },
+    {
+      "regionId": "central-greece-evia",
+      "regionName": "Εύβοια",
+      "beaches": 128,
+      "elevation": {
+        "centroid": 453,
+        "medoid": 0
+      },
+      "meanDiffKmh": 1.4,
+      "bftChangesPct": 42.2,
+      "toneStricterPct": 20,
+      "toneCalmerPct": 3.3
+    },
+    {
+      "regionId": "south-aegean-halki",
+      "regionName": "Χάλκη",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 51,
+        "medoid": 3
+      },
+      "meanDiffKmh": 1.3,
+      "bftChangesPct": 28.8,
+      "toneStricterPct": 10.1,
+      "toneCalmerPct": 3.5
+    },
+    {
+      "regionId": "peloponnese-lakonia-mainland",
+      "regionName": "Λακωνία",
+      "beaches": 69,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 10
+      },
+      "meanDiffKmh": 1.2,
+      "bftChangesPct": 38.8,
+      "toneStricterPct": 13.8,
+      "toneCalmerPct": 4.8
+    },
+    {
+      "regionId": "south-aegean-leros",
+      "regionName": "Λέρος",
+      "beaches": 10,
+      "elevation": {
+        "centroid": 8,
+        "medoid": 9
+      },
+      "meanDiffKmh": 1.2,
+      "bftChangesPct": 16.3,
+      "toneStricterPct": 11,
+      "toneCalmerPct": 1.1
+    },
+    {
+      "regionId": "central-macedonia-pieria-mainland",
+      "regionName": "Πιερία",
+      "beaches": 9,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 1.1,
+      "bftChangesPct": 30.6,
+      "toneStricterPct": 8,
+      "toneCalmerPct": 2.1
+    },
+    {
+      "regionId": "peloponnese-messinia-mainland",
+      "regionName": "Μεσσηνία",
+      "beaches": 57,
+      "elevation": {
+        "centroid": 234,
+        "medoid": 27
+      },
+      "meanDiffKmh": 0.8,
+      "bftChangesPct": 29.4,
+      "toneStricterPct": 12.2,
+      "toneCalmerPct": 2.8
+    },
+    {
+      "regionId": "central-greece-viotia-mainland",
+      "regionName": "Βοιωτία",
+      "beaches": 8,
+      "elevation": {
+        "centroid": 222,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0.7,
+      "bftChangesPct": 32.5,
+      "toneStricterPct": 12,
+      "toneCalmerPct": 3.3
+    },
+    {
+      "regionId": "crete-crete-rethymno",
+      "regionName": "Ρέθυμνο",
+      "beaches": 47,
+      "elevation": {
+        "centroid": 343,
+        "medoid": 16
+      },
+      "meanDiffKmh": 0.3,
+      "bftChangesPct": 25.6,
+      "toneStricterPct": 5.4,
+      "toneCalmerPct": 9.7
+    },
+    {
+      "regionId": "central-greece-fthiotida-mainland",
+      "regionName": "Φθιώτιδα",
+      "beaches": 19,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0.1,
+      "bftChangesPct": 22.6,
+      "toneStricterPct": 4.1,
+      "toneCalmerPct": 2.1
+    },
+    {
+      "regionId": "attica-athens-area-mainland",
+      "regionName": "Περιοχή Αθήνας",
+      "beaches": 26,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "attica-poros",
+      "regionName": "Πόρος",
+      "beaches": 11,
+      "elevation": {
+        "centroid": 10,
+        "medoid": 4
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "attica-salamina",
+      "regionName": "Σαλαμίνα",
+      "beaches": 10,
+      "elevation": {
+        "centroid": 20,
+        "medoid": 1
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "attica-methana",
+      "regionName": "Μέθανα",
+      "beaches": 4,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "regionName": "Έβρος",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-kavala-mainland",
+      "regionName": "Καβάλα",
+      "beaches": 19,
+      "elevation": {
+        "centroid": 53,
+        "medoid": 18
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-xanthi-mainland",
+      "regionName": "Ξάνθη",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "epirus-arta-mainland",
+      "regionName": "Άρτα",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "epirus-preveza-mainland",
+      "regionName": "Πρέβεζα",
+      "beaches": 26,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "ionian-islands-antipaxos",
+      "regionName": "Αντίπαξοι",
+      "beaches": 14,
+      "elevation": {
+        "centroid": 48,
+        "medoid": 3
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "ionian-islands-erikoussa",
+      "regionName": "Ερείκουσα",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "ionian-islands-mathraki",
+      "regionName": "Μαθράκι",
+      "beaches": 1,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "ionian-islands-ithaca",
+      "regionName": "Ιθάκη",
+      "beaches": 25,
+      "elevation": {
+        "centroid": 275,
+        "medoid": 33
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "north-aegean-psara",
+      "regionName": "Ψαρά",
+      "beaches": 6,
+      "elevation": {
+        "centroid": 66,
+        "medoid": 3
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "north-aegean-fournoi",
+      "regionName": "Φούρνοι",
+      "beaches": 7,
+      "elevation": {
+        "centroid": 135,
+        "medoid": 2
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "north-aegean-lemnos",
+      "regionName": "Λήμνος",
+      "beaches": 41,
+      "elevation": {
+        "centroid": 7,
+        "medoid": 3
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-anafi",
+      "regionName": "Ανάφη",
+      "beaches": 14,
+      "elevation": {
+        "centroid": 159,
+        "medoid": 1
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-kea",
+      "regionName": "Κέα",
+      "beaches": 32,
+      "elevation": {
+        "centroid": 261,
+        "medoid": 7
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 21.5,
+      "toneStricterPct": 5.5,
+      "toneCalmerPct": 6.4
+    },
+    {
+      "regionId": "south-aegean-kythnos",
+      "regionName": "Κύθνος",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 172,
+        "medoid": 9
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-mykonos",
+      "regionName": "Μύκονος",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 146,
+        "medoid": 20
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-sikinos",
+      "regionName": "Σίκινος",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 50,
+        "medoid": 35
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-donousa",
+      "regionName": "Δονούσα",
+      "beaches": 4,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-koufonisia",
+      "regionName": "Κουφονήσια",
+      "beaches": 19,
+      "elevation": {
+        "centroid": 3,
+        "medoid": 5
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-agathonisi",
+      "regionName": "Αγαθονήσι",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 45,
+        "medoid": 4
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-astypalaia",
+      "regionName": "Αστυπάλαια",
+      "beaches": 22,
+      "elevation": {
+        "centroid": 154,
+        "medoid": 2
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-karpathos",
+      "regionName": "Κάρπαθος",
+      "beaches": 49,
+      "elevation": {
+        "centroid": 390,
+        "medoid": 18
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-kastellorizo",
+      "regionName": "Καστελλόριζο",
+      "beaches": 3,
+      "elevation": {
+        "centroid": 0,
+        "medoid": 0
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-lipsi",
+      "regionName": "Λειψοί",
+      "beaches": 18,
+      "elevation": {
+        "centroid": 29,
+        "medoid": 11
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-patmos",
+      "regionName": "Πάτμος",
+      "beaches": 15,
+      "elevation": {
+        "centroid": 10,
+        "medoid": 1
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-symi",
+      "regionName": "Σύμη",
+      "beaches": 11,
+      "elevation": {
+        "centroid": 418,
+        "medoid": 2
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-tilos",
+      "regionName": "Τήλος",
+      "beaches": 12,
+      "elevation": {
+        "centroid": 248,
+        "medoid": 3
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-kasos",
+      "regionName": "Κάσος",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 154,
+        "medoid": 7
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-pserimos",
+      "regionName": "Ψέριμος",
+      "beaches": 3,
+      "elevation": {
+        "centroid": 144,
+        "medoid": 8
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "south-aegean-arki",
+      "regionName": "Αρκοί",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 45,
+        "medoid": 20
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "thessaly-alonissos",
+      "regionName": "Αλόννησος",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 101,
+        "medoid": 15
+      },
+      "meanDiffKmh": 0,
+      "bftChangesPct": 0,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 0
+    },
+    {
+      "regionId": "thessaly-skopelos",
+      "regionName": "Σκόπελος",
+      "beaches": 22,
+      "elevation": {
+        "centroid": 364,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.1,
+      "bftChangesPct": 42.6,
+      "toneStricterPct": 7.5,
+      "toneCalmerPct": 9.4
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-samothraki",
+      "regionName": "Σαμοθράκη",
+      "beaches": 11,
+      "elevation": {
+        "centroid": 1171,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.4,
+      "bftChangesPct": 40.2,
+      "toneStricterPct": 6.5,
+      "toneCalmerPct": 13.9
+    },
+    {
+      "regionId": "ionian-islands-kefalonia",
+      "regionName": "Κεφαλονιά",
+      "beaches": 77,
+      "elevation": {
+        "centroid": 769,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.4,
+      "bftChangesPct": 35.9,
+      "toneStricterPct": 6.3,
+      "toneCalmerPct": 6.8
+    },
+    {
+      "regionId": "thessaly-magnesia-mainland---pelion",
+      "regionName": "Μαγνησία (Πήλιο)",
+      "beaches": 69,
+      "elevation": {
+        "centroid": 38,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.5,
+      "bftChangesPct": 36.2,
+      "toneStricterPct": 6,
+      "toneCalmerPct": 4.3
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-thasos",
+      "regionName": "Θάσος",
+      "beaches": 58,
+      "elevation": {
+        "centroid": 570,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.6,
+      "bftChangesPct": 45.2,
+      "toneStricterPct": 2.8,
+      "toneCalmerPct": 11.1
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "regionName": "Νάξος",
+      "beaches": 43,
+      "elevation": {
+        "centroid": 357,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.6,
+      "bftChangesPct": 24.3,
+      "toneStricterPct": 3.7,
+      "toneCalmerPct": 9.6
+    },
+    {
+      "regionId": "central-macedonia-halkidiki-mainland",
+      "regionName": "Χαλκιδική",
+      "beaches": 132,
+      "elevation": {
+        "centroid": 166,
+        "medoid": 0
+      },
+      "meanDiffKmh": -0.7,
+      "bftChangesPct": 39.1,
+      "toneStricterPct": 2.4,
+      "toneCalmerPct": 9.6
+    },
+    {
+      "regionId": "thessaly-skiathos",
+      "regionName": "Σκιάθος",
+      "beaches": 33,
+      "elevation": {
+        "centroid": 187,
+        "medoid": 2
+      },
+      "meanDiffKmh": -0.9,
+      "bftChangesPct": 31.3,
+      "toneStricterPct": 2.3,
+      "toneCalmerPct": 12.6
+    },
+    {
+      "regionId": "north-aegean-ikaria",
+      "regionName": "Ικαρία",
+      "beaches": 19,
+      "elevation": {
+        "centroid": 31,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1,
+      "bftChangesPct": 32.5,
+      "toneStricterPct": 9.6,
+      "toneCalmerPct": 15.4
+    },
+    {
+      "regionId": "south-aegean-serifos",
+      "regionName": "Σέριφος",
+      "beaches": 25,
+      "elevation": {
+        "centroid": 462,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.1,
+      "bftChangesPct": 35,
+      "toneStricterPct": 5,
+      "toneCalmerPct": 15.6
+    },
+    {
+      "regionId": "ionian-islands-lefkada",
+      "regionName": "Λευκάδα",
+      "beaches": 33,
+      "elevation": {
+        "centroid": 541,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.2,
+      "bftChangesPct": 40.8,
+      "toneStricterPct": 3.8,
+      "toneCalmerPct": 6.2
+    },
+    {
+      "regionId": "attica-piraeus-area",
+      "regionName": "Περιοχή Πειραιά",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 6,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.3,
+      "bftChangesPct": 40.2,
+      "toneStricterPct": 2.1,
+      "toneCalmerPct": 16.4
+    },
+    {
+      "regionId": "central-macedonia-thessaloniki-area",
+      "regionName": "Περιοχή Θεσσαλονίκης",
+      "beaches": 17,
+      "elevation": {
+        "centroid": 281,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.4,
+      "bftChangesPct": 52.4,
+      "toneStricterPct": 3.9,
+      "toneCalmerPct": 10
+    },
+    {
+      "regionId": "south-aegean-telendos",
+      "regionName": "Τέλενδος",
+      "beaches": 5,
+      "elevation": {
+        "centroid": 53,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.5,
+      "bftChangesPct": 36.2,
+      "toneStricterPct": 5.1,
+      "toneCalmerPct": 16
+    },
+    {
+      "regionId": "south-aegean-rhodes",
+      "regionName": "Ρόδος",
+      "beaches": 62,
+      "elevation": {
+        "centroid": 180,
+        "medoid": 2
+      },
+      "meanDiffKmh": -1.6,
+      "bftChangesPct": 41.1,
+      "toneStricterPct": 2.6,
+      "toneCalmerPct": 16.1
+    },
+    {
+      "regionId": "west-greece-ileia-mainland",
+      "regionName": "Ηλεία",
+      "beaches": 16,
+      "elevation": {
+        "centroid": 8,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.7,
+      "bftChangesPct": 33.7,
+      "toneStricterPct": 2.2,
+      "toneCalmerPct": 13.9
+    },
+    {
+      "regionId": "attica-east-attica-mainland",
+      "regionName": "Ανατολική Αττική",
+      "beaches": 59,
+      "elevation": {
+        "centroid": 76,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.9,
+      "bftChangesPct": 36.6,
+      "toneStricterPct": 1.7,
+      "toneCalmerPct": 20.3
+    },
+    {
+      "regionId": "epirus-thesprotia-mainland",
+      "regionName": "Θεσπρωτία",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 333,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.9,
+      "bftChangesPct": 40.3,
+      "toneStricterPct": 0.9,
+      "toneCalmerPct": 11.5
+    },
+    {
+      "regionId": "south-aegean-ios",
+      "regionName": "Ίος",
+      "beaches": 40,
+      "elevation": {
+        "centroid": 594,
+        "medoid": 0
+      },
+      "meanDiffKmh": -1.9,
+      "bftChangesPct": 27.4,
+      "toneStricterPct": 2.4,
+      "toneCalmerPct": 17.8
+    },
+    {
+      "regionId": "peloponnese-arkadia-mainland",
+      "regionName": "Αρκαδία",
+      "beaches": 17,
+      "elevation": {
+        "centroid": 65,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2,
+      "bftChangesPct": 31.9,
+      "toneStricterPct": 0.3,
+      "toneCalmerPct": 10.2
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "regionName": "Πάρος",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 160,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2,
+      "bftChangesPct": 28.3,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 17.9
+    },
+    {
+      "regionId": "ionian-islands-corfu",
+      "regionName": "Κέρκυρα",
+      "beaches": 105,
+      "elevation": {
+        "centroid": 8,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.1,
+      "bftChangesPct": 30.5,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 8.4
+    },
+    {
+      "regionId": "peloponnese-argolida-mainland",
+      "regionName": "Αργολίδα",
+      "beaches": 34,
+      "elevation": {
+        "centroid": 12,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.1,
+      "bftChangesPct": 38.7,
+      "toneStricterPct": 0.3,
+      "toneCalmerPct": 13.9
+    },
+    {
+      "regionId": "south-aegean-amorgos",
+      "regionName": "Αμοργός",
+      "beaches": 16,
+      "elevation": {
+        "centroid": 193,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.1,
+      "bftChangesPct": 30.6,
+      "toneStricterPct": 0.6,
+      "toneCalmerPct": 25.6
+    },
+    {
+      "regionId": "south-aegean-andros",
+      "regionName": "Άνδρος",
+      "beaches": 40,
+      "elevation": {
+        "centroid": 239,
+        "medoid": 32
+      },
+      "meanDiffKmh": -2.1,
+      "bftChangesPct": 36,
+      "toneStricterPct": 2,
+      "toneCalmerPct": 26.1
+    },
+    {
+      "regionId": "attica-hydra",
+      "regionName": "Ύδρα",
+      "beaches": 8,
+      "elevation": {
+        "centroid": 33,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.2,
+      "bftChangesPct": 31.8,
+      "toneStricterPct": 0.1,
+      "toneCalmerPct": 12.6
+    },
+    {
+      "regionId": "attica-spetses",
+      "regionName": "Σπέτσες",
+      "beaches": 12,
+      "elevation": {
+        "centroid": 230,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.2,
+      "bftChangesPct": 35.1,
+      "toneStricterPct": 0.2,
+      "toneCalmerPct": 19.4
+    },
+    {
+      "regionId": "ionian-islands-meganisi",
+      "regionName": "Μεγανήσι",
+      "beaches": 8,
+      "elevation": {
+        "centroid": 60,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.2,
+      "bftChangesPct": 41.8,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 5.4
+    },
+    {
+      "regionId": "ionian-islands-paxos",
+      "regionName": "Παξοί",
+      "beaches": 25,
+      "elevation": {
+        "centroid": 105,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 33.3,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 12.1
+    },
+    {
+      "regionId": "north-aegean-agios-efstratios",
+      "regionName": "Άγιος Ευστράτιος",
+      "beaches": 12,
+      "elevation": {
+        "centroid": 35,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 34.5,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 17.2
+    },
+    {
+      "regionId": "south-aegean-folegandros",
+      "regionName": "Φολέγανδρος",
+      "beaches": 16,
+      "elevation": {
+        "centroid": 162,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 30.1,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 16.3
+    },
+    {
+      "regionId": "south-aegean-santorini",
+      "regionName": "Σαντορίνη",
+      "beaches": 13,
+      "elevation": {
+        "centroid": 177,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 30,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 21.3
+    },
+    {
+      "regionId": "south-aegean-sifnos",
+      "regionName": "Σίφνος",
+      "beaches": 20,
+      "elevation": {
+        "centroid": 416,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 30.6,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 15.8
+    },
+    {
+      "regionId": "south-aegean-iraklia",
+      "regionName": "Ηρακλειά",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 85,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.3,
+      "bftChangesPct": 27.9,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 18.3
+    },
+    {
+      "regionId": "attica-aegina",
+      "regionName": "Αίγινα",
+      "beaches": 17,
+      "elevation": {
+        "centroid": 319,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 41.8,
+      "toneStricterPct": 1,
+      "toneCalmerPct": 17
+    },
+    {
+      "regionId": "ionian-islands-othonoi",
+      "regionName": "Οθωνοί",
+      "beaches": 3,
+      "elevation": {
+        "centroid": 137,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 33.4,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 13.2
+    },
+    {
+      "regionId": "ionian-islands-zakynthos",
+      "regionName": "Ζάκυνθος",
+      "beaches": 39,
+      "elevation": {
+        "centroid": 18,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 43.8,
+      "toneStricterPct": 0.1,
+      "toneCalmerPct": 13.3
+    },
+    {
+      "regionId": "north-aegean-oinousses",
+      "regionName": "Οινούσσες",
+      "beaches": 8,
+      "elevation": {
+        "centroid": 64,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 33.5,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 21.9
+    },
+    {
+      "regionId": "south-aegean-kimolos",
+      "regionName": "Κίμωλος",
+      "beaches": 17,
+      "elevation": {
+        "centroid": 138,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 30.6,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 15.6
+    },
+    {
+      "regionId": "south-aegean-syros",
+      "regionName": "Σύρος",
+      "beaches": 24,
+      "elevation": {
+        "centroid": 185,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 32.1,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 19
+    },
+    {
+      "regionId": "south-aegean-polyaigos",
+      "regionName": "Πολύαιγος",
+      "beaches": 4,
+      "elevation": {
+        "centroid": 185,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.4,
+      "bftChangesPct": 30.6,
+      "toneStricterPct": 0,
+      "toneCalmerPct": 15.6
+    },
+    {
+      "regionId": "central-greece-skyros",
+      "regionName": "Σκύρος",
+      "beaches": 21,
+      "elevation": {
+        "centroid": 216,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.5,
+      "bftChangesPct": 39.7,
+      "toneStricterPct": 0.8,
+      "toneCalmerPct": 21.7
+    },
+    {
+      "regionId": "south-aegean-kalymnos",
+      "regionName": "Κάλυμνος",
+      "beaches": 20,
+      "elevation": {
+        "centroid": 488,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.7,
+      "bftChangesPct": 44.9,
+      "toneStricterPct": 4.3,
+      "toneCalmerPct": 24.7
+    },
+    {
+      "regionId": "south-aegean-nisyros",
+      "regionName": "Νίσυρος",
+      "beaches": 2,
+      "elevation": {
+        "centroid": 389,
+        "medoid": 0
+      },
+      "meanDiffKmh": -2.8,
+      "bftChangesPct": 35,
+      "toneStricterPct": 0.5,
+      "toneCalmerPct": 25.2
+    },
+    {
+      "regionId": "attica-kythira",
+      "regionName": "Κύθηρα",
+      "beaches": 42,
+      "elevation": {
+        "centroid": 300,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.1,
+      "bftChangesPct": 47.3,
+      "toneStricterPct": 0.7,
+      "toneCalmerPct": 24.6
+    },
+    {
+      "regionId": "attica-west-attica-mainland",
+      "regionName": "Δυτική Αττική",
+      "beaches": 7,
+      "elevation": {
+        "centroid": 237,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.1,
+      "bftChangesPct": 49.9,
+      "toneStricterPct": 1.4,
+      "toneCalmerPct": 22
+    },
+    {
+      "regionId": "peloponnese-korinthia-mainland",
+      "regionName": "Κορινθία",
+      "beaches": 24,
+      "elevation": {
+        "centroid": 5,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.1,
+      "bftChangesPct": 47.8,
+      "toneStricterPct": 0.2,
+      "toneCalmerPct": 23.2
+    },
+    {
+      "regionId": "west-greece-achaia-mainland",
+      "regionName": "Αχαΐα",
+      "beaches": 18,
+      "elevation": {
+        "centroid": 1677,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.2,
+      "bftChangesPct": 58.1,
+      "toneStricterPct": 7.7,
+      "toneCalmerPct": 23
+    },
+    {
+      "regionId": "central-greece-fokida-mainland",
+      "regionName": "Φωκίδα",
+      "beaches": 21,
+      "elevation": {
+        "centroid": 175,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.3,
+      "bftChangesPct": 48.8,
+      "toneStricterPct": 1,
+      "toneCalmerPct": 18.4
+    },
+    {
+      "regionId": "south-aegean-antiparos",
+      "regionName": "Αντίπαρος",
+      "beaches": 11,
+      "elevation": {
+        "centroid": 40,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.4,
+      "bftChangesPct": 44.3,
+      "toneStricterPct": 0.4,
+      "toneCalmerPct": 27.7
+    },
+    {
+      "regionId": "crete-gavdos",
+      "regionName": "Γαύδος",
+      "beaches": 9,
+      "elevation": {
+        "centroid": 131,
+        "medoid": 0
+      },
+      "meanDiffKmh": -3.5,
+      "bftChangesPct": 53.7,
+      "toneStricterPct": 1.7,
+      "toneCalmerPct": 17.2
+    },
+    {
+      "regionId": "attica-agistri",
+      "regionName": "Αγκίστρι",
+      "beaches": 6,
+      "elevation": {
+        "centroid": 206,
+        "medoid": 3
+      },
+      "meanDiffKmh": -3.9,
+      "bftChangesPct": 57.1,
+      "toneStricterPct": 0.7,
+      "toneCalmerPct": 27.6
+    },
+    {
+      "regionId": "north-aegean-chios",
+      "regionName": "Χίος",
+      "beaches": 36,
+      "elevation": {
+        "centroid": 466,
+        "medoid": 0
+      },
+      "meanDiffKmh": -4.2,
+      "bftChangesPct": 64.1,
+      "toneStricterPct": 3.4,
+      "toneCalmerPct": 37.4
+    },
+    {
+      "regionId": "crete-crete-lasithi",
+      "regionName": "Λασίθι",
+      "beaches": 66,
+      "elevation": {
+        "centroid": 678,
+        "medoid": 0
+      },
+      "meanDiffKmh": -4.3,
+      "bftChangesPct": 50.7,
+      "toneStricterPct": 1.7,
+      "toneCalmerPct": 39.6
+    },
+    {
+      "regionId": "crete-crete-heraklion",
+      "regionName": "Ηράκλειο",
+      "beaches": 53,
+      "elevation": {
+        "centroid": 514,
+        "medoid": 7
+      },
+      "meanDiffKmh": -10.6,
+      "bftChangesPct": 81.4,
+      "toneStricterPct": 3.3,
+      "toneCalmerPct": 60.6
+    },
+    {
+      "regionId": "crete-crete-chania",
+      "regionName": "Χανιά",
+      "beaches": 90,
+      "elevation": {
+        "centroid": 676,
+        "medoid": 0
+      },
+      "meanDiffKmh": -10.7,
+      "bftChangesPct": 84.9,
+      "toneStricterPct": 1.9,
+      "toneCalmerPct": 62.2
+    },
+    {
+      "regionId": "south-aegean-schinoussa",
+      "regionName": "Σχοινούσα",
+      "beaches": 8,
+      "elevation": {
+        "centroid": 28,
+        "medoid": 14
+      },
+      "meanDiffKmh": -12.2,
+      "bftChangesPct": 85.9,
+      "toneStricterPct": 0.3,
+      "toneCalmerPct": 68.3
+    }
+  ],
+  "beachWeighted": {
+    "meanDiffKmh": -1.2,
+    "bftChangesPct": 33.8,
+    "medoidHigherPct": 10.7,
+    "medoidLowerPct": 23.1,
+    "toneStricterPct": 5.6,
+    "toneCalmerPct": 12.5
+  },
+  "medoidElevation": {
+    "at0": 67,
+    "upTo20": 39,
+    "over20": 4
+  }
+}

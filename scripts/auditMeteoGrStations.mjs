@@ -3,19 +3,25 @@ import fs from 'node:fs';
 // έναντι best_match στις συντεταγμένες του σταθμού. Είσοδος: docs/team/data/meteo-gr/<σταθμός>-<YYYY-MM>.txt
 // Τρέξιμο: node scripts/auditMeteoGrStations.mjs  (χωρίς κλειδί — δωρεάν historical-forecast-api)
 const DIR = process.argv[2] || 'docs/team/data/meteo-gr';
-const ST = { ierapetra:[35.00,25.70,'ακτή'], lentas:[34.9331,24.9372,'ακτή'], paleochora:[35.20,23.70,'ακτή'], plakias:[35.20,24.40,'ακτή'], sfakia:[35.20,24.10,'ΒΟΥΝΟ 770μ'], malia:[35.293,25.478,'βόρεια, ξενοδοχείο'], sisi:[35.30,25.50,'βόρεια, μελτέμι'], 'plaka-elounda':[35.292,25.726,'Ελούντα, ξενοδοχείο 47μ'], elafonisi:[35.20,23.50,'δυτική, 67μ'], falasarna:[35.50,23.60,'δυτική'] };
+const ST = { ierapetra:[35.00,25.70,'ακτή'], lentas:[34.9331,24.9372,'ακτή'], paleochora:[35.20,23.70,'ακτή'], plakias:[35.20,24.40,'ακτή'], sfakia:[35.20,24.10,'ΒΟΥΝΟ 770μ'], malia:[35.293,25.478,'βόρεια, ξενοδοχείο'], sisi:[35.30,25.50,'βόρεια, μελτέμι'], 'plaka-elounda':[35.292,25.726,'Ελούντα, ξενοδοχείο 47μ'], elafonisi:[35.20,23.50,'δυτική, 67μ'], falasarna:[35.50,23.60,'δυτική'],
+  // Κεφαλίδα σταθμού λάθος/κενή — συντεταγμένες από τον χάρτη: το «samos2» γράφει LAT 27° LONG 38° (ανάποδα και σε Τουρκία), το Εύδηλος δεν γράφει τίποτα.
+  'samos-karlovasi':[37.793,26.705,'Καρλόβασι (κεφαλίδα ανάποδη)'], 'ikaria-evdilos':[37.630,26.170,'Εύδηλος (χωρίς κεφαλίδα)'] };
 
 // Συντεταγμένες από την κεφαλίδα του αρχείου (3 μορφές Davis). Χωρίς συντεταγμένες = ο σταθμός παραλείπεται.
 const parseCoord=(txt,key)=>{const r=new RegExp(key+String.raw`:\s*(\d+)(?:deg|°)\s*(\d+)(?:min|')?\s*(?:(\d+)")?`).exec(txt);if(r)return +r[1]+(+r[2])/60+((+r[3]||0))/3600;const d=new RegExp(key+String.raw`:\s*(\d+\.\d+)`).exec(txt);return d?+d[1]:null;};
-const headerCoords=f=>{const t=fs.readFileSync(DIR+'/'+f,'utf8').slice(0,600);const lat=parseCoord(t,'LAT'),lon=parseCoord(t,'LONG');const el=(/ELEV:\s*(\d+)/.exec(t)||[])[1];return lat&&lon?[lat,lon,'κεφαλίδα'+(el?' '+el+'μ':'')]:null;};
+const headerCoords=f=>{const t=fs.readFileSync(DIR+'/'+f,'utf8').slice(0,600);const lat=parseCoord(t,'LAT')??parseCoord(t,'Latitude'),lon=parseCoord(t,'LONG')??parseCoord(t,'Longt?itude');const el=(/ELEV:\s*(\d+)|Elevation:\s*(\d+)/.exec(t)||[]).slice(1).find(Boolean);return lat&&lon?[lat,lon,'κεφαλίδα'+(el?' '+el+'μ':'')]:null;};
 for(const f of fs.readdirSync(DIR).filter(x=>x.endsWith('.txt'))){const st=f.replace(/-\d{4}-\d{2}\.txt$/,'');if(ST[st])continue;const c=headerCoords(f);if(c)ST[st]=c;else console.log('ΧΩΡΙΣ ΣΥΝΤΕΤΑΓΜΕΝΕΣ (παραλείπεται):',st);}
 const obs={};
-// Δύο μορφές Davis (στήλες RH ή heat/cool degree-days), ίδια ουρά: AVG SPEED · HIGH · TIME · DOM DIR.
+// Τρεις μορφές: Davis (στήλες RH ή heat/cool degree-days· μέρα = «01»/«1», ουρά AVG SPEED · HIGH · TIME · DOM DIR)
+// και η νέα εξαγωγή του ΕΑΑ (μέρα = «2026-08-01», ουρά … SPEED · HIGH · TIME · DIR · «****» ένδειξη πληρότητας).
 for(const f of fs.readdirSync(DIR).filter(x=>x.endsWith('.txt'))){const st=f.replace(/-\d{4}-\d{2}\.txt$/,'');const mo=f.match(/(\d{4}-\d{2})/)[1];
   for(const l of fs.readFileSync(DIR+'/'+f,'utf8').split(/\r?\n/)){const t=l.trim().split(/\s+/);
-    if(t.length<10||!/^\d{1,2}$/.test(t[0])||!/^[NESW]{1,3}$/.test(t[t.length-1]))continue;
+    if(t.length<10)continue;
+    const dayTok=t[0];let day=null;if(/^\d{1,2}$/.test(dayTok))day=dayTok.padStart(2,'0');else if(new RegExp('^'+mo+'-(\\d{2})$').test(dayTok))day=dayTok.slice(-2);if(!day)continue;
+    if(/^\*+$/.test(t[t.length-1]))t.pop();
+    if(!/^[NESW]{1,3}$/.test(t[t.length-1]))continue;
     const avg=+t[t.length-4],gust=+t[t.length-3];if(!isFinite(avg)||!isFinite(gust))continue;
-    (obs[st]=obs[st]||{})[mo+'-'+t[0].padStart(2,'0')]={avg,gust,dir:t[t.length-1]};}}
+    (obs[st]=obs[st]||{})[mo+'-'+day]={avg,gust,dir:t[t.length-1]};}}
 const names=Object.keys(ST).filter(n=>obs[n]);
 // Το αρχείο του Open-Meteo φτάνει μόνο 92 μέρες πίσω και ΓΛΙΣΤΡΑΕΙ κάθε μέρα. Για να μένουν οι σταθμοί
 // συγκρίσιμοι όποια μέρα κι αν κατέβηκαν, οι ώρες του μοντέλου κρατιούνται σε cache ανά σταθμό την πρώτη

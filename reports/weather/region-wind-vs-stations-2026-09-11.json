@@ -1,0 +1,2037 @@
+{
+  "generatedAt": "2026-09-11T11:25:48.442Z",
+  "judge": "METAR ASOS (Iowa State)",
+  "model": "historical-forecast-api.open-meteo.com best_match",
+  "hours": [
+    8,
+    20
+  ],
+  "maxPairKm": 25,
+  "fairApproachKm": 2,
+  "summers": [
+    [
+      "2025",
+      "2025-06-01",
+      "2025-09-10"
+    ],
+    [
+      "2026",
+      "2026-06-01",
+      "2026-09-10"
+    ]
+  ],
+  "labels": {
+    "centroid": "κέντρο βάρους (σήμερα)",
+    "medoid": "κεντρική παραλία",
+    "nearest": "παραλία πιο κοντά στο κέντρο",
+    "medoidLand": "κεντρ. παραλία, πόρτα στεριάς*",
+    "station": "μοντέλο ΣΤΟ όργανο (ταβάνι)"
+  },
+  "criterion": "medoid κερδίζει μόνο αν στο δίκαιο υποσύνολο και στα δύο καλοκαίρια: λάθος ↓, σωστό Μπφ ↑, χρώμα πιο ήρεμο ↓",
+  "subsets": {
+    "όλες": {
+      "2025": {
+        "centroid": {
+          "n": 29892,
+          "biasKmh": -2.4,
+          "maeKmh": 6,
+          "bftExactPct": 41.2,
+          "underPct": 38.6,
+          "overPct": 20.2,
+          "toneCalmerPct": 26.3,
+          "toneHarsherPct": 12
+        },
+        "medoid": {
+          "n": 29892,
+          "biasKmh": -3.2,
+          "maeKmh": 6.3,
+          "bftExactPct": 37.7,
+          "underPct": 44.3,
+          "overPct": 18.1,
+          "toneCalmerPct": 29.2,
+          "toneHarsherPct": 10.6
+        },
+        "nearest": {
+          "n": 29892,
+          "biasKmh": -3.3,
+          "maeKmh": 6.3,
+          "bftExactPct": 38.4,
+          "underPct": 45.1,
+          "overPct": 16.5,
+          "toneCalmerPct": 29.9,
+          "toneHarsherPct": 9.3
+        },
+        "medoidLand": {
+          "n": 29892,
+          "biasKmh": -1.9,
+          "maeKmh": 5.9,
+          "bftExactPct": 42.1,
+          "underPct": 36,
+          "overPct": 21.9,
+          "toneCalmerPct": 24.9,
+          "toneHarsherPct": 13.4
+        },
+        "station": {
+          "n": 29892,
+          "biasKmh": -0.7,
+          "maeKmh": 4.9,
+          "bftExactPct": 46.9,
+          "underPct": 29.6,
+          "overPct": 23.5,
+          "toneCalmerPct": 18.3,
+          "toneHarsherPct": 15.3
+        }
+      },
+      "2026": {
+        "centroid": {
+          "n": 29799,
+          "biasKmh": -2.2,
+          "maeKmh": 5.7,
+          "bftExactPct": 42.9,
+          "underPct": 36.7,
+          "overPct": 20.4,
+          "toneCalmerPct": 24.7,
+          "toneHarsherPct": 12.4
+        },
+        "medoid": {
+          "n": 29799,
+          "biasKmh": -2.9,
+          "maeKmh": 6,
+          "bftExactPct": 39.4,
+          "underPct": 42.5,
+          "overPct": 18.1,
+          "toneCalmerPct": 27.5,
+          "toneHarsherPct": 11
+        },
+        "nearest": {
+          "n": 29799,
+          "biasKmh": -3.1,
+          "maeKmh": 6,
+          "bftExactPct": 40.6,
+          "underPct": 43.2,
+          "overPct": 16.2,
+          "toneCalmerPct": 28.2,
+          "toneHarsherPct": 9.7
+        },
+        "medoidLand": {
+          "n": 29799,
+          "biasKmh": -1.7,
+          "maeKmh": 5.7,
+          "bftExactPct": 43.6,
+          "underPct": 34.3,
+          "overPct": 22.1,
+          "toneCalmerPct": 23.2,
+          "toneHarsherPct": 13.9
+        },
+        "station": {
+          "n": 29799,
+          "biasKmh": -0.5,
+          "maeKmh": 4.8,
+          "bftExactPct": 48.4,
+          "underPct": 27,
+          "overPct": 24.6,
+          "toneCalmerPct": 17.1,
+          "toneHarsherPct": 16.5
+        }
+      },
+      "regions": 24,
+      "beaches": 843,
+      "όλα": {
+        "centroid": {
+          "n": 59691,
+          "biasKmh": -2.3,
+          "maeKmh": 5.9,
+          "bftExactPct": 42,
+          "underPct": 37.6,
+          "overPct": 20.3,
+          "toneCalmerPct": 25.5,
+          "toneHarsherPct": 12.2
+        },
+        "medoid": {
+          "n": 59691,
+          "biasKmh": -3.1,
+          "maeKmh": 6.2,
+          "bftExactPct": 38.5,
+          "underPct": 43.4,
+          "overPct": 18.1,
+          "toneCalmerPct": 28.4,
+          "toneHarsherPct": 10.8
+        },
+        "nearest": {
+          "n": 59691,
+          "biasKmh": -3.2,
+          "maeKmh": 6.1,
+          "bftExactPct": 39.5,
+          "underPct": 44.1,
+          "overPct": 16.4,
+          "toneCalmerPct": 29,
+          "toneHarsherPct": 9.5
+        },
+        "medoidLand": {
+          "n": 59691,
+          "biasKmh": -1.8,
+          "maeKmh": 5.8,
+          "bftExactPct": 42.9,
+          "underPct": 35.1,
+          "overPct": 22,
+          "toneCalmerPct": 24,
+          "toneHarsherPct": 13.6
+        },
+        "station": {
+          "n": 59691,
+          "biasKmh": -0.6,
+          "maeKmh": 4.8,
+          "bftExactPct": 47.7,
+          "underPct": 28.3,
+          "overPct": 24,
+          "toneCalmerPct": 17.7,
+          "toneHarsherPct": 15.9
+        }
+      }
+    },
+    "δίκαιο (medoid δεν πλησιάζει τον κριτή)": {
+      "2025": {
+        "centroid": {
+          "n": 24800,
+          "biasKmh": -2.7,
+          "maeKmh": 5.9,
+          "bftExactPct": 42.3,
+          "underPct": 39.4,
+          "overPct": 18.3,
+          "toneCalmerPct": 27.1,
+          "toneHarsherPct": 11.1
+        },
+        "medoid": {
+          "n": 24800,
+          "biasKmh": -3.4,
+          "maeKmh": 6.4,
+          "bftExactPct": 38.8,
+          "underPct": 44.4,
+          "overPct": 16.8,
+          "toneCalmerPct": 30.3,
+          "toneHarsherPct": 10.1
+        },
+        "nearest": {
+          "n": 24800,
+          "biasKmh": -3.6,
+          "maeKmh": 6.3,
+          "bftExactPct": 39.3,
+          "underPct": 45.6,
+          "overPct": 15.1,
+          "toneCalmerPct": 30.9,
+          "toneHarsherPct": 8.6
+        },
+        "medoidLand": {
+          "n": 24800,
+          "biasKmh": -2.4,
+          "maeKmh": 5.9,
+          "bftExactPct": 43.2,
+          "underPct": 37,
+          "overPct": 19.8,
+          "toneCalmerPct": 26.1,
+          "toneHarsherPct": 12.4
+        },
+        "station": {
+          "n": 24800,
+          "biasKmh": -1.1,
+          "maeKmh": 5,
+          "bftExactPct": 47.2,
+          "underPct": 31,
+          "overPct": 21.8,
+          "toneCalmerPct": 19.7,
+          "toneHarsherPct": 14.5
+        }
+      },
+      "2026": {
+        "centroid": {
+          "n": 24711,
+          "biasKmh": -2.7,
+          "maeKmh": 5.8,
+          "bftExactPct": 43.5,
+          "underPct": 38.7,
+          "overPct": 17.8,
+          "toneCalmerPct": 26.7,
+          "toneHarsherPct": 11.3
+        },
+        "medoid": {
+          "n": 24711,
+          "biasKmh": -3.4,
+          "maeKmh": 6.2,
+          "bftExactPct": 39.8,
+          "underPct": 43.9,
+          "overPct": 16.3,
+          "toneCalmerPct": 29.9,
+          "toneHarsherPct": 10.3
+        },
+        "nearest": {
+          "n": 24711,
+          "biasKmh": -3.6,
+          "maeKmh": 6.1,
+          "bftExactPct": 40.6,
+          "underPct": 45,
+          "overPct": 14.4,
+          "toneCalmerPct": 30.5,
+          "toneHarsherPct": 8.9
+        },
+        "medoidLand": {
+          "n": 24711,
+          "biasKmh": -2.4,
+          "maeKmh": 5.8,
+          "bftExactPct": 44.1,
+          "underPct": 36.5,
+          "overPct": 19.3,
+          "toneCalmerPct": 25.5,
+          "toneHarsherPct": 12.5
+        },
+        "station": {
+          "n": 24711,
+          "biasKmh": -1,
+          "maeKmh": 4.8,
+          "bftExactPct": 48.5,
+          "underPct": 29.4,
+          "overPct": 22.1,
+          "toneCalmerPct": 19.2,
+          "toneHarsherPct": 15.3
+        }
+      },
+      "regions": 20,
+      "beaches": 651,
+      "όλα": {
+        "centroid": {
+          "n": 49511,
+          "biasKmh": -2.7,
+          "maeKmh": 5.9,
+          "bftExactPct": 42.9,
+          "underPct": 39,
+          "overPct": 18.1,
+          "toneCalmerPct": 26.9,
+          "toneHarsherPct": 11.2
+        },
+        "medoid": {
+          "n": 49511,
+          "biasKmh": -3.4,
+          "maeKmh": 6.3,
+          "bftExactPct": 39.3,
+          "underPct": 44.2,
+          "overPct": 16.6,
+          "toneCalmerPct": 30.1,
+          "toneHarsherPct": 10.2
+        },
+        "nearest": {
+          "n": 49511,
+          "biasKmh": -3.6,
+          "maeKmh": 6.2,
+          "bftExactPct": 40,
+          "underPct": 45.3,
+          "overPct": 14.7,
+          "toneCalmerPct": 30.7,
+          "toneHarsherPct": 8.8
+        },
+        "medoidLand": {
+          "n": 49511,
+          "biasKmh": -2.4,
+          "maeKmh": 5.9,
+          "bftExactPct": 43.7,
+          "underPct": 36.7,
+          "overPct": 19.6,
+          "toneCalmerPct": 25.8,
+          "toneHarsherPct": 12.5
+        },
+        "station": {
+          "n": 49511,
+          "biasKmh": -1,
+          "maeKmh": 4.9,
+          "bftExactPct": 47.8,
+          "underPct": 30.2,
+          "overPct": 22,
+          "toneCalmerPct": 19.4,
+          "toneHarsherPct": 14.9
+        }
+      }
+    }
+  },
+  "regions": [
+    {
+      "regionId": "ionian-islands-kefalonia",
+      "regionName": "Κεφαλονιά",
+      "beaches": 77,
+      "station": "LGKF",
+      "fair": false,
+      "kmToStation": {
+        "centroid": 11.3,
+        "medoid": 5.9,
+        "nearest": 19
+      },
+      "elevationM": {
+        "centroid": 769,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 15
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 0.8,
+          "maeKmh": 6.3,
+          "bftExactPct": 32.6,
+          "underPct": 26.8,
+          "overPct": 40.6,
+          "toneCalmerPct": 19.3,
+          "toneHarsherPct": 10.8
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 0.7,
+          "maeKmh": 4.8,
+          "bftExactPct": 41.1,
+          "underPct": 23.4,
+          "overPct": 35.5,
+          "toneCalmerPct": 16.1,
+          "toneHarsherPct": 7.7
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -3,
+          "maeKmh": 6.1,
+          "bftExactPct": 33.2,
+          "underPct": 44.6,
+          "overPct": 22.2,
+          "toneCalmerPct": 25.4,
+          "toneHarsherPct": 0.9
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 2.7,
+          "maeKmh": 5.3,
+          "bftExactPct": 37.7,
+          "underPct": 14.8,
+          "overPct": 47.4,
+          "toneCalmerPct": 10.7,
+          "toneHarsherPct": 15.4
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": 3.3,
+          "maeKmh": 5.2,
+          "bftExactPct": 37.7,
+          "underPct": 11.7,
+          "overPct": 50.5,
+          "toneCalmerPct": 7.3,
+          "toneHarsherPct": 20.7
+        }
+      }
+    },
+    {
+      "regionId": "north-aegean-samos",
+      "regionName": "Σάμος",
+      "beaches": 44,
+      "station": "LGSM",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 12,
+        "medoid": 15.9,
+        "nearest": 14.4
+      },
+      "elevationM": {
+        "centroid": 471,
+        "medoid": 18,
+        "nearest": 0,
+        "station": 3
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -3.5,
+          "maeKmh": 5.3,
+          "bftExactPct": 41.1,
+          "underPct": 48.3,
+          "overPct": 10.6,
+          "toneCalmerPct": 36.3,
+          "toneHarsherPct": 6.1
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 1.3,
+          "maeKmh": 4.2,
+          "bftExactPct": 53,
+          "underPct": 16.1,
+          "overPct": 30.9,
+          "toneCalmerPct": 13,
+          "toneHarsherPct": 23.7
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -0.6,
+          "maeKmh": 4.3,
+          "bftExactPct": 52.4,
+          "underPct": 26.8,
+          "overPct": 20.8,
+          "toneCalmerPct": 21.1,
+          "toneHarsherPct": 15
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 1.3,
+          "maeKmh": 4.2,
+          "bftExactPct": 53,
+          "underPct": 16.1,
+          "overPct": 30.9,
+          "toneCalmerPct": 13,
+          "toneHarsherPct": 23.7
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": 0.7,
+          "maeKmh": 5.1,
+          "bftExactPct": 42.4,
+          "underPct": 26.2,
+          "overPct": 31.4,
+          "toneCalmerPct": 16,
+          "toneHarsherPct": 26.1
+        }
+      }
+    },
+    {
+      "regionId": "thessaly-skiathos",
+      "regionName": "Σκιάθος",
+      "beaches": 33,
+      "station": "LGSK",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 5.5,
+        "medoid": 6.8,
+        "nearest": 6.1
+      },
+      "elevationM": {
+        "centroid": 187,
+        "medoid": 2,
+        "nearest": 0,
+        "station": 9
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 3,
+          "maeKmh": 4.6,
+          "bftExactPct": 46.9,
+          "underPct": 13.6,
+          "overPct": 39.5,
+          "toneCalmerPct": 4.7,
+          "toneHarsherPct": 22.9
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 1.8,
+          "maeKmh": 4.2,
+          "bftExactPct": 47.4,
+          "underPct": 19.1,
+          "overPct": 33.5,
+          "toneCalmerPct": 6.9,
+          "toneHarsherPct": 16.9
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": 0.8,
+          "maeKmh": 4,
+          "bftExactPct": 48.7,
+          "underPct": 26.1,
+          "overPct": 25.2,
+          "toneCalmerPct": 8.1,
+          "toneHarsherPct": 13.1
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 1.8,
+          "maeKmh": 4.2,
+          "bftExactPct": 47.4,
+          "underPct": 19.1,
+          "overPct": 33.5,
+          "toneCalmerPct": 6.9,
+          "toneHarsherPct": 16.9
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": 3.9,
+          "maeKmh": 5.2,
+          "bftExactPct": 44.4,
+          "underPct": 11.3,
+          "overPct": 44.3,
+          "toneCalmerPct": 3.9,
+          "toneHarsherPct": 27.3
+        }
+      }
+    },
+    {
+      "regionId": "attica-kythira",
+      "regionName": "Κύθηρα",
+      "beaches": 42,
+      "station": "LGKC",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 3.4,
+        "medoid": 4.4,
+        "nearest": 8.7
+      },
+      "elevationM": {
+        "centroid": 300,
+        "medoid": 0,
+        "nearest": 35,
+        "station": 315
+      },
+      "scores": {
+        "centroid": {
+          "n": 1237,
+          "biasKmh": 1.5,
+          "maeKmh": 5.3,
+          "bftExactPct": 44.6,
+          "underPct": 23.6,
+          "overPct": 31.8,
+          "toneCalmerPct": 11.5,
+          "toneHarsherPct": 26.1
+        },
+        "medoid": {
+          "n": 1237,
+          "biasKmh": -2,
+          "maeKmh": 5.1,
+          "bftExactPct": 40.7,
+          "underPct": 42.7,
+          "overPct": 16.7,
+          "toneCalmerPct": 21.7,
+          "toneHarsherPct": 13.8
+        },
+        "nearest": {
+          "n": 1237,
+          "biasKmh": 1.2,
+          "maeKmh": 5.8,
+          "bftExactPct": 41.2,
+          "underPct": 27.9,
+          "overPct": 30.9,
+          "toneCalmerPct": 15,
+          "toneHarsherPct": 22.8
+        },
+        "medoidLand": {
+          "n": 1237,
+          "biasKmh": -0.2,
+          "maeKmh": 4.9,
+          "bftExactPct": 45.2,
+          "underPct": 30.6,
+          "overPct": 24.2,
+          "toneCalmerPct": 15.7,
+          "toneHarsherPct": 19.4
+        },
+        "station": {
+          "n": 1237,
+          "biasKmh": 1.5,
+          "maeKmh": 5.3,
+          "bftExactPct": 44.6,
+          "underPct": 23.6,
+          "overPct": 31.8,
+          "toneCalmerPct": 11.5,
+          "toneHarsherPct": 26.1
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-kos",
+      "regionName": "Κως",
+      "beaches": 38,
+      "station": "LGKO",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 1.9,
+        "medoid": 5,
+        "nearest": 4.7
+      },
+      "elevationM": {
+        "centroid": 127,
+        "medoid": 5,
+        "nearest": 6,
+        "station": 119
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -2.6,
+          "maeKmh": 4.3,
+          "bftExactPct": 53.5,
+          "underPct": 34.5,
+          "overPct": 12,
+          "toneCalmerPct": 30.2,
+          "toneHarsherPct": 9.7
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 0.1,
+          "maeKmh": 4.2,
+          "bftExactPct": 54.4,
+          "underPct": 20,
+          "overPct": 25.5,
+          "toneCalmerPct": 16.7,
+          "toneHarsherPct": 22.6
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -2.6,
+          "maeKmh": 4.3,
+          "bftExactPct": 53.5,
+          "underPct": 34.5,
+          "overPct": 12,
+          "toneCalmerPct": 30.2,
+          "toneHarsherPct": 9.7
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 0.1,
+          "maeKmh": 4.2,
+          "bftExactPct": 54.4,
+          "underPct": 20,
+          "overPct": 25.5,
+          "toneCalmerPct": 16.7,
+          "toneHarsherPct": 22.6
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -2.5,
+          "maeKmh": 4.4,
+          "bftExactPct": 52.2,
+          "underPct": 35.4,
+          "overPct": 12.4,
+          "toneCalmerPct": 29.6,
+          "toneHarsherPct": 10.2
+        }
+      }
+    },
+    {
+      "regionId": "east-macedonia-and-thrace-evros-mainland",
+      "regionName": "Έβρος",
+      "beaches": 5,
+      "station": "LGAL",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 13,
+        "medoid": 11.2,
+        "nearest": 11.2
+      },
+      "elevationM": {
+        "centroid": 0,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 4
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -6.2,
+          "maeKmh": 7.2,
+          "bftExactPct": 25.7,
+          "underPct": 66.9,
+          "overPct": 7.3,
+          "toneCalmerPct": 42.7,
+          "toneHarsherPct": 0.6
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": -6.2,
+          "maeKmh": 7.2,
+          "bftExactPct": 25.7,
+          "underPct": 66.9,
+          "overPct": 7.3,
+          "toneCalmerPct": 42.7,
+          "toneHarsherPct": 0.6
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -6.2,
+          "maeKmh": 7.2,
+          "bftExactPct": 25.7,
+          "underPct": 66.9,
+          "overPct": 7.3,
+          "toneCalmerPct": 42.7,
+          "toneHarsherPct": 0.6
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": -4.5,
+          "maeKmh": 5.8,
+          "bftExactPct": 38.7,
+          "underPct": 51.8,
+          "overPct": 9.5,
+          "toneCalmerPct": 34.9,
+          "toneHarsherPct": 2.1
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -1.6,
+          "maeKmh": 4.4,
+          "bftExactPct": 52.6,
+          "underPct": 28.5,
+          "overPct": 18.9,
+          "toneCalmerPct": 20.4,
+          "toneHarsherPct": 11.4
+        }
+      }
+    },
+    {
+      "regionId": "epirus-arta-mainland",
+      "regionName": "Άρτα",
+      "beaches": 2,
+      "station": "LGPZ",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 15.3,
+        "medoid": 14.4,
+        "nearest": 14.4
+      },
+      "elevationM": {
+        "centroid": 0,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 1
+      },
+      "scores": {
+        "centroid": {
+          "n": 2545,
+          "biasKmh": -2.5,
+          "maeKmh": 4.8,
+          "bftExactPct": 41.3,
+          "underPct": 42.6,
+          "overPct": 16.1,
+          "toneCalmerPct": 17.3,
+          "toneHarsherPct": 8.8
+        },
+        "medoid": {
+          "n": 2545,
+          "biasKmh": -2.5,
+          "maeKmh": 4.8,
+          "bftExactPct": 41.3,
+          "underPct": 42.6,
+          "overPct": 16.1,
+          "toneCalmerPct": 17.3,
+          "toneHarsherPct": 8.8
+        },
+        "nearest": {
+          "n": 2545,
+          "biasKmh": -2.5,
+          "maeKmh": 4.8,
+          "bftExactPct": 41.3,
+          "underPct": 42.6,
+          "overPct": 16.1,
+          "toneCalmerPct": 17.3,
+          "toneHarsherPct": 8.8
+        },
+        "medoidLand": {
+          "n": 2545,
+          "biasKmh": -0.3,
+          "maeKmh": 4.6,
+          "bftExactPct": 46.1,
+          "underPct": 28.3,
+          "overPct": 25.7,
+          "toneCalmerPct": 11.9,
+          "toneHarsherPct": 17.5
+        },
+        "station": {
+          "n": 2545,
+          "biasKmh": 0.2,
+          "maeKmh": 3.5,
+          "bftExactPct": 57.3,
+          "underPct": 20.4,
+          "overPct": 22.3,
+          "toneCalmerPct": 9.6,
+          "toneHarsherPct": 14.2
+        }
+      }
+    },
+    {
+      "regionId": "ionian-islands-zakynthos",
+      "regionName": "Ζάκυνθος",
+      "beaches": 39,
+      "station": "LGZA",
+      "fair": false,
+      "kmToStation": {
+        "centroid": 6.7,
+        "medoid": 2.5,
+        "nearest": 9
+      },
+      "elevationM": {
+        "centroid": 18,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 2
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 0.3,
+          "maeKmh": 3.9,
+          "bftExactPct": 48,
+          "underPct": 26.3,
+          "overPct": 25.7,
+          "toneCalmerPct": 9.2,
+          "toneHarsherPct": 10.7
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": -2.3,
+          "maeKmh": 3.9,
+          "bftExactPct": 42.1,
+          "underPct": 45.3,
+          "overPct": 12.6,
+          "toneCalmerPct": 15.2,
+          "toneHarsherPct": 2.9
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -0.8,
+          "maeKmh": 3.9,
+          "bftExactPct": 46.2,
+          "underPct": 33.8,
+          "overPct": 20,
+          "toneCalmerPct": 14.3,
+          "toneHarsherPct": 5.8
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": -0.1,
+          "maeKmh": 3.5,
+          "bftExactPct": 53.5,
+          "underPct": 27,
+          "overPct": 19.4,
+          "toneCalmerPct": 11,
+          "toneHarsherPct": 7.2
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -0.1,
+          "maeKmh": 3.5,
+          "bftExactPct": 53.5,
+          "underPct": 27,
+          "overPct": 19.4,
+          "toneCalmerPct": 11,
+          "toneHarsherPct": 7.2
+        }
+      }
+    },
+    {
+      "regionId": "north-aegean-oinousses",
+      "regionName": "Οινούσσες",
+      "beaches": 8,
+      "station": "LGHI",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 21.1,
+        "medoid": 20.6,
+        "nearest": 20.9
+      },
+      "elevationM": {
+        "centroid": 64,
+        "medoid": 0,
+        "nearest": 1,
+        "station": 3
+      },
+      "scores": {
+        "centroid": {
+          "n": 2488,
+          "biasKmh": 1.5,
+          "maeKmh": 6.4,
+          "bftExactPct": 39.5,
+          "underPct": 24.1,
+          "overPct": 36.3,
+          "toneCalmerPct": 20.9,
+          "toneHarsherPct": 29.1
+        },
+        "medoid": {
+          "n": 2488,
+          "biasKmh": -0.9,
+          "maeKmh": 6.4,
+          "bftExactPct": 36.1,
+          "underPct": 36.4,
+          "overPct": 27.5,
+          "toneCalmerPct": 28.6,
+          "toneHarsherPct": 21.9
+        },
+        "nearest": {
+          "n": 2488,
+          "biasKmh": 1.5,
+          "maeKmh": 6.4,
+          "bftExactPct": 39.5,
+          "underPct": 24.1,
+          "overPct": 36.3,
+          "toneCalmerPct": 20.9,
+          "toneHarsherPct": 29.1
+        },
+        "medoidLand": {
+          "n": 2488,
+          "biasKmh": 1.5,
+          "maeKmh": 6.4,
+          "bftExactPct": 39.5,
+          "underPct": 24.1,
+          "overPct": 36.3,
+          "toneCalmerPct": 20.9,
+          "toneHarsherPct": 29.1
+        },
+        "station": {
+          "n": 2488,
+          "biasKmh": 3.6,
+          "maeKmh": 5.1,
+          "bftExactPct": 44.5,
+          "underPct": 10,
+          "overPct": 45.5,
+          "toneCalmerPct": 5.2,
+          "toneHarsherPct": 39.9
+        }
+      }
+    },
+    {
+      "regionId": "north-aegean-lemnos",
+      "regionName": "Λήμνος",
+      "beaches": 41,
+      "station": "LGLM",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 2.8,
+        "medoid": 3.4,
+        "nearest": 3.4
+      },
+      "elevationM": {
+        "centroid": 7,
+        "medoid": 3,
+        "nearest": 3,
+        "station": 3
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 0.4,
+          "maeKmh": 2.9,
+          "bftExactPct": 66.3,
+          "underPct": 13.5,
+          "overPct": 20.1,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 13.3
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 0.4,
+          "maeKmh": 2.9,
+          "bftExactPct": 66.3,
+          "underPct": 13.5,
+          "overPct": 20.1,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 13.3
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": 0.4,
+          "maeKmh": 2.9,
+          "bftExactPct": 66.3,
+          "underPct": 13.5,
+          "overPct": 20.1,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 13.3
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 0.4,
+          "maeKmh": 2.9,
+          "bftExactPct": 66.3,
+          "underPct": 13.5,
+          "overPct": 20.1,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 13.3
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -0.5,
+          "maeKmh": 3.2,
+          "bftExactPct": 65.7,
+          "underPct": 18.6,
+          "overPct": 15.7,
+          "toneCalmerPct": 13.8,
+          "toneHarsherPct": 7.7
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-mykonos",
+      "regionName": "Μύκονος",
+      "beaches": 39,
+      "station": "LGMK",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 2.7,
+        "medoid": 3.6,
+        "nearest": 3.8
+      },
+      "elevationM": {
+        "centroid": 146,
+        "medoid": 20,
+        "nearest": 0,
+        "station": 122
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -1.9,
+          "maeKmh": 4.6,
+          "bftExactPct": 54.6,
+          "underPct": 29.7,
+          "overPct": 15.7,
+          "toneCalmerPct": 15.6,
+          "toneHarsherPct": 7.7
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": -1.9,
+          "maeKmh": 4.6,
+          "bftExactPct": 54.6,
+          "underPct": 29.7,
+          "overPct": 15.7,
+          "toneCalmerPct": 15.6,
+          "toneHarsherPct": 7.7
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -4.3,
+          "maeKmh": 5.6,
+          "bftExactPct": 45.8,
+          "underPct": 46.4,
+          "overPct": 7.8,
+          "toneCalmerPct": 22.2,
+          "toneHarsherPct": 4.6
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": -1.9,
+          "maeKmh": 4.6,
+          "bftExactPct": 54.6,
+          "underPct": 29.7,
+          "overPct": 15.7,
+          "toneCalmerPct": 15.6,
+          "toneHarsherPct": 7.7
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -1.9,
+          "maeKmh": 4.6,
+          "bftExactPct": 54.6,
+          "underPct": 29.7,
+          "overPct": 15.7,
+          "toneCalmerPct": 15.6,
+          "toneHarsherPct": 7.7
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-karpathos",
+      "regionName": "Κάρπαθος",
+      "beaches": 49,
+      "station": "LGKP",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 19,
+        "medoid": 18.8,
+        "nearest": 18.8
+      },
+      "elevationM": {
+        "centroid": 390,
+        "medoid": 18,
+        "nearest": 18,
+        "station": 8
+      },
+      "scores": {
+        "centroid": {
+          "n": 2546,
+          "biasKmh": -17.6,
+          "maeKmh": 17.7,
+          "bftExactPct": 4.5,
+          "underPct": 95.1,
+          "overPct": 0.4,
+          "toneCalmerPct": 83.3,
+          "toneHarsherPct": 0.3
+        },
+        "medoid": {
+          "n": 2546,
+          "biasKmh": -17.6,
+          "maeKmh": 17.7,
+          "bftExactPct": 4.5,
+          "underPct": 95.1,
+          "overPct": 0.4,
+          "toneCalmerPct": 83.3,
+          "toneHarsherPct": 0.3
+        },
+        "nearest": {
+          "n": 2546,
+          "biasKmh": -17.6,
+          "maeKmh": 17.7,
+          "bftExactPct": 4.5,
+          "underPct": 95.1,
+          "overPct": 0.4,
+          "toneCalmerPct": 83.3,
+          "toneHarsherPct": 0.3
+        },
+        "medoidLand": {
+          "n": 2546,
+          "biasKmh": -17.6,
+          "maeKmh": 17.7,
+          "bftExactPct": 4.5,
+          "underPct": 95.1,
+          "overPct": 0.4,
+          "toneCalmerPct": 83.3,
+          "toneHarsherPct": 0.3
+        },
+        "station": {
+          "n": 2546,
+          "biasKmh": -7.9,
+          "maeKmh": 8.5,
+          "bftExactPct": 30.8,
+          "underPct": 66.1,
+          "overPct": 3.1,
+          "toneCalmerPct": 28.7,
+          "toneHarsherPct": 2.2
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-pserimos",
+      "regionName": "Ψέριμος",
+      "beaches": 3,
+      "station": "LGKO",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 16.8,
+        "medoid": 16.7,
+        "nearest": 16.7
+      },
+      "elevationM": {
+        "centroid": 144,
+        "medoid": 8,
+        "nearest": 8,
+        "station": 119
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -5.2,
+          "maeKmh": 6.2,
+          "bftExactPct": 40.1,
+          "underPct": 54.7,
+          "overPct": 5.2,
+          "toneCalmerPct": 43.1,
+          "toneHarsherPct": 4
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": -5.2,
+          "maeKmh": 6.2,
+          "bftExactPct": 40.1,
+          "underPct": 54.7,
+          "overPct": 5.2,
+          "toneCalmerPct": 43.1,
+          "toneHarsherPct": 4
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -5.2,
+          "maeKmh": 6.2,
+          "bftExactPct": 40.1,
+          "underPct": 54.7,
+          "overPct": 5.2,
+          "toneCalmerPct": 43.1,
+          "toneHarsherPct": 4
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": -5.2,
+          "maeKmh": 6.2,
+          "bftExactPct": 40.1,
+          "underPct": 54.7,
+          "overPct": 5.2,
+          "toneCalmerPct": 43.1,
+          "toneHarsherPct": 4
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -2.5,
+          "maeKmh": 4.4,
+          "bftExactPct": 52.2,
+          "underPct": 35.4,
+          "overPct": 12.4,
+          "toneCalmerPct": 29.6,
+          "toneHarsherPct": 10.2
+        }
+      }
+    },
+    {
+      "regionId": "ionian-islands-lefkada",
+      "regionName": "Λευκάδα",
+      "beaches": 33,
+      "station": "LGPZ",
+      "fair": false,
+      "kmToStation": {
+        "centroid": 22.9,
+        "medoid": 19.6,
+        "nearest": 19.7
+      },
+      "elevationM": {
+        "centroid": 541,
+        "medoid": 0,
+        "nearest": 7,
+        "station": 1
+      },
+      "scores": {
+        "centroid": {
+          "n": 2545,
+          "biasKmh": -5.3,
+          "maeKmh": 7.6,
+          "bftExactPct": 27.8,
+          "underPct": 60.7,
+          "overPct": 11.4,
+          "toneCalmerPct": 39.7,
+          "toneHarsherPct": 3.8
+        },
+        "medoid": {
+          "n": 2545,
+          "biasKmh": -6.4,
+          "maeKmh": 7.7,
+          "bftExactPct": 18.2,
+          "underPct": 72.4,
+          "overPct": 9.4,
+          "toneCalmerPct": 40.3,
+          "toneHarsherPct": 2.3
+        },
+        "nearest": {
+          "n": 2545,
+          "biasKmh": -4.5,
+          "maeKmh": 6.5,
+          "bftExactPct": 30.8,
+          "underPct": 57.6,
+          "overPct": 11.6,
+          "toneCalmerPct": 35.3,
+          "toneHarsherPct": 4.1
+        },
+        "medoidLand": {
+          "n": 2545,
+          "biasKmh": -4.5,
+          "maeKmh": 6.5,
+          "bftExactPct": 30.8,
+          "underPct": 57.6,
+          "overPct": 11.6,
+          "toneCalmerPct": 35.3,
+          "toneHarsherPct": 4.1
+        },
+        "station": {
+          "n": 2545,
+          "biasKmh": 0.2,
+          "maeKmh": 3.5,
+          "bftExactPct": 57.3,
+          "underPct": 20.4,
+          "overPct": 22.3,
+          "toneCalmerPct": 9.6,
+          "toneHarsherPct": 14.2
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-naxos",
+      "regionName": "Νάξος",
+      "beaches": 43,
+      "station": "LGNX",
+      "fair": false,
+      "kmToStation": {
+        "centroid": 8.3,
+        "medoid": 3.4,
+        "nearest": 3.4
+      },
+      "elevationM": {
+        "centroid": 357,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 0
+      },
+      "scores": {
+        "centroid": {
+          "n": 2539,
+          "biasKmh": 3.4,
+          "maeKmh": 5.5,
+          "bftExactPct": 42.9,
+          "underPct": 10,
+          "overPct": 47.1,
+          "toneCalmerPct": 6.1,
+          "toneHarsherPct": 43.6
+        },
+        "medoid": {
+          "n": 2539,
+          "biasKmh": 2.7,
+          "maeKmh": 5.7,
+          "bftExactPct": 38.4,
+          "underPct": 17.4,
+          "overPct": 44.1,
+          "toneCalmerPct": 8.3,
+          "toneHarsherPct": 41.6
+        },
+        "nearest": {
+          "n": 2539,
+          "biasKmh": 2.7,
+          "maeKmh": 5.7,
+          "bftExactPct": 38.4,
+          "underPct": 17.4,
+          "overPct": 44.1,
+          "toneCalmerPct": 8.3,
+          "toneHarsherPct": 41.6
+        },
+        "medoidLand": {
+          "n": 2539,
+          "biasKmh": 5.1,
+          "maeKmh": 6.8,
+          "bftExactPct": 34,
+          "underPct": 9.5,
+          "overPct": 56.5,
+          "toneCalmerPct": 4.5,
+          "toneHarsherPct": 51.1
+        },
+        "station": {
+          "n": 2539,
+          "biasKmh": 2.7,
+          "maeKmh": 5.7,
+          "bftExactPct": 38.4,
+          "underPct": 17.4,
+          "overPct": 44.1,
+          "toneCalmerPct": 8.3,
+          "toneHarsherPct": 41.6
+        }
+      }
+    },
+    {
+      "regionId": "north-aegean-chios",
+      "regionName": "Χίος",
+      "beaches": 36,
+      "station": "LGHI",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 9.6,
+        "medoid": 12.8,
+        "nearest": 12.8
+      },
+      "elevationM": {
+        "centroid": 466,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 3
+      },
+      "scores": {
+        "centroid": {
+          "n": 2488,
+          "biasKmh": 0.6,
+          "maeKmh": 5.3,
+          "bftExactPct": 41.8,
+          "underPct": 26.1,
+          "overPct": 32,
+          "toneCalmerPct": 14.2,
+          "toneHarsherPct": 27.5
+        },
+        "medoid": {
+          "n": 2488,
+          "biasKmh": -3.1,
+          "maeKmh": 5.7,
+          "bftExactPct": 41.4,
+          "underPct": 44.6,
+          "overPct": 14,
+          "toneCalmerPct": 29.6,
+          "toneHarsherPct": 9.7
+        },
+        "nearest": {
+          "n": 2488,
+          "biasKmh": -3.1,
+          "maeKmh": 5.7,
+          "bftExactPct": 41.4,
+          "underPct": 44.6,
+          "overPct": 14,
+          "toneCalmerPct": 29.6,
+          "toneHarsherPct": 9.7
+        },
+        "medoidLand": {
+          "n": 2488,
+          "biasKmh": -1.6,
+          "maeKmh": 5.4,
+          "bftExactPct": 42.6,
+          "underPct": 35.9,
+          "overPct": 21.5,
+          "toneCalmerPct": 24.7,
+          "toneHarsherPct": 15.8
+        },
+        "station": {
+          "n": 2488,
+          "biasKmh": 3.6,
+          "maeKmh": 5.1,
+          "bftExactPct": 44.5,
+          "underPct": 10,
+          "overPct": 45.5,
+          "toneCalmerPct": 5.2,
+          "toneHarsherPct": 39.9
+        }
+      }
+    },
+    {
+      "regionId": "thessaly-skopelos",
+      "regionName": "Σκόπελος",
+      "beaches": 22,
+      "station": "LGSK",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 15.8,
+        "medoid": 14.4,
+        "nearest": 14.4
+      },
+      "elevationM": {
+        "centroid": 364,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 9
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 1.3,
+          "maeKmh": 4.1,
+          "bftExactPct": 48,
+          "underPct": 22,
+          "overPct": 30,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 15.2
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 1.4,
+          "maeKmh": 4.5,
+          "bftExactPct": 46.2,
+          "underPct": 22.6,
+          "overPct": 31.2,
+          "toneCalmerPct": 8.2,
+          "toneHarsherPct": 14.9
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": 1.4,
+          "maeKmh": 4.5,
+          "bftExactPct": 46.2,
+          "underPct": 22.6,
+          "overPct": 31.2,
+          "toneCalmerPct": 8.2,
+          "toneHarsherPct": 14.9
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 1.3,
+          "maeKmh": 4.1,
+          "bftExactPct": 48,
+          "underPct": 22,
+          "overPct": 30,
+          "toneCalmerPct": 7.7,
+          "toneHarsherPct": 15.2
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": 3.9,
+          "maeKmh": 5.2,
+          "bftExactPct": 44.4,
+          "underPct": 11.3,
+          "overPct": 44.3,
+          "toneCalmerPct": 3.9,
+          "toneHarsherPct": 27.3
+        }
+      }
+    },
+    {
+      "regionId": "ionian-islands-corfu",
+      "regionName": "Κέρκυρα",
+      "beaches": 105,
+      "station": "LGKR",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 5.1,
+        "medoid": 8.1,
+        "nearest": 5
+      },
+      "elevationM": {
+        "centroid": 8,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 0
+      },
+      "scores": {
+        "centroid": {
+          "n": 2545,
+          "biasKmh": -0.4,
+          "maeKmh": 3.6,
+          "bftExactPct": 44.4,
+          "underPct": 30.5,
+          "overPct": 25.1,
+          "toneCalmerPct": 14.2,
+          "toneHarsherPct": 3.7
+        },
+        "medoid": {
+          "n": 2545,
+          "biasKmh": -2.4,
+          "maeKmh": 4.1,
+          "bftExactPct": 36.3,
+          "underPct": 45.7,
+          "overPct": 18,
+          "toneCalmerPct": 19,
+          "toneHarsherPct": 1.4
+        },
+        "nearest": {
+          "n": 2545,
+          "biasKmh": -2.4,
+          "maeKmh": 4.1,
+          "bftExactPct": 36.3,
+          "underPct": 45.7,
+          "overPct": 18,
+          "toneCalmerPct": 19,
+          "toneHarsherPct": 1.4
+        },
+        "medoidLand": {
+          "n": 2545,
+          "biasKmh": -0.4,
+          "maeKmh": 3.6,
+          "bftExactPct": 44.4,
+          "underPct": 30.5,
+          "overPct": 25.1,
+          "toneCalmerPct": 14.2,
+          "toneHarsherPct": 3.7
+        },
+        "station": {
+          "n": 2545,
+          "biasKmh": -2.4,
+          "maeKmh": 4.1,
+          "bftExactPct": 36.3,
+          "underPct": 45.7,
+          "overPct": 18,
+          "toneCalmerPct": 19,
+          "toneHarsherPct": 1.4
+        }
+      }
+    },
+    {
+      "regionId": "peloponnese-messinia-mainland",
+      "regionName": "Μεσσηνία",
+      "beaches": 57,
+      "station": "LGKL",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 22.1,
+        "medoid": 27.1,
+        "nearest": 18.6
+      },
+      "elevationM": {
+        "centroid": 234,
+        "medoid": 27,
+        "nearest": 17,
+        "station": 5
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": 0.8,
+          "maeKmh": 5.2,
+          "bftExactPct": 41.4,
+          "underPct": 26.2,
+          "overPct": 32.3,
+          "toneCalmerPct": 12.3,
+          "toneHarsherPct": 17.5
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": 2,
+          "maeKmh": 5.8,
+          "bftExactPct": 36,
+          "underPct": 24.3,
+          "overPct": 39.7,
+          "toneCalmerPct": 10.7,
+          "toneHarsherPct": 25.7
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": 0,
+          "maeKmh": 5,
+          "bftExactPct": 44.5,
+          "underPct": 28.4,
+          "overPct": 27.1,
+          "toneCalmerPct": 14.8,
+          "toneHarsherPct": 12.3
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": 2,
+          "maeKmh": 5.8,
+          "bftExactPct": 36,
+          "underPct": 24.3,
+          "overPct": 39.7,
+          "toneCalmerPct": 10.7,
+          "toneHarsherPct": 25.7
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": 0.9,
+          "maeKmh": 4.2,
+          "bftExactPct": 45.4,
+          "underPct": 20.7,
+          "overPct": 33.8,
+          "toneCalmerPct": 10,
+          "toneHarsherPct": 18.3
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-paros",
+      "regionName": "Πάρος",
+      "beaches": 39,
+      "station": "LGPA",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 9.8,
+        "medoid": 13.6,
+        "nearest": 13.6
+      },
+      "elevationM": {
+        "centroid": 160,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 31
+      },
+      "scores": {
+        "centroid": {
+          "n": 2547,
+          "biasKmh": -3.4,
+          "maeKmh": 5.1,
+          "bftExactPct": 50.1,
+          "underPct": 38,
+          "overPct": 11.9,
+          "toneCalmerPct": 25.4,
+          "toneHarsherPct": 8.3
+        },
+        "medoid": {
+          "n": 2547,
+          "biasKmh": -5.5,
+          "maeKmh": 6.3,
+          "bftExactPct": 39.8,
+          "underPct": 55.5,
+          "overPct": 4.7,
+          "toneCalmerPct": 37.8,
+          "toneHarsherPct": 3.3
+        },
+        "nearest": {
+          "n": 2547,
+          "biasKmh": -5.5,
+          "maeKmh": 6.3,
+          "bftExactPct": 39.8,
+          "underPct": 55.5,
+          "overPct": 4.7,
+          "toneCalmerPct": 37.8,
+          "toneHarsherPct": 3.3
+        },
+        "medoidLand": {
+          "n": 2547,
+          "biasKmh": -3.2,
+          "maeKmh": 5,
+          "bftExactPct": 51.6,
+          "underPct": 36.7,
+          "overPct": 11.7,
+          "toneCalmerPct": 24.1,
+          "toneHarsherPct": 8.3
+        },
+        "station": {
+          "n": 2547,
+          "biasKmh": -2.9,
+          "maeKmh": 4.9,
+          "bftExactPct": 52.5,
+          "underPct": 35.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 23.9,
+          "toneHarsherPct": 6.9
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-santorini",
+      "regionName": "Σαντορίνη",
+      "beaches": 13,
+      "station": "LGSR",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 4.9,
+        "medoid": 7.9,
+        "nearest": 7.9
+      },
+      "elevationM": {
+        "centroid": 177,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 26
+      },
+      "scores": {
+        "centroid": {
+          "n": 2543,
+          "biasKmh": -3.3,
+          "maeKmh": 5.2,
+          "bftExactPct": 49.5,
+          "underPct": 38.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 28.7,
+          "toneHarsherPct": 8.4
+        },
+        "medoid": {
+          "n": 2543,
+          "biasKmh": -5.6,
+          "maeKmh": 6.5,
+          "bftExactPct": 38.5,
+          "underPct": 55.4,
+          "overPct": 6.1,
+          "toneCalmerPct": 42.1,
+          "toneHarsherPct": 4.1
+        },
+        "nearest": {
+          "n": 2543,
+          "biasKmh": -5.6,
+          "maeKmh": 6.5,
+          "bftExactPct": 38.5,
+          "underPct": 55.4,
+          "overPct": 6.1,
+          "toneCalmerPct": 42.1,
+          "toneHarsherPct": 4.1
+        },
+        "medoidLand": {
+          "n": 2543,
+          "biasKmh": -3.3,
+          "maeKmh": 5.2,
+          "bftExactPct": 49.5,
+          "underPct": 38.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 28.7,
+          "toneHarsherPct": 8.4
+        },
+        "station": {
+          "n": 2543,
+          "biasKmh": -3.3,
+          "maeKmh": 5.2,
+          "bftExactPct": 49.5,
+          "underPct": 38.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 28.7,
+          "toneHarsherPct": 8.4
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-nisyros",
+      "regionName": "Νίσυρος",
+      "beaches": 2,
+      "station": "LGKO",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 22.6,
+        "medoid": 24.9,
+        "nearest": 20.7
+      },
+      "elevationM": {
+        "centroid": 389,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 119
+      },
+      "scores": {
+        "centroid": {
+          "n": 2548,
+          "biasKmh": -3.8,
+          "maeKmh": 5.1,
+          "bftExactPct": 48.8,
+          "underPct": 43.2,
+          "overPct": 7.9,
+          "toneCalmerPct": 35.3,
+          "toneHarsherPct": 6.8
+        },
+        "medoid": {
+          "n": 2548,
+          "biasKmh": -6.6,
+          "maeKmh": 7,
+          "bftExactPct": 31.6,
+          "underPct": 66.2,
+          "overPct": 2.1,
+          "toneCalmerPct": 53.2,
+          "toneHarsherPct": 1.4
+        },
+        "nearest": {
+          "n": 2548,
+          "biasKmh": -6.7,
+          "maeKmh": 7.2,
+          "bftExactPct": 30.5,
+          "underPct": 67.1,
+          "overPct": 2.4,
+          "toneCalmerPct": 51.8,
+          "toneHarsherPct": 2.1
+        },
+        "medoidLand": {
+          "n": 2548,
+          "biasKmh": -4.2,
+          "maeKmh": 5.3,
+          "bftExactPct": 46.5,
+          "underPct": 47.3,
+          "overPct": 6.2,
+          "toneCalmerPct": 41.5,
+          "toneHarsherPct": 4.1
+        },
+        "station": {
+          "n": 2548,
+          "biasKmh": -2.5,
+          "maeKmh": 4.4,
+          "bftExactPct": 52.2,
+          "underPct": 35.4,
+          "overPct": 12.4,
+          "toneCalmerPct": 29.6,
+          "toneHarsherPct": 10.2
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-antiparos",
+      "regionName": "Αντίπαρος",
+      "beaches": 11,
+      "station": "LGPA",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 6.3,
+        "medoid": 4.9,
+        "nearest": 7.4
+      },
+      "elevationM": {
+        "centroid": 40,
+        "medoid": 0,
+        "nearest": 0,
+        "station": 31
+      },
+      "scores": {
+        "centroid": {
+          "n": 2547,
+          "biasKmh": -2.9,
+          "maeKmh": 4.9,
+          "bftExactPct": 52.5,
+          "underPct": 35.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 23.9,
+          "toneHarsherPct": 6.9
+        },
+        "medoid": {
+          "n": 2547,
+          "biasKmh": -6.1,
+          "maeKmh": 6.9,
+          "bftExactPct": 34.2,
+          "underPct": 60.6,
+          "overPct": 5.1,
+          "toneCalmerPct": 40.6,
+          "toneHarsherPct": 3.5
+        },
+        "nearest": {
+          "n": 2547,
+          "biasKmh": -5.3,
+          "maeKmh": 6.2,
+          "bftExactPct": 39.3,
+          "underPct": 54.7,
+          "overPct": 6,
+          "toneCalmerPct": 35.3,
+          "toneHarsherPct": 3.9
+        },
+        "medoidLand": {
+          "n": 2547,
+          "biasKmh": -3.8,
+          "maeKmh": 5.4,
+          "bftExactPct": 47.4,
+          "underPct": 42.3,
+          "overPct": 10.3,
+          "toneCalmerPct": 29.2,
+          "toneHarsherPct": 6.4
+        },
+        "station": {
+          "n": 2547,
+          "biasKmh": -2.9,
+          "maeKmh": 4.9,
+          "bftExactPct": 52.5,
+          "underPct": 35.9,
+          "overPct": 11.6,
+          "toneCalmerPct": 23.9,
+          "toneHarsherPct": 6.9
+        }
+      }
+    },
+    {
+      "regionId": "south-aegean-rhodes",
+      "regionName": "Ρόδος",
+      "beaches": 62,
+      "station": "LGRP",
+      "fair": true,
+      "kmToStation": {
+        "centroid": 24.9,
+        "medoid": 25.5,
+        "nearest": 27.7
+      },
+      "elevationM": {
+        "centroid": 180,
+        "medoid": 2,
+        "nearest": 2,
+        "station": 3
+      },
+      "scores": {
+        "centroid": {
+          "n": 2545,
+          "biasKmh": -7,
+          "maeKmh": 9.4,
+          "bftExactPct": 24.2,
+          "underPct": 64.1,
+          "overPct": 11.6,
+          "toneCalmerPct": 55.7,
+          "toneHarsherPct": 9.8
+        },
+        "medoid": {
+          "n": 2545,
+          "biasKmh": -8.7,
+          "maeKmh": 11.5,
+          "bftExactPct": 17.9,
+          "underPct": 70.7,
+          "overPct": 11.4,
+          "toneCalmerPct": 60.2,
+          "toneHarsherPct": 9.1
+        },
+        "nearest": {
+          "n": 2545,
+          "biasKmh": -7,
+          "maeKmh": 9.4,
+          "bftExactPct": 24.2,
+          "underPct": 64.1,
+          "overPct": 11.6,
+          "toneCalmerPct": 55.7,
+          "toneHarsherPct": 9.8
+        },
+        "medoidLand": {
+          "n": 2545,
+          "biasKmh": -8.7,
+          "maeKmh": 11.5,
+          "bftExactPct": 17.9,
+          "underPct": 70.7,
+          "overPct": 11.4,
+          "toneCalmerPct": 60.2,
+          "toneHarsherPct": 9.1
+        },
+        "station": {
+          "n": 2545,
+          "biasKmh": -6,
+          "maeKmh": 6.5,
+          "bftExactPct": 36.3,
+          "underPct": 60.4,
+          "overPct": 3.3,
+          "toneCalmerPct": 56.3,
+          "toneHarsherPct": 2.2
+        }
+      }
+    }
+  ],
+  "medoidWinsFair": false,
+  "medoidWinsAll": false
+}
