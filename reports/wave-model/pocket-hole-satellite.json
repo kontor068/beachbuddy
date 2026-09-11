@@ -1,0 +1,2843 @@
+{
+ "generatedAt": "2026-09-11T07:23:59.633Z",
+ "script": "scripts/auditPocketHoleAgainstSatellite.mjs",
+ "helper": "scripts/auditPocketHoleSatellite.py",
+ "question": "At beaches where the pocket rule (arrival class 'enclosed') prints ≤0,2 of the open sea for a band of wave directions while both sides of the band print ≥0,9, does Sentinel-2 see breaking foam inside the band?",
+ "definition": {
+  "say": "shoreSeaStateM(1, sectorLevelAt(p,deg), resolveSeaArrivalExposureLevel(p,deg), false, resolveShoreShadowDamping({...p, beachId:-1}, deg)) — identical to scripts/exportGeometricShadowKd.mjs `say`; beachId -1 bypasses witness lists (raw geometry)",
+  "hole": "maximal circular run of 5° directions with say ≤ 0.2 AND resolveSeaArrivalExposureLevel === 'enclosed', with a direction of say ≥ 0.9 within ≤15° on BOTH sides",
+  "flankDirs": "directions with say ≥ 0.9 within ≤15° outside a hole edge",
+  "narrow154": "beach has a hole of ≤6 samples (≤30°) — the variant that reproduces the earlier ~154 count",
+  "dayInHole": "Copernicus MEDSEA 09 UTC direction rounded to the 5° grid exactly as the judge (int(round(dir/5))%72) falls in the hole",
+  "windAssumption": "sectorLevelAt(p,deg) reads the exposure level of the sector the WAVE comes from, i.e. it assumes the wind blows from the same sector as the sea (wind-sea / meltemi case) — as exportGeometricShadowKd.mjs and the national judge. The enclosed band itself is wind-independent (the pocket rule ignores the wind level); a flank whose arrival is partial/exposed is wind-independent (arrival refuses the discount); a flank that is silent (onshore ≤0,3) or grazing depends on the wind: with wind from a protected sector the page prints K_d there too (0,1 everywhere at a pocket — K_d is the 0,1 floor at ALL directions of a pocket, not only in the band) and the hole merges with that flank. Counts under forced protected/exposed wind are in geometry.variants.",
+  "shiftDeg": "10 — the site reads a different wave direction than Copernicus (archive replay: Μώλος −8° median, Καλό Λιμάνι +6-15°). coreDirs = hole directions that stay inside the same hole at ±10°; a hole ≤20° wide has none, so it cannot be confirmed or refuted from Copernicus directions alone."
+ },
+ "geometry": {
+  "profiles": 2872,
+  "beachesWithAnEnclosedDirection": 344,
+  "holeBeaches": 250,
+  "holes": 370,
+  "narrowHoleBeaches": 154,
+  "variants": [
+   {
+    "name": "as specified: run(say≤0,2 & enclosed) at 5°, both flanks say≥0,9 within ≤15°",
+    "beaches": 250,
+    "holes": 370,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "flanks adjacent (5°)",
+    "beaches": 250,
+    "holes": 370,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "flanks within ≤10°",
+    "beaches": 250,
+    "holes": 370,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "flanks within ≤20°",
+    "beaches": 250,
+    "holes": 370,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "run = any say≤0,2 containing an enclosed direction",
+    "beaches": 322,
+    "holes": 442,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "run = any say≤0,2 (no enclosed requirement)",
+    "beaches": 347,
+    "holes": 655,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "step 1°",
+    "beaches": 258,
+    "holes": 402,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "step 10°",
+    "beaches": 237,
+    "holes": 333,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "step 15°",
+    "beaches": 221,
+    "holes": 295,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "step 22,5°",
+    "beaches": 152,
+    "holes": 172,
+    "molos": true,
+    "lindos": false
+   },
+   {
+    "name": "step 30° (12 directions)",
+    "beaches": 88,
+    "holes": 91,
+    "molos": false,
+    "lindos": true
+   },
+   {
+    "name": "wind from a 'protected' sector at every direction (offshore breeze)",
+    "beaches": 6,
+    "holes": 6,
+    "molos": false,
+    "lindos": false
+   },
+   {
+    "name": "wind from an 'exposed' sector at every direction",
+    "beaches": 344,
+    "holes": 512,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "as specified, only holes ≤15° wide (≤3 samples of 5°)",
+    "beaches": 92,
+    "holes": 96,
+    "molos": true,
+    "lindos": false
+   },
+   {
+    "name": "as specified, only holes ≤20° wide (≤4 samples of 5°)",
+    "beaches": 126,
+    "holes": 149,
+    "molos": true,
+    "lindos": false
+   },
+   {
+    "name": "as specified, only holes ≤25° wide (≤5 samples of 5°)",
+    "beaches": 144,
+    "holes": 188,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "as specified, only holes ≤30° wide (≤6 samples of 5°)",
+    "beaches": 154,
+    "holes": 224,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "as specified, only holes ≤45° wide (≤9 samples of 5°)",
+    "beaches": 190,
+    "holes": 279,
+    "molos": true,
+    "lindos": true
+   },
+   {
+    "name": "as specified, only holes ≤60° wide (≤12 samples of 5°)",
+    "beaches": 209,
+    "holes": 315,
+    "molos": true,
+    "lindos": true
+   }
+  ],
+  "widthHistogramDeg": {
+   "5": 19,
+   "10": 34,
+   "15": 43,
+   "20": 53,
+   "25": 39,
+   "30": 36,
+   "35": 28,
+   "40": 17,
+   "45": 10,
+   "50": 13,
+   "55": 14,
+   "60": 9,
+   "65": 6,
+   "70": 5,
+   "75": 7,
+   "80": 1,
+   "90": 2,
+   "95": 1,
+   "100": 2,
+   "105": 1,
+   "140": 1,
+   "145": 28,
+   "150": 1
+  },
+  "flankKinds": {
+   "silent(onshore≤0,3) | partial": 160,
+   "partial | silent(onshore≤0,3)": 175,
+   "partial | partial": 6,
+   "silent(onshore≤0,3) | silent(onshore≤0,3)": 29
+  },
+  "holeWidthStats": {
+   "holes": 370,
+   "under20": 149,
+   "beachesAllHolesUnder20": 69,
+   "beachesWithNoCoreDirection": 69,
+   "holesBothFlanksWindIndependent": 6,
+   "holesOneFlankWindDependent": 335,
+   "holesBothFlanksWindDependent": 29
+  }
+ },
+ "satellite": {
+  "imagery": "Sentinel-2 L2A B08 10 m via AWS Earth Search (judgeShoreSurfSentinel2.measure_beach — unchanged); SWIR B11 for verification (verifyShoreFoamSwir.swir_window/masks/ratio)",
+  "wave": "Copernicus MEDSEA 4,2 km, nearest sea cell, 09 UTC — the judge's cache .tmp/s2judge/waves-cells.json (2022-01-01 → 2026-09-10)",
+  "daysPicked": {
+   "hole": "Hs ≥0.5 m, direction in the hole, all months (all such days, no cap) — PRIMARY; months [5, 6, 7, 8, 9, 10] reported separately as the national 'closed' season",
+   "arrivalRatio": "second route to 'shadow real' (summarizeShoreSurfArrival.py §Γ75): R = (median hole − median calm)/(median full-print − median calm) over beachFoam, days ≥0.8 m on both sides, judged only if full-print − calm ≥0.05 over ≥2 days; R ≤0,25 shadow real, ≥0,6 wave arrives, ≥3 hole days",
+   "shift10": "core days = hole days whose direction stays in the same hole at ±10° (site reads 5-15° off Copernicus); every verdict is recomputed on core days (survivesShift10)",
+   "flank": "Hs ≥0.5 m, direction in a flank (say ≥0.9 within ≤15° of a hole), all months, no cap",
+   "full": "Hs ≥0.8 m, other say ≥0.9 directions, all months, ≤40 by Hs",
+   "calm": "Hs <0.25 m, all months, ≤30 least cloudy"
+  },
+  "surf": "outer strip (20-30 m from stable land, ≤300 m from pin) foam fraction ≥0.2 (summarizeShoreSurfNational.surf); only days we print ≤0.3 m",
+  "test": "binom P(≥k of n | q), q = max(0.04, (calm surf days+1)/(calm days+2)); ΣΚΑΕΙ p<0.01 & k≥3, ΠΙΘΑΝΟ p<0,05 & k≥2; strip noisy if >25% of ≥3 calm days foam → excluded",
+  "swir": "median B11/B08 over the foam pixels; <0.62 = foam (else cloud/rock/land); verdict ΣΚΑΕΙ if ≥2 real-foam days and binom p<0,05 with bright-not-foam days removed (verifyShoreFoamSwir.check_calm)",
+  "shadow": "hole day with whole strip <0.05 while the same image's coast facing that wave (>400 m, normal ≤60°) has ≥0.1 foam, that foam SWIR-verified; 'shadow confirmed' = ≥3 judged and shadow ≥ 2× real-foam days (judgeShoreSurfSentinel2.summarize)",
+  "capability": "strip seen to foam on a full-print day, or median(full-print ≥0.8 m) − median(calm) ≥ 0.05 over ≥2 days"
+ },
+ "instrument": {
+  "sameDayAgreementWithNationalPass": [
+   3566,
+   3582
+  ],
+  "swirWindows": 182,
+  "pinMoved": {},
+  "surfRatesNonNoisy": {
+   "hole": [
+    69,
+    1869
+   ],
+   "flankIndependent": [
+    21,
+    875
+   ],
+   "flankWindDependent": [
+    32,
+    848
+   ],
+   "calm": [
+    84,
+    5270
+   ]
+  },
+  "planned": {
+   "flank": 3250,
+   "full": 1540,
+   "calm": 6866,
+   "hole": 1997,
+   "holeOff": 1446
+  },
+  "chipsOnDiskBefore": 15099,
+  "chipsPlanned": 15099
+ },
+ "classCounts": {
+  "allHoleBeaches": {
+   "n": 250,
+   "c": 243,
+   "a": 4,
+   "b": 3,
+   "cReasons": {
+    "fewDays": 193,
+    "stripBlindOnFullPrintDays": 31,
+    "noSeaCell": 12,
+    "arrivalRatioHighButNotSignificant": 2,
+    "mixed": 5
+   },
+   "a_split": {
+    "survivesShift10": 3,
+    "directionSensitive": 1,
+    "capabilityNotShown": 1
+   },
+   "b_split": {
+    "swirConfirmed": 2,
+    "swirConfirmedAndSurvivesShift10": 0
+   },
+   "allHolesUnder20": 69
+  },
+  "narrow154": {
+   "n": 154,
+   "c": 149,
+   "a": 3,
+   "b": 2,
+   "cReasons": {
+    "fewDays": 118,
+    "stripBlindOnFullPrintDays": 18,
+    "noSeaCell": 9,
+    "mixed": 3,
+    "arrivalRatioHighButNotSignificant": 1
+   },
+   "a_split": {
+    "survivesShift10": 2,
+    "directionSensitive": 1,
+    "capabilityNotShown": 0
+   },
+   "b_split": {
+    "swirConfirmed": 1,
+    "swirConfirmedAndSurvivesShift10": 0
+   },
+   "allHolesUnder20": 69
+  }
+ },
+ "usableHoleDays": {
+  "allYear": {
+   "0": 105,
+   "3-9": 36,
+   "10+": 46,
+   "1-2": 51,
+   "noImagery": 12
+  },
+  "season": {
+   "0": 153,
+   "3-9": 23,
+   "10+": 29,
+   "noImagery": 12,
+   "1-2": 33
+  },
+  "coreAllYear": {
+   "0": 168,
+   "10+": 25,
+   "3-9": 23,
+   "noImagery": 12,
+   "1-2": 22
+  }
+ },
+ "classMeaning": {
+  "a": "satellite confirms calm inside the hole, no significant foam, AND either (route 1, judgeShoreSurfSentinel2.summarize) ≥3 judged hole days with dark strip (beachFoam <0,05) while the same image shows SWIR-verified surf on the coast facing that wave, dark ≥ 2× real-foam days; or (route 2, summarizeShoreSurfArrival.py) arrival ratio R ≤0,25 against this beach's own full-print days (strip foams there by ≥0,05 over calm, ≥3 hole days ≥0,8 m)",
+  "b": "foam inside the hole beyond this beach's own calm-day noise (binomial, summarizeShoreSurfNational rule: p<0,01 & ≥3 days = ΣΚΑΕΙ, p<0,05 & ≥2 = ΠΙΘΑΝΟ), then SWIR B11/B08 on each foam day (verifyShoreFoamSwir rule: ≥2 real-foam days & p<0,05 after dropping bright-not-foam days)",
+  "c": "not enough usable days / noisy strip / strip blind on full-print days / mixed evidence"
+ },
+ "classB": [
+  {
+   "id": 1237,
+   "name": "Αμμούδι",
+   "region": "ionian-islands-ithaca",
+   "beachType": "pebbles",
+   "narrow": true,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 180,
+     "toDeg": 195,
+     "widthDeg": 20,
+     "under20": true,
+     "coreDirs": [],
+     "leftFlankDeg": 175,
+     "rightFlankDeg": 200,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 295,
+     "toDeg": 320,
+     "widthDeg": 30,
+     "under20": false,
+     "coreDirs": [
+      305,
+      310
+     ],
+     "leftFlankDeg": 290,
+     "rightFlankDeg": 325,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "b",
+   "reason": "statistical ΠΙΘΑΝΟ",
+   "classSeason": "c",
+   "reasonSeason": "fewDays",
+   "survivesShift10": false,
+   "stats": {
+    "chips": 50,
+    "shorePixels": 242,
+    "hole": {
+     "n": 9,
+     "surf": 2,
+     "p": 0.04777,
+     "tier": "ΠΙΘΑΝΟ",
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 1,
+     "swir": {
+      "real": 1,
+      "fake": 1,
+      "unknown": 0,
+      "p": 0.27861,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 3,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 1,
+      "stillInsideMinus10": 1,
+      "stillInsidePlus10": 1,
+      "stillInsideBoth": 1,
+      "coreDays": 8,
+      "coreFake": 1,
+      "coreShadowSwirOk": 0,
+      "coreP": 0.24855,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 3,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      300,
+      305,
+      310
+     ]
+    },
+    "holeSeason": {
+     "n": 4,
+     "surf": 1,
+     "p": 0.15065,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 1,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 0,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 3,
+      "coreFake": 1,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      300,
+      305,
+      310
+     ]
+    },
+    "calm": {
+     "n": 25,
+     "surf": 0,
+     "q": 0.04,
+     "noisy": false
+    },
+    "flank": {
+     "n": 1,
+     "surf": 0,
+     "nBig": 1,
+     "surfBig": 0,
+     "windIndependent": [
+      0,
+      0
+     ],
+     "windDependent": [
+      0,
+      1
+     ]
+    },
+    "fullPrint": {
+     "n": 1,
+     "surf": 0,
+     "nBig": 1,
+     "signal": 0.295,
+     "sees": false
+    },
+    "capabilityShown": false
+   },
+   "flags": [
+    "swirNotProven",
+    "seasonOnly→c:fewDays"
+   ],
+   "evidence": [
+    {
+     "day": "2022-09-18",
+     "class": "hole",
+     "hsM": 0.65,
+     "dirDeg": 306,
+     "tpS": 6.3,
+     "printedM": 0.07,
+     "beachFoam": 0.432,
+     "outer": 0.348,
+     "exposed": 0.219,
+     "thr": 0.0522,
+     "swirRatio": 0.999,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2B_34SDH_20220918_0_L2A"
+    },
+    {
+     "day": "2026-01-12",
+     "class": "holeOff",
+     "hsM": 1.01,
+     "dirDeg": 308,
+     "tpS": 9.2,
+     "printedM": 0.1,
+     "beachFoam": 0.369,
+     "outer": 0.247,
+     "exposed": 0.205,
+     "thr": 0.04,
+     "swirRatio": 0.466,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2C_34SDH_20260112_0_L2A"
+    }
+   ],
+   "eyeCheck": [
+    {
+     "day": "2026-01-12",
+     "chip": ".tmp/s2judge/png/1237-2026-01-12.png",
+     "wave": "1,01 m from 308°, Tp 9,2 s (long-period swell)",
+     "swir": 0.47,
+     "seen": "True colour: white surf along the whole NW-facing coast, including a white patch at the pin. Real surf — but the only SWIR-real day (2022-09-18 was 0,999 = land/cloud), so the ≥2-day rule is not met."
+    }
+   ]
+  },
+  {
+   "id": 2034,
+   "name": "Λίμνες",
+   "region": "south-aegean-paros",
+   "beachType": "sandy",
+   "narrow": false,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 0,
+     "toDeg": 55,
+     "widthDeg": 60,
+     "under20": false,
+     "coreDirs": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45
+     ],
+     "leftFlankDeg": 355,
+     "rightFlankDeg": 60,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 95,
+     "toDeg": 140,
+     "widthDeg": 50,
+     "under20": false,
+     "coreDirs": [
+      105,
+      110,
+      115,
+      120,
+      125,
+      130
+     ],
+     "leftFlankDeg": 90,
+     "rightFlankDeg": 145,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "b",
+   "reason": "statistical ΣΚΑΕΙ",
+   "classSeason": "c",
+   "reasonSeason": "stripBlindOnFullPrintDays",
+   "survivesShift10": false,
+   "stats": {
+    "chips": 269,
+    "shorePixels": 247,
+    "hole": {
+     "n": 55,
+     "surf": 23,
+     "p": 0.00052,
+     "tier": "ΣΚΑΕΙ",
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 16,
+     "swir": {
+      "real": 16,
+      "fake": 7,
+      "unknown": 0,
+      "p": 0.03812,
+      "verdict": "ΣΚΑΕΙ"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 43,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 16,
+      "stillInsideMinus10": 3,
+      "stillInsidePlus10": 16,
+      "stillInsideBoth": 3,
+      "coreDays": 10,
+      "coreFake": 2,
+      "coreShadowSwirOk": 0,
+      "coreP": 0.23533,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 6,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      0,
+      5,
+      10,
+      15,
+      25,
+      30
+     ]
+    },
+    "holeSeason": {
+     "n": 33,
+     "surf": 5,
+     "p": 0.86489,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 3,
+     "swir": {
+      "real": 3,
+      "fake": 2,
+      "unknown": 0,
+      "p": 0.97505,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 29,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 3,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 3,
+      "stillInsideBoth": 0,
+      "coreDays": 5,
+      "coreFake": 1,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 3,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      0,
+      5,
+      10
+     ]
+    },
+    "calm": {
+     "n": 26,
+     "surf": 5,
+     "q": 0.2143,
+     "noisy": false
+    },
+    "flank": {
+     "n": 83,
+     "surf": 12,
+     "nBig": 57,
+     "surfBig": 10,
+     "windIndependent": [
+      0,
+      0
+     ],
+     "windDependent": [
+      12,
+      83
+     ]
+    },
+    "fullPrint": {
+     "n": 83,
+     "surf": 12,
+     "nBig": 57,
+     "signal": -0.005,
+     "sees": false
+    },
+    "capabilityShown": true
+   },
+   "flags": [
+    "swirConfirmed",
+    "seasonOnly→c:stripBlindOnFullPrintDays"
+   ],
+   "evidence": [
+    {
+     "day": "2022-02-11",
+     "class": "holeOff",
+     "hsM": 0.53,
+     "dirDeg": 7,
+     "tpS": 5.2,
+     "printedM": 0.05,
+     "beachFoam": 0.615,
+     "outer": 0.515,
+     "exposed": 0.005,
+     "thr": 0.04,
+     "swirRatio": 0.511,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20220211_0_L2A"
+    },
+    {
+     "day": "2022-02-19",
+     "class": "holeOff",
+     "hsM": 0.51,
+     "dirDeg": 31,
+     "tpS": 4.7,
+     "printedM": 0.05,
+     "beachFoam": 0.466,
+     "outer": 0.344,
+     "exposed": 0.034,
+     "thr": 0.04,
+     "swirRatio": 0.578,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20220219_0_L2A"
+    },
+    {
+     "day": "2022-10-22",
+     "class": "hole",
+     "hsM": 1.19,
+     "dirDeg": 358,
+     "tpS": 5.2,
+     "printedM": 0.12,
+     "beachFoam": 0.409,
+     "outer": 0.325,
+     "exposed": 0.222,
+     "thr": 0.04,
+     "swirRatio": 0.457,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20221022_0_L2A"
+    },
+    {
+     "day": "2022-12-21",
+     "class": "holeOff",
+     "hsM": 1.71,
+     "dirDeg": 358,
+     "tpS": 5.7,
+     "printedM": 0.17,
+     "beachFoam": 0.528,
+     "outer": 0.43,
+     "exposed": 0.172,
+     "thr": 0.0439,
+     "swirRatio": 0.571,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20221221_0_L2A"
+    },
+    {
+     "day": "2023-02-14",
+     "class": "holeOff",
+     "hsM": 1.23,
+     "dirDeg": 6,
+     "tpS": 5.2,
+     "printedM": 0.12,
+     "beachFoam": 0.909,
+     "outer": 0.882,
+     "exposed": 0.267,
+     "thr": 0.04,
+     "swirRatio": 0.758,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20230214_0_L2A"
+    },
+    {
+     "day": "2023-02-16",
+     "class": "holeOff",
+     "hsM": 0.81,
+     "dirDeg": 17,
+     "tpS": 5.2,
+     "printedM": 0.08,
+     "beachFoam": 0.955,
+     "outer": 0.945,
+     "exposed": 0.182,
+     "thr": 0.04,
+     "swirRatio": 0.73,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20230216_0_L2A"
+    },
+    {
+     "day": "2024-10-21",
+     "class": "hole",
+     "hsM": 1.52,
+     "dirDeg": 2,
+     "tpS": 5.2,
+     "printedM": 0.15,
+     "beachFoam": 0.182,
+     "outer": 0.27,
+     "exposed": 0.081,
+     "thr": 0.04,
+     "swirRatio": 0.398,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20241021_0_L2A"
+    },
+    {
+     "day": "2024-11-05",
+     "class": "holeOff",
+     "hsM": 1.53,
+     "dirDeg": 6,
+     "tpS": 5.2,
+     "printedM": 0.15,
+     "beachFoam": 0.623,
+     "outer": 0.632,
+     "exposed": 0.022,
+     "thr": 0.04,
+     "swirRatio": 0.42,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20241105_0_L2A"
+    },
+    {
+     "day": "2024-11-10",
+     "class": "holeOff",
+     "hsM": 1.44,
+     "dirDeg": 1,
+     "tpS": 5.2,
+     "printedM": 0.14,
+     "beachFoam": 0.725,
+     "outer": 0.656,
+     "exposed": 0.039,
+     "thr": 0.04,
+     "swirRatio": 0.575,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20241110_0_L2A"
+    },
+    {
+     "day": "2024-12-17",
+     "class": "holeOff",
+     "hsM": 0.73,
+     "dirDeg": 6,
+     "tpS": 4.3,
+     "printedM": 0.07,
+     "beachFoam": 0.567,
+     "outer": 0.491,
+     "exposed": 0.042,
+     "thr": 0.04,
+     "swirRatio": 0.329,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20241217_0_L2A"
+    },
+    {
+     "day": "2025-01-01",
+     "class": "holeOff",
+     "hsM": 0.6,
+     "dirDeg": 358,
+     "tpS": 3.9,
+     "printedM": 0.06,
+     "beachFoam": 0.911,
+     "outer": 0.883,
+     "exposed": 0.3,
+     "thr": 0.04,
+     "swirRatio": 0.699,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20250101_0_L2A"
+    },
+    {
+     "day": "2025-01-19",
+     "class": "holeOff",
+     "hsM": 1.06,
+     "dirDeg": 359,
+     "tpS": 4.7,
+     "printedM": 0.11,
+     "beachFoam": 0.741,
+     "outer": 0.687,
+     "exposed": 0.004,
+     "thr": 0.04,
+     "swirRatio": 0.365,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20250119_0_L2A"
+    },
+    {
+     "day": "2025-01-26",
+     "class": "holeOff",
+     "hsM": 0.77,
+     "dirDeg": 2,
+     "tpS": 5.2,
+     "printedM": 0.08,
+     "beachFoam": 0.539,
+     "outer": 0.442,
+     "exposed": 0.282,
+     "thr": 0.04,
+     "swirRatio": 0.294,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20250126_0_L2A"
+    },
+    {
+     "day": "2025-09-20",
+     "class": "hole",
+     "hsM": 1.9,
+     "dirDeg": 10,
+     "tpS": 5.7,
+     "printedM": 0.19,
+     "beachFoam": 0.47,
+     "outer": 0.368,
+     "exposed": 0.256,
+     "thr": 0.04,
+     "swirRatio": 0.626,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20250920_0_L2A"
+    },
+    {
+     "day": "2025-09-21",
+     "class": "hole",
+     "hsM": 1,
+     "dirDeg": 359,
+     "tpS": 4.7,
+     "printedM": 0.1,
+     "beachFoam": 0.543,
+     "outer": 0.411,
+     "exposed": 0.034,
+     "thr": 0.0462,
+     "swirRatio": 0.61,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2C_35SLB_20250921_0_L2A"
+    },
+    {
+     "day": "2025-12-15",
+     "class": "holeOff",
+     "hsM": 1.41,
+     "dirDeg": 8,
+     "tpS": 5.2,
+     "printedM": 0.14,
+     "beachFoam": 0.658,
+     "outer": 0.583,
+     "exposed": 0.193,
+     "thr": 0.04,
+     "swirRatio": 0.311,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20251215_0_L2A"
+    },
+    {
+     "day": "2025-12-17",
+     "class": "holeOff",
+     "hsM": 0.84,
+     "dirDeg": 5,
+     "tpS": 5.7,
+     "printedM": 0.08,
+     "beachFoam": 0.543,
+     "outer": 0.472,
+     "exposed": 0.051,
+     "thr": 0.04,
+     "swirRatio": 0.37,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2C_35SLB_20251217_0_L2A"
+    },
+    {
+     "day": "2026-02-23",
+     "class": "holeOff",
+     "hsM": 1.7,
+     "dirDeg": 358,
+     "tpS": 5.7,
+     "printedM": 0.17,
+     "beachFoam": 0.405,
+     "outer": 0.393,
+     "exposed": 0.201,
+     "thr": 0.04,
+     "swirRatio": 0.431,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20260223_1_L2A"
+    },
+    {
+     "day": "2026-03-07",
+     "class": "holeOff",
+     "hsM": 1,
+     "dirDeg": 23,
+     "tpS": 5.2,
+     "printedM": 0.1,
+     "beachFoam": 0.96,
+     "outer": 0.951,
+     "exposed": 0.512,
+     "thr": 0.04,
+     "swirRatio": 0.543,
+     "insideMinus10": true,
+     "insidePlus10": true,
+     "scene": "S2C_35SLB_20260307_0_L2A"
+    },
+    {
+     "day": "2026-03-09",
+     "class": "holeOff",
+     "hsM": 1.29,
+     "dirDeg": 359,
+     "tpS": 5.2,
+     "printedM": 0.13,
+     "beachFoam": 0.915,
+     "outer": 0.89,
+     "exposed": 0.227,
+     "thr": 0.04,
+     "swirRatio": 0.72,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20260309_0_L2A"
+    },
+    {
+     "day": "2026-03-10",
+     "class": "holeOff",
+     "hsM": 1,
+     "dirDeg": 360,
+     "tpS": 4.7,
+     "printedM": 0.1,
+     "beachFoam": 0.945,
+     "outer": 0.935,
+     "exposed": 0.26,
+     "thr": 0.04,
+     "swirRatio": 0.697,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2C_35SLB_20260310_0_L2A"
+    },
+    {
+     "day": "2026-04-06",
+     "class": "holeOff",
+     "hsM": 0.88,
+     "dirDeg": 1,
+     "tpS": 4.3,
+     "printedM": 0.09,
+     "beachFoam": 0.368,
+     "outer": 0.215,
+     "exposed": 0.025,
+     "thr": 0.04,
+     "swirRatio": 0.529,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2C_35SLB_20260406_0_L2A"
+    },
+    {
+     "day": "2026-06-27",
+     "class": "hole",
+     "hsM": 1.25,
+     "dirDeg": 358,
+     "tpS": 5.2,
+     "printedM": 0.12,
+     "beachFoam": 0.368,
+     "outer": 0.209,
+     "exposed": 0.064,
+     "thr": 0.0418,
+     "swirRatio": 0.912,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20260627_0_L2A"
+    }
+   ],
+   "eyeCheck": [
+    {
+     "day": "2025-01-19",
+     "chip": ".tmp/s2judge/png/2034-2025-01-19.png",
+     "wave": "1,06 m from 359°, Tp 4,7 s",
+     "swir": 0.37,
+     "seen": "B08: continuous bright band hugging the beach inside the 300 m circle; true colour: pale water with shore-parallel whitish lines. Consistent with breaking surf. Bay water elsewhere dark (a few cloud blobs over the bay, not on the strip)."
+    },
+    {
+     "day": "2022-10-22",
+     "chip": ".tmp/s2judge/png/2034-2022-10-22.png",
+     "wave": "1,19 m from 358°, Tp 5,2 s (in season)",
+     "swir": 0.46,
+     "seen": "B08: only a thin grey band along the beach; true colour: light-turquoise shallows, no clear white lines. By eye NOT separable from the calm-day false band of 2026-05-06."
+    },
+    {
+     "day": "2026-05-06",
+     "chip": ".tmp/s2judge/png/2034-2026-05-06.png",
+     "wave": "CALM day, 0,14 m from 257°",
+     "swir": null,
+     "seen": "Same grey band along the beach and a grey (not black) bay in B08 — the strip lights up without surf (5/26 calm days \"foam\" here)."
+    },
+    {
+     "day": "2024-09-28",
+     "chip": ".tmp/s2judge/png/2034-2024-09-28.png",
+     "wave": "CALM day, 0,13 m from 355°",
+     "swir": null,
+     "seen": "Strip black in B08 — the clean reference."
+    }
+   ]
+  },
+  {
+   "id": 2040,
+   "name": "Μώλος",
+   "region": "south-aegean-paros",
+   "beachType": "sandy",
+   "narrow": true,
+   "allHolesUnder20": true,
+   "holes": [
+    {
+     "fromDeg": 15,
+     "toDeg": 25,
+     "widthDeg": 15,
+     "under20": true,
+     "coreDirs": [],
+     "leftFlankDeg": 10,
+     "rightFlankDeg": 30,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    }
+   ],
+   "class": "b",
+   "reason": "statistical ΣΚΑΕΙ",
+   "classSeason": "b",
+   "reasonSeason": "statistical ΠΙΘΑΝΟ",
+   "survivesShift10": false,
+   "stats": {
+    "chips": 258,
+    "shorePixels": 218,
+    "hole": {
+     "n": 19,
+     "surf": 9,
+     "p": 0,
+     "tier": "ΣΚΑΕΙ",
+     "shadow": 1,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 8,
+     "swir": {
+      "real": 8,
+      "fake": 1,
+      "unknown": 0,
+      "p": 0,
+      "verdict": "ΣΚΑΕΙ"
+     },
+     "arrivalRatio": {
+      "R": 9.7,
+      "daysAtLeast08": 9,
+      "verdict": "ΚΥΜΑ ΦΤΑΝΕΙ"
+     },
+     "shift10": {
+      "realFoamDays": 8,
+      "stillInsideMinus10": 1,
+      "stillInsidePlus10": 4,
+      "stillInsideBoth": 0,
+      "coreDays": 0,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": null,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      15,
+      20,
+      25
+     ]
+    },
+    "holeSeason": {
+     "n": 8,
+     "surf": 2,
+     "p": 0.03815,
+     "tier": "ΠΙΘΑΝΟ",
+     "shadow": 1,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 2,
+     "swir": {
+      "real": 2,
+      "fake": 0,
+      "unknown": 0,
+      "p": 0.03815,
+      "verdict": "ΣΚΑΕΙ"
+     },
+     "arrivalRatio": {
+      "R": 5.16,
+      "daysAtLeast08": 3,
+      "verdict": "ΚΥΜΑ ΦΤΑΝΕΙ"
+     },
+     "shift10": {
+      "realFoamDays": 2,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 1,
+      "stillInsideBoth": 0,
+      "coreDays": 0,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": null,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      15,
+      20
+     ]
+    },
+    "calm": {
+     "n": 24,
+     "surf": 0,
+     "q": 0.04,
+     "noisy": false
+    },
+    "flank": {
+     "n": 107,
+     "surf": 11,
+     "nBig": 72,
+     "surfBig": 11,
+     "windIndependent": [
+      0,
+      1
+     ],
+     "windDependent": [
+      11,
+      106
+     ]
+    },
+    "fullPrint": {
+     "n": 107,
+     "surf": 11,
+     "nBig": 72,
+     "signal": 0.087,
+     "sees": true
+    },
+    "capabilityShown": true
+   },
+   "flags": [
+    "swirConfirmed",
+    "bandUnder20:noCoreDirection"
+   ],
+   "evidence": [
+    {
+     "day": "2022-03-23",
+     "class": "holeOff",
+     "hsM": 1.75,
+     "dirDeg": 20,
+     "tpS": 6.9,
+     "printedM": 0.18,
+     "beachFoam": 0.995,
+     "outer": 0.993,
+     "exposed": 0.46,
+     "thr": 0.05,
+     "swirRatio": 0.35,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20220323_0_L2A"
+    },
+    {
+     "day": "2022-10-04",
+     "class": "hole",
+     "hsM": 1.11,
+     "dirDeg": 16,
+     "tpS": 5.2,
+     "printedM": 0.11,
+     "beachFoam": 0.463,
+     "outer": 0.238,
+     "exposed": 0.07,
+     "thr": 0.04,
+     "swirRatio": 0.452,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20221004_0_L2A"
+    },
+    {
+     "day": "2023-02-14",
+     "class": "holeOff",
+     "hsM": 1.12,
+     "dirDeg": 16,
+     "tpS": 5.7,
+     "printedM": 0.11,
+     "beachFoam": 0.917,
+     "outer": 0.905,
+     "exposed": 0.196,
+     "thr": 0.04,
+     "swirRatio": 0.39,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20230214_0_L2A"
+    },
+    {
+     "day": "2023-02-16",
+     "class": "holeOff",
+     "hsM": 0.86,
+     "dirDeg": 22,
+     "tpS": 5.2,
+     "printedM": 0.09,
+     "beachFoam": 0.858,
+     "outer": 0.81,
+     "exposed": 0.135,
+     "thr": 0.04,
+     "swirRatio": 0.351,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20230216_0_L2A"
+    },
+    {
+     "day": "2024-10-18",
+     "class": "hole",
+     "hsM": 1.73,
+     "dirDeg": 18,
+     "tpS": 6.3,
+     "printedM": 0.17,
+     "beachFoam": 0.986,
+     "outer": 0.979,
+     "exposed": 0.35,
+     "thr": 0.04,
+     "swirRatio": 0.328,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20241018_0_L2A"
+    },
+    {
+     "day": "2024-11-05",
+     "class": "holeOff",
+     "hsM": 1.36,
+     "dirDeg": 14,
+     "tpS": 5.2,
+     "printedM": 0.14,
+     "beachFoam": 0.586,
+     "outer": 0.42,
+     "exposed": 0.079,
+     "thr": 0.0405,
+     "swirRatio": 0.623,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20241105_0_L2A"
+    },
+    {
+     "day": "2024-12-17",
+     "class": "holeOff",
+     "hsM": 0.76,
+     "dirDeg": 16,
+     "tpS": 4.7,
+     "printedM": 0.08,
+     "beachFoam": 0.587,
+     "outer": 0.442,
+     "exposed": 0.054,
+     "thr": 0.04,
+     "swirRatio": 0.291,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20241217_0_L2A"
+    },
+    {
+     "day": "2025-01-26",
+     "class": "holeOff",
+     "hsM": 0.62,
+     "dirDeg": 15,
+     "tpS": 5.2,
+     "printedM": 0.06,
+     "beachFoam": 0.477,
+     "outer": 0.313,
+     "exposed": 0.36,
+     "thr": 0.043,
+     "swirRatio": 0.385,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20250126_0_L2A"
+    },
+    {
+     "day": "2026-03-07",
+     "class": "holeOff",
+     "hsM": 1.09,
+     "dirDeg": 25,
+     "tpS": 5.2,
+     "printedM": 0.11,
+     "beachFoam": 0.982,
+     "outer": 0.98,
+     "exposed": 0.321,
+     "thr": 0.04,
+     "swirRatio": 0.333,
+     "insideMinus10": true,
+     "insidePlus10": false,
+     "scene": "S2C_35SLB_20260307_0_L2A"
+    }
+   ],
+   "eyeCheck": null
+  }
+ ],
+ "sanity": {
+  "lindos2443": {
+   "id": 2443,
+   "name": "Παραλία Λίνδου (Μεγάλη Παραλία)",
+   "region": "south-aegean-rhodes",
+   "beachType": "sandy",
+   "narrow": true,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 0,
+     "toDeg": 55,
+     "widthDeg": 60,
+     "under20": false,
+     "coreDirs": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45
+     ],
+     "leftFlankDeg": 355,
+     "rightFlankDeg": 60,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 120,
+     "toDeg": 140,
+     "widthDeg": 25,
+     "under20": false,
+     "coreDirs": [
+      130
+     ],
+     "leftFlankDeg": 115,
+     "rightFlankDeg": 145,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "c",
+   "reason": "fewDays",
+   "classSeason": "c",
+   "reasonSeason": "fewDays",
+   "survivesShift10": null,
+   "stats": {
+    "chips": 63,
+    "shorePixels": 350,
+    "hole": {
+     "n": 13,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 5,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 8,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 1,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      0,
+      10,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      125,
+      135
+     ]
+    },
+    "holeSeason": {
+     "n": 1,
+     "surf": 0,
+     "p": null,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 1,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 0,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": null,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      135
+     ]
+    },
+    "calm": {
+     "n": 27,
+     "surf": 1,
+     "q": 0.069,
+     "noisy": false
+    },
+    "flank": {
+     "n": 6,
+     "surf": 0,
+     "nBig": 0,
+     "surfBig": 0,
+     "windIndependent": [
+      0,
+      2
+     ],
+     "windDependent": [
+      0,
+      4
+     ]
+    },
+    "fullPrint": {
+     "n": 6,
+     "surf": 0,
+     "nBig": 0,
+     "signal": null,
+     "sees": false
+    },
+    "capabilityShown": false
+   },
+   "flags": [],
+   "evidence": []
+  },
+  "molos2040": {
+   "id": 2040,
+   "name": "Μώλος",
+   "region": "south-aegean-paros",
+   "beachType": "sandy",
+   "narrow": true,
+   "allHolesUnder20": true,
+   "holes": [
+    {
+     "fromDeg": 15,
+     "toDeg": 25,
+     "widthDeg": 15,
+     "under20": true,
+     "coreDirs": [],
+     "leftFlankDeg": 10,
+     "rightFlankDeg": 30,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    }
+   ],
+   "class": "b",
+   "reason": "statistical ΣΚΑΕΙ",
+   "classSeason": "b",
+   "reasonSeason": "statistical ΠΙΘΑΝΟ",
+   "survivesShift10": false,
+   "stats": {
+    "chips": 258,
+    "shorePixels": 218,
+    "hole": {
+     "n": 19,
+     "surf": 9,
+     "p": 0,
+     "tier": "ΣΚΑΕΙ",
+     "shadow": 1,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 8,
+     "swir": {
+      "real": 8,
+      "fake": 1,
+      "unknown": 0,
+      "p": 0,
+      "verdict": "ΣΚΑΕΙ"
+     },
+     "arrivalRatio": {
+      "R": 9.7,
+      "daysAtLeast08": 9,
+      "verdict": "ΚΥΜΑ ΦΤΑΝΕΙ"
+     },
+     "shift10": {
+      "realFoamDays": 8,
+      "stillInsideMinus10": 1,
+      "stillInsidePlus10": 4,
+      "stillInsideBoth": 0,
+      "coreDays": 0,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": null,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      15,
+      20,
+      25
+     ]
+    },
+    "holeSeason": {
+     "n": 8,
+     "surf": 2,
+     "p": 0.03815,
+     "tier": "ΠΙΘΑΝΟ",
+     "shadow": 1,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 2,
+     "swir": {
+      "real": 2,
+      "fake": 0,
+      "unknown": 0,
+      "p": 0.03815,
+      "verdict": "ΣΚΑΕΙ"
+     },
+     "arrivalRatio": {
+      "R": 5.16,
+      "daysAtLeast08": 3,
+      "verdict": "ΚΥΜΑ ΦΤΑΝΕΙ"
+     },
+     "shift10": {
+      "realFoamDays": 2,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 1,
+      "stillInsideBoth": 0,
+      "coreDays": 0,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": null,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 0,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      15,
+      20
+     ]
+    },
+    "calm": {
+     "n": 24,
+     "surf": 0,
+     "q": 0.04,
+     "noisy": false
+    },
+    "flank": {
+     "n": 107,
+     "surf": 11,
+     "nBig": 72,
+     "surfBig": 11,
+     "windIndependent": [
+      0,
+      1
+     ],
+     "windDependent": [
+      11,
+      106
+     ]
+    },
+    "fullPrint": {
+     "n": 107,
+     "surf": 11,
+     "nBig": 72,
+     "signal": 0.087,
+     "sees": true
+    },
+    "capabilityShown": true
+   },
+   "flags": [
+    "swirConfirmed",
+    "bandUnder20:noCoreDirection"
+   ],
+   "evidence": [
+    {
+     "day": "2022-03-23",
+     "class": "holeOff",
+     "hsM": 1.75,
+     "dirDeg": 20,
+     "tpS": 6.9,
+     "printedM": 0.18,
+     "beachFoam": 0.995,
+     "outer": 0.993,
+     "exposed": 0.46,
+     "thr": 0.05,
+     "swirRatio": 0.35,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20220323_0_L2A"
+    },
+    {
+     "day": "2022-10-04",
+     "class": "hole",
+     "hsM": 1.11,
+     "dirDeg": 16,
+     "tpS": 5.2,
+     "printedM": 0.11,
+     "beachFoam": 0.463,
+     "outer": 0.238,
+     "exposed": 0.07,
+     "thr": 0.04,
+     "swirRatio": 0.452,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20221004_0_L2A"
+    },
+    {
+     "day": "2023-02-14",
+     "class": "holeOff",
+     "hsM": 1.12,
+     "dirDeg": 16,
+     "tpS": 5.7,
+     "printedM": 0.11,
+     "beachFoam": 0.917,
+     "outer": 0.905,
+     "exposed": 0.196,
+     "thr": 0.04,
+     "swirRatio": 0.39,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20230214_0_L2A"
+    },
+    {
+     "day": "2023-02-16",
+     "class": "holeOff",
+     "hsM": 0.86,
+     "dirDeg": 22,
+     "tpS": 5.2,
+     "printedM": 0.09,
+     "beachFoam": 0.858,
+     "outer": 0.81,
+     "exposed": 0.135,
+     "thr": 0.04,
+     "swirRatio": 0.351,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20230216_0_L2A"
+    },
+    {
+     "day": "2024-10-18",
+     "class": "hole",
+     "hsM": 1.73,
+     "dirDeg": 18,
+     "tpS": 6.3,
+     "printedM": 0.17,
+     "beachFoam": 0.986,
+     "outer": 0.979,
+     "exposed": 0.35,
+     "thr": 0.04,
+     "swirRatio": 0.328,
+     "insideMinus10": false,
+     "insidePlus10": false,
+     "scene": "S2B_35SLB_20241018_0_L2A"
+    },
+    {
+     "day": "2024-11-05",
+     "class": "holeOff",
+     "hsM": 1.36,
+     "dirDeg": 14,
+     "tpS": 5.2,
+     "printedM": 0.14,
+     "beachFoam": 0.586,
+     "outer": 0.42,
+     "exposed": 0.079,
+     "thr": 0.0405,
+     "swirRatio": 0.623,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2A_35SLB_20241105_0_L2A"
+    },
+    {
+     "day": "2024-12-17",
+     "class": "holeOff",
+     "hsM": 0.76,
+     "dirDeg": 16,
+     "tpS": 4.7,
+     "printedM": 0.08,
+     "beachFoam": 0.587,
+     "outer": 0.442,
+     "exposed": 0.054,
+     "thr": 0.04,
+     "swirRatio": 0.291,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20241217_0_L2A"
+    },
+    {
+     "day": "2025-01-26",
+     "class": "holeOff",
+     "hsM": 0.62,
+     "dirDeg": 15,
+     "tpS": 5.2,
+     "printedM": 0.06,
+     "beachFoam": 0.477,
+     "outer": 0.313,
+     "exposed": 0.36,
+     "thr": 0.043,
+     "swirRatio": 0.385,
+     "insideMinus10": false,
+     "insidePlus10": true,
+     "scene": "S2B_35SLB_20250126_0_L2A"
+    },
+    {
+     "day": "2026-03-07",
+     "class": "holeOff",
+     "hsM": 1.09,
+     "dirDeg": 25,
+     "tpS": 5.2,
+     "printedM": 0.11,
+     "beachFoam": 0.982,
+     "outer": 0.98,
+     "exposed": 0.321,
+     "thr": 0.04,
+     "swirRatio": 0.333,
+     "insideMinus10": true,
+     "insidePlus10": false,
+     "scene": "S2C_35SLB_20260307_0_L2A"
+    }
+   ],
+   "eyeCheck": null
+  }
+ },
+ "classA": [
+  {
+   "id": 632,
+   "name": "Βαθύ",
+   "region": "crete-crete-heraklion",
+   "beachType": "sandy-pebbles",
+   "narrow": true,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 180,
+     "toDeg": 195,
+     "widthDeg": 20,
+     "under20": true,
+     "coreDirs": [],
+     "leftFlankDeg": 175,
+     "rightFlankDeg": 200,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 300,
+     "toDeg": 320,
+     "widthDeg": 25,
+     "under20": false,
+     "coreDirs": [
+      310
+     ],
+     "leftFlankDeg": 295,
+     "rightFlankDeg": 325,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "a",
+   "reason": "arrivalRatio",
+   "classSeason": "a",
+   "reasonSeason": "arrivalRatio",
+   "survivesShift10": false,
+   "stats": {
+    "chips": 167,
+    "shorePixels": 233,
+    "hole": {
+     "n": 33,
+     "surf": 2,
+     "p": 0.95314,
+     "tier": null,
+     "shadow": 5,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 2,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": 0.2,
+      "daysAtLeast08": 8,
+      "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 8,
+      "coreFake": 1,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": 0.09,
+      "coreArrivalDays": 2,
+      "coreArrivalVerdict": "λίγες μέρες"
+     },
+     "bands": [
+      180,
+      190,
+      300,
+      305,
+      310,
+      315
+     ]
+    },
+    "holeSeason": {
+     "n": 25,
+     "surf": 2,
+     "p": 0.87767,
+     "tier": null,
+     "shadow": 4,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 2,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": 0.09,
+      "daysAtLeast08": 4,
+      "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 7,
+      "coreFake": 1,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": 0.09,
+      "coreArrivalDays": 2,
+      "coreArrivalVerdict": "λίγες μέρες"
+     },
+     "bands": [
+      300,
+      305,
+      310,
+      315
+     ]
+    },
+    "calm": {
+     "n": 27,
+     "surf": 3,
+     "q": 0.1379,
+     "noisy": false
+    },
+    "flank": {
+     "n": 16,
+     "surf": 0,
+     "nBig": 1,
+     "surfBig": 0,
+     "windIndependent": [
+      0,
+      15
+     ],
+     "windDependent": [
+      0,
+      1
+     ]
+    },
+    "fullPrint": {
+     "n": 34,
+     "surf": 8,
+     "nBig": 19,
+     "signal": 0.189,
+     "sees": true
+    },
+    "capabilityShown": true
+   },
+   "flags": [],
+   "eyeCheck": null
+  },
+  {
+   "id": 928,
+   "name": "Agias Triades Beach",
+   "region": "ionian-islands-corfu",
+   "beachType": "sandy-pebbles",
+   "narrow": true,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 170,
+     "toDeg": 190,
+     "widthDeg": 25,
+     "under20": false,
+     "coreDirs": [
+      180
+     ],
+     "leftFlankDeg": 165,
+     "rightFlankDeg": 195,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 260,
+     "toDeg": 310,
+     "widthDeg": 55,
+     "under20": false,
+     "coreDirs": [
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300
+     ],
+     "leftFlankDeg": 255,
+     "rightFlankDeg": 315,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "a",
+   "reason": "arrivalRatio",
+   "classSeason": "a",
+   "reasonSeason": "arrivalRatio",
+   "survivesShift10": true,
+   "stats": {
+    "chips": 135,
+    "shorePixels": 548,
+    "hole": {
+     "n": 40,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 6,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": -0.53,
+      "daysAtLeast08": 13,
+      "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 25,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": -0.28,
+      "coreArrivalDays": 4,
+      "coreArrivalVerdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "bands": [
+      180,
+      185,
+      265,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      310
+     ]
+    },
+    "holeSeason": {
+     "n": 18,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 4,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": -0.53,
+      "daysAtLeast08": 5,
+      "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 12,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": -0.58,
+      "coreArrivalDays": 2,
+      "coreArrivalVerdict": "λίγες μέρες"
+     },
+     "bands": [
+      290,
+      295,
+      300,
+      305,
+      310
+     ]
+    },
+    "calm": {
+     "n": 22,
+     "surf": 0,
+     "q": 0.0417,
+     "noisy": false
+    },
+    "flank": {
+     "n": 7,
+     "surf": 0,
+     "nBig": 2,
+     "surfBig": 0,
+     "windIndependent": [
+      0,
+      7
+     ],
+     "windDependent": [
+      0,
+      0
+     ]
+    },
+    "fullPrint": {
+     "n": 11,
+     "surf": 0,
+     "nBig": 6,
+     "signal": 0.07,
+     "sees": true
+    },
+    "capabilityShown": true
+   },
+   "flags": [],
+   "eyeCheck": null
+  },
+  {
+   "id": 1340,
+   "name": "Λαμπρίνη ή Ουζούν Σοκάκ",
+   "region": "north-aegean-lesvos",
+   "beachType": "sandy-pebbles",
+   "narrow": false,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 165,
+     "toDeg": 305,
+     "widthDeg": 145,
+     "under20": false,
+     "coreDirs": [
+      175,
+      180,
+      185,
+      190,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      230,
+      235,
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295
+     ],
+     "leftFlankDeg": 160,
+     "rightFlankDeg": 310,
+     "leftFlankArrival": null,
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "a",
+   "reason": "sameImageShadowCapabilityNotShown",
+   "classSeason": "c",
+   "reasonSeason": "fewDays",
+   "survivesShift10": true,
+   "stats": {
+    "chips": 93,
+    "shorePixels": 294,
+    "hole": {
+     "n": 21,
+     "surf": 2,
+     "p": 0.21734,
+     "tier": null,
+     "shadow": 2,
+     "shadowSwirOk": 2,
+     "judgedForShadow": 3,
+     "swir": {
+      "real": 1,
+      "fake": 1,
+      "unknown": 0,
+      "p": 0.57309,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 7,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 1,
+      "stillInsideMinus10": 1,
+      "stillInsidePlus10": 1,
+      "stillInsideBoth": 1,
+      "coreDays": 20,
+      "coreFake": 1,
+      "coreShadowSwirOk": 2,
+      "coreP": 0.55453,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": true,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 7,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      170,
+      180,
+      190,
+      195,
+      200,
+      210,
+      255,
+      265,
+      275,
+      280
+     ]
+    },
+    "holeSeason": {
+     "n": 7,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": null,
+      "daysAtLeast08": 2,
+      "verdict": "δεν κρίνεται"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 7,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": null,
+      "coreArrivalDays": 2,
+      "coreArrivalVerdict": "δεν κρίνεται"
+     },
+     "bands": [
+      190,
+      195,
+      210,
+      265
+     ]
+    },
+    "calm": {
+     "n": 22,
+     "surf": 0,
+     "q": 0.0417,
+     "noisy": false
+    },
+    "flank": {
+     "n": 0,
+     "surf": 0,
+     "nBig": 0,
+     "surfBig": 0,
+     "windIndependent": [
+      0,
+      0
+     ],
+     "windDependent": [
+      0,
+      0
+     ]
+    },
+    "fullPrint": {
+     "n": 0,
+     "surf": 0,
+     "nBig": 0,
+     "signal": null,
+     "sees": false
+    },
+    "capabilityShown": false
+   },
+   "flags": [
+    "seasonOnly→c:fewDays"
+   ],
+   "eyeCheck": null
+  },
+  {
+   "id": 2167,
+   "name": "Κουμέλας",
+   "region": "south-aegean-tinos",
+   "beachType": "pebbles",
+   "narrow": true,
+   "allHolesUnder20": false,
+   "holes": [
+    {
+     "fromDeg": 230,
+     "toDeg": 285,
+     "widthDeg": 60,
+     "under20": false,
+     "coreDirs": [
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275
+     ],
+     "leftFlankDeg": 225,
+     "rightFlankDeg": 290,
+     "leftFlankArrival": null,
+     "rightFlankArrival": "partial",
+     "leftFlankWindIndependent": false,
+     "rightFlankWindIndependent": true
+    },
+    {
+     "fromDeg": 345,
+     "toDeg": 10,
+     "widthDeg": 30,
+     "under20": false,
+     "coreDirs": [
+      355,
+      0
+     ],
+     "leftFlankDeg": 340,
+     "rightFlankDeg": 15,
+     "leftFlankArrival": "partial",
+     "rightFlankArrival": null,
+     "leftFlankWindIndependent": true,
+     "rightFlankWindIndependent": false
+    }
+   ],
+   "class": "a",
+   "reason": "arrivalRatio",
+   "classSeason": "c",
+   "reasonSeason": "fewDays",
+   "survivesShift10": true,
+   "stats": {
+    "chips": 152,
+    "shorePixels": 314,
+    "hole": {
+     "n": 17,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 1,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": -0.19,
+      "daysAtLeast08": 4,
+      "verdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 9,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": -0.36,
+      "coreArrivalDays": 3,
+      "coreArrivalVerdict": "ΣΚΙΑ ΑΛΗΘΙΝΗ"
+     },
+     "bands": [
+      0,
+      230,
+      235,
+      245,
+      250,
+      255,
+      260,
+      275,
+      280,
+      345,
+      350,
+      355
+     ]
+    },
+    "holeSeason": {
+     "n": 7,
+     "surf": 0,
+     "p": 1,
+     "tier": null,
+     "shadow": 0,
+     "shadowSwirOk": 0,
+     "judgedForShadow": 0,
+     "swir": {
+      "real": 0,
+      "fake": 0,
+      "unknown": 0,
+      "p": 1,
+      "verdict": "δεν αποδεικνύεται"
+     },
+     "arrivalRatio": {
+      "R": 0.47,
+      "daysAtLeast08": 2,
+      "verdict": "λίγες μέρες"
+     },
+     "shift10": {
+      "realFoamDays": 0,
+      "stillInsideMinus10": 0,
+      "stillInsidePlus10": 0,
+      "stillInsideBoth": 0,
+      "coreDays": 3,
+      "coreFake": 0,
+      "coreShadowSwirOk": 0,
+      "coreP": 1,
+      "coreSwirVerdict": "δεν αποδεικνύεται",
+      "coreShadowConfirmed": false,
+      "coreArrivalRatio": 0.98,
+      "coreArrivalDays": 1,
+      "coreArrivalVerdict": "λίγες μέρες"
+     },
+     "bands": [
+      0,
+      260,
+      280,
+      345,
+      350,
+      355
+     ]
+    },
+    "calm": {
+     "n": 26,
+     "surf": 0,
+     "q": 0.04,
+     "noisy": false
+    },
+    "flank": {
+     "n": 44,
+     "surf": 3,
+     "nBig": 16,
+     "surfBig": 3,
+     "windIndependent": [
+      3,
+      38
+     ],
+     "windDependent": [
+      0,
+      6
+     ]
+    },
+    "fullPrint": {
+     "n": 46,
+     "surf": 3,
+     "nBig": 18,
+     "signal": 0.177,
+     "sees": true
+    },
+    "capabilityShown": true
+   },
+   "flags": [
+    "seasonOnly→c:fewDays"
+   ],
+   "eyeCheck": null
+  }
+ ],
+ "beachesTable": {"columns": ["id","name","region","beachType","narrow154","allHolesUnder20","holes(from-to/width;flanks)","class","reason","classSeason","survivesShift10","holeDays","holeSurf","swirReal","swirFake","p","shadowSwirOk","arrivalR","coreDays","calmDays","calmSurf","flankDays","flankSurf","fullPrintDays","fullPrintSurf","stripSeesFoam","flags"],
+  "rows": [
+  [12,"Παραλία Αστέρα Γλυφάδας","attica-athens-area-mainland","sandy",true,true,"220-235/20°;silent|partial 350-0/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,1,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [71,"Πούντα Ζέζα","attica-east-attica-mainland","sandy",false,false,"55-90/40°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,1,0,false,""],
+  [74,"Ασημάκη","attica-east-attica-mainland","sandy-pebbles",true,false,"40-70/35°;silent|partial 170-180/15°;partial|silent","c","stripBlindOnFullPrintDays","c",null,7,0,0,0,1,0,null,0,25,3,55,1,56,1,false,""],
+  [106,"Μπίστι","attica-hydra","pebbles",true,true,"315-315/5°;partial|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,1,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [146,"Καψάλι Πίσω Γιαλός","attica-kythira","sandy-pebbles",false,false,"165-305/145°;silent|silent","c","fewDays","c",null,81,2,0,2,0.99995,0,null,79,5,0,1,0,1,0,false,""],
+  [158,"Μεγάλο Νεώριο","attica-poros","sandy",false,false,"180-250/75°;silent|partial 285-320/40°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,28,0,1,0,1,0,false,""],
+  [161,"Παραλία Ρώσικος Ναύσταθμος","attica-poros","sandy-pebbles",false,false,"185-220/40°;silent|partial 230-325/100°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,1,0,0,0,0,false,""],
+  [189,"Παραλία Πόρτο Γερμενό","attica-west-attica-mainland","pebbles",true,false,"210-230/25°;silent|partial 325-350/30°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [190,"Παραλία Πόρτο Γερμενό (νότιο τμήμα)","attica-west-attica-mainland","pebbles",true,false,"230-235/10°;silent|partial 340-10/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [191,"Προσήλι","attica-west-attica-mainland","pebbles",false,false,"120-180/65°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [195,"Αγία Παρασκευή","central-greece-evia","sandy-pebbles",false,false,"10-45/40°;silent|partial","c","fewDays","c",null,7,0,0,0,1,0,null,4,24,2,16,0,16,0,false,""],
+  [199,"Άγιος Δημήτριος","central-greece-evia",null,true,true,"270-280/15°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [207,"Αράλιμος","central-greece-evia","pebbles",true,true,"140-140/5°;silent|partial 265-280/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [211,"Βαλοπούλα","central-greece-evia","sandy-pebbles",true,true,"100-100/5°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [230,"Καναπίτσα","central-greece-evia",null,true,false,"260-280/25°;silent|partial","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [256,"Μεγάλη Άμμος","central-greece-evia","sandy-pebbles",true,true,"35-45/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,22,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [258,"Μνήματα","central-greece-evia","pebbles",true,false,"80-85/10°;partial|silent 305-335/35°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,20,2,1,0,2,1,false,""],
+  [259,"Μπουρνόντας","central-greece-evia","sandy",true,true,"130-145/20°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [262,"Παπαθανασίου","central-greece-evia","pebbles",false,false,"60-90/35°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [265,"Παραλία \"Αστέρια\"","central-greece-evia","sandy-pebbles",false,false,"45-185/145°;silent|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [282,"Παραλία Φηγιά","central-greece-evia","sandy-pebbles",true,true,"125-135/15°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,21,0,0,0,3,0,true,"bandUnder20:noCoreDirection"],
+  [291,"Πόρτο Πεύκο","central-greece-evia","sandy",false,false,"15-65/55°;silent|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,27,0,0,0,0,0,false,""],
+  [305,"Συκιές","central-greece-evia","sandy-pebbles",false,false,"70-105/40°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [340,"Γιάννακης","central-greece-fokida-mainland","pebbles",true,false,"110-135/30°;partial|silent 355-25/35°;silent|partial","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [343,"Κεντρί","central-greece-fokida-mainland","sandy-pebbles",true,true,"315-315/5°;silent|partial","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [359,"Καραβόμυλος","central-greece-fthiotida-mainland","sandy-pebbles",true,true,"255-270/20°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [362,"Παραλία Αγίου Γεωργίου Πελασγίας","central-greece-fthiotida-mainland","sandy-pebbles",true,true,"135-140/10°;silent|partial 270-275/10°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,2,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [3169,"Λιασίκι","central-greece-fthiotida-mainland","unknown",true,true,"40-45/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [316,"Ρένες","central-greece-skyros","pebbles",true,false,"135-150/20°;silent|partial 255-275/25°;partial|silent","c","stripBlindOnFullPrintDays","c",null,3,0,0,0,1,0,null,0,22,0,6,0,10,0,false,""],
+  [319,"Αχερούνες","central-greece-skyros","sandy",true,true,"135-145/15°;silent|partial 265-275/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,2,0,3,0,false,"bandUnder20:noCoreDirection"],
+  [324,"Πετρίτσα","central-greece-skyros","pebbles",true,false,"35-60/30°;partial|silent 280-285/10°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,23,1,2,0,23,1,true,""],
+  [374,"Λαιμός","central-greece-viotia-mainland","pebbles",true,true,"195-210/20°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [379,"Άγιος Γεώργιος","central-macedonia-halkidiki-mainland","sandy",true,true,"100-100/5°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [395,"Φάκα","central-macedonia-halkidiki-mainland","sandy-pebbles",true,true,"40-55/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [418,"Likithos","central-macedonia-halkidiki-mainland","sandy-pebbles",false,false,"50-90/45°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,0,0,2,0,false,""],
+  [425,"Μεγάλη Άμμος","central-macedonia-halkidiki-mainland","sandy",true,true,"85-95/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [450,"Τσάσκα","central-macedonia-halkidiki-mainland","sandy",true,true,"30-40/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [455,"Βουρβουρού","central-macedonia-halkidiki-mainland","sandy",true,false,"30-40/15°;partial|silent 260-315/60°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,1,0,1,0,false,""],
+  [464,"Παραλία Λιβάρι","central-macedonia-halkidiki-mainland","sandy",false,false,"310-85/140°;silent|partial","c","fewDays","c",null,3,0,0,0,1,0,null,3,28,1,0,0,0,0,false,""],
+  [469,"Παραλία Λατούρα","central-macedonia-halkidiki-mainland","sandy",true,false,"30-55/30°;partial|silent 275-300/30°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,0,0,0,0,false,""],
+  [486,"Παραλία Γαλήνη","central-macedonia-halkidiki-mainland","sandy",false,false,"220-290/75°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,0,0,0,0,false,""],
+  [3007,"Αμμουλιανή","central-macedonia-halkidiki-mainland","sandy",true,false,"80-100/25°;partial|silent 320-345/30°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,1,0,1,0,false,""],
+  [537,"Λουτράκι","crete-crete-chania","sandy",true,true,"40-55/20°;silent|partial 170-180/15°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,0,12,0,7,0,7,0,false,"bandUnder20:noCoreDirection"],
+  [539,"Μαράθι","crete-crete-chania","sandy",true,true,"220-235/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,12,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [549,"Παραλία Βλητέ","crete-crete-chania","sandy",true,false,"50-55/10°;silent|partial 165-190/30°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,13,0,0,0,0,0,false,""],
+  [632,"Βαθύ","crete-crete-heraklion","sandy-pebbles",true,false,"180-195/20°;silent|partial 300-320/25°;partial|silent","a","arrivalRatio","a",false,33,2,0,2,0.95314,0,0.2,8,27,3,16,0,34,8,true,""],
+  [723,"Αμμούδι","crete-crete-lasithi","sandy-pebbles",true,false,"45-70/30°;silent|partial 155-185/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,22,1,2,0,2,0,false,""],
+  [767,"Σχίσμα","crete-crete-lasithi","sandy",true,false,"70-135/70°;partial|silent 350-15/30°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,15,0,3,0,4,0,false,""],
+  [3010,"Ελούντα","crete-crete-lasithi","unknown",false,false,"70-125/60°;partial|silent 345-15/35°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,16,1,3,0,4,0,false,""],
+  [689,"Παλίγκρεμνος","crete-crete-rethymno","sandy-pebbles",false,false,"315-355/45°;partial|silent","c","fewDays","c",null,19,0,0,0,1,0,-0.09,6,27,0,10,1,28,16,true,""],
+  [836,"Βάθη","east-macedonia-and-thrace-thasos","sandy-pebbles",true,true,"35-50/20°;partial|silent 270-285/20°;silent|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,27,0,6,0,6,0,true,"bandUnder20:noCoreDirection"],
+  [865,"Άη Γιαννάκης","epirus-preveza-mainland","sandy",true,false,"80-140/65°;silent|partial 210-220/15°;partial|silent","c","stripBlindOnFullPrintDays","c",null,7,1,0,1,0.24855,0,null,0,26,0,10,0,10,0,false,""],
+  [895,"Ζέρη","epirus-thesprotia-mainland","sandy",true,true,"145-150/10°;silent|partial 280-285/10°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [897,"Κάρβουνο","epirus-thesprotia-mainland","sandy",true,false,"20-35/20°;partial|silent 255-295/45°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,24,1,2,0,2,0,false,""],
+  [904,"Μουρτεμένο","epirus-thesprotia-mainland","sandy",false,false,"280-60/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,2,26,0,0,0,0,0,false,""],
+  [905,"Μπέλα Βράκα","epirus-thesprotia-mainland","sandy",false,false,"75-215/145°;silent|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,26,0,2,0,2,0,false,""],
+  [906,"Πάνα","epirus-thesprotia-mainland","sandy",false,false,"55-140/90°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,0,0,false,""],
+  [907,"Παραλία Plataria Beach Hotel","epirus-thesprotia-mainland","sandy-pebbles",false,false,"130-190/65°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,23,0,0,0,0,0,false,""],
+  [908,"Παραλία Έλενα","epirus-thesprotia-mainland","sandy-pebbles",false,false,"145-195/55°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,23,0,0,0,0,0,false,""],
+  [913,"Παραλία Καλάμι","epirus-thesprotia-mainland","sandy-pebbles",true,false,"100-145/50°;silent|partial 215-240/30°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,0,1,0,1,0,false,""],
+  [928,"Agias Triades Beach","ionian-islands-corfu","sandy-pebbles",true,false,"170-190/25°;silent|partial 260-310/55°;partial|silent","a","arrivalRatio","a",true,40,0,0,0,1,0,-0.53,25,22,0,7,0,11,0,true,""],
+  [929,"Agni Beach","ionian-islands-corfu","pebbles",true,true,"30-45/20°;silent|partial 155-170/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,19,1,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [930,"Αλύπα","ionian-islands-corfu","sandy-pebbles",false,false,"50-190/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,1,22,0,2,0,2,0,false,""],
+  [1016,"Τραμουντάνα","ionian-islands-corfu","sandy-pebbles",true,true,"230-235/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [3013,"Γουβιά","ionian-islands-corfu","pebbles",true,false,"125-125/5°;partial|silent 345-10/30°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,""],
+  [3099,"Άκολη (Κέρκυρα)","ionian-islands-corfu","unknown",true,true,"115-125/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,22,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1228,"Παραλία Μνήματα","ionian-islands-ithaca","pebbles",false,false,"5-35/35°;partial|silent 255-290/40°;silent|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,28,1,2,0,2,0,false,""],
+  [1229,"Παραλία Σκίνος","ionian-islands-ithaca","pebbles",false,false,"225-5/145°;silent|silent","c","fewDays","c",null,7,0,0,0,1,0,null,6,28,1,0,0,0,0,false,""],
+  [1236,"Πόλη","ionian-islands-ithaca","pebbles",false,false,"135-165/35°;silent|partial 245-275/35°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,0,0,0,0,0,false,""],
+  [1237,"Αμμούδι","ionian-islands-ithaca","pebbles",true,false,"180-195/20°;silent|partial 295-320/30°;partial|silent","b","statistical ΠΙΘΑΝΟ","c",false,9,2,1,1,0.04777,0,null,8,25,0,1,0,1,0,false,"swirNotProven;seasonOnly→c:fewDays"],
+  [1069,"Κιμηλιά","ionian-islands-kefalonia","pebbles",false,false,"120-150/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,20,0,0,0,0,0,false,""],
+  [1085,"Αγία Σωτήρα","ionian-islands-kefalonia","unknown",true,true,"295-305/15°;partial|silent","c","stripBlindOnFullPrintDays","c",null,13,0,0,0,1,0,null,0,19,0,93,1,100,1,false,"bandUnder20:noCoreDirection"],
+  [1088,"Αντίσαμος","ionian-islands-kefalonia","pebbles",false,false,"65-100/40°;partial|silent 320-5/50°;silent|partial","c","fewDays","c",null,14,0,0,0,1,0,null,4,26,0,1,0,1,0,false,""],
+  [1108,"Λυγιά Φάρσων","ionian-islands-kefalonia","pebbles",true,true,"305-305/5°;partial|silent","c","stripBlindOnFullPrintDays","c",null,7,0,0,0,1,0,null,0,16,0,103,2,118,2,false,"bandUnder20:noCoreDirection"],
+  [1115,"Παλιοσταφίδα","ionian-islands-kefalonia","sandy",true,true,"240-255/20°;silent|partial","c","stripBlindOnFullPrintDays","c",null,19,0,0,0,1,0,null,0,23,0,20,0,36,0,false,"bandUnder20:noCoreDirection"],
+  [1131,"Φωκι","ionian-islands-kefalonia","pebbles",false,false,"30-170/145°;silent|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,20,0,0,0,0,0,false,""],
+  [1135,"Γιαγάνα","ionian-islands-kefalonia","pebbles",true,false,"0-30/35°;silent|partial 125-140/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,0,0,0,0,false,""],
+  [1136,"Χοργοτά","ionian-islands-kefalonia","pebbles",true,false,"5-30/30°;silent|partial 120-145/30°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [1137,"Αγιά Σοφία","ionian-islands-kefalonia","pebbles",true,false,"10-30/25°;silent|partial 120-150/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [1138,"Πλατύ Λιμάνι","ionian-islands-kefalonia","pebbles",false,false,"35-175/145°;silent|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [1140,"Δεσίμι","ionian-islands-lefkada","sandy-pebbles",false,false,"85-225/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,2,27,0,0,0,0,0,false,""],
+  [1141,"Καμάρι","ionian-islands-lefkada","pebbles",true,true,"90-90/5°;partial|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [1154,"Αφτέλι","ionian-islands-lefkada","pebbles",false,false,"225-260/40°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,1,0,false,""],
+  [1165,"Λυγιά","ionian-islands-lefkada","sandy-pebbles",false,false,"45-85/45°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,0,0,false,""],
+  [1166,"Μικρός Γιαλός","ionian-islands-lefkada","pebbles",true,true,"90-95/10°;silent|partial 220-230/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,1,0,2,0,false,"bandUnder20:noCoreDirection"],
+  [1168,"Νότια Παραλία Σκορπιού","ionian-islands-lefkada","pebbles",false,false,"210-240/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,1,0,false,""],
+  [1177,"Αθερινός","ionian-islands-meganisi","pebbles",false,false,"265-340/80°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,""],
+  [1178,"Άγιος Ιωάννης","ionian-islands-meganisi","pebbles",false,false,"265-320/60°;partial|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,0,0,0,1,0,false,""],
+  [1179,"Πασουμάκι","ionian-islands-meganisi","pebbles",true,true,"235-245/15°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1180,"Σπηλιά","ionian-islands-meganisi","sandy-pebbles",false,false,"25-55/35°;partial|silent 275-320/50°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,1,0,0,0,0,false,""],
+  [1181,"Φανάρι","ionian-islands-meganisi","pebbles",true,false,"280-300/25°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,0,0,0,0,false,""],
+  [1018,"Μογγονήσι","ionian-islands-paxos","sandy",false,false,"30-60/35°;partial|silent 280-330/55°;silent|partial","c","fewDays","c",null,4,0,0,0,1,0,null,3,21,0,2,0,2,0,false,""],
+  [1216,"Πόρτο Βρώμη","ionian-islands-zakynthos","pebbles",true,true,"150-150/5°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,14,0,0,0,7,0,true,"bandUnder20:noCoreDirection"],
+  [1259,"Ελίντα","north-aegean-chios","pebbles",true,false,"130-155/30°;silent|partial 250-270/25°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,5,6,0,6,0,false,""],
+  [1266,"Παραλία Αυλωνία","north-aegean-chios","pebbles",false,false,"140-280/145°;silent|silent","c","fewDays","c",null,16,0,0,0,1,0,null,16,21,0,2,0,2,0,false,""],
+  [1272,"Παραλία Λιθί","north-aegean-chios","sandy",true,true,"35-50/20°;partial|silent 270-275/10°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,0.69,0,28,2,5,0,18,1,true,"bandUnder20:noCoreDirection"],
+  [1275,"Ποταμοί","north-aegean-chios","pebbles",false,false,"35-80/50°;partial|silent 300-330/35°;silent|partial","c","arrivalRatioHighButNotSignificant","c",null,96,0,0,0,1,0,1.01,25,27,1,6,0,6,0,true,""],
+  [1312,"Βλυχάδα","north-aegean-fournoi","pebbles",true,false,"100-110/15°;silent|partial 220-240/25°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,21,0,1,0,2,0,true,""],
+  [1316,"Ελιδάκι","north-aegean-fournoi","sandy",false,false,"225-5/145°;silent|silent","c","fewDays","c",null,66,1,0,1,0.93973,0,null,62,22,0,0,0,0,0,false,""],
+  [1318,"Κουμαρά","north-aegean-fournoi","sandy",false,false,"65-105/45°;partial|silent 325-0/40°;silent|partial","c","fewDays","c",null,4,0,0,0,1,0,null,0,23,0,14,0,15,0,true,""],
+  [1450,"Καλλιθέα","north-aegean-lemnos","sandy",true,false,"170-190/25°;partial|silent","c","fewDays","c",null,6,1,0,1,0.30493,0,null,1,15,0,0,0,0,0,false,""],
+  [1454,"Μεγάλο Φαναράκι","north-aegean-lemnos","sandy",true,true,"335-345/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,15,0,0,0,2,0,false,"bandUnder20:noCoreDirection"],
+  [1459,"Παραλία Κότσινα","north-aegean-lemnos","sandy",false,false,"355-135/145°;silent|silent","c","mixed","c",null,72,7,6,1,0.08433,2,null,69,17,0,0,0,0,0,false,""],
+  [1329,"Βαθύ Κριτήρι","north-aegean-lesvos","sandy",false,false,"30-65/40°;silent|partial 120-170/55°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,0,0,0,0,0,false,""],
+  [1340,"Λαμπρίνη ή Ουζούν Σοκάκ","north-aegean-lesvos","sandy-pebbles",false,false,"165-305/145°;silent|silent","a","sameImageShadowCapabilityNotShown","c",true,21,2,1,1,0.21734,2,null,20,22,0,0,0,0,0,false,"seasonOnly→c:fewDays"],
+  [1358,"Παραλία Νυφίδας","north-aegean-lesvos","sandy",true,true,"100-100/5°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1368,"Τσίλια","north-aegean-lesvos","pebbles",true,false,"125-150/30°;silent|partial 255-265/15°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,30,0,0,0,1,0,false,""],
+  [1375,"Χαλατσές","north-aegean-lesvos","pebbles",true,true,"95-105/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [3135,"Παραλία Λάρισος","north-aegean-lesvos","pebbles",true,true,"265-265/5°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,30,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1397,"Γάγγου","north-aegean-samos","pebbles",false,false,"140-285/150°;silent|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,21,0,0,0,0,0,false,""],
+  [1414,"Ροδίτσες","north-aegean-samos","sandy-pebbles",false,false,"170-230/65°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,21,0,0,0,0,0,false,""],
+  [1475,"Καλαμάκι","peloponnese-argolida-mainland","sandy-pebbles",false,false,"170-240/75°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,""],
+  [1477,"Καστράκι","peloponnese-argolida-mainland","sandy-pebbles",false,false,"220-265/50°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,1,0,1,0,false,""],
+  [1480,"Μπούκα","peloponnese-argolida-mainland","sandy-pebbles",false,false,"275-310/40°;silent|partial 320-55/100°;partial|silent","c","fewDays","c",null,3,0,0,0,1,0,null,3,27,1,0,0,0,0,false,""],
+  [1486,"Παραλία Βαγιωνία","peloponnese-argolida-mainland","sandy-pebbles",true,false,"50-55/10°;silent|partial 170-190/25°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,1,0,1,0,false,""],
+  [1496,"Βιβάρι","peloponnese-argolida-mainland","sandy-pebbles",false,false,"85-115/35°;silent|partial 195-225/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,""],
+  [1528,"Λυχνάρι","peloponnese-korinthia-mainland","pebbles",true,false,"25-40/20°;partial|silent 260-285/30°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,0,0,0,0,false,""],
+  [1529,"Μεγάλο Αμόνι","peloponnese-korinthia-mainland","sandy-pebbles",false,false,"30-60/35°;silent|partial 120-170/55°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,0,0,0,0,false,""],
+  [1530,"Μικρό Αμόνι","peloponnese-korinthia-mainland","pebbles",true,false,"120-135/20°;partial|silent 355-15/25°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,29,0,0,0,0,0,false,""],
+  [1539,"Σιδερώνα","peloponnese-korinthia-mainland","pebbles",true,false,"85-105/25°;partial|silent 325-340/20°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,0,0,0,0,0,false,""],
+  [3041,"Λουτράκι Νεράιδα","peloponnese-korinthia-mainland","unknown",true,true,"135-145/15°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1591,"Πόρτο Κάγιο","peloponnese-lakonia-mainland","sandy-pebbles",true,false,"75-80/10°;partial|silent 300-10/75°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,28,2,1,0,1,0,false,""],
+  [3091,"Παραλία Κάτω Μέζαπος","peloponnese-lakonia-mainland","unknown",false,false,"180-230/55°;silent|partial","c","stripBlindOnFullPrintDays","c",null,6,0,0,0,1,0,null,4,27,0,5,0,29,0,false,""],
+  [3138,"Παραλία Αρχάγγελος","peloponnese-lakonia-mainland","pebbles",true,false,"25-45/25°;partial|silent 265-280/20°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,27,0,9,0,9,0,false,""],
+  [1605,"Άμμος","peloponnese-messinia-mainland","sandy",true,true,"95-105/15°;partial|silent 325-340/20°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,7,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1614,"Διβάρι","peloponnese-messinia-mainland","sandy",true,true,"105-110/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,11,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [1618,"Καντούνι","peloponnese-messinia-mainland","sandy-pebbles",false,false,"315-350/40°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,15,0,0,0,14,0,false,""],
+  [1632,"Παραλία Γιάλοβα","peloponnese-messinia-mainland","sandy",true,true,"295-300/10°;partial|silent","c","stripBlindOnFullPrintDays","c",null,8,0,0,0,1,0,null,0,12,0,20,0,30,1,false,"bandUnder20:noCoreDirection"],
+  [1637,"Παραλία Μεθώνης","peloponnese-messinia-mainland","sandy",true,true,"80-95/20°;silent|partial 210-220/15°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,0.45,0,6,0,4,1,4,1,true,"bandUnder20:noCoreDirection"],
+  [2226,"Γαδουρόλακκος","south-aegean-agathonisi","sandy-pebbles",true,false,"90-105/20°;silent|partial 210-230/25°;partial|silent","c","fewDays","c",null,1,1,0,1,null,0,1.65,0,22,1,2,0,4,1,true,"foamOnFewDays"],
+  [2227,"Πάλος","south-aegean-agathonisi","pebbles",true,true,"60-60/5°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [2228,"Παραλία Σπηλιάς","south-aegean-agathonisi","sandy-pebbles",false,false,"55-195/145°;silent|silent","c","fewDays","c",null,4,1,0,1,0.29393,0,null,3,22,1,1,0,1,0,false,""],
+  [2229,"Τσαγκάρι","south-aegean-agathonisi","pebbles",false,false,"255-300/50°;partial|silent","c","fewDays","c",null,4,0,0,0,1,0,null,3,23,0,2,0,2,0,false,""],
+  [1658,"Άγιος Παύλος","south-aegean-amorgos","sandy-pebbles",false,false,"310-350/45°;partial|silent","c","stripBlindOnFullPrintDays","c",null,74,0,0,0,1,2,null,36,15,0,9,0,11,0,false,""],
+  [1659,"Καλοκαταρίτισσα","south-aegean-amorgos","sandy",false,false,"350-130/145°;silent|silent","c","stripBlindOnFullPrintDays","c",null,118,0,0,0,1,0,null,43,11,0,6,0,6,0,false,""],
+  [1661,"Κάτω Κάμπος","south-aegean-amorgos","sandy-pebbles",false,false,"75-120/50°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,15,1,1,0,1,0,false,""],
+  [1663,"Μαλτέζι","south-aegean-amorgos","sandy",false,false,"130-270/145°;silent|silent","c","fewDays","c",null,14,1,0,1,0.61936,0,null,13,13,0,1,0,1,0,false,""],
+  [1665,"Νικουριά","south-aegean-amorgos","sandy",false,false,"80-220/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,1,17,0,1,0,1,0,false,""],
+  [3083,"Μεγάλη Βλυχάδα","south-aegean-amorgos","unknown",true,false,"30-45/20°;partial|silent 265-285/25°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,16,0,4,0,15,0,true,""],
+  [1696,"Βίντζι","south-aegean-andros","sandy-pebbles",false,false,"130-215/90°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,14,0,0,0,0,0,false,""],
+  [1731,"Καλούδια","south-aegean-antiparos","sandy",false,false,"135-275/145°;silent|silent","c","stripBlindOnFullPrintDays","c",null,19,1,0,1,0.90265,0,null,15,24,2,5,0,5,0,false,""],
+  [1734,"Παραλία Παναγίας Δεσποτικού","south-aegean-antiparos","sandy",false,false,"350-90/105°;partial|silent","c","stripBlindOnFullPrintDays","c",null,63,1,0,1,0.9236,1,null,11,26,0,73,1,75,1,false,""],
+  [3072,"Παραλία Μοναστήρι","south-aegean-antiparos","unknown",true,true,"185-185/5°;silent|partial 310-325/20°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,25,0,11,0,20,0,false,"bandUnder20:noCoreDirection"],
+  [2498,"Πατελιά","south-aegean-arki","sandy-pebbles",false,false,"140-280/145°;silent|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,19,0,1,0,1,0,false,""],
+  [2233,"Άγιος Κωνσταντίνος","south-aegean-astypalaia","sandy-pebbles",true,false,"100-100/5°;partial|silent 320-345/30°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,16,0,2,0,7,0,false,""],
+  [2238,"Λαντές","south-aegean-astypalaia","sandy-pebbles",true,false,"75-85/15°;partial|silent 305-330/30°;silent|partial","c","mixed","c",null,23,0,0,0,1,0,0.38,5,5,0,46,1,66,1,true,""],
+  [2249,"Ψιλή Άμμος","south-aegean-astypalaia","sandy-pebbles",false,false,"45-95/55°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,5,0,0,0,13,0,true,""],
+  [1765,"Βαλμάς","south-aegean-ios","sandy-pebbles",false,false,"305-350/50°;partial|silent","c","stripBlindOnFullPrintDays","c",null,81,1,0,1,0.96336,0,null,73,25,0,2,0,25,0,false,""],
+  [1798,"Τρεις Κλεισιές βόρειος","south-aegean-ios","sandy",false,false,"215-260/50°;partial|silent","c","stripBlindOnFullPrintDays","c",null,22,0,0,0,1,0,null,18,24,0,2,0,5,0,false,""],
+  [2220,"Λιβάδι","south-aegean-iraklia","sandy",true,false,"80-100/25°;partial|silent 320-325/10°;silent|partial","c","fewDays","c",null,5,0,0,0,1,0,null,0,23,0,23,0,45,7,true,""],
+  [2253,"Χαλί","south-aegean-kalymnos","pebbles",false,false,"125-170/50°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,20,0,1,0,2,0,true,""],
+  [2260,"Παραλία Αλέξις","south-aegean-kalymnos","pebbles",false,false,"350-30/45°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,21,1,5,0,11,0,true,""],
+  [2261,"Παραλία Αργίνωντα","south-aegean-kalymnos","pebbles",false,false,"235-305/75°;silent|partial 320-15/60°;partial|silent","c","fewDays","c",null,53,0,0,0,1,0,null,52,22,2,0,0,0,0,false,""],
+  [2273,"Αλιμούντα","south-aegean-karpathos","sandy-pebbles",true,true,"105-105/5°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,20,0,4,0,8,0,true,"bandUnder20:noCoreDirection"],
+  [2319,"Πλάκες","south-aegean-kastellorizo","rocky",true,true,"45-50/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [1808,"Γιαλισκάρι","south-aegean-kea","sandy",true,false,"230-235/10°;silent|partial 350-10/25°;partial|silent","c","stripBlindOnFullPrintDays","c",null,25,0,0,0,1,0,null,6,28,0,17,0,19,0,false,""],
+  [1809,"Καλαμίτσι","south-aegean-kea","sandy-pebbles",true,true,"230-235/10°;silent|partial 355-10/20°;partial|silent","c","stripBlindOnFullPrintDays","c",null,25,3,1,2,0.78704,0,null,0,23,3,33,0,36,0,false,"bandUnder20:noCoreDirection"],
+  [1852,"Μοναστήρια","south-aegean-kimolos","sandy-pebbles",true,true,"110-125/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,12,0,0,0,14,0,true,"bandUnder20:noCoreDirection"],
+  [1855,"Πράσα (Άγιος Γεώργιος)","south-aegean-kimolos","sandy",true,false,"90-115/30°;silent|partial 215-230/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,13,1,0,0,0,0,false,""],
+  [2202,"Λίμνη Κάτω Κουφονησίου","south-aegean-koufonisia","pebbles",true,false,"40-60/25°;partial|silent","c","fewDays","c",null,4,0,0,0,1,0,-1.18,0,27,1,68,0,93,1,true,""],
+  [2210,"Φύκιο","south-aegean-koufonisia","pebbles",true,false,"30-55/30°;partial|silent 275-290/20°;silent|partial","c","mixed","c",null,16,0,0,0,1,0,0.33,1,23,0,107,1,118,1,true,""],
+  [1859,"Άγιος Ιωάννης","south-aegean-kythnos","sandy",true,true,"125-140/20°;silent|partial 255-265/15°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,17,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [1861,"Άγιος Στέφανος","south-aegean-kythnos","sandy",true,false,"100-105/10°;silent|partial 210-240/35°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,17,0,3,0,4,0,true,""],
+  [1864,"Αγκορίτσα","south-aegean-kythnos","pebbles",true,true,"90-105/20°;silent|partial 220-230/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,17,0,1,0,2,0,false,"bandUnder20:noCoreDirection"],
+  [1869,"Βασιλικό","south-aegean-kythnos","sandy",false,false,"170-310/145°;silent|silent","c","fewDays","c",null,4,0,0,0,1,0,null,4,17,0,0,0,0,0,false,""],
+  [1893,"Σκινάρι","south-aegean-kythnos","sandy-pebbles",true,false,"50-60/15°;silent|partial 165-190/30°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,24,6,0,0,1,0,false,""],
+  [2358,"Δύο Λισκάρια","south-aegean-leros","sandy-pebbles",false,false,"175-230/60°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,22,0,0,0,0,0,false,""],
+  [2361,"Παραλία Λακκίου","south-aegean-leros","sandy-pebbles",true,false,"75-140/70°;silent|partial 210-215/10°;partial|silent","c","fewDays","c",null,2,1,0,1,null,0,null,0,14,1,3,0,4,0,false,"foamOnFewDays"],
+  [2363,"Κόκκινη παραλία","south-aegean-leros","sandy-pebbles",false,false,"50-140/95°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,16,0,0,0,1,0,false,""],
+  [2367,"Παραλία Μπλεφούτης","south-aegean-leros","sandy-pebbles",true,false,"20-45/30°;partial|silent 265-295/35°;silent|partial","c","stripBlindOnFullPrintDays","c",null,4,0,0,0,1,0,null,1,14,0,29,0,44,0,false,""],
+  [2368,"Όρμος Μπελφούτη","south-aegean-leros","sandy-pebbles",true,false,"75-100/30°;partial|silent 320-330/15°;silent|partial","c","stripBlindOnFullPrintDays","c",null,12,0,0,0,1,0,null,0,14,1,22,0,44,0,false,""],
+  [2377,"Λεντού","south-aegean-lipsi","sandy-pebbles",true,false,"175-195/25°;silent|partial 300-315/20°;partial|silent","c","fewDays","c",null,16,0,0,0,1,0,-0.24,0,23,0,20,0,22,1,true,""],
+  [2500,"Μαράθι","south-aegean-marathi","sandy",true,false,"35-95/65°;silent|partial 165-175/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,2,0,2,0,false,""],
+  [1898,"Άγιος Δημήτριος","south-aegean-milos","sandy-pebbles",false,false,"50-120/75°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,11,0,0,0,0,0,false,""],
+  [1903,"Αχιβαδολίμνη","south-aegean-milos","sandy",true,true,"45-55/15°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,11,0,4,3,6,5,true,"bandUnder20:noCoreDirection"],
+  [1917,"Παπικινού","south-aegean-milos","sandy",true,true,"145-160/20°;silent|partial 285-285/5°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,8,0,3,0,5,0,false,"bandUnder20:noCoreDirection"],
+  [1921,"Ριβάρι","south-aegean-milos","sandy-pebbles",true,true,"320-325/10°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,9,0,0,0,1,0,false,"bandUnder20:noCoreDirection"],
+  [1932,"Πολλώνια","south-aegean-milos","sandy",false,false,"10-40/35°;silent|partial","c","stripBlindOnFullPrintDays","c",null,4,0,0,0,1,0,null,0,12,0,23,0,24,0,false,""],
+  [1941,"Αγία Άννα Παράγκας","south-aegean-mykonos","sandy",true,false,"185-190/10°;silent|partial 300-325/30°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,0.24,0,26,0,2,0,6,3,true,""],
+  [1945,"Άγιος Σώστης","south-aegean-mykonos","sandy-pebbles",false,false,"130-170/45°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,2,21,0,1,0,3,0,true,""],
+  [1957,"Κόρφος","south-aegean-mykonos","sandy",true,false,"35-60/30°;partial|silent 280-285/10°;silent|partial","c","arrivalRatioHighButNotSignificant","c",null,11,0,0,0,1,0,1.26,3,28,0,24,1,27,1,true,""],
+  [1965,"Πάνορμος","south-aegean-mykonos","sandy",false,false,"90-140/55°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,1,21,0,1,0,20,1,true,""],
+  [2011,"Πάνορμος","south-aegean-naxos","sandy-pebbles",true,false,"165-190/30°;silent|partial 265-305/45°;partial|silent","c","stripBlindOnFullPrintDays","c",null,3,0,0,0,1,1,null,1,26,0,2,0,4,0,false,""],
+  [2015,"Παραλία Σπεδό","south-aegean-naxos","sandy-pebbles",true,false,"50-70/25°;silent|partial 165-190/30°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,1,28,0,5,0,5,0,true,""],
+  [2025,"Βουτάκος","south-aegean-paros","sandy",true,true,"270-285/20°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,0,23,0,2,0,24,0,false,"bandUnder20:noCoreDirection"],
+  [2031,"Κριός","south-aegean-paros","sandy",false,false,"135-190/60°;silent|partial 240-275/40°;partial|silent","c","stripBlindOnFullPrintDays","c",null,10,0,0,0,1,0,null,8,25,0,6,0,6,0,false,""],
+  [2034,"Λίμνες","south-aegean-paros","sandy",false,false,"0-55/60°;silent|partial 95-140/50°;partial|silent","b","statistical ΣΚΑΕΙ","c",false,55,23,16,7,0.00052,0,null,10,26,5,83,12,83,12,false,"swirConfirmed;seasonOnly→c:stripBlindOnFullPrintDays"],
+  [2039,"Μοναστήρι","south-aegean-paros","sandy",false,false,"75-215/145°;silent|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,0,0,0,0,false,""],
+  [2040,"Μώλος","south-aegean-paros","sandy",true,true,"15-25/15°;silent|partial","b","statistical ΣΚΑΕΙ","b",false,19,9,8,1,0,0,9.7,0,24,0,107,11,107,11,true,"swirConfirmed;bandUnder20:noCoreDirection"],
+  [2041,"Ναυτικός όμιλος Πάρου","south-aegean-paros","sandy",true,false,"165-190/30°;silent|partial 305-305/5°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,26,0,5,0,14,1,false,""],
+  [2042,"Ξυφάρα","south-aegean-paros","sandy",true,false,"30-40/15°;partial|silent 260-280/25°;silent|partial","c","fewDays","c",null,5,0,0,0,1,0,1.38,0,26,0,28,0,48,0,true,""],
+  [2389,"Αγριολίβαδο","south-aegean-patmos","sandy-pebbles",true,false,"50-70/25°;silent|partial 160-190/35°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,1,11,0,2,1,2,1,false,""],
+  [2390,"Άσπρη","south-aegean-patmos","pebbles",true,false,"95-105/15°;silent|partial 175-235/65°;partial|silent","c","fewDays","c",null,9,0,0,0,1,0,null,5,10,0,1,0,1,0,false,""],
+  [2392,"Άγιος Θεολόγος","south-aegean-patmos","sandy-pebbles",true,false,"50-60/15°;silent|partial 165-190/30°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,1,12,0,2,0,2,0,false,""],
+  [2393,"Σάψιλα","south-aegean-patmos","sandy-pebbles",true,false,"55-60/10°;partial|silent 280-345/70°;silent|partial","c","fewDays","c",null,81,0,0,0,1,0,null,73,13,0,4,0,5,0,false,""],
+  [2397,"Παραλία Γροίκος","south-aegean-patmos","sandy-pebbles",false,false,"175-215/45°;partial|silent","c","fewDays","c",null,3,0,0,0,1,0,null,2,14,1,3,0,4,0,false,""],
+  [2222,"Κάτω Μερσίνι","south-aegean-polyaigos","sandy",true,true,"180-195/20°;silent|partial 310-320/15°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,14,0,1,0,4,0,false,"bandUnder20:noCoreDirection"],
+  [2223,"Πάνω Μερσίνι","south-aegean-polyaigos","sandy-pebbles",false,false,"225-5/145°;silent|silent","c","fewDays","c",null,3,0,0,0,1,0,0.02,0,13,0,10,0,10,0,true,""],
+  [2492,"Παραλία Μαραθούντα","south-aegean-pserimos","sandy-pebbles",true,false,"75-90/20°;partial|silent 310-330/25°;silent|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,21,0,40,2,58,2,false,""],
+  [2443,"Παραλία Λίνδου (Μεγάλη Παραλία)","south-aegean-rhodes","sandy",true,false,"0-55/60°;silent|partial 120-140/25°;partial|silent","c","fewDays","c",null,13,0,0,0,1,0,null,8,27,1,6,0,6,0,false,""],
+  [2447,"Kavos Beach","south-aegean-rhodes","sandy-pebbles",true,false,"210-230/25°;silent|partial 305-350/50°;partial|silent","c","fewDays","c",null,5,0,0,0,1,0,null,1,28,0,1,0,1,0,false,""],
+  [2213,"Λιόλιου","south-aegean-schinoussa","sandy",true,false,"105-125/25°;partial|silent 345-5/25°;silent|partial","c","mixed","c",null,30,1,0,1,0.70614,0,0.33,4,24,0,49,1,70,1,true,""],
+  [2071,"Άγιος Σώστης","south-aegean-serifos","sandy",true,true,"80-95/20°;partial|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,11,1,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [2074,"Αυλόμωνας","south-aegean-serifos","sandy",true,false,"100-105/10°;silent|partial 215-240/30°;partial|silent","c","fewDays","c",null,7,2,0,2,0.08421,0,null,1,12,0,2,0,3,0,false,""],
+  [2076,"Βάγια","south-aegean-serifos","sandy",false,false,"305-355/55°;partial|silent","c","stripBlindOnFullPrintDays","c",null,4,0,0,0,1,0,null,2,14,0,15,0,23,0,false,""],
+  [2079,"Γιαλούδι","south-aegean-serifos","sandy-pebbles",true,false,"75-80/10°;partial|silent 300-320/25°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,19,1,1,0,12,8,true,""],
+  [2081,"Καλόγερος","south-aegean-serifos","pebbles",true,true,"60-65/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,16,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [2082,"Καραβάς","south-aegean-serifos","sandy-pebbles",true,true,"35-45/15°;partial|silent 265-280/20°;silent|partial","c","fewDays","c",null,3,0,0,0,1,0,null,0,22,4,5,0,18,0,true,"bandUnder20:noCoreDirection"],
+  [2085,"Κουτάλας","south-aegean-serifos","sandy",true,false,"95-145/55°;silent|partial 215-235/25°;partial|silent","c","fewDays","c",null,16,2,0,2,0.7161,0,null,6,18,2,3,0,3,0,false,""],
+  [2087,"Λιβαδάκια","south-aegean-serifos","sandy",true,false,"35-105/75°;silent|partial 155-175/25°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,12,0,1,0,2,0,false,""],
+  [2089,"Μέγα Λιβάδι","south-aegean-serifos","sandy",true,false,"170-195/30°;silent|partial 300-310/15°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,16,0,4,0,13,2,false,""],
+  [2092,"Σκάλα","south-aegean-serifos","sandy",false,false,"180-320/145°;silent|silent","c","fewDays","c",null,16,1,0,1,0.98711,0,null,16,19,4,0,0,0,0,false,""],
+  [2097,"Βαθή","south-aegean-sifnos","sandy",true,true,"300-300/5°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,13,1,3,0,7,0,true,"bandUnder20:noCoreDirection"],
+  [2112,"Φάρος","south-aegean-sifnos","sandy",true,false,"135-150/20°;silent|partial 255-275/25°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,16,2,2,0,4,0,false,""],
+  [2114,"Χερρόνησος","south-aegean-sifnos","sandy",false,false,"220-0/145°;silent|silent","c","mixed","c",null,48,2,0,2,0.64774,2,0.33,19,20,0,5,1,5,1,true,""],
+  [2465,"Νος","south-aegean-symi","sandy",true,true,"325-340/20°;silent|partial","c","stripBlindOnFullPrintDays","c",null,21,0,0,0,1,0,null,0,27,0,24,0,24,0,false,"bandUnder20:noCoreDirection"],
+  [2466,"Γυμνιστική Περιοχή Νος","south-aegean-symi","pebbles",false,false,"315-345/35°;silent|partial","c","fewDays","c",null,40,0,0,0,1,0,null,15,27,0,8,0,8,0,false,""],
+  [2467,"Πέδι","south-aegean-symi","sandy-pebbles",true,false,"115-135/25°;partial|silent 355-20/30°;silent|partial","c","stripBlindOnFullPrintDays","c",null,5,0,0,0,1,0,null,0,27,0,15,0,15,0,false,""],
+  [2469,"Άγιος Νικόλαος","south-aegean-symi","sandy-pebbles",true,false,"70-80/15°;partial|silent 300-335/40°;silent|partial","c","stripBlindOnFullPrintDays","c",null,33,0,0,0,1,0,null,24,25,0,12,0,12,0,false,""],
+  [2472,"Παραλία της Σάρα","south-aegean-symi","pebbles",false,false,"320-355/40°;silent|partial","c","fewDays","c",null,38,1,0,1,0.93382,0,null,19,27,1,10,0,10,0,false,""],
+  [3043,"Σύμη Γυάλα","south-aegean-symi","pebbles",false,false,"330-5/40°;silent|partial","c","stripBlindOnFullPrintDays","c",null,20,0,0,0,1,0,null,10,26,0,9,0,12,0,false,""],
+  [3171,"Παραλία Πανορμίτη","south-aegean-symi","unknown",false,false,"350-130/145°;silent|silent","c","stripBlindOnFullPrintDays","c",null,4,0,0,0,1,0,null,3,29,1,2,0,3,0,false,""],
+  [2130,"Αρμεός","south-aegean-syros","sandy-pebbles",true,false,"235-240/10°;silent|partial 350-15/30°;partial|silent","c","stripBlindOnFullPrintDays","c",null,15,0,0,0,1,0,null,0,17,1,36,1,39,1,false,""],
+  [2134,"Γράμματα","south-aegean-syros","pebbles",true,false,"90-155/70°;silent|partial 215-230/20°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,0,19,0,0,0,0,0,false,""],
+  [2143,"Παραλία Βάρη","south-aegean-syros","sandy",true,false,"145-150/10°;silent|partial 255-285/35°;partial|silent","c","stripBlindOnFullPrintDays","c",null,3,0,0,0,1,0,null,1,27,0,6,0,16,1,false,""],
+  [2146,"Παραλία Λωτό","south-aegean-syros","sandy-pebbles",true,false,"35-55/25°;partial|silent 275-285/15°;silent|partial","c","fewDays","c",null,4,0,0,0,1,0,0.41,0,22,1,4,0,21,0,true,""],
+  [2496,"Παραλία Πόθα","south-aegean-telendos","sandy-pebbles",true,false,"65-130/70°;partial|silent 350-355/10°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,15,0,3,0,3,0,false,""],
+  [2497,"Παραλία Πάρανταϊς","south-aegean-telendos","sandy-pebbles",false,false,"75-125/55°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,13,0,0,0,1,0,false,""],
+  [2167,"Κουμέλας","south-aegean-tinos","pebbles",true,false,"230-285/60°;silent|partial 345-10/30°;partial|silent","a","arrivalRatio","c",true,17,0,0,0,1,0,-0.19,9,26,0,44,3,46,3,true,"seasonOnly→c:fewDays"],
+  [2172,"Μαντροκλήσι","south-aegean-tinos","sandy",false,false,"40-180/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,2,24,0,4,0,4,0,true,""],
+  [2176,"Παραλία Αγία Θάλασσα","south-aegean-tinos","sandy-pebbles",false,false,"85-225/145°;silent|silent","c","fewDays","c",null,2,0,0,0,null,0,null,2,26,0,0,0,0,0,false,""],
+  [2186,"Σταφίδα","south-aegean-tinos","sandy-pebbles",true,false,"35-55/25°;silent|partial 125-175/55°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,1.78,0,27,1,3,0,4,0,true,""],
+  [2581,"Γέρακας","thessaly-alonissos","pebbles",false,false,"0-140/145°;silent|silent","c","fewDays","c",null,35,0,0,0,1,0,null,33,30,0,3,0,3,0,false,""],
+  [2588,"Γλυφά","thessaly-alonissos","sandy-pebbles",true,false,"5-20/20°;silent|partial 125-145/25°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,29,0,1,0,24,1,false,""],
+  [2591,"Καλύβια Σταματίου","thessaly-alonissos","pebbles",false,false,"80-110/35°;partial|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,30,0,5,1,6,1,false,""],
+  [2597,"Μεγάλη Άμμος","thessaly-alonissos","pebbles",true,true,"175-190/20°;silent|partial 310-315/10°;partial|silent","c","stripBlindOnFullPrintDays","c",null,3,0,0,0,1,0,null,0,26,0,24,1,25,1,false,"bandUnder20:noCoreDirection"],
+  [2601,"Παραλία Βότση","thessaly-alonissos","sandy-pebbles",true,false,"135-150/20°;silent|partial 255-275/25°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,28,0,3,0,3,0,false,""],
+  [2611,"Στροβίλι","thessaly-alonissos","rocky",true,true,"130-145/20°;partial|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,30,0,2,0,3,0,false,"bandUnder20:noCoreDirection"],
+  [2612,"Τζώρτζη","thessaly-alonissos","sandy-pebbles",true,true,"45-55/15°;silent|partial 170-185/20°;partial|silent","c","fewDays","c",null,2,0,0,0,null,0,null,0,28,0,42,6,42,6,true,"bandUnder20:noCoreDirection"],
+  [2667,"Ιζγκούδ (Τρίκερι)","thessaly-magnesia-mainland---pelion","pebbles",true,false,"70-85/20°;partial|silent 305-335/35°;silent|partial","c","fewDays","c",null,2,0,0,0,null,0,null,0,28,2,0,0,0,0,false,""],
+  [2724,"Χονδρή Άμμος","thessaly-magnesia-mainland---pelion","pebbles",false,false,"210-255/50°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,1,0,false,""],
+  [3086,"παραλία Νηές","thessaly-magnesia-mainland---pelion","unknown",true,true,"35-45/15°;partial|silent 265-280/20°;silent|partial","c","fewDays","c",null,0,0,0,0,null,0,null,0,26,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [2626,"Καναπίτσα","thessaly-skiathos","sandy",true,false,"345-10/30°;silent|partial","c","fewDays","c",null,6,0,0,0,1,0,null,2,27,0,1,0,2,0,false,""],
+  [2645,"Τζανεριά","thessaly-skiathos","sandy",false,false,"10-45/40°;silent|partial","c","fewDays","c",null,18,0,0,0,1,1,null,2,27,0,4,0,4,0,false,""],
+  [1153,"Ασπρογιαλός","west-greece-aetolia-acarnania-mainland","sandy-pebbles",false,false,"235-285/55°;partial|silent","c","stripBlindOnFullPrintDays","c",null,33,0,0,0,1,5,null,17,23,0,28,0,28,0,false,""],
+  [2529,"Βαθιά Βάλη","west-greece-aetolia-acarnania-mainland","sandy-pebbles",true,false,"80-100/25°;silent|partial 210-220/15°;partial|silent","c","fewDays","c",null,1,0,0,0,null,0,null,0,26,0,2,0,3,0,false,""],
+  [2532,"Γρίμποβο","west-greece-aetolia-acarnania-mainland","sandy-pebbles",true,true,"260-260/5°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,25,0,0,0,0,0,false,"bandUnder20:noCoreDirection"],
+  [2536,"Μυρτάρι","west-greece-aetolia-acarnania-mainland","sandy-pebbles",true,true,"225-230/10°;silent|partial 350-5/20°;partial|silent","c","fewDays","c",null,0,0,0,0,null,0,null,0,23,0,9,0,27,0,false,"bandUnder20:noCoreDirection"],
+  [2552,"Παραλία Κουλούρι","west-greece-aetolia-acarnania-mainland","sandy",true,true,"120-130/15°;partial|silent","c","noSeaCell",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,""],
+  [2564,"Ψανή","west-greece-aetolia-acarnania-mainland","rocky",true,true,"75-90/20°;silent|partial","c","fewDays","c",null,1,0,0,0,null,0,null,0,21,0,0,0,0,0,false,"bandUnder20:noCoreDirection"]
+ ]},
+ "limits": [
+  "'No foam' means no ~0,5 m+ breaking wave, not zero wave: the judge separates 0,1-0,3 from 0,7+, not 0,1 from 0,3.",
+  "One snapshot per day at ~09:20 UTC (~12:20 local); the wave is the Copernicus 4,2 km cell at 09 UTC, not the shore — its direction may differ from what enters a cove.",
+  "Hole days are selected by the cell's mean direction rounded to 5°; a hole 5-10° wide gets few such days and a 1-2° direction error moves a day in or out.",
+  "Bright-in-B08 can be cloud, rock, wet sand, boats; SWIR separates water-foam from land/cloud but not whitewater from a white shallow bottom.",
+  "The foam statistic tests 'does surf reach the strip', not 'is 0,1 of the open sea the right number'. A hole can be physically real and still print too little.",
+  "Pockets have no K_d≥0,9 direction, so the national 'open' positive control never exists here; strip capability comes from full-print (flank/partial) days only."
+ ],
+ "notVerified": [
+  "Whether 0,1 of the open sea is the right NUMBER inside any hole — the foam test only separates \"no surf\" from \"surf ≥~0,5 m\".",
+  "The site's own wave direction per day: holes were tested with Copernicus 09 UTC directions; the ±10° core test is a bound, not the site's real offset at each beach (measured only at Μώλος −8° and Καλό Λιμάνι +6-15°).",
+  "Wind: the geometry assumes wind from the wave's own sector; days were NOT filtered by the actual wind, so silent/grazing flank days mix wind regimes.",
+  "Hole days in (0,2; 0,9) directions were not collected, so a ±10° shift of a narrow band can meet unmeasured directions.",
+  "Chips were inspected by eye only for the class-(b) beaches (Λίμνες 4 chips, Αμμούδι 1); class-(a) beaches were not inspected by eye.",
+  "Μώλος was not re-inspected here (its chips and SWIR are in reports/wave-model/shore-surf-swir-check.json, §Γ77).",
+  "What the card prints after caps/floors/cove guard (only the shadow branch of shoreSeaStateM is tested); no production code was run end-to-end."
+ ]
+}

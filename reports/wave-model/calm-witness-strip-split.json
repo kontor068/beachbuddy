@@ -1,0 +1,2676 @@
+{
+ "generatedBy": "scripts/splitShoreSurfStripByCove.py",
+ "beaches": {
+  "1334": {
+   "stripPixels": {
+    "all": 334,
+    "west": 239,
+    "east": 95
+   },
+   "controlAllEqualsJudge": true,
+   "allVsJudgeMismatches": 0,
+   "summary": {
+    "calm_Hs_lt_0.25": {
+     "all": {
+      "n": 28,
+      "median": 0.033,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 19,
+      "max": 0.153
+     },
+     "west": {
+      "n": 28,
+      "median": 0.019,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 23,
+      "max": 0.146
+     },
+     "east": {
+      "n": 28,
+      "median": 0.037,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 15,
+      "max": 0.221
+     }
+    },
+    "rough_strictControl_all": {
+     "all": {
+      "n": 32,
+      "median": 0.061,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 11,
+      "max": 0.252
+     },
+     "west": {
+      "n": 32,
+      "median": 0.067,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 6,
+      "max": 0.311
+     },
+     "east": {
+      "n": 32,
+      "median": 0.042,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 20,
+      "max": 0.158
+     }
+    },
+    "rough_strictControl_NNW_333_349": {
+     "all": {
+      "n": 31,
+      "median": 0.06,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 11,
+      "max": 0.148
+     },
+     "west": {
+      "n": 31,
+      "median": 0.067,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 6,
+      "max": 0.172
+     },
+     "east": {
+      "n": 31,
+      "median": 0.042,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 20,
+      "max": 0.158
+     }
+    },
+    "rough_strictControl_openCorridor_270_315": {
+     "all": {
+      "n": 1,
+      "median": 0.252,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 0,
+      "max": 0.252
+     },
+     "west": {
+      "n": 1,
+      "median": 0.311,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 0,
+      "max": 0.311
+     },
+     "east": {
+      "n": 1,
+      "median": 0.116,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 0,
+      "max": 0.116
+     }
+    },
+    "rough_swirVerified_NNW": {
+     "all": {
+      "n": 29,
+      "median": 0.063,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 10,
+      "max": 0.148
+     },
+     "west": {
+      "n": 29,
+      "median": 0.063,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 6,
+      "max": 0.172
+     },
+     "east": {
+      "n": 29,
+      "median": 0.042,
+      "foamDays_ge_0.2": 0,
+      "darkDays_lt_0.05": 18,
+      "max": 0.158
+     }
+    }
+   },
+   "rows": [
+    {
+     "day": "2022-01-25",
+     "wave": [
+      1.47,
+      349.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-02-09",
+     "wave": [
+      1.29,
+      338.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.087,
+     "west": 0.1,
+     "east": 0.053,
+     "judgeBeachFoam": 0.087,
+     "exposedFoam": 0.262,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-02-11",
+     "wave": [
+      0.1,
+      319.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.036,
+     "west": 0.017,
+     "east": 0.084,
+     "judgeBeachFoam": 0.036,
+     "exposedFoam": 0.009,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-02-19",
+     "wave": [
+      0.2,
+      291.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.057,
+     "west": 0.046,
+     "east": 0.084,
+     "judgeBeachFoam": 0.057,
+     "exposedFoam": 0.072,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-03-11",
+     "wave": [
+      1.36,
+      344.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.148,
+     "west": 0.172,
+     "east": 0.088,
+     "judgeBeachFoam": 0.148,
+     "exposedFoam": 0.624,
+     "thr": 0.0466
+    },
+    {
+     "day": "2022-06-04",
+     "wave": [
+      0.8,
+      335.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.108)"
+    },
+    {
+     "day": "2022-06-19",
+     "wave": [
+      1.06,
+      335.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.135)"
+    },
+    {
+     "day": "2022-07-04",
+     "wave": [
+      0.82,
+      336.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.170)"
+    },
+    {
+     "day": "2022-07-14",
+     "wave": [
+      0.86,
+      342.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.117)"
+    },
+    {
+     "day": "2022-07-19",
+     "wave": [
+      1.15,
+      339.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.113)"
+    },
+    {
+     "day": "2022-07-29",
+     "wave": [
+      0.99,
+      335.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.079)"
+    },
+    {
+     "day": "2022-08-03",
+     "wave": [
+      0.92,
+      337.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.063)"
+    },
+    {
+     "day": "2022-08-05",
+     "wave": [
+      0.84,
+      336.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.042,
+     "west": 0.033,
+     "east": 0.063,
+     "judgeBeachFoam": 0.042,
+     "exposedFoam": 0.349,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-08-08",
+     "wave": [
+      0.93,
+      337.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.072)"
+    },
+    {
+     "day": "2022-08-10",
+     "wave": [
+      0.84,
+      335.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.069,
+     "west": 0.067,
+     "east": 0.074,
+     "judgeBeachFoam": 0.069,
+     "exposedFoam": 0.405,
+     "thr": 0.042
+    },
+    {
+     "day": "2022-09-07",
+     "wave": [
+      1.1,
+      339.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.078,
+     "west": 0.1,
+     "east": 0.021,
+     "judgeBeachFoam": 0.078,
+     "exposedFoam": 0.509,
+     "thr": 0.0448
+    },
+    {
+     "day": "2022-09-14",
+     "wave": [
+      0.23,
+      329.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.057,
+     "west": 0.054,
+     "east": 0.063,
+     "judgeBeachFoam": 0.057,
+     "exposedFoam": 0.259,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-02",
+     "wave": [
+      0.84,
+      276.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.004,
+     "west": 0.004,
+     "east": 0.0,
+     "judgeBeachFoam": 0.004,
+     "exposedFoam": 0.076,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-04",
+     "wave": [
+      0.89,
+      341.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.015,
+     "west": 0.017,
+     "east": 0.011,
+     "judgeBeachFoam": 0.015,
+     "exposedFoam": 0.237,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-12",
+     "wave": [
+      0.8,
+      339.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.075,
+     "west": 0.071,
+     "east": 0.084,
+     "judgeBeachFoam": 0.075,
+     "exposedFoam": 0.27,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-17",
+     "wave": [
+      1.17,
+      342.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.09,
+     "west": 0.109,
+     "east": 0.042,
+     "judgeBeachFoam": 0.09,
+     "exposedFoam": 0.611,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-24",
+     "wave": [
+      0.15,
+      296.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.033,
+     "west": 0.017,
+     "east": 0.074,
+     "judgeBeachFoam": 0.033,
+     "exposedFoam": 0.019,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-10-29",
+     "wave": [
+      0.94,
+      342.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.063,
+     "west": 0.042,
+     "east": 0.116,
+     "judgeBeachFoam": 0.063,
+     "exposedFoam": 0.167,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-01-07",
+     "wave": [
+      0.2,
+      286.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.051,
+     "west": 0.013,
+     "east": 0.147,
+     "judgeBeachFoam": 0.051,
+     "exposedFoam": 0.025,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-02-16",
+     "wave": [
+      0.14,
+      340.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.114,
+     "west": 0.071,
+     "east": 0.221,
+     "judgeBeachFoam": 0.114,
+     "exposedFoam": 0.064,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-03-13",
+     "wave": [
+      1.24,
+      347.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-07-01",
+     "wave": [
+      0.13,
+      335.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.024,
+     "west": 0.017,
+     "east": 0.042,
+     "judgeBeachFoam": 0.024,
+     "exposedFoam": 0.272,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-06",
+     "wave": [
+      0.9,
+      333.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.048,
+     "west": 0.067,
+     "east": 0.0,
+     "judgeBeachFoam": 0.048,
+     "exposedFoam": 0.326,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-26",
+     "wave": [
+      0.13,
+      143.0,
+      1.5
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.039,
+     "west": 0.025,
+     "east": 0.074,
+     "judgeBeachFoam": 0.039,
+     "exposedFoam": 0.096,
+     "thr": 0.0504
+    },
+    {
+     "day": "2023-08-03",
+     "wave": [
+      0.08,
+      33.0,
+      1.5
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.081,
+     "west": 0.1,
+     "east": 0.032,
+     "judgeBeachFoam": 0.081,
+     "exposedFoam": 0.258,
+     "thr": 0.0562
+    },
+    {
+     "day": "2023-08-05",
+     "wave": [
+      0.23,
+      338.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.018,
+     "west": 0.004,
+     "east": 0.053,
+     "judgeBeachFoam": 0.018,
+     "exposedFoam": 0.214,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-08-13",
+     "wave": [
+      1.02,
+      336.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.089)"
+    },
+    {
+     "day": "2023-08-20",
+     "wave": [
+      0.94,
+      335.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.042,
+     "west": 0.042,
+     "east": 0.042,
+     "judgeBeachFoam": 0.042,
+     "exposedFoam": 0.33,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-09",
+     "wave": [
+      1.1,
+      338.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-09-12",
+     "wave": [
+      0.8,
+      336.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.048,
+     "west": 0.054,
+     "east": 0.032,
+     "judgeBeachFoam": 0.048,
+     "exposedFoam": 0.372,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-17",
+     "wave": [
+      0.91,
+      337.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.081,
+     "west": 0.105,
+     "east": 0.021,
+     "judgeBeachFoam": 0.081,
+     "exposedFoam": 0.466,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-19",
+     "wave": [
+      1.01,
+      339.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.078,
+     "west": 0.071,
+     "east": 0.095,
+     "judgeBeachFoam": 0.078,
+     "exposedFoam": 0.383,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-09-22",
+     "wave": [
+      0.07,
+      335.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.036,
+     "west": 0.029,
+     "east": 0.053,
+     "judgeBeachFoam": 0.036,
+     "exposedFoam": 0.207,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-10-12",
+     "wave": [
+      0.85,
+      338.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.045,
+     "west": 0.059,
+     "east": 0.011,
+     "judgeBeachFoam": 0.045,
+     "exposedFoam": 0.253,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-01-22",
+     "wave": [
+      1.68,
+      349.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-04-11",
+     "wave": [
+      0.86,
+      338.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.057,
+     "west": 0.063,
+     "east": 0.042,
+     "judgeBeachFoam": 0.057,
+     "exposedFoam": 0.407,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-04-29",
+     "wave": [
+      1.06,
+      341.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.056)"
+    },
+    {
+     "day": "2024-05-01",
+     "wave": [
+      0.98,
+      340.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-06-05",
+     "wave": [
+      0.12,
+      270.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.063,
+     "west": 0.025,
+     "east": 0.158,
+     "judgeBeachFoam": 0.063,
+     "exposedFoam": 0.103,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-06-20",
+     "wave": [
+      0.86,
+      338.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.087,
+     "west": 0.084,
+     "east": 0.095,
+     "judgeBeachFoam": 0.087,
+     "exposedFoam": 0.413,
+     "thr": 0.0446
+    },
+    {
+     "day": "2024-06-23",
+     "wave": [
+      0.81,
+      335.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.138)"
+    },
+    {
+     "day": "2024-06-28",
+     "wave": [
+      0.93,
+      334.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.099)"
+    },
+    {
+     "day": "2024-06-30",
+     "wave": [
+      1.0,
+      340.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.03,
+     "west": 0.038,
+     "east": 0.011,
+     "judgeBeachFoam": 0.03,
+     "exposedFoam": 0.335,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-07-08",
+     "wave": [
+      0.95,
+      333.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.101)"
+    },
+    {
+     "day": "2024-07-10",
+     "wave": [
+      0.83,
+      339.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.039,
+     "west": 0.05,
+     "east": 0.011,
+     "judgeBeachFoam": 0.039,
+     "exposedFoam": 0.355,
+     "thr": 0.041
+    },
+    {
+     "day": "2024-07-25",
+     "wave": [
+      0.91,
+      337.0,
+      4.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.027,
+     "west": 0.033,
+     "east": 0.011,
+     "judgeBeachFoam": 0.027,
+     "exposedFoam": 0.345,
+     "thr": 0.0418
+    },
+    {
+     "day": "2024-08-12",
+     "wave": [
+      0.84,
+      335.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.041)"
+    },
+    {
+     "day": "2024-09-08",
+     "wave": [
+      0.84,
+      337.0,
+      4.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.051,
+     "west": 0.05,
+     "east": 0.053,
+     "judgeBeachFoam": 0.051,
+     "exposedFoam": 0.37,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-21",
+     "wave": [
+      1.28,
+      339.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.115,
+     "west": 0.119,
+     "east": 0.105,
+     "judgeBeachFoam": 0.115,
+     "exposedFoam": 0.589,
+     "thr": 0.0499
+    },
+    {
+     "day": "2024-09-26",
+     "wave": [
+      0.09,
+      329.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.051,
+     "west": 0.059,
+     "east": 0.032,
+     "judgeBeachFoam": 0.051,
+     "exposedFoam": 0.115,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-08",
+     "wave": [
+      0.17,
+      303.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.003,
+     "west": 0.0,
+     "east": 0.011,
+     "judgeBeachFoam": 0.003,
+     "exposedFoam": 0.087,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-26",
+     "wave": [
+      0.8,
+      339.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.126,
+     "west": 0.121,
+     "east": 0.137,
+     "judgeBeachFoam": 0.126,
+     "exposedFoam": 0.083,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-31",
+     "wave": [
+      0.9,
+      347.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.213,
+     "west": 0.205,
+     "east": 0.232,
+     "judgeBeachFoam": 0.213,
+     "exposedFoam": 0.062,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-11-07",
+     "wave": [
+      0.95,
+      342.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.228,
+     "west": 0.222,
+     "east": 0.242,
+     "judgeBeachFoam": 0.228,
+     "exposedFoam": 0.085,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-11-10",
+     "wave": [
+      1.06,
+      345.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-12-17",
+     "wave": [
+      0.22,
+      281.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.057,
+     "west": 0.029,
+     "east": 0.126,
+     "judgeBeachFoam": 0.057,
+     "exposedFoam": 0.044,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-12-27",
+     "wave": [
+      1.97,
+      347.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-03-05",
+     "wave": [
+      0.81,
+      343.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-04-16",
+     "wave": [
+      0.16,
+      328.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.153,
+     "west": 0.146,
+     "east": 0.168,
+     "judgeBeachFoam": 0.153,
+     "exposedFoam": 0.378,
+     "thr": 0.0441
+    },
+    {
+     "day": "2025-05-31",
+     "wave": [
+      0.8,
+      349.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.06,
+     "west": 0.067,
+     "east": 0.042,
+     "judgeBeachFoam": 0.06,
+     "exposedFoam": 0.343,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-06-10",
+     "wave": [
+      0.9,
+      344.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.048,
+     "west": 0.05,
+     "east": 0.042,
+     "judgeBeachFoam": 0.048,
+     "exposedFoam": 0.355,
+     "thr": 0.046
+    },
+    {
+     "day": "2025-06-22",
+     "wave": [
+      1.03,
+      344.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.066,
+     "west": 0.075,
+     "east": 0.042,
+     "judgeBeachFoam": 0.066,
+     "exposedFoam": 0.481,
+     "thr": 0.051
+    },
+    {
+     "day": "2025-07-10",
+     "wave": [
+      0.94,
+      339.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-07-13",
+     "wave": [
+      0.99,
+      337.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.100)"
+    },
+    {
+     "day": "2025-07-15",
+     "wave": [
+      1.1,
+      337.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.051,
+     "west": 0.059,
+     "east": 0.032,
+     "judgeBeachFoam": 0.051,
+     "exposedFoam": 0.414,
+     "thr": 0.0414
+    },
+    {
+     "day": "2025-07-22",
+     "wave": [
+      0.1,
+      34.0,
+      1.5
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.009,
+     "west": 0.013,
+     "east": 0.0,
+     "judgeBeachFoam": 0.009,
+     "exposedFoam": 0.24,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-07-28",
+     "wave": [
+      0.11,
+      33.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.087)"
+    },
+    {
+     "day": "2025-08-01",
+     "wave": [
+      1.24,
+      340.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-08-02",
+     "wave": [
+      1.01,
+      339.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-08-07",
+     "wave": [
+      1.11,
+      344.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.071)"
+    },
+    {
+     "day": "2025-08-11",
+     "wave": [
+      0.95,
+      339.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.036,
+     "west": 0.038,
+     "east": 0.032,
+     "judgeBeachFoam": 0.036,
+     "exposedFoam": 0.309,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-12",
+     "wave": [
+      0.98,
+      339.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.060)"
+    },
+    {
+     "day": "2025-08-14",
+     "wave": [
+      0.83,
+      337.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.058)"
+    },
+    {
+     "day": "2025-08-17",
+     "wave": [
+      0.84,
+      335.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.060)"
+    },
+    {
+     "day": "2025-08-21",
+     "wave": [
+      0.19,
+      338.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.003,
+     "west": 0.0,
+     "east": 0.011,
+     "judgeBeachFoam": 0.003,
+     "exposedFoam": 0.188,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-22",
+     "wave": [
+      0.09,
+      7.0,
+      2.0
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.033,
+     "west": 0.025,
+     "east": 0.053,
+     "judgeBeachFoam": 0.033,
+     "exposedFoam": 0.239,
+     "thr": 0.0564
+    },
+    {
+     "day": "2025-08-27",
+     "wave": [
+      1.4,
+      336.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.050)"
+    },
+    {
+     "day": "2025-08-29",
+     "wave": [
+      0.96,
+      335.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.072,
+     "west": 0.084,
+     "east": 0.042,
+     "judgeBeachFoam": 0.072,
+     "exposedFoam": 0.338,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-08-31",
+     "wave": [
+      0.19,
+      188.0,
+      2.0
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.009,
+     "west": 0.004,
+     "east": 0.021,
+     "judgeBeachFoam": 0.009,
+     "exposedFoam": 0.032,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-10",
+     "wave": [
+      0.19,
+      339.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.018,
+     "west": 0.021,
+     "east": 0.011,
+     "judgeBeachFoam": 0.018,
+     "exposedFoam": 0.206,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-11",
+     "wave": [
+      0.09,
+      341.0,
+      2.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.015,
+     "west": 0.021,
+     "east": 0.0,
+     "judgeBeachFoam": 0.015,
+     "exposedFoam": 0.204,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-18",
+     "wave": [
+      1.17,
+      344.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.066,
+     "west": 0.079,
+     "east": 0.032,
+     "judgeBeachFoam": 0.066,
+     "exposedFoam": 0.514,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-26",
+     "wave": [
+      1.31,
+      340.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-12-09",
+     "wave": [
+      0.81,
+      348.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.012,
+     "west": 0.004,
+     "east": 0.032,
+     "judgeBeachFoam": 0.012,
+     "exposedFoam": 0.177,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-01",
+     "wave": [
+      1.24,
+      324.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.078,
+     "west": 0.092,
+     "east": 0.042,
+     "judgeBeachFoam": 0.078,
+     "exposedFoam": 0.22,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-09",
+     "wave": [
+      1.59,
+      298.0,
+      6.9
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.252,
+     "west": 0.311,
+     "east": 0.116,
+     "judgeBeachFoam": 0.252,
+     "exposedFoam": 0.347,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-01-19",
+     "wave": [
+      0.84,
+      354.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-03-09",
+     "wave": [
+      0.89,
+      345.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.111,
+     "west": 0.092,
+     "east": 0.158,
+     "judgeBeachFoam": 0.111,
+     "exposedFoam": 0.417,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-18",
+     "wave": [
+      1.12,
+      343.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.081,
+     "west": 0.063,
+     "east": 0.126,
+     "judgeBeachFoam": 0.081,
+     "exposedFoam": 0.467,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-26",
+     "wave": [
+      0.21,
+      322.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.012,
+     "west": 0.008,
+     "east": 0.021,
+     "judgeBeachFoam": 0.012,
+     "exposedFoam": 0.21,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-04-29",
+     "wave": [
+      0.14,
+      340.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.049)"
+    },
+    {
+     "day": "2026-05-04",
+     "wave": [
+      0.88,
+      332.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.061)"
+    },
+    {
+     "day": "2026-06-15",
+     "wave": [
+      0.1,
+      310.0,
+      2.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.039,
+     "west": 0.042,
+     "east": 0.032,
+     "judgeBeachFoam": 0.039,
+     "exposedFoam": 0.205,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-06-27",
+     "wave": [
+      0.85,
+      349.0,
+      4.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.063,
+     "west": 0.059,
+     "east": 0.074,
+     "judgeBeachFoam": 0.063,
+     "exposedFoam": 0.314,
+     "thr": 0.042
+    },
+    {
+     "day": "2026-07-20",
+     "wave": [
+      0.18,
+      337.0,
+      2.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.006,
+     "west": 0.004,
+     "east": 0.011,
+     "judgeBeachFoam": 0.006,
+     "exposedFoam": 0.204,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-25",
+     "wave": [
+      1.26,
+      339.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-07-27",
+     "wave": [
+      0.1,
+      242.0,
+      1.8
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.012,
+     "west": 0.008,
+     "east": 0.021,
+     "judgeBeachFoam": 0.012,
+     "exposedFoam": 0.067,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-07-30",
+     "wave": [
+      1.14,
+      344.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.094)"
+    },
+    {
+     "day": "2026-08-09",
+     "wave": [
+      0.84,
+      343.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.059)"
+    },
+    {
+     "day": "2026-08-14",
+     "wave": [
+      1.12,
+      344.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.042,
+     "west": 0.042,
+     "east": 0.042,
+     "judgeBeachFoam": 0.042,
+     "exposedFoam": 0.321,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-16",
+     "wave": [
+      1.17,
+      338.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.087,
+     "west": 0.084,
+     "east": 0.095,
+     "judgeBeachFoam": 0.087,
+     "exposedFoam": 0.349,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-08-26",
+     "wave": [
+      0.16,
+      337.0,
+      3.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.012,
+     "west": 0.004,
+     "east": 0.032,
+     "judgeBeachFoam": 0.012,
+     "exposedFoam": 0.182,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-09-03",
+     "wave": [
+      0.98,
+      340.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.054,
+     "west": 0.067,
+     "east": 0.021,
+     "judgeBeachFoam": 0.054,
+     "exposedFoam": 0.352,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-09-06",
+     "wave": [
+      0.15,
+      328.0,
+      2.4
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.006,
+     "west": 0.004,
+     "east": 0.011,
+     "judgeBeachFoam": 0.006,
+     "exposedFoam": 0.178,
+     "thr": 0.04
+    },
+    {
+     "day": "2026-09-08",
+     "wave": [
+      0.87,
+      341.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.039,
+     "west": 0.05,
+     "east": 0.011,
+     "judgeBeachFoam": 0.039,
+     "exposedFoam": 0.348,
+     "thr": 0.04
+    }
+   ]
+  },
+  "601": {
+   "stripPixels": {
+    "all": 234,
+    "nearPier": 78,
+    "awayPier": 156,
+    "westHalf": 120,
+    "eastHalf": 114
+   },
+   "controlAllEqualsJudge": true,
+   "allVsJudgeMismatches": 0,
+   "summary": {
+    "calm_Hs_lt_0.25": {
+     "all": {
+      "n": 13,
+      "median": 0.167,
+      "foamDays_ge_0.2": 3,
+      "darkDays_lt_0.05": 0,
+      "max": 0.269
+     },
+     "nearPier": {
+      "n": 13,
+      "median": 0.128,
+      "foamDays_ge_0.2": 2,
+      "darkDays_lt_0.05": 0,
+      "max": 0.256
+     },
+     "awayPier": {
+      "n": 13,
+      "median": 0.192,
+      "foamDays_ge_0.2": 5,
+      "darkDays_lt_0.05": 0,
+      "max": 0.295
+     },
+     "westHalf": {
+      "n": 13,
+      "median": 0.283,
+      "foamDays_ge_0.2": 8,
+      "darkDays_lt_0.05": 3,
+      "max": 0.375
+     },
+     "eastHalf": {
+      "n": 13,
+      "median": 0.114,
+      "foamDays_ge_0.2": 5,
+      "darkDays_lt_0.05": 4,
+      "max": 0.386
+     }
+    },
+    "rough_strictControl_all": {
+     "all": {
+      "n": 14,
+      "median": 0.161,
+      "foamDays_ge_0.2": 2,
+      "darkDays_lt_0.05": 2,
+      "max": 0.734
+     },
+     "nearPier": {
+      "n": 14,
+      "median": 0.109,
+      "foamDays_ge_0.2": 1,
+      "darkDays_lt_0.05": 2,
+      "max": 0.61
+     },
+     "awayPier": {
+      "n": 14,
+      "median": 0.17,
+      "foamDays_ge_0.2": 5,
+      "darkDays_lt_0.05": 4,
+      "max": 0.795
+     },
+     "westHalf": {
+      "n": 14,
+      "median": 0.058,
+      "foamDays_ge_0.2": 2,
+      "darkDays_lt_0.05": 3,
+      "max": 0.521
+     },
+     "eastHalf": {
+      "n": 14,
+      "median": 0.215,
+      "foamDays_ge_0.2": 7,
+      "darkDays_lt_0.05": 3,
+      "max": 0.956
+     }
+    }
+   },
+   "rows": [
+    {
+     "day": "2022-02-09",
+     "wave": [
+      3.12,
+      21.0,
+      9.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-04-30",
+     "wave": [
+      1.1,
+      6.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.077)"
+    },
+    {
+     "day": "2022-05-15",
+     "wave": [
+      0.04,
+      343.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.064)"
+    },
+    {
+     "day": "2022-05-20",
+     "wave": [
+      2.27,
+      13.0,
+      7.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-05-25",
+     "wave": [
+      0.05,
+      341.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.085)"
+    },
+    {
+     "day": "2022-06-19",
+     "wave": [
+      1.53,
+      9.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.121)"
+    },
+    {
+     "day": "2022-06-29",
+     "wave": [
+      0.85,
+      20.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-07-04",
+     "wave": [
+      1.28,
+      6.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.102)"
+    },
+    {
+     "day": "2022-07-14",
+     "wave": [
+      1.61,
+      13.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-07-19",
+     "wave": [
+      1.89,
+      11.0,
+      7.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.088)"
+    },
+    {
+     "day": "2022-08-03",
+     "wave": [
+      1.18,
+      12.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.065)"
+    },
+    {
+     "day": "2022-08-08",
+     "wave": [
+      0.95,
+      6.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-09-07",
+     "wave": [
+      2.02,
+      10.0,
+      7.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2022-10-22",
+     "wave": [
+      1.29,
+      16.0,
+      6.9
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.103,
+     "nearPier": 0.103,
+     "awayPier": 0.103,
+     "westHalf": 0.058,
+     "eastHalf": 0.149,
+     "judgeBeachFoam": 0.103,
+     "exposedFoam": 0.425,
+     "thr": 0.04
+    },
+    {
+     "day": "2022-11-01",
+     "wave": [
+      0.97,
+      6.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.064,
+     "nearPier": 0.064,
+     "awayPier": 0.064,
+     "westHalf": 0.042,
+     "eastHalf": 0.088,
+     "judgeBeachFoam": 0.064,
+     "exposedFoam": 0.359,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-02-14",
+     "wave": [
+      1.42,
+      16.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-03-26",
+     "wave": [
+      0.2,
+      315.0,
+      2.0
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.179,
+     "nearPier": 0.154,
+     "awayPier": 0.192,
+     "westHalf": 0.3,
+     "eastHalf": 0.053,
+     "judgeBeachFoam": 0.179,
+     "exposedFoam": 0.531,
+     "thr": 0.04
+    },
+    {
+     "day": "2023-07-14",
+     "wave": [
+      0.19,
+      35.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.096)"
+    },
+    {
+     "day": "2023-07-19",
+     "wave": [
+      1.21,
+      18.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.068)"
+    },
+    {
+     "day": "2023-07-24",
+     "wave": [
+      0.15,
+      357.0,
+      1.8
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.075)"
+    },
+    {
+     "day": "2023-08-03",
+     "wave": [
+      0.19,
+      327.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.064)"
+    },
+    {
+     "day": "2023-08-13",
+     "wave": [
+      0.87,
+      4.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-08-18",
+     "wave": [
+      0.21,
+      5.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.218,
+     "nearPier": 0.179,
+     "awayPier": 0.237,
+     "westHalf": 0.317,
+     "eastHalf": 0.114,
+     "judgeBeachFoam": 0.218,
+     "exposedFoam": 0.438,
+     "thr": 0.0491
+    },
+    {
+     "day": "2023-09-02",
+     "wave": [
+      0.18,
+      353.0,
+      3.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.265,
+     "nearPier": 0.205,
+     "awayPier": 0.295,
+     "westHalf": 0.15,
+     "eastHalf": 0.386,
+     "judgeBeachFoam": 0.265,
+     "exposedFoam": 0.505,
+     "thr": 0.047
+    },
+    {
+     "day": "2023-09-12",
+     "wave": [
+      1.33,
+      11.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-09-22",
+     "wave": [
+      0.15,
+      22.0,
+      3.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.269,
+     "nearPier": 0.256,
+     "awayPier": 0.276,
+     "westHalf": 0.375,
+     "eastHalf": 0.158,
+     "judgeBeachFoam": 0.269,
+     "exposedFoam": 0.43,
+     "thr": 0.0474
+    },
+    {
+     "day": "2023-10-12",
+     "wave": [
+      1.23,
+      11.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2023-11-26",
+     "wave": [
+      1.1,
+      338.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-02-24",
+     "wave": [
+      0.04,
+      91.0,
+      2.4
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.137,
+     "nearPier": 0.115,
+     "awayPier": 0.147,
+     "westHalf": 0.267,
+     "eastHalf": 0.0,
+     "judgeBeachFoam": 0.137,
+     "exposedFoam": 0.07,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-03-30",
+     "wave": [
+      0.13,
+      61.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.162,
+     "nearPier": 0.154,
+     "awayPier": 0.167,
+     "westHalf": 0.292,
+     "eastHalf": 0.026,
+     "judgeBeachFoam": 0.162,
+     "exposedFoam": 0.333,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-04-09",
+     "wave": [
+      1.69,
+      13.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-04-29",
+     "wave": [
+      1.11,
+      11.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-05-24",
+     "wave": [
+      0.15,
+      349.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.104)"
+    },
+    {
+     "day": "2024-07-23",
+     "wave": [
+      0.13,
+      324.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.158,
+     "nearPier": 0.051,
+     "awayPier": 0.212,
+     "westHalf": 0.017,
+     "eastHalf": 0.307,
+     "judgeBeachFoam": 0.158,
+     "exposedFoam": 0.398,
+     "thr": 0.0521
+    },
+    {
+     "day": "2024-08-07",
+     "wave": [
+      0.15,
+      21.0,
+      3.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.043)"
+    },
+    {
+     "day": "2024-08-12",
+     "wave": [
+      1.03,
+      8.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.046)"
+    },
+    {
+     "day": "2024-08-17",
+     "wave": [
+      1.13,
+      21.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.235,
+     "nearPier": 0.115,
+     "awayPier": 0.295,
+     "westHalf": 0.067,
+     "eastHalf": 0.412,
+     "judgeBeachFoam": 0.235,
+     "exposedFoam": 0.516,
+     "thr": 0.0594
+    },
+    {
+     "day": "2024-09-06",
+     "wave": [
+      0.24,
+      23.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.167,
+     "nearPier": 0.154,
+     "awayPier": 0.173,
+     "westHalf": 0.292,
+     "eastHalf": 0.035,
+     "judgeBeachFoam": 0.167,
+     "exposedFoam": 0.391,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-09-26",
+     "wave": [
+      0.11,
+      30.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.115,
+     "nearPier": 0.051,
+     "awayPier": 0.147,
+     "westHalf": 0.025,
+     "eastHalf": 0.211,
+     "judgeBeachFoam": 0.115,
+     "exposedFoam": 0.389,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-16",
+     "wave": [
+      0.88,
+      16.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.034,
+     "nearPier": 0.026,
+     "awayPier": 0.038,
+     "westHalf": 0.067,
+     "eastHalf": 0.0,
+     "judgeBeachFoam": 0.034,
+     "exposedFoam": 0.343,
+     "thr": 0.04
+    },
+    {
+     "day": "2024-10-21",
+     "wave": [
+      1.16,
+      13.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-10-26",
+     "wave": [
+      1.1,
+      12.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.056,
+     "nearPier": 0.077,
+     "awayPier": 0.045,
+     "westHalf": 0.05,
+     "eastHalf": 0.061,
+     "judgeBeachFoam": 0.056,
+     "exposedFoam": 0.34,
+     "thr": 0.0416
+    },
+    {
+     "day": "2024-10-31",
+     "wave": [
+      1.64,
+      20.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-11-05",
+     "wave": [
+      1.17,
+      20.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.085)"
+    },
+    {
+     "day": "2024-11-10",
+     "wave": [
+      1.3,
+      9.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2024-11-25",
+     "wave": [
+      0.87,
+      38.0,
+      5.2
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.051,
+     "nearPier": 0.077,
+     "awayPier": 0.038,
+     "westHalf": 0.042,
+     "eastHalf": 0.061,
+     "judgeBeachFoam": 0.051,
+     "exposedFoam": 0.367,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-01-19",
+     "wave": [
+      0.82,
+      23.0,
+      5.7
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.017,
+     "nearPier": 0.0,
+     "awayPier": 0.026,
+     "westHalf": 0.033,
+     "eastHalf": 0.0,
+     "judgeBeachFoam": 0.017,
+     "exposedFoam": 0.352,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-05-19",
+     "wave": [
+      0.22,
+      322.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.090)"
+    },
+    {
+     "day": "2025-05-26",
+     "wave": [
+      0.85,
+      11.0,
+      4.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-06-03",
+     "wave": [
+      0.12,
+      347.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.111)"
+    },
+    {
+     "day": "2025-06-23",
+     "wave": [
+      1.09,
+      17.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.117)"
+    },
+    {
+     "day": "2025-07-08",
+     "wave": [
+      0.13,
+      317.0,
+      1.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.111)"
+    },
+    {
+     "day": "2025-07-23",
+     "wave": [
+      0.15,
+      320.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.086)"
+    },
+    {
+     "day": "2025-08-04",
+     "wave": [
+      0.18,
+      3.0,
+      4.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.047)"
+    },
+    {
+     "day": "2025-08-22",
+     "wave": [
+      0.17,
+      325.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.054)"
+    },
+    {
+     "day": "2025-08-27",
+     "wave": [
+      0.91,
+      22.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.197,
+     "nearPier": 0.103,
+     "awayPier": 0.244,
+     "westHalf": 0.058,
+     "eastHalf": 0.342,
+     "judgeBeachFoam": 0.197,
+     "exposedFoam": 0.495,
+     "thr": 0.0562
+    },
+    {
+     "day": "2025-09-11",
+     "wave": [
+      0.16,
+      27.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.145,
+     "nearPier": 0.077,
+     "awayPier": 0.179,
+     "westHalf": 0.025,
+     "eastHalf": 0.272,
+     "judgeBeachFoam": 0.145,
+     "exposedFoam": 0.416,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-13",
+     "wave": [
+      0.15,
+      38.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.175,
+     "nearPier": 0.103,
+     "awayPier": 0.212,
+     "westHalf": 0.05,
+     "eastHalf": 0.307,
+     "judgeBeachFoam": 0.175,
+     "exposedFoam": 0.46,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-16",
+     "wave": [
+      0.92,
+      17.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.171,
+     "nearPier": 0.141,
+     "awayPier": 0.186,
+     "westHalf": 0.067,
+     "eastHalf": 0.281,
+     "judgeBeachFoam": 0.171,
+     "exposedFoam": 0.462,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-21",
+     "wave": [
+      1.25,
+      9.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.15,
+     "nearPier": 0.141,
+     "awayPier": 0.154,
+     "westHalf": 0.267,
+     "eastHalf": 0.026,
+     "judgeBeachFoam": 0.15,
+     "exposedFoam": 0.406,
+     "thr": 0.04
+    },
+    {
+     "day": "2025-09-26",
+     "wave": [
+      1.05,
+      10.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.171,
+     "nearPier": 0.115,
+     "awayPier": 0.199,
+     "westHalf": 0.058,
+     "eastHalf": 0.289,
+     "judgeBeachFoam": 0.171,
+     "exposedFoam": 0.515,
+     "thr": 0.0531
+    },
+    {
+     "day": "2025-12-10",
+     "wave": [
+      1.01,
+      21.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2025-12-15",
+     "wave": [
+      0.93,
+      33.0,
+      5.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-18",
+     "wave": [
+      1.22,
+      334.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.734,
+     "nearPier": 0.61,
+     "awayPier": 0.795,
+     "westHalf": 0.521,
+     "eastHalf": 0.956,
+     "judgeBeachFoam": 0.734,
+     "exposedFoam": 0.418,
+     "thr": 0.0526
+    },
+    {
+     "day": "2026-02-23",
+     "wave": [
+      1.8,
+      17.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-02-28",
+     "wave": [
+      1.36,
+      24.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-03-22",
+     "wave": [
+      1.22,
+      14.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-04-19",
+     "wave": [
+      1.19,
+      22.0,
+      6.3
+     ],
+     "swirVerifiedControl": true,
+     "all": 0.188,
+     "nearPier": 0.128,
+     "awayPier": 0.218,
+     "westHalf": 0.058,
+     "eastHalf": 0.325,
+     "judgeBeachFoam": 0.188,
+     "exposedFoam": 0.518,
+     "thr": 0.0431
+    },
+    {
+     "day": "2026-04-21",
+     "wave": [
+      0.24,
+      313.0,
+      2.4
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.045)"
+    },
+    {
+     "day": "2026-05-04",
+     "wave": [
+      1.32,
+      23.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.057)"
+    },
+    {
+     "day": "2026-05-31",
+     "wave": [
+      0.19,
+      38.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.085)"
+    },
+    {
+     "day": "2026-06-20",
+     "wave": [
+      1.23,
+      13.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "σύννεφο/λίγα pixel"
+    },
+    {
+     "day": "2026-06-28",
+     "wave": [
+      0.91,
+      7.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.109)"
+    },
+    {
+     "day": "2026-07-20",
+     "wave": [
+      0.19,
+      20.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.080)"
+    },
+    {
+     "day": "2026-07-28",
+     "wave": [
+      0.12,
+      342.0,
+      2.2
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.056)"
+    },
+    {
+     "day": "2026-07-30",
+     "wave": [
+      1.65,
+      13.0,
+      6.9
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.072)"
+    },
+    {
+     "day": "2026-08-02",
+     "wave": [
+      0.84,
+      4.0,
+      6.3
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.066)"
+    },
+    {
+     "day": "2026-08-22",
+     "wave": [
+      0.18,
+      349.0,
+      3.9
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.162,
+     "nearPier": 0.128,
+     "awayPier": 0.179,
+     "westHalf": 0.283,
+     "eastHalf": 0.035,
+     "judgeBeachFoam": 0.162,
+     "exposedFoam": 0.451,
+     "thr": 0.0454
+    },
+    {
+     "day": "2026-08-27",
+     "wave": [
+      0.17,
+      4.0,
+      3.6
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.171,
+     "nearPier": 0.128,
+     "awayPier": 0.192,
+     "westHalf": 0.283,
+     "eastHalf": 0.053,
+     "judgeBeachFoam": 0.171,
+     "exposedFoam": 0.411,
+     "thr": 0.0511
+    },
+    {
+     "day": "2026-08-29",
+     "wave": [
+      0.98,
+      34.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "skipped": "γυάλισμα (P90 ανοιχτού 0.042)"
+    },
+    {
+     "day": "2026-09-08",
+     "wave": [
+      1.12,
+      13.0,
+      5.7
+     ],
+     "swirVerifiedControl": false,
+     "all": 0.197,
+     "nearPier": 0.141,
+     "awayPier": 0.224,
+     "westHalf": 0.075,
+     "eastHalf": 0.325,
+     "judgeBeachFoam": 0.197,
+     "exposedFoam": 0.516,
+     "thr": 0.04
+    }
+   ]
+  }
+ }
+}

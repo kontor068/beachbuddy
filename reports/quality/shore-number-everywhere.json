@@ -1,201 +1,200 @@
 {
-  "generatedAt": "2026-08-21T13:45:17.283Z",
+  "generatedAt": "2026-09-11T05:30:23.215Z",
   "dayIndex": 0,
   "regionsAnswered": 110,
   "regionsAsked": 110,
-  "beaches": 2873,
-  "unchanged": 2337,
-  "changed": 536,
-  "medianDropM": 0.5,
-  "p90DropM": 1.18,
-  "maxDropM": 1.51,
-  "modelAlreadySpeaks": 966,
+  "beaches": 2856,
+  "unchanged": 2165,
+  "changed": 691,
+  "medianDropM": 0.15,
+  "p90DropM": 0.29,
+  "maxDropM": 0.6,
+  "modelAlreadySpeaks": 819,
   "byExposure": {
     "exposed": {
-      "beaches": 850,
-      "changed": 0,
-      "medianDropM": 0
+      "beaches": 961,
+      "changed": 13,
+      "medianDropM": 0.15
     },
     "protected": {
-      "beaches": 1608,
-      "changed": 536,
-      "medianDropM": 0.5
+      "beaches": 1453,
+      "changed": 479,
+      "medianDropM": 0.13
     },
     "partial": {
-      "beaches": 415,
-      "changed": 0,
-      "medianDropM": 0
+      "beaches": 442,
+      "changed": 199,
+      "medianDropM": 0.2
     }
   },
   "bandMoves": {
-    "κύμα → ήρεμα": 121,
-    "φουρτούνα → ήρεμα": 57,
-    "φουρτούνα → κύμα": 126
+    "κύμα → ήρεμα": 34,
+    "φουρτούνα → ήρεμα": 1
   },
-  "intoCalm": 178,
+  "intoCalm": 35,
   "calmTone": {
-    "orange": 104,
-    "red": 30,
-    "yellow": 44
+    "orange": 13,
+    "yellow": 22
   },
-  "calmNumberRoughPin": 178,
+  "calmNumberRoughPin": 35,
+  "calmNumberRoughPinLoose": 13,
   "changedTone": {
-    "orange": 264,
-    "red": 116,
-    "yellow": 113,
-    "blue": 43
+    "blue": 567,
+    "orange": 31,
+    "yellow": 93
   },
-  "changedWithRoughPin": 536,
+  "changedWithRoughPin": 124,
+  "changedWithRoughPinLoose": 31,
   "examples": [
     {
-      "region": "attica-aegina",
-      "name": "Αγία Μαρίνα",
-      "exposure": "protected",
-      "todayM": 0.84,
-      "nextM": 0.42,
-      "comfort": "caution",
+      "region": "attica-east-attica-mainland",
+      "name": "Παραλία Ακρωτηρίου",
+      "exposure": "partial",
+      "todayM": 0.55,
+      "nextM": 0.28,
+      "comfort": "avoid_swimming",
       "tone": "orange",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-aegina",
-      "name": "Τούρλος",
-      "exposure": "protected",
-      "todayM": 0.96,
-      "nextM": 0.48,
-      "comfort": "caution",
+      "region": "attica-east-attica-mainland",
+      "name": "Παραλία Αγίας Παρασκευής",
+      "exposure": "partial",
+      "todayM": 0.55,
+      "nextM": 0.28,
+      "comfort": "avoid_swimming",
       "tone": "orange",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-athens-area-mainland",
-      "name": "Μικρό Καβούρι",
-      "exposure": "protected",
-      "todayM": 0.68,
-      "nextM": 0.34,
-      "comfort": "caution",
+      "region": "attica-east-attica-mainland",
+      "name": "Ωρωπός Σκάλα Ωρωπού",
+      "exposure": "partial",
+      "todayM": 0.55,
+      "nextM": 0.28,
+      "comfort": "avoid_swimming",
       "tone": "orange",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-athens-area-mainland",
-      "name": "Astir Beach / Αστέρας Βουλιαγμένης",
-      "exposure": "protected",
-      "todayM": 0.78,
-      "nextM": 0.39,
-      "comfort": "caution",
+      "region": "attica-east-attica-mainland",
+      "name": "Ωρωπός Χαλκούτσι",
+      "exposure": "partial",
+      "todayM": 0.55,
+      "nextM": 0.28,
+      "comfort": "avoid_swimming",
       "tone": "orange",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-athens-area-mainland",
-      "name": "Λιμανάκια Βουλιαγμένης Γυμνιστών",
+      "region": "central-greece-evia",
+      "name": "Αρχάμπολη",
+      "exposure": "protected",
+      "todayM": 0.88,
+      "nextM": 0.44,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Λινάρι",
+      "exposure": "partial",
+      "todayM": 0.82,
+      "nextM": 0.41,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Ποτάμι Καρύστου",
+      "exposure": "protected",
+      "todayM": 0.82,
+      "nextM": 0.41,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Τσοκαΐτι",
+      "exposure": "partial",
+      "todayM": 0.5,
+      "nextM": 0.25,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Αλμυρίχι",
+      "exposure": "partial",
+      "todayM": 0.82,
+      "nextM": 0.41,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Αμυγδαλιά",
+      "exposure": "partial",
+      "todayM": 0.88,
+      "nextM": 0.44,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
+    },
+    {
+      "region": "central-greece-evia",
+      "name": "Ευαγγελισμός",
       "exposure": "protected",
       "todayM": 0.88,
       "nextM": 0.44,
       "comfort": "caution",
-      "tone": "orange",
+      "tone": "yellow",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Θέρετρο Αξιωματικών Ναυτικού",
-      "exposure": "protected",
-      "todayM": 1.1,
-      "nextM": 0.55,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "φουρτούνα → ήρεμα"
+      "region": "central-greece-evia",
+      "name": "Ζαχαριάς",
+      "exposure": "partial",
+      "todayM": 0.88,
+      "nextM": 0.44,
+      "comfort": "good",
+      "tone": "yellow",
+      "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Παραλία Μαραθώνα",
-      "exposure": "protected",
-      "todayM": 1.5,
-      "nextM": 0.75,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "φουρτούνα → ήρεμα"
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Κεντρική παραλία Σαρωνίδας",
+      "region": "central-greece-evia",
+      "name": "Σπηλίτσες",
       "exposure": "protected",
       "todayM": 0.86,
       "nextM": 0.43,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
+      "comfort": "good",
+      "tone": "yellow",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-east-attica-mainland",
-      "name": "Παραλία Μαύρο Λιθάρι",
-      "exposure": "protected",
-      "todayM": 0.86,
-      "nextM": 0.43,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "κύμα → ήρεμα"
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Όρμος Αγίου Νικολάου",
-      "exposure": "protected",
-      "todayM": 1.04,
-      "nextM": 0.52,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "κύμα → ήρεμα"
-    },
-    {
-      "region": "attica-east-attica-mainland",
-      "name": "Θυμάρι",
-      "exposure": "protected",
-      "todayM": 0.92,
-      "nextM": 0.52,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "κύμα → ήρεμα"
-    },
-    {
-      "region": "attica-hydra",
-      "name": "Μπίστι",
-      "exposure": "protected",
-      "todayM": 0.86,
-      "nextM": 0.43,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "κύμα → ήρεμα"
-    },
-    {
-      "region": "attica-kythira",
-      "name": "Άγιος Νικόλαος",
+      "region": "north-aegean-lemnos",
+      "name": "Ζεματάς",
       "exposure": "protected",
       "todayM": 1,
       "nextM": 0.5,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
+      "comfort": "good",
+      "tone": "yellow",
       "move": "κύμα → ήρεμα"
     },
     {
-      "region": "attica-kythira",
-      "name": "Ῥουτσούνας",
+      "region": "north-aegean-lemnos",
+      "name": "Νεφτίνα",
       "exposure": "protected",
-      "todayM": 1.14,
-      "nextM": 0.57,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
+      "todayM": 1,
+      "nextM": 0.5,
+      "comfort": "caution",
+      "tone": "yellow",
       "move": "κύμα → ήρεμα"
-    },
-    {
-      "region": "attica-kythira",
-      "name": "Παραλία Δίπορος",
-      "exposure": "protected",
-      "todayM": 1.2,
-      "nextM": 0.6,
-      "comfort": "avoid_swimming",
-      "tone": "orange",
-      "move": "φουρτούνα → ήρεμα"
     }
   ]
 }

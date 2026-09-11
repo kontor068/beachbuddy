@@ -1,7 +1,7 @@
 // ΠΑΡΑΓΟΜΕΝΟ ΑΡΧΕΙΟ — μην το πειράξεις με το χέρι.
 // Φτιάχνεται με: node scripts/buildQualityLedger.mjs
 // Το διαβάζει η καρτέλα «Ποιότητα» στο /api/traffic.
-export const generatedAt = "2026-09-10";
+export const generatedAt = "2026-09-11";
 export const axes = [{"key":"pin","label":"Πινέζα στον χάρτη","short":"Πινέζα"},{"key":"nav","label":"Πλοήγηση («Οδηγίες»)","short":"Πλοήγηση"},{"key":"access","label":"Πρόσβαση","short":"Πρόσβαση"},{"key":"amenities","label":"Παροχές","short":"Παροχές"},{"key":"photo","label":"Φωτογραφία","short":"Φωτό","sourced":"human"},{"key":"character","label":"Χαρακτήρας (άμμος · βάθος · μπροστά πού βλέπει)","short":"Χαρακτήρας"},{"key":"text","label":"Σιγουριά κειμένου","short":"Κείμενο"}];
 export const kindLabels = {"access":"Πρόσβαση","photo":"Φωτογραφίες","pin":"Πινέζες","nav":"Πλοήγηση","amenities":"Παροχές","weather":"Άνεμος / κύμα / γεωμετρία","other":"Γενικός έλεγχος"};
 export const totals = {"beaches":2856,"byAxis":{"pin":{"ok":2826,"total":2856},"nav":{"ok":2346,"total":2856},"access":{"ok":2557,"total":2856},"amenities":{"ok":2235,"total":2856},"photo":{"ok":1398,"total":2856},"character":{"ok":2701,"total":2856},"text":{"ok":2292,"total":2856}}};
