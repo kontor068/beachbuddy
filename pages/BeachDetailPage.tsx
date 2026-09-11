@@ -2467,8 +2467,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                      συνάρτηση με τον ΙΔΙΟ αριθμό, οπότε δεν μπορούν να διαφωνήσουν. Το τυπωμένο
                      μέγιστο κάνει ένα πράγμα μόνο: πάνω από το κατώφλι της υπόσχεσης σβήνει τις
                      λέξεις γεωμετρίας. Δεν ανεβάζει ποτέ σκαλί — η ριπή είναι πρόβλεψη, και μια
-                     φούσκα της δεν επιτρέπεται να γράψει «φυσάει αρκετά» κάτω από κίτρινη πινέζα. */
-                  if (printedBeaufortMax > SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT) {
+                     φούσκα της δεν επιτρέπεται να γράψει «φυσάει αρκετά» κάτω από κίτρινη πινέζα.
+
+                     ΚΑΙ ΣΤΑ 3 ΜΠΦ Η ΠΡΟΣΤΑΤΕΥΜΕΝΗ ΑΚΤΗ ΔΕΝ ΛΕΕΙ «ΑΠΑΝΕΜΗ» (Πυργάκι Νάξου #2013,
+                     11/09/2026, απόφαση Μίλτου). Το 'protected' μετράει τη σκιά στο ΚΥΜΑ· πόσος αέρας
+                     πέφτει στην άμμο δεν το υπολογίζουμε — και με απόγειο τον αέρα τον δέχεται ακριβώς
+                     η άμμος. Επισκέπτης επιτόπου, «3 Μπφ · riparata», έγραψε «είχε πιο πολύ αέρα».
+                     Λέει λοιπόν ό,τι η κάρτα στα 3 («Λίγος αέρας» → «φυσάει λίγο»)· η προστασία
+                     μένει στο χρώμα και στο τσιπάκι. «αεράκι»/«κατάμουτρα» στα 3 δεν αλλάζουν. */
+                  if (printedBeaufortMax > SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT || mapAlignedExposureLevel === 'protected') {
                     const cardWindLevel = windFeelLevel(beaufortLevel);
                     if (cardWindLevel >= 4) return shelterCopy.protectedStrongWind;
                     if (cardWindLevel === 3) return shelterCopy.windFeltLot;
