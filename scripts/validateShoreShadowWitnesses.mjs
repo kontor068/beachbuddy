@@ -177,13 +177,13 @@ for (const [beachId, regionFile, expectedWord, checks, why] of WITNESSES) {
  * έξω από το τόξο (νοτιάς πίσω από την Πάρο) πρέπει να μείνει λάδι — η μαρτυρία δεν διαρρέει.
  */
 const MOLOS = { id: 2040, region: 'south-aegean-paros' };
-const molosDay = ({ windDeg, windKmh, seaDeg, seaM }) => {
+const molosDay = ({ windDeg, windKmh, seaDeg, seaM, swellDeg = seaDeg, swellM = 0.25 }) => {
   const wind = { speed: toMs(windKmh), speedBeforeGustFloor: toMs(windKmh), deg: windDeg, gust: toMs(windKmh * 1.2) };
   const item = (hour) => ({ ...hourItem(hour), wind });
   return {
     date: new Date(2026, 7, 29), wind, weather: { main: 'Clear', description: 'clear sky', icon: '01d' },
     temp_min: 26, temp_max: 30, hourly: [item(11), item(13), item(15)],
-    marine: { waveHeightM: seaM, wavePeriodS: 5.2, swellWaveHeightM: 0.25, swellWaveDirectionDeg: seaDeg, swellWavePeriodS: 3.5,
+    marine: { waveHeightM: seaM, wavePeriodS: 5.2, swellWaveHeightM: swellM, swellWaveDirectionDeg: swellDeg, swellWavePeriodS: 3.5,
       waveDirectionDeg: seaDeg, seaSurfaceTemperatureC: 26 },
   };
 };
@@ -227,6 +227,86 @@ const MOLOS_CASES = [
     const control = run({ windDeg: 270, windKmh: 24, seaDeg: 180, seaM: 1.5 });
     if (control.readout.waveWord !== 'Θάλασσα λάδι') failures.push(`#2040 Μώλος (ΕΛΕΓΧΟΣ νοτιάς 180°): λέξη «${control.readout.waveWord}» — η μαρτυρία των 0-30° διέρρευσε`);
     if (!(control.score.shoreShadowDamping <= 0.12)) failures.push(`#2040 Μώλος (ΕΛΕΓΧΟΣ νοτιάς 180°): K_d ${control.score.shoreShadowDamping} — η βαθιά σκιά πίσω από το νησί χάθηκε`);
+
+    /**
+     * Η ΙΔΙΟΤΗΤΑ ΤΟΥ ΔΑΠΕΔΟΥ, ΣΕ ΟΛΟ ΤΟΝ ΚΥΚΛΟ (11/09/2026, μετά το replay των ημερών του δορυφόρου).
+     * Η μαρτυρία υπόσχεται ένα πράγμα: «όπως θα έλεγε χωρίς μάρτυρα, ποτέ κάτω από το μισό του
+     * ανοιχτού». Η πρώτη εκδοχή το παρέβαινε προς τα ΠΑΝΩ (ολόκληρο ύψος στις 0-10° με μελτέμι, λέξη που
+     * πηδούσε στο 0°/359°) και καμία πύλη δεν το έβλεπε. Εδώ κάθε σενάριο τρέχει ΜΕ και ΧΩΡΙΣ το τόξο
+     * (το ίδιο Map του utils/seaArrival, σβηστό και ξαναβαλμένο αμέσως): έξω από το τόξο ΑΚΡΙΒΩΣ ίδια
+     * οθόνη· μέσα ποτέ χαμηλότερο, ποτέ πάνω από max(πριν, μισό της θάλασσας), ποτέ ηπιότερη ετυμηγορία.
+     */
+    const { JUDGE_WITNESSED_ARRIVAL_ARCS, WITNESSED_SEA_SHORE_FRACTION } = require(path.join(root, 'utils/seaArrival.ts'));
+    const arc = JUDGE_WITNESSED_ARRIVAL_ARCS.get(MOLOS.id);
+    const angDist = (a, b) => Math.abs((((a - b) % 360) + 540) % 360 - 180);
+    const VERDICT_SEVERITY = { good: 0, caution: 1, avoid_swimming: 2 };
+    const sweep = { runs: 0, leaks: 0, lowered: 0, overshoot: 0, milder: 0, floored: 0, examples: [] };
+    const sweepDirs = [...Array.from({ length: 72 }, (_, i) => i * 5), 1, 2, 3, 4, 29, 31, 359];
+    // null = ο άνεμος από τη μεριά του κύματος (μελτέμι)· 270/180/90 = δυτικός, νοτιάς, ανατολικός
+    const sweepWinds = [[null, 15], [null, 25], [null, 35], [270, 20], [180, 20], [90, 12]];
+    for (const seaDeg of sweepDirs) for (const seaM of [0.5, 1.1, 2.3]) for (const [wd, windKmh] of sweepWinds) {
+      const spec = { windDeg: wd ?? seaDeg, windKmh, seaDeg, seaM };
+      const after = run(spec);
+      JUDGE_WITNESSED_ARRIVAL_ARCS.delete(MOLOS.id);
+      let before;
+      try { before = run(spec); } finally { JUDGE_WITNESSED_ARRIVAL_ARCS.set(MOLOS.id, arc); }
+      sweep.runs += 1;
+      const a = after.readout.waveM ?? 0;
+      const b = before.readout.waveM ?? 0;
+      const where = `θάλασσα ${seaDeg}° ${seaM} μ. · άνεμος ${spec.windDeg}° ${windKmh} χλμ/ώ: ${b} → ${a} μ.`;
+      const note = (e) => { if (sweep.examples.length < 6) sweep.examples.push(e); };
+      if (angDist(seaDeg, arc.centerDeg) > arc.halfWidthDeg) {
+        if (a !== b || after.readout.waveWord !== before.readout.waveWord || after.score.swimmingComfort !== before.score.swimmingComfort) {
+          sweep.leaks += 1; note(`ΔΙΑΡΡΟΗ ${where}`);
+        }
+        continue;
+      }
+      if (a > b) sweep.floored += 1;
+      if (a < b - 1e-9) { sweep.lowered += 1; note(`ΧΑΜΗΛΟΤΕΡΑ ${where}`); }
+      // +0,051: το τυπωμένο στρογγυλεύει στο δέκατο
+      // Εδώ ΟΛΗ η θάλασσα μπαίνει από το τόξο (κύμα και ρεστία από το seaDeg), άρα το όριο είναι το μισό
+      // της ανοιχτής — το ίδιο που δίνει το πάτωμα K_d του μάρτυρα (shoreSeaStateM × 0,5), και που με
+      // δυνατό άνεμο στο ίδιο τόξο περιλαμβάνει και το κύμα του ανέμου. Το αυστηρότερο «μισό του ΜΙΚΡΟΥ
+      // συστατικού» κρίνεται στις μικτές θάλασσες πιο κάτω.
+      const floorM = WITNESSED_SEA_SHORE_FRACTION * after.score.seaStateWaveM;
+      if (a > Math.max(b, floorM) + 0.051) { sweep.overshoot += 1; note(`ΠΑΝΩ ΑΠΟ ΤΟ ΜΙΣΟ ${where} (δάπεδο ${floorM})`); }
+      if ((VERDICT_SEVERITY[after.score.swimmingComfort] ?? 0) < (VERDICT_SEVERITY[before.score.swimmingComfort] ?? 0)) { sweep.milder += 1; note(`ΗΠΙΟΤΕΡΗ ΕΤΥΜΗΓΟΡΙΑ ${where}`); }
+      // Και ο αριθμός που ΚΡΙΝΕΙ την ετυμηγορία (score.shoreDisplayWaveM = seaAtShoreM), όχι μόνο ο
+      // τυπωμένος: ο τυπωμένος κόβεται από το ταβάνι του φρουρού, οπότε ένας διακόπτης στο σκέλος της
+      // ετυμηγορίας περνούσε αόρατος (σαμποτάζ 11/09).
+      const sa = after.score.shoreDisplayWaveM;
+      const sb = before.score.shoreDisplayWaveM;
+      if (typeof sa === 'number' && typeof sb === 'number') {
+        if (sa < sb - 1e-9) { sweep.lowered += 1; note(`ΧΑΜΗΛΟΤΕΡΑ (ακτή) ${where}: ${sb} → ${sa}`); }
+        if (sa > Math.max(sb, floorM) + 0.011) { sweep.overshoot += 1; note(`ΠΑΝΩ ΑΠΟ ΤΟ ΜΙΣΟ (ακτή) ${where}: ${sb} → ${sa}`); }
+      }
+    }
+    if (sweep.leaks) failures.push(`#2040 Μώλος: η μαρτυρία άλλαξε την οθόνη ΕΞΩ από το τόξο σε ${sweep.leaks}/${sweep.runs} σενάρια — ${sweep.examples.join(' · ')}`);
+    if (sweep.lowered) failures.push(`#2040 Μώλος: η μαρτυρία ΚΑΤΕΒΑΣΕ το τυπωμένο σε ${sweep.lowered} σενάρια — ${sweep.examples.join(' · ')}`);
+    if (sweep.overshoot) failures.push(`#2040 Μώλος: η μαρτυρία ανέβασε το τυπωμένο ΠΑΝΩ από max(πριν, μισό) σε ${sweep.overshoot} σενάρια — δάπεδο, όχι διακόπτης — ${sweep.examples.join(' · ')}`);
+    if (sweep.milder) failures.push(`#2040 Μώλος: ηπιότερη ετυμηγορία με τη μαρτυρία σε ${sweep.milder} σενάρια — ${sweep.examples.join(' · ')}`);
+    if (!sweep.floored) failures.push('#2040 Μώλος: σε κανένα σενάριο η μαρτυρία δεν ανέβασε το τυπωμένο — το δάπεδο δεν ασκείται, η πύλη είναι τυφλή');
+    console.log(`   Μώλος, όλος ο κύκλος: ${sweep.runs} σενάρια · το δάπεδο ανέβασε ${sweep.floored} · διαρροές ${sweep.leaks} · χαμηλότερα ${sweep.lowered} · πάνω από το μισό ${sweep.overshoot} · ηπιότερη ετυμηγορία ${sweep.milder}`);
+
+    // ΜΙΚΤΗ ΘΑΛΑΣΣΑ (ελεγκτής 11/09): 2-3 μ. από νότο/δύση (πίσω από την Πάρο, K_d 0,1) ΚΑΙ ένα
+    // φουσκωματάκι 0,15-0,2 μ. από το τόξο. Η πρώτη εκδοχή του δαπέδου έπαιρνε το μισό ΟΛΟΥ του
+    // πελάγους (0,1 → 1,0-1,5 μ., «μην κολυμπήσεις»). Το δάπεδο ανήκει στο συστατικό που μπαίνει.
+    const MIXED = [
+      { windDeg: 180, windKmh: 30, seaDeg: 180, seaM: 2.0, swellDeg: 15, swellM: 0.15 },
+      { windDeg: 270, windKmh: 30, seaDeg: 270, seaM: 3.0, swellDeg: 15, swellM: 0.15 },
+      { windDeg: 270, windKmh: 20, seaDeg: 180, seaM: 2.5, swellDeg: 20, swellM: 0.2 },
+    ];
+    for (const spec of MIXED) {
+      const after = run(spec);
+      JUDGE_WITNESSED_ARRIVAL_ARCS.delete(MOLOS.id);
+      let before;
+      try { before = run(spec); } finally { JUDGE_WITNESSED_ARRIVAL_ARCS.set(MOLOS.id, arc); }
+      const what = `μικτή: ${spec.seaM} μ. από ${spec.seaDeg}° + ${spec.swellM} μ. από ${spec.swellDeg}°`;
+      if (!after.score.witnessedArrivalSea) failures.push(`#2040 Μώλος (${what}): η μαρτυρία δεν άναψε — η περίπτωση δεν ασκείται`);
+      const capM = Math.max(before.readout.waveM ?? 0, WITNESSED_SEA_SHORE_FRACTION * spec.swellM) + 0.051;
+      if ((after.readout.waveM ?? 0) > capM) failures.push(`#2040 Μώλος (${what}): τυπώνει ${after.readout.waveM} μ. (χωρίς μάρτυρα ${before.readout.waveM}) — το δάπεδο πήρε το μισό ΟΛΟΥ του πελάγους`);
+      if (after.score.swimmingComfort !== before.score.swimmingComfort) failures.push(`#2040 Μώλος (${what}): ετυμηγορία ${before.score.swimmingComfort} → ${after.score.swimmingComfort} από ένα φουσκωματάκι 0,${String(spec.swellM).split('.')[1]} μ.`);
+    }
   }
 }
 

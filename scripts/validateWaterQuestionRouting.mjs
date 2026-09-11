@@ -47,7 +47,12 @@ const ALLOWED = [
   ['if (beachShoreBreaks(beach, seaArrivalExposureLevel, effectiveWaveHeightM, seaStatePeriodS)) {', 1, 'το shoreBreak κρίνει ΜΟΝΟ του την άφιξη (σωπαίνει σε protected/undefined) — δεν χρειάζεται δαμπαρισμένο ύψος'],
   ['measuredWaveHeightM !== undefined ? effectiveWaveHeightM : modeledWaveHeightM', 1, 'η ποινή ανοιχτού νερού στον βαθμό — ΕΠΙΣΤΡΕΦΕΤΑΙ αυτούσια στον κλάδο ακτής της ετυμηγορίας'],
   ['? Math.min(coveDisplayM, effectiveWaveHeightM)', 1, 'το καπάκι του όρμου: ποτέ πάνω από το ανοιχτό'],
-  [': windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && !witnessedSea && coveDisplayCandidateM < effectiveWaveHeightM', 1, 'ίδιο καπάκι, ο άλλος κλάδος (όχι όπου η θάλασσα μπαίνει με μάρτυρα, §Γ77)'],
+  [': windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM', 1, 'ίδιο καπάκι, ο άλλος κλάδος'],
+  // Το δάπεδο της μαρτυρημένης άφιξης (§Γ77): μισό της μαρτυρημένης θάλασσας, ΤΟ ΠΟΛΥ της ανοιχτής —
+  // το ανοιχτό μπαίνει μόνο ως ταβάνι του δαπέδου, ώστε η ακτή να μη γράψει ποτέ πάνω από το μισό της.
+  ['? applyWitnessedSeaFloorM(valueM, witnessedSeaM, effectiveWaveHeightM)', 1, 'δάπεδο μαρτυρίας στον αριθμό ακτής — το ανοιχτό είναι ταβάνι του δαπέδου, όχι ο αριθμός'],
+  ['const displayWaveHeightM = applyWitnessedSeaFloorM(guardDisplayWaveHeightM, witnessedSeaM, effectiveWaveHeightM);', 1, 'δάπεδο μαρτυρίας στον τυπωμένο — ίδιο ταβάνι'],
+  ['? applyWitnessedSeaFloorM(coveWave.waveHeightM, witnessedSeaM, effectiveWaveHeightM)', 1, 'δάπεδο μαρτυρίας στην «εκτίμηση» του γραφήματος — ίδιο με τον αριθμό δίπλα'],
   ['seaStateM: seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),', 1, 'το χρώμα της πινέζας — το resolveConditionTone εφαρμόζει ΜΟΝΟ του το shoreSeaStateM παρακάτω (utils/suitabilityTone.capToneBySeaState)'],
   ['seaStateSeverityM(effectiveWaveHeightM, seaStatePeriodS),', 1, 'το τσιπ της κάρτας — ίδιος λόγος με το χρώμα'],
   ['effectiveWaveHeightM, finalExposureLevel, arrivalBeforeGrazingRelief,', 1, 'ο μάρτυρας του φρένου §Γ59: ΙΔΙΑ δαμπάρισμα προς την ακτή, με την άφιξη γυρισμένη στη χθεσινή της τιμή· δεν τυπώνεται και δεν χρωματίζει τίποτα, απαντάει μόνο «θα έλεγες μην κολυμπήσεις;»'],

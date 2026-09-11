@@ -34,8 +34,9 @@ const { createDailyForecast } = require(path.join(root, 'utils/weatherFixtures.t
 const { calculateBeachScore } = require(path.join(root, 'services/recommendationService.ts'));
 const { resolveCoveAwareWaveHeightM } = require(path.join(root, 'utils/coveWaveGuard.ts'));
 const { SWELL_MIN_HEIGHT_M, hasSwellPresence } = require(path.join(root, 'utils/swellExposure.ts'));
-// 11/09/2026 (§Γ77): όπου υπάρχει ΜΑΡΤΥΡΗΜΕΝΗ άφιξη (Μώλος 0-30°), η βαθμολογία σωπαίνει σκόπιμα τον
-// φρουρό όρμου — εκεί η διαφορά από την «παλιά σελίδα» είναι η διόρθωση, όχι σφάλμα. Εξαιρείται ρητά.
+// 11/09/2026 (§Γ77): όπου υπάρχει ΜΑΡΤΥΡΗΜΕΝΗ άφιξη (Μώλος 0-30°), η βαθμολογία βάζει σκόπιμα δάπεδο
+// (μισό της μαρτυρημένης θάλασσας) στο ύψος της εκτίμησης του φρουρού — εκεί η διαφορά από την «παλιά
+// σελίδα» είναι η διόρθωση, όχι σφάλμα. Εξαιρείται ρητά.
 const { isWitnessedArrivalSea } = require(path.join(root, 'utils/seaArrival.ts'));
 
 // Ο ΠΑΛΙΟΣ καθρέφτης της σελίδας, αυτούσιος (git show f1acdbac:pages/BeachDetailPage.tsx, γρ. 1319).

@@ -53,7 +53,7 @@ import { isSunsetFacingBeach } from '../utils/beachOrientation';
 import { isNaturistBeach } from '../utils/naturistBeaches';
 import { getBeachTouristRecognitionScore } from '../utils/touristPriority';
 import { getWindChopWaveFloorM, resolveEffectiveWaveHeightM, capLightWindMeasuredWaveM, resolveDisplayWaveHeightM, type SeaArrivalGeometry } from '../utils/waveModel';
-import { isWitnessedArrivalSea, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping } from '../utils/seaArrival';
+import { applyWitnessedSeaFloorM, resolveSeaArrival, resolveSeaArrivalExposureLevel, resolveShoreShadowDamping, witnessedArrivalSeaM } from '../utils/seaArrival';
 import { COVE_DISPLAY_FLOOR_M, COVE_ONSHORE_MIN, resolveCoveAwareWaveHeightM, type CoveWave } from '../utils/coveWaveGuard';
 import { drySectorFanWaveHeightM, estimateShoreWaveHeightM, isEnclosedDrySector, isSeaArrivingShore, isSeaDepartingShore } from '../utils/shoreWave';
 import { relievesOverCaution } from '../utils/overCautionRelief';
@@ -188,6 +188,11 @@ export interface BeachScore {
    * §Γ74)· διαβάζει πια αυτόν, ώστε ετικέτα, σημείωση και αριθμός να βγαίνουν από ΕΝΑΝ υπολογισμό.
    */
   coveWave?: Pick<CoveWave, 'coveApplied' | 'waveHeightM' | 'fetchKm' | 'onshore'>;
+  /**
+   * Μπαίνει θάλασσα από τόξο μαρτυρημένης άφιξης (utils/seaArrival, §Γ77 — σήμερα μόνο Μώλος 0-30°).
+   * Η σελίδα κρύβει με αυτό την κάρτα «ήρεμος όρμος»: εκεί ο δορυφόρος είδε κύμα να σκάει.
+   */
+  witnessedArrivalSea?: boolean;
 }
 
 export interface BestBeachTime {
@@ -2022,14 +2027,20 @@ export const calculateBeachScore = (
    */
   /**
    * ΜΑΡΤΥΡΗΜΕΝΗ ΑΦΙΞΗ (utils/seaArrival isWitnessedArrivalSea, 11/09/2026, βίβλος §Γ77): εκεί ο κριτής στην
-   * άμμο ΕΙΔΕ τη θάλασσα αυτής της κατεύθυνσης να σκάει, άρα ούτε η εκτίμηση ακτής («δεν έχει 2 χλμ νερό»)
-   * ούτε ο φρουρός όρμου («δεν υπάρχει ρεστία») επιτρέπεται να την ξανασβήσουν. Σήμερα μόνο Μώλος #2040, 0-30°.
+   * άμμο ΕΙΔΕ τη θάλασσα αυτής της κατεύθυνσης να σκάει. Σήμερα μόνο Μώλος #2040, 0-30°.
+   * ΔΑΠΕΔΟ, ΟΧΙ ΔΙΑΚΟΠΤΗΣ: η εκτίμηση ακτής και ο φρουρός όρμου μιλάνε όπως πάντα, και ο αριθμός ακτής
+   * (πιο κάτω, shoreWaveM) και ο τυπωμένος (displayWaveHeightM) παίρνουν δάπεδο το μισό του ανοιχτού
+   * (utils/seaArrival applyWitnessedSeaFloorM). Η πρώτη εκδοχή τις ΣΩΠΑΙΝΕ — και όπου ο τομέας του
+   * ανέμου έβγαινε 'partial' ή 'exposed' το νούμερο πήγαινε στο ΟΛΟ ύψος, πάνω από ό,τι στηρίζει ο
+   * δορυφόρος (scripts/replayMolosWitnessDays.mjs). Τώρα: «όπως πριν, ποτέ κάτω από το μισό της
+   * ΜΑΡΤΥΡΗΜΕΝΗΣ θάλασσας» — του συστατικού που μπαίνει από το τόξο, όχι όλου του πελάγους.
    */
-  const witnessedSea = isWitnessedArrivalSea(options?.geospatialProfile, [
+  const witnessedSeaM = witnessedArrivalSeaM(options?.geospatialProfile, [
     { heightM: marine?.waveHeightM, directionDeg: marine?.waveDirectionDeg },
     { heightM: marine?.swellWaveHeightM, directionDeg: marine?.swellWaveDirectionDeg },
   ]);
-  const arrivingSea = witnessedSea || isSeaArrivingShore({
+  const witnessedSea = witnessedSeaM !== undefined;
+  const arrivingSea = isSeaArrivingShore({
     facingDeg: windAssessment.facingDeg,
     profile: options?.geospatialProfile,
     components: [
@@ -2097,8 +2108,11 @@ export const calculateBeachScore = (
     windSpeedKmh: windSpeedKmph,
     measuredWaveHeightM: realisticMeasuredWaveHeightM,
     appModeledWaveHeightM: modeledWaveHeightM,
-    // Μαρτυρημένη άφιξη = θάλασσα απ' έξω που μπαίνει — ίδια σημασία με τη ρεστία για τον φρουρό (§Γ77).
-    swellPresent: swell.hasSwell || witnessedSea,
+    // Η μαρτυρημένη άφιξη (§Γ77) ΔΕΝ σβήνει τον φρουρό: ο ίδιος φρουρός δίνει τον αριθμό ΚΑΙ την ετικέτα
+    // «εκτίμηση» της σελίδας, αλλιώς ένα νούμερο εκτίμησης έβγαινε με ετικέτα «Κύμα ανοιχτά» (ελεγκτής
+    // 11/09). Ο αριθμός παίρνει δάπεδο πιο κάτω (displayWaveHeightM)· η κάρτα «ήρεμος όρμος» κρύβεται
+    // με το score.witnessedArrivalSea.
+    swellPresent: swell.hasSwell,
   });
   /**
    * ΤΟ ΝΕΡΟ ΠΟΥ ΔΕΙΧΝΕΙ Η ΣΕΛΙΔΑ ΤΗΣ ΠΑΡΑΛΙΑΣ ΤΟ ΔΙΑΒΑΖΕΙ ΠΛΕΟΝ ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ (10/08/2026).
@@ -2187,9 +2201,14 @@ export const calculateBeachScore = (
     windAssessment.protectionFromCuratedCoveOnly, shoreShadowDamping);
   // The lower of the two only when the modelled one is entitled to speak; otherwise exactly the
   // damping that has been in place since 01/08.
-  const shoreWaveM = typeof shoreModelWaveM === 'number'
+  // Μαρτυρημένη άφιξη (§Γ77): ό,τι θα έλεγε χωρίς μάρτυρα, ποτέ κάτω από το μισό του ανοιχτού. Το ίδιο
+  // δάπεδο μπαίνει και στον «μάρτυρα του φρένου» παρακάτω, ώστε η σύγκρισή τους να μένει μήλα με μήλα.
+  const floorWitnessedShoreM = (valueM: number | undefined) => (typeof valueM === 'number'
+    ? applyWitnessedSeaFloorM(valueM, witnessedSeaM, effectiveWaveHeightM)
+    : valueM);
+  const shoreWaveM = floorWitnessedShoreM(typeof shoreModelWaveM === 'number'
     ? Math.min(shoreModelWaveM, dampedShoreWaveM ?? shoreModelWaveM)
-    : dampedShoreWaveM;
+    : dampedShoreWaveM);
 
   /**
    * Ο ΜΑΡΤΥΡΑΣ ΤΟΥ ΦΡΕΝΟΥ ΤΟΥ §Γ59 (22/08/2026) — «πόσο νερό θα λέγαμε ΧΩΡΙΣ τη χαλάρωση της
@@ -2204,9 +2223,9 @@ export const calculateBeachScore = (
   const dampedShoreWaveWithoutGrazingReliefM = shoreSeaStateM(
     effectiveWaveHeightM, finalExposureLevel, arrivalBeforeGrazingRelief,
     windAssessment.protectionFromCuratedCoveOnly, shoreShadowDamping);
-  const shoreWaveWithoutGrazingReliefM = typeof shoreModelWaveM === 'number'
+  const shoreWaveWithoutGrazingReliefM = floorWitnessedShoreM(typeof shoreModelWaveM === 'number'
     ? Math.min(shoreModelWaveM, dampedShoreWaveWithoutGrazingReliefM ?? shoreModelWaveM)
-    : dampedShoreWaveWithoutGrazingReliefM;
+    : dampedShoreWaveWithoutGrazingReliefM);
   const grazingSeaReliefApplied = shoreWaveWithoutGrazingReliefM !== shoreWaveM;
 
   /**
@@ -2944,11 +2963,13 @@ export const calculateBeachScore = (
   // no waves at all; the cove still reads far calmer than the 1,28 m open sea, which is the whole
   // point of the guard.
   const coveDisplayM = Math.max(coveWave.waveHeightM, modeledWaveHeightM);
-  const displayWaveHeightM = coveWave.coveApplied
+  const guardDisplayWaveHeightM = coveWave.coveApplied
     ? Math.min(coveDisplayM, effectiveWaveHeightM)
-    : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && !witnessedSea && coveDisplayCandidateM < effectiveWaveHeightM
+    : windAssessment.enclosedCove && windIsOffshoreForCove && !swell.hasSwell && coveDisplayCandidateM < effectiveWaveHeightM
       ? coveDisplayCandidateM
       : effectiveWaveHeightM;
+  // Μαρτυρημένη άφιξη (§Γ77): ποτέ κάτω από το μισό της μαρτυρημένης θάλασσας — αλλού ταυτόσημο.
+  const displayWaveHeightM = applyWitnessedSeaFloorM(guardDisplayWaveHeightM, witnessedSeaM, effectiveWaveHeightM);
 
   // The card/list chip states the same conditions as the map pin, from the same number.
   // The engine could only build a wind-only colour (the blended sea state does not exist yet
@@ -3076,10 +3097,15 @@ export const calculateBeachScore = (
     simpleWindSuitability,
     coveWave: {
       coveApplied: coveWave.coveApplied,
-      waveHeightM: coveWave.waveHeightM,
+      // Η εκτίμηση που δείχνει το γράφημα της σελίδας («Εκτίμηση από άνεμο») με το ΙΔΙΟ δάπεδο με τον
+      // αριθμό, ώστε με μαρτυρημένη θάλασσα να μη γράφει μικρότερο κύμα από το νούμερο δίπλα (§Γ77).
+      waveHeightM: coveWave.coveApplied
+        ? applyWitnessedSeaFloorM(coveWave.waveHeightM, witnessedSeaM, effectiveWaveHeightM)
+        : coveWave.waveHeightM,
       fetchKm: coveWave.fetchKm,
       onshore: coveWave.onshore,
     },
+    witnessedArrivalSea: witnessedSea,
   };
 };
 

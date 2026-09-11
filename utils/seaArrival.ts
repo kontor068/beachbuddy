@@ -309,8 +309,17 @@ export const JUDGE_WITNESSED_ARRIVAL_BEACH_IDS: ReadonlySet<number> = new Set([2
  * — ζητάει 2 χλμ νερό στη γωνία, ο Μώλος έχει 1,4) και ο φρουρός όρμου (utils/coveWaveGuard — τυπώνει
  * το SMB του όρμου όταν δεν «υπάρχει» ρεστία). Με μόνο το K_d, με δυτικό ή ελαφρύ αέρα η κάρτα έμενε
  * «Θάλασσα λάδι 0,1 μ.». Ο κοινός έλεγχος είναι το isWitnessedArrivalSea πιο κάτω.
- * Στην άκρη του τόξου (0°/359°) η λέξη μπορεί να αλλάζει με 2° διαφορά κατεύθυνσης — όπως κάθε όριο
- * της τσέπης· δηλωμένο, όχι σφάλμα (το 0-10° το στηρίζουν οι μέρες 6-12° με αφρό, §Γ77).
+ *
+ * Ο ΑΡΙΘΜΟΣ ΠΟΥ ΤΥΠΩΝΕΤΑΙ: ΔΑΠΕΔΟ, ΟΧΙ ΔΙΑΚΟΠΤΗΣ (ίδια μέρα, μετά από replay). Η πρώτη εκδοχή έσβηνε
+ * τον φρουρό όρμου και στο τυπωμένο νούμερο. Το replay της ΙΔΙΑΣ της πρόγνωσης του site για κάθε μέρα
+ * του δορυφόρου (scripts/replayMolosWitnessDays.mjs) έδειξε δύο πράγματα: (α) το site διαβάζει το κύμα
+ * ~8° αριστερόστροφα από τον Copernicus του κριτή, οπότε οι μέρες με αφρό έπεφταν στις 1-10° όπου ήδη
+ * έλεγε «Αρκετό κύμα ~1,1 μ.» — ποτέ «λάδι»· (β) σβήνοντας τον φρουρό, οι 0-10° πήγαιναν στο ΟΛΟ ύψος
+ * («Μεγάλο κύμα 2,3 μ.») και η λέξη πηδούσε στο 0°/359°, τη συνηθέστερη διεύθυνση του site εκεί. Άρα
+ * ο αριθμός ακτής και ο τυπωμένος παίρνουν ό,τι θα έλεγαν χωρίς τη μαρτυρία, με δάπεδο το μισό της
+ * μαρτυρημένης θάλασσας (WITNESSED_SEA_SHORE_FRACTION, witnessedArrivalSeaM): σβήνει μόνο τα «λάδι», δεν
+ * ανεβάζει τίποτα πάνω από το μισό. Ο φρουρός όρμου μένει ο ΙΔΙΟΣ για αριθμό και ετικέτα («εκτίμηση»)·
+ * μόνο η κάρτα «ήρεμος όρμος» κρύβεται (score.witnessedArrivalSea), γιατί εκεί το νερό δεν είναι ήρεμο.
  */
 export const JUDGE_WITNESSED_ARRIVAL_ARCS: ReadonlyMap<number, Readonly<{ centerDeg: number; halfWidthDeg: number }>> = new Map([
   [2040, Object.freeze({ centerDeg: 15, halfWidthDeg: 15 })],
@@ -338,11 +347,46 @@ export const WITNESSED_SEA_MIN_COMPONENT_M = 0.15;
  * φρουρός όρμου πριν πουν «εδώ δεν μπαίνει τίποτα». Μονόδρομο: μπορεί μόνο να σωπάσει τις δύο εκτιμήσεις
  * που ΚΑΤΕΒΑΖΟΥΝ το νούμερο, ποτέ να κάνει παραλία πιο ήρεμη.
  */
+/**
+ * ΠΟΣΗ μαρτυρημένη θάλασσα μπαίνει: το ψηλότερο συστατικό (≥ WITNESSED_SEA_MIN_COMPONENT_M) που έρχεται
+ * από τόξο μαρτυρίας ΑΥΤΗΣ της παραλίας· undefined = καμία. Το ύψος μετράει, όχι μόνο το «ναι»: το δάπεδο
+ * παίρνει το μισό ΑΥΤΟΥ του συστατικού, όχι όλης της θάλασσας — αλλιώς ένα φουσκωματάκι 0,15 μ. από 15°
+ * κάτω από 2-3 μ. από το νότο (πίσω από την Πάρο, K_d 0,1) σήκωνε την ακτή στο 1-1,5 μ. (ελεγκτής 11/09).
+ */
+export const witnessedArrivalSeaM = (
+  geospatialProfile: GeospatialExposureProfile | undefined,
+  components: Array<{ heightM?: number; directionDeg?: number }>
+): number | undefined => {
+  let heightM: number | undefined;
+  for (const c of components) {
+    if (typeof c.heightM === 'number' && Number.isFinite(c.heightM) && c.heightM >= WITNESSED_SEA_MIN_COMPONENT_M
+      && isJudgeWitnessedArrivalDirection(geospatialProfile, c.directionDeg)) {
+      heightM = Math.max(heightM ?? 0, c.heightM);
+    }
+  }
+  return heightM;
+};
+
 export const isWitnessedArrivalSea = (
   geospatialProfile: GeospatialExposureProfile | undefined,
   components: Array<{ heightM?: number; directionDeg?: number }>
-): boolean => components.some((c) => typeof c.heightM === 'number' && Number.isFinite(c.heightM)
-  && c.heightM >= WITNESSED_SEA_MIN_COMPONENT_M && isJudgeWitnessedArrivalDirection(geospatialProfile, c.directionDeg));
+): boolean => witnessedArrivalSeaM(geospatialProfile, components) !== undefined;
+
+/**
+ * Το κλάσμα κάτω από το οποίο ο αριθμός ακτής και ο τυπωμένος δεν πέφτουν όταν μπαίνει μαρτυρημένη
+ * θάλασσα — η άκρη της σκιάς, ίδια με το πάτωμα του K_d του μάρτυρα (βλ. «Ο ΑΡΙΘΜΟΣ ΠΟΥ ΤΥΠΩΝΕΤΑΙ» πιο
+ * πάνω). Δάπεδο μόνο: ό,τι έλεγε ήδη πάνω από αυτό μένει όπως ήταν.
+ */
+export const WITNESSED_SEA_SHORE_FRACTION = SHADOW_KD_AT_EDGE;
+
+/**
+ * Ο αριθμός με το δάπεδο της μαρτυρίας: ποτέ κάτω από το μισό της μαρτυρημένης θάλασσας (το πολύ της
+ * ανοιχτής που τυπώνεται δίπλα). Αμετάβλητος όπου δεν μπαίνει μαρτυρημένη θάλασσα (witnessedSeaM undefined).
+ */
+export const applyWitnessedSeaFloorM = (displayM: number, witnessedSeaM: number | undefined, openSeaM: number): number =>
+  typeof witnessedSeaM === 'number' && Number.isFinite(witnessedSeaM) && Number.isFinite(openSeaM)
+    ? Math.max(displayM, WITNESSED_SEA_SHORE_FRACTION * Math.min(witnessedSeaM, openSeaM))
+    : displayM;
 
 export const resolveShoreShadowDamping = (
   geospatialProfile: GeospatialExposureProfile | undefined,

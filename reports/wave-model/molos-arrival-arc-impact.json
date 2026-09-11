@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T23:14:47.850Z",
+  "generatedAt": "2026-09-11T08:53:59.830Z",
   "script": "scripts/measureMolosArrivalArc.mjs",
   "beach": {
     "id": 2040,
@@ -49,8 +49,8 @@
     "changesOutsideArc": 0,
     "rawScoreChangedOutsideArc": 0,
     "changeTiers": {
-      "kd-only": 56,
-      "shown": 84
+      "kd-only": 65,
+      "shown": 75
     },
     "changeTiersMeaning": {
       "shown": "printed number, wave word, pin colour, card chip or swim verdict differs",
@@ -68,18 +68,17 @@
       25,
       30
     ],
-    "printedChanges": 84,
-    "printedUp": 84,
+    "printedChanges": 75,
+    "printedUp": 75,
     "printedDown": 0,
     "verdictWhereThePrintedNumberChanged": {
-      "avoid_swimming → avoid_swimming": 51,
       "good → good": 18,
+      "avoid_swimming → avoid_swimming": 42,
       "caution → caution": 12,
       "caution → avoid_swimming": 3
     },
-    "wordFlips": 81,
+    "wordFlips": 75,
     "wordMoves": {
-      "Λίγο κύμα → Αρκετό κύμα": 6,
       "Θάλασσα λάδι → Σχεδόν χωρίς κύμα": 12,
       "Θάλασσα λάδι → Λίγο κύμα": 33,
       "Θάλασσα λάδι → Αρκετό κύμα": 18,
@@ -101,21 +100,21 @@
         "inArc": true,
         "seaArrival": null,
         "before": 0.6,
-        "after": 1.1
+        "after": 0.6
       },
       {
         "waveDeg": 5,
         "inArc": true,
         "seaArrival": null,
         "before": 0.6,
-        "after": 1.1
+        "after": 0.6
       },
       {
         "waveDeg": 10,
         "inArc": true,
         "seaArrival": null,
         "before": 0.6,
-        "after": 1.1
+        "after": 0.6
       },
       {
         "waveDeg": 15,
@@ -416,11 +415,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 0.8,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "0,8 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -434,9 +433,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -512,11 +508,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 1.1,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -530,9 +526,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -546,9 +539,9 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.9,
-        "printedAfter": 1.1,
+        "printedAfter": 0.9,
         "waveTextBefore": "0,9 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,9 μ.",
         "wordBefore": "Αρκετό κύμα",
         "wordAfter": "Αρκετό κύμα",
         "pinBefore": "red",
@@ -564,8 +557,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
           "kd"
         ]
       },
@@ -889,11 +880,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 0.8,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "0,8 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -907,9 +898,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -985,11 +973,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 1.1,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -1003,9 +991,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -1019,9 +1004,9 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.9,
-        "printedAfter": 1.1,
+        "printedAfter": 0.9,
         "waveTextBefore": "0,9 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,9 μ.",
         "wordBefore": "Αρκετό κύμα",
         "wordAfter": "Αρκετό κύμα",
         "pinBefore": "red",
@@ -1037,8 +1022,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
           "kd"
         ]
       },
@@ -1362,11 +1345,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 0.8,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "0,8 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -1380,9 +1363,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -1458,11 +1438,11 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.6,
-        "printedAfter": 1.1,
+        "printedAfter": 0.6,
         "waveTextBefore": "0,6 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Λίγο κύμα",
-        "wordAfter": "Αρκετό κύμα",
+        "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
         "pinAfter": "orange",
         "pinWiredBefore": "orange",
@@ -1476,9 +1456,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
-          "waveWord",
           "kd"
         ]
       },
@@ -1492,9 +1469,9 @@
         "kdBefore": 0.1,
         "kdAfter": 0.5,
         "printedBefore": 0.9,
-        "printedAfter": 1.1,
+        "printedAfter": 0.9,
         "waveTextBefore": "0,9 μ.",
-        "waveTextAfter": "1,1 μ.",
+        "waveTextAfter": "0,9 μ.",
         "wordBefore": "Αρκετό κύμα",
         "wordAfter": "Αρκετό κύμα",
         "pinBefore": "red",
@@ -1510,8 +1487,6 @@
         "rankBefore": -1,
         "rankAfter": -1,
         "changed": [
-          "printed",
-          "waveText",
           "kd"
         ]
       },
@@ -1713,7 +1688,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.3,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,3 μ.",
+        "waveTextAfter": "0,3 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Σχεδόν χωρίς κύμα",
         "pinBefore": "yellow",
@@ -1818,7 +1793,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.4,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,4 μ.",
+        "waveTextAfter": "0,4 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -1923,7 +1898,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -1959,7 +1934,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "~0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
@@ -2239,7 +2214,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.3,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,3 μ.",
+        "waveTextAfter": "0,3 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Σχεδόν χωρίς κύμα",
         "pinBefore": "yellow",
@@ -2344,7 +2319,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.4,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,4 μ.",
+        "waveTextAfter": "0,4 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -2449,7 +2424,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -2485,7 +2460,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "~0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",
@@ -2765,7 +2740,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.3,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,3 μ.",
+        "waveTextAfter": "0,3 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Σχεδόν χωρίς κύμα",
         "pinBefore": "yellow",
@@ -2870,7 +2845,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.4,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,4 μ.",
+        "waveTextAfter": "0,4 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -2975,7 +2950,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "yellow",
@@ -3011,7 +2986,7 @@
         "printedBefore": 0.1,
         "printedAfter": 0.6,
         "waveTextBefore": "~0,1 μ.",
-        "waveTextAfter": "~0,6 μ.",
+        "waveTextAfter": "0,6 μ.",
         "wordBefore": "Θάλασσα λάδι",
         "wordAfter": "Λίγο κύμα",
         "pinBefore": "orange",

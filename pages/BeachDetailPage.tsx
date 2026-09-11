@@ -44,7 +44,7 @@ import { AccessibleCalmNearbySection, type AccessibleCalmCove } from '../compone
 import { ConstraintFitSection, type ConstraintFit } from '../components/ConstraintFitSection';
 import { WaveHeightGraphic, type HourlyWavePoint } from '../components/WaveHeightGraphic';
 import { resolveCoveAwareWaveHeightM } from '../utils/coveWaveGuard';
-import { isWitnessedArrivalSea } from '../utils/seaArrival';
+import { applyWitnessedSeaFloorM, witnessedArrivalSeaM } from '../utils/seaArrival';
 // Το δάπεδο των 0,10 μ. στον ΤΥΠΩΜΕΝΟ αριθμό — μία υλοποίηση με την κάρτα και την πινέζα.
 import { printedWaveHeightM } from '../utils/waveModel';
 import { buildShoreIncidenceLine } from '../utils/shoreIncidenceCopy';
@@ -1376,12 +1376,12 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       let waveM = point.effectiveWaveHeightM;
       const item = hourItems.get(point.hour);
       if (item && geospatialExposure) {
-        // Ίδιο με τη βαθμολογία: ρεστία ή μαρτυρημένη άφιξη (Μώλος 0-30°, §Γ77) = θάλασσα απ' έξω που μπαίνει.
-        const hourSwellPresent = hasSwellPresence(item.marine?.swellWaveHeightM, item.marine?.swellWaveDirectionDeg)
-          || isWitnessedArrivalSea(geospatialExposure, [
-            { heightM: item.marine?.waveHeightM, directionDeg: item.marine?.waveDirectionDeg },
-            { heightM: item.marine?.swellWaveHeightM, directionDeg: item.marine?.swellWaveDirectionDeg },
-          ]);
+        // Ίδιο με τον αριθμό της βαθμολογίας: ο φρουρός με τη ρεστία όπως είναι, και όπου μπαίνει
+        // μαρτυρημένη θάλασσα (Μώλος 0-30°, §Γ77) δάπεδο το μισό ΑΥΤΗΣ της θάλασσας — utils/seaArrival.
+        const hourWitnessedSeaM = witnessedArrivalSeaM(geospatialExposure, [
+          { heightM: item.marine?.waveHeightM, directionDeg: item.marine?.waveDirectionDeg },
+          { heightM: item.marine?.swellWaveHeightM, directionDeg: item.marine?.swellWaveDirectionDeg },
+        ]);
         const hourCove = resolveCoveAwareWaveHeightM({
           geospatialProfile: geospatialExposure,
           facingDeg: scoreResult.facingDeg ?? null,
@@ -1389,9 +1389,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           windSpeedKmh: item.wind.speed * 3.6,
           measuredWaveHeightM: item.marine?.waveHeightM,
           appModeledWaveHeightM: 0,
-          swellPresent: hourSwellPresent,
+          swellPresent: hasSwellPresence(item.marine?.swellWaveHeightM, item.marine?.swellWaveDirectionDeg),
         });
-        if (hourCove.coveApplied) waveM = hourCove.waveHeightM;
+        if (hourCove.coveApplied) waveM = applyWitnessedSeaFloorM(hourCove.waveHeightM, hourWitnessedSeaM, point.effectiveWaveHeightM);
       }
       // A truly flat hour with no measured value carries no signal — leave it out so the strip
       // shows up only when there is something to read.
@@ -2634,7 +2634,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
           {/* Two-dimensional "calm water / strong wind" cove card — display only, renders only in
               the decoupling case (enclosed cove + strong wind). Explains why the pin reads breezy
               while the water is flat; never recommends. See utils/coveWaveGuard. */}
-          {coveWave.coveApplied && beaufortLevel >= 4 && typeof coveWave.fetchKm === 'number' && (
+          {/* Όχι όπου μπαίνει μαρτυρημένη θάλασσα (§Γ77, Μώλος 0-30°): εκεί ο δορυφόρος είδε κύμα να
+              σκάει, άρα «ήρεμο νερό στον όρμο» θα ήταν ψέμα — ο αριθμός και η ετικέτα «εκτίμηση» μένουν. */}
+          {coveWave.coveApplied && !scoreResult.witnessedArrivalSea && beaufortLevel >= 4 && typeof coveWave.fetchKm === 'number' && (
             <CoveConditionsCard
               beachId={beach.id}
               waveHeightM={displayWaveHeightM}
