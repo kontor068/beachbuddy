@@ -84,7 +84,7 @@ import { scrollToPageTop } from '../utils/scroll';
 import { getSunsetTime } from '../utils/sunTimes';
 import { sunsetOverSeaWindow, sunsetSeasonRange, type SunsetOverSea } from '../utils/sunsetOverSea';
 import { buildPhotoSuggestionUrl } from '../utils/photoContribution';
-import { getSelectedDayPrefix, getSelectedHourPrefix } from '../utils/dateLabels';
+import { getSelectedDayPrefix, getSelectedHourPrefix, isSelectedDateToday } from '../utils/dateLabels';
 import { athensNow, toAthensWallClock, wallClockDayKey } from '../utils/athensTime';
 import { getBoatRideMotionLevel } from '../utils/boatRideMotion';
 import { getRainSwimAdvisory } from '../utils/rainAdvisory';
@@ -909,7 +909,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     () => getFeedback().some(f => f.beachId === beach.id && f.conditions?.date === feedbackDateKey),
     [beach.id, feedbackDateKey]
   );
-  const selectedDayIsToday = selectedDayPrefix === (language === 'gr' ? 'σήμερα' : 'today');
+  // ΑΠΟ ΤΗΝ ΗΜΕΡΟΜΗΝΙΑ, ΟΧΙ ΑΠΟ ΤΗ ΛΕΞΗ (Πυργάκι Νάξου #2013, 11/09/2026). Σύγκρινε την ετικέτα
+  // με «σήμερα»/«today», οπότε σε DE/IT/FR («heute»/«oggi»/…) ήταν ΠΑΝΤΑ ψευδές: κάθε σχόλιο
+  // από εκεί έφευγε «όχι επιτόπου — ΑΛΛΗ ΜΕΡΑ (η σημερινή)» και η ετυμηγορία έλεγε «oggi» αντί
+  // για «adesso». Ίδιο αποτέλεσμα με πριν για EL/EN, και στην άκυρη ημερομηνία (→ σήμερα).
+  const selectedDayIsToday = isSelectedDateToday(selectedDate, athensNow());
 
   /**
    * WHEN the verdict is describing — the fix for "Ήρεμα τώρα" over 08:00's numbers.
