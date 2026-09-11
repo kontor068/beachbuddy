@@ -17,7 +17,7 @@ const STORE_KEY = 'cb_app_rating_v1';
 // Distinct calendar days the app was opened before we are allowed to ask. Days, not page
 // loads: this is a "which beach today?" site, so one real usage unit is one morning check —
 // a single long session with many page views is still one use.
-const MIN_USAGE_DAYS = 5;
+const MIN_USAGE_DAYS = 3;
 // …and even then, not the instant the page loads: the card would cover the very content the
 // visitor came for. Same reasoning as InstallPrompt's engagement delay.
 const REVEAL_DELAY_MS = 20_000;

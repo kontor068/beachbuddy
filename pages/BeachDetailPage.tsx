@@ -853,7 +853,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // Set the moment a verdict button is tapped; the second step ("when were you there?") shows
   // until it resolves to a submit. Kept separate from feedbackSubmitted so the first tap doesn't
   // already read as "done" while we're still waiting on the timing answer.
-  const [pendingFeedbackVerdict, setPendingFeedbackVerdict] = useState<ConditionFeedbackVerdict | null>(null);
+  // Since 11/09/2026 it can hold more than one answer («πιο πολύ κύμα» AND «πιο πολύ αέρα»):
+  // `feedbackPicks` are the toggles lit in step 1, `pendingFeedbackVerdicts` what step 2 submits.
+  const [pendingFeedbackVerdicts, setPendingFeedbackVerdicts] = useState<ConditionFeedbackVerdict[] | null>(null);
+  const [feedbackPicks, setFeedbackPicks] = useState<ConditionFeedbackVerdict[]>([]);
   /**
    * The id every committed per-beach FILE is keyed by.
    *
@@ -954,6 +957,8 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     feedbackWhenMidday: { en: 'Around midday', gr: 'Το μεσημέρι', de: 'Am Mittag', it: 'A mezzogiorno', fr: 'Vers midi' },
     feedbackWhenEvening: { en: 'Afternoon / evening', gr: 'Απόγευμα / βράδυ', de: 'Nachmittags / abends', it: 'Pomeriggio / sera', fr: 'Après-midi / soir' },
     feedbackWhenSkip: { en: "I don't remember", gr: 'Δεν θυμάμαι', de: 'Weiß ich nicht mehr', it: 'Non ricordo', fr: 'Je ne me souviens plus' },
+    feedbackPickMany: { en: 'You can pick more than one.', gr: 'Μπορείς να διαλέξεις πάνω από ένα.', de: 'Du kannst mehrere auswählen.', it: 'Puoi sceglierne più di uno.', fr: 'Vous pouvez en choisir plusieurs.' },
+    feedbackContinue: { en: 'Continue', gr: 'Συνέχεια', de: 'Weiter', it: 'Continua', fr: 'Continuer' },
     // Separate from the forecast-accuracy widget above on purpose. That widget asks one
     // narrow question — did the sea match — and its answers feed the calibration pass
     // (scripts/calibrateFromFeedback.mjs). A wrong amenity, a wrong access type or a beach
@@ -1114,13 +1119,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   }, [onBack]);
 
   // Step 1: verdict button tapped. Don't submit yet — ask when they were actually there first,
-  // so the report isn't stuck with only the click time (see pendingFeedbackVerdict above).
+  // so the report isn't stuck with only the click time (see pendingFeedbackVerdicts above).
+  // «Ταίριαζε» stands alone and goes straight on; the three "it was different" answers are
+  // toggles, confirmed with «Συνέχεια». «Πιο πολύ κύμα» and «πιο ήρεμα» contradict each other,
+  // so lighting one switches the other off; «πιο πολύ αέρα» + «πιο ήρεμα» is a real pair
+  // (offshore wind: flat water, wind on the sand) and is allowed.
   const handleFeedback = (verdict: ConditionFeedbackVerdict) => {
-    setPendingFeedbackVerdict(verdict);
+    setPendingFeedbackVerdicts([verdict]);
+  };
+  const toggleFeedbackPick = (verdict: ConditionFeedbackVerdict) => {
+    setFeedbackPicks(current => {
+      if (current.includes(verdict)) return current.filter(v => v !== verdict);
+      const opposite = verdict === 'had_waves' ? 'calmer' : verdict === 'calmer' ? 'had_waves' : null;
+      return [...current.filter(v => v !== opposite), verdict];
+    });
   };
 
   // Step 2: timing answered (or skipped via observedTiming === undefined). Actually submits.
-  const submitFeedback = (verdict: ConditionFeedbackVerdict, observedTiming?: ObservedTiming) => {
+  // One report, not one per answer: the first pick is the headline verdict (what every reader
+  // of a single field keeps seeing), the rest travel alongside it.
+  const submitFeedback = (verdicts: ConditionFeedbackVerdict[], observedTiming?: ObservedTiming) => {
+    const [verdict, ...alsoReported] = verdicts;
+    if (!verdict) return;
     // Pair the observed verdict with the modeled conditions so an offline pass can later
     // calibrate this beach/sector (roadmap #7). exposureLevel/windDir/windSpeedKmh are
     // derived below; this handler only runs on click, after they are initialised.
@@ -1217,7 +1237,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       pagePath: feedbackRegionId
         ? buildBeachDetailPath(feedbackRegionId, { ...beach, id: committedBeachId }, language)
         : (typeof window !== 'undefined' ? window.location.pathname : ''),
-    });
+    }, alsoReported);
     setFeedbackSubmitted(true);
   };
 
@@ -3419,7 +3439,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 }[language]}</p>
               </div>
             </div>
-          ) : pendingFeedbackVerdict ? (
+          ) : pendingFeedbackVerdicts ? (
             // Step 2: which part of the day the visitor was actually at the beach. Without this,
             // a report typed at 22:00 about a 09:00 visit has no time signal but the click itself.
             <div className="space-y-2">
@@ -3427,28 +3447,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'now')}
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'now')}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenNow[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'morning')}
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'morning')}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMorning[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'midday')}
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'midday')}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMidday[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdict, 'evening')}
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'evening')}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenEvening[language]}
@@ -3456,46 +3476,57 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               </div>
               <button
                 type="button"
-                onClick={() => submitFeedback(pendingFeedbackVerdict, 'unsure')}
+                onClick={() => submitFeedback(pendingFeedbackVerdicts, 'unsure')}
                 className="w-full text-center text-xs font-semibold text-slate-400 underline decoration-dotted hover:text-slate-600"
               >
                 {copy.feedbackWhenSkip[language]}
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleFeedback('accurate')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
-              >
-                <ThumbsUp className="w-4 h-4" />
-                {{ en: 'It matched', gr: 'Ταίριαζε', de: 'Hat gestimmt', it: 'Corrispondeva', fr: 'Ça correspondait' }[language]}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFeedback('had_waves')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-sky-100 text-sm font-bold text-sky-700 transition-all hover:bg-sky-50 active:scale-95"
-              >
-                <span aria-hidden>🌊</span>
-                {{ en: 'More waves', gr: 'Είχε πιο πολύ κύμα', de: 'Mehr Wellen', it: 'Più onde', fr: 'Plus de vagues' }[language]}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFeedback('too_windy')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-amber-100 text-sm font-bold text-amber-700 transition-all hover:bg-amber-50 active:scale-95"
-              >
-                <span aria-hidden>💨</span>
-                {{ en: 'More wind', gr: 'Είχε πιο πολύ αέρα', de: 'Mehr Wind', it: 'Più vento', fr: 'Plus de vent' }[language]}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFeedback('calmer')}
-                className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
-              >
-                <span aria-hidden>😎</span>
-                {{ en: 'Calmer than you said', gr: 'Ήταν πιο ήρεμα', de: 'Ruhiger als gesagt', it: 'Più calmo del previsto', fr: 'Plus calme que prévu' }[language]}
-              </button>
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleFeedback('accurate')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-emerald-100 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-50 active:scale-95"
+                >
+                  <ThumbsUp className="w-4 h-4" />
+                  {{ en: 'It matched', gr: 'Ταίριαζε', de: 'Hat gestimmt', it: 'Corrispondeva', fr: 'Ça correspondait' }[language]}
+                </button>
+                {([
+                  { verdict: 'had_waves', emoji: '🌊', idle: 'border-sky-100 text-sky-700 hover:bg-sky-50', on: 'border-sky-500 bg-sky-50 text-sky-800 ring-1 ring-sky-500',
+                    label: { en: 'More waves', gr: 'Είχε πιο πολύ κύμα', de: 'Mehr Wellen', it: 'Più onde', fr: 'Plus de vagues' } },
+                  { verdict: 'too_windy', emoji: '💨', idle: 'border-amber-100 text-amber-700 hover:bg-amber-50', on: 'border-amber-500 bg-amber-50 text-amber-800 ring-1 ring-amber-500',
+                    label: { en: 'More wind', gr: 'Είχε πιο πολύ αέρα', de: 'Mehr Wind', it: 'Più vento', fr: 'Plus de vent' } },
+                  { verdict: 'calmer', emoji: '😎', idle: 'border-line text-slate-700 hover:bg-slate-50', on: 'border-slate-500 bg-slate-50 text-slate-900 ring-1 ring-slate-500',
+                    label: { en: 'Calmer than you said', gr: 'Ήταν πιο ήρεμα', de: 'Ruhiger als gesagt', it: 'Più calmo del previsto', fr: 'Plus calme que prévu' } },
+                ] as const).map(option => {
+                  const picked = feedbackPicks.includes(option.verdict);
+                  return (
+                    <button
+                      key={option.verdict}
+                      type="button"
+                      aria-pressed={picked}
+                      onClick={() => toggleFeedbackPick(option.verdict)}
+                      className={`flex min-h-[44px] items-center justify-center gap-2 rounded-control border text-sm font-bold transition-all active:scale-95 ${picked ? option.on : option.idle}`}
+                    >
+                      {picked ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <span aria-hidden>{option.emoji}</span>}
+                      {option.label[language]}
+                    </button>
+                  );
+                })}
+              </div>
+              {feedbackPicks.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => setPendingFeedbackVerdicts(feedbackPicks)}
+                  className="flex min-h-[44px] w-full items-center justify-center rounded-control bg-slate-900 text-sm font-bold text-white transition-colors hover:bg-cyan-700 active:scale-95"
+                >
+                  {copy.feedbackContinue[language]}
+                </button>
+              ) : (
+                <p className="text-center text-xs text-slate-500">{copy.feedbackPickMany[language]}</p>
+              )}
             </div>
           )}
         </section>

@@ -205,6 +205,10 @@ export type ObservedTiming = 'now' | 'morning' | 'midday' | 'evening' | 'unsure'
 export interface FeedbackData {
   beachId: number;
   feedback: 'accurate' | 'not_accurate' | ConditionFeedbackVerdict;
+  // ΠΕΡΙΣΣΟΤΕΡΕΣ ΑΠΟ ΜΙΑ ΕΠΙΛΟΓΕΣ (11/09/2026). Ο επισκέπτης μπορεί να πει «πιο πολύ κύμα ΚΑΙ
+  // πιο πολύ αέρα» μαζί. Το `feedback` μένει η πρώτη επιλογή, ώστε ό,τι διαβάζει ένα μόνο
+  // πεδίο να δουλεύει όπως πριν· εδώ μπαίνουν οι υπόλοιπες (η σελίδα της παραλίας).
+  alsoReported?: ConditionFeedbackVerdict[];
   timestamp: string;
   // Modeled conditions at feedback time, so an offline pass can later calibrate the
   // per-beach/sector model against what the visitor actually observed (roadmap #7).
@@ -622,6 +626,7 @@ const sendFeedbackEmail = (payload: {
   source: string;
   beachId: number;
   feedback: FeedbackData['feedback'];
+  alsoReported?: ConditionFeedbackVerdict[];
   timestamp: string;
   conditions?: FeedbackData['conditions'];
   context?: FeedbackNotificationContext;
@@ -956,17 +961,32 @@ export const storeConditionFeedback = (
   beachId: number,
   verdict: ConditionFeedbackVerdict,
   conditions?: FeedbackData['conditions'],
-  context?: FeedbackNotificationContext
+  context?: FeedbackNotificationContext,
+  alsoReported: ConditionFeedbackVerdict[] = [],
 ) => {
-  const data: FeedbackData = { beachId, feedback: verdict, timestamp: new Date().toISOString(), conditions };
+  const also = alsoReported.filter(v => v !== verdict);
+  const data: FeedbackData = {
+    beachId,
+    feedback: verdict,
+    ...(also.length ? { alsoReported: also } : {}),
+    timestamp: new Date().toISOString(),
+    conditions,
+  };
   const existing = getFeedback();
   existing.push(data);
   setStorageItem(FEEDBACK_KEY, JSON.stringify(existing));
-  trackEvent('condition_feedback', beachId, { verdict, ...gaConditions(conditions) });
+  // `also_reported` τελευταίο: αν ποτέ ξεπεραστεί το όριο των 20 παραμέτρων, κόβεται αυτό
+  // και όχι το `live` που διαβάζουν οι εξαγωγές.
+  trackEvent('condition_feedback', beachId, {
+    verdict,
+    ...gaConditions(conditions),
+    ...(also.length ? { also_reported: also.join(',') } : {}),
+  });
   sendFeedbackEmail({
     source: context?.source || 'condition_feedback',
     beachId,
     feedback: verdict,
+    ...(also.length ? { alsoReported: also } : {}),
     timestamp: data.timestamp,
     conditions,
     context,
@@ -991,7 +1011,8 @@ export const getFeedback = (): FeedbackData[] => {
 const NEGATIVE_FEEDBACK = new Set<FeedbackData['feedback']>(['not_accurate', 'had_waves', 'too_windy']);
 export const getNegativeFeedbackCount = (beachId: number): number => {
   const feedback = getFeedback();
-  return feedback.filter(f => f.beachId === beachId && NEGATIVE_FEEDBACK.has(f.feedback)).length;
+  return feedback.filter(f => f.beachId === beachId
+    && (NEGATIVE_FEEDBACK.has(f.feedback) || (f.alsoReported ?? []).some(v => NEGATIVE_FEEDBACK.has(v)))).length;
 };
 
 // --- Open-Meteo call counter -------------------------------------------------

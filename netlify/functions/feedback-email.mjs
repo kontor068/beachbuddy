@@ -145,11 +145,22 @@ const VERDICTS = {
   // Free-text message from the landing story section (no beach attached).
   story_message: { label: 'Μήνυμα από την αρχική σελίδα', emoji: '✉️', tag: '💬 ΜΗΝΥΜΑ', note: 'Διάβασε το μήνυμα παρακάτω.' },
   // The 1–10 "rate the app" card (components/AppRatingPrompt.tsx) — shown only to visitors
-  // on their 5th+ distinct day of use, so the scores come from people with a formed habit.
-  app_rating: { label: 'Αξιολόγηση εφαρμογής', emoji: '⭐', tag: '💬 ΑΞΙΟΛΟΓΗΣΗ', note: 'Βαθμοί 1–10 από επισκέπτη με τουλάχιστον 5 μέρες χρήσης — δες τους δύο βαθμούς και το σχόλιο.' },
+  // on their 3rd+ distinct day of use (5th until 11/09/2026), so the scores come from people with a formed habit.
+  app_rating: { label: 'Αξιολόγηση εφαρμογής', emoji: '⭐', tag: '💬 ΑΞΙΟΛΟΓΗΣΗ', note: 'Βαθμοί 1–10 από επισκέπτη με τουλάχιστον 3 μέρες χρήσης — δες τους δύο βαθμούς και το σχόλιο.' },
 };
 
 const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Άγνωστο σχόλιο', 80), emoji: '📩', tag: '📩 ΑΓΝΩΣΤΟ', note: 'Δες τι στέλνει αυτή η φόρμα.' };
+
+// Οι απαντήσεις που μπορούν να συνοδεύσουν την πρώτη (11/09/2026: ο επισκέπτης διαλέγει
+// πάνω από μία στη σελίδα της παραλίας). Μόνο αυτές οι τρεις — ένα άγνωστο κείμενο εδώ
+// πετιέται, δεν τυπώνεται.
+const COMBINABLE_VERDICTS = new Set(['had_waves', 'too_windy', 'calmer']);
+const normalizeAlsoReported = (value, primary) => {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map(String))]
+    .filter(verdict => COMBINABLE_VERDICTS.has(verdict) && verdict !== primary)
+    .slice(0, 2);
+};
 
 const finiteNumber = (value) => (Number.isFinite(Number(value)) && value !== null && value !== '' ? Number(value) : undefined);
 
@@ -270,6 +281,10 @@ const normalizePayload = (body, event) => {
   const context = feedback.context && typeof feedback.context === 'object' ? feedback.context : {};
   const ratings = feedback.ratings && typeof feedback.ratings === 'object' ? feedback.ratings : {};
   const verdict = formatVerdict(feedback.feedback || feedback.verdict);
+  const alsoReported = normalizeAlsoReported(feedback.alsoReported, feedback.feedback || feedback.verdict);
+  // Αν η πρώτη απάντηση είναι «πιο ήρεμα» (🟢) αλλά μαζί ήρθε και «πιο πολύ αέρα» (🟡), το
+  // μήνυμα πρέπει να φαίνεται ως κάτι που θέλει έλεγχο — όχι ως καθαρά θετικό.
+  const needsLook = alsoReported.some(v => VERDICTS[v].tag.startsWith('🟡'));
 
   return {
     // The app-rating path: two 1–10 scores, no beach attached.
@@ -288,9 +303,10 @@ const normalizePayload = (body, event) => {
     replyTo: clamp(feedback.replyTo, 160),
     prompt: clamp(feedback.prompt, 60),
     feedback: clamp(feedback.feedback || feedback.verdict || 'unknown', 80),
+    alsoReported,
     verdictLabel: verdict.label,
     verdictEmoji: verdict.emoji,
-    verdictTag: verdict.tag,
+    verdictTag: needsLook ? VERDICTS.had_waves.tag : verdict.tag,
     verdictNote: verdict.note,
     timestamp: clamp(feedback.timestamp || new Date().toISOString(), 80),
     beachName: clamp(context.beachName || feedback.beachName, 120),
@@ -564,6 +580,11 @@ const formatMessage = (payload) => {
     .join('\n');
   const lead = [payload.verdictTag, header];
   if (payload.verdictNote) lead.push(`Τι σημαίνει: ${escapeTelegram(payload.verdictNote)}`);
+  for (const extra of payload.alsoReported || []) {
+    const v = VERDICTS[extra];
+    lead.push(`${v.emoji} <b>ΚΑΙ ΕΠΙΣΗΣ: ${escapeTelegram(v.label)}</b>`);
+    lead.push(`Τι σημαίνει: ${escapeTelegram(v.note)}`);
+  }
   const timingWarning = observedTimingWarning(payload);
   if (timingWarning) lead.push(escapeTelegram(timingWarning));
   // The human's own words go above the metadata, as a block — inlining them into a
@@ -619,6 +640,9 @@ const persistFeedback = async (event, payload) => {
     await store.setJSON(`f/${dayKey}/${randomUUID()}`, {
       beachId: payload.beachId,
       feedback: payload.feedback,
+      // Μία εγγραφή ανά επισκέπτη, όχι μία ανά κουμπί: το lib/feedbackSignals.mjs μετράει
+      // ανθρώπους. Οι επιπλέον απαντήσεις ζουν εδώ.
+      alsoReported: payload.alsoReported?.length ? payload.alsoReported : undefined,
       timestamp: payload.timestamp,
       conditions: payload.conditions,
       // ΟΝΟΜΑ ΚΑΙ ΜΟΝΟΠΑΤΙ ΜΑΖΙ ΜΕ ΤΗΝ ΑΝΑΦΟΡΑ (29/08/2026). Ο αυτόματος έλεγχος

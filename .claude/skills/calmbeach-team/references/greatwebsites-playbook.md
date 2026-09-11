@@ -385,7 +385,7 @@ The book's whole framing, stated on the homepage and in the closing chapter, is 
 **Where CalmBeach already does this**
 
 *Rewritten 30/08/2026. The 30/07 version of this section said "nothing substantive" and "no feedback channel of any kind". Both were false on the day they were written.*
-- **Four inbound channels, all live to Telegram:** the landing form with three seed chips (`OurStorySection.tsx:141` → `netlify/functions/feedback-email.mjs`), the per-beach forecast verdict with a "when were you there?" second step (`BeachDetailPage.tsx`), a 1–10 rating prompt gated behind five days of use (`AppRatingPrompt.tsx`), and since 30/08 a "Κάτι δεν πάει καλά εδώ;" link in every footer and on every beach page.
+- **Four inbound channels, all live to Telegram:** the landing form with three seed chips (`OurStorySection.tsx:141` → `netlify/functions/feedback-email.mjs`), the per-beach forecast verdict with a "when were you there?" second step (`BeachDetailPage.tsx`), a 1–10 rating prompt gated behind three days of use (`AppRatingPrompt.tsx`), and since 30/08 a "Κάτι δεν πάει καλά εδώ;" link in every footer and on every beach page.
 - **The verdict reports feed calibration**, not just an inbox: `feedback-email.mjs` → Netlify Blobs → `feedback-export.mjs` → `scripts/calibrateFromFeedback.mjs`. That is more than the book asks for.
 - Contact routes exist: two addresses in the footer, phone and postal address in `/terms`.
 - A newsletter and a photo-contribution ask both exist (`NewsletterSection.tsx`, `CommunityPhotosSection.tsx`).

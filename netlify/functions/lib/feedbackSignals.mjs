@@ -68,13 +68,20 @@ export const aggregateFeedback = (records) => {
         verdicts: {},
         modeled: {},
         n: 0,
+        negative: 0,
         lastAt: '',
         beachName: '',
         pagePath: '',
       });
     }
     const cell = cells.get(key);
-    cell.verdicts[record.feedback] = (cell.verdicts[record.feedback] || 0) + 1;
+    // Από 11/09/2026 ένας επισκέπτης μπορεί να πει δύο πράγματα μαζί («πιο πολύ κύμα» ΚΑΙ
+    // «πιο πολύ αέρα»): το δεύτερο ταξιδεύει στο `alsoReported`. Κάθε απάντηση μετριέται στο
+    // `verdicts`, αλλά ο επισκέπτης μετράει ΜΙΑ φορά στο `n` και στο `negative` — αλλιώς ένας
+    // άνθρωπος με δύο κουμπιά θα έπιανε μόνος του τα δύο από τα τρία δείγματα του MIN_SAMPLES.
+    const reported = [...new Set([record.feedback, ...(Array.isArray(record.alsoReported) ? record.alsoReported : [])])];
+    for (const verdict of reported) cell.verdicts[verdict] = (cell.verdicts[verdict] || 0) + 1;
+    if (reported.some(verdict => NEGATIVE_VERDICTS.has(verdict))) cell.negative += 1;
     if (record.conditions?.exposureLevel) {
       cell.modeled[record.conditions.exposureLevel] = (cell.modeled[record.conditions.exposureLevel] || 0) + 1;
     }
@@ -98,7 +105,7 @@ const negativeCount = (verdicts) =>
 export const buildProposals = (cells, describe = () => ({})) => {
   const proposals = [];
   for (const cell of cells.values()) {
-    const neg = negativeCount(cell.verdicts);
+    const neg = typeof cell.negative === 'number' ? cell.negative : negativeCount(cell.verdicts);
     const calmer = cell.verdicts.calmer || 0;
     // «Δείχναμε ήρεμα» = protected ή partial. Χωρίς αυτό, ένα «είχε κύμα» πάνω σε
     // παραλία που ΗΔΗ τη δείχναμε εκτεθειμένη θα μετρούσε σαν σφάλμα μας.
