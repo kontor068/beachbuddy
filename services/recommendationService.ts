@@ -475,7 +475,26 @@ const GUST_NOTE_ABS_KMH = 40;             // gust strong enough to note on its o
 const GUST_NOTE_SPREAD_KMH = 18;          // gust-minus-mean worth noting on a windy beach
 const GUST_WARN_ABS_KMH = 55;             // prominent-warning gust (~7+ Bft)
 const GUST_WARN_SPREAD_KMH = 30;          // prominent-warning spread
-const GUST_EFFECTIVE_BFT_SPREAD_KMH = 22; // spread that bumps effective Beaufort +1 / docks experience
+/**
+ * ΤΟ ΣΚΑΛΙ «+1 ΕΝΕΡΓΟ ΜΠΟΦΟΡ ΑΠΟ ΡΙΠΕΣ»: ΟΡΙΟ ΑΝΑ ΜΠΟΦΟΡ ΒΑΣΗΣ (13/09/2026, βίβλος §Γ81 Δ5-Β — ΣΕ COMMIT, ΟΧΙ live ώσπου να πει «ναι» ο Μίλτος).
+ *
+ * Ως 13/09/2026 το όριο ήταν 22 χλμ/ώ για κάθε Μποφόρ (κληρονομημένο, χωρίς κριτή — βίβλος «ΤΙ ΔΕΝ ΕΙΝΑΙ ΒΑΘΜΟΝΟΜΗΜΕΝΟ»).
+ * Ο ΚΡΙΤΗΣ (Δ5, 30 METAR, 11.591 ζευγάρια, reports/weather/gust-spread-vs-stations-2026-09-12.json): ο κανόνας ανάβει στο
+ * 30,5% των ωρών ≥3 Μπφ του μοντέλου, τα ανεμόμετρα βλέπουν τέτοιο άλμα στο 0,8% (ισο-συχνότητα ~38) — και η φούσκα ζει στο
+ * μέτριο: ριπή μοντέλου − ριπή οργάνου 3 Μπφ +11,9 · 4 Μπφ +9,8 · 5 Μπφ +4,5 · 6 Μπφ −0,9 · 7 −5,7 · 8 −10,4 χλμ/ώ.
+ * Άρα όριο = 22 + η φούσκα όπου είναι θετική: 3 → 34, 4 → 32, 5 → 26, ≥6 → 22 — η προειδοποίηση μένει ακέραιη εκεί που η ριπή
+ * του μοντέλου είναι ειλικρινής ή και χαμηλή. Όριο του κριτή: η φούσκα μετρήθηκε ανά Μποφόρ ΟΡΓΑΝΟΥ, ο κανόνας τρέχει με Μποφόρ ΜΟΝΤΕΛΟΥ.
+ *
+ * ΜΕΤΡΗΘΗΚΕ ΕΘΝΙΚΑ ΠΡΙΝ ΜΠΕΙ με το πραγματικό calculateBeachScore (scripts/measureGustStepThreshold.mjs,
+ * reports/weather/gust-step-threshold-2026-09-12.json και -d1.json, 2.856 παραλίες): 13/09 209 ετυμηγορίες ηπιότερες (158 στα 3 Μπφ,
+ * 26 στα 4, 25 στα 5 · 177 protected), 14/09 353 (280 στα 3 Μπφ) — 0 αυστηρότερες και τις δύο μέρες· «μην κολυμπήσεις» → «πρόσεχε»
+ * 23 / 26. Για σύγκριση, ομοιόμορφο 38: 254 / 353. Η σκάλα πόντων ≥14/≥22/≥35 πιο κάτω ΔΕΝ αλλάζει (χωριστή απόφαση).
+ * Το ίδιο όριο διαβάζει και το «−8 εμπειρίας» πιο κάτω, ώστε ο ίδιος κανόνας να μην έχει δύο πρόσωπα.
+ */
+const GUST_EFFECTIVE_BFT_SPREAD_KMH = 22; // ≥6 Μπφ — και η ιστορική τιμή για κάθε Μποφόρ ως 13/09/2026
+const GUST_EFFECTIVE_BFT_SPREAD_KMH_BY_BASE: Readonly<Record<number, number>> = { 3: 34, 4: 32, 5: 26 };
+const gustEffectiveStepSpreadKmh = (baseBeaufort: number): number =>
+  GUST_EFFECTIVE_BFT_SPREAD_KMH_BY_BASE[baseBeaufort] ?? GUST_EFFECTIVE_BFT_SPREAD_KMH;
 
 const getEffectiveBeaufortForComfort = (
   baseBeaufort: number,
@@ -486,7 +505,7 @@ const getEffectiveBeaufortForComfort = (
   let effective = baseBeaufort;
 
   // Real gusts: bump effective Beaufort only on a windy beach with a substantial gust spread.
-  if (baseBeaufort >= GUST_MIN_BASE_BEAUFORT && (gustSpreadKmph ?? 0) >= GUST_EFFECTIVE_BFT_SPREAD_KMH) effective += 1;
+  if (baseBeaufort >= GUST_MIN_BASE_BEAUFORT && (gustSpreadKmph ?? 0) >= gustEffectiveStepSpreadKmh(baseBeaufort)) effective += 1;
   if (baseBeaufort >= 4 && exposureLevel !== 'protected') effective += 1;
   if (typeof waveHeightM === 'number' && waveHeightM >= 0.9) effective += 1;
   if (exposureLevel === 'protected' && baseBeaufort <= 5 && (waveHeightM === undefined || waveHeightM < 0.5)) {
@@ -2719,7 +2738,7 @@ export const calculateBeachScore = (
   if (finalExposureLevel === 'protected') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 10 : 2;
   else if (finalExposureLevel === 'partial') experienceScore += baseBeaufort >= MEANINGFUL_WIND_TOP_PICK_BEAUFORT ? 4 : 1;
   else if (baseBeaufort >= 4) experienceScore -= 12;
-  if (typeof gustSpreadKmph === 'number' && baseBeaufort >= GUST_MIN_BASE_BEAUFORT && gustSpreadKmph >= GUST_EFFECTIVE_BFT_SPREAD_KMH) experienceScore -= 8;
+  if (typeof gustSpreadKmph === 'number' && baseBeaufort >= GUST_MIN_BASE_BEAUFORT && gustSpreadKmph >= gustEffectiveStepSpreadKmh(baseBeaufort)) experienceScore -= 8;
   if (temp >= 23 && temp <= 31) experienceScore += 10;
   else if (temp > 34) experienceScore -= 15;
   else if (temp > 32) experienceScore -= 8;
