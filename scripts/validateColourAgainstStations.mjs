@@ -148,21 +148,30 @@ const toneOf = (exposureLevel, kmh) => resolveConditionTone({
 
 /** rows: [{station, hourUtc, obsKmh, shownKmh}] → μερίδιο βαριάς ψεύτικης ηρεμίας + παραδείγματα. */
 const judge = (rows) => {
-  let strong = 0, severe = 0;
+  let strong = 0, severe = 0, calm = 0, alarm = 0;
   const cases = [];
   for (const r of rows) {
     if (r.hourUtc < DAY_HOURS_UTC[0] || r.hourUtc > DAY_HOURS_UTC[1]) continue;
     for (const exposureLevel of EXPOSURES) {
       const truth = toneOf(exposureLevel, r.obsKmh);
+      const shownTone = toneOf(exposureLevel, r.shownKmh);
+      // Η ΑΛΛΗ ΣΤΗΛΗ (12/09/2026, βίβλος §Γ81): πορτοκαλί/κόκκινο εκεί που το όργανο δίνει ΜΠΛΕ.
+      // Δεν κόβει — το κόστος της είναι εμπιστοσύνη, όχι ασφάλεια — αλλά ΜΕΤΡΙΕΤΑΙ και γράφεται
+      // δίπλα στην ψεύτικη ηρεμία, γιατί κάθε διόρθωση μόνο προς την ασφαλή μεριά τη μεγαλώνει
+      // αθόρυβα (§ΑΞ1/Α7). Το ταμπλό ειλικρίνειας (scripts/buildHonestyScorecard.mjs) τη διαβάζει.
+      if (truth === 'blue') {
+        calm += 1;
+        if (shownTone === 'orange' || shownTone === 'red') alarm += 1;
+      }
       if (truth !== 'orange' && truth !== 'red') continue;
       strong += 1;
-      if (toneOf(exposureLevel, r.shownKmh) === 'blue') {
+      if (shownTone === 'blue') {
         severe += 1;
         if (exposureLevel === 'partial' && cases.length < 12) cases.push(r);
       }
     }
   }
-  return { strong, severe, share: strong ? severe / strong : 0, cases };
+  return { strong, severe, share: strong ? severe / strong : 0, calm, alarm, alarmShare: calm ? alarm / calm : 0, cases };
 };
 
 const joinRows = (observed, shown, fromMs, toMs) => {
@@ -241,7 +250,24 @@ if (stations < 20) {
 }
 const r = judge(rows);
 const span = `${isoDay(fromMs)}→${isoDay(toMs - DAY_MS)}`;
-console.log(`Φύλακας με όργανο ${span}: ${rows.length} ώρες-σταθμοί από ${stations} αεροδρόμια · ώρες×επίπεδα με πορτοκαλί/κόκκινο στο όργανο ${r.strong} · μπλε εκεί ${r.severe} (${(r.share * 100).toFixed(1)}%, όριο ${(MAX_SEVERE_FALSE_CALM_SHARE * 100).toFixed(0)}%)`);
+// ΤΟ ΑΠΟΤΕΛΕΣΜΑ ΓΡΑΦΕΤΑΙ, ΟΧΙ ΜΟΝΟ ΤΥΠΩΝΕΤΑΙ (12/09/2026). Ως τότε ο φύλακας άφηνε μόνο μια γραμμή
+// στο log του GitHub — και η βαθμολογία external-scorecard.json έμενε στις 21/08 (μία εγγραφή). Το
+// αρχείο το διαβάζει το ταμπλό ειλικρίνειας· γράφεται ΠΡΙΝ την κρίση ώστε και μια αποτυχία να μείνει.
+{
+  const latest = {
+    generatedAt: new Date().toISOString(),
+    window: { from: isoDay(fromMs), to: isoDay(toMs - DAY_MS) },
+    stations, pairedHours: rows.length, dayHoursUtc: DAY_HOURS_UTC, exposures: EXPOSURES.length,
+    severeFalseCalm: { slots: r.strong, count: r.severe, share: Number(r.share.toFixed(4)), limit: MAX_SEVERE_FALSE_CALM_SHARE,
+      rule: 'μπλε εκεί που το όργανο δίνει πορτοκαλί/κόκκινο' },
+    falseAlarm: { slots: r.calm, count: r.alarm, share: Number(r.alarmShare.toFixed(4)), rule: 'πορτοκαλί/κόκκινο εκεί που το όργανο δίνει μπλε' },
+    verdict: r.strong < MIN_STRONG_SLOTS ? 'not-judged' : r.share > MAX_SEVERE_FALSE_CALM_SHARE ? 'fail' : 'pass',
+  };
+  const out = path.join(root, 'reports/weather/station-truth-latest.json');
+  mkdirSync(path.dirname(out), { recursive: true });
+  writeFileSync(out, JSON.stringify(latest, null, 2));
+}
+console.log(`Φύλακας με όργανο ${span}: ${rows.length} ώρες-σταθμοί από ${stations} αεροδρόμια · ώρες×επίπεδα με πορτοκαλί/κόκκινο στο όργανο ${r.strong} · μπλε εκεί ${r.severe} (${(r.share * 100).toFixed(1)}%, όριο ${(MAX_SEVERE_FALSE_CALM_SHARE * 100).toFixed(0)}%) · ώρες×επίπεδα με μπλε στο όργανο ${r.calm} · πορτοκαλί/κόκκινο εκεί ${r.alarm} (${(r.alarmShare * 100).toFixed(1)}%, δεν κόβει)`);
 if (r.strong < MIN_STRONG_SLOTS) {
   console.log(`Λίγος δυνατός αέρας στο παράθυρο (<${MIN_STRONG_SLOTS}) — ούτε πέρασε ούτε κόπηκε: δεν υπήρχε τι να κριθεί. Πέρασε ως «δεν κρίνεται».`);
   process.exit(0);

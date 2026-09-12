@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-09-12T13:55:04.842Z",
+  "window": {
+    "from": "2026-09-08",
+    "to": "2026-09-11"
+  },
+  "stations": 25,
+  "pairedHours": 2152,
+  "dayHoursUtc": [
+    6,
+    16
+  ],
+  "exposures": 3,
+  "severeFalseCalm": {
+    "slots": 730,
+    "count": 14,
+    "share": 0.0192,
+    "limit": 0.1,
+    "rule": "μπλε εκεί που το όργανο δίνει πορτοκαλί/κόκκινο"
+  },
+  "falseAlarm": {
+    "slots": 1587,
+    "count": 12,
+    "share": 0.0076,
+    "rule": "πορτοκαλί/κόκκινο εκεί που το όργανο δίνει μπλε"
+  },
+  "verdict": "pass"
+}

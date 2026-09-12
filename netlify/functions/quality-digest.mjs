@@ -21,6 +21,7 @@
 
 import { connectLambda, getStore } from '@netlify/blobs';
 import LEDGER from './lib/qualityLedger.generated.mjs';
+import HONESTY from './lib/honestyScorecard.generated.mjs';
 import { agoLabel, buildQualityRows, buildBeachGapRows, daysSince } from './lib/qualityPriority.mjs';
 
 const TRAFFIC_STORE = 'traffic';
@@ -168,8 +169,35 @@ export const composeDigest = ({ rows, beachRows, todos, measured, consoleUrl }) 
     lines.push(`<i>Η κίνηση μετρήθηκε σε ${measured} από ${WINDOW_DAYS} μέρες.</i>`);
   }
 
+  lines.push('', ...honestyLines());
+
   lines.push('', `<a href="${consoleUrl}">Άνοιξε το ταμπλό</a>`);
   return lines.join('\n');
+};
+
+/**
+ * ΤΟ ΤΑΜΠΛΟ ΕΙΛΙΚΡΙΝΕΙΑΣ (12/09/2026, βίβλος §Γ81). Έξι αριθμοί με εξωτερικό κριτή — ανεμόμετρα,
+ * δορυφόρος, σχόλια — ο καθένας με παρονομαστή. Οι 89 πύλες λένε αν συμφωνούμε με τον εαυτό μας·
+ * αυτές οι γραμμές λένε αν συμφωνούμε με τον κόσμο. Πηγή: scripts/buildHonestyScorecard.mjs →
+ * lib/honestyScorecard.generated.mjs (ίδια σύμβαση με το ημερολόγιο ποιότητας: χτίζεται τοπικά,
+ * γίνεται commit). Μια γραμμή που πέρασε την κόκκινη γραμμή της ΠΑΝΤΑ στέλνει μήνυμα (βλ. handler).
+ */
+export const honestyBreached = () => Array.isArray(HONESTY?.breached) && HONESTY.breached.length > 0;
+
+const honestyLines = () => {
+  const rows = Array.isArray(HONESTY?.rows) ? HONESTY.rows : [];
+  if (!rows.length) return [];
+  const out = [`🧭 <b>Λέμε αλήθεια στον κόσμο; — ταμπλό ειλικρίνειας ${esc(HONESTY.generatedAt)}</b>`];
+  for (const r of rows) {
+    const flag = r.breached === true ? '🔴' : r.breached === false ? '✅' : '❓';
+    const value = r.value === null || r.value === undefined ? '—' : `${String(r.value).replace('.', ',')}${r.unit || ''}`;
+    const frac = typeof r.count === 'number' && typeof r.n === 'number' ? ` (${num(r.count)}/${num(r.n)})` : '';
+    const tail = r.note ? ` <i>${esc(r.note)}</i>` : r.oldest ? ` <i>(${esc(r.oldest)})</i>` : '';
+    out.push(`${flag} ${esc(r.label)}: <b>${esc(value)}</b>${frac}${tail}`);
+  }
+  const age = daysSince(HONESTY.generatedAt);
+  if (age !== null && age > 14) out.push(`⚠️ Το ταμπλό χτίστηκε ${esc(agoLabel(HONESTY.generatedAt))} — τρέξε <code>npm run quality:honesty</code>.`);
+  return out;
 };
 
 export const handler = async (event) => {
@@ -199,7 +227,8 @@ export const handler = async (event) => {
     // σελίδα με κίνηση έχει κενό, ή υπάρχει ανοιχτή σημείωση. Αλλιώς σιωπή.
     const late = rows.filter((r) => r.overdue > 0).length;
     const openTodos = Object.values(todos || {}).flat().filter((t) => t && !t.done).length;
-    const worthSending = late > 0 || beachRows.length > 0 || openTodos > 0;
+    // Μια κόκκινη γραμμή του ταμπλού ειλικρίνειας στέλνει ΠΑΝΤΑ — αυτό είναι το μήνυμα που μετράει.
+    const worthSending = late > 0 || beachRows.length > 0 || openTodos > 0 || honestyBreached();
 
     const key = process.env.TRAFFIC_STATS_KEY || '';
     const consoleUrl = `https://calmbeach.gr/api/traffic?key=${encodeURIComponent(key)}&tab=quality`;
