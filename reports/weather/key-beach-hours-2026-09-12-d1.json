@@ -1,0 +1,342 @@
+{
+  "generatedAt": "2026-09-12T18:21:03.948Z",
+  "dayIndex": 1,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "KEY_BEACH_HOURS.end 18 → 20 (utils/beachDayWindow) — ετυμηγορία, ριπές, βροχή, απογευματινό δυνάμωμα",
+  "verdict": {
+    "changed": 29,
+    "stricter": 29,
+    "softer": 0,
+    "moves": {
+      "good → caution": 4,
+      "caution → avoid_swimming": 7,
+      "excellent → good": 15,
+      "excellent → caution": 3
+    }
+  },
+  "score": {
+    "down": 175,
+    "up": 0,
+    "unchanged": 2681,
+    "medianDownDelta": -4
+  },
+  "distributionBefore": {
+    "excellent": 814,
+    "good": 926,
+    "caution": 441,
+    "avoid": 0,
+    "avoid_swimming": 675
+  },
+  "distributionAfter": {
+    "excellent": 796,
+    "good": 937,
+    "caution": 441,
+    "avoid": 0,
+    "avoid_swimming": 682
+  },
+  "softerSamples": [],
+  "stricterSamples": [
+    {
+      "beachId": 904,
+      "name": "Mourtemeno",
+      "regionId": "epirus-thesprotia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 63,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 907,
+      "name": "Paralia Plataria Beach Hotel",
+      "regionId": "epirus-thesprotia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 63,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 924,
+      "name": "Paralia Kerkyra",
+      "regionId": "epirus-thesprotia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 63,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 926,
+      "name": "Keramidi Beach",
+      "regionId": "epirus-thesprotia-mainland",
+      "before": {
+        "comfort": "good",
+        "score": 63,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 1315,
+      "name": "Petrokopi",
+      "regionId": "north-aegean-fournoi",
+      "before": {
+        "comfort": "caution",
+        "score": 48,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 43,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2252,
+      "name": "Exo Almyres",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2253,
+      "name": "Chali",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 86,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 77,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2254,
+      "name": "Kalimies",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 86,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 77,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2255,
+      "name": "Pezonta",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2257,
+      "name": "Tichi",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 86,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 77,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2258,
+      "name": "Vizotos",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 86,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 77,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2259,
+      "name": "Kasonia",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2261,
+      "name": "Paralia Arginonta",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2262,
+      "name": "Paralia Gefyra",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 94,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 85,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2263,
+      "name": "Paralia Elia",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 86,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 77,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2264,
+      "name": "Paralia Therma",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 94,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 85,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2265,
+      "name": "Paralia Kantouni",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 43,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 55,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 43,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2267,
+      "name": "Paralia Megales Almyres",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2268,
+      "name": "Paralia Mikres Almyres",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    }
+  ],
+  "note": "Δ8 (§Γ81): μία μέρα με τον καιρό που έτυχε. Το «ηπιότερο» μπορεί να προέρχεται μόνο από τη βροχή σε όλες τις κρίσιμες ώρες — έλεγξέ το στα softerSamples."
+}
