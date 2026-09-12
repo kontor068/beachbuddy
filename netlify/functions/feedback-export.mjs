@@ -19,8 +19,20 @@ const FEEDBACK_STORE = 'feedback-log';
 
 export const handler = async (event) => {
   const key = process.env.FEEDBACK_EXPORT_KEY || '';
+  // ΔΙΟΡΘΩΘΗΚΕ 12/09/2026. Το κλειδί δεν ορίστηκε ΠΟΤΕ σε κανένα context του Netlify, οπότε αυτή η
+  // πόρτα απαντούσε 403 σε ΟΛΟΥΣ από τις 30/07 — και το 403 διαβαζόταν ως «λάθος κλειδί», όχι ως
+  // «δεν υπάρχει κλειδί». 50 σχόλια επισκεπτών έμειναν αδιάβαστα 44 μέρες (βίβλος §Γ81). Χωρίς
+  // κλειδί η απάντηση είναι 500 με ρητό κείμενο, ώστε να μη μοιάζει με λάθος του καλούντος.
+  // Μέχρι να οριστεί: scripts/exportFeedbackFromBlobs.mjs διαβάζει την αποθήκη από το linked CLI.
+  if (!key) {
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
+      body: 'feedback-export not configured: FEEDBACK_EXPORT_KEY is not set in the Netlify environment',
+    };
+  }
   const given = (event.queryStringParameters || {}).key || '';
-  if (!key || given !== key) {
+  if (given !== key) {
     return { statusCode: 403, headers: { 'Content-Type': 'text/plain' }, body: 'Forbidden' };
   }
 

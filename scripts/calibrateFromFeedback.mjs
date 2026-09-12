@@ -5,9 +5,10 @@
 // `condition_feedback` events, or the app's local FEEDBACK_KEY records) — a JSON array of
 // FeedbackData { beachId, feedback, timestamp, conditions:{ exposureLevel, beaufort, windDir, date, live } }.
 //
-// Οι εγγραφές με `conditions.live === false` ΔΕΝ μπαίνουν στο άθροισμα: εκεί η οθόνη ήταν
-// γυρισμένη σε άλλη μέρα ή ώρα, οπότε αυτό που είδε ο επισκέπτης και αυτό που δείξαμε δεν
-// αφορούν την ίδια στιγμή (αναλυτικά στο σχόλιο του `isComparable` πιο κάτω).
+// Η χρονική πύλη ΔΕΝ είναι το `conditions.live` (ως 06/09 και 11/09 η σημαία γραφόταν λάθος
+// «false» για επισκέπτες που ήταν εκεί — 15 από τα 50 σχόλια ως 12/09 λένε «now» με live:false).
+// Κρίνει το `timingMismatch` πιο κάτω: μέρα και ώρα της οθόνης απέναντι στη μέρα και ώρα της
+// επίσκεψης· άγνωστο = κρατιέται. Είσοδος: scripts/exportFeedbackFromBlobs.mjs (12/09/2026).
 //
 //   node scripts/calibrateFromFeedback.mjs --input .tmp/feedback-export.json
 //   node scripts/calibrateFromFeedback.mjs --demo        # synthetic example, proves the pipeline

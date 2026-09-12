@@ -1,0 +1,844 @@
+{
+  "generatedAt": "2026-09-12T13:40Z",
+  "source": "Netlify Blobs store feedback-log, read via scripts/exportFeedbackFromBlobs.mjs (raw records stay in .tmp/, never in git)",
+  "window": {
+    "first": "2026-07-31",
+    "last": "2026-09-12"
+  },
+  "why": "FEEDBACK_EXPORT_KEY was never set, so /api/feedback-export answered 403 for everyone since 30/07/2026. First read of the store: 12/09/2026.",
+  "counts": {
+    "feedback": 50,
+    "ratings": 5,
+    "verdict": {
+      "calmer": 7,
+      "had_waves": 18,
+      "accurate": 12,
+      "too_windy": 13
+    },
+    "exposureShown": {
+      "exposed": 13,
+      "partial": 9,
+      "protected": 28
+    },
+    "beaufortShown": {
+      "1": 3,
+      "2": 13,
+      "3": 11,
+      "4": 6,
+      "5": 13,
+      "6": 4
+    },
+    "month": {
+      "2026-07": 1,
+      "2026-08": 38,
+      "2026-09": 11
+    },
+    "liveFlag": {
+      "undefined": 2,
+      "false": 44,
+      "true": 4
+    },
+    "observedTiming": {
+      "undefined": 22,
+      "now": 19,
+      "unsure": 2,
+      "evening": 4,
+      "morning": 1,
+      "midday": 2
+    },
+    "liveByTiming": {
+      "undefined|undefined": 2,
+      "false|undefined": 20,
+      "false|now": 15,
+      "false|unsure": 2,
+      "false|evening": 4,
+      "false|morning": 1,
+      "false|midday": 2,
+      "true|now": 4
+    }
+  },
+  "liveFlagNote": "live:false does NOT mean off-site: 15 records say observedTiming=now with live:false (switch-at-current-hour bug, fixed 06/09) and DE/IT/FR records were always false until 11/09. Genuinely on-site >= 19/50, not 4/50.",
+  "verdictByExposure": {
+    "calmer|exposed": 2,
+    "had_waves|exposed": 6,
+    "accurate|partial": 4,
+    "calmer|protected": 5,
+    "accurate|exposed": 5,
+    "had_waves|partial": 4,
+    "too_windy|partial": 1,
+    "had_waves|protected": 8,
+    "too_windy|protected": 12,
+    "accurate|protected": 3
+  },
+  "negative": {
+    "total": 31,
+    "shareOfAll": 0.62,
+    "onProtected": 20,
+    "protectedTotal": 28,
+    "byRegion": {
+      "crete-gavdos": 1,
+      "attica-east-attica-mainland": 1,
+      "attica-athens-area-mainland": 6,
+      "south-aegean-andros": 1,
+      "ionian-islands-lefkada": 4,
+      "south-aegean-milos": 1,
+      "ionian-islands-kefalonia": 2,
+      "south-aegean-karpathos": 2,
+      "south-aegean-kimolos": 1,
+      "south-aegean-rhodes": 1,
+      "south-aegean-naxos": 5,
+      "central-macedonia-halkidiki-mainland": 1,
+      "epirus-thesprotia-mainland": 1,
+      "crete-crete-lasithi": 2,
+      "south-aegean-kos": 1,
+      "crete-crete-chania": 1
+    },
+    "perBeach": [
+      {
+        "beachId": 1,
+        "name": "Palmyra",
+        "region": "attica-athens-area-mainland",
+        "negative": 3,
+        "verdicts": {
+          "too_windy": 2,
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 2013,
+        "name": "Pyrgaki",
+        "region": "south-aegean-naxos",
+        "negative": 2,
+        "verdicts": {
+          "too_windy": 2
+        }
+      },
+      {
+        "beachId": 6,
+        "name": "Agios Kosmas",
+        "region": "attica-athens-area-mainland",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 8,
+        "name": "Paralia Glyfadas Akti A",
+        "region": "attica-athens-area-mainland",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 11,
+        "name": "Paralia Glyfadas Akti D",
+        "region": "attica-athens-area-mainland",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 37,
+        "name": "Paralia Artemidas",
+        "region": "attica-east-attica-mainland",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 445,
+        "name": "Sykia",
+        "region": "central-macedonia-halkidiki-mainland",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 532,
+        "name": "Kalyvaki",
+        "region": "crete-crete-chania",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 615,
+        "name": "Sarakiniko",
+        "region": "crete-gavdos",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 747,
+        "name": "Kolokytha",
+        "region": "crete-crete-lasithi",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 902,
+        "name": "Mikri Ammos",
+        "region": "epirus-thesprotia-mainland",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1113,
+        "name": "Myrtos",
+        "region": "ionian-islands-kefalonia",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1157,
+        "name": "Gialos",
+        "region": "ionian-islands-lefkada",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1160,
+        "name": "Kathisma",
+        "region": "ionian-islands-lefkada",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1162,
+        "name": "Kavalikevta",
+        "region": "ionian-islands-lefkada",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1165,
+        "name": "Lygia",
+        "region": "ionian-islands-lefkada",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1723,
+        "name": "Steno (Stavros)",
+        "region": "south-aegean-andros",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 1853,
+        "name": "Bonatsa",
+        "region": "south-aegean-kimolos",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 1927,
+        "name": "Fyriplaka",
+        "region": "south-aegean-milos",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 1987,
+        "name": "Alyko",
+        "region": "south-aegean-naxos",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 1993,
+        "name": "Glyfada",
+        "region": "south-aegean-naxos",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 1995,
+        "name": "Paralia Kalantos",
+        "region": "south-aegean-naxos",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 2282,
+        "name": "Kastelia",
+        "region": "south-aegean-karpathos",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      },
+      {
+        "beachId": 2308,
+        "name": "Kyra Panagia",
+        "region": "south-aegean-karpathos",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 2335,
+        "name": "Tigkaki",
+        "region": "south-aegean-kos",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 2451,
+        "name": "Paralia Lachanias",
+        "region": "south-aegean-rhodes",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 3105,
+        "name": "Skala (Kefalonia)",
+        "region": "ionian-islands-kefalonia",
+        "negative": 1,
+        "verdicts": {
+          "had_waves": 1
+        }
+      },
+      {
+        "beachId": 3128,
+        "name": "Paralia Kallithea",
+        "region": "crete-crete-lasithi",
+        "negative": 1,
+        "verdicts": {
+          "too_windy": 1
+        }
+      }
+    ]
+  },
+  "calibration": {
+    "tool": "scripts/calibrateFromFeedback.mjs",
+    "records": 50,
+    "usable": 45,
+    "excludedOtherDay": 5,
+    "proposals": 0,
+    "whyZero": "MIN_SAMPLES=3 per (beach, wind sector); 50 records fall into 48 cells, nothing clusters. Clusters DO exist across neighbouring beaches (south Naxos: 4 beaches, 5 too_windy on protected at 3-5 Bft), which a per-beach cell cannot see."
+  },
+  "ratings": {
+    "n": 5,
+    "easeOfUseAvg": 8.6,
+    "accuracyAvg": 8.4,
+    "byLanguage": {
+      "gr": 1,
+      "en": 3,
+      "it": 1
+    },
+    "accuracyValues": [
+      4,
+      8,
+      10,
+      10,
+      10
+    ]
+  },
+  "negativeRecords": [
+    {
+      "beachId": 615,
+      "name": "Sarakiniko",
+      "region": "crete-gavdos",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 2,
+      "openWaterM": null,
+      "shoreM": null,
+      "date": "2026-08-02",
+      "hour": null,
+      "liveFlag": null,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 37,
+      "name": "Paralia Artemidas",
+      "region": "attica-east-attica-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "partial",
+      "beaufortShown": 6,
+      "openWaterM": 1.38,
+      "shoreM": null,
+      "date": "2026-08-06",
+      "hour": 15,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 6,
+      "name": "Agios Kosmas",
+      "region": "attica-athens-area-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 1,
+      "openWaterM": 0.28,
+      "shoreM": null,
+      "date": "2026-08-07",
+      "hour": 7,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1723,
+      "name": "Steno (Stavros)",
+      "region": "south-aegean-andros",
+      "verdict": "too_windy",
+      "exposureShown": "partial",
+      "beaufortShown": 4,
+      "openWaterM": 0.68,
+      "shoreM": null,
+      "date": "2026-08-11",
+      "hour": 15,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1162,
+      "name": "Kavalikevta",
+      "region": "ionian-islands-lefkada",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 3,
+      "openWaterM": 0.35,
+      "shoreM": null,
+      "date": "2026-08-13",
+      "hour": 11,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 1,
+      "openWaterM": 0.34,
+      "shoreM": null,
+      "date": "2026-08-14",
+      "hour": 10,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 8,
+      "name": "Paralia Glyfadas Akti A",
+      "region": "attica-athens-area-mainland",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 0.7,
+      "shoreM": null,
+      "date": "2026-08-14",
+      "hour": 11,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1927,
+      "name": "Fyriplaka",
+      "region": "south-aegean-milos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 6,
+      "openWaterM": 1.18,
+      "shoreM": null,
+      "date": "2026-08-14",
+      "hour": 14,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 3105,
+      "name": "Skala (Kefalonia)",
+      "region": "ionian-islands-kefalonia",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 3,
+      "openWaterM": 0.68,
+      "shoreM": null,
+      "date": "2026-08-15",
+      "hour": 10,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 2282,
+      "name": "Kastelia",
+      "region": "south-aegean-karpathos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 1.04,
+      "shoreM": null,
+      "date": "2026-08-15",
+      "hour": 13,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1853,
+      "name": "Bonatsa",
+      "region": "south-aegean-kimolos",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 6,
+      "openWaterM": 1.38,
+      "shoreM": null,
+      "date": "2026-08-15",
+      "hour": 13,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1113,
+      "name": "Myrtos",
+      "region": "ionian-islands-kefalonia",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 1,
+      "openWaterM": 0.18,
+      "shoreM": null,
+      "date": "2026-08-16",
+      "hour": 20,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 2451,
+      "name": "Paralia Lachanias",
+      "region": "south-aegean-rhodes",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 0.68,
+      "shoreM": 0.1,
+      "date": "2026-08-17",
+      "hour": 22,
+      "liveFlag": false,
+      "observedTiming": null,
+      "seaArrival": null
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "partial",
+      "beaufortShown": 3,
+      "openWaterM": 0.46,
+      "shoreM": 0.46,
+      "date": "2026-08-18",
+      "hour": 14,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 11,
+      "name": "Paralia Glyfadas Akti D",
+      "region": "attica-athens-area-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "partial",
+      "beaufortShown": 2,
+      "openWaterM": 0.1,
+      "shoreM": 0.1,
+      "date": "2026-08-19",
+      "hour": 13,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1165,
+      "name": "Lygia",
+      "region": "ionian-islands-lefkada",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 2,
+      "openWaterM": 0.02,
+      "shoreM": 0,
+      "date": "2026-08-25",
+      "hour": 9,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1,
+      "name": "Palmyra",
+      "region": "attica-athens-area-mainland",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 3,
+      "openWaterM": 1.08,
+      "shoreM": 0.11,
+      "date": "2026-08-25",
+      "hour": 15,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1157,
+      "name": "Gialos",
+      "region": "ionian-islands-lefkada",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 3,
+      "openWaterM": 0.88,
+      "shoreM": 0.88,
+      "date": "2026-08-26",
+      "hour": 17,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1993,
+      "name": "Glyfada",
+      "region": "south-aegean-naxos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 4,
+      "openWaterM": 0.42,
+      "shoreM": 0.05,
+      "date": "2026-08-27",
+      "hour": 9,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 445,
+      "name": "Sykia",
+      "region": "central-macedonia-halkidiki-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "partial",
+      "beaufortShown": 3,
+      "openWaterM": 0.28,
+      "shoreM": 0.28,
+      "date": "2026-08-27",
+      "hour": 13,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1987,
+      "name": "Alyko",
+      "region": "south-aegean-naxos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 0.5,
+      "shoreM": 0.05,
+      "date": "2026-08-27",
+      "hour": 14,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 902,
+      "name": "Mikri Ammos",
+      "region": "epirus-thesprotia-mainland",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 2,
+      "openWaterM": 0.18,
+      "shoreM": 0.18,
+      "date": "2026-08-29",
+      "hour": 11,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 747,
+      "name": "Kolokytha",
+      "region": "crete-crete-lasithi",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 1.16,
+      "shoreM": 0.58,
+      "date": "2026-08-30",
+      "hour": 21,
+      "liveFlag": false,
+      "observedTiming": "evening",
+      "seaArrival": null
+    },
+    {
+      "beachId": 2335,
+      "name": "Tigkaki",
+      "region": "south-aegean-kos",
+      "verdict": "had_waves",
+      "exposureShown": "exposed",
+      "beaufortShown": 2,
+      "openWaterM": 0.22,
+      "shoreM": 0.22,
+      "date": "2026-09-02",
+      "hour": 20,
+      "liveFlag": false,
+      "observedTiming": "evening",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1160,
+      "name": "Kathisma",
+      "region": "ionian-islands-lefkada",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 2,
+      "openWaterM": 0.32,
+      "shoreM": 0.32,
+      "date": "2026-09-02",
+      "hour": 11,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 1995,
+      "name": "Paralia Kalantos",
+      "region": "south-aegean-naxos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 5,
+      "openWaterM": 0.8,
+      "shoreM": 0.08,
+      "date": "2026-09-04",
+      "hour": 18,
+      "liveFlag": false,
+      "observedTiming": "evening",
+      "seaArrival": null
+    },
+    {
+      "beachId": 2308,
+      "name": "Kyra Panagia",
+      "region": "south-aegean-karpathos",
+      "verdict": "had_waves",
+      "exposureShown": "protected",
+      "beaufortShown": 4,
+      "openWaterM": 0.74,
+      "shoreM": 0.1,
+      "date": "2026-09-06",
+      "hour": 10,
+      "liveFlag": false,
+      "observedTiming": "midday",
+      "seaArrival": null
+    },
+    {
+      "beachId": 3128,
+      "name": "Paralia Kallithea",
+      "region": "crete-crete-lasithi",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 2,
+      "openWaterM": 0.32,
+      "shoreM": 0.04,
+      "date": "2026-09-08",
+      "hour": 10,
+      "liveFlag": true,
+      "observedTiming": "now",
+      "seaArrival": "grazing"
+    },
+    {
+      "beachId": 532,
+      "name": "Kalyvaki",
+      "region": "crete-crete-chania",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 4,
+      "openWaterM": 0.74,
+      "shoreM": 0.12,
+      "date": "2026-09-09",
+      "hour": 15,
+      "liveFlag": true,
+      "observedTiming": "now",
+      "seaArrival": null
+    },
+    {
+      "beachId": 2013,
+      "name": "Pyrgaki",
+      "region": "south-aegean-naxos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 3,
+      "openWaterM": 0.35,
+      "shoreM": 0.1,
+      "date": "2026-09-11",
+      "hour": 10,
+      "liveFlag": false,
+      "observedTiming": "now",
+      "seaArrival": "grazing"
+    },
+    {
+      "beachId": 2013,
+      "name": "Pyrgaki",
+      "region": "south-aegean-naxos",
+      "verdict": "too_windy",
+      "exposureShown": "protected",
+      "beaufortShown": 3,
+      "openWaterM": 0.35,
+      "shoreM": 0.06,
+      "date": "2026-09-12",
+      "hour": 11,
+      "liveFlag": true,
+      "observedTiming": "now",
+      "seaArrival": "grazing"
+    }
+  ]
+}
