@@ -543,8 +543,12 @@ const parseHourlyForecast = (hourly: any, _point?: ForecastPoint, envelope?: any
             ? hourly.wind_speed_10m[index]
             : undefined,
           deg: hourly.wind_direction_10m[index],
-          // Real measured gust (m/s); fall back to the old synthetic estimate only if the API omits it.
-          gust: optionalNumber(hourly.wind_gusts_10m?.[index]) ?? hourly.wind_speed_10m[index] * 1.2
+          // Real model gust (m/s). ΧΩΡΙΣ ΣΥΝΘΕΤΙΚΗ ΕΦΕΔΡΕΙΑ (12/09/2026, βίβλος §Γ81 Δ5): ως τότε, όταν το
+          // API δεν έδινε ριπή, έμπαινε μέσος×1,2 — δηλαδή spread 0,2×μέσος, που δεν φτάνει ποτέ τα 22 χλμ/ώ
+          // του κανόνα «+1 ενεργό Μποφόρ» κάτω από 110 χλμ/ώ. Ο κανόνας έσβηνε σιωπηλά, προς την ανασφαλή
+          // μεριά, και κανείς δεν το έβλεπε. Τώρα: άγνωστη ριπή = undefined (το πεδίο είναι προαιρετικό,
+          // κάθε αναγνώστης το ελέγχει με typeof) — και το ίδιο γεγονός μετριέται (measureGustSpread.mjs).
+          gust: optionalNumber(hourly.wind_gusts_10m?.[index])
         },
         visibility: 10000,
         pop: 0,

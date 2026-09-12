@@ -1,0 +1,401 @@
+{
+  "generatedAt": "2026-09-12T14:04:07.342Z",
+  "windows": {
+    "C": [
+      "2026-07-10",
+      "2026-07-25"
+    ],
+    "B": [
+      "2026-08-04",
+      "2026-08-18"
+    ],
+    "E": [
+      "2026-08-20",
+      "2026-09-03"
+    ]
+  },
+  "dayHoursUtc": [
+    6,
+    16
+  ],
+  "stations": 30,
+  "pairs": 11591,
+  "modelHours": 15180,
+  "modelGustMissing": 0,
+  "modelGustMissingPct": 0,
+  "rule": {
+    "spreadKmh": 22,
+    "minBaseBft": 3,
+    "where": "services/recommendationService.ts GUST_EFFECTIVE_BFT_SPREAD_KMH"
+  },
+  "judgeLimit": "το METAR γράφει ριπή μόνο ≥ ~18.5 χλμ/ώ πάνω από τον μέσο — απουσία = spread κάτω από εκεί, όχι 0",
+  "gustBias": {
+    "n": 742,
+    "biasKmh": 5,
+    "byObsBft": {
+      "1": {
+        "n": 1,
+        "biasKmh": -6.7
+      },
+      "2": {
+        "n": 3,
+        "biasKmh": 5.4
+      },
+      "3": {
+        "n": 135,
+        "biasKmh": 11.9
+      },
+      "4": {
+        "n": 236,
+        "biasKmh": 9.8
+      },
+      "5": {
+        "n": 119,
+        "biasKmh": 4.5
+      },
+      "6": {
+        "n": 143,
+        "biasKmh": -0.9
+      },
+      "7": {
+        "n": 94,
+        "biasKmh": -5.7
+      },
+      "8": {
+        "n": 11,
+        "biasKmh": -10.4
+      }
+    },
+    "byStation": [
+      {
+        "icao": "LGKC",
+        "name": "Κύθηρα",
+        "n": 4,
+        "biasKmh": 21.1,
+        "maeKmh": 21.1
+      },
+      {
+        "icao": "LGMT",
+        "name": "Μυτιλήνη",
+        "n": 32,
+        "biasKmh": 18.1,
+        "maeKmh": 18.1
+      },
+      {
+        "icao": "LGHI",
+        "name": "Χίος",
+        "n": 113,
+        "biasKmh": 14.8,
+        "maeKmh": 15.4
+      },
+      {
+        "icao": "LGNX",
+        "name": "Νάξος",
+        "n": 70,
+        "biasKmh": 13.8,
+        "maeKmh": 14.1
+      },
+      {
+        "icao": "LGSM",
+        "name": "Σάμος",
+        "n": 98,
+        "biasKmh": 10.2,
+        "maeKmh": 10.9
+      },
+      {
+        "icao": "LGMK",
+        "name": "Μύκονος",
+        "n": 78,
+        "biasKmh": 9.3,
+        "maeKmh": 9.3
+      },
+      {
+        "icao": "LGKO",
+        "name": "Κως",
+        "n": 12,
+        "biasKmh": 9.1,
+        "maeKmh": 9.1
+      },
+      {
+        "icao": "LGKV",
+        "name": "Καβάλα",
+        "n": 11,
+        "biasKmh": 7.2,
+        "maeKmh": 11
+      },
+      {
+        "icao": "LGPA",
+        "name": "Πάρος",
+        "n": 23,
+        "biasKmh": 7.1,
+        "maeKmh": 7.4
+      },
+      {
+        "icao": "LGIR",
+        "name": "Ηράκλειο",
+        "n": 2,
+        "biasKmh": 3.6,
+        "maeKmh": 3.6
+      },
+      {
+        "icao": "LGSA",
+        "name": "Χανιά",
+        "n": 1,
+        "biasKmh": 3.2,
+        "maeKmh": 3.2
+      },
+      {
+        "icao": "LGAL",
+        "name": "Αλεξανδρούπολη",
+        "n": 17,
+        "biasKmh": 3,
+        "maeKmh": 4.9
+      },
+      {
+        "icao": "LGLM",
+        "name": "Λήμνος",
+        "n": 98,
+        "biasKmh": -1.9,
+        "maeKmh": 3.9
+      },
+      {
+        "icao": "LGSK",
+        "name": "Σκιάθος",
+        "n": 12,
+        "biasKmh": -2.4,
+        "maeKmh": 8.1
+      },
+      {
+        "icao": "LGPZ",
+        "name": "Άκτιο",
+        "n": 3,
+        "biasKmh": -6.6,
+        "maeKmh": 6.8
+      },
+      {
+        "icao": "LGKR",
+        "name": "Κέρκυρα",
+        "n": 6,
+        "biasKmh": -6.7,
+        "maeKmh": 9.6
+      },
+      {
+        "icao": "LGKL",
+        "name": "Καλαμάτα",
+        "n": 6,
+        "biasKmh": -6.7,
+        "maeKmh": 9.6
+      },
+      {
+        "icao": "LGKP",
+        "name": "Κάρπαθος",
+        "n": 153,
+        "biasKmh": -9.1,
+        "maeKmh": 10.3
+      },
+      {
+        "icao": "LGRX",
+        "name": "Άραξος",
+        "n": 2,
+        "biasKmh": -11.8,
+        "maeKmh": 11.8
+      },
+      {
+        "icao": "LGTS",
+        "name": "Θεσσαλονίκη",
+        "n": 1,
+        "biasKmh": -19.3,
+        "maeKmh": 19.3
+      }
+    ]
+  },
+  "scope": {
+    "inScopeHours": 9202,
+    "obsSpreadEvents": 71,
+    "eventRatePct": 0.8,
+    "obsGustReportedPct": 8
+  },
+  "detector": [
+    {
+      "T": 10,
+      "fires": 8276,
+      "firesPct": 89.9,
+      "hitRate": 100,
+      "falseAlarmOfFires": 99.1,
+      "missed": 0,
+      "tp": 71,
+      "fp": 8205,
+      "tn": 926,
+      "fn": 0
+    },
+    {
+      "T": 12,
+      "fires": 7454,
+      "firesPct": 81,
+      "hitRate": 100,
+      "falseAlarmOfFires": 99,
+      "missed": 0,
+      "tp": 71,
+      "fp": 7383,
+      "tn": 1748,
+      "fn": 0
+    },
+    {
+      "T": 14,
+      "fires": 6530,
+      "firesPct": 71,
+      "hitRate": 100,
+      "falseAlarmOfFires": 98.9,
+      "missed": 0,
+      "tp": 71,
+      "fp": 6459,
+      "tn": 2672,
+      "fn": 0
+    },
+    {
+      "T": 16,
+      "fires": 5497,
+      "firesPct": 59.7,
+      "hitRate": 100,
+      "falseAlarmOfFires": 98.7,
+      "missed": 0,
+      "tp": 71,
+      "fp": 5426,
+      "tn": 3705,
+      "fn": 0
+    },
+    {
+      "T": 18,
+      "fires": 4467,
+      "firesPct": 48.5,
+      "hitRate": 95.8,
+      "falseAlarmOfFires": 98.5,
+      "missed": 3,
+      "tp": 68,
+      "fp": 4399,
+      "tn": 4732,
+      "fn": 3
+    },
+    {
+      "T": 20,
+      "fires": 3561,
+      "firesPct": 38.7,
+      "hitRate": 88.7,
+      "falseAlarmOfFires": 98.2,
+      "missed": 8,
+      "tp": 63,
+      "fp": 3498,
+      "tn": 5633,
+      "fn": 8
+    },
+    {
+      "T": 22,
+      "fires": 2805,
+      "firesPct": 30.5,
+      "hitRate": 83.1,
+      "falseAlarmOfFires": 97.9,
+      "missed": 12,
+      "tp": 59,
+      "fp": 2746,
+      "tn": 6385,
+      "fn": 12
+    },
+    {
+      "T": 24,
+      "fires": 2192,
+      "firesPct": 23.8,
+      "hitRate": 73.2,
+      "falseAlarmOfFires": 97.6,
+      "missed": 19,
+      "tp": 52,
+      "fp": 2140,
+      "tn": 6991,
+      "fn": 19
+    },
+    {
+      "T": 26,
+      "fires": 1669,
+      "firesPct": 18.1,
+      "hitRate": 50.7,
+      "falseAlarmOfFires": 97.8,
+      "missed": 35,
+      "tp": 36,
+      "fp": 1633,
+      "tn": 7498,
+      "fn": 35
+    },
+    {
+      "T": 28,
+      "fires": 1289,
+      "firesPct": 14,
+      "hitRate": 46.5,
+      "falseAlarmOfFires": 97.4,
+      "missed": 38,
+      "tp": 33,
+      "fp": 1256,
+      "tn": 7875,
+      "fn": 38
+    },
+    {
+      "T": 30,
+      "fires": 919,
+      "firesPct": 10,
+      "hitRate": 36.6,
+      "falseAlarmOfFires": 97.2,
+      "missed": 45,
+      "tp": 26,
+      "fp": 893,
+      "tn": 8238,
+      "fn": 45
+    },
+    {
+      "T": 34,
+      "fires": 444,
+      "firesPct": 4.8,
+      "hitRate": 15.5,
+      "falseAlarmOfFires": 97.5,
+      "missed": 60,
+      "tp": 11,
+      "fp": 433,
+      "tn": 8698,
+      "fn": 60
+    },
+    {
+      "T": 38,
+      "fires": 189,
+      "firesPct": 2.1,
+      "hitRate": 8.5,
+      "falseAlarmOfFires": 96.8,
+      "missed": 65,
+      "tp": 6,
+      "fp": 183,
+      "tn": 8948,
+      "fn": 65
+    }
+  ],
+  "current": {
+    "T": 22,
+    "fires": 2805,
+    "firesPct": 30.5,
+    "hitRate": 83.1,
+    "falseAlarmOfFires": 97.9,
+    "missed": 12,
+    "tp": 59,
+    "fp": 2746,
+    "tn": 6385,
+    "fn": 12
+  },
+  "isoFrequency": {
+    "T": 38,
+    "fires": 189,
+    "firesPct": 2.1,
+    "hitRate": 8.5,
+    "falseAlarmOfFires": 96.8,
+    "missed": 65,
+    "tp": 6,
+    "fp": 183,
+    "tn": 8948,
+    "fn": 65
+  },
+  "note": "Δ5 (§Γ81): μέτρηση μόνο. Το κατώφλι δεν αλλάζει χωρίς απόφαση Μίλτου."
+}
