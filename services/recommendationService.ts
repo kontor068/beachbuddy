@@ -27,6 +27,7 @@ import {
   WindDirection,
 } from '../types';
 import { degToCompass, calculateDistance, getBeaufortLevel } from '../utils/weatherUtils';
+import { KEY_BEACH_HOURS, isKeyBeachHour, isCoreBeachHour } from '../utils/beachDayWindow';
 import { computeSwellSurgePenalty, SWELL_SURGE_PENALTY_MID } from '../utils/swellSurge';
 import { hasDownwindSeaSample, holdsGlassWaterAtFourBeaufort } from '../utils/offshoreFlatWater';
 import { assessSwellExposure, SWELL_MIN_HEIGHT_M } from '../utils/swellExposure';
@@ -670,12 +671,16 @@ export const filterBeachesByUserPreferences = (
   preferences?: UserPreferences
 ): Beach[] => beaches.filter(beach => beachMatchesUserPreferences(beach, preferences));
 
-const getKeyBeachHours = (hourlyForecast?: ForecastItem[]): ForecastItem[] => {
+// Οι κρίσιμες ώρες ζουν σε ΜΙΑ σταθερά (utils/beachDayWindow): 10-20 από 12/09/2026 (§Γ81 Δ8), ήταν 10-18.
+// Οι ώρες 19-20 είναι εκεί που το μοντέλο σβήνει το μελτέμι νωρίς (§Γ80-Α) — και ήταν έξω από κάθε κρίση.
+// `core: true` = ο πυρήνας 10-18 για κανόνες «όλων των ωρών»/μέσου όρου (βροχή, μέσος θαλάσσιος βαθμός,
+// εμπιστοσύνη), ώστε το άνοιγμα ως τις 20 να ΜΗΝ τους μαλακώσει. Δες utils/beachDayWindow.
+const getKeyBeachHours = (hourlyForecast?: ForecastItem[], options?: { core?: boolean }): ForecastItem[] => {
   if (!hourlyForecast || hourlyForecast.length === 0) return [];
 
   const daytime = hourlyForecast.filter(item => {
     const hour = new Date(item.dt * 1000).getHours();
-    return hour >= 10 && hour <= 18;
+    return options?.core ? isCoreBeachHour(hour) : isKeyBeachHour(hour);
   });
 
   if (daytime.length >= 3) return daytime;
@@ -716,7 +721,7 @@ export const hasHourlyRainRisk = (item: ForecastItem): boolean => {
 const calculateHourlyRainRisk = (
   hourlyForecast?: ForecastItem[]
 ): { rainyHours: number; checkedHours: number; allKeyHoursRainy: boolean; hasRainRisk: boolean; rainyWindows: string[] } => {
-  const keyHours = getKeyBeachHours(hourlyForecast);
+  const keyHours = getKeyBeachHours(hourlyForecast, { core: true });
   if (keyHours.length === 0) {
     return { rainyHours: 0, checkedHours: 0, allKeyHoursRainy: false, hasRainRisk: false, rainyWindows: [] };
   }
@@ -846,7 +851,7 @@ const calculateHourlySeaScore = (
   hourlyForecast?: ForecastItem[],
   geospatialProfile?: GeospatialExposureProfile
 ): { score?: number; poorHours: number; checkedHours: number } => {
-  const keyHours = getKeyBeachHours(hourlyForecast);
+  const keyHours = getKeyBeachHours(hourlyForecast, { core: true });
   if (keyHours.length === 0) return { poorHours: 0, checkedHours: 0 };
 
   const scores = keyHours.map(item => {
@@ -884,7 +889,7 @@ const calculateRecommendationConfidence = (
   let score = 55;
   const reasons: string[] = [];
   const weatherSource = options?.weatherSource || 'island-fallback';
-  const keyHours = getKeyBeachHours(options?.hourlyForecast || ('hourly' in weather ? weather.hourly : undefined));
+  const keyHours = getKeyBeachHours(options?.hourlyForecast || ('hourly' in weather ? weather.hourly : undefined), { core: true });
 
   if (weatherSource === 'beach-cluster') {
     score += 18;
@@ -2519,7 +2524,7 @@ export const calculateBeachScore = (
   // hour by design (the hour slider already shows the afternoon).
   const afternoonItems = getKeyBeachHours(hourlyForecast).filter(item => {
     const h = new Date(item.dt * 1000).getHours();
-    return h >= 13 && h <= 18;
+    return h >= KEY_BEACH_HOURS.afternoonStart && h <= KEY_BEACH_HOURS.end;
   });
   const afternoonBuild = evaluateAfternoonBuild(
     afternoonItems.map(item => getBeaufortLevel(item.wind.speed * 3.6)),

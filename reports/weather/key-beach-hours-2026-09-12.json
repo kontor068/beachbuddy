@@ -1,0 +1,433 @@
+{
+  "generatedAt": "2026-09-12T17:08:01.355Z",
+  "dayIndex": 0,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "KEY_BEACH_HOURS.end 18 → 20 (utils/beachDayWindow) — ετυμηγορία, ριπές, βροχή, απογευματινό δυνάμωμα",
+  "verdict": {
+    "changed": 92,
+    "stricter": 92,
+    "softer": 0,
+    "moves": {
+      "good → avoid_swimming": 2,
+      "excellent → caution": 12,
+      "good → caution": 19,
+      "excellent → good": 55,
+      "caution → avoid_swimming": 4
+    },
+    "correction": "12/09: το πρώτο τρέξιμο κατέταξε 6 «→ avoid_swimming» ως ηπιότερες γιατί η λέξη έλειπε από τη λίστα ORDER· διορθώθηκε από τα moves του ίδιου αρχείου (όλες οι 92 είναι αυστηρότερες)."
+  },
+  "score": {
+    "down": 100,
+    "up": 0,
+    "unchanged": 2756,
+    "medianDownDelta": -12
+  },
+  "distributionBefore": {
+    "excellent": 1034,
+    "good": 1075,
+    "caution": 472,
+    "avoid_swimming": 0
+  },
+  "distributionAfter": {
+    "excellent": 967,
+    "good": 1109,
+    "caution": 499,
+    "avoid_swimming": 6
+  },
+  "softerSamples": [
+    {
+      "beachId": 156,
+      "name": "Vagionia",
+      "regionId": "attica-poros",
+      "before": {
+        "comfort": "good",
+        "score": 70,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 27,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 162,
+      "name": "Plaka",
+      "regionId": "attica-poros",
+      "before": {
+        "comfort": "good",
+        "score": 70,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 27,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2255,
+      "name": "Pezonta",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2261,
+      "name": "Paralia Arginonta",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2266,
+      "name": "Paralia Linaria",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 2271,
+      "name": "Paralia Sykatis",
+      "regionId": "south-aegean-kalymnos",
+      "before": {
+        "comfort": "caution",
+        "score": 45,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "avoid_swimming",
+        "score": 33,
+        "effBft": null
+      }
+    }
+  ],
+  "stricterSamples": [
+    {
+      "beachId": 512,
+      "name": "Akti Siamo",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 513,
+      "name": "Paralia Agias Triadas",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "good",
+        "score": 80,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 66,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 514,
+      "name": "Giatrou Tsairi",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 515,
+      "name": "Paralia Stavrou",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 516,
+      "name": "KAAv Asprovaltas",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 517,
+      "name": "Kroustali",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 518,
+      "name": "Kyani Akti",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 519,
+      "name": "Milies",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 90,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 76,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 520,
+      "name": "Navagio Epanomis",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 521,
+      "name": "Paralia Neas Michanionas",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "good",
+        "score": 80,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 66,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 522,
+      "name": "Paralia Neon Vrasnon",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 523,
+      "name": "Patoma",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 524,
+      "name": "Paralia Peraias",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "good",
+        "score": 70,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 56,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 525,
+      "name": "Paralia Serraiki Akti",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 526,
+      "name": "Trapezi",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "excellent",
+        "score": 92,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 78,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 3190,
+      "name": "Paralia Angelochoriou",
+      "regionId": "central-macedonia-thessaloniki-area",
+      "before": {
+        "comfort": "good",
+        "score": 80,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 66,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 716,
+      "name": "Agia Fotia",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 717,
+      "name": "Agios Panteleimonas",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "good",
+        "score": 65,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "caution",
+        "score": 0,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 718,
+      "name": "Atherina",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    },
+    {
+      "beachId": 719,
+      "name": "Alatsolimni",
+      "regionId": "crete-crete-lasithi",
+      "before": {
+        "comfort": "excellent",
+        "score": 100,
+        "effBft": null
+      },
+      "after": {
+        "comfort": "good",
+        "score": 100,
+        "effBft": null
+      }
+    }
+  ],
+  "note": "Δ8 (§Γ81): μία μέρα με τον καιρό που έτυχε. Το «ηπιότερο» μπορεί να προέρχεται μόνο από τη βροχή σε όλες τις κρίσιμες ώρες — έλεγξέ το στα softerSamples."
+}

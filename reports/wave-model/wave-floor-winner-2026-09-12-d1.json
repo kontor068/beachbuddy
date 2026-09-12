@@ -1,0 +1,793 @@
+{
+  "generatedAt": "2026-09-12T17:00:15.500Z",
+  "dayIndex": 1,
+  "regions": 110,
+  "regionsSkipped": 0,
+  "calls": 34272,
+  "beaches": 2856,
+  "question": "ποιος ισούται με το ενεργό ύψος: μέτρηση ewam / δάπεδο ψιλοκύματος / SMB / ταβάνι γεωμετρίας",
+  "overall": {
+    "n": 34272,
+    "winners": {
+      "floor": 6493,
+      "smb": 1942,
+      "measured": 25797,
+      "ceiling": 40
+    },
+    "floorPct": 18.9,
+    "floorAboveMeasured": 6484
+  },
+  "byExposure": {
+    "exposed": {
+      "n": 10221,
+      "winners": {
+        "floor": 2131,
+        "smb": 1476,
+        "measured": 6594,
+        "ceiling": 20
+      },
+      "floorPct": 20.8,
+      "floorAboveMeasured": 2131
+    },
+    "protected": {
+      "n": 18203,
+      "winners": {
+        "floor": 3239,
+        "measured": 14823,
+        "smb": 133,
+        "ceiling": 8
+      },
+      "floorPct": 17.8,
+      "floorAboveMeasured": 3235
+    },
+    "partial": {
+      "n": 5848,
+      "winners": {
+        "floor": 1123,
+        "smb": 333,
+        "measured": 4380,
+        "ceiling": 12
+      },
+      "floorPct": 19.2,
+      "floorAboveMeasured": 1118
+    }
+  },
+  "byBeaufort": {
+    "1": {
+      "n": 916,
+      "winners": {
+        "smb": 40,
+        "measured": 875,
+        "ceiling": 1
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "2": {
+      "n": 8986,
+      "winners": {
+        "smb": 642,
+        "measured": 8325,
+        "ceiling": 19
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "3": {
+      "n": 15053,
+      "winners": {
+        "floor": 2798,
+        "smb": 1260,
+        "measured": 10975,
+        "ceiling": 20
+      },
+      "floorPct": 18.6,
+      "floorAboveMeasured": 2793
+    },
+    "4": {
+      "n": 7693,
+      "winners": {
+        "floor": 3301,
+        "measured": 4392
+      },
+      "floorPct": 42.9,
+      "floorAboveMeasured": 3297
+    },
+    "5": {
+      "n": 1603,
+      "winners": {
+        "floor": 394,
+        "measured": 1209
+      },
+      "floorPct": 24.6,
+      "floorAboveMeasured": 394
+    },
+    "6": {
+      "n": 21,
+      "winners": {
+        "measured": 21
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    }
+  },
+  "byFetchBand": {
+    "≥15": {
+      "n": 5736,
+      "winners": {
+        "floor": 787,
+        "smb": 740,
+        "measured": 4209
+      },
+      "floorPct": 13.7,
+      "floorAboveMeasured": 787
+    },
+    "<3": {
+      "n": 21096,
+      "winners": {
+        "floor": 4197,
+        "measured": 16464,
+        "smb": 395,
+        "ceiling": 40
+      },
+      "floorPct": 19.9,
+      "floorAboveMeasured": 4188
+    },
+    "8-15": {
+      "n": 3864,
+      "winners": {
+        "floor": 808,
+        "smb": 517,
+        "measured": 2539
+      },
+      "floorPct": 20.9,
+      "floorAboveMeasured": 808
+    },
+    "3-8": {
+      "n": 3576,
+      "winners": {
+        "floor": 701,
+        "measured": 2585,
+        "smb": 290
+      },
+      "floorPct": 19.6,
+      "floorAboveMeasured": 701
+    }
+  },
+  "byExposureAndBeaufort": {
+    "exposed|3": {
+      "n": 4434,
+      "winners": {
+        "floor": 840,
+        "smb": 914,
+        "measured": 2670,
+        "ceiling": 10
+      },
+      "floorPct": 18.9,
+      "floorAboveMeasured": 840
+    },
+    "exposed|2": {
+      "n": 2920,
+      "winners": {
+        "smb": 526,
+        "measured": 2384,
+        "ceiling": 10
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "protected|3": {
+      "n": 8139,
+      "winners": {
+        "floor": 1558,
+        "measured": 6467,
+        "smb": 112,
+        "ceiling": 2
+      },
+      "floorPct": 19.1,
+      "floorAboveMeasured": 1558
+    },
+    "protected|4": {
+      "n": 4111,
+      "winners": {
+        "floor": 1494,
+        "measured": 2617
+      },
+      "floorPct": 36.3,
+      "floorAboveMeasured": 1490
+    },
+    "protected|2": {
+      "n": 4614,
+      "winners": {
+        "measured": 4589,
+        "smb": 19,
+        "ceiling": 6
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "exposed|4": {
+      "n": 2191,
+      "winners": {
+        "floor": 1171,
+        "measured": 1020
+      },
+      "floorPct": 53.4,
+      "floorAboveMeasured": 1171
+    },
+    "partial|3": {
+      "n": 2480,
+      "winners": {
+        "floor": 400,
+        "smb": 234,
+        "measured": 1838,
+        "ceiling": 8
+      },
+      "floorPct": 16.1,
+      "floorAboveMeasured": 395
+    },
+    "partial|2": {
+      "n": 1452,
+      "winners": {
+        "smb": 97,
+        "measured": 1352,
+        "ceiling": 3
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "partial|4": {
+      "n": 1391,
+      "winners": {
+        "floor": 636,
+        "measured": 755
+      },
+      "floorPct": 45.7,
+      "floorAboveMeasured": 636
+    },
+    "exposed|1": {
+      "n": 273,
+      "winners": {
+        "smb": 36,
+        "measured": 237
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "protected|1": {
+      "n": 465,
+      "winners": {
+        "measured": 463,
+        "smb": 2
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "partial|1": {
+      "n": 178,
+      "winners": {
+        "measured": 175,
+        "ceiling": 1,
+        "smb": 2
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "exposed|5": {
+      "n": 401,
+      "winners": {
+        "floor": 120,
+        "measured": 281
+      },
+      "floorPct": 29.9,
+      "floorAboveMeasured": 120
+    },
+    "protected|5": {
+      "n": 862,
+      "winners": {
+        "floor": 187,
+        "measured": 675
+      },
+      "floorPct": 21.7,
+      "floorAboveMeasured": 187
+    },
+    "partial|5": {
+      "n": 340,
+      "winners": {
+        "floor": 87,
+        "measured": 253
+      },
+      "floorPct": 25.6,
+      "floorAboveMeasured": 87
+    },
+    "protected|6": {
+      "n": 12,
+      "winners": {
+        "measured": 12
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "exposed|6": {
+      "n": 2,
+      "winners": {
+        "measured": 2
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    },
+    "partial|6": {
+      "n": 7,
+      "winners": {
+        "measured": 7
+      },
+      "floorPct": 0,
+      "floorAboveMeasured": 0
+    }
+  },
+  "candidate": {
+    "rule": "δάπεδο = min(δάπεδο, SMB(ριπή, fetch του τομέα του ανέμου)) — μονόδρομη προς το ηπιότερο, ΔΕΝ μπαίνει χωρίς απόφαση",
+    "floorWins": 6493,
+    "floorWinsBeaches": 1289,
+    "changed": 4591,
+    "changedBeaches": 1005,
+    "medianDropM": 0.13,
+    "crossBelowAmber": 43,
+    "crossBelowRough": 0,
+    "changedByFetchBand": {
+      "<3": {
+        "n": 4126,
+        "medianDropM": 0.14,
+        "crossBelowAmber": 32
+      },
+      "8-15": {
+        "n": 140,
+        "medianDropM": 0.05,
+        "crossBelowAmber": 1
+      },
+      "≥15": {
+        "n": 17,
+        "medianDropM": 0.02,
+        "crossBelowAmber": 0
+      },
+      "3-8": {
+        "n": 308,
+        "medianDropM": 0.09,
+        "crossBelowAmber": 10
+      }
+    },
+    "changedByExposure": {
+      "protected": 2961,
+      "exposed": 923,
+      "partial": 707
+    }
+  },
+  "samples": [
+    {
+      "beachId": 93,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 35.6,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.04,
+      "smb": 0.41,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.04
+    },
+    {
+      "beachId": 3024,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 35.6,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.04,
+      "smb": 0.19,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.04
+    },
+    {
+      "beachId": 81,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 35.6,
+      "fetchKm": 0.08,
+      "sectorLevel": "protected",
+      "measured": 0.08,
+      "smb": 0.32,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.08,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 84,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 35.6,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.08,
+      "smb": 0.37,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 93,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 12,
+      "gustKmh": 34.2,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.04,
+      "smb": 0.21,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.04
+    },
+    {
+      "beachId": 897,
+      "regionId": "epirus-thesprotia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.7,
+      "gustKmh": 44.3,
+      "fetchKm": 0.16,
+      "sectorLevel": "partial",
+      "measured": 0.08,
+      "smb": 0.13,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.15,
+      "effectiveIfCapped": 0.15
+    },
+    {
+      "beachId": 1227,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 5,
+      "windKmh": 28.3,
+      "gustKmh": 45.4,
+      "fetchKm": 1.16,
+      "sectorLevel": "partial",
+      "measured": 0.36,
+      "smb": 0.21,
+      "floor": 0.9,
+      "effective": 0.9,
+      "winner": "floor",
+      "capped": 0.34,
+      "effectiveIfCapped": 0.36
+    },
+    {
+      "beachId": 1571,
+      "regionId": "peloponnese-lakonia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.2,
+      "gustKmh": 31.7,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.06,
+      "smb": 0.28,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.06
+    },
+    {
+      "beachId": 1939,
+      "regionId": "south-aegean-mykonos",
+      "exposure": "partial",
+      "beaufort": 5,
+      "windKmh": 31.3,
+      "gustKmh": 52.9,
+      "fetchKm": 0.04,
+      "sectorLevel": "partial",
+      "measured": 0.16,
+      "smb": 0.37,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.1,
+      "effectiveIfCapped": 0.16
+    },
+    {
+      "beachId": 81,
+      "regionId": "attica-aegina",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 12,
+      "gustKmh": 34.2,
+      "fetchKm": 0.08,
+      "sectorLevel": "protected",
+      "measured": 0.04,
+      "smb": 0.19,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.08,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 8,
+      "regionId": "attica-athens-area-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 14,
+      "gustKmh": 28.1,
+      "fetchKm": 0.12,
+      "sectorLevel": "partial",
+      "measured": 0.02,
+      "smb": 0.2,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.08,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 1229,
+      "regionId": "ionian-islands-ithaca",
+      "exposure": "exposed",
+      "beaufort": 5,
+      "windKmh": 28.3,
+      "gustKmh": 45.4,
+      "fetchKm": 1.52,
+      "sectorLevel": "partial",
+      "measured": 0.36,
+      "smb": 0.22,
+      "floor": 0.9,
+      "effective": 0.9,
+      "winner": "floor",
+      "capped": 0.38,
+      "effectiveIfCapped": 0.38
+    },
+    {
+      "beachId": 1546,
+      "regionId": "peloponnese-lakonia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.2,
+      "gustKmh": 31.7,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.08,
+      "smb": 0.3,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.08
+    },
+    {
+      "beachId": 2220,
+      "regionId": "south-aegean-iraklia",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.2,
+      "gustKmh": 35.3,
+      "fetchKm": 0.04,
+      "sectorLevel": "partial",
+      "measured": 0.18,
+      "smb": 0.21,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.06,
+      "effectiveIfCapped": 0.18
+    },
+    {
+      "beachId": 1978,
+      "regionId": "south-aegean-mykonos",
+      "exposure": "partial",
+      "beaufort": 5,
+      "windKmh": 31.3,
+      "gustKmh": 52.9,
+      "fetchKm": 0.16,
+      "sectorLevel": "partial",
+      "measured": 0.16,
+      "smb": 0.33,
+      "floor": 0.7,
+      "effective": 0.7,
+      "winner": "floor",
+      "capped": 0.18,
+      "effectiveIfCapped": 0.18
+    },
+    {
+      "beachId": 85,
+      "regionId": "attica-aegina",
+      "exposure": "partial",
+      "beaufort": 4,
+      "windKmh": 19.6,
+      "gustKmh": 35.6,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.04,
+      "smb": 0.18,
+      "floor": 0.55,
+      "effective": 0.55,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.04
+    },
+    {
+      "beachId": 579,
+      "regionId": "crete-crete-chania",
+      "exposure": "partial",
+      "beaufort": 3,
+      "windKmh": 18.2,
+      "gustKmh": 35.3,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": null,
+      "smb": 0.01,
+      "floor": 0.5,
+      "effective": 0.5,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0
+    },
+    {
+      "beachId": 579,
+      "regionId": "crete-crete-chania",
+      "exposure": "partial",
+      "beaufort": 3,
+      "windKmh": 17.9,
+      "gustKmh": 35.3,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": null,
+      "smb": 0,
+      "floor": 0.5,
+      "effective": 0.5,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0
+    },
+    {
+      "beachId": 579,
+      "regionId": "crete-crete-chania",
+      "exposure": "partial",
+      "beaufort": 3,
+      "windKmh": 16.7,
+      "gustKmh": 35.3,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": null,
+      "smb": 0,
+      "floor": 0.5,
+      "effective": 0.5,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0
+    },
+    {
+      "beachId": 579,
+      "regionId": "crete-crete-chania",
+      "exposure": "partial",
+      "beaufort": 3,
+      "windKmh": 16.7,
+      "gustKmh": 33.1,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": null,
+      "smb": 0,
+      "floor": 0.5,
+      "effective": 0.5,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0
+    },
+    {
+      "beachId": 579,
+      "regionId": "crete-crete-chania",
+      "exposure": "partial",
+      "beaufort": 3,
+      "windKmh": 14.2,
+      "gustKmh": 34.2,
+      "fetchKm": 0,
+      "sectorLevel": "partial",
+      "measured": null,
+      "smb": 0,
+      "floor": 0.5,
+      "effective": 0.5,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0
+    },
+    {
+      "beachId": 897,
+      "regionId": "epirus-thesprotia-mainland",
+      "exposure": "exposed",
+      "beaufort": 3,
+      "windKmh": 14.3,
+      "gustKmh": 31.7,
+      "fetchKm": 0.16,
+      "sectorLevel": "partial",
+      "measured": 0.08,
+      "smb": 0.1,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.1,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1475,
+      "regionId": "peloponnese-argolida-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 20,
+      "gustKmh": 24.5,
+      "fetchKm": 0.36,
+      "sectorLevel": "partial",
+      "measured": 0.02,
+      "smb": 0.1,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0.1,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1571,
+      "regionId": "peloponnese-lakonia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.7,
+      "gustKmh": 33.8,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.32,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.1
+    },
+    {
+      "beachId": 1590,
+      "regionId": "peloponnese-lakonia-mainland",
+      "exposure": "exposed",
+      "beaufort": 4,
+      "windKmh": 19.2,
+      "gustKmh": 31.7,
+      "fetchKm": 0,
+      "sectorLevel": "protected",
+      "measured": 0.1,
+      "smb": 0.3,
+      "floor": 0.6,
+      "effective": 0.6,
+      "winner": "floor",
+      "capped": 0,
+      "effectiveIfCapped": 0.1
+    }
+  ],
+  "note": "Δ6 (§Γ81): μέτρηση μίας μέρας με το πραγματικό προϊόν. Δεν λέει ποιος έχει δίκιο — μόνο ποιος αποφασίζει. Έλεγχος με σημαδούρες: επόμενο."
+}
