@@ -1,0 +1,2018 @@
+{
+  "generatedAt": "2026-09-12T22:20:51.912Z",
+  "dayIndex": 0,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "GUST_EFFECTIVE_BFT_SPREAD_KMH (services/recommendationService) — το σκαλί «+1 ενεργό Μποφόρ από ριπές» σε ≥3 Μπφ· παραγωγή 22· ξαναγράφεται μόνο κατά τη φόρτωση εδώ (δήλωση + συνθήκη)",
+  "untouched": "σκάλα πόντων spread ≥14/≥22/≥35, σημειώσεις 18/30, πίνακας οθόνης beaufortRange (≥12) — μένουν 22 όπως στην παραγωγή",
+  "evidence": "Δ5 §Γ81: gust-spread-vs-stations-2026-09-12.json — ο κανόνας ανάβει 30,5% των ωρών ≥3 Μπφ, το όργανο 0,8%, ισο-συχνότητα ~38· ριπή μοντέλου − οργάνου: 3 Μπφ +11,9 · 4 +9,8 · 5 +4,5 · 6 −0,9 · 7 −5,7 · 8 −10,4",
+  "production": {
+    "threshold": 22,
+    "distribution": {
+      "excellent": 696,
+      "good": 1049,
+      "caution": 381,
+      "avoid": 0,
+      "avoid_swimming": 730
+    },
+    "byBaseBeaufort": {
+      "1": 128,
+      "2": 589,
+      "3": 1190,
+      "4": 855,
+      "5": 94
+    }
+  },
+  "variants": {
+    "t30": {
+      "threshold": 30,
+      "verdict": {
+        "changed": 195,
+        "softer": 195,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "caution → good": 64,
+          "good → excellent": 112,
+          "avoid_swimming → caution": 19
+        },
+        "softerByExposure": {
+          "partial": 20,
+          "protected": 168,
+          "exposed": 7
+        },
+        "softerByBaseBeaufort": {
+          "3": 133,
+          "4": 23,
+          "5": 39
+        },
+        "avoidLifted": {
+          "count": 19,
+          "byBaseBeaufort": {
+            "3": 5,
+            "4": 14
+          },
+          "byExposure": {
+            "protected": 5,
+            "partial": 14
+          }
+        }
+      },
+      "score": {
+        "up": 403,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 808,
+        "good": 1001,
+        "caution": 336,
+        "avoid": 0,
+        "avoid_swimming": 711
+      },
+      "softerSamples": [
+        {
+          "beachId": 26,
+          "name": "Paralia Akrotiriou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 27,
+          "name": "Paralia Agias Paraskevis",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 31,
+          "name": "Theretro Axiomatikon Navtikou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 32,
+          "name": "Paralia Schinia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 33,
+          "name": "Paralia Marathona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 43,
+          "name": "Erotospilia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 44,
+          "name": "Paralia Agiou Spyridona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 50,
+          "name": "Lomparda / Mojito Bay",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 51,
+          "name": "Iliopoulos",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 52,
+          "name": "Paralia Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 53,
+          "name": "Paralia Skales Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 54,
+          "name": "Galazia Akti",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 57,
+          "name": "Pevko",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 58,
+          "name": "Lagonissi Grand Resort",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 59,
+          "name": "Kalopigado",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 60,
+          "name": "Evkalypta",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 61,
+          "name": "Tsonima",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 62,
+          "name": "Kentriki paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 63,
+          "name": "Devteri Paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 64,
+          "name": "Paralia Mavro Lithari",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 323,
+          "name": "Basales",
+          "regionId": "central-greece-skyros",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 25,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 32,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 538,
+          "name": "Lykos",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 547,
+          "name": "Paralia Agiou Charalampous",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 580,
+          "name": "Sfakiano Ammoudi",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 877,
+          "name": "Skala",
+          "regionId": "epirus-preveza-mainland",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 21,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 28,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1212,
+          "name": "Paralia Marathonisi",
+          "regionId": "ionian-islands-zakynthos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1860,
+          "name": "Agios Nikolaos",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1868,
+          "name": "Aosa",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1877,
+          "name": "Kastella",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1879,
+          "name": "Kouri",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1883,
+          "name": "Markouli",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1887,
+          "name": "Nika",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "t38": {
+      "threshold": 38,
+      "verdict": {
+        "changed": 254,
+        "softer": 254,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "caution → good": 72,
+          "good → excellent": 156,
+          "avoid_swimming → caution": 26
+        },
+        "softerByExposure": {
+          "partial": 26,
+          "protected": 218,
+          "exposed": 10
+        },
+        "softerByBaseBeaufort": {
+          "3": 182,
+          "4": 33,
+          "5": 39
+        },
+        "avoidLifted": {
+          "count": 26,
+          "byBaseBeaufort": {
+            "3": 8,
+            "4": 18
+          },
+          "byExposure": {
+            "protected": 5,
+            "partial": 18,
+            "exposed": 3
+          }
+        }
+      },
+      "score": {
+        "up": 618,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 852,
+        "good": 965,
+        "caution": 335,
+        "avoid": 0,
+        "avoid_swimming": 704
+      },
+      "softerSamples": [
+        {
+          "beachId": 26,
+          "name": "Paralia Akrotiriou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 27,
+          "name": "Paralia Agias Paraskevis",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 31,
+          "name": "Theretro Axiomatikon Navtikou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 32,
+          "name": "Paralia Schinia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 33,
+          "name": "Paralia Marathona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 43,
+          "name": "Erotospilia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 44,
+          "name": "Paralia Agiou Spyridona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 50,
+          "name": "Lomparda / Mojito Bay",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 51,
+          "name": "Iliopoulos",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 52,
+          "name": "Paralia Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 53,
+          "name": "Paralia Skales Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 54,
+          "name": "Galazia Akti",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 57,
+          "name": "Pevko",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 58,
+          "name": "Lagonissi Grand Resort",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 59,
+          "name": "Kalopigado",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 60,
+          "name": "Evkalypta",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 61,
+          "name": "Tsonima",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 62,
+          "name": "Kentriki paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 63,
+          "name": "Devteri Paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 64,
+          "name": "Paralia Mavro Lithari",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 323,
+          "name": "Basales",
+          "regionId": "central-greece-skyros",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 25,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 32,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 538,
+          "name": "Lykos",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 547,
+          "name": "Paralia Agiou Charalampous",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 580,
+          "name": "Sfakiano Ammoudi",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 877,
+          "name": "Skala",
+          "regionId": "epirus-preveza-mainland",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 21,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 28,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1212,
+          "name": "Paralia Marathonisi",
+          "regionId": "ionian-islands-zakynthos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1658,
+          "name": "Agios Pavlos",
+          "regionId": "south-aegean-amorgos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 31,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 38,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 2233,
+          "name": "Agios Konstantinos",
+          "regionId": "south-aegean-astypalaia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 31,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 38,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 2235,
+          "name": "Vatses",
+          "regionId": "south-aegean-astypalaia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 2242,
+          "name": "Mikres Vatses",
+          "regionId": "south-aegean-astypalaia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 2255,
+          "name": "Pezonta",
+          "regionId": "south-aegean-kalymnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 33,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 40,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 2261,
+          "name": "Paralia Arginonta",
+          "regionId": "south-aegean-kalymnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 33,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 40,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "bftT": {
+      "threshold": {
+        "byBaseBeaufort": {
+          "3": 34,
+          "4": 32,
+          "5": 26
+        },
+        "otherwise": 22
+      },
+      "verdict": {
+        "changed": 209,
+        "softer": 209,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "caution → good": 53,
+          "good → excellent": 133,
+          "avoid_swimming → caution": 23
+        },
+        "softerByExposure": {
+          "partial": 22,
+          "protected": 177,
+          "exposed": 10
+        },
+        "softerByBaseBeaufort": {
+          "3": 158,
+          "4": 26,
+          "5": 25
+        },
+        "avoidLifted": {
+          "count": 23,
+          "byBaseBeaufort": {
+            "3": 8,
+            "4": 15
+          },
+          "byExposure": {
+            "protected": 5,
+            "partial": 15,
+            "exposed": 3
+          }
+        }
+      },
+      "score": {
+        "up": 420,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 829,
+        "good": 969,
+        "caution": 351,
+        "avoid": 0,
+        "avoid_swimming": 707
+      },
+      "softerSamples": [
+        {
+          "beachId": 26,
+          "name": "Paralia Akrotiriou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 27,
+          "name": "Paralia Agias Paraskevis",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "caution",
+            "score": 53,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "good",
+            "score": 60,
+            "exposure": "partial",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 31,
+          "name": "Theretro Axiomatikon Navtikou",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 32,
+          "name": "Paralia Schinia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 33,
+          "name": "Paralia Marathona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 43,
+          "name": "Erotospilia",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 44,
+          "name": "Paralia Agiou Spyridona",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 50,
+          "name": "Lomparda / Mojito Bay",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 51,
+          "name": "Iliopoulos",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 52,
+          "name": "Paralia Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 53,
+          "name": "Paralia Skales Altheas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 54,
+          "name": "Galazia Akti",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 57,
+          "name": "Pevko",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 58,
+          "name": "Lagonissi Grand Resort",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 59,
+          "name": "Kalopigado",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 60,
+          "name": "Evkalypta",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 61,
+          "name": "Tsonima",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 62,
+          "name": "Kentriki paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 63,
+          "name": "Devteri Paralia Saronidas",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 64,
+          "name": "Paralia Mavro Lithari",
+          "regionId": "attica-east-attica-mainland",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 15,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 323,
+          "name": "Basales",
+          "regionId": "central-greece-skyros",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 25,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 32,
+            "exposure": "protected",
+            "windKmh": 20,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 538,
+          "name": "Lykos",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 547,
+          "name": "Paralia Agiou Charalampous",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 580,
+          "name": "Sfakiano Ammoudi",
+          "regionId": "crete-crete-chania",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 40,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 47,
+            "exposure": "protected",
+            "windKmh": 18,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 877,
+          "name": "Skala",
+          "regionId": "epirus-preveza-mainland",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 21,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 28,
+            "exposure": "protected",
+            "windKmh": 14,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1212,
+          "name": "Paralia Marathonisi",
+          "regionId": "ionian-islands-zakynthos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 24,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1658,
+          "name": "Agios Pavlos",
+          "regionId": "south-aegean-amorgos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 31,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 38,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 2255,
+          "name": "Pezonta",
+          "regionId": "south-aegean-kalymnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 33,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 40,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 2261,
+          "name": "Paralia Arginonta",
+          "regionId": "south-aegean-kalymnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 33,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 40,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 2271,
+          "name": "Paralia Sykatis",
+          "regionId": "south-aegean-kalymnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 33,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 40,
+            "exposure": "exposed",
+            "windKmh": 15,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 1860,
+          "name": "Agios Nikolaos",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 1868,
+          "name": "Aosa",
+          "regionId": "south-aegean-kythnos",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 23,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    }
+  },
+  "note": "Μία μέρα με τον καιρό που έτυχε. Ψηλότερο όριο = ο κανόνας ανάβει σπανιότερα → μόνο ηπιότερο. Ό,τι αυστηρότερο = ανωμαλία, δες stricterSamples. Το «bft» είναι Μποφόρ ΒΑΣΗΣ από το windSpeedKmph του score (getBeaufortLevel), όχι το ενεργό."
+}

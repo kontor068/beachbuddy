@@ -1,0 +1,761 @@
+{
+  "generatedAt": "2026-09-12T22:27:38.553Z",
+  "dayIndex": 0,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "SHADOW_KD_FLOOR (utils/seaArrival) — δάπεδο της γωνιακής σκιάς ακτής· παραγωγή 0,1· μετριέται ζωντανά μέσα στο πραγματικό calculateBeachScore",
+  "evidence": "Δ7 §Γ81: shadow-kd-calibration-2026-09-12.json — kd≈0,1 → εμπειρικό ~0,29 (n=14.899), kd 0,15-0,35 → ~0,27, kd≈0,5 → ~0,63",
+  "production": {
+    "floor": 0.1,
+    "distribution": {
+      "excellent": 696,
+      "good": 1049,
+      "caution": 381,
+      "avoid": 0,
+      "avoid_swimming": 730
+    },
+    "shoreCalm": 859
+  },
+  "variants": {
+    "kd0.25": {
+      "floor": 0.25,
+      "printedNumber": {
+        "changed": 657,
+        "down": 0,
+        "visibleOnPage": {
+          "changed": 344,
+          "moves": {
+            "0.0 → 0.1": 288,
+            "0.1 → 0.2": 43,
+            "0.1 → 0.3": 10,
+            "0.1 → 0.4": 1,
+            "0.2 → 0.3": 2
+          },
+          "byExposure": {
+            "protected": 324,
+            "partial": 11,
+            "exposed": 9
+          },
+          "byArrival": {
+            "grazing": 312,
+            "enclosed": 26,
+            "unknown": 3,
+            "protected": 3
+          },
+          "samples": [
+            {
+              "beachId": 89,
+              "name": "Paralia Kolona",
+              "regionId": "attica-aegina",
+              "before": 0.02,
+              "after": 0.06,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.24,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 50,
+              "name": "Lomparda / Mojito Bay",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 51,
+              "name": "Iliopoulos",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 52,
+              "name": "Paralia Altheas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 53,
+              "name": "Paralia Skales Altheas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 54,
+              "name": "Galazia Akti",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 60,
+              "name": "Evkalypta",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 63,
+              "name": "Devteri Paralia Saronidas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 64,
+              "name": "Paralia Mavro Lithari",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 65,
+              "name": "Mavro Lithari / Eden Beach",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 67,
+              "name": "Ormos Agiou Nikolaou",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 69,
+              "name": "Paralia Agiou Nikolaou",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.09,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            }
+          ]
+        },
+        "byExposure": {
+          "protected": 621,
+          "partial": 17,
+          "exposed": 19
+        },
+        "byArrival": {
+          "grazing": 600,
+          "enclosed": 45,
+          "unknown": 9,
+          "protected": 3
+        },
+        "medianBeforeM": 0.05,
+        "medianAfterM": 0.1,
+        "medianRatio": 2.3333333333333335,
+        "crossings": {
+          "≤0.3 → above («ήρεμη» του κριτή)": 3,
+          "<0.4 → ≥0.4 (όριο «Ιδανική» του χρώματος, αλλά το χρώμα διαβάζει max(K_d,0,5))": 0,
+          "→ ≥0.8 (κίτρινο)": 0,
+          "→ ≥1.2 (κόκκινο)": 0
+        },
+        "histogramBefore": {
+          "≤0.1": 641,
+          "0.1-0.2": 16,
+          "0.2-0.3": 0,
+          "0.3-0.5": 0,
+          ">0.5": 0
+        },
+        "histogramAfter": {
+          "≤0.1": 534,
+          "0.1-0.2": 96,
+          "0.2-0.3": 24,
+          "0.3-0.5": 3,
+          ">0.5": 0
+        },
+        "biggestJumps": [
+          {
+            "beachId": 1056,
+            "name": "Agia Triada",
+            "regionId": "ionian-islands-othonoi",
+            "before": 0.15,
+            "after": 0.39,
+            "seaM": 1.54,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 146,
+            "name": "Kapsali Piso Gialos",
+            "regionId": "attica-kythira",
+            "before": 0.14,
+            "after": 0.35,
+            "seaM": 1.42,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 2627,
+            "name": "Kechria",
+            "regionId": "thessaly-skiathos",
+            "before": 0.14,
+            "after": 0.35,
+            "seaM": 1.4,
+            "exposure": "protected",
+            "arrival": "protected"
+          },
+          {
+            "beachId": 2597,
+            "name": "Megali Ammos",
+            "regionId": "thessaly-alonissos",
+            "before": 0.12,
+            "after": 0.3,
+            "seaM": 1.22,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1282,
+            "name": "Limnos",
+            "regionId": "north-aegean-psara",
+            "before": 0.11,
+            "after": 0.28,
+            "seaM": 1.14,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1087,
+            "name": "Atheras",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.12,
+            "after": 0.29,
+            "seaM": 1.16,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1101,
+            "name": "Koumaria",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.11,
+            "after": 0.27,
+            "seaM": 1.06,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1111,
+            "name": "Megas Lakkos",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.11,
+            "after": 0.27,
+            "seaM": 1.06,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1018,
+            "name": "Mongonisi",
+            "regionId": "ionian-islands-paxos",
+            "before": 0.11,
+            "after": 0.27,
+            "seaM": 1.06,
+            "exposure": "exposed",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1024,
+            "name": "Giannas",
+            "regionId": "ionian-islands-paxos",
+            "before": 0.1,
+            "after": 0.26,
+            "seaM": 1.02,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 928,
+            "name": "Agias Triades Beach",
+            "regionId": "ionian-islands-corfu",
+            "before": 0.1,
+            "after": 0.25,
+            "seaM": 1,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 520,
+            "name": "Navagio Epanomis",
+            "regionId": "central-macedonia-thessaloniki-area",
+            "before": 0.1,
+            "after": 0.24,
+            "seaM": 0.96,
+            "exposure": "protected",
+            "arrival": "grazing"
+          }
+        ]
+      },
+      "shoreNumber": {
+        "changed": 0,
+        "down": 0,
+        "byExposure": {},
+        "medianRatio": null,
+        "medianDeltaM": null,
+        "crossings": {
+          "calm ≤0.3 → above": 0,
+          "→ ≥0.8 (κίτρινο)": 0,
+          "→ ≥1.2 (κόκκινο)": 0,
+          "backwardsAnyTier": 0
+        },
+        "displayedChanged": 657
+      },
+      "verdict": {
+        "changed": 0,
+        "stricter": 0,
+        "softer": 0,
+        "moves": {}
+      },
+      "score": {
+        "down": 0,
+        "up": 0,
+        "medianDownDelta": null
+      },
+      "colour": {
+        "toneKdChanged": 0,
+        "expected": 0
+      },
+      "distributionAfter": {
+        "excellent": 696,
+        "good": 1049,
+        "caution": 381,
+        "avoid": 0,
+        "avoid_swimming": 730
+      },
+      "softerSamples": [],
+      "stricterSamples": [],
+      "biggestShoreJumps": []
+    },
+    "kd0.3": {
+      "floor": 0.3,
+      "printedNumber": {
+        "changed": 661,
+        "down": 0,
+        "visibleOnPage": {
+          "changed": 396,
+          "moves": {
+            "0.0 → 0.1": 301,
+            "0.1 → 0.3": 16,
+            "0.1 → 0.4": 3,
+            "0.2 → 0.3": 5,
+            "0.1 → 0.2": 70,
+            "0.1 → 0.5": 1
+          },
+          "byExposure": {
+            "protected": 363,
+            "partial": 15,
+            "exposed": 18
+          },
+          "byArrival": {
+            "grazing": 350,
+            "enclosed": 40,
+            "unknown": 3,
+            "protected": 3
+          },
+          "samples": [
+            {
+              "beachId": 89,
+              "name": "Paralia Kolona",
+              "regionId": "attica-aegina",
+              "before": 0.02,
+              "after": 0.07,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.24,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 92,
+              "name": "Paralia Sarpa",
+              "regionId": "attica-aegina",
+              "before": 0.02,
+              "after": 0.05,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.18,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 50,
+              "name": "Lomparda / Mojito Bay",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 51,
+              "name": "Iliopoulos",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 52,
+              "name": "Paralia Altheas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 53,
+              "name": "Paralia Skales Altheas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 54,
+              "name": "Galazia Akti",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 60,
+              "name": "Evkalypta",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 63,
+              "name": "Devteri Paralia Saronidas",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 64,
+              "name": "Paralia Mavro Lithari",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 65,
+              "name": "Mavro Lithari / Eden Beach",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            },
+            {
+              "beachId": 67,
+              "name": "Ormos Agiou Nikolaou",
+              "regionId": "attica-east-attica-mainland",
+              "before": 0.03,
+              "after": 0.1,
+              "shownBefore": 0,
+              "shownAfter": 0.1,
+              "seaM": 0.35,
+              "exposure": "protected",
+              "arrival": "grazing"
+            }
+          ]
+        },
+        "byExposure": {
+          "protected": 625,
+          "partial": 17,
+          "exposed": 19
+        },
+        "byArrival": {
+          "grazing": 604,
+          "enclosed": 45,
+          "unknown": 9,
+          "protected": 3
+        },
+        "medianBeforeM": 0.05,
+        "medianAfterM": 0.1,
+        "medianRatio": 2.5,
+        "crossings": {
+          "≤0.3 → above («ήρεμη» του κριτή)": 12,
+          "<0.4 → ≥0.4 (όριο «Ιδανική» του χρώματος, αλλά το χρώμα διαβάζει max(K_d,0,5))": 3,
+          "→ ≥0.8 (κίτρινο)": 0,
+          "→ ≥1.2 (κόκκινο)": 0
+        },
+        "histogramBefore": {
+          "≤0.1": 641,
+          "0.1-0.2": 20,
+          "0.2-0.3": 0,
+          "0.3-0.5": 0,
+          ">0.5": 0
+        },
+        "histogramAfter": {
+          "≤0.1": 514,
+          "0.1-0.2": 99,
+          "0.2-0.3": 36,
+          "0.3-0.5": 12,
+          ">0.5": 0
+        },
+        "biggestJumps": [
+          {
+            "beachId": 1056,
+            "name": "Agia Triada",
+            "regionId": "ionian-islands-othonoi",
+            "before": 0.15,
+            "after": 0.46,
+            "seaM": 1.54,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 146,
+            "name": "Kapsali Piso Gialos",
+            "regionId": "attica-kythira",
+            "before": 0.14,
+            "after": 0.43,
+            "seaM": 1.42,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 2627,
+            "name": "Kechria",
+            "regionId": "thessaly-skiathos",
+            "before": 0.14,
+            "after": 0.42,
+            "seaM": 1.4,
+            "exposure": "protected",
+            "arrival": "protected"
+          },
+          {
+            "beachId": 2597,
+            "name": "Megali Ammos",
+            "regionId": "thessaly-alonissos",
+            "before": 0.12,
+            "after": 0.37,
+            "seaM": 1.22,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1282,
+            "name": "Limnos",
+            "regionId": "north-aegean-psara",
+            "before": 0.11,
+            "after": 0.34,
+            "seaM": 1.14,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1087,
+            "name": "Atheras",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.12,
+            "after": 0.35,
+            "seaM": 1.16,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1101,
+            "name": "Koumaria",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.11,
+            "after": 0.32,
+            "seaM": 1.06,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1111,
+            "name": "Megas Lakkos",
+            "regionId": "ionian-islands-kefalonia",
+            "before": 0.11,
+            "after": 0.32,
+            "seaM": 1.06,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 1018,
+            "name": "Mongonisi",
+            "regionId": "ionian-islands-paxos",
+            "before": 0.11,
+            "after": 0.32,
+            "seaM": 1.06,
+            "exposure": "exposed",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 1024,
+            "name": "Giannas",
+            "regionId": "ionian-islands-paxos",
+            "before": 0.1,
+            "after": 0.31,
+            "seaM": 1.02,
+            "exposure": "protected",
+            "arrival": "grazing"
+          },
+          {
+            "beachId": 928,
+            "name": "Agias Triades Beach",
+            "regionId": "ionian-islands-corfu",
+            "before": 0.1,
+            "after": 0.3,
+            "seaM": 1,
+            "exposure": "partial",
+            "arrival": "enclosed"
+          },
+          {
+            "beachId": 520,
+            "name": "Navagio Epanomis",
+            "regionId": "central-macedonia-thessaloniki-area",
+            "before": 0.1,
+            "after": 0.29,
+            "seaM": 0.96,
+            "exposure": "protected",
+            "arrival": "grazing"
+          }
+        ]
+      },
+      "shoreNumber": {
+        "changed": 0,
+        "down": 0,
+        "byExposure": {},
+        "medianRatio": null,
+        "medianDeltaM": null,
+        "crossings": {
+          "calm ≤0.3 → above": 0,
+          "→ ≥0.8 (κίτρινο)": 0,
+          "→ ≥1.2 (κόκκινο)": 0,
+          "backwardsAnyTier": 0
+        },
+        "displayedChanged": 661
+      },
+      "verdict": {
+        "changed": 0,
+        "stricter": 0,
+        "softer": 0,
+        "moves": {}
+      },
+      "score": {
+        "down": 0,
+        "up": 0,
+        "medianDownDelta": null
+      },
+      "colour": {
+        "toneKdChanged": 0,
+        "expected": 0
+      },
+      "distributionAfter": {
+        "excellent": 696,
+        "good": 1049,
+        "caution": 381,
+        "avoid": 0,
+        "avoid_swimming": 730
+      },
+      "softerSamples": [],
+      "stricterSamples": [],
+      "biggestShoreJumps": []
+    }
+  },
+  "note": "Μία μέρα με τον καιρό που έτυχε. Το δάπεδο αγγίζει ΜΟΝΟ το τυπωμένο νούμερο (printedNumber): η ετυμηγορία διαβάζει min(εκτίμηση ακτής, K_d-αποσβεσμένο) και το χρώμα max(K_d, 0,5) — shoreNumber/verdict/colour πρέπει να είναι 0. Ό,τι «ηπιότερο» = ανωμαλία. Το K_d είναι ένα στη μέση διεύθυνση (Δ11 εκκρεμεί)."
+}

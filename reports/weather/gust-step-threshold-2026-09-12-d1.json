@@ -1,0 +1,2019 @@
+{
+  "generatedAt": "2026-09-12T22:25:58.218Z",
+  "dayIndex": 1,
+  "regions": 110,
+  "beaches": 2856,
+  "change": "GUST_EFFECTIVE_BFT_SPREAD_KMH (services/recommendationService) — το σκαλί «+1 ενεργό Μποφόρ από ριπές» σε ≥3 Μπφ· παραγωγή 22· ξαναγράφεται μόνο κατά τη φόρτωση εδώ (δήλωση + συνθήκη)",
+  "untouched": "σκάλα πόντων spread ≥14/≥22/≥35, σημειώσεις 18/30, πίνακας οθόνης beaufortRange (≥12) — μένουν 22 όπως στην παραγωγή",
+  "evidence": "Δ5 §Γ81: gust-spread-vs-stations-2026-09-12.json — ο κανόνας ανάβει 30,5% των ωρών ≥3 Μπφ, το όργανο 0,8%, ισο-συχνότητα ~38· ριπή μοντέλου − οργάνου: 3 Μπφ +11,9 · 4 +9,8 · 5 +4,5 · 6 −0,9 · 7 −5,7 · 8 −10,4",
+  "production": {
+    "threshold": 22,
+    "distribution": {
+      "excellent": 609,
+      "good": 1256,
+      "caution": 377,
+      "avoid": 0,
+      "avoid_swimming": 614
+    },
+    "byBaseBeaufort": {
+      "1": 66,
+      "2": 600,
+      "3": 1602,
+      "4": 526,
+      "5": 62
+    }
+  },
+  "variants": {
+    "t30": {
+      "threshold": 30,
+      "verdict": {
+        "changed": 330,
+        "softer": 330,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "good → excellent": 229,
+          "avoid_swimming → caution": 26,
+          "caution → good": 75
+        },
+        "softerByExposure": {
+          "protected": 295,
+          "partial": 31,
+          "exposed": 4
+        },
+        "softerByBaseBeaufort": {
+          "3": 257,
+          "4": 30,
+          "5": 43
+        },
+        "avoidLifted": {
+          "count": 26,
+          "byBaseBeaufort": {
+            "3": 15,
+            "4": 11
+          },
+          "byExposure": {
+            "partial": 21,
+            "protected": 3,
+            "exposed": 2
+          }
+        }
+      },
+      "score": {
+        "up": 591,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 838,
+        "good": 1102,
+        "caution": 328,
+        "avoid": 0,
+        "avoid_swimming": 588
+      },
+      "softerSamples": [
+        {
+          "beachId": 193,
+          "name": "Agia Irini Karystou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 194,
+          "name": "Agia Irini Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 196,
+          "name": "Agios Athanasios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 197,
+          "name": "Agios Antonios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 203,
+          "name": "Akrotiri",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 205,
+          "name": "Alykes",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 207,
+          "name": "Aralimos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 214,
+          "name": "Gaidaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 215,
+          "name": "Galataki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 221,
+          "name": "Zastana",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 222,
+          "name": "Zefyros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 223,
+          "name": "Thapsa",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 224,
+          "name": "Kavos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 228,
+          "name": "Kalamitsi",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 232,
+          "name": "Kefala",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 234,
+          "name": "Kokkinias",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 85,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 237,
+          "name": "Kourenti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 240,
+          "name": "Levki Akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 241,
+          "name": "Limnionas Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 268,
+          "name": "Paralia Gialtron",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 286,
+          "name": "Petali",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 304,
+          "name": "Stomio",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 308,
+          "name": "Tsilaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 311,
+          "name": "Chiliadou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 313,
+          "name": "Chrysi akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3121,
+          "name": "Paralia Pili",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 638,
+          "name": "Psaromoura",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 655,
+          "name": "Pera Galini",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 663,
+          "name": "Maridaki",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 666,
+          "name": "Agios Nikitas",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "t38": {
+      "threshold": 38,
+      "verdict": {
+        "changed": 353,
+        "softer": 353,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "good → excellent": 250,
+          "avoid_swimming → caution": 26,
+          "caution → good": 77
+        },
+        "softerByExposure": {
+          "protected": 317,
+          "partial": 32,
+          "exposed": 4
+        },
+        "softerByBaseBeaufort": {
+          "3": 280,
+          "4": 30,
+          "5": 43
+        },
+        "avoidLifted": {
+          "count": 26,
+          "byBaseBeaufort": {
+            "3": 15,
+            "4": 11
+          },
+          "byExposure": {
+            "partial": 21,
+            "protected": 3,
+            "exposed": 2
+          }
+        }
+      },
+      "score": {
+        "up": 603,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 859,
+        "good": 1083,
+        "caution": 326,
+        "avoid": 0,
+        "avoid_swimming": 588
+      },
+      "softerSamples": [
+        {
+          "beachId": 193,
+          "name": "Agia Irini Karystou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 194,
+          "name": "Agia Irini Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 196,
+          "name": "Agios Athanasios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 197,
+          "name": "Agios Antonios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 203,
+          "name": "Akrotiri",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 205,
+          "name": "Alykes",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 207,
+          "name": "Aralimos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 214,
+          "name": "Gaidaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 215,
+          "name": "Galataki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 221,
+          "name": "Zastana",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 222,
+          "name": "Zefyros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 223,
+          "name": "Thapsa",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 224,
+          "name": "Kavos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 228,
+          "name": "Kalamitsi",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 232,
+          "name": "Kefala",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 234,
+          "name": "Kokkinias",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 85,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 237,
+          "name": "Kourenti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 240,
+          "name": "Levki Akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 241,
+          "name": "Limnionas Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 268,
+          "name": "Paralia Gialtron",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 286,
+          "name": "Petali",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 304,
+          "name": "Stomio",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 308,
+          "name": "Tsilaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 311,
+          "name": "Chiliadou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 313,
+          "name": "Chrysi akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3121,
+          "name": "Paralia Pili",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 638,
+          "name": "Psaromoura",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 655,
+          "name": "Pera Galini",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 663,
+          "name": "Maridaki",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 666,
+          "name": "Agios Nikitas",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    },
+    "bftT": {
+      "threshold": {
+        "byBaseBeaufort": {
+          "3": 34,
+          "4": 32,
+          "5": 26
+        },
+        "otherwise": 22
+      },
+      "verdict": {
+        "changed": 353,
+        "softer": 353,
+        "stricter": 0,
+        "expectedStricter": 0,
+        "moves": {
+          "good → excellent": 250,
+          "avoid_swimming → caution": 26,
+          "caution → good": 77
+        },
+        "softerByExposure": {
+          "protected": 317,
+          "partial": 32,
+          "exposed": 4
+        },
+        "softerByBaseBeaufort": {
+          "3": 280,
+          "4": 30,
+          "5": 43
+        },
+        "avoidLifted": {
+          "count": 26,
+          "byBaseBeaufort": {
+            "3": 15,
+            "4": 11
+          },
+          "byExposure": {
+            "partial": 21,
+            "protected": 3,
+            "exposed": 2
+          }
+        }
+      },
+      "score": {
+        "up": 602,
+        "down": 0,
+        "medianUpDelta": 7
+      },
+      "distributionAfter": {
+        "excellent": 859,
+        "good": 1083,
+        "caution": 326,
+        "avoid": 0,
+        "avoid_swimming": 588
+      },
+      "softerSamples": [
+        {
+          "beachId": 193,
+          "name": "Agia Irini Karystou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 194,
+          "name": "Agia Irini Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 196,
+          "name": "Agios Athanasios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 197,
+          "name": "Agios Antonios",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 203,
+          "name": "Akrotiri",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 205,
+          "name": "Alykes",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 207,
+          "name": "Aralimos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 214,
+          "name": "Gaidaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 215,
+          "name": "Galataki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 221,
+          "name": "Zastana",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 222,
+          "name": "Zefyros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 223,
+          "name": "Thapsa",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 224,
+          "name": "Kavos",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 228,
+          "name": "Kalamitsi",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 232,
+          "name": "Kefala",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 234,
+          "name": "Kokkinias",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 85,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 237,
+          "name": "Kourenti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 240,
+          "name": "Levki Akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 100,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 241,
+          "name": "Limnionas Marmariou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "good",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "excellent",
+            "score": 92,
+            "exposure": "protected",
+            "windKmh": 17,
+            "bft": 3
+          }
+        }
+      ],
+      "avoidLiftedSamples": [
+        {
+          "beachId": 206,
+          "name": "Anemaki",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 268,
+          "name": "Paralia Gialtron",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 286,
+          "name": "Petali",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 304,
+          "name": "Stomio",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 308,
+          "name": "Tsilaros",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 311,
+          "name": "Chiliadou",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 313,
+          "name": "Chrysi akti",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 43,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 50,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 3121,
+          "name": "Paralia Pili",
+          "regionId": "central-greece-evia",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 41,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 48,
+            "exposure": "partial",
+            "windKmh": 17,
+            "bft": 3
+          }
+        },
+        {
+          "beachId": 638,
+          "name": "Psaromoura",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 655,
+          "name": "Pera Galini",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 663,
+          "name": "Maridaki",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        },
+        {
+          "beachId": 666,
+          "name": "Agios Nikitas",
+          "regionId": "crete-crete-heraklion",
+          "before": {
+            "comfort": "avoid_swimming",
+            "score": 39,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          },
+          "after": {
+            "comfort": "caution",
+            "score": 46,
+            "exposure": "partial",
+            "windKmh": 21,
+            "bft": 4
+          }
+        }
+      ],
+      "stricterSamples": []
+    }
+  },
+  "note": "Μία μέρα με τον καιρό που έτυχε. Ψηλότερο όριο = ο κανόνας ανάβει σπανιότερα → μόνο ηπιότερο. Ό,τι αυστηρότερο = ανωμαλία, δες stricterSamples. Το «bft» είναι Μποφόρ ΒΑΣΗΣ από το windSpeedKmph του score (getBeaufortLevel), όχι το ενεργό."
+}
