@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-09-12",
+  "beachDays": 30513,
+  "beaches": 2355,
+  "event": "beachFoamOuter >= 0.2",
+  "minOffshoreHs": 0.3,
+  "groups": {
+    "open": {
+      "sayRange": [
+        0.9,
+        1.01
+      ],
+      "n": 15804,
+      "beaches": 2141,
+      "foamRate": 0.321,
+      "medianOffshoreHs": 1.26,
+      "medianPrintedH": 1.26,
+      "logistic": {
+        "a": -1.417,
+        "b": 2.315,
+        "h50m": 1.84
+      },
+      "scaleToMatchOpen": {
+        "s": 1.0,
+        "ci90": [
+          0.97,
+          1.03
+        ],
+        "meaning": "η ανοιχτή καμπύλη ταιριάζει στη σκιά όταν το τυπωμένο ύψος πολλαπλασιαστεί επί s — s>1 = η σκιά είναι ρηχότερη απ' όσο λέμε"
+      }
+    },
+    "edge": {
+      "n": 0,
+      "note": "λίγα"
+    },
+    "deep": {
+      "sayRange": [
+        0.0,
+        0.25
+      ],
+      "n": 14709,
+      "beaches": 994,
+      "foamRate": 0.012,
+      "medianOffshoreHs": 0.8,
+      "medianPrintedH": 0.08,
+      "logistic": {
+        "a": -3.364,
+        "b": 0.434,
+        "h50m": 2334.73
+      },
+      "scaleToMatchOpen": {
+        "s": 2.52,
+        "ci90": [
+          2.31,
+          2.75
+        ],
+        "meaning": "η ανοιχτή καμπύλη ταιριάζει στη σκιά όταν το τυπωμένο ύψος πολλαπλασιαστεί επί s — s>1 = η σκιά είναι ρηχότερη απ' όσο λέμε"
+      }
+    }
+  },
+  "openReference": {
+    "a": -1.417,
+    "b": 2.315,
+    "h50m": 1.84
+  },
+  "byGeometricKd": {
+    "kd≈0.1": {
+      "n": 14899,
+      "foamRate": 0.016,
+      "medianOffshoreHs": 0.82,
+      "scaleToMatchOpen": 2.91,
+      "impliedKd": 0.29
+    },
+    "kd 0.15-0.35": {
+      "n": 519,
+      "foamRate": 0.01,
+      "medianOffshoreHs": 0.64,
+      "scaleToMatchOpen": 1.54,
+      "impliedKd": 0.27
+    },
+    "kd≈0.5": {
+      "n": 3592,
+      "foamRate": 0.148,
+      "medianOffshoreHs": 1.2,
+      "scaleToMatchOpen": 1.26,
+      "impliedKd": 0.63
+    },
+    "kd≈1": {
+      "n": 11503,
+      "foamRate": 0.389,
+      "medianOffshoreHs": 1.27,
+      "scaleToMatchOpen": 1.16,
+      "impliedKd": 1.16
+    }
+  }
+}
