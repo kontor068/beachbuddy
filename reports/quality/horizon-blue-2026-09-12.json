@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-09-12T17:13:05.273Z",
+  "regions": 110,
+  "days": {
+    "4": {
+      "beaches": 2856,
+      "colour": {
+        "orange": 815,
+        "yellow": 913,
+        "blue": 934,
+        "red": 194
+      },
+      "comfort": {
+        "avoid_swimming": 839,
+        "good": 910,
+        "caution": 676,
+        "excellent": 431
+      },
+      "date": "2026-09-15T21:00:00.000Z"
+    },
+    "5": {
+      "beaches": 2856,
+      "colour": {
+        "blue": 977,
+        "yellow": 1080,
+        "red": 273,
+        "orange": 526
+      },
+      "comfort": {
+        "caution": 374,
+        "excellent": 615,
+        "good": 1101,
+        "avoid_swimming": 766
+      },
+      "date": "2026-09-16T21:00:00.000Z"
+    }
+  },
+  "note": "Δ10 (§Γ81): suitabilityColor = το χρώμα της βαθμολογίας (η πινέζα το διαβάζει μέσω windExposureEngine). Ένα στατικό φρένο lead≥4 θα έκανε τα μπλε κίτρινα και τα «excellent» → «good». Μόνο μέτρηση — αλλάζει δόγμα (§ΑΞ3 κανόνας 3)."
+}
