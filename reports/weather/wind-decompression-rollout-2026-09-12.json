@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-09-12T14:00:59.989Z",
+  "hours": 57120,
+  "beaches": 2856,
+  "changedKmhHours": 31631,
+  "up": 22473,
+  "down": 9158,
+  "medianAbsDeltaKmh": 2.4,
+  "p90AbsDeltaKmh": 2.9,
+  "seaCellHours": 25360,
+  "seaCellChanged": 0,
+  "bftChangedHours": 8834,
+  "bftUp": 5788,
+  "bftDown": 3046,
+  "beachesBftChanged": 1574,
+  "rawToShip": {
+    "landHours": 31760,
+    "bftMatrix": {
+      "0": {
+        "1": 164
+      },
+      "1": {
+        "1": 1101,
+        "2": 3325
+      },
+      "2": {
+        "2": 7526,
+        "3": 5204
+      },
+      "3": {
+        "3": 7585,
+        "4": 2098
+      },
+      "4": {
+        "4": 3311,
+        "5": 802
+      },
+      "5": {
+        "5": 604,
+        "6": 22
+      },
+      "6": {
+        "6": 18
+      }
+    },
+    "toneMoves": {
+      "blue → yellow": 3374,
+      "yellow → orange": 1041,
+      "orange → red": 79
+    },
+    "note": "12/09/2026 §Γ81 Δ4 — ωμός μέσος → παραγωγή (applyGustFloor), χερσαία κελιά, ώρες 10-19, σήμερα+αύριο"
+  },
+  "toneChangedHours": 4681,
+  "toneStricter": 3044,
+  "toneSofter": 1637,
+  "beachesToneChanged": 1212,
+  "beachesToneSofter": 456,
+  "toneMoves": {
+    "blue → yellow": 2138,
+    "yellow → blue": 1200,
+    "yellow → orange": 843,
+    "orange → yellow": 394,
+    "red → orange": 35,
+    "orange → blue": 8,
+    "orange → red": 63
+  },
+  "byExposure": {
+    "exposed": {
+      "hours": 18423,
+      "bftChanged": 2422,
+      "toneChanged": 1851
+    },
+    "protected": {
+      "hours": 27292,
+      "bftChanged": 4902,
+      "toneChanged": 2289
+    },
+    "partial": {
+      "hours": 11405,
+      "bftChanged": 1510,
+      "toneChanged": 541
+    }
+  }
+}

@@ -48,8 +48,9 @@ const oldProduction = (speed, gust, elev) => {
   return Math.max(speed, gust * GUST_FLOOR_FACTOR);
 };
 
-const API_KEY = process.env.OPEN_METEO_API_KEY?.trim() || null;
-if (!API_KEY) { console.error('Θέλει OPEN_METEO_API_KEY στο περιβάλλον (εθνική λήψη).'); process.exit(1); }
+import { resolveOpenMeteoKey } from './lib/openMeteoKey.mjs';
+const API_KEY = await resolveOpenMeteoKey();
+if (!API_KEY) { console.error('Θέλει OPEN_METEO_API_KEY (περιβάλλον ή Netlify μέσω NETLIFY_AUTH_TOKEN του .env) — εθνική λήψη.'); process.exit(1); }
 
 const SECTORS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 const sectorOf = deg => SECTORS[Math.round((((deg % 360) + 360) % 360) / 45) % 8];
@@ -120,6 +121,11 @@ const stats = {
   beachesTone: new Set(), beachesToneSofter: new Set(), beachesBft: new Set(), beachesAll: new Set(),
   seaCellHours: 0, seaCellChanged: 0,
   byExposure: {},
+  // 12/09/2026 (§Γ81 Δ4): ΤΙ ΚΑΝΕΙ Η ΔΙΟΡΘΩΣΗ ΣΤΟΝ ΩΜΟ ΑΡΙΘΜΟ, ανά ζώνη Μποφόρ. Το «πριν/μετά»
+  // από πάνω συγκρίνει δύο κανόνες· εδώ μετριέται πόσες ώρες η παραγωγή ανεβάζει τον ΩΜΟ μέσο
+  // κατά ζώνη (0→1, 1→2, 2→3…) στα χερσαία κελιά — το νούμερο που έλειπε από τα σύνολα bftUp/bftDown
+  // και που κρίνει το «φούσκωμα της άπνοιας» (calmInflate 94-96% στα ξένα παράθυρα).
+  rawToShipBft: {}, rawToShipToneMoves: {}, rawToShipLandHours: 0,
 };
 const TONE_ORDER = ['blue', 'yellow', 'orange', 'red'];
 
@@ -151,6 +157,16 @@ for (const item of plan) {
 
     const bBefore = getBeaufortLevel(before), bAfter = getBeaufortLevel(after);
     const exposureLevel = item.profile?.sectors?.[sectorOf(deg)]?.level ?? 'partial';
+    if (!isSea) {
+      const bRaw = getBeaufortLevel(raw);
+      stats.rawToShipLandHours += 1;
+      ((stats.rawToShipBft[bRaw] ||= {})[bAfter] = ((stats.rawToShipBft[bRaw] ||= {})[bAfter] ?? 0) + 1);
+      if (bRaw !== bAfter) {
+        const tRaw = resolveConditionTone({ exposureLevel, beaufort: bRaw, isEnclosedCove: false, seaStateM: undefined });
+        const tShip = resolveConditionTone({ exposureLevel, beaufort: bAfter, isEnclosedCove: false, seaStateM: undefined });
+        if (tRaw !== tShip) { const mv = `${tRaw} → ${tShip}`; stats.rawToShipToneMoves[mv] = (stats.rawToShipToneMoves[mv] ?? 0) + 1; }
+      }
+    }
     stats.byExposure[exposureLevel] ??= { hours: 0, bftChanged: 0, toneChanged: 0 };
     stats.byExposure[exposureLevel].hours += 1;
     if (bBefore !== bAfter) {
@@ -202,6 +218,13 @@ if (stats.seaCellChanged > 0) {
   process.exit(1);
 }
 
+console.log('\nΩΜΟ → ΠΑΡΑΓΩΓΗ, χερσαία κελιά (πόσες ώρες ανεβαίνουν ζώνη Μποφόρ από την αποσυμπίεση):');
+for (const [from, tos] of Object.entries(stats.rawToShipBft).sort((a, b) => Number(a[0]) - Number(b[0]))) {
+  const total = Object.values(tos).reduce((t, v) => t + v, 0);
+  const moved = Object.entries(tos).filter(([to]) => Number(to) !== Number(from)).map(([to, v]) => `→${to}: ${v} (${pct(v, total)})`).join(' · ');
+  console.log(`  ωμό ${from} Μπφ: ${total} ώρες${moved ? ' · ' + moved : ' · καμία αλλαγή'}`);
+}
+for (const [move, count] of Object.entries(stats.rawToShipToneMoves).sort((a, b) => b[1] - a[1])) console.log(`    χρώμα ${move}: ${count}`);
 const reportPath = path.join(root, 'reports/weather', `wind-decompression-rollout-${new Date().toISOString().slice(0, 10)}.json`);
 fs.writeFileSync(reportPath, `${JSON.stringify({
   generatedAt: new Date().toISOString(),
@@ -212,6 +235,8 @@ fs.writeFileSync(reportPath, `${JSON.stringify({
   p90AbsDeltaKmh: Number(percentile(stats.deltas.map(Math.abs), 0.9).toFixed(1)),
   seaCellHours: stats.seaCellHours, seaCellChanged: stats.seaCellChanged,
   bftChangedHours: stats.bftChanged, bftUp: stats.bftUp, bftDown: stats.bftDown, beachesBftChanged: stats.beachesBft.size,
+  rawToShip: { landHours: stats.rawToShipLandHours, bftMatrix: stats.rawToShipBft, toneMoves: stats.rawToShipToneMoves,
+    note: '12/09/2026 §Γ81 Δ4 — ωμός μέσος → παραγωγή (applyGustFloor), χερσαία κελιά, ώρες 10-19, σήμερα+αύριο' },
   toneChangedHours: stats.toneChanged, toneStricter: stats.toneStricter, toneSofter: stats.toneSofter,
   beachesToneChanged: stats.beachesTone.size, beachesToneSofter: stats.beachesToneSofter.size,
   toneMoves: stats.toneMoves,

@@ -41,6 +41,19 @@
  *
  * ΔΕΝ αλλάζει καμία σταθερά. Γράφει reports/weather/wind-decompression-<ημερομηνία>.json.
  *   node scripts/measureWindDecompression.mjs
+ *
+ * 12/09/2026 (βίβλος §Γ81, Δ4) — τρεις προσθήκες, καμία αλλαγή στα παλιά νούμερα:
+ *   varmatch   a + b×v με b = σ_obs/σ_model (ταίριασμα διακύμανσης, «RMA»). Ο OLS του `linear`
+ *              ελαχιστοποιεί το σφάλμα και ΕΞ ΟΡΙΣΜΟΥ συρρικνώνει το εύρος — γι' αυτό έβγαλε b≈1,00
+ *              ενώ η συμπίεση είναι 0,64-0,71 και στα 7 Μπφ μένουμε −10…−17 χλμ/ώ. Το varmatch
+ *              είναι η ευθεία που αποκαθιστά διακύμανση· κρίνεται ισότιμα με τα άλλα.
+ *   shipAlternatives   ό,τι έγινε για το linear («πλήρης υποψήφιος παραγωγής», §5β) γίνεται και
+ *              για το quantile και το varmatch — γιατί στις 23/08 το quantile@raw ΕΙΧΕ περάσει το
+ *              ίδιο κριτήριο και στις δύο αναθέσεις (`verdict`), και η βίβλος έγραφε «μόνο το linear».
+ *   --free / αυτόματα στο 403   το customer-historical-forecast-api θέλει Professional (§Γ79). Τότε
+ *              τρέχει από τη δωρεάν πόρτα με ό,τι φτάνει (~66 μέρες): βαθμονόμηση C (10-25/07), κρίση
+ *              B (04-18/08) και E (20/08-03/09). Λιγότερα παράθυρα, ΙΔΙΑ μέθοδος — και γράφεται ως
+ *              `reach: 'free'` στην αναφορά ώστε να μη συγκριθεί αθόρυβα με τα 4 παράθυρα του Αυγούστου.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,6 +61,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { STATIONS, fetchStationHours } from './lib/windStations.mjs';
+import { resolveOpenMeteoKey } from './lib/openMeteoKey.mjs';
 
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -84,15 +98,18 @@ const toneOf = (exposureLevel, kmh) => {
 // που γράφει η τεκμηρίωση. Με το πληρωμένο κλειδί στο περιβάλλον (OPEN_METEO_API_KEY) το
 // μοντέλο έρχεται από το customer-historical-forecast-api (αρχείο των ίδιων των προγνώσεων,
 // ίδια πηγή για ΟΛΑ τα παράθυρα ώστε να συγκρίνονται) και μπαίνει και ο Μάιος.
-const API_KEY = process.env.OPEN_METEO_API_KEY?.trim() || null;
-const WINDOWS = {
-  A: ['2026-06-20', '2026-07-05'],
-  B: ['2026-08-04', '2026-08-18'],
-  C: ['2026-07-10', '2026-07-25'],
-  ...(API_KEY ? { D: ['2026-05-20', '2026-06-05'] } : {}),
-};
-const CALIBRATION_WINDOW = 'A';
-const JUDGING_WINDOWS = API_KEY ? ['B', 'C', 'D'] : ['B', 'C'];
+const FREE_FLAG = process.argv.includes('--free');
+const RESOLVED_KEY = FREE_FLAG ? null : await resolveOpenMeteoKey();
+let API_KEY = RESOLVED_KEY;
+// Δωρεάν λειτουργία (12/09/2026): μόνο ό,τι φτάνει η δωρεάν πόρτα (~66 μέρες πίσω). Το C γίνεται
+// βαθμονόμηση (το A δεν φτάνεται), το B και το νέο E κρίνουν. Ενεργοποιείται με --free ή μόνο του
+// όταν το αρχείο προγνώσεων απαντήσει 403 (πακέτο Professional, §Γ79).
+const FREE_WINDOWS = { C: ['2026-07-10', '2026-07-25'], B: ['2026-08-04', '2026-08-18'], E: ['2026-08-20', '2026-09-03'] };
+const PAID_WINDOWS = { A: ['2026-06-20', '2026-07-05'], B: ['2026-08-04', '2026-08-18'], C: ['2026-07-10', '2026-07-25'], D: ['2026-05-20', '2026-06-05'] };
+let REACH = API_KEY ? 'paid' : 'free';
+let WINDOWS = API_KEY ? PAID_WINDOWS : FREE_WINDOWS;
+let CALIBRATION_WINDOW = API_KEY ? 'A' : 'C';
+let JUDGING_WINDOWS = API_KEY ? ['B', 'C', 'D'] : ['B', 'E'];
 const DECOMP_T_KMH = 12; // πρώτο χλμ/ώ των 3 Μποφόρ — κάτω από εκεί η πινέζα είναι μπλε από μόνη της
 
 const pct = (n, d) => (d ? Math.round(1000 * n / d) / 10 : null);
@@ -114,17 +131,28 @@ const fetchJson = async (url, tries = 3) => {
 };
 
 const rowsByWindow = {};
+const modelUrl = (start, end) => (API_KEY
+  ? 'https://customer-historical-forecast-api.open-meteo.com/v1/forecast'
+  : 'https://api.open-meteo.com/v1/forecast')
+  + `?latitude=${STATIONS.map(s => s[2]).join(',')}&longitude=${STATIONS.map(s => s[3]).join(',')}`
+  + `&hourly=wind_speed_10m,wind_gusts_10m&wind_speed_unit=kmh&timezone=UTC&start_date=${start}&end_date=${end}`
+  + (API_KEY ? `&apikey=${encodeURIComponent(API_KEY)}` : '');
+if (API_KEY) {
+  // Δοκιμή πρόσβασης ΠΡΙΝ κατέβουν τα όργανα: αν το αρχείο απαντά 403, πάμε στη δωρεάν πόρτα.
+  try {
+    await fetchJson(modelUrl(PAID_WINDOWS.A[0], PAID_WINDOWS.A[0]), 1);
+  } catch (e) {
+    if (!/HTTP 403/.test(String(e.message))) throw e;
+    process.stderr.write('⚠️ το αρχείο προγνώσεων απαντά 403 (πακέτο Professional) — δωρεάν λειτουργία, παράθυρα C/B/E\n');
+    API_KEY = null; REACH = 'free'; WINDOWS = FREE_WINDOWS; CALIBRATION_WINDOW = 'C'; JUDGING_WINDOWS = ['B', 'E'];
+  }
+}
 for (const [key, [start, end]] of Object.entries(WINDOWS)) {
   const startMs = Date.parse(`${start}T00:00:00Z`), endMs = Date.parse(`${end}T23:00:00Z`);
   process.stderr.write(`· ${key} ${start} → ${end}: όργανα…`);
   const observed = await fetchStationHours(startMs, endMs);
   process.stderr.write(` ${observed.size} ώρες-σταθμοί · μοντέλο…`);
-  const meteo = await fetchJson((API_KEY
-    ? 'https://customer-historical-forecast-api.open-meteo.com/v1/forecast'
-    : 'https://api.open-meteo.com/v1/forecast')
-    + `?latitude=${STATIONS.map(s => s[2]).join(',')}&longitude=${STATIONS.map(s => s[3]).join(',')}`
-    + `&hourly=wind_speed_10m,wind_gusts_10m&wind_speed_unit=kmh&timezone=UTC&start_date=${start}&end_date=${end}`
-    + (API_KEY ? `&apikey=${encodeURIComponent(API_KEY)}` : ''));
+  const meteo = await fetchJson(modelUrl(start, end));
   const entries = Array.isArray(meteo) ? meteo : [meteo];
   const rows = [];
   STATIONS.forEach(([icao, name], i) => {
@@ -165,6 +193,17 @@ const fitDecomp = (rows, src, T = DECOMP_T_KMH) => {
   const beta = den > 0 ? Math.max(1, num / den) : 1;
   return { params: { T, beta: round(beta, 4), fittedOn: above.length }, apply: v => (v < T ? v : T + beta * (v - T)) };
 };
+// Ταίριασμα διακύμανσης (12/09/2026): b = σ_obs/σ_model, a = ȳ − b·x̄. Είναι η ευθεία που
+// ΑΠΟΚΑΘΙΣΤΑ το εύρος — ο OLS από πάνω (fitLinear) το συρρικνώνει εξ ορισμού (b_OLS = r·σ_obs/σ_model,
+// και το r είναι ~0,7). Ίδιο σχήμα με το linear, άλλη κλίση· κρίνεται με τα ίδια σετ.
+const fitVarMatch = (rows, src) => {
+  const n = rows.length;
+  const mx = rows.reduce((t, r) => t + r[src], 0) / n, my = rows.reduce((t, r) => t + r.obs, 0) / n;
+  let vx = 0, vy = 0;
+  for (const r of rows) { vx += (r[src] - mx) ** 2; vy += (r.obs - my) ** 2; }
+  const b = vx ? Math.sqrt(vy / vx) : 1, a = my - b * mx;
+  return { params: { a: round(a, 3), b: round(b, 4) }, apply: v => Math.max(0, a + b * v) };
+};
 const fitQuantile = (rows, src) => {
   const xs = rows.map(r => r[src]).sort((p, q) => p - q);
   const ys = rows.map(r => r.obs).sort((p, q) => p - q);
@@ -187,6 +226,7 @@ const CANDIDATES = [
   ['linear@raw', fitLinear, 'raw'], ['linear@prod', fitLinear, 'prod'],
   ['decomp@raw', fitDecomp, 'raw'], ['decomp@prod', fitDecomp, 'prod'],
   ['quantile@raw', fitQuantile, 'raw'], ['quantile@prod', fitQuantile, 'prod'],
+  ['varmatch@raw', fitVarMatch, 'raw'], ['varmatch@prod', fitVarMatch, 'prod'],
 ];
 
 // ── 3. Μετρικές — ό,τι διαβάζει ο χρήστης ως Μποφόρ/χρώμα ──────────────────────────────────
@@ -291,8 +331,38 @@ for (const w of JUDGING_WINDOWS) {
     land: { prod: describe(landOf(rowsByWindow[w]), r => r.prod), ship: describe(landOf(rowsByWindow[w]), shipValue) },
   };
 }
+// ΟΙ ΕΝΑΛΛΑΚΤΙΚΕΣ ΠΑΡΑΓΩΓΗΣ (12/09/2026, §Γ81 Δ4): ό,τι έγινε για το linear γίνεται και για το
+// quantile και το varmatch — βαθμονόμηση σε ΟΛΕΣ τις χερσαίες ώρες του παραθύρου βαθμονόμησης,
+// θαλάσσιο κελί = η σημερινή πόρτα αυτούσια, κρίση στα ξένα παράθυρα. Έτσι οι τρεις μορφές
+// συγκρίνονται ΩΣ ΠΑΡΑΓΩΓΗ, όχι μόνο ως σχήματα.
+const bftMatrix = (rows, value) => {
+  const m = {};
+  for (const r of rows) {
+    const from = bft(r.raw), to = bft(value(r));
+    (m[from] ||= {})[to] = ((m[from] ||= {})[to] || 0) + 1;
+  }
+  return m;
+};
+const shipAlternatives = {};
+for (const [altName, fitFn] of [['quantile', fitQuantile], ['varmatch', fitVarMatch]]) {
+  const fit = fitFn(shipCalibRows, 'raw');
+  const altValue = r => ((r.elevation ?? 0) > 0 ? Math.max(r.raw, fit.apply(r.raw)) : r.prod);
+  const judge = {};
+  for (const w of JUDGING_WINDOWS) {
+    judge[w] = {
+      all: { prod: describe(rowsByWindow[w], r => r.prod), alt: describe(rowsByWindow[w], altValue) },
+      land: { prod: describe(landOf(rowsByWindow[w]), r => r.prod), alt: describe(landOf(rowsByWindow[w]), altValue) },
+      rawToAltBft: bftMatrix(landOf(rowsByWindow[w]), altValue),
+    };
+  }
+  shipAlternatives[altName] = { params: fit.params, judge };
+}
+const shipTransitions = Object.fromEntries(JUDGING_WINDOWS.map(w => [w, bftMatrix(landOf(rowsByWindow[w]), shipValue)]));
+
 const shipFit = {
   decidedBy: 'Μίλτος 24/08/2026 — μπαίνει το linear@raw, με την εξαίρεση θαλασσινού κελιού ανέπαφη',
+  reach: REACH, calibrationWindow: CALIBRATION_WINDOW, judgingWindows: JUDGING_WINDOWS,
+  rawToShipBft: shipTransitions,
   params: shipLinear.params,
   fittedOnLandRows: shipCalibRows.length,
   landShareOfCalibration: pct(shipCalibRows.length, rowsByWindow[CALIBRATION_WINDOW].length),
@@ -312,7 +382,18 @@ const report = {
 };
 const outPath = path.join(root, 'reports', 'weather', `wind-decompression-${report.generatedAt.slice(0, 10)}.json`);
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
+report.reach = REACH;
+report.windowsUsed = WINDOWS;
+report.shipAlternatives = shipAlternatives;
+report.note12_09 = 'Δ4 (§Γ81): varmatch προστέθηκε· quantile/varmatch κρίθηκαν ως πλήρης παραγωγή (shipAlternatives)· rawToShipBft = πίνακας μεταβάσεων Μποφόρ ωμό→παραγωγή στις χερσαίες ώρες.';
 fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
+// Σύνοψη στην οθόνη: οι τρεις μορφές ως παραγωγή, ξένα παράθυρα
+const fmtRow = d => `Μπφ ${d.bftExactPct}% · ψ.ηρεμία ${d.falseCalmPct}% · ψ.συναγ. ${d.falseAlarmPct}% · χαμηλά≥5 ${d.meltemiUnderPct}% · φούσκ.άπν. ${d.calmInflatePct}% · χρώμα ${d.toneOkPct}%`;
+for (const w of JUDGING_WINDOWS) {
+  console.log(`\n[${w}] παραγωγή σήμερα: ${fmtRow(shipJudge[w].all.prod)}`);
+  console.log(`[${w}] linear (ship):   ${fmtRow(shipJudge[w].all.ship)}`);
+  for (const [alt, o] of Object.entries(shipAlternatives)) console.log(`[${w}] ${alt.padEnd(15)} ${fmtRow(o.judge[w].all.alt)}`);
+}
 
 // ── 6. Πίνακας για άνθρωπο ────────────────────────────────────────────────────────────────
 const fmt = (v, w = 6) => String(v ?? '—').padStart(w);
