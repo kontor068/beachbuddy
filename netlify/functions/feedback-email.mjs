@@ -9,6 +9,7 @@
 // durable and exportable via /api/feedback-export — see docs/feedback-calibration.md.
 import { connectLambda, getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
+import { createPhotoToken } from './lib/feedbackPhotoToken.mjs';
 
 const FEEDBACK_STORE = 'feedback-log';
 const MAX_BODY_LENGTH = 12_000;
@@ -155,6 +156,9 @@ const formatVerdict = (value) => VERDICTS[value] || { label: clamp(value || 'Ά�
 // πάνω από μία στη σελίδα της παραλίας). Μόνο αυτές οι τρεις — ένα άγνωστο κείμενο εδώ
 // πετιέται, δεν τυπώνεται.
 const COMBINABLE_VERDICTS = new Set(['had_waves', 'too_windy', 'calmer']);
+// Οι απαντήσεις που ανοίγουν την «στείλε φωτογραφία» — ίδιες τρεις: ένα «ταίριαζε» δεν
+// χρειάζεται απόδειξη. Στο 'not_accurate' (παλιό κουμπί) δεν υπάρχει πια οθόνη να τη ζητήσει.
+const PHOTO_VERDICTS = COMBINABLE_VERDICTS;
 const normalizeAlsoReported = (value, primary) => {
   if (!Array.isArray(value)) return [];
   return [...new Set(value.map(String))]
@@ -738,5 +742,12 @@ export const handler = async (event) => {
     return json(502, { error: 'Feedback notification failed.' });
   }
 
-  return json(202, { ok: true, id: responseBody?.result?.message_id ?? null });
+  const messageId = responseBody?.result?.message_id ?? null;
+  // ΠΑΣΟ ΓΙΑ ΦΩΤΟΓΡΑΦΙΑ (12/09/2026). Μετά από «πιο πολύ κύμα / αέρα / πιο ήρεμα» ο επισκέπτης
+  // μπορεί να στείλει μια φωτογραφία της θάλασσας (feedback-photo.mjs), που πέφτει στο Telegram
+  // ως απάντηση σε ΑΥΤΟ το μήνυμα. Το πάσο δένει τη φωτογραφία με το σχόλιο που μόλις ήρθε.
+  const photoToken = PHOTO_VERDICTS.has(payload.feedback) && typeof payload.beachId === 'number'
+    ? createPhotoToken(messageId, payload.beachId)
+    : null;
+  return json(202, { ok: true, id: messageId, ...(photoToken ? { photoToken } : {}) });
 };

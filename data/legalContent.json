@@ -388,6 +388,9 @@
           "p": "Λογαριασμός & φωτογραφίες (προαιρετικά). Αν συνδεθείτε με Google, λαμβάνουμε από τη Google το όνομα, τη διεύθυνση email και τη φωτογραφία προφίλ σας, ώστε να αναγνωρίζουμε τον λογαριασμό σας και να συγχρονίζουμε τις αποθηκευμένες παραλίες σας σε όλες τις συσκευές σας. Αν ανεβάσετε φωτογραφία παραλίας, αυτή αποθηκεύεται σε ιδιωτικό χώρο και ελέγχεται από άνθρωπο πριν από οποιαδήποτε δημοσίευση· τα κρυμμένα μεταδεδομένα του αρχείου, περιλαμβανομένου του σημείου λήψης, αφαιρούνται στη συσκευή σας πριν από την αποστολή. Αν η φωτογραφία εγκριθεί, δημοσιεύεται στη σελίδα της παραλίας. Το όνομά σας εμφανίζεται από κάτω, σε συντομευμένη μορφή (π.χ. «Γιώργος Π.»), μόνο εφόσον το επιλέξετε κατά την αποστολή· διαφορετικά η φωτογραφία δημοσιεύεται χωρίς όνομα· η διεύθυνση email σας δεν δημοσιεύεται ποτέ. Αν απορριφθεί, το αρχείο διαγράφεται. Μπορείτε οποτεδήποτε να ζητήσετε την απόσυρση μιας δημοσιευμένης φωτογραφίας ή τη διαγραφή ολόκληρου του λογαριασμού σας στο {privacyEmail}."
         },
         {
+          "p": "Σχόλιο για τις συνθήκες & φωτογραφία της θάλασσας (προαιρετικά). Όταν μας λέτε από τη σελίδα μιας παραλίας ότι οι συνθήκες ήταν διαφορετικές από την πρόγνωση, μπορείτε, αν το θέλετε, να στείλετε και μία φωτογραφία της θάλασσας. Η φωτογραφία σμικρύνεται στη συσκευή σας και τα κρυμμένα μεταδεδομένα του αρχείου, περιλαμβανομένου του σημείου λήψης, αφαιρούνται πριν από την αποστολή. Χρησιμοποιείται αποκλειστικά για να ελέγξουμε την ακρίβεια της πρόγνωσης, δεν δημοσιεύεται ποτέ και δεν συνδέεται με λογαριασμό. Παραδίδεται στην ομάδα μας μαζί με το σχόλιο μέσω της υπηρεσίας μηνυμάτων Telegram και διατηρείται μόνο όσο χρειάζεται για τον έλεγχο αυτό· μπορείτε οποτεδήποτε να ζητήσετε τη διαγραφή της στο {privacyEmail}, αναφέροντας την παραλία και την ημέρα. Σας παρακαλούμε να φωτογραφίζετε τη θάλασσα και όχι άλλα πρόσωπα."
+        },
+        {
           "h": "3. Σκοποί & νομικές βάσεις"
         },
         {
@@ -442,7 +445,7 @@
         },
         {
           "ul": [
-            "Πάροχοι υποδομής/υπηρεσιών ως εκτελούντες: φιλοξενία ιστοσελίδας (Netlify), λογαριασμοί χρηστών και αποθήκευση φωτογραφιών (Supabase, με διακομιστές στη Φρανκφούρτη/ΕΕ), ταυτοποίηση μέσω Google, χάρτες, analytics, αναφορές σφαλμάτων.",
+            "Πάροχοι υποδομής/υπηρεσιών ως εκτελούντες: φιλοξενία ιστοσελίδας (Netlify), λογαριασμοί χρηστών και αποθήκευση φωτογραφιών (Supabase, με διακομιστές στη Φρανκφούρτη/ΕΕ), ταυτοποίηση μέσω Google, χάρτες, analytics, αναφορές σφαλμάτων, παράδοση των σχολίων και των προαιρετικών φωτογραφιών επισκεπτών στην ομάδα μας (Telegram).",
             "Πάροχοι καιρού/θαλάσσιων δεδομένων — λαμβάνουν μόνο συντεταγμένες παραλιών, όχι προσωπικά δεδομένα.",
             "Δημόσιες/εποπτικές/δικαστικές αρχές, όταν το επιβάλλει ο νόμος."
           ]
@@ -634,6 +637,9 @@
           "p": "Account & photos (optional). If you sign in with Google, we receive your name, email address and profile picture from Google, in order to identify your account and sync your saved beaches across your devices. If you upload a beach photo, it is stored privately and reviewed by a person before any publication; the file's hidden metadata, including where it was taken, is removed on your device before it is sent. If the photo is approved, it is published on the beach page. Your name appears underneath it, in shortened form, only if you chose that when sending it; otherwise the photo is published with no name (e.g. «George P.»); your email address is never published. If it is rejected, the file is deleted. You may at any time request the withdrawal of a published photo or the deletion of your entire account at {privacyEmail}."
         },
         {
+          "p": "Comment on conditions & photo of the sea (optional). When you tell us from a beach page that conditions were different from the forecast, you may, if you wish, also send one photo of the sea. The photo is resized on your device and the file's hidden metadata, including where it was taken, is removed before it is sent. It is used solely to check the accuracy of the forecast, is never published and is not linked to an account. It is delivered to our team together with your comment through the Telegram messaging service and kept only as long as that check requires; you may ask for it to be deleted at any time at {privacyEmail}, naming the beach and the day. Please photograph the sea, not other people."
+        },
+        {
           "h": "3. Purposes & legal bases"
         },
         {
@@ -688,7 +694,7 @@
         },
         {
           "ul": [
-            "Infrastructure and service providers acting as processors: website hosting (Netlify), user accounts and photo storage (Supabase, servers in Frankfurt/EU), sign-in through Google, maps, analytics, crash reporting.",
+            "Infrastructure and service providers acting as processors: website hosting (Netlify), user accounts and photo storage (Supabase, servers in Frankfurt/EU), sign-in through Google, maps, analytics, crash reporting, delivery of visitor comments and optional photos to our team (Telegram).",
             "Weather/marine data providers — receiving only beach coordinates, not personal data.",
             "Public/supervisory/judicial authorities, when required by law."
           ]

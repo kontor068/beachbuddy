@@ -24,6 +24,7 @@ import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
 import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, ObservedTiming, buildBeachExposureParams } from '../services/analyticsService';
 import { formatBeaufortLabel } from '../utils/beaufortRange';
+import { DEV_PREVIEW_PHOTO_TOKEN, FeedbackPhotoOffer } from '../components/FeedbackPhotoOffer';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
 import { TodayScoreBadge } from '../components/TodayScoreBadge';
 import { BeachAnswerHero, SHELTER_LABEL, SHELTER_WORD_CALM_PROMISE_MAX_BEAUFORT, type PracticalTile } from '../components/BeachAnswerHero';
@@ -857,6 +858,11 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // `feedbackPicks` are the toggles lit in step 1, `pendingFeedbackVerdicts` what step 2 submits.
   const [pendingFeedbackVerdicts, setPendingFeedbackVerdicts] = useState<ConditionFeedbackVerdict[] | null>(null);
   const [feedbackPicks, setFeedbackPicks] = useState<ConditionFeedbackVerdict[]>([]);
+  // After a "more waves / more wind / calmer" comment: the pass that lets the visitor attach a
+  // photo of the sea (components/FeedbackPhotoOffer.tsx). Keyed by beach because this page is
+  // reused when a nearby beach is opened from it — a pass for one beach must never follow the
+  // visitor onto the next.
+  const [feedbackPhoto, setFeedbackPhoto] = useState<{ beachId: number; token: string; observedTiming?: ObservedTiming } | null>(null);
   /**
    * The id every committed per-beach FILE is keyed by.
    *
@@ -1155,7 +1161,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     // «Νησί/περιοχή: Near me» — και το 1 δεν σημαίνει τίποτα: αύριο, από άλλο σημείο,
     // είναι άλλη παραλία. Ό,τι χρειάζεται υπάρχει ήδη πάνω στο αντικείμενο, ακριβώς
     // γι' αυτόν τον λόγο: committedBeachId (= sourceBeachId) και beach.regionId.
-    storeConditionFeedback(committedBeachId, verdict, {
+    const photoTokenPromise = storeConditionFeedback(committedBeachId, verdict, {
       exposureLevel,
       beaufort: getBeaufortLevel(windSpeedKmh),
       // Ό,τι ΕΙΔΕ ο επισκέπτης («3–4»), ώστε ένα «είχε πιο πολύ αέρα» να κριθεί απέναντι στο άνω
@@ -1243,6 +1249,15 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         : (typeof window !== 'undefined' ? window.location.pathname : ''),
     }, alsoReported);
     setFeedbackSubmitted(true);
+    // «Ταίριαζε» needs no evidence; only a "it was different" answer is offered a photo. The
+    // server makes the same call (PHOTO_VERDICTS in feedback-email.mjs) and sends no pass for it.
+    if (verdict !== 'accurate') {
+      const photoBeachId = committedBeachId;
+      void photoTokenPromise.then(token => {
+        const usable = token ?? (import.meta.env.DEV ? DEV_PREVIEW_PHOTO_TOKEN : null);
+        if (usable) setFeedbackPhoto({ beachId: photoBeachId, token: usable, observedTiming });
+      });
+    }
   };
 
   const handleNavigation = () => {
@@ -3448,6 +3463,17 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                   it: 'Ci aiuti tantissimo a migliorare — sei i nostri occhi in spiaggia.',
                   fr: 'Vous nous aidez énormément à nous améliorer — vous êtes nos yeux sur la plage.',
                 }[language]}</p>
+                {feedbackSubmitted && feedbackPhoto?.beachId === committedBeachId && (
+                  <div className="pt-2">
+                    <FeedbackPhotoOffer
+                      photoToken={feedbackPhoto.token}
+                      beachId={committedBeachId}
+                      beachName={beachDisplayName}
+                      observedTiming={feedbackPhoto.observedTiming}
+                      language={language}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ) : pendingFeedbackVerdicts ? (

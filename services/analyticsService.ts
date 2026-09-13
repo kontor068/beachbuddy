@@ -166,6 +166,9 @@ export type AnalyticsEvent =
   | 'photo_suggestion_clicked'
   | 'recommendation_feedback'
   | 'condition_feedback'
+  // The optional photo of the sea after a "more waves / more wind / calmer" comment — how many
+  // offered it, and how many of those it actually reached (components/FeedbackPhotoOffer.tsx).
+  | 'condition_feedback_photo'
   // Two-dimensional "calm water / strong wind" cove card: did the user find it useful?
   // The revealed-preference signal for whether the hidden-calm coves are worth surfacing.
   | 'cove_conditions_feedback'
@@ -630,22 +633,29 @@ const sendFeedbackEmail = (payload: {
   timestamp: string;
   conditions?: FeedbackData['conditions'];
   context?: FeedbackNotificationContext;
-}) => {
-  if (typeof fetch === 'undefined') return;
+}): Promise<string | null> => {
+  if (typeof fetch === 'undefined') return Promise.resolve(null);
 
-  fetch('/.netlify/functions/feedback-email', {
+  // Resolves to the pass that lets this visitor attach a photo of the sea to the comment
+  // (netlify/functions/feedback-photo.mjs), or null. Never rejects: the comment itself is
+  // fire-and-forget, and a missing pass only means the photo button does not appear.
+  return fetch('/.netlify/functions/feedback-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
     keepalive: true,
-  }).then(response => {
-    if (!response.ok && import.meta.env.DEV) {
-      console.warn(`[Feedback] Email delivery failed with HTTP ${response.status}`);
+  }).then(async response => {
+    if (!response.ok) {
+      if (import.meta.env.DEV) console.warn(`[Feedback] Email delivery failed with HTTP ${response.status}`);
+      return null;
     }
+    const body = await response.json().catch(() => null);
+    return typeof body?.photoToken === 'string' ? body.photoToken : null;
   }).catch(error => {
     if (import.meta.env.DEV) {
       console.warn('[Feedback] Email delivery failed.', error);
     }
+    return null;
   });
 };
 
@@ -963,7 +973,7 @@ export const storeConditionFeedback = (
   conditions?: FeedbackData['conditions'],
   context?: FeedbackNotificationContext,
   alsoReported: ConditionFeedbackVerdict[] = [],
-) => {
+): Promise<string | null> => {
   const also = alsoReported.filter(v => v !== verdict);
   const data: FeedbackData = {
     beachId,
@@ -982,7 +992,7 @@ export const storeConditionFeedback = (
     ...gaConditions(conditions),
     ...(also.length ? { also_reported: also.join(',') } : {}),
   });
-  sendFeedbackEmail({
+  return sendFeedbackEmail({
     source: context?.source || 'condition_feedback',
     beachId,
     feedback: verdict,
