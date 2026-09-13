@@ -1,0 +1,214 @@
+{
+  "generatedAt": "2026-09-13",
+  "beachDays": 30513,
+  "deepDays": 14709,
+  "openReferenceN": 15804,
+  "constants": {
+    "SEA_REFERENCE_PERIOD_S": 4.0,
+    "GROUND_SWELL_MIN_PERIOD_S": 7.0,
+    "MIXED_ANGLE_DEG": 45.0,
+    "SWELL_MIN_M": 0.15
+  },
+  "criteria": {
+    "ratio": 2.0,
+    "minN": 500,
+    "minBeaches": 100,
+    "decisiveMinN": 300,
+    "windSeaMaxOverModel": 1.5
+  },
+  "byPeriod": {
+    "windsea": {
+      "n": 3809,
+      "beaches": 609,
+      "foamRate": 0.01,
+      "medianOffshoreHs": 0.63,
+      "s": 3.56,
+      "ci90": [
+        3.0,
+        4.12
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.356,
+      "label": "deep · T windsea",
+      "medianPrintedH": 0.07,
+      "enough": true
+    },
+    "windsea_open": {
+      "n": 734,
+      "beaches": 383,
+      "foamRate": 0.146,
+      "medianOffshoreHs": 0.88,
+      "s": 0.94,
+      "ci90": [
+        0.84,
+        1.06
+      ],
+      "medianModelKd": 1.0,
+      "impliedKd": 0.944,
+      "label": "open · T windsea",
+      "medianPrintedH": 0.88,
+      "enough": true
+    },
+    "mid": {
+      "n": 10595,
+      "beaches": 740,
+      "foamRate": 0.013,
+      "medianOffshoreHs": 0.92,
+      "s": 2.38,
+      "ci90": [
+        2.12,
+        2.67
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.238,
+      "label": "deep · T mid",
+      "medianPrintedH": 0.1,
+      "enough": true
+    },
+    "mid_open": {
+      "n": 11544,
+      "beaches": 1977,
+      "foamRate": 0.305,
+      "medianOffshoreHs": 1.25,
+      "s": 0.97,
+      "ci90": [
+        0.94,
+        1.0
+      ],
+      "medianModelKd": 1.0,
+      "impliedKd": 0.972,
+      "label": "open · T mid",
+      "medianPrintedH": 1.25,
+      "enough": true
+    },
+    "swell": {
+      "n": 305,
+      "beaches": 151,
+      "foamRate": 0.016,
+      "medianOffshoreHs": 0.87,
+      "s": 2.59,
+      "ci90": [
+        1.22,
+        3.67
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.259,
+      "label": "deep · T swell",
+      "medianPrintedH": 0.09,
+      "enough": false
+    },
+    "swell_open": {
+      "n": 3526,
+      "beaches": 968,
+      "foamRate": 0.413,
+      "medianOffshoreHs": 1.38,
+      "s": 1.09,
+      "ci90": [
+        1.03,
+        1.12
+      ],
+      "medianModelKd": 1.0,
+      "impliedKd": 1.091,
+      "label": "open · T swell",
+      "medianPrintedH": 1.38,
+      "enough": true
+    },
+    "none": {
+      "n": 0
+    }
+  },
+  "byArchivePartition": {
+    "since": "2026-06-14",
+    "records": 3497,
+    "deepRecords": 2714,
+    "single": {
+      "n": 2601,
+      "beaches": 626,
+      "foamRate": 0.006,
+      "medianOffshoreHs": 0.8,
+      "s": 1.83,
+      "ci90": [
+        1.5,
+        2.18
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.183,
+      "label": "deep · μονή θάλασσα",
+      "medianPrintedH": 0.08,
+      "enough": true
+    },
+    "mixed": {
+      "n": 113,
+      "beaches": 92,
+      "foamRate": 0.009,
+      "medianOffshoreHs": 0.68,
+      "s": 2.75,
+      "ci90": [
+        0.25,
+        4.62
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.275,
+      "label": "deep · μεικτή θάλασσα",
+      "medianPrintedH": 0.07,
+      "enough": false
+    },
+    "deepWs_openSw": {
+      "n": 206,
+      "beaches": 125,
+      "foamRate": 0.0,
+      "medianOffshoreHs": 0.71,
+      "s": 0.25,
+      "ci90": [
+        0.25,
+        0.25
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.025,
+      "label": "κύμα ανέμου σε σκιά, φουσκοθαλασσιά από ανοιχτή πόρτα",
+      "medianPrintedH": 0.07,
+      "enough": false
+    },
+    "deepWs_deepSw": {
+      "n": 1745,
+      "beaches": 489,
+      "foamRate": 0.007,
+      "medianOffshoreHs": 0.84,
+      "s": 1.78,
+      "ci90": [
+        1.33,
+        2.18
+      ],
+      "medianModelKd": 0.1,
+      "impliedKd": 0.178,
+      "label": "κύμα ανέμου ΚΑΙ φουσκοθαλασσιά σε σκιά",
+      "medianPrintedH": 0.09,
+      "enough": true
+    }
+  },
+  "validation": {
+    "windsea|single": 818,
+    "mid|single": 2510,
+    "windsea|mixed": 75,
+    "swell|single": 40,
+    "mid|mixed": 54
+  },
+  "decision": {
+    "justified": false,
+    "byPeriod": {
+      "passes": false,
+      "why": "λίγα δεδομένα (n 305/3809, παραλίες 151/609)"
+    },
+    "byArchive": {
+      "passes": false,
+      "why": "λίγα δεδομένα (n 113/2601, παραλίες 92/626)",
+      "decisiveCell": "n=206 impliedKd=0.025"
+    },
+    "windSeaWithinModel": {
+      "passes": false,
+      "impliedKd": 0.356,
+      "modelKd": 0.1
+    },
+    "reading": "Ο αφρός στη βαθιά σκιά ΔΕΝ μαζεύεται στη φουσκοθαλασσιά (ή τα κελιά δεν φτάνουν) — η Δ11 μετρήθηκε και δεν δικαιολογείται· το έλλειμμα του Δ7 δεν είναι θέμα περιόδου."
+  }
+}
