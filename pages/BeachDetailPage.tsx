@@ -22,7 +22,7 @@ import {
 } from '../services/recommendationService';
 import { lazyWithChunkRecovery } from '../utils/chunkLoadRecovery';
 import { degToCompass, calculateDistance, getBeaufortLevel, getWaveCondition } from '../utils/weatherUtils';
-import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, ObservedTiming, buildBeachExposureParams } from '../services/analyticsService';
+import { trackEvent, storeConditionFeedback, getFeedback, ConditionFeedbackVerdict, ObservedTiming, SwamAnswer, buildBeachExposureParams } from '../services/analyticsService';
 import { formatBeaufortLabel } from '../utils/beaufortRange';
 import { DEV_PREVIEW_PHOTO_TOKEN, FeedbackPhotoOffer } from '../components/FeedbackPhotoOffer';
 import { calculateSeaConditionScore } from '../utils/seaConditions';
@@ -858,6 +858,9 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
   // `feedbackPicks` are the toggles lit in step 1, `pendingFeedbackVerdicts` what step 2 submits.
   const [pendingFeedbackVerdicts, setPendingFeedbackVerdicts] = useState<ConditionFeedbackVerdict[] | null>(null);
   const [feedbackPicks, setFeedbackPicks] = useState<ConditionFeedbackVerdict[]>([]);
+  // Step 2 answered (the timing), step 3 («Μπήκες στο νερό;») pending. Non-null means the timing
+  // question is done; the inner `timing` may itself be 'unsure'. See SwamAnswer in analyticsService.
+  const [pendingFeedbackTiming, setPendingFeedbackTiming] = useState<{ timing?: ObservedTiming } | null>(null);
   // After a "more waves / more wind / calmer" comment: the pass that lets the visitor attach a
   // photo of the sea (components/FeedbackPhotoOffer.tsx). Keyed by beach because this page is
   // reused when a nearby beach is opened from it — a pass for one beach must never follow the
@@ -967,6 +970,13 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     feedbackWhenMidday: { en: 'Around midday', gr: 'Το μεσημέρι', de: 'Am Mittag', it: 'A mezzogiorno', fr: 'Vers midi' },
     feedbackWhenEvening: { en: 'Afternoon / evening', gr: 'Απόγευμα / βράδυ', de: 'Nachmittags / abends', it: 'Pomeriggio / sera', fr: 'Après-midi / soir' },
     feedbackWhenSkip: { en: "I don't remember", gr: 'Δεν θυμάμαι', de: 'Weiß ich nicht mehr', it: 'Non ricordo', fr: 'Je ne me souviens plus' },
+    // Third step (13/09/2026): did they actually get in? The only external judge our swim verdict
+    // has ever had — «πιο πολύ κύμα» grades the model, this grades the decision. See SwamAnswer.
+    feedbackSwamTitle: { en: 'Did you get in the water?', gr: 'Μπήκες στο νερό;', de: 'Warst du im Wasser?', it: 'Sei entrato in acqua?', fr: 'Êtes-vous allé dans l\'eau ?' },
+    feedbackSwamYes: { en: 'Yes', gr: 'Ναι', de: 'Ja', it: 'Sì', fr: 'Oui' },
+    feedbackSwamNoSea: { en: 'No — because of the sea', gr: 'Όχι — λόγω της θάλασσας', de: 'Nein — wegen des Meeres', it: 'No — per via del mare', fr: 'Non — à cause de la mer' },
+    feedbackSwamNoOther: { en: 'No — another reason', gr: 'Όχι — για άλλο λόγο', de: 'Nein — aus einem anderen Grund', it: 'No — per un altro motivo', fr: 'Non — pour une autre raison' },
+    feedbackSwamSkip: { en: 'Skip', gr: 'Παράλειψη', de: 'Überspringen', it: 'Salta', fr: 'Passer' },
     feedbackPickMany: { en: 'You can pick more than one.', gr: 'Μπορείς να διαλέξεις πάνω από ένα.', de: 'Du kannst mehrere auswählen.', it: 'Puoi sceglierne più di uno.', fr: 'Vous pouvez en choisir plusieurs.' },
     feedbackContinue: { en: 'Continue', gr: 'Συνέχεια', de: 'Weiter', it: 'Continua', fr: 'Continuer' },
     // Separate from the forecast-accuracy widget above on purpose. That widget asks one
@@ -1145,10 +1155,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
     });
   };
 
-  // Step 2: timing answered (or skipped via observedTiming === undefined). Actually submits.
+  // Step 3: «Μπήκες στο νερό;» answered (or skipped) — carries the timing from step 2. Actually submits.
   // One report, not one per answer: the first pick is the headline verdict (what every reader
   // of a single field keeps seeing), the rest travel alongside it.
-  const submitFeedback = (verdicts: ConditionFeedbackVerdict[], observedTiming?: ObservedTiming) => {
+  const submitFeedback = (verdicts: ConditionFeedbackVerdict[], observedTiming?: ObservedTiming, swam?: SwamAnswer) => {
     const [verdict, ...alsoReported] = verdicts;
     if (!verdict) return;
     // Pair the observed verdict with the modeled conditions so an offline pass can later
@@ -1181,6 +1191,10 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
       // `undefined` όταν ο διακόπτης είναι στο «τώρα» — τότε το `hour` ΕΙΝΑΙ η ώρα της οθόνης.
       shownHour: selectedHour,
       observedTiming,
+      // «ΜΠΗΚΕΣ ΣΤΟ ΝΕΡΟ;» ΚΑΙ Η ΕΤΥΜΗΓΟΡΙΑ ΠΟΥ ΕΒΛΕΠΕ (13/09/2026). Η μόνη απάντηση που κρίνει την
+      // ίδια την απόφαση «κολύμπα / μην» — και μόνο αν ταξιδεύει μαζί με το τι του είχαμε πει.
+      swam,
+      verdictShown: scoreResult.swimmingComfort,
       seaStateWaveM: scoreResult.seaStateWaveM,
       seaStatePeriodS: scoreResult.seaStatePeriodS,
       // ...και ο αριθμός που είχε ΜΠΡΟΣΤΑ ΤΟΥ όταν πάτησε το κουμπί. Από τις 13/08/2026 η οθόνη
@@ -1249,6 +1263,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
         : (typeof window !== 'undefined' ? window.location.pathname : ''),
     }, alsoReported);
     setFeedbackSubmitted(true);
+    setPendingFeedbackTiming(null);
     // «Ταίριαζε» needs no evidence; only a "it was different" answer is offered a photo. The
     // server makes the same call (PHOTO_VERDICTS in feedback-email.mjs) and sends no pass for it.
     if (verdict !== 'accurate') {
@@ -3476,6 +3491,42 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
                 )}
               </div>
             </div>
+          ) : pendingFeedbackVerdicts && pendingFeedbackTiming ? (
+            // Step 3: did they get in the water? The one answer that judges the verdict itself
+            // (see SwamAnswer). Three taps or skip — the report goes out either way.
+            <div className="space-y-2">
+              <p className="text-sm font-bold text-slate-900">{copy.feedbackSwamTitle[language]}</p>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, pendingFeedbackTiming.timing, 'yes')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackSwamYes[language]}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, pendingFeedbackTiming.timing, 'no_sea')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackSwamNoSea[language]}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submitFeedback(pendingFeedbackVerdicts, pendingFeedbackTiming.timing, 'no_other')}
+                  className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
+                >
+                  {copy.feedbackSwamNoOther[language]}
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => submitFeedback(pendingFeedbackVerdicts, pendingFeedbackTiming.timing)}
+                className="w-full text-center text-xs font-semibold text-slate-400 underline decoration-dotted hover:text-slate-600"
+              >
+                {copy.feedbackSwamSkip[language]}
+              </button>
+            </div>
           ) : pendingFeedbackVerdicts ? (
             // Step 2: which part of the day the visitor was actually at the beach. Without this,
             // a report typed at 22:00 about a 09:00 visit has no time signal but the click itself.
@@ -3484,28 +3535,28 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'now')}
+                  onClick={() => setPendingFeedbackTiming({ timing: 'now' })}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenNow[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'morning')}
+                  onClick={() => setPendingFeedbackTiming({ timing: 'morning' })}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMorning[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'midday')}
+                  onClick={() => setPendingFeedbackTiming({ timing: 'midday' })}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenMidday[language]}
                 </button>
                 <button
                   type="button"
-                  onClick={() => submitFeedback(pendingFeedbackVerdicts, 'evening')}
+                  onClick={() => setPendingFeedbackTiming({ timing: 'evening' })}
                   className="flex min-h-[44px] items-center justify-center gap-2 rounded-control border border-line text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 active:scale-95"
                 >
                   {copy.feedbackWhenEvening[language]}
@@ -3513,7 +3564,7 @@ export const BeachDetailPage: React.FC<BeachDetailPageProps> = ({
               </div>
               <button
                 type="button"
-                onClick={() => submitFeedback(pendingFeedbackVerdicts, 'unsure')}
+                onClick={() => setPendingFeedbackTiming({ timing: 'unsure' })}
                 className="w-full text-center text-xs font-semibold text-slate-400 underline decoration-dotted hover:text-slate-600"
               >
                 {copy.feedbackWhenSkip[language]}

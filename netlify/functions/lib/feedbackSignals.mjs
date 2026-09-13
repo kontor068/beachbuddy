@@ -145,3 +145,43 @@ export const buildProposals = (cells, describe = () => ({})) => {
   // Πρώτα όσα έχουν τα περισσότερα δείγματα: εκεί η απόδειξη είναι πιο στέρεη.
   return proposals.sort((a, b) => b.samples - a.samples);
 };
+
+/**
+ * «ΜΠΗΚΕΣ ΣΤΟ ΝΕΡΟ;» ΑΠΕΝΑΝΤΙ ΣΤΗΝ ΕΤΥΜΗΓΟΡΙΑ ΠΟΥ ΔΕΙΧΝΑΜΕ (13/09/2026, βίβλος §Γ81 Δ2).
+ *
+ * Ο πρώτος εξωτερικός κριτής της ίδιας της απόφασης «κολύμπα / μην». Τα άλλα σχόλια («πιο πολύ
+ * κύμα») κρίνουν το μοντέλο· αυτό κρίνει αν η υπόσχεση κράτησε. Διαβάζει ΜΟΝΟ εγγραφές με
+ * `conditions.swam` ΚΑΙ `conditions.verdictShown` (και τα δύο μπαίνουν από 13/09/2026).
+ *
+ *   Ιδανική/Καλή  + μπήκε                 → confirmed
+ *   Ιδανική/Καλή  + όχι, λόγω θάλασσας    → wrongCalm   (το επικίνδυνο λάθος — η φορά που μετράει)
+ *   Μην κολυμπήσεις + όχι, λόγω θάλασσας  → confirmed
+ *   Μην κολυμπήσεις + μπήκε               → overCaution (ο κόσμος μπαίνει εκεί που λέμε «μην»)
+ *   Πρόσεχε + οτιδήποτε                   → cautionAnswers, ΟΧΙ κρίση: το «πρόσεχε» επιτρέπει και τα δύο
+ *   «για άλλο λόγο» / χωρίς απάντηση      → δεν μετράει
+ *
+ * Καθαρή συνάρτηση, ίδιοι κανόνες για το script και για τον αυτόματο έλεγχο. Ο καλών περνάει
+ * ΗΔΗ φιλτραρισμένες εγγραφές (χρονική πύλη `timingMismatch` στο calibrateFromFeedback.mjs).
+ */
+export const SWIM_PROMISE_VERDICTS = new Set(['excellent', 'good']);
+export const summarizeSwimJudge = (records) => {
+  const out = { answered: 0, judged: 0, confirmed: 0, wrongCalm: 0, overCaution: 0, cautionAnswers: 0, byVerdict: {} };
+  for (const record of Array.isArray(records) ? records : []) {
+    const swam = record?.conditions?.swam;
+    const shown = record?.conditions?.verdictShown;
+    if (swam !== 'yes' && swam !== 'no_sea' && swam !== 'no_other') continue;
+    out.answered += 1;
+    if (swam === 'no_other' || typeof shown !== 'string' || !shown) continue;
+    const row = out.byVerdict[shown] || (out.byVerdict[shown] = { yes: 0, no_sea: 0 });
+    row[swam] += 1;
+    if (shown === 'caution') { out.cautionAnswers += 1; continue; }
+    const promised = SWIM_PROMISE_VERDICTS.has(shown);
+    const refused = shown === 'avoid_swimming';
+    if (!promised && !refused) continue;
+    out.judged += 1;
+    if (promised && swam === 'no_sea') out.wrongCalm += 1;
+    else if (refused && swam === 'yes') out.overCaution += 1;
+    else out.confirmed += 1;
+  }
+  return out;
+};

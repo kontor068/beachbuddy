@@ -204,6 +204,19 @@ export type ConditionFeedbackVerdict = 'accurate' | 'had_waves' | 'too_windy' | 
 // report typed at 22:00 about a beach visited at 09:00 reads as an evening observation — the
 // exact confusion that made an 09/08/2026 owner ask for this field.
 export type ObservedTiming = 'now' | 'morning' | 'midday' | 'evening' | 'unsure';
+/**
+ * «ΜΠΗΚΕΣ ΣΤΟ ΝΕΡΟ;» — Ο ΠΡΩΤΟΣ ΕΞΩΤΕΡΙΚΟΣ ΚΡΙΤΗΣ ΤΗΣ ΕΤΥΜΗΓΟΡΙΑΣ (13/09/2026).
+ *
+ * Η επιστημονική αξιολόγηση της 12/09 (βίβλος §Γ81, Δ2) το είπε καθαρά: η ετυμηγορία «κολύμπα /
+ * μην κολυμπήσεις» δεν είχε ποτέ κριτή. Τα σχόλια έλεγαν «πιο πολύ κύμα» — για το ΜΟΝΤΕΛΟ· κανείς
+ * δεν μας έλεγε αν τελικά μπήκε στο νερό, που είναι το μόνο που κρίνει την ίδια την απόφαση.
+ * Τρίτο βήμα της φόρμας, μία πατημένη απάντηση, διαβάζεται ΠΑΝΤΑ μαζί με το «verdictShown»:
+ *   yes      — μπήκε. Με «Ιδανική/Καλή» = επιβεβαίωση· με «Μην κολυμπήσεις» = υπερβολική προσοχή.
+ *   no_sea   — δεν μπήκε ΕΞΑΙΤΙΑΣ της θάλασσας. Με «Ιδανική/Καλή» = λάθος «ήρεμα», το επικίνδυνο λάθος.
+ *   no_other — δεν μπήκε για άλλο λόγο (κρύο, ώρα, παρέα): καμία μαρτυρία για τη θάλασσα, δεν μετράει.
+ * Το άθροισμα ζει στο netlify/functions/lib/feedbackSignals.mjs (summarizeSwimJudge).
+ */
+export type SwamAnswer = 'yes' | 'no_sea' | 'no_other';
 
 export interface FeedbackData {
   beachId: number;
@@ -254,6 +267,14 @@ export interface FeedbackData {
     shownHour?: number;
     /** When the visitor says they were actually at the beach — see ObservedTiming above. */
     observedTiming?: ObservedTiming;
+    /** Η απάντηση στο «Μπήκες στο νερό;» — δες SwamAnswer. Λείπει = δεν ρωτήθηκε ή παρέλειψε. */
+    swam?: SwamAnswer;
+    /**
+     * Η ετυμηγορία που ΕΔΕΙΧΝΕ η σελίδα τη στιγμή του σχολίου (excellent / good / caution /
+     * avoid_swimming — scoreResult.swimmingComfort). Χωρίς αυτήν το «μπήκα» δεν κρίνει τίποτα:
+     * ξέρεις τι έκανε ο άνθρωπος, όχι απέναντι σε ποια υπόσχεση.
+     */
+    verdictShown?: string;
     /** The sea state we claimed (m) and its period — what the report is evidence against. */
     seaStateWaveM?: number;
     seaStatePeriodS?: number;

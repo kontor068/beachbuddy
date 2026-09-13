@@ -203,6 +203,18 @@ const OBSERVED_TIMING_LABELS = {
 };
 const formatObservedTiming = (value) => OBSERVED_TIMING_LABELS[value] || '';
 
+// «ΜΠΗΚΕΣ ΣΤΟ ΝΕΡΟ;» (13/09/2026) — ο πρώτος εξωτερικός κριτής της ίδιας της ετυμηγορίας. Διαβάζεται
+// ΜΑΖΙ με τη γραμμή «Ετυμηγορία που έδειχνε»: «Ιδανική/Καλή» + «όχι, λόγω θάλασσας» = λάθος «ήρεμα»
+// (το επικίνδυνο λάθος, σηκώνει και το tag)· «Μην κολυμπήσεις» + «ναι» = υπερβολική προσοχή·
+// «για άλλο λόγο» δεν μαρτυρεί τίποτα για τη θάλασσα. Άθροισμα: lib/feedbackSignals.mjs.
+const SWAM_LABELS = { yes: 'Ναι', no_sea: 'Όχι — λόγω της θάλασσας', no_other: 'Όχι — για άλλο λόγο' };
+const formatSwam = (value) => SWAM_LABELS[value] || '';
+const VERDICT_SHOWN_LABELS = { excellent: 'Ιδανική', good: 'Καλή', caution: 'Πρόσεχε', avoid_swimming: 'Μην κολυμπήσεις' };
+const formatVerdictShown = (value) => VERDICT_SHOWN_LABELS[value] || (value ? String(value) : '');
+/** Είπαμε «κολύμπα» και δεν μπήκε εξαιτίας της θάλασσας — το σχόλιο που πρέπει να διαβαστεί πρώτο. */
+const isWrongCalm = (conditions) =>
+  conditions?.swam === 'no_sea' && (conditions?.verdictShown === 'excellent' || conditions?.verdictShown === 'good');
+
 /**
  * ΣΕ ΠΟΙΑ ΩΡΑ ΑΝΗΚΟΥΝ ΤΑ ΝΟΥΜΕΡΑ ΠΑΡΑΚΑΤΩ — πρόσθετο 29/08/2026.
  *
@@ -288,7 +300,8 @@ const normalizePayload = (body, event) => {
   const alsoReported = normalizeAlsoReported(feedback.alsoReported, feedback.feedback || feedback.verdict);
   // Αν η πρώτη απάντηση είναι «πιο ήρεμα» (🟢) αλλά μαζί ήρθε και «πιο πολύ αέρα» (🟡), το
   // μήνυμα πρέπει να φαίνεται ως κάτι που θέλει έλεγχο — όχι ως καθαρά θετικό.
-  const needsLook = alsoReported.some(v => VERDICTS[v].tag.startsWith('🟡'));
+  // …και όταν είπαμε «κολύμπα» και δεν μπήκε λόγω θάλασσας — ακόμη κι αν πάτησε «ταίριαζε» (13/09/2026).
+  const needsLook = alsoReported.some(v => VERDICTS[v].tag.startsWith('🟡')) || isWrongCalm(conditions);
 
   return {
     // The app-rating path: two 1–10 scores, no beach attached.
@@ -511,6 +524,9 @@ const fieldLines = (payload) => [
   // ήταν στην παραλία· η δεύτερη είναι απλώς πότε πάτησε το κουμπί — ένα βραδινό σχόλιο για
   // πρωινή επίσκεψη έδειχνε μέχρι τώρα ΜΟΝΟ τη δεύτερη και διαβαζόταν λάθος ως βραδινή παρατήρηση.
   ['Πότε ήταν στην παραλία', formatObservedTiming(payload.conditions.observedTiming)],
+  // Οι δύο γραμμές του κριτή (13/09/2026): τι έκανε ο άνθρωπος και τι του είχαμε πει. Μαζί ή τίποτα.
+  ['Μπήκε στο νερό', formatSwam(payload.conditions.swam)],
+  ['Ετυμηγορία που έδειχνε', formatVerdictShown(payload.conditions.verdictShown)],
   ['Ώρα που έστειλε το σχόλιο', formatHour(payload.conditions.hour)],
   // ΤΡΙΤΗ ΩΡΑ, ΚΑΙ Η ΜΟΝΗ ΠΟΥ ΤΑΙΡΙΑΖΕΙ ΜΕ ΤΑ ΝΟΥΜΕΡΑ (29/08/2026). Οι δύο από πάνω είναι
   // ανθρώπινες — πότε ήταν εκεί, πότε πάτησε το κουμπί. Αυτή εδώ είναι της ΣΕΛΙΔΑΣ, και τα

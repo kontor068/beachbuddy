@@ -22,7 +22,7 @@ import path from 'node:path';
 // Η αριθμητική ζει σε ΕΝΑ μέρος: την ίδια τη μοιράζεται ο αυτόματος έλεγχος
 // (netlify/functions/feedback-watch.mjs), ώστε το μήνυμα στο Telegram και αυτή η
 // αναφορά να μη λένε ποτέ διαφορετικά πράγματα για τα ίδια δεδομένα.
-import { aggregateFeedback, buildProposals } from '../netlify/functions/lib/feedbackSignals.mjs';
+import { aggregateFeedback, buildProposals, summarizeSwimJudge } from '../netlify/functions/lib/feedbackSignals.mjs';
 
 const argVal = (name) => { const i = process.argv.indexOf(name); return i === -1 ? undefined : process.argv[i + 1]; };
 const DEMO = process.argv.includes('--demo');
@@ -149,6 +149,8 @@ for (const fb of feedback) {
 // μήνυμα του Telegram, ώστε τα δύο να μη λένε ποτέ διαφορετικά πράγματα.
 const agg = aggregateFeedback(usable);
 const proposals = buildProposals(agg, (id) => beachInfo.get(id));
+// Ο κριτής της ετυμηγορίας (13/09/2026): πάνω στις ίδιες, χρονικά ελεγμένες εγγραφές.
+const swim = summarizeSwimJudge(usable);
 
 console.log(`=== FEEDBACK CALIBRATION ${DEMO ? '(demo)' : ''} ===`);
 console.log(`records: ${feedback.length} | usable: ${feedback.length - excluded.length} | (beach,sector) cells: ${agg.size} | proposals: ${proposals.length}`);
@@ -164,6 +166,7 @@ if (excluded.length > 0) {
 }
 console.log(`  UNDER-WARN (safe, conservative): ${proposals.filter(p => p.type === 'UNDER_WARN').length}`);
 console.log(`  OVER-WARN  (soften, needs 2nd source): ${proposals.filter(p => p.type === 'OVER_WARN').length}`);
+console.log(`  SWIM JUDGE («Μπήκες στο νερό;»): answered ${swim.answered} | judged ${swim.judged} | confirmed ${swim.confirmed} | WRONG-CALM ${swim.wrongCalm} | over-caution ${swim.overCaution} | «πρόσεχε» ${swim.cautionAnswers}`);
 for (const p of proposals.slice(0, 40)) {
   console.log(`  [${p.type}] #${p.beachId} ${p.name} (${p.region}) ${p.sector}: ${p.negative ?? p.calmer}/${p.samples}\n     -> ${p.action}`);
 }
@@ -176,6 +179,7 @@ writeFileSync(outPath, JSON.stringify({
   usableCount: feedback.length - excluded.length,
   excluded,
   proposals,
+  swimJudge: swim,
 }, null, 2), 'utf8');
 console.log(`\nReport: ${outPath}`);
 if (feedback.length === 0 && !DEMO) {
