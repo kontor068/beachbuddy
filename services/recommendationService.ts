@@ -495,6 +495,21 @@ const GUST_EFFECTIVE_BFT_SPREAD_KMH = 22; // ≥6 Μπφ — και η ιστο�
 const GUST_EFFECTIVE_BFT_SPREAD_KMH_BY_BASE: Readonly<Record<number, number>> = { 3: 34, 4: 32, 5: 26 };
 const gustEffectiveStepSpreadKmh = (baseBeaufort: number): number =>
   GUST_EFFECTIVE_BFT_SPREAD_KMH_BY_BASE[baseBeaufort] ?? GUST_EFFECTIVE_BFT_SPREAD_KMH;
+/**
+ * Η σκάλα πόντων της ριπής (swimmingScore: −5/−10/−18, protected −2/−4/−8) διαβάζει το ΙΔΙΟ άλμα ριπή−μέσος με το
+ * σκαλί πιο πάνω, άρα περνάει από την ίδια φούσκα του μοντέλου στα 3-5 Μποφόρ (Δ5, 30 METAR: +11,9 / +9,8 / +4,5 χλμ/ώ,
+ * ειλικρινές από τα 6). Τα σκαλοπάτια 14/22/35 μετατοπίζονται κατά την ίδια ποσότητα με το σκαλί (34−22 = 12, 32−22 = 10,
+ * 26−22 = 4, ≥6 Μπφ 0) — μία απόδειξη, μία μετατόπιση, δύο σημεία. Ως 13/09/2026 ήταν 14/22/35 σε κάθε Μποφόρ.
+ * Μετρημένο εθνικά (scripts/measureGustPenaltyLadder.mjs, 13-14/09): 31 / 49 ετυμηγορίες ηπιότερες, 0 αυστηρότερες·
+ * «μην κολυμπήσεις» → «πρόσεχε» 22 / 30, όλες μερικής προστασίας στα 3-4 Μποφόρ (Ν. Ρέθυμνο 19 χλμ/ώ, Α. Αττική 23 χλμ/ώ),
+ * με βαθμολογία 40-43 → 45-50· πόντοι πάνω σε ~1.100-1.300 παραλίες τη μέρα (διάμεσος +4/+5). Βίβλος §Γ81 Δ5-Γ.
+ */
+const GUST_PENALTY_STEPS_KMH: readonly [number, number, number] = [14, 22, 35];
+const GUST_PENALTY_SHIFT_KMH_BY_BASE: Readonly<Record<number, number>> = { 3: 12, 4: 10, 5: 4 };
+const gustPenaltyStepsKmh = (baseBeaufort: number): [number, number, number] => {
+  const shift = GUST_PENALTY_SHIFT_KMH_BY_BASE[baseBeaufort] ?? 0;
+  return [GUST_PENALTY_STEPS_KMH[0] + shift, GUST_PENALTY_STEPS_KMH[1] + shift, GUST_PENALTY_STEPS_KMH[2] + shift];
+};
 
 const getEffectiveBeaufortForComfort = (
   baseBeaufort: number,
@@ -2674,9 +2689,14 @@ export const calculateBeachScore = (
   if (finalExposureLevel === 'exposed' && baseBeaufort >= 4) swimmingScore -= 12;
   if (effectiveBeaufort >= 4) swimmingScore -= (effectiveBeaufort - 3) * 7;
   if (typeof gustSpreadKmph === 'number' && baseBeaufort >= GUST_MIN_BASE_BEAUFORT) {
-    if (gustSpreadKmph >= 35) swimmingScore -= finalExposureLevel === 'protected' ? 8 : 18;
-    else if (gustSpreadKmph >= 22) swimmingScore -= finalExposureLevel === 'protected' ? 4 : 10;
-    else if (gustSpreadKmph >= 14) swimmingScore -= finalExposureLevel === 'protected' ? 2 : 5;
+    // Τα τρία σκαλοπάτια μετατοπίζονται κατά τη φούσκα της ριπής ανά Μποφόρ βάσης (13/09/2026, §Γ81 Δ5-Γ) —
+    // ίδια απόδειξη και ίδια μετατόπιση με το σκαλί «+1 ενεργό Μποφόρ» (gustEffectiveStepSpreadKmh). Ως 13/09 ήταν
+    // σκέτο 14/22/35 σε κάθε Μποφόρ. Μετρημένο (scripts/measureGustPenaltyLadder.mjs): 31 / 49 ετυμηγορίες ηπιότερες
+    // σε δύο μέρες, 0 αυστηρότερες — 22 / 30 από «μην κολυμπήσεις» σε «πρόσεχε», όλες μερικής προστασίας στα 3-4 Μπφ.
+    const [minor, major, severe] = gustPenaltyStepsKmh(baseBeaufort);
+    if (gustSpreadKmph >= severe) swimmingScore -= finalExposureLevel === 'protected' ? 8 : 18;
+    else if (gustSpreadKmph >= major) swimmingScore -= finalExposureLevel === 'protected' ? 4 : 10;
+    else if (gustSpreadKmph >= minor) swimmingScore -= finalExposureLevel === 'protected' ? 2 : 5;
   }
   if (highFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 25;
   else if (mediumFetchOnshore && effectiveBeaufort >= 4) swimmingScore -= 10;
