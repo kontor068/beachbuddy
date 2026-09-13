@@ -68,6 +68,7 @@ const { getBeaufortLevel } = require(path.join(root, 'utils/weatherUtils.ts'));
 
 const argVal = (name, fallback) => { const hit = process.argv.find(a => a.startsWith(`${name}=`)); return hit ? hit.slice(name.length + 1) : fallback; };
 const FETCH_ONLY = process.argv.includes('--fetch-only');
+const CACHED_ONLY = process.argv.includes('--cached-only'); // κρίνε μόνο με ό,τι υπάρχει στο cache — όταν η δωρεάν πόρτα έχει κλείσει για τη μέρα
 const LIMIT = Number(argVal('--limit', '0'));
 const YEARS = argVal('--years', '2026').split(',').map(Number);
 const today = new Date().toISOString().slice(0, 10);
@@ -124,7 +125,7 @@ const pointsNeeded = new Map();
 for (const t of targetList) pointsNeeded.set(t.point.key, t.point);
 const cachePathFor = (key, year) => path.join(WIND_CACHE, `${key.replace(/[^A-Za-z0-9_.-]/g, '_')}-${year}.json`);
 const missing = [];
-for (const p of pointsNeeded.values()) for (const y of YEARS) if (!existsSync(cachePathFor(p.key, y))) missing.push({ ...p, year: y });
+for (const p of pointsNeeded.values()) for (const y of YEARS) if (!CACHED_ONLY && !existsSync(cachePathFor(p.key, y))) missing.push({ ...p, year: y });
 console.log(`Σημεία ανέμου: ${pointsNeeded.size} · λείπουν από cache: ${missing.length} (σημείο×καλοκαίρι)`);
 const { resolveOpenMeteoKey } = await import('./lib/openMeteoKey.mjs');
 const apiKey = await resolveOpenMeteoKey();
