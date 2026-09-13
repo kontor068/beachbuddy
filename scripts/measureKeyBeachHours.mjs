@@ -39,7 +39,7 @@ require.extensions['.ts'] = (module, filename) => {
 const dayWindow = require(path.join(root, 'utils/beachDayWindow.ts'));
 const { resolveBeachMarinePoints, marinePointKey } = require(path.join(root, 'utils/marineSamplePoints.ts'));
 const { calculateBeachScore } = require(path.join(root, 'services/recommendationService.ts'));
-const { processForecastData, applyMarineToDailyForecast } = require(path.join(root, 'utils/weatherUtils.ts'));
+const { processForecastData, applyMarineToDailyForecast, getBeaufortLevel } = require(path.join(root, 'utils/weatherUtils.ts'));
 const { fetchForecastDataBatch, fetchMarineForecastDataBatch, mergeMarineForecastData } = require(path.join(root, 'services/weatherService.ts'));
 
 const args = process.argv.slice(2);
@@ -87,6 +87,23 @@ for (const region of regions) {
         row[v.key] = { comfort: s.swimmingComfort ?? null, score: typeof s.swimmingScore === 'number' ? Math.round(s.swimmingScore) : null, effBft: s.effectiveBeaufort ?? null };
       }
       dayWindow.KEY_BEACH_HOURS.end = 20;
+      // ΤΟ «ΓΙΑΤΙ» (13/09/2026): όταν η ετυμηγορία αλλάζει, ποιο σήμα των ωρών 19-20 ξεπέρασε το μέγιστο των 10-18;
+      // «άνεμος» = ο μέσος άνεμος έχει ψηλότερη ώρα στις 19-20 (χειρότερη ώρα / απογευματινό δυνάμωμα)·
+      // «ριπή» = το άλμα ριπή−μέσος είναι ψηλότερο στις 19-20 ΚΑΙ περνάει το όριο του σκαλιού για το Μποφόρ βάσης
+      // (34/32/26/22, Δ5-Β)· «και τα δύο» / «άλλο» (βροχή, κύμα της ώρας, μόνο πόντοι). Μόνο διάγνωση, δεν αλλάζει τίποτα.
+      if (row.before.comfort !== row.after.comfort) {
+        const hours = (dayForecast.hourly ?? []).map(h => ({ hour: new Date(h.dt * 1000).getHours(), windKmh: (h.wind?.speed ?? 0) * 3.6, spreadKmh: typeof h.wind?.gust === 'number' ? (h.wind.gust - (h.wind.speedBeforeGustFloor ?? h.wind.speed ?? 0)) * 3.6 : null }));
+        const core = hours.filter(h => h.hour >= 10 && h.hour <= 18), added = hours.filter(h => h.hour >= 19 && h.hour <= 20);
+        const max = (list, pick) => list.reduce((m, h) => (pick(h) == null ? m : Math.max(m, pick(h))), -Infinity);
+        const coreWind = max(core, h => h.windKmh), addedWind = max(added, h => h.windKmh);
+        const coreSpread = max(core, h => h.spreadKmh), addedSpread = max(added, h => h.spreadKmh);
+        const baseBft = getBeaufortLevel(Math.max(coreWind, Number.isFinite(addedWind) ? addedWind : 0));
+        const stepT = { 3: 34, 4: 32, 5: 26 }[baseBft] ?? 22;
+        const windRose = Number.isFinite(addedWind) && addedWind > coreWind + 0.5;
+        const spreadStep = Number.isFinite(addedSpread) && addedSpread > coreSpread && addedSpread >= stepT && baseBft >= 3;
+        row.cause = windRose && spreadStep ? 'άνεμος + ριπή 19-20' : windRose ? 'άνεμος 19-20 (χειρότερη ώρα)' : spreadStep ? 'ριπή 19-20 (σκαλί +1)' : 'άλλο (βροχή / κύμα ώρας / πόντοι)';
+        row.signals = { coreWindKmh: Math.round(coreWind), addedWindKmh: Number.isFinite(addedWind) ? Math.round(addedWind) : null, coreSpreadKmh: Number.isFinite(coreSpread) ? Math.round(coreSpread) : null, addedSpreadKmh: Number.isFinite(addedSpread) ? Math.round(addedSpread) : null, baseBft, stepT };
+      }
       rows.push(row);
     }
     done += 1;
@@ -108,6 +125,8 @@ const report = {
   generatedAt: new Date().toISOString(), dayIndex: DAY_INDEX, regions: done, beaches: rows.length,
   change: 'KEY_BEACH_HOURS.end 18 → 20 (utils/beachDayWindow) — ετυμηγορία, ριπές, βροχή, απογευματινό δυνάμωμα',
   verdict: { changed: changed.length, stricter: stricter.length, softer: softer.length, moves },
+  causes: { stricter: (() => { const o = {}; for (const r of stricter) o[r.cause ?? '?'] = (o[r.cause ?? '?'] || 0) + 1; return o; })(), softer: (() => { const o = {}; for (const r of softer) o[r.cause ?? '?'] = (o[r.cause ?? '?'] || 0) + 1; return o; })(),
+    note: '13/09/2026: «άνεμος 19-20» = ο μέσος άνεμος κορυφώνει μετά τις 18 (χειρότερη ώρα / δυνάμωμα)· «ριπή 19-20» = το άλμα ριπής των 19-20 περνάει το όριο του σκαλιού (34/32/26/22)· «άλλο» = βροχή, κύμα της ώρας ή μόνο πόντοι.' },
   score: { down: scoreDown, up: scoreUp, unchanged: rows.length - scoreDown - scoreUp, medianDownDelta: (() => { const d = scoreDelta.filter(x => x < 0).sort((a, b) => a - b); return d.length ? d[Math.floor(d.length / 2)] : null; })() },
   distributionBefore: Object.fromEntries(ORDER.map(c => [c, rows.filter(r => r.before.comfort === c).length])),
   distributionAfter: Object.fromEntries(ORDER.map(c => [c, rows.filter(r => r.after.comfort === c).length])),
@@ -119,6 +138,7 @@ mkdirSync(path.dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(report, null, 2));
 console.log(`\nΩΡΕΣ 10-18 → 10-20, μέρα +${DAY_INDEX}: ${rows.length} παραλίες, ${done} περιοχές`);
 console.log(`  ετυμηγορία αλλάζει: ${changed.length} (αυστηρότερη ${stricter.length} · ηπιότερη ${softer.length}) · ${JSON.stringify(moves)}`);
+console.log(`  γιατί (αυστηρότερες): ${JSON.stringify(report.causes.stricter)}`);
 console.log(`  πόντοι: κάτω ${scoreDown} · πάνω ${scoreUp} · ίδιοι ${report.score.unchanged} · διάμεση πτώση ${report.score.medianDownDelta}`);
 console.log(`  πριν ${JSON.stringify(report.distributionBefore)}\n  μετά ${JSON.stringify(report.distributionAfter)}`);
 console.log(`→ ${path.relative(root, out)}`);

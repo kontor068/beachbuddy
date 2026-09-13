@@ -1,0 +1,1390 @@
+{
+  "generatedAt": "2026-09-13T06:56:35.450Z",
+  "input": "..\\Users\\Miltos\\Desktop\\beach\\.tmp\\feedback-export.json",
+  "records": 50,
+  "placed": 50,
+  "unknownBeach": 0,
+  "noFacing": 0,
+  "cell": "περιοχή × τομέας προσανατολισμού ακτής (facingDeg του γεωχωρικού προφίλ, 8 × 45°)",
+  "thresholds": {
+    "minNegative": 3,
+    "minBeaches": 2
+  },
+  "headline": {
+    "segments": 36,
+    "systematicSegments": 2,
+    "beachesTheperBeachCalibratorWouldFlag": 1
+  },
+  "systematic": [
+    {
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "records": 7,
+      "negative": 6,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "had_waves": 3,
+        "too_windy": 3,
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 6,
+          "name": "Agios Kosmas",
+          "facingDeg": 216,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1,
+          "name": "Palmyra",
+          "facingDeg": 228,
+          "verdicts": [
+            "too_windy",
+            "had_waves",
+            "too_windy",
+            "accurate"
+          ]
+        },
+        {
+          "beachId": 8,
+          "name": "Paralia Glyfadas Akti A",
+          "facingDeg": 211,
+          "verdicts": [
+            "too_windy"
+          ]
+        },
+        {
+          "beachId": 11,
+          "name": "Paralia Glyfadas Akti D",
+          "facingDeg": 239,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 7
+      },
+      "exposureShown": {
+        "exposed": 2,
+        "protected": 3,
+        "partial": 2
+      },
+      "beaufortShown": {
+        "1": 2,
+        "2": 1,
+        "3": 3,
+        "5": 1
+      },
+      "beachCount": 4,
+      "negativeBeaches": 4
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "sector": "Δ",
+      "records": 3,
+      "negative": 3,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 3
+      },
+      "beaches": [
+        {
+          "beachId": 1162,
+          "name": "Kavalikevta",
+          "facingDeg": 285,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1157,
+          "name": "Gialos",
+          "facingDeg": 267,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1160,
+          "name": "Kathisma",
+          "facingDeg": 286,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 2,
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 2,
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1,
+        "3": 2
+      },
+      "beachCount": 3,
+      "negativeBeaches": 3
+    }
+  ],
+  "segments": [
+    {
+      "region": "attica-athens-area-mainland",
+      "sector": "ΝΔ",
+      "records": 7,
+      "negative": 6,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "had_waves": 3,
+        "too_windy": 3,
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 6,
+          "name": "Agios Kosmas",
+          "facingDeg": 216,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1,
+          "name": "Palmyra",
+          "facingDeg": 228,
+          "verdicts": [
+            "too_windy",
+            "had_waves",
+            "too_windy",
+            "accurate"
+          ]
+        },
+        {
+          "beachId": 8,
+          "name": "Paralia Glyfadas Akti A",
+          "facingDeg": 211,
+          "verdicts": [
+            "too_windy"
+          ]
+        },
+        {
+          "beachId": 11,
+          "name": "Paralia Glyfadas Akti D",
+          "facingDeg": 239,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 7
+      },
+      "exposureShown": {
+        "exposed": 2,
+        "protected": 3,
+        "partial": 2
+      },
+      "beaufortShown": {
+        "1": 2,
+        "2": 1,
+        "3": 3,
+        "5": 1
+      },
+      "beachCount": 4,
+      "negativeBeaches": 4
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "sector": "Δ",
+      "records": 3,
+      "negative": 3,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 3
+      },
+      "beaches": [
+        {
+          "beachId": 1162,
+          "name": "Kavalikevta",
+          "facingDeg": 285,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1157,
+          "name": "Gialos",
+          "facingDeg": 267,
+          "verdicts": [
+            "had_waves"
+          ]
+        },
+        {
+          "beachId": 1160,
+          "name": "Kathisma",
+          "facingDeg": 286,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 2,
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 2,
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1,
+        "3": 2
+      },
+      "beachCount": 3,
+      "negativeBeaches": 3
+    },
+    {
+      "region": "south-aegean-naxos",
+      "sector": "ΝΔ",
+      "records": 3,
+      "negative": 2,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1,
+        "too_windy": 2
+      },
+      "beaches": [
+        {
+          "beachId": 1985,
+          "name": "Agios Prokopios",
+          "facingDeg": 212,
+          "verdicts": [
+            "accurate"
+          ]
+        },
+        {
+          "beachId": 2013,
+          "name": "Pyrgaki",
+          "facingDeg": 203,
+          "verdicts": [
+            "too_windy",
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1,
+        "2026-09": 2
+      },
+      "exposureShown": {
+        "protected": 3
+      },
+      "beaufortShown": {
+        "3": 2,
+        "5": 1
+      },
+      "beachCount": 2,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-naxos",
+      "sector": "Ν",
+      "records": 3,
+      "negative": 2,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1,
+        "too_windy": 2
+      },
+      "beaches": [
+        {
+          "beachId": 1987,
+          "name": "Alyko",
+          "facingDeg": 197,
+          "verdicts": [
+            "calmer",
+            "too_windy"
+          ]
+        },
+        {
+          "beachId": 1995,
+          "name": "Paralia Kalantos",
+          "facingDeg": 183,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 2,
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 3
+      },
+      "beaufortShown": {
+        "5": 3
+      },
+      "beachCount": 2,
+      "negativeBeaches": 2
+    },
+    {
+      "region": "crete-crete-chania",
+      "sector": "Α",
+      "records": 2,
+      "negative": 1,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1,
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 537,
+          "name": "Loutraki",
+          "facingDeg": 109,
+          "verdicts": [
+            "calmer"
+          ]
+        },
+        {
+          "beachId": 532,
+          "name": "Kalyvaki",
+          "facingDeg": 88,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1,
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 2
+      },
+      "beaufortShown": {
+        "2": 1,
+        "4": 1
+      },
+      "beachCount": 2,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "crete-gavdos",
+      "sector": "Β",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 615,
+          "name": "Sarakiniko",
+          "facingDeg": 19,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "attica-east-attica-mainland",
+      "sector": "ΝΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 37,
+          "name": "Paralia Artemidas",
+          "facingDeg": 114,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "6": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-andros",
+      "sector": "Α",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1723,
+          "name": "Steno (Stavros)",
+          "facingDeg": 110,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "4": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-milos",
+      "sector": "ΝΔ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1927,
+          "name": "Fyriplaka",
+          "facingDeg": 205,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "6": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "ionian-islands-kefalonia",
+      "sector": "Α",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 3105,
+          "name": "Skala (Kefalonia)",
+          "facingDeg": 110,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "3": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-karpathos",
+      "sector": "ΝΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2282,
+          "name": "Kastelia",
+          "facingDeg": 113,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-kimolos",
+      "sector": "ΝΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1853,
+          "name": "Bonatsa",
+          "facingDeg": 141,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "6": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "ionian-islands-kefalonia",
+      "sector": "ΒΔ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1113,
+          "name": "Myrtos",
+          "facingDeg": 306,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "1": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-rhodes",
+      "sector": "ΝΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2451,
+          "name": "Paralia Lachanias",
+          "facingDeg": 115,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "sector": "ΝΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1165,
+          "name": "Lygia",
+          "facingDeg": 113,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-naxos",
+      "sector": "Δ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1993,
+          "name": "Glyfada",
+          "facingDeg": 274,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "4": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "central-macedonia-halkidiki-mainland",
+      "sector": "Α",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 445,
+          "name": "Sykia",
+          "facingDeg": 78,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "3": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "epirus-thesprotia-mainland",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 902,
+          "name": "Mikri Ammos",
+          "facingDeg": 195,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "sector": "ΒΑ",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 747,
+          "name": "Kolokytha",
+          "facingDeg": 57,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-kos",
+      "sector": "Β",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2335,
+          "name": "Tigkaki",
+          "facingDeg": 9,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "south-aegean-karpathos",
+      "sector": "Α",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "had_waves": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2308,
+          "name": "Kyra Panagia",
+          "facingDeg": 84,
+          "verdicts": [
+            "had_waves"
+          ]
+        }
+      ],
+      "months": {
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "4": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "crete-crete-lasithi",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 1,
+      "calmer": 0,
+      "accurate": 0,
+      "byVerdict": {
+        "too_windy": 1
+      },
+      "beaches": [
+        {
+          "beachId": 3128,
+          "name": "Paralia Kallithea",
+          "facingDeg": 167,
+          "verdicts": [
+            "too_windy"
+          ]
+        }
+      ],
+      "months": {
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 1
+    },
+    {
+      "region": "central-greece-evia",
+      "sector": "ΒΑ",
+      "records": 2,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 2,
+      "byVerdict": {
+        "accurate": 2
+      },
+      "beaches": [
+        {
+          "beachId": 283,
+          "name": "Paralia Psaropouli/Vasilikon",
+          "facingDeg": 57,
+          "verdicts": [
+            "accurate"
+          ]
+        },
+        {
+          "beachId": 310,
+          "name": "Cheromylos",
+          "facingDeg": 56,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1,
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "exposed": 1,
+        "partial": 1
+      },
+      "beaufortShown": {
+        "3": 1,
+        "5": 1
+      },
+      "beachCount": 2,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "ionian-islands-lefkada",
+      "sector": "Α",
+      "records": 1,
+      "negative": 0,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1139,
+          "name": "Breath of Zorbas beach",
+          "facingDeg": 72,
+          "verdicts": [
+            "calmer"
+          ]
+        }
+      ],
+      "months": {
+        "2026-07": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "south-aegean-kythnos",
+      "sector": "Δ",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1897,
+          "name": "Flampouria",
+          "facingDeg": 282,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "attica-kythira",
+      "sector": "Β",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 131,
+          "name": "Diakofti",
+          "facingDeg": 10,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "3": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "north-aegean-samos",
+      "sector": "Β",
+      "records": 1,
+      "negative": 0,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1
+      },
+      "beaches": [
+        {
+          "beachId": 3136,
+          "name": "Paralia Lekka",
+          "facingDeg": 3,
+          "verdicts": [
+            "calmer"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "4": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "south-aegean-mykonos",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 0,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1958,
+          "name": "Lia",
+          "facingDeg": 181,
+          "verdicts": [
+            "calmer"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "6": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "south-aegean-serifos",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 0,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2085,
+          "name": "Koutalas",
+          "facingDeg": 164,
+          "verdicts": [
+            "calmer"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "peloponnese-arkadia-mainland",
+      "sector": "Α",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1520,
+          "name": "Tigani (Fournaka)",
+          "facingDeg": 68,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "north-aegean-lesvos",
+      "sector": "ΒΑ",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1365,
+          "name": "Pyramies",
+          "facingDeg": 30,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "exposed": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "epirus-thesprotia-mainland",
+      "sector": "ΝΔ",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 909,
+          "name": "Paralia Gata",
+          "facingDeg": 246,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "east-macedonia-and-thrace-kavala-mainland",
+      "sector": "ΒΑ",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 794,
+          "name": "Remvi",
+          "facingDeg": 33,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "2": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "south-aegean-santorini",
+      "sector": "Α",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 2061,
+          "name": "Kamari",
+          "facingDeg": 102,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-08": 1
+      },
+      "exposureShown": {
+        "partial": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "south-aegean-ios",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 0,
+      "calmer": 0,
+      "accurate": 1,
+      "byVerdict": {
+        "accurate": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1778,
+          "name": "Manganari",
+          "facingDeg": 182,
+          "verdicts": [
+            "accurate"
+          ]
+        }
+      ],
+      "months": {
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "5": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    },
+    {
+      "region": "north-aegean-lemnos",
+      "sector": "Ν",
+      "records": 1,
+      "negative": 0,
+      "calmer": 1,
+      "accurate": 0,
+      "byVerdict": {
+        "calmer": 1
+      },
+      "beaches": [
+        {
+          "beachId": 1455,
+          "name": "Mikro Fanaraki",
+          "facingDeg": 170,
+          "verdicts": [
+            "calmer"
+          ]
+        }
+      ],
+      "months": {
+        "2026-09": 1
+      },
+      "exposureShown": {
+        "protected": 1
+      },
+      "beaufortShown": {
+        "4": 1
+      },
+      "beachCount": 1,
+      "negativeBeaches": 0
+    }
+  ],
+  "note": "Μόνο αθροίσματα σχολίων — ΟΧΙ βαθμονόμηση. Ένα «συστηματικό» τμήμα είναι ένδειξη για την ακτή (σημείο ανέμου περιοχής, K_d, έκθεση), που θέλει κριτή (κάμερα/METAR/replay) πριν αγγίξει αριθμό. Τα σχόλια DE/IT/FR δεν έχουν σημαία «επιτόπου» (βλ. 11/09)."
+}
